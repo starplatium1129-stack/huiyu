@@ -2,40 +2,10 @@ import { onDeactivated, onMounted, onUnmounted } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
-/**
- * Workspace order provides a small directional cue, not a full-screen mobile slide.
- * Unknown routes stay neutral rather than inventing a forward/back relationship.
- */
-const ROUTE_ORDER: Record<string, number> = {
-  '/': 0,
-  '/showcase': 1,
-  '/popular-scenes': 2,
-  '/scene-explorer': 3,
-  '/prompt-builder': 4,
-  '/chat': 5,
-  '/gallery': 6,
-  '/video-studio': 7,
-  '/character': 8,
-  '/style': 9,
-  '/scenario': 10,
-  '/color-script': 11,
-  '/lora': 12,
-  '/scene-manager': 13,
-  '/control': 14,
-}
-
-function getRouteDirection(from: string, to: string): number {
-  const fromIdx = ROUTE_ORDER[from]
-  const toIdx = ROUTE_ORDER[to]
-  if (fromIdx !== undefined && toIdx !== undefined) {
-    return toIdx >= fromIdx ? 1 : -1
-  }
-  return 0
-}
-
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
 export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
   const active = new Map<HTMLElement, () => void>()
+  let interrupted = new WeakMap<HTMLElement, Keyframe>()
   const departed = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
   let departingPath = ''
@@ -43,11 +13,33 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   const archivePair = (from: string, to: string) => (from === '/popular-scenes' && to === '/character')
     || (from === '/character' && to === '/popular-scenes')
   function settle(el: HTMLElement) { active.get(el)?.() }
-  function settleAll() { for (const finish of [...active.values()]) finish() }
+  function settleAll() {
+    for (const finish of [...active.values()]) finish()
+    interrupted = new WeakMap()
+  }
+  function presentation(el: HTMLElement): Keyframe | undefined {
+    if (interrupted.has(el)) return interrupted.get(el)
+    if (!active.has(el)) return undefined
+    try {
+      const style = getComputedStyle(el)
+      const opacity = Number.parseFloat(style.opacity)
+      if (!Number.isFinite(opacity)) return undefined
+      return { opacity, ...(style.transform && style.transform !== 'none' ? { transform: style.transform } : {}) }
+    } catch { return undefined }
+  }
+  function interrupt(el: HTMLElement) {
+    // Vue cancels enter before calling leave (and vice versa). Capture before
+    // cancelling WAAPI, otherwise its underlying opacity jumps back to one.
+    const frame = presentation(el)
+    settle(el)
+    if (frame) interrupted.set(el, frame)
+  }
 
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     const path = el.dataset.routePath || ''
+    const current = presentation(el)
+    interrupted.delete(el)
     settle(el)
     el.inert = false
     if (path) markUiFluidityForPath(path, 'shell-ready')
@@ -57,7 +49,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const crossRoute = !!departingPath && departingPath !== pathname(path)
     // A same-page/query refresh does not replay motion. Returning to a cached page
     // gets only a short opacity settle: no remount, translation or scroll reset.
-    if (restored || (cachedActivation && !crossRoute) || prefersReducedMotion() || typeof el.animate !== 'function') {
+    if ((!current && (restored || (cachedActivation && !crossRoute))) || prefersReducedMotion() || typeof el.animate !== 'function') {
       delete el.dataset.routeEntering
       if (path) markUiFluidityForPath(path, 'settled')
       done()
@@ -90,15 +82,10 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     let easing = 'cubic-bezier(.22, 1, .36, 1)'
 
     if (crossRoute) {
-      const slideOffset = getRouteDirection(departingPath, pathname(path)) * 10
-      // A restrained depth hand-off: no blur animation, overshoot, layout work or
-      // persistent fill. Cancel at settlement so fixed descendants regain their viewport.
-      frames = [
-        { opacity: 0, transform: `translateX(${slideOffset}px)` },
-        { opacity: 1, transform: 'translateX(0)' },
-      ]
-      duration = 220
-      easing = 'cubic-bezier(.16, 1, .3, 1)'
+      // Peer workspaces have no forward/back hierarchy. Keep their geometry
+      // still; only the real directory/detail pair below gets a spatial cue.
+      frames = [{ opacity: 0 }, { opacity: 1 }]
+      duration = 180
     } else if (options.initialFade) {
       frames = [{ opacity: 0 }, { opacity: 1 }]
     }
@@ -111,6 +98,10 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       frames = [{ opacity: .88 }, { opacity: 1 }]
       duration = 120
       easing = 'cubic-bezier(.22, 1, .36, 1)'
+    }
+    if (current) {
+      frames = [current, { opacity: 1, ...(current.transform ? { transform: 'none' } : {}) }]
+      duration = 120
     }
     try {
       animation = el.animate(frames, { duration, easing })
@@ -128,6 +119,8 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
     departingPath = pathname(el.dataset.routePath || '')
+    const current = presentation(el)
+    interrupted.delete(el)
     el.inert = true
     settle(el)
     const destination = pathname(destinationPath?.() || '')
@@ -145,16 +138,12 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       done()
     }
     const isArchive = archivePair(departingPath, destination)
-    const dir = getRouteDirection(departingPath, destination)
-    const leaveOffset = dir * -4
-    const leaveFrames: Keyframe[] = isArchive
-      ? [{ opacity: 1 }, { opacity: 0 }]
-      : [
-        { opacity: 1, transform: 'translateX(0)' },
-        { opacity: 0, transform: `translateX(${leaveOffset}px)` },
-      ]
-    const leaveDuration = isArchive ? 100 : 110
-    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.4, 0, 1, 1)'
+    const leaveFrames: Keyframe[] = [
+      current || { opacity: 1 },
+      { opacity: 0, ...(current?.transform ? { transform: current.transform } : {}) },
+    ]
+    const leaveDuration = isArchive ? 100 : 140
+    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.22, 1, .36, 1)'
     try {
       animation = el.animate(leaveFrames, {
         duration: leaveDuration, easing: leaveEasing,
@@ -162,8 +151,8 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
-  function onLeaveCancelled(element: Element) { settle(element as HTMLElement); (element as HTMLElement).inert = false }
-  function onEnterCancelled(element: Element) { settle(element as HTMLElement) }
+  function onLeaveCancelled(element: Element) { interrupt(element as HTMLElement); (element as HTMLElement).inert = false }
+  function onEnterCancelled(element: Element) { interrupt(element as HTMLElement) }
   function onBeforeEnter(element: Element) {
     const el = element as HTMLElement
     el.inert = false

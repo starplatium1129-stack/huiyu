@@ -473,4 +473,30 @@ for (const theme of ['light', 'dark']) {
   })
 }
 
+for (const theme of ['light', 'dark']) {
+  test(`orbit press stays actionable across icon and sector ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 540, height: 760 })
+    await desktop(page, theme)
+    await page.keyboard.press('Shift+F10')
+    const orbit = await settledOrbit(page)
+    for (const name of ['置顶窗口', '打开聊天']) {
+      const button = orbit.getByRole('button', { name, exact: true })
+      const point = await button.evaluate(element => {
+        const box = element.getBoundingClientRect(), y = box.y + box.height / 2
+        const x = box.x + 3, outsideX = box.x - 3
+        return { x, y, outsideX, sameSector: document.elementFromPoint(outsideX, y)?.closest('.orbit-segment') === element.closest('.orbit-segment') }
+      })
+      expect(point.sameSector).toBe(true)
+      // A small hand movement releases on the painted sector, beside its icon.
+      await page.mouse.move(point.x, point.y)
+      await page.mouse.down()
+      await page.mouse.move(point.outsideX, point.y)
+      await page.mouse.up()
+      if (name === '置顶窗口') await expect.poll(() => page.evaluate(() => window.petFixture!.pinned)).toBe(true)
+      else await expect.poll(() => page.evaluate(() => window.petFixture!.open)).toBe(1)
+    }
+    expect(await page.evaluate(() => window.petFixture!.drag)).toBe(0)
+  })
+}
+
 test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

@@ -47,7 +47,7 @@ fn shade_standard(in: VsOut, masked: bool) -> vec4<f32> {
     let multiply = u.multiply_color;
     var mask_a = 1.0;
     if (masked) {
-        mask_a = textureSample(mask_tex, mask_sampler, in.mask_uv).a;
+        mask_a = textureSample(mask_tex, mask_sampler, in.mask_uv).r;
         if (u.misc.z > 0.5) {
             mask_a = 1.0 - mask_a;
         }
@@ -79,7 +79,7 @@ fn fs_multiply_masked(in: VsOut) -> @location(0) vec4<f32> {
     return shade_standard(in, true);
 }
 
-// Mask channel render: white color, alpha from texture. The official renderer
+// Mask channel render: coverage from texture alpha. The official renderer
 // ignores the drawable's opacity while generating mask channels
 // (opacity only applies to the main pass), so mask sources with opacity 0
 // still contribute their shape.
@@ -87,7 +87,8 @@ fn fs_multiply_masked(in: VsOut) -> @location(0) vec4<f32> {
 fn fs_mask(in: VsOut) -> @location(0) vec4<f32> {
     let tex = textureSample(color_tex, color_sampler, in.uv);
     let a = tex.a;
-    return vec4<f32>(1.0, 1.0, 1.0, a);
+    // R8 stores coverage in red; One / OneMinusSrc computes a + dst * (1-a).
+    return vec4<f32>(a, a, a, a);
 }
 
 // Fullscreen blit for 2x supersampled rendering: sample the offscreen

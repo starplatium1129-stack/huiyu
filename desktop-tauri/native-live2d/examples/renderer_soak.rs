@@ -3,6 +3,7 @@
 //! This uses the same persistent target-texture path as the overlay renderer,
 //! without readback. It is intentionally separate from the command-path
 //! selftest so a single process can run for minutes and exercise model swaps.
+//! Keep 2x supersampling enabled, matching the desktop overlay default.
 
 use std::path::{Path, PathBuf};
 use std::thread;

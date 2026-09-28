@@ -15,6 +15,16 @@ function setup(extra = {}) {
   return wrapper
 }
 describe('companion orbit interactions', () => {
+  it('activates each sector once from its icon, paint, or shared click target', async () => {
+    const wrapper = setup()
+    const segment = wrapper.get('[data-tone="pin"]')
+    await segment.get('button').trigger('click')
+    expect(wrapper.emitted('pin')).toHaveLength(1)
+    await segment.get('path').trigger('click')
+    expect(wrapper.emitted('pin')).toHaveLength(2)
+    await segment.trigger('click')
+    expect(wrapper.emitted('pin')).toHaveLength(3)
+  })
   it('returns from a secondary menu before closing the pet controls', async () => {
     const wrapper = setup()
     await wrapper.get('[aria-label="互动动作"]').trigger('click')

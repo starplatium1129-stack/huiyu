@@ -45,8 +45,7 @@ function prefetch(event: Event) {
   if (event instanceof PointerEvent && event.type === 'pointerover' && event.relatedTarget instanceof Node && el.contains(event.relatedTarget)) return
   cancelHover()
   const warm = () => {
-    const url = new URL(el.href, location.href)
-    void prefetchRoute(url.pathname + url.search)
+    void prefetchRoute(routeDestination(el))
   }
   // Crossing the navigation is not intent; focus and pointer-down are.
   if (event.type === 'pointerover') hoverTimer = window.setTimeout(warm, 90)

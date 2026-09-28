@@ -8,12 +8,11 @@
       </header>
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
-          :data-active="active(action) || undefined" :data-tone="action.id">
-          <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" @click="activate(action)" /></svg>
+          :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action)">
+          <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" /></svg>
           <button type="button" class="orbit-action" :class="{ 'orbit-settings-trigger': action.id === 'settings' }"
             :style="{ '--orbit-x': position(orbitAngle(index), 127).left, '--orbit-y': position(orbitAngle(index), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
-            :aria-expanded="action.category ? category === action.category : undefined" :data-category-button="action.category || undefined"
-            @click="activate(action)">
+            :aria-expanded="action.category ? category === action.category : undefined" :data-category-button="action.category || undefined">
             <ArchiveIcon :name="action.icon" /><span>{{ action.short }}</span>
           </button>
         </div>
@@ -112,6 +111,8 @@ function position(angle: number, radius: number) {
   return { left: `${point.x / 4.4}%`, top: `${point.y / 4.4}%` }
 }
 function active(action: Action) { return action.category ? category.value === action.category : action.id === 'pin' ? props.pinned : action.id === 'pass' ? props.passThrough : false }
+// The icon and painted sector share one click owner: a press/release crossing
+// their boundary targets this ancestor. Child handlers would silently lose it.
 function activate(action: Action) {
   if (action.category) { category.value = category.value === action.category ? null : action.category; return }
   if (action.id === 'settings') emit('settings')

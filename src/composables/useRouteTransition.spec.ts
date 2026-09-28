@@ -92,6 +92,42 @@ beforeEach(() => {
 afterEach(() => { unmount(); vi.unstubAllGlobals() })
 
 describe('route motion lifecycle and optional capability fallback (009 F4.6a)', () => {
+  it('continues from the displayed frame when an entering page is immediately left', () => {
+    let destination = '/style'
+    const hooks = useRouteTransition(() => destination), page = surface('/style')
+    const entered = counter(), left = counter()
+    hooks.onEnter(page.el, entered.done)
+    vi.stubGlobal('getComputedStyle', () => ({ opacity: '.34', transform: 'matrix(1, 0, 0, 1, 3, 0)' }))
+    // Vue calls enter-cancelled first; that must not discard the visible frame.
+    hooks.onEnterCancelled(page.el)
+    destination = '/gallery'
+    hooks.onLeave(page.el, left.done)
+    assert.equal(entered.count, 1)
+    assert.deepEqual(page.calls[1][0], [
+      { opacity: .34, transform: 'matrix(1, 0, 0, 1, 3, 0)' },
+      { opacity: 0, transform: 'matrix(1, 0, 0, 1, 3, 0)' },
+    ])
+    page.animations[1].onfinish!()
+    assert.equal(left.count, 1)
+  })
+
+  it('reverses a partially faded cached page without restarting at .88 or zero', () => {
+    let destination = '/gallery'
+    const hooks = useRouteTransition(() => destination), page = surface('/gallery')
+    hooks.onEnter(page.el, () => {}); page.animations[0].onfinish!()
+    destination = '/style'; const left = counter()
+    hooks.onLeave(page.el, left.done)
+    vi.stubGlobal('getComputedStyle', () => ({ opacity: '.27', transform: 'none' }))
+    hooks.onLeaveCancelled(page.el)
+    destination = '/gallery'; hooks.onBeforeEnter(page.el)
+    const returned = counter(); hooks.onEnter(page.el, returned.done)
+    assert.deepEqual(page.calls[2][0], [{ opacity: .27 }, { opacity: 1 }])
+    assert.equal(page.el.inert, false)
+    assert.equal(left.count, 1)
+    page.animations[2].onfinish!()
+    assert.equal(returned.count, 1)
+  })
+
   it('animates ordinary page changes and gives cached returns an opacity-only settle', () => {
     let destination = '/gallery'
     const hooks = useRouteTransition(() => destination)
@@ -99,20 +135,20 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
     hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
-    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(10px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
     assert.equal(gallery.el.inert, false)
     assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 120, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
     hooks.onEnterCancelled(gallery.el); hooks.onLeaveCancelled(style.el)
   })
 
-  it('slides in from left when navigating backwards in the route order', () => {
+  it('keeps peer workspaces still in either navigation direction', () => {
     let destination = '/style'
     const hooks = useRouteTransition(() => destination)
     const style = surface('/style'), scene = surface('/scene-explorer')
     hooks.onEnter(style.el, () => {}); style.animations[0].onfinish!()
     destination = '/scene-explorer'; hooks.onLeave(style.el, () => {}); hooks.onEnter(scene.el, () => {})
-    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-10px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    assert.deepEqual(scene.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     hooks.onEnterCancelled(scene.el); hooks.onLeaveCancelled(style.el)
   })
 
@@ -398,15 +434,15 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.deepEqual(state.marks, [])
   })
 
-  it('hands off workspace depth using only transform and opacity, without a retained fill', () => {
+  it('crossfades peer workspaces without moving controls or retaining a fill', () => {
     const hooks = useRouteTransition(() => '/style'), oldPage = surface('/gallery'), newPage = surface('/style')
     const left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
     assert.deepEqual(oldPage.calls[0], [[
-      { opacity: 1, transform: 'translateX(0)' },
-      { opacity: 0, transform: 'translateX(-4px)' },
-    ], { duration: 110, easing: 'cubic-bezier(.4, 0, 1, 1)' }])
-    assert.deepEqual(newPage.calls[0][1], { duration: 220, easing: 'cubic-bezier(.16, 1, .3, 1)' })
+      { opacity: 1 },
+      { opacity: 0 },
+    ], { duration: 140, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
+    assert.deepEqual(newPage.calls[0][1], { duration: 180, easing: 'cubic-bezier(.22, 1, .36, 1)' })
     for (const { calls } of [oldPage, newPage]) {
       for (const frame of calls[0][0] as Keyframe[]) {
         assert.ok(Object.keys(frame).every(key => key === 'transform' || key === 'opacity'))
@@ -422,10 +458,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
     assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0, transform: 'translateX(0px)' },
-      { opacity: 1, transform: 'translateX(0)' },
+      { opacity: 0 },
+      { opacity: 1 },
     ])
-    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0, transform: 'translateX(0px)' })
+    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0 })
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
   })
 
@@ -436,8 +472,8 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.deepEqual(oldPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
     assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0, transform: 'translateX(10px)' },
-      { opacity: 1, transform: 'translateX(0)' },
+      { opacity: 0 },
+      { opacity: 1 },
     ])
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
   })
