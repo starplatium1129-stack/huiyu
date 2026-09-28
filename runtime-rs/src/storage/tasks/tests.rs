@@ -24,7 +24,16 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
         .unwrap();
     let initial = incoming("task-fixture", "task-1", "request-1");
     assert_eq!(
-        storage.task(TaskCommand::List, "").await.unwrap_err().code,
+        storage
+            .task(
+                TaskCommand::List {
+                    query: Default::default()
+                },
+                ""
+            )
+            .await
+            .unwrap_err()
+            .code,
         "UNAUTHORIZED"
     );
     let accepted = storage
@@ -297,3 +306,5 @@ async fn protected_input_and_interrupted_output_keep_leases_until_commit() {
         1
     );
 }
+
+mod paging;

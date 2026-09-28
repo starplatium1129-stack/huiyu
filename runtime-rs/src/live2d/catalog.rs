@@ -47,26 +47,40 @@ impl Catalog {
         {
             return value.clone();
         }
-        let value = Arc::new(scan(builtins, local));
+        let value = Arc::new(scan(builtins, local, None).expect("uncancellable catalog scan"));
         *cache = Some((Instant::now(), value.clone()));
         value
     }
 }
-fn scan(builtins: &Path, local: Option<&Path>) -> Snapshot {
+// Health scans do not take the catalog mutex: a slow strict catalog read must
+// never delay liveness responses. Cancellation is checked between filesystem
+// inspections; individual OS filesystem calls cannot be interrupted safely.
+pub(super) fn scan(
+    builtins: &Path,
+    local: Option<&Path>,
+    cancel: Option<&tokio_util::sync::CancellationToken>,
+) -> Option<Snapshot> {
     let mut status = json!({"available": false, "characters": [], "models": {}});
     let mut models = Vec::new();
     let mut characters = Vec::new();
     for id in ["nene", "natsume"] {
+        if cancel.is_some_and(|cancel| cancel.is_cancelled()) {
+            return None;
+        }
         let directory = builtins.join(id);
         let manifest = format!("{id}.model3.json");
         let inspection = (|| -> Result<(Vec<String>, Vec<String>)> {
             let model = read_json(&model_file(&directory, &manifest)?)?;
             let mut files = manifest::references(&model)?;
-            let missing = files
-                .iter()
-                .filter(|file| model_file(&directory, file).is_err())
-                .cloned()
-                .collect();
+            let mut missing = Vec::new();
+            for file in &files {
+                if let Some(cancel) = cancel {
+                    super::editor::check_cancel(cancel)?;
+                }
+                if model_file(&directory, file).is_err() {
+                    missing.push(file.clone());
+                }
+            }
             files.push(manifest.clone());
             Ok((files, missing))
         })();
@@ -97,11 +111,14 @@ fn scan(builtins: &Path, local: Option<&Path>) -> Snapshot {
         && let Ok(entries) = fs::read_dir(local)
     {
         for entry in entries.flatten() {
+            if cancel.is_some_and(|cancel| cancel.is_cancelled()) {
+                return None;
+            }
             let id = entry.file_name().to_string_lossy().into_owned();
             if !identity(&id) || !entry.file_type().is_ok_and(|kind| kind.is_dir()) {
                 continue;
             }
-            if let Ok(model) = local_model(local, &id) {
+            if let Ok(model) = local_model_checked(local, &id, cancel) {
                 let receipt = model.receipt.as_ref().unwrap();
                 if receipt["disabled"] == true {
                     continue;
@@ -114,7 +131,10 @@ fn scan(builtins: &Path, local: Option<&Path>) -> Snapshot {
     }
     status["available"] = json!(!characters.is_empty());
     status["characters"] = json!(characters);
-    Snapshot { status, models }
+    if cancel.is_some_and(|cancel| cancel.is_cancelled()) {
+        return None;
+    }
+    Some(Snapshot { status, models })
 }
 pub(super) fn receipt(root: &Path, id: &str) -> Result<(PathBuf, Value, Vec<u8>)> {
     if !identity(id) {
@@ -150,7 +170,11 @@ pub(super) fn receipt(root: &Path, id: &str) -> Result<(PathBuf, Value, Vec<u8>)
     }
     Ok((directory, receipt, bytes))
 }
-pub(super) fn local_model(root: &Path, id: &str) -> Result<Model> {
+fn local_model_checked(
+    root: &Path,
+    id: &str,
+    cancel: Option<&tokio_util::sync::CancellationToken>,
+) -> Result<Model> {
     let (directory, receipt, _) = receipt(root, id)?;
     let manifest = receipt["manifest"].as_str().unwrap().to_owned();
     let model = read_json(&model_file(&directory, &manifest)?)?;
@@ -159,6 +183,9 @@ pub(super) fn local_model(root: &Path, id: &str) -> Result<Model> {
         .unwrap()
         .iter()
         .map(|value| {
+            if let Some(cancel) = cancel {
+                super::editor::check_cancel(cancel)?;
+            }
             let path = value
                 .as_str()
                 .ok_or_else(|| invalid("Invalid receipt file list"))?;
@@ -171,6 +198,9 @@ pub(super) fn local_model(root: &Path, id: &str) -> Result<Model> {
         return Err(invalid("Receipt does not include its manifest"));
     }
     for reference in manifest::references(&model)? {
+        if let Some(cancel) = cancel {
+            super::editor::check_cancel(cancel)?;
+        }
         if !files.contains(&reference) {
             return Err(invalid("Model dependency is outside its receipt"));
         }
@@ -182,4 +212,44 @@ pub(super) fn local_model(root: &Path, id: &str) -> Result<Model> {
         files,
         receipt: Some(receipt),
     })
+}
+
+#[cfg(test)]
+mod health_tests {
+    use super::*;
+    use crate::live2d::Live2dService;
+    use tokio_util::sync::CancellationToken;
+
+    #[tokio::test]
+    async fn health_snapshot_never_waits_for_catalog_lock() {
+        let root = tempfile::tempdir().unwrap();
+        let service = Live2dService::with_roots(
+            root.path().join("builtins"),
+            root.path().join("imports"),
+            CancellationToken::new(),
+        );
+        let catalog = service.catalog.clone();
+        let (locked, ready) = tokio::sync::oneshot::channel();
+        let (release, released) = std::sync::mpsc::channel();
+        let reader = std::thread::spawn(move || {
+            let _lock = catalog.cached.lock().unwrap();
+            let _ = locked.send(());
+            // Dropping the sender also releases the reader on a test failure.
+            let _ = released.recv();
+        });
+        ready.await.unwrap();
+        assert_eq!(service.health_status()["stale"], true);
+        // The background scan can finish even while a strict catalog reader
+        // owns its mutex. Health has a separate, metadata-only snapshot.
+        tokio::time::timeout(Duration::from_secs(3), async {
+            while service.health_status()["stale"] == true {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        release.send(()).unwrap();
+        reader.join().unwrap();
+        service.close().await;
+    }
 }

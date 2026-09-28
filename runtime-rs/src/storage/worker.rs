@@ -117,7 +117,7 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    let result = context.resolve_media(&alias);
+                    let result = context.lookup_media(&alias);
                     let _ = reply.send(result);
                 }
             }

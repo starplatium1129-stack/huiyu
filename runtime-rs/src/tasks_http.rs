@@ -241,7 +241,20 @@ async fn perform(
     }
     let mut result = match path.as_slice() {
         [] => {
-            let mut list = request(state, &storage, &session, json!({"kind":"task.list"})).await?;
+            let mut command = json!({"kind":"task.list"});
+            for (key, value) in url::form_urlencoded::parse(uri.query().unwrap_or("").as_bytes()) {
+                if !matches!(
+                    key.as_ref(),
+                    "before" | "afterRevision" | "throughRevision" | "limit"
+                ) {
+                    return Err(ApiError::invalid("Unknown task page parameter"));
+                }
+                let value: i64 = value
+                    .parse()
+                    .map_err(|_| ApiError::invalid("Invalid task page parameter"))?;
+                command[key.as_ref()] = json!(value);
+            }
+            let mut list = request(state, &storage, &session, command).await?;
             let items = list["items"].as_array_mut().ok_or_else(invalid_record)?;
             for task in items {
                 project_task(task, &session, state, &storage)?;

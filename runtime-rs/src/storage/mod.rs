@@ -1,6 +1,7 @@
 mod backup;
 mod canonical;
 mod garbage;
+mod handle;
 mod media;
 mod migration;
 mod operations;
@@ -10,6 +11,7 @@ mod saves;
 mod schema;
 mod tasks;
 mod thumbnail;
+mod verification;
 mod worker;
 
 use crate::error::{ApiError, Result};
@@ -36,6 +38,7 @@ pub struct Storage {
     runtime_epoch: Arc<str>,
     root: Arc<PathBuf>,
     native_images: Option<Arc<PathBuf>>,
+    verification: Arc<verification::Verifier>,
 }
 enum Work {
     Task(
@@ -67,113 +70,6 @@ impl Drop for CancelOnDrop {
     }
 }
 
-impl Storage {
-    pub async fn open(root: PathBuf, workspace_id: String, create: bool) -> Result<Self> {
-        let epoch = uuid::Uuid::new_v4().to_string();
-        let storage_root = Arc::new(root.clone());
-        let (sender, receiver) = mpsc::channel(64);
-        let (opened, ready) = oneshot::channel();
-        let (id, thread_epoch) = (workspace_id.clone(), epoch.clone());
-        let weak_sender = sender.downgrade();
-        std::thread::Builder::new()
-            .name("workspace-sqlite".into())
-            .spawn(move || {
-                worker::run(
-                    root,
-                    id,
-                    thread_epoch,
-                    create,
-                    receiver,
-                    opened,
-                    weak_sender,
-                )
-            })?;
-        ready.await.map_err(|_| unavailable())??;
-        Ok(Self {
-            sender,
-            workspace_id: workspace_id.into(),
-            runtime_epoch: epoch.into(),
-            root: storage_root,
-            native_images: None,
-        })
-    }
-    pub fn workspace_id(&self) -> &str {
-        &self.workspace_id
-    }
-    pub fn with_native_images(mut self, library: PathBuf) -> Self {
-        self.native_images = Some(Arc::new(library));
-        self
-    }
-    pub fn runtime_epoch(&self) -> &str {
-        &self.runtime_epoch
-    }
-    pub async fn request(&self, command: Value, principal: &str) -> Result<Value> {
-        if command["kind"] == "readThumbnail" {
-            return thumbnail::read(self, &command).await;
-        }
-        let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::Request(
-                command,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| {
-            if mutation {
-                commit_unknown()
-            } else {
-                unavailable()
-            }
-        })?
-    }
-    pub async fn task(
-        &self,
-        command: crate::task_contract::TaskCommand,
-        principal: &str,
-    ) -> Result<Value> {
-        let mutation = !command.is_read();
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::Task(
-                command,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| {
-            if mutation {
-                commit_unknown()
-            } else {
-                unavailable()
-            }
-        })?
-    }
-    pub async fn media(&self, alias: &str) -> Result<Media> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::Media(alias.into(), cancel.0.clone(), reply))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
-    }
-    pub async fn close(&self) -> Result<()> {
-        let (reply, result) = oneshot::channel();
-        if self.sender.send(Work::Close(reply)).await.is_err() {
-            return Ok(());
-        }
-        result.await.unwrap_or(Ok(()))
-    }
-}
-
 pub(super) struct Context {
     db: Connection,
     root: PathBuf,
@@ -181,7 +77,6 @@ pub(super) struct Context {
     epoch: String,
     owner: schema::Owner,
     cancel: Arc<AtomicBool>,
-    verified: HashMap<PathBuf, media::FileIdentity>,
 }
 impl Context {
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {
@@ -293,7 +188,6 @@ impl Context {
             "prepareSave" | "uploadChunk" | "commitSave" | "abortSave" | "prepareMedia"
             | "uploadMediaChunk" | "commitMedia" | "releaseMedia" | "appendArtwork"
             | "countMedia" => saves::execute(self, principal, command),
-            "readMedia" | "readThumbnail" => media::read(self, command),
             kind if kind.starts_with("profile.") => profile::execute(self, principal, command),
             _ => Err(ApiError::new(
                 501,

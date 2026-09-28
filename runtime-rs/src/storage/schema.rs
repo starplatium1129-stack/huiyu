@@ -282,7 +282,9 @@ pub(super) fn open(
     // Reapply on open so existing v3 workspaces and restored older snapshots
     // receive the reverse lookup used by artwork deletion and FK checks.
     db.execute_batch(
-        "CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);",
+        "CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);
+         CREATE INDEX IF NOT EXISTS tasks_revision ON tasks(principal_id,json_extract(record_json,'$.revision'));
+         CREATE INDEX IF NOT EXISTS tasks_recovery_scan ON tasks(principal_id) WHERE json_extract(record_json,'$.deliveryState') != 'discarded' AND (upstream_settled=0 OR (json_extract(record_json,'$.status')='succeeded' AND json_extract(record_json,'$.resultState')!='available'));",
     )?;
     Ok(Context {
         db,
@@ -291,7 +293,6 @@ pub(super) fn open(
         epoch,
         owner,
         cancel: Arc::new(AtomicBool::new(false)),
-        verified: HashMap::new(),
     })
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {

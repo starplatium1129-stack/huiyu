@@ -154,6 +154,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     })
     .await;
     voice.close().await;
+    if let Some(service) = &state.live2d {
+        service.close().await;
+    }
     if let Some(tools) = &state.desktop_tools {
         tools.close().await;
     }

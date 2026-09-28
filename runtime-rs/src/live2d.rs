@@ -1,5 +1,6 @@
 mod catalog;
 mod editor;
+mod health;
 mod import;
 mod manifest;
 mod profile;
@@ -37,6 +38,7 @@ pub struct Live2dService {
     native_library: PathBuf,
     workers: Arc<Semaphore>,
     shutdown: CancellationToken,
+    health: Arc<health::Health>,
 }
 struct CancelWork(CancellationToken);
 impl Drop for CancelWork {
@@ -78,7 +80,8 @@ impl Live2dService {
             textures: Arc::new(textures::Textures::default()),
             native_library: PathBuf::new(),
             workers: Arc::new(Semaphore::new(2)),
-            shutdown,
+            shutdown: shutdown.child_token(),
+            health: Arc::new(health::Health::default()),
         }
     }
     async fn run<T: Send + 'static>(
@@ -324,6 +327,7 @@ async fn update(
         .run(move |service, cancel| editor::edit(&service.local, &id, &input, action, cancel))
         .await;
     service.catalog.clear();
+    service.health.invalidate();
     result.map(Json).map_err(import_error)
 }
 async fn save_profile(
@@ -360,6 +364,7 @@ async fn upload(
         .run(move |service, cancel| import::publish(&service.local, upload, cancel))
         .await;
     service.catalog.clear();
+    service.health.invalidate();
     Ok((StatusCode::CREATED, Json(result.map_err(import_error)?)).into_response())
 }
 

@@ -1,5 +1,6 @@
 mod history;
 mod inputs;
+mod listing;
 mod outputs;
 #[cfg(test)]
 mod tests;
@@ -95,19 +96,7 @@ pub(super) fn execute_command(
             task_id.as_deref(),
             request_key.as_deref(),
         )?)?),
-        TaskCommand::List => {
-            let mut query = c.db.prepare_cached(
-                "SELECT record_json FROM tasks WHERE principal_id=? ORDER BY rowid DESC",
-            )?;
-            let rows = query.query_map([principal], |r| r.get::<_, String>(0))?;
-            let mut items = Vec::new();
-            for row in rows {
-                let mut task: TaskRecord = serde_json::from_str(&row?)?;
-                task.runtime_epoch = c.epoch.clone();
-                items.push(task);
-            }
-            Ok(json!({"runtimeEpoch": c.epoch, "items": items}))
-        }
+        TaskCommand::List { query } => listing::read(c, principal, query),
         TaskCommand::Accept { record } => accept(c, principal, *record),
         TaskCommand::Patch {
             task_id,
@@ -165,6 +154,7 @@ fn patch(
 ) -> Result<Value> {
     c.transaction(|c| {
         let mut task = require(c, principal, id)?;
+        let previous = task.clone();
         if task.revision != expected_revision {
             return Err(conflict("REVISION_CONFLICT", "Task revision changed"));
         }
@@ -274,6 +264,11 @@ fn patch(
         }
         if let Some(value) = patch.input {
             task.input = value;
+        }
+        // Writer, CAS, cancellation and submission checks still apply.
+        // Compare after normalization so ignored regressions are also read-only.
+        if task == previous {
+            return Ok(serde_json::to_value(task)?);
         }
         write(c, task)
     })

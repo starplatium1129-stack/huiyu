@@ -17,21 +17,31 @@ impl TaskRuntime {
             .or_insert_with(|| Arc::new(tokio::sync::OnceCell::new()))
             .clone();
         once.get_or_try_init(|| async {
-            let list = storage.task(TaskCommand::List, principal).await?;
-            for task in list["items"]
-                .as_array()
-                .ok_or_else(|| ApiError::invalid("Invalid task list"))?
-            {
-                let task: TaskRecord = serde_json::from_value(task.clone())?;
-                if task.delivery_state == DeliveryState::Discarded
-                    || task.upstream_settled
-                        && (task.status != TaskStatus::Succeeded
-                            || task.result_state == ResultState::Available)
+            let mut query = crate::task_contract::TaskListQuery {
+                recoverable: true,
+                ..Default::default()
+            };
+            loop {
+                let list = storage
+                    .task(
+                        TaskCommand::List {
+                            query: query.clone(),
+                        },
+                        principal,
+                    )
+                    .await?;
+                for task in list["items"]
+                    .as_array()
+                    .ok_or_else(|| ApiError::invalid("Invalid task list"))?
                 {
-                    continue;
+                    let task: TaskRecord = serde_json::from_value(task.clone())?;
+                    self.reconcile(storage, principal, &task.task_id).await?;
                 }
-                let id = &task.task_id;
-                self.reconcile(storage, principal, id).await?;
+                query.through_revision = list["throughRevision"].as_i64();
+                query.before = list["nextCursor"].as_i64();
+                if query.before.is_none() {
+                    break;
+                }
             }
             Ok::<(), ApiError>(())
         })

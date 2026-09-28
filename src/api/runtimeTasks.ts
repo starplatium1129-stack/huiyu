@@ -8,6 +8,7 @@ export type { TaskRecord } from '../../types/tasks'
 
 const base = '/api/tasks/v1'
 let activeEpoch = '', activeWorkspace = '', sequence = 0, activeRead = 0
+let readEpoch = '', readRevision = 0
 function epoch() { return getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || '' }
 function ensureAuthority() {
   if (!hasRuntimeTasks()) throw new Error('私人任务工作区尚未启用')
@@ -30,9 +31,25 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   if (!hasRuntimeTasks()) return
   const read = ++sequence; activeRead = read
   try {
-    const list = await request<{ items: TaskRecord[] }>('', 'GET', undefined, signal)
-    if (read !== activeRead) return
-    mergeTasks(list.items, epoch())
+    const expected = epoch()
+    const after = readEpoch === expected ? readRevision : 0
+    const items: TaskRecord[] = []
+    let before: number | null = null, through: number | undefined
+    do {
+      const params = new URLSearchParams({ afterRevision: String(after), limit: '100' })
+      if (before !== null) params.set('before', String(before))
+      if (through !== undefined) params.set('throughRevision', String(through))
+      const page = await request<{ items: TaskRecord[]; nextCursor: number | null; throughRevision: number }>('?' + params, 'GET', undefined, signal)
+      if (read !== activeRead || expected !== epoch()) return
+      if (!Number.isSafeInteger(page.throughRevision) || page.throughRevision < after || (through !== undefined && through !== page.throughRevision)
+        || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= after || (before !== null && page.nextCursor >= before)))) throw new Error('任务分页响应无效')
+      items.push(...page.items)
+      through = page.throughRevision
+      before = page.nextCursor
+    } while (before !== null)
+    signal?.throwIfAborted()
+    mergeTasks(items, expected)
+    readEpoch = expected; readRevision = through!
     runtimeTaskError.value = ''
   } catch (error) { if (!signal?.aborted) runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'; throw error }
 }

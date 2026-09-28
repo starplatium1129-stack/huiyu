@@ -28,7 +28,7 @@ pub(super) struct FileIdentity {
     changed: i64,
 }
 impl FileIdentity {
-    fn of(file: &File) -> Result<Self> {
+    pub(super) fn of(file: &File) -> Result<Self> {
         let stat = file.metadata()?;
         #[cfg(unix)]
         use std::os::unix::fs::MetadataExt;
@@ -135,7 +135,7 @@ pub(super) fn detected_mime(header: &[u8]) -> Option<&'static str> {
 pub(super) fn hash_file_checked(
     root: &Path,
     file: &Path,
-    mut check_cancel: impl FnMut() -> Result<()>,
+    check_cancel: impl FnMut() -> Result<()>,
 ) -> Result<(u64, String, Option<String>)> {
     schema::safe(
         root,
@@ -143,6 +143,12 @@ pub(super) fn hash_file_checked(
             .map_err(|_| conflict("MEDIA_INVALID", "Media path escapes workspace"))?,
     )?;
     let mut input = File::open(file)?;
+    hash_opened(&mut input, check_cancel)
+}
+pub(super) fn hash_opened(
+    input: &mut File,
+    mut check_cancel: impl FnMut() -> Result<()>,
+) -> Result<(u64, String, Option<String>)> {
     if !input.metadata()?.is_file() {
         return Err(conflict("MEDIA_INVALID", "Media is not a regular file"));
     }
@@ -191,22 +197,25 @@ pub(super) fn verify_checked(
     Ok(())
 }
 impl Context {
+    // Mutation paths still verify synchronously before publishing references.
+    // Read-only callers use Storage::media and its bounded verifier instead.
     pub(super) fn resolve_media(&mut self, alias: &str) -> Result<Media> {
+        let source = self.lookup_media(alias)?;
+        verify(
+            self,
+            &source.path,
+            &source.sha256,
+            source.total_bytes,
+            &source.mime,
+        )?;
+        Ok(source)
+    }
+    pub(super) fn lookup_media(&mut self, alias: &str) -> Result<Media> {
         self.check_cancel()?;
         let (hash,bytes,mime)=self.db.prepare_cached("SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?")?.query_row([alias],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Media does not exist"))?;
         let bytes = u64::try_from(bytes)
             .map_err(|_| conflict("MEDIA_INVALID", "Invalid media byte count"))?;
         let path = object_path(&self.root, &hash)?;
-        let identity = FileIdentity::of(&File::open(&path)?)?;
-        if self.verified.get(&path) != Some(&identity) {
-            verify(self, &path, &hash, bytes, &mime)?;
-            if self.verified.len() >= 256
-                && let Some(key) = self.verified.keys().next().cloned()
-            {
-                self.verified.remove(&key);
-            }
-            self.verified.insert(path.clone(), identity);
-        }
         Ok(Media {
             path,
             mime,
@@ -214,45 +223,6 @@ impl Context {
             sha256: hash,
         })
     }
-}
-pub(super) fn read(c: &mut Context, command: &Value) -> Result<Value> {
-    let alias = string(command, "alias")?;
-    if command["kind"] == "readThumbnail" {
-        if c.db
-            .query_row("SELECT 1 FROM media_aliases WHERE alias=?", [alias], |r| {
-                r.get::<_, i64>(0)
-            })
-            .optional()?
-            .is_none()
-        {
-            return Ok(Value::Null);
-        }
-        return Err(ApiError::new(
-            501,
-            "COMMAND_NOT_MIGRATED",
-            "Thumbnail decoding has not been migrated to Rust",
-        ));
-    }
-    let media = c.resolve_media(alias)?;
-    let offset = command
-        .get("offset")
-        .map(Value::as_u64)
-        .unwrap_or(Some(0))
-        .filter(|v| *v <= media.total_bytes)
-        .ok_or_else(|| invalid("Invalid media read range"))?;
-    let length = command
-        .get("length")
-        .map(Value::as_u64)
-        .unwrap_or(Some(CHUNK as u64))
-        .filter(|v| *v >= 1 && *v <= CHUNK as u64)
-        .ok_or_else(|| invalid("Invalid media read range"))?;
-    let mut data = vec![0; (length.min(media.total_bytes - offset)) as usize];
-    let mut input = File::open(&media.path)?;
-    input.seek(SeekFrom::Start(offset))?;
-    input.read_exact(&mut data)?;
-    Ok(
-        json!({"data":STANDARD.encode(data),"mime":media.mime,"totalBytes":media.total_bytes,"sha256":media.sha256,"offset":offset}),
-    )
 }
 pub(super) fn validate(input: &Value) -> Result<()> {
     if !input["sha256"].as_str().is_some_and(valid_hash)

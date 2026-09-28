@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { watch } from 'vue'
 import type { TaskRecord } from '../../types/tasks'
 
+let epochSequence = 0
 const mocks = vi.hoisted(() => ({ request: vi.fn(), epoch: 'one' }))
 vi.mock('./client', () => ({ apiClient: { request: mocks.request }, ApiClientError: class extends Error {} }))
 vi.mock('../platform/desktop/runtime.ts', () => ({
@@ -18,11 +19,11 @@ const task = (id: number, revision = 1): TaskRecord => ({
   requestKey: `request-${id}`, status: 'running', upstreamSettled: false,
   input: { prompt: 'neutral fixture '.repeat(100) }, metadata: { nested: { value: id } }, resultRefs: [],
 } as unknown as TaskRecord)
-function respond(items: TaskRecord[]) {
-  mocks.request.mockResolvedValueOnce({ result: { items }, runtimeEpoch: mocks.epoch })
+function respond(items: TaskRecord[], nextCursor: number | null = null, throughRevision = 100) {
+  mocks.request.mockResolvedValueOnce({ result: { items, nextCursor, throughRevision }, runtimeEpoch: mocks.epoch })
 }
 beforeEach(() => {
-  mocks.epoch = 'one'; mocks.request.mockReset()
+  mocks.epoch = 'epoch-' + ++epochSequence; mocks.request.mockReset()
   taskRecords.value = []; unresolvedTaskRequests.clear(); pendingTaskRequests.value = []
 })
 afterEach(() => vi.restoreAllMocks())
@@ -80,5 +81,73 @@ describe('runtime task snapshot merging', () => {
     expect(unresolvedTaskRequests.size).toBe(0)
     expect(pendingTaskRequests.value).toEqual([])
     expect(taskRecords.value).toBe(original)
+  })
+})
+
+
+describe('runtime task pagination', () => {
+  it('collects all pages atomically and polls only revisions after the complete snapshot', async () => {
+    respond([task(3, 3)], 3, 3)
+    respond([task(2, 2), task(1, 1)], null, 3)
+    const notify = vi.fn(), stop = watch(taskRecords, notify, { flush: 'sync' })
+    await refreshRuntimeTasks()
+    expect(taskRecords.value.map(item => item.taskId)).toEqual(['3', '2', '1'])
+    expect(notify).toHaveBeenCalledTimes(1)
+    expect(mocks.request.mock.calls[1][0]).toContain('before=3')
+    expect(mocks.request.mock.calls[1][0]).toContain('throughRevision=3')
+    respond([], null, 3)
+    await refreshRuntimeTasks()
+    expect(mocks.request.mock.calls[2][0]).toContain('afterRevision=3')
+    expect(taskRecords.value).toHaveLength(3)
+    stop()
+  })
+
+  it('does not publish or advance the cursor when a later page fails', async () => {
+    respond([task(3, 3)], 3, 3)
+    mocks.request.mockRejectedValueOnce(new Error('connection lost'))
+    await expect(refreshRuntimeTasks()).rejects.toThrow('connection lost')
+    expect(taskRecords.value).toEqual([])
+    respond([task(3, 3), task(2, 2)], null, 3)
+    await refreshRuntimeTasks()
+    expect(mocks.request.mock.calls[2][0]).toContain('afterRevision=0')
+    expect(taskRecords.value).toHaveLength(2)
+  })
+
+  it('restarts from zero after an epoch change', async () => {
+    respond([task(1, 2)], null, 2)
+    await refreshRuntimeTasks()
+    mocks.epoch += '-reopened'
+    respond([task(1, 2)], null, 2)
+    await refreshRuntimeTasks()
+    expect(mocks.request.mock.calls[1][0]).toContain('afterRevision=0')
+    expect(taskRecords.value[0].runtimeEpoch).toBe(mocks.epoch)
+  })
+
+  it('does not publish a batch cancelled during its final page', async () => {
+    const controller = new AbortController()
+    respond([task(3, 3)], 3, 3)
+    mocks.request.mockImplementationOnce(async () => {
+      controller.abort()
+      return { result: { items: [task(2, 2)], nextCursor: null, throughRevision: 3 }, runtimeEpoch: mocks.epoch }
+    })
+    await expect(refreshRuntimeTasks(controller.signal)).rejects.toThrow()
+    expect(taskRecords.value).toEqual([])
+    respond([task(3, 3)], null, 3)
+    await refreshRuntimeTasks()
+    expect(mocks.request.mock.calls[2][0]).toContain('afterRevision=0')
+  })
+
+  it('rejects an epoch change between pages without mixing workspaces', async () => {
+    respond([task(3, 3)], 3, 3)
+    mocks.request.mockImplementationOnce(async () => {
+      mocks.epoch += '-changed'
+      return { result: { items: [task(2, 2)], nextCursor: null, throughRevision: 3 }, runtimeEpoch: mocks.epoch }
+    })
+    await expect(refreshRuntimeTasks()).rejects.toThrow('运行时连接已更换')
+    expect(taskRecords.value).toEqual([])
+    respond([task(1, 1)], null, 1)
+    await refreshRuntimeTasks()
+    expect(mocks.request.mock.calls[2][0]).toContain('afterRevision=0')
+    expect(taskRecords.value.map(item => item.taskId)).toEqual(['1'])
   })
 })

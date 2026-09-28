@@ -53,7 +53,7 @@ pub enum DeliveryState {
     Discarded,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ResultRef {
     pub alias: String,
@@ -63,7 +63,7 @@ pub struct ResultRef {
     pub index: u64,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct TaskRecord {
     pub task_id: String,
@@ -205,6 +205,17 @@ pub struct TaskPatch {
     pub input: Option<Map<String, Value>>,
 }
 
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct TaskListQuery {
+    pub before: Option<i64>,
+    pub after_revision: Option<i64>,
+    pub through_revision: Option<i64>,
+    pub limit: Option<u32>,
+    #[serde(default)]
+    pub recoverable: bool,
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "kind")]
 pub enum TaskCommand {
@@ -214,7 +225,10 @@ pub enum TaskCommand {
         request_key: Option<String>,
     },
     #[serde(rename = "task.list")]
-    List,
+    List {
+        #[serde(flatten)]
+        query: TaskListQuery,
+    },
     #[serde(rename = "task.accept")]
     Accept { record: Box<TaskRecord> },
     #[serde(rename = "task.patch", rename_all = "camelCase")]
@@ -228,6 +242,6 @@ pub enum TaskCommand {
 }
 impl TaskCommand {
     pub fn is_read(&self) -> bool {
-        matches!(self, Self::Get { .. } | Self::List)
+        matches!(self, Self::Get { .. } | Self::List { .. })
     }
 }

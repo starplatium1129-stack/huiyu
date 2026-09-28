@@ -165,16 +165,18 @@ async fn health(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
 ) -> Json<serde_json::Value> {
-    let live2d = if let Some(service) = &state.live2d {
-        service.available().await
-    } else {
-        false
-    };
+    let live2d_health = state
+        .live2d
+        .as_ref()
+        .map(|service| service.health_status())
+        .unwrap_or(json!({"available":false,"checkedAt":null,"stale":false,"refreshing":false}));
+    let live2d = live2d_health["available"] == true;
     let mut result = json!({"ok":true,"app":"ai-cg-studio","gateway":true,"desktopProtocol":1,
         "port":state.config.bind.port(),"capabilities":{"chat":state.chat.is_some(),"tts":state.voice.is_some(),"translation":state.voice.is_some(),"live2d":live2d},
         "queues":{"chat":state.chat.as_ref().map(|service|service.queue_status()).unwrap_or(json!({"running":false,"pending":0})),
           "voice":state.voice.as_ref().map(|service|service.queue_status()).unwrap_or(json!({"running":false,"pending":0})),
           "resources":state.resources.as_ref().map(|service|service.queue_status()).unwrap_or(json!({"active":0,"queued":0,"max":1}))},
+        "capabilityStatus":{"live2d":live2d_health},
         "runtime":"rust","migrationCandidate":true});
     if security::is_direct_local(&headers, peer.ip())
         && let (Some(secret), Some(challenge)) = (
