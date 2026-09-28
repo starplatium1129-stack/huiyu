@@ -1,4 +1,4 @@
-use super::{CancelWork, Live2dService, catalog};
+use super::{Live2dService, catalog};
 use serde_json::{Value, json};
 use std::{
     sync::{
@@ -77,7 +77,7 @@ impl Live2dService {
     async fn refresh_health(self) {
         let guard = RefreshGuard(self.health.clone());
         let cancel = self.shutdown.child_token();
-        let _cancel = CancelWork(cancel.clone());
+        let _cancel = cancel.clone().drop_guard();
         let deadline = tokio::time::Instant::now() + REFRESH_TIMEOUT;
         let permit = tokio::select! {
             biased;

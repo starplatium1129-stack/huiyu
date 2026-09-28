@@ -46,7 +46,7 @@ async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
         true,
     )
     .unwrap();
-    let record = json!({"taskId":"accepted","workspaceId":storage.workspace_id(),"principalId":"owner","requestKey":"accepted","requestFingerprint":"fixture","kind":"generation","provider":"comfy","providerFingerprint":runtime.binding(&storage),"upstreamId":null,"status":"queued","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),"createdAt":1,"updatedAt":1,"submissionIntentAt":null,"submissionObservedAt":null,"cancelRequestedAt":null,"upstreamSettled":false,"executionDeadline":10800000,"input":normalized,"inputMediaRefs":[],"resultRefs":[],"resultState":"none","deliveryState":"unseen","metadata":{},"checkpoint":null});
+    let record = json!({"taskId":"accepted","workspaceId":storage.workspace_id(),"principalId":"owner","requestKey":"accepted","requestFingerprint":"fixture","kind":"generation","provider":"comfy","providerFingerprint":runtime.binding(),"upstreamId":null,"status":"queued","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),"createdAt":1,"updatedAt":1,"submissionIntentAt":null,"submissionObservedAt":null,"cancelRequestedAt":null,"upstreamSettled":false,"executionDeadline":10800000,"input":normalized,"inputMediaRefs":[],"resultRefs":[],"resultState":"none","deliveryState":"unseen","metadata":{},"checkpoint":null});
     storage
         .request(json!({"kind":"task.accept","record":record}), "owner")
         .await

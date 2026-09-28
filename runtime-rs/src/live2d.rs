@@ -40,12 +40,6 @@ pub struct Live2dService {
     shutdown: CancellationToken,
     health: Arc<health::Health>,
 }
-struct CancelWork(CancellationToken);
-impl Drop for CancelWork {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 impl Live2dService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
         let assets = env::var_os("AICS_ASSETS_ROOT")
@@ -89,7 +83,7 @@ impl Live2dService {
         operation: impl FnOnce(Self, &CancellationToken) -> Result<T> + Send + 'static,
     ) -> Result<T> {
         let cancel = self.shutdown.child_token();
-        let _cancel = CancelWork(cancel.clone());
+        let _cancel = cancel.clone().drop_guard();
         let service = self.clone();
         let workers = self.workers.clone();
         let work = async move {
@@ -118,11 +112,6 @@ impl Live2dService {
         }
         self.run(|service, _| Ok(service.catalog.read(&service.builtins, &service.local)))
             .await
-    }
-    pub async fn available(&self) -> bool {
-        self.snapshot()
-            .await
-            .is_ok_and(|snapshot| snapshot.status["available"] == true)
     }
     async fn public_snapshot(&self) -> Result<Arc<catalog::Snapshot>> {
         if let Some(snapshot) = self.public_catalog.cached() {
@@ -356,7 +345,7 @@ async fn upload(
     form: Multipart,
 ) -> Result<Response> {
     let cancel = service.shutdown.child_token();
-    let _cancel = CancelWork(cancel.clone());
+    let _cancel = cancel.clone().drop_guard();
     let upload = import::receive(&service.local, form, &cancel)
         .await
         .map_err(import_error)?;

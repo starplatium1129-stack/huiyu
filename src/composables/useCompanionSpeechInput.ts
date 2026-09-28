@@ -200,7 +200,6 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     if (value) {
       speechHeldByKeyboard = false
       speechHeldByPointer = false
-      speechSession.markReplyBusy()
       speechCancel()
     } else {
       speechSession.markReplyIdle()

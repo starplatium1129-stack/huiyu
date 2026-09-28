@@ -10,12 +10,6 @@ pub(super) struct Original {
     pub bytes: Arc<Vec<u8>>,
     pub mime: String,
 }
-pub(super) struct CancelOnDrop(pub CancellationToken);
-impl Drop for CancelOnDrop {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 pub(super) fn cancelled() -> ApiError {
     ApiError::new(499, "CANCELLED", "图像操作已取消")
 }

@@ -60,7 +60,7 @@ impl InterrogateService {
         let input = validate(input)?;
         let admission = self.native.admit()?;
         let cancel = self.shutdown.child_token();
-        let _cancel = CancelRequest(cancel.clone());
+        let _cancel = cancel.clone().drop_guard();
         let native = self
             .native
             .run(
@@ -118,12 +118,6 @@ impl InterrogateService {
             ));
         }
         Ok(results::heuristic(&input.mode, input.threshold, &reason))
-    }
-}
-struct CancelRequest(CancellationToken);
-impl Drop for CancelRequest {
-    fn drop(&mut self) {
-        self.0.cancel();
     }
 }
 struct Input {

@@ -14,7 +14,7 @@ impl TaskRuntime {
         }
         let task = Self::get(&storage, &principal, &id).await?;
         if task.kind != TaskKind::Batch
-            || task.provider_fingerprint != self.binding(&storage)
+            || task.provider_fingerprint != self.binding()
             || task.cancel_requested_at.is_some()
         {
             return Err(ApiError::new(

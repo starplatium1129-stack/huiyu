@@ -1,7 +1,6 @@
 import type { HistoryEntry } from '@/types/promptHistory'
 import { parseArtworkRecords } from '@/types/artwork'
-import { prepareGeneratedArtwork, type ArtworkSaveSnapshot, type GeneratedArtworkInput, type LegacyArtworkDefaults, type SaveGeneratedArtworkDependencies, type SaveGeneratedArtworkResult } from './artworkSaveInput'
-export type { GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
+import type { ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
 function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDefaults,
   imageId: string, measured: { width: number | null; height: number | null }, now: number, id: number,
@@ -44,13 +43,8 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
   }
 }
 
-/** No store, database driver or notification dependency. Staging wraps image creation through commit. */
-export async function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: SaveGeneratedArtworkDependencies): Promise<SaveGeneratedArtworkResult> {
-  return saveArtworkSnapshot(prepareGeneratedArtwork(input, deps.resolveLegacyDefaults), deps)
-}
-
 /** The caller already owns a detached snapshot. Load this implementation only when saving. */
-export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, deps: Omit<SaveGeneratedArtworkDependencies, 'resolveLegacyDefaults'>): Promise<SaveGeneratedArtworkResult> {
+export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, deps: SaveGeneratedArtworkDependencies): Promise<SaveGeneratedArtworkResult> {
   return deps.withStaging(async () => {
     let imageId = ''
     let pendingEntry: HistoryEntry | undefined

@@ -174,7 +174,7 @@ impl Service {
             return Err(closed());
         }
         let scope = self.shutdown.child_token();
-        let guard = inputs::CancelOnDrop(scope.clone());
+        let guard = scope.clone().drop_guard();
         let (root, limits) = (
             self.config.ai_workspace_root.join("ComfyUI/input"),
             self.limits,

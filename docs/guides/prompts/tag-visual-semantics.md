@@ -114,7 +114,7 @@ recommendedSize► 视图层 closestSupportedSize(activeModel) 收敛
 | tag `crowd_implied`（灯会要热闹） | `crowd` |
 
 **白名单（保留，勿误伤）**：`no_panties`/`no_bra`（Danbooru 习得概念）、`empty_场所` 系列、`deserted_*` 形容词、`alone`（单人习得暗示）。
-契约守卫：`test-popular-content.js` 「negation-free prompts」用例；修正工具：`scripts/maintenance/popular-scenes-upgrade.js --refresh-prose`（幂等，可从 git HEAD 重算散文层）。
+契约守卫：`test-popular-content.js` 「negation-free prompts」用例。
 
 ### 4.2 数据层质量词 ❌（2026-08-23 已出清）
 `masterpiece/best_quality/absurdres/highres/intricate_details/8k/4k` 属 profile 装配层（`quality_prefix` 全句恰好一次）或 AI 玄学词；两 Anima 底模 `strip_quality_tokens=true`，数据层携带=死数据+重复风险。保留的具体光影环境 tag 见 §2.2。

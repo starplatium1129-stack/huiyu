@@ -34,7 +34,6 @@ export interface SaveGeneratedArtworkDependencies {
   measureBlob: (blob: Blob) => Promise<{ width: number | null; height: number | null }>
   now: () => number
   nextId: (now: number) => number
-  resolveLegacyDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults
   normalizeArtistStyleIds: (value: unknown) => string[]
   readArtworkHistory?: () => Promise<unknown[]>
   appendArtwork: (entry: HistoryEntry) => Promise<unknown[]>
@@ -48,7 +47,7 @@ export type SaveGeneratedArtworkResult =
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }
 
 /** Capture before loading the persistence implementation or awaiting any storage lease. */
-export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDefaults: SaveGeneratedArtworkDependencies['resolveLegacyDefaults']): ArtworkSaveSnapshot {
+export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults): ArtworkSaveSnapshot {
   const merged = { ...input, ...historyFromResultContext(input.context) }
   const entry: GeneratedArtworkInput = { ...merged,
     emotion: merged.emotion ? [...merged.emotion] : merged.emotion,

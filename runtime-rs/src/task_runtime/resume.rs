@@ -13,7 +13,7 @@ impl TaskRuntime {
             || task.cancel_requested_at.is_some()
             || task.status != TaskStatus::Queued
             || task.upstream_settled
-            || task.provider_fingerprint != self.binding(&storage)
+            || task.provider_fingerprint != self.binding()
         {
             return Err(ApiError::new(
                 409,

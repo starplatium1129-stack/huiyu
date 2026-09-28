@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { saveGeneratedArtwork, type LegacyArtworkDefaults, type SaveGeneratedArtworkDependencies } from './saveGeneratedArtwork'
+import { saveArtworkSnapshot } from './saveGeneratedArtwork'
+import { prepareGeneratedArtwork, type GeneratedArtworkInput, type LegacyArtworkDefaults, type SaveGeneratedArtworkDependencies } from './artworkSaveInput'
 
 function fixture() {
   const defaults: LegacyArtworkDefaults = {
@@ -8,6 +9,7 @@ function fixture() {
     cfg: 7, steps: 20, sampler: 'euler', scheduler: 'normal', model: 'fixture-model', size: '832x1216',
     hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false, project: '', artistStyleIds: [],
   }
+  const resolveDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults = vi.fn(() => defaults)
   let staged = false
   const deps: SaveGeneratedArtworkDependencies = {
     withStaging: async work => { staged = true; try { return await work() } finally { staged = false } },
@@ -15,22 +17,22 @@ function fixture() {
     deleteImage: vi.fn(async () => { expect(staged).toBe(true) }),
     cacheThumbnail: vi.fn(async () => {}), measureBlob: vi.fn(async () => ({ width: 100, height: 200 })),
     now: () => 1234, nextId: now => now * 1000 + 1,
-    resolveLegacyDefaults: vi.fn(() => defaults), normalizeArtistStyleIds: vi.fn(() => ['normalized']),
+    normalizeArtistStyleIds: vi.fn(() => ['normalized']),
     appendArtwork: vi.fn(async entry => { expect(staged).toBe(true); return [{ id: 'old', unknown: true }, entry] }),
   }
-  return { deps, defaults, input: { blob: new Blob(['neutral image']), prompt: 'A quiet river.' }, staged: () => staged }
+  return { deps, defaults, resolveDefaults, input: { blob: new Blob(['neutral image']), prompt: 'A quiet river.' }, staged: () => staged }
 }
 
 describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => {
   it('显式空场景标题与无 LoRA 不回退到当前表单', async () => {
     const f = fixture()
-    f.deps.resolveLegacyDefaults = () => ({ ...f.defaults, sceneTitle: 'later scene', lora: 'later lora' })
-    expect(await saveGeneratedArtwork({ ...f.input, sceneTitle: null, lora: null }, f.deps))
+    f.resolveDefaults = () => ({ ...f.defaults, sceneTitle: 'later scene', lora: 'later lora' })
+    expect(await saveArtworkSnapshot(prepareGeneratedArtwork({ ...f.input, sceneTitle: null, lora: null }, f.resolveDefaults), f.deps))
       .toMatchObject({ ok: true, entry: { sceneTitle: null, lora: null } })
   })
   it('在保护内完成图片和记录提交，返回可显示历史及完整生成记录', async () => {
     const f = fixture()
-    const result = await saveGeneratedArtwork(f.input, f.deps)
+    const result = await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)
     expect(f.staged()).toBe(false)
     expect(result).toMatchObject({ ok: true, entry: { id: 1234001, timestamp: 1234, image_id: 'new-image', width: 100, height: 200,
       checkpoint: 'fixture-model', artistStyleIds: ['normalized'] }, history: [{ id: 'old', unknown: true }, { id: 1234001 }] })
@@ -40,7 +42,7 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
   it('拒绝暂存保护时不触发写入，也不把锁错误伪装为存储成功', async () => {
     const f = fixture(), error = new Error('staging unavailable')
     f.deps.withStaging = async () => { throw error }
-    await expect(saveGeneratedArtwork(f.input, f.deps)).rejects.toBe(error)
+    await expect(saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).rejects.toBe(error)
     expect(f.deps.putImage).not.toHaveBeenCalled()
     expect(f.deps.appendArtwork).not.toHaveBeenCalled()
   })
@@ -53,9 +55,9 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
       await new Promise<void>(resolve => { release = resolve })
       return { width: null, height: null }
     })
-    const saving = saveGeneratedArtwork(f.input, f.deps)
+    const saving = saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)
     await vi.waitFor(() => expect(f.deps.measureBlob).toHaveBeenCalled())
-    expect(f.deps.resolveLegacyDefaults).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ prompt: f.input.prompt }))
+    expect(f.resolveDefaults).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ prompt: f.input.prompt }))
     release()
     expect(await saving).toMatchObject({ ok: true, entry: { width: null, height: null } })
   })
@@ -67,8 +69,8 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     f.deps.withStaging = async work => { await wait; return work() }
     f.deps.putImage = async () => 'image'
     f.deps.appendArtwork = async entry => [entry]
-    f.deps.resolveLegacyDefaults = () => ({ ...f.defaults, manual_tags: tags })
-    const saving = saveGeneratedArtwork({ ...f.input, emotion, loras }, f.deps)
+    f.resolveDefaults = () => ({ ...f.defaults, manual_tags: tags })
+    const saving = saveArtworkSnapshot(prepareGeneratedArtwork({ ...f.input, emotion, loras }, f.resolveDefaults), f.deps)
     emotion.push('happy'); tags.push('lake'); loras[0]!.strength = 1
     release()
     expect(await saving).toMatchObject({ ok:true, entry:{ emotion:['calm'], manual_tags:['river'], loras:[{ id:'style', strength:0.5 }] } })
@@ -78,17 +80,17 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     const f = fixture()
     const context = { characterId: 'popular-a', history: { emotion: ['calm'] }, story: 'submitted' }
     f.deps.putImage = async () => { context.history.emotion.push('happy'); context.story = 'later'; return 'new-image' }
-    f.deps.resolveLegacyDefaults = entry => {
+    f.resolveDefaults = entry => {
       expect(entry.emotion).toEqual(['calm'])
       return { ...f.defaults, subject: { kind: 'popular', characterId: entry.characterId!, outfitId: '' } }
     }
-    expect(await saveGeneratedArtwork({ ...f.input, context }, f.deps)).toMatchObject({ ok: true, entry: { story: 'submitted', emotion: ['calm'] } })
+    expect(await saveArtworkSnapshot(prepareGeneratedArtwork({ ...f.input, context }, f.resolveDefaults), f.deps)).toMatchObject({ ok: true, entry: { story: 'submitted', emotion: ['calm'] } })
   })
 
   it.each(['putImage', 'measureBlob', 'appendArtwork'] as const)('%s 失败保留原错误，仅拥有图片后才补偿', async failure => {
     const f = fixture(), error = new Error(failure)
     f.deps[failure] = vi.fn().mockRejectedValue(error)
-    const result = await saveGeneratedArtwork(f.input, f.deps)
+    const result = await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)
     expect(result).toMatchObject({ ok: false, error })
     if (failure === 'appendArtwork') {
       expect(f.deps.deleteImage).not.toHaveBeenCalled()
@@ -104,10 +106,10 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
   it('缩略图拒绝仍能保存，补偿失败也不覆盖原始错误', async () => {
     const f = fixture(), error = new Error('commit failed')
     f.deps.cacheThumbnail = vi.fn().mockRejectedValue(new Error('thumbnail failed'))
-    expect((await saveGeneratedArtwork(f.input, f.deps)).ok).toBe(true)
+    expect((await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).ok).toBe(true)
     f.deps.measureBlob = vi.fn().mockRejectedValue(error)
     f.deps.deleteImage = vi.fn().mockRejectedValue(new Error('cleanup failed'))
-    expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: false, error, cleanup: { status: 'failed', imageId: 'new-image' } })
+    expect(await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).toMatchObject({ ok: false, error, cleanup: { status: 'failed', imageId: 'new-image' } })
   })
 })
 
@@ -116,7 +118,7 @@ it('lost commit acknowledgement is recovered by record and image identity withou
   let committed: unknown[] = []
   f.deps.appendArtwork = async entry => { committed = [entry]; throw new Error('ack lost') }
   f.deps.readArtworkHistory = async () => committed
-  expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: true, entry: { image_id: 'new-image' } })
+  expect(await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).toMatchObject({ ok: true, entry: { image_id: 'new-image' } })
   expect(f.deps.deleteImage).not.toHaveBeenCalled()
 })
 
@@ -124,6 +126,6 @@ it('an unreadable commit outcome keeps its owned image and an operation identifi
   const f = fixture()
   f.deps.appendArtwork = async () => { throw new Error('unknown') }
   f.deps.readArtworkHistory = async () => { throw new Error('offline') }
-  expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: false, operationId: expect.any(String), cleanup: { status: 'commit-unknown', imageId: 'new-image' } })
+  expect(await saveArtworkSnapshot(prepareGeneratedArtwork(f.input, f.resolveDefaults), f.deps)).toMatchObject({ ok: false, operationId: expect.any(String), cleanup: { status: 'commit-unknown', imageId: 'new-image' } })
   expect(f.deps.deleteImage).not.toHaveBeenCalled()
 })

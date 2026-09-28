@@ -22,12 +22,6 @@ pub(super) struct Verifier {
     #[cfg(test)]
     hashes: std::sync::atomic::AtomicUsize,
 }
-struct Cancel(CancellationToken);
-impl Drop for Cancel {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 impl Verifier {
     pub fn new() -> Self {
         Self {
@@ -67,8 +61,8 @@ impl Verifier {
             _ = self.closed.cancelled() => return Err(unavailable()),
             permit = self.workers.clone().acquire_owned() => permit.map_err(|_| unavailable())?,
         };
-        let cancel = Cancel(self.closed.child_token());
-        let cancelled = cancel.0.clone();
+        let cancelled = self.closed.child_token();
+        let _cancel = cancelled.clone().drop_guard();
         let verifier = self.clone();
         tokio::task::spawn_blocking(move || {
             // Retain both guards until the blocking read actually exits, including

@@ -5,7 +5,7 @@ import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
-import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/saveGeneratedArtwork'
+import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
 import { ref, reactive, computed } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { type ModelProfile } from '@/utils/promptPolicy'

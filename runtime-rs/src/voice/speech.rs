@@ -28,12 +28,6 @@ use tokio_util::sync::CancellationToken;
 
 type SharedResult = std::result::Result<Bytes, (u16, String, String)>;
 type Flight = watch::Receiver<Option<SharedResult>>;
-struct CancelBody(CancellationToken);
-impl Drop for CancelBody {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 #[derive(Default)]
 struct Active {
     gpt: String,
@@ -219,7 +213,7 @@ impl Speech {
             .unwrap_or(HeaderValue::from_static("audio/wav"));
         let wait = permit.wait_ms;
         let cancel = self.cancel.child_token();
-        let body_cancel = CancelBody(cancel.clone());
+        let body_cancel = cancel.clone().drop_guard();
         let (send, receive) = tokio::sync::mpsc::channel(4);
         let complete = Arc::new(AtomicBool::new(false));
         let producer_complete = complete.clone();

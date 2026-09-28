@@ -191,7 +191,7 @@ async fn native_texture_http_preserves_manifest_etag_and_scale() {
 async fn multipart_import_publishes_only_bound_assets_and_profile_changes_require_cas() {
     let (_directory, service, app) = fixture();
     assert!(!service.local.exists());
-    assert!(!service.available().await);
+    assert_eq!(service.snapshot().await.unwrap().status["available"], false);
     assert!(!service.local.exists());
     let created = call(
         &app,
@@ -249,7 +249,7 @@ async fn multipart_import_publishes_only_bound_assets_and_profile_changes_requir
             assert_eq!(projection["available"], false);
         }
     }
-    assert!(service.available().await);
+    assert_eq!(service.snapshot().await.unwrap().status["available"], true);
     let model_url = companions[0]["avatar"]["modelPath"].as_str().unwrap();
     let model = json_response(call(&app, "GET", model_url, vec![], "application/json").await).await;
     assert!(model.get("Controllers").is_none());
@@ -411,7 +411,7 @@ async fn legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becom
     )
     .unwrap();
     service.catalog.clear();
-    assert!(service.available().await);
+    assert_eq!(service.snapshot().await.unwrap().status["available"], true);
     let response = call(
         &app,
         "GET",
@@ -441,7 +441,7 @@ async fn legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becom
     )
     .unwrap();
     service.catalog.clear();
-    assert!(!service.available().await);
+    assert_eq!(service.snapshot().await.unwrap().status["available"], false);
     assert!(manifest::no_links(std::path::Path::new("relative-imports")).is_err());
     assert!(manifest::no_links(std::path::Path::new("C:relative-imports")).is_err());
     let link = fs::canonicalize(directory.path())

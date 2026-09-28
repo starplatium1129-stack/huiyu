@@ -40,22 +40,20 @@ pub(super) fn read(c: &Context, principal: &str, query: TaskListQuery) -> Result
         Ok((r.get::<_, i64>(0)?, r.get::<_, String>(1)?))
     })?;
     let mut items = Vec::new();
-    let mut cursors = Vec::new();
+    let mut last_cursor = None;
+    let mut next = None;
     for row in rows {
         c.check_cancel()?;
         let (cursor, body) = row?;
+        if items.len() == limit as usize {
+            next = last_cursor;
+            break;
+        }
         let mut task: TaskRecord = serde_json::from_str(&body)?;
         task.runtime_epoch = c.epoch.clone();
         items.push(task);
-        cursors.push(cursor);
+        last_cursor = Some(cursor);
     }
-    let more = items.len() > limit as usize;
-    items.truncate(limit as usize);
-    let next = if more {
-        cursors.get(limit as usize - 1).copied()
-    } else {
-        None
-    };
     Ok(
         json!({"runtimeEpoch": c.epoch, "items": items, "nextCursor": next, "throughRevision": through}),
     )

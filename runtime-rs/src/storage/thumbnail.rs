@@ -12,12 +12,6 @@ use std::{fs, path::Path, sync::OnceLock};
 use tokio_util::sync::CancellationToken;
 
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
-struct Cancel(CancellationToken);
-impl Drop for Cancel {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     let source = match storage.media(string(command, "alias")?).await {
@@ -53,8 +47,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         Err(error) => return Err(error.into()),
     }
     let permit = queue.decoder().await?;
-    let cancel = Cancel(CancellationToken::new());
-    let cancelled = cancel.0.clone();
+    let cancelled = CancellationToken::new();
+    let _cancel = cancelled.clone().drop_guard();
     tokio::task::spawn_blocking(move || {
         let _permit = permit;
         // Cancellation drops the awaiting future, not a running blocking

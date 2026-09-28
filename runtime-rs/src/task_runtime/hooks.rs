@@ -46,7 +46,7 @@ impl ExecutionHooks for Hooks {
                     error_code: Some(None),
                     submission_intent_at: Some(Some(now())),
                     provider: Some(provider),
-                    provider_fingerprint: Some(runtime.binding(&self.storage)),
+                    provider_fingerprint: Some(runtime.binding()),
                     ..Default::default()
                 },
             )

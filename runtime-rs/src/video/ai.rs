@@ -19,7 +19,6 @@ use axum::{
 };
 use serde_json::{Value, json};
 use std::{net::SocketAddr, sync::LazyLock};
-use tokio_util::sync::CancellationToken;
 
 static CONSTANTS: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!("ai/constants.json")).expect("video AI constants")
@@ -70,12 +69,6 @@ async fn status(State(app): State<AppState>) -> Response {
         .await,
     )
 }
-struct CancelOnDrop(CancellationToken);
-impl Drop for CancelOnDrop {
-    fn drop(&mut self) {
-        self.0.cancel();
-    }
-}
 async fn complete(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
@@ -94,7 +87,7 @@ async fn complete(
                 serde_json::from_slice(&body).map_err(|_| invalid("请求体必须是 JSON 对象"))?;
             let input = validation::validate(action, &raw)?;
             let cancel = app.shutdown.child_token();
-            let _guard = CancelOnDrop(cancel.clone());
+            let _guard = cancel.clone().drop_guard();
             let chat = app.chat.as_ref().ok_or_else(unavailable)?;
             let source = chat.mechanical_status(&app.config, &cancel).await?;
             if source["available"] != true {

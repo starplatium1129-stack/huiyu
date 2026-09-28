@@ -150,7 +150,7 @@ impl TaskRuntime {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return Ok(current);
         }
-        if current.provider_fingerprint != self.binding(storage) {
+        if current.provider_fingerprint != self.binding() {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return patch(
                 storage,

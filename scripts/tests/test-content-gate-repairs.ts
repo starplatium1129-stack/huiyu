@@ -23,11 +23,12 @@ test('all wardrobe coverage gaps are reported together, not masked by the first 
 test('eleven authored coverage additions preserve exact binding and compile in both engines', () => {
   assert.equal(repairs.additions.length, 11);
   assert.equal(new Set(repairs.additions.map(x => x.id)).size, 11);
-  assert.equal(blueprints.length, repairs.baselineTotal + repairs.additions.length);
+  // This historical repair batch must survive later additions to the library.
   for (const entry of repairs.additions) {
     const c = characters.find(x => x.id === entry.characterId)!;
-    const b = blueprints.find(x => x.id === entry.id);
-    assert.ok(b, entry.id);
+    const matches = blueprints.filter(x => x.id === entry.id);
+    assert.equal(matches.length, 1, entry.id + ' must exist exactly once');
+    const b = matches[0];
     assert.equal(b.characterId, c!.id);
     assert.equal(b.outfitId, entry.outfitId);
     assert.equal(b.adult, false);

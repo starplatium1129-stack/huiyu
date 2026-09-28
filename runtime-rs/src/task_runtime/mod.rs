@@ -186,7 +186,7 @@ impl TaskRuntime {
             request_fingerprint_locale: Some(self.fingerprint.locale.clone()),
             kind,
             provider: prepared.provider().into(),
-            provider_fingerprint: self.binding(&storage),
+            provider_fingerprint: self.binding(),
             upstream_id: None,
             status: TaskStatus::Queued,
             recovery_state: TaskRecoveryState::Normal,
@@ -321,7 +321,7 @@ impl TaskRuntime {
         self.tracker.close();
         self.tracker.wait().await;
     }
-    fn binding(&self, _storage: &Storage) -> String {
+    fn binding(&self) -> String {
         self.fingerprint
             .hash(&self.provider.provider_identity(&self.unbound_epoch))
     }

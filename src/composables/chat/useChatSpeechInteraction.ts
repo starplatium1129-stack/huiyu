@@ -133,11 +133,7 @@ export function useChatSpeechInteraction({
   watch(
     busy,
     value => {
-      if (value) {
-        speechSession.markReplyBusy()
-      } else {
-        speechSession.markReplyIdle()
-      }
+      if (!value) speechSession.markReplyIdle()
       reconcileAutoListen()
     },
     { immediate: true },

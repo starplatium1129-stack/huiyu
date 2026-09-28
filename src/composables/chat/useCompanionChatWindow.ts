@@ -289,7 +289,7 @@ function cancelSpeechActivity() {
 }
 
 watch(replyActive, active => {
-  if (active) { speechSession.markReplyBusy(); cancelSpeechActivity() }
+  if (active) cancelSpeechActivity()
   else speechSession.markReplyIdle()
   reconcileAutoListen()
 })
