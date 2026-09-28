@@ -73,7 +73,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
   for (const name of candidateNames) assert.ok(characters.some(c => c.displayName === name), name + ' from the approved candidate plan must be registered');
   const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
   const catalog = persistence.parsePresetCatalog((require('../../data/presets.json') as typeof import('../../data/presets.json')));
-  assert.strictEqual(onboardingIds.size, 36);
+  assert.strictEqual(onboardingIds.size, 37);
   const counts: any = {};
   for (const entry of remainingOnboarding) {
     counts[entry.batch] = (counts[entry.batch] || 0) + 1;
@@ -113,7 +113,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
       }
     }
   }
-  assert.deepStrictEqual(counts, { 6: 10, 7: 10, 8: 7, 9: 9 });
+  assert.deepStrictEqual(counts, { 6: 10, 7: 10, 8: 7, 9: 9, 10: 1 });
 });
 
 test('new onboarding SFW coverage includes authored bridal and beach variants', function () {
@@ -405,7 +405,9 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     'intricate_details', 'ultra_detailed', '8k', '4k',
   ];
   blueprints.forEach(function (blueprint) {
-    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) {
+    // Aisha's adult-only scenes deliberately remain fully covered and non-explicit;
+    // the shared R18 style recipes prepend explicit nudity, so keep those out of this set.
+    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library","aisha_greyrat_after_hours_vanity","aisha_greyrat_letter_by_window","aisha_greyrat_robe_and_book","aisha_greyrat_evening_ribbon"].includes(blueprint.id)) {
       assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
         blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
     }

@@ -290,6 +290,15 @@
       "references": "pending",
       "samples": "sfw-published",
       "sceneCount": 10
+    },
+    {
+      "id": "aisha_greyrat",
+      "batch": 10,
+      "portraitPending": true,
+      "portraitPlaceholder": true,
+      "references": "pending",
+      "samples": "placeholder",
+      "sceneCount": 10
     }
   ]
 }

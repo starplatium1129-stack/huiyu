@@ -404,6 +404,176 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "aisha_greyrat",
+        "aisha greyrat",
+        "aisha",
+        "アイシャ・グレイラット",
+        "爱莎",
+        "艾莎·格雷拉特",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "animeStudio": "studio bind, official anime coloring, fantasy anime illustration",
+      "canon": {
+        "era": "中世纪奇幻（成年平行设定）",
+        "formNotes": "用户指定的成年版（22+）；深栗红高马尾、绿色眼睛、红色发带；保留机敏、聪慧与格雷拉特家女仆装识别点，不沿用幼年或学龄形象",
+        "research": "成年年龄为本次用户指定设定；原作身份与性格参考动画官方角色页 https://mushokutensei.jp/character/",
+        "world": "异世界奇幻（无职转生·六面世界）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "defaultOutfitId": "maid_uniform",
+      "displayName": "爱莎·格雷拉特（成年版）",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "aisha_greyrat"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "aisha_greyrat",
+      "identityProse": "An unmistakably adult, age-twenty-plus alternate-timeline version of Aisha Greyrat from Mushoku Tensei, with deep auburn hair in a high ponytail tied by a burgundy ribbon, vivid green eyes, a perceptive expression, and a poised, capable presence.",
+      "identityTokens": [
+        "aisha_greyrat",
+        "solo",
+        "adult_woman",
+        "auburn_hair",
+        "high_ponytail",
+        "green_eyes",
+        "red_hair_ribbon",
+        "mushoku_tensei"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark",
+        "child",
+        "underage",
+        "minor",
+        "schoolgirl",
+        "childlike proportions"
+      ],
+      "originalName": "Aisha Greyrat",
+      "outfits": [
+        {
+          "id": "maid_uniform",
+          "name": "格雷拉特家女仆装",
+          "isDefault": true,
+          "default": true,
+          "prose": "a modest, fully covered Greyrat-house maid uniform with a crisp white long-sleeved blouse, charcoal fitted bodice, burgundy bow, long dark skirt and white apron",
+          "tokens": [
+            "maid_uniform",
+            "white_blouse",
+            "long_sleeves",
+            "charcoal_bodice",
+            "burgundy_bow",
+            "long_skirt",
+            "white_apron",
+            "red_hair_ribbon"
+          ]
+        },
+        {
+          "id": "study_attire",
+          "name": "书房日常装",
+          "isDefault": false,
+          "default": false,
+          "prose": "a neat cream high-neck blouse under a forest-green vest, a long charcoal skirt and a slim leather belt",
+          "tokens": [
+            "cream_blouse",
+            "high_neck",
+            "green_vest",
+            "long_skirt",
+            "leather_belt"
+          ]
+        },
+        {
+          "id": "travel_cloak",
+          "name": "外出旅行装",
+          "isDefault": false,
+          "default": false,
+          "prose": "a practical forest-green travel cloak over a fully covered cream shirt, fitted trousers, leather boots and a cross-body satchel",
+          "tokens": [
+            "travel_cloak",
+            "cream_shirt",
+            "trousers",
+            "leather_boots",
+            "crossbody_satchel"
+          ]
+        },
+        {
+          "id": "formal_gown",
+          "name": "宅邸正式礼服",
+          "isDefault": false,
+          "default": false,
+          "prose": "a high-neck burgundy and cream formal gown with long sleeves, a fitted waist, ankle-length skirt and understated gold trim",
+          "tokens": [
+            "formal_gown",
+            "burgundy_gown",
+            "long_sleeves",
+            "high_neck",
+            "ankle_length_skirt",
+            "gold_trim"
+          ]
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "成年版婚礼礼服造型",
+          "isDefault": false,
+          "default": false,
+          "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a burgundy sash and a modest floor-length skirt",
+          "tokens": [
+            "bridal_gown",
+            "wedding_dress",
+            "ivory_gown",
+            "lace_sleeves",
+            "veil",
+            "burgundy_sash",
+            "floor_length_skirt"
+          ]
+        },
+        {
+          "id": "sfw_beach",
+          "name": "海滨夏日装",
+          "isDefault": false,
+          "default": false,
+          "prose": "a modest dark-green one-piece swimsuit with a light linen cover-up, a wide-brim sunhat and flat sandals",
+          "tokens": [
+            "one_piece_swimsuit",
+            "beach_cover_up",
+            "linen",
+            "sunhat",
+            "sandals"
+          ]
+        },
+        {
+          "id": "adult_loungewear",
+          "name": "成年私密居家装",
+          "isDefault": false,
+          "default": false,
+          "isNsfw": true,
+          "prose": "opaque burgundy satin loungewear with a high neckline and a long matching robe, fully covering the chest and hips",
+          "tokens": [
+            "satin_loungewear",
+            "opaque_robe",
+            "high_neckline",
+            "full_coverage"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
     }
   ],
   "franchise": "Mushoku Tensei",

@@ -12161,5 +12161,90 @@
     ],
     "accent_color": "#9facd1",
     "bg_color": "#282532"
+  },
+  {
+    "id": "aisha_greyrat",
+    "name": "爱莎·格雷拉特",
+    "alias": [
+      "Aisha Greyrat",
+      "Aisha",
+      "アイシャ・グレイラット",
+      "爱莎",
+      "艾莎·格雷拉特"
+    ],
+    "type": "popular",
+    "icon": "character",
+    "portrait": {
+      "image": "../assets/characters/popular-aisha_greyrat.png?v=1",
+      "alt": "爱莎·格雷拉特成年版占位立绘，待主力机真实出图",
+      "status": "placeholder"
+    },
+    "visual_dna": {
+      "hair": "深栗红高马尾",
+      "hair_color": "深栗红",
+      "eyes": "鲜绿色",
+      "hairstyle": "高马尾 · 红色发带",
+      "uniform": "格雷拉特家女仆装：白色长袖衬衫、深色束身衣、酒红领结与白围裙",
+      "expression": "机敏聪慧 · 从容自信",
+      "style": "quick-witted fantasy house steward",
+      "signature": "深栗红高马尾、绿色眼睛、红色发带与利落的女仆装"
+    },
+    "personality": [
+      "聪明敏锐",
+      "善于察言观色",
+      "灵活务实",
+      "自信从容",
+      "善于统筹"
+    ],
+    "likes": [
+      "整理计划",
+      "魔法与知识",
+      "观察局势",
+      "高效处理事务"
+    ],
+    "classic_cg": {
+      "title": "宅邸账册与晨光",
+      "description": "成年版爱莎在格雷拉特宅邸的书房核对账册，棕红马尾、绿色眼睛与红色发带清晰可见。"
+    },
+    "identity": {
+      "role": "格雷拉特家族的事务统筹者 / 魔术师",
+      "age": "成年版 · 22+（平行成年设定）",
+      "occupation": "宅邸事务统筹 / 魔术师",
+      "faction": "格雷拉特家族"
+    },
+    "tags": [
+      "深栗红高马尾",
+      "绿色眼睛",
+      "红色发带",
+      "格雷拉特家女仆",
+      "机敏",
+      "成年版"
+    ],
+    "bg_story": "爱莎·格雷拉特是保罗与莉莉雅的女儿，也是鲁迪乌斯和诺伦同父异母的妹妹。官方动画资料形容她器用、聪明。此条目采用用户指定的平行成年版设定（22+），以深栗红高马尾、绿色眼睛、红色发带和利落女仆装作为稳定识别特征，不沿用幼年或学龄形象。",
+    "palette": [
+      "深栗红",
+      "森林绿",
+      "象牙白"
+    ],
+    "weather": [
+      "宅邸清晨",
+      "书房午后",
+      "海滨晴日"
+    ],
+    "speech": "爱莎向你致以问候。",
+    "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》；成年版为用户指定设定",
+    "traits": [
+      "aisha_greyrat",
+      "solo",
+      "adult_woman",
+      "auburn_hair",
+      "high_ponytail",
+      "green_eyes",
+      "red_hair_ribbon",
+      "mushoku_tensei"
+    ],
+    "accent_color": "#A74458",
+    "bg_color": "#1b171c",
+    "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
   }
 ]
