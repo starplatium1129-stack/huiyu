@@ -1,6 +1,7 @@
 <template>
-<details class="inspector-route"><summary>推荐配方与复用</summary>
-<ManagedDrawingRouteCard v-if="managedRoute"
+<details v-if="managedRoute" class="inspector-route">
+  <summary><span>推荐配方与复用</span><ArchiveIcon name="chevron-down" /></summary>
+<ManagedDrawingRouteCard
       class="pb-managed-route-banner"
       :route="managedRoute"
       :history="pb.history"

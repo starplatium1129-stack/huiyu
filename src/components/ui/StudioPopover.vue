@@ -3,7 +3,7 @@ import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka
 
 withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end' }>(), { align:'end', contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
-const emit = defineEmits<{ closeAutoFocus: [event: Event] }>()
+const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
 </script>
 
 <template>
@@ -11,7 +11,7 @@ const emit = defineEmits<{ closeAutoFocus: [event: Event] }>()
     <PopoverTrigger as-child><slot name="trigger" /></PopoverTrigger>
     <PopoverPortal>
       <PopoverContent :align="align" :side-offset="10" :collision-padding="16"
-        hide-when-detached as-child @close-auto-focus="emit('closeAutoFocus', $event)">
+        hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="emit('closeAutoFocus', $event)">
         <div :aria-label="label" :aria-labelledby="undefined" class="studio-popover" :class="contentClass"><slot /></div>
       </PopoverContent>
     </PopoverPortal>

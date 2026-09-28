@@ -97,7 +97,9 @@
 .room-surface.room-immersive .character-controls-panel { top: calc(100% + 8px); @apply tw:bottom-auto tw:left-auto tw:right-0; width: min(340px, 84vw); }
 .room-surface.room-immersive .conversation-card { @apply tw:absolute tw:bottom-0 tw:left-[50%]; transform: translateX(-50%); animation: none; width: min(720px, 100%); @apply tw:max-h-[65%]; z-index: var(--z-raised); }
 .room-surface .avatar-status[data-state="idle"] { @apply tw:hidden; }
-.room-surface .live2d-enable-cta { @apply tw:min-w-0; width: max-content; @apply tw:max-w-[90%]; padding: var(--s-3) var(--s-4); background: var(--bg-surface); @apply tw:border-soft; box-shadow: none; backdrop-filter: none; @apply tw:text-center; }
+/* Center through layout: transforming this button over the transformed portrait can leave its pointer target behind the image. */
+.room-surface .live2d-enable-cta { @apply tw:min-w-0 tw:left-0 tw:right-0; width: max-content; margin-inline:auto; transform:none; @apply tw:max-w-[90%]; padding: var(--s-3) var(--s-4); background: var(--bg-surface); @apply tw:border-soft; box-shadow: none; backdrop-filter: none; @apply tw:text-center; }
+.room-surface .live2d-enable-cta:is(:hover,:active) { transform:none; }
 .room-surface .live2d-enable-cta-kicker, .room-surface .live2d-enable-cta small { @apply tw:hidden; }
 .room-surface.room-immersive .live2d-enable-cta { @apply tw:top-s-3 tw:bottom-auto; }
 .room-surface.room-immersive .conversation-head { padding-block: var(--s-2); }
@@ -124,9 +126,12 @@
   .room-surface .chat-actions { @apply tw:gap-s-1; }
   .room-surface .chat-actions > .btn { padding-inline: var(--s-2); }
   .room-surface .chat-actions > .btn:nth-child(2) { @apply tw:inline-flex; }
-  .room-surface .character-info { @apply tw:absolute tw:right-0 tw:bottom-0 tw:p-s-2; z-index: var(--z-raised); }
+  /* Keep the toolbar below the portrait; anchoring both it and the lazy-load CTA to the same bottom edge overlaps their labels. */
+  .room-surface .character-info { @apply tw:relative tw:right-auto tw:bottom-auto tw:flex-wrap tw:gap-s-2 tw:p-s-2; z-index: var(--z-raised); }
   .room-surface .character-info-head { @apply tw:hidden; }
-  .room-surface .character-controls > summary { background: var(--bg-surface); @apply tw:rounded-md tw:p-s-2; }
+  .room-surface .character-info > .btn { flex:1 1 auto; @apply tw:min-w-0 tw:min-h-[44px]; }
+  .room-surface .live2d-enable-cta { @apply tw:min-h-[44px]; }
+  .room-surface .character-controls > summary { background: var(--bg-surface); @apply tw:min-h-[44px] tw:rounded-md tw:p-s-2; }
   .room-surface .character-controls-panel { @apply tw:left-auto tw:right-0; width: min(340px, 88vw); @apply tw:bottom-auto tw:top-[100%] tw:max-h-[45dvh]; }
   .room-surface .conversation-head { @apply tw:flex-row tw:p-s-3; }
   .room-surface .composer-row { @apply tw:flex-nowrap; }

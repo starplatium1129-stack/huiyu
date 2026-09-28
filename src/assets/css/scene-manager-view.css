@@ -8,7 +8,7 @@
 .id-code { @apply tw:text-mono-xs; }
 .sm-head { @apply tw:relative tw:top-auto; z-index:var(--z-sticky); @apply tw:p-s-4; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:flex tw:items-start tw:justify-between tw:gap-s-4 tw:mb-s-5 tw:flex-wrap; }
 .sm-head-actions .btn:disabled, .import-actions .btn:disabled { @apply tw:text-disabled; opacity:1; }
-.maintenance-state { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:mt-s-2; padding:4px 12px; @apply tw:rounded-pill; background:color-mix(in srgb,var(--success) 10%,transparent); @apply tw:text-success-text tw:text-label-sm; }
+.maintenance-state { @apply tw:inline-flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:mt-s-2; padding:4px 12px; @apply tw:rounded-pill; background:color-mix(in srgb,var(--success) 10%,transparent); @apply tw:text-success-text tw:text-label-sm; overflow-wrap:anywhere; }
 .maintenance-state.dirty { background:color-mix(in srgb,var(--warning) 14%,transparent); @apply tw:text-warning-text; }
 .maintenance-state span { @apply tw:text-muted tw:text-label-xs; }
 .saving-phase { @apply tw:text-muted tw:text-label-xs; }
@@ -66,7 +66,7 @@ tr:hover td { background:var(--bg-elevated); }
 .import-result { @apply tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-label-sm tw:leading-loose; }
 .msg-ok { @apply tw:text-success-text; margin:0 0 4px; } .msg-warn { @apply tw:text-warning-text; margin:0 0 4px; } .msg-danger { @apply tw:text-danger-text; margin:0 0 4px; }
 
-.tool-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); @apply tw:gap-s-3 tw:mb-s-4; }
+.tool-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr)); @apply tw:gap-s-3 tw:mb-s-4; }
 .sm-tool-card { @apply tw:flex tw:flex-col tw:gap-s-1 tw:text-left tw:p-s-4; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:cursor-pointer; transition:border-color var(--motion-hover),transform var(--motion-hover); }
 .sm-tool-card:hover:not(:disabled) { @apply tw:border-accent; }
 /* 审计修复: 不用 opacity 压字 */
@@ -82,7 +82,7 @@ tr:hover td { background:var(--bg-elevated); }
 :deep(.hl-id) { @apply tw:text-accent tw:font-bold; background:var(--accent-soft); padding:0 4px; @apply tw:rounded-xs; }
 
 /* 样张管理 */
-.image-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); @apply tw:gap-s-2 tw:mb-s-3; }
+.image-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr)); @apply tw:gap-s-2 tw:mb-s-3; }
 .sm-image-card { @apply tw:grid tw:gap-[4px] tw:text-left tw:p-s-2; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:cursor-pointer; transition:border-color var(--motion-hover),transform var(--motion-hover); @apply tw:overflow-hidden; }
 .sm-card-thumb { @apply tw:w-full; aspect-ratio:16/10; @apply tw:object-cover tw:rounded-md; border:1px solid var(--border-soft); background:var(--art-mat); @apply tw:block; }
 .sm-image-card:hover { @apply tw:border-accent; }
@@ -92,7 +92,7 @@ tr:hover td { background:var(--bg-elevated); }
 }
 .sm-image-card.active { @apply tw:border-accent; background:var(--accent-soft); }
 .home-hero-maintenance { @apply tw:mb-s-5; }
-.home-hero-grid { grid-template-columns:repeat(2,minmax(180px,1fr)); @apply tw:mb-s-3; }
+.home-hero-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); @apply tw:mb-s-3; }
 .home-hero-preview { @apply tw:max-w-[520px]; }
 .sm-card-id { @apply tw:text-muted; font:650 var(--fs-mono-xs) var(--font-mono); }
 .sm-card-title { @apply tw:text-primary tw:text-label-sm tw:font-bold tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
@@ -121,13 +121,13 @@ tr:hover td { background:var(--bg-elevated); }
 .overlay { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:flex tw:items-center tw:justify-center tw:p-s-4; background:var(--art-backdrop); backdrop-filter:blur(6px); }
 .modal-card-wide { width:min(820px,94vw); }
 .modal-card-tag { width:min(480px,94vw); }
-.form-grid-single { grid-template-columns:1fr; }
 .modal-card { @apply tw:max-h-[90vh] tw:overflow-y-auto tw:p-s-6; border:1px solid var(--accent); @apply tw:rounded-xl; background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
 .modal-card h2 { @apply tw:mb-s-4 tw:text-title-sm; }
 .form-section { border:1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-3 tw:mb-s-3; }
 .form-legend { @apply tw:text-label-sm tw:font-bold tw:text-secondary; padding:0 var(--s-2); }
-.form-grid { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-3 tw:mb-s-3; }
-.form-group { @apply tw:grid tw:gap-s-1; }
+.form-grid { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-3 tw:mb-s-3; }
+.form-grid.form-grid-single { grid-template-columns:minmax(0,1fr); }
+.form-group { @apply tw:grid tw:min-w-0 tw:gap-s-1; }
 .form-group-full { grid-column:1 / -1; }
 .form-group { @apply tw:cursor-default; }
 .field-label { @apply tw:text-label-sm tw:text-muted tw:font-semibold; }

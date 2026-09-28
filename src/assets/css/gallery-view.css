@@ -1,5 +1,5 @@
 @reference "./tailwind.css";
-.gallery-shell { width:min(1660px,100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
+.gallery-shell { width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
 .gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto clamp(24px,2.5vw,32px); }
 .gallery-kicker { @apply tw:mb-s-3 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.18em; }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
@@ -19,6 +19,9 @@
 .gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-pill); @apply tw:mr-auto tw:p-s-1 tw:rounded-pill; background:var(--bg-base); }
 .gallery-manage-controls { @apply tw:pl-s-2; border-left:1px solid var(--border-soft); }
 .gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; margin:var(--s-4) 0 var(--s-5); }
+.gallery-album-overview { margin-top:var(--s-5); }
+.gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
+.gallery-album-overview:focus,.gallery-summary:focus { outline:none; }
 .gallery-filter :deep(.archive-icon) { @apply tw:w-[16px] tw:h-[16px]; vertical-align:-.2em; @apply tw:mr-[3px]; }
 /* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
 .gallery-search-field { @apply tw:relative; flex:1 1 210px; @apply tw:min-w-[160px] tw:max-w-[280px]; }
@@ -32,12 +35,12 @@
 .gallery-toolbar-note { @apply tw:text-secondary tw:text-label-xs tw:leading-body tw:text-right; }
 
 /* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */
-.gallery-bulkbar { @apply tw:max-w-[1500px]; margin:0 auto var(--s-3); @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
+.gallery-bulkbar { margin:0 auto var(--s-3); @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
 .gallery-bulk-count { @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-mono); @apply tw:whitespace-nowrap; }
 
 /* 画廊多列瀑布流展墙：等宽列流式拼接，上下紧密咬合，零垂直多余空位 */
 .gallery-wall {
-  @apply tw:max-w-[1560px];
+  @apply tw:w-full;
   margin: 0 auto;
   @apply tw:flex tw:flex-col tw:gap-s-4;
 }

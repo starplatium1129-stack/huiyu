@@ -7,7 +7,7 @@ const album = { id: 'rain', title: '雨后的来信', count: 3, covers: [{ id: 1
 afterEach(() => setRuntimeOrigin(null, false))
 
 describe('project album navigation', () => {
-  it('selects projects and exposes selection and return-to-all to keyboard users', async () => {
+  it('opens an album and reopens the same album after returning to the overview', async () => {
     const wrapper = mount(GalleryProjectAlbums, { props: { albums: [album], selectedId: '' } })
     const card = wrapper.get('button.gallery-album')
     expect(card.attributes('aria-label')).toBe('雨后的来信，3 幅作品')
@@ -17,8 +17,8 @@ describe('project album navigation', () => {
     await wrapper.setProps({ selectedId: 'rain' })
     expect(card.attributes('aria-pressed')).toBe('true')
     await card.trigger('click')
-    await wrapper.get('.gallery-albums-all').trigger('click')
-    expect(wrapper.emitted('select')).toEqual([['rain'], [''], ['']])
+    expect(card.attributes('data-album-id')).toBe('rain')
+    expect(wrapper.emitted('select')).toEqual([['rain'], ['rain']])
     wrapper.unmount()
   })
 

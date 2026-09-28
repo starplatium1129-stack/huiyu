@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
+import { defineComponent, h, KeepAlive, nextTick, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
 
@@ -16,7 +17,7 @@ vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => {} }))
 vi.mock('@/composables/useToast', () => ({ useToast: () => ({ show: vi.fn() }) }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: mocks.thumb, jpegThumbDataUrl: vi.fn(() => '') }))
-vi.mock('vue-router', () => ({ useRoute: () => mocks.route, useRouter: () => ({ replace: mocks.replace }) }))
+vi.mock('vue-router', () => ({ useRoute: () => reactive(mocks.route), useRouter: () => ({ replace: mocks.replace }) }))
 import { useGalleryWorkspace } from './useGalleryWorkspace'
 
 class Observer {
@@ -36,6 +37,7 @@ const record = (id: number): ArtworkRecord => ({ id, image_id: `image-${id}`, pr
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mocks.route.query = {}
   Observer.instances = []
   vi.stubGlobal('IntersectionObserver', Observer)
   let url = 0
@@ -67,6 +69,28 @@ async function setup() {
     async intersect() { Observer.instances.find(observer => observer.options.rootMargin === '600px 0px')!.intersect(); await flushPromises() },
   }
 }
+
+it('keeps the wall mounted when filter URL updates arrive while the viewer is open', async () => {
+  const { gallery } = await setup()
+  gallery.openViewer(0)
+  await flushPromises()
+  mocks.snapshot.mockClear()
+  const route = useRoute()
+  route.query = { tag: '春日' }
+  await flushPromises()
+  expect(mocks.snapshot).not.toHaveBeenCalled()
+  expect(gallery.galleryLoading.value).toBe(false)
+  expect(gallery.viewerIndex.value).toBe(0)
+  route.query = { q: '雨夜', compare: '1,2' }
+  await flushPromises()
+  expect(mocks.snapshot).toHaveBeenCalledTimes(1)
+  route.query = { q: '秋日', compare: '1,2' }
+  await flushPromises()
+  expect(mocks.snapshot).toHaveBeenCalledTimes(1)
+  route.query = { q: '秋日', compare: '1,2', batch: 'next-batch' }
+  await flushPromises()
+  expect(mocks.snapshot).toHaveBeenCalledTimes(2)
+})
 
 it('releases gallery originals on deactivation while keeping filters and thumbnails for a return', async () => {
   const env = await setup()

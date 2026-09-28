@@ -27,6 +27,15 @@
 .rating-options { @apply tw:min-w-0; }
 .showcase-results-heading { @apply tw:flex tw:items-baseline tw:justify-between tw:flex-wrap; gap:var(--s-2) var(--s-4); @apply tw:mb-s-4; }
 .showcase-results-heading h2 { @apply tw:m-0 tw:text-body-lg tw:font-semibold; }
+.showcase-browse-modes,.showcase-result-location { @apply tw:flex tw:items-center tw:gap-s-2; }
+.showcase-browse-modes { @apply tw:shrink-0; }
+.showcase-browse-modes .filter-pill { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
+.showcase-album-back { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[36px] tw:text-secondary tw:text-label; padding:var(--s-1) var(--s-2); border:0; background:transparent; cursor:pointer; }
+.showcase-album-back .archive-icon { transform:rotate(90deg); }
+.showcase-album-back:hover { @apply tw:text-accent; }
+.showcase-album-back:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.showcase-album-overview,.showcase-results-heading { scroll-margin-top:calc(var(--app-navigation-height,80px) + 160px); }
+.showcase-album-overview:focus,.showcase-results-heading:focus { outline:none; }
 .result-meta { @apply tw:text-muted tw:text-label-xs tw:leading-body; }
 .result-meta strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric:tabular-nums; }
 

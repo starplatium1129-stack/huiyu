@@ -197,6 +197,8 @@ export function useSceneExplorerWorkspace() {
     const tierLabel = computed(() => {
         if (showHidden.value)
             return '已隐藏';
+        if (debouncedQuery.value.trim())
+            return '搜索结果';
         return ({ personal: '我的常用', core: '人设核心', featured: '精选', signature: '招牌', curated: '精选', all: '全库' } as Record<string, string>)[fTier.value] || '场景';
     });
     function tier(s: ExplorerScene) { return uxTier(s, curation.value); }
@@ -318,6 +320,12 @@ export function useSceneExplorerWorkspace() {
         sortBy.value = 'used';
         filtersOpen.value = false;
     }
+    function showRecommendedScenes() {
+        showHidden.value = false;
+        fTier.value = 'core';
+        sortBy.value = 'smart';
+        filtersOpen.value = false;
+    }
     function showFavoriteScenes() {
         showHidden.value = false;
         fTier.value = 'all';
@@ -417,7 +425,7 @@ export function useSceneExplorerWorkspace() {
 drawerEl,
         companionId, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
         railIconName, searchQuery, visible, filtered, tierLabel, filtersOpen,
-        activeFacetCount, fTier, showHidden, showPersonalScenes, usedCount, sortBy,
+        activeFacetCount, fTier, showHidden, showPersonalScenes, showRecommendedScenes, usedCount, sortBy,
         showFavoriteScenes, favoriteCount, showHiddenScenes, hiddenCount, showAllScenes, availableCount,
         THEME_DEFS, activeTheme, themeCount, intentHtml, fChar, fSeason,
         fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters, loading,

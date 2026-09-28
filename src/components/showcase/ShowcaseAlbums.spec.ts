@@ -13,16 +13,15 @@ function render() {
 }
 
 describe('ShowcaseAlbums', () => {
-  it('emits the existing type filter and lets the active album return to all', async () => {
+  it('opens the selected type even when revisiting the same cover', async () => {
     const wrapper = render()
     await wrapper.get('[aria-label="场景故事，1 幅样张"]').trigger('click')
     expect(wrapper.emitted('select')).toEqual([['scene']])
     await wrapper.setProps({ selected: 'scene' })
     expect(wrapper.get('[aria-label="场景故事，1 幅样张"]').attributes('aria-pressed')).toBe('true')
     await wrapper.get('[aria-label="场景故事，1 幅样张"]').trigger('click')
-    expect(wrapper.emitted('select')?.at(-1)).toEqual(['all'])
-    await wrapper.get('.albums-all').trigger('click')
-    expect(wrapper.emitted('select')?.at(-1)).toEqual(['all'])
+    expect(wrapper.get('[aria-label="场景故事，1 幅样张"]').attributes('data-album-id')).toBe('scene')
+    expect(wrapper.emitted('select')?.at(-1)).toEqual(['scene'])
   })
 
   it('renders only a safe image and keeps albums without safe covers selectable', async () => {

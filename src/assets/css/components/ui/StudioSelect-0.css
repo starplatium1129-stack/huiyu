@@ -8,7 +8,8 @@
 .studio-select-viewport { @apply tw:[max-height:min(280px,_calc(var(--reka-select-content-available-height,_320px)_-_16px))] tw:overflow-y-auto tw:overscroll-contain tw:[scrollbar-width:thin]; }
 .studio-select-group-label { @apply tw:py-s-1 tw:px-s-3 tw:text-muted tw:[font:600_var(--fs-label-sm)_var(--font-sans)]; }
 .studio-select-item { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[36px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:[font:500_var(--fs-label)_var(--font-sans)] tw:cursor-pointer tw:[outline:none] tw:select-none; }
-.studio-select-check { @apply tw:inline-flex tw:items-center tw:text-accent; }
+.studio-select-item-text { @apply tw:min-w-0; overflow-wrap: anywhere; }
+.studio-select-check { @apply tw:inline-flex tw:shrink-0 tw:items-center tw:text-accent; }
 
 .studio-select-wrapper.studio-select-inline { width: auto; }
 .studio-select-wrapper > .studio-tooltip-anchor[data-anchor] { width: 100%; }

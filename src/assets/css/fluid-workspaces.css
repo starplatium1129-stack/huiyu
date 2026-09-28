@@ -159,7 +159,6 @@ html .video-studio .video-panel {
   @apply tw:border-soft;
   box-shadow: var(--workspace-inset);
 }
-html .video-studio .video-submit-panel { @apply tw:rounded-xl; box-shadow: var(--workspace-lift); }
 html .video-studio .video-prompt { @apply tw:leading-loose; background: var(--bg-base); }
 html .video-studio .video-jump-nav { @apply tw:flex-wrap tw:gap-s-2; }
 

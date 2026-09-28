@@ -47,6 +47,9 @@ watch(selected, async () => { await nextTick(); if (scrollArea.value) scrollArea
 </template>
 
 <style>
+.studio-tabs-list { min-width:0; overflow-x:auto; overscroll-behavior-inline:contain; scrollbar-width:thin; }
+.studio-tabs-trigger { flex:1 0 max-content; white-space:nowrap; }
+.studio-tabs-count { flex-shrink:0; }
 .studio-tabs-trigger:hover { background:var(--bg-hover); color:var(--text-primary); }
 .studio-tabs-trigger[data-state='active'] { color:var(--accent); }
 .studio-tabs-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }

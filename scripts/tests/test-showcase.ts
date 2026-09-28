@@ -26,7 +26,7 @@ const path: typeof import('path') = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (relative: string) => fs.readFileSync(path.join(root, relative), 'utf8');
-const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/components/showcase/ShowcaseSampleCard.vue'), read('src/assets/css/showcase-view.css')].join('\n');
+const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/components/showcase/ShowcaseSampleCard.vue'), read('src/assets/css/showcase-view.css'), read('src/assets/css/showcase-viewer.css')].join('\n');
 
 test('showcase source contract: view, router, nav, server allowlist, exporter wording', async () => {
   const view = readShowcaseView();
@@ -118,8 +118,8 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
     'viewer must use a dedicated class so teleported markup keeps its styles',
   );
   assert(
-    /<style>\s*[\s\S]*\.showcase-viewer/.test(view),
-    'teleported viewer styles must live in a non-scoped <style> block',
+    /<style\s+src="@\/assets\/css\/showcase-viewer\.css">/.test(view),
+    'teleported viewer styles must load their dedicated non-scoped stylesheet',
   );
 
   // ── 导航与路由 ────────────────────────────────────────────────────────────

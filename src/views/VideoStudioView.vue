@@ -1,53 +1,52 @@
 <template>
   <article class="video-studio page">
-    <WorkspaceArchiveBar
-      chapter="14"
-      title="故事短片"
-      subtitle="让这一幕，继续发生"
-      :status="archiveStatus"
-      :state="archiveState"
-      shape="frame"
-    />
-
     <header class="video-header">
       <div>
-        <div class="page-kicker">画室 / 故事短片</div>
+        <div class="page-kicker">画室 / 影像创作</div>
         <h1 class="page-title">故事短片</h1>
-        <p class="page-subtitle">
-          从一张画面或一段描述开始，让角色的故事继续。选择创作方式，再准备镜头与首帧。
-        </p>
+        <p class="page-subtitle">让这一幕，继续发生。</p>
       </div>
+      <div class="video-header-actions">
+      <span class="video-connection" :data-state="archiveState" role="status">{{ archiveStatus }}</span>
       <button class="btn btn-ghost" type="button" :disabled="statusLoading" @click="loadStatus">
         <ArchiveIcon name="refresh" />
         {{ statusLoading ? '检测中' : '重新检测' }}
       </button>
+      </div>
     </header>
 
     <section class="video-mode-strip" aria-label="视频创作方式">
+      <StudioTooltip v-for="mode in modes" :key="mode.id" :anchor="!modeReady(mode.id)" :content="!modeReady(mode.id) ? modeBadge(mode.id) : undefined">
       <button
-        v-for="mode in modes"
-        :key="mode.id"
         class="video-mode-card"
         type="button"
         :class="{ active: selectedMode === mode.id }"
         :aria-pressed="selectedMode === mode.id"
+        :aria-describedby="selectedMode === mode.id ? 'video-mode-description' : undefined"
         :disabled="!modeReady(mode.id)"
         @click="selectedMode = mode.id"
       >
         <span class="video-mode-icon"><ArchiveIcon :name="mode.icon" /></span>
-        <span>
-          <strong>{{ mode.label }}</strong>
-          <small>{{ mode.description }}</small>
-        </span>
-        <em>{{ modeBadge(mode.id) }}</em>
+        <strong>{{ mode.label }}</strong>
       </button>
+      </StudioTooltip>
     </section>
-
-    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:flex tw:flex-wrap tw:gap-s-3 tw:mb-s-4" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">01 镜头描述</a><a href="#video-settings">02 画幅与时长</a><a href="#video-queue">03 查看成片</a></nav>
-    <div class="video-workspace" v-content-motion="selectedMode">
+    <div class="video-mode-context">
+      <p id="video-mode-description"><span>{{ modes.find(mode => mode.id === selectedMode)?.description }}</span><strong>{{ modeBadge(selectedMode) }}</strong></p>
+      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
+    </div>
+    <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
+      v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
+      :aspect-options="aspectOptions.map(item => ({ value: item.id, label: `${item.label}${aspectSize(item.id) ? ' · ' + aspectSize(item.id) : ''}` }))"
+      :duration-options="durationOptions.map(seconds => ({ value: seconds, label: `${seconds} 秒` }))"
+      :quality-options="(status?.qualities || []).map(item => ({ value: item.id, label: `${item.label} · ${item.summary}` }))"
+      :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
+      @generate="submitVideo" />
+    <div class="video-workspace" :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion="selectedMode">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
         <template v-else>
+        <div class="video-draft-grid" :class="{ 'has-frames': selectedMode !== 'text' }">
         <section v-if="selectedMode === 'image'" id="video-frames" class="video-panel video-first-frame-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
@@ -99,7 +98,7 @@
             </div>
           </div>
           <p class="video-install-note">
-            两张图都是输入画面。在下方描述它们之间发生的动作，生成后再检查实际过渡；选择「跟随原图」可沿用首帧比例。
+            两张图都是输入画面。在镜头描述中写下它们之间发生的动作，生成后再检查实际过渡；选择「跟随原图」可沿用首帧比例。
           </p>
         </section>
 
@@ -122,38 +121,13 @@
             rows="7"
             placeholder="例如：黄昏的电车站，少女回头看向镜头，风吹起发丝和裙摆，镜头缓慢推进，暖色逆光，动作自然连续。"
           ></textarea>
-          <div class="video-prompt-guidance tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3">
-            <span>建议写清：主体</span>
-            <span>动作</span>
-            <span>环境</span>
-            <span>光线</span>
-            <span>镜头</span>
-          </div>
         </section>
+        </div>
 
-        <section id="video-settings" class="video-panel">
+        <section class="video-panel video-details-panel">
           <div class="video-panel-heading">
             <div>
-              <span class="video-step">02 · 成片方向</span>
-              <h2>画幅与节奏</h2>
-            </div>
-          </div>
-
-          <div class="video-choice-group tw:grid tw:gap-s-2">
-            <span class="field-label">画幅</span>
-            <div class="video-choice-grid video-choice-grid--three tw:grid tw:gap-s-2" role="group" aria-label="选择视频画幅">
-              <button
-                v-for="item in aspectOptions"
-                :key="item.id"
-                type="button"
-                :class="{ active: aspectRatio === item.id }"
-                :aria-pressed="aspectRatio === item.id"
-                @click="aspectRatio = item.id"
-              >
-                <span class="aspect-glyph" :data-aspect="item.id"></span>
-                <strong>{{ item.label }}</strong>
-                <small>{{ aspectSize(item.id) }}</small>
-              </button>
+              <h2>镜头与细节</h2>
             </div>
           </div>
 
@@ -174,42 +148,6 @@
                 :options="motionOptions.map(item => ({ value: item.id, label: item.label }))"
               />
             </label>
-          </div>
-
-          <div class="video-quality-row">
-            <span class="field-label">画质档位</span>
-            <div class="video-quality-grid" role="group" aria-label="选择视频画质档位">
-              <button
-                v-for="item in status?.qualities || []"
-                :key="item.id"
-                type="button"
-                :class="{ active: quality === item.id }"
-                :aria-pressed="quality === item.id"
-                @click="quality = item.id"
-              >
-                <strong>{{ item.label }}</strong>
-                <small>{{ item.summary }}</small>
-                <em>{{ item.sizes[aspectRatio] }}</em>
-              </button>
-            </div>
-            <p class="video-duration-note">
-              快速档适合试镜找方向；标准档用于日常创作；精细档保留更多细节，也需要更长时间。
-            </p>
-          </div>
-
-          <div class="video-duration-row">
-            <span class="field-label">时长</span>
-            <div class="video-segmented" role="group" aria-label="选择视频时长">
-              <button
-                v-for="seconds in durationOptions"
-                :key="seconds"
-                type="button"
-                :class="{ active: duration === seconds }"
-                :aria-pressed="duration === seconds"
-                @click="duration = seconds"
-              >{{ seconds }} 秒</button>
-            </div>
-            <span class="video-duration-note">首次测试建议 3 秒，确认方向后再生成 5 秒。</span>
           </div>
 
           <details class="video-advanced">
@@ -246,16 +184,6 @@
           </details>
         </section>
 
-        <section class="video-submit-panel" :data-ready="canGenerate || undefined">
-          <div>
-            <strong>{{ submitTitle }}</strong>
-            <p>{{ submitDescription }}</p>
-          </div>
-          <button class="btn btn-primary btn-lg" type="button" :disabled="!canGenerate" @click="submitVideo">
-            <ArchiveIcon name="play" />
-            {{ submitting ? '正在提交…' : '生成视频' }}
-          </button>
-        </section>
         </template>
       </div>
 
@@ -414,11 +342,12 @@
 </template>
 
 <script setup lang="ts">
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
+import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"

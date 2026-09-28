@@ -1,7 +1,7 @@
 @reference "./tailwind.css";
 /* Desktop control room: frequent operations first, setup and sharing below. */
 .control-page { @apply tw:min-h-[100vh]; background: var(--bg-base); @apply tw:text-primary; }
-.control-layout { @apply tw:grid; grid-template-columns: 208px minmax(0, 1fr); @apply tw:max-w-[1920px] tw:min-h-[100vh]; margin: 0 auto; }
+.control-layout { @apply tw:grid; grid-template-columns:minmax(208px,14rem) minmax(0,1fr); max-width:calc(1920px * var(--desktop-layout-scale,1)); @apply tw:min-h-[100vh]; margin:0 auto; }
 .control-mobile-nav { @apply tw:hidden; }
 .control-rail { @apply tw:sticky tw:top-0 tw:h-[100dvh] tw:flex tw:flex-col; padding: var(--s-6) var(--s-4) var(--s-5); background: var(--bg-deep); border-right: 1px solid var(--border-soft); }
 .control-rail-brand { @apply tw:grid tw:gap-s-4; padding: 0 var(--s-2) var(--s-5); @apply tw:text-primary; text-decoration: none; }
@@ -18,7 +18,7 @@
 .control-rail-note p { margin: var(--s-3) 0; font: 400 var(--fs-body-sm)/var(--lh-loose) var(--font-serif); }
 .control-rail-foot { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2; border-top: 1px solid var(--border-soft); @apply tw:pt-s-4 tw:mt-auto; }
 .nav-local-home { flex: 1; padding: var(--s-2) 0; @apply tw:text-secondary tw:text-label; text-decoration: none; }
-.control-shell { @apply tw:max-w-[1600px]; margin: 0 auto; padding: var(--s-6) var(--s-6) var(--s-8); }
+.control-shell { max-width:calc(1600px * var(--desktop-layout-scale,1)); margin:0 auto; padding:var(--s-6) var(--s-6) var(--s-8); }
 .control-shell > [id], .control-work-grid > [id] { scroll-margin-top: var(--s-5); }
 .overview-heading { @apply tw:flex tw:justify-between tw:items-start tw:gap-s-5 tw:mb-s-4; }
 .overview-heading h2 { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
@@ -26,9 +26,7 @@
 .overview-local { @apply tw:inline-flex tw:gap-s-2 tw:items-center tw:text-muted tw:whitespace-nowrap tw:text-label-xs; }
 .status-wall { @apply tw:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .status-tile { @apply tw:grid tw:gap-s-3 tw:min-w-0 tw:p-s-4; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; }
-.status-tile:hover { @apply tw:border-strong; }
 .status-tile-head .archive-icon { @apply tw:text-secondary tw:w-[18px] tw:h-[18px]; }
-.status-tile small { @apply tw:text-secondary tw:text-label; }
 .status-dot { @apply tw:w-[6px] tw:h-[6px] tw:rounded-pill tw:ml-auto; background: var(--text-muted); }
 .status-tile[data-state="on"] .status-dot { background: var(--success); }
 .status-tile strong { @apply tw:text-title-xs tw:font-semibold; }
@@ -48,12 +46,13 @@
 .mode-title .archive-icon { @apply tw:text-accent; }
 .mode-arrow { @apply tw:ml-auto tw:text-muted; }
 .mode-desc { @apply tw:text-secondary tw:text-label tw:leading-body; }
-.service-rows { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-x-s-5; }
-.service-row { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; padding: var(--s-3) 0; border-top: 1px solid var(--border-soft); }
+.status-wall.service-rows { grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); }
+.service-row { @apply tw:grid tw:content-start; }
+.service-row .status-tile-detail { margin:0; min-height:2.8em; }
+.service-context { @apply tw:text-accent tw:text-label tw:mb-s-3; }
+.status-tile.service-required { border-color:var(--accent); box-shadow:inset 0 3px var(--accent); }
 .service-row-name { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:text-label tw:min-w-0; }
-.service-row-name .dot { @apply tw:w-[6px] tw:h-[6px] tw:shrink-0 tw:rounded-pill; background: var(--text-muted); }
-.service-row-name .dot.on { background: var(--success); }
-.service-row-meta { @apply tw:text-muted tw:text-label-xs; overflow-wrap: anywhere; }
+.service-row-name { margin:0; font-weight:600; }
 .service-row-actions { @apply tw:flex tw:shrink-0 tw:gap-s-2; }
 .service-row-actions .btn { @apply tw:min-h-[36px]; }
 .service-row-actions .btn-danger { background: transparent; @apply tw:border-soft tw:text-danger-text; }
@@ -119,7 +118,7 @@
 .spin { animation: spin .7s linear infinite; }
 .control-page :is(a,button,input,select,summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (min-width: 1600px) { .control-shell { padding-inline: var(--s-7); } }
-@media (max-width: 1200px) { .control-layout { grid-template-columns: 184px minmax(0, 1fr); } .control-shell { @apply tw:p-s-5; } .service-rows { grid-template-columns: 1fr; } .voice-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1200px) { .control-layout { grid-template-columns: 184px minmax(0, 1fr); } .control-shell { @apply tw:p-s-5; } .voice-grid { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .control-mobile-nav { @apply tw:block; } .nav-local { @apply tw:flex tw:justify-between tw:p-s-3; } .nav-local-actions { @apply tw:flex tw:items-center tw:gap-s-2; } .nav-local-brand { @apply tw:text-primary; } .control-rail { @apply tw:hidden; } .control-layout { @apply tw:block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { @apply tw:p-s-4; } .mode-grid { grid-template-columns: 1fr; } .overview-heading { @apply tw:flex-col; } .log-panel > summary { @apply tw:flex-wrap; } }
 @media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }

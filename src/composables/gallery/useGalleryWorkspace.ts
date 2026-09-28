@@ -468,7 +468,9 @@ export function useGalleryWorkspace() {
         if (el)
             moreObserver.observe(el);
     });
-    watch(() => [route.query.compare, route.query.batch], () => {
+    // Filter URL sync replaces query too. Watch the two values independently so
+    // it cannot reload/remount the wall and detach an open viewer's focus target.
+    watch([() => route.query.compare, () => route.query.batch], () => {
         if (route.path === '/gallery')
             void loadGalleryStorage().then(compareFromRoute);
     });
