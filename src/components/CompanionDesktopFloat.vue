@@ -16,7 +16,7 @@
         <div v-if="reminder.kind === 'event' && reminder.eventKind" class="companion-reminder-actions">
           <button type="button" class="companion-reminder-action" @click="emit('open-reminder', reminder)">{{ reminderActionLabel(reminder) }}</button>
         </div>
-        <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="emit('dismiss-reminder', reminder.id)">×</button>
+        <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="emit('dismiss-reminder', reminder.id)"><ArchiveIcon name="close" /></button>
       </div>
     </TransitionGroup>
     <StudioTooltip content="打开聊天窗（Ctrl+Shift+X）">

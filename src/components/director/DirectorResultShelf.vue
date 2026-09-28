@@ -61,7 +61,8 @@ async function saveCandidate() {
 .shelf-heading,.shelf-preview header { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:flex-wrap; }
 .shelf-heading a { @apply tw:text-secondary tw:text-label-xs; }
 .shelf-tabs { background:var(--bg-base); }
-.shelf-tabs button { @apply tw:relative; z-index:var(--z-raised); @apply tw:min-h-[40px]; padding:0 var(--s-3); border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:text-label-sm tw:cursor-pointer; }
+.shelf-tabs button { @apply tw:relative; z-index:var(--z-raised); @apply tw:min-h-[40px] tw:rounded-md; padding:0 var(--s-3); border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:text-label-sm tw:cursor-pointer; }
+.shelf-tabs button:hover:not([aria-pressed='true']) { background:var(--bg-hover); @apply tw:text-primary; }
 .shelf-tabs button[aria-pressed='true'] { @apply tw:text-accent; }
 .shelf-strip { padding:var(--s-3) var(--s-1); overscroll-behavior-x:contain; }
 .shelf-thumb { flex:0 0 104px; border:1px solid var(--border-soft); background:var(--bg-base); transition:transform var(--motion-hover); }

@@ -37,7 +37,7 @@ html .gallery-page .gallery-filter,
 html .showcase-page .filter-pill,
 html .scene-discovery .scene-cat,
 html .library-page :is(.pop-cat, .pop-rating-pill) {
-  @apply tw:min-h-[36px] tw:rounded-md;
+  @apply tw:min-h-[36px];
 }
 html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */

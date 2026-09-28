@@ -157,7 +157,7 @@
             <div v-if="reminder.kind === 'event' && reminder.eventKind && desktopBridge" class="companion-reminder-actions">
               <button type="button" class="companion-reminder-action" @click="openReminderRoute(reminder)">{{ reminderActionLabel(reminder) }}</button>
             </div>
-            <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
+            <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)"><ArchiveIcon name="close" /></button>
           </div>
         </TransitionGroup>
         <CompanionClipboardCard :card="clipboardCard" :character-name="currentCharacter.name"
@@ -289,7 +289,7 @@
           @close="speechSettingsOpen = false"
         />
 
-        <div class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
+        <div v-show="chatError" class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
           {{ chatError }}
         </div>
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>

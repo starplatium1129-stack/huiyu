@@ -2,7 +2,7 @@
 .toggle-slider { @apply tw:relative tw:inline-block tw:w-[32px] tw:h-[18px] tw:shrink-0 tw:[background:var(--border-strong)] tw:rounded-pill; }
 .toggle-knob { @apply tw:absolute tw:h-[13px] tw:w-[13px] tw:left-[2.5px] tw:bottom-[2.5px] tw:[background:var(--text-primary)] tw:rounded-full; }
 /* Keep scoped precedence at this component boundary. */
-.toggle-switch { @apply tw:relative tw:inline-flex tw:items-center tw:gap-[8px] tw:p-0 tw:border-0 tw:bg-transparent tw:text-start tw:cursor-pointer tw:text-inherit tw:shrink-0; }
+.toggle-switch { @apply tw:relative tw:inline-flex tw:items-center tw:gap-[8px] tw:min-h-[32px] tw:p-0 tw:border-0 tw:rounded-sm tw:bg-transparent tw:text-start tw:cursor-pointer tw:text-inherit tw:shrink-0; }
 /* The font shorthand must precede line-height; utility sorting reverses them. */
 .toggle-switch { font: inherit; @apply tw:leading-flush; }
 .toggle-switch-icon-only {

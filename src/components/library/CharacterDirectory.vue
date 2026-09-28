@@ -141,7 +141,8 @@ async function locateSelected() {
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度）落在 wrapper。 */
 .directory-tools .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; }
 .directory-count, .directory-current { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2; }
-.directory-count button, .directory-current button { @apply tw:p-0; border: 0; background: transparent; @apply tw:text-accent tw:cursor-pointer; font: inherit; }
+.directory-count button, .directory-current button { @apply tw:min-h-[32px] tw:px-s-2 tw:py-s-1 tw:rounded-md tw:shrink-0; border: 0; background: transparent; @apply tw:text-accent tw:cursor-pointer; font: inherit; }
+.directory-count button:hover, .directory-current button:hover { background:var(--accent-soft); }
 .directory-list { flex: 1 1 auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
 .directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:text-left; background: transparent; border: 1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; transition: transform var(--motion-hover); }
 .directory-item:hover { background: var(--bg-hover); }

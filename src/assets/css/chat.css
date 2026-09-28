@@ -1445,12 +1445,13 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .speech-config-btn {
   flex: none;
+  @apply tw:min-h-[32px];
   padding: 4px 8px;
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
   background: transparent;
   @apply tw:text-muted tw:cursor-pointer;
-  font: 650 var(--fs-mono-xs) var(--font-sans);
+  font: 600 var(--fs-label-sm) var(--font-sans);
   @apply tw:whitespace-nowrap;
   transition: border-color var(--motion-hover), color var(--motion-hover);
 }

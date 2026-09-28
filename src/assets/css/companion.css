@@ -1033,23 +1033,24 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .live2d-enable-cta {
   @apply tw:right-auto tw:top-[118px] tw:bottom-auto tw:left-[16px] tw:max-w-[182px];
   padding: 9px 11px;
-  border-color: color-mix(in srgb, var(--character-accent) 72%, var(--companion-ink));
+  border-color: var(--border-strong);
   @apply tw:rounded-xl;
-  background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
-  color: var(--companion-ink);
-  box-shadow: var(--shadow-lg), 0 0 28px color-mix(in srgb, var(--character-accent) 18%, transparent), inset 0 1px 0 var(--companion-highlight);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: 500 var(--fs-label) / var(--lh-body) var(--font-sans);
+  box-shadow: var(--shadow-md);
   transform: none;
 }
 
 .companion-page .live2d-enable-cta:hover,
 .companion-page .live2d-enable-cta:focus-visible {
-  background: color-mix(in srgb, var(--character-accent) 18%, var(--art-scrim));
+  background: var(--bg-elevated);
   transform: translateY(-2px);
 }
 
 .companion-page .live2d-enable-cta-kicker,
 .companion-page .live2d-enable-cta small {
-  color: var(--companion-ink);
+  color: var(--text-secondary);
 }
 
 .companion-page .live2d-enable-cta p {
@@ -1320,7 +1321,7 @@ html.companion-mode:not(.companion-desktop) body {
   @apply tw:relative;
   width: fit-content;
   @apply tw:max-w-[92%];
-  padding: 8px 26px 8px 11px;
+  padding: 8px 40px 8px 11px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 55%, var(--border-soft));
   border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
   background: color-mix(in srgb, var(--character-accent) 12%, var(--bg-surface));
@@ -1360,12 +1361,13 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .companion-reminder-dismiss {
-  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[20px] tw:h-[20px];
+  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[32px] tw:h-[32px] tw:grid tw:place-items-center;
   border: 0;
   @apply tw:rounded-sm;
   background: transparent;
   @apply tw:text-muted tw:cursor-pointer tw:text-body tw:leading-flush;
 }
+.companion-reminder-dismiss .archive-icon { @apply tw:w-[14px] tw:h-[14px]; }
 
 .companion-page .companion-reminder-dismiss:hover,
 .companion-page .companion-reminder-dismiss:focus-visible {
@@ -1728,6 +1730,7 @@ html.companion-immersive .companion-page {
 }
 .companion-page .companion-pop-switch { @apply tw:min-h-[40px]; }
 .companion-page .companion-pop-switch > span:last-child { flex:1; }
+.companion-page .companion-pop-switch small { @apply tw:block tw:mt-s-1 tw:text-secondary tw:text-label-xs; }
 .companion-page .companion-pop-volume { @apply tw:justify-between tw:min-h-[40px]; }
 .companion-page .companion-pop-volume > span { @apply tw:inline-flex tw:items-baseline tw:gap-s-1; }
 .companion-page .companion-pop-volume small { @apply tw:text-muted tw:text-label-xs; }
@@ -2224,7 +2227,7 @@ html:has(.companion-chat-window) body {
   @apply tw:text-muted tw:text-label-sm;
 }
 .companion-chat-setup-action {
-  @apply tw:shrink-0 tw:whitespace-nowrap tw:ml-auto tw:min-h-[24px];
+  @apply tw:shrink-0 tw:whitespace-nowrap tw:ml-auto tw:min-h-[32px];
   padding: 2px 10px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 60%, var(--border-soft));
   @apply tw:rounded-pill;
@@ -2422,7 +2425,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   @apply tw:relative;
   width: fit-content;
   max-width: min(86%, 420px);
-  padding: 8px 26px 8px 12px;
+  padding: 8px 40px 8px 12px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 55%, var(--companion-edge));
   border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
   background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
@@ -2442,7 +2445,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   @apply tw:m-0 tw:text-body-sm tw:leading-body tw:whitespace-pre-wrap;
 }
 .companion-float-reminder > .companion-reminder-dismiss {
-  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[20px] tw:h-[20px];
+  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[32px] tw:h-[32px] tw:grid tw:place-items-center;
   border: 0;
   @apply tw:rounded-sm;
   background: transparent;
@@ -2464,13 +2467,6 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
 .companion-float-reminder .companion-reminder-action:focus-visible {
   border-color: var(--character-accent);
   background: color-mix(in srgb, var(--character-accent) 28%, var(--art-scrim));
-}
-/* 命中区扩到 24px（WCAG 2.5.8，2026-08-28）：视觉保持 20px，点击面垫到 24px */
-.companion-float-reminder > .companion-reminder-dismiss::before {
-  content: "";
-  @apply tw:absolute;
-  inset: -2px;
-  @apply tw:rounded-sm;
 }
 .companion-float-reminder > .companion-reminder-dismiss:hover,
 .companion-float-reminder > .companion-reminder-dismiss:focus-visible {
