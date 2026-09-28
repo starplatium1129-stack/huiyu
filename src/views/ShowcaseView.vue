@@ -69,7 +69,7 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
+    <div v-else v-content-motion="`${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :type-label="typeLabel(entry.type)" :rating-label="ratingLabel(entry.rating)"

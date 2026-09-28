@@ -56,7 +56,7 @@
         <button v-for="t in TABS" :key="t.id" type="button" :aria-pressed="tab === t.id" @click="tab = t.id"><span>{{ t.label }}</span><small v-if="recordCounts[t.id] !== undefined">{{ recordCounts[t.id] }}</small></button>
         <p>选择记录查看详情。编辑后先保存草稿，再保存到项目。</p>
       </nav>
-      <div class="manager-content">
+      <div class="manager-content" v-content-motion="tab">
       <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :readonly="desktopPackaged" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
       <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :readonly="desktopPackaged" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
 

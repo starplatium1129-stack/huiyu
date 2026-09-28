@@ -8,6 +8,7 @@ import { initializeTheme } from './composables/useTheme'
 import { initializeDesktopPreferences, installDesktopInteraction } from './composables/useDesktopInteraction'
 import { installFluidGlass } from './utils/fluidGlass'
 import { installDesktopZoom } from './composables/useDesktopZoom'
+import { contentMotion, installContentMotion } from './directives/contentMotion'
 // 字体声明移入独立异步 chunk（2026-08-28 审计 P1-7）：315 条 @font-face
 // 不再打进入口 CSS（453KB → ~85KB），首帧用 fallback 渲染、swap 无闪换。
 // 不 await —— 首帧即发起加载，不阻塞入口解析。
@@ -22,6 +23,8 @@ import './assets/css/fluid-workspaces.css'
 import './assets/css/fluid-glass.css'
 import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
+import './assets/css/desktop-layout.css'
+import './assets/css/interaction-motion.css'
 
 // Join before mounting: a new document must not start writing while another
 // document holds exclusive cleanup access. Browsing still works without locks;
@@ -41,11 +44,12 @@ void (async () => {
   stopNavigationFeedback = installNavigationFeedback(router)
   await startArtworkSession().catch(error => console.warn('作品清理保护不可用', error))
   if (disposed) return
-  createApp(App).use(createPinia()).use(router).mount('#app')
+  createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router).mount('#app')
   const stopDesktopInteraction = installDesktopInteraction(router)
   const stopFluidGlass = installFluidGlass()
   const stopDesktopZoom = installDesktopZoom()
-  stopUi = () => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom() }
+  const stopContentMotion = installContentMotion()
+  stopUi = () => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom(); stopContentMotion() }
 })()
 if (import.meta.hot) import.meta.hot.dispose(() => {
   disposed = true

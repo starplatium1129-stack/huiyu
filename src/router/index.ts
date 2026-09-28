@@ -13,6 +13,7 @@ const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/showcase', '/gallery'
 const SCROLL_MEMORY_LIMIT = 16
 const routeScrollMemory = new Map<string, { left: number; top: number }>()
 let cancelRouteScrollRestore: (() => void) | null = null
+let navigationScrollStart = { left: 0, top: 0 }
 
 function cancelPendingScrollRestore() {
   cancelRouteScrollRestore?.()
@@ -98,12 +99,19 @@ const router = createRouter({
     const remembered = routeScrollMemory.get(to.fullPath)
     if (remembered) {
       routeScrollMemory.delete(to.fullPath)
+      // A zero anchor is always reachable. Avoid scrollTo(0, 0) forcing a layout
+      // immediately after Vue mounts the destination when we are already there.
+      if (remembered.top === 0 && remembered.left === 0 && navigationScrollStart.top === 0 && navigationScrollStart.left === 0) return false
       scheduleScrollRestore(to.fullPath, remembered)
       return { ...remembered, behavior: 'instant' }
     }
-    return { top: 0, behavior: 'instant' }
+    return navigationScrollStart.top === 0 ? false : { top: 0, behavior: 'instant' }
   }
 })
+
+// Capture while the old page is still laid out. Reading scrollY inside
+// scrollBehavior after the new DOM patch can itself force a full layout.
+router.beforeResolve(() => { navigationScrollStart = captureScrollAnchor() || { left: 0, top: 0 } })
 
 // Capture before Vue Router performs the destination scrollBehavior. This is
 // intentionally separate from scrollBehavior, which runs after the old page

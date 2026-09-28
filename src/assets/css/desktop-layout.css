@@ -1,0 +1,40 @@
+@reference "./tailwind.css";
+/* 按 CSS 视口适配，不读取显示器物理像素；系统 DPI 和 WebView 缩放继续生效。 */
+:root {
+  --desktop-layout-scale: 1;
+  --desktop-workspace-max: 1840px;
+  --app-navigation-height: 80px;
+}
+@media (min-width: 2200px) {
+  html { font-size: 106.25%; }
+  :root {
+    --desktop-layout-scale: 1.2;
+    --desktop-workspace-max: 2320px;
+    --app-navigation-height: 88px;
+    --s-3: 14px; --s-4: 20px; --s-5: 28px; --s-6: 40px;
+  }
+}
+@media (min-width: 3000px) {
+  html { font-size: 125%; }
+  :root {
+    --desktop-layout-scale: 1.6;
+    --desktop-workspace-max: 3200px;
+    --app-navigation-height: 104px;
+    --s-3: 18px; --s-4: 24px; --s-5: 36px; --s-6: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .page-root > .nav { padding-block: 0; }
+  .page-root > .nav .nav-inner {
+    min-height: calc(var(--app-navigation-height) - 1px);
+    max-width: var(--desktop-workspace-max);
+  }
+  :root .page { width: min(calc(var(--page-max, 1200px) * var(--desktop-layout-scale)), 100%); }
+  :root .library-layout { grid-template-columns: minmax(260px, 17.5rem) minmax(0, 1fr); }
+  :root .gallery-shell { width: min(calc(1660px * var(--desktop-layout-scale)), 100%); }
+  :root .chat-page.room-surface { max-width: calc(1720px * var(--desktop-layout-scale)); }
+  .room-surface .chat-head > div:first-child { flex: 1; min-width: 0; }
+  .room-surface .room-title-group { flex-shrink: 0; }
+  :root .control-layout { max-width: calc(1920px * var(--desktop-layout-scale)); grid-template-columns: minmax(208px, 14rem) minmax(0, 1fr); }
+  :root .video-studio { --page-max: calc(1480px * var(--desktop-layout-scale)); }
+}

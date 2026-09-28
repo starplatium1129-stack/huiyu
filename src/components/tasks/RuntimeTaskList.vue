@@ -1,5 +1,5 @@
 <template>
-  <section class="runtime-task-list tw:grid tw:gap-s-3 tw:min-h-[100px]" aria-label="工作区任务和结果收件箱">
+  <section v-content-motion="selected" class="runtime-task-list tw:grid tw:gap-s-3 tw:min-h-[100px]" aria-label="工作区任务和结果收件箱">
     <nav aria-label="工作区任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" :disabled="busy === 'refresh'" @click="refresh">更新状态</button></nav>
     <p class="inbox-explanation">切换页面后，已接收任务由本地运行时继续处理。结果先保存在收件箱，入册设置保持不变。</p>
     <p v-if="runtimeTaskError || feedback" role="status">{{ feedback || runtimeTaskError }}</p>

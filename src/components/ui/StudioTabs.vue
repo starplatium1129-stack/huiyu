@@ -35,7 +35,7 @@ watch(selected, async () => { await nextTick(); if (scrollArea.value) scrollArea
     <div ref="scrollArea" class="studio-tabs-panels tw:min-h-0 tw:min-w-0" :class="contentClass">
       <TabsContent v-for="tab in tabs" :key="tab.id" :value="tab.id" force-mount as-child>
       <section
-        v-show="stacked || selected === tab.id" :id="`${idPrefix || generatedId}-${tab.id}`"
+        v-show="stacked || selected === tab.id" v-content-motion="!stacked && selected === tab.id" :id="`${idPrefix || generatedId}-${tab.id}`"
         :data-panel="tab.id" :class="panelClass" :role="stacked ? 'region' : 'tabpanel'"
         :aria-labelledby="stacked ? undefined : `${idPrefix || generatedId}-tab-${tab.id}`"
         :aria-label="stacked ? tab.label : undefined" :tabindex="stacked ? undefined : 0">

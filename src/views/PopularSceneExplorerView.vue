@@ -3,7 +3,7 @@
     <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>翻一翻角色的日常与远方，挑选想要绘制的那一幕。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost"><ArchiveIcon name="character" />查看角色档案</RouterLink></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
-      <div class="library-detail">
+      <div class="library-detail" v-content-motion="selectedId">
     <section class="pop-hero" aria-label="当前角色场景">
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
@@ -48,7 +48,7 @@
       </div>
 
       <!-- 场景卡片网格 -->
-      <div class="pop-grid">
+      <div v-content-motion="`${category}:${ratingFilter}`" class="pop-grid">
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->

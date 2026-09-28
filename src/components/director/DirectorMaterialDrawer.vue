@@ -10,7 +10,7 @@
       </button>
     </div>
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
-    <div v-for="item in sections" v-show="active === item.id" :id="`material-${item.id}`"
+    <div v-for="item in sections" v-show="active === item.id" v-content-motion="active === item.id" :id="`material-${item.id}`"
       :key="item.id" class="material-content" :aria-label="item.label">
       <DeferredPanel :active="active === item.id"><slot :name="item.id" /></DeferredPanel>
     </div>

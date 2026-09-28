@@ -1,0 +1,18 @@
+/* Low-specificity fallback: component-specific gestures keep their own motion.
+   Feedback starts on press; no new hover loops or permanent compositing layers. */
+:where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
+  transition: transform var(--motion-press) var(--ease-out);
+}
+:where(button, a[href], summary, [role='button'], [role='tab'], [role='option']):active:not(:disabled):not([aria-disabled='true']):not([data-disabled]) {
+  transform: scale(.98);
+}
+/* Inline links cannot transform; underline communicates their clickable state. */
+:where(a[href]):hover { text-underline-offset: .2em; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']):active {
+    transform: none;
+  }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced']) :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']):active {
+  transform: none;
+}

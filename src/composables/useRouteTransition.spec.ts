@@ -99,10 +99,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
     hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
-    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(18px) scale(.992)' }, { opacity: 1, transform: 'translateX(0) scale(1)' }])
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(10px)' }, { opacity: 1, transform: 'translateX(0)' }])
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
     assert.equal(gallery.el.inert, false)
-    assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 150, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
+    assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 120, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
     hooks.onEnterCancelled(gallery.el); hooks.onLeaveCancelled(style.el)
   })
 
@@ -112,7 +112,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const style = surface('/style'), scene = surface('/scene-explorer')
     hooks.onEnter(style.el, () => {}); style.animations[0].onfinish!()
     destination = '/scene-explorer'; hooks.onLeave(style.el, () => {}); hooks.onEnter(scene.el, () => {})
-    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-18px) scale(.992)' }, { opacity: 1, transform: 'translateX(0) scale(1)' }])
+    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-10px)' }, { opacity: 1, transform: 'translateX(0)' }])
     hooks.onEnterCancelled(scene.el); hooks.onLeaveCancelled(style.el)
   })
 
@@ -148,8 +148,8 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(oldPage.el.inert, true)
     assert.equal(newPage.el.inert, false)
     assert.equal(left.count, 0)
-    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-out' }])
-    assert.deepEqual(newPage.calls[0][0], [{ opacity: 0, transform: 'translateX(16px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 100, easing: 'ease-out' }])
+    assert.deepEqual(newPage.calls[0][0], [{ opacity: 0, transform: 'translateX(8px)' }, { opacity: 1, transform: 'translateX(0)' }])
     hooks.onLeaveCancelled(oldPage.el)
     assert.equal(oldPage.el.inert, false)
     assert.equal(left.count, 1)
@@ -173,7 +173,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(done.count, 0)
     assert.deepEqual(calls, [[
       [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }],
-      { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      { duration: 180, easing: 'cubic-bezier(.22, 1, .36, 1)' },
     ]])
     assert.deepEqual(state.marks, [['/gallery', 'shell-ready']])
   })
@@ -403,10 +403,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
     assert.deepEqual(oldPage.calls[0], [[
-      { opacity: 1, transform: 'translateX(0) scale(1)' },
-      { opacity: 0, transform: 'translateX(-8px) scale(.996)' },
-    ], { duration: 160, easing: 'cubic-bezier(.4, 0, 1, 1)' }])
-    assert.deepEqual(newPage.calls[0][1], { duration: 320, easing: 'cubic-bezier(.16, 1, .3, 1)' })
+      { opacity: 1, transform: 'translateX(0)' },
+      { opacity: 0, transform: 'translateX(-4px)' },
+    ], { duration: 110, easing: 'cubic-bezier(.4, 0, 1, 1)' }])
+    assert.deepEqual(newPage.calls[0][1], { duration: 220, easing: 'cubic-bezier(.16, 1, .3, 1)' })
     for (const { calls } of [oldPage, newPage]) {
       for (const frame of calls[0][0] as Keyframe[]) {
         assert.ok(Object.keys(frame).every(key => key === 'transform' || key === 'opacity'))
@@ -422,10 +422,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
     assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0, transform: 'translateX(0px) scale(.992)' },
-      { opacity: 1, transform: 'translateX(0) scale(1)' },
+      { opacity: 0, transform: 'translateX(0px)' },
+      { opacity: 1, transform: 'translateX(0)' },
     ])
-    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0, transform: 'translateX(0px) scale(.996)' })
+    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0, transform: 'translateX(0px)' })
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
   })
 
@@ -436,8 +436,8 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.deepEqual(oldPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
     assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0, transform: 'translateX(18px) scale(.992)' },
-      { opacity: 1, transform: 'translateX(0) scale(1)' },
+      { opacity: 0, transform: 'translateX(10px)' },
+      { opacity: 1, transform: 'translateX(0)' },
     ])
     hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
   })

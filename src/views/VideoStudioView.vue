@@ -44,7 +44,7 @@
     </section>
 
     <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:flex tw:flex-wrap tw:gap-s-3 tw:mb-s-4" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">01 镜头描述</a><a href="#video-settings">02 画幅与时长</a><a href="#video-queue">03 查看成片</a></nav>
-    <div class="video-workspace">
+    <div class="video-workspace" v-content-motion="selectedMode">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
         <template v-else>

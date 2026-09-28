@@ -2,19 +2,20 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import AnimatedSelection from './AnimatedSelection.vue'
+import { frameData, frameSteps } from 'motion'
 
 describe('AnimatedSelection lifecycle and background suspension', () => {
   let originalHidden: PropertyDescriptor | undefined
 
   beforeEach(() => {
     document.body.innerHTML = ''
-    originalHidden = Object.getOwnPropertyDescriptor(Document.prototype, 'hidden')
+    originalHidden = Object.getOwnPropertyDescriptor(document, 'hidden')
   })
 
   afterEach(() => {
     if (originalHidden) {
-      Object.defineProperty(Document.prototype, 'hidden', originalHidden)
-    }
+      Object.defineProperty(document, 'hidden', originalHidden)
+    } else Reflect.deleteProperty(document, 'hidden')
     document.body.innerHTML = ''
     vi.restoreAllMocks()
   })
@@ -75,12 +76,10 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
 
   it('suspends rAF when document becomes hidden', async () => {
     let isHidden = false
-    Object.defineProperty(Document.prototype, 'hidden', {
+    Object.defineProperty(document, 'hidden', {
       get: () => isHidden,
       configurable: true,
     })
-
-    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame')
 
     const Container = defineComponent({
       setup() {
@@ -95,10 +94,18 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     const wrapper = mount(Container, { attachTo: document.body })
     await nextTick()
 
+    const readSpy = vi.spyOn(wrapper.get('button').element, 'getBoundingClientRect')
     // Trigger visibility change to hidden
     isHidden = true
+    expect(document.hidden).toBe(true)
     document.dispatchEvent(new Event('visibilitychange'))
-    expect(cancelSpy).toHaveBeenCalled()
+    readSpy.mockClear()
+    frameSteps.read.process(frameData)
+    expect(readSpy).not.toHaveBeenCalled()
+    isHidden = false
+    document.dispatchEvent(new Event('visibilitychange'))
+    frameSteps.read.process(frameData)
+    expect(readSpy).toHaveBeenCalled()
 
     wrapper.unmount()
   })

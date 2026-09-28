@@ -14,8 +14,9 @@
 .pb .director-inspector #stepResult { @apply tw:min-h-0; }
 .pb[data-director-mode="basic"] .inspector-section[data-panel="style"] { @apply tw:hidden; }
 .pb[data-director-mode="basic"] .inspector-scroll { @apply tw:flex tw:flex-col tw:gap-s-4; }
-.pb[data-director-mode="pro"] .director-inspector { border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
-.pb[data-director-mode="pro"] .inspector-scroll { @apply tw:p-[14px] tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
+.pb[data-director-mode="basic"] .inspector-section { @apply tw:shrink-0; }
+.pb[data-director-mode] .director-inspector { border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
+.pb[data-director-mode] .inspector-scroll { @apply tw:p-[14px] tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; @apply tw:p-0; }
 .pb[data-director-mode="pro"] .director-inspector .engine-switch { @apply tw:grid; grid-template-columns: 1fr; @apply tw:gap-s-2; }
@@ -28,30 +29,27 @@
 .pb[data-director-mode="pro"] .director-inspector .controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pb[data-director-mode="pro"] .director-inspector .panel-title { @apply tw:mb-[10px]; }
 .pb[data-director-mode="pro"] .director-inspector .decision-fold { @apply tw:pb-[12px]; border-bottom: 1px solid var(--border-soft); }
-.pb[data-director-mode="pro"] .pb-sub { @apply tw:hidden; }
-.pb[data-director-mode="pro"] .pb-topline { @apply tw:mb-[16px]; }
-.pb[data-director-mode="pro"] .pb-title { @apply tw:text-title-xs; }
 @media (min-width: 1024px) {
-  .pb[data-director-mode="pro"] .director-inspector { @apply tw:flex tw:flex-col; }
-  .pb.journal-workspace[data-director-mode="pro"] .inspector-heading,
-  .pb.journal-workspace[data-director-mode="pro"] .inspector-tabs { @apply tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .stage-placeholder { @apply tw:min-h-0 tw:h-full; max-height: none; }
-  .pb.journal-workspace[data-director-mode="pro"] .result-image-wrap { @apply tw:h-full tw:flex tw:flex-col tw:overflow-hidden; }
-  .pb.journal-workspace[data-director-mode="pro"] .result-image { flex: 1; @apply tw:w-full tw:min-h-0; max-height: none; @apply tw:object-contain; }
-  .pb.journal-workspace[data-director-mode="pro"] .result-image-actions { @apply tw:shrink-0; max-height: none; @apply tw:overflow-visible tw:p-[10px]; }
-  .pb.journal-workspace[data-director-mode="pro"] .gen-bar { @apply tw:gap-[10px] tw:p-[12px]; }
-  .pb.journal-workspace[data-director-mode="pro"] .gen-bar-preset { @apply tw:hidden; }
-  .pb.journal-workspace[data-director-mode="pro"] .material-drawer { --scene-list-max-height: none; @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .material-heading,
-  .pb.journal-workspace[data-director-mode="pro"] .material-switch { @apply tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .material-content { flex: 1; @apply tw:min-h-0 tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-gutter: stable; }
+  .pb[data-director-mode] .director-inspector { @apply tw:flex tw:flex-col; }
+  .pb.journal-workspace[data-director-mode] .inspector-heading,
+  .pb.journal-workspace[data-director-mode] .inspector-tabs { @apply tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .stage-placeholder { @apply tw:min-h-0 tw:h-full; max-height: none; }
+  .pb.journal-workspace[data-director-mode] .result-image-wrap { @apply tw:h-full tw:flex tw:flex-col tw:overflow-hidden; }
+  .pb.journal-workspace[data-director-mode] .result-image { flex: 1; @apply tw:w-full tw:min-h-0; max-height: none; @apply tw:object-contain; }
+  .pb.journal-workspace[data-director-mode] .result-image-actions { @apply tw:shrink-0; max-height: none; @apply tw:overflow-visible tw:p-[10px]; }
+  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:gap-[10px] tw:p-[12px]; }
+  .pb.journal-workspace[data-director-mode] .gen-bar-preset { @apply tw:hidden; }
+  .pb.journal-workspace[data-director-mode] .material-drawer { --scene-list-max-height: none; @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
+  .pb.journal-workspace[data-director-mode] .material-heading,
+  .pb.journal-workspace[data-director-mode] .material-switch { @apply tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .material-content { flex: 1; @apply tw:min-h-0 tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-gutter: stable; }
   /* Scene filters stay above the results. Only windows too short for the filters
      and 120px of results need the material-content fallback scrollbar. */
-  .pb.journal-workspace[data-director-mode="pro"] .material-content:has(> #stepScene > .scene-list) { @apply tw:flex tw:flex-col; }
-  .pb.journal-workspace[data-director-mode="pro"] #stepScene:has(> .scene-list) { @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode="pro"] #stepScene > :not(.scene-list) { @apply tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode="pro"] #stepScene > .scene-list { flex: 1; @apply tw:min-h-[120px]; scrollbar-gutter: stable; }
-  .pb.journal-workspace[data-director-mode="pro"] #stepScene > .scene-list > * { @apply tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .material-content:has(> #stepScene > .scene-list) { @apply tw:flex tw:flex-col; }
+  .pb.journal-workspace[data-director-mode] #stepScene:has(> .scene-list) { @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
+  .pb.journal-workspace[data-director-mode] #stepScene > :not(.scene-list) { @apply tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] #stepScene > .scene-list { flex: 1; @apply tw:min-h-[120px]; scrollbar-gutter: stable; }
+  .pb.journal-workspace[data-director-mode] #stepScene > .scene-list > * { @apply tw:shrink-0; }
 }
 @media (max-width: 900px) {
   .pb.journal-workspace .material-content { @apply tw:max-h-[420px] tw:overflow-y-auto; }

@@ -218,7 +218,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 }
 .anima-result { @apply tw:mt-[8px] }
 .anima-result img { @apply tw:max-w-full tw:rounded-lg; border: 1px solid var(--border-soft) }
-.anima-parameter-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); }
+.anima-parameter-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
 .anima-field { @apply tw:grid; align-content: start; @apply tw:gap-s-2 tw:min-w-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); }
 .anima-field label { @apply tw:text-secondary tw:text-label-xs; }
 .anima-field .anima-num { @apply tw:w-full tw:min-w-0 tw:min-h-[40px] tw:box-border; font-variant-numeric: tabular-nums; background: var(--bg-surface); }

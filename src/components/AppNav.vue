@@ -43,25 +43,21 @@
         </div>
 
 
-        <!--
-          全局搜索的可见入口（2026-08-30 UX 审计 P1）：搜索覆盖 15 个页面 +
-          场景 + 作品，但此前只有 Ctrl/Cmd+K 与 `/` 两个键盘入口，纯鼠标流
-          用户永远发现不了这个最强的捷径。
-          按钮只有图标没有可见文字，所以 aria-label 是必需的（无可见文字时
-          不存在 SC 2.5.3 的「标签覆盖可见文字」问题）；快捷键提示放 title。
-        -->
-        <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
-          <button
-            type="button"
-            class="nav-search tw:grid tw:w-[40px] tw:h-[40px] tw:p-0 tw:text-muted tw:cursor-pointer"
-            aria-label="搜索页面、场景与作品"
-            @click="openSearch"
-          ><ArchiveIcon name="search" /></button>
-        </StudioTooltip>
-
-        <TaskCenterButton />
-        <AppThemeToggle />
-        <AppSoundToggle />
+        <!-- 工具保留独立 Tab 焦点；搜索快捷键同时在悬停提示中可见。 -->
+        <div class="nav-utilities" role="group" aria-label="工作台工具">
+          <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
+            <button
+              type="button"
+              class="nav-search tw:cursor-pointer"
+              aria-label="搜索页面、场景与作品"
+              @click="openSearch"
+            ><ArchiveIcon name="search" /></button>
+          </StudioTooltip>
+          <TaskCenterButton />
+          <span class="nav-utility-divider" aria-hidden="true"></span>
+          <AppThemeToggle />
+          <AppSoundToggle />
+        </div>
       </div>
 
       <!-- 移动端汉堡 -->
@@ -259,27 +255,43 @@ onUnmounted(() => {
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
 .nav-logo {
-  @apply tw:block tw:h-[32px] tw:w-auto tw:max-w-[190px];
+  @apply tw:block tw:w-auto; height: 2.15rem; max-width: 12.7rem;
 }
 .nav-brand { @apply tw:gap-s-2; }
 @media (max-width: 480px) {
   .nav-logo { @apply tw:h-[28px] tw:max-w-[150px]; }
 }
 
-/* 搜索入口：与音效开关同规格的圆形图标钮，视觉权重低于导航项 */
-.nav-search {
-  place-items: center;
-  border: 1px solid var(--border-soft);
-  border-radius: 50%;
-  background: var(--bg-surface);
-  transition: color var(--motion-hover), border-color var(--motion-hover),
-    background var(--motion-hover), transform var(--motion-hover);
+/* 轻量工具组：统一点击区，用淡色任务签与细分隔区分工作和偏好。 */
+.nav-utilities {
+  @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0;
+  margin-left: var(--s-2);
+  padding-left: var(--s-2);
+  border-left: 1px solid var(--border-soft);
 }
-.nav-search:hover {
-  @apply tw:text-accent;
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
+.nav-utilities :deep(button) {
+  @apply tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:rounded-md tw:text-secondary;
+  height: 2.4rem; min-height: 2.4rem;
+  border: 1px solid transparent;
+  background: transparent;
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+.nav-utilities :deep(.nav-search),
+.nav-utilities :deep(.app-theme-toggle),
+.nav-utilities :deep(.sound-toggle) { width: 2.4rem; @apply tw:p-0; }
+.nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
+.nav-utilities :deep(.task-center-button) {
+  padding: 0 var(--s-3);
   background: var(--accent-soft);
+  @apply tw:text-accent tw:text-label-sm;
 }
-.nav-search:active { transform: scale(.97); }
-.nav-search:focus-visible { outline: none; box-shadow: var(--ring); }
+.nav-utilities :deep(button:hover),
+.nav-utilities :deep(.sound-toggle.active) {
+  background: var(--accent-soft);
+  border-color: var(--border-soft);
+  @apply tw:text-accent;
+}
+.nav-utilities :deep(button:active) { transform: scale(.96); }
+.nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; }
+.nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 </style>

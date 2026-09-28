@@ -36,9 +36,9 @@
   .pb .panel-title .aic-icon, .pb .director-card-name .aic-icon { @apply tw:text-accent tw:text-body-lg; }
 
 /* Shell geometry lives here. Panel styles must not redistribute these columns.
-   Basic mode follows the page; desktop expert mode allocates the viewport once. */
+   Both modes share desktop geometry; only the panel contents change. */
 .pb.journal-workspace {
-  --drawing-navigation-height: 68px;
+  --drawing-navigation-height: var(--app-navigation-height, 80px);
   --drawing-viewport-height: calc(100dvh - var(--desktop-chrome-height, 0px));
   --drawing-sticky-top: calc(var(--drawing-navigation-height) + var(--s-3));
   --drawing-sticky-bottom-gap: 30px;
@@ -64,7 +64,6 @@
   scrollbar-width: thin;
   overscroll-behavior: contain;
 }
-.pb.journal-workspace[data-director-mode="basic"] .director-workspace > .col-left { grid-row: 1 / span 2; }
 .pb.journal-workspace .col-center { grid-area: stage; @apply tw:gap-s-3; }
 .pb.journal-workspace .director-inspector { grid-area: decisions; @apply tw:min-w-0; }
 .pb.journal-workspace #drawing-materials,
@@ -72,42 +71,40 @@
 .pb.journal-workspace #stepResult { scroll-margin-top: calc(var(--drawing-sticky-top) + var(--drawing-anchor-offset)); }
 .pb.journal-workspace .gen-bar { order: 1; top: var(--drawing-sticky-top); }
 
-@media (min-width: 1201px) {
-  .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 330px minmax(0, 1fr); }
-}
 @media (max-width: 900px) {
   /* Match DOM and keyboard order: the single canvas precedes materials on narrow screens. */
   .pb.journal-workspace .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "story" "decisions"; }
   .pb.journal-workspace .col-left { @apply tw:static; max-height: none; @apply tw:overflow-visible; }
-  .pb.journal-workspace[data-director-mode="basic"] .director-workspace > .col-left { grid-row: auto; }
 }
 @media (max-width: 600px) {
   .pb.journal-workspace { @apply tw:p-s-4; }
 }
 @media (min-width: 1024px) {
-  .pb.journal-workspace[data-director-mode="pro"] {
+  .pb.journal-workspace[data-director-mode] {
     height: calc(var(--drawing-viewport-height) - var(--drawing-navigation-height));
     @apply tw:min-h-[520px] tw:flex tw:flex-col tw:max-w-[2000px];
   }
-  .pb.journal-workspace[data-director-mode="pro"] .director-workspace {
+  .pb.journal-workspace[data-director-mode] .director-workspace {
     flex: 1;
     @apply tw:min-h-0;
-    grid-template-columns: clamp(240px, 18vw, 280px) minmax(320px, 1fr) clamp(280px, 24vw, 360px);
+    grid-template-columns: clamp(260px, 18vw, 21rem) minmax(320px, 1fr) clamp(300px, 24vw, 26rem);
     grid-template-areas: "story stage inspector";
     @apply tw:items-stretch;
   }
   /* Rails allocate space only; their content regions own scrolling. */
-  .pb.journal-workspace[data-director-mode="pro"] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
-  .pb.journal-workspace[data-director-mode="pro"] .col-center { @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .director-inspector { grid-area: inspector; @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .stage-slot { flex: 1; @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .gen-bar { @apply tw:static tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode="pro"] .outfit-override-note { @apply tw:shrink-0; }
-}
-@media (min-width: 1920px) {
-  html.aics-desktop-shell .pb.journal-workspace[data-director-mode="pro"] { max-width: none; padding-inline: var(--s-6); }
-  html.aics-desktop-shell .pb.journal-workspace[data-director-mode="pro"]:where(:not(.focus-mode)) .director-workspace { grid-template-columns: clamp(300px, 14vw, 340px) minmax(320px, 1fr) clamp(360px, 16vw, 400px); @apply tw:gap-s-5; }
-  html.aics-desktop-shell body:has(.pb[data-director-mode="pro"]) .nav-inner { max-width: none; padding-inline: var(--s-6); }
+  .pb.journal-workspace[data-director-mode] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
+  .pb.journal-workspace[data-director-mode] .col-center { @apply tw:min-h-0; }
+  .pb.journal-workspace[data-director-mode] .director-inspector { grid-area: inspector; @apply tw:min-h-0; }
+  /* 画布和候选架共用有限槽位；内容增高时在槽内滚动，不能溢出盖住出图条和页脚。 */
+  .pb.journal-workspace[data-director-mode] .stage-slot {
+    flex: 1;
+    @apply tw:min-h-0 tw:overflow-y-auto;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    overscroll-behavior-y: contain;
+  }
+  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
 }
 .pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }

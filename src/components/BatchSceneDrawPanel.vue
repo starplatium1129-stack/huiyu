@@ -2,7 +2,7 @@
   <Teleport to="body">
     <FluidTransition>
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
-      <section ref="panel" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
+      <section ref="panel" v-content-motion="batchMode" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
           <div>
             <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>

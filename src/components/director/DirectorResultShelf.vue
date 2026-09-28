@@ -32,7 +32,7 @@ async function saveCandidate() {
 
 <template>
   <section class="result-shelf tw:mt-s-3 tw:min-w-0 tw:rounded-lg tw:p-s-3" aria-label="结果选片" @keydown.esc.stop="returnToCurrent">
-    <div v-if="selected" class="shelf-preview tw:pb-s-3 tw:mb-s-3">
+    <div v-if="selected" v-content-motion="selectedKey" class="shelf-preview tw:pb-s-3 tw:mb-s-3">
       <header><div><small>{{ selected.kind === 'history' ? '历史作品预览' : '候选预览' }}</small><h3>{{ selected.title }}</h3></div><button class="btn btn-ghost" type="button" @click="returnToCurrent"><ArchiveIcon name="close" />返回当前画布</button></header>
       <p v-if="loading" class="shelf-state tw:min-h-[220px] tw:grid tw:text-secondary" role="status">正在读取原图…</p>
       <div v-else-if="error" class="shelf-state tw:min-h-[220px] tw:grid tw:text-secondary" role="alert"><p>{{ error }}</p><button class="btn btn-ghost" type="button" @click="retry++">重新读取</button></div>
@@ -47,7 +47,7 @@ async function saveCandidate() {
       <p class="shelf-note">仅预览图片，当前创作参数保持不变。</p>
     </div>
     <header class="shelf-heading"><div class="shelf-tabs tw:relative tw:isolate tw:flex tw:p-s-1 tw:rounded-md" role="group" aria-label="结果来源"><AnimatedSelection /><button type="button" :aria-pressed="category === 'candidates'" @click="category = 'candidates'">候选成片</button><button type="button" :aria-pressed="category === 'history'" @click="category = 'history'">最近作品</button></div><RouterLink to="/gallery">打开作品册</RouterLink></header>
-    <div class="shelf-strip tw:flex tw:gap-s-2 tw:overflow-x-auto" role="group" aria-label="选择预览图片">
+    <div v-content-motion="category" class="shelf-strip tw:flex tw:gap-s-2 tw:overflow-x-auto" role="group" aria-label="选择预览图片">
       <button ref="returnButton" type="button" class="shelf-thumb tw:min-w-0 tw:p-s-1 tw:rounded-md tw:text-primary tw:cursor-pointer" :aria-pressed="!selected" aria-label="当前画布" @click="selectedKey = ''"><span class="shelf-picture tw:grid tw:h-[74px] tw:overflow-hidden tw:rounded-sm tw:text-secondary"><RuntimeImage v-if="currentUrl" :src="currentUrl" alt="当前成片" /><ArchiveIcon v-else name="image" /></span><strong>当前画布</strong></button>
       <button v-for="item in items" :key="item.key" type="button" class="shelf-thumb tw:min-w-0 tw:p-s-1 tw:rounded-md tw:text-primary tw:cursor-pointer" :aria-pressed="selectedKey === item.key" :aria-label="`预览：${item.title}`" @click="selectedKey = item.key"><span class="shelf-picture tw:grid tw:h-[74px] tw:overflow-hidden tw:rounded-sm tw:text-secondary"><RuntimeImage :src="thumbnails[item.key]" :alt="item.title"><template #fallback><ArchiveIcon name="image" /></template></RuntimeImage></span><strong>{{ item.title }}</strong></button>
     </div>

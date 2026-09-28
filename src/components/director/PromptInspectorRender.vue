@@ -12,7 +12,7 @@
     />
           </details>
         <!-- Result panel -->
-        <div class="result-frame step-panel" id="stepResult">
+        <div v-content-motion="drawEngine" class="result-frame step-panel" id="stepResult">
           <div class="panel-title">引擎与输出</div>
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">

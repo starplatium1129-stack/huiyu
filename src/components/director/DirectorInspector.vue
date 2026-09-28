@@ -1,5 +1,5 @@
 <template>
-  <StudioTabs v-model="active" :tabs="tabs" :stacked="!expert" as="aside" id-prefix="inspector"
+  <StudioTabs v-content-motion="expert ? 'pro' : 'basic'" v-model="active" :tabs="tabs" :stacked="!expert" as="aside" id-prefix="inspector"
     class="director-inspector" aria-label="创作参数" label="参数分类"
     list-class="inspector-tabs" content-class="inspector-scroll" panel-class="inspector-section">
     <template #heading><div class="inspector-heading"><strong>创作参数</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div></template>

@@ -130,7 +130,7 @@
           </button>
         </div>
 
-        <div v-if="activeOutfit" class="char-reference-grid">
+        <div v-if="activeOutfit" class="char-reference-grid" v-content-motion="activeOutfit.outfitId">
           <div
             v-for="(refItem, idx) in activeOutfit.references"
             :key="refItem.id"

@@ -140,7 +140,7 @@
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div v-else class="scene-grid stagger-container">
+    <div v-else v-content-motion="`${activeTheme}:${fTier}:${sortBy}:${showHidden}`" class="scene-grid stagger-container">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
           class="stagger-item"
           :class="flashId === s.id ? 'scene-flash' : ''" :data-scene-id="s.id">
@@ -160,7 +160,8 @@
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
             </div>
-            <details class="ex-more"><summary>镜头与更多</summary>
+            <details class="ex-more" @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
+              <DeferredPanel :active="openedDetails.has(s2.id)">
               <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
               <div class="ex-decision">
                 <span>镜头 <strong>{{ dv(s2).shot }}</strong></span>
@@ -175,6 +176,7 @@
                 <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }"
                   type="button" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /> {{ favs.has(s2.id) ? '已收' : '收藏' }}</button>
               </div>
+              </DeferredPanel>
             </details>
           </template>
       </SceneCard>
@@ -217,6 +219,11 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { ref, reactive, watch } from 'vue'
+import DeferredPanel from '@/components/director/DeferredPanel.vue'
+const openedDetails = reactive(new Set<string>())
+function rememberDetails(id: string, event: Event) {
+  if ((event.target as HTMLDetailsElement).open) openedDetails.add(id)
+}
 const searchInput = ref<HTMLInputElement | null>(null)
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'

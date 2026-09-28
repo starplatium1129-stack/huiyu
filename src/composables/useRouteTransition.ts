@@ -58,6 +58,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     // A same-page/query refresh does not replay motion. Returning to a cached page
     // gets only a short opacity settle: no remount, translation or scroll reset.
     if (restored || (cachedActivation && !crossRoute) || prefersReducedMotion() || typeof el.animate !== 'function') {
+      delete el.dataset.routeEntering
       if (path) markUiFluidityForPath(path, 'settled')
       done()
       return
@@ -67,6 +68,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const finish = () => {
       if (finished) return
       finished = true
+      delete el.dataset.routeEntering
       active.delete(el)
       if (animation) {
         animation.onfinish = null
@@ -82,32 +84,32 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       done()
     }
     const archive = archivePair(departingPath, pathname(path))
-    const offset = pathname(path) === '/character' ? 16 : -16
+    const offset = pathname(path) === '/character' ? 8 : -8
     let frames: Keyframe[] = [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }]
-    let duration = 220
+    let duration = 180
     let easing = 'cubic-bezier(.22, 1, .36, 1)'
 
     if (crossRoute) {
-      const slideOffset = getRouteDirection(departingPath, pathname(path)) * 18
+      const slideOffset = getRouteDirection(departingPath, pathname(path)) * 10
       // A restrained depth hand-off: no blur animation, overshoot, layout work or
       // persistent fill. Cancel at settlement so fixed descendants regain their viewport.
       frames = [
-        { opacity: 0, transform: `translateX(${slideOffset}px) scale(.992)` },
-        { opacity: 1, transform: 'translateX(0) scale(1)' },
+        { opacity: 0, transform: `translateX(${slideOffset}px)` },
+        { opacity: 1, transform: 'translateX(0)' },
       ]
-      duration = 320
+      duration = 220
       easing = 'cubic-bezier(.16, 1, .3, 1)'
     } else if (options.initialFade) {
       frames = [{ opacity: 0 }, { opacity: 1 }]
     }
     if (archive) {
       frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
-      duration = 280
+      duration = 200
       easing = 'cubic-bezier(.22, 1, .36, 1)'
     }
     if (cachedActivation) {
       frames = [{ opacity: .88 }, { opacity: 1 }]
-      duration = 150
+      duration = 120
       easing = 'cubic-bezier(.22, 1, .36, 1)'
     }
     try {
@@ -144,14 +146,14 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     }
     const isArchive = archivePair(departingPath, destination)
     const dir = getRouteDirection(departingPath, destination)
-    const leaveOffset = dir * -8
+    const leaveOffset = dir * -4
     const leaveFrames: Keyframe[] = isArchive
       ? [{ opacity: 1 }, { opacity: 0 }]
       : [
-        { opacity: 1, transform: 'translateX(0) scale(1)' },
-        { opacity: 0, transform: `translateX(${leaveOffset}px) scale(.996)` },
+        { opacity: 1, transform: 'translateX(0)' },
+        { opacity: 0, transform: `translateX(${leaveOffset}px)` },
       ]
-    const leaveDuration = isArchive ? 140 : 160
+    const leaveDuration = isArchive ? 100 : 110
     const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.4, 0, 1, 1)'
     try {
       animation = el.animate(leaveFrames, {
@@ -162,7 +164,11 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   }
   function onLeaveCancelled(element: Element) { settle(element as HTMLElement); (element as HTMLElement).inert = false }
   function onEnterCancelled(element: Element) { settle(element as HTMLElement) }
-  function onBeforeEnter(element: Element) { (element as HTMLElement).inert = false }
+  function onBeforeEnter(element: Element) {
+    const el = element as HTMLElement
+    el.inert = false
+    el.dataset.routeEntering = 'true'
+  }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
   let removeMediaListener: (() => void) | undefined
   onMounted(() => {

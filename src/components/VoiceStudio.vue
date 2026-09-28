@@ -17,7 +17,7 @@
         </StudioTooltip>
       </div>
     </div>
-    <div v-show="!collapsed" class="voice-body">
+    <div v-show="!collapsed" v-content-motion="!collapsed" class="voice-body">
         <div class="voice-controls">
           <label class="voice-field">角色
             <StudioSelect v-model="voiceChar" label="角色" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }]" />
