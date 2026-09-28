@@ -18,6 +18,7 @@
 .showcase-viewer:not([open]) { @apply tw:hidden; }
 .showcase-viewer > .viewer-close { @apply tw:absolute tw:top-s-4 tw:right-s-4; z-index:var(--z-raised); }
 .showcase-viewer .viewer-layout {
+  --viewer-frame-radius:var(--r-stage);
   @apply tw:grid;
   grid-template-columns: minmax(0, 1fr) var(--viewer-copy-width);
   /* Fit the frame to the photo, with an independent rail for controls and text.
@@ -28,7 +29,7 @@
   height:min(var(--viewer-height-limit),calc((var(--viewer-width-limit) - var(--viewer-copy-width) - 2 * var(--viewer-art-padding) - 2px) / var(--viewer-image-ratio) + var(--viewer-tools-height) + 2 * var(--viewer-art-padding) + 2px));
   @apply tw:overflow-hidden;
   border: 1px solid color-mix(in srgb, var(--on-art-line) 42%, transparent);
-  @apply tw:rounded-stage;
+  border-radius:var(--viewer-frame-radius);
   /* 查看器永远处于暗色画布，不随浅色主题变亮 */
   background: color-mix(in srgb, var(--art-backdrop) 84%, var(--bg-deep));
   color: var(--on-art-primary);
@@ -43,7 +44,8 @@
 .showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) var(--viewer-tools-height); }
 .showcase-viewer .zoom-viewport { padding:var(--viewer-art-padding); }
 .showcase-viewer .viewer-art .zoom-transform-layer { @apply tw:h-full tw:w-full; }
-.showcase-viewer .viewer-art .zoomable-img { @apply tw:w-full tw:h-full tw:max-h-full; border-radius:var(--r-sm); }
+/* Nested corners share the frame's curvature after subtracting its border and mat. */
+.showcase-viewer .viewer-art .zoomable-img { @apply tw:w-full tw:h-full tw:max-h-full; border-radius:max(0px,calc(var(--viewer-frame-radius) - var(--viewer-art-padding) - 1px)); }
 .showcase-viewer .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:min-w-0; padding:6px var(--s-3); border-top:1px solid var(--on-art-line); background:var(--art-backdrop); cursor:default; }
 .showcase-viewer .zoom-controls { position:static; transform:none; flex:0 0 auto; padding:0; border:0; backdrop-filter:none; }
 /* Controls remain on the same dark art surface in both application themes. */
@@ -98,9 +100,10 @@
 @media (max-width: 768px) {
   .showcase-viewer { @apply tw:p-0; }
   .showcase-viewer .viewer-layout {
+    --viewer-frame-radius:0px;
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 46dvh) minmax(0, 1fr);
-    @apply tw:w-[100vw] tw:h-[100dvh] tw:max-h-[100vh]; border-radius: 0; border: 0;
+    @apply tw:w-[100vw] tw:h-[100dvh] tw:max-h-[100vh]; border: 0;
   }
   .showcase-viewer .viewer-copy { border-left: 0; border-top: 1px solid var(--border-soft); }
 }
