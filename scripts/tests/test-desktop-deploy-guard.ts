@@ -79,7 +79,9 @@ test('resource-only deployment requires matching Rust executable, DLLs and embed
   await fixture(async f=>{
     const stage=path.join(f.root,'stage'),host=path.join(f.root,'candidate-host.exe');
     const put=(file:string,data:string)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,data);};
-    put(host,'host');put(path.join(f.install,'ai-cg-studio-desktop.exe'),'host');
+    const sourceHost='host-prefix\0__TAURI_BUNDLE_TYPE_VAR_UNK\0host-suffix';
+    const nsisHost=sourceHost.replace('_VAR_UNK','_VAR_NSS'),installedHost=path.join(f.install,'ai-cg-studio-desktop.exe');
+    put(host,sourceHost);put(installedHost,nsisHost);
     for(const name of ['huiyu-runtime.exe','native/onnxruntime.dll','native/libvips-42.dll']){put(path.join(stage,name),name);put(path.join(f.install,'gateway',name),name);}
     const script=path.join(f.root,'native-check.ps1');
     fs.writeFileSync(script,"param($Guard,$Stage,$Install,$HostFile)\n$ErrorActionPreference='Stop'\n. $Guard\ntry{Assert-DesktopRuntimeMatches -StageGateway $Stage -InstallDir $Install -HostExecutable $HostFile;exit 0}catch{Write-Output $_.Exception.Message;exit 27}\n");
@@ -89,7 +91,10 @@ test('resource-only deployment requires matching Rust executable, DLLs and embed
       put(path.join(stage,name),'changed');const denied=check();assert.equal(denied.status,27);assert.match(String(denied.stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
       assert.equal(fs.readFileSync(path.join(f.install,'gateway',name),'utf8'),name);put(path.join(stage,name),name);
     }
-    put(host,'changed embedded desktop UI');assert.match(String(check().stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
+    put(host,sourceHost+'changed embedded desktop UI');assert.match(String(check().stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
+    put(host,sourceHost);put(installedHost,sourceHost);assert.match(String(check().stdout),/DESKTOP_FULL_INSTALL_REQUIRED/,'unpatched host is not the NSIS payload');
+    put(installedHost,nsisHost+'tampered');assert.match(String(check().stdout),/DESKTOP_FULL_INSTALL_REQUIRED/,'only the exact bundle marker transformation is allowed');
+    put(host,sourceHost+'__TAURI_BUNDLE_TYPE_VAR_UNK');assert.match(String(check().stdout),/DESKTOP_BUNDLE_MARKER_INVALID/,'ambiguous source markers cannot be accepted');
   });
 });
 

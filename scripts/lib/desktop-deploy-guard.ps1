@@ -149,10 +149,31 @@ function Get-DesktopFileSha256 {
   } finally { $stream.Dispose() }
 }
 
+# Tauri 2.12 stamps the NSIS copy with NSS, then restores the build EXE to UNK.
+# Derive that single documented transformation from the bound source bytes;
+# the installed image still has to match its full SHA-256, with no other edits.
+# Retire this derivation when the build receipt binds the packaged host directly.
+# https://github.com/tauri-apps/tauri/blob/tauri-cli-v2.12.0/crates/tauri-bundler/src/bundle.rs
+function Get-DesktopNsisHostSha256 {
+  param([string]$Path)
+  $bytes = [IO.File]::ReadAllBytes($Path)
+  $marker = '__TAURI_BUNDLE_TYPE_VAR_UNK'
+  $text = [Text.Encoding]::ASCII.GetString($bytes)
+  $offset = $text.IndexOf($marker, [StringComparison]::Ordinal)
+  if ($offset -lt 0 -or $text.IndexOf($marker, $offset + $marker.Length, [StringComparison]::Ordinal) -ge 0) {
+    throw 'DESKTOP_BUNDLE_MARKER_INVALID: Expected one unpatched Tauri bundle marker; rebuild with the verified NSIS toolchain.'
+  }
+  $replacement = [Text.Encoding]::ASCII.GetBytes('__TAURI_BUNDLE_TYPE_VAR_NSS')
+  [Buffer]::BlockCopy($replacement, 0, $bytes, $offset, $replacement.Length)
+  $algorithm = [Security.Cryptography.SHA256]::Create()
+  try { return [BitConverter]::ToString($algorithm.ComputeHash($bytes)).Replace('-', '') }
+  finally { $algorithm.Dispose() }
+}
+
 function Assert-DesktopRuntimeMatches {
   param([string]$StageGateway, [string]$InstallDir, [string]$HostExecutable)
   $pairs = @(
-    @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe') },
+    @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe'); NsisHost = $true },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'huiyu-runtime.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\huiyu-runtime.exe') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\onnxruntime.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\onnxruntime.dll') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\libvips-42.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\libvips-42.dll') }
@@ -160,6 +181,7 @@ function Assert-DesktopRuntimeMatches {
   foreach ($pair in $pairs) {
     if (-not (Test-Path -LiteralPath $pair.Source -PathType Leaf) -or -not (Test-Path -LiteralPath $pair.Target -PathType Leaf)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: Rust runtime/native dependency missing; use -UseInstaller.' }
     if ((Get-Item -LiteralPath $pair.Source).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'DESKTOP_LINK_UNSUPPORTED' }
-    if ((Get-DesktopFileSha256 -Path $pair.Source) -ne (Get-DesktopFileSha256 -Path $pair.Target)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: executable or DLL differs; use -UseInstaller.' }
+    $expected = if ($pair.NsisHost) { Get-DesktopNsisHostSha256 -Path $pair.Source } else { Get-DesktopFileSha256 -Path $pair.Source }
+    if ($expected -ne (Get-DesktopFileSha256 -Path $pair.Target)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: executable or DLL differs; use -UseInstaller.' }
   }
 }
