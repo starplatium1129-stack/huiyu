@@ -27,3 +27,18 @@
 全局 `test:style-debt` 仍报告本批之前已存在的两项：`PromptBuilderView.vue` 的主题样式载体识别和 `GeneratedSceneDialog.vue` 的 `--fs-sm` 令牌。本批没有修改这两个文件，也未放宽门禁；其余样式子检查单独执行通过。
 
 原始截图、几何测量、请求及日志留在被忽略的 `runtime/showcase-image-layout-2026-09-28/`，不入 Git。所有画幅检查均明确使用实际 CSS 视口；没有通过只改变 DPR 冒充分辨率验收。本轮没有修改样张文件、提示词或调用真实模型。实际安装身份以[项目状态](../../project-status.md)为准。
+
+## 桌面同步
+
+`main@594fd6447481b690dbf625ccf5df95f8246c8f8c` 已通过 `desktop:package-local` 完整打包，并以 `deploy-desktop.bat -UseInstaller -QuietInstall -InstallerPath <本次绑定安装包> -InstallDir D:/AI-CG-Studio` 完整安装。UAC 经用户确认，退出码为 0，版本仍为 1.7.2。
+
+2026-09-28 18:23（Asia/Shanghai）再次核对：维护认证状态 ready，宿主 PID 29868，所属 Rust PID 9356，活动 workspace owner 与该 Rust 实例一致。主程序、Rust 后端及两份原生 DLL 均匹配绑定候选，宿主使用既有精确 NSIS 标记变换核验。
+
+| 身份 | SHA-256 |
+| --- | --- |
+| 源码快照 | `b302af18d3ee0feb304a4883ccd1fe013a48a5e583034e7aa7a47a0ba74137aa` |
+| 构建快照 | `62354c0908f7d742c210c5954190d8438149d0d07c135390b7459caa04828752` |
+| 安装包（577,647,664 字节） | `3ac0322fb70c13dc6ad3ab753120c6fa77b3542cd335c28096bfd636f8a45c2e` |
+| 已安装宿主 | `5015aac4d074a63ae790a203a6456ab97d25862c3697ef659af9c5ebf4281378` |
+
+本次仅更新本机安装，没有发布 Release。安装与启动通过不替代原生窗口、多屏及真实模型验收；原始部署记录与校验 JSON 同样留在上面的 `runtime/` 目录。
