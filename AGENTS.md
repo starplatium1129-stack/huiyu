@@ -9,6 +9,12 @@
 - 只读取影响本次决策的资料。涉及服务/数据边界查 [工程契约](docs/engineering-contracts.md)，寻找命令或准备构建/部署查 [工作流](docs/workflow.md)；复用已读上下文。文档条款导致暂停时指出文件与原文，区分真实要求和自己的推断。
 - 独立模块、分批内容或审查可在明显提效时委派，交代目标、文件/ID 边界和验收标准；主会话继续其他工作并复核产物。小改动和强依赖步骤直接处理。
 
+## 目标平台与体验优先级
+
+- 桌面客户端是用户的主要使用方式，设计、交互、性能优化与验收优先保障桌面端，同时支持桌面浏览器中的网页端。
+- 移动端（手机、平板）不在当前适配范围；除非用户明确要求，不新增移动端专用布局或交互，也不默认开展移动端测试和视觉审计。既有移动端断点、用例和历史报告不构成新增适配要求。
+- 布局验收重点是桌面窗口大小（含分屏和较窄窗口）、系统 DPI/显示缩放、键鼠操作及二级菜单和弹层的可达性；深浅主题与 WCAG AA 要求继续执行。
+
 ## Skills 适用与维护
 
 - 图像提示词创作/编译一致性用 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)；UI、普通档案文字和代码任务不因涉及角色就加载它。本机可选的 apple-design 仅辅助相关设计，不要求重做页面或安装动画库。
@@ -26,7 +32,7 @@
 - 批量内容逐条真实重写；必须通过 `node scripts/tests/test-prompt-rewrite-integrity.js --delivery <文件>`，不得用模板、追加词条或虚报覆盖率交付。
 - `data/prompt-pinned-scenes.json` 的 prompt/negative/animaCaption/recommendedSize/rating/mature 为字节级保护基线，批量任务跳过。单条改动须先真实出图，再 `npm run scenes:pin-capture`，提交说明附证据。
 - 高频动画只用 transform/opacity；例外必须写 `/* compositor-exempt: 理由 */` 并评审基线。新增或修改图标使用 `ArchiveIcon.vue` 的手绘线条 SVG，不使用 Emoji 或实心图标。
-- 当前支持深浅主题，新增/修改 UI 均需两种主题视觉审查、WCAG AA 对比度与扫光不压字。禁用文字用 `--text-disabled`，不得 opacity 压字。check-contrast 覆盖双主题全局令牌与角色强调色；组件动态样式、图片叠字和实际布局仍需浏览器视觉验收。
+- 当前支持深浅主题，新增/修改 UI 均需两种主题视觉审查、WCAG AA 对比度与扫光不压字。禁用文字用 `--text-disabled`，不得 opacity 压字。check-contrast 覆盖双主题全局令牌与角色强调色；组件动态样式、图片叠字和实际布局仍需在桌面客户端或桌面浏览器中做视觉验收。
 - 保持本机/远程分级边界：`adultEnabled = isLocalStudioHost()`；远程、隧道、未知或未授权状态 fail-closed，保留拒绝与模糊遮罩。分级字段约定见 [内容与接入契约](docs/engineering-contracts.md#角色接入)。
 - `assets/character-references/` 不入 Git；参考权威源为 `data/references/` 分片，运行时经 `/api/character-reference-profile/:id` 按人物懒加载；两个旧参考 JSON 仅为兼容聚合。pending 占位不能计为已交付资产。
 - 单体有效行数上限 500；存量豁免只降不升，门禁为 `test-monolith-budget.js`，基线为 `scripts/tests/monolith-baseline.json`。
