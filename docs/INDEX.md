@@ -35,6 +35,8 @@
 
 该批优化的落地与 4K / 2K / 1080p 验收见 [桌面体验优化实施记录（2026-09-28）](audits/2026-09-28/desktop-experience-implementation.md)，包含缩放视口、图库焦点回归及安装边界。
 
+该批主线的本机完整安装见 [桌面安装与构建修复（2026-09-28）](audits/2026-09-28/desktop-installation.md)，记录 `a520afc8` 的安装包绑定、角色主题按需加载和安装后运行核验。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯

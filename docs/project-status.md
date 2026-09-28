@@ -1,21 +1,21 @@
 # 项目状态
 
-> 核对日期：2026-09-28；仓库版本 1.7.2。本轮更新 Rust 迁移状态，数据规模仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
+> 核对日期：2026-09-28；仓库版本 1.7.2。本轮更新桌面布局优化后的完整安装状态，数据规模仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前 main | PR #11 的 Node → Rust 迁移已合并；前端/桌面壳保留，旧 Node 对照源码尚未删除 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)；合并提交 `f05f8724` |
-| 最近本机安装 | `main@42041f46` 的 Rust 版 1.7.2 已完整安装并启动；宿主、Rust 子进程、原生 DLL、认证健康状态及现有 workspace owner 已核对 | [本次安装证据](evidence/rust-installation-2026-09-28.json)；此前内存/设备测量仍见 [9 月 27 日记录](evidence/memory-optimization-2026-09-27.json)，不自动沿用于新后端 |
+| 当前 main | Rust 迁移、桌面布局统一及维护改进已合并；`a520afc8` 增加角色主题按需加载，修复工作台构建体积超限 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[桌面体验实施](audits/2026-09-28/desktop-experience-implementation.md)、[安装与构建修复](audits/2026-09-28/desktop-installation.md) |
+| 最近本机安装 | `main@a520afc8` 的 1.7.2 已完整安装并启动；宿主、所属 Rust 子进程、原生 DLL、认证健康状态及现有 workspace owner 已核对 | [本次安装记录](audits/2026-09-28/desktop-installation.md)；此前 [Rust 首次安装](evidence/rust-installation-2026-09-28.json)与[内存/设备测量](evidence/memory-optimization-2026-09-27.json)仍绑定各自构建 |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
-源码、构建、安装和设备验收分别核对。本次经用户授权使用 `deploy-desktop.bat` 完整安装到 `D:/AI-CG-Studio`；UAC 已由用户确认，未主动调用真实模型。首次校验发现 Tauri 的三字节 NSIS 标记差异，修复精确校验后重建并安装成功；后续代码变化不自动获得本次通过结论。
+源码、构建、安装和设备验收分别核对。本次经用户授权使用 `deploy-desktop.bat` 完整安装到 `D:/AI-CG-Studio`；UAC 已由用户确认，未主动调用真实模型。当前安装已包含桌面布局和主题加载优化；完整安装退出码为 0，安装后再次验证状态为 ready。实际 Windows DPI、多屏、原生窗口外观和真实模型仍单列验收；后续代码变化不自动获得本次通过结论。
 
 本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据。Windows/Linux release、Linux Rust 检查、7 项工作区一致性、图库/控制台双主题及默认 Rust 测试栈的五条主流程通过；本机安装与启动核验已完成。旧 Node 单元/契约仅证明旧实现；总门禁仍有继承的 title 36/35 失败，不能标为全绿。真实模型、完整设备/资料验收及原生发行材料仍未完成，`releaseReady=false`。旧安装遗留 Node 程序文件保留，但当前宿主只启动 Rust 网关。
 
-当前工作区已接入 Tailwind CSS 4.3.3，迁移常规组件/页面样式并保留原有深浅主题、Reka 交互及定制视觉；Firefox 最低版本经确认调整为 128。Web/desktop UI 构建及浏览器验收见 [迁移记录](audits/2026-09-27/tailwind-migration.md)，完整门禁仍有记录中的既有环境/基线失败，本轮未同步正式桌面安装。
+当前工作区已接入 Tailwind CSS 4.3.3，迁移常规组件/页面样式并保留原有深浅主题、Reka 交互及定制视觉；Firefox 最低版本经确认调整为 128。Web/desktop UI 构建及浏览器验收见 [迁移记录](audits/2026-09-27/tailwind-migration.md)，完整门禁仍有记录中的既有环境/基线失败；上述实现已随本次完整安装更新。
 
 ## 现行能力与边界
 
