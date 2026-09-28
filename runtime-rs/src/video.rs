@@ -2,7 +2,6 @@ mod ai;
 mod batch;
 mod batch_input;
 mod catalog;
-mod download;
 mod http;
 mod inputs;
 mod prose;
@@ -16,18 +15,15 @@ mod workflow;
 
 use crate::{
     error::{ApiError, Result},
-    generation::{self, ExecutionHooks, Observation, Output},
+    execution::{ExecutionHooks, Observation, Output},
+    generation,
     upstream::LocalUpstream,
 };
 pub use batch::BatchPrepared;
 pub use generation::Config;
 use serde_json::{Value, json};
 pub use service::{Prepared, Service};
-use std::{
-    path::{Path, PathBuf},
-    sync::Arc,
-    time::Duration,
-};
+use std::{path::PathBuf, sync::Arc, time::Duration};
 use tokio_util::sync::CancellationToken;
 pub use transcode::Transcoder;
 pub type VideoService = Service;
@@ -39,7 +35,6 @@ pub fn router(service: Arc<Service>) -> axum::Router<crate::AppState> {
 }
 pub use batch_input::validate_batch;
 pub use catalog::catalog;
-pub(crate) use download::materialize;
 pub use validation::{fit_canvas, validate};
 pub use workflow::build as build_workflow;
 fn error(status: u16, code: &str, message: impl Into<String>) -> ApiError {

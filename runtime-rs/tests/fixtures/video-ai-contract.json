@@ -1,0 +1,511 @@
+{
+  "sourceCommit": "3ede6dff255e6c353afbc07459cb647547f9d32c",
+  "cases": [
+    {
+      "action": "rewrite",
+      "input": {
+        "prompt": "A neutral figure walks through a room.",
+        "shotSize": "medium",
+        "camera": "still",
+        "motion": "natural",
+        "dialogue": "你好",
+        "identity": "silver hair"
+      },
+      "parsed": {
+        "prompt": " A person opens the door. ",
+        "shotSize": "closeup",
+        "camera": "invalid",
+        "motion": " expressive ",
+        "dialogue": "好"
+      },
+      "validation": {
+        "value": {
+          "prompt": "A neutral figure walks through a room.",
+          "identity": "silver hair",
+          "shotSize": "medium",
+          "camera": "still",
+          "motion": "natural",
+          "dialogue": "你好"
+        }
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an expert anime storyboard director and cinematic prompt engineer.\nThe video model (MiniMax H3) is a natural-language model driven by initial frames and Ref2VA character reference sheets,\nso the shot description must describe what HAPPENS in the shot (dynamic actions, expressive gestures, camera trajectory, atmospheric motion), not static pixel details.\n\nRewrite the given prompt into a cinematic video shot description and reply with ONLY a JSON object\nwith exactly these keys: \"prompt\", \"shotSize\", \"camera\", \"motion\", \"dialogue\".\nNo markdown, no code fences, no commentary, no extra text outside the JSON object.\n\n\"prompt\": 1-3 concise English sentences about the dynamic subject action, camera movement, and time progression of the shot.\nWhen multiple characters are referenced in the identity anchor (e.g. Character 1 and Character 2), clearly distinguish who performs which action or interaction.\nKeep the subject, outfit, scene, and lighting consistent with the input. Do not restate static identity tokens that reference sheets already lock.\nDo not describe composition details that the reference images already define. Focus on cinematic movement, expression transition, and atmospheric motion.\n\"shotSize\": \"wide\", \"medium\", \"closeup\", or null.\n\"camera\": \"still\", \"push\", \"pull\", \"pan\", or \"orbit\" - camera movement only when it serves the action, otherwise \"still\".\n\"motion\": \"subtle\" (breathing/blinking only), \"natural\" (one clear continuous action), or \"expressive\" (dramatic action).\n\"dialogue\": one short line the subject speaks, matching the scene language (Chinese scene -> Chinese line),\nat most 20 Chinese characters or 60 English characters; use \"\" when the shot needs no speech.\nIf the input already describes motion or camera movement, keep and refine it; never contradict it."
+        },
+        {
+          "role": "user",
+          "content": "Identity anchor (for reference only, do not restate it in the shot description): silver hair\n\nStill-image prompt (what generated the first frame):\nA neutral figure walks through a room.\n\nCurrent shot parameters: shotSize=medium, camera=still, motion=natural, dialogue=你好\n\nRewrite this shot for video:"
+        }
+      ],
+      "cleaned": {
+        "prompt": "A person opens the door.",
+        "shotSize": "closeup",
+        "camera": "still",
+        "motion": "expressive",
+        "dialogue": "好"
+      }
+    },
+    {
+      "action": "rewrite",
+      "input": {
+        "prompt": "test",
+        "unexpected": true
+      },
+      "parsed": {},
+      "validation": {
+        "error": "不支持的参数：unexpected"
+      }
+    },
+    {
+      "action": "polish",
+      "input": {
+        "identity": "fixture",
+        "shots": [
+          {
+            "prompt": "A neutral figure walks through a room.",
+            "shotSize": "medium",
+            "camera": "still",
+            "motion": "natural",
+            "dialogue": "你好"
+          },
+          {
+            "prompt": "A neutral figure walks through a room.",
+            "shotSize": "medium",
+            "camera": "still",
+            "motion": "natural",
+            "dialogue": ""
+          }
+        ]
+      },
+      "parsed": {
+        "shots": [
+          {
+            "index": 0,
+            "shotSize": "wide",
+            "camera": "push",
+            "motion": "natural",
+            "dialogue": ""
+          },
+          {
+            "index": "0",
+            "camera": "orbit",
+            "dialogue": null
+          },
+          {
+            "index": 1,
+            "motion": "bad",
+            "dialogue": 18
+          },
+          {
+            "index": 8,
+            "camera": "pan"
+          }
+        ]
+      },
+      "validation": {
+        "value": {
+          "identity": "fixture",
+          "shots": [
+            {
+              "prompt": "A neutral figure walks through a room.",
+              "shotSize": "medium",
+              "camera": "still",
+              "motion": "natural",
+              "dialogue": "你好"
+            },
+            {
+              "prompt": "A neutral figure walks through a room.",
+              "shotSize": "medium",
+              "camera": "still",
+              "motion": "natural",
+              "dialogue": ""
+            }
+          ]
+        }
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a storyboard rhythm editor for an anime video.\nReview the WHOLE shot list and adjust ONLY the composition choices so the sequence has rhythm and variety.\n\nReply with ONLY a JSON object: {\"shots\":[{\"index\":0,\"shotSize\":null,\"camera\":null,\"motion\":null,\"dialogue\":null}, ...]}\nwith exactly one entry per shot, in the same order. No markdown, no commentary.\n\nRules:\n- Only set a field when you have a concrete reason; null keeps the current value.\n- \"shotSize\": \"wide\" | \"medium\" | \"closeup\" - avoid long runs of the same size; open scenes wide, emotional beats closeup.\n- \"camera\": \"still\" | \"push\" | \"pull\" | \"pan\" | \"orbit\" - avoid every shot being \"still\"; camera movement must serve the action described.\n- \"motion\": \"subtle\" | \"natural\" | \"expressive\" - match the action intensity in the description.\n- \"dialogue\": a short line (at most 20 Chinese characters); thin out dialogue when too many consecutive shots have lines; use \"\" when silence is better.\n- NEVER change the shot description (prompt) itself, NEVER contradict explicit actions in the descriptions, NEVER invent new characters.\n- If the whole list is already well varied, set every field to null (keep all)."
+        },
+        {
+          "role": "user",
+          "content": "Identity anchor (for reference only): fixture\n\nShot list (index | shotSize | camera | motion | dialogue | description):\n1. medium | still | natural | \"你好\" | A neutral figure walks through a room.\n2. medium | still | natural | \"\" | A neutral figure walks through a room.\n\nAdjust the rhythm of this shot list:"
+        }
+      ],
+      "cleaned": [
+        {
+          "shotSize": null,
+          "camera": "orbit",
+          "motion": null,
+          "dialogue": ""
+        },
+        {
+          "shotSize": null,
+          "camera": null,
+          "motion": null,
+          "dialogue": "18"
+        }
+      ]
+    },
+    {
+      "action": "dialogue",
+      "input": {
+        "prompt": "A neutral person waves.",
+        "currentDialogue": "你好",
+        "mood": "calm"
+      },
+      "parsed": {
+        "options": [
+          null,
+          {
+            "text": ""
+          },
+          {
+            "text": " 好呀 ",
+            "label": "温柔"
+          },
+          {
+            "text": "你好",
+            "label": "简洁"
+          },
+          {
+            "text": "来了",
+            "label": "俏皮"
+          },
+          {
+            "text": "fourth"
+          }
+        ]
+      },
+      "validation": {
+        "value": {
+          "prompt": "A neutral person waves.",
+          "identity": "",
+          "currentDialogue": "你好",
+          "mood": "calm"
+        }
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a dialogue writer for an anime video shot.\nWrite short natural spoken lines based on the shot description and character context.\n\nReply with ONLY a JSON object: {\"options\":[{\"text\":\"...\",\"label\":\"...\"}, ...]} with exactly 3 options.\nNo markdown, no commentary.\n\nRules:\n- Each line is at most 20 Chinese characters (or 60 English characters), natural spoken language, matching the scene language (Chinese scene -> Chinese line).\n- The three options must differ in tone: one short and plain, one gentle/emotional, one slightly playful or dramatic.\n- The line must fit the action and emotion of the shot; do not invent off-screen dialogue.\n- \"label\" is a short Chinese tone tag (e.g. \"简洁\", \"温柔\", \"俏皮\").\n- If a current dialogue is provided, the FIRST option must be a polished version of it (keep the meaning), the other two are fresh alternatives.\n- If the shot does not need dialogue, still give 3 short fitting lines - never return empty options."
+        },
+        {
+          "role": "user",
+          "content": "Identity anchor (for reference only): (none)\nShot description: A neutral person waves.\nCurrent dialogue: 你好\nRequested mood: calm\nPolish the current dialogue and give two alternatives:"
+        }
+      ],
+      "cleaned": [
+        {
+          "text": "好呀",
+          "label": "温柔"
+        },
+        {
+          "text": "你好",
+          "label": "简洁"
+        },
+        {
+          "text": "来了",
+          "label": "俏皮"
+        }
+      ]
+    },
+    {
+      "action": "review",
+      "input": {
+        "shots": [
+          {
+            "prompt": "A neutral figure walks through a room.",
+            "shotSize": "medium",
+            "camera": "still",
+            "motion": "natural",
+            "dialogue": "你好"
+          }
+        ]
+      },
+      "parsed": {
+        "issues": [
+          {
+            "index": "0",
+            "severity": "warn",
+            "field": "camera",
+            "message": "test",
+            "suggestion": "fix"
+          },
+          {
+            "index": 1,
+            "severity": "error",
+            "field": "prompt",
+            "message": "out"
+          },
+          {
+            "index": null,
+            "severity": "error",
+            "field": "continuity",
+            "message": " valid "
+          },
+          {
+            "index": 0,
+            "severity": "bad",
+            "field": "prompt",
+            "message": "bad"
+          }
+        ]
+      },
+      "validation": {
+        "value": {
+          "shots": [
+            {
+              "prompt": "A neutral figure walks through a room.",
+              "shotSize": "medium",
+              "camera": "still",
+              "motion": "natural",
+              "dialogue": "你好"
+            }
+          ]
+        }
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a quality inspector for an anime video storyboard.\nReview each shot for problems and reply with ONLY a JSON object:\n{\"issues\":[{\"index\":0,\"severity\":\"warn\",\"field\":\"camera\",\"message\":\"...\",\"suggestion\":\"...\"}]}\nNo markdown, no commentary. Use an empty \"issues\" array when everything is fine.\n\nCheck for:\n1. Description problems: too static (reads like a still image, no action or time flow), too short, or missing camera intent.\n2. Field contradictions: e.g. description says running but motion is \"subtle\"; says close framing but shotSize is \"wide\".\n3. Dialogue problems: longer than 20 Chinese characters, language mismatch (Chinese scene with English line), or too many consecutive shots with dialogue.\n4. Continuity: a shot that clearly jumps in space/time from the previous one without a transition cue.\n\n\"severity\" is \"error\" (must fix) or \"warn\" (should improve).\n\"field\" is one of \"prompt\",\"shotSize\",\"camera\",\"motion\",\"dialogue\",\"continuity\".\n\"message\" is a short Chinese explanation; \"suggestion\" is a concrete fix (max 60 chars each)."
+        },
+        {
+          "role": "user",
+          "content": "Shot list (index | shotSize | camera | motion | dialogue | description):\n1. medium | still | natural | \"你好\" | A neutral figure walks through a room.\n\nInspect this shot list:"
+        }
+      ],
+      "cleaned": [
+        {
+          "index": 0,
+          "severity": "warn",
+          "field": "camera",
+          "message": "test",
+          "suggestion": "fix"
+        },
+        {
+          "index": 0,
+          "severity": "error",
+          "field": "continuity",
+          "message": "valid",
+          "suggestion": ""
+        }
+      ]
+    },
+    {
+      "action": "script",
+      "input": {
+        "story": "A neutral walk through town.",
+        "identity": "fixture",
+        "shotCount": "8",
+        "totalSeconds": 30,
+        "characterLabels": [
+          null,
+          false,
+          4,
+          ""
+        ]
+      },
+      "parsed": {
+        "shots": [
+          {
+            "prompt": " A neutral shot ",
+            "camera": " push ",
+            "motion": "natural",
+            "duration": 8
+          },
+          {
+            "prompt": "second",
+            "shotSize": "wide",
+            "camera": "pan",
+            "duration": "10"
+          }
+        ]
+      },
+      "validation": {
+        "value": {
+          "story": "A neutral walk through town.",
+          "identity": "fixture",
+          "shotCount": 8,
+          "totalSeconds": 30,
+          "characterLabels": [
+            "null",
+            "false",
+            "4"
+          ]
+        }
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a director turning a story synopsis into an anime video shot list.\nReply with ONLY a JSON object:\n{\"shots\":[{\"prompt\":\"...\",\"shotSize\":\"medium\",\"camera\":\"still\",\"motion\":\"natural\",\"dialogue\":\"...\",\"duration\":5}, ...]}\nNo markdown, no commentary.\n\nRules:\n- Split the story into 8-15 shots (fewer for short synopses).\n- \"prompt\": 1-3 English sentences describing what HAPPENS in the shot: subject action, camera intent, time flow. Keep identity, outfit and scene consistent.\n- Use <Picture 1> / <Picture 2> labels when multiple characters are defined and appear in the shot (e.g. \"Nene hands the letter to <Picture 2>.\").\n- \"shotSize\": \"wide\"|\"medium\"|\"closeup\" - vary for rhythm: open scenes wide, emotional beats closeup.\n- \"camera\": \"still\"|\"push\"|\"pull\"|\"pan\"|\"orbit\" - vary; movement must serve the action.\n- \"motion\": \"subtle\"|\"natural\"|\"expressive\" - match action intensity.\n- \"dialogue\": a short line (at most 20 Chinese characters) for shots that need speech; \"\" for silent shots.\n- \"duration\": 3, 5, 10 or 15 seconds - 5s is the default; use 10/15s sparingly for key shots.\n- If a target total duration is given, keep the sum close to it."
+        },
+        {
+          "role": "user",
+          "content": "Identity anchor (for reference only): fixture\nCharacters: <Picture 1> = null; <Picture 2> = false; <Picture 3> = 4\nStory synopsis: A neutral walk through town.\nTarget shot count: 8\nTarget total duration: 30 seconds\n\nCreate the shot list:"
+        }
+      ],
+      "cleaned": [
+        {
+          "prompt": "A neutral shot",
+          "shotSize": null,
+          "camera": "still",
+          "motion": "natural",
+          "dialogue": "",
+          "duration": 5
+        },
+        {
+          "prompt": "second",
+          "shotSize": "wide",
+          "camera": "pan",
+          "motion": "subtle",
+          "dialogue": "",
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "action": "script",
+      "input": {
+        "story": "test",
+        "shotCount": 3
+      },
+      "parsed": {},
+      "validation": {
+        "error": "镜头数需为 4—20 的整数"
+      }
+    }
+  ],
+  "storyboards": [
+    {
+      "blueprint": {
+        "id": "fixture",
+        "title": "Neutral room",
+        "characterId": "fixture",
+        "description": "【小白·测试】在房间里说「你好呀」，然后说「一起走吧」。",
+        "location": "房间",
+        "action": "轻轻挥手",
+        "lighting": "窗光",
+        "mood": "安静",
+        "timeOfDay": "午后",
+        "promptProse": "A neutral room in daylight."
+      },
+      "intent": "",
+      "result": {
+        "title": "Neutral room",
+        "blueprintId": "fixture",
+        "characterId": "fixture",
+        "beats": [
+          "establishing",
+          "interaction",
+          "emotion",
+          "closing"
+        ],
+        "shots": [
+          {
+            "prompt": "房间全景定场。午后，窗光，安静的氛围铺满画面，小白的身影静静出现在场景之中。",
+            "dialogue": null,
+            "shotSize": "wide",
+            "camera": "still",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a wide establishing shot of the full scene."
+          },
+          {
+            "prompt": "小白轻轻挥手。",
+            "dialogue": "你好呀",
+            "shotSize": "medium",
+            "camera": "still",
+            "motion": "natural",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a medium shot centered on her action."
+          },
+          {
+            "prompt": "特写小白的面庞，窗光在她脸上流转，安静的神情渐渐清晰。",
+            "dialogue": "一起走吧",
+            "shotSize": "closeup",
+            "camera": "push",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a close-up portrait of her face."
+          },
+          {
+            "prompt": "镜头缓缓拉远，房间重新展开，午后的光线归于平静，只余安静的余韵。",
+            "dialogue": null,
+            "shotSize": "wide",
+            "camera": "pull",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a wide shot as the scenery opens up."
+          }
+        ]
+      }
+    },
+    {
+      "blueprint": {
+        "id": "fixture",
+        "title": "Neutral room",
+        "characterId": "fixture",
+        "description": "【小白·测试】在房间里说「你好呀」，然后说「一起走吧」。",
+        "location": "房间",
+        "action": "轻轻挥手",
+        "lighting": "窗光",
+        "mood": "安静",
+        "timeOfDay": "午后",
+        "promptProse": "A neutral room in daylight."
+      },
+      "intent": "慢慢转身",
+      "result": {
+        "title": "Neutral room",
+        "blueprintId": "fixture",
+        "characterId": "fixture",
+        "beats": [
+          "establishing",
+          "interaction",
+          "emotion",
+          "closing"
+        ],
+        "shots": [
+          {
+            "prompt": "房间全景定场。午后，窗光，安静的氛围铺满画面，小白的身影静静出现在场景之中。",
+            "dialogue": null,
+            "shotSize": "wide",
+            "camera": "still",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a wide establishing shot of the full scene."
+          },
+          {
+            "prompt": "小白轻轻挥手。镜头跟随她的动作：慢慢转身。",
+            "dialogue": "你好呀",
+            "shotSize": "medium",
+            "camera": "still",
+            "motion": "natural",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a medium shot centered on her action."
+          },
+          {
+            "prompt": "特写小白的面庞，窗光在她脸上流转，安静的神情渐渐清晰，慢慢转身。",
+            "dialogue": "一起走吧",
+            "shotSize": "closeup",
+            "camera": "push",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a close-up portrait of her face."
+          },
+          {
+            "prompt": "镜头缓缓拉远，房间重新展开，午后的光线归于平静，只余安静的余韵。",
+            "dialogue": null,
+            "shotSize": "wide",
+            "camera": "pull",
+            "motion": "subtle",
+            "duration": 3,
+            "firstFramePrompt": "A neutral room in daylight. Framed as a wide shot as the scenery opens up."
+          }
+        ]
+      }
+    }
+  ]
+}

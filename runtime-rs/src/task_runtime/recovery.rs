@@ -17,20 +17,20 @@ impl TaskRuntime {
             .or_insert_with(|| Arc::new(tokio::sync::OnceCell::new()))
             .clone();
         once.get_or_try_init(|| async {
-            let list = storage
-                .request(json!({"kind":"task.list"}), principal)
-                .await?;
+            let list = storage.task(TaskCommand::List, principal).await?;
             for task in list["items"]
                 .as_array()
                 .ok_or_else(|| ApiError::invalid("Invalid task list"))?
             {
-                if task["deliveryState"] == "discarded"
-                    || task["upstreamSettled"] == true
-                        && (task["status"] != "succeeded" || task["resultState"] == "available")
+                let task: TaskRecord = serde_json::from_value(task.clone())?;
+                if task.delivery_state == DeliveryState::Discarded
+                    || task.upstream_settled
+                        && (task.status != TaskStatus::Succeeded
+                            || task.result_state == ResultState::Available)
                 {
                     continue;
                 }
-                let id = text(task, "taskId")?;
+                let id = &task.task_id;
                 self.reconcile(storage, principal, id).await?;
             }
             Ok::<(), ApiError>(())
@@ -62,12 +62,10 @@ impl TaskRuntime {
     async fn follow(self: &Arc<Self>, storage: &Storage, principal: &str, id: &str) {
         loop {
             let observed = self.reconcile_inner(storage, principal, id, false).await;
-            let settled = observed
-                .as_ref()
-                .is_ok_and(|task| task["upstreamSettled"] == true);
-            let stop = observed
-                .as_ref()
-                .map_or(true, |task| settled || task["recoveryState"] == "unknown");
+            let settled = observed.as_ref().is_ok_and(|task| task.upstream_settled);
+            let stop = observed.as_ref().map_or(true, |task| {
+                settled || task.recovery_state == TaskRecoveryState::Unknown
+            });
             if stop {
                 let again = {
                     let mut jobs = self.jobs.lock().unwrap();
@@ -87,7 +85,7 @@ impl TaskRuntime {
             }
             tokio::select! {
                 _=self.shutdown.cancelled()=>{
-                    let _=patch(storage,principal,id,json!({"recoveryState":"unknown","errorCode":"TASK_RUNTIME_INTERRUPTED"})).await;
+                    let _=patch(storage,principal,id,TaskPatch { recovery_state: Some(TaskRecoveryState::Unknown), error_code: Some(Some("TASK_RUNTIME_INTERRUPTED".into())), ..Default::default() }).await;
                     if let Some(job)=self.jobs.lock().unwrap().get_mut(&identity(storage,id)){job.watching=false;}
                     return;
                 },
@@ -99,16 +97,16 @@ impl TaskRuntime {
         self: &Arc<Self>,
         storage: &Storage,
         principal: &str,
-        task: &Value,
+        task: &TaskRecord,
         cancellation: &mut RecoveryState,
-    ) -> Result<crate::generation::Observation> {
-        if task["kind"] != "batch" {
+    ) -> Result<crate::execution::Observation> {
+        if task.kind != TaskKind::Batch {
             return self
                 .provider
-                .recover_task(task, &mut cancellation.single)
+                .recover_task(&serde_json::to_value(task)?, &mut cancellation.single)
                 .await;
         }
-        let id = text(task, "taskId")?;
+        let id = &task.task_id;
         let hooks = Arc::new(hooks::Hooks {
             runtime: Arc::downgrade(self),
             storage: storage.clone(),
@@ -117,9 +115,18 @@ impl TaskRuntime {
         });
         let (observation, checkpoint) = self
             .video()?
-            .recover_batch(task, hooks, &mut cancellation.batch)
+            .recover_batch(&serde_json::to_value(task)?, hooks, &mut cancellation.batch)
             .await?;
-        patch(storage, principal, id, json!({"checkpoint":checkpoint})).await?;
+        patch(
+            storage,
+            principal,
+            id,
+            TaskPatch {
+                checkpoint: Some(Some(checkpoint.clone())),
+                ..Default::default()
+            },
+        )
+        .await?;
         if let Some(job) = checkpoint["gatewayJobId"].as_str() {
             self.register_job(storage, id, job.into());
         }

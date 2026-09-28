@@ -7,6 +7,7 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use huiyu_runtime::{
     generation::{Config, GenerationService},
     storage::Storage,
+    task_contract::{ResultState, TaskStatus},
     task_runtime::TaskRuntime,
     upstream::LocalUpstream,
 };
@@ -119,7 +120,7 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     let completed = tokio::time::timeout(Duration::from_secs(5), async {
         loop {
             let task = TaskRuntime::get(&storage, "alice", id).await.unwrap();
-            if task["upstreamSettled"] == true {
+            if task.upstream_settled {
                 break task;
             }
             tokio::time::sleep(Duration::from_millis(20)).await;
@@ -127,10 +128,10 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     })
     .await
     .unwrap();
-    assert_eq!(completed["status"], "succeeded");
-    assert_eq!(completed["resultState"], "available");
+    assert_eq!(completed.status, TaskStatus::Succeeded);
+    assert_eq!(completed.result_state, ResultState::Available);
     let media = storage
-        .media(completed["resultRefs"][0]["alias"].as_str().unwrap())
+        .media(&completed.result_refs[0].alias)
         .await
         .unwrap();
     assert_eq!(std::fs::read(media.path).unwrap(),STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap());
@@ -148,22 +149,25 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     .await
     .unwrap();
     assert_eq!(
-        TaskRuntime::get(&reopened, "alice", id).await.unwrap()["resultState"],
-        "available"
+        TaskRuntime::get(&reopened, "alice", id)
+            .await
+            .unwrap()
+            .result_state,
+        ResultState::Available
     );
     assert!(TaskRuntime::get(&reopened, "bob", id).await.is_err());
     let mut queued = completed.clone();
-    queued["taskId"] = json!("queued-before-restart");
-    queued["requestKey"] = json!("queued-before-restart");
-    queued["requestFingerprint"] = json!("queued-before-restart");
-    queued["status"] = json!("queued");
-    queued["upstreamSettled"] = json!(false);
-    queued["submissionIntentAt"] = Value::Null;
-    queued["submissionObservedAt"] = Value::Null;
-    queued["resultState"] = json!("none");
-    queued["resultRefs"] = json!([]);
-    queued["metadata"] = json!({});
-    queued["checkpoint"] = Value::Null;
+    queued.task_id = "queued-before-restart".into();
+    queued.request_key = "queued-before-restart".into();
+    queued.request_fingerprint = "queued-before-restart".into();
+    queued.status = TaskStatus::Queued;
+    queued.upstream_settled = false;
+    queued.submission_intent_at = None;
+    queued.submission_observed_at = None;
+    queued.result_state = ResultState::None;
+    queued.result_refs.clear();
+    queued.metadata.clear();
+    queued.checkpoint = None;
     reopened
         .request(json!({"kind":"task.accept","record":queued}), "alice")
         .await
@@ -203,8 +207,8 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
             let task = TaskRuntime::get(&reopened, "alice", "queued-before-restart")
                 .await
                 .unwrap();
-            if task["upstreamSettled"] == true {
-                assert_eq!(task["status"], "succeeded");
+            if task.upstream_settled {
+                assert_eq!(task.status, TaskStatus::Succeeded);
                 break;
             }
             tokio::time::sleep(Duration::from_millis(20)).await;

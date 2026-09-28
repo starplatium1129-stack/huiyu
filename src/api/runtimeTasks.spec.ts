@@ -11,7 +11,7 @@ vi.mock('../platform/desktop/runtime.ts', () => ({
   desktopRuntimeFetch: vi.fn(), onDesktopRuntime: vi.fn(),
 }))
 import { refreshRuntimeTasks, getRuntimeTask } from './runtimeTasks'
-import { taskRecords, runtimeTasks, unresolvedTaskRequests, pendingTaskRequests } from './runtimeTaskState'
+import { taskRecords, runtimeTasks, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
 
 const task = (id: number, revision = 1): TaskRecord => ({
   taskId: String(id), runtimeEpoch: mocks.epoch, revision, createdAt: id,

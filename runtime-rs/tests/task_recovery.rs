@@ -8,6 +8,7 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use huiyu_runtime::{
     generation::{Config, GenerationService},
     storage::Storage,
+    task_contract::{RecoveryState, ResultState, TaskStatus},
     task_runtime::TaskRuntime,
     upstream::LocalUpstream,
 };
@@ -143,14 +144,9 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
     let recovered = TaskRuntime::get(&storage, "alice", "complete")
         .await
         .unwrap();
-    assert_eq!(recovered["status"], "succeeded", "{recovered}");
-    assert_eq!(recovered["resultState"], "available");
-    assert!(
-        storage
-            .media(recovered["resultRefs"][0]["alias"].as_str().unwrap())
-            .await
-            .is_ok()
-    );
+    assert_eq!(recovered.status, TaskStatus::Succeeded, "{recovered:?}");
+    assert_eq!(recovered.result_state, ResultState::Available);
+    assert!(storage.media(&recovered.result_refs[0].alias).await.is_ok());
     seed(&storage, "cancel", &fingerprint, "missing-history", true).await;
     for _ in 0..2 {
         let unresolved = runtime
@@ -185,8 +181,11 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
     let runtime = Arc::new(TaskRuntime::new(provider, None, None, shutdown).unwrap());
     runtime.ensure_recovered(&storage, "alice").await.unwrap();
     assert_eq!(
-        TaskRuntime::get(&storage, "alice", "watch").await.unwrap()["recoveryState"],
-        "unknown"
+        TaskRuntime::get(&storage, "alice", "watch")
+            .await
+            .unwrap()
+            .recovery_state,
+        RecoveryState::Unknown
     );
     mock.online.store(true, Ordering::Relaxed);
     assert_eq!(
@@ -198,8 +197,8 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
     tokio::time::timeout(std::time::Duration::from_secs(5), async {
         loop {
             let task = TaskRuntime::get(&storage, "alice", "watch").await.unwrap();
-            if task["upstreamSettled"] == true {
-                assert_eq!(task["resultState"], "available");
+            if task.upstream_settled {
+                assert_eq!(task.result_state, ResultState::Available);
                 break;
             }
             tokio::time::sleep(std::time::Duration::from_millis(20)).await;

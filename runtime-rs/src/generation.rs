@@ -12,11 +12,13 @@ mod snapshots;
 mod transport;
 mod types;
 mod validation;
+mod video_output;
 mod webui;
 mod workflow;
 
 use crate::{
     error::{ApiError, Result},
+    execution::{ExecutionHooks, Observation, Output},
     upstream::LocalUpstream,
 };
 pub(crate) use http::{RateLimit, limit_request, owner as request_owner};
@@ -34,7 +36,7 @@ use std::{
 };
 use tokio::sync::{Mutex, Notify, OnceCell, OwnedSemaphorePermit, Semaphore};
 use tokio_util::{sync::CancellationToken, task::TaskTracker};
-pub use types::{Config, ExecutionHooks, Input, Observation, Output};
+pub use types::{Config, Input};
 pub use validation::validate;
 pub(crate) use validation::{adult_intent, truthy};
 pub use workflow::build as build_workflow;

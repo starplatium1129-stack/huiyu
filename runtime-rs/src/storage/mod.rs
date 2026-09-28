@@ -38,6 +38,12 @@ pub struct Storage {
     native_images: Option<Arc<PathBuf>>,
 }
 enum Work {
+    Task(
+        crate::task_contract::TaskCommand,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<Value>>,
+    ),
     Request(
         Value,
         String,
@@ -110,6 +116,31 @@ impl Storage {
         let (reply, result) = oneshot::channel();
         self.sender
             .send(Work::Request(
+                command,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| {
+            if mutation {
+                commit_unknown()
+            } else {
+                unavailable()
+            }
+        })?
+    }
+    pub async fn task(
+        &self,
+        command: crate::task_contract::TaskCommand,
+        principal: &str,
+    ) -> Result<Value> {
+        let mutation = !command.is_read();
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::Task(
                 command,
                 principal.into(),
                 cancel.0.clone(),

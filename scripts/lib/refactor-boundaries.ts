@@ -4,6 +4,7 @@ import { isBuiltin } from 'node:module';
 import ts = require('typescript');
 import { parse } from 'vue/compiler-sfc';
 import { sourceDependencies, type SourceDependency } from './source-imports';
+import { inspectRustBoundaries } from './rust-boundaries';
 
 export interface RefactorEdge {
   source: string;
@@ -186,6 +187,7 @@ export function inspectRefactorBoundaries(root: string): RefactorReport {
     }
   };
   for (const file of report.files.filter(file => /^(?:server\.ts|(?:server|routes|services)\/)/.test(file))) visitRuntime(file);
+  inspectRustBoundaries(root, report);
   report.files.sort();
   report.violations = [...new Map(report.violations.map(edge => [refactorEdgeKey(edge), edge])).values()];
   return report;

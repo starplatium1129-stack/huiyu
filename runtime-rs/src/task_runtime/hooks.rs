@@ -1,5 +1,5 @@
 use super::*;
-use crate::generation::{ExecutionHooks, Output};
+use crate::execution::{ExecutionHooks, Output};
 use futures_util::future::BoxFuture;
 use std::sync::Weak;
 
@@ -12,10 +12,11 @@ pub(super) struct Hooks {
 impl ExecutionHooks for Hooks {
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
-            let mut change = json!({"checkpoint":value});
-            if value["effectiveInput"].is_object() {
-                change["input"] = value["effectiveInput"].clone();
-            }
+            let change = TaskPatch {
+                checkpoint: Some(Some(value.clone())),
+                input: value["effectiveInput"].as_object().cloned(),
+                ..Default::default()
+            };
             patch(&self.storage, &self.principal, &self.id, change).await?;
             if let (Some(runtime), Some(job)) =
                 (self.runtime.upgrade(), value["gatewayJobId"].as_str())
@@ -32,10 +33,24 @@ impl ExecutionHooks for Hooks {
             })?;
             runtime.check_running()?;
             let current = TaskRuntime::get(&self.storage, &self.principal, &self.id).await?;
-            if current["cancelRequestedAt"].is_number() {
+            if current.cancel_requested_at.is_some() {
                 return Err(ApiError::new(499, "CANCELLED", "Task was cancelled"));
             }
-            patch(&self.storage,&self.principal,&self.id,json!({"status":"submitting","recoveryState":"normal","errorCode":null,"submissionIntentAt":now(),"provider":provider,"providerFingerprint":runtime.binding(&self.storage)})).await?;
+            patch(
+                &self.storage,
+                &self.principal,
+                &self.id,
+                TaskPatch {
+                    status: Some(TaskStatus::Submitting),
+                    recovery_state: Some(TaskRecoveryState::Normal),
+                    error_code: Some(None),
+                    submission_intent_at: Some(Some(now())),
+                    provider: Some(provider),
+                    provider_fingerprint: Some(runtime.binding(&self.storage)),
+                    ..Default::default()
+                },
+            )
+            .await?;
             runtime.monitor(
                 self.storage.clone(),
                 self.principal.clone(),
@@ -46,7 +61,19 @@ impl ExecutionHooks for Hooks {
     }
     fn observed(&self, id: String, metadata: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
-            patch(&self.storage,&self.principal,&self.id,json!({"upstreamId":id,"submissionObservedAt":now(),"status":"running","metadata":metadata})).await?;
+            patch(
+                &self.storage,
+                &self.principal,
+                &self.id,
+                TaskPatch {
+                    upstream_id: Some(Some(id)),
+                    submission_observed_at: Some(Some(now())),
+                    status: Some(TaskStatus::Running),
+                    metadata: Some(serde_json::from_value(metadata)?),
+                    ..Default::default()
+                },
+            )
+            .await?;
             if let Some(runtime) = self.runtime.upgrade() {
                 runtime.monitor(
                     self.storage.clone(),

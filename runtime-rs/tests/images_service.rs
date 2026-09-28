@@ -7,7 +7,7 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use futures_util::future::BoxFuture;
 use huiyu_runtime::{
     error::Result,
-    generation::{ExecutionHooks, Output},
+    execution::{ExecutionHooks, Output},
     images::{Config, Limits, Service},
     upstream::LocalUpstream,
 };

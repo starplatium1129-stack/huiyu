@@ -1,6 +1,7 @@
 import { apiClient, ApiClientError } from '@/api/client'
 import { runtimeFetch } from '@/platform/runtimeUrl'
-import { hasRuntimeTasks, runtimeRequestKey } from '../../api/runtimeTaskAuthority'
+import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
+import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { TaskRecord } from '../../../types/tasks'
 import { animaRequestPayload, type AnimaPublicJob, type AnimaRequest } from '@/composables/generation/useAnimaSession'
 

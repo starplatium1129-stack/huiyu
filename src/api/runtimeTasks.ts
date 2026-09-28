@@ -1,10 +1,9 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission } from '../../types/tasks'
-import { taskRecords, copyTask, runtimeTasksEnabled, runtimeTaskError, unresolvedTaskRequests as unresolved, pendingTaskRequests } from './runtimeTaskState'
-import { hasRuntimeTasks, runtimeRequestKey } from './runtimeTaskAuthority'
-export { runtimeTasks, runtimeTasksEnabled, runtimeTaskError, runtimeTaskActiveCount, pendingTaskRequests } from './runtimeTaskState'
-export { hasRuntimeTasks, isRuntimeTaskId, runtimeRequestKey } from './runtimeTaskAuthority'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { hasRuntimeTasks } from './runtimeTaskAuthority'
+export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord } from '../../types/tasks'
 
 const base = '/api/tasks/v1'
@@ -17,32 +16,7 @@ function ensureAuthority() {
 export const runtimeResultPath = (task: TaskRecord, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
 export const isRuntimeResultPath = (url: string) => /^\/api\/tasks\/v1\/[\w-]+\/results\/\d+$/.test(url)
 
-function mergeTasks(incoming: readonly TaskRecord[]): void {
-  // Validate the whole response before publishing any partial state. Revisions
-  // identify immutable runtime snapshots; unchanged polling must not clone and
-  // re-sort every task or invalidate all derived UI snapshots every 2.5 seconds.
-  const expected = epoch()
-  if (incoming.some(task => task.runtimeEpoch !== expected)) throw new Error('运行时已更换，请重新读取任务')
-  const records = new Map(taskRecords.value.map(task => [task.taskId, task]))
-  let changed = false
-  for (const task of incoming) {
-    const current = records.get(task.taskId)
-    if (!current || current.runtimeEpoch !== task.runtimeEpoch || current.revision < task.revision) {
-      records.set(task.taskId, copyTask(task)); changed = true
-    }
-  }
-  if (changed) taskRecords.value = [...records.values()].sort((a, b) => b.createdAt - a.createdAt)
-  const received = new Set(incoming.map(task => task.requestKey))
-  let resolved = false
-  for (const [input, pending] of unresolved) if (received.has(pending.key)) { unresolved.delete(input); resolved = true }
-  if (resolved) pendingTaskRequests.value = [...unresolved.values()]
-}
-function remember(task: TaskRecord): TaskRecord {
-  mergeTasks([task])
-  // Callers still own a detached result, never the stored record or a mutable
-  // cross-layer shared reference. List refresh has no unused return copies.
-  return copyTask(taskRecords.value.find(value => value.taskId === task.taskId)!)
-}
+function remember(task: TaskRecord): TaskRecord { return rememberTask(task, epoch()) }
 async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal): Promise<T> {
   ensureAuthority()
   const expected = epoch()
@@ -58,7 +32,7 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   try {
     const list = await request<{ items: TaskRecord[] }>('', 'GET', undefined, signal)
     if (read !== activeRead) return
-    mergeTasks(list.items)
+    mergeTasks(list.items, epoch())
     runtimeTaskError.value = ''
   } catch (error) { if (!signal?.aborted) runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'; throw error }
 }
@@ -68,8 +42,7 @@ export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<
     // Losing the acceptance response only permits lookup by the original key.
     // It never causes a second POST or a replacement key.
     if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
-      for (const [inputId, pending] of unresolved) if (pending.key === key) unresolved.delete(inputId)
-      pendingTaskRequests.value = [...unresolved.values()]; throw error
+      forgetTaskRequest(key); throw error
     }
     const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key)).catch(() => null)
     if (found) return remember(found)
@@ -153,9 +126,9 @@ export function startRuntimeTaskPolling(): () => void {
     runtimeTasksEnabled.value = hasRuntimeTasks()
     const next = epoch()
     const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId || ''
-    if (workspace && activeWorkspace && workspace !== activeWorkspace) { taskRecords.value = []; unresolved.clear(); pendingTaskRequests.value = [] }
+    if (workspace && activeWorkspace && workspace !== activeWorkspace) resetRuntimeTaskWorkspace()
     if (workspace) activeWorkspace = workspace
-    if (activeEpoch !== next) { activeEpoch = next; activeRead = ++sequence; controller.abort(); controller = new AbortController(); if (!runtimeTasksEnabled.value) taskRecords.value = [] }
+    if (activeEpoch !== next) { activeEpoch = next; activeRead = ++sequence; controller.abort(); controller = new AbortController(); if (!runtimeTasksEnabled.value) clearRuntimeTasks() }
     if (runtimeTasksEnabled.value) void refresh()
   })
   const timer = setInterval(() => { void refresh() }, 2500)

@@ -163,7 +163,7 @@ impl Service {
                             ))
                         );
                         let result_output = if kind == "video" {
-                            crate::video::materialize(
+                            video_output::materialize(
                                 &self.inner.transport,
                                 &self.inner.config.comfy_host,
                                 &self.inner.config.runtime_root.join("outputs/video"),

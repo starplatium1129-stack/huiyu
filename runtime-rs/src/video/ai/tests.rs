@@ -1,23 +1,11 @@
 use super::*;
-use sha2::{Digest, Sha256};
 
 #[test]
-fn video_ai_contracts_and_storyboard_match_the_node_sources() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
-    let mut command = std::process::Command::new("node");
-    command.arg(root.join("tests/video-ai-oracle.cjs"));
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        command.creation_flags(0x08000000);
-    }
-    let legacy = command.output().unwrap();
-    assert!(
-        legacy.status.success(),
-        "{}",
-        String::from_utf8_lossy(&legacy.stderr)
-    );
-    let legacy: Value = serde_json::from_slice(&legacy.stdout).unwrap();
+fn video_ai_contracts_and_storyboard_preserve_fixed_expectations() {
+    let legacy: Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/video-ai-contract.json"
+    ))
+    .unwrap();
     for case in list(&legacy["cases"]) {
         let action = case["action"].as_str().unwrap();
         let value = validation::validate(action, &case["input"]);
@@ -72,18 +60,4 @@ fn video_ai_contracts_and_storyboard_match_the_node_sources() {
             .code,
         "ADULT_BLUEPRINT_UNSUPPORTED"
     );
-    let sources: Value = serde_json::from_str(include_str!("sources.json")).unwrap();
-    for source in list(&sources["sources"]) {
-        assert_eq!(
-            hex::encode(Sha256::digest(
-                std::fs::read(
-                    root.parent()
-                        .unwrap()
-                        .join(source["path"].as_str().unwrap())
-                )
-                .unwrap()
-            )),
-            source["sha256"].as_str().unwrap()
-        );
-    }
 }

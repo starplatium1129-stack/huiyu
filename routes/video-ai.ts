@@ -1,6 +1,6 @@
 import { errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
 'use strict';
-let { readHostConfig }: typeof import('./video-ai-config') = require('./video-ai-config');
+let { readHostConfig }: typeof import('../server/chat-host-config') = require('../server/chat-host-config');
 let { extractJsonObject, cleanRewriteOutput }: typeof import('./video-ai-output') = require('./video-ai-output');
 let {
   REWRITE_SYSTEM_PROMPT,

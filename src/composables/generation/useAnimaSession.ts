@@ -3,7 +3,8 @@ import { ApiClientError, apiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { classifySDError } from '@/utils/sdError'
-import { hasRuntimeTasks, runtimeRequestKey } from '@/api/runtimeTaskAuthority'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,

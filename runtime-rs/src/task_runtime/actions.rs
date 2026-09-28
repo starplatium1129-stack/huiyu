@@ -13,9 +13,9 @@ impl TaskRuntime {
             return Err(ApiError::invalid("Unsupported task action"));
         }
         let task = Self::get(&storage, &principal, &id).await?;
-        if task["kind"] != "batch"
-            || task["providerFingerprint"] != self.binding(&storage)
-            || task["cancelRequestedAt"].is_number()
+        if task.kind != TaskKind::Batch
+            || task.provider_fingerprint != self.binding(&storage)
+            || task.cancel_requested_at.is_some()
         {
             return Err(ApiError::new(
                 409,
@@ -41,16 +41,18 @@ impl TaskRuntime {
             let work = async {
                 runtime.check_running()?;
                 let task = Self::get(&storage, &principal, &id).await?;
-                if task["cancelRequestedAt"].is_number() {
+                if task.cancel_requested_at.is_some() {
                     return Err(ApiError::new(
                         409,
                         "TASK_ACTION_INVALID",
                         "Task was cancelled",
                     ));
                 }
-                let job = task["checkpoint"]["gatewayJobId"]
-                    .as_str()
-                    .or_else(|| task["metadata"]["gatewayJobId"].as_str());
+                let job = task
+                    .checkpoint
+                    .as_ref()
+                    .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
+                    .or_else(|| task.metadata.get("gatewayJobId").and_then(Value::as_str));
                 let exists = if let Some(job) = job {
                     runtime.video()?.get_batch(job, &principal).await.is_ok()
                 } else {
@@ -62,9 +64,13 @@ impl TaskRuntime {
                         .await?;
                 }
                 let task = Self::get(&storage, &principal, &id).await?;
-                let job = task["checkpoint"]["gatewayJobId"].as_str().ok_or_else(|| {
-                    ApiError::new(409, "TASK_ACTION_INVALID", "Batch identity unavailable")
-                })?;
+                let job = task
+                    .checkpoint
+                    .as_ref()
+                    .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
+                    .ok_or_else(|| {
+                        ApiError::new(409, "TASK_ACTION_INVALID", "Batch identity unavailable")
+                    })?;
                 runtime
                     .video()?
                     .clone()
@@ -75,11 +81,18 @@ impl TaskRuntime {
                         &storage,
                         &principal,
                         &id,
-                        json!({"status":"running","recoveryState":"normal","errorCode":null}),
+                        TaskPatch {
+                            status: Some(TaskStatus::Running),
+                            recovery_state: Some(TaskRecoveryState::Normal),
+                            error_code: Some(None),
+                            ..Default::default()
+                        },
                     )
                     .await?;
                 }
-                Self::get(&storage, &principal, &id).await
+                Ok::<Value, ApiError>(serde_json::to_value(
+                    Self::get(&storage, &principal, &id).await?,
+                )?)
             }
             .await;
             drop(guard);

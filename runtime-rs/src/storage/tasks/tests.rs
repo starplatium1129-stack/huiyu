@@ -23,11 +23,43 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
         .await
         .unwrap();
     let initial = incoming("task-fixture", "task-1", "request-1");
+    assert_eq!(
+        storage.task(TaskCommand::List, "").await.unwrap_err().code,
+        "UNAUTHORIZED"
+    );
     let accepted = storage
-        .request(json!({"kind": "task.accept", "record": initial}), PRINCIPAL)
+        .task(
+            TaskCommand::Accept {
+                record: Box::new(serde_json::from_value(initial.clone()).unwrap()),
+            },
+            PRINCIPAL,
+        )
         .await
         .unwrap();
     let task = accepted["task"].clone();
+    // Invalid wire values must fail before changing a durable task. Missing
+    // nullable fields leave state alone; explicit null remains a clearing write.
+    for invalid in [
+        json!({"status":"runnning"}),
+        json!({"status":null}),
+        json!({"upstreamSettled":"false"}),
+        json!({"deliveryState":null}),
+        json!({"metadata":null}),
+        json!({"taskId":"replacement"}),
+    ] {
+        assert!(patch(&storage, &task, invalid).await.is_err());
+    }
+    let with_error = patch(&storage, &task, json!({"errorCode":"TEMPORARY"}))
+        .await
+        .unwrap();
+    let untouched = patch(&storage, &with_error, json!({"metadata":{"checked":true}}))
+        .await
+        .unwrap();
+    assert_eq!(untouched["errorCode"], "TEMPORARY");
+    let task = patch(&storage, &untouched, json!({"errorCode":null}))
+        .await
+        .unwrap();
+    assert!(task["errorCode"].is_null());
     let repeated = storage
         .request(json!({"kind": "task.accept", "record": initial}), PRINCIPAL)
         .await

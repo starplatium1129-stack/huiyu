@@ -3,8 +3,9 @@ import { createBatchAnimaTransport } from './batchAnimaJob'
 import { animaRequestPayload, type AnimaRequest } from '../generation/useAnimaSession'
 
 const mocks = vi.hoisted(() => ({ submit: vi.fn(), wait: vi.fn(), fetch: vi.fn() }))
-vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true, runtimeRequestKey: () => 'stable-key' }))
-vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => true, runtimeRequestKey: () => 'stable-key',
+vi.mock('@/stores/runtimeTaskState', async importOriginal => ({ ...await importOriginal<object>(), runtimeRequestKey: () => 'stable-key' }))
+vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true }))
+vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => true,
   submitRuntimeTask: mocks.submit, waitForRuntimeTask: mocks.wait, fetchRuntimeResult: mocks.fetch,
   runtimeResultPath: () => '/api/tasks/v1/accepted/results/0', taskMessage: () => '核对中' }))
 afterEach(() => vi.clearAllMocks())

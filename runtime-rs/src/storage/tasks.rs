@@ -5,22 +5,18 @@ mod outputs;
 mod tests;
 
 use super::*;
+use crate::task_contract::{
+    DeliveryState, ResultState, TaskCommand, TaskKind, TaskPatch, TaskRecord, TaskStatus,
+};
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
-
-fn terminal(task: &Value) -> bool {
-    matches!(
-        task["status"].as_str(),
-        Some("succeeded" | "failed" | "cancelled")
-    )
-}
 
 fn read(
     c: &Context,
     principal: &str,
     task_id: Option<&str>,
     request_key: Option<&str>,
-) -> Result<Value> {
+) -> Result<Option<TaskRecord>> {
     let row: Option<String> = if let Some(id) = task_id {
         c.db.prepare_cached("SELECT record_json FROM tasks WHERE principal_id=? AND task_id=?")?
             .query_row(params![principal, id], |r| r.get(0))
@@ -31,37 +27,31 @@ fn read(
             .optional()?
     };
     row.map(|body| {
-        let mut task: Value = serde_json::from_str(&body)?;
-        task["runtimeEpoch"] = json!(c.epoch);
+        let mut task: TaskRecord = serde_json::from_str(&body)?;
+        task.runtime_epoch = c.epoch.clone();
         Ok(task)
     })
     .transpose()
-    .map(|task| task.unwrap_or(Value::Null))
 }
-
-fn require(c: &Context, principal: &str, task_id: &str) -> Result<Value> {
-    let task = read(c, principal, Some(task_id), None)?;
-    if task.is_null() {
-        Err(ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
-    } else {
-        Ok(task)
-    }
+fn require(c: &Context, principal: &str, task_id: &str) -> Result<TaskRecord> {
+    read(c, principal, Some(task_id), None)?
+        .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
 }
-
-fn write(c: &Context, mut task: Value) -> Result<Value> {
-    task["revision"] = json!(c.next_revision()?);
-    task["updatedAt"] = json!(now());
-    task["runtimeEpoch"] = json!(c.epoch);
+fn write(c: &Context, mut task: TaskRecord) -> Result<Value> {
+    task.revision = c.next_revision()?;
+    task.updated_at = now() as u64;
+    task.runtime_epoch = c.epoch.clone();
+    let value = serde_json::to_value(&task)?;
     c.db.prepare_cached(
         "UPDATE tasks SET provider=?,upstream_settled=?,record_json=? WHERE task_id=?",
     )?
     .execute(params![
-        string(&task, "provider")?,
-        task["upstreamSettled"].as_bool().unwrap_or(false),
-        stringify(&task),
-        string(&task, "taskId")?
+        task.provider,
+        task.upstream_settled,
+        stringify(&value),
+        task.task_id
     ])?;
-    Ok(task)
+    Ok(value)
 }
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
@@ -72,44 +62,67 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if kind.starts_with("task.result.") {
         return outputs::execute(c, principal, command);
     }
-    match kind {
-        "task.legacy-history" => history::read(c, principal),
-        "task.get" => read(
+    if kind == "task.legacy-history" {
+        return history::read(c, principal);
+    }
+    let command = serde_json::from_value(command.clone())
+        .map_err(|_| invalid("Invalid task command fields"))?;
+    execute_command(c, principal, command)
+}
+pub(super) fn execute_command(
+    c: &mut Context,
+    principal: &str,
+    command: TaskCommand,
+) -> Result<Value> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
+    if !command.is_read() {
+        c.writer()?;
+    }
+    match command {
+        TaskCommand::Get {
+            task_id,
+            request_key,
+        } => Ok(serde_json::to_value(read(
             c,
             principal,
-            command["taskId"].as_str(),
-            command["requestKey"].as_str(),
-        ),
-        "task.list" => {
+            task_id.as_deref(),
+            request_key.as_deref(),
+        )?)?),
+        TaskCommand::List => {
             let mut query = c.db.prepare_cached(
                 "SELECT record_json FROM tasks WHERE principal_id=? ORDER BY rowid DESC",
             )?;
             let rows = query.query_map([principal], |r| r.get::<_, String>(0))?;
             let mut items = Vec::new();
             for row in rows {
-                let mut task: Value = serde_json::from_str(&row?)?;
-                task["runtimeEpoch"] = json!(c.epoch);
+                let mut task: TaskRecord = serde_json::from_str(&row?)?;
+                task.runtime_epoch = c.epoch.clone();
                 items.push(task);
             }
             Ok(json!({"runtimeEpoch": c.epoch, "items": items}))
         }
-        "task.accept" => accept(c, principal, &command["record"]),
-        "task.patch" => patch(c, principal, command),
-        "task.cancel" => cancel(c, principal, string(command, "requestKey")?),
-        _ => Err(ApiError::new(400, "TASK_INVALID", "Unknown task command")),
+        TaskCommand::Accept { record } => accept(c, principal, *record),
+        TaskCommand::Patch {
+            task_id,
+            expected_revision,
+            patch: change,
+        } => patch(c, principal, &task_id, expected_revision, *change),
+        TaskCommand::Cancel { request_key } => cancel(c, principal, &request_key),
     }
 }
-
-fn accept(c: &mut Context, principal: &str, incoming: &Value) -> Result<Value> {
-    let request_key = string(incoming, "requestKey")?;
-    if request_key.is_empty()
-        || request_key.len() > 200
-        || incoming["principalId"] != principal
-        || incoming["workspaceId"] != c.workspace_id
-        || string(incoming, "taskId")?.is_empty()
-        || !incoming["upstreamSettled"].is_boolean()
-        || !incoming["inputMediaRefs"].is_array()
-        || !incoming["resultRefs"].is_array()
+fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Value> {
+    if incoming.request_key.is_empty()
+        || incoming.request_key.len() > 200
+        || incoming.principal_id != principal
+        || incoming.workspace_id != c.workspace_id
+        || incoming.task_id.is_empty()
     {
         return Err(ApiError::new(
             400,
@@ -117,12 +130,9 @@ fn accept(c: &mut Context, principal: &str, incoming: &Value) -> Result<Value> {
             "Invalid task identity or media references",
         ));
     }
-    string(incoming, "requestFingerprint")?;
-    string(incoming, "provider")?;
     c.transaction(|c| {
-        let previous = read(c, principal, None, Some(request_key))?;
-        if !previous.is_null() {
-            if previous["requestFingerprint"] != incoming["requestFingerprint"] {
+        if let Some(previous) = read(c, principal, None, Some(&incoming.request_key))? {
+            if previous.request_fingerprint != incoming.request_fingerprint {
                 return Err(conflict("TASK_KEY_CONFLICT", "Request key was already used with different input"));
             }
             return Ok(json!({"task": previous, "created": false}));
@@ -130,95 +140,60 @@ fn accept(c: &mut Context, principal: &str, incoming: &Value) -> Result<Value> {
         let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
         if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting")); }
         let cancellation: Option<i64> = c.db.query_row("SELECT requested_at FROM task_cancel_intents WHERE principal_id=? AND request_key=?",
-            params![principal, request_key], |r| r.get(0)).optional()?;
-        let mut task = incoming.clone();
+            params![principal, incoming.request_key], |r| r.get(0)).optional()?;
+        let mut task = incoming;
         if let Some(at) = cancellation {
-            task["cancelRequestedAt"] = json!(at);
-            task["status"] = json!("cancelled");
-            task["upstreamSettled"] = json!(true);
+            task.cancel_requested_at = Some(at.try_into().map_err(|_| invalid("Invalid task cancellation time"))?);
+            task.status = TaskStatus::Cancelled;
+            task.upstream_settled = true;
         }
-        let id = string(&task, "taskId")?;
-        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![id, principal, request_key, string(&task, "provider")?, task["upstreamSettled"].as_bool().unwrap(), stringify(&task)])?;
-        for alias in task["inputMediaRefs"].as_array().unwrap() {
-            let alias = alias.as_str().ok_or_else(|| invalid("Invalid frozen task media alias"))?;
+        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![task.task_id, principal, task.request_key, task.provider, task.upstream_settled, stringify(&serde_json::to_value(&task)?)])?;
+        for alias in &task.input_media_refs {
             let hash: Option<String> = c.db.query_row("SELECT hash FROM media_aliases WHERE alias=?", [alias], |r| r.get(0)).optional()?;
             let hash = hash.ok_or_else(|| conflict("TASK_INPUT_MISSING", "Frozen task input media is missing"))?;
-            c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![id, hash])?;
+            c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![task.task_id, hash])?;
         }
         Ok(json!({"task": write(c, task)?, "created": true}))
     })
 }
-
-fn delivery_order(value: &Value) -> Option<usize> {
-    ["unseen", "seen", "saved", "discarded"]
-        .iter()
-        .position(|v| value.as_str() == Some(v))
-}
-
-fn patch(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
-    const FIELDS: &[&str] = &[
-        "status",
-        "recoveryState",
-        "upstreamId",
-        "provider",
-        "providerFingerprint",
-        "submissionIntentAt",
-        "submissionObservedAt",
-        "upstreamSettled",
-        "resultState",
-        "deliveryState",
-        "errorCode",
-        "metadata",
-        "checkpoint",
-        "input",
-    ];
-    let patch = command["patch"]
-        .as_object()
-        .ok_or_else(|| invalid("Task patch must be an object"))?;
-    if patch.keys().any(|key| !FIELDS.contains(&key.as_str())) {
-        return Err(invalid("Task patch contains immutable fields"));
-    }
+fn patch(
+    c: &mut Context,
+    principal: &str,
+    id: &str,
+    expected_revision: i64,
+    mut patch: TaskPatch,
+) -> Result<Value> {
     c.transaction(|c| {
-        let mut task = require(c, principal, string(command, "taskId")?)?;
-        if task["revision"] != command["expectedRevision"] {
+        let mut task = require(c, principal, id)?;
+        if task.revision != expected_revision {
             return Err(conflict("REVISION_CONFLICT", "Task revision changed"));
         }
-        // The cancellation check and durable submission intent must be one
-        // transaction; a stale caller-side check cannot authorize a new POST.
-        if patch
-            .get("submissionIntentAt")
-            .is_some_and(Value::is_number)
-            && (task["cancelRequestedAt"].is_number() || task["upstreamSettled"] == true)
-        {
-            return Err(ApiError::new(
-                499,
-                "CANCELLED",
-                "Task was cancelled or already settled before submission",
-            ));
-        }
-        if patch
-            .get("submissionIntentAt")
-            .is_some_and(Value::is_number)
-            && task["submissionIntentAt"].is_number()
-            && task["kind"] != "batch"
-        {
-            return Err(conflict(
-                "TASK_SUBMISSION_REPLAY",
-                "An existing submission intent cannot be repeated",
-            ));
-        }
-        let mut patch = patch.clone();
-        if let Some(delivery) = patch.get("deliveryState") {
-            let order =
-                delivery_order(delivery).ok_or_else(|| invalid("Invalid task delivery state"))?;
-            if order < delivery_order(&task["deliveryState"]).unwrap_or(0) {
-                patch.remove("deliveryState");
+        // Check cancellation and persist submission intent in the same transaction.
+        if patch.submission_intent_at.flatten().is_some() {
+            if task.cancel_requested_at.is_some() || task.upstream_settled {
+                return Err(ApiError::new(
+                    499,
+                    "CANCELLED",
+                    "Task was cancelled or already settled before submission",
+                ));
+            }
+            if task.submission_intent_at.is_some() && task.kind != TaskKind::Batch {
+                return Err(conflict(
+                    "TASK_SUBMISSION_REPLAY",
+                    "An existing submission intent cannot be repeated",
+                ));
             }
         }
-        if patch.get("deliveryState").and_then(Value::as_str) == Some("discarded")
-            && task["deliveryState"] != "discarded"
+        if patch
+            .delivery_state
+            .is_some_and(|delivery| delivery < task.delivery_state)
         {
-            if task["upstreamSettled"] != true || task["resultState"] != "available" {
+            patch.delivery_state = None;
+        }
+        if patch.delivery_state == Some(DeliveryState::Discarded)
+            && task.delivery_state != DeliveryState::Discarded
+        {
+            if !task.upstream_settled || task.result_state != ResultState::Available {
                 return Err(conflict(
                     "TASK_DISCARD_UNSAFE",
                     "Only settled available results can be discarded",
@@ -226,60 +201,83 @@ fn patch(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
             }
             c.db.execute(
                 "DELETE FROM media_refs WHERE owner_kind='task-result' AND owner_id=?",
-                [string(&task, "taskId")?],
+                [&task.task_id],
             )?;
-            task["resultRefs"] = json!([]);
-            task["resultState"] = json!("unavailable");
+            task.result_refs.clear();
+            task.result_state = ResultState::Unavailable;
         }
-        if task["deliveryState"] == "discarded" {
-            patch.remove("deliveryState");
+        if task.delivery_state == DeliveryState::Discarded {
+            patch.delivery_state = None;
         }
-        if terminal(&task)
-            && task["upstreamSettled"] == true
-            && patch
-                .get("status")
-                .is_some_and(|status| *status != task["status"])
+        if task.status.terminal()
+            && task.upstream_settled
+            && patch.status.is_some_and(|status| status != task.status)
         {
-            patch.remove("status");
+            patch.status = None;
         }
-        if task["cancelRequestedAt"]
-            .as_i64()
-            .is_some_and(|time| time != 0)
-            && !terminal(&task)
-            && patch
-                .get("status")
-                .is_some_and(|status| status != "cancelled" && status != "cancelling")
+        if task.cancel_requested_at.is_some_and(|time| time != 0)
+            && !task.status.terminal()
+            && patch.status.is_some_and(|status| {
+                !matches!(status, TaskStatus::Cancelled | TaskStatus::Cancelling)
+            })
         {
-            patch.insert("status".into(), json!("cancelling"));
+            patch.status = Some(TaskStatus::Cancelling);
         }
-        if task["upstreamId"].as_str().is_some_and(|id| !id.is_empty())
-            && patch
-                .get("upstreamId")
-                .and_then(Value::as_str)
-                .is_some_and(|id| !id.is_empty() && task["upstreamId"] != id)
+        if let (Some(current), Some(Some(next))) = (&task.upstream_id, &patch.upstream_id)
+            && !current.is_empty()
+            && !next.is_empty()
+            && current != next
         {
             return Err(conflict(
                 "TASK_UPSTREAM_CONFLICT",
                 "Upstream identity cannot be replaced",
             ));
         }
-        if let Some(incoming) = patch.get_mut("metadata") {
-            let mut metadata = task["metadata"].as_object().cloned().unwrap_or_default();
-            metadata.extend(
-                incoming
-                    .as_object()
-                    .ok_or_else(|| invalid("Task metadata must be an object"))?
-                    .clone(),
-            );
-            *incoming = Value::Object(metadata);
+        if let Some(value) = patch.status {
+            task.status = value;
         }
-        task.as_object_mut()
-            .ok_or_else(|| invalid("Invalid stored task"))?
-            .extend(patch);
+        if let Some(value) = patch.recovery_state {
+            task.recovery_state = value;
+        }
+        if let Some(value) = patch.upstream_id {
+            task.upstream_id = value;
+        }
+        if let Some(value) = patch.provider {
+            task.provider = value;
+        }
+        if let Some(value) = patch.provider_fingerprint {
+            task.provider_fingerprint = value;
+        }
+        if let Some(value) = patch.submission_intent_at {
+            task.submission_intent_at = value;
+        }
+        if let Some(value) = patch.submission_observed_at {
+            task.submission_observed_at = value;
+        }
+        if let Some(value) = patch.upstream_settled {
+            task.upstream_settled = value;
+        }
+        if let Some(value) = patch.result_state {
+            task.result_state = value;
+        }
+        if let Some(value) = patch.delivery_state {
+            task.delivery_state = value;
+        }
+        if let Some(value) = patch.error_code {
+            task.error_code = value;
+        }
+        if let Some(value) = patch.metadata {
+            task.metadata.extend(value);
+        }
+        if let Some(value) = patch.checkpoint {
+            task.checkpoint = value;
+        }
+        if let Some(value) = patch.input {
+            task.input = value;
+        }
         write(c, task)
     })
 }
-
 fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> {
     if request_key.is_empty() || request_key.len() > 200 {
         return Err(invalid("Invalid task request key"));
@@ -289,19 +287,21 @@ fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> 
             "INSERT OR IGNORE INTO task_cancel_intents VALUES(?,?,?)",
             params![principal, request_key, now()],
         )?;
-        let mut task = read(c, principal, None, Some(request_key))?;
-        if task.is_null() || task["upstreamSettled"] == true {
-            return Ok(task);
+        let Some(mut task) = read(c, principal, None, Some(request_key))? else {
+            return Ok(Value::Null);
+        };
+        if task.upstream_settled {
+            return Ok(serde_json::to_value(task)?);
         }
-        if task["cancelRequestedAt"].is_null() {
-            task["cancelRequestedAt"] = json!(now());
-        }
-        let submitted = task["submissionIntentAt"]
-            .as_i64()
-            .is_some_and(|time| time != 0);
-        task["status"] = json!(if submitted { "cancelling" } else { "cancelled" });
+        task.cancel_requested_at.get_or_insert(now() as u64);
+        let submitted = task.submission_intent_at.is_some_and(|time| time != 0);
+        task.status = if submitted {
+            TaskStatus::Cancelling
+        } else {
+            TaskStatus::Cancelled
+        };
         if !submitted {
-            task["upstreamSettled"] = json!(true);
+            task.upstream_settled = true;
         }
         write(c, task)
     })

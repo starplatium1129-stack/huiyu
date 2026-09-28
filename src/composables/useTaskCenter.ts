@@ -3,7 +3,7 @@ import { readTaskHistory, updateTaskHistory } from '@/platform/web/taskHistory'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { runtimeTaskActiveCount } from '@/api/runtimeTaskState'
+import { runtimeTaskActiveCount } from '@/stores/runtimeTaskState'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {

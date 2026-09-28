@@ -5,8 +5,8 @@ import { useTrackedTask } from '../../composables/useTaskCenter.ts'
 import { apiClient } from '../../api/client.ts'
 import { uploadVideoImage } from '../../api/videoApi.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
-import { hasRuntimeTasks, runtimeRequestKey, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath,
-  cancelRuntimeTaskKey, type TaskRecord } from '../../api/runtimeTasks.ts'
+import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey, type TaskRecord } from '../../api/runtimeTasks.ts'
+import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { ShotDraft } from './shotListTypes.ts'
 
 /**

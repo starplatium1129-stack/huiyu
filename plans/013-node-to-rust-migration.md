@@ -42,3 +42,30 @@
 5. 稳定升级/回退证据齐备后，单独清理不再需要的旧后端实现和旧暂存规则；保留开发工具与受支持 importer。
 
 命令与恢复入口见[工作流](../docs/workflow.md#rust-运行时迁移)，安装边界见[部署指南](../docs/desktop-deployment.md)。隔离实现阶段未修改真实资料；后续经用户明确授权安装新版并重开既有 workspace，没有主动调用真实模型或公开发布。
+
+## 旧 Node 实现的分批退出（2026-09-28）
+
+第一批先解除编译契约对旧实现的运行时依赖：图片与视频各 23 个既有输入/工作流案例、AI 整理的 7 个案例与 2 个分镜样例改为 `runtime-rs/tests/fixtures/*-contract.json` 固定夹具，保留校验结果、错误码、清洗结果与完整图结构断言，删除三个动态 oracle。夹具由标注的 `sourceCommit` 旧 TypeScript 实现提取，不从 Rust 被测实现回写；契约有意变更时逐项审查差异，不能自动刷新以消除失败。`video/ai/sources.json` 仅保留常量提取的历史来源，不再要求旧源码永久存在且哈希不变。删除 `routes/video-ai-config.ts` 纯转发层，现有使用者直接调用 `server/chat-host-config.ts`。
+
+后续删除以实际消费者消失为出口，而非按目录一刀切：
+
+| 范围 | 当前保留原因 | 退出条件 |
+| --- | --- | --- |
+| `server.ts`、旧图片/视频/聊天等路由与服务 | `gateway-test-stack.ts` 仍启动旧网关；例如 `test-video-ai.ts` 检查 API/Ollama HTTP、鉴权与失败响应，纯编译夹具无法替代 | 把已有高价值 HTTP 场景切到 Rust 隔离栈；删除重复或只验证旧内部实现的测试，再按引用删除路由、服务与构建输入，不新增一套重复测试 |
+| `server/workspace` | `runtime-rs/tests/parity.mjs` 仍验证旧回执、读取与 Node 重开 Rust 写入的库 | 固定支持的旧库/回执样本，并用独立 SQLite/协议断言承担 importer 兼容检查后退出旧 host/engine；保留受支持 importer |
+| `server/tasks/runtime` | `task_recovery.rs` 仍通过它计算带真实临时目录身份的旧任务 fingerprint | 使用已固定的序列化指纹案例验证算法，再独立构造旧任务身份；不能把重启恢复改成自写自验的新任务 |
+| 维护域 oracle | colors、semantics、blueprints 依赖仍在使用的 Node 维护工具；content_products 则调用旧维护路由 | 工具仍被工作流使用时保留跨实现差异验证；路由退出前将内容事务/产物语义用固定输入和独立文件断言承接 |
+| Node/TypeScript 工具链 | 前端、构建、内容维护、假上游和浏览器测试仍使用 | 不属于旧产品后端删除范围；没有删除 Node 的计划 |
+
+本批不改变产品提示词、图结构、模型调用或真实数据；固定编译契约验证不构成真实出图和设备验收。
+
+## 迁移后的架构收口（2026-09-28）
+
+- `task_contract` 提供 TaskRecord、生命周期枚举、TaskPatch 与任务存储命令。任务 runtime、SQLite 记录读写和状态转移使用强类型，JSON 留在 HTTP/provider、媒体上传及落盘边界；现有字段名、指纹、CAS、取消意图、提交防重、终态保护与媒体归属保持。非空字段的非法类型/null 拒绝，可空更新保留缺省/清空/赋值三态。旧 Node 记录没有 fingerprint locale 时继续读取原格式，不推断缺失的必需事实。
+- `execution` 承载跨引擎的 Output、Observation 和 ExecutionHooks；视频结果下载归入 generation 的 Comfy 输出实现，移除 generation→video 反向依赖。保留取消、超时与临时文件清理，没有引入插件框架或新增依赖。
+- 前端任务快照、待确认请求身份和合并/清理逻辑移到 `src/stores/runtimeTaskState.ts`；消费者直接读取该状态模块，API 保留传输、轮询和命令编排，删除旧状态文件及状态转导出。
+- 原依赖门禁补 Rust 核心模块显式路径检查，识别分组导入、内联模块的 super 路径、字符串与嵌套注释；不宣称宏展开或完整符号分析。只新增一个护栏夹具用例；任务字段拒绝/null 行为加入原有存储生命周期用例，其余复用既有测试和固定契约案例。
+
+本次验证：Rust all-targets 106 通过、8 项原有忽略；Clippy（warnings 为错误）、格式、前端相关 17 项、依赖边界、页面架构和 500 行预算通过。`gate:full --all` 的旧后端契约 39 文件通过、生产构建与预算通过；全量前端 1723 通过/1 失败，Node unit 1170 通过/2 失败/4 跳过。完整 gate 未通过：本机未配置参考素材根，另有未涉及文件的换行、RouteAtmosphere 装饰数量、资源面板源码断言、Showcase Grid 断言失败；未改索引或放宽这些断言。原始日志仅留被忽略的 `runtime/architecture-refactor-*`。本批未安装桌面、未调用真实模型或改写用户 workspace。
+
+浏览器定向复验 5/5 通过：结果架深浅主题、SD 出图入册、串行队列自动入册及 Anima 经真实 Rust 网关/模拟 ComfyUI 生成。使用当前源码的 debug Rust EXE 与本次生产 SPA、临时隔离数据和假上游；桌面 CSS 视口沿用现有 1440×960/1440×1200 用例，不记为原生窗口、4K/DPI 或真实模型验收。最终命令内存布局调整后，任务存储 2 项与执行/恢复 2 项定向重跑通过。

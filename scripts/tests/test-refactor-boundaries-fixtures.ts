@@ -9,6 +9,30 @@ import { readRefactorAllowancesAtRef, refactorAllowanceRefs, REFACTOR_ALLOWLIST_
 
 type Report = ReturnType<typeof inspectRefactorBoundaries>;
 
+test('Rust core boundaries reject reverse imports but ignore literals and valid contract imports', () => {
+  fixture({
+    'runtime-rs/src/execution.rs': 'use crate::{error::Result, generation::{Output as Other}};',
+    'runtime-rs/src/storage/records.rs': 'use super::super::task_runtime::TaskRuntime;',
+    'runtime-rs/src/generation.rs': `use crate::execution::Output; // crate::storage::Storage
+      const NOTE: &str = r#"crate::video::Service /* not a comment */"#;
+      /* outer /* inner */ crate::storage::Storage; mod ignored { */
+      mod nested {
+        use super::storage::Local;
+        mod deeper { use super::super::storage::Local; }
+        use super::super::images::ImageService;
+      }
+      use super::video::VideoService;`,
+  }, report => {
+    assert.deepEqual(report.unknown, []);
+    assert.deepEqual(report.violations.map(edge => [edge.source, edge.target, edge.rule]), [
+      ['runtime-rs/src/execution.rs', 'runtime-rs/src/generation', 'rust-core-dependency-direction'],
+      ['runtime-rs/src/generation.rs', 'runtime-rs/src/images', 'rust-core-dependency-direction'],
+      ['runtime-rs/src/generation.rs', 'runtime-rs/src/video', 'rust-core-dependency-direction'],
+      ['runtime-rs/src/storage/records.rs', 'runtime-rs/src/task_runtime', 'rust-core-dependency-direction'],
+    ]);
+  });
+});
+
 function fixture(files: Record<string, string>, check: (report: Report, root: string) => void) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-refactor-boundaries-'));
   try {

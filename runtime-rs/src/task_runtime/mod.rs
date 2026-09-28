@@ -14,6 +14,10 @@ use crate::{
     error::{ApiError, Result},
     generation::GenerationService,
     storage::Storage,
+    task_contract::{
+        DeliveryState, RecoveryState as TaskRecoveryState, ResultState, TaskCommand, TaskKind,
+        TaskPatch, TaskRecord, TaskStatus,
+    },
 };
 use fingerprint::Fingerprint;
 use serde_json::{Value, json};
@@ -91,14 +95,20 @@ impl TaskRuntime {
                 .get(&identity(storage, id))
                 .is_some_and(|job| job.dispatching || job.watching)
     }
-    pub async fn get(storage: &Storage, principal: &str, id: &str) -> Result<Value> {
+    pub async fn get(storage: &Storage, principal: &str, id: &str) -> Result<TaskRecord> {
         let task = storage
-            .request(json!({"kind":"task.get","taskId":id}), principal)
+            .task(
+                TaskCommand::Get {
+                    task_id: Some(id.into()),
+                    request_key: None,
+                },
+                principal,
+            )
             .await?;
         if task.is_null() {
             Err(ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
         } else {
-            Ok(task)
+            Ok(serde_json::from_value(task)?)
         }
     }
     fn check_running(&self) -> Result<()> {
@@ -123,14 +133,13 @@ impl TaskRuntime {
             .as_str()
             .filter(|s| !s.is_empty() && s.len() <= 200)
             .ok_or_else(|| ApiError::invalid("Invalid task request key"))?;
-        let kind = request["kind"].as_str().unwrap_or("");
-        if !["generation", "anima", "creative", "video", "batch"].contains(&kind) {
-            return Err(ApiError::new(
+        let kind: TaskKind = serde_json::from_value(request["kind"].clone()).map_err(|_| {
+            ApiError::new(
                 501,
                 "TASK_PROVIDER_NOT_MIGRATED",
                 "This task provider has not been migrated",
-            ));
-        }
+            )
+        })?;
         if !request["input"].is_object() {
             return Err(ApiError::invalid("Task input must be an object"));
         }
@@ -139,35 +148,75 @@ impl TaskRuntime {
             frozen["context"] = context.clone();
         }
         let existing = storage
-            .request(json!({"kind":"task.get","requestKey":key}), &principal)
+            .task(
+                TaskCommand::Get {
+                    task_id: None,
+                    request_key: Some(key.into()),
+                },
+                &principal,
+            )
             .await?;
-        let codec = existing["requestFingerprintLocale"]
-            .as_str()
+        let existing: Option<TaskRecord> = serde_json::from_value(existing)?;
+        let codec = existing
+            .as_ref()
+            .and_then(|task| task.request_fingerprint_locale.as_deref())
             .map(Fingerprint::new)
             .transpose()?;
         let fingerprint = codec.as_ref().unwrap_or(&self.fingerprint).hash(&frozen);
-        if !existing.is_null() {
-            if existing["requestFingerprint"] != fingerprint {
+        if let Some(existing) = existing {
+            if existing.request_fingerprint != fingerprint {
                 return Err(ApiError::new(
                     409,
                     "TASK_KEY_CONFLICT",
                     "Request key already belongs to different input",
                 ));
             }
-            return Ok(existing);
+            return Ok(serde_json::to_value(existing)?);
         }
         let prepared = self.prepare(kind, request["input"].clone()).await?;
         self.check_running()?;
         let task_id = uuid::Uuid::new_v4().to_string();
         let now = now();
-        let record = json!({"taskId":task_id,"workspaceId":storage.workspace_id(),"principalId":principal,
-            "requestKey":key,"requestFingerprint":fingerprint,"requestFingerprintLocale":self.fingerprint.locale,
-            "kind":kind,"provider":prepared.provider(),"providerFingerprint":self.binding(&storage),"upstreamId":null,
-            "status":"queued","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),
-            "createdAt":now,"updatedAt":now,"submissionIntentAt":null,"submissionObservedAt":null,"cancelRequestedAt":null,
-            "upstreamSettled":false,"executionDeadline":now+3*60*60*1000,"input":prepared.input(),"inputMediaRefs":[],
-            "resultState":"none","resultRefs":[],"deliveryState":"unseen","errorCode":null,
-            "metadata":{"context":request.get("context").cloned().unwrap_or(json!({}))},"checkpoint":null,"parentBatchId":null,"stepIndex":null});
+        let record = TaskRecord {
+            task_id,
+            workspace_id: storage.workspace_id().into(),
+            principal_id: principal.clone(),
+            request_key: key.into(),
+            request_fingerprint: fingerprint,
+            request_fingerprint_locale: Some(self.fingerprint.locale.clone()),
+            kind,
+            provider: prepared.provider().into(),
+            provider_fingerprint: self.binding(&storage),
+            upstream_id: None,
+            status: TaskStatus::Queued,
+            recovery_state: TaskRecoveryState::Normal,
+            revision: 0,
+            runtime_epoch: storage.runtime_epoch().into(),
+            created_at: now,
+            updated_at: now,
+            submission_intent_at: None,
+            submission_observed_at: None,
+            cancel_requested_at: None,
+            upstream_settled: false,
+            execution_deadline: now + 3 * 60 * 60 * 1000,
+            input: prepared
+                .input()
+                .as_object()
+                .cloned()
+                .ok_or_else(|| ApiError::invalid("Invalid prepared task input"))?,
+            input_media_refs: vec![],
+            result_state: ResultState::None,
+            result_refs: vec![],
+            delivery_state: DeliveryState::Unseen,
+            error_code: None,
+            metadata: serde_json::Map::from_iter([(
+                "context".into(),
+                request.get("context").cloned().unwrap_or(json!({})),
+            )]),
+            checkpoint: None,
+            parent_batch_id: None,
+            step_index: None,
+        };
         let (reply, received) = tokio::sync::oneshot::channel();
         let runtime = self.clone();
         // After transfer, a lost HTTP response cannot orphan an accepted job.
@@ -176,11 +225,16 @@ impl TaskRuntime {
             let accepted = async {
                 runtime.check_running()?;
                 let result = storage
-                    .request(json!({"kind":"task.accept","record":record}), &principal)
+                    .task(
+                        TaskCommand::Accept {
+                            record: Box::new(record),
+                        },
+                        &principal,
+                    )
                     .await?;
-                let task = result["task"].clone();
+                let task: TaskRecord = serde_json::from_value(result["task"].clone())?;
                 if result["created"] == true {
-                    let id = task["taskId"].as_str().unwrap().to_owned();
+                    let id = task.task_id.clone();
                     runtime.jobs.lock().unwrap().insert(
                         identity(&storage, &id),
                         JobBinding {
@@ -195,7 +249,7 @@ impl TaskRuntime {
                         dispatcher.dispatch(storage, principal, id, prepared).await;
                     });
                 }
-                Ok(task)
+                Ok(serde_json::to_value(task)?)
             }
             .await;
             let _ = reply.send(accepted);
@@ -216,17 +270,18 @@ impl TaskRuntime {
     ) -> Result<Value> {
         self.check_running()?;
         let task = storage
-            .request(json!({"kind":"task.cancel","requestKey":key}), &principal)
+            .task(TaskCommand::Cancel { request_key: key }, &principal)
             .await?;
-        if task.is_null() || task["upstreamSettled"] == true {
-            return Ok(task);
+        let Some(task): Option<TaskRecord> = serde_json::from_value(task)? else {
+            return Ok(Value::Null);
+        };
+        if task.upstream_settled {
+            return Ok(serde_json::to_value(task)?);
         }
-        let id = text(&task, "taskId")?.to_owned();
+        let id = task.task_id.clone();
         if let Some(job) = self.job(&storage, &id).filter(|job| !job.is_empty()) {
             // The live registry proves ownership of WebUI's global interrupt.
-            let _ = self
-                .cancel_provider(text(&task, "kind")?, &job, &principal)
-                .await;
+            let _ = self.cancel_provider(task.kind, &job, &principal).await;
             return self.reconcile(&storage, &principal, &id).await;
         }
         self.reconcile(&storage, &principal, &id).await
@@ -237,10 +292,20 @@ impl TaskRuntime {
         id: &str,
         state: &str,
     ) -> Result<Value> {
-        if !["unseen", "seen", "saved", "discarded"].contains(&state) {
-            return Err(ApiError::invalid("Invalid delivery state"));
-        }
-        patch(storage, principal, id, json!({"deliveryState":state})).await
+        let state: DeliveryState = serde_json::from_value(json!(state))
+            .map_err(|_| ApiError::invalid("Invalid delivery state"))?;
+        Ok(serde_json::to_value(
+            patch(
+                storage,
+                principal,
+                id,
+                TaskPatch {
+                    delivery_state: Some(state),
+                    ..Default::default()
+                },
+            )
+            .await?,
+        )?)
     }
     pub async fn close(&self) {
         if self.closed.swap(true, Ordering::AcqRel) {
@@ -274,10 +339,10 @@ impl TaskRuntime {
             .or_insert_with(|| JobBinding::new(job_id));
     }
 }
-fn image_family(kind: &str) -> Option<&'static str> {
+fn image_family(kind: TaskKind) -> Option<&'static str> {
     match kind {
-        "anima" => Some("anima"),
-        "creative" => Some("krea2"),
+        TaskKind::Anima => Some("anima"),
+        TaskKind::Creative => Some("krea2"),
         _ => None,
     }
 }
@@ -286,14 +351,23 @@ pub(super) async fn patch(
     storage: &Storage,
     principal: &str,
     id: &str,
-    value: Value,
-) -> Result<Value> {
+    value: TaskPatch,
+) -> Result<TaskRecord> {
     for attempt in 0..5 {
         let current = TaskRuntime::get(storage, principal, id).await?;
-        let result = storage.request(json!({"kind":"task.patch","taskId":id,"expectedRevision":current["revision"],"patch":value}),principal).await;
+        let result = storage
+            .task(
+                TaskCommand::Patch {
+                    task_id: id.into(),
+                    expected_revision: current.revision,
+                    patch: Box::new(value.clone()),
+                },
+                principal,
+            )
+            .await;
         match result {
             Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => continue,
-            result => return result,
+            result => return Ok(serde_json::from_value(result?)?),
         }
     }
     unreachable!()

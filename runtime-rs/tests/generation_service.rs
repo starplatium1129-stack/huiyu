@@ -9,7 +9,8 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use futures_util::future::BoxFuture;
 use huiyu_runtime::{
     error::{ApiError, Result},
-    generation::{Config, ExecutionHooks, Output, Service},
+    execution::{ExecutionHooks, Output},
+    generation::{Config, Service},
     upstream::LocalUpstream,
 };
 use serde_json::{Value, json};

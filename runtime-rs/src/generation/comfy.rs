@@ -281,7 +281,7 @@ async fn poll(inner: Arc<Inner>, job: Arc<Job>) {
                     continue;
                 };
                 let materialized = if plan.media_kind == MediaKind::Video {
-                    crate::video::materialize(
+                    video_output::materialize(
                         &inner.transport,
                         &inner.config.comfy_host,
                         &inner.config.runtime_root.join("outputs/video"),

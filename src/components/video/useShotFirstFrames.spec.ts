@@ -6,7 +6,8 @@ const mocks = vi.hoisted(() => ({ request: vi.fn(), upload: vi.fn(), durable: fa
 vi.mock('@/api/client', () => ({ apiClient: { request: mocks.request } }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: mocks.upload }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { putImage: vi.fn() } }))
-vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => mocks.durable, runtimeRequestKey: () => 'request-first-frame',
+vi.mock('@/stores/runtimeTaskState', async importOriginal => ({ ...await importOriginal<object>(), runtimeRequestKey: () => 'request-first-frame' }))
+vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => mocks.durable,
   submitRuntimeTask: mocks.submit, waitForRuntimeTask: mocks.wait, cancelRuntimeTaskKey: mocks.cancel,
   fetchRuntimeResult: vi.fn(), runtimeResultPath: vi.fn() }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))

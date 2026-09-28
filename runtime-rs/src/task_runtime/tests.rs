@@ -46,7 +46,7 @@ async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
         true,
     )
     .unwrap();
-    let record = json!({"taskId":"accepted","workspaceId":storage.workspace_id(),"principalId":"owner","requestKey":"accepted","requestFingerprint":"fixture","kind":"generation","provider":"comfy","providerFingerprint":runtime.binding(&storage),"upstreamId":null,"status":"queued","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),"createdAt":1,"updatedAt":1,"submissionIntentAt":null,"submissionObservedAt":null,"cancelRequestedAt":null,"upstreamSettled":false,"input":normalized,"inputMediaRefs":[],"resultRefs":[],"resultState":"none","deliveryState":"unseen","metadata":{},"checkpoint":null});
+    let record = json!({"taskId":"accepted","workspaceId":storage.workspace_id(),"principalId":"owner","requestKey":"accepted","requestFingerprint":"fixture","kind":"generation","provider":"comfy","providerFingerprint":runtime.binding(&storage),"upstreamId":null,"status":"queued","recoveryState":"normal","revision":0,"runtimeEpoch":storage.runtime_epoch(),"createdAt":1,"updatedAt":1,"submissionIntentAt":null,"submissionObservedAt":null,"cancelRequestedAt":null,"upstreamSettled":false,"executionDeadline":10800000,"input":normalized,"inputMediaRefs":[],"resultRefs":[],"resultState":"none","deliveryState":"unseen","metadata":{},"checkpoint":null});
     storage
         .request(json!({"kind":"task.accept","record":record}), "owner")
         .await
@@ -79,17 +79,24 @@ async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
         &storage,
         "owner",
         "accepted",
-        json!({"submissionIntentAt":now(),"status":"submitting"}),
+        TaskPatch {
+            submission_intent_at: Some(Some(now())),
+            status: Some(TaskStatus::Submitting),
+            ..Default::default()
+        },
     )
     .await
     .unwrap();
-    assert_eq!(submitted["status"], "submitting");
+    assert_eq!(submitted.status, TaskStatus::Submitting);
     assert_eq!(
         patch(
             &storage,
             "owner",
             "accepted",
-            json!({"submissionIntentAt":now()})
+            TaskPatch {
+                submission_intent_at: Some(Some(now())),
+                ..Default::default()
+            }
         )
         .await
         .unwrap_err()
@@ -100,11 +107,15 @@ async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
         &storage,
         "owner",
         "accepted",
-        json!({"status":"failed","upstreamSettled":false}),
+        TaskPatch {
+            status: Some(TaskStatus::Failed),
+            upstream_settled: Some(false),
+            ..Default::default()
+        },
     )
     .await
     .unwrap();
-    assert_eq!(failed["status"], "failed");
+    assert_eq!(failed.status, TaskStatus::Failed);
     let cancelled = storage
         .request(
             json!({"kind":"task.cancel","requestKey":"accepted"}),

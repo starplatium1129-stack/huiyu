@@ -1,6 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 const api = vi.hoisted(() => ({ submit: vi.fn(), wait: vi.fn(), cancel: vi.fn(), key: vi.fn(() => 'stable-click') }))
-vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true, runtimeRequestKey: api.key }))
+vi.mock('@/stores/runtimeTaskState', async importOriginal => ({ ...await importOriginal<object>(), runtimeRequestKey: api.key }))
+vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true }))
 vi.mock('@/api/runtimeTasks', () => ({ submitRuntimeTask: api.submit, waitForRuntimeTask: api.wait, cancelRuntimeTaskKey: api.cancel,
   fetchRuntimeResult: vi.fn(), runtimeResultPath: vi.fn(), taskMessage: () => '生成中' }))
 beforeEach(() => {

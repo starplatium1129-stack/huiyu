@@ -34,7 +34,7 @@ impl TaskRuntime {
             )
         })
     }
-    pub(super) async fn prepare(&self, kind: &str, input: Value) -> Result<Preparation> {
+    pub(super) async fn prepare(&self, kind: TaskKind, input: Value) -> Result<Preparation> {
         let cancel = self.shutdown.child_token();
         if let Some(family) = image_family(kind) {
             let images = self.images.as_ref().ok_or_else(|| {
@@ -50,12 +50,12 @@ impl TaskRuntime {
                 .map(Preparation::Image);
         }
         match kind {
-            "video" => self
+            TaskKind::Video => self
                 .video()?
                 .prepare(input, true, cancel)
                 .await
                 .map(Preparation::Video),
-            "batch" => self
+            TaskKind::Batch => self
                 .video()?
                 .prepare_batch(input, true, cancel)
                 .await
@@ -69,10 +69,10 @@ impl TaskRuntime {
     }
     pub(super) async fn query_provider(
         &self,
-        kind: &str,
+        kind: TaskKind,
         job: &str,
         principal: &str,
-    ) -> Result<crate::generation::Observation> {
+    ) -> Result<crate::execution::Observation> {
         if let Some(family) = image_family(kind) {
             return self
                 .images
@@ -88,9 +88,9 @@ impl TaskRuntime {
                 .await;
         }
         match kind {
-            "generation" => self.provider.query(job, principal).await,
-            "video" => self.video()?.query(job, principal).await,
-            "batch" => self.video()?.query_batch(job, principal).await,
+            TaskKind::Generation => self.provider.query(job, principal).await,
+            TaskKind::Video => self.video()?.query(job, principal).await,
+            TaskKind::Batch => self.video()?.query_batch(job, principal).await,
             _ => Err(ApiError::new(
                 501,
                 "TASK_PROVIDER_NOT_MIGRATED",
@@ -100,7 +100,7 @@ impl TaskRuntime {
     }
     pub(super) async fn cancel_provider(
         &self,
-        kind: &str,
+        kind: TaskKind,
         job: &str,
         principal: &str,
     ) -> Result<Value> {
@@ -119,9 +119,9 @@ impl TaskRuntime {
                 .await;
         }
         match kind {
-            "generation" => self.provider.cancel(job, principal).await,
-            "video" => self.video()?.cancel(job, principal).await,
-            "batch" => self.video()?.cancel_batch(job, principal).await,
+            TaskKind::Generation => self.provider.cancel(job, principal).await,
+            TaskKind::Video => self.video()?.cancel(job, principal).await,
+            TaskKind::Batch => self.video()?.cancel_batch(job, principal).await,
             _ => Err(ApiError::new(
                 501,
                 "TASK_PROVIDER_NOT_MIGRATED",

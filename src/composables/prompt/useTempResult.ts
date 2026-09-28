@@ -1,3 +1,4 @@
+import { runtimeTasks } from '../../stores/runtimeTaskState'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
@@ -284,7 +285,7 @@ export function useTempResult(deps: TempResultDeps) {
    */
   async function restoreTempResult(): Promise<boolean> {
     if (hasRuntimeTasks()) {
-      const { refreshRuntimeTasks, runtimeTasks, runtimeResultPath, fetchRuntimeResult } = await import('../../api/runtimeTasks.ts')
+      const { refreshRuntimeTasks, runtimeResultPath, fetchRuntimeResult } = await import('../../api/runtimeTasks.ts')
       await refreshRuntimeTasks().catch(() => {})
       const task = runtimeTasks.value.find(item => ['generation', 'anima', 'creative'].includes(item.kind) && item.resultState === 'available' && !['saved', 'discarded'].includes(item.deliveryState))
       if (!task) return false

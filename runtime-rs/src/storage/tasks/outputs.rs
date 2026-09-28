@@ -30,13 +30,13 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     }
     if committed {
         media::cleanup(c, &key, &media);
-        return Ok(task);
+        return Ok(serde_json::to_value(task)?);
     }
     media::publish(c, &key, &media)?;
     let result = c.transaction(|c| {
         let mut task = require(c, principal, id)?;
-        if task["deliveryState"] == "discarded" {
-            return Ok(task);
+        if task.delivery_state == DeliveryState::Discarded {
+            return Ok(serde_json::to_value(task)?);
         }
         let hash = string(&media, "sha256")?;
         c.db.execute(
@@ -56,27 +56,29 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             params![id, index],
         )?;
         c.db.execute("DELETE FROM leases WHERE id=?", [&key])?;
-        let refs = task["resultRefs"]
-            .as_array_mut()
-            .ok_or_else(|| invalid("Invalid task result references"))?;
-        if !refs.iter().any(|item| item["index"] == index) {
-            refs.push(media.clone());
+        if !task
+            .result_refs
+            .iter()
+            .any(|item| item.index == index as u64)
+        {
+            task.result_refs
+                .push(serde_json::from_value(media.clone())?);
         }
-        task["resultState"] = json!("available");
+        task.result_state = ResultState::Available;
         write(c, task)
     })?;
     media::cleanup(c, &key, &media);
     Ok(result)
 }
 
-fn prepare(c: &mut Context, task: Value, media: &Value) -> Result<Value> {
-    if task["deliveryState"] == "discarded" {
+fn prepare(c: &mut Context, task: TaskRecord, media: &Value) -> Result<Value> {
+    if task.delivery_state == DeliveryState::Discarded {
         return Err(conflict(
             "TASK_RESULT_DISCARDED",
             "This task result was discarded",
         ));
     }
-    let id = string(&task, "taskId")?.to_owned();
+    let id = task.task_id.clone();
     let index = media["index"]
         .as_i64()
         .filter(|index| (0..=9_007_199_254_740_991).contains(index))
@@ -113,7 +115,7 @@ fn prepare(c: &mut Context, task: Value, media: &Value) -> Result<Value> {
             params![key, string(media, "sha256")?, now()],
         )?;
         let mut task = task;
-        task["resultState"] = json!("collecting");
+        task.result_state = ResultState::Collecting;
         write(c, task)?;
         Ok(json!({"offset": media::uploaded(c, &key, media)?}))
     })

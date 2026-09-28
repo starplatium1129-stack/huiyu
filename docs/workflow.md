@@ -279,6 +279,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 旧 Node unit/contract 和仍启动旧网关的 Playwright 结果只作旧行为对照。Rust 真正端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现/待验见[执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)和 [013](../plans/013-node-to-rust-migration.md)。安装/UAC、真实模型、原生发行材料未完成，`releaseReady=false`。
 
+既有 `test-domain-type-boundaries` 也检查 Rust 任务契约、公共执行、存储与引擎模块的显式依赖方向，复用原边界门禁，不新增全仓测试入口。它识别 crate/super 路径和分组导入，不解析宏展开或完整符号依赖；编译与行为仍由 Cargo 验证。图片/视频编译及视频 AI 契约使用固定的独立旧实现期望，不再动态启动其 Node oracle；其余旧后端退出条件见 [013 分批退出](../plans/013-node-to-rust-migration.md#旧-node-实现的分批退出2026-09-28)。
+
 ### 按改动选择检查
 
 内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。

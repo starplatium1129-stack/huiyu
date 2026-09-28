@@ -9,11 +9,11 @@ impl TaskRuntime {
     ) -> Result<Value> {
         self.check_running()?;
         let task = Self::get(&storage, &principal, &id).await?;
-        if task["submissionIntentAt"].is_number()
-            || task["cancelRequestedAt"].is_number()
-            || task["status"] != "queued"
-            || task["upstreamSettled"] == true
-            || task["providerFingerprint"] != self.binding(&storage)
+        if task.submission_intent_at.is_some()
+            || task.cancel_requested_at.is_some()
+            || task.status != TaskStatus::Queued
+            || task.upstream_settled
+            || task.provider_fingerprint != self.binding(&storage)
         {
             return Err(ApiError::new(
                 409,
@@ -27,7 +27,7 @@ impl TaskRuntime {
                 .entry(identity(&storage, &id))
                 .or_insert_with(|| JobBinding::new(String::new()));
             if binding.dispatching || binding.watching {
-                return Ok(task);
+                return Ok(serde_json::to_value(task)?);
             }
             binding.dispatching = true;
         }
@@ -40,20 +40,20 @@ impl TaskRuntime {
                 principal: principal.clone(),
                 id: id.clone(),
             };
-            let preparation = match task["kind"].as_str() {
-                Some("generation") => runtime
+            let preparation = match task.kind {
+                TaskKind::Generation => runtime
                     .provider
                     .resume_prepared(
-                        task["input"].clone(),
-                        task["provider"].as_str().unwrap_or(""),
+                        Value::Object(task.input.clone()),
+                        &task.provider,
                         runtime.shutdown.child_token(),
                     )
                     .await
                     .map(Preparation::Generation),
-                Some("anima" | "creative") => match &runtime.images {
+                TaskKind::Anima | TaskKind::Creative => match &runtime.images {
                     Some(images) => images
                         .resume_prepared(
-                            task["input"].clone(),
+                            Value::Object(task.input.clone()),
                             &hooks,
                             runtime.shutdown.child_token(),
                         )
@@ -65,10 +65,10 @@ impl TaskRuntime {
                         "图片任务提供方不可用",
                     )),
                 },
-                Some("video") => match runtime.video() {
+                TaskKind::Video => match runtime.video() {
                     Ok(video) => video
                         .resume_prepared(
-                            task["input"].clone(),
+                            Value::Object(task.input.clone()),
                             &hooks,
                             runtime.shutdown.child_token(),
                         )
@@ -76,10 +76,10 @@ impl TaskRuntime {
                         .map(Preparation::Video),
                     Err(error) => Err(error),
                 },
-                Some("batch") => match runtime.video() {
+                TaskKind::Batch => match runtime.video() {
                     Ok(video) => video
                         .prepare_batch_resumed(
-                            task["input"].clone(),
+                            Value::Object(task.input.clone()),
                             &hooks,
                             runtime.shutdown.child_token(),
                         )
@@ -87,15 +87,10 @@ impl TaskRuntime {
                         .map(Preparation::Batch),
                     Err(error) => Err(error),
                 },
-                _ => Err(ApiError::new(
-                    501,
-                    "TASK_RESUME_UNAVAILABLE",
-                    "该任务类型尚未支持排队恢复",
-                )),
             };
             match preparation {
                 Ok(prepared) => {
-                    let _ = reply.send(Ok(task));
+                    let _ = reply.send(serde_json::to_value(task).map_err(ApiError::from));
                     runtime.dispatch(storage, principal, id, prepared).await;
                 }
                 Err(error) => {
@@ -103,7 +98,11 @@ impl TaskRuntime {
                         &storage,
                         &principal,
                         &id,
-                        json!({"recoveryState":"interrupted","errorCode":error.code}),
+                        TaskPatch {
+                            recovery_state: Some(TaskRecoveryState::Interrupted),
+                            error_code: Some(Some(error.code.clone())),
+                            ..Default::default()
+                        },
                     )
                     .await;
                     runtime

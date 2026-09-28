@@ -4,11 +4,13 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
 const mocks = vi.hoisted(() => ({ getImage:vi.fn(), getThumbnail:vi.fn(), fetch:vi.fn(), thumb:vi.fn(), local:vi.fn(), callback:undefined as undefined | ((value: unknown) => void) }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage:mocks.getImage, getThumbnail:mocks.getThumbnail } }))
-vi.mock('@/api/runtimeTasks', async () => { const { ref } = await import('vue'); return { runtimeTasks:ref([]), runtimeTasksEnabled:ref(true), runtimeResultPath:(t:{taskId:string}, i:number)=>`/api/tasks/v1/${t.taskId}/results/${i}`, fetchRuntimeResult:mocks.fetch } })
+vi.mock('@/stores/runtimeTaskState', async () => { const { ref } = await import('vue'); return { runtimeTasks:ref([]), runtimeTasksEnabled:ref(true) } })
+vi.mock('@/api/runtimeTasks', () => ({ runtimeResultPath:(t:{taskId:string}, i:number)=>`/api/tasks/v1/${t.taskId}/results/${i}`, fetchRuntimeResult:mocks.fetch }))
 vi.mock('@/platform/desktop/runtime', () => ({ onDesktopRuntime: (cb:(value:unknown)=>void) => { mocks.callback=cb; return vi.fn() } }))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost:mocks.local }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl:mocks.thumb }))
-import { runtimeTasks, type TaskRecord } from '@/api/runtimeTasks'
+import { type TaskRecord } from '@/api/runtimeTasks'
+import { runtimeTasks } from '@/stores/runtimeTaskState'
 import { useResultShelf } from './useResultShelf'
 
 function task(id = 'one'): TaskRecord { return { taskId:id, createdAt:1, resultState:'available', deliveryState:'unseen', resultRefs:[{index:0,mime:'image/png'}] } as TaskRecord }

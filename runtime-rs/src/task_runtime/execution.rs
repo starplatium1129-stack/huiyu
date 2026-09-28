@@ -10,9 +10,9 @@ impl TaskRuntime {
     ) {
         let execution = async {
             let current = Self::get(&storage, &principal, &id).await?;
-            if current["cancelRequestedAt"].is_number()
-                || current["submissionIntentAt"].is_number()
-                || current["upstreamSettled"] == true
+            if current.cancel_requested_at.is_some()
+                || current.submission_intent_at.is_some()
+                || current.upstream_settled
             {
                 return Ok(false);
             }
@@ -64,19 +64,32 @@ impl TaskRuntime {
         .await;
         if execution.is_err()
             && let Ok(current) = Self::get(&storage, &principal, &id).await
-            && current["upstreamSettled"] != true
+            && !current.upstream_settled
         {
-            let change = if current["submissionIntentAt"].is_number() {
-                json!({"recoveryState":"unknown","errorCode":"SUBMISSION_UNCONFIRMED"})
+            let change = if current.submission_intent_at.is_some() {
+                TaskPatch {
+                    recovery_state: Some(TaskRecoveryState::Unknown),
+                    error_code: Some(Some("SUBMISSION_UNCONFIRMED".into())),
+                    ..Default::default()
+                }
             } else if self.closed.load(Ordering::Acquire) || self.shutdown.is_cancelled() {
-                json!({"recoveryState":"interrupted","errorCode":"TASK_AWAITING_RESUME"})
+                TaskPatch {
+                    recovery_state: Some(TaskRecoveryState::Interrupted),
+                    error_code: Some(Some("TASK_AWAITING_RESUME".into())),
+                    ..Default::default()
+                }
             } else {
-                json!({"status":"failed","upstreamSettled":true,"errorCode":"TASK_VALIDATION_FAILED"})
+                TaskPatch {
+                    status: Some(TaskStatus::Failed),
+                    upstream_settled: Some(true),
+                    error_code: Some(Some("TASK_VALIDATION_FAILED".into())),
+                    ..Default::default()
+                }
             };
             let _ = patch(&storage, &principal, &id, change).await;
         }
         if let Ok(current) = Self::get(&storage, &principal, &id).await
-            && current["upstreamSettled"] == true
+            && current.upstream_settled
         {
             self.jobs.lock().unwrap().remove(&identity(&storage, &id));
         }
@@ -97,7 +110,9 @@ impl TaskRuntime {
         principal: &str,
         id: &str,
     ) -> Result<Value> {
-        self.reconcile_inner(storage, principal, id, true).await
+        Ok(serde_json::to_value(
+            self.reconcile_inner(storage, principal, id, true).await?,
+        )?)
     }
     pub(super) async fn reconcile_inner(
         self: &Arc<Self>,
@@ -105,7 +120,7 @@ impl TaskRuntime {
         principal: &str,
         id: &str,
         observe_after: bool,
-    ) -> Result<Value> {
+    ) -> Result<TaskRecord> {
         self.check_running()?;
         let operation = self
             .jobs
@@ -128,32 +143,36 @@ impl TaskRuntime {
         {
             return Ok(current);
         }
-        if current["upstreamSettled"] == true
-            && (current["status"] != "succeeded" || current["resultState"] == "available")
+        if current.upstream_settled
+            && (current.status != TaskStatus::Succeeded
+                || current.result_state == ResultState::Available)
         {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return Ok(current);
         }
-        if current["providerFingerprint"] != self.binding(storage) {
+        if current.provider_fingerprint != self.binding(storage) {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return patch(
                 storage,
                 principal,
                 id,
-                json!({"recoveryState":"unknown","errorCode":"PROVIDER_IDENTITY_CHANGED"}),
+                TaskPatch {
+                    recovery_state: Some(TaskRecoveryState::Unknown),
+                    error_code: Some(Some("PROVIDER_IDENTITY_CHANGED".into())),
+                    ..Default::default()
+                },
             )
             .await;
         }
         let job = self.job(storage, id).filter(|job| !job.is_empty());
         let mut observed = if let Some(job) = &job {
-            self.query_provider(text(&current, "kind")?, job, principal)
-                .await
+            self.query_provider(current.kind, job, principal).await
         } else {
             self.recover_provider(storage, principal, &current, &mut cancellation)
                 .await
         };
         if job.is_some()
-            && current["provider"] != "webui"
+            && current.provider != "webui"
             && observed.as_ref().map_or(true, |o| o.unknown)
         {
             observed = self
@@ -167,46 +186,59 @@ impl TaskRuntime {
                     storage,
                     principal,
                     id,
-                    json!({"recoveryState":"unknown","errorCode":"TASK_RECONCILE_REQUIRED"}),
+                    TaskPatch {
+                        recovery_state: Some(TaskRecoveryState::Unknown),
+                        error_code: Some(Some("TASK_RECONCILE_REQUIRED".into())),
+                        ..Default::default()
+                    },
                 )
                 .await;
             }
         };
-        if current["cancelRequestedAt"].is_number()
+        if current.cancel_requested_at.is_some()
             && !observation.settled
             && let Some(job) = job
         {
-            let _ = self
-                .cancel_provider(text(&current, "kind")?, &job, principal)
-                .await;
+            let _ = self.cancel_provider(current.kind, &job, principal).await;
         }
         let has_outputs = !observation.outputs.is_empty();
-        if has_outputs && current["resultState"] != "available" {
+        if has_outputs && current.result_state != ResultState::Available {
             hooks::collect(storage, principal, id, observation.outputs).await?;
         }
         let latest = Self::get(storage, principal, id).await?;
-        if latest["upstreamSettled"] == true
-            && (latest["status"] != "succeeded" || latest["resultState"] == "available")
+        if latest.upstream_settled
+            && (latest.status != TaskStatus::Succeeded
+                || latest.result_state == ResultState::Available)
         {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return Ok(latest);
         }
-        let status = if latest["cancelRequestedAt"].is_number() && observation.settled {
-            "cancelled"
+        let observed_status: TaskStatus = serde_json::from_value(json!(observation.status))?;
+        let status = if latest.cancel_requested_at.is_some() && observation.settled {
+            TaskStatus::Cancelled
         } else {
-            &observation.status
+            observed_status
         };
-        let mut update = json!({"status":status,"upstreamSettled":observation.settled,
-            "recoveryState":if observation.unknown {"unknown"} else {"normal"},"errorCode":observation.error_code,
-            "metadata":observation.metadata});
-        if observation.status == "succeeded" && !has_outputs && latest["resultState"] != "available"
-        {
-            update["resultState"] = json!("unavailable");
-        }
+        let update = TaskPatch {
+            status: Some(status),
+            upstream_settled: Some(observation.settled),
+            recovery_state: Some(if observation.unknown {
+                TaskRecoveryState::Unknown
+            } else {
+                TaskRecoveryState::Normal
+            }),
+            error_code: Some(observation.error_code),
+            metadata: Some(serde_json::from_value(observation.metadata)?),
+            result_state: (observed_status == TaskStatus::Succeeded
+                && !has_outputs
+                && latest.result_state != ResultState::Available)
+                .then_some(ResultState::Unavailable),
+            ..Default::default()
+        };
         let task = patch(storage, principal, id, update).await?;
         if observation.settled {
             self.jobs.lock().unwrap().remove(&identity(storage, id));
-        } else if observe_after && !observation.unknown && task["submissionIntentAt"].is_number() {
+        } else if observe_after && !observation.unknown && task.submission_intent_at.is_some() {
             self.monitor(storage.clone(), principal.into(), id.into());
         }
         Ok(task)

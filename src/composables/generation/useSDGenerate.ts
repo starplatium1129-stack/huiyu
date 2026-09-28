@@ -1,7 +1,8 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 import type { SDGenerateParams } from '@/utils/sdRequest'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { hasRuntimeTasks, runtimeRequestKey } from '@/api/runtimeTaskAuthority'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 function isAbortError(error: unknown): boolean {

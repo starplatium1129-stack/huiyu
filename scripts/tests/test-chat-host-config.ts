@@ -4,7 +4,7 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
-const { readHostConfig }: typeof import('../../routes/video-ai-config') = require('../../routes/video-ai-config');
+const { readHostConfig }: typeof import('../../server/chat-host-config') = require('../../server/chat-host-config');
 
 test('host configuration cache isolates equally sized files with identical timestamps', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-config-audit-'));

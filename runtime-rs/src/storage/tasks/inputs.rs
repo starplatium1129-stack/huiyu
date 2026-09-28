@@ -99,11 +99,9 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         )?;
         c.db.execute("DELETE FROM leases WHERE id=?", [&key])?;
         let mut task = require(c, principal, id)?;
-        let refs = task["inputMediaRefs"]
-            .as_array_mut()
-            .ok_or_else(|| invalid("Invalid task input references"))?;
-        if !refs.contains(&stored["alias"]) {
-            refs.push(stored["alias"].clone());
+        let alias = string(&stored, "alias")?.to_owned();
+        if !task.input_media_refs.contains(&alias) {
+            task.input_media_refs.push(alias);
         }
         write(c, task)?;
         Ok(())

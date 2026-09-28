@@ -1,5 +1,6 @@
 import { computed, onActivated, onDeactivated, onScopeDispose, ref, watch, type Ref } from 'vue'
-import { runtimeTasks, runtimeTasksEnabled, runtimeResultPath, fetchRuntimeResult } from '@/api/runtimeTasks'
+import { runtimeResultPath, fetchRuntimeResult } from '@/api/runtimeTasks'
+import { runtimeTasks, runtimeTasksEnabled } from '@/stores/runtimeTaskState'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'

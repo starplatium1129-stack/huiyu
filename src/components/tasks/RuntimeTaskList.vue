@@ -26,7 +26,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import RuntimeTaskResult from './RuntimeTaskResult.vue'
-import { runtimeTasks, runtimeTaskError, pendingTaskRequests, refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
+import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
+import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
 const emit = defineEmits<{ navigate: [] }>()
 const selected = ref('all'), expanded = ref(''), busy = ref(''), feedback = ref(''), discarding = ref('')
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }]

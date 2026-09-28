@@ -1,0 +1,5342 @@
+{
+  "sourceCommit": "3ede6dff255e6c353afbc07459cb647547f9d32c",
+  "catalog": {
+    "constants": {
+      "MAX_BODY": "32kb",
+      "MAX_PENDING": 2,
+      "MAX_PROMPT_LENGTH": 4000,
+      "MAX_NEGATIVE_LENGTH": 2000,
+      "MAX_VIDEO_BYTES": 268435456,
+      "MAX_IMAGE_BYTES": 20971520,
+      "IMAGE_INPUT_PREFIX": "aics_video_input_",
+      "IMAGE_REF_PREFIX": "aics_video_ref_",
+      "JOB_TTL_MS": 7200000,
+      "MAX_BATCH_SHOTS": 30,
+      "MAX_BATCH_BODY": "1mb",
+      "BATCH_TTL_MS": 86400000,
+      "BATCH_JOB_TTL_MS": 86400000,
+      "POLL_INTERVAL_MS": 1000,
+      "OUTPUT_NODE_ID": "11",
+      "OUTPUT_FILENAME_PREFIX": "aics_video",
+      "MODEL_CATALOG": [
+        {
+          "id": "wan2.2-ti2v-5b",
+          "label": "Wan 2.2 TI2V 5B",
+          "family": "wan2.2",
+          "tier": "本机推荐",
+          "summary": "16GB 显存优先路线，先从短片稳定闭环开始。",
+          "executable": true,
+          "modes": [
+            "text"
+          ],
+          "requirements": [
+            [
+              "diffusion_models",
+              "wan2.2_ti2v_5B_fp16.safetensors"
+            ],
+            [
+              "text_encoders",
+              "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+            ],
+            [
+              "vae",
+              "wan2.2_vae.safetensors"
+            ]
+          ]
+        },
+        {
+          "id": "minimax-h3",
+          "label": "MiniMax H3",
+          "family": "minimax-h3",
+          "tier": "高上限成片",
+          "summary": "本地 768p 原生立体声音频与口型，画质上限最高；16GB 显存建议从 3 秒短片起步。",
+          "executable": true,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": [
+            [
+              "diffusion_models",
+              "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+            ],
+            [
+              "text_encoders",
+              "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+            ],
+            [
+              "vae",
+              "minimax_h3_video_vae_fp16.safetensors"
+            ],
+            [
+              "vae",
+              "minimax_h3_audio_vae_fp32.safetensors"
+            ],
+            [
+              "loras",
+              "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors"
+            ],
+            [
+              "loras",
+              "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors"
+            ]
+          ]
+        },
+        {
+          "id": "wan2.2-14b",
+          "label": "Wan 2.2 14B",
+          "family": "wan2.2",
+          "tier": "高质量扩展",
+          "summary": "更高质量的文生/图生视频路线，需独立工作流和显存实测。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": []
+        },
+        {
+          "id": "hunyuan-video-1.5",
+          "label": "HunyuanVideo 1.5",
+          "family": "hunyuan",
+          "tier": "高质量扩展",
+          "summary": "面向 720p 与超分链路，待本机资源和耗时验证。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image"
+          ],
+          "requirements": []
+        },
+        {
+          "id": "ltx-2.3",
+          "label": "LTX-2.3",
+          "family": "ltx",
+          "tier": "快速迭代扩展",
+          "summary": "适合快速预演与音视频扩展，待适配官方子图工作流。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": []
+        }
+      ],
+      "MODEL_BY_ID": {
+        "wan2.2-ti2v-5b": {
+          "id": "wan2.2-ti2v-5b",
+          "label": "Wan 2.2 TI2V 5B",
+          "family": "wan2.2",
+          "tier": "本机推荐",
+          "summary": "16GB 显存优先路线，先从短片稳定闭环开始。",
+          "executable": true,
+          "modes": [
+            "text"
+          ],
+          "requirements": [
+            [
+              "diffusion_models",
+              "wan2.2_ti2v_5B_fp16.safetensors"
+            ],
+            [
+              "text_encoders",
+              "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+            ],
+            [
+              "vae",
+              "wan2.2_vae.safetensors"
+            ]
+          ]
+        },
+        "minimax-h3": {
+          "id": "minimax-h3",
+          "label": "MiniMax H3",
+          "family": "minimax-h3",
+          "tier": "高上限成片",
+          "summary": "本地 768p 原生立体声音频与口型，画质上限最高；16GB 显存建议从 3 秒短片起步。",
+          "executable": true,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": [
+            [
+              "diffusion_models",
+              "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+            ],
+            [
+              "text_encoders",
+              "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+            ],
+            [
+              "vae",
+              "minimax_h3_video_vae_fp16.safetensors"
+            ],
+            [
+              "vae",
+              "minimax_h3_audio_vae_fp32.safetensors"
+            ],
+            [
+              "loras",
+              "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors"
+            ],
+            [
+              "loras",
+              "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors"
+            ]
+          ]
+        },
+        "wan2.2-14b": {
+          "id": "wan2.2-14b",
+          "label": "Wan 2.2 14B",
+          "family": "wan2.2",
+          "tier": "高质量扩展",
+          "summary": "更高质量的文生/图生视频路线，需独立工作流和显存实测。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": []
+        },
+        "hunyuan-video-1.5": {
+          "id": "hunyuan-video-1.5",
+          "label": "HunyuanVideo 1.5",
+          "family": "hunyuan",
+          "tier": "高质量扩展",
+          "summary": "面向 720p 与超分链路，待本机资源和耗时验证。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image"
+          ],
+          "requirements": []
+        },
+        "ltx-2.3": {
+          "id": "ltx-2.3",
+          "label": "LTX-2.3",
+          "family": "ltx",
+          "tier": "快速迭代扩展",
+          "summary": "适合快速预演与音视频扩展，待适配官方子图工作流。",
+          "executable": false,
+          "modes": [
+            "text",
+            "image",
+            "first-last-frame"
+          ],
+          "requirements": []
+        }
+      },
+      "WAN_NEGATIVE": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景",
+      "ASPECTS": {
+        "landscape": {
+          "width": 832,
+          "height": 480,
+          "label": "横屏 16:9"
+        },
+        "portrait": {
+          "width": 480,
+          "height": 832,
+          "label": "竖屏 9:16"
+        },
+        "square": {
+          "width": 640,
+          "height": 640,
+          "label": "方形 1:1"
+        }
+      },
+      "QUALITIES": {
+        "fast": {
+          "label": "快速",
+          "summary": "约 1—2 分钟/条 · 试镜与找方向",
+          "sizes": {
+            "landscape": {
+              "width": 608,
+              "height": 352
+            },
+            "portrait": {
+              "width": 352,
+              "height": 608
+            },
+            "square": {
+              "width": 448,
+              "height": 448
+            }
+          }
+        },
+        "standard": {
+          "label": "标准",
+          "summary": "约 2.5—4.5 分钟/条 · 日常主力（官方常规画布）",
+          "sizes": {
+            "landscape": {
+              "width": 832,
+              "height": 480
+            },
+            "portrait": {
+              "width": 480,
+              "height": 832
+            },
+            "square": {
+              "width": 640,
+              "height": 640
+            }
+          }
+        },
+        "fine": {
+          "label": "精细",
+          "summary": "约 3.5—6 分钟/条 · 16GB 上限档",
+          "sizes": {
+            "landscape": {
+              "width": 960,
+              "height": 544
+            },
+            "portrait": {
+              "width": 544,
+              "height": 960
+            },
+            "square": {
+              "width": 768,
+              "height": 768
+            }
+          }
+        }
+      },
+      "DURATIONS": {
+        "3": {
+          "seconds": 3,
+          "frames": 73
+        },
+        "5": {
+          "seconds": 5,
+          "frames": 121
+        }
+      },
+      "H3_EXTRA_DURATIONS": [
+        10,
+        15
+      ]
+    },
+    "prose": {
+      "CAMERA": {
+        "still": "固定镜头，画面稳定，仅保留自然的微小运动。",
+        "push": "镜头缓慢推进，保持主体居中且运动连续。",
+        "pull": "镜头缓慢拉远，逐步显露环境关系。",
+        "pan": "镜头平稳横移，速度均匀，不要突然变焦。",
+        "orbit": "镜头轻微环绕主体，运动克制并保持身份稳定。"
+      },
+      "MOTION": {
+        "subtle": "主体只有呼吸、眨眼、发丝和衣摆等细微运动。",
+        "natural": "主体做一个清晰、自然、连续的动作，避免反复和突变。",
+        "expressive": "主体动作更有表现力，但肢体结构和身份始终保持一致。"
+      },
+      "H3_CAMERA": {
+        "still": "The camera holds a static shot.",
+        "push": "The camera pushes in at a slow, steady pace.",
+        "pull": "The camera pulls out at a slow, steady pace.",
+        "pan": "The camera pans steadily to the side, without abrupt zooms.",
+        "orbit": "The camera arcs around the subject with restrained motion, keeping the composition stable."
+      },
+      "H3_MOTION": {
+        "subtle": "The subject moves only subtly: breathing, blinking, hair and clothing swaying.",
+        "natural": "The subject performs one clear, natural, continuous action, avoiding repetition or abrupt changes.",
+        "expressive": "The subject's action is more expressive while body structure and identity stay consistent."
+      },
+      "H3_SHOT_SIZE": {
+        "wide": {
+          "label": "全景",
+          "line": "The scene is framed as a wide establishing shot with the full environment visible."
+        },
+        "medium": {
+          "label": "中景",
+          "line": "The subject is framed in a medium shot from the waist up."
+        },
+        "closeup": {
+          "label": "特写",
+          "line": "The subject is framed in a close-up on the face."
+        }
+      },
+      "CJK_DIALOGUE_RE": {
+        "source": "[\\u3400-\\u9fff\\uf900-\\ufaff]",
+        "flags": ""
+      },
+      "JAPANESE_DIALOGUE_RE": {
+        "source": "[\\u3040-\\u30ff]",
+        "flags": ""
+      },
+      "DIALOGUE_LANGS": {
+        "auto": true,
+        "zh": true,
+        "ja": true,
+        "en": true
+      },
+      "H3_STYLE": "2D-animated, cinematic",
+      "H3_SOUNDSCAPE": "Quiet ambient room tone with subtle movement sounds — soft fabric rustle and gentle breathing; no dialogue, no voiceover.",
+      "H3_MUSIC": "Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+      "CAMERA_MENTION_RE": {
+        "source": "(推进|推近|推镜|推入|拉远|拉近|拉镜|横移|平移|环绕|环绕镜头|摇镜|摇摄|俯拍|仰拍|特写|推拉|运镜|镜头移|镜头从|镜头缓慢|镜头慢慢|视角转换|视角变化|\\bzoom\\s*(?:in|out)\\b|\\bpush\\s*in\\b|\\bpull\\s*out\\b|\\bpans?\\b|\\borbit\\b|\\barc\\s*shot\\b|\\btracking\\s*shot\\b|\\bdolly\\b|\\btilt\\b|\\bcamera\\s*(?:moves|pushes|pulls|pans|arcs|tracks|zooms)\\b|\\bpov\\b|\\bclose-?up\\b)",
+        "flags": "i"
+      },
+      "MOTION_MENTION_RE": {
+        "source": "(动作|运动|转身|回头|回眸|回望|站起|起身|坐下|躺下|跳跃|跳起|跳向|起舞|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|走去|走来|举手|举起|挥手|挥动|挥舞|拿起|放下|端起|拾起|扭动|张开|伸出手|抬头|低头|转头|迈步|走动|踱步|舞动|跃起|跪下|跪坐|倚|偎|靠向|推开|拉开|打开|关上|翻页|弹奏|歌唱|哼唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|抱起|行走|跑动|爬出|\\bmov(?:e|es|ed|ing)\\b|\\bwalk(?:s|ed|ing)\\b|\\brun(?:s|ning)\\b|\\bjump(?:s|ed|ing)\\b|\\bturn(?:s|ed|ing)\\b|\\brais(?:e|es|ed|ing)\\b|\\breach(?:es|ed|ing)\\b|\\bstand(?:s|ing)\\b|\\bsit(?:s|ting)\\b|\\bdanc(?:e|es|ed|ing)\\b|\\blift(?:s|ed|ing)\\b|\\bplac(?:e|es|ed|ing)\\b|\\bopen(?:s|ed|ing)\\b|\\bclos(?:e|es|ed|ing)\\b|\\bblink(?:s|ed|ing)\\b|\\bwav(?:e|es|ed|ing)\\b|\\bgrab(?:s|bed|bing)\\b|\\bstep(?:s|ped|ping)\\b|\\blean(?:s|ed|ing)\\b|\\bstretch(?:es|ed|ing)\\b|\\bbend(?:s|ing)\\b|\\bkneel(?:s|ing)\\b|\\bbow(?:s|ing)\\b|\\bspin(?:s|ning)\\b|\\bswing(?:s|ing)\\b|\\bpunch(?:es|ed|ing)\\b|\\bkick(?:s|ed|ing)\\b|\\bnod(?:s|ded|ding)\\b|\\bgestur(?:e|es|ed|ing)\\b|\\bsmil(?:e|es|ed|ing)\\b|\\blaugh(?:s|ed|ing)\\b|\\bwhisper(?:s|ed|ing)\\b|\\bspeak(?:s|ing)\\b|\\bsay(?:s|ing)\\b|\\bsing(?:s|ing)\\b|\\bsigh(?:s|ed|ing)\\b|\\bbreath(?:e|es|ed|ing)\\b|\\bflutter(?:s|ed|ing)\\b|\\bsway(?:s|ed|ing)\\b)",
+        "flags": "i"
+      },
+      "H3_SCENE_SOUND": [
+        {
+          "re": {
+            "source": "雨|暴雨|雨水|雨夜|雷雨|雨滴|\\brain\\b|\\brainfall\\b|\\bstorm\\b|\\bdownpour\\b|\\bdrizzle\\b",
+            "flags": "i"
+          },
+          "sound": "Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces."
+        },
+        {
+          "re": {
+            "source": "海|海滩|海滨|海浪|波浪|沙滩|\\bsea\\b|\\bocean\\b|\\bbeach\\b|\\bwave\\b",
+            "flags": "i"
+          },
+          "sound": "Waves roll onto the shore with soft hissing foam, while a light sea breeze carries faint distant gull cries."
+        },
+        {
+          "re": {
+            "source": "战斗|打斗|刀光|决战|战场|厮杀|\\bfight\\b|\\bbattle\\b|\\bcombat\\b",
+            "flags": "i"
+          },
+          "sound": "Sharp impacts and whooshing blade cuts punctuate the scene, with heavy breathing and the scrape of feet on the ground."
+        },
+        {
+          "re": {
+            "source": "森林|树林|林间|山间|原野|田野|花田|神社|雪原|鸟居|\\bforest\\b|\\bwoods\\b|\\bmountain\\b|\\bmeadow\\b|\\bfield\\b|\\bgrass\\b|\\bsnow\\b|\\bice\\b|\\bfrozen\\b|\\btorii\\b|\\bshrine\\b",
+            "flags": "i"
+          },
+          "sound": "Wind moves through trees and grass with a soft rustle, while faint birdsong carries across the open space."
+        },
+        {
+          "re": {
+            "source": "温泉|浴池|浴缸|汤池|澡堂|泡汤|\\bonsen\\b|\\bbath\\b|\\btub\\b|\\bsoak\\b",
+            "flags": "i"
+          },
+          "sound": "Gentle water laps and ripples in the bath while steam hisses softly and warm droplets fall back into the surface."
+        },
+        {
+          "re": {
+            "source": "街道|街头|便利店|商店|车站|月台|电车|列车|马路|都市|城市|\\bstreet\\b|\\bcity\\b|\\bshop\\b|\\bstation\\b|\\btrain\\b|\\bneon\\b|\\btraffic\\b",
+            "flags": "i"
+          },
+          "sound": "Distant city traffic hums beneath footsteps and ambient street noise, with occasional passing vehicles."
+        },
+        {
+          "re": {
+            "source": "夜|深夜|夜晚|月光|\\bmoonlight\\b|\\bnight\\b",
+            "flags": "i"
+          },
+          "sound": "Quiet night ambience: a soft breeze and distant low hums, with subtle movement sounds nearby."
+        }
+      ],
+      "H3_SCENE_MUSIC": [
+        {
+          "re": {
+            "source": "战斗|决战|战场|刀光|厮杀|\\bfight\\b|\\bbattle\\b|\\bcombat\\b",
+            "flags": "i"
+          },
+          "music": "Driving orchestral percussion at a fast tempo with surging brass and steady strings."
+        },
+        {
+          "re": {
+            "source": "夜|深夜|月光|孤独|寂|思念|离别|伤感|\\bmoonlight\\b|\\bnight\\b|\\blonely\\b|\\bsad\\b|\\bmelancholy\\b",
+            "flags": "i"
+          },
+          "music": "Sparse solo piano notes with wide silent gaps at a slow tempo, joined by a sustained low cello line."
+        },
+        {
+          "re": {
+            "source": "欢快|活力|阳光|午后|集市|庆典|祭典|\\bsunny\\b|\\bfestival\\b|\\bcelebration\\b|\\benergetic\\b",
+            "flags": "i"
+          },
+          "music": "Bright acoustic guitar and light percussion at a moderate tempo with a gently rising melody and clean tone."
+        }
+      ]
+    },
+    "storyboard": {
+      "SHOT_PLAN": [
+        {
+          "beat": "establishing",
+          "shotSize": "wide",
+          "camera": "still",
+          "motion": "subtle",
+          "dialogue": false
+        },
+        {
+          "beat": "interaction",
+          "shotSize": "medium",
+          "camera": "still",
+          "motion": "natural",
+          "dialogue": true
+        },
+        {
+          "beat": "emotion",
+          "shotSize": "closeup",
+          "camera": "push",
+          "motion": "subtle",
+          "dialogue": true
+        },
+        {
+          "beat": "closing",
+          "shotSize": "wide",
+          "camera": "pull",
+          "motion": "subtle",
+          "dialogue": false
+        }
+      ],
+      "BEAT_FRAMING": {
+        "establishing": "Framed as a wide establishing shot of the full scene.",
+        "interaction": "Framed as a medium shot centered on her action.",
+        "emotion": "Framed as a close-up portrait of her face.",
+        "closing": "Framed as a wide shot as the scenery opens up."
+      },
+      "ADULT_CATEGORIES": {
+        "成人": true,
+        "私密写真": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "case": {
+        "input": {
+          "modelId": "wan2.2-ti2v-5b",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景",
+          "modelId": "wan2.2-ti2v-5b",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 20,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+                "type": "wan",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "wan2.2_vae.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。"
+              }
+            },
+            "5": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景"
+              }
+            },
+            "6": {
+              "class_type": "ModelSamplingSD3",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "shift": 8
+              }
+            },
+            "7": {
+              "class_type": "Wan22ImageToVideoLatent",
+              "inputs": {
+                "vae": [
+                  "3",
+                  0
+                ],
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "batch_size": 1
+              }
+            },
+            "8": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "6",
+                  0
+                ],
+                "positive": [
+                  "4",
+                  0
+                ],
+                "negative": [
+                  "5",
+                  0
+                ],
+                "latent_image": [
+                  "7",
+                  0
+                ],
+                "seed": 314159,
+                "steps": 20,
+                "cfg": 5,
+                "sampler_name": "uni_pc",
+                "scheduler": "simple",
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "8",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "9",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "10",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "wan2.2-ti2v-5b",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 5,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景",
+          "modelId": "wan2.2-ti2v-5b",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 5,
+          "frames": 121,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 20,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+                "type": "wan",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "wan2.2_vae.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。"
+              }
+            },
+            "5": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景"
+              }
+            },
+            "6": {
+              "class_type": "ModelSamplingSD3",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "shift": 8
+              }
+            },
+            "7": {
+              "class_type": "Wan22ImageToVideoLatent",
+              "inputs": {
+                "vae": [
+                  "3",
+                  0
+                ],
+                "width": 832,
+                "height": 480,
+                "length": 121,
+                "batch_size": 1
+              }
+            },
+            "8": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "6",
+                  0
+                ],
+                "positive": [
+                  "4",
+                  0
+                ],
+                "negative": [
+                  "5",
+                  0
+                ],
+                "latent_image": [
+                  "7",
+                  0
+                ],
+                "seed": 314159,
+                "steps": 20,
+                "cfg": 5,
+                "sampler_name": "uni_pc",
+                "scheduler": "simple",
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "8",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "9",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "10",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "wan2.2-ti2v-5b",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景",
+          "modelId": "wan2.2-ti2v-5b",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 20,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+                "type": "wan",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "wan2.2_vae.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。"
+              }
+            },
+            "5": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景"
+              }
+            },
+            "6": {
+              "class_type": "ModelSamplingSD3",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "shift": 8
+              }
+            },
+            "7": {
+              "class_type": "Wan22ImageToVideoLatent",
+              "inputs": {
+                "vae": [
+                  "3",
+                  0
+                ],
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "batch_size": 1
+              }
+            },
+            "8": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "6",
+                  0
+                ],
+                "positive": [
+                  "4",
+                  0
+                ],
+                "negative": [
+                  "5",
+                  0
+                ],
+                "latent_image": [
+                  "7",
+                  0
+                ],
+                "seed": 314159,
+                "steps": 20,
+                "cfg": 5,
+                "sampler_name": "uni_pc",
+                "scheduler": "simple",
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "8",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "9",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "10",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "wan2.2-ti2v-5b",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 5,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景",
+          "modelId": "wan2.2-ti2v-5b",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 5,
+          "frames": 121,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 20,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+                "type": "wan",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "wan2.2_vae.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "A quiet riverside at dusk, soft rain on the water.\n固定镜头，画面稳定，仅保留自然的微小运动。\n主体只有呼吸、眨眼、发丝和衣摆等细微运动。\n动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。"
+              }
+            },
+            "5": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，水印，整体发灰，最差质量，低质量，JPEG压缩残留，肢体畸形，多余的手指，画得不好的手部，画得不好的脸部，静止不动的画面，杂乱的背景"
+              }
+            },
+            "6": {
+              "class_type": "ModelSamplingSD3",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "shift": 8
+              }
+            },
+            "7": {
+              "class_type": "Wan22ImageToVideoLatent",
+              "inputs": {
+                "vae": [
+                  "3",
+                  0
+                ],
+                "width": 832,
+                "height": 480,
+                "length": 121,
+                "batch_size": 1
+              }
+            },
+            "8": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "6",
+                  0
+                ],
+                "positive": [
+                  "4",
+                  0
+                ],
+                "negative": [
+                  "5",
+                  0
+                ],
+                "latent_image": [
+                  "7",
+                  0
+                ],
+                "seed": 314159,
+                "steps": 20,
+                "cfg": 5,
+                "sampler_name": "uni_pc",
+                "scheduler": "simple",
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "8",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "9",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "10",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 5,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 5,
+          "frames": 124,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 124
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 10,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 10,
+          "frames": 243,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 243
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 15,
+          "seed": 314159
+        },
+        "t8": false
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 15,
+          "frames": 362,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 362
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "T2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s"
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 5,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 5,
+          "frames": 124,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 124,
+                "task_type": "T2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s"
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 10,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 10,
+          "frames": 243,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 243,
+                "task_type": "T2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s"
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 15,
+          "seed": 314159
+        },
+        "t8": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 15,
+          "frames": 362,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 362,
+                "task_type": "T2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s"
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": "auto"
+        },
+        "t8": true,
+        "allowImages": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": null,
+          "references": null,
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "I2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s",
+                "first_frame": [
+                  "17",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "lastFrame": "aics_video_input_fedcba9876543210.png",
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": "auto"
+        },
+        "t8": true,
+        "allowImages": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the 3.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — A quiet riverside at dusk, soft rain on the water. The scene begins in a plausible earlier state and gradually converges to the pose, composition, lighting, and scene structure established by <Picture 1> by the end of the shot.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": "aics_video_input_fedcba9876543210.png",
+          "references": null,
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the 3.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — A quiet riverside at dusk, soft rain on the water. The scene begins in a plausible earlier state and gradually converges to the pose, composition, lighting, and scene structure established by <Picture 1> by the end of the shot.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "L2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s",
+                "last_frame": [
+                  "18",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "18": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_fedcba9876543210.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": "aics_video_input_fedcba9876543210.png",
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": "auto"
+        },
+        "t8": true,
+        "allowImages": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the 3.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — A quiet riverside at dusk, soft rain on the water. The shot begins in the position, framing, and scene established by Picture 1 and settles into the final pose, spacing, and composition established by Picture 2 at the end of the shot.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": "aics_video_input_fedcba9876543210.png",
+          "references": null,
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the 3.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — A quiet riverside at dusk, soft rain on the water. The shot begins in the position, framing, and scene established by Picture 1 and settles into the final pose, spacing, and composition established by Picture 2 at the end of the shot.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "FL2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s",
+                "first_frame": [
+                  "17",
+                  0
+                ],
+                "last_frame": [
+                  "18",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            },
+            "18": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_fedcba9876543210.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "references": [
+            "aics_video_ref_0123456789abcdef.png"
+          ],
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": "auto"
+        },
+        "t8": true,
+        "allowImages": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity anchors: <Picture 1> - the shot contains exactly one character: <Picture 1>. No other people, no reflections, no duplicate or mirrored copies.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": null,
+          "lastFrame": null,
+          "references": [
+            "aics_video_ref_0123456789abcdef.png"
+          ],
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity anchors: <Picture 1> - the shot contains exactly one character: <Picture 1>. No other people, no reflections, no duplicate or mirrored copies.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "Ref2VA",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s",
+                "ref_images.ref_image_0": [
+                  "21",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "21": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_ref_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "references": [
+            "aics_video_ref_0123456789abcdef.png"
+          ],
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": "auto"
+        },
+        "t8": true,
+        "allowImages": true
+      },
+      "expected": {
+        "input": {
+          "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity anchors: <Picture 1> - the shot contains exactly one character: <Picture 1>. No other people, no reflections, no duplicate or mirrored copies.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "landscape",
+          "quality": "standard",
+          "width": 832,
+          "height": 480,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": null,
+          "references": [
+            "aics_video_ref_0123456789abcdef.png"
+          ],
+          "dialogue": "  今日はいい天気ですね。  ",
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3AudioConditioningT8",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ],
+                "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\n The subject in the frame (S1) says: <d>[Japanese]   今日はいい天気ですね。  </d>\nCharacter identity anchors: <Picture 1> - the shot contains exactly one character: <Picture 1>. No other people, no reflections, no duplicate or mirrored copies.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 832,
+                "height": 480,
+                "length": 73,
+                "task_type": "Hybrid",
+                "audio_mode": "native",
+                "audio_denoise_strength": 1,
+                "add_source_as_reference": false,
+                "prompt_primary_audio_ordinal": 0,
+                "strict_prompt_tags": true,
+                "ref_image_size": "match",
+                "reference_video_policy": "official_2_to_15s",
+                "first_frame": [
+                  "17",
+                  0
+                ],
+                "ref_images.ref_image_0": [
+                  "21",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "16",
+                  1
+                ],
+                "sigmas": [
+                  "16",
+                  2
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "MiniMaxH3AVDecodeT8",
+              "inputs": {
+                "av_latent": [
+                  "10",
+                  0
+                ],
+                "video_vae": [
+                  "3",
+                  0
+                ],
+                "audio_vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "12",
+                  1
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderBypassModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3DualClockSamplerT8",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "av_latent": [
+                  "5",
+                  1
+                ],
+                "steps": 8,
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            },
+            "21": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_ref_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "original",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "quality": "fast",
+          "image": "aics_video_input_0123456789abcdef.png"
+        },
+        "imageSizes": {
+          "aics_video_input_0123456789abcdef.png": {
+            "width": 600,
+            "height": 1000
+          }
+        }
+      },
+      "expected": {
+        "input": {
+          "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "original",
+          "quality": "fast",
+          "width": 352,
+          "height": 608,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 352,
+                "height": 608,
+                "length": 73,
+                "first_frame": [
+                  "17",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "original",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "quality": "standard",
+          "image": "aics_video_input_0123456789abcdef.png"
+        },
+        "imageSizes": {
+          "aics_video_input_0123456789abcdef.png": {
+            "width": 600,
+            "height": 1000
+          }
+        }
+      },
+      "expected": {
+        "input": {
+          "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "original",
+          "quality": "standard",
+          "width": 480,
+          "height": 800,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 480,
+                "height": 800,
+                "length": 73,
+                "first_frame": [
+                  "17",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "original",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159,
+          "quality": "fine",
+          "image": "aics_video_input_0123456789abcdef.png"
+        },
+        "imageSizes": {
+          "aics_video_input_0123456789abcdef.png": {
+            "width": 600,
+            "height": 1000
+          }
+        }
+      },
+      "expected": {
+        "input": {
+          "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+          "originalPrompt": "A quiet riverside at dusk, soft rain on the water.",
+          "negative": "",
+          "modelId": "minimax-h3",
+          "aspectRatio": "original",
+          "quality": "fine",
+          "width": 544,
+          "height": 928,
+          "duration": 3,
+          "frames": 73,
+          "fps": 24,
+          "camera": "still",
+          "motion": "subtle",
+          "seed": 314159,
+          "image": "aics_video_input_0123456789abcdef.png",
+          "lastFrame": null,
+          "references": null,
+          "dialogue": null,
+          "dialogueLang": null,
+          "shotSize": null,
+          "steps": 8,
+          "cfg": 5
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] 2D-animated, cinematic — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then A quiet riverside at dusk, soft rain on the water.\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 544,
+                "height": 928,
+                "length": 73,
+                "first_frame": [
+                  "17",
+                  0
+                ]
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 314159
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            },
+            "17": {
+              "class_type": "LoadImage",
+              "inputs": {
+                "image": "aics_video_input_0123456789abcdef.png"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "aspectRatio": "square",
+          "shots": [
+            {
+              "prompt": "A quiet room",
+              "seed": 1
+            },
+            {
+              "prompt": "A calm forest",
+              "seed": 2
+            }
+          ]
+        },
+        "batch": true
+      },
+      "expected": {
+        "input": {
+          "modelId": "minimax-h3",
+          "aspectRatio": "square",
+          "quality": "standard",
+          "linkLastFrame": true,
+          "steps": 8,
+          "adultEnabled": false,
+          "accessContext": {
+            "isLocal": true
+          },
+          "shots": [
+            {
+              "input": {
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet room\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Quiet ambient room tone with subtle movement sounds — soft fabric rustle and gentle breathing; no dialogue, no voiceover.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "originalPrompt": "A quiet room",
+                "negative": "",
+                "modelId": "minimax-h3",
+                "aspectRatio": "square",
+                "quality": "standard",
+                "width": 640,
+                "height": 640,
+                "duration": 5,
+                "frames": 124,
+                "fps": 24,
+                "camera": "still",
+                "motion": "subtle",
+                "seed": 1,
+                "image": null,
+                "lastFrame": null,
+                "references": null,
+                "dialogue": null,
+                "dialogueLang": null,
+                "shotSize": null,
+                "steps": 8,
+                "cfg": 5
+              }
+            },
+            {
+              "input": {
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A calm forest\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Wind moves through trees and grass with a soft rustle, while faint birdsong carries across the open space.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "originalPrompt": "A calm forest",
+                "negative": "",
+                "modelId": "minimax-h3",
+                "aspectRatio": "square",
+                "quality": "standard",
+                "width": 640,
+                "height": 640,
+                "duration": 5,
+                "frames": 124,
+                "fps": 24,
+                "camera": "still",
+                "motion": "subtle",
+                "seed": 2,
+                "image": null,
+                "lastFrame": null,
+                "references": null,
+                "dialogue": null,
+                "dialogueLang": null,
+                "shotSize": null,
+                "steps": 8,
+                "cfg": 5
+              }
+            }
+          ]
+        },
+        "workflows": [
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A quiet room\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Quiet ambient room tone with subtle movement sounds — soft fabric rustle and gentle breathing; no dialogue, no voiceover.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 640,
+                "height": 640,
+                "length": 124
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 1
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          },
+          {
+            "1": {
+              "class_type": "UNETLoader",
+              "inputs": {
+                "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                "weight_dtype": "default"
+              }
+            },
+            "2": {
+              "class_type": "CLIPLoader",
+              "inputs": {
+                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                "type": "minimax",
+                "device": "default"
+              }
+            },
+            "3": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+              }
+            },
+            "4": {
+              "class_type": "VAELoader",
+              "inputs": {
+                "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+              }
+            },
+            "5": {
+              "class_type": "MiniMaxH3ImageToVideo",
+              "inputs": {
+                "clip": [
+                  "2",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ],
+                "prompt": "integrated_multimodal_description: [Shot 1] 2D-animated, cinematic, A calm forest\nThe camera holds a static shot.\nThe subject moves only subtly: breathing, blinking, hair and clothing swaying.\nCharacter identity, clothing, lighting, and scene structure remain consistent from start to finish.\n\noverall_soundscape: Wind moves through trees and grass with a soft rustle, while faint birdsong carries across the open space.\n\nnon_diegetic_music: Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.",
+                "width": 640,
+                "height": 640,
+                "length": 124
+              }
+            },
+            "6": {
+              "class_type": "RandomNoise",
+              "inputs": {
+                "noise_seed": 2
+              }
+            },
+            "7": {
+              "class_type": "KSamplerSelect",
+              "inputs": {
+                "sampler_name": "euler"
+              }
+            },
+            "8": {
+              "class_type": "BasicScheduler",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "scheduler": "simple",
+                "steps": 8,
+                "denoise": 1
+              }
+            },
+            "9": {
+              "class_type": "BasicGuider",
+              "inputs": {
+                "model": [
+                  "16",
+                  0
+                ],
+                "conditioning": [
+                  "5",
+                  0
+                ]
+              }
+            },
+            "10": {
+              "class_type": "SamplerCustomAdvanced",
+              "inputs": {
+                "noise": [
+                  "6",
+                  0
+                ],
+                "guider": [
+                  "9",
+                  0
+                ],
+                "sampler": [
+                  "7",
+                  0
+                ],
+                "sigmas": [
+                  "8",
+                  0
+                ],
+                "latent_image": [
+                  "5",
+                  1
+                ]
+              }
+            },
+            "11": {
+              "class_type": "SaveVideo",
+              "inputs": {
+                "video": [
+                  "14",
+                  0
+                ],
+                "filename_prefix": "aics_video",
+                "format": "auto",
+                "codec": "auto"
+              }
+            },
+            "12": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "3",
+                  0
+                ]
+              }
+            },
+            "13": {
+              "class_type": "VAEDecodeAudio",
+              "inputs": {
+                "samples": [
+                  "10",
+                  0
+                ],
+                "vae": [
+                  "4",
+                  0
+                ]
+              }
+            },
+            "14": {
+              "class_type": "CreateVideo",
+              "inputs": {
+                "images": [
+                  "12",
+                  0
+                ],
+                "audio": [
+                  "13",
+                  0
+                ],
+                "fps": 24,
+                "bit_depth": 8
+              }
+            },
+            "15": {
+              "class_type": "LoraLoaderModelOnly",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+                "strength_model": 1
+              }
+            },
+            "16": {
+              "class_type": "MiniMaxH3SigmaShift",
+              "inputs": {
+                "model": [
+                  "15",
+                  0
+                ],
+                "shift_video": 12,
+                "shift_audio": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "minimax-h3",
+          "prompt": "nsfw nude",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        },
+        "local": false
+      },
+      "expected": {
+        "code": "ADULT_REMOTE_NOT_ALLOWED",
+        "status": 403
+      }
+    },
+    {
+      "case": {
+        "input": {
+          "modelId": "wan2.2-14b",
+          "prompt": "A quiet riverside at dusk, soft rain on the water.",
+          "aspectRatio": "landscape",
+          "camera": "still",
+          "motion": "subtle",
+          "duration": 3,
+          "seed": 314159
+        }
+      },
+      "expected": {
+        "code": "MODEL_ADAPTER_UNAVAILABLE",
+        "status": 409
+      }
+    }
+  ]
+}
