@@ -2,9 +2,15 @@
 /* 非 scoped：查看器 Teleport 到 body，scoped 属性选择器命不中，
    之前就是因此丢样式导致文字压在图上。与作品册同一处理方式。 */
 .showcase-viewer {
+  --viewer-gutter:clamp(12px,1.25vw,28px);
+  --viewer-art-padding:clamp(8px,.6vw,16px);
+  --viewer-tools-height:60px;
+  --viewer-copy-width:clamp(280px,24vw,calc(360px * var(--desktop-layout-scale,1)));
+  --viewer-width-limit:calc(100vw - 2 * var(--viewer-gutter));
+  --viewer-height-limit:calc(100dvh - 2 * var(--viewer-gutter));
   @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
   @apply tw:w-[100vw] tw:h-[100vh]; max-width: none; max-height: none;
-  @apply tw:m-0; padding: clamp(12px, 2vw, 28px); border: 0;
+  @apply tw:m-0; padding:var(--viewer-gutter); border: 0;
   @apply tw:flex tw:items-center tw:justify-center;
   background: var(--art-backdrop);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
@@ -13,9 +19,13 @@
 .showcase-viewer > .viewer-close { @apply tw:absolute tw:top-s-4 tw:right-s-4; z-index:var(--z-raised); }
 .showcase-viewer .viewer-layout {
   @apply tw:grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
-  width: min(1160px, 96vw);
-  height: min(92dvh, 900px);
+  grid-template-columns: minmax(0, 1fr) var(--viewer-copy-width);
+  /* Fit the frame to the photo, with an independent rail for controls and text.
+     The original 1160px/900px cap left increasingly large mats on 2K/4K screens. */
+  /* Even a very tall photo leaves enough room to operate the three zoom buttons. */
+  --viewer-art-width:max(240px,calc((var(--viewer-height-limit) - var(--viewer-tools-height) - 2 * var(--viewer-art-padding) - 2px) * var(--viewer-image-ratio) + 2 * var(--viewer-art-padding)));
+  width:min(var(--viewer-width-limit),calc(var(--viewer-art-width) + var(--viewer-copy-width) + 2px));
+  height:min(var(--viewer-height-limit),calc((var(--viewer-width-limit) - var(--viewer-copy-width) - 2 * var(--viewer-art-padding) - 2px) / var(--viewer-image-ratio) + var(--viewer-tools-height) + 2 * var(--viewer-art-padding) + 2px));
   @apply tw:overflow-hidden;
   border: 1px solid color-mix(in srgb, var(--on-art-line) 42%, transparent);
   @apply tw:rounded-stage;
@@ -26,24 +36,28 @@
 }
 .showcase-viewer .viewer-art {
   @apply tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center;
-  padding: clamp(16px, 3vw, 40px);
+  container-type:inline-size;
   background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
 }
-/* The image fits the actual art pane, including its padding; viewport-sized
-   limits used to clip the image and made a thumbnail-to-image flight impossible. */
-.showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0; }
+/* The clipped art region and the toolbar occupy separate grid rows, even when zoomed. */
+.showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) var(--viewer-tools-height); }
+.showcase-viewer .zoom-viewport { padding:var(--viewer-art-padding); }
 .showcase-viewer .viewer-art .zoom-transform-layer { @apply tw:h-full tw:w-full; }
-.showcase-viewer .viewer-art .zoomable-img { @apply tw:max-h-full; }
+.showcase-viewer .viewer-art .zoomable-img { @apply tw:w-full tw:h-full tw:max-h-full; border-radius:var(--r-sm); }
+.showcase-viewer .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:min-w-0; padding:6px var(--s-3); border-top:1px solid var(--on-art-line); background:var(--art-backdrop); cursor:default; }
+.showcase-viewer .zoom-controls { position:static; transform:none; flex:0 0 auto; padding:0; border:0; backdrop-filter:none; }
 /* Controls remain on the same dark art surface in both application themes. */
-.showcase-viewer .zoom-controls, .showcase-viewer .studio-tooltip { background: var(--art-scrim); color: var(--on-art-primary); }
+.showcase-viewer .zoom-controls { background:transparent; color:var(--on-art-primary); }
+.showcase-viewer .studio-tooltip { background: var(--art-scrim); color: var(--on-art-primary); }
 .showcase-viewer .zoom-control { background: var(--on-art-fill); color: var(--on-art-primary); }
 .showcase-viewer .zoom-control:focus-visible { outline-color: var(--on-art-primary); }
 .showcase-viewer .zoom-level { color: var(--on-art-primary); }
-.showcase-viewer .zoom-hint { padding: var(--s-1) var(--s-2); @apply tw:rounded-sm; background: var(--art-scrim); color: var(--on-art-primary); }
+.showcase-viewer .zoom-hint { position:static; color:var(--on-art-secondary); @apply tw:text-label-xs; }
+@container (max-width:520px) { .showcase-viewer .zoom-hint { display:none; } }
 .showcase-viewer .viewer-image-fallback { color:var(--on-art-secondary); @apply tw:text-body-sm; }
 .showcase-viewer .viewer-copy {
   @apply tw:min-w-0 tw:overflow-y-auto;
-  padding: clamp(20px, 3vw, 36px);
+  padding:clamp(20px,1.6vw,32px);
   border-left: 1px solid color-mix(in srgb, var(--on-art-line) 30%, transparent);
   background: transparent;
   color: var(--on-art-primary);
@@ -81,16 +95,12 @@
   background: color-mix(in srgb, var(--on-art-line) 12%, transparent);
 }
 
-@media (max-width: 1000px) {
-  .showcase-viewer .viewer-layout { grid-template-columns: minmax(0, 1fr) 320px; }
-}
 @media (max-width: 768px) {
   .showcase-viewer { @apply tw:p-0; }
   .showcase-viewer .viewer-layout {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 46dvh) minmax(0, 1fr);
-    @apply tw:w-[100vw] tw:max-h-[100vh]; border-radius: 0; border: 0;
+    @apply tw:w-[100vw] tw:h-[100dvh] tw:max-h-[100vh]; border-radius: 0; border: 0;
   }
-  .showcase-viewer .viewer-art { @apply tw:p-s-3; }
   .showcase-viewer .viewer-copy { border-left: 0; border-top: 1px solid var(--border-soft); }
 }

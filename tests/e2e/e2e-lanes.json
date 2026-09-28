@@ -96,6 +96,7 @@
     { "file": "focus-controls.spec.ts", "lane": "critical", "risk": "控件焦点可见性", "reason": "系统强制颜色及双主题键盘交互。" },
     { "file": "result-shelf.spec.ts", "lane": "critical", "risk": "结果预览影响生成参数", "reason": "确保预览不改写当前配方。" },
     { "file": "search-focus.spec.ts", "lane": "critical", "risk": "搜索焦点漂移", "reason": "跨页面搜索输入及滚动位置保护。" },
-    { "file": "showcase-scroll.spec.ts", "lane": "critical", "risk": "参考预览滚动恢复", "reason": "覆盖原生焦点与键盘关闭路径。" }
+    { "file": "showcase-scroll.spec.ts", "lane": "critical", "risk": "参考预览滚动恢复", "reason": "覆盖原生焦点与键盘关闭路径。" },
+    { "file": "showcase-image-layout.spec.ts", "lane": "nightly", "risk": "参考画册画幅与工具栏遮挡", "reason": "桌面三档分辨率、窄窗口与双主题检查横竖混排、完整预览、缩放和焦点；使用中性图片夹具。" }
   ]
 }

@@ -37,6 +37,8 @@
 
 该批主线的本机完整安装见 [桌面安装与构建修复（2026-09-28）](audits/2026-09-28/desktop-installation.md)，记录 `a520afc8` 的安装包绑定、角色主题按需加载和安装后运行核验。
 
+参考画册横图排布、预览留边及工具栏避让的后续调整见 [画幅与预览优化（2026-09-28）](audits/2026-09-28/showcase-image-layout.md)，包含桌面三档视口、200% 缩放有效空间与极端画幅验证。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯

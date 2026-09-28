@@ -91,13 +91,13 @@
            没有 top layer、没有 ::backdrop，背景不 inert，Tab 能直接跑到下面的网格里 -->
       <dialog ref="dialogEl" class="showcase-viewer" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
-        <div v-if="viewerMounted && currentEntry" class="viewer-layout">
+        <div v-if="viewerMounted && currentEntry" class="viewer-layout" :style="{ '--viewer-image-ratio': viewerAspectRatio }">
           <div class="viewer-art">
             <ZoomableImageViewer
               :src="resolveRuntimeUrl(imgSrc(currentEntry))"
               :preview-src="viewerPreviewSrc"
               :alt="currentEntry.title"
-              @load="viewerImageReady = true"
+              @load="onViewerImageLoad"
               @error="viewerImageFailed = true"
             >
               <template #fallback>
@@ -225,6 +225,12 @@ const viewerMotion = useFluidDialog(dialogEl, {
 })
 const viewerImageFailed = ref(false)
 const viewerImageReady = ref(false)
+const viewerAspectRatio = ref(2 / 3)
+function onViewerImageLoad() {
+  viewerImageReady.value = true
+  const image = dialogEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
+  if (image?.naturalWidth && image.naturalHeight) viewerAspectRatio.value = image.naturalWidth / image.naturalHeight
+}
 
 const viewerVersion = ref(0)
 const imgVersion = ref(Date.now())
@@ -304,7 +310,10 @@ const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
-  viewerPreviewSrc.value = viewerHero.capture(sourceImage(id))
+  const source = sourceImage(id), entry = filtered.value.find(item => item.id === id)
+  viewerAspectRatio.value = source?.naturalWidth && source.naturalHeight ? source.naturalWidth / source.naturalHeight
+    : entry?.width && entry.height ? entry.width / entry.height : 2 / 3
+  viewerPreviewSrc.value = viewerHero.capture(source)
   if (dialogEl.value?.open) viewerHero.capture(null)
   // Normal reopen uses the same decoded resource. Only a failed image needs a retry key.
   if (viewerImageFailed.value) viewerVersion.value++

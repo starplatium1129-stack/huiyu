@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="containerEl"
     class="zoomable-image-viewer tw:relative tw:w-full tw:h-full tw:min-h-[280px] tw:flex tw:items-center tw:justify-center tw:overflow-hidden tw:select-none tw:cursor-zoom-in tw:touch-none"
     :class="{ 'is-zoomed': scale > 1.01, 'is-panning': isPanning }"
     role="group"
@@ -14,6 +13,7 @@
     @pointercancel="stopPan"
     @dblclick="toggleZoom"
   >
+    <div ref="viewportEl" class="zoom-viewport tw:relative tw:w-full tw:h-full tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center tw:overflow-hidden">
     <div
       class="zoom-transform-layer tw:relative tw:flex tw:items-center tw:justify-center tw:max-w-full tw:max-h-full"
       :style="zoomLayerStyle"
@@ -49,8 +49,10 @@
         </slot>
       </div>
     </div>
+    </div>
 
     <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
+    <div class="zoom-toolbar" @pointerdown.stop @dblclick.stop @wheel.stop>
     <div class="zoom-controls tw:absolute tw:bottom-[12px] tw:left-1/2 tw:flex tw:items-center tw:gap-[6px] tw:p-[4px] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_84%,_transparent)] tw:border tw:border-solid tw:border-soft tw:[z-index:var(--z-raised)] tw:text-label-sm tw:text-primary" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
       <span class="zoom-level tw:[margin:0_4px] tw:[font-family:var(--font-mono,_monospace)] tw:font-semibold tw:[color:var(--archive-blue)]" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
       <button type="button" class="zoom-control tw:grid tw:place-items-center tw:w-[36px] tw:h-[36px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:[background:color-mix(in_srgb,_var(--bg-elevated)_78%,_transparent)] tw:text-primary tw:cursor-pointer" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
@@ -65,6 +67,7 @@
     </div>
     <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-[8px] tw:right-[12px] tw:text-mono-sm tw:[color:color-mix(in_srgb,_white_40%,_transparent)] tw:pointer-events-none">
       双击或滚轮放大查看细节
+    </div>
     </div>
   </div>
 </template>
@@ -92,7 +95,7 @@ const emit = defineEmits<{
 const minScale = props.minScale ?? 1
 const maxScale = props.maxScale ?? 4
 
-const containerEl = ref<HTMLElement | null>(null)
+const viewportEl = ref<HTMLElement | null>(null)
 const imageEl = ref<HTMLImageElement | null>(null)
 const fullImageEl = ref<HTMLImageElement | null>(null)
 const displayedSrc = ref(props.previewSrc || props.src)
@@ -185,8 +188,8 @@ function toggleZoom(event: MouseEvent) {
   }
   scale.value = Number(targetScale.toFixed(2))
   // 聚焦到点击位置
-  if (containerEl.value) {
-    const rect = containerEl.value.getBoundingClientRect()
+  if (viewportEl.value) {
+    const rect = viewportEl.value.getBoundingClientRect()
     const offsetX = event.clientX - (rect.left + rect.width / 2)
     const offsetY = event.clientY - (rect.top + rect.height / 2)
     translateX.value = -offsetX * 1.2
@@ -305,6 +308,9 @@ function stopPan(event: PointerEvent) {
   transform: translateX(-50%);
   backdrop-filter: blur(8px);
 }
+
+/* Hosts can dock the existing toolbar outside the clipped art viewport. */
+.zoom-toolbar { display: contents; }
 
 .zoom-control:hover {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));

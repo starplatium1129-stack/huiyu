@@ -39,8 +39,10 @@
 .result-meta { @apply tw:text-muted tw:text-label-xs tw:leading-body; }
 .result-meta strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric:tabular-nums; }
 
-/* 按行阅读，原始图像比例由样张组件保留，信息独立放在画面下方。 */
-.showcase-grid { @apply tw:grid; grid-template-columns:repeat(4, minmax(0,1fr)); @apply tw:gap-s-5; align-items:start; }
+/* 按原始比例分配行宽：横图获得更多空间，同一行画面等高；DOM 与键盘顺序不变。 */
+.showcase-grid { --showcase-row-height:calc(320px * var(--desktop-layout-scale,1)); @apply tw:flex tw:flex-wrap tw:gap-s-5; align-items:start; }
+/* 最后一行保留正常画幅，不把孤立样张拉成一整屏。 */
+.showcase-grid::after { content:''; flex:1000000 1 0; }
 .load-wrap { @apply tw:flex tw:justify-center; margin:var(--s-6) 0; }
 .load-more { @apply tw:min-w-[190px]; }
 .viewer-position { @apply tw:text-label-xs; color:var(--on-art-secondary); @apply tw:text-center; }
@@ -48,13 +50,13 @@
 .viewer-production { padding-block:var(--s-3); border-block:1px solid var(--on-art-line); margin-block:var(--s-4); color:var(--on-art-secondary); @apply tw:text-label; }
 .viewer-production summary { @apply tw:cursor-pointer tw:min-h-[32px]; }
 
-@media (max-width:1000px) { .showcase-grid { grid-template-columns:repeat(3, minmax(0,1fr)); } }
+@media (max-width:1000px) { .showcase-grid { --showcase-row-height:280px; } }
 @media (max-width:768px) {
   .search-row { @apply tw:gap-s-2; }
   .search-field { flex-basis:100%; }
   .filter-dropdowns { flex-basis:100%; }
   .showcase-page .toolbar-shell { @apply tw:relative tw:top-auto; }
-  .showcase-grid { grid-template-columns:repeat(2, minmax(0,1fr)); @apply tw:gap-s-3; }
+  .showcase-grid { --showcase-row-height:220px; @apply tw:gap-s-3; }
   .filter-summary { @apply tw:text-label-xs; }
 }
 @media (max-width:480px) { .hero-actions { @apply tw:gap-s-1; } .hero-actions .btn { padding-inline:var(--s-2); } .filter-pill { padding-inline:var(--s-3); } }
