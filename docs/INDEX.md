@@ -29,6 +29,8 @@
 
 全站布局与二级导航的最新修复见 [布局审计与统一（2026-09-28）](audits/2026-09-28/layout-unification.md)，包含工作台右栏、跨页样式隔离、双主题/窄屏验证和桌面交付边界。
 
+以角色档案为参照的审美与实用改进见 [桌面页面美观与实用审计（2026-09-28）](audits/2026-09-28/desktop-aesthetics.md)，包含逐页结论、九项发现与分批调整顺序。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯
