@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { isPopularPortraitPending, popularPortraitSrc } from './popularPortraitSource'
+import onboarding from '../../data/popular-onboarding.json'
 const read = (path: string) => readFileSync(path)
 const digest = (path: string) => createHash('sha256').update(read(path)).digest('hex')
 const selected = JSON.parse(read('assets/characters/portrait-selections.json').toString()) as { entries: Record<string, { entryId: string; rating: string; portraitSha256: string }> }
@@ -12,7 +13,14 @@ describe('character portrait identity', () => {
     const seen = new Map<string, string>()
     for (const { id } of catalog.characters) {
       if (isPopularPortraitPending(id)) {
-        expect(popularPortraitSrc(id)).toBe('/assets/characters/portrait-pending.svg')
+        const registration = onboarding.characters.find(character => character.id === id)
+        if (registration && 'portraitPlaceholder' in registration && registration.portraitPlaceholder) {
+          expect(popularPortraitSrc(id)).toBe(`/assets/characters/thumbs/popular-${id}.webp?placeholder=1`)
+          expect(read(`assets/characters/popular-${id}.png`).length).toBeGreaterThan(0)
+          expect(read(`assets/characters/thumbs/popular-${id}.webp`).length).toBeGreaterThan(0)
+        } else {
+          expect(popularPortraitSrc(id)).toBe('/assets/characters/portrait-pending.svg')
+        }
         continue
       }
       const hash = digest('assets/characters/popular-' + id + '.png')

@@ -10,7 +10,7 @@ vi.mock('@/utils/imageDecodeBudget', () => ({ withinImageDecodeBudget: mock.budg
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mock.confirm }))
 vi.mock('vue-router', () => ({ onBeforeRouteLeave: vi.fn() }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ loadCharacterShell: mock.metadata,
-  characters: [{ id: 'nene', name: '宁宁', portrait: { image: '../assets/characters/nene-official.webp' } }, { id: 'natsume', name: '夏目' }],
+  characters: [{ id: 'nene', name: '宁宁', portrait: { image: '../assets/characters/nene-official.webp' } }, { id: 'natsume', name: '夏目' }, { id: 'aisha_greyrat', name: '爱莎' }],
 }) }))
 const entry = { revision: 'new', portraitUrl: '/api/character-art/nene/new/portrait.png', thumbnailUrl: '/api/character-art/nene/new/thumbnail.png', particleUrl: '/api/character-art/nene/new/particles.json', width: 500, height: 700, hasTransparency: true }
 const picture = () => new File(['fixture'], 'portrait.png', { type: 'image/png' })
@@ -43,6 +43,17 @@ it('previews locally then applies one versioned replacement and releases the can
   expect(flow.file.value).toBeNull()
   expect(flow.feedback.value).toContain('粒子已同步更新')
   expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:candidate')
+})
+
+it('shows the registered placeholder before replacement and after restoring builtin artwork', async () => {
+  const flow = setup('aisha_greyrat'); await flushPromises()
+  const builtin = '/assets/characters/popular-aisha_greyrat.png?placeholder=1'
+  expect(flow.originalUrl.value).toBe(builtin)
+  adoptCharacterArtManifest({ version: '1', entries: { aisha_greyrat: entry } })
+  expect(flow.originalUrl.value).toBe(entry.portraitUrl)
+  mock.save.mockImplementation(async () => { clearCharacterArtManifest(); return { version: '2', entries: {} } })
+  await flow.reset()
+  expect(flow.originalUrl.value).toBe(builtin)
 })
 
 it('preserves an unsaved candidate when switching is declined and retains it on conflict', async () => {

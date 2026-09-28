@@ -2,7 +2,7 @@ import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vu
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import { parseCharacterProfiles } from '@/utils/characterProfiles'
-import { isPopularPortraitPending } from '@/utils/popularPortraitSource'
+import { isPopularPortraitPending, popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { withinImageDecodeBudget } from '@/utils/imageDecodeBudget'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { confirmAction } from '@/composables/useConfirm'
@@ -21,7 +21,7 @@ export function useCharacterArtManager(initialId: () => string | undefined) {
   const custom = computed(() => characterArtEntry(selectedId.value))
   const originalUrl = computed(() => {
     if (custom.value) return custom.value.portraitUrl
-    if (isPopularPortraitPending(selectedId.value)) return '/assets/characters/portrait-pending.svg'
+    if (isPopularPortraitPending(selectedId.value)) return popularPortraitFullSrc(selectedId.value)
     return current.value?.portrait?.image?.replace(/^\.\.\//, '/') || ''
   })
   const abort = new AbortController()

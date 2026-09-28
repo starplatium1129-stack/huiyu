@@ -422,7 +422,9 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     // cinematic volumetric light into every kitchen, classroom and shop.
     if (["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) return; // Only classification was audited; adult authoring belongs to the other task.
     if (sfwOnlyIds.has(blueprint.characterId!) || legacyAdultIds.has(blueprint.characterId!)
-      || (onboardingIds.has(blueprint.characterId!) && !blueprint.adult)) {
+      || (onboardingIds.has(blueprint.characterId!) && !blueprint.adult)
+      // Aisha's covered domestic scenes use concrete emitters, not a mandatory fog/DOF template.
+      || blueprint.characterId === 'aisha_greyrat') {
       assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
       assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
     } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
