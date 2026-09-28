@@ -44,5 +44,6 @@
 - 已确认使用隔离夹具、无生产访问的本地测试可自主执行、修复本次导致的失败并定向重跑。真实模型/设备调用、安装和发布仍按实际任务授权，不能把所有测试都当作无副作用。
 - 桌面同步只用 deploy-desktop.bat；已有当前构建可用 -SkipBuild，依赖或 exe 变化需完整安装；UAC 由用户操作。详见 [部署指南](docs/desktop-deployment.md)。
 - 简洁说明结果、验证和剩余限制；未执行、失败或需设备验收的步骤如实列出，历史 PASS 不替代当次证据。
+- 性能验证材料以汇总报告入库；原始采样 JSON、截图和日志放在被忽略的 `runtime/`，不入 Git。实现与必要回归测试正常提交。
 
 维护依据：[OpenAI 关于 Astra 的 skills 与提示词建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)（2026-09-12 核对）。项目质量红线属于本地约束。
