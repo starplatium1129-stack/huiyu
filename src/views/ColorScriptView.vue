@@ -1,23 +1,10 @@
 <template>
-  <article class="page" style="--page-max:1000px">
-    <ArchivePageHero
-      chapter="07"
-      section="Chromatic record"
-      shape="spark"
-      label="色彩情绪的光谱粒子标记"
-      caption="COLOR SCRIPT 07 / 08"
-      compact
-    >
-      <div class="page-kicker">Color script</div>
-      <h1 class="title">色彩情绪</h1>
-      <p class="subtitle">翻开光色手帖，看看一束光、一抹颜色，怎样让故事有了心情。</p>
-    </ArchivePageHero>
-    <CreativeLibraryNav />
+  <article class="page color-script-page creative-library-page">
+    <CreativeLibraryHeader title="色彩情绪" description="选一种心情，把这一幕的色彩与光照带入工作台。" />
 
-    <ColorLightNotebook @choose="chooseMood" />
-
-    <p class="emphasis-plain tw:mb-s-3 tw:font-semibold tw:text-primary">今日心境色板 · Mood Palette</p>
-    <div ref="moodGrid" class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
+    <section class="color-selection" aria-labelledby="mood-palette-title">
+    <header class="color-section-heading"><h2 id="mood-palette-title">今日心境色板</h2><p>六种情绪，从你想讲述的片刻开始。</p></header>
+    <div ref="moodGrid" class="mood-grid color-mood-grid">
       <button
         v-for="m in MOODS" :key="m.id"
         :data-mood="m.id"
@@ -36,23 +23,26 @@
         </div>
       </button>
     </div>
+    </section>
 
     <Transition name="fade-up">
-      <div v-if="selected" ref="resultPanel" class="result-panel card-level-3 show" tabindex="-1">
-        <h3>
-          <span class="mood-icon" :style="{ '--mood-color': selected.color }"><ArchiveIcon :name="selected.iconName" /></span>
-          {{ selected.name }} → 色彩 → 光照
-        </h3>
-        <div class="palette tw:mb-s-4 tw:flex tw:flex-wrap tw:gap-s-2">
-          <div v-for="c in selected.palette" :key="c" class="palette-swatch">
-            <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
-            <span class="palette-code">{{ c }}</span>
+      <section v-if="selected" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
+        <header class="palette-result-heading">
+          <div><p>当前色板</p><h2 id="current-palette-title"><ArchiveIcon :name="selected.iconName" />{{ selected.name }}的色彩与光照</h2></div>
+          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />带入工作台使用</RouterLink>
+        </header>
+        <div class="palette-content">
+          <div class="palette tw:flex tw:flex-wrap tw:gap-s-2">
+            <div v-for="c in selected.palette" :key="c" class="palette-swatch">
+              <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
+              <span class="palette-code">{{ c }}</span>
+            </div>
           </div>
-        </div>
-        <div class="mapping-grid">
-          <div v-for="(val, key) in selected.mapping" :key="key" class="mapping-item">
-            <div class="mapping-label">{{ key }}</div>
-            <div class="mapping-value">{{ val }}</div>
+          <div class="mapping-grid">
+            <div v-for="(val, key) in selected.mapping" :key="key" class="mapping-item">
+              <div class="mapping-label">{{ key }}</div>
+              <div class="mapping-value">{{ val }}</div>
+            </div>
           </div>
         </div>
         <div v-if="violations.length" class="art-warn show">
@@ -61,15 +51,19 @@
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
-          <button class="btn btn-primary" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
+          <button class="btn btn-ghost" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
-          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 带入工作台使用</RouterLink>
           <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
-      </div>
+      </section>
     </Transition>
+    <p v-if="!selected" class="color-selection-hint"><ArchiveIcon name="palette" />选中一种情绪后，在这里查看色板与光照，再带入工作台。</p>
 
-    <h2 class="section-title spaced-lg">美术指导 · 色彩语言</h2>
+    <details class="color-reading">
+      <summary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>光源对照、氛围观察与提示词用法</small></span><ArchiveIcon name="chevron-down" /></summary>
+      <div class="color-reading-body">
+    <ColorLightNotebook @choose="chooseMood" />
+    <h2 class="section-title">美术指导 · 色彩语言</h2>
     <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
@@ -95,21 +89,19 @@
         <div class="lighting-reason">{{ l.reason }}</div>
       </div>
     </div>
+      </div>
+    </details>
   </article>
 </template>
 
 <script setup lang="ts">
 import '@/assets/css/mood.css'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
-import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
+import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
 import { ref, computed, nextTick } from 'vue'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import { useScrollReveal } from '@/composables/useScrollReveal'
 import { BANNED_TAGS } from '@/utils/promptPolicy'
-
-useScrollReveal()
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
 const LIGHTINGS = [
@@ -200,18 +192,37 @@ function exportTxt() {
 </script>
 
 <style scoped>@reference "../assets/css/tailwind.css";
+.color-section-heading, .palette-result-heading { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4; }
+.color-section-heading h2, .palette-result-heading h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.color-section-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
+.color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
+.palette-result-heading > div > p { @apply tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-xs; }
+.palette-result-heading h2 { @apply tw:flex tw:items-center tw:gap-s-2; }
+.palette-result-heading h2 .archive-icon { @apply tw:text-accent; }
+.palette-content { @apply tw:grid tw:gap-s-5 tw:mb-s-4; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); align-items:start; }
+.color-selection-hint { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-body-sm tw:leading-body; padding-block:var(--s-4); }
+.color-selection-hint .archive-icon { @apply tw:text-accent; }
+.color-reading { @apply tw:mt-s-6; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+.color-reading > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[72px] tw:cursor-pointer; list-style:none; padding-block:var(--s-3); }
+.color-reading > summary::-webkit-details-marker { display:none; }
+.color-reading > summary > span { @apply tw:grid tw:gap-s-1; }
+.color-reading > summary strong { @apply tw:text-primary tw:text-body tw:font-semibold; }
+.color-reading > summary small { @apply tw:text-secondary tw:text-body-sm; }
+.color-reading > summary > .archive-icon:first-child { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
+.color-reading > summary > .archive-icon:last-child { @apply tw:ml-auto tw:text-muted; }
+.color-reading[open] > summary > .archive-icon:last-child { transform:rotate(180deg); }
+.color-reading > summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.color-reading-body { @apply tw:pb-s-5; }
+.color-reading-body :deep(.light-notebook) { margin-top:var(--s-4); }
 .section-title { @apply tw:text-title-sm tw:font-bold tw:mb-s-2; }
-/* 章节间距:替代原先三处内联 style="margin-top:..." */
-.section-title.spaced-lg { @apply tw:mt-s-8; }
 .section-title.spaced { @apply tw:mt-s-6; }
 
 .result-panel { @apply tw:p-s-5; border:1px solid var(--accent); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
-.result-panel h3 { @apply tw:mb-s-3 tw:text-title-sm; }
 /* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
-.palette-swatch { @apply tw:w-[76px] tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
+.palette-swatch { flex:1 1 76px; @apply tw:w-[76px] tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
 .palette-color { @apply tw:block tw:h-[48px]; background:var(--swatch); }
 .palette-code { @apply tw:block; padding:var(--s-2) var(--s-1); @apply tw:text-center tw:text-primary; font:500 var(--fs-body-sm)/var(--lh-label) var(--font-mono); }
-.mapping-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); @apply tw:gap-s-3 tw:mb-s-4; }
+.mapping-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); @apply tw:gap-s-3; }
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3; }
 .mapping-label { @apply tw:text-label-sm tw:text-muted tw:uppercase; letter-spacing:.05em; @apply tw:mb-s-1; }
 .mapping-value { @apply tw:text-body tw:font-semibold; }

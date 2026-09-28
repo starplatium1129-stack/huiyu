@@ -1,16 +1,10 @@
 <template>
-  <article class="page style-page" style="--page-max:1120px">
-    <a class="nav-back" href="/" @click.prevent="$router.push('/')">← 回首页</a>
-    <ArchivePageHero chapter="04" section="Visual grammar" shape="spark" label="色彩与光线" caption="PALETTE 04 / 08" compact>
-      <div class="page-kicker">Art direction</div>
-      <h1 class="title">画风</h1>
-      <p class="subtitle">为喜欢的角色，挑一束恰好的光。</p>
-    </ArchivePageHero>
-    <CreativeLibraryNav />
+  <article class="page style-page creative-library-page">
+    <CreativeLibraryHeader title="画风" description="翻看氛围参考，为喜欢的角色挑一束恰好的光。" />
 
     <header class="style-chapter" data-reveal>
-      <div><span class="style-eyebrow">光色手帖 / 01—06</span><h2>同一种心动，不同的色调。</h2></div>
-      <p>翻看画册里的氛围参考，从光线、色彩与留白中，找到这一幕的心情。</p>
+      <h2>六种心情，六种色调</h2>
+      <p>选择配色，带到绘制工作台继续创作。</p>
     </header>
     <div class="mood-grid style-mood-grid" data-reveal data-reveal-delay="1">
       <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
@@ -40,9 +34,8 @@ import '@/assets/css/mood.css'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { ref } from 'vue'
-import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
+import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import { COLOR_MOODS } from '@/config/promptConstants'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useMoodReferences } from '@/composables/useMoodReferences'
@@ -64,11 +57,8 @@ useScrollReveal()
 </script>
 
 <style scoped>@reference "../assets/css/tailwind.css";
-.style-page { @apply tw:pt-s-5 tw:pb-s-8; }
-.style-page :deep(.archive-copy) { padding-block:var(--s-4); }
-.style-chapter { @apply tw:flex tw:justify-between; align-items:end; @apply tw:gap-s-5; margin:var(--s-6) 0 var(--s-5); }
-.style-eyebrow { @apply tw:text-body-sm tw:text-accent; letter-spacing:.08em; }
-.style-chapter h2 { margin:var(--s-2) 0 0; font:500 var(--fs-title)/var(--lh-label) var(--font-serif); }
+.style-chapter { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-5 tw:mb-s-4; }
+.style-chapter h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .style-chapter p { @apply tw:max-w-[340px] tw:text-secondary tw:text-body-sm tw:leading-body; }
 .style-mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-5; }
 .style-mood-card { @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); }

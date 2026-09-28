@@ -1,6 +1,6 @@
 <template>
   <article class="page library-page popular-scene-library" style="--page-max:1500px;" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>翻一翻角色的日常与远方，挑选想要绘制的那一幕。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost"><ArchiveIcon name="character" />查看角色档案</RouterLink></header>
+    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>翻一翻角色的日常与远方，挑选想要绘制的那一幕。</p></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div class="library-detail" v-content-motion="selectedId">
@@ -97,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 

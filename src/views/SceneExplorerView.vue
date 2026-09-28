@@ -43,6 +43,8 @@
       </div>
     </section>
 
+    <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
+
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
       <div class="toolbar-primary">
@@ -69,7 +71,10 @@
       </div>
 
       <div id="scenePersonalViews" class="scene-personal-nav" aria-label="我的场景视图">
-        <span class="scene-personal-label">我的场景</span>
+        <span class="scene-personal-label">浏览范围</span>
+        <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
+          :aria-pressed="fTier === 'core' && !showHidden"
+          @click="showRecommendedScenes">人设核心</button>
         <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
           :aria-pressed="fTier === 'personal' && !showHidden"
           @click="showPersonalScenes">常用 {{ usedCount }}</button>
@@ -88,7 +93,7 @@
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
           :class="{ active: activeTheme === d.id }"
           :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
-          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.label }} {{ themeCount(d.id) }}</button>
+          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.id === 'all' ? '全部分类' : d.label }} {{ themeCount(d.id) }}</button>
       </div>
 
       <div v-if="searchQuery && intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
@@ -213,6 +218,7 @@
 </template>
 
 <script setup lang="ts">
+import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -248,6 +254,7 @@ activeFacetCount,
 fTier,
 showHidden,
 showPersonalScenes,
+showRecommendedScenes,
 usedCount,
 sortBy,
 showFavoriteScenes,

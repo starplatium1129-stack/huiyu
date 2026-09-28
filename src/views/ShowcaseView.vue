@@ -8,18 +8,17 @@
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
     </header>
 
-    <ShowcaseAlbums v-if="!manifestLoading" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" @select="typeFilter = $event" />
-
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
-        <StudioSearch v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
-        <div class="filter-group collection-scope tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" role="group" aria-label="样张来源">
+        <div class="collection-scope showcase-browse-modes" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
+        <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
+        <div v-show="!albumsOpen" class="filter-group collection-scope tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" role="group" aria-label="样张来源">
           <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
-        <button v-if="hasFilters" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
+        <button v-if="hasFilters && !albumsOpen" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
       </div>
-      <details class="showcase-filters">
+      <details v-show="!albumsOpen" class="showcase-filters">
         <summary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span><ArchiveIcon name="chevron-down" /></summary>
         <div class="filter-details">
           <div class="filter-group filter-dropdowns tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
@@ -37,7 +36,12 @@
       </details>
     </div>
 
-    <div class="showcase-results-heading"><h2>{{ typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter) }}</h2><span class="result-meta" id="resultMeta" role="status">显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊</span></div>
+    <div v-show="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
+      <ShowcaseAlbums v-if="!manifestLoading && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" @select="openAlbum" />
+      <ArchiveStatePanel v-if="manifestLoading || unavailable || !albums.length" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
+    </div>
+    <div v-show="!albumsOpen" class="showcase-image-browse">
+    <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status">显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊</span></div>
     <p v-if="reloadError && !unavailable" role="status">{{ reloadError }}</p>
     <ArchiveStatePanel
       v-if="unavailable"
@@ -78,6 +82,7 @@
 
     <div ref="loadSentinel" v-show="paged.length < filtered.length" class="load-wrap">
       <button class="btn btn-ghost load-more" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }}）</button>
+    </div>
     </div>
 
     <!-- 查看器 dialog -->
@@ -153,6 +158,7 @@ import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
 import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
 import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
+import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
@@ -184,6 +190,7 @@ const manifestLoading = ref(true)
 const searchQuery = ref('')
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
+const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum } = useAlbumNavigation(typeFilter)
 const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
 const visibleCount= ref(PAGE_SIZE)
@@ -419,7 +426,7 @@ onMounted(async () => {
   if ('IntersectionObserver' in window) {
     sentinelObserver = new IntersectionObserver(
       (entries) => {
-        if (entries.some(e => e.isIntersecting) && visibleCount.value < filtered.value.length) loadMore()
+        if (!albumsOpen.value && entries.some(e => e.isIntersecting) && visibleCount.value < filtered.value.length) loadMore()
       },
       { rootMargin: '600px 0px' }
     )
@@ -439,100 +446,4 @@ onUnmounted(() => {
 </script>
 
 <style scoped src="@/assets/css/showcase-view.css"></style>
-<style>@reference "../assets/css/tailwind.css";
-/* 非 scoped：查看器 Teleport 到 body，scoped 属性选择器命不中，
-   之前就是因此丢样式导致文字压在图上。与作品册同一处理方式。 */
-.showcase-viewer {
-  @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
-  @apply tw:w-[100vw] tw:h-[100vh]; max-width: none; max-height: none;
-  @apply tw:m-0; padding: clamp(12px, 2vw, 28px); border: 0;
-  @apply tw:flex tw:items-center tw:justify-center;
-  background: var(--art-backdrop);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-}
-.showcase-viewer:not([open]) { @apply tw:hidden; }
-.showcase-viewer > .viewer-close { @apply tw:absolute tw:top-s-4 tw:right-s-4; z-index:var(--z-raised); }
-.showcase-viewer .viewer-layout {
-  @apply tw:grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
-  width: min(1160px, 96vw);
-  height: min(92dvh, 900px);
-  @apply tw:overflow-hidden;
-  border: 1px solid color-mix(in srgb, var(--on-art-line) 42%, transparent);
-  @apply tw:rounded-stage;
-  /* 查看器永远处于暗色画布，不随浅色主题变亮 */
-  background: color-mix(in srgb, var(--art-backdrop) 84%, var(--bg-deep));
-  color: var(--on-art-primary);
-  box-shadow: var(--shadow-lg);
-}
-.showcase-viewer .viewer-art {
-  @apply tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center;
-  padding: clamp(16px, 3vw, 40px);
-  background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
-}
-/* The image fits the actual art pane, including its padding; viewport-sized
-   limits used to clip the image and made a thumbnail-to-image flight impossible. */
-.showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0; }
-.showcase-viewer .viewer-art .zoom-transform-layer { @apply tw:h-full tw:w-full; }
-.showcase-viewer .viewer-art .zoomable-img { @apply tw:max-h-full; }
-/* Controls remain on the same dark art surface in both application themes. */
-.showcase-viewer .zoom-controls, .showcase-viewer .studio-tooltip { background: var(--art-scrim); color: var(--on-art-primary); }
-.showcase-viewer .zoom-control { background: var(--on-art-fill); color: var(--on-art-primary); }
-.showcase-viewer .zoom-control:focus-visible { outline-color: var(--on-art-primary); }
-.showcase-viewer .zoom-level { color: var(--on-art-primary); }
-.showcase-viewer .zoom-hint { padding: var(--s-1) var(--s-2); @apply tw:rounded-sm; background: var(--art-scrim); color: var(--on-art-primary); }
-.showcase-viewer .viewer-image-fallback { color:var(--on-art-secondary); @apply tw:text-body-sm; }
-.showcase-viewer .viewer-copy {
-  @apply tw:min-w-0 tw:overflow-y-auto;
-  padding: clamp(20px, 3vw, 36px);
-  border-left: 1px solid color-mix(in srgb, var(--on-art-line) 30%, transparent);
-  background: transparent;
-  color: var(--on-art-primary);
-}
-.showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); border-color: color-mix(in srgb, var(--on-art-line) 55%, transparent); background: color-mix(in srgb, var(--art-scrim) 65%, transparent); color: var(--on-art-primary); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-.showcase-viewer .viewer-copy .viewer-close:hover { border-color: var(--on-art-line); color: var(--on-art-primary); background: color-mix(in srgb, var(--on-art-line) 14%, transparent); }
-.showcase-viewer .viewer-copy .viewer-kicker { color: var(--on-art-secondary); }
-.showcase-viewer .viewer-copy h2 {
-  margin: var(--s-3) 0 var(--s-2);
-  font-size: clamp(1.25rem, 2.4vw, 1.9rem); @apply tw:leading-tight;
-}
-.showcase-viewer .viewer-meta { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:mb-s-4; }
-.showcase-viewer .viewer-meta span {
-  @apply tw:max-w-full; overflow-wrap:anywhere;
-  padding: var(--s-1) var(--s-2); @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--on-art-line) 16%, transparent);
-  color: var(--on-art-primary);
-  font: 700 var(--fs-mono-sm) var(--font-mono);
-}
-.showcase-viewer .viewer-meta-gen { margin-top: calc(var(--s-4) * -0.4); }
-.showcase-viewer .viewer-popular-note { @apply tw:m-0; color: var(--on-art-secondary); @apply tw:text-body-sm tw:leading-loose; }
-.showcase-viewer .viewer-story {
-  color: var(--on-art-secondary); @apply tw:text-body-sm tw:leading-loose tw:mb-s-5;
-}
-.showcase-viewer .viewer-actions { @apply tw:grid tw:gap-s-2; }
-.showcase-viewer .viewer-actions .btn { @apply tw:justify-center; }
-/* 查看器永远处于暗色画布：按钮用 on-art 色系，避免浅色主题下对比不足 */
-.showcase-viewer .btn-ghost {
-  color: var(--on-art-secondary);
-  border-color: color-mix(in srgb, var(--on-art-line) 62%, transparent);
-}
-.showcase-viewer .btn-ghost:hover {
-  color: var(--on-art-primary);
-  border-color: var(--on-art-line);
-  background: color-mix(in srgb, var(--on-art-line) 12%, transparent);
-}
-
-@media (max-width: 1000px) {
-  .showcase-viewer .viewer-layout { grid-template-columns: minmax(0, 1fr) 320px; }
-}
-@media (max-width: 768px) {
-  .showcase-viewer { @apply tw:p-0; }
-  .showcase-viewer .viewer-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 46dvh) minmax(0, 1fr);
-    @apply tw:w-[100vw] tw:max-h-[100vh]; border-radius: 0; border: 0;
-  }
-  .showcase-viewer .viewer-art { @apply tw:p-s-3; }
-  .showcase-viewer .viewer-copy { border-left: 0; border-top: 1px solid var(--border-soft); }
-}
-</style>
+<style src="@/assets/css/showcase-viewer.css"></style>

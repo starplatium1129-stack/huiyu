@@ -38,11 +38,10 @@ for (const width of [1440, 768, 390]) {
     await openAtelier(page)
     const toggle = page.getByRole('button', { name: '打开导航菜单' })
     if (await toggle.isVisible()) await toggle.click()
-    await page.locator('.nav-more-trigger').click()
-    await page.locator('.nav-more-menu').getByRole('link', { name: '角色档案' }).click()
+    await page.getByRole('navigation', { name: '主导航', exact: true }).getByRole('link', { name: '角色', exact: true }).click()
     await expect(page).toHaveURL(/character$/)
     await expect(page.locator('.nav-more-trigger')).toHaveAttribute('aria-expanded', 'false')
-    await expect(page.locator('.nav-more')).toHaveAttribute('data-active', 'true')
+    await expect(page.getByRole('navigation', { name: '主导航', exact: true }).getByRole('link', { name: '角色', exact: true })).toHaveAttribute('aria-current', 'page')
   })
   test('main screens fit at ' + width, async ({ page }) => {
     test.setTimeout(90000)

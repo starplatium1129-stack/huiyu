@@ -36,7 +36,7 @@
               :aria-expanded="moreOpen" :aria-busy="moreReady"
               @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
           </StudioTooltip>
-          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="activeId"
+          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="route.path === '/popular-scenes' ? 'popular-scenes' : activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
             @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
             @close-auto-focus="onMoreCloseAutoFocus" />
@@ -116,7 +116,7 @@ interface NavItem {
 
 const primaryNav: NavItem[] = [
   { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
-  { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
+  { id: 'character', label: '角色', to: '/character', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
   { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
   { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
@@ -127,7 +127,7 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
     items: [
       { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
-      { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
+      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
     ],
   },
   {
@@ -154,6 +154,7 @@ const secondaryNav: NavItem[] = archiveGroups.flatMap(g => g.items)
 const activeId = computed(() => {
   const p = route.path.replace(/^\//, '')
   if (!p) return 'home'
+  if (p === 'popular-scenes' || (p === 'scene-explorer' && ['nene', 'natsume'].includes(String(route.query.character)))) return 'character'
   const all = [...primaryNav, ...secondaryNav]
   const match = all.find(n => n.to.replace(/^\//, '') === p || p.startsWith(n.to.replace(/^\//, '')))
   return match?.id ?? ''

@@ -54,12 +54,28 @@
       <section id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态">
         <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ feedbackText }}</h2><p>{{ actionNote || '正在读取本机服务状态。' }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
         <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ statusError }}，服务状态待确认，请重新检测。</span><button class="btn btn-ghost btn-sm" @click="pollStatus(true)">重试检测</button></div>
-        <div class="status-wall">
-          <a v-for="service in serviceCards" :key="service.name" class="status-tile" href="#control-resources" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'" @click="openSection('control-resources')">
-            <span class="status-tile-head tw:flex tw:items-center tw:gap-s-2"><ArchiveIcon :name="service.icon" /><small>{{ service.name }}</small><span class="status-dot"></span></span>
+        <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
+        <div class="status-wall service-rows">
+          <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
+            :class="{ 'service-required': requestedService === service.key }" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'">
+            <h3 class="status-tile-head service-row-name"><ArchiveIcon :name="service.icon" />{{ service.name }}<span class="status-dot"></span></h3>
             <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
-            <span class="status-tile-detail">{{ service.detail }}</span>
-          </a>
+            <p class="status-tile-detail">{{ service.detail }}</p>
+            <div class="service-row-actions">
+              <template v-if="service.key !== 'ollama'">
+                <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
+                  <button class="btn btn-sm" :class="requestedService === service.key ? 'btn-primary' : 'btn-ghost'" type="button"
+                    :disabled="!statusUsable || opBusy || service.online" @click="serviceAction(service.key, 'start')">启动</button>
+                </StudioTooltip>
+                <StudioTooltip anchor :content="!service.online ? '未在运行' : '停止服务'">
+                  <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !service.online"
+                    @click="confirmServiceAction(service.key, 'stop')">停止</button>
+                </StudioTooltip>
+              </template>
+              <button v-else class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length"
+                @click="serviceAction('ollama', 'unload')">卸载模型释放显存</button>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -86,76 +102,16 @@
       <!-- 显存调度 -->
       <section id="control-resources" class="panel-card resource-panel">
         <div class="panel-kicker">01 / 常用操作</div>
-        <h2 class="panel-heading">服务与显存调度</h2>
+        <h2 class="panel-heading">显存与运行偏好</h2>
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<span class="mode-arrow">→</span></span>
+            <span class="mode-title"><ArchiveIcon name="spark" /> SD 绘图优先<span class="mode-arrow">→</span></span>
             <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
           </button>
-        </div>
-
-        <div class="service-rows">
-          <div class="service-row">
-            <span class="service-row-name">
-              <span class="dot" :class="{ on: sdOnline }"></span>
-              SD WebUI 绘图
-              <span class="service-row-meta">{{ sdOnline ? (webuiManaged ? '受控' : '手动') : '未运行' }}</span>
-            </span>
-            <span class="service-row-actions">
-              <StudioTooltip anchor :content="sdOnline ? '已在运行' : '启动受控 WebUI'">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || sdOnline" @click="serviceAction('webui','start')">启动</button>
-              </StudioTooltip>
-              <StudioTooltip anchor :content="!sdOnline ? '未在运行' : '停止服务'">
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !sdOnline" @click="confirmServiceAction('webui','stop')">停止</button>
-              </StudioTooltip>
-            </span>
-          </div>
-          <div class="service-row">
-            <span class="service-row-name">
-              <span class="dot" :class="{ on: comfyOnline }"></span>
-              ComfyUI 绘图服务
-              <span class="service-row-meta">{{ comfyOnline ? (comfyManaged ? '受控' : '手动') : '未运行' }}</span>
-            </span>
-            <span class="service-row-actions">
-              <StudioTooltip anchor :content="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || comfyOnline" @click="serviceAction('comfy','start')">启动</button>
-              </StudioTooltip>
-              <StudioTooltip anchor :content="!comfyOnline ? '未在运行' : '停止服务'">
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !comfyOnline" @click="confirmServiceAction('comfy','stop')">停止</button>
-              </StudioTooltip>
-            </span>
-          </div>
-          <div class="service-row">
-            <span class="service-row-name">
-              <span class="dot" :class="{ on: ttsOnline }"></span>
-              GPT-SoVITS 语音
-              <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
-            </span>
-            <span class="service-row-actions">
-              <StudioTooltip anchor :content="ttsOnline ? '已在运行' : '启动语音'">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || ttsOnline" @click="serviceAction('voice','start')">启动</button>
-              </StudioTooltip>
-              <StudioTooltip anchor :content="!ttsOnline ? '未在运行' : '停止服务'">
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ttsOnline" @click="confirmServiceAction('voice','stop')">停止</button>
-              </StudioTooltip>
-            </span>
-          </div>
-          <div class="service-row">
-            <span class="service-row-name">
-              <span class="dot" :class="{ on: ollamaOnline }"></span>
-              Ollama 聊天模型
-              <StudioTooltip :content="ollamaMeta">
-                <span class="service-row-meta">{{ ollamaMeta }}</span>
-              </StudioTooltip>
-            </span>
-            <span class="service-row-actions">
-              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
-            </span>
-          </div>
         </div>
 
         <ToggleSwitch v-model="autoStartVoice" class="autostart-row" @change="saveAutoStartVoice">
@@ -324,6 +280,7 @@ import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -424,11 +381,15 @@ const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
 ]
 const { activeSection, openSection } = useControlNavigation(sections.map(section => section.id))
 const statusUsable = computed(() => statusLoaded.value && !statusError.value)
-const serviceCards = computed<Array<{ name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
-  { name: 'SD WebUI', icon: 'image', online: sdOnline.value, detail: sdOnline.value ? (webuiManaged.value ? '受控绘图服务' : '手动启动的绘图服务') : 'Stable Diffusion 绘图' },
-  { name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: 'Anima · Krea · 视频' },
-  { name: '角色语音', icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `GPT-SoVITS · ${voiceConfiguredCount.value} / 2 声线已配置` },
-  { name: '本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : 'Ollama · 按需加载模型' },
+const route = useRoute()
+const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
+  : ['anima', 'krea2', 'video'].includes(String(route.query.engine)) ? 'comfy' : '')
+const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
+const serviceCards = computed<Array<{ key: string; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
+  { key: 'webui', name: 'SD WebUI', icon: 'image', online: sdOnline.value, detail: sdOnline.value ? (webuiManaged.value ? '受控绘图服务' : '手动启动的绘图服务') : 'SD 引擎 · Stable Diffusion 绘图' },
+  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `Anima · Krea 2 · 视频${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
+  { key: 'voice', name: 'GPT-SoVITS 语音', icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
+  { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },
 ])
 
 onMounted(() => { status.startPolling() })

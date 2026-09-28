@@ -29,7 +29,7 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
-      <StudioTooltip anchor :content="avatarActionTitle">
+      <StudioTooltip v-if="avatarState !== 'idle'" anchor :content="avatarActionTitle">
         <button
           class="avatar-status"
           type="button"

@@ -1,11 +1,6 @@
 <template>
-  <article class="page scenario-page" style="--page-max:1450px">
-    <ArchivePageHero chapter="08" section="Narrative sequence" shape="book" label="故事手帖" caption="SCENARIO 08 / 08" compact>
-      <div class="page-kicker">Story notebook</div>
-      <h1 class="title">剧本模式</h1>
-      <p class="subtitle">从一幕心动，翻到故事的结尾。</p>
-    </ArchivePageHero>
-    <CreativeLibraryNav />
+  <article class="page scenario-page creative-library-page">
+    <CreativeLibraryHeader title="剧本模式" description="选一本故事手帖，从一幕心动，翻到故事的结尾。" />
     <header class="scenario-library-heading">
       <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
       <div class="char-toggle tw:flex tw:gap-s-2" role="group" aria-label="剧本角色">
@@ -52,12 +47,11 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
-import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
+import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
 import { useToast } from '@/composables/useToast'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useMoodReferences } from '@/composables/useMoodReferences'

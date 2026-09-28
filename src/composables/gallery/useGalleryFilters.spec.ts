@@ -39,6 +39,22 @@ describe('saved artwork tag filtering',()=>{
 })
 
 describe('gallery filter metadata reuse', () => {
+  it('does not keep loading hidden image pages while browsing album covers', async () => {
+    const { filters, stop } = setup(ref(Array.from({ length: 160 }, (_, id) => ({ id, timestamp: id }))))
+    const sentinel = document.createElement('div')
+    const rects = vi.spyOn(sentinel, 'getClientRects').mockReturnValue([] as unknown as DOMRectList)
+    const initialCount = filters.pagedVisible.value.length
+    filters.loadMoreIfNeeded(sentinel)
+    await nextTick()
+    expect(filters.pagedVisible.value).toHaveLength(initialCount)
+    rects.mockReturnValue([new DOMRect(0, 4000, 1, 1)] as unknown as DOMRectList)
+    vi.spyOn(sentinel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 4000, 1, 1))
+    filters.loadMoreIfNeeded(sentinel)
+    await nextTick()
+    expect(filters.pagedVisible.value.length).toBeGreaterThan(initialCount)
+    stop()
+  })
+
   it('keeps stable ordering, strict project IDs and live metadata changes', () => {
     const history = ref<ArtworkRecord[]>([
       { id: 1, timestamp: 2, prompt: 'Blue Spring', favorite: true },

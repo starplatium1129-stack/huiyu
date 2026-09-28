@@ -85,8 +85,8 @@ for (const theme of ['dark', 'light']) {
   test(`scene to archive transition is visible, interruptible and cleans up ${theme}`, async ({ page }, info) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.goto('/popular-scenes?character=sakurajima_mai')
-    await expect(page.getByRole('link', { name: '查看角色档案' })).toBeVisible()
-    await expect(page.getByRole('link', { name: '查看角色档案' })).toHaveAttribute('href', '/character?character=sakurajima_mai')
+    await expect(page.getByRole('link', { name: '角色档案', exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: '角色档案', exact: true })).toHaveAttribute('href', '/character?character=sakurajima_mai')
     await page.evaluate(() => {
       const original = Element.prototype.animate
       const motions: Array<{ path: string; frames: Keyframe[] }> = []
@@ -97,17 +97,17 @@ for (const theme of ['dark', 'light']) {
         return original.call(this, frames, options)
       }
     })
-    await page.getByRole('link', { name: '查看角色档案' }).click()
+    await page.getByRole('link', { name: '角色档案', exact: true }).click()
     await expect(page).toHaveURL(/\/character\?character=sakurajima_mai/)
     await expect.poll(() => page.evaluate(() => (window as unknown as {
       archiveMotions: Array<{ path: string; frames: Keyframe[] }>
-    }).archiveMotions.some(m => m.path.startsWith('/character') && m.frames[0].opacity === 0 && m.frames[0].transform === 'translateX(16px)'))).toBe(true)
+    }).archiveMotions.some(m => m.path.startsWith('/character') && m.frames[0].opacity === 0 && m.frames[0].transform === 'translateX(8px)'))).toBe(true)
     // Return immediately: the incoming page must accept input during its animation.
-    await page.locator('.character-page .library-header').getByRole('link', { name: '浏览角色场景' }).click()
+    await page.locator('.character-page .library-header').getByRole('link', { name: '角色场景', exact: true }).click()
     await expect(page).toHaveURL(/\/popular-scenes/)
     await expect(page.locator('.page-main > .route-view')).toHaveCount(1)
     await expect(page.locator('.page-main > .route-view')).not.toHaveAttribute('inert')
-    await page.getByRole('link', { name: '查看角色档案' }).click()
+    await page.getByRole('link', { name: '角色档案', exact: true }).click()
     const archive = page.locator('.character-page')
     await expect(archive.locator('.particle-theatre .has-portrait')).toBeVisible()
     await expect(page.locator('.page-main > .route-view')).toHaveCount(1)
@@ -121,7 +121,7 @@ for (const theme of ['dark', 'light']) {
 test('archive navigation stays immediate with reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/popular-scenes?character=sakurajima_mai')
-  await page.getByRole('link', { name: '查看角色档案' }).click()
+  await page.getByRole('link', { name: '角色档案', exact: true }).click()
   const archive = page.locator('.character-page')
   await expect(archive).toBeVisible()
   expect(await archive.evaluate(e => e.getAnimations().length)).toBe(0)

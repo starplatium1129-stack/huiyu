@@ -2,12 +2,11 @@
   <section v-if="albums.length" class="gallery-albums tw:mb-s-6" aria-label="项目相册">
     <header class="gallery-albums-heading tw:flex tw:items-end tw:justify-between tw:gap-s-4 tw:mb-s-4">
       <div><span class="gallery-albums-kicker tw:text-secondary">STORIES IN ALBUMS</span><h2>成册的故事 <span>{{ albums.length }} 本</span></h2></div>
-      <button v-if="selectedId" class="gallery-albums-all tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:rounded-sm tw:text-accent tw:cursor-pointer" type="button" @click="emit('select', '')">全部项目<ArchiveIcon name="chevron-down" /></button>
-      <p v-else>选一本，翻阅你的创作</p>
+      <p>选一本，翻阅你的创作</p>
     </header>
-    <div class="gallery-albums-track tw:flex tw:gap-s-5 tw:overflow-x-auto" role="group" aria-label="按项目翻阅作品">
+    <div class="gallery-albums-track tw:grid tw:gap-s-5" role="group" aria-label="按项目翻阅作品">
       <button v-for="album in albums" :key="album.id" class="gallery-album tw:min-w-0 tw:p-0 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" type="button" :aria-pressed="selectedId === album.id"
-        :aria-label="`${album.title}，${album.count} 幅作品`" @click="emit('select', selectedId === album.id ? '' : album.id)">
+        :data-album-id="album.id" :aria-label="`${album.title}，${album.count} 幅作品`" @click="emit('select', album.id)">
         <span class="gallery-album-cover tw:relative tw:grid tw:gap-[3px] tw:p-[4px] tw:rounded-lg tw:overflow-hidden" :data-covers="album.covers.length" aria-hidden="true">
           <span v-for="cover in album.covers" :key="cover.id" class="gallery-album-picture tw:grid tw:min-h-0 tw:min-w-0 tw:overflow-hidden tw:rounded-sm tw:text-secondary">
             <img v-if="resolvedUrls[cover.id] && failedUrls[cover.id] !== resolvedUrls[cover.id]" :key="resolvedUrls[cover.id]" :src="resolvedUrls[cover.id]" :crossorigin="runtimeResourceCors()"
@@ -48,10 +47,8 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-albums-heading h2 { @apply tw:flex tw:items-baseline tw:gap-s-3; margin: var(--s-1) 0 0; @apply tw:text-primary; font: 600 var(--fs-body-lg) var(--font-display); }
 .gallery-albums-heading h2 span, .gallery-albums-heading p { @apply tw:text-secondary; font: 400 var(--fs-label-sm) var(--font-sans); }
 .gallery-albums-heading p { @apply tw:m-0; }
-.gallery-albums-all { padding: 0 var(--s-2); border: 0; background: transparent; font: 600 var(--fs-label-sm) var(--font-sans); }
-.gallery-albums-all .archive-icon { transform: rotate(-90deg); }
-.gallery-albums-track { padding: var(--s-2) var(--s-1) var(--s-3); margin: calc(-1 * var(--s-2)) calc(-1 * var(--s-1)) 0; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: var(--border-soft) transparent; }
-.gallery-album { flex: 0 0 clamp(180px, 19vw, 250px); border: 0; background: transparent; scroll-snap-align: start; }
+.gallery-albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); padding:var(--s-2) var(--s-1) var(--s-3); }
+.gallery-album { border:0; background:transparent; align-self:start; }
 .gallery-album-cover { grid-template-columns: 1fr; aspect-ratio: 1.55; border: 1px solid var(--border-soft); background: var(--bg-surface); box-shadow: var(--shadow-sm); transition: transform var(--motion-hover); }
 .gallery-album-cover[data-covers="2"] { grid-template-columns: 1fr 1fr; }
 .gallery-album-cover[data-covers="3"] { grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; }
@@ -71,6 +68,6 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-album[aria-pressed="true"] .gallery-album-caption > .archive-icon { transform: none; }
 .gallery-albums button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) { html:not([data-reduced-motion="true"]) .gallery-album:hover .gallery-album-cover { transform: translateY(-3px); } }
-@media (max-width: 600px) { .gallery-albums { @apply tw:mb-s-4; } .gallery-albums-track { @apply tw:gap-s-4; } .gallery-albums-heading p { @apply tw:hidden; } .gallery-album { flex-basis: 180px; } }
+@media (max-width: 600px) { .gallery-albums { @apply tw:mb-s-4; } .gallery-albums-track { @apply tw:gap-s-4; } .gallery-albums-heading p { @apply tw:hidden; } }
 @media (prefers-reduced-motion: reduce) { .gallery-album-cover { transition: none; } }
 </style>

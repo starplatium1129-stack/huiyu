@@ -1,6 +1,6 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" style="--page-max:1600px">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开喜欢的作品，认识下一位故事主角。' : '认识她的故事，从一个心动的瞬间开始创作。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><RouterLink to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开喜欢的作品，认识下一位故事主角。' : '认识她的故事，从一个心动的瞬间开始创作。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -280,6 +280,7 @@ import CharacterParticleStage from '@/components/library/CharacterParticleStage.
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
+import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import { useCharacterArchiveNavigation } from '@/composables/useCharacterArchiveNavigation'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'

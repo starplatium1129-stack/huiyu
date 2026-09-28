@@ -26,7 +26,7 @@
                 <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
               </button>
             </StudioTooltip>
-            <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
+            <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
         <p class="pb-sub">{{ modeDescription }}</p>

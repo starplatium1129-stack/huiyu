@@ -153,9 +153,10 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   function loadMoreIfNeeded(sentinelEl: HTMLElement | null) {
     if ((isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
+    if (sentinelEl && !sentinelEl.getClientRects().length) return;
     renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
     void nextTick(() => {
-      if ((isViewActive && !isViewActive()) || !hasMoreToRender.value || !sentinelEl) return;
+      if ((isViewActive && !isViewActive()) || !hasMoreToRender.value || !sentinelEl || !sentinelEl.getClientRects().length) return;
       if (sentinelEl.getBoundingClientRect().top < window.innerHeight + 800)
         loadMoreIfNeeded(sentinelEl);
     });

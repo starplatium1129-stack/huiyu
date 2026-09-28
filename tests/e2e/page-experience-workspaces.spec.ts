@@ -79,6 +79,7 @@ for (const theme of ['dark', 'light']) test(`missing notebook references stay co
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
   await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ status: 404, json: {} }))
   await page.goto('/color-script')
+  await page.locator('.color-reading > summary').click()
   await expect(page.locator('.study-unavailable.is-unconnected')).toHaveCount(2)
   expect((await page.locator('.study-unavailable').first().boundingBox())!.height).toBeLessThan(200)
   await page.screenshot({ path: testInfo.outputPath(`color-compact-${theme}.png`) })

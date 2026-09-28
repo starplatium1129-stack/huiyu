@@ -31,6 +31,8 @@
 
 以角色档案为参照的审美与实用改进见 [桌面页面美观与实用审计（2026-09-28）](audits/2026-09-28/desktop-aesthetics.md)，包含逐页结论、九项发现与分批调整顺序。
 
+该批优化的落地与 4K / 2K / 1080p 验收见 [桌面体验优化实施记录（2026-09-28）](audits/2026-09-28/desktop-experience-implementation.md)，包含缩放视口、图库焦点回归及安装边界。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯

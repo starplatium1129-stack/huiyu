@@ -1,0 +1,8 @@
+@reference "./tailwind.css";
+/* One reading frame for the four creative-library routes; their bodies keep their own task layouts. */
+.page.creative-library-page { --page-max:1600px; @apply tw:pt-s-5 tw:pb-s-8; }
+.creative-library-header { @apply tw:mb-s-6; }
+.creative-library-heading { @apply tw:mb-s-5; }
+.creative-library-kicker { @apply tw:m-0 tw:text-accent tw:text-label-xs tw:font-semibold; letter-spacing:.12em; }
+.creative-library-heading h1 { margin:var(--s-2) 0 var(--s-3); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:clamp(2rem,2.8vw,3rem); line-height:var(--lh-label); letter-spacing:-.03em; }
+.creative-library-description { @apply tw:m-0 tw:text-secondary tw:text-body tw:leading-body; }

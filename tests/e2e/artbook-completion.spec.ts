@@ -27,7 +27,7 @@ for (const theme of ['dark', 'light']) {
       for (const route of ['/', '/gallery', '/chat', '/character', '/color-script', '/video-studio', '/prompt-builder']) {
         await page.goto(route)
         await expect(page.locator('main')).toBeVisible()
-        const ready: Record<string, string> = { '/': '.hero-character.is-current', '/gallery': '.archive-state-panel', '/chat': '.chat-input', '/character': '.character-bookshelf', '/color-script': '.light-notebook', '/video-studio': '.video-prompt', '/prompt-builder': '.stage-placeholder' }
+        const ready: Record<string, string> = { '/': '.hero-character.is-current', '/gallery': '.gallery-image-browse .archive-state-panel', '/chat': '.chat-input', '/character': '.character-bookshelf', '/color-script': '.color-selection', '/video-studio': '.video-prompt', '/prompt-builder': '.stage-placeholder' }
         await expect(page.locator(ready[route])).toBeVisible()
         if (route === '/chat') {
           await expect(page.locator('.stage-reference-caption')).toBeVisible()
@@ -38,6 +38,7 @@ for (const theme of ['dark', 'light']) {
         await page.screenshot({ path: info.outputPath(`${route.replaceAll('/', '') || 'home'}-${theme}-${width}.png`), fullPage: false })
       }
       await page.goto('/color-script')
+      await page.locator('.color-reading > summary').click()
       await expect(page.locator('.light-study')).toHaveCount(2)
       for (const choice of await page.locator('.comparison-choices button').all()) {
         await choice.click()

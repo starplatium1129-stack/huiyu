@@ -31,10 +31,8 @@
   }
   :root .page { width: min(calc(var(--page-max, 1200px) * var(--desktop-layout-scale)), 100%); }
   :root .library-layout { grid-template-columns: minmax(260px, 17.5rem) minmax(0, 1fr); }
-  :root .gallery-shell { width: min(calc(1660px * var(--desktop-layout-scale)), 100%); }
   :root .chat-page.room-surface { max-width: calc(1720px * var(--desktop-layout-scale)); }
   .room-surface .chat-head > div:first-child { flex: 1; min-width: 0; }
   .room-surface .room-title-group { flex-shrink: 0; }
-  :root .control-layout { max-width: calc(1920px * var(--desktop-layout-scale)); grid-template-columns: minmax(208px, 14rem) minmax(0, 1fr); }
-  :root .video-studio { --page-max: calc(1480px * var(--desktop-layout-scale)); }
+  :root .video-studio { --page-max: 1480px; }
 }

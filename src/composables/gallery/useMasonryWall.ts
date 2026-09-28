@@ -53,7 +53,11 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
 
   function update() {
     const width = containerRef?.value?.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1440)
-    if (width >= 1280) {
+    if (width >= 2300) {
+      columnCount.value = 6
+    } else if (width >= 1800) {
+      columnCount.value = 5
+    } else if (width >= 1280) {
       columnCount.value = 4
     } else if (width >= 860) {
       columnCount.value = 3
