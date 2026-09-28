@@ -1,75 +1,76 @@
 @reference "./tailwind.css";
+/* SPA route styles persist after leaving maintenance; shared inspector names stay inside this workspace. */
 .manager-readonly { @apply tw:flex tw:items-center tw:gap-s-2; padding: var(--s-3) var(--s-4); @apply tw:mb-s-4; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-surface); @apply tw:text-secondary tw:text-body-sm; }
 .manager-readonly .archive-icon { flex: none; }
 .manager-workspace { @apply tw:grid; grid-template-columns: 160px minmax(0, 1fr); @apply tw:gap-s-4; align-items: start; }
-.manager-nav { @apply tw:grid tw:gap-s-1 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); }
-.manager-nav-heading { @apply tw:p-s-2 tw:text-muted tw:text-label-xs; }
-.manager-nav button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:min-h-[44px] tw:p-s-2; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-body-sm tw:text-left tw:cursor-pointer; }
-.manager-nav button:hover { background: var(--bg-elevated); @apply tw:text-primary; }
-.manager-nav button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-soft; font-weight: 650; }
-.manager-nav small { @apply tw:text-label-xs; font-variant-numeric: tabular-nums; }
-.manager-nav p { margin: var(--s-4) var(--s-2) var(--s-2); @apply tw:text-muted tw:text-label-xs tw:leading-loose; }
-.manager-content, .maintenance-catalog { @apply tw:min-w-0; }
-.catalog-toolbar { @apply tw:flex tw:gap-s-3 tw:items-stretch; }
-.catalog-search { @apply tw:flex; flex: 1; @apply tw:items-center tw:gap-s-2 tw:min-w-0; padding: 0 var(--s-3); @apply tw:min-h-[44px]; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-muted; }
-.catalog-search input { @apply tw:w-full tw:min-w-0; border: 0; outline: none; padding: var(--s-3) 0; background: transparent; @apply tw:text-primary; font: inherit; @apply tw:text-body-sm; }
-.catalog-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-.catalog-filters { @apply tw:flex tw:flex-wrap; align-items: end; @apply tw:gap-s-3 tw:mt-s-3; }
-.catalog-filters label { @apply tw:inline-flex tw:items-center tw:gap-s-2; flex: 1 1 120px; @apply tw:min-w-0 tw:text-muted tw:text-label-xs; }
+.manager-workspace .manager-nav { @apply tw:grid tw:gap-s-1 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); }
+.manager-workspace .manager-nav-heading { @apply tw:p-s-2 tw:text-muted tw:text-label-xs; }
+.manager-workspace .manager-nav button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:min-h-[44px] tw:p-s-2; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-body-sm tw:text-left tw:cursor-pointer; }
+.manager-workspace .manager-nav button:hover { background: var(--bg-elevated); @apply tw:text-primary; }
+.manager-workspace .manager-nav button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-soft; font-weight: 650; }
+.manager-workspace .manager-nav small { @apply tw:text-label-xs; font-variant-numeric: tabular-nums; }
+.manager-workspace .manager-nav p { margin: var(--s-4) var(--s-2) var(--s-2); @apply tw:text-muted tw:text-label-xs tw:leading-loose; }
+.manager-workspace .manager-content, .manager-workspace .maintenance-catalog { @apply tw:min-w-0; }
+.manager-workspace .catalog-toolbar { @apply tw:flex tw:gap-s-3 tw:items-stretch; }
+.manager-workspace .catalog-search { @apply tw:flex; flex: 1; @apply tw:items-center tw:gap-s-2 tw:min-w-0; padding: 0 var(--s-3); @apply tw:min-h-[44px]; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-muted; }
+.manager-workspace .catalog-search input { @apply tw:w-full tw:min-w-0; border: 0; outline: none; padding: var(--s-3) 0; background: transparent; @apply tw:text-primary; font: inherit; @apply tw:text-body-sm; }
+.manager-workspace .catalog-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.manager-workspace .catalog-filters { @apply tw:flex tw:flex-wrap; align-items: end; @apply tw:gap-s-3 tw:mt-s-3; }
+.manager-workspace .catalog-filters label { @apply tw:inline-flex tw:items-center tw:gap-s-2; flex: 1 1 120px; @apply tw:min-w-0 tw:text-muted tw:text-label-xs; }
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在
    .studio-select-wrapper 上，保持 label 文本与控件并排。 */
-.catalog-filters .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[38px]; }
-.catalog-scope { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:flex-wrap; margin: var(--s-3) 0; @apply tw:text-muted tw:text-label-xs; }
-.catalog-quick, .inspector-tabs { @apply tw:flex tw:gap-s-1 tw:items-center; }
-.catalog-quick button, .inspector-tabs > button { border: 0; padding: var(--s-2) var(--s-3); @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-body-sm tw:cursor-pointer; }
-.catalog-quick button[aria-pressed="true"], .inspector-tabs > button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent; font-weight: 650; }
-.catalog-workspace { @apply tw:grid; grid-template-columns: minmax(240px, 32%) minmax(0, 1fr); flex: 1; @apply tw:min-h-[300px]; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:overflow-hidden; }
-.catalog-browser { @apply tw:flex tw:flex-col tw:min-w-0 tw:min-h-0; border-right: 1px solid var(--border-soft); background: var(--bg-base); }
-.catalog-list { flex: 1; @apply tw:min-h-0 tw:m-0 tw:p-s-2; list-style: none; @apply tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
-.catalog-list li + li { @apply tw:mt-s-1; }
-.catalog-record { @apply tw:grid tw:gap-s-2 tw:w-full tw:p-s-3; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-primary tw:text-left tw:cursor-pointer; }
-.catalog-record:hover { background: var(--bg-elevated); }
-.catalog-record[aria-pressed="true"] { background: var(--bg-surface); @apply tw:border-accent; box-shadow: inset 3px 0 var(--accent); }
-.catalog-record strong { @apply tw:text-body; font-weight: 650; @apply tw:leading-body; overflow-wrap: anywhere; }
-.catalog-record-meta { @apply tw:flex tw:justify-between tw:gap-s-2 tw:text-muted tw:text-label-xs; }
-.catalog-record-meta code { @apply tw:font-mono; overflow-wrap: anywhere; }
-.catalog-record-character { @apply tw:text-secondary tw:text-label-xs; }
-.catalog-record-excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-muted tw:text-label-xs tw:leading-loose; }
-.catalog-record-hint { @apply tw:text-warning-text tw:text-label-xs; }
-.catalog-pagination { @apply tw:flex tw:justify-between tw:items-center; flex: none; @apply tw:gap-s-1 tw:p-s-2; border-top: 1px solid var(--border-soft); @apply tw:text-label-xs tw:text-secondary; font-variant-numeric: tabular-nums; }
-.catalog-pagination .btn { padding-inline: var(--s-2); }
-.maintenance-inspector { @apply tw:flex tw:flex-col tw:min-w-0 tw:min-h-0; }
-.inspector-header { padding: var(--s-5) var(--s-5) var(--s-3); flex: none; }
-.inspector-kicker { @apply tw:flex tw:gap-s-3 tw:text-muted tw:text-label-xs; }
-.inspector-kicker code { @apply tw:font-mono; overflow-wrap: anywhere; }
-.inspector-header h2 { margin: var(--s-2) 0 var(--s-3); @apply tw:text-primary tw:font-display tw:text-title-sm tw:leading-tight; overflow-wrap: anywhere; }
-.inspector-meta { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:text-secondary tw:text-label-xs; }
-.inspector-meta span { padding: var(--s-1) var(--s-2); background: var(--bg-elevated); @apply tw:rounded-sm; }
-.inspector-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; padding: 0 var(--s-5) var(--s-3); flex: none; }
-.inspector-more { @apply tw:relative tw:ml-auto tw:text-secondary tw:text-label-xs; }
-.inspector-more summary { @apply tw:p-s-2 tw:cursor-pointer; }
-.inspector-more > div { @apply tw:absolute tw:right-0 tw:top-[100%] tw:grid tw:gap-s-2; width: max-content; @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-elevated); box-shadow: var(--shadow-lg); z-index: var(--z-popover); }
-.inspector-tabs { margin: 0 var(--s-5); padding-block: var(--s-2); border-block: 1px solid var(--border-soft); flex: none; @apply tw:flex-wrap; }
-.inspector-tabs > span { flex: 1; @apply tw:text-success-text tw:text-right tw:text-label-xs; }
-.inspector-body { flex: 1; @apply tw:min-h-0; padding: var(--s-4) var(--s-5); @apply tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
-.inspector-section + .inspector-section { @apply tw:mt-s-5; }
-.inspector-section h3, .inspector-tags summary { margin: 0 0 var(--s-3); @apply tw:text-secondary tw:text-label-sm; font-weight: 650; }
-.inspector-story { @apply tw:m-0 tw:whitespace-pre-wrap; overflow-wrap: anywhere; @apply tw:leading-loose tw:text-body tw:text-primary; }
-.inspector-facts { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3 tw:m-0; }
-.inspector-facts div { @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
-.inspector-facts dt { @apply tw:mb-s-2 tw:text-muted tw:text-label-xs; }
-.inspector-facts dd { @apply tw:m-0 tw:text-primary tw:text-body-sm; overflow-wrap: anywhere; }
-.inspector-tags summary { @apply tw:cursor-pointer; }
-.inspector-tags > div { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
-.inspector-tags span { padding: var(--s-1) var(--s-2); border: 1px solid var(--border-soft); @apply tw:rounded-sm tw:text-secondary tw:text-label-xs; overflow-wrap: anywhere; }
-.inspector-section-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:mb-s-2; }
-.inspector-section-head h3 { @apply tw:m-0; }
-.inspector-prompt { @apply tw:m-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); @apply tw:text-primary tw:font-mono tw:text-body-sm tw:leading-loose tw:whitespace-pre-wrap; overflow-wrap: anywhere; }
-.inspector-empty { @apply tw:text-muted tw:text-body-sm; }
-.manager-workspace button:focus-visible, .manager-workspace summary:focus-visible, .manager-workspace select:focus-visible, .inspector-body:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.manager-workspace .catalog-filters .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[38px]; }
+.manager-workspace .catalog-scope { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:flex-wrap; margin: var(--s-3) 0; @apply tw:text-muted tw:text-label-xs; }
+.manager-workspace .catalog-quick, .manager-workspace .inspector-tabs { @apply tw:flex tw:gap-s-1 tw:items-center; }
+.manager-workspace .catalog-quick button, .manager-workspace .inspector-tabs > button { border: 0; padding: var(--s-2) var(--s-3); @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-body-sm tw:cursor-pointer; }
+.manager-workspace .catalog-quick button[aria-pressed="true"], .manager-workspace .inspector-tabs > button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent; font-weight: 650; }
+.manager-workspace .catalog-workspace { @apply tw:grid; grid-template-columns: minmax(240px, 32%) minmax(0, 1fr); flex: 1; @apply tw:min-h-[300px]; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:overflow-hidden; }
+.manager-workspace .catalog-browser { @apply tw:flex tw:flex-col tw:min-w-0 tw:min-h-0; border-right: 1px solid var(--border-soft); background: var(--bg-base); }
+.manager-workspace .catalog-list { flex: 1; @apply tw:min-h-0 tw:m-0 tw:p-s-2; list-style: none; @apply tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.manager-workspace .catalog-list li + li { @apply tw:mt-s-1; }
+.manager-workspace .catalog-record { @apply tw:grid tw:gap-s-2 tw:w-full tw:p-s-3; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-primary tw:text-left tw:cursor-pointer; }
+.manager-workspace .catalog-record:hover { background: var(--bg-elevated); }
+.manager-workspace .catalog-record[aria-pressed="true"] { background: var(--bg-surface); @apply tw:border-accent; box-shadow: inset 3px 0 var(--accent); }
+.manager-workspace .catalog-record strong { @apply tw:text-body; font-weight: 650; @apply tw:leading-body; overflow-wrap: anywhere; }
+.manager-workspace .catalog-record-meta { @apply tw:flex tw:justify-between tw:gap-s-2 tw:text-muted tw:text-label-xs; }
+.manager-workspace .catalog-record-meta code { @apply tw:font-mono; overflow-wrap: anywhere; }
+.manager-workspace .catalog-record-character { @apply tw:text-secondary tw:text-label-xs; }
+.manager-workspace .catalog-record-excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-muted tw:text-label-xs tw:leading-loose; }
+.manager-workspace .catalog-record-hint { @apply tw:text-warning-text tw:text-label-xs; }
+.manager-workspace .catalog-pagination { @apply tw:flex tw:justify-between tw:items-center; flex: none; @apply tw:gap-s-1 tw:p-s-2; border-top: 1px solid var(--border-soft); @apply tw:text-label-xs tw:text-secondary; font-variant-numeric: tabular-nums; }
+.manager-workspace .catalog-pagination .btn { padding-inline: var(--s-2); }
+.manager-workspace .maintenance-inspector { @apply tw:flex tw:flex-col tw:min-w-0 tw:min-h-0; }
+.manager-workspace .inspector-header { padding: var(--s-5) var(--s-5) var(--s-3); flex: none; }
+.manager-workspace .inspector-kicker { @apply tw:flex tw:gap-s-3 tw:text-muted tw:text-label-xs; }
+.manager-workspace .inspector-kicker code { @apply tw:font-mono; overflow-wrap: anywhere; }
+.manager-workspace .inspector-header h2 { margin: var(--s-2) 0 var(--s-3); @apply tw:text-primary tw:font-display tw:text-title-sm tw:leading-tight; overflow-wrap: anywhere; }
+.manager-workspace .inspector-meta { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:text-secondary tw:text-label-xs; }
+.manager-workspace .inspector-meta span { padding: var(--s-1) var(--s-2); background: var(--bg-elevated); @apply tw:rounded-sm; }
+.manager-workspace .inspector-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; padding: 0 var(--s-5) var(--s-3); flex: none; }
+.manager-workspace .inspector-more { @apply tw:relative tw:ml-auto tw:text-secondary tw:text-label-xs; }
+.manager-workspace .inspector-more summary { @apply tw:p-s-2 tw:cursor-pointer; }
+.manager-workspace .inspector-more > div { @apply tw:absolute tw:right-0 tw:top-[100%] tw:grid tw:gap-s-2; width: max-content; @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-elevated); box-shadow: var(--shadow-lg); z-index: var(--z-popover); }
+.manager-workspace .inspector-tabs { margin: 0 var(--s-5); padding-block: var(--s-2); border-block: 1px solid var(--border-soft); flex: none; @apply tw:flex-wrap; }
+.manager-workspace .inspector-tabs > span { flex: 1; @apply tw:text-success-text tw:text-right tw:text-label-xs; }
+.manager-workspace .inspector-body { flex: 1; @apply tw:min-h-0; padding: var(--s-4) var(--s-5); @apply tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.manager-workspace .inspector-section + .inspector-section { @apply tw:mt-s-5; }
+.manager-workspace .inspector-section h3, .manager-workspace .inspector-tags summary { margin: 0 0 var(--s-3); @apply tw:text-secondary tw:text-label-sm; font-weight: 650; }
+.manager-workspace .inspector-story { @apply tw:m-0 tw:whitespace-pre-wrap; overflow-wrap: anywhere; @apply tw:leading-loose tw:text-body tw:text-primary; }
+.manager-workspace .inspector-facts { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3 tw:m-0; }
+.manager-workspace .inspector-facts div { @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
+.manager-workspace .inspector-facts dt { @apply tw:mb-s-2 tw:text-muted tw:text-label-xs; }
+.manager-workspace .inspector-facts dd { @apply tw:m-0 tw:text-primary tw:text-body-sm; overflow-wrap: anywhere; }
+.manager-workspace .inspector-tags summary { @apply tw:cursor-pointer; }
+.manager-workspace .inspector-tags > div { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
+.manager-workspace .inspector-tags span { padding: var(--s-1) var(--s-2); border: 1px solid var(--border-soft); @apply tw:rounded-sm tw:text-secondary tw:text-label-xs; overflow-wrap: anywhere; }
+.manager-workspace .inspector-section-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:mb-s-2; }
+.manager-workspace .inspector-section-head h3 { @apply tw:m-0; }
+.manager-workspace .inspector-prompt { @apply tw:m-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); @apply tw:text-primary tw:font-mono tw:text-body-sm tw:leading-loose tw:whitespace-pre-wrap; overflow-wrap: anywhere; }
+.manager-workspace .inspector-empty { @apply tw:text-muted tw:text-body-sm; }
+.manager-workspace button:focus-visible, .manager-workspace summary:focus-visible, .manager-workspace select:focus-visible, .manager-workspace .inspector-body:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .manager-workspace button:disabled { @apply tw:text-disabled tw:cursor-not-allowed; }
-@media (max-width: 1200px) { .manager-workspace { grid-template-columns: minmax(0, 1fr); } .manager-nav { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:p-s-2; } .manager-nav-heading, .manager-nav p { @apply tw:hidden; } .manager-nav button { @apply tw:gap-s-2; } }
-@media (max-width: 768px) { .catalog-workspace { grid-template-columns: minmax(0, 1fr); @apply tw:h-auto tw:overflow-visible; } .catalog-browser { border-right: 0; border-bottom: 1px solid var(--border-soft); } .catalog-list { @apply tw:max-h-[300px]; } .maintenance-inspector { @apply tw:min-h-[420px]; } .inspector-body { @apply tw:max-h-[560px]; } .inspector-header { @apply tw:p-s-4; } .inspector-actions { padding-inline: var(--s-4); } .inspector-tabs { margin-inline: var(--s-4); } .inspector-body { padding-inline: var(--s-4); } .inspector-facts { grid-template-columns: minmax(0, 1fr); } .catalog-filters { @apply tw:gap-s-2; } }
+@media (max-width: 1200px) { .manager-workspace { grid-template-columns: minmax(0, 1fr); } .manager-workspace .manager-nav { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:p-s-2; } .manager-workspace .manager-nav-heading, .manager-workspace .manager-nav p { @apply tw:hidden; } .manager-workspace .manager-nav button { @apply tw:gap-s-2; } }
+@media (max-width: 768px) { .manager-workspace .catalog-workspace { grid-template-columns: minmax(0, 1fr); @apply tw:h-auto tw:overflow-visible; } .manager-workspace .catalog-browser { border-right: 0; border-bottom: 1px solid var(--border-soft); } .manager-workspace .catalog-list { @apply tw:max-h-[300px]; } .manager-workspace .maintenance-inspector { @apply tw:min-h-[420px]; } .manager-workspace .inspector-body { @apply tw:max-h-[560px]; } .manager-workspace .inspector-header { @apply tw:p-s-4; } .manager-workspace .inspector-actions { padding-inline: var(--s-4); } .manager-workspace .inspector-tabs { margin-inline: var(--s-4); } .manager-workspace .inspector-body { padding-inline: var(--s-4); } .manager-workspace .inspector-facts { grid-template-columns: minmax(0, 1fr); } .manager-workspace .catalog-filters { @apply tw:gap-s-2; } }
 
 /* Workspace chrome stays compact so records, rather than headings, own the viewport. */
 .scene-maintenance-page { @apply tw:pt-s-3 tw:pb-s-3; }
@@ -85,7 +86,7 @@ html.aics-desktop-shell .scene-maintenance-page.is-catalog { height: calc(100dvh
 .scene-maintenance-page.is-catalog .manager-workspace { flex: 1; @apply tw:min-h-0; grid-template-rows: minmax(0, 1fr); }
 .scene-maintenance-page.is-catalog .manager-content { @apply tw:min-h-0 tw:h-full; }
 .scene-maintenance-page.is-catalog .maintenance-catalog { @apply tw:flex tw:flex-col tw:h-full; }
-.catalog-search input:focus-visible { outline: none; box-shadow: none; }
+.manager-workspace .catalog-search input:focus-visible { outline: none; box-shadow: none; }
 @media (max-width: 1200px) { .scene-maintenance-page.is-catalog .manager-workspace { grid-template-rows: auto minmax(0, 1fr); } }
 @media (max-width: 768px) {
   .scene-maintenance-page.is-catalog, html.aics-desktop-shell .scene-maintenance-page.is-catalog { @apply tw:block tw:h-auto; }
@@ -100,6 +101,6 @@ html.aics-desktop-shell .scene-maintenance-page.is-catalog { height: calc(100dvh
 }
 @media (max-width: 1200px) {
   .scene-maintenance-page.is-catalog > .workspace-archive-bar { @apply tw:hidden; }
-  .catalog-workspace { @apply tw:min-h-[280px]; }
-  .inspector-header { @apply tw:pt-s-3; }
+  .manager-workspace .catalog-workspace { @apply tw:min-h-[280px]; }
+  .manager-workspace .inspector-header { @apply tw:pt-s-3; }
 }

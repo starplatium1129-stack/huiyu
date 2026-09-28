@@ -148,7 +148,7 @@ onMounted(() => {
                   <!-- data-value 与原生 option 的 value 语义一致，e2e 按值选择靠它定位。
                        SelectItem 外面还包着 CollectionItem，属性透传不保证，所以挂在
                        SelectItemText 上（该组件显式透传 $attrs）。 -->
-                  <SelectItemText :data-value="String(option.value)">{{ option.label }}</SelectItemText>
+                  <SelectItemText class="studio-select-item-text" :data-value="String(option.value)">{{ option.label }}</SelectItemText>
                   <SelectItemIndicator class="studio-select-check">
                     <ArchiveIcon name="success" />
                   </SelectItemIndicator>
@@ -163,7 +163,7 @@ onMounted(() => {
                 :disabled="option.disabled"
                 class="studio-select-item"
               >
-                <SelectItemText :data-value="String(option.value)">{{ option.label }}</SelectItemText>
+                <SelectItemText class="studio-select-item-text" :data-value="String(option.value)">{{ option.label }}</SelectItemText>
                 <SelectItemIndicator class="studio-select-check">
                   <ArchiveIcon name="success" />
                 </SelectItemIndicator>

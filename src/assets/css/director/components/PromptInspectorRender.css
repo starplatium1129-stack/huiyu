@@ -1,14 +1,12 @@
 @reference "../../tailwind.css";
 .pb .engine-switch {
-  --engine-active-border: var(--mood-love);
-  --engine-active-text: var(--mood-love-text);
-  @apply tw:flex tw:gap-[8px];
-  margin: 4px 0 10px;
-  @apply tw:flex-wrap;
+  @apply tw:grid tw:gap-s-2 tw:m-0;
+  grid-template-columns: minmax(0, 1fr);
 }
+/* Disabled-engine tooltips own a real wrapper; the button still fills its row. */
+.pb .engine-switch > .studio-tooltip-anchor { @apply tw:w-full tw:min-w-0; }
 .pb .engine-btn {
-  @apply tw:flex tw:flex-col tw:gap-[2px] tw:items-start;
-  padding: 7px 14px;
+  @apply tw:relative tw:flex tw:w-full tw:min-w-0 tw:items-center tw:gap-s-3 tw:p-s-3 tw:min-h-[58px] tw:text-left;
   @apply tw:rounded-md;
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
@@ -23,7 +21,7 @@
 .pb .engine-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .pb .engine-btn.active {
   @apply tw:border-accent;
-  background: var(--bg-surface);
+  background: var(--accent-soft);
   @apply tw:text-accent;
   box-shadow: inset 3px 0 var(--accent);
 }
@@ -34,25 +32,21 @@
   opacity: 1;
 }
 .pb .engine-sub {
-  @apply tw:text-mono-sm tw:text-muted;
+  @apply tw:block tw:mt-s-1 tw:text-label-xs tw:leading-body tw:text-muted;
 }
 .pb .engine-btn:disabled .engine-sub { @apply tw:text-disabled; }
 .pb .base-model-picker {
   @apply tw:grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  @apply tw:items-center tw:gap-[10px];
-  margin: 0 0 10px;
-  padding: 10px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  @apply tw:min-w-0 tw:items-center tw:gap-s-2 tw:m-0 tw:p-s-3;
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
   background: var(--bg-deep);
 }
-.pb .base-model-picker label { @apply tw:text-muted tw:text-label-xs tw:font-bold; }
+.pb .base-model-picker label { @apply tw:text-secondary tw:text-label-xs tw:font-bold; }
 /* 原生 select 已迁至 StudioSelect：触发器沿用其统一样式，仅保留原 42px 高度 */
 .pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
 .pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[42px]; }
 
 .pb .engine-mark { @apply tw:w-[24px] tw:h-[24px] tw:shrink-0; }
 .pb .engine-copy { @apply tw:block tw:min-w-0; overflow-wrap: anywhere; }
-.pb .base-model-picker { border-style: dashed; background: var(--bg-surface); @apply tw:p-s-3 tw:gap-s-2; }
-.pb .base-model-picker label { @apply tw:text-secondary; }

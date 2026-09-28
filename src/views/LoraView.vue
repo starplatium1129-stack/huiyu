@@ -41,7 +41,7 @@
     <p v-if="!visibleLoras.length">没有匹配的模型。<button class="btn btn-ghost btn-sm" @click="modelQuery = ''">清除搜索</button></p>
     <div class="lora-grid">
       <div v-for="l in visibleLoras" :key="l.id" class="lora-card">
-        <div class="lora-header tw:mb-s-2 tw:flex tw:items-baseline tw:gap-s-2">
+        <div class="lora-header tw:mb-s-2 tw:flex tw:flex-wrap tw:items-baseline tw:gap-s-2">
           <span class="lora-name">{{ l.name }}</span>
           <span v-if="l.version" class="lora-version">v{{ l.version }}</span>
           <span v-if="l.experimental" class="badge badge-warning">实验预览</span>
@@ -152,6 +152,7 @@ onMounted(() => { void loadCatalog() })
 }
 .lora-title-row .title { @apply tw:mb-s-2; }
 .lora-title-row .subtitle { @apply tw:mb-0; }
+.lora-header, .lora-pill, .lora-tag { @apply tw:max-w-full; overflow-wrap:anywhere; }
 .lora-grid { @apply tw:grid tw:gap-s-4; grid-template-columns:repeat(auto-fill,minmax(min(320px, 100%),1fr)); }
 .lora-card {
   @apply tw:relative tw:overflow-hidden tw:p-s-5;

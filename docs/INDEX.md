@@ -27,6 +27,8 @@
 
 组件布局、主题令牌与工具类约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；[本次迁移记录](audits/2026-09-27/tailwind-migration.md)区分构建、浏览器验收与环境限制。
 
+全站布局与二级导航的最新修复见 [布局审计与统一（2026-09-28）](audits/2026-09-28/layout-unification.md)，包含工作台右栏、跨页样式隔离、双主题/窄屏验证和桌面交付边界。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯

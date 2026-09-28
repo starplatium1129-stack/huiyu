@@ -294,4 +294,32 @@ onUnmounted(() => {
 .nav-utilities :deep(button:active) { transform: scale(.96); }
 .nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
+
+@media (max-width: 900px) {
+  /* The compact menu is a two-column surface, including the sixth “more” entry. */
+  .nav-links {
+    --selection-radius: var(--r-md);
+    padding: var(--s-3);
+    border-radius: var(--r-lg);
+    background: var(--bg-surface);
+  }
+  .nav-links > a { min-height: 44px; border-radius: var(--r-md); }
+  .nav-more { min-width: 0; grid-column: auto; }
+  .nav-more > :deep(.studio-tooltip-anchor[data-anchor]) { width: 100%; }
+  .nav-more :deep(.nav-more-trigger) {
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    border-radius: var(--r-md);
+  }
+  .nav-utilities {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: var(--s-2) 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border-soft);
+  }
+  .nav-utilities :deep(button) { min-width: 44px; min-height: 44px; }
+}
 </style>
