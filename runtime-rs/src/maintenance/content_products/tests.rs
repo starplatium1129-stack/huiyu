@@ -35,7 +35,7 @@ fn fixture(base: &Path) -> Options {
         &json!({"entries":[]}),
     );
     write(
-        &base.join("showcase/v1/home-hero.json"),
+        &showcase.join("home-hero.json"),
         &json!({"version":4,"entries":{"natsume":{"image":"home/natsume.jpg","updatedAt":"old"}},"unknown":"retained"}),
     );
     for folder in ["images", "thumbs"] {
@@ -153,6 +153,76 @@ fn jpeg_products_match_node_manifests_and_preserve_transaction_digests() {
     assert!(!showcase.join("images/sc001.png").exists());
     assert!(!showcase.join("home/nene.jpg").exists());
 }
+#[test]
+fn home_hero_only_uses_explicit_uploads_in_the_active_showcase() {
+    let temp = tempfile::tempdir().unwrap();
+    let options = fixture(temp.path());
+    let root = options.showcase.as_deref().unwrap();
+    let legacy = json!({"version":9,"entries":{
+        "nene":{"image":"home/nene.jpg","updatedAt":"2026-08-15T03:41:18.363Z"},
+        "natsume":{"image":"home/natsume.jpg","updatedAt":"2026-08-15T03:41:18.363Z"}
+    }});
+    write(&root.join("home-hero.json"), &legacy);
+    std::fs::create_dir_all(root.join("home")).unwrap();
+    std::fs::write(root.join("home/nene.jpg"), image()).unwrap();
+    std::fs::write(root.join("home/natsume.jpg"), image()).unwrap();
+    assert_eq!(showcase::hero(Some(root))["entries"], json!({}));
+    assert_eq!(fs::json(&root.join("home-hero.json")).unwrap(), legacy);
+
+    for character in ["nene", "natsume"] {
+        save(
+            &options,
+            &json!({"character":character,"image":data(&image())}),
+            true,
+            &CancellationToken::new(),
+        )
+        .unwrap();
+        let current = showcase::hero(Some(root));
+        let entry = &current["entries"][character];
+        assert_eq!(entry["source"], "upload");
+        assert!(
+            entry["image"]
+                .as_str()
+                .unwrap()
+                .starts_with(&format!("/scene-showcase/home/{character}.jpg?v="))
+        );
+        assert!(entry["updatedAt"].is_string());
+    }
+    save(
+        &options,
+        &json!({"character":"nene","action":"reset"}),
+        true,
+        &CancellationToken::new(),
+    )
+    .unwrap();
+    let current = showcase::hero(Some(root));
+    assert!(current["entries"]["nene"].is_null());
+    assert_eq!(current["entries"]["natsume"]["source"], "upload");
+    assert!(!root.join("home/nene.jpg").exists());
+    std::fs::remove_file(root.join("home/natsume.jpg")).unwrap();
+    assert_eq!(showcase::hero(Some(root))["entries"], json!({}));
+
+    // Older edition metadata must not select a different image in the active directory,
+    // including when a new upload writes the next manifest.
+    let mut previous = current;
+    previous["entries"]["natsume"]["image"] = json!("home/natsume.jpg");
+    std::fs::write(root.join("home/natsume.jpg"), image()).unwrap();
+    write(&root.parent().unwrap().join("v1/home-hero.json"), &previous);
+    std::fs::remove_file(root.join("home-hero.json")).unwrap();
+    assert_eq!(showcase::hero(Some(root))["entries"], json!({}));
+    assert_eq!(showcase::hero(None)["entries"], json!({}));
+    save(
+        &options,
+        &json!({"character":"nene","image":data(&image())}),
+        true,
+        &CancellationToken::new(),
+    )
+    .unwrap();
+    let current = showcase::hero(Some(root));
+    assert_eq!(current["entries"].as_object().unwrap().len(), 1);
+    assert_eq!(current["entries"]["nene"]["source"], "upload");
+}
+
 #[test]
 fn failed_product_write_rolls_back_every_byte_and_uses_the_shared_lease() {
     let temp = tempfile::tempdir().unwrap();

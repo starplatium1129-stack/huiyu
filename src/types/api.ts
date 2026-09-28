@@ -335,6 +335,7 @@ export type HomeHeroCharacter = 'nene' | 'natsume'
 export interface HomeHeroManifestEntry {
   image: string
   updatedAt: string | null
+  source?: 'upload'
 }
 
 export interface HomeHeroManifestResult {

@@ -214,6 +214,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
@@ -249,9 +250,9 @@ const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
-// Bundled approved covers are authoritative; copied showcase editions may contain older home art.
-const { image: neneHero, failed: neneFailed, retry: retryNene } = useRuntimeImage('/assets/characters/nene-home-cg-1024.webp')
-const { image: natsumeHero, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage('/assets/characters/natsume-home-cg-1024.webp')
+const { heroes } = useHomeHeroes()
+const { image: neneHero, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
+const { image: natsumeHero, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
 const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
 watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); else if (muse === 'natsume' && natsumeFailed.value) retryNatsume() })
 

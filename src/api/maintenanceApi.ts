@@ -137,6 +137,12 @@ function isHomeHeroManifest(value: ApiResponseObject): boolean {
   return value.ok === true
     && typeof value.version === 'number'
     && isObject(value.entries)
+    && Object.entries(value.entries).every(([id, entry]) =>
+      (id === 'nene' || id === 'natsume') && isObject(entry)
+      && typeof entry.image === 'string'
+      && new RegExp(`^/scene-showcase/home/${id}\\.jpg(?:\\?v=[^#]*)?$`).test(entry.image)
+      && (entry.updatedAt === null || (typeof entry.updatedAt === 'string' && Number.isFinite(Date.parse(entry.updatedAt))))
+      && (entry.source === undefined || entry.source === 'upload'))
 }
 
 function isBackupList(value: ApiResponseObject): boolean {

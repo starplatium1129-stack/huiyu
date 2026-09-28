@@ -32,6 +32,8 @@
 
 单 URL 的普通图片复用 `useRuntimeImage`；简单图片或循环卡片使用 `RuntimeImage`。它们沿用平台 URL/CORS 解析，按资源来源与 runtime epoch 重置状态，以每次加载身份拒绝旧事件；正常健康轮询不重载图片。不要在页面重复维护同一图片的失败集合，也不要让未解析的 `srcset` 覆盖已解析 URL。响应式 picture、画布采样、临时 Blob 所有权和原生 Live2D 仍由各自专用消费链管理，分级判定留在业务层。
 
+首页 Hero 与场景维护预览共用 `useHomeHeroes`，默认使用内置 `*-home-cg-1024.webp`。只有当前样张目录中由维护上传写入 `source: "upload"` 且文件存在的条目才覆盖内置图；历史无来源清单保留原文件，但不再视作当前首页替换。恢复操作移除该角色覆盖记录，两页均回到同一内置图，不回溯旧样张版本。
+
 ## Live2D 生命周期
 
 destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capability 分支及 lifecycleToken 语义不能在重构时改变。拆分已完成，见 [完成记录](archive/completed/live2d-composable-refactor-plan.md)，不再列入未来待办。

@@ -14,6 +14,23 @@ function setup(body: object, status = 200) {
 }
 
 describe('scene maintenance HTTP contract (mock transport)', () => {
+  it('accepts explicit hero uploads and keeps legacy entries identifiable', async () => {
+    for (const source of [undefined, 'upload']) {
+      const entry = { image: '/scene-showcase/home/nene.jpg?v=1', updatedAt: '2026-09-28T12:00:00Z', source }
+      const result = await setup({ ok: true, version: 2, entries: { nene: entry } }).api.getHomeHero()
+      expect(result.entries.nene?.source).toBe(source)
+    }
+  })
+  it.each([
+    { image: 'https://example.com/image.jpg', updatedAt: null },
+    { image: '/scene-showcase/home/natsume.jpg?v=1', updatedAt: null },
+    { image: '/scene-showcase/home/nene.jpg?v=1', updatedAt: 'invalid' },
+    { image: '/scene-showcase/home/nene.jpg?v=1', updatedAt: null, source: 'unknown' },
+    null,
+  ])('rejects malformed hero entry %s at the HTTP boundary', async entry => {
+    await expect(setup({ ok: true, version: 2, entries: { nene: entry } }).api.getHomeHero())
+      .rejects.toMatchObject({ kind: 'invalid-response' })
+  })
   it('posts the exact delta envelope for preview and changes without full snapshot fields', async () => {
     const read = setup(preview)
     await read.api.previewSceneChanges(payload)

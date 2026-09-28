@@ -70,7 +70,7 @@ export function useSceneManagerWorkspace() {
         blueprints,
         errorMessage,
     });
-    const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked } = showcase;
+    const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, resetHero, onShowcasePicked, onHeroPicked } = showcase;
     // ── 场景编辑弹层 + CRUD + 策展（已下沉 useSceneEditorModal）───────────────
     const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty, nextSceneId: allocateNextSceneId, allocationError: message => { maintenanceHint.value = message; } });
     const recordCounts = computed<Record<string, number>>(() => ({ scenes: scenes.value.length, blueprints: blueprints.value.length, tags: tags.value.length }));
@@ -411,7 +411,6 @@ export function useSceneManagerWorkspace() {
     onMounted(async () => {
         // 首次进入拉最新落盘状态：编辑器要基于真实文件而不是别的页面留下的内存副本
         await loadFromStore(true);
-        await loadHomeHeroes();
     });
     return {
         canSave: maintenance.canSave, canPreview: maintenance.canPreview,

@@ -5,19 +5,14 @@
  * 2026-08-18：全量支持经典场景（302 个）与热门角色蓝图（347 个）样张在线预览与无感替换。
  */
 
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onScopeDispose } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
 import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
 import { confirmAction } from '@/composables/useConfirm'
+import { useHomeHeroes, type HeroEntry } from '@/composables/useHomeHeroes'
 
 const IMAGE_PAGE_SIZE = 36
-
-export interface HeroEntry {
-  id: HomeHeroCharacter
-  title: string
-  updatedAt: string
-}
 
 export interface ShowcaseSceneItem {
   id: string
@@ -80,11 +75,15 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   const heroFileEl = ref<HTMLInputElement | null>(null)
   const selectedHeroId = ref<HomeHeroCharacter | ''>('')
   const selectedHeroTitle = ref('')
-  const homeHeroVersion = ref(Date.now())
-  const homeHeroes = ref<HeroEntry[]>([
-    { id: 'nene', title: '宁宁', updatedAt: '' },
-    { id: 'natsume', title: '夏目', updatedAt: '' },
-  ])
+  const { heroes, reload: loadHomeHeroes } = useHomeHeroes()
+  const homeHeroes = computed(() => Object.values(heroes.value))
+  let alive = true
+  let heroRequest: AbortController | undefined
+  onScopeDispose(() => {
+    alive = false
+    heroRequest?.abort()
+    if (imageDebounceTimer) clearTimeout(imageDebounceTimer)
+  })
 
   const allShowcaseItems = computed<ShowcaseSceneItem[]>(() => {
     const items: ShowcaseSceneItem[] = scenes.value.map(s => ({
@@ -136,7 +135,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       : '',
   )
   const heroUrl = computed(() => selectedHeroId.value
-    ? `/scene-showcase/home/${selectedHeroId.value}.jpg?v=${homeHeroVersion.value}`
+    ? heroes.value[selectedHeroId.value].image
     : '')
 
   const thumbUrl = (id: string) => `/scene-showcase/thumbs/${encodeURIComponent(id)}.jpg?v=${showcaseVersion.value}`
@@ -160,7 +159,6 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
     selectedHeroId.value = hero.id
     selectedHeroTitle.value = hero.title
     showcaseError.value = false
-    homeHeroVersion.value = Date.now()
     showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }
   function pickHero() { heroFileEl.value?.click() }
@@ -173,30 +171,29 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       : message
   }
 
-  async function loadHomeHeroes() {
-    try {
-      const data = await maintenanceApi.getHomeHero()
-      homeHeroes.value = homeHeroes.value.map(hero => {
-        const updatedAt = data.entries[hero.id]?.updatedAt
-        return { ...hero, updatedAt: updatedAt ? new Date(updatedAt).toLocaleString('zh-CN') : '' }
-      })
-    } catch {}
+  async function refreshSavedHero(message: string) {
+    showcaseFeedback.value = message
+    try { await loadHomeHeroes() } catch (error) {
+      showcaseError.value = true
+      showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
+    }
   }
 
   async function resetHero() {
-    if (!selectedHeroId.value) return
-    if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false }))) return
+    if (!selectedHeroId.value || uploadBusy.value) return
     const character = selectedHeroId.value
+    if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false }))) return
+    if (!alive || uploadBusy.value) return
     uploadBusy.value = true
+    showcaseError.value = false
+    heroRequest = new AbortController()
     try {
-      const data = await maintenanceApi.resetHomeHero(character)
-      showcaseFeedback.value = data.message || '已恢复内置图'
-      homeHeroVersion.value = Date.now()
-      await loadHomeHeroes()
+      const data = await maintenanceApi.resetHomeHero(character, { signal: heroRequest.signal })
+      await refreshSavedHero(data.message || '已恢复内置图')
     } catch (err) {
       showcaseError.value = true
       showcaseFeedback.value = '未能恢复：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
-    } finally { uploadBusy.value = false }
+    } finally { uploadBusy.value = false; heroRequest = undefined }
   }
 
   async function onShowcasePicked(e: Event) {
@@ -238,30 +235,30 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   async function onHeroPicked(e: Event) {
     const input = e.target as HTMLInputElement
     const file = input.files?.[0]
-    if (!file || !selectedHeroId.value) return
+    if (!file || !selectedHeroId.value || uploadBusy.value) return
     const character = selectedHeroId.value
     showcaseError.value = false
     uploadBusy.value = true
+    heroRequest = new AbortController()
     showcaseFeedback.value = '正在保存首页主视觉…'
     try {
       if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
       const image = await readFileAsImage(file)
+      if (!alive) return
       if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
       const normalized = jpegAtWidth(image, 4096, 0.94)
-      const data = await maintenanceApi.saveHomeHero(character, normalized)
-      showcaseFeedback.value = data.message || '首页主视觉已保存'
-      homeHeroVersion.value = Date.now()
-      await loadHomeHeroes()
+      const data = await maintenanceApi.saveHomeHero(character, normalized, { signal: heroRequest.signal })
+      await refreshSavedHero(data.message || '首页主视觉已保存')
     } catch (err) {
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
-    } finally { uploadBusy.value = false; input.value = '' }
+    } finally { uploadBusy.value = false; heroRequest = undefined; input.value = '' }
   }
 
   return {
     imageSearch, imageSearchDebounced, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
     showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
-    showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroVersion, homeHeroes,
+    showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroes,
     allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
     thumbUrl, imageUrl,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,

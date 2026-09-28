@@ -125,7 +125,9 @@
                 <button class="btn btn-ghost btn-sm" type="button" @click="selectedHeroId = ''">关闭</button>
               </span>
             </div>
-            <img :crossorigin="runtimeResourceCors()" class="image-preview-img home-hero-preview" :src="resolveRuntimeUrl(heroUrl)" :alt="selectedHeroTitle" />
+            <RuntimeImage :src="heroUrl" v-slot="{ image, failed }">
+              <img v-if="image.src && !failed" v-bind="image" class="image-preview-img home-hero-preview" :alt="selectedHeroTitle" />
+            </RuntimeImage>
             <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
             <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
           </div>
@@ -461,6 +463,7 @@
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'

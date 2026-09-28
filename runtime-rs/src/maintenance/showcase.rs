@@ -67,33 +67,16 @@ pub(super) fn root(config: &Config) -> Option<PathBuf> {
     None
 }
 pub(super) fn hero(root: Option<&Path>) -> Value {
-    public(raw_hero(root))
+    // Historical showcase editions shipped their own home art. Only an explicit
+    // upload in the active edition may override the currently bundled covers.
+    public(raw_hero(root), root)
 }
 pub(super) fn raw_hero(root: Option<&Path>) -> Value {
-    let fallback = json!({"version":1,"entries":{}});
-    let Some(root) = root else {
-        return fallback;
-    };
-    let Some(parent) = root.parent() else {
-        return fallback;
-    };
-    let Ok(paths) = collections(parent) else {
-        return fallback;
-    };
-    let start = paths
-        .iter()
-        .position(|path| path.file_name() == root.file_name())
-        .unwrap_or(0);
-    for path in paths.into_iter().skip(start) {
-        if let Ok(value) = fs::json(&path.join("home-hero.json"))
-            && value["entries"].is_object()
-        {
-            return value;
-        }
-    }
-    fallback
+    root.and_then(|root| fs::json(&root.join("home-hero.json")).ok())
+        .filter(|value| value["entries"].is_object())
+        .unwrap_or(json!({"version":1,"entries":{}}))
 }
-fn public(manifest: Value) -> Value {
+fn public(manifest: Value, root: Option<&Path>) -> Value {
     let mut entries = serde_json::Map::new();
     let version = manifest
         .get("version")
@@ -107,7 +90,11 @@ fn public(manifest: Value) -> Value {
         .unwrap_or(json!(1));
     for character in ["nene", "natsume"] {
         let entry = &manifest["entries"][character];
-        if entry["image"] != format!("home/{character}.jpg") {
+        let image = format!("home/{character}.jpg");
+        if entry["source"] != "upload"
+            || entry["image"] != image
+            || !root.is_some_and(|root| root.join(&image).is_file())
+        {
             continue;
         }
         let updated = entry
@@ -127,7 +114,7 @@ fn public(manifest: Value) -> Value {
         let encoded = url::form_urlencoded::byte_serialize(stamp.as_bytes())
             .collect::<String>()
             .replace('+', "%20");
-        entries.insert(character.into(),json!({"image":format!("/scene-showcase/home/{character}.jpg?v={encoded}"),"updatedAt":updated}));
+        entries.insert(character.into(),json!({"image":format!("/scene-showcase/home/{character}.jpg?v={encoded}"),"updatedAt":updated,"source":"upload"}));
     }
     json!({"ok":true,"version":version,"entries":entries})
 }

@@ -279,8 +279,7 @@ fn write_hero(
             ));
         }
         tx.write(&image_path, &bytes)?;
-        manifest["entries"][&character] =
-            json!({"image":format!("home/{character}.jpg"),"updatedAt":codec::timestamp()});
+        manifest["entries"][&character] = json!({"image":format!("home/{character}.jpg"),"updatedAt":codec::timestamp(),"source":"upload"});
     }
     let current = if prompt::truthy(&manifest["version"]) {
         number(&manifest["version"])
