@@ -17,23 +17,35 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 280px;
   /* 卡片抬升是 transform-only 物理弹簧；linear() 不支持时回退到 Bézier。 */
-  transition: border-color var(--motion-hover), transform var(--spring-gentle-duration) var(--spring-gentle-ease), box-shadow var(--motion-control) var(--ease-out);
+  transition: transform var(--spring-gentle-duration) var(--spring-gentle-ease);
   @apply tw:min-w-0 tw:text-primary;
   text-decoration: none;
-  box-shadow: none;
+  box-shadow: var(--shadow-sm);
 }
 .sc:hover {
   border-color: color-mix(in srgb, var(--accent) 65%, var(--border-strong));
   transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
 }
 .sc[role="button"]:active {
   transform: translateY(0) scale(.975);
-  box-shadow: var(--shadow-sm);
   transition-duration: var(--motion-press);
 }
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sc-static { @apply tw:cursor-default; }
+/* Prepaint the rim; hovering changes only opacity rather than shadow blur. */
+.sc::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  z-index: var(--z-sc-pointer-glow); pointer-events: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), inset 0 1px 0 var(--glass-highlight);
+  opacity: 0; transition: opacity var(--motion-hover);
+}
+.sc:hover::after, .sc:focus-within::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .sc:hover,
+  :root:not([data-motion="full"]) .sc[role="button"]:active { transform: none; }
+}
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .sc:hover,
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .sc[role="button"]:active { transform: none; }
 
 /* Cache a fixed-size light texture; pointer movement only changes its transform. */
 .sc::before {
@@ -57,9 +69,9 @@
 .sc-thumb {
   @apply tw:absolute; inset: 0; z-index: var(--z-sc-media); /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
   @apply tw:w-full tw:h-full tw:object-cover; object-position: center 22%;
-  opacity:0; filter:blur(6px); transition: opacity var(--motion-surface) var(--ease-out), filter var(--motion-atmosphere) var(--ease-out), transform var(--motion-surface) var(--ease-out), filter var(--motion-surface);
+  opacity:0; transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out);
 }
-.sc-thumb-ready { opacity:1; filter:blur(0); }
+.sc-thumb-ready { opacity:1; }
 /* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
    改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。
    渐变宽度 220%，位移 0 → -120% 与原背景位移量一致。 */
@@ -83,7 +95,7 @@
   padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); @apply tw:rounded-pill;
   background:var(--art-scrim); color:var(--on-art-primary);
   font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em;
-  backdrop-filter:blur(10px); box-shadow:var(--shadow-sm);
+  box-shadow:var(--shadow-sm);
   @apply tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover);
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
@@ -98,13 +110,12 @@
   @apply tw:relative; z-index: var(--z-raised);
   @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;
   background: var(--art-scrim); color: var(--on-art-primary); padding: 2px var(--s-2); @apply tw:rounded-md;
-  backdrop-filter: blur(6px);
 }
 .sc-id {
   @apply tw:absolute; z-index: var(--z-raised); @apply tw:left-s-2 tw:bottom-s-2;
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
   color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 88%, var(--bg-deep));
-  padding: 2px var(--s-2); @apply tw:rounded-sm; backdrop-filter: blur(6px);
+  padding: 2px var(--s-2); @apply tw:rounded-sm;
   box-shadow: inset 0 1px 0 var(--hl-inset-08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 .sc-badge {
@@ -119,14 +130,13 @@
   @apply tw:absolute; z-index: var(--z-raised); @apply tw:top-s-2 tw:left-s-2 tw:text-mono-sm tw:font-extrabold; letter-spacing: 0.04em;
   /* 徽标压在样张上:底色恒为深色(与主题无关),文字用角色品牌色的浅色调 */
   color: color-mix(in srgb, var(--accent) 40%, white);
-  background: color-mix(in srgb, var(--accent) 62%, var(--art-scrim));
+  background: var(--art-backdrop);
   border: 1px solid var(--on-art-line);
-  padding: 2px var(--s-2); @apply tw:rounded-pill; backdrop-filter: blur(8px);
+  padding: 2px var(--s-2); @apply tw:rounded-pill;
   box-shadow: inset 0 1px 0 var(--hl-inset-18), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .sc-tier.signature {
   color: color-mix(in srgb, var(--natsume-amber) 34%, white);
-  background: color-mix(in srgb, var(--natsume-amber) 55%, var(--art-scrim));
 }
 
 /* ---- 主体 ---- */

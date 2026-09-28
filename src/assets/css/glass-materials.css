@@ -3,9 +3,9 @@
 :root { --material-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent); }
 :root[data-glass-material="liquid"] {
   --material-fill: color-mix(in srgb, var(--bg-surface) 68%, transparent);
-  /* A clearer bevel surrounds a protected reading plane (88.48% combined fill).
+  /* A clearer bevel surrounds a protected reading plane (93.6% combined fill).
      Keep glints on the rim: a diagonal wash across labels would reduce contrast. */
-  --material-reading-fill: color-mix(in srgb, var(--bg-surface) 64%, transparent);
+  --material-reading-fill: color-mix(in srgb, var(--bg-surface) 80%, transparent);
   --material-rim: var(--glass-specular, var(--glass-highlight));
 }
 :root[data-glass-material="liquid"][data-theme="light"] {

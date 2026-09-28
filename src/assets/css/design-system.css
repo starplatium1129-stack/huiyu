@@ -11,31 +11,29 @@
    离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
-  /* ---- Core palette (深色基线；浅色由 light-theme.css 覆盖) ----
-     Galgame 梦幻夜空 & 水晶亚克力质感系统 (Cosmic Indigo & Crystal Acrylic) ——
-     深邃澄澈的星夜底色 + 樱花粉 / 薰衣草紫 / 汽水苏打青三色糖果流光点睛；
-     对比度按 WCAG AA 严格把关。 */
-  --bg-deep:       #181420;     /* 最深夜空: 澄澈深绀蓝紫夜空 */
-  --bg-base:       #211c30;     /* 页面背景: 梦幻二次元星夜绀紫 */
-  --bg-surface:    #272135; /* 玻璃卡片: 水晶亚克力透亮面板 */
-  --bg-elevated:   #30283d; /* 浮层/输入框: 星尘柔和提亮 */
-  --bg-hover:      #3a3048; /* 悬停态: 星尘紫光 */
+  /* 蓝灰夜幕承载结构，樱粉与角色色只用于交互和局部氛围。 */
+  --ink-base: #080f17;
+  --bg-deep:       #10161d;
+  --bg-base:       #151c24;
+  --bg-surface:    #1e2935;
+  --bg-elevated:   #25313d;
+  --bg-hover:      #25313d;
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #30283d;
+  --bg-surface-elevated: #25313d;
 
-  --border-soft:   rgba(220, 224, 246, 0.10);
-  --border-strong: rgba(220, 224, 246, 0.24);
+  --border-soft:   rgba(170, 198, 223, 0.14);
+  --border-strong: rgba(187, 214, 235, 0.28);
 
   /* ---- Text ---- */
-  --text-primary:   #fff8f4;   /* 主文字: 暖白带微弱恋爱温润感 */
-  --text-secondary: #c8c7d2;   /* 副文字: 淡薰衣草紫灰 */
+  --text-primary:   #edf3fa;
+  --text-secondary: #bdcbd8;
   /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-muted:     #adb0c2;
-  --text-inverse:   #120c1a;   /* 浅色高光底深色字反色 */
+  --text-muted:     #a8b9c9;
+  --text-inverse:   #111923;   /* 浅色高光底深色字反色 */
   /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
   --text-tertiary:  var(--text-muted);
   /* 禁用态文字：直接用达标色值，不再用 opacity 压字。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-disabled:  #a6a9bc;
+  --text-disabled:  #a6b3c0;
 
   /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
   --accent:         #f2a8be;
@@ -53,16 +51,16 @@
 
   /* ---- Rella 夜空氛围（Galgame 梦幻星尘夜空） ----
      只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。 */
-  --rella-night:       #0e0c16;  /* 最深夜空 */
-  --rella-night-soft:  #1d162c;  /* 夜空过渡层 */
-  --rella-night-glass: rgba(24, 18, 36, 0.70); /* 夜空玻璃卡 */
+  --rella-night:       #0d141b;
+  --rella-night-soft:  #192632;  /* 夜空过渡层 */
+  --rella-night-glass: rgba(20, 30, 41, 0.88); /* 夜空玻璃卡 */
   --rella-star:        #fff2f9;  /* 糖果粉白星辉 */
   --rella-cyan:        #5eead4;  /* 汽水苏打青 */
   --rella-violet:      #b784f6;  /* 梦幻薰衣草紫 */
   --rella-glow-cyan:   rgba(94, 234, 212, 0.22);  /* 青辉光点缀层 */
   --rella-glow-violet: rgba(183, 132, 246, 0.24);  /* 紫辉光主导层 */
   --rella-glow-pink:   rgba(255, 117, 160, 0.32);  /* 樱粉辉光强化层 */
-  --stage-rella: linear-gradient(160deg, #241838 0%, #171126 48%, #0d0b14 100%);
+  --stage-rella: linear-gradient(160deg, #203648 0%, #17232f 48%, #101820 100%);
 
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
@@ -72,16 +70,15 @@
   --archive-ember:       #e65338;
   --archive-grid:        rgba(255, 255, 255, 0.05);
   --archive-line:        rgba(255, 255, 255, 0.12);
-  --archive-glass:       rgba(24, 18, 36, 0.82);
+  --archive-glass:       rgba(22, 31, 42, 0.92);
   /* 档案面板圆角：语义别名统一走 --r-lg，避免只改一处。 */
   --r-dossier:           var(--r-lg);
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(33, 27, 46, 0.80);
-  --glass-highlight: rgba(220, 224, 246, 0.12);
-  /* inset 玻璃高光令牌族（2026-09-05 收纳星夜绀紫主题引入的系统性用法，
-     保持视觉值逐字节一致；使用点一律走令牌，见 scan-style-literals 门禁） */
+  --nav-bg: rgba(21, 28, 36, 0.96);
+  --glass-highlight: rgba(227, 240, 252, 0.07);
+  /* 内衬高光以共享令牌表达，面板正文保持稳定底色。 */
   --hl-inset-04: rgba(255, 255, 255, 0.04);
   --hl-inset-06: rgba(255, 255, 255, 0.06);
   --hl-inset-08: rgba(255, 255, 255, 0.08);
@@ -90,11 +87,11 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(39, 33, 53, 0.80);
-  --glass-fill-strong: #30283d;
-  --glass-edge: rgba(255, 220, 246, 0.16);
-  --glass-specular: color-mix(in srgb, #fff2fa 26%, transparent);
-  --glass-shadow: 0 18px 48px rgba(8, 5, 18, 0.52);
+  --glass-fill: rgba(30, 41, 53, 0.94);
+  --glass-fill-strong: #25313d;
+  --glass-edge: rgba(187, 214, 235, 0.18);
+  --glass-specular: color-mix(in srgb, #eaf4ff 15%, transparent);
+  --glass-shadow: 0 16px 40px rgba(5, 11, 18, 0.40);
 
   /* ---- Functional ---- */
   --success:        #4ade80;
@@ -200,9 +197,9 @@
 
   /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
      二次元水晶亚克力折射与梦幻光晕阶梯 (Crystal Acrylic Specular & Bloom) */
-  --shadow-sm: 0 4px 12px rgba(4, 3, 16, 0.24);
-  --shadow-md: 0 8px 24px rgba(4, 3, 16, 0.36);
-  --shadow-lg: 0 16px 40px rgba(4, 3, 16, 0.50);
+  --shadow-sm: 0 3px 10px rgba(5, 11, 18, 0.20);
+  --shadow-md: 0 8px 22px rgba(5, 11, 18, 0.30);
+  --shadow-lg: 0 16px 38px rgba(5, 11, 18, 0.42);
   /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影) */
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
@@ -266,12 +263,12 @@
   /* 极淡的水印/高光层:比 --on-art-fill 再轻一档,用于画面上的巨大装饰字与光泽 */
   --on-art-wash: color-mix(in srgb, white 7%, transparent);
   --on-art-sheen: color-mix(in srgb, white 32%, transparent);
-  --art-scrim: rgba(18, 14, 29, 0.74);
-  --art-scrim-soft: rgba(18, 14, 29, 0.42);
-  --art-backdrop: rgba(13, 10, 24, 0.82);
+  --art-scrim: rgba(10, 17, 25, 0.78);
+  --art-scrim-soft: rgba(10, 17, 25, 0.44);
+  --art-backdrop: rgba(8, 13, 19, 0.86);
   /* 画作衬垫(画廊卡片与 letterbox 留边):这一项**随主题翻转**,
      因为它是画框而不是画面本身 —— 浅色主题下是画册纸白,深色下是暗房底。 */
-  --art-mat: #17141c;
+  --art-mat: #101820;
 
   /* ---- 立绘舞台底(首页 hero、角色页画框) ----
      这些是"人物身后的空间",随主题翻转:深色是暗房,浅色是画册纸。
@@ -313,45 +310,9 @@ body {
      native dialog locks html, overflow:hidden would otherwise make sticky
      toolbars attach to body and jump offscreen until the modal closes. */
   @apply tw:overflow-x-clip;
-  /* 留白承载界面层级，淡淡的樱色只停在页面上缘。 */
-  background-image: radial-gradient(ellipse at 15% 0%, var(--accent-soft), transparent 45rem);
+  /* RouteAtmosphere owns the single bounded ambient layer. */
 }
 
-/* 装饰层统一加图层隔离（2026-08-28）：contain 把重绘范围锁在图层自身，
-   will-change 提前提层，避免这两个 fixed 全屏层在动的时候把整页拉进重绘。
-   此前全项目 contain 使用数为 0、will-change 仅 7 处，而 backdrop-filter 有 142 处。 */
-body::before, body::after {
-  content: ""; @apply tw:fixed; z-index: var(--z-below); @apply tw:pointer-events-none; border-radius: 50%;
-  filter: blur(2px); opacity: .28;
-  contain: layout paint style;
-  will-change: transform;
-}
-body::before {
-  @apply tw:w-[42rem] tw:h-[42rem] tw:top-[-24rem] tw:right-[-16rem];
-  /* 甜系化：主光斑改成樱花粉辉光 */
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 0, transparent 70%);
-}
-body::after {
-  @apply tw:w-[34rem] tw:h-[34rem] tw:bottom-[-22rem] tw:left-[-14rem];
-  /* 甜系化：次光斑改成淡樱粉辉光 */
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent-hover) 22%, transparent) 0, transparent 72%);
-}
-/* 氛围光斑只在艺术向页面缓慢浮动；工作台保持静止，避免抢画面 */
-body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::before {
-  opacity: .32;
-}
-/* 次光斑保留静态渲染，不再浮动（2026-08-28 装饰层削减 4 → 2）。
-   此前首屏同时跑 4 层常驻全屏动画：两个光斑 + 星野 + bokeh，
-   其中主光斑是 42rem 见方带 blur(2px) 的图层。装饰层越热闹，
-   画面（也就是这个工具真正的主体）越被稀释 —— 这与 DESIGN.md
-   「不要在没有叙事目的时加 glow / blur / 浮动形状」是自相矛盾的。
-   现在只留主光斑 + 星野两层在动，其余保留静态观感。 */
-body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::after {
-  opacity: .28;
-}
-
-/* 首页以封面和留白为主，星野保留在画册等沉浸页面。 */
-body:has(.home-page)::before, body:has(.home-page)::after { animation: none; opacity: .18; }
 
 a { @apply tw:text-accent; text-decoration: none; transition: color var(--motion-hover); }
 a:hover { @apply tw:text-accent-hover; }
@@ -789,13 +750,13 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
   @apply tw:rounded-lg tw:p-s-5;
-  backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: none;
   /* 修复:此处原有两条 box-shadow,后一条覆盖掉玻璃内衬高光,
      导致 .card 与 .card-info/.card-create 的表面语言不一致 */
   box-shadow: var(--shadow-glass-sm);
-  transition: border-color var(--motion-hover), transform var(--motion-hover), box-shadow var(--motion-hover);
+  transition: transform var(--motion-hover);
 }
-.card:hover { @apply tw:border-strong; box-shadow: var(--shadow-glass-md); }
+.card:hover { @apply tw:border-strong; }
 
 .card-grid {
   @apply tw:grid;
@@ -809,27 +770,27 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
    direct  L3 主操作 (单点入口/角色/项目)   — 高密度,accent 渐变边 + 强阴影
    阶梯: shadow-sm → md → lg
 */
-.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: blur(18px); box-shadow:var(--shadow-glass-sm); }
+.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow:var(--shadow-glass-sm); }
 .card-create {
   @apply tw:relative tw:overflow-hidden;
   background:linear-gradient(145deg,var(--glass-highlight),transparent 34%),var(--bg-surface);
   border:1px solid var(--border-strong); @apply tw:rounded-lg tw:p-s-3;
-  backdrop-filter:blur(18px) saturate(118%); box-shadow:var(--shadow-glass-sm);
-  transition:border-color var(--motion-hover),transform var(--motion-hover) var(--ease-out),box-shadow var(--motion-hover);
+  backdrop-filter:none; box-shadow:var(--shadow-glass-sm);
+  transition:transform var(--motion-hover) var(--ease-out);
 }
 .card-create::before {
   content:""; @apply tw:absolute; inset:0 auto auto 10%; @apply tw:w-[52%] tw:h-[1px];
   background:linear-gradient(90deg,transparent,var(--glass-specular),transparent);
   @apply tw:pointer-events-none;
 }
-.card-create:hover { @apply tw:border-accent; box-shadow: var(--shadow-md), 0 0 18px color-mix(in srgb, var(--rella-cyan) 12%, transparent); }
+.card-create:hover { @apply tw:border-accent; }
 .card-direct {
   @apply tw:relative;
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
   border: 1px solid var(--accent);
   @apply tw:rounded-xl tw:p-s-5;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--motion-hover), transform var(--motion-hover);
+  transition: transform var(--motion-hover);
 }
 /* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */
 .card-direct::after {
@@ -837,7 +798,16 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   background: linear-gradient(225deg, var(--bg-base) 0 50%, transparent 50%);
   @apply tw:pointer-events-none;
 }
-.card-direct:hover { box-shadow: var(--shadow-lg), 0 0 22px color-mix(in srgb, var(--rella-violet) 16%, transparent); }
+/* Shared cards keep their shadow static and composite a prepainted edge. The
+   existing top glint and cut corner retain their own pseudo-elements. */
+.card-create::after, .card-direct::before {
+  content: ''; @apply tw:absolute tw:inset-0 tw:pointer-events-none;
+  border-radius: inherit; z-index: var(--z-raised);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), inset 0 1px 0 var(--glass-highlight);
+  opacity: 0; transition: opacity var(--motion-hover);
+}
+.card-create:is(:hover, :focus-visible)::after,
+.card-direct:is(:hover, :focus-visible)::before { opacity: 1; }
 
 /* shadow 阶梯修饰 — 与三级叠加使用 */
 .card-level-1 { box-shadow: var(--shadow-sm); }

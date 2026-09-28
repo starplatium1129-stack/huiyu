@@ -64,20 +64,5 @@
   transition: border-color var(--motion-route-cut) ease, box-shadow var(--motion-route-cut) ease;
 }
 
-/* 角色氛围光斑：document-level variables are synchronized by the active
-   director workspace because CSS custom properties do not flow upward from
-   .pb to body::before/after. */
-body:has(.pb[data-character])::before {
-  opacity: 0.46;
-  filter: blur(55px);
-  @apply tw:w-[48rem] tw:h-[48rem] tw:top-[-18rem] tw:right-[-10rem];
-  background: radial-gradient(circle, var(--character-aura, rgba(216,180,254,.42)) 0, transparent 70%);
-  transition: opacity var(--motion-atmosphere) var(--ease-out);
-}
-body:has(.pb[data-character])::after {
-  opacity: 0.38;
-  filter: blur(50px);
-  @apply tw:w-[42rem] tw:h-[42rem] tw:bottom-[-16rem] tw:left-[-8rem];
-  background: radial-gradient(circle, var(--character-aura-secondary, rgba(255,143,196,.28)) 0, transparent 72%);
-  transition: opacity var(--motion-atmosphere) var(--ease-out);
-}
+/* The active workspace supplies document-level colors to RouteAtmosphere;
+   background geometry and painting are owned by that single surface. */

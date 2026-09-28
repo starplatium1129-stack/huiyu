@@ -401,7 +401,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .scene-reset { border:0; background:transparent; @apply tw:text-muted tw:cursor-pointer; font:600 var(--fs-label-sm) var(--font-sans); }
 .scene-reset:hover { @apply tw:text-accent; }
 
-.scene-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); @apply tw:gap-s-4; }
+.scene-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr)); @apply tw:gap-s-4; }
 .scene-grid :deep(.sc) { @apply tw:rounded-xl; }
 .scene-grid :deep(.sc-body) { flex:1; @apply tw:gap-s-2 tw:p-s-4; }
 .scene-grid :deep(.sc-title) { @apply tw:whitespace-normal tw:min-h-[2.6em]; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; @apply tw:overflow-hidden; line-height:1.3; }

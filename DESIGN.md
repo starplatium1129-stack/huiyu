@@ -4,22 +4,22 @@ name: "绘遇 · HUIYU"
 description: "绘遇 HUIYU：温暖、细腻的角色创作与故事画室。让想象成形，让故事相遇。"
 colors:
   primary: "#F2A8BE"
-  on-primary: "#120C1A"
+  on-primary: "#111923"
   primary-hover: "#FFC4D8"
   secondary: "#B784F6"
   tertiary: "#7FE7FF"
-  neutral: "#211C30"
-  neutral-deep: "#181420"
-  surface: "#272135"
-  surface-elevated: "#30283D"
-  text-primary: "#FFF8F4"
-  text-secondary: "#C8C7D2"
+  neutral: "#151C24"
+  neutral-deep: "#10161D"
+  surface: "#1E2935"
+  surface-elevated: "#25313D"
+  text-primary: "#EDF3FA"
+  text-secondary: "#BDCBD8"
   success: "#81C784"
   warning: "#FFA726"
   danger: "#FF9B8F"
   info: "#90CAF9"
   # 2026-09-08: 此元数据表描述深色基线；浅色覆盖见 src/assets/css/light-theme.css。
-  # 2026-09-01: 升级为甜系 Galgame 夜主题：高饱和樱花粉 + 薰衣草紫。
+  # 2026-09-28: 蓝灰夜幕作为结构底色，樱花粉与角色专属色承载强调。
   # 2026-09-02: 方向 A 二次元博客质感优化：基底调校为澄澈绀蓝夜空、升级日系药丸胶囊微光标签与亚克力边缘高光。
   # 应用支持深浅主题；两种主题都需要视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
@@ -28,7 +28,7 @@ colors:
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
   #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#A6A9BC"
+  disabled-text: "#A6B3C0"
   nene: "#B784F6"
   natsume: "#FBB040"
 typography:
@@ -546,8 +546,15 @@ belong inside installation details, not in the default creative composition.
 
 名称：绘遇 · HUIYU。标语：让想象成形，让故事相遇。画框与翻页线条象征角色从画面进入故事，沿用 ArchiveIcon 的圆头手绘描边。
 
-品牌色为墨紫 `#211C30`、暖白 `#FFF8F4`、樱花粉 `#F2A8BE`、浅紫藤 `#C5B5E8`；浅色背景上的小字与图标使用墨紫或深玫瑰，不能用浅粉压低对比度。
+品牌资产沿用墨紫 `#211C30`、暖白 `#FFF8F4`、樱花粉 `#F2A8BE`、浅紫藤 `#C5B5E8`；界面深色结构底色采用蓝灰夜幕。浅色背景上的小字与图标使用深墨或深玫瑰，不能用浅粉压低对比度。
 
 母版为 `assets/brand-mark.svg`；`npm run wf -- brand:build` 生成深浅字标、favicon、七尺寸 ICO 和原生安装器路径。字标由 BrandLogo 跟随应用主题切换，不使用滤镜或发光覆盖文字。业务功能色和角色强调色保留独立语义。
 
 兼容约束：`com.aics.studio`、内部 AI-CG-Studio 安装标识、可执行文件名、注册表路径、存储键和备份协议继续保留，用户可见名称统一为绘遇。
+
+## Background material hierarchy
+
+- Dark surfaces use blue-gray night tones; light surfaces use warm paper neutrals. Character hues remain accents, not full-page washes.
+- RouteAtmosphere owns one bounded, static ambient surface. Do not add duplicate body glows, blur passes, or permanent will-change to static backgrounds.
+- Reading cards are opaque. Optional liquid refraction belongs to floating structural chrome; cards do not stack backdrop filters.
+- Card hover rims and ordinary image entrances animate opacity/transform. Rating masks remain enforced independently of decorative effects.
