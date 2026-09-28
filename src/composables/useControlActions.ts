@@ -53,8 +53,9 @@ export function useControlActions(
 
   function buildConfigPayload() {
     const last = status.lastStatus()
-    const neneBase = last?.voices?.nene || {}
-    const natBase = last?.voices?.natsume || {}
+    const voices = last?.restartRequired ? last.savedConfig?.voices : last?.voices
+    const neneBase = voices?.nene || {}
+    const natBase = voices?.natsume || {}
     return {
       sdHost: status.sdHost.value.trim(),
       comfyHost: status.comfyHost.value.trim(),
@@ -72,8 +73,8 @@ export function useControlActions(
     savingConfig.value = true
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      await control.saveConfig(buildConfigPayload())
-      showToast('生成服务配置已保存')
+      const result = await control.saveConfig(buildConfigPayload())
+      showToast(result?.restartRequired ? (result.message || '配置已保存，重新启动应用后生效') : '生成服务配置已保存')
       status.pollStatus(true)
     } catch (e) { showToast(errorMessage(e, '保存失败'), true); status.pollStatus() }
     finally { savingConfig.value = false }
@@ -127,11 +128,13 @@ export function useControlActions(
 
   async function doStart() {
     if (!status.lastStatus()) { showToast('控制面板仍在读取配置，请稍候再试', true); status.pollStatus(); return }
+    if (status.lastStatus()?.restartRequired) { showToast('配置已保存，请重新启动应用后再启用公网分享'); return }
     status.actionBusy.value = true
     status.mainBtnLabel.value = '正在启用公网分享…'
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      await control.saveConfig(buildConfigPayload())
+      const result = await control.saveConfig(buildConfigPayload())
+      if (result?.restartRequired) { showToast(result.message || '配置已保存，请重新启动应用后再启用公网分享'); return }
       showToast('生成服务配置已保存')
       await control.start(tunnelEnabled.value)
       showToast('公网分享已启用')

@@ -1,6 +1,5 @@
 import { defineConfig } from '@playwright/test';
 import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import MOCK_PORTS from './scripts/lib/e2e-ports.js';
 
 const localChromiumCandidates = process.platform === 'win32' ? [
@@ -12,8 +11,6 @@ const localChromiumCandidates = process.platform === 'win32' ? [
 ] : [];
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
   localChromiumCandidates.find(candidate => existsSync(candidate));
-
-const isolated = Boolean(Number(process.env.AICS_E2E_PORT_OFFSET || 0));
 
 const browserUse = {
   baseURL: `http://127.0.0.1:${MOCK_PORTS.web}`,
@@ -76,30 +73,18 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'node server.js',
+      command: 'node scripts/tests/mock-stack.js --web-only',
       url: `http://127.0.0.1:${MOCK_PORTS.web}/api/health`,
-      reuseExistingServer: !process.env.CI && !isolated,
-      timeout: 30_000,
-      env: {
-        DISABLE_TUNNEL: '1', PORT: String(MOCK_PORTS.web), HOST: '127.0.0.1',
-        ...(isolated ? {
-          AICS_RUNTIME_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`),
-          AI_WORKSPACE_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`, 'AI'),
-          AICS_DISABLE_LEGACY_RUNTIME_MIGRATION: '1',
-          SD_HOST: `http://127.0.0.1:${MOCK_PORTS.sd}`,
-          COMFY_HOST: `http://127.0.0.1:${MOCK_PORTS.translate + 1}`,
-          OLLAMA_HOST: `http://127.0.0.1:${MOCK_PORTS.ollama}`,
-          TTS_HOST: `http://127.0.0.1:${MOCK_PORTS.tts}`,
-        } : {}),
-      }
+      // A pre-existing Node or operator gateway must never certify Rust E2E.
+      reuseExistingServer: false,
+      timeout: 60_000,
     },
     {
-      // 四个假上游 + 一个真网关，runtime 目录隔离到 tmp
+      // Programmable upstream fixtures + the real Rust release executable.
       command: 'node scripts/tests/mock-stack.js',
       url: `http://127.0.0.1:${MOCK_PORTS.gateway}/api/health`,
-      reuseExistingServer: !process.env.CI && !isolated,
-      timeout: 30_000,
-      env: { DISABLE_TUNNEL: '1' }
+      reuseExistingServer: false,
+      timeout: 60_000,
     }
   ]
 });

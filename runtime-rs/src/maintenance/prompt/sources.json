@@ -1,0 +1,41 @@
+{
+  "kind": "literal-ast-extraction",
+  "sources": [
+    {
+      "file": "scripts/lib/prompt-policy.ts",
+      "sha256": "62f26b0ed25d0e73dd2a42c6d08f890ce95265a276e1650d133fb244ce88110a"
+    },
+    {
+      "file": "scripts/maintenance/optimize-scenes.ts",
+      "sha256": "e1ede9e43418eaa5647810107eb9f39868b81b02b133976c530870333f6aa4ad"
+    },
+    {
+      "file": "scripts/maintenance/classify-scene-ratings.ts",
+      "sha256": "fc3e56dd1adb179a5b027b2d768d001ea68cf01fd92a337dbed98e541437459f"
+    },
+    {
+      "file": "scripts/lib/manual-scene-ratings.ts",
+      "sha256": "f1cf26890e9636e6a43f89d0207f10028af8c0caae9f3df983118d3c78222280"
+    },
+    {
+      "file": "src/utils/soloTemplateSanitize.ts",
+      "sha256": "7b1f5a99a16360f3bda01c094730586e299e57de0f14671bf6552559298d58e2"
+    },
+    {
+      "file": "src/utils/promptFramingTokens.ts",
+      "sha256": "e3a07f593628aa16d10077b2f3f64ddcd9441b415e61f95a8e67fad5c07d82bf"
+    },
+    {
+      "file": "src/utils/sceneInference.ts",
+      "sha256": "9155f59504ad4d58f0c874b664ffd9ff9de04408e035be4dac42263616d8b1e9"
+    },
+    {
+      "file": "src/utils/promptPolicy.ts",
+      "sha256": "b99695b56f3a6d0685c226a712d3cd0a1d94bac951e1392aa7edccf4876ff776"
+    },
+    {
+      "file": "src/config/kreaStyleRecipes.ts",
+      "sha256": "055d0340e3f0bec7b69a5c552da43e8acce71d1195346487b49460197b5705bc"
+    }
+  ]
+}

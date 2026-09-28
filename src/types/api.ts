@@ -91,6 +91,8 @@ export interface ControlStatus {
   tunnelAvailable: boolean
   uptime: number
   autoStartVoice?: boolean
+  restartRequired?: boolean
+  savedConfig?: ControlConfigPayload & { ollamaHost?: string }
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
   scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean; comfy: boolean }
   /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
@@ -148,6 +150,8 @@ export interface ControlConfigResult {
   comfyHost: string
   ttsHost: string
   ollamaHost: string
+  restartRequired?: boolean
+  message?: string
 }
 
 export interface ControlPreferenceResult {

@@ -1,0 +1,134 @@
+{
+  "node": "v24.18.0",
+  "icu": "78.3",
+  "cases": [
+    {
+      "locale": "en-US",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "prompt": "snow portrait 雪 😀",
+          "negative": "",
+          "width": 1024,
+          "height": 1024,
+          "cfg": 7.5,
+          "seed": 42
+        }
+      },
+      "sha256": "d3ffead639a7ddb96dcdd2c636294ca6eed635d0cab7c516a88c8faf2c2943f4"
+    },
+    {
+      "locale": "en-US",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "2": 2,
+          "10": 10,
+          "a": 1e-7,
+          "A": 1e+21,
+          "e": 0,
+          "é": 1,
+          "é": 2,
+          "negative_prompt": "plain",
+          "negativePrompt": "plain"
+        },
+        "context": {
+          "中国": true,
+          "日本": false,
+          "projectId": null
+        }
+      },
+      "sha256": "1e423c89de9949ed50da41ba052088570bc80d7c7b4d5a1e27873e124823797a"
+    },
+    {
+      "locale": "en-US",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "prompt": "neutral fixture",
+          "loras": [
+            {
+              "id": "x",
+              "strength": 0.85
+            }
+          ],
+          "seed": 9007199254740991
+        },
+        "context": {
+          "title": "quote \" newline\n",
+          "nested": [
+            null,
+            true,
+            false,
+            0.000001
+          ]
+        }
+      },
+      "sha256": "78402b3a03633119609d64e763d29dc1ceb9435497bede9ab4f304c4e51ddb3b"
+    },
+    {
+      "locale": "zh-CN",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "prompt": "snow portrait 雪 😀",
+          "negative": "",
+          "width": 1024,
+          "height": 1024,
+          "cfg": 7.5,
+          "seed": 42
+        }
+      },
+      "sha256": "d3ffead639a7ddb96dcdd2c636294ca6eed635d0cab7c516a88c8faf2c2943f4"
+    },
+    {
+      "locale": "zh-CN",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "2": 2,
+          "10": 10,
+          "a": 1e-7,
+          "A": 1e+21,
+          "e": 0,
+          "é": 1,
+          "é": 2,
+          "negative_prompt": "plain",
+          "negativePrompt": "plain"
+        },
+        "context": {
+          "中国": true,
+          "日本": false,
+          "projectId": null
+        }
+      },
+      "sha256": "21a927806ae524e2b308b42e77ebdc02a6bfed81c0c966df7ce72628976f645c"
+    },
+    {
+      "locale": "zh-CN",
+      "value": {
+        "kind": "generation",
+        "input": {
+          "prompt": "neutral fixture",
+          "loras": [
+            {
+              "id": "x",
+              "strength": 0.85
+            }
+          ],
+          "seed": 9007199254740991
+        },
+        "context": {
+          "title": "quote \" newline\n",
+          "nested": [
+            null,
+            true,
+            false,
+            0.000001
+          ]
+        }
+      },
+      "sha256": "78402b3a03633119609d64e763d29dc1ceb9435497bede9ab4f304c4e51ddb3b"
+    }
+  ]
+}

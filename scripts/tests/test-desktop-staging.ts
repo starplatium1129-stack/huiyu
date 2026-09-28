@@ -68,50 +68,49 @@ function write(filePath: any, content: any) {
   fs.writeFileSync(filePath, content);
 }
 
+function remove(root: string) {
+  const actual=fs.realpathSync(root);
+  assert.equal(path.dirname(actual),fs.realpathSync(os.tmpdir()));
+  assert.ok(/^aics-/.test(path.basename(actual)));
+  fs.rmSync(actual,{recursive:true,force:true});
+}
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-stage-fixture-'));
-  const dirs = ['server', 'routes', 'scripts/lib', 'data', 'dist', 'assets', 'tools'];
-  dirs.forEach((directory) => fs.mkdirSync(path.join(root, directory), { recursive: true }));
-  write(path.join(root, 'server.js'), 'module.exports = {}\n');
-  write(path.join(root, 'docs', 'redirects.json'), '{"/docs/old":"/docs/new"}\n');
-  write(path.join(root, 'server', 'config.js'), 'module.exports = {}\n');
-  write(path.join(root, 'routes', 'health.js'), 'module.exports = {}\n');
-  write(path.join(root, 'scripts/lib', 'runtime.js'), 'runtime\n');
-  write(path.join(root, 'data', 'data.json'), '{}\n');
-  write(path.join(root, 'dist', 'index.html'), '<!doctype html>\n');
-  write(path.join(root, 'assets', 'asset.txt'), 'asset\n');
-  write(path.join(root, 'tools', 'tool.txt'), 'tool\n');
-  write(path.join(root, 'services', 'fixture.ts'), 'export const fixture = 1;\n');
-  write(path.join(root, 'services', 'fixture.js'), '"use strict";\nObject.defineProperty(exports, "__esModule", { value: true });\nexports.fixture = void 0;\nexports.fixture = 1;\n');
-  write(path.join(root, 'services', 'fixture.d.ts'), 'export declare const fixture = 1;\n');
-  write(path.join(root, 'services', 'orphan.js'), 'orphan\n');
-  write(path.join(root, 'tsconfig.runtime.json'), JSON.stringify({
-    compilerOptions: { target: 'ES2022', module: 'CommonJS', declaration: true, rootDir: 'services', outDir: 'services' },
-    include: ['services/**/*.ts'],
-    exclude: ['services/**/*.js', 'services/**/*.d.ts'],
-  }, null, 2) + '\n');
-  write(path.join(root, 'package.json'), JSON.stringify({ name: 'fixture', version: '1.0.0' }) + '\n');
-  write(path.join(root, 'package-lock.json'), JSON.stringify({
-    name: 'fixture', version: '1.0.0', lockfileVersion: 3, requires: true,
-    packages: {
-      '': { name: 'fixture', version: '1.0.0' },
-      'node_modules/compression': { version: '1.0.0' },
-      'node_modules/express': { version: '1.0.0' },
-      'node_modules/http-proxy-middleware': { version: '1.0.0' },
-      'node_modules/onnxruntime-node': { version: '1.0.0' },
-      'node_modules/sharp': { version: '1.0.0' },
-      // 2026-09-06 补入 RUNTIME_DEPENDENCIES（ComfyUI 进度 WebSocket 客户端），
-      // fixture 须与清单同步，否则闭包派生会因缺包抛错。
-      'node_modules/ws': { version: '1.0.0' },
-    },
-  }, null, 2) + '\n');
+  for (const directory of ['server', 'routes', 'services', 'scripts/lib', 'data', 'dist', 'assets', 'tools']) fs.mkdirSync(path.join(root, directory), { recursive: true });
+  write(path.join(root, 'server.js'), 'legacy runtime excluded');
+  write(path.join(root, 'docs/redirects.json'), '{"/docs/old":"/docs/new"}');
+  write(path.join(root, 'scripts/lib/managed-webui.ps1'), '# fixture');
+  write(path.join(root, 'scripts/lib/managed-comfyui.ps1'), '# fixture');
+  write(path.join(root, 'scripts/lib/runtime.js'), 'excluded');
+  write(path.join(root, 'data/characters.json'), '{}'); write(path.join(root, 'dist/index.html'), '<!doctype html>');
+  write(path.join(root, 'assets/asset.txt'), 'asset'); write(path.join(root, 'tools/nav.js'), 'browser');
+  for(const name of ['history.json','projects.json','prompts.json','live2d-candidates.json','live2d-candidates.json.br'])write(path.join(root,'data',name),'private');
+  write(path.join(root,'data/references/fixture.json'),'{}');write(path.join(root,'tools/control-server.js'),'old-node-service');
+  write(path.join(root, 'assets/character-references/private.png'), 'private');
+  write(path.join(root, 'assets/live2d-candidates/private.model3.json'), 'private');
+  write(path.join(root, 'runtime-rs/src/main.rs'), 'fn main() {}');
+  write(path.join(root, 'runtime-rs/Cargo.toml'), '[package]'); write(path.join(root, 'runtime-rs/Cargo.lock'), '# fixture');
+  const sha = (data: string) => (require('node:crypto') as typeof import('node:crypto')).createHash('sha256').update(data).digest('hex');
+  const binary = 'runtime-rs/target/release/huiyu-runtime.exe'; write(path.join(root, binary), 'binary');
+  const { SOURCES }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
+  const { snapshot }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
+  write(path.join(root, 'runtime/rust-evidence/build.json'), JSON.stringify({ formatVersion: 1, source: snapshot(root, SOURCES), binary: { path: binary, bytes: 6, sha256: sha('binary') } }));
+  const files = ['libvips-42.dll', 'onnxruntime.dll'].map(name => { write(path.join(root, `fixture-native/${name}`), name); return { name, source: `fixture-native/${name}`, bytes: Buffer.byteLength(name), sha256: sha(name) }; });
+  write(path.join(root, 'runtime-rs/native-licenses/LICENSE'), 'license');
+  write(path.join(root, 'runtime-rs/native-licenses/README.md'), 'fixture notes\n');
+  write(path.join(root, 'runtime-rs/native-licenses/components/fixture/COPYING'), 'upstream bytes\r\n ');
+  const inventory = JSON.stringify({ schemaVersion: 1, files: [
+    { file: 'LICENSE', bytes: 7, sha256: sha('license') },
+    { file: 'README.md', bytes: Buffer.byteLength('fixture notes\n'), sha256: sha('fixture notes\n') },
+    { file: 'components/fixture/COPYING', bytes: Buffer.byteLength('upstream bytes\r\n '), sha256: sha('upstream bytes\r\n ') },
+  ] }) + '\n';
+  write(path.join(root, 'runtime-rs/native-licenses/materials.sha256.json'), inventory);
+  write(path.join(root, 'runtime-rs/native-dependencies.windows-x64.json'), JSON.stringify({ schemaVersion: 1, platform: 'win32-x64', status: 'candidate', files,
+    licenses: [{ file: 'native-licenses/LICENSE', bytes: 7, sha256: sha('license') }], redistribution: { pending: ['fixture notices pending'] },
+    licenseEvidence: { index: 'native-licenses/materials.sha256.json', indexBytes: Buffer.byteLength(inventory), indexSha256: sha(inventory),
+      readme: 'native-licenses/README.md', components: 'native-licenses/components/fixture/COPYING', librsvgCargoSourceIndex: 'native-licenses/components/fixture/COPYING' } }));
   return root;
 }
-
-function remove(root: any) {
-  fs.rmSync(root, { recursive: true, force: true });
-}
-
 test('npm invocation works without shelling through npm.cmd', () => {
   const npm = resolveNpmInvocation();
   const result = spawnSync(npm.command, [...npm.args, '--version'], {
@@ -123,59 +122,65 @@ test('npm invocation works without shelling through npm.cmd', () => {
   assert.match(result.stdout.trim(), /^\d+\.\d+\.\d+/);
 });
 
-test('production stage uses exact runtime outputs and atomic replacement', () => {
-  const root = createFixture();
-  const stage = path.join(root, 'desktop-tauri', 'src-tauri', 'resources');
+test('Rust stage verifies bound inputs, excludes legacy/private files, and replaces atomically', () => {
+  const root = createFixture(), stage = path.join(root, 'desktop-tauri/src-tauri/resources');
   try {
-    fs.mkdirSync(stage, { recursive: true });
-    write(path.join(stage, 'stale.txt'), 'stale\n');
-    let installCalls = 0;
-    const result = stageResources({
-      root,
-      stage,
-      logger: () => {},
-      installDependencies: (gatewayDir) => {
-        installCalls += 1;
-        write(path.join(gatewayDir, 'node_modules', '.installed'), 'yes\n');
-      },
-    });
-
-    assert.equal(installCalls, 1);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/docs/redirects.json'), 'utf8')), { '/docs/old': '/docs/new' });
-    assert.deepEqual(result.runtimeJavaScriptFiles, ['fixture.js']);
-    assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.js')), true);
-    assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.ts')), false);
-    assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.d.ts')), false);
-    assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'orphan.js')), false);
+    write(path.join(stage, 'stale.txt'), 'old');
+    const result = stageResources({ root, stage, logger: () => {} });
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/huiyu-runtime.exe'), 'utf8'), 'binary');
+    assert.equal(fs.existsSync(path.join(stage, 'gateway/native/onnxruntime.dll')), true);
+    assert.equal(fs.existsSync(path.join(stage, 'gateway/native-licenses/LICENSE')), true);
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/native-licenses/components/fixture/COPYING'), 'utf8'), 'upstream bytes\r\n ');
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/native-licenses/README.md'), 'utf8'), 'fixture notes\n');
+    assert.equal(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/rust-runtime-build.json'), 'utf8')).nativeMaterialCount, 4);
+    assert.equal(result.releaseReady, false); assert.deepEqual(result.pending, ['fixture notices pending']);
+    for (const name of ['server.js', 'server', 'routes', 'services', 'node_modules', 'package.json', 'scripts/lib/runtime.js', 'assets/character-references/private.png', 'assets/live2d-candidates/private.model3.json','data/history.json','data/projects.json','data/prompts.json','data/live2d-candidates.json','data/live2d-candidates.json.br','tools/control-server.js']) assert.equal(fs.existsSync(path.join(stage, 'gateway', name)), false, name);
+    assert.equal(fs.existsSync(path.join(stage,'gateway/data/references/fixture.json')),true);
+    assert.equal(fs.existsSync(path.join(stage,'gateway/tools/nav.js')),true);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
-
-    const manifest = JSON.parse(fs.readFileSync(path.join(stage, 'gateway', 'package.json'), 'utf8'));
-    assert.deepEqual(Object.keys(manifest.dependencies).sort(), [
-      'compression', 'express', 'http-proxy-middleware', 'onnxruntime-node', 'sharp', 'ws',
-    ]);
-  } finally {
-    remove(root);
-  }
+  } finally { remove(root); }
 });
-
-test('failed npm ci leaves the previous complete stage untouched', () => {
-  const root = createFixture();
-  const stage = path.join(root, 'resources');
+test('stale Rust source or tampered DLL leaves previous complete stage untouched', () => {
+  const root = createFixture(), stage = path.join(root, 'resources');
   try {
-    write(path.join(stage, 'old', 'marker.txt'), 'old\n');
-    assert.throws(() => stageResources({
-      root,
-      stage,
-      logger: () => {},
-      installDependencies: () => { throw new Error('npm ci failed'); },
-    }), /npm ci failed/);
-    assert.equal(fs.readFileSync(path.join(stage, 'old', 'marker.txt'), 'utf8'), 'old\n');
+    write(path.join(stage, 'old/marker.txt'), 'old');
+    write(path.join(root, 'fixture-native/onnxruntime.dll'), 'tampered');
+    assert.throws(() => stageResources({ root, stage, logger: () => {} }), /bytes mismatch/);
+    assert.equal(fs.readFileSync(path.join(stage, 'old/marker.txt'), 'utf8'), 'old');
+    write(path.join(root, 'runtime-rs/src/main.rs'), 'changed');
+    assert.throws(() => stageResources({ root, stage, logger: () => {} }), /stale/);
     assert.equal(fs.existsSync(path.join(stage, 'gateway')), false);
-  } finally {
-    remove(root);
-  }
+  } finally { remove(root); }
 });
-
+test('prepare builds Rust and bundled UI before staging and verifying the candidate',async()=>{
+  const root=createFixture(),events:string[]=[];
+  const {prepareTauri}:typeof import('../maintenance/prepare-tauri')=require('../maintenance/prepare-tauri');
+  try {
+    const result=await prepareTauri({root,logger:()=>{},buildInstaller:()=>events.push('installer'),buildRuntime:()=>events.push('rust'),
+      buildDesktopUi:()=>{events.push('ui');write(path.join(root,'desktop-tauri/web/index.html'),'desktop');},
+      verifyGateway:()=>{events.push('verify');assert.ok(fs.existsSync(path.join(root,'desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe')));}});
+    assert.deepEqual(events,['installer','rust','ui','verify']);assert.equal(result.releaseReady,false);
+  }finally{remove(root);}
+});
+test('bundle verifier isolates model hosts and credentials from inherited settings',()=>{
+  const {isolatedEnvironment}:typeof import('../maintenance/verify-desktop-gateway')=require('../maintenance/verify-desktop-gateway');
+  const env=isolatedEnvironment('fixture-state','fixture-gateway');
+  for(const key of ['SD_HOST','COMFY_HOST','TTS_HOST','OLLAMA_HOST'])assert.equal(env[key],'http://127.0.0.1:1');
+  assert.equal(env.DISABLE_TUNNEL,'1');assert.equal(env.NODE_OPTIONS,undefined);assert.equal(env.AICS_DESKTOP_CONFIG_ROOT,undefined);
+});
+test('development native environment uses locked DLLs and preserves explicit overrides',{skip:process.platform!=='win32'},()=>{
+  const root=createFixture();const {developmentNativeEnvironment}:typeof import('../maintenance/desktop-rust-inputs')=require('../maintenance/desktop-rust-inputs');
+  try{const supplied={AICS_ORT_DYLIB_PATH:'explicit-ort.dll'};const env=developmentNativeEnvironment(root,supplied);
+    assert.equal(env.AICS_ORT_DYLIB_PATH,'explicit-ort.dll');assert.equal(env.AICS_VIPS_DYLIB_PATH,path.join(root,'fixture-native/libvips-42.dll'));assert.deepEqual(supplied,{AICS_ORT_DYLIB_PATH:'explicit-ort.dll'});
+    write(path.join(root,'fixture-native/libvips-42.dll'),'tampered');assert.throws(()=>developmentNativeEnvironment(root,supplied),/bytes mismatch/);
+  }finally{remove(root);}
+});
+test('non-Windows development does not read the Windows native manifest',{skip:process.platform==='win32'},()=>{
+  const {developmentNativeEnvironment}:typeof import('../maintenance/desktop-rust-inputs')=require('../maintenance/desktop-rust-inputs');
+  const supplied:NodeJS.ProcessEnv={AICS_ORT_DYLIB_PATH:'/explicit/libonnxruntime.so',PATH:'/fixture/bin'};
+  const result=developmentNativeEnvironment('/missing-fixture-root',supplied);
+  assert.deepEqual(result,supplied);assert.notEqual(result,supplied);assert.equal(result.AICS_VIPS_DYLIB_PATH,undefined);
+});
 test('workspace lock serializes concurrent build critical sections', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-lock-fixture-'));
   const lockRoot = path.join(root, 'locks');
@@ -257,7 +262,6 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
     'environment',
     'capture-source',
     'npm:run build',
-    'npm:run test:services-generated',
     'prepare',
     `${process.execPath}:tauri-cli.js build --no-bundle`,
     'bind-build',
@@ -286,55 +290,4 @@ test('updater verifies distributed bytes and rejects tampering', () => {
     fs.appendFileSync(file, 'tampered');
     assert.throws(() => verifyUpdaterSignature(file, signature, pub), /signature verification failed/);
   } finally { remove(root); }
-});
-
-test('runtime gateway dependencies required in source code match RUNTIME_DEPENDENCIES whitelist', () => {
-  const { RUNTIME_DEPENDENCIES }: any = require('../maintenance/desktop-stage-resources');
-  const rootDir = path.resolve(__dirname, '../..');
-  const rootPackage = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
-  const rootDeps = new Set(Object.keys(rootPackage.dependencies || {}));
-  const builtins = new Set(require('node:module').builtinModules.map((m: string) => m.replace(/^node:/, '')));
-
-  // 1. Every package in RUNTIME_DEPENDENCIES must be declared in root package.json dependencies
-  for (const dep of RUNTIME_DEPENDENCIES) {
-    assert.ok(rootDeps.has(dep), `RUNTIME_DEPENDENCIES '${dep}' must exist in root package.json dependencies`);
-  }
-
-  // 2. Scan server.ts, server/, routes/, services/
-  function walkFiles(dir: string): string[] {
-    const absDir = path.join(rootDir, dir);
-    if (!fs.existsSync(absDir)) return [];
-    const entries: string[] = [];
-    for (const ent of fs.readdirSync(absDir, { withFileTypes: true })) {
-      const rel = path.join(dir, ent.name);
-      if (ent.isDirectory()) entries.push(...walkFiles(rel));
-      else if (/\.(?:ts|js)$/.test(ent.name) && !ent.name.endsWith('.d.ts')) entries.push(path.join(rootDir, rel));
-    }
-    return entries;
-  }
-
-  const scanTargets = [path.join(rootDir, 'server.ts'), ...walkFiles('server'), ...walkFiles('routes'), ...walkFiles('services')];
-  const requiredPkgs = new Set<string>();
-  const whitelistSet = new Set(RUNTIME_DEPENDENCIES);
-  const transitiveOrTypeOnly = new Set(['express-serve-static-core', 'qs']);
-
-  for (const file of scanTargets) {
-    const content = fs.readFileSync(file, 'utf8');
-    for (const match of content.matchAll(/(?:require\(['"]|from\s+['"])([^'"]+)['"]/g)) {
-      const spec = match[1];
-      if (spec.startsWith('.') || spec.startsWith('/') || spec.startsWith('@/')) continue;
-      const pkg = spec.startsWith('@') ? spec.split('/').slice(0, 2).join('/') : spec.split('/')[0];
-      const cleanPkg = pkg.replace(/^node:/, '');
-      if (builtins.has(cleanPkg)) continue;
-      if (transitiveOrTypeOnly.has(cleanPkg)) continue;
-      requiredPkgs.add(cleanPkg);
-    }
-  }
-
-  for (const pkg of requiredPkgs) {
-    assert.ok(
-      whitelistSet.has(pkg),
-      `Server source code requires '${pkg}', but it is missing from RUNTIME_DEPENDENCIES in scripts/maintenance/desktop-stage-resources.ts!`,
-    );
-  }
 });

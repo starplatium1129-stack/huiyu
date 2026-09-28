@@ -23,23 +23,10 @@
       "nsis"
     ],
     "createUpdaterArtifacts": true,
-    "externalBin": [
-      "binaries/node"
-    ],
+    "externalBin": [],
     "resources": {
-      "resources/gateway/server.js": "gateway/server.js",
-      "resources/gateway/server": "gateway/server",
-      "resources/gateway/routes": "gateway/routes",
-      "resources/gateway/services": "gateway/services",
-      "resources/gateway/scripts/lib": "gateway/scripts/lib",
-      "resources/gateway/docs": "gateway/docs",
-      "resources/gateway/package.json": "gateway/package.json",
-      "icons/icon.ico": "huiyu-icon.ico",
-      "resources/gateway/data": "gateway/data",
-      "resources/gateway/dist": "gateway/dist",
-      "resources/gateway/assets": "gateway/assets",
-      "resources/gateway/tools": "gateway/tools",
-      "resources/gateway/node_modules": "gateway/node_modules"
+      "resources/gateway": "gateway",
+      "icons/icon.ico": "huiyu-icon.ico"
     },
     "windows": {
       "nsis": {

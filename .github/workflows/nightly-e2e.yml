@@ -31,6 +31,11 @@ jobs:
         run: npm ci
       - name: Build SPA
         run: npm run build
+      - name: Build Rust browser backend
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal
+          rustup default 1.98.1
+          npm run wf -- rust:build
       - name: Cache Playwright browsers
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:

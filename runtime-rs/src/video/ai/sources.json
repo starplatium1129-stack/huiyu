@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "method": "System messages mechanically extracted from current Node modules without executing a router or LLM.",
+  "sources": [
+    {
+      "path": "routes/video-ai.ts",
+      "sha256": "dde618c9fe5112aebb7362ef2020c4eee1ef7251bc78fd277b0d8a50f77c55ab"
+    },
+    {
+      "path": "routes/video-ai-prompts.ts",
+      "sha256": "6701a4903cdce0b1d9a373b622a9a3bab96d61f52e48c0eba4a9162e3a24b797"
+    },
+    {
+      "path": "routes/video-ai-output.ts",
+      "sha256": "df30097d5aaaa9063256fcc3490f8f1652c3d9c3ac2e0bac105e13a5794a7982"
+    },
+    {
+      "path": "routes/video/storyboard.ts",
+      "sha256": "2737dccb82eb2e46e006df10d7213d6e45a4e9b18a4b43a1dc8f50d26ec249a0"
+    }
+  ]
+}

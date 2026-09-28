@@ -1,0 +1,422 @@
+{
+  "url": "https://codeload.github.com/libvips/build-win64-mxe/zip/refs/tags/v8.18.6",
+  "files": [
+    {
+      "bytes": 77,
+      "path": ".gitattributes",
+      "sha256": "6c01bde0e623b54282a76dcd73e3d378d8385702e04c0a89d65a6fb8cbecee3b"
+    },
+    {
+      "bytes": 1788,
+      "path": ".github/workflows/oci-publish.yml",
+      "sha256": "9cd74a28c7ec756df2fe129cf8984acef1ab488bab8297d28d503338e247f565"
+    },
+    {
+      "bytes": 72,
+      "path": ".gitignore",
+      "sha256": "10d8c59e20a0b8c9399af7622d6d87291ebecfc508e956b8d20a130ccfeebd0e"
+    },
+    {
+      "bytes": 11708,
+      "path": "README.md",
+      "sha256": "b8497d90d55fe7b053e7e290ca80aeafbb811fd347dee7c61b6b8b60fc6b67f9"
+    },
+    {
+      "bytes": 285,
+      "path": "TODO.md",
+      "sha256": "cc9c4f05d8a7794837e7aaaf09b35a300845892a048b15a6fcf56d9c294d9c2e"
+    },
+    {
+      "bytes": 7471,
+      "path": "build.sh",
+      "sha256": "21f8ae16447d9987493519ac33d91344ffc7783eb70dc64965eea926f7d64cfa"
+    },
+    {
+      "bytes": 1263,
+      "path": "build/aom.mk",
+      "sha256": "f129aea9a60575d24cf80a82ccbe551c1f9aad496760c955cd29194b29992aa6"
+    },
+    {
+      "bytes": 690,
+      "path": "build/cgif.mk",
+      "sha256": "f83f452c014880cdd01cbfdfc8bb18b1ad4b662919a1f8c7db75c8e50d3be6eb"
+    },
+    {
+      "bytes": 881,
+      "path": "build/highway.mk",
+      "sha256": "9b1a766fd12253cecee01f7c460dc9fd0178aa9182c65e2b9a0985b15f51e6c0"
+    },
+    {
+      "bytes": 808,
+      "path": "build/libdicom.mk",
+      "sha256": "28571a33ddb8414873ea08fd8b4016bf2661b02e0e039f9b44d27b318546569d"
+    },
+    {
+      "bytes": 1052,
+      "path": "build/libheif.mk",
+      "sha256": "cbfb6cdfbab51f13978a9a5d4290ddcd909ca5f2aca1f08412be8eb7fc663ebe"
+    },
+    {
+      "bytes": 652,
+      "path": "build/libimagequant.mk",
+      "sha256": "effe30fe26814beb688a8cb7877515e7051995c806c4fa09726f5c21b6c6013c"
+    },
+    {
+      "bytes": 1221,
+      "path": "build/libjxl.mk",
+      "sha256": "9c440807d06a96bd90ef659c49002119052298db15574cda956a2309b156b19b"
+    },
+    {
+      "bytes": 1029,
+      "path": "build/nifticlib.mk",
+      "sha256": "7dd1bb5d868f1262776d187a43ac0bedbddcbfeefb9fc0ba00eb7a2d4a2a2675"
+    },
+    {
+      "bytes": 1482,
+      "path": "build/nip4.mk",
+      "sha256": "15af7de7acf0f395aba3e475304576dceeaa4b4167ec56292e71e6062fc0e8e8"
+    },
+    {
+      "bytes": 744,
+      "path": "build/openslide.mk",
+      "sha256": "0500e58a4aace3fd75180e8e734caa6fe5d754eec6e54050a89c636d0d47a8cf"
+    },
+    {
+      "bytes": 33438,
+      "path": "build/overrides.mk",
+      "sha256": "b8703578a653b609eacd91f1bc88bf6449acf3cc7ed553b0c75dda13d25eb51b"
+    },
+    {
+      "bytes": 1522,
+      "path": "build/patches/aom-3-fixes.patch",
+      "sha256": "c4f15c4be72f9df33c7af874486227961e7e7263b03d0f6e2907d753fa9f31aa"
+    },
+    {
+      "bytes": 19182,
+      "path": "build/patches/cairo-1-fixes.patch",
+      "sha256": "e9fa4176252f278e8d53ca110959797ac7f636da9f8dfb0d8d5b4c2db69b3b08"
+    },
+    {
+      "bytes": 1325,
+      "path": "build/patches/cairo-1-nanoserver-compat.patch",
+      "sha256": "96eca5ad103861c380c202054401d02e13b14643fe71c665a2fb00b51ffe8db1"
+    },
+    {
+      "bytes": 2312,
+      "path": "build/patches/fontconfig-2-fixes.patch",
+      "sha256": "452d8b94ea7a17f3b0abbe858d799fd774fe0097e21f639f412b3b00662c3a73"
+    },
+    {
+      "bytes": 3162,
+      "path": "build/patches/gdk-pixbuf-2-fixes.patch",
+      "sha256": "482901be8e32a92e9dca5cd0f555ae9ce961300a4b98a62f6e3bf8ce0aa64451"
+    },
+    {
+      "bytes": 1193,
+      "path": "build/patches/glib-2-dllexport-static.patch",
+      "sha256": "65fd140acf960794197b0b38cbc234c5c08f211d8ab679b1695df456250b8a76"
+    },
+    {
+      "bytes": 2146,
+      "path": "build/patches/glib-2-fixes.patch",
+      "sha256": "9778d07b7cb8bdcedd474f345f85ae844542cb34fb38ec6c72cf3615a12b03c5"
+    },
+    {
+      "bytes": 7759,
+      "path": "build/patches/glib-2-without-gregex.patch",
+      "sha256": "81013d38fc18da12522bc3c58d8988d2ac9ee9ca5a55bd4e68486044aa55191f"
+    },
+    {
+      "bytes": 1146,
+      "path": "build/patches/glib-2-without-win32appinfo.patch",
+      "sha256": "66dbbd92404b11316d7bc896889c531697328d645af989e5a0c11aab76fbbca4"
+    },
+    {
+      "bytes": 7317,
+      "path": "build/patches/imagemagick-7-disable-network.patch",
+      "sha256": "493f256e08407d479a76e62622069025d3ac290263864761688dbf74cb568fcf"
+    },
+    {
+      "bytes": 840,
+      "path": "build/patches/imath-3-fixes.patch",
+      "sha256": "785b884d4963a3e522e5d831ebda4a5e0ea9ee281a9e0df6affa13b0e7711f47"
+    },
+    {
+      "bytes": 1289,
+      "path": "build/patches/libheif-1-fixes.patch",
+      "sha256": "846ad069dca01304f6fcbe92ff29636b4183d8eef3d275349dc91cedc8a313c7"
+    },
+    {
+      "bytes": 1807,
+      "path": "build/patches/libjpeg-turbo-3-fixes.patch",
+      "sha256": "159b0704488ea123f6d57febbd908507868c5875bc8a7837ca8eca80d1541b29"
+    },
+    {
+      "bytes": 1270,
+      "path": "build/patches/libraw-0.22-fixes.patch",
+      "sha256": "169e92a78762d44751e78c7c8a1305d0f19d8614aff759d3d06d47c4979eb2c1"
+    },
+    {
+      "bytes": 5972,
+      "path": "build/patches/librsvg-2-fixes.patch",
+      "sha256": "4806547a27937b4ad0f7bae4e17d34e12c959e5fef91756951726ec71e8a0910"
+    },
+    {
+      "bytes": 2487,
+      "path": "build/patches/libtool-2-fixes.patch",
+      "sha256": "66912b00a1da59a5f58d71a95def05e1b48cd8b49bbd01cffff49d4e8daff030"
+    },
+    {
+      "bytes": 994,
+      "path": "build/patches/libxml2-2-fixes.patch",
+      "sha256": "ec36b3e3d5aa05a86ce0ca743c0504e6cfb2d5539b7a45b6c78c8e7b52018f6f"
+    },
+    {
+      "bytes": 819,
+      "path": "build/patches/matio-1-fixes.patch",
+      "sha256": "9bc50605ac2a95fa066e0e095d625ba363f379ac7fe00f4a7d9418a84ab13e36"
+    },
+    {
+      "bytes": 8286,
+      "path": "build/patches/nifticlib-3-fixes.patch",
+      "sha256": "bc6f13605ea0d46ada65385c9148c0c90ce213841c61b827d07c6b526cfe5bbf"
+    },
+    {
+      "bytes": 3030,
+      "path": "build/patches/openexr-2-fixes.patch",
+      "sha256": "cd60a6b627c484fbf0e6864912ca7e431277ff2586fefb81d24b7a868fade5fe"
+    },
+    {
+      "bytes": 3540,
+      "path": "build/patches/openslide-4-without-gregex.patch",
+      "sha256": "cd643e3d034e313e13c14ae2da8af2ebd2ce10f9dee5f53319e214d0ff678747"
+    },
+    {
+      "bytes": 748,
+      "path": "build/patches/poppler-26-fixes.patch",
+      "sha256": "ddc21cb75272d3269fd39a517bc48ba2533bf95125cafe17d346ccb4251b358e"
+    },
+    {
+      "bytes": 1243,
+      "path": "build/patches/sqlite-3-fixes.patch",
+      "sha256": "3f84717c76922434368b1b8bf54b6dad649ca35ee79f00028fa5a4db1b3a9e9a"
+    },
+    {
+      "bytes": 6224,
+      "path": "build/patches/uhdr-1-fixes.patch",
+      "sha256": "c308dd7c65a2bee0fea7471a71916dea1a5f48d698ebedeff41904b38074484b"
+    },
+    {
+      "bytes": 1596,
+      "path": "build/patches/zlib-1-fixes.patch",
+      "sha256": "203e1df29951bd860c72384c4da06cb3d3935a35e7367f720136da6d35b357d3"
+    },
+    {
+      "bytes": 795,
+      "path": "build/plugins/all-deps/overrides.mk",
+      "sha256": "102ef4514d25e2dd1f56ebd03ee9647b5ed1fc633b3048145b0adcbd5e3036b5"
+    },
+    {
+      "bytes": 2852,
+      "path": "build/plugins/all-deps/patches/vips-8-dlldir-as-libdir.patch",
+      "sha256": "fe5bcc0e041324873cd8917aa0e06832d5d231046433bf7a6a45cc429f5fc3e8"
+    },
+    {
+      "bytes": 3902,
+      "path": "build/plugins/all-deps/vips-all.mk",
+      "sha256": "8fb8c4992977f16cecbc8782fd4a495411130d344dbd39b5ed28f1eda454f591"
+    },
+    {
+      "bytes": 395,
+      "path": "build/plugins/ffi-compat/overrides.mk",
+      "sha256": "948558c83718acbe5726ccc547c2b6295da23dc51245cb15c2040cf49f0431f5"
+    },
+    {
+      "bytes": 2198,
+      "path": "build/plugins/ffi-compat/patches/glib-2-static.patch",
+      "sha256": "a1b3cb835461cc0091854b9c3ad63f5960f3671be80f89f45bf981ef2a669578"
+    },
+    {
+      "bytes": 704,
+      "path": "build/plugins/gtk4/directx-headers.mk",
+      "sha256": "0466b8492a4b8be908c3dd03c8388d07692e8f39bf343b229d7a7cfa41c5ff60"
+    },
+    {
+      "bytes": 896,
+      "path": "build/plugins/gtk4/graphene.mk",
+      "sha256": "f8b1744c233d680740d1d8bfa2ecbda7cc512e382cd47ecf8e155de466603027"
+    },
+    {
+      "bytes": 1100,
+      "path": "build/plugins/gtk4/gtk4.mk",
+      "sha256": "92e18f85c76d2da7136c7fccd766e486f542e1dbb67235b3522f4138f3382ef5"
+    },
+    {
+      "bytes": 1246,
+      "path": "build/plugins/gtk4/overrides.mk",
+      "sha256": "8d40f9b28b0b6313f056c5b3bde37df02af5b40a34c7f319c641bb27cff4601c"
+    },
+    {
+      "bytes": 1780,
+      "path": "build/plugins/gtk4/patches/gtk-4-fixes.patch",
+      "sha256": "b686c13fea2486f5ccee6c73fb0ce66690849b97686f84e7e55592a16b155f39"
+    },
+    {
+      "bytes": 774,
+      "path": "build/plugins/hevc-deps/libde265.mk",
+      "sha256": "40096e7ba74599c4e9a12266a00703335d523522100f98e6a66f27eb2c8ab23b"
+    },
+    {
+      "bytes": 3006,
+      "path": "build/plugins/hevc-deps/overrides.mk",
+      "sha256": "22f31ead3b8f6473c758fab69973d87281c60aa2d7ed03f9653a30372dd2a1a3"
+    },
+    {
+      "bytes": 1036,
+      "path": "build/plugins/hevc-deps/patches/x265-4-fixes-crlf.patch",
+      "sha256": "834953e5467184f892d6d78da8d2cc93512fda606b2e3560b56993a3208b35d4"
+    },
+    {
+      "bytes": 1281,
+      "path": "build/plugins/jpegli/jpegli.mk",
+      "sha256": "b974096fa7f8067d2f4edca960ed58e3b0cbb298cb1f187b6df20238b545a655"
+    },
+    {
+      "bytes": 695,
+      "path": "build/plugins/jpegli/overrides.mk",
+      "sha256": "9780b2411f98d0dfbf611e08e967cd73135379e25d2a9d7dd766cfa19fcac690"
+    },
+    {
+      "bytes": 19103,
+      "path": "build/plugins/jpegli/patches/jpegli-0.12-fixes.patch",
+      "sha256": "29a0504361cf47eaa20717ae6bfdc533715f9df5b0c705b399637a6d6ca49037"
+    },
+    {
+      "bytes": 1064,
+      "path": "build/plugins/mozjpeg/mozjpeg.mk",
+      "sha256": "d5e7af68bce6e54b2fd7b50a5f70fa14aea43eff6ab044c7ac9256e1f672641f"
+    },
+    {
+      "bytes": 883,
+      "path": "build/plugins/mozjpeg/overrides.mk",
+      "sha256": "e0c1de0e84ed7d46318452cdaead6111862bcd9b7ef37fa3b37f0b208cb9f7b4"
+    },
+    {
+      "bytes": 2420,
+      "path": "build/plugins/mozjpeg/patches/mozjpeg-4-fixes.patch",
+      "sha256": "7952f72840a29a815740bbcdbf986903a800a97af3685d2654f0d020641e89c1"
+    },
+    {
+      "bytes": 7615,
+      "path": "build/plugins/mozjpeg/patches/mozjpeg-4-pr-453.patch",
+      "sha256": "3ddb71285d43dde5c75a0080cc62cbc158d32359af132b8314e76b85b9205764"
+    },
+    {
+      "bytes": 215,
+      "path": "build/plugins/nightly/overrides.mk",
+      "sha256": "44c54d98c92f9290aa232f95e0399a4b79cf5cebb47e765f4c92fb9dc161f19d"
+    },
+    {
+      "bytes": 283,
+      "path": "build/plugins/proxy-libintl/overrides.mk",
+      "sha256": "7743f7bb299ef280d5f5718341de423a2be5c8553fb88b79cfd0d066a0e899fc"
+    },
+    {
+      "bytes": 782,
+      "path": "build/plugins/proxy-libintl/patches/proxy-libintl-1-fixes.patch",
+      "sha256": "a8386926e1023d3183a48a3f69687ab13ec5639ad07496cdf5f045f0993fb0fd"
+    },
+    {
+      "bytes": 675,
+      "path": "build/plugins/proxy-libintl/proxy-libintl.mk",
+      "sha256": "3322209995d2a56e84998007c6ef8aa7e3d87200490bff1c032e5c6caae04836"
+    },
+    {
+      "bytes": 462,
+      "path": "build/plugins/web-deps/overrides.mk",
+      "sha256": "73175da2b6562abdead5ad66544858d83e6ce74cec62ee49a8619a93805388bb"
+    },
+    {
+      "bytes": 2664,
+      "path": "build/plugins/web-deps/vips-web.mk",
+      "sha256": "faffedbbb6d83ac063c48378656efffdf3445c7f2797281cefd0ca1860b21477"
+    },
+    {
+      "bytes": 1385,
+      "path": "build/plugins/zlib-ng/overrides.mk",
+      "sha256": "ac2b54ad1429cca7486c1848f7709759adb6248df9ea3739e979fd58ee87dfb0"
+    },
+    {
+      "bytes": 1031,
+      "path": "build/plugins/zlib-ng/patches/zlib-ng-2-fixes.patch",
+      "sha256": "22f110cc8b1566db3726d0d448ab04cd11297f062368bdd77971adf9455b852b"
+    },
+    {
+      "bytes": 772,
+      "path": "build/plugins/zlib-ng/zlib-ng.mk",
+      "sha256": "6a5b902348cd00b68adfc436f2a349bcd0b44ed9a7b7289a21cf8c07e8c9a647"
+    },
+    {
+      "bytes": 1179,
+      "path": "build/settings/debug.mk",
+      "sha256": "5adf14e1c147437d3f234f53f8a723c27a7e68e3daeb854759a621685939ea21"
+    },
+    {
+      "bytes": 1319,
+      "path": "build/settings/release.mk",
+      "sha256": "39a2f1d06a7d6d2cc0c0756af7b646234e681ce752907f815d1c1f5075c3c2d6"
+    },
+    {
+      "bytes": 1023,
+      "path": "build/uhdr.mk",
+      "sha256": "c7098df2dc28bcdcba9f89d1ec911a2811ab9234249c4c2b613130e44b6080cd"
+    },
+    {
+      "bytes": 1189,
+      "path": "build/vips.mk",
+      "sha256": "8097e70cea300e6cac2e228b61eebd94d5a5c54981d5dcccbfe87934663be91c"
+    },
+    {
+      "bytes": 1269,
+      "path": "build/vipsdisp.mk",
+      "sha256": "65cfe210e36f4198be2a524c92a408e555d75637f555e35a7f23436851178812"
+    },
+    {
+      "bytes": 925,
+      "path": "container/Dockerfile",
+      "sha256": "0817cff4f940ccf477997f93b6833f839e9ddaa9a0a865cdf64a96df510de747"
+    },
+    {
+      "bytes": 854,
+      "path": "container/base.Dockerfile",
+      "sha256": "3a10f483c1965bb885bf2618423b491179b5886523cdeb35df3339aa7fd1d726"
+    },
+    {
+      "bytes": 1300,
+      "path": "packaging/gendeflibs.sh",
+      "sha256": "2ecff5d96ee7eecbb98bd1209456dbe1e5875ea796780d2ba5c0efd29cb6c6ee"
+    },
+    {
+      "bytes": 4737,
+      "path": "packaging/package-gtk.sh",
+      "sha256": "9c2bac9519249d48c29bb15102abfe1c82059815468f9cba4c249c0784ffcc41"
+    },
+    {
+      "bytes": 4923,
+      "path": "packaging/package-vips.sh",
+      "sha256": "bd10062a2a507134ae4d610077a020c0a05348f7262e0e6d809ab75ba56fa389"
+    },
+    {
+      "bytes": 613,
+      "path": "packaging/package.sh",
+      "sha256": "0e3d0c08f9ca6f1e41997a58d38b766db368021edc4ca27201adc4494ed22f27"
+    },
+    {
+      "bytes": 1057,
+      "path": "packaging/variables.sh",
+      "sha256": "8054b721966778edbacc76fbcecac6d9061583fbb7c5d3ffefe6ae4c2aca8057"
+    }
+  ],
+  "bytes": 104189,
+  "sha256": "1cf0e2fc0bc6d11cb2019661fda85a9367317bc00b9936d535595b915f8dae9a"
+}

@@ -36,8 +36,8 @@ const BASELINE_FILE = path.join(__dirname, 'monolith-baseline.json');
 const RED_LINE = 500;
 
 // 维护入口与支撑模块同样执行 500 行预算，防止拆分后在工具侧重新堆积。
-const SCAN_DIRS = ['src', 'routes', 'services', 'server', 'scripts/maintenance', 'scripts/lib'];
-const SCAN_EXT = /\.(ts|vue|js)$/;
+const SCAN_DIRS = ['src', 'routes', 'services', 'server', 'scripts/maintenance', 'scripts/lib', 'runtime-rs/src'];
+const SCAN_EXT = /\.(ts|vue|js|rs)$/;
 // services 根层的编译产物三件套不入库也不参检（与 eslint ignores 一致）
 const COMPILED_AT_SERVICES_ROOT = (rel: string) =>
   /^services\/[^/]+\.(js|d\.ts)$/.test(rel.replace(/\\/g, '/'));
@@ -69,6 +69,7 @@ function isCommentLine(line: string) {
 
 function effectiveLineCount(absPath: string): number {
   const text = fs.readFileSync(absPath, 'utf8');
+  if (absPath.endsWith('.rs')) return text.split(/\r?\n/).filter(line => line.trim() && !line.trim().startsWith('//')).length;
   return text.split(/\r?\n/).filter((line) => !isCommentLine(line)).length;
 }
 

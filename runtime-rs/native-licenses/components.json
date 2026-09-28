@@ -1,0 +1,1744 @@
+{
+  "buildTag": "libvips/build-win64-mxe@09cfccf20b91b441fbe97fa7a7ed8a597e55e830",
+  "binaryBinding": "e6cc51bbc763e7deda536c6f56ce96b4c51ea769690ce4f4ed07607527b81dae",
+  "baseMxeRecipeSnapshot": "kleisauke/mxe@d973945bb92c7783d5afa41bb2b8d2e1a04eaba3",
+  "schemaVersion": 1,
+  "baseMxeWarning": "This branch tip was retrieved during audit; the release container digest and exact base MXE commit are not recorded by the release tag.",
+  "components": [
+    {
+      "package": "aom",
+      "sourceVerified": true,
+      "expectedSha256": "44bf90dbd23e734d50e70a8c41c285193922938bd0d3bc2ee56764d181d55ef5",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "aom",
+      "version": "3.14.1",
+      "notices": [
+        {
+          "file": "components/aom/AUTHORS",
+          "sha256": "1bf4faf64255fc1ffe1428e56f58f36050eeaac47a6401e532ca15823d21e9ac",
+          "archiveEntry": "libaom-3.14.1/AUTHORS",
+          "bytes": 13105
+        },
+        {
+          "file": "components/aom/LICENSE",
+          "sha256": "4764a286d8b2faeaf42f4418e7d7a28d58fc8fd4d00a3d0a7f44b0a4099de7f2",
+          "archiveEntry": "libaom-3.14.1/LICENSE",
+          "bytes": 1316
+        },
+        {
+          "file": "components/aom/PATENTS",
+          "sha256": "661fb8e504744e95587b556b94a58343448300606a41bea8c7a9b97125696e61",
+          "archiveEntry": "libaom-3.14.1/PATENTS",
+          "bytes": 5701
+        },
+        {
+          "file": "components/aom/third_party/fastfeat/LICENSE",
+          "sha256": "499041ddee5227b6f29ca06c17803e5fe24d60f243c69635cd76b7ba08d0ddd5",
+          "archiveEntry": "libaom-3.14.1/third_party/fastfeat/LICENSE",
+          "bytes": 1504
+        },
+        {
+          "file": "components/aom/third_party/googletest/src/LICENSE",
+          "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+          "archiveEntry": "libaom-3.14.1/third_party/googletest/src/LICENSE",
+          "bytes": 1475
+        },
+        {
+          "file": "components/aom/third_party/highway/LICENSE-BSD3",
+          "sha256": "d25e82e26acd42ca3ccc9993622631163425b869b9e16284226d534cff6470f2",
+          "archiveEntry": "libaom-3.14.1/third_party/highway/LICENSE-BSD3",
+          "bytes": 1515
+        },
+        {
+          "file": "components/aom/third_party/libwebm/AUTHORS.TXT",
+          "sha256": "3edb5f5496bfff3d6d4a62fa75fe996b814920d0d6e348c2e65c589e7ac5d177",
+          "archiveEntry": "libaom-3.14.1/third_party/libwebm/AUTHORS.TXT",
+          "bytes": 137
+        },
+        {
+          "file": "components/aom/third_party/libwebm/LICENSE.TXT",
+          "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+          "archiveEntry": "libaom-3.14.1/third_party/libwebm/LICENSE.TXT",
+          "bytes": 1496
+        },
+        {
+          "file": "components/aom/third_party/libwebm/PATENTS.TXT",
+          "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c",
+          "archiveEntry": "libaom-3.14.1/third_party/libwebm/PATENTS.TXT",
+          "bytes": 1436
+        },
+        {
+          "file": "components/aom/third_party/libyuv/LICENSE",
+          "sha256": "2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f",
+          "archiveEntry": "libaom-3.14.1/third_party/libyuv/LICENSE",
+          "bytes": 1506
+        },
+        {
+          "file": "components/aom/third_party/vector/LICENSE",
+          "sha256": "ff6c857ce2708e87701323078aef115c1872a1f80a9649f86dc899b48083bc60",
+          "archiveEntry": "libaom-3.14.1/third_party/vector/LICENSE",
+          "bytes": 1084
+        },
+        {
+          "file": "components/aom/third_party/x86inc/LICENSE",
+          "sha256": "719d8fa235f2068e0ae6d6a7dceb0a7720d7840f0f0ebed29957989e6ded3cd8",
+          "archiveEntry": "libaom-3.14.1/third_party/x86inc/LICENSE",
+          "bytes": 936
+        }
+      ],
+      "sourceUrls": [
+        "https://storage.googleapis.com/aom-releases/libaom-3.14.1.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/aom.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "44bf90dbd23e734d50e70a8c41c285193922938bd0d3bc2ee56764d181d55ef5",
+        "url": "https://storage.googleapis.com/aom-releases/libaom-3.14.1.tar.gz",
+        "bytes": 6368868
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libarchive",
+      "sourceVerified": true,
+      "expectedSha256": "888c934f9d95648ecb9163dc8e23ab80a476ecb81a8f1154704a227b5b676dde",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "archive",
+      "version": "3.8.9",
+      "notices": [
+        {
+          "file": "components/archive/COPYING",
+          "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+          "archiveEntry": "libarchive-3.8.9/COPYING",
+          "bytes": 3089
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/libarchive/libarchive/releases/download/v3.8.9/libarchive-3.8.9.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/libarchive.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "888c934f9d95648ecb9163dc8e23ab80a476ecb81a8f1154704a227b5b676dde",
+        "url": "https://github.com/libarchive/libarchive/releases/download/v3.8.9/libarchive-3.8.9.tar.xz",
+        "bytes": 6617696
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "cairo",
+      "sourceVerified": true,
+      "expectedSha256": "445ed8208a6e4823de1226a74ca319d3600e83f6369f99b14265006599c32ccb",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "cairo",
+      "version": "1.18.4",
+      "notices": [
+        {
+          "file": "components/cairo/AUTHORS",
+          "sha256": "7118b55c2d911781622ecb281d9e11fd7eeb5f46c8925e6d740f96f89e79a8fe",
+          "archiveEntry": "cairo-1.18.4/AUTHORS",
+          "bytes": 8148
+        },
+        {
+          "file": "components/cairo/COPYING",
+          "sha256": "67228a9f7c5f9b67c58f556f1be178f62da4d9e2e6285318d8c74d567255abdf",
+          "archiveEntry": "cairo-1.18.4/COPYING",
+          "bytes": 1576
+        },
+        {
+          "file": "components/cairo/COPYING-LGPL-2.1",
+          "sha256": "9e9e8608c4cdda51a78cc3a385f4ec9a2e4c96d5ecad74ac8bca5fca3e563b7d",
+          "archiveEntry": "cairo-1.18.4/COPYING-LGPL-2.1",
+          "bytes": 26533
+        },
+        {
+          "file": "components/cairo/COPYING-MPL-1.1",
+          "sha256": "53692a2ed6c6a2c6ec9b32dd0b820dfae91e0a1fcdf625ca9ed0bdf8705fcc4f",
+          "archiveEntry": "cairo-1.18.4/COPYING-MPL-1.1",
+          "bytes": 25755
+        },
+        {
+          "file": "components/cairo/perf/COPYING",
+          "sha256": "6f93b45ea874706058ae35bc02df79c3f9daf00948672eea8394cc25d1327d49",
+          "archiveEntry": "cairo-1.18.4/perf/COPYING",
+          "bytes": 229
+        },
+        {
+          "file": "components/cairo/subprojects/expat.wrap",
+          "sha256": "bc9a017cc61558713011802f0f0a6824da99ae8f209e2e337496db6d5768618d",
+          "archiveEntry": "cairo-1.18.4/subprojects/expat.wrap",
+          "bytes": 601
+        },
+        {
+          "file": "components/cairo/subprojects/fontconfig.wrap",
+          "sha256": "a9df19d71dc2ac0be17904fb6bf95c76260ccf861439c710ead52bb045a8807f",
+          "archiveEntry": "cairo-1.18.4/subprojects/fontconfig.wrap",
+          "bytes": 445
+        },
+        {
+          "file": "components/cairo/subprojects/freetype2.wrap",
+          "sha256": "fe930c2b167276a29969423687008dfaecb5b33dd509b95b07a9256235142d99",
+          "archiveEntry": "cairo-1.18.4/subprojects/freetype2.wrap",
+          "bytes": 453
+        },
+        {
+          "file": "components/cairo/subprojects/glib.wrap",
+          "sha256": "a400c4d0ee5301513bd82f9aace1b3f91af4c534d6192dc49cda9d5e6480e3e5",
+          "archiveEntry": "cairo-1.18.4/subprojects/glib.wrap",
+          "bytes": 541
+        },
+        {
+          "file": "components/cairo/subprojects/libpng.wrap",
+          "sha256": "3305f6a8fb4714b62a3d0e2151fe5a9ef4674d05a812378cf1d0485a97d5333c",
+          "archiveEntry": "cairo-1.18.4/subprojects/libpng.wrap",
+          "bytes": 589
+        },
+        {
+          "file": "components/cairo/subprojects/pixman.wrap",
+          "sha256": "805702242e470993fa2aa2c5996246a8d0ac66b443cc8273075e714c1280152f",
+          "archiveEntry": "cairo-1.18.4/subprojects/pixman.wrap",
+          "bytes": 403
+        },
+        {
+          "file": "components/cairo/subprojects/zlib.wrap",
+          "sha256": "6aa5c2e03aedf723af8574cb5f85bdbe14380cff9d5646f14e08dda7d343b026",
+          "archiveEntry": "cairo-1.18.4/subprojects/zlib.wrap",
+          "bytes": 551
+        },
+        {
+          "file": "components/cairo/test/COPYING",
+          "sha256": "a37812e0e27a211272d4c27fa45028c3653e78bb708acccb77c94128dc72b98e",
+          "archiveEntry": "cairo-1.18.4/test/COPYING",
+          "bytes": 1026
+        },
+        {
+          "file": "components/cairo/util/COPYING",
+          "sha256": "008e976b6e5e7155ee24322073f42cab7cd6daf90bc2322f1d5c3aacab94111c",
+          "archiveEntry": "cairo-1.18.4/util/COPYING",
+          "bytes": 138
+        },
+        {
+          "file": "components/cairo/util/cairo-script/COPYING",
+          "sha256": "25f4d4ce651b1ee6aff713ff986275d6c190a8537e36437886f8bf1497b0a174",
+          "archiveEntry": "cairo-1.18.4/util/cairo-script/COPYING",
+          "bytes": 656
+        },
+        {
+          "file": "components/cairo/util/cairo-trace/COPYING",
+          "sha256": "421158645572270264a980b8b130dd988138e4dae20144e22455446e0ef90902",
+          "archiveEntry": "cairo-1.18.4/util/cairo-trace/COPYING",
+          "bytes": 179
+        },
+        {
+          "file": "components/cairo/util/cairo-trace/COPYING-GPL-3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "archiveEntry": "cairo-1.18.4/util/cairo-trace/COPYING-GPL-3",
+          "bytes": 35147
+        }
+      ],
+      "sourceUrls": [
+        "https://cairographics.org/releases/cairo-1.18.4.tar.xz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/cairo.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "445ed8208a6e4823de1226a74ca319d3600e83f6369f99b14265006599c32ccb",
+        "url": "https://cairographics.org/releases/cairo-1.18.4.tar.xz",
+        "bytes": 32578804
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "cgif",
+      "sourceVerified": true,
+      "expectedSha256": "dcc7731e974ee77db75df26c99aca4d95f11ca2d267d870d42bce1e0d1e1e75f",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "cgif",
+      "version": "0.5.3",
+      "notices": [
+        {
+          "archiveEntry": "cgif-0.5.3/AUTHORS",
+          "bytes": 193,
+          "file": "components/cgif/AUTHORS",
+          "sha256": "76ed8a61cb7e254cab424641ebbb4069d08bf820dfe00f6f7ab5485057ca003d"
+        },
+        {
+          "archiveEntry": "cgif-0.5.3/LICENSE",
+          "bytes": 1099,
+          "file": "components/cgif/LICENSE",
+          "sha256": "7264dede477abab4ac3fe8236beb8153845c04ccd33b18f281085087e219fc6d"
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/dloebl/cgif/archive/v0.5.3.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/cgif.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/dloebl/cgif/archive/v0.5.3.tar.gz",
+        "bytes": 40021,
+        "sha256": "dcc7731e974ee77db75df26c99aca4d95f11ca2d267d870d42bce1e0d1e1e75f"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libexif",
+      "sourceVerified": true,
+      "expectedSha256": "4a055ed6575e61ca46c3172be3c753cc16c9becd0f99ec71d58dd0e471476c0c",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "exif",
+      "version": "0.6.26",
+      "notices": [
+        {
+          "file": "components/exif/AUTHORS",
+          "sha256": "a19ef6f43014fc57829658087d0c2bf59d97482e015cf553d7a68124603cbc44",
+          "archiveEntry": "libexif-0.6.26/AUTHORS",
+          "bytes": 240
+        },
+        {
+          "file": "components/exif/COPYING",
+          "sha256": "36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89",
+          "archiveEntry": "libexif-0.6.26/COPYING",
+          "bytes": 26434
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/libexif/libexif/releases/download/v0.6.26/libexif-0.6.26.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/libexif.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "4a055ed6575e61ca46c3172be3c753cc16c9becd0f99ec71d58dd0e471476c0c",
+        "url": "https://github.com/libexif/libexif/releases/download/v0.6.26/libexif-0.6.26.tar.xz",
+        "bytes": 1335488
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "expat",
+      "sourceVerified": true,
+      "expectedSha256": "f6256df90c906773d344da084402b7d3e4f22ed41b1a59c989098a83d3ea0c85",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "expat",
+      "version": "2.8.3",
+      "notices": [
+        {
+          "file": "components/expat/COPYING",
+          "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+          "archiveEntry": "expat-2.8.3/COPYING",
+          "bytes": 1144
+        },
+        {
+          "file": "components/expat/AUTHORS",
+          "sha256": "59f14371c6b75912cfebb46e6247ee5146766e803a0365b124e5d3011e7d0877",
+          "archiveEntry": "expat-2.8.3/AUTHORS",
+          "bytes": 142
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/libexpat/libexpat/releases/download/R_2_8_3/expat-2.8.3.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/expat.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "f6256df90c906773d344da084402b7d3e4f22ed41b1a59c989098a83d3ea0c85",
+        "url": "https://github.com/libexpat/libexpat/releases/download/R_2_8_3/expat-2.8.3.tar.xz",
+        "bytes": 517264
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libffi",
+      "sourceVerified": true,
+      "expectedSha256": "7da3e2d9a171eb0a038f592ecad3ff2bb2550f3496d87b3b29ad0cf4430c0db4",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "ffi",
+      "version": "3.8.0",
+      "notices": [
+        {
+          "file": "components/ffi/LICENSE-BUILDTOOLS",
+          "sha256": "e67978cd18816c0cb7d29aaaacde7b7447402c2fb321a051698890a8eaedda94",
+          "archiveEntry": "libffi-3.8.0/LICENSE-BUILDTOOLS",
+          "bytes": 18698
+        },
+        {
+          "file": "components/ffi/LICENSE",
+          "sha256": "17b64dc60f3b6897a60f971e288b973f655c2edcdf08b25f3c3dd5549857881c",
+          "archiveEntry": "libffi-3.8.0/LICENSE",
+          "bytes": 1132
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/libffi.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "7da3e2d9a171eb0a038f592ecad3ff2bb2550f3496d87b3b29ad0cf4430c0db4",
+        "url": "https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz",
+        "bytes": 1581626
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "fontconfig",
+      "sourceVerified": true,
+      "expectedSha256": "4f7b554a38cdf78c033f666c8871f3749e14a094f65a07f630c91ed0b43d35e3",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "fontconfig",
+      "version": "2.18.3",
+      "notices": [
+        {
+          "file": "components/fontconfig/AUTHORS",
+          "sha256": "db6d73a160bb2de10268f88ef60aae91771fefdeee4992b791c76ce6592a4a4b",
+          "archiveEntry": "fontconfig-2.18.3/AUTHORS",
+          "bytes": 62
+        },
+        {
+          "file": "components/fontconfig/COPYING",
+          "sha256": "51a51aa9823704fd90bccc616cdd17ebabb5b2b3e9cbde886ca02c7002288067",
+          "archiveEntry": "fontconfig-2.18.3/COPYING",
+          "bytes": 8616
+        },
+        {
+          "file": "components/fontconfig/Cargo.lock",
+          "sha256": "78a394b29b1a08daab91889b8c87fa5450c27146b3b77d59dcdccc7c5952530a",
+          "archiveEntry": "fontconfig-2.18.3/Cargo.lock",
+          "bytes": 2788
+        },
+        {
+          "file": "components/fontconfig/Cargo.toml",
+          "sha256": "6aa571cb8109a23748b386c62ae8384115253e90ece19790aa194579c29e7513",
+          "archiveEntry": "fontconfig-2.18.3/Cargo.toml",
+          "bytes": 611
+        },
+        {
+          "file": "components/fontconfig/fc-fontations/fcint-bindings/Cargo.toml",
+          "sha256": "96cd41535d82b5945edf8b4532d7c7eb26df0614454e5768b4bf57f62ec0596b",
+          "archiveEntry": "fontconfig-2.18.3/fc-fontations/fcint-bindings/Cargo.toml",
+          "bytes": 190
+        },
+        {
+          "file": "components/fontconfig/fc-fontations/fontconfig-bindings/Cargo.toml",
+          "sha256": "2e13a81c52a557bb1eeeea20350bbc589109a6bd2b65ed27a51304f6871c9c57",
+          "archiveEntry": "fontconfig-2.18.3/fc-fontations/fontconfig-bindings/Cargo.toml",
+          "bytes": 163
+        },
+        {
+          "file": "components/fontconfig/subprojects/expat.wrap",
+          "sha256": "ffdb2686e5f24eb87c273639e2ba3df5d5ffb9f6e0145b47c77d1725e20b03de",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/expat.wrap",
+          "bytes": 601
+        },
+        {
+          "file": "components/fontconfig/subprojects/freetype2.wrap",
+          "sha256": "f116568780c5c6e40e9efc787b1244da9e70e6e1f86a1337f603ec114a271d46",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/freetype2.wrap",
+          "bytes": 162
+        },
+        {
+          "file": "components/fontconfig/subprojects/gperf.wrap",
+          "sha256": "58ab57947a174d0e3bb79dac09082046a590f0d25ced3e57a16704abc2424b90",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/gperf.wrap",
+          "bytes": 176
+        },
+        {
+          "file": "components/fontconfig/subprojects/libpng.wrap",
+          "sha256": "2b8ce91474460f9b708001101630cc97034db464aebcc75e205be1aab17db226",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/libpng.wrap",
+          "bytes": 590
+        },
+        {
+          "file": "components/fontconfig/subprojects/libxml2.wrap",
+          "sha256": "cca98b0f08c877547ba761ea498b85d1b55e47326c7e9d9c22f941619d8be0eb",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/libxml2.wrap",
+          "bytes": 613
+        },
+        {
+          "file": "components/fontconfig/subprojects/zlib.wrap",
+          "sha256": "37e68040d898c9eb43e4747ac4baa5585c76f89b5da0cbb095fe26c231278297",
+          "archiveEntry": "fontconfig-2.18.3/subprojects/zlib.wrap",
+          "bytes": 551
+        }
+      ],
+      "sourceUrls": [
+        "https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.18.3/fontconfig-2.18.3.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/fontconfig.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "4f7b554a38cdf78c033f666c8871f3749e14a094f65a07f630c91ed0b43d35e3",
+        "url": "https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.18.3/fontconfig-2.18.3.tar.xz",
+        "bytes": 1172016
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "freetype",
+      "sourceVerified": true,
+      "expectedSha256": "36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "freetype",
+      "version": "2.14.3",
+      "notices": [
+        {
+          "archiveEntry": "freetype-2.14.3/docs/FTL.TXT",
+          "bytes": 6743,
+          "file": "components/freetype/docs/FTL.TXT",
+          "sha256": "5a5ee54c5001bbad1cdc1a57cc3dd4c42199b2da09d39c7ee41fab002d02967f"
+        },
+        {
+          "archiveEntry": "freetype-2.14.3/subprojects/libpng.wrap",
+          "bytes": 703,
+          "file": "components/freetype/subprojects/libpng.wrap",
+          "sha256": "03030bfddbaacf13e40a3fc539ccccb16a33201e7c7d55008999059aa7aabd81"
+        },
+        {
+          "archiveEntry": "freetype-2.14.3/subprojects/zlib.wrap",
+          "bytes": 653,
+          "file": "components/freetype/subprojects/zlib.wrap",
+          "sha256": "9a7916471716b8bdd107f82114477304b79759ea7f934254d4a0bc5af184d7c8"
+        },
+        {
+          "archiveEntry": "freetype-2.14.3/subprojects/harfbuzz.wrap",
+          "bytes": 495,
+          "file": "components/freetype/subprojects/harfbuzz.wrap",
+          "sha256": "147b05412cc67f2efa2be866e87e45a94d65d2da5a37d6bf9986ee2cc069f740"
+        },
+        {
+          "archiveEntry": "freetype-2.14.3/LICENSE.TXT",
+          "bytes": 2149,
+          "file": "components/freetype/LICENSE.TXT",
+          "sha256": "bd36c8b474855fa294c2ec5c184544478ef3720aad37d65a6296a4f264fd2d3b"
+        }
+      ],
+      "sourceUrls": [
+        "https://downloads.sourceforge.net/project/freetype/freetype2/2.14.3/freetype-2.14.3.tar.xz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/freetype.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://downloads.sourceforge.net/project/freetype/freetype2/2.14.3/freetype-2.14.3.tar.xz",
+        "bytes": 2670220,
+        "sha256": "36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "fribidi",
+      "sourceVerified": true,
+      "expectedSha256": "1b1cde5b235d40479e91be2f0e88a309e3214c8ab470ec8a2744d82a5a9ea05c",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "fribidi",
+      "version": "1.0.16",
+      "notices": [
+        {
+          "file": "components/fribidi/AUTHORS",
+          "sha256": "cb173f55c9514c8f38f4647ac3fedd5f8611358d331e65ab955da931e826861c",
+          "archiveEntry": "fribidi-1.0.16/AUTHORS",
+          "bytes": 1640
+        },
+        {
+          "file": "components/fribidi/COPYING",
+          "sha256": "32434afcc8666ba060e111d715bfdb6c2d5dd8a35fa4d3ab8ad67d8f850d2f2b",
+          "archiveEntry": "fribidi-1.0.16/COPYING",
+          "bytes": 26440
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/fribidi/fribidi/releases/download/v1.0.16/fribidi-1.0.16.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/fribidi.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "1b1cde5b235d40479e91be2f0e88a309e3214c8ab470ec8a2744d82a5a9ea05c",
+        "url": "https://github.com/fribidi/fribidi/releases/download/v1.0.16/fribidi-1.0.16.tar.xz",
+        "bytes": 1098260
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "glib",
+      "sourceVerified": true,
+      "expectedSha256": "1cdbb799f558832e6f14b8337b5fd599c6918ab144977b55e05e00a5e2e84a2c",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "glib",
+      "version": "2.89.4",
+      "notices": [
+        {
+          "file": "components/glib/LICENSES/AFL-2.0.txt",
+          "sha256": "7ecc7db84298adb05d2cf10339c63a5315a1c5c270a68d97d7d40a53b508ccde",
+          "archiveEntry": "glib-2.89.4/LICENSES/AFL-2.0.txt",
+          "bytes": 8987
+        },
+        {
+          "file": "components/glib/LICENSES/Apache-2.0.txt",
+          "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+          "archiveEntry": "glib-2.89.4/LICENSES/Apache-2.0.txt",
+          "bytes": 10280
+        },
+        {
+          "file": "components/glib/LICENSES/CC-BY-SA-3.0.txt",
+          "sha256": "3f941b3b89cf7b8370ceb83cc76d2120d471b58735d8ca60238a751a48d7f72f",
+          "archiveEntry": "glib-2.89.4/LICENSES/CC-BY-SA-3.0.txt",
+          "bytes": 22240
+        },
+        {
+          "file": "components/glib/LICENSES/CC0-1.0.txt",
+          "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+          "archiveEntry": "glib-2.89.4/LICENSES/CC0-1.0.txt",
+          "bytes": 7048
+        },
+        {
+          "file": "components/glib/LICENSES/GPL-2.0-or-later.txt",
+          "sha256": "aaf135472f81c5b4a0dca9367e5bb5e9750032b5bebe5442b36e4c0a47430df3",
+          "archiveEntry": "glib-2.89.4/LICENSES/GPL-2.0-or-later.txt",
+          "bytes": 17337
+        },
+        {
+          "file": "components/glib/LICENSES/LGPL-2.1-only.txt",
+          "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb",
+          "archiveEntry": "glib-2.89.4/LICENSES/LGPL-2.1-only.txt",
+          "bytes": 25967
+        },
+        {
+          "file": "components/glib/LICENSES/LGPL-2.1-or-later.txt",
+          "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb",
+          "archiveEntry": "glib-2.89.4/LICENSES/LGPL-2.1-or-later.txt",
+          "bytes": 25967
+        },
+        {
+          "file": "components/glib/LICENSES/LLVM-exception.txt",
+          "sha256": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+          "archiveEntry": "glib-2.89.4/LICENSES/LLVM-exception.txt",
+          "bytes": 919
+        },
+        {
+          "file": "components/glib/LICENSES/LicenseRef-old-glib-tests.txt",
+          "sha256": "fb261b2d5dbe76c4850f90da763210bc385e52428df6bbfd7b06295ac8a32914",
+          "archiveEntry": "glib-2.89.4/LICENSES/LicenseRef-old-glib-tests.txt",
+          "bytes": 841
+        },
+        {
+          "file": "components/glib/LICENSES/MIT.txt",
+          "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+          "archiveEntry": "glib-2.89.4/LICENSES/MIT.txt",
+          "bytes": 1078
+        },
+        {
+          "file": "components/glib/LICENSES/MPL-1.1.txt",
+          "sha256": "6214f8b1300bb9f37b16ebc146f8f61af0187e0025042ff95c8b3030744a8795",
+          "archiveEntry": "glib-2.89.4/LICENSES/MPL-1.1.txt",
+          "bytes": 23669
+        },
+        {
+          "file": "components/glib/docs/reference/AUTHORS",
+          "sha256": "b4f60a02b2b1f82764f8295b2eafbfcd4c33f596d70abcf5cb3c3623b1cfbc6d",
+          "archiveEntry": "glib-2.89.4/docs/reference/AUTHORS",
+          "bytes": 122
+        },
+        {
+          "file": "components/glib/docs/reference/COPYING",
+          "sha256": "b1ec1d0e5947f81e815d8771f7d4d90671a94bb10a42dc687fb566de461a57aa",
+          "archiveEntry": "glib-2.89.4/docs/reference/COPYING",
+          "bytes": 1698
+        },
+        {
+          "file": "components/glib/gmodule/AUTHORS",
+          "sha256": "28073c8c65c072387b778ba00b6c24a2ff1b573ca4415e151aa91fab5a6454be",
+          "archiveEntry": "glib-2.89.4/gmodule/AUTHORS",
+          "bytes": 25
+        },
+        {
+          "file": "components/glib/subprojects/gi-docgen.wrap",
+          "sha256": "e1baa25ea3e44e2a854e870592368b45e9fac205cae4c3c60e193709c0857a8f",
+          "archiveEntry": "glib-2.89.4/subprojects/gi-docgen.wrap",
+          "bytes": 211
+        },
+        {
+          "file": "components/glib/subprojects/gtk-doc.wrap",
+          "sha256": "272b13dcf9e4ba1b9aa1727ebeb59e043716c0f555ca6957a6211b163b94cee6",
+          "archiveEntry": "glib-2.89.4/subprojects/gtk-doc.wrap",
+          "bytes": 100
+        },
+        {
+          "file": "components/glib/subprojects/gvdb/COPYING",
+          "sha256": "bdbcdaa7858872393e9d6b216bbdc8a23e99d98dd6cdb7cda19458025b9e19fc",
+          "archiveEntry": "glib-2.89.4/subprojects/gvdb/COPYING",
+          "bytes": 26445
+        },
+        {
+          "file": "components/glib/subprojects/gvdb/LICENSES/LGPL-2.1-or-later.txt",
+          "sha256": "5749785c8bdefafcb5d798270ed0a967036fe2ca63dcedade1627565dfef81d2",
+          "archiveEntry": "glib-2.89.4/subprojects/gvdb/LICENSES/LGPL-2.1-or-later.txt",
+          "bytes": 26001
+        },
+        {
+          "file": "components/glib/subprojects/gvdb.wrap",
+          "sha256": "d669f93cb531a04d719dcc5b790838452c918eea0a6134ae2bf17b470eb7838c",
+          "archiveEntry": "glib-2.89.4/subprojects/gvdb.wrap",
+          "bytes": 163
+        },
+        {
+          "file": "components/glib/subprojects/libffi.wrap",
+          "sha256": "1d56093bbe4d8158295c1be7b0fd62a9818b5e7d771ab55e3e0c057b10e9e99b",
+          "archiveEntry": "glib-2.89.4/subprojects/libffi.wrap",
+          "bytes": 609
+        },
+        {
+          "file": "components/glib/subprojects/pcre2.wrap",
+          "sha256": "a790b22a6f8e2c21404fec9795209d6d0fb760fe40981adc332d3222dfe4553f",
+          "archiveEntry": "glib-2.89.4/subprojects/pcre2.wrap",
+          "bytes": 796
+        },
+        {
+          "file": "components/glib/subprojects/proxy-libintl.wrap",
+          "sha256": "ca5a4e2734f8f82ed211d9c3e62560ebe68670533902f42aad961313029b0c46",
+          "archiveEntry": "glib-2.89.4/subprojects/proxy-libintl.wrap",
+          "bytes": 417
+        },
+        {
+          "file": "components/glib/subprojects/sysprof.wrap",
+          "sha256": "84414f4b755314900c9f68b0471a30aaf201599a500b38fd687d1f02b4d439ae",
+          "archiveEntry": "glib-2.89.4/subprojects/sysprof.wrap",
+          "bytes": 134
+        },
+        {
+          "file": "components/glib/subprojects/zlib.wrap",
+          "sha256": "6aa5c2e03aedf723af8574cb5f85bdbe14380cff9d5646f14e08dda7d343b026",
+          "archiveEntry": "glib-2.89.4/subprojects/zlib.wrap",
+          "bytes": 551
+        }
+      ],
+      "sourceUrls": [
+        "https://download.gnome.org/sources/glib/2.89/glib-2.89.4.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/glib.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "1cdbb799f558832e6f14b8337b5fd599c6918ab144977b55e05e00a5e2e84a2c",
+        "url": "https://download.gnome.org/sources/glib/2.89/glib-2.89.4.tar.xz",
+        "bytes": 5830980
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "harfbuzz",
+      "sourceVerified": true,
+      "expectedSha256": "9dae9538aae2ffdf70cec31f2c27bf68e2aaeeae3112688467697d5faf6194f7",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "harfbuzz",
+      "version": "14.3.1",
+      "notices": [
+        {
+          "file": "components/harfbuzz/AUTHORS",
+          "sha256": "19bfe8f5ed100636cd24ab0c90a3f71c21d8b02d9ba00719447a0faab364d49f",
+          "archiveEntry": "harfbuzz-14.3.1/AUTHORS",
+          "bytes": 201
+        },
+        {
+          "file": "components/harfbuzz/COPYING",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+          "archiveEntry": "harfbuzz-14.3.1/COPYING",
+          "bytes": 1971
+        },
+        {
+          "file": "components/harfbuzz/src/ms-use/COPYING",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "archiveEntry": "harfbuzz-14.3.1/src/ms-use/COPYING",
+          "bytes": 1141
+        },
+        {
+          "file": "components/harfbuzz/src/rust/Cargo.toml",
+          "sha256": "f7b20276f1e521fb39d557cc4771cbafb89bc244fa5068e9caaf33055852751a",
+          "archiveEntry": "harfbuzz-14.3.1/src/rust/Cargo.toml",
+          "bytes": 773
+        },
+        {
+          "file": "components/harfbuzz/src/wasm/rust/harfbuzz-wasm/Cargo.toml",
+          "sha256": "5f9ddd87fee6abe40ec01ad51d94b82cecff7e6be38bb6affc10773ba95abe8f",
+          "archiveEntry": "harfbuzz-14.3.1/src/wasm/rust/harfbuzz-wasm/Cargo.toml",
+          "bytes": 229
+        },
+        {
+          "file": "components/harfbuzz/src/wasm/sample/rust/hello-wasm/Cargo.toml",
+          "sha256": "a394b86b691dd815776ce7803cb6e75617b03323a29d8237fd184278c4802792",
+          "archiveEntry": "harfbuzz-14.3.1/src/wasm/sample/rust/hello-wasm/Cargo.toml",
+          "bytes": 229
+        },
+        {
+          "file": "components/harfbuzz/subprojects/cairo.wrap",
+          "sha256": "e5f316991bbefe1ff77ad906f4b7c3f817fc96c39982a02eaf27c81d4d999f0d",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/cairo.wrap",
+          "bytes": 441
+        },
+        {
+          "file": "components/harfbuzz/subprojects/freetype2.wrap",
+          "sha256": "0153b6907f46e632e2c9fb740446d4ec77dea475fbf2b4a60017e5f4d8a08077",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/freetype2.wrap",
+          "bytes": 422
+        },
+        {
+          "file": "components/harfbuzz/subprojects/glew.wrap",
+          "sha256": "5d410574cb6598020c2f88749c01c9c76c22254f3c3e90e1bcfe58f164068627",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/glew.wrap",
+          "bytes": 451
+        },
+        {
+          "file": "components/harfbuzz/subprojects/glfw.wrap",
+          "sha256": "019b8eb85b3e939a42319cbb51c42aa2fff60ac644b072587448df2de3fea74a",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/glfw.wrap",
+          "bytes": 554
+        },
+        {
+          "file": "components/harfbuzz/subprojects/glib.wrap",
+          "sha256": "e610c90a5a903b0fc9c934142e1a5844f84451ce1354340d2230f09c61429cdc",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/glib.wrap",
+          "bytes": 640
+        },
+        {
+          "file": "components/harfbuzz/subprojects/google-benchmark.wrap",
+          "sha256": "3e1fc6557c2eb42b2d2f53999edb8684b9796ea9b8fafadac6091eba4c4f56d6",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/google-benchmark.wrap",
+          "bytes": 657
+        },
+        {
+          "file": "components/harfbuzz/subprojects/graphite2.wrap",
+          "sha256": "cac5de25e5b6e4b0625758b2efb82041b7b5d1bc75e83c32d76f7a4486a98ad8",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/graphite2.wrap",
+          "bytes": 490
+        },
+        {
+          "file": "components/harfbuzz/subprojects/icu.wrap",
+          "sha256": "2ee7ad42e48f8c4f9afe619f67226e3e6e0d85e25c5cbd3603f90df3325b6a43",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/icu.wrap",
+          "bytes": 770
+        },
+        {
+          "file": "components/harfbuzz/subprojects/kbts.wrap",
+          "sha256": "06bb7e177ac33cfa2d436baec215c3510da7eb919a60f87262a4eeabb28b8b37",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/kbts.wrap",
+          "bytes": 140
+        },
+        {
+          "file": "components/harfbuzz/subprojects/libffi.wrap",
+          "sha256": "ab89c1e7e8b76aff9a12fd20ce8d05b77666eac87d4f5c33f2e0f7a619097c38",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/libffi.wrap",
+          "bytes": 609
+        },
+        {
+          "file": "components/harfbuzz/subprojects/libpng.wrap",
+          "sha256": "03030bfddbaacf13e40a3fc539ccccb16a33201e7c7d55008999059aa7aabd81",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/libpng.wrap",
+          "bytes": 703
+        },
+        {
+          "file": "components/harfbuzz/subprojects/ragel.wrap",
+          "sha256": "42e608b3a113dc9c6ae50c8c8ed043c32732fbe67ccd235f52c269be9ba02183",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/ragel.wrap",
+          "bytes": 265
+        },
+        {
+          "file": "components/harfbuzz/subprojects/zlib.wrap",
+          "sha256": "9a7916471716b8bdd107f82114477304b79759ea7f934254d4a0bc5af184d7c8",
+          "archiveEntry": "harfbuzz-14.3.1/subprojects/zlib.wrap",
+          "bytes": 653
+        },
+        {
+          "file": "components/harfbuzz/test/COPYING",
+          "sha256": "9b35b8485f69cd298fccbb3c40a827dc06cf1185553bef827903497d2944a8d7",
+          "archiveEntry": "harfbuzz-14.3.1/test/COPYING",
+          "bytes": 4370
+        },
+        {
+          "file": "components/harfbuzz/test/shape/data/aots/COPYING",
+          "sha256": "f55f74bf740db07bb032a90aa74af4307adea3d489c1ccba12453cf0c0a764cb",
+          "archiveEntry": "harfbuzz-14.3.1/test/shape/data/aots/COPYING",
+          "bytes": 593
+        },
+        {
+          "file": "components/harfbuzz/test/shape/data/text-rendering-tests/COPYING",
+          "sha256": "d24039e4d22c9bc72096f6174374539d92a3d6e1163938546ec59179fe095e6f",
+          "archiveEntry": "harfbuzz-14.3.1/test/shape/data/text-rendering-tests/COPYING",
+          "bytes": 584
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/harfbuzz/harfbuzz/releases/download/14.3.1/harfbuzz-14.3.1.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/harfbuzz.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "9dae9538aae2ffdf70cec31f2c27bf68e2aaeeae3112688467697d5faf6194f7",
+        "url": "https://github.com/harfbuzz/harfbuzz/releases/download/14.3.1/harfbuzz-14.3.1.tar.xz",
+        "bytes": 19826476
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libheif",
+      "sourceVerified": true,
+      "expectedSha256": "8bd5d41d19dc84536d118b04774709f244df6104ef66d623dad5fa4650143405",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "heif",
+      "version": "1.23.2",
+      "notices": [
+        {
+          "file": "components/heif/COPYING",
+          "sha256": "fa81ce652315b013359d6e8e4744335f31a50c7c192907176d3632f78a3b4596",
+          "archiveEntry": "libheif-1.23.2/COPYING",
+          "bytes": 44366
+        },
+        {
+          "file": "components/heif/examples/COPYING",
+          "sha256": "278ee9bbb13ecb080a131c68927bd589a6a56fd5449ce25e8e594c858864830d",
+          "archiveEntry": "libheif-1.23.2/examples/COPYING",
+          "bytes": 1066
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/strukturag/libheif/releases/download/v1.23.2/libheif-1.23.2.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/libheif.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "8bd5d41d19dc84536d118b04774709f244df6104ef66d623dad5fa4650143405",
+        "url": "https://github.com/strukturag/libheif/releases/download/v1.23.2/libheif-1.23.2.tar.gz",
+        "bytes": 2111195
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "highway",
+      "sourceVerified": true,
+      "expectedSha256": "36f672ab48ddb3c8555e9e89e16fe400cd7d16c6eb455a1a3d0c146a63ababdc",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "highway",
+      "version": "1.4.0",
+      "notices": [
+        {
+          "file": "components/highway/LICENSE",
+          "sha256": "e340270d4f64384569a91d546acb5b094d69ce47f0c015db77abb74dc6f815af",
+          "archiveEntry": "highway-1.4.0/LICENSE",
+          "bytes": 20785
+        },
+        {
+          "file": "components/highway/debian/copyright",
+          "sha256": "6e4ecf1cae052b678ea3178dd4b3652d581ee66a82d58db8800dd7d80dd6de76",
+          "archiveEntry": "highway-1.4.0/debian/copyright",
+          "bytes": 825
+        },
+        {
+          "file": "components/highway/subprojects/gtest.wrap",
+          "sha256": "656242e3c9faf27a5c75595bc0eb8570d988361f0a0cfc1b6fb52ccae2341626",
+          "archiveEntry": "highway-1.4.0/subprojects/gtest.wrap",
+          "bytes": 682
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/google/highway/releases/download/1.4.0/highway-1.4.0.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/highway.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "36f672ab48ddb3c8555e9e89e16fe400cd7d16c6eb455a1a3d0c146a63ababdc",
+        "url": "https://github.com/google/highway/releases/download/1.4.0/highway-1.4.0.tar.gz",
+        "bytes": 3691557
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libimagequant",
+      "sourceVerified": true,
+      "expectedSha256": "47d2a84b7b1052975c9d50a3d4e3cacbf57b43d84a4c3131210848ead9964dfb",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "imagequant",
+      "version": "2.4.1",
+      "notices": [
+        {
+          "archiveEntry": "libimagequant-2.4.1/COPYRIGHT",
+          "bytes": 1851,
+          "file": "components/imagequant/COPYRIGHT",
+          "sha256": "7391bfbcde4404cefb9849553362c3ab436f929f5cc1abb57071ec045590ee99"
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/lovell/libimagequant/archive/v2.4.1.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/libimagequant.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/lovell/libimagequant/archive/v2.4.1.tar.gz",
+        "bytes": 45792,
+        "sha256": "47d2a84b7b1052975c9d50a3d4e3cacbf57b43d84a4c3131210848ead9964dfb"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "lcms",
+      "sourceVerified": true,
+      "expectedSha256": "bfc54f7bab59fbc921012014a8032e4cba4abd46db47d46b76416a8c0b2815c8",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "lcms",
+      "version": "2.19.1",
+      "notices": [
+        {
+          "file": "components/lcms/LICENSE",
+          "sha256": "6dbd60437f8ef91d8de1f08ad75882547fd4931bfcc3566a0735f28db1484d31",
+          "archiveEntry": "lcms2-2.19.1/LICENSE",
+          "bytes": 1080
+        },
+        {
+          "file": "components/lcms/plugins/fast_float/COPYING.GPL3",
+          "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271",
+          "archiveEntry": "lcms2-2.19.1/plugins/fast_float/COPYING.GPL3",
+          "bytes": 35146
+        },
+        {
+          "file": "components/lcms/plugins/threaded/COPYING.GPL3",
+          "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271",
+          "archiveEntry": "lcms2-2.19.1/plugins/threaded/COPYING.GPL3",
+          "bytes": 35146
+        },
+        {
+          "file": "components/lcms/utils/jpgicc/LICENSE_iccjpeg",
+          "sha256": "8baac37d14eed89b82ffcb041677dd701164eb5cc0f26e165fe47eb11afa0dca",
+          "archiveEntry": "lcms2-2.19.1/utils/jpgicc/LICENSE_iccjpeg",
+          "bytes": 3234
+        },
+        {
+          "file": "components/lcms/AUTHORS",
+          "sha256": "4847d97cd41e980794939b1d2694bd8f67b92856ec80e95c2fcfc34066f0df93",
+          "archiveEntry": "lcms2-2.19.1/AUTHORS",
+          "bytes": 1010
+        }
+      ],
+      "sourceUrls": [
+        "https://downloads.sourceforge.net/project/lcms/lcms/2.19.1/lcms2-2.19.1.tar.gz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/lcms.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "bfc54f7bab59fbc921012014a8032e4cba4abd46db47d46b76416a8c0b2815c8",
+        "url": "https://downloads.sourceforge.net/project/lcms/lcms/2.19.1/lcms2-2.19.1.tar.gz",
+        "bytes": 5728743
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "mozjpeg",
+      "sourceVerified": true,
+      "expectedSha256": "375d19302f09dfa267651dcfd3ddb62862ab3a488862b6168ce755bb1a925860",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "mozjpeg",
+      "version": "0826579",
+      "notices": [
+        {
+          "file": "components/mozjpeg/LICENSE.md",
+          "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+          "archiveEntry": "mozilla-mozjpeg-0826579/LICENSE.md",
+          "bytes": 5620
+        },
+        {
+          "file": "components/mozjpeg/java/doc/legal/LICENSE",
+          "sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+          "archiveEntry": "mozilla-mozjpeg-0826579/java/doc/legal/LICENSE",
+          "bytes": 19274
+        },
+        {
+          "file": "components/mozjpeg/release/License.rtf",
+          "sha256": "933e1427ec78050c76396182fd9819a23fef58c17e997b67581852167be971db",
+          "archiveEntry": "mozilla-mozjpeg-0826579/release/License.rtf",
+          "bytes": 2172
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/mozilla/mozjpeg/tarball/08265790774cd0714832c9e675522acbe5581437"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/plugins/mozjpeg/mozjpeg.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "375d19302f09dfa267651dcfd3ddb62862ab3a488862b6168ce755bb1a925860",
+        "url": "https://github.com/mozilla/mozjpeg/tarball/08265790774cd0714832c9e675522acbe5581437",
+        "bytes": 2442626
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "pixman",
+      "sourceVerified": true,
+      "expectedSha256": "d09c44ebc3bd5bee7021c79f922fe8fb2fb57f7320f55e97ff9914d2346a591c",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "pixman",
+      "version": "0.46.4",
+      "notices": [
+        {
+          "file": "components/pixman/COPYING",
+          "sha256": "fac9270f0987b96ff4533fca3548c633e02083cbba4a0172a3b149b2e4019793",
+          "archiveEntry": "pixman-0.46.4/COPYING",
+          "bytes": 2087
+        }
+      ],
+      "sourceUrls": [
+        "https://cairographics.org/releases/pixman-0.46.4.tar.gz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/pixman.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "d09c44ebc3bd5bee7021c79f922fe8fb2fb57f7320f55e97ff9914d2346a591c",
+        "url": "https://cairographics.org/releases/pixman-0.46.4.tar.gz",
+        "bytes": 827198
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libpng",
+      "sourceVerified": true,
+      "expectedSha256": "28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "png",
+      "version": "1.6.58",
+      "notices": [
+        {
+          "file": "components/png/AUTHORS",
+          "sha256": "0c777e9f2a67bd4058ab91050eb7a56106c92ed038ba8fe5f54c83344f2d93ca",
+          "archiveEntry": "libpng-1.6.58/AUTHORS",
+          "bytes": 1773
+        },
+        {
+          "file": "components/png/LICENSE",
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "archiveEntry": "libpng-1.6.58/LICENSE",
+          "bytes": 5345
+        },
+        {
+          "file": "components/png/ci/LICENSE_MIT.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "archiveEntry": "libpng-1.6.58/ci/LICENSE_MIT.txt",
+          "bytes": 1036
+        },
+        {
+          "file": "components/png/contrib/gregbook/COPYING",
+          "sha256": "d6cb0e9e560f51085556949a84af12b79a00f10ab8b66c752537faf7cd665572",
+          "archiveEntry": "libpng-1.6.58/contrib/gregbook/COPYING",
+          "bytes": 18097
+        },
+        {
+          "file": "components/png/contrib/gregbook/LICENSE",
+          "sha256": "b6a03c1803eb58ffb1f1278d5c7d4096c4c116e66dce8a7553e8c77d163c3438",
+          "archiveEntry": "libpng-1.6.58/contrib/gregbook/LICENSE",
+          "bytes": 2373
+        },
+        {
+          "file": "components/png/contrib/pngexif/LICENSE_MIT.txt",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+          "archiveEntry": "libpng-1.6.58/contrib/pngexif/LICENSE_MIT.txt",
+          "bytes": 1036
+        },
+        {
+          "file": "components/png/contrib/pngminus/LICENSE.txt",
+          "sha256": "1806f1f10d393e9e377b3a8d1b968452b54f1a90378f14eeef45426946ace330",
+          "archiveEntry": "libpng-1.6.58/contrib/pngminus/LICENSE.txt",
+          "bytes": 1164
+        },
+        {
+          "file": "components/png/scripts/cmake/AUTHORS.md",
+          "sha256": "50633b976f0133862c921aa67d56de2c0b42eb344c8ca3853686efb092a447db",
+          "archiveEntry": "libpng-1.6.58/scripts/cmake/AUTHORS.md",
+          "bytes": 862
+        }
+      ],
+      "sourceUrls": [
+        "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.58/libpng-1.6.58.tar.xz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/libpng.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775",
+        "url": "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.58/libpng-1.6.58.tar.xz",
+        "bytes": 1070096
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "proxy-libintl",
+      "sourceVerified": true,
+      "expectedSha256": "f7a1cbd7579baaf575c66f9d99fb6295e9b0684a28b095967cfda17857595303",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "proxy-libintl",
+      "version": "0.5",
+      "notices": [
+        {
+          "archiveEntry": "proxy-libintl-0.5/COPYING",
+          "bytes": 25292,
+          "file": "components/proxy-libintl/COPYING",
+          "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/frida/proxy-libintl/archive/0.5.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/plugins/proxy-libintl/proxy-libintl.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/frida/proxy-libintl/archive/0.5.tar.gz",
+        "bytes": 13056,
+        "sha256": "f7a1cbd7579baaf575c66f9d99fb6295e9b0684a28b095967cfda17857595303"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "librsvg",
+      "sourceVerified": true,
+      "expectedSha256": "6caeae129d40dd88f8ec49436fd89bfe4ada716a125187a7fa0def8fcaa0b250",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "rsvg",
+      "version": "2.62.91",
+      "notices": [
+        {
+          "file": "components/rsvg/AUTHORS",
+          "sha256": "14e765b9c1097d93f4b842a6ad23172b530cc00dfe7a5aae1b9afefdca54531b",
+          "archiveEntry": "librsvg-2.62.91/AUTHORS",
+          "bytes": 1798
+        },
+        {
+          "file": "components/rsvg/COPYING.LIB",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+          "archiveEntry": "librsvg-2.62.91/COPYING.LIB",
+          "bytes": 26530
+        },
+        {
+          "file": "components/rsvg/Cargo.lock",
+          "sha256": "fcca33feb66f75fb02199902cee0a5072cb491020d655463dfeffffc9d626941",
+          "archiveEntry": "librsvg-2.62.91/Cargo.lock",
+          "bytes": 84674
+        },
+        {
+          "file": "components/rsvg/Cargo.toml",
+          "sha256": "2b31af45debf11de20a99f8aaea177348a5b1bea62a69f0547c86b50244773b0",
+          "archiveEntry": "librsvg-2.62.91/Cargo.toml",
+          "bytes": 2441
+        },
+        {
+          "file": "components/rsvg/afl-fuzz/Cargo.toml",
+          "sha256": "e485a525eff0257256ecaacb7f8d7c3c4cae7255eb70c6963aa9ec200b38b208",
+          "archiveEntry": "librsvg-2.62.91/afl-fuzz/Cargo.toml",
+          "bytes": 322
+        },
+        {
+          "file": "components/rsvg/ci/Cargo.toml",
+          "sha256": "b2e11b2ea1e293dc19e37da43a1bf982940d6e6b12ff162820bef1eb33ee2dd3",
+          "archiveEntry": "librsvg-2.62.91/ci/Cargo.toml",
+          "bytes": 461
+        },
+        {
+          "file": "components/rsvg/fuzz/Cargo.toml",
+          "sha256": "e31c999020130abf4be6eb18db713faedab37f6cfb6080c574f078f07f7ddcb4",
+          "archiveEntry": "librsvg-2.62.91/fuzz/Cargo.toml",
+          "bytes": 491
+        },
+        {
+          "file": "components/rsvg/gdk-pixbuf-loader/Cargo.toml",
+          "sha256": "44d58917a367cb240f681bc999cb2df4125600a41c2a19c48ac8537886289fc6",
+          "archiveEntry": "librsvg-2.62.91/gdk-pixbuf-loader/Cargo.toml",
+          "bytes": 641
+        },
+        {
+          "file": "components/rsvg/librsvg-c/Cargo.toml",
+          "sha256": "0b55c706b9f9c8a4515941cdef12ff130242a4f44ed4d0f7703c07b18095d570",
+          "archiveEntry": "librsvg-2.62.91/librsvg-c/Cargo.toml",
+          "bytes": 904
+        },
+        {
+          "file": "components/rsvg/librsvg-rebind/LICENSE",
+          "sha256": "f9c4c77baa3828004ee54b8a4f2db2e88ed44a6237a493965bf551fac0fcb62d",
+          "archiveEntry": "librsvg-2.62.91/librsvg-rebind/LICENSE",
+          "bytes": 1023
+        },
+        {
+          "file": "components/rsvg/librsvg-rebind/librsvg-rebind/Cargo.toml",
+          "sha256": "e356cf1cae52472d491bde50ec1836a66b352df1cb6eebe4fe06fd20a95516e0",
+          "archiveEntry": "librsvg-2.62.91/librsvg-rebind/librsvg-rebind/Cargo.toml",
+          "bytes": 959
+        },
+        {
+          "file": "components/rsvg/librsvg-rebind/librsvg-rebind/sys/Cargo.toml",
+          "sha256": "d8b461f6345d92528f4956bd1e53caaa2d13962be28023a126f2fba06a5b3a57",
+          "archiveEntry": "librsvg-2.62.91/librsvg-rebind/librsvg-rebind/sys/Cargo.toml",
+          "bytes": 1251
+        },
+        {
+          "file": "components/rsvg/pango-examples/Cargo.toml",
+          "sha256": "8f370834d267f608aa03f73d6deb4b78b0440d6238b6389535ccca1f61e2ff7a",
+          "archiveEntry": "librsvg-2.62.91/pango-examples/Cargo.toml",
+          "bytes": 597
+        },
+        {
+          "file": "components/rsvg/rsvg/Cargo.toml",
+          "sha256": "7c68ed69ddfaca59c50d0da1f959e6298a759f0362b24aaed060f92af618d262",
+          "archiveEntry": "librsvg-2.62.91/rsvg/Cargo.toml",
+          "bytes": 3572
+        },
+        {
+          "file": "components/rsvg/rsvg-bench/Cargo.toml",
+          "sha256": "964815527bf97cb996fe73d987448dfa65c2a2144370d82428e01479c1b71e09",
+          "archiveEntry": "librsvg-2.62.91/rsvg-bench/Cargo.toml",
+          "bytes": 615
+        },
+        {
+          "file": "components/rsvg/rsvg_convert/Cargo.toml",
+          "sha256": "6d51399ecffc97461dbbee5a262103c99ecc8baed0ecf8ec70c8a9d3b413966f",
+          "archiveEntry": "librsvg-2.62.91/rsvg_convert/Cargo.toml",
+          "bytes": 1751
+        }
+      ],
+      "sourceUrls": [
+        "https://download.gnome.org/sources/librsvg/2.62/librsvg-2.62.91.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/librsvg.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "6caeae129d40dd88f8ec49436fd89bfe4ada716a125187a7fa0def8fcaa0b250",
+        "url": "https://download.gnome.org/sources/librsvg/2.62/librsvg-2.62.91.tar.xz",
+        "bytes": 6766696
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "tiff",
+      "sourceVerified": true,
+      "expectedSha256": "4996f0c4f93094719b1ca5c6279b20e588773ba8a247533e486416fb662ddb88",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "tiff",
+      "version": "4.7.2",
+      "notices": [
+        {
+          "file": "components/tiff/doc/html-prebuilt/_sources/project/license.rst.txt",
+          "sha256": "02e86af3b805e0f2075ebb5ac512831f6ab2a97ddeb186de076c418956418ba1",
+          "archiveEntry": "tiff-4.7.2/doc/html-prebuilt/_sources/project/license.rst.txt",
+          "bytes": 1181
+        },
+        {
+          "file": "components/tiff/doc/html-prebuilt/project/license.html",
+          "sha256": "6c9436f8e9f58a79e044949e360291b9c910715fad31cdaed66bc61b0dcf33e6",
+          "archiveEntry": "tiff-4.7.2/doc/html-prebuilt/project/license.html",
+          "bytes": 5663
+        },
+        {
+          "file": "components/tiff/doc/project/license.rst",
+          "sha256": "02e86af3b805e0f2075ebb5ac512831f6ab2a97ddeb186de076c418956418ba1",
+          "archiveEntry": "tiff-4.7.2/doc/project/license.rst",
+          "bytes": 1181
+        },
+        {
+          "file": "components/tiff/LICENSE.md",
+          "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+          "archiveEntry": "tiff-4.7.2/LICENSE.md",
+          "bytes": 2416
+        }
+      ],
+      "sourceUrls": [
+        "https://download.osgeo.org/libtiff/tiff-4.7.2.tar.xz"
+      ],
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "recipe": "mxe-d973945/src/tiff.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "4996f0c4f93094719b1ca5c6279b20e588773ba8a247533e486416fb662ddb88",
+        "url": "https://download.osgeo.org/libtiff/tiff-4.7.2.tar.xz",
+        "bytes": 2409652
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "uhdr",
+      "sourceVerified": true,
+      "expectedSha256": "aa8d193bb887c348c419780511dd03b374f4e07af8812b6d3f80c8537cf1ef2c",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "uhdr",
+      "version": "2.0.2",
+      "notices": [
+        {
+          "archiveEntry": "libultrahdr-2.0.2/LICENSE",
+          "bytes": 12566,
+          "file": "components/uhdr/LICENSE",
+          "sha256": "c9247b5cb07866938643cc238292434e6f2af8642e1fce10771c0e4cc7909316"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/LICENSE-APACHE",
+          "bytes": 11358,
+          "file": "components/uhdr/LICENSE-APACHE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/LICENSE-MIT",
+          "bytes": 1088,
+          "file": "components/uhdr/LICENSE-MIT",
+          "sha256": "029624bf1488ed7b8c92727d267c95f588c9c12fa6932c207884c2641a7e9d37"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/adobe-hdr-gain-map-license/NOTICE",
+          "bytes": 66,
+          "file": "components/uhdr/adobe-hdr-gain-map-license/NOTICE",
+          "sha256": "746d8c9c414b335bb7c9615918a15a6489a4dcc1c5c3aac2bda410d1072c332a"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/tests/data/LICENSE",
+          "bytes": 19354,
+          "file": "components/uhdr/tests/data/LICENSE",
+          "sha256": "c4b2cd68902b8c4a82c9b5ddebe15538acbce7f70a88fcc751e1e921bde89f7f"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/third_party/image_io/LICENSE",
+          "bytes": 11358,
+          "file": "components/uhdr/third_party/image_io/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "archiveEntry": "libultrahdr-2.0.2/third_party/image_io/src/modp_b64/LICENSE",
+          "bytes": 1721,
+          "file": "components/uhdr/third_party/image_io/src/modp_b64/LICENSE",
+          "sha256": "d47e8390fb0d7ad4a18f26aedd6283c7ab6b5b4fabab536ccb4db7f9f6d90c08"
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/google/libultrahdr/archive/v2.0.2.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/uhdr.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/google/libultrahdr/archive/v2.0.2.tar.gz",
+        "bytes": 1518872,
+        "sha256": "aa8d193bb887c348c419780511dd03b374f4e07af8812b6d3f80c8537cf1ef2c"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "vips",
+      "sourceVerified": true,
+      "expectedSha256": "3c41e1d5458081bfa4a5bc54e116c46259c75c6760a18027764555632b9dda3e",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "vips",
+      "version": "8.18.6",
+      "notices": [
+        {
+          "file": "components/vips/LICENSE",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+          "archiveEntry": "vips-8.18.6/LICENSE",
+          "bytes": 26530
+        },
+        {
+          "file": "components/vips/libvips/foreign/libnsgif/COPYING",
+          "sha256": "1469b759cf18e43c6e1b4ff892307d3962cbbb337ac497620d6690a219fad10c",
+          "archiveEntry": "vips-8.18.6/libvips/foreign/libnsgif/COPYING",
+          "bytes": 1133
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/libvips/libvips/releases/download/v8.18.6/vips-8.18.6.tar.xz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/vips.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "3c41e1d5458081bfa4a5bc54e116c46259c75c6760a18027764555632b9dda3e",
+        "url": "https://github.com/libvips/libvips/releases/download/v8.18.6/vips-8.18.6.tar.xz",
+        "bytes": 25431000
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libwebp",
+      "sourceVerified": true,
+      "expectedSha256": "e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "webp",
+      "version": "1.6.0",
+      "notices": [
+        {
+          "file": "components/webp/PATENTS",
+          "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c",
+          "archiveEntry": "libwebp-1.6.0/PATENTS",
+          "bytes": 1436
+        },
+        {
+          "file": "components/webp/COPYING",
+          "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+          "archiveEntry": "libwebp-1.6.0/COPYING",
+          "bytes": 1496
+        },
+        {
+          "file": "components/webp/AUTHORS",
+          "sha256": "f251be89fd442bd9d701360730aea163cc8e2076ff03528f59267dc2c4f8b60a",
+          "archiveEntry": "libwebp-1.6.0/AUTHORS",
+          "bytes": 3279
+        }
+      ],
+      "sourceUrls": [
+        "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0.tar.gz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/libwebp.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0.tar.gz",
+        "bytes": 4296070
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "libxml2",
+      "sourceVerified": true,
+      "expectedSha256": "78262a6e7ac170d6528ebfe2efccdf220191a5af6a6cd61ea4a9a9a5042c7a07",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "xml2",
+      "version": "2.15.3",
+      "notices": [
+        {
+          "file": "components/xml2/Copyright",
+          "sha256": "5d4873884a890122a4b9b20ad56ac6f7da1d796a5bfcf04a427970ac96217626",
+          "archiveEntry": "libxml2-2.15.3/Copyright",
+          "bytes": 1314
+        },
+        {
+          "file": "components/xml2/test/html-tokenizer/NOTICE",
+          "sha256": "d6a2cb265a0a249a234b89eeffa7f316ebe5bff546672a0a2b1a861dd2238460",
+          "archiveEntry": "libxml2-2.15.3/test/html-tokenizer/NOTICE",
+          "bytes": 1270
+        },
+        {
+          "file": "components/xml2/result/html-tokenizer/NOTICE",
+          "sha256": "d6a2cb265a0a249a234b89eeffa7f316ebe5bff546672a0a2b1a861dd2238460",
+          "archiveEntry": "libxml2-2.15.3/result/html-tokenizer/NOTICE",
+          "bytes": 1270
+        }
+      ],
+      "sourceUrls": [
+        "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.3.tar.xz"
+      ],
+      "override": null,
+      "recipe": "mxe-d973945/src/libxml2.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "78262a6e7ac170d6528ebfe2efccdf220191a5af6a6cd61ea4a9a9a5042c7a07",
+        "url": "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.3.tar.xz",
+        "bytes": 3152452
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "package": "zlib-ng",
+      "sourceVerified": true,
+      "expectedSha256": "f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1",
+      "sourceStatus": "archive-matches-build-recipe",
+      "name": "zlib-ng",
+      "version": "2.3.3",
+      "notices": [
+        {
+          "archiveEntry": "zlib-ng-2.3.3/LICENSE.md",
+          "bytes": 867,
+          "file": "components/zlib-ng/LICENSE.md",
+          "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee"
+        }
+      ],
+      "sourceUrls": [
+        "https://github.com/zlib-ng/zlib-ng/archive/2.3.3.tar.gz"
+      ],
+      "override": null,
+      "recipe": "build-win64-mxe-v8.18.6/build/plugins/zlib-ng/zlib-ng.mk",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/zlib-ng/zlib-ng/archive/2.3.3.tar.gz",
+        "bytes": 2447397,
+        "sha256": "f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "recipe": "mxe-d973945/src/pango.mk",
+      "package": "pango",
+      "notices": [
+        {
+          "file": "components/pango/COPYING",
+          "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5",
+          "archiveEntry": "pango-1.58.2/COPYING",
+          "bytes": 25292
+        },
+        {
+          "file": "components/pango/subprojects/cairo.wrap",
+          "sha256": "ff724510cf6671ff503a3247411950ca667aeb1289341811fc09cf68a3ce4640",
+          "archiveEntry": "pango-1.58.2/subprojects/cairo.wrap",
+          "bytes": 238
+        },
+        {
+          "file": "components/pango/subprojects/fontconfig.wrap",
+          "sha256": "b371e21035b70723de192cf5e6f60c5297c8a56102cdb92399df59d4e2a35911",
+          "archiveEntry": "pango-1.58.2/subprojects/fontconfig.wrap",
+          "bytes": 224
+        },
+        {
+          "file": "components/pango/subprojects/freetype2.wrap",
+          "sha256": "769c69a6e0c3460385bda41baec7fb7fcaa13d6977bdec0798b0d93f03584e22",
+          "archiveEntry": "pango-1.58.2/subprojects/freetype2.wrap",
+          "bytes": 153
+        },
+        {
+          "file": "components/pango/subprojects/fribidi.wrap",
+          "sha256": "2aea0ccdfddf4e0cc2135fe9059f8ebe929c36527b217f0809fd76c0ecaf02c1",
+          "archiveEntry": "pango-1.58.2/subprojects/fribidi.wrap",
+          "bytes": 188
+        },
+        {
+          "file": "components/pango/subprojects/gi-docgen.wrap",
+          "sha256": "bcf440c82e6e16a765f3e51e3246c2cf72234b6e159722955da936aed388b175",
+          "archiveEntry": "pango-1.58.2/subprojects/gi-docgen.wrap",
+          "bytes": 209
+        },
+        {
+          "file": "components/pango/subprojects/glib.wrap",
+          "sha256": "ccf4421b2e02348b39526facdf94bb4585dbff3e7ee2f62bc51e9592575d6b42",
+          "archiveEntry": "pango-1.58.2/subprojects/glib.wrap",
+          "bytes": 443
+        },
+        {
+          "file": "components/pango/subprojects/gobject-introspection.wrap",
+          "sha256": "a3e03bef5521ba49f2991a29cfcdfc3c887046ea756958b4d91e8c2cc61d405e",
+          "archiveEntry": "pango-1.58.2/subprojects/gobject-introspection.wrap",
+          "bytes": 413
+        },
+        {
+          "file": "components/pango/subprojects/harfbuzz.wrap",
+          "sha256": "45b5779e59848d62672c7de2d78c39bcc4c32b60fec2a1ac24a1bc63c5350a05",
+          "archiveEntry": "pango-1.58.2/subprojects/harfbuzz.wrap",
+          "bytes": 192
+        },
+        {
+          "file": "components/pango/subprojects/sysprof.wrap",
+          "sha256": "7e747d261eaaf10a95ac7533c5b1ff720204d2aef40869f6bf323b0630ea6b06",
+          "archiveEntry": "pango-1.58.2/subprojects/sysprof.wrap",
+          "bytes": 241
+        }
+      ],
+      "sourceUrls": [
+        "https://download.gnome.org/sources/pango/1.58/pango-1.58.2.tar.xz"
+      ],
+      "sourceVerified": true,
+      "sourceStatus": "archive-matches-build-recipe",
+      "expectedSha256": "342385b6ca3b7c73455d7c80a13b7dbe4489e00bc3bd4c5bd6ed4dce421e374a",
+      "version": "1.58.2",
+      "name": "pango",
+      "override": "build-win64-mxe-v8.18.6/build/overrides.mk",
+      "errors": [],
+      "observedArchive": {
+        "sha256": "342385b6ca3b7c73455d7c80a13b7dbe4489e00bc3bd4c5bd6ed4dce421e374a",
+        "url": "https://download.gnome.org/sources/pango/1.58/pango-1.58.2.tar.xz",
+        "bytes": 1918112
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "notices": [
+        {
+          "archiveEntry": "pcre2-10.46/AUTHORS.md",
+          "bytes": 3855,
+          "file": "components/glib-pcre2/AUTHORS.md",
+          "sha256": "1bbf636fa9d7e863bd524af8a3d7229d0c8f88ad740b20f866f25cefaca98fb7"
+        },
+        {
+          "archiveEntry": "pcre2-10.46/LICENCE.md",
+          "bytes": 3867,
+          "file": "components/glib-pcre2/LICENCE.md",
+          "sha256": "9cf7ac6976099a1d856826d3ef1b093bd6b84489dc6100628ac79e740cf9885a"
+        },
+        {
+          "archiveEntry": "pcre2-10.46/COPYING",
+          "bytes": 97,
+          "file": "components/glib-pcre2/COPYING",
+          "sha256": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507"
+        },
+        {
+          "archiveEntry": "pcre2-10.46/cmake/COPYING-CMAKE-SCRIPTS",
+          "bytes": 1326,
+          "file": "components/glib-pcre2/cmake/COPYING-CMAKE-SCRIPTS",
+          "sha256": "c666ec2313dba24523ccad88f4c04ea4b24fad6545263a35b1d4ab2b08efe50a"
+        }
+      ],
+      "version": "10.46",
+      "expectedSha256": "15fbc5aba6beee0b17aecb04602ae39432393aba1ebd8e39b7cabf7db883299f",
+      "scope": "glib subproject, source hash pinned in glib/subprojects/pcre2.wrap",
+      "package": "pcre2",
+      "sourceUrls": [
+        "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.46/pcre2-10.46.tar.bz2"
+      ],
+      "sourceVerified": true,
+      "sourceStatus": "archive-matches-build-recipe",
+      "recipe": "components/glib/subprojects/pcre2.wrap",
+      "name": "glib-pcre2",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.46/pcre2-10.46.tar.bz2",
+        "bytes": 2035354,
+        "sha256": "15fbc5aba6beee0b17aecb04602ae39432393aba1ebd8e39b7cabf7db883299f"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    },
+    {
+      "notices": [
+        {
+          "archiveEntry": "gvdb-2b42fc75f09dbe1cd1057580b5782b08f2dcb400/COPYING",
+          "bytes": 26445,
+          "file": "components/glib-gvdb/COPYING",
+          "sha256": "bdbcdaa7858872393e9d6b216bbdc8a23e99d98dd6cdb7cda19458025b9e19fc"
+        },
+        {
+          "archiveEntry": "gvdb-2b42fc75f09dbe1cd1057580b5782b08f2dcb400/LICENSES/LGPL-2.1-or-later.txt",
+          "bytes": 26001,
+          "file": "components/glib-gvdb/LICENSES/LGPL-2.1-or-later.txt",
+          "sha256": "5749785c8bdefafcb5d798270ed0a967036fe2ca63dcedade1627565dfef81d2"
+        }
+      ],
+      "version": "2b42fc75f09dbe1cd1057580b5782b08f2dcb400",
+      "expectedSha256": null,
+      "scope": "forced glib fallback; git commit pinned in glib/subprojects/gvdb.wrap; archive SHA256 recorded by this audit",
+      "package": "gvdb",
+      "sourceUrls": [
+        "https://gitlab.gnome.org/GNOME/gvdb/-/archive/2b42fc75f09dbe1cd1057580b5782b08f2dcb400/gvdb-2b42fc75f09dbe1cd1057580b5782b08f2dcb400.tar.gz"
+      ],
+      "sourceVerified": false,
+      "sourceStatus": "version-source-retrieved-no-build-checksum",
+      "recipe": "components/glib/subprojects/gvdb.wrap",
+      "name": "glib-gvdb",
+      "errors": [],
+      "observedArchive": {
+        "url": "https://gitlab.gnome.org/GNOME/gvdb/-/archive/2b42fc75f09dbe1cd1057580b5782b08f2dcb400/gvdb-2b42fc75f09dbe1cd1057580b5782b08f2dcb400.tar.gz",
+        "bytes": 24716,
+        "sha256": "069a00aa1fc893f18423602f4e095583be5a220429f6e8a58d70511490b4b019"
+      },
+      "noticeScope": "Source-distribution notices; may include optional/tests/vendor code. Not a proof of the complete linked DLL license closure."
+    }
+  ],
+  "retrievedAt": "2026-09-27T16:15:43.0322235Z"
+}

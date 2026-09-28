@@ -2,6 +2,7 @@ import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } fr
 'use strict';
 
 import { PathOrFileDescriptor } from 'node:fs';
+import { loadNativeLicenseMaterials, shouldPreserveMaterial, verifyNativeLicenseMaterial } from '../lib/native-license-materials';
 
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const { execFileSync, spawn }: typeof import('node:child_process') = require('node:child_process');
@@ -101,6 +102,9 @@ function classifyPath(relativePath: string) {
   const basename = path.posix.basename(relativePath).toLowerCase();
   const extension = path.posix.extname(basename).toLowerCase();
   if (TEXT_FILENAMES.has(basename) || TEXT_EXTENSIONS.has(extension)) return 'text';
+  // Upstream COPYING, patches and build receipts are text. Only digest-bound
+  // original material may bypass formatting; COPYING.LIB is a notice, not a DLL.
+  if (relativePath.startsWith('runtime-rs/native-licenses/')) return 'text';
   if (BINARY_EXTENSIONS.has(extension)) return 'binary';
   return 'unknown';
 }
@@ -367,7 +371,11 @@ function unknownViolation(target: string, relativePath: string) {
   };
 }
 
-function appendBlobViolations(result: any, target: string, relativePath: string, bytes: any, allowanceLookup: Map<any,any>) {
+function appendBlobViolations(result: any, target: string, relativePath: string, bytes: any, allowanceLookup: Map<any,any>, materials: ReturnType<typeof loadNativeLicenseMaterials>) {
+  if (materials.has(relativePath) && shouldPreserveMaterial(relativePath)) {
+    verifyNativeLicenseMaterial(materials, relativePath, bytes);
+    return;
+  }
   const violations = scanText(bytes, expectedLineEnding(target, relativePath), relativePath);
   if (violations.length === 0) return;
   const digest = sha256(bytes);
@@ -415,7 +423,7 @@ function readWorktreeBlob(repositoryRoot: string, relativePath: string, target: 
   }
 }
 
-function scanWorktreeTarget(repositoryRoot: string, relativePaths: any[], target: string, allowanceLookup: Map<any,any>, result: any) {
+function scanWorktreeTarget(repositoryRoot: string, relativePaths: any[], target: string, allowanceLookup: Map<any,any>, result: any, materials: ReturnType<typeof loadNativeLicenseMaterials>) {
   for (const relativePath of relativePaths) {
     const bytes = readWorktreeBlob(repositoryRoot, relativePath, target, result);
     if (bytes === null) continue;
@@ -424,7 +432,7 @@ function scanWorktreeTarget(repositoryRoot: string, relativePaths: any[], target
     if (classification === 'unknown') {
       result.violations.push(unknownViolation(target, relativePath));
     } else if (classification === 'text') {
-      appendBlobViolations(result, target, relativePath, bytes, allowanceLookup);
+      appendBlobViolations(result, target, relativePath, bytes, allowanceLookup, materials);
     }
   }
 }
@@ -502,6 +510,8 @@ async function scanRepository(startPath: string, options: any = {}) {
     repositoryRoot,
     textIndexEntries.map((entry) => entry.objectId),
   );
+  const materialIndex = new Map(textIndexEntries.map(entry => [entry.path, indexBlobs.get(entry.objectId.toLowerCase())]));
+  const indexedMaterials = loadNativeLicenseMaterials(relativePath => materialIndex.get(relativePath) ?? null);
   for (const entry of textIndexEntries) {
     appendBlobViolations(
       result,
@@ -509,8 +519,14 @@ async function scanRepository(startPath: string, options: any = {}) {
       entry.path,
       indexBlobs.get(entry.objectId.toLowerCase()),
       allowanceLookup,
+      indexedMaterials,
     );
   }
+
+  const worktreeMaterials = loadNativeLicenseMaterials(relativePath => {
+    const absolute = repositoryPath(repositoryRoot, relativePath);
+    return fs.existsSync(absolute) ? fs.readFileSync(absolute) : null;
+  });
 
   scanWorktreeTarget(
     repositoryRoot,
@@ -518,13 +534,14 @@ async function scanRepository(startPath: string, options: any = {}) {
     'worktree',
     allowanceLookup,
     result,
+    worktreeMaterials,
   );
 
   const untrackedPaths = splitNullTerminated(runGit(
     repositoryRoot,
     ['ls-files', '--others', '--exclude-per-directory=.gitignore', '-z'],
   )).sort(compareStrings);
-  scanWorktreeTarget(repositoryRoot, untrackedPaths, 'untracked', allowanceLookup, result);
+  scanWorktreeTarget(repositoryRoot, untrackedPaths, 'untracked', allowanceLookup, result, worktreeMaterials);
 
   sortViolations(result.violations);
   result.allowed.sort((left: any, right: any) => {
