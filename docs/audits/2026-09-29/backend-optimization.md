@@ -24,4 +24,20 @@
 
 Rust 新回归证明：暂停冷校验期间数据库请求仍可完成，同文件并发只哈希一次，取消/关闭等待实际线程退出，文件变化不进入缓存；任务无变化 patch 不推进版本，分页期间的更新由增量读取补齐，一次性恢复使用稳定 rowid，查询计划使用相应索引；健康路由在两个 Live2D worker 均占用时仍响应，目录锁、冷启动、失效、TTL 与刷新超时有覆盖。最初两轮 Clippy 发现测试跨 await 持锁及未使用包装函数，已分别改为独立线程夹具并删除无用包装，最终完整检查通过。
 
-构建与安装另行登记。代码路径优化不等于已经测得整机性能提升；本次没有调用真实模型，8 项被标记 ignored 的实验不计为通过，长期设备表现不在隔离回归结论内。
+代码路径优化不等于已经测得整机性能提升；本次没有调用真实模型，8 项被标记 ignored 的实验不计为通过，长期设备表现不在隔离回归结论内。
+
+## 桌面构建与安装
+
+- 实现提交 `ff4917b05a70061071b5220d715bd632dd377f6c` 已推送 `origin/main`，随后完成构建与安装。
+- `AICS_BUNDLED_UI_VERIFIED=1 npm run wf -- desktop:package-local` 成功，保留已经启用的打包 UI。Web/desktop UI、Rust release、Tauri release 与 NSIS 均完成，包内 Rust EXE 在隔离目录真实启动验证通过。日志为同目录 `package.log`；构建绑定为 `runtime/delivery-evidence/desktop-build-binding.json`。
+- 使用 `deploy-desktop.bat -UseInstaller -QuietInstall -SkipBuild -InstallDir D:\AI-CG-Studio -InstallerPath <本次绑定安装包>` 完整安装 1.7.2，UAC 已确认，退出码 0；旧宿主/网关受控退出及 workspace 锁释放均通过。
+- 安装后宿主、Rust EXE 与两份原生 DLL 匹配候选；自动启动及独立维护状态复核均为 `ready`，宿主 PID 19832。2026-09-29 02:12（Asia/Shanghai）复核记录为同目录 `installation.json`，部署日志为 `runtime/desktop-deploy-last.log` 与同目录 `install.log`。
+
+| 构建标识 | SHA-256 |
+| --- | --- |
+| 绑定源码 | `673b0bb46c8454f11e41ec19ee86898782cec1f38f8f6c3027ba304d59afd12d` |
+| 绑定产物集合 | `613f97654222097fda263ee828c2755c6889c0a9400c05023401ce6fb103a913` |
+| 已安装 Rust EXE | `ddd74532e85cbe867a64a301135009f3441eca998b38a21a0468a02001b4ee47` |
+| 本机 NSIS 包 | `005af76ddda6c6cc3b362fdc15c856723bfeb73e3a5ccb23fd3fc6052331644d` |
+
+安装包为本机未签名、无压缩构建（580,478,355 字节），未公开发布。`releaseReady=false` 的原生发行材料边界保持原样。状态复核证明宿主及自有网关就绪，不替代窗口视觉、多屏、真实模型或长期负载验收。

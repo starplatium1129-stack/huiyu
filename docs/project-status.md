@@ -1,17 +1,17 @@
 # 项目状态
 
-> 核对日期：2026-09-28；仓库版本 1.7.2。本轮更新桌面布局优化后的完整安装状态，数据规模仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
+> 核对日期：2026-09-29；仓库版本 1.7.2。本轮更新 Rust 后端优化后的完整安装状态，数据规模仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前 main | Rust 迁移、桌面布局统一、维护改进及角色主题按需加载已合并；参考画册已修复横图展示与工具栏遮挡，`a23ef351` 进一步对齐内图与外框圆角 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[桌面体验实施](audits/2026-09-28/desktop-experience-implementation.md)、[画册画幅与预览](audits/2026-09-28/showcase-image-layout.md) |
-| 最近本机安装 | `main@a23ef351` 的 1.7.2 已完整安装并启动；宿主、所属 Rust 子进程、原生 DLL、认证健康状态及现有 workspace owner 已核对 | [本次圆角跟进与安装](audits/2026-09-28/showcase-image-layout.md#圆角细节跟进)；此前[主题加载版安装](audits/2026-09-28/desktop-installation.md)、[Rust 首次安装](evidence/rust-installation-2026-09-28.json)与[内存/设备测量](evidence/memory-optimization-2026-09-27.json)仍绑定各自构建 |
+| 当前 main | Rust 后端已优化无变化任务写入、任务分页/增量读取、恢复筛选、媒体冷校验与健康快照；此前桌面和画册改进保留 | [后端优化与验证](audits/2026-09-29/backend-optimization.md)、[迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[画册画幅与预览](audits/2026-09-28/showcase-image-layout.md) |
+| 最近本机安装 | `main@ff4917b0` 的 1.7.2 已完整安装并启动；宿主、Rust EXE 与原生 DLL 匹配候选，受控退出/锁释放通过，独立认证状态复核为 ready | [本次后端优化安装](audits/2026-09-29/backend-optimization.md#桌面构建与安装)；此前[圆角版安装](audits/2026-09-28/showcase-image-layout.md#圆角细节跟进)、[Rust 首次安装](evidence/rust-installation-2026-09-28.json)与[内存/设备测量](evidence/memory-optimization-2026-09-27.json)仍绑定各自构建 |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
-源码、构建、安装和设备验收分别核对。本次经用户授权使用 `deploy-desktop.bat` 完整安装到 `D:/AI-CG-Studio`；UAC 已由用户确认，未主动调用真实模型。当前安装已包含画册横竖图排布、预览留边与工具栏避让；完整安装退出码为 0，安装后再次验证状态为 ready。本机 Windows 主屏为 2880×1800 / 200%，已另验 1440×900 CSS 有效空间；原生窗口外观、多屏和真实模型仍单列验收，后续代码变化不自动获得本次通过结论。
+源码、构建、安装和设备验收分别核对。本次经用户授权使用 `deploy-desktop.bat` 完整安装到 `D:/AI-CG-Studio`；UAC 已确认，未主动调用真实模型。117 项 Rust 测试与 22 项前端任务相关测试通过；完整安装退出码为 0，安装后再次验证状态为 ready。此前记录的本机 Windows 主屏 2880×1800 / 200% 与 1440×900 CSS 视觉验收仍绑定原记录，本次未重做窗口视觉、多屏或真实模型验收。
 
 本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据。Windows/Linux release、Linux Rust 检查、7 项工作区一致性、图库/控制台双主题及默认 Rust 测试栈的五条主流程通过；本机安装与启动核验已完成。旧 Node 单元/契约仅证明旧实现；9 月 28 日后续修复已区分组件 title 参数与原生提示，并将原生 title 基线收紧到 0，当前源码的 CI 静态检查通过，详情见 [CI 修复记录](../plans/013-node-to-rust-migration.md#ci-修复与既有-e2e-收口2026-09-28)。这不替代远端流水线、原生 runner 或已安装版本身份。真实模型、完整设备/资料验收及原生发行材料仍未完成，`releaseReady=false`。旧安装遗留 Node 程序文件保留，但当前宿主只启动 Rust 网关。
 
