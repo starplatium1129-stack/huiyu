@@ -6,8 +6,8 @@
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前 main | Rust 迁移、桌面布局统一、维护改进及角色主题按需加载已合并；`594fd644` 修复参考画册的横图展示与预览工具栏遮挡 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[桌面体验实施](audits/2026-09-28/desktop-experience-implementation.md)、[画册画幅与预览](audits/2026-09-28/showcase-image-layout.md) |
-| 最近本机安装 | `main@594fd644` 的 1.7.2 已完整安装并启动；宿主、所属 Rust 子进程、原生 DLL、认证健康状态及现有 workspace owner 已核对 | [本次安装记录](audits/2026-09-28/showcase-image-layout.md#桌面同步)；此前[主题加载版安装](audits/2026-09-28/desktop-installation.md)、[Rust 首次安装](evidence/rust-installation-2026-09-28.json)与[内存/设备测量](evidence/memory-optimization-2026-09-27.json)仍绑定各自构建 |
+| 当前 main | Rust 迁移、桌面布局统一、维护改进及角色主题按需加载已合并；参考画册已修复横图展示与工具栏遮挡，`a23ef351` 进一步对齐内图与外框圆角 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[桌面体验实施](audits/2026-09-28/desktop-experience-implementation.md)、[画册画幅与预览](audits/2026-09-28/showcase-image-layout.md) |
+| 最近本机安装 | `main@a23ef351` 的 1.7.2 已完整安装并启动；宿主、所属 Rust 子进程、原生 DLL、认证健康状态及现有 workspace owner 已核对 | [本次圆角跟进与安装](audits/2026-09-28/showcase-image-layout.md#圆角细节跟进)；此前[主题加载版安装](audits/2026-09-28/desktop-installation.md)、[Rust 首次安装](evidence/rust-installation-2026-09-28.json)与[内存/设备测量](evidence/memory-optimization-2026-09-27.json)仍绑定各自构建 |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
