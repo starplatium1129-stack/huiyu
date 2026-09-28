@@ -508,7 +508,7 @@ describe('Web artwork reads and legacy imports', () => {
     expect(local.removeItem).toHaveBeenCalledWith(KV.history)
     kv.adapter.set.mockClear()
     kv.adapter.get.mockRejectedValueOnce(new Error('offline'))
-    expect(await repo.readPreferenceHistory()).toEqual([{ id: 'legacy', prompt: 'old work' }])
+    expect(await repo.readPreferenceHistory()).toEqual([{ id: 'legacy', scene: undefined, character: undefined, favorite: undefined, timestamp: undefined }])
     expect(kv.adapter.set).not.toHaveBeenCalled()
   })
 })

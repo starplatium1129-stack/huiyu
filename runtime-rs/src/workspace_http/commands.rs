@@ -183,6 +183,9 @@ pub(super) fn command(
         }
         ("GET", ["artworks"]) => {
             let mut command = json!({"kind": "listArtworks"});
+            if let Some(projection) = query.get("projection") {
+                command["projection"] = json!(projection);
+            }
             if query.contains_key("limit") {
                 command["limit"] = query_int(query, "limit", 1, 1)?;
             }
@@ -298,6 +301,21 @@ pub(super) fn command(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn preference_projection_is_forwarded_as_a_read_only_list() {
+        let query = Query::from([("projection".into(), "preference".into())]);
+        let result = command(
+            &Method::GET,
+            &segments("artworks").unwrap(),
+            &query,
+            &Value::Null,
+        )
+        .unwrap();
+        assert_eq!(
+            result,
+            json!({"kind":"listArtworks","projection":"preference"})
+        );
+    }
     #[test]
     fn routes_preserve_numeric_ids_and_do_not_execute_supplied_commands() {
         let query = Query::from([("idType".into(), "number".into())]);

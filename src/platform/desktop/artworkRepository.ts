@@ -4,6 +4,7 @@ import { createDesktopArtworkMedia } from './artworkMedia.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
+import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
@@ -19,12 +20,13 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   const { forgetThumbnail, ...media } = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
-  async function list(includeDeleted = false): Promise<Row[]> {
+  let loadedPreferences: unknown[] | undefined
+  async function list(includeDeleted = false, projection?: 'preference'): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
     let revision: number | undefined
     do {
-      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, includeDeleted, ...(cursor ? { cursor } : {}) })
+      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, includeDeleted, ...(projection ? { projection } : {}), ...(cursor ? { cursor } : {}) })
       if (revision !== undefined && revision !== page.revision) throw new Error('作品库在读取期间发生变更，请重新读取')
       revision = page.revision; rows.push(...page.items); cursor = page.nextCursor
     } while (cursor)
@@ -35,6 +37,11 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     loadedHistory = parseArtworkRecords((await list()).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
     return structuredClone(loadedHistory)
+  }
+  async function readPreferenceHistory() {
+    if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
+    loadedPreferences = preferenceHistoryRows((await list(false, 'preference')).map(row => row.body))
+    return structuredClone(loadedPreferences)
   }
   async function readProjects() {
     if (getDesktopRuntime().connection !== 'ready' && projectsLoaded) return structuredClone(loadedProjects)
@@ -72,7 +79,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
   const repository: ArtworkRepository = {
-    readHistory, readProjects, readRecentHistory: readHistory, readPreferenceHistory: readHistory,
+    readHistory, readProjects, readRecentHistory: readHistory, readPreferenceHistory,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {

@@ -36,7 +36,7 @@ export interface ArtworkRepository {
   readProjects(): Promise<ArtworkProjectRecord[]>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(): Promise<ArtworkRecord[]>
-  /** Legacy preference scoring also accepts history rows that predate artwork IDs. */
+  /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
   getImage(id: string): Promise<Blob | null>
   putImage(blob: Blob): Promise<string>

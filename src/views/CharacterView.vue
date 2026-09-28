@@ -462,8 +462,8 @@ watch(() => current.value?.id, id => {
   if (!id) return
   void ensureCharacterReferencesLoaded(id).catch(() => undefined)
   // The bookshelf needs only the character shell; load scene details on entry.
-  void sceneStore.load().then(() => {
-    scenes.value = parseCharacterScenes(sceneStore.scenes)
+  void Promise.all([sceneStore.loadBrowserScenes('all'), sceneStore.loadBlueprintCatalog()]).then(([catalog]) => {
+    scenes.value = parseCharacterScenes(catalog.scenes)
   }).catch(e => console.warn('character scene data load failed', e))
 })
 onMounted(() => {

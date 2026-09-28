@@ -126,3 +126,12 @@ it('forgets released media and cannot repopulate its cache from an older read', 
   mocks.request.mockResolvedValue(null)
   expect(await repository.getThumbnail('image')).toBeNull()
 })
+it('reads paged recommendation fields without loading the full library cache', async () => {
+  mocks.request.mockImplementation(async command => ({items:[{id:command.cursor?'b':'a',body:{id:command.cursor?'b':'a',scene:'sc001',favorite:true},revision:3,deletedAt:null}],nextCursor:command.cursor?null:'next',revision:3}))
+  const repository=createDesktopArtworkRepository();const rows=await repository.readPreferenceHistory()
+  expect(rows).toHaveLength(2)
+  expect(mocks.request.mock.calls.map(([c])=>c.projection)).toEqual(['preference','preference'])
+  expect(mocks.request.mock.calls[1][0].cursor).toBe('next')
+  mocks.state.connection='unavailable';(rows[0] as {scene:string}).scene='changed'
+  expect((await repository.readPreferenceHistory())[0]).toMatchObject({scene:'sc001'})
+})

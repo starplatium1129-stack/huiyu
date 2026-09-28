@@ -43,6 +43,7 @@ export interface TagMeta {
   cat: string
   [key: string]: unknown
 }
+export type SceneBrowseTarget = 'core' | 'all' | 'nene' | 'natsume' | 'triad'
 
 /**
  * 静态数据的缓存版本号。
@@ -78,11 +79,13 @@ async function fetchJson<T>(file: string, version: number): Promise<T> {
 
 const CORE_FILE = 'scenes-core.json'
 const SHARD_FILES = {
+  core: CORE_FILE,
   nene: 'scenes-nene.json',
   natsume: 'scenes-natsume.json',
   shared: 'scenes-shared.json',
 } as const
-type ShardChar = keyof typeof SHARD_FILES
+type SceneShard = keyof typeof SHARD_FILES
+type ShardChar = Exclude<SceneShard, 'core'>
 
 function sceneNumber(scene: Scene): number {
   const match = /^sc(\d+)$/.exec(String(scene.id || ''))
@@ -260,11 +263,10 @@ export const useSceneStore = defineStore('scenes', () => {
 
   interface ShardCacheEntry { epoch: number; list: Scene[] }
   interface ShardInflightEntry { epoch: number; promise: Promise<Scene[]> }
-  let shardCache: Partial<Record<ShardChar, ShardCacheEntry>> = {}
-  let coreLoaded = false
-  const shardInflight = new Map<ShardChar, ShardInflightEntry>()
+  let shardCache: Partial<Record<SceneShard, ShardCacheEntry>> = {}
+  const shardInflight = new Map<SceneShard, ShardInflightEntry>()
 
-  function loadShard(char: ShardChar, epoch = loadEpoch, requestVersion = version.value): Promise<Scene[]> {
+  function loadShard(char: SceneShard, epoch = loadEpoch, requestVersion = version.value): Promise<Scene[]> {
     const cached = shardCache[char]
     if (cached?.epoch === epoch) return Promise.resolve(cached.list)
     const existing = shardInflight.get(char)
@@ -275,7 +277,7 @@ export const useSceneStore = defineStore('scenes', () => {
         const parsed = requireDataRecords(list, SHARD_FILES[char]) as Scene[]
         if (epoch === loadEpoch) {
           shardCache[char] = { epoch, list: parsed }
-          loadedShards.value = new Set([...loadedShards.value, char])
+          if (char !== 'core') loadedShards.value = new Set([...loadedShards.value, char])
         }
         return parsed
       })
@@ -336,7 +338,6 @@ export const useSceneStore = defineStore('scenes', () => {
     loadEpoch += 1
     version.value += 1
     loaded.value = false
-    coreLoaded = false
     shardCache = {}
     loadedShards.value = new Set()
     metaOk.clear()
@@ -378,11 +379,9 @@ export const useSceneStore = defineStore('scenes', () => {
       await loadMeta(false)
       const [shared, core] = await Promise.all([
         loadShard('shared', epoch, requestVersion),
-        fetchJson<Scene[]>(CORE_FILE, requestVersion),
+        loadShard('core', epoch, requestVersion),
       ])
-      const list = mergeScenes(shared, Array.isArray(core) ? core : [])
-      if (epoch === loadEpoch) coreLoaded = true
-      return list
+      return mergeScenes(shared, core)
     })
   }
 
@@ -403,8 +402,26 @@ export const useSceneStore = defineStore('scenes', () => {
   }
 
   function ensureCore(): Promise<void> {
-    if (loaded.value || coreLoaded) return Promise.resolve()
+    if (loaded.value) return Promise.resolve()
+    // A browser may have warmed the shards without the studio metadata.
+    // loadCore reuses those shards while completing the original studio contract.
     return loadCore()
+  }
+
+  /** Browsing needs scene shards and curation, not the studio's model/tag/blueprint catalogs. */
+  async function loadBrowserScenes(target: SceneBrowseTarget): Promise<{ scenes: Scene[]; curation: CurationData }> {
+    const epoch = loadEpoch, requestVersion = version.value
+    const files: SceneShard[] = target === 'all' ? ['shared', 'nene', 'natsume']
+      : target === 'core' ? ['shared', 'core'] : ['shared', resolveShard(target)]
+    const [metadata, lists] = await Promise.all([
+      loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, epoch, requestVersion, false),
+      Promise.all([...new Set(files)].map(file => loadShard(file, epoch, requestVersion))),
+    ])
+    if (epoch !== loadEpoch) throw new Error('场景目录已更新，请重新读取。')
+    if (!metadata.ok) throw metadata.error
+    // Browser filters must not replace the studio's active scene list, nor edit
+    // cached JSON through a shared mutable reference.
+    return { scenes: structuredClone(mergeScenes(...lists)), curation: structuredClone(metaOk.get('curation.json')!.data as CurationData) }
   }
 
   /**
@@ -441,6 +458,14 @@ export const useSceneStore = defineStore('scenes', () => {
       inflightByKey.delete('character-shell')
     }
     return loadMeta(force, false, new Set(['characters.json', 'popular-characters.json']))
+  }
+
+  /** Blueprint browsers need metadata, not character scene shards or studio options. */
+  async function loadBlueprintCatalog(): Promise<void> {
+    await Promise.all([
+      loadMeta(false, false, new Set(['popular-characters.json', 'scene-blueprints.json'])),
+      loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, loadEpoch, version.value, false),
+    ])
   }
 
   /** 场景维护只需要角色元数据；不要为一个编辑器首屏拉取三份场景分片。 */
@@ -480,6 +505,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
   }
 })

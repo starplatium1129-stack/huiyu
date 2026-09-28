@@ -1,11 +1,11 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { artworkRepository } from '@/storage/artworkRepository';
-import { useSceneStore,type CurationData } from '@/stores/sceneStore';
+import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
-import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,sceneUsageScore,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,personalScore as uxPersonalScore,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
+import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
 import {
     DEFAULT_RAILS,
@@ -19,6 +19,7 @@ import {
     themeDefinition,
     type ExplorerScene,
 } from './sceneExplorerPresentation';
+import { orderExplorerScenes } from './sceneExplorerOrdering';
 import { watchDebounced } from '@vueuse/core';
 import { computed,nextTick,onMounted,onUnmounted,ref,watch } from 'vue';
 import type { LocationQueryRaw } from 'vue-router';
@@ -112,7 +113,9 @@ export function useSceneExplorerWorkspace() {
         });
     }
     watch(debouncedQuery, holdFilterAnchor);
-    onUnmounted(clearFilterAnchor);
+    let loadRevision = 0;
+    let flashTimer: ReturnType<typeof setTimeout> | undefined;
+    onUnmounted(() => { dataReady = false; loadRevision++; clearTimeout(flashTimer); clearFilterAnchor(); });
     /**
      * 搜索词进 URL（2026-08-30 UX 审计 P2）：刷新或从别处返回时不至于白搜一次。
      *
@@ -198,20 +201,6 @@ export function useSceneExplorerWorkspace() {
     });
     function tier(s: ExplorerScene) { return uxTier(s, curation.value); }
     function isCore(s: ExplorerScene) { return isPersonaCore(s, curation.value); }
-    function sigIds(): string[] { return curation.value.signatureSceneIds || []; }
-    function curIds(): string[] { return curation.value.curatedSceneIds || []; }
-    function coreIds(): string[] { return curation.value.personaCoreSceneIds || curation.value.signatureSceneIds || []; }
-    function cScore(s: ExplorerScene) {
-        if (coreIds().includes(s.id))
-            return 30000 - coreIds().indexOf(s.id);
-        if (sigIds().includes(s.id))
-            return 20000 - sigIds().indexOf(s.id);
-        const f = curIds().indexOf(s.id);
-        if (f >= 0)
-            return 10000 - f;
-        const c = [s.story, s.emotion, s.camera, s.lighting, s.location].filter(Boolean).length;
-        return c * 100 + Math.min((s.story || '').length, 500) + (s.rating === 'All' ? 20 : 0);
-    }
     function charName(s: ExplorerScene) {
         const c = s.char || '';
         return c === 'nene' || c === 'ayachi_nene' ? '宁宁' : c === 'natsume' || c === 'shiki_natsume' ? '夏目' : c === 'triad' ? '双人' : c;
@@ -236,9 +225,9 @@ export function useSceneExplorerWorkspace() {
         const days = Math.max(0, Math.floor((Date.now() - timestamp) / 86400000));
         return days === 0 ? '今天' : days === 1 ? '昨天' : days < 30 ? `${days} 天前` : '较早';
     }
-    function themeCount(id: string) {
-        return scenes.value.filter(s => (showMature.value || !s.mature) && !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length;
-    }
+    const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
+        scenes.value.filter(s => (showMature.value || !s.mature) && !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
+    function themeCount(id: string) { return themeCounts.value[id] || 0; }
     const filtered = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
@@ -282,30 +271,8 @@ export function useSceneExplorerWorkspace() {
                 relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)]));
             }
         }
-        return r.sort((a, b) => {
-            if (q) {
-                const rel = (relevance.get(b.id) ?? 0) - (relevance.get(a.id) ?? 0);
-                if (rel)
-                    return rel;
-            }
-            if (sortBy.value === 'newest')
-                return String(b.id).localeCompare(String(a.id), undefined, { numeric: true });
-            if (sortBy.value === 'title')
-                return String(a.title).localeCompare(String(b.title), 'zh-CN');
-            if (sortBy.value === 'used')
-                return sceneUsageScore(usageFor(b)) - sceneUsageScore(usageFor(a));
-            if (sortBy.value === 'favorite') {
-                const favoriteScore = (s: ExplorerScene) => (favs.value.has(s.id) ? 100000 : 0)
-                    + uxPersonalScore(s, profile.value) * 500
-                    + sceneUsageScore(usageFor(s));
-                return favoriteScore(b) - favoriteScore(a);
-            }
-            if (sortBy.value === 'smart') {
-                return (sceneUsageScore(usageFor(b)) * 400 + uxPersonalScore(b, profile.value) * 500 + cScore(b))
-                    - (sceneUsageScore(usageFor(a)) * 400 + uxPersonalScore(a, profile.value) * 500 + cScore(a));
-            }
-            return cScore(b) - cScore(a);
-        });
+        return orderExplorerScenes(r, { mode: sortBy.value, curation: curation.value,
+            profile: profile.value, usage: localUsage.value, favorites: favs.value, relevance });
     });
     const paged = computed(() => filtered.value.slice(0, visible.value));
     function escapeHtml(value: unknown): string {
@@ -393,78 +360,58 @@ export function useSceneExplorerWorkspace() {
         sortBy.value = 'smart';
         showHidden.value = false;
     }
-    async function init() {
-        dataReady = false;
+    const browseTarget = computed<SceneBrowseTarget>(() => fChar.value !== 'all'
+        ? fChar.value as SceneBrowseTarget
+        : debouncedQuery.value.trim() || fTier.value !== 'core' ? 'all' : 'core');
+    let preferenceLoad: Promise<PreferenceProfile | null> | undefined;
+    async function refreshScenes(target: SceneBrowseTarget): Promise<boolean> {
+        const revision = ++loadRevision;
         loading.value = true;
         loadError.value = '';
+        // Start independent storage and catalog reads together; reuse preferences
+        // across filters, but refresh them on an explicit reload or new page visit.
+        preferenceLoad ??= artworkRepository.readPreferenceHistory().then(buildPreferenceProfile).catch(() => null);
         try {
-            // 场景库按需拉取：默认只载入"人设核心"子集（index + shared + core），
-            // 切到具体角色时只拉对应分片，切到全库/精选等才拉完整三片。
-            const charParam = typeof route.query.character === 'string' ? route.query.character : null;
-            if (['nene', 'natsume', 'triad'].includes(charParam || ''))
-                fChar.value = charParam!;
-            const personalDefault = Object.keys(localUsage.value).length || favs.value.size;
-            if (charParam && ['nene', 'natsume', 'triad'].includes(charParam)) {
-                await sceneStore.loadCharacter(charParam);
-            }
-            else if (personalDefault) {
-                await sceneStore.load();
-            }
-            else {
-                await sceneStore.ensureCore();
-            }
-            if (sceneStore.error)
-                throw new Error(sceneStore.error);
-            scenes.value = sceneStore.scenes as ExplorerScene[];
-            curation.value = sceneStore.curation || curation.value;
+            const [catalog, nextProfile] = await Promise.all([sceneStore.loadBrowserScenes(target), preferenceLoad]);
+            if (revision !== loadRevision) return false;
+            scenes.value = catalog.scenes as ExplorerScene[];
+            curation.value = catalog.curation as ExplorerCuration;
+            if (nextProfile) profile.value = nextProfile;
+            return true;
+        } catch (e) {
+            if (revision === loadRevision) loadError.value = e instanceof Error ? e.message : String(e);
+            return false;
+        } finally {
+            if (revision === loadRevision) loading.value = false;
         }
-        catch (e) {
-            loadError.value = e instanceof Error ? e.message : String(e);
-        }
-        try {
-            profile.value = buildPreferenceProfile(await artworkRepository.readPreferenceHistory());
-        }
-        catch { }
-        loading.value = false;
-        const focusId = typeof route.query.scene === 'string' ? route.query.scene : null;
+    }
+    async function init() {
+        const openingRevision = ++loadRevision;
+        dataReady = false;
+        preferenceLoad = undefined;
+        const charParam = typeof route.query.character === 'string' ? route.query.character : null;
+        if (['nene', 'natsume', 'triad'].includes(charParam || '')) fChar.value = charParam!;
+        // Flush route-derived filters before enabling the user-intent watcher.
+        await nextTick();
+        if (openingRevision !== loadRevision) return;
         dataReady = true;
-        if (focusId) {
+        const published = await refreshScenes(browseTarget.value);
+        const revision = loadRevision;
+        const focusId = typeof route.query.scene === 'string' ? route.query.scene : null;
+        if (published && focusId) {
             await nextTick();
+            if (!dataReady || revision !== loadRevision) return;
             const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement;
             if (el) {
                 el.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
                 flashId.value = focusId;
-                setTimeout(() => flashId.value = '', 2000);
+                clearTimeout(flashTimer);
+                flashTimer = setTimeout(() => flashId.value = '', 2000);
             }
         }
     }
-    watch([fChar, fTier], async () => {
-        if (!dataReady)
-            return;
-        loading.value = true;
-        try {
-            if (fChar.value !== 'all') {
-                await sceneStore.ensureCharacter(fChar.value);
-            }
-            else if (fTier.value === 'core') {
-                await sceneStore.ensureCore();
-            }
-            else {
-                await sceneStore.load();
-            }
-            if (sceneStore.error)
-                throw new Error(sceneStore.error);
-            scenes.value = sceneStore.scenes as ExplorerScene[];
-            curation.value = sceneStore.curation || curation.value;
-            loadError.value = '';
-        }
-        catch (e) {
-            loadError.value = e instanceof Error ? e.message : String(e);
-        }
-        finally {
-            loading.value = false;
-        }
-    });
+    // Query changes only fetch when crossing core/full coverage, never per key.
+    watch(browseTarget, target => { if (dataReady) void refreshScenes(target); });
     onMounted(() => { init(); });
     return {
 drawerEl,

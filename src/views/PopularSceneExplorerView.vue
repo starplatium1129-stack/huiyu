@@ -209,9 +209,7 @@ async function init() {
   loading.value = true
   loadError.value = ''
   try {
-    // 元数据（含热门角色 + 场景蓝图）随 core 加载一起就位，不拉全量宁宁/夏目分片。
-    await sceneStore.ensureCore()
-    if (sceneStore.error) throw new Error(sceneStore.error)
+    await sceneStore.loadBlueprintCatalog()
     const charParam = typeof route.query.character === 'string' ? route.query.character : ''
     const fallback = characters.value[0]?.id ?? ''
     selectedId.value = characters.value.some(c => c.id === charParam) ? charParam : fallback

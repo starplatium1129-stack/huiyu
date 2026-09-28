@@ -3,10 +3,8 @@ import type { Router } from 'vue-router'
 import { DATA_VERSION } from 'virtual:data-version'
 
 const CORE_RESOURCE_ROUTES = new Set(['/scene-explorer', '/popular-scenes'])
-const CORE_RESOURCE_FILES = [
-  'curation.json', 'characters.json', 'popular-characters.json', 'scene-blueprints.json',
-  'scenes-core.json', 'scenes-shared.json',
-]
+const CORE_RESOURCE_FILES = ['curation.json', 'scenes-core.json', 'scenes-shared.json']
+const BLUEPRINT_RESOURCE_FILES = ['curation.json', 'popular-characters.json', 'scene-blueprints.json']
 const SHOWCASE_THUMB_LIMIT = 4
 let activeResourcePrefetch: { path: string; controller: AbortController } | null = null
 
@@ -20,8 +18,9 @@ function safeShowcaseUrl(value: unknown): string | null {
   } catch { return null }
 }
 
-async function prefetchCoreResources(signal: AbortSignal): Promise<void> {
-  await Promise.all(CORE_RESOURCE_FILES.map(file =>
+async function prefetchCoreResources(signal: AbortSignal, path: string): Promise<void> {
+  const files = path === '/popular-scenes' ? BLUEPRINT_RESOURCE_FILES : CORE_RESOURCE_FILES
+  await Promise.all(files.map(file =>
     runtimeFetch(`/data/${file}?v=${DATA_VERSION}`, { cache: 'force-cache', credentials: 'same-origin', signal })
       .then(response => { if (!response.ok) throw new Error(`${file} HTTP ${response.status}`) }),
   ))
@@ -52,7 +51,7 @@ export function prefetchRouteResources(path: string): void {
   activeResourcePrefetch = { path: routePath, controller }
   const task = routePath === '/showcase'
     ? prefetchShowcaseResources(controller.signal)
-    : prefetchCoreResources(controller.signal)
+    : prefetchCoreResources(controller.signal, routePath)
   void task.catch(error => {
     if (!controller.signal.aborted) console.warn(`[route-prefetch] ${routePath}`, error)
   }).finally(() => {

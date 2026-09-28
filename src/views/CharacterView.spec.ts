@@ -4,7 +4,7 @@ import CharacterView from './CharacterView.vue'
 
 vi.mock('vue-router', () => ({ useRoute: () => ({ query: { character: 'nene' } }), useRouter: () => ({ replace: vi.fn(), push: vi.fn() }) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
-vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, loadCharacterShell: async () => {}, characters: [], scenes: [], curation: {} }) }))
+vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ loadBrowserScenes: async () => ({ scenes: [], curation: {} }), loadBlueprintCatalog: async () => {}, loadCharacterShell: async () => {}, characters: [], scenes: [], curation: {} }) }))
 vi.mock('@/utils/characterProfiles', () => ({
   parseCharacterProfiles: () => [{ id: 'nene', name: '宁宁', source: '', tags: [], personality: [], likes: [] }],
   parseCharacterScenes: () => [], popularPortraitSrc: () => '', isPopularPortraitPending: () => false,

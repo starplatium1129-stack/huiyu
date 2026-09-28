@@ -377,7 +377,7 @@ async function loadManifest() {
     // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
     const [manifest] = await Promise.all([
       runtimeFetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
-      sceneStore.load().catch(() => {})
+      sceneStore.loadBlueprintCatalog().catch(() => {})
     ])
     if (unmounted || revision !== manifestRevision) return
     manifestLoading.value = false

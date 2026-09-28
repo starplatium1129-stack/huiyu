@@ -55,6 +55,15 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             ))
         }
         "listArtworks" => {
+            // Project in SQLite before deserializing large prompt/legacy image
+            // bodies. Pagination, revisions and deletion policy stay identical.
+            let body = match command.get("projection") {
+                None | Some(Value::Null) => "body",
+                Some(Value::String(value)) if value == "preference" => {
+                    "json_object('id',json_extract(body,'$.id'),'scene',json_extract(body,'$.scene'),'character',json_extract(body,'$.character'),'favorite',body -> '$.favorite','timestamp',json_extract(body,'$.timestamp'))"
+                }
+                _ => return Err(invalid("Unknown artwork projection")),
+            };
             let limit = command
                 .get("limit")
                 .map(Value::as_i64)
@@ -62,7 +71,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 .filter(|v| (1..=200).contains(v))
                 .ok_or_else(|| invalid("List limit must be 1–200"))?;
             let sql = format!(
-                "SELECT id_json,body,revision,deleted_at,id_key FROM artworks WHERE id_key>? {} ORDER BY id_key LIMIT ?",
+                "SELECT id_json,{body},revision,deleted_at,id_key FROM artworks WHERE id_key>? {} ORDER BY id_key LIMIT ?",
                 if command["includeDeleted"] == true {
                     ""
                 } else {

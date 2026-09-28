@@ -117,6 +117,8 @@
 
 ## 按需查阅
 
+- [页面数据链路性能根因与验证](audits/2026-09-28/ui-data-performance.md)：浏览目录分离、推荐字段投影、排序与加载竞态；含冷启动对照和资源检查边界。[机器可读证据](evidence/ui-data-performance-2026-09-28.json)。
+
 - [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；已按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
 - [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
 - [全功能开箱与硬件配置、模型部署指南](guides/setup-and-models.md)：各硬件档位运行能力、公共开源底座直链、自训专属 LoRA 说明与环境体检。

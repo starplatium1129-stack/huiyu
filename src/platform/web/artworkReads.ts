@@ -1,4 +1,5 @@
 import { kvInit } from '../../composables/useKVStore.ts'
+import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { parseArtworkRecords } from '../../types/artwork.ts'
 import type { ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, record } from './artworkStorage.ts'
@@ -78,10 +79,10 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     try {
       if (!dependencies.kv) await kvInit()
       const history = await kv.get(ARTWORK_HISTORY_KEY)
-      if (Array.isArray(history)) return structuredClone(history)
+      if (Array.isArray(history)) return preferenceHistoryRows(history)
     } catch { /* This legacy read-only recommendation path permits a local fallback. */ }
     const fallback = readLocal(ARTWORK_HISTORY_KEY)
-    return structuredClone(Array.isArray(fallback) ? fallback : [])
+    return preferenceHistoryRows(fallback)
   }
 
   return { readHistory, readProjects, readLibrarySnapshot, readRecentHistory, readPreferenceHistory }

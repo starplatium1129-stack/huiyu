@@ -1,6 +1,23 @@
 import { expect, it, vi } from 'vitest'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { createRoutePrefetcher } from './prefetch'
+import { createRoutePrefetcher, prefetchRouteResources } from './prefetch'
+
+it('warms only the data owned by the selected browsing route', async () => {
+  const calls: string[] = []
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+    calls.push(new URL(url, location.origin).pathname.split('/').pop()!)
+    return { ok: true }
+  }))
+  try {
+    prefetchRouteResources('/scene-explorer')
+    await vi.waitFor(() => expect(calls).toHaveLength(3))
+    expect(calls.sort()).toEqual(['curation.json', 'scenes-core.json', 'scenes-shared.json'])
+    calls.length = 0
+    prefetchRouteResources('/popular-scenes')
+    await vi.waitFor(() => expect(calls).toHaveLength(3))
+    expect(calls.sort()).toEqual(['curation.json', 'popular-characters.json', 'scene-blueprints.json'])
+  } finally { vi.unstubAllGlobals() }
+})
 
 it('deduplicates concurrent intent across query strings and shared layout imports', async () => {
   const layout = vi.fn(async () => ({})), page = vi.fn(async () => ({}))

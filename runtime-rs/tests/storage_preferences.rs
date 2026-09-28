@@ -1,0 +1,69 @@
+use base64::{Engine, engine::general_purpose::STANDARD};
+use huiyu_runtime::storage::Storage;
+use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
+async fn read(storage: &Storage, command: Value) -> Value {
+    storage
+        .request(command, "desktop:preference-test")
+        .await
+        .unwrap()
+}
+#[tokio::test]
+async fn preference_projection_preserves_paging_types_and_revision_without_large_fields() {
+    let temp = tempfile::tempdir().unwrap();
+    let storage = Storage::open(
+        temp.path().join("workspace"),
+        "preference-test".into(),
+        true,
+    )
+    .await
+    .unwrap();
+    let bytes = STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap();
+    for id in 1..=3 {
+        let operation = format!("add-{id}");
+        read(&storage, json!({"kind":"prepareSave","operationId":operation,"artwork":{
+            "id":id,"scene":"sc001","character":"nene","favorite":id==1,"timestamp":100+id,"prompt":"x".repeat(256*1024)
+        },"media":{"alias":format!("image-{id}"),"sha256":hex::encode(Sha256::digest(&bytes)),"bytes":bytes.len(),"mime":"image/png"}})).await;
+        read(&storage, json!({"kind":"uploadChunk","operationId":operation,"offset":0,"data":STANDARD.encode(&bytes)})).await;
+        read(
+            &storage,
+            json!({"kind":"commitSave","operationId":operation}),
+        )
+        .await;
+    }
+    let row = read(&storage, json!({"kind":"getArtwork","id":3})).await;
+    read(&storage, json!({"kind":"softDeleteArtwork","operationId":"delete-3","id":3,"expectedRevision":row["revision"]})).await;
+    let full = read(&storage, json!({"kind":"listArtworks"})).await;
+    let full_page = read(&storage, json!({"kind":"listArtworks","limit":1})).await;
+    let first = read(
+        &storage,
+        json!({"kind":"listArtworks","projection":"preference","limit":1}),
+    )
+    .await;
+    let next = read(&storage, json!({"kind":"listArtworks","projection":"preference","limit":1,"cursor":first["nextCursor"]})).await;
+    assert_eq!(
+        first["items"][0]["body"],
+        json!({"id":1,"scene":"sc001","character":"nene","favorite":true,"timestamp":101})
+    );
+    assert_eq!(next["items"][0]["body"]["favorite"], false);
+    assert!(next["nextCursor"].is_null());
+    assert_eq!(first["revision"], full["revision"]);
+    assert_eq!(next["revision"], full["revision"]);
+    assert!(serde_json::to_vec(&first).unwrap().len() < 1024);
+    assert!(serde_json::to_vec(&full).unwrap().len() > 500_000);
+    assert!(
+        storage
+            .request(
+                json!({"kind":"listArtworks","projection":"unknown"}),
+                "desktop:preference-test"
+            )
+            .await
+            .is_err()
+    );
+    println!(
+        "preference-projection fullBytes={} pageBytes={}",
+        serde_json::to_vec(&full_page).unwrap().len(),
+        serde_json::to_vec(&first).unwrap().len()
+    );
+    storage.close().await.unwrap();
+}
