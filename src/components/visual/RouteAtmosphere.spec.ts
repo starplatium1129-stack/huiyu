@@ -1,23 +1,15 @@
-import { describe, expect, it, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RouteAtmosphere from './RouteAtmosphere.vue'
 
-describe('RouteAtmosphere decoration layer (009 F5.4)', () => {
-  beforeEach(() => {
-    document.documentElement.removeAttribute('data-fluid-effects')
-    document.documentElement.removeAttribute('data-reduced-glass')
-  })
-
-  afterEach(() => {
-    document.documentElement.removeAttribute('data-fluid-effects')
-    document.documentElement.removeAttribute('data-reduced-glass')
-  })
-
-  it('renders decorative aura layers with strict containment and hidden accessibility', () => {
+describe('RouteAtmosphere decoration layer', () => {
+  it('renders one contained decoration surface without intercepting input or accessibility', () => {
     const wrapper = mount(RouteAtmosphere)
-    const el = wrapper.find('.route-atmosphere')
-    expect(el.exists()).toBe(true)
+    const el = wrapper.get('.route-atmosphere')
     expect(el.attributes('aria-hidden')).toBe('true')
-    expect(el.findAll('i').length).toBe(2)
+    expect(el.classes()).toEqual(expect.arrayContaining(['tw:pointer-events-none', 'tw:[contain:strict]']))
+    expect(el.element.children).toHaveLength(0)
+    expect(el.attributes('tabindex')).toBeUndefined()
+    wrapper.unmount()
   })
 })

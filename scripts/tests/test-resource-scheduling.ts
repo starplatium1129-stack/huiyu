@@ -102,14 +102,19 @@ assert(
 );
 
 // ─── 控制面板界面：调度面板 ───
-assert(controlView.includes('id="control-resources"') && controlView.includes('服务与显存调度'), 'control panel must show the VRAM scheduling panel');
+const resourcePanel = controlView.match(/<section\b[^>]*id="control-resources"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
+assert(/<h2\b[^>]*>[^<]*显存/.test(resourcePanel), 'control panel must label the VRAM scheduling section');
 assert(
-  controlView.includes("switchMode('draw')") && controlView.includes("switchMode('chat')"),
+  resourcePanel.includes("switchMode('draw')") && resourcePanel.includes("switchMode('chat')"),
   'control panel must offer draw/chat mode buttons',
 );
 assert(
-  controlView.includes("serviceAction('webui'") && controlView.includes("serviceAction('voice'") && controlView.includes("serviceAction('ollama'"),
-  'control panel must expose per-service controls',
+  ['webui', 'comfy', 'voice', 'ollama'].every(service => controlView.includes(`key: '${service}'`))
+    && controlView.includes('v-for="service in serviceCards"')
+    && controlView.includes("serviceAction(service.key, 'start')")
+    && controlView.includes("confirmServiceAction(service.key, 'stop')")
+    && controlView.includes("serviceAction('ollama', 'unload')"),
+  'service rows must expose start, confirmed stop and Ollama unload controls',
 );
 assert(
   controlActions.includes('autoStartVoice') && controlActions.includes('savePreference')

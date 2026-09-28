@@ -18,14 +18,16 @@
           </button>
         </div>
         <template v-if="category && !compact">
-          <button v-for="(option, index) in visibleOptions" :key="`${category}-${option.id}`" type="button"
-            class="orbit-option" :data-value="option.id" :style="{ '--orbit-x': position(-67.5 + index * 360 / 8, 193).left, '--orbit-y': position(-67.5 + index * 360 / 8, 193).top }" :aria-label="option.label"
+          <StudioTooltip v-for="(option, index) in visibleOptions" :key="`${category}-${option.id}`" anchor :content="option.label"
+            class="orbit-option-tooltip" :style="{ '--orbit-x': position(-67.5 + index * 360 / 8, 193).left, '--orbit-y': position(-67.5 + index * 360 / 8, 193).top }">
+          <button type="button" class="orbit-option" :data-value="option.id" :aria-label="option.label"
             :aria-pressed="category === 'characters' ? option.id === characterId : undefined"
-            :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" :title="option.label" @click="choose(option)">
+            :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" @click="choose(option)">
             <RuntimeImage v-if="option.image" :src="option.image" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
             <ArchiveIcon v-else :name="category === 'motions' ? 'spark' : 'happy'" />
             <span>{{ option.shortLabel || option.label }}</span>
           </button>
+          </StudioTooltip>
         </template>
       </div>
       <section v-if="category" class="orbit-selection" :class="{ 'orbit-selection-compact': compact }" :aria-label="categoryLabel">
@@ -62,6 +64,7 @@ import { characterArtEntry } from '@/platform/characterArtState'
 import { computed, ref, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import RuntimeImage from './visual/RuntimeImage.vue'
+import StudioTooltip from './ui/StudioTooltip.vue'
 import type { ArchiveIconName } from './visual/icons/types'
 import { getCompanionCharacterConfig, listCompanionUiCharacters, resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { orbitAngle, orbitPoint, orbitSector, useCompanionOrbit } from '@/composables/chat/useCompanionOrbit'
@@ -131,3 +134,8 @@ async function choose(option: Option) {
   finally { if (turn === expressionTurn) expressionBusy.value = false }
 }
 </script>
+
+<style scoped>
+.orbit-option-tooltip { position:absolute; left:var(--orbit-x); top:var(--orbit-y); transform:translate(-50%, -50%); pointer-events:auto; }
+.orbit-option-tooltip :deep(.orbit-option) { position:relative; left:auto; top:auto; transform:none; }
+</style>

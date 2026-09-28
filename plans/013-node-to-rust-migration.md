@@ -69,3 +69,11 @@
 本次验证：Rust all-targets 106 通过、8 项原有忽略；Clippy（warnings 为错误）、格式、前端相关 17 项、依赖边界、页面架构和 500 行预算通过。`gate:full --all` 的旧后端契约 39 文件通过、生产构建与预算通过；全量前端 1723 通过/1 失败，Node unit 1170 通过/2 失败/4 跳过。完整 gate 未通过：本机未配置参考素材根，另有未涉及文件的换行、RouteAtmosphere 装饰数量、资源面板源码断言、Showcase Grid 断言失败；未改索引或放宽这些断言。原始日志仅留被忽略的 `runtime/architecture-refactor-*`。本批未安装桌面、未调用真实模型或改写用户 workspace。
 
 浏览器定向复验 5/5 通过：结果架深浅主题、SD 出图入册、串行队列自动入册及 Anima 经真实 Rust 网关/模拟 ComfyUI 生成。使用当前源码的 debug Rust EXE 与本次生产 SPA、临时隔离数据和假上游；桌面 CSS 视口沿用现有 1440×960/1440×1200 用例，不记为原生窗口、4K/DPI 或真实模型验收。最终命令内存布局调整后，任务存储 2 项与执行/恢复 2 项定向重跑通过。
+
+## CI 修复与既有 E2E 收口（2026-09-28）
+
+修复 GitHub Quality 在 `9f3f54f5` 的两条失败链：主题自定义属性载体改为按词法作用域追踪返回值，修复相对导入识别；替换未定义字号 token。既有 RouteAtmosphere、资源面板、画册和页面标题断言跟随已上线实现，保留可达性、操作接线、原图比例与命名一致性保障。原生 title 门禁通过 Vue 模板 AST 区分组件 props 和真实 HTML 属性，最后一处桌宠菜单提示改为 StudioTooltip，真实原生预算为 0。未新增测试数量或调低质量门槛。
+
+Critical 的五项真实失败同时修复：Rust 生图和 TTS 保留有界错误诊断，使 OOM 恢复操作及语音失败原因可见；TTS 错误体仍受 16 KiB、截止时间和取消约束。尾斜杠文档与普通路径使用相同的麦克风/CSP 策略，API 路由与权限未放宽。已有 E2E 导航 helper 等待 Vue Router 初次就绪，防止测试在初始路由尚未完成时发起第二次导航；桌宠菜单原有双主题用例补键盘提示与边界核验，不增加用例数。
+
+本机验证：按 GitHub 的结构素材模式执行 `npm run check`，21/21 步通过；前端含覆盖率 1724/1724、Node unit 1172 通过（保留4项素材条件跳过）；Rust 生成2项、语音1项、受限上游诊断1项通过，Clippy 与格式检查通过，生产 SPA 和 debug Rust 构建通过。Critical 原95项中90项首次通过，5项修复后定向通过；桌宠菜单双主题480×720 CSS窗口键盘提示通过并查看截图。日志和截图仅在忽略的 `runtime/ci-repair-*`。`desktop-maintenance-runtime.spec.ts` 原工作区提示经哈希确认与HEAD内容一致，刷新索引后无差异；本批实际 E2E 修改为 office-code 和 companion-focus。GitHub 结果以最终提交上的 Actions 为准，Windows Native Live2D 仍需要带 live2d-cubism 标签的自托管 runner（用户表示可能在主力机上）。

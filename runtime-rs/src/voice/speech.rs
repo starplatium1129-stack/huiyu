@@ -165,14 +165,35 @@ impl Speech {
         let deadline = tokio::time::Instant::now() + Duration::from_secs(180);
         let response = tokio::select! { response = request.send() => response.map_err(|_| ApiError::new(502, "TTS_FAILED", "GPT-SoVITS 生成请求失败或超时"))?, _ = self.cancel.cancelled() => return Err(cancelled()) };
         if !response.status().is_success() {
+            let status = if response.status().is_client_error() {
+                response.status().as_u16()
+            } else {
+                502
+            };
+            // Error bodies must obey the same cancellation/deadline as audio,
+            // with a small separate cap so a failed provider cannot hold the queue.
+            let read = async {
+                let mut bytes = Vec::new();
+                let mut stream = response.bytes_stream();
+                while let Some(chunk) = stream.next().await {
+                    let chunk = chunk.ok()?;
+                    if bytes.len().saturating_add(chunk.len()) > 16 * 1024 {
+                        return None;
+                    }
+                    bytes.extend_from_slice(&chunk);
+                }
+                Some(serde_json::from_slice::<Value>(&bytes).unwrap_or_else(|_| {
+                    Value::String(String::from_utf8_lossy(&bytes).into_owned())
+                }))
+            };
+            let detail = tokio::select! {
+                result = tokio::time::timeout_at(deadline, read) => result.ok().flatten().unwrap_or(Value::Null),
+                _ = self.cancel.cancelled() => return Err(cancelled()),
+            };
             return Err(ApiError::new(
-                if response.status().is_client_error() {
-                    response.status().as_u16()
-                } else {
-                    502
-                },
+                status,
                 "TTS_FAILED",
-                "GPT-SoVITS 生成失败",
+                crate::upstream::diagnostic_message(&detail, "GPT-SoVITS 生成失败"),
             ));
         }
         let mime = response

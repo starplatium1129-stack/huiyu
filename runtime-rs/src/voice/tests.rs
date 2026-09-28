@@ -17,6 +17,7 @@ struct Mock {
     spoken: AtomicUsize,
     translated: AtomicUsize,
     fail_gpt: AtomicBool,
+    fail_tts: AtomicBool,
     switches: Mutex<Vec<String>>,
     payloads: Mutex<Vec<Value>>,
 }
@@ -32,11 +33,18 @@ fn wave() -> Vec<u8> {
 async fn mock_speech(
     Extension(mock): Extension<Arc<Mock>>,
     Json(payload): Json<Value>,
-) -> impl IntoResponse {
+) -> Response {
     mock.spoken.fetch_add(1, Ordering::SeqCst);
     mock.payloads.lock().unwrap().push(payload);
+    if mock.fail_tts.load(Ordering::Relaxed) {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"error":"RuntimeError: reference audio missing"})),
+        )
+            .into_response();
+    }
     tokio::time::sleep(std::time::Duration::from_millis(30)).await;
-    ([("content-type", "audio/wav")], wave())
+    ([("content-type", "audio/wav")], wave()).into_response()
 }
 async fn mock_translate(Extension(mock): Extension<Arc<Mock>>) -> Json<Value> {
     mock.translated.fetch_add(1, Ordering::SeqCst);
@@ -191,6 +199,17 @@ async fn tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_dro
     })
     .await
     .unwrap();
+    mock.fail_tts.store(true, Ordering::Relaxed);
+    let error = service
+        .speech
+        .stream(payload::validate(&input, &service.speech.settings).unwrap())
+        .await
+        .unwrap_err();
+    assert_eq!(error.status, StatusCode::BAD_GATEWAY);
+    assert_eq!(error.code, "TTS_FAILED");
+    assert!(error.message.contains("GPT-SoVITS 生成失败"));
+    assert!(error.message.contains("reference audio missing"));
+    assert_eq!(service.queue_status()["running"], false);
     service.close().await;
     stop.cancel();
 }

@@ -73,7 +73,9 @@ pub async fn guard(
     request: Request,
     next: Next,
 ) -> Response {
-    let path = request.uri().path().to_owned();
+    // SPA document routes accept a trailing slash. Apply the same document
+    // policy to both spellings without broadening API routing or authority.
+    let path = request.uri().path().trim_end_matches('/').to_owned();
     let headers = request.headers();
     let cors = native_resource_origin(&state, headers, peer.ip(), request.method());
     let preflight = request.method() == Method::OPTIONS;

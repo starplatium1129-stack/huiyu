@@ -11,6 +11,27 @@ use url::{Host, Url};
 pub(crate) const CONNECT_TIMEOUT: Duration = Duration::from_secs(15);
 pub(crate) const GENERATION_TIMEOUT: Duration = Duration::from_secs(20 * 60);
 
+/// Keep the provider's actionable explanation, never serialize its complete
+/// response (which may include request parameters or diagnostics).
+pub(crate) fn diagnostic_message(value: &Value, fallback: &str) -> String {
+    let message = value.as_str().or_else(|| {
+        ["detail", "message", "error", "errors"]
+            .iter()
+            .filter_map(|field| value.get(field))
+            .find_map(|entry| entry.as_str().or_else(|| entry.get("message")?.as_str()))
+    });
+    let Some(message) = message.filter(|text| !text.trim().is_empty() && !text.contains('<'))
+    else {
+        return fallback.into();
+    };
+    let detail: String = message
+        .chars()
+        .filter(|c| !c.is_control())
+        .take(512)
+        .collect();
+    format!("{fallback}：{}", detail.trim())
+}
+
 /// This transport is restricted to configured loopback HTTP services. Public
 /// custom providers need their separate DNS/HTTPS/authorization contract.
 pub fn local_url(raw: &str) -> Result<Url> {

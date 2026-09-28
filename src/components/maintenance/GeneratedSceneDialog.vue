@@ -92,7 +92,7 @@ const compositionOptions = [{ value: 'single', label: '单人画面' }, { value:
 .generated-scene-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s-5); }
 .generated-scene-preview { width: 100%; max-height: 360px; object-fit: contain; border-radius: var(--radius-md); background: var(--bg-deep); }
 .generated-scene-fields { display: grid; gap: var(--s-3); min-width: 0; }
-.generated-scene-note { color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.7; margin: 0; }
+.generated-scene-note { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.7; margin: 0; }
 .generated-scene-check { display: flex; gap: var(--s-2); align-items: center; color: var(--text-primary); }
 .generated-scene-details { margin-top: var(--s-4); }
 .generated-scene-details summary { cursor: pointer; padding-block: var(--s-2); color: var(--text-secondary); }

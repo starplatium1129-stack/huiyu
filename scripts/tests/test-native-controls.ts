@@ -26,6 +26,8 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 import assert = require('node:assert/strict');
+import { parse as parseSfc } from '@vue/compiler-sfc';
+import { parse as parseTemplate, NodeTypes, ElementTypes, type TemplateChildNode } from '@vue/compiler-dom';
 const sources: typeof import('../maintenance/style-sources') = require('../maintenance/style-sources');
 
 interface Violation { file: string; line: number; detail: string }
@@ -115,24 +117,48 @@ test('native checkbox and radio usage stays counted', () => {
   assert.ok(total >= 0);
 });
 
-// 原生 title 提示的未迁移存量：从 177 处清零至 35 处（剩余 35 处均为 Vue 组件自定义属性：
-// ArchiveStatePanel 29 处、WorkspaceArchiveBar 3 处、ModelCalibrationFields 3 处；
-// 原生 HTML 元素上的 title 提示已完全清零）。
-// 它是浏览器原生外观里最后一大块，而且行为也改不动：出现延迟约 1 秒、无法主题化、
-// 只有 hover 才出（键盘与触屏用户拿不到）、禁用控件上多数浏览器连 hover 都不响应。
-// 替代品是 StudioTooltip（hover 与聚焦都触发、跟随双主题令牌、dialog 内自动改写 portal）。
-// 这里锁成「只降不升」：迁移一批就把这个数字改小，不允许新增原生 title。
-const NATIVE_TITLE = /(?<![\w-]):?title="/g;
-const TITLE_BASELINE = 35;
+// 组件的 title prop 是内容契约，不是浏览器 tooltip。只检查原生元素的模板属性。
+// 注释、脚本文本和组件标题不计入；原生 title 必须使用 StudioTooltip。
+const TITLE_BASELINE = 0;
+function nativeTitles(raw: string, file: string): Violation[] {
+  const { descriptor, errors } = parseSfc(raw, { filename: file });
+  assert.deepEqual(errors, [], `${file}: SFC must parse before checking native titles`);
+  if (!descriptor.template) return [];
+  const offset = descriptor.template.loc.start.line - 1;
+  const violations: Violation[] = [];
+  const visit = (node: TemplateChildNode) => {
+    if (node.type !== NodeTypes.ELEMENT) return;
+    if (node.tagType === ElementTypes.ELEMENT) {
+      for (const prop of node.props) {
+        const title = prop.type === NodeTypes.ATTRIBUTE ? prop.name === 'title'
+          : prop.name === 'bind' && prop.arg?.type === NodeTypes.SIMPLE_EXPRESSION
+            && prop.arg.isStatic && prop.arg.content === 'title';
+        if (title) violations.push({ file, line: offset + prop.loc.start.line, detail: `<${node.tag}> ${prop.loc.source}` });
+      }
+    }
+    node.children.forEach(visit);
+  };
+  parseTemplate(descriptor.template.content).children.forEach(visit);
+  return violations;
+}
 
 test('native title tooltips only go down', () => {
-  const { counts } = scan([{ re: NATIVE_TITLE }]);
-  const total = counts.get(NATIVE_TITLE.source) ?? 0;
-
-  console.log(`原生 title 提示：${total} 处 / 未迁移基线 ${TITLE_BASELINE}`);
-  assert.ok(
-    total <= TITLE_BASELINE,
-    `原生 title 从 ${TITLE_BASELINE} 涨到 ${total}：改用 StudioTooltip —— hover 与键盘聚焦都出提示，`
-    + '跟随双主题令牌，且在 dialog 内不会被弹窗盖住（迁完一批请把 TITLE_BASELINE 同步调小）',
-  );
+  const fixture = `<template>
+    <ArchiveStatePanel title="Component heading"><button title="Native hint" /></ArchiveStatePanel>
+    <workspace-archive-bar :title="heading" />
+    <!-- <button title="Commented hint" /> -->
+    <div><button :title="hint" /><span v-bind:title="hint" /></div>
+  </template>
+  <script setup>const markup = '<button title="Script text" />'</script>`;
+  assert.deepEqual(nativeTitles(fixture, 'fixture.vue').map(({ line, detail }) => ({ line, detail })), [
+    { line: 2, detail: '<button> title="Native hint"' },
+    { line: 5, detail: '<button> :title="hint"' },
+    { line: 5, detail: '<span> v-bind:title="hint"' },
+  ], 'the parser must distinguish native titles from component props, comments and script strings');
+  const violations = appSourceFiles().filter(file => file.endsWith('.vue')).flatMap(file =>
+    nativeTitles(fs.readFileSync(path.join(sources.ROOT, file), 'utf8'), file));
+  console.log(`原生 title 提示：${violations.length} 处 / 未迁移基线 ${TITLE_BASELINE}`);
+  assert.ok(violations.length <= TITLE_BASELINE,
+    '原生 title 改用 StudioTooltip：hover 与键盘聚焦均可提示，且跟随主题。\n'
+    + violations.map(v => `${v.file}:${v.line} ${v.detail}`).join('\n'));
 });

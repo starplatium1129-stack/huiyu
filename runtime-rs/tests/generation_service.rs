@@ -44,6 +44,7 @@ struct MockState {
     payloads: Mutex<Vec<Value>>,
     auth: Mutex<Vec<String>>,
     history_fails: AtomicBool,
+    oom: AtomicBool,
 }
 struct Server {
     url: String,
@@ -112,7 +113,7 @@ async fn txt2img(
     State(state): State<Arc<MockState>>,
     headers: HeaderMap,
     Json(body): Json<Value>,
-) -> Json<Value> {
+) -> Response {
     let count = state.txt_count.fetch_add(1, Ordering::Relaxed) + 1;
     state.payloads.lock().unwrap().push(body);
     state.auth.lock().unwrap().push(
@@ -129,7 +130,14 @@ async fn txt2img(
         state.gate.acquire().await.unwrap().forget();
     }
     state.calls.lock().unwrap().push(format!("finish:{count}"));
-    Json(json!({"images":[STANDARD.encode(png())],"info":"{\"seed\":123}"}))
+    if state.oom.load(Ordering::Relaxed) {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"error":"OutOfMemoryError","detail":"CUDA out of memory"})),
+        )
+            .into_response();
+    }
+    Json(json!({"images":[STANDARD.encode(png())],"info":"{\"seed\":123}"})).into_response()
 }
 async fn interrupt(State(state): State<Arc<MockState>>) -> Json<Value> {
     state.calls.lock().unwrap().push("interrupt:start".into());
@@ -200,6 +208,7 @@ fn mock(web: bool, comfy: bool) -> (Arc<MockState>, mpsc::UnboundedReceiver<Stri
             payloads: Mutex::new(Vec::new()),
             auth: Mutex::new(Vec::new()),
             history_fails: AtomicBool::new(false),
+            oom: AtomicBool::new(false),
         }),
         rx,
     )
@@ -309,6 +318,35 @@ async fn webui_serializes_global_interrupt_and_rejects_stale_provider_before_adm
             .status,
         StatusCode::NOT_FOUND
     );
+    state.oom.store(true, Ordering::Relaxed);
+    let failed = service
+        .prepare(input(3), true, CancellationToken::new())
+        .await
+        .unwrap();
+    let failed = service
+        .clone()
+        .submit(failed, "owner".into(), None)
+        .await
+        .unwrap();
+    let failed_id = failed["id"].as_str().unwrap();
+    let error = tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            let job = service.get_job(failed_id, "owner").await.unwrap();
+            if job["status"] == "failed" {
+                break job;
+            }
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    assert_eq!(error["code"], "UPSTREAM_ERROR");
+    assert!(
+        error["error"]
+            .as_str()
+            .unwrap()
+            .contains("CUDA out of memory")
+    );
     service.get_status().await.unwrap();
     state.web.store(false, Ordering::Relaxed);
     assert!(
@@ -317,7 +355,7 @@ async fn webui_serializes_global_interrupt_and_rejects_stale_provider_before_adm
             .await
             .is_err()
     );
-    assert_eq!(state.txt_count.load(Ordering::Relaxed), 2);
+    assert_eq!(state.txt_count.load(Ordering::Relaxed), 3);
     service.close().await;
 }
 

@@ -238,9 +238,12 @@ const CHECKS = [
       const nav = stripComments(source).match(/id:\s*'color-script',\s*label:\s*'([^']+)'/);
       if (!nav) return false;
       const page = stripComments(read('src/views/ColorScriptView.vue'))
-        .match(/<h1[^>]*>\s*([^<]+?)\s*<\/h1>/);
-      if (!page) return false;
-      return nav[1] === page[1];
+        .match(/<CreativeLibraryHeader\s+title="([^"]+)"/);
+      const header = stripComments(read('src/components/library/CreativeLibraryHeader.vue'));
+      const search = stripComments(read('src/components/GlobalSearch.vue'))
+        .match(/id:\s*'color-script',\s*label:\s*'([^']+)'/);
+      return !!page && !!search && /<h1>\s*\{\{\s*title\s*\}\}\s*<\/h1>/.test(header)
+        && nav[1] === page[1] && nav[1] === search[1];
     },
   },
   {

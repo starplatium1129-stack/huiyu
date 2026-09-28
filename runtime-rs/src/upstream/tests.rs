@@ -183,6 +183,22 @@ async fn proxy_streams_large_body_preserves_responses_and_enforces_exact_allowli
 
 #[tokio::test]
 async fn bounded_json_transport_cancels_and_refuses_nonlocal_targets() {
+    let diagnostic =
+        serde_json::json!({"detail":"CUDA out of memory", "request":{"token":"private"}});
+    assert_eq!(
+        diagnostic_message(&diagnostic, "failed"),
+        "failed：CUDA out of memory"
+    );
+    assert_eq!(
+        diagnostic_message(&serde_json::json!("<html>proxy error</html>"), "failed"),
+        "failed"
+    );
+    assert_eq!(
+        diagnostic_message(&serde_json::json!("x".repeat(1000)), "failed")
+            .chars()
+            .count(),
+        519
+    );
     let (upstream, server) = serve(Router::new().fallback(|| async { "abcdefghijklmnop" })).await;
     let client = LocalUpstream::new();
     let token = CancellationToken::new();

@@ -9,7 +9,7 @@ R0–R11 主线代码、受影响验收、NSIS 安装及用户授权后的当前
 
 ## 当前执行顺序
 
-当前优先收口 [013：Node → Rust](../plans/013-node-to-rust-migration.md) 的真实模型/设备与发行验收。产品后端、入口和默认 E2E 已切到 Rust；Windows/Linux 构建、Rust 检查、双主题/五条主流程及候选输入绑定已有证据，main 合并和本机完整安装/UAC、运行时身份核验也已完成。剩余为继承的 title 门禁、原生依赖发行材料（`releaseReady=false`）、真实模型和完整设备/资料验收。前端、Tauri 保留；旧 Node 源码与旧安装程序残留退出时机单独记录。
+当前优先收口 [013：Node → Rust](../plans/013-node-to-rust-migration.md) 的真实模型/设备与发行验收。产品后端、入口和默认 E2E 已切到 Rust；Windows/Linux 构建、Rust 检查、双主题/五条主流程及候选输入绑定已有证据，main 合并和本机完整安装/UAC、运行时身份核验也已完成。剩余为原生依赖发行材料（`releaseReady=false`）、真实模型和完整设备/资料验收。前端、Tauri 保留；旧 Node 源码与旧安装程序残留退出时机单独记录。
 
 9 月 28 日补齐任务强类型、跨引擎执行契约、前端任务状态归属及 Rust 依赖护栏；旧 Node 编译 oracle 已退出第一批。剩余旧路由、workspace/任务兼容对照与维护工具按 [013 的真实消费者和退出条件](../plans/013-node-to-rust-migration.md#旧-node-实现的分批退出2026-09-28) 分批处理，不删除仍承担有效兼容验证的实现。当前源码验证与未通过项见该计划末尾，不覆盖已安装版本身份。
 

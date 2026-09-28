@@ -6,6 +6,7 @@ use crate::AppState;
 use axum::{Extension, Router, routing::any};
 use std::sync::Arc;
 
+pub(crate) use client::diagnostic_message;
 pub use client::{LocalUpstream, local_url};
 
 pub(crate) const READ_PATHS: &[&str] = &[

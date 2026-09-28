@@ -165,7 +165,7 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
 
 for (const theme of ['dark', 'light']) {
   for (const [width, height] of [[360, 520], [480, 720]]) {
-    test(`companion character window ${theme} ${width}`, async ({ page }) => {
+    test(`companion character window ${theme} ${width}`, async ({ page }, testInfo) => {
       await desktopFixture(page, theme)
       await page.setViewportSize({ width, height })
       await page.goto('/companion')
@@ -190,6 +190,20 @@ for (const theme of ['dark', 'light']) {
       await page.keyboard.press('Escape')
       await expect(panel).toBeHidden()
       await expect(orbit.getByRole('button', { name: '设置', exact: true })).toBeFocused()
+      if (width >= 460) {
+        const category = orbit.getByRole('button', { name: '切换陪伴角色', exact: true })
+        await category.click()
+        const option = orbit.locator('.orbit-option').first()
+        await option.focus()
+        await expect(option).toBeFocused()
+        const tooltip = page.locator('.studio-tooltip')
+        await expect(tooltip).toBeVisible()
+        await expect(tooltip).toContainText((await option.getAttribute('aria-label'))!)
+        const bounds = await option.boundingBox()
+        expect(bounds && bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= width && bounds.y + bounds.height <= height).toBeTruthy()
+        await page.screenshot({ path: testInfo.outputPath(`orbit-tooltip-${theme}.png`) })
+        await category.click()
+      }
       const contrast = await paintedTextContrast(orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).locator('span'))
       expect(contrast).toBeGreaterThanOrEqual(4.5)
       await page.keyboard.press('Escape')

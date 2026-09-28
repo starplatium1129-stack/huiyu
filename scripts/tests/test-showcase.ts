@@ -9,7 +9,7 @@ import { PathLike } from 'node:fs';
  * 那两个文件已迁为 src/views/ShowcaseView.vue，这里保留同样的保障目标：
  *   1. 加载审核 manifest、链回导演台、缩略图懒加载
  *   2. R18 直接可筛选（不用二次确认弹窗），默认模糊
- *   3. 瀑布流保持每张图原始比例
+ *   3. 画册按原始比例分配行宽，完整展示每张图
  *   4. 服务端正确挂载并限制 scene-showcase 目录（真实 HTTP 断言）
  *   5. 实际产出的 manifest 与图片资产自洽
  *   6. scene/artist/popular/lora 四类条目、生成元数据与审核依据
@@ -80,8 +80,7 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
     'R18 browsing must not require a confirmation dialog',
   );
 
-  // ── 画面比例：Grid 网格（2026-08-15 由 columns 瀑布流改为 Grid，修正
-  //  columns 先填满一列的填序问题）+ 自适应高度 ────────────────────────────────
+  // ── 画面比例：按比例分配行宽，保持 DOM/键盘顺序和完整画面 ──────────────
   const { compile }: typeof import('@tailwindcss/node') = require('@tailwindcss/node');
   const { parse }: typeof import('postcss') = require('postcss');
   const sample = read('src/components/showcase/ShowcaseSampleCard.vue');
@@ -106,11 +105,19 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
     return values;
   };
   const grid = declarations(new Set(['.showcase-grid']));
-  assert.strictEqual(grid.display, 'grid', 'sample wall must use CSS Grid');
-  assert.strictEqual(grid['grid-template-columns']?.replace(/\s/g, ''), 'repeat(4,minmax(0,1fr))', 'sample wall must use the 4-up grid layout');
+  assert.strictEqual(grid.display, 'flex', 'sample wall must lay out proportional cards in DOM order');
+  assert.strictEqual(grid['flex-wrap'], 'wrap', 'sample wall must wrap rows to the available width');
+  const card = declarations(new Set(['.sample']));
+  assert.strictEqual(card.flex?.replace(/\s/g, ''), 'var(--sample-grow)1calc(var(--showcase-row-height,320px)*var(--sample-grow))', 'cards must allocate row width using their image ratio');
+  assert.strictEqual(card['max-width'], '100%', 'a sample must fit within a narrow desktop window');
+  const remainder = declarations(new Set(['.showcase-grid::after']));
+  assert.strictEqual(remainder.flex, '1000000 1 0', 'the last row must reserve empty space instead of stretching an isolated image');
+  const visual = declarations(new Set(['.sample-visual']));
+  assert.strictEqual(visual['aspect-ratio']?.replace(/\s/g, ''), 'var(--sample-ratio,3/4)', 'the image frame must follow its source aspect ratio');
   const image = declarations(new Set(imageClasses.map(name => '.' + name.replace(/[^a-zA-Z0-9_-]/g, '\\$&'))));
   assert.strictEqual(image.width, '100%', 'sample images must fill the card width');
-  assert.strictEqual(image.height, 'auto', 'sample wall must preserve each image aspect ratio');
+  assert.strictEqual(image.height, '100%', 'sample images must fill their proportional frame');
+  assert.strictEqual(image['object-fit'], 'contain', 'sample images must remain fully visible without cropping');
 
   // ── 查看器必须脱离 scoped 样式（Teleport 到 body） ────────────────────────
   assert(

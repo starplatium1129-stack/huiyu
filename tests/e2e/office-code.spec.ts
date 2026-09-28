@@ -18,9 +18,12 @@ async function settledContrast(locator: Locator) {
 }
 
 async function navigateThroughRouter(page: Page, path: string) {
-  await page.evaluate(destination => {
-    const app = document.querySelector('#app') as unknown as { __vue_app__: { config: { globalProperties: { $router: { push: (path: string) => Promise<unknown> } } } } }
-    void app.__vue_app__.config.globalProperties.$router.push(destination)
+  await expect(page.locator('#app')).toHaveAttribute('data-v-app', '')
+  await page.evaluate(async destination => {
+    const app = document.querySelector('#app') as unknown as { __vue_app__: { config: { globalProperties: { $router: { isReady: () => Promise<void>; push: (path: string) => Promise<unknown> } } } } }
+    const router = app.__vue_app__.config.globalProperties.$router
+    await router.isReady()
+    void router.push(destination)
   }, path)
   await expect(page).toHaveURL(new RegExp(path.split('?')[0].replace(/\/$/, '') + '/?(?:\\?|$)'))
   await expect(page.locator('#app')).not.toBeEmpty()

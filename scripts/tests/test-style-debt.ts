@@ -1,5 +1,6 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 import ts from 'typescript';
+import { bindsOnlyCustomProps } from '../lib/style-carriers';
 'use strict';
 
 // 样式债门禁 —— 防止本次全局美术校准的成果回归。
@@ -41,6 +42,11 @@ test('dynamic style carriers accept custom-property keys with template and neste
     "{ '--fill': enabled ? '80%' : '0', '--opacity': values[index] ?? '1' }",
     "({ ['--offset']: ({ value: '}' }).value, '--color': color })",
   ]) assert.equal(dynamicCustomPropsOnly(value), true, value);
+  assert.equal(bindsOnlyCustomProps(`
+    const host = useAtmosphere();
+    function useAtmosphere() { const style = computed(() => theme()); return style; }
+    function theme() { return { '--accent': color, '--aura': nested.value } as CSSProperties; }
+  `, 'host'), true);
 });
 
 test('dynamic style carriers reject ordinary keys, unknown computed keys and spreads', () => {
@@ -51,6 +57,25 @@ test('dynamic style carriers reject ordinary keys, unknown computed keys and spr
     "{ '--fill': '80%', ...otherStyles }", "{ get '--fill'() { return '80%' } }",
     "{ '--fill': }", "{ '--fill': '80%'", "[ { '--fill': '80%' }, otherStyles ]",
   ]) assert.equal(dynamicCustomPropsOnly(value), false, value);
+  for (const object of ["{ '--accent': color, opacity: 1 }", "{ '--accent': color, ...other }", "{ [key]: color }"]) {
+    assert.equal(bindsOnlyCustomProps(`
+      const host = useAtmosphere();
+      function useAtmosphere() { const style = computed(() => theme()); return style; }
+      function theme() { return ${object}; }
+    `, 'host'), false, object);
+  }
+  for (const body of [
+    'function useAtmosphere(style) { return style; }',
+    'function useAtmosphere({ style }) { return style; }',
+    'function useAtmosphere() { const { style } = incoming; return style; }',
+    'function useAtmosphere() { const style = incoming; return style; }',
+    "function useAtmosphere() { function inner() { const hidden = { '--accent': color }; } return hidden; }",
+    "function useAtmosphere(computed) { return computed(() => ({ '--accent': color })); }",
+  ]) assert.equal(bindsOnlyCustomProps(`
+    const style = { '--accent': color };
+    const host = useAtmosphere(incoming);
+    ${body}
+  `, 'host'), false, body);
 });
 
 test("style-debt", () => {
@@ -68,57 +93,31 @@ const CUSTOM_PROP_ONLY = /^\s*(--[\w-]+\s*:\s*[^;]+;?\s*)+$/;
 // :style="someRef" 的形态:去 <script> 里查该标识符的定义,确认它只产出自定义属性
 const IDENTIFIER_ONLY = /^\s*[A-Za-z_$][\w$]*\s*$/;
 
-function bindsOnlyCustomProps(source: string, identifier: string) {
-  const decl = new RegExp('(?:const|let|var)\\s+' + identifier + '\\s*=\\s*computed\\(\\s*\\(\\)\\s*=>\\s*\\(([\\s\\S]*?)\\)\\s*\\)');
-  const match = source.match(decl);
-  if (!match) return false;
-  // 键只认行首 / 花括号 / 逗号之后的位置：否则三元表达式里的字符串字面量
-  // （如 '0' : '0.55'）会被误判成对象键，导致合法写法误报。
-  const keys = [...match[1].matchAll(/(?:^|\n|\{)\s*(?:'([^']+)'|"([^"]+)"|([\w-]+))\s*:/g)]
-    .map((m) => m[1] || m[2] || m[3]);
-  if (keys.length > 0) return keys.every((k) => k.startsWith('--'));
-  // A computed style carrier may delegate to a pure helper. Verify the called
-  // helper's returned object by its own custom-property keys instead of
-  // rejecting a valid indirection as ordinary inline styling.
-  const call = match[1].trim().match(/^([A-Za-z_$][\w$]*)\s*\(/);
-  if (!call) return false;
-  const helper = call[1];
-  const helperStart = source.search(new RegExp(`(?:function\\s+${helper}\\s*\\(|(?:const|let|var)\\s+${helper}\\s*=)`));
-  if (helperStart < 0) return false;
-  const helperSource = source.slice(helperStart, helperStart + 6000);
-  const helperKeys = [...helperSource.matchAll(/['"](--[\w-]+)['"]\s*:/g)].map((m) => m[1]);
-  return helperKeys.length > 0 && helperKeys.every((k) => k.startsWith('--'));
-}
-
-// 2026-08-22 自定义属性载体随簇下沉 composable 后，定义点可能不在 SFC 本体：
-// 按 SFC 的相对/别名导入把候选模块源码拼进搜索范围（最多追两层，覆盖
-// 「const { x } = useY()」解构与纯函数 style carrier；找不到定义仍按违规报）。
+// Follow local imports to the binding's helper, resolving each path from its own module.
 function styleCarrierSearchScope(absPath: string, source: string) {
-  const chunks = [source];
-  for (const m of source.matchAll(/import\s+(?:[^'"]*?\sfrom\s+)?['"]([^'"]+)['"]/g)) {
-    const spec = m[1];
-    let resolved = null;
-    if (spec.startsWith('./') || spec.startsWith('../')) resolved = path.join(path.dirname(absPath), spec);
-    else if (spec.startsWith('@/')) resolved = path.join(root, 'src', spec.slice(2));
-    else continue;
-    for (const ext of ['.ts', '.js']) {
-      try { chunks.push(fs.readFileSync(resolved + ext, 'utf8')); break } catch { /* 试下一个扩展名 */ }
-    }
-  }
-  // Follow one additional import layer so a composable can delegate to a pure
-  // custom-property helper without turning the SFC binding into a false alarm.
-  for (const imported of chunks.slice(1)) {
-    for (const m of imported.matchAll(/import\s+(?:[^'"]*?\sfrom\s+)?['"]([^'"]+)['"]/g)) {
-      const spec = m[1];
-      const resolved = spec.startsWith('./') || spec.startsWith('../')
-        ? path.join(path.dirname(absPath), spec)
+  const visited = new Set<string>();
+  const chunks: string[] = [];
+  const visit = (file: string, text: string, depth: number): void => {
+    if (visited.has(file)) return;
+    visited.add(file);
+    const script = file.endsWith('.vue')
+      ? [...text.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(match => match[1]).join('\n') : text;
+    chunks.push(script);
+    if (depth === 3) return;
+    const tree = ts.createSourceFile(file, script, ts.ScriptTarget.Latest, true);
+    for (const statement of tree.statements) {
+      if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+      const spec = statement.moduleSpecifier.text;
+      const resolved = spec.startsWith('.') ? path.resolve(path.dirname(file), spec)
         : spec.startsWith('@/') ? path.join(root, 'src', spec.slice(2)) : null;
       if (!resolved) continue;
       for (const ext of ['.ts', '.js']) {
-        try { chunks.push(fs.readFileSync(resolved + ext, 'utf8')); break; } catch { /* 试下一个扩展名 */ }
+        const target = resolved + ext;
+        if (fs.existsSync(target)) { visit(target, fs.readFileSync(target, 'utf8'), depth + 1); break; }
       }
     }
-  }
+  };
+  visit(absPath, source, 0);
   return chunks.join('\n');
 }
 

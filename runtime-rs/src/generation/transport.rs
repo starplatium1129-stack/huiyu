@@ -108,6 +108,9 @@ impl Inner {
             .await?;
         let value = if bytes.is_empty() {
             Value::Null
+        } else if !(200..300).contains(&status) {
+            serde_json::from_slice(&bytes)
+                .unwrap_or_else(|_| Value::String(String::from_utf8_lossy(&bytes).into_owned()))
         } else {
             serde_json::from_slice(&bytes).map_err(|_| {
                 ApiError::new(
@@ -143,7 +146,7 @@ impl Inner {
                 } else {
                     "COMFY_UPSTREAM_ERROR"
                 },
-                "上游请求失败",
+                crate::upstream::diagnostic_message(&value, "上游请求失败"),
             ));
         }
         Ok(value)
