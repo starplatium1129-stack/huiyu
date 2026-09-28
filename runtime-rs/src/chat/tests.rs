@@ -4,6 +4,8 @@ use http_body_util::BodyExt;
 use std::{convert::Infallible, path::Path};
 use tokio_util::sync::CancellationToken;
 
+mod stream_lifecycle;
+
 fn settings(root: &Path, host: &str) -> settings::Settings {
     settings::Settings {
         runtime: root.into(),

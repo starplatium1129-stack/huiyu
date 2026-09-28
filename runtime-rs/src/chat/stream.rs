@@ -232,24 +232,60 @@ pub(super) async fn collect_text(prepared: Prepared, cancel: CancellationToken) 
 }
 
 pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Response {
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(600);
     let wait = prepared.wait_ms;
-    let events = events(prepared, shutdown);
-    // Pull-based body retains the queue permit and upstream response. Disconnect
-    // drops both immediately; no detached producer or unbounded channel survives.
-    let stream = futures_util::stream::unfold(events, |mut events| async move {
-        let next = match events.next().await {
-            Ok(Some(value)) => value,
-            Ok(None) => return None,
-            Err(error) => {
-                events.finished = true;
-                events.pending.clear();
-                json!({"type":"error","error":error.message})
+    let cancel = shutdown.child_token();
+    let guard = cancel.clone().drop_guard();
+    let mut events = events(prepared, cancel.clone());
+    let (send, receive) = tokio::sync::mpsc::channel(4);
+    let (finished, terminal) = tokio::sync::oneshot::channel();
+    // A connected client can stop polling the body. Keep the deadline outside
+    // that body so blocked delivery still releases the Ollama queue and upstream.
+    tokio::spawn(async move {
+        let relay = async {
+            while let Some(value) = events.next().await.map_err(|error| error.message)? {
+                let mut bytes = serde_json::to_vec(&value).unwrap();
+                bytes.push(b'\n');
+                send.send(Bytes::from(bytes))
+                    .await
+                    .map_err(|_| "聊天连接已关闭".to_owned())?;
             }
+            Ok(())
         };
-        let mut bytes = serde_json::to_vec(&next).unwrap();
-        bytes.push(b'\n');
-        Some((Ok::<Bytes, Infallible>(bytes.into()), events))
+        let result = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => Err("聊天已停止".to_owned()),
+            _ = tokio::time::sleep_until(deadline) => Err("聊天流超时".to_owned()),
+            result = relay => result,
+        };
+        drop(events);
+        let _ = finished.send(result);
     });
+    // The terminal result has its own slot: a full data channel must not hide
+    // timeout/cancellation as a clean EOF when the reader eventually resumes.
+    let stream = futures_util::stream::unfold(
+        (receive, Some(terminal), guard),
+        |(mut receive, mut terminal, guard)| async move {
+            let bytes = if let Some(bytes) = receive.recv().await {
+                bytes
+            } else {
+                match terminal.take()?.await {
+                    Ok(Ok(())) => return None,
+                    result => {
+                        let message = match result {
+                            Ok(Err(message)) => message,
+                            _ => "聊天流中断".to_owned(),
+                        };
+                        let mut bytes =
+                            serde_json::to_vec(&json!({"type":"error","error":message})).unwrap();
+                        bytes.push(b'\n');
+                        Bytes::from(bytes)
+                    }
+                }
+            };
+            Some((Ok::<Bytes, Infallible>(bytes), (receive, terminal, guard)))
+        },
+    );
     let mut response = Body::from_stream(stream).into_response();
     let headers = response.headers_mut();
     headers.insert(
