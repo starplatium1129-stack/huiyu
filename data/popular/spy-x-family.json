@@ -177,45 +177,47 @@
         "1girl",
         "solo",
         "short_hair",
-        "pale_purple_hair",
+        "bob_cut",
+        "white_hair",
         "hair_over_one_eye",
-        "purple_eyes",
-        "stoic",
+        "grey_eyes",
+        "expressionless",
         "spy_x_family"
       ],
-      "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with sleek short pale-lilac hair parted over one eye, piercing cool purple eyes, an unshakeable stoic poker face, and a secret passionate heart",
+      "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with a sleek blunt-ended white bob (lavender-tinted in the manga) whose long right-side fringe covers much of her right eye while the left side is tucked behind her ear, calm dark grey eyes with pale lashes, an unshakeable expressionless poker face, and a secretly passionate heart",
       "outfits": [
         {
           "id": "wise_agent_trench",
-          "name": "夜帷干员风衣西装",
+          "name": "夜帷·WISE 特工双排扣大衣",
           "tokens": [
-            "trench_coat",
+            "pea_coat",
             "double-breasted",
             "dark_coat",
-            "collared_shirt",
-            "necktie",
-            "black_gloves",
-            "leather_gloves",
-            "trousers",
+            "purple_turtleneck",
+            "sweater",
+            "black_leather_pants",
+            "brown_leather_gloves",
+            "stud_earrings",
             "boots"
           ],
-          "prose": "wearing her signature dark blue tailored double-breasted trench coat with a sharp collared shirt, slim tie, black trousers, and leather gloves",
+          "prose": "wearing her dark blue double-breasted WISE pea coat, a purple turtleneck sweater and black leather trousers underneath, brown leather gloves, ankle-high button boots, and black stud earrings shaped like the WISE emblem",
           "styleHint": "cool cinematic espionage lighting",
           "isDefault": true,
           "default": true
         },
         {
           "id": "hospital_clerk_uniform",
-          "name": "医院见习事务员套裙",
+          "name": "巴林特综合医院事务员制服",
           "tokens": [
             "office_lady",
+            "sweater",
+            "grey_vest",
             "white_shirt",
-            "knit_vest",
-            "pencil_skirt",
+            "black_skirt",
             "pantyhose",
-            "id_badge"
+            "heels"
           ],
-          "prose": "wearing a neat Berlint General Hospital clerk uniform with a crisp white blouse, pale knit vest, dark pencil skirt, pantyhose, and an ID badge",
+          "prose": "wearing her Berlint General Hospital office worker uniform: a long-sleeved dark blue sweater under a grey vest with black stripes and buttons, over a white long-sleeved shirt, with a black knee-length office skirt, dark grey tights and black heeled shoes",
           "styleHint": "bright organized hospital interior",
           "isDefault": false,
           "default": false
@@ -227,12 +229,11 @@
             "sleeveless_shirt",
             "tennis_uniform",
             "pleated_skirt",
-            "miniskirt",
             "wristbands",
             "tennis_racket",
             "athletic"
           ],
-          "prose": "wearing an athletic white tennis uniform with a sleeveless collared top, pleated short skirt, red-and-blue trim, wristbands, and holding a tournament racket",
+          "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands, holding her tournament racket during the underground Campbelldon match",
           "styleHint": "dynamic high-speed tennis court drama",
           "isDefault": false,
           "default": false
@@ -243,11 +244,11 @@
           "tokens": [
             "turtleneck_sweater",
             "ribbed_sweater",
-            "form-fitting",
-            "shorts",
+            "purple_sweater",
+            "lounge_shorts",
             "thighhighs"
           ],
-          "prose": "wearing a form-fitting dark ribbed turtleneck sweater, casual lounge shorts, and dark thighhighs in private quarters",
+          "prose": "wearing a form-fitting purple ribbed turtleneck sweater with casual lounge shorts and dark thighhighs in private quarters",
           "styleHint": "soft moody evening boudoir",
           "isDefault": false,
           "default": false
@@ -286,7 +287,7 @@
         "rella",
         "kantoku"
       ],
-      "originalName": "菲奥娜·弗罗斯特",
+      "originalName": "Fiona Frost",
       "exactTokens": [
         "fiona_frost"
       ],
@@ -301,13 +302,14 @@
         "tobari",
         "spy x family",
         "菲奥娜·弗罗斯特",
+        "菲奥娜·弗洛斯特",
         "夜帷",
         "菲奥娜"
       ],
       "canon": {
         "world": "现代日常+间谍（SPY x FAMILY）",
         "era": "冷战东欧架空",
-        "formNotes": "浅淡紫偏冷白短发，刘海遮掩一侧眼睛，淡紫眼瞳，毫无表情扑克脸，内心狂热暗恋黄昏；双排扣风衣、网球运动服、医院事务服",
+        "formNotes": "白色齐尾短发（漫画为薰衣草紫），右侧长刘海遮住右半脸，深灰瞳（漫画紫），浅色睫毛；面无表情扑克脸与狂热暗恋的反差；深蓝双排扣大衣＋紫色高领毛衣、医院事务员制服、地下网球赛运动装",
         "research": "2026-09 调研"
       },
       "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"

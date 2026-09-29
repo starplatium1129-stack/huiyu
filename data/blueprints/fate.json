@@ -13638,7 +13638,7 @@
       "category": "圣洁花嫁",
       "characterId": "kama_fate",
       "outfitId": "sfw_bridal",
-      "description": "【大奥宇宙宫殿·黄昏】迦摩以成年神性形态穿着黑粉色婚纱坐在金色莲台边，黑发与金饰被微风托起；她懒洋洋地捧住一束星形花朵，先装作不在乎，随后被镜头看久了而露出不耐烦的红晕。",
+      "description": "【大奥宇宙宫殿·黄昏】迦摩以成年神性形态穿着黑粉色婚纱坐在金色莲台边，银白长发与金饰被微风托起；她懒洋洋地捧住一束星形花朵，先装作不在乎，随后被镜头看久了而露出不耐烦的红晕。",
       "location": "celestial lotus palace in the Ooku",
       "action": "金色莲台边转动星形捧花装作无聊，被镜头注视后隔纱泛红",
       "timeOfDay": "黄昏",
@@ -13652,11 +13652,12 @@
         "cosmic_palace",
         "star_flowers",
         "gold_trim",
-        "black_hair",
+        "white_hair",
+        "long_hair",
         "reluctant_blush",
         "twilight"
       ],
-      "promptProse": "Kama from Fate wears a black-and-rose bridal gown with gold trim, a sheer veil and star-shaped celestial flowers. She sits on the edge of a golden lotus dais in her adult divine form, turning a star-shaped bouquet between jeweled fingers. She pretends the ceremony is boring until the viewer keeps looking, then hides a reluctant blush behind the drifting veil and cosmic petals. rose-gold sunset among floating petals.",
+      "promptProse": "Kama from Fate wears a black-and-rose bridal gown with gold trim, a sheer veil and star-shaped celestial flowers. Her long silver-white hair drifts with the cosmic petals as she sits on the edge of a golden lotus dais in her adult divine form, turning a star-shaped bouquet between jeweled fingers. She pretends the ceremony is boring until the viewer keeps looking, then hides a reluctant blush behind the drifting veil. rose-gold sunset among floating petals.",
       "promptTokens": [
         "wedding_dress",
         "bridal_veil",
@@ -13664,7 +13665,8 @@
         "cosmic_palace",
         "star_flowers",
         "gold_trim",
-        "black_hair",
+        "white_hair",
+        "long_hair",
         "reluctant_blush",
         "twilight",
         "twilight_light"

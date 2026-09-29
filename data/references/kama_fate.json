@@ -4,11 +4,12 @@
     "displayName": "迦摩",
     "originalName": "Kama",
     "source": "Fate",
-    "identityProse": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+    "identityProse": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
     "identityTokens": [
       "kama_(fate)",
       "fate/grand_order",
       "white_hair",
+      "long_hair",
       "red_eyes"
     ],
     "outfits": [
@@ -108,7 +109,7 @@
     "characterId": "kama_fate",
     "displayName": "迦摩",
     "source": "Fate",
-    "identityProse": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+    "identityProse": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
     "outfits": [
       {
         "outfitId": "sfw_home",

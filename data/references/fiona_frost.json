@@ -2,52 +2,54 @@
   "standard": {
     "id": "fiona_frost",
     "displayName": "菲奥娜·弗罗斯特",
-    "originalName": "菲奥娜·弗罗斯特",
+    "originalName": "Fiona Frost",
     "source": "SPY x FAMILY",
-    "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with sleek short pale-lilac hair parted over one eye, piercing cool purple eyes, an unshakeable stoic poker face, and a secret passionate heart",
+    "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with a sleek blunt-ended white bob (lavender-tinted in the manga) whose long right-side fringe covers much of her right eye while the left side is tucked behind her ear, calm dark grey eyes with pale lashes, an unshakeable expressionless poker face, and a secretly passionate heart",
     "identityTokens": [
       "fiona_frost",
       "1girl",
       "solo",
       "short_hair",
-      "pale_purple_hair",
+      "bob_cut",
+      "white_hair",
       "hair_over_one_eye",
-      "purple_eyes",
-      "stoic",
+      "grey_eyes",
+      "expressionless",
       "spy_x_family"
     ],
     "outfits": [
       {
         "id": "wise_agent_trench",
-        "name": "夜帷干员风衣西装",
+        "name": "夜帷·WISE 特工双排扣大衣",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "wearing her signature dark blue tailored double-breasted trench coat with a sharp collared shirt, slim tie, black trousers, and leather gloves",
+        "prose": "wearing her dark blue double-breasted WISE pea coat, a purple turtleneck sweater and black leather trousers underneath, brown leather gloves, ankle-high button boots, and black stud earrings shaped like the WISE emblem",
         "tokens": [
-          "trench_coat",
+          "pea_coat",
           "double-breasted",
           "dark_coat",
-          "collared_shirt",
-          "necktie",
-          "black_gloves",
-          "leather_gloves",
-          "trousers",
+          "purple_turtleneck",
+          "sweater",
+          "black_leather_pants",
+          "brown_leather_gloves",
+          "stud_earrings",
           "boots"
         ]
       },
       {
         "id": "hospital_clerk_uniform",
-        "name": "医院见习事务员套裙",
+        "name": "巴林特综合医院事务员制服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a neat Berlint General Hospital clerk uniform with a crisp white blouse, pale knit vest, dark pencil skirt, pantyhose, and an ID badge",
+        "prose": "wearing her Berlint General Hospital office worker uniform: a long-sleeved dark blue sweater under a grey vest with black stripes and buttons, over a white long-sleeved shirt, with a black knee-length office skirt, dark grey tights and black heeled shoes",
         "tokens": [
           "office_lady",
+          "sweater",
+          "grey_vest",
           "white_shirt",
-          "knit_vest",
-          "pencil_skirt",
+          "black_skirt",
           "pantyhose",
-          "id_badge"
+          "heels"
         ]
       },
       {
@@ -55,12 +57,11 @@
         "name": "地下网球赛潜入运动装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing an athletic white tennis uniform with a sleeveless collared top, pleated short skirt, red-and-blue trim, wristbands, and holding a tournament racket",
+        "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands, holding her tournament racket during the underground Campbelldon match",
         "tokens": [
           "sleeveless_shirt",
           "tennis_uniform",
           "pleated_skirt",
-          "miniskirt",
           "wristbands",
           "tennis_racket",
           "athletic"
@@ -71,12 +72,12 @@
         "name": "私密独处修身高领毛衣",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "wearing a form-fitting dark ribbed turtleneck sweater, casual lounge shorts, and dark thighhighs in private quarters",
+        "prose": "wearing a form-fitting purple ribbed turtleneck sweater with casual lounge shorts and dark thighhighs in private quarters",
         "tokens": [
           "turtleneck_sweater",
           "ribbed_sweater",
-          "form-fitting",
-          "shorts",
+          "purple_sweater",
+          "lounge_shorts",
           "thighhighs"
         ]
       },
@@ -104,14 +105,14 @@
     "characterId": "fiona_frost",
     "displayName": "菲奥娜·弗罗斯特",
     "source": "SPY x FAMILY",
-    "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with sleek short pale-lilac hair parted over one eye, piercing cool purple eyes, an unshakeable stoic poker face, and a secret passionate heart",
+    "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with a sleek blunt-ended white bob (lavender-tinted in the manga) whose long right-side fringe covers much of her right eye while the left side is tucked behind her ear, calm dark grey eyes with pale lashes, an unshakeable expressionless poker face, and a secretly passionate heart",
     "outfits": [
       {
         "outfitId": "wise_agent_trench",
-        "outfitName": "夜帷干员风衣西装",
+        "outfitName": "夜帷·WISE 特工双排扣大衣",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "wearing her signature dark blue tailored double-breasted trench coat with a sharp collared shirt, slim tie, black trousers, and leather gloves",
+        "prose": "wearing her dark blue double-breasted WISE pea coat, a purple turtleneck sweater and black leather trousers underneath, brown leather gloves, ankle-high button boots, and black stud earrings shaped like the WISE emblem",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -219,10 +220,10 @@
       },
       {
         "outfitId": "hospital_clerk_uniform",
-        "outfitName": "医院见习事务员套裙",
+        "outfitName": "巴林特综合医院事务员制服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a neat Berlint General Hospital clerk uniform with a crisp white blouse, pale knit vest, dark pencil skirt, pantyhose, and an ID badge",
+        "prose": "wearing her Berlint General Hospital office worker uniform: a long-sleeved dark blue sweater under a grey vest with black stripes and buttons, over a white long-sleeved shirt, with a black knee-length office skirt, dark grey tights and black heeled shoes",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -333,7 +334,7 @@
         "outfitName": "地下网球赛潜入运动装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing an athletic white tennis uniform with a sleeveless collared top, pleated short skirt, red-and-blue trim, wristbands, and holding a tournament racket",
+        "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands, holding her tournament racket during the underground Campbelldon match",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -444,7 +445,7 @@
         "outfitName": "私密独处修身高领毛衣",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "wearing a form-fitting dark ribbed turtleneck sweater, casual lounge shorts, and dark thighhighs in private quarters",
+        "prose": "wearing a form-fitting purple ribbed turtleneck sweater with casual lounge shorts and dark thighhighs in private quarters",
         "references": [
           {
             "id": "ref_01_face_closeup",

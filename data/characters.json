@@ -10857,7 +10857,9 @@
     "name": "迦摩",
     "alias": [
       "迦摩",
-      "Kama"
+      "Kama",
+      "カーマ",
+      "爱神迦摩"
     ],
     "type": "popular",
     "portrait": {
@@ -10865,11 +10867,12 @@
       "alt": "迦摩 · 魔王沙发的慵懒午后场景样张"
     },
     "visual_dna": {
-      "signature": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
-      "hair": "white_hair",
+      "signature": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "hair": "white_hair, long_hair（银白长发 · 第三再临成年形态）",
+      "hair_color": "银白（silver white）",
       "eyes": "red_eyes",
-      "uniform": "游戏时间宽松家居装",
-      "expression": "按各日常场景的动作与神态呈现",
+      "uniform": "游戏时间宽松家居装 / 咖啡馆便装 / 冬季参拜大衣",
+      "expression": "嫌麻烦的傲沉神态 · 被注视后会露出不耐的红晕",
       "style": "anime"
     },
     "personality": [
@@ -10886,23 +10889,26 @@
       "title": "迦摩 · 魔王沙发的慵懒午后",
       "description": "她的领域一角，成年形态的她横卧在华丽沙发上，单手撑头、另一只手指尖转着花之箭；身边散落着零食与靠垫，「魔王的工作」看起来就是彻底地躺着。"
     },
-    "identity": "Fate · 迦摩",
+    "identity": "Fate · 迦摩（Assassin / 爱神）",
     "tags": [
       "迦摩",
       "Fate 系列",
+      "爱神",
+      "银白长发",
       "日常"
     ],
-    "bg_story": "常以不以为然的口吻回应世界，却会对游戏和甜点格外认真。白发红瞳与别扭的神态保留为识别点，本批以完整居家装、外出装和冬装表现日常。",
+    "bg_story": "迦摩是印度神话中的爱神，在《Fate/Grand Order》中以凭依在间桐樱「恶／影」一侧的姿态现界，职阶为 Assassin。她辛辣倦怠、看不起人类，却又自认能爱任何存在；面对御主时不自觉露出的动摇才是她的识别点。外观按官方立绘以银白长发与红瞳为准（第三再临的成年形态），本批以完整居家装、外出装和冬装表现日常。",
     "palette": [
       "#c9a0b1",
       "#282532"
     ],
-    "source": "Fate",
+    "source": "TYPE-MOON《Fate/Grand Order》",
     "speech": "只是顺路看看，才没有特意来买甜点。",
     "traits": [
       "kama_(fate)",
       "fate/grand_order",
       "white_hair",
+      "long_hair",
       "red_eyes"
     ],
     "accent_color": "#c9a0b1",
@@ -11483,7 +11489,10 @@
     "name": "橘美花莉",
     "alias": [
       "橘美花莉",
-      "Mikari Tachibana"
+      "Mikari Tachibana",
+      "Tachibana Mikari",
+      "ミカリン",
+      "みかリン"
     ],
     "type": "popular",
     "portrait": {
@@ -11491,17 +11500,17 @@
       "alt": "橘美花莉 · 摄影棚收工的三秒场景样张"
     },
     "visual_dna": {
-      "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a glamorous professional teen reader model with wavy chestnut brown hair tied into playful two-side-up bunches with pink ribbons, and vibrant pink eyes. Fashionable, poised, and fiercely devoted to her childhood sweetheart.",
-      "hair": "brown_hair, long_hair, two_side_up, pink_ribbon",
+      "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
+      "hair": "brown_hair, long_hair, two_side_up, hair_between_eyes, sidelocks, pink_ribbon",
       "eyes": "pink_eyes",
-      "uniform": "名模露肩时尚私服 / 名门高中辣妹制服 / 魅魔米莉埃拉Cos战袍",
+      "uniform": "名模露肩时尚私服 / 高中黑色开襟西装制服 / 恶魔米莉艾拉 Cos 战衣",
       "expression": "专业甜美名模笑颜 · 对正宗娇嗔傲娇",
       "style": "anime"
     },
     "personality": [
-      "镜头前表现力惊人，专业敬业的顶流读者模特",
+      "镜头前表现力惊人的现役人气模特，Cosplay 圈里的常识人",
       "面对青梅竹马奥村正宗傲娇又极度专一深情",
-      "为爱入宅，愿意为了奥村跨入Cosplay界"
+      "一牵扯到奥村就会失控，为了追回他的视线踏入 Cosplay 界"
     ],
     "likes": [
       "奥村正宗",
@@ -11516,16 +11525,16 @@
     "tags": [
       "橘美花莉",
       "2.5次元的诱惑",
-      "读者模特",
+      "现役模特",
       "青梅竹马",
       "日常"
     ],
-    "bg_story": "现役高人气时尚杂志读者模特（艺名：美莉亚 / みかリン），奥村正宗的青梅竹马。小时候因头发天生蓬松微卷受欺负而被正宗鼓励解围，从此深爱正宗十余年。本体为栗棕色微卷长发、两侧半扎发各系一个小粉色蝴蝶结发带与粉色双眸。为了挽回正宗的视线踏入Cosplay界，在漫展上戴金发假发与蓝瞳美瞳出《阿修福德战记》的魅魔米莉埃拉惊艳全场。",
+    "bg_story": "现役人气模特（爱称：みかリン／Mikarin，上过电视），奥村正宗的青梅竹马。小时候因天生蓬松微卷的头发被欺负时被正宗解围，从此单恋他十余年。本体为浅栗棕色长发、斜分碎刘海与不对称长鬓发，头顶两侧以粉色缎带束起两束发，粉色双眸；校服是黑色开襟西装＋米色针织背心＋红领结＋灰百褶裙。为了追回正宗的视线踏入 Cosplay 界，在漫展上戴上紫粉双色长双马尾假发，出作中作《阿修福德战记》中莉莉艾露的亲友恶魔「米莉艾拉」，惊艳全场。",
     "palette": [
       "#d8a4be",
       "#282532"
     ],
-    "source": "2.5 Dimensional Seduction",
+    "source": "桥本悠《2.5次元的诱惑 / 2.5 Dimensional Seduction》",
     "speech": "奥村君……我的目光十年来都只看着你，你的视线也只能看着我一个人哦！",
     "traits": [
       "tachibana_mikari",
@@ -11533,6 +11542,8 @@
       "brown_hair",
       "long_hair",
       "two_side_up",
+      "hair_between_eyes",
+      "sidelocks",
       "pink_ribbon",
       "pink_eyes"
     ],
@@ -12168,29 +12179,31 @@
   },
   {
     "id": "aisha_greyrat",
-    "name": "爱莎·格雷拉特",
+    "name": "爱夏·格雷拉特",
     "alias": [
       "Aisha Greyrat",
       "Aisha",
       "アイシャ・グレイラット",
-      "爱莎",
+      "爱夏",
+      "爱夏·格雷拉特",
+      "爱莎·格雷拉特",
       "艾莎·格雷拉特"
     ],
     "type": "popular",
     "icon": "character",
     "portrait": {
       "image": "../assets/characters/popular-aisha_greyrat.png?v=20260929",
-      "alt": "爱莎·格雷拉特在晨光书房核对账册的日常场景"
+      "alt": "爱夏·格雷拉特在晨光书房核对账册的日常场景"
     },
     "visual_dna": {
-      "hair": "深栗红高马尾",
-      "hair_color": "深栗红",
+      "hair": "深栗红（红发）短发 · 高马尾",
+      "hair_color": "深栗红／茶褐（红发）",
       "eyes": "鲜绿色",
-      "hairstyle": "高马尾 · 红色发带",
-      "uniform": "格雷拉特家女仆装：白色长袖衬衫、深色束身衣、酒红领结与白围裙",
-      "expression": "机敏聪慧 · 从容自信",
+      "hairstyle": "短发高马尾 · 白色发带与鬓发",
+      "uniform": "格雷拉特家女仆装：深褐长袖连衣裙、白色褶边围裙与白色褶领",
+      "expression": "机敏聪慧 · 从容自信 · 笑露小虎牙",
       "style": "quick-witted fantasy house steward",
-      "signature": "深栗红高马尾、绿色眼睛、红色发带与利落的女仆装"
+      "signature": "深栗红高马尾、绿色眼睛、白色发带与利落的女仆装"
     },
     "personality": [
       "聪明敏锐",
@@ -12207,23 +12220,23 @@
     ],
     "classic_cg": {
       "title": "宅邸账册与晨光",
-      "description": "成年版爱莎在格雷拉特宅邸的书房核对账册，棕红马尾、绿色眼睛与红色发带清晰可见。"
+      "description": "成年版爱夏在格雷拉特宅邸的书房核对账册，棕红马尾、绿色眼睛与白色发带清晰可见。"
     },
     "identity": {
-      "role": "格雷拉特家族的事务统筹者 / 魔术师",
-      "age": "成年版 · 22+（平行成年设定）",
-      "occupation": "宅邸事务统筹 / 魔术师",
-      "faction": "格雷拉特家族"
+      "role": "鲁迪乌斯的女仆 / 鲁德佣兵团顾问",
+      "age": "成年形态（原作正传结局 29 岁；本条目为 22+ 成年版）",
+      "occupation": "宅邸事务统筹 / 佣兵团顾问 / 魔术师",
+      "faction": "格雷拉特家 / 鲁德佣兵团"
     },
     "tags": [
       "深栗红高马尾",
       "绿色眼睛",
-      "红色发带",
+      "白色发带",
       "格雷拉特家女仆",
       "机敏",
       "成年版"
     ],
-    "bg_story": "爱莎·格雷拉特是保罗与莉莉雅的女儿，也是鲁迪乌斯和诺伦同父异母的妹妹。官方动画资料形容她器用、聪明。此条目采用用户指定的平行成年版设定（22+），以深栗红高马尾、绿色眼睛、红色发带和利落女仆装作为稳定识别特征，不沿用幼年或学龄形象。",
+    "bg_story": "爱夏·格雷拉特是保罗与女仆莉莉娅的女儿，也是鲁迪乌斯与诺伦同父异母的妹妹，与诺伦同日出生。她聪明敏锐、学什么都快，十岁便在拉诺亚魔法大学入学考试拿到满分，后来成为鲁迪乌斯的女仆兼鲁德佣兵团顾问，统筹宅邸与佣兵团事务。此条目采用成年形态（原作正传结局已 29 岁，本条目为 22+），以深栗红（红发）短发高马尾、绿色眼睛、白色发带与深褐女仆装＋白围裙作为稳定识别特征；不戴眼镜（眼镜与发髻属母亲莉莉娅），不沿用幼年形象。",
     "palette": [
       "深栗红",
       "森林绿",
@@ -12234,16 +12247,18 @@
       "书房午后",
       "海滨晴日"
     ],
-    "speech": "爱莎向你致以问候。",
-    "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》；成年版为用户指定设定",
+    "speech": "爱夏向你致以问候。",
+    "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
     "traits": [
       "aisha_greyrat",
       "solo",
       "adult_woman",
-      "auburn_hair",
-      "high_ponytail",
+      "red_hair",
+      "short_hair",
+      "ponytail",
+      "hairband",
+      "sidelocks",
       "green_eyes",
-      "red_hair_ribbon",
       "mushoku_tensei"
     ],
     "accent_color": "#A74458",
@@ -12257,6 +12272,7 @@
       "Fiona Frost",
       "Nightfall",
       "夜帷",
+      "菲奥娜·弗洛斯特",
       "フィオナ・フロスト",
       "とばり"
     ],
@@ -12267,17 +12283,17 @@
       "alt": "菲奥娜·弗罗斯特 样张立绘"
     },
     "visual_dna": {
-      "hair": "浅灰淡紫短发 · 单侧长刘海",
-      "hair_color": "浅淡紫（Pale Lilac / Ice Violet）",
-      "eyes": "冷酷紫瞳（Piercing Purple）",
-      "hairstyle": "干练短发 · 遮半脸刘海",
-      "uniform": "深色双排扣风衣西装 / 医院文职套裙 / 白色网球服",
-      "expression": "极度理性扑克脸 · 隐藏狂热暗恋",
+      "hair": "白色齐尾短发（漫画为薰衣草紫）· 右侧长刘海遮住右半脸",
+      "hair_color": "白色（动画）／薰衣草紫（漫画）",
+      "eyes": "冷静深灰瞳（漫画为紫）· 浅色睫毛",
+      "hairstyle": "齐尾短发（bob）· 右侧长刘海遮眼、左侧别在耳后",
+      "uniform": "深蓝双排扣 WISE 大衣＋紫色高领毛衣 / 医院事务员制服 / 白色网球运动装",
+      "expression": "毫无表情的扑克脸 · 隐藏狂热暗恋",
       "style": "cool elite spy with hidden passion",
-      "signature": "冰冷扑克脸、淡紫短发遮眼、深蓝风衣与狂热反差萌"
+      "signature": "白色短发与右侧遮眼刘海、冰冷扑克脸、深蓝大衣与狂热反差萌"
     },
     "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
-    "bg_story": "菲奥娜·弗罗斯特是西国情报局（WISE）的顶尖干员，代号「夜帷（Nightfall）」，表面身份是伯灵顿综合医院的事务员。受过黄昏严格教导的她始终保持毫无破绽的扑克脸与冷酷计算，被同事称为没有感情的谍报机器；但在冷若冰霜的假面之下，隐藏着对前辈「黄昏」火山爆发般炽热狂乱的暗恋，时刻梦想着取代约尔成为黄昏的合法妻子。",
+    "bg_story": "菲奥娜·弗罗斯特是西国情报局（WISE）对东课的干员，代号「夜帷（Nightfall，とばり）」，公开身份是柏林特综合医院的事务员。受黄昏严格教导的她始终维持毫无破绽的扑克脸与冷酷计算，被同事视为没有感情的谍报机器；但在冷若冰霜的假面之下，隐藏着对前辈「黄昏」炽热狂乱的暗恋，梦想成为他的妻子，并把约尔视为情敌。",
     "personality": [
       "极度冷静",
       "扑克脸",
@@ -12289,7 +12305,7 @@
     "likes": [
       "黄昏（洛伊德）",
       "成为洛伊德的妻子",
-      "网球",
+      "网球与体能训练",
       "高效完成任务"
     ],
     "traits": [
@@ -12297,10 +12313,11 @@
       "1girl",
       "solo",
       "short_hair",
-      "pale_purple_hair",
+      "bob_cut",
+      "white_hair",
       "hair_over_one_eye",
-      "purple_eyes",
-      "stoic",
+      "grey_eyes",
+      "expressionless",
       "spy_x_family"
     ],
     "speech": "夜帷正在执行任务。请勿妨碍工作……以及，请离前辈远一点。",

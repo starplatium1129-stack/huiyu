@@ -9,15 +9,20 @@
       "franchise": "2.5 Dimensional Seduction",
       "aliases": [
         "橘美花莉",
-        "Mikari Tachibana"
+        "Mikari Tachibana",
+        "Tachibana Mikari",
+        "ミカリン",
+        "みかリン"
       ],
-      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a glamorous professional teen reader model with wavy chestnut brown hair tied into playful two-side-up bunches with pink ribbons, and vibrant pink eyes. Fashionable, poised, and fiercely devoted to her childhood sweetheart.",
+      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
       "identityTokens": [
         "tachibana_mikari",
         "2.5_jigen_no_ririsa",
         "brown_hair",
         "long_hair",
         "two_side_up",
+        "hair_between_eyes",
+        "sidelocks",
         "pink_ribbon",
         "pink_eyes"
       ],
@@ -79,14 +84,20 @@
         },
         {
           "id": "sfw_school",
-          "name": "名门高校辣妹制服",
-          "prose": "a fashionable gyaru-style school uniform with an open dark blazer, loosened ribbon tie, short pleated skirt, and pink hair ribbons",
+          "name": "高中黑色开襟西装制服",
+          "prose": "her high school uniform: an open black blazer with gold buttons over a beige sweater vest and white shirt, a red bow tie, a short grey pleated skirt, white socks and dark brown loafers",
           "tokens": [
             "school_uniform",
+            "black_jacket",
             "blazer",
             "open_jacket",
-            "ribbon",
+            "sweater_vest",
+            "white_shirt",
+            "red_bowtie",
+            "grey_skirt",
             "pleated_skirt",
+            "white_socks",
+            "loafers",
             "two_side_up",
             "pink_ribbon"
           ],
@@ -95,18 +106,43 @@
         },
         {
           "id": "nsfw_boudoir",
-          "name": "魅魔米莉艾拉Cos战袍与私密薄纱",
-          "prose": "her iconic Miriella succubus cosplay ensemble featuring a skintight black leather bodysuit, bat wings, and revealing sheer accents",
+          "name": "恶魔米莉艾拉 Cos 战衣",
+          "prose": "her Miriella cosplay from the in-universe Ashford War Chronicles: a two-tone purple-and-pink long twintail wig, a black open-navel sleeveless top with pink trim, a pink belt, a short black-and-pink pleated skirt, black over-knee socks with pink garter straps, pink heels, white angular decorative wings on her shoulders and small white demon horns",
           "tokens": [
             "cosplay",
-            "succubus",
-            "demon_wings",
-            "leather_bodysuit",
-            "sheer_cloth",
-            "completely_nude"
+            "miriella_(2.5_jigen_no_ririsa)",
+            "miriella_(2.5_jigen_no_ririsa)_(cosplay)",
+            "wig",
+            "multicolored_hair",
+            "two-tone_hair",
+            "twintails",
+            "wings",
+            "demon_horns",
+            "midriff",
+            "sleeveless_shirt",
+            "pink_skirt",
+            "thighhighs",
+            "high_heels"
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely unclad with a slim model figure, soft full breasts with flushed pink nipples and bare intimate contours",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "bare_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "slender_waist"
+          ],
+          "default": false,
+          "isDefault": false,
+          "isNsfw": true
         },
         {
           "id": "sfw_bridal",

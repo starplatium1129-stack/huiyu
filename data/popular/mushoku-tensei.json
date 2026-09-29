@@ -412,16 +412,18 @@
         "aisha greyrat",
         "aisha",
         "アイシャ・グレイラット",
-        "爱莎",
+        "爱夏",
+        "爱夏·格雷拉特",
+        "爱莎·格雷拉特",
         "艾莎·格雷拉特",
         "mushoku tensei",
         "jobless reincarnation"
       ],
       "animeStudio": "studio bind, official anime coloring, fantasy anime illustration",
       "canon": {
-        "era": "中世纪奇幻（成年平行设定）",
-        "formNotes": "用户指定的成年版（22+）；深栗红高马尾、绿色眼睛、红色发带；保留机敏、聪慧与格雷拉特家女仆装识别点，不沿用幼年或学龄形象",
-        "research": "成年年龄为本次用户指定设定；原作身份与性格参考动画官方角色页 https://mushokutensei.jp/character/",
+        "era": "中世纪奇幻（成年形态）",
+        "formNotes": "成年形态（原作正传结局 29 岁，本条目为 22+ 成年版）；深栗红／茶褐色短发扎高马尾、两侧鬓发、绿色眼睛、笑露小虎牙；发饰为素色白色发带，女仆装为深褐近黑长袖连衣裙＋白色褶边围裙＋白色褶领，不戴眼镜（眼镜与发髻是母亲莉莉娅的特征）",
+        "research": "2026-09 调研：萌娘百科《爱夏·格雷拉特》https://zh.moegirl.org.cn/爱夏·格雷拉特 （「拥有和母亲莉莉娅一样特征的红发」）；原作小说第 6 卷「パウロに似た茶髪をポニーテールにしている」；英文维基/Fandom 发型与发饰、Danbooru aisha_greyrat 关联 tag（red_hair 主导、hair_ribbon 不成立）",
         "world": "异世界奇幻（无职转生·六面世界）"
       },
       "curatedArtistStyles": [
@@ -430,22 +432,24 @@
         "kantoku"
       ],
       "defaultOutfitId": "maid_uniform",
-      "displayName": "爱莎·格雷拉特（成年版）",
+      "displayName": "爱夏·格雷拉特（成年版）",
       "exactPrefixes": [],
       "exactTokens": [
         "aisha_greyrat"
       ],
       "franchise": "Mushoku Tensei",
       "id": "aisha_greyrat",
-      "identityProse": "An unmistakably adult, age-twenty-plus alternate-timeline version of Aisha Greyrat from Mushoku Tensei, with deep auburn hair in a high ponytail tied by a burgundy ribbon, vivid green eyes, a perceptive expression, and a poised, capable presence.",
+      "identityProse": "Aisha Greyrat from Mushoku Tensei as a grown woman, the quick-witted daughter of Paul and the maid Lilia, with short reddish-brown auburn hair gathered into a neat ponytail by a plain white hairband, sidelocks framing her cheeks, vivid green eyes, a small fang showing when she smiles, and a composed, perceptive presence.",
       "identityTokens": [
         "aisha_greyrat",
         "solo",
         "adult_woman",
-        "auburn_hair",
-        "high_ponytail",
+        "red_hair",
+        "short_hair",
+        "ponytail",
+        "hairband",
+        "sidelocks",
         "green_eyes",
-        "red_hair_ribbon",
         "mushoku_tensei"
       ],
       "negativeTokens": [
@@ -464,16 +468,16 @@
           "name": "格雷拉特家女仆装",
           "isDefault": true,
           "default": true,
-          "prose": "a modest, fully covered Greyrat-house maid uniform with a crisp white long-sleeved blouse, charcoal fitted bodice, burgundy bow, long dark skirt and white apron",
+          "prose": "a modest, fully covered Greyrat-house maid uniform: a dark brown long-sleeved dress with a white frilled apron, a white ascot collar and white cuffs, her hair gathered under a plain white maid headdress",
           "tokens": [
-            "maid_uniform",
-            "white_blouse",
+            "maid",
+            "maid_apron",
+            "black_dress",
             "long_sleeves",
-            "charcoal_bodice",
-            "burgundy_bow",
-            "long_skirt",
             "white_apron",
-            "red_hair_ribbon"
+            "white_ascot",
+            "maid_headdress",
+            "hairband"
           ]
         },
         {
@@ -524,14 +528,14 @@
           "name": "成年版婚礼礼服造型",
           "isDefault": false,
           "default": false,
-          "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a burgundy sash and a modest floor-length skirt",
+          "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a slim ivory sash and a modest floor-length skirt",
           "tokens": [
             "bridal_gown",
             "wedding_dress",
             "ivory_gown",
             "lace_sleeves",
             "veil",
-            "burgundy_sash",
+            "ivory_sash",
             "floor_length_skirt"
           ]
         },
@@ -561,6 +565,23 @@
             "opaque_robe",
             "high_neckline",
             "full_coverage"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "default": false,
+          "isNsfw": true,
+          "prose": "completely unclad with an adult feminine figure, soft full breasts with flushed pink nipples and bare intimate contours",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "bare_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "slender_waist"
           ]
         }
       ],

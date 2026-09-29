@@ -3230,7 +3230,7 @@
     },
     {
       "id": "aisha_greyrat_morning_ledgers",
-      "title": "爱莎·晨光中的账目核对",
+      "title": "爱夏·晨光中的账目核对",
       "outfitId": "maid_uniform",
       "action": "左手压住账册，右手用羽毛笔圈出一项数字",
       "location": "格雷拉特宅邸书房",
@@ -3247,7 +3247,7 @@
         "morning",
         "fantasy"
       ],
-      "description": "晨光从书桌左侧照入。爱莎坐在桌后，左手压住摊开的账册，右手的羽毛笔停在刚圈出的数字上，眉梢微挑。白衬衫、深色束身衣与围裙保持整齐；前景的收据束与后方的分类书架交代宅邸事务，焦点落在脸、笔尖和账页之间。",
+      "description": "晨光从书桌左侧照入。爱夏坐在桌后，左手压住摊开的账册，右手的羽毛笔停在刚圈出的数字上，眉梢微挑。深褐连衣裙与白色围裙保持整齐；前景的收据束与后方的分类书架交代宅邸事务，焦点落在脸、笔尖和账页之间。",
       "promptProse": "At an oak desk, Aisha pauses with her quill touching a circled entry in an open household ledger. Her left palm holds the page flat while her raised eyebrow suggests she has found a discrepancy. Seen across the near desk corner in a waist-up view, she sits between a bundle of receipts in the foreground and labeled storage shelves behind her. Sunlight from the window on the left illuminates her face, the writing hand and the paper together; the far shelves remain softly shaded.",
       "promptTokens": [
         "seated_at_desk",
@@ -3284,7 +3284,7 @@
     },
     {
       "id": "aisha_greyrat_spell_notes",
-      "title": "爱莎·页边的术式修订",
+      "title": "爱夏·页边的术式修订",
       "outfitId": "study_attire",
       "action": "左手食指对照书中图形，右手在笔记页边补上一笔",
       "location": "宅邸藏书室",
@@ -3301,7 +3301,7 @@
         "notes",
         "fantasy"
       ],
-      "description": "爱莎侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
+      "description": "爱夏侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
       "promptProse": "Two open volumes lie side side on the library table: a reference tome and a working notebook. Aisha leans slightly forward, placing her left index finger beneath a diagram in the tome while her right hand draws one connecting stroke in the notebook with a feather pen. A three-quarter view keeps her intent eyes and both contact points visible. Afternoon sun crosses the pages diagonally, with an inkpot at the far corner and the arch of a tall window behind her shoulder.",
       "promptTokens": [
         "leaning_forward",
@@ -3335,7 +3335,7 @@
     },
     {
       "id": "aisha_greyrat_garden_plans",
-      "title": "爱莎·花宴之前",
+      "title": "爱夏·花宴之前",
       "outfitId": "formal_gown",
       "action": "左手托住布置板，右手用铅笔标记长桌的位置",
       "location": "宅邸庭院",
@@ -3352,7 +3352,7 @@
         "flowers",
         "fantasy"
       ],
-      "description": "爱莎站在庭院石径的一侧，左臂托住布置板，右手用铅笔在图上标出花宴长桌的位置。酒红与象牙白的长袖礼服垂至脚踝。横幅中人物位于左侧，右侧石径通向尚未摆满的长桌和花圃；晨光同时照亮图板边缘与桌面，呈现布置尚在进行的一刻。",
+      "description": "爱夏站在庭院石径的一侧，左臂托住布置板，右手用铅笔在图上标出花宴长桌的位置。酒红与象牙白的长袖礼服垂至脚踝。横幅中人物位于左侧，右侧石径通向尚未摆满的长桌和花圃；晨光同时照亮图板边缘与桌面，呈现布置尚在进行的一刻。",
       "promptProse": "The stone path leads from Aisha at the left of the frame toward a partly arranged banquet table on the right. Standing firmly beside a flower border, she braces a planning board on her left forearm and marks the table position with a pencil in her right hand. Her ankle-length burgundy-and-ivory gown falls clear of the paving. In this wide garden view, morning sunlight picks out the board edge and the pale tablecloth, while the manor facade closes the distant background.",
       "promptTokens": [
         "holding_clipboard",
@@ -3386,7 +3386,7 @@
     },
     {
       "id": "aisha_greyrat_market_errand",
-      "title": "爱莎·香料摊前的比较",
+      "title": "爱夏·香料摊前的比较",
       "outfitId": "travel_cloak",
       "action": "左手托起一只香料罐，右手把清单压在摊位边缘",
       "location": "阿斯拉王国城镇市集",
@@ -3403,7 +3403,7 @@
         "fantasy",
         "town"
       ],
-      "description": "爱莎停在市集香料摊前，左手将一只小陶罐托到视线下方，右手把采购单压在木柜台边缘。旅行斗篷的兜帽垂在肩后，马尾和发带完整露出，挎包闭合。棚布投下柔和阴影，罐口与手背接住摊位外的日光；横幅背景以空置摊架、布幌和石墙交代市集。",
+      "description": "爱夏停在市集香料摊前，左手将一只小陶罐托到视线下方，右手把采购单压在木柜台边缘。旅行斗篷的兜帽垂在肩后，马尾和发带完整露出，挎包闭合。棚布投下柔和阴影，罐口与手背接住摊位外的日光；横幅背景以空置摊架、布幌和石墙交代市集。",
       "promptProse": "Beneath a striped market awning, Aisha lifts a small ceramic spice jar in her left palm and examines its contents. Her right hand pins a shopping slip against the wooden counter, and her closed cross-body satchel rests at her hip. The travel cloak hood lies behind her shoulders, leaving the ponytail and ribbon visible. A medium-wide view includes rows of jars along the counter; daylight catches their rims beneath the awning shade, with empty stall frames and stone walls beyond.",
       "promptTokens": [
         "examining_jar",
@@ -3437,7 +3437,7 @@
     },
     {
       "id": "aisha_greyrat_bridal_portrait",
-      "title": "爱莎·花廊下的回眸",
+      "title": "爱夏·花廊下的回眸",
       "outfitId": "sfw_bridal",
       "action": "抬手扶住头纱边缘，转头望向镜头",
       "location": "宅邸花园花廊",
@@ -3454,7 +3454,7 @@
         "veil",
         "adult_portrait"
       ],
-      "description": "花廊下，爱莎身体朝向石径，转头望向镜头，一只手轻扶被微风带起的头纱边缘，另一只手自然垂在腰侧。象牙白蕾丝长袖与酒红腰带呼应发带。镜头取至大腿上部，白花只沿画面两侧形成边框，夕阳透过头纱，脸部保留柔和反光。",
+      "description": "花廊下，爱夏身体朝向石径，转头望向镜头，一只手轻扶被微风带起的头纱边缘，另一只手自然垂在腰侧。象牙白蕾丝长袖与象牙白腰带呼应白色发带。镜头取至大腿上部，白花只沿画面两侧形成边框，夕阳透过头纱，脸部保留柔和反光。",
       "promptProse": "Under a flowering arbor, Aisha turns her head back toward the viewer while her shoulders remain angled along the path. One hand lightly catches the edge of her wind-lifted veil; the other rests beside the burgundy sash of her ivory lace-sleeved gown. Frame her from the upper thighs upward, with white blossoms confined to the side edges and open space around her face. Low evening sun passes through the veil from behind, while pale paving reflects gentle light into her eyes.",
       "promptTokens": [
         "looking_back",
@@ -3488,7 +3488,7 @@
     },
     {
       "id": "aisha_greyrat_beach_day",
-      "title": "爱莎·潮线之外",
+      "title": "爱夏·潮线之外",
       "outfitId": "sfw_beach",
       "action": "一手扶住草帽帽檐，另一手拢住被海风吹起的罩衫侧摆",
       "location": "六面世界海滨",
@@ -3505,7 +3505,7 @@
         "swimsuit",
         "summer"
       ],
-      "description": "爱莎穿着深绿连身泳装、亚麻罩衫与平底凉鞋，站在潮线之外的干沙上。一手扶住草帽帽檐，另一手拢住罩衫侧摆，目光追随右侧刚退去的浪花。横幅给海面留出空间，海风将发带和衣摆带向同一侧；明亮沙地反光照亮面部，浅色礁石压住远景。",
+      "description": "爱夏穿着深绿连身泳装、亚麻罩衫与平底凉鞋，站在潮线之外的干沙上。一手扶住草帽帽檐，另一手拢住罩衫侧摆，目光追随右侧刚退去的浪花。横幅给海面留出空间，海风将发带和衣摆带向同一侧；明亮沙地反光照亮面部，浅色礁石压住远景。",
       "promptProse": "A retreating wave leaves a bright curved line across the right half of the beach. On dry sand to its left, Aisha steadies the brim of her straw sunhat with one hand and gathers the side hem of her linen cover-up with the other, watching the foam. Flat sandals support both feet above the wet shoreline; the dark-green one-piece swimsuit remains beneath the cover-up. The ribbon and loose fabric trail in the same sea breeze, with reflected sand light on her face and pale rocks beyond the open water.",
       "promptTokens": [
         "holding_hat_brim",
@@ -3542,9 +3542,9 @@
     },
     {
       "id": "aisha_greyrat_r18_maid_desk_unbutton",
-      "title": "爱莎·夜阑账房解衣",
+      "title": "爱夏·夜阑账房解衣",
       "outfitId": "maid_uniform",
-      "action": "在深夜账房反锁房门后倚坐桌沿，解开女仆衬衫与束身衣纽扣，大敞衣襟露出饱满双乳与粉嫩乳头，单手撩起长裙裙摆展示大腿与吊袜带",
+      "action": "在深夜账房反锁房门后倚坐桌沿，解开女仆连衣裙前襟与围裙系带，大敞衣襟露出饱满双乳与粉嫩乳头，单手撩起长裙裙摆展示大腿与吊袜带",
       "location": "格雷拉特宅邸账务室",
       "timeOfDay": "深夜",
       "lighting": "桌上暖色遮罩油灯与冷色窗棂月光",
@@ -3563,7 +3563,7 @@
         "night",
         "candlelight"
       ],
-      "description": "夜深人静，爱莎在核验完最后一叠账卷后反锁了书房。松懈下日间的严谨克制，她倚坐在坚实的胡桃木书桌边缘，将紧绷的深色女仆束胸与白色长袖衬衫彻底解开，任由薄棉衣料向两侧大敞，饱满雪白的双乳与娇嫩的粉红乳头完全袒露在微凉空气中。她一手轻抚锁骨下起伏的胸脯，另一手撩起黑色裙裾，展示出紧勒着吊袜带与黑色过膝袜的大腿线条，面泛潮红，目光微转。",
+      "description": "夜深人静，爱夏在核验完最后一叠账卷后反锁了书房。松懈下日间的严谨克制，她倚坐在坚实的胡桃木书桌边缘，解开深色女仆连衣裙的前襟，把白色围裙推到腰侧，任由薄棉衣料向两侧大敞，饱满雪白的双乳与娇嫩的粉红乳头完全袒露在微凉空气中。她一手轻抚锁骨下起伏的胸脯，另一手撩起深褐裙裾，展示出紧勒着吊袜带与黑色过膝袜的大腿线条，面泛潮红，目光微转。",
       "promptProse": "Inside the locked mansion accounting chamber late at night, adult Aisha Greyrat leans back against the polished walnut desk beside stacked parchment ledgers and an inkpot. A hooded desk lantern casts warm amber lamplight across her flushed collarbones and the wooden table surface, while soft pale moonlight cuts through the leaded windowpane behind her high auburn ponytail. One hand rests near her throat while the other lifts the hem of her dark maid skirt, revealing leather garter clips and dark thighhighs against smooth skin. Seated medium composition framed against book-lined walls.",
       "promptTokens": [
         "office",
@@ -3579,7 +3579,7 @@
         "cowboy_shot",
         "night"
       ],
-      "nsfwProse": "Her crisp white maid blouse and fitted dark bodice are pulled wide open down to the waist, fully exposing her bare breasts and blushing pink nipples to the cool air while her lifted skirt reveals garter straps and pale upper thighs.",
+      "nsfwProse": "Her dark maid dress and white frilled apron are pulled wide open down to the waist, fully exposing her bare breasts and blushing pink nipples to the cool air while her lifted skirt reveals garter straps and pale upper thighs.",
       "nsfwTokens": [
         "unbuttoned_shirt",
         "open_shirt",
@@ -3626,7 +3626,7 @@
     },
     {
       "id": "aisha_greyrat_r18_boudoir_lingerie",
-      "title": "爱莎·闺房酒红薄绡",
+      "title": "爱夏·闺房酒红薄绡",
       "outfitId": "adult_loungewear",
       "action": "侧卧在深色丝绒榻上，将酒红薄绡居家丝袍褪至腰际，指尖轻勾底裤边缘拉向一侧展露私密部位，微侧俏颜含羞凝视",
       "location": "宅邸私人卧室贵妃榻",
@@ -3647,7 +3647,7 @@
         "night",
         "candlelight"
       ],
-      "description": "归入私密卧房后，爱莎斜卧在宽大的深红丝绒贵妃榻上。轻薄如烟的酒红缎面丝袍滑落垂在腰际，胸前半透的绯红蕾丝薄衣彻底敞落，圆润饱满的双峰在跳跃的烛光下泛着诱人的温润光泽与粉嫩乳头。修长的右腿微微蜷曲，修长纤细的右手指尖勾住蕾丝小裤的侧带缓缓拉偏，无遮掩地露出光洁晶莹的隐秘私处与润泽水迹，面带绯红，绿眸微阖脉脉含情。",
+      "description": "归入私密卧房后，爱夏斜卧在宽大的深红丝绒贵妃榻上。轻薄如烟的酒红缎面丝袍滑落垂在腰际，胸前半透的绯红蕾丝薄衣彻底敞落，圆润饱满的双峰在跳跃的烛光下泛着诱人的温润光泽与粉嫩乳头。修长的右腿微微蜷曲，修长纤细的右手指尖勾住蕾丝小裤的侧带缓缓拉偏，无遮掩地露出光洁晶莹的隐秘私处与润泽水迹，面带绯红，绿眸微阖脉脉含情。",
       "promptProse": "In the warm seclusion of her private bedroom, Aisha Greyrat reclines horizontally across an expansive crimson velvet couch adorned with tasseled cushions. A multi-branch silver candelabrum on a nearby vanity table casts flickering golden candlelight over the lustrous dark wood and draped tapestries, carving soft shadows along her graceful hip curvature. Her high ponytail spills softly over the edge of a brocade bolster as green eyes gaze languidly toward the viewer. Horizontal boudoir side view centered on the opulent couch setting.",
       "promptTokens": [
         "bedroom",
@@ -3710,8 +3710,8 @@
     },
     {
       "id": "aisha_greyrat_r18_bath_steam_droplets",
-      "title": "爱莎·雾气私汤凝脂",
-      "outfitId": "adult_loungewear",
+      "title": "爱夏·雾气私汤凝脂",
+      "outfitId": "nsfw_nude",
       "action": "全裸坐在石砌温汤阶梯上，双膝微微分开，晶莹水珠沿锁骨与丰满双乳滚落，单手挽住湿润马尾回眸轻喘",
       "location": "宅邸私人石砌温汤浴室",
       "timeOfDay": "深夜",
@@ -3732,7 +3732,7 @@
         "night",
         "lantern"
       ],
-      "description": "在深夜静谧的宅邸私密浴池中，温热的水汽在古朴石壁间徐徐蒸腾。爱莎褪去所有衣物全裸坐在浸没于温水中的青石阶梯上，双膝自然微分。滚烫的温泉水汽将雪白剔透的肌肤蒸透成诱人的淡绯色，晶莹剔透的水珠顺着优美锁骨、饱满娇挺的双乳与粉色乳头缓缓滑下，在紧致小腹与修长腿根凝聚滴落。她一手轻挽因吸饱水汽而服帖在颈侧的深栗红马尾，微张樱唇呼出微热白汽，眼神湿润而动情。",
+      "description": "在深夜静谧的宅邸私密浴池中，温热的水汽在古朴石壁间徐徐蒸腾。爱夏褪去所有衣物全裸坐在浸没于温水中的青石阶梯上，双膝自然微分。滚烫的温泉水汽将雪白剔透的肌肤蒸透成诱人的淡绯色，晶莹剔透的水珠顺着优美锁骨、饱满娇挺的双乳与粉色乳头缓缓滑下，在紧致小腹与修长腿根凝聚滴落。她一手轻挽因吸饱水汽而服帖在颈侧的深栗红马尾，微张樱唇呼出微热白汽，眼神湿润而动情。",
       "promptProse": "Inside the private natural stone bathhouse, dense fragrant steam drifts gently across warm ripples late at night. Aisha Greyrat sits completely unclad on the submerged marble steps, her posture upright as clear thermal water laps around her slender waist and thighs. A sheltered brass lantern hanging from a cedar beam projects soft amber radiance across wet flagstones, generating shimmering golden highlights across damp tilework. Strands of wet auburn hair cling along her flushed neck, framed in a vertical medium composition with steam filling the quiet background.",
       "promptTokens": [
         "bathhouse",
@@ -3796,8 +3796,8 @@
     },
     {
       "id": "aisha_greyrat_r18_bed_pov_surrender",
-      "title": "爱莎·锦衾微醺献媚",
-      "outfitId": "adult_loungewear",
+      "title": "爱夏·锦衾微醺献媚",
+      "outfitId": "nsfw_nude",
       "action": "主观视角仰卧在凌乱的白色丝绸大床上，修长双腿大开呈M字姿态，完全展露润泽私密处，胸脯剧烈起伏，眼眸含泪羞怯承迎",
       "location": "宅邸主卧丝绸大床",
       "timeOfDay": "深夜",
@@ -3820,7 +3820,7 @@
         "night",
         "lamp"
       ],
-      "description": "深夜卧房的主卧大床上，第一人称主观视角（POV）俯视着卸下所有防线的爱莎。她全裸仰卧在微乱的象牙白真丝床单上，修长丰润的双腿顺应着视线大大敞开呈诱人的M字曲膝姿态，毫无遮掩地将晶莹润泽的花径幽谷全然奉献在明亮视线下。饱满高耸的雪峰随急促喘息剧烈起伏，粉嫩乳尖挺立颤动。她满面红霞、泪眼汪汪地仰视着镜头，双手紧紧抓着两侧的褶皱床单，唇瓣微启，低吟溢出。",
+      "description": "深夜卧房的主卧大床上，第一人称主观视角（POV）俯视着卸下所有防线的爱夏。她全裸仰卧在微乱的象牙白真丝床单上，修长丰润的双腿顺应着视线大大敞开呈诱人的M字曲膝姿态，毫无遮掩地将晶莹润泽的花径幽谷全然奉献在明亮视线下。饱满高耸的雪峰随急促喘息剧烈起伏，粉嫩乳尖挺立颤动。她满面红霞、泪眼汪汪地仰视着镜头，双手紧紧抓着两侧的褶皱床单，唇瓣微启，低吟溢出。",
       "promptProse": "From an intimate overhead first-person POV looking downward, Aisha Greyrat lies fully unclad on a plush four-poster bed draped in rumpled ivory silk sheets deep into the night. A shaded bedside lamp spreads concentrated golden lamplight across her flushed skin and curved torso, leaving the carved wooden headboard and velvet bed curtains in soft atmospheric shadow. Her auburn ponytail spreads across a down pillow while her green eyes look upward with intense vulnerability. Vertical full-length perspective focused between her open knees.",
       "promptTokens": [
         "bedroom",

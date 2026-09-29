@@ -1,18 +1,20 @@
 {
   "standard": {
     "id": "aisha_greyrat",
-    "displayName": "爱莎·格雷拉特（成年版）",
+    "displayName": "爱夏·格雷拉特（成年版）",
     "originalName": "Aisha Greyrat",
     "source": "Mushoku Tensei",
-    "identityProse": "An unmistakably adult, age-twenty-plus alternate-timeline version of Aisha Greyrat from Mushoku Tensei, with deep auburn hair in a high ponytail tied by a burgundy ribbon, vivid green eyes, a perceptive expression, and a poised, capable presence.",
+    "identityProse": "Aisha Greyrat from Mushoku Tensei as a grown woman, the quick-witted daughter of Paul and the maid Lilia, with short reddish-brown auburn hair gathered into a neat ponytail by a plain white hairband, sidelocks framing her cheeks, vivid green eyes, a small fang showing when she smiles, and a composed, perceptive presence.",
     "identityTokens": [
       "aisha_greyrat",
       "solo",
       "adult_woman",
-      "auburn_hair",
-      "high_ponytail",
+      "red_hair",
+      "short_hair",
+      "ponytail",
+      "hairband",
+      "sidelocks",
       "green_eyes",
-      "red_hair_ribbon",
       "mushoku_tensei"
     ],
     "outfits": [
@@ -21,16 +23,16 @@
         "name": "格雷拉特家女仆装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "a modest, fully covered Greyrat-house maid uniform with a crisp white long-sleeved blouse, charcoal fitted bodice, burgundy bow, long dark skirt and white apron",
+        "prose": "a modest, fully covered Greyrat-house maid uniform: a dark brown long-sleeved dress with a white frilled apron, a white ascot collar and white cuffs, her hair gathered under a plain white maid headdress",
         "tokens": [
-          "maid_uniform",
-          "white_blouse",
+          "maid",
+          "maid_apron",
+          "black_dress",
           "long_sleeves",
-          "charcoal_bodice",
-          "burgundy_bow",
-          "long_skirt",
           "white_apron",
-          "red_hair_ribbon"
+          "white_ascot",
+          "maid_headdress",
+          "hairband"
         ]
       },
       {
@@ -81,14 +83,14 @@
         "name": "成年版婚礼礼服造型",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a burgundy sash and a modest floor-length skirt",
+        "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a slim ivory sash and a modest floor-length skirt",
         "tokens": [
           "bridal_gown",
           "wedding_dress",
           "ivory_gown",
           "lace_sleeves",
           "veil",
-          "burgundy_sash",
+          "ivory_sash",
           "floor_length_skirt"
         ]
       },
@@ -118,21 +120,37 @@
           "high_neckline",
           "full_coverage"
         ]
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely unclad with an adult feminine figure, soft full breasts with flushed pink nipples and bare intimate contours",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "bare_breasts",
+          "pink_nipples",
+          "exposed_pussy",
+          "slender_waist"
+        ]
       }
     ]
   },
   "view": {
     "characterId": "aisha_greyrat",
-    "displayName": "爱莎·格雷拉特（成年版）",
+    "displayName": "爱夏·格雷拉特（成年版）",
     "source": "Mushoku Tensei",
-    "identityProse": "An unmistakably adult, age-twenty-plus alternate-timeline version of Aisha Greyrat from Mushoku Tensei, with deep auburn hair in a high ponytail tied by a burgundy ribbon, vivid green eyes, a perceptive expression, and a poised, capable presence.",
+    "identityProse": "Aisha Greyrat from Mushoku Tensei as a grown woman, the quick-witted daughter of Paul and the maid Lilia, with short reddish-brown auburn hair gathered into a neat ponytail by a plain white hairband, sidelocks framing her cheeks, vivid green eyes, a small fang showing when she smiles, and a composed, perceptive presence.",
     "outfits": [
       {
         "outfitId": "maid_uniform",
         "outfitName": "格雷拉特家女仆装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "a modest, fully covered Greyrat-house maid uniform with a crisp white long-sleeved blouse, charcoal fitted bodice, burgundy bow, long dark skirt and white apron",
+        "prose": "a modest, fully covered Greyrat-house maid uniform: a dark brown long-sleeved dress with a white frilled apron, a white ascot collar and white cuffs, her hair gathered under a plain white maid headdress",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -576,7 +594,7 @@
         "outfitName": "成年版婚礼礼服造型",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a burgundy sash and a modest floor-length skirt",
+        "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a slim ivory sash and a modest floor-length skirt",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -799,6 +817,117 @@
         "isDefault": false,
         "isNsfw": true,
         "prose": "opaque burgundy satin loungewear with a high neckline and a long matching robe, fully covering the chest and hips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely unclad with an adult feminine figure, soft full breasts with flushed pink nipples and bare intimate contours",
         "references": [
           {
             "id": "ref_01_face_closeup",
