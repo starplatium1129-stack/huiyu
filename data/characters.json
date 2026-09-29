@@ -12175,9 +12175,8 @@
     "type": "popular",
     "icon": "character",
     "portrait": {
-      "image": "../assets/characters/popular-aisha_greyrat.png?v=1",
-      "alt": "爱莎·格雷拉特成年版占位立绘，待主力机真实出图",
-      "status": "placeholder"
+      "image": "../assets/characters/popular-aisha_greyrat.png?v=20260929",
+      "alt": "爱莎·格雷拉特在晨光书房核对账册的日常场景"
     },
     "visual_dna": {
       "hair": "深栗红高马尾",
