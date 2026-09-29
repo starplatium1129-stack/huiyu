@@ -163,6 +163,154 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"
+    },
+    {
+      "id": "fiona_frost",
+      "displayName": "菲奥娜·弗罗斯特",
+      "originalName": "Fiona Frost",
+      "franchise": "SPY x FAMILY",
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "wise_agent_trench",
+      "identityTokens": [
+        "fiona_frost",
+        "1girl",
+        "solo",
+        "short_hair",
+        "pale_purple_hair",
+        "hair_over_one_eye",
+        "purple_eyes",
+        "stoic",
+        "spy_x_family"
+      ],
+      "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with sleek short pale-lilac hair parted over one eye, piercing cool purple eyes, an unshakeable stoic poker face, and a secret passionate heart",
+      "outfits": [
+        {
+          "id": "wise_agent_trench",
+          "name": "夜帷干员风衣西装",
+          "tokens": [
+            "trench_coat",
+            "double-breasted",
+            "dark_coat",
+            "collared_shirt",
+            "necktie",
+            "black_gloves",
+            "leather_gloves",
+            "trousers",
+            "boots"
+          ],
+          "prose": "wearing her signature dark blue tailored double-breasted trench coat with a sharp collared shirt, slim tie, black trousers, and leather gloves",
+          "styleHint": "cool cinematic espionage lighting",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "hospital_clerk_uniform",
+          "name": "医院见习事务员套裙",
+          "tokens": [
+            "office_lady",
+            "white_shirt",
+            "knit_vest",
+            "pencil_skirt",
+            "pantyhose",
+            "id_badge"
+          ],
+          "prose": "wearing a neat Berlint General Hospital clerk uniform with a crisp white blouse, pale knit vest, dark pencil skirt, pantyhose, and an ID badge",
+          "styleHint": "bright organized hospital interior",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tennis_sportswear",
+          "name": "地下网球赛潜入运动装",
+          "tokens": [
+            "sleeveless_shirt",
+            "tennis_uniform",
+            "pleated_skirt",
+            "miniskirt",
+            "wristbands",
+            "tennis_racket",
+            "athletic"
+          ],
+          "prose": "wearing an athletic white tennis uniform with a sleeveless collared top, pleated short skirt, red-and-blue trim, wristbands, and holding a tournament racket",
+          "styleHint": "dynamic high-speed tennis court drama",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_nightfall_knit",
+          "name": "私密独处修身高领毛衣",
+          "tokens": [
+            "turtleneck_sweater",
+            "ribbed_sweater",
+            "form-fitting",
+            "shorts",
+            "thighhighs"
+          ],
+          "prose": "wearing a form-fitting dark ribbed turtleneck sweater, casual lounge shorts, and dark thighhighs in private quarters",
+          "styleHint": "soft moody evening boudoir",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "bare_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "slender_waist",
+            "athletic_body"
+          ],
+          "prose": "completely unclad with no clothing, athletic toned waistline, firm shapely breasts with flushed pink nipples, and glistening intimate contours",
+          "styleHint": "dramatic cinematic rim light and soft shadows",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "菲奥娜·弗罗斯特",
+      "exactTokens": [
+        "fiona_frost"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "fiona frost",
+        "nightfall",
+        "tobari",
+        "spy x family",
+        "菲奥娜·弗罗斯特",
+        "夜帷",
+        "菲奥娜"
+      ],
+      "canon": {
+        "world": "现代日常+间谍（SPY x FAMILY）",
+        "era": "冷战东欧架空",
+        "formNotes": "浅淡紫偏冷白短发，刘海遮掩一侧眼睛，淡紫眼瞳，毫无表情扑克脸，内心狂热暗恋黄昏；双排扣风衣、网球运动服、医院事务服",
+        "research": "2026-09 调研"
+      },
+      "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"
     }
   ]
 }

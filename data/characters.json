@@ -12245,5 +12245,67 @@
     "accent_color": "#A74458",
     "bg_color": "#1b171c",
     "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+  },
+  {
+    "id": "fiona_frost",
+    "name": "菲奥娜·弗罗斯特",
+    "alias": [
+      "Fiona Frost",
+      "Nightfall",
+      "夜帷",
+      "フィオナ・フロスト",
+      "とばり"
+    ],
+    "type": "popular",
+    "icon": "🕶️",
+    "portrait": {
+      "image": "../assets/characters/popular-fiona_frost.png?v=1",
+      "alt": "菲奥娜·弗罗斯特 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅灰淡紫短发 · 单侧长刘海",
+      "hair_color": "浅淡紫（Pale Lilac / Ice Violet）",
+      "eyes": "冷酷紫瞳（Piercing Purple）",
+      "hairstyle": "干练短发 · 遮半脸刘海",
+      "uniform": "深色双排扣风衣西装 / 医院文职套裙 / 白色网球服",
+      "expression": "极度理性扑克脸 · 隐藏狂热暗恋",
+      "style": "cool elite spy with hidden passion",
+      "signature": "冰冷扑克脸、淡紫短发遮眼、深蓝风衣与狂热反差萌"
+    },
+    "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+    "bg_story": "菲奥娜·弗罗斯特是西国情报局（WISE）的顶尖干员，代号「夜帷（Nightfall）」，表面身份是伯灵顿综合医院的事务员。受过黄昏严格教导的她始终保持毫无破绽的扑克脸与冷酷计算，被同事称为没有感情的谍报机器；但在冷若冰霜的假面之下，隐藏着对前辈「黄昏」火山爆发般炽热狂乱的暗恋，时刻梦想着取代约尔成为黄昏的合法妻子。",
+    "personality": [
+      "极度冷静",
+      "扑克脸",
+      "深沉狂热",
+      "运动全能",
+      "反差萌",
+      "忠诚专一"
+    ],
+    "likes": [
+      "黄昏（洛伊德）",
+      "成为洛伊德的妻子",
+      "网球",
+      "高效完成任务"
+    ],
+    "traits": [
+      "fiona_frost",
+      "1girl",
+      "solo",
+      "short_hair",
+      "pale_purple_hair",
+      "hair_over_one_eye",
+      "purple_eyes",
+      "stoic",
+      "spy_x_family"
+    ],
+    "speech": "夜帷正在执行任务。请勿妨碍工作……以及，请离前辈远一点。",
+    "accent_color": "#6366f1",
+    "bg_color": "#0f172a",
+    "series": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+    "classic_cg": {
+      "title": "夜色下的暗号交接",
+      "description": "细雨霏霏的街头，她撑着黑伞在电话亭中以毫无波澜的声音汇报情报，眼神却穿透玻璃凝视着远处的微光。"
+    }
   }
 ]

@@ -166,7 +166,8 @@ test('popular data: preserve existing catalog, unique ids, exactly one default o
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（伊卡洛斯/小暗/菈菈/梦梦/古手川唯/娜娜），82 -> 88。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（莉雅丝/朱乃/雅儿贝德/花火/C.C.，5 位各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（两仪式/爱尔奎特/希耶尔/卡莲/黑呆，5 位各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(characters.length, 116 + legacyAdultIds.size + onboardingIds.size,
+  // 2026-09-29 间谍过家家新增菲奥娜·弗罗斯特（夜帷，fiona_frost，10 场景），159 -> 160。
+  assert.strictEqual(characters.length, 117 + legacyAdultIds.size + onboardingIds.size,
     'preserve the existing catalog alongside the six migrated adult and 36 onboarding characters');
   let ids = new Set(characters.map(function (character) { return character.id; }));
   assert.strictEqual(ids.size, characters.length, 'character ids must be unique');
@@ -233,7 +234,8 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（6 位角色各 11 蓝图 = +66 场景，88 角色 = 939 场景）。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(blueprints.length, 1249 + legacyAdultIds.size * 10 + onboardingIds.size * 10 + onboardingExtraSceneCount + coverageRepairs.additions.length,
+  // 2026-09-29 间谍过家家新增菲奥娜·弗罗斯特（10 场景），1702 -> 1712。
+  assert.strictEqual(blueprints.length, 1259 + legacyAdultIds.size * 10 + onboardingIds.size * 10 + onboardingExtraSceneCount + coverageRepairs.additions.length,
     'preserve existing scenes alongside the complete adult onboarding batches');
   let ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
@@ -262,7 +264,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
   const expectedSceneDist: any = {
-    10: 43 + legacyAdultIds.size + onboardingIds.size - extendedOnboardingIds.size,
+    10: 44 + legacyAdultIds.size + onboardingIds.size - extendedOnboardingIds.size,
     11: 66 + extendedOnboardingIds.size,
     13: 6,
     15: 1,
@@ -288,7 +290,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 98 + legacyAdultIds.size + onboardingIds.size, 5: 15, 6: 2, 10: 1 },
+  assert.deepStrictEqual(adultDist, { 4: 99 + legacyAdultIds.size + onboardingIds.size, 5: 15, 6: 2, 10: 1 },
     'adult distribution must include four scenes for each newly adult character');
 
   let adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
@@ -405,9 +407,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     'intricate_details', 'ultra_detailed', '8k', '4k',
   ];
   blueprints.forEach(function (blueprint) {
-    // Aisha's adult-only scenes deliberately remain fully covered and non-explicit;
-    // the shared R18 style recipes prepend explicit nudity, so keep those out of this set.
-    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library","aisha_greyrat_after_hours_vanity","aisha_greyrat_letter_by_window","aisha_greyrat_robe_and_book","aisha_greyrat_evening_ribbon"].includes(blueprint.id)) {
+    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) {
       assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
         blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
     }
@@ -423,8 +423,9 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     if (["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) return; // Only classification was audited; adult authoring belongs to the other task.
     if (sfwOnlyIds.has(blueprint.characterId!) || legacyAdultIds.has(blueprint.characterId!)
       || (onboardingIds.has(blueprint.characterId!) && !blueprint.adult)
-      // Aisha's covered domestic scenes use concrete emitters, not a mandatory fog/DOF template.
-      || blueprint.characterId === 'aisha_greyrat') {
+      // Aisha and Fiona use concrete emitters, not a mandatory fog/DOF template.
+      || blueprint.characterId === 'aisha_greyrat'
+      || blueprint.characterId === 'fiona_frost') {
       assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
       assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
     } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
