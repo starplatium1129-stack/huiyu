@@ -56,6 +56,41 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 ---
 
+## 数据改动如何到达桌面端
+
+打包版网关把**个人内容目录**当作权威数据源：`%APPDATA%\com.aics.studio\gateway\content\data`
+（实现见 `runtime-rs/src/config/content.rs`，注释原文 *"Existing user content is authoritative
+across restarts and upgrades"*）。该目录只在**首次启动且目录缺失**时从安装包播种，之后
+完整安装与增量部署都只更新安装目录的 `gateway\data`，**永远不会覆盖它**。
+
+后果：改 `data/**` 里的角色、服装、蓝图、场景或参考索引后，光重装/增量部署，桌面端仍然
+显示旧数据（2026-09-30 实例：内容目录停在 09-29 17:27 快照，只认 161 位角色、没有
+`fiona_frost`，迦摩/美花莉的角色修正也看不到）。另外该目录自带 `.br/.gz` 预压缩副本，
+服务端优先发压缩体，只换 `.json` 同样无效。
+
+统一入口：
+
+```powershell
+npm run wf -- desktop:content-sync                                  # 只读预览差异
+npm run wf -- desktop:content-sync --apply                          # 复制缺失/变更文件（不删除目标文件）
+npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 WebView2 缓存
+# 之后重启桌面端（托盘退出再启动，或重新执行部署入口）
+```
+
+约定与边界：
+
+- 源固定为仓库 `data/`（权威源），只增改；目标目录里多出来的文件只**列出**供人工判断，
+  不自动删除。安装目录曾残留仓库已删除的旧场景单文件（`nene-core.json`、`nene-after-story.json`、
+  `natsume-core.json`，2026-08-27），它们回流后会与数字分片并存，使场景维护接口以
+  「单文件与批次文件并存」拒绝服务；因此部署入口的 `$STALE_ASSETS` 已登记这九个路径
+  （`.json` 与 `.br/.gz`），`deploy-desktop.bat` 默认带 `-Cleanup` 时会把它们从安装目录清掉。
+- 不动用户数据（SQLite 工作区、history/projects/prompts、`pipeline-run-state.json` 等）。
+- **不重启应用**，也不证明应用内画面；装机后仍要自行核对安装目录与内容目录哈希、以及
+  实际界面（深浅主题、卡片裁切）。
+- 需要出图/真实素材的验收不走本入口。
+
+---
+
 ## 一、决策表：改了什么，就用什么
 
 2026-09-26 当前桌面已启用独立打包 UI（`http://tauri.localhost`）。它的前端编译进原生 EXE；修改 Vue / TS / CSS 后必须重新打包并完整安装，仅复制网关 `dist/` 不会更新桌面界面。构建时保留已验收的 `AICS_BUNDLED_UI_VERIFIED=1` 标记；来源切换和真实资料迁移仍经宿主维护流程，不能用标记跳过资料门槛。此次安装与迁移证据见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md)。

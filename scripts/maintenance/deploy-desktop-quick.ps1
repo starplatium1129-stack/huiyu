@@ -1,4 +1,4 @@
-﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
+# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
 # 两种模式（二选一，默认增量）：
 #   增量部署（默认）  把新鲜的 已绑定的 data/dist/assets/docs/tools 复制到已安装网关，秒级生效。
@@ -67,8 +67,16 @@ if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
 
 # 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
 # 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
+# 2026-09-30：旧场景单文件（nene-core / nene-after-story / natsume-core）在仓库中已被
+# 数字分片取代，但安装目录里的 2026-08-27 残留会随「安装目录 -> 个人内容目录」的复制
+# 回流，造成「单文件与批次文件并存」，使维护接口拒绝服务（见 docs/desktop-deployment.md）。
 # 凡是「源端删除型」的迁移，都必须在这里登记，否则增量部署永远清不掉。
-$STALE_ASSETS = @('assets\character-references')
+$STALE_ASSETS = @(
+  'assets\character-references',
+  'data\scenes\nene-core.json', 'data\scenes\nene-core.json.br', 'data\scenes\nene-core.json.gz',
+  'data\scenes\nene-after-story.json', 'data\scenes\nene-after-story.json.br', 'data\scenes\nene-after-story.json.gz',
+  'data\scenes\natsume-core.json', 'data\scenes\natsume-core.json.br', 'data\scenes\natsume-core.json.gz'
+)
 
 # 提权：注意要把已传入的参数一起带过去，否则 UAC 后的新进程会丢掉它们
 # （旧版这里只传脚本路径，导致 -SkipBuild 静默失效、白白重跑一次 build）。

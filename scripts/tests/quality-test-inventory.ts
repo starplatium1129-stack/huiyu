@@ -9,6 +9,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-workflow-runner.js',
     'test-doc-redirects.js',
     'test-desktop-staging.js',
+    'test-desktop-update-path.js',
     'test-e2e-ci-split.js',
     'test-page-architecture.js',
     'test-module-boundaries.mjs',

@@ -83,6 +83,7 @@
 | 聚合反向写回分片 | data:import / popular:import / blueprints:import | 覆盖写入操作，先核对 diff；popular:split/blueprints:split 只拆分 |
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
+| 桌面端个人内容目录 | desktop:content-sync | 仓库 `data/` → `%APPDATA%\<ns>\gateway\content\data`；默认只读预览，`--apply` 只增改不删除，`--clear-webview-cache` 另清 WebView2 缓存；之后需重启桌面端。不重启应用、不证明界面 |
 
 详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本默认计算 DATA_VERSION，客户端由 Vite 的 `virtual:data-version` 在构建时注入，不再改写 `src/stores/sceneStore.ts`；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
 
@@ -425,6 +426,8 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
 桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和两个 DLL 均与安装版本一致时才允许增量，否则须完整安装。默认同步会清 WebView2 缓存并重启桌面端。
+
+该入口只写安装目录：打包版网关把 `%APPDATA%\<ns>\gateway\content` 视为权威数据源且升级不覆盖，所以纯数据改动（角色/服装/蓝图/场景/参考索引）装完仍需 `desktop:content-sync --apply --clear-webview-cache` 再重启，否则桌面端继续显示旧数据；旧场景单文件等「源端删除型」残留由 bat 默认的 `-Cleanup` 按 `$STALE_ASSETS` 清理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
 可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 只同步当前绑定版本的文档、图标与快捷方式，与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
 
