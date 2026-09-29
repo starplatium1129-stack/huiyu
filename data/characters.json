@@ -10865,8 +10865,8 @@
       "alt": "迦摩 · 魔王沙发的慵懒午后场景样张"
     },
     "visual_dna": {
-      "signature": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
-      "hair": "white_hair",
+      "signature": "Kama from Fate/Grand Order, with purple hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "hair": "purple_hair",
       "eyes": "red_eyes",
       "uniform": "游戏时间宽松家居装",
       "expression": "按各日常场景的动作与神态呈现",
@@ -10892,7 +10892,7 @@
       "Fate 系列",
       "日常"
     ],
-    "bg_story": "常以不以为然的口吻回应世界，却会对游戏和甜点格外认真。白发红瞳与别扭的神态保留为识别点，本批以完整居家装、外出装和冬装表现日常。",
+    "bg_story": "常以不以为然的口吻回应世界，却会对游戏和甜点格外认真。紫发红瞳与别扭的神态保留为识别点，本批以完整居家装、外出装和冬装表现日常。",
     "palette": [
       "#c9a0b1",
       "#282532"
@@ -10902,7 +10902,7 @@
     "traits": [
       "kama_(fate)",
       "fate/grand_order",
-      "white_hair",
+      "purple_hair",
       "red_eyes"
     ],
     "accent_color": "#c9a0b1",

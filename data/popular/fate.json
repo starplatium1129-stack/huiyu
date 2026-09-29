@@ -2451,11 +2451,11 @@
         "迦摩",
         "Kama"
       ],
-      "identityProse": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "identityProse": "Kama from Fate/Grand Order, with purple hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
       "identityTokens": [
         "kama_(fate)",
         "fate/grand_order",
-        "white_hair",
+        "purple_hair",
         "red_eyes"
       ],
       "exactTokens": [
@@ -2482,11 +2482,9 @@
         "watermark",
         "text",
         "signature",
+        "horns",
         "2girls",
-        "1boy",
-        "nude",
-        "underwear",
-        "see-through"
+        "1boy"
       ],
       "outfits": [
         {
