@@ -11,12 +11,14 @@
         "橘美花莉",
         "Mikari Tachibana"
       ],
-      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a dedicated model and costume maker with long pink hair and bright pink eyes. Her professional composure becomes lively concentration when she works on a creative project.",
+      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a glamorous professional teen reader model with wavy chestnut brown hair tied into playful two-side-up bunches with pink ribbons, and vibrant pink eyes. Fashionable, poised, and fiercely devoted to her childhood sweetheart.",
       "identityTokens": [
         "tachibana_mikari",
         "2.5_jigen_no_ririsa",
-        "pink_hair",
+        "brown_hair",
         "long_hair",
+        "two_side_up",
+        "pink_ribbon",
         "pink_eyes"
       ],
       "exactTokens": [
@@ -44,61 +46,63 @@
         "text",
         "signature",
         "2girls",
-        "1boy",
-        "nude",
-        "underwear",
-        "see-through"
+        "1boy"
       ],
       "outfits": [
         {
           "id": "sfw_studio",
-          "name": "摄影棚端庄衬衫裙",
-          "prose": "a white collared blouse and opaque pink knee-length skirt with flat shoes",
+          "name": "摄影棚时尚露肩裙",
+          "prose": "a glamorous off-the-shoulder stylish white top and chic pink miniskirt with fashionable heels",
           "tokens": [
-            "white_blouse",
-            "collar",
+            "off_shoulder_top",
             "pink_skirt",
-            "knee_length_skirt",
-            "flat_shoes"
+            "high_heels",
+            "two_side_up",
+            "pink_ribbon"
           ],
           "default": true,
           "isDefault": true
         },
         {
           "id": "sfw_craft",
-          "name": "缝纫工作针织便装",
-          "prose": "a lavender long-sleeved cardigan, white shirt and comfortable dark trousers",
+          "name": "放学约会针织私服",
+          "prose": "a stylish lavender soft cardigan over a white camisole paired with a trendy skirt",
           "tokens": [
             "lavender_cardigan",
-            "white_shirt",
-            "dark_pants"
+            "white_camisole",
+            "short_skirt",
+            "two_side_up",
+            "pink_ribbon"
           ],
           "default": false,
           "isDefault": false
         },
         {
           "id": "sfw_school",
-          "name": "漫研社整齐制服",
-          "prose": "a dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+          "name": "名门高校辣妹制服",
+          "prose": "a fashionable gyaru-style school uniform with an open dark blazer, loosened ribbon tie, short pleated skirt, and pink hair ribbons",
           "tokens": [
             "school_uniform",
             "blazer",
-            "white_blouse",
+            "open_jacket",
             "ribbon",
-            "pleated_skirt"
+            "pleated_skirt",
+            "two_side_up",
+            "pink_ribbon"
           ],
           "default": false,
           "isDefault": false
         },
         {
           "id": "nsfw_boudoir",
-          "name": "橘美花莉·成人私密造型",
-          "prose": "a private adult ensemble built around micro_bikini, gold_bikini, dressing_room, bodysuit, completely_nude",
+          "name": "魅魔米莉艾拉Cos战袍与私密薄纱",
+          "prose": "her iconic Miriella succubus cosplay ensemble featuring a skintight black leather bodysuit, bat wings, and revealing sheer accents",
           "tokens": [
-            "micro_bikini",
-            "gold_bikini",
-            "dressing_room",
-            "bodysuit",
+            "cosplay",
+            "succubus",
+            "demon_wings",
+            "leather_bodysuit",
+            "sheer_cloth",
             "completely_nude"
           ],
           "default": false,

@@ -11491,22 +11491,22 @@
       "alt": "橘美花莉 · 摄影棚收工的三秒场景样张"
     },
     "visual_dna": {
-      "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a dedicated model and costume maker with long pink hair and bright pink eyes. Her professional composure becomes lively concentration when she works on a creative project.",
-      "hair": "pink_hair, long_hair",
+      "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a glamorous professional teen reader model with wavy chestnut brown hair tied into playful two-side-up bunches with pink ribbons, and vibrant pink eyes. Fashionable, poised, and fiercely devoted to her childhood sweetheart.",
+      "hair": "brown_hair, long_hair, two_side_up, pink_ribbon",
       "eyes": "pink_eyes",
-      "uniform": "摄影棚端庄衬衫裙",
-      "expression": "按各日常场景的动作与神态呈现",
+      "uniform": "名模露肩时尚私服 / 名门高中辣妹制服 / 魅魔米莉埃拉Cos战袍",
+      "expression": "专业甜美名模笑颜 · 对正宗娇嗔傲娇",
       "style": "anime"
     },
     "personality": [
-      "面对镜头认真专业，不把努力当作理所当然",
-      "对在意的人直率又容易逞强",
-      "参与服装创作时细致投入，愿意反复调整细节"
+      "镜头前表现力惊人，专业敬业的顶流读者模特",
+      "面对青梅竹马奥村正宗傲娇又极度专一深情",
+      "为爱入宅，愿意为了奥村跨入Cosplay界"
     ],
     "likes": [
-      "检查拍摄成片",
-      "缝制与搭配服装",
-      "和伙伴讨论创作"
+      "奥村正宗",
+      "时尚穿搭与拍摄",
+      "被奥村注视与夸赞"
     ],
     "classic_cg": {
       "title": "橘美花莉 · 摄影棚收工的三秒",
@@ -11516,20 +11516,24 @@
     "tags": [
       "橘美花莉",
       "2.5次元的诱惑",
+      "读者模特",
+      "青梅竹马",
       "日常"
     ],
-    "bg_story": "模特与社团创作者，镜头前专业、制作服装时细致认真。粉发粉瞳为常态，假发和隐形眼镜作为可选创作道具，不写入常驻外貌。",
+    "bg_story": "现役高人气时尚杂志读者模特（艺名：美莉亚 / みかリン），奥村正宗的青梅竹马。小时候因头发天生蓬松微卷受欺负而被正宗鼓励解围，从此深爱正宗十余年。本体为栗棕色微卷长发、两侧半扎发各系一个小粉色蝴蝶结发带与粉色双眸。为了挽回正宗的视线踏入Cosplay界，在漫展上戴金发假发与蓝瞳美瞳出《阿修福德战记》的魅魔米莉埃拉惊艳全场。",
     "palette": [
       "#d8a4be",
       "#282532"
     ],
     "source": "2.5 Dimensional Seduction",
-    "speech": "这块布的颜色更接近，再比一下就好。",
+    "speech": "奥村君……我的目光十年来都只看着你，你的视线也只能看着我一个人哦！",
     "traits": [
       "tachibana_mikari",
       "2.5_jigen_no_ririsa",
-      "pink_hair",
+      "brown_hair",
       "long_hair",
+      "two_side_up",
+      "pink_ribbon",
       "pink_eyes"
     ],
     "accent_color": "#d8a4be",
