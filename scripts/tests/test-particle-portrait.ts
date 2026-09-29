@@ -1,8 +1,6 @@
 'use strict';
 
-// particlePortrait 背景剔除单元测试（2026-08-16）：
-// samplePortraitPoints 应把整图点云的外圈主色当背景剔除（对齐参考实现的
-// 「透明底剪影」），抠图素材（外圈透明）与多色杂底则跳过剔除。
+// Particle portraits preserve every encoded color; only explicit transparency removes cells.
 
 const { test }: typeof import('node:test') = require('node:test');
 const assert: typeof import('assert') = require('assert');
@@ -33,16 +31,15 @@ function ringCloud(borderValue: string, interiorValue: string) {
   return cloudFromCells(cells, w, h)
 }
 
-test('整图点云：外圈主色被剔除，内部剪影保留', () => {
-  // 外圈全部 'a'(=10)，内部 'b'(=11)
+test('整图点云：边缘主色及内部同色细节全部保留', () => {
   const cloud = ringCloud('a', 'b')
-  const sample = samplePortraitPoints(cloud, 100, 100, 100)
-  assert.ok(sample.points.length > 0, '剪影内部点应保留')
-  assert.ok(sample.points.every((point) => point.paint === 11),
-    '背景色(10)格子必须被剔除，只留内部(11)')
-  assert.ok(sample.points.length < 100 * 0.9, '剔除后点数应明显少于整图')
-  // 2026-08-16 内容盒放大（0.96 → 1.02）：人物占屏约 94%，消除留白过多
-  assert.ok(sample.boxW > 0.96 && sample.boxW <= 1.02, '内容盒放大到 1.02 以撑满场域')
+  const sample = samplePortraitPoints(cloud, 120, 120, 100)
+  assert.ok(sample.points.some(point => point.paint === 10), '边缘颜色不能被当作透明背景')
+  assert.ok(sample.points.some(point => point.paint === 11), '内部颜色必须保留')
+  const solid = samplePortraitPoints(ringCloud('a', 'a'), 120, 120, 100)
+  assert.equal(sample.points.length, solid.points.length, '换色不能改变覆盖率或粒子数量')
+  assert.ok(solid.points.length > 100, '同色主体不能整张消失')
+  assert.ok(sample.boxW > 0.96 && sample.boxW <= 1.02)
 })
 
 test('抠图素材（外圈透明）：跳过剔除，内部全部保留', () => {

@@ -23,17 +23,6 @@
   --pb-active-grad: var(--mood-tension);
   --pb-badge-blue: var(--info);
   --pb-badge-green: var(--success);
-  /* 2026-08-15 rella 化：导演台静态夜空衬底（工作台不浮动，只留静谧辉光） */
   @apply tw:relative tw:isolate;
-}
-.pb::before {
-  content: "";
-  @apply tw:absolute;
-  inset: 0;
-  z-index: var(--z-below);
-  @apply tw:pointer-events-none;
-  background:
-    radial-gradient(30rem 20rem at 92% -6%, var(--rella-glow-cyan), transparent 64%),
-    radial-gradient(26rem 18rem at -4% 88%, var(--rella-glow-violet), transparent 62%);
 }
 /* char-source / popular-tags-note / btn-video-action 已外移至 src/assets/css/director/panels.css（.pb 全局），scoped 内不再保留以免抽离后失活 */
