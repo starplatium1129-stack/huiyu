@@ -279,7 +279,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Data loading (single source via sceneStore) ───────────────────────
   async function loadData() {
+    dataReady.value = false
     await sceneStore.load()
+    // Browsing only waits for required scene data; do not snapshot a pending catalog.
+    await sceneStore.loadPresetCatalog()
     const catalog = parsePresetCatalog(sceneStore.presets)
     presets.value = catalog.presets
     modelProfiles.value = catalog.modelProfiles

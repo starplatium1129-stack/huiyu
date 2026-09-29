@@ -236,6 +236,13 @@ export const useSceneStore = defineStore('scenes', () => {
     if (!result.ok) throw result.error
   }
 
+  /** Drawing requires profiles even though scene browsing can finish without them. */
+  async function loadPresetCatalog(): Promise<void> {
+    const spec = META_SPECS.find(item => item.file === 'presets.json')!
+    const result = await loadMetaSpec(spec, loadEpoch, version.value, false)
+    if (!result.ok) throw result.error
+  }
+
   async function loadMeta(force = false, lite = false, only?: ReadonlySet<string>): Promise<void> {
     const epoch = loadEpoch
     const requestVersion = version.value
@@ -505,6 +512,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
   }
 })
