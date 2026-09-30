@@ -60,20 +60,23 @@ test.beforeAll(async () => {
       "export * from './src/composables/useBackup.ts';",
       "export * from './src/composables/useImageStore.ts';",
       "export * from './src/composables/useTaskCenter.ts';",
-      `import { saveGeneratedArtwork } from './src/application/artwork/saveGeneratedArtwork.ts';
-       import { withArtworkStaging } from './src/storage/artworkSession.ts';
-       import { imgPut, imgDelete, imgGetRecord } from './src/composables/useImageStore.ts';
+      `import { saveArtworkSnapshot } from './src/application/artwork/saveGeneratedArtwork.ts';
+       import { prepareGeneratedArtwork } from './src/application/artwork/artworkSaveInput.ts';
+       import { imgGetRecord } from './src/composables/useImageStore.ts';
        import { artworkRepository } from './src/storage/artworkRepository.ts';
        export async function saveFixtureArtwork(artworkId) {
-         const result = await saveGeneratedArtwork({ blob: new Blob(['neutral fixture'], { type: 'image/png' }), prompt: 'Neutral fixture.' }, {
-           withStaging: withArtworkStaging, putImage: imgPut, deleteImage: imgDelete,
-           cacheThumbnail: async () => {}, measureBlob: async () => ({ width: null, height: null }),
-           now: () => 1234, nextId: () => artworkId, appendArtwork: artworkRepository.appendArtwork,
-           normalizeArtistStyleIds: () => [],
-           resolveLegacyDefaults: () => ({ subject: { kind: 'studio' }, character: 'nene', scene: null, sceneTitle: null, story: '',
+         const snapshot = prepareGeneratedArtwork({ blob: new Blob(['neutral fixture'], { type: 'image/png' }), prompt: 'Neutral fixture.' },
+           () => ({ subject: { kind: 'studio' }, character: 'nene', scene: null, sceneTitle: null, story: '',
              visualDescription: '', seed: -1, emotion: [], shot: null, lighting: null, composition: null, colorMood: null,
              manual_tags: [], lora: null, cfg: 7, steps: 20, sampler: 'euler', scheduler: 'normal', model: 'fixture', size: '',
-             hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false, project: '', artistStyleIds: [] }),
+             hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false, project: '', artistStyleIds: [] }));
+         const result = await saveArtworkSnapshot(snapshot, {
+           withStaging: work => artworkRepository.withStaging(work),
+           putImage: blob => artworkRepository.putImage(blob), deleteImage: id => artworkRepository.deleteImage(id),
+           cacheThumbnail: async () => {}, measureBlob: async () => ({ width: null, height: null }),
+           now: () => 1234, nextId: () => artworkId,
+           readArtworkHistory: () => artworkRepository.readHistory(), appendArtwork: entry => artworkRepository.appendArtwork(entry),
+           normalizeArtistStyleIds: () => [],
          });
          return result.ok ? { id: result.entry.id, imagePresent: Boolean(await imgGetRecord(result.entry.image_id)) } : null;
        }`,
