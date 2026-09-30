@@ -4,7 +4,7 @@ import { defineComponent, h, ref } from 'vue'
 import DirectorStagePanel from './DirectorStagePanel.vue'
 
 vi.mock('@/composables/useInterrogate', () => ({
-  useInterrogate: () => ({ busy: ref(false), error: ref(null), interrogate: vi.fn() }),
+  useInterrogate: () => ({ busy: ref(false), error: ref(null), interrogate: vi.fn(), cancel: vi.fn() }),
 }))
 const Reveal = defineComponent({
   name: 'CgImageReveal', props: ['src', 'autoReveal'], emits: ['reveal-start', 'reveal-complete'],

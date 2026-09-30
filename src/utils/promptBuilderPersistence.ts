@@ -30,6 +30,11 @@ export interface DraftSelections {
   composition: string | null
 }
 
+export interface DraftOutfitOverride {
+  tokens: string[]
+  replaced: string | null
+}
+
 export interface PromptBuilderDraft {
   updatedAt: number
   story?: string
@@ -40,6 +45,7 @@ export interface PromptBuilderDraft {
   selections?: Partial<DraftSelections>
   colorMood?: string | null
   manualTags?: string[]
+  outfitOverride?: DraftOutfitOverride | null
   artistStyleIds?: string[]
   sceneBaseStory?: string
   directorMode?: 'basic' | 'pro'
@@ -98,6 +104,12 @@ function finiteNumber(value: unknown): number | undefined {
 
 function stringList(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+}
+
+function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
+  if (!isRecord(value)) return null
+  const tokens = [...new Set(stringList(value.tokens).map(token => token.trim()).filter(Boolean))]
+  return tokens.length ? { tokens, replaced: nullableString(value.replaced) ?? null } : null
 }
 
 export function isSDParamKey(key: string): key is keyof SDParams {
@@ -166,6 +178,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     selections,
     colorMood: nullableString(value.colorMood),
     manualTags: stringList(value.manualTags),
+    outfitOverride: value.subject === 'popular' ? parseOutfitOverride(value.outfitOverride) : null,
     artistStyleIds: normalizeArtistStyleIds(value.artistStyleIds),
     sceneBaseStory: stringValue(value.sceneBaseStory),
     directorMode,

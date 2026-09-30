@@ -282,3 +282,51 @@ async fn disconnected_interrogation_closes_upstream_and_releases_single_admissio
     assert!(std::fs::read_dir(&mock.input).unwrap().next().is_none());
     stop.cancel();
 }
+
+#[tokio::test]
+async fn request_body_limit_preserves_the_advertised_image_size_boundary() {
+    let (_root, service, _mock, url, client, stop) = fixture().await;
+    // Hold admission so these byte-boundary fixtures never reach a decoder or
+    // an upstream service. A valid-size request must get past JSON validation.
+    let admission = service.native.admit().unwrap();
+    let endpoint = format!("{url}/api/interrogate");
+    let encoded = STANDARD.encode(vec![0; MAX_BYTES]);
+    let response = client
+        .post(&endpoint)
+        .json(&json!({
+            "image":format!("data:image/png;base64,{encoded}"),
+            "mode":"tag",
+            "threshold":0.35
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::TOO_MANY_REQUESTS);
+    assert_eq!(
+        response.json::<Value>().await.unwrap()["code"],
+        "INTERROGATE_BUSY"
+    );
+
+    let response = client
+        .post(&endpoint)
+        .json(&json!({"image":STANDARD.encode(vec![0; MAX_BYTES + 1])}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::PAYLOAD_TOO_LARGE);
+    assert_eq!(
+        response.json::<Value>().await.unwrap()["code"],
+        "IMAGE_TOO_LARGE"
+    );
+
+    let response = client
+        .post(&endpoint)
+        .json(&json!({"image":encoded,"extra":"x".repeat(64 * 1024)}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::PAYLOAD_TOO_LARGE);
+    drop(admission);
+    service.close().await;
+    stop.cancel();
+}

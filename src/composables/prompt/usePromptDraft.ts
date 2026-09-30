@@ -1,7 +1,7 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
-import { onScopeDispose, type Ref, type ComputedRef } from 'vue'
+import { onScopeDispose, watch, type Ref, type ComputedRef } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { isSDParamKey, parsePromptBuilderDraft, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { isSDParamKey, parsePromptBuilderDraft, type DraftOutfitOverride, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
@@ -19,6 +19,7 @@ export interface PromptDraftState {
   selections: Selections
   colorMood: Ref<string | null>
   manualTags: Ref<Set<string>>
+  outfitOverride: Ref<DraftOutfitOverride | null>
   artistStyleIds: Ref<string[]>
   sceneBaseStory: Ref<string>
   directorMode: Ref<'basic' | 'pro'>
@@ -33,7 +34,7 @@ export interface PromptDraftState {
 
 /** Owns the draft persistence timer; never owns generation or artwork storage. */
 export function usePromptDraft(state: PromptDraftState) {
-  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash } = state
+  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash } = state
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
@@ -66,6 +67,9 @@ export function usePromptDraft(state: PromptDraftState) {
       selections: { emotion: [...selections.emotion], shot: selections.shot, lighting: selections.lighting, composition: selections.composition },
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
+      outfitOverride: subject.value.kind === 'popular' && outfitOverride.value
+        ? { tokens: [...outfitOverride.value.tokens], replaced: outfitOverride.value.replaced }
+        : null,
       artistStyleIds: [...artistStyleIds.value],
       sceneBaseStory: sceneBaseStory.value,
       directorMode: directorMode.value,
@@ -128,6 +132,9 @@ export function usePromptDraft(state: PromptDraftState) {
     } else {
       subject.value = { kind: 'studio' }
     }
+    outfitOverride.value = subject.value.kind === 'popular' && d.outfitOverride
+      ? { tokens: [...d.outfitOverride.tokens], replaced: d.outfitOverride.replaced }
+      : null
   }
 
   function saveDraft() {
@@ -156,6 +163,8 @@ export function usePromptDraft(state: PromptDraftState) {
     } catch { return false }
   }
 
+  // Clearing or editing only the reference outfit does not touch manualTags.
+  watch(outfitOverride, saveDraft, { deep: true })
 
   onScopeDispose(() => { releaseMaintenance(); if (draftTimer) clearTimeout(draftTimer) })
   return { snapshotDraft, saveDraft, restoreDraft }

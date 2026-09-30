@@ -21,6 +21,7 @@ import {
   isSDParamKey,
   parsePresetCatalog,
   type PromptPreset,
+  type DraftOutfitOverride,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -87,7 +88,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
    * 清空即恢复角色默认服装。studio 路径（宁宁/夏目）不使用——它们无默认服装注入。
    */
-  const outfitOverride = ref<{ tokens: string[]; replaced: string | null } | null>(null)
+  const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
@@ -306,7 +307,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {

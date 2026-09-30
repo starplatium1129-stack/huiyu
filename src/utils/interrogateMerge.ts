@@ -193,6 +193,7 @@ function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
 
 /** 三重去重 + 身份域与全维度冲突消解后的可叠加词条（参考图姿势与服装优先还原）。 */
 export function mergeInterrogatedTags(input: InterrogateMergeInput): InterrogateMergeResult {
+  const fixedTokens = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? [])])
   const occupied = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? []), ...input.manualTags])
   const seen = new Set(occupied)
   const accepted: string[] = [], duplicates: string[] = [], filtered: string[] = [], outfitReplacement: string[] = []
@@ -241,84 +242,47 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       continue
     }
 
-    // ── 视线与闭眼：参考图神态优先，清理 manualTags 中的冲突旧词 ──
-    if (CLOSED_EYES_TOKENS.has(key)) {
+    // Stage removals until this candidate is accepted. A token shared with an
+    // identity/scene or an earlier accepted result is not removed with manualTags.
+    const pendingRemoval = new Map<string, string>()
+    const hasRemainingConflict = (matches: (token: string) => boolean) => {
       for (const t of input.manualTags) {
         const k = normalizeKey(t)
-        if (GAZE_AND_EYE_DETAIL_TOKENS.has(k)) {
-          obsoleteManualTags.push(t)
-          occupied.delete(k)
-        }
+        if (matches(k)) pendingRemoval.set(t, k)
       }
-      const remainingGaze = [...occupied].some(t => GAZE_AND_EYE_DETAIL_TOKENS.has(t))
-      if (remainingGaze) {
-        conflict(key, '眼神', '闭眼状态与当前角色/场景设定的直视镜头冲突')
-        continue
-      }
+      const removable = new Set(pendingRemoval.values())
+      return [...occupied].some(token => matches(token)
+        && (fixedTokens.has(token) || accepted.includes(token) || !removable.has(token)))
     }
-    if (GAZE_AND_EYE_DETAIL_TOKENS.has(key)) {
-      for (const t of input.manualTags) {
-        const k = normalizeKey(t)
-        if (CLOSED_EYES_TOKENS.has(k)) {
-          obsoleteManualTags.push(t)
-          occupied.delete(k)
-        }
-      }
-      const remainingClosed = [...occupied].some(t => CLOSED_EYES_TOKENS.has(t))
-      if (remainingClosed) {
-        conflict(key, '眼神', '眼神细节与当前闭眼状态冲突')
-        continue
-      }
+
+    // ── 视线与闭眼：只替换可移除的手动词条，保留固定场景约束 ──
+    if (CLOSED_EYES_TOKENS.has(key) && hasRemainingConflict(token => GAZE_AND_EYE_DETAIL_TOKENS.has(token))) {
+      conflict(key, '眼神', '闭眼状态与当前角色/场景设定的直视镜头冲突')
+      continue
+    }
+    if (GAZE_AND_EYE_DETAIL_TOKENS.has(key) && hasRemainingConflict(token => CLOSED_EYES_TOKENS.has(token))) {
+      conflict(key, '眼神', '眼神细节与当前闭眼状态冲突')
+      continue
     }
 
     // ── 赤脚与穿鞋：参考图穿戴优先，清理 manualTags 中的冲突旧词 ──
-    if (BAREFOOT_TOKENS.has(key)) {
-      for (const t of input.manualTags) {
-        const k = normalizeKey(t)
-        if (SHOE_TOKENS.has(k)) {
-          obsoleteManualTags.push(t)
-          occupied.delete(k)
-        }
-      }
-      const remainingShoes = [...occupied].some(t => SHOE_TOKENS.has(t))
-      if (remainingShoes && input.replaceOutfit === false) {
-        conflict(key, '穿戴状态', '赤脚与当前穿鞋状态冲突')
-        continue
-      }
+    if (BAREFOOT_TOKENS.has(key) && hasRemainingConflict(token => SHOE_TOKENS.has(token)) && input.replaceOutfit === false) {
+      conflict(key, '穿戴状态', '赤脚与当前穿鞋状态冲突')
+      continue
     }
-    if (SHOE_TOKENS.has(key)) {
-      for (const t of input.manualTags) {
-        const k = normalizeKey(t)
-        if (BAREFOOT_TOKENS.has(k)) {
-          obsoleteManualTags.push(t)
-          occupied.delete(k)
-        }
-      }
-      const remainingBarefoot = [...occupied].some(t => BAREFOOT_TOKENS.has(t))
-      if (remainingBarefoot) {
-        conflict(key, '穿戴状态', '穿鞋与当前赤脚状态冲突')
-        continue
-      }
+    if (SHOE_TOKENS.has(key) && hasRemainingConflict(token => BAREFOOT_TOKENS.has(token))) {
+      conflict(key, '穿戴状态', '穿鞋与当前赤脚状态冲突')
+      continue
     }
 
     // ── 嘴部表情互斥 ──
-    if (key === 'closed_mouth') {
-      if (input.manualTags.has('open_mouth')) {
-        obsoleteManualTags.push('open_mouth')
-        occupied.delete('open_mouth')
-      } else if (occupied.has('open_mouth')) {
-        conflict(key, '面部表情', '闭嘴与当前张嘴表情冲突')
-        continue
-      }
+    if (key === 'closed_mouth' && hasRemainingConflict(token => token === 'open_mouth')) {
+      conflict(key, '面部表情', '闭嘴与当前张嘴表情冲突')
+      continue
     }
-    if (key === 'open_mouth') {
-      if (input.manualTags.has('closed_mouth')) {
-        obsoleteManualTags.push('closed_mouth')
-        occupied.delete('closed_mouth')
-      } else if (occupied.has('closed_mouth')) {
-        conflict(key, '面部表情', '张嘴与当前闭嘴表情冲突')
-        continue
-      }
+    if (key === 'open_mouth' && hasRemainingConflict(token => token === 'closed_mouth')) {
+      conflict(key, '面部表情', '张嘴与当前闭嘴表情冲突')
+      continue
     }
 
     const hit = mutualGroupWithCategory(key)
@@ -374,6 +338,10 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
           continue
         }
       }
+    }
+    for (const [tag, normalized] of pendingRemoval) {
+      if (!obsoleteManualTags.includes(tag)) obsoleteManualTags.push(tag)
+      if (!fixedTokens.has(normalized) && !accepted.includes(normalized)) occupied.delete(normalized)
     }
     accepted.push(key)
     occupied.add(key)
