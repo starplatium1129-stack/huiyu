@@ -1,4 +1,4 @@
-import { ref, watch, type ComputedRef, type Ref } from 'vue'
+import { nextTick, ref, watch, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SdResultSnapshot } from './sdResultActions'
@@ -294,6 +294,17 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       sdErrorReport.value = classifySDError({ message: err })
       return { status: 'failure' as const, error: err }
     },
+  })
+
+  // Direct generation shares the SD runner with queued jobs. Enqueue may have
+  // yielded while it was busy; resume only after its result context is captured.
+  // Watch cleanup also prevents a deferred wake after the page scope is disposed.
+  watch(sd.generating, async (busy, _previous, onCleanup) => {
+    if (busy) return
+    let cancelled = false
+    onCleanup(() => { cancelled = true })
+    await nextTick()
+    if (!cancelled) void sdQueue.process()
   })
 
   // ── 队列快照接线（声明顺序见上方 readQueueSnapshot 处的说明）──────────
