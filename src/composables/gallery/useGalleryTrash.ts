@@ -1,11 +1,25 @@
+import { onActivated, onDeactivated, onUnmounted, watch } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
-type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
-export function useGalleryTrash({ trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void> } {
+type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
+export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void> } {
 let loadVersion = 0
 let restoreVersion = 0
 let publishedIds = new Set<string | number>()
+let active = true
+let disposed = false
+function invalidateLoads() { loadVersion++ }
+onDeactivated(() => { active = false; invalidateLoads() })
+onUnmounted(() => { disposed = true; active = false; invalidateLoads() })
+onActivated(() => {
+  const returning = !active
+  active = true
+  if (returning && trashMode.value) void loadTrash()
+})
+// Opening trash is owned by toggleTrashMode; only invalidate on closing here.
+watch(trashMode, visible => { if (!visible) invalidateLoads() }, { flush: 'sync' })
 async function loadTrash() {
+  if (disposed || !active || !trashMode.value) return
   const version = ++loadVersion
   const restoration = restoreVersion
   try {

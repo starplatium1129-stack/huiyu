@@ -494,7 +494,7 @@ export function useGalleryWorkspace() {
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     const { copiedPrompt, copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
-    const trashActions = useGalleryTrash({ trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
+    const trashActions = useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }

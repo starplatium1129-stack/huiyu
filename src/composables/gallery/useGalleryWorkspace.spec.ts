@@ -5,11 +5,11 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const mocks = vi.hoisted(() => ({
-  getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
+  listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
   route: { path: '/gallery', query: {} }, replace: vi.fn(),
 }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
-  getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
+  listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
   readLibrarySnapshot: mocks.snapshot, purgeExpiredTrash: vi.fn(async () => ({ purged: 0 })),
 } }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, scenes: [], loras: [], popularCharacters: [] }) }))
@@ -44,6 +44,8 @@ beforeEach(() => {
   let url = 0
   vi.spyOn(URL, 'createObjectURL').mockImplementation(() => `blob:gallery-${++url}`)
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  mocks.listTrash.mockReset().mockResolvedValue([])
+  mocks.restoreArtwork.mockReset().mockResolvedValue({ restored: true })
   mocks.getImage.mockReset().mockResolvedValue(new Blob(['fixture'], { type: 'image/png' }))
   mocks.getThumbnail.mockReset().mockResolvedValue('data:image/jpeg;base64,thumb')
   mocks.setThumbnail.mockResolvedValue(undefined)
@@ -375,4 +377,23 @@ it.each(['temporary failure', 'missing image'])('rechecks a %s after reactivatio
   expect(mocks.getImage).toHaveBeenCalledTimes(2)
   expect(env.gallery.missingImageIds.value.has(1)).toBe(false)
   expect(env.gallery.cardUrls[1]).toBe('blob:gallery-1')
+})
+
+
+it('loads trash exactly once on opening and on an active-trash KeepAlive return', async () => {
+  const env = await setup()
+  expect(mocks.listTrash).not.toHaveBeenCalled()
+  env.gallery.toggleTrashMode()
+  await flushPromises()
+  expect(mocks.listTrash).toHaveBeenCalledTimes(1)
+  await env.hide()
+  await env.show()
+  expect(mocks.listTrash).toHaveBeenCalledTimes(2)
+  env.gallery.toggleTrashMode()
+  await env.hide()
+  await env.show()
+  expect(mocks.listTrash).toHaveBeenCalledTimes(2)
+  env.gallery.toggleTrashMode()
+  await flushPromises()
+  expect(mocks.listTrash).toHaveBeenCalledTimes(3)
 })
