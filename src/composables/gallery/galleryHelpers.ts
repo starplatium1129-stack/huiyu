@@ -2,7 +2,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 import type { TrashEntry } from '@/storage/artworkRepository'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
-import { artworkSearchText } from '@/utils/artworkSearch'
+import { artworkSearchText } from '@/application/artwork/searchIndex'
 
 /** Viewer actions bind to a stable artwork identity, never to a mutable list position. */
 export function artworkIndexById(items: readonly ArtworkRecord[], id: string | number | null): number {

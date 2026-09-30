@@ -291,7 +291,9 @@ async fn perform(
     if result.get("taskId").is_some() {
         project_task(&mut result, &session, state, &storage)?;
     }
-    Ok(Json(json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()})).into_response())
+    let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()});
+    envelope["result"] = result;
+    Ok(Json(envelope).into_response())
 }
 
 fn invalid_record() -> ApiError {

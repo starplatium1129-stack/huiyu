@@ -333,7 +333,7 @@ async function loadWorks() {
   const controller = new AbortController()
   worksController.value = controller
   try {
-    const raw = await artworkRepository.readHistory(AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
+    const raw = await artworkRepository.readSearchIndex(AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
     if (controller.signal.aborted) return
     works.value = indexArtworkSearch(raw)
   } catch {

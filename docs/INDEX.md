@@ -1,5 +1,7 @@
 # 项目文档索引
 
+全局搜索传输收口见 [单请求搜索索引（2026-09-30）](audits/2026-09-30/search-index-transfer.md)：50 次分页改为一次轻量读取、Rust 响应 ownership 移动、实际隔离链路与双主题验证。
+
 Rust 迁移后的运行时复审见 [Rust 请求与存储性能（2026-09-30）](audits/2026-09-30/rust-runtime-performance.md)：草稿 SQL 筛选、备份 statement 复用、模型目录借用，以及完整行为验证、工具链限制和后续瓶颈。
 
 性能与测试负担复审见 [搜索性能与门禁精简（2026-09-30）](audits/2026-09-30/performance-simplification.md)：查询重复工作、按需读取与取消、5 条旧源码断言删减，以及首次搜索仍需全库分页的剩余成本。

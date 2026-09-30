@@ -2,12 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import GlobalSearch from './GlobalSearch.vue'
+import { buildArtworkSearchIndex } from '@/application/artwork/searchIndex'
 
 const mocks = vi.hoisted(() => ({
   routerPush: vi.fn(),
   loadHome: vi.fn().mockResolvedValue(undefined),
   scenes: [] as Array<Record<string, unknown>>,
-  readHistory: vi.fn().mockResolvedValue([]),
+  readSearchIndex: vi.fn().mockResolvedValue([]),
 }))
 
 vi.mock('vue-router', () => ({
@@ -35,7 +36,7 @@ vi.mock('@/stores/sceneStore', () => ({
 }))
 
 vi.mock('@/storage/artworkRepository', () => ({
-  artworkRepository: { readHistory: mocks.readHistory },
+  artworkRepository: { readSearchIndex: (signal?: AbortSignal) => mocks.readSearchIndex(signal).then(buildArtworkSearchIndex) },
 }))
 
 vi.mock('@/composables/useFluidSurface', () => ({
@@ -99,7 +100,7 @@ function toggleSearch() {
 beforeEach(() => {
   mocks.routerPush.mockReset()
   mocks.loadHome.mockClear()
-  mocks.readHistory.mockReset().mockResolvedValue([])
+  mocks.readSearchIndex.mockReset().mockResolvedValue([])
   mocks.scenes.length = 0
 })
 
@@ -111,7 +112,7 @@ afterEach(() => {
 describe('GlobalSearch combobox', () => {
   it('connects the input to a stable listbox and announces the active result', async () => {
     await openSearch()
-    expect(mocks.readHistory).not.toHaveBeenCalled()
+    expect(mocks.readSearchIndex).not.toHaveBeenCalled()
     const input = searchInput()
     const listboxId = input.getAttribute('aria-controls')!
     const listbox = document.getElementById(listboxId)!
@@ -187,7 +188,7 @@ describe('GlobalSearch combobox', () => {
   })
 
   it('matches multiple words across the whole library, limits results and reuses the current read', async () => {
-    mocks.readHistory.mockResolvedValue(Array.from({ length: 10000 }, (_, i) => ({
+    mocks.readSearchIndex.mockResolvedValue(Array.from({ length: 10000 }, (_, i) => ({
       id: i + 1, timestamp: i + 1, title: i ? `Garden ${i}` : 'Oldest Sentinel', prompt: 'BLUE flower', size: '1216x912',
     })))
     mocks.scenes.push(...Array.from({ length: 12 }, (_, i) => ({ id: `s${i}`, title: `Scene ${i}`, story: 'Blue Flower' })))
@@ -200,24 +201,24 @@ describe('GlobalSearch combobox', () => {
     expect(works).toHaveLength(5)
     expect(works[0].textContent).toContain('Garden 9999')
     expect(works[0].textContent).toContain('1216x912')
-    expect(mocks.readHistory).toHaveBeenCalledOnce()
+    expect(mocks.readSearchIndex).toHaveBeenCalledOnce()
     works[0].click()
     expect(mocks.routerPush).toHaveBeenCalledWith('/prompt-builder?regen=10000')
   })
 
   it('aborts a closed search and rejects its late result after reopening', async () => {
     let finish!: (rows: unknown[]) => void
-    mocks.readHistory.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    mocks.readSearchIndex.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
     await openSearch()
     await search('stale')
-    const signal = mocks.readHistory.mock.calls[0][0] as AbortSignal
+    const signal = mocks.readSearchIndex.mock.calls[0][0] as AbortSignal
     toggleSearch()
     await settleSearch()
     expect(signal.aborted).toBe(true)
-    mocks.readHistory.mockResolvedValue([{ id: 'fresh', title: 'Fresh artwork' }])
+    mocks.readSearchIndex.mockResolvedValue([{ id: 'fresh', title: 'Fresh artwork' }])
     toggleSearch()
     await settleSearch()
-    expect(mocks.readHistory).toHaveBeenCalledOnce()
+    expect(mocks.readSearchIndex).toHaveBeenCalledOnce()
     await search('fresh')
     finish([{ id: 'stale', title: 'Stale artwork' }])
     await settleSearch()
@@ -227,17 +228,17 @@ describe('GlobalSearch combobox', () => {
 
   it('cancels pending reads on query clearing and unmount without retaining results', async () => {
     let finish!: (rows: unknown[]) => void
-    mocks.readHistory.mockImplementation(() => new Promise(resolve => { finish = resolve }))
+    mocks.readSearchIndex.mockImplementation(() => new Promise(resolve => { finish = resolve }))
     const { wrapper } = await openSearch()
     await search('stale')
-    const firstSignal = mocks.readHistory.mock.calls[0][0] as AbortSignal
+    const firstSignal = mocks.readSearchIndex.mock.calls[0][0] as AbortSignal
     await search(' ')
     expect(firstSignal.aborted).toBe(true)
     finish([{ id: 'stale', title: 'Stale artwork' }])
     await settleSearch()
     expect(document.querySelector('[role="status"].gs-empty')).toBeNull()
     await search('next')
-    const secondSignal = mocks.readHistory.mock.calls[1][0] as AbortSignal
+    const secondSignal = mocks.readSearchIndex.mock.calls[1][0] as AbortSignal
     wrapper.unmount()
     expect(secondSignal.aborted).toBe(true)
     finish([])
@@ -246,18 +247,18 @@ describe('GlobalSearch combobox', () => {
   })
 
   it('keeps a read failure visible and retries only after reopening', async () => {
-    mocks.readHistory.mockRejectedValueOnce(new Error('offline'))
+    mocks.readSearchIndex.mockRejectedValueOnce(new Error('offline'))
     await openSearch()
     await search('work')
     expect(document.querySelector('[role="alert"]')?.textContent).toContain('作品读取失败')
     await search('another work')
-    expect(mocks.readHistory).toHaveBeenCalledOnce()
+    expect(mocks.readSearchIndex).toHaveBeenCalledOnce()
     toggleSearch()
     await settleSearch()
     toggleSearch()
     await settleSearch()
     await search('work')
-    expect(mocks.readHistory).toHaveBeenCalledTimes(2)
+    expect(mocks.readSearchIndex).toHaveBeenCalledTimes(2)
     expect(document.querySelector('[role="alert"]')).toBeNull()
   })
 })

@@ -157,3 +157,27 @@ it('reads paged recommendation fields without loading the full library cache', a
   mocks.state.connection='unavailable';(rows[0] as {scene:string}).scene='changed'
   expect((await repository.readPreferenceHistory())[0]).toMatchObject({scene:'sc001'})
 })
+
+it('reads a complete search index once, detaches offline data and invalidates it after edits', async () => {
+  const record = { id: 'old', title: 'Original', timestamp: 'January 1, 2020', searchText: 'original moonlight' }
+  mocks.request.mockResolvedValue({ items: [record], revision: 9 })
+  const repository = createDesktopArtworkRepository()
+  const controller = new AbortController()
+  const index = await repository.readSearchIndex(controller.signal)
+  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'readArtworkSearchIndex' }, controller.signal)
+  index[0].title = 'changed by consumer'
+  mocks.state.connection = 'unavailable'
+  expect((await repository.readSearchIndex())[0]).toMatchObject({ title: 'Original' })
+  expect(mocks.request).toHaveBeenCalledOnce()
+  controller.abort()
+  await expect(repository.readSearchIndex(controller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+  mocks.state.connection = 'ready'
+  mocks.request.mockImplementation(async command => command.kind === 'getArtwork'
+    ? { id: 'old', body: { id: 'old' }, revision: 9, deletedAt: null } : { changed: true })
+  await repository.patchArtwork('old', { title: 'edited' })
+  mocks.state.connection = 'unavailable'
+  mocks.request.mockRejectedValue(new Error('offline'))
+  await expect(repository.readSearchIndex()).rejects.toThrow('offline')
+  mocks.state.bootstrap.runtime.workspace.workspaceId = 'another-library'
+  await expect(repository.readSearchIndex()).rejects.toThrow('身份')
+})

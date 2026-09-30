@@ -1,4 +1,4 @@
-import type { ArtworkRecord } from '../../types/artwork.ts'
+import type { ArtworkRecord, ArtworkSearchRecord } from '../../types/artwork.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -33,6 +33,7 @@ export interface TrashEntry {
 /** Business capabilities shared by the Web library and the future desktop authority. */
 export interface ArtworkRepository {
   readHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
+  readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(): Promise<ArtworkRecord[]>

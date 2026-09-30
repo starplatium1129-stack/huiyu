@@ -168,5 +168,7 @@ async fn perform(
             return Ok((error.status, Json(json!({"ok": false, "error": error.message, "code": error.code, "operationId": operation_id}))).into_response());
         }
     };
-    Ok(Json(json!({"ok": true, "result": result, "protocolVersion": 1, "workspaceId": storage.workspace_id(), "runtimeEpoch": storage.runtime_epoch()})).into_response())
+    let mut envelope = json!({"ok": true, "result": null, "protocolVersion": 1, "workspaceId": storage.workspace_id(), "runtimeEpoch": storage.runtime_epoch()});
+    envelope["result"] = result;
+    Ok(Json(envelope).into_response())
 }

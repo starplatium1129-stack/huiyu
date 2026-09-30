@@ -33,6 +33,16 @@ export interface ArtworkRecord {
   [key: string]: unknown
 }
 
+export interface ArtworkSearchRecord {
+  id: string | number
+  title?: unknown
+  sceneTitle?: unknown
+  scene?: unknown
+  timestamp?: unknown
+  size?: unknown
+  searchText: string
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
@@ -45,7 +55,7 @@ export function parseArtworkRecords(value: unknown): ArtworkRecord[] {
   })
 }
 
-export function artworkTimestamp(item: ArtworkRecord): number {
+export function artworkTimestamp(item: { id: string | number; timestamp?: unknown }): number {
   const timestamp = item.timestamp
   const parsed = typeof timestamp === 'number'
     ? timestamp

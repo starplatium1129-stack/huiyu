@@ -31,6 +31,39 @@ fn project(c: &Context, key: &str) -> Result<Option<Value>> {
 }
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
+        "readArtworkSearchIndex" => {
+            // Project before JSON decoding: legacy inline images and arbitrary
+            // recipe fields are not needed by search. Keep raw dates/titles so
+            // the client retains its established Date/String conversion rules.
+            let mut statement = c.db.prepare_cached(
+                "SELECT json_object('id',body -> '$.id','title',body -> '$.title',
+                 'sceneTitle',body -> '$.sceneTitle','scene',body -> '$.scene',
+                 'timestamp',body -> '$.timestamp','size',body -> '$.size',
+                 'fields',json_array(body -> '$.title',body -> '$.sceneTitle',body -> '$.scene',
+                 body -> '$.character',body -> '$.characterId',body -> '$.story',body -> '$.project',body -> '$.prompt'))
+                 FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
+            )?;
+            let mut rows = statement.query([])?;
+            let mut items = Vec::new();
+            while let Some(row) = rows.next()? {
+                c.check_cancel()?;
+                let mut item = json_column(row, 0)?;
+                let fields = item.as_object_mut().unwrap().remove("fields").unwrap();
+                let text = fields
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .filter_map(|field| field.as_str().filter(|text| !text.is_empty()))
+                    .collect::<Vec<_>>()
+                    .join(" ")
+                    .to_lowercase();
+                item["searchText"] = text.into();
+                items.push(item);
+            }
+            let mut result = json!({"items":null,"revision":c.revision()?});
+            result["items"] = Value::Array(items);
+            Ok(result)
+        }
         "getArtwork" => Ok(artwork(c, &entity_key(&command["id"])?)?.unwrap_or(Value::Null)),
         "getArtworks" => {
             let ids = command["ids"]

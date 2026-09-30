@@ -120,6 +120,7 @@ impl Context {
             kind,
             "status"
                 | "listArtworks"
+                | "readArtworkSearchIndex"
                 | "getArtwork"
                 | "getArtworks"
                 | "listProjects"
@@ -173,9 +174,11 @@ impl Context {
             "status" => Ok(
                 json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3,"writerEpoch":self.epoch,"revision":self.revision()?,"sqliteVersion":rusqlite::version()}),
             ),
-            "listArtworks" | "getArtwork" | "getArtworks" | "listProjects" => {
-                records::read(self, command)
-            }
+            "listArtworks"
+            | "readArtworkSearchIndex"
+            | "getArtwork"
+            | "getArtworks"
+            | "listProjects" => records::read(self, command),
             "getOperation" => self
                 .operation(principal, string(command, "operationId")?)?
                 .map(|row| saves::state(self, &row, false))
@@ -271,6 +274,7 @@ fn is_read(kind: &str) -> bool {
         kind,
         "status"
             | "listArtworks"
+            | "readArtworkSearchIndex"
             | "getArtwork"
             | "getArtworks"
             | "listProjects"

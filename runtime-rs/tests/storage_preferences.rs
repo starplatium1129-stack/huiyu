@@ -22,7 +22,10 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
     for id in 1..=3 {
         let operation = format!("add-{id}");
         read(&storage, json!({"kind":"prepareSave","operationId":operation,"artwork":{
-            "id":id,"scene":"sc001","character":"nene","favorite":id==1,"timestamp":100+id,"prompt":"x".repeat(256*1024)
+            "id":id,"title":if id==1 {json!({"future":"title"})} else {json!("ΣΟΣ İ ẞ")},
+            "sceneTitle":"Garden","scene":"sc001","character":"nene","story":"moonlight","project":"美術",
+            "favorite":id==1,"timestamp":if id==2 {json!("Fri, 01 Jan 2021 00:00:00 GMT")} else {json!(100+id)},
+            "prompt":"x".repeat(256*1024),"image_data":"unrelated legacy image".repeat(1024)
         },"media":{"alias":format!("image-{id}"),"sha256":hex::encode(Sha256::digest(&bytes)),"bytes":bytes.len(),"mime":"image/png"}})).await;
         read(&storage, json!({"kind":"uploadChunk","operationId":operation,"offset":0,"data":STANDARD.encode(&bytes)})).await;
         read(
@@ -51,6 +54,32 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
     assert_eq!(next["revision"], full["revision"]);
     assert!(serde_json::to_vec(&first).unwrap().len() < 1024);
     assert!(serde_json::to_vec(&full).unwrap().len() > 500_000);
+    let search = read(&storage, json!({"kind":"readArtworkSearchIndex"})).await;
+    assert_eq!(search["revision"], full["revision"]);
+    let items = search["items"].as_array().unwrap();
+    assert_eq!(items.len(), 2);
+    assert_eq!(items[0]["id"], 1);
+    assert_eq!(items[0]["title"], json!({"future":"title"}));
+    assert_eq!(items[0]["timestamp"], 101);
+    assert_eq!(items[1]["timestamp"], "Fri, 01 Jan 2021 00:00:00 GMT");
+    assert!(
+        items[0]["searchText"]
+            .as_str()
+            .unwrap()
+            .starts_with("garden sc001 nene moonlight 美術 ")
+    );
+    assert!(
+        items[1]["searchText"]
+            .as_str()
+            .unwrap()
+            .starts_with("σος i\u{0307} ß garden")
+    );
+    assert!(
+        items
+            .iter()
+            .all(|item| item.get("prompt").is_none() && item.get("image_data").is_none())
+    );
+    assert!(items[1]["searchText"].as_str().unwrap().len() > 256_000);
     assert!(
         storage
             .request(

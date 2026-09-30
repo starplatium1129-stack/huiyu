@@ -1,5 +1,6 @@
 import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkProjectRecord, type ArtworkSoftDeleteResult } from '../../application/artwork/artworkRepository.ts'
-import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
+import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type ArtworkSearchRecord } from '../../types/artwork.ts'
+import { buildArtworkSearchIndex, parseArtworkSearchIndex } from '../../application/artwork/searchIndex.ts'
 import { createDesktopArtworkMedia } from './artworkMedia.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
@@ -21,6 +22,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   let loadedPreferences: unknown[] | undefined
+  let loadedSearchIndex: ArtworkSearchRecord[] | undefined
   async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
@@ -39,7 +41,20 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
     loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
+    loadedSearchIndex = undefined
     return structuredClone(loadedHistory)
+  }
+  async function readSearchIndex(signal?: AbortSignal) {
+    signal?.throwIfAborted()
+    requireAuthority()
+    if (getDesktopRuntime().connection !== 'ready') {
+      if (loadedSearchIndex) return structuredClone(loadedSearchIndex)
+      if (historyLoaded) return buildArtworkSearchIndex(loadedHistory)
+    }
+    const result = await workspaceRequest<{ items: unknown }>({ kind: 'readArtworkSearchIndex' }, signal)
+    signal?.throwIfAborted()
+    loadedSearchIndex = parseArtworkSearchIndex(result.items)
+    return structuredClone(loadedSearchIndex)
   }
   async function readPreferenceHistory() {
     if (getDesktopRuntime().connection !== 'ready' && (loadedPreferences || historyLoaded)) return preferenceHistoryRows(loadedPreferences ?? loadedHistory)
@@ -58,6 +73,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (!current) return null
     const result = await workspaceRequest<Receipt>({ kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision, ...extra })
     historyLoaded = false; projectsLoaded = false
+    loadedSearchIndex = undefined
     return result
   }
   async function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
@@ -78,11 +94,12 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       receipt = operation.receipt
     }
     historyLoaded = false; projectsLoaded = false
+    loadedSearchIndex = undefined
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
   const repository: ArtworkRepository = {
-    readHistory, readProjects, readRecentHistory: readHistory, readPreferenceHistory,
+    readHistory, readSearchIndex, readProjects, readRecentHistory: readHistory, readPreferenceHistory,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {
@@ -104,6 +121,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read
       // the same record without generating another artwork or releasing its media.
       await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork })
+      loadedSearchIndex = undefined
       return readHistory()
     },
     async patchArtwork(id, patch) { return { updated: Boolean((await mutate('patchArtwork', id, { patch }))?.changed) } },

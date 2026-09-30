@@ -197,6 +197,7 @@ pub(super) fn command(
             }
             command
         }
+        ("GET", ["artwork-search-index"]) => json!({"kind": "readArtworkSearchIndex"}),
         ("GET", ["artworks", id]) => json!({"kind": "getArtwork", "id": route_id(id, query)?}),
         ("POST", ["artworks", "lookup"]) => {
             json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?})
@@ -319,6 +320,26 @@ mod tests {
     #[test]
     fn routes_preserve_numeric_ids_and_do_not_execute_supplied_commands() {
         let query = Query::from([("idType".into(), "number".into())]);
+        assert_eq!(
+            command(
+                &Method::GET,
+                &segments("artwork-search-index").unwrap(),
+                &query,
+                &json!({"kind":"backup"}),
+            )
+            .unwrap(),
+            json!({"kind":"readArtworkSearchIndex"})
+        );
+        assert_eq!(
+            command(
+                &Method::GET,
+                &segments("artworks/search-index").unwrap(),
+                &Query::default(),
+                &Value::Null,
+            )
+            .unwrap(),
+            json!({"kind":"getArtwork","id":"search-index"})
+        );
         let converted = command(
             &Method::GET,
             &segments("artworks/42").unwrap(),
