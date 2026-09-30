@@ -25,7 +25,8 @@
     },
     {
       "path": "src/utils/popularPromptBuilder.ts",
-      "sha256": "ab2632e55c5c1cbd2aadd51dd2f7f7e17f759b78e76ea6096f7c52b83cdf0c66"
+      "sha256": "349b66c208d0997f4d583933f0e023dbdbd8eab554b9e495ecb56e188a740356",
+      "note": "2026-09-30: 3f7b6fdc changes runtime reference-outfit composition and exports isGarmentToken. The content gate does not call prompt-plan builders; parsing, pollution and eligibility checks, and the mechanical recipe snapshot are unchanged. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "src/utils/blueprintComposition.ts",
