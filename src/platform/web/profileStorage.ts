@@ -1,4 +1,5 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
+import { SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
   const domain = classifyMigrationKey('local', key)
@@ -79,7 +80,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
-  const expectedReset = resetRevision
+  let expectedReset = resetRevision
   let baseValue = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
@@ -96,7 +97,18 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
       } catch (error) {
         const code = error && typeof error === 'object' && 'code' in error ? error.code : ''
         if (code !== 'REVISION_CONFLICT' && code !== 'PROFILE_RESET_CONFLICT') throw error
+        // Queue snapshots cannot be merged or rebased over another writer.
+        if (key === SD_PENDING_QUEUE_KEY && code === 'REVISION_CONFLICT') {
+          throw Object.assign(new Error('待处理队列已被其他窗口更新，请刷新页面后重试。'), { code })
+        }
         const latest = domain === 'settings' ? await selected.readSettings() : domain === 'chat' ? await selected.readChat() : await selected.readDrafts(windowId)
+        if (key === SD_PENDING_QUEUE_KEY) {
+          // A definitive reset conflict did not commit. Refresh only this write's
+          // reset token; preserve its CAS revision and unrelated chat recovery.
+          expectedReset = latest.resetRevision
+          operationId = crypto.randomUUID()
+          continue
+        }
         const remote = latest.records.find(record => record.key === key)
         if (domain !== 'settings' && latest.resetRevision !== expectedReset) {
           recovery.set(identity, { key, value, reason: 'chat-reset' })

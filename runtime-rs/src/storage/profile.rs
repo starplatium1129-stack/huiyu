@@ -50,6 +50,7 @@ const DRAFT: &[&str] = &[
     "aics_video_draft_v1",
     "aics_video_shots_draft_v1",
     "aics_pb_temp_result_v1",
+    "aics_sd_pending_queue_v1",
 ];
 pub(super) fn domain(key: &str) -> Option<&'static str> {
     if CHAT.contains(&key) {

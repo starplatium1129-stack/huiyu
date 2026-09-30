@@ -96,6 +96,8 @@ export const TEMP_RESULT_KEY = 'aics_pb_temp_result_v1'
  * 价值（引用的 checkpoint / LoRA 可能不存在），只在本机会话内往返。
  */
 export const SD_QUEUE_SNAPSHOT_KEY = 'aics_sd_queue_snapshot_v1'
+/** Window-owned pending SD inputs; runtime drafts are authoritative on desktop. */
+export const SD_PENDING_QUEUE_KEY = 'aics_sd_pending_queue_v1'
 
 export const LIVE_LOCAL_KEYS = [
   DESKTOP_START_PAGE_KEY,
