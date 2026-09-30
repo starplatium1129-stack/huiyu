@@ -30,6 +30,7 @@ pub struct Service {
     management: bool,
     client: reqwest::Client,
     shutdown: CancellationToken,
+    pub(super) read_cancel: CancellationToken,
     closed: AtomicBool,
     active: AtomicBool,
     workers: TaskTracker,
@@ -69,6 +70,7 @@ impl Service {
             configuration,
             management,
             client,
+            read_cancel: shutdown.child_token(),
             shutdown,
             closed: AtomicBool::new(false),
             active: AtomicBool::new(false),
@@ -81,6 +83,9 @@ impl Service {
     }
     pub async fn close(&self) {
         self.closed.store(true, Ordering::Release);
+        // Stop read/hash loops before waiting for a snapshot refresh to release
+        // the state lock, without revoking management rollback authorization.
+        self.read_cancel.cancel();
         if let Some(cancel) = &self.data.lock().unwrap().cancel {
             cancel.cancel();
         }
@@ -104,7 +109,7 @@ impl Service {
             let configuration = Arc::new(config::load(&self.gateway, file, self.shutdown.clone())?);
             data.config = Some(configuration.clone());
             data.task = tasks::saved(&configuration.ctx)?;
-            let snapshot = resolve::snapshot(&configuration.ctx, &self.shutdown)?.map(Arc::new);
+            let snapshot = resolve::snapshot(&configuration.ctx, &self.read_cancel)?.map(Arc::new);
             if let Some(snapshot) = &snapshot {
                 data.last_installed = Some(
                     json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.verified_files}),
@@ -141,24 +146,47 @@ impl Service {
         data.snapshot = None;
         data.issue = Some(super::public(&error));
     }
-    pub(super) fn mount(&self) -> Option<(Arc<Configuration>, Arc<Snapshot>)> {
+    pub(super) fn mount(&self, relative: &str) -> Option<(Arc<Configuration>, Arc<Snapshot>)> {
         if self.active.load(Ordering::Acquire) || self.closed.load(Ordering::Acquire) {
             return None;
         }
-        let mut data = self.data.lock().unwrap();
-        if !data.loaded {
-            self.refresh(&mut data);
-        }
-        let configuration = data.config.clone()?;
-        let snapshot = data.snapshot.clone()?;
-        match resolve::mount(&configuration.ctx, &snapshot) {
-            Ok(()) => Some((configuration, snapshot)),
-            Err(error) => {
-                data.snapshot = None;
-                data.issue = Some(super::public(&error));
-                None
+        let (configuration, snapshot) = {
+            let mut data = self.data.lock().unwrap();
+            if self.active.load(Ordering::Acquire) || self.closed.load(Ordering::Acquire) {
+                return None;
             }
+            if !data.loaded {
+                self.refresh(&mut data);
+            }
+            let snapshot = data.snapshot.as_ref()?;
+            // Bundled-only assets need no mount authorization: they cannot
+            // publish bytes from this snapshot, even if it has been revoked.
+            if !snapshot.entries.contains_key(relative) {
+                return None;
+            }
+            (data.config.clone()?, snapshot.clone())
+        };
+        // Disk authorization and pointer checks must not serialize unrelated
+        // requests or prevent cancellation/close from acquiring the state lock.
+        if let Err(error) = resolve::mount(&configuration.ctx, &snapshot) {
+            self.invalidate(&configuration, &snapshot, error);
+            return None;
         }
+        let data = self.data.lock().unwrap();
+        if self.active.load(Ordering::Acquire)
+            || self.closed.load(Ordering::Acquire)
+            || !data
+                .config
+                .as_ref()
+                .is_some_and(|current| Arc::ptr_eq(current, &configuration))
+            || !data
+                .snapshot
+                .as_ref()
+                .is_some_and(|current| Arc::ptr_eq(current, &snapshot))
+        {
+            return None;
+        }
+        Some((configuration, snapshot))
     }
     pub(super) fn status(&self, refresh: bool) -> Value {
         let mut data = self.data.lock().unwrap();

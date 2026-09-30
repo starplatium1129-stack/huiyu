@@ -11,6 +11,7 @@ const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
 export function createDesktopArtworkMedia(requireAuthority: () => void, readThumbnail: (id: string) => Promise<string | null>) {
   const images = new Map<string, { controller: AbortController; promise: Promise<Blob | null>; readers: number }>()
   const pendingThumbnails = new Map<string, Promise<string | null>>()
+  const renderingThumbnails = new Map<string, object>()
   const thumbnails = new Map<string, string>()
   let thumbnailBytes = 0
   function key(id: string) {
@@ -35,6 +36,7 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     const identity = key(id)
     forget(identity)
     pendingThumbnails.delete(identity)
+    renderingThumbnails.delete(identity)
   }
   async function fetchImage(id: string, signal: AbortSignal): Promise<Blob | null> {
     const response = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', signal,
@@ -113,11 +115,20 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
       return value
     } finally { if (pendingThumbnails.get(identity) === pending) pendingThumbnails.delete(identity) }
   }
-  async function setThumbnail(id: string, value: string) { remember(key(id), value) }
+  async function setThumbnail(id: string, value: string) {
+    const identity = key(id)
+    renderingThumbnails.delete(identity)
+    remember(identity, value)
+  }
   async function cacheThumbnail(id: string, blob: Blob) {
     const identity = key(id)
-    const value = await blobThumbDataUrl(blob)
-    if (value && key(id) === identity) remember(identity, value)
+    const rendering = {}
+    renderingThumbnails.set(identity, rendering)
+    try {
+      const value = await blobThumbDataUrl(blob)
+      // Deletion, explicit publication or a newer render supersedes this work.
+      if (value && renderingThumbnails.get(identity) === rendering && key(id) === identity) remember(identity, value)
+    } finally { if (renderingThumbnails.get(identity) === rendering) renderingThumbnails.delete(identity) }
   }
   return { getImage, getThumbnail, setThumbnail, cacheThumbnail, forgetThumbnail }
 }

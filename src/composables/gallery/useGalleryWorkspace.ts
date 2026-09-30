@@ -166,6 +166,8 @@ export function useGalleryWorkspace() {
         objectUrls.clear();
         for (const id of Object.keys(cardUrls)) delete cardUrls[id];
         cardLruOrder.clear();
+        // Missing results, including temporary read failures, expire on leaving.
+        missingImageIds.value = new Set();
     }
     /* ---------- 图片加载 ---------- */
     /**
@@ -322,7 +324,11 @@ export function useGalleryWorkspace() {
      * unobserve 会一直被 IntersectionObserver 强引用——所以每次全量重挂。
      */
     function scanWallCards() {
-        if (!viewActive || !shellEl.value || !visible.value.length) return;
+        // An empty wall still releases detached nodes and rejects queued deliveries.
+        for (const el of observedCards.keys())
+            cardObserver?.unobserve(el);
+        observedCards.clear();
+        if (unmounted || !viewActive || !shellEl.value || !visible.value.length) return;
         if (!cardObserver) {
             cardObserver = new IntersectionObserver(entries => {
                 for (const entry of entries) {
@@ -334,9 +340,6 @@ export function useGalleryWorkspace() {
                 }
             }, { rootMargin: '600px 0px' });
         }
-        for (const el of observedCards.keys())
-            cardObserver.unobserve(el);
-        observedCards.clear();
         const byId = new Map(visible.value.map(item => [String(item.id), item]));
         for (const el of shellEl.value.querySelectorAll<HTMLElement>('.artwork')) {
             const item = byId.get(el.dataset.cardId || '');
@@ -430,7 +433,7 @@ export function useGalleryWorkspace() {
     let activatedOnce = false;
     onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void nextTick(() => { scanWallCards(); if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
-        viewActive = false; releaseImages();
+        viewActive = false; cleanupFilterSync(); releaseImages();
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
         cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear();
     });

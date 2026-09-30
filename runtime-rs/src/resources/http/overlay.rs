@@ -85,7 +85,7 @@ pub async fn overlay(
     let condition = request.headers().get("if-none-match").cloned();
     let owner = service.clone();
     let loaded = crate::resources::blocking(move || {
-        let Some((configuration, snapshot)) = owner.mount() else {
+        let Some((configuration, snapshot)) = owner.mount(&relative) else {
             return Ok(None);
         };
         let Some(entry) = snapshot.entries.get(&relative) else {
@@ -121,7 +121,7 @@ pub async fn overlay(
                     if !fs::file_matches(
                         &fs::child(&snapshot.root, name)?,
                         entry,
-                        &configuration.ctx.shutdown,
+                        &owner.read_cancel,
                     )? {
                         return Err(Error::new("CONTENT_INVALID", "Live2D dependency changed"));
                     }
@@ -129,18 +129,14 @@ pub async fn overlay(
             }
             let file = fs::child(&snapshot.root, &entry.path)?;
             let bytes = if !head && !fresh {
-                Some(fs::verified_bytes(
-                    &file,
-                    entry,
-                    &configuration.ctx.shutdown,
-                )?)
+                Some(fs::verified_bytes(&file, entry, &owner.read_cancel)?)
             } else {
-                if !fs::file_matches(&file, entry, &configuration.ctx.shutdown)? {
+                if !fs::file_matches(&file, entry, &owner.read_cancel)? {
                     return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
                 }
                 None
             };
-            let Some((latest_configuration, latest)) = owner.mount() else {
+            let Some((latest_configuration, latest)) = owner.mount(&relative) else {
                 return Ok(None);
             };
             if !Arc::ptr_eq(&configuration, &latest_configuration)

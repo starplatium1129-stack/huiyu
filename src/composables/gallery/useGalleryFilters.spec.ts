@@ -119,3 +119,31 @@ describe('gallery filter metadata reuse', () => {
     stop()
   })
 })
+
+
+it('does not publish delayed filter changes or schedule new ones while inactive', async () => {
+  vi.useFakeTimers()
+  const scope = effectScope(), replace = vi.fn()
+  let active = true
+  const filters = scope.run(() => useGalleryFilters({
+    history: ref([]), projects: ref([]), columnCount: ref(2), ratioOf: () => 1,
+    route: reactive({ query: {} }) as unknown as RouteLocationNormalizedLoaded,
+    router: { replace } as unknown as Router, isViewActive: () => active,
+  }))!
+  try {
+    filters.searchQuery.value = 'pending'
+    await nextTick()
+    active = false
+    await vi.advanceTimersByTimeAsync(300)
+    expect(replace).not.toHaveBeenCalled()
+    filters.searchQuery.value = 'hidden'
+    await nextTick()
+    active = true
+    await vi.advanceTimersByTimeAsync(300)
+    expect(replace).not.toHaveBeenCalled()
+    filters.searchQuery.value = 'current'
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(300)
+    expect(replace).toHaveBeenCalledExactlyOnceWith({ query: { q: 'current' } })
+  } finally { filters.cleanupFilterSync(); scope.stop() }
+})

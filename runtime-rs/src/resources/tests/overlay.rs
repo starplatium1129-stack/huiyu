@@ -1,3 +1,5 @@
+mod close;
+mod mount;
 use super::*;
 use axum::{
     Router,
@@ -446,7 +448,8 @@ async fn same_identity_refresh_rejects_old_worker_publication_and_invalidation()
     for damaged in [false, true] {
         let fixture = Arc::new(Fixture::new());
         let path = fixture.root.join(&fixture.entries[2].path);
-        let (old_configuration, old_snapshot) = fixture.service.mount().unwrap();
+        let (old_configuration, old_snapshot) =
+            fixture.service.mount(&fixture.entries[2].path).unwrap();
         if damaged {
             let mut bytes = fixture.texture.clone();
             bytes[0] ^= 1;
@@ -465,7 +468,7 @@ async fn same_identity_refresh_rejects_old_worker_publication_and_invalidation()
             write(&path, &fixture.texture);
         }
         assert_eq!(fixture.service.status(true)["mounted"], true);
-        let (configuration, snapshot) = fixture.service.mount().unwrap();
+        let (configuration, snapshot) = fixture.service.mount(&fixture.entries[2].path).unwrap();
         assert_eq!(
             (&snapshot.identity, snapshot.sequence),
             (&old_snapshot.identity, old_snapshot.sequence)
@@ -476,7 +479,7 @@ async fn same_identity_refresh_rejects_old_worker_publication_and_invalidation()
         let (_, headers, body) = worker.await.unwrap();
         assert_eq!(body.as_ref(), b"bundled");
         assert!(!headers.contains_key("x-resource-version"));
-        let (_, current) = fixture.service.mount().unwrap();
+        let (_, current) = fixture.service.mount(&fixture.entries[2].path).unwrap();
         assert!(Arc::ptr_eq(&snapshot, &current));
         assert!(fixture.service.status(false)["issue"].is_null());
         assert_eq!(

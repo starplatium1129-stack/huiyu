@@ -113,6 +113,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   let syncTimer: ReturnType<typeof setTimeout> | null = null;
 
   function syncFiltersToQuery() {
+    if (isViewActive && !isViewActive()) return;
     const q = route.query;
     const fav = q.fav === '1';
     const project = typeof q.project === 'string' ? q.project : '';
@@ -124,6 +125,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       syncTimer = null;
+      if (isViewActive && !isViewActive()) return;
       const query: LocationQueryRaw = { ...route.query };
       if (tagFilter.value) query.tag = tagFilter.value;
       else delete query.tag;

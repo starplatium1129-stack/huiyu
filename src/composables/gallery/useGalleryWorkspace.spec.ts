@@ -37,6 +37,7 @@ const record = (id: number): ArtworkRecord => ({ id, image_id: `image-${id}`, pr
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mocks.route.path = '/gallery'
   mocks.route.query = {}
   Observer.instances = []
   vi.stubGlobal('IntersectionObserver', Observer)
@@ -292,6 +293,27 @@ it('drops queued originals that are no longer visible after a filter change', as
   expect(nextReads).toEqual([])
 })
 
+it('releases observed cards when filtering to an empty wall and ignores queued observer entries', async () => {
+  const env = await setup()
+  const observer = Observer.instances.find(item => item.options.rootMargin === '600px 0px')!
+  const previousCards = [...observer.elements]
+  expect(previousCards).toHaveLength(1)
+  env.gallery.searchQuery.value = 'no-matching-artwork'
+  await flushPromises()
+  expect(env.gallery.visible.value).toEqual([])
+  // A queued IntersectionObserver delivery may arrive after its cards detach.
+  observer.callback(previousCards.map(target => ({ target, isIntersecting: true }) as IntersectionObserverEntry), observer as unknown as IntersectionObserver)
+  await flushPromises()
+  expect(mocks.getImage).not.toHaveBeenCalled()
+  expect(observer.elements.size).toBe(0)
+  expect(env.gallery.cardUrls).toEqual({})
+  env.gallery.searchQuery.value = ''
+  await flushPromises()
+  await env.intersect()
+  expect(observer.elements.size).toBe(1)
+  expect(mocks.getImage).toHaveBeenCalledExactlyOnceWith('image-1', expect.any(AbortSignal))
+})
+
 it('keeps the selected queued original and stops obsolete thumbnail work after filtering', async () => {
   const history = Array.from({ length: 60 }, (_, index) => record(index + 1))
   history[0].prompt = 'only-target'
@@ -313,4 +335,44 @@ it('keeps the selected queued original and stops obsolete thumbnail work after f
     'image-60', 'image-59', 'image-58', 'image-57', 'image-56', 'image-55', 'image-54', 'image-53', 'image-1',
   ])
   expect(mocks.getImage.mock.calls.slice(4).map(([imageId]) => imageId)).toEqual(['image-1'])
+})
+
+
+it('cancels delayed filter URL changes when leaving and resumes sync after returning', async () => {
+  const env = await setup()
+  vi.useFakeTimers()
+  env.gallery.searchQuery.value = 'work'
+  await nextTick()
+  await env.hide()
+  const route = useRoute()
+  route.path = '/studio'
+  route.query = { project: 'another-project' }
+  await vi.advanceTimersByTimeAsync(300)
+  expect(mocks.replace).not.toHaveBeenCalled()
+  expect(route.query).toEqual({ project: 'another-project' })
+  route.path = '/gallery'
+  route.query = {}
+  await env.show()
+  env.gallery.searchQuery.value = 'work-1'
+  await nextTick()
+  await vi.advanceTimersByTimeAsync(300)
+  expect(mocks.replace).toHaveBeenCalledExactlyOnceWith({ query: { q: 'work-1' } })
+})
+
+it.each(['temporary failure', 'missing image'])('rechecks a %s after reactivation instead of caching it forever', async failure => {
+  if (failure === 'temporary failure') mocks.getImage.mockRejectedValueOnce(new Error('temporary transport failure'))
+  else mocks.getImage.mockResolvedValueOnce(null)
+  const env = await setup()
+  await env.intersect()
+  expect(mocks.getImage).toHaveBeenCalledTimes(1)
+  expect(env.gallery.missingImageIds.value.has(1)).toBe(true)
+  // Avoid retry loops while this activation is still visible.
+  await env.intersect()
+  expect(mocks.getImage).toHaveBeenCalledTimes(1)
+  await env.hide()
+  await env.show()
+  await env.intersect()
+  expect(mocks.getImage).toHaveBeenCalledTimes(2)
+  expect(env.gallery.missingImageIds.value.has(1)).toBe(false)
+  expect(env.gallery.cardUrls[1]).toBe('blob:gallery-1')
 })

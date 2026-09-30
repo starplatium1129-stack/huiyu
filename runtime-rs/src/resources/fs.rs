@@ -183,7 +183,10 @@ pub(super) fn bytes(path: &Path, max: u64, hardlinks: bool) -> Result<Vec<u8>> {
         return Err(Error::new("METADATA_INVALID", "File exceeds limit"));
     }
     #[cfg(test)]
-    super::tests::overlay::observe(path, bytes.len() as u64, true);
+    {
+        super::tests::overlay::observe(path, bytes.len() as u64, true);
+        super::tests::overlay::checkpoint(path, bytes.len() as u64);
+    }
     Ok(bytes)
 }
 pub(super) fn json(path: &Path, optional: bool, hardlinks: bool) -> Result<Option<Value>> {

@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 
-const mocks = vi.hoisted(() => ({ fetch: vi.fn(), runtime: { runtimeEpoch: 'one', workspace: { generation: 1 } } }))
+const mocks = vi.hoisted(() => ({ fetch: vi.fn(), render: vi.fn(), runtime: { runtimeEpoch: 'one', workspace: { generation: 1 } } }))
 vi.mock('./runtime.ts', () => ({ desktopRuntimeFetch: mocks.fetch, getDesktopRuntime: () => ({ bootstrap: { runtime: mocks.runtime } }) }))
+vi.mock('../../utils/imageThumb.ts', () => ({ blobThumbDataUrl: mocks.render }))
 import { createDesktopArtworkMedia } from './artworkMedia'
 
 function deferred<T>() {
@@ -13,7 +14,7 @@ function deferred<T>() {
 const capability = () => ({ ok: true, status: 200, json: async () => ({ url: '/media/one' }) })
 const mediaResponse = (blob = new Blob(['image'])) => ({ ok: true, blob: async () => blob })
 const create = () => createDesktopArtworkMedia(() => {}, async () => null)
-beforeEach(() => { mocks.fetch.mockReset(); mocks.runtime.runtimeEpoch = 'one'; mocks.runtime.workspace.generation = 1 })
+beforeEach(() => { mocks.fetch.mockReset(); mocks.render.mockReset(); mocks.runtime.runtimeEpoch = 'one'; mocks.runtime.workspace.generation = 1 })
 afterEach(() => { vi.useRealTimers() })
 
 it('one reader can cancel while another shares the original transfer; results are not cached', async () => {
@@ -131,4 +132,46 @@ it('cached previews still require the active workspace authority', async () => {
   await media.setThumbnail('a', 'data:image/jpeg;base64,fixture')
   allowed = false
   await expect(media.getThumbnail('a')).rejects.toThrow('identity changed')
+})
+
+
+it('deleted thumbnails are not resurrected by a late background render', async () => {
+  const rendered = deferred<string>()
+  mocks.render.mockReturnValueOnce(rendered.promise)
+  const read = vi.fn(async () => null)
+  const media = createDesktopArtworkMedia(() => {}, read)
+  const pending = media.cacheThumbnail('a', new Blob(['old']))
+  media.forgetThumbnail('a')
+  rendered.resolve('data:image/jpeg;base64,deleted')
+  await pending
+  expect(await media.getThumbnail('a')).toBeNull()
+  expect(read).toHaveBeenCalledExactlyOnceWith('a')
+})
+
+it('explicit thumbnail publication wins over an earlier background render', async () => {
+  const rendered = deferred<string>()
+  mocks.render.mockReturnValueOnce(rendered.promise)
+  const media = create()
+  const pending = media.cacheThumbnail('a', new Blob(['old']))
+  await media.setThumbnail('a', 'data:image/jpeg;base64,published')
+  rendered.resolve('data:image/jpeg;base64,stale')
+  await pending
+  expect(await media.getThumbnail('a')).toBe('data:image/jpeg;base64,published')
+})
+
+it('the newest thumbnail render wins and failed work can retry', async () => {
+  const old = deferred<string>(), latest = deferred<string>()
+  mocks.render.mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise)
+  const media = create()
+  const first = media.cacheThumbnail('a', new Blob(['old']))
+  const second = media.cacheThumbnail('a', new Blob(['new']))
+  latest.resolve('data:image/jpeg;base64,new')
+  await second
+  old.resolve('data:image/jpeg;base64,old')
+  await first
+  expect(await media.getThumbnail('a')).toBe('data:image/jpeg;base64,new')
+  mocks.render.mockRejectedValueOnce(new Error('decode failed')).mockResolvedValueOnce('data:image/jpeg;base64,retry')
+  await expect(media.cacheThumbnail('a', new Blob())).rejects.toThrow('decode failed')
+  await media.cacheThumbnail('a', new Blob())
+  expect(await media.getThumbnail('a')).toBe('data:image/jpeg;base64,retry')
 })
