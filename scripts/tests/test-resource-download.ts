@@ -254,7 +254,12 @@ test('junction in download partial storage is rejected without writing artwork',
   const parts = path.join(directory, 'parts');
   fs.renameSync(parts, parts + '-saved');
   fs.symlinkSync(f.artwork, parts, 'junction');
-  const before = snapshot(f.artwork);
-  await assert.rejects(f.download().download({ releaseId: 'full' }), code('UNSAFE_LINK'));
-  assert.deepEqual(snapshot(f.artwork), before);
+  try {
+    const before = snapshot(f.artwork);
+    await assert.rejects(f.download().download({ releaseId: 'full' }), code('UNSAFE_LINK'));
+    assert.deepEqual(snapshot(f.artwork), before);
+  } finally {
+    // Unlink before fixture cleanup removes the target; Windows cannot remove a dangling junction.
+    fs.unlinkSync(parts);
+  }
 });

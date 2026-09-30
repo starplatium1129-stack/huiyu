@@ -2,15 +2,11 @@
  * sync-desktop-content.ts — 把仓库 data/ 同步进桌面端「个人内容目录」。
  *
  * 为什么需要独立入口：打包版网关把 %APPDATA%\<ns>\gateway\content 视为权威内容
- * （runtime-rs/src/config/content.rs：「Existing user content is authoritative across
- * restarts and upgrades」，只在目录缺失时从安装包播种）。完整安装与增量部署都只更新
- * 安装目录的 gateway\data，因此任何纯数据改动（角色、服装、蓝图、场景、参考索引）在
- * 桌面端都不会生效，必须先刷新个人内容目录并清 WebView2 缓存。
+ * （runtime-rs/src/config/content.rs，只在目录缺失时从安装包播种）。
+ * 完整安装与增量部署只更新安装目录 gateway\data，已有个人内容需显式同步。
  *
  * 边界：
- * - 源固定为仓库 data/（权威源），只增改、**从不删除**目标文件；目标里多出来的文件
- *   作为「陈旧项」列出来供人工判断（安装目录曾残留被仓库删除的旧场景单文件，导致
- *   「单文件与批次文件并存」使维护接口拒绝服务）。
+ * - 只同步桌面打包白名单数据；覆盖前备份当前目标字节，目标独有文件保留并报告。
  * - 不调用模型、不安装、不改安装目录、不动用户作品（history/projects/prompts 等）。
  * - 默认只读预览；写盘与清缓存需显式开关。
  *
@@ -25,49 +21,81 @@
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
+const zlib: typeof import('node:zlib') = require('node:zlib');
+const io: typeof import('../lib/maintenance-recovery-fs') = require('../lib/maintenance-recovery-fs');
+const { includeData }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const WEBVIEW_CACHE_DIRS = ['Cache', 'Code Cache', 'GPUCache'];
 
 /** 目标个人内容目录：打包版网关的 content_root/data。 */
 function defaultContentRoot(): string {
+  const configured = process.env.AICS_DESKTOP_CONFIG_ROOT;
+  if (configured && path.isAbsolute(configured)) return path.join(configured, 'gateway', 'content', 'data');
   const namespace = process.env.AICS_DESKTOP_NAMESPACE || 'com.aics.studio';
+  if (!/^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(namespace)) throw new Error('桌面命名空间无效');
   const appData = process.env.APPDATA || '';
   if (!appData) throw new Error('APPDATA 不可用；请用 --content-root 显式指定目标目录');
   return path.join(appData, namespace, 'gateway', 'content', 'data');
 }
 function defaultWebviewRoot(): string | null {
+  const configured = process.env.AICS_DESKTOP_WEBVIEW_DATA_DIR;
+  if (configured && path.isAbsolute(configured)) return path.join(configured, 'EBWebView', 'Default');
   const namespace = process.env.AICS_DESKTOP_NAMESPACE || 'com.aics.studio';
+  if (!/^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(namespace)) throw new Error('桌面命名空间无效');
   const local = process.env.LOCALAPPDATA || '';
   return local ? path.join(local, namespace, 'EBWebView', 'Default') : null;
 }
-function walk(dir: string, base = ''): string[] {
+function walk(dir: string, base = '', source = false): string[] {
+  io.safePath(dir, 'directory', false);
   const out: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const relative = base ? `${base}/${entry.name}` : entry.name;
-    if (entry.isDirectory()) out.push(...walk(path.join(dir, entry.name), relative));
+    const full = path.join(dir, entry.name);
+    if (source && !includeData(relative.split('/'), full)) continue;
+    if (source) io.safePath(full, entry.isDirectory() ? 'directory' : 'file', false);
+    if (entry.isDirectory()) out.push(...walk(full, relative, source));
     else out.push(relative);
   }
   return out;
 }
-function digest(file: string): string {
-  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-}
-function sameBytes(a: string, b: string): boolean {
-  if (!fs.existsSync(b)) return false;
-  const left = fs.statSync(a), right = fs.statSync(b);
-  return left.size === right.size && digest(a) === digest(b);
+function assertStopped(target: string) {
+  const content = path.dirname(target);
+  if (io.safePath(path.join(content, 'runtime', 'maintenance-transactions', 'lease'), 'directory')) {
+    throw new Error('CONTENT_BUSY: 内容维护事务尚未释放，请先完成维护或恢复');
+  }
+  if (io.keyPath(path.basename(content)) !== 'content' || io.keyPath(path.basename(path.dirname(content))) !== 'gateway') return;
+  const config = path.resolve(content, '../..');
+  const capability = path.join(config, 'desktop-maintenance.json');
+  if (io.safePath(capability)) {
+    const { hostPid } = io.readJson(capability);
+    if (!Number.isInteger(hostPid) || hostPid <= 0) throw new Error('DESKTOP_IDENTITY_INVALID: 宿主身份无效');
+    let alive = true;
+    try { process.kill(hostPid, 0); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'ESRCH') alive = false; else throw error; }
+    if (alive) throw new Error('DESKTOP_RUNNING: 请先从托盘正常退出桌面端，再同步内容或清理缓存');
+  }
+  for (const name of ['workspace-active.json', 'workspace-candidate.json']) {
+    const pointer = path.join(config, name);
+    if (!io.safePath(pointer)) continue;
+    const { workspaceId } = io.readJson(pointer);
+    if (typeof workspaceId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(workspaceId)) throw new Error('WORKSPACE_POINTER_INVALID');
+    if (io.safePath(path.join(config, 'workspaces', workspaceId, '.workspace-owner.json'))) throw new Error('WORKSPACE_LOCK_REMAINS: 请先完成桌面端退出或工作区恢复');
+  }
 }
 
-function main() {
-  const args = process.argv.slice(2);
+function main(args = process.argv.slice(2)) {
   if (args.includes('--help')) {
     console.log('sync-desktop-content [--apply] [--clear-webview-cache] [--content-root=DIR] [--source=DIR] [--webview-root=DIR]\n'
-      + '默认只读预览差异；--apply 把仓库 data/ 缺失或变更的文件复制进个人内容目录（不删除目标文件）；\n'
+      + '默认只读预览差异；--apply 先备份将覆盖的个人内容，再原子写入缺失或变更文件（不删除目标文件）；\n'
       + '--clear-webview-cache 另外删除 WebView2 的 Cache / Code Cache / GPUCache。');
     return;
   }
-  const value = (name: string) => args.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+  const value = (name: string) => {
+    const arg = args.find(a => a.startsWith(`--${name}=`));
+    if (arg && !arg.slice(name.length + 3)) throw new Error(`--${name} 不能为空`);
+    return arg?.slice(name.length + 3);
+  };
   for (const arg of args) {
     if (arg === '--apply' || arg === '--clear-webview-cache') continue;
     if (/^--(content-root|source|webview-root)=/.test(arg)) continue;
@@ -75,19 +103,36 @@ function main() {
   }
   const source = path.resolve(value('source') || path.join(ROOT, 'data'));
   const target = path.resolve(value('content-root') || defaultContentRoot());
-  if (!fs.existsSync(source)) throw new Error(`源数据目录不存在: ${source}`);
-  if (!fs.existsSync(target)) {
+  io.safePath(source, 'directory', false);
+  if (io.samePath(source, target) || io.within(source, target) || io.within(target, source)) throw new Error('源与目标目录不能重叠');
+  if (!io.safePath(target, 'directory')) {
     console.log(`[desktop:content-sync] 目标个人内容目录不存在（应用首次启动会自动播种）: ${target}`);
     return;
   }
-  if (!fs.statSync(target).isDirectory()) throw new Error(`目标不是目录: ${target}`);
-
-  const sourceFiles = walk(source);
+  const sourceFiles = walk(source, '', true);
   const targetFiles = walk(target);
   const sourceSet = new Set(sourceFiles);
-  const toAdd = sourceFiles.filter(file => !fs.existsSync(path.join(target, file)));
-  const toUpdate = sourceFiles.filter(file => !toAdd.includes(file) && !sameBytes(path.join(source, file), path.join(target, file)));
+  const changes = sourceFiles.flatMap(file => {
+    const bytes = io.readBytes(path.join(source, file)) as Buffer;
+    if (/\.(br|gz)$/i.test(file)) {
+      const raw = io.readBytes(path.join(source, file.replace(/\.(br|gz)$/i, ''))) as Buffer;
+      const decoded = /\.gz$/i.test(file) ? zlib.gunzipSync(bytes) : zlib.brotliDecompressSync(bytes);
+      if (!raw.equals(decoded)) throw new Error(`预压内容与源不一致，请先重新预压: ${file}`);
+    }
+    const previous = io.readBytes(path.join(target, file), true) as Buffer | null;
+    return previous?.equals(bytes) ? [] : [{ file, bytes, previous }];
+  });
+  const toAdd = changes.filter(change => change.previous === null);
+  const toUpdate = changes.filter(change => change.previous !== null);
   const targetOnly = targetFiles.filter(file => !sourceSet.has(file));
+  const cacheRoot = args.includes('--clear-webview-cache') ? value('webview-root') || defaultWebviewRoot() : null;
+  const caches: string[] = [];
+  if (cacheRoot) {
+    for (const name of WEBVIEW_CACHE_DIRS) {
+      const directory = path.resolve(cacheRoot, name);
+      if (io.safePath(directory, 'directory')) caches.push(directory);
+    }
+  }
 
   console.log(`[desktop:content-sync] 源=${source}`);
   console.log(`[desktop:content-sync] 目标=${target}`);
@@ -100,22 +145,32 @@ function main() {
   if (!args.includes('--apply')) {
     console.log('[desktop:content-sync] 预览模式：未写入。加 --apply 复制差异文件。');
   } else {
-    let copied = 0;
-    for (const file of [...toAdd, ...toUpdate]) {
-      const from = path.join(source, file), to = path.join(target, file);
-      fs.mkdirSync(path.dirname(to), { recursive: true });
-      fs.copyFileSync(from, to);
-      copied += 1;
+    assertStopped(target);
+    const backup = path.join(path.dirname(target), 'content-sync-backups', crypto.randomUUID());
+    if (toUpdate.length) {
+      for (const { file, previous } of toUpdate) io.atomicWrite(path.join(backup, file), previous, true);
+      io.atomicWrite(path.join(backup, 'sync-manifest.json'), Buffer.from(JSON.stringify({ target, added: toAdd.map(change => change.file), updated: toUpdate.map(change => change.file) }, null, 2) + '\n'), true);
+      console.log(`[desktop:content-sync] 覆盖前原字节备份（可恢复）: ${backup}`);
     }
-    console.log(`[desktop:content-sync] 已复制 ${copied} 个文件（未删除任何目标文件）`);
+    // A running application must be closed by its owner. Refuse concurrent edits
+    // rather than silently replacing bytes that were not included in the backup.
+    for (const { file, previous } of changes) {
+      const current = io.readBytes(path.join(target, file), true) as Buffer | null;
+      if (previous === null ? current !== null : !current?.equals(previous)) throw new Error(`CONTENT_CHANGED: 同步期间目标发生变化，未覆盖: ${file}`);
+    }
+    for (const { file, bytes, previous } of changes) {
+      const current = io.readBytes(path.join(target, file), true) as Buffer | null;
+      if (previous === null ? current !== null : !current?.equals(previous)) throw new Error(`CONTENT_CHANGED: 同步期间目标发生变化，未覆盖: ${file}`);
+      io.atomicWrite(path.join(target, file), bytes, true);
+    }
+    console.log(`[desktop:content-sync] 已复制 ${changes.length} 个文件（未删除任何目标文件）`);
   }
   if (args.includes('--clear-webview-cache')) {
-    const webviewRoot = value('webview-root') || defaultWebviewRoot();
-    if (!webviewRoot) { console.log('[desktop:content-sync] 跳过缓存清理：无法确定 WebView2 根目录'); return; }
+    if (!cacheRoot) { console.log('[desktop:content-sync] 跳过缓存清理：无法确定 WebView2 根目录'); return; }
+    assertStopped(target);
     let cleared = 0;
-    for (const name of WEBVIEW_CACHE_DIRS) {
-      const dir = path.join(webviewRoot, name);
-      if (!fs.existsSync(dir)) continue;
+    for (const dir of caches) {
+      io.safePath(dir, 'directory', false);
       fs.rmSync(dir, { recursive: true, force: true });
       cleared += 1;
     }
@@ -126,6 +181,8 @@ function main() {
   }
 }
 
-try { main(); } catch (error) { console.error(`[desktop:content-sync] ${error instanceof Error ? error.message : String(error)}`); process.exitCode = 1; }
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(`[desktop:content-sync] ${error instanceof Error ? error.message : String(error)}`); process.exitCode = 1; }
+}
 
-export {};
+export = { main };

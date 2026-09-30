@@ -1,4 +1,4 @@
-# AI-CG-Studio 桌面端部署 —— 唯一入口
+﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
 # 两种模式（二选一，默认增量）：
 #   增量部署（默认）  把新鲜的 已绑定的 data/dist/assets/docs/tools 复制到已安装网关，秒级生效。

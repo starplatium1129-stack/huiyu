@@ -83,7 +83,7 @@
 | 聚合反向写回分片 | data:import / popular:import / blueprints:import | 覆盖写入操作，先核对 diff；popular:split/blueprints:split 只拆分 |
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
-| 桌面端个人内容目录 | desktop:content-sync | 仓库 `data/` → `%APPDATA%\<ns>\gateway\content\data`；默认只读预览，`--apply` 只增改不删除，`--clear-webview-cache` 另清 WebView2 缓存；之后需重启桌面端。不重启应用、不证明界面 |
+| 桌面端个人内容目录 | desktop:content-sync | 默认只读预览；退出桌面端后，`--apply` 按打包白名单先备份覆盖项、逐文件原子写入，目标独有项保留；`--clear-webview-cache` 另清 WebView2 缓存；支持实际配置/资料根覆盖，完成后再启动，不证明界面 |
 
 详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本默认计算 DATA_VERSION，客户端由 Vite 的 `virtual:data-version` 在构建时注入，不再改写 `src/stores/sceneStore.ts`；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
 

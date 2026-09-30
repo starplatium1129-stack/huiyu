@@ -44,7 +44,9 @@ export async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secre
 /** Builds write Cargo's normal output; running images are independent copies so
  * Windows never locks the next compilation's EXE. Failed builds preserve service. */
 export async function startDevelopment(root=defaultRoot,options:DevelopmentOptions={}){
-  root=path.resolve(root);const reportError=options.reportError||((error:unknown)=>console.error(error instanceof Error?error.message:String(error)));
+  // Supported Node/libuv on Windows can abort when 8.3 watch roots receive long-path events.
+  // Keep native canonical paths while those runtime versions remain supported.
+  root=fs.realpathSync.native(path.resolve(root));const reportError=options.reportError||((error:unknown)=>console.error(error instanceof Error?error.message:String(error)));
   const watchers:fs.FSWatcher[]=[];const watched=new Set<string>();const ownership=new WeakMap<ChildProcess,Running>();
   let child:ChildProcess|undefined,timer:ReturnType<typeof setTimeout>|undefined,running:Promise<void>|undefined;
   let requested=false,closed=false,candidate:{directory:string;executable:string;env:NodeJS.ProcessEnv}|undefined;

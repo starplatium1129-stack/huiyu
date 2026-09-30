@@ -48,7 +48,8 @@ function prepare(webOnly: boolean) {
     throw Error('Build the Rust browser backend first: npm run wf -- rust:build');
   }
   if (!fs.existsSync(path.join(ROOT_DIR, 'dist/index.html'))) throw Error('Build the SPA first: npm run build');
-  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), TEMP_PREFIX));
+  // Windows TEMP can use an 8.3 alias; Rust requires its native canonical root.
+  const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), TEMP_PREFIX)));
   const application = path.join(temporary, 'app'), runtime = path.join(temporary, 'runtime'), ai = path.join(temporary, 'AI');
   try {
     fs.mkdirSync(application);
@@ -67,7 +68,7 @@ function prepare(webOnly: boolean) {
     if (!webOnly) fixtureModels(ai);
     fs.writeFileSync(path.join(runtime, 'config.json'), JSON.stringify({ autoTunnel: false, voices: webOnly ? {} : VOICES }));
     const env: NodeJS.ProcessEnv = {};
-    for (const key of ['PATH', 'SystemRoot', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'ProgramFiles', 'ProgramFiles(x86)', 'COMSPEC', 'LANG', 'LC_ALL']) {
+    for (const key of ['PATH', 'SystemRoot', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'ProgramFiles', 'ProgramFiles(x86)', 'COMSPEC', 'LANG', 'LC_ALL', 'AICS_VIPS_DYLIB_PATH']) {
       if (process.env[key]) env[key] = process.env[key];
     }
     Object.assign(env, {
@@ -82,6 +83,8 @@ function prepare(webOnly: boolean) {
       TRANSLATE_PORT: String(PORTS.translate), TRANSLATION_PYTHON: path.join(temporary, 'no-model-python.exe'),
       AICS_WD14_MODEL_DIR: path.join(temporary, 'no-wd14-model')
     });
+    // Do not resolve or load a real model library, even while selecting the image DLL.
+    env.AICS_ORT_DYLIB_PATH = path.join(temporary, 'no-model-onnxruntime.dll');
     if (process.platform === 'win32') Object.assign(env, developmentNativeEnvironment(ROOT_DIR, env));
     else {
       // Test-launcher selection only. Production loads its explicit/bundled DLL,
@@ -91,15 +94,13 @@ function prepare(webOnly: boolean) {
       if (!name) throw Error(`No locked native image fixture library in ${native}`);
       env.AICS_VIPS_DYLIB_PATH = fs.realpathSync(path.join(native, name));
     }
-    // A real WD14 library or model is never admitted by ordinary browser tests.
-    env.AICS_ORT_DYLIB_PATH = path.join(temporary, 'no-model-onnxruntime.dll');
     const executable = path.join(temporary, path.basename(selected)); fs.copyFileSync(selected, executable);
     if (process.platform !== 'win32') fs.chmodSync(executable, 0o755);
     return { temporary, application, runtime, ai, executable, env, port: webOnly ? PORTS.web : PORTS.gateway };
   } catch (error) { cleanup(temporary); throw error; }
 }
 function cleanup(directory: string) {
-  const root = fs.realpathSync(os.tmpdir()), target = fs.realpathSync(directory), relative = path.relative(root, target);
+  const root = fs.realpathSync.native(os.tmpdir()), target = fs.realpathSync.native(directory), relative = path.relative(root, target);
   if (!relative || path.isAbsolute(relative) || relative.includes(path.sep) || !relative.startsWith(TEMP_PREFIX)) {
     throw Error('Refusing cleanup outside the exact temporary fixture root');
   }

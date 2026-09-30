@@ -153,7 +153,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
       switches: { '--apply': ['writes-product'], '--clear-webview-cache': ['delete'] }, resume: 'idempotent',
       evidence: 'scripts/maintenance/sync-desktop-content.ts',
       unknown: ['不重启应用，也不证明应用内画面；安装目录与个人内容目录的差异仍需人工核对'],
-      notes: ['打包版网关以个人内容目录为权威（runtime-rs/src/config/content.rs），完整安装/增量部署只写安装目录 gateway\\data，纯数据改动必须走本入口后再重启桌面端', '只增改、从不删除目标文件；目标多余项只列出供人工判断（安装目录残留的旧场景单文件曾造成「单文件与批次文件并存」使维护接口拒绝）'],
+      notes: ['打包版网关以个人内容目录为权威（runtime-rs/src/config/content.rs），完整安装/增量部署只写安装目录 gateway\\data；执行写入或清缓存前需从托盘退出桌面端并释放维护锁，完成后再重启', '只同步桌面打包白名单数据，不复制 history/projects/prompts 等私有状态；覆盖前备份原始字节到 content-sync-backups/<ID>，逐文件原子写入，目标独有项保留并报告', '尊重 AICS_DESKTOP_CONFIG_ROOT 与 AICS_DESKTOP_WEBVIEW_DATA_DIR；拒绝根目录重叠、写入目标链接、陈旧预压缩副本及已检测到的并发修改；失败可能留下已同步文件与备份，不提供整批事务回滚'],
     },
   },
   'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',

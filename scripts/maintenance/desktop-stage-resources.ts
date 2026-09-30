@@ -81,4 +81,4 @@ function stageResources(options: StageOptions = {}) {
   } catch (error) { fs.rmSync(temporary, { recursive: true, force: true }); throw error; }
 }
 if (require.main === module) withDesktopBuildLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
-export = { copyDir, publishStage, resolveNpmInvocation, stageResources };
+export = { copyDir, includeData, publishStage, resolveNpmInvocation, stageResources };

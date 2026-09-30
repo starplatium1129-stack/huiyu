@@ -2,7 +2,7 @@
 
 /**
  * 桌面端「数据更新到达路径」回归：
- * ① desktop:content-sync 只增改、不删除目标文件，陈旧项单独报告（隔离夹具）；
+ * ① desktop:content-sync 覆盖前备份，不删除目标文件，私有状态不参与同步（隔离夹具）；
  * ② 缓存清理只删 WebView2 的三个缓存目录；
  * ③ 部署脚本仍登记着仓库已删除的旧场景单文件（它们回流会让维护接口拒绝服务）。
  */
@@ -10,6 +10,7 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
+const zlib: typeof import('node:zlib') = require('node:zlib');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const { test }: typeof import('node:test') = require('node:test');
 
@@ -17,8 +18,9 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const SCRIPT = path.join(ROOT, 'scripts', 'maintenance', 'sync-desktop-content.js');
 const DEPLOY = path.join(ROOT, 'scripts', 'maintenance', 'deploy-desktop-quick.ps1');
 
-function run(args: string[]) {
-  return spawnSync(process.execPath, [SCRIPT, ...args], { encoding: 'utf8', windowsHide: true, timeout: 60000 });
+function run(args: string[], env: NodeJS.ProcessEnv = {}) {
+  return spawnSync(process.execPath, [SCRIPT, ...args], { encoding: 'utf8', windowsHide: true, timeout: 60000,
+    env: { ...process.env, AICS_DESKTOP_CONFIG_ROOT: '', AICS_DESKTOP_WEBVIEW_DATA_DIR: '', AICS_DESKTOP_NAMESPACE: '', ...env } });
 }
 function fixture(execute: (f: { root: string; source: string; target: string; webview: string }) => void) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-desktop-content-'));
@@ -50,6 +52,7 @@ test('desktop content sync previews and copies only missing or changed files', (
     assert.equal(fs.readFileSync(path.join(f.target, 'popular', 'fate.json'), 'utf8'), 'v1\n', 'preview must not write');
     assert.match(preview.stdout, /legacy\.json/);
     assert.match(preview.stdout, /pipeline-run-state\.json/);
+    assert.equal(fs.existsSync(path.join(path.dirname(f.target), 'content-sync-backups')), false, 'preview must not create backups');
 
     const applied = run([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']);
     assert.equal(applied.status, 0, applied.stderr);
@@ -57,10 +60,18 @@ test('desktop content sync previews and copies only missing or changed files', (
     assert.equal(fs.readFileSync(path.join(f.target, 'popular', 'fate.json'), 'utf8'), 'v2\n');
     assert.equal(fs.readFileSync(path.join(f.target, 'popular', 'legacy.json'), 'utf8'), 'legacy\n', 'target-only files must survive');
     assert.equal(fs.readFileSync(path.join(f.target, 'pipeline-run-state.json'), 'utf8'), 'user-state\n', 'user state must survive');
+    const backups = path.join(path.dirname(f.target), 'content-sync-backups');
+    const [saved] = fs.readdirSync(backups);
+    const backup = path.join(backups, saved!);
+    assert.equal(fs.readFileSync(path.join(backup, 'popular', 'fate.json'), 'utf8'), 'v1\n', 'overwritten bytes must remain recoverable');
+    assert.equal(fs.existsSync(path.join(backup, 'characters.json')), false, 'new files have no previous bytes');
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(backup, 'sync-manifest.json'), 'utf8')), { target: f.target, added: ['characters.json'], updated: ['popular/fate.json'] });
+    assert.match(applied.stdout, /覆盖前原字节备份/);
 
     const second = run([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']);
     assert.equal(second.status, 0, second.stderr);
     assert.match(second.stdout, /已复制 0 个文件/, 'idempotent second run');
+    assert.deepEqual(fs.readdirSync(backups), [saved], 'unchanged reruns do not accumulate backups');
   });
 });
 
@@ -73,6 +84,148 @@ test('desktop content sync clears only the WebView2 cache directories', () => {
     assert.equal(fs.existsSync(path.join(f.webview, 'Local Storage')), true, 'unrelated webview data must survive');
     assert.equal(fs.readFileSync(path.join(f.target, 'popular', 'fate.json'), 'utf8'), 'v1\n', 'cache clearing alone must not copy data');
   });
+});
+
+test('desktop content sync excludes repository-local private state even when target names match', () => {
+  fixture(f => {
+    for (const file of ['pipeline-run-state.json', 'history.json', 'projects.json', 'prompts.json', 'live2d-candidates.json']) {
+      fs.writeFileSync(path.join(f.source, file), 'repository-private\n');
+      fs.writeFileSync(path.join(f.target, file), 'personal-private\n');
+    }
+    const result = run([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    for (const file of ['pipeline-run-state.json', 'history.json', 'projects.json', 'prompts.json', 'live2d-candidates.json']) {
+      assert.equal(fs.readFileSync(path.join(f.target, file), 'utf8'), 'personal-private\n', file + ' must not be replaced');
+    }
+  });
+});
+
+test('desktop content sync rejects linked destinations before copying or clearing caches', () => {
+  fixture(f => {
+    const outside = path.join(f.root, 'outside');
+    fs.mkdirSync(outside);
+    fs.writeFileSync(path.join(outside, 'fate.json'), 'outside-personal\n');
+    fs.rmSync(path.join(f.target, 'popular'), { recursive: true });
+    fs.symlinkSync(outside, path.join(f.target, 'popular'), process.platform === 'win32' ? 'junction' : 'dir');
+    const result = run([`--source=${f.source}`, `--content-root=${f.target}`, `--webview-root=${f.webview}`, '--apply', '--clear-webview-cache']);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /symlink|junction|符号链接/);
+    assert.equal(fs.readFileSync(path.join(outside, 'fate.json'), 'utf8'), 'outside-personal\n');
+    assert.equal(fs.existsSync(path.join(f.target, 'characters.json')), false, 'preflight must prevent partial writes');
+    assert.equal(fs.existsSync(path.join(f.webview, 'Cache')), true, 'preflight must prevent cache deletion');
+  });
+});
+
+test('desktop content sync rejects a linked cache ancestor before any data write', () => {
+  fixture(f => {
+    const alias = path.join(f.root, 'linked-profile');
+    fs.symlinkSync(f.webview, alias, process.platform === 'win32' ? 'junction' : 'dir');
+    try {
+      const result = run([`--source=${f.source}`, `--content-root=${f.target}`, `--webview-root=${alias}`, '--apply', '--clear-webview-cache']);
+      assert.equal(result.status, 1);
+      assert.match(result.stderr, /symlink|junction|符号链接/);
+      assert.equal(fs.existsSync(path.join(f.target, 'characters.json')), false);
+      assert.equal(fs.existsSync(path.join(f.webview, 'Cache')), true);
+    } finally {
+      // Remove the junction before its target; Windows cannot unlink a dangling one.
+      fs.unlinkSync(alias);
+    }
+  });
+});
+
+test('desktop content sync rejects stale compressed sources and accepts matching gzip and brotli', () => {
+  fixture(f => {
+    const raw = fs.readFileSync(path.join(f.source, 'characters.json'));
+    fs.writeFileSync(path.join(f.source, 'characters.json.gz'), zlib.gzipSync('stale source'));
+    const rejected = run([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']);
+    assert.equal(rejected.status, 1);
+    assert.match(rejected.stderr, /预压内容与源不一致/);
+    assert.equal(fs.existsSync(path.join(f.target, 'characters.json')), false);
+    fs.writeFileSync(path.join(f.source, 'characters.json.gz'), zlib.gzipSync(raw));
+    fs.renameSync(path.join(f.source, 'characters.json.gz'), path.join(f.source, 'characters.json.GZ'));
+    fs.writeFileSync(path.join(f.source, 'characters.json.br'), zlib.brotliCompressSync(raw));
+    const accepted = run([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']);
+    assert.equal(accepted.status, 0, accepted.stderr);
+    assert.deepEqual(zlib.gunzipSync(fs.readFileSync(path.join(f.target, 'characters.json.GZ'))), raw);
+    assert.deepEqual(zlib.brotliDecompressSync(fs.readFileSync(path.join(f.target, 'characters.json.br'))), raw);
+  });
+});
+
+test('desktop content sync uses the actual host configuration and WebView profile overrides', () => {
+  fixture(f => {
+    const config = path.join(f.root, 'config');
+    const managed = path.join(config, 'gateway', 'content', 'data');
+    fs.mkdirSync(path.dirname(managed), { recursive: true });
+    fs.renameSync(f.target, managed);
+    const result = run([`--source=${f.source}`, '--apply', '--clear-webview-cache'], {
+      AICS_DESKTOP_CONFIG_ROOT: config, AICS_DESKTOP_WEBVIEW_DATA_DIR: f.root,
+      APPDATA: path.join(f.root, 'unrelated-appdata'), LOCALAPPDATA: path.join(f.root, 'unrelated-localdata'),
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(fs.readFileSync(path.join(managed, 'popular', 'fate.json'), 'utf8'), 'v2\n');
+    assert.equal(fs.existsSync(path.join(f.webview, 'Cache')), false);
+    assert.equal(fs.existsSync(path.join(f.root, 'unrelated-appdata')), false);
+    assert.equal(fs.existsSync(path.join(f.root, 'unrelated-localdata')), false);
+  });
+});
+
+test('desktop content sync refuses a live host and pending content maintenance without stopping them', () => {
+  fixture(f => {
+    const config = path.join(f.root, 'config');
+    const managed = path.join(config, 'gateway', 'content', 'data');
+    fs.mkdirSync(path.dirname(managed), { recursive: true });
+    fs.renameSync(f.target, managed);
+    fs.writeFileSync(path.join(config, 'desktop-maintenance.json'), JSON.stringify({ hostPid: process.pid }));
+    const live = run([`--source=${f.source}`, `--content-root=${managed}`, `--webview-root=${f.webview}`, '--apply', '--clear-webview-cache']);
+    assert.equal(live.status, 1);
+    assert.match(live.stderr, /DESKTOP_RUNNING/);
+    assert.equal(fs.existsSync(path.join(managed, 'characters.json')), false);
+    assert.equal(fs.existsSync(path.join(f.webview, 'Cache')), true);
+    if (process.platform === 'win32') {
+      const upper = path.join(config, 'GATEWAY', 'CONTENT', 'data');
+      const alias = run([`--source=${f.source}`, `--content-root=${upper}`, `--webview-root=${f.webview}`, '--apply', '--clear-webview-cache']);
+      assert.equal(alias.status, 1);
+      assert.match(alias.stderr, /DESKTOP_RUNNING/, 'Windows path casing must not bypass the live host guard');
+      assert.equal(fs.existsSync(path.join(managed, 'characters.json')), false);
+      assert.equal(fs.existsSync(path.join(f.webview, 'Cache')), true);
+    }
+    fs.unlinkSync(path.join(config, 'desktop-maintenance.json'));
+    const lease = path.join(path.dirname(managed), 'runtime', 'maintenance-transactions', 'lease');
+    fs.mkdirSync(lease, { recursive: true });
+    const pending = run([`--source=${f.source}`, `--content-root=${managed}`, '--apply']);
+    assert.equal(pending.status, 1);
+    assert.match(pending.stderr, /CONTENT_BUSY/);
+    assert.equal(fs.existsSync(lease), true, 'pending maintenance must not be erased');
+    assert.equal(fs.readFileSync(path.join(managed, 'popular', 'fate.json'), 'utf8'), 'v1\n');
+  });
+});
+
+test('desktop content sync rejects changes made after its backup without overwriting the new personal bytes', t => {
+  fixture(f => {
+    const { main }: typeof import('../maintenance/sync-desktop-content') = require('../maintenance/sync-desktop-content');
+    const io: typeof import('../lib/maintenance-recovery-fs') = require('../lib/maintenance-recovery-fs');
+    const originalWrite = io.atomicWrite;
+    const target = path.join(f.target, 'popular', 'fate.json');
+    t.mock.method(io, 'atomicWrite', (file: string, bytes: Buffer, createParents?: boolean) => {
+      originalWrite(file, bytes, createParents);
+      if (file.includes('content-sync-backups') && file.endsWith(path.join('popular', 'fate.json'))) fs.writeFileSync(target, 'concurrent-personal-edit\n');
+    });
+    assert.throws(() => main([`--source=${f.source}`, `--content-root=${f.target}`, '--apply']), /CONTENT_CHANGED/);
+    assert.equal(fs.readFileSync(target, 'utf8'), 'concurrent-personal-edit\n');
+    assert.equal(fs.existsSync(path.join(f.target, 'characters.json')), false);
+  });
+});
+
+test('deploy script keeps UTF-8 BOM for Windows PowerShell 5.1', () => {
+  assert.equal(fs.readFileSync(DEPLOY).subarray(0, 3).toString('hex'), 'efbbbf');
+});
+
+test('Windows PowerShell 5.1 parses the deployment entry without executing it', { skip: process.platform !== 'win32' }, () => {
+  const result = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
+    '$tokens = $null; $errors = $null; [void][System.Management.Automation.Language.Parser]::ParseFile($env:AICS_TEST_DEPLOY_PARSE_FILE, [ref]$tokens, [ref]$errors); if ($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }'], {
+    env: { ...process.env, AICS_TEST_DEPLOY_PARSE_FILE: DEPLOY }, encoding: 'utf8', windowsHide: true, timeout: 20000,
+  });
+  assert.equal(result.status, 0, result.stderr);
 });
 
 test('deploy script still prunes the scene shards the repository removed', () => {

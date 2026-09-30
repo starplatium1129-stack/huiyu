@@ -65,26 +65,33 @@ across restarts and upgrades"*）。该目录只在**首次启动且目录缺失
 
 后果：改 `data/**` 里的角色、服装、蓝图、场景或参考索引后，光重装/增量部署，桌面端仍然
 显示旧数据（2026-09-30 实例：内容目录停在 09-29 17:27 快照，只认 161 位角色、没有
-`fiona_frost`，迦摩/美花莉的角色修正也看不到）。另外该目录自带 `.br/.gz` 预压缩副本，
-服务端优先发压缩体，只换 `.json` 同样无效。
+`fiona_frost`，迦摩/美花莉的角色修正也看不到）。该目录也有 `.br/.gz` 预压缩副本：
+服务端只接受时间戳不早于原文的压缩体。复制陈旧压缩文件会刷新时间戳，因此同步前会解压
+核对它们与源 JSON 的字节；不一致时拒绝写入，需先重新生成预压缩产物。
 
 统一入口：
 
 ```powershell
 npm run wf -- desktop:content-sync                                  # 只读预览差异
-npm run wf -- desktop:content-sync --apply                          # 复制缺失/变更文件（不删除目标文件）
+npm run wf -- desktop:content-sync --apply                          # 先备份覆盖项，再复制差异文件
 npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 WebView2 缓存
-# 之后重启桌面端（托盘退出再启动，或重新执行部署入口）
+# 写入/清缓存前先从托盘退出桌面端；同步完成后再启动
 ```
 
 约定与边界：
 
-- 源固定为仓库 `data/`（权威源），只增改；目标目录里多出来的文件只**列出**供人工判断，
+- 源默认使用仓库 `data/`，复用桌面打包的数据白名单，只增改；目标目录里多出来的文件只**列出**供人工判断，
   不自动删除。安装目录曾残留仓库已删除的旧场景单文件（`nene-core.json`、`nene-after-story.json`、
   `natsume-core.json`，2026-08-27），它们回流后会与数字分片并存，使场景维护接口以
   「单文件与批次文件并存」拒绝服务；因此部署入口的 `$STALE_ASSETS` 已登记这九个路径
   （`.json` 与 `.br/.gz`），`deploy-desktop.bat` 默认带 `-Cleanup` 时会把它们从安装目录清掉。
 - 不动用户数据（SQLite 工作区、history/projects/prompts、`pipeline-run-state.json` 等）。
+- 覆盖前将当前目标的原始字节及新增/更新文件清单保存到 `content/data` 旁的
+  `content-sync-backups/<ID>/`，并输出路径。逐文件原子写入；链接路径、陈旧压缩体和已检测到的
+  并发修改会拒绝。失败可能留下已同步文件与备份，不提供整批事务回滚。
+- 写入或清缓存要求桌面端已退出、维护事务与工作区 owner 锁已释放；脚本只检查并拒绝，
+  不停止进程、不删除锁。尊重 `AICS_DESKTOP_CONFIG_ROOT` 与 `AICS_DESKTOP_WEBVIEW_DATA_DIR`
+  指定的隔离配置/浏览器资料根，可用帮助中的路径参数选择隔离夹具。
 - **不重启应用**，也不证明应用内画面；装机后仍要自行核对安装目录与内容目录哈希、以及
   实际界面（深浅主题、卡片裁切）。
 - 需要出图/真实素材的验收不走本入口。

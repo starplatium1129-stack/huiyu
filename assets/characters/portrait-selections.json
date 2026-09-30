@@ -151,13 +151,14 @@
       "modelId": "anima-miaomiao-v1.2"
     },
     "kama_fate": {
-      "entryId": "pc_kama_fate_kama_fate_sfw_b7_01",
-      "sourceImage": "images/kama_fate/kama_fate_sfw_b7_01/attempt-1.png",
-      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "entryId": "pc_kama_fate_kama_fate_sfw_b7_04",
+      "sourceImage": "images/pc_kama_fate_kama_fate_sfw_b7_04.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
       "rating": "All",
-      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
-      "sourceSha256": "498092ed6c8d7c3acc7fbeccd7b8af2a535a631848d5903deb47a0811cbb6f73",
-      "portraitSha256": "498092ed6c8d7c3acc7fbeccd7b8af2a535a631848d5903deb47a0811cbb6f73",
+      "reason": "迦摩 · 金莲宫殿的粉色花嫁；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "f71aea95b028791d5906e92340740dea1472e0a6adddd68fc9dd1b9abee92df5",
+      "portraitSha256": "fd963146190adeb9cf76923d1e7525de2a0d0b3030dc45a981607573533922b0",
+      "thumbnailSha256": "475531e091f43e0c4ddd8896a061031df735ff5fd7d271d914245a5b38276c28",
       "modelId": "anima-miaomiao-v1.2"
     },
     "kanroji_mitsuri": {
@@ -272,13 +273,13 @@
     },
     "shiranui_mai": {
       "entryId": "pc_shiranui_mai_shiranui_mai_sfw_b9_01",
-      "sourceImage": "images/shiranui_mai/shiranui_mai_sfw_b9_01/attempt-1.png",
-      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "sourceImage": "images/pc_shiranui_mai_shiranui_mai_sfw_b9_01.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
       "rating": "All",
-      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
-      "sourceSha256": "a8ff88099e5189a67368899f60e697ea572a470615d29dbb3b223f8580ef2e3b",
-      "portraitSha256": "a8ff88099e5189a67368899f60e697ea572a470615d29dbb3b223f8580ef2e3b",
-      "modelId": "anima-miaomiao-v1.2"
+      "reason": "不知火舞 · 道场晨训的扇舞；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "9d73795d0e7b2e8f1d21ba443a45d492dd4489a28e80d7f0018b2846a0d710c1",
+      "portraitSha256": "97a32eedcccd512f0105424d2a6caa37f3b2a4080df322ac89f4db59add2421d",
+      "thumbnailSha256": "00bd934e7e3bc5778e8217673c66a84279214e35bbd15e73b5162401f9a2a74a"
     },
     "shirogane_kei": {
       "entryId": "pc_shirogane_kei_shirogane_kei_sfw_b8_01",
@@ -311,13 +312,13 @@
       "modelId": "anima-miaomiao-v1.2"
     },
     "tachibana_mikari": {
-      "entryId": "pc_tachibana_mikari_tachibana_mikari_sfw_b8_01",
-      "sourceImage": "images/tachibana_mikari/tachibana_mikari_sfw_b8_01/attempt-1.png",
-      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "sourceImage": "portrait_tachibana_mikari_00001_.png",
+      "sourceCollection": "E:/code/2/lora/AI/ComfyUI/output",
       "rating": "All",
-      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
-      "sourceSha256": "e0504624b5104561b923633ded3050a7c69bc0de538332d0a4ebedc3d4e30827",
-      "portraitSha256": "e0504624b5104561b923633ded3050a7c69bc0de538332d0a4ebedc3d4e30827",
+      "reason": "2026-09-29 生成的摄影棚喝水立绘；PNG 元数据与原始输出字节已核对。",
+      "sourceSha256": "dfa4e29fc05a685492581fafe438b96bace7d28248bb6cebbabd8f23efde6d99",
+      "portraitSha256": "dfa4e29fc05a685492581fafe438b96bace7d28248bb6cebbabd8f23efde6d99",
+      "thumbnailSha256": "d564945abc3f79eddb7f3edd1b564cd1b5b65786845a80ef697dadac86349e04",
       "modelId": "anima-miaomiao-v1.2"
     },
     "tobiichi_origami": {
@@ -418,6 +419,59 @@
       "reason": "Original-size visual review: coherent single figure, readable face, corrected composition; replaces rejected attempt 1.",
       "sourceSha256": "228405a552c118a9c905daaf7f52ee22d539e47a90e57bc8668b6d634a30ffcd",
       "portraitSha256": "228405a552c118a9c905daaf7f52ee22d539e47a90e57bc8668b6d634a30ffcd",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "fiona_frost": {
+      "entryId": "pc_fiona_frost_fiona_frost_rainy_telephone_booth",
+      "sourceImage": "images/pc_fiona_frost_fiona_frost_rainy_telephone_booth.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "菲奥娜 · 雨夜公用电话亭暗号接头；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "2ca232f6fe244963c2d06a13a48f8d96bdf67de7681243bfa4a8eedf6641faac",
+      "portraitSha256": "6e3cf3dbb6167c3a14a244dfcfd631f9b424cb7e6f94c929603141a35b04727a",
+      "thumbnailSha256": "449a0ea2d13c1bf067551a7f0517df61904f1290d9e65aefb93fe3da9fb8f2df"
+    },
+    "aisha_greyrat": {
+      "entryId": "pc_aisha_greyrat_aisha_greyrat_morning_ledgers",
+      "sourceImage": "images/pc_aisha_greyrat_aisha_greyrat_morning_ledgers.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "爱夏·晨光中的账目核对；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "4f815757bb69e3551101084c562266e8b3099c8135076e450d72be720ab27e25",
+      "portraitSha256": "93950c9050e7639a57835206f89a580e6d187e2d815bbe0e53b0054f0933d635",
+      "thumbnailSha256": "e149ae9959f6e733a0bc9f0e668d8789629b7047bd6f2835b486e496b57a6aa3"
+    },
+    "hayasaka_ai": {
+      "entryId": "pc_hayasaka_ai_hayasaka_ai_sfw_b5_01",
+      "sourceImage": "images/pc_hayasaka_ai_hayasaka_ai_sfw_b5_01.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "早坂爱 · 清晨四宫宅的女仆晨检；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "a2c83debae278246f313addfa37aa774f30d7790576dee0db1b390e9abf60544",
+      "portraitSha256": "91bcfe32d07a08785ed888050c36b3818340d7d6a4f578b80728a09d6535d8d7",
+      "thumbnailSha256": "552bb51283ab1b5d6bf8cdaff55ca6282953d888b39debb8cdf96847d9366a5e",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "takarada_rikka": {
+      "entryId": "pc_takarada_rikka_takarada_rikka_sfw_b5_07",
+      "sourceImage": "images/pc_takarada_rikka_takarada_rikka_sfw_b5_07.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "宝多六花 · 夏祭的捞水球；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "1e90a4ff8a7d683249b793bb62265e669385966471fea22c0e0686ee51e56f3e",
+      "portraitSha256": "2ca59eb0d69196821179a721b00c5ea6b85d353e23c3a37c86a6f52b08ee6036",
+      "thumbnailSha256": "a8d57a38fb90e78a2d251f51486884a665fd340260ca83d29f7f36cd0cbd4a45",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "shiina_mashiro": {
+      "entryId": "pc_shiina_mashiro_shiina_mashiro_sfw_b5_06",
+      "sourceImage": "images/pc_shiina_mashiro_shiina_mashiro_sfw_b5_06.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "椎名真白 · 雨中撑伞的猫步；已核对发布样张与立绘转换字节。",
+      "sourceSha256": "3d8d96130dd78cd32369ec86074e59e1e12b81bc0832c2b39dfcd503405a1302",
+      "portraitSha256": "bc4cd2532b64c1689cef8f5f15652ba4a9538aa95b5c98c59b5eb47ed8c6f46a",
+      "thumbnailSha256": "968ed83e20f370dca8d017df1afd1411520aefbc337765475deac8a8d96485af",
       "modelId": "anima-miaomiao-v1.2"
     }
   }
