@@ -1,5 +1,7 @@
 # 搜索索引传输与响应复制收口
 
+Clippy 补验（2026-09-30）：经用户授权安装同版本的 rustup 管理工具链及 Clippy/rustfmt，编译器仍为 `1.97.1`，默认工具链改为 `1.97.1-x86_64-pc-windows-msvc`；原 stable 目录保留。完整 `rust:check` 已通过：fmt、全目标 Clippy `-D warnings`、117 项行为测试通过，8 项显式专项 ignored。日志在 `runtime/clippy-setup-2026-09-30/rust-check.log`；下文“Clippy 缺失”为初次交付状态，现已补齐。未更新桌面安装。
+
 日期：2026-09-30。基线 `005ffc43` 已提交并推送，包含前两轮搜索/测试负担与 Rust 读写优化。本轮落实先前报告中的全库分页成本，保留工作区原有遮罩、粒子和 TypeScript 热点审计改动。
 
 ## 实现与取舍
