@@ -1,7 +1,7 @@
 const { CONTRACT_ISOLATION }: typeof import('./contract-test-policy') = require('./contract-test-policy');
 'use strict';
 
-const QUALITY_TEST_SUITES = Object.freeze({
+const REGISTERED_TESTS = Object.freeze({
   check: Object.freeze([
     'test-repo-hygiene.js',
     'test-repo-hygiene-contract.js',
@@ -48,9 +48,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-blueprint-write.js',
     'test-reference-audit-root.js',
     'test-scene-rating-diagnostics.js', // 人工 R15 usage 真实隔离写入、受保护字段保持与幂等检查
-    'test-anima-session.js',
     'test-api-client.js',
-    'test-artwork-persistence-prototype.js',
     'test-workspace-storage.js',
     'test-workspace-thumbnails.js',
     'test-workspace-client.js',
@@ -90,7 +88,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-logger.js',
     'test-logger-retention.js',
     'test-logger-safety.js',
-    'test-compare-snapshots.js',
     'test-inpaint-showcase-candidates.js',
     'test-lora-catalog.js',
     'test-manual-review.js',
@@ -127,7 +124,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-resource-install-edge.js',
     'test-resource-install-resolver.js',
     'test-resource-download.js',
-    'test-resource-scheduling.js',
     'test-scene-ux.js',
     'test-scene-write.js',
     'test-scene-change-set.js',
@@ -142,7 +138,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-storage-health.js',
     'test-storage-reliability.js',
     'test-storage-repositories.js',
-    'test-task-recovery-prototype.js',
     'test-vad-segmenter.js',
     'test-voice-baseline.js',
     'test-voice-profile-contract.js',
@@ -189,6 +184,123 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-video-ai.js',
     'test-video-routes.js',
   ]),
+});
+
+// One registration per file. Optional lanes remain available for changed files and explicit full runs.
+const LEGACY_UNIT = new Set<string>([
+  "test-character-reference-profile.js",
+  "test-workspace-storage.js",
+  "test-workspace-thumbnails.js",
+  "test-workspace-client.js",
+  "test-workspace-backup.js",
+  "test-workspace-migration.js",
+  "test-task-runtime.js",
+  "test-desktop-workspace-host.js",
+  "test-chat-host-config.js",
+  "test-comfy-progress.js",
+  "test-comfy-client.js",
+  "test-control-operation.js",
+  "test-job-snapshots.js",
+  "test-live2d-service.js",
+  "test-live2d-imports.js",
+  "test-live2d-textures.js",
+  "test-logger.js",
+  "test-logger-retention.js",
+  "test-logger-safety.js",
+  "test-serial-queue.js",
+  "test-service-watchdog.js",
+  "test-translation-service.js",
+  "test-voice-cache.js",
+  "test-voice-profile-contract.js"
+]);
+const RELEASE_TESTS = new Set<string>([
+  "test-desktop-deploy-guard.js",
+  "test-desktop-native-evidence.js",
+  "test-desktop-updates.js",
+  "test-live2d-native-contract.js",
+  "test-delivery-audit.js",
+  "test-delivery-evidence.js",
+  "test-delivery-handoff.js",
+  "test-delivery-finalize.js",
+  "test-resource-manifest.js",
+  "test-resource-pack.js",
+  "test-resource-pack-delta.js",
+  "test-resource-pack-verify.js",
+  "test-resource-install.js",
+  "test-resource-packaging.js",
+  "test-offline-release.js",
+  "test-model-downloads.js",
+  "test-resource-install-recovery.js",
+  "test-resource-install-edge.js",
+  "test-resource-install-resolver.js",
+  "test-resource-download.js",
+  "test-desktop-staging.js",
+  "test-desktop-update-path.js",
+  "test-bridge-acl.js"
+]);
+const TOOLING_TESTS = new Set<string>([
+  "test-reference-library-merge.js",
+  "test-content-sync.js",
+  "test-domain-type-boundaries-fixtures.js",
+  "test-refactor-boundaries-fixtures.js",
+  "test-test-process-pool.js",
+  "test-precompress-runner.js",
+  "test-workflow-conditions.js",
+  "test-quality-report.js",
+  "test-content-ownership.js",
+  "test-content-history.js",
+  "test-content-consistency.js",
+  "test-content-impact-check.js",
+  "test-content-evidence-audit.js",
+  "test-content-contract-root.js",
+  "test-blueprint-change-plan.js",
+  "test-blueprint-write.js",
+  "test-reference-audit-root.js",
+  "test-scene-rating-diagnostics.js",
+  "test-scene-patch.js",
+  "test-inpaint-scene-candidates.js",
+  "test-inpaint-showcase-candidates.js",
+  "test-manual-review.js",
+  "test-prompt-rewrite-integrity.js",
+  "test-quality-prompt-contract.js",
+  "test-coverage-report.js",
+  "test-content-impact.js",
+  "test-generation-workflow-safety.js",
+  "test-reference-candidate-workflow.js",
+  "test-scene-prose-contract.js",
+  "test-scene-write.js",
+  "test-scene-change-set.js",
+  "test-showcase.js",
+  "test-showcase-candidate-contract.js",
+  "test-repo-hygiene-contract.js",
+  "test-bundle-budget.js",
+  "test-workflow-runner.js",
+  "test-e2e-ci-split.js",
+  "test-typescript-build.js",
+  "test-typescript-development.js",
+  "test-style-debt.js"
+]);
+const CORE_CONTRACT = new Set<string>([
+  "test-control-failure-contract.js",
+  "test-character-reference-contract.js",
+  "test-pinned-scene-prompts.js",
+  "test-scene-story-alignment.js",
+  "test-scene-shard-integrity.js",
+  "test-tag-shards.js",
+  "test-popular-shard-integrity.js",
+  "test-blueprint-shard-integrity.js",
+  "test-security.js"
+]);
+const optionalUnit = (file: string) => LEGACY_UNIT.has(file) || RELEASE_TESTS.has(file) || TOOLING_TESTS.has(file);
+const registered = [...REGISTERED_TESTS.check, ...REGISTERED_TESTS.unit, ...REGISTERED_TESTS.contract];
+const QUALITY_TEST_SUITES = Object.freeze({
+  check: Object.freeze(REGISTERED_TESTS.check.filter(file => !RELEASE_TESTS.has(file) && !TOOLING_TESTS.has(file))),
+  unit: Object.freeze(REGISTERED_TESTS.unit.filter(file => !optionalUnit(file))),
+  contract: Object.freeze(REGISTERED_TESTS.contract.filter(file => CORE_CONTRACT.has(file))),
+  tooling: Object.freeze(registered.filter(file => TOOLING_TESTS.has(file))),
+  release: Object.freeze(registered.filter(file => RELEASE_TESTS.has(file))),
+  legacy: Object.freeze([...REGISTERED_TESTS.unit.filter(file => LEGACY_UNIT.has(file)),
+    ...REGISTERED_TESTS.contract.filter(file => !CORE_CONTRACT.has(file))]),
 });
 
 interface TestMetadata {

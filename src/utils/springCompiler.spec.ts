@@ -51,7 +51,6 @@ describe('springCompiler (Spring-to-Linear-Easing)', () => {
 
   it('pre-bakes global presets in BAKED_SPRINGS', () => {
     for (const name of Object.keys(SPRING_PRESETS) as (keyof typeof SPRING_PRESETS)[]) {
-      expect(BAKED_SPRINGS[name]).toBeDefined()
       expect(BAKED_SPRINGS[name].easing).toContain('linear(')
       expect(BAKED_SPRINGS[name].duration).toBeGreaterThan(0)
       expect(BAKED_SPRINGS[name].easing.length).toBeLessThan(1000)

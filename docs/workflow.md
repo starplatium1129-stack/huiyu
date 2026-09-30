@@ -305,7 +305,11 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-`gate:quick` 自动分类从 `quality-test-inventory.ts` 选择已登记的 Node 测试：只改这些测试与文档时，先更新运行入口，再只运行所改测试，沿用所属套件时限与缺失数据准备。源文件与生成入口去重，失败处理复用现有执行器；混合业务改动继续叠加对应领域检查。前端 spec 仍归 ui；E2E、共享夹具、runner、注册表、构建器、未知或删除的测试等继续触发 full。已明确影响范围时可用显式面积或定向入口；提交本身不扩大检查范围。
+日常使用 `npm test`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
+
+Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm run test:legacy -- test-anima-routes.ts`（已有当前SPA）、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，全部库存使用 `gate:all`；修改执行器自身后先 `npm run build:runtime` 更新生成入口。
+
+短期限的 `test-generation-workflow-safety` 独立于 Node 并发批次执行，保留其 250ms 夹具期限与显式超时场景；Windows 的 `test-desktop-deploy-guard` 使用真实 PowerShell 进程探测，也单独执行。其他文件仍并发 4。每个选中文件只执行一次，整体仍共用原 300 秒上限，阶段失败/未运行分别记录，不放宽退出与锁清理断言。
 
 ### 验证并发与复用
 
@@ -317,14 +321,17 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 生产构建的预压使用 `PRECOMPRESS_JOBS`（默认 2，范围 1–4）限制同时处理的文件数，继续使用 Brotli 11 / gzip 9，不缓存测试 PASS、不依赖文件时间戳跳过压缩，也不放宽包体预算。同步 `compress()` 接口保持兼容，`precompress --check` 仍只读核对源字节、孤儿与陈旧产物。
 
-同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。这里优化的是执行开销，完整门禁仍覆盖相同测试清单。耗时比较使用同机、同输入和相同参数独占测量。
+同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。定向与完整门禁共用当前登记清单，删除/合并须记录保留覆盖与当次验收。耗时比较使用同机、同输入和相同参数独占测量。
 
 | 入口 | 实际范围 |
 | --- | --- |
-| gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动；脚本、依赖、配置及未知代码路径升级 full；纯文档跳过 |
+| npm test / gate:quick ui/style/server/data/all | 自动模式按文件选相关前端、样式、Node、常规 E2E；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
-| check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build；validate 内部使用 `test:unit:run` / `test:contract:run` 复用 check 阶段已准备的运行时，独立运行 `test:unit` / `test:contract` 仍会先执行 `build:runtime` |
-| gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
+| check:full | npm run validate：核心check + Git关联前端 + 核心unit/contract + 变更触发专项；复用已有runtime，legacy专项按需构建SPA |
+| gate:full | 当前产品整合门禁：核心check、完整前端、核心unit/contract、变更触发专项与打包预算 |
+| gate:all / validate:all | 显式全部库存：构建、check、完整前端覆盖率和六个Node lane；用于整合/发行全面复核 |
+| test:tooling / test:release / test:legacy | 维护工具、发行/资源包、旧Node/迁移对照专项；不作为纯前端改动的固定成本 |
+| test:optional | 按Git选择专项；相关工具/旧Node/桌面源码改动自动触发；未知影响面、无有效CI基线及配置变更保守全跑 |
 | build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护/旧对照脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
@@ -334,11 +341,13 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | test:e2e / test:e2e:all | 默认 `test:e2e` 构建后只跑 critical；已有构建的 `test:e2e:all` 运行 critical + nightly，不包含 manual/device |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
 
-质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和 Node 跳过数量；原有单项命令与 fail-fast/--all 语义不变。JSON 与日志按 [报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告) 接入 capture:delivery；报告不是已执行门禁的替代品。Quality 仍独立构建各 lane，并新增 Node 22.18 的锁定安装、构建和网关烟雾检查。
+质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和Node跳过数量；失败与未运行不改标通过。Quality的前端使用Git基线关联测试，无有效基线时全跑；完整前端覆盖率和既有门槛由夜间及显式全量入口执行。核心contract不再准备旧SPA，变更触发的legacy会在执行前构建；核心Rust CI与Node22.18检查保留。JSON与日志按[报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告)接入capture:delivery，报告不代替实际执行。
 
 E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项目或手机、平板专用尺寸及触屏用例。保留桌面窄窗口、分屏、双主题、键鼠可达性与减少动态效果检查；桌宠原生小窗口尺寸不属于移动端，继续覆盖。不要把手机尺寸替换成同数量的桌面尺寸来扩大矩阵。
 
 分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 仍会发现全部文件，不作为常规回归入口。
+
+精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。实现与当次验证见 [日常测试精简](audits/2026-09-30/test-simplification.md)。
 
 小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。当前 `test:e2e` 默认的95项也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。详情见 [全量必要性审计](audits/2026-09-28/e2e-necessity-audit.md)。
 
@@ -382,7 +391,7 @@ Electron 验收修复后可显式使用 `--resume-native <旧report.json>` 只�
 
 `node scripts/maintenance/check-bundle-budget.js [dist目录] --json` 保留旧预算，同时报告入口与真实路由匹配链的静态 JS 文件并集（不计运行时动态请求）。映射来自 router AST；无 src 命名块只接受唯一匹配，缺失/歧义显式 unknown、总数 null，不能解释为零。新指标仅报告，包含文件集合、manifest/router 哈希；需将所选 dist 与相同源码配对，再用独占冷启动浏览器的 script 请求核对动态加载差异。
 
-迁移原型 `test-artwork-persistence-prototype.js` 在文件发布、事务内元数据写入与提交后三个检查点真实强杀自有子进程，重开临时 SQLite 核对未提交/已提交状态及幂等恢复。这只证明该候选的进程终止边界；浏览器备份涉及 localStorage 与 IndexedDB 的恢复 journal、设置发布/清理阶段、物理断电及 512 MiB 大包峰值仍须独立验收，不据此上线 journal。
+旧 SQLite 候选与模拟任务 journal 的重复原型测试已退役；`artwork-sqlite.ts` 仍供显式 storage benchmark 使用，基准内继续检查数量与字节，不能把候选原型当产品持久化验收。当前作品、任务与恢复边界由 workspace/持久任务及 Rust 存储测试负责；物理断电、浏览器恢复 journal 与 512 MiB 大包峰值仍是独立验收范围。全部前端与 Node 的逐文件决定见 [单测精简实施](audits/2026-09-30/test-total-simplification.md)。
 
 `flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
 
@@ -449,8 +458,8 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 | 自动化 | 触发与范围 |
 | --- | --- |
-| Quality | push / PR：构建、静态检查、前端覆盖率、unit、contract、关键浏览器回归 |
-| Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
+| Quality | push / PR：构建、核心静态检查、关联前端、核心unit/contract、变更触发专项、关键浏览器回归 |
+| Nightly visual regression | 每日北京时间 02:00 / 手动：完整前端覆盖率门槛、主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
 当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.7.4 说明](releases/v1.7.4.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。

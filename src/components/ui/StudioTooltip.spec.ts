@@ -11,23 +11,6 @@ function mountTooltip(props: Record<string, unknown> = {}) {
 }
 
 describe('StudioTooltip', () => {
-  it('默认模式不产生额外盒子，DOM 与布局对调用方透明', () => {
-    const wrapper = mountTooltip()
-    const anchor = wrapper.find('.studio-tooltip-anchor')
-    expect(anchor.exists()).toBe(true)
-    // display:contents 由样式提供；这里契约是「没有 data-anchor」→ 不生成盒子
-    expect(anchor.attributes('data-anchor')).toBeUndefined()
-    expect(wrapper.find('button').text()).toBe('步数')
-    wrapper.unmount()
-  })
-
-  it('控件可能被禁用时用 anchor 生成可接收 hover 的外壳', () => {
-    const wrapper = mountTooltip({ anchor: true })
-    const anchor = wrapper.find('.studio-tooltip-anchor')
-    expect(anchor.attributes('data-anchor')).toBeDefined()
-    expect(anchor.find('button').exists()).toBe(true)
-    wrapper.unmount()
-  })
 
   it('内容为空时退化为只渲染子元素，不挂任何提示语义', () => {
     const wrapper = mountTooltip({ content: '' })

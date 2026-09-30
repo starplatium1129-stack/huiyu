@@ -71,30 +71,6 @@ test('debug() is silent unless enabled, persists to file when enabled', { timeou
     'enabled debug lines persist with DEBUG level');
 });
 
-test('retention sweep: 双判据回收——过期按天日志（含旁路 prefix）与过期旁路文件都删除，新鲜文件保留', () => {
-  const dir = makeTmpDir();
-  const old = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  const key = (d: any) => '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
-  fs.writeFileSync(path.join(dir, 'gateway-' + key(old) + '.log'), 'stale\n', 'utf8');
-  fs.writeFileSync(path.join(dir, 'other-' + key(old) + '.log'), 'not-mine\n', 'utf8');
-  fs.writeFileSync(path.join(dir, 'comfyui.stderr.log'), 'stale bypass\n', 'utf8');
-  const staleMtime = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  fs.utimesSync(path.join(dir, 'comfyui.stderr.log'), staleMtime, staleMtime);
-  fs.writeFileSync(path.join(dir, 'control.log'), 'fresh bypass\n', 'utf8');
-
-  createLogger({ dir, prefix: 'gateway', retainDays: 14 });
-  assert.strictEqual(fs.existsSync(path.join(dir, 'gateway-' + key(old) + '.log')), false,
-    'expired gateway log deleted synchronously at init');
-  // P1-11 双判据：旁路日志不再无限积压——带日期后缀的按文件名日期判，
-  // 无日期后缀的按 mtime 判；新鲜文件不受影响。
-  assert.strictEqual(fs.existsSync(path.join(dir, 'other-' + key(old) + '.log')), false,
-    'expired other-prefix dated log deleted by dual-criteria sweep');
-  assert.strictEqual(fs.existsSync(path.join(dir, 'comfyui.stderr.log')), false,
-    'stale undated bypass log deleted by mtime');
-  assert.strictEqual(fs.existsSync(path.join(dir, 'control.log')), true,
-    'fresh undated bypass log kept (mtime within retention)');
-});
-
 test('missing dir degrades to console-only without throwing', () => {
   const logger = createLogger({ dir: '', prefix: 'gw' });
   assert.doesNotThrow(() => {

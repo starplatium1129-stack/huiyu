@@ -7,7 +7,7 @@ for (const theme of ['dark']) for (const width of [1280, 1920]) {
     await page.goto('/prompt-builder?popular=makinohara_shouko')
     await expect(page.locator('.pb')).toHaveAttribute('data-character', 'makinohara_shouko')
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
-    await page.waitForTimeout(600)
+    await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro')
     await page.locator('[aria-controls="material-scenes"]').click()
     await page.getByRole('button', { name: '查看全部', exact: true }).click()
     const cards = page.locator('.blueprint-card')

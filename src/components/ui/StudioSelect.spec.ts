@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { afterEach, describe, expect, it } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
 import { SelectRoot } from 'reka-ui'
 import StudioSelect from './StudioSelect.vue'
+
+const mounted: Array<{ unmount(): void }> = []
+afterEach(async () => {
+  mounted.splice(0).forEach(wrapper => wrapper.unmount())
+  await flushPromises()
+  document.body.innerHTML = ''
+})
 
 const flatOptions = [
   { value: 'opt1', label: '选项一' },
@@ -10,7 +16,9 @@ const flatOptions = [
 ]
 
 function mountSelect(props: Record<string, unknown>) {
-  return mount(StudioSelect, { props: { options: flatOptions, ...props }, attachTo: document.body })
+  const wrapper = mount(StudioSelect, { props: { options: flatOptions, ...props }, attachTo: document.body })
+  mounted.push(wrapper)
+  return wrapper
 }
 
 /**
@@ -27,19 +35,8 @@ describe('StudioSelect', () => {
   it('renders the trigger with the label as accessible name', () => {
     const wrapper = mountSelect({ modelValue: 'opt1', label: '测试下拉' })
     const trigger = wrapper.find('.studio-select-trigger')
-    expect(trigger.exists()).toBe(true)
     expect(trigger.attributes('aria-label')).toBe('测试下拉')
-  })
-
-  // 仓库 e2e（apple-hig-accessibility / companion-focus）要求对话框与桌宠面板内
-  // 原生控件数量为 0，所以组件自身不得再渲染兼容用的隐藏 <select>。
-  it('never renders a native select element', async () => {
-    const wrapper = mountSelect({ modelValue: 'opt1', label: '测试下拉' })
     expect(wrapper.find('select').exists()).toBe(false)
-    expect(wrapper.find('.studio-select-native').exists()).toBe(false)
-    await wrapper.find('.studio-select-trigger').trigger('click')
-    await nextTick()
-    expect(document.querySelector('select')).toBeNull()
   })
 
   it('puts the id on the visible trigger so label[for] names the control', () => {
@@ -59,13 +56,16 @@ describe('StudioSelect', () => {
   })
 
   // 「全部分类 / 自动 / 无参考」在原实现里是 value="" 的真实选项，不是未选择状态。
-  it('treats an empty-string option as a real selectable value', () => {
+  it('treats an empty-string option as a real value and emits its original type', async () => {
     const wrapper = mountSelect({
       modelValue: '',
       options: [{ value: '', label: '全部分类' }, { value: 'a', label: '分类 A' }],
     })
     expect(wrapper.find('.studio-select-value').text()).toBe('全部分类')
     expect(wrapper.find('.studio-select-trigger').attributes('data-empty')).toBeUndefined()
+    await wrapper.setProps({ modelValue: 'a' })
+    chooseKey(wrapper, '__studio-select-empty__')
+    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([''])
   })
 
   it('round-trips number values without turning them into strings', async () => {
@@ -77,15 +77,6 @@ describe('StudioSelect', () => {
 
     chooseKey(wrapper, '2')
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([2])
-  })
-
-  it('maps the empty-string option back to an empty string', async () => {
-    const wrapper = mountSelect({
-      modelValue: 'a',
-      options: [{ value: '', label: '全部分类' }, { value: 'a', label: '分类 A' }],
-    })
-    chooseKey(wrapper, '__studio-select-empty__')
-    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([''])
   })
 
   // 原生 optgroup 的等价物：分组只影响弹层结构，取值与显示仍走同一套映射。
@@ -103,30 +94,24 @@ describe('StudioSelect', () => {
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['768x1344'])
   })
 
-  it('keeps the wrapper as the layout box so page CSS can size the control', () => {
-    const wrapper = mountSelect({ modelValue: 'opt1', class: 'model-select', inline: true })
-    const root = wrapper.find('.studio-select-wrapper')
-    expect(root.classes()).toContain('model-select')
-    expect(root.classes()).toContain('studio-select-inline')
-  })
-
-  it('delegates hint to StudioTooltip instead of setting a native title attribute', () => {
+  it('shows its hint when the visible select receives keyboard focus', async () => {
     const wrapper = mountSelect({ modelValue: 'opt1', hint: '采样器说明' })
     const trigger = wrapper.find('.studio-select-trigger')
     expect(trigger.attributes('title')).toBeUndefined()
-    const tooltip = wrapper.findComponent({ name: 'StudioTooltip' })
-    expect(tooltip.exists()).toBe(true)
-    expect(tooltip.props('content')).toBe('采样器说明')
-    expect(tooltip.props('anchor')).toBe(false)
+    await trigger.trigger('focus')
+    await flushPromises()
+    expect(document.querySelector('[role="tooltip"]')?.textContent).toContain('采样器说明')
   })
 
-  it('enables tooltip anchor when the select is disabled so hover still triggers hint', () => {
+  it('keeps a disabled select hint reachable through keyboard focus', async () => {
     const wrapper = mountSelect({ modelValue: 'opt1', hint: '生成中不可切换', disabled: true })
     const trigger = wrapper.find('.studio-select-trigger')
     expect(trigger.attributes('title')).toBeUndefined()
-    const tooltip = wrapper.findComponent({ name: 'StudioTooltip' })
-    expect(tooltip.exists()).toBe(true)
-    expect(tooltip.props('content')).toBe('生成中不可切换')
-    expect(tooltip.props('anchor')).toBe(true)
+    await flushPromises()
+    const anchor = wrapper.get('.studio-tooltip-anchor')
+    expect(anchor.attributes('tabindex')).toBe('0')
+    await anchor.trigger('focus')
+    await flushPromises()
+    expect(document.querySelector('[role="tooltip"]')?.textContent).toContain('生成中不可切换')
   })
 })

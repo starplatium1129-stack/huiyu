@@ -27,6 +27,9 @@ const SUITE_TIMEOUT_MS = Object.freeze({
   check: 180_000,
   unit: 300_000,
   contract: 180_000,
+  tooling: 300_000,
+  release: 300_000,
+  legacy: 180_000,
 });
 const CAPTURE_MAX_BUFFER = 64 * 1024 * 1024;
 
@@ -97,39 +100,57 @@ function runSuiteFiles(entries: string|any[], { label, timeout, verbose = false,
   return failed || skipped ? 1 : 0;
 }
 
-/** unit 套件：单进程 node --test 聚合跑全部文件（保持既有并发=4）。 */
-function runUnitSuite({ verbose = false }: any = {}) {
-  const files = QUALITY_TEST_SUITES.unit.map((file) => path.join(root, 'scripts', 'tests', file));
-  const started = Date.now();
-  const result: any = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {
-    cwd: root,
-    timeout: SUITE_TIMEOUT_MS.unit,
-    maxBuffer: CAPTURE_MAX_BUFFER,
-    encoding: 'utf8',
-  });
-  const duration = Date.now() - started;
-  const output = `${result.stdout || ''}\n${result.stderr || ''}`;
-  const ok = !result.error && result.status === 0;
-  writeQualityReport('unit', [{ name: 'node --test (aggregate)', status: ok ? 'passed' : 'failed', duration,
-    output, failureKind: classifyFailure(result, output), timeoutMs: SUITE_TIMEOUT_MS.unit }], duration);
-  if (verbose) console.log(output.trimEnd());
-  if (ok) {
-    const passLine = /[ℹ#] pass (\d+)/.exec(output);
-    const count = passLine ? `${passLine[1]} 用例` : '全部文件';
-    console.log(`✔ unit 套件 ${count} ${formatDuration(duration)}`);
-    return 0;
-  }
-  const reason = result.error
-    ? (result.error.code === 'ETIMEDOUT' ? `TIMEOUT(${formatDuration(SUITE_TIMEOUT_MS.unit)})` : result.error.message)
-    : `exit ${result.status ?? '?'}`;
-  console.log(`✘ unit 套件 ${formatDuration(duration)} ${reason}`);
-  printExcerpt(output, 'unit');
-  return 1;
+function planUnitTests(files: readonly string[], platform: NodeJS.Platform = process.platform) {
+  // Windows PowerShell process inspection timed out in the parallel suite but
+  // passed alone. Keep its real host/identity/drain assertions in a separate
+  // phase, after CPU-heavy Node fixtures; Linux keeps the original aggregate.
+  const guard = 'test-desktop-deploy-guard.js';
+  // The successful/malformed local HTTP scenarios keep their 250ms deadline;
+  // they failed under the aggregate CPU load and passed unchanged alone.
+  const generation = 'test-generation-workflow-safety.js';
+  const serial: readonly string[] = files.filter(file => file === generation || (platform === 'win32' && file === guard));
+  const parallel = files.filter(file => !serial.includes(file));
+  return [
+    ...(parallel.length ? [{ name: 'node --test (aggregate)', files: parallel, concurrency: 4 }] : []),
+    ...serial.map(file => ({ name: file === guard ? 'Windows deployment fixture' : 'Generation workflow fixture', files: [file], concurrency: 1 })),
+  ];
 }
 
-async function runContractSuite({ verbose = false, keepGoing = false } = {}): Promise<number> {
+/** unit aggregation keeps concurrency=4; the Windows process fixture follows alone. */
+function runUnitSuite({ verbose = false, files: selected = QUALITY_TEST_SUITES.unit }: { verbose?: boolean; files?: readonly string[] } = {}) {
+  console.log(`unit: ${selected.length}/${QUALITY_TEST_SUITES.unit.length} files`);
+  if (!selected.length) throw new Error('Cannot execute an empty unit selection');
+  const started = Date.now();
+  const groups = planUnitTests(selected);
+  const results: import('./quality-report').QualityResult[] = [];
+  for (const group of groups) {
+    const remaining = SUITE_TIMEOUT_MS.unit - (Date.now() - started);
+    if (remaining <= 0) break;
+    const phaseStarted = Date.now();
+    const result = spawnSync(process.execPath, ['--test', `--test-concurrency=${group.concurrency}`,
+      ...group.files.map(file => path.join(root, 'scripts/tests', file))], {
+      cwd: root, timeout: remaining, maxBuffer: CAPTURE_MAX_BUFFER, encoding: 'utf8', windowsHide: true,
+    });
+    const output = `${result.stdout || ''}\n${result.stderr || ''}`;
+    const ok = !result.error && result.status === 0;
+    const error = result.error as NodeJS.ErrnoException | undefined;
+    const reason = result.error?.message || (ok ? '' : `exit ${result.status ?? '?'}`);
+    results.push({ name: group.name, status: ok ? 'passed' : 'failed', duration: Date.now() - phaseStarted,
+      output, reason, failureKind: classifyFailure({ status: result.status, signal: result.signal, error }, output), timeoutMs: remaining });
+    if (verbose) console.log(output.trimEnd());
+    else if (!ok) printExcerpt(output, group.name);
+    if (result.signal || error?.code === 'ETIMEDOUT') break;
+  }
+  for (const group of groups.slice(results.length)) results.push({ name: group.name, status: 'not-run', duration: 0 });
+  const duration = Date.now() - started, ok = results.every(result => result.status === 'passed');
+  writeQualityReport('unit', results, duration);
+  const passed = results.reduce((sum, result) => sum + Number(/[ℹ#] pass (\d+)/.exec(result.output ?? '')?.[1] ?? 0), 0);
+  console.log(`${ok ? '✔' : '✘'} unit 套件 ${passed} 用例 ${formatDuration(duration)}`);
+  return ok ? 0 : 1;
+}
+
+async function runContractSuite({ verbose = false, keepGoing = false, files = QUALITY_TEST_SUITES.contract }: { verbose?: boolean; keepGoing?: boolean; files?: readonly string[] } = {}): Promise<number> {
   const jobs = contractJobs();
-  const files = QUALITY_TEST_SUITES.contract;
   const plan = planContractTests(files, jobs);
   const started = Date.now();
   const controller = new AbortController();
@@ -192,18 +213,39 @@ function runNpmScript(script: any, timeout: any = 300_000) {
   return { name: script, ok: !reason, duration, reason, output };
 }
 
+function selectSuiteFiles(suite: keyof typeof QUALITY_TEST_SUITES, args: readonly string[]): readonly string[] {
+  const selected = new Set<string>();
+  for (const arg of args) {
+    if (['--all', '--verbose'].includes(arg)) continue;
+    const file = arg.replace(/^scripts[\\/]tests[\\/]/, '').replace(/\.mts$/, '.mjs').replace(/\.ts$/, '.js');
+    if (!QUALITY_TEST_SUITES[suite].includes(file)) throw new Error(`Unknown ${suite} test: ${arg}`);
+    selected.add(file);
+  }
+  return selected.size ? [...selected] : QUALITY_TEST_SUITES[suite];
+}
+
 async function main(argv: string[]) {
-  const suiteName = argv.find((arg: PropertyKey) => Object.hasOwn(QUALITY_TEST_SUITES, arg));
-  if (!suiteName) {
-    console.error(`usage: node ${path.basename(__filename)} <check|unit|contract> [--verbose] [--all]`);
+  if (argv[0] === 'all') {
+    const invalid = argv.slice(1).filter(arg => !['--verbose', '--all'].includes(arg));
+    if (invalid.length) throw new Error('all accepts only --verbose and --all');
+    let code = 0;
+    for (const suite of Object.keys(QUALITY_TEST_SUITES)) {
+      code = await main([suite, ...argv.slice(1)]) || code;
+      if (code && !argv.includes('--all')) break;
+    }
+    return code;
+  }
+  const suiteName = argv[0] as keyof typeof QUALITY_TEST_SUITES;
+  if (!Object.hasOwn(QUALITY_TEST_SUITES, suiteName)) {
+    console.error(`usage: node ${path.basename(__filename)} <check|unit|contract|tooling|release|legacy|all> [test-file...] [--verbose] [--all]`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
   if (suiteName === 'contract') contractJobs(); // Validate before any missing-data preparation.
-  const files = (QUALITY_TEST_SUITES as Record<string, any>)[suiteName];
+  const files = selectSuiteFiles(suiteName, argv.slice(1));
   const entries = files.map((file: string) => ({ name: file, file: path.join(root, 'scripts', 'tests', file) }));
-  if (suiteName === 'unit' || suiteName === 'contract') {
+  if (suiteName !== 'check') {
     // 数据聚合产物不入库（2026-08-28）：unit（test-prompt-corpus 直读 scenes.json）
     // 与 contract 套件都直接读取生成文件，fresh clone 先补齐缺失产物。
     // onlyIfMissing：陈旧态留给 --check 门禁报红，不在测试里静默自愈。
@@ -216,8 +258,8 @@ async function main(argv: string[]) {
       return 1;
     }
   }
-  if (suiteName === 'unit') return runUnitSuite({ verbose });
-  if (suiteName === 'contract') return runContractSuite({ verbose, keepGoing });
+  if (suiteName === 'unit') return runUnitSuite({ verbose, files });
+  if (suiteName === 'contract') return runContractSuite({ verbose, keepGoing, files });
   return runSuiteFiles(entries, {
     label: suiteName,
     timeout: (SUITE_TIMEOUT_MS as Record<string, any>)[suiteName],
@@ -230,4 +272,4 @@ if (require.main === module) {
   main(process.argv.slice(2)).then(code => { process.exitCode = code; }).catch(error => { console.error(runtimeErrorMessage(error)); process.exitCode = 1; });
 }
 
-export = { runSuiteFiles, runUnitSuite, runContractSuite, runNpmScript, runStep, formatDuration, printExcerpt, SUITE_TIMEOUT_MS, root };
+export = { runSuiteFiles, planUnitTests, runUnitSuite, runContractSuite, selectSuiteFiles, runNpmScript, runStep, formatDuration, printExcerpt, SUITE_TIMEOUT_MS, root };

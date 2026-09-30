@@ -114,19 +114,74 @@ test('quick gate selects registered Node tests once across source and generated 
     'scripts/tests/test-chat.ts', 'scripts/tests/test-module-boundaries.mts', 'docs/workflow.md',
   ]), { areas: ['tests'], testFiles: ['test-api-client.js', 'test-chat.js', 'test-module-boundaries.mjs'] });
   assert.deepEqual(classifyFiles(['src/utils/stream.spec.ts', 'scripts/tests/test-chat.ts']), {
-    areas: ['ui', 'tests'], testFiles: ['test-chat.js'],
+    areas: ['ui', 'tests'], testFiles: ['test-chat.js'], frontendFiles: ['src/utils/stream.spec.ts'],
   });
 });
 
-test('quick gate keeps shared runners, unknown or removed tests and browser tests at full scope', () => {
+test('quick gate keeps shared runners, unknown or removed tests and device tests at full scope', () => {
   for (const file of [
     'scripts/tests/quality-test-inventory.ts', 'scripts/tests/run-quality-suite.ts',
     'scripts/tests/gateway-test-stack.ts', 'scripts/build-node.mts',
     'scripts/tests/test-unknown.ts', 'scripts/tests/test-removed-fixture.ts',
-    'scripts/tests/test-electron-shell.mts', 'tests/e2e/studio.spec.ts',
+    'scripts/tests/test-electron-shell.mts', 'tests/e2e/studio-live2d.spec.ts', 'tests/e2e/helpers/sceneState.ts',
   ]) {
     assert.deepEqual(classifyFiles(['scripts/tests/test-api-client.ts', file]), { areas: ['full'], testFiles: [] }, file);
   }
+});
+
+test('quick gate selects related frontend sources and exact regular browser specs', () => {
+  assert.deepEqual(classifyFiles(['src/utils/characterTheme.ts', 'tests/e2e/studio.spec.ts', 'tests/e2e/studio.spec.ts']), {
+    areas: ['ui', 'browser'], testFiles: [], frontendFiles: ['src/utils/characterTheme.ts'], browserFiles: ['tests/e2e/studio.spec.ts'],
+  });
+  assert.deepEqual(classifyFiles(['src/utils/characterTheme.ts', 'src/assets/css/companion.css']), {
+    areas: ['ui', 'style'], testFiles: [], frontendFiles: ['src/utils/characterTheme.ts'],
+  }, 'CSS uses its own scans and does not widen the related logic tests');
+  assert.deepEqual(classifyFiles(['src/assets/css/companion.css']), { areas: ['style'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['tests/e2e/unknown.spec.ts']), { areas: ['full'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['src/utils/deleted-test.spec.ts']), { areas: ['full'], testFiles: [] });
+});
+
+test('quality suite selection deduplicates exact source entries and rejects typos or wrong suites', () => {
+  const { selectSuiteFiles }: typeof import('./run-quality-suite') = require('./run-quality-suite');
+  const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+  assert.deepEqual(selectSuiteFiles('unit', ['test-api-client.ts', 'scripts/tests/test-api-client.js', '--verbose']), ['test-api-client.js']);
+  assert.deepEqual(selectSuiteFiles('contract', []), QUALITY_TEST_SUITES.contract);
+  for (const arg of ['test-api-clinet.ts', 'test-chat.ts', '../test-api-client.js', '--typo']) {
+    assert.throws(() => selectSuiteFiles('unit', [arg]), /Unknown unit test/);
+  }
+});
+
+test('optional suites stay available and execute when their real consumers change', () => {
+  const { selectOptionalLanes }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
+  const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+  assert.deepEqual(selectOptionalLanes(['src/views/HomeView.vue', 'data/scenes/core.json', 'docs/workflow.md']), []);
+  assert.deepEqual(selectOptionalLanes(['scripts/lib/scene-store.ts']), ['tooling', 'release', 'legacy']);
+  assert.deepEqual(selectOptionalLanes(['desktop-tauri/src-tauri/src/main.rs']), ['release']);
+  assert.deepEqual(selectOptionalLanes(['routes/anima.ts']), ['legacy']);
+  assert.deepEqual(selectOptionalLanes(['scripts/tests/test-blueprint-write.ts']), ['tooling']);
+  assert.deepEqual(selectOptionalLanes(['unclassified-code.ts']), ['tooling', 'release', 'legacy']);
+  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-api-client.js'));
+  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-data-backup.js'));
+  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-control-failure-contract.js'));
+  assert.ok(QUALITY_TEST_SUITES.legacy.includes('test-maintenance-blueprint-transaction.js'));
+});
+
+test('unit phases execute each selected file once and isolate Windows process inspection', () => {
+  const { planUnitTests }: typeof import('./run-quality-suite') = require('./run-quality-suite');
+  const files = ['test-api-client.js', 'test-desktop-deploy-guard.js', 'test-comfy-client.js'];
+  const windows = planUnitTests(files, 'win32');
+  assert.deepEqual(windows.flatMap(group => group.files).sort(), [...files].sort());
+  assert.equal(windows[0].concurrency, 4);
+  assert.deepEqual(windows[1].files, ['test-desktop-deploy-guard.js']);
+  assert.equal(windows[1].concurrency, 1);
+  const linux = planUnitTests(files, 'linux');
+  assert.equal(linux.length, 1);
+  assert.deepEqual(linux[0].files, files);
+  assert.deepEqual(planUnitTests(['test-desktop-deploy-guard.js'], 'win32')[0].files, ['test-desktop-deploy-guard.js']);
+  const generation = planUnitTests(['test-api-client.js', 'test-generation-workflow-safety.js'], 'linux');
+  assert.deepEqual(generation.map(group => [group.files, group.concurrency]), [
+    [['test-api-client.js'], 4], [['test-generation-workflow-safety.js'], 1],
+  ]);
 });
 
 test('quick gate does not execute stale generated tests when their registered source was deleted', t => {

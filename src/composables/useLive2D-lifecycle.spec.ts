@@ -36,12 +36,13 @@ function setup() {
   const connect = vi.fn<(options: Live2DConnectOptions) => Promise<Live2DStageSession>>(async () => session)
   ctx.backend = { kind: 'browser', capability: BROWSER_CAPABILITY, connect }
   const setState = vi.fn()
-  const lifecycle = createLifecycleController(ctx, {
+  const controllers = {
     pointerGaze: { bind: vi.fn() }, emotionClock: { start: vi.fn(), stop: vi.fn() },
     layoutFit: { fit: vi.fn(), layout: vi.fn(), scheduleNativeLayout: vi.fn(), resetWindowBounds: vi.fn() },
     interactions: { bind: vi.fn(), stopAudio: vi.fn() }, parameterFrame: { bindMouthOverride: vi.fn() },
-  }, { setState })
-  return { ctx, lifecycle, connect, session, model, setState, loaded: () => loaded(model), failed: (e: Error) => failed(e) }
+  }
+  const lifecycle = createLifecycleController(ctx, controllers, { setState })
+  return { ctx, lifecycle, controllers, connect, session, model, setState, loaded: () => loaded(model), failed: (e: Error) => failed(e) }
 }
 
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers() })
@@ -257,6 +258,8 @@ describe('Live2D lifecycle races', () => {
     await loading
     expect(h.connect.mock.calls[0]![0].signal?.aborted).toBe(true)
     expect(h.ctx.loading).toBeNull()
+    expect(h.ctx.enabled.value).toBe(false)
+    expect(h.controllers.layoutFit.resetWindowBounds).toHaveBeenCalledOnce()
     expect(vi.getTimerCount()).toBe(0)
   })
 

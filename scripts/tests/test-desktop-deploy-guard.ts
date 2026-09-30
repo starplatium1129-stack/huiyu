@@ -143,7 +143,11 @@ class FixtureHost {
       const refused = run('status'); assert.equal(refused.status, 27); assert.match(String(refused.stdout), /DESKTOP_MAINTENANCE_IDENTITY/);
       assert.equal(child.exitCode, null); fs.writeFileSync(file, original);
       const exited = once(child, 'exit'), stopped = run('shutdown');
-      assert.equal(stopped.status, 0, stopped.stdout + stopped.stderr); await exited;
+      assert.equal(stopped.status, 0, JSON.stringify({
+        error: stopped.error?.message, stdout: stopped.stdout, stderr: stopped.stderr,
+        drainStarted: fs.existsSync(path.join(f.root, 'drain-started')),
+        ownerPresent: fs.existsSync(f.owner),
+      })); await exited;
       assert.equal(fs.existsSync(f.owner), false); assert.equal(fs.existsSync(path.join(f.root, 'drain-started')), true);
     } finally { if (child.exitCode === null) { const exited = once(child, 'exit'); child.kill(); await exited; } }
   });

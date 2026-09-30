@@ -7,7 +7,6 @@ describe('showcase handoff', () => {
   it('preserves an exact owned blueprint without generating', () => {
     const result = showcaseDestination(entry, characters, [{ id: 'raiden_garden', characterId: 'raiden' }])
     expect(result.to).toBe('/prompt-builder?popular=raiden&blueprint=raiden_garden')
-    expect(result.to).not.toContain('generate=')
   })
   it('does not bind another character blueprint or invent a missing one', () => {
     expect(showcaseDestination(entry, characters, [{ id: 'raiden_garden', characterId: 'someone_else' }]).to).toBe('/prompt-builder?popular=raiden')

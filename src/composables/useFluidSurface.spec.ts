@@ -1,19 +1,8 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { h } from 'vue'
-import {
-  useFluidSurface,
-  DEFAULT_FLUID_PANEL_SELECTORS,
-  DEFAULT_FLUID_PANEL_SELECTOR,
-  FLUID_FULLSCREEN_SELECTORS,
-  FLUID_FULLSCREEN_SELECTOR,
-  FLUID_POPOVER_SELECTORS,
-  FLUID_POPOVER_SELECTOR,
-} from './useFluidSurface'
-import FluidTransition from '@/components/visual/FluidTransition.vue'
+import { useFluidSurface } from './useFluidSurface'
 import { createFluidMotion } from '@/utils/fluidSpring'
 
-describe('useFluidSurface & FluidTransition selectors and motion curves', () => {
+describe('useFluidSurface interrupted motion and cleanup', () => {
   beforeEach(() => {
     document.body.innerHTML = ''
     vi.restoreAllMocks()
@@ -23,64 +12,6 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
     document.body.innerHTML = ''
     vi.unstubAllGlobals()
     delete document.documentElement.dataset.motion
-  })
-
-  it('exports standardized surface panel selectors', () => {
-    expect(DEFAULT_FLUID_PANEL_SELECTORS).toContain('.story-card')
-    expect(DEFAULT_FLUID_PANEL_SELECTORS).toContain('.modal-card')
-    expect(DEFAULT_FLUID_PANEL_SELECTORS).toContain('[role="dialog"]')
-    expect(DEFAULT_FLUID_PANEL_SELECTOR).toBe(DEFAULT_FLUID_PANEL_SELECTORS.join(', '))
-
-    expect(FLUID_FULLSCREEN_SELECTORS).toContain('.art-viewer')
-    expect(FLUID_FULLSCREEN_SELECTORS).toContain('.candidate-compare')
-    expect(FLUID_FULLSCREEN_SELECTOR).toBe(FLUID_FULLSCREEN_SELECTORS.join(', '))
-
-    expect(FLUID_POPOVER_SELECTORS).toContain('.utility-popover')
-    expect(FLUID_POPOVER_SELECTORS).toContain('.popover-menu')
-    expect(FLUID_POPOVER_SELECTOR).toBe(FLUID_POPOVER_SELECTORS.join(', '))
-  })
-
-  it('FluidTransition component uses DEFAULT_FLUID_PANEL_SELECTOR as default prop', () => {
-    const wrapper = mount(FluidTransition, {
-      slots: {
-        default: () => h('div', { class: 'modal-card' }, 'Hello'),
-      },
-    })
-    expect(wrapper.props('panel')).toBe(DEFAULT_FLUID_PANEL_SELECTOR)
-    expect(wrapper.props('appear')).toBe(false)
-  })
-
-  it('correctly targets self if element itself matches the panel selector', () => {
-    const surface = useFluidSurface('.modal-card')
-    const el = document.createElement('div')
-    el.className = 'modal-card'
-    document.body.appendChild(el)
-
-    surface.enter(el, () => {})
-
-    expect(el.style.opacity).toBeDefined()
-    expect(el.style.transform).toBeDefined()
-
-    surface.dispose(el)
-    el.remove()
-  })
-
-  it('correctly targets nested panel child if wrapper element does not match selector', () => {
-    const surface = useFluidSurface('.story-card')
-    const wrapper = document.createElement('div')
-    wrapper.className = 'dialog-backdrop'
-    const card = document.createElement('div')
-    card.className = 'story-card'
-    wrapper.appendChild(card)
-    document.body.appendChild(wrapper)
-
-    surface.enter(wrapper, () => {})
-
-    expect(wrapper.style.opacity).toBeDefined()
-    expect(card.style.transform).toBeDefined()
-
-    surface.dispose(wrapper)
-    wrapper.remove()
   })
 
   it('applies reduced motion immediately and leaves no spatial transform', () => {

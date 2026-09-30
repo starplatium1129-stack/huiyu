@@ -45,15 +45,4 @@ describe('CgImageReveal component', () => {
     expect(wrapper.emitted('error')).toHaveLength(1)
     expect(wrapper.classes()).toContain('is-loaded')
   })
-
-  it('exposes triggerReveal method', () => {
-    const wrapper = mount(CgImageReveal, {
-      props: {
-        src: '/test-cg.png',
-        autoReveal: false,
-      },
-    })
-
-    expect(typeof wrapper.vm.triggerReveal).toBe('function')
-  })
 })

@@ -39,32 +39,11 @@ describe('usePromptTagTools · addTag 批量粘贴', () => {
     expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('1 项替换了冲突词条'))
   })
 
-  it('英文逗号分隔一次回车加多个词条', () => {
+  it('一次粘贴混合分隔符并归一内部空格，不产生逗号垃圾词条', () => {
     const pb = usePromptBuilderStore()
     const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('blue_hair, smile, twintails'))
-    expect([...pb.manualTags].sort()).toEqual(['blue_hair', 'smile', 'twintails'])
-  })
-
-  it('中文逗号与顿号同样分隔', () => {
-    const pb = usePromptBuilderStore()
-    const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('looking_at_viewer，blush、open_mouth'))
-    expect([...pb.manualTags].sort()).toEqual(['blush', 'looking_at_viewer', 'open_mouth'])
-  })
-
-  it('换行分隔（多行粘贴）', () => {
-    const pb = usePromptBuilderStore()
-    const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('detailed_background\ndepth_of_field'))
-    expect([...pb.manualTags].sort()).toEqual(['depth_of_field', 'detailed_background'])
-  })
-
-  it('词条内部空格归一为下划线，且不再产出 "a,_b" 这类垃圾词条', () => {
-    const pb = usePromptBuilderStore()
-    const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('long hair, blue eyes'))
-    expect([...pb.manualTags].sort()).toEqual(['blue_eyes', 'long_hair'])
+    addTag(inputWith('blue_hair, smile，twintails、long hair\ndetailed_background'))
+    expect([...pb.manualTags].sort()).toEqual(['blue_hair', 'detailed_background', 'long_hair', 'smile', 'twintails'])
     expect([...pb.manualTags].some(tag => tag.includes(','))).toBe(false)
   })
 
@@ -102,14 +81,6 @@ describe('usePromptTagTools · addTag 批量粘贴', () => {
 })
 
 describe('usePromptTagTools · addTag 幂等语义', () => {
-  it('输入已激活的词条保留它（toggle 语义会静默删掉，是 P0-3 的根因）', () => {
-    const pb = usePromptBuilderStore()
-    const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('smile'))
-    expect(pb.manualTags.has('smile')).toBe(true)
-    addTag(inputWith('smile'))
-    expect(pb.manualTags.has('smile')).toBe(true)
-  })
 
   it('重复项被跳过并提示数量，已存在的那一批不受影响', () => {
     const pb = usePromptBuilderStore()

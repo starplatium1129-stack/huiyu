@@ -13,7 +13,6 @@ describe('portrait screen density', () => {
     const large = samplePortraitPoints(cloud, count, 1200, 660)
     expect(count).toBe(24000)
     expect(large.spacing).toBeCloseTo(small.spacing, 6)
-    expect(large.spacing * .3).toBeCloseTo(small.spacing * .3, 6)
     // Edge cells are rounded and transparent source cells are discarded.
     expect(large.points.length / small.points.length).toBeGreaterThan(3.8)
     expect(large.points.length / small.points.length).toBeLessThan(4.2)

@@ -126,19 +126,6 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     await settleActive({ status: 'success' })
   })
 
-  it('快照恢复：恢复的任务构成新一轮（done=0，总量=恢复数），且保持暂停', () => {
-    const { run } = controllableRunner()
-    const q = useSDQueue({ run })
-    const restored = q.restore([
-      { ...makeJob('R1'), id: 'r1' },
-      { ...makeJob('R2'), id: 'r2' },
-    ])
-    expect(restored).toBe(2)
-    expect(q.paused.value).toBe(true)
-    expect(q.done.value).toBe(0)
-    expect(q.batchTotal.value).toBe(2)
-  })
-
   it('清空等待且无在途：本轮终结，done 归零', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })

@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import StudioMediaPlayer from './StudioMediaPlayer.vue'
 
 describe('StudioMediaPlayer', () => {
-  it('replaces the browser media chrome with project controls', () => {
+  it('offers a labelled video transport without native browser chrome', () => {
     const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '生成的视频成片' } })
     const video = wrapper.find('video')
     expect(video.exists()).toBe(true)
@@ -11,6 +11,11 @@ describe('StudioMediaPlayer', () => {
     expect(video.attributes('controls')).toBeUndefined()
     expect(video.attributes('preload')).toBe('metadata')
     expect(wrapper.find('audio').exists()).toBe(false)
+    expect(wrapper.find('[aria-label="播放生成的视频成片"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="静音生成的视频成片"]').exists()).toBe(true)
+    const seek = wrapper.find('input[type="range"]')
+    expect(seek.attributes('aria-label')).toBe('生成的视频成片播放进度')
+    expect(seek.attributes('disabled')).toBeDefined()
   })
 
   it('renders audio kind without a visible native element', () => {
@@ -22,22 +27,19 @@ describe('StudioMediaPlayer', () => {
     expect(wrapper.find('[aria-label="全屏播放AI 声线试听"]').exists()).toBe(false)
   })
 
-  it('exposes a labelled transport with keyboard-reachable seek', () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '生成的视频成片' } })
-    expect(wrapper.find('[aria-label="播放生成的视频成片"]').exists()).toBe(true)
-    expect(wrapper.find('[aria-label="静音生成的视频成片"]').exists()).toBe(true)
-    const seek = wrapper.find('input[type="range"]')
-    expect(seek.attributes('aria-label')).toBe('生成的视频成片播放进度')
-    expect(seek.attributes('disabled')).toBeDefined()
-  })
-
   it('resets progress and error state when the source changes', async () => {
     const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/a.mp4', label: '镜头一' } })
+    const video = wrapper.get('video')
+    Object.defineProperty(video.element, 'duration', { configurable: true, value: 120 })
+    await video.trigger('loadedmetadata')
     const seek = wrapper.find('input[type="range"]')
-    await seek.setValue('3')
-    expect(wrapper.find('.studio-media-time').text()).toBe('0:00 / 0:00')
+    await seek.setValue('45')
+    expect(wrapper.find('.studio-media-time').text()).toBe('0:45 / 2:00')
+    await video.trigger('error')
+    expect(wrapper.find('.studio-media-error').exists()).toBe(true)
 
     await wrapper.setProps({ src: '/media/b.mp4' })
+    expect(wrapper.find('.studio-media-time').text()).toBe('0:00 / 0:00')
     expect(wrapper.find('input[type="range"]').attributes('disabled')).toBeDefined()
     expect(wrapper.find('.studio-media-error').exists()).toBe(false)
   })

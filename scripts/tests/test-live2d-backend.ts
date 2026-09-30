@@ -389,6 +389,10 @@ test('原生后端：相同帧率不重复发送，失败后允许下一次重�
   await new Promise(resolve => setImmediate(resolve));
   session.setMaxFps(60);
   assert.equal(bridge.calls.setMaxFps.length, 2);
+  session.setMaxFps(999);
+  assert.deepEqual(bridge.calls.setMaxFps.at(-1), [165]);
+  session.setMaxFps(1);
+  assert.deepEqual(bridge.calls.setMaxFps.at(-1), [24]);
   session.destroy();
 });
 

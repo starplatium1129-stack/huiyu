@@ -34,17 +34,6 @@ describe('DirectorTagWorkbench', () => {
     vi.restoreAllMocks()
   })
 
-  it('没有激活词条时不渲染清空按钮', () => {
-    const pb = usePromptBuilderStore()
-    pb.manualTags = new Set()
-    const wrapper = mount(DirectorTagWorkbench, {
-      global: {
-        stubs: { StudioTooltip: tooltipStub, ArchiveIcon: iconStub },
-      },
-    })
-    expect(wrapper.find('.clear-tags-btn').exists()).toBe(false)
-  })
-
   it('点击清空词条必须先弹窗确认；取消后保留词条，确认后才真正清空', async () => {
     const pb = usePromptBuilderStore()
     pb.manualTags = new Set(['smile', 'white_dress'])
@@ -74,5 +63,8 @@ describe('DirectorTagWorkbench', () => {
     await clearBtn.trigger('click')
     expect(pb.manualTags.size).toBe(0)
     expect(flashSpy).toHaveBeenCalledWith('已清空词条')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.clear-tags-btn').exists()).toBe(false)
+    wrapper.unmount()
   })
 })

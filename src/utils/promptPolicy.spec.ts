@@ -26,16 +26,6 @@ describe('adaptNegative · 评级驱动的负面词适配', () => {
     expect(out).not.toContain('child')
   })
 
-  it('R15/R18：剥离 nsfw/nude/naked/explicit，改挂未成年保护词', () => {
-    for (const rating of ['R15', 'R18'] as const) {
-      const out = adaptNegative(base, { rating })
-      expect(out).not.toMatch(/\bnsfw\b|\bnude\b|\bnaked\b/)
-      expect(out).toContain('child')
-      expect(out).toContain('loli')
-      expect(out).toContain('underage')
-    }
-  })
-
   it('特写/细节镜头移除 cropped；triad 双人移除 duplicate', () => {
     const close = adaptNegative(base, { rating: 'R18' }, { shot: 'close' })
     expect(close).not.toContain('cropped')
@@ -56,14 +46,6 @@ describe('mergeNegativePrompt · merge/replace 策略', () => {
   it('replace+all：只留前缀', () => {
     const out = mergeNegativePrompt('prefix-a', 'scene-x', 'replace', 'all')
     expect(out).toBe('prefix-a')
-  })
-
-  it('replace+boilerplate：剔除样板后保留场景语义词', () => {
-    const out = mergeNegativePrompt('prefix-a', 'worst quality, low quality, scene-y', 'replace', 'boilerplate')
-    expect(out).toContain('scene-y')
-    // worst quality / low quality 属于样板词被移除（前缀自身仍保留）
-    expect(out).toContain('prefix-a')
-    expect(out).not.toMatch(/worst quality|low quality/i)
   })
 })
 

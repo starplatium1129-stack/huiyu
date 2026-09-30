@@ -46,21 +46,6 @@ describe('ImageCompareSlider compositor styles and variables', () => {
 })
 
 describe('ZoomableImageViewer panning and zoom state', () => {
-  it('mounts and toggles panning class for instantaneous drag response', async () => {
-    const wrapper = mount(ZoomableImageViewer, {
-      props: {
-        src: '/test-art.png',
-        alt: 'Test Artwork',
-      },
-    })
-
-    const container = wrapper.find('.zoomable-image-viewer')
-    expect(container.exists()).toBe(true)
-    expect(container.classes()).not.toContain('is-panning')
-
-    const layer = wrapper.find('.zoom-transform-layer')
-    expect(layer.exists()).toBe(true)
-  })
 
   it('keeps labelled zoom controls available and uses them for keyboard panning', async () => {
     const wrapper = mount(ZoomableImageViewer, {
@@ -79,7 +64,6 @@ describe('ZoomableImageViewer panning and zoom state', () => {
       '缩小图片',
       '还原图片缩放',
     ])
-    expect(controls.every(control => control.find('svg.archive-icon').exists())).toBe(true)
 
     await controls[0].trigger('click')
     expect(wrapper.find('.zoom-level').text()).toBe('125%')

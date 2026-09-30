@@ -73,14 +73,6 @@ function stripComments(source: any) {
 
 const CHECKS = [
   {
-    id: 'P0-5 出图队列必须持久化',
-    file: 'src/utils/storageKeys.ts',
-    why: '队列只活在视图作用域时，切页或刷新就整组蒸发且没有任何解释。',
-    assert(source: any) {
-      return /SD_QUEUE_SNAPSHOT_KEY/.test(source);
-    },
-  },
-  {
     id: 'P0-6 高清修复不得默认开启',
     file: 'data/presets.json',
     why: '默认开 hires_fix 又不在默认模式暴露开关，等于每次出图都悄悄多跑一个二阶段，'
@@ -97,15 +89,6 @@ const CHECKS = [
       // 任何底模档都不该默认开启二阶段：它把分钟级任务再拉长一截，而默认模式
       // 里连开关都看不见（开关外层 v-if 要求 expert 模式）。
       return !profiles.some((profile: any) => profile && profile.hires_fix === true);
-    },
-  },
-  {
-    id: 'P1 桌宠容器高度下限不得超出视口',
-    file: 'src/assets/css/companion.css',
-    why: '死值 min-height 在宽扁窗（如 700x500）里超过视口高度，而两层 overflow:hidden '
-      + '会把底部对话条永久裁掉，既不能输入也关不掉窗。',
-    assert(source: any) {
-      return /min-height:\s*min\(\s*560px\s*,\s*100dvh\s*\)/.test(source);
     },
   },
   {

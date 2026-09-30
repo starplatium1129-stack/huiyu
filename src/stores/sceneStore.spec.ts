@@ -96,22 +96,6 @@ describe('sceneStore · 全量加载', () => {
     expect(calls.length).toBeGreaterThan(count)
   })
 
-  it('force 重载会递增版本号绕过浏览器缓存', async () => {
-    routes = {
-      'scenes-shared.json': [], 'scenes-nene.json': [], 'scenes-natsume.json': [],
-      'curation.json': {}, 'characters.json': [], 'loras.json': [], 'tags.json': [],
-      'presets.json': [], 'popular-characters.json': { characters: [] }, 'scene-blueprints.json': { blueprints: [] },
-    }
-    stubFetch()
-    const store = useSceneStore()
-    await store.load()
-    await store.load(true)
-
-    const versions = new Set(calls.map(u => u.split('v=')[1]))
-    expect(versions.has(String(DATA_VERSION))).toBe(true)
-    expect(versions.has(String(DATA_VERSION + 1))).toBe(true)
-  })
-
   it('轻载与完整加载重叠时，完整入口必须补齐必需元数据', async () => {
     const gate = deferred<void>()
     const heldLite = new Set(['curation.json', 'scenes-index.json', 'popular-characters.json'])

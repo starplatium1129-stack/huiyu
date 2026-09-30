@@ -29,6 +29,8 @@ describe('useSDQueue · snapshot restore boundaries', () => {
     assert.equal(queue.restore([job('a'), job('a', 'duplicate'), job('b')]), 2)
     assert.deepEqual(queue.queue.value.map(item => item.id), ['a', 'b'])
     assert.equal(queue.queue.value[0].prompt, 'queue fixture')
+    assert.equal(queue.done.value, 0)
+    assert.equal(queue.batchTotal.value, 2)
     assert.equal(queue.paused.value, true)
     assert.equal(pending.length, 0)
   })

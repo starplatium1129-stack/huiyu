@@ -16,8 +16,7 @@
  *   · 逻辑出现 confirm/alert/prompt 调用 → 失败（改用 useConfirm 或项目弹层）
  *   · 原生 title 提示 → 计数并锁「只降不升」（改用 StudioTooltip：原生 title 延迟约 1 秒、
  *     不可主题化、只有 hover 才出，禁用控件上多数浏览器还不响应）
- *   · 原生 checkbox/radio 只计数不阻断（native-controls.css 仍为其提供主题外观，
- *     但 apple-hig-accessibility / companion-focus 要求指定容器内为 0）
+ *   · checkbox/radio 的容器级外观约束由 companion-focus 的浏览器测试验证。
  *
  * 用法: node scripts/tests/test-native-controls.js
  */
@@ -55,11 +54,11 @@ function isCommentLine(line: string): boolean {
   return trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*') || trimmed.startsWith('<!--');
 }
 
-function scan(patterns: { re: RegExp; templateOnly?: boolean }[]): { violations: Violation[]; counts: Map<string, number> } {
+const applicationSources = appSourceFiles().map(file => ({ file, raw: fs.readFileSync(path.join(sources.ROOT, file), 'utf8') }));
+
+function scan(patterns: { re: RegExp; templateOnly?: boolean }[]): Violation[] {
   const violations: Violation[] = [];
-  const counts = new Map<string, number>();
-  for (const file of appSourceFiles()) {
-    const raw = fs.readFileSync(path.join(sources.ROOT, file), 'utf8');
+  for (const { file, raw } of applicationSources) {
     const template = file.endsWith('.vue') ? sources.sfcTemplate(raw) : '';
     for (const { re, templateOnly } of patterns) {
       const haystack = templateOnly ? template : raw;
@@ -68,21 +67,19 @@ function scan(patterns: { re: RegExp; templateOnly?: boolean }[]): { violations:
         const line = haystack.slice(0, index).split('\n').length;
         const text = haystack.split('\n')[line - 1] ?? '';
         if (isCommentLine(text)) continue;
-        counts.set(re.source, (counts.get(re.source) || 0) + 1);
         violations.push({ file, line, detail: match[0].replace(/\s+/g, ' ').trim().slice(0, 90) });
       }
     }
   }
-  return { violations, counts };
+  return violations;
 }
 
 const NATIVE_TEMPLATE = /<select[\s>]/g;
 const NATIVE_MEDIA = /<(?:audio|video)\b[^>]*\bcontrols\b/g;
 const BROWSER_DIALOG = /(?<![\w.$])(?:confirm|alert|prompt)\s*\(/g;
-const NATIVE_PICKERS = /<input\b[^>]*type="(?:checkbox|radio)"/g;
 
 test('templates use the project primitives instead of native controls', () => {
-  const { violations } = scan([
+  const violations = scan([
     { re: NATIVE_TEMPLATE, templateOnly: true },
     { re: NATIVE_MEDIA, templateOnly: true },
   ]);
@@ -95,7 +92,7 @@ test('templates use the project primitives instead of native controls', () => {
 });
 
 test('browser dialogs are not used for in-app decisions', () => {
-  const { violations } = scan([
+  const violations = scan([
     { re: /(?<![\w.$.])window\.(?:confirm|alert|prompt)\s*\(/g },
     { re: BROWSER_DIALOG },
   ]);
@@ -105,16 +102,6 @@ test('browser dialogs are not used for in-app decisions', () => {
     [],
     '应用内确认与提示必须走 useConfirm / 项目弹层：原生弹出框无法主题化，也拿不到焦点流程',
   );
-});
-
-test('native checkbox and radio usage stays counted', () => {
-  const { counts } = scan([{ re: NATIVE_PICKERS, templateOnly: true }]);
-  const total = counts.get(NATIVE_PICKERS.source) ?? 0;
-
-  // 只报告不阻断：这一项是 e2e 的容器级约束（外观对话框、桌宠设置面板要求为 0），
-  // 全库数量变化本身不是回归，但审计时需要这个数字在手。
-  console.log(`原生 checkbox/radio：${total} 处（允许，需双主题视觉验收）`);
-  assert.ok(total >= 0);
 });
 
 // 组件的 title prop 是内容契约，不是浏览器 tooltip。只检查原生元素的模板属性。
@@ -155,8 +142,7 @@ test('native title tooltips only go down', () => {
     { line: 5, detail: '<button> :title="hint"' },
     { line: 5, detail: '<span> v-bind:title="hint"' },
   ], 'the parser must distinguish native titles from component props, comments and script strings');
-  const violations = appSourceFiles().filter(file => file.endsWith('.vue')).flatMap(file =>
-    nativeTitles(fs.readFileSync(path.join(sources.ROOT, file), 'utf8'), file));
+  const violations = applicationSources.filter(({ file }) => file.endsWith('.vue')).flatMap(({ file, raw }) => nativeTitles(raw, file));
   console.log(`原生 title 提示：${violations.length} 处 / 未迁移基线 ${TITLE_BASELINE}`);
   assert.ok(violations.length <= TITLE_BASELINE,
     '原生 title 改用 StudioTooltip：hover 与键盘聚焦均可提示，且跟随主题。\n'

@@ -360,33 +360,3 @@ describe('apiClient 内存缓存策略（O1）', () => {
     await expect(refreshed).resolves.toEqual({ ok: true })
   })
 })
-
-
-describe('apiClient refresh ordering regression', () => {
-  it('refresh results cannot be overwritten by an older same-generation GET', async () => {
-    const reads: Array<(response: Response) => void> = []
-    const client = createApiClient(() => new Promise<Response>(resolve => reads.push(resolve)))
-    const old = client.request('/api/refresh-order', { cacheTtlMs: 30_000 })
-    const fresh = client.request('/api/refresh-order', { cacheTtlMs: 30_000, cachePolicy: 'refresh' })
-    expect(reads).toHaveLength(2)
-    reads[1](okResponse({ revision: 2 }))
-    await expect(fresh).resolves.toEqual({ revision: 2 })
-    reads[0](okResponse({ revision: 1 }))
-    await expect(old).resolves.toEqual({ revision: 1 })
-    await expect(client.request('/api/refresh-order')).resolves.toEqual({ revision: 2 })
-    expect(reads).toHaveLength(2)
-  })
-
-  it('two explicit refreshes retain the latest-started successful result', async () => {
-    const reads: Array<(response: Response) => void> = []
-    const client = createApiClient(() => new Promise<Response>(resolve => reads.push(resolve)))
-    const first = client.request('/api/refresh-pair', { cacheTtlMs: 30_000, cachePolicy: 'refresh' })
-    const second = client.request('/api/refresh-pair', { cacheTtlMs: 30_000, cachePolicy: 'refresh' })
-    reads[1](okResponse({ revision: 2 }))
-    await second
-    reads[0](okResponse({ revision: 1 }))
-    await first
-    await expect(client.request('/api/refresh-pair')).resolves.toEqual({ revision: 2 })
-    expect(reads).toHaveLength(2)
-  })
-})

@@ -1,6 +1,4 @@
 const assert: typeof import('assert') = require('assert');
-const fs: typeof import('fs') = require('fs');
-const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 const { createVadSegmenter, rmsOf, normalizeVadConfig }: typeof import('../../src/utils/vadSegmenter.ts') = require('../../src/utils/vadSegmenter.ts');
 const { encodeWav16k, resampleTo16k, buildAsrRequestParts }: typeof import('../../src/utils/voiceApi.ts') = require('../../src/utils/voiceApi.ts');
@@ -15,15 +13,6 @@ const {
 const { LIVE_LOCAL_KEYS }: typeof import('../../src/utils/storageKeys.ts') = require('../../src/utils/storageKeys.ts');
 
 const RATE = 16000;
-
-test('useVoiceInput：取消 pending getUserMedia 不得恢复成后台采集', () => {
-  const source = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'composables', 'useVoiceInput.ts'), 'utf8');
-  assert.match(source, /let startToken = 0/);
-  assert.match(source, /const token = \+\+startToken/);
-  assert.match(source, /disposed \|\| canceled \|\| token !== startToken/);
-  assert.match(source, /acquiredStream\.getTracks\(\)\).*track\.stop|for \(const track of acquiredStream\.getTracks\(\)\) track\.stop/);
-  assert.match(source, /startToken \+= 1/); // 保持源码契约测试不依赖浏览器媒体设备
-});
 
 test('storageKeys 登记：语音输入键已进备份白名单', () => {
   assert(LIVE_LOCAL_KEYS.includes(SPEECH_INPUT_KEY), `aics_speech_input_v1 应登记在 LIVE_LOCAL_KEYS（实际 ${LIVE_LOCAL_KEYS.length} 个）`);

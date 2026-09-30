@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { afterEach, describe, it } from 'vitest'
+import { afterEach, describe, it, vi } from 'vitest'
 import type { ApiClient, ApiRequestOptions } from '@/api/client'
 import type { AnimaJobMetadata, AnimaResult } from '@/types/anima'
 import { useAnimaSession, type AnimaRequest } from './useAnimaSession'
@@ -47,7 +47,7 @@ function fixture() {
   return { session, calls, generate }
 }
 
-afterEach(async () => { for (const cleanup of cleanups.splice(0)) await cleanup() })
+afterEach(async () => { for (const cleanup of cleanups.splice(0)) await cleanup(); vi.useRealTimers() })
 
 describe('useAnimaSession · stale asynchronous work', () => {
   it('cleans up a late accepted job through its original engine after a cross-engine retry', async () => {
@@ -80,6 +80,8 @@ describe('useAnimaSession · stale asynchronous work', () => {
     calls[0].resolve(accepted('late-retry'))
     await pending
     assert.equal(calls.at(-1)?.url, '/api/anima/jobs/late-retry')
+    assert.equal(calls.at(-1)?.options?.method, 'DELETE')
+    assert.equal(session.state.value.phase, 'cancelled')
   })
 
   for (const outcome of ['success', 'failure'] as const) {
@@ -115,18 +117,23 @@ describe('useAnimaSession · stale asynchronous work', () => {
   })
 
   it('invalidates an in-flight progress read once DELETE confirms cancellation', async () => {
+    vi.useFakeTimers()
     const { session, calls, generate } = fixture()
     const pending = generate()
     calls[0].resolve(accepted('running-job'))
     await flush()
-    // Exercise the actual polling loop, not a synthetic state callback.
-    const deadline = Date.now() + 2500
-    while (calls.length < 2 && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 20))
+    session.patchState({ family: 'krea2' })
+    await vi.advanceTimersByTimeAsync(1000)
     assert.equal(calls.length, 2)
     const progress = calls[1]
+    assert.equal(progress.url, '/api/anima/jobs/running-job')
     const cancellation = session.cancel()
+    assert.equal(calls[2].url, '/api/anima/jobs/running-job')
+    assert.equal(calls[2].options?.method, 'DELETE')
     calls[2].resolve(accepted('running-job', 'cancelled'))
     await cancellation
+    assert.equal(session.state.value.phase, 'cancelled')
+    assert.equal(calls.filter(call => call.options?.method === 'DELETE').length, 1)
     const stateAfterCancel = { ...session.state.value }
     progress.resolve({ ...accepted('running-job', 'running'), job: { ...accepted('running-job').job, status: 'running', progress: 0.9, currentNode: 'stale-node' } })
     await flush()
@@ -169,11 +176,31 @@ describe('useAnimaSession · stale asynchronous work', () => {
 
   it('discards a backend response after status polling is paused', async () => {
     const { session, calls } = fixture()
+    session.patchState({ phase: 'running' })
     const current = session.refreshBackend()
     session.pauseStatusPolling()
+    assert.equal(calls[0].options?.signal?.aborted, true)
     const before = { ...session.state.value }
     calls[0].resolve({ ok: true, online: false, models: [] })
     await current
     assert.deepEqual(session.state.value, before)
+  })
+
+  it.each(['submitting', 'running'])('dispose cancels %s ownership and deletes a late or already accepted job', async phase => {
+    vi.useFakeTimers()
+    const { session, calls, generate } = fixture()
+    const pending = generate()
+    if (phase === 'running') { calls[0].resolve(accepted('disposed-job', 'running')); await flush() }
+    session.startStatusPolling(50)
+    session.dispose()
+    const before = { ...session.state.value }
+    assert.equal(calls[0].options?.signal?.aborted, true)
+    if (phase === 'submitting') calls[0].resolve(accepted('disposed-job'))
+    await vi.advanceTimersByTimeAsync(1000)
+    await pending
+    assert.equal(calls.at(-1)?.url, '/api/anima/jobs/disposed-job')
+    assert.equal(calls.at(-1)?.options?.method, 'DELETE')
+    assert.deepEqual(session.state.value, before)
+    assert.equal(vi.getTimerCount(), 0)
   })
 })

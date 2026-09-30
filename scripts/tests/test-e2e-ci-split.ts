@@ -110,3 +110,29 @@ test('nightly screenshots are uploaded from the hidden review directory without 
   assert.match(upload, /^\s+if-no-files-found:\s+error\s*$/m,
     'missing screenshot evidence must fail instead of silently reporting success');
 });
+
+test('exact browser selections start only required isolated stacks, unknown filters stay conservative', () => {
+  const { selectE2eServers }: typeof import('../lib/e2e-selection') = require('../lib/e2e-selection');
+  const { loadLaneManifest }: typeof import('./run-e2e-lane') = require('./run-e2e-lane');
+  const known = loadLaneManifest().specs.map(spec => spec.file);
+  assert.deepStrictEqual(selectE2eServers(['test', 'tests/e2e/studio.spec.ts', '--project', 'desktop', '--grep', 'flows.spec.ts'], known), ['web']);
+  assert.deepStrictEqual(selectE2eServers(['test', 'tests\\e2e\\flows.spec.ts:10', '--project=flows'], known), ['gateway']);
+  assert.deepStrictEqual(selectE2eServers(['test', 'studio.spec.ts', 'flows.spec.ts'], known), ['web', 'gateway']);
+  assert.deepStrictEqual(selectE2eServers(['test', 'interaction-polish.spec.ts'], known), ['web', 'gateway']);
+  for (const args of [[], ['test', 'studio'], ['test', 'unknown.spec.ts'], ['test', '--project=desktop'],
+    ['test', 'studio.spec.ts', '--test-list=selection.txt'], ['test', '--project=*']]) {
+    assert.deepStrictEqual(selectE2eServers(args, known), ['web', 'gateway'], args.join(' '));
+  }
+  assert.deepStrictEqual(selectE2eServers(['test', '--project', 'flows'], known), ['gateway']);
+});
+
+test('desktop specs addressing the gateway keep their explicit stack prerequisite', () => {
+  const { MOCK_SPECS, GATEWAY_SPECS }: typeof import('../lib/e2e-selection') = require('../lib/e2e-selection');
+  const root = path.resolve(__dirname, '..', '..');
+  const { loadLaneManifest }: typeof import('./run-e2e-lane') = require('./run-e2e-lane');
+  for (const { file } of loadLaneManifest().specs) {
+    if (MOCK_SPECS.test(file)) continue;
+    const source = fs.readFileSync(path.join(root, 'tests/e2e', file), 'utf8');
+    if (/MOCK_PORTS\.gateway/.test(source)) assert.ok(GATEWAY_SPECS.has(file), `${file} requires the isolated gateway stack`);
+  }
+});

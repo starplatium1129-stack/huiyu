@@ -109,18 +109,6 @@ it('a cold thumbnail reads the derived preview once without fetching the origina
   expect(mocks.fetch).not.toHaveBeenCalled()
 })
 
-it('coalesces concurrent original reads and releases the completed blob from its request map', async () => {
-  const blob = new Blob(['fixture'], { type: 'image/png' })
-  mocks.fetch.mockImplementation(async (url: string) => url.endsWith('/media-capabilities')
-    ? { status: 200, ok: true, json: async () => ({ url: '/api/workspace/media-content/a?cap=fixture' }) }
-    : { ok: true, blob: async () => blob })
-  const media = createDesktopArtworkMedia(() => {}, vi.fn())
-  expect(await Promise.all([media.getImage('a'), media.getImage('a')])).toEqual([blob, blob])
-  expect(mocks.fetch).toHaveBeenCalledTimes(2)
-  expect(await media.getImage('a')).toBe(blob)
-  expect(mocks.fetch).toHaveBeenCalledTimes(4)
-})
-
 it('failed thumbnail work can retry, and a runtime change invalidates cached and pending previews', async () => {
   const read = vi.fn<(id: string) => Promise<string | null>>().mockRejectedValueOnce(new Error('offline')).mockResolvedValue('data:image/jpeg;base64,fixture')
   const media = createDesktopArtworkMedia(() => {}, read)

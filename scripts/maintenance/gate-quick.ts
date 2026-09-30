@@ -5,13 +5,14 @@
  *
  * 用法：
  *   node scripts/maintenance/gate-quick.js                自动检测 git 改动选面积
- *   node scripts/maintenance/gate-quick.js ui|server|data|all|full [--verbose] [--all]
+ *   node scripts/maintenance/gate-quick.js ui|style|server|data|all|full [--verbose] [--all]
  *
  * 面积 → 步骤：
- *   ui     typecheck:app + vitest（纯前端改动，~1-2 分钟）
+ *   ui     typecheck:app + vitest；自动模式按导入图选择相关单测，显式 ui 跑全部
+ *   style  字面值、双主题对比度、颜色、动画扫描；不跑无关 TS/单测
  *   server Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件（~2-3 分钟）
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
- *   all    ui + server + data 三块连跑
+ *   all    ui + style + server + data 四块连跑
  *   full   ≙ npm run validate（check 编排 + vitest + unit + contract）+ 生产打包预算。
  *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
@@ -23,6 +24,9 @@ const path = (require('node:path') as typeof import('node:path'));
 const fs: typeof import('node:fs') = require('node:fs');
 const { contractJobs }: typeof import('../tests/contract-test-policy') = require('../tests/contract-test-policy');
 const { QUALITY_TEST_SUITES, qualityTestMetadata }: typeof import('../tests/quality-test-inventory') = require('../tests/quality-test-inventory');
+const { loadLaneManifest }: typeof import('../tests/run-e2e-lane') = require('../tests/run-e2e-lane');
+const { writeQualityReport, classifyFailure }: typeof import('../tests/quality-report') = require('../tests/quality-report');
+const { runTestProcessPool }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
 const {
   runSuiteFiles,
   runUnitSuite,
@@ -36,10 +40,37 @@ const {
 
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'server' | 'data' | 'tests' | 'full';
-interface GatePlan { areas: GateArea[]; testFiles: string[] }
+type GateArea = 'ui' | 'style' | 'server' | 'data' | 'tests' | 'browser' | 'full';
+interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[] }
 const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
   .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
+const browserSpecs = new Set(loadLaneManifest().specs.filter(spec => ['critical', 'nightly'].includes(spec.lane))
+  .map(spec => `tests/e2e/${spec.file}`));
+
+async function runTool(name: string, file: string, args: string[], { verbose }: GateOptions) {
+  const controller = new AbortController();
+  const interrupt = () => controller.abort();
+  process.once('SIGINT', interrupt);
+  process.once('SIGTERM', interrupt);
+  let step: import('../lib/test-process-pool').TestProcessResult;
+  try {
+    const { results } = await runTestProcessPool([{ name, file, args }], { cwd: root, jobs: 1, timeoutMs: 600_000, signal: controller.signal });
+    step = results[0];
+  } finally {
+    process.removeListener('SIGINT', interrupt);
+    process.removeListener('SIGTERM', interrupt);
+  }
+  step ??= { name, ok: false, reason: 'INTERRUPTED', duration: 0, output: '' };
+  writeQualityReport(name, [{ name, status: step.ok ? 'passed' : 'failed', duration: step.duration,
+    output: step.output, reason: step.reason, timeoutMs: 600_000,
+    failureKind: classifyFailure({ status: step.exitCode ?? (step.ok ? 0 : 1), signal: step.signal,
+      error: step.timedOut ? { code: 'ETIMEDOUT' } : step.errorCode ? { code: step.errorCode } : undefined }, step.output) }], step.duration);
+  console.log(`${step.ok ? '✔' : '✘'} ${name} ${formatDuration(step.duration)} ${step.reason}`);
+  if (verbose) console.log(step.output.trimEnd());
+  else if (!step.ok) printExcerpt(step.output, name);
+  if (step.ok && /No test files found/.test(step.output)) console.log('没有相关前端单测；本次只完成类型检查，页面风险需定向浏览器验收。');
+  return step.ok ? 0 : 1;
+}
 
 function runNpmStep(name: string, script: string, timeout: number, verbose: boolean) {
   if (verbose) {
@@ -73,9 +104,6 @@ function suiteFiles(names: readonly string[], label: string, { verbose, keepGoin
 
 const AREA_STEPS = {
   tests(files: readonly string[], { verbose, keepGoing }: GateOptions) {
-    // Test sources and their dependencies must be current before running generated entries.
-    const built = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
-    if (built) return built;
     if (files.some(file => registeredTests.get(file) !== 'check')) {
       (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensureAll({ onlyIfMissing: true });
     }
@@ -83,10 +111,22 @@ const AREA_STEPS = {
       name: file, file: path.join(testsDir, file), timeoutMs: qualityTestMetadata(file).timeoutMs ?? SUITE_TIMEOUT_MS[registeredTests.get(file)!],
     })), { label: 'changed-tests', timeout: 180_000, verbose, keepGoing });
   },
-  ui({ verbose, keepGoing }: GateOptions) {
+  async ui({ verbose, keepGoing }: GateOptions, files?: readonly string[]) {
     let code = runNpmStep('typecheck:app', 'typecheck:app', 300_000, verbose);
-    if (code === 0 || keepGoing) code = runNpmStep('vitest', 'test:frontend', 300_000, verbose) || code;
+    if (code === 0 || keepGoing) code = (files?.length
+      ? await runTool('vitest related', path.join(root, 'node_modules/vitest/vitest.mjs'),
+        ['related', '--run', '--passWithNoTests', ...files], { verbose, keepGoing })
+      : runNpmStep('vitest', 'test:frontend', 300_000, verbose)) || code;
     return code;
+  },
+  browser(files: readonly string[], options: GateOptions) {
+    return runTool('changed E2E specs (existing dist)', require.resolve('@playwright/test/cli'),
+      ['test', ...files, `--max-failures=${options.keepGoing ? 0 : 1}`], options);
+  },
+  style({ verbose, keepGoing }: GateOptions) {
+    return runSuiteFiles(['scan-style-literals', 'check-contrast', 'lint-colors', 'lint-animations'].map(name => ({
+      name, file: path.join(root, 'scripts/maintenance', `${name}.js`), args: ['--check'],
+    })), { label: 'style', timeout: 180_000, verbose, keepGoing });
   },
   server({ verbose, keepGoing }: GateOptions) {
     const typecheck = runNpmStep('typecheck:node', 'typecheck:node', 300_000, verbose);
@@ -130,9 +170,18 @@ const AREA_STEPS = {
 function classifyFiles(files: readonly string[]): GatePlan {
   const areas = new Set<GateArea>();
   const testFiles = new Set<string>();
+  const frontendFiles = new Set<string>(), browserFiles = new Set<string>();
+  let allFrontend = false;
   const full = (): GatePlan => ({ areas: ['full'], testFiles: [] });
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
+    if (/^src\/.*\.(?:spec|test)\.ts$/.test(p) && !fs.existsSync(path.join(root, p))) return full();
+    if (/^(src|css)\/.*\.css$/.test(p)) { areas.add('style'); continue; }
+    if (browserSpecs.has(p) && fs.existsSync(path.join(root, p))) {
+      areas.add('browser');
+      browserFiles.add(p);
+      continue;
+    }
     const testName = /^scripts\/tests\/(test-[^/]+\.(?:ts|mts|js|mjs))$/.exec(p)?.[1]
       .replace(/\.mts$/, '.mjs').replace(/\.ts$/, '.js');
     if (testName && registeredTests.has(testName)
@@ -143,13 +192,19 @@ function classifyFiles(files: readonly string[]): GatePlan {
     }
     if (/^(scripts|desktop-tauri|tests|\.github)\//.test(p)
       || /^(package(?:-lock)?\.json|.*config\.[^/]+|deploy-desktop\.bat)$/.test(p)) return full();
-    if (/^(src|css|public)\//.test(p) || p === 'index.html') areas.add('ui');
+    if (/^(src|css|public)\//.test(p) || p === 'index.html') {
+      areas.add('ui');
+      if (/^src\/.*\.(?:ts|vue)$/.test(p) && fs.existsSync(path.join(root, p))) frontendFiles.add(p);
+      else allFrontend = true;
+    }
     if (/^(routes|server|services)\//.test(p) || /^server\.(?:js|ts)$/.test(p)) areas.add('server');
     if (/^(data|assets)\//.test(p)) areas.add('data');
     if (!/^(docs\/|.*\.md$)/.test(p) && !/^(src|css|public|routes|server|services|data|assets)\//.test(p)
       && !['index.html', 'server.js', 'server.ts'].includes(p)) return full();
   }
-  return { areas: [...areas], testFiles: [...testFiles] };
+  return { areas: [...areas], testFiles: [...testFiles],
+    ...(!allFrontend && frontendFiles.size ? { frontendFiles: [...frontendFiles] } : {}),
+    ...(browserFiles.size ? { browserFiles: [...browserFiles] } : {}) };
 }
 
 function detectAreas() {
@@ -163,26 +218,27 @@ function detectAreas() {
 
 async function main(argv: string[]) {
   if (argv.includes('--help') || argv.includes('-h')) {
-    console.log('用法: node scripts/maintenance/gate-quick.js [ui|server|data|all|full] [--verbose] [--all]');
+    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|server|data|all|full] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
-  const invalid = argv.filter((arg: any) => !['ui', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  const invalid = argv.filter((arg: any) => !['ui', 'style', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
   if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const areaArg = argv.find((arg: any) => ['ui', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
+  const areaArg = argv.find((arg: any) => ['ui', 'style', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
   let testFiles: string[] = [];
+  let frontendFiles: string[] | undefined, browserFiles: string[] = [];
   if (areaArg) {
-    // 'full' 保持原样走下方 full 专属分支（含 check 套件与打包预算）；'all' 展开三块
-    areas = areaArg === 'all' ? ['ui', 'server', 'data'] : [areaArg];
+    // 'full' 走完整门禁；'all' 展开领域检查。
+    areas = areaArg === 'all' ? ['ui', 'style', 'server', 'data'] : [areaArg];
   } else {
-    try { ({ areas, testFiles } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
+    try { ({ areas, testFiles, frontendFiles, browserFiles = [] } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
     if (!areas.length) {
       console.log('gate:quick 未检测到需运行门禁的代码改动（可能仅文档）；显式指定面积或用 full。');
       return 0;
@@ -195,6 +251,16 @@ async function main(argv: string[]) {
     try { contractJobs(); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 2; }
   }
   const started = Date.now();
+  // Prepare generated entries once for all selected Node/browser areas.
+  if (!areas.includes('full') && areas.some(area => ['tests', 'server', 'data', 'browser'].includes(area))) {
+    exitCode = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
+    if (exitCode) return exitCode;
+  }
+  // Test-only edits do not change the SPA. Mixed UI/data edits need a new dist.
+  if (areas.includes('browser') && areas.some(area => ['ui', 'style', 'data'].includes(area))) {
+    exitCode = runNpmStep('build (changed UI/data)', 'build:web:run', 600_000, verbose);
+    if (exitCode) return exitCode;
+  }
   for (const area of areas) {
     if (exitCode && !keepGoing) break;
     console.log(`── gate ${area} ──`);
@@ -203,7 +269,15 @@ async function main(argv: string[]) {
       continue;
     }
     if (area === 'ui') {
-      exitCode = AREA_STEPS.ui({ verbose, keepGoing }) || exitCode;
+      exitCode = await AREA_STEPS.ui({ verbose, keepGoing }, frontendFiles) || exitCode;
+      continue;
+    }
+    if (area === 'browser') {
+      exitCode = await AREA_STEPS.browser(browserFiles, { verbose, keepGoing }) || exitCode;
+      continue;
+    }
+    if (area === 'style') {
+      exitCode = AREA_STEPS.style({ verbose, keepGoing }) || exitCode;
       continue;
     }
     if (area === 'server') {
@@ -229,6 +303,7 @@ async function main(argv: string[]) {
     if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
     if (failPhase(runUnitSuite({ verbose }))) continue;
     if (failPhase(await runContractSuite({ verbose, keepGoing }))) continue;
+    if (failPhase(runNpmStep('optional suites for changed consumers', 'test:optional', 900_000, verbose))) continue;
     failPhase(runNpmStep('build（打包预算）', 'build:web:run', 600_000, verbose));
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);

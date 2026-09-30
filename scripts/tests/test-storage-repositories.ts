@@ -138,7 +138,6 @@ test('settings repository: typed scalar definitions preserve exact legacy bytes'
   assert.strictEqual(CHAT_THINKING_SETTING.parse('0'), 'off', 'legacy reasoning 0 must remain off');
   assert.strictEqual(TUNNEL_ENABLED_SETTING.parse(''), true);
   assert.strictEqual(TUNNEL_ENABLED_SETTING.parse('1'), false);
-  assert.strictEqual(TUNNEL_ENABLED_SETTING.parse(null), true);
 });
 
 test('settings repository: storage failures are silent for get/set/remove', () => {

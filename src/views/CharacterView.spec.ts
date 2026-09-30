@@ -30,9 +30,11 @@ async function openReferences() {
 }
 
 describe('角色参考图浏览', () => {
-  it('方向键跳过待生成图片，到最后一张可用图时禁用下一张', async () => {
+  it('方向键跳过待生成图片并遵守边界，修饰键不意外切换', async () => {
     const page = await openReferences()
     expect(page.get('[aria-label="上一视角"]').attributes('disabled')).toBeDefined()
+    await page.get('dialog').trigger('keydown', { key: 'ArrowRight', altKey: true })
+    expect(page.get('.ref-modal-copy h2').text()).toContain('正面')
     await page.get('dialog').trigger('keydown', { key: 'ArrowRight' })
     expect(page.get('.ref-modal-copy h2').text()).toContain('侧面')
     expect(page.get('[aria-label="下一视角"]').attributes('disabled')).toBeDefined()
@@ -40,9 +42,4 @@ describe('角色参考图浏览', () => {
     expect(page.get('.ref-modal-copy h2').text()).toContain('正面')
   })
 
-  it('修饰键组合不意外切换图片', async () => {
-    const page = await openReferences()
-    await page.get('dialog').trigger('keydown', { key: 'ArrowRight', altKey: true })
-    expect(page.get('.ref-modal-copy h2').text()).toContain('正面')
-  })
 })

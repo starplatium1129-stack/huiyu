@@ -3,59 +3,25 @@ import { mount } from '@vue/test-utils'
 import BorderBeam from './BorderBeam.vue'
 
 describe('BorderBeam visual component', () => {
-  it('renders default slot content with active beam tracks', () => {
+  it('preserves slot content while independently disabling decoration and bloom', async () => {
     const wrapper = mount(BorderBeam, {
       slots: {
         default: '<button class="test-btn">测试按钮</button>',
       },
     })
 
-    expect(wrapper.find('.test-btn').exists()).toBe(true)
-    expect(wrapper.find('.border-beam-track').exists()).toBe(true)
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(true)
-
-    const track = wrapper.find('.border-beam-track')
+    const content = wrapper.get('.test-btn').element
+    const track = wrapper.get('.border-beam-track')
     expect(track.attributes('aria-hidden')).toBe('true')
-  })
-
-  it('hides beam tracks when active is false', () => {
-    const wrapper = mount(BorderBeam, {
-      props: {
-        active: false,
-      },
-      slots: {
-        default: '<div class="card-content">卡片内容</div>',
-      },
-    })
-
-    expect(wrapper.find('.card-content').exists()).toBe(true)
+    await wrapper.setProps({ active: false })
+    expect(wrapper.get('.test-btn').element).toBe(content)
     expect(wrapper.find('.border-beam-track').exists()).toBe(false)
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
-  })
-
-  it('applies is-standalone class when no slot is passed', () => {
-    const wrapper = mount(BorderBeam)
-    expect(wrapper.classes()).toContain('is-standalone')
-  })
-
-  it('supports hiding bloom glow with prop', () => {
-    const wrapper = mount(BorderBeam, {
-      props: {
-        glow: false,
-      },
-    })
-
+    await wrapper.setProps({ active: true, glow: false })
     expect(wrapper.find('.border-beam-track').exists()).toBe(true)
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
-  })
-
-  it('applies colorVariant classes properly', () => {
-    const wrapper = mount(BorderBeam, {
-      props: {
-        colorVariant: 'violet',
-      },
-    })
-
-    expect(wrapper.classes()).toContain('variant-violet')
+    expect(wrapper.get('.test-btn').element).toBe(content)
+    wrapper.unmount()
   })
 })

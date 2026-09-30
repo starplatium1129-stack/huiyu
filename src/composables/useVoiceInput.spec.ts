@@ -43,6 +43,21 @@ afterEach(() => { vi.unstubAllGlobals(); vi.clearAllMocks(); tracks.length = 0; 
 const settle = () => new Promise(resolve => setTimeout(resolve, 0))
 
 describe('voice session ownership', () => {
+  it.each(['cancel', 'release'] as const)('%s stops a microphone stream granted after capture ownership ended', async operation => {
+    let grant!: (stream: MediaStream) => void
+    vi.mocked(navigator.mediaDevices.getUserMedia).mockReturnValueOnce(new Promise(resolve => { grant = resolve }))
+    const onText = vi.fn(), voice = useVoiceInput({ config: () => ({} as SpeechInputConfig), onText })
+    const starting = voice.start()
+    voice[operation]()
+    const track = { stop: vi.fn() }
+    grant({ getTracks: () => [track] } as unknown as MediaStream)
+    await starting
+    expect(track.stop).toHaveBeenCalledOnce()
+    expect(processors).toHaveLength(0)
+    expect(voice.state.value).toBe('idle')
+    expect(onText).not.toHaveBeenCalled()
+    voice.release()
+  })
   for (const mode of ['manual', 'auto'] as const) for (const outcome of ['resolve', 'reject'] as const) {
     it(`canceled ${outcome} cannot change a new ${mode} session`, async () => {
       const old = deferred()

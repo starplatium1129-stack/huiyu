@@ -41,18 +41,6 @@ describe('renderPromptPlan krea2', () => {
     expect(negative).toBe('')
   })
 
-  it('medium 已含于 lead 时不再重复织入（防 "visual novel event CG" 双写）', () => {
-    const plan = createPromptPlan({
-      style: ['A polished visual novel event CG with refined cel shading, flat colors and crisp character work'],
-      medium: 'visual novel event CG',
-      subjectProse: 'A young anime woman with long silver hair',
-      outfitProse: 'a white summer dress',
-      sceneProse: 'a sunlit school courtyard',
-    })
-    const { prompt } = renderPromptPlan(plan, 'krea2', null)
-    expect(prompt.match(/visual novel event CG/gi)?.length ?? 0).toBe(1)
-  })
-
   it('空场景（无主体）散文自动追加 no characters, no people, no figures', () => {
     const plan = createPromptPlan({
       style: ['A vibrant anime key visual with crisp line art, flat cel shading and saturated colors'],

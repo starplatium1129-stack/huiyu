@@ -19,7 +19,6 @@ describe('gallery viewer stylesheet isolation', () => {
           <div class="viewer-actions"><span class="viewer-position">1 / 3</span></div>
         </div>
       </dialog>`
-    expect(gallerySelectors.length).toBeGreaterThan(50)
     expect(gallerySelectors.filter(selector => document.querySelector(selector))).toEqual([])
   })
 

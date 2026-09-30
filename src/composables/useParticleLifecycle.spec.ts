@@ -37,11 +37,11 @@ beforeEach(() => {
 afterEach(() => { app?.unmount(); app = undefined; document.body.replaceChildren(); vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 describe('009 particle lifecycle ownership', () => {
-  it('mount and activation attach only one observer set', async () => {
-    await mount(); expect(observers.size).toBe(3); expect(hooks.portrait).toHaveBeenCalledTimes(1); expect(api.isActive()).toBe(true)
-  })
   it('balances every owner through 20 cached deactivation/reactivation cycles', async () => {
     await mount()
+    expect(observers.size).toBe(3)
+    expect(hooks.portrait).toHaveBeenCalledTimes(1)
+    expect(api.isActive()).toBe(true)
     for (let i = 0; i < 20; i++) {
       shown.value = false; await nextTick(); expect(observers.size).toBe(0); expect(frames.size).toBe(0); expect(api.isActive()).toBe(false)
       const count = hooks.start.mock.calls.length

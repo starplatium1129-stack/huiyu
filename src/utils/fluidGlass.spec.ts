@@ -1,14 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { installFluidGlass } from './fluidGlass'
-import { fluidLens, FLUID_GLASS_SELECTOR } from './fluidGlassRenderer'
+import { fluidLens } from './fluidGlassRenderer'
 
 describe('structural glass optics', () => {
-  it('includes navigation, floating toolbars and generation bar in FLUID_GLASS_SELECTOR', () => {
-    expect(FLUID_GLASS_SELECTOR).toContain('.nav')
-    expect(FLUID_GLASS_SELECTOR).toContain('.sticky-toolbar')
-    expect(FLUID_GLASS_SELECTOR).toContain('.gen-bar')
-    expect(FLUID_GLASS_SELECTOR).toContain('.toolbar-shell')
-  })
   it('keeps reading centers and the outer silhouette undistorted', () => {
     expect(fluidLens(300, 100, 20, 150, 50)).toEqual([0, 0])
     expect(fluidLens(300, 100, 20, 0, 50)).toEqual([0, 0])
@@ -33,11 +27,14 @@ describe('structural glass optics', () => {
   })
   it('allocates optics only on explicit opt-in and releases them when returning to light', async () => {
     const disconnect = vi.fn()
-    const surface = document.createElement('div')
-    surface.className = 'sticky-toolbar'
-    document.body.append(surface)
-    Object.defineProperties(surface, { offsetWidth: { value: 100 }, offsetHeight: { value: 40 } })
-    vi.spyOn(surface, 'getClientRects').mockReturnValue([{ width: 100, height: 40 }] as unknown as DOMRectList)
+    const surfaces = ['nav', 'sticky-toolbar', 'gen-bar', 'toolbar-shell'].map(className => {
+      const surface = document.createElement('div')
+      surface.className = className
+      document.body.append(surface)
+      Object.defineProperties(surface, { offsetWidth: { value: 100 }, offsetHeight: { value: 40 } })
+      vi.spyOn(surface, 'getClientRects').mockReturnValue([{ width: 100, height: 40 }] as unknown as DOMRectList)
+      return surface
+    })
     vi.stubGlobal('CSS', { supports: () => true })
     vi.stubGlobal('ResizeObserver', class { observe() {} unobserve() {} disconnect = disconnect })
     vi.stubGlobal('IntersectionObserver', class {
@@ -63,14 +60,15 @@ describe('structural glass optics', () => {
       document.documentElement.dataset.glassMaterial = 'liquid'
       await vi.waitFor(() => expect(document.querySelector('.fluid-glass-definitions')).not.toBeNull())
       vi.advanceTimersByTime(100)
-      await vi.waitFor(() => expect(surface.hasAttribute('data-fluid-refracted')).toBe(true))
-      expect(document.querySelectorAll('.fluid-glass-definitions filter')).toHaveLength(1)
+      await vi.waitFor(() => expect(surfaces.every(surface => surface.hasAttribute('data-fluid-refracted'))).toBe(true))
+      expect(document.querySelectorAll('.fluid-glass-definitions filter')).toHaveLength(surfaces.length)
       expect(installFluidGlass()).toBe(dispose)
       document.documentElement.dataset.glassMaterial = 'light'
       await vi.waitFor(() => expect(document.querySelector('.fluid-glass-definitions')).toBeNull())
-      expect(surface.hasAttribute('data-fluid-refracted')).toBe(false)
-      expect(surface.style.getPropertyValue('--fluid-glass-filter')).toBe('')
-      expect(document.querySelector('.fluid-glass-definitions')).toBeNull()
+      for (const surface of surfaces) {
+        expect(surface.hasAttribute('data-fluid-refracted')).toBe(false)
+        expect(surface.style.getPropertyValue('--fluid-glass-filter')).toBe('')
+      }
       expect(disconnect).toHaveBeenCalledTimes(2)
       dispose()
       document.documentElement.dataset.glassMaterial = 'liquid'
@@ -83,7 +81,7 @@ describe('structural glass optics', () => {
       document.dispatchEvent(new Event('visibilitychange'))
       expect(document.querySelectorAll('.fluid-glass-definitions')).toHaveLength(1)
     } finally {
-      dispose(); surface.remove(); delete document.documentElement.dataset.glassMaterial; vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks()
+      dispose(); surfaces.forEach(surface => surface.remove()); delete document.documentElement.dataset.glassMaterial; vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks()
     }
   })
 })

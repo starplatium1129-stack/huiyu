@@ -103,6 +103,6 @@ test('unknown contracts stay serial; jobs=1 preserves order and inventory is unc
   assert.deepEqual([...plan.parallel, ...plan.serial].sort(), [...files].sort());
   assert.ok(plan.serial.includes('unknown-new-test.js'));
   assert.deepEqual(planContractTests(files, 1), { parallel: [], serial: files });
-  for (const name of Object.keys(CONTRACT_ISOLATION)) assert.ok(QUALITY_TEST_SUITES.contract.includes(name));
+  for (const name of Object.keys(CONTRACT_ISOLATION)) assert.ok([...QUALITY_TEST_SUITES.contract, ...QUALITY_TEST_SUITES.legacy].includes(name));
   for (const invalid of ['0', '5', '', 'NaN', '2.5', '2x']) assert.throws(() => contractJobs(invalid));
 });

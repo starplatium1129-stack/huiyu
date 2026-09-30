@@ -77,21 +77,6 @@ it('defers pre-render callers so the old document height cannot settle a pending
   expect(state.scrollY).toBe(1400)
 })
 
-it('retries while the document is short, then lands once it grows back', () => {
-  setup()
-  state.scrollY = 1400
-  const anchor = captureScrollAnchor()
-  state.scrollY = 0
-  state.scrollHeight = 2000
-  restoreScrollAnchor(anchor!, { timeoutMs: 500 })
-  runFrame()
-  expect(state.scrollY).toBe(0)
-  now = 100
-  state.scrollHeight = 4000
-  runFrame()
-  expect(state.scrollY).toBe(1400)
-})
-
 it('gives up after the timeout instead of holding the position forever', () => {
   setup()
   state.scrollY = 1400

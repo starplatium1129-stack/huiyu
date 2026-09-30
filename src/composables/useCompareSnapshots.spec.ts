@@ -142,3 +142,18 @@ it('releases replaced displayed clones on close while keeping the current pair r
   wrapper.unmount()
   expect(vi.mocked(URL.revokeObjectURL).mock.calls.map(([url]) => url).sort()).toEqual(['blob:clone-1', 'blob:clone-2', 'blob:clone-3'])
 })
+
+it('rotates non-blob URLs unchanged without fetching, cloning or revoking them', async () => {
+  const build = vi.fn((url: string) => ({ url }))
+  const { snapshots, wrapper } = setup(build)
+  snapshots.rotate('/api/generation/jobs/first/result'); await flushPromises()
+  expect(snapshots.prevResult.value).toBeNull()
+  snapshots.rotate('/api/generation/jobs/second/result'); await flushPromises()
+  expect(snapshots.prevResult.value?.url).toBe('/api/generation/jobs/first/result')
+  expect(snapshots.lastResult.value?.url).toBe('/api/generation/jobs/second/result')
+  expect(build.mock.calls.map(([url]) => url)).toEqual(['/api/generation/jobs/first/result', '/api/generation/jobs/second/result'])
+  wrapper.unmount()
+  expect(fetch).not.toHaveBeenCalled()
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+  expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+})

@@ -33,16 +33,13 @@ function setup(initial = '') {
 }
 
 describe('album overview and image navigation', () => {
-  it('starts on the image view and retains a restored collection filter', () => {
-    const { navigation, selection } = setup('rain')
+
+  it('opens album images, then restores the cover position and focus without clearing search', async () => {
+    const { navigation, selection, query, wrapper } = setup('rain')
     expect(navigation.albumsOpen.value).toBe(false)
     expect(selection.value).toBe('rain')
     expect(navigation.albumRoot.value?.style.display).toBe('none')
     expect(navigation.imageHeading.value?.style.display).not.toBe('none')
-  })
-
-  it('opens album images, then restores the cover position and focus without clearing search', async () => {
-    const { navigation, selection, query, wrapper } = setup()
     scroll.capture.mockReturnValue({ left: 0, top: 80 })
     await navigation.showAlbums()
     scroll.capture.mockReturnValue({ left: 0, top: 480 })

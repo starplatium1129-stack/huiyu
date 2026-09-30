@@ -158,64 +158,9 @@ test('Native IPC command inventory stays consistent across build manifest, invok
   assert.match(main, /main_shared::is_gateway_origin\(view\.app_handle\(\), &url\)/, 'IPC 仍须验证当前认证来源')
 })
 
-test('Native destroy keeps the overlay thread alive for reuse (long-lived contract)', () => {
-  const overlay = readOverlay()
-
-  // destroy 契约：释放模型与资源，但保留渲染线程/窗口，前端可重新 setCharacter。
-  assert.match(overlay, /fn clear_model_state\(state: &Live2DOverlayState\)/)
-  assert.match(overlay, /destroy 契约 = 释放模型与资源、隐藏 overlay，但渲染线程与窗口长期/)
-  assert.match(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?clear_model_state\(state\)/)
-  // destroy 不得触发 stopped 事件（那是线程退出路径的专属）。
-  assert.doesNotMatch(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?emit_stopped/)
-  // SetCharacter 复用同一清理函数：重复加载前先清模型态。
-  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, texture_scale, adapter, reply \} => \{\s*clear_model_state\(state\)/)
-  // 单元测试锁定契约：清模型态但保留 window_ready/renderer_attached/cmd_tx。
-  assert.match(overlay, /fn destroy_clears_model_state_but_keeps_thread_for_reuse\(\)/)
-})
-
-test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', () => {
-  const live2d = read('src/composables/useLive2D.ts')
-  // 2026-08-23 useLive2D 组合式拆分：实现移入 live2d/ 子模块，契约断言跟随新家。
-  const emotionClock = read('src/composables/live2d/emotionClock.ts')
-  const layoutFit = read('src/composables/live2d/layoutFit.ts')
-  const interactions = read('src/composables/live2d/interactions.ts')
-  const backend = read('src/live2d/nativeBackend.ts')
-  const nativeTypes = read('src/types/live2dNative.ts')
-
-  assert.match(live2d, /session\?\.sendMouthLevel\?\.\(0\)/)
-  assert.match(emotionClock, /requestAnimationFrame\(tick\)/)
-  assert.match(layoutFit, /const visible = !isStageHidden\(ctx\) && !prefersReducedMotion\(\)/)
-  assert.match(layoutFit, /session\.updateOverlay\(overlayRect, visible, framing\(\)\)/)
-  assert.match(layoutFit, /windowBounds: \{ x: 0, y: 0, width: bounds\.width, height: bounds\.height \}/)
-  assert.match(interactions, /model\?\.hitTest\(/)
-  assert.match(layoutFit, /nativeSession && ctx\.nativeOverlayReady && !sizeChanged/)
-  assert.match(layoutFit, /function scheduleNativeLayout/)
-  assert.match(layoutFit, /if \(isStageHidden\(ctx\)\) return/)
-  assert.match(layoutFit, /tick\(\)/)
-  assert.match(layoutFit, /session\.setPaused\(!visible\)/)
-  assert.match(live2d, /setDesktopWindowBounds/)
-  const lifecycle = [
-    read('src/composables/live2d/lifecycle.ts'),
-    read('src/composables/live2d/lifecycleConnect.ts'),
-  ].join('\n')
-  assert.match(lifecycle, /destroyed\.value = true; ctx\.enabled\.value = false; destroyRuntime\(\)[\s\S]{0,180}?controllers\.layoutFit\.resetWindowBounds\(\)/)
-  const companionView = read('src/views/CompanionView.vue')
-  const characterStage = read('src/components/ChatCharacterStage.vue')
-  assert.match(companionView, /:desktop-window-bounds="desktopWindowBounds"/)
-  assert.match(characterStage, /watch\(\(\) => props\.desktopWindowBounds/)
-  // 原生接电目标 165fps，不允许默认 60 或 120 上限覆盖。
-  assert.match(live2d, /isNative \? 165 : 120/)
-  assert.match(backend, /Math\.min\(165,/)
-  // 单一情绪时间推进器：sendEmotion 只能出现在 RAF tick，口型回调不推进。
-  assert.equal((emotionClock.match(/sendEmotion/g) || []).length, 1, 'sendEmotion 只允许出现在原生情绪时钟 tick')
-  // 加载状态必须在 connect 之前显示。
-  assert.ok(lifecycle.indexOf("setState('loading', 'Live2D 加载中…')") < lifecycle.indexOf('await connectSession('), 'loading 必须在 connect 之前设置')
-  assert.match(interactions, /onMotionFailed/)
-  assert.match(backend, /if \(!destroyed\) callback\(handle\)/)
-  assert.match(backend, /bridge\.setMaxFps/)
-  assert.match(lifecycle, /原生 Live2D 初始化失败，已回退到浏览器渲染/)
-  assert.match(backend, /adapter: options\.adapter/)
-  assert.match(nativeTypes, /adapter\?: Live2DRuntimeAdapterConfig/)
-  assert.doesNotMatch(nativeTypes, /passthrough/)
-  assert.match(nativeTypes, /setMaxFps\(fps: number\)/)
-})
+// This is a static ownership guard, not evidence of native frame/device behavior.
+test('native emotion intent has one frontend clock owner', () => {
+  const clock = read('src/composables/live2d/emotionClock.ts');
+  assert.equal((clock.match(/sendEmotion/g) || []).length, 1);
+  assert.doesNotMatch(read('src/composables/useLive2D.ts'), /sendEmotion/);
+});

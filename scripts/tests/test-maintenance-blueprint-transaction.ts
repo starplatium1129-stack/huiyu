@@ -80,7 +80,11 @@ async function app(run: any, packaged: any = false) {
     return { status: response.status, body: await response.json() };
   };
   try { await run(request); }
-  finally { await new Promise(resolve => server.close(resolve)); }
+  finally {
+    // Responses have settled; close only this fixture's keep-alive connections.
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+  }
 }
 
 const stateUrl = '/api/maintenance/scenes-state';

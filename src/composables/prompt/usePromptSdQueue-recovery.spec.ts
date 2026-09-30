@@ -36,21 +36,15 @@ function setup() {
   return { tools, pb, sd, setResultContext }
 }
 
-it('LoRA recovery removes both inline tags and structured LoRA input without mutating the original job', async () => {
-  const { tools, sd } = setup()
+it('archives the effective no-LoRA recovery request rather than the original failing request', async () => {
+  const { tools, pb, sd } = setup()
   const job = tools.captureJob()!
   const original = JSON.stringify(job)
   await tools.runJob(job, { disableLora: true })
-  const request = sd.generate.mock.calls[0]![0]
-  assert.equal(request.prompt, 'A quiet park')
-  assert.equal(request.lora, undefined)
+  assert.equal(sd.generate.mock.calls[0]![0].prompt, 'A quiet park')
+  assert.equal(sd.generate.mock.calls[0]![0].lora, undefined)
   assert.equal(JSON.stringify(job), original)
-})
-
-it('archives the effective no-LoRA recovery request rather than the original failing request', async () => {
-  const { tools, pb } = setup()
-  const job = tools.captureJob()!
-  await tools.runJob(job, { disableLora: true })
+  assert.equal(pb.sdParams.seed, 0)
   await tools.commitJobResult(job, 'blob:result')
   const input = pb.commitHistoryEntry.mock.calls[0]![0]
   assert.equal(input.prompt, 'A quiet park')
@@ -81,12 +75,6 @@ it('view context edits cannot mutate the completed archive snapshot', async () =
   setResultContext.mock.calls[0]![0].history.cfg = 99
   await tools.commitJobResult(job, 'blob:result')
   assert.equal(pb.commitHistoryEntry.mock.calls[0]![0].context.history.cfg, 7)
-})
-
-it('uses the successful SD seed including zero, not the currently displayed seed', async () => {
-  const { tools, pb } = setup()
-  await tools.runJob(tools.captureJob()!)
-  assert.equal(pb.sdParams.seed, 0)
 })
 
 it('a failed attempt does not overwrite the selected seed with the old display result', async () => {

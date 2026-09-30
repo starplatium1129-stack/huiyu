@@ -21,7 +21,6 @@ describe('maintenance stylesheet isolation', () => {
           <section class="inspector-section"><h3>画幅</h3></section>
         </div>
       </article>`
-    expect(inspectorSelectors.length).toBeGreaterThan(20)
     const leaks = inspectorSelectors.filter(selector => document.querySelector(selector))
     expect(leaks).toEqual([])
   })

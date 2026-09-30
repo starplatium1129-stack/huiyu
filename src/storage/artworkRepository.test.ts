@@ -219,15 +219,6 @@ describe('artworkRepository 软删 / 恢复', () => {
     expect(kv.store.get(KV.trash)).toHaveLength(1)
     expect(historyIds(kv)).toEqual(['b2'])
   })
-
-  it('同 id 重复软删：trash 只保留一条快照', async () => {
-    const { repo, kv } = makeRepo()
-    await repo.softDeleteArtwork('a1')
-    await repo.restoreArtwork('a1')
-    await repo.softDeleteArtwork('a1')
-    const trash = kv.store.get(KV.trash) as unknown[]
-    expect(trash).toHaveLength(1)
-  })
 })
 
 describe('artworkRepository 惰性清理', () => {
@@ -361,19 +352,19 @@ describe('artworkRepository 惰性清理', () => {
     kv.store.set(thumbKey('img-b'), { data: 'tiny-b' })
     const day = 24 * 60 * 60 * 1000
     const trash = kv.store.get(KV.trash) as Array<{ id: string; deletedAt: number }>
-    trash.find(t => t.id === 'a1')!.deletedAt = Date.now() - (ARTWORK_TRASH_RETENTION_DAYS + 1) * day
+    for (const entry of trash) entry.deletedAt = Date.now() - (ARTWORK_TRASH_RETENTION_DAYS + 1) * day
 
     // img-b 被人为加回 history（防御性兜底路径：条目超期也不删活图）
     ;(kv.store.get(KV.history) as unknown[]).push({ id: 'b2', image_id: 'img-b' })
 
     const result = await repo.purgeExpiredTrash()
-    expect(result.purged).toBe(1)
+    expect(result.purged).toBe(2)
     expect(images.store.has('img-a')).toBe(false)
     expect(images.store.has('img-b')).toBe(true)
     expect(kv.store.has(thumbKey('img-a'))).toBe(false)
     expect(kv.store.has(thumbKey('img-b'))).toBe(true)
     const rest = kv.store.get(KV.trash) as Array<{ id: string }>
-    expect(rest.map(t => t.id)).toEqual(['b2'])
+    expect(rest).toEqual([])
   })
 
   it('purge：trash 为空时返回 0 且不动图片', async () => {

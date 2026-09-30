@@ -20,19 +20,6 @@ describe('VoiceGlow component', () => {
     expect(canvas.exists()).toBe(true)
   })
 
-  it('applies processing and variant classes correctly', () => {
-    const wrapper = mount(VoiceGlow, {
-      props: {
-        processing: true,
-        colorVariant: 'violet',
-      },
-    })
-
-    const container = wrapper.find('.voice-glow-container')
-    expect(container.classes()).toContain('is-processing')
-    expect(container.classes()).toContain('variant-violet')
-  })
-
   it('useVoiceMeter sets manual level and cleans up cleanly', () => {
     const meter = useVoiceMeter()
     expect(meter.level.value).toBe(0)
@@ -41,6 +28,7 @@ describe('VoiceGlow component', () => {
     expect(meter.level.value).toBe(0.8)
 
     meter.detachStream()
+    expect(meter.level.value).toBe(0)
     expect(meter.isListening.value).toBe(false)
   })
 })

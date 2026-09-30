@@ -32,8 +32,10 @@ test('prompt rewrite integrity tokenization and similarity heuristics', () => {
   const s2 = tokenize('1girl, solo, ayachi_nene, school_uniform');
   assert.ok(s1.has('ayachi'));
   assert.ok(s1.has('nene'));
-  assert.ok(retentionRate(s1, s2) <= 1.0);
-  assert.ok(jaccardSimilarity(s1, s2) > 0);
+  assert.strictEqual(retentionRate(s1, s2), 5 / 7);
+  assert.strictEqual(jaccardSimilarity(s1, s2), 5 / 8);
+  assert.strictEqual(retentionRate(new Set(), s2), 0);
+  assert.strictEqual(jaccardSimilarity(new Set(), new Set()), 0);
 });
 
 test('cross-entry signature detection flags templated deliveries', () => {

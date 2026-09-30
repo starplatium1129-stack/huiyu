@@ -19,8 +19,8 @@ const fact: ChatMemoryItem = {
 describe('ChatMemoryPanel', () => {
   beforeEach(() => vi.mocked(confirmAction).mockReset())
 
-  it('confirms before emitting irreversible deletion', async () => {
-    vi.mocked(confirmAction).mockResolvedValue(true)
+  it('keeps cancelled memories and emits deletion only after destructive confirmation', async () => {
+    vi.mocked(confirmAction).mockResolvedValueOnce(false).mockResolvedValueOnce(true)
     const wrapper = mount(ChatMemoryPanel, { props: { items: [fact], characterName: '宁宁' } })
 
     await wrapper.get('.memory-item .btn-ghost:last-child').trigger('click')
@@ -30,15 +30,9 @@ describe('ChatMemoryPanel', () => {
       message: fact.text,
       danger: true,
     }))
-    expect(wrapper.emitted('delete')).toEqual([[fact.id]])
-  })
-
-  it('keeps the memory when confirmation is cancelled', async () => {
-    vi.mocked(confirmAction).mockResolvedValue(false)
-    const wrapper = mount(ChatMemoryPanel, { props: { items: [fact], characterName: '宁宁' } })
-
-    await wrapper.get('.memory-item .btn-ghost:last-child').trigger('click')
-
     expect(wrapper.emitted('delete')).toBeUndefined()
+    await wrapper.get('.memory-item .btn-ghost:last-child').trigger('click')
+    expect(wrapper.emitted('delete')).toEqual([[fact.id]])
+    wrapper.unmount()
   })
 })

@@ -200,18 +200,6 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
     expect(result.accepted).toEqual([])
   })
 
-  it('顶替项记录被顶替的服装族，供提示与一键恢复使用', () => {
-    const result = mergeInterrogatedTags({
-      tags: ['swimsuit'],
-      manualTags: new Set(),
-      identityTokens: ['school_uniform'],
-    })
-    expect(result.outfitReplacement).toEqual(['swimsuit'])
-    expect(result.replacedOutfitGroup).toBe('校服/水手服')
-    // 服装是替换语义，不再计入 conflicts（conflicts 表示「丢弃」）
-    expect(result.conflicts).toEqual([])
-  })
-
   it('时段互斥仍走跳过（无「可替换部件」语义），且不进服装顶替', () => {
     const result = mergeInterrogatedTags({
       tags: ['day'],
@@ -221,15 +209,6 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
     expect(result.conflicts.map(c => c.tag)).toEqual(['day'])
     expect(result.conflicts[0].domain).toBe('时段')
     expect(result.outfitReplacement).toEqual([])
-  })
-
-  it('回归：发色身份域行为不受影响（域内互斥）', () => {
-    const result = mergeInterrogatedTags({
-      tags: ['blonde_hair'],
-      manualTags: new Set(),
-      identityTokens: ['pink_hair'],
-    })
-    expect(result.conflicts.map(c => c.tag)).toEqual(['blonde_hair'])
   })
 
   it('未纳入互斥词表的服装词（ballgown）不参与判定，照常叠加', () => {
@@ -257,11 +236,14 @@ describe('反推冲突审计回归', () => {
     expect(result.accepted).toEqual([])
     expect(result.conflicts.map(item => item.domain)).toEqual(['时段', '天气'])
   })
-  it('归一去重且同一批反推中只保留首个互斥取值', () => {
+  it('归一去重且同一批反推中只保留首个发色与姿势', () => {
     const result = merge(['Blush', 'pink_hair', 'pink hair', 'blue_hair'], [], [], new Set(['blush']))
     expect(result.accepted).toEqual(['pink_hair'])
     expect(result.duplicates).toEqual(['blush', 'pink_hair'])
     expect(result.conflicts.map(item => item.tag)).toEqual(['blue_hair'])
+    const batch = merge(['sitting', 'standing', 'lying'])
+    expect(batch.accepted).toEqual(['sitting'])
+    expect(batch.conflicts.map(c => c.tag)).toEqual(['standing', 'lying'])
   })
   it('泳装不能误替换夜间，多个服装家族择一', () => {
     expect(merge(['swimsuit'], ['night']).accepted).toEqual(['swimsuit'])
@@ -285,8 +267,7 @@ describe('反推冲突审计回归', () => {
     expect(result.conflicts.map(item => item.tag)).toEqual(['swimsuit'])
   })
 
-  it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('姿势最大还原：替换旧坐姿，同批只保留首个姿势（身份 $identityTokens）', ({ identityTokens }) => {
-    // 1. manualTags 中有 sitting，反推 standing → standing 采纳，sitting 列入淘汰
+  it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('姿势最大还原：替换旧坐姿并提供恢复说明（身份 $identityTokens）', ({ identityTokens }) => {
     const replaceResult = mergeInterrogatedTags({
       tags: ['standing', 'smile'],
       manualTags: new Set(['sitting']),
@@ -295,11 +276,6 @@ describe('反推冲突审计回归', () => {
     expect(replaceResult.accepted).toEqual(['standing', 'smile'])
     expect(replaceResult.obsoleteManualTags).toEqual(['sitting'])
     expect(replaceResult.restorations.some(r => r.includes('姿势'))).toBe(true)
-
-    // 2. 同一批次反推包含多个姿势时，首选置信度最高的姿势，丢弃后续冲突姿势
-    const batch = merge(['sitting', 'standing', 'lying'])
-    expect(batch.accepted).toEqual(['sitting'])
-    expect(batch.conflicts.map(c => c.tag)).toEqual(['standing', 'lying'])
   })
 
   it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('反推闭眼清理旧直视词（身份 $identityTokens）', ({ identityTokens }) => {

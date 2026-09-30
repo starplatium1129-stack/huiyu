@@ -45,7 +45,8 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const nightly = read('.github/workflows/nightly-e2e.yml');
 
   // 2026-08-22 加入 test:frontend（Vitest）道：validate 必须先跑前端单测再进 unit/contract。
-  assert.equal(scripts.validate, 'npm run check && npm run test:frontend && npm run test:unit:run && npm run test:contract:run');
+  assert.equal(scripts.validate, 'npm run check && npm run test:frontend:changed && npm run test:unit:run && npm run test:contract:run && npm run test:optional');
+  assert.match(scripts['validate:all'], /test:frontend -- --coverage.*test:node:all/);
   assert.match(scripts['test:frontend'], /^vitest run$/);
   assert.ok(
     fs.existsSync(path.join(root, 'vitest.config.ts'))
@@ -95,8 +96,8 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const summary = quality.slice(quality.indexOf('  quality-summary:'));
   assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
   assert.match(summary, /if: always\(\)/);
-  assert.match(summary, /needs: \[checks, unit, contract, e2e, minimum-node\]/);
-  for (const lane of ['checks', 'unit', 'contract', 'e2e', 'minimum-node']) {
+  assert.match(summary, /needs: \[checks, unit, contract, optional, e2e, minimum-node\]/);
+  for (const lane of ['checks', 'unit', 'contract', 'optional', 'e2e', 'minimum-node']) {
     assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase().replace(/-/g, '_')}_RESULT`),
       `quality summary must inspect ${lane} result`);
   }
@@ -124,15 +125,16 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.doesNotMatch(native, /pull_request:/);
 });
 
-test('contract CI builds the SPA before testing fallback and CSP on a clean checkout', () => {
+test('core CI avoids legacy SPA setup; optional legacy builds and nightly coverage remain explicit', () => {
   const quality = read('.github/workflows/quality.yml');
   const contract = quality.split('\n  contract:\n')[1]?.split('\n  e2e:\n')[0];
   assert.ok(contract, 'the isolated contract job must be present');
   const install = contract.indexOf('run: npm ci');
-  const build = contract.indexOf('run: npm run build');
   const run = contract.indexOf('run: npm run test:contract');
-  assert.ok(install >= 0 && install < build && build < run,
-    'contract routes require locally built dist; another job cannot supply it');
+  assert.ok(install >= 0 && install < run);
+  assert.doesNotMatch(contract, /run: npm run build/, 'legacy SPA-only contracts are outside the core lane');
+  assert.match(read('scripts/tests/run-optional-test-lanes.ts'), /lanes\.includes\('legacy'\)[\s\S]*build:web:run/);
+  assert.match(read('.github/workflows/nightly-e2e.yml'), /test:frontend -- --coverage/);
   assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
     'route contract failures must remain fatal');
 });

@@ -21,15 +21,10 @@ describe('project album presentation', () => {
     const { albums } = useGalleryProjectAlbums(state)
     expect(albums.value).toEqual([{ id: 'first', title: '雨后的来信', count: 3, covers: [] }])
     expect(state.projects.value[0].history_ids).toEqual([1, 1, 2, 3, 'gone'])
+    state.projects.value[0].history_ids = ['1', 2]
+    expect(albums.value[0].count).toBe(1)
     state.history.value = []
     expect(albums.value).toEqual([])
-  })
-
-  it('uses the same strict ID membership as the gallery project filter', () => {
-    const state = fixture()
-    state.projects.value[0].history_ids = ['1', 2]
-    const { albums } = useGalleryProjectAlbums(state)
-    expect(albums.value[0].count).toBe(1)
   })
 
   it('borrows thumbnails before HD URLs and reacts to cache eviction without loading originals', () => {

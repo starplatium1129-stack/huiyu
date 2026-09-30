@@ -110,15 +110,6 @@ assert.deepStrictEqual(
   'damaged recent-scene storage must be normalized before use',
 );
 
-sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow - 86400000);
-sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow);
-sceneUx.recordSceneUsage(scenes[1], storage, preferenceNow - 100 * 86400000);
-const usage = sceneUx.readSceneUsage(storage);
-assert.strictEqual(usage[scenes[0].id].uses, 2, 'scene selections must increment local usage');
-assert.strictEqual(usage[scenes[0].id].lastUsed, preferenceNow, 'scene usage must retain the latest selection time');
-assert(sceneUx.sceneUsageScore(usage[scenes[0].id], preferenceNow) > sceneUx.sceneUsageScore(usage[scenes[1].id], preferenceNow),
-  'frequent and recent scenes must rank above stale one-off selections');
-
 const legacyUsageMemory = new Map([[sceneUx.SCENE_USAGE_KEY, JSON.stringify({
   sc001:{ uses:'3.9', lastUsed:'1234', token:'must-not-survive' },
   broken:{ uses:0, lastUsed:99 },

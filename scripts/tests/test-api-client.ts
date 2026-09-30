@@ -1,8 +1,6 @@
 'use strict';
 
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
-const fs: typeof import('node:fs') = require('node:fs');
-const path: typeof import('node:path') = require('node:path');
 const { test }: typeof import('node:test') = require('node:test');
 const { ref }: typeof import('vue') = require('vue');
 const {
@@ -25,7 +23,6 @@ const { GENERATION_API_TIMEOUTS, createGenerationApi }: typeof import('../../src
 const { useControlActions }: typeof import('../../src/composables/useControlActions.ts') = require('../../src/composables/useControlActions.ts');
 const { useControlStatus }: typeof import('../../src/composables/useControlStatus.ts') = require('../../src/composables/useControlStatus.ts');
 
-const root = path.resolve(__dirname, '..', '..');
 
 function jsonResponse(body: any, status: any = 200, headers: any = {}) {
   return new Response(JSON.stringify(body), {
@@ -226,22 +223,6 @@ test('translate caller abort maps to aborted and passes the caller signal throug
   controller.abort();
   await assert.rejects(request, error => error instanceof ApiClientError && error.kind === 'aborted');
   assert.equal(requestSignal.aborted, true);
-});
-
-test('phase 2 callers do not keep ordinary JSON endpoint fetches, while TTS and sdapi remain allowed', () => {
-  const scopedFiles = [
-    'src/composables/chat/useChatProvider.ts',
-    'src/components/ChatApiSettings.vue',
-    'src/components/VoiceStudio.vue',
-    'src/composables/useVoice.ts',
-    'src/composables/useLive2D.ts',
-    'src/composables/generation/useSDGenerate.ts',
-  ];
-  const ordinaryEndpoint = /fetch\s*\(\s*['"]\/api\/(?:chat-status|chat-provider|tts-status|voice\/prepare|translate|live2d-status|sd-status)/;
-  for (const relativePath of scopedFiles) {
-    const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
-    assert.doesNotMatch(source, ordinaryEndpoint, `${relativePath} must use phase 2 API modules`);
-  }
 });
 
 test('client maps standard 400/409/501/504 envelopes without losing fields', async () => {
@@ -610,26 +591,6 @@ test('useControlStatus aborts older same-kind requests and clears protected stal
   assert.deepEqual(status.logs.value, []);
   assert.equal(status.logIndex.value, 0);
   assert.equal(status.shareLink.value, '');
-});
-
-test('scoped migration keeps Companion unmount aborts and removes bare fetch calls', () => {
-  const scopedFiles = [
-    'src/composables/useControlActions.ts',
-    'src/composables/useControlStatus.ts',
-    'src/views/SceneManagerView.vue',
-    'src/composables/scene/useSceneShowcaseUpload.ts',
-    'src/views/HomeView.vue',
-    'src/views/CompanionView.vue',
-    'src/composables/chat/useCharacterRoomSession.ts',
-    // 2026-08-22 陪伴页行为/剪贴板/语音簇自 CompanionView 下沉，随迁禁裸 fetch 清单。
-    'src/composables/useCompanionBehaviorRuntime.ts',
-    'src/composables/useCompanionClipboardImport.ts',
-    'src/composables/useCompanionSpeechInput.ts',
-  ];
-  for (const relativePath of scopedFiles) {
-    const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
-    assert.doesNotMatch(source, /\bfetch\s*\(/, `${relativePath} must use the typed API modules`);
-  }
 });
 
 test('API modules keep operation timeouts within the documented baselines', () => {

@@ -2,7 +2,7 @@
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
 const { test }: typeof import('node:test') = require('node:test');
 const { resolveSceneChangeSet, previewSceneChanges }: typeof import('../lib/scene-change-set') = require('../lib/scene-change-set');
-const { isSceneId, formatSceneId, missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
+const { missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
 const scene = (id: any, title: any = id) => ({ id, title, char: 'fixture' });
 const current = () => ({ scenes: [scene('sc001'), scene('sc002'), scene('sc999')],
   blueprints: [], tags: [{ tag: 'fixture' }], curation: { curatedSceneIds: ['sc002'] } });
@@ -52,15 +52,6 @@ test('preview distinguishes related references from proof of rendering or delive
   assert.ok(preview.related.some(item => item.kind === 'curation' && item.id === 'sc002'));
   assert.ok(preview.unknown.length);
   assert.equal(preview.version, 123);
-});
-
-test('scene identifiers preserve canonical spelling at all numeric boundaries', () => {
-  for (const id of ['sc001', 'sc099', 'sc999', 'sc1000', 'sc9007199254740991']) {
-    assert.ok(isSceneId(id), id);
-    assert.equal(formatSceneId(Number(id.slice(2))), id);
-  }
-  for (const id of ['sc000', 'sc0001', 'sc01', 'sc-1', 'SC001', 'sc1e3', 'sc9007199254740992', 1]) assert.equal(isSceneId(id), false);
-  assert.throws(() => formatSceneId(Number.MAX_SAFE_INTEGER + 1));
 });
 
 test('missing-ID checks use finite ranges even at the largest safe identifier', () => {

@@ -9,8 +9,9 @@ describe('workbench catalog boundary', () => {
       ['loras', parsePromptLoras], ['tags', parsePromptTags],
     ] as const) {
       const value = JSON.parse(readFileSync(`data/${file}.json`, 'utf8'))
-      expect(parse(value)).toEqual(value)
-      expect(parse(value)[0]).toBe(value[0])
+      const parsed = parse(value)
+      expect(parsed).toEqual(value)
+      expect(parsed[0]).toBe(value[0])
     }
   })
   it('rejects malformed nested fields before consumers access them', () => {

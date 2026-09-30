@@ -69,6 +69,8 @@ async function startApp(desktopPackaged: any) {
 }
 async function stopApp() {
   if (!server) return;
+  // All fixture responses have settled; do not wait for keep-alive expiry.
+  server.closeAllConnections();
   await new Promise((resolve) => server.close(resolve));
   server = null;
 }

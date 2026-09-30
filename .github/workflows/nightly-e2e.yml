@@ -31,6 +31,8 @@ jobs:
         run: npm ci
       - name: Build SPA
         run: npm run build
+      - name: Full frontend coverage with existing thresholds
+        run: npm run test:frontend -- --coverage
       - name: Build Rust browser backend
         run: |
           rustup toolchain install 1.98.1 --profile minimal

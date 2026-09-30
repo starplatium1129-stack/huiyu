@@ -71,8 +71,7 @@ describe('promptBuilderStore · 角色与主体切换', () => {
     const s = usePromptBuilderStore()
     s.setChar('natsume')
     expect(s.char).toBe('natsume')
-    // CHAR_PROMPT 表内 natsume 有专属提示词，派生值非空
-    expect(typeof s.charPrompt).toBe('string')
+    expect(s.charPrompt).toContain('shiki_natsume')
   })
 
   it('subject 默认工作室；切热门带全字段；切回工作室幂等', () => {

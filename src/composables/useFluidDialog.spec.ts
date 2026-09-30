@@ -278,45 +278,24 @@ describe('modal page scroll lock', () => {
 })
 
 describe('isBackdropClick predicate', () => {
-  it('returns false when clicking child elements inside dialog', () => {
+
+  it('distinguishes backdrop coordinates from panel padding and child clicks', () => {
     const dialog = document.createElement('dialog')
+    dialog.getBoundingClientRect = () => ({
+      left: 100,
+      right: 500,
+      top: 100,
+      bottom: 400,
+      width: 400,
+      height: 300,
+      x: 100,
+      y: 100,
+      toJSON: () => {},
+    })
     const child = document.createElement('div')
     dialog.appendChild(child)
-    const event = { target: child, clientX: 100, clientY: 100 } as unknown as MouseEvent
-    expect(isBackdropClick(event, dialog)).toBe(false)
-  })
-
-  it('returns false when clicking inside dialog bounding box (e.g. padding / empty areas)', () => {
-    const dialog = document.createElement('dialog')
-    dialog.getBoundingClientRect = () => ({
-      left: 100,
-      right: 500,
-      top: 100,
-      bottom: 400,
-      width: 400,
-      height: 300,
-      x: 100,
-      y: 100,
-      toJSON: () => {},
-    })
-    // Click within [100, 500] x [100, 400]
-    const insideEvent = { target: dialog, clientX: 120, clientY: 120 } as unknown as MouseEvent
-    expect(isBackdropClick(insideEvent, dialog)).toBe(false)
-  })
-
-  it('returns true when event target is dialog and click coordinates are outside bounding box', () => {
-    const dialog = document.createElement('dialog')
-    dialog.getBoundingClientRect = () => ({
-      left: 100,
-      right: 500,
-      top: 100,
-      bottom: 400,
-      width: 400,
-      height: 300,
-      x: 100,
-      y: 100,
-      toJSON: () => {},
-    })
+    expect(isBackdropClick({ target: child, clientX: 10, clientY: 10 } as unknown as MouseEvent, dialog)).toBe(false)
+    expect(isBackdropClick({ target: dialog, clientX: 120, clientY: 120 } as unknown as MouseEvent, dialog)).toBe(false)
     // Click at (10, 10), outside the dialog rectangle
     const backdropEvent = { target: dialog, clientX: 10, clientY: 10 } as unknown as MouseEvent
     expect(isBackdropClick(backdropEvent, dialog)).toBe(true)

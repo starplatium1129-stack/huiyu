@@ -51,18 +51,11 @@ beforeEach(() => {
 })
 afterEach(() => vi.restoreAllMocks())
 
-describe('VoiceStudio 可访问名称', () => {
-  it('为字幕与日文配音稿提供稳定名称', async () => {
-    const wrapper = await openStudio()
-    expect(wrapper.find('.voice-caption-text').attributes('aria-label')).toBe('中文字幕')
-    expect(wrapper.find('.voice-script-details textarea').attributes('aria-label')).toBe('日文配音稿')
-    wrapper.unmount()
-  })
-})
-
 describe('VoiceStudio 异步操作生命周期', () => {
   it('生成时冻结声线、语言、情绪和速度，下载文件名沿用生成设置', async () => {
     const wrapper = await openStudio()
+    expect(wrapper.find('.voice-caption-text').attributes('aria-label')).toBe('中文字幕')
+    expect(wrapper.find('.voice-script-details textarea').attributes('aria-label')).toBe('日文配音稿')
     const status = deferred<TtsStatus>()
     vi.mocked(voiceApi.getStatus).mockReturnValueOnce(status.promise)
     await wrapper.find('button.btn-primary').trigger('click')

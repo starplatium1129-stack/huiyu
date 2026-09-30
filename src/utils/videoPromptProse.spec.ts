@@ -21,7 +21,6 @@ describe('tagsToVideoProse', () => {
       'masterpiece, best quality, safe, absurdres, rating:explicit, source:pixiv, 1girl, smile',
     )
     expect(out).toBe('a girl, smile')
-    expect(out).not.toMatch(/masterpiece|best quality|absurdres|rating|source/i)
   })
 
   it('权重括号与整词强调括号被剥离', () => {

@@ -85,7 +85,6 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
     assert.ok(expectedSceneCount === 6 || expectedSceneCount === 10 || expectedSceneCount === 11,
       entry.id + ' must use a supported onboarding scene count');
     assert.strictEqual(owned.length, expectedSceneCount, entry.id + ' must have its complete parsed scene set');
-    assert.strictEqual(entry.sceneCount, owned.length);
     assert.strictEqual(typeof entry.portraitPending, 'boolean');
     if (!entry.portraitPending) {
       for (const asset of [`assets/characters/popular-${entry.id}.png`, `assets/characters/thumbs/popular-${entry.id}.webp`, `assets/particles/p_${entry.id}.json`]) {

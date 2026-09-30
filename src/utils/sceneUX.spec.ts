@@ -74,7 +74,7 @@ describe('sceneUX · 使用次数统计', () => {
     }))
     const usage = readSceneUsage(storage)
     expect(usage.scGood).toEqual({ uses: 2, lastUsed: 100 })
-    expect(usage.scOld?.uses ?? usage.scOld).toBeTruthy()
+    expect(usage.scOld).toEqual({ uses: 3, lastUsed: 0 })
     // 迁移结果回写为带版本的信封
     expect(JSON.parse(storage.getItem(SCENE_USAGE_KEY)!)).toMatchObject({ version: 1 })
   })

@@ -14,12 +14,9 @@ function makeItem(id: string, ratio: number): ArtworkRecord {
 }
 
 describe('buildMasonryGroups', () => {
-  it('handles empty groups safely', () => {
-    const res = buildMasonryGroups([], () => 1, 4)
-    expect(res).toEqual([])
-  })
 
   it('distributes items into balanced columns', () => {
+    expect(buildMasonryGroups([], () => 1, 4)).toEqual([])
     const items = [
       makeItem('1', 3 / 4), // 竖图
       makeItem('2', 3 / 4), // 竖图

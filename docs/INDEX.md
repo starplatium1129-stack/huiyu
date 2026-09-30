@@ -50,6 +50,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 
 | 日期 | 主题 |
 | --- | --- |
+| 2026-09-30 | [全部前端与 Node 单测精简](audits/2026-09-30/test-total-simplification.md)及[454文件逐项决定](audits/2026-09-30/test-total-decisions.md) |
 | 2026-09-30 | [日常测试精简与定向入口](audits/2026-09-30/test-simplification.md) |
 | 2026-09-30 | [搜索索引传输与响应复制收口](audits/2026-09-30/search-index-transfer.md) |
 | 2026-09-30 | [Rust 迁移后运行时性能复审](audits/2026-09-30/rust-runtime-performance.md) |

@@ -1,6 +1,8 @@
 import { defineConfig } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import MOCK_PORTS from './scripts/lib/e2e-ports.js';
+import selection from './scripts/lib/e2e-selection.js';
+import lanes from './tests/e2e/e2e-lanes.json';
 
 const localChromiumCandidates = process.platform === 'win32' ? [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -24,7 +26,8 @@ const browserUse = {
  * 使用共享模拟上游的套件统一放入单 worker 项目，避免一个用例的 reset/fault
  * 清除另一个用例的任务或污染请求断言。普通页面与设备回归仍可并行。
  */
-const MOCK_SPECS = /(?:flows|anima-quick|office-code|page-experience-flows)\.spec\.ts/;
+const { MOCK_SPECS } = selection;
+const servers = selection.selectE2eServers(process.argv.slice(2), lanes.specs.map(spec => spec.file));
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -57,19 +60,19 @@ export default defineConfig({
     }
   ],
   webServer: [
-    {
+    ...servers.includes('web') ? [{
       command: 'node scripts/tests/mock-stack.js --web-only',
       url: `http://127.0.0.1:${MOCK_PORTS.web}/api/health`,
       // A pre-existing Node or operator gateway must never certify Rust E2E.
       reuseExistingServer: false,
       timeout: 60_000,
-    },
-    {
+    }] : [],
+    ...servers.includes('gateway') ? [{
       // Programmable upstream fixtures + the real Rust release executable.
       command: 'node scripts/tests/mock-stack.js',
       url: `http://127.0.0.1:${MOCK_PORTS.gateway}/api/health`,
       reuseExistingServer: false,
       timeout: 60_000,
-    }
+    }] : []
   ]
 });

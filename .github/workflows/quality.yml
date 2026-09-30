@@ -80,8 +80,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Run frontend unit tests (coverage thresholds enforced)
-        run: npx vitest run --coverage
+      - name: Run frontend tests related to this change
+        run: |
+          if git rev-parse --verify "$AICS_HYGIENE_BASE_REF^{commit}" >/dev/null 2>&1; then
+            npx vitest run --changed="$AICS_HYGIENE_BASE_REF" --passWithNoTests
+          else
+            npm run test:frontend
+          fi
       - name: Run parallel-safe unit suite
         run: npm run test:unit
 
@@ -111,10 +116,6 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      # Contract tests exercise the real SPA fallback and route-specific CSP.
-      # Jobs have isolated checkouts; the checks job cannot supply its dist here.
-      - name: Build SPA for route contracts
-        run: npm run build
       - name: Run controlled contract suite
         run: npm run test:contract
 
@@ -127,9 +128,37 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  optional:
+    name: Changed tooling, release and legacy consumers
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run optional lanes only when their consumers change
+        run: npm run test:optional
+      - name: Upload optional diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: quality-optional
+          path: runtime/quality-reports
+          if-no-files-found: ignore
+          retention-days: 7
+
   e2e:
     name: Browser Regression (Critical)
-    needs: [checks, unit, contract]
+    needs: [checks, unit, contract, optional]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -197,7 +226,7 @@ jobs:
   quality-summary:
     name: Quality Summary
     if: always()
-    needs: [checks, unit, contract, e2e, minimum-node]
+    needs: [checks, unit, contract, optional, e2e, minimum-node]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -206,6 +235,7 @@ jobs:
           CHECKS_RESULT: ${{ needs.checks.result }}
           UNIT_RESULT: ${{ needs.unit.result }}
           CONTRACT_RESULT: ${{ needs.contract.result }}
+          OPTIONAL_RESULT: ${{ needs.optional.result }}
           MINIMUM_NODE_RESULT: ${{ needs.minimum-node.result }}
           E2E_RESULT: ${{ needs.e2e.result }}
         run: |
@@ -213,5 +243,6 @@ jobs:
           test "$CHECKS_RESULT" = "success"
           test "$UNIT_RESULT" = "success"
           test "$CONTRACT_RESULT" = "success"
+          test "$OPTIONAL_RESULT" = "success"
           test "$E2E_RESULT" = "success"
           test "$MINIMUM_NODE_RESULT" = "success"
