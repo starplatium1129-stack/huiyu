@@ -71,6 +71,13 @@ async fn chat_reset_clears_all_chat_drafts_and_preserves_other_registered_drafts
         )
         .await;
         save_draft(&storage, &format!("model-{index}"), model, *window).await;
+        save_draft(
+            &storage,
+            &format!("queue-{index}"),
+            "aics_sd_pending_queue_v1",
+            *window,
+        )
+        .await;
     }
     let command =
         json!({"kind":"profile.resetChat","operationId":"reset-neutral","expectedReset":""});
@@ -104,15 +111,16 @@ async fn chat_reset_clears_all_chat_drafts_and_preserves_other_registered_drafts
         let records = drafts(&storage, window).await;
         assert_eq!(
             records.len(),
-            4,
-            "Preserve the global and own video/model drafts: {window}"
+            6,
+            "Preserve the global and own video/model/queue drafts: {window}"
         );
         assert!(
-            records
-                .iter()
-                .all(|row| row["key"] == model || row["key"] == "aics_video_draft_v1")
+            records.iter().all(|row| row["key"] == model
+                || row["key"] == "aics_video_draft_v1"
+                || row["key"] == "aics_sd_pending_queue_v1")
         );
         assert!(records.iter().any(|row| row["value"] == "model-0"));
+        assert!(records.iter().any(|row| row["value"] == "queue-0"));
     }
     let stale = storage
         .request(

@@ -67,6 +67,10 @@ export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<
   }
 }
 export async function getRuntimeTask(id: string, signal?: AbortSignal) { return remember(await request<TaskRecord>('/' + encodeURIComponent(id), 'GET', undefined, signal)) }
+export async function getRuntimeTaskByKey(key: string): Promise<TaskRecord | null> {
+  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key))
+  return task ? remember(task) : null
+}
 export async function readRuntimeTaskHistory(): Promise<unknown> {
   const { snapshots } = await request<{ snapshots: unknown[] }>('/legacy-history')
   const records: unknown[] = []; const deleted: Record<string, number> = {}

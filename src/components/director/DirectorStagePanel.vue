@@ -148,9 +148,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { runtimeFetch } from '@/platform/runtimeUrl'
-
-import { computed, ref, defineAsyncComponent } from 'vue'
+import { computed, ref, defineAsyncComponent, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
@@ -235,9 +233,12 @@ const stageMuseUrl = {
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const interrogateInputRef2 = ref<HTMLInputElement | null>(null)
-const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
+const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate()
 const interrogateError = computed(() => interrogateErrorRaw.value)
 const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
+let readingCurrentResult: symbol | null = null
+watch(interrogateMode, () => cancel(), { flush: 'sync' })
+watch(() => props.displayResultUrl, () => { if (readingCurrentResult) cancel() }, { flush: 'sync' })
 
 function triggerInterrogatePick() {
   // 有结果时优先用结果态外层的 input：空闲态 input 在 v-show=false 的舞台里，
@@ -286,26 +287,18 @@ async function interrogateCurrentImage() {
     triggerInterrogatePick()
     return
   }
-  let file: File
+  if (interrogateBusy.value) return
+  const request = Symbol()
+  readingCurrentResult = request
   try {
-    var res = await runtimeFetch(props.displayResultUrl)
-    if (!res.ok) throw new Error('获取当前成片失败')
-    var blob = await res.blob()
-    file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })
-  } catch (e) {
-    // 取图失败回落到上传，让用户手动选图
-    const msg = e instanceof Error ? e.message : String(e)
-    console.warn('[interrogate] fetch current image failed:', msg)
-    triggerInterrogatePick()
-    return
-  }
-  try {
-    var result = await interrogate(file, interrogateMode.value, 0.35)
+    const result = await interrogate(props.displayResultUrl, interrogateMode.value, 0.35)
     if (result) emit('interrogateResult', result)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
     console.warn('[interrogate]', msg)
+  } finally {
+    if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
 </script>

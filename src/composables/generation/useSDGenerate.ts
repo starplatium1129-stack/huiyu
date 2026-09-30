@@ -3,6 +3,7 @@ import type { SDGenerateParams } from '@/utils/sdRequest'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
+import type { RuntimeSdAttempt } from './runtimeImageSession'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 function isAbortError(error: unknown): boolean {
@@ -42,6 +43,7 @@ export function useSDGenerate() {
   let abortCtrl: AbortController | null = null
   let activeJobId = ''
   let durableAttempt = false, durableKey = ''
+  let queueAttempt: RuntimeSdAttempt | undefined
 
   function abandonAcceptedJob(jobId: string) {
     if (!jobId) return
@@ -59,7 +61,7 @@ export function useSDGenerate() {
     if (value.upscalers) upscalers.value = value.upscalers
     return value.online
   }
-  async function generate(params: SDGenerateParams): Promise<string | null> {
+  async function generate(params: SDGenerateParams, attempt?: RuntimeSdAttempt): Promise<string | null> {
     if (generating.value) return null
     generating.value = true
     taskState.value = 'submitting'
@@ -71,7 +73,8 @@ export function useSDGenerate() {
 
     abortCtrl = new AbortController()
     const controller = abortCtrl
-    durableAttempt = hasRuntimeTasks(); durableKey = ''
+    durableAttempt = hasRuntimeTasks(); durableKey = attempt?.key || ''
+    queueAttempt = attempt
 
     try {
       params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
@@ -102,10 +105,10 @@ export function useSDGenerate() {
         ...(isLocalStudioHost() ? { adultEnabled: true } : {}),
       }
       if (durableAttempt) {
-        durableKey = runtimeRequestKey('generation', jobInput)
+        durableKey = attempt?.key || runtimeRequestKey('generation', jobInput)
         const { runRuntimeSd } = await import('./runtimeImageSession')
         const url = await runRuntimeSd(jobInput, durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext)
+          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext, attempt)
         lastLoras.value = loras
         return url
       }
@@ -145,7 +148,14 @@ export function useSDGenerate() {
     if (!generating.value) return
     taskState.value = 'cancelling'
     abortCtrl?.abort()
-    if (durableAttempt) { if (durableKey) { const key = durableKey; void import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key)).catch(() => { errorMsg.value = '取消尚未确认，请到任务中心核对' }) } return }
+    if (durableAttempt) {
+      if (durableKey) {
+        const key = durableKey
+        const cancellation = queueAttempt ? queueAttempt.cancel() : import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key))
+        void cancellation.catch(() => { errorMsg.value = '取消尚未确认，请到任务中心核对' })
+      }
+      return
+    }
     if (activeJobId) {
       abandonAcceptedJob(activeJobId)
     }

@@ -70,7 +70,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   function captureBatch() {
     const live = deps.pb
     pb = { ...live, subject: clone(live.subject), selections: clone(live.selections), sdParams: clone(live.sdParams),
-      manualTags: new Set(live.manualTags), outfitOverride: clone(live.outfitOverride) } as PromptBuilderStore
+      manualTags: new Set(live.manualTags), outfitOverride: clone(live.outfitOverride), referenceInput: clone(live.referenceInput) } as PromptBuilderStore
     characters = clone(deps.popularCharacters?.() || live.popularCharacters)
     blueprints = clone(deps.sceneBlueprints())
     sdSize.value = deps.sdSize.value; negativePrompt.value = deps.negativePrompt.value

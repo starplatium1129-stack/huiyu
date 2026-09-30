@@ -1,6 +1,6 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { useTrackedTask } from './useTaskCenter.ts'
-import { ref } from 'vue'
+import { getCurrentScope, onScopeDispose, ref } from 'vue'
 
 export type InterrogateMode = 'tag' | 'caption'
 export interface InterrogateResult {
@@ -20,11 +20,19 @@ export interface InterrogateResult {
 const API = '/api/interrogate'
 const MAX_BYTES = 12 * 1024 * 1024
 
-function fileToDataUrl(file: File): Promise<string> {
+function fileToDataUrl(file: File, signal: AbortSignal): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => resolve(String(reader.result || ''))
-    reader.onerror = () => reject(new Error('读取图片失败'))
+    const cleanup = () => signal.removeEventListener('abort', abort)
+    const abort = () => {
+      cleanup()
+      reader.abort()
+      reject(new DOMException('Aborted', 'AbortError'))
+    }
+    reader.onload = () => { cleanup(); resolve(String(reader.result || '')) }
+    reader.onerror = () => { cleanup(); reject(new Error('读取图片失败')) }
+    if (signal.aborted) { abort(); return }
+    signal.addEventListener('abort', abort, { once: true })
     reader.readAsDataURL(file)
   })
 }
@@ -57,18 +65,44 @@ export function useInterrogate() {
   const error = ref<string | null>(null)
   const lastResult = ref<InterrogateResult | null>(null)
 
-  async function interrogate(file: File, mode: InterrogateMode = 'tag', threshold = 0.35): Promise<InterrogateResult | null> {
-    if (busy.value) return null
+  const cancelled = ref(false)
+  let activeController: AbortController | null = null
+  let disposed = false
+  function cancel() {
+    if (!activeController) return
+    const controller = activeController
+    activeController = null
+    cancelled.value = true
+    busy.value = false
+    controller.abort()
+  }
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancel() })
+
+  async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.35): Promise<InterrogateResult | null> {
+    if (busy.value || disposed) return null
     busy.value = true
+    cancelled.value = false
     error.value = null
     lastResult.value = null
     const controller = new AbortController()
+    activeController = controller
     const timeout = setTimeout(() => controller.abort(), 120_000)
     try {
+      let file: File
+      if (typeof source === 'string') {
+        const response = await runtimeFetch(source, { signal: controller.signal })
+        if (!response.ok) throw new Error('获取当前成片失败，请重试或上传图片')
+        const blob = await response.blob()
+        file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })
+      } else file = source
+      if (activeController !== controller) return null
+      controller.signal.throwIfAborted()
       if (!file) throw new Error('请选择图片')
       if (file.size > MAX_BYTES) throw new Error('图片超过 12MB 限制')
       if (!file.type.startsWith('image/')) throw new Error('仅支持图片文件')
-      const dataUrl = await fileToDataUrl(file)
+      const dataUrl = await fileToDataUrl(file, controller.signal)
+      if (activeController !== controller) return null
+      controller.signal.throwIfAborted()
       // 后端接受 base64 或 dataURL，传 dataURL 更省一次前缀判断
       const res = await runtimeFetch(API, {
         method: 'POST',
@@ -77,6 +111,8 @@ export function useInterrogate() {
         body: JSON.stringify({ image: dataUrl, mode: mode, threshold: threshold })
       })
       const json = (await res.json().catch(() => null)) as { ok?: boolean; data?: InterrogateResult; error?: string; message?: string } | null
+      if (activeController !== controller) return null
+      controller.signal.throwIfAborted()
       if (!res.ok || !json || json.ok !== true) {
         const backendMessage = (json && (json.error || json.message)) || ''
         throw new Error(interrogateFailure(res.status, backendMessage))
@@ -91,6 +127,7 @@ export function useInterrogate() {
       lastResult.value = data
       return data
     } catch (e: unknown) {
+      if (activeController !== controller) return null
       // fetch 的网络失败（网关没起）抛的是 TypeError，消息是浏览器的
       // "Failed to fetch"，同样属于「看不懂」，在这里一并换成可读文案。
       const isNetwork = e instanceof TypeError
@@ -103,10 +140,13 @@ export function useInterrogate() {
       throw new Error(error.value)
     } finally {
       clearTimeout(timeout)
-      busy.value = false
+      if (activeController === controller) {
+        activeController = null
+        busy.value = false
+      }
     }
   }
 
-  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? '正在读取图片特征…' : '反推结果已送回工作台') }))
-  return { busy, error, lastResult, interrogate }
+  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : cancelled.value ? 'cancelled' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? '正在读取图片特征…' : cancelled.value ? '图片反推已取消' : '反推结果已送回工作台') }), { cancel })
+  return { busy, error, lastResult, interrogate, cancel }
 }

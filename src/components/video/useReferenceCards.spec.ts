@@ -18,7 +18,7 @@ beforeEach(() => {
   vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:preview')
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
 })
-afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
 describe('reference-card async ownership', () => {
   it('ignores a previous character profile arriving after a new selection', async () => {
     let finish!: () => void
@@ -90,6 +90,42 @@ describe('reference-card async ownership', () => {
     resolvers.forEach(resolve => resolve({ ok: true, name: 'new', bytes: 1 }))
     await Promise.all([first, second])
     expect(cards.referenceCards.value[0].images).toHaveLength(4)
+    scope.stop()
+  })
+  it('releases loading and reports a timed-out profile instead of using stale cached data', async () => {
+    vi.mocked(ensureCharacterReferencesLoaded).mockRejectedValueOnce(new DOMException('timeout', 'TimeoutError'))
+    const { cards, deps, scope } = setup()
+    expect(await cards.autoLoadCharacterReferences('one')).toBe(0)
+    expect(cards.loadingRefAssets.value).toBe(false)
+    expect(deps.batchError.value).toContain('读取失败')
+    expect(fetch).not.toHaveBeenCalled()
+    scope.stop()
+  })
+  it('cancels the profile consumer when its card is removed', async () => {
+    let signal!: AbortSignal
+    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce((_id, _refresh, consumerSignal) => new Promise((_resolve, reject) => {
+      signal = consumerSignal!
+      signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+    }))
+    const { cards, deps, scope } = setup()
+    const pending = cards.autoLoadCharacterReferences('one')
+    cards.removeReferenceCard(0)
+    expect(await pending).toBe(0)
+    expect(signal.aborted).toBe(true)
+    expect(cards.loadingRefAssets.value).toBe(false)
+    expect(deps.batchError.value).toBe('')
+    scope.stop()
+  })
+  it('times out a stalled image body and permits selection retry', async () => {
+    vi.useFakeTimers()
+    vi.mocked(fetch).mockResolvedValueOnce({ ok: true, blob: () => new Promise(() => {}) } as Response)
+    const { cards, deps, scope } = setup()
+    const pending = cards.autoLoadCharacterReferences('one')
+    await vi.advanceTimersByTimeAsync(15_001)
+    expect(await pending).toBe(0)
+    expect(cards.loadingRefAssets.value).toBe(false)
+    expect(deps.batchError.value).toContain('0/1')
+    expect(await cards.autoLoadCharacterReferences('one')).toBe(1)
     scope.stop()
   })
   it('keeps actor references attached to the same remaining cards after removal', () => {

@@ -80,13 +80,14 @@ describe('director blueprint round-trip', () => {
     const result = await loadBlueprint({
       schema: 'aics-director-blueprint-v1', subject: 'popular', characterId: 'popular-one', outfitId: 'outfit-one',
       blueprintId: 'blueprint-one', story: '蓝图故事', visualDescription: 'Holding a paper lantern.',
-      manualTags: ['looking_at_viewer'], outfitOverride: { tokens: ['winter_coat'], replaced: '默认服装' },
+      manualTags: ['looking_at_viewer'], referenceInput: { tags: ['looking_at_viewer'] }, outfitOverride: { tokens: ['winter_coat'], replaced: '默认服装' },
       drawEngine: 'krea2', size: '1024x1536',
       anima: { modelId: 'krea2-turbo-fp8', steps: 8, cfg: 1, seed: 0, sampler: 'euler', scheduler: 'simple' },
     }, context as any)
     expect(result.applied).toBe(true)
     expect(pb.subject).toMatchObject({ kind: 'popular', characterId: 'popular-one', outfitId: 'outfit-one', blueprintId: 'blueprint-one' })
     expect(pb.outfitOverride).toEqual({ tokens: ['winter_coat'], replaced: '默认服装' })
+    expect(pb.referenceInput).toEqual({ tags: ['looking_at_viewer'] })
     expect(engine.value).toBe('krea2')
     expect(animaState.value).toMatchObject({ modelId: 'krea2-turbo-fp8', width: 1024, height: 1536, steps: 8, cfg: 1, seed: 0 })
   })

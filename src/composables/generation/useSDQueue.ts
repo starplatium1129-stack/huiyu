@@ -1,4 +1,4 @@
-import { ref, computed, readonly } from 'vue'
+import { ref, computed, readonly, getCurrentScope, onScopeDispose } from 'vue'
 
 /**
  * 串行出图队列 — 从重构前 tools/prompt-builder/queue.js 迁移。
@@ -9,6 +9,8 @@ import { ref, computed, readonly } from 'vue'
 export const SD_QUEUE_LIMIT = 8
 
 export interface SDQueueJob {
+  attempt?: { key: string; submitted: boolean; cancelRequested?: boolean }
+  removeRequested?: boolean
   context?: import('@/types/anima').AnimaResultContext
   id: string
   title: string
@@ -45,12 +47,27 @@ export function useSDQueue(options: {
   run: SDJobRunner
   onFlash?: (msg: string) => void
   isBusy?: () => boolean
+  persist?: (jobs: readonly SDQueueJob[]) => Promise<void>
+  beforeRemove?: (job: SDQueueJob) => Promise<void>
 }) {
   const { run, onFlash = () => {}, isBusy = () => false } = options
 
   const queue = ref<SDQueueJob[]>([])
   const activeJob = ref<SDQueueJob | null>(null)
   const paused = ref(false)
+  let disposed = false, editing = 0, edits = Promise.resolve()
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; paused.value = true })
+  function checkpoint(): Promise<void> {
+    if (disposed || !options.persist) return Promise.resolve()
+    // One stable projection includes the current attempt; shift/retain are not
+    // independent durable states and must never temporarily erase the head.
+    return options.persist([...(activeJob.value ? [activeJob.value] : []), ...queue.value])
+  }
+  function saveFailed(error: unknown) {
+    paused.value = true
+    onFlash(error instanceof Error ? error.message : '队列尚未保存，已暂停，请保持窗口打开并重试')
+  }
+  function changed() { void checkpoint().catch(saveFailed) }
 
   /**
    * 本轮已完成张数（2026-09-06 体验报告 F6）。
@@ -80,23 +97,43 @@ export function useSDQueue(options: {
     // 上一轮已全部跑完（无等待无在途）时重新开一轮：done 归零，批次语义重启。
     if (!queue.value.length && !activeJob.value) done.value = 0
     queue.value.push({ ...job, id: makeId() } as SDQueueJob)
+    changed()
     onFlash('已加入队列：' + (job.title || '未命名'))
     void process()
     return true
   }
 
   function remove(id: string) {
+    if (options.beforeRemove) return removeDurably(queue.value.filter(j => j.id === id))
     queue.value = queue.value.filter(j => j.id !== id)
   }
 
   function clear() {
+    if (options.beforeRemove) return removeDurably([...queue.value])
     queue.value = []
     // 清空等待即终结本轮：无在途任务时完成数一并归零，下一轮从 0 计。
     if (!activeJob.value) done.value = 0
   }
 
+  function removeDurably(jobs: SDQueueJob[]): Promise<void> {
+    if (disposed) return Promise.resolve()
+    editing += 1
+    edits = edits.then(async () => {
+      for (const job of jobs) {
+        if (disposed) return
+        if (queue.value.some(item => item.id === job.id)) await options.beforeRemove!(job)
+      }
+      if (disposed) return
+      const removed = new Set(jobs.map(job => job.id))
+      queue.value = queue.value.filter(job => !removed.has(job.id))
+      if (!activeJob.value && !queue.value.length) done.value = 0
+      await checkpoint()
+    }).catch(saveFailed).finally(() => { editing -= 1; if (!paused.value && !disposed) void process() })
+    return edits
+  }
+
   async function process(): Promise<void> {
-    if (paused.value || activeJob.value || !queue.value.length) return
+    if (disposed || editing || paused.value || activeJob.value || !queue.value.length) return
     if (isBusy()) return
 
     const job = queue.value.shift()!
@@ -112,6 +149,10 @@ export function useSDQueue(options: {
     }
 
     try {
+      if (options.persist) {
+        await checkpoint()
+        if (disposed || paused.value) { retain(); return }
+      }
       const outcome = await run(job)
       if (outcome?.status === 'success') {
         done.value += 1
@@ -125,9 +166,10 @@ export function useSDQueue(options: {
       }
     } catch (e) {
       console.error('queue task failed unexpectedly', e)
-      retain('队列已暂停，失败任务已保留在队首')
+      retain(e instanceof Error ? e.message : '队列已暂停，失败任务已保留在队首')
     } finally {
       activeJob.value = null
+      if (options.persist && !disposed) { try { await checkpoint() } catch (error) { saveFailed(error) } }
       if (!paused.value) void process()
     }
   }
@@ -169,6 +211,6 @@ export function useSDQueue(options: {
     paused: readonly(paused),
     done: readonly(done),
     total, batchTotal, canEnqueue,
-    enqueue, remove, clear, pause, resume, process, restore,
+    enqueue, remove, clear, pause, resume, process, restore, checkpoint,
   }
 }

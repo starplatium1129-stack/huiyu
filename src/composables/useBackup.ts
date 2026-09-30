@@ -69,7 +69,21 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   let fileRequest = 0
   const exportProgress = ref<BackupExportProgress | null>(null)
   let exportController: AbortController | null = null
-  function cancelExport() { exportController?.abort() }
+  const imageExportProgress = ref<BackupExportProgress | null>(null)
+  let imageExportController: AbortController | null = null
+  let disposed = false
+  const imageDownloadUrls = new Map<string, number>()
+  function releaseImageUrl(url: string) {
+    window.clearTimeout(imageDownloadUrls.get(url))
+    imageDownloadUrls.delete(url)
+    URL.revokeObjectURL(url)
+  }
+  function cancelExport() { exportController?.abort(); imageExportController?.abort() }
+  onScopeDispose(() => {
+    disposed = true
+    imageExportController?.abort()
+    for (const url of imageDownloadUrls.keys()) releaseImageUrl(url)
+  })
 
   async function exportBackup(): Promise<void> {
     if (busy.value) return
@@ -125,48 +139,84 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
    * 与导出备份（JSON 恢复包）不同，这里导出的是可以直接使用的图片。
    */
   async function exportImages(): Promise<void> {
-    if (busy.value) return
+    if (busy.value || disposed) return
     busy.value = true
+    const controller = new AbortController()
+    imageExportController = controller
+    imageExportProgress.value = { completed: 0, total: 0 }
+    const desktop = desktopActive.value
+    let saved = 0
+    let failed = 0
+    let completed = 0
     onFlash('正在整理作品图片…')
     try {
-      const records = desktopActive.value
+      const records = desktop
         ? (await artworkRepository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
           name: String(item.title || ''), created_at: Number(item.timestamp) || Date.now() }))
         : await readWebBackupImages()
-      let saved = 0
-      let failed = 0
+      if (!controller.signal.aborted) imageExportProgress.value = { completed: 0, total: records.length }
       for (const record of records) {
+        if (controller.signal.aborted) break
         try {
-          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktopActive.value ? artworkRepository.getImage(record.id) : readWebBackupImage(record.id)) : null)
-          if (!blob) { failed++; continue }
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          const ext = (blob.type || 'image/png').split('/')[1] || 'png'
-          a.href = url
-          // 2026-09-01 文件名去重：name 相同的多张图旧方案直接撞名，
-          // 改用统一生成器，带时间戳与 id 尾号保证唯一（见 utils/artworkFileName.ts）。
-          a.download = buildArtworkFileName({
-            title: record.name,
-            timestamp: record.created_at,
-            id: record.id,
-            ext,
-          })
-          document.body.appendChild(a)
-          a.click()
-          a.remove()
-          // 大图下载完成后才释放 blob URL，避免下载中断
-          window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
-          saved++
+          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? artworkRepository.getImage(record.id) : readWebBackupImage(record.id)) : null)
+          // Storage reads may not be abortable. Never download their late result after cancellation.
+          if (controller.signal.aborted) break
+          if (!blob) failed++
+          else {
+            const url = URL.createObjectURL(blob)
+            let anchor: HTMLAnchorElement | undefined
+            let started = false
+            try {
+              anchor = document.createElement('a')
+              anchor.href = url
+              anchor.download = buildArtworkFileName({
+                title: record.name, timestamp: record.created_at, id: record.id,
+                ext: (blob.type || 'image/png').split('/')[1] || 'png',
+              })
+              document.body.appendChild(anchor)
+              anchor.click()
+              started = true
+              saved++
+            } finally {
+              try { anchor?.remove() } finally {
+                // Failed setup releases immediately; successful downloads retain their existing grace period.
+                if (started && !disposed) imageDownloadUrls.set(url, window.setTimeout(() => releaseImageUrl(url), 60_000))
+                else URL.revokeObjectURL(url)
+              }
+            }
+          }
         } catch { failed++ }
+        if (controller.signal.aborted) break
+        imageExportProgress.value = { completed: ++completed, total: records.length }
+        // Inline blobs and cached reads must yield to the Cancel button between downloads.
+        if (completed < records.length) await new Promise<void>(resolve => {
+          const finish = () => {
+            window.clearTimeout(timer)
+            controller.signal.removeEventListener('abort', finish)
+            resolve()
+          }
+          const timer = window.setTimeout(finish, 0)
+          controller.signal.addEventListener('abort', finish, { once: true })
+        })
       }
-      onFlash(saved
-        ? `已开始下载 ${saved} 张作品图片（浏览器可能询问「允许下载多个文件」）`
-        : '没有找到可导出的图片')
-      if (failed) onFlash(`已开始下载 ${saved} 张；${failed} 张读取或下载失败，请重试`)
+      if (!disposed) {
+        if (controller.signal.aborted) onFlash(`已停止后续导出；已开始下载 ${saved} 张，浏览器中已开始的下载无法撤销`)
+        else if (failed) onFlash(`已开始下载 ${saved} 张；${failed} 张读取或下载失败，请重试`)
+        else onFlash(saved
+          ? `已开始下载 ${saved} 张作品图片（浏览器可能询问「允许下载多个文件」）`
+          : '没有找到可导出的图片')
+      }
     } catch (e) {
-      console.error('export images failed', e)
-      onFlash('导出图片失败：' + errorMessage(e, '请检查浏览器存储'))
+      if (!disposed) {
+        if (controller.signal.aborted) onFlash(`已停止后续导出；已开始下载 ${saved} 张，浏览器中已开始的下载无法撤销`)
+        else {
+          console.error('export images failed', e)
+          onFlash('导出图片失败：' + errorMessage(e, '请检查浏览器存储'))
+        }
+      }
     } finally {
+      imageExportController = null
+      imageExportProgress.value = null
       busy.value = false
     }
   }
@@ -314,5 +364,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, desktopActive, exportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, desktopActive, exportProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

@@ -6,9 +6,9 @@ export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
 import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { type ModelProfile } from '@/utils/promptPolicy'
+import { normalizeKey, type ModelProfile } from '@/utils/promptPolicy'
 import { useSceneStore } from '@/stores/sceneStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
 import { usePromptTags } from '@/composables/prompt/usePromptTags'
@@ -21,6 +21,8 @@ import {
   isSDParamKey,
   parsePresetCatalog,
   type PromptPreset,
+  type DraftOutfitOverride,
+  type DraftReferenceInput,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -87,7 +89,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
    * 清空即恢复角色默认服装。studio 路径（宁宁/夏目）不使用——它们无默认服装注入。
    */
-  const outfitOverride = ref<{ tokens: string[]; replaced: string | null } | null>(null)
+  const outfitOverride = ref<DraftOutfitOverride | null>(null)
+  const referenceInput = ref<DraftReferenceInput | null>(null)
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
@@ -98,7 +101,22 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const curation = computed(() => sceneStore.curation)
   const loraMeta = computed(() => parsePromptLoras(sceneStore.loras))
   const tags = computed(() => parsePromptTags(sceneStore.tags))
-  const { manualTags, tagDictionary, addManualTag, toggleManualTag } = usePromptTags(() => tags.value, flash)
+  const { manualTags, tagDictionary, addManualTag: addTag, toggleManualTag: toggleTag } = usePromptTags(() => tags.value, flash)
+  // Explicit user edits take ownership; later reference replacement must not erase them.
+  function releaseReferenceTag(input: string) {
+    if (!referenceInput.value) return
+    const key = normalizeKey(tagDictionary.value.canonicalize(input))
+    const tags = referenceInput.value.tags.filter(tag => normalizeKey(tag) !== key)
+    referenceInput.value = tags.length ? { tags } : null
+  }
+  function addManualTag(input: string) { releaseReferenceTag(input); return addTag(input) }
+  function toggleManualTag(input: string) { releaseReferenceTag(input); toggleTag(input) }
+  watch(manualTags, () => {
+    if (!referenceInput.value) return
+    const current = new Set([...manualTags.value].map(normalizeKey))
+    const tags = referenceInput.value.tags.filter(tag => current.has(normalizeKey(tag)))
+    if (tags.length !== referenceInput.value.tags.length) referenceInput.value = tags.length ? { tags } : null
+  }, { deep: true, flush: 'sync' })
   const characters = computed(() => parsePromptCharacters(sceneStore.characters))
   const popularCharacters = computed(() => sceneStore.popularCharacters)
   /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
@@ -181,12 +199,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setStudioSubject() {
     if (subject.value.kind === 'studio') return
     subject.value = { kind: 'studio' }
+    clearReferenceInput()
     outfitOverride.value = null
   }
-  function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null) {
+  function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
+    options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
-    // 换角色 / 换服装是一次明确的服装决策，清掉上一次反推留下的顶替
-    outfitOverride.value = null
+    if (!options.preserveReference) clearReferenceInput()
+    if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
   function setPopularBlueprint(blueprintId: string | null) {
     if (subject.value.kind !== 'popular') return
@@ -211,6 +231,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** 一键恢复角色默认服装。 */
   function clearOutfitOverride() { outfitOverride.value = null }
 
+  /** A new scene owns its environment; retain tags explicitly adopted or entered by the user. */
+  function clearReferenceInput() {
+    if (!referenceInput.value) return
+    const owned = new Set(referenceInput.value.tags.map(normalizeKey))
+    referenceInput.value = null
+    manualTags.value = new Set([...manualTags.value].filter(tag => !owned.has(normalizeKey(tag))))
+  }
+
   function loadScene(scene: Scene) {
     // 工作室场景天然属于 studio 组装分支：热门角色(popular)模式下用 ?scene= 深链
     // （灵感场景/全景搜索/历史恢复）切回宁宁或夏目场景时，若不把 subject 兜底回
@@ -233,6 +261,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections.composition = sceneComposition(scene)
     colorMood.value = sceneColorMood(scene)
     manualTags.value = new Set()
+    referenceInput.value = null
     outfitOverride.value = null
     sdParams.negativeCustom = ''
     sdParamsTouched.value = new Set()
@@ -243,6 +272,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function clearScene(opts: { keepStory?: boolean } = {}) {
     sceneId.value = null; sceneBaseStory.value = ''; visualDescription.value = ''; manualTags.value = new Set()
     outfitOverride.value = null
+    referenceInput.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null
     selections.composition = null; colorMood.value = null
     if (!opts.keepStory) story.value = ''
@@ -257,6 +287,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       composition: selections.composition,
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
+      referenceInput: referenceInput.value ? { tags: [...referenceInput.value.tags] } : null,
       artistStyleIds: [...artistStyleIds.value],
     }
   }
@@ -269,6 +300,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections.composition = snapshot.composition ?? null
     colorMood.value = snapshot.colorMood ?? null
     manualTags.value = new Set(snapshot.manualTags ?? [])
+    referenceInput.value = snapshot.referenceInput ? { tags: [...snapshot.referenceInput.tags] } : null
     artistStyleIds.value = normalizeArtistStyleIds(snapshot.artistStyleIds)
   }
 
@@ -306,7 +338,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -338,7 +370,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
-    subject, isPopular, outfitOverride,
+    subject, isPopular, outfitOverride, referenceInput,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,
     history, projects,
@@ -348,7 +380,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
-    setOutfitOverride, clearOutfitOverride,
+    setOutfitOverride, clearOutfitOverride, clearReferenceInput,
     snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,

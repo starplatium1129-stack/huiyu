@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { computed, effectScope, ref } from 'vue'
+import { computed, effectScope, nextTick, ref } from 'vue'
 import { afterEach, it, vi } from 'vitest'
 import { usePromptSdQueue, type PromptSdQueueDeps } from './usePromptSdQueue'
 
@@ -33,7 +33,7 @@ function setup() {
     displayResultSeed: computed(() => 999), setResultContext,
   } as unknown as PromptSdQueueDeps))!
   vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['image']), { headers: { 'content-type': 'image/png' } })))
-  return { tools, pb, sd, setResultContext }
+  return { tools, pb, sd, setResultContext, scope }
 }
 
 it('archives the effective no-LoRA recovery request rather than the original failing request', async () => {
@@ -110,3 +110,62 @@ for (const available of [0, 1, 2, 3]) {
     assert.ok(messages.filter(message => message.includes('最多保留')).length <= 1)
   })
 }
+
+
+it('starts waiting jobs after a direct generation settles, without overlapping or duplicating jobs', async () => {
+  const { tools, pb, sd, setResultContext } = setup()
+  const releases: Array<() => void> = []
+  sd.generate.mockImplementation(() => {
+    sd.generating.value = true
+    sd.resultSeed.value = null
+    const seed = 100 + sd.generate.mock.calls.length
+    return new Promise<string>(resolve => releases.push(() => {
+      sd.resultSeed.value = seed
+      sd.generating.value = false
+      resolve('blob:result')
+    }))
+  })
+  const direct = tools.runJob(tools.captureJob()!)
+  tools.enqueueCurrent()
+  tools.enqueueCurrent()
+  assert.equal(sd.generate.mock.calls.length, 1)
+  assert.equal(tools.sdQueue.queue.value.length, 2)
+  await nextTick() // Let the busy state become observable before the delayed reply.
+  releases.shift()!()
+  await direct
+  await nextTick()
+  assert.equal(sd.generate.mock.calls.length, 2)
+  assert.equal(setResultContext.mock.calls[0]![0].history.seed, 101)
+  assert.equal(tools.sdQueue.queue.value.length, 1)
+  releases.shift()!()
+  await vi.waitFor(() => assert.equal(sd.generate.mock.calls.length, 3))
+  releases.shift()!()
+  await vi.waitFor(() => assert.equal(tools.sdQueue.done.value, 2))
+  assert.equal(pb.commitHistoryEntry.mock.calls.length, 2)
+  assert.equal(tools.sdQueue.total.value, 0)
+})
+
+it('keeps user-paused waiting jobs paused when direct generation finishes', async () => {
+  const { tools, sd } = setup()
+  sd.generating.value = true
+  tools.enqueueCurrent()
+  await nextTick()
+  tools.sdQueue.pause()
+  sd.generating.value = false
+  await nextTick()
+  assert.equal(sd.generate.mock.calls.length, 0)
+  assert.equal(tools.sdQueue.queue.value.length, 1)
+  tools.sdQueue.resume()
+  await vi.waitFor(() => assert.equal(tools.sdQueue.done.value, 1))
+})
+
+it('does not wake page-owned pending jobs after its scope is disposed', async () => {
+  const { tools, sd, scope } = setup()
+  sd.generating.value = true
+  tools.enqueueCurrent()
+  await nextTick()
+  scope.stop()
+  sd.generating.value = false
+  await nextTick()
+  assert.equal(sd.generate.mock.calls.length, 0)
+})
