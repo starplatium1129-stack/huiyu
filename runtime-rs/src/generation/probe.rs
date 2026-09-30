@@ -39,9 +39,8 @@ async fn webui(inner: &Inner, cancel: &CancellationToken) -> WebUiStatus {
         return WebUiStatus::default();
     };
     let models = models.unwrap_or(Value::Null);
-    let catalog = models.as_array().cloned().unwrap_or_default();
     let keys = ["filename", "title", "model_name", "name"];
-    let matched = catalog.iter().find(|item| {
+    let matched = models.as_array().into_iter().flatten().find(|item| {
         keys.iter().any(|key| {
             item[*key]
                 .as_str()

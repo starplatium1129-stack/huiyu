@@ -110,6 +110,12 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     Ok(())
 }
 fn verify_records(c: &Files, db: &Connection) -> Result<()> {
+    let mut original = db.prepare(
+        "SELECT 1 FROM media_aliases a JOIN media_refs r ON r.hash=a.hash WHERE a.alias=? AND r.owner_id=?",
+    )?;
+    let mut membership = db.prepare(
+        "SELECT a.id_json FROM project_artworks p JOIN artworks a ON a.id_key=p.artwork_key WHERE project_key=? ORDER BY position",
+    )?;
     for table in ["artworks", "projects"] {
         let sql = format!("SELECT id_key,id_json,body FROM {table}");
         let mut stmt = db.prepare(&sql)?;
@@ -126,9 +132,16 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
                 let alias = body["image_id"].as_str().ok_or_else(|| {
                     invalid_backup("Backup artwork original reference is missing")
                 })?;
-                if !db.prepare("SELECT 1 FROM media_aliases a JOIN media_refs r ON r.hash=a.hash WHERE a.alias=? AND r.owner_id=?")?.exists(params![alias,key])? {return Err(invalid_backup("Backup artwork original reference is missing"))}
+                if !original.exists(params![alias, key])? {
+                    return Err(invalid_backup(
+                        "Backup artwork original reference is missing",
+                    ));
+                }
             } else {
-                let ids=db.prepare("SELECT a.id_json FROM project_artworks p JOIN artworks a ON a.id_key=p.artwork_key WHERE project_key=? ORDER BY position")?.query_map([key],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<Vec<_>>>()?.into_iter().map(|v|serde_json::from_str::<Value>(&v)).collect::<serde_json::Result<Vec<_>>>()?;
+                let ids = membership
+                    .query_map([key], |r| r.get::<_, String>(0))?
+                    .map(|row| serde_json::from_str::<Value>(&row?).map_err(Into::into))
+                    .collect::<Result<Vec<_>>>()?;
                 if body["history_ids"] != json!(ids) {
                     return Err(invalid_backup(
                         "Backup project order differs from its relationships",

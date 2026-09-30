@@ -51,6 +51,34 @@ async fn durable_save_project_trash_profile_and_backup_round_trip() {
         request(&storage, json!({"kind":"profile.readSettings"})).await["records"][0],
         setting
     );
+    for (operation, window, text) in [
+        ("global-draft", None, "legacy"),
+        ("own-draft", Some("绘遇_%[测试]"), "current window"),
+        ("other-draft", Some("other"), "other window"),
+    ] {
+        let mut command = json!({"kind":"profile.saveDraft","operationId":operation,"key":"aics_pb_last_draft","value":{"text":text},"expectedRevision":null});
+        if let Some(window) = window {
+            command["windowId"] = window.into();
+        }
+        request(&storage, command).await;
+    }
+    for (window, text) in [
+        ("绘遇_%[测试]", "current window"),
+        ("other", "other window"),
+    ] {
+        let drafts = request(
+            &storage,
+            json!({"kind":"profile.readDrafts","windowId":window}),
+        )
+        .await;
+        let values: Vec<_> = drafts["records"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|row| row["value"]["text"].as_str().unwrap())
+            .collect();
+        assert_eq!(values, ["legacy", text]);
+    }
     let backup = request(&storage, json!({"kind":"backup","operationId":"backup"})).await;
     assert_eq!(
         backup,

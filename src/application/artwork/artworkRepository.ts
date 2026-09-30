@@ -32,7 +32,7 @@ export interface TrashEntry {
 
 /** Business capabilities shared by the Web library and the future desktop authority. */
 export interface ArtworkRepository {
-  readHistory(): Promise<ArtworkRecord[]>
+  readHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(): Promise<ArtworkRecord[]>

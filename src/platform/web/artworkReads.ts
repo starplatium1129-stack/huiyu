@@ -20,8 +20,11 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     catch { return null }
   }
 
-  async function readHistory() {
-    return structuredClone(parseArtworkRecords(await kv.get(ARTWORK_HISTORY_KEY)))
+  async function readHistory(signal?: AbortSignal) {
+    signal?.throwIfAborted()
+    const raw = await kv.get(ARTWORK_HISTORY_KEY)
+    signal?.throwIfAborted()
+    return structuredClone(parseArtworkRecords(raw))
   }
 
   async function readProjects() {

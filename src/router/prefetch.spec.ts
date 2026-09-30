@@ -22,11 +22,11 @@ it('warms only the data owned by the selected browsing route', async () => {
 it('deduplicates concurrent intent across query strings and shared layout imports', async () => {
   const layout = vi.fn(async () => ({})), page = vi.fn(async () => ({}))
   const router = createRouter({ history: createMemoryHistory(), routes: [
-    { path: '/', component: layout, children: [{ path: 'page', component: page }] },
+    { path: '/', component: layout, children: [{ path: 'chat', component: page }] },
   ] })
   const warm = createRoutePrefetcher(router)
-  expect(await Promise.all([warm('/page?a=1'), warm('/page?a=2')])).toEqual([true, true])
-  await warm('/page')
+  expect(await Promise.all([warm('/chat?a=1'), warm('/chat?a=2')])).toEqual([true, true])
+  await warm('/chat')
   expect(layout).toHaveBeenCalledTimes(1)
   expect(page).toHaveBeenCalledTimes(1)
   expect(router.currentRoute.value.matched).toHaveLength(0)

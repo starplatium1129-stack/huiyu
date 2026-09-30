@@ -100,13 +100,26 @@ fn reset(c: &Context) -> Result<String> {
         .map(|v| v.unwrap_or_default())
 }
 fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
-    let rows=c.db.prepare_cached("SELECT record_key,body,revision FROM profile_records WHERE domain=? ORDER BY record_key")?.query_map([domain],|r|Ok((r.get::<_,String>(0)?,r.get::<_,String>(1)?,r.get::<_,i64>(2)?)))?.collect::<rusqlite::Result<Vec<_>>>()?;
     let prefix = format!("{}:", window.unwrap_or("undefined"));
+    // Filter window-owned drafts before copying their bodies out of SQLite.
+    // instr/substr preserve literal, case-sensitive prefix matching even for
+    // Unicode window IDs or IDs containing SQL wildcard characters.
+    let mut statement = c.db.prepare_cached(
+        "SELECT record_key,body,revision FROM profile_records WHERE domain=?1
+         AND (?1!='draft' OR instr(record_key,':aics_')=0 OR substr(record_key,1,length(?2))=?2)
+         ORDER BY record_key",
+    )?;
+    let rows = statement.query_map(params![domain, prefix], |r| {
+        Ok((
+            r.get::<_, String>(0)?,
+            r.get::<_, String>(1)?,
+            r.get::<_, i64>(2)?,
+        ))
+    })?;
     let mut records = Vec::new();
-    for (key, body, revision) in rows {
-        if domain == "draft" && key.contains(":aics_") && !key.starts_with(&prefix) {
-            continue;
-        }
+    for row in rows {
+        c.check_cancel()?;
+        let (key, body, revision) = row?;
         records.push(json!({"key":key.strip_prefix(&prefix).unwrap_or(&key),"value":serde_json::from_str::<Value>(&body)?,"revision":revision}));
     }
     Ok(json!({"records":records,"revision":c.revision()?,"resetRevision":reset(c)?}))

@@ -32,6 +32,27 @@ it('keeps detached loaded history while disconnected and uses the same artwork i
   expect(writes.map(command => command.operationId)).toEqual(['artwork:saved', 'artwork:saved'])
 })
 
+it('cancels paginated reads without starting another page or replacing the last complete history', async () => {
+  const page = (id: string, nextCursor: string | null) => ({ items: [{ id, body: { id }, revision: 1, deletedAt: null }], nextCursor, revision: 1 })
+  mocks.request.mockResolvedValueOnce(page('saved', null))
+  const repository = createDesktopArtworkRepository()
+  await repository.readHistory()
+  mocks.request.mockClear()
+  let finish!: (value: ReturnType<typeof page>) => void
+  mocks.request.mockResolvedValueOnce(page('partial', 'next'))
+    .mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  const controller = new AbortController()
+  const reading = repository.readHistory(controller.signal)
+  await vi.waitFor(() => expect(mocks.request).toHaveBeenCalledTimes(2))
+  expect(mocks.request.mock.calls.every(([, signal]) => signal === controller.signal)).toBe(true)
+  controller.abort()
+  finish(page('late', 'third'))
+  await expect(reading).rejects.toMatchObject({ name: 'AbortError' })
+  expect(mocks.request).toHaveBeenCalledTimes(2)
+  mocks.state.connection = 'unavailable'
+  expect((await repository.readHistory()).map(item => item.id)).toEqual(['saved'])
+})
+
 it('deletes a batch with one revision lookup and one mutation while retaining per-record failures', async () => {
   mocks.request.mockImplementation(async command => {
     if (command.kind === 'getArtworks') return [{ id: 1, revision: 4, deletedAt: null }, { id: 'two', revision: 7, deletedAt: null }, null]
@@ -77,7 +98,8 @@ it('evicts the least recently used entry above 96 thumbnails', async () => {
   expect(await repository.getThumbnail('image-0')).toBe('data:image/jpeg;base64,0')
   expect(await repository.getThumbnail('image-1')).toBeNull()
   expect(await repository.getThumbnail('image-95')).toBe('data:image/jpeg;base64,95')
-  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'readThumbnail', alias: 'image-1' })
+  expect(mocks.request).toHaveBeenCalledOnce()
+  expect(mocks.request.mock.calls[0][0]).toEqual({ kind: 'readThumbnail', alias: 'image-1' })
 })
 
 it('also bounds thumbnail string storage to 8 MiB, below the entry limit', async () => {

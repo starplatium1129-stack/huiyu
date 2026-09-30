@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
+import { ref, shallowRef, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -137,7 +137,6 @@ interface SearchItem {
 
 interface PageItem extends SearchItem { path: string }
 interface SceneItem { path: string; id: string; title: string; meta: string; keywords: string }
-interface WorkItem { path: string; id: string | number; title: string; meta: string; keywords: string }
 type SearchResultKind = 'action' | 'page' | 'scene' | 'work'
 interface FlatSearchResult {
   kind: SearchResultKind
@@ -155,11 +154,11 @@ const activeIndex = ref(0)
 const inputEl = ref<HTMLInputElement | null>(null)
 const panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
-const scenes = ref<SceneItem[]>([])
-const works = ref<WorkItem[]>([])
-let worksRequest = 0
+const scenes = shallowRef<SceneItem[]>([])
+const works = shallowRef<ReturnType<typeof indexArtworkSearch> | null>(null)
+const worksController = shallowRef<AbortController | null>(null)
 const worksError = ref('')
-const worksLoading = ref(false)
+const worksLoading = computed(() => worksController.value !== null)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 
@@ -195,16 +194,32 @@ const ACTIONS: SearchItem[] = [
   { id: 'works', label: '打开我的作品', icon: 'gallery', path: '/gallery', keywords: '作品' },
 ]
 
+const queryTerms = computed(() => query.value.trim().toLowerCase().split(/\s+/).filter(Boolean))
+
 function match(keywords: string): boolean {
-  const q = query.value.trim().toLowerCase()
-  if (!q) return true
-  return q.split(/\s+/).every(part => keywords.toLowerCase().includes(part))
+  const text = keywords.toLowerCase()
+  return queryTerms.value.every(part => text.includes(part))
+}
+
+function takeMatches<T extends { keywords: string }>(items: readonly T[], limit: number): T[] {
+  const terms = queryTerms.value
+  if (!open.value || !terms.length) return []
+  const result: T[] = []
+  for (const item of items) {
+    if (!terms.every(part => item.keywords.includes(part))) continue
+    result.push(item)
+    if (result.length === limit) break
+  }
+  return result
 }
 
 const filteredPages = computed(() => PAGES.filter(p => match(p.label + ' ' + p.keywords)))
 const filteredActions = computed(() => ACTIONS.filter(a => match(a.keywords)))
-const filteredScenes = computed(() => scenes.value.filter(s => match(s.keywords)).slice(0, 8))
-const filteredWorks = computed(() => works.value.filter(w => match(w.keywords)).slice(0, 5))
+const filteredScenes = computed(() => takeMatches(scenes.value, 8))
+const filteredWorks = computed(() => takeMatches(works.value ?? [], 5).map(item => ({
+  ...item,
+  meta: [item.timestamp ? new Date(item.timestamp).toLocaleDateString() : '', item.size].filter(Boolean).join(' · '),
+})))
 
 /** 展平结果行：空查询 = 操作 + 页面；有查询 = 页面 + 场景 + 作品 */
 const flat = computed<FlatSearchResult[]>(() => {
@@ -277,14 +292,13 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = docume
   open.value = true
   query.value = ''
   activeIndex.value = 0
-  void loadWorks()
   void loadScenesOnce()
   void nextTick(() => { inputEl.value?.focus() })
 }
 
 function close(restoreFocus = true) {
-  worksRequest++
   open.value = false
+  resetWorks()
   const previous = previousActiveElement
   previousActiveElement = null
   if (restoreFocus && previous?.isConnected) void nextTick(() => previous.focus({ preventScroll: true }))
@@ -307,18 +321,26 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-async function loadWorks() {
-  const request = ++worksRequest
-  worksLoading.value = true
+function resetWorks() {
+  worksController.value?.abort()
+  worksController.value = null
+  works.value = null
   worksError.value = ''
-  works.value = []
+}
+
+async function loadWorks() {
+  if (works.value !== null || worksController.value || worksError.value) return
+  const controller = new AbortController()
+  worksController.value = controller
   try {
-    const raw = await artworkRepository.readHistory()
-    if (request !== worksRequest || !open.value) return
+    const raw = await artworkRepository.readHistory(AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
+    if (controller.signal.aborted) return
     works.value = indexArtworkSearch(raw)
   } catch {
-    if (request === worksRequest) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
-  } finally { if (request === worksRequest) worksLoading.value = false }
+    if (!controller.signal.aborted) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
+  } finally {
+    if (worksController.value === controller) worksController.value = null
+  }
 }
 async function loadScenes() {
   try {
@@ -336,7 +358,7 @@ async function loadScenes() {
           s.title, s.story, s.category, s.emotion, s.location, s.weather,
           Array.isArray(s.tags) ? (s.tags as string[]).join(' ') : '',
           s.char,
-        ].filter(Boolean).join(' '),
+        ].filter(Boolean).join(' ').toLowerCase(),
       } satisfies SceneItem
     })
   } catch { scenesRequested = false /* 下一次打开允许重新读取 */ }
@@ -355,7 +377,11 @@ useFocusTrap(panelEl, () => open.value, {
   initialFocus: inputEl,
 })
 
-watch(query, () => { activeIndex.value = 0 })
+watch(query, () => {
+  activeIndex.value = 0
+  if (!queryTerms.value.length) resetWorks()
+  else if (open.value) void loadWorks()
+})
 
 // 可见入口的唤起通道（2026-08-30 UX 审计 P1）：本组件挂在路由之外，导航里的
 // 触发按钮在路由之内，两者没有父子关系，只能经单例请求。watch 的是递增序号
@@ -373,6 +399,7 @@ onMounted(() => {
   // 摊进包括首页在内的每个页面首屏（审计 2026-09-05 P2-02）
 })
 onUnmounted(() => {
+  resetWorks()
   document.removeEventListener('keydown', onKeydown)
 })
 </script>

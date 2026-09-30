@@ -177,6 +177,23 @@ test('storage gate: literal aics_* localStorage writes are registered', () => {
   assertRegisteredLocalStorageWrites();
 });
 
+test('artwork repository: cancelled reads reject before copying late IndexedDB results', async () => {
+  let finish!: (value: unknown) => void;
+  const controller = new AbortController();
+  let reads = 0;
+  const repository = createWebArtworkRepository({ kv: { get() {
+    reads += 1;
+    return new Promise(resolve => { finish = resolve; });
+  } } });
+  const reading = repository.readHistory(controller.signal);
+  controller.abort();
+  // A non-cloneable field proves cancellation happens before the detached copy.
+  finish([{ id: 'late', future: () => {} }]);
+  await assert.rejects(reading, { name: 'AbortError' });
+  await assert.rejects(repository.readHistory(controller.signal), { name: 'AbortError' });
+  assert.equal(reads, 1);
+});
+
 test('artwork repository: successful delete removes history, media, thumbnail and project references', async () => {
   const fixture = createArtworkFixture();
   const result = await fixture.repository.deleteArtwork(1);

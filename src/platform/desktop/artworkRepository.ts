@@ -16,25 +16,28 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (!session?.domains.includes('artwork') || (workspaceId && workspaceId !== session.workspaceId)) throw new Error('作品库身份尚未确认，请重新连接')
     workspaceId ??= session.workspaceId
   }
-  const workspaceRequest = <T>(command: Record<string, unknown>): Promise<T> => { requireAuthority(); return request<T>(command) }
+  const workspaceRequest = <T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> => { requireAuthority(); return request<T>(command, signal) }
   const { forgetThumbnail, ...media } = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   let loadedPreferences: unknown[] | undefined
-  async function list(includeDeleted = false, projection?: 'preference'): Promise<Row[]> {
+  async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
     const rows: Row[] = []
     let cursor: string | null = null
     let revision: number | undefined
     do {
-      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, includeDeleted, ...(projection ? { projection } : {}), ...(cursor ? { cursor } : {}) })
+      signal?.throwIfAborted()
+      const page: Page = await workspaceRequest({ kind: 'listArtworks', limit: 200, includeDeleted, ...(projection ? { projection } : {}), ...(cursor ? { cursor } : {}) }, signal)
+      signal?.throwIfAborted()
       if (revision !== undefined && revision !== page.revision) throw new Error('作品库在读取期间发生变更，请重新读取')
       revision = page.revision; rows.push(...page.items); cursor = page.nextCursor
     } while (cursor)
     return rows
   }
-  async function readHistory() {
+  async function readHistory(signal?: AbortSignal) {
+    signal?.throwIfAborted()
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
-    loadedHistory = parseArtworkRecords((await list()).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
+    loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
     return structuredClone(loadedHistory)
   }

@@ -3,14 +3,9 @@
 /**
  * UX 审计修复的回归门禁（2026-08-30）
  *
- * 存在的理由：docs/archive/audits/ux-audit-2026-08-30.html 里 9 条 P0 有 6 条属于「写完没接上 /
- * 接反了」的单点缺陷——改一行就修好，也改一行就能退回。这类缺陷不会让任何类型
- * 检查或单测失败，只会在用户手里安静地复发。本文件把这些修复固化成断言，
- * 防的是「以后重构时顺手改回去」。
- *
- * 判定方式是源码级模式匹配（与审计取证同口径），不加载运行时。断言失败信息
- * 都写清了「为什么这条不能改」，便于正当重构时按意图更新断言，而不是照着
- * 报错瞎改代码。
+ * 只保留尚有价值的数据默认值与静态接线检查。源码匹配不证明运行时行为；
+ * 图库激活/筛选、出图进度、路由预热和搜索入口已由行为测试覆盖，避免重复锁定
+ * 函数名、ref 写法和实现位置。依据见 docs/audits/2026-09-30/performance-simplification.md。
  *
  * 用法: node scripts/tests/test-ux-regressions.js
  */
@@ -22,12 +17,8 @@ const assert: typeof import('node:assert') = require('node:assert');
 
 const ROOT = path.resolve(__dirname, '../..');
 
-function read(relPath: any) {
-  const owners: any = {
-    'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts', 'src/composables/gallery/useGalleryFilters.ts'],
-    'src/views/SceneExplorerView.vue': ['src/composables/scene/useSceneExplorerWorkspace.ts'],
-  };
-  return [relPath, ...(owners[relPath] || [])].map(file => fs.readFileSync(path.join(ROOT, file), 'utf8')).join('\n');
+function read(relPath: string) {
+  return fs.readFileSync(path.join(ROOT, relPath), 'utf8');
 }
 
 /**
@@ -80,30 +71,6 @@ function stripComments(source: any) {
   return out
 }
 
-/**
- * 取出某个具名函数的函数体（大括号配对）。
- *
- * 这类断言必须落在具体函数里才算数：比如 `styleLoraId: ''` 在 applyModel 里
- * 是正确行为（用户真的换了底模，风格 LoRA 本来就该重置），全文件级匹配会把
- * 正常的写法也判成回潮。
- */
-function extractFunction(source: any, name: any) {
-  const start = source.search(new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`));
-  if (start < 0) return '';
-  const open = source.indexOf('{', start);
-  if (open < 0) return '';
-  let depth = 0;
-  for (let i = open; i < source.length; i += 1) {
-    const ch = source[i];
-    if (ch === '{') depth += 1;
-    else if (ch === '}') {
-      depth -= 1;
-      if (depth === 0) return source.slice(open, i + 1);
-    }
-  }
-  return '';
-}
-
 const CHECKS = [
   {
     id: 'P0-5 出图队列必须持久化',
@@ -133,25 +100,6 @@ const CHECKS = [
     },
   },
   {
-    id: 'P0-7 作品册必须在 KeepAlive 激活时刷新',
-    file: 'src/views/GalleryView.vue',
-    why: '保存成功却在作品册里看不到刚存的图，用户会判定「保存失败」并重复保存或重画。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /onActivated\s*\(/.test(code);
-    },
-  },
-  {
-    id: 'P0-9 出图进度必须可空（不得兜成 0）',
-    file: 'src/composables/generation/useSDGenerate.ts',
-    why: '后端给不出进度时兜成 0 会被读成「卡在 0%」。可空才能让 UI 走 indeterminate，'
-      + '同时守住「不做匀速假增量」这条诚实纪律。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /ref<number\s*\|\s*null>\(null\)/.test(code);
-    },
-  },
-  {
     id: 'P1 桌宠容器高度下限不得超出视口',
     file: 'src/assets/css/companion.css',
     why: '死值 min-height 在宽扁窗（如 700x500）里超过视口高度，而两层 overflow:hidden '
@@ -169,37 +117,6 @@ const CHECKS = [
     assert(source: any) {
       const code = stripComments(source);
       return /@paste="onInterrogatePaste"/.test(code) && /function onInterrogatePaste/.test(code);
-    },
-  },
-  // DESIGN.md#Layout permits content-driven breakpoints alongside the shared scale.
-  // A global blacklist of three pixel values cannot validate that layout policy;
-  // tests/e2e/ui-layout.spec.ts checks rendered overflow at desktop, tablet and phone sizes.
-  // Changed thresholds still require both-side, dual-theme review under DESIGN.md.
-  {
-    id: 'P1 Live2D 路由也必须预热',
-    file: 'src/router/index.ts',
-    why: '进出 Live2D 页要整页刷新（CSP 需要 unsafe-eval），刷新后浏览器得重新取'
-      + '一遍 chunk。预热过的会命中 HTTP 缓存，这是「/chat 是全程最慢一步」里'
-      + '最容易修的一半——以 LIVE2D_PATHS 为由跳过预热，等于把最需要预热的那条路'
-      + '恰好排除掉。（整页刷新本身是 CSP 设计的必然代价，不要为了快而删掉它。）',
-    assert(source: any) {
-      const code = stripComments(source);
-      return !/if\s*\(\s*LIVE2D_PATHS\.has\(path\)\s*\)\s*return/.test(code);
-    },
-  },
-  {
-    id: 'P1 作品册筛选状态必须进 URL（且只在挂载时恢复）',
-    file: 'src/views/GalleryView.vue',
-    why: '刷新页面或存成书签后筛选条件归零，等于白筛一次。但恢复只应在挂载时做：'
-      + '本页被 KeepAlive 缓存，从 Remix 回来时 URL 是干净的 /gallery，在 '
-      + 'onActivated 里照着它恢复反而会清掉用户当前的筛选，比不做更糟。'
-      + '写回必须走 replace（不污染后退栈）。',
-    assert(source: any) {
-      const code = stripComments(source);
-      const sync = stripComments(extractFunction(source, 'syncFiltersToQuery'));
-      if (!sync) return false;
-      const calls = code.match(/restoreFiltersFromQuery\(\)/g) || [];
-      return /router\.replace/.test(sync) && /setTimeout/.test(sync) && calls.length >= 1;
     },
   },
   {
@@ -277,17 +194,6 @@ const CHECKS = [
       // 先剥 HTML 注释：注释里会复述这个参数名，不剥会把解释文字误判成代码
       const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
       return !/prompt-builder\?[^`'"\s]*generate=1/.test(code);
-    },
-  },
-  {
-    id: 'P1 全局搜索必须有可见入口',
-    file: 'src/components/AppNav.vue',
-    why: '搜索覆盖 15 个页面 + 场景 + 作品，是本项目最强的捷径，但只有 '
-      + 'Ctrl/Cmd+K 与 `/` 两个键盘入口时，纯鼠标流用户永远发现不了它。'
-      + '导航里必须有一个点得着的按钮。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /openGlobalSearch/.test(code) && /nav-search/.test(code);
     },
   },
 ];
