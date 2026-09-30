@@ -1,13 +1,32 @@
 'use strict';
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
 const fs: typeof import('node:fs') = require('node:fs');
+const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
 const { test }: typeof import('node:test') = require('node:test');
 const { fixture, tree, EVIDENCE_DIR }: typeof import('./delivery-fixture') = require('./delivery-fixture');
 const { capture }: typeof import('../lib/delivery-handoff') = require('../lib/delivery-handoff');
-const { snapshot, compareSnapshot }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
+const { snapshot, compareSnapshot, repository }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
 const { saveJson, fileEntry }: typeof import('../lib/delivery-paths') = require('../lib/delivery-paths');
 const { formatReport }: typeof import('../lib/delivery-report-format') = require('../lib/delivery-report-format');
+
+test('Git 根身份接受 Windows 大小写和 TEMP 短路径别名，仍拒绝仓库子目录', t => {
+  const f = fixture(t), before = tree(f.root);
+  const actual = repository(f.root);
+  assert.equal(actual.status, 'recorded');
+  const alias = repository(path.join(os.tmpdir(), path.basename(f.root)));
+  assert.equal(alias.status, 'recorded', alias.message || '合法 TEMP 别名应识别同一仓库');
+  assert.equal(alias.commit, actual.commit);
+  if (process.platform === 'win32') {
+    const upper = repository(f.root.toUpperCase());
+    assert.equal(upper.status, 'recorded', upper.message || 'Windows 根路径大小写不改变仓库身份');
+    assert.equal(upper.commit, actual.commit);
+  }
+  const nested = repository(path.join(f.root, 'src'));
+  assert.equal(nested.status, 'unknown');
+  assert.match(nested.message || '', /Git 工作树根/);
+  assert.deepEqual(tree(f.root), before, '根身份读取不能改写 Git 元数据或文件');
+});
 
 test('源码修改同 HEAD 自动失效，只影响依赖 source 的门禁；审计零写入', t => {
   const f = fixture(t); f.office();

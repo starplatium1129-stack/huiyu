@@ -1,6 +1,6 @@
 import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 
-import { onActivated } from 'vue'
+import { onActivated,onDeactivated } from 'vue'
 
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { useBackendSelection } from '@/composables/tasks/useBackendSelection'
@@ -158,6 +158,9 @@ const job = ref<VideoJob | null>(null)
 let pollTimer = 0
 
 let disposed = false
+let pageActive = true
+let statusRequest: AbortController | null = null
+let pollRequest: AbortController | null = null
 
 
 /**
@@ -330,17 +333,21 @@ const jobStatusLabel = computed(() => ({
 
 function schedulePoll() {
   window.clearTimeout(pollTimer)
-  if (!job.value || disposed || !jobActive.value) return
+  if (!job.value || disposed || !pageActive || pollRequest || !jobActive.value) return
   pollTimer = window.setTimeout(() => { void pollJob() }, 1500)
 }
 
 
 async function loadStatus() {
+  if (disposed || !pageActive) return
+  statusRequest?.abort()
+  const controller = new AbortController(); statusRequest = controller
   void taskSelection.retry()
   statusLoading.value = true
   statusError.value = ''
   try {
-    const next = await fetchVideoStatus()
+    const next = await fetchVideoStatus(controller.signal)
+    if (statusRequest !== controller || controller.signal.aborted || disposed) return
     status.value = next
     if (!next.models.some(model => model.id === selectedModelId.value)) {
       selectedModelId.value = next.defaults.modelId
@@ -354,9 +361,10 @@ async function loadStatus() {
       }
     }
   } catch (error) {
+    if (statusRequest !== controller || controller.signal.aborted || disposed) return
     statusError.value = error instanceof Error ? error.message : '视频环境检测失败'
   } finally {
-    statusLoading.value = false
+    if (statusRequest === controller) { statusRequest = null; statusLoading.value = false }
   }
 }
 
@@ -411,14 +419,16 @@ async function submitVideo() {
     const frames = await resolveSubmitFrames(mode)
     if (disposed) return
     const response = await createVideoJob({ ...request, ...frames })
-    job.value = response.job
     // 任务记录（F1）：离页后按 jobId 重连真实状态。
     const recorded = useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
+    if (disposed) return
+    job.value = response.job
     if (!recorded) {
       statusError.value = '视频任务已提交，但任务记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
     }
     schedulePoll()
   } catch (error) {
+    if (disposed) return
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
     // 分类不出具体原因时仍退回原始消息，不丢信息。
     const report = classifySDError(error, 'comfy')
@@ -434,16 +444,18 @@ async function submitVideo() {
 
 
 async function pollJob() {
-  if (!job.value || !jobActive.value) return
+  if (disposed || !pageActive || pollRequest || !job.value || !jobActive.value) return
   const id = job.value.id
+  const controller = new AbortController(); pollRequest = controller
   try {
-    const response = await fetchVideoJob(id)
-    if (disposed || job.value?.id !== id) return
+    const response = await fetchVideoJob(id, controller.signal)
+    if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
     job.value = response.job
   } catch (error) {
+    if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
     statusError.value = error instanceof Error ? error.message : '视频任务状态读取失败'
   } finally {
-    schedulePoll()
+    if (pollRequest === controller) { pollRequest = null; schedulePoll() }
   }
 }
 
@@ -485,7 +497,13 @@ const taskSelection = useBackendSelection(
 )
 watch(() => route.query.mode, mode => { if (route.path === '/video-studio' && mode === 'shots') selectedMode.value = 'shots' })
 
-onActivated(() => { if (!activatedOnce) { activatedOnce = true; return }; consumeVideoCtx(); if (route.query.mode === 'shots') selectedMode.value = 'shots' })
+function stopPageReads() {
+  window.clearTimeout(pollTimer)
+  statusRequest?.abort(); statusRequest = null; statusLoading.value = false
+  pollRequest?.abort(); pollRequest = null
+}
+onDeactivated(() => { pageActive = false; stopPageReads() })
+onActivated(() => { pageActive = true; if (!activatedOnce) { activatedOnce = true; return }; consumeVideoCtx(); if (route.query.mode === 'shots') selectedMode.value = 'shots'; void loadStatus(); void pollJob() })
 
 onMounted(() => {
   // 绘图页「去分镜短片」深链：进入分镜模式并清掉 query（一次性消费）。
@@ -499,6 +517,7 @@ onMounted(() => {
     // 分镜模式下草稿由 ShotListEditor 自己的分镜草稿承担，这里跳过。
     if (selectedMode.value !== 'shots') {
       const { firstFrameLost, lastFrameLost } = await videoDraftTools.restoreDraft()
+      if (disposed) return
       if (firstFrameLost || lastFrameLost) {
         statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
       }
@@ -507,6 +526,7 @@ onMounted(() => {
     // 任务重连（F1）：离页不丢任务——按 jobId 拉回真实状态并恢复轮询。
     if (typeof route.query.job === 'string') return
     const reconnect = await videoDraftTools.reconnectTask()
+    if (disposed) return
     if (reconnect.kind === 'job') {
       job.value = reconnect.job
       schedulePoll()
@@ -520,9 +540,10 @@ useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitti
 
 onBeforeUnmount(() => {
   disposed = true
+  pageActive = false
+  stopPageReads()
   disposeFrames()
   stopDraftWatch()
-  window.clearTimeout(pollTimer)
   if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
   if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
 })

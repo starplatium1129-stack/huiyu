@@ -308,3 +308,104 @@ async fn protected_input_and_interrupted_output_keep_leases_until_commit() {
 }
 
 mod paging;
+
+#[tokio::test]
+async fn discarded_task_releases_pending_output_without_publishing_it() {
+    let directory = tempfile::tempdir().unwrap();
+    let root = directory.path().join("tasks");
+    let storage = Storage::open(root.clone(), "task-fixture".into(), true)
+        .await
+        .unwrap();
+    storage
+        .request(
+            json!({"kind":"task.accept","record":incoming("task-fixture","discard-task","discard-request")}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    let original = STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aN1cAAAAASUVORK5CYII=").unwrap();
+    let mut pending = original.clone();
+    pending.push(0);
+    for (index, bytes) in [original, pending.clone()].into_iter().enumerate() {
+        storage
+            .request(
+                json!({"kind":"task.result.prepare","taskId":"discard-task","media":{"alias":format!("task-discard-task-{index}"),"index":index,"sha256":canonical::digest(&bytes),"bytes":bytes.len(),"mime":"image/png"}}),
+                PRINCIPAL,
+            )
+            .await
+            .unwrap();
+        storage
+            .request(
+                json!({"kind":"task.result.chunk","taskId":"discard-task","index":index,"offset":0,"data":STANDARD.encode(bytes)}),
+                PRINCIPAL,
+            )
+            .await
+            .unwrap();
+    }
+    let available = storage
+        .request(
+            json!({"kind":"task.result.commit","taskId":"discard-task","index":0}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    let settled = patch(
+        &storage,
+        &available,
+        json!({"status":"succeeded","upstreamSettled":true}),
+    )
+    .await
+    .unwrap();
+    let discarded = patch(&storage, &settled, json!({"deliveryState":"discarded"}))
+        .await
+        .unwrap();
+    assert_eq!(discarded["resultState"], "unavailable");
+    let late = storage
+        .request(
+            json!({"kind":"task.result.commit","taskId":"discard-task","index":1}),
+            PRINCIPAL,
+        )
+        .await;
+    assert_eq!(late.unwrap_err().code, "TASK_RESULT_DISCARDED");
+    assert!(
+        !media::object_path(&root, &canonical::digest(&pending))
+            .unwrap()
+            .exists()
+    );
+    let staged = media::staging_path(
+        &root,
+        &canonical::digest("task:discard-task:1"),
+        "task-discard-task-1",
+    )
+    .unwrap();
+    std::fs::OpenOptions::new()
+        .write(true)
+        .open(&staged)
+        .unwrap()
+        .set_modified(std::time::UNIX_EPOCH)
+        .unwrap();
+    storage
+        .request(
+            json!({"kind":"collectGarbage","operationId":"discarded-output-gc"}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    assert!(!staged.exists(), "Discarded staging must be reclaimable");
+    storage.close().await.unwrap();
+    let database = rusqlite::Connection::open_with_flags(
+        root.join("huiyu.sqlite3"),
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+    )
+    .unwrap();
+    assert_eq!(
+        database
+            .query_row(
+                "SELECT count(*) FROM leases WHERE kind='task-result'",
+                [],
+                |r| r.get::<_, i64>(0)
+            )
+            .unwrap(),
+        0
+    );
+}

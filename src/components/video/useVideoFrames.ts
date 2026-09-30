@@ -60,6 +60,9 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   let firstVersion = 0
   let lastVersion = 0
   let pendingUploads = 0
+  let disposed = false
+  let firstUpload: AbortController | null = null
+  let lastUpload: AbortController | null = null
 
   /**
    * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
@@ -123,6 +126,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
 
   function clearFirstFrame() {
     firstVersion++
+    firstUpload?.abort(); firstUpload = null
     if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
     videoImageUrl.value = ''
     videoImageId.value = ''
@@ -131,6 +135,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
 
   function clearLastFrame() {
     lastVersion++
+    lastUpload?.abort(); lastUpload = null
     if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
     lastFrameUrl.value = ''
     lastFrameName.value = ''
@@ -146,20 +151,26 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       const input = event.target as HTMLInputElement
       const file = input.files?.[0]
       input.value = ''
-      if (!file) return
+      if (!file || disposed) return
       if (!file.type.startsWith('image/')) {
         statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
         return
       }
       const version = slot === 'first' ? ++firstVersion : ++lastVersion
-      const isCurrent = () => version === (slot === 'first' ? firstVersion : lastVersion)
+      const controller = new AbortController()
+      if (slot === 'first') { firstUpload?.abort(); firstUpload = controller }
+      else { lastUpload?.abort(); lastUpload = controller }
+      const isCurrent = () => !disposed && !controller.signal.aborted && version === (slot === 'first' ? firstVersion : lastVersion)
       pendingUploads++
       uploadingImage.value = true
       statusError.value = ''
       try {
-        const upload = await uploadVideoImage(await blobToBase64(file))
-        const imageId = await artworkRepository.putImage(file).catch(() => '')
+        const data = await blobToBase64(file)
         if (!isCurrent()) return
+        const upload = await uploadVideoImage(data, undefined, controller.signal)
+        if (!isCurrent()) return
+        const imageId = await artworkRepository.putImage(file).catch(() => '')
+        if (!isCurrent()) { if (imageId) await artworkRepository.deleteImage(imageId).catch(() => {}); return }
         const preview = URL.createObjectURL(file)
         if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
         if (slot === 'first') {
@@ -176,6 +187,8 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       } catch (error) {
         if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
       } finally {
+        if (firstUpload === controller) firstUpload = null
+        if (lastUpload === controller) lastUpload = null
         pendingUploads--
         uploadingImage.value = pendingUploads > 0
       }
@@ -217,7 +230,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     }
   }
 
-  function disposeFrames() { firstVersion++; lastVersion++ }
+  function disposeFrames() { disposed = true; firstVersion++; lastVersion++; firstUpload?.abort(); lastUpload?.abort() }
 
   return {
     applyVideoCtx,

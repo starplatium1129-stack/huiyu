@@ -9,12 +9,16 @@ const { parse, report }: typeof import('../maintenance/report-content-impact') =
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 
 function git(root: any, ...args: any[]) {
-  const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  // Skip Git for Windows' symlink capability probe: its dangling tXXXXXX link
+  // is unreadable by Node and is not part of the fixture's content contract.
+  const r = spawnSync('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-c', 'core.symlinks=false', ...args], { cwd: root, encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
 }
 function gitFixture(t: any) {
   const f = sceneFixture(t);
   git(f.root, 'init');
+  git(f.root, 'config', '--local', 'gc.auto', '0');
+  git(f.root, 'config', '--local', 'maintenance.auto', 'false');
   git(f.root, 'add', '.');
   git(f.root, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-m', 'fixture');
   return f;
@@ -93,8 +97,8 @@ test('未启用、帮助及预览不启动 Git；命令失败及不可解析输�
 });
 
 function fixture(t: any) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-impact-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-impact-')));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'aics-impact-'));
   const write = (file: any, value: any) => {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.writeFileSync(path.join(root, file), JSON.stringify(value));

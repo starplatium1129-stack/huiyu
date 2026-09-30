@@ -51,6 +51,29 @@ async fn reconciliation_and_resume_cannot_steal_an_accepted_dispatcher() {
         .request(json!({"kind":"task.accept","record":record}), "owner")
         .await
         .unwrap();
+    for index in 0..16 {
+        assert_eq!(
+            runtime
+                .reconcile(&storage, "owner", &format!("missing-{index}"))
+                .await
+                .unwrap_err()
+                .code,
+            "TASK_NOT_FOUND"
+        );
+    }
+    assert_eq!(
+        runtime
+            .reconcile(&storage, "another-principal", "accepted")
+            .await
+            .unwrap_err()
+            .code,
+        "TASK_NOT_FOUND"
+    );
+    assert!(
+        runtime.jobs.lock().unwrap().is_empty(),
+        "Rejected reconciliations must not retain execution bindings"
+    );
+    assert_eq!(requests.load(Ordering::Relaxed), 0);
     // Model the accepted interval while the real dispatcher owns input copying,
     // before it has published any gateway/upstream identity.
     runtime.jobs.lock().unwrap().insert(

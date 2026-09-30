@@ -12,6 +12,7 @@ function git(root: string, ...args: string[]) {
   const env = { ...process.env };
   for (const key of Object.keys(env)) if (/^GIT_/i.test(key)) delete env[key];
   const result = spawnSync('git', ['-c', 'core.hooksPath=' + os.devNull, '-c', 'core.autocrlf=false', '-c', 'core.symlinks=false',
+    '-c', 'gc.auto=0', '-c', 'maintenance.auto=false',
     '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgsign=false', ...args],
   { cwd: root, env, encoding: 'utf8', timeout: 20000, windowsHide: true, shell: false });
   assert.equal(result.status, 0, `${args[0]}: ${result.stderr}`);
@@ -19,7 +20,7 @@ function git(root: string, ...args: string[]) {
 }
 
 function fixture(t: any, withGit: any = true) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-'));
+  const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-')));
   t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'content-history-'));
   const write = (file: string, value: any) => {
     const destination = path.join(root, file);
@@ -81,6 +82,8 @@ function fixture(t: any, withGit: any = true) {
   let base = null;
   if (withGit) {
     git(root, 'init');
+    git(root, 'config', '--local', 'gc.auto', '0');
+    git(root, 'config', '--local', 'maintenance.auto', 'false');
     git(root, 'add', '--', 'data', 'src');
     git(root, 'commit', '-m', 'isolated baseline');
     base = git(root, 'rev-parse', 'HEAD');

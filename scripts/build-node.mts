@@ -55,6 +55,30 @@ function relativeInside(root: string, file: string): string {
   return relative;
 }
 
+function canonicalRelative(relative: string): boolean {
+  return !!relative && !path.isAbsolute(relative) && !path.win32.isAbsolute(relative)
+    && !/[\\:\x00-\x1f]/.test(relative)
+    && !relative.split('/').some(part => !part || part === '.' || part === '..' || /[. ]$/.test(part));
+}
+
+/** Generated outputs and cache records must never write through filesystem aliases. */
+function buildPath(root: string, relative: string): string {
+  if (!canonicalRelative(relative)) throw new Error(`Build path escapes the project: ${relative}`);
+  let current = root;
+  const parts = relative.split('/');
+  for (let index = 0; index < parts.length; index++) {
+    current = path.join(current, parts[index]);
+    const stat = fs.lstatSync(current, { throwIfNoEntry: false });
+    if (!stat) return path.join(root, relative);
+    if (stat.isSymbolicLink()) throw new Error(`Build path uses a symbolic link or junction: ${relative}`);
+    if (index < parts.length - 1 && !stat.isDirectory()) throw new Error(`Build parent is not a directory: ${relative}`);
+    if (index === parts.length - 1 && (!stat.isFile() || stat.nlink > 1)) {
+      throw new Error(`Build target must be a regular file without hard links: ${relative}`);
+    }
+  }
+  return current;
+}
+
 function outputForSource(source: string): string {
   return source.replace(/\.mts$/, '.mjs').replace(/\.cts$/, '.cjs').replace(/\.ts$/, '.js');
 }
@@ -112,7 +136,7 @@ function sourceForOutput(relative: string): string {
 }
 
 function ownedOutput(project: ProjectName, relative: string): boolean {
-  if (relative.startsWith('../') || path.isAbsolute(relative) || !/\.(?:[cm]?js|d\.ts)$/.test(relative)) return false;
+  if (!canonicalRelative(relative) || !/\.(?:[cm]?js|d\.ts)$/.test(relative)) return false;
   if (project === 'services') return relative.startsWith('services/');
   if (project === 'browser') return /^(?:tools\/|assets\/theme-bootstrap\.|docs\/guides\/prompts\/)/.test(relative);
   if (project === 'tests') return relative.startsWith('scripts/tests/');
@@ -122,7 +146,7 @@ function ownedOutput(project: ProjectName, relative: string): boolean {
 
 /** No output is published until every selected project passes type checking. */
 export function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] {
-  root = path.resolve(root);
+  root = fs.realpathSync(root);
   const pending: Array<{ project: ProjectName; recordFile: string; previous?: BuildManifest;
     record: BuildRecord; contents: Map<string, string> }> = [];
   const results: BuildResult[] = [];
@@ -135,7 +159,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
       builder: builderHash, roots: parsed.fileNames,
       config: fs.readFileSync(path.join(root, PROJECTS[project]), 'utf8'),
       dependencies: dependencyHash }));
-    const recordFile = path.join(root, '.cache', 'typescript-build', `${project}.json`);
+    const recordFile = buildPath(root, `.cache/typescript-build/${project}.json`);
     const previous = readManifest(recordFile);
     const cachedRecord = previous?.cache;
     const expected = new Set(parsed.fileNames.filter(file => !file.endsWith('.d.ts'))
@@ -148,7 +172,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
       && inputsCurrent(cachedRecord.queries)
       && [...expected].every(relative => {
         if (!ownedOutput(project, relative) || !cachedRecord.outputs[relative]) return false;
-        const file = path.join(root, relative);
+        const file = buildPath(root, relative);
         return fs.existsSync(file) && digest(fs.readFileSync(file)) === cachedRecord.outputs[relative];
       });
     if (cached) {
@@ -209,20 +233,28 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
     }
     results.push({ project, sources: parsed.fileNames.length, outputs: options.check ? 0 : contents.size, cached: false });
   }
+  // Preflight every managed path before publishing any selected project's files.
+  for (const item of pending) {
+    for (const relative of new Set([...item.contents.keys(), ...Object.keys(item.previous?.outputs || {})])) {
+      if (ownedOutput(item.project, relative)) buildPath(root, relative);
+    }
+  }
   for (const item of pending) {
     for (const [relative, text] of item.contents) {
-      const file = path.join(root, relative);
+      const file = buildPath(root, relative);
       fs.mkdirSync(path.dirname(file), { recursive: true });
+      buildPath(root, relative);
       if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== text) fs.writeFileSync(file, text, 'utf8');
     }
     for (const [relative, hash] of Object.entries(item.previous?.outputs || {})) {
       if (item.contents.has(relative) || !ownedOutput(item.project, relative)
         || fs.existsSync(path.join(root, sourceForOutput(relative)))) continue;
-      const file = path.join(root, relative);
+      const file = buildPath(root, relative);
       // Only remove a stale output previously produced by this builder, unchanged.
       if (fs.existsSync(file) && digest(fs.readFileSync(file)) === hash) fs.unlinkSync(file);
     }
     fs.mkdirSync(path.dirname(item.recordFile), { recursive: true });
+    buildPath(root, relativeInside(root, item.recordFile));
     fs.writeFileSync(item.recordFile, `${JSON.stringify(item.record, null, 2)}\n`);
   }
   if (!options.quiet) for (const result of results) {

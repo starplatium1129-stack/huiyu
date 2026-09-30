@@ -9,7 +9,7 @@ import { test } from 'node:test';
 const guard = path.resolve(__dirname, '../lib/desktop-deploy-guard.ps1');
 const windows = { skip: process.platform !== 'win32' };
 async function fixture(run: (f: { root: string; install: string; config: string; owner: string; check: (install?: string, config?: string, mode?: string) => ReturnType<typeof spawnSync>; start: () => Promise<ChildProcess> }) => Promise<void>) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-deploy-guard-'));
+  const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-deploy-guard-')));
   const install = path.join(root, 'install'), config = path.join(root, 'config');
   const workspace = path.join(config, 'workspaces', 'fixture');
   const owner = path.join(workspace, '.workspace-owner.json');
@@ -39,7 +39,7 @@ process.on('message',()=>{fs.unlinkSync(owner);process.exit(0)});process.send('r
     });
   } finally {
     if (child && child.exitCode === null && child.signalCode === null) { const exited = once(child, 'exit'); child.kill(); await exited; }
-    assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(os.tmpdir()));
+    assert.equal(path.dirname(fs.realpathSync.native(root)), fs.realpathSync.native(os.tmpdir()));
     assert.ok(path.basename(root).startsWith('huiyu-deploy-guard-'));
     fs.rmSync(root, { recursive: true, force: true });
   }

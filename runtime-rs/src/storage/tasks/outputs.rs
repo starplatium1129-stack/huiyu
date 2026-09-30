@@ -3,6 +3,12 @@ use super::*;
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let id = string(command, "taskId")?;
     let task = require(c, principal, id)?;
+    if task.delivery_state == DeliveryState::Discarded {
+        return Err(conflict(
+            "TASK_RESULT_DISCARDED",
+            "This task result was discarded",
+        ));
+    }
     let kind = string(command, "kind")?;
     if kind == "task.result.prepare" {
         return prepare(c, task, &command["media"]);
@@ -35,9 +41,6 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     media::publish(c, &key, &media)?;
     let result = c.transaction(|c| {
         let mut task = require(c, principal, id)?;
-        if task.delivery_state == DeliveryState::Discarded {
-            return Ok(serde_json::to_value(task)?);
-        }
         let hash = string(&media, "sha256")?;
         c.db.execute(
             "INSERT OR IGNORE INTO media_objects VALUES(?,?,?)",
@@ -71,13 +74,22 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     Ok(result)
 }
 
-fn prepare(c: &mut Context, task: TaskRecord, media: &Value) -> Result<Value> {
-    if task.delivery_state == DeliveryState::Discarded {
-        return Err(conflict(
-            "TASK_RESULT_DISCARDED",
-            "This task result was discarded",
-        ));
+pub(super) fn discard(c: &Context, id: &str) -> Result<()> {
+    let pending =
+        c.db.prepare("SELECT output_index FROM task_outputs WHERE task_id=? AND committed=0")?
+            .query_map([id], |row| row.get::<_, i64>(0))?
+            .collect::<rusqlite::Result<Vec<_>>>()?;
+    for index in pending {
+        let key = canonical::digest(format!("task:{id}:{index}"));
+        c.db.execute(
+            "DELETE FROM leases WHERE id=? AND kind='task-result'",
+            [key],
+        )?;
     }
+    Ok(())
+}
+
+fn prepare(c: &mut Context, task: TaskRecord, media: &Value) -> Result<Value> {
     let id = task.task_id.clone();
     let index = media["index"]
         .as_i64()

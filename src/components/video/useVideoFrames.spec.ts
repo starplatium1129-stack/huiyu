@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVideoFrames, type VideoFramesDeps } from './useVideoFrames'
-import { imgGet, imgPut } from '@/composables/useImageStore'
+import { imgGet, imgPut, imgDeleteMany } from '@/composables/useImageStore'
 import { uploadVideoImage } from '@/api/videoApi'
 
-vi.mock('@/composables/useImageStore', () => ({ imgGet: vi.fn(), imgPut: vi.fn() }))
+vi.mock('@/composables/useImageStore', () => ({ imgGet: vi.fn(), imgPut: vi.fn(), imgDeleteMany: vi.fn() }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: vi.fn() }))
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeImageCtx: vi.fn() }) }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints: [] }) }))
@@ -22,6 +22,7 @@ function setup() {
 beforeEach(() => {
   vi.mocked(imgGet).mockReset().mockResolvedValue(new Blob(['image']))
   vi.mocked(imgPut).mockReset().mockResolvedValue('stored')
+  vi.mocked(imgDeleteMany).mockReset().mockResolvedValue(undefined)
   vi.mocked(uploadVideoImage).mockReset().mockResolvedValue({ ok: true, name: 'fresh.png' } as Awaited<ReturnType<typeof uploadVideoImage>>)
   vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:new')
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
@@ -87,5 +88,20 @@ describe('video input identity and retries', () => {
     await pending
     expect(deps.videoImageId.value).toBe('')
     expect(deps.uploadingImage.value).toBe(false)
+    expect(imgDeleteMany).toHaveBeenCalledWith(['new'])
+  })
+  it('aborts an in-flight frame upload when its owner is disposed', async () => {
+    let finish!: (value: Awaited<ReturnType<typeof uploadVideoImage>>) => void
+    vi.mocked(uploadVideoImage).mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    const { frames } = setup()
+    const event = { target: { files: [new File(['new'], 'new.png', { type: 'image/png' })], value: '' } } as unknown as Event
+    const pending = frames.handleFrameFile(event, 'first')
+    await vi.waitFor(() => expect(uploadVideoImage).toHaveBeenCalled())
+    const signal = vi.mocked(uploadVideoImage).mock.calls[0][2]!
+    frames.disposeFrames()
+    expect(signal.aborted).toBe(true)
+    finish({ ok: true, name: 'late.png', bytes: 3 })
+    await pending
+    expect(imgPut).not.toHaveBeenCalled()
   })
 })

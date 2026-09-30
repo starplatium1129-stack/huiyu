@@ -122,6 +122,9 @@ impl TaskRuntime {
         observe_after: bool,
     ) -> Result<TaskRecord> {
         self.check_running()?;
+        // A rejected task identity must not allocate a persistent operation
+        // binding, or wait on another principal's in-flight task operation.
+        Self::get(storage, principal, id).await?;
         let operation = self
             .jobs
             .lock()

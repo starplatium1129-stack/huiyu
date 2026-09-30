@@ -9,12 +9,30 @@ const path: typeof import('node:path') = require('node:path');
 const cp: typeof import('node:child_process') = require('node:child_process');
 const { test }: typeof import('node:test') = require('node:test');
 const { parse, report, main }: typeof import('../maintenance/report-content-impact') = require('../maintenance/report-content-impact');
-const { collectGitHistory }: typeof import('../maintenance/content-impact-git') = require('../maintenance/content-impact-git');
+const { collectGitHistory, collectGitChanges }: typeof import('../maintenance/content-impact-git') = require('../maintenance/content-impact-git');
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 const { fixture, git, snapshot }: typeof import('./content-history-fixture') = require('./content-history-fixture');
 const script = path.resolve(__dirname, '../maintenance/report-content-impact.js');
 const run = (f: any, ...args: (string|undefined)[]) => report(parse(['--root', f.root, '--base', f.base, ...args]));
 const entity = (result: any, kind: string, id: string, role: any = 'source') => result.history.entities.find((r: { kind: string; id: string; role: string; }) => r.kind === kind && r.id === id && r.role === role);
+
+test('history and changes accept native TEMP aliases and Windows case but refuse nested roots', (t) => {
+  const f = fixture(t), before = snapshot(f.root);
+  const roots = [f.root, path.join(os.tmpdir(), path.basename(f.root))];
+  if (process.platform === 'win32') roots.push(f.root.toUpperCase());
+  for (const root of roots) {
+    const history = collectGitHistory(root, f.base!).result;
+    assert.equal(history.status, 'compared', history.reason);
+    assert.equal(history.baseCommit, f.base);
+    const changes = collectGitChanges(root);
+    assert.equal(changes.status, 'collected', changes.reason);
+    assert.deepEqual(changes.paths, []);
+  }
+  const nested = path.join(f.root, 'data');
+  assert.equal(collectGitHistory(nested, f.base!).result.status, 'error');
+  assert.equal(collectGitChanges(nested).status, 'error');
+  assert.deepEqual(snapshot(f.root), before, 'root identity probes must leave Git metadata and content unchanged');
+});
 
 test('explicit base tracks committed changes, scoped IDs, both owners/outfits and separate source/derived records', (t) => {
   const f = fixture(t);

@@ -193,6 +193,7 @@ fn patch(
                 "DELETE FROM media_refs WHERE owner_kind='task-result' AND owner_id=?",
                 [&task.task_id],
             )?;
+            outputs::discard(c, &task.task_id)?;
             task.result_refs.clear();
             task.result_state = ResultState::Unavailable;
         }

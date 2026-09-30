@@ -9,7 +9,7 @@ const { EVIDENCE_DIR, saveJson, sha256 }: typeof import('../lib/delivery-paths')
 const { report }: typeof import('../maintenance/audit-delivery') = require('../maintenance/audit-delivery');
 
 function temp(t: any) {
-  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-tracking-')));
+  const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-tracking-')));
   t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'aics-delivery-tracking-'));
   return root;
 }

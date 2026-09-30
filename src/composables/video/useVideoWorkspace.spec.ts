@@ -1,17 +1,17 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h, KeepAlive, ref } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVideoWorkspace } from './useVideoWorkspace'
 import type { VideoFramesDeps } from '@/components/video/useVideoFrames'
 
-const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn() }))
+const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn(), fetch: vi.fn(), status: vi.fn() }))
 vi.mock('vue-router', () => ({ useRoute: () => ({ path: '/video-studio', query: {} }), useRouter: () => ({ replace: vi.fn() }) }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/composables/tasks/useBackendSelection', () => ({ useBackendSelection: () => ({ retry: vi.fn() }) }))
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ recordVideoTask: mocks.record }) }))
 vi.mock('@/api/videoApi', () => ({
-  createVideoJob: mocks.create, fetchVideoJob: vi.fn(), cancelVideoJob: vi.fn(),
-  fetchVideoStatus: async () => ({ online: true, models: [{ id: 'minimax-h3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'] }], defaults: { modelId: 'minimax-h3' } }),
+  createVideoJob: mocks.create, fetchVideoJob: mocks.fetch, cancelVideoJob: vi.fn(),
+  fetchVideoStatus: mocks.status,
 }))
 vi.mock('@/components/video/useVideoFrames', () => ({ useVideoFrames: (deps: VideoFramesDeps) => {
   deps.videoImageId.value = 'restored-first'
@@ -31,7 +31,10 @@ async function setup() {
   workspace.prompt.value = 'A calm afternoon by the window'
   return workspace
 }
-afterEach(() => { wrapper?.unmount(); vi.clearAllMocks() })
+beforeEach(() => {
+  mocks.status.mockResolvedValue({ online: true, models: [{ id: 'minimax-h3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'] }], defaults: { modelId: 'minimax-h3' } })
+})
+afterEach(() => { wrapper?.unmount(); vi.clearAllMocks(); vi.useRealTimers() })
 describe('video submission recovery', () => {
   it('distinguishes offline draft editing from models awaiting installation', async () => {
     const workspace = await setup()
@@ -96,5 +99,52 @@ describe('video submission recovery', () => {
     resolve({ job: { id: 'old', status: 'succeeded' } })
     await pending
     expect(workspace.uploadingImage.value).toBe(true)
+  })
+  it('keeps the latest environment check when an earlier reply arrives late', async () => {
+    const workspace = await setup()
+    const initial = workspace.status.value!
+    let first!: (value: unknown) => void, second!: (value: unknown) => void
+    mocks.status.mockReturnValueOnce(new Promise(resolve => { first = resolve }))
+      .mockReturnValueOnce(new Promise(resolve => { second = resolve }))
+    const older = workspace.loadStatus()
+    const oldSignal = mocks.status.mock.calls[1][0] as AbortSignal
+    const newer = workspace.loadStatus()
+    expect(oldSignal.aborted).toBe(true)
+    second({ ...initial, online: false })
+    await newer
+    first(initial)
+    await older
+    expect(workspace.status.value?.online).toBe(false)
+    expect(workspace.statusLoading.value).toBe(false)
+  })
+  it('stops reading a cached page task and resumes without cancelling its backend job', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+    const visible = ref(true)
+    let workspace!: ReturnType<typeof useVideoWorkspace>
+    const page = defineComponent({ setup() { workspace = useVideoWorkspace(); return () => null } })
+    wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => visible.value ? h(page) : null }) }))
+    await flushPromises()
+    workspace.prompt.value = 'A calm afternoon by the window'
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockResolvedValueOnce({ job: { id: 'running', status: 'running' } })
+    let finish!: (value: object) => void
+    mocks.fetch.mockReturnValueOnce(new Promise(resolve => { finish = resolve }))
+    await workspace.submitVideo()
+    await vi.advanceTimersByTimeAsync(1500)
+    expect(mocks.fetch).toHaveBeenCalledOnce()
+    const signal = mocks.fetch.mock.calls[0][1] as AbortSignal
+    visible.value = false
+    await flushPromises()
+    expect(signal.aborted).toBe(true)
+    finish({ job: { id: 'running', status: 'succeeded' } })
+    await flushPromises()
+    await vi.advanceTimersByTimeAsync(4500)
+    expect(mocks.fetch).toHaveBeenCalledOnce()
+    expect(workspace.job.value?.status).toBe('running')
+    mocks.fetch.mockResolvedValueOnce({ job: { id: 'running', status: 'succeeded' } })
+    visible.value = true
+    await flushPromises()
+    expect(mocks.fetch).toHaveBeenCalledTimes(2)
+    expect(workspace.job.value?.status).toBe('succeeded')
   })
 })

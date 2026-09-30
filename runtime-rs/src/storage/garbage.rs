@@ -61,7 +61,7 @@ fn clean_staging(c: &Context) -> Result<()> {
         c.db.prepare("SELECT op_key FROM operations WHERE state IN ('committed','aborted')")?
             .query_map([], |r| Ok((r.get::<_, String>(0)?, None::<String>)))?
             .collect::<rusqlite::Result<HashMap<_, _>>>()?;
-    let rows=c.db.prepare("SELECT task_id,output_index AS identity,json_extract(media_json,'$.alias') AS alias,'output' AS kind FROM task_outputs WHERE committed=1 UNION ALL SELECT task_id,name AS identity,json_extract(media_json,'$.alias') AS alias,'input' AS kind FROM task_inputs WHERE committed=1")?
+    let rows=c.db.prepare("SELECT task_id,output_index AS identity,json_extract(media_json,'$.alias') AS alias,'output' AS kind FROM task_outputs WHERE committed=1 OR task_id IN (SELECT task_id FROM tasks WHERE json_extract(record_json,'$.deliveryState')='discarded') UNION ALL SELECT task_id,name AS identity,json_extract(media_json,'$.alias') AS alias,'input' AS kind FROM task_inputs WHERE committed=1")?
         .query_map([],|r|Ok((r.get::<_,String>(0)?,r.get::<_,rusqlite::types::Value>(1)?,r.get::<_,String>(2)?,r.get::<_,String>(3)?)))?.collect::<rusqlite::Result<Vec<_>>>()?;
     for (task, identity, alias, kind) in rows {
         let identity = match identity {

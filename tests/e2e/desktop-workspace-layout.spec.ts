@@ -140,10 +140,13 @@ for (const theme of ['dark', 'light']) {
           expect(bounds.x).toBeGreaterThanOrEqual(firstBounds.x)
           expect(bounds.x + bounds.width).toBeLessThanOrEqual(firstBounds.x + firstBounds.width + 1)
         }
-        await firstItem.locator('input[type="checkbox"]').check()
+        // The native input stays keyboard accessible; the visible label is its pointer target.
+        await firstItem.locator('label.history-pick').click()
+        await expect(firstItem.locator('input[type="checkbox"]')).toBeChecked()
         await expect(history.getByRole('button', { name: '加入分镜 (1)', exact: true })).toBeVisible()
         expect(await history.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1)
         await history.getByRole('button', { name: '取消选择', exact: true }).click()
+        await expect(firstItem.locator('input[type="checkbox"]')).not.toBeChecked()
         const switchTop = (await page.locator('.material-switch').boundingBox())!.y
         const last = history.getByRole('button', { name: '继续', exact: true }).last()
         await last.focus()

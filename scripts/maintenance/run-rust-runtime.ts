@@ -24,6 +24,10 @@ if (process.argv.includes('--help')) {
   if(action==='recover') console.log('run-rust-runtime recover --root <absolute project> --runtime-root <absolute runtime> [--showcase-root <absolute root>] [--backup-id <id>] [--out <new plan>] | --apply-plan <signed plan>');
   else console.log('run-rust-runtime <check|build|start|recover>\ncheck: fmt, clippy and isolated Rust tests\nbuild: locked release runtime; no install\nstart: run the Rust service from source\nrecover: explicit native maintenance recovery; default is preview');
 } else if (action === 'check' && process.argv.length === 3) {
+  // Windows TEMP may use an 8.3 alias. Isolated fixtures must receive its
+  // physical spelling so runtime path guards can keep rejecting junctions.
+  const testTemporary = fs.realpathSync.native(os.tmpdir());
+  Object.assign(env, { TEMP: testTemporary, TMP: testTemporary });
   run(['fmt', '--manifest-path', manifest, '--check']);
   run(['clippy', '--manifest-path', manifest, '--locked', '--all-targets', '--', '-D', 'warnings']);
   run(['test', '--manifest-path', manifest, '--locked']);

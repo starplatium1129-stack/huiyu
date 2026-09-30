@@ -2,6 +2,8 @@
 
 > 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
 
+本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；尚未重新签名、打包、安装或发布。下方签名发行与安装记录仍对应原 1.7.4，不代表本轮源码已到达客户端。
+
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |

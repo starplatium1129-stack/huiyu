@@ -1,4 +1,4 @@
-import { watch, type Ref } from 'vue'
+import { onScopeDispose, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
 import { fetchVideoJob, type VideoDefaults, type VideoJob, type VideoMode } from '@/api/videoApi'
@@ -48,6 +48,10 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   let restoring = false
   let draftTimer = 0
   let saveFailed = false
+  let disposed = false
+  let restoreRequest: AbortController | null = null
+  let reconnectRequest: AbortController | null = null
+  onScopeDispose(() => { disposed = true; restoreRequest?.abort(); reconnectRequest?.abort() }, true)
 
   function persistDraft() {
     if (restoring) return
@@ -94,15 +98,20 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   }
 
   /** 单张帧图恢复：IndexedDB 取 blob 重建预览；失效返回 false（草稿其余部分照常）。 */
-  async function restoreFrame(imageId: string, urlRef: Ref<string>): Promise<boolean> {
+  async function restoreFrame(idRef: Ref<string>, urlRef: Ref<string>, signal: AbortSignal): Promise<boolean> {
+    const imageId = idRef.value, previousUrl = urlRef.value
     if (!imageId) return true
+    const current = () => !disposed && !signal.aborted && idRef.value === imageId && urlRef.value === previousUrl
     try {
-      const blob = await artworkRepository.getImage(imageId)
-      if (!blob || !blob.size) return false
-      if (urlRef.value) URL.revokeObjectURL(urlRef.value)
+      const blob = await artworkRepository.getImage(imageId, signal)
+      if (!current()) return true
+      if (!blob || !blob.size) { idRef.value = ''; return false }
+      if (previousUrl) URL.revokeObjectURL(previousUrl)
       urlRef.value = URL.createObjectURL(blob)
       return true
     } catch {
+      if (!current()) return true
+      idRef.value = ''
       return false
     }
   }
@@ -112,8 +121,11 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
    * 不恢复 mode 为 shots 的草稿（分镜草稿由 ShotListEditor 自己的草稿承担）。
    */
   async function restoreDraft(): Promise<{ firstFrameLost: boolean; lastFrameLost: boolean }> {
+    if (disposed) return { firstFrameLost: false, lastFrameLost: false }
     const draft = videoStore.videoDraft
     if (!draft) return { firstFrameLost: false, lastFrameLost: false }
+    restoreRequest?.abort()
+    const controller = new AbortController(); restoreRequest = controller
     restoring = true
     try {
       if (['text', 'image', 'first-last-frame'].includes(draft.mode)) {
@@ -144,21 +156,27 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     } finally {
       restoring = false
     }
-    const firstOk = await restoreFrame(deps.videoImageId.value, deps.videoImageUrl)
-    if (!firstOk) deps.videoImageId.value = ''
-    const lastOk = await restoreFrame(deps.lastFrameImageId.value, deps.lastFrameUrl)
-    if (!lastOk) deps.lastFrameImageId.value = ''
+    const [firstOk, lastOk] = await Promise.all([
+      restoreFrame(deps.videoImageId, deps.videoImageUrl, controller.signal),
+      restoreFrame(deps.lastFrameImageId, deps.lastFrameUrl, controller.signal),
+    ])
+    if (restoreRequest === controller) restoreRequest = null
     return { firstFrameLost: !firstOk, lastFrameLost: !lastOk }
   }
 
   /** 任务重连：按记录的 jobId 拉真实状态；语义化结果由调用方决定提示文案。 */
   async function reconnectTask(): Promise<ReconnectResult> {
     const record = videoStore.videoTask
-    if (!record) return { kind: 'none' }
+    if (disposed || !record) return { kind: 'none' }
+    reconnectRequest?.abort()
+    const controller = new AbortController(); reconnectRequest = controller
+    const current = () => !disposed && !controller.signal.aborted && videoStore.videoTask?.jobId === record.jobId
     try {
-      const response = await fetchVideoJob(record.jobId)
+      const response = await fetchVideoJob(record.jobId, controller.signal)
+      if (!current()) return { kind: 'none' }
       return { kind: 'job', job: response.job }
     } catch (error) {
+      if (!current()) return { kind: 'none' }
       if (error instanceof ApiClientError && error.kind === 'http') {
         if (error.status === 410) {
           videoStore.clearVideoTask()
@@ -170,6 +188,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         }
       }
       return { kind: 'unreachable' }
+    } finally {
+      if (reconnectRequest === controller) reconnectRequest = null
     }
   }
 

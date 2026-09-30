@@ -22,6 +22,11 @@ function gitEnvironment() {
   return { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_NO_LAZY_FETCH: '1', GIT_TERMINAL_PROMPT: '0', GIT_NO_REPLACE_OBJECTS: '1', GIT_ALLOW_PROTOCOL: '' };
 }
 
+function worktreeRootKey(directory: string) {
+  const real = fs.realpathSync.native(directory);
+  return process.platform === 'win32' ? real.toLowerCase() : real;
+}
+
 function nulRecords(raw: any) {
   if (raw && !raw.endsWith('\0')) throw new Error('Git output missing NUL terminator');
   return raw ? raw.slice(0, -1).split('\0') : [];
@@ -46,7 +51,7 @@ function collectGitHistory(root: string, base: string) {
       return binary ? stdout : new TextDecoder('utf-8', { fatal: true }).decode(stdout);
     };
     const top = run(['rev-parse', '--show-toplevel']).replace(/\r?\n$/, '');
-    if (fs.realpathSync(top) !== fs.realpathSync(root)) throw new Error('--root must be the Git working-tree root');
+    if (worktreeRootKey(top) !== worktreeRootKey(root)) throw new Error('--root must be the Git working-tree root');
     const resolve = (ref: string) => {
       const oid = run(['rev-parse', '--verify', '--end-of-options', `${ref}^{commit}`]).trim();
       if (!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(oid)) throw new Error('Invalid resolved commit');
@@ -130,7 +135,7 @@ function collectGitChanges(root: string) {
       return new TextDecoder('utf-8', { fatal: true }).decode(output.stdout);
     };
     const top = run(['rev-parse', '--show-toplevel']).replace(/\r?\n$/, '');
-    if (fs.realpathSync(top) !== fs.realpathSync(root)) throw new Error('--root 必须为 Git 工作树根目录，不能把父仓库路径映射到子目录');
+    if (worktreeRootKey(top) !== worktreeRootKey(root)) throw new Error('--root 必须为 Git 工作树根目录，不能把父仓库路径映射到子目录');
     const paths: any[] = [];
     for (const args of [
       ['diff', '--name-only', '-z', '--no-renames', '--no-ext-diff', '--no-textconv', 'HEAD', '--'],

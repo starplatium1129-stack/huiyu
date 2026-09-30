@@ -3,13 +3,16 @@ import fs = require('node:fs');
 import os = require('node:os');
 import path = require('node:path');
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 
 type ProjectName = 'services' | 'node' | 'tests' | 'browser';
 const builder = import('../build-node.mjs');
 
 function fixture() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-typescript-build-'));
+  const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-typescript-build-'));
+  const root = path.join(parent, 'project');
+  fs.mkdirSync(root);
   const write = (relative: string, content: string) => {
     const file = path.join(root, relative);
     fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -46,7 +49,13 @@ function fixture() {
     root, write,
     read: (relative: string) => fs.readFileSync(path.join(root, relative), 'utf8'),
     exists: (relative: string) => fs.existsSync(path.join(root, relative)),
-    remove: () => fs.rmSync(root, { recursive: true, force: true }),
+    remove: () => {
+      // Remove directory aliases first so Windows does not traverse a sibling twice.
+      for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+        if (entry.isSymbolicLink()) fs.unlinkSync(path.join(root, entry.name));
+      }
+      fs.rmSync(parent, { recursive: true, force: true });
+    },
   };
 }
 
@@ -184,6 +193,66 @@ test('deleted source removes only its unchanged owned output, including after ca
     assert.equal(f.exists('server/retired.js'), false);
     assert.equal(f.read('server/edited.js'), '// user-owned recovery note\n');
     assert.equal(f.read('server/unrelated.js'), '// pre-existing external fixture\n');
+  } finally { f.remove(); }
+});
+
+test('stale-output manifest traversal cannot remove a file outside the project', async () => {
+  const f = fixture();
+  try {
+    const { buildProjects } = await builder;
+    buildProjects(f.root, { quiet: true, projects: ['node'] });
+    f.write('../sentinel.js', 'outside project sentinel');
+    const record = JSON.parse(f.read('.cache/typescript-build/node.json')) as { outputs: Record<string, string> };
+    const hash = createHash('sha256').update('outside project sentinel').digest('hex');
+    record.outputs['server/../../sentinel.js'] = hash;
+    record.outputs['server/.. /.. /sentinel.js'] = hash;
+    f.write('.cache/typescript-build/node.json', JSON.stringify(record));
+    f.write('server/value.ts', 'export const value: number = 42;\n');
+    assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, false);
+    assert.equal(f.read('../sentinel.js'), 'outside project sentinel');
+    assert.match(f.read('server/value.js'), /value = 42/);
+  } finally { f.remove(); }
+});
+
+test('symbolic and hard-linked outputs reject all publication before altering outside bytes', async () => {
+  const { buildProjects } = await builder;
+  for (const kind of ['symbolic', 'hard'] as const) {
+    const f = fixture();
+    try {
+      buildProjects(f.root, { quiet: true, projects: ['node'] });
+      const previous = f.read('server.js');
+      const outside = kind === 'symbolic' ? '../outside-server/value.js' : '../sentinel.js';
+      if (kind === 'symbolic') {
+        fs.renameSync(path.join(f.root, 'server'), path.join(f.root, '../outside-server'));
+        fs.symlinkSync(path.join(f.root, '../outside-server'), path.join(f.root, 'server'),
+          process.platform === 'win32' ? 'junction' : 'dir');
+      }
+      f.write(outside, 'outside project sentinel');
+      if (kind === 'hard') {
+        const target = path.join(f.root, 'server/value.js');
+        fs.unlinkSync(target);
+        fs.linkSync(path.join(f.root, outside), target);
+      }
+      f.write('server.ts', "import { value } from './server/value';\nexport = { value, changed: true };\n");
+      assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }),
+        kind === 'symbolic' ? /symbolic link or junction/ : /without hard links/);
+      assert.equal(f.read(outside), 'outside project sentinel');
+      assert.equal(f.read('server.js'), previous, 'an earlier output must not publish before path validation finishes');
+    } finally { f.remove(); }
+  }
+});
+
+test('a cache-directory junction is rejected before generating outputs', async () => {
+  const f = fixture();
+  try {
+    const { buildProjects } = await builder;
+    f.write('../outside-cache/sentinel.txt', 'outside cache sentinel');
+    fs.symlinkSync(path.join(f.root, '../outside-cache'), path.join(f.root, '.cache'),
+      process.platform === 'win32' ? 'junction' : 'dir');
+    assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /symbolic link or junction/);
+    assert.equal(f.exists('server.js'), false);
+    assert.equal(f.exists('../outside-cache/typescript-build'), false);
+    assert.equal(f.read('../outside-cache/sentinel.txt'), 'outside cache sentinel');
   } finally { f.remove(); }
 });
 

@@ -105,7 +105,11 @@ function repository(root: any) {
   }
   try {
     // Do not accidentally use a parent repository when --root is a subdirectory.
-    if (fs.realpathSync(git(['rev-parse', '--show-toplevel']).trim()) !== root) throw Error('root 必须是 Git 工作树根');
+    const canonicalRoot = (directory: string) => {
+      const real = fs.realpathSync.native(directory);
+      return process.platform === 'win32' ? real.toLowerCase() : real;
+    };
+    if (canonicalRoot(git(['rev-parse', '--show-toplevel']).trim()) !== canonicalRoot(root)) throw Error('root 必须是 Git 工作树根');
     const commit = git(['rev-parse', '--verify', 'HEAD^{commit}']).trim();
     if (!/^[a-f\d]{40}$/i.test(commit)) throw Error('HEAD 不是完整 Git SHA-1');
     const worktree = git(['status', '--porcelain=v1', '-z', '--untracked-files=all']);

@@ -278,6 +278,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 - `npm run wf -- rust:parity`：先准备上述两类构建，再通过两个独立临时库核验 Node/Rust HTTP、旧回执重试、媒体 Range 和 Rust 写入后 Node 重开；顺序测量分页读取并记录实际行数和轮次。可设 `AICS_RUST_RUNTIME_EXE` 指定已构建候选，`AICS_RUST_PARITY_REPORT` 保存 JSON。报告是工作区切片，不能当作整机内存或完整后端迁移收益。
 - `npm run wf -- rust:licenses:collect`：PowerShell 7 按 `components.json` 的固定配方下载公开源码并提取许可材料，跳过已核验项；不安装或执行源码。缓存不入 Git，材料变化后必须更新 `materials.sha256.json` 及根 manifest 绑定。完整来源和发行待办见[原生材料说明](../runtime-rs/native-licenses/README.md)。
 
+`rust:check` 仅在检查子进程环境中把 TEMP/TMP 规范为实际目录路径，避免 Windows 8.3 短路径令隔离夹具误触物理路径守卫；不改变生产路径校验、start/build 环境或用户资料目录。
+
 设置 `AICS_RUST_BROWSER_REPORT=<新证据目录>` 会在同一 parity 运行中调用 `browser.mjs`，用真实 Rust 服务执行图库/控制台双主题操作并保留截图；`AICS_RUST_APP_ROOT=<已暂存gateway>` 可验证该布局及其中的 EXE，未设置时使用源码应用根。夹具设置关闭真实模型/隧道并使用临时配置和 workspace，不能把它改指用户资料作普通回归。
 
 - `npm run wf -- desktop:rust-bundle`：使用已暂存的实际 Rust EXE/DLL和 bundle 映射，在仓库外临时布局验证；不下载、安装或访问用户库。它替代旧 `desktop:workspace-sidecar`，不能以开发机上的 Node 启动成功替代原生包验证。

@@ -34,7 +34,10 @@ function fixture(t: any, withGit: any = true) {
     outfits: [{ outfitId: 'dress', outfitName: 'Coat', prose: 'neutral clothing', isDefault: true, isNsfw: false,
       references: perspectives.map((p) => ({ ...p, fileName: `${p.id}.png`, url: '', pending: true })) }] } });
   if (withGit) {
-    git(f.root, 'init'); git(f.root, 'add', '--', 'data', 'src'); git(f.root, 'commit', '-m', 'neutral check fixture');
+    git(f.root, 'init');
+    git(f.root, 'config', '--local', 'gc.auto', '0');
+    git(f.root, 'config', '--local', 'maintenance.auto', 'false');
+    git(f.root, 'add', '--', 'data', 'src'); git(f.root, 'commit', '-m', 'neutral check fixture');
     f.base = git(f.root, 'rev-parse', 'HEAD');
   }
   f.changeBlueprint = (patch: any) => {
