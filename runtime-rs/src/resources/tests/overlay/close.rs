@@ -76,7 +76,6 @@ async fn close_cancels_snapshot_verification_before_waiting_for_state_lock() {
     assert!(!fixture.shutdown.is_cancelled());
 }
 
-
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn close_during_start_refresh_rejects_admission_without_task_writes() {
     let fixture = Fixture::new();
@@ -89,9 +88,8 @@ async fn close_during_start_refresh_rejects_admission_without_task_writes() {
     let host = Arc::new(HostAuthority::new(None, None, None));
     let admission = host.admit_owned().unwrap();
     let owner = fixture.service.clone();
-    let starting = tokio::task::spawn_blocking(move || {
-        owner.start("import", Some("neutral"), admission)
-    });
+    let starting =
+        tokio::task::spawn_blocking(move || owner.start("import", Some("neutral"), admission));
     tokio::time::timeout(Duration::from_secs(2), entered)
         .await
         .unwrap()
@@ -99,9 +97,12 @@ async fn close_during_start_refresh_rejects_admission_without_task_writes() {
     let owner = fixture.service.clone();
     let runtime = tokio::runtime::Handle::current();
     let closing = tokio::task::spawn_blocking(move || runtime.block_on(owner.close()));
-    tokio::time::timeout(Duration::from_secs(2), fixture.service.read_cancel.cancelled())
-        .await
-        .unwrap();
+    tokio::time::timeout(
+        Duration::from_secs(2),
+        fixture.service.read_cancel.cancelled(),
+    )
+    .await
+    .unwrap();
     drop(pause);
     let result = starting.await.unwrap();
     closing.await.unwrap();
@@ -116,17 +117,20 @@ async fn close_during_start_refresh_rejects_admission_without_task_writes() {
 async fn close_waits_for_already_admitted_resource_worker() {
     let fixture = Fixture::new();
     // The source manifest is read only by the admitted import, not refresh.
-    let source = PathBuf::from(fixture.ctx.policy["sources"]["source"]["root"].as_str().unwrap());
+    let source = PathBuf::from(
+        fixture.ctx.policy["sources"]["source"]["root"]
+            .as_str()
+            .unwrap(),
+    );
     let (pause, entered) = Pause::new(&source.join("neutral/manifest.json"));
     let host = Arc::new(HostAuthority::new(None, None, None));
     let admission = host.admit_owned().unwrap();
     let owner = fixture.service.clone();
-    let task = tokio::task::spawn_blocking(move || {
-        owner.start("import", Some("neutral"), admission)
-    })
-    .await
-    .unwrap()
-    .unwrap();
+    let task =
+        tokio::task::spawn_blocking(move || owner.start("import", Some("neutral"), admission))
+            .await
+            .unwrap()
+            .unwrap();
     tokio::time::timeout(Duration::from_secs(2), entered)
         .await
         .unwrap()
