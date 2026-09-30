@@ -45,6 +45,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 - [Live2D 运行时](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[Apple HIG Web 指南](guides/design/apple-hig-web-guidelines.md)。
 - 图像提示词查 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)，按需选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md)或[数据交付](../.agents/skills/studio-prompt-craft/references/delivery.md)。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)。
+- [旧陪伴 CDP 探针归档说明](../scripts/archive/companion-cdp-20260930/README.md)：保留历史源码、失效原因与现行验收边界；手动窗口截图及旧热门样张恢复查[工作流](workflow.md)。
 
 ## 保留的专题验收记录
 

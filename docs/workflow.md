@@ -165,6 +165,12 @@
 
 `npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。当前 checkpoint 和采样参数以脚本/网关配置为准；生成后检查编译请求与实际画面，失败与未审记录保留。
 
+### 旧热门样张的人工恢复
+
+`publish-popular-showcase` 会替换源版本的全部 popular 条目，不是增量追加。仅在确实需要恢复旧版本中已审核、且目标版本缺失的条目时，保留的 `scripts/maintenance/merge-showcase-legacy-popular.ts` 提供人工补救：先 `npm run build:runtime`，再用 `node scripts/maintenance/merge-showcase-legacy-popular.js --legacy <可信旧版本的manifest.json> --target <独立恢复副本目录>` 只读查看旧条目数、已存在数和待合并数。必须显式传两个路径，不使用脚本内的历史默认版本；底层缺少有效的必填参数保护，也不支持 `--help` 或 `--plan`。
+
+这不是正常发布的自动后置步骤。先完整备份目标版本，在非活跃副本中核对旧条目的审核记录、ID、分级、图片和缩略图。只接受可信本地 manifest，人工确认所有素材路径都留在各自版本目录内；该遗留工具不验证路径越界、审核状态或素材完整性。追加 `--apply` 会复制缺失素材、按 ID 追加条目并覆盖目标 manifest/统计/更新时间，既有同名素材不覆盖，缺失源素材会被跳过，无事务回滚。此写入需用户对恢复范围和目标明确授权；计数或退出成功不证明素材齐全、重新审核通过、发布或真实画面验收。
+
 ## 角色接入
 
 `character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成。历史 `--deploy` 仍直连底层 PowerShell，不作为现行安装入口；接入核验后另用 `deploy-desktop.bat` 完成桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](guides/characters/character-onboarding-workflow.md)。
@@ -451,6 +457,14 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 批处理入口的单杠字母开关可以登记于 run.switches，help/plan/audit 共用；其他入口仍要求双杠元数据键。`--plan` 会显示所传安装开关的行为标签而不启动执行器。默认与开关标签是可能副作用说明，不做标签抵消或参数权限判断；具体互斥及跳过行为以本段和部署实现为准。
 
 ## 备份与清理
+
+### 手动窗口截图与历史探针
+
+Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File scripts/maintenance/capture-window.ps1 -Title "绘遇 Companion" -Out "runtime/window-review.png" -Scale 1`。先建立输出父目录，选择新的 PNG 路径，并核对实际窗口标题；可加 `-ProcessId <进程ID>` 优先定位主窗口，定位失败仍按标题回退。实际参数名是 `-ProcessId`，不是旧文件头示例中的 `-Pid`。脚本使用 Windows `PrintWindow` 和 System.Drawing，写入 PNG，可能覆盖同名文件；不启动应用、不上传，也不截整个桌面。运行前确认当前设备及目标窗口截图已获授权，不得用作绕过受限的浏览器或设备访问。
+
+`-Scale` 默认 2，只调整截图位图，不改变实际窗口、系统 DPI 或 CSS 视口。`PrintWindow` 返回失败仍可能落盘，日志里的 saved 不能证明画面正确；须人工打开 PNG 检查黑屏、透明或缺失内容，并独立记录实际分辨率、DPI/缩放和主题。此处仅说明静态审查确认的用途和限制，未宣称当次 Windows/WebView2 端到端验收。
+
+2026-09-30 的四个旧 CDP 探针已原样移至 `scripts/archive/companion-cdp-20260930/`，本次特意保留 Git 跟踪供审阅与恢复，详见[归档理由](../scripts/archive/companion-cdp-20260930/README.md)。它们硬编码调试端口、存在失效 DOM 选择器/用户路径，且只打印状态而没有回归断言，因此不再作为维护入口或通过证据。当前陪伴交互回归见 `tests/e2e/companion-focus.spec.ts` 和 `tests/e2e/studio-live2d.spec.ts`，后者仍需对应模型/设备条件；归档不代表这些回归已在当前环境执行。
 
 `backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。
 
