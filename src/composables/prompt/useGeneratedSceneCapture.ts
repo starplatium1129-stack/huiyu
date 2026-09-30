@@ -1,8 +1,7 @@
 import { onBeforeUnmount, onDeactivated, ref, shallowRef, type Ref } from 'vue'
 import type { AnimaGenerationState, AnimaResultContext } from '@/types/anima'
 import type { DrawEngine, HistorySnapshot } from '@/types/promptHistory'
-import { historyFromResultContext } from '@/utils/resultContext'
-import { runtimeFetch } from '@/platform/runtimeUrl'
+import type { CapturedSceneFacts } from './generatedSceneCaptureAction'
 
 export interface GeneratedSceneCapture {
   recipe: HistorySnapshot
@@ -48,32 +47,20 @@ export function useGeneratedSceneCapture(deps: Dependencies) {
       deps.flash('这张图缺少完整的生成记录，请使用新生成的成片创建场景')
       return
     }
-    const recipe: HistorySnapshot = JSON.parse(JSON.stringify({
-      ...historyFromResultContext(context),
-      ...(meta ? {
-        engine: meta.engine, model: meta.modelId, profile: meta.profileId,
-        seed: meta.seed, prompt: meta.prompt, negative: meta.negative,
-        cfg: meta.cfg, steps: meta.steps, sampler: meta.sampler, scheduler: meta.scheduler,
-        width: meta.width, height: meta.height, size: `${meta.width}x${meta.height}`,
-        lora: meta.loraId, loraId: meta.loraId, loraStrength: meta.loraStrength,
-        loras: meta.loras, styleLoraId: meta.styleLoraId,
-        hiresFix: meta.hiresFix, hiresScale: meta.hiresScale, hiresDenoise: meta.hiresDenoise,
-      } : { engine: 'sd', prompt }),
-    }))
+    // Freeze before loading the click-only action; panel edits during the import
+    // must not change the selected result's identity or recipe.
+    const facts: CapturedSceneFacts = JSON.parse(JSON.stringify({ context, meta, prompt }))
+    const imageBlob = result?.blob
     const abort = new AbortController()
     controller = abort
     capturingScene.value = true
     const timeout = setTimeout(() => abort.abort(), 30_000)
     try {
-      let image = result?.blob
-      if (!image) {
-        const response = await runtimeFetch(url, { signal: abort.signal })
-        if (!response.ok) throw new Error('读取成片失败，请重试')
-        image = await response.blob()
-      }
+      const { loadGeneratedSceneCapture } = await import('./generatedSceneCaptureAction')
       if (abort.signal.aborted) return
-      if (!image.size || !image.type.startsWith('image/')) throw new Error('成片图片已失效')
-      capturedScene.value = { recipe, image, previewUrl: URL.createObjectURL(image) }
+      const captured = await loadGeneratedSceneCapture(facts, url, abort.signal, imageBlob)
+      if (!captured || abort.signal.aborted) return
+      capturedScene.value = { ...captured, previewUrl: URL.createObjectURL(captured.image) }
     } catch (error) {
       if (controller === abort) deps.flash(error instanceof Error ? error.message : '无法读取成片')
     } finally {

@@ -220,7 +220,7 @@ function outfitOverrideProse(tokens: ReadonlyArray<string>): string {
 const GARMENT_TOKEN_RE =
   /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/
 
-function isGarmentToken(token: string): boolean {
+export function isGarmentToken(token: string): boolean {
   return GARMENT_TOKEN_RE.test(String(token || '').trim().toLowerCase())
 }
 
@@ -320,7 +320,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       subjectProse: adultGranted
         ? adultIdentityProse(character.identityProse)
         : (outfitActive
-            ? identityWithoutOutfit(character.identityProse)
+            ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
             : proseWithoutOutfit(character.identityProse)),
       outfitProse,
       sceneProse,
@@ -343,16 +343,19 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
-  const identityTokens = (outfitActive
+  const referenceIdentity = Boolean(overridden) && !adultGranted
+  const identityTokens = (outfitActive && !referenceIdentity
     ? character.identityTokens
     : character.identityTokens.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
     .filter(token => !adultGranted || (!isGarmentToken(token)
       && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
+  const exactIdentity = (character.exactTokens || []).filter(token => !referenceIdentity
+    || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
   const exactControls = [...new Set([
     ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
-    ...(character.exactTokens || []),
+    ...exactIdentity,
     ...(adultGranted ? ['adult'] : []),
     ...nsfwTokens,
   ])]
@@ -375,7 +378,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     identity: compositionTokens(identityTokens, blueprint).join(', '),
     controls: compositionTokens(exactControls, blueprint),
     artists: effectiveArtists,
-    exactTokens: compositionTokens(character.exactTokens || [], blueprint),
+    exactTokens: compositionTokens(exactIdentity, blueprint),
     scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
@@ -389,7 +392,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     subjectProse: adultGranted
       ? adultIdentityProse(character.identityProse)
       : (outfitActive
-          ? identityWithoutOutfit(character.identityProse)
+          ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
           : proseWithoutOutfit(character.identityProse)),
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支已置空）。
     // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",

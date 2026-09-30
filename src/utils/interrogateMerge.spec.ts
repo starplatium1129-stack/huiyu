@@ -355,4 +355,50 @@ describe('反推冲突审计回归', () => {
     })
     expect(noScene.accepted).toEqual(['white_background', 'white_dress'])
   })
+
+  it.each([
+    ['closed_eyes', 'looking_at_viewer'],
+    ['looking_at_viewer', 'closed_eyes'],
+    ['closed_mouth', 'open_mouth'],
+    ['open_mouth', 'closed_mouth'],
+    ['barefoot', 'boots'],
+    ['boots', 'barefoot'],
+  ])('rejects %s without deleting %s shared by manual and fixed context', (incoming, existing) => {
+    for (const fixedSource of ['identityTokens', 'sceneTokens'] as const) {
+      const manualTags = new Set([existing.replace(/_/g, ' ')])
+      const result = mergeInterrogatedTags({
+        tags: [incoming], identityTokens: [], [fixedSource]: [existing], manualTags, replaceOutfit: false,
+      })
+      expect(result.accepted).toEqual([])
+      expect(result.conflicts.map(item => item.tag)).toEqual([incoming])
+      expect(result.obsoleteManualTags).toEqual([])
+      expect([...manualTags]).toEqual([existing.replace(/_/g, ' ')])
+    }
+  })
+
+  it('does not delete manual gaze when another fixed gaze rejects the reference expression', () => {
+    const result = merge(['closed_eyes'], [], ['looking_away'], new Set(['looking_at_viewer']))
+    expect(result.accepted).toEqual([])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['closed_eyes'])
+    expect(result.obsoleteManualTags).toEqual([])
+  })
+
+  it('normalizes replaceable mouth tags while keeping the original deletion key', () => {
+    const result = merge(['closed_mouth'], [], [], new Set(['Open Mouth']))
+    expect(result.accepted).toEqual(['closed_mouth'])
+    expect(result.obsoleteManualTags).toEqual(['Open Mouth'])
+    expect(result.conflicts).toEqual([])
+  })
+
+  it.each([
+    ['closed_eyes', 'looking_at_viewer'],
+    ['closed_mouth', 'open_mouth'],
+    ['barefoot', 'boots'],
+  ])('keeps the first accepted %s, deduplicates repeats and rejects later %s', (first, later) => {
+    const result = merge([first, first, later])
+    expect(result.accepted).toEqual([first])
+    expect(result.duplicates).toEqual([first])
+    expect(result.conflicts.map(item => item.tag)).toEqual([later])
+    expect(result.obsoleteManualTags).toEqual([])
+  })
 })

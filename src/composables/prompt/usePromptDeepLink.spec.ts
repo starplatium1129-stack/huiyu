@@ -3,6 +3,38 @@ import { effectScope, ref } from 'vue'
 import { SCENARIOS, SCENARIO_RES_MAP, substituteScenarioPrompt } from '@/config/scenarios'
 import { usePromptDeepLink, type PromptDeepLinkDeps } from './usePromptDeepLink'
 
+describe('deep-link action loading', () => {
+  it('does not load URL actions for an ordinary workbench entry', async () => {
+    const load = vi.fn(() => { throw new Error('URL actions must remain deferred') })
+    vi.doMock('./promptDeepLinkActions', load)
+    try {
+      const api = usePromptDeepLink({ pb: {} } as unknown as PromptDeepLinkDeps)
+      expect(await api.applyDeepLink({})).toBe(false)
+      expect(await api.applyDeepLink({ unrelated: 'preview' })).toBe(false)
+      expect(load).not.toHaveBeenCalled()
+    } finally { vi.doUnmock('./promptDeepLinkActions') }
+  })
+
+  it('does not apply an old history response after a newer context link', async () => {
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    const pb = { history: [] as { id: number }[], char: 'nene',
+      loadHistory: vi.fn(async () => { await gate; pb.history = [{ id: 9 }] }),
+      setChar(value: string) { pb.char = value } }
+    const applyHistory = vi.fn()
+    const api = usePromptDeepLink({ pb, applyHistory } as unknown as PromptDeepLinkDeps)
+    const prior = api.applyDeepLink({ regen: '9' })
+    await vi.waitFor(() => expect(pb.loadHistory).toHaveBeenCalledOnce())
+    expect(await api.applyDeepLink({ char: 'natsume' })).toBe(true)
+    release()
+    expect(await prior).toBe(false)
+    expect(applyHistory).not.toHaveBeenCalled()
+    expect(pb.char).toBe('natsume')
+    expect(api.deepLinkNeeded({ char: 'natsume' })).toBe(false)
+    expect(api.deepLinkNeeded({ regen: '9' })).toBe(true)
+  })
+})
+
 describe('history links on a reused workbench', () => {
   it('keeps a rejected busy-workbench link retryable', async () => {
     const record = { id: 42 }

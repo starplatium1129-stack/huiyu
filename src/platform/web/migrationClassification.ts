@@ -3,7 +3,7 @@ import type { MigrationDomain, MigrationSource } from '../../../types/migration'
 
 const artworks = new Set<string>([keys.ARTWORK_HISTORY_KV_KEY, keys.ARTWORK_PROJECTS_KV_KEY, keys.ARTWORK_TRASH_KV_KEY])
 const sessions = new Set<string>([keys.VIDEO_CONTEXT_KEY, keys.VIDEO_SHOTS_CONTEXT_KEY, keys.VIDEO_SCENARIO_CONTEXT_KEY,
-  keys.VIDEO_DRAFT_KEY, keys.VIDEO_SHOTS_DRAFT_KEY, keys.TEMP_RESULT_KEY, keys.BATCH_DRAW_PLAN_KEY])
+  keys.VIDEO_DRAFT_KEY, keys.VIDEO_SHOTS_DRAFT_KEY, keys.TEMP_RESULT_KEY, keys.BATCH_DRAW_PLAN_KEY, keys.SD_PENDING_QUEUE_KEY])
 const histories = new Set<string>([keys.TASK_CENTER_KV_KEY, keys.SD_QUEUE_SNAPSHOT_KEY, keys.VIDEO_TASK_KEY, keys.VIDEO_SHOTS_BATCH_KEY])
 const transient = new Set<string>([keys.CHAT_ARCHIVE_CHANGED_KEY, keys.CHAT_TURN_KEY, keys.CHAT_RELAY_RECEIPT_KEY,
   keys.COMPANION_CHAT_LIVE_KEY, keys.ROOM_PRESENTATION_KEY, 'huiyu:migration:barrier'])

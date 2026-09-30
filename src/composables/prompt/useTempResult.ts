@@ -118,110 +118,42 @@ export function useTempResult(deps: TempResultDeps) {
   }
 
   /** Anima/Krea 直出成功：按偏好入册或落临时缓冲（原 onAnimaResult 内联块下沉）。 */
+  const freeze = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T
   async function handleAnimaResult(result: AnimaResult, inpaintSourceHistoryId: string | number | null) {
     const current = ownsResult(result.url)
-    const frozen = deps.animaState.value.resultContext ?? null
-    if (!deps.autoSaveToGallery.value) {
+    const autoSave = deps.autoSaveToGallery.value
+    const runtimeTaskId = hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined
+    if (!autoSave) {
       if (current()) displayedResultHistoryId.value = null
-      if (hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id)) { storedResultUrl.value = result.url; return }
-      await captureTemp({
-        engine: result.metadata.engine,
-        prompt: result.metadata.prompt,
-        negative: result.metadata.negative,
-        seed: result.metadata.seed,
-        size: `${result.metadata.width}x${result.metadata.height}`,
-        animaMetadata: result.metadata,
-        context: frozen,
-      }, result.blob, result.url, current)
-      return
+      if (runtimeTaskId) { storedResultUrl.value = result.url; return }
     }
-    try {
-      if (!result.blob.size) throw new Error('成片数据为空')
-      // initImage 非空即 inpaint 重绘：parent_id 回指来源条目，作品册对比才有
-      // 「重绘前 vs 重绘后」的真实语义（P1-14）。
-      const isInpaint = Boolean(result.metadata.initImage)
-      const saved = await pb.commitHistoryEntry({
-        taskId: hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined,
-        context: frozen,
-        blob: result.blob,
-        seed: result.metadata.seed,
-        negative: result.metadata.negative ?? '',
-        prompt: result.metadata.prompt,
-        ...deps.historyGenerationFields(),
-        // F3：入册字段跟随出图时的冻结上下文，不随生成期间的表单改动漂移。
-        story: frozen?.story ?? String(pb.story || '').trim(),
-        scene: frozen ? (frozen.sceneId ?? null) : pb.sceneId,
-        hiresFix: result.metadata.hiresFix === true,
-        hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
-        hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
-        parentId: isInpaint ? (inpaintSourceHistoryId ?? undefined) : undefined,
-      })
-      if (!saved) throw new Error('作品册写入失败')
-      if (current()) {
-        displayedResultHistoryId.value = saved.id
-        releaseTemp()
-        pb.flash('已自动存入作品册')
-      }
-    } catch (e) {
-      console.warn('anima direct autosave failed', e)
-      if (!current()) return
-      pb.flash('自动入册失败：成片已保留在临时缓冲，可手动点「存入作品册」')
-      await captureTemp({
-        engine: result.metadata.engine,
-        prompt: result.metadata.prompt,
-        negative: result.metadata.negative,
-        seed: result.metadata.seed,
-        size: `${result.metadata.width}x${result.metadata.height}`,
-        animaMetadata: result.metadata,
-        context: frozen,
-      }, result.blob, result.url, current)
-    }
+    const input = { result: { ...result, metadata: freeze(result.metadata) }, current,
+      context: freeze(deps.animaState.value.resultContext ?? null), autoSave, runtimeTaskId, inpaintSourceHistoryId,
+      history: autoSave ? freeze(deps.historyGenerationFields()) : {},
+      story: autoSave ? String(pb.story || '').trim() : '', scene: autoSave ? pb.sceneId : null }
+    const { handleAnimaResultAction } = await import('./tempResultActions')
+    await handleAnimaResultAction(input, { pb, displayedResultHistoryId, captureTemp, releaseTemp })
   }
 
-  /** SD 直出成功：按偏好入册或落临时缓冲（原 callGenerate 尾段下沉）。 */
   async function handleSdResult(job: Omit<SDQueueJob, 'id'>, url: string) {
     const current = ownsResult(url)
-    const seed = sd.resultSeed.value
-    const context = deps.resultContext.value
-    if (!deps.autoSaveToGallery.value) {
+    const autoSave = deps.autoSaveToGallery.value
+    if (!autoSave) {
       if (current()) displayedResultHistoryId.value = null
       if (hasRuntimeTasks() && sd.resultTaskId?.value) { storedResultUrl.value = url; return }
-      try {
-        const blob = await (await runtimeFetch(url, { cache: 'no-store' })).blob()
-        if (blob.size) {
-          await captureTemp({
-            engine: 'sd',
-            prompt: job.prompt,
-            negative: job.negative,
-            seed,
-            size: job.size,
-            animaMetadata: null,
-            context,
-          }, blob, url, current)
-        }
-      } catch (error) {
-        console.warn('[temp-result] sd capture failed', error)
-      }
-      return
     }
-    try {
-      const saved = await deps.commitJobResult(job, url)
-      if (!saved) throw new Error('作品册写入失败')
-      if (current()) {
-        displayedResultHistoryId.value = saved.id
-        releaseTemp()
-        pb.flash('已自动存入作品册')
-      }
-    } catch (e) {
-      console.warn('direct autosave failed', e)
-      if (!current()) return
-      pb.flash('自动入册失败，可手动点「存入作品册」')
-      try {
-        const blob = await (await runtimeFetch(url)).blob()
-        await captureTemp({ engine: 'sd', prompt: job.prompt, negative: job.negative,
-          seed, size: job.size, context }, blob, url, current)
-      } catch { if (current()) pb.flash('临时保存也未成功，请下载当前原图') }
+    const input = { job: freeze(job), url, current, seed: sd.resultSeed.value,
+      context: freeze(deps.resultContext.value), autoSave, save: null as Promise<HistoryEntry | null> | null }
+    // The original job reference owns the runner's already-frozen WeakMap facts.
+    // Capture its archive promise before loading completion handling; observing
+    // rejection here leaves the original promise available to the action catch.
+    if (autoSave) {
+      try { input.save = deps.commitJobResult(job, url) }
+      catch (error) { input.save = Promise.reject(error) }
+      void input.save.catch(() => {})
     }
+    const { handleSdResultAction } = await import('./tempResultActions')
+    await handleSdResultAction(input, { pb, displayedResultHistoryId, captureTemp, releaseTemp })
   }
 
   /** 手动「保存快照」（原 saveHistory 下沉）：入册成功即释放临时缓冲。 */

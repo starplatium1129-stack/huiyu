@@ -160,11 +160,11 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   function selectPopularCharacter(character: PopularCharacter) {
     if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
     const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
-    pb.setPopularSubject(character.id, outfitId, null)
+    // Changing identity keeps the reference scene and clothing across successive characters.
+    pb.setPopularSubject(character.id, outfitId, null, { preserveReference: true, preserveOutfitOverride: true })
     // 2026-08-29 需求变更：切换热门角色时清空上一角色继承的画师（保持角色
     // 原滋原味），画师由用户按角色手动选择。
     pb.setArtistStyleIds([])
-    pb.visualDescription = ''
     resetBlueprintRotation()
     // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
     applyRecommendedEngine(character)
@@ -175,7 +175,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularOutfit(outfitId: string) {
     if (pb.subject.kind !== 'popular') return
-    pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId)
+    pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId, { preserveReference: true })
     patchAnimaState({ styleLoraId: '', loraId: '' })
     resetBlueprintRotation()
   }
@@ -263,8 +263,11 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     if (!pb.isPopular || pb.subject.kind !== 'popular') return
     const savedRecipe = currentGeneratedRecipe()
     if (savedRecipe) {
-      try { flash(applyGeneratedSceneSettings(savedRecipe, input).join('；')) }
-      catch (error) { flash(error instanceof Error ? error.message : '生成配方无法载入') }
+      // The draft may contain a newer reference than the saved generation recipe.
+      if (!pb.referenceInput && !pb.outfitOverride) {
+        try { flash(applyGeneratedSceneSettings(savedRecipe, input).join('；')) }
+        catch (error) { flash(error instanceof Error ? error.message : '生成配方无法载入') }
+      }
       void refreshAnimaBackend()
       return
     }

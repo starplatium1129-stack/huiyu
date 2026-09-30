@@ -1,5 +1,7 @@
 # 项目文档索引
 
+云端修复与最新本机主线的整合见 [双父合并与 Windows 定向验收](audits/2026-10-01/cloud-local-integration.md)：保留 durable batch 与独立 FIFO 语义、反推跨角色、双主题真实浏览器证据及安装/模型未验边界。
+
 本轮[创作流程、画布与大库响应优化](audits/2026-10-01/creator-workflow-optimization.md)完成保存／最近作品读取、图库整理、候选对比、导航、配方核对、批次恢复与 GC 排队收口；画布按用户反馈恢复原默认比例，新增检查移到次级入口。源码和候选已更新，安装与原生验收仍分开记录。
 
 云端本轮有限优化见 [图库空筛选与资源 mount 读取](audits/2026-09-30/cloud-gallery-resource-optimization.md)：迟到观察回调回归、未命中控制读取与锁外代次核验；验证与设备边界分开记录。
@@ -47,6 +49,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 - [Live2D 运行时](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[Apple HIG Web 指南](guides/design/apple-hig-web-guidelines.md)。
 - 图像提示词查 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)，按需选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md)或[数据交付](../.agents/skills/studio-prompt-craft/references/delivery.md)。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)。
+- [旧陪伴 CDP 探针归档说明](../scripts/archive/companion-cdp-20260930/README.md)：保留历史源码、失效原因与现行验收边界；手动窗口截图及旧热门样张恢复查[工作流](workflow.md)。
 
 ## 保留的专题验收记录
 

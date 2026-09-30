@@ -31,6 +31,10 @@
             <ArchiveIcon name="image" /> 导出作品图片
           </button>
         </StudioTooltip>
+        <div v-if="backup.imageExportProgress.value" class="utility-note wide" role="status" aria-live="polite">
+          正在导出原图：{{ backup.imageExportProgress.value.completed }} / {{ backup.imageExportProgress.value.total }}（已开始的下载无法撤销）
+        </div>
+        <button v-if="backup.imageExportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">停止后续图片导出</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
           <ArchiveIcon name="upload" /> 从备份恢复
         </button>

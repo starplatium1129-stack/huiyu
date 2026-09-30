@@ -9,7 +9,11 @@ vi.mock('@/platform/runtimeUrl', () => ({ runtimeFetch: fetchImage }))
 let wrapper: ReturnType<typeof mount>
 afterEach(() => { wrapper?.unmount(); vi.restoreAllMocks(); vi.unstubAllGlobals(); fetchImage.mockReset() })
 function setup(context: AnimaResultContext | null) {
-  vi.stubGlobal('URL', { createObjectURL: vi.fn(() => 'blob:owned'), revokeObjectURL: vi.fn() })
+  class TestURL extends URL {
+    static createObjectURL = vi.fn(() => 'blob:owned')
+    static revokeObjectURL = vi.fn()
+  }
+  vi.stubGlobal('URL', TestURL)
   const deps = { engine: ref<DrawEngine>('sd'), url: ref('blob:result'), busy: ref(false),
     anima: ref({} as AnimaGenerationState), sdContext: ref(context), sdPrompt: ref<string | undefined>('original prompt'), flash: vi.fn() }
   let flow!: ReturnType<typeof useGeneratedSceneCapture>
@@ -22,6 +26,7 @@ it('freezes completed identity and recipe before image loading, then releases it
   const { deps, flow } = setup({ char: 'nene', story: 'original story', history: { seed: 0, negative: '', cfg: 0, size: '1024x1024' } })
   const pending = flow.captureScene()
   deps.sdContext.value = { char: 'natsume', story: 'later story' }; deps.sdPrompt.value = 'later prompt'
+  await vi.waitFor(() => expect(fetchImage).toHaveBeenCalledOnce())
   finish(new Response(new Blob(['image'], { type: 'image/png' })))
   await pending
   expect(flow.capturedScene.value?.recipe).toMatchObject({ character: 'nene', story: 'original story', prompt: 'original prompt', seed: 0, cfg: 0 })

@@ -1,5 +1,6 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { shallowRef } from 'vue'
+import { readCharacterReference, waitForCharacterReference } from './characterReferenceRead.ts'
 
 export interface CharacterReferenceItem {
   id: string
@@ -35,19 +36,20 @@ const requests = new Map<string, Promise<void>>()
 const revisions = new Map<string, number>()
 
 /** 同一角色并发去重；失败可重试，刷新前的迟到响应不会覆盖新数据。 */
-export function ensureCharacterReferencesLoaded(characterId: string, refresh = false): Promise<void> {
+export function ensureCharacterReferencesLoaded(characterId: string, refresh = false, signal?: AbortSignal): Promise<void> {
   if (!/^[a-z0-9][a-z0-9_-]*$/i.test(characterId)) return Promise.reject(new Error('角色 ID 无效'))
-  if (!refresh && requests.has(characterId)) return requests.get(characterId)!
+  if (signal?.aborted) return Promise.reject(signal.reason ?? new DOMException('已取消读取', 'AbortError'))
+  if (!refresh && requests.has(characterId)) return waitForCharacterReference(requests.get(characterId)!, signal)
   const revision = (revisions.get(characterId) || 0) + 1
   revisions.set(characterId, revision)
-  const request = runtimeFetch('/api/character-reference-profile/' + encodeURIComponent(characterId), { cache: 'no-cache' })
-    .then(async response => {
-      if (response.status === 404) return undefined
-      if (!response.ok) throw new Error('character-reference-profile ' + response.status)
-      const data = await response.json() as CharacterReferenceProfile
-      if (!data || data.characterId !== characterId || !Array.isArray(data.outfits)) throw new Error('参考档案格式无效')
-      return data
-    })
+  const request = readCharacterReference(async requestSignal => {
+    const response = await runtimeFetch('/api/character-reference-profile/' + encodeURIComponent(characterId), { cache: 'no-cache', signal: requestSignal })
+    if (response.status === 404) return undefined
+    if (!response.ok) throw new Error('character-reference-profile ' + response.status)
+    const data = await response.json() as CharacterReferenceProfile
+    if (!data || data.characterId !== characterId || !Array.isArray(data.outfits)) throw new Error('参考档案格式无效')
+    return data
+  })
     .then(data => {
       if (revisions.get(characterId) !== revision) return
       const next = { ...standards.value }
@@ -60,7 +62,7 @@ export function ensureCharacterReferencesLoaded(characterId: string, refresh = f
       throw error
     })
   requests.set(characterId, request)
-  return request
+  return waitForCharacterReference(request, signal)
 }
 
 /** 同步读取角色参考档案；数据未加载完成时返回 undefined（与未知角色同路径降级）。 */

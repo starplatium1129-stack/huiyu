@@ -1,4 +1,4 @@
-import { ref, watch, type ComputedRef, type Ref } from 'vue'
+import { getCurrentScope, onScopeDispose, nextTick, ref, watch, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SdResultSnapshot } from './sdResultActions'
@@ -14,6 +14,8 @@ import type { AnimaResultContext } from '@/types/anima'
 import { captureResultContext } from '@/utils/resultContext'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { profileLocalStorage as localStorage } from '@/platform/web/profileStorage'
+import { createPendingSdQueueStorage } from './sdQueuePersistence'
+import type { RuntimeSdAttempt } from '@/composables/generation/runtimeImageSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -52,6 +54,10 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   const { pb, sd, sdSize, drawEngine, livePrompt, negativePrompt, effectiveScene, loraSpecs, modelProfile, animaState } = deps
 
   const sdErrorReport = ref<SDErrorReport | null>(null)
+  const durable = hasRuntimeTasks()
+  const queueStorage = durable ? createPendingSdQueueStorage() : null
+  let disposed = false, queueReadError: unknown = null
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true })
   function dismissError() { sdErrorReport.value = null }
 
   /**
@@ -60,10 +66,14 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
    * 队列此前只活在 PromptBuilderView 作用域：离开页面（onUnmounted→dispose→
    * cancel）或刷新，pending 队列整组蒸发且无任何解释。现在 pending 任务实时
    * 落 localStorage，回到绘图页时恢复（置暂停，不自动开跑）；在途任务不保
-   * 留——它已被真实取消，恢复一个早已死掉的 jobId 只会误导。
+   * 留——Web 在途请求由页面取消。桌面使用 workspace draft 保存任务意图与
+   * 稳定请求身份；已接受任务仍由 runtime 持有，恢复只查询，不自动重发。
    */
   function readQueueSnapshot(): SDQueueJob[] {
-    if (hasRuntimeTasks()) return []
+    if (durable) {
+      try { return queueStorage!.read() }
+      catch (error) { queueReadError = error; pb.flash(error instanceof Error ? error.message : '队列暂时无法读取'); return [] }
+    }
     try {
       const raw = localStorage.getItem(SD_QUEUE_SNAPSHOT_KEY)
       if (!raw) return []
@@ -75,7 +85,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   }
 
   function persistQueueSnapshot(jobs: readonly SDQueueJob[]) {
-    if (hasRuntimeTasks()) return
+    if (durable) return
     try {
       if (!jobs.length) { localStorage.removeItem(SD_QUEUE_SNAPSHOT_KEY); return }
       localStorage.setItem(SD_QUEUE_SNAPSHOT_KEY, JSON.stringify(jobs))
@@ -236,11 +246,28 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     return archiveSdResult(snapshot, url, pb.commitHistoryEntry)
   }
 
-  const sdQueue = useSDQueue({
+  const sdQueue: ReturnType<typeof useSDQueue> = useSDQueue({
     isBusy: () => sd.generating.value,
     onFlash: (m) => pb.flash(m),
+    ...(durable ? {
+      persist: async (jobs: readonly SDQueueJob[]) => {
+        if (queueReadError) throw queueReadError
+        await queueStorage!.persist(jobs)
+      },
+      beforeRemove: async (job: SDQueueJob) => {
+        const { removePendingSdJob } = await import('./sdQueueActions')
+        if (!disposed) await removePendingSdJob(job, sdQueue.checkpoint)
+      },
+    } : {}),
     run: async (job) => {
-      const url = await runJob(job)
+      let attempt: RuntimeSdAttempt | undefined
+      if (durable) {
+        const { preparePendingSdAttempt } = await import('./sdQueueActions')
+        if (disposed) return { status: 'cancelled' as const }
+        attempt = await preparePendingSdAttempt(job, sdQueue.checkpoint)
+      }
+      if (disposed) return { status: 'cancelled' as const }
+      const url = await runJob(job, { attempt })
       if (url) {
         sdErrorReport.value = null
         // 队列产出自动入册，避免跑完一批还要手点保存
@@ -261,17 +288,42 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     },
   })
 
+  // Direct generation shares the SD runner with queued jobs. Enqueue may have
+  // yielded while it was busy; resume only after its result context is captured.
+  // Watch cleanup also prevents a deferred wake after the page scope is disposed.
+  watch(sd.generating, async (busy, _previous, onCleanup) => {
+    if (busy) return
+    let cancelled = false
+    onCleanup(() => { cancelled = true })
+    await nextTick()
+    if (!cancelled) void sdQueue.process()
+  })
+
   // ── 队列快照接线（声明顺序见上方 readQueueSnapshot 处的说明）──────────
   // 队列变化实时落盘；挂载时把上次离开/刷新残留的 pending 任务灌回队列并置
   // 暂停，让用户确认面板状态后再手动「继续」。
-  watch(() => sdQueue.queue.value, jobs => persistQueueSnapshot(jobs), { deep: true })
+  if (!durable) watch(() => sdQueue.queue.value, jobs => persistQueueSnapshot(jobs), { deep: true })
 
   /**
    * 本次挂载从快照恢复的任务数（P0-5）。对外暴露是为了让队列面板能解释
    * 「为什么一进来就是暂停」——否则用户看到一个暂停着的队列，既不知道这批
    * 任务是哪来的，也不知道该不该直接点继续。
    */
-  const restoredCount = sdQueue.restore(readQueueSnapshot())
+  const restoredJobs = readQueueSnapshot()
+  const restoredCount = sdQueue.restore(restoredJobs)
+  if (queueReadError) sdQueue.pause()
+  if (durable) void (async () => {
+    // These are already-recorded user cancellations, never an unload policy.
+    for (const job of restoredJobs) {
+      if (disposed) return
+      if (job.removeRequested) await sdQueue.remove(job.id)
+      else if (job.attempt?.cancelRequested) {
+        const { cancelPendingSdAttempt } = await import('./sdQueueActions')
+        if (disposed) return
+        await cancelPendingSdAttempt(job, sdQueue.checkpoint)
+      }
+    }
+  })().catch(error => { sdQueue.pause(); pb.flash(error instanceof Error ? error.message : '取消尚未确认，请重试') })
   if (restoredCount > 0) {
     pb.flash(`已恢复 ${restoredCount} 个排队任务（已暂停，点「继续」逐张生成）`)
   }

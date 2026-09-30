@@ -98,6 +98,50 @@ describe('promptBuilderStore · 角色与主体切换', () => {
 })
 
 describe('promptBuilderStore · 词条选择', () => {
+  it('keeps user-owned duplicates and explicitly adopted reference tags when resetting the reference', () => {
+    const s = usePromptBuilderStore()
+    s.manualTags = new Set(['sitting', 'park', 'paper_lantern'])
+    s.referenceInput = { tags: ['sitting', 'park'] }
+    expect(s.addManualTag('sitting')).toBe('duplicate')
+    expect(s.referenceInput).toEqual({ tags: ['park'] })
+    s.clearReferenceInput()
+    expect(s.manualTags).toEqual(new Set(['sitting', 'paper_lantern']))
+    expect(s.referenceInput).toBeNull()
+  })
+
+  it('does not restore reference ownership after a user removes and re-adds a tag', () => {
+    const s = usePromptBuilderStore()
+    s.manualTags = new Set(['sitting', 'park'])
+    s.referenceInput = { tags: ['sitting', 'park'] }
+    s.toggleManualTag('sitting')
+    s.toggleManualTag('sitting')
+    s.clearReferenceInput()
+    expect(s.manualTags).toEqual(new Set(['sitting']))
+  })
+
+  it('clears removed source tags synchronously, including the clear-tags action', () => {
+    const s = usePromptBuilderStore()
+    s.manualTags = new Set(['sitting', 'park'])
+    s.referenceInput = { tags: ['sitting', 'park'] }
+    s.manualTags.delete('sitting')
+    expect(s.referenceInput).toEqual({ tags: ['park'] })
+    s.manualTags = new Set()
+    expect(s.referenceInput).toBeNull()
+  })
+
+  it('restores detached reference ownership when undoing a style-layer change', () => {
+    const s = usePromptBuilderStore()
+    s.manualTags = new Set(['sitting', 'paper_lantern'])
+    s.referenceInput = { tags: ['sitting'] }
+    const snapshot = s.snapshotStyleLayers()
+    s.manualTags = new Set(['standing'])
+    expect(s.referenceInput).toBeNull()
+    s.restoreStyleLayers(snapshot)
+    snapshot.referenceInput!.tags.push('paper_lantern')
+    s.clearReferenceInput()
+    expect(s.manualTags).toEqual(new Set(['paper_lantern']))
+  })
+
   it('toggleEmotion 开关语义：未选则加入，已选则移除', () => {
     const s = usePromptBuilderStore()
     s.toggleEmotion('emo-a')

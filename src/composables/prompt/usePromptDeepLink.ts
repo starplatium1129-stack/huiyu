@@ -1,15 +1,9 @@
 import type { ArtworkRecord } from '@/types/artwork'
 import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
-import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
+import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
-import type { ScenarioCharacter } from '@/config/scenarios'
-import {
-  findBlueprint as findPopularBlueprint,
-  findCharacter as findPopularCharacter,
-  type PopularCharacter,
-  type SceneBlueprint,
-} from '@/utils/popularContent'
+import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
@@ -40,11 +34,11 @@ export interface PromptDeepLinkDeps {
  * 条件重放（bfcache / 组件复用时 onMounted 不重跑）。
  */
 export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
-  const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
+  const { pb } = deps
   let lastHistoryLink = ''
   let lastContextLink = ''
-  let historyRequest = 0
-  if (getCurrentScope()) onScopeDispose(() => { historyRequest += 1 })
+  let historyRequest = 0, disposed = false
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; historyRequest += 1 })
   function historyKey(q: Record<string, unknown>) {
     const mode = ['remix', 'regen', 'variant'].find(key => typeof q[key] === 'string')
     return mode ? mode + ':' + q[mode] : ''
@@ -57,99 +51,16 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
 
   async function applyDeepLink(q: Record<string, unknown>): Promise<boolean> {
     const request = ++historyRequest
-    let handled = false
-    const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
-    if (scenarioId) {
-      const { findScenario, substituteScenarioPrompt, SCENARIO_RES_MAP } = await import('@/config/scenarios')
-      if (request !== historyRequest) return false
-      // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
-      // 质量行不搬（质量前缀由模型 profile 决定，剧本里的六连质量词
-      // 正是 WAI 作者建议避免的堆叠写法）。
-      const scenario = findScenario(scenarioId)
-      const act = scenario?.acts[0]
-      if (act) {
-        if (pb.isPopular) deps.selectPopularSource('studio')
-        pb.clearScene()
-        const char = isCharKey(q.char) ? (q.char as ScenarioCharacter) : 'nene'
-        pb.setChar(char)
-        pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
-        const semanticTokens = substituteScenarioPrompt(act.prompt, char)
-          .split('\n')
-          .slice(1)
-          .flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_')))
-          .filter(Boolean)
-        pb.manualTags = new Set(semanticTokens)
-        const dim = SCENARIO_RES_MAP[act.res]?.dim
-        if (dim) {
-          pb.lastRecommendedSize = dim.replace('×', 'x')
-          sdSize.value = pb.lastRecommendedSize
-        }
-        pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
-        handled = true
-      }
-    }
-    if (isCharKey(q.char)) {
-      if (pb.isPopular && !q.popular && !historyKey(q)) deps.selectPopularSource('studio')
-      pb.setChar(q.char); handled = true
-    }
-    // 热门角色深链：不带 !pb.isPopular 前置条件——已在热门模式时二次进入
-    // （换角色/换场景）也必须重新应用，否则「点击场景还是上一个」。
-    if (typeof q.popular === 'string') {
-      // 进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
-      // （角色场景库页面「开始绘制」直达）。
-      deps.selectPopularSource('popular')
-      const target = findPopularCharacter(pb.popularCharacters, q.popular)
-      if (target) {
-        const blueprintId = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
-        pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, blueprintId)
-        patchAnimaState({ modelId: target.recommendedEngine })
-        deps.applyRecommendedEngine(target)
-        if (blueprintId) {
-          const blueprint = findPopularBlueprint(pb.sceneBlueprints, blueprintId)
-          if (blueprint) {
-            // 与点击卡片同一路径：应用镜头/光照/构图/色调/尺寸推断，并展开全部列表
-            // 保证预选场景卡片可见高亮（可能不在推荐 3 个里）。
-            deps.selectBlueprint(blueprint)
-            showAllBlueprints.value = true
-          }
-        }
-      }
-      handled = true
-    }
-    if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
-      const targetId = String(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
-      let entry = targetId ? pb.history.find(h => String(h.id) === targetId) : null
-      if (!entry && targetId) {
-        await pb.loadHistory()
-        if (request !== historyRequest) return handled
-        entry = pb.history.find(h => String(h.id) === targetId)
-      }
-      if (entry) {
-        const applied = await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
-        if (applied === false) return handled
-        if (request !== historyRequest) return handled
-        lastHistoryLink = historyKey(q)
-        if (typeof q.remix === 'string') {
-          deps.setDirectorMode('pro')
-        }
-        handled = true
-      }
-    } else if (typeof q.scene === 'string') {
-      const sc = pb.scenes.find(s => s.id === q.scene)
-      if (sc) { deps.selectScene(sc); handled = true }
-    } else if (q.resume === '1') {
-      handled = pb.restoreDraft()
-    } else if (q.quick === '1' && !pb.story) {
-      pb.setStory('用一张画面来讲今天想画的故事')
-      handled = true
-    }
-    // An explicit scene-link mood wins over inferred scene defaults; saved snapshots keep their own mood.
-    if (!q.remix && !q.regen && !q.variant && q.resume !== '1'
-      && typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
-      pb.setColorMood(q.mood); handled = true
-    }
-    if (handled && !historyKey(q)) lastContextLink = contextKey(q)
-    return handled
+    if (disposed || (!historyKey(q) && !contextKey(q))) return false
+    const query = { ...q }
+    const isCurrent = () => !disposed && request === historyRequest
+    const { applyPromptDeepLink } = await import('./promptDeepLinkActions')
+    if (!isCurrent()) return false
+    const result = await applyPromptDeepLink(query, deps, isCurrent)
+    if (!isCurrent()) return false
+    if (result.historyApplied) lastHistoryLink = historyKey(query)
+    if (result.handled && !historyKey(query)) lastContextLink = contextKey(query)
+    return result.handled
   }
 
   /** URL 场景参数与当前选中不一致时才需要重放深链（避免覆盖用户手动编辑的状态）。 */

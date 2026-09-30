@@ -387,7 +387,8 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
 
   await page.locator('.chat-input').fill('周五晚上做什么好？');
   await page.locator('.send-btn').click();
-  await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('今天也辛苦了', { timeout: 15_000 });
+  // The first reply has identical text; wait for the second turn before reading upstream calls.
+  await expect(page.locator('.message.assistant .message-bubble').nth(1)).toContainText('今天也辛苦了', { timeout: 15_000 });
 
   const calls = await callsTo(request, MOCK.ollama, '/api/chat');
   expect(calls).toHaveLength(2);

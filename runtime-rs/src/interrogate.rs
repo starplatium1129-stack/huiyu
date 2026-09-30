@@ -28,6 +28,9 @@ use std::{net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
 const MAX_BYTES: usize = 12 * 1024 * 1024;
+// A maximum-size image already occupies 16 MiB after base64 encoding. Keep a
+// bounded allowance for its data URL prefix and JSON fields as well.
+const MAX_BODY_BYTES: usize = MAX_BYTES.div_ceil(3) * 4 + 64 * 1024;
 pub struct InterrogateService {
     native: worker::Client,
     fallback: fallback::Fallback,
@@ -195,7 +198,7 @@ pub fn router(service: Arc<InterrogateService>) -> Router<AppState> {
     Router::new()
         .route(
             "/api/interrogate",
-            post(interrogate).layer(DefaultBodyLimit::max(16 * 1024 * 1024)),
+            post(interrogate).layer(DefaultBodyLimit::max(MAX_BODY_BYTES)),
         )
         .route("/api/interrogate/status", get(status))
         .layer(Extension(service))

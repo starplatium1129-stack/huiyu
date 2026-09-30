@@ -1,3 +1,4 @@
+import { readCharacterReference } from '../../utils/characterReferenceRead.ts'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { ref, onScopeDispose, getCurrentScope, type Ref } from 'vue'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '../../utils/characterReferenceData.ts'
@@ -132,7 +133,13 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     targetCard.characterId = charId
     targetCard.outfitId = ''
     targetCard.label = ''
-    await ensureCharacterReferencesLoaded(charId).catch(() => undefined)
+    try {
+      await ensureCharacterReferencesLoaded(charId, false, controller.signal)
+    } catch {
+      if (current(targetCard, controller)) deps.batchError.value = '角色参考档案读取失败，请重新选择重试'
+      finish(targetCard, controller)
+      return 0
+    }
     if (!current(targetCard, controller)) { finish(targetCard, controller); return 0 }
     const profile = getCharacterReferences(charId)
     if (!profile) {
@@ -169,9 +176,11 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
         try {
         const imgUrl = new URL(item.url, location.href)
         imgUrl.searchParams.set('t', String(Date.now()))
-        const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal: controller.signal })
-        if (!resp.ok) continue
-        const blob = await resp.blob()
+        const blob = await readCharacterReference(async signal => {
+          const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal })
+          return resp.ok ? resp.blob() : null
+        }, controller.signal)
+        if (!blob) continue
         if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue
         const dataUrl = await deps.readBlobAsDataURL(blob)
         const comma = dataUrl.indexOf(',')

@@ -158,6 +158,8 @@ it('a late temporary blob cannot replace the newer temporary pointer', async () 
   run.autoSave.value = false
   vi.mocked(imgPut).mockReturnValueOnce(firstImage.promise).mockResolvedValueOnce('new-image')
   const first = run.deliver('old')
+  // The deferred action must have reached storage before the newer image races it.
+  await vi.waitFor(() => expect(imgPut).toHaveBeenCalledOnce())
   await run.deliver('new')
   firstImage.resolve('old-image'); await first
   expect(run.temp()?.imageId).toBe('new-image')

@@ -2,12 +2,30 @@ import type { Ref } from 'vue'
 import { submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
 import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { AnimaPublicJob, AnimaRequest } from './animaSessionContract'
+import { ApiClientError } from '@/api/client'
+
+/** Queue-owned intent identity; task execution remains owned by the runtime. */
+export interface RuntimeSdAttempt {
+  key: string
+  task?: TaskRecord
+  rejected(): Promise<void>
+  cancel(): Promise<void>
+}
 
 async function image(kind: 'generation' | 'anima' | 'creative', input: Record<string, unknown>, key: string,
   signal: AbortSignal, update: (task: TaskRecord) => void, context?: Record<string, unknown>,
-  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void) {
+  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void, attempt?: RuntimeSdAttempt) {
   signal.throwIfAborted()
-  const accepted = await submitRuntimeTask(kind, input, key, context, { signal, onSubmitting })
+  let accepted = attempt?.task
+  if (!accepted) {
+    try { accepted = await submitRuntimeTask(kind, input, key, context, { signal, onSubmitting }) }
+    catch (error) {
+      // Only a definitive POST rejection releases a queue attempt; later
+      // observation or archive failures never permit another submission.
+      if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) await attempt?.rejected()
+      throw error
+    }
+  }
   await onAccepted?.(accepted)
   signal.throwIfAborted()
   const task = await waitForRuntimeTask(accepted.taskId, signal, update)
@@ -18,11 +36,11 @@ async function image(kind: 'generation' | 'anima' | 'creative', input: Record<st
 export async function runRuntimeSd(input: Record<string, unknown>, key: string, signal: AbortSignal,
   fields: { taskState: Ref<string>; statusText: Ref<string>; progress: Ref<number | null>; provider: Ref<'comfy' | 'webui' | ''>;
     resultUrl: Ref<string>; resultSeed: Ref<number | null>; resultTaskId: Ref<string>; resultPrompt: Ref<string> }, context?: Record<string, unknown>,
-  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void) {
+  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void, attempt?: RuntimeSdAttempt) {
   const { task, blob } = await image('generation', input, key, signal, value => {
     fields.taskState.value = value.status; fields.statusText.value = taskMessage(value); fields.progress.value = null
     fields.provider.value = value.provider === 'webui' ? 'webui' : 'comfy'
-  }, context, onAccepted, onSubmitting)
+  }, context, onAccepted, onSubmitting, attempt)
   signal.throwIfAborted()
   const url = URL.createObjectURL(blob)
   if (fields.resultUrl.value) URL.revokeObjectURL(fields.resultUrl.value)

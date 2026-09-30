@@ -5,9 +5,12 @@ import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { buildRuntimeSdInput } from '@/utils/sdRuntimeRequest'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { TaskRecord } from '../../../types/tasks'
+import type { RuntimeSdAttempt } from './runtimeImageSession'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 export interface SDGenerateOptions {
+  /** Existing FIFO intent; batch plans continue to own their own request keys. */
+  attempt?: RuntimeSdAttempt
   requestKey?: string
   onAccepted?: (task: TaskRecord) => void | Promise<void>
   onAcceptedId?: (id: string) => void | Promise<void>
@@ -55,6 +58,7 @@ export function useSDGenerate() {
   let activeJobId = ''
   let durableAttempt = false, durableKey = ''
   let batchObservation = false
+  let queueAttempt: RuntimeSdAttempt | undefined
 
   function abandonAcceptedJob(jobId: string) {
     if (!jobId) return
@@ -87,8 +91,9 @@ export function useSDGenerate() {
     const stopObservation = () => controller.abort()
     options.signal?.addEventListener('abort', stopObservation, { once: true })
     if (options.signal?.aborted) controller.abort()
-    durableAttempt = hasRuntimeTasks(); durableKey = ''
+    durableAttempt = hasRuntimeTasks(); durableKey = options.attempt?.key || options.requestKey || ''
     batchObservation = Boolean(options.requestKey)
+    queueAttempt = options.attempt
 
     try {
       params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
@@ -101,10 +106,10 @@ export function useSDGenerate() {
       const jobInput = buildRuntimeSdInput(params, payload, isLocalStudioHost())
       const loras = jobInput.loras
       if (durableAttempt) {
-        durableKey = options.requestKey || runtimeRequestKey('generation', jobInput)
+        durableKey = options.attempt?.key || options.requestKey || runtimeRequestKey('generation', jobInput)
         const { runRuntimeSd } = await import('./runtimeImageSession')
         const url = await runRuntimeSd(jobInput, durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext, options.onAccepted, options.onSubmitting)
+          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext, options.onAccepted, options.onSubmitting, options.attempt)
         lastLoras.value = loras
         return url
       }
@@ -147,7 +152,14 @@ export function useSDGenerate() {
     if (!generating.value) return
     taskState.value = 'cancelling'
     abortCtrl?.abort()
-    if (durableAttempt) { if (durableKey) { const key = durableKey; void import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key)).catch(() => { errorMsg.value = '取消尚未确认，请到任务中心核对' }) } return }
+    if (durableAttempt) {
+      if (durableKey) {
+        const key = durableKey
+        const cancellation = queueAttempt ? queueAttempt.cancel() : import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key))
+        void cancellation.catch(() => { errorMsg.value = '取消尚未确认，请到任务中心核对' })
+      }
+      return
+    }
     if (activeJobId) {
       abandonAcceptedJob(activeJobId)
     }
