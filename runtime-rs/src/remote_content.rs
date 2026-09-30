@@ -71,19 +71,6 @@ pub struct RemoteContent {
 }
 impl RemoteContent {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
-        let saved: Value = std::fs::read(config.runtime_root.join("config.json"))
-            .ok()
-            .and_then(|bytes| serde_json::from_slice(&bytes).ok())
-            .unwrap_or(Value::Null);
-        let configured = env::var("SCENE_SHOWCASE_DIR")
-            .ok()
-            .filter(|s| !s.trim().is_empty())
-            .or_else(|| {
-                saved["sceneShowcaseDir"]
-                    .as_str()
-                    .filter(|s| !s.trim().is_empty())
-                    .map(str::to_owned)
-            });
         let absolute = |path: PathBuf| {
             if path.is_absolute() {
                 path
@@ -93,20 +80,9 @@ impl RemoteContent {
                     .join(path)
             }
         };
-        let mut showcase: Vec<PathBuf> = configured
-            .map(PathBuf::from)
-            .map(absolute)
+        let showcase = crate::resources::offline::showcase_root(config)
             .into_iter()
             .collect();
-        showcase.push(config.ai_workspace_root.join("SceneShowcase"));
-        showcase.push(
-            config
-                .app_root
-                .parent()
-                .unwrap_or(&config.app_root)
-                .join("AI/SceneShowcase"),
-        );
-        showcase.dedup();
         Self {
             app: config.content_root(),
             runtime: config.runtime_root.clone(),
@@ -261,36 +237,12 @@ impl RemoteContent {
         Ok(response)
     }
     async fn showcase_root(&self) -> Option<PathBuf> {
-        use icu_collator::{Collator, options::CollatorOptions};
         for root in &self.showcase {
             if tokio::fs::metadata(root.join("manifest.json"))
                 .await
                 .is_ok_and(|meta| meta.is_file())
             {
                 return Some(root.clone());
-            }
-            let Ok(mut entries) = tokio::fs::read_dir(root).await else {
-                continue;
-            };
-            let mut collections = Vec::new();
-            while let Ok(Some(entry)) = entries.next_entry().await {
-                let name = entry.file_name().to_string_lossy().into_owned();
-                if name.starts_with('.') || !entry.file_type().await.is_ok_and(|kind| kind.is_dir())
-                {
-                    continue;
-                }
-                if tokio::fs::metadata(entry.path().join("manifest.json"))
-                    .await
-                    .is_ok_and(|meta| meta.is_file())
-                {
-                    collections.push((name, entry.path()));
-                }
-            }
-            if !collections.is_empty() {
-                let locale: icu_locale::Locale = "zh-CN".parse().ok()?;
-                let collator = Collator::try_new(locale.into(), CollatorOptions::default()).ok()?;
-                collections.sort_by(|a, b| collator.compare(&b.0, &a.0));
-                return collections.into_iter().next().map(|(_, path)| path);
             }
         }
         None

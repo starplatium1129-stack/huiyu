@@ -1,5 +1,5 @@
 use super::{Error, Result, Value, config::Context, fs, json};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 pub(super) struct Lock {
     target: PathBuf,
     token: String,
@@ -39,16 +39,19 @@ fn alive(owner: &Value) -> Result<bool> {
     Ok(crate::processes::liveness(pid) != "dead")
 }
 pub(super) fn acquire(ctx: &Context, name: &str, depth: u8) -> Result<Lock> {
+    acquire_at(&ctx.store, name, depth)
+}
+pub(super) fn acquire_at(store: &Path, name: &str, depth: u8) -> Result<Lock> {
     if depth > 8 {
         return Err(Error::new(
             "LOCK_UNCERTAIN",
             "Too many interrupted recoveries",
         ));
     }
-    let target = fs::child(&ctx.store, &format!("locks/{name}.json"))?;
+    let target = fs::child(store, &format!("locks/{name}.json"))?;
     let token = uuid::Uuid::new_v4().to_string();
     let owner = json!({"pid":std::process::id(),"host":fs::hostname()?,"token":token});
-    let claim = ctx.store.join("locks").join(format!("claim-{token}.json"));
+    let claim = store.join("locks").join(format!("claim-{token}.json"));
     fs::write_json(&claim, &owner)?;
     let result = (|| {
         for _ in 0..4 {
@@ -70,8 +73,8 @@ pub(super) fn acquire(ctx: &Context, name: &str, depth: u8) -> Result<Lock> {
             if alive(&old)? {
                 return Err(Error::new("BUSY", "Another resource operation active"));
             }
-            let _reaper = acquire(
-                ctx,
+            let _reaper = acquire_at(
+                store,
                 &format!("reap-{}", old["token"].as_str().unwrap()),
                 depth + 1,
             )?;

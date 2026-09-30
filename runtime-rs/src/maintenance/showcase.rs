@@ -1,70 +1,10 @@
-use super::{Error, Result, fs};
+use super::fs;
 use crate::config::Config;
-use icu_collator::{Collator, options::CollatorOptions};
-use icu_locale::Locale;
 use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
-fn collections(root: &Path) -> Result<Vec<PathBuf>> {
-    fs::safe(root, true, false)?;
-    let mut paths = Vec::new();
-    for entry in std::fs::read_dir(root)? {
-        let entry = entry?;
-        if entry.file_type()?.is_dir()
-            && !entry.file_name().to_string_lossy().starts_with('.')
-            && entry.path().join("manifest.json").exists()
-        {
-            paths.push(entry.path());
-        }
-    }
-    let locale: Locale = "zh-CN".parse().unwrap();
-    let collator = Collator::try_new(locale.into(), CollatorOptions::default())
-        .map_err(|_| Error::path("样张排序不可用"))?;
-    paths.sort_by(|a, b| {
-        collator.compare(
-            &b.file_name().unwrap().to_string_lossy(),
-            &a.file_name().unwrap().to_string_lossy(),
-        )
-    });
-    Ok(paths)
-}
 pub(super) fn root(config: &Config) -> Option<PathBuf> {
-    let saved = fs::json(&config.runtime_root.join("config.json")).unwrap_or(Value::Null);
-    let explicit = std::env::var_os("SCENE_SHOWCASE_DIR")
-        .filter(|value| !value.is_empty())
-        .map(PathBuf::from)
-        .or_else(|| {
-            saved["sceneShowcaseDir"]
-                .as_str()
-                .filter(|value| !value.trim().is_empty())
-                .map(PathBuf::from)
-        });
-    let mut roots = Vec::new();
-    if let Some(path) = explicit {
-        roots.push(path);
-    }
-    roots.push(config.ai_workspace_root.join("SceneShowcase"));
-    roots.push(
-        config
-            .app_root
-            .parent()
-            .unwrap_or(&config.app_root)
-            .join("AI/SceneShowcase"),
-    );
-    for root in roots {
-        let Ok(root) = fs::absolute(&root) else {
-            continue;
-        };
-        if root.join("manifest.json").exists() {
-            return Some(root);
-        }
-        if let Ok(paths) = collections(&root)
-            && let Some(path) = paths.first()
-        {
-            return Some(path.clone());
-        }
-    }
-    None
+    crate::resources::offline::showcase_root(config)
 }
 pub(super) fn hero(root: Option<&Path>) -> Value {
     // Historical showcase editions shipped their own home art. Only an explicit

@@ -11,7 +11,7 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 function git(root: string, ...args: string[]) {
   const env = { ...process.env };
   for (const key of Object.keys(env)) if (/^GIT_/i.test(key)) delete env[key];
-  const result = spawnSync('git', ['-c', 'core.hooksPath=' + os.devNull, '-c', 'core.autocrlf=false',
+  const result = spawnSync('git', ['-c', 'core.hooksPath=' + os.devNull, '-c', 'core.autocrlf=false', '-c', 'core.symlinks=false',
     '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgsign=false', ...args],
   { cwd: root, env, encoding: 'utf8', timeout: 20000, windowsHide: true, shell: false });
   assert.equal(result.status, 0, `${args[0]}: ${result.stderr}`);
@@ -20,7 +20,7 @@ function git(root: string, ...args: string[]) {
 
 function fixture(t: any, withGit: any = true) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'content-history-'));
   const write = (file: string, value: any) => {
     const destination = path.join(root, file);
     fs.mkdirSync(path.dirname(destination), { recursive: true });

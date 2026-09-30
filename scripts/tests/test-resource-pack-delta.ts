@@ -70,7 +70,7 @@ function snapshot(dir: any): any {
  */
 function buildDeltaFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-delta-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'resource-pack-delta-'));
   const root = path.join(base, 'root');
   fs.mkdirSync(path.join(root, 'assets/dir'), { recursive: true });
   fs.mkdirSync(path.join(root, 'artifacts'), { recursive: true });
@@ -88,7 +88,7 @@ function buildDeltaFixture(t: any) {
 /** 仅删除的夹具：v1 有 alpha+golf，v2 只剩 alpha（golf 已删除）。 */
 function buildRemovalFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-delta-rm-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'resource-pack-delta-'));
   const root = path.join(base, 'root');
   fs.mkdirSync(path.join(root, 'assets'), { recursive: true });
   fs.mkdirSync(path.join(root, 'artifacts'), { recursive: true });

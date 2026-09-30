@@ -58,7 +58,7 @@ test('默认文件工具拒绝外向目录链接，允许内部链接与新文�
     assert.equal((await runToolUntrusted(root, 'read_file', { path: 'inward/marker.txt' })).output, 'INSIDE_FIXTURE');
     assert.equal((await runToolUntrusted(root, 'write_file', { path: 'inward/new/deep.txt', content: 'inside' })).ok, true);
     assert.equal(fs.readFileSync(path.join(root, 'inside/new/deep.txt'), 'utf8'), 'inside');
-  } finally { fs.rmSync(parent, { recursive: true, force: true }); }
+  } finally { (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(parent, 'aics-tools-'); }
 });
 
 test('通用命令必须由操作员启用，模型参数不能声明信任', async () => {

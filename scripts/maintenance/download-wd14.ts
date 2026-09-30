@@ -1,136 +1,38 @@
-import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors'
+import path from 'node:path'
+import { WD14_FILES, officialUrl, type ModelFile } from '../lib/model-download-manifest'
+import { downloadPlan, runModelDownloads } from '../lib/model-download'
+import { errorMessage } from '../lib/runtime-errors'
 
-/**
- * scripts/maintenance/download-wd14.ts
- *
- * 一键下载本地 WD14 真实反推模型（wd-v1-4-moat-tagger-v2）。
- * 默认使用 ModelScope；--mirror 切换 HF-Mirror，--official 切换 HuggingFace。
- * 下载完成后放进 runtime/models/interrogate/，自动点亮前端真实反推。
- *
- * 用法：
- *   node scripts/maintenance/download-wd14.js              # 默认从 ModelScope 下载
- *   node scripts/maintenance/download-wd14.js --mirror    # 从 HF-Mirror 下载
- *   node scripts/maintenance/download-wd14.js --official  # 从 HuggingFace 官方源下载
- */
-
-const fs: typeof import('fs') = require('fs')
-const path: typeof import('path') = require('path')
-const https: typeof import('https') = require('https')
-
-const USE_OFFICIAL = process.argv.includes('--official')
-const USE_MIRROR = process.argv.includes('--mirror')
-const TARGET_DIR = path.resolve(__dirname, '..', '..', 'runtime', 'models', 'interrogate')
-
-const FILES = [
-  {
-    name: 'wd-v1-4-moat-tagger-v2.csv',
-    remotePath: 'selected_tags.csv',
-    label: '标签索引表 (CSV)',
-  },
-  {
-    name: 'wd-v1-4-moat-tagger-v2.onnx',
-    remotePath: 'model.onnx',
-    label: 'ONNX 神经网络权重',
-  },
-]
-
-function getFileUrl(remotePath: string): string {
-  if (USE_OFFICIAL) {
-    return `https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/${remotePath}`
-  }
-  if (USE_MIRROR) {
-    return `https://hf-mirror.com/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/${remotePath}`
-  }
-  // 默认使用 ModelScope；实际速度与可达性由运行环境决定。
-  return `https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/${remotePath}`
+export function wd14Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
+  if (source === 'mirror') return officialUrl(entry).replace('https://huggingface.co/', 'https://hf-mirror.com/')
+  if (source === 'modelscope') return `https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/${entry.remotePath}`
+  return officialUrl(entry)
 }
 
-function downloadFile(url: string, targetPath: string, label: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    https.get(url, { headers: { 'user-agent': 'huiyu-model-downloader' } }, res => {
-      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        res.resume()
-        const redirectUrl = new URL(res.headers.location, url).toString()
-        downloadFile(redirectUrl, targetPath, label).then(resolve, reject)
-        return
-      }
-
-      if (res.statusCode !== 200) {
-        res.resume()
-        reject(new Error(`HTTP ${res.statusCode} 获取失败: ${url}`))
-        return
-      }
-
-      const total = Number(res.headers['content-length']) || 0
-      let received = 0
-      const tmpPath = `${targetPath}.tmp`
-      const out = fs.createWriteStream(tmpPath)
-
-      res.on('data', (chunk: Buffer) => {
-        received += chunk.length
-        if (total > 0) {
-          const percent = Math.floor((received / total) * 100)
-          const mbRec = (received / 1048576).toFixed(1)
-          const mbTot = (total / 1048576).toFixed(1)
-          process.stdout.write(`\r  ⬇️ [${percent}%] ${label}: ${mbRec} / ${mbTot} MB`)
-        }
-      })
-
-      res.pipe(out)
-
-      out.on('finish', () => {
-        process.stdout.write('\n')
-        out.close(() => {
-          if (fs.existsSync(targetPath)) fs.unlinkSync(targetPath)
-          fs.renameSync(tmpPath, targetPath)
-          resolve()
-        })
-      })
-
-      out.on('error', err => {
-        res.destroy()
-        if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath)
-        reject(err)
-      })
-    }).on('error', reject)
-  })
+async function main(): Promise<void> {
+  const args = process.argv.slice(2)
+  if (args.includes('--help')) {
+    console.log('models:download-wd14 [--target-dir <writable directory>] [--official|--modelscope|--mirror] [--plan]\nDefault: pinned Hugging Face publisher; ~311 MiB ONNX + CSV. --plan prints metadata without network or writes.\nCtrl+C cancels. Bytes and SHA-256 must match before a final file is installed.')
+    return
+  }
+  for (let index = 0; index < args.length; index++) {
+    if (args[index] === '--target-dir') {
+      if (!args[index + 1] || args[index + 1]!.startsWith('--')) throw Error('--target-dir requires a path')
+      index++
+    } else if (!['--official', '--modelscope', '--mirror', '--plan'].includes(args[index]!)) throw Error(`Unknown argument: ${args[index]}`)
+  }
+  const sources = ['--official', '--modelscope', '--mirror'].filter(flag => args.includes(flag))
+  if (sources.length > 1) throw Error('Choose one model source')
+  const source = args.includes('--mirror') ? 'mirror' : args.includes('--modelscope') ? 'modelscope' : 'official'
+  const index = args.indexOf('--target-dir')
+  const root = path.resolve(index >= 0 ? args[index + 1]! : process.env.AICS_WD14_MODEL_DIR || path.join(__dirname, '../../runtime/models/interrogate'))
+  const url = (entry: ModelFile) => wd14Url(entry, source)
+  if (args.includes('--plan')) { console.log(JSON.stringify(downloadPlan(root, WD14_FILES, url), null, 2)); return }
+  console.log(`WD14 source: ${source}; target: ${root}`)
+  await runModelDownloads(root, WD14_FILES, url)
+  console.log('WD14 文件已通过字节校验。检查 /api/interrogate/status 和一张真实反推；原生 DLL 与设备状态需另验。')
 }
 
-async function main() {
-  const sourceName = USE_OFFICIAL ? 'HuggingFace 官方' : (USE_MIRROR ? 'HF-Mirror 镜像' : 'ModelScope 魔搭（国内高速）')
-  console.log(`=== 绘遇 HUIYU · WD14 反推模型一键下载 ===`)
-  console.log(`下载源: ${sourceName}`)
-  console.log(`目标路径: ${TARGET_DIR}\n`)
-
-  fs.mkdirSync(TARGET_DIR, { recursive: true })
-
-  let failed = 0
-  for (const file of FILES) {
-    const target = path.join(TARGET_DIR, file.name)
-    if (fs.existsSync(target) && fs.statSync(target).size > 1024) {
-      console.log(`[已存在] ${file.label}: ${file.name} (${(fs.statSync(target).size / 1048576).toFixed(1)} MB)`)
-      continue
-    }
-
-    const url = getFileUrl(file.remotePath)
-    console.log(`[正在下载] ${file.label}...`)
-    try {
-      await downloadFile(url, target, file.label)
-      console.log(`  ✔ 下载完成: ${file.name}`)
-    } catch (e) {
-      failed += 1
-      console.error(`  ✘ 下载失败: ${runtimeErrorMessage(e)}`)
-    }
-  }
-
-  console.log('')
-  if (failed > 0) {
-    console.error(`⚠️ 有 ${failed} 个文件未完成下载。可重新运行本脚本继续。`)
-    process.exitCode = 1
-  } else {
-    console.log(`🎉 恭喜！WD14 本地真实反推模型已就绪！`)
-    console.log(`👉 回到绘遇工作台刷新网页，反推按钮旁将点亮绿色的 [WD14 · 真实模型] 徽标！`)
-  }
-}
-
-void main()
+if (require.main === module) void main().catch(error => {
+  console.error(errorMessage(error)); if (process.exitCode !== 130) process.exitCode = 1
+})

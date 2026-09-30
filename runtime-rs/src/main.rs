@@ -6,6 +6,10 @@ use tokio_util::sync::CancellationToken;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if let Some(result) = huiyu_runtime::resources::offline::cli(&args).await? {
+        println!("{}", serde_json::to_string_pretty(&result)?);
+        return Ok(());
+    }
     if let Some(result) = huiyu_runtime::maintenance::cli::run(&args)? {
         println!("{}", serde_json::to_string_pretty(&result)?);
         if result.get("executable") == Some(&serde_json::Value::Bool(false))
@@ -17,11 +21,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.iter().any(|arg| arg == "--help" || arg == "-h") {
         println!(
-            "huiyu-runtime --app-root <path> [--bind 127.0.0.1:3000]\n  [--workspace-root <absolute-private-path> --workspace-id <id> [--create-workspace]]\nDesktop session: AICS_DESKTOP_GATEWAY_TOKEN + AICS_DESKTOP_SOURCE_PROFILE_ID.\nMaintenance recovery: huiyu-runtime maintenance-recovery --help"
+            "huiyu-runtime --app-root <path> [--bind 127.0.0.1:3000]\n  [--workspace-root <absolute-private-path> --workspace-id <id> [--create-workspace]]\nDesktop session: AICS_DESKTOP_GATEWAY_TOKEN + AICS_DESKTOP_SOURCE_PROFILE_ID.\nMaintenance recovery: huiyu-runtime maintenance-recovery --help\nOffline import: huiyu-runtime offline-import --help"
         );
         return Ok(());
     }
     let mut config = Config::from_env()?;
+    let _offline_session = huiyu_runtime::resources::offline::gateway_guard(&config)?;
     config.prepare_content()?;
     let shutdown = CancellationToken::new();
     let signal = shutdown.clone();

@@ -23,7 +23,8 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MODEL = REPO_ROOT.parent / "AI" / "Voice" / "models" / "translation" / "m2m100_418m"
+AI_ROOT = Path(os.environ.get("AI_WORKSPACE_ROOT", REPO_ROOT.parent / "AI"))
+DEFAULT_MODEL = AI_ROOT / "Voice" / "models" / "translation" / "m2m100_418m"
 MODEL_PATH = Path(os.environ.get("AICS_TRANSLATION_MODEL", DEFAULT_MODEL))
 MAX_INPUT_CHARS = 2000
 TRANSLATION_BEAMS = max(1, min(4, int(os.environ.get("AICS_TRANSLATION_BEAMS", "1"))))
@@ -40,7 +41,7 @@ def fail(message: str, code: int = 1) -> int:
 
 
 def segments(text: str) -> list[str]:
-    """Keep dialogue punctuation while staying comfortably below Marian's input limit."""
+    """Keep dialogue punctuation while staying below the M2M100 input limit."""
     parts = re.split(r"(?<=[。！？!?；;\n])", text.strip())
     result: list[str] = []
     for part in parts:

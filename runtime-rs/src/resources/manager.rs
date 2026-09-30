@@ -41,7 +41,11 @@ impl Service {
             config,
             std::env::var_os("AICS_RESOURCE_CONFIG")
                 .filter(|value| !value.is_empty())
-                .map(PathBuf::from),
+                .map(PathBuf::from)
+                .or_else(|| {
+                    let path = config.runtime_root.join("offline-resource-config.json");
+                    path.exists().then_some(path)
+                }),
             std::env::var("AICS_RESOURCE_MANAGEMENT").as_deref() == Ok("trusted"),
             shutdown,
         )

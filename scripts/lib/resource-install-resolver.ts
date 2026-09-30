@@ -176,4 +176,4 @@ function resolveInstalledResourceRoots(options: any = {}) {
     entries, verifiedFiles: verified.manifest.entries.length });
 }
 
-export = { resolveInstalledResourceRoots };
+export = { resolveInstalledResourceRoots, serviceable };

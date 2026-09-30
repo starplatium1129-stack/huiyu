@@ -87,7 +87,7 @@ function gitFixture(t: any) {
     assert.equal(r.status, 0, r.stderr);
     return r.stdout.trim();
   };
-  git('init', '--template=');
+  git('-c', 'core.symlinks=false', 'init', '--template=');
   // The fixture snapshots .git bytes: automatic maintenance is an unrelated
   // writer and may remove its lock between readdir and stat on newer Git.
   git('config', '--local', 'maintenance.auto', 'false');
@@ -104,7 +104,7 @@ function snapshotTree(root: any) {
 }
 function fixture(t: any): any {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'aics-delivery-'));
   const d = { schemaVersion: 1, commit, baseline: 'c'.repeat(40), scope: 'isolated office CPU', environment: { platform: 'win32', node: 'v24.18.0' }, build: { manifestSha256: hash }, fullGate: { status: 'passed', log: 'gate.log' } };
   const write = (file: any, value: any) => fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   write('evidence.json', d);
@@ -263,7 +263,7 @@ test('HEAD 检查识别旧提交和缺少最终 commit，保留显式预期比�
 test('非 Git root 与 unborn HEAD 明确报错', t => {
   const f = fixture(t);
   assert.equal(f.run({ 'check-head': true }).repositoryHead.status, 'unavailable');
-  const init = spawnSync('git', ['init', '--template='], { cwd: f.root, encoding: 'utf8' });
+  const init = spawnSync('git', ['-c', 'core.symlinks=false', 'init', '--template='], { cwd: f.root, encoding: 'utf8' });
   assert.equal(init.status, 0, init.stderr);
   assert.equal(f.run({ 'check-head': true }).exitCode, 1);
 });
@@ -336,7 +336,7 @@ test('worktree 非 Git unavailable；unborn 的未跟踪状态不依赖 HEAD', t
   const r = f.run({ 'check-worktree': true });
   assert.equal(r.repositoryWorktree.status, 'unavailable');
   assert.equal(r.exitCode, 1);
-  assert.equal(spawnSync('git', ['init', '--template='], { cwd: f.root }).status, 0);
+  assert.equal(spawnSync('git', ['-c', 'core.symlinks=false', 'init', '--template='], { cwd: f.root }).status, 0);
   const unborn = f.run({ 'check-worktree': true, 'check-head': true });
   assert.equal(unborn.repositoryWorktree.status, 'dirty');
   assert.equal(unborn.repositoryHead.status, 'unavailable');

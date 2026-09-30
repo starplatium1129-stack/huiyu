@@ -1,131 +1,38 @@
-import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
-'use strict';
+import path from 'node:path'
+import { H3_FILES, officialUrl, type ModelFile } from '../lib/model-download-manifest'
+import { downloadPlan, runModelDownloads } from '../lib/model-download'
+import { errorMessage } from '../lib/runtime-errors'
 
-// MiniMax H3（ComfyUI 官方量化组合 + lightx2v Turbo LoRA）模型下载脚本。
-//
-// 目标文件（与 routes/video.js 的 minimax-h3 requirements 一一对应）：
-//   diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors   ~21GB
-//   text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors          ~15.7GB
-//   vae/minimax_h3_video_vae_fp16.safetensors                           ~5.2GB
-//   vae/minimax_h3_audio_vae_fp32.safetensors                           ~0.6GB
-//   loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors    ~2GB
-//     （lightx2v/Minimax-h3-Turbo 官方蒸馏 LoRA，8 步代替原生 20 步）
-//
-// 用法：
-//   node scripts/maintenance/download-minimax-h3.js --modelscope  # ModelScope（国内最快，推荐）
-//   node scripts/maintenance/download-minimax-h3.js               # Hugging Face 直连
-//   node scripts/maintenance/download-minimax-h3.js --mirror      # hf-mirror.com 加速
-//   node scripts/maintenance/download-minimax-h3.js --models-root "D:/ComfyUI/models"
-// 已存在且非空的文件自动跳过；中断后重跑会从零继续（不覆盖已完成文件）。
-
-let fs: typeof import('fs') = require('fs');
-let path: typeof import('path') = require('path');
-let https: typeof import('https') = require('https');
-
-let DEFAULT_REPO = 'Comfy-Org/MiniMax-H3';
-let MODE_MODELSCOPE = process.argv.includes('--modelscope');
-let MODE_MIRROR = process.argv.includes('--mirror');
-
-// [安装目录, 文件名, 仓库（缺省 Comfy-Org/MiniMax-H3）, ModelScope 路径前缀（null = 仓库根目录；缺省 = 安装目录）]
-let FILES: any[] = [
-  ['diffusion_models', 'minimax_h3_fl2va_pruned_int8_convrot.safetensors'],
-  ['text_encoders', 'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors'],
-  ['vae', 'minimax_h3_video_vae_fp16.safetensors'],
-  ['vae', 'minimax_h3_audio_vae_fp32.safetensors'],
-  ['loras', 'minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors', 'lightx2v/Minimax-h3-Turbo', null],
-];
-
-function modelRoot() {
-  let flagIndex = process.argv.indexOf('--models-root');
-  if (flagIndex >= 0 && process.argv[flagIndex + 1]) {
-    return path.resolve(process.argv[flagIndex + 1]);
-  }
-  // 与 routes/video.js 的 modelRoot 默认一致：<项目根>/../AI/ComfyUI/models
-  return path.resolve(__dirname, '..', '..', '..', 'AI', 'ComfyUI', 'models');
+export function h3Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
+  if (source === 'mirror') return officialUrl(entry).replace('https://huggingface.co/', 'https://hf-mirror.com/')
+  if (source === 'modelscope') return `https://www.modelscope.cn/models/${entry.repo}/resolve/master/${entry.remotePath}`
+  return officialUrl(entry)
 }
 
-function fileUrl(file: any) {
-  let repo = file[2] || DEFAULT_REPO;
-  let fileName = encodeURIComponent(file[1]);
-  if (MODE_MODELSCOPE) {
-    let scopePath = file[3] === undefined ? file[0] + '/' + fileName : (file[3] === null ? fileName : file[3] + '/' + fileName);
-    return 'https://www.modelscope.cn/models/' + repo + '/resolve/master/' + scopePath;
+async function main(): Promise<void> {
+  const args = process.argv.slice(2)
+  if (args.includes('--help')) {
+    console.log('models:download-h3 --models-root <ComfyUI/models> [--modelscope|--mirror] [--plan]\nSix exact workflow files, ~46.38 GB / 43.20 GiB. Default: pinned Comfy-Org Hugging Face source.\nRequires compatible ComfyUI, PyTorch cu130 and verified nodes/hardware. --plan performs no network/write.\nCtrl+C cancels; only verified bytes become final weights. Interrupted file restarts from zero.')
+    return
   }
-  let host = MODE_MIRROR ? 'hf-mirror.com' : 'huggingface.co';
-  return 'https://' + host + '/' + repo + '/resolve/main/' + file[0] + '/' + fileName;
+  for (let index = 0; index < args.length; index++) {
+    if (args[index] === '--models-root') {
+      if (!args[index + 1] || args[index + 1]!.startsWith('--')) throw Error('--models-root requires a path')
+      index++
+    } else if (!['--modelscope', '--mirror', '--plan'].includes(args[index]!)) throw Error(`Unknown argument: ${args[index]}`)
+  }
+  if (args.includes('--modelscope') && args.includes('--mirror')) throw Error('Choose one model source')
+  const index = args.indexOf('--models-root')
+  if (index < 0) throw Error('--models-root is required; select the actual ComfyUI/models directory')
+  const root = path.resolve(args[index + 1]!)
+  const source = args.includes('--mirror') ? 'mirror' : args.includes('--modelscope') ? 'modelscope' : 'official'
+  const url = (entry: ModelFile) => h3Url(entry, source)
+  if (args.includes('--plan')) { console.log(JSON.stringify(downloadPlan(root, H3_FILES, url), null, 2)); return }
+  console.log(`H3 source: ${source}; target: ${root}`)
+  await runModelDownloads(root, H3_FILES, url)
+  console.log('H3 六个文件已通过字节校验；仍需 /api/video/status、节点与真实设备短片验收。')
 }
 
-function download(url: any, target: any) {
-  return new Promise<any>(function (resolve: any, reject: any) {
-    https.get(url, { headers:{ 'user-agent': 'aics-downloader' } }, function (response: any) {
-      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        response.resume();
-        download(new URL(response.headers.location, url).toString(), target).then(resolve, reject);
-        return;
-      }
-      if (response.statusCode !== 200) {
-        response.resume();
-        reject(new Error('HTTP ' + response.statusCode + ' for ' + url));
-        return;
-      }
-      let total = Number(response.headers['content-length']) || 0;
-      let received = 0;
-      let out = fs.createWriteStream(target);
-      response.on('data', function (chunk: any) {
-        received += chunk.length;
-        if (total > 0) {
-          let percent = Math.floor(received / total * 100);
-          process.stdout.write('\r  ' + percent + '% (' + (received / 1048576).toFixed(0) + ' / ' + (total / 1048576).toFixed(0) + ' MB)');
-        }
-      });
-      response.pipe(out);
-      out.on('finish', function () {
-        process.stdout.write('\n');
-        out.close();
-        resolve();
-      });
-      out.on('error', function (error: any) {
-        response.destroy();
-        reject(error);
-      });
-    }).on('error', reject);
-  });
-}
-
-async function run() {
-  let root = modelRoot();
-  let source = MODE_MODELSCOPE ? 'ModelScope（www.modelscope.cn）' : (MODE_MIRROR ? 'hf-mirror.com' : 'huggingface.co');
-  console.log('下载源:', source);
-  console.log('目标目录:', root);
-  console.log('');
-  let failed = 0;
-  for (let file of FILES) {
-    let dir = path.join(root, file[0]);
-    let target = path.join(dir, file[1]);
-    fs.mkdirSync(dir, { recursive:true });
-    if (fs.existsSync(target) && fs.statSync(target).size > 0) {
-      console.log('[跳过] ' + file[0] + '/' + file[1] + '（已存在）');
-      continue;
-    }
-    let url = fileUrl(file);
-    console.log('[下载] ' + file[0] + '/' + file[1]);
-    try {
-      await download(url, target);
-    } catch (error) {
-      failed += 1;
-      console.error('[失败] ' + file[0] + '/' + file[1] + ': ' + runtimeErrorMessage(error));
-    }
-  }
-  console.log('');
-  if (failed) {
-    console.error('完成，但有 ' + failed + ' 个文件下载失败；重跑本脚本可继续。');
-    process.exitCode = 1;
-  } else {
-    console.log('全部完成。回到视频页点击「重新检测」即可启用 MiniMax H3。');
-  }
-}
-
-run().catch(function (error: any) {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) void main().catch(error => {
+  console.error(errorMessage(error)); if (process.exitCode !== 130) process.exitCode = 1
+})

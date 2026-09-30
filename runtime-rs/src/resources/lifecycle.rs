@@ -1,4 +1,4 @@
-mod copy;
+pub(super) mod copy;
 use super::{
     Error, Result, Value,
     config::{Context, cancelled},

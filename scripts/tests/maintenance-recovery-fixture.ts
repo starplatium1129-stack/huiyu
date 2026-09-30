@@ -21,7 +21,7 @@ function createFixture() {
   }
   fs.writeFileSync(path.join(rootDir, 'data', 'unrelated.json'), 'unrelated bytes\r\n');
   const options = { rootDir, runtimeRoot: path.join(rootDir, 'runtime') };
-  return { base, options, files: names.map(name => path.join(rootDir, name)), cleanup: () => fs.rmSync(base, { recursive: true, force: true }) };
+  return { base, options, files: names.map(name => path.join(rootDir, name)), cleanup: () => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'aics-recovery-') };
 }
 function tree(directory: string, excludeRuntime: any = false, output: any = {}, prefix: any = '') {
   if (!fs.existsSync(directory)) return output;
