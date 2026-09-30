@@ -3,7 +3,7 @@
 export function proseToken(value: string): string {
   const token = value.replace(/^\(+|\)+$/g, '').replace(/<lora:[^>]+>/gi, '').replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '').trim()
   if (!token || /^(?:score_\d+|best_quality|amazing_quality|masterpiece|very_aesthetic|absurdres|newest|highres|highly_detailed|safe|sensitive|nsfw|nene_r18|natsume_r18)$/i.test(token)) return ''
-  // 官方服装触发词在 Krea 散文流中映射为自然英文词组（文档:model-prompting-and-parameters-guide 排查点 2），
+  // 官方服装触发词在 Krea 散文流中映射为自然英文词组（规则见 .agents/skills/studio-prompt-craft/references/krea.md），
   // 而非直接擦除——服装细节必须保留进散文。
   const readable = token
     .replace(/^ayachi_nene$/i, 'Nene').replace(/^shiki_natsume$/i, 'Natsume')

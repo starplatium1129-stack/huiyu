@@ -1,5 +1,5 @@
 # AI-CG-Studio local ComfyUI launcher.
-# Historical version experiments: docs/archive/troubleshooting/comfyui-dynamic-vram-crash.md.
+# Current setup and model guide: docs/guides/setup-and-models.md.
 # Report installed versions at launch; do not claim an old dependency combination is active.
 # This command starts only one local instance and preserves the installed model environment.
 

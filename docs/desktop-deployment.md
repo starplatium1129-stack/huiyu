@@ -15,7 +15,7 @@
 
 `npm run wf -- check:desktop-deploy` 使用临时安装目录、独立 owner 记录及真实进程夹具，验证受控退出、旧版本拒绝、进程身份变化与未知残留锁保留；不操作当前安装或触发 UAC。安装后重启会核对新宿主实例及其认证网关就绪，页面/图片显示另做实际界面验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
 
-`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[迁移记录](architecture/NODE-RUST-MIGRATION-REPORT.md)。
+`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[Rust 迁移与剩余验收](../plans/013-node-to-rust-migration.md)。
 
 旧 1.6.0 的缺失 `docs/redirects.json` 修复属于历史 Node 版本，应使用对应版本的发行流程。当前 `-StartupRepair` 仅为已匹配 Rust 构建的安装同步文档、图标和快捷方式，不能升级旧 Node 安装。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
 
@@ -100,7 +100,7 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 
 ## 一、决策表：改了什么，就用什么
 
-2026-09-26 当前桌面已启用独立打包 UI（`http://tauri.localhost`）。它的前端编译进原生 EXE；修改 Vue / TS / CSS 后必须重新打包并完整安装，仅复制网关 `dist/` 不会更新桌面界面。构建时保留已验收的 `AICS_BUNDLED_UI_VERIFIED=1` 标记；来源切换和真实资料迁移仍经宿主维护流程，不能用标记跳过资料门槛。此次安装与迁移证据见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md)。
+2026-09-26 当前桌面已启用独立打包 UI（`http://tauri.localhost`）。它的前端编译进原生 EXE；修改 Vue / TS / CSS 后必须重新打包并完整安装，仅复制网关 `dist/` 不会更新桌面界面。构建时保留已验收的 `AICS_BUNDLED_UI_VERIFIED=1` 标记；来源切换和真实资料迁移仍经宿主维护流程，不能用标记跳过资料门槛。此次安装与迁移证据见 [当前实现与安装边界](project-status.md#源码与本机安装)。
 
 | 改动内容 | 用哪个 | 原因 |
 |---|---|---|

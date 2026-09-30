@@ -1,16 +1,16 @@
 # Workspace 与数据迁移实施规范
 
-> 已落地的实施契约；对应修订版 R1–R4 与 R9。入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约；对应修订版 R1–R4 与 R9。入口：[现行架构契约](../engineering-contracts.md#重构期间的任务与持久化边界)。
 
-> 主线已接入；本机 `3002` 来源迁移、SQLite authority 激活及 bundled UI 切换见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。激活由持久 workspace 指针决定，不自动迁移其他来源；Web 继续使用独立 IndexedDB。R2 报告保留当次默认关闭的历史边界，不能作为当前未激活的结论。
+> 主线已接入；本机 `3002` 来源迁移、SQLite authority 激活及 bundled UI 切换见 [当前实现与安装边界](../project-status.md#源码与本机安装)，当前安装身份以[项目状态](../project-status.md)为准。激活由持久 workspace 指针决定，不自动迁移其他来源；Web 继续使用独立 IndexedDB。其他来源不因当前来源已激活而自动迁移。
 
 ## 1. 已定方案与所有权
 
-桌面作品库由 Node 应用运行时统一管理；SQLite 元数据和不可变媒体文件共同组成 workspace。Vue 不直接访问桌面 SQLite，Rust 不建立第二套业务仓储。
+桌面作品库由 Rust 应用运行时统一管理；SQLite 元数据和不可变媒体文件共同组成 workspace。Vue 通过窄 HTTP 契约访问，不能直接访问 SQLite 或建立第二套业务仓储。
 
-首个生产驱动选择仓库已有原型使用的 `node:sqlite`，运行版本以 `.nvmrc` 的 Node 24.18.0 为基准。`DatabaseSync` 放在专用 storage worker 中，防止同步查询、迁移和校验阻塞网关健康检查。worker 不是新的业务服务，也不拥有生成调度逻辑。
+当前生产驱动使用 rusqlite，SQLite 连接由专用存储线程持有，避免同步查询、迁移和校验阻塞异步网关。存储线程不拥有生成调度逻辑，驱动和可变连接不向业务层泄漏。
 
-R2 必须用实际打包 sidecar 验证 SQLite 版本、事务、备份、worker 加载与重开；版本或打包不满足时阻塞 R2，不悄悄切换驱动或提高整个项目的 Node 下限。Node 该版本文档仍将此模块列为 release candidate，驱动必须封装且不向业务层泄漏。
+实际打包 Rust EXE 必须验证 SQLite 版本、事务、备份、存储线程加载与重开；驱动或打包不满足时拒绝激活，不静默切换库或降级为旧 Node 后端。
 
 路径由宿主配置决定，不接受 HTTP 请求中的任意绝对路径：
 
@@ -35,7 +35,7 @@ R2 必须用实际打包 sidecar 验证 SQLite 版本、事务、备份、worker
 - 每个活动 workspace 只允许一个运行时拥有者和一个写连接。所有窗口经同一 API 进入仓储事务；Web Locks 只留在 Web adapter，不用于跨来源协调。
 - 初版使用排他的 owner lock 文件创建和宿主生命周期管理，记录 owner nonce、进程身份与 workspaceId。发现已有 owner 时拒绝二次启动，不用“心跳超时”抢锁。
 - 崩溃后的自动接管仅允许宿主确认其拥有的旧进程已退出且锁身份匹配；无法证明的残留锁进入维修状态，不删锁试运气。PID 被复用或外部 runtime 不明时同样停止。
-- DB meta 保存 writerEpoch，每次变更事务校验；worker 出错后暂停接收写入和生成副作用，先停止/回收原拥有者再恢复。已发送的写命令不能因客户端断开而假定没有提交。
+- DB meta 保存 writerEpoch，每次变更事务校验；存储线程出错后暂停接收写入和生成副作用，先停止/回收原拥有者再恢复。已发送的写命令不能因客户端断开而假定没有提交。
 - WAL + synchronous=FULL + foreign_keys=ON；具体 SQLite 版本和恢复行为列入 R2 证据。活库仅支持已验证的本机文件系统，不部署到网络共享或同步盘中并发写。
 - 文件提升、GC、备份和数据库更新都服从同一所有权；禁止另开“清理脚本”绕过它。不要用长时间持有 SQLite 事务等待网络/图片解码。
 
@@ -149,10 +149,9 @@ UI 开关可以控制入口展示，但不能选择两个可写主库。旧源�
 
 隔离测试必须覆盖：两个进程竞争同库、残留锁、writerEpoch 过期、每个保存中断点、回执丢失、幂等冲突、磁盘满、原图损坏、重复/变化源、迁移中窗口写入、未知格式、项目悬空、回收站恢复、共享媒体不误删、备份期间新写入、带新写入的回退拒绝、远程 token 读取私人库被拒绝。
 
-Windows 必须另验：实际 Node sidecar 加载 worker/SQLite；旧 WebView profile 导出；安装更新不覆盖 workspace；3000 创建作品后占用端口再启动仍访问同一库；路径不可用时不创建空库。没有此证据，R2/R3 可合入默认关闭的实现，但 R4 的真实数据激活不能标完成。
+Windows 目标环境必须验证实际 Rust EXE/原生 DLL 与 SQLite；旧 WebView profile 导出；安装更新不覆盖 workspace；旧端口被占用后仍访问同一库；路径不可用时不创建空库。本机当前来源的已验范围查项目状态，其他机器/来源及物理断电仍按 roadmap 单列。
 
 ## 技术依据
 
-- [现有 SQLite 原型](../../scripts/tests/prototypes/artwork-sqlite.ts)与[旧方案及隔离证据](../../plans/005-desktop-architecture-consolidation.md)。
-- [Node 24.18 SQLite](https://nodejs.org/download/release/v24.18.0/docs/api/sqlite.html)：DatabaseSync 为同步接口，提供 backup；本方案因此隔离同步存储工作。
+- [生产存储实现](../../runtime-rs/src/storage/)与[剩余验收](../roadmap.md)。
 - [SQLite WAL](https://sqlite.org/wal.html)与[Backup API](https://sqlite.org/backup.html)：按数据库快照和引用媒体分别保证备份完整性；不能把文件系统与数据库声称为一个原子事务。

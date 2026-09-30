@@ -15,19 +15,19 @@
 - **生图双引擎**：
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2（自研 DiT + Qwen3-VL 编码器，非 SD3.5 系）**：当前本地编译使用英文 prose，清理标签堆词、评分词和括号权重，negative 为空；CFG 以实际节点定义为准，不把本地约束泛化为所有版本能力。提示词按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 执行，人物环境融合见 [叙事 CG 规范](guides/prompts/narrative-cg-prompt-standard.md)；历史研究不覆盖当前实现与后续证据。
-- **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。组合式拆分方案见 `docs/archive/completed/live2d-composable-refactor-plan.md`。
+- **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。运行时维护见 [Live2D 指南](guides/desktop/live2d-native-runtime.md)。
 - **配音与陪伴**：GPT-SoVITS + 本机翻译管道，自动剥离台词舞台提示，长句分段与 in-flight 缓存去重。
 
 作品历史/工作台的纯类型、配方解码、资源所有权和可执行依赖方向见 [可维护性试点边界](guides/engineering/maintainability-boundaries.md)。类型兼容转导出不改变持久化格式。
 
 ## 重构期间的任务与持久化边界
 
-以下约束已按 [重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md) 接入 R0–R11 主线，并继续约束后续维护；实现、本机迁移与交付范围见 [主线记录](architecture/R3-R11-EXECUTION-REPORT.md)。实际模型、其他设备和历史来源的未覆盖条件继续按 roadmap 单列，不用代码完成替代这些验收。
+以下约束已接入现行主线并继续约束维护；实现、本机迁移与交付范围见 [项目状态](project-status.md)。实际模型、其他设备和历史来源的未覆盖条件在 roadmap 单列。
 
 - **任务所有权**：runtime 已接受的任务由 runtime 持有身份、执行和结果状态；页面卸载只解除订阅、停止页面查询并释放页面拥有的媒体与监听资源。用户明确取消通过独立任务取消命令表达，不能由页面卸载、客户端读取超时或连接断开隐式代替。尚未被接受的交互请求可取消；接受应答丢失属于未知结果，须按稳定请求身份查询，不能据此断言未接受或自动重提。
 - **单一持久权威**：每个领域在每个数据域只有一个可写权威。Web adapter 是长期合法的平台实现，继续拥有独立浏览器数据；桌面 workspace 激活后，旧作品库仅作受控迁移来源或只读保留，不得因 runtime 不可用自动回落写入旧库，不得双写两份主库。Pinia 保留编辑和展示状态，缓存不构成第二份持久事实。
 - **迁移适配的窄例外**：允许读取旧数据格式和旧来源的 importer，但须记录支持的来源/版本、用途和退出条件；其保留期由支持的升级跨度决定。此例外不允许新增无限期 deprecated shim、任意错误 fallback 或双主写入，也不要求删除仍在使用的真实 Web adapter。
-- **依赖护栏**：既有违规边按 source、target、依赖种类、规则和退出批次精确登记，只减不增；不以整个目录豁免。类型边与运行时边分开处理，runtime 反向依赖前端连纯类型也受约束；既有纯领域根的更严格可达依赖规则继续有效。静态依赖检查不禁止所有 `AbortController` / `onUnmounted`，也不把正常 unsubscribe 误报为任务取消；任务所有权由 R6 行为测试证明。规则、旧边清单和当次验证见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md)。
+- **依赖护栏**：既有违规边按 source、target、依赖种类、规则和退出批次精确登记，只减不增；不以整个目录豁免。类型边与运行时边分开处理，runtime 反向依赖前端连纯类型也受约束；既有纯领域根的更严格可达依赖规则继续有效。静态依赖检查不禁止所有 `AbortController` / `onUnmounted`，也不把正常 unsubscribe 误报为任务取消；任务所有权由 R6 行为测试证明。规则与旧边清单见 [依赖护栏配置](../scripts/lib/refactor-boundaries.ts)，任务所有权另以行为回归验证。
 
 ## 普通图片资源
 
@@ -37,7 +37,7 @@
 
 ## Live2D 生命周期
 
-destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capability 分支及 lifecycleToken 语义不能在重构时改变。拆分已完成，见 [完成记录](archive/completed/live2d-composable-refactor-plan.md)，不再列入未来待办。
+destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capability 分支及 lifecycleToken 语义不能在重构时改变。拆分已完成，见 [Live2D 运行时契约](guides/desktop/live2d-native-runtime.md)，不再列入未来待办。
 
 桌宠显式隐藏或舞台停用时，经同一 destroyRuntime 取消在途连接并释放模型，保留启用、角色、服装和画质偏好；重新显示时按需恢复。普通浏览器标签页后台及减少动态效果仍只暂停。原生 Destroy 保留轻量 HWND、线程和命令通道，但释放 GPU context、设备资源池和模型；下一次 SetCharacter 懒建，不把正常卸载广播成故障 stopped。无模型的迟到帧和输入不得恢复渲染或新建 GPU 资源。
 

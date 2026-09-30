@@ -126,7 +126,7 @@
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
 4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。
 
-`reference:audit` / `reference:repair` 仍用于旧活跃参考库的视觉检查/定向修复，不能用于新候选目录，也不能替代下面的人工决定。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
+`reference:audit` / `reference:repair` 仍用于旧活跃参考库的视觉检查/定向修复，不能用于新候选目录，也不能替代下面的人工决定。参考图片不入 Git；尚未交付素材与人工决定见 [未来规划](roadmap.md)。
 
 ### 参考库候选审核与版本发布
 
@@ -163,7 +163,7 @@
 
 热门候选生成默认采用 MiaoMiao v1.2 与 TeaCache 0.08 加速；`--no-tea-cache` 可关闭加速，`--model anima-miaomiao-v1.6` 可显式指定另一 MiaoMiao 版本。`--keys` 格式为 `popular:<角色id>:<蓝图id>`。续跑仅复用模型、提示词、画幅和采样参数全部一致的成功记录，换底模或精修场景会重新生成；不同底模建议使用独立候选目录。
 
-`npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。旧参数与实测方法见 [样张工艺记录](archive/troubleshooting/showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
+`npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。当前 checkpoint 和采样参数以脚本/网关配置为准；生成后检查编译请求与实际画面，失败与未审记录保留。
 
 ## 角色接入
 
@@ -286,7 +286,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 源码服务用 `npm start` / `npm run start:run`（开发包装器调用 Cargo/Rust）；直接入口为 `runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210`。工作区须显式私有路径/身份或受控桌面激活；未知请求不落回 Node。`build:runtime` 仍生成旧 Node 与维护工具 JS，不会产出 Rust EXE。
 
-旧 Node unit/contract 和仍启动旧网关的 Playwright 结果只作旧行为对照。Rust 真正端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现/待验见[执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)和 [013](../plans/013-node-to-rust-migration.md)。安装/UAC、真实模型、原生发行材料未完成，`releaseReady=false`。
+旧 Node unit/contract 和仍启动旧网关的 Playwright 结果只作旧行为对照。Rust 真正端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现及剩余范围见 [013](../plans/013-node-to-rust-migration.md)。本机安装/UAC 已完成；真实模型、完整设备与原生许可材料仍未收口，`releaseReady=false`。
 
 既有 `test-domain-type-boundaries` 也检查 Rust 任务契约、公共执行、存储与引擎模块的显式依赖方向，复用原边界门禁，不新增全仓测试入口。它识别 crate/super 路径和分组导入，不解析宏展开或完整符号依赖；编译与行为仍由 Cargo 验证。图片/视频编译及视频 AI 契约使用固定的独立旧实现期望，不再动态启动其 Node oracle；其余旧后端退出条件见 [013 分批退出](../plans/013-node-to-rust-migration.md#旧-node-实现的分批退出2026-09-28)。
 
@@ -317,7 +317,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 生产构建的预压使用 `PRECOMPRESS_JOBS`（默认 2，范围 1–4）限制同时处理的文件数，继续使用 Brotli 11 / gzip 9，不缓存测试 PASS、不依赖文件时间戳跳过压缩，也不放宽包体预算。同步 `compress()` 接口保持兼容，`precompress --check` 仍只读核对源字节、孤儿与陈旧产物。
 
-同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。这里优化的是执行开销，完整门禁仍覆盖相同测试清单。前后对照和实际验证记录见 [验证性能优化](research/engineering/validation-performance-2026-09-19.md)。
+同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。这里优化的是执行开销，完整门禁仍覆盖相同测试清单。耗时比较使用同机、同输入和相同参数独占测量。
 
 | 入口 | 实际范围 |
 | --- | --- |
@@ -364,7 +364,7 @@ E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项�
 
 `ui-fluidity-office.bench.ts` 默认每组 20 次往返；显式 `AICS_OFFICE_RESOURCE_SAMPLES=100` 可延长到 100 次（范围 20–100），每 10 次和最终检查点采集 GC 后堆/DOM/监听器。非默认样本数输出到 `runtime/ui-fluidity-office-<次数>/`，不覆盖旧 20 次证据。用 `--config=playwright.performance.config.ts --project=fluidity-office --grep 'full round 1$'` 选择深浅主题各一组；这不冒充默认完整三组或真实 GPU/进程内存验收。测试独占运行，不与构建、GPU 基准并发。
 
-`npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [计划 005](../plans/005-desktop-architecture-consolidation.md)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
+`npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [剩余验收与规划](roadmap.md#pc-桌面架构整理后的验收)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
 
 `npm run wf -- desktop:rust-bundle` 使用真实 bundle 映射和当前 Rust 载荷验证隔离安装布局；先准备 `rust:build` 与桌面 staging。旧 `desktop:workspace-sidecar` 已退出注册表，旧 Node worker测试仅作对照。临时库验证不能替代正式安装、WebView2 或物理断电验收。
 
@@ -386,11 +386,11 @@ Electron 验收修复后可显式使用 `--resume-native <旧report.json>` 只�
 
 `flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
 
-无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。2026-09-09 的工程治理历史见[当时记录](archive/audits/engineering-debt-2026-09-09.md)。
+无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。
 
 首次建立无构建产物的 worktree 时，先执行 `npm run build:runtime` 与 `npm run build`，再运行完整门禁；聊天契约会实际请求已构建的 SPA。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
 
-每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞。9-09 的依赖问题见[历史审计](archive/audits/remaining-dimensions-2026-09-09.md)，9-11 的 `adm-zip` 升级、重新审计及安装验收边界见[办公机收尾记录](archive/audits/office-code-2026-09-11.md)。
+每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞。
 
 Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/src-tauri/Cargo.lock`（发行桌面壳）和 `desktop-tauri/native-live2d/Cargo.lock`（原生渲染器独立构建）；PoC 锁文件不冒充发行依赖。发现 advisory 或扫描不可用均失败，保留 JSON、stderr、退出码、工具版本、源码 SHA 和锁文件哈希。原生 SDK 不属于 Cargo advisory 数据库：`native-live2d/build.rs` 声明 Cubism Native 5-r.5，实际 SDK 字节与许可仍需发行机单独记录。两份 Cargo 清单与 npm 锁文件随 CI artifact 保存；14 天留存不能代替长期发行归档。
 
@@ -453,7 +453,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 | Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
-当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。[1.7.1](releases/v1.7.1.md)、[独立审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)及[工作流审计（2026-09-08）](archive/audits/workflow-audit-2026-09-08.md)保留当时证据。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.7.4 说明](releases/v1.7.4.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
 
 ### 011 发行输入绑定（2026-09-21）
 

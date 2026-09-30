@@ -1,6 +1,6 @@
 # 可维护性试点边界
 
-本页规定作品历史、提示词工作台和观画适配的维护入口，按当前平台边界更新。当前实施和验收见 [项目状态](../../project-status.md)，待验事项见 [roadmap](../../roadmap.md)，早期试点基线见 [M01–M10](../../research/engineering/maintainability-optimization-2026-09-19.md)。
+本页规定作品历史、提示词工作台和观画适配的维护入口，按当前平台边界更新。当前实施和验收见 [项目状态](../../project-status.md)，待验事项见 [roadmap](../../roadmap.md)，阶段证据见 [维护性证据](../../evidence/maintainability-2026-09-19.json)。
 
 ## 历史与工作台依赖
 
@@ -16,13 +16,13 @@
 
 前端纯类型可按既有规则使用现存转导出入口；runtime 不得反向依赖 `src/`，包括纯类型和间接边。应用用例通过端口与平台适配连接，不能从纯计算层引入 Store 或具体持久化实现；当前规则见 `scripts/lib/refactor-boundaries.ts`，早期试点决策不放宽该护栏。
 
-长期架构计划对已明确迁出的 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 增加更窄的保护：它们的可达依赖连类型边也不再引用 Store/展示层/Vue。`check:domain-types` 检查实际路径与间接导入，复用 `source-imports.ts` 的 AST 读取能力；原 ESLint 试点及 PhotoSwipe/存储规则继续保留。其余兼容入口按既有规则逐步迁移，不扩大为全仓类型禁令。范围、unknown 与验证见 [架构首批记录](../../research/engineering/architecture-a01-2026-09-19.md)。
+已迁出的 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 有更窄的保护：它们的可达依赖连类型边也不再引用 Store/展示层/Vue。`check:domain-types` 检查实际路径与间接导入，复用 `source-imports.ts` 的 AST 读取能力；原 ESLint 试点及 PhotoSwipe/存储规则继续保留。其余兼容入口按既有规则逐步迁移，不扩大为全仓类型禁令。检查不解析完整运行时依赖图，unknown 不能视为通过。
 
 ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 historyRecipe/generationTask/promptPolicy 不得运行时加载页面、状态或浏览器服务；storage 不得反向加载页面/组件/store；PhotoSwipe 依赖（含类型）只能从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals，统一别名与相对路径；试点底层的非字面量加载拒绝检查绕过。test-module-boundaries 用允许/禁止夹具验证。它不检查任意 eval、运行时加载器或未纳入试点的全仓依赖图。
 
 ## 资源所有权
 
-生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 与重构护栏保护用例及其可达依赖，拒绝具体存储/API 与 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)，早期抽取时序见 [A02.1 记录](../../research/engineering/architecture-a02-2026-09-19.md)。
+生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 与重构护栏保护用例及其可达依赖，拒绝具体存储/API 与 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
 
 WAI HTTP 入口只依赖 `server/generation/` 的类型、校验、业务和兼容导出。业务可复用 `routes/anima/service` 与纯超分资源模块，不可加载顶层 HTTP 路由或 Express；校验器仅允许 Express 的请求类型。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务。本次模块禁止显式 any；这些约束纳入既有 ESLint 门禁和允许/拒绝夹具，不声称覆盖全仓所有间接边。
 

@@ -8,191 +8,85 @@
 
 全局搜索传输收口见 [单请求搜索索引（2026-09-30）](audits/2026-09-30/search-index-transfer.md)：50 次分页改为一次轻量读取、Rust 响应 ownership 移动、实际隔离链路与双主题验证。
 
-Rust 迁移后的运行时复审见 [Rust 请求与存储性能（2026-09-30）](audits/2026-09-30/rust-runtime-performance.md)：草稿 SQL 筛选、备份 statement 复用、模型目录借用，以及完整行为验证、工具链限制和后续瓶颈。
-
-性能与测试负担复审见 [搜索性能与门禁精简（2026-09-30）](audits/2026-09-30/performance-simplification.md)：查询重复工作、按需读取与取消、5 条旧源码断言删减，以及首次搜索仍需全库分页的剩余成本。
-
-手绘撤销的接手复核见 [遮罩历史优化（2026-09-30）](audits/2026-09-30/mask-history-takeover.md)：局部快照、24 MiB 预算、像素/PNG 对照及原始报告纠错。
-
-局部语言迁移的历史线索见 [TypeScript 热点审计（2026-09-29）](audits/2026-09-29/ts-hotspot-audit.md)：搜索、遮罩与粒子循环的原始隔离测量和迁移适用边界；错误搜索回放结论已撤回。
-
-真实图片库存见 [角色场景盘点与日常立绘（2026-09-29）](audits/2026-09-29/character-image-inventory.md)：撤回普通场景 299 条缺图结论，记录实际图片、缺登记与待审核状态，以及爱莎日常场景立绘替换。
-
-冗余代码精简见 [过度工程化审计（2026-09-29）](audits/2026-09-29/engineering-simplification.md)：删除的历史入口、测试专用接口、虚设状态及保留核心边界的依据。
-
-后端请求与存储优化见 [Rust 后端优化（2026-09-29）](audits/2026-09-29/backend-optimization.md)：任务写入与分页、媒体校验、健康快照及当次验证和安装记录。
-
-新增角色核对见 [爱莎接入审计（2026-09-29）](audits/2026-09-29/aisha-onboarding-audit.md)：占位立绘预览修复、定向回归和真实资产待验范围。
-
-更新于 2026-09-30。已完成范围、实际待办、研究资料和历史记录分别查阅；旧计划的启动说明不作为当前任务。
-
-本次技术升级见 [六项技术栈升级评估与实施](audits/2026-09-27/stack-upgrades.md)，包含版本、适用性决定及未完成的设备验收。
-
-日常只读下面八个入口；遇到具体问题再查专题。历史测试结果不能替代当前验收。
-
-场景与角色图片维护的本次交付见 [桌面维护视觉验收（2026-09-28）](audits/2026-09-28/maintenance-visual-acceptance.md)，包含三档主要视口、系统缩放记录、修复与主力机待验边界。
-
-全站界面细节的本次修整见 [桌面 UI 细节审计（2026-09-28）](audits/2026-09-28/desktop-ui-craft.md)，记录圆角、键盘焦点、命中区域、主题可读性与双主题桌面画面复核。
-
-测试范围与耗时治理见 [E2E 必要性审计（2026-09-28）](audits/2026-09-28/e2e-necessity-audit.md)：全部原始用例的保留/合并/删除依据、95 项核心集合、定向入口及保留的真实失败。
+更新于 2026-09-30。文档按主题保留当前有效版本；已完成批次、旧状态快照与被替代报告从工作区删除，历史原文可从 Git 历史查询。报告日期只说明证据时点，不能代替当前源码或真实设备验收。
 
 ## 日常入口
 
-新机器素材离线安装与维护者 ZIP 发行见 [离线资源安装与发行](guides/offline-resources.md)；模型权重、运行环境和在线专属功能见 [模型开箱指南](guides/setup-and-models.md)。
-
-本次产物、真实完整 ZIP 导入/重启、模型清单修正与未覆盖发行条件见 [离线资源交付验收](audits/2026-09-30/offline-resource-delivery.md)。
-
-桌宠原生渲染与按钮交互的本次修复见 [Live2D 内存与桌宠交互优化（2026-09-28）](audits/2026-09-28/live2d-mask-memory.md)，包含原始画质下的内存对照、逐像素画面验证、工具栏点击回归及安装边界。
-
-页面切换的本次打磨见 [日常导航过渡细节优化（2026-09-28）](audits/2026-09-28/daily-navigation-motion.md)，包含同级淡变、中断帧衔接、桌面路由预取修复与双主题三档桌面视口验证。
-
 | 文档 | 用途 |
 | --- | --- |
-| [项目说明](../README_zh.md) | 定位、安装与功能入口 |
-| [设计规范](../DESIGN.md) | 品牌特色、主题与交互原则 |
-| [项目状态](project-status.md) | 当前能力、数据规模与边界 |
-| [未来规划](roadmap.md) | 待办、优先级与验收目标 |
-| [统一工作流](workflow.md) | 现成命令与操作顺序 |
-| [维护手册](maintenance.md) | 目录职责与常见维护 |
-| [工程契约](engineering-contracts.md) | 模块、数据与生命周期约束 |
+| [项目说明](../README_zh.md) | 定位、下载与功能入口 |
+| [设计规范](../DESIGN.md) | 品牌、主题与交互原则 |
+| [项目状态](project-status.md) | 当前能力、数据规模、源码与安装身份 |
+| [未来规划](roadmap.md) | 未完成、暂停与待决策事项 |
+| [统一工作流](workflow.md) | 现成命令与验收范围 |
+| [维护手册](maintenance.md) | 目录职责与数据维护 |
+| [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |
 | [桌面部署](desktop-deployment.md) | 构建、同步、完整安装与 UAC |
 
-协作执行规则单独见 [AGENTS.md](../AGENTS.md)。
+协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。当前发行说明只维护 [1.7.4](releases/v1.7.4.md)。
 
-试点模块依赖、资源所有权、第三方退出及测试报告见 [可维护性边界](guides/engineering/maintainability-boundaries.md)；[当次验证证据](evidence/maintainability-2026-09-19.json) 保留通过、失败与复验的区别。
+## 现行契约与专项计划
 
-源码维护与构建见 [TypeScript 开发与维护](guides/engineering/typescript-development.md)，包含类型归属、缓存、开发重启和验证入口。
+- [Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
+- [Rust 迁移与剩余验收（013）](../plans/013-node-to-rust-migration.md)、[交互性能（009）](../plans/009-ui-fluidity-and-performance.md)、[Live2D 适配（010）](../plans/010-companion-experience-and-live2d-adapter.md)。
+- [反推满意图入场景（004）](../plans/004-scene-save-from-interrogate.md)保持暂停；[计划索引](../plans/README.md)只列仍有效范围。
+- [012 功能矩阵](audits/2026-09-21/012-page-function-matrix.md)与[逐 ID 验收说明](audits/2026-09-21/012-execution-report.md)仍承接真实模型、素材与设备条件；历史 PASS 不关闭剩余事项。
+- [远程内容投影契约](audits/2026-09-20/sec-03-remote-projection-design.md)保留字段、审批与拒绝边界。
 
-组件布局、主题令牌与工具类约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；[本次迁移记录](audits/2026-09-27/tailwind-migration.md)区分构建、浏览器验收与环境限制。
+## 专题与研究
 
-全站布局与二级导航的最新修复见 [布局审计与统一（2026-09-28）](audits/2026-09-28/layout-unification.md)，包含工作台右栏、跨页样式隔离、双主题/窄屏验证和桌面交付边界。
+- [专题指南](guides/README.md)：角色、粒子、美术、视频、桌面和工程维护。
+- [研究与未验证候选](research/README.md)：独有来源资料、提示词依据和待决策方案。
+- [TypeScript 开发](guides/engineering/typescript-development.md)、[Tailwind 样式](guides/engineering/tailwind-styling.md)、[维护性边界](guides/engineering/maintainability-boundaries.md)。
+- [Live2D 运行时](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[Apple HIG Web 指南](guides/design/apple-hig-web-guidelines.md)。
+- 图像提示词查 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)，按需选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md)或[数据交付](../.agents/skills/studio-prompt-craft/references/delivery.md)。
+- [浏览器阅读入口](index.html)与[上手教程](getting-started.html)。
 
-以角色档案为参照的审美与实用改进见 [桌面页面美观与实用审计（2026-09-28）](audits/2026-09-28/desktop-aesthetics.md)，包含逐页结论、九项发现与分批调整顺序。
+## 保留的专题验收记录
 
-该批优化的落地与 4K / 2K / 1080p 验收见 [桌面体验优化实施记录（2026-09-28）](audits/2026-09-28/desktop-experience-implementation.md)，包含缩放视口、图库焦点回归及安装边界。
+下列记录各自承接独立主题或未覆盖条件；源码、构建、安装和设备结果分别核对。旧版本安装记录由当前状态页与最新发行说明承接。
 
-该批主线的本机完整安装见 [桌面安装与构建修复（2026-09-28）](audits/2026-09-28/desktop-installation.md)，记录 `a520afc8` 的安装包绑定、角色主题按需加载和安装后运行核验。
+| 日期 | 主题 |
+| --- | --- |
+| 2026-09-30 | [日常测试精简与定向入口](audits/2026-09-30/test-simplification.md) |
+| 2026-09-30 | [搜索索引传输与响应复制收口](audits/2026-09-30/search-index-transfer.md) |
+| 2026-09-30 | [Rust 迁移后运行时性能复审](audits/2026-09-30/rust-runtime-performance.md) |
+| 2026-09-30 | [1.7.4 构建、离线资源与有限优化](audits/2026-09-30/release-offline-optimization.md) |
+| 2026-09-30 | [项目多维审计与修复](audits/2026-09-30/project-audit-and-fixes.md) |
+| 2026-09-30 | [性能与测试负担复审](audits/2026-09-30/performance-simplification.md) |
+| 2026-09-30 | [新机器离线资源交付与模型清单核对](audits/2026-09-30/offline-resource-delivery.md) |
+| 2026-09-30 | [手绘遮罩撤销优化与工作区接手复核](audits/2026-09-30/mask-history-takeover.md) |
+| 2026-09-30 | [本地优化与覆盖账本（SFW 范围）](audits/2026-09-30/local-optimization.md) |
+| 2026-09-29 | [过度工程化审计与精简](audits/2026-09-29/engineering-simplification.md) |
+| 2026-09-29 | [角色场景图片盘点与日常立绘](audits/2026-09-29/character-image-inventory.md) |
+| 2026-09-29 | [Rust 后端请求与存储优化](audits/2026-09-29/backend-optimization.md) |
+| 2026-09-29 | [爱莎新增角色审计](audits/2026-09-29/aisha-onboarding-audit.md) |
+| 2026-09-28 | [页面数据链路性能根因与验证](audits/2026-09-28/ui-data-performance.md) |
+| 2026-09-28 | [参考画册画幅与预览优化（2026-09-28）](audits/2026-09-28/showcase-image-layout.md) |
+| 2026-09-28 | [性能优化报告](audits/2026-09-28/performance.md) |
+| 2026-09-28 | [维护功能桌面视觉验收（2026-09-28）](audits/2026-09-28/maintenance-visual-acceptance.md) |
+| 2026-09-28 | [Live2D 遮罩内存与桌宠按钮交互优化](audits/2026-09-28/live2d-mask-memory.md) |
+| 2026-09-28 | [全站布局审计与统一（2026-09-28）](audits/2026-09-28/layout-unification.md) |
+| 2026-09-28 | [E2E 必要性审计（2026-09-28）](audits/2026-09-28/e2e-necessity-audit.md) |
+| 2026-09-28 | [桌面 UI 细节审计与修整](audits/2026-09-28/desktop-ui-craft.md) |
+| 2026-09-28 | [桌面体验优化实施与验收](audits/2026-09-28/desktop-experience-implementation.md) |
+| 2026-09-28 | [日常导航过渡细节优化](audits/2026-09-28/daily-navigation-motion.md) |
+| 2026-09-27 | [Tailwind 全站样式迁移](audits/2026-09-27/tailwind-migration.md) |
+| 2026-09-27 | [六项技术栈升级评估与实施](audits/2026-09-27/stack-upgrades.md) |
+| 2026-09-21 | [012：逐页功能、状态与验收矩阵](audits/2026-09-21/012-page-function-matrix.md) |
+| 2026-09-21 | [012 全站页面与功能体验执行报告](audits/2026-09-21/012-execution-report.md) |
+| 2026-09-20 | [SEC-03 远程内容投影设计](audits/2026-09-20/sec-03-remote-projection-design.md) |
 
-参考画册横图排布、预览留边及工具栏避让的后续调整见 [画幅与预览优化（2026-09-28）](audits/2026-09-28/showcase-image-layout.md)，包含桌面三档视口、200% 缩放有效空间与极端画幅验证。
+## 文档维护
 
-图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
+| 目录 | 收录内容 |
+| --- | --- |
+| docs 根目录 | 日常入口与阅读门户 |
+| architecture/ | 现行架构契约 |
+| guides/ | 可重复使用的操作与维护指南 |
+| research/ | 独有来源、未采纳研究及候选 |
+| audits/ | 各主题仍有效的验收摘要与剩余条件 |
+| releases/ | 当前发行说明 |
+| evidence/ | 绑定原始源码和构建的受控证据；不改写历史身份 |
 
-## 架构契约与实施追溯
-
-现行实现与最近本机安装以 [项目状态](project-status.md) 为准；设计目标、分批证据和剩余条件分别查下列资料，不从旧计划的启动提示重新派工。
-
-- 现行契约：[Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
-- [Node → Rust 执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)：产品后端与构建入口切换、差分验证与发行边界；[9 月 28 日安装证据](evidence/rust-installation-2026-09-28.json)记录 main 合并、完整安装及 Rust 运行时核验。
-- 目标与批次定义：[重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md)、[执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md)、[原基线复审](architecture/REFACTOR-AUDIT.md)。
-- 主线记录：[R0](architecture/R0-EXECUTION-REPORT.md)、[R1](architecture/R1-EXECUTION-REPORT.md)、[R2](architecture/R2-EXECUTION-REPORT.md)、[R3–R11](architecture/R3-R11-EXECUTION-REPORT.md)；验证 JSON 随各报告列出。
-- 独立实验：[R12 渲染进程](architecture/R12-EXECUTION-REPORT.md)、[R13 Electron 对照](architecture/R13-EXECUTION-REPORT.md)；正式默认与采用边界查当前状态。
-- 后续交付：[可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)、[图片恢复](evidence/desktop-images-2026-09-27.json)、[UI/Live2D 联合安装](evidence/desktop-ui-live2d-2026-09-27.json)、[内存优化与最近安装](evidence/memory-optimization-2026-09-27.json)；每份证据绑定自己的源码/构建。
-
-## 待办与专项验收入口
-
-- [9 月 28 日性能优化报告](audits/2026-09-28/performance.md)：CPU、内存、媒体与渲染优化结果、验证及 4070 Ti S 待验边界；原始采样和日志仅保留本机。
-
-- [Node.js 运行时迁移到 Rust（013）](../plans/013-node-to-rust-migration.md)：后端与入口切换、main 合并及本机安装已完成，真实模型、设备和发行材料继续收口；[接口与生产依赖矩阵](architecture/NODE-RUST-MIGRATION-MATRIX.md)保留旧实现范围，pending 不是当前完成率。
-
-以下计划可能包含已完成阶段；只从 [未来规划](roadmap.md) 选择剩余事项。
-
-- [长期架构优化实施计划](../plans/architecture-evolution.md)：业务类型、入册用例、接口、引擎、存储和生命周期的分批实施与验收；动态进度见 roadmap。
-- [桌宠陪伴体验与 Live2D 通用适配（010）](../plans/010-companion-experience-and-live2d-adapter.md)：陪伴体验与适配的设计、分批任务及验收边界；复用现有独立聊天窗，分批优化陪伴布局、角色注册、模型 Profile、自动检查与可视化校准；模型来源／自制留待后续讨论。
-- [交互流畅度与运行性能分批计划（009）](../plans/009-ui-fluidity-and-performance.md)：流畅度与性能的测量方法及分批验收边界；按基线、导航响应、缓存/返回、滚动、动效、资源、回归和真机验收分批交付，每批都有验收与回退边界。
-- [剩余任务与验收顺序](roadmap.md)：桌面同步、真实资源与设备验收、完整语义覆盖及暂停事项；已接通的办公机工程不重复列入。
-- [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
-- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定的设计与验收边界。
-- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口和存储原型评估；后续桌面 SQLite 主线状态查项目状态，Web journal、大备份和设备范围查未来规划。
-
-## 已执行审计与实施证据
-
-这里保存已完成的审计或办公机实施；报告中的真实素材、安装与设备待验边界继续有效。
-
-- [办公机工程尾项](audits/2026-09-21/office-tail-completion.md)：归档多窗口事务、保存未知回执保护、Live2D 文件检查和导入校准；[验证证据](audits/2026-09-21/office-tail-evidence.json)包含修正历史、哈希与主力机边界。
-
-- [桌宠功能检查与修复（2026-09-21）](audits/2026-09-21/companion-functional-review.md)：语音会话/录音取消、剪贴板资源与迟到看图归属修复；保留真实 Windows、模型和音频设备待验范围。
-
-- [012：全站页面与功能体验](audits/2026-09-21/012-execution-report.md)：办公机实施完成；[217 项功能矩阵](audits/2026-09-21/012-page-function-matrix.md)保留 85 项含主力机条件的记录，[基线审计](audits/2026-09-21/012-page-experience-audit.md)与[原计划](../plans/012-page-experience-polish.md)仅作追溯。
-- [012执行证据](audits/2026-09-21/012-execution-evidence.json)：逐ID处置、608个去重浏览器结果、最终默认页面、日志/图片哈希与主力机限制；[详细执行报告](audits/2026-09-21/012-execution-report.md)含逐页结论和前后图。
-- [011：数据兼容、删除闭环与资源边界](audits/2026-09-21/011-results.md)：六项实现及最终集成验证完成；[证据](audits/2026-09-21/011-evidence.json)与[原计划](../plans/011-data-compatibility-and-resource-boundaries.md)保留实现范围，真实模型/安装验收见 roadmap。
-- [全面审计总览（2026-09-20）](audits/2026-09-20/README.md)：审计时基线的安全、后端桌面、存储、内容资产、前端无障碍、性能、测试交付、文档治理八份报告；含本次失败与隔离复现证据。
-- [全面审计落实计划](audits/2026-09-20/implementation-plan.md)：按风险与依赖拆分 A0–A9，保留原文件范围、实施步骤、验收和回退；办公机后续完成情况见接手证据。
-- [接手复核证据（2026-09-21）](audits/2026-09-20/handoff-evidence.json)：办公机修复、分轮补验、原生中性测试、性能实测、构建与依赖哈希；明确素材/安装/主力机未验范围。
-- 分报告：[安全隐私](audits/2026-09-20/security-privacy.md)、[后端桌面](audits/2026-09-20/backend-desktop.md)、[存储可靠性](audits/2026-09-20/storage-functional-reliability.md)、[内容资产](audits/2026-09-20/content-assets-governance.md)、[前端无障碍](audits/2026-09-20/frontend-ux-accessibility.md)、[性能维护性](audits/2026-09-20/performance-maintainability.md)、[测试交付](audits/2026-09-20/testing-delivery.md)、[文档治理](audits/2026-09-20/engineering-documentation.md)；[脱敏执行证据](audits/2026-09-20/evidence.json)。
-- [SEC-03 远程内容投影设计](audits/2026-09-20/sec-03-remote-projection-design.md)：已接入统一远程审核索引与拒绝策略；记录最小字段、字节绑定、缓存和真实发布待验边界。
-- [架构首批实施记录](research/engineering/architecture-a01-2026-09-19.md)：A00 当前基线复核、复用已合入的类型迁出、A01.2 窄输入和 A07.1 间接依赖检查及验证。
-- [架构 A02.1 入册用例实施记录](research/engineering/architecture-a02-2026-09-19.md)：A01.3 作品链路盘点、保存用例抽取、兼容回退时机、失败边界与浏览器/完整门禁证据。
-- [生成链路与工作台维护性整理](research/engineering/architecture-maintenance-2026-09-20.md)：WAI 路由/业务分离、工作台适配、目录校验、保存快照及边界回归。
-- [工程维护视角全面审计与系统提升（2026-09-16）](archive/audits/engineering-maintainability-audit-2026-09-16.md)：单体预算压线、类型系统割裂、Entry CSS 预算危机、门禁重复计算与全栈架构提升方案。
-- [办公机工程交付（2026-09-15）](archive/audits/office-engineering-completion-2026-09-15.md)：本批实现、最终验证、提交证据和主力机待验范围。
-- [GitHub 参考方案落地与提交复审（2026-09-19）](research/engineering/github-reference-implementation-2026-09-19.md)：P1–P6 的代码落地、PhotoSwipe 可退出试验、随机复现、配方兼容检查与语音生命周期修复；真实模型/设备验收单列。
-- [验证性能优化（2026-09-19）](research/engineering/validation-performance-2026-09-19.md)：隔离契约有限并行、原顺序回退、预压字节等价与同机耗时对照。
-
-## 研究、设计与历史任务包
-
-研究和旧任务包不构成当前实施清单；已采纳部分查项目状态，未采纳方案需另定范围。
-
-- [可选轻盈 / 液态玻璃（2026-09-20）](research/engineering/glass-material-modes-2026-09-20.md)：设备内材质偏好、按需折射、资源释放、辅助显示回退及双主题验收。
-- [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：当时的模型取景采样、视觉依据与分批检查；后续安装和未覆盖设备条件分别查项目状态与未来规划。
-- [本机 Live2D 候选接入（2026-09-20）](research/desktop/live2d-candidate-integration-2026-09-20.md)：本机模型与 Native 适配、影退役、开放聊天舞台、桌宠与独立聊天窗重构；双主题真实模型检查与桌面实测边界。
-- [可维护性增量审查（2026-09-19）](research/engineering/maintainability-optimization-2026-09-19.md)：M01–M10 的固定基线、依据与实施边界；执行结果见项目状态，剩余事项见 roadmap。
-- [工程研究资料归档](research/engineering/README.md)：资产、图片候选、容器与文案、文档证据及未执行验收用例的已核验范围。
-- [GitHub 复用与参考项目调研（2026-09-19）](research/engineering/github-reference-research-2026-09-19.md)：候选项目与 HUIYU 能力边界、优先级和正式接入前的 Spike／许可／门禁要求。
-- [Gemini 场景候选复核与修订](research/prompts/gemini-scene-candidates/review.md)：60 份概念／12 份深化稿核对，三条双引擎修订候选，均未出图。
-- [Gemini 第二轮复核与场景创作交接](guides/engineering/gemini-scene-draft-handoff.md)：已纠正项、新误报与 60 份场景概念／12 份双引擎草稿任务；不写生产内容。
-- [成年角色 NSFW / R-18 CG 提示词规范](guides/prompts/nsfw-cg-prompt-standard.md)：双引擎 NSFW 语法、脱衣防冲突机制、Danbooru 核心矩阵与 R-18 蓝图规范。
-- [手机竖屏壁纸](guides/prompts/mobile-wallpaper-prompt-standard.md)与[成年角色非露骨 CG 研究](research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)：iPhone 17 Pro／通用长屏适配、非露骨创作及中性一致性检查；候选未出图。
-- [单人物立绘与特写壁纸规范](guides/prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 同列重点，分别评价人物表现和桌面适配；案例尚未出图。
-- [叙事 CG 提示词规范](guides/prompts/narrative-cg-prompt-standard.md)与[研究依据](research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)：Anima／Krea 2 人物环境融合；示例及实验计划尚未真实出图。
-
-## 已完成批次与历史记录
-
-- [文档漂移整理（2026-09-27）](audits/2026-09-27/documentation-drift.md)：源码/安装、权威分片、操作命令、工程边界与目录路由的核对；记录验证范围和未执行项。
-- [原状态页分批记录（截至 2026-09-27）](archive/completed/project-status-2026-09-27.md)：完整保留各批当时结果与限制，现行摘要仍见项目状态。
-
-- [后端审计与优化（2026-09-27）](audits/2026-09-27/backend-audit.md)：任务/自愈竞态、存储热路径、翻译和反推传输、配音配置与收件箱；[热路径样本](evidence/backend-hotpaths-2026-09-27.json)、[批量读取](evidence/backend-readpaths-2026-09-27.json)、[生命周期](evidence/backend-lifecycle-2026-09-27.json)、[配音与收件箱](evidence/backend-voice-inbox-2026-09-27.json)和安装边界分列。
-- [后端重构必要性复审与落实（2026-09-27）](audits/2026-09-27/backend-refactor-review.md)：五项任务、派生媒体权限与暂存回收缺口的修复前复现、同日实施及测试精简；源码验证、完整门禁失败与安装边界分别记录。
-
-- [工作流治理实施与复核（2026-09-13–14）](archive/audits/workflow-governance-2026-09-13-14.md)：合并 GLM 交接、W1 初版/复核及 A/RB/RC/RD、N1–N3、G1–G16 结果，保留分批失败与补验。
-- [资产与资料复核（2026-09-13）](archive/audits/asset-document-review-2026-09-13.md)：合并 Gemini 交付复核、G0–G5 资料范围及六份盘点的误报更正；原始 JSON 与验收证据保留。
-
-- [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：当时导航回归、删除和未安装的分阶段记录；后续安装见当前状态。
-- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。
-- [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
-- [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
-- [1.7.4 图库与离线资源](releases/v1.7.4.md)：图库调度、真实完整资源导入/重启、签名构建及发布/设备/许可边界。
-- [1.7.2 工作台与桌面维护](releases/v1.7.2.md)：主线内容、工作台体验、资源边界、桌面可靠性与工程维护更新。
-- [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。
-
-- [办公机独立全面审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)：当时源码与失败/通过证据；后续修复查项目状态，不直接执行旧待办。
-
-## 按需查阅
-
-- [页面数据链路性能根因与验证](audits/2026-09-28/ui-data-performance.md)：浏览目录分离、推荐字段投影、排序与加载竞态；含冷启动对照和资源检查边界。[机器可读证据](evidence/ui-data-performance-2026-09-28.json)。
-
-- [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；已按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
-- [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
-- [全功能开箱与硬件配置、模型部署指南](guides/setup-and-models.md)：各硬件档位运行能力、公共开源底座直链、自训专属 LoRA 说明与环境体检。
-- [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
-- [研究与候选方案](research/README.md)：调研依据与待评估提案。
-- [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。
-- [版本更新](releases/v1.7.4.md)：当前发行准备及验收边界；[1.7.2](releases/v1.7.2.md)、[1.7.1](releases/v1.7.1.md)、[1.7.0](releases/v1.7.0.md)、[1.6.1](releases/v1.6.1.md)、[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
-- [专项计划与保留提案](../plans/README.md)：部分实施、待验收与暂停提案分别登记；001–003 已归档。
-- [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。
-
-## 文档放在哪里
-
-| 目录 | 收录内容 | 维护规则 |
-| --- | --- | --- |
-| docs 根目录 | 上述日常入口与阅读门户 | 不追加单次报告 |
-| guides/ | 可重复使用的专题指南 | 更新已有指南，注明历史段落 |
-| research/ | 未采纳或待复核研究 | 执行优先级只写入 roadmap |
-| audits/ | 按日期保存的审计输入与执行证据 | 基线问题和执行结果分别保留，当前待办汇总到 roadmap |
-| archive/audits/ | 按日期记录的审计 | 保留失败项与原始验收边界 |
-| archive/batches/ | 角色、场景接入批次 | 不把登记数量当成交付数量 |
-| archive/completed/ | 已完成事项 | 只收录有完成依据的记录 |
-| archive/troubleshooting/ | 故障与实验经验 | 保留可追溯的原因和证据 |
-| evidence/ | 机器可读的审计证据 | 与报告链接对应，不重复抄入正文 |
-
-新增文档登记到本页或对应分类索引。规模只在项目状态维护，待办只在规划维护。
-移动文档需同步相对链接、脚本引用及 `redirects.json` 中的旧站内地址，并运行 `npm run wf -- docs:check`。
+新增文档登记本页或分类索引。规模只在项目状态维护，待办只在未来规划维护。更新或删除文档时同步相对链接、脚本引用和现有旧站内地址映射，并运行 npm run wf -- docs:check；原始性能采样、截图与日志放在被忽略的 runtime/。

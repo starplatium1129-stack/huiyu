@@ -1,6 +1,6 @@
 # 013：Node.js 运行时迁移到 Rust
 
-更新于 2026-09-28。状态：**后端切换、main 合并与本机安装/启动核验已完成，发行材料及真实模型/设备验收仍待收口**。最初的工期估算不再作为当前排期。执行、失败和证据边界见[迁移执行记录](../docs/architecture/NODE-RUST-MIGRATION-REPORT.md)；安装身份见[项目状态](../docs/project-status.md)。
+更新于 2026-09-30。状态：**后端切换、main 合并与本机安装/启动核验已完成，发行材料及真实模型/设备验收仍待收口**。最初的工期估算不再作为当前排期。迁移范围见 [生产范围清单](../runtime-rs/migration-inventory.json)；安装身份见[项目状态](../docs/project-status.md)。
 
 ## 范围与当前架构
 
@@ -12,16 +12,16 @@
 
 | 批次 | 实际完成范围 | 尚需收口 |
 | --- | --- | --- |
-| M0 范围 | `aba7e24b` 的 227 模块闭包、164 HTTP 登记、55 workspace command、4 维护任务；动态 worker/维护边入册 | 清单 pending 保留范围基线语义；当前源码/构建身份见执行记录，整机成本对照仍待测 |
+| M0 范围 | `aba7e24b` 的 227 模块闭包、164 HTTP 登记、55 workspace command、4 维护任务；动态 worker/维护边入册 | 清单 pending 保留范围基线语义；当前源码/构建身份见项目状态，整机成本对照仍待测 |
 | M1 纵向接线 | health、桌面认证、工作区与真实 Vue 图库接线、双主题证据；新安装认证与 workspace owner 核验通过 | 完整浏览器/多窗设备矩阵 |
 | M2 存储 | 单写者、schema、回执、媒体/profile/迁移、备份/恢复/GC | 真实用户库升级/回退、断电、磁盘/规模条件 |
 | M3 网关与安全 | Host/Origin/token/会话、静态/预压、远程投影、参考、代理与 WS | 隧道、授权素材和完整远程页面验收 |
 | M4 任务与创作 | accepted/取消/unknown 恢复、五种 provider、输入快照/收件箱、视频批次 | 真实模型、GPU、长任务及最终视频效果 |
 | M5 聊天与语音 | 个人/托管 API、Ollama、工具协议、翻译/TTS、队列和取消 | 真实语音、长流、设备与服务生命周期 |
 | M6 媒体与维护 | 图片/WD14、Live2D、内容事务/校验/上传、资源 full/delta/续传/恢复、五域聚合、恢复 CLI、控制面；两份原生 DLL 安装哈希一致 | 真实权重与视觉/设备；未实际安装额外资源包或出图 |
-| M7 产品交付 | Rust EXE/DLL、Tauri release、NSIS 与输入绑定通过；main 合并及本机完整安装/UAC、认证启动通过 | 继承的 title 门禁、许可/SBOM、真实模型/完整设备验收、旧实现退出；`releaseReady=false` |
+| M7 产品交付 | Rust EXE/DLL、Tauri release、NSIS 与输入绑定通过；main 合并及本机完整安装/UAC、认证启动通过 | 许可/SBOM、真实模型/完整设备验收、旧实现退出；`releaseReady=false` |
 
-“实现”不等于每个分支均验收。已保存日志、失败及定向补测见执行记录，不从路由数量推算覆盖率。Node 单元/契约保留旧行为对照；默认 Playwright 已启动 Rust，Node 仅提供假上游，五条主流程实际重跑通过。Rust 专项另用隔离 `parity.mjs` / `browser.mjs` 验证工作区与双主题。Linux CI 的格式、Clippy、65 项单元/16 项集成、release 与协议对照已通过。
+“实现”不等于每个分支均验收。历史日志和失败边界可从 Git 历史查询；本机安装见 [Rust 安装证据](../docs/evidence/rust-installation-2026-09-28.json)，后续验证查[当前状态](../docs/project-status.md)，不从路由数量推算覆盖率。Node 单元/契约保留旧行为对照；默认 Playwright 已启动 Rust，Node 仅提供假上游。Rust 专项另用隔离 `parity.mjs` / `browser.mjs` 验证工作区与双主题，历史 CI 结果不替代当前源码验收。
 
 ## 保持的约束
 
@@ -33,9 +33,16 @@
 
 具体约束沿用[工程契约](../docs/engineering-contracts.md)、[Workspace 契约](../docs/architecture/WORKSPACE-MIGRATION-DESIGN.md)及[任务契约](../docs/architecture/TASK-RUNTIME-DESIGN.md)。
 
+## 当前受理与恢复边界
+
+- 服务与声线配置区分保存值和生效值，保存后需重启；应用启动不自动启动模型服务或隧道。
+- Krea init/mask 未接通时明确返回 501；H3 缺少 T8 的参考输入和 Wan 不支持的尾帧链在受理前拒绝。
+- AI 分镜仅本机可用并拒绝成人输入，未知能力不假报支持。
+- 模型生成成功后，结果持久化失败仅重新收集原结果，不重新发起生成；未知提交先按稳定身份查询。
+
 ## 剩余交付顺序
 
-1. 保留当前源码、Rust/前端/对照及 release/NSIS 的绑定证据；原有 title 36/35 门禁尚未消除，全站浏览器矩阵与整机成本对照另验。
+1. 保留源码、前端/Rust release 与 NSIS 的绑定证据；原生 title 基线已收紧到 0，全站其他状态和整机同负载成本仍按实际范围验收。
 2. 完成原生依赖 SBOM/notices、工具链与对应源码等发行材料；`releaseReady=false` 期间不记为可公开发行。
 3. 已通过 `deploy-desktop.bat` 完整安装并核验 UAC、启动身份、workspace owner 与原生库；三窗、实际资料回退和长期退出/恢复场景仍按设备矩阵补验。
 4. 按目标设备验证真实生成、视频、聊天/语音、WD14 与资源；再进行同负载成本测量。

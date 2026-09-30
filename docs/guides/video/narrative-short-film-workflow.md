@@ -97,7 +97,7 @@
 
 ## 四、应用方案（P5–P8，供视频链路负责人评估实施）
 
-> 以下接口与数据结构为建议草案，实施时由视频链路负责人按现有契约风格（`validateInput` 白名单、错误信封、测试锚点）落地并写回 `docs/archive/expired/video-generation-roadmap.md`。
+> 以下接口与数据结构为建议草案，实施时由视频链路负责人按现有契约风格（`validateInput` 白名单、错误信封、测试锚点）落地并写回 `docs/engineering-contracts.md`。
 
 ### P5 · 分镜模式（Shot List）+ 批量生成 ——「几秒单镜」→「30–60 秒短片」的最小闭环
 
@@ -181,4 +181,4 @@
 
 ## 六、留档要求
 
-按 AGENTS.md（2026-08-15 决策）：实施过程中反复排查才解决的疑难（如 FL2VA 尾帧接线、批量队列竞态、对白口型问题），必须把「现象 → 根因 → 修复 → 验证」追加到本文档或 `docs/archive/expired/video-generation-roadmap.md`（由视频链路负责人维护），标注日期。
+按 AGENTS.md（2026-08-15 决策）：实施过程中反复排查才解决的疑难（如 FL2VA 尾帧接线、批量队列竞态、对白口型问题），必须把「现象 → 根因 → 修复 → 验证」追加到本文档或 `docs/engineering-contracts.md`（由视频链路负责人维护），标注日期。

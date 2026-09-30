@@ -1,10 +1,10 @@
 # 桌面启动、连接与能力边界实施规范
 
-> 已落地的实施契约。R1 的最小 bootstrap、R8 的类型化桥接/连接层与 R9 的 bundled UI 已接入；本机真实安装、`3002` 来源迁移和独立界面切换见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。来源切换仍由经过验证的持久激活指针决定，普通构建不自动迁移其他 profile；入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约。R1 的最小 bootstrap、R8 的类型化桥接/连接层与 R9 的 bundled UI 已接入；本机真实安装、`3002` 来源迁移和独立界面切换见 [当前实现与安装边界](../project-status.md#源码与本机安装)，当前安装身份以[项目状态](../project-status.md)为准。来源切换仍由经过验证的持久激活指针决定，普通构建不自动迁移其他 profile；入口：[现行架构契约](../engineering-contracts.md#重构期间的任务与持久化边界)。
 
 ## 1. 默认选择，不再把 transport 留给下一轮研究
 
-保留 Node HTTP API 作为业务传输，复用现有请求客户端和 provider 路由；任务进度初版继续可重连的 HTTP 查询。Tauri IPC 只管理可信 bootstrap、窗口、凭据、安装更新及原生能力，不把所有业务请求改写成一个 Rust 通用代理。
+使用 Rust HTTP API 作为业务传输，复用现有请求客户端和 provider 路由；任务进度初版继续可重连的 HTTP 查询。Tauri IPC 只管理可信 bootstrap、窗口、凭据、安装更新及原生能力，不把所有业务请求改写成一个 Rust 通用代理。
 
 理由是现有 `src/api/client.ts` 已有响应校验、并发去重、消费者取消隔离和代际缓存；已有 generation/video API 能继续使用。此选择不意味着直接允许任意网页调用私人 workspace，新增会话与权限规则见第 3 节。
 
@@ -97,11 +97,11 @@ R9 采用桌面专用构建入口/模式，桌面路由使用 hash history，避
 
 这会改变 location.pathname，因此必须同步修改窗口角色判定、shim 退出路径、页面 CSP 判断和深链测试；不能只改 router 的一行配置。
 
-沿用 `tauri.conf.json` 的 frontendDist staging 边界，构建脚本把桌面产物放到实际配置目录。只打包必要的公开启动资源；模型/私人图片/迁移备份不进入 frontendDist。Node 仍需要的 assets/tools/data 不因删除重复 web dist 被误删。
+沿用 `tauri.conf.json` 的 frontendDist staging 边界，构建脚本把桌面产物放到实际配置目录。只打包必要的公开启动资源；模型/私人图片/迁移备份不进入 frontendDist。Rust 运行时需要的公开 assets/data 不因删除重复 web dist 被误删，开发工具不随产品后端打包。
 
-新增 storage worker、runtime `.js` 生成物、纯类型声明和依赖必须进入对应构建图与 gateway resources。共享运行时代码需要明确 TS rootDir、生成路径与资源映射；默认优先纯 DTO 类型共享和既有目录，而不是新建未经配置的根 shared 包。
+Rust EXE、图像与 ONNX 原生 DLL、依赖清单及公开资源必须进入构建绑定与 gateway resources。Node 生成物保留在开发构建图，不进入产品载荷；前后端只通过明确 DTO/协议共享契约，不跨层共享可变引用。
 
-安装包验收必须在没有 Vite 开发服务器、没有开发仓库相对路径兜底的环境中完成。验证 node.exe 版本、worker 入口、SQLite、媒体加载和三个窗口；开发模式成功不能代替打包成功。
+安装包验收必须在没有 Vite 开发服务器、没有开发仓库相对路径兜底的环境中完成。验证 Rust EXE/DLL 身份、存储线程与 SQLite、媒体加载和三个窗口；开发模式成功不能代替打包成功。
 
 升级协议包含 UI/runtime protocolVersion、workspace schemaVersion 和最低可写版本；不兼容时只读/诊断，不能偷偷回退旧库。应用身份和 WebView profile 路径不随这次重构改名。
 

@@ -15,7 +15,7 @@ description: 编写或审查 AI-CG-Studio 的 Anima/Krea 2 图像提示词及编
 - 手机竖屏壁纸：读 [手机规范](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)；成年角色非露骨题材或中性一致性排查：读 [稳定性研究](../../../docs/research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)。
 - 成年角色成人向／NSFW 场景与蓝图规范：读 [NSFW 规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)（严格遵循 adult 资格与本地宿主放行）。
 - 写入仓库、批量重写、换装/生成验收或定稿：再读 [字段与交付](references/delivery.md)。纯草稿不要求启动仓库工作流或出图。
-- 仅在解释模型能力、参数来源或旧规范冲突时查 [调研记录](../../../docs/research/prompts/prompt-skill-research-2026-09-09.md)。不用默认加载所有引擎和历史指南。
+- 仅在解释模型能力、参数来源或旧规范冲突时查 [双引擎提示词研究](../../../docs/research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。不用默认加载所有引擎和历史指南。
 
 ## 共同约束
 

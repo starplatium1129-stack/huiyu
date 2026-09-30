@@ -6,8 +6,8 @@
 //   3. R18 配方独立、显式声明，只有 adultEligibility === 'adult' 且成熟内容
 //      开关同时开启时才可达，unknown / underage 永远不可达（fail closed）。
 //
-// 2026-08-30 Krea2 提示词调研报告（docs/research/prompts/krea2-prompt-research-2026-08-30.md）落地：
-//   - 动漫向配方 lead 统一补「平涂词族」（§5.3）：Krea 2 默认偏厚涂/半写实，
+// 当前 Krea 规则见 .agents/skills/studio-prompt-craft/references/krea.md：
+//   - 动漫向配方 lead 统一补「平涂词族」：Krea 2 默认偏厚涂/半写实，
 //     'polished' 词又引导光泽，二次元出图「油、糊、厚」；对策是明写
 //     flat cel shading / flat colors / crisp line art / clean linework。
 //   - 真人/电影向配方补「光线材质语言」（§6.2）：film grain、softbox 等可测量

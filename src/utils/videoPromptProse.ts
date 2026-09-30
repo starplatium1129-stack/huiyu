@@ -9,8 +9,7 @@
  *     AGENTS.md「exactTokens 括号消歧按 Anima 空格规则」同向，避免 H3 收到下划线 token）
  *   - 主体计数词（1girl / solo …）与外观词（red hair / blue eyes …）
  *     组装进主句（a girl with red hair and blue eyes, …）
- *   - 其余词条（服装/场景/动作/角色标识）原样保留（不翻译——tag 转译会引入
- *     错误语义，与 docs/archive/expired/video-generation-roadmap 的「不做 tag 翻译」原则一致）
+ *   - 其余词条（服装/场景/动作/角色标识）原样保留；tag 转译会引入错误语义。
  *   - 已像自然语言的提示词（Anima prose 等）原样返回，不误伤
  *   - 含 CJK 的输入（中文 story / 场景描述）原样返回——按 ASCII 逗号重拼会
  *     把「，」改写成「, 」造成标点残渣（2026-08-15 审计实锤）

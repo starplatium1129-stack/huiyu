@@ -21,10 +21,10 @@ describe('plainEnglish', () => {
   })
 })
 
-/** Krea 2 调研报告（docs/research/prompts/krea2-prompt-research-2026-08-30.md）落地行为：
- *  1) medium 媒介词收尾（官方「命名工作室收尾」，§四/§五.2）——此前被 sanitize
+/** 当前 Krea 规则（.agents/skills/studio-prompt-craft/references/krea.md）的行为回归：
+ *  1) medium 媒介词收尾——此前被 sanitize
  *     但从未织入渲染输出，此处验证织入与防重复；
- *  2) 空场景散文追加 "no characters, no people, no figures"（§七/§八）。 */
+ *  2) 空场景散文追加 "no characters, no people, no figures"。 */
 describe('renderPromptPlan krea2', () => {
   it('medium 未出现在 lead 中时，以 polished X finish 收尾织入散文', () => {
     const plan = createPromptPlan({

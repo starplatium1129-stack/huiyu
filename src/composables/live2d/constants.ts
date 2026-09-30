@@ -77,7 +77,7 @@ export const OVERLAY_SETTLE_MS = 450
 // -1（隐藏），写 0 会落在"显示区间"导致叠层半透明残留（重影灰眼，用户
 // 反馈）；Param18/44-51/56/57/62 默认 0。Param37/Param64 为 2026-08-16
 // 补充（Tap 驱动但此前不在清单）。
-// 依据：docs/research/desktop/live2d-natsume-overlay-research.md、docs/guides/desktop/live2d-native-runtime.md。
+// 依据：docs/guides/desktop/live2d-native-runtime.md 的模型特殊契约。
 export const NATSUME_RESET_PARAMS: ReadonlyArray<{ id: string; value: number }> = [
   { id: 'Param18', value: 0 },
   { id: 'Param36', value: 0 },

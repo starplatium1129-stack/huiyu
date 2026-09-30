@@ -125,7 +125,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture', 'service'], machine: ['windows', 'node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/verify-desktop-gateway.js:47-85', unknown: [] } },
   'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md',
     run: { nature: ['read-only'], machine: ['windows', 'node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/desktop-build-environment.js:39-64', unknown: [] } },
-  'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'plans/005-desktop-architecture-consolidation.md',
+  'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'docs/workflow.md#门禁与构建',
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-artwork-storage.js:56-135', unknown: [] } },
   'desktop:rust-bundle': { desc: '在仓库外隔离布局验证已暂存的 Rust gateway 与原生依赖', cmd: ['node', 'scripts/tests/test-rust-bundle.js'], docs: 'docs/workflow.md#门禁与构建',
     run: { nature: ['isolated-fixture', 'service'], machine: ['windows', 'node', 'build-present'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-rust-bundle.ts', unknown: ['真实模型与最终安装另验'], notes: ['先准备当前Rust release与staging；真实bundle映射进入临时目录，模型上游隔离，不下载、不安装、不访问用户库'] } },
@@ -330,7 +330,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'showcase:generate': {
     desc: 'Anima 热门角色 × 蓝图候选出图',
     cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
-    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    docs: 'docs/workflow.md#样张',
     required: ['--output'],
     opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.2 --concurrency 3',
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-popular-showcase-anima11.js:16-18,44-49', unknown: [], notes: ['写仓库外 ../AI/Reviews/... 候选目录；assertIsolated 拒写公共 showcase'] },
@@ -338,7 +338,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'showcase:batch-miaomiao': {
     desc: 'MiaoMiao v1.2 场景待审核候选生成（832x1216/1216x832，默认并发3）',
     cmd: ['node', 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js'],
-    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    docs: 'docs/workflow.md#样张',
     required: ['--output'],
     opts: '--output <候选目录> [--force] [--character <id>] [--limit <n>] [--root <数据根>] [--gateway <url>] [--concurrency <n>] [--dry-run] [--retry-unknown]',
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--force': ['external-model', 'writes-product'], '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['默认网关3000；隔离候选保持 pending，不自动发布；已知 job 可恢复'] },
@@ -377,7 +377,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     required: ['--from', '--source', '--target'],
     desc: '预览审核通过的样张发布（--apply 写入版本目录）',
     cmd: ['node', 'scripts/maintenance/publish-popular-showcase.js'],
-    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    docs: 'docs/workflow.md#样张',
     run: { nature: ['preview'], machine: ['node', 'python-pillow'], switches: { '--apply': ['writes-release', 'writes-source'], '--force': ['delete', 'writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/publish-popular-showcase.js:9-12,24-27', unknown: [], notes: ['--apply 除新版本目录外还写仓库内 assets/characters/popular-<id>.png 立绘'] },
   },
   'showcase:batch': {
@@ -390,7 +390,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'showcase:full': {
     desc: '样张链路：generate -> audit -> 发布预览（--output / --source / --target 必填）',
     cmd: null,
-    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    docs: 'docs/workflow.md#样张',
     steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'vision-api', 'node', 'python-pillow'], switches: {}, resume: 'checkpoint', evidence: 'scripts/workflow.js:200-205; scripts/lib/workflow-runner.js:37-53', unknown: [], notes: ['复合：生成与审核实际执行，发布步仅预览（--apply 被 plan() 参数白名单拒绝）'] },
   },
@@ -569,7 +569,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'check:domain-types': {
     desc: '检查公共类型、结果快照与入册用例的间接依赖，报告类型边、运行候选边及未知导入',
     cmd: ['node', 'scripts/tests/test-domain-type-boundaries.js'],
-    docs: 'plans/architecture-evolution.md#a07',
+    docs: 'docs/engineering-contracts.md#重构期间的任务与持久化边界',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/lib/domain-type-boundaries.ts; scripts/tests/test-domain-type-boundaries-fixtures.ts', unknown: [] },
   },
   'test:contract': {

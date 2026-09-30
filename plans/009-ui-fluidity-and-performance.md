@@ -71,7 +71,7 @@
 | [现有性能配置](../playwright.performance.config.ts)、[导演台基准](../tests/e2e/office-performance.bench.ts) | 单 worker；3 组新 context；每组两次 `page.goto('/prompt-builder')`，测可见入口与首次操作 | 当前 warm 是同 context 的再次文档导航，不等于 SPA 切换或 KeepAlive 激活；补独立场景，不改名冒充已有覆盖 |
 | [Live2D 纹理](../services/live2d-textures.ts)、[原生构建](../desktop-tauri/native-live2d/build.rs) | 已有 Sharp 处理、纹理缓存与串行队列；已有 Rust/C++ 原生集成 | 测共用 CPU/GPU 和生命周期；不要把现有原生依赖重写一遍 |
 
-[007 UI 计划](007-ui-detail-polish-and-review.md)、[008 TypeScript 计划](008-typescript-migration-repair.md) 和 [导航收尾记录](../docs/archive/audits/ui-navigation-and-unused-2026-09-15.md) 仅提供已做范围与回归线索。本文不重新开启它们已经完成的开发批次，也不关闭其中尚未完成的设备验收。
+[剩余验收与规划](../docs/roadmap.md#pc-桌面架构整理后的验收)、[剩余验收与规划](../docs/roadmap.md#011--012-的剩余验收) 和 [当前项目状态](../docs/project-status.md) 仅提供已做范围与回归线索。本文不重新开启它们已经完成的开发批次，也不关闭其中尚未完成的设备验收。
 
 ## 4. 测量口径与拟定目标
 

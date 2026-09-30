@@ -2,8 +2,7 @@
 
 > 2026-08-24 · 场景蓝图词条出图语义研究产物。
 > 数据基座：`data/scene-blueprints.json` 438 蓝图 / 1295 唯一词条普查；
-> 证据源：项目本地实测文档（`three-engine-prompt-research.md` 等，🟢）+ NoobAI/Illustrious 官方口径（🔵）
-> + Danbooru 标签体系惯例（🔵）+ 本项目 A/B 记录（`anima-training-record.md`，🟢）。
+> 证据来自当时本地实验、官方说明和 Danbooru 惯例；旧实验原文从 Git 历史查询。当前编译规则见 [项目 skill](../../../.agents/skills/studio-prompt-craft/SKILL.md)，模型依据见[最新双引擎研究](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。
 > 置信度标记：🟢 官方或本项目实测背书 / 🔵 多源社区一致 / 🟡 单源推断 / ⚪ 未验证。
 
 ---
@@ -21,7 +20,7 @@
 
 **双引擎差异要点：**
 - **Anima（Qwen3-0.6B 文本编码器）**：LLM 族编码器对自然语言与词序敏感度高；超长 prompt 末尾 tag 权重衰减（"末尾=加噪声"，官方答疑 🟢）；underscore exact token 是身份/质量控制的硬锚点，普通场景词用空格形（v19 实测：`best_quality` 转空格→胸饰退化 🟢）。
-- **Krea 2（自研 12B DiT + Qwen3-VL 编码器，非 SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。架构与提示词规范见 `docs/research/prompts/krea2-prompt-research-2026-08-30.md`。
+- **Krea 2（自研 12B DiT + Qwen3-VL 编码器，非 SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。架构与提示词规范见 [双引擎研究](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。
 - **Illustrious/NoobAI 系（CLIP）**：纯 tag 方言；质量锚点前置有效（官方口径 "quality tags help clean up the picture" 🔵），但 Anima 两底模均 `strip_quality_tokens=true`——质量词只属于 profile 装配层，数据层携带必被剥离且属死数据 🟢。
 
 ---

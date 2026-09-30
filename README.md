@@ -4,13 +4,13 @@
 
 [中文说明](README_zh.md)
 
-[Download HUIYU 1.7.2 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.2) · [Release notes](docs/releases/v1.7.2.md)
+[Download HUIYU 1.7.4 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4) · [1.7.4 更新说明](docs/releases/v1.7.4.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
 
-The current source uses a Rust product backend. Node remains a frontend/development build tool and a legacy behavior oracle; the existing 1.7.2 download is a separate, previously published build. The Rust version has been installed and its runtime verified locally. Real-model/device acceptance and native redistribution materials remain incomplete (`releaseReady=false`): see the [migration report](docs/architecture/NODE-RUST-MIGRATION-REPORT.md).
+The product backend uses Rust; Node remains a frontend/development build tool and a legacy behavior oracle. Version 1.7.4 has been installed locally. Later source fixes, real-model/device acceptance and native licensing gaps are tracked separately in [project status](docs/project-status.md) and the [Rust migration plan](plans/013-node-to-rust-migration.md).
 
 ## About
 

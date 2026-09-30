@@ -1,6 +1,6 @@
 # Durable Task Runtime 实施规范
 
-> 已落地的实施契约，对应修订版 R5–R7。桌面在已激活 workspace 上使用 durable runtime；Web 数据域与任务行为保持各自平台边界。实现、隔离验收及本机安装范围见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。真实模型、并发负载及其他设备验收不由安装记录替代；入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约，对应修订版 R5–R7。桌面在已激活 workspace 上使用 durable runtime；Web 数据域与任务行为保持各自平台边界。实现、隔离验收及本机安装范围见 [当前实现与安装边界](../project-status.md#源码与本机安装)，当前安装身份以[项目状态](../project-status.md)为准。真实模型、并发负载及其他设备验收不由安装记录替代；入口：[现行架构契约](../engineering-contracts.md#重构期间的任务与持久化边界)。
 
 ## 1. 产品语义先固定
 

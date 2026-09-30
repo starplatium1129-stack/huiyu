@@ -1,6 +1,6 @@
 # 项目状态
 
-> 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
+> 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)。旧批次原文从 Git 历史查询。
 
 本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；尚未重新签名、打包、安装或发布。下方签名发行与安装记录仍对应原 1.7.4，不代表本轮源码已到达客户端。
 
@@ -10,8 +10,8 @@
 | --- | --- | --- |
 | 当前源码/构建 | 1.7.4 签名发行材料已完成；图库合并缩略图重复读取并跳过筛选后的过时队列，既有 Rust 后端及桌面改进保留 | [1.7.4 说明](releases/v1.7.4.md)、[本轮有限优化与证据](audits/2026-09-30/release-offline-optimization.md)、[后端优化与验证](audits/2026-09-29/backend-optimization.md) |
 | 最近本机安装 | 1.7.4 已正常安装至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE与两份DLL匹配候选哈希；不带 Cleanup，按 NoRestart 保持退出。9个旧打包文件的此前授权清理与本轮缓存隔离分别记录 | [本轮发行与安装边界](audits/2026-09-30/release-offline-optimization.md)、[此前优化、安装与限制](audits/2026-09-30/local-optimization.md) |
-| 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
-| 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
+| 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[迁移安装证据](evidence/architecture-mainline-2026-09-26.json) |
+| 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [实验操作与验收边界](workflow.md#门禁与构建) |
 
 源码、构建、安装和设备验收分别核对。9月29日记录的 `D:/AI-CG-Studio` 安装、117项Rust测试、22项前端测试及ready状态是历史证据，不替代本轮验收。本轮复用已绑定NSIS正常安装，不带Cleanup；随后只清理用户明确指定且已备份的9个旧文件。8张喵喵v1.2/rella本地SFW对比已完成并关闭自有ComfyUI，不向生产提示词推广。当前实机主屏3840×2160/175%，未以浏览器DPR模拟代替原生窗口或多屏验收。
 
@@ -30,16 +30,16 @@
 | 创作 | SD、Anima、Krea 2 各有编译/请求边界，支持工作台、换装、场景蓝图、作品入册与视频分镜 | [工程契约](engineering-contracts.md)；聊天绘画工具目前只准备草稿，真实生成及视频效果按 roadmap 验收 |
 | 内容维护 | 人物、服装、蓝图和参考按权威源维护；变更集/事务、候选审核、不可变发布与资源恢复已接线 | [维护手册](maintenance.md)、[候选审核工作流](workflow.md#参考库候选审核与版本发布)；pending、登记与结构检查不计为图片交付 |
 | UI | 深浅主题、按需路由、角色画集、粒子肖像、结果架、相册/收藏及无障碍交互已有实现；Reka UI 已用于浮层和控件 | [012 实施记录](audits/2026-09-21/012-execution-report.md)；217 项矩阵中的 85 项外部条件为当时检查点，后续按 ID 补验 |
-| 陪伴与 Live2D | 统一身份/Profile、独立聊天窗、模型检查、参数枚举、有界本机导入校准已接线；Cubism 2 候选保留浏览器回退 | [010 计划与记录](../plans/010-companion-experience-and-live2d-adapter.md)、[尾项记录](audits/2026-09-21/office-tail-completion.md)；语音、多屏/DPI/休眠与长期资源趋势继续开放 |
+| 陪伴与 Live2D | 统一身份/Profile、独立聊天窗、模型检查、参数枚举、有界本机导入校准已接线；Cubism 2 候选保留浏览器回退 | [010 计划与记录](../plans/010-companion-experience-and-live2d-adapter.md)、[运行时维护](guides/desktop/live2d-native-runtime.md)；语音、多屏/DPI/休眠与长期资源趋势继续开放 |
 | 资源释放 | 桌宠隐藏/系统关闭释放模型与原生 GPU context，重开按偏好恢复；桌面取消全库缩略预热，缓存限 96 项/8 MiB；图库停用释放高清 URL | [内存优化证据](evidence/memory-optimization-2026-09-27.json)；880M 本机短样本不推广到独显、大图库或长期功耗 |
-| 桌面交付 | 图片统一解析 runtime URL；维护先保存各窗并排空网关；构建回执绑定实际输入/载荷，部署拒绝未退出进程或残留 workspace 锁 | [可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)、[部署指南](desktop-deployment.md)；UAC 由用户操作 |
+| 桌面交付 | 图片统一解析 runtime URL；维护先保存各窗并排空网关；构建回执绑定实际输入/载荷，部署拒绝未退出进程或残留 workspace 锁 | [可靠性工程证据](evidence/reliability-followup-2026-09-27.json)、[部署指南](desktop-deployment.md)；UAC 由用户操作 |
 | 离线资源 | r1 完整素材可由 1.7.4 原生入口导入到用户目录；1,640 条历史样张与原分级元数据保留，不更改内容分类/过滤 | [1.7.4 发行材料](releases/v1.7.4.md)、[隔离验证与缺口](audits/2026-09-30/release-offline-optimization.md)；本轮不转载 VC++，新机先从微软备好离线安装材料；全图/设备及许可未验项保留 |
 
 011 六项边界补强、012 办公机体验实施及 9 月 20–21 日审计修复已有分批记录。本机后续安装包含其受控提交中的实现；这不替代各专项仍缺的模型、素材、其他设备与大规模数据证据。
 
 ## 当前数据
 
-以下为 2026-09-27 从权威 JSON/分片重新读取的登记快照，非资产实物或画质审核。读取使用现有 store 的只读加载函数，未重建或改写内容；[盘点与文档整理记录](audits/2026-09-27/documentation-drift.md)保留口径。
+以下为 2026-09-27 从权威 JSON/分片重新读取的登记快照，非资产实物或画质审核。读取使用现有 store 的只读加载函数，未重建或改写内容；后续数量须从权威源重新对账。
 
 | 项目 | 数量 | 权威源 / 口径 |
 | --- | ---: | --- |
@@ -57,6 +57,6 @@
 当前页不滚动累加测试数量。各次通过、失败、跳过、环境与源码/构建身份留在对应执行记录；历史 PASS 不能替代当前工作区验证。局部改动按 [工作流分层规则](workflow.md#门禁与构建) 选择检查。
 
 - [未来规划](roadmap.md)：待开发、待验收、暂停与待决策事项；同一缺口按 ID 维护。
-- [计划索引](../plans/README.md)：005–013 和长期架构目标，进入前先查剩余范围。
-- [分批记录快照](archive/completed/project-status-2026-09-27.md)：此前状态页的完整过程，包括当时未安装、失败及补验说明。
+- [计划索引](../plans/README.md)：004、009、010、013 的剩余范围；长期架构待办统一在未来规划维护。
+- 旧状态页的分批过程从 Git 历史查询；本页只维护当前身份、能力与限制。
 - [文档索引](INDEX.md)：专题规范、实施报告、证据及研究资料。

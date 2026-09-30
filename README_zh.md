@@ -1,6 +1,6 @@
 # 绘遇 · HUIYU
 
-[下载 Windows 桌面版 1.7.2](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.2) · [查看更新说明](docs/releases/v1.7.2.md)
+[下载 Windows 桌面版 1.7.4](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4) · [1.7.4 更新说明](docs/releases/v1.7.4.md)
 
 > 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG、4 视角角色参考档案与 AI 叙事短片。
 
@@ -10,7 +10,7 @@
 
 当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
-当前源码的产品后端已改为 Rust；Node 保留于前端/开发构建和旧行为对照。已有 1.7.2 下载属于此前发布构建；Rust 版已完成本机安装与运行时核验，真实模型/设备验收及原生发行材料仍未完成（`releaseReady=false`），详见[迁移执行记录](docs/architecture/NODE-RUST-MIGRATION-REPORT.md)。
+产品后端使用 Rust；Node 保留于前端/开发构建和旧行为对照。1.7.4 已在本机安装，其后源码修复、真实模型/设备验收和原生许可缺口分别在[项目状态](docs/project-status.md)与[Rust 迁移计划](plans/013-node-to-rust-migration.md)维护。
 
 ## 项目定位
 

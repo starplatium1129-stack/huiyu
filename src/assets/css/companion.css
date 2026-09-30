@@ -2013,7 +2013,7 @@ html.companion-desktop.companion-ui-hidden .companion-page .live2d-interaction-h
 /* ============================================================
  * 2026-08-18 真双窗口：独立聊天窗（/companion-chat）表面
  * 角色窗只装角色；会话在这边聊天。无 Live2D、严格 CSP。
- * 设计：见 docs/research/desktop/companion-dual-window-design.md
+ * 设计：见 docs/architecture/DESKTOP-INTEGRATION-DESIGN.md
  * ============================================================ */
 html:has(.companion-chat-window) body {
   background: var(--bg-deep);
