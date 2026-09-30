@@ -125,6 +125,54 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
     }
     lost
 }
+
+pub(super) async fn progress_event(
+    inner: &Inner,
+    event: Option<crate::upstream::progress::ProgressUpdate>,
+) {
+    let lost = event
+        .as_ref()
+        .is_none_or(|event| event.event == "connection_lost");
+    let jobs = inner
+        .state
+        .lock()
+        .await
+        .jobs
+        .values()
+        .cloned()
+        .collect::<Vec<_>>();
+    for job in jobs {
+        if job.provider != "comfy" {
+            continue;
+        }
+        let mut state = job.state.lock().await;
+        if state.settled || state.upstream_id.is_empty() {
+            continue;
+        }
+        if lost {
+            state.progress_live = false;
+            state.history_urgent = true;
+            job.notify.notify_one();
+        } else if let Some(event) = &event
+            && state.upstream_id == event.prompt_id
+        {
+            state.progress = event.progress;
+            state.current_node = event.current_node.clone();
+            state.progress_text = event.progress_text.clone();
+            state.progress_live = true;
+            state.execution_started = true;
+            if event.terminal_hint() {
+                // WebSocket hints shorten the next authoritative HTTP check;
+                // they never settle a job or release its provider capacity.
+                state.history_urgent = true;
+                state.history_finishing =
+                    Some(tokio::time::Instant::now() + Duration::from_secs(5));
+                job.notify.notify_one();
+            }
+        }
+    }
+}
+
 pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
     if inner.closed.load(Ordering::Relaxed) || inner.cancel.is_cancelled() {
         return Err(closed());
@@ -139,8 +187,8 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
         let progress=crate::upstream::progress::ProgressMonitor::new(&inner.config.comfy_host,&client_id)?;
         let mut events=progress.subscribe();let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
         inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,event=events.recv()=>{
-            let event=match event{Ok(event)=>event,Err(tokio::sync::broadcast::error::RecvError::Lagged(_))=>continue,Err(_)=>return};let Some(inner)=weak.upgrade()else{return};
-            let jobs=inner.state.lock().await.jobs.values().cloned().collect::<Vec<_>>();for job in jobs{let mut state=job.state.lock().await;if state.status=="running"&&state.upstream_id==event.prompt_id{state.progress=event.progress;state.current_node=event.current_node.clone();state.progress_text=event.progress_text.clone();}}
+            let event=match event{Ok(event)=>Some(event),Err(tokio::sync::broadcast::error::RecvError::Lagged(_))=>None,Err(_)=>return};let Some(inner)=weak.upgrade()else{return};
+            progress_event(&inner,event).await;
         }}}});
         let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
         inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(60))=>{let Some(inner)=weak.upgrade()else{return};let jobs=inner.state.lock().await.jobs.values().cloned().collect::<Vec<_>>();for job in jobs{let expired={let state=job.state.lock().await;state.finished.is_some_and(|t|now()-t>=match &job.execution{Execution::Webui(_)=>2*60*60*1000,Execution::Comfy(plan)=>plan.retention.as_millis() as i64})&&state.permit.is_none()};if expired{jobs::remove(&inner,&job).await;}}}}}});

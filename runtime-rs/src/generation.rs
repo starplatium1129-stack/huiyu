@@ -1,5 +1,6 @@
 mod comfy;
 mod constants;
+mod decoder;
 mod http;
 mod jobs;
 mod output;
@@ -73,6 +74,7 @@ struct Inner {
     scope: Scope,
     config: Config,
     transport: LocalUpstream,
+    decoder: decoder::Decoder,
     cancel: CancellationToken,
     closed: AtomicBool,
     admission: Arc<Semaphore>,
@@ -150,6 +152,10 @@ struct JobState {
     progress: Option<f64>,
     current_node: Option<String>,
     progress_text: String,
+    history_urgent: bool,
+    history_finishing: Option<tokio::time::Instant>,
+    progress_live: bool,
+    execution_started: bool,
     finished: Option<i64>,
     settled: bool,
     unknown: bool,
@@ -182,6 +188,7 @@ impl Service {
             scope,
             config,
             transport,
+            decoder: decoder::Decoder::default(),
             cancel: cancel.clone(),
             closed: AtomicBool::new(false),
             admission: Arc::new(Semaphore::new(scope.capacity())),

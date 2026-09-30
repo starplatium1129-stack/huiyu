@@ -32,6 +32,19 @@ pub(crate) use canonical::stringify;
 pub use media::Media;
 
 #[derive(Clone)]
+pub(crate) enum TaskMediaTarget {
+    Input(String),
+    Result(u64),
+}
+
+pub(crate) struct TaskMediaChunk {
+    pub task_id: String,
+    pub target: TaskMediaTarget,
+    pub offset: u64,
+    pub bytes: axum::body::Bytes,
+}
+
+#[derive(Clone)]
 pub struct Storage {
     sender: mpsc::Sender<Work>,
     workspace_id: Arc<str>,
@@ -41,6 +54,12 @@ pub struct Storage {
     verification: Arc<verification::Verifier>,
 }
 enum Work {
+    TaskMediaChunk(
+        TaskMediaChunk,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<u64>>,
+    ),
     Task(
         crate::task_contract::TaskCommand,
         String,

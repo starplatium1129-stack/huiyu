@@ -15,6 +15,7 @@ async fn request(storage: &Storage, command: Value) -> Value {
 }
 
 fn assert_index(root: &Path) -> String {
+    assert_media_indexes(root);
     let db = Connection::open(root.join("huiyu.sqlite3")).unwrap();
     let plan: String = db
         .query_row(&format!("EXPLAIN QUERY PLAN {LOOKUP}"), ["17"], |r| {
@@ -43,6 +44,46 @@ fn assert_index(root: &Path) -> String {
     .unwrap()
 }
 
+fn assert_media_indexes(root: &Path) -> Vec<String> {
+    let db = Connection::open(root.join("huiyu.sqlite3")).unwrap();
+    db.pragma_update(None, "foreign_keys", true).unwrap();
+    for sql in [
+        "DELETE FROM media_aliases WHERE hash=?",
+        "DELETE FROM media_objects WHERE hash=?",
+    ] {
+        let plan: Vec<String> = db
+            .prepare(&format!("EXPLAIN QUERY PLAN {sql}"))
+            .unwrap()
+            .query_map(["missing"], |r| r.get(3))
+            .unwrap()
+            .collect::<rusqlite::Result<_>>()
+            .unwrap();
+        assert!(
+            !plan.iter().any(|row| row.contains("SCAN media_")),
+            "{plan:?}"
+        );
+        assert!(
+            plan.iter().any(|row| row.contains("media_aliases_hash")),
+            "{plan:?}"
+        );
+        if sql.contains("media_objects") {
+            assert!(
+                plan.iter().any(|row| row.contains("media_refs_hash")),
+                "{plan:?}"
+            );
+        }
+    }
+    ["media_aliases_hash", "media_refs_hash"]
+        .into_iter()
+        .map(|name| {
+            db.query_row("SELECT sql FROM sqlite_master WHERE name=?", [name], |r| {
+                r.get(0)
+            })
+            .unwrap()
+        })
+        .collect()
+}
+
 #[tokio::test]
 async fn new_and_existing_v3_workspaces_receive_reverse_index_without_revision_change() {
     let temp = tempfile::tempdir().unwrap();
@@ -56,7 +97,7 @@ async fn new_and_existing_v3_workspaces_receive_reverse_index_without_revision_c
     let identity = std::fs::read(root.join("workspace.json")).unwrap();
     Connection::open(root.join("huiyu.sqlite3"))
         .unwrap()
-        .execute_batch("DROP INDEX project_artworks_artwork")
+        .execute_batch("DROP INDEX project_artworks_artwork; DROP INDEX media_aliases_hash; DROP INDEX media_refs_hash")
         .unwrap();
     for _ in 0..2 {
         let storage = Storage::open(root.clone(), "index-test".into(), false)
@@ -70,6 +111,104 @@ async fn new_and_existing_v3_workspaces_receive_reverse_index_without_revision_c
         assert_eq!(
             std::fs::read(root.join("workspace.json")).unwrap(),
             identity
+        );
+    }
+}
+
+// Real bundled SQLite mechanism measurement; no filesystem GC or timing gate.
+#[tokio::test]
+#[ignore = "manual isolated SQL timing experiment"]
+async fn benchmark_media_gc_reverse_indexes() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("workspace");
+    let storage = Storage::open(root.clone(), "media-gc-bench".into(), true)
+        .await
+        .unwrap();
+    storage.close().await.unwrap();
+    let indexes = assert_media_indexes(&root);
+    let mut db = Connection::open_in_memory().unwrap();
+    db.execute_batch(include_str!("../src/storage/schema.sql"))
+        .unwrap();
+    db.pragma_update(None, "foreign_keys", true).unwrap();
+    let tx = db.transaction().unwrap();
+    {
+        let mut objects = tx
+            .prepare("INSERT INTO media_objects VALUES(?,1,'image/png')")
+            .unwrap();
+        let mut aliases = tx.prepare("INSERT INTO media_aliases VALUES(?,?)").unwrap();
+        let mut refs = tx
+            .prepare("INSERT INTO media_refs VALUES('artwork',?,?)")
+            .unwrap();
+        for i in 0..50_000 {
+            let hash = format!("{i:064x}");
+            objects.execute([&hash]).unwrap();
+            aliases
+                .execute(rusqlite::params![format!("alias-{i}"), hash])
+                .unwrap();
+            if i < 25_000 {
+                refs.execute(rusqlite::params![i.to_string(), hash])
+                    .unwrap();
+            }
+        }
+    }
+    tx.commit().unwrap();
+    let keys: Vec<_> = (49_800..50_000).map(|i| format!("{i:064x}")).collect();
+    for phase in ["before", "after"] {
+        if phase == "after" {
+            for sql in &indexes {
+                db.execute_batch(sql).unwrap();
+            }
+        }
+        let plans: Vec<Value> = [
+            "DELETE FROM media_aliases WHERE hash=?",
+            "DELETE FROM media_objects WHERE hash=?",
+        ]
+        .into_iter()
+        .map(|sql| {
+            let rows: Vec<String> = db
+                .prepare(&format!("EXPLAIN QUERY PLAN {sql}"))
+                .unwrap()
+                .query_map([&keys[0]], |r| r.get(3))
+                .unwrap()
+                .collect::<rusqlite::Result<_>>()
+                .unwrap();
+            json!({"sql":sql,"plan":rows})
+        })
+        .collect();
+        let mut samples = Vec::new();
+        for _ in 0..3 {
+            let tx = db.transaction().unwrap();
+            let started = Instant::now();
+            {
+                let mut aliases = tx
+                    .prepare("DELETE FROM media_aliases WHERE hash=?")
+                    .unwrap();
+                let mut objects = tx
+                    .prepare("DELETE FROM media_objects WHERE hash=?")
+                    .unwrap();
+                for hash in &keys {
+                    assert_eq!(aliases.execute([hash]).unwrap(), 1);
+                    assert_eq!(objects.execute([hash]).unwrap(), 1);
+                }
+            }
+            samples.push(started.elapsed().as_secs_f64() * 1000.0);
+            tx.rollback().unwrap();
+        }
+        assert_eq!(
+            db.query_row("SELECT COUNT(*) FROM media_objects", [], |r| r
+                .get::<_, i64>(0))
+                .unwrap(),
+            50_000
+        );
+        assert_eq!(
+            db.query_row("SELECT COUNT(*) FROM media_refs", [], |r| r
+                .get::<_, i64>(0))
+                .unwrap(),
+            25_000
+        );
+        println!(
+            "{}",
+            json!({"phase":phase,"sqliteVersion":rusqlite::version(),"objects":50000,"aliases":50000,"refs":25000,"deletions":200,"samplesMs":samples,"plans":plans})
         );
     }
 }

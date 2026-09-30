@@ -1,4 +1,6 @@
 use super::*;
+#[cfg(test)]
+mod tests;
 
 pub(super) fn run(
     root: PathBuf,
@@ -27,6 +29,17 @@ pub(super) fn run(
     let mut pause = None;
     while let Some(work) = receiver.blocking_recv() {
         match work {
+            Work::TaskMediaChunk(chunk, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::upload_chunk(&mut context, &principal, chunk);
+                    let _ = reply.send(result);
+                }
+            }
             Work::Task(command, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
@@ -141,6 +154,10 @@ pub(super) fn run(
             }
         }
     }
+    // Refuse admission before acknowledging Close. A copy keeps the receiver
+    // open until CopyFinished is queued; already admitted mutations retain
+    // COMMIT_UNKNOWN if shutdown drops their reply without executing them.
+    receiver.close();
     // The copy holds a sender until CopyFinished is queued, so channel shutdown
     // cannot release ownership while a background filesystem operation is running.
     let result = context.shutdown();

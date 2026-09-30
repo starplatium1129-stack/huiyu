@@ -1,6 +1,8 @@
 mod history;
 mod inputs;
 mod listing;
+#[cfg(test)]
+mod media_tests;
 mod outputs;
 #[cfg(test)]
 mod tests;
@@ -69,6 +71,30 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     let command = serde_json::from_value(command.clone())
         .map_err(|_| invalid("Invalid task command fields"))?;
     execute_command(c, principal, command)
+}
+pub(super) fn upload_chunk(c: &mut Context, principal: &str, chunk: TaskMediaChunk) -> Result<u64> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
+    c.writer()?;
+    let source = media::Chunk::Bytes {
+        offset: chunk.offset,
+        data: &chunk.bytes,
+    };
+    let result = match chunk.target {
+        TaskMediaTarget::Input(name) => inputs::chunk(c, principal, &chunk.task_id, &name, source)?,
+        TaskMediaTarget::Result(index) => {
+            outputs::chunk(c, principal, &chunk.task_id, index, source)?
+        }
+    };
+    result["offset"]
+        .as_u64()
+        .ok_or_else(|| invalid("Invalid stored media offset"))
 }
 pub(super) fn execute_command(
     c: &mut Context,

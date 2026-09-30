@@ -1,5 +1,4 @@
 use super::*;
-use base64::{Engine, engine::general_purpose::STANDARD};
 use reqwest::Method;
 
 pub(super) fn payload(input: &Input) -> Value {
@@ -66,7 +65,7 @@ pub(super) async fn run_queue(inner: Arc<Inner>) {
             )
             .await;
         let result = match result {
-            Ok(value) => complete(&inner, &job, &value).await,
+            Ok(value) => complete(&inner, &job, value).await,
             Err(error) => Err(error),
         };
         if let Err(error) = result {
@@ -96,36 +95,23 @@ pub(super) async fn run_queue(inner: Arc<Inner>) {
         job.notify.notify_waiters();
     }
 }
-async fn complete(inner: &Arc<Inner>, job: &Arc<Job>, value: &Value) -> Result<()> {
+async fn complete(inner: &Arc<Inner>, job: &Arc<Job>, value: Value) -> Result<()> {
     if job.state.lock().await.status != "running" {
         return Ok(());
     }
-    let image = value["images"]
-        .as_array()
-        .and_then(|a| a.first())
-        .and_then(Value::as_str)
-        .filter(|s| !s.is_empty())
-        .ok_or_else(|| ApiError::new(502, "SD_NO_IMAGE", "WebUI 未返回图片"))?;
-    let bytes = STANDARD
-        .decode(image)
-        .map_err(|_| ApiError::new(502, "SD_INVALID_IMAGE", "WebUI 返回无效图片编码"))?;
+    let decoded = inner.decoder.image(value, &inner.cancel).await?;
     let output = Output::Bytes {
-        bytes: Arc::new(bytes),
+        bytes: Arc::new(decoded.bytes),
         mime: "image/png".into(),
     };
-    let info = value["info"]
-        .as_str()
-        .and_then(|s| serde_json::from_str::<Value>(s).ok())
-        .unwrap_or_else(|| value["info"].clone());
     {
         let mut state = job.state.lock().await;
         if state.status != "running" {
             return Ok(());
         }
         state.metadata["seed"] = json!(
-            info["seed"]
-                .as_u64()
-                .filter(|s| *s <= 9_007_199_254_740_991)
+            decoded
+                .seed
                 .unwrap_or(job.input["seed"].as_u64().unwrap_or(0))
         );
     }

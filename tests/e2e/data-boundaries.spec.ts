@@ -19,6 +19,8 @@ for (const theme of ['dark', 'light']) {
         }
       })
     })
+    // Document load precedes the async app/router bootstrap and shortcut host.
+    await expect(page.getByRole('button', { name: '搜索页面、场景与作品', exact: true })).toBeVisible()
     const start = Date.now()
     await page.keyboard.press('Control+k')
     const input = page.getByRole('combobox', { name: '搜索场景、作品或页面' })

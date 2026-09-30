@@ -23,6 +23,14 @@ pub struct ProgressUpdate {
     pub progress_text: String,
     pub event: String,
 }
+impl ProgressUpdate {
+    pub fn terminal_hint(&self) -> bool {
+        matches!(
+            self.event.as_str(),
+            "execution_success" | "execution_error" | "execution_interrupted"
+        ) || self.event == "executing" && self.current_node.is_none()
+    }
+}
 
 /// Best-effort progress only. History polling remains authoritative for terminal
 /// state; providers must unwatch finished/cancelled jobs and ignore late updates.
@@ -123,6 +131,10 @@ async fn run(
         if active.borrow().is_empty() {
             continue;
         }
+        let _ = events.send(ProgressUpdate {
+            event: "connection_lost".into(),
+            ..Default::default()
+        });
         tokio::select! {
             _ = cancel.cancelled() => return,
             changed = active.changed() => if changed.is_err() { return; },
@@ -151,6 +163,9 @@ fn apply(
         "progress",
         "executing",
         "execution_cached",
+        "execution_success",
+        "execution_error",
+        "execution_interrupted",
     ]
     .contains(&event)
     {
@@ -209,7 +224,14 @@ fn apply(
             };
         }
         "execution_cached" => state.progress_text = "ComfyUI 使用缓存节点…".into(),
+        "execution_success" => state.progress_text = "ComfyUI 正在确认生成结果…".into(),
+        "execution_error" | "execution_interrupted" => {
+            state.progress_text = "ComfyUI 正在核对执行状态…".into();
+        }
         _ => unreachable!(),
     }
     Some(state.clone())
 }
+
+#[cfg(test)]
+mod tests;

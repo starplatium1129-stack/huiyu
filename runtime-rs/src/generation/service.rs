@@ -246,12 +246,14 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
 pub(super) async fn close(inner: Arc<Inner>) {
     if inner.closed.swap(true, Ordering::Relaxed) {
         inner.tasks.wait().await;
+        inner.decoder.close().await;
         return;
     }
     inner.admission.close();
     inner.cancel.cancel();
     inner.tasks.close();
     inner.tasks.wait().await;
+    inner.decoder.close().await;
     let monitor = inner
         .initialized
         .get()

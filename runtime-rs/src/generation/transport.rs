@@ -106,24 +106,10 @@ impl Inner {
                 cancel,
             )
             .await?;
-        let value = if bytes.is_empty() {
-            Value::Null
-        } else if !(200..300).contains(&status) {
-            serde_json::from_slice(&bytes)
-                .unwrap_or_else(|_| Value::String(String::from_utf8_lossy(&bytes).into_owned()))
-        } else {
-            serde_json::from_slice(&bytes).map_err(|_| {
-                ApiError::new(
-                    502,
-                    if provider == "webui" {
-                        "INVALID_UPSTREAM_RESPONSE"
-                    } else {
-                        "COMFY_INVALID_RESPONSE"
-                    },
-                    "上游返回无效 JSON",
-                )
-            })?
-        };
+        let value = self
+            .decoder
+            .json(provider, status, bytes, cancel, &self.cancel)
+            .await?;
         Ok((status, value))
     }
     pub(super) async fn json(

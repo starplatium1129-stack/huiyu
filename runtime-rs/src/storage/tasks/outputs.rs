@@ -2,6 +2,32 @@ use super::*;
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let id = string(command, "taskId")?;
+    let task = result_task(c, principal, id)?;
+    let kind = string(command, "kind")?;
+    if kind == "task.result.prepare" {
+        return prepare(c, task, &command["media"]);
+    }
+    let index = output_index(command["index"].as_u64())?;
+    let chunk = match kind {
+        "task.result.chunk" => Some(media::Chunk::Encoded(command)),
+        "task.result.commit" => None,
+        _ => return Err(invalid("Unknown task result command")),
+    };
+    prepared(c, principal, task, index, chunk)
+}
+
+pub(super) fn chunk(
+    c: &mut Context,
+    principal: &str,
+    id: &str,
+    index: u64,
+    source: media::Chunk<'_>,
+) -> Result<Value> {
+    let task = result_task(c, principal, id)?;
+    prepared(c, principal, task, output_index(Some(index))?, Some(source))
+}
+
+fn result_task(c: &Context, principal: &str, id: &str) -> Result<TaskRecord> {
     let task = require(c, principal, id)?;
     if task.delivery_state == DeliveryState::Discarded {
         return Err(conflict(
@@ -9,14 +35,24 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             "This task result was discarded",
         ));
     }
-    let kind = string(command, "kind")?;
-    if kind == "task.result.prepare" {
-        return prepare(c, task, &command["media"]);
-    }
-    let index = command["index"]
-        .as_i64()
-        .filter(|index| (0..=9_007_199_254_740_991).contains(index))
-        .ok_or_else(|| invalid("Invalid output index"))?;
+    Ok(task)
+}
+
+fn output_index(index: Option<u64>) -> Result<i64> {
+    index
+        .filter(|index| *index <= 9_007_199_254_740_991)
+        .map(|index| index as i64)
+        .ok_or_else(|| invalid("Invalid output index"))
+}
+
+fn prepared(
+    c: &mut Context,
+    principal: &str,
+    task: TaskRecord,
+    index: i64,
+    chunk: Option<media::Chunk<'_>>,
+) -> Result<Value> {
+    let id = task.task_id.as_str();
     let (body, committed): (String, bool) =
         c.db.prepare_cached(
             "SELECT media_json,committed FROM task_outputs WHERE task_id=? AND output_index=?",
@@ -26,13 +62,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Result was not prepared"))?;
     let media: Value = serde_json::from_str(&body)?;
     let key = canonical::digest(format!("task:{id}:{index}"));
-    if kind == "task.result.chunk" {
+    if let Some(chunk) = chunk {
         return Ok(
-            json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload(c, &key, &media, command, false)? }}),
+            json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &media, chunk, false)? }}),
         );
-    }
-    if kind != "task.result.commit" {
-        return Err(invalid("Unknown task result command"));
     }
     if committed {
         media::cleanup(c, &key, &media);

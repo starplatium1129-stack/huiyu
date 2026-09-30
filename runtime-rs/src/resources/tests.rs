@@ -1,4 +1,5 @@
 mod network;
+pub(super) mod overlay;
 use super::*;
 use crate::{AppState, config::Config, host::HostAuthority};
 use lifecycle::Operation;

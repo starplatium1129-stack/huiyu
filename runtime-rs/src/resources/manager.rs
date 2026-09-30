@@ -118,8 +118,26 @@ impl Service {
             data.issue = Some(super::public(&error));
         }
     }
-    pub(super) fn invalidate(&self, error: Error) {
+    pub(super) fn invalidate(
+        &self,
+        configuration: &Arc<Configuration>,
+        snapshot: &Arc<Snapshot>,
+        error: Error,
+    ) {
         let mut data = self.data.lock().unwrap();
+        if self.active.load(Ordering::Acquire)
+            || self.closed.load(Ordering::Acquire)
+            || !data
+                .config
+                .as_ref()
+                .is_some_and(|current| Arc::ptr_eq(current, configuration))
+            || !data
+                .snapshot
+                .as_ref()
+                .is_some_and(|current| Arc::ptr_eq(current, snapshot))
+        {
+            return;
+        }
         data.snapshot = None;
         data.issue = Some(super::public(&error));
     }

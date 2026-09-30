@@ -100,6 +100,24 @@ impl Storage {
             }
         })?
     }
+    pub(crate) async fn task_media_chunk(
+        &self,
+        chunk: TaskMediaChunk,
+        principal: &str,
+    ) -> Result<u64> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskMediaChunk(
+                chunk,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| commit_unknown())?
+    }
     pub async fn media(&self, alias: &str) -> Result<Media> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();

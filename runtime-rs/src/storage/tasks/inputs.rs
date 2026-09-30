@@ -1,9 +1,43 @@
 use super::*;
 
+enum InputCommand<'a> {
+    Get,
+    Prepare(&'a Value),
+    Chunk(media::Chunk<'a>),
+    Commit,
+}
+
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let id = string(command, "taskId")?;
-    require(c, principal, id)?;
     let name = string(command, "name")?;
+    let command = match string(command, "kind")? {
+        "task.input.get" => InputCommand::Get,
+        "task.input.prepare" => InputCommand::Prepare(&command["media"]),
+        "task.input.chunk" => InputCommand::Chunk(media::Chunk::Encoded(command)),
+        "task.input.commit" => InputCommand::Commit,
+        _ => return Err(invalid("Unknown task input command")),
+    };
+    apply(c, principal, id, name, command)
+}
+
+pub(super) fn chunk(
+    c: &mut Context,
+    principal: &str,
+    id: &str,
+    name: &str,
+    source: media::Chunk<'_>,
+) -> Result<Value> {
+    apply(c, principal, id, name, InputCommand::Chunk(source))
+}
+
+fn apply(
+    c: &mut Context,
+    principal: &str,
+    id: &str,
+    name: &str,
+    command: InputCommand<'_>,
+) -> Result<Value> {
+    require(c, principal, id)?;
     if name.is_empty()
         || name.len() > 220
         || !name
@@ -26,16 +60,14 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         .map(|(body, _)| serde_json::from_str(body))
         .transpose()?;
     let committed = existing.as_ref().is_some_and(|(_, committed)| *committed);
-    let kind = string(command, "kind")?;
-    if kind == "task.input.get" {
+    if matches!(command, InputCommand::Get) {
         return Ok(if committed {
             stored.unwrap_or(Value::Null)
         } else {
             Value::Null
         });
     }
-    if kind == "task.input.prepare" {
-        let media = &command["media"];
+    if let InputCommand::Prepare(media) = command {
         media::validate(media)?;
         if media["alias"] != format!("task-input-{key}") {
             return Err(conflict(
@@ -66,13 +98,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     }
     let stored =
         stored.ok_or_else(|| conflict("TASK_INPUT_MISSING", "Protected task input is missing"))?;
-    if kind == "task.input.chunk" {
+    if let InputCommand::Chunk(chunk) = command {
         return Ok(
-            json!({"offset": if committed { stored["bytes"].as_u64().unwrap() } else { media::upload(c, &key, &stored, command, false)? }}),
+            json!({"offset": if committed { stored["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &stored, chunk, false)? }}),
         );
-    }
-    if kind != "task.input.commit" {
-        return Err(invalid("Unknown task input command"));
     }
     if committed {
         media::cleanup(c, &key, &stored);

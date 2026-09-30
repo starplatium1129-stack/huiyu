@@ -1,5 +1,5 @@
 use super::*;
-use crate::resources::{fs, manifest};
+use crate::resources::fs;
 use axum::{body::Body, extract::Request, http::Method, middleware::Next};
 fn resource_path(raw: &str) -> Option<String> {
     let lower = raw.to_ascii_lowercase();
@@ -54,13 +54,6 @@ fn mime(path: &str) -> &'static str {
         _ => "application/octet-stream",
     }
 }
-fn bytes(root: &std::path::Path, entry: &manifest::Entry) -> Result<Vec<u8>> {
-    let value = fs::bytes(&fs::child(root, &entry.path)?, entry.bytes, false)?;
-    if value.len() as u64 != entry.bytes || crate::resources::digest(&value) != entry.sha256 {
-        return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
-    }
-    Ok(value)
-}
 pub async fn overlay(
     State(service): State<Arc<Service>>,
     request: Request,
@@ -83,6 +76,13 @@ pub async fn overlay(
     let Some(relative) = resource_path(request.uri().path()) else {
         return next.run(request).await;
     };
+    let head = request.method() == Method::HEAD;
+    let no_cache = request
+        .headers()
+        .get("cache-control")
+        .and_then(|value| value.to_str().ok())
+        .is_some_and(|value| value.split(',').any(|part| part.trim() == "no-cache"));
+    let condition = request.headers().get("if-none-match").cloned();
     let owner = service.clone();
     let loaded = crate::resources::blocking(move || {
         let Some((configuration, snapshot)) = owner.mount() else {
@@ -91,6 +91,17 @@ pub async fn overlay(
         let Some(entry) = snapshot.entries.get(&relative) else {
             return Ok(None);
         };
+        let etag = format!("\"{}\"", entry.sha256);
+        let fresh = !no_cache
+            && condition
+                .as_ref()
+                .and_then(|value| value.to_str().ok())
+                .is_some_and(|value| {
+                    value.split(',').any(|part| {
+                        let part = part.trim().strip_prefix("W/").unwrap_or(part.trim());
+                        part == "*" || part == etag
+                    })
+                });
         let result = (|| {
             if relative.starts_with("assets/live2d/") {
                 let Some(group) = snapshot
@@ -101,6 +112,11 @@ pub async fn overlay(
                     return Ok(None);
                 };
                 for name in &group.paths {
+                    // The requested file is verified once below, using the same
+                    // bytes as the GET body or a bounded hash-only read.
+                    if name == &relative {
+                        continue;
+                    }
                     let entry = &snapshot.entries[name];
                     if !fs::file_matches(
                         &fs::child(&snapshot.root, name)?,
@@ -111,53 +127,53 @@ pub async fn overlay(
                     }
                 }
             }
-            let bytes = bytes(&snapshot.root, entry)?;
-            let Some((_, latest)) = owner.mount() else {
+            let file = fs::child(&snapshot.root, &entry.path)?;
+            let bytes = if !head && !fresh {
+                Some(fs::verified_bytes(
+                    &file,
+                    entry,
+                    &configuration.ctx.shutdown,
+                )?)
+            } else {
+                if !fs::file_matches(&file, entry, &configuration.ctx.shutdown)? {
+                    return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
+                }
+                None
+            };
+            let Some((latest_configuration, latest)) = owner.mount() else {
                 return Ok(None);
             };
-            if latest.sequence != snapshot.sequence || latest.identity != snapshot.identity {
+            if !Arc::ptr_eq(&configuration, &latest_configuration)
+                || !Arc::ptr_eq(&snapshot, &latest)
+            {
                 return Ok(None);
             }
             Ok(Some((
                 bytes,
-                entry.sha256.clone(),
+                etag,
                 snapshot.identity.clone(),
                 mime(&relative),
+                entry.bytes,
+                fresh,
             )))
         })();
         if let Err(error) = result {
-            owner.invalidate(error);
+            owner.invalidate(&configuration, &snapshot, error);
             return Ok(None);
         }
         result
     })
     .await;
-    let Ok(Some((bytes, hash, version, mime))) = loaded else {
+    let Ok(Some((bytes, etag, version, mime, length, fresh))) = loaded else {
         return next.run(request).await;
     };
-    let etag = format!("\"{hash}\"");
-    let fresh = !request
-        .headers()
-        .get("cache-control")
-        .and_then(|value| value.to_str().ok())
-        .is_some_and(|value| value.split(',').any(|part| part.trim() == "no-cache"))
-        && request
-            .headers()
-            .get("if-none-match")
-            .and_then(|value| value.to_str().ok())
-            .is_some_and(|value| {
-                value.split(',').any(|part| {
-                    let part = part.trim().strip_prefix("W/").unwrap_or(part.trim());
-                    part == "*" || part == etag
-                })
-            });
-    let length = bytes.len();
     let mut response = if fresh {
         StatusCode::NOT_MODIFIED.into_response()
-    } else if request.method() == Method::HEAD {
-        Body::empty().into_response()
     } else {
-        Body::from(bytes).into_response()
+        bytes
+            .map(Body::from)
+            .unwrap_or_else(Body::empty)
+            .into_response()
     };
     let headers = response.headers_mut();
     headers.insert("cache-control", "private, no-cache".parse().unwrap());
