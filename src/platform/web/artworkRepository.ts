@@ -5,12 +5,13 @@ import { collectImageReferences, readLocalImageReferences, readSessionImageRefer
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
 import { thumbKey } from '../../utils/imageThumb.ts'
 import { ARTWORK_HISTORY_QUARANTINE_KEY } from '../../utils/storageKeys.ts'
-import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
+import { type ArtworkRecord } from '../../types/artwork.ts'
 import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type ArtworkImageAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely, ArtworkDeletionError } from './artworkStorage.ts'
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
+import { createArtworkOrganization } from './artworkOrganization.ts'
 export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, ArtworkDeletionError } from './artworkStorage.ts'
 
 export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDependencies = {}): ArtworkRepository {
@@ -299,18 +300,18 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
     })
   }
 
-  function appendArtwork(entry: ArtworkRecord): Promise<ArtworkRecord[]> {
+  function appendArtwork(entry: ArtworkRecord): Promise<void> {
     const snapshot = structuredClone(entry)
     return enqueue(async () => {
       const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
       if (history.some(item => recordId(item) === comparableId(snapshot.id))) throw new Error('作品编号已存在')
       const next = [...history, snapshot]
       await kv.set(ARTWORK_HISTORY_KEY, next)
-      return structuredClone(parseArtworkRecords(next))
     })
   }
 
   const reads = createArtworkReads(kv, dependencies, work => dependencies.kv ? work() : withArtworkMutation(work))
   const media = createArtworkMedia(kv, images, dependencies)
-  return { ...reads, ...media, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
+  const organization = createArtworkOrganization({ kv, commit: commitRelatedRecords, enqueue })
+  return { ...reads, ...media, ...organization, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
 }

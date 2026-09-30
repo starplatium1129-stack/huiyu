@@ -198,6 +198,7 @@ pub(super) fn command(
             command
         }
         ("GET", ["artwork-search-index"]) => json!({"kind": "readArtworkSearchIndex"}),
+        ("GET", ["artwork-recent-index"]) => json!({"kind": "readArtworkRecentIndex"}),
         ("GET", ["artworks", id]) => json!({"kind": "getArtwork", "id": route_id(id, query)?}),
         ("POST", ["artworks", "lookup"]) => {
             json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?})
@@ -205,6 +206,28 @@ pub(super) fn command(
         ("POST", ["artworks", "trash-batch"]) => {
             let items = array(&input["items"], true)?.iter().map(|item| Ok(json!({"id": entity_id(&item["id"])?, "expectedRevision": integer(&item["expectedRevision"], 0)?}))).collect::<Result<Vec<_>>>()?;
             json!({"kind": "softDeleteArtworks", "operationId": operation()?, "items": items})
+        }
+        ("POST", ["artworks", "organize"]) => {
+            let ids = array(&input["ids"], true)?
+                .iter()
+                .map(entity_id)
+                .collect::<Result<Vec<_>>>()?;
+            let revisions = array(&input["expectedRevisions"], true)?.iter().map(|item| Ok(json!({"id":entity_id(&item["id"])?,"revision":integer(&item["revision"],0)?}))).collect::<Result<Vec<_>>>()?;
+            let mut command = json!({"kind":"organizeArtworks","operationId":operation()?,"ids":ids,"expectedRevisions":revisions});
+            if let Some(project) = input.get("projectId") {
+                command["projectId"] = if project.is_null() {
+                    Value::Null
+                } else {
+                    entity_id(project)?
+                };
+            }
+            if let Some(tags) = input.get("collectionTags") {
+                command["collectionTags"] = record(tags)?;
+            }
+            command
+        }
+        ("POST", ["artworks", "organization-undo"]) => {
+            json!({"kind":"undoArtworkOrganization","operationId":operation()?,"sourceOperationId":route_op(text(&input["sourceOperationId"])?)?})
         }
         ("PATCH", ["artworks", id]) => {
             json!({"kind": "patchArtwork", "operationId": operation()?, "id": route_id(id, query)?, "expectedRevision": revision()?, "patch": record(&input["patch"])?})
@@ -340,6 +363,30 @@ mod tests {
             .unwrap(),
             json!({"kind":"getArtwork","id":"search-index"})
         );
+        assert_eq!(
+            command(
+                &Method::GET,
+                &segments("artwork-recent-index").unwrap(),
+                &query,
+                &json!({"kind":"backup"})
+            )
+            .unwrap(),
+            json!({"kind":"readArtworkRecentIndex"})
+        );
+        assert_eq!(
+            command(
+                &Method::GET,
+                &segments("artworks/recent-index").unwrap(),
+                &Query::default(),
+                &Value::Null
+            )
+            .unwrap(),
+            json!({"kind":"getArtwork","id":"recent-index"})
+        );
+        let organized = command(&Method::POST, &segments("artworks/organize").unwrap(), &Query::default(), &json!({"kind":"backup","operationId":"organize-one","ids":[42],"expectedRevisions":[{"id":42,"revision":1}],"projectId":null,"collectionTags":{"add":["keep"]}})).unwrap();
+        assert_eq!(organized["kind"], "organizeArtworks");
+        assert!(organized["projectId"].is_null());
+        assert_eq!(command(&Method::POST, &segments("artworks/organization-undo").unwrap(), &Query::default(), &json!({"operationId":"undo-one","sourceOperationId":"organize-one","changes":[{"id":"untrusted"}]})).unwrap(),json!({"kind":"undoArtworkOrganization","operationId":"undo-one","sourceOperationId":"organize-one"}));
         let converted = command(
             &Method::GET,
             &segments("artworks/42").unwrap(),

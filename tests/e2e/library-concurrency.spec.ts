@@ -17,7 +17,7 @@ type LibraryFixture = {
   useBackup(onFlash: (message: string) => void): { cleanOrphanImages(): Promise<number> }
 
   artworkRepository: {
-    appendArtwork(entry: { id: string; favorite?: boolean }): Promise<unknown[]>
+    appendArtwork(entry: { id: string; favorite?: boolean }): Promise<void>
     patchArtwork(id: string, patch: Record<string, unknown>): Promise<unknown>
     softDeleteArtworks(ids: string[]): Promise<Array<{ id: string; deleted: boolean }>>
     restoreArtwork(id: string): Promise<unknown>
@@ -75,7 +75,7 @@ test.beforeAll(async () => {
            putImage: blob => artworkRepository.putImage(blob), deleteImage: id => artworkRepository.deleteImage(id),
            cacheThumbnail: async () => {}, measureBlob: async () => ({ width: null, height: null }),
            now: () => 1234, nextId: () => artworkId,
-           readArtworkHistory: () => artworkRepository.readHistory(), appendArtwork: entry => artworkRepository.appendArtwork(entry),
+           readArtwork: id => artworkRepository.readArtwork(id), appendArtwork: entry => artworkRepository.appendArtwork(entry),
            normalizeArtistStyleIds: () => [],
          });
          return result.ok ? { id: result.entry.id, imagePresent: Boolean(await imgGetRecord(result.entry.image_id)) } : null;

@@ -2,8 +2,20 @@ import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 import type { SDGenerateParams } from '@/utils/sdRequest'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { buildRuntimeSdInput } from '@/utils/sdRuntimeRequest'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
+import type { TaskRecord } from '../../../types/tasks'
 export type { SDGenerateParams } from '@/utils/sdRequest'
+
+export interface SDGenerateOptions {
+  requestKey?: string
+  onAccepted?: (task: TaskRecord) => void | Promise<void>
+  onAcceptedId?: (id: string) => void | Promise<void>
+  onSubmitting?: () => void
+  resumeId?: string
+  onError?: (error: unknown) => void
+  signal?: AbortSignal
+}
 
 function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError'
@@ -42,6 +54,7 @@ export function useSDGenerate() {
   let abortCtrl: AbortController | null = null
   let activeJobId = ''
   let durableAttempt = false, durableKey = ''
+  let batchObservation = false
 
   function abandonAcceptedJob(jobId: string) {
     if (!jobId) return
@@ -59,7 +72,7 @@ export function useSDGenerate() {
     if (value.upscalers) upscalers.value = value.upscalers
     return value.online
   }
-  async function generate(params: SDGenerateParams): Promise<string | null> {
+  async function generate(params: SDGenerateParams, options: SDGenerateOptions = {}): Promise<string | null> {
     if (generating.value) return null
     generating.value = true
     taskState.value = 'submitting'
@@ -71,7 +84,11 @@ export function useSDGenerate() {
 
     abortCtrl = new AbortController()
     const controller = abortCtrl
+    const stopObservation = () => controller.abort()
+    options.signal?.addEventListener('abort', stopObservation, { once: true })
+    if (options.signal?.aborted) controller.abort()
     durableAttempt = hasRuntimeTasks(); durableKey = ''
+    batchObservation = Boolean(options.requestKey)
 
     try {
       params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
@@ -81,38 +98,21 @@ export function useSDGenerate() {
 
       statusText.value = 'SD WebUI 生成中…'
 
-      const loraNames = params.lora ? (Array.isArray(params.lora) ? params.lora : String(params.lora).split(',')) : []
-      const loras = loraNames.map(raw => {
-        const match = String(raw).replace(/^<lora:/i, '').replace(/>$/, '').split(':')
-        const name = match[0].trim()
-        const id = name === 'ayachi_nene_v18_wd14' ? 'L_NENE_V18_WD14' : name === 'shiki_natsume_v18_wd14' ? 'L_NAT_V18_WD14' : ''
-        const strength = match[1]?.trim() ? Number(match[1]) : params.lora_weight
-        return id ? { id, strength: typeof strength === 'number' && Number.isFinite(strength) ? strength : 0.8 } : null
-      }).filter((x): x is { id: string; strength: number } => Boolean(x))
-      const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
-      const jobInput = {
-        prompt: payload.prompt, negative: payload.negative_prompt, profile: '',
-        ...(modelId ? { modelId } : {}),
-        character: params.char || '', loras, width: payload.width, height: payload.height,
-        steps: payload.steps, cfg: payload.cfg_scale, seed: payload.seed,
-        sampler: payload.sampler_name, scheduler: String(payload.scheduler || params.scheduler || ''),
-        hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
-        hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
-        faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
-        ...(isLocalStudioHost() ? { adultEnabled: true } : {}),
-      }
+      const jobInput = buildRuntimeSdInput(params, payload, isLocalStudioHost())
+      const loras = jobInput.loras
       if (durableAttempt) {
-        durableKey = runtimeRequestKey('generation', jobInput)
+        durableKey = options.requestKey || runtimeRequestKey('generation', jobInput)
         const { runRuntimeSd } = await import('./runtimeImageSession')
         const url = await runRuntimeSd(jobInput, durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext)
+          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext, options.onAccepted, options.onSubmitting)
         lastLoras.value = loras
         return url
       }
       const { runWebGeneration } = await import('@/platform/web/generationSession')
       const { blob, seed } = await runWebGeneration(jobInput, {
         signal: controller.signal, steps: params.steps, hires: params.hr_fix, hiresSteps: params.hr_second_pass_steps,
-        accepted(id, selectedProvider) { activeJobId = id; provider.value = selectedProvider },
+        resumeId: options.resumeId, onSubmitting: options.onSubmitting, preserveAccepted: batchObservation,
+        async accepted(id, selectedProvider) { activeJobId = id; provider.value = selectedProvider; await options.onAcceptedId?.(id) },
         progress(value) { taskState.value = value.status; if (value.progress !== undefined) progress.value = value.progress; if (value.text !== undefined) statusText.value = value.text },
       })
       controller.signal.throwIfAborted()
@@ -128,12 +128,14 @@ export function useSDGenerate() {
       statusText.value = '生成完成'
       return url
     } catch (e) {
+      options.onError?.(e)
       if (isAbortError(e) || controller.signal.aborted) { taskState.value = 'cancelled'; statusText.value = '已停止'; return null }
       taskState.value = durableAttempt ? 'unknown' : 'failed'
       errorMsg.value   = errorMessage(e)
       statusText.value = durableAttempt ? '请在任务中心查看已接收任务' : '生成失败'
       return null
     } finally {
+      options.signal?.removeEventListener('abort', stopObservation)
       generating.value = false
       progress.value = 0
       abortCtrl = null
@@ -180,7 +182,8 @@ export function useSDGenerate() {
 
   /** 组件卸载时收尾：取消 in-flight 任务并释放 blob，防止出图途中离开页面泄漏。 */
   function dispose() {
-    if (durableAttempt) abortCtrl?.abort()
+    // Persisted batch plans own their accepted IDs; page disposal releases only observation.
+    if (durableAttempt || batchObservation) abortCtrl?.abort()
     else cancel()
     abortCtrl = null
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }

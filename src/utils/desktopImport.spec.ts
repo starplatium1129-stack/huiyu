@@ -2,7 +2,7 @@ import { beforeEach, expect, it, vi } from 'vitest'
 import { importLocalImages } from './desktopImport'
 import { artworkRepository } from '@/storage/artworkRepository'
 
-vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { appendArtwork: vi.fn(), putImage: vi.fn(), deleteImage: vi.fn(), readHistory: vi.fn(), cacheThumbnail: vi.fn(), withStaging: (work: () => Promise<unknown>) => work() } }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { appendArtwork: vi.fn(), putImage: vi.fn(), deleteImage: vi.fn(), readArtwork: vi.fn(), cacheThumbnail: vi.fn(), withStaging: (work: () => Promise<unknown>) => work() } }))
 const file = { name: 'fixture.png', size: 1, type: 'image/png', blob: new Blob(['a']) }
 beforeEach(() => {
   vi.resetAllMocks()
@@ -15,13 +15,13 @@ beforeEach(() => {
   })
   vi.mocked(artworkRepository.putImage).mockResolvedValue('new-image')
   vi.mocked(artworkRepository.deleteImage).mockResolvedValue()
-  vi.mocked(artworkRepository.readHistory).mockResolvedValue([])
-  vi.mocked(artworkRepository.appendArtwork).mockResolvedValue([])
+  vi.mocked(artworkRepository.readArtwork).mockResolvedValue(null)
+  vi.mocked(artworkRepository.appendArtwork).mockResolvedValue()
   vi.mocked(artworkRepository.cacheThumbnail).mockResolvedValue()
 })
 it('reads back a committed import after a lost acknowledgement', async () => {
   vi.mocked(artworkRepository.appendArtwork).mockImplementation(async entry => {
-    vi.mocked(artworkRepository.readHistory).mockResolvedValue([entry])
+    vi.mocked(artworkRepository.readArtwork).mockResolvedValue(entry)
     throw new Error('ack lost')
   })
   expect(await importLocalImages([file])).toEqual({ imported: 1, skipped: 0 })
@@ -29,8 +29,8 @@ it('reads back a committed import after a lost acknowledgement', async () => {
 })
 it.each(['missing', 'unreadable', 'wrong-image'])('retains the original for an unconfirmed %s record', async mode => {
   vi.mocked(artworkRepository.appendArtwork).mockImplementation(async entry => {
-    if (mode === 'unreadable') vi.mocked(artworkRepository.readHistory).mockRejectedValue(new Error('offline'))
-    if (mode === 'wrong-image') vi.mocked(artworkRepository.readHistory).mockResolvedValue([{ ...entry, image_id: 'other-image' }])
+    if (mode === 'unreadable') vi.mocked(artworkRepository.readArtwork).mockRejectedValue(new Error('offline'))
+    if (mode === 'wrong-image') vi.mocked(artworkRepository.readArtwork).mockResolvedValue({ ...entry, image_id: 'other-image' })
     throw new Error('ack lost')
   })
   expect(await importLocalImages([file])).toEqual({ imported: 0, skipped: 1 })
@@ -38,6 +38,11 @@ it.each(['missing', 'unreadable', 'wrong-image'])('retains the original for an u
   expect(console.warn).toHaveBeenCalledWith('[desktop-import] commit unknown; image retained', expect.objectContaining({
     operationId: expect.any(String), imageId: 'new-image',
   }))
+})
+it('imports a batch without reading any complete or single-record history on success', async () => {
+  expect(await importLocalImages([file, file])).toEqual({ imported: 2, skipped: 0 })
+  expect(artworkRepository.appendArtwork).toHaveBeenCalledTimes(2)
+  expect(artworkRepository.readArtwork).not.toHaveBeenCalled()
 })
 it('reports failed compensation without aborting the remaining batch', async () => {
   vi.spyOn(URL, 'createObjectURL').mockImplementationOnce(() => { throw new Error('measure failed') })

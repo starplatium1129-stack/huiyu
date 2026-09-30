@@ -179,30 +179,24 @@ async fn session_requires_bound_browser_origin_scope_and_current_epoch() {
     let grant = json_body(signed(&app, "session", "companion").await).await;
     let token = grant["workspace"]["token"].as_str().unwrap();
     let valid = [("origin", ORIGIN), ("x-aics-workspace-session", token)];
-    assert_eq!(
-        request(
-            &app,
-            "GET",
-            "/api/workspace/artwork-search-index",
-            String::new(),
-            &valid
-        )
-        .await
-        .status(),
-        StatusCode::OK
-    );
-    assert_eq!(
-        request(
-            &app,
-            "GET",
-            "/api/workspace/artwork-search-index",
-            String::new(),
-            &[("origin", ORIGIN)]
-        )
-        .await
-        .status(),
-        StatusCode::UNAUTHORIZED
-    );
+    for path in [
+        "/api/workspace/artwork-search-index",
+        "/api/workspace/artwork-recent-index",
+        "/api/workspace/artworks/missing",
+    ] {
+        assert_eq!(
+            request(&app, "GET", path, String::new(), &valid)
+                .await
+                .status(),
+            StatusCode::OK
+        );
+        assert_eq!(
+            request(&app, "GET", path, String::new(), &[("origin", ORIGIN)])
+                .await
+                .status(),
+            StatusCode::UNAUTHORIZED
+        );
+    }
     assert_eq!(
         request(&app, "GET", "/api/workspace/status", String::new(), &valid)
             .await

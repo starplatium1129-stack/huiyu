@@ -15,6 +15,22 @@ beforeEach(() => {
 })
 
 describe('promptHistoryStore 持久化同步', () => {
+  it('已确认保存增量更新、去重且不被更早的历史读取覆盖', async () => {
+    const store = usePromptHistoryStore()
+    let finish!: (rows: Array<{ id: string }>) => void
+    vi.mocked(artworkRepository.readHistory).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    store.history = [{ id: 'older', timestamp: 1, extension: { keep: true } }]
+    const loading = store.loadHistory()
+    const saved = { id: 'saved', timestamp: 2, details: { text: 'confirmed' } }
+    store.rememberArtwork(saved)
+    saved.details.text = 'caller edit'
+    finish([{ id: 'stale' }]); await loading
+    expect(store.history).toEqual([{ ...saved, details: { text: 'confirmed' } }, { id: 'older', timestamp: 1, extension: { keep: true } }])
+    store.rememberArtwork({ ...saved, details: { text: 'latest' } })
+    expect(store.history).toHaveLength(2)
+    expect(store.history[0].details).toEqual({ text: 'latest' })
+    expect(artworkRepository.readHistory).toHaveBeenCalledOnce()
+  })
   it('存储已清空时清除旧列表，后续读取重新填充', async () => {
     const store = usePromptHistoryStore()
     store.history = [{ id: 1 }]

@@ -80,6 +80,27 @@ async fn preference_projection_preserves_paging_types_and_revision_without_large
             .all(|item| item.get("prompt").is_none() && item.get("image_data").is_none())
     );
     assert!(items[1]["searchText"].as_str().unwrap().len() > 256_000);
+    let recent = read(&storage, json!({"kind":"readArtworkRecentIndex"})).await;
+    assert_eq!(recent["revision"], full["revision"]);
+    assert_eq!(recent["items"].as_array().unwrap().len(), 2);
+    for (index, expected_id) in [1, 2].iter().enumerate() {
+        let item = &recent["items"][index];
+        let complete = read(&storage, json!({"kind":"getArtwork","id":expected_id})).await;
+        assert_eq!(
+            item,
+            &json!({"id":expected_id,"timestamp":complete["body"]["timestamp"],"revision":complete["revision"]})
+        );
+    }
+    assert!(serde_json::to_vec(&recent).unwrap().len() < 512);
+    assert!(
+        read(&storage, json!({"kind":"getArtwork","id":"missing"}))
+            .await
+            .is_null()
+    );
+    assert_eq!(
+        read(&storage, json!({"kind":"getArtwork","id":"1"})).await["id"],
+        1
+    );
     assert!(
         storage
             .request(

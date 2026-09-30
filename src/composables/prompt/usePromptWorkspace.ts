@@ -533,5 +533,6 @@ export function usePromptWorkspace() {
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
         cancelGeneration, outfitOverridden, outfitReplacedLabel, outfitOverrideTokens, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings,
+        recipePreviewContext: { engine: drawEngine, sdJob: captureJob, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

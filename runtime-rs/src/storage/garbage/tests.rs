@@ -17,11 +17,17 @@ fn fixture() -> (tempfile::TempDir, Context) {
 }
 
 fn collect(c: &mut Context, id: &str) -> Result<Value> {
-    execute(
+    match prepare(
         c,
         "test",
         &json!({"kind":"collectGarbage","operationId":id}),
-    )
+    )? {
+        Prepared::Complete(receipt) => Ok(receipt),
+        Prepared::Discover(job) => {
+            let candidates = job.run();
+            finish(c, job.completion, candidates)
+        }
+    }
 }
 
 fn completed(c: &Context, id: &str) -> String {

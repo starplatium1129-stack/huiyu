@@ -24,6 +24,7 @@ import {
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject } from '@/utils/popularContent'
+import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
@@ -115,7 +116,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const presets = ref<PromptPreset[]>([])
   const modelProfiles = ref<ModelProfile[]>([])
   const dataReady = ref(false)
-  const historyRestoreReport = ref<{ title: string; notes: string[] } | null>(null)
+  const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
 
   // ── SD state ────────────────────────────────────────────────────────────
   // 生成生命周期状态（online/generating/progress/result/error）由 useSDGenerate

@@ -51,10 +51,8 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
         if (pendingRecord) {
           // A rejected append may already have committed. Never delete its image.
           try {
-            const history = await repository.readHistory()
-            if (Array.isArray(history) && history.some(item => item && typeof item === 'object'
-              && String((item as { id?: unknown }).id) === String(pendingRecord!.id)
-              && (item as { image_id?: unknown }).image_id === imageId)) {
+            const saved = await repository.readArtwork(pendingRecord.id)
+            if (saved && String(saved.id).trim() === String(pendingRecord.id).trim() && saved.image_id === imageId) {
               imported += 1
               continue
             }

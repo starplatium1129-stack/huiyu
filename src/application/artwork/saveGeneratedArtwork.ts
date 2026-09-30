@@ -1,5 +1,4 @@
 import type { HistoryEntry } from '@/types/promptHistory'
-import { parseArtworkRecords } from '@/types/artwork'
 import type { ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
 function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDefaults,
@@ -60,16 +59,16 @@ export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, de
       const id = deps.nextId(now)
       const historyEntry = assembleRecord(entry, defaults, imageId, measured, now, id, deps.normalizeArtistStyleIds)
       pendingEntry = historyEntry
-      const history = parseArtworkRecords(await deps.appendArtwork(historyEntry))
-      return { ok: true, entry: historyEntry, history }
+      await deps.appendArtwork(historyEntry)
+      return { ok: true, entry: historyEntry }
     } catch (error) {
       // Append rejection can mean a lost acknowledgement after commit. Read back
       // by identity, or retain the image when the outcome remains unknown.
       if (pendingEntry) {
         try {
-          const history = parseArtworkRecords(await deps.readArtworkHistory?.() ?? [])
-          if (history.some(item => String(item.id) === String(pendingEntry!.id) && item.image_id === imageId)) {
-            return { ok: true, entry: pendingEntry, history }
+          const saved = await deps.readArtwork(pendingEntry.id)
+          if (saved && String(saved.id).trim() === String(pendingEntry.id).trim() && saved.image_id === imageId) {
+            return { ok: true, entry: pendingEntry }
           }
         } catch { /* An unreadable store cannot prove rollback. */ }
         return { ok: false, error, operationId, cleanup: { status: 'commit-unknown' as const, imageId } }

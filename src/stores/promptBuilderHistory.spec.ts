@@ -3,12 +3,11 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePromptBuilderStore } from './promptBuilderStore'
 import { usePromptHistoryStore } from './promptHistoryStore'
 import { captureResultContext } from '@/utils/resultContext'
-import type { HistoryEntry } from '@/types/promptHistory'
 
-const io = vi.hoisted(() => ({ put: vi.fn(), remove: vi.fn(), append: vi.fn(), thumbnail: vi.fn(), stageExit: vi.fn(), events: [] as string[] }))
+const io = vi.hoisted(() => ({ put: vi.fn(), remove: vi.fn(), append: vi.fn(), read: vi.fn(), thumbnail: vi.fn(), stageExit: vi.fn(), events: [] as string[] }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
   putImage: io.put, deleteImage: io.remove, appendArtwork: io.append, cacheThumbnail: io.thumbnail,
-  readHistory: async () => [],
+  readHistory: io.read, readArtwork: async () => null,
   withStaging: async (work: () => Promise<unknown>) => {
     io.events.push('stage-enter')
     try { return await work() } finally { io.stageExit(); io.events.push('stage-exit') }
@@ -24,7 +23,8 @@ beforeEach(() => {
   io.put.mockImplementation(async () => { io.events.push('put'); return 'owned-image' })
   io.remove.mockResolvedValue(undefined)
   io.thumbnail.mockImplementation(async () => { io.events.push('thumbnail'); return null })
-  io.append.mockImplementation(async (entry: HistoryEntry) => { io.events.push('append'); return [entry] })
+  io.append.mockImplementation(async () => { io.events.push('append') })
+  io.read.mockResolvedValue([])
   vi.stubGlobal('createImageBitmap', vi.fn(async () => { io.events.push('measure'); return { width: 832, height: 1216, close: vi.fn() } }))
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -32,17 +32,18 @@ beforeEach(() => {
 describe('入册抽取前后的兼容特征', () => {
   it('在暂存保护内依次写图、启动缩略图、测量并提交，成功前不发布历史', async () => {
     const pb = usePromptBuilderStore()
+    const legacy = { id: 'legacy', parent_id: 'missing', extension: { keep: true } }
+    pb.history = [legacy]
     io.stageExit.mockImplementation(() => expect(pb.history).toHaveLength(2))
-    io.append.mockImplementation(async (entry: HistoryEntry) => {
+    io.append.mockImplementation(async () => {
       io.events.push('append')
-      expect(pb.history).toEqual([])
-      return [{ id: 'legacy', parent_id: 'missing', extension: { keep: true } }, entry]
+      expect(pb.history).toEqual([legacy])
     })
     const saved = await pb.commitHistoryEntry({ blob: blob(), prompt: 'A quiet river.' })
     expect(io.events).toEqual(['stage-enter', 'put', 'thumbnail', 'measure', 'append', 'stage-exit'])
     expect(saved).toMatchObject({ width: 832, height: 1216, image_id: 'owned-image', styleLoraId: null })
-    expect(pb.history[0]).toEqual({ id: 'legacy', parent_id: 'missing', extension: { keep: true } })
-    expect(pb.history[1]).toEqual(saved)
+    expect(pb.history).toEqual([saved, legacy])
+    expect(io.read).not.toHaveBeenCalled()
   })
 
   it('显式 null/空值与零值按原优先级保留，model 优先于旧 checkpoint 字段', async () => {

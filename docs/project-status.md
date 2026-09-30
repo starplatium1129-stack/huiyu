@@ -1,5 +1,7 @@
 # 项目状态
 
+2026-10-01 [创作流程、画布与大库响应优化](audits/2026-10-01/creator-workflow-optimization.md)已完成源码、网页与 Rust release 候选：保存不回读全库、最近作品两次读取、图库整理／对比、作品主导航、配方核对、显式批次恢复及 GC 查询响应。绘制台恢复原默认侧栏比例，配方表不占画布高度；浏览器与隔离运行时证据见报告。本轮尚未更新 Tauri／NSIS 或已安装 1.7.4，不以候选替代安装、模型或原生设备验收。
+
 > 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)。旧批次原文从 Git 历史查询。
 
 本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；尚未重新签名、打包、安装或发布。下方签名发行与安装记录仍对应原 1.7.4，不代表本轮源码已到达客户端。

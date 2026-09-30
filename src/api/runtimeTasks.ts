@@ -18,9 +18,11 @@ export const runtimeResultPath = (task: TaskRecord, index = 0) => `${base}/${enc
 export const isRuntimeResultPath = (url: string) => /^\/api\/tasks\/v1\/[\w-]+\/results\/\d+$/.test(url)
 
 function remember(task: TaskRecord): TaskRecord { return rememberTask(task, epoch()) }
-async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal): Promise<T> {
+async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal, onSubmitting?: () => void): Promise<T> {
   ensureAuthority()
+  signal?.throwIfAborted()
   const expected = epoch()
+  onSubmitting?.()
   const response = await apiClient.request<{ result: T; runtimeEpoch: string }>(base + path, {
     method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
   })
@@ -53,9 +55,11 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     runtimeTaskError.value = ''
   } catch (error) { if (!signal?.aborted) runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'; throw error }
 }
-export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>): Promise<TaskRecord> {
-  try { return remember(await request<TaskRecord>('', 'POST', { kind, input, requestKey: key, context } satisfies TaskSubmission)) }
+export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
+  observation: { signal?: AbortSignal; onSubmitting?: () => void } = {}): Promise<TaskRecord> {
+  try { return remember(await request<TaskRecord>('', 'POST', { kind, input, requestKey: key, context } satisfies TaskSubmission, observation.signal, observation.onSubmitting)) }
   catch (error) {
+    if (observation.signal?.aborted) throw error
     // Losing the acceptance response only permits lookup by the original key.
     // It never causes a second POST or a replacement key.
     if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
@@ -67,6 +71,10 @@ export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<
   }
 }
 export async function getRuntimeTask(id: string, signal?: AbortSignal) { return remember(await request<TaskRecord>('/' + encodeURIComponent(id), 'GET', undefined, signal)) }
+export async function getRuntimeTaskByKey(key: string, signal?: AbortSignal): Promise<TaskRecord | null> {
+  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'GET', undefined, signal)
+  return task ? remember(task) : null
+}
 export async function readRuntimeTaskHistory(): Promise<unknown> {
   const { snapshots } = await request<{ snapshots: unknown[] }>('/legacy-history')
   const records: unknown[] = []; const deleted: Record<string, number> = {}

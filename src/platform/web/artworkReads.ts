@@ -28,6 +28,15 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     return structuredClone(parseArtworkRecords(raw))
   }
 
+  async function readArtwork(id: string | number, signal?: AbortSignal) {
+    signal?.throwIfAborted()
+    if (!parseArtworkRecords([{ id }]).length) throw new Error('作品编号无效')
+    const raw = await kv.get(ARTWORK_HISTORY_KEY)
+    signal?.throwIfAborted()
+    const found = parseArtworkRecords(raw).find(item => String(item.id).trim() === String(id).trim())
+    return found ? structuredClone(found) : null
+  }
+
   async function readSearchIndex(signal?: AbortSignal) {
     signal?.throwIfAborted()
     const raw = await kv.get(ARTWORK_HISTORY_KEY)
@@ -100,5 +109,5 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     return preferenceHistoryRows(fallback)
   }
 
-  return { readHistory, readSearchIndex, readProjects, readLibrarySnapshot, readRecentHistory, readPreferenceHistory }
+  return { readHistory, readArtwork, readSearchIndex, readProjects, readLibrarySnapshot, readRecentHistory, readPreferenceHistory }
 }

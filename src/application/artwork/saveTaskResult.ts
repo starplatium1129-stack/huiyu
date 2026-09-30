@@ -12,7 +12,8 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
   const context = task.metadata.context && typeof task.metadata.context === 'object' ? task.metadata.context as Record<string, unknown> : {}
   const history = context.history && typeof context.history === 'object' ? context.history as Record<string, unknown> : {}
   const id = `task-${task.taskId}-${index}`
-  const existing = (await artworkRepository.readHistory()).find(value => String(value.id) === id)
+  const existing = await artworkRepository.readArtwork(id)
+  if (existing && existing.image_id !== output.alias) throw new Error('作品编号已对应另一张图片，请核对作品册')
   let saved = existing
   if (!existing) {
     const input = task.input
@@ -33,7 +34,12 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
       favorite: false, rating: {}, version: 1, taskId: task.taskId, outputIndex: index,
     }
     saved = taskResultHistory(record)
-    await artworkRepository.appendArtwork(saved)
+    try { await artworkRepository.appendArtwork(saved) }
+    catch (error) {
+      const confirmed = await artworkRepository.readArtwork(id).catch(() => null)
+      if (!confirmed || confirmed.image_id !== output.alias) throw error
+      saved = confirmed
+    }
   }
   await deps.markSaved(task.taskId)
   return taskResultHistory(saved!)

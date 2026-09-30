@@ -1,4 +1,5 @@
 import type { ArtworkRecord, ArtworkSearchRecord } from '../../types/artwork.ts'
+import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -33,6 +34,8 @@ export interface TrashEntry {
 /** Business capabilities shared by the Web library and the future desktop authority. */
 export interface ArtworkRepository {
   readHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
+  /** One detached, visible record; unknown outcomes can be reconciled by identity. */
+  readArtwork(id: string | number, signal?: AbortSignal): Promise<ArtworkRecord | null>
   readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
@@ -47,7 +50,10 @@ export interface ArtworkRepository {
   setThumbnail(id: string, dataUrl: string): Promise<void>
   cacheThumbnail(id: string, blob: Blob): Promise<void>
   withStaging<T>(work: () => Promise<T>): Promise<T>
-  appendArtwork(entry: ArtworkRecord): Promise<ArtworkRecord[]>
+  /** Commit only. Consumers update their own display without rereading the library. */
+  appendArtwork(entry: ArtworkRecord): Promise<void>
+  organizeArtworks(input: ArtworkOrganizationRequest): Promise<ArtworkOrganizationReceipt>
+  undoArtworkOrganization(receipt: ArtworkOrganizationReceipt): Promise<ArtworkOrganizationUndoResult>
   patchArtwork(id: string | number, patch: Record<string, unknown>): Promise<{ updated: boolean }>
   patchArtworks(patches: Array<{ id: string | number; patch: Record<string, unknown> }>): Promise<void>
   deleteArtwork(id: string | number): Promise<ArtworkDeleteResult>

@@ -111,6 +111,17 @@ impl Owner {
             released: false,
         })
     }
+    pub(super) fn check(&self) -> Result<()> {
+        safe(self.file.parent().unwrap(), ".workspace-owner.json")?;
+        let current: Value = serde_json::from_slice(&fs::read(&self.file)?)?;
+        if self.released || current != self.identity {
+            return Err(conflict(
+                "WORKSPACE_LOCK_CHANGED",
+                "Workspace ownership changed; lock retained",
+            ));
+        }
+        Ok(())
+    }
     pub(super) fn release(&mut self) -> Result<()> {
         if self.released {
             return Ok(());

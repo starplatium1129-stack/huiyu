@@ -2,6 +2,7 @@ import { generationApi, type GenerationJobPayload } from '@/api/generationApi'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { parseSDOptionList, parseSDStatus } from '@/utils/sdStatus'
 import { runtimeFetch } from '../runtimeUrl'
+import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 export interface WebGenerationStatus {
   online: boolean; checkpoint?: string; models?: string[]; samplers?: string[]; schedulers?: string[]; upscalers?: string[]
 }
@@ -28,14 +29,19 @@ export function cancelWebGeneration(id: string) { return generationApi.deleteJob
 /** Owns the Web request lifecycle; desktop durable jobs use a different execution owner. */
 export async function runWebGeneration(input: GenerationJobPayload, options: {
   signal: AbortSignal; steps?: number; hires?: boolean; hiresSteps?: number;
-  accepted(id: string, provider: 'comfy' | 'webui'): void;
+  resumeId?: string; onSubmitting?: () => void; preserveAccepted?: boolean;
+  accepted(id: string, provider: 'comfy' | 'webui'): void | Promise<void>;
   progress(state: { status: string; progress?: number | null; text?: string }): void;
 }) {
   const { signal } = options
-  const accepted = await generationApi.createJob(input, { signal })
-  if (signal.aborted) { void cancelWebGeneration(accepted.job.id).catch(() => {}); signal.throwIfAborted() }
+  signal.throwIfAborted()
+  let accepted
+  if (options.resumeId) accepted = await generationApi.getJob(options.resumeId, { signal })
+  else { options.onSubmitting?.(); signal.throwIfAborted(); accepted = await generationApi.createJob(input, { signal }) }
+  if (options.resumeId && accepted.job.id !== options.resumeId) throw new Error('原任务编号与响应不一致，请核对原任务。')
+  if (signal.aborted) { if (!options.preserveAccepted) void cancelWebGeneration(accepted.job.id).catch(() => {}); signal.throwIfAborted() }
   const provider = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'
-  options.accepted(accepted.job.id, provider)
+  await options.accepted(accepted.job.id, provider)
   let job = accepted.job
   const started = Date.now(), deadline = started + 20 * 60 * 1000
   // This threshold changes explanatory copy only. It never invents progress or cancels work.
@@ -43,12 +49,13 @@ export async function runWebGeneration(input: GenerationJobPayload, options: {
   while (Date.now() < deadline) {
     signal.throwIfAborted()
     options.progress({ status: job.status === 'succeeded' ? 'running' : job.status })
-    if (job.status === 'failed') throw new Error(job.error || '生成失败')
-    if (job.status === 'cancelled') throw new DOMException('cancelled', 'AbortError')
+    if (job.status === 'failed') throw new AcceptedTaskTerminalError(job.id, 'failed', job.error || '生成失败')
+    if (job.status === 'cancelled') throw new AcceptedTaskTerminalError(job.id, 'cancelled', '任务已取消')
     if (job.status === 'succeeded' && job.resultUrl) break
     await new Promise(resolve => setTimeout(resolve, 700)); signal.throwIfAborted()
     const state = await generationApi.getJob(job.id, { signal }); signal.throwIfAborted()
     if (!state.job) throw new Error('生成状态无效')
+    if (state.job.id !== accepted.job.id) throw new Error('原任务编号与响应不一致，请核对原任务。')
     job = state.job
     const elapsed = Date.now() - started
     options.progress({ status: job.status === 'succeeded' ? 'running' : job.status,
@@ -57,7 +64,7 @@ export async function runWebGeneration(input: GenerationJobPayload, options: {
         + ` · 已等待 ${Math.max(0, Math.round(elapsed / 1000))}s`
         + (elapsed > Math.max(120000, estimated * 2.5) ? ' · 耗时异常，可检查 ComfyUI 是否卡住，必要时取消后重试' : '') })
   }
-  if (job.status !== 'succeeded' || !job.resultUrl) { void cancelWebGeneration(job.id).catch(() => {}); throw new Error('生成超时') }
+  if (job.status !== 'succeeded' || !job.resultUrl) { if (!options.preserveAccepted) void cancelWebGeneration(job.id).catch(() => {}); throw new Error('生成超时') }
   const response = await runtimeFetch(job.resultUrl, { cache: 'no-store', signal }); signal.throwIfAborted()
   if (!response.ok || !String(response.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
   const blob = await response.blob(); signal.throwIfAborted()

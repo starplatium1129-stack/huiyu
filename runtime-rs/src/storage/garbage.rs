@@ -1,4 +1,8 @@
 use super::*;
+mod discovery;
+pub(super) use discovery::{Candidates, Completion, Discovery};
+#[cfg(test)]
+mod lifecycle_tests;
 #[cfg(test)]
 mod tests;
 use canonical::digest;
@@ -8,32 +12,87 @@ use std::{
     time::UNIX_EPOCH,
 };
 
-pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
+pub(super) enum Prepared {
+    Complete(Value),
+    Discover(Box<Discovery>),
+}
+fn validate(c: &Context, principal: &str, command: &Value) -> Result<()> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
+    if command["kind"] != "collectGarbage" {
+        return Err(invalid("Unknown garbage collection command"));
+    }
+    let id = string(command, "operationId")?;
+    if id.is_empty() || id.len() > 200 {
+        return Err(invalid("A stable operation ID is required"));
+    }
+    c.writer()?;
+    c.owner.check()
+}
+pub(super) fn receipt(c: &Context, principal: &str, command: &Value) -> Result<Option<Value>> {
+    validate(c, principal, command)?;
+    if let Some(operation) = c.operation(principal, string(command, "operationId")?)? {
+        operation.check("collectGarbage", command)?;
+        return Ok(operation.receipt);
+    }
+    Ok(None)
+}
+pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared> {
+    validate(c, principal, command)?;
     let (key, previous) = c.transaction(|c| c.start_operation(principal, command))?;
     if let Some(receipt) = previous {
-        return Ok(receipt);
+        return Ok(Prepared::Complete(receipt));
     }
+    Ok(Prepared::Discover(Box::new(Discovery::new(
+        c,
+        key,
+        command["operationId"].clone(),
+    )?)))
+}
+pub(super) fn finish(
+    c: &mut Context,
+    completion: Completion,
+    candidates: Result<Candidates>,
+) -> Result<Value> {
+    c.cancel = completion.cancel.clone();
+    c.check_cancel()?;
+    let candidates = candidates?;
+    completion.check(c)?;
     c.transaction(|c| {
-        let protected=c.db.prepare("SELECT hash FROM media_refs UNION SELECT hash FROM leases WHERE hash IS NOT NULL")?.query_map([],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<HashSet<_>>>()?;
-        let directory=schema::safe(&c.root,"media/objects")?;let mut removed=0;
-        if directory.exists() {for prefix in fs::read_dir(&directory)? {
-            let prefix=prefix?;let name=prefix.file_name().to_string_lossy().into_owned();
-            if name.len()!=2||!name.bytes().all(|c|c.is_ascii_digit()||(b'a'..=b'f').contains(&c)) {continue}
-            let folder=schema::safe(&directory,&name)?;if !folder.is_dir() {continue}
-            for item in fs::read_dir(folder)? {
-                c.check_cancel()?;let item=item?;let hash=item.file_name().to_string_lossy().into_owned();
-                if !media::valid_hash(&hash)||!hash.starts_with(&name)||protected.contains(&hash) {continue}
-                let file=media::object_path(&c.root,&hash)?;let stat=fs::metadata(&file)?;
-                if !stat.is_file()||!expired(&stat)? {continue}
-                fs::remove_file(file)?;remove_metadata(c,&hash)?;removed+=1;
+        let mut removed = 0;
+        for candidate in candidates.expired {
+            c.check_cancel()?;
+            if protected(c, &candidate.hash)? { continue; }
+            if let Some(file) = candidate.current(&c.root)? {
+                completion.check(c)?;
+                fs::remove_file(file)?;
+                remove_metadata(c, &candidate.hash)?;
+                removed += 1;
             }
-        }}
-        let hashes=c.db.prepare("SELECT hash FROM media_objects")?.query_map([],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<Vec<_>>>()?;
-        for hash in hashes {c.check_cancel()?;if protected.contains(&hash)||media::object_path(&c.root,&hash)?.exists() {continue}remove_metadata(c,&hash)?;removed+=1;}
+        }
+        for hash in candidates.missing {
+            c.check_cancel()?;
+            let recorded: bool = c.db.prepare_cached("SELECT EXISTS(SELECT 1 FROM media_objects WHERE hash=?)")?.query_row([&hash], |row| row.get(0))?;
+            if !recorded || protected(c, &hash)? || !discovery::missing(&media::object_path(&c.root, &hash)?)? { continue; }
+            completion.check(c)?;
+            remove_metadata(c, &hash)?;
+            removed += 1;
+        }
         clean_staging(c)?;
-        let receipt=json!({"operationId":command["operationId"],"kind":"collectGarbage","revision":c.next_revision()?,"removed":removed});
-        c.commit_operation(&key,&receipt)?;Ok(receipt)
+        completion.check(c)?;
+        let receipt=json!({"operationId":completion.operation_id,"kind":"collectGarbage","revision":c.next_revision()?,"removed":removed});
+        c.commit_operation(&completion.key,&receipt)?;Ok(receipt)
     })
+}
+fn protected(c: &Context, hash: &str) -> Result<bool> {
+    Ok(c.db.prepare_cached("SELECT EXISTS(SELECT 1 FROM media_refs WHERE hash=?1) OR EXISTS(SELECT 1 FROM leases WHERE hash=?1)")?
+        .query_row([hash], |row| row.get(0))?)
 }
 fn expired(stat: &fs::Metadata) -> Result<bool> {
     Ok(stat

@@ -35,12 +35,12 @@ export interface SaveGeneratedArtworkDependencies {
   now: () => number
   nextId: (now: number) => number
   normalizeArtistStyleIds: (value: unknown) => string[]
-  readArtworkHistory?: () => Promise<unknown[]>
-  appendArtwork: (entry: HistoryEntry) => Promise<unknown[]>
+  readArtwork: (id: string | number) => Promise<ArtworkRecord | null>
+  appendArtwork: (entry: HistoryEntry) => Promise<void>
 }
 
 export type SaveGeneratedArtworkResult =
-  | { ok: true; entry: HistoryEntry; history: ArtworkRecord[] }
+  | { ok: true; entry: HistoryEntry }
   | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown'; imageId?: string; error?: unknown } }
 
 

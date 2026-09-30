@@ -13,6 +13,7 @@ import {
 import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { confirmAction } from '@/composables/useConfirm'
 import { useToast } from '@/composables/useToast'
+import { snapshotHistoricalRecipe } from '@/utils/recipeComparison'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -222,7 +223,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       }
       if (entry.loraId && before.loraId !== entry.loraId) restoreNotes.push(`原角色 LoRA ${entry.loraId} 不适用于当前角色，已使用角色绑定`)
     }
-    pb.historyRestoreReport = { title: `配方载入检查 · ${entry.sceneTitle || entry.id}`, notes: restoreNotes }
+    pb.historyRestoreReport = { title: `配方载入检查 · ${entry.sceneTitle || entry.id}`, notes: restoreNotes, original: snapshotHistoricalRecipe(record) }
     pb.flash(`${keepAsVariant ? '已复制为新变体草稿' : '已载入历史配方'}，请核对配方检查`, 4000, 'info')
   }
 

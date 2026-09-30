@@ -48,6 +48,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
       notes: ['只生成 runtime/live2d-imports 本机副本，拒绝覆盖不同内容；不解包 lpk，不上传或发布'] },
   },
   ...(require('./lib/workflows-content-checks') as typeof import('./lib/workflows-content-checks')),
+  ...(require('./lib/workflows-diagnostics') as typeof import('./lib/workflows-diagnostics')),
   'maintenance:recover': {
     desc: '预览已中断维护事务的精确文件恢复；显式apply绑定预览后执行',
     cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'recover'], required: ['--root', '--runtime-root'], docs: 'docs/workflow.md#rust-运行时迁移',
@@ -612,13 +613,6 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     docs: 'docs/workflow.md',
     needs: '已完成 build；运行时不要并行构建或执行其他浏览器测试',
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'playwright.performance.config.ts:7', unknown: [] },
-  },
-  'audit:orphans': {
-    desc: '探测 scripts/maintenance/ 下零引用的孤儿脚本（只读，列清单不删）',
-    cmd: ['node', 'scripts/maintenance/detect-orphan-scripts.js'],
-    docs: 'scripts/maintenance/detect-orphan-scripts.js:1',
-    opts: '[--json] 机器可读输出；[--check] 孤儿候选非零时失败',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--check': ['guard'], '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/detect-orphan-scripts.js:90-144', unknown: [] },
   },
   'character:onboard': {
     desc: '历史活跃库维护流水线（直接写源/资产）；新角色使用候选审核发布流程',

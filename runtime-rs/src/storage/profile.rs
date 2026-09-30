@@ -33,6 +33,7 @@ const SETTINGS: &[&str] = &[
     "aics_companion_affection_v1",
     "aics_speech_input_v1",
     "aics_draw_engine",
+    "aics_director_layout_v1",
     "aics_guest_guide_dismissed",
     "aics_auto_save_to_gallery",
     "aics_backup_last_at",
@@ -44,6 +45,7 @@ const SETTINGS: &[&str] = &[
 ];
 const DRAFT: &[&str] = &[
     "aics_pb_last_draft",
+    "aics_pb_batch_plan_v1",
     "aics_video_ctx",
     "aics_video_shots_ctx",
     "aics_video_scenario_ctx",

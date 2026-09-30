@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "specs": [
+    { "file": "canvas-image-flows.spec.ts", "lane": "nightly", "risk": "桌面画布空间", "reason": "真实Rust加隔离上游的横竖画幅及双主题布局回归；绘制台布局变化时定向运行，夜间保留。" },
     { "file": "character-reference-loading.spec.ts", "lane": "nightly", "risk": "人物参考按需加载", "reason": "桌面扩展回归：人物参考按需加载；相关功能改动时定向运行，夜间保留覆盖，不加入每次提交的核心链路。" },
     { "file": "page-experience-workspaces.spec.ts", "lane": "nightly", "risk": "画布顺序和资料闭环", "reason": "桌面扩展回归：画布顺序和资料闭环；相关功能改动时定向运行，夜间保留覆盖，不加入每次提交的核心链路。" },
     { "file": "page-experience-docs.spec.ts", "lane": "nightly", "risk": "文档主题与地标", "reason": "桌面扩展回归：文档主题与地标；相关功能改动时定向运行，夜间保留覆盖，不加入每次提交的核心链路。" },

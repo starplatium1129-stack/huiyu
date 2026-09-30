@@ -24,9 +24,12 @@ pub(super) fn run(
         }
     };
     let mut copying = false;
+    let mut collecting: Option<Arc<AtomicBool>> = None;
     let mut closing = Vec::new();
     #[cfg(test)]
     let mut pause = None;
+    #[cfg(test)]
+    let mut garbage_pause = None;
     while let Some(work) = receiver.blocking_recv() {
         match work {
             Work::TaskMediaChunk(chunk, principal, cancel, reply) => {
@@ -60,7 +63,74 @@ pub(super) fn run(
                 if reply.is_closed() {
                     continue;
                 }
-                if matches!(command["kind"].as_str(), Some("backup" | "restoreBackup")) {
+                if command["kind"] == "collectGarbage" {
+                    if collecting.is_some() {
+                        let result =
+                            garbage::receipt(&context, &principal, &command).and_then(|receipt| {
+                                receipt.ok_or_else(|| {
+                                    ApiError::new(
+                                        429,
+                                        "WORKSPACE_BUSY",
+                                        "A workspace garbage discovery is already running",
+                                    )
+                                })
+                            });
+                        let _ = reply.send(result);
+                        continue;
+                    }
+                    match garbage::prepare(&mut context, &principal, &command) {
+                        Ok(garbage::Prepared::Complete(value)) => {
+                            let _ = reply.send(Ok(value));
+                        }
+                        Ok(garbage::Prepared::Discover(job)) => {
+                            let Some(sender) = sender.upgrade() else {
+                                let _ = reply.send(Err(unavailable()));
+                                continue;
+                            };
+                            let cancellation = job.completion.cancel.clone();
+                            #[cfg(test)]
+                            let gate: Option<GarbagePause> = garbage_pause.take();
+                            let thread = std::thread::Builder::new()
+                                .name("workspace-garbage".into())
+                                .spawn(move || {
+                                    let result = std::panic::catch_unwind(
+                                        std::panic::AssertUnwindSafe(|| job.run()),
+                                    )
+                                    .unwrap_or_else(|_| {
+                                        Err(ApiError::new(
+                                            503,
+                                            "STORAGE_UNAVAILABLE",
+                                            "Workspace garbage discovery failed",
+                                        ))
+                                    });
+                                    #[cfg(test)]
+                                    let finished = gate.map(|gate| {
+                                        let _ = gate.entered.send(());
+                                        let _ = gate.resume.recv();
+                                        gate.finished
+                                    });
+                                    let _ = sender.blocking_send(Work::GarbageFinished(
+                                        job.completion,
+                                        result,
+                                        reply,
+                                    ));
+                                    #[cfg(test)]
+                                    if let Some(finished) = finished {
+                                        let _ = finished.send(());
+                                    }
+                                });
+                            if thread.is_ok() {
+                                collecting = Some(cancellation);
+                            }
+                            if let Err(error) = thread {
+                                eprintln!("workspace garbage startup: {error}");
+                            }
+                        }
+                        Err(error) => {
+                            let _ = reply.send(Err(error));
+                        }
+                    }
+                } else if matches!(command["kind"].as_str(), Some("backup" | "restoreBackup")) {
                     if copying {
                         let _ = reply.send(Err(ApiError::new(
                             429,
@@ -138,13 +208,24 @@ pub(super) fn run(
                 let result = backup::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 copying = false;
-                if !closing.is_empty() {
+                if !closing.is_empty() && collecting.is_none() {
+                    break;
+                }
+            }
+            Work::GarbageFinished(completion, result, reply) => {
+                let result = garbage::finish(&mut context, completion, result);
+                let _ = reply.send(result);
+                collecting = None;
+                if !closing.is_empty() && !copying {
                     break;
                 }
             }
             Work::Close(reply) => {
                 closing.push(reply);
-                if !copying {
+                if let Some(cancel) = &collecting {
+                    cancel.store(true, Ordering::Relaxed);
+                }
+                if !copying && collecting.is_none() {
                     break;
                 }
             }
@@ -152,13 +233,17 @@ pub(super) fn run(
             Work::PauseCopy(gate) => {
                 pause = Some(gate);
             }
+            #[cfg(test)]
+            Work::PauseGarbage(gate) => {
+                garbage_pause = Some(gate);
+            }
         }
     }
-    // Refuse admission before acknowledging Close. A copy keeps the receiver
-    // open until CopyFinished is queued; already admitted mutations retain
+    // Refuse admission before acknowledging Close. Each filesystem worker keeps
+    // the receiver open until its completion is queued; admitted mutations retain
     // COMMIT_UNKNOWN if shutdown drops their reply without executing them.
     receiver.close();
-    // The copy holds a sender until CopyFinished is queued, so channel shutdown
+    // The filesystem workers hold a sender until completion, so channel shutdown
     // cannot release ownership while a background filesystem operation is running.
     let result = context.shutdown();
     for reply in closing {
@@ -175,6 +260,12 @@ pub(super) fn run(
 
 #[cfg(test)]
 pub(super) struct CopyPause {
+    pub entered: oneshot::Sender<()>,
+    pub resume: std::sync::mpsc::Receiver<()>,
+    pub finished: oneshot::Sender<()>,
+}
+#[cfg(test)]
+pub(super) struct GarbagePause {
     pub entered: oneshot::Sender<()>,
     pub resume: std::sync::mpsc::Receiver<()>,
     pub finished: oneshot::Sender<()>,

@@ -127,7 +127,10 @@ for (const theme of ['dark']) {
     await page.screenshot({ path: `.review-shots/github-tags-${theme}.png`, fullPage: true })
   })
 
-  test(`history compatibility stays visible after initialization ${theme}`, async ({ page }) => {
+}
+
+for (const theme of ['dark', 'light']) {
+  test(`history compatibility stays visible after initialization ${theme}`, async ({ page }, info) => {
     await page.addInitScript(theme => {
       localStorage.setItem('aics_theme', theme)
       localStorage.setItem('aics_pb_history', JSON.stringify([{ id: 321, engine: 'sd', character: 'nene', sceneTitle: '配方检查夹具', story: 'A quiet afternoon', manual_tags: ['depth_of_field'], seed: 0, cfg: 0, steps: 12, sampler: 'Euler a', size: '1024x1024' }]))
@@ -135,10 +138,28 @@ for (const theme of ['dark']) {
     await page.goto('/gallery')
     await expect(page.locator('.artwork')).toHaveCount(1)
     await page.goto('/prompt-builder?regen=321')
-    await expect(page.locator('.restore-notice')).toContainText('未记录底模')
-    await expect(page.locator('.restore-notice')).toContainText('提示词按当前角色与编译规则重建')
-    await page.screenshot({ path: `.review-shots/github-history-${theme}.png` })
-    await page.getByRole('button', { name: '关闭配方检查', exact: true }).click()
+    const beforeReview = (await page.locator('#drawing-canvas').boundingBox())!
+    expect(beforeReview.height).toBeGreaterThan(500)
+    await page.getByRole('button', { name: '查看配方变化', exact: true }).click()
+    const review = page.getByRole('dialog', { name: /配方载入检查/ })
+    await expect(review).toContainText('未记录底模')
+    await expect(review).toContainText('提示词按当前角色与编译规则重建')
+    const duringReview = (await page.locator('#drawing-canvas').boundingBox())!
+    expect(Math.abs(duringReview.height - beforeReview.height)).toBeLessThan(2)
+    expect(Math.abs(duringReview.width - beforeReview.width)).toBeLessThan(2)
+    await expect(page.locator('.recipe-diff-table')).toBeVisible()
+    await expect(page.locator('[data-parameter="model"]')).toContainText('原作未记录')
+    await page.getByRole('checkbox', { name: '仅看变化与缺失', exact: true }).uncheck()
+    await expect(page.locator('[data-parameter="seed"] pre')).toHaveText(['0', '0'])
+    await expect(page.locator('[data-parameter="cfg"] pre')).toHaveText(['0', '0'])
+    await page.getByRole('button', { name: '按当前参数进入专家模式', exact: true }).click()
+    await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro')
+    await page.getByRole('button', { name: '查看配方变化', exact: true }).click()
+    await expect(page.locator('.recipe-diff-heading')).toContainText('当前提交参数')
+    await page.screenshot({ path: info.outputPath(`recipe-differences-${theme}.png`) })
+    await page.getByRole('button', { name: '收起配方检查', exact: true }).click()
     await expect(page.locator('.restore-notice')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
+    await page.screenshot({ path: info.outputPath(`recipe-restored-canvas-${theme}.png`) })
   })
 }

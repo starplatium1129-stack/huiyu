@@ -460,10 +460,12 @@ describe('Web artwork reads and legacy imports', () => {
     const input = { id: 'new', extra: { detail: 'original' } }
     const saving = repo.appendArtwork(input)
     input.extra.detail = 'changed'
-    const saved = await saving
-    expect(saved[1]).toEqual({ id: 'new', extra: { detail: 'original' } })
-    ;(saved[1].extra as { detail: string }).detail = 'changed again'
+    expect(await saving).toBeUndefined()
+    const saved = await repo.readArtwork('new')
+    expect(saved).toEqual({ id: 'new', extra: { detail: 'original' } })
+    ;(saved!.extra as { detail: string }).detail = 'changed again'
     expect((await repo.readHistory())[1].extra).toEqual({ detail: 'original' })
+    expect(await repo.readArtwork('missing')).toBeNull()
   })
 
   it('keeps an empty project list authoritative and reads the old key only when the new value is not an array', async () => {

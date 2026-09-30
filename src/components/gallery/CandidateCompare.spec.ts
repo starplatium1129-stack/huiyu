@@ -5,7 +5,7 @@ import CandidateCompare from './CandidateCompare.vue'
 const mocks = vi.hoisted(() => ({ read: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
 vi.mock('@/composables/useFluidDialog', () => ({
-  useFluidDialog: () => ({ open() {}, close(done: () => void) { done() } }), isBackdropClick: () => false,
+  useFluidDialog: (dialog: { value: HTMLDialogElement }) => ({ open() { dialog.value?.setAttribute('open', '') }, close(done: () => void) { dialog.value?.removeAttribute('open'); done() } }), isBackdropClick: () => false,
 }))
 
 it('closing a comparison cancels all reads and reopening cannot publish its old results', async () => {
@@ -23,12 +23,45 @@ it('closing a comparison cancels all reads and reopening cannot publish its old 
   await wrapper.setProps({ open: false })
   expect(firstSignal.aborted).toBe(true)
   await wrapper.setProps({ open: true }); await flushPromises()
+  expect(mocks.read).toHaveBeenCalledTimes(2)
   finish[0](new Blob(['stale'])); finish[1](new Blob(['stale']))
   await flushPromises()
   expect(create).not.toHaveBeenCalled()
+  expect(mocks.read).toHaveBeenCalledTimes(4)
   wrapper.unmount()
   expect(mocks.read.mock.calls[2][1].aborted).toBe(true)
   finish[2](new Blob(['unmounted'])); finish[3](new Blob(['unmounted']))
   await flushPromises()
   expect(create).not.toHaveBeenCalled()
+})
+
+it('shows parameter differences and synchronizes keyboard zoom, movement and reset', async () => {
+  mocks.read.mockReset().mockResolvedValue(new Blob(['fixture']))
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:comparison')
+  vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  const wrapper = mount(CandidateCompare, {
+    props: { open: true, items: [{ id: 'a', image_id: 'a', seed: 0, cfg: 0, steps: 20, model: 'same' },
+      { id: 'b', image_id: 'b', seed: 1, cfg: 0, steps: 30, model: 'same' }] },
+    global: { stubs: { Teleport: true, RouterLink: true } },
+  })
+  await flushPromises()
+  const controls = () => wrapper.findAll('.candidate-controls button')
+  expect(controls()[0].attributes('aria-pressed')).toBe('true')
+  expect(wrapper.findAll('.candidate-parameters dt').map(item => item.text())).toEqual(['种子', '步数', '种子', '步数'])
+  await controls()[0].trigger('click')
+  expect(wrapper.findAll('.candidate-parameters dt').map(item => item.text())).toContain('CFG')
+  const stages = () => wrapper.findAll('.candidate-viewport')
+  await stages()[0].trigger('keydown', { key: '+' })
+  expect(stages()[0].get('img').attributes('style')).toContain('scale(1.25)')
+  expect(stages()[1].get('img').attributes('style')).toContain('scale(1.25)')
+  await stages()[0].trigger('keydown', { key: 'ArrowRight' })
+  expect(stages()[1].get('img').attributes('style')).toContain('translate(8%')
+  await controls()[1].trigger('click')
+  await stages()[0].trigger('keydown', { key: '+' })
+  expect(stages()[0].get('img').attributes('style')).toContain('scale(1.5625)')
+  expect(stages()[1].get('img').attributes('style')).toContain('scale(1.25)')
+  await controls()[2].trigger('click')
+  expect(stages()[0].get('img').attributes('style')).toContain('scale(1)')
+  expect(stages()[1].get('img').attributes('style')).toContain('scale(1)')
+  wrapper.unmount()
 })

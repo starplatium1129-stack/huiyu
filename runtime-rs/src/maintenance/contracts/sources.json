@@ -33,7 +33,8 @@
     },
     {
       "path": "src/config/kreaStyleRecipes.ts",
-      "sha256": "055d0340e3f0bec7b69a5c552da43e8acce71d1195346487b49460197b5705bc"
+      "sha256": "72b7c581383e63eb37aeac038baba03e13a59bfa672bf5f06b7ffe19302af948",
+      "note": "2026-10-01: f1070627 only migrated documentation-link comments; comment-free TypeScript and all 23 mechanical recipe exports are unchanged. Extraction date and recipeSha256 remain the original snapshot."
     }
   ],
   "recipeSha256": "dc06bea00ff7cc9d67e8156d9d95a41fc3b73a2b713081d87cd55fe7d786c4d7"

@@ -132,7 +132,7 @@ test('runner 回传 resultUrl 时落到任务上，reset 释放', async () => {
       '成功张的预览 URL 应逐张落任务',
     );
 
-    batch.reset();
+    await batch.reset();
     assert.equal(batch.jobs.value.length, 0);
     assert.deepEqual(revoked, ['blob:preview-1000', 'blob:preview-2000'], 'reset 应释放全部预览 URL');
   } finally {
@@ -155,7 +155,7 @@ test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保�
   assert.equal(batch.progress.value.failed, 1);
 
   failSeed = -1; // 重跑全部成功
-  await batch.retryFailed(scenes(1));
+  await batch.retryFailed();
 
   assert.equal(batch.progress.value.total, 3, '重跑不重建清单');
   assert.equal(batch.progress.value.succeeded, 3);
@@ -212,7 +212,7 @@ test('重试使用初次任务素材而非修改后的目录', async () => {
   const batch = useBatchDraw({ run: async input => { texts.push(input.scene.prose); return { ok: ++attempt > 1 }; } });
   await batch.start(items, 1, 42);
   items[0].prose = 'changed';
-  await batch.retryFailed(items);
+  await batch.retryFailed();
   assert.deepEqual(texts, ['prose 0', 'prose 0']);
 });
 
@@ -235,6 +235,6 @@ test('销毁后不启动下一张，晚到的预览被释放', async () => {
     const run = batch.start(scenes(2), 1, 42);
     batch.dispose(); release!(); await run;
     assert.deepEqual(revoked, ['blob:late']);
-    assert.equal(batch.jobs.value[1].status, 'cancelled');
+    assert.equal(batch.jobs.value[1].status, 'pending', '离页保留未执行计划供显式继续');
   } finally { URL.revokeObjectURL = previous; }
 });

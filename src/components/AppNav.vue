@@ -119,13 +119,13 @@ const primaryNav: NavItem[] = [
   { id: 'character', label: '角色', to: '/character', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
   { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
+  { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
   { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
 ]
 const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
     heading: '发现',
     items: [
-      { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
       { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
     ],
@@ -259,6 +259,13 @@ onUnmounted(() => {
   @apply tw:block tw:w-auto; height: 2.15rem; max-width: 12.7rem;
 }
 .nav-brand { @apply tw:gap-s-2; }
+.nav-links > a { white-space:nowrap; }
+@media (min-width:901px) and (max-width:1200px) {
+  .nav-inner { gap:var(--s-2); padding-inline:var(--s-3); }
+  .nav-links > a { padding-inline:var(--s-2); gap:var(--s-1); font-size:var(--fs-label-sm); }
+  .nav-logo { height:1.9rem; }
+  .nav-links .nav-utilities { margin-left:var(--s-1); padding-left:var(--s-1); }
+}
 @media (max-width: 480px) {
   .nav-logo { @apply tw:h-[28px] tw:max-w-[150px]; }
 }
@@ -297,7 +304,7 @@ onUnmounted(() => {
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 
 @media (max-width: 900px) {
-  /* The compact menu is a two-column surface, including the sixth “more” entry. */
+  /* Keep compact desktop windows on the existing two-column navigation surface. */
   .nav-links {
     --selection-radius: var(--r-md);
     padding: var(--s-3);

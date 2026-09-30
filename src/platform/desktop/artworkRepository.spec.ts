@@ -16,18 +16,17 @@ it('does not write into a migration candidate or a different library after recon
   await expect(repository.appendArtwork({ id: 1, image_id: 'a' })).rejects.toThrow('身份')
   expect(mocks.request).not.toHaveBeenCalled()
 })
-it('reads only three recent bodies after lightweight pages while preserving timestamp fallback and stable ties', async () => {
+it('reads only three recent bodies after one atomic summary while preserving timestamp fallback and stable ties', async () => {
   const bodies: ArtworkRecord[] = [{ id: 10, timestamp: 100 }, { id: 20, timestamp: 100 }, { id: 999, timestamp: 'invalid' }, { id: 1, timestamp: 50 }]
   const row = (body: ArtworkRecord) => ({ id: body.id, body, revision: 3, deletedAt: null })
-  mocks.request.mockImplementation(async command => command.kind === 'listArtworks'
-    ? { items: bodies.slice(command.cursor ? 2 : 0, command.cursor ? 4 : 2).map(row), nextCursor: command.cursor ? null : 'next', revision: 7 }
+  mocks.request.mockImplementation(async command => command.kind === 'readArtworkRecentIndex'
+    ? { items: bodies.map(body => ({ id: body.id, timestamp: body.timestamp, revision: 3 })), revision: 7 }
     : command.ids.map((id: number) => row({ ...bodies.find(body => body.id === id)!, sceneTitle: 'Full body', prompt: 'neutral complete prompt' })))
   const repository = createDesktopArtworkRepository(), controller = new AbortController()
   const history = await repository.readRecentHistory(controller.signal)
   expect(history.map(item => item.id)).toEqual([999, 10, 20])
   expect(history[0]).toMatchObject({ sceneTitle: 'Full body', prompt: 'neutral complete prompt' })
-  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['listArtworks', 'listArtworks', 'getArtworks'])
-  expect(mocks.request.mock.calls.slice(0, 2).every(([command]) => command.projection === 'preference')).toBe(true)
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['readArtworkRecentIndex', 'getArtworks'])
   expect(mocks.request.mock.calls.every(([, signal]) => signal === controller.signal)).toBe(true)
   mocks.state.connection = 'unavailable'; history[0].prompt = 'consumer edit'
   expect((await repository.readRecentHistory())[0].prompt).toBe('neutral complete prompt')
@@ -89,6 +88,57 @@ it('keeps detached loaded history while disconnected and uses the same artwork i
   await repository.appendArtwork(entry)
   const writes = mocks.request.mock.calls.map(([command]) => command).filter(command => command.kind === 'appendArtwork')
   expect(writes.map(command => command.operationId)).toEqual(['artwork:saved', 'artwork:saved'])
+  expect(mocks.request.mock.calls.filter(([command]) => command.kind === 'listArtworks')).toHaveLength(1)
+})
+
+it('reads one detached record by identity, filters deleted records and rejects malformed or mismatched rows', async () => {
+  const row = { id: 42, body: { id: 42, nested: { keep: true } }, revision: 1, deletedAt: null }
+  const repository = createDesktopArtworkRepository()
+  mocks.request.mockResolvedValue(row)
+  const item = await repository.readArtwork('42')
+  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'getArtwork', id: '42' }, undefined)
+  ;(item!.nested as { keep: boolean }).keep = false
+  expect((await repository.readArtwork(42))?.nested).toEqual({ keep: true })
+  mocks.request.mockResolvedValue({ ...row, deletedAt: 5 })
+  expect(await repository.readArtwork(42)).toBeNull()
+  mocks.request.mockResolvedValue(null)
+  expect(await repository.readArtwork('missing')).toBeNull()
+  for (const invalid of [{ ...row, id: 'other' }, { ...row, body: { id: 'wrong' } }, { ...row, revision: -1 }, { ...row, deletedAt: undefined }]) {
+    mocks.request.mockResolvedValue(invalid)
+    await expect(repository.readArtwork(42)).rejects.toThrow('响应无效')
+  }
+})
+
+it('rejects incomplete, duplicate or invalid recent indexes before body reads', async () => {
+  const repository = createDesktopArtworkRepository()
+  const item = { id: 'one', timestamp: 'Fri, 01 Jan 2021 00:00:00 GMT', revision: 1 }
+  for (const invalid of [null, { items: [item] }, { items: null, revision: 2 },
+    { items: [item, { ...item, id: ' one ' }], revision: 2 }, { items: [item, {}], revision: 2 },
+    { items: [{ ...item, revision: 3 }], revision: 2 }, { items: [{ ...item, revision: 0.5 }], revision: 2 }]) {
+    mocks.request.mockResolvedValue(invalid)
+    await expect(repository.readRecentHistory()).rejects.toThrow('索引无效')
+  }
+  expect(mocks.request.mock.calls.every(([command]) => command.kind === 'readArtworkRecentIndex')).toBe(true)
+})
+
+it('organizes a bounded selection with one revision lookup and recovers its stable receipt after a lost acknowledgement', async () => {
+  const receipt = { operationId: '', changes: [{ id: 'one', before: { project: { present: false } }, after: { project: { present: true, value: 'album' } } }] }
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtworks') return [{ id: 'one', body: { id: 'one' }, revision: 4, deletedAt: null }]
+    if (command.kind === 'organizeArtworks') { receipt.operationId = command.operationId; throw new Error('lost acknowledgement') }
+    if (command.kind === 'getOperation') return { state: 'committed', receipt }
+    if (command.kind === 'undoArtworkOrganization') return { restored: 1, skipped: 0 }
+    throw new Error('unexpected full-library read')
+  })
+  const repository = createDesktopArtworkRepository()
+  const result = await repository.organizeArtworks({ ids: ['one'], projectId: 'album' })
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['getArtworks', 'organizeArtworks', 'getOperation'])
+  expect(mocks.request.mock.calls[1][0]).toMatchObject({ expectedRevisions: [{ id: 'one', revision: 4 }], projectId: 'album' })
+  expect(mocks.request.mock.calls[2][0].operationId).toBe(mocks.request.mock.calls[1][0].operationId)
+  expect(await repository.undoArtworkOrganization({ ...result, changes: [] })).toEqual({ restored: 1, skipped: 0 })
+  const undo = mocks.request.mock.calls[3][0]
+  expect(undo.sourceOperationId).toBe(receipt.operationId)
+  expect(undo).not.toHaveProperty('changes')
 })
 
 it('cancels paginated reads without starting another page or replacing the last complete history', async () => {

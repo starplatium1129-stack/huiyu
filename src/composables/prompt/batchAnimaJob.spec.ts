@@ -2,11 +2,11 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { createBatchAnimaTransport } from './batchAnimaJob'
 import { animaRequestPayload, type AnimaRequest } from '../generation/useAnimaSession'
 
-const mocks = vi.hoisted(() => ({ submit: vi.fn(), wait: vi.fn(), fetch: vi.fn() }))
+const mocks = vi.hoisted(() => ({ submit: vi.fn(), get: vi.fn(), wait: vi.fn(), fetch: vi.fn() }))
 vi.mock('@/stores/runtimeTaskState', async importOriginal => ({ ...await importOriginal<object>(), runtimeRequestKey: () => 'stable-key' }))
 vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true }))
 vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => true,
-  submitRuntimeTask: mocks.submit, waitForRuntimeTask: mocks.wait, fetchRuntimeResult: mocks.fetch,
+  submitRuntimeTask: mocks.submit, getRuntimeTask: mocks.get, waitForRuntimeTask: mocks.wait, fetchRuntimeResult: mocks.fetch,
   runtimeResultPath: () => '/api/tasks/v1/accepted/results/0', taskMessage: () => '核对中' }))
 afterEach(() => vi.clearAllMocks())
 const input = { prompt: 'unchanged input', negative: 'unchanged negative', modelId: 'fixture-model', width: 832, height: 1216,
@@ -16,11 +16,12 @@ const task = { taskId: 'accepted', requestKey: 'stable-key', input: { seed: 0 },
 it('keeps every submitted engine field and reuses an accepted unknown task during manual retry', async () => {
   const transport = createBatchAnimaTransport(() => 'anima'), context = { history: { outfitId: 'fixture' } }
   mocks.submit.mockResolvedValue(task)
+  mocks.get.mockResolvedValue(task)
   mocks.wait.mockRejectedValueOnce(new Error('状态未确认')).mockResolvedValueOnce(task)
   mocks.fetch.mockResolvedValue(new Blob(['image'], { type: 'image/png' }))
   await expect(transport.run(input, context, () => false)).rejects.toThrow('状态未确认')
   const result = await transport.run(input, context, () => false)
-  expect(mocks.submit).toHaveBeenCalledExactlyOnceWith('anima', animaRequestPayload(input), 'stable-key', context)
+  expect(mocks.submit).toHaveBeenCalledExactlyOnceWith('anima', animaRequestPayload(input), 'stable-key', context, expect.objectContaining({ signal: expect.any(AbortSignal) }))
   expect(result.taskId).toBe('accepted'); expect(result.seed).toBe(0)
 })
 

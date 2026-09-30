@@ -10,20 +10,20 @@ export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, histor
   const repository = artworkRepository
   if (snapshot.entry.taskId) {
     const entry = await archiveTaskResult(snapshot.entry.taskId, snapshot.entry.resultIndex ?? 0)
-    historyStore.history = await repository.readHistory()
+    historyStore.rememberArtwork(entry)
     return entry
   }
   const result = await saveArtworkSnapshot(snapshot, {
     withStaging: work => repository.withStaging(async () => {
       const saved = await work()
-      if (saved.ok) historyStore.history = saved.history
+      if (saved.ok) historyStore.rememberArtwork(saved.entry)
       else console.warn('commitHistoryEntry failed', { error: saved.error, operationId: saved.operationId, cleanup: saved.cleanup })
       return saved
     }),
     putImage: blob => repository.putImage(blob), deleteImage: id => repository.deleteImage(id),
     cacheThumbnail: (id, blob) => repository.cacheThumbnail(id, blob), measureBlob: historyStore.measureBlob,
     now: () => Date.now(), nextId: historyStore.historyIdSeq,
-    readArtworkHistory: () => repository.readHistory(),
+    readArtwork: id => repository.readArtwork(id),
     normalizeArtistStyleIds, appendArtwork: entry => repository.appendArtwork(entry),
   })
   if (!result.ok && result.cleanup.status === 'commit-unknown') {

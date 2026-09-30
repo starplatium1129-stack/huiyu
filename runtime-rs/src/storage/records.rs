@@ -23,7 +23,7 @@ pub(super) fn artwork(c: &Context, key: &str) -> Result<Option<Value>> {
         .query_row([key], decode_artwork)
         .optional()?)
 }
-fn project(c: &Context, key: &str) -> Result<Option<Value>> {
+pub(super) fn project(c: &Context, key: &str) -> Result<Option<Value>> {
     Ok(c.db
         .prepare_cached("SELECT id_json,body,revision FROM projects WHERE id_key=?")?
         .query_row([key], decode_project)
@@ -31,6 +31,24 @@ fn project(c: &Context, key: &str) -> Result<Option<Value>> {
 }
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
+        "readArtworkRecentIndex" => {
+            let mut statement = c.db.prepare_cached(
+                "SELECT id_json,json_object('timestamp',body -> '$.timestamp'),revision
+                 FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
+            )?;
+            let mut rows = statement.query([])?;
+            let mut items = Vec::new();
+            while let Some(row) = rows.next()? {
+                c.check_cancel()?;
+                let mut item = json_column(row, 1)?;
+                item["id"] = json_column(row, 0)?;
+                item["revision"] = row.get::<_, i64>(2)?.into();
+                items.push(item);
+            }
+            let mut result = json!({"items":null,"revision":c.revision()?});
+            result["items"] = Value::Array(items);
+            Ok(result)
+        }
         "readArtworkSearchIndex" => {
             // Project before JSON decoding: legacy inline images and arbitrary
             // recipe fields are not needed by search. Keep raw dates/titles so
@@ -137,7 +155,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
         _ => Err(invalid("Unknown record query")),
     }
 }
-fn membership(c: &Context, key: &str) -> Result<Vec<String>> {
+pub(super) fn membership(c: &Context, key: &str) -> Result<Vec<String>> {
     Ok(c.db
         .prepare_cached(
             "SELECT artwork_key FROM project_artworks WHERE project_key=? ORDER BY position",
@@ -145,7 +163,12 @@ fn membership(c: &Context, key: &str) -> Result<Vec<String>> {
         .query_map([key], |r| r.get(0))?
         .collect::<rusqlite::Result<_>>()?)
 }
-fn update_membership(c: &Context, key: &str, keys: &[String], revision: i64) -> Result<()> {
+pub(super) fn update_membership(
+    c: &Context,
+    key: &str,
+    keys: &[String],
+    revision: i64,
+) -> Result<()> {
     let Some(mut record) = project(c, key)? else {
         return Ok(());
     };
@@ -178,7 +201,7 @@ fn update_membership(c: &Context, key: &str, keys: &[String], revision: i64) -> 
     )?;
     Ok(())
 }
-fn project_refs(c: &Context, key: &str) -> Result<Vec<Value>> {
+pub(super) fn project_refs(c: &Context, key: &str) -> Result<Vec<Value>> {
     Ok(c.db
         .prepare_cached("SELECT project_key,position FROM project_artworks WHERE artwork_key=?")?
         .query_map([key], |r| {

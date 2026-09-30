@@ -11,10 +11,11 @@
               ? (batchMode === 'scene'
                   ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。'
                   : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。')
-              : '逐张串行生成，可关闭面板留在当前页；点缩略图看大图，失败项可单独重跑。' }}</p>
+              : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。' }}</p>
           </div>
           <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
+        <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
 
         <!-- ── 配置态 ── -->
         <template v-if="phase === 'config'">
@@ -149,7 +150,7 @@
             <button
               class="btn btn-primary"
               type="button"
-              :disabled="isRunning || !engineReady || (batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount)"
+              :disabled="isRunning || batchDraw.resetting.value || !engineReady || (batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount)"
               @click="submit"
             >
               <ArchiveIcon name="spark" /> {{ engineReady ? '开始批量出图' : '请选择可用的 Anima / Krea 2 引擎' }}
@@ -160,12 +161,13 @@
         <!-- ── 结果态（进行中与完成后统一，完成后不自动弹回配置）── -->
         <template v-else>
           <div class="batch-progress-head">
-            <strong>{{ isRunning ? (batchDraw.cancelRequested.value ? '当前张完成后停止…' : '正在逐张出图…') : (progress.cancelled ? '本批已停止' : '本批完成') }}</strong>
+            <strong>{{ isRunning ? (batchDraw.cancelRequested.value ? '当前张完成后停止…' : '正在逐张出图…') : (progress.unresolved ? '本批待核对' : progress.remaining ? '本批已暂停' : '本批完成') }}</strong>
             <span class="batch-count-label">
-              {{ progress.succeeded }} / {{ progress.total }} 张成功<template v-if="progress.failed"> · {{ progress.failed }} 失败</template><template v-if="progress.cancelled"> · {{ progress.cancelled }} 未执行</template>
+              {{ progress.succeeded }} / {{ progress.total }} 张成功<template v-if="progress.failed"> · {{ progress.failed }} 失败</template><template v-if="progress.remaining"> · {{ progress.remaining }} 未执行</template><template v-if="progress.unresolved"> · {{ progress.unresolved }} 待核对</template>
             </span>
           </div>
           <div class="batch-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
+          <p v-if="batchDraw.restored.value" class="batch-hint">已恢复上次计划与原参数；本次尚未自动生成。接收状态不明的项只查询原请求编号。</p>
 
           <div class="batch-result-grid">
             <figure v-for="job in jobs" :key="job.id" class="batch-card" :data-state="job.status">
@@ -196,17 +198,22 @@
 
           <footer class="batch-foot">
             <template v-if="isRunning">
-              <span class="batch-hint">关闭面板可继续；离开页面会停止后续任务</span>
+              <span class="batch-hint">关闭面板可继续；离页保存计划，原任务保留，剩余项等待你继续</span>
               <button class="btn btn-danger" type="button" :disabled="batchDraw.cancelRequested.value" @click="batchDraw.cancel">停止（当前张完成后停）</button>
             </template>
             <template v-else>
-              <span class="batch-hint">成功成片已自动入册历史，可在历史里「加入分镜」攒片</span>
+              <span class="batch-hint">{{ progress.unresolved ? '原任务接收状态尚未确认；核对成功后再继续，避免重复生成。' : progress.remaining ? '继续时沿用本批原参数与种子；已完成项不会重新生成。' : '成功成片已入册，可在「我的作品」查看。' }}</span>
               <div class="batch-foot-actions">
-                <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
-                <button v-if="retryableCount" class="btn btn-ghost" type="button" @click="onRetryFailed">
-                  <ArchiveIcon name="spark" /> 重试失败 / 未执行 {{ retryableCount }} 张
+                <button v-if="progress.remaining || progress.unresolved" class="btn btn-primary" type="button" :disabled="batchDraw.resetting.value" @click="batchDraw.resume">
+                  <ArchiveIcon name="spark" /> {{ progress.unresolved ? '核对并继续剩余' : `继续剩余 ${progress.remaining} 张` }}
                 </button>
-                <button class="btn btn-ghost" type="button" @click="resetToConfig">再来一批</button>
+                <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
+                <button v-if="retryableCount && !progress.unresolved" class="btn btn-ghost" type="button" :disabled="batchDraw.resetting.value" @click="onRetryFailed">
+                  <ArchiveIcon name="spark" /> 重试失败 {{ retryableCount }} 张
+                </button>
+                <StudioTooltip anchor :content="progress.unresolved ? '先核对原任务，再开启新计划' : undefined">
+                  <button class="btn btn-ghost" type="button" :disabled="Boolean(progress.unresolved) || batchDraw.resetting.value" @click="resetToConfig">{{ batchDraw.resetting.value ? '正在清除计划…' : '再来一批' }}</button>
+                </StudioTooltip>
                 <button class="btn btn-primary" type="button" @click="emit('close')">完成</button>
               </div>
             </template>
@@ -293,7 +300,7 @@ const jobs = computed(() => batchDraw.jobs.value)
 const comparisonIds = computed(() => jobs.value.filter(job => job.historyId != null).slice(0, 4).map(job => encodeURIComponent(String(job.historyId))))
 const progress = computed(() => batchDraw.progress.value)
 const retryableCount = computed(() =>
-  jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled').length)
+  jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled' && job.taskId).length)
 const progressPercent = computed(() => {
   if (!progress.value.total) return 0
   return Math.min(100, Math.round((progress.value.done / progress.value.total) * 100))
@@ -408,8 +415,9 @@ async function submit() {
   if (jobs.value.length) phase.value = 'results'
 }
 
-function resetToConfig() {
-  batchDraw.reset()
+async function resetToConfig() {
+  await batchDraw.reset()
+  if (jobs.value.length) return
   previewJob.value = null
   phase.value = 'config'
 }
@@ -427,8 +435,10 @@ const franchiseOptions = computed<StudioSelectOption[]>(() => [
 function placeholderText(job: BatchDrawJob): string {
   if (job.status === 'failed') return job.error || '生成失败'
   if (job.status === 'running') return job.message || '生成中…'
+  if (job.status === 'accepted') return job.message || '已接收，等待结果…'
+  if (job.status === 'unknown') return '待核对原任务'
   if (job.status === 'pending') return '排队中'
-  if (job.status === 'cancelled') return '未执行（已停止）'
+  if (job.status === 'cancelled') return job.taskId ? '原任务已取消' : '未执行（已停止）'
   return '已入册'
 }
 
@@ -440,11 +450,12 @@ watch(() => props.open, (open) => {
     categoryFilter.value = ''
     charFilter.value = ''
     franchiseFilter.value = ''
-    if (!isRunning.value && !engineReady.value) batchEngine.value = props.animaAvailable ? 'anima' : 'sd'
+    if (!jobs.value.length && !isRunning.value && !engineReady.value) batchEngine.value = props.animaAvailable ? 'anima' : 'sd'
   }
 })
 
 watch(isRunning, running => { if (running) phase.value = 'results'; emit('running-change', running) }, { immediate: true })
+if (jobs.value.length) { phase.value = 'results'; batchMode.value = jobs.value[0].kind === 'character' ? 'character' : 'scene' }
 onUnmounted(() => batchDraw.dispose())
 </script>
 

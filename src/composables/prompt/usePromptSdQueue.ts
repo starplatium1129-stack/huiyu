@@ -6,8 +6,10 @@ import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
 import { classifySDError, type SDErrorReport } from '@/utils/sdError'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { SDGenerateOptions } from '@/composables/generation/useSDGenerate'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
+import { sdJobRequest } from './sdJobRequest'
 import type { AnimaResultContext } from '@/types/anima'
 import { captureResultContext } from '@/utils/resultContext'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
@@ -171,21 +173,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     }
   }
 
-  function buildSingleDetailerScripts(): Record<string, unknown> {
-    const passes: Array<[string, string, string, number, number]> = [
-      ['face_yolov8s.pt', 'detailed eyes, clean face, character-accurate facial features',
-        'deformed face, asymmetrical eyes, cross-eyed', 0.35, 0.18],
-      ['hand_yolov8n.pt', 'detailed hands, five fingers, natural fingers',
-        'extra fingers, missing fingers, fused fingers, malformed hands', 0.3, 0.16],
-    ]
-    return { ADetailer: { args: [true, false, ...passes.map(([model, prompt, negative, confidence, denoise]) => ({
-      ad_model: model, ad_prompt: prompt, ad_negative_prompt: negative,
-      ad_confidence: confidence, ad_denoising_strength: denoise,
-      ad_inpaint_only_masked: true, ad_inpaint_only_masked_padding: 32,
-      ad_use_inpaint_width_height: true, ad_inpaint_width: 768, ad_inpaint_height: 768, is_api: true,
-    }))] } }
-  }
-
   // Preserve result facts independently of the current form and later results.
   const completedJobs = new WeakMap<Omit<SDQueueJob, 'id'>, SdResultSnapshot>()
   function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
@@ -205,7 +192,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   }
 
   /** 执行一个任务（队列与直接出图共用同一条路径） */
-  async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean } = {}) {
+  async function runJob(job: Omit<SDQueueJob, 'id'>, opts: SDGenerateOptions & { disableLora?: boolean } = {}) {
     // Recovery edits and later form/queue mutations must not rewrite result facts.
     const submitted = JSON.parse(JSON.stringify(job)) as Omit<SDQueueJob, 'id'>
     if (opts.disableLora) {
@@ -213,32 +200,10 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       submitted.lora = undefined
     }
     const context = jobResultContext(submitted)
-    const [w, h] = String(submitted.size).split('x').map(Number)
-    const directHighResolution = !submitted.hiresFix && (w || 832) * (h || 1216) > 1_500_000
-    const alwaysonScripts = submitted.faceDetailer && submitted.char !== 'triad' && directHighResolution
-      ? buildSingleDetailerScripts()
-      : undefined
-
     const url = await sd.generate({
+      ...sdJobRequest(submitted),
       runtimeContext: context as Record<string, unknown>,
-      prompt: submitted.prompt,
-      negative_prompt: submitted.negative,
-      width: w || 832,
-      height: h || 1216,
-      cfg_scale: submitted.cfg,
-      steps: submitted.steps,
-      sampler_name: submitted.sampler,
-      scheduler: submitted.scheduler || undefined,
-      hr_fix: submitted.hiresFix,
-      hr_scale: submitted.hiresScale,
-      hr_upscaler: submitted.hiresUpscaler,
-      hr_second_pass_steps: submitted.hiresSteps,
-      denoising_strength: submitted.denoisingStrength,
-      seed: submitted.seed,
-      model: submitted.checkpoint || undefined,
-      lora: submitted.lora,
-      alwayson_scripts: alwaysonScripts,
-    })
+    }, opts)
 
     if (url) {
       // Zero is a valid seed; failed attempts must not reuse an old display seed.

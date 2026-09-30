@@ -4,8 +4,11 @@ import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/ty
 import type { AnimaPublicJob, AnimaRequest } from './animaSessionContract'
 
 async function image(kind: 'generation' | 'anima' | 'creative', input: Record<string, unknown>, key: string,
-  signal: AbortSignal, update: (task: TaskRecord) => void, context?: Record<string, unknown>) {
-  const accepted = await submitRuntimeTask(kind, input, key, context)
+  signal: AbortSignal, update: (task: TaskRecord) => void, context?: Record<string, unknown>,
+  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void) {
+  signal.throwIfAborted()
+  const accepted = await submitRuntimeTask(kind, input, key, context, { signal, onSubmitting })
+  await onAccepted?.(accepted)
   signal.throwIfAborted()
   const task = await waitForRuntimeTask(accepted.taskId, signal, update)
   const blob = await fetchRuntimeResult(runtimeResultPath(task), signal)
@@ -14,11 +17,12 @@ async function image(kind: 'generation' | 'anima' | 'creative', input: Record<st
 }
 export async function runRuntimeSd(input: Record<string, unknown>, key: string, signal: AbortSignal,
   fields: { taskState: Ref<string>; statusText: Ref<string>; progress: Ref<number | null>; provider: Ref<'comfy' | 'webui' | ''>;
-    resultUrl: Ref<string>; resultSeed: Ref<number | null>; resultTaskId: Ref<string>; resultPrompt: Ref<string> }, context?: Record<string, unknown>) {
+    resultUrl: Ref<string>; resultSeed: Ref<number | null>; resultTaskId: Ref<string>; resultPrompt: Ref<string> }, context?: Record<string, unknown>,
+  onAccepted?: (task: TaskRecord) => void | Promise<void>, onSubmitting?: () => void) {
   const { task, blob } = await image('generation', input, key, signal, value => {
     fields.taskState.value = value.status; fields.statusText.value = taskMessage(value); fields.progress.value = null
     fields.provider.value = value.provider === 'webui' ? 'webui' : 'comfy'
-  }, context)
+  }, context, onAccepted, onSubmitting)
   signal.throwIfAborted()
   const url = URL.createObjectURL(blob)
   if (fields.resultUrl.value) URL.revokeObjectURL(fields.resultUrl.value)

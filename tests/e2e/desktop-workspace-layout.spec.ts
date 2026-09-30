@@ -181,3 +181,59 @@ for (const theme of ['dark', 'light']) {
 }
 
 test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })
+
+for (const theme of ['dark', 'light']) {
+  test(`desktop rail resizing and independent collapse ${theme}`, async ({ browser }, info) => {
+    const context = await browser.newContext({ viewport: { width: 1920, height: 1080 }, reducedMotion: 'reduce' })
+    await prepareDesktop(context, theme)
+    await context.addInitScript(() => localStorage.setItem('aics_pb_director_mode', 'pro'))
+    const page = await context.newPage()
+    try {
+      await page.goto(`${info.project.use.baseURL}/prompt-builder?scene=sc006`)
+      const search = page.locator('#stepScene .scene-search')
+      await expect(search).toBeVisible()
+      await search.fill('雨')
+      const materialHandle = page.getByRole('separator', { name: '调整素材栏宽度' })
+      const before = Number(await materialHandle.getAttribute('aria-valuenow'))
+      await materialHandle.focus()
+      await materialHandle.press('ArrowRight')
+      await materialHandle.press('Shift+ArrowRight')
+      await expect(materialHandle).toHaveAttribute('aria-valuenow', String(before + 50))
+      const inspectorHandle = page.getByRole('separator', { name: '调整参数栏宽度' })
+      const oldInspector = Number(await inspectorHandle.getAttribute('aria-valuenow'))
+      const grip = (await inspectorHandle.boundingBox())!
+      await page.mouse.move(grip.x + grip.width / 2, grip.y + grip.height / 2)
+      await page.mouse.down()
+      await page.mouse.move(grip.x - 25 + grip.width / 2, grip.y + grip.height / 2, { steps: 4 })
+      await page.mouse.up()
+      await expect(inspectorHandle).toHaveAttribute('aria-valuenow', String(oldInspector + 25))
+      await page.getByRole('button', { name: '工作台布局', exact: true }).click()
+      await page.getByRole('button', { name: '收起素材', exact: true }).click()
+      await expect(page.locator('#drawing-materials')).toBeHidden()
+      await expect(page.locator('#drawing-inspector')).toBeVisible()
+      await page.getByRole('button', { name: '收起参数', exact: true }).click()
+      await expect(page.locator('#drawing-inspector')).toBeHidden()
+      const canvas = (await page.locator('#drawing-canvas').boundingBox())!
+      const workspace = (await page.locator('.director-workspace').boundingBox())!
+      expect(Math.abs(canvas.width - workspace.width)).toBeLessThan(2)
+      await page.reload()
+      await page.getByRole('button', { name: '工作台布局', exact: true }).click()
+      await expect(page.getByRole('button', { name: '展开素材', exact: true })).toBeVisible()
+      await expect(page.locator('#drawing-inspector')).toBeHidden()
+      await page.getByRole('button', { name: '展开素材', exact: true }).click()
+      await page.getByRole('button', { name: '展开参数', exact: true }).click()
+      await page.keyboard.press('Escape')
+      await expect(materialHandle).toHaveAttribute('aria-valuenow', String(before + 50))
+      await page.screenshot({ path: info.outputPath('desktop-adjusted-rails.png') })
+      await page.setViewportSize({ width: 1024, height: 720 })
+      await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
+      await expect(page.locator('.stage-quick-actions .btn-primary').first()).toBeInViewport({ ratio: 1 })
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+      await page.screenshot({ path: info.outputPath('desktop-adjusted-narrow.png') })
+      await page.getByRole('button', { name: '工作台布局', exact: true }).click()
+      await page.getByRole('button', { name: '恢复默认布局', exact: true }).click()
+      await expect(page.locator('#drawing-materials')).toBeVisible()
+      await expect(page.locator('#drawing-inspector')).toBeVisible()
+    } finally { await context.close() }
+  })
+}

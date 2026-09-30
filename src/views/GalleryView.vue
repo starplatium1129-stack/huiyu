@@ -62,7 +62,7 @@
     </div>
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : (projects.find(project => project.id === projectFilter)?.title || '作品展墙') }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
-      <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可对比挑选或批量移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
+      <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可整理画册与标签、对比挑选或移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
     </div>
 
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
@@ -76,6 +76,7 @@
         <button class="btn btn-ghost btn-sm" type="button" @click="toggleSelectMode">完成</button>
       </span>
     </div>
+    <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
 
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
     <section v-content-motion="`${trashMode}:${projectFilter}:${favoriteOnly}:${tagFilter}`" aria-live="polite" data-reveal data-reveal-delay="1">
@@ -379,6 +380,7 @@ import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const gestureViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
+import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
 import GalleryProjectAlbums from '@/components/gallery/GalleryProjectAlbums.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'

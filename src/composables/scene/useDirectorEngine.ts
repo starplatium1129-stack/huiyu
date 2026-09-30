@@ -210,26 +210,26 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     })
   }
 
-  function buildAnimaRequest(): AnimaRequest | null {
+  function buildAnimaRequest(preview = false): AnimaRequest | null {
     if (pb.isPopular) {
-      return buildPopularRequest()
+      return buildPopularRequest(preview)
     }
     const profile = modelProfile.value
     if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
-      flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
+      if (!preview) flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
       return null
     }
     const charKey = pb.char === 'triad' ? null : pb.char
     if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-      flash('当前底模没有匹配的模型 profile，已拒绝生成')
+      if (!preview) flash('当前底模没有匹配的模型 profile，已拒绝生成')
       return null
     }
     const expectedLoraId = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
     if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && charKey && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
-      flash('Anima 底模尚未从服务端白名单发现')
+      if (!preview) flash('Anima 底模尚未从服务端白名单发现')
       return null
     }
-    updateAnimaPromptState()
+    if (!preview) updateAnimaPromptState()
     return {
       prompt: livePrompt.value,
       negative: effectiveNegative.value,
@@ -253,17 +253,17 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   }
 
   /** 热门角色无 LoRA 出图：Anima 只允许服务端声明的 noLora capability 底模；Krea 家族天然无 LoRA。 */
-  function buildPopularRequest(): AnimaRequest | null {
+  function buildPopularRequest(preview = false): AnimaRequest | null {
     const profile = popularProfile.value
     if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-      flash('当前底模没有匹配的模型 profile，已拒绝生成')
+      if (!preview) flash('当前底模没有匹配的模型 profile，已拒绝生成')
       return null
     }
     if (!currentCapabilities.value.noLora) {
-      flash('当前底模不支持无 LoRA 热门角色创作')
+      if (!preview) flash('当前底模不支持无 LoRA 热门角色创作')
       return null
     }
-    updateAnimaPromptState()
+    if (!preview) updateAnimaPromptState()
     return {
       prompt: livePrompt.value,
       negative: effectiveNegative.value,

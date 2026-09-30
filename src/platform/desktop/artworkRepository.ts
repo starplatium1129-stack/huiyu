@@ -6,6 +6,8 @@ import { workspaceRequest as request } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
+import { parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
+import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
@@ -46,26 +48,32 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     loadedSearchIndex = undefined
     return structuredClone(loadedHistory)
   }
+  async function readArtwork(id: string | number, signal?: AbortSignal) {
+    signal?.throwIfAborted()
+    const raw = await workspaceRequest<unknown>({ kind: 'getArtwork', id }, signal)
+    signal?.throwIfAborted()
+    const row = parseArtworkRow(raw, id)
+    return row?.deletedAt === null ? structuredClone(row.body) : null
+  }
   async function readRecentHistory(signal?: AbortSignal) {
     signal?.throwIfAborted()
     if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
       return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
     }
-    // Existing cursors sort by identity, not time. Scan the small preference
-    // projection to preserve Date/id fallback and stable tie ordering, then
-    // fetch only the three visible bodies; no prompt/inline-image library clone.
-    const selected = (await list(false, 'preference', signal))
-      .filter(row => parseArtworkRecords([row.body]).length)
-      .sort((a, b) => artworkTimestamp(b.body) - artworkTimestamp(a.body)).slice(0, 3)
-    const rows = selected.length
-      ? await workspaceRequest<Array<Row | null>>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal) : []
+    // One atomic id/time/revision projection retains JS Date/id fallback and
+    // stable identity tie order. Only the three selected bodies cross HTTP.
+    const result = await workspaceRequest<unknown>({ kind: 'readArtworkRecentIndex' }, signal)
     signal?.throwIfAborted()
-    if (rows.length !== selected.length || rows.some((row, index) => !row || row.deletedAt !== null
-      || row.id !== selected[index].id || row.revision !== selected[index].revision)) {
+    const selected = parseArtworkRecentIndex(result).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
+    const rows = selected.length
+      ? await workspaceRequest<unknown>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal) : []
+    signal?.throwIfAborted()
+    if (!Array.isArray(rows) || rows.length !== selected.length) throw new Error('最近作品响应无效')
+    const parsed = rows.map((row, index) => parseArtworkRow(row, selected[index].id))
+    if (parsed.some((row, index) => !row || row.deletedAt !== null || row.revision !== selected[index].revision)) {
       throw new Error('作品库在读取期间发生变更，请重新读取')
     }
-    const recent = parseArtworkRecords(rows.map(row => row!.body))
-    if (recent.length !== selected.length) throw new Error('最近作品响应无效')
+    const recent = structuredClone(parsed.map(row => row!.body))
     loadedRecent = recent; recentLoaded = true
     return structuredClone(loadedRecent)
   }
@@ -123,8 +131,34 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
+  async function organizationWrite<T>(command: Record<string, unknown>): Promise<T> {
+    let result: T
+    try { result = await workspaceRequest<T>(command) }
+    catch (error) {
+      const operation = await workspaceRequest<{ state: string; receipt?: T } | null>({ kind: 'getOperation', operationId: command.operationId }).catch(() => null)
+      if (operation?.state !== 'committed' || !operation.receipt) throw error
+      result = operation.receipt
+    }
+    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined; loadedSearchIndex = undefined
+    return structuredClone(result)
+  }
+  async function organizeArtworks(input: ArtworkOrganizationRequest) {
+    const normalized = normalizeArtworkOrganization(structuredClone(input))
+    const rows = await workspaceRequest<unknown>({ kind: 'getArtworks', ids: normalized.ids })
+    if (!Array.isArray(rows) || rows.length !== normalized.ids.length) throw new Error('作品响应无效')
+    const expectedRevisions = rows.map((row, index) => {
+      const parsed = parseArtworkRow(row, normalized.ids[index])
+      if (!parsed || parsed.deletedAt !== null) throw new Error('部分作品已不在作品册，请重新读取后选择')
+      return { id: parsed.id, revision: parsed.revision }
+    })
+    return organizationWrite<ArtworkOrganizationReceipt>({ kind: 'organizeArtworks', operationId: `organize-${crypto.randomUUID()}`, ...normalized, expectedRevisions })
+  }
+  function undoArtworkOrganization(receipt: ArtworkOrganizationReceipt) {
+    return organizationWrite<ArtworkOrganizationUndoResult>({ kind: 'undoArtworkOrganization', operationId: `undo-${crypto.randomUUID()}`, sourceOperationId: receipt.operationId })
+  }
   const repository: ArtworkRepository = {
-    readHistory, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
+    readHistory, readArtwork, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
+    organizeArtworks, undoArtworkOrganization,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {
@@ -145,10 +179,10 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     async appendArtwork(artwork) {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read
       // the same record without generating another artwork or releasing its media.
-      await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork })
+      await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork: structuredClone(artwork) })
+      historyLoaded = false
       recentLoaded = false
       loadedSearchIndex = undefined
-      return readHistory()
     },
     async patchArtwork(id, patch) { return { updated: Boolean((await mutate('patchArtwork', id, { patch }))?.changed) } },
     async patchArtworks(patches) { for (const item of patches) await mutate('patchArtwork', item.id, { patch: item.patch }) },
@@ -167,6 +201,8 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     putImage: blob => trackMaintenanceWrite(() => repository.putImage(blob)),
     deleteImage: alias => trackMaintenanceWrite(() => repository.deleteImage(alias)),
     appendArtwork: artwork => trackMaintenanceWrite(() => repository.appendArtwork(artwork)),
+    organizeArtworks: input => trackMaintenanceWrite(() => repository.organizeArtworks(input)),
+    undoArtworkOrganization: receipt => trackMaintenanceWrite(() => repository.undoArtworkOrganization(receipt)),
     patchArtwork: (id, patch) => trackMaintenanceWrite(() => repository.patchArtwork(id, patch)),
     patchArtworks: patches => trackMaintenanceWrite(() => repository.patchArtworks(patches)),
     deleteArtwork: id => trackMaintenanceWrite(() => repository.deleteArtwork(id)),

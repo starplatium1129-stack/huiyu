@@ -4,8 +4,7 @@ import { pickStudioOptionByValue, readStudioOptions } from './helpers/studioSele
 test('archive content reveals and route changes leave one active page', async ({ page }) => {
   await page.goto('/style')
   await expect(page.locator('.mood-grid[data-reveal]')).toHaveClass(/revealed/)
-  await page.locator('.nav-more-trigger').click()
-  await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
+  await page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page).toHaveURL(/\/gallery$/)
   await expect(page.locator('main h1')).toHaveCount(1)
   await expect(page.getByRole('heading', { level: 1, name: '我的作品', exact: true })).toBeVisible()

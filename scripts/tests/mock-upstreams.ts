@@ -223,7 +223,7 @@ function createSdMock() {
       let seed = Number(body.seed);
       let resolved = Number.isFinite(seed) && seed >= 0 ? seed : 918273645;
       return sendJson(res, 200, {
-        images:[PNG_1X1],
+        images:[typeof faults.imageBase64 === 'string' ? faults.imageBase64 : PNG_1X1],
         parameters:body,
         info:JSON.stringify({ seed:resolved, all_seeds:[resolved], sampler_name:body.sampler_name })
       });

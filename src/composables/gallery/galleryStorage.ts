@@ -3,6 +3,7 @@ import type { useGalleryWorkspace } from './useGalleryWorkspace'
 
 export interface GalleryProject {
   id: string
+  recordId?: string | number
   title: string
   history_ids: Array<string | number>
 }
@@ -21,6 +22,7 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
     history.value = snapshot.history
     projects.value = snapshot.projects.map(project => ({
       id: String(project.id),
+      recordId: project.id,
       title: String(project.title || project.name || project.id),
       history_ids: Array.isArray(project.history_ids)
         ? project.history_ids.filter((id): id is string | number => typeof id === 'string' || typeof id === 'number')

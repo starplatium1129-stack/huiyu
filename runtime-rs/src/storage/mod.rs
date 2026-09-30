@@ -5,6 +5,7 @@ mod handle;
 mod media;
 mod migration;
 mod operations;
+mod organization;
 mod profile;
 mod records;
 mod saves;
@@ -78,9 +79,16 @@ enum Work {
         Result<Value>,
         oneshot::Sender<Result<Value>>,
     ),
+    GarbageFinished(
+        garbage::Completion,
+        Result<garbage::Candidates>,
+        oneshot::Sender<Result<Value>>,
+    ),
     Close(oneshot::Sender<Result<()>>),
     #[cfg(test)]
     PauseCopy(worker::CopyPause),
+    #[cfg(test)]
+    PauseGarbage(worker::GarbagePause),
 }
 struct CancelOnDrop(Arc<AtomicBool>);
 impl Drop for CancelOnDrop {
@@ -127,19 +135,12 @@ impl Context {
             }
             return migration::execute(self, principal, command);
         }
-        if kind == "collectGarbage" {
-            self.writer()?;
-            let id = string(command, "operationId")?;
-            if id.is_empty() || id.len() > 200 {
-                return Err(invalid("A stable operation ID is required"));
-            }
-            return garbage::execute(self, principal, command);
-        }
         if !matches!(
             kind,
             "status"
                 | "listArtworks"
                 | "readArtworkSearchIndex"
+                | "readArtworkRecentIndex"
                 | "getArtwork"
                 | "getArtworks"
                 | "listProjects"
@@ -160,6 +161,8 @@ impl Context {
                 | "commitMedia"
                 | "releaseMedia"
                 | "appendArtwork"
+                | "organizeArtworks"
+                | "undoArtworkOrganization"
                 | "countMedia"
                 | "readMedia"
                 | "readThumbnail"
@@ -195,6 +198,7 @@ impl Context {
             ),
             "listArtworks"
             | "readArtworkSearchIndex"
+            | "readArtworkRecentIndex"
             | "getArtwork"
             | "getArtworks"
             | "listProjects" => records::read(self, command),
@@ -206,6 +210,9 @@ impl Context {
             "patchArtwork" | "softDeleteArtwork" | "softDeleteArtworks" | "hardDeleteArtwork"
             | "restoreArtwork" | "saveProject" | "purgeExpiredTrash" => {
                 records::mutate(self, principal, command)
+            }
+            "organizeArtworks" | "undoArtworkOrganization" => {
+                organization::execute(self, principal, command)
             }
             "prepareSave" | "uploadChunk" | "commitSave" | "abortSave" | "prepareMedia"
             | "uploadMediaChunk" | "commitMedia" | "releaseMedia" | "appendArtwork"
@@ -294,6 +301,7 @@ fn is_read(kind: &str) -> bool {
         "status"
             | "listArtworks"
             | "readArtworkSearchIndex"
+            | "readArtworkRecentIndex"
             | "getArtwork"
             | "getArtworks"
             | "listProjects"

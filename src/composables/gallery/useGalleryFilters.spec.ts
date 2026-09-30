@@ -19,6 +19,7 @@ afterEach(()=>vi.useRealTimers())
 describe('saved artwork tag filtering',()=>{
   it('reads only explicit saved tag arrays, without parsing prompt text',()=>{
     expect(artworkTags({id:1,manual_tags:[' spring ','spring',null],tags:['night',3],prompt:'invented, tag'})).toEqual(['spring','night'])
+    expect(artworkTags({id:2,collectionTags:[' album ','album'],manual_tags:['generated']})).toEqual(['album','generated'])
   })
   it('combines exact tag matching with project and favorite filters, and resets the URL',async()=>{
     vi.useFakeTimers()

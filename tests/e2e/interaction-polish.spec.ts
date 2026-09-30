@@ -421,7 +421,7 @@ for (const theme of ['dark']) {
 
 
 for (const theme of ['dark']) {
-  test(`candidate comparison persists a preferred choice ${theme}`, async ({ page }) => {
+  test(`candidate comparison persists a preferred choice ${theme}`, async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => {
@@ -435,14 +435,14 @@ for (const theme of ['dark']) {
     const compare = page.getByRole('dialog', { name: '对比挑选', exact: true })
     await expect(compare).toBeVisible()
     await expect(compare.locator('.candidate-card')).toHaveCount(2)
-    const imageBox = (await compare.locator('.candidate-image').first().boundingBox())!
-    const picture = (await compare.locator('.candidate-image img').first().boundingBox())!
+    const imageBox = (await compare.locator('.candidate-viewport').first().boundingBox())!
+    const picture = (await compare.locator('.candidate-viewport img').first().boundingBox())!
     expect(picture.height).toBeLessThanOrEqual(imageBox.height + 1)
     await compare.locator('.candidate-card').first().getByRole('button', { name: '选为首选' }).click()
     await expect(compare.locator('.candidate-card').first()).toHaveAttribute('data-choice', 'preferred')
     await compare.locator('.candidate-card').nth(1).getByRole('button', { name: '暂不采用' }).click()
     await expect(compare.locator('.candidate-card').nth(1)).toHaveAttribute('data-choice', 'rejected')
-    await compare.screenshot({ path: `.review-shots/candidate-compare-${theme}.png` })
+    await compare.screenshot({ path: info.outputPath(`candidate-compare-${theme}.png`) })
     await compare.getByRole('button', { name: '关闭对比' }).click()
     await page.reload()
     await expect(compare.locator('.candidate-card').first()).toHaveAttribute('data-choice', 'preferred')
@@ -479,7 +479,6 @@ test('global task center retains a batch while visiting the gallery and control 
   await expect(batch.locator('.batch-progress-head')).toContainText('正在逐张出图')
   await batch.getByRole('button', { name: '关闭', exact: true }).click()
   await expect(page.getByRole('link', { name: '房间', exact: true })).toHaveAttribute('target', '_blank')
-  await page.locator('.nav-more-trigger').click()
   await page.getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
   await page.locator('.task-center-button:visible').click()

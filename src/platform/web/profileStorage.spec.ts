@@ -45,6 +45,29 @@ it('blocks offline desktop startup writes before hydration without losing the re
   expect(localStorage.getItem('aics_theme')).toBe('light')
 })
 
+it('batch plans hydrate under the stable desktop window identity and remain separate from another window', async () => {
+  const module = await import('./profileStorage')
+  const drafts = new Map<string, string | null>()
+  const port = fakePort()
+  vi.mocked(port.readDrafts).mockImplementation(async id => ({ records: drafts.has(id)
+    ? [{ key: 'aics_pb_batch_plan_v1', value: drafts.get(id), revision: 9 }] : [], revision: 9, resetRevision: 'reset-1' }))
+  vi.mocked(port.saveDraft).mockImplementation(async input => {
+    drafts.set(input.windowId!, input.value)
+    return { key: input.key, value: input.value, revision: 9 }
+  })
+  await module.activateProfileStorage(port, 'atelier')
+  module.profileDraftStorage.setItem('aics_pb_batch_plan_v1', 'atelier plan')
+  await module.flushProfileWrites()
+  await module.activateProfileStorage(port, 'companion')
+  expect(module.profileDraftStorage.getItem('aics_pb_batch_plan_v1')).toBeNull()
+  module.profileDraftStorage.setItem('aics_pb_batch_plan_v1', 'companion plan')
+  await module.flushProfileWrites()
+  await module.activateProfileStorage(port, 'atelier')
+  expect(module.profileDraftStorage.getItem('aics_pb_batch_plan_v1')).toBe('atelier plan')
+  expect(port.saveDraft).toHaveBeenCalledWith(expect.objectContaining({ key: 'aics_pb_batch_plan_v1', windowId: 'atelier' }))
+  expect(sessionStorage.getItem('aics_pb_batch_plan_v1')).toBeNull()
+})
+
 function fakePort(): ProfilePort {
   const snapshot = { records: [], revision: 7, resetRevision: 'reset-1' }
   return {

@@ -2,7 +2,10 @@
   <article
     class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :style="currentCharacterThemeStyle"
+    :style="[currentCharacterThemeStyle, directorLayout.style.value]"
+    :data-materials-collapsed="directorLayout.collapsed.value.materials || undefined"
+    :data-inspector-collapsed="directorLayout.collapsed.value.inspector || undefined"
+    :data-resizing="directorLayout.dragging.value || undefined"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
     :class="{
@@ -44,6 +47,8 @@
           </button>
         </div>
         <div class="pb-utility-actions">
+          <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
+          <DirectorLayoutControls v-if="!pb.focusMode" :collapsed="directorLayout.collapsed.value" @toggle="directorLayout.toggle" @reset="directorLayout.reset" />
           <RandomInspirationButton />
           <PromptDataTools
             :blueprint-data="currentBlueprintData"
@@ -54,11 +59,14 @@
       </div>
     </div>
 
-    <HistoryRestoreNotice v-if="pb.historyRestoreReport" />
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links" aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
-    <div class="director-workspace">
+    <div ref="layoutRoot" class="director-workspace">
+      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
+        @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
+      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
+        @start="directorLayout.start('inspector', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @key="directorLayout.key('inspector', $event)" @reset="directorLayout.reset" />
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center" id="drawing-canvas">
@@ -184,7 +192,10 @@
 
 <script setup lang="ts">
 import '@/assets/css/director.css'
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
+import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
+import DirectorResizeHandle from '@/components/director/DirectorResizeHandle.vue'
+import DirectorLayoutControls from '@/components/director/DirectorLayoutControls.vue'
 import { charOptions } from '@/composables/scene/directorOptions'
 const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
@@ -210,6 +221,8 @@ const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioT
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
+const layoutRoot = ref<HTMLElement | null>(null)
+const directorLayout = useDirectorLayout(layoutRoot)
 const {
 capturedScene, capturingScene, captureScene, closeSceneCapture,
 pb,
