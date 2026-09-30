@@ -1,183 +1,135 @@
-/**
- * scripts/maintenance/check-models-environment.ts
- *
- * 绘遇 HUIYU · 模型资产与硬件运行环境一键体检工具。
- * 扫描显卡、显存、内存，以及反推、绘图底模、编码器、VAE 和自训 LoRA。
- *
- * 用法：
- *   node scripts/maintenance/check-models-environment.js
- */
+import os from 'node:os'
+import fs from 'node:fs'
+import path from 'node:path'
+import { execFileSync } from 'node:child_process'
+import { COMFY_KNOWN_FILES, WD14_FILES, officialUrl, type ModelFile } from '../lib/model-download-manifest'
+import { matchesModel } from '../lib/model-download'
+import { errorMessage } from '../lib/runtime-errors'
 
-const os: typeof import('os') = require('os')
-const fs: typeof import('fs') = require('fs')
-const path: typeof import('path') = require('path')
-const { execSync } = require('child_process')
-
-const ROOT = path.resolve(__dirname, '..', '..')
-
-interface GpuInfo {
-  name: string
-  vramMb: number
+interface FileCheck {
+  path: string
+  state: 'missing' | 'file-present' | 'bytes-match' | 'sha256-match' | 'size-mismatch' | 'hash-mismatch'
+  bytes?: number
+  expectedBytes?: number
+  source?: string
 }
 
-function detectGpu(): GpuInfo | null {
+export async function inspectModelFile(root: string, relative: string, known?: ModelFile, hashes = false): Promise<FileCheck> {
+  const file = path.resolve(root, relative)
+  const result: FileCheck = { path: relative, state: 'missing' }
+  if (known) { result.expectedBytes = known.bytes; if (known.repo || known.sourceUrl) result.source = officialUrl(known) }
   try {
-    const stdout = execSync('nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits', {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-      timeout: 3000,
+    const stat = fs.statSync(file)
+    if (!stat.isFile() || !stat.size) return result
+    result.bytes = stat.size
+    result.state = !known ? 'file-present' : stat.size === known.bytes ? 'bytes-match' : 'size-mismatch'
+    if (known && hashes && result.state === 'bytes-match') result.state = await matchesModel(file, known) ? 'sha256-match' : 'hash-mismatch'
+    return result
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
+    return result
+  }
+}
+
+function detectGpu(): { name: string; vramMiB: number }[] {
+  try {
+    const output = execFileSync('nvidia-smi', ['--query-gpu=name,memory.total', '--format=csv,noheader,nounits'], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 3000, windowsHide: true,
     })
-    const line = stdout.trim().split('\n')[0]
-    if (line) {
-      const parts = line.split(',')
-      if (parts.length >= 2) {
-        return {
-          name: parts[0].trim(),
-          vramMb: parseInt(parts[1].trim(), 10) || 0,
-        }
+    return output.trim().split(/\r?\n/).flatMap(line => {
+      const [name, memory] = line.split(',')
+      return name && Number(memory) > 0 ? [{ name: name.trim(), vramMiB: Number(memory) }] : []
+    })
+  } catch { return [] }
+}
+
+function directoryPresent(file: string): boolean {
+  try { return fs.statSync(file).isDirectory() } catch { return false }
+}
+
+export async function checkModels(appRoot: string, env: NodeJS.ProcessEnv = process.env, hashes = false, probeHardware = true) {
+  appRoot = path.resolve(appRoot)
+  const aiRoot = path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI'))
+  const runtimeRoot = path.resolve(env.AICS_RUNTIME_ROOT || path.join(appRoot, 'runtime'))
+  const runtimeComfyRoot = path.join(aiRoot, 'ComfyUI', 'models')
+  const comfyRoot = path.resolve(env.COMFYUI_MODELS_ROOT || runtimeComfyRoot)
+  const known = new Map(COMFY_KNOWN_FILES.map(entry => [entry.path, entry]))
+  const checked = new Map<string, Promise<FileCheck>>()
+  const inspect = (relative: string) => {
+    if (!checked.has(relative)) checked.set(relative, inspectModelFile(comfyRoot, relative, known.get(relative), hashes))
+    return checked.get(relative)!
+  }
+  // These embedded catalogs are the product Rust runtime's exact model requirements.
+  const images = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/src/images/catalog.json'), 'utf8'))
+  const video = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/src/video/catalog.json'), 'utf8')).constants
+  const imageModels = []
+  for (const [id, model] of Object.entries(images.MODELS) as [string, { file: string; family: string; noLora?: boolean }][]) {
+    imageModels.push({ id, family: model.family, noLora: model.noLora === true,
+      files: await Promise.all([`diffusion_models/${model.file}`, `text_encoders/${model.family === 'krea2' ? 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors' : 'qwen_3_06b_base.safetensors'}`, 'vae/qwen_image_vae.safetensors'].map(inspect)) })
+  }
+  const videoModels = []
+  for (const model of video.MODEL_CATALOG as { id: string; executable: boolean; requirements: string[][] }[]) {
+    videoModels.push({ id: model.id, adapter: model.executable ? 'implemented-device-unverified' : 'unavailable',
+      files: await Promise.all(model.requirements.map(parts => inspect(parts.join('/')))) })
+  }
+  const loras = await Promise.all([...Object.values(images.LORAS), ...Object.values(images.KREA_STYLE_LORAS)]
+    .map(model => inspect(`loras/${(model as { file: string }).file}`)))
+  const wdDirs = [...new Set([env.AICS_WD14_MODEL_DIR,
+    path.join(aiRoot, 'ComfyUI/custom_nodes/ComfyUI-WD14-Tagger/models'), path.join(aiRoot, 'ComfyUI/models/tagger'),
+    path.join(aiRoot, 'stable-diffusion-webui/models/WD14_tagger'), path.join(appRoot, 'runtime/models/interrogate')].filter(Boolean) as string[])]
+  const wd14 = []
+  for (const directory of wdDirs) {
+    const pairs = []
+    if (directoryPresent(directory)) {
+      for (const entry of fs.readdirSync(directory).filter(name => /\.onnx$/i.test(name)).sort()) {
+        const tagFile = entry.replace(/\.onnx$/i, '.csv')
+        pairs.push(await Promise.all([entry, tagFile].map(name => inspectModelFile(directory, name, WD14_FILES.find(item => item.path === name), hashes))))
       }
     }
-  } catch {
-    // 无 nvidia-smi 或非 NVIDIA 显卡
+    wd14.push({ directory, pairs })
   }
-  return null
+  const nativeManifest = JSON.parse(fs.readFileSync(path.join(appRoot, 'runtime-rs/native-dependencies.windows-x64.json'), 'utf8'))
+  const nativeFiles = await Promise.all((nativeManifest.files as { name: string; source: string; bytes: number; sha256: string }[]).map(entry => {
+    const variable = entry.name === 'onnxruntime.dll' ? env.AICS_ORT_DYLIB_PATH : env.AICS_VIPS_DYLIB_PATH
+    const file = variable || (fs.existsSync(path.join(appRoot, 'native', entry.name)) ? path.join(appRoot, 'native', entry.name) : path.join(appRoot, entry.source))
+    return inspectModelFile(path.dirname(file), path.basename(file), { path: entry.name, remotePath: '', repo: '', revision: '', bytes: entry.bytes, sha256: entry.sha256 }, hashes)
+  }))
+  const translationRoot = path.resolve(env.AICS_TRANSLATION_MODEL || path.join(aiRoot, 'Voice/models/translation/m2m100_418m'))
+  const translationFiles = await Promise.all(['config.json', 'pytorch_model.bin', 'vocab.json', 'sentencepiece.bpe.model', 'tokenizer_config.json']
+    .map(relative => inspectModelFile(translationRoot, relative)))
+  const python = env.TRANSLATION_PYTHON || path.join(aiRoot, 'GPT-SoVITS-env/python.exe')
+  let voices: Record<string, { refAudioPath?: string; promptText?: string; gptWeightsPath?: string; sovitsWeightsPath?: string }> = {}
+  try { voices = JSON.parse(fs.readFileSync(path.join(runtimeRoot, 'config.json'), 'utf8')).voices || {} } catch {}
+  const voiceProfiles = []
+  for (const id of ['nene', 'natsume']) {
+    const profile = voices[id] || {}
+    voiceProfiles.push({ id, referenceTextConfigured: Boolean(profile.promptText?.trim()),
+      files: await Promise.all([profile.refAudioPath, profile.gptWeightsPath, profile.sovitsWeightsPath].map(file => file
+        ? inspectModelFile(path.dirname(file), path.basename(file)) : Promise.resolve({ path: 'not-configured', state: 'missing' as const }))) })
+  }
+  const ollamaRoot = env.OLLAMA_MODELS || path.join(os.homedir(), '.ollama/models')
+  return { checkedAt: new Date().toISOString(), verification: hashes ? 'file bytes and known SHA-256 only' : 'file presence and known sizes only',
+    inference: 'not-run', upstreamNodes: 'not-probed', performance: 'device-unverified',
+    roots: { appRoot, runtimeRoot, aiRoot, comfyRoot, runtimeComfyRoot, gatewayPathMatchesScan: path.resolve(comfyRoot) === path.resolve(runtimeComfyRoot) },
+    hardware: { ramGiB: Math.round(os.totalmem() / 1073741824), cpu: os.cpus()[0]?.model || 'unknown', gpus: probeHardware ? detectGpu() : [] },
+    wd14, nativeFiles, imageModels, videoModels, loras,
+    wai: await inspect('checkpoints/waiIllustriousSDXL_v170.safetensors'),
+    waiLoras: await Promise.all(['ayachi_nene_v18_wd14.safetensors', 'shiki_natsume_v18_wd14.safetensors'].map(name => inspect(`loras/${name}`))),
+    translation: { directory: translationRoot, files: translationFiles, python: await inspectModelFile(path.dirname(python), path.basename(python)), pythonPackages: 'not-probed; torch, transformers and sentencepiece required' },
+    voiceProfiles, ollama: { directory: ollamaRoot, blobs: directoryPresent(path.join(ollamaRoot, 'blobs')), manifests: directoryPresent(path.join(ollamaRoot, 'manifests')), modelUsability: 'not-probed; verify local model using ollama list' },
+    onlineOnly: ['remote API models', 'Ollama cloud models', 'public sharing/tunnel', 'initial downloads and updates'] }
 }
 
-function candidateComfyDirs(): string[] {
-  const dirs: string[] = []
-  if (process.env.COMFYUI_MODELS_ROOT) dirs.push(process.env.COMFYUI_MODELS_ROOT)
-  if (process.env.AI_WORKSPACE_ROOT) {
-    dirs.push(path.join(process.env.AI_WORKSPACE_ROOT, 'ComfyUI', 'models'))
+async function main(): Promise<void> {
+  const args = process.argv.slice(2)
+  if (args.includes('--help') || args.includes('--plan')) {
+    console.log('models:check [--json] [--verify-hashes]\nRead-only inventory: Rust model catalogs, WD14 + native DLLs, voice/translation, Ollama cache.\nSet AICS_APP_ROOT, AI_WORKSPACE_ROOT, AICS_WD14_MODEL_DIR, AICS_TRANSLATION_MODEL as appropriate.\nCOMFYUI_MODELS_ROOT changes this scan only; runtime uses AI_WORKSPACE_ROOT/ComfyUI/models.\n--verify-hashes reads large weights. Does not load models, start services or certify inference.')
+    return
   }
-  dirs.push(path.resolve(ROOT, '..', 'AI', 'ComfyUI', 'models'))
-  dirs.push(path.resolve(ROOT, '..', 'ComfyUI', 'models'))
-  dirs.push('D:\\AI-CG-Studio\\AI\\ComfyUI\\models')
-  dirs.push('D:\\ComfyUI\\models')
-  dirs.push('C:\\ComfyUI\\models')
-  return [...new Set(dirs)].filter(d => fs.existsSync(d))
+  if (args.some(arg => !['--json', '--verify-hashes'].includes(arg))) throw Error('Unknown models:check argument; use --help')
+  const report = await checkModels(process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'), process.env, args.includes('--verify-hashes'))
+  console.log(JSON.stringify(report, null, 2))
+  if (!args.includes('--json')) console.log('\n文件状态只表示当前字节；请按 docs/guides/setup-and-models.md 完成断网真实功能验收。')
 }
 
-function checkFileExists(dirs: string[], subPath: string): { found: boolean; fullPath?: string; sizeMb?: number } {
-  for (const dir of dirs) {
-    const full = path.join(dir, subPath)
-    if (fs.existsSync(full)) {
-      try {
-        const stats = fs.statSync(full)
-        return { found: true, fullPath: full, sizeMb: Math.round(stats.size / 1048576) }
-      } catch {
-        return { found: true, fullPath: full }
-      }
-    }
-  }
-  return { found: false }
-}
-
-function main() {
-  console.log('==================================================================')
-  console.log('            绘遇 HUIYU · 硬件环境与模型资产全景体检                ')
-  console.log('==================================================================\n')
-
-  // 1. 硬件配置与档位评估
-  console.log('【1. 硬件配置与推荐档位】')
-  const totalMemGb = Math.round(os.totalmem() / (1024 * 1024 * 1024))
-  const cpus = os.cpus()
-  console.log(`  • 系统内存 (RAM): ${totalMemGb} GB`)
-  console.log(`  • 处理器 (CPU)  : ${cpus[0]?.model || '未知'} (${cpus.length} 核心)`)
-
-  const gpu = detectGpu()
-  if (gpu) {
-    const vramGb = (gpu.vramMb / 1024).toFixed(1)
-    console.log(`  • 独立显卡 (GPU): ${gpu.name} (${gpu.vramMb} MB / 约 ${vramGb} GB VRAM)`)
-    if (gpu.vramMb >= 16000) {
-      console.log(`  ⭐ 当前定位: 【发烧短片档】 - 可完全驾驭 Wan 2.2 / MiniMax H3 视频生成与批量大并发`)
-    } else if (gpu.vramMb >= 10000) {
-      console.log(`  ⭐ 当前定位: 【黄金推荐档】 - 可完全驾驭 Anima 旗舰画质 + 高清修复 + GPT-SoVITS 原声`)
-    } else if (gpu.vramMb >= 6000) {
-      console.log(`  ⭐ 当前定位: 【轻量入门档】 - 可运行 SD 1.5 与 Anima 基础分辨率（832x1216）直出`)
-    } else {
-      console.log(`  ⭐ 当前定位: 【基础档】 - 显存较低，建议使用无 LoRA 轻量模式或连接外部服务器`)
-    }
-  } else {
-    console.log(`  • 独立显卡 (GPU): 未检测到 NVIDIA 显卡或驱动`)
-    console.log(`  ⭐ 当前定位: 【纯 CPU / 浏览档】 - 场景浏览、蓝图、故事、WD14 CPU 反推 (0.3s) 完全可用！`)
-  }
-  console.log('')
-
-  // 2. WD14 本地反推模型检查
-  console.log('【2. 本地真实反推引擎 (WD14 Tagger)】')
-  const interrogateDir = path.join(ROOT, 'runtime', 'models', 'interrogate')
-  const onnxFile = path.join(interrogateDir, 'wd-v1-4-moat-tagger-v2.onnx')
-  const csvFile = path.join(interrogateDir, 'wd-v1-4-moat-tagger-v2.csv')
-  const onnxReady = fs.existsSync(onnxFile) && fs.statSync(onnxFile).size > 1024
-  const csvReady = fs.existsSync(csvFile) && fs.statSync(csvFile).size > 1024
-
-  if (onnxReady && csvReady) {
-    const sizeMb = Math.round(fs.statSync(onnxFile).size / 1048576)
-    console.log(`  [✔ 已就绪] WD14 真实反推模型 (${sizeMb} MB) @ ${interrogateDir}`)
-  } else {
-    console.log(`  [✘ 未就绪] 尚未下载 WD14 反推模型 (当前运行在启发式兜底模式)`)
-    console.log(`  💡 快捷安装: 在终端运行 npm run workflow -- models:download-wd14`)
-  }
-  console.log('')
-
-  // 3. ComfyUI 核心开源底模与编码器检查
-  console.log('【3. ComfyUI 核心绘图模型 (开源底座)】')
-  const comfyDirs = candidateComfyDirs()
-  if (!comfyDirs.length) {
-    console.log(`  [ℹ 未检测到 ComfyUI 目录]`)
-    console.log(`    若您安装了 ComfyUI，可设置环境变量 COMFYUI_MODELS_ROOT 指向其 models/ 文件夹。`)
-  } else {
-    console.log(`  已找到 ComfyUI models 目录: ${comfyDirs[0]}`)
-    // 底模检查
-    const miaomiao12 = checkFileExists(comfyDirs, path.join('diffusion_models', 'miaomiaoHarem_anima12.safetensors'))
-    const miaomiao16 = checkFileExists(comfyDirs, path.join('diffusion_models', 'miaomiaoHarem_anima16.safetensors'))
-    const animaBase = checkFileExists(comfyDirs, path.join('diffusion_models', 'anima-base-v1.0.safetensors'))
-    if (miaomiao12.found) {
-      console.log(`  [✔ 已就绪] Anima 绘图底模: MiaoMiao v1.2 (${miaomiao12.sizeMb} MB)`)
-    } else if (miaomiao16.found) {
-      console.log(`  [✔ 已就绪] Anima 绘图底模: MiaoMiao v1.6 (${miaomiao16.sizeMb} MB)`)
-    } else if (animaBase.found) {
-      console.log(`  [✔ 已就绪] Anima 绘图底模: Anima Base v1.0 (${animaBase.sizeMb} MB)`)
-    } else {
-      console.log(`  [✘ 缺失] Anima 绘图底模 (需放 diffusion_models/miaomiaoHarem_anima12.safetensors)`)
-    }
-
-    // 文本编码器
-    const qwenText = checkFileExists(comfyDirs, path.join('text_encoders', 'qwen_3_06b_base.safetensors'))
-    if (qwenText.found) {
-      console.log(`  [✔ 已就绪] Qwen 文本编码器 (${qwenText.sizeMb} MB)`)
-    } else {
-      console.log(`  [✘ 缺失] Qwen 文本编码器 (需放 text_encoders/qwen_3_06b_base.safetensors)`)
-    }
-
-    // VAE
-    const qwenVae = checkFileExists(comfyDirs, path.join('vae', 'qwen_image_vae.safetensors'))
-    if (qwenVae.found) {
-      console.log(`  [✔ 已就绪] 图像 VAE 编解码器 (${qwenVae.sizeMb} MB)`)
-    } else {
-      console.log(`  [✘ 缺失] 图像 VAE (需放 vae/qwen_image_vae.safetensors)`)
-    }
-  }
-  console.log('')
-
-  // 4. 看板娘专属自训 LoRA 说明
-  console.log('【4. 本站独家自训 LoRA (绫地宁宁 / 四季夏目)】')
-  if (comfyDirs.length) {
-    const nene = checkFileExists(comfyDirs, path.join('loras', 'ayachi_nene_v21_anima.safetensors'))
-    const natsume = checkFileExists(comfyDirs, path.join('loras', 'shiki_natsume_v21_anima.safetensors'))
-    if (nene.found && natsume.found) {
-      console.log(`  [✔ 已就绪] 宁宁与夏目 v21 自训专属 LoRA 均已就绪`)
-    } else {
-      console.log(`  [ℹ 独家资产提示] 专属 LoRA 为站长主力机精炼资产，目前未公开。`)
-      console.log(`    系统已原生启用【无 LoRA 兼容模式】，且 158 位热门动漫角色无需 LoRA 即可完美出图！`)
-    }
-  } else {
-    console.log(`  [ℹ 独家资产提示] 专属 LoRA 为站长主力机精炼资产。非主力机环境原生支持无 LoRA 创作。`)
-  }
-
-  console.log('\n==================================================================')
-  console.log('📖 完整配置说明与模型下载直链请阅读: docs/guides/setup-and-models.md')
-  console.log('==================================================================')
-}
-
-main()
+if (require.main === module) void main().catch(error => { console.error(errorMessage(error)); process.exitCode = 1 })

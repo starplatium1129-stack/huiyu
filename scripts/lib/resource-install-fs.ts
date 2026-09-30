@@ -86,6 +86,16 @@ function noLinks(io: typeof fs, target: string, options: { missing?: boolean; ha
   for (let index = 0; index < parts.length; index++) {
     cursor = path.join(cursor, parts[index]);
     try { stat = io.lstatSync(cursor); } catch (error) {
+      // Windows Node may report ENOENT for a dangling junction. Its parent's
+      // directory entry still identifies the link; do not treat it as a missing
+      // writable path. Remove this check when supported Node versions reliably
+      // lstat dangling junctions (the ordinary existing-link check stays below).
+      if (process.platform === 'win32' && runtimeErrorCode(error) === 'ENOENT') {
+        const name = path.basename(cursor).toLowerCase();
+        const entry = io.readdirSync(path.dirname(cursor), { withFileTypes: true })
+          .find(item => item.name.toLowerCase() === name);
+        if (entry?.isSymbolicLink()) fail('UNSAFE_LINK', 'Dangling symlink/junction rejected: ' + cursor);
+      }
       if (runtimeErrorCode(error) === 'ENOENT' && missing) return null;
       throw error;
     }

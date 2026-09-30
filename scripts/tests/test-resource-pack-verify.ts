@@ -74,7 +74,7 @@ function snapshot(dir: any): any {
  */
 function buildTwoStateFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-verify-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'resource-pack-verify-'));
   const root = path.join(base, 'root');
   fs.mkdirSync(path.join(root, 'assets/dir'), { recursive: true });
   fs.mkdirSync(path.join(root, 'artifacts'), { recursive: true });

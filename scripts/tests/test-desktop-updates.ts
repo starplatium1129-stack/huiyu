@@ -21,7 +21,8 @@ function buildBindingFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'desktop-binding-'));
   const put = (name: string, value: string) => { const file = path.join(root, name); fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, value); };
   const git = (...args: string[]) => execFileSync('git', args, { cwd:root, stdio:'pipe', windowsHide:true });
-  git('init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
+  // This fixture needs Git identities, not a Windows symlink capability probe.
+  git('-c', 'core.symlinks=false', 'init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
   put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
   git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
   put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe', 'rust-A'); put('desktop-tauri/web/index.html', 'desktop-UI');
@@ -30,7 +31,7 @@ function buildBindingFixture() {
   return { root, put, git, binding, native, payload, remove() {
     assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(os.tmpdir()));
     assert.ok(path.basename(root).startsWith('desktop-binding-'));
-    fs.rmSync(root, { recursive:true, force:true });
+    (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'desktop-binding-');
   } };
 }
 

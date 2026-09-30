@@ -7,6 +7,7 @@ mod lease;
 mod lifecycle;
 mod manager;
 mod manifest;
+pub mod offline;
 mod policy;
 mod resolve;
 mod state;

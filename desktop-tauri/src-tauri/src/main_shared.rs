@@ -326,6 +326,9 @@ pub fn primary_work_area_logical() -> (i64, i64, i64, i64) {
 }
 
 pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Option<&str>) -> Vec<(String, String)> {
+    let ai_workspace = workspace_root.filter(|value| !value.trim().is_empty()).map(String::from)
+        .or_else(|| std::env::var("AI_WORKSPACE_ROOT").ok().filter(|value| !value.trim().is_empty()))
+        .unwrap_or_else(|| paths.app_root.parent().unwrap_or(&paths.app_root).join("AI").to_string_lossy().to_string());
     let mut env = vec![
         ("AICS_APP_ROOT".into(), paths.app_root.to_string_lossy().to_string()),
         ("AICS_ASSETS_ROOT".into(), paths.assets_root.to_string_lossy().to_string()),
@@ -334,7 +337,7 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
         ("AICS_DESKTOP_CONFIG_ROOT".into(), paths.config_root.to_string_lossy().to_string()),
         ("AICS_DESKTOP_SOURCE_PROFILE_ID".into(), paths.source_profile_id.clone()),
         ("AICS_SCRIPTS_ROOT".into(), paths.app_root.join("scripts").to_string_lossy().to_string()),
-        ("AI_WORKSPACE_ROOT".into(), workspace_root.map(String::from).or_else(|| std::env::var("AI_WORKSPACE_ROOT").ok()).unwrap_or_else(|| paths.app_root.parent().unwrap_or(&paths.app_root).join("AI").to_string_lossy().to_string())),
+        ("AI_WORKSPACE_ROOT".into(), ai_workspace),
     ];
     if is_packaged {
         env.push(("AICS_DESKTOP_PACKAGED".into(), "1".into()));
@@ -347,7 +350,25 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
 
 #[cfg(test)]
 mod tests {
-    use super::normalize_atelier_path;
+    use super::{gateway_env, normalize_atelier_path};
+
+    #[test]
+    fn empty_workspace_selection_preserves_inherited_or_default_model_root() {
+        let paths = crate::paths::DesktopPaths {
+            is_packaged: true, app_root: "C:/Huiyu/gateway".into(), resource_root: "".into(),
+            gateway_executable: "".into(), gateway_cwd: "".into(), assets_root: "".into(),
+            tools_root: "".into(), runtime_root: "".into(), config_root: "".into(), source_profile_id: String::new(),
+            ai_workspace_file: "".into(), desktop_log: "".into(), gateway_port_file: "".into(),
+            companion_window_file: "".into(), companion_chat_window_file: "".into(),
+            atelier_window_file: "".into(), preferences_file: "".into(),
+        };
+        let workspace = |value| gateway_env(&paths, true, value).into_iter()
+            .find(|(key, _)| key == "AI_WORKSPACE_ROOT").unwrap().1;
+        assert_eq!(workspace(Some("")), workspace(None));
+        assert_eq!(workspace(Some("  ")), workspace(None));
+        assert!(!workspace(Some("")).trim().is_empty());
+        assert_eq!(workspace(Some("D:/HuiyuAI")), "D:/HuiyuAI");
+    }
 
     // 由已退役 Electron 版 desktop/deepLink.ts 的 test-deep-link.js 移植：
     // 归一化是 aics:// 深链的核心契约（main.rs 深链回调先剥 aics:// 再归一化）。

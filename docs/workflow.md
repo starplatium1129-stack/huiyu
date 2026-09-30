@@ -203,6 +203,10 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 离线资源候选包暂存导出
 
+面向新机器的完整发行使用 `offline:pack --showcase-root <已发布样张目录> --release <安全版本ID> --out <新输出父目录> [--root <项目根>] [--apply]`。默认只读规划并核对真实来源字节；Windows `--apply` 导出可服务 assets 与样张清单实际引用的原图/缩略图，生成 ZIP、两种 SHA-256 及独立 PowerShell 安装入口。新机解压/原生导入不依赖 Node 或源码，外部审批指纹绑定 release.json 原始字节。导入前需退出桌面；默认自动解析用户资源库与独立可维护样张库，升级保留用户样张和旧版。完整步骤和发行边界见[离线资源安装与发行](guides/offline-resources.md)。此入口只导出已有素材，不安装模型、上传或生成/审核图片。
+
+`offline:prerequisites-plan -Out <新目录>` 只读预览微软 VC++ x64 离线材料；`offline:prerequisites-prepare -Out <新目录>` 显式下载并核对有效微软签名、版本与真实字节/SHA-256，整批完成后发布新目录，不执行安装。将其离线 EXE、回执与说明作为发行前置附件，新机由用户完成 UAC 安装；WebView2 由本次 NSIS offlineInstaller 配置提供，二者用途不同。
+
 当前 `--apply` 仅支持 Windows，其他平台拒绝写入、仍可预览。原因是普通目录 rename 在 POSIX 可覆盖并发出现的空目录；Windows 隔离回归已验证该冲突会拒绝。工具面向受控本地目录，不承诺抵御其他进程持续恶意替换路径的绝对事务隔离。
 
 `node scripts/workflow.js resource:pack --manifest <root内JSON> --name <包名> [--base-manifest <root内旧JSON>] [--root <目录>] [--apply]` 是 R1 之后的受控复制工具，不是安装器、下载器或发布入口。默认只预览复制计划（stdout JSON：目标路径、条目、字节合计与核验摘要），零写入；但预览会读取清单并对源文件做与 `audit:resource-manifest` 同套的核验（读取不是零读取）。`--help` / `--plan` 仅打印用法，不读取目标文件。
@@ -415,8 +419,8 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 聊天个人 API 密钥在 Windows 桌面版由系统凭据管理器按 API 地址保存，网页端只放在当前页面内存；浏览器持久设置保留地址/模型，不保存新密钥。旧明文记录只有安全写入和读回一致后才清除；失败保留可恢复旧值并提示重试，不降级为新明文写入。配置面板可独立清除个人密钥；备份导出排除尚未迁移的旧密钥。站主托管配置仍是服务端受限文件，与个人凭据迁移分开验收。原生测试仅使用唯一 `Huiyu/Test` 目标，不读取已有个人凭据；系统凭据库失败、升级与最终安装须另留真实 Windows 验收。
 
 - `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
-- `models:download-wd14`：默认从 ModelScope 下载本地 WD14 反推模型；显式 `--mirror` 切换 HF-mirror，其他可用参数先查帮助；
-- `models:download-h3 --models-root <ComfyUI模型目录>`：H3 可选模型下载入口；该操作下载大文件，不属于质量检查或普通安装的自动步骤。
+- `models:download-wd14 [--target-dir <可写目录>]`：默认从固定 HuggingFace 发布者版本下载 WD14 MOAT v2（ONNX 约 311 MiB 与配套 CSV）；`--modelscope` / `--mirror` 可显式选择镜像，但同样核对固定字节与 SHA-256；`--plan` 不下载；
+- `models:download-h3 --models-root <实际ComfyUI/models目录>`：下载当前工作流完整六文件（约 46.38 GB / 43.20 GiB，含 4/8-step LoRA），固定官方 revision 和 SHA-256；`--plan` 不下载。运行依赖与硬件见[模型开箱指南](guides/setup-and-models.md)，不属于质量检查或普通安装的自动步骤。
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 

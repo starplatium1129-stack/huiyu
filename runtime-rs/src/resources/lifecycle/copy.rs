@@ -6,7 +6,7 @@ use std::{
     io::{Read, Write},
     path::Path,
 };
-pub(super) fn entry(
+pub(in crate::resources) fn entry(
     op: &Operation,
     source_root: &Path,
     tree: &Path,

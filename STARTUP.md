@@ -1,11 +1,19 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。先启动网页与网关，再按需要连接生图、语音和聊天服务；缺少某个可选服务不影响浏览其他页面。硬件配置要求、公共开源底座直链与自训专属 LoRA 说明详见 [全功能开箱指南](docs/guides/setup-and-models.md)。可运行 `npm run wf -- models:check` 快速体检当前环境与模型就绪状态。以下启动入口按 2026-09-27 源码核对，不代表这台机器上的模型已经安装或验收。
+本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。以下入口按 2026-09-30 的 1.7.3 源码核对；公开发行、目标设备安装与模型效果以实际记录为准。
 
-## 从干净工作区启动
+## 新机器的桌面离线安装
 
-1. 安装符合 `package.json` 的 Node.js（最低 22.18，CI 使用的具体版本见 `.github/workflows/quality.yml`），在项目根目录执行 `npm ci`。
-2. 执行 `npm run build` 生成网页，再执行 `npm start` 编译服务端 TypeScript 并启动网关。默认访问 `http://127.0.0.1:3000`。
+准备匹配版本的桌面安装包、完整资源 ZIP、发布处的 ZIP SHA-256 及 `Install-OfflineResources.ps1`，另带微软 **VC++ v14 x64** 离线安装器、校验值和准备回执；WebView2 前置按离线指南补齐。新机用户先核对并手动安装 `vc_redist.x64.exe`，处理许可/UAC与可能的重启，再安装绘遇。安装后完全退出绘遇及其运行时，再执行离线资源导入脚本；成功后重启。素材导入使用已安装的 Rust 原生入口，不要求新机安装 Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+
+微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、VC++ 安装与 WD14 真实推理分别验收。
+
+AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的完整权重和可用上游环境，复制到新机，重配路径后做一次断网冷启动与真实任务。未取得私有 LoRA、声线或参考库时，把对应能力记录为未配置，不把默认样张当成新机已可生成的证据。
+
+## 源码开发或构建机启动
+
+1. 先联机准备符合 `package.json` 的 Node.js（最低 22.18，CI 版本见 `.github/workflows/quality.yml`）、Rust/Cargo 与 Windows 对应构建工具；在项目根目录执行 `npm ci`。完全离线的源码构建还需预先准备 npm/Cargo 依赖缓存与原生构建材料，Git 源码不包含这些环境。
+2. 执行 `npm run build` 生成网页和维护命令，再执行 `npm start`。当前产品入口经 `run-rust-runtime` 编译/启动 `runtime-rs`，默认访问 `http://127.0.0.1:3000`；旧 Node 网关已退出产品路径。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
 4. 数据聚合产物由现有构建流程补齐，不把生成的 `services/*.js` 或聚合 JSON 手工复制回 Git。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
 5. 在这台机器上执行 `npm run wf -- gate:full` 验证代码、数据契约和构建。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材再跑完整门禁，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
@@ -19,9 +27,11 @@
 | 角色语音 | `http://127.0.0.1:9880` / `TTS_HOST` | GPT-SoVITS 权重与参考音频；控制面板配置角色声线 |
 | 本地聊天 | `http://127.0.0.1:11434` / `OLLAMA_HOST` | Ollama 模型由 `OLLAMA_MODEL` 或页面选择 |
 
-模型文件名以 `server/anima-model-catalog.js`、`server/video-model-catalog.js` 为准，节点接线以 `routes/anima/workflows.js` 为准。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目另从 `loras/` 加载目录中对应的 v21 LoRA。Krea 2 的 checkpoint 与编码器不同，不能拿 Anima 文件改名顶替。网关 `/api/anima/status` 返回按当前模型目录核查的可用状态；文件存在仍不代表节点或实际出图通过。
+产品模型文件名以 `runtime-rs/src/images/catalog.json`、`runtime-rs/src/video/catalog.json` 为准，节点接线在相应 `workflow.rs` 中；目录源表保留在 `server/anima-model-catalog.ts`、`server/video-model-catalog.ts`。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目角色路径另需 v21 LoRA。新机公共起步可以明确选 Anima Aesthetic v1.1 的无 LoRA 路径。Krea 2 使用特定 Turbo FP8 与 Heretic 编码器，不能改名替换不同权重。`/api/anima/status` 的文件可用状态仍不代表节点或真实出图通过。
 
-AI 外部工作区默认是项目同级 `AI/`，迁移时设置 `AI_WORKSPACE_ROOT`。参考库可用 `AICS_CHARACTER_REF_ROOT` 明确指定，样张可用 `SCENE_SHOWCASE_DIR` 指定；这些大型资产不在 Git 中，需从自己的资产副本恢复。可选 H3 模型有 `npm run wf -- models:download-h3 --models-root <ComfyUI模型目录>` 入口，使用前检查磁盘与下载量，不随普通安装自动运行。
+源码服务的 AI 外部工作区默认是应用同级 `AI/`，启动前可设置 `AI_WORKSPACE_ROOT`。**桌面端在 Companion「AI 工作区」设置中选新机实际目录**，该设置会重启网关，并用于 `ComfyUI/models/` 权重检查。WD14 可用继承的 `AICS_WD14_MODEL_DIR` 指向新机可写目录，翻译使用 `AICS_TRANSLATION_MODEL` / `TRANSLATION_PYTHON`。源码维护环境可运行 `npm run wf -- models:check --json`（默认只读取文件/硬件，`--verify-hashes` 另查已知权重 SHA-256）。体检的 `COMFYUI_MODELS_ROOT` 不改变网关模型路径。
+
+公共样张和图片按离线资源包安装；未公开的参考库可另用 `AICS_CHARACTER_REF_ROOT` 恢复，开发维护的外置样张可用 `SCENE_SHOWCASE_DIR` 指定。它们都不是 Git 克隆自动取得的媒体。可选 H3 下载入口为 `npm run wf -- models:download-h3 --models-root <ComfyUI模型目录>`，完整六文件约 46.38 GB，并需对应上游环境；不随普通安装自动下载。
 
 ## 运行配置与凭据恢复
 
@@ -29,7 +39,7 @@ AI 外部工作区默认是项目同级 `AI/`，迁移时设置 `AI_WORKSPACE_RO
 
 Windows 的 npm/npx 通过已安装的 CLI JavaScript 入口执行，不启用通用 shell，也不自动安装依赖。提示 `TOOL_UNAVAILABLE` 时检查 Node/npm 安装；提示 `TRUSTED_EXECUTION_REQUIRED` 时先确认确实需要上述执行权限，不能靠修改模型参数解决。
 
-- 服务地址和语音配置保存在 `runtime/config.json`；环境变量优先于保存配置，具体映射见 `server/config.js`。上游仅支持当前电脑的 HTTP loopback 地址。
+- 服务地址和语音配置保存在实际 `AICS_RUNTIME_ROOT/config.json`（源码默认 `runtime/config.json`）；环境变量优先于保存配置，映射见 `runtime-rs/src/config.rs` 和 `runtime-rs/src/voice/config.rs`。上游仅支持当前电脑的 HTTP loopback 地址。
 - 分享令牌由网关自动生成并保存于 `runtime/state/gateway_token`，也可由 `TOKEN` 环境变量覆盖。记录所在位置即可，不把令牌正文写入文档、提交或截图。
 - 网关、控制面板与隧道日志位于 `runtime/logs/`。迁移时保留配置和必要凭据，PID 文件属于旧进程，不用作新机服务已启动的依据。
 - 本机使用不需要分享令牌。分享链接首次认证后会换为 HttpOnly cookie 并清除地址里的 token；停止分享后再进行配置迁移。排错时可用 `DISABLE_TUNNEL=1` 启动仅本机网关。
@@ -64,7 +74,7 @@ Windows 的 npm/npx 通过已安装的 CLI JavaScript 入口执行，不启用�
 6. 需要分享时开启公网分享通道，点击 **启动并生成分享链接**，再复制带 Token 的链接给朋友。
 7. 使用结束后在控制面板「本机服务」区按需停止各服务（网站网关始终在运行，只能停止公网分享）。ComfyUI 与 reForge 无论由面板启动还是手动启动，只要监听的是面板配置的端口、且命令行含 `main.py` / `launch.py`，「停止」都能关闭；占用同一端口的无关进程不会被误杀。
 
-首次运行且缺少依赖时，`control.bat` 会自动执行 `npm install`；缺少网页构建时也会执行 `npm run build`。启动器打开 `http://127.0.0.1:3000/control`，创作网站在同一网关的根路径。手动启动可通过 `PORT` 设置网关端口。
+源码启动器 `control.bat` 在缺依赖时会执行 `npm ci`，缺网页时执行 `npm run build`，之后启动 Rust 网关；这些准备步骤可能需要网络和构建工具。普通桌面安装版直接用绘遇程序。控制室在 `http://127.0.0.1:3000/control`，创作网站在同一网关根路径，手动启动可用 `PORT` 改端口。
 
 ### 本地使用和朋友分享的区别
 
@@ -111,7 +121,7 @@ Tauri 2 是桌面壳。开发执行 `npm run dev:tauri`，构建 NSIS 执行 `np
 ```powershell
 $env:OLLAMA_HOST = 'http://127.0.0.1:11434'
 $env:OLLAMA_MODEL = '你的模型名'
-node server.js
+npm run start:run
 ```
 
 网页端聊天记录保存在当前浏览器；桌面 workspace 激活后，聊天、设置和草稿保存到本机私库，由 runtime 统一读写。运行时断开不会改写旧浏览器库。关闭 Ollama 不会影响场景浏览、Prompt 或 SD 出图；角色房间会显示离线状态。开启“回复后自动配音”时，中文回复会先经过现有本地翻译链路，再调用 GPT-SoVITS 生成日语声音。
@@ -220,19 +230,19 @@ C:\Program Files (x86)\cloudflared\cloudflared.exe
 通常不需要手动运行。需要查看完整日志时，可以在项目目录执行：
 
 ```powershell
-npm install
+npm ci
 npm run build
 $env:SD_HOST = 'http://127.0.0.1:7860'
 npm run start:run
 ```
 
-`npm install` 的 postinstall 会构建运行时；`npm run build` 再构建网页。`build:runtime` 覆盖服务、网关、路由、维护/测试及独立浏览器脚本，生成文件不入库。`npm start` 经 prestart 重新构建运行时；`control.bat`/`start.ps1` 会补齐缺失产物。修改 TypeScript 源码后需要重新构建，持续开发可使用 `npm run dev:server`。
+`npm ci` 的 postinstall 构建 TypeScript 维护命令，`npm run build` 构建网页；这些产物不入 Git。`npm run start:run` / `npm start` 使用 Rust/Cargo 产品入口，需要前述构建工具与原生库。`build:runtime` 构建的是维护、测试和保留对照模块，不能把它的成功当作 Rust 二进制已经构建或启动。持续开发可使用 `npm run dev:server`。
 
 网关默认不开公网分享；`AUTO_TUNNEL=1` 或已保存的自动分享偏好才会在启动时打开。需要明确禁止隧道时：
 
 ```powershell
 $env:DISABLE_TUNNEL = '1'
-node server.js
+npm run start:run
 ```
 
 在当前终端按 `Ctrl+C` 即可停止手动启动的进程。

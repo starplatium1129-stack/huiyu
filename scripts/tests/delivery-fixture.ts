@@ -10,7 +10,7 @@ const { report }: typeof import('../maintenance/audit-delivery') = require('../m
 
 function temp(t: any) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-tracking-')));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'aics-delivery-tracking-'));
   return root;
 }
 function fixture(t: any, gitEnabled: any = true) {
@@ -27,7 +27,7 @@ function fixture(t: any, gitEnabled: any = true) {
   write('src/main.js', 'module.exports = 1;\n'); write('src/remove.js', 'module.exports = 2;\n');
   write('dist/index.html', '<html>fixture</html>'); write('.gitignore', '/runtime/\n/src/ignored*\n');
   if (gitEnabled) {
-    git('init', '--template=');
+    git('-c', 'core.symlinks=false', 'init', '--template=');
     // Handoff/evidence/finalize tests snapshot every .git byte. Keep automatic
     // maintenance from adding/removing locks independently of the command under test.
     git('config', '--local', 'maintenance.auto', 'false');

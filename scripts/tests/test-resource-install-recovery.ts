@@ -105,8 +105,15 @@ createResourceInstaller({...config, access:{isLocalStudioHost:()=>true,isAuthori
     await f.installer().install({ releaseId: 'base' });
     const root = f.installer().root;
     fs.renameSync(path.join(root, 'locks'), path.join(root, 'saved-locks'));
-    fs.symlinkSync(path.join(f.base, 'missing-target'), path.join(root, 'locks'), 'junction');
-    await assert.rejects(f.installer().status(), code('UNSAFE_LINK'));
+    const missing = path.join(f.base, 'missing-target');
+    fs.symlinkSync(missing, path.join(root, 'locks'), 'junction');
+    try {
+      await assert.rejects(f.installer().status(), code('UNSAFE_LINK'));
+    } finally {
+      // Keep the target absent during the assertion. Windows cannot unlink the
+      // dangling junction during cleanup, so restore only this owned empty target.
+      fs.mkdirSync(missing);
+    }
   });
 
   test('junction injected into interrupted staging cannot write outside resource storage', async t => {

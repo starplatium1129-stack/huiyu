@@ -35,7 +35,7 @@ function approve(f: any, name: any, kind: any, targetManifest: any, sourceId: an
 }
 function fixture(t: any, { large = false }: any = {}) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-resource-install-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'aics-resource-install-'));
   const source = path.join(base, 'source');
   const user = path.join(base, 'user');
   const program = path.join(base, 'program');

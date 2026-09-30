@@ -49,7 +49,7 @@ function assertNoAccessOutside(calls: any, rootReal: any) {
 
 function buildFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-manifest-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(base, 'resource-manifest-'));
   const root = path.join(base, 'root');
   const outside = path.join(base, 'outside');
   fs.mkdirSync(path.join(root, 'assets/dir'), { recursive: true });

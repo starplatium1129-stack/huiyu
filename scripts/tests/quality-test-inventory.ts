@@ -121,6 +121,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-resource-pack-verify.js', // G15 增量候选包兼容核验：基线身份/removed 逐项/重建目标/候选字节，零写入与旧资产零访问
     'test-resource-install.js',
     'test-resource-packaging.js',
+    'test-offline-release.js',
+    'test-model-downloads.js',
     'test-resource-install-recovery.js',
     'test-resource-install-edge.js',
     'test-resource-install-resolver.js',

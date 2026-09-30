@@ -63,7 +63,7 @@ function fixture(files: Record<string, string>, check: (report: Report, root: st
     check(inspectRefactorBoundaries(root), root);
   } finally {
     // Delete only the exact temporary root created above; never a repository path.
-    fs.rmSync(root, { recursive: true, force: true });
+    (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'huiyu-refactor-boundaries-');
   }
 }
 
@@ -409,7 +409,8 @@ function gitFixture(check: (root: string, baseCommit: string,
     return git(['rev-parse', 'HEAD']);
   };
   try {
-    git(['init', '--quiet', '--template=']);
+    // Do not leave Git's dangling symlink probe in this disposable Windows repo.
+    git(['-c', 'core.symlinks=false', 'init', '--quiet', '--template=']);
     const baseCommit = commit('pre-R0 fixture baseline');
     check(root, baseCommit, (entries, message) => {
       const target = path.join(root, REFACTOR_ALLOWLIST_PATH);
@@ -422,7 +423,7 @@ function gitFixture(check: (root: string, baseCommit: string,
   } finally {
     assert.equal(path.dirname(fs.realpathSync(root)), temporaryParent);
     assert.ok(path.basename(root).startsWith('huiyu-refactor-git-'));
-    fs.rmSync(root, { recursive: true, force: true });
+    (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'huiyu-refactor-git-');
   }
 }
 

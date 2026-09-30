@@ -1,7 +1,7 @@
 use super::*;
 use std::{path::PathBuf, sync::LazyLock};
 static SHOWCASE: LazyLock<regex::Regex> = LazyLock::new(|| {
-    regex::Regex::new(r"(?i)^/(?:manifest\.json|00-cover\.jpg|README\.txt|home/(?:nene|natsume)\.jpg|(?:images|thumbs)/(?:sc\d{3}|artist_[a-z0-9_-]+|pc_[a-z0-9_-]+|lora_[a-z0-9_-]+)\.(?:jpg|png|webp)|sheets/[a-z0-9_-]+/[a-z0-9_.-]+\.jpg)$").unwrap()
+    regex::Regex::new(r"(?i)^/(?:manifest\.json|00-cover\.jpg|README\.txt|home/(?:nene|natsume)\.jpg|(?:images|thumbs)/(?:sc\d{3,}|artist_[a-z0-9_-]+|pc_[a-z0-9_-]+|lora_[a-z0-9_-]+)\.(?:jpg|png|webp)|sheets/[a-z0-9_-]+/[a-z0-9_.-]+\.jpg)$").unwrap()
 });
 
 pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)> {
