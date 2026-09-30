@@ -60,7 +60,7 @@ const {
   brushSize,
   cursorVisible,
   brushCursorStyle,
-  maskHistory,
+  maskUndoCount,
   clearMask,
   undoMask,
   handleCanvasWheel,
@@ -314,7 +314,7 @@ async function handleStart() {
                   <button
                     type="button"
                     class="btn btn-ghost btn-xs"
-                    :disabled="maskHistory.length === 0"
+                    :disabled="maskUndoCount === 0"
                     @click="undoMask"
                   >
                     <ArchiveIcon name="refresh" />

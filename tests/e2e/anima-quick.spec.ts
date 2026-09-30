@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
+import sharp from 'sharp'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
-import { expectStudioSelectValue } from './helpers/studioSelect'
 
 async function chooseCharacter(page: Page, name: string) {
   if (new URL(page.url()).pathname === '/prompt-builder') {
@@ -503,7 +503,7 @@ test('popular creator · scene library page deep-links character and blueprint i
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })
 
-test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, adjusts threshold and presets', async ({ page }) => {
+test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, adjusts threshold and presets', async ({ page }, testInfo) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
 
   // 切换到专家模式并选择 Anima 引擎
@@ -558,6 +558,45 @@ test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, ad
   // 切换回手绘模式
   await page.getByRole('button', { name: '手绘精确遮罩', exact: true }).click()
   await expect(page.locator('#brushSizeInput')).toBeVisible()
+
+  const canvas = modal.locator('canvas.mask-canvas')
+  await expect.poll(() => canvas.evaluate((element: HTMLCanvasElement) => [element.width, element.height])).toEqual([512, 512])
+  const undo = modal.getByRole('button', { name: /撤销/ })
+  const alphaCount = () => canvas.evaluate((element: HTMLCanvasElement) => {
+    const data = element.getContext('2d')!.getImageData(0, 0, element.width, element.height).data
+    let count = 0
+    for (let i = 3; i < data.length; i += 4) if (data[i]) count++
+    return count
+  })
+  await expect(undo).toBeDisabled()
+  const box = (await canvas.boundingBox())!
+  await page.mouse.move(box.x + box.width * .3, box.y + box.height * .3)
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * .7, box.y + box.height * .7, { steps: 8 })
+  await page.mouse.up()
+  expect(await alphaCount()).toBeGreaterThan(0)
+  const paintedPixels = await alphaCount()
+  const coverage = await canvas.evaluate((element: HTMLCanvasElement) => [.3, .5, .7].map(f => element.getContext('2d')!.getImageData(Math.round(element.width * f), Math.round(element.height * f), 1, 1).data[3]))
+  coverage.forEach(alpha => expect(alpha).toBeGreaterThan(0))
+  await expect(undo).toBeEnabled()
+  await page.mouse.move(box.x + box.width + 10, box.y)
+  for (const theme of ['dark', 'light']) {
+    await page.evaluate(async theme => {
+      document.documentElement.dataset.theme = theme
+      document.documentElement.style.colorScheme = theme
+      await new Promise(requestAnimationFrame)
+      await new Promise(requestAnimationFrame)
+    }, theme)
+    await expect.poll(async () => {
+      const pixels = await sharp(await canvas.screenshot({ path: testInfo.outputPath(`mask-${theme}-canvas.png`), animations: 'disabled' })).resize(10, 10).removeAlpha().raw().toBuffer()
+      return pixels[(5 * 10 + 5) * 3] > 100
+    }).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`mask-${theme}.png`), animations: 'disabled' })
+    expect(await alphaCount()).toBe(paintedPixels)
+  }
+  await page.keyboard.press('Control+z')
+  expect(await alphaCount()).toBe(0)
+  await expect(undo).toBeDisabled()
 
   // 关闭弹窗
   await page.locator('.modal-header .btn-close').click()
