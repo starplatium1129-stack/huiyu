@@ -114,11 +114,9 @@ async fn chat_reset_clears_all_chat_drafts_and_preserves_other_registered_drafts
             6,
             "Preserve the global and own video/model/queue drafts: {window}"
         );
-        assert!(
-            records.iter().all(|row| row["key"] == model
-                || row["key"] == "aics_video_draft_v1"
-                || row["key"] == "aics_sd_pending_queue_v1")
-        );
+        assert!(records.iter().all(|row| row["key"] == model
+            || row["key"] == "aics_video_draft_v1"
+            || row["key"] == "aics_sd_pending_queue_v1"));
         assert!(records.iter().any(|row| row["value"] == "model-0"));
         assert!(records.iter().any(|row| row["value"] == "queue-0"));
     }
