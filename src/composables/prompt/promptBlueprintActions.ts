@@ -132,6 +132,7 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }
   pb.setColorMood(selection(draft.colorMood, COLOR_MOOD_IDS))
   pb.manualTags = new Set(stringList(draft.manualTags))
+  pb.referenceInput = draft.referenceInput ? { tags: [...draft.referenceInput.tags] } : null
   pb.setArtistStyleIds(draft.artistStyleIds || [])
   if (draft.projectId !== undefined) pb.projectId = draft.projectId
 

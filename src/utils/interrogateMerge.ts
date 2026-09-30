@@ -150,6 +150,8 @@ export interface InterrogateMergeInput {
   sceneTokens?: ReadonlyArray<string>
   shot?: string | null
   replaceOutfit?: boolean
+  /** Explicit user edits take precedence over newly imported reference tags. */
+  protectedManualTags?: ReadonlySet<string>
 }
 
 export interface InterrogateMergeResult {
@@ -193,7 +195,8 @@ function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
 
 /** 三重去重 + 身份域与全维度冲突消解后的可叠加词条（参考图姿势与服装优先还原）。 */
 export function mergeInterrogatedTags(input: InterrogateMergeInput): InterrogateMergeResult {
-  const fixedTokens = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? [])])
+  const protectedManual = toKeySet([...(input.protectedManualTags ?? [])])
+  const fixedTokens = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? []), ...protectedManual])
   const occupied = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? []), ...input.manualTags])
   const seen = new Set(occupied)
   const accepted: string[] = [], duplicates: string[] = [], filtered: string[] = [], outfitReplacement: string[] = []
@@ -266,7 +269,8 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
     }
 
     // ── 赤脚与穿鞋：参考图穿戴优先，清理 manualTags 中的冲突旧词 ──
-    if (BAREFOOT_TOKENS.has(key) && hasRemainingConflict(token => SHOE_TOKENS.has(token)) && input.replaceOutfit === false) {
+    if (BAREFOOT_TOKENS.has(key) && hasRemainingConflict(token => SHOE_TOKENS.has(token))
+      && (input.replaceOutfit === false || [...protectedManual].some(token => SHOE_TOKENS.has(token)))) {
       conflict(key, '穿戴状态', '赤脚与当前穿鞋状态冲突')
       continue
     }
@@ -306,6 +310,12 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       const foreign = prior.find(value => value?.group !== hit.group)
 
       if (foreign) {
+        const protectedConflict = [...protectedManual].map(mutualGroupWithCategory)
+          .some(value => value?.category === hit.category && value.group !== hit.group)
+        if (protectedConflict) {
+          conflict(key, hit.label, `${hit.label}与手动设置冲突，已保留手动词条`)
+          continue
+        }
         if (hit.category === 'outfit') {
           if (input.replaceOutfit !== false) {
             outfitReplacement.push(key)

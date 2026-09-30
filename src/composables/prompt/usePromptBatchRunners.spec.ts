@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { apiClient, ApiClientError } from '@/api/client'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from './usePromptBatchRunners'
 import { applyInterrogateResult } from './applyInterrogateResult'
+import type { DraftOutfitOverride, DraftReferenceInput } from '@/utils/promptBuilderPersistence'
 
 function setup() {
   const character = { id: 'audit', displayName: '测试角色', aliases: ['audit_(series)'], identityProse: 'An adult woman with black hair and blue eyes', identityTokens: ['1girl', 'solo', 'black_hair', 'blue_eyes'], exactTokens: ['audit_(series)'], exactPrefixes: [], adultEligibility: 'adult', outfits: [
@@ -10,7 +11,9 @@ function setup() {
     { id: 'coat', name: '外套', tokens: ['coat'], prose: 'a long coat' },
   ] }
   const blueprint = { id: 'one', title: '雨夜', characterId: 'audit', outfitId: 'coat', promptProse: 'An adult woman sits beside a rainy cafe window', promptTokens: ['night', 'rain', 'sitting', 'cafe'], negativeTokens: ['watermark'], recommendedSize: '1216x832', adult: false, camera: 'medium shot', location: 'cafe', lighting: 'warm', sceneTags: [] }
-  const pb = { subject: { kind: 'popular', characterId: 'audit', outfitId: 'school', blueprintId: null }, char: 'nene', isPopular: true, selections: { shot: null, lighting: null, composition: null }, sdParams: { seedLock: true, seed: 42 }, manualTags: new Set<string>(), artistStyleIds: [], tags: [], outfitOverride: null, showMatureScenes: true, story: '', visualDescription: '', emotionPrompt: '', flash: vi.fn(), commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), popularCharacters: [character], sceneBlueprints: [blueprint], setOutfitOverride: vi.fn() }
+  const pb = { subject: { kind: 'popular', characterId: 'audit', outfitId: 'school', blueprintId: null }, char: 'nene', isPopular: true, selections: { shot: null, lighting: null, composition: null }, sdParams: { seedLock: true, seed: 42 }, manualTags: new Set<string>(), artistStyleIds: [], tags: [], outfitOverride: null as DraftOutfitOverride | null, referenceInput: null as DraftReferenceInput | null, tagDictionary: { canonicalize: (tag: string) => tag }, showMatureScenes: true, story: '', visualDescription: '', emotionPrompt: '', flash: vi.fn(), commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), popularCharacters: [character], sceneBlueprints: [blueprint], setOutfitOverride: vi.fn(), clearOutfitOverride: vi.fn() }
+  pb.setOutfitOverride.mockImplementation((tokens: string[], replaced: string | null) => { pb.outfitOverride = { tokens: [...tokens], replaced } })
+  pb.clearOutfitOverride.mockImplementation(() => { pb.outfitOverride = null })
   const state = ref({ online: true, family: 'anima', models: [], modelId: 'test-model', width: 832, height: 1216, loraId: 'wrong-studio-lora', cfg: 4.5, steps: 30, sampler: 'res_multistep', scheduler: 'simple' })
   const deps = { pb, animaState: state, sd: {}, sdSize: ref('832x1216'), negativePrompt: ref('low quality'), loraSpecs: ref([]), modelProfile: ref(null), runJob: vi.fn(), historyGenerationFields: () => ({}), sceneBlueprints: () => [blueprint], popularCharacters: () => [character] } as unknown as PromptBatchRunnersDeps
   const runner = usePromptBatchRunners(deps)
@@ -67,11 +70,31 @@ it('unauthorized adult blueprints never reach the generation API', async () => {
 
 it('applying repeated tags is idempotent and compatible outfit tags remain together', async () => {
   const { deps, pb } = setup()
+  // This uniform came from an earlier image; it is not a user-owned choice.
   pb.manualTags.add('school_uniform')
-  await applyInterrogateResult(deps.pb, { tags: ['blush', 'blush', 'swimsuit', 'bikini'], characterTags: ['audit_(series)'] })
+  pb.referenceInput = { tags: ['school_uniform'] }
+  const result = { tags: ['blush', 'blush', 'swimsuit', 'bikini'], characterTags: ['audit_(series)'] }
+  await applyInterrogateResult(deps.pb, result)
   expect([...pb.manualTags]).toEqual(['blush'])
-  expect(pb.setOutfitOverride).toHaveBeenCalledWith(['swimsuit', 'bikini'], '校服/水手服')
+  expect(pb.setOutfitOverride).toHaveBeenCalledWith(['swimsuit', 'bikini'], null)
+  expect(pb.referenceInput).toEqual({ tags: ['blush'] })
+  const outfit = structuredClone(pb.outfitOverride)
+  await applyInterrogateResult(deps.pb, result)
+  expect(pb.outfitOverride).toEqual(outfit)
+  expect([...pb.manualTags]).toEqual(['blush'])
+  expect(pb.referenceInput).toEqual({ tags: ['blush'] })
   expect(pb.flash.mock.calls.at(-1)?.[0]).not.toContain('识别到其他角色')
+})
+
+it('preserves a genuine manual outfit when new reference clothes conflict with it', async () => {
+  const { deps, pb } = setup()
+  pb.manualTags.add('school_uniform')
+  await applyInterrogateResult(deps.pb, { tags: ['blush', 'kimono', 'yukata'] })
+  expect([...pb.manualTags]).toEqual(['school_uniform', 'blush'])
+  expect(pb.referenceInput).toEqual({ tags: ['blush'] })
+  expect(pb.outfitOverride).toBeNull()
+  expect(pb.setOutfitOverride).not.toHaveBeenCalled()
+  expect(pb.flash.mock.calls.at(-1)?.[0]).toContain('保留')
 })
 
 

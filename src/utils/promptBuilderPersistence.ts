@@ -35,6 +35,11 @@ export interface DraftOutfitOverride {
   replaced: string | null
 }
 
+/** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */
+export interface DraftReferenceInput {
+  tags: string[]
+}
+
 export interface PromptBuilderDraft {
   updatedAt: number
   story?: string
@@ -46,6 +51,7 @@ export interface PromptBuilderDraft {
   colorMood?: string | null
   manualTags?: string[]
   outfitOverride?: DraftOutfitOverride | null
+  referenceInput?: DraftReferenceInput | null
   artistStyleIds?: string[]
   sceneBaseStory?: string
   directorMode?: 'basic' | 'pro'
@@ -110,6 +116,12 @@ function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
   if (!isRecord(value)) return null
   const tokens = [...new Set(stringList(value.tokens).map(token => token.trim()).filter(Boolean))]
   return tokens.length ? { tokens, replaced: nullableString(value.replaced) ?? null } : null
+}
+
+function parseReferenceInput(value: unknown): DraftReferenceInput | null {
+  if (!isRecord(value)) return null
+  const tags = [...new Set(stringList(value.tags).map(tag => tag.trim()).filter(Boolean))]
+  return tags.length ? { tags } : null
 }
 
 export function isSDParamKey(key: string): key is keyof SDParams {
@@ -179,6 +191,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     colorMood: nullableString(value.colorMood),
     manualTags: stringList(value.manualTags),
     outfitOverride: value.subject === 'popular' ? parseOutfitOverride(value.outfitOverride) : null,
+    referenceInput: parseReferenceInput(value.referenceInput),
     artistStyleIds: normalizeArtistStyleIds(value.artistStyleIds),
     sceneBaseStory: stringValue(value.sceneBaseStory),
     directorMode,

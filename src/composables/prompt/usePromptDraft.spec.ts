@@ -131,3 +131,35 @@ it('validates and detaches persisted outfit arrays at the storage boundary', () 
   raw.outfitOverride.tokens.push('yukata')
   expect(draft.outfitOverride?.tokens).toEqual(['kimono'])
 })
+
+it('detaches and restores reference ownership, and clears it when restoring an older draft', async () => {
+  const pb = usePromptBuilderStore()
+  pb.setPopularSubject('fixture-target', 'default')
+  pb.dataReady = true
+  pb.manualTags = new Set(['sitting', 'park', 'paper_lantern'])
+  pb.referenceInput = { tags: ['sitting', 'park'] }
+  const snapshot = pb.snapshotDraft()
+  snapshot.referenceInput!.tags.push('mutated_snapshot')
+  expect(pb.referenceInput).toEqual({ tags: ['sitting', 'park'] })
+  await nextTick(); vi.advanceTimersByTime(280)
+  pb.clearReferenceInput()
+  expect(pb.restoreDraft()).toBe(true)
+  expect(pb.referenceInput).toEqual({ tags: ['sitting', 'park'] })
+  pb.clearReferenceInput()
+  expect(pb.manualTags).toEqual(new Set(['paper_lantern']))
+  localStorage.setItem('aics_pb_last_draft', JSON.stringify({ updatedAt: 1, story: 'Older draft', manualTags: ['park'] }))
+  pb.referenceInput = { tags: ['park'] }
+  expect(pb.restoreDraft()).toBe(true)
+  expect(pb.referenceInput).toBeNull()
+  expect(pb.manualTags).toEqual(new Set(['park']))
+  pb.$dispose()
+})
+
+it('validates and detaches persisted source tags without inferring provenance for legacy manual tags', () => {
+  const raw = { updatedAt: 1, story: 'Fixture', manualTags: ['sitting'], referenceInput: { tags: [' sitting ', 7, '', 'sitting'] } }
+  const draft = parsePromptBuilderDraft(raw)!
+  expect(draft.referenceInput).toEqual({ tags: ['sitting'] })
+  raw.referenceInput.tags.push('park')
+  expect(draft.referenceInput?.tags).toEqual(['sitting'])
+  expect(parsePromptBuilderDraft({ updatedAt: 1, manualTags: ['sitting'] })?.referenceInput).toBeNull()
+})
