@@ -75,3 +75,77 @@ async fn close_cancels_snapshot_verification_before_waiting_for_state_lock() {
     assert_eq!(watch.take(&path), Reads::default());
     assert!(!fixture.shutdown.is_cancelled());
 }
+
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn close_during_start_refresh_rejects_admission_without_task_writes() {
+    let fixture = Fixture::new();
+    let task_file = fixture.ctx.store.join("gateway/task.json");
+    assert!(!task_file.exists());
+    let current_file = fixture.ctx.store.join("current.json");
+    let before = std::fs::read(&current_file).unwrap();
+    let path = fixture.root.join(&fixture.entries[2].path);
+    let (pause, entered) = Pause::new(&path);
+    let host = Arc::new(HostAuthority::new(None, None, None));
+    let admission = host.admit_owned().unwrap();
+    let owner = fixture.service.clone();
+    let starting = tokio::task::spawn_blocking(move || {
+        owner.start("import", Some("neutral"), admission)
+    });
+    tokio::time::timeout(Duration::from_secs(2), entered)
+        .await
+        .unwrap()
+        .unwrap();
+    let owner = fixture.service.clone();
+    let runtime = tokio::runtime::Handle::current();
+    let closing = tokio::task::spawn_blocking(move || runtime.block_on(owner.close()));
+    tokio::time::timeout(Duration::from_secs(2), fixture.service.read_cancel.cancelled())
+        .await
+        .unwrap();
+    drop(pause);
+    let result = starting.await.unwrap();
+    closing.await.unwrap();
+    assert_eq!(result.unwrap_err().code, "ACCESS_DENIED");
+    assert!(!task_file.exists());
+    assert_eq!(std::fs::read(&current_file).unwrap(), before);
+    assert_eq!(fixture.service.queue_status()["active"], 0);
+    assert!(!fixture.shutdown.is_cancelled());
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn close_waits_for_already_admitted_resource_worker() {
+    let fixture = Fixture::new();
+    // The source manifest is read only by the admitted import, not refresh.
+    let source = PathBuf::from(fixture.ctx.policy["sources"]["source"]["root"].as_str().unwrap());
+    let (pause, entered) = Pause::new(&source.join("neutral/manifest.json"));
+    let host = Arc::new(HostAuthority::new(None, None, None));
+    let admission = host.admit_owned().unwrap();
+    let owner = fixture.service.clone();
+    let task = tokio::task::spawn_blocking(move || {
+        owner.start("import", Some("neutral"), admission)
+    })
+    .await
+    .unwrap()
+    .unwrap();
+    tokio::time::timeout(Duration::from_secs(2), entered)
+        .await
+        .unwrap()
+        .unwrap();
+    let closing = fixture.service.close();
+    tokio::pin!(closing);
+    // Poll to the tracker wait rather than guessing with a fixed sleep.
+    assert!(futures_util::poll!(closing.as_mut()).is_pending());
+    assert!(fixture.service.read_cancel.is_cancelled());
+    assert_eq!(fixture.service.queue_status()["active"], 1);
+    drop(pause);
+    tokio::time::timeout(Duration::from_secs(2), closing)
+        .await
+        .unwrap();
+    assert_eq!(fixture.service.queue_status()["active"], 0);
+    let saved = fs::json(&fixture.ctx.store.join("gateway/task.json"), false, false)
+        .unwrap()
+        .unwrap();
+    assert_eq!(saved["id"], task["id"]);
+    assert_eq!(saved["state"], "cancelled");
+    assert!(!fixture.shutdown.is_cancelled());
+}

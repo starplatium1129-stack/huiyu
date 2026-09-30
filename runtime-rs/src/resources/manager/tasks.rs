@@ -66,6 +66,9 @@ pub(super) fn start(
         ));
     }
     let mut data = service.data.lock().unwrap();
+    if service.closed.load(Ordering::Acquire) {
+        return Err(Error::new("ACCESS_DENIED", "Service closed"));
+    }
     if service.active.load(Ordering::Acquire) {
         return Err(Error::new("BUSY", "Resource task already active"));
     }
@@ -101,6 +104,11 @@ pub(super) fn start(
     if matches!(action, "import" | "download") || resume.is_some() {
         policy::release(&ctx, release.as_deref().unwrap_or(""))?;
     }
+    // Admission commits after read-only checks. Close can signal while refresh
+    // holds the lock; reject before creating a lease or writing task state.
+    if service.closed.load(Ordering::Acquire) {
+        return Err(Error::new("ACCESS_DENIED", "Service closed"));
+    }
     ctx.initialize()?;
     let gate = lease::acquire(&ctx, "gateway", 0)?;
     fs::ensure(&ctx.store.join("gateway"))?;
@@ -112,7 +120,6 @@ pub(super) fn start(
     data.snapshot = None;
     data.cancel = Some(cancel.clone());
     service.active.store(true, Ordering::Release);
-    drop(data);
     let owner = service.clone();
     let weak = Arc::downgrade(service);
     let progress_id = id.clone();
@@ -194,5 +201,8 @@ pub(super) fn start(
         })
         .await;
     });
+    // Keep admission and worker registration under the same lock close uses
+    // to cancel the admitted task, so close cannot finish before registration.
+    drop(data);
     Ok(task)
 }
