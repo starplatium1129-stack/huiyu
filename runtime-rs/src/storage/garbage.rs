@@ -1,4 +1,6 @@
 use super::*;
+#[cfg(test)]
+mod tests;
 use canonical::digest;
 use std::{
     collections::{HashMap, HashSet},
@@ -57,6 +59,10 @@ fn clean_staging(c: &Context) -> Result<()> {
     if !staging.exists() {
         return Ok(());
     }
+    let mut entries = fs::read_dir(&staging)?;
+    let Some(first) = entries.next().transpose()? else {
+        return Ok(());
+    };
     let mut completed =
         c.db.prepare("SELECT op_key FROM operations WHERE state IN ('committed','aborted')")?
             .query_map([], |r| Ok((r.get::<_, String>(0)?, None::<String>)))?
@@ -76,7 +82,7 @@ fn clean_staging(c: &Context) -> Result<()> {
         );
     }
     let leased=c.db.prepare("SELECT id FROM leases UNION SELECT operation_key FROM leases WHERE operation_key IS NOT NULL")?.query_map([],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<HashSet<_>>>()?;
-    for item in fs::read_dir(&staging)? {
+    for item in std::iter::once(Ok(first)).chain(entries) {
         c.check_cancel()?;
         let item = item?;
         let key = item.file_name().to_string_lossy().into_owned();

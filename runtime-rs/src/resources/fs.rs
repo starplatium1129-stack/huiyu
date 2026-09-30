@@ -182,6 +182,8 @@ pub(super) fn bytes(path: &Path, max: u64, hardlinks: bool) -> Result<Vec<u8>> {
     if bytes.len() as u64 > max {
         return Err(Error::new("METADATA_INVALID", "File exceeds limit"));
     }
+    #[cfg(test)]
+    super::tests::overlay::observe(path, bytes.len() as u64, true);
     Ok(bytes)
 }
 pub(super) fn json(path: &Path, optional: bool, hardlinks: bool) -> Result<Option<Value>> {
@@ -260,6 +262,26 @@ pub(super) fn file_matches(
     entry: &super::manifest::Entry,
     cancel: &tokio_util::sync::CancellationToken,
 ) -> Result<bool> {
+    read_verified(path, entry, cancel, None)
+}
+pub(super) fn verified_bytes(
+    path: &Path,
+    entry: &super::manifest::Entry,
+    cancel: &tokio_util::sync::CancellationToken,
+) -> Result<Vec<u8>> {
+    let mut bytes = Vec::new();
+    if !read_verified(path, entry, cancel, Some(&mut bytes))? {
+        return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
+    }
+    Ok(bytes)
+}
+fn read_verified(
+    path: &Path,
+    entry: &super::manifest::Entry,
+    cancel: &tokio_util::sync::CancellationToken,
+    mut output: Option<&mut Vec<u8>>,
+) -> Result<bool> {
+    super::config::cancelled(cancel)?;
     let Some(stat) = safe(path, true, false)? else {
         return Ok(false);
     };
@@ -285,6 +307,14 @@ pub(super) fn file_matches(
             return Ok(false);
         }
         hash.update(&buffer[..count]);
+        if let Some(bytes) = &mut output {
+            bytes.extend_from_slice(&buffer[..count]);
+        }
+        #[cfg(test)]
+        super::tests::overlay::checkpoint(path, total);
     }
+    super::config::cancelled(cancel)?;
+    #[cfg(test)]
+    super::tests::overlay::observe(path, total, output.is_some());
     Ok(total == entry.bytes && hex::encode(hash.finalize()) == entry.sha256)
 }

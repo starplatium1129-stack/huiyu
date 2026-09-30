@@ -283,6 +283,8 @@ pub(super) fn open(
     // receive the reverse lookup used by artwork deletion and FK checks.
     db.execute_batch(
         "CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);
+         CREATE INDEX IF NOT EXISTS media_aliases_hash ON media_aliases(hash);
+         CREATE INDEX IF NOT EXISTS media_refs_hash ON media_refs(hash);
          CREATE INDEX IF NOT EXISTS tasks_revision ON tasks(principal_id,json_extract(record_json,'$.revision'));
          CREATE INDEX IF NOT EXISTS tasks_recovery_scan ON tasks(principal_id) WHERE json_extract(record_json,'$.deliveryState') != 'discarded' AND (upstream_settled=0 OR (json_extract(record_json,'$.status')='succeeded' AND json_extract(record_json,'$.resultState')!='available'));",
     )?;

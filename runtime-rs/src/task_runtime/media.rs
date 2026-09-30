@@ -1,13 +1,22 @@
 use super::*;
 use crate::execution::Output;
-use base64::{Engine, engine::general_purpose::STANDARD};
+use crate::storage::{TaskMediaChunk, TaskMediaTarget};
+use axum::body::Bytes;
 use sha2::{Digest, Sha256};
 use std::path::{Path, PathBuf};
 use tokio::io::{AsyncReadExt, AsyncSeekExt};
+#[cfg(test)]
+mod tests;
 
 pub(super) enum Target {
     Input(String),
     Result(usize),
+}
+struct SharedOutput(Arc<Vec<u8>>);
+impl AsRef<[u8]> for SharedOutput {
+    fn as_ref(&self) -> &[u8] {
+        self.0.as_slice()
+    }
 }
 impl Target {
     fn command(&self, id: &str, phase: &str) -> Value {
@@ -73,24 +82,40 @@ pub(super) async fn persist(
     if let Some(file) = file.as_mut() {
         file.seek(std::io::SeekFrom::Start(offset)).await?;
     }
+    let shared = match &output {
+        Output::Bytes { bytes, .. } => Some(Bytes::from_owner(SharedOutput(bytes.clone()))),
+        Output::File { .. } => None,
+    };
     while offset < output.len() {
         let length = (output.len() - offset).min(1024 * 1024) as usize;
         let data = match &output {
-            Output::Bytes { bytes, .. } => {
-                STANDARD.encode(&bytes[offset as usize..offset as usize + length])
-            }
+            Output::Bytes { .. } => shared
+                .as_ref()
+                .unwrap()
+                .slice(offset as usize..offset as usize + length),
             Output::File { .. } => {
                 let mut buffer = vec![0; length];
                 file.as_mut().unwrap().read_exact(&mut buffer).await?;
-                STANDARD.encode(buffer)
+                Bytes::from(buffer)
             }
         };
-        let mut command = target.command(id, "chunk");
-        command["offset"] = json!(offset);
-        command["data"] = json!(data);
-        let result = storage.request(command, principal).await?;
-        offset = result["offset"]
-            .as_u64()
+        // This process already owns the bytes. Keep the JSON/base64 codec at
+        // the HTTP boundary and transfer shared slices or owned file buffers.
+        let result = storage
+            .task_media_chunk(
+                TaskMediaChunk {
+                    task_id: id.into(),
+                    target: match &target {
+                        Target::Input(name) => TaskMediaTarget::Input(name.clone()),
+                        Target::Result(index) => TaskMediaTarget::Result(*index as u64),
+                    },
+                    offset,
+                    bytes: data,
+                },
+                principal,
+            )
+            .await?;
+        offset = Some(result)
             .filter(|next| *next > offset && *next <= output.len())
             .ok_or_else(|| {
                 ApiError::new(503, "TASK_MEDIA_INVALID", "Media upload did not advance")

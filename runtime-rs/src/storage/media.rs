@@ -3,11 +3,16 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use rusqlite::OptionalExtension;
 use sha2::{Digest, Sha256};
 use std::{
+    borrow::Cow,
     fs::{self, File, OpenOptions},
     io::{Read, Seek, SeekFrom, Write},
     path::Path,
 };
 pub(super) const CHUNK: usize = 1024 * 1024;
+pub(super) enum Chunk<'a> {
+    Encoded(&'a Value),
+    Bytes { offset: u64, data: &'a [u8] },
+}
 #[derive(Debug)]
 pub struct Media {
     pub path: PathBuf,
@@ -267,16 +272,31 @@ pub(super) fn upload(
     command: &Value,
     committed: bool,
 ) -> Result<u64> {
-    let encoded = string(command, "data")?;
-    if encoded.len() > CHUNK.div_ceil(3) * 4 {
-        return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
-    }
-    let bytes = STANDARD
-        .decode(encoded)
-        .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?;
-    let offset = command["offset"]
-        .as_u64()
-        .ok_or_else(|| conflict("MEDIA_INVALID", "Invalid media chunk"))?;
+    upload_chunk(c, key, media, Chunk::Encoded(command), committed)
+}
+pub(super) fn upload_chunk(
+    c: &Context,
+    key: &str,
+    media: &Value,
+    chunk: Chunk<'_>,
+    committed: bool,
+) -> Result<u64> {
+    let (offset, bytes) = match chunk {
+        Chunk::Encoded(command) => {
+            let encoded = string(command, "data")?;
+            if encoded.len() > CHUNK.div_ceil(3) * 4 {
+                return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
+            }
+            let bytes = STANDARD
+                .decode(encoded)
+                .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?;
+            let offset = command["offset"]
+                .as_u64()
+                .ok_or_else(|| conflict("MEDIA_INVALID", "Invalid media chunk"))?;
+            (offset, Cow::Owned(bytes))
+        }
+        Chunk::Bytes { offset, data } => (offset, Cow::Borrowed(data)),
+    };
     let total = media["bytes"].as_u64().unwrap();
     if bytes.is_empty()
         || bytes.len() > CHUNK
@@ -319,7 +339,7 @@ pub(super) fn upload(
         let mut existing = vec![0; bytes.len()];
         input.seek(SeekFrom::Start(offset))?;
         input.read_exact(&mut existing)?;
-        if bytes != existing {
+        if bytes.as_ref() != existing {
             return Err(conflict(
                 "OPERATION_CONFLICT",
                 "Retried chunk differs from stored bytes",

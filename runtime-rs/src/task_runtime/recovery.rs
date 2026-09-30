@@ -1,5 +1,10 @@
 use super::*;
-use std::time::Duration;
+use futures_util::{StreamExt, TryStreamExt, stream};
+use std::{collections::HashSet, time::Duration};
+
+const RECOVERY_PARALLELISM: usize = 2;
+const RECOVERY_TIMEOUT: Duration = Duration::from_secs(60);
+const RECOVERY_CLEANUP_TIMEOUT: Duration = Duration::from_secs(5);
 
 impl TaskRuntime {
     pub async fn ensure_recovered(
@@ -16,37 +21,158 @@ impl TaskRuntime {
             .entry(key)
             .or_insert_with(|| Arc::new(tokio::sync::OnceCell::new()))
             .clone();
-        once.get_or_try_init(|| async {
-            let mut query = crate::task_contract::TaskListQuery {
-                recoverable: true,
-                ..Default::default()
-            };
-            loop {
-                let list = storage
-                    .task(
-                        TaskCommand::List {
-                            query: query.clone(),
-                        },
-                        principal,
-                    )
+        let initialize = once.get_or_try_init(|| async {
+            let unfinished = Arc::new(Mutex::new(HashSet::new()));
+            let scan = async {
+                let mut query = crate::task_contract::TaskListQuery {
+                    recoverable: true,
+                    ..Default::default()
+                };
+                loop {
+                    let mut list = storage
+                        .task(
+                            TaskCommand::List {
+                                query: query.clone(),
+                            },
+                            principal,
+                        )
+                        .await?;
+                    let tasks = list
+                        .get_mut("items")
+                        .and_then(Value::as_array_mut)
+                        .map(std::mem::take)
+                        .ok_or_else(|| ApiError::invalid("Invalid task list"))?;
+                    // Independent task probes may overlap; each reconciliation
+                    // still owns its task operation lock and never resubmits.
+                    let unfinished = unfinished.clone();
+                    stream::iter(tasks.into_iter().map(move |task| {
+                        let unfinished = unfinished.clone();
+                        async move {
+                            let task: TaskRecord = serde_json::from_value(task)?;
+                            unfinished.lock().unwrap().insert(task.task_id.clone());
+                            let result = self.recover_one(storage, principal, &task.task_id).await;
+                            if result.is_ok() {
+                                unfinished.lock().unwrap().remove(&task.task_id);
+                            }
+                            result
+                        }
+                    }))
+                    .buffer_unordered(RECOVERY_PARALLELISM)
+                    .try_for_each(|()| std::future::ready(Ok(())))
                     .await?;
-                for task in list["items"]
-                    .as_array()
-                    .ok_or_else(|| ApiError::invalid("Invalid task list"))?
-                {
-                    let task: TaskRecord = serde_json::from_value(task.clone())?;
-                    self.reconcile(storage, principal, &task.task_id).await?;
+                    query.through_revision = list["throughRevision"].as_i64();
+                    query.before = list["nextCursor"].as_i64();
+                    if query.before.is_none() {
+                        break;
+                    }
                 }
-                query.through_revision = list["throughRevision"].as_i64();
-                query.before = list["nextCursor"].as_i64();
-                if query.before.is_none() {
-                    break;
+                Ok::<(), ApiError>(())
+            };
+            // Bound the complete scan, including storage waits and all pages.
+            // Err leaves OnceCell empty so a later request can retry observation.
+            let result = tokio::select! {
+                biased;
+                _ = self.shutdown.cancelled() => Err(recovery_closed()),
+                result = tokio::time::timeout(RECOVERY_TIMEOUT, scan) =>
+                    result.unwrap_or_else(|_| Err(recovery_timeout())),
+            };
+            if result
+                .as_ref()
+                .is_err_and(|error| error.code == "TASK_RECOVERY_TIMEOUT")
+            {
+                let unfinished = unfinished
+                    .lock()
+                    .unwrap()
+                    .iter()
+                    .cloned()
+                    .collect::<Vec<_>>();
+                let cleanup = async {
+                    for id in unfinished {
+                        let _ = self.recovery_unknown(storage, principal, &id).await;
+                    }
+                };
+                tokio::select! {
+                    biased;
+                    _ = self.shutdown.cancelled() => return Err(recovery_closed()),
+                    _ = tokio::time::timeout(RECOVERY_CLEANUP_TIMEOUT, cleanup) => {},
                 }
             }
-            Ok::<(), ApiError>(())
-        })
-        .await?;
+            result
+        });
+        // A second HTTP request shares initialization but also has its own
+        // finite wait; it cannot wait through repeated failed initialization.
+        tokio::select! {
+            biased;
+            _ = self.shutdown.cancelled() => return Err(recovery_closed()),
+            result = tokio::time::timeout(RECOVERY_TIMEOUT + RECOVERY_CLEANUP_TIMEOUT, initialize) => {
+                result.map_err(|_| recovery_timeout())??;
+            }
+        }
         Ok(())
+    }
+    async fn recover_one(
+        self: &Arc<Self>,
+        storage: &Storage,
+        principal: &str,
+        id: &str,
+    ) -> Result<()> {
+        tokio::select! {
+            biased;
+            _ = self.shutdown.cancelled() => Err(recovery_closed()),
+            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, true)) => {
+                match result {
+                    Ok(result) => result.map(|_| ()),
+                    Err(_) => {
+                        // A probe timeout is an unknown observation, never a
+                        // cancellation, successful result or permission to replay.
+                        Err(recovery_timeout())
+                    }
+                }
+            }
+        }
+    }
+    async fn recovery_unknown(&self, storage: &Storage, principal: &str, id: &str) -> Result<()> {
+        let operation = self
+            .jobs
+            .lock()
+            .unwrap()
+            .entry(identity(storage, id))
+            .or_insert_with(|| JobBinding::new(String::new()))
+            .operation
+            .clone();
+        // The cancelled query releases its own lock. If another operation took
+        // over, it owns the observation; do not overwrite it or extend the wait.
+        let Ok(_guard) = operation.try_lock_owned() else {
+            return Ok(());
+        };
+        let current = Self::get(storage, principal, id).await?;
+        if self
+            .jobs
+            .lock()
+            .unwrap()
+            .get(&identity(storage, id))
+            .is_some_and(|job| job.dispatching)
+        {
+            return Ok(());
+        }
+        if current.upstream_settled
+            && (current.status != TaskStatus::Succeeded
+                || current.result_state == ResultState::Available)
+        {
+            return Ok(());
+        }
+        patch(
+            storage,
+            principal,
+            id,
+            TaskPatch {
+                recovery_state: Some(TaskRecoveryState::Unknown),
+                error_code: Some(Some("TASK_RECOVERY_TIMEOUT".into())),
+                ..Default::default()
+            },
+        )
+        .await
+        .map(|_| ())
     }
     pub(super) fn monitor(self: &Arc<Self>, storage: Storage, principal: String, id: String) {
         if self.check_running().is_err() {
@@ -142,4 +268,14 @@ impl TaskRuntime {
         }
         Ok(observation)
     }
+}
+fn recovery_closed() -> ApiError {
+    ApiError::new(503, "TASK_RUNTIME_CLOSED", "Task runtime is draining")
+}
+fn recovery_timeout() -> ApiError {
+    ApiError::new(
+        504,
+        "TASK_RECOVERY_TIMEOUT",
+        "Task recovery observation timed out; retry the original task",
+    )
 }
