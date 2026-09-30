@@ -1,17 +1,19 @@
 # 项目状态
 
-> 核对日期：2026-09-30；源码与本机安装版本 1.7.3。本轮桌宠、加载、UI与构建优化及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
+> 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前 main | Rust 后端已优化无变化任务写入、任务分页/增量读取、恢复筛选、媒体冷校验与健康快照；此前桌面和画册改进保留 | [后端优化与验证](audits/2026-09-29/backend-optimization.md)、[迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)、[画册画幅与预览](audits/2026-09-28/showcase-image-layout.md) |
-| 最近本机安装 | 以 `main@9f069ccd` 为起点的本轮1.7.3候选已安装到 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE及DLL哈希匹配；未自动重启，原生桌宠安装后画面待使用核对。9个旧打包文件经用户授权备份校验后移除，新数字分片保留 | [本轮优化、安装与限制](audits/2026-09-30/local-optimization.md)；此前证据仍绑定各自构建 |
+| 当前源码/构建 | 1.7.4 签名发行材料已完成；图库合并缩略图重复读取并跳过筛选后的过时队列，既有 Rust 后端及桌面改进保留 | [1.7.4 说明](releases/v1.7.4.md)、[本轮有限优化与证据](audits/2026-09-30/release-offline-optimization.md)、[后端优化与验证](audits/2026-09-29/backend-optimization.md) |
+| 最近本机安装 | 1.7.4 已正常安装至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE与两份DLL匹配候选哈希；不带 Cleanup，按 NoRestart 保持退出。9个旧打包文件的此前授权清理与本轮缓存隔离分别记录 | [本轮发行与安装边界](audits/2026-09-30/release-offline-optimization.md)、[此前优化、安装与限制](audits/2026-09-30/local-optimization.md) |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
 源码、构建、安装和设备验收分别核对。9月29日记录的 `D:/AI-CG-Studio` 安装、117项Rust测试、22项前端测试及ready状态是历史证据，不替代本轮验收。本轮复用已绑定NSIS正常安装，不带Cleanup；随后只清理用户明确指定且已备份的9个旧文件。8张喵喵v1.2/rella本地SFW对比已完成并关闭自有ComfyUI，不向生产提示词推广。当前实机主屏3840×2160/175%，未以浏览器DPR模拟代替原生窗口或多屏验收。
+
+1.7.4 新用户隔离目录已导入真实 r1 ZIP，并经两次 Rust 网关启动读取 SFW 原图、缩略图与基础资源；不依赖 Node/AI 工作区或导入来源继续存在。这不是正式安装、干净 Windows 或物理断网 GUI 验收。r1 资源快照仍记 1.7.3，可由 1.7.4 导入；公开完整包范围已确认，但未知资源许可与原生许可闭包不因此变为已解决。旧缓存 3.852 GiB 仅同盘可恢复隔离，释放空间 0。
 
 本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据。Windows/Linux release、Linux Rust 检查、7 项工作区一致性、图库/控制台双主题及默认 Rust 测试栈的五条主流程通过；本机安装与启动核验已完成。旧 Node 单元/契约仅证明旧实现；9 月 28 日后续修复已区分组件 title 参数与原生提示，并将原生 title 基线收紧到 0，当前源码的 CI 静态检查通过，详情见 [CI 修复记录](../plans/013-node-to-rust-migration.md#ci-修复与既有-e2e-收口2026-09-28)。这不替代远端流水线、原生 runner 或已安装版本身份。真实模型、完整设备/资料验收及原生发行材料仍未完成，`releaseReady=false`。旧安装遗留 Node 程序文件保留，但当前宿主只启动 Rust 网关。
 
@@ -29,6 +31,7 @@
 | 陪伴与 Live2D | 统一身份/Profile、独立聊天窗、模型检查、参数枚举、有界本机导入校准已接线；Cubism 2 候选保留浏览器回退 | [010 计划与记录](../plans/010-companion-experience-and-live2d-adapter.md)、[尾项记录](audits/2026-09-21/office-tail-completion.md)；语音、多屏/DPI/休眠与长期资源趋势继续开放 |
 | 资源释放 | 桌宠隐藏/系统关闭释放模型与原生 GPU context，重开按偏好恢复；桌面取消全库缩略预热，缓存限 96 项/8 MiB；图库停用释放高清 URL | [内存优化证据](evidence/memory-optimization-2026-09-27.json)；880M 本机短样本不推广到独显、大图库或长期功耗 |
 | 桌面交付 | 图片统一解析 runtime URL；维护先保存各窗并排空网关；构建回执绑定实际输入/载荷，部署拒绝未退出进程或残留 workspace 锁 | [可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)、[部署指南](desktop-deployment.md)；UAC 由用户操作 |
+| 离线资源 | r1 完整素材可由 1.7.4 原生入口导入到用户目录；1,640 条历史样张与原分级元数据保留，不更改内容分类/过滤 | [1.7.4 发行材料](releases/v1.7.4.md)、[隔离验证与缺口](audits/2026-09-30/release-offline-optimization.md)；本轮不转载 VC++，新机先从微软备好离线安装材料；全图/设备及许可未验项保留 |
 
 011 六项边界补强、012 办公机体验实施及 9 月 20–21 日审计修复已有分批记录。本机后续安装包含其受控提交中的实现；这不替代各专项仍缺的模型、素材、其他设备与大规模数据证据。
 

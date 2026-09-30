@@ -251,3 +251,66 @@ it('keeps gallery previews usable when optional thumbnail persistence fails', as
   expect(Object.keys(env.gallery.cardUrls)).toHaveLength(2)
   expect(env.gallery.galleryError.value).toBe('')
 })
+
+it('coalesces overlapping wall thumbnail hydration into one bounded read batch', async () => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 60 }, (_, index) => record(index + 1)), projects: [] })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  let active = 0, peak = 0
+  mocks.getThumbnail.mockImplementation(async () => {
+    peak = Math.max(peak, ++active)
+    await gate
+    active--
+    return 'data:image/jpeg;base64,thumb'
+  })
+  const { gallery } = await setup()
+  const initialReads = mocks.getThumbnail.mock.calls.length
+  release()
+  await flushPromises()
+  console.info(JSON.stringify({ fixture: 'gallery-overlapping-thumbnails', records: 60,
+    initialReads, totalReads: mocks.getThumbnail.mock.calls.length, peakConcurrentReads: peak }))
+  expect(Object.keys(gallery.thumbUrls)).toHaveLength(60)
+  expect(mocks.getThumbnail).toHaveBeenCalledTimes(60)
+  expect(peak).toBeLessThanOrEqual(8)
+})
+
+it('drops queued originals that are no longer visible after a filter change', async () => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 60 }, (_, index) => record(index + 1)), projects: [] })
+  const pending: Array<(blob: Blob) => void> = []
+  mocks.getImage.mockImplementation(() => new Promise<Blob>(resolve => { pending.push(resolve) }))
+  const env = await setup()
+  await env.intersect()
+  expect(mocks.getImage).toHaveBeenCalledTimes(4)
+  env.gallery.searchQuery.value = 'work-60'
+  await flushPromises()
+  expect(env.gallery.visible.value.map(item => item.id)).toEqual([60])
+  pending.splice(0).forEach(resolve => resolve(new Blob(['already reading'])))
+  await flushPromises()
+  const nextReads = mocks.getImage.mock.calls.slice(4).map(([imageId]) => imageId)
+  console.info(JSON.stringify({ fixture: 'gallery-filter-original-queue', queuedInitially: 60,
+    inFlightBeforeFilter: 4, subsequentReads: nextReads }))
+  expect(nextReads).toEqual([])
+})
+
+it('keeps the selected queued original and stops obsolete thumbnail work after filtering', async () => {
+  const history = Array.from({ length: 60 }, (_, index) => record(index + 1))
+  history[0].prompt = 'only-target'
+  mocks.snapshot.mockResolvedValue({ history, projects: [] })
+  let releaseThumbs!: () => void
+  const gate = new Promise<void>(resolve => { releaseThumbs = resolve })
+  mocks.getThumbnail.mockImplementation(async () => { await gate; return null })
+  const pending: Array<(blob: Blob) => void> = []
+  mocks.getImage.mockImplementation(() => new Promise<Blob>(resolve => { pending.push(resolve) }))
+  const env = await setup()
+  await env.intersect()
+  env.gallery.searchQuery.value = 'only-target'
+  await flushPromises()
+  releaseThumbs()
+  pending.splice(0).forEach(resolve => resolve(new Blob(['already reading'])))
+  await flushPromises()
+  expect(env.gallery.visible.value.map(item => item.id)).toEqual([1])
+  expect(mocks.getThumbnail.mock.calls.map(([imageId]) => imageId)).toEqual([
+    'image-60', 'image-59', 'image-58', 'image-57', 'image-56', 'image-55', 'image-54', 'image-53', 'image-1',
+  ])
+  expect(mocks.getImage.mock.calls.slice(4).map(([imageId]) => imageId)).toEqual(['image-1'])
+})

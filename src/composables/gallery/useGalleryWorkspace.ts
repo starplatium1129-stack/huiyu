@@ -200,29 +200,40 @@ export function useGalleryWorkspace() {
         const excess = Math.max(0, cardLruOrder.size - HD_CACHE_LIMIT);
         for (const id of [...cardLruOrder.keys()].slice(0, excess)) releaseCardImage(id);
     }
-    async function hydrateThumbs() {
-        const epoch = imageEpoch;
-        // 只为已进入渲染窗口的作品取缩略图（分页外的不预取）
-        const pending = pagedVisible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id]);
-        let index = 0;
-        async function worker() {
-            while (index < pending.length) {
-                const item = pending[index++];
-                if (unmounted || !viewActive || epoch !== imageEpoch) return;
-                if (!item.image_id)
-                    continue;
-                try {
-                    const thumb = await artworkRepository.getThumbnail(item.image_id);
-                    if (unmounted || !viewActive || epoch !== imageEpoch)
-                        return;
-                    if (typeof thumb === 'string' && thumb.startsWith('data:image/')) {
-                        thumbUrls[item.id] = thumb;
+    let thumbHydration: Promise<void> | null = null;
+    let thumbsDirty = false;
+    function hydrateThumbs(): Promise<void> {
+        thumbsDirty = true;
+        if (thumbHydration) return thumbHydration;
+        const epoch = imageEpoch, visited = new Set<string | number>();
+        async function run() {
+            do {
+                thumbsDirty = false;
+                // Watchers and mounting share one batch; a changed page reschedules
+                // its remaining reads without fetching the same missing preview twice.
+                const pending = pagedVisible.value.filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
+                let index = 0;
+                async function worker() {
+                    while (index < pending.length) {
+                        if (unmounted || !viewActive || epoch !== imageEpoch || thumbsDirty) return;
+                        const item = pending[index++];
+                        visited.add(item.id);
+                        try {
+                            const thumb = await artworkRepository.getThumbnail(item.image_id!);
+                            if (unmounted || !viewActive || epoch !== imageEpoch) return;
+                            if (typeof thumb === 'string' && thumb.startsWith('data:image/')) thumbUrls[item.id] = thumb;
+                        }
+                        catch { /* 缩略图缺失正常，直接走 HD */ }
                     }
                 }
-                catch { /* 缩略图缺失正常，直接走 HD */ }
-            }
+                await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()));
+            } while (thumbsDirty && !unmounted && viewActive && epoch === imageEpoch);
         }
-        await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()));
+        thumbHydration = run().finally(() => {
+            thumbHydration = null;
+            if (thumbsDirty && !unmounted && viewActive) void hydrateThumbs();
+        });
+        return thumbHydration;
     }
     async function hydrateCard(item: ArtworkRecord) {
         const epoch = imageEpoch;
@@ -437,6 +448,9 @@ export function useGalleryWorkspace() {
     watch(visible, () => {
         const ids = new Set(visible.value.map(item => item.id));
         selectedIds.value = new Set([...selectedIds.value].filter(id => ids.has(id)));
+        for (let index = cardQueue.length - 1; index >= 0; index--) {
+            if (!ids.has(cardQueue[index].id)) queuedCardIds.delete(cardQueue.splice(index, 1)[0].id);
+        }
         void hydrateThumbs();
         void nextTick(() => scanWallCards());
     });

@@ -207,6 +207,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `offline:prerequisites-plan -Out <新目录>` 只读预览微软 VC++ x64 离线材料；`offline:prerequisites-prepare -Out <新目录>` 显式下载并核对有效微软签名、版本与真实字节/SHA-256，整批完成后发布新目录，不执行安装。将其离线 EXE、回执与说明作为发行前置附件，新机由用户完成 UAC 安装；WebView2 由本次 NSIS offlineInstaller 配置提供，二者用途不同。
 
+本轮 1.7.4 的公开附件不转载 VC++。上面的前置准备入口用于联网准备机取得微软原始材料并带到断网新机，不应写成本次资源 ZIP 内已包含安装器。源码/签名构建已到 1.7.4，现有完整资源 r1 的 `appVersion=1.7.3` 保持原样，可由 1.7.4 导入，无需重导出；ZIP 校验 SHA 与 `release.json` 审批 SHA 分别核对，具体值和附件见 [1.7.4 说明](releases/v1.7.4.md)。真实 r1 ZIP 的隔离新用户导入及两次 Rust 启动已读取 SFW 原图/缩略图/基础资源，但不等同于正式安装、干净 Windows 或物理断网 GUI 验收，见 [有限交付报告](audits/2026-09-30/release-offline-optimization.md)。
+
 当前 `--apply` 仅支持 Windows，其他平台拒绝写入、仍可预览。原因是普通目录 rename 在 POSIX 可覆盖并发出现的空目录；Windows 隔离回归已验证该冲突会拒绝。工具面向受控本地目录，不承诺抵御其他进程持续恶意替换路径的绝对事务隔离。
 
 `node scripts/workflow.js resource:pack --manifest <root内JSON> --name <包名> [--base-manifest <root内旧JSON>] [--root <目录>] [--apply]` 是 R1 之后的受控复制工具，不是安装器、下载器或发布入口。默认只预览复制计划（stdout JSON：目标路径、条目、字节合计与核验摘要），零写入；但预览会读取清单并对源文件做与 `audit:resource-manifest` 同套的核验（读取不是零读取）。`--help` / `--plan` 仅打印用法，不读取目标文件。

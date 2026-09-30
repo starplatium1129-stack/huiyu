@@ -1,10 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。以下入口按 2026-09-30 的 1.7.3 源码核对；公开发行、目标设备安装与模型效果以实际记录为准。
+本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。以下入口按 2026-09-30 的 1.7.4 源码核对；签名构建已完成，正式安装仍为 1.7.3。[本轮发行说明](docs/releases/v1.7.4.md)区分资源版本、隔离导入证据与尚未完成的设备/公开发行状态。
 
 ## 新机器的桌面离线安装
 
-准备匹配版本的桌面安装包、完整资源 ZIP、发布处的 ZIP SHA-256 及 `Install-OfflineResources.ps1`，另带微软 **VC++ v14 x64** 离线安装器、校验值和准备回执；WebView2 前置按离线指南补齐。新机用户先核对并手动安装 `vc_redist.x64.exe`，处理许可/UAC与可能的重启，再安装绘遇。安装后完全退出绘遇及其运行时，再执行离线资源导入脚本；成功后重启。素材导入使用已安装的 Rust 原生入口，不要求新机安装 Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+准备匹配版本的桌面安装包、完整资源 ZIP、`Install-OfflineResources.ps1`、ZIP SHA-256、独立受信发布说明里的 `release.json` 审批 SHA-256 及离线安装 README。两种哈希用途不同，后者用于脚本的 `-ExpectedReleaseSha256`。本轮复用 r1 素材快照（元数据 1.7.3），可由 1.7.4 导入，不需要重导出。
+
+本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。WebView2 前置按离线指南补齐。安装后完全退出绘遇及其运行时，再执行离线资源导入脚本；成功后重启。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、VC++ 安装与 WD14 真实推理分别验收。
 
@@ -16,7 +18,7 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 2. 执行 `npm run build` 生成网页和维护命令，再执行 `npm start`。当前产品入口经 `run-rust-runtime` 编译/启动 `runtime-rs`，默认访问 `http://127.0.0.1:3000`；旧 Node 网关已退出产品路径。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
 4. 数据聚合产物由现有构建流程补齐，不把生成的 `services/*.js` 或聚合 JSON 手工复制回 Git。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
-5. 在这台机器上执行 `npm run wf -- gate:full` 验证代码、数据契约和构建。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材再跑完整门禁，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
+5. 按 [工作流分层规则](docs/workflow.md#门禁与构建)选择代码、数据契约和构建检查；跨领域整合需要时执行 `npm run wf -- gate:full`，不在每次启动或小改后重复。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
 
 ## 本机 AI 服务与模型
 
@@ -51,7 +53,7 @@ Windows 的 npm/npx 通过已安装的 CLI JavaScript 入口执行，不启用�
 
 ### 准备条件
 
-- Windows 与 Node.js
+- Windows 桌面安装版；使用源码启动入口时另需 Node.js 与 Rust 构建工具
 - 由 Stability Matrix 启动的 AUTOMATIC1111、Forge 或 ReForge
 - WebUI 启动参数中包含 `--api`
 - 如需生成公网分享链接，本机还要安装 `cloudflared`
