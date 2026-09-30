@@ -138,10 +138,10 @@ export function useModelStudio(hostId: string) {
   async function openExisting(id: string) {
     request?.abort(); request = null
     stopPreview(); inspection.value = null; saved.value = null; restoreBindings(); needsReload.value = false
-    const token = generation; busy.value = true
+    const token = generation, controller = new AbortController(); request = controller; busy.value = true
     try {
-      const value = await apiClient.request<SavedModel>(`/api/live2d-import/${encodeURIComponent(id)}`, { cache: 'no-store' })
-      if (token !== generation) return
+      const value = await apiClient.request<SavedModel>(`/api/live2d-import/${encodeURIComponent(id)}`, { cache: 'no-store', signal: controller.signal })
+      if (token !== generation || controller.signal.aborted) return
       const character = getCompanionCharacter(id)
       if (value.id !== id || !validateAdapterProfile(value.profile).valid || !value.fingerprint) throw new Error('已保存的模型配置无效')
       saved.value = value; identity.id = id; identity.name = character?.name || id
@@ -150,8 +150,8 @@ export function useModelStudio(hostId: string) {
       expressions.value = avatar?.expressions?.map(item => item.id) || []
       motions.value = Object.values(value.profile.interactions || {}).map(item => ({ group: item.group, index: 0 }))
       message.value = value.disabled ? '该模型已停用，文件和角色记忆仍保留。重新载入页面后角色列表会更新。' : '已读取当前配置。加载预览后可重新校准；保存时会检查版本冲突。'
-    } catch (error) { if (token === generation) message.value = errorText(error) }
-    finally { if (token === generation) busy.value = false }
+    } catch (error) { if (token === generation && !controller.signal.aborted) message.value = errorText(error) }
+    finally { if (token === generation) busy.value = false; if (request === controller) request = null }
   }
   async function preview() {
     if (saved.value?.disabled) { message.value = '该模型已停用，请重新载入页面更新角色列表'; return }

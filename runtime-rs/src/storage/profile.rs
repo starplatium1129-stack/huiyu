@@ -99,17 +99,54 @@ fn reset(c: &Context) -> Result<String> {
         .transpose()
         .map(|v| v.unwrap_or_default())
 }
+fn draft_record_key(key: &str) -> Option<&str> {
+    if domain(key) == Some("draft") {
+        return Some(key);
+    }
+    key.match_indices(':').find_map(|(index, _)| {
+        let suffix = &key[index + 1..];
+        (domain(suffix) == Some("draft")).then_some(suffix)
+    })
+}
+fn clear_chat(c: &Context) -> Result<()> {
+    // Inspect keys only. A model draft can contain a chat-like suffix; classify
+    // its registered base key before deciding whether this reset owns it.
+    let keys =
+        c.db.prepare_cached("SELECT record_key FROM profile_records WHERE domain='draft'")?
+            .query_map([], |row| row.get::<_, String>(0))?
+            .collect::<rusqlite::Result<Vec<_>>>()?;
+    let mut remove =
+        c.db.prepare_cached("DELETE FROM profile_records WHERE domain='draft' AND record_key=?")?;
+    for key in keys {
+        c.check_cancel()?;
+        if draft_record_key(&key).is_some_and(|key| key.starts_with("aics_chat_draft_v1:")) {
+            remove.execute([key])?;
+        }
+    }
+    c.db.execute("DELETE FROM profile_records WHERE domain='chat'", [])?;
+    Ok(())
+}
 fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
     let prefix = format!("{}:", window.unwrap_or("undefined"));
     // Filter window-owned drafts before copying their bodies out of SQLite.
-    // instr/substr preserve literal, case-sensitive prefix matching even for
-    // Unicode window IDs or IDs containing SQL wildcard characters.
-    let mut statement = c.db.prepare_cached(
+    // Match registered global keys, including the hyphenated model namespace.
+    // substr preserves literal window IDs, including Unicode and SQL wildcards.
+    let sql = format!(
         "SELECT record_key,body,revision FROM profile_records WHERE domain=?1
-         AND (?1!='draft' OR instr(record_key,':aics_')=0 OR substr(record_key,1,length(?2))=?2)
+         AND (?1!='draft' OR record_key GLOB 'aics_chat_draft_v1:*'
+         OR record_key GLOB 'aics-model-draft-*' OR record_key IN ({})
+         OR substr(record_key,1,length(?2))=?2)
          ORDER BY record_key",
-    )?;
-    let rows = statement.query_map(params![domain, prefix], |r| {
+        (3..DRAFT.len() + 3)
+            .map(|index| format!("?{index}"))
+            .collect::<Vec<_>>()
+            .join(",")
+    );
+    let mut statement = c.db.prepare_cached(&sql)?;
+    let parameters = std::iter::once(domain)
+        .chain(std::iter::once(prefix.as_str()))
+        .chain(DRAFT.iter().copied());
+    let rows = statement.query_map(rusqlite::params_from_iter(parameters), |r| {
         Ok((
             r.get::<_, String>(0)?,
             r.get::<_, String>(1)?,
@@ -120,7 +157,14 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
     for row in rows {
         c.check_cancel()?;
         let (key, body, revision) = row?;
-        records.push(json!({"key":key.strip_prefix(&prefix).unwrap_or(&key),"value":serde_json::from_str::<Value>(&body)?,"revision":revision}));
+        let key = if self::domain(&key) == Some("draft") {
+            key.as_str()
+        } else {
+            key.strip_prefix(&prefix).unwrap_or(&key)
+        };
+        records.push(
+            json!({"key":key,"value":serde_json::from_str::<Value>(&body)?,"revision":revision}),
+        );
     }
     Ok(json!({"records":records,"revision":c.revision()?,"resetRevision":reset(c)?}))
 }
@@ -154,7 +198,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 if !record["settings"].is_object() {record["settings"]=json!({});}record["settings"]["drafts"]=json!({});
                 Some(stringify(&json!(stringify(&record))))
             } else {None};
-            c.db.execute("DELETE FROM profile_records WHERE domain='chat' OR (domain='draft' AND record_key LIKE 'aics_chat_draft_v1:%')",[])?;
+            clear_chat(c)?;
             if let Some(retained)=retained {c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_v1',?,?)",params![retained,revision])?;}
             c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_reset_v1',?,?)",params![stringify(&command["operationId"]),revision])?;
             snapshot(c,"chat",None)?

@@ -1,24 +1,27 @@
 <template>
   <fieldset class="glass-choice tw:min-w-0 tw:m-0 tw:p-0">
     <legend>玻璃材质</legend>
-    <div class="glass-choice-grid tw:grid tw:gap-s-3 tw:mb-s-3" role="radiogroup" aria-label="玻璃材质">
-      <button v-for="choice in choices" :key="choice.value" type="button" role="radio" class="glass-choice-option tw:relative tw:min-w-0 tw:p-0 tw:rounded-lg tw:cursor-pointer tw:text-left"
-        :aria-checked="glassMode === choice.value" :data-value="choice.value" @click="setGlassMode(choice.value)">
+    <RadioGroupRoot v-model="selectedGlass" class="glass-choice-grid tw:grid tw:gap-s-3 tw:mb-s-3" aria-label="玻璃材质">
+      <RadioGroupItem v-for="choice in choices" :key="choice.value" :value="choice.value" class="glass-choice-option tw:relative tw:min-w-0 tw:p-0 tw:rounded-lg tw:cursor-pointer tw:text-left"
+        :data-value="choice.value" @focus="selectedGlass = choice.value">
         <span class="glass-choice-body tw:grid tw:h-full tw:gap-s-2 tw:p-s-3 tw:rounded-lg">
           <span class="glass-choice-preview tw:relative tw:grid tw:h-[64px] tw:overflow-hidden tw:rounded-md" :data-material="choice.value" aria-hidden="true"><span class="glass-choice-surface tw:flex tw:items-center tw:gap-s-2 tw:w-[80%] tw:h-[36px] tw:p-s-2 tw:box-border tw:rounded-pill"><span></span><i></i><i></i></span></span>
           <strong>{{ choice.title }}</strong><small>{{ choice.description }}</small>
         </span>
         <span class="glass-choice-indicator tw:absolute tw:top-s-3 tw:right-s-3 tw:grid tw:w-[20px] tw:h-[20px]" aria-hidden="true"><ArchiveIcon name="success" /></span>
-      </button>
-    </div>
+      </RadioGroupItem>
+    </RadioGroupRoot>
     <p class="glass-choice-note tw:m-0 tw:text-muted tw:text-label tw:leading-loose" role="status">{{ glassMode === 'liquid' && effectiveGlassMode !== 'liquid' ? '辅助显示设置优先，当前使用清晰底色；关闭后恢复所选材质。' : glassMode === 'liquid' ? '导航和工具条呈现折射与透光，适合性能充裕的设备。环境不支持时自动回退为柔和玻璃。' : '细腻高光与稳定底色，不计算背景折射。适合日常使用和办公笔记本。' }}</p>
   </fieldset>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { computed } from 'vue'
+import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import { useDesktopPreferences, type GlassMode } from '@/composables/useDesktopInteraction'
 const { glassMode, effectiveGlassMode, setGlassMode } = useDesktopPreferences()
+const selectedGlass = computed({ get: () => glassMode.value, set: setGlassMode })
 const choices: Array<{ value: GlassMode; title: string; description: string }> = [
   { value: 'light', title: '轻盈玻璃', description: '默认 · 轻负担，清晰耐看' },
   { value: 'liquid', title: '液态玻璃', description: '高效果 · 折射，通透层次' },

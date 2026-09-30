@@ -215,11 +215,12 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
+import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, onUnmounted, reactive, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
@@ -227,12 +228,10 @@ import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import { artworkRepository } from '@/storage/artworkRepository'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { Scene } from '@/stores/sceneStore'
-import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork'
 
 useScrollReveal()
 
@@ -244,20 +243,16 @@ const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创�
 const continueHint = ref('先选喜欢的画面；确认参数后再生成。')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
-const recentWorks = ref<ArtworkRecord[]>([])
+const { recentWorks, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
 const recentScenes = ref<HomeScene[]>([])
 const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
-const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const { heroes } = useHomeHeroes()
 const { image: neneHero, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
 const { image: natsumeHero, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
 const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
 watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); else if (muse === 'natsume' && natsumeFailed.value) retryNatsume() })
-
-/** 卸载标记：异步媒体读取回来时组件可能已经没了 */
-let unmounted = false
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.popularCharacters)
@@ -275,9 +270,6 @@ function charName(id: string | undefined) {
 function fmtDate(ts: string | number | undefined) {
   const value = typeof ts === 'number' || typeof ts === 'string' ? ts : 0
   return new Date(value).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
-}
-function coverUrl(item: ArtworkRecord): string {
-  return item.image_id ? coverUrls[item.image_id] || '' : ''
 }
 
 function errorMessage(error: unknown): string {
@@ -357,31 +349,13 @@ async function loadSceneHighlights() {
   }
 }
 
-async function loadRecentWorks() {
-  try {
-    const history = await artworkRepository.readRecentHistory()
-    // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
-    recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
-
-    if (!initContinueDraft() && recentWorks.value[0]) {
-      const h = recentWorks.value[0]
+watch(recentWorks, works => {
+    if (!initContinueDraft() && works[0]) {
+      const h = works[0]
       continueLink.value = { to: `/prompt-builder?regen=${encodeURIComponent(h.id)}`, label: '继续最近作品' }
       continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
     }
-
-    await Promise.all(recentWorks.value.map(async h => {
-      if (!h.image_id) return
-      try {
-        const blob = await artworkRepository.getImage(h.image_id)
-        if (!blob) return
-        // 组件可能在 await 期间就卸载了，这时候不该再建 URL
-        if (unmounted) return
-        if (coverUrls[h.image_id]) URL.revokeObjectURL(coverUrls[h.image_id])
-        coverUrls[h.image_id] = URL.createObjectURL(blob)
-      } catch {}
-    }))
-  } catch (e) { console.warn('读取历史失败', e) }
-}
+})
 
 onMounted(async () => {
   initContinueDraft()
@@ -389,15 +363,6 @@ onMounted(async () => {
   try {
     await loadRecentWorks()
   } catch (e) { console.warn('作品库暂时不可用', e) }
-})
-
-onUnmounted(() => {
-  unmounted = true
-  // 首页封面是 IndexedDB blob，不释放就会一直挂在内存里
-  Object.keys(coverUrls).forEach((key) => {
-    if (coverUrls[key]) URL.revokeObjectURL(coverUrls[key])
-    delete coverUrls[key]
-  })
 })
 
 </script>

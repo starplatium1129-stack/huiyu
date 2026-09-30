@@ -238,3 +238,16 @@ it('keeps only 40 gallery originals while active and releases the remaining URLs
   expect(URL.revokeObjectURL).toHaveBeenCalledTimes(45)
   expect(env.gallery.cardUrls).toEqual({})
 })
+
+it('keeps gallery previews usable when optional thumbnail persistence fails', async () => {
+  mocks.snapshot.mockResolvedValue({ history: [record(1), record(2)], projects: [] })
+  mocks.getThumbnail.mockResolvedValue(null)
+  mocks.setThumbnail.mockRejectedValueOnce(new DOMException('fixture quota exceeded', 'QuotaExceededError'))
+  const env = await setup()
+  await env.intersect()
+  expect(mocks.setThumbnail).toHaveBeenCalledTimes(2)
+  expect(env.gallery.thumbUrls[1]).toBe('data:image/jpeg;base64,generated')
+  expect(env.gallery.thumbUrls[2]).toBe('data:image/jpeg;base64,generated')
+  expect(Object.keys(env.gallery.cardUrls)).toHaveLength(2)
+  expect(env.gallery.galleryError.value).toBe('')
+})

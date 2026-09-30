@@ -13,7 +13,11 @@ export const PROJECTS = {
 } as const;
 type ProjectName = keyof typeof PROJECTS;
 interface BuildOptions { check?: boolean; force?: boolean; projects?: ProjectName[]; quiet?: boolean }
-interface BuildRecord { version: 1; fingerprint: string; outputs: Record<string, string> }
+const filesystemMethods = ['readFile', 'fileExists', 'directoryExists', 'getDirectories', 'realpath', 'readDirectory'] as const;
+type FilesystemMethod = typeof filesystemMethods[number];
+interface FilesystemQuery { method: FilesystemMethod; args: unknown[]; value: string }
+interface BuildRecord { version: 2; fingerprint: string; queries: FilesystemQuery[]; outputs: Record<string, string> }
+interface BuildManifest { outputs: Record<string, string>; cache?: BuildRecord }
 interface BuildResult { project: ProjectName; sources: number; outputs: number; cached: boolean }
 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -55,13 +59,51 @@ function outputForSource(source: string): string {
   return source.replace(/\.mts$/, '.mjs').replace(/\.cts$/, '.cjs').replace(/\.ts$/, '.js');
 }
 
-function readRecord(file: string): BuildRecord | undefined {
+function readManifest(file: string): BuildManifest | undefined {
   try {
     const value: any = JSON.parse(fs.readFileSync(file, 'utf8'));
-    if (!isRecord(value) || value.version !== 1 || typeof value.fingerprint !== 'string'
-      || !isRecord(value.outputs) || !Object.values(value.outputs).every(item => typeof item === 'string')) return;
-    return value as any as BuildRecord;
+    if (!isRecord(value) || !isRecord(value.outputs)
+      || !Object.values(value.outputs).every(item => typeof item === 'string')) return;
+    const current = value.version === 2 && typeof value.fingerprint === 'string'
+      && Array.isArray(value.queries) && value.queries.length > 0
+      && value.queries.every((query: unknown) => isRecord(query) && filesystemMethods.includes(query.method)
+        && Array.isArray(query.args) && typeof query.args[0] === 'string' && typeof query.value === 'string');
+    // Output ownership survives cache invalidation. Only the current input
+    // schema can certify a hit; unchanged orphan outputs can still be retired.
+    return { outputs: value.outputs, cache: current ? value as unknown as BuildRecord : undefined };
   } catch { return; }
+}
+
+function filesystemValue(method: FilesystemMethod, value: unknown): string {
+  return method === 'readFile' && typeof value === 'string' ? digest(value) : JSON.stringify(value) ?? 'undefined';
+}
+
+/** Replay the compiler's reads and resolution probes before allocating another AST.
+ * Missing candidates, directory enumeration and package metadata matter too: a new
+ * source can change module resolution even when every previously read file is unchanged.
+ */
+function inputsCurrent(queries: FilesystemQuery[]): boolean {
+  try {
+    return queries.every(query => {
+      const operation = ts.sys[query.method];
+      return operation && filesystemValue(query.method,
+        Reflect.apply(operation, ts.sys, query.args.map(arg => arg === null ? undefined : arg))) === query.value;
+    });
+  } catch { return false; }
+}
+
+function recordingHost(options: ts.CompilerOptions, queries: Map<string, FilesystemQuery>): ts.CompilerHost {
+  const host = ts.createCompilerHost(options);
+  for (const method of filesystemMethods) {
+    const operation = host[method];
+    if (!operation) continue;
+    Object.assign(host, { [method]: (...args: unknown[]) => {
+      const value: unknown = Reflect.apply(operation, host, args);
+      queries.set(JSON.stringify([method, args]), { method, args, value: filesystemValue(method, value) });
+      return value;
+    } });
+  }
+  return host;
 }
 
 function sourceForOutput(relative: string): string {
@@ -81,48 +123,46 @@ function ownedOutput(project: ProjectName, relative: string): boolean {
 /** No output is published until every selected project passes type checking. */
 export function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] {
   root = path.resolve(root);
-  const pending: Array<{ project: ProjectName; recordFile: string; previous?: BuildRecord;
+  const pending: Array<{ project: ProjectName; recordFile: string; previous?: BuildManifest;
     record: BuildRecord; contents: Map<string, string> }> = [];
   const results: BuildResult[] = [];
+  const lock = path.join(root, 'package-lock.json');
+  const builderHash = digest(fs.readFileSync(fileURLToPath(import.meta.url)));
+  const dependencyHash = fs.existsSync(lock) ? digest(fs.readFileSync(lock)) : null;
   for (const project of options.projects || Object.keys(PROJECTS) as ProjectName[]) {
     const parsed = loadProject(root, project);
-    // Classic browser scripts execute on different pages, in their own scopes.
-    const groups = project === 'browser' ? parsed.fileNames.map(file => [file]) : [parsed.fileNames];
-    const isolatedEmit = project === 'node' || project === 'tests';
-    const programs = groups.map(files => ts.createProgram(files, { ...parsed.options, noEmit: isolatedEmit,
-      ...(isolatedEmit ? { isolatedModules: true, allowImportingTsExtensions: true } : {}),
-      noEmitOnError: true, sourceMap: false, declarationMap: false, incremental: false }));
-    const localSources = new Map<string, string>();
-    for (const program of programs) for (const source of program.getSourceFiles()) {
-      const relative = posix(path.relative(root, source.fileName));
-      if (!relative.startsWith('../') && !path.isAbsolute(relative) && !relative.includes('node_modules/')) {
-        localSources.set(relative, digest(source.text));
-      }
-    }
-    const lock = path.join(root, 'package-lock.json');
     const fingerprint = digest(JSON.stringify({ compiler: ts.version, options: parsed.options,
-      builder: digest(fs.readFileSync(fileURLToPath(import.meta.url))),
-      sources: [...localSources].sort(([a]: any, [b]: any) => a.localeCompare(b)),
+      builder: builderHash, roots: parsed.fileNames,
       config: fs.readFileSync(path.join(root, PROJECTS[project]), 'utf8'),
-      dependencies: fs.existsSync(lock) ? digest(fs.readFileSync(lock)) : null }));
+      dependencies: dependencyHash }));
     const recordFile = path.join(root, '.cache', 'typescript-build', `${project}.json`);
-    const previous = readRecord(recordFile);
+    const previous = readManifest(recordFile);
+    const cachedRecord = previous?.cache;
     const expected = new Set(parsed.fileNames.filter(file => !file.endsWith('.d.ts'))
       .flatMap(file => {
         const relative = relativeInside(root, outputForSource(file));
         return parsed.options.declaration ? [relative, relative.replace(/\.js$/, '.d.ts')] : [relative];
       }));
-    const cached = !options.check && !options.force && previous?.fingerprint === fingerprint
-      && expected.size === Object.keys(previous.outputs).length
+    const cached = !options.check && !options.force && cachedRecord?.fingerprint === fingerprint
+      && expected.size === Object.keys(cachedRecord.outputs).length
+      && inputsCurrent(cachedRecord.queries)
       && [...expected].every(relative => {
-        if (!ownedOutput(project, relative) || !previous.outputs[relative]) return false;
+        if (!ownedOutput(project, relative) || !cachedRecord.outputs[relative]) return false;
         const file = path.join(root, relative);
-        return fs.existsSync(file) && digest(fs.readFileSync(file)) === previous.outputs[relative];
+        return fs.existsSync(file) && digest(fs.readFileSync(file)) === cachedRecord.outputs[relative];
       });
     if (cached) {
       results.push({ project, sources: parsed.fileNames.length, outputs: expected.size, cached: true });
       continue;
     }
+    // Classic browser scripts execute on different pages, in their own scopes.
+    const groups = project === 'browser' ? parsed.fileNames.map(file => [file]) : [parsed.fileNames];
+    const isolatedEmit = project === 'node' || project === 'tests';
+    const queries = new Map<string, FilesystemQuery>();
+    const compilerOptions = { ...parsed.options, noEmit: isolatedEmit,
+      ...(isolatedEmit ? { isolatedModules: true, allowImportingTsExtensions: true } : {}),
+      noEmitOnError: true, sourceMap: false, declarationMap: false, incremental: false };
+    const programs = groups.map(files => ts.createProgram(files, compilerOptions, recordingHost(compilerOptions, queries)));
     const contents = new Map<string, string>();
     const ownedSources = new Set(parsed.fileNames.map(file => path.resolve(file)));
     for (const program of programs) {
@@ -164,7 +204,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
       if (expected.size !== contents.size || [...expected].some(relative => !contents.has(relative))) {
         throw new Error(`${project}: source/output inventory is incomplete`);
       }
-      pending.push({ project, recordFile, previous, contents, record: { version: 1, fingerprint,
+      pending.push({ project, recordFile, previous, contents, record: { version: 2, fingerprint, queries: [...queries.values()],
         outputs: Object.fromEntries([...contents].map(([file, text]: any) => [file, digest(text)])) } });
     }
     results.push({ project, sources: parsed.fileNames.length, outputs: options.check ? 0 : contents.size, cached: false });

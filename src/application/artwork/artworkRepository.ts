@@ -36,7 +36,7 @@ export interface ArtworkRepository {
   readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
-  readRecentHistory(): Promise<ArtworkRecord[]>
+  readRecentHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
   getImage(id: string, signal?: AbortSignal): Promise<Blob | null>

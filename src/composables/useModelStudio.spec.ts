@@ -40,6 +40,38 @@ async function load() {
   return { ...fixture, session }
 }
 describe('model studio state ownership', () => {
+  it('cancels an obsolete model read without allowing its completion to clear the newer request', async () => {
+    let finishFirst!: (value: unknown) => void, finishSecond!: (value: unknown) => void
+    mocks.request.mockImplementationOnce(() => new Promise(resolve => { finishFirst = resolve }))
+      .mockImplementationOnce(() => new Promise(resolve => { finishSecond = resolve }))
+    const first = studio.openExisting('first')
+    const firstSignal = mocks.request.mock.calls[0][1].signal as AbortSignal
+    const second = studio.openExisting('second')
+    const secondSignal = mocks.request.mock.calls[1][1].signal as AbortSignal
+    expect(firstSignal.aborted).toBe(true); expect(secondSignal.aborted).toBe(false)
+    finishFirst({ id: 'first', revision: 'r1', fingerprint: 'first-hash', profile: profile() }); await first
+    expect(studio.saved.value).toBeNull(); expect(studio.busy.value).toBe(true)
+    studio.dispose()
+    expect(secondSignal.aborted).toBe(true)
+    finishSecond({ id: 'second', revision: 'r2', fingerprint: 'second-hash', profile: profile() }); await second
+    expect(studio.saved.value).toBeNull(); expect(studio.busy.value).toBe(false)
+  })
+  it('cancels a model read when selecting files or unmounting the studio', async () => {
+    let reject!: (error: Error) => void
+    mocks.request.mockImplementation(() => new Promise((_resolve, fail) => { reject = fail }))
+    const first = studio.openExisting('fixture')
+    const firstSignal = mocks.request.mock.lastCall![1].signal as AbortSignal
+    await studio.selectFiles([])
+    expect(firstSignal.aborted).toBe(true)
+    reject(new Error('old read cancelled')); await first
+    expect(studio.message.value).not.toContain('old read cancelled')
+    const second = studio.openExisting('fixture')
+    const secondSignal = mocks.request.mock.lastCall![1].signal as AbortSignal
+    app.unmount()
+    expect(secondSignal.aborted).toBe(true)
+    reject(new Error('unmounted read cancelled')); await second
+    expect(studio.message.value).not.toContain('unmounted read cancelled')
+  })
   it('does not let a late preview destroy or replace the newer session', async () => {
     const fixture = modelFixture(), first = { destroy: vi.fn() }, second = { destroy: vi.fn() }
     let finish!: (session: unknown) => void

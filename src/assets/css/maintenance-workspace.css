@@ -16,10 +16,10 @@
 .manager-workspace .catalog-search input { @apply tw:w-full tw:min-w-0; border: 0; outline: none; padding: var(--s-3) 0; background: transparent; @apply tw:text-primary; font: inherit; @apply tw:text-body-sm; }
 .manager-workspace .catalog-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .manager-workspace .catalog-filters { @apply tw:flex tw:flex-wrap; align-items: end; @apply tw:gap-s-3 tw:mt-s-3; }
-.manager-workspace .catalog-filters label { @apply tw:inline-flex tw:items-center tw:gap-s-2; flex: 1 1 120px; @apply tw:min-w-0 tw:text-muted tw:text-label-xs; }
+.manager-workspace .catalog-filters label { @apply tw:inline-flex tw:items-center tw:gap-s-2; flex: 1 1 120px; @apply tw:min-w-0 tw:text-muted tw:text-label-xs tw:whitespace-nowrap; }
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在
    .studio-select-wrapper 上，保持 label 文本与控件并排。 */
-.manager-workspace .catalog-filters .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[38px]; }
+.manager-workspace .catalog-filters .studio-select-wrapper { flex: 1; width: auto; @apply tw:min-w-0 tw:min-h-[38px]; }
 .manager-workspace .catalog-scope { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:flex-wrap; margin: var(--s-3) 0; @apply tw:text-muted tw:text-label-xs; }
 .manager-workspace .catalog-quick, .manager-workspace .inspector-tabs { @apply tw:flex tw:gap-s-1 tw:items-center; }
 .manager-workspace .catalog-quick button, .manager-workspace .inspector-tabs > button { border: 0; padding: var(--s-2) var(--s-3); @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-body-sm tw:cursor-pointer; }

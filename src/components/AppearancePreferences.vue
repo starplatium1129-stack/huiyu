@@ -10,17 +10,17 @@
       <div v-if="section === 'appearance'" class="appearance-fields">
         <fieldset class="appearance-choice-field">
           <legend>画室主题</legend>
-          <div class="appearance-segments" role="radiogroup" aria-label="画室主题">
-            <button v-for="choice in themeChoices" :key="choice.value" type="button" role="radio"
-              :aria-checked="themeMode === choice.value" :data-value="choice.value" @click="setThemeMode(choice.value)">{{ choice.label }}</button>
-          </div>
+          <RadioGroupRoot v-model="selectedTheme" class="appearance-segments" aria-label="画室主题">
+            <RadioGroupItem v-for="choice in themeChoices" :key="choice.value" :value="choice.value"
+              :data-value="choice.value" @focus="selectedTheme = choice.value">{{ choice.label }}</RadioGroupItem>
+          </RadioGroupRoot>
         </fieldset>
         <fieldset class="appearance-choice-field">
           <legend>动态效果</legend>
-          <div class="appearance-segments" role="radiogroup" aria-label="动态效果">
-            <button v-for="choice in motionChoices" :key="choice.value" type="button" role="radio"
-              :aria-checked="motionMode === choice.value" :data-value="choice.value" @click="setMotionMode(choice.value)">{{ choice.label }}</button>
-          </div>
+          <RadioGroupRoot v-model="selectedMotion" class="appearance-segments" aria-label="动态效果">
+            <RadioGroupItem v-for="choice in motionChoices" :key="choice.value" :value="choice.value"
+              :data-value="choice.value" @focus="selectedMotion = choice.value">{{ choice.label }}</RadioGroupItem>
+          </RadioGroupRoot>
         </fieldset>
         <GlassMaterialChoice v-if="materialControlsReady" />
         <label v-if="zoomAvailable" class="appearance-range">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
@@ -44,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
@@ -55,6 +56,10 @@ import '@/assets/css/appearance-preferences.css'
 const emit = defineEmits<{ open: [] }>()
 const props = withDefaults(defineProps<{ launcherOnly?: boolean; hideTriggers?: boolean }>(), { launcherOnly: false, hideTriggers: false })
 const { themeMode, motionMode, reducedGlass, setThemeMode, setMotionMode, setReducedGlass } = useDesktopPreferences()
+// Select on roving focus so the preference and Tab stop stay aligned even when
+// keyup precedes Reka's deferred click after a short arrow-key press.
+const selectedTheme = computed({ get: () => themeMode.value, set: setThemeMode })
+const selectedMotion = computed({ get: () => motionMode.value, set: setMotionMode })
 const dialog = ref<HTMLDialogElement | null>(null)
 const fluidDialog = useFluidDialog(dialog)
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()

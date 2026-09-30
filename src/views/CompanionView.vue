@@ -337,7 +337,7 @@ import CompanionOrbitMenu from '@/components/CompanionOrbitMenu.vue'
 import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
 import VoiceGlow from "@/components/visual/VoiceGlow.vue"
 import { defineAsyncComponent, ref, watch } from 'vue'
-import AppearancePreferences from '@/components/AppearancePreferences.vue'
+const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'

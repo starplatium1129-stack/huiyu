@@ -4,7 +4,6 @@ use std::time::{Duration, Instant};
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager};
 use windows_sys::Win32::Foundation::POINT;
-use windows_sys::Win32::Graphics::Gdi::{EnumDisplayMonitors, HDC};
 use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, OpenClipboard};
 use windows_sys::Win32::System::Memory::{GlobalLock, GlobalSize, GlobalUnlock};
 use windows_sys::Win32::System::Power::GetSystemPowerStatus;
@@ -243,78 +242,48 @@ pub fn start_power_watch(app: AppHandle) {
     });
 }
 
-/// 显示器轮询：监视器数量/工作区变化时把 Companion 与 Atelier 拉回屏内。
+/// 显示器轮询：各屏工作区或 DPI 变化时把窗口整体收进实际可用的屏幕。
 pub fn start_display_watch(app: AppHandle) {
     thread::spawn(move || {
-        let mut last_count = monitor_count();
-        let mut last_area = primary_work_area();
+        let mut last_areas = crate::main_shared::display_work_areas(&app);
         loop {
             thread::sleep(Duration::from_secs(3));
-            let count = monitor_count();
-            let area = primary_work_area();
-            if count != last_count || area != last_area {
-                last_count = count;
-                last_area = area;
-                clamp_windows(&app);
+            let areas = crate::main_shared::display_work_areas(&app);
+            if areas != last_areas {
+                last_areas = areas;
+                clamp_windows(&app, &last_areas);
             }
         }
     });
 }
 
-fn monitor_count() -> u32 {
-    let mut count = 0u32;
-    unsafe {
-        EnumDisplayMonitors(
-            HDC::default(),
-            std::ptr::null(),
-            Some(monitor_enum_proc),
-            &mut count as *mut u32 as isize,
-        );
-    }
-    count
-}
-
-unsafe extern "system" fn monitor_enum_proc(
-    _monitor: windows_sys::Win32::Graphics::Gdi::HMONITOR,
-    _dc: HDC,
-    _rect: *mut windows_sys::Win32::Foundation::RECT,
-    data: isize,
-) -> windows_sys::Win32::Foundation::BOOL {
-    let count = data as *mut u32;
-    *count += 1;
-    1
-}
-
-fn primary_work_area() -> (i32, i32, i32, i32) {
-    unsafe {
-        let x = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(76); // SM_XVIRTUALSCREEN
-        let y = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(77);
-        let w = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(78);
-        let h = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(79);
-        (x, y, w, h)
-    }
-}
-
-fn clamp_windows(app: &AppHandle) {
-    let area = primary_work_area();
-    if area.2 <= 0 || area.3 <= 0 {
-        return;
-    }
+fn clamp_windows(app: &AppHandle, monitors: &[crate::window_state::DisplayWorkArea]) {
+    let areas: Vec<_> = monitors.iter().map(|monitor| monitor.bounds).collect();
+    if areas.is_empty() { return; }
     for label in ["companion", "companion-chat", "atelier"] {
         if let Some(w) = app.get_webview_window(label) {
-            let Ok(pos) = w.outer_position() else { continue };
-            let Ok(size) = w.outer_size() else { continue };
-            let bounds = crate::window_state::clamp_window_bounds(
+            if w.is_minimized().unwrap_or(true) || w.is_maximized().unwrap_or(true) || w.is_fullscreen().unwrap_or(true) { continue; }
+            let Ok(pos) = w.inner_position() else { continue };
+            let Ok(size) = w.inner_size() else { continue };
+            let bounds = crate::window_state::clamp_bounds_to_work_areas(
                 &crate::window_state::WindowBounds {
                     x: pos.x as i64,
                     y: pos.y as i64,
                     width: size.width as i64,
                     height: size.height as i64,
                 },
-                (area.0 as i64, area.1 as i64, area.2 as i64, area.3 as i64),
-                None,
+                &areas,
+                Some((1, 1)),
             );
-            let _ = w.set_position(tauri::PhysicalPosition::new(bounds.x as i32, bounds.y as i32));
+            if bounds.x != pos.x as i64 || bounds.y != pos.y as i64 {
+                let _ = crate::main_shared::position_window_client_area(&w, tauri::PhysicalPosition::new(bounds.x as i32, bounds.y as i32));
+            }
+            if bounds.width != size.width as i64 || bounds.height != size.height as i64 {
+                let scale = w.scale_factor().unwrap_or(1.0);
+                let minimum = match label { "atelier" => (1024.0_f64, 720.0_f64), "companion-chat" => (380.0, 460.0), _ => (360.0, 480.0) };
+                let _ = w.set_min_size(Some(tauri::LogicalSize::new(minimum.0.min(bounds.width as f64 / scale), minimum.1.min(bounds.height as f64 / scale))));
+                let _ = w.set_size(tauri::PhysicalSize::new(bounds.width as u32, bounds.height as u32));
+            }
         }
     }
 }

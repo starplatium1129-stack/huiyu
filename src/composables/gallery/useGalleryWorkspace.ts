@@ -243,7 +243,7 @@ export function useGalleryWorkspace() {
                     blobThumbDataUrl(blob).then(dataUrl => {
                         if (dataUrl && !unmounted && viewActive && epoch === imageEpoch && history.value.some(entry => entry.id === item.id)) {
                             thumbUrls[item.id] = dataUrl;
-                            void artworkRepository.setThumbnail(imageId, dataUrl);
+                            return artworkRepository.setThumbnail(imageId, dataUrl);
                         }
                     }).catch(() => { }).finally(() => thumbPending.delete(imageId));
                 }

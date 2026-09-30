@@ -21,6 +21,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   const { forgetThumbnail, ...media } = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
+  let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
   let loadedPreferences: unknown[] | undefined
   let loadedSearchIndex: ArtworkSearchRecord[] | undefined
   async function list(includeDeleted = false, projection?: 'preference', signal?: AbortSignal): Promise<Row[]> {
@@ -41,8 +42,32 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (getDesktopRuntime().connection !== 'ready' && historyLoaded) return structuredClone(loadedHistory)
     loadedHistory = parseArtworkRecords((await list(false, undefined, signal)).map(row => row.body)).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
     historyLoaded = true
+    recentLoaded = false
     loadedSearchIndex = undefined
     return structuredClone(loadedHistory)
+  }
+  async function readRecentHistory(signal?: AbortSignal) {
+    signal?.throwIfAborted()
+    if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
+      return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
+    }
+    // Existing cursors sort by identity, not time. Scan the small preference
+    // projection to preserve Date/id fallback and stable tie ordering, then
+    // fetch only the three visible bodies; no prompt/inline-image library clone.
+    const selected = (await list(false, 'preference', signal))
+      .filter(row => parseArtworkRecords([row.body]).length)
+      .sort((a, b) => artworkTimestamp(b.body) - artworkTimestamp(a.body)).slice(0, 3)
+    const rows = selected.length
+      ? await workspaceRequest<Array<Row | null>>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal) : []
+    signal?.throwIfAborted()
+    if (rows.length !== selected.length || rows.some((row, index) => !row || row.deletedAt !== null
+      || row.id !== selected[index].id || row.revision !== selected[index].revision)) {
+      throw new Error('作品库在读取期间发生变更，请重新读取')
+    }
+    const recent = parseArtworkRecords(rows.map(row => row!.body))
+    if (recent.length !== selected.length) throw new Error('最近作品响应无效')
+    loadedRecent = recent; recentLoaded = true
+    return structuredClone(loadedRecent)
   }
   async function readSearchIndex(signal?: AbortSignal) {
     signal?.throwIfAborted()
@@ -72,7 +97,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     const current = await row(id)
     if (!current) return null
     const result = await workspaceRequest<Receipt>({ kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision, ...extra })
-    historyLoaded = false; projectsLoaded = false
+    historyLoaded = false; projectsLoaded = false; recentLoaded = false
     loadedSearchIndex = undefined
     return result
   }
@@ -93,13 +118,13 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       if (operation?.state !== 'committed' || !operation.receipt?.softDeleteResults) throw error
       receipt = operation.receipt
     }
-    historyLoaded = false; projectsLoaded = false
+    historyLoaded = false; projectsLoaded = false; recentLoaded = false
     loadedSearchIndex = undefined
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
   const repository: ArtworkRepository = {
-    readHistory, readSearchIndex, readProjects, readRecentHistory: readHistory, readPreferenceHistory,
+    readHistory, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {
@@ -121,6 +146,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read
       // the same record without generating another artwork or releasing its media.
       await workspaceRequest({ kind: 'appendArtwork', operationId: `artwork:${String(artwork.id)}`, artwork })
+      recentLoaded = false
       loadedSearchIndex = undefined
       return readHistory()
     },

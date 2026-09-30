@@ -9,6 +9,7 @@
     { "file": "a11y-device.spec.ts", "lane": "critical", "risk": "主流程可达性", "reason": "键盘、主题和窄屏主流程是每次变更的发布前回归。" },
     { "file": "anima-quick.spec.ts", "lane": "critical", "risk": "生成请求", "reason": "Anima 快速生成与参数提交是核心创作路径。" },
     { "file": "apple-hig-accessibility.spec.ts", "lane": "nightly", "risk": "无障碍视觉", "reason": "完整 HIG 视觉与交互审查耗时较高，放入夜间矩阵。" },
+    { "file": "appearance-keyboard.spec.ts", "lane": "nightly", "risk": "外观偏好单选组键盘与持久化", "reason": "中性页面夹具验证主题、动态与玻璃材质的方向键、Tab停点、偏好恢复及弹层焦点；相关控件变更时定向执行。" },
     { "file": "archive-route-transition.spec.ts", "lane": "nightly", "risk": "导航回归", "reason": "桌面扩展回归：导航回归；相关功能改动时定向运行，夜间保留覆盖，不加入每次提交的核心链路。" },
     { "file": "anchored-surface-motion.spec.ts", "lane": "nightly", "risk": "锚定弹层交互", "reason": "桌面扩展回归：锚定弹层交互；相关功能改动时定向运行，夜间保留覆盖，不加入每次提交的核心链路。" },
     { "file": "archive-visual-language.spec.ts", "lane": "manual", "risk": "视觉一致性", "reason": "历史视觉专项，涉及对应页面、材质或动效变更时定向执行；日常全站主题巡检统一由 theme-audit 承担。" },

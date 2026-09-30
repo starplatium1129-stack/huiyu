@@ -45,9 +45,10 @@ function createRepository(t: any) {
   });
   // 夹具不使用符号链接，避免 Git 初始化探测遗留重解析点。
   git(repositoryRoot, ['-c', 'core.symlinks=false', 'init', '--quiet']);
-  git(repositoryRoot, ['config', 'user.email', 'repo-hygiene@example.invalid']);
-  git(repositoryRoot, ['config', 'user.name', 'Repo Hygiene Test']);
-  git(repositoryRoot, ['config', 'core.autocrlf', 'false']);
+  // 只向独立临时库追加这三个固定值，保留 init 写入的平台默认配置。
+  // 等价于三次 git config --local，避免每个夹具重复启动三个 Git 进程。
+  fs.appendFileSync(path.join(repositoryRoot, '.git', 'config'),
+    '\n[user]\n\tname = Repo Hygiene Test\n\temail = repo-hygiene@example.invalid\n[core]\n\tautocrlf = false\n', 'utf8');
   write(repositoryRoot, '.gitattributes', '* -text\n');
   git(repositoryRoot, ['add', '--', '.gitattributes']);
   return repositoryRoot;

@@ -73,15 +73,19 @@ export function createArtworkReads(kv: ArtworkKvAdapter, dependencies: WebArtwor
     })
   }
 
-  function readRecentHistory() {
+  async function readRecentHistory(signal?: AbortSignal) {
+    signal?.throwIfAborted()
     return withMutation(async () => {
+      signal?.throwIfAborted()
       const current = parseArtworkRecords(await kv.get(ARTWORK_HISTORY_KEY))
+      signal?.throwIfAborted()
       if (current.length) return structuredClone(current)
       const legacy = parseArtworkRecords(readLocal(ARTWORK_HISTORY_KEY))
       if (legacy.length) {
         await kv.set(ARTWORK_HISTORY_KEY, legacy)
         local()?.removeItem(ARTWORK_HISTORY_KEY)
       }
+      signal?.throwIfAborted()
       return structuredClone(legacy)
     })
   }

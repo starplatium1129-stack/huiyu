@@ -2,10 +2,15 @@ use std::fs;
 use std::path::Path;
 use std::sync::Mutex;
 
+#[path = "window_geometry.rs"]
+mod geometry;
+pub use geometry::{clamp_bounds_to_work_areas, normalize_companion_bounds, physical_to_logical_bounds,
+    restore_window_placement, DisplayWorkArea, WindowPlacement};
+
 /// 与 Electron 版 windowState.ts 完全一致的 JSON 文件格式与语义，
 /// 保证升级迁移后数据无缝可用。
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct WindowBounds {
     pub x: i64,
     pub y: i64,
@@ -145,17 +150,6 @@ pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
     value["width"] = serde_json::json!(bounds.width);
     value["height"] = serde_json::json!(bounds.height);
     if value != previous { save_json_atomic(file_path, &value); }
-}
-
-/// Convert Tauri's physical client-area measurements to Electron-compatible DIP values.
-pub fn physical_to_logical_bounds(bounds: &WindowBounds, scale_factor: f64) -> WindowBounds {
-    let scale_factor = if scale_factor.is_finite() && scale_factor > 0.0 { scale_factor } else { 1.0 };
-    WindowBounds {
-        x: (bounds.x as f64 / scale_factor).round() as i64,
-        y: (bounds.y as f64 / scale_factor).round() as i64,
-        width: (bounds.width as f64 / scale_factor).round() as i64,
-        height: (bounds.height as f64 / scale_factor).round() as i64,
-    }
 }
 
 pub fn load_companion_preferences(file_path: &Path) -> CompanionPreferences {

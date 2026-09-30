@@ -165,13 +165,17 @@ test('source, compiler options, dependency lock and changed or missing outputs i
   } finally { f.remove(); }
 });
 
-test('deleted source removes only its unchanged owned output and preserves unrelated or edited files', async () => {
+test('deleted source removes only its unchanged owned output, including after cache format invalidation', async () => {
   const f = fixture();
   try {
     const { buildProjects } = await builder;
     f.write('server/retired.ts', 'export const retired = true;\n');
     f.write('server/edited.ts', 'export const edited = true;\n');
     buildProjects(f.root, { quiet: true, projects: ['node'] });
+    const record = JSON.parse(f.read('.cache/typescript-build/node.json')) as Record<string, unknown>;
+    record.version = 1;
+    delete record.queries;
+    f.write('.cache/typescript-build/node.json', JSON.stringify(record));
     f.write('server/edited.js', '// user-owned recovery note\n');
     f.write('server/unrelated.js', '// pre-existing external fixture\n');
     fs.unlinkSync(path.join(f.root, 'server/retired.ts'));
@@ -262,5 +266,33 @@ test('modifying inherited base config invalidates child project cache and catche
     const recompiled = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(recompiled.cached, false);
     assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
+  } finally { f.remove(); }
+});
+
+test('cached checking observes transitive sources, new resolution candidates and installed declarations', async () => {
+  const f = fixture();
+  try {
+    const { buildProjects } = await builder;
+    const build = () => buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    f.write('src/choice.d.ts', 'export declare const value: number;\n');
+    f.write('server/value.ts', "import { value } from '../src/choice';\nexport { value };\nconst checked: number = value;\n");
+    assert.equal(build().cached, false);
+    assert.equal(build().cached, true);
+    // Neither imported path belongs to this project's root inventory.
+    f.write('src/choice.ts', "export const value = 'new higher-priority module';\n");
+    assert.throws(build, /not assignable to type 'number'/);
+    f.write('src/choice.ts', 'export const value: number = 42;\n');
+    assert.equal(build().cached, false);
+    assert.equal(build().cached, true);
+    f.write('src/choice.ts', "export const value = 'changed transitive source';\n");
+    assert.throws(build, /not assignable to type 'number'/);
+
+    f.write('node_modules/fixture-lib/package.json', JSON.stringify({ name: 'fixture-lib', types: 'index.d.ts' }));
+    f.write('node_modules/fixture-lib/index.d.ts', 'export declare const value: number;\n');
+    f.write('server/value.ts', "import { value } from 'fixture-lib';\nexport { value };\nconst checked: number = value;\n");
+    assert.equal(build().cached, false);
+    assert.equal(build().cached, true);
+    f.write('node_modules/fixture-lib/index.d.ts', 'export declare const value: string;\n');
+    assert.throws(build, /not assignable to type 'number'/);
   } finally { f.remove(); }
 });

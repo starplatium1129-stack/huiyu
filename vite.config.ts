@@ -116,9 +116,9 @@ export default defineConfig(async ({ mode }) => {
   server: {
     port: 5173,
     watch: {
-      // desktop-tauri Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）；
+      // Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）；
       // runtime/ 由网关随时写入 pid/日志，同样会触发 EBUSY
-      ignored: ['**/desktop-tauri/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
+      ignored: ['**/desktop-tauri/**', '**/runtime-rs/target/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
     },
     proxy: {
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },
