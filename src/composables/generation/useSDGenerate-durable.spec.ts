@@ -54,6 +54,42 @@ it('closing during the cold durable execution import never reaches POST or its s
   } finally { signal.abort(); release(); sd.dispose(); vi.doUnmock('./runtimeImageSession') }
 })
 
+it.each([false, true])('keeps click ownership while the SD projection loads (cancel=%s)', async cancelled => {
+  let release!: () => void, entered = false
+  const gate = new Promise<void>(resolve => { release = resolve })
+  vi.doMock('@/utils/sdRuntimeRequest', async () => {
+    entered = true
+    await gate
+    return vi.importActual<object>('@/utils/sdRuntimeRequest')
+  })
+  const { useSDGenerate } = await import('./useSDGenerate')
+  const signal = new AbortController(), submitting = vi.fn()
+  const params = { prompt: 'Original neutral fixture', lora: ['ayachi_nene_v18_wd14:0'], runtimeContext: { sceneId: 'original' } }
+  const sd = useSDGenerate(), work = sd.generate(params, { requestKey: 'projection-key', signal: signal.signal, onSubmitting: submitting })
+  try {
+    await vi.waitFor(() => expect(entered).toBe(true))
+    params.prompt = 'Later edited fixture'
+    params.lora[0] = 'shiki_natsume_v18_wd14:1'
+    params.runtimeContext.sceneId = 'later'
+    if (cancelled) signal.abort()
+    release()
+    if (!cancelled) {
+      await vi.waitFor(() => expect(api.wait).toHaveBeenCalledOnce())
+      expect(api.submit).toHaveBeenCalledWith('generation', expect.objectContaining({
+        prompt: expect.stringContaining('Original neutral fixture'), loras: [{ id: 'L_NENE_V18_WD14', strength: 0 }],
+      }), 'projection-key', { sceneId: 'original' }, expect.any(Object))
+      expect(submitting).toHaveBeenCalledOnce()
+      signal.abort()
+    }
+    await work
+    if (cancelled) {
+      expect(api.submit).not.toHaveBeenCalled()
+      expect(submitting).not.toHaveBeenCalled()
+    }
+    expect(api.cancel).not.toHaveBeenCalled()
+  } finally { signal.abort(); release(); sd.dispose(); vi.doUnmock('@/utils/sdRuntimeRequest') }
+})
+
 it('observes a restored accepted queue attempt without another POST or replacement key', async () => {
   const { useSDGenerate } = await import('./useSDGenerate')
   const attempt = { key: 'saved-key', task: { taskId: 'accepted-task' }, rejected: vi.fn(), cancel: vi.fn() } as unknown as RuntimeSdAttempt

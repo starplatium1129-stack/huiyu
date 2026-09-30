@@ -2,7 +2,6 @@ import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 import type { SDGenerateParams } from '@/utils/sdRequest'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { buildRuntimeSdInput } from '@/utils/sdRuntimeRequest'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { TaskRecord } from '../../../types/tasks'
 import type { RuntimeSdAttempt } from './runtimeImageSession'
@@ -97,7 +96,11 @@ export function useSDGenerate() {
 
     try {
       params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
-      const { buildTxt2ImgRequest } = await import('@/utils/sdRequest')
+      // Both projections are submission-only. Keep the frozen input and abort
+      // check around this existing lazy boundary, including a cold first click.
+      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }] = await Promise.all([
+        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'),
+      ])
       controller.signal.throwIfAborted()
       const { payload } = buildTxt2ImgRequest(params)
 
