@@ -18,19 +18,15 @@
 
 ## 桌面人工诊断
 
-以下入口只由操作员显式调用，不属于默认门禁、CI或自动设备验收。本轮仅登记并审查源码，没有连接现有桌面、截图、点击或调用模型。`npm run wf -- diagnostics --help` 查看清单；工作流级 `--help` / `--plan` 只显示命令和副作用，不运行底层脚本。底层 CDP 脚本不实现 `--help`，不要直接加此参数试探运行条件。
+以下入口只由操作员显式调用，不属于默认门禁、CI或自动设备验收。`npm run wf -- diagnostics --help` 查看清单；工作流级 `--help` / `--plan` 只显示命令和副作用，不运行底层脚本。
 
 | 显式入口 | 源文件与默认行为 |
 | --- | --- |
 | `diagnostics:window-capture -Out runtime/<PNG> [-Title <标题>] [-ProcessId <PID>] [-Scale 2]` | `scripts/maintenance/capture-window.ps1` 用 PrintWindow 截取指定窗口，写入PNG，可覆盖旧文件。默认标题为绘遇 Companion、倍率为2；工作流要求明确传入 `-Out`，输出父目录须预先存在 |
-| `diagnostics:companion-shot` | `scripts/maintenance/cdp-shot.ts` 读取桌宠DOM并截图，固定写入 `C:/Users/Administrator/Desktop/_cdp_window.png`，可覆盖旧文件，当前没有输出路径参数 |
-| `diagnostics:companion-state` | `scripts/maintenance/cdp-verify.ts` 读取DOM和舞台尺寸，移除 `companion-ui-hidden` 临时显示当前窗口UI；只向标准输出写诊断，不创建截图，也不恢复原隐藏类 |
-| `diagnostics:companion-taps` | `scripts/maintenance/cdp-taps.ts` 临时显示UI并真实点击四处舞台位置；可能触发现有互动、语音与状态更新 |
-| `diagnostics:companion-interact` | `scripts/maintenance/cdp-interact.ts` 临时显示UI、点击身体并尝试旧角色切换按钮。当前UI没有 `companion-char-switch` 入口；`NO_SWITCH_BTN`、DOM状态或 `ready` 不代表已完成切角验收 |
 
-CDP入口连接显式开启的 `127.0.0.1:9222`，不自动启动浏览器或桌面服务；需现有 Playwright 依赖与目标 WebView。它们选择CDP枚举中最后一个URL包含 `/companion` 的页面，操作前核对目标窗口，不能把聊天页或其它窗口的日志混算为桌宠证据。点击和切角入口按目标当前设置可能使用模型、语音或设备，必须单独明确调用范围。登记不表示这些脚本已在当前设备验证通过。
+四个旧 `diagnostics:companion-*` CDP 探针已退出注册表。其源文件原样保留在 [历史探针归档](../scripts/archive/companion-cdp-20260930/README.md)，没有删除测试；旧选择器、固定截图目标与按 URL 子串选择最后一个页面的做法不构成当前有效的公共诊断 CLI，也不应直接运行。不能把归档探针输出作为现行桌宠功能或设备验收证据。
 
-人工诊断的当次截图与日志归入被忽略的 `runtime/`；CDP截图脚本保留上述历史固定输出行为，操作者须另行保留当次材料，避免覆盖已有证据。常规隔离浏览器回归继续使用下方的Playwright入口，不以这些人工脚本代替。
+人工诊断的当次截图与日志归入被忽略的 `runtime/`，避免覆盖已有证据。常规隔离浏览器回归继续使用下方的Playwright入口，不以人工脚本代替。本次只核对注册和归档内容，未连接真实浏览器或执行探针。
 
 ## 日常快捷操作
 

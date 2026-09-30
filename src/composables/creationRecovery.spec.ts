@@ -174,8 +174,13 @@ describe('临时成片持久化', () => {
     const { deps, tools, result } = tempHarness()
     deps.autoSaveToGallery.value = false
     let finish!: (id: string) => void
-    io.put.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    let entered!: () => void
+    const writeStarted = new Promise<void>(resolve => { entered = resolve })
+    io.put.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; entered() }))
     const pending = tools.handleAnimaResult(result, null)
+    // Completion actions load lazily; discard after the real write has begun,
+    // so this still exercises cleanup of an image that completes too late.
+    await writeStarted
     tools.discardTemp()
     finish('late-image')
     await pending

@@ -78,6 +78,31 @@ test('dynamic style carriers reject ordinary keys, unknown computed keys and spr
   `, 'host'), false, body);
 });
 
+test('style arrays recursively resolve only proven custom-property carriers', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const source = `
+    const theme = computed(() => ({ '--accent': color }));
+    const layout = useLayout();
+    function useLayout() {
+      const style = computed(() => expanded ? { '--width': width } : {});
+      return { style, resize };
+    }
+    const unsafe = computed(() => ({ color: 'red' }));
+    const unknown = incoming;
+  `;
+  for (const binding of ['[theme, layout.style.value]', '[theme, [{ "--fill": value }, layout.style.value]]',
+    '[{ style: { "--fill": value } }.style]']) {
+    assert.equal(bindsOnlyCustomProps(source, binding), true, binding);
+  }
+  for (const binding of ['[theme, unknown]', '[theme, unsafe]', '[theme, { opacity: 1 }]',
+    '[theme, ...unknown]', '[theme, layout.missing.value]', '[theme, layout[key]]', '[theme, , layout.style.value]',
+    '[theme, enabled ? layout.style.value : unsafe]', '[theme', '[{ "--fill": value',
+    '[{ style: theme, style: unknown }.style]']) {
+    assert.equal(bindsOnlyCustomProps(source, binding), false, binding);
+  }
+  assert.equal(bindsOnlyCustomProps(`${source}\nconst replaced = { ...unknown, style: theme };`, '[theme, replaced.style]'), false);
+});
+
 test("style-debt", () => {
 const root = sources.ROOT;
 const failures: string[] = [];
@@ -90,8 +115,6 @@ const sfcFiles = sources.sfcFiles();
 // ---- 1. 内联 style 预算 ----------------------------------------------------
 // 允许的唯一形态:自定义属性载体。值属于数据(评分/比例/进度),样式规则仍在 CSS 里。
 const CUSTOM_PROP_ONLY = /^\s*(--[\w-]+\s*:\s*[^;]+;?\s*)+$/;
-// :style="someRef" 的形态:去 <script> 里查该标识符的定义,确认它只产出自定义属性
-const IDENTIFIER_ONLY = /^\s*[A-Za-z_$][\w$]*\s*$/;
 
 // Follow local imports to the binding's helper, resolving each path from its own module.
 function styleCarrierSearchScope(absPath: string, source: string) {
@@ -141,7 +164,7 @@ for (const rel of sfcFiles) {
   for (const attr of sources.inlineStyleAttrs(template)) {
     if (attr.dynamic) {
       if (dynamicCustomPropsOnly(attr.value)) continue;
-      if (IDENTIFIER_ONLY.test(attr.value) && bindsOnlyCustomProps(styleCarrierSearchScope(path.join(root, rel), source), attr.value.trim())) continue;
+      if (bindsOnlyCustomProps(styleCarrierSearchScope(path.join(root, rel), source), attr.value)) continue;
     } else if (CUSTOM_PROP_ONLY.test(attr.value)) continue;
     const prefix = attr.dynamic ? ':style' : 'style';
     fail(`${rel}:${templateStartLine + attr.line} 内联 ${prefix} 必须换成 scoped class 或自定义属性载体 → ${prefix}="${attr.value}"`);
