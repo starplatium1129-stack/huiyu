@@ -60,7 +60,25 @@ function snapshot(dir: any): any {
 
 function buildFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  t.after(() => {
+    const info = fs.lstatSync(base);
+    assert.ok(info.isDirectory() && !info.isSymbolicLink(), 'fixture root must remain its own directory');
+    const root = fs.realpathSync.native(base);
+    const relative = path.relative(fs.realpathSync.native(os.tmpdir()), root);
+    assert.ok(path.isAbsolute(root) && relative === path.basename(base) && relative.startsWith('resource-pack-'),
+      'refusing cleanup outside this temporary fixture root');
+    // Windows rmSync can leave dangling junctions if their targets are removed first.
+    // Unlink only entries inside this fixture, without traversing their targets.
+    const unlinkFixtureLinks = (directory: string) => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const file = path.join(directory, entry.name);
+        if (entry.isSymbolicLink()) fs.unlinkSync(file);
+        else if (entry.isDirectory()) unlinkFixtureLinks(file);
+      }
+    };
+    unlinkFixtureLinks(root);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
   const root = path.join(base, 'root');
   const outside = path.join(base, 'outside');
   fs.mkdirSync(path.join(root, 'assets/dir'), { recursive: true });
