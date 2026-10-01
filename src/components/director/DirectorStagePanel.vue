@@ -13,7 +13,7 @@
       }"
       aria-label="成片监看区"
     >
-      <BorderBeam v-if="generationBusy" size="lg" color-variant="dual" />
+      <GenerationDust v-if="generationBusy" />
       <div class="stage-chrome">
         <span>绘制画布</span>
         <span class="stage-ready" role="status" aria-live="polite">
@@ -83,7 +83,7 @@
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <BorderBeam v-if="generationBusy" size="lg" color-variant="dual" />
+      <GenerationDust v-if="generationBusy" framed />
       <div class="stage-result-heading">
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
@@ -125,7 +125,7 @@ import { computed, ref, defineAsyncComponent, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
-import BorderBeam from '@/components/visual/BorderBeam.vue'
+import GenerationDust from '@/components/visual/GenerationDust.vue'
 import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
