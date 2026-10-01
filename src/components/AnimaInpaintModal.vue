@@ -229,6 +229,7 @@ async function handleStart() {
                   class="mask-canvas"
                   :class="{ hidden: maskMode !== 'paint' }"
                   aria-label="换装区域遮罩画布"
+                  tabindex="0"
                   @contextmenu.prevent
                   @pointerenter="cursorVisible = true"
                   @pointerleave="cursorVisible = false; stopMaskPaint()"
