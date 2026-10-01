@@ -186,3 +186,27 @@ it('validates and detaches persisted source tags without inferring provenance fo
   expect(draft.referenceInput?.tags).toEqual(['sitting'])
   expect(parsePromptBuilderDraft({ updatedAt: 1, manualTags: ['sitting'] })?.referenceInput).toBeNull()
 })
+
+
+it('restores saved tag ownership before adopting a new overlay and clears stale touched flags', () => {
+  const pb = usePromptBuilderStore()
+  pb.setPopularSubject('previous', 'default')
+  pb.manualTags = new Set(['jacket'])
+  pb.randomVariation = { context: 'previous', source: '', prompt: '', prose: '', tags: [], outfit: ['jacket'] }
+  pb.markParamTouched('cfg')
+  const savedVariation = { context: 'saved', source: '', prompt: '', prose: '', tags: [], outfit: ['coat'] }
+  localStorage.setItem('aics_pb_last_draft', JSON.stringify({ updatedAt: 1, subject: 'popular',
+    characterId: 'next', outfitId: 'default', char: pb.char, sceneId: pb.sceneId,
+    manualTags: ['jacket', 'coat', 'explicit_detail'], referenceInput: { tags: ['jacket'] },
+    randomVariation: savedVariation, sdParamsTouched: [] }))
+  expect(pb.restoreDraft()).toBe(true)
+  expect(pb.manualTags).toEqual(new Set(['jacket', 'coat', 'explicit_detail']))
+  expect(pb.referenceInput).toEqual({ tags: ['jacket'] })
+  expect(pb.randomVariation).toEqual(savedVariation)
+  expect(pb.sdParamsTouched.size).toBe(0)
+  pb.clearReferenceInput()
+  expect(pb.manualTags).toEqual(new Set(['coat', 'explicit_detail']))
+  pb.setPopularSubject('another', 'default')
+  expect(pb.manualTags).toEqual(new Set(['explicit_detail']))
+  pb.$dispose()
+})

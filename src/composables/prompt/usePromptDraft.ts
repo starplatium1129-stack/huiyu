@@ -88,6 +88,9 @@ export function usePromptDraft(state: PromptDraftState) {
   }
 
   function applyDraft(d: PromptBuilderDraft) {
+    // Context watchers must not retire the previous overlay against restored tags.
+    // The saved overlay is adopted last, after all subject/outfit changes.
+    randomVariation.value = null
     if (typeof d.story === 'string') story.value = d.story
     if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
     if (d.char) char.value = d.char
@@ -130,9 +133,7 @@ export function usePromptDraft(state: PromptDraftState) {
     // 2026-08-16 审计：恢复草稿时同步重建 touched 集合——否则恢复的用户参数会被
     // 后续 applyModelProfile（切底模/引擎等）当默认值静默覆盖。缺省（旧草稿）
     // 保持原行为：不标记任何键。
-    if (Array.isArray(d.sdParamsTouched) && d.sdParamsTouched.length) {
-      sdParamsTouched.value = new Set(d.sdParamsTouched.filter(isSDParamKey))
-    }
+    sdParamsTouched.value = new Set((d.sdParamsTouched ?? []).filter(isSDParamKey))
     if (typeof d.projectId === 'string') projectId.value = d.projectId
     if (d.subject === 'popular' && d.characterId && d.outfitId) {
       subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
