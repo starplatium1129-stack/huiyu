@@ -4,13 +4,25 @@ import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
 import type { useGalleryWorkspace } from './useGalleryWorkspace';
-type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "deleting" | "viewerIndex" | "visible" | "indexOf" | "history" | "releaseCardResources" | "pendingDeleteId" | "closeViewer" | "openViewer" | "bulkDeleting" | "selectedIds" | "loadGalleryStorage">;
+type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "deleting" | "viewerIndex" | "visible" | "indexOf" | "history" | "releaseCardResources" | "pendingDeleteId" | "closeViewer" | "openViewer" | "bulkDeleting" | "selectedIds" | "loadGalleryStorage"> & {
+    onDeleted?: (ids: Array<string | number>) => void;
+};
 interface FavoriteWrite {
     tail: Promise<void>;
     confirmed: boolean;
     revision: number;
 }
 const favoriteWrites = new WeakMap<object, Map<string | number, FavoriteWrite>>();
+function presentDeleted(ctx: Context, ids: Array<string | number>): void {
+    try {
+        // Capture presentation synchronously while decoded images and their DOM still exist.
+        ctx.onDeleted?.([...ids]);
+    }
+    catch (error) {
+        // A best-effort effect must not turn a confirmed storage write into a deletion failure.
+        console.warn('delete artwork presentation failed', error);
+    }
+}
 export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showToast'>, item: ArtworkRecord): Promise<void> {
     let writes = favoriteWrites.get(ctx.history);
     if (!writes) {
@@ -60,6 +72,7 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
             showToast('这幅作品已不在作品册，请刷新后重试', 'warning');
             return;
         }
+        presentDeleted(ctx, [item.id]);
         history.value = history.value.filter(h => h.id !== item.id);
         releaseCardResources(item.id);
         pendingDeleteId.value = null;
@@ -99,6 +112,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
     bulkDeleting.value = true;
     const ids = [...selectedIds.value];
     const failed: (string | number)[] = [];
+    const confirmed: (string | number)[] = [];
     try {
         let unconfirmed = false;
         for (let offset = 0; offset < ids.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
@@ -106,6 +120,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
             try {
                 const results = await artworkRepository.softDeleteArtworks(batch);
                 const deleted = new Set(results.filter(result => result.deleted).map(result => result.id));
+                confirmed.push(...batch.filter(id => deleted.has(id)));
                 failed.push(...batch.filter(id => !deleted.has(id)));
             }
             catch {
@@ -113,16 +128,18 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
                 unconfirmed = true;
             }
         }
-        const done = ids.length - failed.length;
+        const done = confirmed.length;
         if (done) {
+            presentDeleted(ctx, confirmed);
+            const deletedIds = new Set(confirmed);
+            // Remove originals before releasing resources or awaiting reload so snapshots stand alone.
+            ctx.history.value = ctx.history.value.filter(item => !deletedIds.has(item.id));
             // 查看器可能正指着被删掉的某一幅，先收起来，避免停在一张空图上
             if (viewerIndex.value >= 0)
                 closeViewer();
             // 软删已在仓储层摘掉项目引用，整体重载一次即可同步展墙与项目下拉
-            const failedIds = new Set(failed);
-            for (const id of ids)
-                if (!failedIds.has(id))
-                    releaseCardResources(id);
+            for (const id of confirmed)
+                releaseCardResources(id);
             selectedIds.value = new Set(failed);
         }
         // Also reconcile an unknown commit; never leave a successfully deleted batch visible after a lost response.

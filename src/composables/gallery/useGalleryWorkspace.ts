@@ -19,6 +19,7 @@ import { useGalleryFilters } from './useGalleryFilters';
 import { useGalleryComparison } from './useGalleryComparison';
 import { useGallerySelection } from './useGallerySelection';
 import { useGalleryViewer } from './useGalleryViewer';
+import { useGalleryDeleteMotion } from './useGalleryDeleteMotion';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -499,8 +500,9 @@ export function useGalleryWorkspace() {
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
-    function confirmDelete(item: ArtworkRecord): Promise<void> { return confirmDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }, item); }
-    function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }); }
+    const deleteMotion = useGalleryDeleteMotion(shellEl, () => history.value, () => galleryLoading.value);
+    function confirmDelete(item: ArtworkRecord): Promise<void> { return confirmDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item); }
+    function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }); }
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions,

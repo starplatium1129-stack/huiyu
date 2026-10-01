@@ -20,9 +20,9 @@ interface Grain {
   alpha: number
 }
 
-function sizeBacking(canvas: HTMLCanvasElement, width: number, height: number): void {
+function sizeBacking(canvas: HTMLCanvasElement, width: number, height: number, maxPixels: number, maxEdge: number): void {
   const scale = Math.min(window.devicePixelRatio || 1, 1.5,
-    MAX_EDGE / Math.max(width, height), Math.sqrt(MAX_PIXELS / (width * height)))
+    maxEdge / Math.max(width, height), Math.sqrt(maxPixels / (width * height)))
   canvas.width = Math.max(1, Math.floor(width * scale))
   canvas.height = Math.max(1, Math.floor(height * scale))
 }
@@ -31,7 +31,10 @@ function sizeBacking(canvas: HTMLCanvasElement, width: number, height: number): 
  * its URL is revoked. The host must establish an absolute-positioning context.
  * Returns null when capture is unavailable (including cross-origin taint).
  */
-export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement): (() => void) | null {
+export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, profile: 'canvas' | 'thumbnail' = 'canvas'): (() => void) | null {
+  const maxParticles = profile === 'thumbnail' ? 1200 : MAX_PARTICLES
+  const maxPixels = profile === 'thumbnail' ? 300_000 : MAX_PIXELS
+  const maxEdge = profile === 'thumbnail' ? 640 : MAX_EDGE
   if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0) return null
   const rect = image.getBoundingClientRect(), hostRect = host.getBoundingClientRect()
   if (rect.width < 1 || rect.height < 1 || !Number.isFinite(rect.width * rect.height)) return null
@@ -57,10 +60,10 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement):
   }
 
   try {
-    sizeBacking(overlay, viewWidth, viewHeight)
-    sizeBacking(snapshot, width, height)
+    sizeBacking(overlay, viewWidth, viewHeight, maxPixels, maxEdge)
+    sizeBacking(snapshot, width, height, maxPixels, maxEdge)
     // A single tiny readback, never a read of the full-size artwork or snapshot.
-    const target = Math.min(MAX_PARTICLES, Math.max(1, Math.ceil(width * height / 110)))
+    const target = Math.min(maxParticles, Math.max(1, Math.ceil(width * height / 110)))
     const columns = Math.max(1, Math.min(target, Math.round(Math.sqrt(target * width / height))))
     const rows = Math.max(1, Math.floor(target / columns))
     sample.width = columns
