@@ -37,15 +37,17 @@
       </div>
       <div class="pop-results-bar">
         <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }} 幕</span>
+        <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
           <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
         </StudioTooltip>
       </div>
 
-      <div v-if="filtered.length === 0" class="pop-empty">
-        <p>没有符合当前条件的场景，换个关键词或分类试试。</p>
-        <button class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
-      </div>
+      <ArchiveStatePanel v-if="filtered.length === 0" compact :kind="pool.length ? 'filtered' : 'empty'"
+        :title="pool.length ? '没有符合当前条件的场景' : '这个角色暂未收录场景'"
+        :message="pool.length ? '换个关键词或分类，也可以清除筛选继续翻阅。' : '可先翻阅其他角色的场景，找到想要绘制的下一幕。'">
+        <button v-if="pool.length" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
+      </ArchiveStatePanel>
 
       <!-- 场景卡片网格 -->
       <div v-content-motion="`${category}:${ratingFilter}`" class="pop-grid">

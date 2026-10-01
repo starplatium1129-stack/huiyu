@@ -8,7 +8,7 @@
    ============================================================ */
 .sc {
   --z-sc-media: 0;
-  --z-sc-pointer-glow: 1;
+  --z-sc-accent: 1;
   @apply tw:relative;
   background: var(--bg-surface);
   border: 1px solid var(--border-soft);
@@ -22,42 +22,31 @@
   text-decoration: none;
   box-shadow: var(--shadow-sm);
 }
-.sc:hover {
-  border-color: color-mix(in srgb, var(--accent) 65%, var(--border-strong));
-  transform: translateY(-2px);
-}
 .sc[role="button"]:active {
   transform: translateY(0) scale(.975);
   transition-duration: var(--motion-press);
 }
+.sc[role="button"]:focus-visible:active { transform:none; transition:none; }
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sc-static { @apply tw:cursor-default; }
 /* Prepaint the rim; hovering changes only opacity rather than shadow blur. */
 .sc::after {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
-  z-index: var(--z-sc-pointer-glow); pointer-events: none;
+  z-index: var(--z-sc-accent); pointer-events: none;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 48%, transparent), inset 0 1px 0 var(--glass-highlight);
   opacity: 0; transition: opacity var(--motion-hover);
 }
-.sc:hover::after, .sc:focus-within::after { opacity: 1; }
+.sc:focus-within::after { opacity: 1; transition:none; }
+@media (hover:hover) and (pointer:fine) {
+  .sc:hover { border-color:var(--border-strong); }
+  .sc:hover::after { opacity:1; }
+}
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion="full"]) .sc:hover,
   :root:not([data-motion="full"]) .sc[role="button"]:active { transform: none; }
 }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .sc:hover,
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .sc[role="button"]:active { transform: none; }
-
-/* Cache a fixed-size light texture; pointer movement only changes its transform. */
-.sc::before {
-  content: ""; @apply tw:absolute tw:left-0 tw:top-0 tw:w-[520px] tw:h-[520px]; z-index: var(--z-sc-pointer-glow); @apply tw:pointer-events-none;
-  background: radial-gradient(260px circle at center,
-    color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
-  transform:translate3d(calc(var(--sc-spot-x, 0px) - 260px),calc(var(--sc-spot-y, 0px) - 260px),0);
-  opacity: var(--sc-spot-o, 0);
-  transition: opacity var(--motion-route-cut) var(--ease-out);
-}
-.sc:hover::before { will-change:transform,opacity; }
-.sc:hover .sc-band { border-color: transparent; }
 
 /* ---- 视觉预览图区(审核样张优先,渐变兜底) ---- */
 .sc-band {
@@ -69,21 +58,17 @@
 .sc-thumb {
   @apply tw:absolute; inset: 0; z-index: var(--z-sc-media); /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
   @apply tw:w-full tw:h-full tw:object-cover; object-position: center 22%;
-  opacity:0; transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out);
+  opacity:0; transition: opacity var(--motion-hover) var(--ease-out);
 }
 .sc-thumb-ready { opacity:1; }
-/* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
-   改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。
-   渐变宽度 220%，位移 0 → -120% 与原背景位移量一致。 */
+/* Keep a static mat until the decoded thumbnail arrives. */
 .sc-thumb-skeleton { @apply tw:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; @apply tw:overflow-hidden; transition:opacity var(--motion-hover); }
 .sc-thumb-skeleton::after {
   content:""; @apply tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[220%];
   background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%);
 }
 .sc-thumb-skeleton.visible { opacity:1; }
-.sc-thumb-skeleton.visible::after { animation:archive-skeleton-shimmer 1.3s linear infinite; }
 .sc-thumb-missing { @apply tw:hidden; }
-.sc:hover .sc-thumb { transform: none; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
 .sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
 .sc-thumb-r18.sc-thumb-ready { filter: blur(16px) saturate(.85); transform: scale(1.08); }
@@ -100,12 +85,7 @@
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
 .sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
-@media (hover: hover) and (pointer: fine) {
-  .sc:hover { transform: translateY(-3px); }
-  .sc:hover .sc-thumb { transform: scale(1.03); }
-  .sc:hover .sc-thumb-r18,
-  .sc:hover .sc-thumb-r18.sc-thumb-ready { transform: scale(1.03); }
-}
+.sc[data-rating="R18"]:focus-within .sc-band::before { transition:none; }
 .sc-cat {
   @apply tw:relative; z-index: var(--z-raised);
   @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;
@@ -141,7 +121,7 @@
 
 /* ---- 主体 ---- */
 .sc-body { @apply tw:p-s-3 tw:flex tw:flex-col tw:gap-s-1 tw:min-w-0; }
-.sc-title { @apply tw:font-bold tw:text-body tw:leading-tight tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis; }
+.sc-title { @apply tw:font-semibold tw:text-body tw:leading-tight tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis; }
 .sc-story { @apply tw:text-label-sm tw:text-muted tw:leading-body; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; @apply tw:overflow-hidden; }
 .sc-tags { @apply tw:flex tw:gap-s-1 tw:flex-wrap; }
 .sc-tag {
@@ -149,16 +129,9 @@
   padding: 2px 8px;
   @apply tw:rounded-pill;
   background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
-  border: 1px solid var(--border-soft);
+  border: 0;
   @apply tw:text-secondary;
   letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 var(--hl-inset-06);
-  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
-}
-.sc-tag:hover {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  @apply tw:text-primary;
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
 }
 .sc-meta { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:text-mono-sm tw:text-muted; }
 .sc-meta-r { @apply tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:text-right; }
@@ -195,9 +168,6 @@
 }
 .sc-empty .ic { @apply tw:text-glyph tw:mb-s-3; }
 .sc-empty p { @apply tw:text-muted tw:mb-s-4; }
-/* 位移量：层宽 220%，要让右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
-@keyframes archive-skeleton-shimmer { to { transform: translateX(-54.5%); } }
-@media (prefers-reduced-motion: reduce) { .sc-thumb-skeleton.visible { animation:none; } }
 
 /* An unavailable preview is explicit; keep frame dimensions stable while it loads. */
 .sc-preview-unavailable { @apply tw:absolute; inset: 0; @apply tw:grid; place-items: center; @apply tw:p-s-4 tw:text-muted tw:text-label-sm; background: var(--bg-deep); }

@@ -1,37 +1,38 @@
 <template>
   <article class="home-page">
     <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
-      <div class="home-hero" :data-muse="homeMuse">
+      <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
         <div class="hero-copy">
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
           <p class="hero-sub">选角色、挑场景，用 AI 生成二次元 CG。<br />从现成灵感开始，也能自己编排画面与光影。</p>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink to="/showcase" class="btn btn-lg btn-ghost">先看参考样张 <ArchiveIcon name="image" /></RouterLink>
+            <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses" role="group" aria-label="首页角色视觉">
             <AnimatedSelection />
-            <button type="button" :aria-pressed="homeMuse === 'nene'" @click="homeMuse = 'nene'"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
-            <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="homeMuse = 'natsume'"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
+            <button type="button" :aria-pressed="homeMuse === 'nene'" @click="selectMuse('nene', $event)"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
+            <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
+          <div class="hero-links">
           <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
             :aria-label="`欣赏${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的粒子形象`">
             <ArchiveIcon name="spark" /><span>欣赏粒子形象</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
           </RouterLink>
+          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />先看参考样张</RouterLink>
+          </div>
         </div>
-        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" aria-label="宁宁与夏目的角色视觉">
+        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" :aria-label="`${heroName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
           <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
-          <div v-else class="hero-fallback nene" :class="{ 'is-current': homeMuse === 'nene' }" aria-hidden="true">
-            <ArchiveIcon name="image" />
-            <span class="hero-fallback-text">主视觉暂未加载</span>
-          </div>
           <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
-          <div v-else class="hero-fallback natsume" :class="{ 'is-current': homeMuse === 'natsume' }" aria-hidden="true">
+          <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="homeMuse">
             <ArchiveIcon name="image" />
-            <span class="hero-fallback-text">主视觉暂未加载</span>
+            <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
+            <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
           </div>
+          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" role="status">正在载入{{ heroName }}的画页…</p>
           <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
         <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
@@ -126,7 +127,7 @@
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
           <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
-          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage :src="homeMuse === 'nene' ? natsumeHero.src : neneHero.src" alt="" loading="lazy" /></span>
+          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage v-if="heroLoaded[homeMuse]" :src="homeMuse === 'nene' ? neneHero.src : natsumeHero.src" alt="" loading="lazy" /><ArchiveIcon v-else name="image" class="home-entry-placeholder" /></span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
@@ -220,7 +221,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
@@ -248,10 +249,30 @@ const recentScenes = ref<HomeScene[]>([])
 const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
+const heroImmediate = ref(false)
+const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
 const { heroes } = useHomeHeroes()
-const { image: neneHero, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
-const { image: natsumeHero, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
+const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
+const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
 const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
+const heroLoaded = computed(() => ({ nene: neneLoaded.value, natsume: natsumeLoaded.value }))
+function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
+  heroImmediate.value = event.detail === 0
+  homeMuse.value = muse
+}
+function retryHero(event: MouseEvent) {
+  const origin = event.currentTarget
+  const hero = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.home-hero') : null
+  if (homeMuse.value === 'nene' && neneFailed.value) retryNene()
+  else if (homeMuse.value === 'natsume' && natsumeFailed.value) retryNatsume()
+  if (hero) void nextTick(() => {
+    // The retry button leaves with its error state; preserve only the focus
+    // it owned, and never pull the user back from a newly focused control.
+    if (hero.isConnected && document.activeElement === document.body) {
+      hero.querySelector<HTMLButtonElement>('.hero-muses button[aria-pressed="true"]')?.focus({ preventScroll: true })
+    }
+  })
+}
 watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); else if (muse === 'natsume' && natsumeFailed.value) retryNatsume() })
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──

@@ -36,30 +36,30 @@
       </details>
     </div>
 
+    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册，当前样张仍可继续浏览。' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest">重试</button></div>
     <div v-show="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
-      <ShowcaseAlbums v-if="!manifestLoading && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" @select="openAlbum" />
-      <ArchiveStatePanel v-if="manifestLoading || unavailable || !albums.length" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
+      <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
+      <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
     <div v-show="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status">显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊</span></div>
-    <p v-if="reloadError && !unavailable" role="status">{{ reloadError }}</p>
     <ArchiveStatePanel
       v-if="unavailable"
       class="empty empty-block"
       kind="error"
       title="展示素材暂未连接"
-      message="重新启动控制面板后会自动连接 AI/SceneShowcase 中最新的审核展示集。"
+      message="请确认展示素材已连接后重新读取，也可以先逛灵感场景。"
     >
       <button class="btn btn-primary" type="button" @click="loadManifest">重新读取样张</button>
       <RouterLink class="btn btn-ghost" to="/scene-explorer">先逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 
     <ArchiveStatePanel
-      v-else-if="manifestLoading"
+      v-else-if="manifestLoading && !entries.length"
       class="empty empty-block"
       kind="loading"
       title="正在读取样张目录…"
-      message="连接 AI/SceneShowcase 审核展示集。"
+      message="正在连接画册目录和已审核样张。"
     >
       <span class="btn btn-ghost" aria-disabled="true">加载中</span>
     </ArchiveStatePanel>
@@ -73,7 +73,7 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else v-content-motion="`${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
+    <div v-else v-content-motion="`${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :type-label="typeLabel(entry.type)" :rating-label="ratingLabel(entry.rating)"

@@ -6,11 +6,7 @@
     :role="clickable ? 'button' : undefined"
     :tabindex="clickable ? 0 : undefined"
     @click="clickable && emit('pick', scene)"
-    @keydown.enter.prevent="clickable && emit('pick', scene)"
-    @keydown.space.prevent="clickable && emit('pick', scene)"
-    @mousemove="onSpotMove"
-    @mouseenter="onSpotEnter"
-    @mouseleave="onSpotLeave"
+    @keydown="onCardKeydown"
   >
     <div class="sc-band">
       <div v-if="thumbId" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
@@ -49,8 +45,7 @@
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { computed, onDeactivated, onUnmounted, ref } from 'vue'
-import { prefersReducedMotion } from '@/utils/motionPreference'
+import { computed } from 'vue'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -84,40 +79,14 @@ const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
 
 const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
-
-// Move a fixed gradient texture; coalesce pointer events to the latest position.
-const spotEl = ref<HTMLElement | null>(null)
-let spotFrame = 0
-let spotX = 0, spotY = 0
-function onSpotEnter(e: MouseEvent) {
-  if (prefersReducedMotion()) return
-  const el = e.currentTarget as HTMLElement
-  spotEl.value = el
-  el.style.setProperty('--sc-spot-o', '1')
-  onSpotMove(e)
-}
-function onSpotLeave() {
-  spotEl.value?.style.setProperty('--sc-spot-o', '0')
-  spotEl.value = null
-  if (spotFrame) { cancelAnimationFrame(spotFrame); spotFrame = 0 }
-}
-function onSpotMove(e: MouseEvent) {
-  if (prefersReducedMotion()) { onSpotLeave(); return }
-  const el = e.currentTarget as HTMLElement
-  if (spotEl.value !== el) return
-  spotX = e.clientX; spotY = e.clientY
-  if (spotFrame) return
-  spotFrame = requestAnimationFrame(() => {
-    spotFrame = 0
-    const r = el.getBoundingClientRect()
-    el.style.setProperty('--sc-spot-x', `${spotX - r.left}px`)
-    el.style.setProperty('--sc-spot-y', `${spotY - r.top}px`)
-  })
-}
-
 const clickable = computed(() =>
   props.clickable === true || (props.clickable !== false && props.mode !== 'strip')
 )
+function onCardKeydown(event: KeyboardEvent) {
+  if (!clickable.value || event.target !== event.currentTarget || event.defaultPrevented || event.isComposing || (event.key !== 'Enter' && event.key !== ' ')) return
+  event.preventDefault()
+  emit('pick', props.scene)
+}
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFailed } = useRuntimeImage(() => {
@@ -133,7 +102,5 @@ const tags = computed(() => {
 const metaText = computed(() =>
   props.meta ?? [props.scene.season || '', props.scene.weather || ''].filter(Boolean).join(' · ')
 )
-onDeactivated(onSpotLeave)
-onUnmounted(onSpotLeave)
 </script>
 <style src="@/assets/css/scene-card.css"></style>

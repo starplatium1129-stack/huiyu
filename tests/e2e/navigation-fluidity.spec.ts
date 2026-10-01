@@ -32,7 +32,7 @@ test('changing motion preference settles an active route transition', async ({ p
 
 test('explicitly revisiting a cached page restores its window scroll position', async ({ page }) => {
   await page.goto('/scene-explorer')
-  await expect(page.locator('.scene-grid .stagger-item').first()).toBeVisible()
+  await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 640))
   const saved = await page.evaluate(() => window.scrollY)
   expect(saved).toBeGreaterThan(0)
@@ -47,7 +47,7 @@ test('explicitly revisiting a cached page restores its window scroll position', 
 
 test('clearing a scene filter returns to the pre-filter scroll position', async ({ page }) => {
   await page.goto('/scene-explorer')
-  const cards = page.locator('.scene-grid .stagger-item')
+  const cards = page.locator('.scene-grid .sc')
   await expect(cards.first()).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 700))
   const saved = await page.evaluate(() => window.scrollY)
@@ -66,7 +66,7 @@ test('clearing a scene filter returns to the pre-filter scroll position', async 
 
 test('a deliberate scroll while filtered wins over the remembered position', async ({ page }) => {
   await page.goto('/scene-explorer')
-  const cards = page.locator('.scene-grid .stagger-item')
+  const cards = page.locator('.scene-grid .sc')
   await expect(cards.first()).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 700))
 

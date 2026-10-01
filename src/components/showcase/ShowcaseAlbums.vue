@@ -47,9 +47,9 @@ const emit = defineEmits<{
 .albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); padding:var(--s-2) var(--s-1) var(--s-3); }
 .album-card { border: 0; background: transparent; font: inherit; scroll-snap-align: start; }
 .album-art { margin: var(--s-1) var(--s-1) var(--s-3); aspect-ratio: 1.65; }
-.album-art::before { content: ''; @apply tw:absolute; z-index: -1; inset: -5px 7px 5px; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-base); transform: rotate(-2deg); transition: transform var(--motion-hover); }
+.album-art::before { content: ''; @apply tw:absolute; z-index: -1; inset: -5px 7px 5px; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-base); transform: rotate(-2deg); }
 .album-cover { border: 2px solid var(--bg-surface); background: var(--bg-base); box-shadow: var(--shadow-sm); }
-.album-cover :deep(img) { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position: center 28%; transition: transform var(--motion-hover); }
+.album-cover :deep(img) { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position: center 28%; }
 .album-placeholder > .archive-icon { @apply tw:text-title; }
 .album-card[aria-pressed="true"] .album-cover { outline: 2px solid var(--accent); outline-offset: 2px; }
 .album-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
@@ -58,10 +58,6 @@ const emit = defineEmits<{
 .album-copy > span { @apply tw:shrink-0 tw:text-secondary tw:text-label; font-variant-numeric: tabular-nums; }
 .album-description { padding-inline: var(--s-1); }
 .album-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  html:not([data-reduced-motion="true"]) .album-card:hover .album-art::before { transform: translateY(-2px) rotate(-3deg); }
-  html:not([data-reduced-motion="true"]) .album-card:hover .album-cover :deep(img) { transform: scale(1.035); }
-}
+@media (hover:hover) and (pointer:fine) { .album-card:hover .album-copy strong { color:var(--accent); } }
 @media (max-width: 768px) { .albums-track { @apply tw:gap-s-4; } .showcase-albums { @apply tw:pb-s-4; } }
-@media (prefers-reduced-motion: reduce) { .album-art::before, .album-cover :deep(img) { transition: none; } }
 </style>

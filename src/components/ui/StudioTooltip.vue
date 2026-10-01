@@ -200,10 +200,7 @@ watch(() => props.anchor, () => {
 .studio-tooltip {
   transform-origin: var(--reka-tooltip-content-transform-origin, center);
 }
-.studio-tooltip[data-state='open'] { animation:studio-tooltip-in var(--motion-control) var(--ease-out) both; }
-.studio-tooltip[data-state='closed'] { animation:studio-tooltip-out var(--motion-hover) var(--ease-out) both; }
-@keyframes studio-tooltip-in { from { opacity:0; transform:translateY(-2px) scale(.98); } to { opacity:1; transform:none; } }
-@keyframes studio-tooltip-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-1px) scale(.99); } }
+/* Toolbar hints repeat frequently and appear on keyboard focus: respond directly. */
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
 @media (prefers-reduced-motion: reduce) { .studio-tooltip[data-state] { animation: none; } }

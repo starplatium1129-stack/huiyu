@@ -13,10 +13,11 @@
   @apply tw:cursor-pointer;
 }
 .pop-rating-pill { background: transparent; }
-.pop-rating-pill:hover,
-.pop-cat:hover { @apply tw:border-strong tw:text-primary; }
+@media (hover:hover) and (pointer:fine) {
+  .pop-rating-pill:hover,.pop-cat:hover { background:var(--bg-elevated); color:var(--text-primary); }
+}
 .pop-rating-pill.active,
-.pop-cat.active { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; }
+.pop-cat.active { background: var(--accent-soft); @apply tw:text-accent; }
 .pop-rating-pill.rating-R18.active,
 .pop-cat.adult.active { @apply tw:border-danger-text tw:text-danger-text; background: var(--bg-surface); }
 .pop-rating-pill:focus-visible,
@@ -26,17 +27,17 @@
 .pop-results-bar { @apply tw:flex tw:flex-wrap tw:justify-between tw:items-center tw:gap-s-2; margin: var(--s-4) 0; }
 .pop-count { @apply tw:text-secondary tw:text-label-sm; }
 .pop-count strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric: tabular-nums; }
+.pop-filter-reset { margin-left:auto; min-height:32px; padding:var(--s-1) var(--s-2); border:0; border-radius:var(--r-sm); background:transparent; color:var(--accent); font:500 var(--fs-label-sm) var(--font-sans); cursor:pointer; }
+.pop-filter-reset:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .mature-hint { @apply tw:text-label-xs; }
-.pop-empty { padding: var(--s-7) var(--s-4); border: 1px dashed var(--border-strong); @apply tw:rounded-lg tw:text-secondary tw:text-center; }
 
 .pop-grid { @apply tw:grid; align-items: start; @apply tw:gap-s-5; }
 .pop-card {
-  @apply tw:flex tw:flex-col tw:min-w-0 tw:p-s-2;
+  @apply tw:flex tw:flex-col tw:min-w-0 tw:overflow-hidden;
   border: 1px solid var(--border-soft);
   @apply tw:rounded-lg;
   background: var(--bg-surface);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--motion-hover) var(--ease-out);
   content-visibility: auto;
   contain-intrinsic-size: auto 470px;
 }
@@ -55,13 +56,13 @@
   @apply tw:w-full tw:h-full tw:object-cover;
   object-position: center 22%;
   opacity: 0;
-  transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out);
+  transition: opacity var(--motion-hover) var(--ease-out);
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; }
 .pop-thumb img.pop-thumb-missing { @apply tw:hidden; }
 .pop-thumb-skeleton { @apply tw:absolute; inset: 0; opacity: 0; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); }
 .pop-thumb-skeleton.visible { opacity: 1; }
-.pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; border: 1px dashed var(--border-strong); @apply tw:rounded-sm tw:text-secondary tw:text-center tw:text-label-xs tw:leading-body; }
+.pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; @apply tw:rounded-sm tw:text-secondary tw:text-center tw:text-label-xs tw:leading-body; }
 .pop-preview-missing > .archive-icon { @apply tw:text-title tw:mb-s-1; }
 .pop-preview-missing strong { @apply tw:text-body-sm tw:font-medium; }
 /* Keep the existing local-only R18 reveal; blur changes instantly, never animates. */
@@ -82,7 +83,8 @@
 }
 .pop-card:hover .pop-thumb-hint,
 .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
-.pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding: var(--s-4) var(--s-2) var(--s-2); }
+.pop-card:focus-within .pop-thumb-hint { transition:none; }
+.pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding:var(--s-4); }
 .pop-card-category { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[20px] tw:text-secondary tw:text-label-xs; }
 .pop-card-head h3 { @apply tw:m-0 tw:text-primary; font: 600 var(--fs-title-xs)/var(--lh-tight) var(--font-display); overflow-wrap: anywhere; }
 .pop-rating { flex: 0 0 auto; padding: 1px var(--s-2); border: 1px solid var(--danger-text); @apply tw:rounded-pill tw:text-danger-text; font: 600 var(--fs-label-xs) var(--font-sans); }
@@ -96,7 +98,6 @@
 .pop-scene-details summary { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:text-secondary tw:text-label-sm; list-style: none; @apply tw:cursor-pointer; }
 .pop-scene-details summary::-webkit-details-marker { @apply tw:hidden; }
 .pop-scene-details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
-.pop-scene-details summary > .archive-icon { transition: transform var(--motion-hover) var(--ease-out); }
 .pop-scene-details[open] summary > .archive-icon { transform: rotate(180deg); }
 .pop-decision { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; margin: var(--s-1) 0 var(--s-4); @apply tw:text-label-xs; }
 .pop-decision > div { @apply tw:grid tw:gap-s-1; }
@@ -107,10 +108,9 @@
 .pop-draw-action:hover,
 .pop-draw-action:focus-visible { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; box-shadow: none; }
 
-@media (hover: hover) and (pointer: fine) {
-  .pop-card:hover { transform: translateY(-3px); @apply tw:border-strong; }
-  .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform: scale(1.025); }
-}
+/* The cover stays in place while readers compare scenes and open details. */
+.popular-scene-library .pop-grid .pop-card { transition:none; }
+.popular-scene-library .pop-grid .pop-card:hover { transform:none; }
 @media (prefers-reduced-motion: reduce) {
   .pop-card,
   .pop-thumb img,
@@ -119,3 +119,5 @@
   .pop-card:hover,
   .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform: none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb img,
+:root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb-hint { transition:opacity var(--motion-press) var(--ease-out); }

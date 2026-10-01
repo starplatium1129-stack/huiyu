@@ -1,7 +1,7 @@
 @reference "./tailwind.css";
 .popular-scene-library { padding: clamp(28px, 3vw, 44px) clamp(20px, 3.5vw, 56px) var(--s-8); background: var(--bg-base); }
-.popular-scene-library .library-header { @apply tw:items-center tw:mb-s-6; }
-.popular-scene-library .library-header h1 { font-size: clamp(2rem, 3.5vw, 3.2rem); @apply tw:font-semibold; }
+.popular-scene-library .library-header { @apply tw:items-center tw:mb-s-5; }
+.popular-scene-library .library-header h1 { font-size: clamp(1.65rem, 2.8vw, 2.4rem); @apply tw:font-semibold; letter-spacing:-.02em; }
 .popular-scene-library .library-header p { @apply tw:text-secondary tw:leading-body; }
 .popular-scene-library .library-header > .btn { @apply tw:shrink-0; }
 .popular-scene-library .page-kicker { @apply tw:text-secondary; font: 500 var(--fs-label-xs) var(--font-mono); letter-spacing: .12em; }

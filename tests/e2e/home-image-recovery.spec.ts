@@ -76,16 +76,25 @@ failureCase('H1', '英雄图 404 占位可读并恢复', async (page, theme, tes
   await expect(page.locator('#continueCta')).toBeVisible()
   await expect(page.locator('.hero-orbit')).toBeVisible()
   await shot(page, testInfo, 'H1-failure', theme)
-  // 恢复：解除 404 → 发放有效图 → 重载，图片真实解码且占位清零
+  // 显式重试在当前画页内恢复，不丢角色选择或改变主视觉框架。
+  const before = await page.locator('.hero-orbit').boundingBox()
+  await expect(page.locator('.hero-fallback [role="status"]')).toBeVisible()
+  // 恢复：解除 404 → 发放有效图 → 重试，图片真实解码且占位清零
   await page.unroute('**/assets/characters/nene-home-cg-1024.webp')
   await page.unroute('**/assets/characters/natsume-home-cg-1024.webp')
   const restored = await intercept(page, '**/assets/characters/nene-home-cg-1024.webp', pngFixture)
   await intercept(page, '**/assets/characters/natsume-home-cg-1024.webp', pngFixture)
-  await page.reload({ waitUntil: 'domcontentloaded' })
+  await page.getByRole('button', { name: '重试画页', exact: true }).focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('button', { name: '绫地宁宁', exact: true })).toBeFocused()
   await assertIntercepted(restored)
   await expect(page.locator('.hero-character.nene')).not.toHaveJSProperty('naturalWidth', 0)
   await expect(page.locator('.hero-character.nene')).toHaveJSProperty('complete', true)
   await expect(page.locator('.hero-fallback')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: '绫地宁宁', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  const after = await page.locator('.hero-orbit').boundingBox()
+  expect(after!.height).toBeCloseTo(before!.height, 0)
+  expect(after!.width).toBeCloseTo(before!.width, 0)
 })
 
 failureCase('H2', '英雄图失败按角色隔离且切换重试有界', async (page, theme) => {
@@ -109,6 +118,18 @@ failureCase('H2', '英雄图失败按角色隔离且切换重试有界', async (
   await expect(page.locator('.hero-fallback.nene')).toBeVisible()
   await expect(neneProbe.hits).toBe(hitsBefore + 1)
   await expect(page.locator('.hero-character.natsume')).toHaveJSProperty('naturalWidth', 1)
+  // 键盘切换无需等待透明度动画，仍落在同一个画页框架。
+  const frame = await page.locator('.hero-orbit').boundingBox()
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.getByRole('button', { name: '四季夏目', exact: true }).focus()
+  await page.keyboard.press('Enter')
+  expect(await page.locator('.hero-character.natsume').evaluate(image => ({
+    opacity: getComputedStyle(image).opacity,
+    running: image.getAnimations().filter(animation => animation.playState === 'running').length,
+  }))).toEqual({ opacity: '1', running: 0 })
+  const keyboardFrame = await page.locator('.hero-orbit').boundingBox()
+  expect(keyboardFrame!.height).toBeCloseTo(frame!.height, 0)
+  expect(keyboardFrame!.width).toBeCloseTo(frame!.width, 0)
 })
 
 failureCase('H3', '热门横条缩略图 404 占位并恢复', async (page, theme, testInfo) => {
