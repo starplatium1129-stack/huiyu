@@ -4,6 +4,8 @@
 
 ## 先查入口
 
+新 worktree 复用已有依赖时，若工具 `.js` 入口尚未生成，先执行一次 `npm run build:runtime`。维护和登记修改 `.ts` 源文件；`.js` 是运行入口，不直接编辑。工具源或配置未变化时，不因普通 UI 小改动重复准备工具。
+
 `node scripts/workflow.js audit:workflow-conditions --json` 从当前注册表报告运行条件、入口/文档存在性及递归复合副作用覆盖。`--domain audit` 按工作流分组筛选；`--root` 仅替换文件存在性核验根，不加载该目录中的 JavaScript。`--help/--plan` 不读取目标根或启动子进程。结构问题退出 1，所有命令执行状态始终为 `not-run`；元数据通过不代表实际运行通过。`showcase:fill-gaps` 实际生成需网关与显式候选目录，只写待审核候选；`--dry-run` 不写盘、不调用模型，不回填活跃源登记。
 
 条件报告的 JSON 还保留已声明的 `switches`、`notes`、`needs`（缺省分别为 `{}`、`[]`、`null`），不从说明文字推断副作用。默认文字按项列出默认行为、开关及效果、前置条件、说明和未知项；不改变命令执行、旧 JSON 字段或退出码。
@@ -325,7 +327,7 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-日常使用 `npm test`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
+日常使用 `npm test`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
 
 Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm run test:legacy -- test-anima-routes.ts`（已有当前SPA）、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，全部库存使用 `gate:all`；修改执行器自身后先 `npm run build:runtime` 更新生成入口。
 

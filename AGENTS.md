@@ -25,7 +25,8 @@
 
 - 写入前核对 git status、git diff，保护其他会话改动。禁止 git add .、git reset --hard；仅暂存已验证的受控文件，每次提交后 push。
 - 同一工作区只由一个会话做 Git 写操作；并行使用 worktree 或错峰，长期并行关闭自动 gc（git config gc.auto 0）。本地 bundle 不替代远端副本。
-- 查找操作优先使用现有工作流；入口不明时用 npm run workflow -- --help，仍无入口再查 scripts/maintenance。新增维护脚本登记 scripts/workflow.js 与 docs/workflow.md，新增文档登记 docs/INDEX.md；一次性脚本归入被忽略的 scripts/archive/。
+- 查找操作优先使用现有工作流；入口不明时用 npm run workflow -- --help，仍无入口再查 scripts/maintenance。新增维护脚本登记源文件 scripts/workflow.ts 与 docs/workflow.md，新增文档登记 docs/INDEX.md；一次性脚本归入被忽略的 scripts/archive/。
+- 新 worktree 若复用已有依赖但缺少生成的工具 `.js`，先运行一次 `npm run build:runtime`；不要手改生成入口。工具源或配置变化后更新对应产物，普通 UI 小改动不需要重复准备全部工具。
 
 ## 质量红线
 
