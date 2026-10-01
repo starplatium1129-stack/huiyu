@@ -11,6 +11,30 @@ const os: typeof import('os') = require('os');
 const path: typeof import('path') = require('path');
 const helpers = (require('../../routes/maintenance') as typeof import('../../routes/maintenance'))._test;
 
+test('popular showcase partial publish preserves other samples and replaces only matching IDs', () => {
+  const publish: typeof import('../maintenance/publish-popular-showcase.js') = require('../maintenance/publish-popular-showcase.js');
+  const retained = {
+    id: 'pc_alice_library', type: 'popular', char: 'alice', rating: 'R18',
+    image: 'images/pc_alice_library.jpg', thumb: 'thumbs/pc_alice_library.jpg',
+    provenance: { review: { verdict: 'pass', recordId: 'alice-library@attempt-2' } },
+  };
+  const replacement = { id: 'pc_bob_garden', type: 'popular', char: 'bob', rating: 'All', attempt: 2 };
+  const source = { entries: [
+    { id: 'sc001', rating: 'All' }, retained, { ...replacement, attempt: 1 },
+    { id: 'artist_line', type: 'artist', rating: 'R15' }, { id: 'lora_line', type: 'lora', rating: 'All' },
+  ] };
+  const before = JSON.stringify(source);
+  const context = { sourceName: 'published', publishedAt: '2026-10-01T00:00:00.000Z' };
+  const merged = publish.buildManifest(source, [replacement], context);
+  assert.deepStrictEqual(merged.entries, [{ id: 'sc001', rating: 'All', type: 'scene' }, retained,
+    source.entries[3], source.entries[4], replacement]);
+  assert.strictEqual(JSON.stringify(source), before, 'partial publishing must not mutate its source');
+  assert.strictEqual(merged.entryCount, 5);
+  assert.deepStrictEqual(merged.typeCounts, { scene: 1, popular: 2, artist: 1, lora: 1 });
+  assert.deepStrictEqual(merged.counts, { All: 3, R15: 1, R18: 1 });
+  assert.deepStrictEqual(publish.buildManifest(merged, [replacement], context), merged, 'repeating the batch is idempotent');
+});
+
 function expectThrow(action: { (): void; (): void; (): any; }, message: string|Error|undefined) {
   assert.throws(action, message);
 }

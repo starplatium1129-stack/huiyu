@@ -133,8 +133,8 @@ function buildManifest(sourceManifest: any, popularEntries: any, context: any) {
     .filter((entry: any) => isRecord(entry))
     .map((entry: any) => (entry.type ? entry : Object.assign({}, entry, { type: 'scene' })));
   const incoming = new Set(popularEntries.map((entry: any) => entry.id));
-  // 旧 pc_* 测试样张全部删除；artist/lora 保留；scene 保留。
-  const kept = sourceEntries.filter((entry: any) => entry.type !== 'popular' && !incoming.has(entry.id));
+  // 分批发布只替换本批同 ID 的样张，保留其余已发布条目及分级、审核记录。
+  const kept = sourceEntries.filter((entry: any) => !incoming.has(entry.id));
   const entries = [...kept, ...popularEntries];
   const typeCounts: any = { scene: 0, artist: 0, popular: 0, lora: 0 };
   for (const entry of entries) if (typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
@@ -328,14 +328,7 @@ async function main() {
   fs.rmSync(tempDir, { recursive: true, force: true });
   try {
     fs.cpSync(sourceDir, tempDir, { recursive: true });
-    // 1) 删除旧 pc_* 资产，写入新 popular 图片
-    for (const kind of ['images', 'thumbs']) {
-      const dir = path.join(tempDir, kind);
-      const files = fs.readdirSync(dir);
-      for (const name of files) {
-        if (/^pc_[a-z0-9_-]+\.(?:jpg|png|webp)$/i.test(name)) fs.rmSync(path.join(dir, name), { force: true });
-      }
-    }
+    // 1) 源版本资产整体保留，转换器覆盖本批图片。
     for (const record of passed) {
       const entry = entries.find((e: any) => e.provenance && e.provenance.recordId === record.recordId);
       if (!entry) throw new Error(`missing entry for ${record.recordId}`);
