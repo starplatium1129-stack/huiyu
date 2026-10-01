@@ -15,9 +15,11 @@ export function parseDirectorLayout(raw: string | null): LayoutPreference {
   } catch { return defaults() }
 }
 
+function readPreferences() { return parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY)) }
+
 /** Remember rail preferences; actual widths always fit the current CSS viewport. */
 export function useDirectorLayout(root: Ref<HTMLElement | null>) {
-  const preferences = ref(parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY)))
+  const preferences = ref(readPreferences())
   const width = ref(960), viewport = ref(1280), rootFont = ref(16), dragging = ref<Side | null>(null)
   let observer: ResizeObserver | null = null
   let observing = false
@@ -81,11 +83,11 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     preferences.value[key] = !preferences.value[key]; save()
   }
   function reset() { finish(); preferences.value = defaults(); save() }
-  function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY)) }
+  function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
   function observe() {
     if (observing) return
     observing = true
-    preferences.value = parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY))
+    preferences.value = readPreferences()
     observer ??= new ResizeObserver(measure)
     if (root.value) observer.observe(root.value)
     window.addEventListener('resize', measure)
