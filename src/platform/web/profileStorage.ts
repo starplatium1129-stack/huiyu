@@ -20,6 +20,8 @@ export interface ProfilePort {
 let port: ProfilePort | null = null
 let windowId = ''
 let generation = 0
+let writeVersion = 0
+let refreshVersion = 0
 let resetRevision = ''
 const values = new Map<string, ProfileRecord>()
 let pending = Promise.resolve()
@@ -78,6 +80,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   let operationId = crypto.randomUUID()
   const previous = values.get(identity)
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
+  writeVersion++
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
   let expectedReset = resetRevision
@@ -154,10 +157,14 @@ export async function activateProfileStorage(next: ProfilePort, id: string): Pro
 }
 export async function refreshProfileStorage(): Promise<void> {
   if (!port) return
+  const refresh = ++refreshVersion
   await flushProfileWrites()
-  const current = generation
+  if (refresh !== refreshVersion) return
+  const current = generation, writes = writeVersion
   const [settings, chat, drafts] = await Promise.all([port.readSettings(), port.readChat(), port.readDrafts(windowId)])
-  if (current !== generation || outbox.length) return
+  // A save may have started AND drained while these snapshots were in flight.
+  // A later refresh captures the new write version and can publish normally.
+  if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || outbox.length) return
   const before = new Map([...values].map(([identity, record]) => [identity, JSON.stringify(record.value)]))
   values.clear(); revisions.clear(); take(settings); take(chat)
   for (const record of drafts.records) {
@@ -216,6 +223,7 @@ export async function resetProfileChat(): Promise<void> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
   const snapshot = await port.resetChat({ operationId: crypto.randomUUID(), expectedReset: resetRevision })
+  writeVersion++
   for (const [identity, record] of values) if (profileDomainForKey(record.key) === 'chat' || record.key.startsWith('aics_chat_draft_v1:')) {
     values.delete(identity); revisions.delete(identity)
   }
