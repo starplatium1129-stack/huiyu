@@ -322,6 +322,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       height: dimensions ? Number(dimensions[2]) : animaState.value.height,
       steps: animaState.value.steps,
       cfg: animaState.value.cfg,
+      teaCache: animaState.value.teaCache !== false,
+      teaCacheThresh: animaState.value.teaCacheThresh,
       ...(input.seed >= 0 ? { seed: input.seed } : {}),
       adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
       character: (animaState.value.family === 'krea2' || !animaCharKey || animaCharKey === 'triad')

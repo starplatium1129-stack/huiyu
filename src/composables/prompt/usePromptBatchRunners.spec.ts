@@ -14,7 +14,7 @@ function setup() {
   const pb = { subject: { kind: 'popular', characterId: 'audit', outfitId: 'school', blueprintId: null }, char: 'nene', isPopular: true, selections: { shot: null, lighting: null, composition: null }, sdParams: { seedLock: true, seed: 42 }, manualTags: new Set<string>(), artistStyleIds: [], tags: [], outfitOverride: null as DraftOutfitOverride | null, referenceInput: null as DraftReferenceInput | null, tagDictionary: { canonicalize: (tag: string) => tag }, showMatureScenes: true, story: '', visualDescription: '', emotionPrompt: '', flash: vi.fn(), commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), popularCharacters: [character], sceneBlueprints: [blueprint], setOutfitOverride: vi.fn(), clearOutfitOverride: vi.fn() }
   pb.setOutfitOverride.mockImplementation((tokens: string[], replaced: string | null) => { pb.outfitOverride = { tokens: [...tokens], replaced } })
   pb.clearOutfitOverride.mockImplementation(() => { pb.outfitOverride = null })
-  const state = ref({ online: true, family: 'anima', models: [], modelId: 'test-model', width: 832, height: 1216, loraId: 'wrong-studio-lora', cfg: 4.5, steps: 30, sampler: 'res_multistep', scheduler: 'simple' })
+  const state = ref({ online: true, family: 'anima', models: [], modelId: 'test-model', width: 832, height: 1216, loraId: 'wrong-studio-lora', cfg: 4.5, steps: 30, sampler: 'res_multistep', scheduler: 'simple', teaCache: false, teaCacheThresh: 0 })
   const deps = { pb, animaState: state, sd: {}, sdSize: ref('832x1216'), negativePrompt: ref('low quality'), loraSpecs: ref([]), modelProfile: ref(null), runJob: vi.fn(), historyGenerationFields: () => ({}), sceneBlueprints: () => [blueprint], popularCharacters: () => [character] } as unknown as PromptBatchRunnersDeps
   const runner = usePromptBatchRunners(deps)
   runner.batchEngine.value = 'anima'
@@ -32,8 +32,11 @@ it('retry keeps original model, seed, blueprint, clothing and negative prompt', 
   expect(original.negative).toContain('watermark')
   expect(original.loraId).toBeUndefined()
   expect(original.character).toBeNull()
+  expect(original.teaCache).toBe(false)
+  expect(original.teaCacheThresh).toBe(0)
   expect(original.prompt).toContain('coat')
   pb.manualTags.add('day'); blueprint.promptProse = 'changed scene'; state.value.modelId = 'changed'
+  state.value.teaCache = true; state.value.teaCacheThresh = 0.4
   runner.batchEngine.value = 'sd'
   await runner.onRetryFailed()
   expect(request.mock.calls[1][1]?.body).toEqual(original)
