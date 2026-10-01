@@ -254,3 +254,44 @@ function fakePort(): ProfilePort {
     resetChat: vi.fn(async () => ({ ...snapshot, resetRevision: 'reset-2' })),
   }
 }
+
+
+it.each(['aics_scene_favorites', 'aics_hidden_scenes'])('rebases %s as scene-ID deltas without losing another window’s changes', async key => {
+  const module = await import('./profileStorage'), port = fakePort()
+  const snapshot = (value: string, revision: number): ProfileSnapshot => ({ records: [{ key, value, revision }], revision, resetRevision: 'reset-1' })
+  vi.mocked(port.readSettings).mockResolvedValueOnce(snapshot('["remove","keep"]', 7))
+    .mockResolvedValue(snapshot('["remove","remote"]', 8))
+  vi.mocked(port.saveSetting).mockRejectedValueOnce(Object.assign(new Error('concurrent edit'), { code: 'REVISION_CONFLICT' }))
+  await module.activateProfileStorage(port, 'main')
+  module.profileLocalStorage.setItem(key, '["keep","local","local"]')
+  await module.flushProfileWrites()
+  expect(port.saveSetting).toHaveBeenLastCalledWith(expect.objectContaining({ key, expectedRevision: 8, value: '["local","remote"]' }))
+  expect(module.profileLocalStorage.getItem(key)).toBe('["local","remote"]')
+  const { mergeProfileSettingConflict } = await import('./profileConflict')
+  expect(mergeProfileSettingConflict(key, null, '["same"]', '["same","remote"]')).toBe('["remote","same"]')
+  expect(mergeProfileSettingConflict('aics_recent_scenes', '["first"]', '["second","first"]', '["third","first"]')).toBe('["second","first"]')
+})
+
+
+it('carries merged scene IDs through queued toggles and freezes payload after an unknown receipt', async () => {
+  const module = await import('./profileStorage'), port = fakePort(), key = 'aics_scene_favorites'
+  const snapshot = (value: string, revision: number): ProfileSnapshot => ({ records: [{ key, value, revision }], revision, resetRevision: 'reset-1' })
+  vi.mocked(port.readSettings).mockResolvedValueOnce(snapshot('[]', 7)).mockResolvedValue(snapshot('["remote"]', 8))
+  let rejectFirst!: (error: Error) => void
+  const first = new Promise<never>((_resolve, reject) => { rejectFirst = reject }), started = deferred<void>()
+  vi.mocked(port.saveSetting).mockImplementationOnce(() => { started.resolve(); return first })
+    .mockResolvedValueOnce({ key, value: '["a","remote"]', revision: 9 })
+    .mockRejectedValueOnce(new Error('receipt unknown'))
+    .mockResolvedValueOnce({ key, value: '["a","b","remote"]', revision: 10 })
+  await module.activateProfileStorage(port, 'main')
+  module.profileLocalStorage.setItem(key, '["a"]')
+  await started.promise
+  module.profileLocalStorage.setItem(key, '["a","b"]')
+  rejectFirst(Object.assign(new Error('concurrent edit'), { code: 'REVISION_CONFLICT' }))
+  await expect(module.flushProfileWrites()).rejects.toThrow('receipt unknown')
+  const calls = vi.mocked(port.saveSetting).mock.calls
+  expect(calls[2][0]).toMatchObject({ expectedRevision: 9, value: '["a","b","remote"]' })
+  await module.flushProfileWrites()
+  expect(calls[3][0]).toEqual(calls[2][0])
+  expect(module.profileLocalStorage.getItem(key)).toBe('["a","b","remote"]')
+})

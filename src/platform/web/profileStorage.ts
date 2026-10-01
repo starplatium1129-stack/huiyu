@@ -79,6 +79,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const identity = cacheKey(key, session), selected = port!, epoch = generation
   let operationId = crypto.randomUUID()
   const previous = values.get(identity)
+  const sceneIdSet = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes')
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
   writeVersion++
   values.set(identity, optimistic)
@@ -87,7 +88,16 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   let baseValue = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
-    if (expectedRevision === undefined) expectedRevision = revisions.get(identity) ?? null
+    if (expectedRevision === undefined) {
+      // A queued predecessor may have merged another window's IDs. Carry only
+      // this write's original delta forward, once, before its first submission.
+      if (sceneIdSet && previous) {
+        const { mergeProfileSettingConflict } = await import('./profileConflict.ts')
+        sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, previous.value)
+        baseValue = structuredClone(previous.value)
+      }
+      expectedRevision = revisions.get(identity) ?? null
+    }
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         const input = { operationId, key, value: sendValue as string | null, expectedRevision }
@@ -95,6 +105,8 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           : domain === 'chat' ? await selected.saveChatRecord({ ...input, expectedReset })
             : await selected.saveDraft({ ...input, ...(session ? { windowId } : {}), expectedReset })
         revisions.set(identity, saved.revision)
+        // Successors already retain this record; no second authority/cache is needed.
+        if (sceneIdSet) Object.assign(optimistic, structuredClone(saved))
         if (values.get(identity) === optimistic) values.set(identity, structuredClone(saved))
         return
       } catch (error) {
@@ -128,7 +140,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
         }
         const { mergeProfileChatConflict, mergeProfileSettingConflict } = await import('./profileConflict.ts')
         if (domain === 'chat') sendValue = await mergeProfileChatConflict(key, baseValue, sendValue, remote?.value ?? null)
-        else if (domain === 'settings') sendValue = mergeProfileSettingConflict(baseValue, sendValue, remote?.value ?? null)
+        else if (domain === 'settings') sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, remote?.value ?? null)
         baseValue = structuredClone(remote?.value ?? null)
         expectedRevision = remote?.revision ?? null
         // A 409 proved this operation did not commit. Only this branch may use a
