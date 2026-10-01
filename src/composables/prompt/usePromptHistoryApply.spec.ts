@@ -5,6 +5,7 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { AnimaGenerationState } from '@/types/anima'
+import { applyInterrogateResult } from './applyInterrogateResult'
 import { usePromptHistoryApply } from './usePromptHistoryApply'
 import { usePromptHistoryReuse } from './usePromptHistoryReuse'
 import { useAnimaSession } from '@/composables/generation/useAnimaSession'
@@ -210,4 +211,34 @@ it('keeps a direct restore active when another reuse is blocked during discovery
   expect(pb.historyRestoreReport?.title).toContain('12')
   expect(reuse.reuseBusy.value).toBe(false)
   scope.stop()
+})
+
+
+it('preserves untouched reference and variation ownership through an incomplete prompt restore', async () => {
+  const { pb, applyHistory } = setup()
+  pb.manualTags = new Set(['sitting', 'library', 'explicit_detail'])
+  pb.referenceInput = { tags: ['sitting', 'library'] }
+  const variation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: [] }
+  pb.randomVariation = variation
+  await applyHistory({ id: 'legacy-partial', engine: 'sd', character: 'nene', story: 'Restored story' }, true,
+    { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.story).toBe('Restored story')
+  expect(pb.referenceInput).toEqual({ tags: ['sitting', 'library'] })
+  expect(pb.randomVariation).toEqual(variation)
+  await applyInterrogateResult(pb, { engine: 'wd14', tags: ['standing', 'forest'] })
+  expect(pb.manualTags).toEqual(new Set(['explicit_detail', 'standing', 'forest']))
+  expect(pb.referenceInput).toEqual({ tags: ['standing', 'forest'] })
+})
+
+it.each(['tags', 'scene'] as const)('clears only replaced-layer provenance when restoring %s', async layer => {
+  const { pb, applyHistory } = setup()
+  pb.manualTags = new Set(['library'])
+  pb.referenceInput = { tags: ['library'] }
+  pb.randomVariation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: [] }
+  await applyHistory({ id: 'partial', engine: 'sd', character: 'nene',
+    ...(layer === 'tags' ? { manual_tags: ['historical_detail'] } : { scene: null }) }, true,
+    { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.randomVariation).toBeNull()
+  expect(pb.referenceInput).toEqual(layer === 'tags' ? null : { tags: ['library'] })
+  expect([...pb.manualTags]).toEqual(layer === 'tags' ? ['historical_detail'] : ['library'])
 })
