@@ -8,18 +8,23 @@ import type { useDirectorPopular } from '@/composables/scene/useDirectorPopular'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession';
 import type { useTempResult } from './useTempResult';
 export interface PromptGenerationContext extends
-    Pick<PromptSdQueueDeps, 'pb' | 'drawEngine' | 'sd' | 'livePrompt' | 'sdSize' | 'animaState' | 'displayResultSeed'>,
+    Pick<PromptSdQueueDeps, 'pb' | 'drawEngine' | 'sd' | 'livePrompt' | 'sdSize'>,
     Pick<ReturnType<typeof usePromptSdQueue>, 'sdErrorReport' | 'captureJob' | 'runJob'>,
-    Pick<ReturnType<typeof useDirectorEngine>, 'currentCapabilities'>,
+    Pick<ReturnType<typeof useDirectorEngine>, 'currentCapabilities' | 'generationBusy'>,
     Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute' | 'resetBlueprintRotation'> {
     generateAnima: ReturnType<typeof useAnimaSession>['generate'];
-    patchAnimaState: ReturnType<typeof useAnimaSession>['patchState'];
     tempResultTools: Pick<ReturnType<typeof useTempResult>, 'handleSdResult'>;
 }
 type Context = PromptGenerationContext;
+export interface HiresSource {
+    engine: Context['drawEngine']['value'];
+    anima: ReturnType<ReturnType<typeof useAnimaSession>['resultSubmission']>;
+    sd: ReturnType<ReturnType<typeof usePromptSdQueue>['resultJob']>;
+}
 export async function callGenerateAction(ctx: Context, opts: {
     disableLora?: boolean;
 } = {}): Promise<void> {
+    if (ctx.generationBusy.value) return;
     const { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools } = ctx;
     if (pb.directorMode === 'basic') {
         await applyManagedRoute({ silent: true });
@@ -96,35 +101,41 @@ export async function runRecoveryAction(ctx: Context, id: SDRecoveryId): Promise
         }
     }
 }
-export async function upscaleCurrentResultAction(ctx: Context): Promise<void> {
-    const { pb, drawEngine, generateAnima, animaState, patchAnimaState, displayResultSeed } = ctx;
+export async function upscaleCurrentResultAction(ctx: Context, source: HiresSource): Promise<void> {
+    const { pb, drawEngine, generateAnima } = ctx;
+    if (ctx.generationBusy.value || drawEngine.value !== source.engine) return;
     if (drawEngine.value === 'anima') {
-        const currentResult = animaState.value.result;
-        const baseSeed = currentResult?.metadata?.seed ?? animaState.value.seed;
-        if (baseSeed == null || baseSeed < 0) {
-            pb.flash('当前图片缺少 Seed 信息，无法执行精准超分');
+        const submission = source.anima;
+        const request = submission?.request;
+        if (!request || submission.family !== 'anima' || !request.prompt || !request.modelId
+            || ![request.width, request.height, request.steps].every(value => Number.isSafeInteger(value) && value > 0)
+            || !Number.isFinite(request.cfg) || request.cfg < 0 || !Number.isSafeInteger(request.seed) || request.seed! < 0) {
+            pb.flash('原成片的完整提交配方或 Seed 未知，无法按原配方高清重绘；请先重新生成');
             return;
         }
-        // 锁定当前图的 seed 进行 2.0x 潜空间重绘放大
-        patchAnimaState({ seed: baseSeed });
-        pb.flash('正在使用当前 Seed 执行 2x 高清超分精修…');
-        await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 });
+        if (request.initImage || request.maskImage || request.maskPrompt) {
+            pb.flash('这幅成片含局部重绘输入，原输入无法确认仍可复用；暂不能按完整原配方高清重绘');
+            return;
+        }
+        pb.flash('正在按原成片的配方和 Seed 执行 2x 高清重绘…');
+        await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 }, submission);
         return;
     }
     if (drawEngine.value === 'sd') {
-        const seed = displayResultSeed.value ?? pb.lastSeed;
-        if (seed != null && seed >= 0) {
-            pb.sdParams.seed = seed;
-            pb.sdParams.seedLock = true;
+        const original = source.sd;
+        if (!original || !original.prompt || !original.checkpoint || !original.sampler
+            || !/^\d+x\d+$/.test(original.size) || original.size.split('x').some(value => Number(value) <= 0)
+            || !Number.isSafeInteger(original.seed) || original.seed < 0 || !Number.isFinite(original.cfg)
+            || !Number.isSafeInteger(original.steps) || original.steps <= 0) {
+            pb.flash('原成片的完整提交配方或 Seed 未知，无法按原配方高清重绘；请先重新生成');
+            return;
         }
-        pb.sdParams.hiresFix = true;
-        pb.sdParams.hiresScale = 2.0;
-        pb.sdParams.hiresDenoise = 0.35;
-        pb.markParamTouched('hiresFix');
-        pb.markParamTouched('hiresScale');
-        pb.markParamTouched('hiresDenoise');
-        pb.flash('正在使用当前 Seed 执行 SD 2x 高清修复…');
-        await callGenerateAction(ctx);
+        const job = { ...original, hiresFix: true, hiresScale: 2.0, denoisingStrength: 0.35 };
+        ctx.sdErrorReport.value = null;
+        pb.flash('正在按原成片的配方和 Seed 执行 SD 2x 高清重绘…');
+        const url = await ctx.runJob(job);
+        if (!url && ctx.sd.errorMsg.value) ctx.sdErrorReport.value = classifySDError({ message: ctx.sd.errorMsg.value });
+        if (url) void ctx.tempResultTools.handleSdResult(job, url);
     }
 }
 export async function resetAllAction(ctx: Context): Promise<void> {

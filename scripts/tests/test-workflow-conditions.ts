@@ -19,8 +19,16 @@ function fixture(t: TestContext) {
 }
 const definition = (): WorkflowDefinition & { run: WorkflowRun } => ({ cmd: ['node', 'scripts/entry.js'], docs: 'doc.md', run: { nature: ['read-only'], machine: ['node'], resume: 'na', evidence: 'scripts/entry.js:1', unknown: [] } });
 test('conditions: reports metadata without executing entry', t => {
-  const result = reportConditions({ root: fixture(t), registry: registryFixture({ 'test:a': definition() }), domain: 'test' });
+  const root = fixture(t), registry = registryFixture({ 'test:a': definition() });
+  for (const [name,cmd] of [['parity',['node','runtime-rs/tests/parity.mjs']], ['licenses',['pwsh','-File','runtime-rs/native-licenses/collect-sources.ps1']]] as const) {
+    const file = cmd[cmd.length-1]; fs.mkdirSync(path.dirname(path.join(root,file)),{recursive:true});
+    fs.writeFileSync(path.join(root,file),'throw "entry must not execute"');
+    registry[`test:${name}`] = {...definition(),cmd:[...cmd]};
+  }
+  const result = reportConditions({ root, registry, domain: 'test' });
   assert.equal(result.ok, true); assert.equal(result.commands[0].executionStatus, 'not-run');
+  fs.unlinkSync(path.join(root,'runtime-rs/tests/parity.mjs'));
+  assert.equal(reportConditions({root,registry}).ok,false);
 });
 test('conditions: missing entry, docs and malformed metadata fail closed', t => {
   const root = fixture(t);

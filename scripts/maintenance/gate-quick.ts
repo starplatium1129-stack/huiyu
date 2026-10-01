@@ -5,15 +5,16 @@
  *
  * 用法：
  *   node scripts/maintenance/gate-quick.js                自动检测 git 改动选面积
- *   node scripts/maintenance/gate-quick.js ui|style|server|data|all|full [--verbose] [--all]
+ *   node scripts/maintenance/gate-quick.js ui|style|server|rust|data|all|full [--verbose] [--all]
  *
  * 面积 → 步骤：
  *   ui     typecheck:app + vitest；自动模式按导入图选择相关单测，显式 ui 跑全部
  *   style  字面值、双主题对比度、颜色、动画扫描；不跑无关 TS/单测
  *   server Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件（~2-3 分钟）
+ *   rust   现行后端 fmt、Clippy 与隔离 Rust 行为测试
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
- *   all    ui + style + server + data 四块连跑
- *   full   ≙ npm run validate（check 编排 + vitest + unit + contract）+ 生产打包预算。
+ *   all    ui + style + server + rust + data 各领域连跑
+ *   full   check 编排 + rust:check + vitest + unit + contract + optional + 生产打包预算。
  *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
  * 横切重构（目录改名、模块搬迁、依赖变更）请直接用 full——爆炸半径无法事先界定。
@@ -40,7 +41,7 @@ const {
 
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'style' | 'server' | 'data' | 'tests' | 'browser' | 'full';
+type GateArea = 'ui' | 'style' | 'server' | 'rust' | 'data' | 'tests' | 'browser' | 'full';
 interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[] }
 const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
   .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
@@ -103,6 +104,9 @@ function suiteFiles(names: readonly string[], label: string, { verbose, keepGoin
 }
 
 const AREA_STEPS = {
+  rust(options: GateOptions) {
+    return runTool('rust:check', path.join(root, 'scripts/maintenance/run-rust-runtime.js'), ['check'], options);
+  },
   tests(files: readonly string[], { verbose, keepGoing }: GateOptions) {
     if (files.some(file => registeredTests.get(file) !== 'check')) {
       (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensureAll({ onlyIfMissing: true });
@@ -175,6 +179,7 @@ function classifyFiles(files: readonly string[]): GatePlan {
   const full = (): GatePlan => ({ areas: ['full'], testFiles: [] });
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
+    if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(p)) { areas.add('rust'); continue; }
     if (/^src\/.*\.(?:spec|test)\.ts$/.test(p) && !fs.existsSync(path.join(root, p))) return full();
     if (/^(src|css)\/.*\.css$/.test(p)) { areas.add('style'); continue; }
     if (browserSpecs.has(p) && fs.existsSync(path.join(root, p))) {
@@ -218,25 +223,25 @@ function detectAreas() {
 
 async function main(argv: string[]) {
   if (argv.includes('--help') || argv.includes('-h')) {
-    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|server|data|all|full] [--verbose] [--all]');
+    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|server|rust|data|all|full] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
-  const invalid = argv.filter((arg: any) => !['ui', 'style', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  const invalid = argv.filter((arg: any) => !['ui', 'style', 'server', 'rust', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
   if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const areaArg = argv.find((arg: any) => ['ui', 'style', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
+  const areaArg = argv.find((arg: any) => ['ui', 'style', 'server', 'rust', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
   let testFiles: string[] = [];
   let frontendFiles: string[] | undefined, browserFiles: string[] = [];
   if (areaArg) {
     // 'full' 走完整门禁；'all' 展开领域检查。
-    areas = areaArg === 'all' ? ['ui', 'style', 'server', 'data'] : [areaArg];
+    areas = areaArg === 'all' ? ['ui', 'style', 'server', 'rust', 'data'] : [areaArg];
   } else {
     try { ({ areas, testFiles, frontendFiles, browserFiles = [] } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
     if (!areas.length) {
@@ -252,7 +257,7 @@ async function main(argv: string[]) {
   }
   const started = Date.now();
   // Prepare generated entries once for all selected Node/browser areas.
-  if (!areas.includes('full') && areas.some(area => ['tests', 'server', 'data', 'browser'].includes(area))) {
+  if (!areas.includes('full') && areas.some(area => ['tests', 'server', 'rust', 'data', 'browser'].includes(area))) {
     exitCode = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
     if (exitCode) return exitCode;
   }
@@ -284,13 +289,17 @@ async function main(argv: string[]) {
       exitCode = AREA_STEPS.server({ verbose, keepGoing }) || exitCode;
       continue;
     }
+    if (area === 'rust') {
+      exitCode = await AREA_STEPS.rust({ verbose, keepGoing }) || exitCode;
+      continue;
+    }
     if (area === 'data') {
       exitCode = AREA_STEPS.data({ verbose, keepGoing }) || exitCode;
       continue;
     }
-    // full ≙ npm run check（run-check-parallel.js 编排，含后端/前端 typecheck、
+    // full ≙ npm run check（run-check-parallel.js 编排，含 Node/Vue typecheck、
     // eslint、风格/对比度/动效门禁、场景构建与优化/分级/校验、内容契约、参考 URL、
-    // design:lint 及 test:check 的 check 套件）+ vitest + unit + contract + 生产打包预算。
+    // design:lint 及 test:check 的 check 套件）+ rust:check + vitest + unit + contract + 生产打包预算。
     // 2026-09-05 审计 P1-03：此前 full 自拼 QUALITY_TEST_SUITES.check 文件子集，与
     // npm run check 的编排漂移；现直接复用同一编排，"全量通过"不再出现两套口径。
     // 缺省保持 fail-fast；--all 时阶段失败仍继续跑完并收集其余结果。
@@ -300,6 +309,7 @@ async function main(argv: string[]) {
       return !keepGoing;
     };
     if (failPhase(runNpmStep('check（质量门禁编排）', 'check', 900_000, verbose))) continue;
+    if (failPhase(await AREA_STEPS.rust({ verbose, keepGoing }))) continue;
     if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
     if (failPhase(runUnitSuite({ verbose }))) continue;
     if (failPhase(await runContractSuite({ verbose, keepGoing }))) continue;

@@ -25,10 +25,16 @@ function buildBindingFixture() {
   git('-c', 'core.symlinks=false', 'init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
   put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
   git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
+  const sdk = 'runtime/desktop-build-sdk/CubismSdkForNative-5-r.5';
+  put(`${sdk}/Core/include/Live2DCubismCore.h`, 'header-A'); put(`${sdk}/Framework/src/CubismFramework.cpp`, 'framework-A');
+  put(`${sdk}/Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib`, 'core-A');
+  const previousSdk = process.env.LIVE2D_CUBISM_SDK_DIR;
+  process.env.LIVE2D_CUBISM_SDK_DIR = path.join(root,sdk);
   put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe', 'rust-A'); put('desktop-tauri/web/index.html', 'desktop-UI');
   const native = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'; put(native, 'native-A');
   const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
   return { root, put, git, binding, native, payload, remove() {
+    if (previousSdk === undefined) delete process.env.LIVE2D_CUBISM_SDK_DIR; else process.env.LIVE2D_CUBISM_SDK_DIR = previousSdk;
     assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(os.tmpdir()));
     assert.ok(path.basename(root).startsWith('desktop-binding-'));
     (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(root, 'desktop-binding-');
@@ -46,6 +52,10 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     binding.verifyDeployment(root,path.join(root,payload));
     put('docs/note.md', 'documentation only');
     binding.verifyBuild(root);
+    const sdkFile = path.join(root,'runtime/desktop-build-sdk/CubismSdkForNative-5-r.5/Core/include/Live2DCubismCore.h');
+    const sdkTime = fs.statSync(sdkFile); fs.writeFileSync(sdkFile,'header-B'); fs.utimesSync(sdkFile,sdkTime.atime,sdkTime.mtime);
+    assert.throws(() => binding.verifyBuild(root), /Cubism SDK 与构建绑定不匹配/);
+    fs.writeFileSync(sdkFile,'header-A'); binding.verifyBuild(root);
     put('source.ts', 'B'); git('add', 'source.ts'); git('commit', '-m', 'B');
     assert.throws(() => { binding.verifyBuild(root); sideEffects++; }, /源码与构建不匹配/);
     assert.equal(sideEffects, 0);
@@ -100,6 +110,10 @@ test('official Tauri entry detaches only the Cargo release executable before bin
     fs.writeFileSync(cache, 'next Cargo image');
     assert.equal(fs.readFileSync(target, 'utf8'), 'native-A', 'later Cargo cache writes cannot alter the bound image');
     binding.verifyBuild(root);
+    const sdkBefore = binding.sdkIdentity(root), sdkHeader = path.join(sdkBefore.root,'Core/include/Live2DCubismCore.h');
+    fs.writeFileSync(sdkHeader,'SDK changed during build');
+    assert.throws(() => binding.recordBuild(root,binding.sourceIdentity(root),true,sdkBefore), /Cubism SDK 输入发生变化/);
+    fs.writeFileSync(sdkHeader,'header-A');
     const source = binding.sourceIdentity(root), previous = fs.readFileSync(path.join(root, binding.receiptPath));
     const resource = path.join(root, 'desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe');
     fs.linkSync(resource, path.join(root, 'runtime/resource-alias.exe'));
@@ -189,18 +203,40 @@ test('发布清单指向同版本公开 Release 安装包', () => {
 });
 
 function releaseFixture(callback: any) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-release-test-'));
+  const fixture = buildBindingFixture(), { root, put, binding, payload } = fixture;
+  const directory = path.join(root, 'runtime/release');
+  fs.mkdirSync(directory, { recursive:true });
   try {
+    const gateway = 'desktop-tauri/src-tauri/resources/gateway';
+    const sha = (value: string) => (require('node:crypto') as typeof import('node:crypto')).createHash('sha256').update(value).digest('hex');
+    const nativeFiles = ['libvips-42.dll', 'onnxruntime.dll'].map(name => {
+      put(`${gateway}/native/${name}`, name); return { name, bytes: Buffer.byteLength(name), sha256:sha(name) };
+    });
+    const inventory = JSON.stringify({ schemaVersion:1, files:[{ file:'LICENSE', bytes:7, sha256:sha('license') }] });
+    put(`${gateway}/native-licenses/LICENSE`, 'license'); put(`${gateway}/native-licenses/materials.sha256.json`, inventory);
+    const manifest = { schemaVersion:1, platform:'win32-x64', status:'redistribution-verified', files:nativeFiles,
+      licenses:[{ file:'native-licenses/LICENSE', bytes:7, sha256:sha('license') }], redistribution:{ pending:[] },
+      licenseEvidence:{ index:'native-licenses/materials.sha256.json', indexBytes:Buffer.byteLength(inventory), indexSha256:sha(inventory),
+        readme:'native-licenses/LICENSE', components:'native-licenses/LICENSE', librsvgCargoSourceIndex:'native-licenses/LICENSE',
+        publicRedistributionApproved:true, completeLinkedLicenseClosure:true } };
+    const updateNative = () => {
+      const bytes = JSON.stringify(manifest); put(`${gateway}/native-dependencies.windows-x64.json`, bytes);
+      put(`${gateway}/rust-runtime-build.json`, JSON.stringify({ schemaVersion:1, nativeManifestSha256:sha(bytes), nativeMaterialCount:2,
+        runtime:{ bytes:6, sha256:sha('rust-A') }, releaseReady:true, pending:[] }));
+    };
+    updateNative();
     const notes = path.join(directory, 'notes.md');
     fs.writeFileSync(notes, '# Release notes\nVerified changes.\n');
     const files = ['setup.exe', 'setup.exe.sha256'].map(name => {
       const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file;
     });
-    callback({ directory, notes, files });
-  } finally { fs.rmSync(directory, { recursive: true, force: true }); }
+    const bind = () => { binding.recordBuild(root, binding.sourceIdentity(root)); binding.bindDistribution(root, path.join(root,payload), files[0]); };
+    bind();
+    callback({ ...fixture, directory, notes, files, gateway, manifest, updateNative, bind });
+  } finally { fixture.remove(); }
 }
 
-test('手动版先上传草稿并验证资产，再公开但不晋升自动更新 latest', () => releaseFixture(({ directory, notes, files }: any) => {
+test('手动版先上传草稿并验证资产，再公开但不晋升自动更新 latest', () => releaseFixture(({ root, directory, notes, files }: any) => {
   const calls: any = [];
   const run = (_command: any, args: any) => {
     calls.push(args);
@@ -210,7 +246,7 @@ test('手动版先上传草稿并验证资产，再公开但不晋升自动更�
     if (args.includes('assets')) return JSON.stringify({ assets: files.map((file: any) => ({ name: path.basename(file), size: fs.statSync(file).size })) });
     return '';
   };
-  publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run });
+  publishRelease('1.6.0', 'source-head', files, { root, manual: true, notesFile: notes, outputDir: directory, run });
   const create = calls.find((args: any) => args[1] === 'create');
   const publish = calls.find((args: any) => args[1] === 'edit');
   assert(create.includes('--draft'));
@@ -221,7 +257,7 @@ test('手动版先上传草稿并验证资产，再公开但不晋升自动更�
   assert(!create.some((value: any) => value.endsWith('latest.json') || value.endsWith('.sig')));
 }));
 
-test('资产未上传完整时保留草稿，不公开半成品', () => releaseFixture(({ directory, notes, files }: any) => {
+test('资产未上传完整时保留草稿，不公开半成品', () => releaseFixture(({ root, directory, notes, files }: any) => {
   const calls: any = [];
   const run = (_command: any, args: any) => {
     calls.push(args);
@@ -229,17 +265,17 @@ test('资产未上传完整时保留草稿，不公开半成品', () => releaseF
     if (args.includes('assets')) return JSON.stringify({ assets: [] });
     return '';
   };
-  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /上传不完整/);
+  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { root, manual: true, notesFile: notes, outputDir: directory, run }), /上传不完整/);
   assert(!calls.some((args: any) => args[1] === 'edit'));
 }));
 
-test('手动发布不能携带自动更新清单，也不能覆盖已公开的普通版本', () => releaseFixture(({ directory, notes, files }: any) => {
+test('手动发布不能携带自动更新清单，也不能覆盖已公开的普通版本', () => releaseFixture(({ root, directory, notes, files }: any) => {
   assert.throws(() => publishRelease('1.6.0', 'source-head', [...files, 'latest.json'], { manual: true }), /不能发布自动更新/);
   const run = () => JSON.stringify({ isDraft: false, body: '# Signed release', targetCommitish: 'source-head' });
-  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /已公开发布/);
+  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { root, manual: true, notesFile: notes, outputDir: directory, run }), /已公开发布/);
 }));
 
-test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixture(({ directory, notes, files }: any) => {
+test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixture(({ root, directory, notes, files }: any) => {
   const calls: any = [];
   const run = (_command: any, args: any) => {
     calls.push(args);
@@ -247,11 +283,11 @@ test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixtur
     if (args.includes('assets')) return JSON.stringify({ assets: files.map((file: any) => ({ name: path.basename(file), size: fs.statSync(file).size, digest: 'sha256:wrong' })) });
     return '';
   };
-  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /校验失败/);
+  assert.throws(() => publishRelease('1.6.0', 'source-head', files, { root, manual: true, notesFile: notes, outputDir: directory, run }), /校验失败/);
   assert(!calls.some((args: any) => args[1] === 'edit'));
 }));
 
-test('补签必须显式声明且匹配原标签，然后才晋升 latest', () => releaseFixture(({ directory, notes, files }: any) => {
+test('补签必须显式声明且匹配原标签，然后才晋升 latest', () => releaseFixture(({ root, directory, notes, files }: any) => {
   const signedFiles = [...files, ...['latest.json', 'setup.exe.sig'].map(name => { const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file; })];
   const calls: any = [];
   const run = (command: any, args: any) => {
@@ -261,9 +297,41 @@ test('补签必须显式声明且匹配原标签，然后才晋升 latest', () =
     if (args.includes('assets')) return JSON.stringify({ assets: signedFiles.map(file => ({ name: path.basename(file), size: fs.statSync(file).size })) });
     return '';
   };
-  publishRelease('1.6.0', 'source-head', signedFiles, { manual: false, completeManual: true, notesFile: notes, outputDir: directory, run });
+  publishRelease('1.6.0', 'source-head', signedFiles, { root, manual: false, completeManual: true, notesFile: notes, outputDir: directory, run });
   assert(calls.find((args: any) => args[1] === 'edit').includes('--latest=true'));
   assert(!fs.readFileSync(path.join(directory, 'release-notes-v1.6.0.md'), 'utf8').includes(MANUAL_MARKER));
+}));
+
+test('all public release modes reject unapproved or corrupt bound native materials before packaging or external calls', () => releaseFixture((fixture: any) => {
+  const { root, put, binding, payload, gateway, manifest, updateNative, bind, files, notes, directory } = fixture;
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(ROOT, 'scripts/maintenance/release-desktop-update.js'), originalRequire = createRequire(entry);
+  let sideEffects = 0;
+  const guardedRequire = (name: string) => name === './build-modern-installer'
+    ? { buildModernInstaller:() => { sideEffects++; throw Error('unexpected wrapper'); } } : originalRequire(name);
+  const sourceCode = fs.readFileSync(entry, 'utf8').replace(/^const ROOT =.*$/m, 'const ROOT = ' + JSON.stringify(root) + ';');
+  const nsis = payload.replace('fixture.exe', 'AI-CG-Studio_1.0.0_x64-setup.exe');
+  put(nsis, 'payload-A'); put(`${nsis}.sig`, 'fixture signature'); put('runtime/keys/aics-updater.key', 'fixture key');
+  const modes = [{ manual:false, completeManual:false, args:[] }, { manual:true, completeManual:false, args:['--manual'] },
+    { manual:false, completeManual:true, args:['--complete-manual'] }];
+  for (const flag of ['publicRedistributionApproved', 'completeLinkedLicenseClosure']) {
+    manifest.licenseEvidence[flag] = false; updateNative(); bind();
+    for (const mode of modes) {
+      assert.throws(() => publishRelease('1.0.0', 'head', files, { root, ...mode, notesFile:notes, outputDir:directory,
+        run:() => { sideEffects++; throw Error('unexpected external call'); } }), /not approved/);
+      assert.throws(() => vm.runInNewContext(sourceCode + '\nmain();', { require:guardedRequire, module:{exports:{}}, exports:{},
+        __dirname:path.dirname(entry), process:{...process, env:{...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH:path.join(root,'runtime/keys/aics-updater.key')},
+          argv:['node','fixture','--skip-build','--publish',...mode.args], exit:() => { throw Error('unexpected exit'); }}, console }), /not approved/);
+    }
+    manifest.licenseEvidence[flag] = true;
+  }
+  updateNative(); put(`${gateway}/native-licenses/LICENSE`, 'tampered'); bind();
+  assert.throws(() => publishRelease('1.0.0', 'head', files, { root, manual:true }), /SHA-256 changed/);
+  put(`${gateway}/native-licenses/LICENSE`, 'license'); fs.unlinkSync(path.join(root,gateway,'native-dependencies.windows-x64.json')); bind();
+  assert.throws(() => publishRelease('1.0.0', 'head', files, { root, manual:true }), /manifest\/build report is missing/);
+  assert.equal(sideEffects, 0);
+  assert.ok(binding.verifyBuild(root));
 }));
 
 test('仓库品牌更新仍保留原客户端安装身份', () => {

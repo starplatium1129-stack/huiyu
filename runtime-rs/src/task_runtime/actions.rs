@@ -1,6 +1,56 @@
 use super::*;
 
 impl TaskRuntime {
+    pub async fn resolve_webui(
+        self: &Arc<Self>,
+        storage: &Storage,
+        principal: &str,
+        id: &str,
+        expected_revision: i64,
+        upstream_stopped: bool,
+    ) -> Result<Value> {
+        self.check_running()?;
+        // Reject other principals before allocating an operation binding.
+        Self::get(storage, principal, id).await?;
+        let operation = self
+            .jobs
+            .lock()
+            .unwrap()
+            .entry(identity(storage, id))
+            .or_insert_with(|| JobBinding::new(String::new()))
+            .operation
+            .clone();
+        let _guard = operation.try_lock_owned().map_err(|_| {
+            ApiError::new(409, "TASK_ACTION_BUSY", "Another task operation is running")
+        })?;
+        if self
+            .jobs
+            .lock()
+            .unwrap()
+            .get(&identity(storage, id))
+            .is_some_and(|job| job.dispatching || job.watching)
+        {
+            return Err(ApiError::new(
+                409,
+                "TASK_RESOLUTION_UNSAFE",
+                "The runtime still owns active execution of this task",
+            ));
+        }
+        self.check_running()?;
+        let result = storage
+            .task(
+                TaskCommand::ResolveWebui {
+                    task_id: id.into(),
+                    expected_revision,
+                    upstream_stopped,
+                },
+                principal,
+            )
+            .await?;
+        self.jobs.lock().unwrap().remove(&identity(storage, id));
+        Ok(result)
+    }
+
     pub async fn action(
         self: &Arc<Self>,
         storage: Storage,

@@ -21,7 +21,9 @@ function selectOptionalLanes(files: readonly string[]): OptionalLane[] {
       continue;
     }
     if (/^(package(?:-lock)?\.json|.*config\.[^/]+)$/.test(file) || /^\.github\//.test(file)) return [...optional];
-    if (/^(routes|server|services|runtime-rs)\//.test(file) || /^server\.(ts|js)$/.test(file)) lanes.add('legacy');
+    if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(file)) continue;
+    if (/^runtime-rs\/native-/.test(file)) lanes.add('release');
+    else if (/^(routes|server|services|runtime-rs)\//.test(file) || /^server\.(ts|js)$/.test(file)) lanes.add('legacy');
     else if (/^desktop-tauri\//.test(file) || file === 'deploy-desktop.bat'
       || /^src\/(platform\/desktop|types\/live2dNative|utils\/live2dNativeAdapter)/.test(file)) lanes.add('release');
     else if (/^scripts\/maintenance\//.test(file)) {

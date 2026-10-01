@@ -99,7 +99,12 @@ const CHECKS = [
       + '监听器要挂在可聚焦的元素上——浏览器只把 paste 派发给焦点元素。',
     assert(source: any) {
       const code = stripComments(source);
-      return /@paste="onInterrogatePaste"/.test(code) && /function onInterrogatePaste/.test(code);
+      const tools = stripComments(read('src/components/director/DirectorImageTools.vue'));
+      const workspace = stripComments(read('src/views/PromptBuilderView.vue'));
+      return /function onInterrogatePaste/.test(code)
+        && /defineExpose\([\s\S]*\bonInterrogatePaste\b/.test(code)
+        && /<button\b[^>]*@paste="\$emit\('interrogatePaste',\s*\$event\)"/.test(tools)
+        && /@interrogatePaste="stagePanel\.onInterrogatePaste\(\$event\)"/.test(workspace);
     },
   },
   {

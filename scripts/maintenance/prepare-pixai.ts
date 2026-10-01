@@ -20,7 +20,7 @@ async function main(): Promise<void> {
     } else throw Error(`Unknown PixAI preparation argument: ${argument}`)
   }
   if (flags.has('--help')) {
-    console.log('models:prepare-pixai [--target-dir <writable runtime root>] [--python <existing Python/venv>] [--torch-site-packages <existing torch site>] [--reuse-from <existing candidate root>] [--plan|--check]\nFixed official PixAI v1.0 model (~1.81 GiB) and timm 1.0.30. Reuses verified files; installs timm only in target/deps.\n--plan: no network/writes/process. --check: local integrity/dependency checks, no install/inference. Production Python/Comfy settings are not changed.')
+    console.log('models:prepare-pixai [--target-dir <writable runtime root>] [--python <existing Python/venv>] [--torch-site-packages <existing torch site>] [--reuse-from <existing candidate root>] [--plan|--check]\nRequires Python 3.11 or newer; checked before downloads or dependency installation.\nFixed official PixAI v1.0 model (~1.81 GiB) and timm 1.0.30. Reuses verified files; installs timm only in target/deps.\n--plan: no network/writes/process. --check: local integrity/dependency checks, no install/inference. Production Python/Comfy settings are not changed.')
     return
   }
   if (flags.has('--plan') && flags.has('--check')) throw Error('Choose --plan or --check')

@@ -1,5 +1,7 @@
 # 项目文档索引
 
+第一批七项可靠性修复见 [审计修复与验证](audits/2026-10-01/first-batch-audit-fixes.md)：WebUI 手动恢复、发布拦截、换装与高清配方归属、SDK 输入、Rust 门禁和 Python 版本检查；源码、候选与安装边界分别记录。
+
 本轮[绘制台、角色档案与作品查看器精修](audits/2026-10-01/atelier-ui-refinement.md)记录共享图片、菜单与通知反馈，双主题 CSS 视口、行为回归、前后截图及原生设备未验边界。
 
 云端修复与最新本机主线的整合见 [双父合并与 Windows 定向验收](audits/2026-10-01/cloud-local-integration.md)：保留 durable batch 与独立 FIFO 语义、反推跨角色、双主题真实浏览器证据及安装/模型未验边界。

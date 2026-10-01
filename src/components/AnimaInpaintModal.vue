@@ -40,6 +40,7 @@ const props = defineProps<{
   adultEnabled?: boolean
   seed?: number | null
   submitting?: boolean
+  preparing?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -444,12 +445,12 @@ async function handleStart() {
       </div>
 
       <footer class="modal-footer">
-        <button class="btn btn-ghost" type="button" :disabled="submitting" @click="emit('close')">
+        <button class="btn btn-ghost" type="button" :disabled="submitting && !preparing" @click="emit('close')">
           取消
         </button>
         <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting || !activeImageUrl" @click="handleStart">
           <ArchiveIcon name="lightning" />
-          <span>{{ submitting ? '正在换装中…' : '开始智能换装 (~6秒)' }}</span>
+          <span>{{ preparing ? '正在准备换装…' : submitting ? '正在换装中…' : '开始智能换装 (~6秒)' }}</span>
         </button>
       </footer>
     </div>

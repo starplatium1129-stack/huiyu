@@ -11,7 +11,8 @@
         <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">返回工作台</RouterLink>
         <button v-if="task.resultRefs.length" class="btn btn-primary" @click="expanded = expanded === task.taskId ? '' : task.taskId">{{ expanded === task.taskId ? '收起结果' : '查看结果' }}</button>
         <button v-if="!task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'cancel')">取消任务</button>
-        <button v-if="task.deliveryState !== 'discarded' && (task.recoveryState !== 'normal' || task.resultState === 'unavailable')" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'reconcile')">重新核对</button>
+        <button v-if="task.deliveryState !== 'discarded' && task.errorCode !== 'WEBUI_STOP_CONFIRMED' && (task.recoveryState !== 'normal' || task.resultState === 'unavailable')" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'reconcile')">重新核对</button>
+        <button v-if="task.kind === 'generation' && task.provider === 'webui' && task.recoveryState === 'unknown' && task.submissionIntentAt && !task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resolve-webui')">解除 WebUI 占用</button>
         <button v-if="task.status === 'queued' && !task.submissionIntentAt" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resume')">继续生成</button>
         <button v-if="task.errorCode === 'BATCH_AWAITING_EXPLICIT_CONTINUE'" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'continue')">继续剩余分镜</button>
         <button v-if="task.kind === 'batch' && task.status === 'succeeded' && task.resultRefs.length > 1 && !hasConcat(task)" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'concat')">拼接成片</button>
@@ -26,8 +27,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import RuntimeTaskResult from './RuntimeTaskResult.vue'
-import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
+import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
+import { confirmAction } from '@/composables/useConfirm'
 const emit = defineEmits<{ navigate: [] }>()
 const selected = ref('all'), expanded = ref(''), busy = ref(''), feedback = ref(''), discarding = ref('')
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }]
@@ -38,9 +40,20 @@ const routeFor = (task: TaskRecord) => task.kind === 'video' ? `/video-studio?jo
 const hasConcat = (task: TaskRecord) => Array.isArray(task.checkpoint?.shots) && task.resultRefs.some(result => result.index === (task.checkpoint!.shots as unknown[]).length)
 async function refresh() { busy.value = 'refresh'; feedback.value = ''; try { await refreshRuntimeTasks() } catch {} finally { busy.value = '' } }
 async function cancelKey(key: string) { try { await cancelRuntimeTaskKey(key); feedback.value = '取消意图已记录。' } catch { feedback.value = '取消尚未确认，请保持原操作并重试查询。' } }
-async function act(task: TaskRecord, action: 'cancel' | 'reconcile' | 'resume' | 'continue' | 'concat' | 'discard') {
-  if (busy.value) return; busy.value = task.taskId; feedback.value = ''
-  try { if (action === 'cancel') await cancelRuntimeTask(task.taskId); else if (action === 'discard') { await markRuntimeTask(task.taskId, 'discarded'); expanded.value = ''; discarding.value = '' } else await actOnRuntimeTask(task.taskId, action) }
+async function act(task: TaskRecord, action: 'cancel' | 'reconcile' | 'resume' | 'continue' | 'concat' | 'discard' | 'resolve-webui') {
+  if (busy.value) return
+  feedback.value = ''
+  if (action === 'resolve-webui' && !await confirmAction({ title: '确认 WebUI 已停止', message: '请先在 WebUI 中停止该任务，或完成 WebUI 服务重启。确认后将解除这条未知任务的占用，保留原任务和已保存结果；未取回的结果仍未确认。应用不会代你停止 WebUI。', confirmLabel: '我已停止或重启 WebUI', cancelLabel: '暂不解除' })) return
+  if (busy.value) return
+  busy.value = task.taskId
+  try {
+    if (action === 'resolve-webui') {
+      await confirmWebuiTaskStopped(task.taskId, task.revision)
+      feedback.value = '已按你的确认解除占用，可以发起新任务。'
+    } else if (action === 'cancel') await cancelRuntimeTask(task.taskId)
+    else if (action === 'discard') { await markRuntimeTask(task.taskId, 'discarded'); expanded.value = ''; discarding.value = '' }
+    else await actOnRuntimeTask(task.taskId, action)
+  }
   catch (error) { feedback.value = error instanceof Error ? error.message : '操作尚未完成，请重新核对。' }
   finally { busy.value = '' }
 }

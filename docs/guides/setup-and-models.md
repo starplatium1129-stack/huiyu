@@ -76,7 +76,7 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 ### PixAI 默认图片反推
 
-默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
+默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。运行环境要求 Python 3.11 或更新版本；准备入口在下载或安装依赖前检查解释器版本，并将实际版本写入回执。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
 
 首次反推需要加载模型，后续请求复用同一个 GPU 进程；不会在每张图结束或开始生图时自动卸载。取消活跃请求、进程故障或网关关闭会回收对应进程。显存不足明确报错，不自动变更模型或回退为演示标签。安装包只带 worker 和固定文件清单，Python 环境与权重仍需另行准备。
 

@@ -46,6 +46,11 @@ fn main() {
     let core_include = sdk.join("Core").join("include");
     let framework_src = sdk.join("Framework").join("src");
     println!("cargo:rerun-if-env-changed=LIVE2D_CUBISM_SDK_DIR");
+    println!("cargo:rerun-if-env-changed=LIVE2D_CUBISM_SDK_SHA256");
+    // Track SDK paths for direct Cargo use. The desktop entry also fingerprints
+    // bytes so replacing an SDK with preserved timestamps invalidates the cache.
+    println!("cargo:rerun-if-changed={}", core_include.display());
+    println!("cargo:rerun-if-changed={}", framework_src.display());
 
     let mut build = cc::Build::new();
     build
@@ -79,6 +84,7 @@ fn main() {
         .join("143");
     println!("cargo:rustc-link-search=native={}", core_lib.display());
     println!("cargo:rustc-link-lib=static=Live2DCubismCore_MD");
+    println!("cargo:rerun-if-changed={}", core_lib.join("Live2DCubismCore_MD.lib").display());
     println!("cargo:rerun-if-changed=csrc");
 }
 

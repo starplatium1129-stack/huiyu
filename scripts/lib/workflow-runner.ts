@@ -80,7 +80,7 @@ function audit(registry: WorkflowRegistry, root: string) {
     if (def.cmd?.includes('--help')) errors.push(`${name}: 固定 --help 阻止执行`);
     if (def.cmd?.[0] === 'npm' && !scripts[def.cmd[1] === 'run' ? def.cmd[2] : def.cmd[1]]) errors.push(`${name}: npm 入口不存在`);
     for (const arg of def.cmd || []) {
-      if (/^(scripts\/|deploy-desktop\.bat)/.test(arg) && !fs.existsSync(path.join(root, arg))) errors.push(`${name}: 文件不存在 ${arg}`);
+      if (/^(?:scripts\/|runtime-rs\/|deploy-desktop\.bat)/.test(arg) && !fs.existsSync(path.join(root, arg))) errors.push(`${name}: 文件不存在 ${arg}`);
     }
     if (def.docs && !fs.existsSync(path.join(root, def.docs.split('#')[0].replace(/:\d+$/, '')))) errors.push(`${name}: 文档不存在 ${def.docs}`);
     try {

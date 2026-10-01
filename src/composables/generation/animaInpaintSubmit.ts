@@ -1,23 +1,16 @@
-import type { ComputedRef, Ref } from 'vue'
 import { resolveInpaintRequestBinding } from './useAnimaSession'
+import type { AnimaSubmission } from './animaSessionContract'
 import { apiClient } from '@/api/client'
 import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags.ts'
+import { readImageDataUrl } from '@/utils/backupExport'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 
-type InpaintSubmitContext = AnimaInpaintDeps & {
-  inpaintOpen: Ref<boolean>
-  inpaintOriginalUrl: Ref<string | null>
-  inpaintCompareActive: Ref<boolean>
-  inpaintCharacter: ComputedRef<'nene' | 'natsume' | null>
-}
-
-type InpaintSubmissionSnapshot = {
+export type InpaintSubmissionSnapshot = {
   payload: InpaintSubmitPayload
   effectiveChar: Exclude<InpaintSubmitPayload['characterOverride'], undefined>
   isPopular: boolean
   identityTokens: string[]
-  displayResultUrl: string
   model: {
     models: AnimaInpaintDeps['animaState']['value']['models']
     modelId: string
@@ -27,43 +20,29 @@ type InpaintSubmissionSnapshot = {
   }
 }
 
-/** Freeze all mutable creator state before the first asynchronous upload. */
-function captureSubmission(context: InpaintSubmitContext, payload: InpaintSubmitPayload): InpaintSubmissionSnapshot {
-  const { animaState, displayResultUrl, isPopular, popularIdentityTokens, inpaintCharacter } = context
-  return {
-    payload: { ...payload },
-    effectiveChar: payload.characterOverride !== undefined ? payload.characterOverride : inpaintCharacter.value,
-    isPopular: isPopular.value,
-    identityTokens: [...popularIdentityTokens.value],
-    displayResultUrl: displayResultUrl.value,
-    model: {
-      models: JSON.parse(JSON.stringify(animaState.value.models)) as AnimaInpaintDeps['animaState']['value']['models'],
-      modelId: animaState.value.modelId,
-      width: animaState.value.width,
-      height: animaState.value.height,
-      loraStrength: animaState.value.loraStrength,
-    },
-  }
-}
-
 /** Loaded only when the user confirms inpainting; request construction stays unchanged. */
-export async function submitAnimaInpaint(payload: InpaintSubmitPayload, context: InpaintSubmitContext): Promise<void> {
-  const snapshot = captureSubmission(context, payload)
-  const { pb, generateAnima, inpaintOpen, inpaintOriginalUrl, inpaintCompareActive } = context
-  pb.flash('正在上传原图并准备智能换装…')
-  const reader = new FileReader()
-  const base64Promise = new Promise<string>((resolve, reject) => {
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(snapshot.payload.imageBlob)
-  })
-  const base64Data = await base64Promise
+export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, context: {
+  signal: AbortSignal
+  current(): boolean
+  flash: AnimaInpaintDeps['pb']['flash']
+  submission: AnimaSubmission
+  generate: AnimaInpaintDeps['generateAnima']
+  begin(originalUrl: string): void
+  started(): void
+}): Promise<void> {
+  const { signal, flash } = context
+  signal.throwIfAborted()
+  flash('正在上传原图并准备智能换装…')
+  const base64Data = await readImageDataUrl(snapshot.payload.imageBlob, signal)
+  signal.throwIfAborted()
 
   const uploadJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
     method: 'POST',
     body: { image: base64Data },
+    signal,
     timeoutMs: 30_000,
-  } as unknown as Record<string, unknown>)
+  })
+  signal.throwIfAborted()
   if (!uploadJson.ok || !uploadJson.name) {
     throw new Error((uploadJson as { error?: string }).error || '原图上传失败')
   }
@@ -71,24 +50,18 @@ export async function submitAnimaInpaint(payload: InpaintSubmitPayload, context:
   const initImage = uploadJson.name
   let maskImage: string | undefined
   if (snapshot.payload.maskBlob) {
-    const maskReader = new FileReader()
-    const maskData = await new Promise<string>((resolve, reject) => {
-      maskReader.onload = () => resolve(maskReader.result as string)
-      maskReader.onerror = reject
-      maskReader.readAsDataURL(snapshot.payload.maskBlob as Blob)
-    })
+    const maskData = await readImageDataUrl(snapshot.payload.maskBlob, signal)
+    signal.throwIfAborted()
     const maskJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
       method: 'POST',
       body: { image: maskData },
+      signal,
       timeoutMs: 30_000,
-    } as unknown as Record<string, unknown>)
+    })
+    signal.throwIfAborted()
     if (!maskJson.ok || !maskJson.name) throw new Error((maskJson as { error?: string }).error || '遮罩上传失败')
     maskImage = maskJson.name
   }
-  inpaintOpen.value = false
-  inpaintOriginalUrl.value = snapshot.displayResultUrl
-  inpaintCompareActive.value = false
-  pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
 
   // All values below come from the submission snapshot. Uploading the source
   // image and resolving a mask may yield to the event loop; the creator can
@@ -123,11 +96,16 @@ export async function submitAnimaInpaint(payload: InpaintSubmitPayload, context:
     ? `${snapshot.payload.negativePrompt}, face, head, hair, duplicate person, extra person`
     : snapshot.payload.negativePrompt
   if (!binding) {
-    pb.flash('当前没有可用的无 LoRA Anima 底模，无法处理外部通用图片')
+    flash('当前没有可用的无 LoRA Anima 底模，无法处理外部通用图片')
     return
   }
 
-  await generateAnima({
+  signal.throwIfAborted()
+  if (!context.current()) return
+  context.begin(URL.createObjectURL(snapshot.payload.imageBlob))
+  flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
+  let pending: Promise<void>
+  try { pending = context.generate({
     prompt: promptText,
     modelId: binding.modelId,
     negative: negativePrompt,
@@ -142,5 +120,7 @@ export async function submitAnimaInpaint(payload: InpaintSubmitPayload, context:
     width: binding.width,
     height: binding.height,
     teaCache: true,
-  })
+  }, context.submission) }
+  finally { context.started() }
+  await pending
 }

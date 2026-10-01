@@ -4,6 +4,7 @@ const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const os: typeof import('node:os') = require('node:os');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
+const identity: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
 const ROOT = path.resolve(__dirname, '../..');
 const SDK_PARTS = ['Core/include/Live2DCubismCore.h', 'Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib', 'Framework/src/CubismFramework.cpp'];
 
@@ -23,6 +24,13 @@ function resolveSdkRoot(root: any = ROOT, env: NodeJS.ProcessEnv = process.env, 
   ].find((candidate: any) => SDK_PARTS.every((part: any) => exists(path.join(candidate, part)))) || '';
 }
 
+function sdkInputSnapshot(sdkRoot: string) {
+  const inputs = identity.snapshot(sdkRoot, [{ kind:'tree', path:'Core/include' }, { kind:'tree', path:'Framework/src' },
+    { kind:'file', path:'Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib' }]);
+  if (inputs.status !== 'complete') throw Error('Cubism SDK inputs are missing or unsafe');
+  return inputs;
+}
+
 function desktopBuildEnvironment(root: any = ROOT, source: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
   const env = { ...source };
   const pathKey = Object.keys(env).find((key: any) => key.toLowerCase() === 'path') || 'PATH';
@@ -31,7 +39,13 @@ function desktopBuildEnvironment(root: any = ROOT, source: NodeJS.ProcessEnv = p
   const rustBin = candidates.find((candidate: any) => fs.existsSync(path.join(candidate, 'cargo.exe')));
   if (rustBin) env[pathKey] = [rustBin, env[pathKey] || ''].join(path.delimiter);
   const sdk = resolveSdkRoot(root, source);
-  if (sdk) env.LIVE2D_CUBISM_SDK_DIR = sdk;
+  delete env.LIVE2D_CUBISM_SDK_SHA256;
+  if (sdk) {
+    env.LIVE2D_CUBISM_SDK_DIR = sdk;
+    // Package replacement can preserve old mtimes. A content fingerprint makes
+    // the normal desktop entry invalidate Cargo even for that replacement.
+    if (SDK_PARTS.every(part => fs.existsSync(path.join(sdk,part)))) env.LIVE2D_CUBISM_SDK_SHA256 = sdkInputSnapshot(sdk).sha256;
+  }
   return env;
 }
 
@@ -70,4 +84,4 @@ if (require.main === module) {
   console.log(process.argv.includes('--json') ? JSON.stringify(report, null, 2) : report.checks.map((check: any) => `${check.ready ? 'OK' : 'MISSING'} ${check.name}: ${check.detail || check.help}`).join('\n'));
   process.exitCode = report.ready ? 0 : 1;
 }
-export = { resolveSdkRoot, desktopBuildEnvironment, inspectDesktopBuildEnvironment, assertDesktopBuildEnvironment };
+export = { resolveSdkRoot, sdkInputSnapshot, desktopBuildEnvironment, inspectDesktopBuildEnvironment, assertDesktopBuildEnvironment };

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { defineComponent, h, nextTick } from 'vue'
+import { defineComponent, h, nextTick, ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { apiClient } from '@/api/client'
 import { generationApi } from '@/api/generationApi'
@@ -9,6 +9,9 @@ import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { DRAW_ENGINE_SETTING, settingsRepository } from '@/storage/settingsRepository'
 import { usePromptWorkspace } from './usePromptWorkspace'
+import type { AnimaSubmission } from '@/composables/generation/animaSessionContract'
+import type { PromptGenerationContext } from './promptGenerationActions'
+import type { SdResultSnapshot } from './sdResultActions'
 
 vi.mock('@/utils/tempResult', () => ({ clearTempResult: vi.fn(), readTempResult: vi.fn(() => null), writeTempResult: vi.fn(() => true) }))
 
@@ -55,6 +58,53 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {})
 }
 
 describe('workspace ownership and panel boundaries', () => {
+  it('hires freezes the completed recipe before cold loading, supports loading cancellation and refuses unknown recipes', async () => {
+    const anima: AnimaSubmission = { family: 'anima', request: { prompt: 'recipe A', negative: 'negative A', profileId: 'profile A',
+      modelId: 'model A', loraId: null, loraStrength: null, character: null, width: 832, height: 1216, steps: 28, cfg: 4.5, seed: 0 }, context: { characterId: 'role A' } }
+    const { workspace, pb } = await setup()
+    workspace.drawEngine.value = 'anima'
+    workspace.animaSession.patchState({ online: true, family: 'anima', phase: 'succeeded', resultContext: anima.context,
+      result: { url: 'blob:original-A', blob: new Blob(['original'], { type: 'image/png' }), metadata: { ...anima.request,
+        id: 'original-A', engine: 'anima', seed: 0, sampler: 'original', scheduler: 'original', createdAt: 0, resultUrl: null } } })
+    const source = vi.spyOn(workspace.animaSession, 'resultSubmission').mockReturnValue(anima)
+    vi.mocked(apiClient.request).mockRejectedValue(new Error('isolated submission failure'))
+    const loading = workspace.upscaleCurrentResult()
+    expect(source).toHaveBeenCalledOnce(); expect(workspace.generationBusy.value).toBe(true)
+    source.mockReturnValue({ ...anima, request: { ...anima.request, prompt: 'recipe B', modelId: 'model B' } })
+    pb.story = 'recipe B'
+    await loading
+    const posts = () => vi.mocked(apiClient.request).mock.calls.filter(([url, options]) => url === '/api/anima/jobs' && options?.method === 'POST')
+    expect(posts()).toHaveLength(1)
+    expect(posts()[0]![1]!.body).toMatchObject({ prompt: 'recipe A', modelId: 'model A', seed: 0, hiresFix: true })
+    expect(workspace.animaSession.restoreStashedResult()).toBe(true)
+    source.mockReturnValue(anima)
+    const cancelled = workspace.upscaleCurrentResult()
+    workspace.cancelGeneration(); await cancelled
+    expect(posts()).toHaveLength(1)
+    expect(workspace.generationBusy.value).toBe(false)
+
+    const { upscaleCurrentResultAction } = await import('./promptGenerationActions')
+    const sd = { prompt: 'recipe A', negative: 'negative A', checkpoint: 'model A', sampler: 'Euler', size: '832x1216', seed: 0, cfg: 7, steps: 24,
+      hiresFix: false, hiresScale: 1.5, denoisingStrength: 0.5, context: { char: 'nene' } } as SdResultSnapshot
+    const current = { prompt: 'recipe B', model: 'model B', hiresFix: false }
+    const generate = vi.fn().mockResolvedValue(undefined), run = vi.fn().mockResolvedValue('blob:hires')
+    const capture = vi.fn(() => current), flash = vi.fn(), saved = vi.fn()
+    const context = { pb: { flash, sdParams: current }, drawEngine: ref('anima'), generationBusy: ref(false),
+      generateAnima: generate, captureJob: capture, applyManagedRoute: capture, runJob: run,
+      sd: { errorMsg: ref('') }, sdErrorReport: ref(null), tempResultTools: { handleSdResult: saved },
+    } as unknown as PromptGenerationContext
+    await upscaleCurrentResultAction(context, { engine: 'anima', anima, sd: null })
+    expect(generate).toHaveBeenCalledExactlyOnceWith({ hiresFix: true, hiresScale: 2, hiresDenoise: 0.35 }, anima)
+    context.drawEngine.value = 'sd'
+    await upscaleCurrentResultAction(context, { engine: 'sd', anima: null, sd })
+    expect(run).toHaveBeenCalledExactlyOnceWith({ ...sd, hiresFix: true, hiresScale: 2, denoisingStrength: 0.35 })
+    expect(saved).toHaveBeenCalledOnce(); expect(capture).not.toHaveBeenCalled()
+    expect(current).toEqual({ prompt: 'recipe B', model: 'model B', hiresFix: false }); expect(sd.hiresFix).toBe(false)
+    context.drawEngine.value = 'anima'
+    await upscaleCurrentResultAction(context, { engine: 'anima', anima: null, sd: null })
+    expect(generate).toHaveBeenCalledOnce()
+    expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('未知'))
+  })
   it('projects live store fields and keeps draft subscription single across mode changes', async () => {
     const { workspace, pb, catalog, saveDraft } = await setup()
     const { renderBindings, styleBindings, healthBindings, deliveryBindings } = workspace

@@ -187,6 +187,20 @@ async fn perform(
                     .reconcile(&storage, &session.principal_id, id)
                     .await?
             }
+            ("POST", [id, action]) if action == "confirm-webui-stopped" => {
+                let revision = input["expectedRevision"]
+                    .as_i64()
+                    .filter(|value| (0..=9_007_199_254_740_991).contains(value))
+                    .ok_or_else(|| ApiError::invalid("Missing or invalid task revision"))?;
+                if input["upstreamStopped"] != true {
+                    return Err(ApiError::invalid(
+                        "Confirm that WebUI has stopped or restarted",
+                    ));
+                }
+                runtime
+                    .resolve_webui(&storage, &session.principal_id, id, revision, true)
+                    .await?
+            }
             ("POST", [id, action]) if action == "resume" => {
                 runtime
                     .resume(storage.clone(), session.principal_id.clone(), id.clone())

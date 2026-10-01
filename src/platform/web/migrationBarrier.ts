@@ -1,4 +1,4 @@
-import { assertMaintenanceWritable } from '../maintenanceParticipants'
+import { assertMaintenanceWritable } from '../maintenanceParticipants.ts'
 
 /** The bridge is installed before consumers mount. It is temporary upgrade code:
  * synchronous Storage writers cannot await Web Locks, so a shared marker blocks
