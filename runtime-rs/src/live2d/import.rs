@@ -30,8 +30,9 @@ impl Drop for UploadDirectory {
         };
         let path = directory.keep();
         let cleanup = move || {
-            // Only this request's staging directory is owned. Do not follow a
-            // replaced ancestor, and never inspect or sweep older uploads.
+            // Best-effort cleanup of this request's staging directory only.
+            // Skip ancestry currently containing links; this is not an atomic
+            // identity guard against external replacement. Never sweep old uploads.
             if no_links(&path).is_ok() {
                 let _ = fs::remove_dir_all(path);
             }
