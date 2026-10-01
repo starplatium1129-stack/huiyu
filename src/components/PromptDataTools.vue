@@ -62,7 +62,7 @@
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value || !migration.bundledVerified.value" @click="migration.enableBundled()"><ArchiveIcon name="spark" /> 启用独立启动界面</button>
         </StudioTooltip>
         <div v-if="migration.progress.value" class="utility-note wide" role="status" aria-live="polite">{{ migration.progress.value }}</div>
-        <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" @click="migration.cancel()">取消迁移</button>
+        <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" :disabled="!migration.canCancel.value" @click="migration.cancel()">取消迁移</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="cleanOrphanImages"><ArchiveIcon name="broom" /> 清理未引用图片</button>
       </div>
