@@ -13,6 +13,7 @@ const INPUT_EVENTS = ['beforeinput', 'input', 'change', 'click', 'dblclick', 'po
 type Message = { type: 'pause' | 'ack' | 'resume'; requestId: string; scope: string; participant?: string; references?: string[]; error?: string; deadlineAt?: number }
 type Paused = { request: Message; timer: ReturnType<typeof setTimeout>; stopping?: Promise<void>; restoring?: Promise<void> }
 const busyMessage = '其他绘遇窗口仍有未保存编辑或进行中的操作，请先完成保存再清理；本次未删除图片'
+type Options = { isBusy: () => boolean; waitForSync?: () => Promise<unknown> }
 function identity() {
   const state = getDesktopRuntime(), bootstrap = state.bootstrap
   if (state.connection !== 'ready' || !bootstrap?.runtime || bootstrap.runtime.workspace?.domains.includes('artwork')) return null
@@ -23,9 +24,33 @@ function identity() {
 /** Legacy desktop origins still share IndexedDB with the host's hidden
  * companion documents. Pause only verified sibling roles, then retain the
  * original exclusive lock: foreign documents and in-flight staging still veto. */
-export async function installDesktopArtworkCleanup(options: { isBusy: () => boolean; waitForSync?: () => Promise<unknown> }): Promise<() => void> {
-  const selected = identity(), locks = navigator.locks
-  if (!selected || !locks || typeof BroadcastChannel === 'undefined') return () => {}
+export async function installDesktopArtworkCleanup(options: Options): Promise<() => void> {
+  if (!navigator.locks || typeof BroadcastChannel === 'undefined') return () => {}
+  let current: { identity: NonNullable<ReturnType<typeof identity>>; stop: (rejoin?: boolean) => Promise<void> } | undefined
+  let disposed = false, pending = Promise.resolve()
+  // The first handshake can fail, and a restarted runtime has a new scope.
+  // Retire the old coordinator fully before publishing its replacement.
+  const sync = () => {
+    pending = pending.catch(() => {}).then(async () => {
+      const selected = disposed ? null : identity()
+      if (current && selected?.scope === current.identity.scope && selected.role === current.identity.role) return
+      if (current) { await current.stop(!disposed); current = undefined }
+      const next = disposed ? null : identity()
+      if (next) current = { identity: next, stop: await installScope(next, options) }
+    })
+    void pending.catch(() => {})
+  }
+  const removeRuntime = onDesktopRuntime(sync)
+  try { await pending } catch (error) { disposed = true; removeRuntime(); throw error }
+  return () => {
+    disposed = true; removeRuntime()
+    void current?.stop(false).catch(() => {})
+    sync()
+  }
+}
+
+async function installScope(selected: NonNullable<ReturnType<typeof identity>>, options: Options): Promise<(rejoin?: boolean) => Promise<void>> {
+  const locks = navigator.locks
   const channel = new BroadcastChannel(CHANNEL)
   const participant = `${REGISTRY}${selected.scope}:${selected.role}:${crypto.randomUUID()}`
   let releaseRegistry!: () => void, enterRegistry!: () => void, failRegistry!: (error: unknown) => void
@@ -36,6 +61,8 @@ export async function installDesktopArtworkCleanup(options: { isBusy: () => bool
   let paused: Paused | undefined, disposed = false, composing = false
   let cancelCleanup: (() => void) | undefined
   let activeRequest: string | undefined
+  const activeJobs = new Set<Promise<unknown>>()
+  let rejoinOnStop = true, stopping: Promise<void> | undefined
   const blockInput = (event: Event) => { if (paused || activeRequest) { event.preventDefault(); event.stopImmediatePropagation() } }
   const compositionStart = () => { composing = true }, compositionEnd = () => { composing = false }
   function check() {
@@ -66,7 +93,7 @@ export async function installDesktopArtworkCleanup(options: { isBusy: () => bool
     // cleanup access, even a timeout cannot reopen writes until it releases it.
     entry.restoring = (async () => {
       await entry.stopping
-      if (!disposed) await startArtworkSession()
+      if (!disposed || rejoinOnStop) await startArtworkSession()
       if (paused === entry) { paused = undefined; setArtworkCleanupPhase('idle') }
     })()
     return entry.restoring
@@ -106,8 +133,9 @@ export async function installDesktopArtworkCleanup(options: { isBusy: () => bool
   const removeCoordinator = selected.role === 'atelier' ? installArtworkCleanupCoordinator(async (work, signal) => {
     check(); signal?.throwIfAborted()
     if (maintenanceFrozen()) throw new Error(busyMessage)
-    return locks.request(COORDINATOR, { ifAvailable: true }, async lock => {
+    const job = locks.request(COORDINATOR, { ifAvailable: true }, async lock => {
       if (!lock) throw new Error(busyMessage)
+      check(); signal?.throwIfAborted()
       setArtworkCleanupPhase('preparing')
       const requestId = crypto.randomUUID(), epoch = new AbortController()
       activeRequest = requestId
@@ -137,26 +165,46 @@ export async function installDesktopArtworkCleanup(options: { isBusy: () => bool
             if (combined.aborted) { abort(); return }
             channel.postMessage({ type: 'pause', requestId, scope: selected.scope, deadlineAt: Date.now() + 5000 } satisfies Message)
           })
-        await flushWindow(() => { check(); combined.throwIfAborted(); guard() })
+        // Only preparation may be abandoned. Actual destructive work must keep
+        // its leases until it settles, even after cancellation or reconnecting.
+        let rejectPreparation!: (error: unknown) => void
+        const cancelled = new Promise<never>((_, reject) => { rejectPreparation = reject })
+        const abortPreparation = () => rejectPreparation(combined.reason)
+        const timer = setTimeout(() => epoch.abort(new Error(busyMessage)), 5000)
+        combined.addEventListener('abort', abortPreparation, { once: true })
+        try {
+          combined.throwIfAborted()
+          await Promise.race([flushWindow(() => { check(); combined.throwIfAborted(); guard() }), cancelled])
+        } finally { clearTimeout(timer); combined.removeEventListener('abort', abortPreparation) }
         setArtworkCleanupPhase('sealed')
         return await work([...references], combined)
       } finally {
         removeRuntime(); cancelCleanup = undefined; activeRequest = undefined; setArtworkCleanupPhase('idle')
-        if (!disposed) channel.postMessage({ type: 'resume', requestId, scope: selected.scope } satisfies Message)
+        channel.postMessage({ type: 'resume', requestId, scope: selected.scope } satisfies Message)
       }
     })
+    activeJobs.add(job)
+    try { return await job } finally { activeJobs.delete(job) }
   }) : () => {}
   const removeRuntime = onDesktopRuntime(() => { if (paused && identity()?.scope !== selected.scope) void resume(paused).catch(() => {}) })
   for (const event of INPUT_EVENTS) window.addEventListener(event, blockInput, { capture: true, passive: false })
   window.addEventListener('compositionstart', compositionStart, true); window.addEventListener('compositionend', compositionEnd, true)
-  function stop() {
-    if (activeRequest) channel.postMessage({ type: 'resume', requestId: activeRequest, scope: selected!.scope } satisfies Message)
-    disposed = true; cancelCleanup?.(); removeCoordinator(); removeRuntime(); releaseRegistry()
-    if (paused) void resume(paused).catch(() => {})
-    for (const event of INPUT_EVENTS) window.removeEventListener(event, blockInput, true)
-    window.removeEventListener('compositionstart', compositionStart, true); window.removeEventListener('compositionend', compositionEnd, true)
-    void registry.catch(() => {}); channel.close()
+  function stop(rejoin = true): Promise<void> {
+    if (!rejoin) rejoinOnStop = false
+    if (stopping) return stopping
+    rejoinOnStop = rejoin; disposed = true; cancelCleanup?.(); removeCoordinator(); removeRuntime()
+    stopping = (async () => {
+      // A replacement must not thaw a sibling before its shared lease returns,
+      // or overlap a deletion still finishing under the previous coordinator.
+      await Promise.allSettled([...activeJobs])
+      if (paused) await resume(paused)
+      releaseRegistry()
+      for (const event of INPUT_EVENTS) window.removeEventListener(event, blockInput, true)
+      window.removeEventListener('compositionstart', compositionStart, true); window.removeEventListener('compositionend', compositionEnd, true)
+      await registry.catch(() => {}); channel.close()
+    })()
+    return stopping
   }
-  try { await registered } catch (error) { stop(); throw error }
+  try { await registered } catch (error) { await stop(); throw error }
   return stop
 }

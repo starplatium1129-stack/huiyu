@@ -99,7 +99,7 @@ async function cleanup(page: Page) {
 }
 async function thawed(pages: Page[], documentCount: number) {
   for (const page of pages) await expect.poll(() => page.evaluate(() => window.cleanupFixture.maintenanceFrozen())).toBe(false)
-  await expect.poll(() => pages[0].evaluate(async () => (await navigator.locks.query()).held
+  await expect.poll(() => pages[0].evaluate(async () => ((await navigator.locks.query()).held ?? [])
     .filter(lock => lock.name === 'huiyu-artwork-documents').length)).toBe(documentCount)
 }
 async function holdFlush(page: Page) {
