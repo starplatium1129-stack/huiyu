@@ -3,7 +3,7 @@ import { parseSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
 import { characterName as artworkCharacterName, safeImageUrl, searchHaystack } from './galleryHelpers'
-import { artworkCharacterIds, matchesSmartAlbum, smartAlbumSummary, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
+import { artworkCharacterIds, createSmartAlbumMatcher, smartAlbumSummary, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 
 export interface GalleryProjectAlbum {
   id: string
@@ -52,9 +52,10 @@ export function useGalleryProjectAlbums(options: {
       const rule = smartRules.value.get(project)
       if (Object.hasOwn(project, 'smartRule')) {
         if (!rule) return []
+        const matches = createSmartAlbumMatcher(rule, projects)
         return [{ id: project.id, title: project.title, kind: 'smart',
           ruleSummary: smartAlbumSummary(rule, options.characterName),
-          items: sortedHistory.value.filter(item => matchesSmartAlbum(item, rule, projects, index?.get(item))) }]
+          items: sortedHistory.value.filter(item => matches(item, index?.get(item))) }]
       }
       // Match the existing project filter's ID semantics, excluding deleted/stale references.
       const items = [...new Set(project.history_ids)]

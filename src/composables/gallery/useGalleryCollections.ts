@@ -7,7 +7,7 @@ import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useAlbumNavigation } from './useAlbumNavigation'
 import { galleryProjects, type GalleryProject } from './galleryStorage'
 import { useGalleryProjectAlbums } from './useGalleryProjectAlbums'
-import { matchesSmartAlbum, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
+import { createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 import { safeImageUrl } from './galleryHelpers'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 
@@ -38,6 +38,8 @@ export function useGalleryCollections(options: Options) {
   const editorTitle = ref(''), editorRule = ref<SmartAlbumRule>(blankRule())
   let draftId = ''
   let disposed = false
+  let viewRevision = 0
+  const isCurrentView = (revision: number) => !disposed && revision === viewRevision
   function blankRule(): SmartAlbumRule {
     return { characterId: '', tags: [], tagMatch: 'all', favoriteOnly: false, search: '', projectId: '' }
   }
@@ -59,7 +61,11 @@ export function useGalleryCollections(options: Options) {
     editorTitle.value = project.title; editorRule.value = normalizeSmartAlbumRule(project.smartRule)
     editorOpen.value = true
   }
-  const previewItems = computed(() => options.history.value.filter(item => matchesSmartAlbum(item, editorRule.value, options.projects.value)))
+  const previewItems = computed(() => {
+    if (!editorOpen.value) return []
+    const matches = createSmartAlbumMatcher(editorRule.value, options.projects.value)
+    return options.history.value.filter(item => matches(item))
+  })
   const previewCovers = computed(() => previewItems.value.slice(0, 3).map(item => {
     const cached = options.thumbUrls[item.id] || options.cardUrls[item.id] || ''
     return { id: item.id, src: /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached) }
@@ -90,6 +96,7 @@ export function useGalleryCollections(options: Options) {
   }
   async function save() {
     if (saving.value) return
+    const revision = viewRevision
     saving.value = true; error.value = ''
     try {
       const saved = await artworkRepository.saveSmartAlbum({ id: draftId, title: editorTitle.value, rule: normalizeSmartAlbumRule(editorRule.value) })
@@ -98,35 +105,41 @@ export function useGalleryCollections(options: Options) {
       if (!project) throw new Error('智能画册保存响应无效')
       if (disposed) return
       options.projects.value = [...options.projects.value.filter(value => value.id !== project.id), project]
+      // Persistence survives KeepAlive deactivation; old UI work must not navigate a newer visit.
+      if (!isCurrentView(revision)) return
       editorOpen.value = false
       albumSection.value = 'albums'
       await openCollection(project.id)
+      if (!isCurrentView(revision)) return
       options.showToast(editing.value ? '智能画册已更新' : '智能画册已保存', 'success')
-    } catch (cause) { if (!disposed) error.value = storageWriteMessage(cause, '智能画册') }
+    } catch (cause) { if (isCurrentView(revision)) error.value = storageWriteMessage(cause, '智能画册') }
     finally { saving.value = false }
   }
   async function removeSmartAlbum(id: string) {
     const project = options.projects.value.find(value => value.id === id && value.smartRule)
     if (!project || saving.value) return
+    const revision = viewRevision
     const confirmed = await confirmAction({ title: '移除智能画册？', message: `移除「${project.title}」的筛选规则，作品仍保存在全部作品中。`, confirmLabel: '移除画册', danger: false })
-    if (!confirmed || disposed || saving.value) return
+    if (!confirmed || !isCurrentView(revision) || saving.value) return
     saving.value = true
     try {
       await artworkRepository.deleteSmartAlbum(id)
       if (disposed) return
       options.projects.value = options.projects.value.filter(value => value.id !== id)
+      if (!isCurrentView(revision)) return
       if (options.projectFilter.value === id) options.resetGalleryFilters()
       options.showToast('智能画册已移除', 'success')
-      await nextTick(); navigation.albumRoot.value?.focus({ preventScroll: true })
+      await nextTick()
+      if (isCurrentView(revision)) navigation.albumRoot.value?.focus({ preventScroll: true })
     } catch (cause) {
-      options.showToast(storageWriteMessage(cause, '智能画册'), 'error')
+      if (isCurrentView(revision)) options.showToast(storageWriteMessage(cause, '智能画册'), 'error')
       await refreshProjects().catch(() => {})
     } finally { saving.value = false }
   }
   const releaseMaintenance = registerMaintenanceParticipant(() => {
     if (saving.value || editorOpen.value) throw new Error('OPEN_GALLERY_ALBUM_EDITOR')
   })
-  onDeactivated(() => { editorOpen.value = false })
+  onDeactivated(() => { viewRevision++; editorOpen.value = false })
   onScopeDispose(() => { disposed = true; releaseMaintenance() })
   return { ...navigation, selection, albums, characterAlbums, albumSection, visibleAlbumIds, collectionTitle, manualProjects, characterOptions,
     currentSmartRule, editorOpen, editorTitle, editorRule, editing, saving, error, previewItems, previewCovers, syncPreviews,

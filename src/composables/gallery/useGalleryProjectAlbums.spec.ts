@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue'
 import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
-import { artworkCharacterIds, matchesSmartAlbum, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
+import { artworkCharacterIds, createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 import * as galleryHelpers from './galleryHelpers'
 import { useGalleryProjectAlbums } from './useGalleryProjectAlbums'
 
@@ -86,7 +86,7 @@ describe('project album presentation', () => {
     expect(coverItems.value.map(item => item.id)).toEqual([4, 5, 2, 3, 6])
     expect(JSON.stringify(state.history.value)).toBe(saved)
     expect(artworkCharacterIds(state.history.value[0])).toEqual(['nene'])
-    expect(matchesSmartAlbum(state.history.value[5], rule({ characterId: UNASSIGNED_CHARACTER_ID }), [])).toBe(true)
+    expect(createSmartAlbumMatcher(rule({ characterId: UNASSIGNED_CHARACTER_ID }), [])(state.history.value[5])).toBe(true)
     state.history.value[0].outfitId = 'evening'
     expect(characterAlbums.value.find(album => album.characterId === 'nene')?.title).toBe('绫地宁宁')
     state.history.value.push({ id: 7, timestamp: 700, characterId: 'nene' })
@@ -131,6 +131,19 @@ describe('project album presentation', () => {
     expect(smart().count).toBe(0)
     state.projects.value.push({ id: 'broken', title: '损坏规则', history_ids: [1, 2, 3], smartRule: { tags: [] } as unknown as SmartAlbumRule })
     expect(albums.value.map(album => album.id)).toEqual(['smart'])
+  })
+
+  it('prepares source membership once instead of scanning the album for each artwork', () => {
+    const history = Array.from({ length: 400 }, (_, id) => ({ id }))
+    const projects = [{ id: 'source', title: 'Source', history_ids: history.map(item => item.id) }]
+    const find = vi.spyOn(projects, 'find')
+    const includes = vi.spyOn(projects[0].history_ids, 'includes')
+    const matches = createSmartAlbumMatcher(rule({ projectId: 'source' }), projects)
+    expect(history.filter(item => matches(item))).toHaveLength(400)
+    expect(matches({ id: '1' })).toBe(false)
+    expect(matches({ id: 401 })).toBe(false)
+    expect(find.mock.calls.length).toBeLessThanOrEqual(1)
+    expect(includes).not.toHaveBeenCalled()
   })
 
   it('reuses prepared search metadata when cover caches arrive or are evicted', () => {

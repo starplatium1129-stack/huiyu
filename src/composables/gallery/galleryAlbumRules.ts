@@ -21,30 +21,29 @@ export function artworkCharacterIds(item: ArtworkRecord): string[] {
   return [...new Set(identities.flatMap(expandCharacterIdentity))]
 }
 
-export function matchesSmartAlbum(
-  item: ArtworkRecord,
-  rule: SmartAlbumRule,
-  projects: readonly GalleryProject[],
-  preparedSearchText?: string,
-): boolean {
-  if (rule.characterId) {
-    const identities = artworkCharacterIds(item)
-    if (rule.characterId === UNASSIGNED_CHARACTER_ID ? identities.length > 0 : !identities.includes(rule.characterId)) return false
-  }
-  if (rule.favoriteOnly && !item.favorite) return false
-  if (rule.projectId) {
-    const project = projects.find(candidate => candidate.id === rule.projectId && !Object.hasOwn(candidate, 'smartRule'))
-    if (!project || !project.history_ids.includes(item.id)) return false
-  }
-  if (rule.tags.length) {
-    const tags = artworkTags(item)
-    const matchesTag = (tag: string) => tags.includes(tag)
-    if (rule.tagMatch === 'any' ? !rule.tags.some(matchesTag) : !rule.tags.every(matchesTag)) return false
-  }
+/** Prepare rule-wide work once per reactive snapshot, not once per artwork. */
+export function createSmartAlbumMatcher(rule: SmartAlbumRule, projects: readonly GalleryProject[]) {
+  const { characterId, favoriteOnly, projectId, tagMatch } = rule
+  const tags = [...rule.tags]
+  const project = projectId ? projects.find(candidate => candidate.id === projectId && !Object.hasOwn(candidate, 'smartRule')) : null
+  const projectIds = projectId ? new Set(project?.history_ids || []) : null
   const terms = rule.search.trim().toLowerCase().split(/\s+/).filter(Boolean)
-  if (!terms.length) return true
-  const haystack = preparedSearchText ?? searchHaystack(item)
-  return terms.every(term => haystack.includes(term))
+  return (item: ArtworkRecord, preparedSearchText?: string): boolean => {
+    if (characterId) {
+      const identities = artworkCharacterIds(item)
+      if (characterId === UNASSIGNED_CHARACTER_ID ? identities.length > 0 : !identities.includes(characterId)) return false
+    }
+    if (favoriteOnly && !item.favorite) return false
+    if (projectIds && !projectIds.has(item.id)) return false
+    if (tags.length) {
+      const itemTags = artworkTags(item)
+      const matchesTag = (tag: string) => itemTags.includes(tag)
+      if (tagMatch === 'any' ? !tags.some(matchesTag) : !tags.every(matchesTag)) return false
+    }
+    if (!terms.length) return true
+    const haystack = preparedSearchText ?? searchHaystack(item)
+    return terms.every(term => haystack.includes(term))
+  }
 }
 
 export function smartAlbumSummary(rule: SmartAlbumRule, characterName?: (id: string) => string): string {
