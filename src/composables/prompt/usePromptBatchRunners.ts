@@ -16,7 +16,8 @@ import {
   type SceneBlueprint,
   type PopularCharacter,
 } from '../../utils/popularContent.ts'
-import { mutualGroupWithCategory, normalizeKey } from '../../utils/promptPolicy.ts'
+import { COLOR_MOODS } from '../../config/promptConstants.ts'
+import { mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
 import {
   ANIMA_CHARACTER_BY_CHARACTER,
   type useAnimaSession,
@@ -67,7 +68,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   let blueprints: SceneBlueprint[] | null = null
   let fields: Partial<HistoryEntry> = {}
   let runEngine: BatchEngine = 'sd'
-  const plans = new Map<string, { negative: string; outfitId?: string; size?: string }>()
+  const plans = new Map<string, { negative: string; outfitId?: string; size?: string; colorMood?: string | null }>()
   const clone = <T,>(value: T): T => value == null ? value : JSON.parse(JSON.stringify(value)) as T
   const historyGenerationFields = () => fields
   function captureBatch() {
@@ -191,6 +192,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(',')].map(normalizeKey))
       const engine = animaState.value.family === 'krea2' ? 'krea2' : 'anima'
       const decisions = blueprint ? inferBlueprintDecisions(blueprint) : null
+      const mood = COLOR_MOODS.find(option => option.id === (decisions?.colorMood ?? pb.colorMood))
       const planResult = buildPopularPromptPlan({
         character: pop, outfit, blueprint, engine, profile: modelProfile.value,
         manual: [...pb.manualTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
@@ -198,6 +200,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         shot: decisions?.shot ?? pb.selections.shot,
         lighting: decisions?.lighting ?? pb.selections.lighting,
         composition: decisions?.composition ?? pb.selections.composition,
+        palette: mood ? tokenize(mood.prompt) : [],
         visualDescription: target.kind === 'character' ? baseText : pb.visualDescription,
         outfitOverride: detectOutfitOverrideFromContext(),
         adultEnabled: isLocalStudioHost() && pb.showMatureScenes,
@@ -205,7 +208,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
       if (!planResult) throw new Error('该蓝图未获当前环境或角色分级授权')
-      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize })
+      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize, colorMood: mood?.id ?? null })
       return planResult.prompt
     }
     if (charInfo?.kind === 'studio') {
@@ -274,6 +277,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         ...(isTargetPopular ? {
           subject: 'popular' as const,
           characterId: charInfo.char.id,
+          colorMood: plans.get(target.id)?.colorMood ?? null,
           outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
           blueprintId: target.kind === 'scene' ? target.id : null,
         } : charInfo?.kind === 'studio' ? {
@@ -344,6 +348,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         ...(isTargetPopular ? {
           subject: 'popular' as const,
           characterId: charInfo.char.id,
+          colorMood: plans.get(target.id)?.colorMood ?? null,
           outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
           blueprintId: target.kind === 'scene' ? target.id : null,
         } : charInfo?.kind === 'studio' ? {
