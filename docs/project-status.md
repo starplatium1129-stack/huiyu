@@ -1,5 +1,7 @@
 # 项目状态
 
+2026-10-02 [1.8.0 程序与完整素材发行准备](releases/v1.8.0.md)已补齐实物登记：`ce50105a` 的原私钥签名安装包经统一入口完整安装、认证启动及载荷哈希核验；程序公开发行仍受既有原生材料门禁阻塞。新版素材 `huiyu-resources-20261002-r1` 含 471 项基础资源和 2,042 条样张，约 1.28 GiB ZIP；实际安装的 1.8.0 Rust 程序在空隔离用户目录完成全部文件导入核验，首次启动、重启与临时来源不存在时的 SFW 图片／清单读取通过。完整素材已独立公开发布，五个附件的服务端 SHA-256／大小与本机一致，下载链接见版本说明，程序 latest 仍为 1.7.4。未验证干净 Windows、物理断网或全部图片画质，原始材料在忽略的 `runtime/release-1.8.0-resources-20261002/`。
+
 2026-10-01 第三批[视频台、任务中心与设置精修](audits/2026-10-01/atelier-production-polish.md)完成视频/分镜层级与窄窗口操作、任务内部滚动、控制台字段与状态呈现，修复外观弹窗关闭/重开及第二批遗留确认框键盘循环。最新主线整合后 75 项关联单测、23 项浏览器场景及类型/对比度/动效/体量/构建预算通过；双主题桌面 CSS 视口记录 48 项，另有运行时任务只读夹具与连续键盘操作记录。原始证据在 runtime/ui-production-refinement-20261001/；未调用真实模型、安装或发布，原生客户端和物理显示器验收仍待完成。
 
 2026-10-01 [角色自动画册与标签智能画册](audits/2026-10-01/gallery-smart-albums.md)完成元数据角色归组、规则创建／编辑／移除和 Web／Rust 工作区持久化。图库 14 个浏览器场景、定向前端／Rust／真实隔离 HTTP、类型／对比度／动效／体量与构建预算通过；角色页和编辑器完成双主题 1080p／QHD／4K CSS 视口及较窄窗口检查。本轮按用户要求只交付源码提交，安装与其他改动整合后的统一打包另行执行。
@@ -30,8 +32,8 @@
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前源码/构建 | 1.7.4 签名发行材料已完成；图库合并缩略图重复读取并跳过筛选后的过时队列，既有 Rust 后端及桌面改进保留 | [1.7.4 说明](releases/v1.7.4.md)、[本轮有限优化与证据](audits/2026-09-30/release-offline-optimization.md)、[后端优化与验证](audits/2026-09-29/backend-optimization.md) |
-| 最近本机安装 | 2026-10-01 1.7.4 本机测试构建已完整安装至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE与两份 DLL 匹配候选哈希，内容先备份再同步，启动状态为 ready | 当次本机核验材料与限制见本页顶部；[此前发行与安装边界](audits/2026-09-30/release-offline-optimization.md) |
+| 当前源码/构建 | 1.8.0 程序构建绑定 `ce50105a`，签名安装包及完整素材已生成；程序公开发行门禁仍未满足 | [1.8.0 说明](releases/v1.8.0.md)；[此前 1.7.4 发行与证据](audits/2026-09-30/release-offline-optimization.md) |
+| 最近本机安装 | 2026-10-01 1.8.0 已完整安装至 `C:/Program Files/AI-CG-Studio`，宿主、Rust EXE 与两份 DLL 匹配候选哈希，认证启动 ready；216 个个人内容差异项已先备份后同步 | 日志在忽略的 `runtime/desktop-deploy-last.log`、`runtime/desktop-content-sync-20261001.log`；不替代完整设备／模型验收 |
 | 资料迁移 | 2026-09-26 曾登记旧来源 3002 迁入 SQLite；10 月 1 日本次机器未发现 active pointer，实际仍为旧来源 IndexedDB，未进行新迁移 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[历史迁移证据](evidence/architecture-mainline-2026-09-26.json) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [实验操作与验收边界](workflow.md#门禁与构建) |
 
