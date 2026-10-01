@@ -7,19 +7,21 @@ export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy,
 const trashClearing = ref(false)
 let loadVersion = 0
 let restoreVersion = 0
+let viewRevision = 0
 let publishedIds = new Set<string | number>()
 let active = true
 let disposed = false
 function invalidateLoads() { loadVersion++ }
-onDeactivated(() => { active = false; invalidateLoads() })
-onUnmounted(() => { disposed = true; active = false; invalidateLoads() })
+function invalidateView() { viewRevision++; invalidateLoads() }
+onDeactivated(() => { active = false; invalidateView() })
+onUnmounted(() => { disposed = true; active = false; invalidateView() })
 onActivated(() => {
   const returning = !active
   active = true
   if (returning && trashMode.value) void loadTrash()
 })
 // Opening trash is owned by toggleTrashMode; only invalidate on closing here.
-watch(trashMode, visible => { if (!visible) invalidateLoads() }, { flush: 'sync' })
+watch(trashMode, visible => { if (!visible) invalidateView() }, { flush: 'sync' })
 async function loadTrash() {
   if (disposed || !active || !trashMode.value || trashClearing.value) return
   const version = ++loadVersion
@@ -74,6 +76,7 @@ async function restoreTrashItem(id: string | number) {
 }
 async function clearTrash() {
   if (disposed || !active || !trashMode.value || trashClearing.value || trashBusy.value !== null || !trashItems.value.length) return
+  const revision = viewRevision
   const entries = trashItems.value.map(({ id, deletedAt }) => ({ id, deletedAt }))
   trashClearing.value = true
   let accepted = false
@@ -83,7 +86,7 @@ async function clearTrash() {
       message: '清空后无法从回收站恢复。仍在其他作品或草稿中使用的图片会保留。',
       confirmLabel: '永久清空', danger: true,
     })
-    if (!confirmed || disposed || !active || !trashMode.value) return
+    if (!confirmed || disposed || !active || !trashMode.value || revision !== viewRevision) return
     accepted = true
     invalidateLoads()
     restoreVersion++
@@ -94,7 +97,7 @@ async function clearTrash() {
     showToast('清理未完成，请重新查看回收站后重试', 'warning')
   } finally {
     trashClearing.value = false
-    if (accepted) await loadTrash()
+    if (accepted || revision !== viewRevision) await loadTrash()
   }
 }
 return { loadTrash, restoreTrashItem, clearTrash, trashClearing }
