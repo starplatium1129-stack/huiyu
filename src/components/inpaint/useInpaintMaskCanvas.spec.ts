@@ -6,7 +6,7 @@ import { MaskTileHistory } from './maskTileHistory'
 
 it('keeps mask undo scoped to active modal controls rather than text edits or another dialog', async () => {
   const undo = vi.spyOn(MaskTileHistory.prototype, 'undo').mockImplementation(() => {})
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ beginPath() {}, arc() {}, fill() {} } as CanvasRenderingContext2D)
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ beginPath() {}, arc() {}, fill() {} } as unknown as CanvasRenderingContext2D)
   vi.spyOn(MaskTileHistory.prototype, 'capture').mockImplementation(() => {})
   const remove = vi.spyOn(window, 'removeEventListener')
   const active = ref(true)
