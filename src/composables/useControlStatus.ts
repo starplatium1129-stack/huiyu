@@ -70,6 +70,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const logIndex = ref(0)
   // 驱动 opProgress 时间微增的响应式时钟，避免“冻住”观感（仅在操作进行时滴答）
   const now = ref(Date.now())
+  let tickerEnabled = false
   let nowTimer: ReturnType<typeof setInterval> | null = null
   function ensureNowTicker() {
     if (nowTimer) return
@@ -83,7 +84,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     nowTimer = null
   }
   function syncNowTicker() {
-    if (operation.value?.status === 'running') ensureNowTicker()
+    if (tickerEnabled && (typeof document === 'undefined' || !document.hidden) && operation.value?.status === 'running') ensureNowTicker()
     else clearNowTicker()
   }
   let lastStatus: ControlStatus | null = null
@@ -329,7 +330,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     paused: () => typeof document !== 'undefined' && document.hidden,
     immediate: true,
   })
-  function handleVisibilityChange() { polling.sync() }
+  function handleVisibilityChange() { polling.sync(); syncNowTicker() }
   function bindPollingVisibility() {
     if (visibilityBound || typeof document === 'undefined') return
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -342,10 +343,15 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
   function startPolling() {
     if (polling.isActive()) return
+    tickerEnabled = true
+    now.value = Date.now()
     bindPollingVisibility()
     polling.start()
+    syncNowTicker()
   }
   function stopPolling() {
+    // A queued operation watcher must not recreate the clock after its owner leaves.
+    tickerEnabled = false
     unbindPollingVisibility()
     polling.stop()
     clearNowTicker()
