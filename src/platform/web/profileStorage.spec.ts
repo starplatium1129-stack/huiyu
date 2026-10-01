@@ -1,5 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { ProfilePort } from './profileStorage'
+import type { ProfileSnapshot } from '../../../types/profile'
 import { BATCH_DRAW_PLAN_KEY, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY } from '../../utils/storageKeys'
 import { classifyMigrationKey } from './migrationClassification'
 
@@ -146,6 +147,72 @@ it('retries pending SD saves after unrelated chat reset without swallowing them 
   expect(module.hasProfileRecoveryData()).toBe(false)
   expect(module.hasPendingProfileWrites()).toBe(false)
   expect(module.profileDraftStorage.getItem(SD_PENDING_QUEUE_KEY)).toBe('{"pending":["fixture"]}')
+})
+
+function deferred<T>() {
+  let resolve!: (value: T) => void
+  const promise = new Promise<T>(done => { resolve = done })
+  return { promise, resolve }
+}
+
+it('rejects a stale draft snapshot after its newer save has already drained, then allows a fresh read', async () => {
+  const module = await import('./profileStorage'), port = fakePort()
+  const key = 'aics_pb_last_draft'
+  const snapshot = (value: string, revision: number): ProfileSnapshot => ({ records: [{ key, value, revision }], revision, resetRevision: 'reset-1' })
+  vi.mocked(port.readDrafts).mockResolvedValue(snapshot('old draft', 7))
+  await module.activateProfileStorage(port, 'main')
+  const stale = deferred<ProfileSnapshot>(), started = deferred<void>()
+  vi.mocked(port.readDrafts).mockImplementationOnce(() => { started.resolve(); return stale.promise })
+  const refreshing = module.refreshProfileStorage()
+  await started.promise
+  module.profileLocalStorage.setItem(key, 'saved draft')
+  await module.flushProfileWrites()
+  expect(module.hasPendingProfileWrites()).toBe(false)
+  stale.resolve(snapshot('old draft', 7))
+  await refreshing
+  expect(module.profileLocalStorage.getItem(key)).toBe('saved draft')
+  module.profileLocalStorage.setItem(key, 'next draft')
+  await module.flushProfileWrites()
+  expect(vi.mocked(port.saveDraft).mock.calls[1][0].expectedRevision).toBe(9)
+
+  // Independent remote keys are not frozen by the rejected read.
+  vi.mocked(port.readSettings).mockResolvedValue({ records: [{ key: 'aics_theme', value: 'light', revision: 10 }], revision: 10, resetRevision: 'reset-1' })
+  vi.mocked(port.readDrafts).mockResolvedValue(snapshot('next draft', 9))
+  await module.refreshProfileStorage()
+  expect(module.profileLocalStorage.getItem('aics_theme')).toBe('light')
+  expect(module.profileLocalStorage.getItem(key)).toBe('next draft')
+})
+
+it('does not let an older refresh overwrite a newer completed snapshot', async () => {
+  const module = await import('./profileStorage'), port = fakePort()
+  await module.activateProfileStorage(port, 'main')
+  const older = deferred<ProfileSnapshot>(), started = deferred<void>()
+  vi.mocked(port.readSettings).mockImplementationOnce(() => { started.resolve(); return older.promise })
+    .mockResolvedValueOnce({ records: [{ key: 'aics_theme', value: 'latest', revision: 9 }], revision: 9, resetRevision: 'reset-1' })
+  const first = module.refreshProfileStorage()
+  await started.promise
+  await module.refreshProfileStorage()
+  older.resolve({ records: [{ key: 'aics_theme', value: 'obsolete', revision: 8 }], revision: 8, resetRevision: 'reset-1' })
+  await first
+  expect(module.profileLocalStorage.getItem('aics_theme')).toBe('latest')
+})
+
+it('does not restore pre-reset chat state from a delayed profile refresh', async () => {
+  const module = await import('./profileStorage'), port = fakePort()
+  const before: ProfileSnapshot = { records: [{ key: 'aics_chat_v1', value: 'old chat', revision: 7 }], revision: 7, resetRevision: 'reset-1' }
+  vi.mocked(port.readChat).mockResolvedValue(before)
+  await module.activateProfileStorage(port, 'main')
+  const stale = deferred<ProfileSnapshot>(), started = deferred<void>()
+  vi.mocked(port.readChat).mockImplementationOnce(() => { started.resolve(); return stale.promise })
+  const refreshing = module.refreshProfileStorage()
+  await started.promise
+  await module.resetProfileChat()
+  stale.resolve(before)
+  await refreshing
+  expect(module.profileLocalStorage.getItem('aics_chat_v1')).toBeNull()
+  module.profileDraftStorage.setItem('aics_video_draft_v1', 'new draft')
+  await module.flushProfileWrites()
+  expect(port.saveDraft).toHaveBeenLastCalledWith(expect.objectContaining({ expectedReset: 'reset-2' }))
 })
 
 function fakePort(): ProfilePort {
