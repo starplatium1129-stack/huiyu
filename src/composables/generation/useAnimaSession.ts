@@ -1,6 +1,6 @@
 import { computed, getCurrentInstance, onUnmounted, ref, toRaw } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
@@ -9,7 +9,6 @@ import {
   animaRequestPayload,
   closestSupportedSize,
   jobPath,
-  type AnimaPublicJob,
   type AnimaRequest,
   type AnimaSessionOptions,
   type AnimaStatusResponse,
@@ -49,6 +48,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
   let disposed = false
+  let directTransport: typeof import('./animaJobPolling') | null = null
+  async function loadDirectTransport() {
+    // Cache only success: a missing deployment chunk must be retryable.
+    return directTransport ??= await import('./animaJobPolling')
+  }
   const completedSubmissions = new WeakMap<Blob, AnimaSubmission>()
 
   /**
@@ -228,40 +232,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     statusRequest = null
   }
 
-  function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'anima' | 'krea2'): AnimaJobMetadata {
-    const supplied = job.metadata
-    if (supplied && supplied.id !== job.id) throw new Error('成片元数据与当前任务编号不一致，请核对任务')
-    const metadata = supplied
-      ? supplied
-      : {
-          engine: family,
-          id: job.id,
-          prompt: request.prompt,
-          negative: request.negative,
-          profileId: request.profileId,
-          modelId: request.modelId,
-          loraId: request.loraId,
-          loraStrength: request.loraStrength,
-          styleLoraId: request.styleLoraId ?? null,
-          width: request.width,
-          height: request.height,
-          steps: request.steps,
-          cfg: request.cfg,
-          sampler: '',
-          scheduler: '',
-          seed: job.seed,
-          character: request.character,
-          preview: false,
-          hiresFix: Boolean(request.hiresFix),
-          hiresScale: request.hiresScale,
-          hiresDenoise: request.hiresDenoise,
-          createdAt: Date.now(),
-          resultUrl: job.resultUrl,
-        }
-    return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
-  }
-
-
   function clearResult() {
     const previous = state.value.result
     if (previous) URL.revokeObjectURL(previous.url)
@@ -349,37 +319,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
         return
       }
-      const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
-        method: 'POST',
-        body: animaRequestPayload(request),
-        signal: controller.signal,
-        timeoutMs: 30_000,
-      })
-      if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-      if (controller.signal.aborted || serial !== requestSerial) {
-        // A cancel can race the POST response. Once the server has accepted a
-        // job, delete that late job instead of leaving an unowned GPU task.
-        void client.request(jobPath(family, data.job.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
-        if (serial === requestSerial && controller.signal.aborted) {
-          patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
-        }
-        return
-      }
-      const metadata = metadataFromJob(data.job, request, family)
-      patchState({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', job: metadata })
-      const observation = { client, id: data.job.id, family, signal: controller.signal, deadline: Date.now() + 10 * 60 * 1000,
-        current: () => !controller.signal.aborted && serial === requestSerial, state, context: pendingContext,
-        patch: patchState, metadata: (job: AnimaPublicJob) => metadataFromJob(job, request, family), discardStashed: discardStashedResult, onResult }
-      const polling = await import('./animaJobPolling').catch(async error => {
-        if (observation.current()) {
-          // POST already accepted: an unavailable observer must cancel that job,
-          // retaining its identity and busy state when cancellation is unconfirmed.
-          await cancel()
-          if (observation.current()) patchState({ statusText: '进度工具加载失败，取消尚未确认，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
-        }
-        return null
-      })
-      if (polling && observation.current()) await polling.pollAnimaJob(observation)
+      // Load the complete direct transport before creating an upstream job.
+      const transport = await loadDirectTransport()
+      const current = () => !controller.signal.aborted && serial === requestSerial
+      if (!current()) return
+      await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
+        state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
     } catch (error) {
       if (serial !== requestSerial) return
       if (durableAttempt) {
@@ -428,18 +373,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       && ['running', 'cancelling'].includes(state.value.phase)
     patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
     try {
-      const data = await client.request<{ job?: AnimaPublicJob }>(jobPath(family, job.id), {
-        method: 'DELETE', timeoutMs: 15_000,
-      })
+      const transport = directTransport ?? await loadDirectTransport()
       if (!isCurrent()) return
-      if (data.job?.status === 'cancelled') {
-        requestSerial += 1
-        jobRequest?.abort()
-        patchState({ phase: 'cancelled', statusText: '任务已取消' })
-      }
+      await transport.cancelDirectAnima({ client, id: job.id, family, current: isCurrent, patch: patchState,
+        cancelled: () => { requestSerial += 1; jobRequest?.abort() } })
     } catch (error) {
-      if (!isCurrent()) return
-      patchState({ statusText: '取消尚未确认，正在继续查询任务', errorMsg: error instanceof Error ? error.message : '取消请求失败' })
+      if (isCurrent()) patchState({ statusText: '取消工具加载失败，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
     }
   }
 
