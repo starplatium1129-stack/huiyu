@@ -28,7 +28,7 @@
       ],
       "franchise": "A Certain Scientific Railgun",
       "id": "misaka_mikoto",
-      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut-brown hair carrying a soft glossy sheen, warm brown eyes, a white flower hair clip, and blue-white electrical sparks crackling at her fingertips",
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut-brown hair carrying a soft glossy sheen, warm brown eyes, and a white flower hair clip",
       "identityTokens": [
         "misaka_mikoto",
         "1girl",
@@ -37,8 +37,6 @@
         "brown_eyes",
         "hair_clip",
         "flower_hair_clip",
-        "sparks",
-        "electricity",
         "toaru_kagaku_no_railgun"
       ],
       "negativeTokens": [

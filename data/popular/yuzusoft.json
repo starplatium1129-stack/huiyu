@@ -33,7 +33,7 @@
       ],
       "franchise": "YUZUSOFT",
       "id": "murasame",
-      "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, petite slender figure, and ethereal blue spirit wisps floating around her.",
+      "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, and a petite slender figure.",
       "identityTokens": [
         "murasame (senren)",
         "1girl",
@@ -49,10 +49,7 @@
         "hair_ribbon",
         "flat_chest",
         "small_breasts",
-        "floating",
         "spirit",
-        "katana",
-        "sword",
         "senren_banka"
       ],
       "negativeTokens": [

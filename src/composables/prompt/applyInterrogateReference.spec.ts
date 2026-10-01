@@ -27,6 +27,39 @@ function fixture() {
 }
 const extract = (tags: string[], extra = {}) => ({ engine: 'wd14', mode: 'tag', tags, ...extra })
 
+it.each(['anima', 'krea2'] as const)('keeps candles owned by the reference or user instead of warm color and lantern presets in %s', async engine => {
+  const pb = fixture()
+  pb.setColorMood('warmth')
+  const assembly = usePopularPromptAssembly(pb, ref(engine), ref('fixture-model'))
+  await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'library']))
+  for (const lighting of ['window', 'lantern']) {
+    pb.setLighting(lighting)
+    const prompt = assembly.positivePrompt.value
+    expect(prompt).toContain('orange theme')
+    expect(prompt).toContain('warm tones')
+    expect(prompt).toMatch(/white[_ ]coat/)
+    expect(prompt).toContain('library')
+    expect(prompt).not.toMatch(/candle/)
+  }
+  pb.setColorMood('calm')
+  pb.setLighting(null)
+  expect(assembly.positivePrompt.value).toContain('green theme')
+  expect(assembly.positivePrompt.value).toContain('library')
+  expect(assembly.positivePrompt.value).not.toMatch(/window[_ ]light/)
+  pb.setLighting('window')
+  expect(assembly.positivePrompt.value).toMatch(/window[_ ]light/)
+  await applyInterrogateResult(pb, extract(['white_coat', 'candle', 'candlelight']))
+  expect(pb.referenceInput?.tags).toEqual(['candle', 'candlelight'])
+  expect(assembly.positivePrompt.value).toContain('candlelight')
+  await applyInterrogateResult(pb, extract(['white_coat', 'park']))
+  expect(assembly.positivePrompt.value).toContain('park')
+  expect(assembly.positivePrompt.value).not.toMatch(/candle/)
+  pb.addManualTag('candle')
+  await applyInterrogateResult(pb, extract(['white_coat', 'library']))
+  expect(assembly.positivePrompt.value).toContain('candle')
+  expect(pb.referenceInput?.tags).toEqual(['library'])
+})
+
 it.each(['anima', 'krea2'] as const)('keeps reference clothes and scene while only replacing target identity in %s', async engine => {
   const pb = fixture()
   await applyInterrogateResult(pb, extract(['pink_hair', 'red_eyes', 'fox_ears', 'fixture_a', 'white_coat', 'sitting', 'library', 'from_above']))

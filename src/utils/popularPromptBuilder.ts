@@ -80,7 +80,7 @@ const AMBIENCE_TOKENS: Record<string, string[]> = {
   back: ['backlighting', 'rim_light', 'volumetric_lighting', 'silhouette', 'deep_depth_of_field'],
   window: ['window_light', 'soft_lighting', 'sunlight', 'volumetric_lighting', 'shadows'],
   moon: ['moonlight', 'night', 'cool_lighting', 'stars', 'deep_depth_of_field'],
-  lantern: ['lantern', 'candlelight', 'warm_lighting', 'volumetric_lighting', 'shadows'],
+  lantern: ['lantern', 'warm_lighting', 'volumetric_lighting', 'shadows'],
   overcast: ['overcast', 'soft_diffused_light', 'cloudy', 'hazy'],
 }
 const COMPOSITION_TOKENS: Record<string, string> = {

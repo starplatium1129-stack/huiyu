@@ -230,7 +230,7 @@
       ],
       "franchise": "Zenless Zone Zero",
       "id": "hoshimi_miyabi",
-      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, refined stoic expression, and a sheathed katana.",
+      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, and a refined stoic expression.",
       "identityTokens": [
         "hoshimi miyabi",
         "1girl",
@@ -241,8 +241,6 @@
         "fox_tail",
         "amber_eyes",
         "yellow_eyes",
-        "katana",
-        "sheath",
         "zenless_zone_zero"
       ],
       "negativeTokens": [

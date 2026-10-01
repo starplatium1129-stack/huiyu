@@ -61,10 +61,10 @@ export const COMPOSITION: ChoiceDef[] = [
 export const COLOR_MOODS: ColorMoodDef[] = [
   { id:'joy',     iconName:'sun',      name:'快乐', en:'Joy',     prompt:'yellow theme, warm tones',        desc:'暖黄/浅橙/明亮', colors:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'] },
   { id:'love',    iconName:'love',     name:'恋爱', en:'Love',    prompt:'pink theme, warm light',          desc:'夕阳/粉色/暖光', colors:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'] },
-  { id:'calm',    iconName:'leaf',     name:'平静', en:'Calm',    prompt:'green theme, soft tones, window light', desc:'淡绿/青绿/奶白', colors:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'] },
+  { id:'calm',    iconName:'leaf',     name:'平静', en:'Calm',    prompt:'green theme, soft tones',        desc:'淡绿/青绿/奶白', colors:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'] },
   { id:'sad',     iconName:'rain',     name:'忧伤', en:'Sad',     prompt:'blue theme, cool tones',          desc:'蓝色/灰蓝/冷调', colors:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'] },
   { id:'tension', iconName:'moonlight', name:'神秘', en:'Mystery', prompt:'purple theme, blue tones',        desc:'紫蓝/深紫/冷调', colors:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'] },
-  { id:'warmth',  iconName:'lantern',  name:'温馨', en:'Warmth',  prompt:'orange theme, candlelight',       desc:'暖橙/橘红/米黄', colors:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'] },
+  { id:'warmth',  iconName:'lantern',  name:'温馨', en:'Warmth',  prompt:'orange theme, warm tones',        desc:'暖橙/橘红/米黄', colors:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'] },
 ]
 
 export interface SceneThemeDef { id: string; label: string; iconName: ArchiveIconName; cat: string[] }
