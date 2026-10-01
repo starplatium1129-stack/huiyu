@@ -87,6 +87,7 @@ function applyKey(key: string) {
 }
 
 const attrs = useAttrs()
+const pointerOpened = ref(false)
 // class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
 // aria-*）连同 id 一起加到可见 trigger。样式一律走 class —— 仓库禁止内联 style
 // （test-style-debt 的内联样式预算只允许承载自定义属性），所以 style 不透传。
@@ -126,6 +127,9 @@ onMounted(() => {
           :aria-label="accessibleName"
           :data-empty="selectedLabel ? undefined : ''"
           :data-value="String(modelValue ?? '')"
+          :data-pointer-open="pointerOpened"
+          @pointerdown="pointerOpened = true"
+          @keydown="pointerOpened = false"
         >
           <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
           <ArchiveIcon name="chevron-down" class="studio-select-icon" aria-hidden="true" />
@@ -133,7 +137,7 @@ onMounted(() => {
       </StudioTooltip>
 
       <SelectPortal :to="portalTarget">
-        <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content">
+        <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">

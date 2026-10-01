@@ -95,6 +95,33 @@ it('keeps the wall mounted when filter URL updates arrive while the viewer is op
   expect(mocks.snapshot).toHaveBeenCalledTimes(2)
 })
 
+it('opens and closes the narrow information drawer immediately from the keyboard', async () => {
+  vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
+    matches: query === '(max-width: 900px)', media: query, addEventListener: vi.fn(), removeEventListener: vi.fn(),
+  }) as unknown as MediaQueryList)
+  const { gallery } = await setup()
+  const viewer = document.createElement('div'), toggle = document.createElement('button')
+  gallery.viewerEl.value = viewer
+  gallery.infoToggleBtn.value = toggle
+  const focus = vi.spyOn(toggle, 'focus')
+  gallery.openViewer(0)
+  const key = new KeyboardEvent('keydown', { key: 'i', bubbles: true, cancelable: true })
+  document.dispatchEvent(key)
+  expect(gallery.infoOpen.value).toBe(true)
+  expect(key.defaultPrevented).toBe(true)
+  expect(viewer.hasAttribute('data-info-instant')).toBe(true)
+  expect(focus).toHaveBeenCalledOnce()
+  gallery.toggleInfoDrawer(new MouseEvent('click', { detail: 1 }))
+  expect(gallery.infoOpen.value).toBe(false)
+  expect(viewer.hasAttribute('data-info-instant')).toBe(false)
+  gallery.toggleInfoDrawer(new MouseEvent('click', { detail: 0 }))
+  expect(gallery.infoOpen.value).toBe(true)
+  expect(viewer.hasAttribute('data-info-instant')).toBe(true)
+  gallery.closeInfoDrawer()
+  expect(gallery.infoOpen.value).toBe(false)
+  expect(viewer.hasAttribute('data-info-instant')).toBe(true)
+})
+
 it('releases gallery originals on deactivation while keeping filters and thumbnails for a return', async () => {
   const env = await setup()
   env.gallery.favoriteOnly.value = true

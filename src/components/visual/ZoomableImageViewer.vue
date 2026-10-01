@@ -11,6 +11,7 @@
     @pointermove="onPan"
     @pointerup="stopPan"
     @pointercancel="stopPan"
+    @lostpointercapture="stopPan"
     @dblclick="toggleZoom"
   >
     <div ref="viewportEl" class="zoom-viewport tw:relative tw:w-full tw:h-full tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center tw:overflow-hidden">
@@ -19,9 +20,7 @@
       :style="zoomLayerStyle"
     >
       <!-- 骨架屏占位 -->
-      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:min-w-[240px] tw:min-h-[320px] tw:[border-radius:var(--r-lg,_12px)] tw:[background:color-mix(in_srgb,_white_4%,_transparent)] tw:overflow-hidden">
-        <div class="skeleton-shimmer tw:absolute tw:inset-0"></div>
-      </div>
+      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:min-w-[240px] tw:min-h-[320px] tw:[border-radius:var(--r-lg,_12px)] tw:[background:var(--bg-elevated)]" aria-hidden="true"></div>
 
       <!-- 真实图片 -->
       <img :crossorigin="runtimeResourceCors()"
@@ -65,7 +64,7 @@
         <ArchiveIcon name="refresh" />
       </button>
     </div>
-    <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-[8px] tw:right-[12px] tw:text-mono-sm tw:[color:color-mix(in_srgb,_white_40%,_transparent)] tw:pointer-events-none">
+    <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-[8px] tw:right-[12px] tw:text-mono-sm tw:text-secondary tw:pointer-events-none">
       双击或滚轮放大查看细节
     </div>
     </div>
@@ -101,7 +100,7 @@ const fullImageEl = ref<HTMLImageElement | null>(null)
 const displayedSrc = ref(props.previewSrc || props.src)
 const fullImageFailed = ref(false)
 let sourceRevision = 0
-onBeforeUnmount(() => { sourceRevision++ })
+onBeforeUnmount(() => { sourceRevision++; releasePan() })
 const imageReady = ref(false)
 const imageFailed = ref(false)
 
@@ -119,6 +118,8 @@ let startX = 0
 let startY = 0
 let initialTranslateX = 0
 let initialTranslateY = 0
+let panTarget: HTMLElement | null = null
+let panPointerId: number | null = null
 const ZOOM_STEP = 0.25
 const KEYBOARD_PAN_STEP = 32
 
@@ -153,19 +154,27 @@ watch(() => [props.src, props.previewSrc], () => {
 })
 
 function resetZoom() {
+  releasePan()
   scale.value = 1
   translateX.value = 0
   translateY.value = 0
   isPanning.value = false
 }
 
-function setScale(nextScale: number) {
+function setScale(nextScale: number, point?: { clientX: number; clientY: number }) {
   const boundedScale = Math.max(minScale, Math.min(maxScale, nextScale))
   if (boundedScale <= 1.01) {
     resetZoom()
     return
   }
-  scale.value = Number(boundedScale.toFixed(2))
+  const next = Number(boundedScale.toFixed(2))
+  const rect = viewportEl.value?.getBoundingClientRect()
+  const anchorX = point && rect ? point.clientX - rect.left - rect.width / 2 : 0
+  const anchorY = point && rect ? point.clientY - rect.top - rect.height / 2 : 0
+  const ratio = next / scale.value
+  translateX.value = anchorX - (anchorX - translateX.value) * ratio
+  translateY.value = anchorY - (anchorY - translateY.value) * ratio
+  scale.value = next
 }
 
 function zoomIn() {
@@ -186,23 +195,17 @@ function toggleZoom(event: MouseEvent) {
     resetZoom()
     return
   }
-  scale.value = Number(targetScale.toFixed(2))
-  // 聚焦到点击位置
-  if (viewportEl.value) {
-    const rect = viewportEl.value.getBoundingClientRect()
-    const offsetX = event.clientX - (rect.left + rect.width / 2)
-    const offsetY = event.clientY - (rect.top + rect.height / 2)
-    translateX.value = -offsetX * 1.2
-    translateY.value = -offsetY * 1.2
-  }
+  setScale(targetScale, event)
 }
 
 function handleWheel(event: WheelEvent) {
-  setScale(scale.value + (event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP))
+  if (event.deltaY) setScale(scale.value + (event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP), event)
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.ctrlKey || event.metaKey || event.altKey || event.target !== event.currentTarget) return
+  if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomIn(); return }
+  if (event.key === '-') { event.preventDefault(); zoomOut(); return }
   if (event.key === 'Home') {
     event.preventDefault()
     resetZoom()
@@ -225,17 +228,19 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function startPan(event: PointerEvent) {
-  if (scale.value <= 1.01) return
+  if (scale.value <= 1.01 || isPanning.value || event.button !== 0) return
   isPanning.value = true
   startX = event.clientX
   startY = event.clientY
   initialTranslateX = translateX.value
   initialTranslateY = translateY.value
-  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
+  panTarget = event.currentTarget instanceof HTMLElement ? event.currentTarget : null
+  panPointerId = event.pointerId
+  panTarget?.setPointerCapture(event.pointerId)
 }
 
 function onPan(event: PointerEvent) {
-  if (!isPanning.value) return
+  if (!isPanning.value || event.pointerId !== panPointerId) return
   const dx = event.clientX - startX
   const dy = event.clientY - startY
   translateX.value = initialTranslateX + dx
@@ -243,11 +248,16 @@ function onPan(event: PointerEvent) {
 }
 
 function stopPan(event: PointerEvent) {
-  if (isPanning.value) {
-    isPanning.value = false
-    try {
-      event.currentTarget instanceof HTMLElement && event.currentTarget.releasePointerCapture(event.pointerId)
-    } catch {}
+  if (event.pointerId === panPointerId) releasePan()
+}
+
+function releasePan() {
+  const target = panTarget, pointerId = panPointerId
+  panTarget = null
+  panPointerId = null
+  isPanning.value = false
+  if (target && pointerId !== null) {
+    try { target.releasePointerCapture(pointerId) } catch {}
   }
 }
 </script>
@@ -266,42 +276,19 @@ function stopPan(event: PointerEvent) {
   cursor: grabbing;
 }
 
-.zoomable-image-viewer.is-panning .zoom-transform-layer {
-  transition: none;
-}
-
 .zoom-transform-layer {
   transform: var(--zoom-transform, none);
   transform-origin: center center;
-  transition: transform var(--motion-control) var(--ease-out);
-}
-
-.skeleton-shimmer {
-  transform: translateX(-100%);
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, white 8%, transparent) 50%,
-    transparent 100%
-  );
-  animation: shimmer 1.6s infinite;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
+  /* Wheel, keyboard and drag follow the input directly, without queued zoom. */
 }
 
 .zoomable-img {
   opacity: 0;
-  filter: blur(8px);
-  transition: opacity var(--motion-route) ease, filter var(--motion-route-cut) ease;
+  transition: opacity var(--motion-hover) var(--ease-out);
 }
 
 .zoomable-img.is-ready {
   opacity: 1;
-  filter: blur(0);
 }
 
 .zoom-controls {
@@ -312,10 +299,12 @@ function stopPan(event: PointerEvent) {
 /* Hosts can dock the existing toolbar outside the clipped art viewport. */
 .zoom-toolbar { display: contents; }
 
-.zoom-control:hover {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
-  background: var(--accent-soft);
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .zoom-control:hover {
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
 }
 
 .zoom-control:focus-visible {
@@ -337,8 +326,7 @@ function stopPan(event: PointerEvent) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .skeleton-shimmer { animation:none; }
-  .zoom-transform-layer { transition:none; }
-  .zoomable-img { filter:none; transition:opacity var(--motion-press) ease-out; }
+  .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 }
+:global(:root:is([data-motion='reduce'], [data-motion='reduced'])) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 </style>

@@ -1,17 +1,17 @@
 @reference "./tailwind.css";
 /* Character archive: a quiet reading page around the existing portrait and tools. */
-.character-editorial { padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
-.character-editorial .library-header { @apply tw:items-center tw:mb-s-6; }
-.character-editorial .library-header h1 { font-size:clamp(2rem,3.5vw,3.2rem); @apply tw:font-semibold; }
+.character-editorial { padding:clamp(24px,2.2vw,32px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
+.character-editorial .library-header { @apply tw:items-center tw:mb-s-5; }
+.character-editorial .library-header h1 { font-size:clamp(1.8rem,2.6vw,2.4rem); @apply tw:font-semibold; }
 .character-editorial .library-header p { @apply tw:text-secondary tw:leading-body; }
 .archive-header-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .character-editorial .page-kicker,.profile-kicker { @apply tw:text-secondary; font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.12em; }
 .character-editorial .library-layout { grid-template-columns:220px minmax(0,1fr); gap:clamp(20px,2.5vw,40px); }
-.character-editorial :deep(.character-directory) { @apply tw:rounded-md; background:var(--bg-base); max-height:calc(100dvh - 112px); }
+.character-editorial :deep(.character-directory) { @apply tw:rounded-lg; border-color:transparent; background:var(--bg-surface); max-height:calc(100dvh - 112px); }
 .character-editorial :deep(.directory-tools) { @apply tw:p-s-3; }
 .character-editorial :deep(.directory-item) { @apply tw:gap-s-2; }
 .character-editorial :deep(.directory-label strong) { overflow-wrap:anywhere; }
-.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,1fr); align-items:start; gap:clamp(20px,2.5vw,36px); @apply tw:overflow-visible; scroll-margin-top:100px; transform:none; }
+.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); align-items:start; gap:clamp(20px,2.5vw,32px); @apply tw:overflow-visible; scroll-margin-top:100px; transform:none; }
 .character-editorial .library-detail .portrait { border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
 .character-editorial .library-detail .portrait-image { @apply tw:max-h-[760px] tw:object-contain; }
 .character-editorial .portrait-footer { @apply tw:justify-between tw:items-center; background:var(--bg-surface); @apply tw:p-s-3; border-top:1px solid var(--border-soft); }
@@ -19,18 +19,19 @@
 .character-editorial .portrait-badge { @apply tw:inline-flex tw:items-center tw:gap-s-1; }
 .character-editorial .portrait-source { @apply tw:max-w-[65%] tw:text-right; }
 .character-editorial .portrait-fallback-note { order:1; @apply tw:w-full tw:p-0; border:0; background:transparent; }
-.character-profile { @apply tw:min-w-0 tw:p-s-5; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-md; }
-.profile-kicker { @apply tw:mb-s-3; }
+.character-profile { @apply tw:min-w-0; padding:var(--s-2) 0; background:transparent; border:0; }
+.profile-kicker { @apply tw:mb-s-2; }
 .character-editorial .character-name { margin:0 0 var(--s-3); @apply tw:font-display; font-size:clamp(1.7rem,2.5vw,2.5rem); @apply tw:leading-tight; overflow-wrap:anywhere; }
 .character-editorial .character-alias { overflow-wrap:anywhere; @apply tw:text-secondary; }
 .character-editorial .identity-row { @apply tw:gap-s-1; }
-.character-editorial .identity-row .item { padding:var(--s-1) var(--s-2); @apply tw:rounded-sm; }
-.character-editorial .character-actions { @apply tw:gap-s-2 tw:pb-s-4; margin:var(--s-4) 0; border-bottom:1px solid var(--border-soft); }
+.character-editorial .identity-row .item { padding:var(--s-1) var(--s-2); border:0; background:var(--bg-surface); @apply tw:rounded-pill; }
+.character-editorial .identity-row .item.role { background:var(--accent-soft); }
+.character-editorial .character-actions { @apply tw:gap-s-2; margin:var(--s-5) 0; border:0; }
 .character-editorial .character-actions .btn { @apply tw:min-h-[40px]; }
 .character-editorial .character-actions .btn-primary { flex:1 1 100%; }
 .character-editorial .voice-block { margin:var(--s-4) 0; padding:0 0 0 var(--s-3); border:0; border-left:2px solid var(--accent); border-radius:0; background:transparent; @apply tw:not-italic; box-shadow:none; }
 .character-editorial .tags-grid { @apply tw:gap-s-1; }
-.character-editorial .tag-chip { @apply tw:text-secondary; background:var(--bg-base); @apply tw:border-soft tw:rounded-sm tw:font-normal; }
+.character-editorial .tag-chip { @apply tw:text-secondary; background:var(--bg-surface); border:0; @apply tw:rounded-pill tw:font-normal; }
 .character-story { margin:var(--s-5) 0; }
 .profile-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; @apply tw:overflow-hidden tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose tw:whitespace-pre-line; overflow-wrap:anywhere; }
 .profile-story.expanded { @apply tw:block; }
@@ -56,7 +57,7 @@
 .character-editorial .recommend-head > .btn { @apply tw:shrink-0; }
 .character-editorial .char-reference-grid { @apply tw:gap-s-3; }
 .character-editorial .char-outfit-tabs { padding:var(--s-3) 0; background:transparent; border:0; border-bottom:1px solid var(--border-soft); border-radius:0; }
-.character-editorial .char-ref-card { @apply tw:rounded-md; background:var(--bg-surface); transition:transform var(--motion-hover); }
+.character-editorial .char-ref-card { @apply tw:rounded-md; background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
 .character-editorial .char-ref-image { @apply tw:object-contain; }
 .character-editorial .char-ref-card:hover .char-ref-image { transform:none; }
 .character-editorial .char-ref-card[aria-disabled='true'] { @apply tw:cursor-default; }
@@ -65,9 +66,13 @@
 .character-editorial .char-ref-badge,.character-editorial .char-ref-hover-hint { background:var(--art-scrim); color:var(--on-art-primary); }
 .character-editorial .char-ref-card:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .character-editorial .char-ref-card:focus-visible .char-ref-hover-hint { opacity:1; transform:none; }
-@media (max-width:1100px) {
+/* Below 1200 CSS px, the directory leaves too little room for both a readable
+   profile and its portrait. Stack these two regions without changing their
+   internal geometry or using the image's changing natural aspect ratio. */
+@media (max-width:1200px) {
+  .character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,1fr); }
   .character-editorial .library-layout { grid-template-columns:190px minmax(0,1fr); @apply tw:gap-s-4; }
-  .character-editorial .character-profile { @apply tw:p-s-4; }
+  .character-editorial .character-profile { padding:var(--s-4) 0; }
   .character-editorial .detail-grid { grid-template-columns:1fr; }
   .character-editorial .char-reference-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }

@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { DirectiveBinding, VNode } from 'vue'
-import { contentMotion } from './contentMotion'
+import { contentMotion, installContentMotion } from './contentMotion'
 vi.mock('@/utils/motionPreference', () => ({ prefersReducedMotion: () => false }))
 const elements: HTMLElement[] = []
 function panel() {
@@ -28,6 +28,19 @@ it('does not start nested effects while the route is entering or a panel is hidd
   const { el } = panel(); el.dataset.routeEntering = 'true'; update(el)
   delete el.dataset.routeEntering; el.style.display = 'none'; update(el)
   expect(el.animate).not.toHaveBeenCalled()
+})
+it('settles changing content on keyboard input and resumes feedback on pointer input', () => {
+  const stop = installContentMotion()
+  try {
+    const { el, animation } = panel(); update(el)
+    document.dispatchEvent(new KeyboardEvent('keydown', { key:'ArrowRight' }))
+    expect(animation.cancel).toHaveBeenCalledOnce()
+    update(el, 'keyboard selection')
+    expect(el.animate).toHaveBeenCalledOnce()
+    document.dispatchEvent(new Event('pointerdown'))
+    update(el, 'pointer selection')
+    expect(el.animate).toHaveBeenCalledTimes(2)
+  } finally { stop() }
 })
 it('hiding or unmounting a changing panel cancels its effect', () => {
   const { el, animation } = panel(); update(el); update(el, false)

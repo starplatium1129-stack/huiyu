@@ -5,7 +5,11 @@
 }
 :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']):active:not(:disabled):not([aria-disabled='true']):not([data-disabled]) {
   transform: scale(.98);
+  transition-duration: 100ms;
 }
+/* Focus-visible activation is keyboard input: selection responds immediately. */
+:where(button, a[href], summary, [role='button'], [role='tab'], [role='option']):focus-visible:active { transform:none; transition:none; }
+:is(.pb.atelier-workspace,.character-editorial,.art-viewer,.showcase-viewer,.studio-popover) :is(button,a[href],summary,[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
 /* Inline links cannot transform; underline communicates their clickable state. */
 :where(a[href]):hover { text-underline-offset: .2em; }
 @media (prefers-reduced-motion: reduce) {

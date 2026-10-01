@@ -2,21 +2,23 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import PhotoSwipeStage from './PhotoSwipeStage.vue'
 
-const mocks = vi.hoisted(() => ({ read: vi.fn(), failed: vi.fn(), destroyed: vi.fn(), refreshed: vi.fn(), init: vi.fn(), change: vi.fn(), removed: vi.fn() }))
+const mocks = vi.hoisted(() => ({ read: vi.fn(), failed: vi.fn(), destroyed: vi.fn(), refreshed: vi.fn(), init: vi.fn(), change: vi.fn(), removed: vi.fn(), created: vi.fn(), stopped: vi.fn(), zoom: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
 vi.mock('photoswipe', () => ({ default: class {
   events: Record<string, (event: unknown) => void> = {}
   currIndex = 0
   contentLoader = { getContentByIndex: () => undefined, removeByIndex: mocks.removed }
-  constructor() { mocks.change.mockImplementation((index: number) => { this.currIndex = index; this.events.change(undefined) }) }
+  animations = { stopAll: mocks.stopped }
+  constructor(public options: { zoomAnimationDuration: number }) { mocks.created(this); mocks.change.mockImplementation((index: number) => { this.currIndex = index; this.events.change(undefined) }) }
   on(name: string, callback: (event: unknown) => void) { this.events[name] = callback }
   refreshSlideContent(index: number) { mocks.refreshed(index) }
   init() { mocks.init(); this.events.contentLoad({ content: { index: 0, onError: mocks.failed }, preventDefault() {} }) }
   updateSize() {}
   setScrollOffset() {}
   destroy() { mocks.destroyed() }
+  toggleZoom() { mocks.zoom(this.options.zoomAnimationDuration) }
 } }))
-afterEach(() => { vi.restoreAllMocks(); vi.clearAllMocks() })
+afterEach(() => { vi.restoreAllMocks(); vi.clearAllMocks(); delete document.documentElement.dataset.motion })
 
 it('moving outside the preload neighborhood aborts and evicts unfinished slide content', async () => {
   mocks.read.mockImplementationOnce(() => new Promise(() => {}))
@@ -99,4 +101,21 @@ it('external HTTP images are never revoked by the adapter', async () => {
   await flushPromises(); wrapper.unmount()
   expect(mocks.refreshed).toHaveBeenCalledOnce()
   expect(revoke).not.toHaveBeenCalled()
+})
+
+it('honors the app motion preference while open and keeps keyboard zoom immediate', async () => {
+  mocks.read.mockResolvedValue(null)
+  document.documentElement.dataset.motion = 'full'
+  const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 1 }], index: 0 } })
+  const instance = mocks.created.mock.calls.at(-1)![0] as { options: { zoomAnimationDuration: number } }
+  await wrapper.get('button').trigger('click', { detail: 0 })
+  expect(mocks.zoom).toHaveBeenLastCalledWith(0)
+  expect(instance.options.zoomAnimationDuration).toBe(160)
+  document.documentElement.dataset.motion = 'reduce'
+  window.dispatchEvent(new Event('atelier:motion-preference'))
+  expect(instance.options.zoomAnimationDuration).toBe(0)
+  expect(mocks.stopped).toHaveBeenCalledOnce()
+  wrapper.unmount()
+  window.dispatchEvent(new Event('atelier:motion-preference'))
+  expect(mocks.stopped).toHaveBeenCalledOnce()
 })

@@ -52,7 +52,7 @@ for (const theme of ['dark'] as const) {
       await observeMotion(page, '.studio-select-content')
       const trigger = page.getByLabel('筛选作品类型')
       const content = page.locator('.studio-select-content')
-      await trigger.press('Enter')
+      await trigger.click()
       await expect(content).toBeVisible()
       await expectMotionWasPlayed(page)
       // Interrupt an opening/closing surface instead of waiting for a screenshot
@@ -60,6 +60,7 @@ for (const theme of ['dark'] as const) {
       await page.keyboard.press('Escape')
       await trigger.press('Enter')
       await expect(content).toHaveCount(1)
+      expect(await content.evaluate(element => element.getAnimations().length)).toBe(0)
       await expectSettledTransform(content)
       await expect(content).toHaveCSS('will-change', 'auto')
       await expect(content).not.toHaveAttribute('inert')
@@ -91,6 +92,7 @@ for (const theme of ['dark'] as const) {
       await expect(trigger).toBeFocused()
       await trigger.press('Enter')
       await expect(content).toBeVisible()
+      expect(await content.evaluate(element => element.getAnimations().length)).toBe(0)
       // App preference changes must settle an active transition, not strand it.
       await page.evaluate(() => {
         document.documentElement.dataset.motion = 'reduce'

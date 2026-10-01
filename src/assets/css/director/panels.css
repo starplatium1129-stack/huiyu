@@ -21,7 +21,6 @@
   /* 热门角色说明与视频动作按钮原在 PromptBuilderView scoped，外移后同需全局 */
   .pb .popular-tags-note {
     @apply tw:text-mono-sm tw:text-muted;
-    opacity: 0.75;
     margin: var(--s-2) 0;
     @apply tw:leading-body;
   }

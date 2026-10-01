@@ -4,6 +4,7 @@ import { prefersReducedMotion } from '@/utils/motionPreference'
 // One animation per changed surface, never one per list item. No cloned DOM,
 // delayed state update, persistent layer, or height animation during a switch.
 const active = new Map<HTMLElement, Animation>()
+let keyboardInput = false
 function cancel(el: HTMLElement) {
   const animation = active.get(el)
   active.delete(el)
@@ -15,7 +16,7 @@ function cancel(el: HTMLElement) {
 function settle() { for (const el of active.keys()) cancel(el) }
 
 function reveal(el: HTMLElement) {
-  if (document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function') {
+  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function') {
     cancel(el)
     return
   }
@@ -31,7 +32,7 @@ function reveal(el: HTMLElement) {
   const previous = active.has(el) ? getComputedStyle(el).opacity : '.82'
   cancel(el)
   const animation = el.animate([{ opacity: previous }, { opacity: 1 }], {
-    duration: 180, easing: 'cubic-bezier(.22, 1, .36, 1)',
+    duration:160, easing:'cubic-bezier(.23, 1, .32, 1)',
   })
   active.set(el, animation)
   animation.onfinish = animation.oncancel = () => {
@@ -56,16 +57,23 @@ export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
 export function installContentMotion() {
   const media = window.matchMedia('(prefers-reduced-motion: reduce)')
   function preference() { if (document.hidden || prefersReducedMotion()) settle() }
+  function keyboard() { keyboardInput = true; settle() }
+  function pointer() { keyboardInput = false }
   function toggle(event: Event) {
     if (event.target instanceof HTMLDetailsElement) reveal(event.target)
   }
   document.addEventListener('toggle', toggle, true)
+  document.addEventListener('keydown', keyboard, true)
+  document.addEventListener('pointerdown', pointer, true)
   document.addEventListener('visibilitychange', preference)
   window.addEventListener('atelier:motion-preference', preference)
   media.addEventListener('change', preference)
   return () => {
     settle()
+    keyboardInput = false
     document.removeEventListener('toggle', toggle, true)
+    document.removeEventListener('keydown', keyboard, true)
+    document.removeEventListener('pointerdown', pointer, true)
     document.removeEventListener('visibilitychange', preference)
     window.removeEventListener('atelier:motion-preference', preference)
     media.removeEventListener('change', preference)

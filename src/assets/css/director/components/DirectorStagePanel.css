@@ -33,13 +33,6 @@
       radial-gradient(circle at 78% 26%,color-mix(in srgb,var(--natsume-amber) 13%,transparent),transparent 34%),
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 88%,transparent),var(--bg-deep));
   }
-  .pb .stage-placeholder::after {
-    content:''; @apply tw:absolute; z-index:var(--z-base); inset:-35% -55%; @apply tw:pointer-events-none;
-    background:linear-gradient(108deg,transparent 38%,var(--glass-specular) 49%,transparent 60%);
-    opacity:0; transform:translateX(-22%) rotate(-4deg);
-  }
-  .pb.character-shifting .stage-placeholder::after { animation:characterGlassSweep .72s var(--ease-out) both; }
-  .pb.character-shifting .stage-muse { transform:translateY(-4px) scale(1.015); }
   /* ── plans/002：画布占位 ↔ 成片交接（stage-swap）──
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
@@ -90,8 +83,6 @@
     .pb .monitor-rec .dot, .pb .review-star { animation:none; }
     /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
        stage-swap 退出去掉 scale 只留淡出 */
-    .pb.character-shifting .stage-placeholder::after { animation:none; }
-    .pb.character-shifting .stage-muse { transform:none; }
     .pb .stage-swap-leave-active { transition:opacity var(--motion-hover) var(--ease-out); }
   }
 

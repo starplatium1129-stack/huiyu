@@ -1,23 +1,29 @@
 @reference "./tailwind.css";
 /* Teleport 查看器以 .art-viewer 隔离，避免访问作品页后改变参考画册的同名控件。 */
-.art-viewer .viewer-info .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) { @apply tw:text-primary tw:border-soft; background:var(--bg-surface); }
+.art-viewer .viewer-info .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) { @apply tw:text-primary tw:border-transparent; background:var(--bg-elevated); }
 .art-viewer .viewer-info .viewer-actions .btn-danger { @apply tw:text-danger-text; }
 .art-viewer .viewer-info .viewer-actions .btn:disabled { @apply tw:text-disabled; }
 .art-viewer .viewer-info .viewer-actions .btn-ghost.btn-favorite-on:not(.btn-danger) { @apply tw:border-accent tw:text-accent; background:var(--accent-soft); }
 .art-viewer .viewer-close .archive-icon,.art-viewer .viewer-nav .archive-icon,.art-viewer .viewer-info-toggle .archive-icon { @apply tw:w-[20px] tw:h-[20px]; }
-.art-viewer .viewer-stage .zoomable-img { max-height:calc(100dvh - 160px); @apply tw:rounded-md; }
+.art-viewer .viewer-stage .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) 56px; }
+.art-viewer .viewer-stage .zoom-transform-layer { @apply tw:w-full tw:h-full; }
+.art-viewer .viewer-stage .zoomable-img { @apply tw:max-h-full tw:w-auto tw:h-auto tw:rounded-md; }
+.art-viewer .viewer-stage .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:min-h-0; padding:0; cursor:default; }
+.art-viewer .viewer-stage .zoom-controls { position:static; transform:none; background:var(--bg-surface); backdrop-filter:none; padding:var(--s-1) var(--s-2); }
+.art-viewer .viewer-stage .zoom-level { color:var(--text-secondary); }
+.art-viewer .viewer-stage .zoom-control { background:transparent; }
 .art-viewer .viewer-stage .zoom-hint { @apply tw:hidden; }
-.art-viewer .viewer-section { @apply tw:mt-s-5 tw:pt-s-4; border-top:1px solid var(--border-soft); }
-.art-viewer .viewer-section h3 { margin:0 0 var(--s-3); @apply tw:text-primary tw:text-body tw:font-semibold; }
+.art-viewer .viewer-section { @apply tw:mt-s-5; }
+.art-viewer .viewer-section h3 { margin:0 0 var(--s-2); @apply tw:text-secondary tw:text-label-sm tw:font-semibold; }
 .art-viewer .viewer-story { overflow-wrap:anywhere; }
 .art-viewer .viewer-tags { @apply tw:flex tw:flex-wrap tw:gap-s-2; margin-block:var(--s-3); }
-.art-viewer .viewer-tags button { @apply tw:max-w-full; overflow-wrap:anywhere; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent; padding:var(--s-2) var(--s-3); font:inherit; @apply tw:text-label-xs tw:cursor-pointer; }
+.art-viewer .viewer-tags button { @apply tw:max-w-full; overflow-wrap:anywhere; border:0; @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent; padding:var(--s-2) var(--s-3); font:inherit; @apply tw:text-label-xs tw:cursor-pointer; }
 .art-viewer .viewer-tags button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.art-viewer .viewer-record { @apply tw:grid tw:gap-s-2; margin:var(--s-4) 0; @apply tw:text-label-sm; }
+.art-viewer .viewer-record { @apply tw:grid tw:gap-s-2 tw:p-s-3 tw:rounded-md; margin:var(--s-4) 0; background:var(--bg-base); @apply tw:text-label-sm; }
 .art-viewer .viewer-record div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-3; }
 .art-viewer .viewer-record dt { @apply tw:text-secondary; }
 .art-viewer .viewer-record dd { @apply tw:m-0 tw:text-primary; overflow-wrap:anywhere; }
-.art-viewer .viewer-details summary span { @apply tw:block; margin:var(--s-1) 0 0 var(--s-4); @apply tw:text-label-xs tw:text-secondary; }
+.art-viewer .viewer-details summary span { @apply tw:block; margin:var(--s-1) 0 0; @apply tw:text-label-xs tw:text-secondary; }
 .art-viewer .viewer-details summary > .archive-icon { float:right; @apply tw:w-[16px] tw:h-[16px]; }
 .art-viewer .viewer-details[open] > summary > .archive-icon { transform:rotate(180deg); }
 .art-viewer .viewer-details summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
@@ -28,57 +34,57 @@
 .art-viewer .viewer-next .archive-icon { transform:rotate(-90deg); }
 .art-viewer .viewer-info .viewer-more { @apply tw:mt-s-5; }
 .art-viewer .viewer-more .viewer-actions { margin:0 0 var(--s-3); }
-.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(310px,380px); background:var(--bg-base); @apply tw:text-primary; }
+.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(310px,380px); background:var(--bg-deep); @apply tw:text-primary; }
 .art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }
 .art-viewer .viewer-compare-toggle {
   @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:right-[64px] tw:inline-flex tw:items-center tw:gap-[4px];
   padding:6px 12px; @apply tw:rounded-pill;
   border:1px solid var(--border-soft); background:var(--bg-surface);
   @apply tw:text-primary tw:cursor-pointer; font:600 var(--fs-label-xs) var(--font-mono);
-  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
-  transition:background var(--motion-hover), border-color var(--motion-hover);
 }
-.art-viewer .viewer-compare-toggle:hover, .art-viewer .viewer-compare-toggle.active {
-  @apply tw:border-accent; background:color-mix(in srgb,var(--accent) 30%,var(--bg-surface)); @apply tw:text-primary;
+.art-viewer .viewer-compare-toggle.active {
+  @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent;
 }
-.art-viewer .viewer-stage { @apply tw:relative tw:min-w-0 tw:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); @apply tw:overflow-hidden; }
-.art-viewer .viewer-image { @apply tw:block tw:max-w-full; max-height:calc(100vh - 92px); @apply tw:w-auto tw:h-auto tw:object-contain; filter:drop-shadow(0 24px 56px var(--bg-base)); animation:galleryImageIn .35s var(--ease-out); }
+.art-viewer .viewer-stage { @apply tw:relative tw:min-w-0 tw:min-h-0 tw:grid; place-items:center; padding:64px clamp(48px,4vw,72px) var(--s-4); @apply tw:overflow-hidden; }
+.art-viewer .viewer-image { @apply tw:block tw:max-w-full; max-height:calc(100dvh - 120px); @apply tw:w-auto tw:h-auto tw:object-contain; }
 .art-viewer .viewer-fallback { @apply tw:text-secondary tw:text-glyph-lg; }
 .art-viewer .viewer-close { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:left-[18px]; }
-.art-viewer .viewer-nav,.art-viewer .viewer-info-toggle { @apply tw:absolute; z-index:var(--z-raised); @apply tw:grid; place-items:center; border:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:background var(--motion-hover),transform var(--motion-hover); }
+.art-viewer .viewer-nav,.art-viewer .viewer-info-toggle { @apply tw:absolute; z-index:var(--z-raised); @apply tw:grid; place-items:center; border:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
 .art-viewer .viewer-info-toggle { @apply tw:top-[18px] tw:right-[18px] tw:w-[40px] tw:h-[40px]; border-radius:50%; @apply tw:hidden; }
 /* 用定位居中，避免全局按压 scale 覆盖 translateY 后按钮跳离点击位置。 */
 .art-viewer .viewer-nav { top:calc(50% - 32px); @apply tw:w-[44px] tw:h-[64px] tw:rounded-pill tw:text-title; }
-.art-viewer .viewer-nav:hover,.art-viewer .viewer-info-toggle:hover { background:color-mix(in srgb,var(--accent) 58%,var(--bg-surface)); }
+@media (hover:hover) and (pointer:fine) {
+  .art-viewer .viewer-nav:not(:disabled):hover,.art-viewer .viewer-info-toggle:hover,.art-viewer .viewer-info-close:hover,.art-viewer .viewer-compare-toggle:hover { background:var(--bg-elevated); }
+}
 .art-viewer .viewer-prev { @apply tw:left-s-4; }
 .art-viewer .viewer-next { @apply tw:right-s-4; }
 /* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
 .art-viewer .viewer-nav:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-default; }
 .art-viewer .viewer-position { @apply tw:absolute tw:left-[50%] tw:top-[30px]; transform:translateX(-50%); @apply tw:text-secondary; font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:overflow-y-auto; padding:var(--s-6) var(--s-5); border-left:1px solid var(--border-soft); background:var(--bg-surface); }
+.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:overflow-y-auto; padding:var(--s-6) clamp(20px,2vw,32px); border-left:1px solid var(--border-soft); background:var(--bg-surface); overscroll-behavior:contain; }
 .art-viewer .viewer-info-header { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
-.art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; transition:background var(--motion-hover),border-color var(--motion-hover); }
-.art-viewer .viewer-info-close:hover { @apply tw:border-strong; background:var(--bg-elevated); }
+.art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
 .art-viewer .viewer-info-close:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
 .art-viewer .viewer-info-close .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
-.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-1); @apply tw:text-primary tw:text-title tw:leading-tight; overflow-wrap:anywhere; }
+.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-2); @apply tw:text-primary tw:text-title tw:leading-tight; letter-spacing:-.02em; overflow-wrap:anywhere; }
 .art-viewer .viewer-kicker { @apply tw:text-secondary; }
 .art-viewer .viewer-meta { @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
 .art-viewer .viewer-facts { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-2 tw:mb-s-3; }
-.art-viewer .viewer-fact { @apply tw:min-w-0 tw:p-s-2; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-elevated); }
+.art-viewer .viewer-fact { @apply tw:min-w-0 tw:p-s-3 tw:rounded-md; background:var(--bg-base); }
 .art-viewer .viewer-fact small,.art-viewer .viewer-fact strong { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .art-viewer .viewer-fact small { @apply tw:text-secondary tw:text-mono-xs tw:uppercase; letter-spacing:.08em; }
 .art-viewer .viewer-fact strong { @apply tw:mt-s-1 tw:text-primary tw:text-label-xs; }
 .art-viewer .viewer-details { margin:0 0 var(--s-5); border-top:1px solid var(--border-soft); }
-.art-viewer .viewer-details summary { padding:var(--s-3) 0; @apply tw:text-secondary tw:text-label-xs tw:cursor-pointer; }
+.art-viewer .viewer-details summary { min-height:44px; padding:var(--s-3) 0; @apply tw:text-primary tw:text-label-sm tw:font-semibold tw:cursor-pointer; }
 .art-viewer .viewer-actions .btn-ghost { @apply tw:text-primary tw:border-soft; background:var(--bg-surface); }
 .art-viewer .viewer-actions .btn-danger { @apply tw:text-primary; }
 .art-viewer .viewer-prompt { @apply tw:max-h-[220px] tw:overflow-auto tw:p-s-3 tw:rounded-md; background:var(--bg-base); @apply tw:text-secondary; font:400 var(--fs-mono-sm)/1.65 var(--font-mono); @apply tw:whitespace-pre-wrap; word-break:break-word; }
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }
-  .art-viewer .viewer-stage { padding:60px 42px 78px; }
+  .art-viewer .viewer-stage { padding:60px 48px var(--s-3); }
   .art-viewer .viewer-info { @apply tw:absolute; inset:0 0 0 auto; width:min(92vw,360px); @apply tw:max-w-full; visibility:hidden; @apply tw:pointer-events-none; transform:translateX(100%); background:var(--bg-deep);  transition:transform var(--motion-surface) var(--ease-drawer),visibility 0s linear var(--motion-surface); z-index:var(--z-raised); }
   .art-viewer.info-open .viewer-info { visibility:visible; @apply tw:pointer-events-auto; transform:none; transition-delay:0s; }
+  .art-viewer[data-info-instant] .viewer-info { transition:none; }
   .art-viewer .viewer-info-toggle { @apply tw:grid; }
   .art-viewer .viewer-info-close { @apply tw:inline-flex; flex:0 0 auto; }
   .art-viewer .viewer-info .viewer-actions { @apply tw:flex tw:flex-wrap; }
@@ -94,3 +100,4 @@
   .art-viewer .viewer-next { @apply tw:right-s-2; }
 }
 @media (prefers-reduced-motion:reduce) { .art-viewer,.art-viewer .viewer-info { transition:none !important; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .art-viewer .viewer-info { transition:none !important; }

@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import DirectorImageTools from './DirectorImageTools.vue'
 import GenerationActionBar from './GenerationActionBar.vue'
@@ -41,6 +42,26 @@ describe('result tools', () => {
     await clear.trigger('click')
     expect(bar.emitted('clearResult')).toHaveLength(1)
     bar.unmount(); tools.unmount(); wrapper.unmount()
+  })
+  it('continues focused saving on the archive link without stealing a new focus target', async () => {
+    const wrapper = mount(DirectorResultTools, { props, attachTo:document.body, global:{ stubs:{ RouterLink:{ props:['to'], template:'<a :href="to"><slot /></a>' } } } })
+    const save = wrapper.get<HTMLButtonElement>('.result-archive-action')
+    save.element.focus()
+    await save.trigger('click')
+    await wrapper.setProps({ savingResult:true })
+    save.element.blur()
+    expect(wrapper.get('[role="status"]').text()).toContain('正在存入作品册')
+    await wrapper.setProps({ savingResult:false, resultArchived:true })
+    await nextTick()
+    expect(document.activeElement).toBe(wrapper.get('.result-archive-action').element)
+    await wrapper.setProps({ resultArchived:false })
+    wrapper.get<HTMLButtonElement>('.result-archive-action').element.focus()
+    await wrapper.get('.result-archive-action').trigger('click')
+    const other = document.createElement('button'); document.body.append(other); other.focus()
+    await wrapper.setProps({ resultArchived:true })
+    await nextTick()
+    expect(document.activeElement).toBe(other)
+    other.remove(); wrapper.unmount()
   })
   it('retains busy-state explanations and disables changes during generation', () => {
     const wrapper = mount(DirectorImageTools, { props: { ...props, generationBusy: true } })

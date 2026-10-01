@@ -14,6 +14,7 @@ import 'photoswipe/style.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from '@/composables/gallery/galleryHelpers'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const props = defineProps<{ items: ArtworkRecord[]; index: number }>()
@@ -27,7 +28,20 @@ const urls = new Map<number, string>()
 const ownedUrls = new Set<string>()
 const pending = new Map<number, AbortController>()
 const decoding = new Set<HTMLImageElement>()
-function toggleZoom() { viewer?.toggleZoom() }
+const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)')
+function syncMotionPreference() {
+  if (!viewer) return
+  const reduced = prefersReducedMotion()
+  viewer.options.zoomAnimationDuration = reduced ? 0 : 160
+  if (reduced) viewer.animations.stopAll()
+}
+function toggleZoom(event: MouseEvent) {
+  if (!viewer) return
+  const duration = viewer.options.zoomAnimationDuration
+  if (!event.detail) viewer.options.zoomAnimationDuration = 0
+  viewer.toggleZoom()
+  viewer.options.zoomAnimationDuration = duration
+}
 
 function releaseUrl(url: string) {
   if (ownedUrls.delete(url)) URL.revokeObjectURL(url)
@@ -50,7 +64,7 @@ function start() {
   const token = revision
   const items = [...props.items]
   const data = items.map(item => ({ type: 'image', src: '', width: Number(item.width) || 832, height: Number(item.height) || 1216, alt: item.sceneTitle || '作品' }))
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduced = prefersReducedMotion()
   let instance: PhotoSwipe
   try { instance = new PhotoSwipe({
     dataSource: data, index: props.index, appendToEl: element,
@@ -58,7 +72,7 @@ function start() {
     // The Gallery dialog owns focus, keyboard navigation and body scroll.
     trapFocus: false, returnFocus: false, escKey: false, arrowKeys: false,
     close: false, zoom: false, counter: false, arrowPrev: false, arrowNext: false,
-    showAnimationDuration: 0, hideAnimationDuration: 0, zoomAnimationDuration: reduced ? 0 : 200,
+    showAnimationDuration: 0, hideAnimationDuration: 0, zoomAnimationDuration: reduced ? 0 : 160,
     wheelToZoom: true, loop: false, preload: [1, 1], bgOpacity: 0,
     pinchToClose: false, closeOnVerticalDrag: false, clickToCloseNonZoomable: false,
     imageClickAction: 'zoom', bgClickAction: false, tapAction: false, doubleTapAction: 'zoom',
@@ -143,10 +157,19 @@ function start() {
     resize.observe(element)
   } catch { dispose(); emit('error') }
 }
+// goTo's external-selection path is instant, including the dialog's arrow keys.
 watch(() => props.index, index => { if (index >= 0 && viewer && viewer.currIndex !== index) viewer.goTo(index) })
 watch(() => props.items.map(item => item.id).join(','), start)
-onMounted(start)
-onBeforeUnmount(dispose)
+onMounted(() => {
+  motionMedia.addEventListener('change', syncMotionPreference)
+  window.addEventListener('atelier:motion-preference', syncMotionPreference)
+  start()
+})
+onBeforeUnmount(() => {
+  motionMedia.removeEventListener('change', syncMotionPreference)
+  window.removeEventListener('atelier:motion-preference', syncMotionPreference)
+  dispose()
+})
 </script>
 
 <style scoped>
