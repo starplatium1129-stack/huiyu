@@ -52,10 +52,15 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   restoreSettings(storage.state)
   watch(() => storage.state.settings.apiKey, value => { apiKey.value = value })
 
+  let hostRevision = 0
+  let hostMutationPending = false
+
   /** 拉取站主托管配置（接口不回传密钥，只告知是否可用） */
   async function refreshHostConfig() {
+    const revision = ++hostRevision
     try {
       const data = await chatApi.getHostConfig()
+      if (revision !== hostRevision) return
       hostApiConfigured.value = data.configured
       hostApiModel.value = data.model || ''
       hostApiBaseUrl.value = data.baseUrl || ''
@@ -65,6 +70,9 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   /** 本机：把当前本地配置保存为站主托管配置（访客直接可用） */
   async function saveHostConfig(): Promise<string> {
     if (!apiConfigured.value) return '请先完善本地 API 配置'
+    if (hostMutationPending) return '站主配置正在更新，请稍候'
+    hostMutationPending = true
+    hostRevision++
     try {
       await chatApi.saveHostConfig({
           baseUrl: apiBaseUrl.value,
@@ -81,13 +89,25 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
         return error.status ? `保存失败：HTTP ${error.status}` : '保存失败，请检查网络'
       }
       return '保存失败，请检查网络'
-    }
+    } finally { hostMutationPending = false }
   }
 
-  async function clearHostConfig(): Promise<void> {
-    try { await chatApi.clearHostConfig() } catch {}
-    hostApiConfigured.value = false
-    hostApiModel.value = ''
+  async function clearHostConfig(): Promise<boolean> {
+    if (hostMutationPending) return false
+    hostMutationPending = true
+    hostRevision++
+    try {
+      await chatApi.clearHostConfig()
+      // A read started before the acknowledgement cannot restore cleared state.
+      hostRevision++
+      hostApiConfigured.value = false
+      hostApiModel.value = ''
+      hostApiBaseUrl.value = ''
+      return true
+    } catch {
+      // A transport failure cannot establish whether server-side credentials remain.
+      return false
+    } finally { hostMutationPending = false }
   }
 
   const apiConfigured = computed(() =>
