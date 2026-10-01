@@ -33,20 +33,20 @@ function markFailed(event: Event) {
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.shot-storyboard { margin:var(--s-4) 0 var(--s-5); border:1px solid var(--border-soft); background:var(--bg-base); }
+.shot-storyboard { margin:0 0 var(--s-2); border:0; background:var(--bg-surface); }
 .shot-storyboard header { @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap tw:gap-s-3 tw:mb-s-3; }
-.storyboard-kicker { letter-spacing:.05em; }
+.storyboard-kicker { letter-spacing:.05em; font-size:var(--fs-label-xs); }
 .shot-storyboard h3 { margin:var(--s-1) 0 0; @apply tw:text-primary; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .storyboard-frames { padding:var(--s-1) var(--s-1) var(--s-3); scroll-snap-type:x proximity; scrollbar-width:thin; }
-.storyboard-frame { @apply tw:flex-col; flex:0 0 200px; border:1px solid var(--border-soft); background:var(--bg-surface); font:inherit; scroll-snap-align:start; }
+.storyboard-frame { @apply tw:flex-col; flex:0 0 200px; border:1px solid transparent; background:var(--bg-base); font:inherit; scroll-snap-align:start; }
 .storyboard-media { aspect-ratio:16 / 10; background:var(--bg-deep); }
 .storyboard-media img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
 .storyboard-placeholder .archive-icon { @apply tw:w-[36px] tw:h-[36px] tw:text-accent; }
 .storyboard-caption { padding:var(--s-3) var(--s-3) var(--s-1); }
-.storyboard-caption > span { @apply tw:text-secondary; }
+.storyboard-caption > span { @apply tw:text-secondary tw:text-label-xs; }
 .storyboard-description { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; margin:0 var(--s-3) var(--s-3); }
 .shot-storyboard > p { @apply tw:mt-s-2 tw:text-secondary tw:text-body-sm; }
 .storyboard-frame:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-@media(hover:hover) { .storyboard-frame:hover { @apply tw:border-accent; } }
+@media(hover:hover) and (pointer:fine) { .storyboard-frame:hover { @apply tw:border-accent; } }
 @media(max-width:540px) { .shot-storyboard { @apply tw:p-s-3; } .storyboard-frame { flex-basis:176px; } }
 </style>

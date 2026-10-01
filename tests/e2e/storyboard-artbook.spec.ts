@@ -85,8 +85,20 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
       await expect(page.locator('.shot-row').nth(index).locator('.shot-field-prompt textarea')).toHaveValue(`${act.desc}。${act.emotion}的氛围。`)
     }
     await page.getByRole('button', { name:'查看镜头 2', exact:true }).focus()
+    const locateTarget = page.locator('[data-shot-index="1"]')
+    const locateBefore = await locateTarget.evaluate(row => {
+      const previousMotion = document.documentElement.dataset.motion
+      document.documentElement.dataset.motion = 'full'
+      const margin = parseFloat(getComputedStyle(row).scrollMarginTop) || 0
+      return { previousMotion, expectedScroll: Math.min(document.documentElement.scrollHeight - innerHeight, Math.max(0, scrollY + row.getBoundingClientRect().top - margin)) }
+    })
     await page.keyboard.press('Enter')
-    await expect(page.locator('[data-shot-index="1"]')).toBeFocused()
+    expect(Math.abs(await page.evaluate(() => scrollY) - locateBefore.expectedScroll)).toBeLessThanOrEqual(2)
+    await expect(locateTarget).toBeFocused()
+    await page.evaluate(previousMotion => {
+      if (previousMotion === undefined) delete document.documentElement.dataset.motion
+      else document.documentElement.dataset.motion = previousMotion
+    }, locateBefore.previousMotion)
     const first = page.locator('.shot-row').first()
     await pickStudioOptionByValue(first.getByRole('combobox', { name:'时长', exact:true }), '5')
     await expect(page.locator('.storyboard-total')).toHaveText('3 镜 · 11 秒')

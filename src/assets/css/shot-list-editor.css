@@ -1,5 +1,5 @@
 @reference "./tailwind.css";
-.shot-editor { @apply tw:grid tw:gap-s-4 tw:min-w-0; }
+.shot-editor { @apply tw:grid tw:gap-s-4 tw:min-w-0; container-type:inline-size; }
 .shot-blocked { @apply tw:text-secondary tw:leading-loose; }
 
 /* ── 面板视觉（组件自包含：video-* 类名在 VideoStudioView 是 scoped 的，
@@ -9,36 +9,28 @@
   padding: clamp(18px, 2.4vw, 28px);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-xl;
-  background: color-mix(in srgb, var(--bg-surface) 90%, transparent);
-  box-shadow: var(--shadow-glass-sm);
-}
-.video-panel::before {
-  @apply tw:absolute tw:top-[-1px] tw:left-s-5 tw:w-[44px] tw:h-[1px];
-  background: linear-gradient(90deg, var(--archive-cyan), transparent); content: "";
+  background:var(--bg-surface);
+  box-shadow:none;
 }
 .video-panel-heading { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-4 tw:mb-s-4; }
-.video-panel-heading h2 { margin: 4px 0 0; @apply tw:text-title-sm; }
-.video-step { @apply tw:text-accent; font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; @apply tw:uppercase; }
+.video-panel-heading h2 { margin:var(--s-1) 0 0; @apply tw:text-title-sm tw:font-semibold; }
+.video-step { @apply tw:text-accent; font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; @apply tw:uppercase; }
 .video-choice-group { @apply tw:grid tw:gap-s-2; }
 .video-quality-row { @apply tw:grid tw:gap-s-2 tw:mt-s-4; }
 .video-quality-grid { @apply tw:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); @apply tw:gap-s-2; }
 .video-quality-grid button {
   @apply tw:grid tw:gap-[4px] tw:min-h-[66px]; padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); @apply tw:rounded-md;
-  background: var(--bg-deep); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out);
+  border:1px solid transparent; @apply tw:rounded-md;
+  background:var(--bg-base); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
-.video-quality-grid button:active { transform: scale(.98); }
-.video-quality-grid button.active { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-primary; }
+.video-quality-grid button.active { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
 .video-quality-grid strong { @apply tw:text-body-sm; }
 .video-quality-grid small { @apply tw:text-muted tw:text-label-xs tw:leading-label; }
 .video-quality-grid em { @apply tw:text-accent; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:not-italic; }
-.video-segmented { @apply tw:inline-flex tw:flex-wrap tw:p-[3px]; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); }
+.video-segmented { @apply tw:inline-flex tw:flex-wrap tw:p-s-1; border:0; @apply tw:rounded-md; background:var(--bg-base); }
 .video-segmented button { @apply tw:min-h-[32px]; padding: 0 var(--s-3); border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-muted tw:cursor-pointer; }
 .video-segmented button.active { background: var(--accent); @apply tw:text-inverse; }
 .video-install-note { margin: 0 0 var(--s-3); @apply tw:text-muted tw:text-label-xs tw:leading-body; }
-.video-progress { @apply tw:h-[3px]; margin: var(--s-3) 0; @apply tw:overflow-hidden tw:rounded-pill; background: var(--bg-deep); }
-.video-progress i { @apply tw:block tw:h-full tw:w-full; transform-origin: left; scale: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: scale var(--motion-surface) var(--ease-out); }
 
 .shot-toolbar { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center tw:mb-s-3; }
 .shot-toolbar .studio-select-wrapper { @apply tw:w-auto tw:max-w-[300px]; flex: 0 1 auto; }
@@ -48,14 +40,15 @@
 .shot-flow-hint { margin: 0 0 var(--s-3); @apply tw:text-muted tw:text-label-xs tw:leading-body; }
 
 /* ── 参考卡 / 台词 / 质检 / 脚本弹层 ── */
-.shot-reference-section { @apply tw:grid tw:gap-s-2 tw:mt-s-4; }
+.shot-reference-section { @apply tw:grid tw:gap-s-3; }
 .shot-reference-header-row { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:flex-wrap; }
-.shot-reference-title-group { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
+.shot-reference-title-group { @apply tw:grid tw:gap-s-1 tw:min-w-0; }
+.shot-reference-title-group h2 { margin:0; font-size:var(--fs-title-sm); font-weight:600; }
 .shot-ref-loading { @apply tw:text-accent tw:text-label-xs tw:font-semibold;  }
 
 .shot-reference-grid { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .shot-card-remove-btn { @apply tw:text-danger-text; padding: 1px 6px; font-weight: bold; }
-.shot-reference-card { @apply tw:grid tw:gap-s-2 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); }
+.shot-reference-card { @apply tw:grid tw:gap-s-3 tw:p-s-3; border:0; @apply tw:rounded-md; background:var(--bg-base); }
 .shot-reference-head { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
 .shot-reference-head strong { @apply tw:text-body-sm tw:whitespace-nowrap; }
 .shot-card-quick-select { flex: 1 1 140px; }
@@ -65,9 +58,9 @@
 .shot-card-outfit-pills { @apply tw:flex tw:flex-wrap tw:gap-[4px]; padding: 2px 0; }
 .shot-card-outfit-pill {
   @apply tw:inline-flex tw:items-center tw:gap-[3px];
-  padding: 2px 8px; border: 1px solid var(--border-soft);
+  min-height:32px; padding:var(--s-1) var(--s-2); border:1px solid transparent;
   @apply tw:rounded-pill; background: var(--bg-surface);
-  @apply tw:text-label-xs tw:text-secondary tw:cursor-pointer; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
+  @apply tw:text-label-xs tw:text-secondary tw:cursor-pointer;
 }
 .shot-card-outfit-pill:hover { @apply tw:border-accent tw:text-primary; }
 .shot-card-outfit-pill.active { @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse tw:font-semibold; }
@@ -77,7 +70,7 @@
 .shot-reference-remove { @apply tw:inline-flex tw:p-0; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:cursor-pointer; }
 .shot-reference-remove:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .shot-reference-remove:disabled { @apply tw:cursor-not-allowed; }
-.shot-reference-thumb { @apply tw:w-[64px] tw:h-[64px] tw:object-cover tw:rounded-sm; border: 1px solid var(--border-soft); @apply tw:cursor-pointer; }
+.shot-reference-thumb { @apply tw:w-[64px] tw:h-[80px] tw:object-contain tw:rounded-sm; border:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:cursor-pointer; }
 .shot-reference-hint { @apply tw:m-0 tw:text-muted tw:text-label-xs; }
 .shot-dialogue-row { @apply tw:flex tw:gap-s-2 tw:items-center; }
 .shot-dialogue-row .input { flex: 1 1 auto; }
@@ -88,17 +81,17 @@
 @media (max-width: 768px) {
   .shot-reference-grid { grid-template-columns: 1fr; }
 }
-.shot-toggle { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:mt-s-4 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:cursor-pointer tw:text-left; }
+.shot-toggle { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:mt-s-4 tw:p-s-3; border:0; @apply tw:rounded-md; background:var(--bg-base); @apply tw:cursor-pointer tw:text-left; }
 .shot-toggle > span { flex: 1; }
 .shot-toggle strong, .shot-toggle small { @apply tw:block; }
 .shot-toggle small { @apply tw:mt-[3px] tw:text-muted tw:text-label-xs tw:leading-body; }
 .shot-identity-field { @apply tw:grid tw:gap-s-2 tw:mt-s-4; }
 .shot-identity-row { @apply tw:grid; grid-template-columns: minmax(0, 1fr) 220px; @apply tw:gap-s-2; align-items: start; }
 .shot-identity-row .studio-select-wrapper { align-self: start; }
-.shot-row { @apply tw:grid tw:gap-s-3; padding: var(--s-4) 0; border-top: 1px solid var(--border-soft); scroll-margin-top:84px; }
+.shot-row { @apply tw:grid tw:gap-s-3; padding:var(--s-5) 0; border-top:1px solid var(--border-soft); scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-4)); }
 .shot-row:focus-visible { outline:2px solid var(--accent); outline-offset:4px; @apply tw:rounded-md; }
 .shot-row:first-of-type { border-top: 0; @apply tw:pt-0; }
-.shot-row-head { @apply tw:flex tw:items-center tw:gap-s-3; }
+.shot-row-head { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; }
 .shot-index { font: 800 var(--fs-title-xs) var(--font-mono); @apply tw:text-accent; }
 .shot-row-status { padding: 2px var(--s-2); @apply tw:rounded-pill; font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-row-status[data-state="running"], .shot-row-status[data-state="queued"] { background: color-mix(in srgb, var(--accent) 14%, transparent); @apply tw:text-accent; }
@@ -106,7 +99,8 @@
 .shot-row-status[data-state="failed"], .shot-row-status[data-state="cancelled"] { background: color-mix(in srgb, var(--danger) 12%, transparent); @apply tw:text-danger-text; }
 .shot-row-status[data-state="pending"] { background: var(--bg-elevated); @apply tw:text-muted; }
 .shot-row-actions { @apply tw:flex tw:gap-s-1 tw:ml-auto; }
-.shot-row-actions button { @apply tw:min-w-[30px] tw:h-[30px]; border: 1px solid var(--border-soft); @apply tw:rounded-sm; background: var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer; }
+.shot-row-actions button { @apply tw:grid tw:min-w-[32px] tw:h-[32px]; place-items:center; border:1px solid transparent; @apply tw:rounded-sm; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
+.shot-row-actions .shot-move-up { transform:rotate(180deg); }
 .shot-row-actions button:disabled { /* 审计修复：不用 opacity 压字，改用禁用令牌 */ @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
 .shot-fields { @apply tw:grid tw:gap-s-3; }
 .shot-field-prompt { @apply tw:grid tw:gap-s-2; }
@@ -128,10 +122,10 @@
 .shot-submit-panel strong { @apply tw:text-title-xs; }
 .shot-submit-panel p { margin: 4px 0 0; @apply tw:text-body-sm tw:leading-body; }
 .shot-submit-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:justify-end; }
-.shot-progress-panel { @apply tw:grid tw:gap-s-3; }
-.shot-progress-stats { @apply tw:text-muted; font: 600 var(--fs-mono-xs) var(--font-mono); }
-.shot-concat-heading { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; }
-.shot-concat-player { --media-max-height: min(68vh, 700px); @apply tw:w-full; }
+@container (max-width:620px) {
+  .shot-reference-grid,.video-quality-grid { grid-template-columns:minmax(0,1fr); }
+  .shot-selects { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
 @media (max-width: 1000px) {
   .shot-identity-row { grid-template-columns: 1fr; }
   .shot-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); }

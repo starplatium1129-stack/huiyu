@@ -4,7 +4,7 @@
   <Teleport v-if="!launcherOnly" to="body">
     <dialog ref="dialog" class="appearance-dialog" aria-labelledby="appearance-title" @close="restoreFocus" @cancel.prevent="fluidDialog.close()" @click="backdropClose">
       <div class="appearance-heading">
-        <div><p class="appearance-eyebrow">让画室适合你</p><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2></div>
+        <div><p class="appearance-eyebrow">让画室适合你</p><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">选择后自动保存在此设备。</p></div>
         <button class="appearance-close" type="button" aria-label="关闭" @click="fluidDialog.close()"><ArchiveIcon name="close" /></button>
       </div>
       <div v-if="section === 'appearance'" class="appearance-fields">
@@ -28,7 +28,7 @@
         <ToggleSwitch class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
           <span>降低玻璃效果<small>使用更稳定的底色，减少透光与背景干扰。</small></span>
         </ToggleSwitch>
-        <p class="appearance-note">偏好自动保存在此设备。系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
+        <p class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
       <dl v-else class="appearance-shortcuts">
         <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
@@ -49,8 +49,9 @@ import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
-import { usableFocus, useDesktopPreferences } from '@/composables/useDesktopInteraction'
+import { desktopShortcutAllowed, usableFocus, useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useDesktopZoom } from '@/composables/useDesktopZoom'
 import '@/assets/css/appearance-preferences.css'
 const emit = defineEmits<{ open: [] }>()
@@ -61,7 +62,25 @@ const { themeMode, motionMode, reducedGlass, setThemeMode, setMotionMode, setRed
 const selectedTheme = computed({ get: () => themeMode.value, set: setThemeMode })
 const selectedMotion = computed({ get: () => motionMode.value, set: setMotionMode })
 const dialog = ref<HTMLDialogElement | null>(null)
-const fluidDialog = useFluidDialog(dialog)
+let keyboardInput = false
+const surface = useFluidSurface()
+let phaseDone: (() => void) | null = null
+function finishPhase(element: Element) {
+  const done = phaseDone; phaseDone = null
+  surface.dispose(element); done?.()
+}
+function runPhase(element: Element, done: () => void, entering: boolean) {
+  phaseDone = done
+  const finish = () => { if (phaseDone === done) phaseDone = null; done() }
+  if (keyboardInput) finishPhase(element)
+  else if (entering) surface.enter(element, finish)
+  else surface.leave(element, finish)
+}
+const fluidDialog = useFluidDialog(dialog, {
+  enter(element, done) { runPhase(element, done, true) },
+  leave(element, done) { runPhase(element, done, false) },
+  dispose(element) { phaseDone = null; surface.dispose(element) },
+})
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()
 const section = ref<'appearance' | 'keyboard'>('appearance')
 const materialControlsReady = ref(false)
@@ -76,22 +95,30 @@ const motionChoices = [
   { value: 'reduce', label: '减少动态' },
 ] as const
 let trigger: HTMLElement | null = null
+let opening = 0
 function launch(value: 'appearance' | 'keyboard') {
   // Dispatch synchronously so the sole host captures the trigger before its menu closes.
   window.dispatchEvent(new CustomEvent('atelier:appearance-open', { detail: { section: value } }))
   emit('open')
 }
 async function open(value: 'appearance' | 'keyboard') {
-  if (dialog.value?.open) return
-  trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  const version = ++opening, wasOpen = !!dialog.value?.open
+  const focusInside = !!dialog.value?.contains(document.activeElement)
+  if (!wasOpen) trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
   section.value = value
   if (value === 'appearance') materialControlsReady.value = true
   await nextTick()
+  if (version !== opening) return
   const summary = document.querySelector<HTMLElement>('.nav-more-trigger')
   const origin = usableFocus(trigger) ? trigger : usableFocus(summary) ? summary : document.querySelector<HTMLElement>('.nav-menu-toggle')
   fluidDialog.open(origin)
+  if (wasOpen && focusInside && document.activeElement === document.body) {
+    dialog.value?.querySelector<HTMLButtonElement>('.appearance-close')?.focus({ preventScroll: true })
+  }
 }
 function restoreFocus() {
+  // A queued close event must not redirect focus after the dialog reopens.
+  if (dialog.value?.open) return
   const fallback = document.querySelector<HTMLElement>('.nav-more-trigger')
   ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus({ preventScroll: true })
 }
@@ -100,16 +127,34 @@ function backdropClose(event: MouseEvent) {
   const rect = dialog.value.getBoundingClientRect()
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) fluidDialog.close()
 }
-function keyboardHelp() { void open('keyboard') }
+function keyboardHelp() { keyboardInput = true; void open('keyboard') }
 function appearanceOpen(event: Event) { void open((event as CustomEvent).detail?.section === 'keyboard' ? 'keyboard' : 'appearance') }
+function keyboard(event: KeyboardEvent) {
+  keyboardInput = true
+  const current = dialog.value
+  if (!current?.open) return
+  // Global shortcuts defer to an open modal. This one owns its help request,
+  // including a keyboard reversal while a pointer close is still settling.
+  if (event.key === 'F1' && !event.ctrlKey && !event.shiftKey && desktopShortcutAllowed(event)
+    && event.target instanceof Node && current.contains(event.target)) {
+    event.preventDefault(); void open('keyboard')
+  }
+  else finishPhase(current)
+}
+function pointer() { keyboardInput = false }
 onMounted(() => {
   if (props.launcherOnly) return
   window.addEventListener('atelier:keyboard-help', keyboardHelp)
   window.addEventListener('atelier:appearance-open', appearanceOpen)
+  window.addEventListener('keydown', keyboard, true)
+  window.addEventListener('pointerdown', pointer, true)
 })
 onUnmounted(() => {
   if (props.launcherOnly) return
   window.removeEventListener('atelier:keyboard-help', keyboardHelp)
   window.removeEventListener('atelier:appearance-open', appearanceOpen)
+  window.removeEventListener('keydown', keyboard, true)
+  window.removeEventListener('pointerdown', pointer, true)
+  opening++
 })
 </script>

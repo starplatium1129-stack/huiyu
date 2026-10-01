@@ -34,8 +34,8 @@ defineEmits<{ generate: [] }>()
           @update:model-value="quality = $event as VideoDefaults['quality']" />
       </label>
     </div>
-    <div class="video-generation-summary"><strong>{{ submitTitle }}</strong><p>{{ submitDescription }}</p></div>
-    <button class="btn btn-primary btn-lg" type="button" :disabled="!canGenerate" @click="$emit('generate')">
+    <div id="video-generation-summary" class="video-generation-summary"><strong>{{ submitTitle }}</strong><p>{{ submitDescription }}</p></div>
+    <button class="btn btn-primary btn-lg" type="button" aria-describedby="video-generation-summary" :disabled="!canGenerate" @click="$emit('generate')">
       <ArchiveIcon name="play" />{{ submitting ? '正在提交…' : '生成视频' }}
     </button>
   </section>
@@ -47,7 +47,7 @@ defineEmits<{ generate: [] }>()
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 22rem) auto;
   align-items: center; gap: var(--s-4); margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface);
-  box-shadow: var(--shadow-glass-sm);
+  box-shadow:none;
 }
 .video-generation-bar[data-ready="true"] { border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft)); }
 .video-generation-fields { display: grid; grid-template-columns: minmax(0, 1.7fr) repeat(2, minmax(0, 1fr)); gap: var(--s-3); min-width: 0; }
@@ -59,5 +59,10 @@ defineEmits<{ generate: [] }>()
 .video-generation-bar > .btn { white-space: nowrap; }
 @media (min-width: 1001px) {
   .video-generation-bar { position: sticky; top: calc(var(--app-navigation-height, 80px) + var(--s-2)); z-index: var(--z-sticky); }
+}
+@media (max-width:1150px) {
+  .video-generation-bar { grid-template-columns:minmax(0,1fr) auto; align-items:start; position:static; top:auto; }
+  .video-generation-fields { grid-column:1 / -1; }
+  .video-generation-summary { align-self:center; }
 }
 </style>

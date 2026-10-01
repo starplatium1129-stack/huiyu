@@ -5,13 +5,9 @@ import ConfirmDialog from './ConfirmDialog.vue'
 import { confirmAction, resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
-vi.mock('@/composables/useFluidSurface', () => ({
-  useFluidSurface: () => ({ enter: (_el: Element, done: () => void) => done(), leave: (_el: Element, done: () => void) => done(), dispose: vi.fn() }),
-}))
-
 const mounted: VueWrapper[] = []
 const settle = async () => { await nextTick(); await nextTick() }
-const button = (kind: 'cancel' | 'confirm') => document.querySelectorAll<HTMLButtonElement>('.confirm-actions button')[kind === 'cancel' ? 0 : 1]!
+const button = (kind: 'cancel' | 'confirm') => document.querySelectorAll<HTMLButtonElement>('.confirm-actions .confirm-btn')[kind === 'cancel' ? 0 : 1]!
 
 beforeEach(() => {
   resolveConfirm(false)
@@ -91,11 +87,17 @@ it('cycles Tab in both directions and recaptures background focus', async () => 
   confirmAction('删除作品')
   await settle()
   const close = document.querySelector<HTMLButtonElement>('.confirm-close')!
-  close.focus()
-  close.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }))
+  button('cancel').focus()
+  button('cancel').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }))
   expect(document.activeElement).toBe(button('confirm'))
   button('confirm').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }))
-  expect(document.activeElement).toBe(close)
+  expect(document.activeElement).toBe(button('cancel'))
+  // The corner close remains an ordinary keyboard stop between the decisions.
+  close.focus()
+  const middleTab = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })
+  close.dispatchEvent(middleTab)
+  expect(close.tabIndex).toBe(0)
+  expect(middleTab.defaultPrevented).toBe(false)
   outside.focus()
   expect(document.activeElement).toBe(button('cancel'))
 })

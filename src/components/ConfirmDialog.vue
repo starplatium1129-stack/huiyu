@@ -1,6 +1,6 @@
 <template>
   <Teleport :to="teleportTarget">
-    <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
+    <!-- Decision feedback and keyboard focus do not wait for decorative motion. -->
       <div
         v-show="state.visible"
         :inert="!state.visible"
@@ -17,7 +17,6 @@
           :aria-label="state.title"
           :aria-describedby="state.message ? messageId : undefined"
         >
-          <button class="confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
           <span class="confirm-icon" aria-hidden="true">
             <ArchiveIcon :name="state.danger ? 'warning' : 'info'" />
           </span>
@@ -30,6 +29,9 @@
               type="button"
               @click="cancel"
             >{{ state.cancelLabel }}</button>
+            <!-- Keep the safe choice first and confirmation last in keyboard order.
+                 The alternate close action stays reachable at its visual corner. -->
+            <button class="confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
             <button
               ref="confirmBtn"
               class="btn confirm-btn"
@@ -40,7 +42,6 @@
           </div>
         </div>
       </div>
-    </Transition>
   </Teleport>
 </template>
 
@@ -48,10 +49,7 @@
 import { computed, onUnmounted, ref, shallowRef, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
-import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useFocusTrap } from '@/composables/useFocusTrap'
-
-const surface = useFluidSurface('.confirm-panel')
 
 const state = useConfirmState()
 const teleportTarget = shallowRef<string | HTMLElement>('body')

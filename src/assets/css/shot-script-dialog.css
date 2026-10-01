@@ -1,10 +1,14 @@
 @reference "./tailwind.css";
 .shot-script-overlay { @apply tw:fixed; inset: 0; z-index: var(--z-dock); @apply tw:grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
-.shot-script-panel { width: min(560px, 100%); max-height: calc(100dvh - 32px); @apply tw:overflow-y-auto tw:grid tw:gap-s-4; padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); box-shadow: var(--shadow-md); }
+.shot-script-panel { width:min(560px,100%); max-height:calc(100dvh - 32px); @apply tw:overflow-y-auto tw:grid tw:gap-s-4; overscroll-behavior:contain; padding:clamp(20px,2.4vw,28px); border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); box-shadow:var(--shadow-md); }
 .shot-script-head { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
 .shot-script-head h2 { margin: 2px 0 4px; @apply tw:text-title-sm; }
 .shot-script-head p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
 .shot-script-row { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .shot-script-foot { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3; }
 .shot-script-hint { @apply tw:text-muted tw:text-label-xs; }
+.shot-script-help { padding-top:var(--s-3); border-top:1px solid var(--border-soft); font-size:var(--fs-label-sm); color:var(--text-secondary); }
+.shot-script-help summary { min-height:32px; cursor:pointer; }
+.shot-script-help summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.shot-script-help p { margin:var(--s-2) 0 0; line-height:var(--lh-body); }
 @media (max-width: 768px) { .shot-script-row { grid-template-columns: 1fr; } }

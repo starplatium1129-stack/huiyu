@@ -225,7 +225,7 @@
             <p v-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
             <p v-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
             <p v-if="job.status === 'cancelling'" class="video-install-note">正在等待本机停止任务，完成后可以重新生成。</p>
-            <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress">
+            <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress" role="progressbar" aria-label="视频生成进度" :aria-valuenow="progressPercent" aria-valuemin="0" aria-valuemax="100">
               <i :style="{ '--progress': progressPercent + '%' }"></i>
             </div>
             <p v-if="job.status === 'running' && job.estimatedSeconds" class="video-job-eta">

@@ -87,10 +87,13 @@
           ></textarea>
         </label>
 
+      </section>
+      <section class="video-panel shot-reference-panel" aria-labelledby="shotReferencesTitle">
         <div class="shot-reference-section">
           <div class="shot-reference-header-row">
             <div class="shot-reference-title-group">
-              <span class="field-label">角色参考卡（跨镜锁定形象 · 支持多角色 4 视角装配）</span>
+              <h2 id="shotReferencesTitle">角色参考卡</h2>
+              <span class="field-hint">跨镜锁定形象 · 支持多角色 4 视角装配</span>
               <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">
                 <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...
               </span>
@@ -101,7 +104,7 @@
               type="button"
               :disabled="batchActive || submitting"
               @click="addReferenceCard"
-            >＋ 添加出场角色（最多 4 位）</button>
+            ><ArchiveIcon name="gallery" />添加出场角色（最多 4 位）</button>
           </div>
           <div class="shot-reference-grid">
             <div v-for="(card, cardIndex) in referenceCards" :key="cardIndex" class="shot-reference-card">
@@ -164,7 +167,7 @@
                   type="button"
                   :disabled="batchActive || submitting"
                   @click="pickReference(cardIndex)"
-                >＋ 本地上传</button>
+                ><ArchiveIcon name="upload" />本地上传</button>
               </div>
               <p v-if="card.images.length" class="shot-reference-hint">已装配 {{ card.images.length }}/4 张参考图 · 点击缩略图可移除</p>
               <input
@@ -183,12 +186,13 @@
         <div class="video-panel-heading">
           <div>
             <span class="video-step">02 · 分镜清单</span>
-            <h2>{{ shots.length }} 个镜头 · 建议 1–2 分钟片拆 8–15 镜</h2>
+            <h2>{{ shots.length }} 个镜头</h2>
+            <p class="video-install-note">建议 1–2 分钟片拆 8–15 镜</p>
           </div>
         </div>
         <div class="shot-toolbar">
           <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="batchActive || submitting" />
-          <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot">＋ 添加镜头</button>
+          <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="gallery" />添加镜头</button>
           <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="storyboardBusy || batchActive || submitting" />
           <input
             v-model="storyboardIntent"
@@ -245,10 +249,10 @@
             </span>
             <div class="shot-row-actions">
               <StudioTooltip anchor content="上移镜头">
-                <button type="button" :disabled="index === 0 || batchActive || submitting" aria-label="上移镜头" @click="moveShot(index, -1)">↑</button>
+                <button type="button" :disabled="index === 0 || batchActive || submitting" aria-label="上移镜头" @click="moveShot(index, -1)"><ArchiveIcon name="chevron-down" class="shot-move-up" /></button>
               </StudioTooltip>
               <StudioTooltip anchor content="下移镜头">
-                <button type="button" :disabled="index === shots.length - 1 || batchActive || submitting" aria-label="下移镜头" @click="moveShot(index, 1)">↓</button>
+                <button type="button" :disabled="index === shots.length - 1 || batchActive || submitting" aria-label="下移镜头" @click="moveShot(index, 1)"><ArchiveIcon name="chevron-down" /></button>
               </StudioTooltip>
               <StudioTooltip anchor content="删除镜头">
                 <button type="button" :disabled="batchActive || submitting" aria-label="删除镜头" @click="removeShot(index)"><ArchiveIcon name="close" /></button>
@@ -412,27 +416,7 @@
         </div>
       </section>
 
-      <section v-if="batch" class="video-panel shot-progress-panel" aria-live="polite">
-        <div class="video-panel-heading">
-          <div>
-            <span class="video-step">03 · 批量进度</span>
-            <h2>{{ batchStatusLabel }}</h2>
-          </div>
-          <span class="shot-progress-stats">{{ batch.progress.succeeded }} / {{ batch.progress.total }} 镜成功 · {{ batch.progress.failed }} 失败</span>
-        </div>
-        <div class="video-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
-        <p class="video-install-note">
-          {{ batch.linkLastFrame ? '镜头间已自动衔接上一镜尾帧；' : '已关闭尾帧衔接；' }}
-          单镜约 2.5–6 分钟（standard 档），可离开页面，任务在后台继续。
-        </p>
-        <template v-if="batch.concatUrl">
-          <div class="shot-concat-heading">
-            <strong>整片预览</strong>
-            <TaskMediaDownload class="btn btn-ghost" :src="batch.concatUrl">下载整片 MP4</TaskMediaDownload>
-          </div>
-          <StudioMediaPlayer class="shot-concat-player" kind="video" :src="batch.concatUrl" label="整片预览" :transcript="concatTranscript" />
-        </template>
-      </section>
+      <ShotBatchProgress v-if="batch" :status-label="batchStatusLabel" :succeeded="batch.progress.succeeded" :total="batch.progress.total" :failed="batch.progress.failed" :progress-percent="progressPercent" :link-last-frame="batch.linkLastFrame" :concat-url="batch.concatUrl || ''" :transcript="concatTranscript" />
     </template>
   </section>
 </template>
@@ -441,7 +425,6 @@
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
-import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'
@@ -449,15 +432,15 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
+import ShotBatchProgress from './ShotBatchProgress.vue'
 import { durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
-import { prefersReducedMotion } from '@/utils/motionPreference'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
 import type { VideoStatusResponse } from '@/api/videoApi'
 const props = defineProps<{ status: VideoStatusResponse | null }>()
 const editorRoot = ref<HTMLElement | null>(null)
 function locateShot(index: number) {
   const row = editorRoot.value?.querySelector<HTMLElement>(`[data-shot-index="${index}"]`)
-  row?.scrollIntoView({ block:'start', behavior:prefersReducedMotion() ? 'instant' : 'smooth' })
+  row?.scrollIntoView({ block:'start', behavior:'instant' })
   row?.focus({ preventScroll:true })
 }
 const {

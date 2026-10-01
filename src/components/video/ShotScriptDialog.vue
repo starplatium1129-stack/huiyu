@@ -7,7 +7,6 @@
             <div>
               <span class="video-step"><ArchiveIcon name="wand" /> AI 生成脚本</span>
               <h2>故事梗概 → 完整分镜表</h2>
-              <p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p>
             </div>
             <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
           </header>
@@ -33,6 +32,7 @@
               <StudioSelect size="sm" label="总时长（秒）" :model-value="total ?? ''" :options="totalOptions" @update:model-value="emit('update:total', nullableNumber($event))" />
             </label>
           </div>
+          <details class="shot-script-help"><summary>分镜生成说明</summary><p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p></details>
           <footer class="shot-script-foot">
             <span v-if="referenceLabels.length" class="shot-script-hint">
               参考卡角色将作为 &lt;Picture N&gt; 注入：{{ referenceLabels.join('、') }}

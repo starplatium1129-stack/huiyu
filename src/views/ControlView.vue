@@ -45,7 +45,7 @@
       <ControlIntro :ready-label="readyLabel">
         <template #actions>
           <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
-            <ArchiveIcon name="refresh" :class="{ spin: serviceChecking }" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
+            <ArchiveIcon name="refresh" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
           </button>
           <RouterLink class="btn btn-primary" to="/prompt-builder"><ArchiveIcon name="spark" /> 回到创作</RouterLink>
         </template>
@@ -60,7 +60,7 @@
             :class="{ 'service-required': requestedService === service.key }" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'">
             <h3 class="status-tile-head service-row-name"><ArchiveIcon :name="service.icon" />{{ service.name }}<span class="status-dot"></span></h3>
             <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
-            <p class="status-tile-detail">{{ service.detail }}</p>
+            <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
               <template v-if="service.key !== 'ollama'">
                 <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
@@ -138,47 +138,47 @@
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="sdHost">
-            <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
+            <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" aria-describedby="sd-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
+        <p id="sd-host-help" class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="comfyHost">
-            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
+            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
+        <p id="comfy-host-help" class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
-            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
+            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
+        <p id="tts-host-help" class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
 
         <details class="voice-config">
           <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
           <div class="voice-grid">
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
-              <label class="sr-only" for="v-nene-ref">宁宁参考音频路径</label>
+              <label for="v-nene-ref">宁宁参考音频路径</label>
             <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
-              <label class="sr-only" for="v-nene-prompt">宁宁提示文本（日文）</label>
+              <label for="v-nene-prompt">宁宁提示文本（日文）</label>
             <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">夏目</div>
-              <label class="sr-only" for="v-nat-ref">夏目参考音频路径</label>
+              <label for="v-nat-ref">夏目参考音频路径</label>
             <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
-              <label class="sr-only" for="v-nat-prompt">夏目提示文本（日文）</label>
+              <label for="v-nat-prompt">夏目提示文本（日文）</label>
             <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
           </div>
         </details>
-        <div class="config-save-row"><p>地址与声线一起保存，自动检测不会覆盖未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
+        <div class="config-save-row" :aria-busy="savingConfig"><p>地址与声线一起保存，自动检测不会覆盖未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
       </section>
 
       <!-- 公网分享 -->

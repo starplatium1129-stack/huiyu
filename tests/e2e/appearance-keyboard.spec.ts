@@ -57,8 +57,15 @@ for (const theme of ['dark', 'light']) {
     }
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('atelier-desktop-appearance-v1') || '{}'))
     expect(saved).toMatchObject({ theme: 'system', motion: 'system', glass: 'light', reducedGlass: true })
+    // A keyboard request can reverse an in-flight pointer close without losing
+    // the modal or the preference values that were just selected.
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await dialog.getByRole('button', { name: '关闭', exact: true }).click()
+    await page.keyboard.press('F1')
+    await expect(shortcuts).toBeVisible()
+    expect(await shortcuts.evaluate(element => getComputedStyle(element).opacity)).toBe('1')
     await page.keyboard.press('Escape')
-    await expect(dialog).toBeHidden()
+    await expect(shortcuts).toBeHidden()
     await expect(page.getByRole('button', { name: '更多', exact: true })).toBeFocused()
     await page.reload()
     await page.getByRole('button', { name: '更多', exact: true }).click()
@@ -66,5 +73,10 @@ for (const theme of ['dark', 'light']) {
     for (const [name, value] of [['画室主题', 'system'], ['动态效果', 'system'], ['玻璃材质', 'light']]) {
       await expect(dialog.getByRole('radiogroup', { name, exact: true }).locator(`[data-value="${value}"]`)).toHaveAttribute('aria-checked', 'true')
     }
+    // A normal key during a pointer leave must finish native close and its lock.
+    await dialog.getByRole('button', { name:'关闭', exact:true }).click()
+    await page.keyboard.press('Tab')
+    await expect(dialog).toBeHidden()
+    expect(await page.evaluate(() => document.documentElement.style.overflow)).not.toBe('hidden')
   })
 }

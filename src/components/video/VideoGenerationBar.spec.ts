@@ -33,6 +33,7 @@ describe('video generation controls', () => {
     const bar = setup()
     const submit = bar.get('button.btn-primary')
     expect(bar.get('.video-generation-summary').text()).toContain('先写镜头描述')
+    expect(bar.get(`#${submit.attributes('aria-describedby')}`).text()).toContain('写下这一幕再生成。')
     expect(submit.attributes('disabled')).toBeDefined()
     await submit.trigger('click')
     expect(bar.emitted('generate')).toBeUndefined()

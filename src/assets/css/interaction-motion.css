@@ -12,6 +12,9 @@
 :is(.pb.atelier-workspace,.character-editorial,.art-viewer,.showcase-viewer,.studio-popover) :is(button,a[href],summary,[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
 :root :is(.nav,.home-page,.showcase-page,.scene-discovery,.popular-scene-library) :is(button,a[href],summary,[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.nav,.nav-more-menu,.home-page,.showcase-page,.scene-discovery,.popular-scene-library) :is(button,a[href],summary,[role='tab'],[role='option']):active { transform:none; }
+:root :is(.task-center,.confirm-overlay,.control-page,.appearance-dialog,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.task-center,.confirm-overlay,.control-page,.appearance-dialog,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):active { transform:none; }
+:root :is(.control-page,.appearance-dialog,.video-studio) .toggle-switch:focus-visible .toggle-knob { transition:none; }
 /* Inline links cannot transform; underline communicates their clickable state. */
 :where(a[href]):hover { text-underline-offset: .2em; }
 @media (prefers-reduced-motion: reduce) {

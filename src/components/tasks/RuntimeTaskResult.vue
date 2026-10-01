@@ -1,5 +1,5 @@
 <template>
-  <section class="runtime-result tw:grid tw:gap-s-3 tw:mt-s-3">
+  <section class="runtime-result tw:grid tw:gap-s-3 tw:mt-s-3" aria-label="任务结果">
     <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2">
       <StudioSelect v-if="task.resultRefs.length > 1" label="选择任务结果" size="sm" inline :model-value="index" :options="resultOptions" @update:model-value="index = Number($event)" />
       <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || task.deliveryState === 'saved'" @click="save">{{ task.deliveryState === 'saved' ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
@@ -49,4 +49,6 @@ onUnmounted(() => { controller?.abort(); release() })
 .runtime-result img, .runtime-result video { @apply tw:w-full tw:max-h-[460px] tw:object-contain tw:rounded-lg; background: var(--bg-surface); }
 .runtime-result p, .runtime-result label { @apply tw:text-secondary tw:text-label; }
 .runtime-result :disabled { @apply tw:text-disabled; }
+.runtime-result { padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.runtime-result .result-toolbar { gap:var(--s-2); }
 </style>
