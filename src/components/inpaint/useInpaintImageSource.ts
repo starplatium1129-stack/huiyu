@@ -1,5 +1,5 @@
-import { runtimeFetch, resolveRuntimeUrl, runtimeResourceCors } from '../../platform/runtimeUrl.ts'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { inpaintCanvasSize } from '../../utils/inpaintCanvas.ts'
 import { useToast } from '../../composables/useToast.ts'
 
@@ -12,10 +12,11 @@ export interface InpaintSource {
 export interface InpaintImageSourceDeps {
   open: () => boolean
   source: () => InpaintSource
+  previewImage: () => HTMLImageElement | null
   /** 图片更换后清空遮罩（useInpaintMaskCanvas.clearMask）。 */
   clearMask: () => void
   /** 画幅探测完成后重同步遮罩画布尺寸（useInpaintMaskCanvas.syncMaskCanvas）。 */
-  syncMaskCanvas: () => void
+  syncMaskCanvas: () => boolean
 }
 
 /**
@@ -23,7 +24,7 @@ export interface InpaintImageSourceDeps {
  *
  * 三个来源的优先级：本地上传（拖拽/选择，blob URL 生命周期自持）→
  * source.blob（引擎结果直通）→ source.url 兜底 fetch。换图时
- * 用 Image onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
+ * 用实际预览图 onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
  * 到受支持画幅，同时重置遮罩画布；关闭/卸载释放 blob URL。
  */
 export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
@@ -112,30 +113,25 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   })
 
-  watch([activeImageUrl, () => deps.source().blob, deps.open], ([url, , open], _previous, onCleanup) => {
+  watch([activeImageUrl, () => deps.source().blob, deps.open], () => {
     sourceRevision.value++
     // Adopt the URL/blob and its parent together; later gallery selection is not this source.
     sourceHistoryId.value = uploadedBlob.value ? null : deps.source().historyId
     imageReady.value = false
     detectedResolution.value = null
     deps.clearMask()
-    if (!url || !open) return
-    let current = true
-    const img = new Image()
-    onCleanup(() => { current = false; img.onload = null; img.onerror = null })
-    img.crossOrigin = runtimeResourceCors() ?? null
-    img.onload = () => {
-      if (!current) return
-      detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
-      void nextTick(() => {
-        if (!current) return
-        deps.syncMaskCanvas()
-        imageReady.value = true
-      })
-    }
-    img.onerror = () => { if (current) detectedResolution.value = null }
-    img.src = resolveRuntimeUrl(url)
   }, { immediate: true, flush: 'sync' })
+
+  function onPreviewLoad(event: Event) {
+    const image = deps.previewImage()
+    // The preview is keyed by revision: detached old images and duplicate loads
+    // must never resize the active canvas or erase a stroke already drawn on it.
+    if (!deps.open() || imageReady.value || !image || event.target !== image
+      || image.dataset.sourceRevision !== String(sourceRevision.value)
+      || !image.naturalWidth || !image.naturalHeight) return
+    detectedResolution.value = inpaintCanvasSize(image.naturalWidth, image.naturalHeight)
+    imageReady.value = deps.syncMaskCanvas()
+  }
 
   onBeforeUnmount(() => {
     clearUploadedImage()
@@ -148,6 +144,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     imageReady,
     sourceRevision,
     sourceHistoryId,
+    onPreviewLoad,
     /** 本地上传的原图 blob（模板用它区分「已导入外部图片/原图基准」标签）。 */
     uploadedBlob,
     fileInputRef,

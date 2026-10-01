@@ -8,42 +8,53 @@ vi.mock('../../platform/runtimeUrl.ts', () => ({ runtimeFetch: vi.fn(), resolveR
 vi.mock('../../composables/useToast.ts', () => ({ useToast: () => ({ error: vi.fn() }) }))
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
-it('rejects obsolete decode callbacks and clears source dimensions and mask before the new image loads', async () => {
-  const probes: Array<{ onload: (() => void) | null; onerror: (() => void) | null; naturalWidth: number; naturalHeight: number }> = []
-  vi.stubGlobal('Image', class {
-    onload = null; onerror = null; naturalWidth = 832; naturalHeight = 1216
-    constructor() { probes.push(this) }
-  })
+it('waits for successful preview initialization and ignores obsolete or duplicate loads without clearing painted masks', async () => {
   const parentId = ref<string | number | null>('gallery-first')
-  const url = ref('first'), open = ref(true), clearMask = vi.fn(), syncMaskCanvas = vi.fn()
+  const url = ref('first'), open = ref(true), preview = ref<HTMLImageElement | null>(null)
+  const clearMask = vi.fn(), syncMaskCanvas = vi.fn(() => true)
   let source!: ReturnType<typeof useInpaintImageSource>
   const wrapper = mount(defineComponent({ setup() {
-    source = useInpaintImageSource({ open: () => open.value, source: () => ({ url: url.value, blob: null, historyId: parentId.value }), clearMask, syncMaskCanvas })
-    return () => h('div')
+    source = useInpaintImageSource({ open: () => open.value, source: () => ({ url: url.value, blob: null, historyId: parentId.value }),
+      previewImage: () => preview.value, clearMask, syncMaskCanvas })
+    return () => h('img', { key: source.sourceRevision.value, 'data-source-revision': source.sourceRevision.value, ref: preview, onLoad: source.onPreviewLoad })
   } }))
+  const dimensions = (image: HTMLImageElement, width: number, height: number) => {
+    Object.defineProperties(image, { naturalWidth: { value: width, configurable: true }, naturalHeight: { value: height, configurable: true } })
+  }
   try {
-    const staleLoad = probes[0]!.onload!, staleError = probes[0]!.onerror!
+    const staleImage = preview.value!
+    dimensions(staleImage, 832, 1216)
     parentId.value = 'gallery-second'
     url.value = 'second'
+    staleImage.dispatchEvent(new Event('load'))
+    expect(syncMaskCanvas).not.toHaveBeenCalled()
     expect(clearMask).toHaveBeenCalledTimes(2)
     expect(source.detectedResolution.value).toBeNull()
     expect(source.imageReady.value).toBe(false)
-    probes[1]!.naturalWidth = 1024; probes[1]!.naturalHeight = 1024
-    probes[1]!.onload!(); await nextTick()
-    expect(source.detectedResolution.value).toEqual({ width: 1024, height: 1024 })
+    await nextTick()
+    const image = preview.value!
+    image.dispatchEvent(new Event('load'))
+    expect(source.imageReady.value).toBe(false)
+    expect(syncMaskCanvas).not.toHaveBeenCalled()
+    dimensions(image, 1024, 1024)
+    syncMaskCanvas.mockReturnValueOnce(false)
+    image.dispatchEvent(new Event('load'))
+    expect(source.imageReady.value).toBe(false)
+    image.dispatchEvent(new Event('load'))
     expect(source.imageReady.value).toBe(true)
+    expect(source.detectedResolution.value).toEqual({ width: 1024, height: 1024 })
     expect(source.sourceHistoryId.value).toBe('gallery-second')
     parentId.value = 'unrelated-later-id'
     expect(source.sourceHistoryId.value).toBe('gallery-second')
+    // Once painting is enabled, no late load may resize/clear this canvas again.
+    image.dispatchEvent(new Event('load')); staleImage.dispatchEvent(new Event('load'))
+    expect(syncMaskCanvas).toHaveBeenCalledTimes(2)
     source.onDrop({ dataTransfer: { files: [new File(['synthetic'], 'fixture.png', { type: 'image/png' })] } } as unknown as DragEvent)
     expect(source.sourceHistoryId.value).toBeNull()
-    probes[2]!.naturalWidth = 1024; probes[2]!.naturalHeight = 1024
-    probes[2]!.onload!(); await nextTick()
-    staleLoad(); staleError(); await nextTick()
-    expect(source.detectedResolution.value).toEqual({ width: 1024, height: 1024 })
+    expect(source.imageReady.value).toBe(false)
+    image.dispatchEvent(new Event('load'))
     expect(syncMaskCanvas).toHaveBeenCalledTimes(2)
     open.value = false
-    expect(source.imageReady.value).toBe(false)
     expect(source.detectedResolution.value).toBeNull()
   } finally { wrapper.unmount() }
 })

@@ -89,10 +89,11 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   function syncMaskCanvas() {
     const image = deps.imageEl.value
     const canvas = maskCanvasEl.value
-    if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return
+    if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return false
     canvas.width = deps.resolution()?.width ?? image.naturalWidth
     canvas.height = deps.resolution()?.height ?? image.naturalHeight
     clearMask()
+    return true
   }
 
   function pointerPosition(event: PointerEvent): { x: number; y: number } | null {

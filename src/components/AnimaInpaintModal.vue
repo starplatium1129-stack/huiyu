@@ -86,6 +86,7 @@ const {
   imageReady,
   sourceRevision,
   sourceHistoryId,
+  onPreviewLoad,
   uploadedBlob,
   fileInputRef,
   isDragging,
@@ -96,6 +97,7 @@ const {
 } = useInpaintImageSource({
   open: () => props.open,
   source: () => props.imageSource,
+  previewImage: () => previewImageEl.value,
   clearMask,
   syncMaskCanvas,
 })
@@ -223,7 +225,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 class="preview-surface"
                 :style="previewSurfaceStyle"
               >
-                <img :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="syncMaskCanvas" />
+                <img :key="sourceRevision" :data-source-revision="sourceRevision" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" />
                 <canvas
                   ref="maskCanvasEl"
                   class="mask-canvas"
