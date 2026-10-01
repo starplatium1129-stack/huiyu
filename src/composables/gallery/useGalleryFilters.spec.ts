@@ -44,6 +44,35 @@ describe('saved artwork tag filtering',()=>{
     expect(filters.visible.value).toHaveLength(3); expect(replace).toHaveBeenLastCalledWith({query:{}})
     filters.cleanupFilterSync(); scope.stop()
   })
+  it('restores role and smart album links, updates membership from metadata and clears both scopes', async () => {
+    vi.useFakeTimers()
+    const scope = effectScope(), replace = vi.fn()
+    const history = ref<ArtworkRecord[]>([
+      { id: 1, character: 'nene', characterId: 'popular-character', manual_tags: ['春日'], favorite: true, timestamp: 3 },
+      { id: 2, characterId: 'popular-character', collectionTags: ['春日'], timestamp: 2 },
+      { id: 3, character: 'triad', manual_tags: ['春日'], favorite: true, timestamp: 1 },
+    ])
+    const projects = ref<GalleryProject[]>([{ id: 'smart-spring', title: '角色的春日精选', history_ids: [],
+      smartRule: { characterId: 'popular-character', tags: ['春日'], tagMatch: 'all', favoriteOnly: true, search: '', projectId: '' } }])
+    const route = reactive({query:{project:'smart-spring',character:'popular-character'}}) as unknown as RouteLocationNormalizedLoaded
+    const filters = scope.run(() => useGalleryFilters({ history, projects, columnCount: ref(2), ratioOf: () => 1, route, router: {replace} as unknown as Router }))!
+    filters.restoreFiltersFromQuery()
+    await nextTick()
+    expect(filters.visible.value.map(item => item.id)).toEqual([1])
+    history.value[0].favorite = false; history.value[1].favorite = true
+    expect(filters.visible.value.map(item => item.id)).toEqual([2])
+    filters.projectFilter.value = ''; filters.characterFilter.value = 'nene'
+    expect(filters.visible.value.map(item => item.id)).toEqual([3])
+    projects.value.push({ id: 'smart-manual', title: '手动画册', history_ids: [3] })
+    filters.projectFilter.value = 'smart-manual'
+    expect(filters.visible.value.map(item => item.id)).toEqual([3])
+    filters.projectFilter.value = 'smart-missing'
+    expect(filters.visible.value).toEqual([])
+    filters.resetGalleryFilters(); await nextTick(); await vi.runAllTimersAsync()
+    expect(filters.visible.value).toHaveLength(3)
+    expect(replace).toHaveBeenLastCalledWith({query:{}})
+    filters.cleanupFilterSync(); scope.stop()
+  })
 })
 
 describe('gallery filter metadata reuse', () => {
@@ -173,7 +202,7 @@ describe('gallery generation conditions and reusable searches', () => {
   it('resets pagination on condition changes, replaces cleared URL fields and preserves unrelated route keys', async () => {
     vi.useFakeTimers()
     const { filters, route, replace, stop } = setup(ref(Array.from({ length: 140 }, (_, id) => ({ id, timestamp: id, engine: id < 100 ? 'anima' : 'sd' }))))
-    route.query = { compare: 'preserve', fav: '1', project: 'deleted-album', q: 'old', tag: 'old', gEngine: recordedCondition('sd'), gSeed: UNRECORDED_CONDITION }
+    route.query = { compare: 'preserve', fav: '1', project: 'deleted-album', character: 'role-a', q: 'old', tag: 'old', gEngine: recordedCondition('sd'), gSeed: UNRECORDED_CONDITION }
     await nextTick()
     expect(filters.projectUnavailable.value).toBe(true)
     expect(filters.visible.value).toHaveLength(0)
@@ -181,6 +210,7 @@ describe('gallery generation conditions and reusable searches', () => {
     await nextTick()
     expect(filters.favoriteOnly.value).toBe(false)
     expect(filters.projectFilter.value).toBe('')
+    expect(filters.characterFilter.value).toBe('')
     expect(filters.searchQuery.value).toBe('')
     expect(filters.tagFilter.value).toBe('')
     expect(filters.generationConditions.value.seed).toBe('')
@@ -202,7 +232,7 @@ describe('gallery generation conditions and reusable searches', () => {
   })
 
   it('saves detached filter preferences, updates a named combination and exposes rejected saves without reporting success', async () => {
-    const { filters, stop } = setup(ref([{ id: 'one', engine: 'anima', favorite: true }]))
+    const { filters, stop } = setup(ref([{ id: 'one', engine: 'anima', characterId: 'role-a', favorite: true }]))
     const values = new Map<string, string>()
     let rejectWrite = false
     const flush = vi.fn(async () => {})
@@ -218,14 +248,18 @@ describe('gallery generation conditions and reusable searches', () => {
     } }))
     try {
       filters.favoriteOnly.value = true
+      filters.characterFilter.value = 'role-a'
       filters.generationConditions.value.engine = recordedCondition('anima')
       expect(await saved.savePreset('常用')).toBe(true)
       const id = saved.presets.value[0].id
       expect(classifyMigrationKey('local', GALLERY_FILTER_PRESETS_KEY)).toBe('settings')
       filters.resetGalleryFilters()
+      expect(filters.characterFilter.value).toBe('')
       expect(preferences.read()[0].filters.favoriteOnly).toBe(true)
+      expect(preferences.read()[0].filters.characterFilter).toBe('role-a')
       saved.applyPreset(id)
       expect(filters.favoriteOnly.value).toBe(true)
+      expect(filters.characterFilter.value).toBe('role-a')
       expect(filters.generationConditions.value.engine).toBe(recordedCondition('anima'))
       filters.generationConditions.value.seed = recordedCondition('0')
       expect(await saved.savePreset('常用')).toBe(true)

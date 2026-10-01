@@ -27,6 +27,7 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'hardDeleteArtwork': return ['DELETE', `/artworks/${id}/permanent?idType=${typeof command.id}`]
     case 'restoreArtwork': return ['POST', `/artworks/${id}/restore?idType=${typeof command.id}`]
     case 'saveProject': return ['POST', '/projects']
+    case 'deleteSmartAlbum': return ['DELETE', `/projects/${id}/smart?idType=${typeof command.id}`]
     case 'purgeExpiredTrash': return ['POST', '/trash/purge']
     case 'purgeTrash': return ['POST', '/trash/purge-selected']
     case 'collectGarbage': return ['POST', '/media/collect']

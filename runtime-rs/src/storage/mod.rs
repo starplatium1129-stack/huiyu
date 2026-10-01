@@ -7,6 +7,7 @@ mod migration;
 mod operations;
 mod organization;
 mod profile;
+mod project_commands;
 mod records;
 mod saves;
 mod schema;
@@ -151,6 +152,7 @@ impl Context {
                 | "hardDeleteArtwork"
                 | "restoreArtwork"
                 | "saveProject"
+                | "deleteSmartAlbum"
                 | "purgeExpiredTrash"
                 | "purgeTrash"
                 | "prepareSave"
@@ -209,9 +211,8 @@ impl Context {
                 .transpose()
                 .map(|value| value.unwrap_or(Value::Null)),
             "patchArtwork" | "softDeleteArtwork" | "softDeleteArtworks" | "hardDeleteArtwork"
-            | "restoreArtwork" | "saveProject" | "purgeExpiredTrash" | "purgeTrash" => {
-                records::mutate(self, principal, command)
-            }
+            | "restoreArtwork" | "saveProject" | "deleteSmartAlbum" | "purgeExpiredTrash"
+            | "purgeTrash" => records::mutate(self, principal, command),
             "organizeArtworks" | "undoArtworkOrganization" => {
                 organization::execute(self, principal, command)
             }

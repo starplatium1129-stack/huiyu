@@ -6,6 +6,7 @@ export type GalleryGenerationConditions = Record<GenerationFilterField, string>
 export interface GalleryFilterSnapshot {
   favoriteOnly: boolean
   projectFilter: string
+  characterFilter: string
   searchQuery: string
   tagFilter: string
   generation: GalleryGenerationConditions
@@ -26,7 +27,7 @@ export function normalizeGenerationConditions(raw: unknown): GalleryGenerationCo
 export function normalizeGalleryFilterSnapshot(raw: unknown): GalleryFilterSnapshot {
   const input = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {}
   const text = (key: string) => typeof input[key] === 'string' ? input[key] as string : ''
-  return { favoriteOnly: input.favoriteOnly === true, projectFilter: text('projectFilter'), searchQuery: text('searchQuery'), tagFilter: text('tagFilter'), generation: normalizeGenerationConditions(input.generation) }
+  return { favoriteOnly: input.favoriteOnly === true, projectFilter: text('projectFilter'), characterFilter: text('characterFilter'), searchQuery: text('searchQuery'), tagFilter: text('tagFilter'), generation: normalizeGenerationConditions(input.generation) }
 }
 
 const savedText = (value: unknown): string => typeof value === 'string' ? value.trim() : ''

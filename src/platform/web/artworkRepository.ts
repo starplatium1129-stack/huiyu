@@ -163,7 +163,7 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
     const nextProjects = projects.map(project => {
       const source = record(project)
       const ref = entry.projectRefs.find(r => comparableId(r.projectId) === comparableId(source?.id))
-      if (!source || !ref || !ref.hadReference) return project
+      if (!source || Object.hasOwn(source, 'smartRule') || !ref || !ref.hadReference) return project
       if (!Array.isArray(source.history_ids)) return project
       if (source.history_ids.some(x => comparableId(x) === targetId)) return project
       refsRestored += 1

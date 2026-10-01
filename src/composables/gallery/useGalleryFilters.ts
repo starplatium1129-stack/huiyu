@@ -6,6 +6,7 @@ import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
 import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
+import { artworkCharacterIds, matchesSmartAlbum, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
 
 const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
 
@@ -32,9 +33,10 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const projectFilter = ref('');
   const projectUnavailable = computed(() => !!projectFilter.value && !projects.value.some(project => project.id === projectFilter.value));
   const projectOptions = computed(() => [
-    { value: '', label: '全部项目' }, ...projects.value.map(project => ({ value: project.id, label: project.title })),
+    { value: '', label: '全部画册' }, ...projects.value.map(project => ({ value: project.id, label: project.smartRule ? `${project.title} · 智能` : project.title })),
     ...(projectUnavailable.value ? [{ value: projectFilter.value, label: `画册未找到 · ${projectFilter.value}` }] : []),
   ]);
+  const characterFilter = ref('');
   /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
    *  攒到几百张后找某张旧作只能靠翻。 */
   const searchQuery = ref('');
@@ -45,9 +47,9 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const generationFilterCount = computed(() => GENERATION_FILTER_FIELDS.filter(field => generationConditions.value[field]).length);
   const filterSnapshot = computed<GalleryFilterSnapshot>(() => ({
     favoriteOnly: favoriteOnly.value, projectFilter: projectFilter.value, searchQuery: searchQuery.value.trim(),
-    tagFilter: tagFilter.value, generation: { ...generationConditions.value },
+    tagFilter: tagFilter.value, characterFilter: characterFilter.value, generation: { ...generationConditions.value },
   }));
-  const hasActiveFilters = computed(() => !!(favoriteOnly.value || projectFilter.value || searchQuery.value.trim() || tagFilter.value || generationFilterCount.value));
+  const hasActiveFilters = computed(() => !!(favoriteOnly.value || projectFilter.value || characterFilter.value || searchQuery.value.trim() || tagFilter.value || generationFilterCount.value));
   const tagOptions = computed(() => {
     const counts = new Map<string, number>();
     for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
@@ -62,7 +64,9 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     .map(item => ({ item, timestamp: artworkTimestamp(item) }))
     .sort((a, b) => b.timestamp - a.timestamp)
     .map(entry => entry.item));
-  const searching = computed(() => searchQuery.value.trim().length > 0);
+  const selectedProject = computed(() => projects.value.find(item => item.id === projectFilter.value));
+  const smartRule = computed(() => selectedProject.value?.smartRule);
+  const searching = computed(() => searchQuery.value.trim().length > 0 || Boolean(smartRule.value?.search));
   const searchIndex = computed(() => searching.value
     ? new Map(history.value.map(item => [item, searchHaystack(item)])) : null);
   // A cleared search no longer needs normalized prompts or their reactive
@@ -71,15 +75,21 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   watch(searching, active => { if (!active) void searchIndex.value; }, { flush: 'sync' });
   const projectIds = computed(() => {
     const project = projects.value.find(item => item.id === projectFilter.value);
-    return new Set(project && Array.isArray(project.history_ids) ? project.history_ids : []);
+    return project && !project.smartRule ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
   });
   const visible = computed(() => {
     const favorites = favoriteOnly.value, tag = tagFilter.value;
     const ids = projectFilter.value ? projectIds.value : null;
     const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const index = terms.length ? searchIndex.value : null;
+    const index = searching.value ? searchIndex.value : null;
     const generation = generationFilterCount.value ? generationIndex.value : null;
     return sortedHistory.value.filter(item => {
+      if (projectFilter.value && !selectedProject.value) return false;
+      if (smartRule.value && !matchesSmartAlbum(item, smartRule.value, projects.value, index?.get(item))) return false;
+      if (characterFilter.value) {
+        const ids = artworkCharacterIds(item);
+        if (characterFilter.value === UNASSIGNED_CHARACTER_ID ? ids.length > 0 : !ids.includes(characterFilter.value)) return false;
+      }
       if (favorites && !item.favorite) return false;
       if (ids && !ids.has(item.id)) return false;
       if (tag && !artworkTags(item).includes(tag)) return false;
@@ -115,6 +125,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const snapshot = normalizeGalleryFilterSnapshot(raw);
     favoriteOnly.value = snapshot.favoriteOnly;
     projectFilter.value = snapshot.projectFilter;
+    characterFilter.value = snapshot.characterFilter;
     searchQuery.value = snapshot.searchQuery;
     tagFilter.value = snapshot.tagFilter;
     if (GENERATION_FILTER_FIELDS.some(field => generationConditions.value[field] !== snapshot.generation[field]))
@@ -133,6 +144,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const q = route.query;
     applyFilterSnapshot({
       favoriteOnly: q.fav === '1', projectFilter: typeof q.project === 'string' ? q.project : '',
+      characterFilter: typeof q.character === 'string' ? q.character : '',
       searchQuery: typeof q.q === 'string' ? q.q : '', tagFilter: typeof q.tag === 'string' ? q.tag : '',
       generation: normalizeGenerationConditions(Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => [field, q[generationQueryKeys[field]]]))),
     });
@@ -147,7 +159,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const project = typeof q.project === 'string' ? q.project : '';
     const term = typeof q.q === 'string' ? q.q : '';
     const tag = typeof q.tag === 'string' ? q.tag : '';
-    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value
+    const character = typeof q.character === 'string' ? q.character : '';
+    if (fav === favoriteOnly.value && project === projectFilter.value && character === characterFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value
       && GENERATION_FILTER_FIELDS.every(field => (q[generationQueryKeys[field]] || '') === generationConditions.value[field])) {
       cleanupFilterSync();
       return;
@@ -164,6 +177,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       }
       if (tagFilter.value) query.tag = tagFilter.value;
       else delete query.tag;
+      if (characterFilter.value) query.character = characterFilter.value;
+      else delete query.character;
       if (favoriteOnly.value)
         query.fav = '1';
       else
@@ -201,17 +216,17 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
 
   // 筛选变化回到第一页，让用户始终从最新作品看起
-  watch([favoriteOnly, projectFilter, searchQuery, tagFilter, generationConditions], () => {
+  watch([favoriteOnly, projectFilter, characterFilter, searchQuery, tagFilter, generationConditions], () => {
     renderLimit.value = PAGE_SIZE;
     onFilterReset?.();
     syncFiltersToQuery();
   }, { deep: true });
   // Back/forward and cleared URL fields replace the complete filter snapshot.
-  watch(() => JSON.stringify([route.query.fav, route.query.project, route.query.q, route.query.tag,
+  watch(() => JSON.stringify([route.query.fav, route.query.project, route.query.character, route.query.q, route.query.tag,
     ...GENERATION_FILTER_FIELDS.map(field => route.query[generationQueryKeys[field]])]), restoreFiltersFromQuery);
 
   return {
-    tagFilter, tagOptions,
+    tagFilter, tagOptions, characterFilter,
     generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
     favoriteOnly,
     projectFilter,

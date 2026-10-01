@@ -103,6 +103,14 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                 .ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Album no longer exists"))?,
         ),
     };
+    if project
+        .as_ref()
+        .is_some_and(|row| row["body"].get("smartRule").is_some())
+    {
+        return Err(invalid(
+            "Smart albums collect artwork by conditions; edit the album rule",
+        ));
+    }
     let tags_change = command.get("collectionTags").is_some();
     if tags_change && !command["collectionTags"].is_object() {
         return Err(invalid("Collection tag changes must be an object"));

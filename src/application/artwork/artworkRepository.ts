@@ -1,6 +1,7 @@
 import type { ArtworkRecord, ArtworkSearchRecord } from '../../types/artwork.ts'
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 import type { ArtworkProjectDraft } from './projects.ts'
+import type { SmartAlbumDraft } from './smartAlbums.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -41,6 +42,9 @@ export interface ArtworkRepository {
   readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
   createProject(input: ArtworkProjectDraft): Promise<ArtworkProjectRecord>
+  saveSmartAlbum(input: SmartAlbumDraft): Promise<ArtworkProjectRecord>
+  /** Removes only the saved rule; artwork and media remain in the library. */
+  deleteSmartAlbum(id: string): Promise<{ deleted: boolean }>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */

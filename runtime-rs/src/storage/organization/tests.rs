@@ -129,3 +129,26 @@ fn cancelled_organization_never_writes_or_allocates_a_receipt() {
     c.cancel.store(false, Ordering::Relaxed);
     c.shutdown().unwrap();
 }
+
+#[test]
+fn manual_organization_cannot_assign_into_any_smart_rule_marker() {
+    let (_directory, mut c) = fixture();
+    for rule in [Value::Null, json!({"tags":["和服"]})] {
+        c.db.execute(
+            "UPDATE projects SET body=json_set(body,'$.smartRule',json(?)) WHERE id_key='7'",
+            [stringify(&rule)],
+        )
+        .unwrap();
+        assert!(c.execute(&command("smart-assignment"), "owner").is_err());
+        assert_eq!(
+            records::artwork(&c, "1").unwrap().unwrap()["body"]["project"],
+            "old"
+        );
+        assert_eq!(
+            records::project(&c, "7").unwrap().unwrap()["body"]["history_ids"],
+            json!([])
+        );
+        assert!(c.operation("owner", "smart-assignment").unwrap().is_none());
+    }
+    c.shutdown().unwrap();
+}
