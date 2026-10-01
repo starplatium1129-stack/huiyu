@@ -71,8 +71,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
+          fetch-depth: 2
           persist-credentials: false
+      - name: Fetch only the comparison baseline
+        shell: bash
+        run: |
+          # Git consumers in these lanes compare trees, not repository ancestry.
+          # Missing/new-branch baselines retain the existing full-suite fallback.
+          base="$AICS_HYGIENE_BASE_REF"
+          if [[ "$base" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ && ! "$base" =~ ^0+$ ]] &&
+             ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            git fetch --no-tags --no-recurse-submodules --depth=1 origin "$base" ||
+              echo "::warning::Comparison baseline unavailable; running the full fallback suites"
+          fi
       - name: Use Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -107,7 +118,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
       - name: Use Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -136,8 +147,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
+          fetch-depth: 2
           persist-credentials: false
+      - name: Fetch only the comparison baseline
+        shell: bash
+        run: |
+          # Git consumers in these lanes compare trees, not repository ancestry.
+          # Missing/new-branch baselines retain the existing full-suite fallback.
+          base="$AICS_HYGIENE_BASE_REF"
+          if [[ "$base" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ && ! "$base" =~ ^0+$ ]] &&
+             ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            git fetch --no-tags --no-recurse-submodules --depth=1 origin "$base" ||
+              echo "::warning::Comparison baseline unavailable; running the full fallback suites"
+          fi
       - name: Use Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
