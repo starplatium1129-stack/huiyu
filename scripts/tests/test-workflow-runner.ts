@@ -303,7 +303,7 @@ test('legacy invocations keep their exact commands after metadata landed', () =>
   // 无转发参数时 npm 链保持原样，不插 --（转发参数时才补分隔符）。
   assert.deepEqual(checkArgs.slice(1), ['run', 'test:content']);
   assert.equal(main(['showcase:scene-candidates', '--output', 'o', '--ids', 'sc001'], WORKFLOWS, root, run), 0);
-  assert.deepEqual(calls[2], [process.execPath, ['scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.2', '--output', 'o', '--ids', 'sc001']]);
+  assert.deepEqual(calls[2], [process.execPath, ['scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.6', '--output', 'o', '--ids', 'sc001']]);
 });
 
 test('help prints run conditions without spawning; plan tags steps with nature', () => {
