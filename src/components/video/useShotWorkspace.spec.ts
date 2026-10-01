@@ -1,11 +1,17 @@
-import { expect, it, vi } from 'vitest'
-import { defineComponent, ref } from 'vue'
+import { beforeEach, expect, it, vi } from 'vitest'
+import { defineComponent, h, KeepAlive, nextTick, reactive, ref } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useShotWorkspace } from './useShotWorkspace'
 import { uploadVideoImage, type VideoStatusResponse } from '@/api/videoApi'
 import { artworkRepository } from '@/storage/artworkRepository'
 
-vi.mock('vue-router', () => ({ useRoute: () => ({ path: '/video-studio', query: {} }) }))
+const route = reactive({ path: '/video-studio', query: {} as Record<string, string | undefined> })
+const replace = vi.fn(async ({ query }: { query: Record<string, string | undefined> }) => { route.query = query })
+const restoreDraft = vi.fn(async () => {})
+const cards = ref<Array<{ characterId?: string; outfitId?: string }>>([{}])
+const loadReferences = vi.fn(async (_id: string, _index: number, _outfit?: string, _signal?: AbortSignal) => 0)
+beforeEach(() => { route.path = '/video-studio'; route.query = {}; cards.value = [{}]; loadReferences.mockReset(); replace.mockClear(); restoreDraft.mockReset() })
+vi.mock('vue-router', () => ({ useRoute: () => route, useRouter: () => ({ replace }) }))
 vi.mock('@/storage/artworkSession', () => ({ withArtworkStaging: (run: () => unknown) => run() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { putImage: vi.fn().mockResolvedValue('saved-image') } }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: vi.fn() }))
@@ -14,9 +20,9 @@ vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints:
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeScenarioActs: () => [] }) }))
 vi.mock('@/utils/characterReferenceData', () => ({ ensureCharacterReferencesLoaded: vi.fn(), getCharacterReferences: vi.fn() }))
 vi.mock('./useShotFirstFrames', () => ({ useShotFirstFrames: () => ({ firstFrameBusy: ref(false) }) }))
-vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: ref([]), loadingRefAssets: ref(false), shotReferences: () => undefined }) }))
+vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: cards, loadingRefAssets: ref(false), shotReferences: () => undefined, autoLoadCharacterReferences: loadReferences }) }))
 vi.mock('./useShotAiTools', () => ({ useShotAiTools: () => ({}) }))
-vi.mock('./useShotDraft', () => ({ useShotDraft: () => ({ restoreShotsDraft: async () => {} }) }))
+vi.mock('./useShotDraft', () => ({ useShotDraft: () => ({ restoreShotsDraft: restoreDraft }) }))
 vi.mock('./useShotImport', () => ({ useShotImport: () => ({ importShotsFromDrawing: async () => null }) }))
 
 it('keeps frame uploads on the captured shot and rejects cleared, replaced, or disposed requests', async () => {
@@ -66,4 +72,41 @@ it('keeps frame uploads on the captured shot and rejects cleared, replaced, or d
     expect(artworkRepository.putImage).toHaveBeenCalledTimes(1)
     expect(revoke).toHaveBeenCalledWith('blob:new')
   } finally { if (wrapper.exists()) wrapper.unmount(); create.mockRestore(); revoke.mockRestore() }
+})
+
+
+it('applies only the latest explicit character/outfit after draft restore and does not replay on activation', async () => {
+  route.query = { character: 'first', outfit: 'chosen', extra: 'keep' }
+  let restored!: () => void
+  restoreDraft.mockImplementationOnce(() => new Promise(resolve => { restored = resolve }))
+  const pending: Array<() => void> = []
+  loadReferences.mockImplementation((id, _index, outfit, signal) => new Promise(resolve => pending.push(() => {
+    if (!signal?.aborted) cards.value[0] = { characterId: id, outfitId: outfit }
+    resolve(0)
+  })))
+  const active = ref(true)
+  let tools!: ReturnType<typeof useShotWorkspace>
+  const Page = defineComponent({ setup() { tools = useShotWorkspace({ status: null }); return () => null } })
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Page) : null }) }))
+  try {
+    await nextTick()
+    expect(loadReferences).not.toHaveBeenCalled()
+    route.query = { character: 'second', outfit: 'special', extra: 'keep' }
+    restored(); await flushPromises()
+    expect(loadReferences.mock.calls[0].slice(0, 3)).toEqual(['second', 0, 'special'])
+    const oldSignal = loadReferences.mock.calls[0][3]!
+    route.query = { character: 'third', outfit: 'unknown-explicit', extra: 'latest' }
+    await nextTick()
+    expect(oldSignal.aborted).toBe(true)
+    pending[0](); await flushPromises()
+    expect(replace).not.toHaveBeenCalled()
+    expect(loadReferences.mock.calls[1].slice(0, 3)).toEqual(['third', 0, 'unknown-explicit'])
+    pending[1](); await flushPromises()
+    expect(route.query).toEqual({ character: undefined, outfit: undefined, extra: 'latest' })
+    tools.identityCard.value = 'User edited identity'
+    active.value = false; await nextTick()
+    active.value = true; await nextTick()
+    expect(loadReferences).toHaveBeenCalledTimes(2)
+    expect(tools.identityCard.value).toBe('User edited identity')
+  } finally { wrapper.unmount() }
 })
