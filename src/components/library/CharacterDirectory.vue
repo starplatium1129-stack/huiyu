@@ -16,8 +16,8 @@
         <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
       </div>
-      <div ref="list" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
-        <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
+      <div ref="list" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
+        <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :tabindex="tabStopId === item.id ? 0 : -1" @focus="focusedId = item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="resolveRuntimeUrl(item.image)" :name="item.name" />
           <span class="directory-label">
             <strong>{{ item.name }}</strong>
@@ -56,6 +56,7 @@ const series = ref('')
 const page = ref(1)
 const list = ref<HTMLElement | null>(null)
 const rail = ref<HTMLElement | null>(null)
+const focusedId = ref(props.selectedId)
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
 /** 选中项变化时把结果区落到它所在的页并滚入视野：打开弹窗即可看到当前角色，不用先找页。 */
 watch([() => props.selectedId, () => props.pageSize], async () => {
@@ -80,6 +81,17 @@ const pageCount = computed(() => props.pageSize ? Math.max(1, Math.ceil(results.
 /** 页码跳转选项：1 … pageCount，供 StudioSelect 渲染（原生分页 <select> 已迁移）。 */
 const pageItems = computed(() => Array.from({ length: pageCount.value }, (_, i) => i + 1))
 const visibleResults = computed(() => props.pageSize ? results.value.slice((page.value - 1) * props.pageSize, page.value * props.pageSize) : results.value)
+const tabStopId = computed(() => visibleResults.value.find(item => item.id === focusedId.value)?.id
+  || visibleResults.value.find(item => item.id === props.selectedId)?.id || visibleResults.value[0]?.id || '')
+watch(() => props.selectedId, id => { focusedId.value = id })
+watch(visibleResults, async items => {
+  // Only repair focus when the focused result disappears; typing/filter controls keep focus.
+  const focused = document.activeElement as HTMLElement | null
+  if (!focused || !list.value?.contains(focused) || items.some(item => item.id === focused.dataset.character)) return
+  await nextTick()
+  const replacement = list.value?.querySelector<HTMLButtonElement>('button[tabindex="0"]')
+  ;(replacement || document.getElementById(inputId))?.focus({ preventScroll: true })
+})
 watch([query, series], () => { page.value = 1 })
 watch(pageCount, count => { page.value = Math.min(page.value, count) })
 watch(page, async () => { await nextTick(); if (list.value) list.value.scrollTop = 0 })
@@ -93,7 +105,18 @@ function moveIn(container: HTMLElement | null, step: number) {
   next?.focus()
   next?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
 }
-function move(step: number) { moveIn(list.value, step) }
+function onListKeys(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229 || event.altKey || event.ctrlKey || event.metaKey
+    || !(event.target instanceof HTMLButtonElement) || event.target.parentElement !== list.value) return
+  const step = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0
+  if (step) { event.preventDefault(); moveIn(list.value, step) }
+  else if (event.key === 'Home' || event.key === 'End') {
+    event.preventDefault()
+    const buttons = list.value?.querySelectorAll<HTMLButtonElement>('.directory-item')
+    const button = event.key === 'Home' ? buttons?.[0] : buttons?.[buttons.length - 1]
+    button?.focus(); button?.scrollIntoView({ block: 'nearest' })
+  }
+}
 function onRailKeys(event: KeyboardEvent) {
   const step = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
     : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 0

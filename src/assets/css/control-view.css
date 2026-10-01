@@ -127,3 +127,15 @@
 @media (max-width: 900px) { .control-mobile-nav { @apply tw:block; } .nav-local { @apply tw:flex tw:justify-between tw:p-s-3; } .nav-local-actions { @apply tw:flex tw:items-center tw:gap-s-2; } .nav-local-brand { @apply tw:text-primary; } .control-rail { @apply tw:hidden; } .control-layout { @apply tw:block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { @apply tw:p-s-4; } .mode-grid { grid-template-columns: 1fr; } .overview-heading { @apply tw:flex-col; } .log-panel > summary { @apply tw:flex-wrap; } }
 @media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }
+
+/* The compact header stays in document flow so section jumps are never covered. */
+@media (max-width:900px) {
+  .control-mobile-nav { position:static; }
+  .nav-local { flex-wrap:wrap; }
+  .nav-local-actions { flex-wrap:wrap; }
+  .control-section-jump { display:flex; gap:var(--s-1); overflow-x:auto; padding:var(--s-2) var(--s-3); scrollbar-width:thin; }
+  .control-section-jump a { flex:0 0 auto; display:flex; align-items:center; min-height:40px; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); font-size:var(--fs-label); }
+  .control-section-jump a[aria-current] { color:var(--accent); background:var(--accent-soft); }
+  .control-section-jump a:hover { background:var(--bg-surface); }
+  .control-section-jump a:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+}

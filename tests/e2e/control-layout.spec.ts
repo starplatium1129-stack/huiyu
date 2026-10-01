@@ -38,10 +38,10 @@ for (const theme of ['dark', 'light']) {
       const controls = (await page.locator('.service-rows').boundingBox())!
       expect(controls.y + controls.height).toBeLessThan(1000)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-      await page.locator('a[href="#control-logs"]').click()
+      await page.locator('.control-rail a[href="#control-logs"]').click()
       await expect(page.locator('#control-logs')).toHaveAttribute('open', '')
       await expect(page.locator('.log-box')).toBeVisible()
-      await expect(page.locator('a[href="#control-logs"]')).toHaveAttribute('aria-current', 'location')
+      await expect(page.locator('.control-rail a[href="#control-logs"]')).toHaveAttribute('aria-current', 'location')
       expect(posts).toEqual([])
     })
   }

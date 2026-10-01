@@ -16,6 +16,9 @@
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </div>
+      <div class="control-section-jump" role="group" aria-label="控制室分区">
+        <a v-for="item in sections" :key="item.id" :href="'#' + item.id" :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">{{ item.label }}</a>
+      </div>
     </nav>
 
     <div class="control-layout">

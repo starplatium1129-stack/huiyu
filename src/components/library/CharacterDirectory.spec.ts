@@ -55,3 +55,56 @@ describe('character search keyboard', () => {
     expect(wrapper!.emitted('select')).toEqual([['one']])
   })
 })
+
+describe('character result roving focus', () => {
+  const items = [
+    { id: 'one', name: '第一位', source: '原神' },
+    { id: 'two', name: '第二位', source: '原神' },
+    { id: 'three', name: '第三位', source: '原神' },
+  ]
+  async function mountDirectory() {
+    wrapper = mount(CharacterDirectory, { attachTo: document.body, props: { items, selectedId: 'two' } })
+    await nextTick()
+  }
+  it('has one Tab entry, moves with arrows/Home/End and leaves Tab and activation native', async () => {
+    await mountDirectory()
+    const entry = () => wrapper!.findAll('.directory-item[tabindex="0"]')
+    expect(entry()).toHaveLength(1)
+    expect(entry()[0]!.attributes('data-character')).toBe('two')
+    ;(entry()[0]!.element as HTMLButtonElement).focus()
+    await entry()[0]!.trigger('keydown', { key: 'ArrowDown' })
+    expect(entry()[0]!.attributes('data-character')).toBe('three')
+    await entry()[0]!.trigger('keydown', { key: 'Home' })
+    expect(entry()[0]!.attributes('data-character')).toBe('one')
+    await entry()[0]!.trigger('keydown', { key: 'End' })
+    expect(entry()[0]!.attributes('data-character')).toBe('three')
+    for (const key of ['Tab', 'Enter', ' ']) {
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+      entry()[0]!.element.dispatchEvent(event)
+      expect(event.defaultPrevented).toBe(false)
+    }
+    await entry()[0]!.trigger('click')
+    expect(wrapper!.emitted('select')).toEqual([['three']])
+  })
+  it('repairs removed result focus, follows selection and never steals focus from search', async () => {
+    await mountDirectory()
+    ;(wrapper!.get('[data-character="two"]').element as HTMLButtonElement).focus()
+    await wrapper!.setProps({ items: [items[0]!, items[2]!] })
+    await nextTick()
+    expect(document.activeElement).toBe(wrapper!.get('[data-character="one"]').element)
+    await wrapper!.setProps({ selectedId: 'three' })
+    expect(wrapper!.get('.directory-item[tabindex="0"]').attributes('data-character')).toBe('three')
+    const input = wrapper!.get('input')
+    ;(input.element as HTMLInputElement).focus()
+    await input.setValue('没有匹配')
+    expect(wrapper!.findAll('.directory-item')).toHaveLength(0)
+    expect(document.activeElement).toBe(input.element)
+    await input.setValue('第一位')
+    expect(wrapper!.get('.directory-item[tabindex="0"]').attributes('data-character')).toBe('one')
+    expect(document.activeElement).toBe(input.element)
+    ;(wrapper!.get('.directory-item').element as HTMLButtonElement).focus()
+    await wrapper!.setProps({ items: [] })
+    await nextTick()
+    expect(document.activeElement).toBe(input.element)
+  })
+})
