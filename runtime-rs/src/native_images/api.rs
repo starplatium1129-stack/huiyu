@@ -10,27 +10,20 @@ type ImagePtr = *mut c_void;
 type Unary = unsafe extern "C" fn(ImagePtr, *mut ImagePtr, ...) -> c_int;
 type IntUnary = unsafe extern "C" fn(ImagePtr, *mut ImagePtr, c_int, ...) -> c_int;
 type Getter = unsafe extern "C" fn(ImagePtr) -> c_int;
-type LoadBuffer = unsafe extern "C" fn(*const c_void, usize, *mut ImagePtr, ...) -> c_int;
 type LoadFile = unsafe extern "C" fn(*const c_char, *mut ImagePtr, ...) -> c_int;
 type SaveBuffer = unsafe extern "C" fn(ImagePtr, *mut *mut c_void, *mut usize, ...) -> c_int;
 
 pub(crate) struct Api {
     _library: Library,
-    pub new_buffer: unsafe extern "C" fn(*const c_void, usize, *const c_char, ...) -> ImagePtr,
     pub new_file: unsafe extern "C" fn(*const c_char, ...) -> ImagePtr,
     pub jpeg_file: LoadFile,
     pub webp_file: LoadFile,
     pub svg_file: LoadFile,
     pub pdf_file: LoadFile,
-    pub jpeg: LoadBuffer,
-    pub webp: LoadBuffer,
-    pub svg: LoadBuffer,
-    pub pdf: LoadBuffer,
     pub jpeg_save: SaveBuffer,
     pub webp_save: SaveBuffer,
     pub width: Getter,
     pub height: Getter,
-    pub bands: Getter,
     pub format: Getter,
     pub interpretation: Getter,
     pub has_alpha: Getter,
@@ -43,20 +36,14 @@ pub(crate) struct Api {
     pub copy: Unary,
     pub cast: IntUnary,
     pub colourspace: IntUnary,
-    pub extract_band: IntUnary,
     pub autorot: Unary,
     pub premultiply: Unary,
     pub unpremultiply: Unary,
     pub flatten: Unary,
     pub resize: unsafe extern "C" fn(ImagePtr, *mut ImagePtr, c_double, ...) -> c_int,
-    pub embed:
-        unsafe extern "C" fn(ImagePtr, *mut ImagePtr, c_int, c_int, c_int, c_int, ...) -> c_int,
     pub crop:
         unsafe extern "C" fn(ImagePtr, *mut ImagePtr, c_int, c_int, c_int, c_int, ...) -> c_int,
     pub icc: unsafe extern "C" fn(ImagePtr, *mut ImagePtr, *const c_char, ...) -> c_int,
-    pub memory: unsafe extern "C" fn(ImagePtr, *mut usize) -> *mut c_void,
-    pub array: unsafe extern "C" fn(*const c_double, c_int) -> *mut c_void,
-    pub area_unref: unsafe extern "C" fn(*mut c_void),
     pub unref: unsafe extern "C" fn(*mut c_void),
     pub free: unsafe extern "C" fn(*mut c_void),
     pub progress: unsafe extern "C" fn(ImagePtr, c_int),
@@ -115,8 +102,8 @@ impl Api {
         }
         let cache = symbol!("vips_cache_set_max", unsafe extern "C" fn(c_int));
         let concurrency = symbol!("vips_concurrency_set", unsafe extern "C" fn(c_int));
-        // Buffer loaders borrow uploaded memory. Disabling operation caching
-        // ensures no cached graph can retain it after a request ends.
+        // Disabling operation caching prevents graphs from retaining temporary
+        // input files after a request ends.
         unsafe {
             cache(0);
             concurrency(
@@ -140,10 +127,6 @@ impl Api {
             nick(c"huiyu".as_ptr(), kind(), name.as_ptr())
         };
         let result = Self {
-            new_buffer: symbol!(
-                "vips_image_new_from_buffer",
-                unsafe extern "C" fn(*const c_void, usize, *const c_char, ...) -> ImagePtr
-            ),
             new_file: symbol!(
                 "vips_image_new_from_file",
                 unsafe extern "C" fn(*const c_char, ...) -> ImagePtr
@@ -152,15 +135,10 @@ impl Api {
             webp_file: symbol!("vips_webpload", LoadFile),
             svg_file: symbol!("vips_svgload", LoadFile),
             pdf_file: symbol!("vips_pdfload", LoadFile),
-            jpeg: symbol!("vips_jpegload_buffer", LoadBuffer),
-            webp: symbol!("vips_webpload_buffer", LoadBuffer),
-            svg: symbol!("vips_svgload_buffer", LoadBuffer),
-            pdf: symbol!("vips_pdfload_buffer", LoadBuffer),
             jpeg_save: symbol!("vips_jpegsave_buffer", SaveBuffer),
             webp_save: symbol!("vips_webpsave_buffer", SaveBuffer),
             width: symbol!("vips_image_get_width", Getter),
             height: symbol!("vips_image_get_height", Getter),
-            bands: symbol!("vips_image_get_bands", Getter),
             format: symbol!("vips_image_get_format", Getter),
             interpretation: symbol!("vips_image_get_interpretation", Getter),
             has_alpha: symbol!("vips_image_hasalpha", Getter),
@@ -188,7 +166,6 @@ impl Api {
             copy: symbol!("vips_copy", Unary),
             cast: symbol!("vips_cast", IntUnary),
             colourspace: symbol!("vips_colourspace", IntUnary),
-            extract_band: symbol!("vips_extract_band", IntUnary),
             autorot: symbol!("vips_autorot", Unary),
             premultiply: symbol!("vips_premultiply", Unary),
             unpremultiply: symbol!("vips_unpremultiply", Unary),
@@ -196,18 +173,6 @@ impl Api {
             resize: symbol!(
                 "vips_resize",
                 unsafe extern "C" fn(ImagePtr, *mut ImagePtr, c_double, ...) -> c_int
-            ),
-            embed: symbol!(
-                "vips_embed",
-                unsafe extern "C" fn(
-                    ImagePtr,
-                    *mut ImagePtr,
-                    c_int,
-                    c_int,
-                    c_int,
-                    c_int,
-                    ...
-                ) -> c_int
             ),
             crop: symbol!(
                 "vips_extract_area",
@@ -225,15 +190,6 @@ impl Api {
                 "vips_icc_transform",
                 unsafe extern "C" fn(ImagePtr, *mut ImagePtr, *const c_char, ...) -> c_int
             ),
-            memory: symbol!(
-                "vips_image_write_to_memory",
-                unsafe extern "C" fn(ImagePtr, *mut usize) -> *mut c_void
-            ),
-            array: symbol!(
-                "vips_array_double_new",
-                unsafe extern "C" fn(*const c_double, c_int) -> *mut c_void
-            ),
-            area_unref: symbol!("vips_area_unref", unsafe extern "C" fn(*mut c_void)),
             unref: symbol!("g_object_unref", unsafe extern "C" fn(*mut c_void)),
             free: symbol!("g_free", unsafe extern "C" fn(*mut c_void)),
             progress: symbol!(

@@ -50,3 +50,11 @@ CPU 测试使用现有 Rust EXE，SHA-256 为 `5e39c6c622c354f7dff3ba783052fa62e
 - CPU：`runtime/interrogate-model-trial-20261001/cpu-results.json`、`manual-spot-check.json`、`runs/*/process-samples.json`。
 - PixAI：`runtime/interrogate-candidates/pixai-v1-20261001/summary.json`、`artifacts-manifest.json`、`trial-manifest.json`、`attempt-03/inference.json`、`guard.json`、`gpu-samples.jsonl`、`process-exit-audit.json`。
 - 5 张样本的路径与 SHA-256 记录在 CPU 目录的 `samples.json`。原始脚本仅用于本轮试跑，位于被忽略的 `scripts/archive/` 或候选运行目录，不注册为普通无副作用测试。
+
+## 主线接入与常驻验证
+
+用户随后明确选择 PixAI 替代默认反推，并要求加载后保持 GPU 常驻，不在反推结束或开始生图时自动卸载。主线现通过 Rust 管理独立 Python JSONL worker，默认 general 阈值 0.17、人物阈值 0.27，保留 20 MiB 输入与本机边界；没有旧 WD、Comfy 或演示标签的隐式回退。取消活跃推理、协议故障、超时或网关关闭会终止并等待自有进程退出；正常成功复用同一模型。
+
+本机 `AI/PixAI/runtime-config.json` 已准备。新构建 Rust HTTP 主链对宁宁、雷电将军与莱万汀样张调用成功：首个请求 6.533 秒，后续 0.168、0.184 秒；每次完成后 status 的 `cached` 与 `gpuResident` 都为 true。这是包含 HTTP 的请求时间，与前面的进程内 PixAI 试跑区分。子网关退出后没有自有 worker 进程残留；不把桌面全卡显存波动解释为该模型的泄漏或绝对峰值。
+
+原始结果位于 `runtime/pixai-integration-20261001/report.json`。常驻进程生命周期定向 5 项、HTTP 本机/默认引擎/20 MiB 边界 3 项、Python worker 9 项及前端适配、原画册逻辑的定向检查通过；桌面暂存检查确认打包 worker 与固定 manifest，不打包测试、模型权重或原 Python 环境。此处记录源码和真实网关接入，不声明已安装桌面客户端同步完成。

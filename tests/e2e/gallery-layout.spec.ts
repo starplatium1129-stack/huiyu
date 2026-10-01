@@ -3,7 +3,7 @@ import { textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 // Browser-local fixture: no personal artwork or generation endpoint is used.
-async function seedGallery(page: Page, theme: string, empty = false, reducedMotion: 'reduce' | 'no-preference' = 'reduce') {
+async function seedGallery(page: Page, theme: string, empty = false, reducedMotion: 'reduce' | 'no-preference' = 'reduce', unfiled = false) {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false } }))
   await page.route('**/assets/gallery-fixture-*', route => {
     const item = Number(route.request().url().split('-').at(-1))
@@ -11,10 +11,10 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
     const [width, height] = [[1200, 600], [600, 1200], [1024, 1024]][item % 3]
     return route.fulfill({ contentType: 'image/svg+xml', body: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="#746687"/><circle cx="250" cy="250" r="140" fill="#d5e1e2"/><path d="M0 600L500 350L1200 800V1400H0Z" fill="#4e737e"/></svg>` })
   })
-  await page.addInitScript(({ theme, empty }) => {
+  await page.addInitScript(({ theme, empty, unfiled }) => {
     localStorage.setItem('aics_theme', theme)
     localStorage.setItem('aics_guest_guide_dismissed', '1')
-    localStorage.setItem('aics_pb_history', JSON.stringify(empty ? [] : Array.from({ length: 6 }, (_, index) => ({
+    localStorage.setItem('aics_pb_history', JSON.stringify(empty ? [] : Array.from({ length: unfiled ? 40 : 6 }, (_, index) => ({
       id: `gallery-review-${index}`, sceneTitle: ['午后，和你', '光的形状', '一封写给秋日的长信：保留完整标题以验证小屏幕上的省略与布局', '雨后的街角', '海与她', '某个下午'][index],
       character: index % 2 ? 'nene' : 'natsume', prompt: 'Neutral UI review fixture',
       image_url: `/assets/gallery-fixture-${index}`, favorite: index < 2,
@@ -24,14 +24,53 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
       width: index === 3 ? 1200 : [1200, 600, 1024][index % 3],
       height: index === 3 ? 750 : [600, 1200, 1024][index % 3],
     }))))
-    localStorage.setItem('aics_pb_projects', JSON.stringify([{ id: 'review', title: '秋日手记', history_ids: ['gallery-review-0', 'gallery-review-1'] }]))
-  }, { theme, empty })
+    localStorage.setItem('aics_pb_projects', JSON.stringify(unfiled ? [] : [{ id: 'review', title: '秋日手记', history_ids: ['gallery-review-0', 'gallery-review-1'] }]))
+  }, { theme, empty, unfiled })
   await page.emulateMedia({ reducedMotion })
   await page.goto('/gallery')
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
 for (const theme of ['light', 'dark']) {
+  test(`gallery creates an album from 40 existing artworks ${theme}`, async ({ page }, info) => {
+    await seedGallery(page, theme, false, 'reduce', true)
+    await expect(page.locator('[data-card-id]')).toHaveCount(40)
+    await page.getByRole('button', { name: /^按画册/ }).click()
+    await expect(page.getByText('还没有成册的作品', { exact: true })).toBeVisible()
+    await page.getByRole('button', { name: '选择作品成册', exact: true }).click()
+    await page.getByRole('button', { name: '全选当前', exact: true }).click()
+    await page.locator('.gallery-organization').getByRole('button', { name: '新建画册', exact: true }).click()
+    await page.getByRole('textbox', { name: '画册名称', exact: true }).fill('四十幅创作手记')
+    const create = page.getByRole('button', { name: '创建画册并加入 40 幅作品', exact: true })
+    const viewports = []
+    for (const [width, height] of [[1920, 1080], [2560, 1440], [3840, 2160], [960, 900]]) {
+      await page.setViewportSize({ width, height })
+      await create.scrollIntoViewIfNeeded()
+      await expect(create).toBeInViewport()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+      expect(await create.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      for (const label of await page.locator('.organization-field > span, .organization-note').all()) {
+        expect(await label.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      }
+      viewports.push(await page.evaluate(() => ({ cssViewport: [innerWidth, innerHeight], devicePixelRatio,
+        visualViewportScale: visualViewport?.scale, physicalDisplay: 'not sampled in isolated browser' })))
+      await page.screenshot({ path: info.outputPath(`album-create-${theme}-${width}.png`) })
+    }
+    await info.attach('browser-viewports', { body: JSON.stringify(viewports), contentType: 'application/json' })
+    await create.click()
+    await expect(page.locator('.gallery-organization')).toContainText('已整理 40 幅作品')
+    await page.getByRole('region', { name: '批量操作' }).getByRole('button', { name: '完成', exact: true }).click()
+    await page.getByRole('button', { name: /^按画册/ }).click()
+    const album = page.getByRole('button', { name: '四十幅创作手记，40 幅作品', exact: true })
+    await expect(album).toBeVisible()
+    await album.click()
+    await expect(page.locator('.gallery-count strong')).toHaveText('四十幅创作手记')
+    await expect(page).toHaveURL(/project=album-/)
+    await page.reload()
+    await expect(page.locator('.gallery-count strong')).toHaveText('四十幅创作手记')
+    await expect(page.locator('[data-card-id]')).toHaveCount(40)
+    await page.screenshot({ path: info.outputPath(`album-open-${theme}.png`) })
+  })
   test(`gallery trash styled restoration and confirmed clearing ${theme}`, async ({ page }, info) => {
     await seedGallery(page, theme)
     await page.getByRole('button', { name: '选择', exact: true }).click()

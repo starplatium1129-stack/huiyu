@@ -10,6 +10,7 @@ import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
 import { createArtworkOrganization } from './artworkOrganization.ts'
+import { createArtworkProjects } from './artworkProjects.ts'
 import { purgeWebTrash } from './artworkTrashPurge.ts'
 export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, ArtworkDeletionError } from './artworkStorage.ts'
 
@@ -291,5 +292,6 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
   const reads = createArtworkReads(kv, dependencies, work => dependencies.kv ? work() : withArtworkMutation(work))
   const media = createArtworkMedia(kv, images, dependencies)
   const organization = createArtworkOrganization({ kv, commit: commitRelatedRecords, enqueue })
-  return { ...reads, ...media, ...organization, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
+  const projects = createArtworkProjects(kv, enqueue)
+  return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

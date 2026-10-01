@@ -8,6 +8,7 @@ import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
+import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
@@ -156,9 +157,18 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   function undoArtworkOrganization(receipt: ArtworkOrganizationReceipt) {
     return organizationWrite<ArtworkOrganizationUndoResult>({ kind: 'undoArtworkOrganization', operationId: `undo-${crypto.randomUUID()}`, sourceOperationId: receipt.operationId })
   }
+  async function createProject(input: ArtworkProjectDraft) {
+    const project = normalizeNewArtworkProject(input)
+    const receipt = await organizationWrite<{ project: { body: ArtworkProjectRecord } }>({
+      kind: 'saveProject', operationId: `create-project:${project.id}`, project, artworkIds: [], expectedRevision: null,
+    })
+    const saved = receipt?.project?.body
+    if (saved?.id !== project.id || saved.title !== project.title) throw new Error('画册创建响应无效，请重试本次创建')
+    return structuredClone(saved)
+  }
   const repository: ArtworkRepository = {
     readHistory, readArtwork, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
-    organizeArtworks, undoArtworkOrganization,
+    organizeArtworks, undoArtworkOrganization, createProject,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {
@@ -210,6 +220,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     putImage: blob => trackMaintenanceWrite(() => repository.putImage(blob)),
     deleteImage: alias => trackMaintenanceWrite(() => repository.deleteImage(alias)),
     appendArtwork: artwork => trackMaintenanceWrite(() => repository.appendArtwork(artwork)),
+    createProject: input => trackMaintenanceWrite(() => repository.createProject(input)),
     organizeArtworks: input => trackMaintenanceWrite(() => repository.organizeArtworks(input)),
     undoArtworkOrganization: receipt => trackMaintenanceWrite(() => repository.undoArtworkOrganization(receipt)),
     patchArtwork: (id, patch) => trackMaintenanceWrite(() => repository.patchArtwork(id, patch)),

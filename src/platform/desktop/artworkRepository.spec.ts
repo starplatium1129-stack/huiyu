@@ -7,6 +7,27 @@ vi.mock('./runtime', () => ({ getDesktopRuntime: () => mocks.state, desktopRunti
 import { createDesktopArtworkRepository } from './artworkRepository'
 
 beforeEach(() => { mocks.request.mockResolvedValue(null) })
+it('creates a project through the workspace and reconciles a lost response using its stable operation identity', async () => {
+  const body = { id: 'album-new', title: '秋日手记', history_ids: [] }
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listProjects') return { items: [] }
+    if (command.kind === 'saveProject') throw new Error('lost response')
+    if (command.kind === 'getOperation') return { state: 'committed', receipt: { project: { body } } }
+    throw new Error('unexpected command')
+  })
+  const repository = createDesktopArtworkRepository()
+  await repository.readProjects()
+  const saved = await repository.createProject({ id: 'album-new', title: ' 秋日手记 ' })
+  expect(saved).toEqual(body)
+  expect(mocks.request).toHaveBeenCalledWith({ kind: 'saveProject', operationId: 'create-project:album-new',
+    project: body, artworkIds: [], expectedRevision: null }, undefined)
+  expect(mocks.request).toHaveBeenCalledWith({ kind: 'getOperation', operationId: 'create-project:album-new' }, undefined)
+  mocks.state.connection = 'unavailable'
+  mocks.request.mockResolvedValueOnce({ items: [{ body }] })
+  expect(await repository.readProjects()).toEqual([body])
+  saved.title = 'consumer edit'
+  expect(body.title).toBe('秋日手记')
+})
 afterEach(() => { mocks.request.mockReset(); mocks.state.connection = 'ready'; mocks.state.bootstrap.runtime.workspace = { workspaceId: 'library-1', domains: ['artwork'] } })
 it('purges bounded confirmed tombstone batches and reconciles a lost committed response', async () => {
   const entries = Array.from({ length: 205 }, (_, index) => ({ id: String(index), deletedAt: 10 }))

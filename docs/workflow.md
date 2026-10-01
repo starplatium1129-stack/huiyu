@@ -453,6 +453,14 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 - `models:download-wd14 [--target-dir <可写目录>]`：默认从固定 HuggingFace 发布者版本下载 WD14 MOAT v2（ONNX 约 311 MiB 与配套 CSV）；`--modelscope` / `--mirror` 可显式选择镜像，但同样核对固定字节与 SHA-256；`--plan` 不下载；
 - `models:download-h3 --models-root <实际ComfyUI/models目录>`：下载当前工作流完整六文件（约 46.38 GB / 43.20 GiB，含 4/8-step LoRA），固定官方 revision 和 SHA-256；`--plan` 不下载。运行依赖与硬件见[模型开箱指南](guides/setup-and-models.md)，不属于质量检查或普通安装的自动步骤。
 
+### PixAI 本机反推准备
+
+`npm run wf -- models:prepare-pixai [--target-dir <独立可写runtime根>] [--python <已有Python或venv>] [--torch-site-packages <已有torch包目录>] [--reuse-from <已下载候选根>]` 准备固定 PixAI v1.0：官方 revision 为 `9fe10addf9326e292da8a85a98ea74cd91b41771`，FP32 safetensors 为 1,945,425,796 字节，模型、代码、配置逐项核对固定大小与 SHA-256。默认根为运行目录下的 `pixai/`；模型在 `model/`，固定 timm 1.0.30 仅装入独立 `deps/`，现有 Comfy/Python 包和生图模型不修改。已匹配文件直接复用；`--reuse-from` 核验既有候选，优先硬链权重、复制代码/配置，避免重复下载。
+
+`--plan` 不联网、不写入、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。正常准备生成 `runtime-config.json`，包含实际 base Python、只读复用的 Torch 包目录、模型与独立依赖路径，供可信运行时配置采用。Python 首选显式参数或 `AICS_PIXAI_PYTHON`，否则查找现有 Comfy venv；包目录可用 `AICS_PIXAI_TORCH_SITE_PACKAGES` 指定。Windows worker 使用实际 base Python，避免 venv launcher 产生不能由直接取消回收的子进程。
+
+worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签阈值 0.17，角色阈值 0.27 单独输出，一般词条最多 100。图像上限 20 MiB，边长 8192、3200 万像素，GIF 只读取首帧。模型加载后保留至 runtime 关闭或活跃推理被取消/超时；生图启动不自动卸载。Torch 分配器预算为 3 GiB，CUDA 上下文另留余量；显卡不可用或显存不足明确失败，不隐式切换 CPU。准备命令不证明 GPU 效果或设备可用性。
+
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。

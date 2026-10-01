@@ -84,13 +84,13 @@
                 <span>导入图片换装</span>
               </button>
             </StudioTooltip>
-            <StudioTooltip anchor :content="(interrogateMode === 'caption' ? '从图片提取自然语言描述（适合 Krea）' : '从图片提取特征标签（适合 Anima/SD）') + '；也可聚焦后直接粘贴图片'">
+            <StudioTooltip anchor :content="(interrogateMode === 'caption' ? '用 PixAI 整理图片标签（适合 Krea）' : '用 PixAI 提取图片标签（适合 Anima/SD）') + '；首次需加载模型，后续复用 GPU 常驻模型，也可聚焦后直接粘贴图片'">
               <button class="btn btn-ghost" type="button"
                 :disabled="interrogateBusy"
                 @click="triggerInterrogatePick"
                 @paste="onInterrogatePaste">
                 <ArchiveIcon name="search" />
-                <span>{{ interrogateBusy ? '正在读取图片…' : '从图片提取灵感' }}</span>
+                <span>{{ interrogateBusy ? '正在反推…' : '从图片提取灵感' }}</span>
               </button>
             </StudioTooltip>
 
@@ -273,7 +273,7 @@ function onInterrogatePaste(e: ClipboardEvent) {
 /** 反推一张图片：文件选择与剪贴板粘贴共用这一条路径 */
 async function runInterrogateFile(file: File) {
   try {
-    const result = await interrogate(file, interrogateMode.value, 0.35)
+    const result = await interrogate(file, interrogateMode.value)
     if (result) emit('interrogateResult', result)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -291,7 +291,7 @@ async function interrogateCurrentImage() {
   const request = Symbol()
   readingCurrentResult = request
   try {
-    const result = await interrogate(props.displayResultUrl, interrogateMode.value, 0.35)
+    const result = await interrogate(props.displayResultUrl, interrogateMode.value)
     if (result) emit('interrogateResult', result)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)

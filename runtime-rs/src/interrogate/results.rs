@@ -61,44 +61,15 @@ pub(super) fn caption(tags: &Value) -> String {
     }
     format!("{subject}, {}", phrases.join(", "))
 }
-pub(super) fn heuristic(mode: &str, threshold: f64, reason: &str) -> Value {
-    let base = [
-        ("1girl", 0.98),
-        ("solo", 0.97),
-        ("long_hair", 0.82),
-        ("looking_at_viewer", 0.71),
-        ("soft_lighting", 0.68),
-        ("indoor", 0.62),
-        ("window_light", 0.58),
-        ("detailed_eyes", 0.55),
-        ("school_uniform", 0.49),
-        ("pleated_skirt", 0.44),
-        ("blush", 0.41),
-        ("depth_of_field", 0.38),
-    ];
-    let mut scores = serde_json::Map::new();
-    let mut tags = Vec::new();
-    for (tag, score) in base {
-        if score >= threshold {
-            scores.insert(tag.into(), json!(score));
-            if mode == "tag" {
-                tags.push(tag);
-            }
-        }
-    }
-    json!({"ok":true,"engine":"heuristic","mode":mode,"threshold":threshold,"tags":tags,"scores":scores,
-        "caption":"a girl with long hair, soft window lighting, indoor scene, detailed eyes, school uniform, pleated skirt, depth of field","editable":true,
-        "warning":format!("真实反推引擎未完成此请求（{reason}）；当前仅为启发式演示标签，不代表图片识别结果。")})
-}
 pub(super) fn finish(mut result: Value, engine: &str, mode: &str, threshold: f64) -> Value {
     result["ok"] = json!(true);
     result["engine"] = json!(engine);
     result["mode"] = json!(mode);
     result["threshold"] = json!(threshold);
     result["editable"] = json!(true);
-    if engine == "wd14" && mode == "caption" {
+    if mode == "caption" {
         result["caption"] = json!(caption(&result["tags"]));
-        result["captionDerived"] = json!("wd14-tags");
+        result["captionDerived"] = json!("pixai-tags");
     } else if result.get("caption").is_none() {
         result["caption"] = json!(
             result["tags"]

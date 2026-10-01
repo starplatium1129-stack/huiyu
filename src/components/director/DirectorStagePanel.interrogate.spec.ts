@@ -9,7 +9,12 @@ vi.mock('@/composables/useInterrogate', () => ({
   useInterrogate: () => ({ busy, error: ref(null), ...mocks }),
 }))
 const cleanups: Array<() => void> = []
-afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.clearAllMocks(); busy.value = false })
+afterEach(async () => {
+  await vi.dynamicImportSettled()
+  cleanups.splice(0).forEach(fn => fn())
+  vi.clearAllMocks()
+  busy.value = false
+})
 function fixture() {
   const wrapper = mount(DirectorStagePanel, {
     props: {
@@ -35,7 +40,7 @@ it('routes current-image reads through the guarded request and cancels on newer 
   const tools = wrapper.findComponent({ name: 'DirectorResultTools' })
   tools.vm.$emit('interrogateCurrent')
   tools.vm.$emit('interrogateCurrent')
-  expect(mocks.interrogate).toHaveBeenCalledExactlyOnceWith('/result-a.png', 'tag', 0.35)
+  expect(mocks.interrogate).toHaveBeenCalledExactlyOnceWith('/result-a.png', 'tag')
   await wrapper.setProps({ displayResultUrl: '/result-b.png' })
   expect(mocks.cancel).toHaveBeenCalledOnce()
   resolve(null)

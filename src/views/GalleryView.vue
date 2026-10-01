@@ -50,8 +50,9 @@
       </div>
     </div>
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
+      <div v-if="!galleryLoading && !galleryError && albums.length" class="tw:flex tw:justify-end tw:mb-s-4"><button class="btn btn-primary" type="button" @click="startAlbumSelection"><ArchiveIcon name="book" />新建画册</button></div>
       <GalleryProjectAlbums v-if="!galleryLoading && !galleryError" :albums="albums" :selected-id="projectFilter" @select="openAlbum" />
-      <ArchiveStatePanel v-if="!galleryLoading && !galleryError && !albums.length" compact kind="empty" title="还没有成册的作品" message="作品展墙会保留全部作品；保存到项目的作品会在这里组成画册。"><button class="btn btn-ghost" type="button" @click="showImages">查看作品展墙</button></ArchiveStatePanel>
+      <ArchiveStatePanel v-if="!galleryLoading && !galleryError && !albums.length" compact kind="empty" title="还没有成册的作品" message="生成的图片会自动保存在全部作品。选择作品并新建画册后，就能在这里按册翻阅。"><button class="btn btn-primary" type="button" :disabled="!history.length" @click="startAlbumSelection">选择作品成册</button><button class="btn btn-ghost" type="button" @click="showImages">查看作品展墙</button></ArchiveStatePanel>
       <ArchiveStatePanel v-if="galleryLoading || galleryError" :kind="galleryError ? 'error' : 'loading'" :title="galleryError ? '画册读取失败' : '正在整理画册'" :message="galleryError || '正在读取项目与作品目录。'" />
     </div>
     <div v-show="!albumsOpen" class="gallery-image-browse">
@@ -473,6 +474,12 @@ function openFromCard(index: number, event: MouseEvent) {
 }
 const { albums } = useGalleryProjectAlbums({ projects, history, thumbUrls, cardUrls })
 const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum } = useAlbumNavigation(projectFilter)
+function startAlbumSelection() {
+  resetGalleryFilters()
+  if (trashMode.value) toggleTrashMode()
+  if (!selectMode.value) toggleSelectMode()
+  void showImages()
+}
 const tagControls = ref<HTMLElement | null>(null)
 async function filterByTag(tag: string) {
   closeViewer(); tagFilter.value = tag

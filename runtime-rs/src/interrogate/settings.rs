@@ -1,44 +1,82 @@
+use super::pixai::Settings;
 use crate::config::Config;
-use std::{env, path::PathBuf};
+use serde::Deserialize;
+use std::{env, fs, path::PathBuf};
 
-#[derive(Clone)]
-pub(super) struct Settings {
-    pub models: Vec<PathBuf>,
-    pub ort: PathBuf,
-    pub vips: PathBuf,
-    pub sd: String,
-    pub comfy: String,
-    pub comfy_input: PathBuf,
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Receipt {
+    schema_version: u32,
+    python: PathBuf,
+    model_dir: PathBuf,
+    deps_dir: PathBuf,
+    torch_site_packages: PathBuf,
 }
-impl Settings {
-    pub fn new(config: &Config) -> Self {
-        let mut models = Vec::new();
-        if let Some(path) = env::var_os("AICS_WD14_MODEL_DIR") {
-            models.push(PathBuf::from(path));
+
+fn receipt(config: &Config) -> Option<Receipt> {
+    // Startup configuration alone selects executable/model paths. An explicit
+    // invalid receipt stays closed rather than searching a different library.
+    let paths = if let Some(path) = env::var_os("AICS_PIXAI_CONFIG") {
+        vec![PathBuf::from(path)]
+    } else {
+        vec![
+            config.runtime_root.join("pixai/runtime-config.json"),
+            config.ai_workspace_root.join("PixAI/runtime-config.json"),
+        ]
+    };
+    for path in paths {
+        if !path.is_file() {
+            continue;
         }
-        for relative in [
-            "ComfyUI/custom_nodes/ComfyUI-WD14-Tagger/models",
-            "ComfyUI/models/tagger",
-            "stable-diffusion-webui/models/WD14_tagger",
-        ] {
-            models.push(config.ai_workspace_root.join(relative));
+        let value: Receipt = serde_json::from_slice(&fs::read(path).ok()?).ok()?;
+        if value.schema_version != 1
+            || ![
+                &value.python,
+                &value.model_dir,
+                &value.deps_dir,
+                &value.torch_site_packages,
+            ]
+            .iter()
+            .all(|path| path.is_absolute())
+        {
+            return None;
         }
-        models.push(config.app_root.join("runtime/models/interrogate"));
-        #[cfg(windows)]
-        let ort = "onnxruntime.dll";
-        #[cfg(target_os = "macos")]
-        let ort = "libonnxruntime.dylib";
-        #[cfg(all(not(windows), not(target_os = "macos")))]
-        let ort = "libonnxruntime.so";
-        Self {
-            models,
-            ort: env::var_os("AICS_ORT_DYLIB_PATH")
-                .map(PathBuf::from)
-                .unwrap_or_else(|| config.app_root.join("native").join(ort)),
-            vips: crate::native_images::library_path(config),
-            sd: config.sd_host.clone(),
-            comfy: config.comfy_host.clone(),
-            comfy_input: config.ai_workspace_root.join("ComfyUI/input"),
-        }
+        return Some(value);
+    }
+    None
+}
+
+pub(super) fn load(config: &Config) -> Settings {
+    let root = config.runtime_root.join("pixai");
+    let value = receipt(config);
+    let selected = |name: &str, saved: Option<&PathBuf>, fallback: &str| {
+        env::var_os(name)
+            .map(PathBuf::from)
+            .or_else(|| saved.cloned())
+            .unwrap_or_else(|| root.join(fallback))
+    };
+    Settings {
+        python: selected(
+            "AICS_PIXAI_PYTHON",
+            value.as_ref().map(|v| &v.python),
+            "unconfigured/python.exe",
+        ),
+        model_dir: selected(
+            "AICS_PIXAI_MODEL_DIR",
+            value.as_ref().map(|v| &v.model_dir),
+            "model",
+        ),
+        deps_dir: selected(
+            "AICS_PIXAI_DEPS_DIR",
+            value.as_ref().map(|v| &v.deps_dir),
+            "deps",
+        ),
+        torch_site_packages: selected(
+            "AICS_PIXAI_TORCH_SITE_PACKAGES",
+            value.as_ref().map(|v| &v.torch_site_packages),
+            "torch",
+        ),
+        script: config.app_root.join("tools/interrogate/pixai_worker.py"),
+        temp_root: config.runtime_root.join("pixai/inputs"),
     }
 }

@@ -24,17 +24,17 @@
              可禁用（busy）的按钮加 anchor —— 禁用控件不派发指针事件，没有外壳托住 hover
              时提示根本不会出现。v-if 挂在 Tooltip 上（不能留在内层按钮上，否则条件为假
              时会留下空外壳，在 flex + gap 的网格里多吃一次间距）。 -->
-        <StudioTooltip anchor :content="interrogateMode === 'caption' ? '提取当前画面的自然语言描述（适合 Krea）' : '提取当前画面的特征标签（适合 Anima/SD）'">
+        <StudioTooltip anchor :content="(interrogateMode === 'caption' ? '用 PixAI 整理当前画面的标签（适合 Krea）' : '用 PixAI 提取当前画面的标签（适合 Anima/SD）') + '；首次需加载模型，后续复用 GPU 常驻模型'">
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="interrogateBusy"
             @click="$emit('interrogateCurrent')">
             <ArchiveIcon name="search" />
-            <span>{{ interrogateBusy ? '反推中…' : '反推当前图' }}</span>
+            <span>{{ interrogateBusy ? '正在反推…' : '反推当前图' }}</span>
           </button>
         </StudioTooltip>
-        <StudioTooltip anchor content="上传任意图片本地反推">
+        <StudioTooltip anchor content="上传图片用 PixAI 本地反推；首次需加载模型，后续复用 GPU 常驻模型">
           <button
             class="btn btn-ghost"
             type="button"

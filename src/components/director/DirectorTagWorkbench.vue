@@ -3,13 +3,13 @@
     <div class="panel-title expert-tags-header">
       <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
       <div class="expert-tags-actions">
-        <StudioTooltip anchor content="上传图片本地反推为 Tag（WD14 真实模型），可切人直出">
+        <StudioTooltip anchor content="用 PixAI 本地反推图片标签；首次需加载模型，后续复用 GPU 常驻模型，可切人直出">
           <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" @click="triggerInterrogatePick">
-            <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
+            <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '正在反推…' : '本地反推' }}
           </button>
         </StudioTooltip>
         <StudioTooltip v-if="interrogateMeta" :content="interrogateMeta.title">
-          <span class="tag-interrogate-engine" :class="{ 'is-fallback': interrogateMeta.fallback }">{{ interrogateMeta.label }}</span>
+          <span class="tag-interrogate-engine">{{ interrogateMeta.label }}</span>
         </StudioTooltip>
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
@@ -29,11 +29,15 @@
       </p>
     </div>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
-    <div class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
-      <div class="outfit-presets-head">
+    <details class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
+      <summary class="outfit-presets-head wardrobe-summary">
         <strong><ArchiveIcon name="wardrobe" /> 全角色通用 · 特典战袍衣橱</strong>
-        <span>一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</span>
-      </div>
+        <span class="wardrobe-toggle">
+          <span class="wardrobe-expand">展开</span><span class="wardrobe-collapse">收起</span>
+          <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
+        </span>
+      </summary>
+      <p class="wardrobe-description">一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</p>
       <div class="outfit-preset-list universal-preset-list">
         <StudioTooltip v-for="preset in universalWardrobePresets" :key="preset.id" :content="preset.description">
           <button
@@ -46,7 +50,7 @@
           </button>
         </StudioTooltip>
       </div>
-    </div>
+    </details>
 
     <div v-if="!pb.isPopular" class="outfit-presets" aria-label="专属角色服装词包">
       <div class="outfit-presets-head">
@@ -186,27 +190,20 @@ async function clearTags() {
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
 const interrogateError = computed(() => interrogateErrorRaw.value)
-// 反推引擎徽标：真实模型（wd14）高亮，启发式兜底置灰并如实标注
-const interrogateMeta = ref<{ label: string; title: string; fallback: boolean } | null>(null)
+const interrogateMeta = ref<{ label: string; title: string } | null>(null)
 function triggerInterrogatePick() { interrogateInputRef.value?.click() }
 async function onInterrogateFile(e: Event) {
   var input = e.target as HTMLInputElement
   var file = input.files && input.files[0]
   if (!file) return
   input.value = ''
+  interrogateMeta.value = null
   try {
-    var result = await interrogate(file, 'tag', 0.35)
+    var result = await interrogate(file, 'tag')
     if (!result) return
-    if (result.engine === 'wd14') {
-      interrogateMeta.value = {
-        label: `WD14 · ${result.model || 'wd14'}`,
-        title: `真实反推模型（本地 ONNX，零网络）。角色：${(result.characterTags || []).join(', ') || '未识别'}`,
-        fallback: false,
-      }
-    } else if (result.engine === 'heuristic') {
-      interrogateMeta.value = { label: '启发式兜底', title: result.warning || '未找到真实反推模型，当前为演示标签', fallback: true }
-    } else {
-      interrogateMeta.value = { label: result.engine, title: `引擎：${result.engine}`, fallback: false }
+    interrogateMeta.value = {
+      label: 'PixAI · v1.0',
+      title: `PixAI 本地 GPU 反推（${result.model}），模型加载后常驻。识别角色仅作参考：${result.characterTags.join(', ') || '未识别'}`,
     }
     await applyInterrogateResult(pb, result)
   } catch (e) {

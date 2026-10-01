@@ -1,5 +1,6 @@
 import type { ArtworkRecord, ArtworkSearchRecord } from '../../types/artwork.ts'
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
+import type { ArtworkProjectDraft } from './projects.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -39,6 +40,7 @@ export interface ArtworkRepository {
   readArtwork(id: string | number, signal?: AbortSignal): Promise<ArtworkRecord | null>
   readSearchIndex(signal?: AbortSignal): Promise<ArtworkSearchRecord[]>
   readProjects(): Promise<ArtworkProjectRecord[]>
+  createProject(input: ArtworkProjectDraft): Promise<ArtworkProjectRecord>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */

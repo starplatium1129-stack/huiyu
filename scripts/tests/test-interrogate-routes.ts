@@ -16,6 +16,7 @@ let assert: typeof import('assert/strict') = require('assert/strict');
 let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 
 let TINY_PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='.padEnd(2048, 'A'); // padEnd 合法 base64，>1024B 过体积校验
+let holdAdmission = false;
 
 async function json(response: Response) { return response.json(); }
 function post(base: string, body: { mode: string; image?: string; threshold?: number; }) {
@@ -36,7 +37,7 @@ async function run() {
     assert.equal(status.local, true);
     assert.deepEqual(status.engines, ['wd14', 'webui', 'comfy', 'heuristic']);
     assert.equal(status.thresholdDefault, 0.35);
-    assert.equal(typeof status.maxBytes, 'number');
+    assert.equal(status.maxBytes, 20 * 1024 * 1024);
     // wd14 真实引擎状态：有模型时返回 model，无模型时返回 reason（结构契约）。
     assert.equal(typeof status.wd14.available, 'boolean');
     assert.ok(status.wd14.available ? typeof status.wd14.model === 'string' : typeof status.wd14.reason === 'string');
@@ -78,6 +79,24 @@ async function run() {
     let dataUrl = 'data:image/png;base64,' + TINY_PNG;
     let viaDataUrl = await json(await post(base, { mode:'tag', image:dataUrl }));
     assert.ok(viaDataUrl.engine === 'wd14' || viaDataUrl.engine === 'heuristic');
+
+    // Hold inference admission: valid large requests must pass the JSON/base64
+    // boundary, without invoking a decoder, a real model or any upstream.
+    holdAdmission = true;
+    try {
+      for (const bytes of [12 * 1024 * 1024 + 1, 20 * 1024 * 1024]) {
+        const accepted = await post(base, { mode: 'tag', image: 'data:image/png;base64,' + Buffer.alloc(bytes).toString('base64') });
+        assert.equal(accepted.status, 429);
+        assert.equal((await json(accepted)).code, 'INTERROGATE_BUSY');
+      }
+      const tooLarge = await post(base, { mode: 'tag', image: Buffer.alloc(20 * 1024 * 1024 + 1).toString('base64') });
+      assert.equal(tooLarge.status, 413);
+      const rejection = await json(tooLarge);
+      assert.equal(rejection.code, 'IMAGE_TOO_LARGE');
+      assert.equal(rejection.error, '图片超过 20MB 限制');
+    } finally {
+      holdAdmission = false;
+    }
   } finally {
     await stack.close();
   }
@@ -136,7 +155,10 @@ async function run() {
 
 const originalCreate = wd14.createInterrogateClient;
 wd14.createInterrogateClient = () => ({
-  interrogateTag: async () => ({ ok:false, reason:'fixture disables real inference' }),
+  interrogateTag: async () => {
+    if (holdAdmission) throw Object.assign(new Error('fixture holds inference admission'), { status: 429, code: 'INTERROGATE_BUSY' });
+    return { ok:false, reason:'fixture disables real inference' };
+  },
   probe: () => ({ available:false, reason:'fixture disables real models' }),
   close: async () => undefined,
 });

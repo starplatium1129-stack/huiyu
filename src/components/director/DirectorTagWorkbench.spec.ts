@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import DirectorTagWorkbench from './DirectorTagWorkbench.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
 
 const mocks = vi.hoisted(() => ({
   confirmAction: vi.fn(),
@@ -32,6 +33,34 @@ describe('DirectorTagWorkbench', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+  })
+
+  it('衣橱默认收起，展开选择预设后再次收起不会卸下已选服装', async () => {
+    const pb = usePromptBuilderStore()
+    pb.subject = { kind: 'popular', characterId: 'test-character', outfitId: 'default', blueprintId: null }
+    const wrapper = mount(DirectorTagWorkbench, {
+      global: { stubs: { StudioTooltip: tooltipStub, ArchiveIcon: iconStub } },
+    })
+    const wardrobe = wrapper.get('details.universal-wardrobe-section')
+    const element = wardrobe.element as HTMLDetailsElement
+    const summary = wardrobe.get('summary')
+    expect(element.open).toBe(false)
+
+    await summary.trigger('click')
+    expect(element.open).toBe(true)
+    const preset = wardrobe.get('.universal-outfit-btn')
+    await preset.trigger('click')
+    expect(pb.outfitOverride?.tokens).toEqual(UNIVERSAL_WARDROBE_PRESETS[0].tags)
+    expect(preset.attributes('aria-pressed')).toBe('true')
+
+    await summary.trigger('click')
+    expect(element.open).toBe(false)
+    expect(pb.outfitOverride?.tokens).toEqual(UNIVERSAL_WARDROBE_PRESETS[0].tags)
+    await summary.trigger('click')
+    expect(preset.attributes('aria-pressed')).toBe('true')
+    await preset.trigger('click')
+    expect(pb.outfitOverride).toBeNull()
+    wrapper.unmount()
   })
 
   it('点击清空词条必须先弹窗确认；取消后保留词条，确认后才真正清空', async () => {

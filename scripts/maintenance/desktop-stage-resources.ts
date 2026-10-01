@@ -14,6 +14,11 @@ const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
 const DATA_SHARDS=new Set(['blueprints','popular','references','scenes','tags']);
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','install-translation-model.ps1']);
+const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
+function includeTools(parts:string[],file:string):boolean {
+  if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
+  return parts.length===1&&TOOLS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
+}
 function includeData(parts:string[],file:string):boolean {
   if(parts.some(part=>part.startsWith('.')))return false;
   if(parts.length===1&&DATA_SHARDS.has(parts[0]))return fs.statSync(file).isDirectory();
@@ -64,7 +69,7 @@ function stageResources(options: StageOptions = {}) {
       copyDir(from, path.join(gateway, source), file => {
         const rel = path.relative(from, file).split(path.sep);
         if(source==='data'&&!includeData(rel,file))return false;
-        if(source==='tools'&&(rel.length!==1||!TOOLS.has(rel[0].replace(/\.(?:br|gz)$/i,''))))return false;
+        if(source==='tools'&&!includeTools(rel,file))return false;
         if (source === 'assets' && ['character-references', 'live2d-candidates'].includes(rel[0])) return false;
         return !/\.(?:[cm]?ts|map)$/i.test(file) && !['node_modules', '.git', '__pycache__'].includes(path.basename(file));
       });
@@ -81,4 +86,4 @@ function stageResources(options: StageOptions = {}) {
   } catch (error) { fs.rmSync(temporary, { recursive: true, force: true }); throw error; }
 }
 if (require.main === module) withDesktopBuildLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
-export = { copyDir, includeData, publishStage, resolveNpmInvocation, stageResources };
+export = { copyDir, includeData, includeTools, publishStage, resolveNpmInvocation, stageResources };

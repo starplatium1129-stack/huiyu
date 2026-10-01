@@ -1,147 +1,33 @@
 use super::*;
-use axum::{
-    body::{Body, Bytes},
-    extract::{Query, State},
-    http::StatusCode,
-    response::IntoResponse,
-};
-use futures_util::StreamExt;
-use std::{
-    collections::HashMap,
-    sync::atomic::{AtomicUsize, Ordering},
-    time::Duration,
-};
-use tokio::sync::Notify;
+use axum::http::StatusCode;
 
-struct Mock {
-    stage: AtomicUsize,
-    input: std::path::PathBuf,
-    started: Notify,
-    disconnected: Arc<Notify>,
-}
-struct Disconnect(Arc<Notify>);
-impl Drop for Disconnect {
-    fn drop(&mut self) {
-        self.0.notify_one();
-    }
-}
-async fn webui_tagger(State(mock): State<Arc<Mock>>) -> Json<Value> {
-    Json(if mock.stage.load(Ordering::Relaxed) == 1 {
-        json!({"tags":["1girl","blue_hair"],"scores":{"1girl":0.9}})
-    } else {
-        json!({})
-    })
-}
-async fn webui_native(State(mock): State<Arc<Mock>>) -> Json<Value> {
-    Json(if mock.stage.load(Ordering::Relaxed) == 2 {
-        json!({"caption":"1girl, blue_hair"})
-    } else {
-        json!({})
-    })
-}
-async fn objects(State(mock): State<Arc<Mock>>) -> Json<Value> {
-    Json(if mock.stage.load(Ordering::Relaxed) >= 3 {
-        json!({"WD14Tagger":{}})
-    } else {
-        json!({})
-    })
-}
-async fn tag(
-    State(mock): State<Arc<Mock>>,
-    Query(query): Query<HashMap<String, String>>,
-) -> axum::response::Response {
-    let name = query.get("filename").unwrap();
-    assert!(name.starts_with("aics_interrogate_"));
-    assert_eq!(query.get("type").unwrap(), "input");
-    assert!(
-        std::fs::read(mock.input.join(name))
-            .unwrap()
-            .starts_with(b"\x89PNG\r\n\x1a\n")
-    );
-    if mock.stage.load(Ordering::Relaxed) == 4 {
-        let guard = Disconnect(mock.disconnected.clone());
-        mock.started.notify_one();
-        let stream = futures_util::stream::once(async {
-            Ok::<_, std::io::Error>(Bytes::from_static(b"partial tags"))
-        })
-        .chain(futures_util::stream::pending())
-        .map(move |chunk| {
-            let _ = &guard;
-            chunk
-        });
-        return Body::from_stream(stream).into_response();
-    }
-    Json(json!("1girl, blue hair, BLUE_HAIR")).into_response()
-}
-fn image() -> String {
-    let image = image::RgbImage::from_fn(128, 128, |x, y| {
-        image::Rgb([
-            ((x * 37 + y * 3) % 256) as u8,
-            ((y * 29 + x * 7) % 256) as u8,
-            ((x * 13 + y * 11) % 256) as u8,
-        ])
-    });
-    let mut bytes = Vec::new();
-    image::DynamicImage::ImageRgb8(image)
-        .write_to(
-            &mut std::io::Cursor::new(&mut bytes),
-            image::ImageFormat::Png,
-        )
-        .unwrap();
-    assert!(bytes.len() > 1024);
-    STANDARD.encode(bytes)
-}
 async fn fixture() -> (
     tempfile::TempDir,
     Arc<InterrogateService>,
-    Arc<Mock>,
     String,
     reqwest::Client,
     CancellationToken,
 ) {
     let root = tempfile::tempdir().unwrap();
-    let stop = CancellationToken::new();
-    let mock = Arc::new(Mock {
-        stage: AtomicUsize::new(0),
-        input: root.path().join("ComfyUI/input"),
-        started: Notify::new(),
-        disconnected: Arc::new(Notify::new()),
-    });
-    let upstream = Router::new()
-        .route("/tagger/v1/interrogate", post(webui_tagger))
-        .route("/sdapi/v1/interrogate", post(webui_native))
-        .route("/object_info", get(objects))
-        .route("/pysssss/wd14tagger/tag", get(tag))
-        .with_state(mock.clone());
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let upstream_url = format!("http://{}", listener.local_addr().unwrap());
-    let done = stop.clone();
-    tokio::spawn(async move {
-        axum::serve(listener, upstream)
-            .with_graceful_shutdown(done.cancelled_owned())
-            .await
-            .unwrap();
-    });
-    let settings = settings::Settings {
-        models: vec![root.path().join("empty-models")],
-        ort: root.path().join("absent-ort.dll"),
-        vips: root.path().join("absent-vips.dll"),
-        sd: upstream_url.clone(),
-        comfy: upstream_url.clone(),
-        comfy_input: mock.input.clone(),
-    };
     let shutdown = CancellationToken::new();
     let service = Arc::new(InterrogateService::with_settings(
-        settings,
+        pixai::Settings {
+            python: root.path().join("missing-python.exe"),
+            model_dir: root.path().join("missing-model"),
+            deps_dir: root.path().join("missing-deps"),
+            torch_site_packages: root.path().join("missing-torch"),
+            script: root.path().join("missing-worker.py"),
+            temp_root: root.path().join("private-inputs"),
+        },
         shutdown.clone(),
     ));
     let config = Config {
         app_root: root.path().into(),
         runtime_root: root.path().join("runtime"),
         ai_workspace_root: root.path().into(),
-        sd_host: upstream_url.clone(),
+        sd_host: "http://127.0.0.1:9".into(),
         sd_auth: None,
-        comfy_host: upstream_url,
+        comfy_host: "http://127.0.0.1:9".into(),
         bind: "127.0.0.1:0".parse().unwrap(),
         token: String::new(),
         desktop_secret: None,
@@ -161,6 +47,7 @@ async fn fixture() -> (
     );
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let url = format!("http://{}", listener.local_addr().unwrap());
+    let stop = CancellationToken::new();
     let done = stop.clone();
     let app = router(service.clone()).with_state(state);
     tokio::spawn(async move {
@@ -172,18 +59,12 @@ async fn fixture() -> (
         .await
         .unwrap();
     });
-    let client = reqwest::Client::builder()
-        .no_proxy()
-        .timeout(Duration::from_secs(5))
-        .build()
-        .unwrap();
-    (root, service, mock, url, client, stop)
+    (root, service, url, reqwest::Client::new(), stop)
 }
 
 #[tokio::test]
-async fn protocol_fallbacks_report_actual_engine_and_keep_private_temporary_inputs_owned() {
-    let (_root, service, mock, url, client, stop) = fixture().await;
-    let encoded = image();
+async fn pixai_is_the_local_default_and_unavailable_models_never_become_fake_results() {
+    let (root, service, url, client, stop) = fixture().await;
     let status = client
         .get(format!("{url}/api/interrogate/status"))
         .send()
@@ -192,10 +73,14 @@ async fn protocol_fallbacks_report_actual_engine_and_keep_private_temporary_inpu
         .json::<Value>()
         .await
         .unwrap();
-    assert_eq!(status["wd14"]["available"], false);
+    assert_eq!(status["defaultEngine"], "pixai");
+    assert_eq!(status["engines"], json!(["pixai"]));
+    assert_eq!(status["pixai"]["available"], false);
+    assert_eq!(status["thresholdDefault"], 0.17);
     assert_eq!(status["maxBytes"], MAX_BYTES);
+    let endpoint = format!("{url}/api/interrogate");
     let remote = client
-        .post(format!("{url}/api/interrogate"))
+        .post(&endpoint)
         .header("x-forwarded-for", "198.51.100.9")
         .header("content-type", "application/json")
         .body("not json")
@@ -203,125 +88,71 @@ async fn protocol_fallbacks_report_actual_engine_and_keep_private_temporary_inpu
         .await
         .unwrap();
     assert_eq!(remote.status(), StatusCode::FORBIDDEN);
-    assert_eq!(
-        client
-            .post(format!("{url}/api/interrogate"))
-            .json(&json!({"image":encoded,"threshold":1.5}))
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        StatusCode::BAD_REQUEST
-    );
-    for (stage, engine) in [(0, "heuristic"), (1, "webui"), (2, "webui"), (3, "comfy")] {
-        mock.stage.store(stage, Ordering::Relaxed);
-        let result = client
-            .post(format!("{url}/api/interrogate"))
-            .json(&json!({"image":encoded,"mode":"tag"}))
-            .send()
-            .await
-            .unwrap()
-            .json::<Value>()
-            .await
-            .unwrap();
-        assert_eq!(result["engine"], engine, "{result}");
-        assert_eq!(result["editable"], true);
-        if stage == 0 {
-            assert!(result["warning"].as_str().unwrap().contains("演示"));
-        }
-        if stage == 3 {
-            assert_eq!(result["tags"], json!(["1girl", "BLUE_HAIR"]));
-            assert!(std::fs::read_dir(&mock.input).unwrap().next().is_some());
-        }
+    let image = STANDARD.encode(vec![0; 2048]);
+    for body in [
+        json!({"image":image,"threshold":1.5}),
+        json!({"image":image,"mode":"unknown"}),
+    ] {
+        assert_eq!(
+            client
+                .post(&endpoint)
+                .json(&body)
+                .send()
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::BAD_REQUEST
+        );
     }
-    service.close().await;
-    assert!(std::fs::read_dir(&mock.input).unwrap().next().is_none());
-    stop.cancel();
-}
-
-#[tokio::test]
-async fn disconnected_interrogation_closes_upstream_and_releases_single_admission() {
-    let (_root, service, mock, url, client, stop) = fixture().await;
-    let encoded = image();
-    mock.stage.store(4, Ordering::Relaxed);
-    let requester = client.clone();
-    let endpoint = format!("{url}/api/interrogate");
-    let body = json!({"image":encoded,"mode":"tag"});
-    let request = tokio::spawn(async move { requester.post(endpoint).json(&body).send().await });
-    tokio::time::timeout(Duration::from_secs(2), mock.started.notified())
+    let unavailable = client
+        .post(&endpoint)
+        .json(&json!({"image":image}))
+        .send()
         .await
         .unwrap();
-    assert_eq!(
-        client
-            .post(format!("{url}/api/interrogate"))
-            .json(&json!({"image":encoded}))
-            .send()
-            .await
+    assert_eq!(unavailable.status(), StatusCode::SERVICE_UNAVAILABLE);
+    let result = unavailable.json::<Value>().await.unwrap();
+    assert_eq!(result["ok"], false);
+    assert!(result["code"].as_str().unwrap().starts_with("PIXAI_"));
+    assert!(result.get("tags").is_none());
+    assert!(
+        std::fs::read_dir(root.path().join("private-inputs"))
             .unwrap()
-            .status(),
-        StatusCode::TOO_MANY_REQUESTS
+            .next()
+            .is_none()
     );
-    request.abort();
-    let _ = request.await;
-    tokio::time::timeout(Duration::from_secs(2), mock.disconnected.notified())
-        .await
-        .expect("upstream must close when caller disconnects");
-    mock.stage.store(0, Ordering::Relaxed);
-    let result = client
-        .post(format!("{url}/api/interrogate"))
-        .json(&json!({"image":encoded,"mode":"caption"}))
-        .send()
-        .await
-        .unwrap()
-        .json::<Value>()
-        .await
-        .unwrap();
-    assert_eq!(result["engine"], "heuristic");
-    assert_eq!(result["tags"], json!([]));
     service.close().await;
-    assert!(std::fs::read_dir(&mock.input).unwrap().next().is_none());
     stop.cancel();
 }
 
 #[tokio::test]
-async fn request_body_limit_preserves_the_advertised_image_size_boundary() {
-    let (_root, service, _mock, url, client, stop) = fixture().await;
-    // Hold admission so these byte-boundary fixtures never reach a decoder or
-    // an upstream service. A valid-size request must get past JSON validation.
-    let admission = service.native.admit().unwrap();
+async fn request_body_limit_preserves_twenty_mib_before_model_admission() {
+    let (_root, service, url, client, stop) = fixture().await;
+    let admission = service.client.admit().unwrap();
     let endpoint = format!("{url}/api/interrogate");
-    let encoded = STANDARD.encode(vec![0; MAX_BYTES]);
+    for bytes in [12 * 1024 * 1024 + 1, MAX_BYTES] {
+        let response = client.post(&endpoint)
+            .json(&json!({"image":format!("data:image/png;base64,{}", STANDARD.encode(vec![0;bytes]))}))
+            .send().await.unwrap();
+        assert_eq!(response.status(), StatusCode::TOO_MANY_REQUESTS);
+        assert_eq!(
+            response.json::<Value>().await.unwrap()["code"],
+            "INTERROGATE_BUSY"
+        );
+    }
     let response = client
         .post(&endpoint)
-        .json(&json!({
-            "image":format!("data:image/png;base64,{encoded}"),
-            "mode":"tag",
-            "threshold":0.35
-        }))
-        .send()
-        .await
-        .unwrap();
-    assert_eq!(response.status(), StatusCode::TOO_MANY_REQUESTS);
-    assert_eq!(
-        response.json::<Value>().await.unwrap()["code"],
-        "INTERROGATE_BUSY"
-    );
-
-    let response = client
-        .post(&endpoint)
-        .json(&json!({"image":STANDARD.encode(vec![0; MAX_BYTES + 1])}))
+        .json(&json!({"image":STANDARD.encode(vec![0;MAX_BYTES+1])}))
         .send()
         .await
         .unwrap();
     assert_eq!(response.status(), StatusCode::PAYLOAD_TOO_LARGE);
-    assert_eq!(
-        response.json::<Value>().await.unwrap()["code"],
-        "IMAGE_TOO_LARGE"
-    );
-
+    let rejection = response.json::<Value>().await.unwrap();
+    assert_eq!(rejection["code"], "IMAGE_TOO_LARGE");
+    assert_eq!(rejection["error"], "图片超过 20MB 限制");
     let response = client
         .post(&endpoint)
-        .json(&json!({"image":encoded,"extra":"x".repeat(64 * 1024)}))
+        .json(&json!({"image":STANDARD.encode(vec![0;MAX_BYTES]),"extra":"x".repeat(64*1024)}))
         .send()
         .await
         .unwrap();
@@ -329,4 +160,19 @@ async fn request_body_limit_preserves_the_advertised_image_size_boundary() {
     drop(admission);
     service.close().await;
     stop.cancel();
+}
+
+#[test]
+fn captions_are_label_summaries_not_a_separate_caption_model() {
+    let result = results::finish(
+        json!({"tags":["1girl","white_shirt"]}),
+        "pixai",
+        "caption",
+        0.17,
+    );
+    assert_eq!(result["engine"], "pixai");
+    assert_eq!(result["captionDerived"], "pixai-tags");
+    assert_eq!(result["caption"], "a girl, wearing a white shirt");
+    let input = validate(json!({"image":STANDARD.encode(vec![0;2048])})).unwrap();
+    assert_eq!(input.threshold, 0.17);
 }

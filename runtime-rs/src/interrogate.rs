@@ -1,12 +1,6 @@
-mod fallback;
-mod model;
-mod ort_runtime;
-mod preprocess;
+mod pixai;
 mod results;
 mod settings;
-mod temporary;
-use crate::native_images::{api as vips_api, library as native_library};
-mod worker;
 
 use crate::{
     AppState,
@@ -27,30 +21,27 @@ use serde_json::{Value, json};
 use std::{net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
-const MAX_BYTES: usize = 12 * 1024 * 1024;
-// A maximum-size image already occupies 16 MiB after base64 encoding. Keep a
-// bounded allowance for its data URL prefix and JSON fields as well.
+const MAX_BYTES: usize = 20 * 1024 * 1024;
+// Allow base64 expansion of the maximum-size image, with bounded room for its
+// data URL prefix and JSON fields as well.
 const MAX_BODY_BYTES: usize = MAX_BYTES.div_ceil(3) * 4 + 64 * 1024;
 pub struct InterrogateService {
-    native: worker::Client,
-    fallback: fallback::Fallback,
+    client: pixai::Client,
     shutdown: CancellationToken,
 }
 impl InterrogateService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
-        Self::with_settings(settings::Settings::new(config), shutdown)
+        Self::with_settings(settings::load(config), shutdown)
     }
-    fn with_settings(settings: settings::Settings, shutdown: CancellationToken) -> Self {
+    fn with_settings(settings: pixai::Settings, shutdown: CancellationToken) -> Self {
         Self {
-            native: worker::Client::new(settings.clone()),
-            fallback: fallback::Fallback::new(settings),
+            client: pixai::Client::new(settings),
             shutdown,
         }
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
-        self.native.close().await;
-        self.fallback.close().await;
+        self.client.close().await;
     }
     async fn interrogate(&self, input: Value) -> Result<Value> {
         if self.shutdown.is_cancelled() {
@@ -61,72 +52,23 @@ impl InterrogateService {
             ));
         }
         let input = validate(input)?;
-        let admission = self.native.admit()?;
         let cancel = self.shutdown.child_token();
         let _cancel = cancel.clone().drop_guard();
-        let native = self
-            .native
-            .run(
-                input.image.clone(),
-                input.threshold,
-                cancel.clone(),
-                admission.clone(),
-            )
-            .await;
-        if cancel.is_cancelled() {
-            return Err(fallback::cancelled());
-        }
-        let reason = match native {
-            Ok(result) => {
-                return Ok(results::finish(
-                    result,
-                    "wd14",
-                    &input.mode,
-                    input.threshold,
-                ));
-            }
-            Err(error)
-                if [
-                    "INTERROGATE_BUSY",
-                    "INTERROGATE_TIMEOUT",
-                    "INTERROGATE_CLOSED",
-                    "CANCELLED",
-                ]
-                .contains(&error.code.as_str()) =>
-            {
-                return Err(error);
-            }
-            Err(error) => error.message,
-        };
-        if let Some(result) = self
-            .fallback
-            .webui(input.base64, input.threshold, &cancel)
-            .await?
-        {
-            return Ok(results::finish(
-                result,
-                "webui",
-                &input.mode,
-                input.threshold,
-            ));
-        }
-        if input.mode == "tag"
-            && let Some(result) = self.fallback.comfy(&input.image, &cancel).await?
-        {
-            return Ok(results::finish(
-                result,
-                "comfy",
-                &input.mode,
-                input.threshold,
-            ));
-        }
-        Ok(results::heuristic(&input.mode, input.threshold, &reason))
+        let result = self
+            .client
+            .run(input.image, input.threshold, cancel)
+            .await?;
+        Ok(results::finish(
+            result,
+            "pixai",
+            &input.mode,
+            input.threshold,
+        ))
     }
 }
 struct Input {
     mode: String,
     threshold: f64,
-    base64: String,
     image: Arc<Vec<u8>>,
 }
 fn validate(mut input: Value) -> Result<Input> {
@@ -146,7 +88,7 @@ fn validate(mut input: Value) -> Result<Input> {
         ));
     }
     let threshold = match input.get("threshold") {
-        None => Some(0.35),
+        None => Some(0.17),
         Some(value) => value
             .as_f64()
             .or_else(|| value.as_str().and_then(|value| value.trim().parse().ok())),
@@ -173,12 +115,11 @@ fn validate(mut input: Value) -> Result<Input> {
         return Err(ApiError::new(400, "INVALID_IMAGE", "图片过小"));
     }
     if bytes.len() > MAX_BYTES {
-        return Err(ApiError::new(413, "IMAGE_TOO_LARGE", "图片超过 12MB 限制"));
+        return Err(ApiError::new(413, "IMAGE_TOO_LARGE", "图片超过 20MB 限制"));
     }
     Ok(Input {
         mode,
         threshold,
-        base64,
         image: Arc::new(bytes),
     })
 }
@@ -222,7 +163,7 @@ async fn interrogate(
 }
 async fn status(Extension(service): Extension<Arc<InterrogateService>>) -> Result<Json<Value>> {
     Ok(Json(
-        json!({"ok":true,"local":true,"engines":["wd14","webui","comfy","heuristic"],"wd14":service.native.probe().await,"thresholdDefault":0.35,"maxBytes":MAX_BYTES}),
+        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES}),
     ))
 }
 

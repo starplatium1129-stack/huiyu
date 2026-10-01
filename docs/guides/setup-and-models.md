@@ -9,7 +9,7 @@
 | 使用范围 | 需要准备 | 断网后验证 |
 | --- | --- | --- |
 | 完整素材浏览 | 匹配版本的桌面安装包、完整资源 ZIP、发布处的 SHA-256、离线导入脚本；桌面运行前提按离线安装指南准备 | 首次打开角色、场景、热门蓝图、画师、LoRA 样张及原图；检查 Live2D 和深浅主题 |
-| WD14 反推 | ONNX 与同名 CSV、随 Rust 程序提供的 ONNX Runtime/图像 DLL，以及已安装的微软 VC++ v14 x64 运行库 | `/api/interrogate/status`，再对本机图片做真实反推 |
+| PixAI 图片反推 | 固定 PixAI v1.0 权重与配置、CUDA 可用的 Python/PyTorch 环境及独立 timm；按 [准备入口](../workflow.md#pixai-本机反推准备) 生成 runtime-config.json | `/api/interrogate/status` 的 pixai 就绪后对本机图片反推；加载后模型按用户设置常驻显存 |
 | Anima 生图 | ComfyUI、匹配的 Python/PyTorch 环境、底模＋文本编码器＋VAE；工作流需要的节点/采样器 | 控制室检查服务，`/api/anima/status`，再生成一张所选模型的图 |
 | Krea 2 生图 | ComfyUI、下述 Krea 2 三件套；选择风格时另需相应 LoRA | `/api/creative/status`，再生成一张图 |
 | WAI 生图 | WebUI/ReForge 的可用环境与 `--api`，或受支持的 ComfyUI 路径；WAI v17 checkpoint，所选角色 LoRA | 控制室连接和一张真实图；双人增强另需扩展与姿势模型 |
@@ -74,7 +74,13 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 容量按 2026-09-30 发布者文件元数据计算，GB 为十进制，GiB/MiB 为二进制。下面列的是**当前绘遇工作流支持的指定版本**，发布页的最新版本不自动成为兼容版本。下载后按清单放置，不以改名替代不同架构/量化。
 
-### WD14：约 311 MiB，不是 150 MB
+### PixAI 默认图片反推
+
+默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
+
+首次反推需要加载模型，后续请求复用同一个 GPU 进程；不会在每张图结束或开始生图时自动卸载。取消活跃请求、进程故障或网关关闭会回收对应进程。显存不足明确报错，不自动变更模型或回退为演示标签。安装包只带 worker 和固定文件清单，Python 环境与权重仍需另行准备。
+
+### WD14 可选旧工具
 
 [SmilingWolf 发布页](https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2)提供 `model.onnx`（326,197,340 字节）和 `selected_tags.csv`（253,906 字节）。下载后分别命名为 `wd-v1-4-moat-tagger-v2.onnx`、`wd-v1-4-moat-tagger-v2.csv`；二者必须来自同一版本。支持 CPU，不承诺固定耗时。
 

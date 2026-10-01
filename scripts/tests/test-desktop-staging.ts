@@ -84,6 +84,9 @@ function createFixture() {
   write(path.join(root, 'scripts/lib/runtime.js'), 'excluded');
   write(path.join(root, 'data/characters.json'), '{}'); write(path.join(root, 'dist/index.html'), '<!doctype html>');
   write(path.join(root, 'assets/asset.txt'), 'asset'); write(path.join(root, 'tools/nav.js'), 'browser');
+  write(path.join(root, 'tools/interrogate/pixai_worker.py'), '# model worker');
+  write(path.join(root, 'tools/interrogate/pixai-manifest.json'), '{}');
+  write(path.join(root, 'tools/interrogate/test_pixai_worker.py'), '# excluded test');
   for(const name of ['history.json','projects.json','prompts.json','live2d-candidates.json','live2d-candidates.json.br'])write(path.join(root,'data',name),'private');
   write(path.join(root,'data/references/fixture.json'),'{}');write(path.join(root,'tools/control-server.js'),'old-node-service');
   write(path.join(root, 'assets/character-references/private.png'), 'private');
@@ -137,6 +140,9 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     for (const name of ['server.js', 'server', 'routes', 'services', 'node_modules', 'package.json', 'scripts/lib/runtime.js', 'assets/character-references/private.png', 'assets/live2d-candidates/private.model3.json','data/history.json','data/projects.json','data/prompts.json','data/live2d-candidates.json','data/live2d-candidates.json.br','tools/control-server.js']) assert.equal(fs.existsSync(path.join(stage, 'gateway', name)), false, name);
     assert.equal(fs.existsSync(path.join(stage,'gateway/data/references/fixture.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/nav.js')),true);
+    assert.equal(fs.readFileSync(path.join(stage,'gateway/tools/interrogate/pixai_worker.py'),'utf8'),'# model worker');
+    assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
+    assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
   } finally { remove(root); }
 });

@@ -1,5 +1,5 @@
 <template>
-  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" aria-label="当前场景参考">
+  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" :style="referenceStyle" aria-label="当前场景参考">
     <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }">
       <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
       <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-secondary tw:text-label tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
@@ -67,7 +67,17 @@ const imageUrl = computed(() => {
   return /^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path) ? `/scene-showcase/${path}` : ''
 })
 const canLoad = computed(() => !!imageUrl.value && (!restricted.value || isLocalStudioHost()))
-const { image, failed } = useRuntimeImage(() => canLoad.value ? imageUrl.value : '')
+const { image: runtimeImage, src, failed } = useRuntimeImage(() => canLoad.value ? imageUrl.value : '')
+const imageRatio = ref<number | null>(null)
+watch([src, runtimeResourceIdentity], () => { imageRatio.value = null }, { flush: 'sync' })
+function measureImage(event: Event) {
+  if (!runtimeImage.value.onLoad(event)) return
+  const image = event.target as HTMLImageElement
+  imageRatio.value = image.naturalWidth / image.naturalHeight
+}
+const image = computed(() => ({ ...runtimeImage.value, onLoad: measureImage }))
+const referenceStyle = computed(() => imageRatio.value && !failed.value
+  ? { '--reference-image-ratio': String(imageRatio.value) } : undefined)
 const shot = computed(() => SHOT.find(item => item.id === pb.selections.shot)?.name ?? '跟随场景')
 const composition = computed(() => COMPOSITION.find(item => item.id === pb.selections.composition)?.name ?? '跟随场景')
 const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.lighting)?.name ?? '跟随场景')
@@ -75,8 +85,8 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.scene-reference { @apply tw:grid; grid-template-columns:minmax(120px,.9fr) minmax(0,1fr); @apply tw:gap-s-4; margin:0 0 var(--s-4); @apply tw:text-left tw:items-center; }
-.scene-reference-picture { place-items:center; aspect-ratio:4/3; background:var(--bg-base); }
+.scene-reference { --reference-max-height:clamp(180px,calc(var(--drawing-viewport-height, 100vh) - 390px),560px); @apply tw:grid; grid-template-columns:minmax(0,min(45%,calc(var(--reference-max-height) * var(--reference-image-ratio,1.333333)))) minmax(0,1fr); @apply tw:gap-s-4; margin:0 0 var(--s-4); @apply tw:text-left tw:items-center; }
+.scene-reference-picture { width:min(100%,calc(var(--reference-max-height) * var(--reference-image-ratio,1.333333))); max-height:var(--reference-max-height); justify-self:center; place-items:center; aspect-ratio:var(--reference-image-ratio,4/3); background:var(--bg-base); }
 .scene-reference-picture img { @apply tw:absolute; inset:0; @apply tw:block tw:w-full tw:h-full tw:object-contain; }
 .scene-reference.is-unconnected .scene-reference-picture { aspect-ratio:auto; @apply tw:min-h-[104px]; }
 .scene-reference-picture.is-restricted img { filter:blur(24px); transform:scale(1.15); }
@@ -88,6 +98,6 @@ figcaption p { margin:var(--s-2) 0 var(--s-3); @apply tw:text-secondary tw:text-
 .scene-reference-settings { gap:var(--s-2) var(--s-4); }
 .scene-reference-settings dt { @apply tw:text-secondary; }
 .scene-reference-settings dd { margin:var(--s-1) 0 0; @apply tw:text-primary; }
-@container canvas-column (max-width:440px) { .scene-reference { grid-template-columns:1fr; } .scene-reference-picture { @apply tw:max-h-[190px]; aspect-ratio:16/9; } }
-@media (min-width:901px) and (max-height:760px) { .scene-reference-picture { @apply tw:max-h-[180px]; } }
+@container canvas-column (max-width:440px) { .scene-reference { --reference-max-height:190px; grid-template-columns:1fr; } }
+@media (min-width:901px) and (max-height:760px) { .scene-reference { --reference-max-height:180px; } }
 </style>

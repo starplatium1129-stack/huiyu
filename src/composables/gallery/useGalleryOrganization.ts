@@ -1,5 +1,7 @@
 import { onScopeDispose, ref, shallowRef } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
+import type { ArtworkProjectRecord } from '@/application/artwork/artworkRepository'
+import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '@/application/artwork/projects'
 import { ARTWORK_ORGANIZATION_BATCH_SIZE, ARTWORK_ORGANIZATION_SELECTION_LIMIT, collectionTags, type ArtworkOrganizationId,
   type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt } from '@/application/artwork/organization'
 
@@ -10,9 +12,11 @@ export function useGalleryOrganization(options: {
   const busy = ref(false), stopping = ref(false), message = ref(''), error = ref('')
   const receipts = shallowRef<ArtworkOrganizationReceipt[]>([])
   const canUndo = ref(false)
+  const pendingProject = shallowRef<ArtworkProjectDraft | null>(null)
+  const createdProject = shallowRef<ArtworkProjectRecord | null>(null)
   const tagsFromInput = (text: string) => collectionTags(text.split(/[,，;；\n]/))
   onScopeDispose(() => { stopping.value = true })
-  async function apply(input: Omit<ArtworkOrganizationRequest, 'ids'>) {
+  async function apply(input: Omit<ArtworkOrganizationRequest, 'ids'>, newProjectTitle?: string) {
     if (busy.value) return
     const ids = options.ids().slice()
     if (!ids.length) return
@@ -21,8 +25,18 @@ export function useGalleryOrganization(options: {
     receipts.value = []; canUndo.value = false
     let handled = 0
     try {
+      const organizationInput = structuredClone(input)
+      if (newProjectTitle !== undefined) {
+        const draft = pendingProject.value ?? normalizeNewArtworkProject({ id: `album-${crypto.randomUUID()}`, title: newProjectTitle })
+        pendingProject.value = { id: draft.id, title: draft.title }
+        message.value = '正在新建画册…'
+        const project = await artworkRepository.createProject(pendingProject.value)
+        createdProject.value = project
+        pendingProject.value = null
+        organizationInput.projectId = project.id
+      }
       for (let start = 0; start < ids.length && !stopping.value; start += ARTWORK_ORGANIZATION_BATCH_SIZE) {
-        const receipt = await artworkRepository.organizeArtworks({ ...input, ids: ids.slice(start, start + ARTWORK_ORGANIZATION_BATCH_SIZE) })
+        const receipt = await artworkRepository.organizeArtworks({ ...organizationInput, ids: ids.slice(start, start + ARTWORK_ORGANIZATION_BATCH_SIZE) })
         receipts.value = [...receipts.value, receipt]
         handled += receipt.changes.length
         canUndo.value = receipts.value.some(value => value.changes.length > 0)
@@ -30,7 +44,8 @@ export function useGalleryOrganization(options: {
       }
       message.value = stopping.value ? `已停止后续整理；已完成 ${handled} 幅，可撤销` : handled ? `已整理 ${handled} 幅作品，可撤销本次整理` : '所选作品已使用这些画册与标签'
     } catch (failure) {
-      error.value = `${failure instanceof Error ? failure.message : '作品整理未确认'}${handled ? `；已完成 ${handled} 幅，可先撤销` : ''}`
+      if (!handled) message.value = ''
+      error.value = `${failure instanceof Error ? failure.message : '作品整理未确认'}${pendingProject.value ? '；请重试本次创建' : handled ? `；已完成 ${handled} 幅，可先撤销` : ''}`
     } finally { busy.value = false; options.changed() }
   }
   async function undo() {
@@ -49,5 +64,5 @@ export function useGalleryOrganization(options: {
     } catch (failure) { error.value = failure instanceof Error ? failure.message : '撤销尚未确认，可重试本次撤销' }
     finally { busy.value = false; options.changed() }
   }
-  return { busy, stopping, message, error, canUndo, apply, undo, tagsFromInput, stop: () => { stopping.value = true } }
+  return { busy, stopping, message, error, canUndo, pendingProject, createdProject, apply, undo, tagsFromInput, stop: () => { stopping.value = true } }
 }

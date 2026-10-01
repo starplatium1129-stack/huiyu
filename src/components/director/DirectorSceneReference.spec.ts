@@ -52,6 +52,29 @@ describe('scene canvas reference', () => {
     expect(wrapper.text()).toContain('图书馆')
   })
 
+  it.each([[1216, 832], [832, 1216]])('follows the loaded reference dimensions %s × %s and resets when the sample changes', async (width, height) => {
+    const wrapper = mount(DirectorSceneReference)
+    await flushPromises()
+    const frame = wrapper.get('figure').element as HTMLElement
+    const sample = wrapper.get('img')
+    expect(frame.style.getPropertyValue('--reference-image-ratio')).toBe('')
+    Object.defineProperties(sample.element, { naturalWidth: { value: width }, naturalHeight: { value: height } })
+    await sample.trigger('load')
+    expect(Number(frame.style.getPropertyValue('--reference-image-ratio'))).toBeCloseTo(width / height)
+
+    context.store.activeScene = { id: 'scene_two', title: '图书馆', rating: 'All' }
+    await nextTick()
+    expect(frame.style.getPropertyValue('--reference-image-ratio')).toBe('')
+    const replacement = wrapper.get('img')
+    Object.defineProperties(replacement.element, { naturalWidth: { value: height }, naturalHeight: { value: width } })
+    await replacement.trigger('load')
+    expect(Number(frame.style.getPropertyValue('--reference-image-ratio'))).toBeCloseTo(height / width)
+    await replacement.trigger('error')
+    expect(frame.style.getPropertyValue('--reference-image-ratio')).toBe('')
+    expect(wrapper.find('img').exists()).toBe(false)
+    expect(wrapper.text()).toContain('暂未提供可核实的样张')
+  })
+
   it.each(['R18', 'R15', 'All', undefined])('uses the sample rating even if scene metadata differs (%s)', async rating => {
     context.store.activeScene = { id: 'private', title: '场景', rating }
     const wrapper = mount(DirectorSceneReference)

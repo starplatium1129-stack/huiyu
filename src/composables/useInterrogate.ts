@@ -1,24 +1,11 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { useTrackedTask } from './useTaskCenter.ts'
 import { getCurrentScope, onScopeDispose, ref } from 'vue'
-
-export type InterrogateMode = 'tag' | 'caption'
-export interface InterrogateResult {
-  engine: string
-  model?: string
-  mode: InterrogateMode
-  threshold: number
-  tags: string[]
-  scores: Record<string, number>
-  caption: string
-  captionDerived?: string
-  characterTags?: string[]
-  rating?: Record<string, number>
-  warning?: string
-}
+import { decodeInterrogateResult, type InterrogateMode, type InterrogateResult } from '../api/interrogateResult.ts'
+export type { InterrogateMode, InterrogateResult } from '../api/interrogateResult.ts'
 
 const API = '/api/interrogate'
-const MAX_BYTES = 12 * 1024 * 1024
+const MAX_BYTES = 20 * 1024 * 1024
 
 function fileToDataUrl(file: File, signal: AbortSignal): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -53,9 +40,9 @@ function interrogateFailure(status: number, backendMessage: string): string {
     : status === 429 ? '反推请求太频繁，稍等几秒再试。'
     : status === 400 ? '请求被网关拒绝，通常是图片格式或体积不合要求。'
     : status === 404 ? '反推接口不可用，请确认网关已启动到最新版本。'
-    : status >= 500 ? '反推服务内部出错，WD14 模型可能尚未就绪，可稍后重试。'
+    : status >= 500 ? '请检查 PixAI 模型、GPU 显存与本地推理依赖后重试。'
     : status === 0 ? '无法连接网关，请确认服务已启动。'
-    : '请稍后重试；若持续失败，检查网关与 WD14 反推模型。'
+    : '请稍后重试；若持续失败，检查网关与 PixAI 反推模型。'
   // 后端给的中文文案优先，状态码提示作为补充，不重复拼接。
   return backendMessage ? `${backendMessage}（${hint}）` : `反推失败：${hint}`
 }
@@ -78,7 +65,7 @@ export function useInterrogate() {
   }
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancel() })
 
-  async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.35): Promise<InterrogateResult | null> {
+  async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
     if (busy.value || disposed) return null
     busy.value = true
     cancelled.value = false
@@ -98,7 +85,7 @@ export function useInterrogate() {
       if (activeController !== controller) return null
       controller.signal.throwIfAborted()
       if (!file) throw new Error('请选择图片')
-      if (file.size > MAX_BYTES) throw new Error('图片超过 12MB 限制')
+      if (file.size > MAX_BYTES) throw new Error('图片超过 20MB 限制')
       if (!file.type.startsWith('image/')) throw new Error('仅支持图片文件')
       const dataUrl = await fileToDataUrl(file, controller.signal)
       if (activeController !== controller) return null
@@ -110,20 +97,16 @@ export function useInterrogate() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: dataUrl, mode: mode, threshold: threshold })
       })
-      const json = (await res.json().catch(() => null)) as { ok?: boolean; data?: InterrogateResult; error?: string; message?: string } | null
+      const json: unknown = await res.json().catch(() => null)
       if (activeController !== controller) return null
       controller.signal.throwIfAborted()
-      if (!res.ok || !json || json.ok !== true) {
-        const backendMessage = (json && (json.error || json.message)) || ''
+      const envelope = json && typeof json === 'object' && !Array.isArray(json) ? json as Record<string, unknown> : null
+      if (!res.ok || !envelope || envelope.ok !== true) {
+        const backendMessage = typeof envelope?.error === 'string' ? envelope.error
+          : typeof envelope?.message === 'string' ? envelope.message : ''
         throw new Error(interrogateFailure(res.status, backendMessage))
       }
-      // 后端信封是 { ok:true, ...payload }，payload 直接平铺在顶层；
-      // 兼容历史/未来可能的 { ok:true, data: {...} } 两种形态。
-      const data = (json.data ?? json) as InterrogateResult
-      if (data.engine === 'heuristic') {
-        throw new Error(data.warning || '本地反推模型不可用，演示标签未写入工作台，请检查 WD14 模型后重试')
-      }
-      if (!Array.isArray(data.tags) || typeof data.caption !== 'string') throw new Error('反推服务返回了无效结果，请重试')
+      const data = decodeInterrogateResult(envelope, mode)
       lastResult.value = data
       return data
     } catch (e: unknown) {
@@ -147,6 +130,6 @@ export function useInterrogate() {
     }
   }
 
-  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : cancelled.value ? 'cancelled' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? '正在读取图片特征…' : cancelled.value ? '图片反推已取消' : '反推结果已送回工作台') }), { cancel })
+  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : cancelled.value ? 'cancelled' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? 'PixAI 正在反推；首次需加载模型，后续复用 GPU 常驻模型' : cancelled.value ? '图片反推已取消' : '反推结果已送回工作台') }), { cancel })
   return { busy, error, lastResult, interrogate, cancel }
 }

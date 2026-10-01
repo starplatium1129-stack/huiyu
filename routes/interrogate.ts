@@ -25,8 +25,9 @@ let security: typeof import('../server/security') = require('../server/security'
 let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
 let wd14Client: typeof import('../server/interrogate-client') = require('../server/interrogate-client');
 
-let MAX_BODY = '16mb';
-let MAX_IMAGE_BYTES = 12 * 1024 * 1024; // base64前 12M ≈ dataURL 16M
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+// Match the Rust route: account for base64 expansion, data URL and JSON fields.
+const MAX_BODY = Math.ceil(MAX_IMAGE_BYTES / 3) * 4 + 64 * 1024;
 const MAX_UPSTREAM_BYTES = 4 * 1024 * 1024;
 let ALLOWED_MODE = new Set(['tag', 'caption']);
 let DEFAULT_THRESHOLD = 0.35;
@@ -54,7 +55,7 @@ function validateImageBase64(b64: string|any[]) {
   if (!/^[A-Za-z0-9+/=\r\n]+$/.test(raw)) throw serviceError(400, 'INVALID_IMAGE', '图片 base64 非法');
   let bytes = sniffBase64Bytes(raw);
   if (bytes < 1024) throw serviceError(400, 'INVALID_IMAGE', '图片过小');
-  if (bytes > MAX_IMAGE_BYTES) throw serviceError(413, 'IMAGE_TOO_LARGE', '图片超过 12MB 限制');
+  if (bytes > MAX_IMAGE_BYTES) throw serviceError(413, 'IMAGE_TOO_LARGE', '图片超过 20MB 限制');
   // 校验能解码
   try { Buffer.from(raw, 'base64'); } catch { throw serviceError(400, 'INVALID_IMAGE', '图片解码失败'); }
   return raw;
