@@ -53,11 +53,12 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (active?.element.hasPointerCapture?.(active.id)) active.element.releasePointerCapture(active.id)
     if (active) save()
   }
+  function currentWidth(side: Side) { return side === 'materials' ? materialsWidth.value : inspectorWidth.value }
   function start(side: Side, event: PointerEvent) {
     if (!observing || event.button !== 0 || !event.isPrimary) return
     finish(); measure()
     const element = event.currentTarget as HTMLElement
-    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: side === 'materials' ? materialsWidth.value : inspectorWidth.value }
+    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side) }
     element.setPointerCapture(event.pointerId); dragging.value = side; event.preventDefault()
   }
   function move(event: PointerEvent) {
@@ -68,7 +69,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   function key(side: Side, event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey) return
     const step = event.shiftKey ? 40 : 10
-    const current = side === 'materials' ? materialsWidth.value : inspectorWidth.value
+    const current = currentWidth(side)
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       const sign = event.key === 'ArrowRight' ? 1 : -1
       setWidth(side, current + sign * step * (side === 'materials' ? 1 : -1))
