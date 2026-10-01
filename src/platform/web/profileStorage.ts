@@ -85,7 +85,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
   let expectedReset = resetRevision
-  let baseValue = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
+  let baseValue: unknown = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
     if (expectedRevision === undefined) {
