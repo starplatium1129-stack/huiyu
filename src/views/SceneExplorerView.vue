@@ -171,7 +171,9 @@
             <div class="ex-actions">
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
-              <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :title="favs.has(s2.id) ? '取消收藏' : '收藏场景'" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
+              <StudioTooltip :content="favs.has(s2.id) ? '取消收藏' : '收藏场景'">
+              <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
+              </StudioTooltip>
             </div>
             <details class="ex-more" @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
               <DeferredPanel :active="openedDetails.has(s2.id)">
@@ -229,6 +231,7 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { computed, ref, reactive, watch } from 'vue'
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
