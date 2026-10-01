@@ -44,7 +44,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     rootFont.value = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
   }
   function setWidth(side: Side, value: number) {
-    const other = side === 'materials' ? (collapsed.value.inspector ? 0 : inspectorWidth.value) : (collapsed.value.materials ? 0 : materialsWidth.value)
+    const otherSide = side === 'materials' ? 'inspector' : 'materials'
+    const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
     preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
   function finish() {
