@@ -17,7 +17,7 @@ const frames = new Map<number, FrameRequestCallback>()
 const cleanups: Array<() => void> = []
 let nextFrame = 0
 const context = {
-  clearRect: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), fillRect: vi.fn(),
+  setTransform: vi.fn(), clearRect: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), fillRect: vi.fn(),
   moveTo: vi.fn(), lineTo: vi.fn(), closePath: vi.fn(), stroke: vi.fn(), save: vi.fn(), restore: vi.fn(),
   drawImage: vi.fn(), getImageData: vi.fn(), createLinearGradient: vi.fn(),
   globalAlpha: 1, fillStyle: '', strokeStyle: '', lineWidth: 1,
@@ -193,21 +193,18 @@ describe('CgImageReveal ownership and fallback', () => {
     await img.trigger('load')
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
     expect(wrapper.classes()).toContain('is-revealing')
-    expect(animate).toHaveBeenCalledTimes(3)
-    expect(animate.mock.calls[0]).toEqual([
-      [{ opacity: 0.65 }, { opacity: 1, offset: 0.65 }, { opacity: 1 }],
-      { duration: 680, easing: 'cubic-bezier(.23,1,.32,1)' },
-    ])
-    expect(animate.mock.calls[1][1]).toEqual({ duration: 680, easing: 'cubic-bezier(.23,1,.32,1)' })
+    expect(animate).toHaveBeenCalledTimes(1)
     for (const [keyframes] of animate.mock.calls) {
       for (const frame of keyframes as Keyframe[]) {
-        expect(Object.keys(frame).filter(key => key !== 'offset').every(key => key === 'opacity' || key === 'transform')).toBe(true)
+        expect(Object.keys(frame).filter(key => key !== 'offset').every(key => key === 'opacity')).toBe(true)
       }
     }
-    expect(wrapper.find('canvas').exists()).toBe(false)
-    expect(context.drawImage).not.toHaveBeenCalled()
-    expect(context.getImageData).not.toHaveBeenCalled()
-    expect(frames.size).toBe(0)
+    expect(wrapper.find('canvas').exists()).toBe(true)
+    expect(context.drawImage).toHaveBeenCalledOnce()
+    expect(context.getImageData).toHaveBeenCalledOnce()
+    expect(frames.size).toBe(1)
+    tick(200)
+    expect(context.fillRect).toHaveBeenCalled()
 
     animations[0].finish()
     await Promise.resolve()
@@ -215,12 +212,11 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(wrapper.classes()).not.toContain('is-revealing')
     expect(wrapper.classes()).toContain('is-loaded')
-    expect(wrapper.get('.cg-reveal-grain').attributes('style')).toContain('display: none')
-    expect(wrapper.get('.cg-reveal-sweep').attributes('style')).toContain('display: none')
+    expect(wrapper.find('canvas').exists()).toBe(false)
     expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
     expect(img.element.style.opacity).toBe('')
     expect(img.element.style.transform).toBe('')
-    animations[1].finish()
+    animations[0].finish()
     await Promise.resolve()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(frames.size).toBe(0)
@@ -238,7 +234,7 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
     wrapper.vm.triggerReveal()
     await nextTick()
-    expect(animate).toHaveBeenCalledTimes(3)
+    expect(animate).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
   })
 
@@ -249,12 +245,12 @@ describe('CgImageReveal ownership and fallback', () => {
     await img.trigger('load')
     expect(animate).not.toHaveBeenCalled()
     await wrapper.setProps({ autoReveal: true })
-    expect(animate).toHaveBeenCalledTimes(3)
+    expect(animate).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
     await img.trigger('load')
     await wrapper.setProps({ autoReveal: false })
     await wrapper.setProps({ autoReveal: true })
-    expect(animate).toHaveBeenCalledTimes(3)
+    expect(animate).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
   })
 
@@ -283,8 +279,8 @@ describe('CgImageReveal ownership and fallback', () => {
     await nextTick()
     expect(wrapper.classes()).toContain('is-revealing')
     expect(wrapper.emitted('reveal-complete')).toBeUndefined()
-    expect(animations[3].cancel).not.toHaveBeenCalled()
-    animations[3].finish()
+    expect(animations[1].cancel).not.toHaveBeenCalled()
+    animations[1].finish()
     await Promise.resolve()
     await nextTick()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
@@ -299,7 +295,7 @@ describe('CgImageReveal ownership and fallback', () => {
     const previous = [...animations]
     wrapper.vm.triggerReveal()
     await nextTick()
-    expect(animate).toHaveBeenCalledTimes(6)
+    expect(animate).toHaveBeenCalledTimes(2)
     expect(previous.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
     expect(wrapper.emitted('reveal-start')).toHaveLength(2)
     previous.forEach(animation => animation.finish())
@@ -307,7 +303,7 @@ describe('CgImageReveal ownership and fallback', () => {
     await nextTick()
     expect(wrapper.classes()).toContain('is-revealing')
     expect(wrapper.emitted('reveal-complete')).toBeUndefined()
-    animations[3].finish()
+    animations[1].finish()
     await Promise.resolve()
     await nextTick()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
@@ -361,7 +357,7 @@ describe('CgImageReveal ownership and fallback', () => {
     animations.forEach(animation => animation.reject())
     await Promise.resolve()
     await nextTick()
-    expect(animate).toHaveBeenCalledTimes(3)
+    expect(animate).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(frames.size).toBe(0)
   })
@@ -381,7 +377,8 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it.each([1, 2, 3])('falls back safely when animation creation %i throws', async failureCall => {
+  it('falls back safely and releases dust when animation creation throws', async () => {
+    const failureCall = 1
     const createAnimation = animate.getMockImplementation()! as () => Animation
     animate.mockImplementation(() => {
       if (animate.mock.calls.length === failureCall) throw new Error('Animation is unavailable')
