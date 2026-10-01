@@ -1,5 +1,5 @@
 <template>
-  <section class="voice-studio" aria-label="成片配音">
+  <section ref="voiceRoot" class="voice-studio" aria-label="成片配音">
     <div class="voice-head">
       <div>
         <div class="voice-title">成片配音</div>
@@ -45,7 +45,7 @@
         </details>
         <div class="voice-actions">
           <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">翻译成日文</button>
-          <button class="btn btn-ghost" type="button" :disabled="!voicePlayText" @click="previewVoice">系统试听</button>
+          <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voicePlayText" @click="previewVoice">系统试听</button>
           <button class="btn btn-primary" type="button" :disabled="voiceBusy || !voicePlayText" @click="generateVoice">
             {{ voiceBusy ? '生成中…' : '生成 AI 声线' }}
           </button>
@@ -63,7 +63,7 @@
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, onActivated, onDeactivated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -98,9 +98,23 @@ const voiceConfigured = ref(false)
 const voiceAudioUrl = ref('')
 const voiceAudioTranscript = ref('')
 let voiceObjectUrl = ''
-const lifecycle = new AbortController()
-const callOptions = { signal: lifecycle.signal }
-let statusRequest = 0
+const voiceRoot = ref<HTMLElement | null>(null)
+let lifecycle = new AbortController(), viewActive = true
+let statusRequest = 0, operationRevision = 0
+let ownedSpeech: SpeechSynthesisUtterance | null = null
+function stopOwnedSpeech() {
+  const utterance = ownedSpeech
+  ownedSpeech = null
+  if (!utterance) return
+  utterance.onstart = null; utterance.onend = null; utterance.onerror = null
+  window.speechSynthesis?.cancel()
+}
+function beginOperation() {
+  stopOwnedSpeech()
+  const revision = ++operationRevision, controller = lifecycle
+  return { callOptions: { signal: controller.signal },
+    current: () => viewActive && controller === lifecycle && !controller.signal.aborted && revision === operationRevision }
+}
 
 const voiceEmotion = ref('neutral')
 const voiceSpeed = ref(1)
@@ -126,14 +140,16 @@ function errorMessage(error: unknown, fallback: string) {
 }
 
 async function refreshVoiceStatus() {
+  if (!viewActive) return
+  const controller = lifecycle, operation = operationRevision, callOptions = { signal: controller.signal }
   const request = ++statusRequest
   const voice = voiceChar.value
   try {
     const data = await voiceApi.getStatus(callOptions)
-    if (lifecycle.signal.aborted || request !== statusRequest) return
+    if (!viewActive || controller.signal.aborted || request !== statusRequest) return
     voiceOnline.value = data.online
     voiceConfigured.value = Boolean(data.voices[voice])
-    if (voiceBusy.value) return
+    if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     if (voiceOnline.value && voiceConfigured.value) {
       voiceStatus.value = 'GPT-SoVITS 已连接；可翻译或生成角色声线。'
       // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
@@ -144,7 +160,7 @@ async function refreshVoiceStatus() {
       voiceStatus.value = '语音服务未启动。可到控制面板启动 GPT-SoVITS。'
     }
   } catch {
-    if (lifecycle.signal.aborted || request !== statusRequest || voiceBusy.value) return
+    if (!viewActive || controller.signal.aborted || request !== statusRequest || voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     voiceOnline.value = false
     voiceConfigured.value = false
     voiceStatus.value = '无法读取语音状态。'
@@ -158,43 +174,50 @@ function clearVoiceAudio() {
 }
 
 async function translateVoice() {
-  if (voiceBusy.value) return
+  if (!viewActive || voiceBusy.value) return
   const text = voiceCaption.value.trim()
   if (!text) { toast.warning('请先写下中文字幕'); return }
+  const { callOptions, current } = beginOperation()
   voiceBusy.value = true
   voiceStatus.value = '正在本机翻译成日语…'
   try {
     const data = await voiceApi.translate(text, callOptions)
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     if (voiceCaption.value.trim() !== text) { voiceStatus.value = '字幕已修改，请重新翻译。'; return }
     const translation = data.translation.trim()
     if (!translation) throw new Error('没有得到可用的日语译文')
     voiceScript.value = translation
     voiceStatus.value = '已生成日语配音稿；可直接生成角色语音，也可以先微调。'
   } catch (error) {
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     voiceStatus.value = errorMessage(error, '翻译失败')
     toast.error(voiceStatus.value)
-  } finally { voiceBusy.value = false }
+  } finally { if (current()) voiceBusy.value = false }
 }
 
 function previewVoice() {
+  if (!viewActive || voiceBusy.value) return
   if (!voicePlayText.value) { toast.warning('请先准备配音文本'); return }
   if (!('speechSynthesis' in window)) { voiceStatus.value = '当前浏览器没有系统语音朗读能力'; return }
-  window.speechSynthesis.cancel()
+  const { current } = beginOperation()
   const utterance = new SpeechSynthesisUtterance(voicePlayText.value)
   utterance.lang = voiceLang.value === 'ja' ? 'ja-JP' : 'zh-CN'
   utterance.rate = 1
   utterance.pitch = voiceChar.value === 'nene' ? 1.08 : 0.95
-  utterance.onstart = () => { voiceStatus.value = '正在用本机系统声音试听（仅检查语速与文本）' }
-  utterance.onend = () => { voiceStatus.value = '试听结束。满意后可生成 AI 角色声线。' }
-  window.speechSynthesis.speak(utterance)
+  ownedSpeech = utterance
+  const owns = () => current() && ownedSpeech === utterance
+  utterance.onstart = () => { if (owns()) voiceStatus.value = '正在用本机系统声音试听（仅检查语速与文本）' }
+  utterance.onend = () => { if (owns()) { ownedSpeech = null; voiceStatus.value = '试听结束。满意后可生成 AI 角色声线。' } }
+  utterance.onerror = () => { if (owns()) { ownedSpeech = null; voiceStatus.value = '系统试听未完成，请重试。' } }
+  try { window.speechSynthesis.speak(utterance) }
+  catch { if (owns()) { ownedSpeech = null; voiceStatus.value = '系统试听未能开始，请重试。' } }
 }
 
 async function generateVoice() {
-  if (voiceBusy.value) return
+  if (!viewActive || voiceBusy.value) return
   const text = voicePlayText.value
   if (!text) { toast.warning('请先准备配音文本'); return }
+  const { callOptions, current } = beginOperation()
   clearVoiceAudio()
   voiceBusy.value = true
   voiceStatus.value = '正在生成 AI 角色声线…'
@@ -205,15 +228,15 @@ async function generateVoice() {
   }
   try {
     const status = await voiceApi.getStatus(callOptions)
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     voiceOnline.value = status.online
     voiceConfigured.value = Boolean(status.voices[voiceChar.value])
     if (!status.voices[payload.voice]) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
     // 预热失败不阻断合成；合成接口会返回可读的真实失败原因。
     await voiceApi.prepare({ voice: payload.voice, translation: payload.language === 'ja' }, callOptions).catch(() => {})
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     const { blob, queueWaitMs } = await voiceApi.synthesize(payload, callOptions)
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     voiceObjectUrl = URL.createObjectURL(blob)
     voiceAudioUrl.value = voiceObjectUrl
     voiceAudioTranscript.value = text
@@ -221,10 +244,10 @@ async function generateVoice() {
     voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。' + (queueWaitMs > 0 ? `（排队 ${Math.round(queueWaitMs / 100) / 10}s）` : '')
     toast.success('配音已生成')
   } catch (error) {
-    if (lifecycle.signal.aborted) return
+    if (!current()) return
     voiceStatus.value = errorMessage(error, '语音生成失败')
     toast.error(voiceStatus.value)
-  } finally { voiceBusy.value = false }
+  } finally { if (current()) voiceBusy.value = false }
 }
 
 watch(() => props.initialVoice, voice => { voiceChar.value = voice })
@@ -242,7 +265,20 @@ watch(() => props.suggestedCaption, caption => {
 }, { immediate: true })
 watch(voiceChar, () => { void refreshVoiceStatus() })
 onMounted(() => { void refreshVoiceStatus() })
-onUnmounted(() => { lifecycle.abort(); clearVoiceAudio() })
+function leaveVoiceStudio() {
+  viewActive = false; operationRevision++; statusRequest++; lifecycle.abort()
+  stopOwnedSpeech()
+  if (voiceBusy.value) voiceStatus.value = '已停止本页配音请求，可重新生成。'
+  voiceBusy.value = false
+  voiceRoot.value?.querySelectorAll('audio').forEach(audio => audio.pause())
+}
+onDeactivated(leaveVoiceStudio)
+onActivated(() => {
+  if (viewActive) return
+  viewActive = true; lifecycle = new AbortController()
+  void refreshVoiceStatus()
+})
+onUnmounted(() => { leaveVoiceStudio(); clearVoiceAudio() })
 
 function setSuggestedCaption(caption: string) {
   const nextCaption = caption.trim()
