@@ -94,6 +94,36 @@ test('more popover keeps its trigger anchor while entering', async ({ page }) =>
   expect(Math.abs(frame.top - (triggerAfter.y + triggerAfter.height + 10))).toBeLessThanOrEqual(2)
 })
 
+test('a pending menu download remains cancellable and preserves the trigger focus', async ({ page }) => {
+  let release!: () => void
+  let downloads = 0
+  const response = new Promise<void>(resolve => { release = resolve })
+  await page.route(/AppMoreMenu.*\.js/, async route => { downloads++; await response; await route.continue() })
+  try {
+    await page.goto('/scene-explorer')
+    const trigger = page.getByRole('button', { name:'更多', exact:true })
+    await trigger.click()
+    await expect(trigger).toHaveAttribute('aria-busy','true')
+    await expect(trigger).toBeEnabled()
+    await trigger.click()
+    await expect(trigger).toHaveAttribute('aria-expanded','false')
+    await trigger.click()
+    await expect(trigger).toHaveAttribute('aria-expanded','true')
+    const input = page.locator('#sceneSearch')
+    await input.click()
+    await expect(trigger).toHaveAttribute('aria-expanded','false')
+    release()
+    await expect(trigger).not.toHaveAttribute('aria-busy','true')
+    await expect(input).toBeFocused()
+    await expect(page.getByRole('dialog', { name:'更多页面', exact:true })).toHaveCount(0)
+    await trigger.press('Enter')
+    await expect(page.getByRole('dialog', { name:'更多页面', exact:true })).toBeVisible()
+    expect(downloads).toBe(1)
+    await page.keyboard.press('Escape')
+    await expect(trigger).toBeFocused()
+  } finally { release() }
+})
+
 test('a failed menu download keeps primary navigation available', async ({ page }) => {
   await page.goto('/scene-explorer')
   await expect(page.locator('main h1')).toBeVisible()

@@ -6,7 +6,7 @@
     </header>
     <ol class="guide-steps tw:grid tw:gap-s-4 tw:p-0 tw:m-0">
       <li><RouterLink to="/scene-explorer"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">01</span><span><strong>挑一个场景</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">浏览故事与参考画面，找到想画的瞬间。</span></span></RouterLink></li>
-      <li><RouterLink to="/prompt-builder"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><span><strong>在绘制台完成画面</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">从场景进入后，确认角色、画幅与参数，再生成。</span></span></RouterLink></li>
+      <li><RouterLink to="/prompt-builder"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><span><strong>在绘制台完成画面</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">确认角色、画幅与氛围，把灵感画出来。</span></span></RouterLink></li>
       <li><RouterLink to="/gallery"><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">03</span><span><strong>在「我的作品」回看</strong><span class="step-copy tw:block tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose">查看已保存的作品，挑选喜欢的图片继续创作。</span></span></RouterLink></li>
     </ol>
     <details class="guide-help tw:mt-s-4 tw:text-secondary tw:text-label">
@@ -27,12 +27,12 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.creation-guide { margin-block: var(--s-7); }
+.creation-guide { margin-block: var(--s-6); }
 .eyebrow { @apply tw:text-secondary tw:text-label-sm; }
-h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title)/var(--lh-label) var(--font-serif); }
+h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .guide-direct { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-label; }
 .guide-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; }
-.guide-steps a { @apply tw:flex tw:gap-s-3 tw:h-full tw:p-s-4; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out); }
+.guide-steps a { @apply tw:flex tw:gap-s-3 tw:h-full tw:p-s-4; border: 1px solid transparent; @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
 .guide-steps a:hover { @apply tw:border-strong; background: var(--bg-surface); }
 .guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 @media (hover: hover) and (pointer: fine) {
@@ -42,6 +42,7 @@ h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title)/var(--lh-label) var(--fon
   .guide-steps a { transition: none; }
   .guide-steps a:hover { transform: none; }
 }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .creation-guide .guide-steps a { transition:none; transform:none; }
 .step-number { place-items:center; flex:0 0 40px; background:var(--accent-soft); font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .guide-steps strong { @apply tw:block tw:text-body-sm; }
 .guide-help { border-bottom: 1px solid var(--border-soft); }

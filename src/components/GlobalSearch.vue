@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
+    <!-- Frequent lookup and keyboard commands keep the focus handoff immediate. -->
     <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
@@ -103,7 +103,6 @@
         <div class="gs-footer tw:flex tw:justify-between tw:gap-s-3 tw:text-muted tw:text-label-sm" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
     </div>
-    </Transition>
   </Teleport>
 </template>
 
@@ -117,13 +116,11 @@ import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { indexArtworkSearch } from '@/utils/artworkSearch'
-import { useFluidSurface } from '@/composables/useFluidSurface'
 
 const props = defineProps<{
   initialSource?: 'keyboard' | 'pointer'
   initialTrigger?: HTMLElement | null
 }>()
-const surface = useFluidSurface('.gs-panel')
 
 interface SearchItem {
   id: string

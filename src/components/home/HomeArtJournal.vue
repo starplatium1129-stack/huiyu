@@ -1,6 +1,6 @@
 <template>
   <section v-if="scenes.length" class="art-journal container" aria-labelledby="journal-title" data-reveal>
-    <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-6">
+    <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
       <div><span class="eyebrow">CG JOURNAL / 画里的日常</span><h2 id="journal-title">在喜欢的世界，多停留一会。</h2></div>
       <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
     </header>
@@ -22,24 +22,23 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.art-journal { margin-block: var(--s-8); }
+.art-journal { margin-block: var(--s-7); }
 .journal-heading { align-items: end; }
-.journal-heading h2 { font: 500 clamp(1.5rem, 2.4vw, 2rem)/1.4 var(--font-serif); @apply tw:m-0; }
+.journal-heading h2 { font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); margin:var(--s-2) 0 0; }
 .journal-heading .eyebrow { @apply tw:text-label-xs; letter-spacing: .16em; @apply tw:text-muted; }
-.journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:text-label tw:text-secondary tw:whitespace-nowrap; }
-.journal-spread { grid-template-columns: 1.2fr 1fr; gap: var(--s-5) var(--s-7); }
+.journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-label tw:text-secondary tw:whitespace-nowrap; }
+.journal-spread { grid-template-columns: 1.2fr 1fr; gap: var(--s-5); }
 .journal-entry { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); @apply tw:items-center tw:gap-s-5 tw:text-primary tw:min-w-0; }
 .journal-entry.lead { grid-row: span 2; @apply tw:flex tw:flex-col tw:items-stretch; }
 .journal-art { background: var(--bg-surface); aspect-ratio: 4 / 5; }
 .journal-missing > span { @apply tw:text-label tw:text-muted; }
 .lead .journal-art { aspect-ratio: 4 / 3; }
-.journal-art img { @apply tw:w-full tw:h-full tw:object-cover; object-position: center 32%; transition: transform .7s cubic-bezier(.22,1,.36,1); }
+.journal-art img { @apply tw:w-full tw:h-full tw:object-cover; object-position: center 32%; }
 .journal-caption h3 { margin-block: var(--s-2); font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .lead h3 { @apply tw:text-title; }
-.journal-caption p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-label; line-height: 1.9; @apply tw:text-muted; }
-.journal-read span { transition: transform .4s var(--ease-out); }
-@media (hover: hover) { .journal-entry:hover img { transform: scale(1.035); } .journal-entry:hover .journal-read span { transform: translate(3px,-3px); } }
+.journal-caption p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-label tw:leading-body tw:text-secondary; }
+.journal-entry:focus-visible, .journal-more:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:var(--r-md); }
+@media (hover: hover) and (pointer: fine) { .journal-entry:hover .journal-read { text-decoration:underline; text-underline-offset:.25em; } }
 @media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } }
 @media (max-width: 600px) { .art-journal { margin-block: var(--s-7); } .journal-heading { align-items: start; @apply tw:flex-col tw:gap-s-3; } .journal-spread { grid-template-columns: minmax(0, 1fr); } .journal-entry:not(.lead) { grid-template-columns: 112px minmax(0, 1fr); @apply tw:pt-s-5; border-top: 1px solid var(--border-soft); } }
-@media (prefers-reduced-motion: reduce) { .journal-art img, .journal-read span { transition: none; } }
 </style>

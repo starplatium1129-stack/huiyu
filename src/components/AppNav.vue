@@ -28,11 +28,11 @@
         </RouterLink>
 
         <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
-        <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"
+        <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined" @pointerenter="prepareMore" @focusin="prepareMore"
           :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
           :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
           <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
-            <button type="button" class="nav-more-trigger" :disabled="moreReady"
+            <button type="button" class="nav-more-trigger"
               :aria-expanded="moreOpen" :aria-busy="moreReady"
               @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
           </StudioTooltip>
@@ -60,7 +60,7 @@
         </div>
       </div>
 
-      <!-- 移动端汉堡 -->
+      <!-- 较窄桌面窗口导航 -->
       <button
         ref="menuToggleEl"
         type="button"
@@ -104,6 +104,12 @@ const moreReady = ref(false)
 const moreLoaded = ref(false)
 const moreError = ref(false)
 let moreHandoff = false
+let menuDownload: Promise<{ default: Component }> | null = null
+let navigationActive = true
+function downloadMore() {
+  return menuDownload ??= import('./AppMoreMenu.vue').catch(error => { menuDownload = null; throw error })
+}
+function prepareMore() { if (!AppMoreMenu.value) void downloadMore().catch(() => {}) }
 watch(moreOpen, open => { if (open) moreHandoff = false }, { flush:'sync' })
 const menuToggleEl = ref<HTMLButtonElement | null>(null)
 
@@ -168,12 +174,24 @@ function closeMenu() {
   moreOpen.value = false
 }
 async function openMore() {
+  if (moreReady.value) { moreOpen.value = !moreOpen.value; return }
   moreReady.value = true; moreOpen.value = true; moreError.value = false
-  try { AppMoreMenu.value = (await import('./AppMoreMenu.vue')).default }
-  catch {
-    moreReady.value = false; moreOpen.value = false; moreError.value = true
-    showToast('菜单暂未加载，请刷新页面后重试。其余导航仍可使用。', 'error', 6000)
+  const trigger = moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
+  try {
+    const menu = await downloadMore()
+    if (!navigationActive) return
+    const restoreTrigger = !moreOpen.value && document.activeElement === trigger
+    AppMoreMenu.value = menu.default
+    await nextTick()
+    if (restoreTrigger && document.activeElement === document.body) moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus({ preventScroll:true })
   }
+  catch {
+    if (!navigationActive) return
+    const requested = moreOpen.value
+    moreOpen.value = false; moreError.value = true
+    if (requested) showToast('菜单暂未加载，请刷新页面后重试。其余导航仍可使用。', 'error', 6000)
+  }
+  finally { moreReady.value = false }
 }
 function onMoreCloseAutoFocus(event: Event) {
   // Route navigation and settings dialogs own focus after selecting an entry.
@@ -200,14 +218,20 @@ async function openGuide() {
   window.dispatchEvent(new Event('atelier:welcome'))
 }
 
-function openSearch() {
+function openSearch(event: MouseEvent) {
   if (menuOpen.value) { closeMenu(); menuToggleEl.value?.focus() }
-  openGlobalSearch('pointer')
+  openGlobalSearch(event.detail ? 'pointer' : 'keyboard')
 }
 
 function onDocClick(e: MouseEvent) {
+  dismissPendingMore(e)
   const inMore = e.target instanceof Element && e.target.closest('.nav-more-menu')
   if (menuOpen.value && !inMore && !linksEl.value?.contains(e.target as Node) && !menuToggleEl.value?.contains(e.target as Node)) closeMenu()
+}
+function dismissPendingMore(event: Event) {
+  const target = event.target
+  if (moreReady.value && moreOpen.value && !moreEl.value?.contains(target as Node)
+    && !(target instanceof Element && target.closest('.nav-more-menu'))) moreOpen.value = false
 }
 function onDocKey(e: KeyboardEvent) {
   if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
@@ -235,10 +259,13 @@ function onNavigationKey(event: KeyboardEvent) {
 onMounted(() => {
   document.addEventListener('click', onDocClick)
   document.addEventListener('keydown', onDocKey)
+  document.addEventListener('focusin', dismissPendingMore)
 })
 onUnmounted(() => {
+  navigationActive = false
   document.removeEventListener('click', onDocClick)
   document.removeEventListener('keydown', onDocKey)
+  document.removeEventListener('focusin', dismissPendingMore)
 })
 </script>
 
@@ -259,6 +286,9 @@ onUnmounted(() => {
   @apply tw:block tw:w-auto; height: 2.15rem; max-width: 12.7rem;
 }
 .nav-brand { @apply tw:gap-s-2; }
+.nav-links { border-color:transparent; background:transparent; box-shadow:none; }
+.nav-links > a { transition:transform var(--motion-press) var(--ease-out); }
+.nav-more-chevron { transition:none; }
 .nav-links > a { white-space:nowrap; }
 @media (min-width:901px) and (max-width:1200px) {
   .nav-inner { gap:var(--s-2); padding-inline:var(--s-3); }

@@ -328,5 +328,5 @@ function releasePan() {
 @media (prefers-reduced-motion: reduce) {
   .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 }
-:global(:root:is([data-motion='reduce'], [data-motion='reduced'])) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
+:root:is([data-motion='reduce'], [data-motion='reduced']) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 </style>
