@@ -301,17 +301,19 @@ assert(
 );
 
 const zoomViewerSource = read('src/components/visual/ZoomableImageViewer.vue');
+// Direct-input zoom replaced eased transforms in d0c2efaf; keep image fades tokenized.
 assert(
-  /\.zoomable-image-viewer\.is-panning\s+\.zoom-transform-layer\s*\{\s*transition:\s*none;?\s*\}/.test(zoomViewerSource)
-    && /transition:\s*transform\s+var\(--motion-control\)\s+var\(--ease-out\)/.test(zoomViewerSource)
+  /\.zoom-transform-layer\s*\{[^}]*transform:\s*var\(--zoom-transform,\s*none\)/.test(zoomViewerSource)
+    && !/transition(?:-property)?:[^;}]*\b(?:transform|all)\b/.test(zoomViewerSource)
+    && /transition:\s*opacity\s+var\(--motion-hover\)\s+var\(--ease-out\)/.test(zoomViewerSource)
     && !zoomViewerSource.includes('0.08s linear'),
-  'ZoomableImageViewer must disable transition during panning and use motion tokens for transform easing',
+  'ZoomableImageViewer must apply zoom and pan transforms directly while keeping image fades tokenized',
 );
 
 const videoStudioSource = read('src/views/VideoStudioView.vue') + '\n' + read('src/assets/css/video-studio-view.css');
 assert(
   /transform:\s*scaleX\(var\(--progress,\s*0%\)\)/.test(videoStudioSource)
-    && /transition:\s*transform\s+var\(--motion-surface\)\s+var\(--ease-out\)/.test(videoStudioSource)
+    && /transition:\s*transform\s+var\(--motion-hover\)\s+var\(--ease-out\)/.test(videoStudioSource)
     && !/scale:\s*var\(--progress/.test(videoStudioSource),
   'VideoStudioView progress bar must use scaleX transform and eliminate single-axis scale squish',
 );
