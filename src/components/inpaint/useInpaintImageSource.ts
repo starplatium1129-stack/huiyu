@@ -27,6 +27,8 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   const fileInputRef = ref<HTMLInputElement | null>(null)
   const isDragging = ref(false)
   const detectedResolution = ref<{ width: number; height: number } | null>(null)
+  const imageReady = ref(false)
+  const sourceRevision = ref(0)
 
   const activeImageUrl = computed(() => uploadedUrl.value || deps.imageUrl() || '')
 
@@ -76,7 +78,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   }
 
   /** 提交用原图 blob：上传 > props.imageBlob > url 兜底拉取。 */
-  async function getBlob(): Promise<Blob | null> {
+  async function getBlob(signal?: AbortSignal): Promise<Blob | null> {
     if (uploadedBlob.value) {
       return uploadedBlob.value
     }
@@ -86,7 +88,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
     if (activeImageUrl.value) {
       try {
-        const res = await runtimeFetch(activeImageUrl.value, { cache: 'no-store' })
+        const res = await runtimeFetch(activeImageUrl.value, { cache: 'no-store', signal })
         if (!res.ok) return null
         return await res.blob()
       } catch {
@@ -104,20 +106,28 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   })
 
-  watch(activeImageUrl, (url) => {
-    if (!url) {
-      detectedResolution.value = null
-      return
-    }
+  watch([activeImageUrl, deps.imageBlob, deps.open], ([url, , open], _previous, onCleanup) => {
+    sourceRevision.value++
+    imageReady.value = false
+    detectedResolution.value = null
+    deps.clearMask()
+    if (!url || !open) return
+    let current = true
     const img = new Image()
+    onCleanup(() => { current = false; img.onload = null; img.onerror = null })
     img.crossOrigin = runtimeResourceCors() ?? null
     img.onload = () => {
+      if (!current) return
       detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
-      void nextTick(deps.syncMaskCanvas)
+      void nextTick(() => {
+        if (!current) return
+        deps.syncMaskCanvas()
+        imageReady.value = true
+      })
     }
-    img.onerror = () => { detectedResolution.value = null }
+    img.onerror = () => { if (current) detectedResolution.value = null }
     img.src = resolveRuntimeUrl(url)
-  }, { immediate: true })
+  }, { immediate: true, flush: 'sync' })
 
   onBeforeUnmount(() => {
     clearUploadedImage()
@@ -127,6 +137,8 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     activeImageUrl,
     previewSurfaceStyle,
     detectedResolution,
+    imageReady,
+    sourceRevision,
     /** 本地上传的原图 blob（模板用它区分「已导入外部图片/原图基准」标签）。 */
     uploadedBlob,
     fileInputRef,
