@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useControlStatus } from './useControlStatus'
 import type { ControlStatus } from '@/types/api'
 
@@ -34,6 +35,40 @@ describe('control room state', () => {
       await vi.advanceTimersByTimeAsync(2500)
       expect(getStatus).toHaveBeenCalledTimes(2)
     } finally { status.stopPolling(); vi.useRealTimers() }
+  })
+
+  it('suspends the progress clock while hidden and cannot resurrect it after stop', async () => {
+    vi.useFakeTimers()
+    let hidden = false
+    const visibility = vi.spyOn(document, 'hidden', 'get').mockImplementation(() => hidden)
+    const running = snapshot({ operation: { status: 'running', stages: [], stageIndex: 0 } as unknown as ControlStatus['operation'] })
+    const status = useControlStatus({ showToast: vi.fn(), api: {
+      getStatus: vi.fn().mockResolvedValue(running),
+      getLogs: vi.fn().mockResolvedValue({ logs: [], total: 0 }),
+    } as never })
+    try {
+      status.startPolling()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(vi.getTimerCount()).toBe(2)
+      hidden = true
+      document.dispatchEvent(new Event('visibilitychange'))
+      expect(vi.getTimerCount()).toBe(0)
+      // A late read or local operation update must not restart the hidden clock.
+      status.renderStatus(running)
+      await nextTick()
+      expect(vi.getTimerCount()).toBe(0)
+      hidden = false
+      document.dispatchEvent(new Event('visibilitychange'))
+      await vi.advanceTimersByTimeAsync(0)
+      expect(vi.getTimerCount()).toBe(2)
+      status.renderStatus(snapshot({ operation: { ...running.operation! } }))
+      status.stopPolling()
+      await nextTick()
+      expect(vi.getTimerCount()).toBe(0)
+      status.startPolling()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(vi.getTimerCount()).toBe(2)
+    } finally { status.stopPolling(); visibility.mockRestore(); vi.useRealTimers() }
   })
 
   it('includes ComfyUI in readiness and the four-service count', () => {
