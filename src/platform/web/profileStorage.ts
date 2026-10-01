@@ -1,5 +1,5 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
-import { SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
+import { CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
   const domain = classifyMigrationKey('local', key)
@@ -105,15 +105,16 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           throw Object.assign(new Error('待处理队列已被其他窗口更新，请刷新页面后重试。'), { code })
         }
         const latest = domain === 'settings' ? await selected.readSettings() : domain === 'chat' ? await selected.readChat() : await selected.readDrafts(windowId)
-        if (key === SD_PENDING_QUEUE_KEY) {
-          // A definitive reset conflict did not commit. Refresh only this write's
-          // reset token; preserve its CAS revision and unrelated chat recovery.
+        if (domain === 'draft' && !key.startsWith(CHAT_DRAFT_PREFIX)
+          && (code === 'PROFILE_RESET_CONFLICT' || latest.resetRevision !== expectedReset)) {
+          // Runtime chat reset preserves drawing/video/model drafts. Retry only
+          // the reset token; retain CAS so an unrelated draft edit still conflicts.
           expectedReset = latest.resetRevision
           operationId = crypto.randomUUID()
           continue
         }
         const remote = latest.records.find(record => record.key === key)
-        if (domain !== 'settings' && latest.resetRevision !== expectedReset) {
+        if ((domain === 'chat' || key.startsWith(CHAT_DRAFT_PREFIX)) && latest.resetRevision !== expectedReset) {
           recovery.set(identity, { key, value, reason: 'chat-reset' })
           const chat = domain === 'chat' ? latest : await selected.readChat()
           for (const [entryId, record] of values) if (profileDomainForKey(record.key) === 'chat' || record.key.startsWith('aics_chat_draft_v1:')) {

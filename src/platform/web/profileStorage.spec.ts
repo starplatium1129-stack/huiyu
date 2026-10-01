@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { ProfilePort } from './profileStorage'
 import type { ProfileSnapshot } from '../../../types/profile'
-import { BATCH_DRAW_PLAN_KEY, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY } from '../../utils/storageKeys'
+import { BATCH_DRAW_PLAN_KEY, CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY, SD_QUEUE_SNAPSHOT_KEY, TEMP_RESULT_KEY, VIDEO_CONTEXT_KEY, VIDEO_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SHOTS_DRAFT_KEY } from '../../utils/storageKeys'
 import { classifyMigrationKey } from './migrationClassification'
 
 afterEach(() => { vi.resetModules(); localStorage.clear(); sessionStorage.clear() })
@@ -129,24 +129,52 @@ it('fails closed on pending SD CAS conflicts instead of overwriting a newer auth
   expect(module.hasProfileRecoveryData()).toBe(false)
 })
 
-it('retries pending SD saves after unrelated chat reset without swallowing them into chat recovery', async () => {
+it.each([
+  { key: 'aics_pb_last_draft', local: true },
+  { key: 'aics-model-draft-fixture', local: true },
+  { key: `aics-model-draft-fixture:${CHAT_DRAFT_PREFIX}nene`, local: true },
+  ...[BATCH_DRAW_PLAN_KEY, VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY, VIDEO_SCENARIO_CONTEXT_KEY,
+    VIDEO_DRAFT_KEY, VIDEO_SHOTS_DRAFT_KEY, TEMP_RESULT_KEY, SD_PENDING_QUEUE_KEY].map(key => ({ key, local: false })),
+])('retries preserved non-chat draft $key after a chat reset without losing its CAS revision', async ({ key, local }) => {
   const module = await import('./profileStorage')
   const port = fakePort()
-  vi.mocked(port.readDrafts).mockResolvedValue({ records: [{ key: SD_PENDING_QUEUE_KEY, value: 'saved', revision: 7 }], revision: 8, resetRevision: 'reset-2' })
-    .mockResolvedValueOnce({ records: [{ key: SD_PENDING_QUEUE_KEY, value: 'saved', revision: 7 }], revision: 7, resetRevision: 'reset-1' })
+  vi.mocked(port.readDrafts).mockResolvedValue({ records: [{ key, value: 'saved', revision: 7 }], revision: 8, resetRevision: 'reset-2' })
+    .mockResolvedValueOnce({ records: [{ key, value: 'saved', revision: 7 }], revision: 7, resetRevision: 'reset-1' })
   vi.mocked(port.saveDraft).mockRejectedValueOnce(Object.assign(new Error('chat reset'), { code: 'PROFILE_RESET_CONFLICT' }))
   await module.activateProfileStorage(port, 'main')
-  module.profileDraftStorage.setItem(SD_PENDING_QUEUE_KEY, '{"pending":["fixture"]}')
+  const storage = local ? module.profileLocalStorage : module.profileDraftStorage
+  storage.setItem(key, '{"draft":"fixture"}')
   await module.flushProfileWrites()
   const calls = vi.mocked(port.saveDraft).mock.calls
   expect(calls).toHaveLength(2)
   expect(calls[1][0]).toEqual({ ...calls[0][0], operationId: expect.any(String), expectedReset: 'reset-2' })
   expect(calls[1][0].operationId).not.toBe(calls[0][0].operationId)
   expect(calls[1][0].expectedRevision).toBe(7)
+  expect(calls[1][0].windowId).toBe(local ? undefined : 'main')
   expect(port.readChat).toHaveBeenCalledTimes(1)
   expect(module.hasProfileRecoveryData()).toBe(false)
   expect(module.hasPendingProfileWrites()).toBe(false)
-  expect(module.profileDraftStorage.getItem(SD_PENDING_QUEUE_KEY)).toBe('{"pending":["fixture"]}')
+  expect(storage.getItem(key)).toBe('{"draft":"fixture"}')
+})
+
+it.each(['aics_chat_v1', `${CHAT_DRAFT_PREFIX}nene`])('keeps actual reset-owned content %s in recovery instead of resaving it', async key => {
+  const module = await import('./profileStorage'), port = fakePort()
+  const cleared: ProfileSnapshot = { records: [{ key: 'aics_chat_v1', value: '{"histories":{}}', revision: 10 }], revision: 10, resetRevision: 'reset-2' }
+  vi.mocked(port.readChat).mockResolvedValue(cleared)
+    .mockResolvedValueOnce({ records: [], revision: 7, resetRevision: 'reset-1' })
+  vi.mocked(port.readDrafts).mockResolvedValue({ records: [], revision: 10, resetRevision: 'reset-2' })
+    .mockResolvedValueOnce({ records: [], revision: 7, resetRevision: 'reset-1' })
+  const write = key === 'aics_chat_v1' ? vi.mocked(port.saveChatRecord) : vi.mocked(port.saveDraft)
+  write.mockRejectedValueOnce(Object.assign(new Error('chat reset'), { code: 'PROFILE_RESET_CONFLICT' }))
+  await module.activateProfileStorage(port, 'main')
+  module.profileLocalStorage.setItem(key, 'unsaved local chat')
+  await module.flushProfileWrites()
+  expect(write).toHaveBeenCalledOnce()
+  expect(module.hasPendingProfileWrites()).toBe(false)
+  expect(module.hasProfileRecoveryData()).toBe(true)
+  expect(JSON.parse(await module.exportProfileRecovery().text()).records).toEqual([{ key, value: 'unsaved local chat', reason: 'chat-reset' }])
+  expect(module.profileLocalStorage.getItem('aics_chat_v1')).toBe('{"histories":{}}')
+  if (key !== 'aics_chat_v1') expect(module.profileLocalStorage.getItem(key)).toBeNull()
 })
 
 function deferred<T>() {
