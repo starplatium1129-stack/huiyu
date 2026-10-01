@@ -1,7 +1,7 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
-  <div class="stage-slot">
-    <!-- 容器保留轻量入场；图片显现只由 CgImageReveal 驱动。 -->
+  <div ref="stageRoot" class="stage-slot">
+    <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
         v-if="!displayResultUrl && !browsingResult"
@@ -124,7 +124,7 @@
         class="result-image-reveal"
         img-class="result-image"
         :src="resolveRuntimeUrl(displayResultUrl)"
-        :auto-reveal="!revealedResults.has(displayResultUrl)"
+        :auto-reveal="displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
         alt="当前生成的画面成片"
         @reveal-start="rememberResultReveal"
         @reveal-complete="rememberResultReveal"
@@ -134,7 +134,7 @@
         @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
         @openInpaint="$emit('openInpaint')" @update:inpaintCompareActive="$emit('update:inpaintCompareActive', $event)"
         @upscale="$emit('upscale')" @goVideo="$emit('goVideo')" @addToShots="$emit('addToShots')" @goShots="$emit('goShots')"
-        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="$emit('clearResult')"
+        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="clearCanvas"
       />
       <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
@@ -156,6 +156,7 @@ import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
 import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
+import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -166,6 +167,7 @@ const props = defineProps<{
   history?: ArtworkRecord[]
   previousResult?: ResultSnapshot | null
   displayResultUrl: string
+  resultRevealUrl?: string
   canvasSize?: string
   generationBusy: boolean
   generationError: string | null
@@ -188,9 +190,16 @@ const props = defineProps<{
   hasStashedResult?: boolean
 }>()
 
+const browsingResult = ref(false)
+const stageRoot = ref<HTMLElement | null>(null)
+const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => browsingResult.value || props.inpaintCompareActive)
+function clearCanvas() {
+  playClear()
+  emit('clearResult')
+}
+
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
-const browsingResult = ref(false)
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return
@@ -200,6 +209,11 @@ function rememberResultReveal() {
     if (oldest !== undefined) revealedResults.value.delete(oldest)
   }
 }
+
+// Do not postpone a completion animation until the user leaves history/comparison.
+watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive, browsingResult.value], () => {
+  if ((props.inpaintCompareActive || browsingResult.value) && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
+}, { immediate: true })
 
 // Result-only tools load after an image exists.
 const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))

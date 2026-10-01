@@ -19,19 +19,21 @@ it('保存排队任务与手动保存上下文均保留提交参数，不读取�
   const sd = { generate: vi.fn(() => new Promise<string>(resolve => { finish = resolve })),
     resultSeed: ref(42), lastLoras: ref([{ id: 'lora-a', strength: 0.7 }]), checkpoint: ref('model-a'), generating: ref(false) }
   const setResultContext = vi.fn()
+  const onGenerated = vi.fn()
   const scope = effectScope()
   try {
     const tools = scope.run(() => usePromptSdQueue({ pb, sd, sdSize: ref('832x1216'), drawEngine: ref('sd'),
       livePrompt: computed(() => 'submitted prompt'), negativePrompt: computed(() => 'negative-a'),
       effectiveScene: computed(() => ({ title: 'scene A' })), loraSpecs: computed(() => []),
       modelProfile: computed(() => ({ id: 'profile-a' })), animaState: ref({}),
-      displayResultSeed: computed(() => 42), setResultContext,
+      displayResultSeed: computed(() => 42), setResultContext, onGenerated,
     } as unknown as PromptSdQueueDeps))!
     const job = tools.captureJob()!
     const running = tools.runJob(job)
     pb.char = 'natsume'; pb.sceneId = 'scene-b'; pb.story = 'story-b'
     pb.sdParams.cfg = 99; pb.sdParams.steps = 99; pb.sdModelName = 'model-b'
     finish('blob:result'); await running
+    expect(onGenerated).toHaveBeenCalledExactlyOnceWith('blob:result')
     let release!: (response: Response) => void
     vi.stubGlobal('fetch', vi.fn(() => new Promise<Response>(resolve => { release = resolve })))
     const saving = tools.commitJobResult(job, 'blob:result')

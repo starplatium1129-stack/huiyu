@@ -151,68 +151,282 @@ describe('VoiceGlow rendering lifecycle', () => {
 })
 
 describe('CgImageReveal ownership and fallback', () => {
-  it('starts once per loaded image and completes without a leftover frame', async () => {
-    const wrapper = own(mount(CgImageReveal, { props: { src: '/first.png' } }))
+  type MockAnimation = {
+    finished: Promise<Animation>
+    cancel: ReturnType<typeof vi.fn>
+    finish: () => void
+    reject: () => void
+  }
+  let animateDescriptor: PropertyDescriptor | undefined
+  let animate: ReturnType<typeof vi.fn>
+  const animations: MockAnimation[] = []
+
+  beforeEach(() => {
+    animations.length = 0
+    animateDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'animate')
+    animate = vi.fn(() => {
+      let finish!: (animation: Animation) => void
+      let reject!: (reason: Error) => void
+      const finished = new Promise<Animation>((resolve, fail) => { finish = resolve; reject = fail })
+      const animation: MockAnimation = {
+        finished,
+        // Keep deferred completions controllable to reproduce stale browser callbacks.
+        cancel: vi.fn(),
+        finish: () => finish(animation as unknown as Animation),
+        reject: () => reject(new DOMException('Animation canceled', 'AbortError')),
+      }
+      animations.push(animation)
+      return animation as unknown as Animation
+    })
+    Object.defineProperty(Element.prototype, 'animate', { configurable: true, writable: true, value: animate })
+  })
+  afterEach(() => {
+    if (animateDescriptor) Object.defineProperty(Element.prototype, 'animate', animateDescriptor)
+    else Reflect.deleteProperty(Element.prototype, 'animate')
+  })
+
+  it('reveals each loaded image once using short compositor-only effects and releases both animations', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/first.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
     await img.trigger('load')
     await img.trigger('load')
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
-    expect(frames.size).toBe(1)
-    tick(2000)
+    expect(wrapper.classes()).toContain('is-revealing')
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(animate.mock.calls[0]).toEqual([
+      [{ opacity: 0.28, transform: 'scale(1.008)' }, { opacity: 1, transform: 'scale(1)' }],
+      { duration: 620, easing: 'cubic-bezier(.2,.65,.3,1)' },
+    ])
+    expect(animate.mock.calls[1][1]).toEqual({ duration: 527, easing: 'ease-out', fill: 'both' })
+    for (const [keyframes] of animate.mock.calls) {
+      for (const frame of keyframes as Keyframe[]) expect(Object.keys(frame).sort()).toEqual(['opacity', 'transform'])
+    }
+    expect(wrapper.find('canvas').exists()).toBe(false)
+    expect(context.drawImage).not.toHaveBeenCalled()
+    expect(context.getImageData).not.toHaveBeenCalled()
+    expect(frames.size).toBe(0)
+
+    animations[0].finish()
+    await Promise.resolve()
     await nextTick()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(wrapper.classes()).not.toContain('is-revealing')
     expect(wrapper.classes()).toContain('is-loaded')
-    expect(frames.size).toBe(0)
-  })
-  it('does not revive the old image when src changes or a late load arrives', async () => {
-    const wrapper = own(mount(CgImageReveal, { props: { src: '/old.png' } }))
-    const old = wrapper.get('img')
-    readyImage(old.element)
-    await old.trigger('load')
-    expect(frames.size).toBe(1)
-    await wrapper.setProps({ src: '/new.png' })
-    expect(wrapper.get('img').element).not.toBe(old.element)
-    expect(frames.size).toBe(0)
-    await old.trigger('load')
-    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
-    const fresh = wrapper.get('img')
-    readyImage(fresh.element)
-    await fresh.trigger('load')
-    expect(wrapper.emitted('reveal-start')).toHaveLength(2)
-    expect(frames.size).toBe(1)
-  })
-  it('falls back to the original when cross-origin pixel sampling throws', async () => {
-    context.getImageData.mockImplementation(() => { throw new DOMException('tainted canvas', 'SecurityError') })
-    const wrapper = own(mount(CgImageReveal, { props: { src: 'https://images.example/cg.png' } }))
-    const img = wrapper.get('img')
-    readyImage(img.element)
-    await img.trigger('load')
-    expect(wrapper.classes()).toContain('is-loaded')
-    expect(wrapper.classes()).not.toContain('is-revealing')
+    expect(wrapper.get('.cg-reveal-glow').attributes('style')).toContain('display: none')
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(img.element.style.opacity).toBe('')
+    expect(img.element.style.transform).toBe('')
+    animations[1].finish()
+    await Promise.resolve()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(frames.size).toBe(0)
-    expect(img.attributes('src')).toBe('https://images.example/cg.png')
   })
-  it('replaces an explicit replay rather than adding a second frame loop', async () => {
-    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: false } }))
-    readyImage(wrapper.get('img').element)
-    wrapper.vm.triggerReveal()
-    wrapper.vm.triggerReveal()
-    expect(frames.size).toBe(1)
-    activity.canAnimate.value = false
-    await nextTick()
-    expect(frames.size).toBe(0)
-    expect(wrapper.classes()).not.toContain('is-revealing')
-  })
-  it('does not allocate a reveal canvas when automatic playback is disabled', async () => {
+
+  it('keeps history images static until an explicit reveal is requested', async () => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/seen.png', autoReveal: false } }))
     const img = wrapper.get('img')
     readyImage(img.element)
     await img.trigger('load')
-    expect(context.drawImage).not.toHaveBeenCalled()
     expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.emitted('reveal-start')).toBeUndefined()
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+    expect(animate).not.toHaveBeenCalled()
+    expect(frames.size).toBe(0)
+    wrapper.vm.triggerReveal()
+    await nextTick()
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
+  })
+
+  it('handles a generation signal arriving after a cached image load exactly once', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/cached.png', autoReveal: false } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    expect(animate).not.toHaveBeenCalled()
+    await wrapper.setProps({ autoReveal: true })
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
+    await img.trigger('load')
+    await wrapper.setProps({ autoReveal: false })
+    await wrapper.setProps({ autoReveal: true })
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
+  })
+
+  it('cancels the old source and ignores its late load, error, and completion callbacks', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/old.png', autoReveal: true } }))
+    const old = wrapper.get('img')
+    readyImage(old.element)
+    await old.trigger('load')
+    const staleAnimations = [...animations]
+    await wrapper.setProps({ src: '/new.png' })
+    expect(wrapper.get('img').element).not.toBe(old.element)
+    expect(staleAnimations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(wrapper.classes()).not.toContain('is-loaded')
+    await old.trigger('load')
+    await old.trigger('error')
+    expect(wrapper.emitted('load')).toHaveLength(1)
+    expect(wrapper.emitted('error')).toBeUndefined()
+    expect(wrapper.emitted('reveal-start')).toHaveLength(1)
+
+    const fresh = wrapper.get('img')
+    readyImage(fresh.element)
+    await fresh.trigger('load')
+    expect(wrapper.emitted('reveal-start')).toHaveLength(2)
+    staleAnimations.forEach(animation => animation.finish())
+    await Promise.resolve()
+    await nextTick()
+    expect(wrapper.classes()).toContain('is-revealing')
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+    expect(animations[2].cancel).not.toHaveBeenCalled()
+    animations[2].finish()
+    await Promise.resolve()
+    await nextTick()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(fresh.attributes('src')).toBe('/new.png')
+    expect(frames.size).toBe(0)
+  })
+
+  it('replaces an explicit replay and ignores completion of the canceled animation', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: false } }))
+    readyImage(wrapper.get('img').element)
+    wrapper.vm.triggerReveal()
+    const previous = [...animations]
+    wrapper.vm.triggerReveal()
+    await nextTick()
+    expect(animate).toHaveBeenCalledTimes(4)
+    expect(previous.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(wrapper.emitted('reveal-start')).toHaveLength(2)
+    previous.forEach(animation => animation.finish())
+    await Promise.resolve()
+    await nextTick()
+    expect(wrapper.classes()).toContain('is-revealing')
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+    animations[2].finish()
+    await Promise.resolve()
+    await nextTick()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(frames.size).toBe(0)
+  })
+
+  it.each(['reduced motion', 'low effects', 'hidden activity'])('shows the original immediately under %s', async mode => {
+    if (mode === 'reduced motion') {
+      activity.reducedMotion.value = true
+      activity.canAnimate.value = false
+    } else if (mode === 'low effects') activity.lowEffects.value = true
+    else { activity.canPresent.value = false; activity.canAnimate.value = false }
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.classes()).not.toContain('is-revealing')
+    expect(animate).not.toHaveBeenCalled()
+    expect(wrapper.emitted('reveal-start')).toBeUndefined()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    await img.trigger('load')
+    await wrapper.setProps({ autoReveal: false })
+    await wrapper.setProps({ autoReveal: true })
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(frames.size).toBe(0)
+  })
+
+  it.each(['reduced motion', 'low effects', 'hidden activity'])('cancels an in-progress reveal under %s without replaying on return', async mode => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    if (mode === 'reduced motion') {
+      activity.reducedMotion.value = true
+      activity.canAnimate.value = false
+    } else if (mode === 'low effects') activity.lowEffects.value = true
+    else { activity.canPresent.value = false; activity.canAnimate.value = false }
+    await nextTick()
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.classes()).not.toContain('is-revealing')
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    activity.reducedMotion.value = false
+    activity.lowEffects.value = false
+    activity.canPresent.value = true
+    activity.canAnimate.value = true
+    await nextTick()
+    await img.trigger('load')
+    animations.forEach(animation => animation.reject())
+    await Promise.resolve()
+    await nextTick()
+    expect(animate).toHaveBeenCalledTimes(2)
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(frames.size).toBe(0)
+  })
+
+  it('shows the original when the animation API is unavailable', async () => {
+    Object.defineProperty(Element.prototype, 'animate', { configurable: true, value: undefined })
+    const wrapper = own(mount(CgImageReveal, { props: { src: 'https://images.example/cg.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.classes()).not.toContain('is-revealing')
+    expect(wrapper.emitted('reveal-start')).toBeUndefined()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(context.getImageData).not.toHaveBeenCalled()
+    expect(img.attributes('src')).toBe('https://images.example/cg.png')
+    expect(frames.size).toBe(0)
+  })
+
+  it.each([1, 2])('falls back safely when animation creation %i throws', async failureCall => {
+    const createAnimation = animate.getMockImplementation()! as () => Animation
+    animate.mockImplementation(() => {
+      if (animate.mock.calls.length === failureCall) throw new Error('Animation is unavailable')
+      const result = createAnimation()
+      const animation = animations[animations.length - 1]
+      animation.cancel.mockImplementation(animation.reject)
+      return result
+    })
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    await Promise.resolve()
+    await nextTick()
+    expect(animate).toHaveBeenCalledTimes(failureCall)
+    expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.classes()).not.toContain('is-revealing')
+    expect(wrapper.emitted('reveal-start')).toBeUndefined()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(frames.size).toBe(0)
+  })
+
+  it('cancels both animations when the current image fails', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    await img.trigger('error')
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    expect(wrapper.emitted('error')).toHaveLength(1)
+    expect(wrapper.classes()).toContain('is-loaded')
+    expect(wrapper.classes()).not.toContain('is-revealing')
+    animations.forEach(animation => animation.finish())
+    await Promise.resolve()
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+  })
+
+  it('releases all animations on unmount without emitting a late completion', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    wrapper.unmount()
+    expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
+    animations.forEach(animation => animation.finish())
+    await Promise.resolve()
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
     expect(frames.size).toBe(0)
   })
 })

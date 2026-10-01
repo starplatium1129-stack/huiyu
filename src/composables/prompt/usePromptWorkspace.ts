@@ -40,6 +40,8 @@ export function usePromptWorkspace() {
 
     // ── UI state ──────────────────────────────────────────────────────────────
     const sdSize = ref('832x1216');
+    // Ephemeral success signal; restored/history images never acquire it.
+    const resultRevealUrl = ref('');
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd');
@@ -70,6 +72,7 @@ export function usePromptWorkspace() {
     }
     // Anima/Krea 结果编排（自动入册 vs 临时缓冲）已下沉 useTempResult.handleAnimaResult。
     function onAnimaResult(result: AnimaResult) {
+        resultRevealUrl.value = result.url;
         engine.onAnimaResult(result);
         void tempResultTools.handleAnimaResult(result, inpaintSourceHistoryId.value);
     }
@@ -198,6 +201,7 @@ export function usePromptWorkspace() {
         animaState,
         displayResultSeed,
         setResultContext: (ctx) => { resultContext.value = ctx; },
+        onGenerated: url => { resultRevealUrl.value = url; },
     });
     // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
     const tempResultTools = useTempResult({
@@ -387,6 +391,7 @@ export function usePromptWorkspace() {
     }
     /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
     function onClearResult() {
+        resultRevealUrl.value = '';
         discardTemp();
         animaSession.discardStashedResult();
         clearDisplayedResult();
@@ -519,7 +524,7 @@ export function usePromptWorkspace() {
     });
     return {
         capturedScene, capturingScene, captureScene, closeSceneCapture,
-        pb, displayResultUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
+        pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
         animaSession, archiveBarShape, modeDescription, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,

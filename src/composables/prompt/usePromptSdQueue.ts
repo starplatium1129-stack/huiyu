@@ -39,6 +39,8 @@ export interface PromptSdQueueDeps {
    * captureJob 快照的场景与故事跟随成片，跨页交接不读当前表单。
    */
   setResultContext?: (ctx: AnimaResultContext | null) => void
+  /** Ephemeral presentation signal, emitted only for a newly completed generation. */
+  onGenerated?: (url: string) => void
 }
 
 /**
@@ -225,6 +227,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       // The view receives its own context; its edits cannot mutate archive input.
       completedJobs.set(job, JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot)
       deps.setResultContext?.(context)
+      deps.onGenerated?.(url)
       // Best-effort recent settings must not turn a successful image into a failure.
       void import('./sdResultActions').then(({ rememberSdResult }) => rememberSdResult(completedJob)).catch(() => {})
     }
