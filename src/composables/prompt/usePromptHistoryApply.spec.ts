@@ -242,3 +242,31 @@ it.each(['tags', 'scene'] as const)('clears only replaced-layer provenance when 
   expect(pb.referenceInput).toEqual(layer === 'tags' ? null : { tags: ['library'] })
   expect([...pb.manualTags]).toEqual(layer === 'tags' ? ['historical_detail'] : ['library'])
 })
+
+
+it('reports scene-only reuse and retires same-scene clothing before accepting saved tags', async () => {
+  const { pb, applyHistory, flash } = setup()
+  const scene = { id: 'same-scene', char: 'nene', title: 'Room', story: 'Scene story', rating: 'ALL', prompt: 'indoors' }
+  useSceneStore().scenes = [scene]
+  pb.loadScene(scene)
+  const selection = { style: false, camera: false, prompts: true, parameters: false }
+  const setOverlay = () => {
+    pb.manualTags = new Set(['jacket', 'explicit_detail', 'library'])
+    pb.referenceInput = { tags: ['library'] }
+    pb.randomVariation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: ['jacket'] }
+  }
+  setOverlay()
+  expect(await applyHistory({ id: 'scene-only', character: 'nene', scene: scene.id }, true, selection)).toBe(true)
+  expect(pb.randomVariation).toBeNull()
+  expect(pb.manualTags).toEqual(new Set(['explicit_detail', 'library']))
+  expect(pb.referenceInput).toEqual({ tags: ['library'] })
+  expect(flash.mock.lastCall?.[0]).toContain('已沿用')
+  setOverlay()
+  expect(await applyHistory({ id: 'saved-tags', character: 'nene', scene: scene.id, manual_tags: ['jacket'] }, true, selection)).toBe(true)
+  expect(pb.manualTags).toEqual(new Set(['jacket']))
+  expect(await applyHistory({ id: 'clear-scene', character: 'nene', scene: null }, true, selection)).toBe(true)
+  pb.setPopularSubject('fixture', 'daily', 'previous')
+  expect(await applyHistory({ id: 'clear-blueprint', subject: 'popular', characterId: 'fixture', outfitId: 'daily', blueprintId: null }, true, selection)).toBe(true)
+  expect(pb.subject).toMatchObject({ blueprintId: null })
+  expect(await applyHistory({ id: 'unsupported', character: 'natsume', scene: null }, true, selection)).toBe(false)
+})

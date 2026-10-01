@@ -41,11 +41,16 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     if (!sameSubject || pb.outfitOverride) {
       notes.push('原角色或服装与当前条件不同，提示词未沿用；可选择完整配方后再调整')
     } else if ([entry.story, entry.visualDescription, entry.emotion, entry.manual_tags, entry.scene, entry.blueprintId].some(value => value !== undefined)) {
+      // Retire the old scene overlay even when the saved scene ID is unchanged.
+      // Do this before adopting historical tags so their clothing is not removed.
+      if (popular ? entry.blueprintId !== undefined : entry.scene !== undefined) pb.clearRandomVariation()
       if (popular && entry.blueprintId !== undefined) {
+        applied = true
         const blueprint = entry.blueprintId ? findBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
         if (!entry.blueprintId || blueprint && blueprint.characterId === entry.characterId && (!blueprint.outfitId || blueprint.outfitId === entry.outfitId)) pb.setPopularBlueprint(entry.blueprintId ?? null)
         else { pb.setPopularBlueprint(null); notes.push('原蓝图不可用或角色不匹配，已清除蓝图；请核对提示词') }
       } else if (!popular && entry.scene !== undefined) {
+        applied = true
         const scene = pb.scenes.find(item => item.id === entry.scene)
         if (!entry.scene || scene && (!scene.char || scene.char === 'both' || scene.char === pb.char)) {
           pb.sceneId = scene?.id ?? null
