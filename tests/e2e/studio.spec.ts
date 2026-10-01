@@ -72,9 +72,9 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('.inspector-tabs')).toBeHidden();
   // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
   await expect(page.locator('#baseModel')).toBeHidden();
-  await page.locator('.inspector-route > summary').click();
+  await page.locator('#inspector-render .inspector-route > summary').click();
   await expect(page.locator('.managed-route-card')).toBeVisible();
-  await page.locator('.inspector-route > summary').click();
+  await page.locator('#inspector-render .inspector-route > summary').click();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
@@ -131,7 +131,7 @@ test('director expert artist tags use model-native syntax and stay out of scene 
   await page.getByRole('tab', { name: '生成', exact: true }).click();
   await page.getByRole('button', { name: /Krea 2/ }).click();
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
-  await expect(page.locator('.prompt-health-body')).toContainText('clear and soft Japanese anime style');
+  await expect(page.locator('.prompt-health-body')).toContainText(/clear and soft Japanese anime style/i);
   await page.getByRole('button', { name: /场景模式/ }).click();
   await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
   // 场景模式收起专家编译面板；无论空态还是结构态，kantoku 都不得出现

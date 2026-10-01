@@ -605,6 +605,8 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   const confirmation = page.getByRole('alertdialog');
   await expect(confirmation.getByRole('button', { name: '取消', exact: true })).toBeFocused();
   await page.keyboard.press('Tab');
+  await expect(confirmation.getByRole('button', { name: '关闭确认框', exact: true })).toBeFocused();
+  await page.keyboard.press('Tab');
   await expect(confirmation.getByRole('button', { name: '覆盖', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(confirmation).toBeHidden();
