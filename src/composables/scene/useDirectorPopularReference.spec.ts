@@ -108,3 +108,25 @@ it('does not replay an older generated recipe over newer reference layers during
   expect(input.refreshAnimaBackend).toHaveBeenCalled()
   pb.$dispose()
 })
+
+it('releases the previous blueprint color and lighting when selecting another character', () => {
+  const { pb, flow } = setup()
+  flow.selectBlueprint(blueprint)
+  expect(pb.colorMood).toBe('calm')
+  expect(pb.selections.lighting).toBe('window')
+  flow.selectPopularCharacter(characters[1])
+  expect(pb.subject).toMatchObject({ blueprintId: null })
+  expect(pb.colorMood).toBeNull()
+  expect(pb.selections).toMatchObject({ shot: null, lighting: null, composition: null })
+  pb.$dispose()
+})
+
+it('keeps director settings edited away from the old blueprint during a character switch', () => {
+  const { pb, flow } = setup()
+  flow.selectBlueprint(blueprint)
+  pb.setShot('close'); pb.setLighting('moon'); pb.setComposition('center'); pb.setColorMood('warmth')
+  flow.selectPopularCharacter(characters[1])
+  expect(pb.colorMood).toBe('warmth')
+  expect(pb.selections).toMatchObject({ shot: 'close', lighting: 'moon', composition: 'center' })
+  pb.$dispose()
+})

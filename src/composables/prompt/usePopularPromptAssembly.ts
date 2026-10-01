@@ -84,10 +84,10 @@ export function usePopularPromptAssembly(
     new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => tag.en.trim().toLowerCase().replace(/\s+/g, '_'))),
   )
 
-  /** 风格由蓝图 hint 或引擎默认值自动确定；成人配方在此 fail-closed。 */
+  /** A blueprint may select a style; choosing only a character supplies no visual defaults. */
   const resolvedStyle = computed<ResolvedStyle | null>(() => {
     const subject = pb.subject
-    if (subject.kind !== 'popular' || !character.value) return null
+    if (subject.kind !== 'popular' || !character.value || !blueprint.value) return null
     const targetEngine = engine.value === 'krea2' ? 'krea2' : 'anima'
     return resolveStyleRecipe(
       KREA_STYLE_RECIPES,

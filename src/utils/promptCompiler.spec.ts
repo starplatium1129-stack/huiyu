@@ -26,6 +26,17 @@ describe('plainEnglish', () => {
  *     但从未织入渲染输出，此处验证织入与防重复；
  *  2) 空场景散文追加 "no characters, no people, no figures"。 */
 describe('renderPromptPlan krea2', () => {
+  it.each(['anima', 'krea2'] as const)('does not invent a style or background for an undirected character in %s', engine => {
+    const plan = createPromptPlan({
+      identity: '1girl, solo, black_hair',
+      subjectProse: 'A woman with black hair',
+      manual: ['blue_background', 'simple_background', 'monochrome'],
+    })
+    const { prompt } = renderPromptPlan(plan, engine, null)
+    expect(prompt).toMatch(/blue[_ ]background/)
+    expect(prompt).not.toMatch(/polished|cel shading|flat colors|layered background|cinematic atmosphere|wallpaper/)
+  })
+
   it('medium 未出现在 lead 中时，以 polished X finish 收尾织入散文', () => {
     const plan = createPromptPlan({
       style: ['A 1990s cel anime illustration with bold outlines, crisp line art and nostalgic flat colors'],

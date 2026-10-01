@@ -1,7 +1,7 @@
 import { mutualGroupWithCategory, normalizeKey } from '@/utils/promptPolicy'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
-import { isGarmentToken } from '@/utils/popularPromptBuilder'
+import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown) {
@@ -40,7 +40,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const userTags = new Set([...pb.manualTags].filter(tag => !priorReference.has(normalizeKey(tag))))
   // The new picture replaces the previous reference layer, never unrelated
   // explicit user edits. The target's identity is supplied only by its own data.
-  const identityOnly = context.identityTokens.filter(tag => !isGarmentToken(normalizeKey(tag)) && mutualGroupWithCategory(tag)?.category !== 'outfit')
+  const identityOnly = standaloneIdentityTokens(context.identityTokens)
   const decision = blueprint ? inferBlueprintDecisions(blueprint) : null
   const inheritedShot = decision && pb.selections.shot === decision.shot
   const merged = mergeInterrogatedTags({

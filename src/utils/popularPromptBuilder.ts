@@ -12,6 +12,7 @@ import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { blueprintNegative, compositionTokens } from './blueprintComposition.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
+import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -208,22 +209,6 @@ function outfitOverrideProse(tokens: ReadonlyArray<string>): string {
  * 实测 17 个命中角色里 16 个剥得干净，仅 kyouyama_kazusa 的 "and black tights"
  * 属并列结构残留（影响小，不再加规则以免误伤）。
  */
-/**
- * 明确的衣物类词（2026-08-29）。
- *
- * `OUTFIT_FAMILIES` 只覆盖 6 个高频互斥族（校服/泳装/和服…），但角色数据里实际
- * 混着大量普通衣物词（green_clothes / coat / dress / boots），互斥族判定管不到。
- * 这里补一张「只要出现就一定是衣服」的名单，仅在**不选场景**时用于过滤身份词。
- * 刻意**不含**发饰（hair_ribbon）、发型（short_hair）、职业（maid）、饰品
- * （earring / crown）——那些是身份特征，去掉会让角色变样。
- */
-const GARMENT_TOKEN_RE =
-  /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/
-
-export function isGarmentToken(token: string): boolean {
-  return GARMENT_TOKEN_RE.test(String(token || '').trim().toLowerCase())
-}
-
 function proseWithoutOutfit(prose: string): string {
   let out = String(prose || '')
   // ", wearing X …" / ", dressed in X …" 从句（句中、句尾皆可），删到句号或分号前
@@ -290,6 +275,13 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   ].filter(Boolean).join(' ')
 
   const emotionTokens = options.emotion || []
+  const subjectProse = !blueprint
+    ? standaloneIdentityProse(character)
+    : adultGranted
+      ? adultIdentityProse(character.identityProse)
+      : (outfitActive
+          ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
+          : proseWithoutOutfit(character.identityProse))
 
   if (engine === 'krea2') {
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
@@ -317,11 +309,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
         ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 4)])]
       : []
     const plan = createPromptPlan({
-      subjectProse: adultGranted
-        ? adultIdentityProse(character.identityProse)
-        : (outfitActive
-            ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
-            : proseWithoutOutfit(character.identityProse)),
+      subjectProse,
       outfitProse,
       sceneProse,
       emotion: emotionTokens,
@@ -344,14 +332,14 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
   const referenceIdentity = Boolean(overridden) && !adultGranted
-  const identityTokens = (outfitActive && !referenceIdentity
+  const identityTokens = (!blueprint ? standaloneIdentityTokens(character.identityTokens) : outfitActive && !referenceIdentity
     ? character.identityTokens
     : character.identityTokens.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
     .filter(token => !adultGranted || (!isGarmentToken(token)
       && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
-  const exactIdentity = (character.exactTokens || []).filter(token => !referenceIdentity
+  const exactIdentity = (!blueprint ? standaloneIdentityTokens(character.exactTokens) : character.exactTokens).filter(token => !referenceIdentity
     || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
   const exactControls = [...new Set([
     ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
@@ -389,11 +377,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     negative: (blueprint?.negativeTokens || []).join(', '),
     rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
-    subjectProse: adultGranted
-      ? adultIdentityProse(character.identityProse)
-      : (outfitActive
-          ? (overridden ? proseWithoutOutfit(character.identityProse) : identityWithoutOutfit(character.identityProse))
-          : proseWithoutOutfit(character.identityProse)),
+    subjectProse,
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支已置空）。
     // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。

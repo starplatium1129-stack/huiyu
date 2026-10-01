@@ -75,6 +75,7 @@ function inferredKreaStyle(plan: PromptPlan): string {
     ? sentence(`${explicit.replace(/[.!?]+$/, '')}, ${plan.artistProse}`)
     : explicit
   const scene = plan.scene
+  if (!scene && !plan.sceneProse) return sentence(plan.artistProse)
   const tags = new Set((scene?.tags || []).map(normalizeProseKey))
   const category = String(scene?.category || '').toLowerCase()
   const usage = (scene?.usage || []).join(' ').toLowerCase()
@@ -484,8 +485,6 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
   if (direction) setting.push(`Frame it with ${direction}`)
   const atmosphere = naturalList(compactPhrases(lighting, 2))
   if (atmosphere) setting.push(`Light it with ${atmosphere}`)
-  setting.push('Compose it as a finished anime wallpaper with a clear focal subject, layered background depth, and cinematic atmosphere')
-
   return [sentence(portrayal.join('; ')), sentence(setting.join('; '))].filter(Boolean).join(' ')
 }
 

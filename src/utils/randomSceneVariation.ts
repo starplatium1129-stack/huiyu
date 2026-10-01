@@ -1,6 +1,6 @@
 import { COMPOSITION, LIGHTING, SHOT } from '../config/promptConstants.ts'
 import { mutualGroupWithCategory, normalizeKey, tokenize } from './promptPolicy.ts'
-import { isGarmentToken } from './popularPromptBuilder.ts'
+import { isGarmentToken } from './popularIdentity.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
 

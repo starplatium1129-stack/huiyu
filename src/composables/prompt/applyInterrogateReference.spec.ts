@@ -117,3 +117,19 @@ it('replaces inherited blueprint prose with the reference scene without losing e
   expect(assembly.positivePrompt.value).toContain('sitting')
   expect(assembly.positivePrompt.value).not.toMatch(/beach|standing/)
 })
+
+it.each(['anima', 'krea2'] as const)('keeps a reference background color without automatic styling or character poses in %s', async engine => {
+  const pb = fixture()
+  const target = useSceneStore().popularCharacters[0]
+  target.identityProse = 'Fixture A from Fixture, a woman with black hair and blue eyes, an expressionless peace-sign pose, and a warm sunset backdrop.'
+  target.identityTokens.push('expressionless', 'standing', 'full_body', 'pink_background')
+  await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'blue_background', 'simple_background', 'sad']))
+  const assembly = usePopularPromptAssembly(pb, ref(engine), ref('fixture-model'))
+  expect(assembly.positivePrompt.value).toMatch(/blue[_ ]background/)
+  expect(assembly.positivePrompt.value).toContain('sitting')
+  expect(assembly.positivePrompt.value).toContain('sad')
+  expect(assembly.positivePrompt.value).toMatch(/black[_ ]hair/)
+  expect(assembly.positivePrompt.value).toMatch(/blue[_ ]eyes/)
+  expect(assembly.positivePrompt.value).not.toMatch(/pink[_ ]background|standing|full[_ ]body|peace-sign|expressionless|warm sunset|saturated colors|cel shading|layered background|cinematic atmosphere|visual novel event CG/)
+  expect(assembly.structuredPlan.value?.style).toEqual([])
+})

@@ -159,6 +159,14 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularCharacter(character: PopularCharacter) {
     if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
+    const previous = pb.subject.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId) : null
+    if (previous) {
+      const decision = inferBlueprintDecisions(previous)
+      if (pb.selections.shot === decision.shot) pb.setShot(null)
+      if (pb.selections.lighting === decision.lighting) pb.setLighting(null)
+      if (pb.selections.composition === decision.composition) pb.setComposition(null)
+      if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
+    }
     const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
     // Changing identity keeps the reference scene and clothing across successive characters.
     pb.setPopularSubject(character.id, outfitId, null, { preserveReference: true, preserveOutfitOverride: true })

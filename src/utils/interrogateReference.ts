@@ -1,6 +1,6 @@
 import { identityDomainOf } from './interrogateMerge.ts'
 import { normalizeKey, CLOSED_EYES_TOKENS, GAZE_AND_EYE_DETAIL_TOKENS } from './promptPolicy.ts'
-import { isGarmentToken } from './popularPromptBuilder.ts'
+import { isGarmentToken } from './popularIdentity.ts'
 
 export interface ReferenceTagOptions {
   knownCharacterTags?: readonly string[]
