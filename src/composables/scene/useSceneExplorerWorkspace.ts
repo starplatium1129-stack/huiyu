@@ -145,6 +145,7 @@ export function useSceneExplorerWorkspace() {
     const activeThemeLabel = computed(() => activeThemeDefinition.value.label);
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
     const companionId = computed<'nene' | 'natsume'>(() => {
+        if (manualCompanion.value) return manualCompanion.value;
         if (fChar.value === 'natsume')
             return 'natsume';
         if (fChar.value === 'nene')
@@ -154,7 +155,7 @@ export function useSceneExplorerWorkspace() {
             return 'natsume';
         if (q.includes('nene') || q.includes('宁宁'))
             return 'nene';
-        return manualCompanion.value || 'nene';
+        return 'nene';
     });
     const fChar = ref('all');
     const fSeason = ref('all');
@@ -364,7 +365,7 @@ export function useSceneExplorerWorkspace() {
         fTime.value = 'all';
         fSeries.value = 'all';
         fRating.value = 'all';
-        fTier.value = defaultTier;
+        fTier.value = 'all';
         sortBy.value = 'smart';
         showHidden.value = false;
     }

@@ -44,7 +44,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     rootFont.value = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
   }
   function setWidth(side: Side, value: number) {
-    const other = side === 'materials' ? (collapsed.value.inspector ? 0 : inspectorWidth.value) : (collapsed.value.materials ? 0 : materialsWidth.value)
+    const otherSide = side === 'materials' ? 'inspector' : 'materials'
+    const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
     preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
   function finish() {
@@ -53,11 +54,12 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (active?.element.hasPointerCapture?.(active.id)) active.element.releasePointerCapture(active.id)
     if (active) save()
   }
+  function currentWidth(side: Side) { return side === 'materials' ? materialsWidth.value : inspectorWidth.value }
   function start(side: Side, event: PointerEvent) {
     if (!observing || event.button !== 0 || !event.isPrimary) return
     finish(); measure()
     const element = event.currentTarget as HTMLElement
-    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: side === 'materials' ? materialsWidth.value : inspectorWidth.value }
+    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side) }
     element.setPointerCapture(event.pointerId); dragging.value = side; event.preventDefault()
   }
   function move(event: PointerEvent) {
@@ -68,7 +70,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   function key(side: Side, event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey) return
     const step = event.shiftKey ? 40 : 10
-    const current = side === 'materials' ? materialsWidth.value : inspectorWidth.value
+    const current = currentWidth(side)
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       const sign = event.key === 'ArrowRight' ? 1 : -1
       setWidth(side, current + sign * step * (side === 'materials' ? 1 : -1))
