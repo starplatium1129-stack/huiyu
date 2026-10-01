@@ -40,7 +40,7 @@ function harness(popular = false) {
 }
 
 const payload: InpaintSubmitPayload = {
-  imageBlob: new Blob(['original']), maskBlob: null, maskPrompt: 'clothing', maskThreshold: 0.4,
+  sourceHistoryId: 'source-artwork', imageBlob: new Blob(['original']), maskBlob: null, maskPrompt: 'clothing', maskThreshold: 0.4,
   newOutfitPrompt: 'blue jacket', negativePrompt: 'blur', denoisingStrength: 0.6, growMaskBy: 12, seed: 0,
 }
 
@@ -66,7 +66,7 @@ describe('换装提交按操作加载', () => {
       initImage: 'source.png', maskImage: 'mask.png', denoisingStrength: 0.6, growMaskBy: 12,
       seed: 0, character: 'nene', loraId: ANIMA_LORA_BY_CHARACTER.nene, loraStrength: 0.75,
       width: 832, height: 1216, teaCache: true,
-    }, expect.objectContaining({ family: 'anima', context: { characterId: 'original-role' } }))
+    }, expect.objectContaining({ family: 'anima', context: { characterId: 'original-role', parentId: 'source-artwork' } }))
     expect(tools.inpaintOpen.value).toBe(false)
     expect(owned).toHaveBeenCalledExactlyOnceWith(payload.imageBlob)
     expect(tools.inpaintOriginalUrl.value).toBe('blob:owned-original')
@@ -86,6 +86,17 @@ describe('换装提交按操作加载', () => {
     resolveUpload({ ok: true, name: 'source.png' })
     await pending
     expect(generate).toHaveBeenCalledWith(expect.objectContaining({ modelId: 'character-model', loraStrength: 0.75 }), expect.objectContaining({ request: expect.objectContaining({ modelId: 'character-model' }) }))
+  })
+
+  it('keeps an external source explicitly parentless even if the caller changes its draft during preparation', async () => {
+    const { tools, generate } = harness()
+    const external = { ...payload, sourceHistoryId: null as string | number | null }
+    const pending = tools.handleInpaintSubmit(external)
+    external.sourceHistoryId = 'unrelated-later-artwork'
+    await pending
+    expect(generate).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+      context: expect.objectContaining({ parentId: null }),
+    }))
   })
 
   it('热门角色沿用无 LoRA 绑定、身份与自动遮罩参数', async () => {

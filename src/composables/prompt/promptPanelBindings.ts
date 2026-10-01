@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import type { InpaintSource } from '@/components/inpaint/useInpaintImageSource'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
@@ -98,7 +99,7 @@ export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 
   Pick<Compare, 'compareEl' | 'prevResult' | 'lastResult' | 'compareOpen'> {
   adultEnabled: Readonly<Ref<boolean>>
   inpaintPreparing: Readonly<Ref<boolean>>
-  resultBlob: Readonly<Ref<Blob | null | undefined>>
+  inpaintImageSource: Readonly<Ref<InpaintSource>>
   livePrompt: Assembly['positivePrompt']
   negativePrompt: Assembly['studio']['negativePrompt']
   closeCompare: Compare['close']

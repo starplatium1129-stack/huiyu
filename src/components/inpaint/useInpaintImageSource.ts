@@ -3,10 +3,15 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { inpaintCanvasSize } from '../../utils/inpaintCanvas.ts'
 import { useToast } from '../../composables/useToast.ts'
 
+export interface InpaintSource {
+  url: string | null | undefined
+  blob: Blob | null | undefined
+  historyId: string | number | null
+}
+
 export interface InpaintImageSourceDeps {
   open: () => boolean
-  imageUrl: () => string | null | undefined
-  imageBlob: () => Blob | null | undefined
+  source: () => InpaintSource
   /** 图片更换后清空遮罩（useInpaintMaskCanvas.clearMask）。 */
   clearMask: () => void
   /** 画幅探测完成后重同步遮罩画布尺寸（useInpaintMaskCanvas.syncMaskCanvas）。 */
@@ -17,7 +22,7 @@ export interface InpaintImageSourceDeps {
  * 局部换装弹窗「图片源 + 画幅探测」（2026-08-22 自 AnimaInpaintModal 下沉）。
  *
  * 三个来源的优先级：本地上传（拖拽/选择，blob URL 生命周期自持）→
-  props.imageBlob（引擎结果直通）→ props.imageUrl 兜底 fetch。换图时
+ * source.blob（引擎结果直通）→ source.url 兜底 fetch。换图时
  * 用 Image onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
  * 到受支持画幅，同时重置遮罩画布；关闭/卸载释放 blob URL。
  */
@@ -29,8 +34,9 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   const detectedResolution = ref<{ width: number; height: number } | null>(null)
   const imageReady = ref(false)
   const sourceRevision = ref(0)
+  const sourceHistoryId = ref<string | number | null>(null)
 
-  const activeImageUrl = computed(() => uploadedUrl.value || deps.imageUrl() || '')
+  const activeImageUrl = computed(() => uploadedUrl.value || deps.source().url || '')
 
   // 自定义属性载体：预览画幅比例规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
   const previewSurfaceStyle = computed(() => ({
@@ -77,12 +83,12 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   }
 
-  /** 提交用原图 blob：上传 > props.imageBlob > url 兜底拉取。 */
+  /** 提交用原图 blob：上传 > source.blob > url 兜底拉取。 */
   async function getBlob(signal?: AbortSignal): Promise<Blob | null> {
     if (uploadedBlob.value) {
       return uploadedBlob.value
     }
-    const propBlob = deps.imageBlob()
+    const propBlob = deps.source().blob
     if (propBlob && propBlob.size > 0) {
       return propBlob
     }
@@ -106,8 +112,10 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   })
 
-  watch([activeImageUrl, deps.imageBlob, deps.open], ([url, , open], _previous, onCleanup) => {
+  watch([activeImageUrl, () => deps.source().blob, deps.open], ([url, , open], _previous, onCleanup) => {
     sourceRevision.value++
+    // Adopt the URL/blob and its parent together; later gallery selection is not this source.
+    sourceHistoryId.value = uploadedBlob.value ? null : deps.source().historyId
     imageReady.value = false
     detectedResolution.value = null
     deps.clearMask()
@@ -139,6 +147,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     detectedResolution,
     imageReady,
     sourceRevision,
+    sourceHistoryId,
     /** 本地上传的原图 blob（模板用它区分「已导入外部图片/原图基准」标签）。 */
     uploadedBlob,
     fileInputRef,

@@ -14,14 +14,16 @@ it('rejects obsolete decode callbacks and clears source dimensions and mask befo
     onload = null; onerror = null; naturalWidth = 832; naturalHeight = 1216
     constructor() { probes.push(this) }
   })
+  const parentId = ref<string | number | null>('gallery-first')
   const url = ref('first'), open = ref(true), clearMask = vi.fn(), syncMaskCanvas = vi.fn()
   let source!: ReturnType<typeof useInpaintImageSource>
   const wrapper = mount(defineComponent({ setup() {
-    source = useInpaintImageSource({ open: () => open.value, imageUrl: () => url.value, imageBlob: () => null, clearMask, syncMaskCanvas })
+    source = useInpaintImageSource({ open: () => open.value, source: () => ({ url: url.value, blob: null, historyId: parentId.value }), clearMask, syncMaskCanvas })
     return () => h('div')
   } }))
   try {
     const staleLoad = probes[0]!.onload!, staleError = probes[0]!.onerror!
+    parentId.value = 'gallery-second'
     url.value = 'second'
     expect(clearMask).toHaveBeenCalledTimes(2)
     expect(source.detectedResolution.value).toBeNull()
@@ -30,9 +32,16 @@ it('rejects obsolete decode callbacks and clears source dimensions and mask befo
     probes[1]!.onload!(); await nextTick()
     expect(source.detectedResolution.value).toEqual({ width: 1024, height: 1024 })
     expect(source.imageReady.value).toBe(true)
+    expect(source.sourceHistoryId.value).toBe('gallery-second')
+    parentId.value = 'unrelated-later-id'
+    expect(source.sourceHistoryId.value).toBe('gallery-second')
+    source.onDrop({ dataTransfer: { files: [new File(['synthetic'], 'fixture.png', { type: 'image/png' })] } } as unknown as DragEvent)
+    expect(source.sourceHistoryId.value).toBeNull()
+    probes[2]!.naturalWidth = 1024; probes[2]!.naturalHeight = 1024
+    probes[2]!.onload!(); await nextTick()
     staleLoad(); staleError(); await nextTick()
     expect(source.detectedResolution.value).toEqual({ width: 1024, height: 1024 })
-    expect(syncMaskCanvas).toHaveBeenCalledTimes(1)
+    expect(syncMaskCanvas).toHaveBeenCalledTimes(2)
     open.value = false
     expect(source.imageReady.value).toBe(false)
     expect(source.detectedResolution.value).toBeNull()
@@ -49,7 +58,7 @@ it('freezes form and mask reads, prevents repeated submission, and cancels late 
   const wrapper = mount(defineComponent({ setup() {
     preparation = useInpaintPreparation({ open: () => open.value, sourceRevision: () => revision.value,
       ready: () => true, busy: () => false, adultEnabled: () => false, getBlob, maskBlob, submit, error,
-      capture: () => ({ painted: true, requiresAdult: false, newOutfitPrompt: prompt.value, negativePrompt: '', maskPrompt: '', maskThreshold: 0.4, denoisingStrength: 0.8, growMaskBy: 8, seed: null }),
+      capture: () => ({ sourceHistoryId: 'original-parent', painted: true, requiresAdult: false, newOutfitPrompt: prompt.value, negativePrompt: '', maskPrompt: '', maskThreshold: 0.4, denoisingStrength: 0.8, growMaskBy: 8, seed: null }),
     })
     return () => h('div')
   } }))
@@ -60,7 +69,7 @@ it('freezes form and mask reads, prevents repeated submission, and cancels late 
     await preparation.start()
     expect(getBlob).toHaveBeenCalledOnce()
     finish(new Blob(['first'])); await pending
-    expect(submit).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ newOutfitPrompt: 'first outfit' }))
+    expect(submit).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ newOutfitPrompt: 'first outfit', sourceHistoryId: 'original-parent' }))
     for (const boundary of ['close', 'source']) {
       open.value = true
       const cancelled = preparation.start()

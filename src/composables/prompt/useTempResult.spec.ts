@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useTempResult, type TempResultDeps } from './useTempResult'
 import { clearTempResult, readTempResult, writeTempResult, type TempResultRecord } from '@/utils/tempResult'
 import { artworkRepository } from '@/storage/artworkRepository'
-import type { AnimaResult } from '@/types/anima'
+import type { AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 import type { TaskRecord } from '../../../types/tasks'
 import { copyTask, taskRecords } from '@/stores/runtimeTaskState'
@@ -87,7 +87,8 @@ function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
   const url = ref('')
   const autoSave = ref(true)
   const commit = vi.fn().mockResolvedValue({ id: 102 })
-  const context = ref({ char: 'nene', sceneId: 'sc001' })
+  const context = ref<AnimaResultContext>({ char: 'nene', sceneId: 'sc001' })
+  const animaState = ref({ resultContext: context.value, result: null as AnimaResult | null })
   const scope = effectScope(); scopes.push(scope)
   let temp: TempResultRecord | null = null
   vi.mocked(readTempResult).mockImplementation(() => temp)
@@ -96,20 +97,37 @@ function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
   const tools = scope.run(() => useTempResult({
     pb: { commitHistoryEntry: commit, flash: vi.fn() },
     sd: { resultSeed: ref(41), resultPrompt: ref('fixture') },
-    drawEngine: ref(engine), animaState: ref({ resultContext: context.value }), resultContext: context,
+    drawEngine: ref(engine), animaState, resultContext: context,
+    displayResultSeed: computed(() => 41), livePrompt: computed(() => ''), negativePrompt: computed(() => ''),
     displayResultUrl: computed(() => url.value), autoSaveToGallery: autoSave,
     historyGenerationFields: () => ({}), commitJobResult: commit,
   } as unknown as TempResultDeps))!
-  function deliver(id: string) {
+  function deliver(id: string, initImage?: string) {
     url.value = 'blob:' + id
     if (engine === 'sd') return tools.handleSdResult({ prompt: id, negative: '', size: '832x1216' } as Omit<SDQueueJob, 'id'>, url.value)
-    return tools.handleAnimaResult({
+    const result = {
       url: url.value, blob: new Blob([id]),
-      metadata: { engine, prompt: id, negative: '', seed: 41, width: 832, height: 1216 },
-    } as AnimaResult, null)
+      metadata: { engine, prompt: id, negative: '', seed: 41, width: 832, height: 1216, initImage },
+    } as AnimaResult
+    animaState.value.result = result
+    return tools.handleAnimaResult(result)
   }
-  return { tools, autoSave, commit, deliver, scope, temp: () => temp }
+  return { tools, autoSave, commit, deliver, scope, context, temp: () => temp }
 }
+
+it('archives the frozen source parent consistently through automatic and manual saves, including explicit null', async () => {
+  for (const parentId of ['source-artwork', null]) {
+    const run = setupAutomatic('anima')
+    run.context.value.parentId = parentId
+    await run.deliver('automatic', 'source.png')
+    expect(run.commit).toHaveBeenLastCalledWith(expect.objectContaining({ parentId }))
+    run.autoSave.value = false
+    await run.deliver('manual', 'source.png')
+    await run.tools.saveCurrentResult()
+    expect(run.commit).toHaveBeenCalledTimes(2)
+    expect(run.commit).toHaveBeenLastCalledWith(expect.objectContaining({ parentId }))
+  }
+})
 
 describe.each(['anima', 'krea2', 'sd'] as const)('%s automatic archive ownership', engine => {
   for (const outcome of ['success', 'failure'] as const) {

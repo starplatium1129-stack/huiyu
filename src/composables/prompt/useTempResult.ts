@@ -118,7 +118,7 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** Anima/Krea 直出成功：按偏好入册或落临时缓冲（原 onAnimaResult 内联块下沉）。 */
   const freeze = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T
-  async function handleAnimaResult(result: AnimaResult, inpaintSourceHistoryId: string | number | null) {
+  async function handleAnimaResult(result: AnimaResult) {
     const current = ownsResult(result.url)
     const autoSave = deps.autoSaveToGallery.value
     const runtimeTaskId = hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined
@@ -127,7 +127,7 @@ export function useTempResult(deps: TempResultDeps) {
       if (runtimeTaskId) { storedResultUrl.value = result.url; return }
     }
     const input = { result: { ...result, metadata: freeze(result.metadata) }, current,
-      context: freeze(deps.animaState.value.resultContext ?? null), autoSave, runtimeTaskId, inpaintSourceHistoryId,
+      context: freeze(deps.animaState.value.resultContext ?? null), autoSave, runtimeTaskId,
       history: autoSave ? freeze(deps.historyGenerationFields()) : {},
       story: autoSave ? String(pb.story || '').trim() : '', scene: autoSave ? pb.sceneId : null }
     const { handleAnimaResultAction } = await import('./tempResultActions')
@@ -169,6 +169,7 @@ export function useTempResult(deps: TempResultDeps) {
         context: frozen, seed: deps.displayResultSeed.value ?? undefined,
         ...deps.historyGenerationFields(), story: frozen?.story,
         scene: frozen ? (frozen.sceneId ?? null) : undefined,
+        parentId: frozen?.parentId,
       })) as Partial<HistoryEntry>
       const resultPrompt = sd.resultPrompt.value
       let blob: Blob

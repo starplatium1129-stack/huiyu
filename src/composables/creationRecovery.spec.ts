@@ -164,7 +164,7 @@ describe('临时成片持久化', () => {
   it('入册返回 null 时按失败处理，回退临时保存并如实标记', async () => {
     const { pb, tools, result } = tempHarness()
     vi.spyOn(pb, 'commitHistoryEntry').mockResolvedValue(null)
-    await tools.handleAnimaResult(result, null)
+    await tools.handleAnimaResult(result)
     expect(readTempResult()?.imageId).toBe('temp-image')
     expect(tools.resultArchived.value).toBe(false)
     expect(tools.resultTemporary.value).toBe(true)
@@ -177,7 +177,7 @@ describe('临时成片持久化', () => {
     let entered!: () => void
     const writeStarted = new Promise<void>(resolve => { entered = resolve })
     io.put.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; entered() }))
-    const pending = tools.handleAnimaResult(result, null)
+    const pending = tools.handleAnimaResult(result)
     // Completion actions load lazily; discard after the real write has begun,
     // so this still exercises cleanup of an image that completes too late.
     await writeStarted

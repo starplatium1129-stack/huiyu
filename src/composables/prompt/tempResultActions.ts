@@ -21,7 +21,6 @@ interface AnimaAutomaticInput {
   scene: TempResultDeps['pb']['sceneId']
   autoSave: boolean
   runtimeTaskId?: string
-  inpaintSourceHistoryId: string | number | null
 }
 interface SdAutomaticInput {
   job: Omit<SDQueueJob, 'id'>
@@ -35,7 +34,7 @@ interface SdAutomaticInput {
 
 /** Automatic completion actions load only after a result arrives. */
 export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner: ResultActionOwner) {
-  const { result, current, context: frozen, history, story, scene, autoSave, runtimeTaskId, inpaintSourceHistoryId } = input
+  const { result, current, context: frozen, history, story, scene, autoSave, runtimeTaskId } = input
   const { pb, displayedResultHistoryId, captureTemp, releaseTemp } = owner
   if (!autoSave) {
     if (current()) displayedResultHistoryId.value = null
@@ -69,7 +68,7 @@ export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner:
       hiresFix: result.metadata.hiresFix === true,
       hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
       hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
-      parentId: isInpaint ? (inpaintSourceHistoryId ?? undefined) : undefined,
+      parentId: isInpaint ? frozen?.parentId : undefined,
     })
     if (!saved) throw new Error('作品册写入失败')
     if (current()) {

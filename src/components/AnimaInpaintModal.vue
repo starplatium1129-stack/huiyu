@@ -11,13 +11,14 @@ import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
 import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
-import { useInpaintImageSource } from './inpaint/useInpaintImageSource'
+import { useInpaintImageSource, type InpaintSource } from './inpaint/useInpaintImageSource'
 import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
 import { useInpaintPreparation } from './inpaint/useInpaintPreparation'
 import '@/assets/css/director/components/AnimaInpaintModal.css'
 
 export interface InpaintSubmitPayload {
   imageBlob: Blob
+  sourceHistoryId: string | number | null
   maskBlob: Blob | null
   maskPrompt: string
   maskThreshold: number
@@ -33,8 +34,7 @@ export interface InpaintSubmitPayload {
 
 const props = defineProps<{
   open: boolean
-  imageUrl?: string | null
-  imageBlob?: Blob | null
+  imageSource: InpaintSource
   currentPrompt?: string
   currentNegative?: string
   character?: 'nene' | 'natsume' | 'triad' | null
@@ -85,6 +85,7 @@ const {
   detectedResolution,
   imageReady,
   sourceRevision,
+  sourceHistoryId,
   uploadedBlob,
   fileInputRef,
   isDragging,
@@ -94,8 +95,7 @@ const {
   getBlob,
 } = useInpaintImageSource({
   open: () => props.open,
-  imageUrl: () => props.imageUrl,
-  imageBlob: () => props.imageBlob,
+  source: () => props.imageSource,
   clearMask,
   syncMaskCanvas,
 })
@@ -145,6 +145,7 @@ function captureDraft() {
 
   return {
     painted: maskMode.value === 'paint',
+    sourceHistoryId: sourceHistoryId.value,
     requiresAdult: Boolean(selectedPreset?.isNsfw),
     maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
     maskThreshold: maskThreshold.value,

@@ -64,7 +64,7 @@ export function usePromptWorkspace() {
         isPopular: () => pb.isPopular,
         getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
         getRequest: () => buildAnimaRequest(),
-        getSubmitContext: () => ({ ...captureResultContext(), parentId: inpaintSourceHistoryId.value }),
+        getSubmitContext: captureResultContext,
         onResult: result => onAnimaResult(result),
         flash: message => pb.flash(message),
         preferredSize: () => pb.lastRecommendedSize,
@@ -79,7 +79,7 @@ export function usePromptWorkspace() {
     function onAnimaResult(result: AnimaResult) {
         resultRevealUrl.value = result.url;
         engine.onAnimaResult(result);
-        void tempResultTools.handleAnimaResult(result, inpaintSourceHistoryId.value);
+        void tempResultTools.handleAnimaResult(result);
     }
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
@@ -191,8 +191,6 @@ export function usePromptWorkspace() {
      * 舞台当前结果 ↔ 作品册条目锚点（P1-14 inpaint 对比语义）与「未入册成片」
      * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
      */
-    /** 重绘来源条目：在换装弹窗打开的瞬间定格，弹窗期间舞台结果不变。 */
-    const inpaintSourceHistoryId = ref<string | number | null>(null);
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
     const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, resultJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
@@ -350,12 +348,6 @@ export function usePromptWorkspace() {
         popularIdentityTokens: inpaintPopularTokens,
     });
     function cancelGeneration() { hiresVersion++; hiresPreparing.value = false; if (!cancelInpaintPreparation()) cancelEngineGeneration(); }
-    // 弹窗一打开就定格来源：此时舞台上的正是要被重绘的那张图；等结果回来再取
-    // 就已经是新图了（inpaint 是覆盖式提交，结果直接顶掉舞台）。
-    watch(inpaintOpen, (open) => {
-        if (open)
-            inpaintSourceHistoryId.value = displayedResultHistoryId.value;
-    });
     /**
      * 画师选满后再点（2026-08-30 UX 审计 P1）：面板内已有就地提示，这里补一条
      * toast——画师网格在折叠面板里，提示有可能被滚出视野。
@@ -511,7 +503,8 @@ export function usePromptWorkspace() {
         dismissError, queuePausedReason, batchPanelDeps,
     };
     const dialogBindings: PromptDialogBindings = {
-        compareEl, adultEnabled: toRef(pb, 'showMatureScenes'), resultBlob: computed(() => animaState.value.result?.blob),
+        compareEl, adultEnabled: toRef(pb, 'showMatureScenes'),
+        inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
         displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
