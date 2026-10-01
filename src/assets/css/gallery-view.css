@@ -1,5 +1,5 @@
 @reference "./tailwind.css";
-.gallery-shell { width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
+.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
 .gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto clamp(24px,2.5vw,32px); }
 .gallery-kicker { @apply tw:mb-s-3 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.18em; }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }

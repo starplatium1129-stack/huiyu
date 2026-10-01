@@ -136,6 +136,18 @@ describe('bounded canvas dust dissolve', () => {
     },
   )
 
+  it('uses a compact thumbnail budget so two simultaneous deletions stay bounded', () => {
+    const { image, host } = fixture(2560, 1440, 2560, 1440)
+    stop = startCanvasDissolve(image, host, 'thumbnail')
+    const [overlay, snapshot, sample] = contexts
+    for (const context of [overlay, snapshot]) {
+      expect(context.canvas.width * context.canvas.height).toBeLessThanOrEqual(300_000)
+      expect(Math.max(context.canvas.width, context.canvas.height)).toBeLessThanOrEqual(640)
+    }
+    const [, , columns, rows] = sample.getImageData.mock.calls[0]
+    expect(columns * rows).toBeLessThanOrEqual(1200)
+  })
+
   it('keeps a full snapshot before staggered patches turn into moving, fading fine grains', () => {
     const { image, host } = fixture()
     stop = startCanvasDissolve(image, host)
