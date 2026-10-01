@@ -7,7 +7,7 @@ import { artworkTags } from './artworkTags'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
 import { conditionText, recordedCondition, UNRECORDED_CONDITION } from './galleryGenerationConditions'
-import { createGalleryFilterPreferences } from '@/storage/galleryFilterPreferences'
+import { createGalleryFilterPreferences, GALLERY_FILTER_PRESETS_SETTING, GALLERY_FILTER_PRESET_MAX_BYTES } from '@/storage/galleryFilterPreferences'
 import { useGallerySavedFilters } from './useGallerySavedFilters'
 import { GALLERY_FILTER_PRESETS_KEY } from '@/utils/storageKeys'
 import { classifyMigrationKey } from '@/platform/web/migrationClassification'
@@ -306,4 +306,24 @@ it('does not publish delayed filter changes or schedule new ones while inactive'
     await vi.advanceTimersByTimeAsync(300)
     expect(replace).toHaveBeenCalledExactlyOnceWith({ query: { q: 'current' } })
   } finally { filters.cleanupFilterSync(); scope.stop() }
+})
+
+
+it('keeps concurrently merged preset overflow removable while enforcing creation and byte limits', async () => {
+  const { filters, stop } = setup()
+  const snapshot = filters.filterSnapshot.value
+  let raw = GALLERY_FILTER_PRESETS_SETTING.serialize(Array.from({ length: 25 }, (_, index) => ({ id: `preset-${index}`, name: `Preset ${index}`, filters: snapshot })))
+  const storage = { getItem: () => raw, setItem: vi.fn((_key: string, value: string) => { raw = value }), removeItem: vi.fn() }
+  const preferences = createGalleryFilterPreferences(storage, async () => {})
+  try {
+    expect(preferences.read()).toHaveLength(25)
+    await expect(preferences.save('New preset', snapshot)).rejects.toThrow('最多保存 24')
+    expect(storage.setItem).not.toHaveBeenCalled()
+    expect(await preferences.remove('preset-0')).toHaveLength(24)
+    expect(await preferences.save('Preset 1', { ...snapshot, searchQuery: 'updated' })).toHaveLength(24)
+    const before = raw
+    await expect(preferences.save('Preset 1', { ...snapshot, searchQuery: 'x'.repeat(GALLERY_FILTER_PRESET_MAX_BYTES) })).rejects.toThrow('资料过大')
+    expect(raw).toBe(before)
+    expect(GALLERY_FILTER_PRESETS_SETTING.parse('x'.repeat(GALLERY_FILTER_PRESET_MAX_BYTES + 1))).toBeNull()
+  } finally { stop() }
 })

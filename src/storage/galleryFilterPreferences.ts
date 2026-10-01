@@ -5,16 +5,22 @@ import type { KeyedStorage, SettingDefinition } from './settingsRepository'
 
 export const GALLERY_FILTER_PRESET_LIMIT = 24
 export const GALLERY_FILTER_NAME_LIMIT = 60
+// Cross-window merges can exceed the UI creation count. Bound bytes instead of
+// making valid concurrent additions unreadable and impossible to remove.
+export const GALLERY_FILTER_PRESET_MAX_BYTES = 4 * 1024 * 1024
+function withinPresetBudget(raw: string): boolean {
+  return raw.length <= GALLERY_FILTER_PRESET_MAX_BYTES && new TextEncoder().encode(raw).byteLength <= GALLERY_FILTER_PRESET_MAX_BYTES
+}
 export interface GalleryFilterPreset { id: string; name: string; filters: GalleryFilterSnapshot }
 export const GALLERY_FILTER_PRESETS_SETTING: SettingDefinition<GalleryFilterPreset[]> = {
   key: GALLERY_FILTER_PRESETS_KEY,
   parse(raw) {
     if (raw === null) return []
+    if (!withinPresetBudget(raw)) return null
     try {
       const object: unknown = JSON.parse(raw)
       if (!object || typeof object !== 'object' || Array.isArray(object)) return null
       const entries = Object.entries(object)
-      if (entries.length > GALLERY_FILTER_PRESET_LIMIT) return null
       const presets: GalleryFilterPreset[] = []
       for (const [id, entry] of entries) {
         if (!/^[a-zA-Z0-9-]{1,80}$/.test(id) || !entry || typeof entry !== 'object') return null
@@ -33,7 +39,11 @@ export const GALLERY_FILTER_PRESETS_SETTING: SettingDefinition<GalleryFilterPres
     } catch { return null }
   },
   // Flat IDs let the existing profile conflict merge preserve independent presets.
-  serialize(value) { return JSON.stringify(Object.fromEntries(value.map(preset => [preset.id, { name: preset.name, filters: normalizeGalleryFilterSnapshot(preset.filters) }]))) },
+  serialize(value) {
+    const raw = JSON.stringify(Object.fromEntries(value.map(preset => [preset.id, { name: preset.name, filters: normalizeGalleryFilterSnapshot(preset.filters) }])))
+    if (!withinPresetBudget(raw)) throw new Error('筛选组合资料过大，请缩短搜索条件后重试。')
+    return raw
+  },
 }
 export function createGalleryFilterPreferences(storage: KeyedStorage = profileLocalStorage, flush: () => Promise<void> = flushProfileWrites) {
   function read(): GalleryFilterPreset[] {
