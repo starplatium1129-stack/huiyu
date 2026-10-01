@@ -1,5 +1,7 @@
 # 项目文档索引
 
+本次 [1.8.0 发行准备与更新说明](releases/v1.8.0.md)汇总配方选择沿用、角色／智能画册、生成条件检索、PixAI、MiaoMiao 1.6 和桌面交互更新；安装包、签名及公开发行条件分别核对，当前公开版本仍为 1.7.4。
+
 第三批[视频台、任务中心与设置精修](audits/2026-10-01/atelier-production-polish.md)记录窄桌面布局、任务列表滚动、外观弹窗连续操作与确认框焦点修复，附双主题前后对比、定向验证和原生设备未验边界。
 
 「我的作品」的[角色自动画册与标签智能画册](audits/2026-10-01/gallery-smart-albums.md)记录元数据归组、持续规则匹配、手动／智能画册边界及双主题桌面 CSS 视口验证。
@@ -44,7 +46,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 | [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |
 | [桌面部署](desktop-deployment.md) | 构建、同步、完整安装与 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。当前发行说明只维护 [1.7.4](releases/v1.7.4.md)。
+协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。公开发行说明见 [1.7.4](releases/v1.7.4.md)，新版本准备见 [1.8.0](releases/v1.8.0.md)。
 
 ## 现行契约与专项计划
 
