@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict'
-import { afterEach, describe, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { ApiClient, ApiRequestOptions } from '@/api/client'
 import type { AnimaJobMetadata, AnimaResult } from '@/types/anima'
 import { useAnimaSession, type AnimaRequest } from './useAnimaSession'
+import type { TaskRecord } from '../../../types/tasks'
+
+const runtime = vi.hoisted(() => ({ enabled: false, submit: vi.fn(), wait: vi.fn(), fetch: vi.fn(), cancel: vi.fn() }))
+vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => runtime.enabled }))
+vi.mock('@/api/runtimeTasks', () => ({ submitRuntimeTask: runtime.submit, waitForRuntimeTask: runtime.wait,
+  fetchRuntimeResult: runtime.fetch, cancelRuntimeTaskKey: runtime.cancel, runtimeResultPath: () => '/api/tasks/v1/one/results/0', taskMessage: () => 'Runtime state' }))
 
 const request: AnimaRequest = {
   prompt: 'session race fixture', negative: '', profileId: 'default',
@@ -47,7 +53,75 @@ function fixture() {
   return { session, calls, generate }
 }
 
-afterEach(async () => { for (const cleanup of cleanups.splice(0)) await cleanup(); vi.useRealTimers() })
+afterEach(async () => {
+  for (const cleanup of cleanups.splice(0)) await cleanup()
+  runtime.enabled = false; runtime.submit.mockReset(); runtime.wait.mockReset(); runtime.fetch.mockReset(); runtime.cancel.mockReset()
+  vi.useRealTimers(); vi.unstubAllGlobals()
+})
+
+function durableFixture() {
+  runtime.enabled = true
+  const task = { taskId: 'runtime-task', kind: 'anima', provider: 'comfy', status: 'running', recoveryState: 'normal', createdAt: 1,
+    input: { ...request, sampler: 'actual-sampler', scheduler: 'actual-scheduler', seed: 41 },
+    metadata: { seed: 0, context: { char: 'nene', story: 'Frozen story' } },
+  } as unknown as TaskRecord
+  runtime.submit.mockResolvedValue(task)
+  runtime.fetch.mockResolvedValue(new Blob(['pixels'], { type: 'image/png' }))
+  vi.stubGlobal('URL', class extends URL { static createObjectURL = vi.fn(() => 'blob:runtime'); static revokeObjectURL = vi.fn() })
+  const fixtureValue = fixture()
+  function wait() {
+    let resolve!: (value: TaskRecord) => void
+    const pending = new Promise<TaskRecord>(done => { resolve = done })
+    runtime.wait.mockImplementationOnce((_id: string, signal: AbortSignal, update: (value: TaskRecord) => void) => {
+      update(task)
+      return Promise.race([pending, new Promise<never>((_done, reject) => signal.addEventListener('abort', () => reject(new DOMException('unsubscribe', 'AbortError')), { once: true }))])
+    })
+    return (patch: Partial<TaskRecord> = {}) => resolve({ ...task, status: 'succeeded', ...patch })
+  }
+  return { ...fixtureValue, task, wait }
+}
+
+it('retains Krea runtime style processing, actual parameters and result context', async () => {
+  const { session, task, generate } = durableFixture()
+  session.patchState({ family: 'krea2' })
+  runtime.wait.mockResolvedValueOnce({ ...task, kind: 'creative', metadata: { ...task.metadata, prompt: request.prompt + ', actual style trigger', steps: 12, cfg: 1, styleLoraId: 'style-a' } })
+  await generate()
+  expect(session.state.value.result?.metadata).toMatchObject({ engine: 'krea2', prompt: request.prompt + ', actual style trigger',
+    seed: 0, steps: 12, cfg: 1, sampler: 'actual-sampler', styleLoraId: 'style-a' })
+  expect(session.state.value.resultContext).toMatchObject({ story: 'Frozen story', history: { seed: 0, cfg: 1 } })
+  expect(session.state.value.result?.metadata).not.toHaveProperty('context')
+})
+
+it('a late durable cancellation receipt cannot roll a completed image back to cancelling', async () => {
+  const { session, task, generate, wait } = durableFixture()
+  const finish = wait(), work = generate()
+  await vi.waitFor(() => expect(runtime.wait).toHaveBeenCalledOnce())
+  let receipt!: (value: TaskRecord) => void
+  runtime.cancel.mockImplementationOnce(() => new Promise(resolve => { receipt = resolve }))
+  const cancellation = session.cancel()
+  await vi.waitFor(() => expect(runtime.cancel).toHaveBeenCalledOnce())
+  finish(); await work
+  receipt({ ...task, status: 'cancelled' }); await cancellation
+  expect(session.state.value.phase).toBe('succeeded')
+  expect(session.state.value.result?.url).toBe('blob:runtime')
+})
+
+it('a stale durable cancellation failure cannot overwrite a newer generation', async () => {
+  const { session, generate, wait } = durableFixture()
+  wait(); const old = generate()
+  await vi.waitFor(() => expect(runtime.wait).toHaveBeenCalledOnce())
+  let reject!: (reason: unknown) => void
+  runtime.cancel.mockImplementationOnce(() => new Promise((_resolve, fail) => { reject = fail }))
+  const cancellation = session.cancel()
+  await vi.waitFor(() => expect(runtime.cancel).toHaveBeenCalledOnce())
+  session.patchState({ phase: 'cancelled' })
+  const finish = wait(), retry = generate()
+  await vi.waitFor(() => expect(runtime.wait).toHaveBeenCalledTimes(2))
+  const before = { ...session.state.value }
+  reject(new Error('Old receipt lost')); await cancellation
+  expect(session.state.value).toEqual(before)
+  finish(); await retry; await old
+})
 
 describe('useAnimaSession · stale asynchronous work', () => {
   it('cleans up a late accepted job through its original engine after a cross-engine retry', async () => {

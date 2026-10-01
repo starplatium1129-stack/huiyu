@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding, useAnimaSession, type AnimaRequest, type AnimaSessionOptions } from './useAnimaSession'
 import type { ApiClient, ApiRequestOptions } from '@/api/client'
+import type { AnimaJobMetadata } from '@/types/anima'
 import * as environment from '@/utils/runtimeEnvironment'
 
 const request: AnimaRequest = {
@@ -31,6 +32,19 @@ function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> 
   sessions.push(session)
   return session
 }
+
+it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
+  const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
+    { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5 } },
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: false, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5 } },
+  ], loras: [] })) } as unknown as ApiClient
+  const session = createSession(client)
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ modelId: 'anima-miaomiao-v1.6', online: false })
+  session.applyModel('anima-miaomiao-v1.2')
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ modelId: 'anima-miaomiao-v1.2', online: true })
+})
 
 describe('useAnimaSession · backend status and polling', () => {
   it('底模未发生改变的心跳轮询不覆写用户手动调整的 cfg、steps 与已选风格 LoRA', async () => {
@@ -195,4 +209,23 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(recovery.state.value.phase).toBe(family === 'anima' ? 'cancelled' : 'cancelling')
   expect(recovery.state.value.job?.id).toBe('unobserved')
   if (family === 'krea2') expect(recovery.state.value.statusText).toContain('取消尚未确认')
+})
+
+it('uses the accepted Web Krea metadata after provider style processing, even if the panel changes', async () => {
+  vi.useFakeTimers()
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['image']), { headers: { 'content-type': 'image/png' } })))
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:completed')
+  const metadata = { ...request, id: 'style-result', engine: 'krea2', prompt: request.prompt + ', actual style trigger',
+    seed: 0, sampler: 'actual-sampler', scheduler: 'actual-scheduler' } as AnimaJobMetadata
+  const client = { request: vi.fn(async () => ({ ok: true, job: { id: 'style-result', status: 'succeeded', metadata, seed: 0,
+    resultAvailable: true, resultUrl: '/api/creative/jobs/style-result/result' } })) } as unknown as ApiClient
+  const session = createSession(client)
+  session.patchState({ online: true, family: 'krea2' })
+  const generating = session.generate()
+  session.patchState({ sampler: 'later-sampler', scheduler: 'later-scheduler' })
+  await vi.dynamicImportSettled()
+  await vi.advanceTimersByTimeAsync(1000); await generating
+  expect(session.state.value.result?.metadata).toMatchObject({ prompt: request.prompt + ', actual style trigger', seed: 0, sampler: 'actual-sampler' })
+  metadata.prompt = 'Mutated transport response'
+  expect(session.state.value.result?.metadata.prompt).toBe(request.prompt + ', actual style trigger')
 })

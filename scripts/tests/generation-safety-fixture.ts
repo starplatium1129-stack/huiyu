@@ -25,7 +25,7 @@ function fixture(t: any): any {
   const manifest = path.join(temporary, 'active', 'manifest.json');
   const character = { id: 'fixture', displayName: 'Fixture', originalName: 'Fixture', franchise: 'Test',
     identityProse: 'An adult test character.', identityTokens: ['fixture_character'], exactTokens: [], exactPrefixes: [],
-    recommendedEngine: 'anima-miaomiao-v1.2', supportedEngines: ['anima'], adultEligibility: 'adult',
+    recommendedEngine: 'anima-miaomiao-v1.6', supportedEngines: ['anima'], adultEligibility: 'adult',
     outfits: [{ id: 'coat', name: 'Blue coat', prose: 'A blue coat.', tokens: ['blue_coat'], default: true }] };
   const blueprint = { id: 'bp1', title: 'Walk', category: 'daily', description: 'Walking outside.',
     characterId: character.id, outfitId: 'coat', location: 'garden', action: 'walking', timeOfDay: 'morning',
@@ -35,8 +35,8 @@ function fixture(t: any): any {
   const values = {
     'popular-characters.json': { characters: [character] },
     'scene-blueprints.json': { blueprints: [blueprint] },
-    'presets.json': { model_profiles: [{ id: 'anima_miaomiao_v12', name: 'Fixture model',
-      model_id: 'anima-miaomiao-v1.2', engine: 'anima', quality_prefix: 'test_quality', negative_prefix: 'test_negative' }] },
+    'presets.json': { model_profiles: [{ id: 'anima_miaomiao_v16', name: 'Fixture model',
+      model_id: 'anima-miaomiao-v1.6', engine: 'anima', quality_prefix: 'test_quality', negative_prefix: 'test_negative' }] },
     'tags.json': [],
     'scenes.json': [{ id: 'sc001', title: 'Window', char: 'nene', prompt: 'A person by a window.', negative: 'rain', recommendedSize: '832x1216' }],
     'character-reference-standards.json': { characters: [character], perspectives: [

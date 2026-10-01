@@ -89,6 +89,7 @@ export function useGalleryWorkspace() {
     const {
         favoriteOnly,
         tagFilter, tagOptions,
+        generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         projectFilter,
         searchQuery,
         visible,
@@ -109,7 +110,7 @@ export function useGalleryWorkspace() {
         route,
         router,
         onFilterReset: () => { clearSelection(); },
-        isViewActive: () => viewActive,
+        isViewActive: () => viewActive, deferQueryRestore: () => viewerIndex.value >= 0 || current.value !== null,
     });
 
     const {
@@ -122,9 +123,10 @@ export function useGalleryWorkspace() {
         clearSelection,
     } = useGallerySelection(visible);
 
-    const { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed, step } = useGalleryViewer({
+    const { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step } = useGalleryViewer({
         history, visible, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
+    function onViewerClosed() { finishViewerClose(); restoreFiltersFromQuery(); }
 
     const {
         compareMode,
@@ -504,6 +506,7 @@ export function useGalleryWorkspace() {
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions,
+        generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,

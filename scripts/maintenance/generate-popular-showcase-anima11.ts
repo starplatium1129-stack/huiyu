@@ -5,7 +5,7 @@
  * Generate showcase candidates for EVERY popular character × EVERY scene
  * blueprint (SFW + R18), unified contract:
  *
- *   - engine : MiaoMiao v1.2 by default; --model selects an explicit Anima profile
+ *   - engine : MiaoMiao v1.6 by default; --model selects an explicit Anima profile
  *   - prompt : buildPopularPromptPlan (identity + outfit + blueprint scene +
  *              inferred shot/lighting/composition) with artist tag @rella
  *   - params : 30 steps / CFG 4.5 (global Anima default since 2026-08-14)
@@ -27,14 +27,14 @@ const animaGenerationContract: typeof import('../../server/anima-generation-cont
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
-const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-08-14_v18-popular-all-rella');
+const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-10-01_miaomiao16-popular-all-rella');
 const popularData: unknown = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
 const blueprintData: unknown = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 
 const MANIFEST_NAME = 'generation-manifest.json';
-const ANIMA_MODEL_ID = argument('--model', 'anima-miaomiao-v1.2');
-const ANIMA_PROFILE_ID = (presets.model_profiles || []).find((item: any) => item.model_id === ANIMA_MODEL_ID)?.id;
+const ANIMA_MODEL_ID = argument('--model', 'anima-miaomiao-v1.6');
+const ANIMA_PROFILE_ID = (presets.model_profiles || []).find((item: any) => item.model_id === ANIMA_MODEL_ID && item.engine === 'anima')?.id;
 const ARTIST_TAG = 'rella';
 
 function argument(name: any, fallback: any = '') {

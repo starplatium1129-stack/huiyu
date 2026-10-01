@@ -69,6 +69,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         await pb.loadHistory();
         if (disposed) return;
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
+        if (typeof route.query.remix === 'string' || typeof route.query.variant === 'string') pb.restoreDraft();
         const handledDeepLink = await applyDeepLink(route.query);
         if (disposed) return;
         if (!handledDeepLink)
@@ -95,8 +96,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
             const savedQuick = readQuickCreate();
             applyQuickCreateSettings(savedQuick);
-            // 快速出图深链：Anima 引擎必须收敛到受控路线推荐的底模（工作室角色 → Aesthetic v1.1），
-            // pro 模式不会走 applyManagedRoute，这里显式对齐，避免落到 anima-base-v1.0。
+            // 快速出图深链：Anima 引擎必须收敛到受控路线推荐的底模（工作室角色 → MiaoMiao v1.6），
+            // pro 模式不会走 applyManagedRoute，这里显式对齐到当前推荐底模。
             if (drawEngine.value !== 'sd' && !pb.isPopular) {
                 const route = await refreshManagedRoute();
                 if (disposed) return;

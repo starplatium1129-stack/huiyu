@@ -5,6 +5,13 @@ import { clearTempResult, readTempResult, writeTempResult, type TempResultRecord
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { AnimaResult } from '@/types/anima'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
+import type { TaskRecord } from '../../../types/tasks'
+import { copyTask, taskRecords } from '@/stores/runtimeTaskState'
+
+const runtime = vi.hoisted(() => ({ enabled: false, refresh: vi.fn(), fetch: vi.fn(), mark: vi.fn() }))
+vi.mock('@/api/runtimeTaskAuthority', async importOriginal => ({ ...await importOriginal<object>(), hasRuntimeTasks: () => runtime.enabled }))
+vi.mock('@/api/runtimeTasks', () => ({ refreshRuntimeTasks: runtime.refresh, fetchRuntimeResult: runtime.fetch, markRuntimeTask: runtime.mark,
+  runtimeResultPath: (task: TaskRecord) => `/api/tasks/v1/${task.taskId}/results/0` }))
 
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { deleteImage: vi.fn().mockResolvedValue(undefined), getImage: vi.fn(), putImage: vi.fn() } }))
 const imgDelete = artworkRepository.deleteImage, imgPut = artworkRepository.putImage
@@ -17,6 +24,7 @@ function deferred<T>() {
   return { resolve, reject, promise }
 }
 beforeEach(() => {
+  runtime.enabled = false; runtime.refresh.mockReset(); runtime.fetch.mockReset(); runtime.mark.mockReset(); taskRecords.value = []
   vi.mocked(readTempResult).mockReturnValue(null)
   vi.mocked(writeTempResult).mockReturnValue(true)
   vi.mocked(imgPut).mockResolvedValue('temporary-image')
@@ -165,4 +173,54 @@ it('a late temporary blob cannot replace the newer temporary pointer', async () 
   expect(run.temp()?.imageId).toBe('new-image')
   expect(imgDelete).toHaveBeenCalledWith('old-image')
   expect(imgDelete).not.toHaveBeenCalledWith('new-image')
+})
+
+function restoreFixture() {
+  runtime.enabled = true
+  const taskId = '12345678-1234-1234-1234-123456789012'
+  taskRecords.value = [{ taskId, kind: 'generation', resultState: 'available', deliveryState: 'unseen', provider: 'webui',
+    input: { prompt: 'Requested prompt', negative: 'Requested negative', seed: 41 },
+    metadata: { seed: 0, prompt: 'Actual prompt', context: { char: 'nene', story: 'Original story' } },
+  } as unknown as TaskRecord]
+  runtime.refresh.mockResolvedValue(undefined)
+  runtime.fetch.mockResolvedValue(new Blob(['pixels'], { type: 'image/png' }))
+  runtime.mark.mockImplementation(async (id, state) => { taskRecords.value = taskRecords.value.map(task => task.taskId === id ? { ...copyTask(task), deliveryState: state } : copyTask(task)) })
+  vi.stubGlobal('URL', class extends URL { static createObjectURL = vi.fn(() => 'blob:restored'); static revokeObjectURL = vi.fn() })
+  const url = ref(''), resultTaskId = ref(''), resultContext = ref(null)
+  const sd = { resultTaskId, adoptResult: vi.fn((next: string, _seed: number | null, _prompt: string, id: string) => { url.value = next; resultTaskId.value = id }) }
+  const scope = effectScope(); scopes.push(scope)
+  const tools = scope.run(() => useTempResult({ sd, pb: { flash: vi.fn(), setChar: vi.fn() }, drawEngine: ref('sd'), animaState: ref({}),
+    resultContext, displayResultUrl: computed(() => url.value), setDrawEngine: vi.fn(),
+  } as unknown as TempResultDeps))!
+  return { tools, url, sd, taskId, resultContext, scope }
+}
+
+it('restores the observed Seed and actual prompt from the runtime inbox', async () => {
+  const { tools, sd, taskId, resultContext } = restoreFixture()
+  expect(await tools.restoreTempResult()).toBe(true)
+  expect(sd.adoptResult).toHaveBeenCalledWith('blob:restored', 0, 'Actual prompt', taskId)
+  expect(resultContext.value).toMatchObject({ story: 'Original story', history: { seed: 0, prompt: 'Actual prompt' } })
+})
+
+it.each(['replacement', 'dispose'] as const)('a late inbox restore cannot allocate or replace a result after %s', async action => {
+  const { tools, url, sd, scope } = restoreFixture()
+  const pending = deferred<Blob>()
+  runtime.fetch.mockReturnValueOnce(pending.promise)
+  const restoring = tools.restoreTempResult()
+  await vi.waitFor(() => expect(runtime.fetch).toHaveBeenCalledOnce())
+  if (action === 'replacement') url.value = 'blob:new-result'
+  else scope.stop()
+  pending.resolve(new Blob(['late'], { type: 'image/png' }))
+  expect(await restoring).toBe(false)
+  expect(sd.adoptResult).not.toHaveBeenCalled()
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+})
+
+it('explicitly cleared runtime results do not return on the next inbox restore', async () => {
+  const { tools, url, taskId } = restoreFixture()
+  await tools.restoreTempResult()
+  tools.discardTemp(); url.value = ''
+  await vi.waitFor(() => expect(runtime.mark).toHaveBeenCalledWith(taskId, 'discarded'))
+  expect(await tools.restoreTempResult()).toBe(false)
+  expect(runtime.fetch).toHaveBeenCalledOnce()
 })

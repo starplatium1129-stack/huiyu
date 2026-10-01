@@ -3,6 +3,7 @@ import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../pla
 import type { TaskRecord, TaskSubmission } from '../../types/tasks'
 import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks } from './runtimeTaskAuthority'
+import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord } from '../../types/tasks'
 
@@ -128,10 +129,10 @@ export async function waitForRuntimeTask(id: string, signal: AbortSignal, update
     signal.throwIfAborted()
     const task = await getRuntimeTask(id, signal)
     signal.throwIfAborted(); update(task)
+    if (task.upstreamSettled && (task.status === 'failed' || task.status === 'cancelled')) throw new AcceptedTaskTerminalError(task.taskId, task.status, taskMessage(task))
     if (task.recoveryState === 'unknown' || task.recoveryState === 'interrupted') throw new Error(taskMessage(task))
     if (task.upstreamSettled) {
       if (task.status === 'succeeded' && task.resultState === 'available') return task
-      if (task.status === 'cancelled') throw new DOMException('任务已取消', 'AbortError')
       throw new Error(taskMessage(task))
     }
     await new Promise<void>((resolve, reject) => {

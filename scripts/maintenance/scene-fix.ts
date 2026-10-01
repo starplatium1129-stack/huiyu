@@ -38,12 +38,12 @@ const REPAIR_MODELS: any = Object.freeze({
   nene: Object.freeze({
     loraId: 'L_NENE_V21_ANIMA',
     loraStrength: 0.85,
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.6',
   }),
   natsume: Object.freeze({
     loraId: 'L_NAT_V21_ANIMA',
     loraStrength: 0.85,
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.6',
   }),
 });
 

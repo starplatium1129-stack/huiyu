@@ -4,6 +4,7 @@ import { saveArtworkSnapshot } from '@/application/artwork/saveGeneratedArtwork'
 import type { ArtworkSaveSnapshot } from '@/application/artwork/artworkSaveInput'
 import type { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
+import { taskResultHistory } from '@/application/artwork/taskResultHistory'
 
 /** Save-only adapters load on first save; the submitted snapshot already exists. */
 export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, historyStore: ReturnType<typeof usePromptHistoryStore>) {
@@ -11,7 +12,7 @@ export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, histor
   if (snapshot.entry.taskId) {
     const entry = await archiveTaskResult(snapshot.entry.taskId, snapshot.entry.resultIndex ?? 0)
     historyStore.rememberArtwork(entry)
-    return entry
+    return taskResultHistory(entry)
   }
   const result = await saveArtworkSnapshot(snapshot, {
     withStaging: work => repository.withStaging(async () => {

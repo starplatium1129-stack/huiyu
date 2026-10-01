@@ -1,4 +1,3 @@
-import { runtimeTasks } from '../../stores/runtimeTaskState'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
@@ -190,7 +189,8 @@ export function useTempResult(deps: TempResultDeps) {
         }
         blob = await response.blob()
         // 按图取词：SD 结果记录的是提交时实际使用的提示词，面板后续修改不漂移。
-        prompt = resultPrompt || prompt
+        prompt = resultPrompt || frozen?.history?.prompt || prompt
+        negative = frozen?.history?.negative ?? negative
       }
       if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
       const entry = await pb.commitHistoryEntry({
@@ -216,70 +216,19 @@ export function useTempResult(deps: TempResultDeps) {
    * 返回是否发生了恢复（调用方据此提示）。
    */
   async function restoreTempResult(): Promise<boolean> {
-    if (hasRuntimeTasks()) {
-      const { refreshRuntimeTasks, runtimeResultPath, fetchRuntimeResult } = await import('../../api/runtimeTasks.ts')
-      await refreshRuntimeTasks().catch(() => {})
-      const task = runtimeTasks.value.find(item => ['generation', 'anima', 'creative'].includes(item.kind) && item.resultState === 'available' && !['saved', 'discarded'].includes(item.deliveryState))
-      if (!task) return false
-      const blob = await fetchRuntimeResult(runtimeResultPath(task)).catch(() => null)
-      if (!blob || disposed) return false
-      const context = (task.metadata.context || null) as AnimaResultContext | null
-      const url = URL.createObjectURL(blob)
-      if (task.kind === 'generation') { deps.sd.adoptResult(url, Number(task.input.seed) || 0, String(task.input.prompt || ''), task.taskId); deps.resultContext.value = context; deps.setDrawEngine('sd') }
-      else {
-        const metadata = { ...task.metadata, id: task.taskId, resultUrl: runtimeResultPath(task) } as unknown as AnimaResult['metadata']
-        deps.patchAnimaState({ result: { url, blob, metadata }, job: metadata, resultContext: context, phase: 'succeeded', progress: 1, statusText: '已从收件箱找回结果' })
-        deps.setDrawEngine(task.kind === 'creative' ? 'krea2' : 'anima')
-      }
-      storedResultUrl.value = url; return true
-    }
-    const record = readTempResult()
-    if (!record) return false
-    let blob: Blob | null = null
-    try {
-      blob = await artworkRepository.getImage(record.imageId)
-    } catch { /* 读取失败按失效处理 */ }
-    if (!blob || !blob.size) {
-      clearTempResult()
-      return false
-    }
-    // 引擎守卫前置还原（setDrawEngine 对 popular→SD、triad→Anima 有拒绝分支）：
-    // 先回到出图时的角色归属，再切引擎，保证恢复结果真的可见。
-    if (record.engine === 'sd' && pb.isPopular) pb.setStudioSubject()
-    const originChar = record.context?.char
-    if (originChar === 'nene' || originChar === 'natsume' || originChar === 'triad') {
-      pb.setChar(originChar)
-    }
-    if (record.engine === 'sd') {
-      deps.sd.adoptResult(URL.createObjectURL(blob), record.seed, record.prompt)
-      deps.resultContext.value = record.context ?? null
-      deps.setDrawEngine('sd')
-    } else {
-      if (!record.animaMetadata) {
-        clearTempResult()
-        return false
-      }
-      deps.patchAnimaState({
-        result: { url: URL.createObjectURL(blob), blob, metadata: record.animaMetadata },
-        job: record.animaMetadata,
-        resultContext: record.context ?? null,
-        phase: 'succeeded',
-        progress: 1,
-        statusText: '已找回上次未入册的成片',
-        errorMsg: '',
-        errorReport: null,
-      })
-      deps.setDrawEngine(record.engine === 'krea2' ? 'krea2' : 'anima')
-    }
-    pb.flash('已找回上次未入册的成片：可点「存入作品册」，或点「清除」丢弃')
-    storedResultUrl.value = deps.displayResultUrl.value
-    return true
+    if (deps.displayResultUrl.value) return false
+    const current = ownsResult('')
+    const { restoreUnarchivedResult } = await import('./tempResultRestore')
+    return restoreUnarchivedResult(deps, storedResultUrl, current)
   }
 
   /** 用户显式「清除」舞台结果：临时缓冲一并丢弃（显式丢弃优于一切恢复）。 */
   function discardTemp() {
+    const taskId = hasRuntimeTasks() ? deps.drawEngine.value === 'sd' ? sd.resultTaskId?.value : deps.animaState.value.result?.metadata.id : undefined
     resultRevision += 1
     releaseTemp()
+    if (taskId && isRuntimeTaskId(taskId)) void import('@/api/runtimeTasks').then(api => api.markRuntimeTask(taskId, 'discarded'))
+      .catch(() => pb.flash('清除尚未同步到收件箱，请在任务中心核对'))
   }
 
   return {

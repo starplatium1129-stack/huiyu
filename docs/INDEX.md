@@ -34,6 +34,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 | [设计规范](../DESIGN.md) | 品牌、主题与交互原则 |
 | [项目状态](project-status.md) | 当前能力、数据规模、源码与安装身份 |
 | [未来规划](roadmap.md) | 未完成、暂停与待决策事项 |
+| [第一批功能流程优化](audits/2026-10-01/functional-workflow-first-batch.md) | 配方选择沿用、任务结果事实、图库组合检索及独立分支集成边界 |
 | [统一工作流](workflow.md) | 现成命令与验收范围 |
 | [维护手册](maintenance.md) | 目录职责与数据维护 |
 | [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |

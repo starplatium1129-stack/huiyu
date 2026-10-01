@@ -50,7 +50,7 @@ test('V21 always resolves to nene and scene repair defaults to the v21 binding',
   );
   const config = sceneFix.resolveRepairConfig('nene');
   assert.deepStrictEqual(config, {
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.6',
     loraId: 'L_NENE_V21_ANIMA',
     loraStrength: 0.85,
     character: 'nene',

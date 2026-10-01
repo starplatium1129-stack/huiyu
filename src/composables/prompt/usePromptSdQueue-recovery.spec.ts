@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { computed, effectScope, nextTick, ref } from 'vue'
 import { afterEach, it, vi } from 'vitest'
 import { usePromptSdQueue, type PromptSdQueueDeps } from './usePromptSdQueue'
+import type { AnimaResultContext } from '@/types/anima'
 
 const scopes: ReturnType<typeof effectScope>[] = []
 afterEach(() => {
@@ -20,7 +21,8 @@ function setup() {
     sdModelName: 'model-a', commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), flash: vi.fn(),
   }
   const sd = { generate: vi.fn().mockResolvedValue('blob:result'), resultSeed: ref<number | null>(0),
-    lastLoras: ref<Array<{ id: string; strength: number }>>([]), checkpoint: ref('model-a'), generating: ref(false) }
+    lastLoras: ref<Array<{ id: string; strength: number }>>([]), checkpoint: ref('model-a'), generating: ref(false),
+    resultTaskId: ref(''), resultContext: ref<AnimaResultContext | null>(null) }
   const setResultContext = vi.fn()
   const scope = effectScope()
   scopes.push(scope)
@@ -75,6 +77,23 @@ it('view context edits cannot mutate the completed archive snapshot', async () =
   setResultContext.mock.calls[0]![0].history.cfg = 99
   await tools.commitJobResult(job, 'blob:result')
   assert.equal(pb.commitHistoryEntry.mock.calls[0]![0].context.history.cfg, 7)
+})
+
+it('restored accepted results keep their runtime recipe and original ownership instead of the queue projection', async () => {
+  const { tools, pb, sd, setResultContext } = setup()
+  sd.resultTaskId.value = 'accepted-task'
+  sd.resultContext.value = { char: 'natsume', sceneId: 'accepted-scene', story: 'accepted-story',
+    history: { prompt: 'Accepted prompt', negative: 'Accepted negative', cfg: 3, model: 'accepted-model', size: '1216x832' } }
+  const job = tools.captureJob()!
+  await tools.runJob(job)
+  await tools.commitJobResult(job, 'blob:result')
+  const input = pb.commitHistoryEntry.mock.calls[0]![0]
+  assert.equal(input.prompt, 'Accepted prompt')
+  assert.equal(input.negative, 'Accepted negative')
+  assert.equal(input.context.char, 'natsume')
+  assert.equal(input.context.sceneId, 'accepted-scene')
+  assert.equal(input.context.history.cfg, 3)
+  assert.equal(setResultContext.mock.calls[0]![0].story, 'accepted-story')
 })
 
 it('a failed attempt does not overwrite the selected seed with the old display result', async () => {

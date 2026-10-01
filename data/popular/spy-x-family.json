@@ -6,7 +6,7 @@
       "id": "yor_forger",
       "displayName": "约尔·福杰",
       "franchise": "SPY x FAMILY",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "thorn_princess_dress",
       "identityTokens": [
@@ -144,6 +144,7 @@
         "yor_briar"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -169,7 +170,7 @@
       "displayName": "菲奥娜·弗罗斯特",
       "originalName": "Fiona Frost",
       "franchise": "SPY x FAMILY",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "wise_agent_trench",
       "identityTokens": [
@@ -292,6 +293,7 @@
         "fiona_frost"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],

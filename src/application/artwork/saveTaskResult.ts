@@ -1,39 +1,39 @@
 import type { ArtworkRepository } from './artworkRepository'
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
-import type { HistoryEntry } from '@/types/promptHistory'
-import { taskResultHistory } from './taskResultHistory'
+import { runtimeTaskResultContext, runtimeTaskRecipe } from '@/utils/runtimeTaskResult'
 
 /** Task outputs already live in the workspace; save adds an artwork reference. */
-export async function saveTaskResult(task: TaskRecord, index: number, deps: { repository: ArtworkRepository; markSaved(id: string): Promise<unknown> }): Promise<HistoryEntry & ArtworkRecord> {
+export async function saveTaskResult(task: TaskRecord, index: number, deps: { repository: ArtworkRepository; markSaved(id: string): Promise<unknown> }): Promise<ArtworkRecord> {
   const artworkRepository = deps.repository
   const output = task.resultRefs.find(value => value.index === index)
   if (!output?.mime.startsWith('image/')) throw new Error('请选择图片结果入册')
-  const context = task.metadata.context && typeof task.metadata.context === 'object' ? task.metadata.context as Record<string, unknown> : {}
-  const history = context.history && typeof context.history === 'object' ? context.history as Record<string, unknown> : {}
+  const context = runtimeTaskResultContext(task) as Record<string, unknown>
+  const history = context.history as Record<string, unknown>
   const id = `task-${task.taskId}-${index}`
   const existing = await artworkRepository.readArtwork(id)
   if (existing && existing.image_id !== output.alias) throw new Error('作品编号已对应另一张图片，请核对作品册')
   let saved = existing
   if (!existing) {
     const input = task.input
+    const recipe = runtimeTaskRecipe(task)
     const record: ArtworkRecord = {
-      scene: typeof context.sceneId === 'string' ? context.sceneId : null, sceneTitle: null, emotion: [], shot: null, lighting: null,
+      sceneTitle: null, emotion: [], shot: null, lighting: null,
       composition: null, colorMood: null, manual_tags: [], lora: typeof input.loraId === 'string' ? input.loraId : null, notes: '',
       parent_id: context.parentId ?? null, project: '', image_url: '',
-      ...input, ...history, id, timestamp: task.createdAt, image_id: output.alias,
-      engine: task.kind === 'generation' ? 'sd' : task.kind === 'creative' ? 'krea2' : task.kind,
-      prompt: String(input.prompt || ''), negative: String(input.negative || ''),
-      seed: Number(task.metadata.seed ?? input.seed) || 0,
+      ...history, ...recipe, id, timestamp: task.createdAt, image_id: output.alias,
+      prompt: recipe.prompt ?? '', negative: recipe.negative ?? '',
       character: String(context.char || input.character || history.character || ''),
       characterId: typeof context.characterId === 'string' ? context.characterId : undefined,
       outfitId: typeof context.outfitId === 'string' ? context.outfitId : undefined,
       blueprintId: typeof context.blueprintId === 'string' ? context.blueprintId : undefined,
-      story: String(context.story || history.story || ''), checkpoint: String(input.modelId || ''), model: String(input.modelId || ''),
-      size: `${input.width || ''}x${input.height || ''}`, subject: context.characterId ? 'popular' : 'studio',
+      scene: context.characterId ? typeof context.blueprintId === 'string' ? context.blueprintId : null : typeof context.sceneId === 'string' ? context.sceneId : null,
+      story: String(context.story ?? history.story ?? ''), subject: context.characterId ? 'popular' : 'studio',
       favorite: false, rating: {}, version: 1, taskId: task.taskId, outputIndex: index,
     }
-    saved = taskResultHistory(record)
+    // Persist the recorded subset. Required history-view defaults must not turn
+    // absent model/Seed/size fields into invented generation facts in the library.
+    saved = record
     try { await artworkRepository.appendArtwork(saved) }
     catch (error) {
       const confirmed = await artworkRepository.readArtwork(id).catch(() => null)
@@ -42,5 +42,5 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
     }
   }
   await deps.markSaved(task.taskId)
-  return taskResultHistory(saved!)
+  return saved!
 }

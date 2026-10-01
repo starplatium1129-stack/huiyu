@@ -27,6 +27,9 @@ const DATA_DIR = path.join(ROOT, 'data');
 const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
 const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
+const MODEL_ID = 'anima-miaomiao-v1.6';
+const PROFILE_ID = 'anima_miaomiao_v16';
+const CHECKPOINT = 'miaomiaoHarem_anima16.safetensors';
 // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences；找不到退回项目 assets。
 const refRoot = (() => {
   const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
@@ -89,7 +92,7 @@ async function pollJob(jobId: any, timeoutMs: any = 120000) {
 
 async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed }: any) {
   const jobId = await submitAnimaJob({
-    modelId: 'anima-miaomiao-v1.2',
+    modelId: MODEL_ID,
     prompt,
     negative,
     width,
@@ -116,6 +119,10 @@ async function runPipeline(charId: any, opts: any = {}) {
   const popular = require(path.join(ROOT, 'src', 'utils', 'popularContent.ts'));
   const popularChars = popular.parsePopularCharacters(JSON.parse(fs.readFileSync(POPULAR_FILE, 'utf8')));
   const blueprints = popular.parseSceneBlueprints(JSON.parse(fs.readFileSync(BLUEPRINTS_FILE, 'utf8')));
+  const presets = opts.skipRender ? null : JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'presets.json'), 'utf8'));
+  const profile = presets?.model_profiles?.find((item: any) =>
+    item.id === PROFILE_ID && item.model_id === MODEL_ID && item.engine === 'anima');
+  if (!opts.skipRender && !profile) throw new Error(`presets.json missing profile ${PROFILE_ID} for ${MODEL_ID}`);
 
   const character = popular.findCharacter(popularChars, charId);
   if (!character) {
@@ -248,6 +255,7 @@ async function runPipeline(charId: any, opts: any = {}) {
         outfit: character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0],
         blueprint: bp,
         engine: 'anima',
+        profile,
         adultEnabled: true,
         artist: 'rella'
       });
@@ -283,8 +291,8 @@ async function runPipeline(charId: any, opts: any = {}) {
         thumb: `thumbs/pc_${charId}_${bp.id}.jpg`,
         meta: {
           engine: 'anima',
-          model: 'anima-aesthetic-v1.1',
-          checkpoint: 'anima-aesthetic-v1.1.safetensors',
+          model: MODEL_ID,
+          checkpoint: CHECKPOINT,
           seed: 70000000 + i * 12345
         },
         prompt,

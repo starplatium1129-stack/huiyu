@@ -11,7 +11,8 @@ vi.mock('../platform/desktop/runtime.ts', () => ({
   } } } }),
   desktopRuntimeFetch: vi.fn(), onDesktopRuntime: vi.fn(),
 }))
-import { refreshRuntimeTasks, getRuntimeTask } from './runtimeTasks'
+import { refreshRuntimeTasks, getRuntimeTask, waitForRuntimeTask } from './runtimeTasks'
+import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { taskRecords, runtimeTasks, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
 
 const task = (id: number, revision = 1): TaskRecord => ({
@@ -27,6 +28,22 @@ beforeEach(() => {
   taskRecords.value = []; unresolvedTaskRequests.clear(); pendingTaskRequests.value = []
 })
 afterEach(() => vi.restoreAllMocks())
+
+it.each(['failed', 'cancelled'] as const)('reports an observed %s outcome by accepted identity', async status => {
+  const observed = { ...task(1), status, recoveryState: 'normal', upstreamSettled: true, resultState: 'none' } as TaskRecord
+  mocks.request.mockResolvedValueOnce({ result: observed, runtimeEpoch: mocks.epoch })
+  const update = vi.fn()
+  await expect(waitForRuntimeTask('1', new AbortController().signal, update)).rejects.toMatchObject({ taskId: '1', status })
+  expect(update).toHaveBeenCalledWith(expect.objectContaining({ status }))
+})
+
+it('does not turn an unknown accepted job into a terminal failure', async () => {
+  const observed = { ...task(1), recoveryState: 'unknown', upstreamSettled: false } as TaskRecord
+  mocks.request.mockResolvedValueOnce({ result: observed, runtimeEpoch: mocks.epoch })
+  const error = await waitForRuntimeTask('1', new AbortController().signal, vi.fn()).catch(value => value)
+  expect(error).not.toBeInstanceOf(AcceptedTaskTerminalError)
+  expect(error.message).toContain('状态尚未确认')
+})
 
 describe('runtime task snapshot merging', () => {
   it('does not clone or invalidate 100 unchanged tasks on an idle poll', async () => {

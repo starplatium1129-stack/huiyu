@@ -367,7 +367,7 @@ for (const profile of modelProfiles) {
   if (!profile.sampler || !Number.isFinite(Number(profile.steps)) || !Number.isFinite(Number(profile.cfg))) errors.push(label + ': invalid generation defaults');
   if (!/^\d+×\d+$/.test(profile.size || '')) errors.push(label + ': invalid output size');
 }
-for (const requiredProfile of ['wai_illustrious_v17', 'anima_base_v10', 'anima_aesthetic_v11', 'krea2_turbo_fp8']) {
+for (const requiredProfile of ['wai_illustrious_v17', 'anima_base_v10', 'anima_aesthetic_v11', 'anima_miaomiao_v16', 'krea2_turbo_fp8']) {
   if (!profileIds.has(requiredProfile)) errors.push('presets.json missing model profile ' + requiredProfile);
 }
 const presetIds = new Set();

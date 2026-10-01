@@ -28,14 +28,14 @@ type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
-const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-08-12_current-prompts');
+const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-10-01_miaomiao16-current-prompts');
 const scenes: Scene[] = readSceneData(path.join(ROOT, 'data', 'scenes.json'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
 
 const MANIFEST_NAME = 'generation-manifest.json';
-const ANIMA_MODEL_ID = 'anima-base-v1.0';
-const ANIMA_PROFILE_ID = 'anima_base_v10';
+const ANIMA_MODEL_ID = 'anima-miaomiao-v1.6';
+const ANIMA_PROFILE_ID = 'anima_miaomiao_v16';
 const WAI_MODEL_ID = 'waiIllustriousSDXL_v170';
 const WAI_PROFILE_ID = 'wai_illustrious_v17';
 const CHAR_PROMPT = Object.freeze({
@@ -119,6 +119,7 @@ function waiSize(scene: any) {
 }
 function animaProfileFor(loraId: any) {
   const base = profileById(ANIMA_PROFILE_ID);
+  if (base.model_id !== ANIMA_MODEL_ID || base.engine !== 'anima') throw new Error(`presets.json missing profile for ${ANIMA_MODEL_ID}`);
   const contract: any = loraById(loraId).prompt_contract || {};
   return Object.assign({}, base, {
     exact_tokens: [...new Set([...(base.exact_tokens || []), ...(contract.exact_tokens || [])])],

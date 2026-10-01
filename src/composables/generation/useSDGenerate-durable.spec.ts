@@ -1,10 +1,11 @@
-import { beforeEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import type { RuntimeSdAttempt } from './runtimeImageSession'
-const api = vi.hoisted(() => ({ submit: vi.fn(), wait: vi.fn(), cancel: vi.fn(), key: vi.fn(() => 'stable-click') }))
+import type { TaskRecord } from '../../../types/tasks'
+const api = vi.hoisted(() => ({ submit: vi.fn(), wait: vi.fn(), cancel: vi.fn(), result: vi.fn(), key: vi.fn(() => 'stable-click') }))
 vi.mock('@/stores/runtimeTaskState', async importOriginal => ({ ...await importOriginal<object>(), runtimeRequestKey: api.key }))
 vi.mock('@/api/runtimeTaskAuthority', () => ({ hasRuntimeTasks: () => true }))
 vi.mock('@/api/runtimeTasks', () => ({ submitRuntimeTask: api.submit, waitForRuntimeTask: api.wait, cancelRuntimeTaskKey: api.cancel,
-  fetchRuntimeResult: vi.fn(), runtimeResultPath: vi.fn(), taskMessage: () => '生成中' }))
+  fetchRuntimeResult: api.result, runtimeResultPath: () => '/api/tasks/v1/accepted-task/results/0', taskMessage: () => '生成中' }))
 beforeEach(() => {
   vi.resetModules(); vi.clearAllMocks()
   api.submit.mockImplementation(async (_kind, _input, _key, _context, observation) => {
@@ -13,7 +14,13 @@ beforeEach(() => {
   })
   api.wait.mockImplementation((_id: string, signal: AbortSignal) => new Promise((_resolve, reject) => signal.addEventListener('abort', () => reject(new DOMException('unsubscribe', 'AbortError')), { once: true })))
   api.cancel.mockResolvedValue(null)
+  api.result.mockResolvedValue(new Blob(['pixels'], { type: 'image/png' }))
+  vi.stubGlobal('URL', class extends URL {
+    static createObjectURL = vi.fn(() => 'blob:runtime-result')
+    static revokeObjectURL = vi.fn()
+  })
 })
+afterEach(() => vi.unstubAllGlobals())
 it('leaving an accepted desktop generation only releases its observation', async () => {
   const { useSDGenerate } = await import('./useSDGenerate')
   const sd = useSDGenerate(), work = sd.generate({ prompt: 'fixture', seed: 0 })
@@ -98,6 +105,64 @@ it('observes a restored accepted queue attempt without another POST or replaceme
   expect(api.submit).not.toHaveBeenCalled(); expect(api.key).not.toHaveBeenCalled()
   sd.dispose(); await work
   expect(attempt.cancel).not.toHaveBeenCalled()
+})
+
+it('projects the accepted result recipe and ownership when observing a restored queue task', async () => {
+  const { useSDGenerate } = await import('./useSDGenerate')
+  const task = { taskId: 'accepted-task', kind: 'generation', provider: 'webui', status: 'succeeded', recoveryState: 'normal',
+    input: { prompt: 'Original accepted prompt', negative: 'Original negative', seed: 41, cfg: 7 },
+    metadata: { seed: 0, loras: [{ id: 'L_NENE_V18_WD14', strength: 0 }], context: { char: 'nene', story: 'Original story' } },
+  } as unknown as TaskRecord
+  api.wait.mockResolvedValueOnce(task)
+  const sd = useSDGenerate()
+  const attempt: RuntimeSdAttempt = { key: 'saved-key', task, rejected: vi.fn(), cancel: vi.fn() }
+  await sd.generate({ prompt: 'Later page projection', lora: 'shiki_natsume_v18_wd14:0.7', runtimeContext: { story: 'Later story' } }, { attempt })
+  expect(api.submit).not.toHaveBeenCalled()
+  expect(sd.resultPrompt.value).toBe('Original accepted prompt')
+  expect(sd.resultSeed.value).toBe(0)
+  expect(sd.lastLoras.value).toEqual([{ id: 'L_NENE_V18_WD14', strength: 0 }])
+  expect(sd.resultContext.value).toMatchObject({ char: 'nene', story: 'Original story', history: { cfg: 7, negative: 'Original negative', seed: 0 } })
+  sd.dispose()
+})
+
+it.each(['failed', 'cancelled'] as const)('keeps an observed %s terminal distinct from unknown runtime observation', async status => {
+  const { useSDGenerate } = await import('./useSDGenerate')
+  const { AcceptedTaskTerminalError } = await import('@/api/acceptedTaskOutcome')
+  api.wait.mockRejectedValueOnce(new AcceptedTaskTerminalError('accepted-task', status, 'Observed terminal'))
+  const sd = useSDGenerate()
+  await sd.generate({ prompt: 'neutral fixture' })
+  expect(sd.taskState.value).toBe(status)
+  expect(sd.statusText.value).not.toContain('核对')
+  sd.dispose()
+})
+
+it('an interrupted observation does not declare an accepted task cancelled', async () => {
+  const { useSDGenerate } = await import('./useSDGenerate')
+  const sd = useSDGenerate(), controller = new AbortController()
+  const work = sd.generate({ prompt: 'neutral fixture' }, { signal: controller.signal })
+  await vi.waitFor(() => expect(api.wait).toHaveBeenCalledOnce())
+  controller.abort(); await work
+  expect(sd.taskState.value).toBe('unknown')
+  expect(sd.statusText.value).toContain('仍由运行时管理')
+  expect(api.cancel).not.toHaveBeenCalled()
+  sd.dispose()
+})
+
+it('a late cancellation failure cannot overwrite a newer successful result', async () => {
+  const { useSDGenerate } = await import('./useSDGenerate')
+  let reject!: (reason: unknown) => void
+  api.cancel.mockImplementationOnce(() => new Promise((_resolve, fail) => { reject = fail }))
+  const sd = useSDGenerate(), work = sd.generate({ prompt: 'First fixture' })
+  await vi.waitFor(() => expect(api.wait).toHaveBeenCalledOnce())
+  sd.cancel(); await work
+  await vi.waitFor(() => expect(api.cancel).toHaveBeenCalledOnce())
+  api.wait.mockResolvedValueOnce({ taskId: 'new-task', kind: 'generation', input: { prompt: 'Second fixture' }, metadata: {} })
+  await sd.generate({ prompt: 'Second fixture' })
+  reject(new Error('Old receipt lost'))
+  await Promise.resolve(); await Promise.resolve()
+  expect(sd.taskState.value).toBe('succeeded')
+  expect(sd.errorMsg.value).toBe('')
+  sd.dispose()
 })
 
 it('records explicit cancellation against the saved queue key even before POST starts', async () => {

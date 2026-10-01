@@ -335,11 +335,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
     docs: 'docs/workflow.md#样张',
     required: ['--output'],
-    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.2 --concurrency 3',
+    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.6 --concurrency 3',
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-popular-showcase-anima11.js:16-18,44-49', unknown: [], notes: ['写仓库外 ../AI/Reviews/... 候选目录；assertIsolated 拒写公共 showcase'] },
   },
   'showcase:batch-miaomiao': {
-    desc: 'MiaoMiao v1.2 场景待审核候选生成（832x1216/1216x832，默认并发3）',
+    desc: 'MiaoMiao v1.6 场景待审核候选生成（832x1216/1216x832，默认并发3）',
     cmd: ['node', 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js'],
     docs: 'docs/workflow.md#样张',
     required: ['--output'],
@@ -347,8 +347,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--force': ['external-model', 'writes-product'], '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['默认网关3000；隔离候选保持 pending，不自动发布；已知 job 可恢复'] },
   },
   'showcase:scene-candidates': {
-    desc: '独立场景 MiaoMiao v1.2 候选生成（仅指定 ID，不发布）',
-    cmd: ['node', 'scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.2'],
+    desc: '独立场景 MiaoMiao v1.6 候选生成（仅指定 ID，不发布）',
+    cmd: ['node', 'scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.6'],
     docs: 'docs/workflow.md#样张',
     required: ['--output', '--ids'],
     opts: '--output <候选目录> --ids sc001,sc002 [--concurrency 1] [--dry-run]',
@@ -356,7 +356,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   },
   'showcase:fill-gaps': {
     docs: 'docs/workflow.md',
-    desc: '只读样张清单并生成缺口待审核候选（MiaoMiao v1.2，沿用蓝图画幅，默认并发3）',
+    desc: '只读样张清单并生成缺口待审核候选（MiaoMiao v1.6，沿用蓝图画幅，默认并发3）',
     cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
     required: ['--output'],
     opts: '--output <候选目录> [--manifest <源manifest>] [--only <角色id列表>] [--concurrency <n>] [--gateway <url>] [--root <数据根>] [--redo-mine] [--dry-run] [--retry-unknown]',

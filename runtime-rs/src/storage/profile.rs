@@ -36,6 +36,7 @@ const SETTINGS: &[&str] = &[
     "aics_director_layout_v1",
     "aics_guest_guide_dismissed",
     "aics_auto_save_to_gallery",
+    "aics_gallery_filter_presets_v1",
     "aics_backup_last_at",
     "aics-artist-usage",
     "aics-voice-studio-collapsed",

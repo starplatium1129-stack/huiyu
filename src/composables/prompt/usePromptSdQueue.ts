@@ -217,13 +217,14 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       submitted.prompt = submitted.prompt.replace(/<lora:[^>]+>\s*,?\s*/gi, '').trim().replace(/,\s*$/, '')
       submitted.lora = undefined
     }
-    const context = jobResultContext(submitted)
+    let context = jobResultContext(submitted)
     const url = await sd.generate({
       ...sdJobRequest(submitted),
       runtimeContext: context as Record<string, unknown>,
     }, opts)
 
     if (url) {
+      if (sd.resultTaskId?.value && sd.resultContext?.value) context = JSON.parse(JSON.stringify(sd.resultContext.value)) as AnimaResultContext
       // Zero is a valid seed; failed attempts must not reuse an old display seed.
       if (sd.resultSeed.value !== null) pb.sdParams.seed = sd.resultSeed.value
       const loras = sd.lastLoras.value.map(lora => ({ ...lora }))

@@ -40,9 +40,15 @@ function readSceneData(): Scene[] {
   return requireDataRecords(readData('data/scenes.json'), 'scenes.json') as unknown as Scene[];
 }
 
-test('standalone MiaoMiao selection reaches profile, checkpoint and submission without losing character LoRA', () => {
+test('standalone defaults and explicit historical selection reach the matching profile and submission', () => {
   const generator: typeof import('../maintenance/generate-scene-showcase-anima11.js') = require('../maintenance/generate-scene-showcase-anima11.js');
   const scene = readSceneData().find(scene => scene.id === 'sc002');
+  const defaults = generator.buildAnimaCandidate(scene, 1, 1);
+  assert.strictEqual(defaults.modelId, 'anima-miaomiao-v1.6');
+  assert.strictEqual(defaults.profileId, 'anima_miaomiao_v16');
+  assert.strictEqual(defaults.checkpoint, 'miaomiaoHarem_anima16.safetensors');
+  assert.strictEqual(generator.buildSubmissionBody(defaults).modelId, defaults.modelId);
+  assert.strictEqual(defaults.loraId, 'L_NENE_V21_ANIMA');
   const candidate = generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'anima-miaomiao-v1.2' });
   const model = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants.MODELS[candidate.modelId];
   assert.strictEqual(candidate.profileId, 'anima_miaomiao_v12');
@@ -598,6 +604,9 @@ test('single-character scene candidates use the audited short prompt and correct
   for (const candidate of candidates) {
     const tagLine = candidate.prompt.split('\n')[0];
     assert.strictEqual(candidate.engine, 'anima', `${candidate.sceneId} engine`);
+    assert.strictEqual(candidate.modelId, 'anima-miaomiao-v1.6', `${candidate.sceneId} model`);
+    assert.strictEqual(candidate.profileId, 'anima_miaomiao_v16', `${candidate.sceneId} profile`);
+    assert.strictEqual(candidate.checkpoint, 'miaomiaoHarem_anima16.safetensors', `${candidate.sceneId} checkpoint`);
     assert.strictEqual(candidate.promptHealth.ok, true,
       `${candidate.sceneId}: ${candidate.promptHealth.errors.join('; ')}`);
     assert.ok(candidate.promptHealth.tokenCount >= 22 && candidate.promptHealth.tokenCount <= 26,

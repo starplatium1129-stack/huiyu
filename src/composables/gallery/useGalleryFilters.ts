@@ -1,10 +1,13 @@
-import { computed, nextTick, ref, watch, type Ref } from 'vue';
+import { computed, nextTick, onScopeDispose, ref, watch, type Ref } from 'vue';
 import type { LocationQueryRaw, RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
 import { dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
+import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
+
+const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
 
 export interface UseGalleryFiltersOptions {
   history: Ref<ArtworkRecord[]>;
@@ -15,6 +18,7 @@ export interface UseGalleryFiltersOptions {
   router: Router;
   onFilterReset?: () => void;
   isViewActive?: () => boolean;
+  deferQueryRestore?: () => boolean;
 }
 
 /**
@@ -22,14 +26,28 @@ export interface UseGalleryFiltersOptions {
  * pagination, day grouping, and URL query synchronization.
  */
 export function useGalleryFilters(options: UseGalleryFiltersOptions) {
-  const { history, projects, ratioOf, columnCount, route, router, onFilterReset, isViewActive } = options;
+  const { history, projects, ratioOf, columnCount, route, router, onFilterReset, isViewActive, deferQueryRestore } = options;
 
   const favoriteOnly = ref(false);
   const projectFilter = ref('');
+  const projectUnavailable = computed(() => !!projectFilter.value && !projects.value.some(project => project.id === projectFilter.value));
+  const projectOptions = computed(() => [
+    { value: '', label: '全部项目' }, ...projects.value.map(project => ({ value: project.id, label: project.title })),
+    ...(projectUnavailable.value ? [{ value: projectFilter.value, label: `画册未找到 · ${projectFilter.value}` }] : []),
+  ]);
   /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
    *  攒到几百张后找某张旧作只能靠翻。 */
   const searchQuery = ref('');
   const tagFilter = ref('');
+  const generationConditions = ref(emptyGenerationConditions());
+  const generationIndex = computed(() => new Map(history.value.map(item => [item, artworkGenerationConditions(item)])));
+  const generationOptions = computed(() => generationConditionOptions(generationIndex.value.values(), generationConditions.value));
+  const generationFilterCount = computed(() => GENERATION_FILTER_FIELDS.filter(field => generationConditions.value[field]).length);
+  const filterSnapshot = computed<GalleryFilterSnapshot>(() => ({
+    favoriteOnly: favoriteOnly.value, projectFilter: projectFilter.value, searchQuery: searchQuery.value.trim(),
+    tagFilter: tagFilter.value, generation: { ...generationConditions.value },
+  }));
+  const hasActiveFilters = computed(() => !!(favoriteOnly.value || projectFilter.value || searchQuery.value.trim() || tagFilter.value || generationFilterCount.value));
   const tagOptions = computed(() => {
     const counts = new Map<string, number>();
     for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
@@ -53,17 +71,19 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   watch(searching, active => { if (!active) void searchIndex.value; }, { flush: 'sync' });
   const projectIds = computed(() => {
     const project = projects.value.find(item => item.id === projectFilter.value);
-    return project ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
+    return new Set(project && Array.isArray(project.history_ids) ? project.history_ids : []);
   });
   const visible = computed(() => {
     const favorites = favoriteOnly.value, tag = tagFilter.value;
     const ids = projectFilter.value ? projectIds.value : null;
     const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const index = terms.length ? searchIndex.value : null;
+    const generation = generationFilterCount.value ? generationIndex.value : null;
     return sortedHistory.value.filter(item => {
       if (favorites && !item.favorite) return false;
       if (ids && !ids.has(item.id)) return false;
       if (tag && !artworkTags(item).includes(tag)) return false;
+      if (generation && !matchesGenerationConditions(generation.get(item)!, generationConditions.value)) return false;
       return !index || terms.every(term => index.get(item)!.includes(term));
     });
   });
@@ -91,23 +111,31 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   const masonryGroups = computed(() => buildMasonryGroups(groups.value, ratioOf, columnCount.value));
 
+  function applyFilterSnapshot(raw: GalleryFilterSnapshot) {
+    const snapshot = normalizeGalleryFilterSnapshot(raw);
+    favoriteOnly.value = snapshot.favoriteOnly;
+    projectFilter.value = snapshot.projectFilter;
+    searchQuery.value = snapshot.searchQuery;
+    tagFilter.value = snapshot.tagFilter;
+    if (GENERATION_FILTER_FIELDS.some(field => generationConditions.value[field] !== snapshot.generation[field]))
+      generationConditions.value = snapshot.generation;
+  }
   function resetGalleryFilters() {
-    favoriteOnly.value = false;
-    projectFilter.value = '';
-    searchQuery.value = '';
-    tagFilter.value = '';
+    applyFilterSnapshot(normalizeGalleryFilterSnapshot(null));
+  }
+  function clearGenerationConditions() {
+    generationConditions.value = emptyGenerationConditions();
   }
 
   /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）---------- */
   function restoreFiltersFromQuery() {
+    if (deferQueryRestore?.()) return;
     const q = route.query;
-    tagFilter.value = typeof q.tag === 'string' ? q.tag : '';
-    if (typeof q.fav === 'string')
-      favoriteOnly.value = q.fav === '1';
-    if (typeof q.project === 'string')
-      projectFilter.value = q.project;
-    if (typeof q.q === 'string')
-      searchQuery.value = q.q;
+    applyFilterSnapshot({
+      favoriteOnly: q.fav === '1', projectFilter: typeof q.project === 'string' ? q.project : '',
+      searchQuery: typeof q.q === 'string' ? q.q : '', tagFilter: typeof q.tag === 'string' ? q.tag : '',
+      generation: normalizeGenerationConditions(Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => [field, q[generationQueryKeys[field]]]))),
+    });
   }
 
   let syncTimer: ReturnType<typeof setTimeout> | null = null;
@@ -119,14 +147,21 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const project = typeof q.project === 'string' ? q.project : '';
     const term = typeof q.q === 'string' ? q.q : '';
     const tag = typeof q.tag === 'string' ? q.tag : '';
-    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value)
+    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value
+      && GENERATION_FILTER_FIELDS.every(field => (q[generationQueryKeys[field]] || '') === generationConditions.value[field])) {
+      cleanupFilterSync();
       return;
+    }
     if (syncTimer)
       clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       syncTimer = null;
       if (isViewActive && !isViewActive()) return;
       const query: LocationQueryRaw = { ...route.query };
+      for (const field of GENERATION_FILTER_FIELDS) {
+        if (generationConditions.value[field]) query[generationQueryKeys[field]] = generationConditions.value[field];
+        else delete query[generationQueryKeys[field]];
+      }
       if (tagFilter.value) query.tag = tagFilter.value;
       else delete query.tag;
       if (favoriteOnly.value)
@@ -152,6 +187,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       syncTimer = null;
     }
   }
+  onScopeDispose(cleanupFilterSync);
 
   function loadMoreIfNeeded(sentinelEl: HTMLElement | null) {
     if ((isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
@@ -165,14 +201,18 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
 
   // 筛选变化回到第一页，让用户始终从最新作品看起
-  watch([favoriteOnly, projectFilter, searchQuery, tagFilter], () => {
+  watch([favoriteOnly, projectFilter, searchQuery, tagFilter, generationConditions], () => {
     renderLimit.value = PAGE_SIZE;
     onFilterReset?.();
     syncFiltersToQuery();
-  });
+  }, { deep: true });
+  // Back/forward and cleared URL fields replace the complete filter snapshot.
+  watch(() => JSON.stringify([route.query.fav, route.query.project, route.query.q, route.query.tag,
+    ...GENERATION_FILTER_FIELDS.map(field => route.query[generationQueryKeys[field]])]), restoreFiltersFromQuery);
 
   return {
     tagFilter, tagOptions,
+    generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
     favoriteOnly,
     projectFilter,
     searchQuery,

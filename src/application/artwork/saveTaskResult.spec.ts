@@ -48,3 +48,30 @@ it('does not mark unknown or conflicting results saved', async () => {
   await expect(saveTaskResult(task, 0, f)).rejects.toThrow('另一张图片')
   expect(f.markSaved).not.toHaveBeenCalled()
 })
+
+it('archives the actual runtime recipe and frozen subject without persisting gateway fields', async () => {
+  const f = fixture()
+  const accepted = { ...task, kind: 'creative', input: { prompt: 'Requested prompt', negative: '', seed: 41, cfg: 4, steps: 30,
+    width: 1024, height: 1024, modelId: 'requested-model', adultEnabled: true, initImage: 'private-input', superResModel: 'gateway-resource' },
+    metadata: { prompt: 'Actual prompt with style trigger', modelId: 'actual-model', cfg: 1, steps: 12, seed: 0, loras: [], styleLoraId: 'style-a',
+      context: { characterId: 'subject-a', outfitId: 'outfit-a', blueprintId: 'blueprint-a', story: 'Frozen story',
+        history: { sceneTitle: 'Frozen title', model: 'stale-model', seed: 99, cfg: 99, shot: 'close-up' } } },
+  } as TaskRecord
+  const result = await saveTaskResult(accepted, 0, f)
+  expect(result).toMatchObject({ prompt: 'Actual prompt with style trigger', model: 'actual-model', checkpoint: 'actual-model', cfg: 1, steps: 12, seed: 0,
+    engine: 'krea2', size: '1024x1024', styleLoraId: 'style-a', loras: [], loraId: null, loraStrength: null,
+    characterId: 'subject-a', outfitId: 'outfit-a', scene: 'blueprint-a', story: 'Frozen story', shot: 'close-up' })
+  const stored = await f.repository.readArtwork(result.id)
+  for (const field of ['adultEnabled', 'initImage', 'superResModel', 'context']) expect(stored).not.toHaveProperty(field)
+  expect(f.full).not.toHaveBeenCalled()
+})
+
+it('keeps unavailable generation fields absent in persistence rather than borrowing recipe form defaults', async () => {
+  const f = fixture()
+  const result = await saveTaskResult({ ...task, input: { prompt: 'Legacy task' }, metadata: { context: { history: { seed: 99, model: 'form-model', cfg: 7, size: '832x1216' } } } }, 0, f)
+  const stored = await f.repository.readArtwork('task-one-0')
+  for (const field of ['seed', 'model', 'checkpoint', 'size', 'cfg', 'steps', 'sampler']) {
+    expect(stored).not.toHaveProperty(field)
+    expect(result).not.toHaveProperty(field)
+  }
+})

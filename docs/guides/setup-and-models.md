@@ -97,7 +97,7 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 ### Anima：新机先选能无角色 LoRA 使用的底模
 
-[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步组合可选择 **Anima Aesthetic v1.1**，三件套共约 **5.63 GB**；在绘遇中明确选此模型并使用无角色 LoRA 的创作路径。程序默认的 MiaoMiao v1.2 仍需单独取得对应文件。
+[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步组合可选择 **Anima Aesthetic v1.1**，三件套共约 **5.63 GB**；在绘遇中明确选此模型并使用无角色 LoRA 的创作路径。程序默认的 MiaoMiao v1.6 仍需单独取得对应文件。
 
 | 放置路径（相对 `ComfyUI/models/`） | 来源 |
 | --- | --- |
@@ -109,8 +109,8 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 | 模型 | 要求的文件名 | 发布者版本入口 |
 | --- | --- | --- |
-| MiaoMiao v1.2（当前默认） | `miaomiaoHarem_anima12.safetensors` | [MIAOKA：Anima_1.2](https://civitai.com/models/934764?modelVersionId=3020110) |
-| MiaoMiao v1.6 | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
+| MiaoMiao v1.2 | `miaomiaoHarem_anima12.safetensors` | [MIAOKA：Anima_1.2](https://civitai.com/models/934764?modelVersionId=3020110) |
+| MiaoMiao v1.6（当前默认） | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
 | Anima Yume v1.0 | `AnimaYume_v10_final_base.safetensors` | [v1.0 base final](https://civitai.com/models/2385278?modelVersionId=3065644)；上游名 `animayume_v10BaseFinal.safetensors`，仅这一指定文件按体检哈希核对后改成本机目录名 |
 | Anima 2.9B Preview v1 | `Anima-2.9B-preview-v1.safetensors` | [Gazingstars123 发布页](https://huggingface.co/Gazingstars123/Anima-2.9B)，5.84 GB；旧 ComfyUI 可能需作者扩展，须检查实际支持 |
 | Anima Base v1.0 | `anima-base-v1.0.safetensors` | [固定版下载](https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors)，4.18 GB；当前绘遇未声明无 LoRA 路径 |

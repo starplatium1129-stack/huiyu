@@ -14,6 +14,8 @@ import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/gen
 import { confirmAction } from '@/composables/useConfirm'
 import { useToast } from '@/composables/useToast'
 import { snapshotHistoricalRecipe } from '@/utils/recipeComparison'
+import type { HistoryReuseSelection } from '@/types/historyReuse'
+import { applyHistoryParts } from './usePromptHistoryParts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -29,6 +31,7 @@ export interface PromptHistoryApplyDeps {
   /** 热门蓝图推荐游标重置（视图持有轮换状态）。 */
   resetBlueprintRotation: () => void
   sdSize: Ref<string>
+  drawEngine: Ref<DrawEngine>
 }
 
 /**
@@ -44,6 +47,14 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
   const { show: showToast } = useToast()
   let restoreRevision = 0
 
+  function prepareHistoryReuse(record: ArtworkRecord): ArtworkRecord | null {
+    const parsed = parseHistoryRecipe(record)
+    if (!parsed.ok) { pb.flash(parsed.error, 9000, 'warning'); return null }
+    const detached: ArtworkRecord = { ...parsed.recipe }
+    Object.assign(detached, snapshotHistoricalRecipe(record))
+    return detached
+  }
+
   /**
    * 恢复历史条目（2026-09-06 体验报告 F5 修订）。
    *
@@ -52,7 +63,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
    * 现在：已记录且当前仍支持的字段一律回放；合法零值（cfg=0 的 Turbo 档、
    * loraStrength=0）用显式判断保留；恢复不了的写进提示，不冒称「已恢复」。
    */
-  async function applyHistory(record: ArtworkRecord, keepAsVariant = false) {
+  async function applyHistory(record: ArtworkRecord, keepAsVariant = false, selection: HistoryReuseSelection = 'full') {
     const revision = ++restoreRevision
     const parsed = parseHistoryRecipe(record)
     if (!parsed.ok) {
@@ -60,10 +71,26 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.flash(parsed.error, 9000, 'warning')
       return false
     }
-    pb.randomVariation = null
+    if (selection !== 'full') return applyHistoryParts(deps, record, selection, () => revision === restoreRevision)
     const { recipe: entry, notes: restoreNotes } = parsed
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
-    if (!entry.engine) restoreNotes.push('旧作品未记录引擎，按 SD 配方读取')
+    if (popularEntry) {
+      const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
+      if (!character || !findPopularOutfit(character, entry.outfitId || '') || entry.engine === 'sd') {
+        const note = entry.engine === 'sd' ? '原作记录的 SD 引擎不支持当前热门角色，配方未载入；当前草稿已保留' : '原角色或服装已不在当前角色库，配方未载入；当前草稿已保留'
+        pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
+        pb.flash(note, 9000, 'warning')
+        return false
+      }
+    } else if (entry.character && !['nene', 'natsume', 'triad'].includes(entry.character)
+      || (entry.character || pb.char) === 'triad' && entry.engine && entry.engine !== 'sd') {
+      const note = '原角色不可用，配方未载入；当前草稿已保留'
+      pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
+      pb.flash(note, 9000, 'warning')
+      return false
+    }
+    pb.randomVariation = null
+    if (!entry.engine) restoreNotes.push(popularEntry ? '旧作品未记录引擎，按当前角色支持的 Anima 配方读取；不是原引擎确认' : '旧作品未记录引擎，按 SD 配方读取')
     if (!entry.model && !entry.checkpoint) restoreNotes.push('未记录底模，使用当前底模')
     restoreNotes.push('提示词按当前角色与编译规则重建，请核对后生成')
     // 合法零值保留：Number(x)||fallback 会把 0 误判为缺失，必须显式判有限数。
@@ -72,7 +99,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       const num = Number(value)
       return Number.isFinite(num) ? num : fallback
     }
-    const entryEngine = entry.engine === 'krea2' ? 'krea2' : entry.engine === 'anima' ? 'anima' : 'sd'
+    const entryEngine = entry.engine === 'krea2' ? 'krea2' : entry.engine === 'anima' || popularEntry && !entry.engine ? 'anima' : 'sd'
     /** Anima 面板字段：风格 LoRA 与高清修复实参（旧历史缺字段时保持面板现值）。 */
     const animaHistoryPatch = () => {
       // 风格 LoRA 只有 Krea 2 有；候选列表在 refresh 后才就位，这里乐观恢复，
@@ -103,8 +130,10 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
       const outfit = character ? findPopularOutfit(character, entry.outfitId || '') : null
       if (character && outfit) {
-        pb.setPopularSubject(character.id, outfit.id, entry.blueprintId ?? null)
-        const blueprint = entry.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
+        const found = entry.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
+        const blueprint = found?.characterId === character.id && (!found.outfitId || found.outfitId === outfit.id) ? found : null
+        if (entry.blueprintId && !blueprint) restoreNotes.push('原蓝图不可用或角色/服装绑定已变化，未恢复蓝图')
+        pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null)
         if (blueprint) {
           const decision = inferBlueprintDecisions(blueprint)
           if (decision.shot) pb.setShot(decision.shot)
@@ -138,14 +167,15 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.setStudioSubject()
       if (entry.character === 'nene' || entry.character === 'natsume' || entry.character === 'triad') pb.setChar(entry.character)
       else if (entry.character) restoreNotes.push('原角色不可用，保留当前角色')
-      if ((entry.engine === 'anima' || entry.engine === 'krea2') && (entry.character === 'nene' || entry.character === 'natsume')) {
+      const character = entry.character || pb.char
+      if ((entry.engine === 'anima' || entry.engine === 'krea2') && (character === 'nene' || character === 'natsume')) {
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
         setDrawEngine(entry.engine)
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
           modelId: animaModelPatch(animaState.value.modelId),
-           loraId: entryEngine === 'krea2' ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
+           loraId: entryEngine === 'krea2' ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
            loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
            ...animaHistoryPatch(),
            width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,
@@ -163,8 +193,12 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
     if (!popularEntry) {
       const restoredContext = restoreHistorySceneStory(entry, pb.scenes)
-      if (restoredContext.scene) pb.loadScene(restoredContext.scene)
-      else pb.clearScene({ keepStory: true })
+      const scene = restoredContext.scene
+      if (scene && (!scene.char || scene.char === 'both' || scene.char === pb.char)) pb.loadScene(scene)
+      else {
+        if (scene) restoreNotes.push('原场景的角色绑定已变化，未恢复场景')
+        pb.clearScene({ keepStory: true })
+      }
       // loadScene seeds the scene story; restore the historical user story last.
       pb.setStory(restoredContext.story)
       pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
@@ -187,17 +221,19 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.setColorMood(entry.colorMood ?? null)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
-    pb.sdParams.seed = entry.seed !== undefined && entry.seed >= 0 ? entry.seed : -1
-    pb.sdParams.seedLock = entry.seed !== undefined && entry.seed >= 0
-    pb.sdParams.cfg = finiteOr(entry.cfg, pb.sdParams.cfg)
-    pb.sdParams.steps = finiteOr(entry.steps, pb.sdParams.steps)
-    if (entry.sampler) pb.sdParams.sampler = entry.sampler
-    pb.sdParams.scheduler = entry.scheduler || ''
+    if (entryEngine === 'sd') {
+      pb.sdParams.seed = entry.seed !== undefined && entry.seed >= 0 ? entry.seed : -1
+      pb.sdParams.seedLock = entry.seed !== undefined && entry.seed >= 0
+      pb.sdParams.cfg = finiteOr(entry.cfg, pb.sdParams.cfg)
+      pb.sdParams.steps = finiteOr(entry.steps, pb.sdParams.steps)
+      if (entry.sampler) pb.sdParams.sampler = entry.sampler
+      pb.sdParams.scheduler = entry.scheduler || ''
+      pb.sdParams.negative = Boolean(entry.negative)
+    }
     if (entryEngine === 'sd' && !popularEntry) {
       const savedModel = entry.model || entry.checkpoint
       if (savedModel && pb.sdModelName && savedModel !== pb.sdModelName) restoreNotes.push(`原底模 ${savedModel} 与当前底模 ${pb.sdModelName} 不同；需先切换后端底模`)
     }
-    pb.sdParams.negative = Boolean(entry.negative)
     pb.sdParams.negativeCustom = ''
     // SD 家族条目回放到 SD 面板（Anima 家族的 hires 字段属于 Anima 面板，不串写）。
     if (entryEngine === 'sd') {
@@ -211,8 +247,10 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     // 历史成片负面是"当时场景+当时 profile"的快照，不得写回 negativeCustom ——
     // 否则会作为自定义负面跨场景/跨 profile 泄漏。恢复时由当前场景+profile
     // 重新生成模型原生负面。
-    if (entry.size) sdSize.value = entry.size.replace('×', 'x')
-    Object.keys(pb.sdParams).forEach(key => pb.markParamTouched(key))
+    if (entryEngine === 'sd') {
+      if (entry.size) sdSize.value = entry.size.replace('×', 'x')
+      Object.keys(pb.sdParams).forEach(key => pb.markParamTouched(key))
+    }
     if (entryEngine !== 'sd' && (!popularEntry || pb.isPopular)) {
       const before = { ...animaState.value }
       await refreshAnimaBackend()
@@ -220,22 +258,15 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       const after = animaState.value
       if (!after.online) restoreNotes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
       for (const [key, label] of [['modelId', '底模'], ['loraId', '角色 LoRA'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
-        if (before[key] !== after[key]) restoreNotes.push(`${label}：${before[key] || '未设置'} → ${after[key] || '不可用'}`)
+        if (before[key] !== after[key]) restoreNotes.push(`${label}：${before[key] === '' ? '未设置' : before[key] ?? '未设置'} → ${after[key] === '' ? '不可用' : after[key] ?? '不可用'}`)
       }
       if (entry.loraId && before.loraId !== entry.loraId) restoreNotes.push(`原角色 LoRA ${entry.loraId} 不适用于当前角色，已使用角色绑定`)
     }
     pb.historyRestoreReport = { title: `配方载入检查 · ${entry.sceneTitle || entry.id}`, notes: restoreNotes, original: snapshotHistoricalRecipe(record) }
     pb.flash(`${keepAsVariant ? '已复制为新变体草稿' : '已载入历史配方'}，请核对配方检查`, 4000, 'info')
+    return true
   }
 
-  function reuseSuccessfulRecipe(id: string | number) {
-    const entry = pb.history.find(item => item.id === id)
-    if (!entry) return
-    applyHistory(entry, true)
-  }
-
-  function resumeHistory(entry: ArtworkRecord) { applyHistory(entry) }
-  function duplicateHistory(entry: ArtworkRecord) { applyHistory(entry, true) }
   /**
    * 删除历史条目（2026-08-30 UX 审计 P0-8）。
    *
@@ -260,5 +291,5 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
   }
 
-  return { applyHistory, reuseSuccessfulRecipe, resumeHistory, duplicateHistory, deleteHistory }
+  return { prepareHistoryReuse, applyHistory, deleteHistory }
 }

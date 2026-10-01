@@ -32,6 +32,7 @@ export async function pollAnimaJob(options: {
     if (!current()) return
     const job = data.job
     if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
+    if (job.id !== id) throw new Error('成片响应与当前任务编号不一致，请核对任务')
     if (job.metadata) patch({ job: metadata(job) })
     patch({
       backendStatus: job.status,
