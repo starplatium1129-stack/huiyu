@@ -241,7 +241,6 @@ import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneExplorerWorkspace } from "@/composables/scene/useSceneExplorerWorkspace"
 const {
 drawerEl,companionId,
@@ -311,10 +310,6 @@ const activeFilters = computed(() => [
 ])
 const displayedDrawerScene = ref(drawerScene.value)
 watch(drawerScene, value => { if (value) displayedDrawerScene.value = value }, { flush: 'sync' })
-
-useFocusTrap(drawerEl, () => Boolean(drawerScene.value), {
-  onEscape: () => { drawerScene.value = null },
-})
 
 // ── 陪伴图失败回退：两位角色各记一个失败态，互不牵连 ──
 // 失败即撤下对应 img 换占位；切回该角色时重置失败态让 img 重挂重试一次（用户驱动、有界，非递归）。

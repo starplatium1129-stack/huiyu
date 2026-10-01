@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
 
@@ -20,6 +20,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const preferences = ref(parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY)))
   const width = ref(960), viewport = ref(1280), rootFont = ref(16), dragging = ref<Side | null>(null)
   let observer: ResizeObserver | null = null
+  let observing = false
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
   const baseMaterials = computed(() => Math.max(260, Math.min(21 * rootFont.value, viewport.value * .18)))
   const baseInspector = computed(() => Math.max(300, Math.min(26 * rootFont.value, viewport.value * .24)))
@@ -36,6 +37,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     try { profileLocalStorage.setItem(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value)) } catch { /* The current layout remains usable if storage is unavailable. */ }
   }
   function measure() {
+    if (!observing || !root.value?.isConnected) return
     width.value = root.value?.clientWidth || 960; viewport.value = typeof innerWidth === 'number' ? innerWidth : 1280
     rootFont.value = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
   }
@@ -50,7 +52,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (active) save()
   }
   function start(side: Side, event: PointerEvent) {
-    if (event.button !== 0 || !event.isPrimary) return
+    if (!observing || event.button !== 0 || !event.isPrimary) return
     finish(); measure()
     const element = event.currentTarget as HTMLElement
     activePointer = { element, id: event.pointerId, side, x: event.clientX, width: side === 'materials' ? materialsWidth.value : inspectorWidth.value }
@@ -80,9 +82,32 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   }
   function reset() { finish(); preferences.value = defaults(); save() }
   function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY)) }
-  watch(root, () => { observer?.disconnect(); if (root.value) observer?.observe(root.value); measure() })
-  onMounted(() => { measure(); observer = new ResizeObserver(measure); if (root.value) observer.observe(root.value); window.addEventListener('resize', measure); window.addEventListener('storage', changed) })
-  onDeactivated(finish)
-  onBeforeUnmount(() => { finish(); observer?.disconnect(); window.removeEventListener('resize', measure); window.removeEventListener('storage', changed) })
+  function observe() {
+    if (observing) return
+    observing = true
+    preferences.value = parseDirectorLayout(profileLocalStorage.getItem(DIRECTOR_LAYOUT_KEY))
+    observer ??= new ResizeObserver(measure)
+    if (root.value) observer.observe(root.value)
+    window.addEventListener('resize', measure)
+    window.addEventListener('storage', changed)
+    measure()
+  }
+  function stopObserving() {
+    observing = false
+    finish()
+    observer?.disconnect()
+    window.removeEventListener('resize', measure)
+    window.removeEventListener('storage', changed)
+  }
+  watch(root, () => {
+    observer?.disconnect()
+    if (!observing) return
+    if (root.value) observer?.observe(root.value)
+    measure()
+  })
+  onMounted(observe)
+  onActivated(observe)
+  onDeactivated(stopObserving)
+  onBeforeUnmount(stopObserving)
   return { style, collapsed, dragging, materialsWidth, inspectorWidth, start, move, finish, key, toggle, reset }
 }
