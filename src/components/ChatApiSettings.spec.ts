@@ -4,8 +4,9 @@ import { expect, it, vi } from 'vitest'
 import ChatApiSettings from './ChatApiSettings.vue'
 import { chatApi } from '@/api/chatApi'
 
+const clearDraft = vi.hoisted(() => vi.fn())
 vi.mock('@/api/chatApi', () => ({ chatApi: { testProvider: vi.fn() } }))
-vi.mock('@/utils/chatApiDrafts', () => ({ createChatApiDrafts: () => ({ drafts: ref({}), set: vi.fn(), clear: vi.fn() }) }))
+vi.mock('@/utils/chatApiDrafts', () => ({ createChatApiDrafts: () => ({ drafts: ref({}), set: vi.fn(), clear: clearDraft }) }))
 it('ignores replaced draft results, owns the newer busy state and aborts on unmount', async () => {
   const pending: Array<{ resolve: (value: { ok: true; models: string[] }) => void; reject: (reason: Error) => void }> = []
   vi.mocked(chatApi.testProvider).mockImplementation(() => new Promise((resolve, reject) => { pending.push({ resolve, reject }) }))
@@ -30,4 +31,18 @@ it('ignores replaced draft results, owns the newer busy state and aborts on unmo
     expect(lastSignal.aborted).toBe(true)
     pending[2]!.resolve({ ok: true, models: ['late'] }); await flushPromises()
   } finally { if (wrapper.exists()) wrapper.unmount() }
+})
+
+it('does not clear a different vendor after an earlier draft removal completes', async () => {
+  let finish!: () => void
+  clearDraft.mockImplementationOnce(() => new Promise<void>(resolve => { finish = resolve }))
+  const wrapper = mount(ChatApiSettings, { props: { vendor: 'custom', baseUrl: 'https://example.test', model: 'first', apiKey: '', hint: '' },
+    global: { stubs: { ArchiveIcon: true, StudioSelect: true } } })
+  try {
+    await wrapper.findAll('button').find(button => button.text() === '清除个人密钥')!.trigger('click')
+    await wrapper.setProps({ vendor: 'deepseek', baseUrl: 'https://other.example.test', model: 'second' })
+    finish(); await flushPromises()
+    expect(wrapper.emitted('clear-key')).toBeUndefined()
+    expect(wrapper.emitted('update:apiKey')).toBeUndefined()
+  } finally { wrapper.unmount() }
 })

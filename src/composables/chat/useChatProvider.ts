@@ -50,7 +50,19 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   restoreSettings(storage.state)
-  watch(() => storage.state.settings.apiKey, value => { apiKey.value = value })
+  let settingsRevision = 0
+  let settingsRequest = 0
+  let settingsWrites = 0
+  let disposed = false
+  watch(() => [apiVendor.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiSettingsOpen.value], () => { settingsRevision++ }, { flush: 'sync' })
+  watch(() => storage.state.settings.apiKey, (value, previous) => {
+    if (!settingsWrites && apiKey.value === previous && apiBaseUrl.value === storage.state.settings.apiBaseUrl
+      && apiModel.value === storage.state.settings.apiModel) apiKey.value = value
+  })
+  function settingsOwner() {
+    const request = ++settingsRequest, revision = settingsRevision
+    return () => !disposed && request === settingsRequest && revision === settingsRevision
+  }
 
   let hostRevision = 0
   let hostMutationPending = false
@@ -182,23 +194,31 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
         : '请填写 API 地址和模型名。'
       return
     }
+    const current = settingsOwner()
+    const draft = { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value }
+    settingsWrites++
     try {
-      await storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value })
+      await storage.setApiSettings(draft)
+      if (!current()) return
+      apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
+      apiSettingsOpen.value = false
+      setChatStatus(`自定义 API · ${draft.model}`, 'online')
     } catch {
-      apiConfigHint.value = '安全凭据保存失败，原配置已保留，请重试。'
-      return
-    }
-    apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
-    apiSettingsOpen.value = false
-    setChatStatus(`自定义 API · ${apiModel.value}`, 'online')
+      if (current()) apiConfigHint.value = '配置保存未完成，请检查当前配置后重试。'
+    } finally { settingsWrites-- }
   }
 
   async function clearApiCredential() {
+    const current = settingsOwner()
+    const draft = { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: '' }
+    settingsWrites++
     try {
-      await storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: '' })
+      await storage.setApiSettings(draft)
+      if (!current()) return
       apiKey.value = ''
       apiConfigHint.value = '个人密钥已清除。'
-    } catch { apiConfigHint.value = '个人密钥清除失败，原配置已保留，请重试。' }
+    } catch { if (current()) apiConfigHint.value = '个人密钥清除尚未确认，请检查当前配置后重试。' }
+    finally { settingsWrites-- }
   }
 
   function setBusyStatus(value: boolean) {
@@ -223,7 +243,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
   window.addEventListener('storage', syncApiSettingsFromStorage)
   if (getCurrentScope()) {
-    onScopeDispose(() => window.removeEventListener('storage', syncApiSettingsFromStorage))
+    onScopeDispose(() => { disposed = true; window.removeEventListener('storage', syncApiSettingsFromStorage) })
   }
 
   return {
