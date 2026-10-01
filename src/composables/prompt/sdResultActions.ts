@@ -24,6 +24,7 @@ export async function archiveSdResult(job: SdResultSnapshot, url: string,
   if (!response.ok || !contentType.startsWith('image/')) throw new Error('成片响应不是图片')
   const blob = await response.blob()
   if (!blob.size) throw new Error('成片数据已失效')
+  const history = JSON.parse(JSON.stringify(job.context.history || {})) as Partial<HistoryEntry>
   return commit({
     taskId: job.taskId,
     context: job.context, blob, seed: job.seed,
@@ -31,5 +32,6 @@ export async function archiveSdResult(job: SdResultSnapshot, url: string,
     story: job.story, scene: job.sceneId ?? null, sceneTitle: job.sceneTitle || undefined,
     hiresFix: job.hiresFix, hiresScale: job.hiresScale, hiresUpscaler: job.hiresUpscaler,
     hiresSteps: job.hiresSteps, hiresDenoise: job.denoisingStrength, faceDetailer: job.faceDetailer,
+    ...history,
   })
 }

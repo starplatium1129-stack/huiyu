@@ -32,7 +32,7 @@
         故事与完整 prompt——很多旧作只记得里面出现过某个词。
       -->
       <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
-      <StudioSelect v-show="!albumsOpen" v-model="projectFilter" class="gallery-project" label="按项目筛选" :options="[{ value: '', label: '全部项目' }, ...projects.map(p => ({ value: p.id, label: p.title }))]" />
+      <StudioSelect v-show="!albumsOpen" v-model="projectFilter" class="gallery-project" label="按项目筛选" :options="projectOptions" />
       <!--
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
@@ -56,6 +56,7 @@
       <ArchiveStatePanel v-if="galleryLoading || galleryError" :kind="galleryError ? 'error' : 'loading'" :title="galleryError ? '画册读取失败' : '正在整理画册'" :message="galleryError || '正在读取项目与作品目录。'" />
     </div>
     <div v-show="!albumsOpen" class="gallery-image-browse">
+    <GalleryGenerationFilters v-if="!trashMode" v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
     <div v-if="!trashMode && tagOptions.length" ref="tagControls" class="gallery-tags" role="group" aria-label="作品标签筛选">
       <ArchiveIcon name="pin" /><StudioSelect v-model="tagFilter" label="按标签筛选" :options="[{value:'',label:'全部标签'}, ...tagOptions]" />
       <button v-if="tagFilter" type="button" class="gallery-filter" @click="tagFilter = ''">清除标签：{{ tagFilter }}<ArchiveIcon name="close" /></button>
@@ -120,7 +121,7 @@
         v-else-if="!visible.length"
         kind="filtered"
         title="当前筛选下没有作品"
-        message="作品仍在本地档案中，清空搜索或重置收藏 / 项目筛选即可重新显示。"
+        message="作品仍在本地档案中，重置文本、标签、收藏、画册及生成条件即可重新查找。"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
@@ -386,6 +387,7 @@ import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
 import GalleryProjectAlbums from '@/components/gallery/GalleryProjectAlbums.vue'
+import GalleryGenerationFilters from '@/components/gallery/GalleryGenerationFilters.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
@@ -396,12 +398,10 @@ import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 const {
 tagFilter, tagOptions,
+generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
-favoriteOnly,
-favoriteCount,
-projectFilter,
-projects,
+favoriteOnly, favoriteCount, projectFilter, projects,
 selectMode,
 toggleSelectMode,
 trashMode,

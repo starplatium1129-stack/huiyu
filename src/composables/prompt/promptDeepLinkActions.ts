@@ -80,9 +80,6 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
       if (applied === false) return { handled, historyApplied }
       if (!isCurrent()) return { handled: false, historyApplied: false }
       historyApplied = true
-      if (typeof q.remix === 'string') {
-        deps.setDirectorMode('pro')
-      }
       handled = true
     }
   } else if (typeof q.scene === 'string') {

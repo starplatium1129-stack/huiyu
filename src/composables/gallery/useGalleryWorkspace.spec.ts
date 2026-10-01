@@ -93,6 +93,11 @@ it('keeps the wall mounted when filter URL updates arrive while the viewer is op
   route.query = { q: '秋日', compare: '1,2', batch: 'next-batch' }
   await flushPromises()
   expect(mocks.snapshot).toHaveBeenCalledTimes(2)
+  gallery.closeViewer(); gallery.onViewerClosed()
+  await flushPromises()
+  expect(gallery.searchQuery.value).toBe('秋日')
+  expect(gallery.tagFilter.value).toBe('')
+  expect(mocks.snapshot).toHaveBeenCalledTimes(2)
 })
 
 it('releases gallery originals on deactivation while keeping filters and thumbnails for a return', async () => {

@@ -1,11 +1,12 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ref } from 'vue'
+import { effectScope, ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { AnimaGenerationState } from '@/types/anima'
 import { usePromptHistoryApply } from './usePromptHistoryApply'
+import { usePromptHistoryReuse } from './usePromptHistoryReuse'
 
 beforeEach(() => setActivePinia(createPinia()))
 function setup() {
@@ -13,8 +14,10 @@ function setup() {
   const state = ref({ phase: 'idle', family: 'anima', models: [], loras: [], online: true, modelId: 'old', loraId: '', styleLoraId: '', width: 832, height: 1216, steps: 20, cfg: 5 } as unknown as AnimaGenerationState)
   const flash = vi.spyOn(pb, 'flash')
   const refresh = vi.fn(async () => {})
-  const api = usePromptHistoryApply({ pb, animaState: state, patchAnimaState: patch => { Object.assign(state.value, patch) }, clearAnimaResult: vi.fn(), refreshAnimaBackend: refresh, setDrawEngine: vi.fn(), resetBlueprintRotation: vi.fn(), sdSize: ref('832x1216') })
-  return { pb, state, flash, refresh, ...api }
+  const engine = ref<'sd' | 'anima' | 'krea2'>('sd'), size = ref('832x1216')
+  const deps = { pb, animaState: state, patchAnimaState: (patch: Partial<AnimaGenerationState>) => { Object.assign(state.value, patch) }, clearAnimaResult: vi.fn(), refreshAnimaBackend: refresh, setDrawEngine: vi.fn(value => { engine.value = value }), resetBlueprintRotation: vi.fn(), sdSize: size, drawEngine: engine }
+  const api = usePromptHistoryApply(deps)
+  return { pb, state, flash, refresh, deps, engine, size, ...api }
 }
 const entry = (overrides: Partial<ArtworkRecord> = {}) => ({ id: 12, engine: 'sd', character: 'nene', manual_tags: ['dof'], emotion: ['calm'], shot: 'wide', lighting: 'moon', composition: 'rule3', colorMood: 'warmth', story: 'Saved story', seed: -1, cfg: 0, steps: 25, sampler: 'Euler', scheduler: '', size: '832x1216', project: 'saved-project', ...overrides })
 
@@ -59,4 +62,79 @@ it('loads incomplete old records without claiming exact reproduction', async () 
   expect(pb.sdParams.seed).toBe(0)
   expect(pb.historyRestoreReport?.notes.join(';')).toContain('无法精确复现')
   expect(pb.historyRestoreReport?.title).toContain('0001')
+})
+
+it('reuses style and camera without changing the current subject, prompt, parameters or album', async () => {
+  const { pb, state, engine, applyHistory } = setup()
+  pb.setChar('natsume'); pb.story = 'Current story'; pb.visualDescription = 'Current prose'
+  pb.manualTags = new Set(['current']); pb.projectId = 'current-project'; pb.sdParams.negativeCustom = 'current negative'
+  const parameters = { ...pb.sdParams }, anima = { ...state.value }
+  await applyHistory(entry(), true, { style: true, camera: true, prompts: false, parameters: false })
+  expect(pb.char).toBe('natsume')
+  expect(pb.selections.shot).toBe('wide'); expect(pb.selections.composition).toBe('rule3')
+  expect(pb.selections.lighting).toBe('moon'); expect(pb.colorMood).toBe('warmth')
+  expect(pb.story).toBe('Current story'); expect(pb.visualDescription).toBe('Current prose')
+  expect([...pb.manualTags]).toEqual(['current']); expect(pb.projectId).toBe('current-project')
+  expect(pb.sdParams).toEqual(parameters); expect(state.value).toEqual(anima)
+  engine.value = 'krea2'; state.value.styleLoraId = 'current-style'
+  await applyHistory(entry({ engine: 'krea2', styleLoraId: null }), true, { style: true, camera: false, prompts: false, parameters: false })
+  expect(state.value.styleLoraId).toBe('')
+  expect(pb.sdParams).toEqual(parameters)
+})
+
+it('reuses prompt inputs for a matching subject while preserving camera, style and numeric parameters', async () => {
+  const { pb, applyHistory } = setup()
+  pb.setShot('close'); pb.setComposition('center'); pb.setLighting('sun'); pb.setColorMood('cool')
+  pb.sdParams.negativeCustom = 'stale compiled negative'; const cfg = pb.sdParams.cfg
+  await applyHistory(entry({ negative: 'historical exclusion', visualDescription: 'Saved prose' }), true, { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.story).toBe('Saved story'); expect(pb.visualDescription).toBe('Saved prose')
+  expect(pb.selections).toEqual({ emotion: ['calm'], shot: 'close', lighting: 'sun', composition: 'center' })
+  expect(pb.colorMood).toBe('cool'); expect(pb.sdParams.cfg).toBe(cfg)
+  expect(pb.sdParams.negativeCustom).toBe('')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('原作负向快照未写入')
+})
+
+it('does not import another character or outfit prompt, or parameters from an unrecorded engine', async () => {
+  const { pb, applyHistory } = setup()
+  pb.setChar('natsume'); pb.story = 'Keep'; pb.manualTags = new Set(['keep'])
+  const parameters = { ...pb.sdParams }
+  await applyHistory(entry({ engine: undefined }), true, { style: false, camera: false, prompts: true, parameters: true })
+  expect(pb.story).toBe('Keep'); expect([...pb.manualTags]).toEqual(['keep']); expect(pb.sdParams).toEqual(parameters)
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('原角色或服装与当前条件不同')
+  const scenes = useSceneStore()
+  scenes.popularCharacters = [{ id: 'fixture', outfits: [{ id: 'daily' }, { id: 'formal' }] }] as unknown as typeof scenes.popularCharacters
+  pb.setPopularSubject('fixture', 'formal')
+  await applyHistory(entry({ subject: 'popular', characterId: 'fixture', outfitId: 'daily' }), true, { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.subject).toMatchObject({ characterId: 'fixture', outfitId: 'formal' }); expect(pb.story).toBe('Keep')
+})
+
+it('keeps the draft intact when a complete recipe refers to a removed character or outfit', async () => {
+  const { pb, applyHistory } = setup()
+  pb.story = 'Keep'; pb.sdParams.negativeCustom = 'Keep negative'
+  expect(await applyHistory(entry({ subject: 'popular', characterId: 'removed', outfitId: 'daily' }))).toBe(false)
+  expect(pb.story).toBe('Keep'); expect(pb.sdParams.negativeCustom).toBe('Keep negative')
+  expect(pb.subject.kind).toBe('studio')
+})
+
+it('does not write Anima numeric parameters into the inactive SD editor', async () => {
+  const { pb, applyHistory } = setup()
+  const seed = pb.sdParams.seed, cfg = pb.sdParams.cfg
+  await applyHistory(entry({ engine: 'anima', seed: 77, cfg: 3.2, negative: 'different native negative' }))
+  expect(pb.sdParams.seed).toBe(seed); expect(pb.sdParams.cfg).toBe(cfg)
+})
+
+it('cancels a detached reuse choice without changing the draft and blocks confirmation during generation', async () => {
+  const { pb, deps } = setup(), busy = ref(false), scope = effectScope()
+  const onApplied = vi.fn()
+  const reuse = scope.run(() => usePromptHistoryReuse({ ...deps, generationBusy: busy, onApplied }))!
+  const source = entry(); pb.story = 'Keep'
+  expect(await reuse.duplicateHistory(source)).toBe(true)
+  source.emotion!.push('later edit')
+  expect(reuse.reuseRequest.value?.record.emotion).toEqual(['calm'])
+  reuse.cancelReuse()
+  expect(await reuse.applyReuse('full')).toBe(false); expect(pb.story).toBe('Keep')
+  expect(onApplied).not.toHaveBeenCalled()
+  await reuse.resumeHistory(source); busy.value = true
+  expect(await reuse.applyReuse('full')).toBe(false); expect(pb.story).toBe('Keep')
+  scope.stop(); expect(reuse.reuseRequest.value).toBeNull()
 })

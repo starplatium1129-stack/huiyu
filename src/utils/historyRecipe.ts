@@ -32,6 +32,7 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     notes.push(`${key} 格式无效，未恢复`)
     return undefined
   }
+  const nullableText = (key: string) => record[key] === null ? null : text(key)
   const engine = record.engine
   if (engine !== undefined && engine !== 'sd' && engine !== 'anima' && engine !== 'krea2') {
     return { ok: false as const, error: `未知引擎 ${String(engine)}，当前草稿已保留` }
@@ -41,16 +42,16 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
   const recipe = {
     id: record.id, engine,
     subject: text('subject'), character: text('character'), characterId: text('characterId'),
-    outfitId: text('outfitId'), blueprintId: text('blueprintId'), noLora: boolean('noLora'),
-    model: text('model'), checkpoint: text('checkpoint'), styleLoraId: text('styleLoraId'),
+    outfitId: text('outfitId'), blueprintId: nullableText('blueprintId'), noLora: boolean('noLora'),
+    model: text('model'), checkpoint: text('checkpoint'), styleLoraId: nullableText('styleLoraId'),
     loraId: text('loraId'), loraStrength: number('loraStrength'),
     size: text('size'), seed: number('seed'), steps: number('steps'), cfg: number('cfg'),
     sampler: text('sampler'), scheduler: text('scheduler'), negative: text('negative'),
     hiresFix: boolean('hiresFix'), hiresScale: number('hiresScale'), hiresDenoise: number('hiresDenoise'),
     hiresUpscaler: text('hiresUpscaler'), hiresSteps: number('hiresSteps'), faceDetailer: boolean('faceDetailer'),
-    scene: text('scene'), sceneTitle: text('sceneTitle'), story: text('story'), visualDescription: text('visualDescription'),
+    scene: nullableText('scene'), sceneTitle: text('sceneTitle'), story: text('story'), visualDescription: text('visualDescription'),
     emotion: strings('emotion'), manual_tags: strings('manual_tags'), artistStyleIds: strings('artistStyleIds'),
-    shot: text('shot'), lighting: text('lighting'), composition: text('composition'), colorMood: text('colorMood'), project: text('project'),
+    shot: nullableText('shot'), lighting: nullableText('lighting'), composition: nullableText('composition'), colorMood: nullableText('colorMood'), project: text('project'),
   }
   return { ok: true as const, recipe, notes }
 }

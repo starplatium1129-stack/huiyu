@@ -46,6 +46,8 @@ export const CHAT_RESET_KEY = 'aics_chat_reset_v1'
 export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 /** 出图自动入册开关（2026-08-31 用户偏好：默认关，直出成片不再自动进作品册）。 */
 export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'
+/** Gallery search preferences; contains conditions, never artwork facts or image data. */
+export const GALLERY_FILTER_PRESETS_KEY = 'aics_gallery_filter_presets_v1'
 
 /**
  * 上次成功备份的时间戳（localStorage）——活键但刻意不参与备份导出：
@@ -135,6 +137,7 @@ export const LIVE_LOCAL_KEYS = [
   DIRECTOR_LAYOUT_KEY,
   GUEST_GUIDE_DISMISSED_KEY,
   AUTO_SAVE_TO_GALLERY_KEY,
+  GALLERY_FILTER_PRESETS_KEY,
   'aics-artist-usage',
   'aics-voice-studio-collapsed',
   'aics_managed_route_collapsed_v1',

@@ -176,6 +176,7 @@ export default defineConfig(async ({ mode }) => {
           // Prompt rendering, draft persistence and shared variation helpers are cached
           // by their actual consumers; full static closures remain budgeted.
           if (id.includes('src/composables/prompt/usePromptDraft') ||
+              id.includes('src/composables/prompt/usePromptHistoryReuse') ||
               id.includes('src/utils/promptBuilderPersistence') ||
               id.includes('src/utils/randomVariation') ||
               id.includes('src/utils/promptPolicy') ||

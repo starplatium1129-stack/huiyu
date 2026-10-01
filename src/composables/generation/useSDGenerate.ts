@@ -5,6 +5,7 @@ import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import type { TaskRecord } from '../../../types/tasks'
 import type { RuntimeSdAttempt } from './runtimeImageSession'
+import type { AnimaResultContext } from '@/types/anima'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 export interface SDGenerateOptions {
@@ -44,6 +45,7 @@ export function useSDGenerate() {
   /** 当前结果图实际提交生成时使用的正向提示词（出视频/存历史按图取词，不随面板改动漂移）。 */
   const resultPrompt = ref('')
   const resultTaskId = ref('')
+  const resultContext = ref<AnimaResultContext | null>(null)
   /** LoRA facts belong to the displayed result, not a pending or failed attempt. */
   const lastLoras = ref<Array<{ id: string; strength: number }>>([])
   const errorMsg    = ref('')
@@ -58,6 +60,7 @@ export function useSDGenerate() {
   let durableAttempt = false, durableKey = ''
   let batchObservation = false
   let queueAttempt: RuntimeSdAttempt | undefined
+  let requestSerial = 0, cancelRequested = false
 
   function abandonAcceptedJob(jobId: string) {
     if (!jobId) return
@@ -87,6 +90,9 @@ export function useSDGenerate() {
 
     abortCtrl = new AbortController()
     const controller = abortCtrl
+    requestSerial += 1
+    cancelRequested = false
+    let submitted = false, accepted = false
     const stopObservation = () => controller.abort()
     options.signal?.addEventListener('abort', stopObservation, { once: true })
     if (options.signal?.aborted) controller.abort()
@@ -112,8 +118,10 @@ export function useSDGenerate() {
         durableKey = options.attempt?.key || options.requestKey || runtimeRequestKey('generation', jobInput)
         const { runRuntimeSd } = await import('./runtimeImageSession')
         const url = await runRuntimeSd(jobInput, durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt }, params.runtimeContext, options.onAccepted, options.onSubmitting, options.attempt)
-        lastLoras.value = loras
+          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt, resultContext }, params.runtimeContext,
+          async task => { accepted = true; await options.onAccepted?.(task) },
+          () => { submitted = true; options.onSubmitting?.() }, options.attempt)
+        lastLoras.value = resultContext.value?.history?.loras?.map(lora => ({ ...lora })) ?? []
         return url
       }
       const { runWebGeneration } = await import('@/platform/web/generationSession')
@@ -129,6 +137,7 @@ export function useSDGenerate() {
       if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url
       resultTaskId.value = ''
+      resultContext.value = null
       resultSeed.value = seed
       resultPrompt.value = payload.prompt
       lastLoras.value = loras
@@ -137,10 +146,19 @@ export function useSDGenerate() {
       return url
     } catch (e) {
       options.onError?.(e)
-      if (isAbortError(e) || controller.signal.aborted) { taskState.value = 'cancelled'; statusText.value = '已停止'; return null }
-      taskState.value = durableAttempt ? 'unknown' : 'failed'
+      if (durableAttempt) {
+        const { runtimeSdFailure } = await import('./runtimeImageSession')
+        const failure = runtimeSdFailure(e, controller.signal.aborted, submitted, accepted, cancelRequested)
+        taskState.value = failure.state; statusText.value = failure.message; errorMsg.value = failure.error
+        return null
+      }
+      if (isAbortError(e) || controller.signal.aborted) {
+        taskState.value = 'cancelled'; statusText.value = '已停止'
+        return null
+      }
+      taskState.value = 'failed'
       errorMsg.value   = errorMessage(e)
-      statusText.value = durableAttempt ? '请在任务中心查看已接收任务' : '生成失败'
+      statusText.value = '生成失败'
       return null
     } finally {
       options.signal?.removeEventListener('abort', stopObservation)
@@ -153,13 +171,19 @@ export function useSDGenerate() {
 
   function cancel() {
     if (!generating.value) return
+    cancelRequested = true
     taskState.value = 'cancelling'
     abortCtrl?.abort()
     if (durableAttempt) {
       if (durableKey) {
         const key = durableKey
+        const serial = requestSerial
         const cancellation = queueAttempt ? queueAttempt.cancel() : import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key))
-        void cancellation.catch(() => { errorMsg.value = '取消尚未确认，请到任务中心核对' })
+        void cancellation.then(task => {
+          if (!task || serial !== requestSerial || !task.upstreamSettled) return
+          taskState.value = task.status
+          statusText.value = task.status === 'cancelled' ? '任务已取消' : '任务已经结束，请在收件箱核对结果'
+        }).catch(() => { if (serial === requestSerial) errorMsg.value = '取消尚未确认，请到任务中心核对' })
       }
       return
     }
@@ -175,6 +199,7 @@ export function useSDGenerate() {
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
     lastLoras.value = []
     resultTaskId.value = ''
+    resultContext.value = null
     resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
@@ -189,6 +214,7 @@ export function useSDGenerate() {
     resultSeed.value = seed
     resultPrompt.value = prompt
     resultTaskId.value = taskId
+    resultContext.value = null
     // Restored images do not inherit LoRAs from an unrelated local result.
     lastLoras.value = []
     errorMsg.value = ''
@@ -211,7 +237,7 @@ export function useSDGenerate() {
     taskState: readonly(taskState), online: readonly(online), checkpoint: readonly(checkpoint),
     generating: readonly(generating),
     progress: readonly(progress), statusText: readonly(statusText),
-    resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed), resultPrompt: readonly(resultPrompt), resultTaskId: readonly(resultTaskId),
+    resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed), resultPrompt: readonly(resultPrompt), resultTaskId: readonly(resultTaskId), resultContext: readonly(resultContext),
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models), provider: readonly(provider),

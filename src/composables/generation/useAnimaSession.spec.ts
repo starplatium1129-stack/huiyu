@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding, useAnimaSession, type AnimaRequest, type AnimaSessionOptions } from './useAnimaSession'
 import type { ApiClient, ApiRequestOptions } from '@/api/client'
+import type { AnimaJobMetadata } from '@/types/anima'
 import * as environment from '@/utils/runtimeEnvironment'
 
 const request: AnimaRequest = {
@@ -172,4 +173,22 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(session.restoreStashedResult()).toBe(true)
   expect(session.state.value).toMatchObject({ phase: 'succeeded', errorMsg: '', resultContext: { outfitId: 'outfit-a' } })
   expect(session.restoreStashedResult()).toBe(false)
+})
+
+it('uses the accepted Web Krea metadata after provider style processing, even if the panel changes', async () => {
+  vi.useFakeTimers()
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['image']), { headers: { 'content-type': 'image/png' } })))
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:completed')
+  const metadata = { ...request, id: 'style-result', engine: 'krea2', prompt: request.prompt + ', actual style trigger',
+    seed: 0, sampler: 'actual-sampler', scheduler: 'actual-scheduler' } as AnimaJobMetadata
+  const client = { request: vi.fn(async () => ({ ok: true, job: { id: 'style-result', status: 'succeeded', metadata, seed: 0,
+    resultAvailable: true, resultUrl: '/api/creative/jobs/style-result/result' } })) } as unknown as ApiClient
+  const session = createSession(client)
+  session.patchState({ online: true, family: 'krea2' })
+  const generating = session.generate()
+  session.patchState({ sampler: 'later-sampler', scheduler: 'later-scheduler' })
+  await vi.advanceTimersByTimeAsync(1000); await generating
+  expect(session.state.value.result?.metadata).toMatchObject({ prompt: request.prompt + ', actual style trigger', seed: 0, sampler: 'actual-sampler' })
+  metadata.prompt = 'Mutated transport response'
+  expect(session.state.value.result?.metadata.prompt).toBe(request.prompt + ', actual style trigger')
 })

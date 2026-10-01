@@ -1,19 +1,26 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, reactive, ref } from 'vue'
+import { defineComponent, effectScope, h, nextTick, reactive, ref } from 'vue'
+import { mount } from '@vue/test-utils'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import { useGalleryFilters } from './useGalleryFilters'
 import { artworkTags } from './artworkTags'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
+import { conditionText, recordedCondition, UNRECORDED_CONDITION } from './galleryGenerationConditions'
+import { createGalleryFilterPreferences } from '@/storage/galleryFilterPreferences'
+import { useGallerySavedFilters } from './useGallerySavedFilters'
+import { GALLERY_FILTER_PRESETS_KEY } from '@/utils/storageKeys'
+import { classifyMigrationKey } from '@/platform/web/migrationClassification'
 
 function setup(history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([])) {
   const scope = effectScope()
+  const route = reactive({ query: {} }) as unknown as RouteLocationNormalizedLoaded
+  const replace = vi.fn()
   const filters = scope.run(() => useGalleryFilters({
     history, projects, columnCount: ref(2), ratioOf: () => 1,
-    route: reactive({ query: {} }) as unknown as RouteLocationNormalizedLoaded,
-    router: { replace: vi.fn() } as unknown as Router,
+    route, router: { replace } as unknown as Router,
   }))!
-  return { filters, stop: () => { filters.cleanupFilterSync(); scope.stop() } }
+  return { filters, route, replace, stop: () => { filters.cleanupFilterSync(); scope.stop() } }
 }
 afterEach(()=>vi.useRealTimers())
 describe('saved artwork tag filtering',()=>{
@@ -81,7 +88,9 @@ describe('gallery filter metadata reuse', () => {
     filters.projectFilter.value = 'missing'
     filters.favoriteOnly.value = false
     filters.searchQuery.value = ''
-    expect(filters.visible.value).toHaveLength(3)
+    expect(filters.visible.value).toHaveLength(0)
+    expect(filters.projectUnavailable.value).toBe(true)
+    filters.projectFilter.value = ''
     history.value.splice(1, 1)
     expect(filters.visible.value.map(item => item.id)).toEqual([1, 'old'])
     stop()
@@ -118,6 +127,122 @@ describe('gallery filter metadata reuse', () => {
     expect(filters.visible.value).toHaveLength(1)
     expect(prompt.mock.calls.length).toBeGreaterThan(firstReads)
     stop()
+  })
+})
+
+describe('gallery generation conditions and reusable searches', () => {
+  it('combines recorded engine, either model field, role-owned outfit, seed, size and review state with existing filters', () => {
+    const history = ref<ArtworkRecord[]>([
+      { id: 'match', timestamp: 3, engine: 'anima', checkpoint: 'model-a', model: 'model-b', characterId: 'role-a', outfitId: 'uniform', seed: 0, size: '832 × 1216', reviewState: 'preferred', favorite: true, prompt: 'spring sky', manual_tags: ['春日'] },
+      { id: 'other-role', timestamp: 2, engine: 'anima', model: 'model-b', characterId: 'role-b', outfitId: 'uniform', seed: '0', size: '832x1216', width: 832, height: 1216, reviewState: 'preferred', favorite: true, prompt: 'spring sky', manual_tags: ['春日'] },
+      { id: 'candidate', timestamp: 1, engine: 'anima', model: 'model-b', characterId: 'role-a', outfitId: 'uniform', seed: '0', size: '832x1216', width: 832, height: 1216, reviewState: 'candidate', favorite: true, prompt: 'spring sky', manual_tags: ['春日'] },
+    ])
+    const { filters, stop } = setup(history, ref([{ id: 'album', title: 'Album', history_ids: ['match', 'other-role', 'candidate'] }]))
+    filters.favoriteOnly.value = true; filters.projectFilter.value = 'album'; filters.tagFilter.value = '春日'; filters.searchQuery.value = 'spring sky'
+    filters.generationConditions.value = { engine: recordedCondition('anima'), model: recordedCondition('model-b'), outfit: recordedCondition(JSON.stringify(['role-a', 'uniform'])), seed: recordedCondition('0'), size: recordedCondition('832x1216'), reviewState: recordedCondition('preferred') }
+    expect(filters.visible.value.map(item => item.id)).toEqual(['match'])
+    expect(filters.generationOptions.value.outfit.map(value => conditionText(value.value))).toContain(JSON.stringify(['role-b', 'uniform']))
+    history.value[0].reviewState = 'rejected'
+    expect(filters.visible.value).toHaveLength(0)
+    filters.generationConditions.value.reviewState = recordedCondition('candidate')
+    expect(filters.visible.value.map(item => item.id)).toEqual(['candidate'])
+    stop()
+  })
+
+  it('keeps missing facts separate from defaults and never turns measured image dimensions into generation size', () => {
+    const { filters, stop } = setup(ref<ArtworkRecord[]>([
+      { id: 'old', timestamp: 3, prompt: 'anima model-a seed 0', outfitId: 'uniform', actual: { width: 832, height: 1216 }, image_width: 832, image_height: 1216 },
+      { id: 'recorded', timestamp: 2, engine: 'sd', checkpoint: 'model-a', character: 'role-a', outfitId: 'uniform', seed: '000', width: '832', height: 1216, reviewState: 'candidate' },
+      { id: 'missing-model', timestamp: 1, engine: 'sd', seed: -1 },
+      { id: 'saved-size', timestamp: 0, engine: 'anima', size: '832x1216', width: 1664, height: 2432 },
+    ]))
+    filters.generationConditions.value.size = UNRECORDED_CONDITION
+    expect(filters.visible.value.map(item => item.id)).toEqual(['old', 'recorded', 'missing-model'])
+    filters.generationConditions.value.engine = UNRECORDED_CONDITION
+    filters.generationConditions.value.model = UNRECORDED_CONDITION
+    filters.generationConditions.value.outfit = UNRECORDED_CONDITION
+    filters.generationConditions.value.seed = UNRECORDED_CONDITION
+    filters.generationConditions.value.reviewState = UNRECORDED_CONDITION
+    expect(filters.visible.value.map(item => item.id)).toEqual(['old'])
+    filters.clearGenerationConditions()
+    filters.generationConditions.value.seed = recordedCondition('0')
+    expect(filters.visible.value.map(item => item.id)).toEqual(['recorded'])
+    stop()
+  })
+
+  it('resets pagination on condition changes, replaces cleared URL fields and preserves unrelated route keys', async () => {
+    vi.useFakeTimers()
+    const { filters, route, replace, stop } = setup(ref(Array.from({ length: 140 }, (_, id) => ({ id, timestamp: id, engine: id < 100 ? 'anima' : 'sd' }))))
+    route.query = { compare: 'preserve', fav: '1', project: 'deleted-album', q: 'old', tag: 'old', gEngine: recordedCondition('sd'), gSeed: UNRECORDED_CONDITION }
+    await nextTick()
+    expect(filters.projectUnavailable.value).toBe(true)
+    expect(filters.visible.value).toHaveLength(0)
+    route.query = { compare: 'preserve', gEngine: recordedCondition('anima') }
+    await nextTick()
+    expect(filters.favoriteOnly.value).toBe(false)
+    expect(filters.projectFilter.value).toBe('')
+    expect(filters.searchQuery.value).toBe('')
+    expect(filters.tagFilter.value).toBe('')
+    expect(filters.generationConditions.value.seed).toBe('')
+    expect(filters.visible.value).toHaveLength(100)
+    filters.renderLimit.value = 120
+    filters.generationConditions.value.engine = recordedCondition('sd')
+    await nextTick()
+    expect(filters.renderLimit.value).toBe(60)
+    await vi.advanceTimersByTimeAsync(300)
+    expect(replace).toHaveBeenLastCalledWith({ query: { compare: 'preserve', gEngine: recordedCondition('sd') } })
+    filters.renderLimit.value = 120
+    route.query = { compare: 'preserve', gEngine: recordedCondition('sd') }
+    await nextTick()
+    expect(filters.renderLimit.value).toBe(120)
+    filters.resetGalleryFilters(); await nextTick(); await vi.advanceTimersByTimeAsync(300)
+    expect(filters.visible.value).toHaveLength(140)
+    expect(replace).toHaveBeenLastCalledWith({ query: { compare: 'preserve' } })
+    stop()
+  })
+
+  it('saves detached filter preferences, updates a named combination and exposes rejected saves without reporting success', async () => {
+    const { filters, stop } = setup(ref([{ id: 'one', engine: 'anima', favorite: true }]))
+    const values = new Map<string, string>()
+    let rejectWrite = false
+    const flush = vi.fn(async () => {})
+    const preferences = createGalleryFilterPreferences({
+      getItem: key => values.get(key) ?? null,
+      setItem: (key, value) => { if (rejectWrite) throw new Error('资料保存失败'); values.set(key, value) },
+      removeItem: key => { values.delete(key) },
+    }, flush)
+    let saved!: ReturnType<typeof useGallerySavedFilters>
+    const wrapper = mount(defineComponent({ setup() {
+      saved = useGallerySavedFilters({ snapshot: () => filters.filterSnapshot.value, apply: filters.applyFilterSnapshot, preferences })
+      return () => h('div')
+    } }))
+    try {
+      filters.favoriteOnly.value = true
+      filters.generationConditions.value.engine = recordedCondition('anima')
+      expect(await saved.savePreset('常用')).toBe(true)
+      const id = saved.presets.value[0].id
+      expect(classifyMigrationKey('local', GALLERY_FILTER_PRESETS_KEY)).toBe('settings')
+      filters.resetGalleryFilters()
+      expect(preferences.read()[0].filters.favoriteOnly).toBe(true)
+      saved.applyPreset(id)
+      expect(filters.favoriteOnly.value).toBe(true)
+      expect(filters.generationConditions.value.engine).toBe(recordedCondition('anima'))
+      filters.generationConditions.value.seed = recordedCondition('0')
+      expect(await saved.savePreset('常用')).toBe(true)
+      expect(saved.presets.value).toHaveLength(1)
+      expect(saved.presets.value[0].id).toBe(id)
+      rejectWrite = true
+      expect(await saved.savePreset('另一个')).toBe(false)
+      expect(saved.message.value).toBe('')
+      expect(saved.error.value).toContain('资料保存失败')
+      expect(saved.busy.value).toBe(false)
+      expect(preferences.read()).toHaveLength(1)
+      rejectWrite = false
+      expect(await saved.removePreset(id)).toBe(true)
+      expect(preferences.read()).toEqual([])
+      expect(filters.generationConditions.value.seed).toBe(recordedCondition('0'))
+      expect(flush).toHaveBeenCalled()
+    } finally { wrapper.unmount(); stop() }
   })
 })
 

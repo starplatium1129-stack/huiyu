@@ -2,7 +2,6 @@ import { computed, getCurrentInstance, onUnmounted, ref } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
-import { classifySDError } from '@/utils/sdError'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import {
@@ -214,7 +213,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'anima' | 'krea2'): AnimaJobMetadata {
     const supplied = job.metadata
-    const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
+    if (supplied && supplied.id !== job.id) throw new Error('成片元数据与当前任务编号不一致，请核对任务')
+    const metadata = supplied
       ? supplied
       : {
           engine: family,
@@ -230,8 +230,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           height: request.height,
           steps: request.steps,
           cfg: request.cfg,
-          sampler: state.value.sampler,
-          scheduler: state.value.scheduler,
+          sampler: '',
+          scheduler: '',
           seed: job.seed,
           character: request.character,
           preview: false,
@@ -241,7 +241,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           createdAt: Date.now(),
           resultUrl: job.resultUrl,
         }
-    return Object.freeze({ ...metadata, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
+    return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
   }
 
 
@@ -266,6 +266,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (serial !== requestSerial) return
       const job = data.job
       if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
+      if (job.id !== jobId) throw new Error('成片响应与当前任务编号不一致，请核对任务')
       if (job.metadata) patchState({ job: metadataFromJob(job, request, family) })
       patchState({
         backendStatus: job.status,
@@ -318,15 +319,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * errorMsg 保留分类后的可读文案而非原始串——调用方（导演台 generationError、
    * 面板红字）都只是展示给用户看。
    */
-  function failurePatch(error: unknown, statusText: string) {
-    const report = classifySDError(error, 'comfy')
-    return {
-      phase: 'failed' as const,
-      statusText,
-      errorMsg: report.kind === 'cancelled' ? report.message : `${report.title}：${report.message}`,
-      errorReport: report,
-    }
-  }
 
   function clearResult() {
     const previous = state.value.result
@@ -390,15 +382,16 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
     patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
+    let accepted = false
     try {
       if (durableAttempt) {
         const kind = family === 'krea2' ? 'creative' : 'anima'
         const input = animaRequestPayload(request)
         durableKey = runtimeRequestKey(kind, input)
         const { runRuntimeAnima } = await import('./runtimeImageSession')
-        await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, request, context: pendingContext, state,
+        await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, context: pendingContext, state,
           isCurrent: () => !controller.signal.aborted && serial === requestSerial,
-          metadata: job => metadataFromJob(job, request, family), discardStashed: discardStashedResult, onResult: options.onResult })
+          onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult: options.onResult })
         return
       }
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
@@ -422,12 +415,18 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       await pollJob(data.job.id, request, family, serial, controller.signal)
     } catch (error) {
       if (serial !== requestSerial) return
+      if (durableAttempt) {
+        const { runtimeAnimaFailure } = await import('./runtimeImageSession')
+        if (serial === requestSerial) patchState(runtimeAnimaFailure(error, controller.signal.aborted, accepted))
+        return
+      }
       if (controller.signal.aborted) {
         patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
         return
       }
       if (error instanceof ApiClientError && error.kind === 'aborted') return
-      patchState(failurePatch(error, '生成失败'))
+      const { imageFailurePatch } = await import('./runtimeImageSession')
+      if (serial === requestSerial) patchState(imageFailurePatch(error, '生成失败'))
     } finally {
       if (jobRequest === controller) jobRequest = null
     }
@@ -435,12 +434,15 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   async function cancel(): Promise<void> {
     if (durableAttempt && durableKey && ['submitting', 'running', 'cancelling'].includes(state.value.phase)) {
+      const serial = requestSerial, key = durableKey
+      const isCurrent = () => serial === requestSerial && key === durableKey && ['submitting', 'running', 'cancelling'].includes(state.value.phase)
       patchState({ phase: 'cancelling', statusText: '正在记录取消请求…' })
       try {
         const { cancelRuntimeTaskKey, taskMessage } = await import('@/api/runtimeTasks')
-        const task = await cancelRuntimeTaskKey(durableKey)
+        const task = await cancelRuntimeTaskKey(key)
+        if (!isCurrent()) return
         patchState({ phase: task?.status === 'cancelled' ? 'cancelled' : 'cancelling', statusText: task ? taskMessage(task) : '取消意图已记录，等待提交核对。' })
-      } catch { patchState({ statusText: '取消尚未确认，请到任务中心核对。' }) }
+      } catch { if (isCurrent()) patchState({ statusText: '取消尚未确认，请到任务中心核对。' }) }
       return
     }
     const job = state.value.job

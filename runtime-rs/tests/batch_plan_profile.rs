@@ -29,6 +29,15 @@ async fn batch_planning_survives_reopen_and_keeps_window_ownership() {
         "key":"aics_director_layout_v1","expectedRevision":null,"value":{"rightHidden":true}}),
     )
     .await;
+    let filters = json!({"fixture":{"name":"Anima 收藏","filters":{"favoriteOnly":true,
+        "projectFilter":"","searchQuery":"","tagFilter":"","generation":{"engine":"v:anima",
+        "model":"","outfit":"","seed":"v:0","size":"","reviewState":""}}}});
+    request(
+        &storage,
+        json!({"kind":"profile.saveSetting","operationId":"gallery-filters",
+        "key":"aics_gallery_filter_presets_v1","expectedRevision":null,"value":filters}),
+    )
+    .await;
     storage.close().await.unwrap();
     let reopened = Storage::open(root, "batch-plan-test".into(), false)
         .await
@@ -49,5 +58,12 @@ async fn batch_planning_survives_reopen_and_keeps_window_ownership() {
     let settings = request(&reopened, json!({"kind":"profile.readSettings"})).await;
     assert_eq!(settings["records"][0]["key"], "aics_director_layout_v1");
     assert_eq!(settings["records"][0]["value"]["rightHidden"], true);
+    let preset = settings["records"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|record| record["key"] == "aics_gallery_filter_presets_v1")
+        .unwrap();
+    assert_eq!(preset["value"], filters);
     reopened.close().await.unwrap();
 }

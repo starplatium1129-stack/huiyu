@@ -1,5 +1,5 @@
 import type { ArtworkRecord } from '@/types/artwork'
-import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
+import { getCurrentInstance, getCurrentScope, onDeactivated, onScopeDispose, type Ref } from 'vue'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
@@ -20,7 +20,6 @@ export interface PromptDeepLinkDeps {
   selectBlueprint: (blueprint: SceneBlueprint) => void
   selectScene: (scene: Scene) => void
   applyRecommendedEngine: (character: PopularCharacter | null) => void
-  setDirectorMode: (mode: 'basic' | 'pro') => void
   applyHistory: (entry: ArtworkRecord, keepAsVariant?: boolean) => void | boolean | Promise<void | boolean>
 }
 
@@ -39,6 +38,7 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
   let lastContextLink = ''
   let historyRequest = 0, disposed = false
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; historyRequest += 1 })
+  if (getCurrentInstance()) onDeactivated(() => { historyRequest += 1; lastHistoryLink = ''; lastContextLink = '' })
   function historyKey(q: Record<string, unknown>) {
     const mode = ['remix', 'regen', 'variant'].find(key => typeof q[key] === 'string')
     return mode ? mode + ':' + q[mode] : ''

@@ -1,5 +1,4 @@
 import { useGeneratedSceneCapture } from './useGeneratedSceneCapture';
-import type { ArtworkRecord } from '@/types/artwork'
 import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
@@ -14,6 +13,7 @@ import { useTempResult } from '@/composables/prompt/useTempResult';
 import { usePromptMaterials } from './usePromptMaterials';
 import { usePromptLifecycle } from './usePromptLifecycle';
 import { usePromptWorkspaceUi } from './usePromptWorkspaceUi';
+import { usePromptHistoryReuse } from './usePromptHistoryReuse';
 import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
@@ -406,30 +406,10 @@ export function usePromptWorkspace() {
         pb.sdParams.seedLock = true;
         pb.flash(`已锁定 seed ${seed}`);
     }
-    // ── 历史应用（恢复/复制/删除/复用配方）已下沉 usePromptHistoryApply ────────
-    // 历史恢复与删除只在用户操作或历史深链时加载，普通出图首屏不下载这段代码。
-    let historyTools: Promise<ReturnType<typeof import('@/composables/prompt/usePromptHistoryApply')['usePromptHistoryApply']>> | null = null;
-    function getHistoryTools() {
-        return historyTools ??= import('@/composables/prompt/usePromptHistoryApply').then(({ usePromptHistoryApply }) => usePromptHistoryApply({
-            pb,
-            animaState,
-            patchAnimaState: animaSession.restoreSettings,
-            clearAnimaResult,
-            refreshAnimaBackend,
-            setDrawEngine,
-            resetBlueprintRotation,
-            sdSize,
-        }));
-    }
-    async function applyHistory(entry: ArtworkRecord, variant = false) {
-        const tools = await getHistoryTools();
-        if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入配方'); return false; }
-        return tools.applyHistory(entry, variant);
-    }
-    function resumeHistory(entry: ArtworkRecord) { return applyHistory(entry); }
-    function duplicateHistory(entry: ArtworkRecord) { return applyHistory(entry, true); }
-    async function deleteHistory(entry: ArtworkRecord) { await (await getHistoryTools()).deleteHistory(entry); }
-    async function reuseSuccessfulRecipe(id: string | number) { const entry = pb.history.find(item => item.id === id); if (entry) await applyHistory(entry, true); }
+    const historyReuse = usePromptHistoryReuse({ pb, animaState, patchAnimaState: animaSession.restoreSettings,
+        clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation, sdSize, drawEngine, generationBusy, onApplied: () => setDirectorMode('pro') });
+    const { applyHistory, resumeHistory, duplicateHistory, deleteHistory, reuseSuccessfulRecipe } = historyReuse;
+    watch(() => route.fullPath, () => historyReuse.cancelReuse());
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
     // onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
     // 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，
@@ -444,7 +424,6 @@ export function usePromptWorkspace() {
         selectBlueprint,
         selectScene,
         applyRecommendedEngine,
-        setDirectorMode,
         applyHistory,
     });
     // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
@@ -523,7 +502,7 @@ export function usePromptWorkspace() {
         popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession,
     });
     return {
-        capturedScene, capturingScene, captureScene, closeSceneCapture,
+        capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse,
         pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
         animaSession, archiveBarShape, modeDescription, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,

@@ -69,6 +69,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         await pb.loadHistory();
         if (disposed) return;
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
+        if (typeof route.query.remix === 'string' || typeof route.query.variant === 'string') pb.restoreDraft();
         const handledDeepLink = await applyDeepLink(route.query);
         if (disposed) return;
         if (!handledDeepLink)

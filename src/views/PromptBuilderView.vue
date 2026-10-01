@@ -195,6 +195,7 @@
 
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
+    <HistoryReuseDialog v-if="reuseRequest" :key="String(reuseRequest.record.id)" :record="reuseRequest.record" :busy="reuseBusy" @apply="applyReuse" @cancel="cancelReuse" />
     <GeneratedSceneDialog v-if="capturedScene" :source="capturedScene" @close="closeSceneCapture" />
     <DeferredPanel :active="compareOpen || inpaintOpen">
       <PromptResultDialogs :bindings="dialogBindings" />
@@ -223,6 +224,7 @@ const DirectorInspector = defineAsyncComponent(() => import('@/components/direct
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
+const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))
 const DrawingTaskObserver = defineAsyncComponent(() => import('@/components/tasks/DrawingTaskObserver.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
@@ -235,6 +237,7 @@ const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioT
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
+const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
