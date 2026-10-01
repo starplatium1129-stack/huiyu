@@ -40,7 +40,7 @@ test('anima expert parameters and unified button share one parent-owned request 
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
-  await page.locator('.result-tools-disclosure summary').first().click()
+  await page.getByRole('tab', { name: '成片', exact: true }).click()
   const hires = page.locator('.btn-hires-action').first()
   // 迁移契约：按钮上不再挂原生 title —— 原生提示延迟约 1 秒，且只在 hover 时出现
   expect(await hires.getAttribute('title')).toBeNull()
@@ -55,12 +55,14 @@ test('anima expert parameters and unified button share one parent-owned request 
   await expect(tip).toBeVisible()
   await expect(tip).toContainText('高清超分')
   await expect(hires).toHaveAttribute('aria-describedby', /.+/)
+  await page.getByRole('tab', { name: '生成', exact: true }).click()
   await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
   expect(bodies[0]).toEqual(bodies[1])
   expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
   // 受控路线：宁宁默认 LoRA 为 V21（unified e16），请求角色为 nene
   expect((bodies[0] as { character: string }).character).toBe('nene')
+  expect((bodies[0] as { modelId: string }).modelId).toBe('anima-miaomiao-v1.6')
 })
 
 
@@ -88,6 +90,7 @@ test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ pa
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].character).toBe('natsume')
   expect(bodies[0].loraId).toBe('L_NAT_V21_ANIMA')
+  expect(bodies[0].modelId).toBe('anima-miaomiao-v1.6')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
@@ -196,7 +199,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   expect(bodies[0].loraId).toBeUndefined()
   expect(bodies[0].loraStrength).toBeUndefined()
   expect(bodies[0].character).toBeNull()
-  expect(bodies[0].modelId).toBe('anima-miaomiao-v1.2')
+  expect(bodies[0].modelId).toBe('anima-miaomiao-v1.6')
   expect(String(bodies[0].prompt)).toContain('raiden_shogun')
   expect(String(bodies[0].prompt)).toContain('bouquet')
   expect(String(bodies[0].prompt)).toContain('pink theme')

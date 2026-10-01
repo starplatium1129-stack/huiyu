@@ -11,7 +11,7 @@ const manifest = path.join(root, 'runtime-rs', 'Cargo.toml');
 const cargoHome = process.env.CARGO_HOME || path.join(os.homedir(), '.cargo');
 const candidate = path.join(cargoHome, 'bin', process.platform === 'win32' ? 'cargo.exe' : 'cargo');
 const cargo = fs.existsSync(candidate) ? candidate : 'cargo';
-const env = { ...process.env, CARGO_TARGET_DIR: path.join(root,'runtime-rs','target'), PATH: path.join(cargoHome, 'bin') + path.delimiter + (process.env.PATH || '') };
+const env: NodeJS.ProcessEnv = { ...process.env, CARGO_TARGET_DIR: path.join(root,'runtime-rs','target'), PATH: path.join(cargoHome, 'bin') + path.delimiter + (process.env.PATH || '') };
 
 function run(args: string[]): void {
   const result = spawnSync(cargo, args, { cwd: root, env, windowsHide: true, stdio: 'inherit' });
@@ -28,6 +28,10 @@ if (process.argv.includes('--help')) {
   // physical spelling so runtime path guards can keep rejecting junctions.
   const testTemporary = fs.realpathSync.native(os.tmpdir());
   Object.assign(env, { TEMP: testTemporary, TMP: testTemporary });
+  // Parallel integration-crate linkage can exceed Windows commit/page-file
+  // limits even with free RAM. Bound checks; callers can select their measured
+  // safe parallelism with CARGO_BUILD_JOBS. Normal release builds stay unchanged.
+  env.CARGO_BUILD_JOBS ??= '2';
   run(['fmt', '--manifest-path', manifest, '--check']);
   run(['clippy', '--manifest-path', manifest, '--locked', '--all-targets', '--', '-D', 'warnings']);
   run(['test', '--manifest-path', manifest, '--locked']);

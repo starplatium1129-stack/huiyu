@@ -17,6 +17,9 @@ let initialized = false
 let parent: HTMLElement | null = null
 let observedTarget: HTMLElement | null = null
 let destinationBox = ''
+let keyboardInput = false
+function keyboard() { keyboardInput = true; fluid?.settle(); indicator.value?.style.setProperty('transition','none') }
+function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
 // Motion batches all indicator reads before any indicator writes in this frame.
 function schedule() { if (!suspended && !document.hidden) frame.read(update) }
 function cancelScheduled() {
@@ -67,7 +70,7 @@ function render() {
   fluid ??= createFluidMotion([x, y, width, height], ([left, top, width, height]) => {
     el.style.transform = `translate(${left}px,${top}px) scale(${width / baseWidth},${height / baseHeight})`
   }, 5.5)
-  fluid.to([x, y, width, height], !initialized)
+  fluid.to([x, y, width, height], !initialized || keyboardInput)
   initialized = true
 }
 onMounted(() => {
@@ -92,6 +95,8 @@ onMounted(() => {
   mutations = new MutationObserver(schedule)
   mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-pressed', 'aria-selected', 'hidden'] })
   parent.addEventListener('scroll', schedule, { passive: true })
+  parent.addEventListener('keydown', keyboard, true)
+  parent.addEventListener('pointerdown', pointer, true)
   document.fonts?.addEventListener('loadingdone', schedule)
   schedule()
 })
@@ -118,6 +123,8 @@ onUnmounted(() => {
   fluid?.dispose()
   cancelScheduled()
   parent?.removeEventListener('scroll', schedule)
+  parent?.removeEventListener('keydown', keyboard, true)
+  parent?.removeEventListener('pointerdown', pointer, true)
 })
 </script>
 <style scoped>

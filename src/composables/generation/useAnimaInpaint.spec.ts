@@ -1,33 +1,42 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, effectScope, ref } from 'vue'
 import { useAnimaInpaint, type AnimaInpaintDeps } from './useAnimaInpaint'
 import { ANIMA_LORA_BY_CHARACTER } from './useAnimaSession'
 import { apiClient } from '@/api/client'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
+import type { AnimaSubmission } from './animaSessionContract'
 
 vi.mock('@/api/client', async importOriginal => ({
   ...await importOriginal<typeof import('@/api/client')>(),
   apiClient: { request: vi.fn() },
 }))
 
+const cleanups: Array<() => void> = []
+afterEach(() => { cleanups.splice(0).forEach(cleanup => cleanup()); vi.restoreAllMocks() })
 function harness(popular = false) {
   const generate = vi.fn().mockResolvedValue(undefined)
   const flash = vi.fn()
   const deps = {
     pb: { char: 'nene', flash }, drawEngine: ref('anima'),
     animaState: ref({
-      modelId: 'character-model', width: 832, height: 1216, loraStrength: 0.75,
+      phase: 'idle', family: 'anima', modelId: 'character-model', width: 832, height: 1216, loraStrength: 0.75,
       models: [
         { id: 'character-model', sizes: ['832x1216'] },
         { id: 'base-model', sizes: ['1024x1024'], capabilities: { noLora: true } },
       ],
     }),
-    displayResultUrl: computed(() => 'blob:original'), generateAnima: generate,
+    generateAnima: generate,
+    preparing: ref(false), captureAnimaSubmission: vi.fn(() => ({ family: 'anima', request: {
+      prompt: 'original recipe', negative: 'original negative', profileId: 'fixture', modelId: 'character-model',
+      loraId: ANIMA_LORA_BY_CHARACTER.nene, loraStrength: 0.75, width: 832, height: 1216, steps: 30, cfg: 4.5, character: 'nene',
+    }, context: { characterId: 'original-role' } } satisfies AnimaSubmission)),
     isPopular: computed(() => popular), popularIdentityTokens: computed(() => ['example_character', 'blue_eyes']),
   } as unknown as AnimaInpaintDeps
-  const tools = useAnimaInpaint(deps)
+  const scope = effectScope()
+  const tools = scope.run(() => useAnimaInpaint(deps))!
+  cleanups.push(() => scope.stop())
   tools.inpaintOpen.value = true
-  return { deps, tools, generate, flash }
+  return { deps, tools, generate, flash, scope }
 }
 
 const payload: InpaintSubmitPayload = {
@@ -42,7 +51,10 @@ beforeEach(() => {
 
 describe('换装提交按操作加载', () => {
   it('初始化不上传图片，确认后保留工作室角色、遮罩与完整生成参数', async () => {
-    const { tools, generate } = harness()
+    const { tools, generate, scope } = harness()
+    const owned = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:owned-original')
+    const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    generate.mockImplementation(async () => { URL.revokeObjectURL('blob:original') })
     expect(apiClient.request).not.toHaveBeenCalled()
     vi.mocked(apiClient.request)
       .mockResolvedValueOnce({ ok: true, name: 'source.png' })
@@ -54,9 +66,13 @@ describe('换装提交按操作加载', () => {
       initImage: 'source.png', maskImage: 'mask.png', denoisingStrength: 0.6, growMaskBy: 12,
       seed: 0, character: 'nene', loraId: ANIMA_LORA_BY_CHARACTER.nene, loraStrength: 0.75,
       width: 832, height: 1216, teaCache: true,
-    })
+    }, expect.objectContaining({ family: 'anima', context: { characterId: 'original-role' } }))
     expect(tools.inpaintOpen.value).toBe(false)
-    expect(tools.inpaintOriginalUrl.value).toBe('blob:original')
+    expect(owned).toHaveBeenCalledExactlyOnceWith(payload.imageBlob)
+    expect(tools.inpaintOriginalUrl.value).toBe('blob:owned-original')
+    expect(revoke).not.toHaveBeenCalledWith('blob:owned-original')
+    scope.stop()
+    expect(revoke).toHaveBeenCalledWith('blob:owned-original')
   })
 
   it('freezes model and LoRA state before the asynchronous source upload', async () => {
@@ -64,12 +80,12 @@ describe('换装提交按操作加载', () => {
     let resolveUpload!: (value: object | PromiseLike<object>) => void
     vi.mocked(apiClient.request).mockImplementationOnce(() => new Promise(resolve => { resolveUpload = resolve }))
     const pending = tools.handleInpaintSubmit(payload)
-    await vi.waitFor(() => expect(apiClient.request).toHaveBeenCalled())
     deps.animaState.value.modelId = 'base-model'
     deps.animaState.value.loraStrength = 0.1
+    await vi.waitFor(() => expect(apiClient.request).toHaveBeenCalled())
     resolveUpload({ ok: true, name: 'source.png' })
     await pending
-    expect(generate).toHaveBeenCalledWith(expect.objectContaining({ modelId: 'character-model', loraStrength: 0.75 }))
+    expect(generate).toHaveBeenCalledWith(expect.objectContaining({ modelId: 'character-model', loraStrength: 0.75 }), expect.objectContaining({ request: expect.objectContaining({ modelId: 'character-model' }) }))
   })
 
   it('热门角色沿用无 LoRA 绑定、身份与自动遮罩参数', async () => {
@@ -81,7 +97,7 @@ describe('换装提交按操作加载', () => {
       initImage: 'source.png', maskPrompt: 'clothing', maskThreshold: 0.4,
       denoisingStrength: 0.6, growMaskBy: 12, seed: 0, character: null, loraId: null,
       loraStrength: null, width: 1024, height: 1024, teaCache: true,
-    })
+    }, expect.objectContaining({ family: 'anima' }))
   })
 
   it('错误引擎不上传，上传失败不提交并保留重试弹窗', async () => {
@@ -95,5 +111,34 @@ describe('换装提交按操作加载', () => {
     expect(generate).not.toHaveBeenCalled()
     expect(flash).toHaveBeenLastCalledWith('换装失败：upload failed')
     expect(tools.inpaintOpen.value).toBe(true)
+  })
+
+  it('preparation is single-flight and rejects late uploads after closing, changing engine or disposing', async () => {
+    for (const boundary of ['loading', 'close', 'engine', 'dispose']) {
+      vi.mocked(apiClient.request).mockClear()
+      const { deps, tools, generate, scope } = harness()
+      let finish!: (result: object) => void
+      vi.mocked(apiClient.request).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+      const pending = tools.handleInpaintSubmit(payload)
+      if (boundary === 'loading') {
+        tools.inpaintOpen.value = false; await pending
+        expect(apiClient.request).not.toHaveBeenCalled(); expect(generate).not.toHaveBeenCalled()
+        scope.stop(); vi.mocked(apiClient.request).mockReset()
+        continue
+      }
+      await vi.waitFor(() => expect(apiClient.request).toHaveBeenCalledOnce())
+      expect(deps.preparing.value).toBe(true)
+      await tools.handleInpaintSubmit(payload)
+      expect(apiClient.request).toHaveBeenCalledOnce()
+      if (boundary === 'close') tools.inpaintOpen.value = false
+      else if (boundary === 'engine') deps.drawEngine.value = 'krea2'
+      else scope.stop()
+      expect(vi.mocked(apiClient.request).mock.calls[0]![1]!.signal?.aborted).toBe(true)
+      expect(deps.preparing.value).toBe(false)
+      finish({ ok: true, name: 'late.png' }); await pending
+      expect(generate).not.toHaveBeenCalled()
+      expect(tools.inpaintOriginalUrl.value).toBeNull()
+      scope.stop()
+    }
   })
 })

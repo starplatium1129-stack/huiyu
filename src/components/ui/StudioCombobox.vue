@@ -15,6 +15,7 @@ const props = defineProps<{
 }>()
 const value = defineModel<string>({ required: true })
 const open = ref(false)
+const pointerOpened = ref(false)
 const query = ref('')
 const displayValue = (key: string) => props.options.find(option => option.value === key)?.label ?? ''
 const selectedLabel = computed(() => displayValue(value.value))
@@ -23,7 +24,7 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
 </script>
 
 <template>
-  <ComboboxRoot v-model="value" v-model:open="open" :disabled="disabled" open-on-click class="studio-combobox tw:min-w-0 tw:w-full">
+  <ComboboxRoot v-model="value" v-model:open="open" :disabled="disabled" open-on-click class="studio-combobox tw:min-w-0 tw:w-full" @pointerdown.capture="pointerOpened = true" @keydown.capture="pointerOpened = false">
     <ComboboxAnchor class="studio-combobox-anchor tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:pl-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary">
       <ArchiveIcon name="search" class="studio-combobox-search tw:shrink-0 tw:w-[16px] tw:h-[16px] tw:text-muted" aria-hidden="true" />
       <ComboboxInput :id="id" v-model="query" :aria-label="label" :display-value="displayValue"
@@ -35,7 +36,7 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
     </ComboboxAnchor>
     <ComboboxPortal>
       <ComboboxContent position="popper" align="start" :side-offset="8" :collision-padding="12"
-        class="studio-combobox-content tw:[z-index:var(--z-popover)] tw:[width:max(260px,var(--reka-combobox-trigger-width,_260px))] tw:[max-width:calc(100vw_-_24px)] tw:[max-height:var(--reka-combobox-content-available-height,_320px)] tw:overflow-hidden tw:p-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:shadow-(--shadow-lg) tw:text-primary" :aria-label="label">
+        class="studio-combobox-content tw:[z-index:var(--z-popover)] tw:[width:max(260px,var(--reka-combobox-trigger-width,_260px))] tw:[max-width:calc(100vw_-_24px)] tw:[max-height:var(--reka-combobox-content-available-height,_320px)] tw:overflow-hidden tw:p-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:shadow-(--shadow-lg) tw:text-primary" :aria-label="label" :data-pointer-open="pointerOpened">
         <div class="studio-combobox-heading tw:flex tw:justify-between tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:[border-bottom:1px_solid_var(--border-soft)] tw:[font:600_var(--fs-label-sm)/var(--lh-body)_var(--font-sans)]" aria-hidden="true">{{ label }}<span class="tw:font-normal tw:text-muted">输入名称快速查找</span></div>
         <ComboboxViewport class="studio-combobox-viewport tw:[max-height:min(300px,calc(var(--reka-combobox-content-available-height,_320px)_-_64px))] tw:overflow-y-auto tw:overscroll-contain tw:[scrollbar-width:thin]">
           <ComboboxEmpty class="studio-combobox-empty tw:py-s-5 tw:px-s-3 tw:text-secondary tw:text-label tw:text-center">没有匹配项，试试其他名字</ComboboxEmpty>
@@ -58,13 +59,16 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
 .studio-combobox-input::placeholder { color:var(--text-muted); }
 .studio-combobox-trigger:hover { background:var(--bg-hover); }
 .studio-combobox-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
-.studio-combobox-trigger .archive-icon { width:16px; height:16px; transition:transform var(--motion-hover); }
+.studio-combobox-trigger .archive-icon { width:16px; height:16px; }
 .studio-combobox-trigger[data-state='open'] .archive-icon { transform:rotate(180deg); }
 .studio-combobox-input:disabled, .studio-combobox-trigger:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .studio-combobox-option[data-state='checked'] { background:var(--accent-soft); color:var(--accent); }
 .studio-combobox-option[data-highlighted] { outline:1px solid var(--accent); outline-offset:-1px; background:var(--bg-hover); }
 .studio-combobox-check .archive-icon { width:16px; height:16px; }
+.studio-combobox-content { transform-origin:var(--reka-combobox-content-transform-origin,top left); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
+@starting-style { .studio-combobox-content[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
+.studio-combobox-content[data-pointer-open='false'] { transition:none; }
 @media(max-width:600px) { .studio-combobox-anchor,.studio-combobox-option { min-height:44px; } }
-@media(prefers-reduced-motion:reduce) { .studio-combobox-trigger .archive-icon { transition:none; } }
+@media(prefers-reduced-motion:reduce) { .studio-combobox-content,.studio-combobox-trigger .archive-icon { transition:none; } }
 @media(forced-colors:active) { .studio-combobox-content { background:Canvas; border-color:CanvasText; } .studio-combobox-option[data-state='checked'] { outline:1px solid Highlight; outline-offset:-1px; } }
 </style>

@@ -32,8 +32,9 @@
       "exactPrefixes": [
         "1girl, solo, yamada_anna"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"

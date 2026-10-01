@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport :to="teleportTarget">
     <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
       <div
         v-show="state.visible"
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref, useId, watch } from 'vue'
+import { computed, onUnmounted, ref, shallowRef, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFluidSurface } from '@/composables/useFluidSurface'
@@ -54,6 +54,12 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 const surface = useFluidSurface('.confirm-panel')
 
 const state = useConfirmState()
+const teleportTarget = shallowRef<string | HTMLElement>('body')
+// A body portal is inert below a native showModal top layer. Capture the
+// requesting dialog before its action button becomes disabled or loses focus.
+watch(state, current => {
+  if (current.visible) teleportTarget.value = document.activeElement?.closest<HTMLDialogElement>('dialog:modal') ?? 'body'
+}, { flush: 'sync' })
 const panel = ref<HTMLElement | null>(null)
 const cancelBtn = ref<HTMLButtonElement | null>(null)
 const confirmBtn = ref<HTMLButtonElement | null>(null)

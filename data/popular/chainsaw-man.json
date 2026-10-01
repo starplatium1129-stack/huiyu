@@ -31,8 +31,9 @@
         "makima (chainsaw man)"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -121,7 +122,7 @@
       "id": "reze_chainsaw",
       "displayName": "蕾塞",
       "franchise": "Chainsaw Man",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "sleeveless_white_shirt",
       "identityTokens": [
@@ -239,6 +240,7 @@
         "reze (chainsaw man)"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],

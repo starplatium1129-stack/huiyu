@@ -4,7 +4,7 @@
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
-        v-if="!displayResultUrl && !browsingResult"
+        v-if="!displayResultUrl"
         class="stage-placeholder"
       :class="{
         'is-generating': generationBusy,
@@ -82,7 +82,8 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl && !browsingResult" class="result-image-wrap archive-canvas">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+      <BorderBeam v-if="generationBusy" size="lg" color-variant="dual" />
       <div class="stage-result-heading">
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
@@ -112,8 +113,6 @@
         @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
       />
     </div>
-    <DirectorResultShelf :history="history || []" :previous="previousResult" :current-url="displayResultUrl" :busy="generationBusy"
-      @preview="browsingResult = $event" @resume="$emit('resumeHistory', $event)" @saved="$emit('saved')" />
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
@@ -132,13 +131,9 @@ import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
-import type { ArtworkRecord } from '@/types/artwork'
-import type { ResultSnapshot } from '@/composables/prompt/promptResultSnapshot'
 import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
-  history?: ArtworkRecord[]
-  previousResult?: ResultSnapshot | null
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -162,9 +157,8 @@ const props = defineProps<{
   hasStashedResult?: boolean
 }>()
 
-const browsingResult = ref(false)
 const stageRoot = ref<HTMLElement | null>(null)
-const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => browsingResult.value || props.inpaintCompareActive)
+const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
@@ -179,17 +173,14 @@ function rememberResultReveal() {
 }
 
 // Do not postpone a completion animation until the user leaves history/comparison.
-watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive, browsingResult.value], () => {
-  if ((props.inpaintCompareActive || browsingResult.value) && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
+watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive], () => {
+  if (props.inpaintCompareActive && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
 }, { immediate: true })
 
 // Result-only tools load after an image exists.
 const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))
-const DirectorResultShelf = defineAsyncComponent(() => import('./DirectorResultShelf.vue'))
 
 const emit = defineEmits<{
-  resumeHistory: [entry: ArtworkRecord]
-  saved: []
   generate: []
   openRecovery: []
   exploreScenes: []
@@ -271,7 +262,7 @@ async function interrogateCurrentImage() {
     if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
-defineExpose({ playClear, browsingResult, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
+defineExpose({ playClear, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
 
 <style scoped>

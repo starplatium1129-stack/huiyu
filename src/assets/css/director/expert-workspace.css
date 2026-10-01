@@ -2,7 +2,7 @@
 /* Panel internals: fixed headings, scrollable content, and readable controls.
    layout.css owns viewport allocation and all outer column placement. */
 .pb .inspector-section { @apply tw:flex tw:flex-col tw:gap-s-4 tw:min-w-0; }
-.pb .inspector-heading { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:p-s-4; border-top: 3px solid var(--accent); background: linear-gradient(120deg, var(--accent-soft), var(--bg-surface) 75%); }
+.pb .inspector-heading { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:p-s-4; background:var(--bg-surface); }
 .pb .inspector-heading strong { @apply tw:text-body; letter-spacing: .04em; }
 .pb .inspector-heading span { @apply tw:text-label tw:text-muted; }
 .pb .director-inspector .col-right { @apply tw:flex tw:flex-col tw:shrink-0 tw:p-0; }
@@ -16,16 +16,24 @@
 .pb[data-director-mode="basic"] .inspector-scroll { @apply tw:flex tw:flex-col tw:gap-s-4; }
 .pb[data-director-mode="basic"] .inspector-section { @apply tw:shrink-0; }
 .pb[data-director-mode] .director-inspector { border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
-.pb[data-director-mode] .inspector-scroll { @apply tw:p-[14px] tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
+.pb[data-director-mode] .inspector-scroll { @apply tw:p-s-4 tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; @apply tw:p-0; }
 .pb .inspector-route { @apply tw:text-secondary tw:text-label; }
-.pb .inspector-route summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[40px] tw:p-s-3 tw:rounded-md tw:cursor-pointer; border: 1px solid var(--border-soft); background: var(--bg-base); list-style: none; }
+.pb .inspector-route summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[40px] tw:p-s-3 tw:rounded-md tw:cursor-pointer; border:0; background:var(--bg-base); list-style:none; }
 .pb .inspector-route summary::-webkit-details-marker { display: none; }
 .pb .inspector-route summary:hover { background: var(--bg-hover); color: var(--text-primary); }
 .pb .inspector-route summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pb .inspector-route[open] > summary .archive-icon { transform: rotate(180deg); }
 .pb .inspector-route .pb-managed-route-banner { margin: var(--s-3) 0 0; }
+.pb .result-shelf { border:0; background:transparent; padding:0; }
+.pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
+.pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
+.pb .shelf-preview .zoom-controls { position:static; transform:none; background:var(--bg-base); }
+.pb .result-shelf { border:0; background:transparent; padding:0; }
+.pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
+.pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
+.pb .shelf-preview .zoom-controls { position:static; transform:none; background:var(--bg-base); }
 .pb[data-director-mode="pro"] .director-inspector .controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pb[data-director-mode="pro"] .director-inspector .panel-title { @apply tw:mb-[10px]; }
 .pb[data-director-mode="pro"] .director-inspector .settings-summary { padding: 0 0 var(--s-2); }

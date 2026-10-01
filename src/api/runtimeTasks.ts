@@ -98,11 +98,24 @@ export async function cancelRuntimeTask(id: string) { return cancelRuntimeTaskKe
 export async function actOnRuntimeTask(id: string, action: 'reconcile' | 'resume' | 'continue' | 'concat') {
   return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/${action}`, 'POST', {}))
 }
+export async function confirmWebuiTaskStopped(id: string, expectedRevision: number) {
+  try { return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/confirm-webui-stopped`, 'POST', { expectedRevision, upstreamStopped: true })) }
+  catch (error) {
+    if (error instanceof ApiClientError && error.code === 'REVISION_CONFLICT') {
+      await getRuntimeTask(id).catch(() => {})
+      throw new Error('任务状态已经变化，请重新核对后再确认解除占用。')
+    }
+    throw error
+  }
+}
 export async function markRuntimeTask(id: string, state: TaskRecord['deliveryState']) {
   return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/delivery`, 'PATCH', { state }))
 }
 export function taskMessage(task: TaskRecord): string {
   if (task.deliveryState === 'discarded') return '结果已移出收件箱，已入册作品保留。'
+  if (task.errorCode === 'WEBUI_STOP_CONFIRMED') return task.resultState === 'available'
+    ? '你已确认 WebUI 已停止或重启，任务占用已解除。已保存结果仍可查看和入册。'
+    : '你已确认 WebUI 已停止或重启，任务占用已解除。原任务已保留，未取回的结果仍未确认。'
   if (task.recoveryState === 'unknown') return task.errorCode === 'BATCH_AWAITING_EXPLICIT_CONTINUE' ? '已发镜头已核对，等待你继续剩余分镜。' : '状态尚未确认，已保留任务和输出。可重新核对，不会自动重发。'
   if (task.recoveryState === 'interrupted') return '尚未提交，等待你确认继续。'
   if (task.status === 'cancelling') return '取消意图已记录，正在等待上游结束。'

@@ -65,15 +65,20 @@ export async function pythonJson(python: string, code: string, args: string[] = 
   }
 }
 
-export async function resolvePython(python: string, torchSite?: string): Promise<{ python: string; torchSitePackages: string }> {
-  const info = await pythonJson(python, 'import sys,sysconfig,json;print(json.dumps({"python":getattr(sys,"_base_executable",sys.executable),"site":sysconfig.get_path("purelib")}))')
-  if (typeof info.python !== 'string' || typeof info.site !== 'string') throw Error('Python environment returned invalid paths')
-  return { python: path.resolve(info.python), torchSitePackages: path.resolve(torchSite || info.site) }
+export async function resolvePython(python: string, torchSite?: string): Promise<{ python: string; pythonVersion: string; torchSitePackages: string }> {
+  const info = await pythonJson(python, [
+    'import sys,sysconfig,json',
+    'assert sys.version_info >= (3, 11), f"PixAI requires Python 3.11 or newer; selected {sys.version.split()[0]}"',
+    'print(json.dumps({"python":getattr(sys,"_base_executable",sys.executable),"pythonVersion":sys.version.split()[0],"site":sysconfig.get_path("purelib")}))',
+  ].join('\n'))
+  if (typeof info.python !== 'string' || typeof info.site !== 'string' || typeof info.pythonVersion !== 'string') throw Error('Python environment returned invalid paths or version')
+  return { python: path.resolve(info.python), pythonVersion: info.pythonVersion, torchSitePackages: path.resolve(torchSite || info.site) }
 }
 
 export async function checkPython(python: string, site: string, deps: string): Promise<Record<string, any>> {
   return pythonJson(python, [
     'import sys,json,importlib.metadata as m',
+    'assert sys.version_info >= (3, 11), f"PixAI requires Python 3.11 or newer; selected {sys.version.split()[0]}"',
     'sys.path[:0]=[sys.argv[1],sys.argv[2]]',
     'import torch,torchvision,timm,numpy,PIL,safetensors',
     'from timm.layers import DropPath,trunc_normal_',
@@ -81,7 +86,7 @@ export async function checkPython(python: string, site: string, deps: string): P
     'assert m.version("timm")=="1.0.30","PixAI requires the pinned timm 1.0.30 target"',
     'assert torch.version.cuda is not None,"PyTorch has no CUDA build"',
     'assert torch.cuda.is_available(),"CUDA GPU is unavailable"',
-    'print(json.dumps({"versions":{n:m.version(n) for n in ["torch","torchvision","transformers","timm","numpy","Pillow","safetensors"]},"cuda":torch.version.cuda,"gpuAvailable":True}))',
+    'print(json.dumps({"pythonVersion":sys.version.split()[0],"versions":{n:m.version(n) for n in ["torch","torchvision","transformers","timm","numpy","Pillow","safetensors"]},"cuda":torch.version.cuda,"gpuAvailable":True}))',
   ].join('\n'), [deps, site])
 }
 

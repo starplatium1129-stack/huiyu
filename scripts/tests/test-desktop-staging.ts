@@ -144,6 +144,15 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);
     assert.equal(fs.existsSync(path.join(stage, 'stale.txt')), false);
+    const { assertNativeReleaseReady }: typeof import('../maintenance/desktop-rust-inputs') = require('../maintenance/desktop-rust-inputs');
+    assert.throws(() => assertNativeReleaseReady(path.join(stage,'gateway')), /not approved/);
+    const manifestPath = path.join(root,'runtime-rs/native-dependencies.windows-x64.json');
+    const manifest = JSON.parse(fs.readFileSync(manifestPath,'utf8'));
+    manifest.status = 'redistribution-verified'; manifest.redistribution.pending = [];
+    Object.assign(manifest.licenseEvidence, { publicRedistributionApproved:true, completeLinkedLicenseClosure:true });
+    write(manifestPath,JSON.stringify(manifest));
+    assert.equal(stageResources({root,stage,logger:()=>{}}).releaseReady,true);
+    assert.doesNotThrow(() => assertNativeReleaseReady(path.join(stage,'gateway')));
   } finally { remove(root); }
 });
 test('stale Rust source or tampered DLL leaves previous complete stage untouched', () => {
@@ -243,7 +252,10 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   const events: any = [];
   await runTauri(['build', '--no-bundle'], {
     root: 'fixture-root',
-    binding: { sourceIdentity: () => { events.push('capture-source'); return {} as never; }, recordBuild: () => { events.push('bind-build'); } },
+    env:{},
+    binding: { sourceIdentity: () => { events.push('capture-source'); return {} as never; },
+      sdkIdentity:() => {events.push('capture-sdk');return {root:'fixture-sdk',inputs:{sha256:'a'.repeat(64)}};},
+      recordBuild:(_root: string,_source: unknown,_bundle: boolean,sdk: any) => {assert.equal(sdk.inputs.sha256,'a'.repeat(64));events.push('bind-build');} },
     npmCommand: 'npm',
     checkEnvironment: () => { events.push('environment'); },
     withLock: async (options: any, callback: any) => {
@@ -258,7 +270,8 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
     },
     prepareTauri: async () => { events.push('prepare'); },
     tauriCli: 'tauri-cli.js',
-    spawnTauri: (command: any, args: any) => {
+    spawnTauri: (command: any, args: any, options: any) => {
+      assert.equal(options.env.LIVE2D_CUBISM_SDK_SHA256,'a'.repeat(64));
       events.push(`${command}:${args.join(' ')}`);
       return 0;
     },
@@ -267,6 +280,7 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
     'lock',
     'environment',
     'capture-source',
+    'capture-sdk',
     'npm:run build',
     'prepare',
     `${process.execPath}:tauri-cli.js build --no-bundle`,

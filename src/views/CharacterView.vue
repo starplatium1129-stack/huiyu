@@ -30,7 +30,7 @@
       <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
-      <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3">
+      <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
           <img :crossorigin="runtimeResourceCors()" v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
@@ -329,7 +329,7 @@ const portraitSources = computed(() => {
   return { id: profile?.id || '', main,
     thumb: profile?.type === 'popular' ? resolveRuntimeUrl(popularPortraitSrc(profile.id)) : '' }
 })
-const { view: portraitView, ratio: portraitRatio, fail: failPortrait,
+const { view: portraitView, fail: failPortrait,
   loaded: loadPortrait, isLoaded: portraitLoaded } = usePortraitFallback(portraitSources)
 function onPortraitError(event: Event) {
   failPortrait((event.target as HTMLImageElement).dataset.attemptToken || '')

@@ -36,7 +36,7 @@ function reportConditions({ root = path.resolve(__dirname, '../..'), domain, reg
     const cmd = Array.isArray(def.cmd) ? def.cmd : [];
     let entryExists = Boolean(def.builtin === 'audit' || Array.isArray(def.steps) && def.steps.length);
     if (cmd.length) {
-      const files = cmd.filter((arg: any) => typeof arg === 'string' && /^(scripts\/|deploy-desktop\.bat)/.test(arg));
+      const files = cmd.filter((arg: any) => typeof arg === 'string' && /^(?:scripts\/|runtime-rs\/|deploy-desktop\.bat)/.test(arg));
       entryExists = cmd[0] === 'npm' ? typeof scripts[cmd[1] === 'run' ? cmd[2] : cmd[1]] === 'string' : files.length > 0 && files.every(exists);
     }
     if (!entryExists) errors.push('Missing entry');

@@ -1,7 +1,7 @@
 <template>
-  <section class="character-bookshelf tw:min-w-0 tw:rounded-2xl tw:text-primary" aria-label="角色作品书架">
+  <section class="character-bookshelf tw:min-w-0 tw:rounded-xl tw:text-primary" :class="{ 'is-keyboard-input': keyboardInput }" aria-label="角色作品书架" @keydown.capture="keyboardInput = true" @pointerdown.capture="keyboardInput = false">
     <header class="bookshelf-header tw:flex tw:items-center tw:justify-between tw:gap-s-5">
-      <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm">{{ items.length }} 位角色<span aria-hidden="true"> · </span>{{ groups.length }} 部作品</p>
+      <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><strong>{{ items.length }}</strong> 位角色<span aria-hidden="true"> · </span><strong>{{ groups.length }}</strong> 部作品</p>
       <div class="bookshelf-modes tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" role="group" aria-label="角色浏览方式">
         <AnimatedSelection />
         <button type="button" :aria-pressed="showingShelf" @click="switchMode('shelf')"><ArchiveIcon name="gallery" />作品书架</button>
@@ -85,9 +85,12 @@ const characterGrid = ref<HTMLElement | null>(null)
 const resultsHeading = ref<HTMLElement | null>(null)
 const contentRoot = ref<HTMLElement | null>(null)
 const contentMotion = useFluidSurface()
+const keyboardInput = ref(false)
 let shelfAnchor: ScrollAnchor | null = null
 let cancelRestore = () => {}
-onScopeDispose(() => cancelRestore())
+let revision = 0
+function interruptNavigation() { cancelRestore(); return ++revision }
+onScopeDispose(interruptNavigation)
 const coverOffsets = ref<Record<string, number>>({})
 function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
   const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
@@ -98,7 +101,7 @@ const { query, series, page, term, groups, activeGroup, showingShelf, results, p
 function revealContent() {
   const element = contentRoot.value
   if (!element) return
-  contentMotion.dispose(element)
+  if (keyboardInput.value) { contentMotion.dispose(element); return }
   contentMotion.enter(element, () => contentMotion.dispose(element))
 }
 function focusResults() {
@@ -108,28 +111,33 @@ function focusResults() {
   if (heading.getBoundingClientRect().top < 70) heading.scrollIntoView({ block: 'start', behavior: 'instant' })
 }
 async function enterGroup(key: string) {
-  cancelRestore(); shelfAnchor = captureScrollAnchor()
-  openGroup(key); await nextTick(); focusResults(); revealContent()
+  const version = interruptNavigation(); shelfAnchor = captureScrollAnchor()
+  openGroup(key); await nextTick()
+  if (version !== revision) return
+  focusResults(); revealContent()
 }
 async function switchMode(value: 'shelf' | 'characters') {
-  cancelRestore()
+  if (value === 'shelf' && showingShelf.value || value === 'characters' && !showingShelf.value && series.value === null && !term.value) return
+  const version = interruptNavigation()
   if (showingShelf.value) shelfAnchor = captureScrollAnchor()
   changeMode(value); await nextTick()
-  if (value === 'shelf' && shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => showingShelf.value })
+  if (version !== revision) return
+  if (value === 'shelf' && shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
   searchInput.value?.focus({ preventScroll: true }); revealContent()
 }
 async function backToShelf() {
   const key = series.value
-  cancelRestore()
+  const version = interruptNavigation()
   changeMode('shelf')
   await nextTick()
-  if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => showingShelf.value })
+  if (version !== revision) return
+  if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
   const origin = [...(shelfGrid.value?.querySelectorAll<HTMLButtonElement>('[data-franchise]') || [])].find(button => button.dataset.franchise === key)
   ;(origin || searchInput.value)?.focus({ preventScroll: true })
   revealContent()
 }
-async function clearQuery() { clearSearch(); await nextTick(); searchInput.value?.focus() }
-async function changePage(value: number) { page.value = value; await nextTick(); focusResults(); revealContent() }
+async function clearQuery() { const version = interruptNavigation(); clearSearch(); await nextTick(); if (version === revision) searchInput.value?.focus() }
+async function changePage(value: number) { const version = interruptNavigation(); page.value = value; await nextTick(); if (version === revision) { focusResults(); revealContent() } }
 function onSearchKeydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
   if (event.key === 'ArrowDown') {
@@ -152,20 +160,21 @@ defineExpose({ focusSelected })
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .character-bookshelf { padding: clamp(20px, 2.5vw, 32px); border: 1px solid var(--border-soft); background: var(--bg-surface); }
+.bookshelf-total strong { @apply tw:text-primary tw:font-semibold; }
 .bookshelf-total span { margin-inline: var(--s-2); }
-.bookshelf-modes { --selection-radius:var(--r-pill); border: 1px solid var(--border-soft); background: var(--bg-base); }
+.bookshelf-modes { --selection-radius:var(--r-pill); border: 1px solid transparent; background: var(--bg-base); }
 .bookshelf-modes button { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; border: 1px solid transparent; @apply tw:rounded-pill; padding: var(--s-2) var(--s-4); @apply tw:min-h-[40px]; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .bookshelf-modes button[aria-pressed="true"] { @apply tw:text-accent; }
-.bookshelf-search-row { border-bottom: 1px solid var(--border-soft); }
+.bookshelf-search-row { border-bottom: 0; }
 .bookshelf-search { flex:1; @apply tw:max-w-[620px]; }
 .bookshelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); @apply tw:gap-y-s-6; padding: var(--s-5) 0 var(--s-3); }
 .bookshelf-open { border:0; background:transparent; color:inherit; font:inherit; }
 .bookshelf-flip-row > span { @apply tw:min-w-0 tw:max-w-[60%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-.bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-base); @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
-.bookshelf-flip-row button:hover { @apply tw:border-accent tw:text-accent; }
+.bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
+.bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-accent; }
 .bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
 .bookshelf-cover-stage { aspect-ratio: 1.15; }
-.bookshelf-cover { border: 3px solid var(--bg-surface); box-shadow: var(--shadow-md); transform-origin: center 85%; transition: transform var(--motion-hover); }
+.bookshelf-cover { border: 3px solid var(--bg-surface); box-shadow: var(--shadow-md); transform-origin: center 85%; transition: transform var(--motion-hover) var(--ease-out); }
 .bookshelf-cover :deep(.character-portrait) { @apply tw:w-full tw:h-full; border: 0; border-radius: 0; }
 .bookshelf-cover :deep(img) { transform: none; }
 .bookshelf-cover[data-slot="0"] { z-index: calc(var(--z-base) + 4); transform: translateY(-3%); }
@@ -184,12 +193,12 @@ defineExpose({ focusSelected })
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }
 .bookshelf-back .archive-icon { transform: rotate(90deg); }
 .bookshelf-characters { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
-.bookshelf-character { border: 1px solid var(--border-soft); background: var(--bg-base); font: inherit; transition: transform var(--motion-hover); }
+.bookshelf-character { border: 1px solid transparent; background: var(--bg-base); font: inherit; }
 .bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio: .78; border: 0; @apply tw:rounded-md; }
 .bookshelf-character :deep(img) { transform: none; }
 .bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
-.bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-body; }
-.bookshelf-character-copy small { @apply tw:text-muted tw:text-label-xs tw:leading-body; }
+.bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-label; }
+.bookshelf-character-copy small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
 .bookshelf-character[aria-pressed="true"] { @apply tw:border-accent; background: var(--accent-soft); }
 .bookshelf-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
 .bookshelf-empty { padding: var(--s-8) var(--s-4); }
@@ -199,12 +208,13 @@ defineExpose({ focusSelected })
 .bookshelf-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-character:hover { @apply tw:border-accent; }
 }
+.is-keyboard-input .bookshelf-cover { transition:none; }
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bookshelf-characters { grid-template-columns: repeat(4, minmax(0, 1fr)); }

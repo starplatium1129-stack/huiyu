@@ -19,8 +19,8 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  *   --all 强制重跑（同条目同 seed，可复现；要变体请加 --seed-shift）。
  * 稳定 seed：sha1(角色/服装/视角) 派生，同一条目任何时候重跑都得到同一张图。
  *
- * 引擎与参数（与 2026-08-30 首轮 153 张基线一致）：
- *   anima-aesthetic-v1.1 + qwen_3_06b CLIP + qwen_image_vae，
+ * 当前引擎与参数（2026-08-30 首轮 153 张底模为 Anima Aesthetic v1.1）：
+ *   MiaoMiao Harem Anima v1.6 + qwen_3_06b CLIP + qwen_image_vae，
  *   960×1536，30 steps res_multistep，CFG 4.5，ImageSharpenKJ RCAS 0.75。
  *   2026-08-31 起不再手写 workflow——直接复用生产构建器
  *   routes/anima/workflows.js 的 buildWorkflow（模型/参数/TeaCache/RCAS

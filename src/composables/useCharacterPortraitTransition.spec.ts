@@ -3,18 +3,19 @@ import { defineComponent, h, ref } from 'vue'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { useCharacterPortraitTransition } from './useCharacterPortraitTransition'
 
-const state = vi.hoisted(() => ({ reduced: false, fades: vi.fn() }))
+const state = vi.hoisted(() => ({ reduced: false, fades: vi.fn(), failAt: -1 }))
 vi.mock('@/utils/motionPreference', () => ({ prefersReducedMotion: () => state.reduced }))
 vi.mock('./useFluidSurface', () => ({ useFluidSurface: () => ({ enter: (el: Element, done: () => void) => { state.fades(el); done() }, dispose: vi.fn() }) }))
 let wrapper: VueWrapper | undefined
 const originalAnimate = Object.getOwnPropertyDescriptor(Element.prototype, 'animate')
-const animations: Array<{ element: Element; frames: Keyframe[]; animation: { cancel: ReturnType<typeof vi.fn>; onfinish: null | (() => void); oncancel: null | (() => void) } }> = []
+const animations: Array<{ element: Element; frames: Keyframe[]; options: KeyframeAnimationOptions; animation: { cancel: ReturnType<typeof vi.fn>; onfinish: null | (() => void); oncancel: null | (() => void) } }> = []
 
 beforeEach(() => {
-  state.reduced = false; state.fades.mockClear(); animations.length = 0
-  Object.defineProperty(Element.prototype, 'animate', { configurable: true, value: function (this: Element, frames: Keyframe[]) {
+  state.reduced = false; state.failAt = -1; state.fades.mockClear(); animations.length = 0
+  Object.defineProperty(Element.prototype, 'animate', { configurable: true, value: function (this: Element, frames: Keyframe[], options: KeyframeAnimationOptions) {
+    if (animations.length === state.failAt) throw new Error('animation unavailable')
     const animation = { cancel: vi.fn(), onfinish: null, oncancel: null }
-    animations.push({ element: this, frames: frames as Keyframe[], animation })
+    animations.push({ element: this, frames: frames as Keyframe[], options, animation })
     return animation as unknown as Animation
   } })
 })
@@ -25,10 +26,10 @@ afterEach(() => {
 })
 
 async function setup(targetReady = true) {
-  const shelf = ref(true), root = ref<HTMLElement | null>(null)
+  const shelf = ref(true), character = ref('nene'), root = ref<HTMLElement | null>(null)
   let motion!: ReturnType<typeof useCharacterPortraitTransition>
   const image = (detail: boolean) => h('img', {
-    src: '/portrait.jpg', class: detail ? 'portrait-image' : '',
+    src: '/portrait.jpg', class: detail ? 'portrait-image' : '', style: { objectFit: detail ? 'contain' : 'cover', objectPosition: 'center 20%' },
     ref: (element: unknown) => {
       if (!(element instanceof HTMLImageElement)) return
       Object.defineProperties(element, { complete: { value: !detail || targetReady, configurable: true }, naturalWidth: { value: 100, configurable: true }, naturalHeight: { value: 140, configurable: true } })
@@ -37,14 +38,14 @@ async function setup(targetReady = true) {
   })
   wrapper = mount(defineComponent({
     setup() {
-      motion = useCharacterPortraitTransition(root, shelf, () => 'nene')
+      motion = useCharacterPortraitTransition(root, shelf, () => character.value)
       return () => h('article', { ref: root }, shelf.value
         ? h('section', { class: 'character-bookshelf' }, h('button', { class: 'bookshelf-character', 'data-character': 'nene' }, image(false)))
         : h('div', { class: 'library-layout' }, image(true)))
     },
   }), { attachTo: document.body })
   await flushPromises()
-  return { shelf, motion }
+  return { shelf, motion, character }
 }
 
 it('connects a loaded card to the real original and releases both layers on completion', async () => {
@@ -53,8 +54,11 @@ it('connects a loaded card to the real original and releases both layers on comp
   expect(motion.preferOriginal.value).toBe(true)
   expect(document.querySelectorAll('[data-archive-portrait-flight]')).toHaveLength(1)
   expect(animations[0].frames[0].transform).toBe('translate(10px, 100px) scale(1, 1)')
-  expect(animations[0].frames[1].transform).toBe('translate(300px, 100px) scale(3, 3)')
-  expect(animations[1].element.className).toBe('portrait-image')
+  expect(animations[0].frames.at(-1)!.transform).toBe('translate(300px, 100px) scale(3, 3)')
+  expect(animations).toHaveLength(2)
+  expect(animations[0].frames.every(frame => frame.opacity === 1)).toBe(true)
+  expect(wrapper!.get('.portrait-image').attributes('style')).toContain('opacity: 0')
+  expect(animations[0].options.duration).toBeLessThan(300)
   animations[0].animation.onfinish!()
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
   expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
@@ -69,12 +73,17 @@ it('falls back without a flying placeholder when the destination has not loaded'
   expect(state.fades).toHaveBeenCalledOnce()
 })
 
-it('keeps both scale axes equal when a cropped card meets the original aspect ratio', async () => {
+it('preserves the painted image ratio at every sampled crop frame and lands on the full original', async () => {
   const { shelf } = await setup()
   const source = wrapper!.get('img').element as HTMLImageElement
   source.getBoundingClientRect = () => new DOMRect(10, 100, 100, 120)
   shelf.value = false; await flushPromises()
-  expect(animations[0].frames[1].transform).toBe('translate(300px, 130px) scale(3, 3)')
+  expect(animations[0].frames.at(-1)!.transform).toBe('translate(300px, 100px) scale(3, 3.5)')
+  const axes = (frame: Keyframe) => String(frame.transform).match(/scale\(([^,]+), ([^)]+)\)/)!.slice(1).map(Number)
+  animations[0].frames.forEach((frame, index) => {
+    const outer = axes(frame), inner = axes(animations[1].frames[index])
+    expect(outer[0] * inner[0]).toBeCloseTo(outer[1] * inner[1], 6)
+  })
 })
 
 it('uses the cover clipping frame so a returning portrait cannot cover the card caption', async () => {
@@ -85,10 +94,10 @@ it('uses the cover clipping frame so a returning portrait cannot cover the card 
   frame.getBoundingClientRect = () => new DOMRect(10, 100, 100, 120)
   source.replaceWith(frame); frame.append(source)
   shelf.value = false; await flushPromises()
-  const clone = document.querySelector<HTMLImageElement>('[data-archive-portrait-flight]')!
+  const clone = document.querySelector<HTMLElement>('[data-archive-portrait-flight]')!
   expect(clone.style.height).toBe('120px')
-  expect(clone.style.objectPosition).toBe('center top')
-  expect(animations[0].frames[1].transform).toBe('translate(300px, 130px) scale(3, 3)')
+  expect(clone.querySelector('img')!.style.height).toBe('140px')
+  expect(animations[0].frames.at(-1)!.transform).toBe('translate(300px, 100px) scale(3, 3.5)')
 })
 
 it('does not clone a blurred source or an enlarged image inside its clipped card', async () => {
@@ -109,26 +118,61 @@ it('a quick return cancels the outgoing connection and never retains two clones'
   const { shelf } = await setup()
   shelf.value = false; await flushPromises()
   const first = animations[0].animation
-  const floating = document.querySelector<HTMLImageElement>('[data-archive-portrait-flight]')!
-  Object.defineProperties(floating, { complete: { value: true }, naturalWidth: { value: 100 }, naturalHeight: { value: 140 } })
-  floating.getBoundingClientRect = () => new DOMRect(160, 120, 180, 252)
+  const floating = document.querySelector<HTMLElement>('[data-archive-portrait-flight]')!
+  const image = floating.querySelector('img')!
+  Object.defineProperties(image, { complete: { value: true }, naturalWidth: { value: 100 }, naturalHeight: { value: 140 } })
+  floating.getBoundingClientRect = () => new DOMRect(160, 120, 180, 200)
+  image.getBoundingClientRect = () => new DOMRect(160, 110, 180, 252)
   shelf.value = true; await flushPromises()
   expect(first.cancel).toHaveBeenCalledOnce()
   expect(document.querySelectorAll('[data-archive-portrait-flight]')).toHaveLength(1)
   expect(animations[2].frames[0].transform).toBe('translate(160px, 120px) scale(1, 1)')
+  expect(animations[3].frames[0].transform).toBe('translate(0px, -10px) scale(1, 1)')
   wrapper!.unmount(); wrapper = undefined
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
 })
 
 it('reduced motion skips the connection and a preference change clears an active connection', async () => {
-  const { shelf } = await setup()
+  const { shelf, motion } = await setup()
   state.reduced = true
   shelf.value = false; await flushPromises()
   expect(animations).toHaveLength(0)
+  expect(motion.preferOriginal.value).toBe(true)
   shelf.value = true; await flushPromises()
   state.reduced = false
   shelf.value = false; await flushPromises()
   expect(document.querySelector('[data-archive-portrait-flight]')).not.toBeNull()
   state.reduced = true; window.dispatchEvent(new Event('atelier:motion-preference'))
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
+})
+
+it('keyboard entry stays immediate while opening the same original image', async () => {
+  const { shelf, motion } = await setup()
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+  shelf.value = false; await flushPromises()
+  const done = vi.fn()
+  motion.enter(wrapper!.get('.library-layout').element, done)
+  expect(done).toHaveBeenCalledOnce()
+  expect(motion.preferOriginal.value).toBe(true)
+  expect(animations).toHaveLength(0)
+  expect(state.fades).not.toHaveBeenCalled()
+})
+
+it('a different character releases the active connection instead of showing the old portrait', async () => {
+  const { shelf, character } = await setup()
+  shelf.value = false; await flushPromises()
+  character.value = 'natsume'; await flushPromises()
+  expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
+  expect(animations.every(call => call.animation.cancel.mock.calls.length === 1)).toBe(true)
+  expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
+})
+
+it('a partial animation failure releases started timelines and restores the real image', async () => {
+  const { shelf } = await setup()
+  state.failAt = 1
+  shelf.value = false; await flushPromises()
+  expect(animations).toHaveLength(1)
+  expect(animations[0].animation.cancel).toHaveBeenCalledOnce()
+  expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
+  expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
 })

@@ -40,6 +40,7 @@ const MANUAL = process.argv.includes('--manual');
 const COMPLETE_MANUAL = process.argv.includes('--complete-manual');
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
 const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
+const { assertNativeReleaseReady }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 const MANUAL_MARKER = '<!-- huiyu-release-mode: manual -->';
 
 function ghCommand() {
@@ -136,6 +137,11 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
   const manual = options.manual ?? MANUAL;
   const completeManual = options.completeManual ?? COMPLETE_MANUAL;
   if (manual && files.some((file: any) => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
+  const workspaceRoot = options.root || ROOT;
+  const installers = files.filter((file: string) => file.endsWith('.exe'));
+  if (installers.length !== 1) throw Error('公开发布必须提供唯一的已绑定安装包');
+  binding.verifyDistribution(workspaceRoot, installers[0]);
+  assertNativeReleaseReady(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
   const tag = releaseTag(version);
   const baseNotes = options.notesFile || path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
@@ -216,6 +222,7 @@ function main() {
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
   binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe));
+  if (PUBLISH) assertNativeReleaseReady(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const exeName = artifact.exe;

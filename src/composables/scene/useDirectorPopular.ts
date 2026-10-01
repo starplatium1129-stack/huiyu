@@ -153,7 +153,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       }
       void refreshAnimaBackend()
       syncManagedRoute()
-      flash('已切换到热门角色：默认 Anima Aesthetic 无 LoRA，可改 Krea 2')
+      flash('已切换到热门角色：默认 MiaoMiao v1.6 无 LoRA，可改 Krea 2')
     }
   }
 
@@ -279,7 +279,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       void refreshAnimaBackend()
       return
     }
-    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.2'
+    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.6'
     if (animaState.value.models.some(model => model.id === recommendedEngine)) {
       patchAnimaState({ modelId: recommendedEngine, loraId: '' })
     }

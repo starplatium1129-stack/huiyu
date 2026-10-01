@@ -63,6 +63,28 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     }
   })
 
+  it('places keyboard selections immediately even when full motion is enabled', async () => {
+    const previous = document.documentElement.dataset.motion
+    document.documentElement.dataset.motion = 'full'
+    const selected = ref('a')
+    const Container = defineComponent({ setup:() => () => h('div', [
+      ...['a','b'].map(id => h('button',{id,'aria-pressed':selected.value === id ? 'true':'false'},id)), h(AnimatedSelection),
+    ]) })
+    const wrapper = mount(Container,{attachTo:document.body})
+    try {
+      vi.spyOn(wrapper.element,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,300,40))
+      vi.spyOn(wrapper.get('#a').element,'getBoundingClientRect').mockReturnValue(new DOMRect(10,5,80,30))
+      vi.spyOn(wrapper.get('#b').element,'getBoundingClientRect').mockReturnValue(new DOMRect(110,5,100,30))
+      await flushPromises(); frameSteps.read.process(frameData); frameSteps.render.process(frameData)
+      await wrapper.get('#b').trigger('keydown',{key:'ArrowRight'}); selected.value = 'b'
+      await flushPromises(); frameSteps.read.process(frameData); frameSteps.render.process(frameData)
+      expect((wrapper.get('.animated-selection').element as HTMLElement).style.transform).toContain('translate(110px,5px)')
+    } finally {
+      wrapper.unmount()
+      if (previous === undefined) delete document.documentElement.dataset.motion
+      else document.documentElement.dataset.motion = previous
+    }
+  })
   it('suspends rAF when document becomes hidden', async () => {
     let isHidden = false
     Object.defineProperty(document, 'hidden', {

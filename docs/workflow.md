@@ -296,7 +296,9 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 - `npm run wf -- rust:parity`：先准备上述两类构建，再通过两个独立临时库核验 Node/Rust HTTP、旧回执重试、媒体 Range 和 Rust 写入后 Node 重开；顺序测量分页读取并记录实际行数和轮次。可设 `AICS_RUST_RUNTIME_EXE` 指定已构建候选，`AICS_RUST_PARITY_REPORT` 保存 JSON。报告是工作区切片，不能当作整机内存或完整后端迁移收益。
 - `npm run wf -- rust:licenses:collect`：PowerShell 7 按 `components.json` 的固定配方下载公开源码并提取许可材料，跳过已核验项；不安装或执行源码。缓存不入 Git，材料变化后必须更新 `materials.sha256.json` 及根 manifest 绑定。完整来源和发行待办见[原生材料说明](../runtime-rs/native-licenses/README.md)。
 
-`rust:check` 仅在检查子进程环境中把 TEMP/TMP 规范为实际目录路径，避免 Windows 8.3 短路径令隔离夹具误触物理路径守卫；不改变生产路径校验、start/build 环境或用户资料目录。
+`rust:check` 仅在检查子进程环境中把 TEMP/TMP 规范为实际目录路径，避免 Windows 8.3 短路径令隔离夹具误触物理路径守卫；默认 Cargo 构建并发 2，避免多份集成测试同时链接超出 Windows 提交内存/页面文件额度，可通过已有 `CARGO_BUILD_JOBS` 选择实测安全并发。不改变生产路径校验、start/build 环境或用户资料目录。
+
+PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品链，其两份引用已删除模块的集成夹具与专用 toy model builder 也退出默认 Cargo 发现，由 Git 历史保留；不通过恢复兼容模块或缩小 all-targets 来绕过。现行 PixAI 子进程、Python worker、libvips atlas／thumbnail 与 Live2D 像素断言继续保留。仍在使用的 `interrogate/golden.mjs` 及原生像素夹具变量不因旧名称改动。
 
 设置 `AICS_RUST_BROWSER_REPORT=<新证据目录>` 会在同一 parity 运行中调用 `browser.mjs`，用真实 Rust 服务执行图库/控制台双主题操作并保留截图；`AICS_RUST_APP_ROOT=<已暂存gateway>` 可验证该布局及其中的 EXE，未设置时使用源码应用根。夹具设置关闭真实模型/隧道并使用临时配置和 workspace，不能把它改指用户资料作普通回归。
 
@@ -343,13 +345,13 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm 
 
 | 入口 | 实际范围 |
 | --- | --- |
-| npm test / gate:quick ui/style/server/data/all | 自动模式按文件选相关前端、样式、Node、常规 E2E；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
+| npm test / gate:quick ui/style/server/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
-| check:full | npm run validate：核心check + Git关联前端 + 核心unit/contract + 变更触发专项；复用已有runtime，legacy专项按需构建SPA |
-| gate:full | 当前产品整合门禁：核心check、完整前端、核心unit/contract、变更触发专项与打包预算 |
+| check:full | npm run validate：Node/Vue 核心check + Git关联前端 + 核心unit/contract + 变更触发专项；复用已有runtime，legacy专项按需构建SPA；不代替 Rust 检查 |
+| gate:full | 当前产品整合门禁：核心check、rust:check、完整前端、核心unit/contract、变更触发专项与打包预算；Rust 失败后停止后续步骤 |
 | gate:all / validate:all | 显式全部库存：构建、check、完整前端覆盖率和六个Node lane；用于整合/发行全面复核 |
 | test:tooling / test:release / test:legacy | 维护工具、发行/资源包、旧Node/迁移对照专项；不作为纯前端改动的固定成本 |
-| test:optional | 按Git选择专项；相关工具/旧Node/桌面源码改动自动触发；未知影响面、无有效CI基线及配置变更保守全跑 |
+| test:optional | 按Git选择专项；相关工具/旧Node/桌面源码改动自动触发；纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
 | build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护/旧对照脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
@@ -457,7 +459,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 `npm run wf -- models:prepare-pixai [--target-dir <独立可写runtime根>] [--python <已有Python或venv>] [--torch-site-packages <已有torch包目录>] [--reuse-from <已下载候选根>]` 准备固定 PixAI v1.0：官方 revision 为 `9fe10addf9326e292da8a85a98ea74cd91b41771`，FP32 safetensors 为 1,945,425,796 字节，模型、代码、配置逐项核对固定大小与 SHA-256。默认根为运行目录下的 `pixai/`；模型在 `model/`，固定 timm 1.0.30 仅装入独立 `deps/`，现有 Comfy/Python 包和生图模型不修改。已匹配文件直接复用；`--reuse-from` 核验既有候选，优先硬链权重、复制代码/配置，避免重复下载。
 
-`--plan` 不联网、不写入、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。正常准备生成 `runtime-config.json`，包含实际 base Python、只读复用的 Torch 包目录、模型与独立依赖路径，供可信运行时配置采用。Python 首选显式参数或 `AICS_PIXAI_PYTHON`，否则查找现有 Comfy venv；包目录可用 `AICS_PIXAI_TORCH_SITE_PACKAGES` 指定。Windows worker 使用实际 base Python，避免 venv launcher 产生不能由直接取消回收的子进程。
+`--plan` 不联网、不写入、不启动 Python；`--check` 只读核验本机文件与依赖，不安装或推理。PixAI 要求 Python 3.11 或更新版本，解析解释器时先核对版本，再允许下载或安装；依赖检查也先拒绝旧版本。正常准备生成 `runtime-config.json`，包含实际 base Python、解释器版本、只读复用的 Torch 包目录、模型与独立依赖路径，供可信运行时配置采用。Python 首选显式参数或 `AICS_PIXAI_PYTHON`，否则查找现有 Comfy venv；包目录可用 `AICS_PIXAI_TORCH_SITE_PACKAGES` 指定。Windows worker 使用实际 base Python，避免 venv launcher 产生不能由直接取消回收的子进程。
 
 worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签阈值 0.17，角色阈值 0.27 单独输出，一般词条最多 100。图像上限 20 MiB，边长 8192、3200 万像素，GIF 只读取首帧。模型加载后保留至 runtime 关闭或活跃推理被取消/超时；生图启动不自动卸载。Torch 分配器预算为 3 GiB，CUDA 上下文另留余量；显卡不可用或显存不足明确失败，不隐式切换 CPU。准备命令不证明 GPU 效果或设备可用性。
 
@@ -500,6 +502,8 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 
 ### 011 发行输入绑定（2026-09-21）
 
-完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。仅原生构建不把旧 NSIS 纳入新身份，`releaseReady` 的发行材料状态仍须单独核对。
+完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。Cubism 的 Core 头文件、Framework 源码与 Core 静态库也以实际字节摘要进入桌面构建环境和回执；构建前后及复用时核对，保留旧时间戳的同路径替换也会使候选失效。直接运行 Cargo 仍使用文件变化监听，常规桌面构建请走既有入口。仅原生构建不把旧 NSIS 纳入新身份。
+
+公开发布的 signed、manual 和 complete-manual 模式均要求暂存发行材料就绪：绑定清单和完整材料索引、Rust EXE 与 DLL 字节一致，`releaseReady=true`、pending 为空，且公开重分发审批与链接许可闭包明确为 true。缺材料、字节漂移或未批准均在发行封装/最终签名/上传前拒绝；独立 `publishRelease` 入口也再次核验。普通本地候选构建仍允许 `releaseReady=false`，不能据此公开发布。
 
 skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。

@@ -19,7 +19,7 @@ type RunCommandOptions = {
 };
 
 type RunTauriOptions = {
-  binding?: Pick<typeof binding, 'sourceIdentity' | 'recordBuild'>;
+  binding?: Pick<typeof binding, 'sourceIdentity' | 'sdkIdentity' | 'recordBuild'>;
   root?: string;
   withLock?: typeof withDesktopBuildLock;
   checkEnvironment?: typeof assertDesktopBuildEnvironment;
@@ -65,6 +65,9 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
     (options.checkEnvironment || assertDesktopBuildEnvironment)(workspaceRoot);
     const buildBinding = options.binding || binding;
     const source = mode === 'build' ? buildBinding.sourceIdentity(workspaceRoot) : null;
+    const env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
+    const sdk = mode === 'build' ? buildBinding.sdkIdentity(workspaceRoot, env) : null;
+    if (sdk) { env.LIVE2D_CUBISM_SDK_DIR = sdk.root; env.LIVE2D_CUBISM_SDK_SHA256 = sdk.inputs.sha256; }
     const npm = options.npmCommand
       ? { command: options.npmCommand, args: options.npmArgs || [] }
       : resolveNpmInvocation();
@@ -80,11 +83,11 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
     const result = spawnTauri(process.execPath, [cli, mode, ...args], {
       cwd: path.join(workspaceRoot, 'desktop-tauri'),
       stdio: 'inherit',
-      env: options.env || tauriEnvironment(workspaceRoot),
+      env,
       windowsHide: false,
     });
     if (result === 0 && source) {
-      try { buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle')); }
+      try { buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'), sdk!); }
       catch (error) {
         throw Error(`Tauri CLI 已成功，但构建产物/回执校验失败；本次构建不可发行: ${error instanceof Error ? error.message : String(error)}`, { cause:error });
       }

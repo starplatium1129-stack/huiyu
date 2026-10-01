@@ -30,7 +30,7 @@ let extendedOnboardingIds = new Set(remainingOnboarding.filter(c => c.sceneCount
 test('explicit SFW composition survives core and showcase guards without relaxing adult gates', () => {
   const policy: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
   const generator: typeof import('../maintenance/generate-popular-showcase-anima11.js') = require('../maintenance/generate-popular-showcase-anima11.js');
-  const profile: any = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles.find(p => p.model_id === 'anima-miaomiao-v1.2');
+  const profile: any = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles.find(p => p.model_id === 'anima-miaomiao-v1.6');
   const tokens = (text: any) => text.split(',').map((t: any) => t.trim().toLowerCase().replaceAll('_', ' '));
   for (const id of ['marcille_donato_sfw_b9_01', 'togawa_sakiko_sfw_b9_06', 'illyasviel_grail_war']) {
     const b = blueprints.find(b => b.id === id)!, c = characters.find(c => c.id === b!.characterId)!;
@@ -79,7 +79,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
     counts[entry.batch] = (counts[entry.batch] || 0) + 1;
     const character = characters.find(c => c.id === entry.id);
     assert.ok(character, entry.id + ' must appear in the parsed catalog');
-    assert.strictEqual(character.recommendedEngine, 'anima-miaomiao-v1.2');
+    assert.strictEqual(character.recommendedEngine, 'anima-miaomiao-v1.6');
     const owned = blueprints.filter(b => b.characterId === entry.id);
     const expectedSceneCount = entry.sceneCount;
     assert.ok(expectedSceneCount === 6 || expectedSceneCount === 10 || expectedSceneCount === 11,
@@ -102,7 +102,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
         assert.strictEqual(blueprint.sampleRating, 'R18');
       }
       for (const engine of ['anima', 'krea2'] as const) {
-        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
         const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
@@ -145,7 +145,7 @@ test('batch five: six migrated adult characters each have six SFW plus four R18 
       const outfit: any = character.outfits.find(o => o.id === blueprint.outfitId);
       assert.ok(outfit, blueprint.id + ' must resolve its exact outfit');
       for (const engine of ['anima', 'krea2'] as const) {
-        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
         const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
@@ -438,7 +438,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       const outfit = popular.findOutfit(character, blueprint.outfitId!)!;
       const profiles = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
       for (const engine of ['anima', 'krea2'] as const) {
-        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.6' : 'krea2-turbo-fp8';
         const profile: any = profiles.find(item => item.model_id === model);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: false });
         assert.ok(plan && plan.prompt.toLowerCase().includes(phrase),

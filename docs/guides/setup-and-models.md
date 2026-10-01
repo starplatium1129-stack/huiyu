@@ -76,7 +76,7 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 ### PixAI 默认图片反推
 
-默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
+默认模型为 PixAI Tagger v1.0，权重约 1.95 GB，支持最多 20 MiB 图片。运行环境要求 Python 3.11 或更新版本；准备入口在下载或安装依赖前检查解释器版本，并将实际版本写入回执。执行 [PixAI 本机准备](../workflow.md#pixai-本机反推准备) 后，Rust 从选定 AI 工作区的 `PixAI/runtime-config.json` 或网关运行目录的 `pixai/runtime-config.json` 读取本机配置；`AICS_PIXAI_CONFIG` 可显式指定其他回执。准备入口复用已有 CUDA Torch 环境，仅在独立目录补齐 timm，不修改 ComfyUI。
 
 首次反推需要加载模型，后续请求复用同一个 GPU 进程；不会在每张图结束或开始生图时自动卸载。取消活跃请求、进程故障或网关关闭会回收对应进程。显存不足明确报错，不自动变更模型或回退为演示标签。安装包只带 worker 和固定文件清单，Python 环境与权重仍需另行准备。
 
@@ -97,7 +97,7 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 ### Anima：新机先选能无角色 LoRA 使用的底模
 
-[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步组合可选择 **Anima Aesthetic v1.1**，三件套共约 **5.63 GB**；在绘遇中明确选此模型并使用无角色 LoRA 的创作路径。程序默认的 MiaoMiao v1.2 仍需单独取得对应文件。
+[CircleStone Labs 发布页](https://huggingface.co/circlestone-labs/Anima)列出以下三类目录。公共起步组合可选择 **Anima Aesthetic v1.1**，三件套共约 **5.63 GB**；在绘遇中明确选此模型并使用无角色 LoRA 的创作路径。程序默认的 MiaoMiao v1.6 仍需单独取得对应文件。
 
 | 放置路径（相对 `ComfyUI/models/`） | 来源 |
 | --- | --- |
@@ -109,8 +109,8 @@ npm run wf -- models:download-wd14 --target-dir 'D:\HuiyuAI\Interrogate'
 
 | 模型 | 要求的文件名 | 发布者版本入口 |
 | --- | --- | --- |
-| MiaoMiao v1.2（当前默认） | `miaomiaoHarem_anima12.safetensors` | [MIAOKA：Anima_1.2](https://civitai.com/models/934764?modelVersionId=3020110) |
-| MiaoMiao v1.6 | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
+| MiaoMiao v1.2 | `miaomiaoHarem_anima12.safetensors` | [MIAOKA：Anima_1.2](https://civitai.com/models/934764?modelVersionId=3020110) |
+| MiaoMiao v1.6（当前默认） | `miaomiaoHarem_anima16.safetensors` | [MIAOKA：Anima_1.6](https://civitai.com/models/934764?modelVersionId=3248362) |
 | Anima Yume v1.0 | `AnimaYume_v10_final_base.safetensors` | [v1.0 base final](https://civitai.com/models/2385278?modelVersionId=3065644)；上游名 `animayume_v10BaseFinal.safetensors`，仅这一指定文件按体检哈希核对后改成本机目录名 |
 | Anima 2.9B Preview v1 | `Anima-2.9B-preview-v1.safetensors` | [Gazingstars123 发布页](https://huggingface.co/Gazingstars123/Anima-2.9B)，5.84 GB；旧 ComfyUI 可能需作者扩展，须检查实际支持 |
 | Anima Base v1.0 | `anima-base-v1.0.safetensors` | [固定版下载](https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors)，4.18 GB；当前绘遇未声明无 LoRA 路径 |

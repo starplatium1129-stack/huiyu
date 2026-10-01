@@ -130,6 +130,11 @@ pub(super) fn execute_command(
             patch: change,
         } => patch(c, principal, &task_id, expected_revision, *change),
         TaskCommand::Cancel { request_key } => cancel(c, principal, &request_key),
+        TaskCommand::ResolveWebui {
+            task_id,
+            expected_revision,
+            upstream_stopped,
+        } => resolve_webui(c, principal, &task_id, expected_revision, upstream_stopped),
     }
 }
 fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Value> {
@@ -324,6 +329,68 @@ fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> 
         };
         if !submitted {
             task.upstream_settled = true;
+        }
+        write(c, task)
+    })
+}
+
+fn resolve_webui(
+    c: &mut Context,
+    principal: &str,
+    id: &str,
+    expected_revision: i64,
+    upstream_stopped: bool,
+) -> Result<Value> {
+    if !upstream_stopped || expected_revision < 0 {
+        return Err(invalid(
+            "Explicit WebUI stop confirmation and revision are required",
+        ));
+    }
+    c.transaction(|c| {
+        let mut task = require(c, principal, id)?;
+        let previous = task.metadata.get("webuiRelease");
+        if task.upstream_settled
+            && previous.is_some_and(|receipt| {
+                receipt["confirmedBy"] == principal
+                    && receipt["expectedRevision"] == expected_revision
+            })
+        {
+            return Ok(serde_json::to_value(task)?);
+        }
+        if task.revision != expected_revision {
+            return Err(conflict(
+                "REVISION_CONFLICT",
+                "Task revision changed; read it again before confirming",
+            ));
+        }
+        if task.kind != TaskKind::Generation
+            || task.provider != "webui"
+            || task.recovery_state != crate::task_contract::RecoveryState::Unknown
+            || !task.submission_intent_at.is_some_and(|at| at != 0)
+            || task.upstream_settled
+        {
+            return Err(conflict(
+                "TASK_RESOLUTION_UNSAFE",
+                "Only submitted unknown WebUI tasks can be released",
+            ));
+        }
+        // This is the authenticated user's declaration, not a runtime probe.
+        // Preserve the original submission, media and diagnostics; never replay
+        // or globally interrupt a WebUI request to resolve this ledger entry.
+        task.metadata.insert(
+            "webuiRelease".into(),
+            json!({
+                "confirmedBy":principal, "confirmedAt":now(), "expectedRevision":expected_revision,
+                "evidence":"user-confirmation", "previousStatus":task.status,
+                "previousErrorCode":task.error_code
+            }),
+        );
+        task.status = TaskStatus::Failed;
+        task.recovery_state = crate::task_contract::RecoveryState::Normal;
+        task.upstream_settled = true;
+        task.error_code = Some("WEBUI_STOP_CONFIRMED".into());
+        if task.result_state != ResultState::Available {
+            task.result_state = ResultState::Unavailable;
         }
         write(c, task)
     })

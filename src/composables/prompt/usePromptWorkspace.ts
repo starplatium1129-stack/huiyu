@@ -15,6 +15,7 @@ import { usePromptLifecycle } from './usePromptLifecycle';
 import { usePromptWorkspaceUi } from './usePromptWorkspaceUi';
 import { usePromptHistoryReuse } from './usePromptHistoryReuse';
 import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
+import type { HiresSource } from './promptGenerationActions';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
@@ -23,7 +24,7 @@ import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
 import { type SDRecoveryId } from '@/utils/sdError';
-import { computed, reactive, ref, toRef, watch } from 'vue';
+import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
@@ -42,6 +43,10 @@ export function usePromptWorkspace() {
     const sdSize = ref('832x1216');
     // Ephemeral success signal; restored/history images never acquire it.
     const resultRevealUrl = ref('');
+    const inpaintPreparing = ref(false);
+    const hiresPreparing = ref(false);
+    let hiresVersion = 0, disposed = false;
+    onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; }, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd');
@@ -111,7 +116,8 @@ export function usePromptWorkspace() {
         popularProfile: popular.profile,
         flash: message => pb.flash(message),
     });
-    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
+    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
+    const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value);
     // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
     // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
     const genBarSize = computed({
@@ -188,7 +194,7 @@ export function usePromptWorkspace() {
     const inpaintSourceHistoryId = ref<string | number | null>(null);
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
-    const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
+    const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, resultJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
         pb,
         sd,
         sdSize,
@@ -332,15 +338,17 @@ export function usePromptWorkspace() {
             return [];
         return [...(match.exactTokens ?? []), ...(match.identityTokens ?? [])];
     });
-    const { inpaintOpen, inpaintOriginalUrl, inpaintCompareActive, inpaintCharacter, handleInpaintSubmit } = useAnimaInpaint({
+    const { inpaintOpen, inpaintOriginalUrl, inpaintCompareActive, inpaintCharacter, handleInpaintSubmit, cancelInpaintPreparation, clearInpaintOriginal } = useAnimaInpaint({
         pb,
         drawEngine,
         animaState,
-        displayResultUrl,
         generateAnima,
+        captureAnimaSubmission: animaSession.captureSubmission,
+        preparing: inpaintPreparing,
         isPopular: computed(() => pb.isPopular),
         popularIdentityTokens: inpaintPopularTokens,
     });
+    function cancelGeneration() { hiresVersion++; hiresPreparing.value = false; if (!cancelInpaintPreparation()) cancelEngineGeneration(); }
     // 弹窗一打开就定格来源：此时舞台上的正是要被重绘的那张图；等结果回来再取
     // 就已经是新图了（inpaint 是覆盖式提交，结果直接顶掉舞台）。
     watch(inpaintOpen, (open) => {
@@ -391,6 +399,7 @@ export function usePromptWorkspace() {
     }
     /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
     function onClearResult() {
+        clearInpaintOriginal();
         resultRevealUrl.value = '';
         discardTemp();
         animaSession.discardStashedResult();
@@ -438,12 +447,24 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize, animaState, patchAnimaState, displayResultSeed, resetBlueprintRotation }
+    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generationBusy, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize, resetBlueprintRotation }
     function callGenerate(opts: {
         disableLora?: boolean;
     } = {}): Promise<void> { return import('./promptGenerationActions').then(({ callGenerateAction }) => callGenerateAction(generationContext, opts)); }
     function runRecovery(id: SDRecoveryId): Promise<void> { return import('./promptGenerationActions').then(({ runRecoveryAction }) => runRecoveryAction(generationContext, id)); }
-    function upscaleCurrentResult(): Promise<void> { return import('./promptGenerationActions').then(({ upscaleCurrentResultAction }) => upscaleCurrentResultAction(generationContext)); }
+    async function upscaleCurrentResult(): Promise<void> {
+        if (generationBusy.value || disposed) return;
+        const version = ++hiresVersion, sourceUrl = displayResultUrl.value;
+        const source: HiresSource = { engine: drawEngine.value, anima: drawEngine.value === 'anima' ? animaSession.resultSubmission() : null,
+            sd: drawEngine.value === 'sd' ? resultJob() : null };
+        hiresPreparing.value = true;
+        try {
+            const { upscaleCurrentResultAction } = await import('./promptGenerationActions');
+            if (disposed || version !== hiresVersion || source.engine !== drawEngine.value || sourceUrl !== displayResultUrl.value) return;
+            hiresPreparing.value = false;
+            await upscaleCurrentResultAction(generationContext, source);
+        } finally { if (version === hiresVersion) hiresPreparing.value = false; }
+    }
     function resetAll(): Promise<void> { return import('./promptGenerationActions').then(({ resetAllAction }) => resetAllAction(generationContext)); }
     // Each lazy panel receives a stable, explicit capability surface. Store fields are
     // projected with toRef, so writes still reach the single existing state owner.
@@ -490,7 +511,7 @@ export function usePromptWorkspace() {
     };
     const dialogBindings: PromptDialogBindings = {
         compareEl, adultEnabled: toRef(pb, 'showMatureScenes'), resultBlob: computed(() => animaState.value.result?.blob),
-        displayResultUrl, generationBusy, prevResult, inpaintOpen, compareOpen, displayResultSeed,
+        displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({

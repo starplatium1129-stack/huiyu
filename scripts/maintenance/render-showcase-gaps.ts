@@ -23,7 +23,8 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 
-const MODEL_ID = 'anima-miaomiao-v1.2';
+const MODEL_ID = 'anima-miaomiao-v1.6';
+const PROFILE_ID = 'anima_miaomiao_v16';
 const ENGINE = 'anima';
 
 function resolveManifest(opts: any) {
@@ -53,14 +54,14 @@ function loadInputs(opts: any) {
 
 function collectTasks(opts: any, input: any) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
-  const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
   const { parsePresetCatalog }: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
   const { KREA_STYLE_RECIPES, resolveStyleRecipe }: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
   const characters = popular.parsePopularCharacters(input.data['data/popular-characters.json']);
   const blueprints = popular.parseSceneBlueprints(input.data['data/scene-blueprints.json']);
   const catalog = parsePresetCatalog(input.data['data/presets.json']);
-  const profile = resolveModelProfile(catalog.modelProfiles, MODEL_ID, ENGINE);
-  if (!profile) throw new Error(`找不到引擎 ${ENGINE} 的模型 profile，拒绝执行`);
+  const profile = catalog.modelProfiles.find(item =>
+    item.id === PROFILE_ID && item.model_id === MODEL_ID && item.engine === ENGINE);
+  if (!profile) throw new Error(`找不到 ${MODEL_ID} 的模型 profile ${PROFILE_ID}，拒绝执行`);
   const tagsData = input.data['data/tags.json'];
   const matureTokenSet = new Set<string>(tagsData.filter((t: any) => t.cat === 'Mature').map((t: any) => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
   const manifest = input.manifest;

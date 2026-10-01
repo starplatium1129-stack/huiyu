@@ -1,7 +1,7 @@
 import { computed, nextTick, onDeactivated, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { CharacterProfile } from '@/types/character'
-import { captureScrollAnchor, restoreScrollAnchor, type ScrollAnchor } from '@/utils/scrollAnchor'
+import { captureScrollAnchor, restoreScrollAnchor, watchForUserScroll, type ScrollAnchor } from '@/utils/scrollAnchor'
 
 /** The URL owns the open profile; the shelf keeps its own browsing position. */
 export function useCharacterArchiveNavigation(
@@ -17,24 +17,33 @@ export function useCharacterArchiveNavigation(
   const lastViewedId = ref('')
   let shelfAnchor: ScrollAnchor | null = null
   let cancelRestore = () => {}
-  onDeactivated(() => cancelRestore())
-  onScopeDispose(() => cancelRestore())
+  let stopUserScroll = () => {}
+  let revision = 0
+  function cancel() { revision++; cancelRestore(); stopUserScroll() }
+  onDeactivated(cancel)
+  onScopeDispose(cancel)
 
   watch(current, character => {
     if (character) lastViewedId.value = character.id
   }, { immediate: true })
 
   watch(requestedId, async (id, previous) => {
-    cancelRestore()
+    cancel()
+    const version = revision
     await nextTick()
-    if (id !== requestedId.value || route.path !== '/character') return
+    if (version !== revision || id !== requestedId.value || route.path !== '/character') return
     if (showShelf.value) {
       if (previous) {
         restoreShelfFocus()
-        if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, {
-          immediate: true,
-          shouldContinue: () => showShelf.value && route.path === '/character',
-        })
+        if (shelfAnchor) {
+          stopUserScroll = watchForUserScroll(cancel)
+          cancelRestore = restoreScrollAnchor(shelfAnchor, {
+            immediate: true,
+            shouldContinue: () => version === revision && showShelf.value && route.path === '/character',
+            onRestored: () => stopUserScroll(),
+            onAbandoned: () => stopUserScroll(),
+          })
+        }
       }
       return
     }

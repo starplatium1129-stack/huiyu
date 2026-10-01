@@ -67,6 +67,13 @@ export interface AnimaSessionOptions {
   client?: ApiClient
 }
 
+/** A detached submission recipe; preparing tools and hires never reread the form. */
+export interface AnimaSubmission {
+  family: 'anima' | 'krea2'
+  request: AnimaRequest
+  context: AnimaResultContext | null
+}
+
 export const ANIMA_LORA_BY_CHARACTER = {
   nene: 'L_NENE_V21_ANIMA',
   natsume: 'L_NAT_V21_ANIMA',

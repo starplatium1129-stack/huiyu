@@ -9,5 +9,5 @@ const pending = computed(() => !props.src || props.src.includes('portrait-pendin
 </script>
 <style scoped>
 .character-portrait { border: 1px solid var(--border-soft); background: var(--bg-elevated); }
-.character-portrait img { object-position: center 20%; transform: scale(1.2); transform-origin: center 20%; }
+.character-portrait img { object-position: center 20%; }
 </style>

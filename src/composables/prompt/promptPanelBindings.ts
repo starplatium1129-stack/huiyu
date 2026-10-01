@@ -97,6 +97,7 @@ export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 
   Pick<Inpaint, 'inpaintOpen' | 'inpaintCharacter' | 'handleInpaintSubmit'>,
   Pick<Compare, 'compareEl' | 'prevResult' | 'lastResult' | 'compareOpen'> {
   adultEnabled: Readonly<Ref<boolean>>
+  inpaintPreparing: Readonly<Ref<boolean>>
   resultBlob: Readonly<Ref<Blob | null | undefined>>
   livePrompt: Assembly['positivePrompt']
   negativePrompt: Assembly['studio']['negativePrompt']

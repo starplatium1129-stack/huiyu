@@ -8,7 +8,8 @@
  *              <lora:...> tags stripped, formatted for Anima (exact tokens
  *              preserved, everything else space-separated), then the artist tag
  *              `@rella` appended at the end (Anima artist syntax).
- *   - model  : anima-aesthetic-v1.1 (Anima Aesthetic v1.1) — uniform base.
+ *   - model  : anima-miaomiao-v1.6 (MiaoMiao Harem Anima v1.6) by default;
+ *              --model selects an explicit Anima profile.
  *   - lora   : single-character scenes load the production v21 Anima LoRA at
  *              the strength written in the scene prompt tag (fallback 0.85);
  *              dual (triad) scenes run in the route's no-LoRA mode with both
@@ -34,14 +35,14 @@ type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
-const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-08-14_v16-anima11-rella');
+const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-10-01_miaomiao16-rella');
 const scenes: Scene[] = readSceneData(path.join(ROOT, 'data', 'scenes.json'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
 
 const MANIFEST_NAME = 'generation-manifest.json';
-const ANIMA_MODEL_ID = 'anima-aesthetic-v1.1';
-const ANIMA_PROFILE_ID = 'anima_aesthetic_v11';
+const ANIMA_MODEL_ID = 'anima-miaomiao-v1.6';
+const ANIMA_PROFILE_ID = 'anima_miaomiao_v16';
 const ARTIST_TAG = '@rella';
 const ANIMA_LORA_BY_CHARACTER: any = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
@@ -109,7 +110,7 @@ function nearestAnimaSize(scene: any, modelId: any = ANIMA_MODEL_ID) {
 function animaProfileFor(loraIds: any, modelId: any = ANIMA_MODEL_ID) {
   const base: any = modelId === ANIMA_MODEL_ID ? profileById(ANIMA_PROFILE_ID)
     : (presets.model_profiles || []).find((profile: any) => profile.model_id === modelId && profile.engine === 'anima');
-  if (!base || !animaConstants.MODELS[modelId]) throw new Error(`unsupported Anima model: ${modelId}`);
+  if (!base || base.model_id !== modelId || base.engine !== 'anima' || !animaConstants.MODELS[modelId]) throw new Error(`unsupported Anima model: ${modelId}`);
   const contract = (loraIds || []).map((id: any) => (loraById(id).prompt_contract || {}));
   return Object.assign({}, base, {
     exact_tokens: [...new Set([...(base.exact_tokens || []), ...contract.flatMap((c: any) => c.exact_tokens || [])])],

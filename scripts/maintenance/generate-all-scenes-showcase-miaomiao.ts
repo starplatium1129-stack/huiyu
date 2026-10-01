@@ -4,12 +4,12 @@
 /**
  * scripts/maintenance/generate-all-scenes-showcase-miaomiao.js
  *
- * 全库场景样张待审核候选生成（MiaoMiao Harem v1.2 专属正规编译版）：
+ * 全库场景样张待审核候选生成（MiaoMiao Harem v1.6 专属正规编译版）：
  *
  * 核心特性：
  * - 提示词编译：通过 buildPopularPromptPlan 完整绑定【角色核心DNA + 专属服装 + 场景蓝图 + @rella 画风 + 防分身/Solo守护】
  * - 专属女主角：宁宁/夏目 强制绑定官方 v21 LoRA (0.85 强度) 保证 100% 角色神韵
- * - 底模：MiaoMiao Harem Anima v1.2 (anima-miaomiao-v1.2)
+ * - 底模：MiaoMiao Harem Anima v1.6 (anima-miaomiao-v1.6)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
  * - 加速机制：TeaCache (0.08 阈值, 1.9x 加速)
  * - 存储：显式 --output 隔离目录，PNG 原图与 generation-manifest.json；不自动发布
@@ -18,13 +18,14 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
-const MODEL_ID = 'anima-miaomiao-v1.2';
-const PROFILE_ID = 'anima_miaomiao_v12';
+const MODEL_ID = 'anima-miaomiao-v1.6';
+const PROFILE_ID = 'anima_miaomiao_v16';
 const ARTIST_TAG = 'rella';
 
 function resolveProfile(presets: any) {
-  const profile = (presets.model_profiles || []).find((item: any) => item.id === PROFILE_ID || item.id === 'anima_base_v10');
-  if (!profile) throw new Error(`presets.json missing profile for anima`);
+  const profile = (presets.model_profiles || []).find((item: any) =>
+    item.id === PROFILE_ID && item.model_id === MODEL_ID && item.engine === 'anima');
+  if (!profile) throw new Error(`presets.json missing profile ${PROFILE_ID} for ${MODEL_ID}`);
   return profile;
 }
 
@@ -178,7 +179,7 @@ function candidateTasks(tasks: any) {
       outfitId: task.outfitId, adult: task.adult,
       title: task.title, story: task.story || '',
       category: task.category || (task.type === 'popular' ? '热门角色' : '日常'),
-      rating: task.rating || 'All', checkpoint: 'miaomiaoHarem_anima12.safetensors',
+      rating: task.rating || 'All', checkpoint: 'miaomiaoHarem_anima16.safetensors',
       intendedEntryId: task.standardId || task.id },
     payload: () => buildPayload(task),
   }));

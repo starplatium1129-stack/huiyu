@@ -187,6 +187,12 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
   // Preserve result facts independently of the current form and later results.
   const completedJobs = new WeakMap<Omit<SDQueueJob, 'id'>, SdResultSnapshot>()
+  let completedResult: { url: string; job: SdResultSnapshot } | null = null
+  if (getCurrentScope()) onScopeDispose(() => { completedResult = null })
+  function resultJob(): SdResultSnapshot | null {
+    return completedResult && completedResult.url === sd.resultUrl.value
+      ? JSON.parse(JSON.stringify(completedResult.job)) as SdResultSnapshot : null
+  }
   function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
     return {
       ...job.context, characterId: '', outfitId: null, blueprintId: null,
@@ -227,6 +233,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       const completedJob: SdResultSnapshot = { ...submitted, context, seed: sd.resultSeed.value ?? -1, taskId: sd.resultTaskId?.value || undefined }
       // The view receives its own context; its edits cannot mutate archive input.
       completedJobs.set(job, JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot)
+      completedResult = { url, job: JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot }
       deps.setResultContext?.(context)
       deps.onGenerated?.(url)
       // Best-effort recent settings must not turn a successful image into a failure.
@@ -366,6 +373,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     captureJob,
     historyGenerationFields,
     runJob,
+    resultJob,
     commitJobResult,
     sdQueue,
     restoredCount,

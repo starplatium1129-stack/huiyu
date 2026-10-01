@@ -32,8 +32,9 @@
         "yukinoshita_yukino"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -133,7 +134,7 @@
       "id": "yuigahama_yui",
       "displayName": "由比滨结衣",
       "franchise": "Oregairu",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "sobu_uniform",
       "identityTokens": [
@@ -264,6 +265,7 @@
         "yuigahama_yui"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -317,8 +319,9 @@
       "exactPrefixes": [
         "1girl, solo, isshiki_iroha"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -497,8 +500,9 @@
       "exactPrefixes": [
         "1girl, solo, yukinoshita_haruno"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"

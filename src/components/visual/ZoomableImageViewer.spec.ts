@@ -50,3 +50,33 @@ it('keeps an available thumbnail with a truthful status when the original fails'
   expect(view.find('.image-fallback').exists()).toBe(false)
   expect(view.emitted('error')).toHaveLength(1)
 })
+
+it('zooms around the wheel position and responds to keyboard zoom without handling child controls', async () => {
+  const view = preview(), viewport = view.get('.zoom-viewport').element
+  vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 200, height: 200 } as DOMRect)
+  await view.trigger('wheel', { deltaY: -1, clientX: 150, clientY: 100 })
+  expect(view.get('.zoom-transform-layer').attributes('style')).toContain('translate(-12.5px, 0px) scale(1.25)')
+  await view.trigger('keydown', { key: '+' })
+  expect(view.get('.zoom-level').text()).toBe('150%')
+  await view.get('[aria-label="放大图片"]').trigger('keydown', { key: 'Home' })
+  expect(view.get('.zoom-level').text()).toBe('150%')
+  await view.trigger('keydown', { key: 'Home' })
+  expect(view.get('.zoom-level').text()).toBe('100%')
+})
+
+it('keeps one pointer in control and releases it when the picture changes', async () => {
+  const view = preview(), element = view.element as HTMLElement
+  element.setPointerCapture = vi.fn()
+  element.releasePointerCapture = vi.fn()
+  await view.get('[aria-label="放大图片"]').trigger('click')
+  await view.trigger('pointerdown', { pointerId: 1, button: 0, clientX: 20, clientY: 20 })
+  await view.trigger('pointerdown', { pointerId: 2, button: 0, clientX: 100, clientY: 100 })
+  await view.trigger('pointermove', { pointerId: 2, clientX: 200, clientY: 200 })
+  await view.trigger('pointermove', { pointerId: 1, clientX: 35, clientY: 30 })
+  expect(view.get('.zoom-transform-layer').attributes('style')).toContain('translate(15px, 10px) scale(1.25)')
+  expect(element.setPointerCapture).toHaveBeenCalledExactlyOnceWith(1)
+  await view.setProps({ src: '/next.jpg', previewSrc: '/next-thumb.jpg' })
+  expect(element.releasePointerCapture).toHaveBeenCalledExactlyOnceWith(1)
+  expect(view.get('.zoom-level').text()).toBe('100%')
+  expect(view.classes()).not.toContain('is-panning')
+})

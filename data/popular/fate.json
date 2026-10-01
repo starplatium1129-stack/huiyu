@@ -31,8 +31,9 @@
         "artoria_pendragon (fate)"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -134,8 +135,9 @@
         "tohsaka_rin"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -270,8 +272,9 @@
         "illyasviel_von_einzbern"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -391,7 +394,7 @@
       "id": "jeanne_alter",
       "displayName": "贞德[Alter]",
       "franchise": "Fate",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
@@ -526,6 +529,7 @@
         "jeanne d'arc alter (fate)"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -551,7 +555,7 @@
       "id": "matou_sakura",
       "displayName": "间桐樱",
       "franchise": "Fate",
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "adultEligibility": "adult",
       "defaultOutfitId": "homurahara_uniform",
       "identityTokens": [
@@ -691,6 +695,7 @@
         "matou_sakura"
       ],
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -741,8 +746,9 @@
         "morgan (fate/grand order)"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -877,8 +883,9 @@
         "mash_kyrielight"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -1029,8 +1036,9 @@
         "1girl, solo, caren_hortensia",
         "1girl, solo, caren_ortensia"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -1186,8 +1194,9 @@
       "exactPrefixes": [
         "1girl, solo, saber_alter"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -1350,8 +1359,9 @@
       "exactPrefixes": [
         "1girl, solo, jeanne d'arc (fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -1541,8 +1551,9 @@
       "exactPrefixes": [
         "1girl, solo, scathach (fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -1717,8 +1728,9 @@
       "exactPrefixes": [
         "1girl, solo, ishtar (fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -1888,8 +1900,9 @@
       "exactPrefixes": [
         "1girl, solo, ereshkigal (fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
@@ -2032,8 +2045,9 @@
       "exactPrefixes": [
         "1girl, solo, medusa_(fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -2176,8 +2190,9 @@
       "exactPrefixes": [
         "1girl, solo, chloe_von_einzbern"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -2322,8 +2337,9 @@
       "exactPrefixes": [
         "1girl, solo, medea_(caster)_(fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
@@ -2468,8 +2484,9 @@
       "exactPrefixes": [
         "1girl, solo, kama_(fate)"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],

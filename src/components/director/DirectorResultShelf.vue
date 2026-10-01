@@ -9,12 +9,12 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual/ImageSplitCompare.vue'))
 const props = defineProps<{ history: ArtworkRecord[]; previous?: ResultSnapshot | null; currentUrl: string; busy: boolean }>()
-const emit = defineEmits<{ preview: [active: boolean]; resume: [entry: ArtworkRecord]; saved: [] }>()
+const emit = defineEmits<{ resume: [entry: ArtworkRecord]; saved: [] }>()
 const { category, items, selected, selectedKey, thumbnails, previewUrl, loading, error, retry } = useResultShelf(toRef(props, 'history'), toRef(props, 'previous'))
 const comparing = ref(false), saving = ref(false), message = ref(''), savedKeys = ref(new Set<string>())
 const returnButton = ref<HTMLButtonElement | null>(null)
-watch(selectedKey, () => { comparing.value = false; message.value = ''; emit('preview', Boolean(selected.value)) })
-watch(selected, value => { if (!value) { selectedKey.value = ''; emit('preview', false) } })
+watch(selectedKey, () => { comparing.value = false; message.value = '' })
+watch(selected, value => { if (!value) selectedKey.value = '' })
 function returnToCurrent() { selectedKey.value = ''; returnButton.value?.focus({ preventScroll: true }) }
 async function saveCandidate() {
   const item = selected.value
@@ -33,7 +33,7 @@ async function saveCandidate() {
 <template>
   <section class="result-shelf tw:mt-s-3 tw:min-w-0 tw:rounded-lg tw:p-s-3" aria-label="结果选片" @keydown.esc.stop="returnToCurrent">
     <div v-if="selected" v-content-motion="selectedKey" class="shelf-preview tw:pb-s-3 tw:mb-s-3">
-      <header><div><small>{{ selected.kind === 'history' ? '历史作品预览' : '候选预览' }}</small><h3>{{ selected.title }}</h3></div><button class="btn btn-ghost" type="button" @click="returnToCurrent"><ArchiveIcon name="close" />返回当前画布</button></header>
+      <header><div><small>{{ selected.kind === 'history' ? '历史作品预览' : '候选预览' }}</small><h3>{{ selected.title }}</h3></div><button class="btn btn-ghost" type="button" @click="returnToCurrent"><ArchiveIcon name="close" />收起预览</button></header>
       <p v-if="loading" class="shelf-state tw:min-h-[220px] tw:grid tw:text-secondary" role="status">正在读取原图…</p>
       <div v-else-if="error" class="shelf-state tw:min-h-[220px] tw:grid tw:text-secondary" role="alert"><p>{{ error }}</p><button class="btn btn-ghost" type="button" @click="retry++">重新读取</button></div>
       <ImageSplitCompare v-else-if="comparing && previewUrl && currentUrl" :before-src="previewUrl" :after-src="currentUrl" before-label="选中作品" after-label="当前成片" />

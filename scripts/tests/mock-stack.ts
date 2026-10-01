@@ -32,7 +32,7 @@ function fixtureModels(ai: string) {
   const groups = {
     loras: ['ayachi_nene_v21_anima.safetensors', 'shiki_natsume_v21_anima.safetensors'],
     diffusion_models: ['anima-aesthetic-v1.1.safetensors', 'Anima-2.9B-preview-v1.safetensors', 'anima-base-v1.0.safetensors',
-      'AnimaYume_v10_final_base.safetensors', 'miaomiaoHarem_anima12.safetensors', 'krea2_turbo_fp8_scaled.safetensors'],
+      'AnimaYume_v10_final_base.safetensors', 'miaomiaoHarem_anima12.safetensors', 'miaomiaoHarem_anima16.safetensors', 'krea2_turbo_fp8_scaled.safetensors'],
     text_encoders: ['qwen_3_06b_base.safetensors', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'],
     vae: ['qwen_image_vae.safetensors']
   };

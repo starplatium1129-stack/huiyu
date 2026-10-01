@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, onUnmounted, ref } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, toRaw } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
@@ -13,6 +13,7 @@ import {
   type AnimaRequest,
   type AnimaSessionOptions,
   type AnimaStatusResponse,
+  type AnimaSubmission,
 } from './animaSessionContract'
 export * from './animaSessionContract'
 
@@ -26,7 +27,7 @@ export * from './animaSessionContract'
 
 const INITIAL_STATE: AnimaGenerationState = {
   phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
-  prompt: '', negative: '', modelId: 'anima-miaomiao-v1.2', loraId: 'L_NENE_V21_ANIMA',
+  prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
@@ -45,6 +46,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let statusRequest: AbortController | null = null
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
+  let disposed = false
+  const completedSubmissions = new WeakMap<Blob, AnimaSubmission>()
 
   /**
    * 上一次成功成片的临时缓冲（2026-09-06 体验报告 F2）。
@@ -245,81 +248,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }
 
 
-  async function pollJob(jobId: string, request: AnimaRequest, family: 'anima' | 'krea2', serial: number, signal: AbortSignal): Promise<void> {
-    const deadline = Date.now() + 10 * 60 * 1000
-    while (Date.now() < deadline && serial === requestSerial) {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      if (serial !== requestSerial) return
-      let data: { ok?: boolean; job?: AnimaPublicJob; error?: string }
-      try {
-        data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family, jobId), {
-          cache: 'no-store', signal, timeoutMs: 15_000,
-        })
-      } catch (error) {
-        if (serial !== requestSerial || signal.aborted) return
-        if (error instanceof ApiClientError && (error.kind === 'network' || error.kind === 'timeout' || (error.kind === 'http' && error.status >= 500))) {
-          patchState({ progressText: '连接暂时中断，正在重新读取任务进度…' })
-          continue
-        }
-        throw error
-      }
-      if (serial !== requestSerial) return
-      const job = data.job
-      if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
-      if (job.id !== jobId) throw new Error('成片响应与当前任务编号不一致，请核对任务')
-      if (job.metadata) patchState({ job: metadataFromJob(job, request, family) })
-      patchState({
-        backendStatus: job.status,
-        progress: typeof job.progress === 'number' ? Math.max(0, Math.min(1, job.progress)) : null,
-        elapsedSeconds: typeof job.elapsedSeconds === 'number' ? Math.max(0, job.elapsedSeconds) : state.value.elapsedSeconds,
-        progressText: typeof job.progressText === 'string' ? job.progressText : state.value.progressText,
-        currentNode: typeof job.currentNode === 'string' ? job.currentNode : state.value.currentNode,
-      })
-      if (job.status === 'cancelling') {
-        patchState({ phase: 'cancelling', statusText: '取消中…' })
-        continue
-      }
-      if (job.status === 'cancelled') {
-        patchState({ phase: 'cancelled', statusText: '任务已取消', errorMsg: '' })
-        return
-      }
-      if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
-      if (job.status !== 'succeeded' || !job.resultAvailable || !job.resultUrl) continue
-
-      const { fetchResultImage } = await import('./fetchResultImage.ts')
-      const blob = await fetchResultImage(job.resultUrl, signal)
-      if (serial !== requestSerial) return
-      const metadata = metadataFromJob(job, request, family)
-      const result: AnimaResult = { url: URL.createObjectURL(blob), blob, metadata }
-      // 会话拥有成功态与结果持有：先释放旧结果再写入新结果。
-      const previous = state.value.result
-      if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
-      // 新成片落地即超越 stash（上一张未入册成片由临时缓冲/作品册接管）。
-      discardStashedResult()
-      patchState({ result, job: metadata, resultContext: pendingContext, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '', errorReport: null })
-      options.onResult(result)
-      return
-    }
-    if (serial === requestSerial) {
-      // A deadline ends this attempt; cleanup must not publish into a retry.
-      void client.request(jobPath(family, jobId), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
-      throw new Error('Anima 生成超时，已请求取消上游任务')
-    }
-  }
-
-  /**
-   * 失败态统一落法（2026-08-30 UX 审计）。
-   *
-   * Anima / Krea 2 走 ComfyUI，后端失败信息是英文技术串（节点名、张量形状、
-   * traceback）。此前原样直出——用户看不懂，也没有任何重试入口，与 SD 路径
-   * 的「分类 + 恢复动作」形成体验断层。
-   *
-   * 现在与 SD 共用 sdError 分类器（backend='comfy' 保证文案不提 WebUI），
-   * errorMsg 给中文结论，errorReport 让面板能显示标题、建议与折叠的技术细节。
-   * errorMsg 保留分类后的可读文案而非原始串——调用方（导演台 generationError、
-   * 面板红字）都只是展示给用户看。
-   */
-
   function clearResult() {
     const previous = state.value.result
     if (previous) URL.revokeObjectURL(previous.url)
@@ -364,21 +292,34 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     return true
   }
 
-  async function generate(overrides: Partial<AnimaRequest> = {}): Promise<void> {
-    if (['submitting', 'running', 'cancelling'].includes(state.value.phase)) return
-    const baseRequest = options.getRequest()
-    if (!baseRequest) return
-    const request: AnimaRequest = { ...baseRequest, ...overrides }
+  function captureSubmission(overrides: Partial<AnimaRequest> = {}): AnimaSubmission | null {
+    if (disposed || ['submitting', 'running', 'cancelling'].includes(state.value.phase)) return null
+    const request = options.getRequest()
+    return request ? JSON.parse(JSON.stringify({ family: state.value.family, request: { ...request, ...overrides }, context: options.getSubmitContext?.() ?? null })) as AnimaSubmission : null
+  }
+
+  function resultSubmission(): AnimaSubmission | null {
+    const result = state.value.result
+    const submission = result && completedSubmissions.get(toRaw(result.blob))
+    if (!result || !submission || !Number.isSafeInteger(result.metadata.seed) || result.metadata.seed < 0) return null
+    return JSON.parse(JSON.stringify({ ...submission, request: { ...submission.request, seed: result.metadata.seed } })) as AnimaSubmission
+  }
+
+  async function generate(overrides: Partial<AnimaRequest> = {}, frozen?: AnimaSubmission): Promise<void> {
+    if (disposed || ['submitting', 'running', 'cancelling'].includes(state.value.phase)) return
+    const submission = frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : captureSubmission(overrides)
+    if (!submission) return
+    if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
+    const { request, family } = submission
     if (!state.value.online) { options.flash('Anima ComfyUI 当前未连接'); return }
     const serial = ++requestSerial
-    const family = state.value.family
     activeFamily = family
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
     durableAttempt = hasRuntimeTasks(); durableKey = ''
-    const context = options.getSubmitContext?.()
-    pendingContext = context ? JSON.parse(JSON.stringify(context)) as AnimaResultContext : null
+    pendingContext = JSON.parse(JSON.stringify(submission.context)) as AnimaResultContext | null
+    const onResult = (result: AnimaResult) => { completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
     patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
@@ -391,7 +332,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         const { runRuntimeAnima } = await import('./runtimeImageSession')
         await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, context: pendingContext, state,
           isCurrent: () => !controller.signal.aborted && serial === requestSerial,
-          onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult: options.onResult })
+          onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
         return
       }
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
@@ -412,7 +353,19 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       }
       const metadata = metadataFromJob(data.job, request, family)
       patchState({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', job: metadata })
-      await pollJob(data.job.id, request, family, serial, controller.signal)
+      const observation = { client, id: data.job.id, family, signal: controller.signal, deadline: Date.now() + 10 * 60 * 1000,
+        current: () => !controller.signal.aborted && serial === requestSerial, state, context: pendingContext,
+        patch: patchState, metadata: (job: AnimaPublicJob) => metadataFromJob(job, request, family), discardStashed: discardStashedResult, onResult }
+      const polling = await import('./animaJobPolling').catch(async error => {
+        if (observation.current()) {
+          // POST already accepted: an unavailable observer must cancel that job,
+          // retaining its identity and busy state when cancellation is unconfirmed.
+          await cancel()
+          if (observation.current()) patchState({ statusText: '进度工具加载失败，取消尚未确认，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
+        }
+        return null
+      })
+      if (polling && observation.current()) await polling.pollAnimaJob(observation)
     } catch (error) {
       if (serial !== requestSerial) return
       if (durableAttempt) {
@@ -478,6 +431,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   /** 离开导演台：停止轮询、取消在途任务、释放结果 URL（防止 GPU 任务悬挂与 blob 泄漏） */
   function dispose() {
+    disposed = true
     requestSerial += 1
     statusRequest?.abort()
     statusRequest = null
@@ -509,6 +463,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     stopStatusPolling,
     pauseStatusPolling,
     generate,
+    captureSubmission,
+    resultSubmission,
     cancel,
     clearResult,
     dispose,

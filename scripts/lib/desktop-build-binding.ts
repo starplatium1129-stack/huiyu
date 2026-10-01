@@ -76,6 +76,12 @@ function sourceIdentity(root: string) {
   const selection: Selection[] = [...new Set(names)].map(name => ({ kind:'file', path:name }));
   return completeSnapshot(root, selection, '发行源码身份不完整，请检查源码文件后完整构建');
 }
+function sdkIdentity(root: string, env: NodeJS.ProcessEnv = process.env) {
+  const { resolveSdkRoot, sdkInputSnapshot }: typeof import('../maintenance/desktop-build-environment') = require('../maintenance/desktop-build-environment');
+  const sdkRoot = resolveSdkRoot(root, env);
+  if (!sdkRoot) throw Error('缺少实际 Cubism SDK 输入，不能绑定桌面构建');
+  return { root:sdkRoot, inputs:sdkInputSnapshot(sdkRoot) };
+}
 function buildSelection(root: string, includeBundle = true): Selection[] {
   const selected: Selection[] = [
     { kind:'tree', path:'dist' },
@@ -86,11 +92,14 @@ function buildSelection(root: string, includeBundle = true): Selection[] {
   if (includeBundle) selected.push({ kind:'tree', path:bundle });
   return selected;
 }
-function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true) {
+function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root)) {
   if (sourceIdentity(root).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
+  const { sdkInputSnapshot }: typeof import('../maintenance/desktop-build-environment') = require('../maintenance/desktop-build-environment');
+  const sdk = {root:sdkBefore.root,inputs:sdkInputSnapshot(sdkBefore.root)};
+  if (sdk.inputs.sha256 !== sdkBefore.inputs.sha256) throw Error('构建期间 Cubism SDK 输入发生变化，请重新完整构建');
   materializeNativeExecutable(root);
   const build = completeSnapshot(root, buildSelection(root, includeBundle), '桌面产物不完整，不能生成发行绑定回执');
-  writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', includeBundle, source:before, build, buildCommit:identity.repository(root).commit }, '构建绑定');
+  writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', includeBundle, source:before, sdk, build, buildCommit:identity.repository(root).commit }, '构建绑定');
 }
 function verifyBuild(root: string, payload?: string) {
   let receipt;
@@ -100,6 +109,9 @@ function verifyBuild(root: string, payload?: string) {
   try { identity.validateSnapshot(receipt.source); identity.validateSnapshot(receipt.build); }
   catch (error) { throw Error(`发行源码/产物回执格式无效: ${error instanceof Error ? error.message : String(error)}`, { cause:error }); }
   if (sourceIdentity(root).sha256 !== receipt.source.sha256) throw Error('发行源码与构建不匹配，请完整重建；版本号相同不能复用旧包');
+  try { identity.validateSnapshot(receipt.sdk?.inputs); }
+  catch (error) { throw Error('缺少或无效的 Cubism SDK 构建绑定，请完整重建', {cause:error}); }
+  if (sdkIdentity(root).inputs.sha256 !== receipt.sdk.inputs.sha256) throw Error('Cubism SDK 与构建绑定不匹配，请完整重建');
   if (typeof receipt.includeBundle !== 'boolean') throw Error('发行回执缺少产物模式');
   const build = completeSnapshot(root, buildSelection(root, receipt.includeBundle), '桌面产物缺失或已改写，请从匹配源码完整重建');
   if (build.sha256 !== receipt.build.sha256) throw Error('桌面产物缺失或已改写，请从匹配源码完整重建');
@@ -113,7 +125,7 @@ function verifyBuild(root: string, payload?: string) {
 function extendBuild(root: string, receipt: ReturnType<typeof verifyBuild>) {
   const original = completeSnapshot(root, receipt.build.selectors, '打包原构建产物不完整，拒绝绑定');
   if (original.sha256 !== receipt.build.sha256) throw Error('打包修改了原构建产物，拒绝绑定');
-  recordBuild(root, receipt.source);
+  recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs });
 }
 function bindDistribution(root: string, payload: string, output: string) {
   const receipt = verifyBuild(root, payload);
@@ -140,4 +152,4 @@ if(require.main===module){
   try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
-export = { sourceIdentity, recordBuild, verifyBuild, extendBuild, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };
+export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };

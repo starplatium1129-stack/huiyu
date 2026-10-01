@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "defaultModelId": "anima-miaomiao-v1.2",
+  "defaultModelId": "anima-miaomiao-v1.6",
   "scope": "Character onboarding: MiaoMiao portraits published; reference sets and complete scene coverage tracked separately",
   "characters": [
     {

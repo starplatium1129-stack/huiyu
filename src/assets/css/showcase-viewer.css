@@ -38,7 +38,7 @@
 .showcase-viewer .viewer-art {
   @apply tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center;
   container-type:inline-size;
-  background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
+  background:var(--art-backdrop);
 }
 /* The clipped art region and the toolbar occupy separate grid rows, even when zoomed. */
 .showcase-viewer .viewer-art .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) var(--viewer-tools-height); }
@@ -46,7 +46,7 @@
 .showcase-viewer .viewer-art .zoom-transform-layer { @apply tw:h-full tw:w-full; }
 /* Nested corners share the frame's curvature after subtracting its border and mat. */
 .showcase-viewer .viewer-art .zoomable-img { @apply tw:w-full tw:h-full tw:max-h-full; border-radius:max(0px,calc(var(--viewer-frame-radius) - var(--viewer-art-padding) - 1px)); }
-.showcase-viewer .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:min-w-0; padding:6px var(--s-3); border-top:1px solid var(--on-art-line); background:var(--art-backdrop); cursor:default; }
+.showcase-viewer .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:min-w-0; padding:6px var(--s-3); border-top:1px solid color-mix(in srgb,var(--on-art-line) 45%,transparent); background:var(--art-backdrop); cursor:default; }
 .showcase-viewer .zoom-controls { position:static; transform:none; flex:0 0 auto; padding:0; border:0; backdrop-filter:none; }
 /* Controls remain on the same dark art surface in both application themes. */
 .showcase-viewer .zoom-controls { background:transparent; color:var(--on-art-primary); }
@@ -63,6 +63,7 @@
   border-left: 1px solid color-mix(in srgb, var(--on-art-line) 30%, transparent);
   background: transparent;
   color: var(--on-art-primary);
+  overscroll-behavior:contain;
 }
 .showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); border-color: color-mix(in srgb, var(--on-art-line) 55%, transparent); background: color-mix(in srgb, var(--art-scrim) 65%, transparent); color: var(--on-art-primary); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 .showcase-viewer .viewer-copy .viewer-close:hover { border-color: var(--on-art-line); color: var(--on-art-primary); background: color-mix(in srgb, var(--on-art-line) 14%, transparent); }
@@ -70,22 +71,27 @@
 .showcase-viewer .viewer-copy h2 {
   margin: var(--s-3) 0 var(--s-2);
   font-size: clamp(1.25rem, 2.4vw, 1.9rem); @apply tw:leading-tight;
+  letter-spacing:-.02em;
 }
 .showcase-viewer .viewer-meta { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:mb-s-4; }
 .showcase-viewer .viewer-meta span {
   @apply tw:max-w-full; overflow-wrap:anywhere;
-  padding: var(--s-1) var(--s-2); @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--on-art-line) 16%, transparent);
-  color: var(--on-art-primary);
-  font: 700 var(--fs-mono-sm) var(--font-mono);
+  color: var(--on-art-secondary);
+  font: 500 var(--fs-label-xs)/1.65 var(--font-sans);
 }
 .showcase-viewer .viewer-meta-gen { margin-top: calc(var(--s-4) * -0.4); }
 .showcase-viewer .viewer-popular-note { @apply tw:m-0; color: var(--on-art-secondary); @apply tw:text-body-sm tw:leading-loose; }
+.showcase-viewer .viewer-production { margin-bottom:var(--s-4); border-block:1px solid color-mix(in srgb,var(--on-art-line) 45%,transparent); }
+.showcase-viewer .viewer-production summary { padding:var(--s-3) 0; color:var(--on-art-secondary); font-size:var(--fs-label-sm); cursor:pointer; }
+.showcase-viewer .viewer-production summary:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
+.showcase-viewer .viewer-production .viewer-meta { margin:0 0 var(--s-3); }
 .showcase-viewer .viewer-story {
   color: var(--on-art-secondary); @apply tw:text-body-sm tw:leading-loose tw:mb-s-5;
 }
 .showcase-viewer .viewer-actions { @apply tw:grid tw:gap-s-2; }
 .showcase-viewer .viewer-actions .btn { @apply tw:justify-center; }
+.showcase-viewer .viewer-position { padding:var(--s-2) 0; color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:1.65; }
+.showcase-viewer .viewer-paging { @apply tw:grid tw:gap-s-2; grid-template-columns:repeat(2,minmax(0,1fr)); }
 /* 查看器永远处于暗色画布：按钮用 on-art 色系，避免浅色主题下对比不足 */
 .showcase-viewer .btn-ghost {
   color: var(--on-art-secondary);

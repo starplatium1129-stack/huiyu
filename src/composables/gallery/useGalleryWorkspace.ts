@@ -351,8 +351,8 @@ export function useGalleryWorkspace() {
             cardObserver.observe(el);
         }
     }
-    function toggleInfoDrawer() { if (!narrowViewer.value) return; if (!infoOpen.value) infoToggleBtn.value?.focus({ preventScroll: true }); infoOpen.value = !infoOpen.value; }
-    function closeInfoDrawer() { infoOpen.value = false; }
+    function toggleInfoDrawer(event?: MouseEvent | KeyboardEvent) { if (!narrowViewer.value) return; viewerEl.value?.toggleAttribute('data-info-instant', event?.detail === 0); if (!infoOpen.value) infoToggleBtn.value?.focus({ preventScroll: true }); infoOpen.value = !infoOpen.value; }
+    function closeInfoDrawer(event?: MouseEvent) { viewerEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0); infoOpen.value = false; }
     function syncNarrowViewer() { const nextNarrow = narrowViewerMedia?.matches ?? false; narrowViewer.value = nextNarrow; if (!nextNarrow && infoOpen.value) { closeInfoDrawer(); void nextTick(() => closeBtn.value?.focus({ preventScroll: true })); } }
     // 父查看器与窄屏信息抽屉叠成两层陷阱：抽屉打开时 Escape 只交给顶层抽屉，
     // 关闭后由子陷阱把焦点还给 .viewer-info-toggle，再由父陷阱管理整个查看器。
@@ -401,7 +401,7 @@ export function useGalleryWorkspace() {
         if (e.key === 'ArrowRight')
             return step(1);
         if (e.key.toLowerCase() === 'i') {
-            toggleInfoDrawer();
+            e.preventDefault(); toggleInfoDrawer(e);
             return;
         }
     }

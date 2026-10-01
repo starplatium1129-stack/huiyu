@@ -11,7 +11,7 @@ function fixture(props: { src: string; alt?: string; imgClass?: string }) {
 }
 
 describe('CgImageReveal component', () => {
-  it('renders the original image and a hidden decorative glow without a canvas', () => {
+  it('renders the original image and hidden decorative layers without a canvas', () => {
     const wrapper = fixture({
       src: '/test-cg.png',
       alt: '测试成片',
@@ -25,9 +25,11 @@ describe('CgImageReveal component', () => {
     expect(img.classes()).toContain('custom-cg-class')
 
     expect(wrapper.find('canvas').exists()).toBe(false)
-    const glow = wrapper.get('.cg-reveal-glow')
-    expect(glow.attributes('aria-hidden')).toBe('true')
-    expect(glow.attributes('style')).toContain('display: none')
+    for (const selector of ['.cg-reveal-grain', '.cg-reveal-sweep']) {
+      const layer = wrapper.get(selector)
+      expect(layer.attributes('aria-hidden')).toBe('true')
+      expect(layer.attributes('style')).toContain('display: none')
+    }
     expect(img.attributes('loading')).toBe('eager')
     expect(img.attributes('decoding')).toBe('async')
   })

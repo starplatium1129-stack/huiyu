@@ -105,7 +105,38 @@ test('quick gate covers root server, dependencies, scripts and rejects typos', a
   for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), { areas: ['full'], testFiles: [] });
   assert.deepEqual(classifyFiles(['docs/workflow.md']), { areas: [], testFiles: [] });
   assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), { areas: ['ui', 'data'], testFiles: [] });
+  for (const file of ['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/tests/fixtures/task-fingerprints.json', 'runtime-rs/Cargo.toml', 'runtime-rs/Cargo.lock']) {
+    assert.deepEqual(classifyFiles([file]), { areas:['rust'], testFiles:[] });
+  }
   assert.equal(await gate(['servre']), 2);
+});
+
+test('Rust-only gate avoids Node suites and a Rust failure stops explicit full before later phases', async () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root,'scripts/maintenance/gate-quick.js'), originalRequire = createRequire(entry);
+  const calls: string[] = []; let rustCode = 0;
+  const fakeRequire = (name: string) => {
+    if (name === '../tests/run-quality-suite') return { ...originalRequire(name),
+      runNpmScript:(script: string) => { calls.push(script); return {ok:true,duration:1,output:''}; },
+      runUnitSuite:() => {calls.push('unit');return 0;}, runContractSuite:async() => {calls.push('contract');return 0;} };
+    if (name === '../lib/test-process-pool') return { runTestProcessPool:async(entries: any[]) => {
+      assert.equal(path.basename(entries[0].file),'run-rust-runtime.js'); assert.deepEqual(Array.from(entries[0].args),['check']); calls.push('rust:check');
+      return {results:[{ok:rustCode===0,exitCode:rustCode,duration:1,output:'',reason:rustCode?'fixture failure':''}]};
+    } };
+    if (name === '../tests/quality-report') return {...originalRequire(name),writeQualityReport:()=>{}};
+    return originalRequire(name);
+  };
+  const module = {exports:{} as typeof import('../maintenance/gate-quick')};
+  vm.runInNewContext(fs.readFileSync(entry,'utf8'), {require:fakeRequire,module,exports:module.exports,__dirname:path.dirname(entry),process,
+    AbortController,setTimeout,clearTimeout,console:{log(){},error(){}}});
+  assert.equal(await module.exports.main(['rust']),0);
+  assert.deepEqual(calls,['build:runtime','rust:check']); calls.length=0;
+  assert.equal(await module.exports.main(['full']),0);
+  assert.deepEqual(calls,['check','rust:check','test:frontend','unit','contract','test:optional','build:web:run']); calls.length=0;
+  rustCode=1;
+  assert.equal(await module.exports.main(['full']),1);
+  assert.deepEqual(calls,['check','rust:check']);
 });
 
 test('quick gate selects registered Node tests once across source and generated paths', () => {
@@ -158,6 +189,9 @@ test('optional suites stay available and execute when their real consumers chang
   assert.deepEqual(selectOptionalLanes(['scripts/lib/scene-store.ts']), ['tooling', 'release', 'legacy']);
   assert.deepEqual(selectOptionalLanes(['desktop-tauri/src-tauri/src/main.rs']), ['release']);
   assert.deepEqual(selectOptionalLanes(['routes/anima.ts']), ['legacy']);
+  assert.deepEqual(selectOptionalLanes(['runtime-rs/src/storage.rs','runtime-rs/tests/task_execution.rs','runtime-rs/Cargo.lock']), []);
+  assert.deepEqual(selectOptionalLanes(['runtime-rs/native-dependencies.windows-x64.json']), ['release']);
+  assert.deepEqual(selectOptionalLanes(['runtime-rs/tests/parity.mjs']), ['legacy']);
   assert.deepEqual(selectOptionalLanes(['scripts/tests/test-blueprint-write.ts']), ['tooling']);
   assert.deepEqual(selectOptionalLanes(['unclassified-code.ts']), ['tooling', 'release', 'legacy']);
   assert.ok(QUALITY_TEST_SUITES.unit.includes('test-api-client.js'));

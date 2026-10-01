@@ -22,6 +22,7 @@ const sessions: ReturnType<typeof useAnimaSession>[] = []
 afterEach(() => {
   sessions.splice(0).forEach(session => session.dispose())
   vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks()
+  vi.doUnmock('./animaJobPolling')
 })
 
 function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> = {}) {
@@ -31,6 +32,19 @@ function createSession(client: ApiClient, options: Partial<AnimaSessionOptions> 
   sessions.push(session)
   return session
 }
+
+it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an older available model', async () => {
+  const client = { request: vi.fn(async () => ({ ok: true, online: true, models: [
+    { id: 'anima-miaomiao-v1.2', family: 'anima', available: true, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5 } },
+    { id: 'anima-miaomiao-v1.6', family: 'anima', available: false, sizes: ['832x1216'], defaults: { steps: 30, cfg: 4.5 } },
+  ], loras: [] })) } as unknown as ApiClient
+  const session = createSession(client)
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ modelId: 'anima-miaomiao-v1.6', online: false })
+  session.applyModel('anima-miaomiao-v1.2')
+  await session.refreshBackend()
+  expect(session.state.value).toMatchObject({ modelId: 'anima-miaomiao-v1.2', online: true })
+})
 
 describe('useAnimaSession · backend status and polling', () => {
   it('底模未发生改变的心跳轮询不覆写用户手动调整的 cfg、steps 与已选风格 LoRA', async () => {
@@ -159,20 +173,42 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(call.mock.calls[0]?.[1]?.body).toMatchObject({ modelId: family === 'krea2' ? 'krea2-turbo-fp8' : 'anima-fixture', prompt: 'submitted prompt' })
   expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('loraId')
   prompt = 'later prompt'; context.characterId = 'task-b'; context.outfitId = 'outfit-b'
+  await vi.dynamicImportSettled()
   await vi.advanceTimersByTimeAsync(2000)
   await generating
   expect(session.state.value.phase).toBe('succeeded')
   expect(onResult).toHaveBeenCalledOnce()
   expect(session.state.value.result).toMatchObject({ url: 'blob:completed', metadata: { id: 'success', seed: 0, prompt: 'submitted prompt' } })
   expect(session.state.value.resultContext).toMatchObject({ characterId: 'task-a', outfitId: 'outfit-a' })
+  const recipe = session.resultSubmission()!
+  expect(recipe).toMatchObject({ family, request: { prompt: 'submitted prompt', seed: 0 }, context: { characterId: 'task-a' } })
+  recipe.request.prompt = 'external edit'; recipe.context!.characterId = 'external edit'
+  expect(session.resultSubmission()).toMatchObject({ request: { prompt: 'submitted prompt' }, context: { characterId: 'task-a' } })
   call.mockRejectedValue(new Error('network down'))
-  await session.generate(); await session.generate()
+  await session.generate({ hiresFix: true, hiresScale: 2, hiresDenoise: 0.35 }, session.resultSubmission()!)
+  expect(call.mock.calls.at(-1)?.[1]?.body).toMatchObject({ prompt: 'submitted prompt', seed: 0, hiresFix: true })
+  await session.generate()
   expect(session.state.value.phase).toBe('failed')
   expect(session.state.value.result).toBeNull()
   expect(session.stashedResult.value).toMatchObject({ result: { url: 'blob:completed' }, context: { characterId: 'task-a' } })
   expect(session.restoreStashedResult()).toBe(true)
   expect(session.state.value).toMatchObject({ phase: 'succeeded', errorMsg: '', resultContext: { outfitId: 'outfit-a' } })
   expect(session.restoreStashedResult()).toBe(false)
+  const count = call.mock.calls.length
+  session.dispose(); await session.generate()
+  expect(call).toHaveBeenCalledTimes(count)
+
+  vi.doMock('./animaJobPolling', () => { throw new Error('observer chunk unavailable') })
+  const cancelled = { ok: true, job: { id: 'unobserved', status: family === 'anima' ? 'cancelled' : 'cancelling' } }
+  const recoveryCall = vi.fn(async (_url: string, options?: ApiRequestOptions) => options?.method === 'POST'
+    ? { ok: true, job: { id: 'unobserved', status: 'queued', seed: 0 } } : cancelled)
+  const recovery = createSession({ request: recoveryCall } as unknown as ApiClient, { getFamily: () => family })
+  recovery.patchState({ online: true, family })
+  await recovery.generate()
+  expect(recoveryCall.mock.calls.map(([url, options]) => [url, options?.method])).toEqual([[base, 'POST'], [`${base}/unobserved`, 'DELETE']])
+  expect(recovery.state.value.phase).toBe(family === 'anima' ? 'cancelled' : 'cancelling')
+  expect(recovery.state.value.job?.id).toBe('unobserved')
+  if (family === 'krea2') expect(recovery.state.value.statusText).toContain('取消尚未确认')
 })
 
 it('uses the accepted Web Krea metadata after provider style processing, even if the panel changes', async () => {
@@ -187,6 +223,7 @@ it('uses the accepted Web Krea metadata after provider style processing, even if
   session.patchState({ online: true, family: 'krea2' })
   const generating = session.generate()
   session.patchState({ sampler: 'later-sampler', scheduler: 'later-scheduler' })
+  await vi.dynamicImportSettled()
   await vi.advanceTimersByTimeAsync(1000); await generating
   expect(session.state.value.result?.metadata).toMatchObject({ prompt: request.prompt + ', actual style trigger', seed: 0, sampler: 'actual-sampler' })
   metadata.prompt = 'Mutated transport response'

@@ -197,6 +197,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     calls[0].resolve(accepted('running-job'))
     await flush()
     session.patchState({ family: 'krea2' })
+    await vi.dynamicImportSettled()
     await vi.advanceTimersByTimeAsync(1000)
     assert.equal(calls.length, 2)
     const progress = calls[1]

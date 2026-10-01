@@ -239,6 +239,12 @@ pub enum TaskCommand {
     },
     #[serde(rename = "task.cancel", rename_all = "camelCase")]
     Cancel { request_key: String },
+    #[serde(rename = "task.resolve-webui", rename_all = "camelCase")]
+    ResolveWebui {
+        task_id: String,
+        expected_revision: i64,
+        upstream_stopped: bool,
+    },
 }
 impl TaskCommand {
     pub fn is_read(&self) -> bool {

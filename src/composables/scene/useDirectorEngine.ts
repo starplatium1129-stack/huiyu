@@ -123,7 +123,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       void refreshAnimaBackend()
     }
     if (!options.silent) flash(v === 'anima'
-      ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
+      ? (pb.isPopular ? '已切换到 Anima（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
       : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
   }
 

@@ -31,8 +31,9 @@
         "hatsune_miku"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
+      "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
+        "anima-miaomiao-v1.6",
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
