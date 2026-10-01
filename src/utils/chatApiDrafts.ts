@@ -74,11 +74,23 @@ export function createChatApiDrafts(onError: () => void) {
     try { persist() } catch { onError() }
   }
   async function clear(vendor: string, entry: ChatApiDraft) {
+    if (!vendors.has(vendor)) return
+    const revision = revisions[vendor] = (revisions[vendor] || 0) + 1
+    const sessionEntry = sessionDrafts[vendor]
+    const source = read()[vendor]
     await credentials.save(scope(vendor, entry.baseUrl), '', () => {
       const current = read()
-      if (current[vendor]?.baseUrl === entry.baseUrl) current[vendor].apiKey = ''
-      localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify(current))
-      set(vendor, { ...entry, apiKey: '' })
+      if (current[vendor]?.baseUrl === entry.baseUrl && current[vendor]?.apiKey === source?.apiKey) {
+        current[vendor].apiKey = ''
+        localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify(current))
+      }
+      // The secure deletion owns its original target, not a later edited draft.
+      const latest = sessionDrafts[vendor]
+      if (revisions[vendor] === revision && latest === sessionEntry) set(vendor, { ...entry, apiKey: '' })
+      else if (latest?.baseUrl === entry.baseUrl && latest.apiKey === entry.apiKey) {
+        // Keep newer metadata, but do not resurrect the exact key just removed.
+        set(vendor, { ...latest, apiKey: '' })
+      }
     })
   }
   return { drafts, ready, set, clear }

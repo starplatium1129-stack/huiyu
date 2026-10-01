@@ -174,8 +174,11 @@ const testing = ref(false)
 const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
+let draftRevision = 0
+let clearingKey = false
 let testController: AbortController | null = null
 function invalidateTest() {
+  draftRevision++
   testController?.abort()
   testController = null
   testing.value = false
@@ -189,11 +192,16 @@ const draftStore = createChatApiDrafts(() => { testMessage.value = '旧密钥草
 const vendorDrafts = draftStore.drafts
 
 async function clearPersonalKey() {
+  if (clearingKey) return
+  clearingKey = true
+  const revision = draftRevision
   try {
     await draftStore.clear(props.vendor, { baseUrl: props.baseUrl, model: props.model, apiKey: props.apiKey })
+    if (revision !== draftRevision) return
     emit('update:apiKey', '')
     emit('clear-key')
-  } catch { testMessage.value = '个人密钥草稿清除失败，原值已保留，请重试。' }
+  } catch { if (revision === draftRevision) testMessage.value = '个人密钥草稿清除尚未确认，请检查后重试。' }
+  finally { clearingKey = false }
 }
 
 const vendorProxy = computed({

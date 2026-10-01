@@ -55,6 +55,46 @@ describe('provider draft credentials', () => {
     expect(vault.get(`${endpoint}#huiyu-api-draft-opencode`)).toBe('')
   })
 
+  it('preserves newer same-vendor edits in this editor and a reopened editor during clear', async () => {
+    const vault = new Map<string, string>()
+    let release!: () => void
+    let entered!: () => void
+    let started = new Promise<void>(resolve => { entered = resolve })
+    bridge(async target => vault.get(target) || null, async (target, value) => {
+      entered()
+      await new Promise<void>(resolve => { release = resolve })
+      vault.set(target, value)
+    })
+    const drafts = createChatApiDrafts(vi.fn())
+    await drafts.ready
+    const old = { baseUrl: endpoint, model: 'old', apiKey: 'fixture-old' }
+    drafts.set('cliproxy', old)
+    const clearing = drafts.clear('cliproxy', old)
+    await started
+    const fresh = { baseUrl: 'https://fresh.example/v1', model: 'fresh', apiKey: 'fixture-new' }
+    drafts.set('cliproxy', fresh)
+    release(); await clearing
+    expect(drafts.drafts.value.cliproxy).toEqual(fresh)
+    const reopened = createChatApiDrafts(vi.fn()); await reopened.ready
+    expect(reopened.drafts.value.cliproxy).toEqual(fresh)
+    started = new Promise<void>(resolve => { entered = resolve })
+    const secondClear = drafts.clear('cliproxy', fresh)
+    await started
+    const newest = { ...fresh, model: 'newest', apiKey: 'fixture-newest' }
+    reopened.set('cliproxy', newest)
+    release(); await secondClear
+    const latest = createChatApiDrafts(vi.fn()); await latest.ready
+    expect(latest.drafts.value.cliproxy).toEqual(newest)
+    expect(JSON.parse(localStorage.getItem(CHAT_API_DRAFTS_KEY)!).cliproxy.model).toBe('newest')
+    expect(localStorage.getItem(CHAT_API_DRAFTS_KEY)).not.toContain('fixture-newest')
+    started = new Promise<void>(resolve => { entered = resolve })
+    const metadataClear = latest.clear('cliproxy', newest)
+    await started
+    latest.set('cliproxy', { ...newest, model: 'metadata-edited' })
+    release(); await metadataClear
+    expect(latest.drafts.value.cliproxy).toEqual({ ...newest, model: 'metadata-edited', apiKey: '' })
+  })
+
   it('preserves failed legacy sources but excludes them from backups', async () => {
     seed('opencode-go')
     bridge(async () => null, async () => { throw Error('credential store unavailable') })
