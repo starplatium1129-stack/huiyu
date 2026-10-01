@@ -99,12 +99,13 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     disposed = true
     invalidateSelection()
     cleanupController?.abort()
+    exportController?.abort()
     imageExportController?.abort()
     for (const url of imageDownloadUrls.keys()) releaseImageUrl(url)
   })
 
   async function exportBackup(): Promise<void> {
-    if (busy.value) return
+    if (busy.value || disposed) return
     busy.value = true
     onFlash('正在整理备份…')
     try {
@@ -112,6 +113,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       exportController = controller
       if (desktopActive.value) {
         const receipt = await createWorkspaceBackup(controller.signal)
+        // A native request can finish after its owner or cancel action stopped waiting.
+        controller.signal.throwIfAborted()
         downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `huiyu-backup-${receipt.backupId}.json`)
         lastBackupAt.value = Date.now()
         localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
@@ -140,6 +143,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(blob.size / 1024))} KB`
         + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
+      if (disposed) return
       if (exportController?.signal.aborted) onFlash('已取消备份，未生成文件，原有作品未改动')
       else {
         console.error('backup export failed', e)

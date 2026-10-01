@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
+import { defineComponent, effectScope, h, KeepAlive, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
+import * as backupActions from '@/platform/desktop/backupActions'
 import { restoreBackupData } from '@/storage/backupRestore'
 import { useBackup } from './useBackup'
 import { imgList, imgDeleteMany } from './useImageStore'
@@ -185,6 +186,27 @@ describe('backup safety regressions', () => {
     expect(tool.busy.value).toBe(false)
     expect(tool.exportProgress.value).toBeNull()
     expect(flash).toHaveBeenCalledWith(expect.stringContaining('512 MB'))
+  })
+  it('aborts a disposed backup export and rejects a late native receipt without downloading', async () => {
+    const desktop = vi.spyOn(backupActions, 'workspaceBackupActive').mockReturnValue(true)
+    let receipt!: (value: backupActions.WorkspaceBackupReceipt) => void
+    const create = vi.spyOn(backupActions, 'createWorkspaceBackup').mockImplementation(() => new Promise(resolve => { receipt = resolve }))
+    const scope = effectScope()
+    const flash = vi.fn()
+    const tool = scope.run(() => useBackup(flash))!
+    try {
+      const exporting = tool.exportBackup()
+      const signal = create.mock.calls[0]![0]!
+      scope.stop()
+      expect(signal.aborted).toBe(true)
+      receipt({ format: 'huiyu-workspace-backup-receipt', version: 1, workspaceId: 'workspace', backupId: 'backup', createdAt: '', revision: 1, mediaCount: 0 })
+      await exporting
+      expect(downloadBlob).not.toHaveBeenCalled()
+      expect(tool.lastBackupAt.value).toBe(0)
+      expect(flash).toHaveBeenCalledTimes(1)
+      await tool.exportBackup()
+      expect(create).toHaveBeenCalledOnce()
+    } finally { scope.stop(); create.mockRestore(); desktop.mockRestore() }
   })
   it('supports cancelling export without touching existing records or timestamps', async () => {
     vi.mocked(imgList).mockResolvedValue([])
