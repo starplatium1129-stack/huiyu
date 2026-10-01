@@ -95,8 +95,8 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
   }
   if (engine !== 'sd' && sameEngine && parts.parameters) {
     const before = { ...animaState.value }
-    await refreshAnimaBackend()
-    if (!isCurrent()) return false
+    const checked = await refreshAnimaBackend()
+    if (!isCurrent() || !checked) return false
     if (!animaState.value.online) notes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
     for (const [key, label] of [['modelId', '底模'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
       if (before[key] !== animaState.value[key]) notes.push(`${label}：${before[key] ?? '未设置'} → ${animaState.value[key] ?? '不可用'}`)

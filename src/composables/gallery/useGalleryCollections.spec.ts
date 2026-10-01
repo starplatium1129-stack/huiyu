@@ -24,7 +24,7 @@ function setup() {
   const options = {
     history: ref<ArtworkRecord[]>([{ id: 1, favorite: true }]), projects: ref<GalleryProject[]>([]),
     thumbUrls: reactive<Record<string, string>>({}), cardUrls: reactive<Record<string, string>>({}),
-    characterName: (id: string) => id, characterFilter: ref(''), projectFilter: ref('existing'),
+    characterName: (id: string | undefined) => id || '', characterFilter: ref(''), projectFilter: ref('existing'),
     tagFilter: ref(''), searchQuery: ref(''), favoriteOnly: ref(false), resetGalleryFilters: vi.fn(),
     collectionPreviewItems: ref<ArtworkRecord[] | null>(null), showToast: vi.fn(),
   }

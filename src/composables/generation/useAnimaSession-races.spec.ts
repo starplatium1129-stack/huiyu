@@ -249,6 +249,22 @@ describe('useAnimaSession · stale asynchronous work', () => {
     })
   }
 
+  it.each(['success', 'failure'])('waits for replacement discovery when the superseded request ends with %s first', async outcome => {
+    const { session, calls } = fixture()
+    let settled = false
+    const old = session.refreshBackend().then(checked => { settled = true; return checked })
+    const current = session.refreshBackend()
+    expect(calls[0].options?.signal?.aborted).toBe(true)
+    if (outcome === 'success') calls[0].resolve({ ok: true, online: false, models: [] })
+    else calls[0].reject(new Error('superseded request'))
+    await flush()
+    expect(settled).toBe(false)
+    calls[1].resolve({ ok: true, online: true, models: [{ id: 'replacement', family: 'anima', available: true }] })
+    expect(await current).toBe(true)
+    expect(await old).toBe(true)
+    expect(session.state.value.modelId).toBe('replacement')
+  })
+
   it('discards a backend response after status polling is paused', async () => {
     const { session, calls } = fixture()
     session.patchState({ phase: 'running' })
@@ -257,7 +273,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     assert.equal(calls[0].options?.signal?.aborted, true)
     const before = { ...session.state.value }
     calls[0].resolve({ ok: true, online: false, models: [] })
-    await current
+    expect(await current).toBe(false)
     assert.deepEqual(session.state.value, before)
   })
 

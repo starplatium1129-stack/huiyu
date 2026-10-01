@@ -32,7 +32,7 @@ function fixture() {
       const [width, height] = value.split('x').map(Number)
       patchAnimaState({ width, height })
     },
-    refreshAnimaBackend: vi.fn(async () => {}),
+    refreshAnimaBackend: vi.fn(async () => true),
     animaState,
     patchAnimaState,
     sdSize: size,

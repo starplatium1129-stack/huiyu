@@ -22,6 +22,11 @@ export function usePromptHistoryReuse(deps: HistoryReuseDeps) {
   if (getCurrentInstance()) onDeactivated(cancelReuse)
   onScopeDispose(cancelReuse)
   async function applyHistory(record: ArtworkRecord, variant = false, choose = variant) {
+    // A blocked click must not invalidate the restore already in progress.
+    if (state.busy.value || deps.generationBusy.value) {
+      deps.pb.flash('生成或配方载入进行中，完成或停止后再载入配方')
+      return false
+    }
     const expected = ++state.revision, api = await getActions()
     return expected === state.revision ? api.request(record, variant, choose) : false
   }
