@@ -3,7 +3,14 @@ import { assertMigrationAuthority, bindMigrationCandidate, type MigrationAuthori
 import type { DesktopConnectionState } from '../desktop/runtime'
 const target: MigrationAuthorityTarget = { migrationId: 'migration', workspaceId: 'candidate', generation: 1, sourceProfileId: 'profile', sourceOrigin: 'https://source', domains: ['artwork', 'settings'] }
 function state(): DesktopConnectionState {
-  return { connection: 'ready', bootstrap: { windowId: 'atelier', sourceProfileId: 'profile', sourceOrigin: 'https://source', runtime: { origin: 'https://runtime', runtimeEpoch: 'epoch', workspace: { workspaceId: 'candidate', runtimeEpoch: 'epoch', generation: 1, domains: [] } } } } as DesktopConnectionState
+  return { connection: 'ready', bootstrap: {
+    protocolVersion: 1, windowRole: 'atelier', windowId: 'atelier', bundledUiAvailable: true, connection: 'ready',
+    sourceProfileId: 'profile', sourceOrigin: 'https://source',
+    runtime: { origin: 'https://runtime', protocolVersion: 1, ownership: 'managed', runtimeEpoch: 'epoch', workspace: {
+      workspaceId: 'candidate', runtimeEpoch: 'epoch', generation: 1, domains: [],
+      principalId: 'test-principal', token: 'test-session', expiresAt: Number.MAX_SAFE_INTEGER, bundledUi: true,
+    } },
+  } }
 }
 it('binds each import request to its immutable candidate and rejects reconnect before or during a call', async () => {
   const current = state(), request = vi.fn().mockResolvedValue({ ok: true })
