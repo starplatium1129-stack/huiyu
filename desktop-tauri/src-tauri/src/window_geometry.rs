@@ -73,16 +73,26 @@ pub fn clamp_bounds_to_work_areas(bounds: &WindowBounds, areas: &[(i64, i64, i64
         .unwrap_or_else(|| bounds.clone())
 }
 
-pub fn restore_window_placement(bounds: &WindowBounds, monitors: &[DisplayWorkArea], min_size: Option<(i64, i64)>) -> WindowPlacement {
+pub fn restore_window_placement(bounds: &WindowBounds, physical_hint: Option<&WindowBounds>, monitors: &[DisplayWorkArea], min_size: Option<(i64, i64)>) -> WindowPlacement {
     let logical_areas: Vec<_> = monitors.iter().map(|monitor| {
         let area = physical_to_logical_bounds(&area_bounds(monitor.bounds), monitor.scale_factor);
         (area.x, area.y, area.width, area.height)
     }).collect();
-    let Some(index) = target_area(bounds, &logical_areas) else {
+    // Absolute DIP origins from different scales overlap. A saved physical rectangle
+    // disambiguates them without depending on unstable display names or enumeration order.
+    let physical_areas: Vec<_> = monitors.iter().map(|monitor| monitor.bounds).collect();
+    let target = physical_hint.map(|hint| target_area(hint, &physical_areas))
+        .unwrap_or_else(|| target_area(bounds, &logical_areas));
+    let Some(index) = target else {
         return WindowPlacement { logical: bounds.clone(), physical: bounds.clone() };
     };
-    let logical = clamp_window_bounds(bounds, logical_areas[index], min_size);
     let scale = valid_scale(monitors[index].scale_factor);
+    let positioned = physical_hint.map(|hint| WindowBounds {
+        x: (hint.x as f64 / scale).round() as i64,
+        y: (hint.y as f64 / scale).round() as i64,
+        ..bounds.clone()
+    }).unwrap_or_else(|| bounds.clone());
+    let logical = clamp_window_bounds(&positioned, logical_areas[index], min_size);
     let physical = WindowBounds {
         x: (logical.x as f64 * scale).round() as i64,
         y: (logical.y as f64 * scale).round() as i64,
@@ -102,7 +112,7 @@ mod tests {
     #[test]
     fn current_4k_175_percent_state_returns_to_pet_design_size() {
         let saved = WindowBounds { x: 1299, y: 3, width: 1103, height: 1234 };
-        let result = restore_window_placement(&normalize_companion_bounds(&saved),
+        let result = restore_window_placement(&normalize_companion_bounds(&saved), None,
             &[DisplayWorkArea { bounds: (0, 0, 3840, 2160), scale_factor: 1.75 }], None);
         assert_eq!(result.logical, WindowBounds { x: 1299, y: 3, width: 540, height: 760 });
         assert_eq!(result.physical, WindowBounds { x: 2273, y: 5, width: 945, height: 1330 });
@@ -137,12 +147,30 @@ mod tests {
         let monitors = [DisplayWorkArea { bounds: (0, 0, 3840, 2080), scale_factor: 1.75 },
             DisplayWorkArea { bounds: (-1920, 0, 1920, 1040), scale_factor: 1.0 }];
         let saved = WindowBounds { x: -1500, y: 100, width: 600, height: 850 };
-        let placed = restore_window_placement(&saved, &monitors, None);
+        let placed = restore_window_placement(&saved, None, &monitors, None);
         assert_eq!(placed.logical, saved);
         assert_eq!(placed.physical, saved);
-        let small = restore_window_placement(&WindowBounds { x: 100, y: 100, width: 1440, height: 960 },
+        let small = restore_window_placement(&WindowBounds { x: 100, y: 100, width: 1440, height: 960 }, None,
             &[DisplayWorkArea { bounds: (0, 0, 1920, 1040), scale_factor: 1.75 }], Some((1024, 720)));
         assert!(small.physical.width <= 1920 && small.physical.height <= 1040);
         assert!(small.logical.height < 720);
     }
+    #[test]
+    fn physical_hint_disambiguates_overlapping_dip_origins_and_survives_dpi_changes() {
+        let primary = DisplayWorkArea { bounds: (0, 0, 3840, 2080), scale_factor: 1.0 };
+        let right = DisplayWorkArea { bounds: (3840, 0, 3840, 2080), scale_factor: 2.0 };
+        let physical = WindowBounds { x: 4000, y: 200, width: 1080, height: 1520 };
+        let saved = physical_to_logical_bounds(&physical, 2.0);
+        for monitors in [[primary, right], [right, primary]] {
+            let placed = restore_window_placement(&saved, Some(&physical), &monitors, None);
+            assert_eq!(placed.logical, saved);
+            assert_eq!(placed.physical, physical);
+        }
+        let changed = DisplayWorkArea { scale_factor: 1.0, ..right };
+        let placed = restore_window_placement(&saved, Some(&physical), &[primary, changed], None);
+        assert_eq!(placed.physical, WindowBounds { x: 4000, y: 200, width: 540, height: 760 });
+        let removed = restore_window_placement(&saved, Some(&physical), &[primary], None);
+        assert_eq!(removed.physical, WindowBounds { x: 3300, y: 200, width: 540, height: 760 });
+    }
+
 }

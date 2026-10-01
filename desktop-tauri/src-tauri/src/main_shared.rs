@@ -25,14 +25,14 @@ pub fn normalize_atelier_path(value: Option<&str>) -> String {
 }
 
 pub fn companion_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
-    let saved = load_window_bounds(&state.paths.companion_window_file, None);
-    restore_window_placement(&normalize_companion_bounds(&saved), &display_work_areas(app), None)
+    let (saved, physical) = load_window_bounds(&state.paths.companion_window_file, None);
+    restore_window_placement(&normalize_companion_bounds(&saved), physical.as_ref(), &display_work_areas(app), None)
 }
 
 pub fn atelier_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
     let fallback = WindowBounds { x: 120, y: 72, width: 1440, height: 960 };
-    let saved = load_window_bounds(&state.paths.atelier_window_file, Some(&fallback));
-    restore_window_placement(&saved, &display_work_areas(app), Some((1024, 720)))
+    let (saved, physical) = load_window_bounds(&state.paths.atelier_window_file, Some(&fallback));
+    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((1024, 720)))
 }
 
 /// 聊天窗默认位于角色窗右侧（560×720），超出工作区时左移收进屏幕。
@@ -45,8 +45,8 @@ pub fn companion_chat_bounds(app: &AppHandle, state: &AppState) -> WindowPlaceme
         width: 560,
         height: 720,
     };
-    let saved = load_window_bounds(&state.paths.companion_chat_window_file, Some(&fallback));
-    restore_window_placement(&saved, &display_work_areas(app), Some((380, 460)))
+    let (saved, physical) = load_window_bounds(&state.paths.companion_chat_window_file, Some(&fallback));
+    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((380, 460)))
 }
 
 pub fn display_work_areas(app: &AppHandle) -> Vec<DisplayWorkArea> {
@@ -141,7 +141,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         let state = app.state::<AppState>();
         let bounds = &placement.logical;
         let presentation = load_window_presentation(&state.paths.atelier_window_file);
-        save_window_bounds(&state.paths.atelier_window_file, bounds);
+        save_window_bounds(&state.paths.atelier_window_file, bounds, Some(&placement.physical));
         let mut builder = WebviewWindowBuilder::new(&app, "atelier", source);
         if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
         match builder
@@ -232,7 +232,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         let state = app.state::<AppState>();
         let bounds = &placement.logical;
         let presentation = load_window_presentation(&state.paths.companion_chat_window_file);
-        save_window_bounds(&state.paths.companion_chat_window_file, bounds);
+        save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
         let mut builder = WebviewWindowBuilder::new(&app, "companion-chat", source);
         if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
         match builder
@@ -290,10 +290,10 @@ fn webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
     Some(WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 })
 }
 
-fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
+fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<(WindowBounds, WindowBounds)> {
     let physical = webview_bounds(w)?;
     let scale_factor = w.scale_factor().ok()?;
-    Some(physical_to_logical_bounds(&physical, scale_factor))
+    Some((physical_to_logical_bounds(&physical, scale_factor), physical))
 }
 
 pub fn companion_window_bounds(app: &AppHandle) -> Option<WindowBounds> {
@@ -304,8 +304,8 @@ pub fn persist_window_bounds(app: &AppHandle) {
     let state = app.state::<AppState>();
     if let Some(w) = app.get_webview_window("companion") {
         if let Some(bounds) = webview_bounds(&w) {
-            if let Some(logical_bounds) = persisted_webview_bounds(&w) {
-                save_window_bounds(&state.paths.companion_window_file, &logical_bounds);
+            if let Some((logical_bounds, physical)) = persisted_webview_bounds(&w) {
+                save_window_bounds(&state.paths.companion_window_file, &logical_bounds, Some(&physical));
             }
             let _ = w.emit("aics:window-bounds", bounds);
         }
@@ -320,7 +320,7 @@ pub fn persist_window_bounds(app: &AppHandle) {
             if w.is_minimized().unwrap_or(true) || w.is_fullscreen().unwrap_or(true) { continue; }
             let Ok(maximized) = w.is_maximized() else { continue };
             if !maximized {
-                if let Some(bounds) = persisted_webview_bounds(&w) { save_window_bounds(file, &bounds); }
+                if let Some((bounds, physical)) = persisted_webview_bounds(&w) { save_window_bounds(file, &bounds, Some(&physical)); }
             }
             save_window_presentation(file, None, Some(maximized));
         }
