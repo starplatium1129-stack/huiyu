@@ -6,6 +6,7 @@ import { storageWriteMessage } from '@/utils/storageWriteError';
 import type { useGalleryWorkspace } from './useGalleryWorkspace';
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "deleting" | "viewerIndex" | "visible" | "indexOf" | "history" | "releaseCardResources" | "pendingDeleteId" | "closeViewer" | "openViewer" | "bulkDeleting" | "selectedIds" | "loadGalleryStorage"> & {
     onDeleted?: (ids: Array<string | number>) => void;
+    isCurrentView?: () => boolean;
 };
 interface FavoriteWrite {
     tail: Promise<void>;
@@ -14,6 +15,7 @@ interface FavoriteWrite {
 }
 const favoriteWrites = new WeakMap<object, Map<string | number, FavoriteWrite>>();
 function presentDeleted(ctx: Context, ids: Array<string | number>): void {
+    if (ctx.isCurrentView?.() === false) return;
     try {
         // Capture presentation synchronously while decoded images and their DOM still exist.
         ctx.onDeleted?.([...ids]);
@@ -100,20 +102,20 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
     const { showToast, viewerIndex, releaseCardResources, closeViewer, bulkDeleting, selectedIds, loadGalleryStorage } = ctx;
     if (bulkDeleting.value || !selectedIds.value.size)
         return;
-    const count = selectedIds.value.size;
-    const ok = await confirmAction({
-        title: `把 ${count} 幅作品移入回收站？`,
-        message: '它们会立即从展墙消失，但原图保留 30 天，可在提示里一键撤销。',
-        confirmLabel: '移入回收站',
-        danger: true,
-    });
-    if (!ok)
-        return;
-    bulkDeleting.value = true;
+    // Approval belongs to this exact selection and visit, not later UI state.
     const ids = [...selectedIds.value];
+    bulkDeleting.value = true;
     const failed: (string | number)[] = [];
     const confirmed: (string | number)[] = [];
     try {
+        const ok = await confirmAction({
+            title: `把 ${ids.length} 幅作品移入回收站？`,
+            message: '它们会立即从展墙消失，但原图保留 30 天，可在提示里一键撤销。',
+            confirmLabel: '移入回收站',
+            danger: true,
+        });
+        if (!ok || ctx.isCurrentView?.() === false)
+            return;
         let unconfirmed = false;
         for (let offset = 0; offset < ids.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
             const batch = ids.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE);
@@ -135,12 +137,12 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
             // Remove originals before releasing resources or awaiting reload so snapshots stand alone.
             ctx.history.value = ctx.history.value.filter(item => !deletedIds.has(item.id));
             // 查看器可能正指着被删掉的某一幅，先收起来，避免停在一张空图上
-            if (viewerIndex.value >= 0)
+            if (viewerIndex.value >= 0 && ctx.isCurrentView?.() !== false)
                 closeViewer();
             // 软删已在仓储层摘掉项目引用，整体重载一次即可同步展墙与项目下拉
             for (const id of confirmed)
                 releaseCardResources(id);
-            selectedIds.value = new Set(failed);
+            selectedIds.value = new Set([...selectedIds.value].filter(id => !deletedIds.has(id)));
         }
         // Also reconcile an unknown commit; never leave a successfully deleted batch visible after a lost response.
         if (done || unconfirmed) await loadGalleryStorage();

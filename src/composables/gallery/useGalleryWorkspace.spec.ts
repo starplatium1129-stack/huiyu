@@ -5,13 +5,14 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const mocks = vi.hoisted(() => ({
-  listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
+  confirm: vi.fn(), softDeleteArtworks: vi.fn(), listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
   route: { path: '/gallery', query: {} }, replace: vi.fn(),
 }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
-  listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
+  softDeleteArtworks: mocks.softDeleteArtworks, listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
   readLibrarySnapshot: mocks.snapshot, purgeExpiredTrash: vi.fn(async () => ({ purged: 0 })),
 } }))
+vi.mock('@/composables/useConfirm', () => ({ confirmAction: mocks.confirm }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, scenes: [], loras: [], popularCharacters: [] }) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => {} }))
@@ -428,4 +429,20 @@ it('loads trash exactly once on opening and on an active-trash KeepAlive return'
   env.gallery.toggleTrashMode()
   await flushPromises()
   expect(mocks.listTrash).toHaveBeenCalledTimes(3)
+})
+
+
+it('invalidates a bulk-delete approval when the gallery leaves and returns', async () => {
+  let resolve!: (approved: boolean) => void
+  mocks.confirm.mockReturnValueOnce(new Promise<boolean>(done => { resolve = done }))
+  const env = await setup()
+  env.gallery.selectedIds.value = new Set([1])
+  const pending = env.gallery.bulkDelete()
+  await env.hide()
+  await env.show()
+  resolve(true)
+  await pending
+  expect(mocks.softDeleteArtworks).not.toHaveBeenCalled()
+  expect(env.gallery.history.value.map(item => item.id)).toContain(1)
+  expect(env.gallery.bulkDeleting.value).toBe(false)
 })
