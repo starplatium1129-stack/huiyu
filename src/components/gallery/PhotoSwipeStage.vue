@@ -14,6 +14,7 @@ import 'photoswipe/style.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from '@/composables/gallery/galleryHelpers'
+import { sameArtworkMedia } from '@/composables/gallery/artworkMediaIdentity'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import type { ArtworkRecord } from '@/types/artwork'
 
@@ -62,7 +63,7 @@ function start() {
   const element = host.value
   if (!element || !props.items.length || props.index < 0) return
   const token = revision
-  const items = [...props.items]
+  const items = props.items.map(item => ({ ...item }))
   const data = items.map(item => ({ type: 'image', src: '', width: Number(item.width) || 832, height: Number(item.height) || 1216, alt: item.sceneTitle || '作品' }))
   const reduced = prefersReducedMotion()
   let instance: PhotoSwipe
@@ -115,7 +116,7 @@ function start() {
       try {
         const item = items[index]
         const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
-        if (revision !== token || request.signal.aborted) return
+        if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index])) return
         url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (blob) ownedUrls.add(url)
         if (!url) throw new Error('missing image')
@@ -124,7 +125,7 @@ function start() {
         decoding.add(image)
         image.src = url
         try { await image.decode() } finally { decoding.delete(image) }
-        if (revision !== token || request.signal.aborted || Math.abs(index - instance.currIndex) > 2) {
+        if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index]) || Math.abs(index - instance.currIndex) > 2) {
           releaseUrl(url)
           if (revision === token && urls.get(index) === url) urls.delete(index)
           return
@@ -159,7 +160,9 @@ function start() {
 }
 // goTo's external-selection path is instant, including the dialog's arrow keys.
 watch(() => props.index, index => { if (index >= 0 && viewer && viewer.currIndex !== index) viewer.goTo(index) })
-watch(() => props.items.map(item => item.id).join(','), start)
+watch(() => props.items.map(({ id, image_id, image_url, image_data }) => ({ id, image_id, image_url, image_data })), (items, previous) => {
+  if (items.length !== previous.length || items.some((item, index) => !sameArtworkMedia(item, previous[index]))) start()
+})
 onMounted(() => {
   motionMedia.addEventListener('change', syncMotionPreference)
   window.addEventListener('atelier:motion-preference', syncMotionPreference)

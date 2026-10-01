@@ -55,7 +55,7 @@ it('closing during decode immediately releases its URL and rejects late publicat
   expect(revoke).toHaveBeenCalledTimes(1)
 })
 
-it('A-B-A switching discards old storage reads and owns only new URLs', async () => {
+it.each([false, true])('media switching (same ID: %s) rejects old reads while metadata preserves the viewer', async sameId => {
   let first!: (blob: Blob) => void
   mocks.read.mockImplementationOnce(() => new Promise<Blob>(resolve => { first = resolve }))
     .mockResolvedValue(new Blob(['new']))
@@ -64,9 +64,12 @@ it('A-B-A switching discards old storage reads and owns only new URLs', async ()
   vi.spyOn(HTMLImageElement.prototype, 'decode').mockResolvedValue()
   const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 'a', image_id: 'a' }], index: 0 } })
   await flushPromises()
-  await wrapper.setProps({ items: [{ id: 'b', image_id: 'b' }] }); await flushPromises()
+  await wrapper.setProps({ items: [{ id: 'a', image_id: 'a', sceneTitle: 'Renamed' }] }); await flushPromises()
+  expect(mocks.destroyed).not.toHaveBeenCalled()
+  expect(mocks.read).toHaveBeenCalledTimes(1)
+  await wrapper.setProps({ items: [{ id: sameId ? 'a' : 'b', image_id: 'b' }] }); await flushPromises()
   expect(mocks.read.mock.calls[0][1].aborted).toBe(true)
-  await wrapper.setProps({ items: [{ id: 'a', image_id: 'a' }] }); await flushPromises()
+  await wrapper.setProps({ items: [{ id: 'a', image_id: 'a-new' }] }); await flushPromises()
   first(new Blob(['old'])); await flushPromises()
   expect(create).toHaveBeenCalledTimes(2)
   expect(mocks.refreshed).toHaveBeenCalledTimes(2)
