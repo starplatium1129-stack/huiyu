@@ -96,7 +96,7 @@ function frameIcon(res: ScenarioResolution) { return res === 'Close-up' ? 'close
 
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
-function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
+function norm(t: string) { return t.split(/[,\r\n\u2028\u2029]+/).map(s => s.trim().replace(/[\s-]+/g,'_')).filter(Boolean).join(', ') }
 function resInfo(res: ScenarioResolution) { return RES_MAP[res] }
 function violations(a: ScenarioAct) {
   const lower = a.prompt.toLowerCase()
