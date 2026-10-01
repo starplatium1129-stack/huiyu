@@ -116,7 +116,7 @@ import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useWorkspaceMigration } from '@/composables/useWorkspaceMigration'
 import { useConfirmState } from '@/composables/useConfirm'
@@ -130,7 +130,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   flash: [message: string]
-  loadBlueprint: [data: Record<string, unknown>]
+  loadBlueprint: [data: Record<string, unknown>, signal: AbortSignal]
 }>()
 
 const backup = useBackup((message) => emit('flash', message))
@@ -143,6 +143,12 @@ const utilityTrigger = ref<HTMLButtonElement | null>(null)
 const confirmation = useConfirmState()
 const pendingSummary = ref<BackupSummary | null>(null)
 let backupFileVersion = 0
+let blueprintRead: AbortController | null = null
+let blueprintViewActive = true
+function stopBlueprintRead() { blueprintViewActive = false; blueprintRead?.abort(); blueprintRead = null }
+onActivated(() => { blueprintViewActive = true })
+onDeactivated(stopBlueprintRead)
+onScopeDispose(stopBlueprintRead)
 
 /** 超过 7 天未备份（或从未备份）时在触发器上亮角标，菜单内给提示 */
 const BACKUP_REMIND_DAYS = 7
@@ -207,20 +213,26 @@ function exportBlueprint() {
 async function onBlueprintFilePicked(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
-  if (!file) return
+  if (!file || !blueprintViewActive) return
+  blueprintRead?.abort()
+  const request = new AbortController()
+  const draftAtPick = props.blueprintData
+  blueprintRead = request
+  input.value = ''
+  const current = () => blueprintViewActive && !request.signal.aborted && blueprintRead === request
   try {
     const text = await file.text()
+    if (!current() || props.blueprintData !== draftAtPick) return
     const parsed = JSON.parse(text)
     if (parsed && typeof parsed === 'object') {
-      emit('loadBlueprint', parsed as Record<string, unknown>)
+      emit('loadBlueprint', parsed as Record<string, unknown>, request.signal)
     } else {
       emit('flash', '无效的蓝图文件格式')
     }
   } catch {
-    emit('flash', '读取蓝图 JSON 失败')
+    if (current()) emit('flash', '读取蓝图 JSON 失败')
   }
-  input.value = ''
-  utilityOpen.value = false
+  if (current()) utilityOpen.value = false
 }
 
 function discard() {

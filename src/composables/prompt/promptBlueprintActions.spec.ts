@@ -100,3 +100,22 @@ describe('director blueprint round-trip', () => {
     expect(pb.subject).toEqual(original)
   })
 })
+
+
+it.each(['new-owner', 'edited-draft', 'changed-engine', 'cancelled-refresh'] as const)('stops late blueprint parameter writes after %s', async reason => {
+  const { pb, engine, animaState, context } = fixture()
+  let finish!: (value: boolean) => void
+  let current = true
+  context.refreshAnimaBackend.mockImplementation(() => new Promise<boolean>(resolve => { finish = resolve }))
+  const pending = loadBlueprint({ story: 'Imported story', drawEngine: 'anima', anima: { cfg: 11 }, size: '1216x832' },
+    { ...context, isCurrent: () => current, getDrawEngine: () => engine.value } as any)
+  expect(pb.story).toBe('Imported story')
+  if (reason === 'new-owner') current = false
+  if (reason === 'edited-draft') pb.setStory('Newer story')
+  if (reason === 'changed-engine') engine.value = 'sd'
+  animaState.value.cfg = 6
+  finish(reason !== 'cancelled-refresh')
+  expect((await pending).applied).toBe(false)
+  expect(animaState.value.cfg).toBe(6)
+  expect(pb.story).toBe(reason === 'edited-draft' ? 'Newer story' : 'Imported story')
+})
