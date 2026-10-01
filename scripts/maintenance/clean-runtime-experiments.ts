@@ -44,30 +44,36 @@ const KNOWN_EXPERIMENTS = new Set([
 ]);
 
 const daysIndex = process.argv.indexOf('--days');
-const DAYS = Number(process.argv[daysIndex + 1]) || 30;
+const DAYS = daysIndex < 0 ? 30 : Number(process.argv[daysIndex + 1]);
+if (!Number.isFinite(DAYS) || DAYS <= 0) throw new Error('--days must be a positive number');
 const PRUNE = process.argv.includes('--prune');
 const CUTOFF = Date.now() - DAYS * 24 * 60 * 60 * 1000;
 
-function scanDir(dir: string) {
-  // 递归求体积 + 最新 mtime（实验目录均 <100MB，遍历成本可忽略）
+export function scanDir(dir: string, io: Pick<typeof fs, 'lstatSync' | 'readdirSync'> = fs) {
   let bytes = 0;
   let newest = 0;
   let files = 0;
+  let complete = true;
   const stack = [dir];
   while (stack.length) {
-    const cur: any = stack.pop();
-    let entries;
-    try { entries = fs.readdirSync(cur, { withFileTypes: true }); } catch { continue; }
-    for (const ent of entries) {
-      const p = path.join(cur, ent.name);
-      try {
-        const st = fs.statSync(p);
-        if (st.isDirectory()) stack.push(p);
-        else { bytes += st.size; files += 1; if (st.mtimeMs > newest) newest = st.mtimeMs; }
-      } catch { /* 文件被占用/消失则忽略 */ }
-    }
+    const cur = stack.pop()!;
+    try {
+      const directory = io.lstatSync(cur);
+      if (!directory.isDirectory() || directory.isSymbolicLink()) { complete = false; continue; }
+      newest = Math.max(newest, directory.mtimeMs);
+      for (const ent of io.readdirSync(cur, { withFileTypes: true })) {
+        const file = path.join(cur, ent.name);
+        const stat = io.lstatSync(file);
+        if (stat.isSymbolicLink()) { complete = false; continue; }
+        if (stat.isDirectory()) stack.push(file);
+        else if (stat.isFile()) {
+          bytes += stat.size; files += 1;
+          newest = Math.max(newest, stat.mtimeMs);
+        } else complete = false;
+      }
+    } catch { complete = false; }
   }
-  return { bytes, newest, files };
+  return { bytes, newest, files, complete };
 }
 
 function fmtMB(bytes: number) {
@@ -94,7 +100,7 @@ function main() {
     const isKnown = KNOWN_EXPERIMENTS.has(name.name) || /^tmp-/.test(name.name);
     const info = scanDir(full);
     const entry = { name: name.name, bytes: info.bytes, ageDays: info.newest ? fmtAge(info.newest) : '(空)', path: full };
-    if (!isKnown) { unknown.push(entry); continue; }
+    if (!isKnown || !info.complete) { unknown.push(entry); continue; }
     if (info.newest && info.newest > CUTOFF) { active.push(entry); continue; }
     reclaimable.push(entry);
   }
@@ -115,7 +121,7 @@ function main() {
     for (const e of active) console.log(`  - ${e.name.padEnd(32)} ${fmtMB(e.bytes).padStart(9)}  最后活动 ${e.ageDays}`);
   }
   if (unknown.length) {
-    console.log(`\n未识别目录（未处理；确认是实验后请收编进 KNOWN_EXPERIMENTS）：`);
+    console.log(`\n未识别或未完整核验目录（未处理；链接与读取错误须先人工核查）：`);
     for (const e of unknown) console.log(`  - ${e.name.padEnd(32)} ${fmtMB(e.bytes).padStart(9)}  最后活动 ${e.ageDays}`);
   }
 
@@ -133,6 +139,11 @@ function main() {
       continue;
     }
     try {
+      const current = scanDir(e.path);
+      if (!current.complete || current.newest > CUTOFF) {
+        console.log(`  [跳过] ${e.name}（目录已变化或无法完整核验）`);
+        continue;
+      }
       fs.rmSync(e.path, { recursive: true, force: true });
       freed += e.bytes;
       ok += 1;
@@ -144,4 +155,4 @@ function main() {
   console.log(`\n删除 ${ok}/${reclaimable.length} 个目录，释放 ${fmtMB(freed)}`);
 }
 
-main();
+if (require.main === module) main();
