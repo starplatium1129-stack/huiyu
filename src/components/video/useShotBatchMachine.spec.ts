@@ -68,4 +68,17 @@ describe('shot batch operation recovery', () => {
     const { machine } = setup()
     expect(await machine.reconnectBatch('saved')).toBe(false)
   })
+  it('ignores a missing response from an older reconnect after a newer selection succeeds', async () => {
+    let reject!: (error: Error) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise((_resolve, fail) => { reject = fail }))
+      .mockResolvedValueOnce({ batch: { ...batch('done'), id: 'new' } } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
+    const { machine, error } = setup()
+    const old = machine.reconnectBatch('old')
+    await machine.reconnectBatch('new')
+    reject(new ApiClientError('gone', { kind: 'http', status: 410 }))
+    expect(await old).toBe(true)
+    expect(machine.batch.value?.id).toBe('new')
+    expect(error.value).toBe('')
+  })
+
 })
