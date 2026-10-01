@@ -216,13 +216,14 @@ async function onBlueprintFilePicked(event: Event) {
   if (!file || !blueprintViewActive) return
   blueprintRead?.abort()
   const request = new AbortController()
-  const draftAtPick = props.blueprintData
+  const fingerprint = () => JSON.stringify({ ...props.blueprintData, updatedAt: undefined })
+  const draftAtPick = fingerprint()
   blueprintRead = request
   input.value = ''
   const current = () => blueprintViewActive && !request.signal.aborted && blueprintRead === request
   try {
     const text = await file.text()
-    if (!current() || props.blueprintData !== draftAtPick) return
+    if (!current() || fingerprint() !== draftAtPick) return
     const parsed = JSON.parse(text)
     if (parsed && typeof parsed === 'object') {
       emit('loadBlueprint', parsed as Record<string, unknown>, request.signal)

@@ -13,9 +13,9 @@ vi.mock('@/composables/useWorkspaceMigration', () => ({ useWorkspaceMigration: (
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => ({ returnFocus: ref(null) }) }))
 
 it('only emits the newest blueprint file and expires its signal on cached navigation', async () => {
-  const active = ref(true), loaded = vi.fn(), flash = vi.fn()
+  const active = ref(true), loaded = vi.fn(), flash = vi.fn(), blueprint = ref({ story: 'draft', updatedAt: 1 })
   const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {
-    default: () => active.value ? h(PromptDataTools, { onLoadBlueprint: loaded, onFlash: flash }) : null,
+    default: () => active.value ? h(PromptDataTools, { blueprintData: blueprint.value, onLoadBlueprint: loaded, onFlash: flash }) : null,
   }) }), { global: { stubs: { StudioPopover: true, StudioTooltip: true, FluidTransition: true, ArchiveIcon: true } } })
   const input = wrapper.find<HTMLInputElement>('.pb-blueprint-file-input')
   const pick = async () => {
@@ -25,6 +25,7 @@ it('only emits the newest blueprint file and expires its signal on cached naviga
     return finish
   }
   const first = await pick(), second = await pick()
+  blueprint.value = { story: 'draft', updatedAt: 2 }; await nextTick()
   second('{"story":"second"}'); await flushPromises()
   first('{"story":"first"}'); await flushPromises()
   expect(loaded).toHaveBeenCalledTimes(1)
