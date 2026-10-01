@@ -1,18 +1,24 @@
 # 项目状态
 
-2026-10-01 [创作流程、画布与大库响应优化](audits/2026-10-01/creator-workflow-optimization.md)已完成源码、网页与 Rust release 候选：保存不回读全库、最近作品两次读取、图库整理／对比、作品主导航、配方核对、显式批次恢复及 GC 查询响应。绘制台恢复原默认侧栏比例，配方表不占画布高度；浏览器与隔离运行时证据见报告。本轮尚未更新 Tauri／NSIS 或已安装 1.7.4，不以候选替代安装、模型或原生设备验收。
+2026-10-01 桌面实际验收反馈已修复并经统一入口完整安装、启动：回收站恢复按钮拥有组件样式，增加确认后的手动清空；旧来源资料库可协调同宿主闲置辅助窗口清理，仍保护草稿、在途保存和外部窗口；反推换装提示使用中文。当前样张库 748 条旧图映射已修正，维护页统一读取清单，莱万汀角色样张换为既有「熔岩工坊」。当次桌面网关提供的 1,641 条样张、3,282 个原图/缩略图 URL 与源 SHA 全部匹配；安装程序/原生库及内置角色图、画像索引核验通过，个人内容复查零差异。版本仍为 1.7.4，本次为本机未签名测试包，公开发行材料未更新。单测、Rust 清空事务、双主题桌面 CSS 视口与三文档清理回归通过；本机实际操作仍由用户继续验收，未执行真实生成或清空个人作品库。
+
+本次只读核对该机 `%APPDATA%/com.aics.studio/workspace-active.json` 不存在，实际资料库仍走旧来源 IndexedDB；不能据下方历史迁移登记声称当前已激活 SQLite，也未自动迁移用户资料。备份、原始截图与日志保留在被忽略的 `runtime/desktop-acceptance-fixes-20261001-*`、`runtime/gallery-maintenance-20261001-ui/`、`runtime/outfit-ui-20261001/`、`runtime/desktop-artwork-cleanup-20261001-final/` 与 `runtime/laevatain-sample-repair-20261001/`，属于本机核验材料。
+
+2026-10-01 随后按用户要求合入远端 `cloud/random-inspiration-20261001`：随机灵感可保留场景地点、时段与关系，并通过受上下文约束的临时覆盖进入编译和草稿；配方版本为 v2。89 项关联测试、应用类型、前端构建/体积预算、定向 ESLint 与单体门禁通过。真实模型出图未执行，当前桌面仍为上方已验收的安装构建；该合并后的源码尚未重新打包安装。功能边界见 [随机灵感设计](guides/engineering/random-prompt-assembler-design.md)。
+
+2026-10-01 [创作流程、画布与大库响应优化](audits/2026-10-01/creator-workflow-optimization.md)已完成源码、网页与 Rust release 候选：保存不回读全库、最近作品两次读取、图库整理／对比、作品主导航、配方核对、显式批次恢复及 GC 查询响应。绘制台恢复原默认侧栏比例，配方表不占画布高度；浏览器与隔离运行时证据见报告。上述改动已随本次 Tauri／NSIS 本机安装到达客户端，不替代模型或原生设备验收。
 
 > 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)。旧批次原文从 Git 历史查询。
 
-本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；尚未重新签名、打包、安装或发布。下方签名发行与安装记录仍对应原 1.7.4，不代表本轮源码已到达客户端。
+本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；已随 10 月 1 日本机测试包安装，尚未重新签名或公开发布。下方签名发行记录仍对应原公开 1.7.4。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
 | 当前源码/构建 | 1.7.4 签名发行材料已完成；图库合并缩略图重复读取并跳过筛选后的过时队列，既有 Rust 后端及桌面改进保留 | [1.7.4 说明](releases/v1.7.4.md)、[本轮有限优化与证据](audits/2026-09-30/release-offline-optimization.md)、[后端优化与验证](audits/2026-09-29/backend-optimization.md) |
-| 最近本机安装 | 1.7.4 已正常安装至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE与两份DLL匹配候选哈希；不带 Cleanup，按 NoRestart 保持退出。9个旧打包文件的此前授权清理与本轮缓存隔离分别记录 | [本轮发行与安装边界](audits/2026-09-30/release-offline-optimization.md)、[此前优化、安装与限制](audits/2026-09-30/local-optimization.md) |
-| 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[迁移安装证据](evidence/architecture-mainline-2026-09-26.json) |
+| 最近本机安装 | 2026-10-01 1.7.4 本机测试构建已完整安装至 `C:/Program Files/AI-CG-Studio`；宿主、Rust EXE与两份 DLL 匹配候选哈希，内容先备份再同步，启动状态为 ready | 当次本机核验材料与限制见本页顶部；[此前发行与安装边界](audits/2026-09-30/release-offline-optimization.md) |
+| 资料迁移 | 2026-09-26 曾登记旧来源 3002 迁入 SQLite；10 月 1 日本次机器未发现 active pointer，实际仍为旧来源 IndexedDB，未进行新迁移 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[历史迁移证据](evidence/architecture-mainline-2026-09-26.json) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [实验操作与验收边界](workflow.md#门禁与构建) |
 
 源码、构建、安装和设备验收分别核对。9月29日记录的 `D:/AI-CG-Studio` 安装、117项Rust测试、22项前端测试及ready状态是历史证据，不替代本轮验收。本轮复用已绑定NSIS正常安装，不带Cleanup；随后只清理用户明确指定且已备份的9个旧文件。8张喵喵v1.2/rella本地SFW对比已完成并关闭自有ComfyUI，不向生产提示词推广。当前实机主屏3840×2160/175%，未以浏览器DPR模拟代替原生窗口或多屏验收。

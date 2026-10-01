@@ -30,6 +30,7 @@ export interface TrashEntry {
   projectRefs: Array<{ projectId: unknown; hadReference: boolean }>
   imageIds: string[]
 }
+export type ArtworkTrashSelection = Pick<TrashEntry, 'id' | 'deletedAt'>
 
 /** Business capabilities shared by the Web library and the future desktop authority. */
 export interface ArtworkRepository {
@@ -62,5 +63,7 @@ export interface ArtworkRepository {
   softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]>
   restoreArtwork(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }>
   purgeExpiredTrash(): Promise<{ purged: number }>
+  /** Permanently remove only the confirmed tombstones; newer deletions stay recoverable. */
+  purgeTrash(entries: ArtworkTrashSelection[]): Promise<{ purged: number }>
   listTrash(): Promise<TrashEntry[]>
 }

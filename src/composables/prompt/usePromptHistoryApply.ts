@@ -60,6 +60,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.flash(parsed.error, 9000, 'warning')
       return false
     }
+    pb.randomVariation = null
     const { recipe: entry, notes: restoreNotes } = parsed
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
     if (!entry.engine) restoreNotes.push('旧作品未记录引擎，按 SD 配方读取')

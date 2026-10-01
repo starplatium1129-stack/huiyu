@@ -126,15 +126,7 @@
           @cancel="cancelGeneration"
         />
         <!-- 特典服装换装提示：当服装被通用特典或反推顶替时出现，附一键恢复 -->
-        <div v-if="outfitOverridden" class="outfit-override-note" role="status">
-          <ArchiveIcon name="wardrobe" class="outfit-override-icon" />
-          <span class="outfit-override-text">
-            已换装为「{{ outfitReplacedLabel || outfitOverrideTokens.slice(0, 3).join('、') }}」
-          </span>
-          <button type="button" class="outfit-override-restore" @click="pb.clearOutfitOverride()">
-            恢复默认服装
-          </button>
-        </div>
+        <OutfitOverrideNotice v-if="outfitOverridden" />
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
@@ -199,6 +191,7 @@ import DirectorLayoutControls from '@/components/director/DirectorLayoutControls
 import { charOptions } from '@/composables/scene/directorOptions'
 const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
+const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))
 const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
 const PromptInspectorRender = defineAsyncComponent(() => import('@/components/director/PromptInspectorRender.vue'))
 const PromptInspectorStyle = defineAsyncComponent(() => import('@/components/director/PromptInspectorStyle.vue'))
@@ -285,8 +278,6 @@ generationPresetSummary,
 generateBlockReason,
 cancelGeneration,
 outfitOverridden,
-outfitReplacedLabel,
-outfitOverrideTokens,
 sdQueue,
 materialBindings,
 renderBindings,

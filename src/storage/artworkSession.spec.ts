@@ -102,4 +102,14 @@ describe('document cleanup exclusion', () => {
     await expect(createArtworkSession(undefined).exclusively(work)).rejects.toThrow('跨窗口安全清理')
     expect(work).not.toHaveBeenCalled()
   })
+  it('does not reacquire a document lease when the document stops during cleanup', async () => {
+    const manager = lockManager(), client = createArtworkSession(manager.locks)
+    const entered = deferred(), release = deferred()
+    const cleanup = client.exclusively(async () => { entered.resolve(); await release.promise })
+    await entered.promise
+    await client.stop()
+    release.resolve(); await cleanup
+    expect(manager.held.size).toBe(0)
+    expect(manager.pending).toEqual([])
+  })
 })

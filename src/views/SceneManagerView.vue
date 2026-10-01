@@ -149,7 +149,9 @@
             :class="{ active: selectedImageId === s.id }"
             @click="previewImage(s)"
           >
-            <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(`/scene-showcase/thumbs/${encodeURIComponent(s.id)}.jpg?v=${showcaseVersion}`)" loading="lazy" class="sm-card-thumb" @error="onThumbError" alt="" />
+            <RuntimeImage :src="thumbUrl(s.id)" v-slot="{ image, failed }">
+              <img v-if="image.src && !failed" v-bind="image" loading="lazy" class="sm-card-thumb" alt="" />
+            </RuntimeImage>
             <span class="sm-card-id">{{ s.id }}</span>
             <span class="sm-card-title">{{ s.title }}</span>
             <span class="sm-card-meta">{{ charLabel(s.char) }} · {{ s.rating || 'All' }}</span>
@@ -169,7 +171,9 @@
               <button class="btn btn-ghost btn-sm" type="button" @click="selectedImageId = ''">关闭</button>
             </span>
           </div>
-          <img :crossorigin="runtimeResourceCors()" class="image-preview-img" :src="resolveRuntimeUrl(showcaseUrl)" :alt="selectedImageTitle" @error="onShowcaseMissing" />
+          <RuntimeImage :src="showcaseUrl" v-slot="{ image, failed }">
+            <img v-if="image.src && !failed" v-bind="image" class="image-preview-img" :alt="selectedImageTitle" @error="onShowcaseMissing" />
+          </RuntimeImage>
           <input ref="showcaseFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
           <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
         </div>
@@ -462,7 +466,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
@@ -488,7 +491,7 @@ tags, pagedTags, hl, tagSearchDebounced, tagUsage, startEditTag,
 deleteTag, tagTotalPages, tagPage, homeHeroes, selectedHeroId, previewHero,
 selectedHeroTitle, uploadBusy, pickHero, resetHero, heroUrl, onHeroPicked,
 showcaseError, showcaseFeedback, imageSearch, imageTypeFilter, allShowcaseItems, filteredImageScenes,
-pagedImageScenes, selectedImageId, previewImage, showcaseVersion, onThumbError, charLabel,
+pagedImageScenes, selectedImageId, previewImage, thumbUrl, charLabel,
 imageTotalPages, imagePage, selectedImageTitle, pickShowcase, showcaseUrl, onShowcaseMissing,
 onShowcasePicked, detectDuplicates, dupResult, dupGroups, dupChecked, deleteSceneFromDup,
 importInput, importScenes, importResult, TOOLS, toolRunning, runTool,

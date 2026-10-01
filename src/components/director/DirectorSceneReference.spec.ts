@@ -82,6 +82,18 @@ describe('scene canvas reference', () => {
     expect(wrapper.find('figure').exists()).toBe(false)
   })
 
+  it('uses the current manifest thumbnail instead of reconstructing an old filename', async () => {
+    vi.mocked(fetch).mockResolvedValue({ ok: true, json: async () => ({ entries: [
+      { id: 'pc_alice_library', title: '书架之间', char: 'alice', type: 'popular', rating: 'All',
+        image: 'images/pc_current_alice_library.png', thumb: 'thumbs/pc_current_alice_library.webp' },
+    ] }) } as Response)
+    context.store.subject = { kind: 'popular', characterId: 'alice', blueprintId: 'library' }
+    context.store.sceneBlueprints = [{ id: 'library', characterId: 'alice', title: '书架之间', sampleRating: 'All', adult: false }]
+    const wrapper = mount(DirectorSceneReference)
+    await flushPromises()
+    expect(wrapper.get('img').attributes('src')).toBe('/scene-showcase/thumbs/pc_current_alice_library.webp')
+  })
+
   it('keeps missing or ambiguous manifest entries closed', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ entries: [
       { id: 'scene_one', title: 'A', char: 'nene', rating: 'All' },

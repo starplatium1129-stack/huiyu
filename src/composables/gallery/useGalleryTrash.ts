@@ -1,8 +1,10 @@
-import { onActivated, onDeactivated, onUnmounted, watch } from 'vue'
+import { onActivated, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { confirmAction } from '@/composables/useConfirm'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
-export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void> } {
+export function useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean> } {
+const trashClearing = ref(false)
 let loadVersion = 0
 let restoreVersion = 0
 let publishedIds = new Set<string | number>()
@@ -19,7 +21,7 @@ onActivated(() => {
 // Opening trash is owned by toggleTrashMode; only invalidate on closing here.
 watch(trashMode, visible => { if (!visible) invalidateLoads() }, { flush: 'sync' })
 async function loadTrash() {
-  if (disposed || !active || !trashMode.value) return
+  if (disposed || !active || !trashMode.value || trashClearing.value) return
   const version = ++loadVersion
   const restoration = restoreVersion
   try {
@@ -28,6 +30,8 @@ async function loadTrash() {
     entries.sort((a, b) => Number(b.deletedAt) - Number(a.deletedAt))
     trashItems.value = entries
     const ids = publishedIds = new Set<string | number>(entries.map(entry => entry.id))
+    const keys = new Set(entries.map(entry => String(entry.id)))
+    for (const key of Object.keys(trashThumbs)) if (!keys.has(key)) delete trashThumbs[key]
     for (const entry of entries) {
       if (version !== loadVersion) return
       if (!ids.has(entry.id)) continue
@@ -43,7 +47,7 @@ async function loadTrash() {
 }
 
 async function restoreTrashItem(id: string | number) {
-  if (trashBusy.value !== null) return
+  if (trashBusy.value !== null || trashClearing.value) return
   trashBusy.value = id
   try {
     const result = await artworkRepository.restoreArtwork(id)
@@ -68,5 +72,30 @@ async function restoreTrashItem(id: string | number) {
     trashBusy.value = null
   }
 }
-return { loadTrash, restoreTrashItem }
+async function clearTrash() {
+  if (disposed || !active || !trashMode.value || trashClearing.value || trashBusy.value !== null || !trashItems.value.length) return
+  const entries = trashItems.value.map(({ id, deletedAt }) => ({ id, deletedAt }))
+  trashClearing.value = true
+  let accepted = false
+  try {
+    const confirmed = await confirmAction({
+      title: `清空回收站中的 ${entries.length} 幅作品？`,
+      message: '清空后无法从回收站恢复。仍在其他作品或草稿中使用的图片会保留。',
+      confirmLabel: '永久清空', danger: true,
+    })
+    if (!confirmed || disposed || !active || !trashMode.value) return
+    accepted = true
+    invalidateLoads()
+    restoreVersion++
+    const { purged } = await artworkRepository.purgeTrash(entries)
+    showToast(purged ? `已永久清理 ${purged} 幅回收站作品` : '回收站已变化，未删除新的作品', purged ? 'success' : 'info')
+  } catch (error) {
+    console.warn('[gallery] clear trash failed', error)
+    showToast('清理未完成，请重新查看回收站后重试', 'warning')
+  } finally {
+    trashClearing.value = false
+    if (accepted) await loadTrash()
+  }
+}
+return { loadTrash, restoreTrashItem, clearTrash, trashClearing }
 }

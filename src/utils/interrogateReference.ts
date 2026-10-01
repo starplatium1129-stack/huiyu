@@ -33,7 +33,8 @@ const STABLE_DETAILS_RE = /^(?:freckles|facial_markings|birthmark|(?:facial|face
 const ACCESSORY_RE = /^(?:[a-z0-9]+_)*(?:headband|hairband|earrings?|ear_clips?|hairclips?|hair_clips?|hair_ribbons?|hair_ornaments?|hair_flower|necklace|pendant|brooch|bracelet|ribbon|bow|crown|tiara|glasses|goggles)$/
 const TEMPORARY_BODY_STATE_RE = /^(?:wet_(?:hair|skin)|messy_hair|windblown_hair|red_ears|sweaty_skin|water_droplets|sweat|bare_(?:shoulders|arms|legs|back|streaks)|backless|off_shoulder|collarbone|shoulder_blade)$/
 
-function stableIdentity(key: string): boolean {
+export function isStableIdentityToken(token: string): boolean {
+  const key = normalizeKey(token)
   return Boolean(identityDomainOf(key)) || SPECIES.has(key)
     || EAR_TRAIT_RE.test(key) || APPENDAGE_RE.test(key) || EXTRA_HAIR_RE.test(key)
     || EXTRA_EYE_RE.test(key) || SKIN_COLOR_RE.test(key) || STABLE_DETAILS_RE.test(key)
@@ -51,7 +52,7 @@ function isAtomicTag(raw: string, key: string, catalogKeys: ReadonlySet<string>)
   // Unknown long space-separated phrases are prose candidates. Underscored
   // action tags and known catalog entries need not fit an arbitrary word count.
   return !(/\s/.test(unweighted) && words.length > 3 && !catalogKeys.has(key)
-    && !isGarmentToken(key) && !stableIdentity(key))
+    && !isGarmentToken(key) && !isStableIdentityToken(key))
 }
 
 /** Split newly inferred reference tags without modifying user-authored tags. */
@@ -87,7 +88,7 @@ export function splitReferenceTags(
       result.excludedIdentity.push(key)
     } else if (!atomic) {
       result.uncertain.push(raw)
-    } else if (stableIdentity(key)) {
+    } else if (isStableIdentityToken(key)) {
       result.excludedIdentity.push(key)
     } else if ((bodyKeys.has(key) || /(?:^|_)(?:hair|eyes?|skin|ears?|tails?|wings?|horns?)$/.test(key))
       && !TEMPORARY_BODY_STATE_RE.test(key) && !CLOSED_EYES_TOKENS.has(key) && !GAZE_AND_EYE_DETAIL_TOKENS.has(key)) {

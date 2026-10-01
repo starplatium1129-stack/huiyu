@@ -28,6 +28,7 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'restoreArtwork': return ['POST', `/artworks/${id}/restore?idType=${typeof command.id}`]
     case 'saveProject': return ['POST', '/projects']
     case 'purgeExpiredTrash': return ['POST', '/trash/purge']
+    case 'purgeTrash': return ['POST', '/trash/purge-selected']
     case 'collectGarbage': return ['POST', '/media/collect']
     case 'prepareMedia': return ['POST', `/media-uploads/${operation}`]
     case 'uploadMediaChunk': return ['PUT', `/media-uploads/${operation}/chunks`]

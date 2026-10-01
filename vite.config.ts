@@ -173,8 +173,12 @@ export default defineConfig(async ({ mode }) => {
               id.includes('vite/preload-helper')) {
             return 'shared'
           }
-          // 提示词策略与热门内容单独成块：改一个词条不应让全量 vendor 缓存失效
-          if (id.includes('src/utils/promptPolicy') ||
+          // Prompt rendering, draft persistence and shared variation helpers are cached
+          // by their actual consumers; full static closures remain budgeted.
+          if (id.includes('src/composables/prompt/usePromptDraft') ||
+              id.includes('src/utils/promptBuilderPersistence') ||
+              id.includes('src/utils/randomVariation') ||
+              id.includes('src/utils/promptPolicy') ||
               id.includes('src/utils/promptCompiler') ||
               id.includes('src/utils/popularContent') ||
               id.includes('src/config/artistStyleCatalog') ||

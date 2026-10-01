@@ -8,13 +8,13 @@ import { createDesktopArtworkRepository } from './desktop/artworkRepository'
 import { getDesktopRuntime, initializeDesktopRuntime, onDesktopRuntime } from './desktop/runtime'
 import { hostApi } from './desktop/hostApi'
 import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
-import { maintenanceFrozen } from './maintenanceParticipants'
+import { artworkCleanupFrozen, maintenanceFrozen } from './maintenanceParticipants'
 
 export function isDesktopHost(): boolean {
   return '__TAURI_INTERNALS__' in window || Boolean(hostApi()) || isNativeDesktopOrigin(location.origin)
 }
 export async function initializePlatform(isBusy: () => boolean): Promise<() => void> {
-  let stopRuntime = () => {}, stopConnection = () => {}, stopMaintenance = () => {}
+  let stopRuntime = () => {}, stopConnection = () => {}, stopMaintenance = () => {}, stopArtworkCleanup = () => {}
   if (isDesktopHost()) {
     setProfileConnectionBlocked(true)
     // While identity is unknown, every artwork call goes to a disconnected
@@ -46,11 +46,13 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     await sync().catch(failure)
     stopConnection = onDesktopRuntime(() => { syncing = syncing.then(sync).catch(failure) })
     const { installDesktopMaintenance } = await import('./desktop/maintenance')
-    stopMaintenance = installDesktopMaintenance({ isBusy, waitForSync: () => syncing })
+    stopMaintenance = installDesktopMaintenance({ isBusy: () => isBusy() || artworkCleanupFrozen(), waitForSync: () => syncing })
+    const { installDesktopArtworkCleanup } = await import('./desktop/artworkCleanup')
+    stopArtworkCleanup = await installDesktopArtworkCleanup({ isBusy, waitForSync: () => syncing })
   }
   const preventLoss = (event: BeforeUnloadEvent) => {
     if (hasPendingProfileWrites() || hasProfileRecoveryData()) { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', preventLoss)
-  return () => { stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
+  return () => { stopArtworkCleanup(); stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
 }

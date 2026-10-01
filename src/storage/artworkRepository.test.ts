@@ -323,7 +323,7 @@ describe('artworkRepository 惰性清理', () => {
 
     await expect(repo.purgeExpiredTrash()).rejects.toThrow('缩略图存储暂时不可用')
     expect(kv.store.get(KV.trash)).toHaveLength(1)
-    expect(images.store.has('img-a')).toBe(false)
+    expect(images.store.has('img-a')).toBe(true)
     expect(kv.store.has(thumbKey('img-a'))).toBe(true)
 
     await expect(repo.purgeExpiredTrash()).resolves.toEqual({ purged: 1 })

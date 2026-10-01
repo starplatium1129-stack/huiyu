@@ -152,6 +152,7 @@ impl Context {
                 | "restoreArtwork"
                 | "saveProject"
                 | "purgeExpiredTrash"
+                | "purgeTrash"
                 | "prepareSave"
                 | "uploadChunk"
                 | "commitSave"
@@ -208,7 +209,7 @@ impl Context {
                 .transpose()
                 .map(|value| value.unwrap_or(Value::Null)),
             "patchArtwork" | "softDeleteArtwork" | "softDeleteArtworks" | "hardDeleteArtwork"
-            | "restoreArtwork" | "saveProject" | "purgeExpiredTrash" => {
+            | "restoreArtwork" | "saveProject" | "purgeExpiredTrash" | "purgeTrash" => {
                 records::mutate(self, principal, command)
             }
             "organizeArtworks" | "undoArtworkOrganization" => {

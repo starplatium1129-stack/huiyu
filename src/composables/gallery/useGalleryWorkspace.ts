@@ -495,6 +495,7 @@ export function useGalleryWorkspace() {
     const { copiedPrompt, copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
     const trashActions = useGalleryTrash({ trashMode, trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
+    const { clearTrash, trashClearing } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
@@ -506,7 +507,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,
-        formatTrashTime, restoreTrashItem, galleryLoading, galleryError, history, resetGalleryFilters,
+        formatTrashTime, restoreTrashItem, clearTrash, trashClearing, galleryLoading, galleryError, history, resetGalleryFilters,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,

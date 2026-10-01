@@ -21,10 +21,14 @@ function scoped<T>(setup: () => T): T {
   const scope = effectScope(); scopes.push(scope)
   return scope.run(setup)!
 }
-beforeEach(() => { vi.mocked(maintenanceApi.getHomeHero).mockResolvedValue(empty()) })
+beforeEach(() => {
+  vi.mocked(maintenanceApi.getHomeHero).mockResolvedValue(empty())
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ entries: [] }) }))
+})
 afterEach(() => {
   scopes.splice(0).forEach(scope => scope.stop())
   setRuntimeOrigin(null)
+  vi.unstubAllGlobals()
   vi.resetAllMocks()
 })
 

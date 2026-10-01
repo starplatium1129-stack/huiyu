@@ -32,6 +32,45 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
 }
 
 for (const theme of ['light', 'dark']) {
+  test(`gallery trash styled restoration and confirmed clearing ${theme}`, async ({ page }, info) => {
+    await seedGallery(page, theme)
+    await page.getByRole('button', { name: '选择', exact: true }).click()
+    await page.locator('[data-card-id="gallery-review-0"] .artwork-button').click()
+    await page.locator('[data-card-id="gallery-review-1"] .artwork-button').click()
+    await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
+    await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
+    await page.getByRole('group', { name: '管理作品' }).getByRole('button', { name: /回收站/ }).click()
+    await expect(page.locator('.trash-card')).toHaveCount(2)
+    const restore = page.getByRole('button', { name: /恢复作品/ }).first()
+    const clear = page.getByRole('button', { name: '清空回收站', exact: true })
+    for (const [width, height] of [[1920, 1080], [2560, 1440], [3840, 2160], [960, 900]]) {
+      await page.setViewportSize({ width, height })
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+      await expect(clear).toBeInViewport()
+      await expect(restore).toBeInViewport()
+      expect(await restore.evaluate(el => parseFloat(getComputedStyle(el).borderRadius))).toBeGreaterThanOrEqual(4)
+      expect(await restore.evaluate(el => parseFloat(getComputedStyle(el).minHeight))).toBeGreaterThanOrEqual(32)
+      for (const control of [restore, clear, page.locator('.trash-hint'), page.locator('.trash-count')]) {
+        expect(await control.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      }
+      await page.screenshot({ path: info.outputPath(`trash-${theme}-${width}.png`) })
+    }
+    await clear.click()
+    const dialog = page.getByRole('alertdialog')
+    await expect(dialog).toContainText('无法从回收站恢复')
+    await dialog.getByRole('button', { name: '取消', exact: true }).click()
+    await expect(page.locator('.trash-card')).toHaveCount(2)
+    await restore.click()
+    await expect(page.locator('.trash-card')).toHaveCount(1)
+    await clear.click()
+    await dialog.getByRole('button', { name: '永久清空', exact: true }).click()
+    await expect(page.locator('.trash-card')).toHaveCount(0)
+    await expect(clear).toBeDisabled()
+    expect(await clear.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+    await page.getByRole('button', { name: '全部作品', exact: true }).click()
+    await expect(page.locator('[data-card-id]')).toHaveCount(5)
+    await info.attach('viewport', { body: JSON.stringify(await page.evaluate(() => ({ cssWidth: innerWidth, cssHeight: innerHeight, devicePixelRatio, visualScale: visualViewport?.scale }))), contentType: 'application/json' })
+  })
   if (theme === 'dark') test(`gallery preview keeps real images through the closing fade ${theme}`, async ({ page }, testInfo) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))

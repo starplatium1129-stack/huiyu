@@ -3,6 +3,8 @@ use canonical::{entity_key, stringify};
 use rusqlite::{OptionalExtension, Row, params};
 use std::collections::{BTreeSet, HashSet};
 pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
+#[cfg(test)]
+mod tests;
 fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     let value: String = row.get(column)?;
     serde_json::from_str(&value).map_err(|e| {
@@ -274,6 +276,7 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
                 for key in &keys { c.check_cancel()?; c.db.execute("DELETE FROM media_refs WHERE owner_kind='trash' AND owner_id=?",[key])?; c.db.execute("DELETE FROM artworks WHERE id_key=?",[key])?; }
                 receipt["purged"]=json!(keys.len());
             }
+            "purgeTrash" => purge_selected(c,command,&mut receipt)?,
             "softDeleteArtworks" => batch_delete(c,command,revision,&mut receipt)?,
             _ => {
                 let key=entity_key(&command["id"])?;
@@ -306,6 +309,39 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
         }
         c.commit_operation(&op,&receipt)?; Ok(receipt)
     })
+}
+fn purge_selected(c: &Context, command: &Value, receipt: &mut Value) -> Result<()> {
+    let entries = command["entries"]
+        .as_array()
+        .filter(|items| !items.is_empty() && items.len() <= 200)
+        .ok_or_else(|| invalid("Trash purge requires 1 to 200 entries"))?;
+    let mut seen = HashSet::new();
+    let mut purged = 0;
+    for entry in entries {
+        c.check_cancel()?;
+        let key = entity_key(&entry["id"])?;
+        let deleted_at = entry["deletedAt"]
+            .as_i64()
+            .filter(|time| *time >= 0)
+            .ok_or_else(|| invalid("Invalid trash deletion timestamp"))?;
+        if !seen.insert(key.clone()) {
+            return Err(invalid("Duplicate trash purge entry"));
+        }
+        // The confirmation owns this tombstone, never a restored or newly deleted artwork.
+        let exists = c.db.prepare_cached("SELECT EXISTS(SELECT 1 FROM trash t JOIN artworks a ON a.id_key=t.artwork_key WHERE t.artwork_key=? AND t.deleted_at=? AND a.deleted_at=t.deleted_at)")?
+            .query_row(params![key,deleted_at], |row| row.get::<_,bool>(0))?;
+        if !exists {
+            continue;
+        }
+        c.db.execute(
+            "DELETE FROM media_refs WHERE owner_kind='trash' AND owner_id=?",
+            [&key],
+        )?;
+        c.db.execute("DELETE FROM artworks WHERE id_key=?", [&key])?;
+        purged += 1;
+    }
+    receipt["purged"] = json!(purged);
+    Ok(())
 }
 fn restore(c: &Context, key: &str, revision: i64) -> Result<()> {
     let (snapshot, refs) =

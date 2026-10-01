@@ -5,7 +5,7 @@ export const MAX_RANDOM_CANDIDATES = 8
 export interface RandomRecipe {
   schemaVersion: 1
   poolVersion: number
-  algorithm: 'huiyu-random-v1'
+  algorithm: 'huiyu-random-v2'
   seed: number
   config: Omit<RandomInspirationOptions, 'rng' | 'identityExclude'> & { identityExclude?: string[] }
 }
@@ -23,12 +23,12 @@ export function randomRecipe(options: RandomInspirationOptions, seed: number): R
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('种子须为 0–4294967295 的整数')
   const { rng: _rng, identityExclude, ...config } = options
   return {
-    schemaVersion: 1, poolVersion: pools.version, algorithm: 'huiyu-random-v1', seed,
+    schemaVersion: 1, poolVersion: pools.version, algorithm: 'huiyu-random-v2', seed,
     config: JSON.parse(JSON.stringify({ ...config, ...(identityExclude ? { identityExclude: [...identityExclude] } : {}) })),
   }
 }
 export function replayRandomRecipe(recipe: RandomRecipe) {
-  if (recipe.schemaVersion !== 1 || recipe.poolVersion !== pools.version || recipe.algorithm !== 'huiyu-random-v1') throw new Error('随机配方版本不兼容')
+  if (recipe.schemaVersion !== 1 || recipe.poolVersion !== pools.version || recipe.algorithm !== 'huiyu-random-v2') throw new Error('随机配方版本不兼容')
   return randomPromptPlan({ ...recipe.config, identityExclude: recipe.config.identityExclude ? new Set(recipe.config.identityExclude) : undefined, rng: seededRandom(recipe.seed) })
 }
 export function randomCandidates(options: RandomInspirationOptions, seed: number, count: number) {

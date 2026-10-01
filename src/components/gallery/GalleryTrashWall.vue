@@ -1,8 +1,14 @@
 <template>
-  <div class="trash-wall" :style="{ '--wall-cols': columnCount }">
+  <div class="trash-wall" :style="{ '--wall-cols': columnCount }" :aria-busy="trashClearing">
     <div class="trash-toolbar">
-      <span class="trash-hint">软删保留 30 天，超期自动清理；点「恢复」放回展墙</span>
-      <span class="trash-count" aria-live="polite">{{ trashItems.length }} 条</span>
+      <span class="trash-hint">删除的作品保留 30 天，可恢复，也可提前清空</span>
+      <div class="trash-actions">
+        <span class="trash-count" aria-live="polite">{{ trashItems.length }} 幅作品</span>
+        <button class="btn btn-ghost btn-danger btn-sm" type="button"
+          :disabled="!trashItems.length || trashBusy !== null || trashClearing" @click="emit('clear')">
+          <ArchiveIcon name="broom" />{{ trashClearing ? '清理中…' : '清空回收站' }}
+        </button>
+      </div>
     </div>
     <template v-if="trashItems.length">
       <article
@@ -28,7 +34,7 @@
         </div>
         <div class="artwork-tools">
           <StudioTooltip anchor content="恢复放回展墙">
-            <button class="artwork-tool" type="button" :disabled="trashBusy === entry.id"
+            <button class="btn btn-ghost btn-sm trash-restore" type="button" :disabled="trashBusy !== null || trashClearing"
               :aria-label="`恢复作品：${trashPrompt(entry)}`"
               @click="emit('restore', entry.id)">
               <ArchiveIcon name="spark" /><span>{{ trashBusy === entry.id ? '恢复中…' : '恢复' }}</span>
@@ -56,9 +62,13 @@ defineProps<{
   trashItems: TrashEntry[]
   trashThumbs: Record<string, string>
   trashBusy: string | number | null
+  trashClearing: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'restore', id: string | number): void
+  (e: 'clear'): void
 }>()
 </script>
+
+<style scoped src="@/assets/css/gallery-trash.css"></style>

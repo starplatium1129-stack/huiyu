@@ -87,8 +87,6 @@ export function usePromptWorkspace() {
     // 热门角色默认会注入 12 个服装 tag 加一整段 "She wears ..." 散文，参考图服装
     // 追加在末尾会被淹没。故反推出跨族服装时改为整体顶替，并给用户一键恢复的入口。
     const outfitOverridden = computed(() => pb.isPopular && Boolean(pb.outfitOverride?.tokens.length));
-    const outfitOverrideTokens = computed(() => pb.outfitOverride?.tokens ?? []);
-    const outfitReplacedLabel = computed(() => pb.outfitOverride?.replaced ?? '');
     // ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
     // 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
     const engine = useDirectorEngine({
@@ -531,7 +529,7 @@ export function usePromptWorkspace() {
         callGenerate, inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo,
         addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
-        cancelGeneration, outfitOverridden, outfitReplacedLabel, outfitOverrideTokens, sdQueue,
+        cancelGeneration, outfitOverridden, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings,
         recipePreviewContext: { engine: drawEngine, sdJob: captureJob, animaRequest: () => engine.buildAnimaRequest(true) },
     };

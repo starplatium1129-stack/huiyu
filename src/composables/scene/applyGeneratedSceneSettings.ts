@@ -5,6 +5,7 @@ import type { AnimaGenerationState } from '@/types/anima'
 /** Apply the recorded engine before its settings; unsupported resources are reported explicitly. */
 export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPopularInput): string[] {
   const recipe = parseGeneratedRecipe(value)
+  input.pb.randomVariation = null
   const { pb, sd, animaState, patchAnimaState, setDrawEngine, applyModel } = input
   const parameters = recipe.parameters
   const notes: string[] = []

@@ -4,8 +4,10 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import type { TrashEntry } from '@/storage/artworkRepository'
 import { useGalleryTrash } from './useGalleryTrash'
 
-const repo = vi.hoisted(() => ({ listTrash: vi.fn(), getThumbnail: vi.fn(), restoreArtwork: vi.fn() }))
+const repo = vi.hoisted(() => ({ listTrash: vi.fn(), getThumbnail: vi.fn(), restoreArtwork: vi.fn(), purgeTrash: vi.fn() }))
+const confirm = vi.hoisted(() => vi.fn())
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: repo }))
+vi.mock('@/composables/useConfirm', () => ({ confirmAction: confirm }))
 
 function deferred<T>() {
   let resolve!: (value: T) => void
@@ -37,8 +39,57 @@ beforeEach(() => {
   repo.listTrash.mockReset().mockResolvedValue([])
   repo.getThumbnail.mockReset().mockImplementation(async (id: string) => `thumb:${id}`)
   repo.restoreArtwork.mockReset().mockResolvedValue({ restored: true })
+  repo.purgeTrash.mockReset().mockResolvedValue({ purged: 1 })
+  confirm.mockReset().mockResolvedValue(false)
 })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.restoreAllMocks() })
+
+it('cancels clearing without changing trash or touching the repository', async () => {
+  const gallery = setup()
+  gallery.trashItems.value = [entry('kept')]
+  await gallery.clearTrash()
+  expect(confirm).toHaveBeenCalledWith(expect.objectContaining({ danger: true, confirmLabel: '永久清空' }))
+  expect(repo.purgeTrash).not.toHaveBeenCalled()
+  expect(gallery.trashItems.value).toHaveLength(1)
+  expect(gallery.trashClearing.value).toBe(false)
+})
+
+it('owns clearing until it settles, snapshots confirmed tombstones and rejects stale reads', async () => {
+  const stale = deferred<TrashEntry[]>(), cleared = deferred<{ purged: number }>()
+  repo.listTrash.mockReturnValueOnce(stale.promise).mockResolvedValueOnce([entry('new', 3)])
+  repo.purgeTrash.mockReturnValueOnce(cleared.promise)
+  confirm.mockResolvedValueOnce(true)
+  const gallery = setup()
+  gallery.trashItems.value = [entry('old', 1)]
+  gallery.trashThumbs.old = 'old-thumb'
+  const loading = gallery.loadTrash(), pending = gallery.clearTrash()
+  await flushPromises()
+  expect(repo.purgeTrash).toHaveBeenCalledExactlyOnceWith([{ id: 'old', deletedAt: 1 }])
+  await gallery.restoreTrashItem('old')
+  await gallery.clearTrash()
+  expect(repo.restoreArtwork).not.toHaveBeenCalled()
+  expect(confirm).toHaveBeenCalledOnce()
+  stale.resolve([entry('old')]); await loading
+  cleared.resolve({ purged: 1 }); await pending
+  expect(gallery.trashItems.value.map(item => item.id)).toEqual(['new'])
+  expect(gallery.trashThumbs).not.toHaveProperty('old')
+  expect(gallery.trashClearing.value).toBe(false)
+})
+
+it('refreshes partially cleared trash after an error and allows retry', async () => {
+  vi.spyOn(console, 'warn').mockImplementation(() => {})
+  confirm.mockResolvedValue(true)
+  repo.purgeTrash.mockRejectedValueOnce(new Error('another window is saving'))
+  repo.listTrash.mockResolvedValueOnce([entry('remaining')]).mockResolvedValueOnce([])
+  const gallery = setup()
+  gallery.trashItems.value = [entry('old'), entry('remaining')]
+  await gallery.clearTrash()
+  expect(gallery.trashItems.value.map(item => item.id)).toEqual(['remaining'])
+  expect(gallery.showToast).toHaveBeenCalledWith(expect.stringContaining('清理未完成'), 'warning')
+  await gallery.clearTrash()
+  expect(gallery.trashItems.value).toEqual([])
+  expect(gallery.trashClearing.value).toBe(false)
+})
 
 it('ignores an older list that finishes after a newer load', async () => {
   const old = deferred<TrashEntry[]>()

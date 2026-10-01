@@ -29,6 +29,7 @@
     { "file": "control-layout.spec.ts", "lane": "nightly", "risk": "控制页布局", "reason": "控制页多状态布局检查量较大，放入夜间矩阵。" },
     { "file": "deferred-search.spec.ts", "lane": "manual", "risk": "延迟加载", "reason": "搜索延迟与资源时序需要专项环境，保留手动 lane。" },
     { "file": "desktop-atelier.spec.ts", "lane": "device", "risk": "桌面宽屏", "reason": "需要目标桌面窗口与缩放条件，不能由普通浏览器 lane 代替。" },
+    { "file": "desktop-artwork-cleanup.spec.ts", "lane": "critical", "risk": "桌面多文档清理", "reason": "隔离浏览器的三窗身份、草稿引用、独占文档与在途暂存、取消和解冻回归，防止隐窗永久阻塞或误删原图。" },
     { "file": "desktop-maintenance-runtime.spec.ts", "lane": "manual", "risk": "Rust 内容维护", "reason": "需要显式隔离的真实 Rust 服务和完整 UI，通过 playwright.maintenance.config.ts 验收，不使用旧 Node 模拟网关。" },
     { "file": "desktop-personalization.spec.ts", "lane": "device", "risk": "桌面偏好", "reason": "桌面偏好持久化与原生边界需要设备环境验收。" },
     { "file": "desktop-ux.spec.ts", "lane": "device", "risk": "桌面交互", "reason": "涉及安装版窗口和桌面交互，独立于网页 CI。" },

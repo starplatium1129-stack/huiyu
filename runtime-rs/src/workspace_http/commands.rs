@@ -251,6 +251,10 @@ pub(super) fn command(
         ("POST", ["trash", "purge"]) => {
             json!({"kind": "purgeExpiredTrash", "operationId": operation()?})
         }
+        ("POST", ["trash", "purge-selected"]) => {
+            let entries = array(&input["entries"], true)?.iter().map(|entry| Ok(json!({"id":entity_id(&entry["id"])?,"deletedAt":integer(&entry["deletedAt"],0)?}))).collect::<Result<Vec<_>>>()?;
+            json!({"kind":"purgeTrash","operationId":operation()?,"entries":entries})
+        }
         ("POST", ["media", "collect"]) => {
             json!({"kind": "collectGarbage", "operationId": operation()?})
         }

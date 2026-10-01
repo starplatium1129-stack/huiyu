@@ -11,6 +11,8 @@ import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
 import { confirmAction } from '@/composables/useConfirm'
 import { useHomeHeroes, type HeroEntry } from '@/composables/useHomeHeroes'
+import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
 
 const IMAGE_PAGE_SIZE = 36
 
@@ -77,13 +79,39 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   const selectedHeroTitle = ref('')
   const { heroes, reload: loadHomeHeroes } = useHomeHeroes()
   const homeHeroes = computed(() => Object.values(heroes.value))
+  const showcaseEntries = ref(new Map<string, ShowcaseEntry>())
   let alive = true
   let heroRequest: AbortController | undefined
+  let showcaseRequest: AbortController | undefined
   onScopeDispose(() => {
     alive = false
     heroRequest?.abort()
+    showcaseRequest?.abort()
     if (imageDebounceTimer) clearTimeout(imageDebounceTimer)
   })
+
+  async function loadShowcaseManifest() {
+    showcaseRequest?.abort()
+    const controller = new AbortController()
+    showcaseRequest = controller
+    const timeout = setTimeout(() => controller.abort(), 10_000)
+    try {
+      const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
+      if (!response.ok) throw new Error('无法读取当前样张清单')
+      const raw = await response.json() as { entries?: Array<{ id?: unknown } | null> }
+      const counts = new Map<unknown, number>()
+      for (const item of raw.entries ?? []) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
+      const entries = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
+      if (alive && !controller.signal.aborted) showcaseEntries.value = new Map(entries.map(item => [item.id, item]))
+    } finally {
+      clearTimeout(timeout)
+      if (showcaseRequest === controller) showcaseRequest = undefined
+    }
+  }
+  watch(runtimeResourceIdentity, () => {
+    showcaseEntries.value = new Map()
+    void loadShowcaseManifest().catch(() => {})
+  }, { immediate: true })
 
   const allShowcaseItems = computed<ShowcaseSceneItem[]>(() => {
     const items: ShowcaseSceneItem[] = scenes.value.map(s => ({
@@ -129,17 +157,20 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   )
   watch([imageSearchDebounced, imageTypeFilter], () => { imagePage.value = 1 })
 
-  const showcaseUrl = computed(() =>
-    selectedImageId.value
-      ? `/scene-showcase/images/${encodeURIComponent(selectedImageId.value)}.jpg?v=${showcaseVersion.value}`
-      : '',
-  )
+  const showcaseUrl = computed(() => imageUrl(selectedImageId.value))
   const heroUrl = computed(() => selectedHeroId.value
     ? heroes.value[selectedHeroId.value].image
     : '')
 
-  const thumbUrl = (id: string) => `/scene-showcase/thumbs/${encodeURIComponent(id)}.jpg?v=${showcaseVersion.value}`
-  const imageUrl = (id: string) => `/scene-showcase/images/${encodeURIComponent(id)}.jpg?v=${showcaseVersion.value}`
+  function showcaseAssetUrl(id: string, kind: 'image' | 'thumb'): string {
+    const entry = showcaseEntries.value.get(id)
+    if (!entry) return ''
+    const path = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${id}.jpg`
+    return /^(?:images|thumbs)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path)
+      ? `/scene-showcase/${path}?v=${showcaseVersion.value}` : ''
+  }
+  const thumbUrl = (id: string) => showcaseAssetUrl(id, 'thumb')
+  const imageUrl = (id: string) => showcaseAssetUrl(id, 'image')
 
   function previewImage(s: ShowcaseSceneItem | SceneDraft) {
     selectedImageId.value = s.id
@@ -223,6 +254,10 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       })
       showcaseFeedback.value = data.message || '样张已保存'
       showcaseVersion.value = Date.now()
+      try { await loadShowcaseManifest() } catch (error) {
+        showcaseError.value = true
+        showcaseFeedback.value += `，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
+      }
     } catch (err) {
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')

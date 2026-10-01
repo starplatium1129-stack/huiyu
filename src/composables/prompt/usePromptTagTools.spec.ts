@@ -125,3 +125,38 @@ describe('usePromptTagTools · outfit bundles', () => {
     expect([...pb.manualTags]).toEqual(['smile'])
   })
 })
+
+describe('usePromptTagTools · outfit override label', () => {
+  it('describes the current reference outfit in Chinese without changing its prompt tokens', async () => {
+    const pb = usePromptBuilderStore()
+    const tokens = ['panties', 'high_heels', 'underwear']
+    pb.setOutfitOverride(tokens, '校服/水手服')
+    const { outfitOverrideLabel } = usePromptTagTools(pb)
+    expect(outfitOverrideLabel.value).not.toMatch(/[a-z_]/i)
+    await vi.dynamicImportSettled()
+    expect(outfitOverrideLabel.value).toBe('内裤、高跟鞋、内衣')
+    expect(pb.outfitOverride).toEqual({ tokens, replaced: '校服/水手服' })
+  })
+
+  it('uses a natural Chinese fallback for unknown or partly translated tokens', async () => {
+    const pb = usePromptBuilderStore()
+    pb.setOutfitOverride(['mystery_costume', 'mystery_shirt'], null)
+    const { outfitOverrideLabel } = usePromptTagTools(pb)
+    expect(outfitOverrideLabel.value).toBe('新服装')
+    await vi.dynamicImportSettled()
+    expect(outfitOverrideLabel.value).toBe('新服装')
+    expect(pb.outfitOverride?.tokens).toEqual(['mystery_costume', 'mystery_shirt'])
+  })
+
+  it('uses catalog translations, skips unknown entries and follows outfit changes', async () => {
+    useSceneStore().tags = [{ en: 'fixture_shoes', cn: '定制鞋履', cat: 'Clothing' }]
+    const pb = usePromptBuilderStore()
+    pb.setOutfitOverride(['fixture_shoes', 'mystery_costume', 'dress', 'dress', 'bikini'], null)
+    const { outfitOverrideLabel } = usePromptTagTools(pb)
+    expect(outfitOverrideLabel.value).toBe('定制鞋履')
+    await vi.dynamicImportSettled()
+    expect(outfitOverrideLabel.value).toBe('定制鞋履、连衣裙、比基尼')
+    pb.setOutfitOverride(['high_heels'], null)
+    expect(outfitOverrideLabel.value).toBe('高跟鞋')
+  })
+})

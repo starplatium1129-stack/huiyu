@@ -1,17 +1,16 @@
 import { kvGet, kvSet, kvSetMany } from '../../composables/useKVStore.ts'
 import { withArtworkMutation } from '../../storage/artworkMutation.ts'
 import { withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
-import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '../../utils/storageReferences.ts'
+import { readLocalImageReferences, readSessionImageReferences } from '../../utils/storageReferences.ts'
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
-import { thumbKey } from '../../utils/imageThumb.ts'
-import { ARTWORK_HISTORY_QUARANTINE_KEY } from '../../utils/storageKeys.ts'
 import { type ArtworkRecord } from '../../types/artwork.ts'
-import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry } from '../../application/artwork/artworkRepository.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type ArtworkImageAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely, ArtworkDeletionError } from './artworkStorage.ts'
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
 import { createArtworkOrganization } from './artworkOrganization.ts'
+import { purgeWebTrash } from './artworkTrashPurge.ts'
 export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, ArtworkDeletionError } from './artworkStorage.ts'
 
 export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDependencies = {}): ArtworkRepository {
@@ -74,10 +73,6 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
       const entry = record(item)
       return Boolean(entry && comparableId(entry.id) && Array.isArray(entry.historyEntries))
     })
-  }
-
-  async function writeTrash(entries: TrashEntry[]): Promise<void> {
-    await kv.set(ARTWORK_TRASH_KEY, entries)
   }
 
   async function softDeleteArtworksNow(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
@@ -181,47 +176,30 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
     return { restored: true }
   }
 
-  /**
-   * 懒清理：真删超期软删条目的图片与缩略图。只删「当前 history 无人引用」
-   * 的 image。当前作品和仍未过期的 trash 快照都会保护其 historyEntries 与
-   * imageIds 引用；恢复过的条目正常已移出 trash，这里仍保持防御性兜底。
-   */
+  function trashDrafts(): unknown[] {
+    return dependencies.kv ? [] : [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]
+  }
   async function purgeExpiredTrashNow(): Promise<{ purged: number }> {
     const trash = await readTrash()
-    if (!trash.length) return { purged: 0 }
     const deadline = Date.now() - ARTWORK_TRASH_RETENTION_DAYS * 24 * 60 * 60 * 1000
     // 刚好到保留期限仍可恢复；非法时间戳保守地保留，避免清理误删快照。
-    const expired = trash.filter(entry => {
+    return purgeWebTrash(kv, images, trash, entry => {
       const deletedAt = Number(entry.deletedAt)
       return Number.isFinite(deletedAt) && deletedAt < deadline
-    })
-    if (!expired.length) return { purged: 0 }
-
-    const [history, projects, quarantine] = await Promise.all([
-      kv.get(ARTWORK_HISTORY_KEY), kv.get(ARTWORK_PROJECTS_KEY), kv.get(ARTWORK_HISTORY_QUARANTINE_KEY),
-    ])
-    const expiredIds = new Set(expired.map(entry => entry.id))
-    const survivingTrash = trash.filter(entry => !expiredIds.has(entry.id))
-    // imageIds 只是软删当时的“独占”快照，不能代替可恢复 historyEntries
-    // 的引用；两者都要保护，才能覆盖共享图在多个墓碑间转移的时序。
-    const entryImageIds = (entry: TrashEntry) => unique([
-      ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
-      ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
-    ])
-    const protectedImageIds = collectImageReferences([
-      history, projects, quarantine, survivingTrash,
-      // Injected adapters own their environment; only the actual browser reads
-      // browser drafts. Cleanup holds the document lease before the library lock.
-      ...(dependencies.kv ? [] : [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]),
-    ])
-    const expiredImageIds = unique(expired.flatMap(entryImageIds))
-    const removable = expiredImageIds.filter(image => !protectedImageIds.has(image))
-    if (removable.length) {
-      await images.deleteMany(removable)
-      for (const image of removable) await kv.remove?.(thumbKey(image))
-    }
-    await writeTrash(survivingTrash)
-    return { purged: expired.length }
+    }, trashDrafts())
+  }
+  function purgeTrash(entries: ArtworkTrashSelection[]): Promise<{ purged: number }> {
+    const snapshot = structuredClone(entries)
+    return enqueue(async () => {
+      let purged = 0
+      for (let offset = 0; offset < snapshot.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
+        const selected = new Map(snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE).map(entry => [entry.id, entry.deletedAt]))
+        const result = await purgeWebTrash(kv, images, await readTrash(), entry =>
+          selected.has(entry.id) && selected.get(entry.id) === entry.deletedAt, trashDrafts())
+        purged += result.purged
+      }
+      return { purged }
+    }, true)
   }
 
   function softDeleteArtwork(id: string | number): Promise<{ deleted: boolean }> {
@@ -313,5 +291,5 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
   const reads = createArtworkReads(kv, dependencies, work => dependencies.kv ? work() : withArtworkMutation(work))
   const media = createArtworkMedia(kv, images, dependencies)
   const organization = createArtworkOrganization({ kv, commit: commitRelatedRecords, enqueue })
-  return { ...reads, ...media, ...organization, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
+  return { ...reads, ...media, ...organization, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

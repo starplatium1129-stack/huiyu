@@ -140,20 +140,4 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @keyframes gallerySkeleton { to { transform: translateX(-54.5%); } }
 /* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
 @keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
-/* ── 回收站（2026-08-31）── */
-.trash-wall { margin:0 auto; @apply tw:grid; grid-template-columns:repeat(var(--wall-cols, 4),minmax(0,1fr)); @apply tw:gap-s-4; align-items:start; }
-.trash-wall > :not(.trash-card) { grid-column:1 / -1; }
-.trash-toolbar { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-secondary; }
-.trash-hint { @apply tw:text-body-sm; }
-.trash-count { @apply tw:font-medium tw:text-primary; }
-.trash-card { @apply tw:relative; border:1px solid var(--border-soft); @apply tw:rounded-lg tw:overflow-hidden; background:var(--bg-surface); }
-.trash-card .artwork-media { aspect-ratio:1; }
-.trash-card .artwork-caption { @apply tw:static; opacity:1; transform:none; @apply tw:pointer-events-auto; background:none; padding:var(--s-2) var(--s-3) var(--s-3); @apply tw:text-primary; }
-.trash-card .artwork-name { @apply tw:block tw:text-body-sm; line-height:1.4; }
-.trash-card .artwork-date { @apply tw:block tw:mt-[2px] tw:text-label-xs tw:text-secondary; }
-.trash-card .artwork-tools { @apply tw:static; opacity:1; transform:none; @apply tw:pointer-events-auto tw:justify-start; margin:0 var(--s-3) var(--s-3); background:none; border:none; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; @apply tw:p-0; }
-.trash-card .artwork-tool { @apply tw:text-secondary; }
-.trash-card .artwork-tool:hover { @apply tw:text-primary; }
-.trash-card .artwork-placeholder { @apply tw:min-h-[200px] tw:grid; place-items:center; @apply tw:text-tertiary; }
-
 .gallery-browse-controls .gallery-filter.active { @apply tw:text-accent; background:transparent; border-color:transparent; }

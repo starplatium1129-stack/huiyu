@@ -2,7 +2,7 @@ import { profileLocalStorage as localStorage, profileDraftStorage as sessionStor
 import { readChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
 import { CHAT_ARCHIVE_KEY, serializeChatArchive } from '@/utils/chatArchive'
 import { withArtworkMutation } from '@/storage/artworkMutation'
-import { withArtworkCleanup } from '@/storage/artworkSession'
+import { withArtworkCleanup, assertArtworkCleanupCurrent, readArtworkCleanupImageReferences } from '@/storage/artworkSession'
 import { buildBackupBlob, MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE, type BackupExportProgress } from '@/utils/backupExport'
 import { restoreBackupData } from '@/storage/backupRestore'
 import { downloadBlob } from '@/utils/downloadBlob'
@@ -12,7 +12,7 @@ import { ref, onScopeDispose } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, readWebBackupImage, deleteWebBackupImages } from '../platform/web/profileBackupSource'
 import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRestoreCandidate, workspaceBackupActive, workspaceStorageHealth, collectWorkspaceGarbage, type WorkspaceBackupReceipt } from '../platform/desktop/backupActions'
-import { onDesktopRuntime } from '../platform/desktop/runtime'
+import { getDesktopWindowRole, onDesktopRuntime } from '../platform/desktop/runtime'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 import { artworkRepository } from '../storage/artworkRepository'
 import {
@@ -60,7 +60,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)
   const pendingWorkspace = ref<WorkspaceBackupReceipt | null>(null)
-  onScopeDispose(registerMaintenanceParticipant(() => { if (busy.value || pending.value || pendingWorkspace.value) throw new Error('BACKUP_BUSY') }))
+  let cleanupController: AbortController | null = null
+  onScopeDispose(registerMaintenanceParticipant(() => {
+    // The initiating atelier cleanup itself is not an unrelated backup writer.
+    if ((busy.value && !(cleanupController && getDesktopWindowRole() === 'atelier')) || pending.value || pendingWorkspace.value) throw new Error('BACKUP_BUSY')
+  }))
   const desktopActive = ref(workspaceBackupActive())
   const removeRuntimeListener = onDesktopRuntime(() => { desktopActive.value = workspaceBackupActive() })
   onScopeDispose(removeRuntimeListener)
@@ -81,6 +85,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   function cancelExport() { exportController?.abort(); imageExportController?.abort() }
   onScopeDispose(() => {
     disposed = true
+    cleanupController?.abort()
     imageExportController?.abort()
     for (const url of imageDownloadUrls.keys()) releaseImageUrl(url)
   })
@@ -322,7 +327,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
 
   async function readCleanupState() {
     const { history, projects, trash, quarantine, images } = await readWebBackupCleanup()
-    const referenced = collectImageReferences([history, projects, trash, quarantine, ...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)])
+    const referenced = collectImageReferences([history, projects, trash, quarantine, ...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage), ...readArtworkCleanupImageReferences()])
     return { referenced, images }
   }
 
@@ -331,8 +336,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
    * deleting. Other tabs' session-only drafts cannot be safely guessed at.
    */
   async function cleanOrphanImages(): Promise<number> {
-    if (busy.value) return 0
+    if (busy.value || disposed) return 0
     busy.value = true
+    const controller = new AbortController()
+    cleanupController = controller
     try {
       if (desktopActive.value) {
         const removed = await collectWorkspaceGarbage()
@@ -344,22 +351,25 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
       if (!(await confirmAction({
         title: `清理 ${candidates.size} 张未引用图片`,
-        message: '请先备份，并保存草稿、关闭其他绘遇窗口。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。',
+        message: '请先备份并保存草稿，完成其他窗口的生成与保存操作。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。',
         confirmLabel: '继续清理',
         danger: true,
       }))) return 0
       const removed = await withArtworkCleanup(async () => {
         const current = await readCleanupState()
+        controller.signal.throwIfAborted()
         const ids = current.images.filter(record => candidates.has(record.id) && !current.referenced.has(record.id)).map(record => record.id)
+        assertArtworkCleanupCurrent()
         if (ids.length) await deleteWebBackupImages(ids)
         return ids.length
-      })
+      }, controller.signal)
       onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
       return removed
     } catch (e) {
       onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
     } finally {
+      cleanupController = null
       busy.value = false
     }
   }

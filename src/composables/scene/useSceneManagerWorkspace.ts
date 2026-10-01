@@ -70,7 +70,7 @@ export function useSceneManagerWorkspace() {
         blueprints,
         errorMessage,
     });
-    const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, resetHero, onShowcasePicked, onHeroPicked } = showcase;
+    const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, thumbUrl, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, resetHero, onShowcasePicked, onHeroPicked } = showcase;
     // ── 场景编辑弹层 + CRUD + 策展（已下沉 useSceneEditorModal）───────────────
     const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty, nextSceneId: allocateNextSceneId, allocationError: message => { maintenanceHint.value = message; } });
     const recordCounts = computed<Record<string, number>>(() => ({ scenes: scenes.value.length, blueprints: blueprints.value.length, tags: tags.value.length }));
@@ -306,11 +306,6 @@ export function useSceneManagerWorkspace() {
     useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal });
     useFocusTrap(bpModalEl, () => bpEditing.value !== null, { onEscape: closeBlueprintModal });
     function esc(s: string) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-    function onThumbError(e: Event) {
-        const img = e.target as HTMLImageElement | null;
-        if (img)
-            img.style.display = 'none';
-    }
     function onBeforeUnload(e: BeforeUnloadEvent) {
         if (!dirty.value)
             return;
@@ -433,7 +428,7 @@ heroFileEl,
         deleteTag, tagTotalPages, tagPage, homeHeroes, selectedHeroId, previewHero,
         selectedHeroTitle, uploadBusy, pickHero, resetHero, heroUrl, onHeroPicked,
         showcaseError, showcaseFeedback, imageSearch, imageTypeFilter, allShowcaseItems, filteredImageScenes,
-        pagedImageScenes, selectedImageId, previewImage, showcaseVersion, onThumbError, charLabel,
+        pagedImageScenes, selectedImageId, previewImage, thumbUrl, charLabel,
         imageTotalPages, imagePage, selectedImageTitle, pickShowcase, showcaseUrl, onShowcaseMissing,
         onShowcasePicked, detectDuplicates, dupResult, dupGroups, dupChecked, deleteSceneFromDup,
         importInput, importScenes, importResult, TOOLS, toolRunning, runTool,

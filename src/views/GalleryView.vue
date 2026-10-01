@@ -87,6 +87,8 @@
         :trash-items="trashItems"
         :trash-thumbs="trashThumbs"
         :trash-busy="trashBusy"
+        :trash-clearing="trashClearing"
+        @clear="clearTrash"
         @restore="restoreTrashItem"
       />
       <template v-else>
@@ -419,6 +421,7 @@ trashThumbs,
 trashPrompt,
 formatTrashTime,
 restoreTrashItem,
+clearTrash, trashClearing,
 galleryLoading,
 galleryError,
 history,

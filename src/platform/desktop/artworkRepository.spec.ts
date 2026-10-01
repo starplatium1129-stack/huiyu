@@ -8,6 +8,22 @@ import { createDesktopArtworkRepository } from './artworkRepository'
 
 beforeEach(() => { mocks.request.mockResolvedValue(null) })
 afterEach(() => { mocks.request.mockReset(); mocks.state.connection = 'ready'; mocks.state.bootstrap.runtime.workspace = { workspaceId: 'library-1', domains: ['artwork'] } })
+it('purges bounded confirmed tombstone batches and reconciles a lost committed response', async () => {
+  const entries = Array.from({ length: 205 }, (_, index) => ({ id: String(index), deletedAt: 10 }))
+  let calls = 0
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getOperation') return { state: 'committed', receipt: { purged: 200 } }
+    if (++calls === 1) throw new Error('response lost after commit')
+    return { purged: command.entries.length }
+  })
+  const repository = createDesktopArtworkRepository(), pending = repository.purgeTrash(entries)
+  entries[0].deletedAt = 999
+  expect(await pending).toEqual({ purged: 205 })
+  const batches = mocks.request.mock.calls.map(([command]) => command).filter(command => command.kind === 'purgeTrash')
+  expect(batches.map(command => command.entries.length)).toEqual([200, 5])
+  expect(batches[0].entries[0]).toEqual({ id: '0', deletedAt: 10 })
+  expect(mocks.request.mock.calls[1][0].operationId).toBe(batches[0].operationId)
+})
 it('does not write into a migration candidate or a different library after reconnecting', async () => {
   const repository = createDesktopArtworkRepository()
   mocks.state.bootstrap.runtime.workspace.domains = []

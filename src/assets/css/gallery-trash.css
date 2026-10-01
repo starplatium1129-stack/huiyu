@@ -1,0 +1,16 @@
+@reference "./tailwind.css";
+.trash-wall { margin:0 auto; @apply tw:grid; grid-template-columns:repeat(var(--wall-cols,4),minmax(0,1fr)); @apply tw:gap-s-4; align-items:start; }
+.trash-wall > :not(.trash-card) { grid-column:1 / -1; }
+.trash-toolbar { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:text-secondary; }
+.trash-hint { @apply tw:text-body-sm; }
+.trash-actions { @apply tw:flex tw:items-center tw:gap-s-3; }
+.trash-count { @apply tw:font-medium tw:text-primary tw:text-body-sm; white-space:nowrap; }
+.trash-card { @apply tw:relative tw:m-0 tw:min-w-0 tw:rounded-lg tw:overflow-hidden; border:1px solid var(--border-soft); background:var(--bg-surface); }
+.artwork-media { @apply tw:relative tw:w-full tw:overflow-hidden; aspect-ratio:1; background:var(--art-mat); }
+.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
+.artwork-caption { padding:var(--s-2) var(--s-3) var(--s-3); @apply tw:text-primary; }
+.artwork-name { @apply tw:block tw:text-body-sm tw:font-semibold tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; line-height:1.4; }
+.artwork-date { @apply tw:block tw:mt-s-1 tw:text-label-xs tw:text-secondary; }
+.artwork-tools { @apply tw:flex tw:items-center; margin:0 var(--s-3) var(--s-3); }
+.artwork-placeholder { @apply tw:absolute tw:inset-0 tw:grid tw:text-tertiary; place-items:center; }
+.trash-restore :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; }

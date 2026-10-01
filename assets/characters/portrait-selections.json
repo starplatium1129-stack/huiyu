@@ -473,6 +473,16 @@
       "portraitSha256": "bc4cd2532b64c1689cef8f5f15652ba4a9538aa95b5c98c59b5eb47ed8c6f46a",
       "thumbnailSha256": "968ed83e20f370dca8d017df1afd1411520aefbc337765475deac8a8d96485af",
       "modelId": "anima-miaomiao-v1.2"
+    },
+    "laevatain_arknights": {
+      "entryId": "pc_laevatain_arknights_laevatain_arknights_lava_forge",
+      "sourceImage": "images/pc_laevatain_arknights_laevatain_arknights_lava_forge.jpg",
+      "sourceCollection": "E:/code/2/lora/AI/SceneShowcase/2026-09-09_v28-nsfw-reviewed",
+      "rating": "All",
+      "reason": "莱万汀 · 熔岩工坊；从现有六张普通场景样张中选择，红短发、黑角、紫瞳与熔岩大剑清楚，竖构图适合角色卡；保留原图完整画面。",
+      "sourceSha256": "eb20a418ebe1e8c7c52ecd090cabc0c45bee53033ea65555ebcfae7d77f94372",
+      "portraitSha256": "6684ff1025c4e5bcc92d63f8028a165bec8ec90be32219408767e958d61dbb52",
+      "thumbnailSha256": "e7bf76fe99c896d3c0ecc8fb3e2ada37af3ead4f103c0d3b3d8b54038b7014cb"
     }
   }
 }

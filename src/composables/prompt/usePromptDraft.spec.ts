@@ -44,6 +44,29 @@ it('restores touched parameters and shared fields for both original and edited s
   }
 })
 
+it('restores edited scene direction completely, while unedited defaults still migrate', () => {
+  const original = { id: 'random-fixture', title: 'Classroom', char: 'nene', story: 'Original',
+    camera: 'medium', lighting: 'window', tags: ['classroom'], colorMood: 'calm' }
+  useSceneStore().scenes = [original]
+  let pb = usePromptBuilderStore()
+  pb.loadScene(original)
+  pb.selections.emotion = ['happy']; pb.selections.shot = 'wide'
+  pb.selections.lighting = 'back'; pb.selections.composition = 'left'; pb.colorMood = 'joy'
+  pb.manualTags = new Set(['jacket'])
+  pb.dataReady = true; pb.saveDraft(); vi.advanceTimersByTime(280)
+  const expected = pb.snapshotStyleLayers()
+  pb.$dispose(); setActivePinia(createPinia()); useSceneStore().scenes = [original]
+  pb = usePromptBuilderStore()
+  expect(pb.restoreDraft()).toBe(true)
+  expect(pb.snapshotStyleLayers()).toEqual(expected)
+
+  pb.loadScene(original); pb.dataReady = true; pb.saveDraft(); vi.advanceTimersByTime(280)
+  pb.$dispose(); setActivePinia(createPinia())
+  useSceneStore().scenes = [{ ...original, camera: 'wide' }]
+  pb = usePromptBuilderStore(); expect(pb.restoreDraft()).toBe(true)
+  expect(pb.selections.shot).toBe('wide')
+})
+
 it('reports storage failures and leaves corrupt saved drafts unapplied', () => {
   const pb = usePromptBuilderStore(); pb.story = 'Keep'; pb.dataReady = true
   localStorage.setItem('aics_pb_last_draft', '{broken')

@@ -20,7 +20,7 @@ export const EXACT_MEANINGS: Record<string, string> = {
   "open-front_negligee": '前开襟透肉睡衣', silk_slip: '真丝细吊带衬裙', garter_straps: '吊带袜金属束带',
   black_pantyhose: '薄透透肉黑丝袜', fishnet_thighhighs: '过膝网眼袜', torn_thighhighs: '战损撕裂丝袜',
   loose_socks: '日系宽松堆堆袜', frilled_socks: '荷叶边花边短袜', asymmetrical_legwear: '不对称腿袜',
-  stiletto_heels: '尖头细高跟鞋', strappy_heels: '绑带缠踝高跟凉鞋', mary_janes: '玛丽珍复古皮鞋',
+  high_heels: '高跟鞋', stiletto_heels: '尖头细高跟鞋', strappy_heels: '绑带缠踝高跟凉鞋', mary_janes: '玛丽珍复古皮鞋',
   thigh_boots: '过膝紧身皮靴', combat_boots: '系带马丁靴', barefoot: '赤足 / 美足',
   painted_toenails: '涂指甲油脚趾', looking_at_viewer: '直视镜头', looking_back: '回头看向镜头',
   direct_eye_contact: '与镜头直接对视', full_body: '全身构图', upper_body: '上半身构图',

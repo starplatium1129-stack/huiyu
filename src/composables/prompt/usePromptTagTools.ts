@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { mutualGroupWithCategory } from '@/utils/promptPolicy'
 
@@ -38,6 +38,12 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     if (!/[\u4e00-\u9fa5]/.test(meaning)) return ''
     return meaning
   }
+
+  // replaced 可能是被替换的旧服装族；提示始终描述当前 tokens，展示不回写生成词条。
+  const outfitOverrideLabel = computed(() => {
+    const labels = (pb.outfitOverride?.tokens ?? []).map(tagLabel).filter(label => label && !/[a-z_]/i.test(label))
+    return [...new Set(labels)].slice(0, 3).join('、') || '新服装'
+  })
 
   /** 词条权重色彩热力等级（NovelAI 视觉分级：强增强、增强、弱化、标准） */
   function tagWeightTier(tag: string): 'strong-boost' | 'boost' | 'reduce' | 'normal' {
@@ -111,5 +117,5 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     pb.manualTags = next
   }
 
-  return { addTag, tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle }
+  return { addTag, tagMeaning, tagLabel, outfitOverrideLabel, tagWeightTier, toggleOutfitBundle }
 }

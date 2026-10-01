@@ -1,3 +1,7 @@
+import { hasVariableCamera, hasVariableLight } from './randomVariationProse.ts'
+import { isStableIdentityToken } from './interrogateReference.ts'
+import { canVarySceneOutfit, sceneAllowsAction, sceneAllowsLight, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation.ts'
+import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
 import pools from '../config/randomInspirationPools.json' with { type: 'json' }
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/artistStyles.ts'
@@ -21,11 +25,15 @@ import { appendRandomTag, compatibleRandomDetail, randomTokens, visibleInRandomS
  */
 
 export interface RandomInspirationOptions {
+  context?: string
+  scene?: RandomSceneContext
+  /** Explicit caller opt-in: popular wardrobes may vary unless manually selected. */
+  allowClothing?: boolean
+  rich?: boolean
   /** 工作室角色（studio 模式）。popular 模式改传 identityExclude，不传 char。 */
   char?: 'nene' | 'natsume' | 'triad'
-  /** 显式身份排除集（热门角色模式）：当前角色的 identityTokens + exactTokens +
-   *  当前 outfit tokens。传入后替代内置 IDENTITY_TOKENS 查表，并跳过服装抽取
-   *  （热门角色的服装由 outfit 系统管理，随机抽通用服装会与之打架）。 */
+  /** Explicit identity anchors replace the studio lookup. Popular callers opt into
+   *  wardrobe sampling separately; manually selected outfits remain protected. */
   identityExclude?: ReadonlySet<string>
   /** 「随机画师」开关，默认 false：不加画师 tag，保留角色原生画风。 */
   includeArtists?: boolean
@@ -42,6 +50,8 @@ export interface RandomInspirationOptions {
 }
 
 export interface RandomDraw {
+  variation: DraftRandomVariation
+  kept: string[]
   /** EMOTION id 列表（1~2 个，进入 store.selections.emotion）。 */
   emotions: string[]
   /** SHOT id 或 null。 */
@@ -169,14 +179,14 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     const pool = catalog.get(tag.cat) ?? new Map<string, string>()
     for (const token of randomTokens(tag.en)) {
       const key = normalizeKey(token)
-      if (!exclude.has(key) && !pool.has(key)) pool.set(key, token)
+      if (!exclude.has(key) && !isStableIdentityToken(token) && !pool.has(key)) pool.set(key, token)
     }
     catalog.set(tag.cat, pool)
   }
   const byCat = (cat: string): string[] => [...(catalog.get(cat)?.values() ?? [])]
 
-  const scenePool = byCat('Scene').filter(tag => !exclude.has(tag))
-  const actionPool = byCat('Action').filter(tag => !exclude.has(tag))
+  const scenePool = options.scene ? [] : byCat('Scene').filter(tag => !exclude.has(tag))
+  const actionPool = byCat('Action').filter(tag => !exclude.has(tag) && (!options.scene || sceneAllowsAction(options.scene, tag)))
   const appearancePool = byCat('Appearance').filter(tag => !exclude.has(tag))
   const stylePool = byCat('Style').filter(tag => !exclude.has(tag))
   const bodyPool = byCat('Body').filter(tag => BODY_MILD.has(tag))
@@ -198,6 +208,8 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     }
   }
 
+  if (options.scene && (options.scene.prose || options.scene.prompt.includes('\n'))) emotions.length = 0
+
   // ── 色彩情调（50%，与情绪弱联动） ────────────────────────────────────
   let colorMood: string | null = null
   if (chance(0.5, rng)) {
@@ -206,9 +218,13 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     colorMood = draw(pool, 1, rng)[0] ?? null
   }
 
+  if (options.scene && ['calm', 'warmth'].includes(colorMood ?? '')) colorMood = null
+
   // ── 镜头（100% 抽 1） + 构图（50%） ──────────────────────────────────
-  const shot = draw(ALL_SHOT_IDS, 1, rng)[0] ?? null
-  const composition = chance(0.5, rng) ? (draw(ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
+  const shotPool = options.scene ? ALL_SHOT_IDS.filter(id => !['turn', 'over', 'detail'].includes(id)) : ALL_SHOT_IDS
+  const shot = options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableCamera(options.scene.prose))) ? options.scene.shot
+    : draw(shotPool, 1, rng)[0] ?? null
+  const composition = chance(options.rich ? 1 : 0.5, rng) ? (draw(options.scene ? ALL_COMPOSITION_IDS.filter(id => id !== 'bywindow') : ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
   const visible = (token: string) => visibleInRandomShot(token, shot)
   const add = (token: string) => {
     for (const part of randomTokens(token)) {
@@ -218,8 +234,9 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
 
   // ── 光照（主光源 1 个 + 40% 叠逆光） ──────────────────────────────────
   let lighting: string | null = null
-  if (chance(0.9, rng)) {
-    lighting = draw(LIGHT_MAIN, 1, rng)[0] ?? null
+  if (chance(options.rich ? 1 : 0.9, rng)) {
+    lighting = draw(options.scene ? LIGHTING.map(item => item.id).filter(id => sceneAllowsLight(options.scene!, id)) : LIGHT_MAIN, 1, rng)[0] ?? null
+    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose)))) lighting = options.scene.lighting
     if (lighting && chance(0.4, rng)) {
       // back 逆光作为可叠加标签进入 manualTags（与主光源不互斥）
       add('backlighting')
@@ -227,6 +244,10 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
 
   // ── 场景（70% 1 个 / 30% 2 个，室内外互斥 + 核心建筑排他） ─────────
+  if (options.rich && !options.scene) {
+    const location = draw(scenePool.filter(token => INDOOR_SCENE.has(token) || OUTDOOR_SCENE.has(token)), 1, rng)[0]
+    if (location) add(location)
+  }
   const sceneCount = chance(0.7, rng) ? 1 : 2
   for (const scene of draw(scenePool.filter(token => {
     const time = mutualGroupWithCategory(token)
@@ -248,13 +269,14 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
 
   // ── 动作（60% 抽 1） ────────────────────────────────────────────────
-  if (chance(0.6, rng)) {
+  if (chance(options.rich ? 1 : 0.6, rng)) {
     const action = draw(actionPool.filter(visible), 1, rng)[0]
     if (action) add(action)
   }
 
   // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token；特写镜头过滤下肢细节） ────
-  const appearanceCandidates = appearancePool.filter(visible)
+  const appearanceCandidates = appearancePool.filter(token => visible(token)
+    && (!options.scene || !['sunbeam', 'lens_flare', 'dappled_light'].includes(normalizeKey(token)) || ['golden', 'window'].includes(lighting ?? '')))
   const appearanceCount = chance(0.6, rng) ? 1 : 0
   if (appearanceCount) {
     for (const item of draw(appearanceCandidates, chance(0.25, rng) ? 2 : 1, rng)) {
@@ -278,11 +300,12 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   // ── 服装（官方 60% / 通用 40%；triad 与热门角色不抽服装） ─────────────
   const officialOutfits = options.officialOutfits
   const officialKeys = officialOutfits ? Object.keys(officialOutfits) : []
-  if (!explicitIdentity && char !== 'triad') {
+  const outfitStart = manualTags.length
+  if ((options.allowClothing ?? !explicitIdentity) && char !== 'triad' && (!options.scene || canVarySceneOutfit(options.scene))) {
     if (officialKeys.length && chance(0.6, rng)) {
       const key = draw(officialKeys, 1, rng)[0]
       if (key) {
-        const tokens = (officialOutfits?.[key] ?? []).flatMap(randomTokens).filter(token => !exclude.has(normalizeKey(token)) && visible(token))
+        const tokens = (officialOutfits?.[key] ?? []).flatMap(randomTokens).filter(token => !exclude.has(normalizeKey(token)) && !isStableIdentityToken(token) && visible(token))
         const canonical = tokens[0]
         if (canonical) add(canonical)
         // 额外补 0~2 个签名 token（官方套装通常 4~12 个 token，全塞会淹没画面）
@@ -294,6 +317,8 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
       if (generic) add(generic)
     }
   }
+
+  const outfit = manualTags.slice(outfitStart)
 
   // ── Mature（50% 抽 1~4，无独立开关，本地直连本就放行） ──────────────
   // 2026-08-29 提额：20%→50%。此前的三重叠加（概率低 + isManualR18 正则只认
@@ -331,6 +356,14 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
 
   return {
+    kept: options.scene ? [
+      '地点与时段', ...(options.scene.prose || options.scene.action ? ['核心动作'] : []),
+      ...(!(options.allowClothing ?? !explicitIdentity) || !canVarySceneOutfit(options.scene) ? ['服装'] : []),
+      ...(options.scene.prose ? ['原文表情'] : []),
+      ...(options.scene.prose && !hasVariableCamera(options.scene.prose) ? ['原文镜头'] : []),
+      ...(options.scene.prose && !hasVariableLight(options.scene.prose) ? ['原文光源'] : []),
+    ] : [],
+    variation: { ...sceneVariationOverlay(options.scene, outfit, options.tags, shot, lighting), context: options.context ?? '' },
     emotions,
     shot,
     lighting,

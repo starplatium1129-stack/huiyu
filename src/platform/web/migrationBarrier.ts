@@ -1,3 +1,5 @@
+import { assertMaintenanceWritable } from '../maintenanceParticipants'
+
 /** The bridge is installed before consumers mount. It is temporary upgrade code:
  * synchronous Storage writers cannot await Web Locks, so a shared marker blocks
  * them in the same native call. Remove this interception when old-profile upgrades
@@ -42,9 +44,9 @@ export function initializeMigrationParticipant(options: { windowId?: string; isB
   busy = options.isBusy || busy
   installed = true
   const originalClear = Storage.prototype.clear
-  Storage.prototype.setItem = function (key, value) { assertMigrationWritable(); nativeSet!.call(this, key, value) }
-  Storage.prototype.removeItem = function (key) { assertMigrationWritable(); nativeRemove!.call(this, key) }
-  Storage.prototype.clear = function () { assertMigrationWritable(); originalClear.call(this) }
+  Storage.prototype.setItem = function (key, value) { assertMaintenanceWritable(); assertMigrationWritable(); nativeSet!.call(this, key, value) }
+  Storage.prototype.removeItem = function (key) { assertMaintenanceWritable(); assertMigrationWritable(); nativeRemove!.call(this, key) }
+  Storage.prototype.clear = function () { assertMaintenanceWritable(); assertMigrationWritable(); originalClear.call(this) }
   const lease = new Promise<void>(resolve => { stopLease = resolve })
   void navigator.locks.request(WINDOW_LOCK + ownId, () => lease)
   channel = new BroadcastChannel(CHANNEL)

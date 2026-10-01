@@ -194,6 +194,15 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     softDeleteArtworks,
     async restoreArtwork(id) { return { restored: Boolean((await mutate('restoreArtwork', id))?.changed) } },
     async purgeExpiredTrash() { const result = await workspaceRequest<Receipt>({ kind: 'purgeExpiredTrash', operationId: crypto.randomUUID() }); return { purged: result.purged ?? 0 } },
+    async purgeTrash(entries) {
+      const snapshot = structuredClone(entries)
+      let purged = 0
+      for (let offset = 0; offset < snapshot.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
+        const result = await organizationWrite<Receipt>({ kind: 'purgeTrash', operationId: `purge-${crypto.randomUUID()}`, entries: snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE) })
+        purged += result.purged ?? 0
+      }
+      return { purged }
+    },
     async listTrash() { return (await list(true)).filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
   }
   return { ...repository,
@@ -210,5 +219,6 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     softDeleteArtworks: ids => trackMaintenanceWrite(() => repository.softDeleteArtworks(ids)),
     restoreArtwork: id => trackMaintenanceWrite(() => repository.restoreArtwork(id)),
     purgeExpiredTrash: () => trackMaintenanceWrite(() => repository.purgeExpiredTrash()),
+    purgeTrash: entries => trackMaintenanceWrite(() => repository.purgeTrash(entries)),
   }
 }
