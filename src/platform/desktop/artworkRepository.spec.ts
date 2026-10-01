@@ -5,6 +5,9 @@ const mocks = vi.hoisted(() => ({ request: vi.fn(), state: { connection: 'ready'
 vi.mock('@/api/workspace', () => ({ workspaceRequest: mocks.request }))
 vi.mock('./runtime', () => ({ getDesktopRuntime: () => mocks.state, desktopRuntimeFetch: vi.fn() }))
 import { createDesktopArtworkRepository } from './artworkRepository'
+import type { SmartAlbumRule } from '../../application/artwork/smartAlbums'
+
+const smartRule = (): SmartAlbumRule => ({ characterId: 'custom-role', tags: ['和服'], tagMatch: 'all', favoriteOnly: false, search: '', projectId: '' })
 
 beforeEach(() => { mocks.request.mockResolvedValue(null) })
 it('creates a project through the workspace and reconciles a lost response using its stable operation identity', async () => {
@@ -27,6 +30,59 @@ it('creates a project through the workspace and reconciles a lost response using
   expect(await repository.readProjects()).toEqual([body])
   saved.title = 'consumer edit'
   expect(body.title).toBe('秋日手记')
+})
+it('saves detached smart metadata with CAS, preserves unknown fields and reconciles a lost acknowledgement', async () => {
+  const current = { id: 'smart-one', body: { id: 'smart-one', title: '旧名称', smartRule: smartRule(), history_ids: [], custom: { retained: true } }, revision: 7 }
+  let write: Record<string, unknown> | undefined
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listProjects') return { items: [current] }
+    if (command.kind === 'saveProject') { write = command; throw new Error('lost acknowledgement') }
+    if (command.kind === 'getOperation') return { state: 'committed', receipt: { project: { ...current, body: write!.project, revision: 8 } } }
+    throw new Error('unexpected artwork/media access')
+  })
+  const repository = createDesktopArtworkRepository(), input = { id: 'smart-one', title: ' 新名称 ', rule: smartRule() }
+  const pending = repository.saveSmartAlbum(input)
+  input.rule.tags.push('consumer edit')
+  const result = await pending
+  expect(write).toMatchObject({ expectedRevision: 7, artworkIds: [], project: { title: '新名称', custom: { retained: true }, smartRule: { tags: ['和服'] } } })
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['listProjects', 'saveProject', 'getOperation'])
+  expect(mocks.request.mock.calls[2][0].operationId).toBe(write!.operationId)
+  ;(result.custom as { retained: boolean }).retained = false
+  expect((write!.project as typeof current.body).custom.retained).toBe(true)
+  mocks.request.mockResolvedValue({ items: [{ ...current, body: write!.project, revision: 8 }] })
+  await repository.saveSmartAlbum({ id: 'smart-one', title: '新名称', rule: smartRule() })
+  expect(mocks.request.mock.calls.filter(([command]) => command.kind === 'saveProject')).toHaveLength(1)
+})
+it('deletes only a smart project through CAS and recovers its receipt without accessing artwork or media', async () => {
+  const body = { id: 'smart-one', title: '智能画册', history_ids: [], smartRule: smartRule() }
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listProjects') return { items: [{ id: body.id, body, revision: 7 }] }
+    if (command.kind === 'deleteSmartAlbum') throw new Error('lost acknowledgement')
+    if (command.kind === 'getOperation') return { state: 'committed', receipt: { id: body.id, deleted: true } }
+    throw new Error('unexpected artwork/media access')
+  })
+  expect(await createDesktopArtworkRepository().deleteSmartAlbum(body.id)).toEqual({ deleted: true })
+  expect(mocks.request.mock.calls[1][0]).toMatchObject({ kind: 'deleteSmartAlbum', id: body.id, expectedRevision: 7 })
+  expect(mocks.request.mock.calls[2][0].operationId).toBe(mocks.request.mock.calls[1][0].operationId)
+})
+it('rejects manual replacement, smart/self conditions and unknown write outcomes without reporting success', async () => {
+  const manual = { id: 'manual', body: { id: 'manual', title: '手动', history_ids: [] }, revision: 1 }
+  const smart = { id: 'smart-one', body: { id: 'smart-one', title: '智能', history_ids: [], smartRule: smartRule() }, revision: 2 }
+  const repository = createDesktopArtworkRepository()
+  mocks.request.mockResolvedValue({ items: [manual, smart] })
+  await expect(repository.saveSmartAlbum({ id: 'manual', title: '新', rule: smartRule() })).rejects.toThrow('手动画册')
+  await expect(repository.deleteSmartAlbum('manual')).rejects.toThrow('智能画册')
+  await expect(repository.saveSmartAlbum({ id: 'smart-new', title: '新', rule: { ...smartRule(), projectId: 'smart-one' } })).rejects.toThrow('手动画册')
+  await expect(repository.saveSmartAlbum({ id: 'smart-one', title: '新', rule: { ...smartRule(), projectId: 'smart-one' } })).rejects.toThrow('手动画册')
+  expect(mocks.request.mock.calls.every(([command]) => command.kind === 'listProjects')).toBe(true)
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'listProjects') return { items: [smart] }
+    if (command.kind === 'getOperation') return { state: 'prepared' }
+    throw new Error('REVISION_CONFLICT')
+  })
+  await expect(repository.saveSmartAlbum({ id: 'smart-one', title: 'changed', rule: smartRule() })).rejects.toThrow('REVISION_CONFLICT')
+  mocks.request.mockImplementation(async command => command.kind === 'listProjects' ? { items: [smart] } : { project: { body: { ...smart.body, smartRule: null } } })
+  await expect(repository.saveSmartAlbum({ id: 'smart-one', title: 'changed', rule: smartRule() })).rejects.toThrow('响应无效')
 })
 afterEach(() => { mocks.request.mockReset(); mocks.state.connection = 'ready'; mocks.state.bootstrap.runtime.workspace = { workspaceId: 'library-1', domains: ['artwork'] } })
 it('purges bounded confirmed tombstone batches and reconciles a lost committed response', async () => {

@@ -32,7 +32,7 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
   function memberships(projects: unknown[], target: string) {
     return projects.flatMap(value => {
       const project = record(value)
-      if (!project || !comparableId(project.id) || !Array.isArray(project.history_ids)) return []
+      if (!project || Object.hasOwn(project, 'smartRule') || !comparableId(project.id) || !Array.isArray(project.history_ids)) return []
       const position = project.history_ids.findIndex(id => comparableId(id) === target)
       return position < 0 ? [] : [{ projectId: project.id as ArtworkOrganizationId, position }]
     })
@@ -45,7 +45,7 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
     const target = comparableId(artworkId)!
     for (const value of projects) {
       const project = record(value)
-      if (!project) continue
+      if (!project || Object.hasOwn(project, 'smartRule')) continue
       const ref = refs.find(item => comparableId(item.projectId) === comparableId(project.id))
       const previous = Array.isArray(project.history_ids) ? project.history_ids : []
       const next = previous.filter(id => comparableId(id) !== target)
@@ -59,6 +59,7 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
       const { history, projects } = await read()
       const project = request.projectId == null ? null : projects.map(record).find(value => comparableId(value?.id) === comparableId(request.projectId))
       if (request.projectId != null && !project) throw new Error('画册已不存在，请重新读取后选择')
+      if (project && Object.hasOwn(project, 'smartRule')) throw new Error('智能画册按条件收录，请修改画册条件')
       const receipt: ArtworkOrganizationReceipt = { operationId: `organize-${crypto.randomUUID()}`, changes: [] }
       for (const id of request.ids) {
         const source = history.map(record).find(value => comparableId(value?.id) === comparableId(id))
@@ -101,7 +102,10 @@ export function createArtworkOrganization({ kv, commit, enqueue }: Dependencies)
         const after = change.after
         const sameMemberships = !after.memberships || equal(memberships(projects, comparableId(change.id)!).map(ref => comparableId(ref.projectId)).sort(),
           after.memberships.map(ref => comparableId(ref.projectId)).sort())
-        const allAlbumsExist = !change.before.memberships || change.before.memberships.every(ref => projects.some(value => comparableId(record(value)?.id) === comparableId(ref.projectId)))
+        const allAlbumsExist = !change.before.memberships || change.before.memberships.every(ref => projects.some(value => {
+          const project = record(value)
+          return project && !Object.hasOwn(project, 'smartRule') && comparableId(project.id) === comparableId(ref.projectId)
+        }))
         if (!sameMemberships || !allAlbumsExist || (after.project && !equal(field(source, 'project'), after.project))
           || (after.collectionTags && !equal(field(source, 'collectionTags'), after.collectionTags))) { skipped++; continue }
         for (const name of ['project', 'collectionTags'] as const) {

@@ -9,10 +9,12 @@ import { preferenceHistoryRows } from '../../application/artwork/preferenceHisto
 import { parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
+import { normalizeSmartAlbumDraft, parseSmartAlbumRule, type SmartAlbumDraft } from '../../application/artwork/smartAlbums.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
 interface Receipt { artwork?: Row; changed?: boolean; removed?: number; purged?: number; softDeleteResults?: ArtworkSoftDeleteResult[] }
+interface ProjectRow { id: string | number; body: ArtworkProjectRecord; revision: number }
 export function createDesktopArtworkRepository(): ArtworkRepository {
   let workspaceId = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId
   function requireAuthority() {
@@ -166,9 +168,49 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (saved?.id !== project.id || saved.title !== project.title) throw new Error('画册创建响应无效，请重试本次创建')
     return structuredClone(saved)
   }
+  async function projectRows(): Promise<ProjectRow[]> {
+    const result = await workspaceRequest<{ items: ProjectRow[] }>({ kind: 'listProjects' })
+    if (!Array.isArray(result?.items) || result.items.some(row => !row?.body || typeof row.body !== 'object'
+      || Array.isArray(row.body) || !['string', 'number'].includes(typeof row.id)
+      || !String(row.id).trim() || (typeof row.id === 'number' && !Number.isFinite(row.id))
+      || String(row.body.id).trim() !== String(row.id).trim()
+      || !Number.isSafeInteger(row.revision) || row.revision < 0)) throw new Error('画册响应无效')
+    if (new Set(result.items.map(row => String(row.id).trim())).size !== result.items.length) throw new Error('画册响应无效')
+    return structuredClone(result.items)
+  }
+  async function saveSmartAlbum(input: SmartAlbumDraft) {
+    const draft = normalizeSmartAlbumDraft(input), projects = await projectRows()
+    const current = projects.find(row => String(row.id).trim() === draft.id)
+    if (current && !Object.hasOwn(current.body, 'smartRule')) throw new Error('画册编号已被手动画册使用')
+    if (draft.rule.projectId) {
+      const manual = projects.find(row => String(row.id).trim() === draft.rule.projectId)
+      if (!manual || Object.hasOwn(manual.body, 'smartRule') || draft.rule.projectId === draft.id) throw new Error('智能画册只能筛选已有的手动画册')
+    }
+    const project = { ...current?.body, id: current?.id ?? draft.id, title: draft.title, history_ids: [], smartRule: draft.rule }
+    if (current && JSON.stringify(current.body) === JSON.stringify(project)) return structuredClone(current.body)
+    const receipt = await organizationWrite<{ project: ProjectRow }>({ kind: 'saveProject',
+      operationId: `smart-album-${crypto.randomUUID()}`, project, artworkIds: [], expectedRevision: current?.revision ?? null })
+    const saved = receipt?.project?.body
+    if (!saved || String(receipt.project.id).trim() !== draft.id || !Number.isSafeInteger(receipt.project.revision)
+      || receipt.project.revision < 0 || String(saved.id).trim() !== draft.id || saved.title !== draft.title
+      || !Array.isArray(saved.history_ids) || saved.history_ids.length
+      || JSON.stringify(parseSmartAlbumRule(saved.smartRule)) !== JSON.stringify(draft.rule)) throw new Error('智能画册保存响应无效，请重新读取')
+    return structuredClone(saved)
+  }
+  async function deleteSmartAlbum(id: string) {
+    const target = typeof id === 'string' ? id.trim() : ''
+    if (!target) throw new Error('画册编号无效')
+    const current = (await projectRows()).find(row => String(row.id).trim() === target)
+    if (!current) return { deleted: false }
+    if (!Object.hasOwn(current.body, 'smartRule') || !parseSmartAlbumRule(current.body.smartRule)) throw new Error('只能删除有效的智能画册')
+    const receipt = await organizationWrite<{ deleted: boolean; id: unknown }>({ kind: 'deleteSmartAlbum',
+      id: current.id, operationId: `delete-smart-album-${crypto.randomUUID()}`, expectedRevision: current.revision })
+    if (typeof receipt?.deleted !== 'boolean' || String(receipt.id).trim() !== target) throw new Error('智能画册删除响应无效，请重新读取')
+    return { deleted: receipt.deleted }
+  }
   const repository: ArtworkRepository = {
     readHistory, readArtwork, readSearchIndex, readProjects, readRecentHistory, readPreferenceHistory,
-    organizeArtworks, undoArtworkOrganization, createProject,
+    organizeArtworks, undoArtworkOrganization, createProject, saveSmartAlbum, deleteSmartAlbum,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     ...media,
     async putImage(blob) {
@@ -221,6 +263,8 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     deleteImage: alias => trackMaintenanceWrite(() => repository.deleteImage(alias)),
     appendArtwork: artwork => trackMaintenanceWrite(() => repository.appendArtwork(artwork)),
     createProject: input => trackMaintenanceWrite(() => repository.createProject(input)),
+    saveSmartAlbum: input => trackMaintenanceWrite(() => repository.saveSmartAlbum(input)),
+    deleteSmartAlbum: id => trackMaintenanceWrite(() => repository.deleteSmartAlbum(id)),
     organizeArtworks: input => trackMaintenanceWrite(() => repository.organizeArtworks(input)),
     undoArtworkOrganization: receipt => trackMaintenanceWrite(() => repository.undoArtworkOrganization(receipt)),
     patchArtwork: (id, patch) => trackMaintenanceWrite(() => repository.patchArtwork(id, patch)),

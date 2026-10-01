@@ -37,6 +37,35 @@ describe('saved artwork tag filtering',()=>{
     expect(filters.visible.value).toHaveLength(3); expect(replace).toHaveBeenLastCalledWith({query:{}})
     filters.cleanupFilterSync(); scope.stop()
   })
+  it('restores role and smart album links, updates membership from metadata and clears both scopes', async () => {
+    vi.useFakeTimers()
+    const scope = effectScope(), replace = vi.fn()
+    const history = ref<ArtworkRecord[]>([
+      { id: 1, character: 'nene', characterId: 'popular-character', manual_tags: ['春日'], favorite: true, timestamp: 3 },
+      { id: 2, characterId: 'popular-character', collectionTags: ['春日'], timestamp: 2 },
+      { id: 3, character: 'triad', manual_tags: ['春日'], favorite: true, timestamp: 1 },
+    ])
+    const projects = ref<GalleryProject[]>([{ id: 'smart-spring', title: '角色的春日精选', history_ids: [],
+      smartRule: { characterId: 'popular-character', tags: ['春日'], tagMatch: 'all', favoriteOnly: true, search: '', projectId: '' } }])
+    const route = reactive({query:{project:'smart-spring',character:'popular-character'}}) as unknown as RouteLocationNormalizedLoaded
+    const filters = scope.run(() => useGalleryFilters({ history, projects, columnCount: ref(2), ratioOf: () => 1, route, router: {replace} as unknown as Router }))!
+    filters.restoreFiltersFromQuery()
+    await nextTick()
+    expect(filters.visible.value.map(item => item.id)).toEqual([1])
+    history.value[0].favorite = false; history.value[1].favorite = true
+    expect(filters.visible.value.map(item => item.id)).toEqual([2])
+    filters.projectFilter.value = ''; filters.characterFilter.value = 'nene'
+    expect(filters.visible.value.map(item => item.id)).toEqual([3])
+    projects.value.push({ id: 'smart-manual', title: '手动画册', history_ids: [3] })
+    filters.projectFilter.value = 'smart-manual'
+    expect(filters.visible.value.map(item => item.id)).toEqual([3])
+    filters.projectFilter.value = 'smart-missing'
+    expect(filters.visible.value).toEqual([])
+    filters.resetGalleryFilters(); await nextTick(); await vi.runAllTimersAsync()
+    expect(filters.visible.value).toHaveLength(3)
+    expect(replace).toHaveBeenLastCalledWith({query:{}})
+    filters.cleanupFilterSync(); scope.stop()
+  })
 })
 
 describe('gallery filter metadata reuse', () => {
@@ -81,7 +110,8 @@ describe('gallery filter metadata reuse', () => {
     filters.projectFilter.value = 'missing'
     filters.favoriteOnly.value = false
     filters.searchQuery.value = ''
-    expect(filters.visible.value).toHaveLength(3)
+    expect(filters.visible.value).toHaveLength(0)
+    filters.projectFilter.value = ''
     history.value.splice(1, 1)
     expect(filters.visible.value.map(item => item.id)).toEqual([1, 'old'])
     stop()

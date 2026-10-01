@@ -262,15 +262,8 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
         let revision=c.next_revision()?;
         let mut receipt=json!({"operationId":command["operationId"],"kind":kind,"revision":revision});
         match kind {
-            "saveProject" => {
-                let mut body=command["project"].clone(); let key=entity_key(&body["id"])?; let current=project(c,&key)?;
-                if current.as_ref().map(|p|&p["revision"]).unwrap_or(&Value::Null)!=&command["expectedRevision"] {return Err(conflict("REVISION_CONFLICT","Project has a newer revision"))}
-                let keys=command["artworkIds"].as_array().ok_or_else(||invalid("Project artwork IDs must be an array"))?.iter().map(entity_key).collect::<Result<Vec<_>>>()?;
-                if keys.iter().collect::<HashSet<_>>().len()!=keys.len() {return Err(invalid("Project contains duplicate artworks"))}
-                if let Some(current)=current {body["id"]=current["id"].clone();}
-                c.db.execute("INSERT INTO projects VALUES(?,?,?,?) ON CONFLICT(id_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![key,stringify(&body["id"]),stringify(&body),revision])?;
-                update_membership(c,&key,&keys,revision)?; receipt["project"]=project(c,&key)?.unwrap();
-            }
+            "saveProject" => project_commands::save(c,command,revision,&mut receipt)?,
+            "deleteSmartAlbum" => project_commands::delete_smart(c,command,&mut receipt)?,
             "purgeExpiredTrash" => {
                 let keys=c.db.prepare("SELECT artwork_key FROM trash WHERE deleted_at<=?")?.query_map([now()-RETENTION],|r|r.get::<_,String>(0))?.collect::<rusqlite::Result<Vec<_>>>()?;
                 for key in &keys { c.check_cancel()?; c.db.execute("DELETE FROM media_refs WHERE owner_kind='trash' AND owner_id=?",[key])?; c.db.execute("DELETE FROM artworks WHERE id_key=?",[key])?; }
@@ -365,7 +358,7 @@ fn restore(c: &Context, key: &str, revision: i64) -> Result<()> {
         .ok_or_else(|| invalid("Invalid trash project references"))?
     {
         let p = string(r, "project_key")?;
-        if project(c, p)?.is_none() {
+        if project(c, p)?.is_none_or(|row| row["body"].get("smartRule").is_some()) {
             continue;
         }
         let mut keys = membership(c, p)?;

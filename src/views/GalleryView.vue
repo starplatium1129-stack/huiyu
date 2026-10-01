@@ -4,10 +4,10 @@
       <div>
         <div class="gallery-kicker">HUIYU / PRIVATE COLLECTION</div>
         <h1 class="gallery-title">我的作品</h1>
-        <nav v-if="projectFilter && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
-          <button type="button" @click="showAlbums">返回画册</button>
+        <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
+          <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
           <ArchiveIcon name="chevron-down" />
-          <span aria-current="page">{{ projects.find(project => project.id === projectFilter)?.title || '当前画册' }}</span>
+          <span aria-current="page">{{ collectionTitle }}</span>
         </nav>
         <p class="gallery-subtitle">收藏每一次心动，让灵感从这里继续。</p>
       </div>
@@ -19,9 +19,10 @@
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
       <div class="gallery-browse-controls" role="group" aria-label="浏览作品">
       <AnimatedSelection />
-      <button class="gallery-filter" :class="{ active: !albumsOpen && !favoriteOnly && !trashMode }" type="button"
-        :aria-pressed="!albumsOpen && !favoriteOnly && !trashMode" @click="favoriteOnly = false; trashMode && toggleTrashMode(); showImages()">{{ projectFilter ? '画册作品' : '全部作品' }}</button>
-      <button class="gallery-filter" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="selectMode && toggleSelectMode(); trashMode && toggleTrashMode(); showAlbums()"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button>
+      <button class="gallery-filter" :class="{ active: !albumsOpen && !favoriteOnly && !trashMode && !projectFilter && !characterFilter }" type="button"
+        :aria-pressed="!albumsOpen && !favoriteOnly && !trashMode && !projectFilter && !characterFilter" @click="trashMode && toggleTrashMode(); showAllWorks()">全部作品</button>
+      <button class="gallery-filter" type="button" :class="{ active: (albumsOpen && albumSection === 'characters') || (!albumsOpen && !!characterFilter && !projectFilter) }" :aria-pressed="(albumsOpen && albumSection === 'characters') || (!albumsOpen && !!characterFilter && !projectFilter)" @click="showAlbumOverview('characters')"><ArchiveIcon name="character" />按角色 <span>{{ characterAlbums.length }}</span></button>
+      <button class="gallery-filter" type="button" :class="{ active: (albumsOpen && albumSection === 'albums') || (!albumsOpen && !!projectFilter) }" :aria-pressed="(albumsOpen && albumSection === 'albums') || (!albumsOpen && !!projectFilter)" @click="showAlbumOverview('albums')"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button>
       <button v-show="!albumsOpen" class="gallery-filter" :class="{ active: favoriteOnly && !trashMode }" type="button" :aria-pressed="favoriteOnly && !trashMode" @click="favoriteOnly = trashMode || !favoriteOnly; trashMode && toggleTrashMode()">
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
@@ -32,7 +33,7 @@
         故事与完整 prompt——很多旧作只记得里面出现过某个词。
       -->
       <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
-      <StudioSelect v-show="!albumsOpen" v-model="projectFilter" class="gallery-project" label="按项目筛选" :options="[{ value: '', label: '全部项目' }, ...projects.map(p => ({ value: p.id, label: p.title }))]" />
+      <StudioSelect v-show="!albumsOpen" v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="[{ value: '', label: '全部画册' }, ...projects.map(p => ({ value: p.id, label: p.smartRule ? `${p.title} · 智能` : p.title }))]" />
       <!--
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
@@ -50,19 +51,12 @@
       </div>
     </div>
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <div v-if="!galleryLoading && !galleryError && albums.length" class="tw:flex tw:justify-end tw:mb-s-4"><button class="btn btn-primary" type="button" @click="startAlbumSelection"><ArchiveIcon name="book" />新建画册</button></div>
-      <GalleryProjectAlbums v-if="!galleryLoading && !galleryError" :albums="albums" :selected-id="projectFilter" @select="openAlbum" />
-      <ArchiveStatePanel v-if="!galleryLoading && !galleryError && !albums.length" compact kind="empty" title="还没有成册的作品" message="生成的图片会自动保存在全部作品。选择作品并新建画册后，就能在这里按册翻阅。"><button class="btn btn-primary" type="button" :disabled="!history.length" @click="startAlbumSelection">选择作品成册</button><button class="btn btn-ghost" type="button" @click="showImages">查看作品展墙</button></ArchiveStatePanel>
-      <ArchiveStatePanel v-if="galleryLoading || galleryError" :kind="galleryError ? 'error' : 'loading'" :title="galleryError ? '画册读取失败' : '正在整理画册'" :message="galleryError || '正在读取项目与作品目录。'" />
+      <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
     <div v-show="!albumsOpen" class="gallery-image-browse">
-    <div v-if="!trashMode && tagOptions.length" ref="tagControls" class="gallery-tags" role="group" aria-label="作品标签筛选">
-      <ArchiveIcon name="pin" /><StudioSelect v-model="tagFilter" label="按标签筛选" :options="[{value:'',label:'全部标签'}, ...tagOptions]" />
-      <button v-if="tagFilter" type="button" class="gallery-filter" @click="tagFilter = ''">清除标签：{{ tagFilter }}<ArchiveIcon name="close" /></button>
-      <span v-else>按作品保存的标签查找</span>
-    </div>
+    <div v-if="!trashMode && history.length" ref="tagControls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
-      <span class="gallery-count"><strong>{{ trashMode ? '回收站' : (projects.find(project => project.id === projectFilter)?.title || '作品展墙') }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
+      <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可整理画册与标签、对比挑选或移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
     </div>
 
@@ -80,7 +74,7 @@
     <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
 
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
-    <section v-content-motion="`${trashMode}:${projectFilter}:${favoriteOnly}:${tagFilter}`" aria-live="polite" data-reveal data-reveal-delay="1">
+    <section v-content-motion="`${trashMode}:${projectFilter}:${characterFilter}:${favoriteOnly}:${tagFilter}`" aria-live="polite" data-reveal data-reveal-delay="1">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
       <GalleryTrashWall
         v-if="trashMode"
@@ -120,7 +114,7 @@
         v-else-if="!visible.length"
         kind="filtered"
         title="当前筛选下没有作品"
-        message="作品仍在本地档案中，清空搜索或重置收藏 / 项目筛选即可重新显示。"
+        message="可调整角色、标签与收藏条件，或重置画册和搜索筛选。"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
@@ -235,6 +229,7 @@
     </section>
 
     </div>
+    <GallerySmartAlbumEditor v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
@@ -385,17 +380,19 @@ const gestureViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
-import GalleryProjectAlbums from '@/components/gallery/GalleryProjectAlbums.vue'
+import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
+import GalleryCollectionFilters from '@/components/gallery/GalleryCollectionFilters.vue'
+import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
-import { useGalleryProjectAlbums } from '@/composables/gallery/useGalleryProjectAlbums'
-import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
+import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
+const workspace = useGalleryWorkspace()
 const {
-tagFilter, tagOptions,
+tagFilter, tagOptions, characterFilter, collectionPreviewItems,
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
 favoriteOnly,
@@ -465,15 +462,22 @@ facts,
 downloadCurrent,
 copiedPrompt,
 copyPrompt
-} = useGalleryWorkspace()
+} = workspace
 const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
 function openFromCard(index: number, event: MouseEvent) {
   imageOrigin.capture(event)
   openViewer(index)
   void imageOrigin.enter()
 }
-const { albums } = useGalleryProjectAlbums({ projects, history, thumbUrls, cardUrls })
-const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum } = useAlbumNavigation(projectFilter)
+const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects, collectionTitle, currentSmartRule,
+  albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
+  editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
+watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
+function showAlbumOverview(section: 'characters' | 'albums') {
+  if (selectMode.value) toggleSelectMode()
+  if (trashMode.value) toggleTrashMode()
+  void showOverview(section)
+}
 function startAlbumSelection() {
   resetGalleryFilters()
   if (trashMode.value) toggleTrashMode()
@@ -483,7 +487,7 @@ function startAlbumSelection() {
 const tagControls = ref<HTMLElement | null>(null)
 async function filterByTag(tag: string) {
   closeViewer(); tagFilter.value = tag
-  await nextTick(); tagControls.value?.querySelector<HTMLElement>('[role="combobox"]')?.focus()
+  await nextTick(); tagControls.value?.querySelector<HTMLElement>('[aria-label="按标签筛选"]')?.focus()
 }
 
 const displayedCurrent = ref(current.value)

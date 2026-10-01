@@ -5,6 +5,7 @@ import { dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
+import { artworkCharacterIds, matchesSmartAlbum, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
 
 export interface UseGalleryFiltersOptions {
   history: Ref<ArtworkRecord[]>;
@@ -26,6 +27,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   const favoriteOnly = ref(false);
   const projectFilter = ref('');
+  const characterFilter = ref('');
   /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
    *  攒到几百张后找某张旧作只能靠翻。 */
   const searchQuery = ref('');
@@ -44,7 +46,9 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     .map(item => ({ item, timestamp: artworkTimestamp(item) }))
     .sort((a, b) => b.timestamp - a.timestamp)
     .map(entry => entry.item));
-  const searching = computed(() => searchQuery.value.trim().length > 0);
+  const selectedProject = computed(() => projects.value.find(item => item.id === projectFilter.value));
+  const smartRule = computed(() => selectedProject.value?.smartRule);
+  const searching = computed(() => searchQuery.value.trim().length > 0 || Boolean(smartRule.value?.search));
   const searchIndex = computed(() => searching.value
     ? new Map(history.value.map(item => [item, searchHaystack(item)])) : null);
   // A cleared search no longer needs normalized prompts or their reactive
@@ -53,14 +57,20 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   watch(searching, active => { if (!active) void searchIndex.value; }, { flush: 'sync' });
   const projectIds = computed(() => {
     const project = projects.value.find(item => item.id === projectFilter.value);
-    return project ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
+    return project && !project.smartRule ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
   });
   const visible = computed(() => {
     const favorites = favoriteOnly.value, tag = tagFilter.value;
     const ids = projectFilter.value ? projectIds.value : null;
     const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const index = terms.length ? searchIndex.value : null;
+    const index = searching.value ? searchIndex.value : null;
     return sortedHistory.value.filter(item => {
+      if (projectFilter.value && !selectedProject.value) return false;
+      if (smartRule.value && !matchesSmartAlbum(item, smartRule.value, projects.value, index?.get(item))) return false;
+      if (characterFilter.value) {
+        const ids = artworkCharacterIds(item);
+        if (characterFilter.value === UNASSIGNED_CHARACTER_ID ? ids.length > 0 : !ids.includes(characterFilter.value)) return false;
+      }
       if (favorites && !item.favorite) return false;
       if (ids && !ids.has(item.id)) return false;
       if (tag && !artworkTags(item).includes(tag)) return false;
@@ -94,6 +104,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   function resetGalleryFilters() {
     favoriteOnly.value = false;
     projectFilter.value = '';
+    characterFilter.value = '';
     searchQuery.value = '';
     tagFilter.value = '';
   }
@@ -102,6 +113,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   function restoreFiltersFromQuery() {
     const q = route.query;
     tagFilter.value = typeof q.tag === 'string' ? q.tag : '';
+    characterFilter.value = typeof q.character === 'string' ? q.character : '';
     if (typeof q.fav === 'string')
       favoriteOnly.value = q.fav === '1';
     if (typeof q.project === 'string')
@@ -119,7 +131,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const project = typeof q.project === 'string' ? q.project : '';
     const term = typeof q.q === 'string' ? q.q : '';
     const tag = typeof q.tag === 'string' ? q.tag : '';
-    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value)
+    const character = typeof q.character === 'string' ? q.character : '';
+    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value && character === characterFilter.value)
       return;
     if (syncTimer)
       clearTimeout(syncTimer);
@@ -129,6 +142,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       const query: LocationQueryRaw = { ...route.query };
       if (tagFilter.value) query.tag = tagFilter.value;
       else delete query.tag;
+      if (characterFilter.value) query.character = characterFilter.value;
+      else delete query.character;
       if (favoriteOnly.value)
         query.fav = '1';
       else
@@ -165,14 +180,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
 
   // 筛选变化回到第一页，让用户始终从最新作品看起
-  watch([favoriteOnly, projectFilter, searchQuery, tagFilter], () => {
+  watch([favoriteOnly, projectFilter, characterFilter, searchQuery, tagFilter], () => {
     renderLimit.value = PAGE_SIZE;
     onFilterReset?.();
     syncFiltersToQuery();
   });
 
   return {
-    tagFilter, tagOptions,
+    tagFilter, tagOptions, characterFilter,
     favoriteOnly,
     projectFilter,
     searchQuery,

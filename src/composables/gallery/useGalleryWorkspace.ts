@@ -37,6 +37,7 @@ export function useGalleryWorkspace() {
     const cardUrls = reactive<Record<string, string>>({});
     /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
     const thumbUrls = reactive<Record<string, string>>({});
+    const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
     const missingImageIds = ref(new Set<string | number>());
     /** 缩略图生成去重：HD 管线与解码回填共用，同一张图并发只生成一次 */
     const thumbPending = new Set<string>();
@@ -88,7 +89,7 @@ export function useGalleryWorkspace() {
 
     const {
         favoriteOnly,
-        tagFilter, tagOptions,
+        tagFilter, tagOptions, characterFilter,
         projectFilter,
         searchQuery,
         visible,
@@ -213,7 +214,7 @@ export function useGalleryWorkspace() {
                 thumbsDirty = false;
                 // Watchers and mounting share one batch; a changed page reschedules
                 // its remaining reads without fetching the same missing preview twice.
-                const pending = pagedVisible.value.filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
+                const pending = (collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
@@ -464,6 +465,7 @@ export function useGalleryWorkspace() {
         void hydrateThumbs();
         void nextTick(() => scanWallCards());
     });
+    watch(collectionPreviewItems, () => { if (viewActive) void hydrateThumbs(); });
     /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
     const sentinelEl = ref<HTMLElement | null>(null);
     let moreObserver: IntersectionObserver | null = null;
@@ -503,7 +505,7 @@ export function useGalleryWorkspace() {
     function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }); }
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
-        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions,
+        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions, characterFilter, collectionPreviewItems,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,

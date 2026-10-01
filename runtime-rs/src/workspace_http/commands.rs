@@ -245,6 +245,9 @@ pub(super) fn command(
         ("POST", ["projects"]) => {
             json!({"kind": "saveProject", "operationId": operation()?, "project": body(&input["project"])?, "artworkIds": array(&input["artworkIds"], false)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }})
         }
+        ("DELETE", ["projects", id, "smart"]) => {
+            json!({"kind":"deleteSmartAlbum","operationId":operation()?,"id":route_id(id,query)?,"expectedRevision":revision()?})
+        }
         ("GET", ["operations", id]) => {
             json!({"kind": "getOperation", "operationId": route_op(id)?})
         }
@@ -390,6 +393,9 @@ mod tests {
         let organized = command(&Method::POST, &segments("artworks/organize").unwrap(), &Query::default(), &json!({"kind":"backup","operationId":"organize-one","ids":[42],"expectedRevisions":[{"id":42,"revision":1}],"projectId":null,"collectionTags":{"add":["keep"]}})).unwrap();
         assert_eq!(organized["kind"], "organizeArtworks");
         assert!(organized["projectId"].is_null());
+        assert_eq!(command(&Method::DELETE, &segments("projects/42/smart").unwrap(), &query,
+            &json!({"kind":"hardDeleteArtwork","operationId":"delete-smart","expectedRevision":7})).unwrap(),
+            json!({"kind":"deleteSmartAlbum","operationId":"delete-smart","id":42.0,"expectedRevision":7}));
         assert_eq!(command(&Method::POST, &segments("artworks/organization-undo").unwrap(), &Query::default(), &json!({"operationId":"undo-one","sourceOperationId":"organize-one","changes":[{"id":"untrusted"}]})).unwrap(),json!({"kind":"undoArtworkOrganization","operationId":"undo-one","sourceOperationId":"organize-one"}));
         let converted = command(
             &Method::GET,

@@ -66,3 +66,140 @@ fn duplicate_or_oversized_purge_cannot_partially_remove_tombstones() {
         );
     }
 }
+
+fn smart_rule() -> Value {
+    json!({"characterId":"custom-role","tags":["和服"],"tagMatch":"all","favoriteOnly":true,"search":"","projectId":""})
+}
+
+#[test]
+fn smart_albums_round_trip_replay_edit_and_delete_without_changing_artwork_or_media() {
+    let (_directory, mut c) = fixture();
+    let manual = json!({"id":7,"title":"手动","history_ids":[],"custom":"retained"});
+    c.db.execute(
+        "INSERT INTO projects VALUES('7','7',?,1)",
+        [stringify(&manual)],
+    )
+    .unwrap();
+    c.db.execute(
+        "INSERT INTO media_objects VALUES('fixture-hash',10,'image/png')",
+        [],
+    )
+    .unwrap();
+    c.db.execute(
+        "INSERT INTO media_aliases VALUES('fixture-image','fixture-hash')",
+        [],
+    )
+    .unwrap();
+    c.db.execute(
+        "INSERT INTO media_refs VALUES('artwork','restored','fixture-hash')",
+        [],
+    )
+    .unwrap();
+    let history =
+        read(&c, &json!({"kind":"listArtworks","includeDeleted":true})).unwrap()["items"].clone();
+    let create = json!({"kind":"saveProject","operationId":"smart-create","project":{
+        "id":"smart-one","title":" 和服收藏 ","smartRule":smart_rule(),"custom":{"retained":true}},
+        "artworkIds":[],"expectedRevision":null});
+    let created = c.execute(&create, "test").unwrap();
+    assert_eq!(created["project"]["body"]["title"], "和服收藏");
+    assert_eq!(created["project"]["body"]["smartRule"], smart_rule());
+    assert_eq!(created["project"]["body"]["history_ids"], json!([]));
+    assert_eq!(c.execute(&create, "test").unwrap(), created);
+    let mut updated_rule = smart_rule();
+    updated_rule["tagMatch"] = "any".into();
+    updated_rule["tags"] = json!(["海边"]);
+    updated_rule["projectId"] = "7".into();
+    let update = json!({"kind":"saveProject","operationId":"smart-update","project":{
+        "id":"smart-one","title":"海边精选","smartRule":updated_rule},"artworkIds":[],
+        "expectedRevision":created["project"]["revision"]});
+    let updated = c.execute(&update, "test").unwrap();
+    assert_eq!(
+        updated["project"]["body"]["custom"],
+        json!({"retained":true})
+    );
+    assert_eq!(updated["project"]["body"]["smartRule"], updated_rule);
+    let mut stale = update.clone();
+    stale["operationId"] = "stale-update".into();
+    assert_eq!(
+        c.execute(&stale, "test").unwrap_err().code,
+        "REVISION_CONFLICT"
+    );
+    let delete = json!({"kind":"deleteSmartAlbum","operationId":"smart-delete","id":"smart-one",
+        "expectedRevision":updated["project"]["revision"]});
+    let deleted = c.execute(&delete, "test").unwrap();
+    assert_eq!(deleted["deleted"], true);
+    assert_eq!(c.execute(&delete, "test").unwrap(), deleted);
+    assert!(project(&c, "smart-one").unwrap().is_none());
+    assert_eq!(project(&c, "7").unwrap().unwrap()["body"], manual);
+    assert_eq!(
+        read(&c, &json!({"kind":"listArtworks","includeDeleted":true})).unwrap()["items"],
+        history
+    );
+    for table in ["media_objects", "media_aliases", "media_refs"] {
+        assert_eq!(
+            c.db.query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| row
+                .get::<_, i64>(0))
+                .unwrap(),
+            1
+        );
+    }
+    c.shutdown().unwrap();
+}
+
+#[test]
+fn smart_album_validation_rejects_manual_membership_replacement_and_recursive_rules() {
+    let (_directory, mut c) = fixture();
+    let save = json!({"kind":"saveProject","operationId":"smart-valid","project":{
+        "id":"smart-one","title":"智能","smartRule":smart_rule()},"artworkIds":[],"expectedRevision":null});
+    let receipt = c.execute(&save, "test").unwrap();
+    let mut membership = save.clone();
+    membership["project"]["id"] = "with-members".into();
+    membership["operationId"] = "smart-members".into();
+    membership["artworkIds"] = json!(["restored"]);
+    assert!(c.execute(&membership, "test").is_err());
+    let mut recursive = save.clone();
+    recursive["operationId"] = "recursive".into();
+    recursive["project"]["id"] = "smart-two".into();
+    recursive["project"]["smartRule"]["projectId"] = "smart-one".into();
+    assert!(c.execute(&recursive, "test").is_err());
+    recursive["project"]["smartRule"]["projectId"] = "smart-two".into();
+    assert!(c.execute(&recursive, "test").is_err());
+    let mut malformed = save.clone();
+    malformed["operationId"] = "malformed".into();
+    malformed["project"]["id"] = "malformed".into();
+    malformed["project"]["smartRule"]["favoriteOnly"] = "yes".into();
+    assert!(c.execute(&malformed, "test").is_err());
+    let mut replace = json!({"kind":"saveProject","operationId":"replace-smart","project":{
+        "id":"smart-one","title":"手动"},"artworkIds":[],"expectedRevision":receipt["project"]["revision"]});
+    assert_eq!(
+        c.execute(&replace, "test").unwrap_err().code,
+        "PROJECT_KIND_CONFLICT"
+    );
+    replace["project"]["id"] = "manual".into();
+    replace["operationId"] = "create-manual".into();
+    replace["expectedRevision"] = Value::Null;
+    let manual = c.execute(&replace, "test").unwrap();
+    assert!(
+        c.execute(
+            &json!({"kind":"deleteSmartAlbum","operationId":"delete-manual","id":"manual",
+        "expectedRevision":manual["project"]["revision"]}),
+            "test"
+        )
+        .is_err()
+    );
+    replace["project"]["smartRule"] = smart_rule();
+    replace["operationId"] = "replace-manual".into();
+    replace["expectedRevision"] = manual["project"]["revision"].clone();
+    assert_eq!(
+        c.execute(&replace, "test").unwrap_err().code,
+        "PROJECT_KIND_CONFLICT"
+    );
+    assert!(project(&c, "with-members").unwrap().is_none());
+    assert!(project(&c, "smart-two").unwrap().is_none());
+    assert!(project(&c, "malformed").unwrap().is_none());
+    assert_eq!(
+        project(&c, "smart-one").unwrap().unwrap(),
+        receipt["project"]
+    );
+    c.shutdown().unwrap();
+}

@@ -72,7 +72,8 @@ describe('promptHistoryStore 持久化同步', () => {
     expect(artworkRepository.readHistory).not.toHaveBeenCalled()
     vi.mocked(artworkRepository.restoreArtwork).mockResolvedValueOnce({ restored: true })
     vi.mocked(artworkRepository.readHistory).mockResolvedValue([{ id: 1 }])
-    vi.mocked(artworkRepository.readProjects).mockResolvedValue([{ id: 'p1', name: '项目' }])
+    vi.mocked(artworkRepository.readProjects).mockResolvedValue([{ id: 'p1', name: '项目' },
+      { id: 'smart-album', title: '自动画册', smartRule: { tags: ['春日'] } }, { id: 'damaged-smart', smartRule: null }])
     expect(await store.restoreHistoryEntry(1)).toBe(true)
     expect(store.history).toEqual([{ id: 1 }])
     expect(store.projects).toEqual([{ id: 'p1', name: '项目' }])

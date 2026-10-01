@@ -1,11 +1,12 @@
 <template>
-  <section v-if="albums.length" class="gallery-albums tw:mb-s-6" aria-label="项目相册">
+  <section v-if="albums.length" ref="root" class="gallery-albums tw:mb-s-6" :aria-label="characters ? '角色画册' : '我的画册'">
     <header class="gallery-albums-heading tw:flex tw:items-end tw:justify-between tw:gap-s-4 tw:mb-s-4">
-      <div><span class="gallery-albums-kicker tw:text-secondary">STORIES IN ALBUMS</span><h2>成册的故事 <span>{{ albums.length }} 本</span></h2></div>
+      <div><span class="gallery-albums-kicker tw:text-secondary">{{ characters ? 'CHARACTERS IN COLLECTION' : 'STORIES IN ALBUMS' }}</span><h2>{{ characters ? '按角色翻阅' : '成册的故事' }} <span>{{ albums.length }} {{ characters ? '位角色' : '本' }}</span></h2></div>
       <p>选一本，翻阅你的创作</p>
     </header>
-    <div class="gallery-albums-track tw:grid tw:gap-s-5" role="group" aria-label="按项目翻阅作品">
-      <button v-for="album in albums" :key="album.id" class="gallery-album tw:min-w-0 tw:p-0 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" type="button" :aria-pressed="selectedId === album.id"
+    <div class="gallery-albums-track tw:grid tw:gap-s-5" role="group" :aria-label="characters ? '按角色翻阅作品' : '按画册翻阅作品'">
+      <div v-for="album in albums" :key="album.id" class="gallery-album-entry">
+      <button class="gallery-album tw:min-w-0 tw:p-0 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" type="button" :aria-pressed="selectedId === album.id"
         :data-album-id="album.id" :aria-label="`${album.title}，${album.count} 幅作品`" @click="emit('select', album.id)">
         <span class="gallery-album-cover tw:relative tw:grid tw:gap-[3px] tw:p-[4px] tw:rounded-lg tw:overflow-hidden" :data-covers="album.covers.length" aria-hidden="true">
           <span v-for="cover in album.covers" :key="cover.id" class="gallery-album-picture tw:grid tw:min-h-0 tw:min-w-0 tw:overflow-hidden tw:rounded-sm tw:text-secondary">
@@ -15,20 +16,45 @@
           </span>
           <span v-if="!album.covers.length" class="gallery-album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-3 tw:rounded-md tw:text-secondary"><ArchiveIcon name="gallery" /><span>打开相册，翻阅作品</span></span>
         </span>
-        <span class="gallery-album-caption tw:flex tw:items-center tw:justify-between tw:gap-s-3"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅作品</small></span><ArchiveIcon :name="selectedId === album.id ? 'success' : 'chevron-down'" /></span>
+        <span class="gallery-album-caption tw:flex tw:items-center tw:justify-between tw:gap-s-3"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅作品 · {{ album.kind === 'smart' ? '智能 · 自动更新' : album.kind === 'character' ? '按角色自动归集' : '手动精选' }}</small></span><ArchiveIcon :name="selectedId === album.id ? 'success' : 'chevron-down'" /></span>
       </button>
+      <template v-if="album.kind === 'smart'"><p class="gallery-album-rule">{{ album.ruleSummary }}</p><div class="gallery-album-actions"><button type="button" :disabled="busy" :aria-label="`编辑智能画册：${album.title}`" @click="emit('edit',album.id)">编辑条件</button><button type="button" :disabled="busy" :aria-label="`移除智能画册：${album.title}`" @click="emit('remove',album.id)">移除画册</button></div></template>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
+import { computed, nextTick, onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import type { GalleryProjectAlbum } from '@/composables/gallery/useGalleryProjectAlbums'
 
-const props = defineProps<{ albums: readonly GalleryProjectAlbum[]; selectedId: string }>()
-const emit = defineEmits<{ select: [id: string] }>()
+const props = withDefaults(defineProps<{ albums: readonly GalleryProjectAlbum[]; selectedId: string; characters?: boolean; busy?: boolean }>(), { characters: false, busy: false })
+const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id: string]; visible: [ids: string[]] }>()
+const root = ref<HTMLElement | null>(null)
+const visibleIds = new Set<string>()
+let observer: IntersectionObserver | null = null
+let disposed = false, observationVersion = 0
+async function observeCovers() {
+  const version = ++observationVersion
+  observer?.disconnect(); visibleIds.clear(); emit('visible', [])
+  await nextTick()
+  if (disposed || version !== observationVersion || typeof IntersectionObserver === 'undefined') return
+  observer = new IntersectionObserver(entries => {
+    if (disposed || version !== observationVersion) return
+    for (const entry of entries) {
+      const id = (entry.target as HTMLElement).dataset.albumId!
+      if (entry.isIntersecting) visibleIds.add(id)
+      else visibleIds.delete(id)
+    }
+    emit('visible', [...visibleIds])
+  }, { rootMargin: '300px 0px' })
+  root.value?.querySelectorAll('[data-album-id]').forEach(element => observer!.observe(element))
+}
+onMounted(observeCovers)
+watch(() => JSON.stringify(props.albums.map(album => album.id)), observeCovers)
+onBeforeUnmount(() => { disposed = true; observationVersion++; observer?.disconnect(); observer = null })
 const failedUrls = reactive<Record<string, string>>({})
 const resolvedUrls = computed<Record<string, string>>(() => Object.fromEntries(props.albums.flatMap(album => album.covers.map(cover => [cover.id, resolveRuntimeUrl(cover.src)]))))
 // Observe the disconnected state synchronously so even a same-address reconnect retries failed covers.
@@ -48,7 +74,8 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-albums-heading h2 span, .gallery-albums-heading p { @apply tw:text-secondary; font: 400 var(--fs-label-sm) var(--font-sans); }
 .gallery-albums-heading p { @apply tw:m-0; }
 .gallery-albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); padding:var(--s-2) var(--s-1) var(--s-3); }
-.gallery-album { border:0; background:transparent; align-self:start; }
+.gallery-album-entry { min-width:0; }
+.gallery-album { border:0; background:transparent; align-self:start; width:100%; }
 .gallery-album-cover { grid-template-columns: 1fr; aspect-ratio: 1.55; border: 1px solid var(--border-soft); background: var(--bg-surface); box-shadow: var(--shadow-sm); transition: transform var(--motion-hover); }
 .gallery-album-cover[data-covers="2"] { grid-template-columns: 1fr 1fr; }
 .gallery-album-cover[data-covers="3"] { grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; }
@@ -63,6 +90,11 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-album-caption strong { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; font: 600 var(--fs-body-sm) var(--font-sans); }
 .gallery-album-caption small { @apply tw:block tw:mt-s-1 tw:text-secondary; font: 400 var(--fs-label-xs) var(--font-sans); }
 .gallery-album-caption > .archive-icon { @apply tw:text-accent; transform: rotate(-90deg); }
+.gallery-album-rule { @apply tw:text-secondary tw:text-label-xs tw:leading-body; margin:0 var(--s-1) var(--s-2); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
+.gallery-album-actions { @apply tw:flex tw:gap-s-2; padding:0 var(--s-1); }
+.gallery-album-actions button { @apply tw:text-secondary tw:text-label-xs tw:cursor-pointer; min-height:32px; padding:var(--s-1) var(--s-2); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
+.gallery-album-actions button:hover { color:var(--accent); border-color:var(--accent); }
+.gallery-album-actions button:disabled { color:var(--text-disabled); }
 .gallery-album[aria-pressed="true"] .gallery-album-cover { @apply tw:border-accent; box-shadow: 0 0 0 2px var(--accent-soft); }
 .gallery-album[aria-pressed="true"] .gallery-album-caption strong { @apply tw:text-accent; }
 .gallery-album[aria-pressed="true"] .gallery-album-caption > .archive-icon { transform: none; }

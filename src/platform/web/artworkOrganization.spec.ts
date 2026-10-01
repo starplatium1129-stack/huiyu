@@ -19,6 +19,16 @@ function fixture() {
 }
 
 describe('artwork organization transaction', () => {
+  it('does not manually assign artwork into valid or malformed smart albums', async () => {
+    const f = fixture(), before = structuredClone(f.history())
+    for (const smartRule of [null, { tags: ['和服'] }]) {
+      f.projects()[1].smartRule = smartRule
+      await expect(f.organization.organizeArtworks({ ids: [1], projectId: 7 })).rejects.toThrow('智能画册按条件收录')
+      expect(f.history()).toEqual(before)
+      expect(f.projects()[1].history_ids).toEqual([])
+    }
+    expect(f.commit).not.toHaveBeenCalled()
+  })
   it('moves both membership directions, retains IDs and generated facts, and undoes only its own fields', async () => {
     const f = fixture()
     const receipt = await f.organization.organizeArtworks({ ids: [1, 'two'], projectId: 7, collectionTags: { add: [' chosen ', 'chosen'], remove: ['draft'] } })

@@ -53,7 +53,7 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
   async function loadProjects() {
     const request = ++projectLoad
     try {
-      const parsed = parseProjectOptions(await artworkRepository.readProjects())
+      const parsed = parseProjectOptions((await artworkRepository.readProjects()).filter(project => !Object.hasOwn(project, 'smartRule')))
       if (request === projectLoad) projects.value = parsed
     } catch {}
   }

@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import GalleryProjectAlbums from './GalleryProjectAlbums.vue'
 import { setRuntimeOrigin } from '@/platform/runtimeUrl'
 
-const album = { id: 'rain', title: '雨后的来信', count: 3, covers: [{ id: 1, src: 'blob:one' }] }
+const album = { id: 'rain', title: '雨后的来信', count: 3, covers: [{ id: 1, src: 'blob:one' }], kind: 'manual' as const }
 afterEach(() => setRuntimeOrigin(null, false))
 
 describe('project album navigation', () => {
