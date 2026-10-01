@@ -86,7 +86,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   }
   if (getCurrentInstance()) {
     onActivated(() => { viewActive = true })
-    onDeactivated(() => { viewActive = false; invalidateSelection() })
+    onDeactivated(() => { viewActive = false; cleanupController?.abort(); invalidateSelection() })
   }
   const imageDownloadUrls = new Map<string, number>()
   function releaseImageUrl(url: string) {
@@ -365,25 +365,27 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
    * deleting. Other tabs' session-only drafts cannot be safely guessed at.
    */
   async function cleanOrphanImages(): Promise<number> {
-    if (busy.value || disposed) return 0
+    if (busy.value || disposed || !viewActive) return 0
     busy.value = true
     const controller = new AbortController()
     cleanupController = controller
     try {
       if (desktopActive.value) {
         const removed = await collectWorkspaceGarbage()
-        onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
+        if (!disposed && viewActive && !controller.signal.aborted) onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
         return removed
       }
       const snapshot = await readCleanupState()
+      controller.signal.throwIfAborted()
       const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
       if (!(await confirmAction({
         title: `清理 ${candidates.size} 张未引用图片`,
         message: '请先备份并保存草稿，完成其他窗口的生成与保存操作。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。',
         confirmLabel: '继续清理',
-        danger: true,
+        danger: true, signal: controller.signal,
       }))) return 0
+      controller.signal.throwIfAborted()
       const removed = await withArtworkCleanup(async () => {
         const current = await readCleanupState()
         controller.signal.throwIfAborted()
@@ -392,10 +394,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         if (ids.length) await deleteWebBackupImages(ids)
         return ids.length
       }, controller.signal)
-      onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
+      if (!disposed && viewActive && !controller.signal.aborted) onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
       return removed
     } catch (e) {
-      onFlash('清理失败：' + errorMessage(e, '请重试'))
+      if (!disposed && viewActive && !controller.signal.aborted) onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
     } finally {
       cleanupController = null

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, effectScope, h, KeepAlive, nextTick, ref } from 'vue'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import * as backupActions from '@/platform/desktop/backupActions'
 import { restoreBackupData } from '@/storage/backupRestore'
 import { useBackup } from './useBackup'
@@ -99,6 +99,31 @@ describe('backup selection and cleanup', () => {
       expect(tool.pending.value).toBeNull()
       expect(tool.busy.value).toBe(false)
     } finally { vi.clearAllTimers(); vi.useRealTimers() }
+  })
+  it('rejects orphan cleanup approval from an earlier cached-page visit', async () => {
+    const active = ref(true)
+    const flash = vi.fn()
+    let tool!: ReturnType<typeof useBackup>
+    const Page = defineComponent({ setup() { tool = useBackup(flash); return () => h('div') } })
+    const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Page) : null }) }))
+    vi.mocked(imgList).mockResolvedValue([{ id: 'orphan' }] as Awaited<ReturnType<typeof imgList>>)
+    let approve!: (value: boolean) => void
+    vi.mocked(confirmAction).mockImplementationOnce(() => new Promise(resolve => { approve = resolve }))
+    try {
+      const cleaning = tool.cleanOrphanImages()
+      await flushPromises()
+      const signal = (vi.mocked(confirmAction).mock.calls[0]![0] as { signal: AbortSignal }).signal
+      active.value = false; await nextTick()
+      expect(signal.aborted).toBe(true)
+      active.value = true; await nextTick()
+      approve(true)
+      expect(await cleaning).toBe(0)
+      expect(imgDeleteMany).not.toHaveBeenCalled()
+      expect(flash).not.toHaveBeenCalled()
+      expect(tool.busy.value).toBe(false)
+      expect(await tool.cleanOrphanImages()).toBe(1)
+      expect(imgDeleteMany).toHaveBeenCalledWith(['orphan'])
+    } finally { wrapper.unmount() }
   })
   it('protects project, trash and video-draft images during cleanup', async () => {
     vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_TRASH_KV_KEY ? [{ imageIds: ['trash'] }] : key === ARTWORK_PROJECTS_KV_KEY ? [{ imageId: 'project' }] : [])

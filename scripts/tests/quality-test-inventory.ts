@@ -37,6 +37,7 @@ const REGISTERED_TESTS = Object.freeze({
     'test-workflow-conditions.js',
     'test-desktop-deploy-guard.js',
     'test-runtime-errors.js',
+    'test-runtime-experiment-cleanup.js',
     'test-quality-report.js',
     'test-content-ownership.js',
     'test-content-history.js',
