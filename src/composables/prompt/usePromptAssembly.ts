@@ -1,3 +1,4 @@
+import { activeRandomVariation, variedStudioScene } from '@/utils/randomVariationContext'
 import { computed, type Ref } from 'vue'
 import {
   NEGATIVE_DEFAULT,
@@ -120,7 +121,9 @@ export function usePromptAssembly(
   /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或门控词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
     const isManualR18 = isManualR18Tags(pb.manualTags, matureTokenSet.value)
-    const scene = pb.activeScene
+    const original = pb.activeScene
+    const variation = activeRandomVariation(pb.randomVariation, pb, original)
+    const scene = original && variation ? variedStudioScene(original, variation, pb) : original
     if (!scene) {
       return isManualR18
         ? { id: 'custom_r18', title: '自定义 R18', rating: 'R18', mature: true, prompt: '', tags: [], negative: '' }
@@ -303,7 +306,7 @@ export function usePromptAssembly(
     controls: characterControlTokens(effectiveScene.value, pb.char, controlLoraIds.value),
     artists: artistTags.value,
     artistProse: artistProse.value,
-    scenePrompt: sceneTemplateText(effectiveScene.value, { char: pb.char, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value }),
+    scenePrompt: sceneTemplateText(effectiveScene.value, { char: pb.char, manualTags: pb.manualTags, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value }),
     emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
     camera: pb.selections.shot ? [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''] : [],
     lighting: pb.selections.lighting ? [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''] : [],

@@ -23,6 +23,7 @@ import {
   type PromptPreset,
   type DraftOutfitOverride,
   type DraftReferenceInput,
+  type DraftRandomVariation,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -92,6 +93,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    */
   const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const referenceInput = ref<DraftReferenceInput | null>(null)
+  const randomVariation = ref<DraftRandomVariation | null>(null)
+  watch(() => JSON.stringify([char.value, sceneId.value, subject.value, outfitOverride.value]), clearRandomVariation, { flush: 'sync' })
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
@@ -196,6 +199,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   )
 
   // ── Mutations ───────────────────────────────────────────────────────────
+  function clearRandomVariation() {
+    const outfit = new Set(randomVariation.value?.outfit.map(normalizeKey) ?? [])
+    if (outfit.size) manualTags.value = new Set([...manualTags.value].filter(token => !outfit.has(normalizeKey(token))))
+    randomVariation.value = null
+  }
   function setChar(c: CharKey) { char.value = c }
   function setStudioSubject() {
     if (subject.value.kind === 'studio') return
@@ -205,11 +213,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
+    clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
   function setPopularBlueprint(blueprintId: string | null) {
+    clearRandomVariation()
     if (subject.value.kind !== 'popular') return
     subject.value = { kind: 'popular', characterId: subject.value.characterId, outfitId: subject.value.outfitId, blueprintId }
   }
@@ -241,6 +251,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   function loadScene(scene: Scene) {
+    randomVariation.value = null
     // 工作室场景天然属于 studio 组装分支：热门角色(popular)模式下用 ?scene= 深链
     // （灵感场景/全景搜索/历史恢复）切回宁宁或夏目场景时，若不把 subject 兜底回
     // studio，isPopular 仍为 true，livePrompt 会继续走 usePopularPromptAssembly，
@@ -271,6 +282,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   function clearScene(opts: { keepStory?: boolean } = {}) {
+    randomVariation.value = null
     sceneId.value = null; sceneBaseStory.value = ''; visualDescription.value = ''; manualTags.value = new Set()
     outfitOverride.value = null
     referenceInput.value = null
@@ -288,6 +300,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       composition: selections.composition,
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
+      randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) as DraftRandomVariation : null,
       referenceInput: referenceInput.value ? { tags: [...referenceInput.value.tags] } : null,
       artistStyleIds: [...artistStyleIds.value],
     }
@@ -295,6 +308,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   /** 回退到一组风格层快照（随机灵感撤销用）。 */
   function restoreStyleLayers(snapshot: ReturnType<typeof snapshotStyleLayers>) {
+    randomVariation.value = snapshot.randomVariation ? JSON.parse(JSON.stringify(snapshot.randomVariation)) : null
     selections.emotion = [...(snapshot.emotions ?? [])]
     selections.shot = snapshot.shot ?? null
     selections.lighting = snapshot.lighting ?? null
@@ -339,7 +353,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -371,7 +385,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
-    subject, isPopular, outfitOverride, referenceInput,
+    subject, isPopular, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,
     history, projects,

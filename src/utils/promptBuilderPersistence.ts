@@ -40,7 +40,19 @@ export interface DraftReferenceInput {
   tags: string[]
 }
 
+/** Runtime-only scene variation; never writes the source scene/catalog. */
+export interface DraftRandomVariation {
+  context: string
+  source: string
+  prompt: string
+  prose: string
+  tags: string[]
+  outfit: string[]
+}
+
 export interface PromptBuilderDraft {
+  randomVariation?: DraftRandomVariation | null
+  sceneStyleBaseline?: { shot: string | null; lighting: string | null; composition: string | null; colorMood: string | null }
   updatedAt: number
   story?: string
   visualDescription?: string
@@ -124,6 +136,11 @@ function parseReferenceInput(value: unknown): DraftReferenceInput | null {
   return tags.length ? { tags } : null
 }
 
+export function parseRandomVariation(value: unknown): DraftRandomVariation | null {
+  if (!isRecord(value) || typeof value.prompt !== 'string' || typeof value.prose !== 'string' || typeof value.source !== 'string' || typeof value.context !== 'string') return null
+  return { context: value.context, source: value.source, prompt: value.prompt, prose: value.prose, tags: stringList(value.tags), outfit: stringList(value.outfit) }
+}
+
 export function isSDParamKey(key: string): key is keyof SDParams {
   return SD_PARAM_KEYS.has(key as keyof SDParams)
 }
@@ -182,6 +199,13 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
 
   return {
     updatedAt,
+    randomVariation: parseRandomVariation(value.randomVariation),
+    sceneStyleBaseline: isRecord(value.sceneStyleBaseline) ? {
+      shot: nullableString(value.sceneStyleBaseline.shot) ?? null,
+      lighting: nullableString(value.sceneStyleBaseline.lighting) ?? null,
+      composition: nullableString(value.sceneStyleBaseline.composition) ?? null,
+      colorMood: nullableString(value.sceneStyleBaseline.colorMood) ?? null,
+    } : undefined,
     story,
     visualDescription,
     char,

@@ -31,6 +31,7 @@
         <div v-for="(candidate, index) in candidates" :key="candidate.recipe.seed" class="random-candidate tw:text-secondary tw:text-label-sm">
           <small>种子 {{ candidate.recipe.seed }}</small>
           <p>{{ candidate.draw.manualTags.join(' · ') || '镜头与情绪组合' }}</p>
+          <small v-if="candidate.draw.kept.length">本次保持：{{ candidate.draw.kept.join('、') }}</small>
           <button class="random-choice tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" @click="applyCandidate(index)">应用候选 {{ index + 1 }}</button>
         </div>
         <button v-if="lastRecipe" class="random-choice tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" @click="exportRecipe">保存种子与配置快照</button>

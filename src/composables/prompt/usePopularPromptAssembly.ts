@@ -1,3 +1,4 @@
+import { activeRandomVariation, variedPopularScene } from '@/utils/randomVariationContext'
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import {
@@ -59,10 +60,17 @@ export function usePopularPromptAssembly(
     return findOutfit(current, subject.outfitId) ?? defaultOutfit(current)
   })
 
+  const randomVariation = computed(() => {
+    const subject = pb.subject
+    const source = subject.kind === 'popular' && subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId) : null
+    return activeRandomVariation(pb.randomVariation, pb, source)
+  })
+
   const blueprint = computed(() => {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !subject.blueprintId) return null
-    return findBlueprint(pb.sceneBlueprints, subject.blueprintId)
+    const original = findBlueprint(pb.sceneBlueprints, subject.blueprintId)
+    return original && randomVariation.value ? variedPopularScene(original, randomVariation.value, pb) : original
   })
 
   const adultEnabled = computed(() => pb.showMatureScenes)
@@ -113,7 +121,7 @@ export function usePopularPromptAssembly(
       style: resolvedStyle.value,
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
       artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
-      outfitOverride: pb.outfitOverride?.tokens ?? null,
+      outfitOverride: pb.outfitOverride?.tokens ?? (randomVariation.value?.outfit.length ? randomVariation.value.outfit : null),
       outfitExplicit: outfitExplicit.value,
     })
   })

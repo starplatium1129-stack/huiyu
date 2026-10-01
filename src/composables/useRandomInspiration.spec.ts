@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { effectScope } from 'vue'
+import { effectScope, ref } from 'vue'
+import { usePopularPromptAssembly } from './prompt/usePopularPromptAssembly'
+import { usePromptAssembly } from './prompt/usePromptAssembly'
+import type { PopularCharacter } from '@/types/character'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRandomInspiration } from './useRandomInspiration'
@@ -23,7 +26,7 @@ it('real store/caller reaches the default artist pool without loading the full c
   expect(pb.artistStyleIds).toEqual([])
   random.includeArtists.value = true
   expect(random.roll()).toBe(true)
-  expect(pb.artistStyleIds).toEqual(['nekotomi_chao', 'mika_pikazo'])
+  expect(pb.artistStyleIds).toEqual(['mika_pikazo'])
 })
 
 it('rerolls replace generated artists while retaining manual choices and the two-artist limit', () => {
@@ -33,12 +36,12 @@ it('rerolls replace generated artists while retaining manual choices and the two
   random.includeArtists.value = true
   const rng = vi.spyOn(Math, 'random').mockReturnValue(0)
   random.roll()
-  expect(pb.artistStyleIds).toEqual(['rella', 'nekotomi_chao'])
+  expect(pb.artistStyleIds).toEqual(['rella', 'nardack'])
   rng.mockReturnValue(0.4)
   random.roll()
   expect(pb.artistStyleIds[0]).toBe('rella')
   expect(pb.artistStyleIds).toHaveLength(2)
-  expect(pb.artistStyleIds[1]).not.toBe('nekotomi_chao')
+  expect(pb.artistStyleIds[1]).not.toBe('nardack')
   random.includeArtists.value = false
   random.roll()
   expect(pb.artistStyleIds).toEqual(['rella'])
@@ -178,4 +181,60 @@ it.each(['artists', 'catalog', 'ready', 'outfit'])('invalidates previews after %
   if (field === 'outfit') pb.setOutfitOverride(['dress'], 'test')
   expect(random.candidates.value).toEqual([])
   expect(random.applyCandidate(0)).toBe(false)
+})
+
+it('free popular mode uses a real wardrobe variation while protecting identity and undo', () => {
+  const character: PopularCharacter = {
+    id: 'fixture', displayName: 'Fixture', originalName: 'Fixture', franchise: 'Fixture', aliases: [],
+    identityProse: 'An adult woman with black hair and blue eyes', identityTokens: ['1girl', 'black_hair', 'blue_eyes'],
+    exactTokens: [], exactPrefixes: [], recommendedEngine: 'anima', supportedEngines: ['anima', 'krea2'], adultEligibility: 'adult',
+    outfits: [{ id: 'default', name: 'Default', tokens: ['jacket'], prose: 'a jacket', default: true }],
+  }
+  useSceneStore().popularCharacters = [character]
+  useSceneStore().tags = [{ en: 'white_hair', cn: '白发', cat: 'Appearance' }, { en: 'jacket', cn: '夹克', cat: 'Clothing' }, { en: 'park', cn: '公园', cat: 'Scene' }]
+  const pb = usePromptBuilderStore(); pb.setPopularSubject(character.id, 'default')
+  const random = setup(); const before = pb.snapshotStyleLayers()
+  expect(random.roll(2)).toBe(true)
+  expect(pb.randomVariation?.outfit).toContain('jacket')
+  const assembly = scope.run(() => usePopularPromptAssembly(pb, ref('anima'), ref('fixture-model')))!
+  expect(assembly.positivePrompt.value).toContain('black hair')
+  expect(assembly.positivePrompt.value).not.toContain('white hair')
+  expect(assembly.positivePrompt.value).toContain('jacket')
+  expect(random.undo()).toBe(true); expect(pb.snapshotStyleLayers()).toEqual(before)
+  random.roll(2); pb.setOutfitOverride(['coat'], null)
+  expect(pb.manualTags.has('jacket')).toBe(false)
+  expect(assembly.positivePrompt.value).toContain('coat')
+  expect(assembly.positivePrompt.value).not.toContain('jacket')
+})
+
+it('scene variation follows manual camera/caption edits and clears on same-scene reload', () => {
+  const scene = { id: 'fixture', char: 'nene', title: 'Classroom', story: 'Original', rating: 'ALL',
+    prompt: 'indoors, classroom, night, school_uniform', tags: ['classroom', 'night', 'school_uniform'],
+    animaCaption: 'A close-up of an adult woman in a classroom, wearing a school uniform.', camera: 'close', lighting: 'moon' }
+  useSceneStore().scenes = [scene]
+  useSceneStore().tags = [{ en: 'beach', cn: '海滩', cat: 'Scene' }, { en: 'jacket', cn: '夹克', cat: 'Clothing' }, { en: 'school_uniform', cn: '制服', cat: 'Clothing' }]
+  const pb = usePromptBuilderStore(); pb.loadScene(scene)
+  const random = setup(); expect(random.roll(5)).toBe(true)
+  expect(pb.manualTags.has('beach')).toBe(false)
+  const assembly = scope.run(() => usePromptAssembly(pb, ref(''), ref('anima'), ref('fixture'), ref('')))!
+  expect(assembly.positivePrompt.value).toContain('classroom')
+  pb.setShot('wide')
+  expect(assembly.positivePrompt.value).toContain('A wide shot of an adult woman')
+  expect(assembly.positivePrompt.value).not.toContain('A close-up')
+  pb.visualDescription = 'She holds an open book.'
+  expect(assembly.positivePrompt.value).toContain('She holds an open book.')
+  expect(assembly.positivePrompt.value).not.toContain('of an adult woman in a classroom')
+  pb.loadScene(scene)
+  expect(pb.randomVariation).toBeNull()
+})
+
+it('does not apply a popular wardrobe from a different source context', () => {
+  const pb = usePromptBuilderStore()
+  const random = setup(); random.roll(4)
+  const variation = pb.randomVariation!
+  pb.setPopularSubject('other', 'outfit')
+  expect(pb.randomVariation).toBeNull()
+  pb.randomVariation = variation
+  const state = scope.run(() => usePopularPromptAssembly(pb, ref('anima'), ref('fixture')))!
+  expect(state.positivePrompt.value).toBe('')
 })

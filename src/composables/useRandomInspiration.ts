@@ -1,8 +1,13 @@
+import { randomVariationContext, randomVariationSource } from '@/utils/randomVariationContext'
 import { ref, watch } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
 import { randomCandidates, type RandomRecipe } from '@/utils/randomPromptRecipe'
+import { sceneSupportsCharacter } from '@/utils/promptPolicy'
+import { sceneShot, sceneLighting } from '@/utils/sceneInference'
+import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
+import type { RandomSceneContext } from '@/utils/randomSceneVariation'
 import { downloadBlob } from '@/utils/downloadBlob'
 
 /**
@@ -12,8 +17,7 @@ import { downloadBlob } from '@/utils/downloadBlob'
  * 调纯函数采样器 randomPromptPlan → 写回 store 各风格层字段 → 维护撤销快照。
  *
  * 2026-08-29 扩展：热门角色（popular）模式开放随机灵感。身份排除集 =
- * 当前角色 identityTokens + exactTokens + 当前 outfit tokens（服装由 outfit
- * 系统管理，随机不抽服装），采样结果写回 selections/manualTags/artistStyleIds，
+ * 当前角色 identityTokens + exactTokens；服装来源由独立选项控制，采样结果写回 selections/manualTags/artistStyleIds，
  * 与 studio 模式共用同一套撤销快照。
  *
  * 不新增任何门控/开关：Mature 池无独立开关（本地直连本就放行）；
@@ -57,7 +61,7 @@ export function useRandomInspiration() {
     lastRecipe.value = null
   }, { deep: true, flush: 'sync' })
 
-  watch([includeArtists, () => pb.tags, () => pb.dataReady], clearCandidates, { deep: true, flush: 'sync' })
+  watch([includeArtists, () => pb.tags, () => pb.dataReady, () => pb.scenes, () => pb.sceneBlueprints, () => pb.loraMeta, () => pb.popularCharacters], clearCandidates, { deep: true, flush: 'sync' })
 
   watch(contextKey, () => {
     lastSnapshot.value = null
@@ -86,17 +90,15 @@ export function useRandomInspiration() {
     return result
   }
 
-  /** 热门角色身份排除集：identityTokens + exactTokens + 当前 outfit tokens。 */
+  /** Stable identity anchors; explicit outfit choices are protected separately. */
   function popularIdentityExclude(): Set<string> | null {
     const subject = pb.subject
     if (subject.kind !== 'popular') return null
     const character = findCharacter(pb.popularCharacters, subject.characterId)
     if (!character) return null
-    const outfit = findOutfit(character, subject.outfitId) ?? defaultOutfit(character)
     return new Set<string>([
       ...character.identityTokens,
       ...(character.exactTokens || []),
-      ...(outfit?.tokens || []),
     ])
   }
 
@@ -112,19 +114,44 @@ export function useRandomInspiration() {
       pb.flash('当前热门角色数据缺失，无法随机', 2500, 'warning')
       return false
     }
+    let scene: RandomSceneContext | undefined
+    let allowClothing = !pb.outfitOverride
+    let outfits = officialOutfitsFor(pb.char)
+    if (pb.subject.kind === 'popular') {
+      const character = findCharacter(pb.popularCharacters, pb.subject.characterId)!
+      const selectedOutfit = findOutfit(character, pb.subject.outfitId)
+      allowClothing &&= !selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id
+      outfits = Object.fromEntries(character.outfits.map(outfit => [outfit.id, outfit.tokens]))
+      if (pb.subject.blueprintId) {
+        const blueprintId = pb.subject.blueprintId
+        const blueprint = pb.sceneBlueprints.find(item => item.id === blueprintId && (!item.characterId || item.characterId === character.id))
+        if (!blueprint) { pb.flash('当前场景尚未就绪，无法随机', 2500, 'warning'); return false }
+        allowClothing = !pb.outfitOverride && (!selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id || selectedOutfit.id === blueprint.outfitId)
+        const decisions = inferBlueprintDecisions(blueprint)
+        scene = { source: randomVariationSource(blueprint), prompt: blueprint.promptTokens.join(', '), prose: blueprint.promptProse,
+          tags: blueprint.sceneTags, action: blueprint.action, time: blueprint.timeOfDay,
+          shot: decisions.shot, lighting: decisions.lighting }
+      }
+    } else if (pb.sceneId) {
+      const active = pb.activeScene
+      if (!active || !sceneSupportsCharacter(active, pb.char)) { pb.flash('当前场景不支持此角色，无法随机', 2500, 'warning'); return false }
+      scene = { source: randomVariationSource(active), prompt: active.prompt ?? '', prose: active.animaCaption ?? '', tags: active.tags ?? [],
+        action: typeof active.action === 'string' ? active.action : '', time: active.timeOfDay ?? active.time ?? '',
+        shot: sceneShot(active), lighting: sceneLighting(active) }
+    }
+    const shared = { context: randomVariationContext(pb), scene, rich: true, allowClothing, officialOutfits: outfits }
     const options: RandomInspirationOptions = identityExclude
       ? {
-          identityExclude,
+          ...shared, identityExclude,
           includeArtists: includeArtists.value,
           keepArtists: pb.artistStyleIds.filter(id => !generatedArtists.has(id)),
           tags: pb.tags,
         }
       : {
-          char: pb.char,
+          ...shared, char: pb.char,
           includeArtists: includeArtists.value,
           keepArtists: pb.artistStyleIds.filter(id => !generatedArtists.has(id)),
           tags: pb.tags,
-          officialOutfits: officialOutfitsFor(pb.char),
         }
     try { candidates.value = randomCandidates(options, seed, count) }
     catch (error) { pb.flash((error as Error).message, 2500, 'warning'); return false }
@@ -145,6 +172,7 @@ export function useRandomInspiration() {
     const retainedArtists = new Set(recipe.config.keepArtists)
     applying = true
     try {
+      pb.randomVariation = JSON.parse(JSON.stringify(draw.variation))
       pb.selections.emotion = [...draw.emotions]
       pb.selections.shot = draw.shot
       pb.selections.lighting = draw.lighting
@@ -158,7 +186,7 @@ export function useRandomInspiration() {
     generatedArtists = new Set(draw.artistStyleIds.filter(id => !retainedArtists.has(id)))
     lastRecipe.value = recipe
 
-    pb.flash('随机灵感已应用，可继续手改或再掷', 2500, 'info')
+    pb.flash(draw.kept.length ? `随机灵感已应用；本次保持：${draw.kept.join('、')}` : '自由随机灵感已应用，可继续手改或再掷', 4000, 'info')
     return true
   }
 

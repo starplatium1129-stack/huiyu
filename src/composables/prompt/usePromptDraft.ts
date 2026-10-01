@@ -1,7 +1,8 @@
+import { hasEditedSceneStyle, sceneStyleBaseline } from '@/utils/randomVariationContext'
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { onScopeDispose, watch, type Ref, type ComputedRef } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { isSDParamKey, parsePromptBuilderDraft, type DraftOutfitOverride, type DraftReferenceInput, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { isSDParamKey, parsePromptBuilderDraft, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
@@ -21,6 +22,7 @@ export interface PromptDraftState {
   manualTags: Ref<Set<string>>
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
+  randomVariation: Ref<DraftRandomVariation | null>
   artistStyleIds: Ref<string[]>
   sceneBaseStory: Ref<string>
   directorMode: Ref<'basic' | 'pro'>
@@ -35,7 +37,7 @@ export interface PromptDraftState {
 
 /** Owns the draft persistence timer; never owns generation or artwork storage. */
 export function usePromptDraft(state: PromptDraftState) {
-  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash } = state
+  const { subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash } = state
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
@@ -60,6 +62,8 @@ export function usePromptDraft(state: PromptDraftState) {
       : { subject: 'studio' as const, noLora: false }
     return {
       updatedAt: Date.now(),
+      randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) : null,
+      sceneStyleBaseline: activeScene.value ? sceneStyleBaseline(activeScene.value) : undefined,
       story: story.value,
       visualDescription: visualDescription.value,
       char: char.value,
@@ -94,7 +98,7 @@ export function usePromptDraft(state: PromptDraftState) {
         lastRecommendedSize.value = sceneRecommendedSize(currentScene)
         // 场景未被用户魔改时，镜头与推荐配置自动跟随最新场景定义更新，避免旧草稿锁死过时机位
         const isUnmodifiedScene = (!d.story || d.story === currentScene.story) && (d.sceneBaseStory === currentScene.story || !d.sceneBaseStory)
-        if (isUnmodifiedScene) {
+        if (isUnmodifiedScene && !hasEditedSceneStyle(d)) {
           sceneBaseStory.value = currentScene.story ?? ''
           story.value = currentScene.story ?? story.value
           selections.shot = sceneShot(currentScene)
@@ -138,6 +142,7 @@ export function usePromptDraft(state: PromptDraftState) {
     outfitOverride.value = subject.value.kind === 'popular' && d.outfitOverride
       ? { tokens: [...d.outfitOverride.tokens], replaced: d.outfitOverride.replaced }
       : null
+    randomVariation.value = d.randomVariation ? JSON.parse(JSON.stringify(d.randomVariation)) : null
   }
 
   function saveDraft() {
