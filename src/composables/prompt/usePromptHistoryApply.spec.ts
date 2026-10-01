@@ -7,13 +7,16 @@ import type { ArtworkRecord } from '@/types/artwork'
 import type { AnimaGenerationState } from '@/types/anima'
 import { usePromptHistoryApply } from './usePromptHistoryApply'
 import { usePromptHistoryReuse } from './usePromptHistoryReuse'
+import { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import type { ApiClient } from '@/api/client'
+import type { HistoryReuseSelection } from '@/types/historyReuse'
 
 beforeEach(() => setActivePinia(createPinia()))
 function setup() {
   const pb = usePromptBuilderStore()
   const state = ref({ phase: 'idle', family: 'anima', models: [], loras: [], online: true, modelId: 'old', loraId: '', styleLoraId: '', width: 832, height: 1216, steps: 20, cfg: 5 } as unknown as AnimaGenerationState)
   const flash = vi.spyOn(pb, 'flash')
-  const refresh = vi.fn(async () => {})
+  const refresh = vi.fn(async () => true)
   const engine = ref<'sd' | 'anima' | 'krea2'>('sd'), size = ref('832x1216')
   const deps = { pb, animaState: state, patchAnimaState: (patch: Partial<AnimaGenerationState>) => { Object.assign(state.value, patch) }, clearAnimaResult: vi.fn(), refreshAnimaBackend: refresh, setDrawEngine: vi.fn(value => { engine.value = value }), resetBlueprintRotation: vi.fn(), sdSize: size, drawEngine: engine }
   const api = usePromptHistoryApply(deps)
@@ -42,7 +45,7 @@ it('restores saved popular decisions instead of leaving current or blueprint val
 })
 it('reports backend model and style fallback after discovery completes', async () => {
   const { pb, state, refresh, applyHistory } = setup()
-  refresh.mockImplementation(async () => { state.value.modelId = 'available'; state.value.styleLoraId = ''; state.value.width = 1024 })
+  refresh.mockImplementation(async () => { state.value.modelId = 'available'; state.value.styleLoraId = ''; state.value.width = 1024; return true })
   await applyHistory(entry({ engine: 'krea2', model: 'missing', styleLoraId: 'old-style' }))
   expect(pb.historyRestoreReport?.notes.join(';')).toContain('missing → available')
   expect(pb.historyRestoreReport?.notes.join(';')).toContain('old-style → 不可用')
@@ -137,4 +140,74 @@ it('cancels a detached reuse choice without changing the draft and blocks confir
   await reuse.resumeHistory(source); busy.value = true
   expect(await reuse.applyReuse('full')).toBe(false); expect(pb.story).toBe('Keep')
   scope.stop(); expect(reuse.reuseRequest.value).toBeNull()
+})
+
+
+it('waits for winning backend discovery before reporting recipe fallbacks', async () => {
+  const { pb, deps } = setup()
+  const responses: Array<{ resolve(value: object): void; reject(error: Error): void }> = []
+  const client = { request: () => new Promise((resolve, reject) => responses.push({ resolve, reject })) } as unknown as ApiClient
+  const session = useAnimaSession({ client, getCharacter: () => 'nene', isPopular: () => false,
+    getFamily: () => 'krea2', getRequest: () => null, preferredSize: () => '', onResult: vi.fn(), flash: vi.fn() })
+  const { applyHistory } = usePromptHistoryApply({ ...deps, animaState: session.state,
+    patchAnimaState: session.restoreSettings, refreshAnimaBackend: session.refreshBackend })
+  const before = pb.historyRestoreReport
+  const restoring = applyHistory(entry({ engine: 'krea2', model: 'missing', styleLoraId: 'old-style' }))
+  const replacement = session.refreshBackend()
+  responses[0].reject(new Error('superseded'))
+  await Promise.resolve(); await Promise.resolve()
+  expect(pb.historyRestoreReport).toBe(before)
+  responses[1].resolve({ ok: true, online: true, models: [{ id: 'available', family: 'krea2', available: true, sizes: ['1024x1024'] }] })
+  await replacement
+  expect(await restoring).toBe(true)
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('missing → available')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('old-style → 不可用')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('832 → 1024')
+  session.dispose()
+})
+
+it.each([
+  { selection: 'full' as HistoryReuseSelection, failure: false, dispose: false },
+  { selection: { style: false, camera: false, prompts: false, parameters: true }, failure: false, dispose: true },
+  { selection: 'full' as HistoryReuseSelection, failure: true, dispose: false },
+])('suppresses late restore reports and flashes after cancellation (%j)', async ({ selection, failure, dispose }) => {
+  const { pb, deps, refresh, flash, engine } = setup(), scope = effectScope(), onApplied = vi.fn()
+  engine.value = 'anima'
+  let resolve!: (value: boolean) => void, reject!: (error: Error) => void
+  refresh.mockReturnValueOnce(new Promise<boolean>((done, fail) => { resolve = done; reject = fail }))
+  const reuse = scope.run(() => usePromptHistoryReuse({ ...deps, generationBusy: ref(false), onApplied }))!
+  await reuse.resumeHistory(entry({ engine: 'anima' }))
+  const restoring = reuse.applyReuse(selection)
+  await Promise.resolve()
+  expect(reuse.reuseBusy.value).toBe(true)
+  const before = pb.historyRestoreReport
+  flash.mockClear()
+  if (dispose) scope.stop()
+  else reuse.cancelReuse()
+  if (failure) reject(new Error('late failure'))
+  else resolve(true)
+  expect(await restoring).toBe(false)
+  expect(pb.historyRestoreReport).toBe(before)
+  expect(flash).not.toHaveBeenCalled()
+  expect(onApplied).not.toHaveBeenCalled()
+  expect(reuse.reuseBusy.value).toBe(false)
+  scope.stop()
+})
+
+it('keeps a direct restore active when another reuse is blocked during discovery', async () => {
+  const { pb, deps, refresh } = setup(), scope = effectScope()
+  let resolve!: (value: boolean) => void
+  refresh.mockReturnValueOnce(new Promise<boolean>(done => { resolve = done }))
+  const reuse = scope.run(() => usePromptHistoryReuse({ ...deps, generationBusy: ref(false), onApplied: vi.fn() }))!
+  // Load the lazy controller before starting the asynchronous direct restore.
+  await reuse.resumeHistory(entry())
+  const restoring = reuse.applyHistory(entry({ engine: 'anima' }))
+  await Promise.resolve()
+  expect(reuse.reuseBusy.value).toBe(true)
+  expect(await reuse.duplicateHistory(entry({ id: 99 }))).toBe(false)
+  resolve(true)
+  expect(await restoring).toBe(true)
+  expect(pb.historyRestoreReport?.title).toContain('12')
+  expect(reuse.reuseBusy.value).toBe(false)
+  scope.stop()
 })

@@ -44,6 +44,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let requestSerial = 0
   let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
+  let statusRefresh: Promise<boolean> | null = null
+  let statusEpoch = 0
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
   let disposed = false
@@ -121,16 +123,24 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 拉取 ComfyUI / 网关状态并按当前角色与引擎族收敛 model / lora 白名单。
    * 成功响应即使 offline 也采用（清空列表）；只有请求失败才标记离线。
    */
-  async function refreshBackend(): Promise<void> {
+  // Awaiters follow a superseding refresh; false means the view cancelled discovery.
+  function refreshBackend(): Promise<boolean> {
+    if (disposed) return Promise.resolve(false)
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
+    statusRefresh = readBackendStatus(controller, statusEpoch)
+    return statusRefresh
+  }
+
+  async function readBackendStatus(controller: AbortController, epoch: number): Promise<boolean> {
+    const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
       const data = await client.request<AnimaStatusResponse>('/api/creative/status', {
         cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
         validate: value => value.ok === true,
       })
-      if (statusRequest !== controller || controller.signal.aborted) return
+      if (statusRequest !== controller || controller.signal.aborted) return latest()
       const models = Array.isArray(data.models) ? data.models : []
       const loras = (Array.isArray(data.loras) ? data.loras : [])
         .filter(lora => lora.character === options.getCharacter())
@@ -188,10 +198,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       })
       if (shouldApplyDefaults) defaultsAppliedFor = modelIdCurrent
       syncCharacter(options.getCharacter())
+      return true
     } catch (error) {
-      if (statusRequest !== controller || controller.signal.aborted) return
-      if (error instanceof ApiClientError && error.kind === 'aborted') return
+      if (statusRequest !== controller || controller.signal.aborted) return latest()
+      if (error instanceof ApiClientError && error.kind === 'aborted') return false
       patchState({ online: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      return true
     } finally {
       if (statusRequest === controller) statusRequest = null
     }
@@ -209,6 +221,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   /** Hidden/irrelevant workspaces stop health polling and discard its stale in-flight read. */
   function pauseStatusPolling() {
+    statusEpoch++
+    statusRefresh = null
     stopStatusPolling()
     statusRequest?.abort()
     statusRequest = null
@@ -433,11 +447,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   function dispose() {
     disposed = true
     requestSerial += 1
-    statusRequest?.abort()
-    statusRequest = null
+    pauseStatusPolling()
     jobRequest?.abort()
     jobRequest = null
-    stopStatusPolling()
     const activeJob = state.value.job
     if (!durableAttempt && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
       void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
