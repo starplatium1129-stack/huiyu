@@ -272,19 +272,33 @@ export function useChatConversation(options: ChatConversationOptions) {
     return result
   }
 
-  // ── Pipeline 步骤⑤：meta 模型名写回 ─────────────────────────────────
-  function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean) {
-    // 视觉轮（临时切到 Gemini 看图）的模型名不写回用户配置
-    if (options.chatProvider.value === 'api' && !hostMode && !useVision) {
-      options.apiModel.value = String(rawModel)
+  function captureConnection() {
+    return { provider: options.chatProvider.value, currentModel: options.currentModel.value,
+      baseUrl: options.apiBaseUrl.value, apiModel: options.apiModel.value, apiKey: options.apiKey.value,
+      hostConfig: options.useHostConfig.value, webSearch: options.webSearchEnabled.value,
+      tools: options.companionTools.value, reasoning: options.reasoning.value }
+  }
+  type TurnConnection = ReturnType<typeof captureConnection>
+  const connectionMatches = (connection: TurnConnection) => {
+    const live = captureConnection()
+    return (Object.keys(connection) as Array<keyof TurnConnection>).every(key => live[key] === connection[key])
+  }
+
+  // A stream may canonicalize its own model, but never a newer connection draft.
+  function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean, connection: TurnConnection) {
+    const ownsDraft = connectionMatches(connection)
+    if (connection.provider === 'api' && !hostMode && !useVision) {
+      connection.apiModel = String(rawModel)
+      if (!ownsDraft) return
+      options.apiModel.value = connection.apiModel
       void Promise.resolve(options.storage.setApiSettings({
-        baseUrl: options.apiBaseUrl.value,
-        model: options.apiModel.value,
-        apiKey: options.apiKey.value,
-      })).catch(() => options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。'))
-    } else if (options.chatProvider.value !== 'api' || hostMode) {
-      options.currentModel.value = String(rawModel)
-      options.storage.setModel(options.currentModel.value)
+        baseUrl: connection.baseUrl, model: connection.apiModel, apiKey: connection.apiKey,
+      })).catch(() => { if (connectionMatches(connection)) options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。') })
+    } else if (connection.provider !== 'api' || hostMode) {
+      connection.currentModel = String(rawModel)
+      if (!ownsDraft) return
+      options.currentModel.value = connection.currentModel
+      options.storage.setModel(connection.currentModel)
     }
   }
 
@@ -298,16 +312,17 @@ export function useChatConversation(options: ChatConversationOptions) {
     toolsEnabled: boolean
     roundMessages: Array<Record<string, unknown>>
     messages: TurnMessages
+    connection: TurnConnection
   }): string {
-    const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages } = args
+    const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
     // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
-    const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(options.apiModel.value)
+    const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(connection.apiModel)
     const userApi = {
-      baseUrl: options.apiBaseUrl.value,
-      model: options.apiModel.value,
-      apiKey: options.apiKey.value,
+      baseUrl: connection.baseUrl,
+      model: connection.apiModel,
+      apiKey: connection.apiKey,
     }
-    const visionApi = userHasVision || options.apiKey.value
+    const visionApi = userHasVision || connection.apiKey
       ? userApi
       : { baseUrl: CLIPROXY_BASE_URL, model: CLIPROXY_DEFAULT_MODEL, apiKey: CLIPROXY_API_KEY }
     const historyList = (useVision && imageUrl)
@@ -315,13 +330,13 @@ export function useChatConversation(options: ChatConversationOptions) {
       : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
     return JSON.stringify({
       character: characterId,
-      provider: options.chatProvider.value,
-      model: hostMode ? '' : options.currentModel.value,
-      api: !hostMode && options.chatProvider.value === 'api' ? (useVision ? visionApi : userApi) : undefined,
+      provider: connection.provider,
+      model: hostMode ? '' : connection.currentModel,
+      api: !hostMode && connection.provider === 'api' ? (useVision ? visionApi : userApi) : undefined,
       hostConfig: hostMode || undefined,
-      webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
+      webSearch: connection.provider === 'api' && connection.webSearch,
       companionTools: toolsEnabled || undefined,
-      reasoning: options.reasoning.value,
+      reasoning: connection.reasoning,
       userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
       memories: options.recallMemories(characterId, text),
       messages: [
@@ -340,6 +355,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     options.onError('')
     options.voice.ensureAudioContext()
 
+    const connection = captureConnection()
     const turn = beginUserTurn(text, imageUrl, customText)
 
     const controller = new AbortController()
@@ -353,7 +369,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     const tracker = createTurnEmotionTracker(turn.characterId)
 
     try {
-      const toolsEnabled = options.companionTools.value && options.chatProvider.value === 'api'
+      const toolsEnabled = connection.tools && connection.provider === 'api'
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
@@ -372,8 +388,8 @@ export function useChatConversation(options: ChatConversationOptions) {
       }
       while (true) {
         controller.signal.throwIfAborted()
-        const hostMode = options.chatProvider.value === 'api' && options.useHostConfig.value
-        const useVision = visionRound && options.chatProvider.value === 'api' && !hostMode
+        const hostMode = connection.provider === 'api' && connection.hostConfig
+        const useVision = visionRound && connection.provider === 'api' && !hostMode
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
@@ -388,7 +404,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             useVision,
             toolsEnabled,
             roundMessages,
-            messages: turn.messages,
+            messages: turn.messages, connection,
           }),
           signal: controller.signal,
         })
@@ -398,7 +414,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           controller.signal.throwIfAborted()
           watchdog.touch()
           if (event.type === 'meta' && event.model) {
-            applyModelWriteback(event.model, hostMode, useVision)
+            applyModelWriteback(event.model, hostMode, useVision, connection)
           }
           if (event.type === 'tool-call') {
             if (event.id && event.name) {
@@ -485,7 +501,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         options.voice.stop({ preserveMessageAudio: true, silent: true })
         options.onError(streamErrorMessage(
           error,
-          options.chatProvider.value === 'api'
+          connection.provider === 'api'
             ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
             : '聊天暂不可用，请检查 Ollama。',
         ))
