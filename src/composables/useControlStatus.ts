@@ -53,6 +53,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     syncedConfig.set(field, incoming)
   }
   const autoStartVoice = ref(false)
+  const savingAutoStartVoice = ref(false)
 
   const tunnelStatus = ref('')
   const shareLink = ref('')
@@ -212,7 +213,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     syncConfigField(voiceNenePrompt, voices.nene?.promptText)
     syncConfigField(voiceNatsumeRef, voices.natsume?.refAudioPath)
     syncConfigField(voiceNatsumePrompt, voices.natsume?.promptText)
-    if (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox') {
+    if (!savingAutoStartVoice.value && (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox')) {
       autoStartVoice.value = !!data.autoStartVoice
     }
 
@@ -367,7 +368,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   return {
     tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, serviceChecking, statusLoaded, statusError, scripts,
-    sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
+    sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,

@@ -81,13 +81,21 @@ export function useControlActions(
   }
 
   async function saveAutoStartVoice() {
+    if (status.savingAutoStartVoice.value) return
+    const requested = status.autoStartVoice.value
+    status.savingAutoStartVoice.value = true
     try {
-      await control.savePreference(status.autoStartVoice.value)
-      showToast(status.autoStartVoice.value ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
+      const result = await control.savePreference(requested)
+      const acknowledged = typeof result.autoStartVoice === 'boolean' ? result.autoStartVoice : requested
+      status.autoStartVoice.value = acknowledged
+      showToast(acknowledged ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
     } catch (e) {
-      // 请求失败时把开关拨回去，避免 UI 与落盘状态不一致
-      status.autoStartVoice.value = !status.autoStartVoice.value
-      showToast(errorMessage(e, '保存失败'), true)
+      // A lost response does not prove rollback. Re-read the saved preference.
+      showToast('保存结果尚未确认：' + errorMessage(e, '连接中断') + '；正在重新读取设置', true)
+    } finally {
+      status.savingAutoStartVoice.value = false
+      // Starting a new read synchronously invalidates pre-acknowledgement polls.
+      await status.pollStatus(true)
     }
   }
 
