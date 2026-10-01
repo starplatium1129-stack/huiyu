@@ -41,6 +41,8 @@ export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
       || typeof session.expiresAt !== 'number' || session.expiresAt <= Date.now() || !Array.isArray(session.domains)
       || session.domains.some(domain => !['artwork', 'settings', 'chat', 'draft'].includes(String(domain)))
       || !Number.isSafeInteger(session.generation) || typeof session.bundledUi !== 'boolean') throw new Error('工作区会话无效')
+    if (session.activeMigrationId !== undefined && session.activeMigrationId !== null
+      && (typeof session.activeMigrationId !== 'string' || !/^[a-f0-9-]{36}$/.test(session.activeMigrationId))) throw new Error('工作区激活身份无效')
     workspace = session as unknown as NonNullable<typeof workspace>
   }
   return {

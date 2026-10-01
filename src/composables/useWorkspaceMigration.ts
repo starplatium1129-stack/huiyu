@@ -1,3 +1,5 @@
+import { bindMigrationCandidate } from '../platform/web/migrationAuthority'
+import { markMigrationActivation, migrationRecoveryPending, watchMigrationRecovery, reconcileMigrationAuthority, recoverMigrationAuthority } from '../platform/web/migrationBarrier'
 import { computed, ref, onScopeDispose } from 'vue'
 import { getDesktopRuntime, onDesktopRuntime, refreshDesktopRuntime } from '../platform/desktop/runtime'
 import { prepareDesktopWorkspace, activateDesktopWorkspace, enableDesktopBundledUi } from '../platform/desktop/bootstrap'
@@ -11,6 +13,8 @@ import { registerMaintenanceParticipant } from '../platform/maintenanceParticipa
 export function useWorkspaceMigration(onMessage: (message: string) => void) {
   const busy = ref(false), available = ref(false), progress = ref('')
   onScopeDispose(registerMaintenanceParticipant(() => { if (busy.value) throw new Error('MIGRATION_BUSY') }))
+  const recoveryPending = ref(migrationRecoveryPending())
+  onScopeDispose(watchMigrationRecovery(() => { recoveryPending.value = migrationRecoveryPending() }))
   const bundledAvailable = ref(false), bundledVerified = ref(false)
   const tasks = useTaskCenter()
   let controller: AbortController | null = null
@@ -28,6 +32,7 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
   onScopeDispose(() => { disposed = true; unsubscribe(); controller?.abort() })
   async function migrate(resume = false) {
     if (disposed || busy.value) return
+    if (recoveryPending.value) { onMessage('上次激活结果尚未确认，请先执行只读核对。'); return }
     const initial = getDesktopRuntime()
     const bootstrap = initial.bootstrap
     if (!bootstrap || initial.connection !== 'ready' || bootstrap.windowRole !== 'atelier' || tasks.activeCount.value) { onMessage('请等待进行中的任务结束后再迁移。'); return }
@@ -59,7 +64,7 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
       const candidate = getDesktopRuntime().bootstrap?.runtime?.workspace
       const bridge = getDesktopCapabilities()
       const result = await migrateProfileToCandidate({ sourceProfileId: bootstrap.sourceProfileId, expectedOrigin: bootstrap.sourceOrigin,
-        backupDirectory: directory, signal: request.signal, candidate: { request: workspaceRequest },
+        backupDirectory: directory, signal: request.signal, candidate: bindMigrationCandidate(getDesktopRuntime, workspaceRequest),
         resume,
         migrateCredential: async (reference, secret) => {
           if (!bridge?.writeChatCredential || !bridge.readChatCredential) return false
@@ -73,10 +78,17 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
           if (!candidate || current?.workspaceId !== candidate.workspaceId || current.generation !== candidate.generation) throw new Error('迁移目标已变化，请重新核对后继续。')
           // Once native activation starts, retain the source barrier until its acknowledgment.
           activating.value = true; progress.value = '正在确认工作区切换，请稍候…'
-          await activateDesktopWorkspace(status.migrationId, false)
+          // Persist intent before invoke; a lost acknowledgment must not thaw old writers.
+          markMigrationActivation({ migrationId: status.migrationId, workspaceId: candidate.workspaceId, generation: candidate.generation,
+            sourceProfileId: bootstrap.sourceProfileId, sourceOrigin: bootstrap.sourceOrigin, domains: status.domains })
+          let activationError: unknown
+          try { await activateDesktopWorkspace(status.migrationId, false) } catch (error) { activationError = error }
+          try { await reconcileMigrationAuthority() } catch (error) {
+            const detail = error instanceof Error ? error.message : '激活结果尚未确认。'
+            throw new Error(activationError instanceof Error ? `${detail} 本机确认：${activationError.message}` : detail)
+          }
         },
       })
-      await refreshDesktopRuntime()
       if (!disposed) {
         onMessage(`迁移已完成，独立备份保存在 ${result.backupName}；旧资料继续保留。`)
         available.value = false
@@ -84,8 +96,17 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
     } catch (error) { if (!disposed) onMessage(request.signal.aborted && !activating.value ? '迁移已取消，原始资料与已导出的备份已保留。' : error instanceof Error ? error.message : '迁移未完成，原始资料与已导出的备份已保留。') }
     finally { if (controller === request) { busy.value = false; controller = null; activating.value = false; progress.value = '' } }
   }
+  async function reconcile() {
+    if (disposed || busy.value) return
+    busy.value = true
+    try {
+      await recoverMigrationAuthority()
+      if (!disposed) onMessage('已核对本机激活身份与各窗口资料连接，可以继续使用。')
+    } catch (error) { if (!disposed) onMessage(error instanceof Error ? error.message : '激活结果仍未确认，请保留备份并联系维护人员。') }
+    finally { busy.value = false; recoveryPending.value = migrationRecoveryPending() }
+  }
   async function enableBundled() {
-    if (busy.value || !bundledVerified.value) return
+    if (busy.value || recoveryPending.value || !bundledVerified.value) return
     if (tasks.activeCount.value) { onMessage('请等待进行中的任务结束后再切换启动方式。'); return }
     busy.value = true
     try {
@@ -96,5 +117,5 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
     } catch (error) { onMessage(error instanceof Error ? error.message : '启动方式尚未切换，当前入口继续保留。') }
     finally { busy.value = false }
   }
-  return { available, bundledAvailable, bundledVerified, busy, canCancel, progress, migrate, enableBundled, cancel: () => { if (!activating.value) controller?.abort() } }
+  return { available, bundledAvailable, bundledVerified, busy, canCancel, recoveryPending, reconcile, progress, migrate, enableBundled, cancel: () => { if (!activating.value) controller?.abort() } }
 }

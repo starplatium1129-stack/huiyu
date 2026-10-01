@@ -1,7 +1,8 @@
 import { effectScope } from 'vue'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { useWorkspaceMigration } from './useWorkspaceMigration'
-const mocks = vi.hoisted(() => ({ state: {} as Record<string, unknown>, tasks: { activeCount: { value: 0 } }, prepare: vi.fn(), refresh: vi.fn(), migrate: vi.fn(), activate: vi.fn() }))
+const mocks = vi.hoisted(() => ({ state: {} as Record<string, unknown>, tasks: { activeCount: { value: 0 } }, prepare: vi.fn(), refresh: vi.fn(), migrate: vi.fn(), activate: vi.fn(), mark: vi.fn(), reconcile: vi.fn() }))
+vi.mock('../platform/web/migrationBarrier', () => ({ migrationRecoveryPending: () => false, watchMigrationRecovery: () => () => {}, markMigrationActivation: mocks.mark, reconcileMigrationAuthority: mocks.reconcile, recoverMigrationAuthority: vi.fn() }))
 vi.mock('../platform/desktop/runtime', () => ({ getDesktopRuntime: () => mocks.state, onDesktopRuntime: () => () => {}, refreshDesktopRuntime: mocks.refresh }))
 vi.mock('../platform/desktop/bootstrap', () => ({ prepareDesktopWorkspace: mocks.prepare, activateDesktopWorkspace: mocks.activate, enableDesktopBundledUi: vi.fn() }))
 vi.mock('../platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => null }))
@@ -47,7 +48,7 @@ it('keeps an already-started native activation pending until its acknowledgment'
   vi.stubGlobal('showDirectoryPicker', vi.fn().mockResolvedValue(directory))
   const native = deferred<void>(), begun = deferred<void>()
   mocks.activate.mockImplementation(() => { begun.resolve(); return native.promise })
-  mocks.migrate.mockImplementation(async options => { await options.activate({ migrationId: 'migration' }); return { backupName: 'backup' } })
+  mocks.migrate.mockImplementation(async options => { await options.activate({ migrationId: 'migration', domains: ['artwork'] }); return { backupName: 'backup' } })
   const scope = effectScope(), message = vi.fn()
   const migration = scope.run(() => useWorkspaceMigration(message))!
   const running = migration.migrate()
@@ -56,7 +57,12 @@ it('keeps an already-started native activation pending until its acknowledgment'
   migration.cancel()
   expect(migration.busy.value).toBe(true)
   expect(message).not.toHaveBeenCalled()
-  native.resolve(); await running
+  const hydration = deferred<void>()
+  mocks.reconcile.mockReturnValue(hydration.promise)
+  native.resolve(); await Promise.resolve(); await Promise.resolve()
+  expect(migration.busy.value).toBe(true)
+  expect(message).not.toHaveBeenCalled()
+  hydration.resolve(); await running
   expect(message).toHaveBeenCalledWith(expect.stringContaining('迁移已完成'))
   scope.stop()
 })

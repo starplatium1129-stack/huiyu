@@ -50,4 +50,13 @@ describe('desktop bootstrap wire contract', () => {
     expect(bootstrap).toHaveBeenCalledWith(undefined)
     expect('__TAURI__' in window).toBe(false)
   })
+  it('accepts legacy sessions and validates the optional durable activation identity', () => {
+    vi.stubGlobal('window', { location: { origin } })
+    const session = { workspaceId: 'workspace', runtimeEpoch: 'epoch-1', principalId: 'principal', token: 'x'.repeat(43), expiresAt: Date.now() + 60000, domains: ['artwork'], generation: 2, bundledUi: false }
+    for (const activeMigrationId of [undefined, null, '11111111-1111-4111-8111-111111111111']) {
+      expect(decodeDesktopBootstrap({ ...ready, runtime: { ...ready.runtime, workspace: { ...session, activeMigrationId } } }).runtime?.workspace?.activeMigrationId).toBe(activeMigrationId)
+    }
+    expect(() => decodeDesktopBootstrap({ ...ready, runtime: { ...ready.runtime, workspace: { ...session, activeMigrationId: 42 } } })).toThrow('激活身份无效')
+  })
+
 })
