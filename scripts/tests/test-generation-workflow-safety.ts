@@ -388,13 +388,15 @@ test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sam
   }
   const tasks = modules[1].collectAllSceneTasks({}, modules[1].loadInputs({ root: f.root }));
   const payload = (task: any, characterId: any = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
-  assert.equal(F.sha(JSON.stringify(payload(tasks[0]))), '593aeb1db0b7f402d3e40b481da899e6320e89bf2fffb2c3639796ee8f154ca6');
+  // fe96ae82 removed the generic wallpaper direction; the same SFW bp1 fixture has no other payload changes.
+  assert.equal(F.sha(JSON.stringify(payload(tasks[0]))), '458a062f3aafe4ed14a36ee74afec9e52851336b1298e18b96a1f18cf91020c9');
   for (const [character, hash] of Object.entries({
     nene: '75a003ccdf092e76e84993be6605247683045d6615ac1b2f555da703e0cdc9dc',
     natsume: 'cfa9057ca57e15873c5f9089275524cc3ae82c88fa3fea0c72487f6fbc64a4a9',
     generic: '5d8306f0ce1489fed3bdb34f27af957712980e056bc846eaf01c84a6c458c428',
   })) assert.equal(F.sha(JSON.stringify(payload(tasks[1], character))), hash);
   const gap = modules[2].collectTasks({}, modules[2].loadInputs({ root: f.root, env: f.env }))[0];
-  assert.equal(F.sha(JSON.stringify(gap.payload(1))), 'b3289c106af3263b91d4684a585ff0cd0d9b7c117b18481baee0c334b6fc5ca6');
-  assert.equal(F.sha(JSON.stringify(gap.payload(2))), 'b9e68dc60e41f8a0784357e8bf40dfaa25e68539b73564591049b5a2bd9f3ccb');
+  // The gap fixture uses the same compiler direction; only that fe96ae82 sentence was removed in both attempts.
+  assert.equal(F.sha(JSON.stringify(gap.payload(1))), '99205048bc222e2e21278649944215fc621255d8e07b7e8a7e75f7d2b58e5203');
+  assert.equal(F.sha(JSON.stringify(gap.payload(2))), 'd11e878cc89e52002f2f7398806dc46f9649863721c50c5a383ce06466fa1244');
 });
