@@ -1,4 +1,5 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
+import { useToast } from '@/composables/useToast';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
@@ -41,6 +42,7 @@ export function useSceneExplorerWorkspace() {
     const route = useRoute();
     const router = useRouter();
     const sceneStore = useSceneStore();
+    const toast = useToast();
     const scenes = ref<ExplorerScene[]>([]);
     const curation = ref<ExplorerCuration>({ curatedSceneIds: [], moodRails: [], signatureSceneIds: [], reviewSceneIds: [] });
     const profile = ref<PreferenceProfile>(buildPreferenceProfile([]));
@@ -300,20 +302,20 @@ export function useSceneExplorerWorkspace() {
     });
     watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => { visible.value = PAGE_SIZE; });
     function toggleFav(id: string) {
-        if (favs.value.has(id))
-            favs.value.delete(id);
-        else
-            favs.value.add(id);
-        favs.value = new Set(favs.value);
-        localStorage.setItem(FAV_KEY, JSON.stringify([...favs.value]));
+        const next = new Set(favs.value);
+        if (next.has(id)) next.delete(id); else next.add(id);
+        try {
+            localStorage.setItem(FAV_KEY, JSON.stringify([...next]));
+            favs.value = next;
+        } catch { toast.error('收藏未保存，原有状态已保留，请稍后重试'); }
     }
     function toggleHidden(id: string) {
-        if (hiddenIds.value.has(id))
-            hiddenIds.value.delete(id);
-        else
-            hiddenIds.value.add(id);
-        hiddenIds.value = new Set(hiddenIds.value);
-        writeHiddenScenes(hiddenIds.value);
+        const next = new Set(hiddenIds.value);
+        if (next.has(id)) next.delete(id); else next.add(id);
+        try {
+            writeHiddenScenes(next);
+            hiddenIds.value = next;
+        } catch { toast.error('隐藏设置未保存，原有状态已保留，请稍后重试'); }
     }
     function showPersonalScenes() {
         showHidden.value = false;
