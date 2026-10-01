@@ -76,6 +76,35 @@ describe('resource library interaction', () => {
     await model.refresh(); model.stop(); await vi.advanceTimersByTimeAsync(30000)
     expect(calls.status).toHaveBeenCalledOnce(); expect(calls.cancel).not.toHaveBeenCalled()
   })
+  it('pauses hidden polling without interrupting an accepted command and refreshes on return', async () => {
+    vi.useFakeTimers()
+    let hidden = false
+    const visibility = vi.spyOn(document, 'hidden', 'get').mockImplementation(() => hidden)
+    const calls = api(); const model = useResourceLibrary(calls, true)
+    try {
+      model.start(); await vi.advanceTimersByTimeAsync(0)
+      let accept!: (value: { ok: true; task: ResourceTask }) => void
+      vi.mocked(calls.start).mockImplementationOnce(() => new Promise(resolve => { accept = resolve }))
+      const pending = model.run('import')
+      const signal = vi.mocked(calls.start).mock.calls[0]![2]!
+      hidden = true; document.dispatchEvent(new Event('visibilitychange'))
+      expect(signal.aborted).toBe(false)
+      vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task }))
+      accept({ ok: true, task }); await pending
+      expect(model.status.value?.task?.id).toBe(task.id)
+      const reads = vi.mocked(calls.status).mock.calls.length
+      await vi.advanceTimersByTimeAsync(30000)
+      expect(calls.status).toHaveBeenCalledTimes(reads)
+      hidden = false; document.dispatchEvent(new Event('visibilitychange'))
+      await vi.advanceTimersByTimeAsync(750)
+      expect(calls.status).toHaveBeenCalledTimes(reads + 2)
+      model.stop()
+      document.dispatchEvent(new Event('visibilitychange'))
+      await vi.advanceTimersByTimeAsync(5000)
+      expect(calls.status).toHaveBeenCalledTimes(reads + 2)
+      expect(calls.cancel).not.toHaveBeenCalled()
+    } finally { model.stop(); visibility.mockRestore() }
+  })
   it('failed status prevents unsafe action until the next successful refresh', async () => {
     const calls = api(); const model = useResourceLibrary(calls, true); await model.refresh()
     vi.mocked(calls.status).mockRejectedValueOnce(new Error('offline')); await model.refresh()
