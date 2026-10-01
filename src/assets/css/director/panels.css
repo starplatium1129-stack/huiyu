@@ -38,8 +38,7 @@
   .pb .btn-video-action .archive-icon {
     @apply tw:w-[1rem] tw:h-[1rem];
   }
-  .pb .tag-interrogate-error,
-  .pb .stage-interrogate-error {
+  .pb .tag-interrogate-error {
     @apply tw:mt-s-2;
     padding: 6px 10px;
     border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);

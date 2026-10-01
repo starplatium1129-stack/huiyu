@@ -32,7 +32,7 @@
   .pb .gen-bar-blocked {
     flex: 1 1 16rem; @apply tw:min-w-0 tw:ml-auto tw:text-danger-text tw:text-body tw:leading-body;
   }
-  .pb .gen-bar-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:ml-auto; }
+  .pb .gen-bar-actions { @apply tw:flex tw:flex-wrap tw:justify-end tw:items-center tw:gap-s-2 tw:ml-auto; }
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
   .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
   .pb .gen-bar-actions .btn { @apply tw:min-h-[38px] tw:text-body; padding: var(--s-2) var(--s-4); @apply tw:rounded-md; }

@@ -17,7 +17,7 @@ import StudioTabs from '@/components/ui/StudioTabs.vue'
 import DeferredPanel from './DeferredPanel.vue'
 import '@/assets/css/director/expert-workspace.css'
 const props = defineProps<{ expert: boolean; queueCount: number; busy: boolean }>()
-const tabs = computed(() => [{ id:'render', label:'生成' }, { id:'style', label:'画面' }, { id:'prompt', label:'提示词' }, { id:'delivery', label:'任务', count:props.queueCount }])
+const tabs = computed(() => [{ id:'render', label:'生成' }, { id:'tools', label:'成片' }, { id:'style', label:'画面' }, { id:'prompt', label:'提示词' }, { id:'delivery', label:'任务', count:props.queueCount }])
 const active = ref('render')
 function selectSection(section: string) {
   if (tabs.value.some(tab => tab.id === section)) active.value = section

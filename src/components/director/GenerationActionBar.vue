@@ -32,6 +32,9 @@
           @click="$emit('generate')"
         >{{ busy ? '正在绘制…' : '生成图片' }}</button>
       </StudioTooltip>
+      <StudioTooltip anchor content="清除当前画布图片，已入册的作品不受影响">
+        <button class="btn btn-ghost" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
+      </StudioTooltip>
       <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
     </div>
   </div>
@@ -57,6 +60,7 @@ const props = defineProps<{
   /** Anima/Krea2 候选尺寸（当前底模白名单，含当前值兜底）。 */
   animaSizes: string[]
   presetSummary: string
+  hasResult: boolean
   /**
    * 提交前校验的原因（2026-08-30 UX 审计 P1）。非空即禁用生成按钮，并把原因
    * 常驻在按钮旁。
@@ -73,6 +77,7 @@ const emit = defineEmits<{
   'update:size': [value: string]
   generate: []
   cancel: []
+  clearResult: []
 }>()
 
 // SD 引擎按竖/方/横/官方 CG 分组；Anima/Krea2 取平铺候选尺寸。

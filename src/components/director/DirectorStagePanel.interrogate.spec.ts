@@ -21,7 +21,7 @@ function fixture() {
       displayResultUrl: '/result-a.png', generationBusy: false, generationError: null,
       generationStopped: false, generationStatusText: null, generationProgress: null,
       animaElapsed: 0, animaCurrentNode: '', drawEngine: 'anima', inpaintOriginalUrl: null,
-      inpaintCompareActive: false, shotsPending: 0, hasPrevResult: false,
+      inpaintCompareActive: false, hasPrevResult: false,
     },
     global: { stubs: {
       CgImageReveal: true, ImageSplitCompare: true, ThinkingOrb: true, BorderBeam: true,
@@ -37,9 +37,8 @@ it('routes current-image reads through the guarded request and cancels on newer 
   let resolve!: (value: null) => void
   mocks.interrogate.mockImplementation(() => { busy.value = true; return new Promise(done => { resolve = done }) })
   const wrapper = fixture()
-  const tools = wrapper.findComponent({ name: 'DirectorResultTools' })
-  tools.vm.$emit('interrogateCurrent')
-  tools.vm.$emit('interrogateCurrent')
+  void wrapper.vm.interrogateCurrentImage()
+  void wrapper.vm.interrogateCurrentImage()
   expect(mocks.interrogate).toHaveBeenCalledExactlyOnceWith('/result-a.png', 'tag')
   await wrapper.setProps({ displayResultUrl: '/result-b.png' })
   expect(mocks.cancel).toHaveBeenCalledOnce()

@@ -74,29 +74,7 @@
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
-            <StudioTooltip v-if="drawEngine === 'anima'" content="导入任意外部本地图片，进行智能语义识别与局部换装">
-              <button
-                class="btn btn-ghost"
-                type="button"
-                @click="$emit('openInpaint')"
-              >
-                <ArchiveIcon name="inpaint" />
-                <span>导入图片换装</span>
-              </button>
-            </StudioTooltip>
-            <StudioTooltip anchor :content="(interrogateMode === 'caption' ? '用 PixAI 整理图片标签（适合 Krea）' : '用 PixAI 提取图片标签（适合 Anima/SD）') + '；首次需加载模型，后续复用 GPU 常驻模型，也可聚焦后直接粘贴图片'">
-              <button class="btn btn-ghost" type="button"
-                :disabled="interrogateBusy"
-                @click="triggerInterrogatePick"
-                @paste="onInterrogatePaste">
-                <ArchiveIcon name="search" />
-                <span>{{ interrogateBusy ? '正在反推…' : '从图片提取灵感' }}</span>
-              </button>
-            </StudioTooltip>
-
           </div>
-          <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
-          <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
         </div>
         </div>
       </div>
@@ -130,18 +108,14 @@
         @reveal-complete="rememberResultReveal"
       />
       <DirectorResultTools
-        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
-        @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
-        @openInpaint="$emit('openInpaint')" @update:inpaintCompareActive="$emit('update:inpaintCompareActive', $event)"
-        @upscale="$emit('upscale')" @goVideo="$emit('goVideo')" @addToShots="$emit('addToShots')" @goShots="$emit('goShots')"
-        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="clearCanvas"
+        v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
+        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
       />
-      <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
     <DirectorResultShelf :history="history || []" :previous="previousResult" :current-url="displayResultUrl" :busy="generationBusy"
       @preview="browsingResult = $event" @resume="$emit('resumeHistory', $event)" @saved="$emit('saved')" />
     <!-- 供两态共用的上传入口 -->
-    <input ref="interrogateInputRef2" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
+    <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
 </template>
 
@@ -150,7 +124,6 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { computed, ref, defineAsyncComponent, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
@@ -179,7 +152,6 @@ const props = defineProps<{
   drawEngine: string
   inpaintOriginalUrl: string | null
   inpaintCompareActive: boolean
-  shotsPending: number
   hasPrevResult: boolean
   /** 当前结果是否已入册（null = 画布无结果，不显示徽章）。 */
   resultArchived?: boolean | null
@@ -193,10 +165,6 @@ const props = defineProps<{
 const browsingResult = ref(false)
 const stageRoot = ref<HTMLElement | null>(null)
 const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => browsingResult.value || props.inpaintCompareActive)
-function clearCanvas() {
-  playClear()
-  emit('clearResult')
-}
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
@@ -223,18 +191,11 @@ const emit = defineEmits<{
   resumeHistory: [entry: ArtworkRecord]
   saved: []
   generate: []
-  openInpaint: []
   openRecovery: []
   exploreScenes: []
-  'update:inpaintCompareActive': [value: boolean]
-  upscale: []
-  goVideo: []
-  addToShots: []
-  goShots: []
   saveScene: []
   saveResult: []
   openCompare: []
-  clearResult: []
   restoreStashed: []
   interrogateResult: [result: InterrogateResult]
   interrogateError: [message: string]
@@ -246,7 +207,6 @@ const stageMuseUrl = {
 }
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
-const interrogateInputRef2 = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate()
 const interrogateError = computed(() => interrogateErrorRaw.value)
 const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
@@ -255,11 +215,7 @@ watch(interrogateMode, () => cancel(), { flush: 'sync' })
 watch(() => props.displayResultUrl, () => { if (readingCurrentResult) cancel() }, { flush: 'sync' })
 
 function triggerInterrogatePick() {
-  // 有结果时优先用结果态外层的 input：空闲态 input 在 v-show=false 的舞台里，
-  // 部分 WebView/浏览器对 display:none 祖先内的 file input 不弹选择器。
-  var target = props.displayResultUrl ? interrogateInputRef2.value : interrogateInputRef.value
-  if (!target) target = props.displayResultUrl ? interrogateInputRef.value : interrogateInputRef2.value
-  if (target) target.click()
+  interrogateInputRef.value?.click()
 }
 
 async function onInterrogateFile(e: Event) {
@@ -315,6 +271,7 @@ async function interrogateCurrentImage() {
     if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
+defineExpose({ playClear, browsingResult, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
 
 <style scoped>

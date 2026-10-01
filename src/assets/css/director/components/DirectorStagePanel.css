@@ -95,27 +95,10 @@
     .pb .stage-swap-leave-active { transition:opacity var(--motion-hover) var(--ease-out); }
   }
 
-/* Secondary result actions expand in flow, so they never cover the artwork. */
-.pb .result-tools-disclosure { @apply tw:w-full tw:text-secondary tw:text-label; }
 .pb .result-image-actions > .btn { @apply tw:min-h-[40px]; }
-.pb .result-tools-disclosure > summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2; width:fit-content; @apply tw:max-w-full tw:min-h-[40px]; padding:var(--s-2) var(--s-3); @apply tw:cursor-pointer; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:leading-label; }
-.pb .result-tools-disclosure[open] > summary { @apply tw:text-primary tw:border-accent; background:var(--accent-soft); }
-.pb .result-tools-count { @apply tw:text-secondary; }
-.pb .result-tools-chevron { @apply tw:w-[16px] tw:h-[16px]; transition:transform var(--motion-hover) var(--ease-out); }
-.pb .result-tools-disclosure[open] .result-tools-chevron { transform:rotate(180deg); }
-.pb .result-tools-disclosure > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-/* Expert mode already scrolls the outer action area; keep one scroll owner. */
-.pb .result-tools-grid { @apply tw:grid tw:gap-s-3 tw:pt-s-3; }
-.pb .result-tools-group { @apply tw:grid; grid-template-columns:3em minmax(0,1fr); align-items:start; @apply tw:gap-s-2 tw:min-w-0; }
-.pb .result-tools-group + .result-tools-group { border-top:1px solid var(--border-soft); @apply tw:pt-s-3; }
-.pb .result-tools-label { padding-block:var(--s-2); @apply tw:text-secondary tw:text-label tw:leading-label; }
-.pb .result-tool-buttons { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:min-w-0; }
-.pb .result-tool-buttons > * { @apply tw:max-w-full; }
-.pb .result-tool-buttons .btn { @apply tw:min-h-[40px] tw:max-w-full tw:whitespace-normal tw:text-left; }
 @media (max-width:600px) {
-  .pb .result-image-actions > .btn, .pb .result-tool-buttons .btn, .pb .result-tools-disclosure > summary { @apply tw:min-h-[44px]; }
+  .pb .result-image-actions > .btn { @apply tw:min-h-[44px]; }
 }
-@media (prefers-reduced-motion:reduce) { .pb .result-tools-chevron { transition:none; } }
 .pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
 .pb .stage-progress-details summary { @apply tw:cursor-pointer; }
 

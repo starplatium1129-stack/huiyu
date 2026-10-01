@@ -1,0 +1,11 @@
+@reference "../../tailwind.css";
+.pb .image-tools { @apply tw:grid tw:min-w-0 tw:gap-s-4; }
+.pb .image-tools .panel-title { @apply tw:m-0; }
+.pb .image-tools-group { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
+.pb .image-tools-group + .image-tools-group { border-top:1px solid var(--border-soft); @apply tw:pt-s-4; }
+.pb .image-tools-group h4 { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label; font-weight:600; }
+.pb .image-tool-buttons { @apply tw:grid tw:gap-s-2 tw:min-w-0; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); }
+.pb .image-tool-buttons > *, .pb .image-tool-buttons .btn { @apply tw:w-full tw:min-w-0; }
+.pb .image-tool-buttons .btn { @apply tw:min-h-[40px] tw:justify-start tw:text-left tw:whitespace-normal; }
+.pb .image-tools-count { @apply tw:text-muted tw:text-label-xs; font-weight:500; }
+.pb .image-tools-error { @apply tw:m-0 tw:text-danger-text tw:text-body; overflow-wrap:anywhere; }

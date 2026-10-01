@@ -14,7 +14,7 @@ const props = {
   displayResultUrl: '/result-a.png', generationBusy: false, generationError: null,
   generationStopped: false, generationStatusText: null, generationProgress: null,
   animaElapsed: 0, animaCurrentNode: '', drawEngine: 'anima', inpaintOriginalUrl: '/original.png',
-  inpaintCompareActive: false, shotsPending: 0, hasPrevResult: false,
+  inpaintCompareActive: false, hasPrevResult: false,
 }
 const cleanup: Array<() => void> = []
 afterEach(() => cleanup.splice(0).forEach(fn => fn()))

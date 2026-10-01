@@ -72,6 +72,7 @@
       <div class="director-col col-center" id="drawing-canvas">
 
         <DirectorStagePanel
+          ref="stagePanel"
           :history="pb.history"
           :previous-result="prevResult"
           @resumeHistory="resumeHistory"
@@ -89,7 +90,6 @@
           :draw-engine="drawEngine"
           :inpaint-original-url="inpaintOriginalUrl"
           :inpaint-compare-active="inpaintCompareActive"
-          :shots-pending="shotsPending"
           :has-prev-result="!!prevResult"
           :result-archived="resultArchived"
           :saving-result="savingResult"
@@ -97,18 +97,11 @@
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
-          @openInpaint="inpaintOpen = true"
           @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render')"
           @exploreScenes="materialDrawer?.selectSection('scenes')"
-          @update:inpaintCompareActive="inpaintCompareActive = $event"
-          @upscale="upscaleCurrentResult"
-          @goVideo="goToVideo"
-          @addToShots="addToShots"
-          @goShots="goToShots"
           @saveResult="saveResult"
           @saveScene="captureScene"
           @openCompare="compareOpen = true"
-          @clearResult="onClearResult"
           @restoreStashed="onRestoreStashed"
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
@@ -122,9 +115,11 @@
           :anima-sizes="animaBarSizes"
           :preset-summary="generationPresetSummary"
           :blocked-reason="generateBlockReason"
+          :has-result="Boolean(displayResultUrl) && !stagePanel?.browsingResult"
           @update:size="genBarSize = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
+          @clearResult="clearCanvasResult"
         />
         <!-- 特典服装换装提示：当服装被通用特典或反推顶替时出现，附一键恢复 -->
         <OutfitOverrideNotice v-if="outfitOverridden" />
@@ -164,6 +159,30 @@
         </template>
         <template #style>
           <PromptInspectorStyle :bindings="styleBindings" />
+        </template>
+        <template #tools>
+          <DirectorImageTools
+            v-if="stagePanel && !stagePanel.browsingResult"
+            :generation-busy="generationBusy"
+            :interrogate-busy="stagePanel.interrogateBusy"
+            :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
+            :interrogate-error="stagePanel.interrogateError"
+            :display-result-url="displayResultUrl"
+            :draw-engine="drawEngine"
+            :inpaint-original-url="inpaintOriginalUrl"
+            :inpaint-compare-active="inpaintCompareActive"
+            :shots-pending="shotsPending"
+            @interrogateCurrent="stagePanel.interrogateCurrentImage()"
+            @interrogateUpload="stagePanel.triggerInterrogatePick()"
+            @interrogatePaste="stagePanel.onInterrogatePaste($event)"
+            @openInpaint="inpaintOpen = true"
+            @update:inpaintCompareActive="inpaintCompareActive = $event"
+            @upscale="upscaleCurrentResult"
+            @goVideo="goToVideo"
+            @addToShots="addToShots"
+            @goShots="goToShots"
+          />
+          <p v-else-if="stagePanel?.browsingResult" class="inspector-route">返回当前成片后，可继续修图或制作短片。</p>
         </template>
         <template #prompt>
           <PromptInspectorPrompt :bindings="healthBindings" />
@@ -210,11 +229,13 @@ const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/direc
 const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
+const DirectorImageTools = defineAsyncComponent(() => import('@/components/director/DirectorImageTools.vue'))
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
+const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
 const {
@@ -288,6 +309,10 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
+function clearCanvasResult() {
+  stagePanel.value?.playClear()
+  onClearResult()
+}
 </script>
 
 <style scoped src="@/assets/css/director/view-shell.css"></style>

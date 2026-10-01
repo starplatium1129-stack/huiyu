@@ -33,7 +33,26 @@ for (const theme of ['dark', 'light']) {
       expect(Math.abs(after.width - before.width)).toBeLessThan(2)
       expect(Math.abs(after.height - before.height)).toBeLessThan(2)
       await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
+      const clear = page.locator('.gen-bar').getByRole('button', { name: '清除图片', exact: true })
+      await expect(clear).toBeEnabled()
+      await expect(clear).toBeInViewport({ ratio: 1 })
+      await page.getByRole('tab', { name: '成片', exact: true }).click()
+      await expect(page.locator('#drawing-inspector').getByRole('button', { name: '生成短片', exact: true })).toBeVisible()
+      await expect(page.locator('#drawing-inspector').getByRole('button', { name: '高清放大 2x', exact: true })).toBeVisible()
+      await expect(page.locator('#drawing-canvas').getByRole('button', { name: '生成短片', exact: true })).toHaveCount(0)
       await page.screenshot({ path: info.outputPath(`canvas-artwork-${theme}-${size}.png`) })
+      if (size === '1344x896') {
+        for (const viewport of [{ width: 2560, height: 1440 }, { width: 3840, height: 2160 }, { width: 1280, height: 800 }]) {
+          await page.setViewportSize(viewport)
+          await expect(page.locator('.gen-bar').getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
+          await expect(clear).toBeInViewport({ ratio: 1 })
+          await expect(page.locator('#drawing-inspector').getByRole('button', { name: '生成短片', exact: true })).toBeInViewport({ ratio: 1 })
+          await page.screenshot({ path: info.outputPath('canvas-controls-' + theme + '-' + viewport.width + '.png') })
+        }
+      }
+      await clear.click()
+      await expect(image).toHaveCount(0)
+      await expect(clear).toBeDisabled()
     })
   }
 }
