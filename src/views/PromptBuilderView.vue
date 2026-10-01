@@ -78,6 +78,7 @@
           @saved="pb.loadHistory"
           :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
+          :result-reveal-url="resultRevealUrl"
           :generation-busy="generationBusy"
           :generation-error="generationError"
           :generation-stopped="generationStopped"
@@ -220,6 +221,7 @@ const {
 capturedScene, capturingScene, captureScene, closeSceneCapture,
 pb,
 displayResultUrl,
+resultRevealUrl,
 characterShifting,
 currentCharacterThemeStyle,
 popularCharacter,

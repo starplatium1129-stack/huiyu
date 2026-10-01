@@ -6,8 +6,7 @@
    ============================================================ */
    .pb .result-image-wrap {
      @apply tw:relative tw:overflow-hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
-     /* 成片容器轻移，图片自身单独显现，操作文字保持清晰。 */
-     animation:directorViewIn var(--motion-control) var(--ease-out);
+     /* 只让新成片显现；历史、恢复与操作文字不跟随容器重播。 */
      @apply tw:rounded-stage; background:var(--bg-deep);
      box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
    }
@@ -44,7 +43,7 @@
   /* ── plans/002：画布占位 ↔ 成片交接（stage-swap）──
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
-     只补间 opacity/transform。结果容器用 directorViewIn，图片由 CgImageReveal 接管。 */
+     只补间 opacity/transform。结果容器保持静止，图片由 CgImageReveal 接管。 */
   .pb .stage-slot { @apply tw:relative; }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
