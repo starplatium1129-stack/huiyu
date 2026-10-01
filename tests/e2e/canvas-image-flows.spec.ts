@@ -13,9 +13,9 @@ for (const theme of ['dark', 'light']) {
       for (const port of [ports.sd, ports.comfy || ports.translate + 1, ports.ollama, ports.tts, ports.translate]) {
         await request.post(`http://127.0.0.1:${port}/__mock/reset`)
       }
-      await request.post(`http://127.0.0.1:${ports.sd}/__mock/fault`, { data: { imageBase64, renderMs: 30 } })
+      await request.post(`http://127.0.0.1:${ports.sd}/__mock/fault`, { data: { imageBase64, renderMs: size === '1344x896' ? 1200 : 30 } })
       await page.setViewportSize({ width: 1920, height: 1080 })
-      await page.emulateMedia({ reducedMotion: 'reduce' })
+      await page.emulateMedia({ reducedMotion: size === '1344x896' ? 'no-preference' : 'reduce' })
       await page.addInitScript(value => { localStorage.setItem('aics_theme', value); localStorage.setItem('aics_guest_guide_dismissed', '1') }, theme)
       await page.goto('/prompt-builder?scene=sc001')
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -26,9 +26,28 @@ for (const theme of ['dark', 'light']) {
       expect(before.width).toBeGreaterThan(1050)
       expect(before.height).toBeGreaterThan(650)
       await page.getByRole('button', { name: '生成图片', exact: true }).click()
+      if (size === '1344x896') {
+        await expect(page.locator('#drawing-canvas .border-beam-wrap')).toBeVisible()
+        await page.locator('#drawing-canvas .border-beam-ray').first().evaluate(element => {
+          const animation = element.getAnimations()[0]
+          animation.pause()
+          animation.currentTime = 450
+        })
+        await page.screenshot({ path: info.outputPath('canvas-generating-edge-' + theme + '.png'), animations: 'allow' })
+      }
       const image = page.locator('.result-image')
       await expect(image).toBeVisible({ timeout: 15_000 })
       await expect.poll(() => image.evaluate((node: HTMLImageElement) => [node.naturalWidth, node.naturalHeight])).toEqual([width, height])
+      if (size === '1344x896') {
+        await page.locator('.cg-image-reveal').evaluate(element => {
+          element.getAnimations({ subtree: true }).forEach(animation => {
+            animation.pause()
+            animation.currentTime = 180
+          })
+        })
+        await page.screenshot({ path: info.outputPath('canvas-image-developing-' + theme + '.png'), animations: 'allow' })
+        await page.locator('.cg-image-reveal').evaluate(element => element.getAnimations({ subtree: true }).forEach(animation => animation.finish()))
+      }
       const after = (await page.locator('#drawing-canvas').boundingBox())!
       expect(Math.abs(after.width - before.width)).toBeLessThan(2)
       expect(Math.abs(after.height - before.height)).toBeLessThan(2)
@@ -40,6 +59,10 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('#drawing-inspector').getByRole('button', { name: '生成短片', exact: true })).toBeVisible()
       await expect(page.locator('#drawing-inspector').getByRole('button', { name: '高清放大 2x', exact: true })).toBeVisible()
       await expect(page.locator('#drawing-canvas').getByRole('button', { name: '生成短片', exact: true })).toHaveCount(0)
+      await expect(page.locator('#drawing-canvas').getByRole('group', { name: '结果来源', exact: true })).toHaveCount(0)
+      const candidates = page.locator('#drawing-inspector').getByText('候选与最近作品', { exact: true })
+      await expect(candidates).toBeVisible()
+      await expect(page.locator('#drawing-inspector .result-shelf')).toHaveCount(0)
       await page.screenshot({ path: info.outputPath(`canvas-artwork-${theme}-${size}.png`) })
       if (size === '1344x896') {
         for (const viewport of [{ width: 2560, height: 1440 }, { width: 3840, height: 2160 }, { width: 1280, height: 800 }]) {

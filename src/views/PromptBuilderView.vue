@@ -73,10 +73,6 @@
 
         <DirectorStagePanel
           ref="stagePanel"
-          :history="pb.history"
-          :previous-result="prevResult"
-          @resumeHistory="resumeHistory"
-          @saved="pb.loadHistory"
           :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
           :result-reveal-url="resultRevealUrl"
@@ -115,7 +111,7 @@
           :anima-sizes="animaBarSizes"
           :preset-summary="generationPresetSummary"
           :blocked-reason="generateBlockReason"
-          :has-result="Boolean(displayResultUrl) && !stagePanel?.browsingResult"
+          :has-result="Boolean(displayResultUrl)"
           @update:size="genBarSize = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
@@ -162,7 +158,7 @@
         </template>
         <template #tools>
           <DirectorImageTools
-            v-if="stagePanel && !stagePanel.browsingResult"
+            v-if="stagePanel"
             :generation-busy="generationBusy"
             :interrogate-busy="stagePanel.interrogateBusy"
             :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
@@ -182,7 +178,11 @@
             @addToShots="addToShots"
             @goShots="goToShots"
           />
-          <p v-else-if="stagePanel?.browsingResult" class="inspector-route">返回当前成片后，可继续修图或制作短片。</p>
+          <details class="inspector-route" @toggle="resultShelfOpen = ($event.target as HTMLDetailsElement).open">
+            <summary><span>候选与最近作品</span><ArchiveIcon name="chevron-down" /></summary>
+            <DirectorResultShelf v-if="resultShelfOpen" :history="pb.history" :previous="prevResult" :current-url="displayResultUrl" :busy="generationBusy"
+              @resume="resumeHistory" @saved="pb.loadHistory" />
+          </details>
         </template>
         <template #prompt>
           <PromptInspectorPrompt :bindings="healthBindings" />
@@ -230,12 +230,14 @@ const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/d
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
 const DirectorImageTools = defineAsyncComponent(() => import('@/components/director/DirectorImageTools.vue'))
+const DirectorResultShelf = defineAsyncComponent(() => import('@/components/director/DirectorResultShelf.vue'))
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
+const resultShelfOpen = ref(false)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
 const {
