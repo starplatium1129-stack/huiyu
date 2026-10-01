@@ -57,6 +57,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 
 | 日期 | 主题 |
 | --- | --- |
+| 2026-10-01 | [动漫图片反推模型试跑](audits/2026-10-01/interrogate-model-trial.md)：三个 CPU 模型和 PixAI 的真实 CG 标签、耗时、显存与退出释放记录 |
 | 2026-09-30 | [全部前端与 Node 单测精简](audits/2026-09-30/test-total-simplification.md)及[454文件逐项决定](audits/2026-09-30/test-total-decisions.md) |
 | 2026-09-30 | [日常测试精简与定向入口](audits/2026-09-30/test-simplification.md) |
 | 2026-09-30 | [搜索索引传输与响应复制收口](audits/2026-09-30/search-index-transfer.md) |
