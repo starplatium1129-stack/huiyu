@@ -30,4 +30,3 @@ async fn failed_import_cleans_only_its_owned_upload_directory() {
         b"existing fixture"
     );
 }
-
