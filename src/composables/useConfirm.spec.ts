@@ -1,0 +1,28 @@
+import { expect, it, vi } from 'vitest'
+import { confirmAction, resolveConfirm, useConfirmState } from './useConfirm'
+
+it('cancels only the owned dialog and detaches abort listeners on replacement or settlement', async () => {
+  const first = new AbortController()
+  const remove = vi.spyOn(first.signal, 'removeEventListener')
+  const pending = confirmAction({ title: 'first', signal: first.signal })
+  const second = confirmAction('second')
+  expect(await pending).toBe(false)
+  expect(remove).toHaveBeenCalledWith('abort', expect.any(Function))
+  first.abort()
+  expect(useConfirmState().value).toMatchObject({ visible: true, title: 'second' })
+  expect(await confirmAction({ title: 'already cancelled', signal: first.signal })).toBe(false)
+  expect(useConfirmState().value.title).toBe('second')
+  resolveConfirm(true)
+  expect(await second).toBe(true)
+  const owned = new AbortController()
+  const cancelled = confirmAction({ title: 'owned', signal: owned.signal })
+  owned.abort()
+  expect(await cancelled).toBe(false)
+  expect(useConfirmState().value.visible).toBe(false)
+  const accepted = new AbortController()
+  const cleanup = vi.spyOn(accepted.signal, 'removeEventListener')
+  const current = confirmAction({ title: 'accepted', signal: accepted.signal })
+  resolveConfirm(true)
+  expect(await current).toBe(true)
+  expect(cleanup).toHaveBeenCalledWith('abort', expect.any(Function))
+})
