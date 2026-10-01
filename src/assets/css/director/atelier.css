@@ -4,7 +4,7 @@
 .pb.atelier-workspace .atelier-kicker { @apply tw:mb-s-2 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.15em; }
 .pb.atelier-workspace .atelier-context { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label; overflow-wrap:anywhere; }
 .pb.atelier-workspace .pb-topline { @apply tw:pb-s-3; border-bottom:1px solid var(--border-soft); }
-.pb.journal-workspace.atelier-workspace .pb-title { font-size:var(--fs-title); line-height:var(--lh-title); letter-spacing:-.02em; }
+.pb.journal-workspace.atelier-workspace .pb-title { font-size:var(--fs-title); line-height:var(--lh-tight); letter-spacing:-.02em; }
 .pb.atelier-workspace .pb-sub { max-width:54ch; }
 .pb.atelier-workspace .pb-utility-actions { @apply tw:pl-s-3; border-left:1px solid var(--border-soft); }
 .pb.atelier-workspace .material-drawer,
