@@ -495,3 +495,37 @@ it.each(['album overview', 'trash'] as const)('stops hidden wall reads in %s and
   await env.intersect()
   expect(Object.keys(env.gallery.cardUrls)).toHaveLength(6)
 })
+
+
+it('replaces same-ID media without evicting unchanged cards or publishing obsolete reads', async () => {
+  mocks.snapshot.mockResolvedValue({ history: [record(1), record(2)], projects: [] })
+  const env = await setup()
+  await env.intersect()
+  const old = env.gallery.cardUrls[1], unchanged = env.gallery.cardUrls[2]
+  env.gallery.openViewer(env.gallery.visible.value.findIndex(item => item.id === 1))
+  await flushPromises()
+  const oldViewer = env.gallery.viewerUrl.value
+  const oldReads: Array<{ signal: AbortSignal; finish: (blob: Blob) => void }> = []
+  mocks.getImage.mockImplementation((id, signal) => id === 'pending-image'
+    ? new Promise<Blob>(finish => { oldReads.push({ signal, finish }) })
+    : Promise.resolve(new Blob([id])))
+  env.gallery.history.value = [{ ...record(1), image_id: 'pending-image' }, record(2)]
+  await flushPromises()
+  await env.intersect()
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith(old)
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith(oldViewer)
+  expect(env.gallery.cardUrls[2]).toBe(unchanged)
+  mocks.getThumbnail.mockImplementation(async id => `data:image/jpeg;base64,${id}`)
+  env.gallery.history.value = [{ ...record(1), image_id: 'latest-image' }, record(2)]
+  await flushPromises()
+  await env.intersect()
+  expect(oldReads).toHaveLength(2)
+  expect(oldReads.every(read => read.signal.aborted)).toBe(true)
+  const latest = env.gallery.cardUrls[1], latestViewer = env.gallery.viewerUrl.value
+  expect(env.gallery.thumbUrls[1]).toBe('data:image/jpeg;base64,latest-image')
+  oldReads.forEach(read => read.finish(new Blob(['obsolete'])))
+  await flushPromises()
+  expect(env.gallery.cardUrls[1]).toBe(latest)
+  expect(env.gallery.viewerUrl.value).toBe(latestViewer)
+  expect(env.gallery.cardUrls[2]).toBe(unchanged)
+})

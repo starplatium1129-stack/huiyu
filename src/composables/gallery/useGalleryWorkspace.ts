@@ -1,3 +1,4 @@
+import { sameArtworkMedia, watchArtworkMedia } from './artworkMediaIdentity';
 import { artworkFacts, characterName as resolveCharacterName, formatDate, formatTrashTime, safeImageUrl, sceneTitle as resolveSceneTitle, trashPrompt } from './galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
@@ -48,7 +49,7 @@ export function useGalleryWorkspace() {
         saveThumb: async (item, dataUrl, imageId) => {
             const epoch = imageEpoch;
             await artworkRepository.setThumbnail(imageId, dataUrl);
-            if (!unmounted && viewActive && epoch === imageEpoch) thumbUrls[item.id] = dataUrl;
+            if (!unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) thumbUrls[item.id] = dataUrl;
         },
     });
     /**
@@ -57,7 +58,8 @@ export function useGalleryWorkspace() {
      * 否则 transition 不会触发、又会硬切一下（回到「闪一下」的老问题）。
      */
     function onHdLoad(item: ArtworkRecord, e: Event) {
-        measure(item, e);
+        if (!isMediaCurrent(item)) return;
+        measure({ ...item }, e);
         const img = e.target as HTMLImageElement;
         requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('is-loaded')));
     }
@@ -212,23 +214,23 @@ export function useGalleryWorkspace() {
     function hydrateThumbs(): Promise<void> {
         thumbsDirty = true;
         if (thumbHydration) return thumbHydration;
-        const epoch = imageEpoch, visited = new Set<string | number>();
+        const epoch = imageEpoch, visited = new Map<string | number, ArtworkRecord>();
         async function run() {
             do {
                 thumbsDirty = false;
                 // Watchers and mounting share one batch; a changed page reschedules
                 // its remaining reads without fetching the same missing preview twice.
-                const pending = (trashMode.value ? [] : collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
+                const pending = (trashMode.value ? [] : collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls[item.id] && !thumbUrls[item.id]).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
                         if (unmounted || !viewActive || epoch !== imageEpoch || thumbsDirty) return;
                         const item = pending[index++];
-                        visited.add(item.id);
+                        visited.set(item.id, item);
                         try {
                             const thumb = await artworkRepository.getThumbnail(item.image_id!);
                             if (unmounted || !viewActive || epoch !== imageEpoch) return;
-                            if (typeof thumb === 'string' && thumb.startsWith('data:image/')) thumbUrls[item.id] = thumb;
+                            if (isMediaCurrent(item) && typeof thumb === 'string' && thumb.startsWith('data:image/')) thumbUrls[item.id] = thumb;
                         }
                         catch { /* 缩略图缺失正常，直接走 HD */ }
                     }
@@ -248,7 +250,7 @@ export function useGalleryWorkspace() {
         let resolved = false;
         try {
             const blob = item.image_id ? await artworkRepository.getImage(item.image_id, signal) : null;
-            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch) return;
+            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch || !isMediaCurrent(item)) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
                 resolved = true;
@@ -259,7 +261,7 @@ export function useGalleryWorkspace() {
                 if (imageId && !thumbUrls[item.id] && !thumbPending.has(imageId)) {
                     thumbPending.add(imageId);
                     blobThumbDataUrl(blob).then(dataUrl => {
-                        if (dataUrl && !signal.aborted && !unmounted && viewActive && epoch === imageEpoch && history.value.some(entry => entry.id === item.id)) {
+                        if (dataUrl && !signal.aborted && !unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) {
                             thumbUrls[item.id] = dataUrl;
                             return artworkRepository.setThumbnail(imageId, dataUrl);
                         }
@@ -278,7 +280,7 @@ export function useGalleryWorkspace() {
                 markImageMissing(item.id);
         }
         catch {
-            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch) return;
+            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch || !isMediaCurrent(item)) return;
             if (fallback) {
                 cardUrls[item.id] = fallback;
                 resolved = true;
@@ -289,7 +291,7 @@ export function useGalleryWorkspace() {
         if (!resolved)
             return;
         // 读取期间被删除的条目：URL 不入册直接释放，避免缓存里留下孤儿
-        if (!history.value.some(entry => entry.id === item.id)) {
+        if (!isMediaCurrent(item)) {
             releaseCardImage(item.id);
             return;
         }
@@ -306,7 +308,7 @@ export function useGalleryWorkspace() {
         if (missingImageIds.value.has(item.id) || queuedCardIds.has(item.id))
             return;
         queuedCardIds.add(item.id);
-        cardQueue.push(item);
+        cardQueue.push({ ...item });
         pumpCardQueue();
     }
     function pumpCardQueue() {
@@ -318,9 +320,8 @@ export function useGalleryWorkspace() {
             const controller = new AbortController();
             cardReads.set(item.id, controller);
             void hydrateCard(item, AbortSignal.any([imageReads.signal, controller.signal])).finally(() => {
-                if (cardReads.get(item.id) === controller) cardReads.delete(item.id);
+                if (cardReads.get(item.id) === controller) { cardReads.delete(item.id); if (epoch === imageEpoch) queuedCardIds.delete(item.id); }
                 cardWorkers -= 1;
-                if (epoch === imageEpoch) queuedCardIds.delete(item.id);
                 pumpCardQueue();
             });
         }
@@ -456,6 +457,13 @@ export function useGalleryWorkspace() {
         moreObserver = null; narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
         releaseImages();
+    });
+    const isMediaCurrent = watchArtworkMedia(history, id => {
+        releaseCardImage(id); delete thumbUrls[id]; forgetRatio(id);
+        cardReads.get(id)?.abort(); cardReads.delete(id); queuedCardIds.delete(id);
+        for (let index = cardQueue.length - 1; index >= 0; index--) if (cardQueue[index].id === id) cardQueue.splice(index, 1);
+        if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
+        void hydrateThumbs(); void nextTick(() => scanWallCards());
     });
     watch(visible, () => {
         const ids = new Set(visible.value.map(item => item.id));

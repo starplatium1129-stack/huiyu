@@ -1,3 +1,4 @@
+import { sameArtworkMedia } from './artworkMediaIdentity'
 import { computed, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -16,6 +17,7 @@ export function useGalleryViewer(options: {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
     return index >= 0 ? options.history.value[index] : null
   })
+  let loadedMedia: ArtworkRecord | null = null
   let objectUrl = ''
   let loadToken = 0
   let disposed = false
@@ -25,18 +27,21 @@ export function useGalleryViewer(options: {
     if (objectUrl) URL.revokeObjectURL(objectUrl)
     objectUrl = ''
     viewerUrl.value = ''
+    loadedMedia = null
   }
 
-  async function hydrate(item: ArtworkRecord) {
+  async function hydrate(source: ArtworkRecord) {
+    const item = { ...source }
     loading?.abort()
     const request = new AbortController()
     loading = request
     releaseImage()
+    loadedMedia = item
     const token = ++loadToken
     const fallback = safeImageUrl(item.image_url)
     try {
       const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
-      if (disposed || token !== loadToken || current.value?.id !== item.id) return
+      if (disposed || token !== loadToken || !sameArtworkMedia(current.value ?? undefined, item)) return
       if (blob) {
         objectUrl = URL.createObjectURL(blob)
         viewerUrl.value = objectUrl
@@ -50,7 +55,7 @@ export function useGalleryViewer(options: {
   function openViewer(index: number) {
     const item = options.visible.value[index]
     if (disposed || !item) return
-    const reuseImage = viewerItemId.value === item.id && Boolean(viewerUrl.value)
+    const reuseImage = sameArtworkMedia(loadedMedia ?? undefined, item) && Boolean(viewerUrl.value)
     viewerItemId.value = item.id
     viewerIndex.value = index
     options.resetControls()
@@ -82,6 +87,9 @@ export function useGalleryViewer(options: {
     const index = artworkIndexById(options.visible.value, viewerItemId.value)
     if (index < 0) closeViewer()
     else viewerIndex.value = index
+  })
+  watch(() => { const item = current.value; return item && [item.image_id, item.image_url, item.image_data] }, () => {
+    if (viewerIndex.value >= 0 && current.value && !sameArtworkMedia(loadedMedia ?? undefined, current.value)) void hydrate(current.value)
   })
   function dispose() { closeViewer(); onViewerClosed() }
   onDeactivated(dispose)
