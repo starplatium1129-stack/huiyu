@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, onUnmounted, ref, toRaw } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
@@ -38,13 +38,22 @@ const INITIAL_STATE: AnimaGenerationState = {
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
+  let settingsRevision = 0, reconcilingSettings = false
+  const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
+    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'teaCache', 'teaCacheThresh'] as const
+  // Observe direct v-model writes as well as patchState, excluding only our
+  // synchronous backend reconciliation, never the time spent awaiting status.
+  const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
+    if (!reconcilingSettings) settingsRevision++
+  }, { flush: 'sync' })
+  const getSettingsRevision = () => settingsRevision
 
   let statusTimer: ReturnType<typeof setInterval> | null = null
   let requestSerial = 0
   let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
   let statusRefresh: Promise<boolean> | null = null
-  let statusEpoch = 0
+  let statusEpoch = 0, refreshSettingsRevision = 0
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
   let disposed = false
@@ -130,14 +139,16 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   // Awaiters follow a superseding refresh; false means the view cancelled discovery.
   function refreshBackend(): Promise<boolean> {
     if (disposed) return Promise.resolve(false)
+    // Superseding discovery still belongs to the pending read's edit baseline.
+    if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
-    statusRefresh = readBackendStatus(controller, statusEpoch)
+    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision)
     return statusRefresh
   }
 
-  async function readBackendStatus(controller: AbortController, epoch: number): Promise<boolean> {
+  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number): Promise<boolean> {
     const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
       const data = await client.request<AnimaStatusResponse>('/api/creative/status', {
@@ -183,25 +194,29 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        * 现在：首次拉取 / 底模真的变了（用户换的，或原底模从后端消失导致的回落）
        * 才套用默认值，其余心跳只更新在线状态与候选列表。
        */
-      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent
+      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
       const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
         ? state.value.styleLoraId
         : ''
-      patchState({
-        online,
-        checkMsg: online
-          ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
-          : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
-        models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
-        family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-        steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
-        cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
-        sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
-        scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
-      })
-      if (shouldApplyDefaults) defaultsAppliedFor = modelIdCurrent
-      syncCharacter(options.getCharacter())
+      reconcilingSettings = true
+      try {
+        patchState({
+          online,
+          checkMsg: online
+            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
+            : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
+          models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
+          family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
+          steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
+          cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
+          sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
+          scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
+        })
+        // An edit during discovery owns these defaults for this model, including later polls.
+        defaultsAppliedFor = modelIdCurrent
+        syncCharacter(options.getCharacter())
+      } finally { reconcilingSettings = false }
       return true
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
@@ -385,6 +400,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   /** 离开导演台：停止轮询、取消在途任务、释放结果 URL（防止 GPU 任务悬挂与 blob 泄漏） */
   function dispose() {
     disposed = true
+    stopSettingsWatch()
     requestSerial += 1
     pauseStatusPolling()
     jobRequest?.abort()
@@ -404,6 +420,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   return {
     state,
+    getSettingsRevision,
     modelId,
     patchState,
     restoreSettings,

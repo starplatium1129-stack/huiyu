@@ -10,6 +10,7 @@ export type VoiceStudioHandle = { setSuggestedCaption?: (caption: string) => voi
 
 interface PromptMaterialsInput extends UseDirectorPopularInput {
   voiceStudioRef: Ref<VoiceStudioHandle | null>
+  getAnimaSettingsRevision?: () => number
 }
 
 /** Owns material browsing and selection; scene/character business state stays in the store. */
@@ -81,13 +82,13 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     const current = () => blueprintActive && revision === blueprintRevision && !signal?.aborted && !generationBusy.value
     if (!blueprintActive || signal?.aborted) return
     if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入蓝图'); return }
-    const fingerprint = () => { const { updatedAt: _updatedAt, ...draft } = pb.snapshotDraft(); return JSON.stringify([drawEngine.value, draft]) }
+    const fingerprint = () => { const { updatedAt: _updatedAt, ...draft } = currentBlueprintData.value; return JSON.stringify(draft) }
     const before = fingerprint()
     try {
       const { loadBlueprint } = await import('./promptBlueprintActions')
       if (!current() || before !== fingerprint()) return
       const result = await loadBlueprint(data, {
-        pb, selectScene, setDrawEngine, sdSize, setDirectorMode, isCurrent: current, getDrawEngine: () => drawEngine.value,
+        pb, selectScene, setDrawEngine, sdSize, setDirectorMode, isCurrent: current, getDrawEngine: () => drawEngine.value, getAnimaSettingsRevision: input.getAnimaSettingsRevision,
         selectPopularSource: popular.selectPopularSource, selectBlueprint: popular.selectBlueprint,
         applyRecommendedSize, refreshAnimaBackend, animaState, patchAnimaState,
       })

@@ -143,6 +143,7 @@ export function usePromptWorkspace() {
     // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
     // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
     const materials = usePromptMaterials({
+        getAnimaSettingsRevision: animaSession.getSettingsRevision,
         voiceStudioRef,
         pb,
         sd,

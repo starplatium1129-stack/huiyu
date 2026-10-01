@@ -12,6 +12,7 @@ type AnimaSession = ReturnType<typeof useAnimaSession>
 interface BlueprintContext {
   isCurrent?: () => boolean
   getDrawEngine?: () => DrawEngine
+  getAnimaSettingsRevision?: () => number
   pb: PromptBuilderStore
   selectScene: (scene: Scene) => void
   selectPopularSource: (source: 'studio' | 'popular') => void
@@ -176,10 +177,12 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
       const { updatedAt: _updatedAt, ...draft } = pb.snapshotDraft()
       return JSON.stringify(draft)
     }
-    const before = draftFingerprint()
+    const before = draftFingerprint(), sizeBefore = ctx.sdSize.value
+    const settingsBefore = ctx.getAnimaSettingsRevision?.()
     const refreshed = await ctx.refreshAnimaBackend()
     if (!refreshed || ctx.isCurrent && !ctx.isCurrent() || before !== draftFingerprint()
-      || ctx.getDrawEngine && ctx.getDrawEngine() !== engine) return interrupted()
+      || ctx.getDrawEngine && ctx.getDrawEngine() !== engine
+      || settingsBefore !== ctx.getAnimaSettingsRevision?.() || sizeBefore !== ctx.sdSize.value) return interrupted()
     if (requestedModel && ctx.animaState.value.modelId !== requestedModel) {
       warnings.push(`原底模 ${requestedModel} 当前不可用，已回落到可用底模`)
     }
