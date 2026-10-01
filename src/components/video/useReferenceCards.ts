@@ -124,84 +124,85 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
    * 返回成功装配的张数（2026-09-06 体验报告 F4：导入汇报需要逐卡如实计数，
    * 不再让装配失败被「全部成功」的文案掩盖）。
    */
-  async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string): Promise<number> {
+  async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string, signal?: AbortSignal): Promise<number> {
+    if (signal?.aborted) return 0
     if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return 0
     const targetCard = referenceCards.value[cardIndex]
     cancelCard(targetCard)
     clearImages(targetCard)
     const controller = start(targetCard)
-    targetCard.characterId = charId
-    targetCard.outfitId = ''
-    targetCard.label = ''
+    const abort = () => controller.abort()
+    signal?.addEventListener('abort', abort, { once: true })
     try {
-      await ensureCharacterReferencesLoaded(charId, false, controller.signal)
-    } catch {
-      if (current(targetCard, controller)) deps.batchError.value = '角色参考档案读取失败，请重新选择重试'
-      finish(targetCard, controller)
-      return 0
-    }
-    if (!current(targetCard, controller)) { finish(targetCard, controller); return 0 }
-    const profile = getCharacterReferences(charId)
-    if (!profile) {
-      finish(targetCard, controller)
       targetCard.characterId = charId
       targetCard.outfitId = ''
       targetCard.label = ''
-      updateMultiCharacterIdentity()
-      deps.batchError.value = '角色参考档案尚未就绪，请稍后重新选择'
-      return 0
-    }
-
-    // 匹配特定 outfit 或默认 outfit
-    let chosenOutfit = profile.outfits.find(o => o.outfitId === outfitId)
-    if (!chosenOutfit && !outfitId) {
-      chosenOutfit = profile.outfits.find(o => o.isDefault) || profile.outfits[0]
-    }
-
-    // 记录角色元信息
-    targetCard.characterId = charId
-    targetCard.outfitId = chosenOutfit?.outfitId || ''
-    targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
-
-    updateMultiCharacterIdentity()
-    if (!chosenOutfit) { finish(targetCard, controller); deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
-    let loaded = 0
-    try {
-      // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
-      // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
-      const targets = chosenOutfit.references.filter(r => r.url && !r.pending).slice(0, MAX_IMAGES_PER_CARD)
-      for (const item of targets) {
-        if (!current(targetCard, controller)) return 0
-        if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
-        try {
-        const imgUrl = new URL(item.url, location.href)
-        imgUrl.searchParams.set('t', String(Date.now()))
-        const blob = await readCharacterReference(async signal => {
-          const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal })
-          return resp.ok ? resp.blob() : null
-        }, controller.signal)
-        if (!blob) continue
-        if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue
-        const dataUrl = await deps.readBlobAsDataURL(blob)
-        const comma = dataUrl.indexOf(',')
-        if (comma < 0) continue
-        const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
-        if (!current(targetCard, controller)) return 0
-        if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
-        targetCard.images.push({
-          name: upload.name,
-          url: URL.createObjectURL(blob),
-        })
-        loaded += 1
-        } catch { if (!current(targetCard, controller)) return 0 }
+      try {
+        await ensureCharacterReferencesLoaded(charId, false, controller.signal)
+      } catch {
+        if (current(targetCard, controller)) deps.batchError.value = '角色参考档案读取失败，请重新选择重试'
+        return 0
       }
-      if (current(targetCard, controller)) deps.batchError.value = loaded === targets.length && loaded > 0 ? '' : `已装配 ${loaded}/${targets.length} 张参考图，缺失或待补素材未计入完成，可重新选择服装重试`
-    } catch (error) {
-      console.warn(`[ShotList] 自动装配角色 ${cardIndex + 1} 标准参考图失败:`, error)
-    } finally {
-      finish(targetCard, controller)
-    }
-    return loaded
+      if (!current(targetCard, controller)) { return 0 }
+      const profile = getCharacterReferences(charId)
+      if (!profile) {
+        targetCard.characterId = charId
+        targetCard.outfitId = ''
+        targetCard.label = ''
+        updateMultiCharacterIdentity()
+        deps.batchError.value = '角色参考档案尚未就绪，请稍后重新选择'
+        return 0
+      }
+
+      // 匹配特定 outfit 或默认 outfit
+      let chosenOutfit = profile.outfits.find(o => o.outfitId === outfitId)
+      if (!chosenOutfit && !outfitId) {
+        chosenOutfit = profile.outfits.find(o => o.isDefault) || profile.outfits[0]
+      }
+
+      // 记录角色元信息
+      targetCard.characterId = charId
+      targetCard.outfitId = chosenOutfit?.outfitId || ''
+      targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
+
+      updateMultiCharacterIdentity()
+      if (!chosenOutfit) { deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
+      let loaded = 0
+      try {
+        // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
+        // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
+        const targets = chosenOutfit.references.filter(r => r.url && !r.pending).slice(0, MAX_IMAGES_PER_CARD)
+        for (const item of targets) {
+          if (!current(targetCard, controller)) return 0
+          if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
+          try {
+          const imgUrl = new URL(item.url, location.href)
+          imgUrl.searchParams.set('t', String(Date.now()))
+          const blob = await readCharacterReference(async signal => {
+            const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal })
+            return resp.ok ? resp.blob() : null
+          }, controller.signal)
+          if (!blob) continue
+          if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue
+          const dataUrl = await deps.readBlobAsDataURL(blob)
+          const comma = dataUrl.indexOf(',')
+          if (comma < 0) continue
+          const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
+          if (!current(targetCard, controller)) return 0
+          if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
+          targetCard.images.push({
+            name: upload.name,
+            url: URL.createObjectURL(blob),
+          })
+          loaded += 1
+          } catch { if (!current(targetCard, controller)) return 0 }
+        }
+        if (current(targetCard, controller)) deps.batchError.value = loaded === targets.length && loaded > 0 ? '' : `已装配 ${loaded}/${targets.length} 张参考图，缺失或待补素材未计入完成，可重新选择服装重试`
+      } catch (error) {
+        console.warn(`[ShotList] 自动装配角色 ${cardIndex + 1} 标准参考图失败:`, error)
+      }
+      return loaded
+    } finally { signal?.removeEventListener('abort', abort); finish(targetCard, controller) }
   }
 
   /**

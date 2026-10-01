@@ -20,6 +20,20 @@ beforeEach(() => {
 })
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
 describe('reference-card async ownership', () => {
+  it('cancels an externally owned load without changing a newer card and removes its listener', async () => {
+    let finish!: () => void
+    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    const { cards, scope } = setup()
+    const controller = new AbortController()
+    const remove = vi.spyOn(controller.signal, 'removeEventListener')
+    const pending = cards.autoLoadCharacterReferences('one', 0, 'b', controller.signal)
+    controller.abort()
+    await cards.autoLoadCharacterReferences('one', 0, 'a')
+    finish(); await pending
+    expect(cards.referenceCards.value[0].outfitId).toBe('a')
+    expect(remove).toHaveBeenCalledWith('abort', expect.any(Function))
+    scope.stop()
+  })
   it('ignores a previous character profile arriving after a new selection', async () => {
     let finish!: () => void
     vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
