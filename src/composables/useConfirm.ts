@@ -14,6 +14,7 @@ export interface ConfirmOptions {
   cancelLabel?: string
   /** 破坏性操作红样式；调用点迁移时默认 true，明确无害的恢复/重置类传 false */
   danger?: boolean
+  signal?: AbortSignal
 }
 
 export interface ConfirmDialogState {
@@ -45,6 +46,7 @@ export function confirmAction(options: ConfirmOptions | string): Promise<boolean
   // 避免宿主 await 一个永远悬置的 Promise。
   if (typeof document === 'undefined') return Promise.resolve(false)
   const opts = typeof options === 'string' ? { title: options } : options
+  if (opts.signal?.aborted) return Promise.resolve(false)
   if (resolver) resolver(false)
   state.value = {
     visible: true,
@@ -54,7 +56,16 @@ export function confirmAction(options: ConfirmOptions | string): Promise<boolean
     cancelLabel: opts.cancelLabel ?? '取消',
     danger: opts.danger ?? true,
   }
-  return new Promise<boolean>((resolve) => { resolver = resolve })
+  return new Promise<boolean>((resolve) => {
+    const abort = () => finish(false)
+    const finish = (ok: boolean) => {
+      opts.signal?.removeEventListener('abort', abort)
+      if (resolver === finish) { state.value.visible = false; resolver = null }
+      resolve(ok)
+    }
+    resolver = finish
+    opts.signal?.addEventListener('abort', abort, { once: true })
+  })
 }
 
 /** 仅供 ConfirmDialog 宿主组件调用 */
