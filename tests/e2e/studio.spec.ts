@@ -753,7 +753,8 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
 
   await expect(page.locator('.scene-toolbar')).toHaveCount(1);
   await expect(page.locator('.scene-grid .sc')).toHaveCount(12);
-  await expect(page.locator('.scene-count')).toContainText('人设核心 12');
+  await expect(page.getByRole('button', { name: '人设核心', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.scene-count')).toHaveText('已显示 12 / 12 个场景');
   const firstScene = page.locator('.scene-grid .sc').first();
   await firstScene.locator('.ex-more summary').click();
   await firstScene.getByRole('button', { name: '隐藏', exact: true }).click();
@@ -790,7 +791,11 @@ test('scene explorer promotes locally used scenes without deleting the archive',
 
   await page.getByRole('button', { name: /完整库/ }).click();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(24);
-  await expect(page.locator('.scene-count')).toContainText('全库');
+  const fullLibrary = page.getByRole('button', { name: /^完整库 \d+$/ });
+  await expect(fullLibrary).toHaveAttribute('aria-pressed', 'true');
+  const total = Number((await fullLibrary.innerText()).match(/\d+$/)![0]);
+  expect(total).toBeGreaterThan(24);
+  await expect(page.locator('.scene-count')).toHaveText(`已显示 24 / ${total} 个场景`);
 
   expect(errors).toEqual([]);
 });
