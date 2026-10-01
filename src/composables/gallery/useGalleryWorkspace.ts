@@ -191,6 +191,7 @@ export function useGalleryWorkspace() {
     const cardLruOrder = new Map<string | number, 1>();
     const cardQueue: ArtworkRecord[] = [];
     const queuedCardIds = new Set<string | number>();
+    const cardReads = new Map<string | number, AbortController>();
     let cardWorkers = 0;
     function touchCardLru(id: string | number) {
         cardLruOrder.delete(id);
@@ -217,7 +218,7 @@ export function useGalleryWorkspace() {
                 thumbsDirty = false;
                 // Watchers and mounting share one batch; a changed page reschedules
                 // its remaining reads without fetching the same missing preview twice.
-                const pending = (collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
+                const pending = (trashMode.value ? [] : collectionPreviewItems.value ?? pagedVisible.value).filter(item => item.image_id && !visited.has(item.id) && !cardUrls[item.id] && !thumbUrls[item.id]);
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
@@ -241,13 +242,13 @@ export function useGalleryWorkspace() {
         });
         return thumbHydration;
     }
-    async function hydrateCard(item: ArtworkRecord) {
+    async function hydrateCard(item: ArtworkRecord, signal: AbortSignal) {
         const epoch = imageEpoch;
         const fallback = safeImageUrl(item.image_url);
         let resolved = false;
         try {
-            const blob = item.image_id ? await artworkRepository.getImage(item.image_id, imageReads.signal) : null;
-            if (unmounted || !viewActive || epoch !== imageEpoch) return;
+            const blob = item.image_id ? await artworkRepository.getImage(item.image_id, signal) : null;
+            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
                 resolved = true;
@@ -258,7 +259,7 @@ export function useGalleryWorkspace() {
                 if (imageId && !thumbUrls[item.id] && !thumbPending.has(imageId)) {
                     thumbPending.add(imageId);
                     blobThumbDataUrl(blob).then(dataUrl => {
-                        if (dataUrl && !unmounted && viewActive && epoch === imageEpoch && history.value.some(entry => entry.id === item.id)) {
+                        if (dataUrl && !signal.aborted && !unmounted && viewActive && epoch === imageEpoch && history.value.some(entry => entry.id === item.id)) {
                             thumbUrls[item.id] = dataUrl;
                             return artworkRepository.setThumbnail(imageId, dataUrl);
                         }
@@ -277,7 +278,7 @@ export function useGalleryWorkspace() {
                 markImageMissing(item.id);
         }
         catch {
-            if (unmounted || !viewActive || epoch !== imageEpoch) return;
+            if (signal.aborted || unmounted || !viewActive || epoch !== imageEpoch) return;
             if (fallback) {
                 cardUrls[item.id] = fallback;
                 resolved = true;
@@ -297,6 +298,7 @@ export function useGalleryWorkspace() {
     }
     /** 只有走进视口的卡片才读 HD；再次可见的已淘汰卡片会按需重读 */
     function requestCardHydration(item: ArtworkRecord) {
+        if (!viewActive || trashMode.value || collectionPreviewItems.value !== null) return;
         if (cardUrls[item.id]) {
             touchCardLru(item.id);
             return;
@@ -313,7 +315,10 @@ export function useGalleryWorkspace() {
             const item = cardQueue.shift()!;
             const epoch = imageEpoch;
             cardWorkers += 1;
-            void hydrateCard(item).finally(() => {
+            const controller = new AbortController();
+            cardReads.set(item.id, controller);
+            void hydrateCard(item, AbortSignal.any([imageReads.signal, controller.signal])).finally(() => {
+                if (cardReads.get(item.id) === controller) cardReads.delete(item.id);
                 cardWorkers -= 1;
                 if (epoch === imageEpoch) queuedCardIds.delete(item.id);
                 pumpCardQueue();
@@ -332,7 +337,7 @@ export function useGalleryWorkspace() {
         for (const el of observedCards.keys())
             cardObserver?.unobserve(el);
         observedCards.clear();
-        if (unmounted || !viewActive || !shellEl.value || !visible.value.length) return;
+        if (unmounted || !viewActive || trashMode.value || collectionPreviewItems.value !== null || !shellEl.value || !visible.value.length) return;
         if (!cardObserver) {
             cardObserver = new IntersectionObserver(entries => {
                 for (const entry of entries) {
@@ -455,20 +460,18 @@ export function useGalleryWorkspace() {
     watch(visible, () => {
         const ids = new Set(visible.value.map(item => item.id));
         selectedIds.value = new Set([...selectedIds.value].filter(id => ids.has(id)));
+    });
+    // Only the displayed image page owns original reads. Album/editor previews
+    // and trash hydrate their thumbnails separately; hidden HD work must not block them.
+    watch([pagedVisible, collectionPreviewItems, trashMode], () => {
+        const ids = new Set(!trashMode.value && collectionPreviewItems.value === null ? pagedVisible.value.map(item => item.id) : []);
         for (let index = cardQueue.length - 1; index >= 0; index--) {
             if (!ids.has(cardQueue[index].id)) queuedCardIds.delete(cardQueue.splice(index, 1)[0].id);
         }
+        for (const [id, controller] of cardReads) if (!ids.has(id)) controller.abort();
         void hydrateThumbs();
         void nextTick(() => scanWallCards());
     });
-    // 2026-08-30 修复：分页追加（renderLimit 增）只改变 pagedVisible，visible 不变 →
-    // 上面 watch 不触发 → 新页卡片从未挂 IntersectionObserver → 无缩略图的旧图永远 skeleton。
-    // 监听 pagedVisible 长度变化，翻页后重新取缩略图 + 重挂观察器。
-    watch(() => pagedVisible.value.length, () => {
-        void hydrateThumbs();
-        void nextTick(() => scanWallCards());
-    });
-    watch(collectionPreviewItems, () => { if (viewActive) void hydrateThumbs(); });
     /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
     const sentinelEl = ref<HTMLElement | null>(null);
     let moreObserver: IntersectionObserver | null = null;

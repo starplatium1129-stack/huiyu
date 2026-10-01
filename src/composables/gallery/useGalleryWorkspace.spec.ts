@@ -446,3 +446,52 @@ it('invalidates a bulk-delete approval when the gallery leaves and returns', asy
   expect(env.gallery.history.value.map(item => item.id)).toContain(1)
   expect(env.gallery.bulkDeleting.value).toBe(false)
 })
+
+
+it('cancels obsolete in-flight originals so a newly selected album does not wait for their downloads', async () => {
+  const history = Array.from({ length: 8 }, (_, index) => record(index + 1))
+  history[0].prompt = 'new-album-target'
+  mocks.snapshot.mockResolvedValue({ history, projects: [] })
+  const reads: Array<{ id: string; signal: AbortSignal; resolve(blob: Blob): void }> = []
+  mocks.getImage.mockImplementation((id: string, signal: AbortSignal) => new Promise<Blob>((resolve, reject) => {
+    reads.push({ id, signal, resolve })
+    signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+  }))
+  const env = await setup()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  env.gallery.searchQuery.value = 'new-album-target'
+  await flushPromises()
+  expect(reads.slice(0, 4).every(read => read.signal.aborted)).toBe(true)
+  expect(reads.map(read => read.id)).toEqual(['image-8', 'image-7', 'image-6', 'image-5', 'image-1'])
+  reads[4].resolve(new Blob(['new target']))
+  await flushPromises()
+  expect(Object.keys(env.gallery.cardUrls)).toEqual(['1'])
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+})
+
+it.each(['album overview', 'trash'] as const)('stops hidden wall reads in %s and rejects late originals or fallbacks', async surface => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 6 }, (_, index) => ({ ...record(index + 1), image_url: '/old-fallback.png' })), projects: [] })
+  const reads: Array<{ signal: AbortSignal; resolve(blob: Blob): void }> = []
+  mocks.getImage.mockImplementation((_id: string, signal: AbortSignal) => new Promise<Blob>(resolve => { reads.push({ signal, resolve }) }))
+  const env = await setup()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  if (surface === 'album overview') env.gallery.collectionPreviewItems.value = []
+  else env.gallery.toggleTrashMode()
+  await flushPromises()
+  expect(reads.every(read => read.signal.aborted)).toBe(true)
+  reads.forEach(read => read.resolve(new Blob(['ignored late image'])))
+  await flushPromises()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+  expect(env.gallery.cardUrls).toEqual({})
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+  mocks.getImage.mockResolvedValue(new Blob(['visible again']))
+  if (surface === 'album overview') env.gallery.collectionPreviewItems.value = null
+  else env.gallery.toggleTrashMode()
+  await flushPromises()
+  await env.intersect()
+  expect(Object.keys(env.gallery.cardUrls)).toHaveLength(6)
+})
