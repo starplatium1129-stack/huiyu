@@ -1,4 +1,5 @@
-import { generationApi, type GenerationJobPayload } from '@/api/generationApi'
+import { ApiClientError } from '@/api/client'
+import { generationApi, type GenerationJobEnvelope, type GenerationJobPayload } from '@/api/generationApi'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { parseSDOptionList, parseSDStatus } from '@/utils/sdStatus'
 import { runtimeFetch } from '../runtimeUrl'
@@ -53,7 +54,20 @@ export async function runWebGeneration(input: GenerationJobPayload, options: {
     if (job.status === 'cancelled') throw new AcceptedTaskTerminalError(job.id, 'cancelled', '任务已取消')
     if (job.status === 'succeeded' && job.resultUrl) break
     await new Promise(resolve => setTimeout(resolve, 700)); signal.throwIfAborted()
-    const state = await generationApi.getJob(job.id, { signal }); signal.throwIfAborted()
+    let state: GenerationJobEnvelope
+    try { state = await generationApi.getJob(job.id, { signal }) }
+    catch (error) {
+      signal.throwIfAborted()
+      // Acceptance already owns a job. Retry its read, never its submission;
+      // a transient disconnect must not expose a new-generation retry as failure.
+      if (error instanceof ApiClientError && (error.kind === 'network' || error.kind === 'timeout'
+        || error.kind === 'http' && error.status >= 500)) {
+        options.progress({ status: job.status, progress: null, text: '连接暂时中断，正在重新读取原任务状态…' })
+        continue
+      }
+      throw error
+    }
+    signal.throwIfAborted()
     if (!state.job) throw new Error('生成状态无效')
     if (state.job.id !== accepted.job.id) throw new Error('原任务编号与响应不一致，请核对原任务。')
     job = state.job
