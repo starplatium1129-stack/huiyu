@@ -1,0 +1,320 @@
+{
+  "formatVersion": 1,
+  "sourceCommit": "142f654cea2b30287a37bb9a0d60364e1b1c497f",
+  "scope": "Legacy Node workspace schema 3, protocol 1: historical save receipt replay, unknown JSON fields, patch/save/profile idempotency and media bytes. Retain while these persisted versions are supported; never regenerate from Rust.",
+  "workspaceId": "4ef78272-7b1c-4146-9292-dc2d3323cbf2",
+  "sourceProfile": "profile-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "principal": "desktop:profile-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "image": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAvElEQVR4nOXOMQEAIAzAsKqdAWQgmsnIwZE/nbnvZ+mAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YC23TEyOwyhA1MAAAAASUVORK5CYII=",
+  "baseline": {
+    "prepare": {
+      "kind": "prepareSave",
+      "operationId": "seed-save",
+      "artwork": {
+        "id": "seed-1",
+        "image_id": "seed-image",
+        "custom_future_field": {
+          "2": 2,
+          "10": 10,
+          "nested": [
+            true,
+            null,
+            "kept"
+          ],
+          "z": 1e-7
+        },
+        "prompt": "中性测试"
+      },
+      "media": {
+        "alias": "seed-image",
+        "sha256": "03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4",
+        "bytes": 266,
+        "mime": "image/png"
+      }
+    },
+    "receipt": {
+      "operationId": "seed-save",
+      "kind": "saveArtwork",
+      "revision": 1,
+      "artwork": {
+        "id": "seed-1",
+        "body": {
+          "id": "seed-1",
+          "image_id": "seed-image",
+          "custom_future_field": {
+            "2": 2,
+            "10": 10,
+            "nested": [
+              true,
+              null,
+              "kept"
+            ],
+            "z": 1e-7
+          },
+          "prompt": "中性测试"
+        },
+        "revision": 1,
+        "deletedAt": null
+      }
+    }
+  },
+  "expected": {
+    "receipt": {
+      "operationId": "patch-parity",
+      "kind": "patchArtwork",
+      "revision": 2,
+      "artwork": {
+        "id": "seed-1",
+        "body": {
+          "id": "seed-1",
+          "image_id": "seed-image",
+          "custom_future_field": {
+            "2": 2,
+            "10": 10,
+            "nested": [
+              true,
+              null,
+              "kept"
+            ],
+            "z": 1e-7
+          },
+          "prompt": "中性测试",
+          "note": "Rust/Node parity",
+          "nested": {
+            "untouched": true
+          },
+          "number": 1e+21
+        },
+        "revision": 2,
+        "deletedAt": null
+      },
+      "changed": true
+    },
+    "saved": {
+      "operationId": "upload-parity",
+      "kind": "saveArtwork",
+      "revision": 3,
+      "artwork": {
+        "id": "new-save",
+        "body": {
+          "id": "new-save",
+          "image_id": "new-image",
+          "prompt": "隔离保存"
+        },
+        "revision": 3,
+        "deletedAt": null
+      }
+    },
+    "setting": {
+      "key": "aics_theme",
+      "value": "dark",
+      "revision": 4
+    }
+  },
+  "database": {
+    "userVersion": 3,
+    "schema": [
+      {
+        "type": "table",
+        "name": "artworks",
+        "sql": "CREATE TABLE artworks(id_key TEXT PRIMARY KEY, id_json TEXT NOT NULL, body TEXT NOT NULL,\n  revision INTEGER NOT NULL, deleted_at INTEGER)"
+      },
+      {
+        "type": "table",
+        "name": "leases",
+        "sql": "CREATE TABLE leases(id TEXT PRIMARY KEY, kind TEXT NOT NULL, hash TEXT,\n  operation_key TEXT REFERENCES operations(op_key), created_at INTEGER NOT NULL)"
+      },
+      {
+        "type": "table",
+        "name": "media_aliases",
+        "sql": "CREATE TABLE media_aliases(alias TEXT PRIMARY KEY, hash TEXT NOT NULL REFERENCES media_objects(hash))"
+      },
+      {
+        "type": "table",
+        "name": "media_objects",
+        "sql": "CREATE TABLE media_objects(hash TEXT PRIMARY KEY, bytes INTEGER NOT NULL, mime TEXT NOT NULL)"
+      },
+      {
+        "type": "table",
+        "name": "media_refs",
+        "sql": "CREATE TABLE media_refs(owner_kind TEXT NOT NULL, owner_id TEXT NOT NULL,\n  hash TEXT NOT NULL REFERENCES media_objects(hash), PRIMARY KEY(owner_kind,owner_id,hash))"
+      },
+      {
+        "type": "table",
+        "name": "meta",
+        "sql": "CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
+      },
+      {
+        "type": "table",
+        "name": "migration_items",
+        "sql": "CREATE TABLE migration_items(migration_id TEXT NOT NULL REFERENCES migration_sessions(migration_id),\n  item_id TEXT NOT NULL, sha256 TEXT NOT NULL, body TEXT NOT NULL, PRIMARY KEY(migration_id,item_id))"
+      },
+      {
+        "type": "table",
+        "name": "migration_media",
+        "sql": "CREATE TABLE migration_media(migration_id TEXT NOT NULL REFERENCES migration_sessions(migration_id),\n  alias TEXT NOT NULL, sha256 TEXT NOT NULL, bytes INTEGER NOT NULL, mime TEXT NOT NULL,\n  complete INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(migration_id,alias))"
+      },
+      {
+        "type": "table",
+        "name": "migration_sessions",
+        "sql": "CREATE TABLE migration_sessions(migration_id TEXT PRIMARY KEY, principal_id TEXT NOT NULL,\n  fingerprint TEXT NOT NULL, envelope TEXT NOT NULL, state TEXT NOT NULL, report TEXT NOT NULL,\n  revision INTEGER NOT NULL DEFAULT 0)"
+      },
+      {
+        "type": "table",
+        "name": "operations",
+        "sql": "CREATE TABLE operations(op_key TEXT PRIMARY KEY, principal_id TEXT NOT NULL, kind TEXT NOT NULL,\n  operation_id TEXT NOT NULL, fingerprint TEXT NOT NULL, state TEXT NOT NULL,\n  input_json TEXT NOT NULL, receipt_json TEXT, revision INTEGER,\n  UNIQUE(principal_id,kind,operation_id), UNIQUE(principal_id,operation_id))"
+      },
+      {
+        "type": "table",
+        "name": "profile_records",
+        "sql": "CREATE TABLE profile_records(domain TEXT NOT NULL CHECK(domain IN ('settings','chat','draft')),\n  record_key TEXT NOT NULL, body TEXT NOT NULL, revision INTEGER NOT NULL,\n  PRIMARY KEY(domain,record_key))"
+      },
+      {
+        "type": "table",
+        "name": "project_artworks",
+        "sql": "CREATE TABLE project_artworks(project_key TEXT NOT NULL REFERENCES projects(id_key) ON DELETE CASCADE,\n  artwork_key TEXT NOT NULL REFERENCES artworks(id_key), position INTEGER NOT NULL,\n  PRIMARY KEY(project_key,artwork_key), UNIQUE(project_key,position))"
+      },
+      {
+        "type": "table",
+        "name": "projects",
+        "sql": "CREATE TABLE projects(id_key TEXT PRIMARY KEY, id_json TEXT NOT NULL, body TEXT NOT NULL, revision INTEGER NOT NULL)"
+      },
+      {
+        "type": "table",
+        "name": "schema_migrations",
+        "sql": "CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY, applied_at INTEGER NOT NULL)"
+      },
+      {
+        "type": "table",
+        "name": "task_cancel_intents",
+        "sql": "CREATE TABLE task_cancel_intents(principal_id TEXT NOT NULL, request_key TEXT NOT NULL,\n  requested_at INTEGER NOT NULL, PRIMARY KEY(principal_id,request_key))"
+      },
+      {
+        "type": "table",
+        "name": "task_inputs",
+        "sql": "CREATE TABLE task_inputs(task_id TEXT NOT NULL REFERENCES tasks(task_id), name TEXT NOT NULL,\n  media_json TEXT NOT NULL, committed INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(task_id,name))"
+      },
+      {
+        "type": "table",
+        "name": "task_outputs",
+        "sql": "CREATE TABLE task_outputs(task_id TEXT NOT NULL REFERENCES tasks(task_id), output_index INTEGER NOT NULL,\n  media_json TEXT NOT NULL, committed INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(task_id,output_index))"
+      },
+      {
+        "type": "table",
+        "name": "tasks",
+        "sql": "CREATE TABLE tasks(task_id TEXT PRIMARY KEY, principal_id TEXT NOT NULL, request_key TEXT NOT NULL,\n  provider TEXT NOT NULL, upstream_settled INTEGER NOT NULL, record_json TEXT NOT NULL,\n  UNIQUE(principal_id,request_key))"
+      },
+      {
+        "type": "table",
+        "name": "trash",
+        "sql": "CREATE TABLE trash(artwork_key TEXT PRIMARY KEY REFERENCES artworks(id_key) ON DELETE CASCADE,\n  deleted_at INTEGER NOT NULL, snapshot TEXT NOT NULL, project_refs TEXT NOT NULL)"
+      },
+      {
+        "type": "index",
+        "name": "leases_hash",
+        "sql": "CREATE INDEX leases_hash ON leases(hash)"
+      },
+      {
+        "type": "index",
+        "name": "tasks_active",
+        "sql": "CREATE INDEX tasks_active ON tasks(provider,upstream_settled)"
+      }
+    ],
+    "tables": {
+      "artworks": [
+        {
+          "id_key": "seed-1",
+          "id_json": "\"seed-1\"",
+          "body": "{\"id\":\"seed-1\",\"image_id\":\"seed-image\",\"custom_future_field\":{\"2\":2,\"10\":10,\"nested\":[true,null,\"kept\"],\"z\":1e-7},\"prompt\":\"中性测试\"}",
+          "revision": 1,
+          "deleted_at": null
+        }
+      ],
+      "leases": [],
+      "media_aliases": [
+        {
+          "alias": "seed-image",
+          "hash": "03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4"
+        }
+      ],
+      "media_objects": [
+        {
+          "hash": "03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4",
+          "bytes": 266,
+          "mime": "image/png"
+        }
+      ],
+      "media_refs": [
+        {
+          "owner_kind": "artwork",
+          "owner_id": "seed-1",
+          "hash": "03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4"
+        }
+      ],
+      "meta": [
+        {
+          "key": "workspaceId",
+          "value": "4ef78272-7b1c-4146-9292-dc2d3323cbf2"
+        },
+        {
+          "key": "databaseKind",
+          "value": "huiyu-workspace"
+        },
+        {
+          "key": "schemaVersion",
+          "value": "3"
+        },
+        {
+          "key": "revision",
+          "value": "1"
+        },
+        {
+          "key": "writerEpoch",
+          "value": "fixture"
+        }
+      ],
+      "migration_items": [],
+      "migration_media": [],
+      "migration_sessions": [],
+      "operations": [
+        {
+          "op_key": "9beef42263dca68bafbc35cd0f48f54d21b0f16b2927d66122cc198944af07de",
+          "principal_id": "desktop:profile-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "kind": "saveArtwork",
+          "operation_id": "seed-save",
+          "fingerprint": "4fad2e9652b59d1e06b9eb25d982bd21a30e90437f30fab32fb09e04305b58fa",
+          "state": "committed",
+          "input_json": "{\"kind\":\"prepareSave\",\"operationId\":\"seed-save\",\"artwork\":{\"id\":\"seed-1\",\"image_id\":\"seed-image\",\"custom_future_field\":{\"2\":2,\"10\":10,\"nested\":[true,null,\"kept\"],\"z\":1e-7},\"prompt\":\"中性测试\"},\"media\":{\"alias\":\"seed-image\",\"sha256\":\"03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4\",\"bytes\":266,\"mime\":\"image/png\"}}",
+          "receipt_json": "{\"operationId\":\"seed-save\",\"kind\":\"saveArtwork\",\"revision\":1,\"artwork\":{\"id\":\"seed-1\",\"body\":{\"id\":\"seed-1\",\"image_id\":\"seed-image\",\"custom_future_field\":{\"2\":2,\"10\":10,\"nested\":[true,null,\"kept\"],\"z\":1e-7},\"prompt\":\"中性测试\"},\"revision\":1,\"deletedAt\":null}}",
+          "revision": 1
+        }
+      ],
+      "profile_records": [],
+      "project_artworks": [],
+      "projects": [],
+      "schema_migrations": [
+        {
+          "version": 1,
+          "applied_at": 1790951445733
+        },
+        {
+          "version": 2,
+          "applied_at": 1790951445738
+        },
+        {
+          "version": 3,
+          "applied_at": 1790951445738
+        }
+      ],
+      "task_cancel_intents": [],
+      "task_inputs": [],
+      "task_outputs": [],
+      "tasks": [],
+      "trash": []
+    },
+    "files": {
+      "media/objects/03/03b1501c77a31adc59749ef4f9cb7a26126ddcdb059cd5b1557b4c96b302c7f4": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAvElEQVR4nOXOMQEAIAzAsKqdAWQgmsnIwZE/nbnvZ+mAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YCWDmjpgJYOaOmAlg5o6YC23TEyOwyhA1MAAAAASUVORK5CYII=",
+      "workspace.json": "eyJ3b3Jrc3BhY2VJZCI6IjRlZjc4MjcyLTdiMWMtNDE0Ni05MjkyLWRjMmQzMzIzY2JmMiIsImRhdGFiYXNlS2luZCI6Imh1aXl1LXdvcmtzcGFjZSIsInNjaGVtYVZlcnNpb24iOjN9"
+    }
+  }
+}

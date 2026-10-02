@@ -1,0 +1,79 @@
+{
+  "sourceCommit": "142f654cea2b30287a37bb9a0d60364e1b1c497f",
+  "scope": "Legacy maintenance showcase/home-hero upload and reset HTTP results and final manifests; retained as behavior contract after Node retirement. Dynamic backup IDs and timestamps excluded; never regenerate from Rust.",
+  "expected": {
+    "results": [
+      {
+        "ok": true,
+        "file": "images/sc001.jpg",
+        "thumb": "thumbs/sc001.jpg",
+        "message": "样张与轻量缩略图已安全保存，旧版本已备份"
+      },
+      {
+        "ok": true,
+        "file": "images/quiet_blueprint.jpg",
+        "thumb": "thumbs/quiet_blueprint.jpg",
+        "message": "样张与轻量缩略图已安全保存，旧版本已备份"
+      },
+      {
+        "ok": true,
+        "character": "nene",
+        "action": "replace",
+        "message": "首页主视觉已保存"
+      },
+      {
+        "ok": true,
+        "character": "nene",
+        "action": "reset",
+        "message": "已恢复内置首页主视觉"
+      }
+    ],
+    "manifest": {
+      "version": 23,
+      "entries": [
+        {
+          "id": "sc001",
+          "title": "Neutral study",
+          "category": "Core",
+          "story": "A book rests on a desk.",
+          "char": "nene",
+          "rating": "All",
+          "attempt": 1,
+          "image": "images/sc001.jpg",
+          "thumb": "thumbs/sc001.jpg"
+        },
+        {
+          "id": "pc_alpha_quiet_blueprint",
+          "title": "Alpha / Reading",
+          "story": "A neutral bookshelf.",
+          "category": "热门角色",
+          "char": "alpha",
+          "displayName": "Alpha",
+          "rating": "All",
+          "attempt": 1,
+          "type": "popular",
+          "image": "images/quiet_blueprint.jpg",
+          "thumb": "thumbs/quiet_blueprint.jpg"
+        }
+      ],
+      "custom": {
+        "kept": true
+      },
+      "entryCount": 2,
+      "sceneCount": 2,
+      "counts": {
+        "popular": 1
+      }
+    },
+    "hero": {
+      "version": 6,
+      "entries": {
+        "natsume": {
+          "image": "home/natsume.jpg",
+          "updatedAt": "<timestamp>"
+        }
+      },
+      "unknown": "retained"
+    }
+  }
+}

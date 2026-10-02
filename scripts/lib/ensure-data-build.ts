@@ -11,12 +11,12 @@
  * 解析，自愈重建只会产出与语义源一致的字节，不需要改写任何源码。
  *
  * 调用方：
- *   - 网关启动（server.js）：陈旧即重建，自愈而非报错；
+ *   - Rust 网关启动编排（run-rust-runtime.js）：陈旧即重建，自愈而非报错；
  *   - 质检套件 contract 阶段（run-quality-suite.js）：fresh clone 保底；
  *   - build-scenes/build-popular --check 的"产物缺失"分支：等价自愈。
  * 已构建但不一致的"改源忘重建"守卫不受影响（--check 仍报错）。
  *
- * 重建后刷新对应预压产物：server/precompressed.js 按文件存在即直发、
+ * 重建后刷新对应预压产物：静态资源服务按文件存在即直发、
  * 无新鲜度检查，不刷新会端出陈旧 .br/.gz。
  */
 

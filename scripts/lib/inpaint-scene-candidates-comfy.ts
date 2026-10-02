@@ -1,7 +1,7 @@
 // inpaint-scene-candidates: workflow construction.
 const { UPSCALE }: typeof import('./inpaint-scene-candidates-records.js') = require('./inpaint-scene-candidates-records.js');
 
-// ── workflow builder (mirrors routes/anima.js Anima chain) ─────────────────
+// ── workflow builder (offline Anima candidate graph) ─────────────────
 
 function modelNodes(cfg: any, graph: any, startId: any) {
   let next = startId;

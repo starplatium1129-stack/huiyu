@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
@@ -75,7 +76,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const {
   sourceRecordFor, validateSourceRecord, outputImageRel, attemptFiveRecordId, shouldReuse,
-  DENOISE_CONFIGS, writeJsonAtomic, imageInfo, SOURCE_WIDTH, SOURCE_HEIGHT, sha256, argument,
+  DENOISE_CONFIGS, imageInfo, SOURCE_WIDTH, SOURCE_HEIGHT, sha256, argument,
   DEFAULT_OUTPUT, MANIFEST_NAME, assertNotShowcase, splitList, KEYS, INPAINT_CONFIG, readJson,
   isRecord, escapeHtml, ROOT, AI_ROOT, REVIEW_INDEX_NAME, CONTACT_SHEET_NAME, UPSCALE, CROP_SIZE,
   POLL_INTERVAL_MS, JOB_TIMEOUT_MS,
@@ -281,8 +282,7 @@ if (require.main === module) {
 
 export = {
   INPAINT_CONFIG, KEYS, DENOISE_CONFIGS,
-  argument, splitList, readJson, writeJsonAtomic,
-  isRecord, imageInfo, sha256, escapeHtml, assertNotShowcase,
+  argument, splitList, readJson, isRecord, imageInfo, sha256, escapeHtml, assertNotShowcase,
   sourceRecordFor, validateSourceRecord, attemptFiveRecordId, outputImageRel,
   shouldReuse, buildOpWorkflow, buildMaskArgs, generateMask,
   opLooksDone, buildAttemptFiveRecord, verifyAndIndex, resolveUploadName,

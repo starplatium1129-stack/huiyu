@@ -308,11 +308,11 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
   return changes;
 }
 
-// ── 保存副作用（自 routes/maintenance.js 下放，行为保持一致） ────────────
+// ── 维护工具的保存后引用清理 ────────────
 
 /**
  * 保存后清理 characters/loras/curation 中指向已不存在场景的引用。
- * io 由调用方注入（routes/maintenance-validation 的 readJson/writeJson/sanitizeCuration），
+ * io 由调用方注入（readJson/writeJson/sanitizeCuration），
  * 保持与原实现完全相同的落盘格式。
  */
 function cleanOrphanedSceneRefs(options: any) {

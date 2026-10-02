@@ -1,3 +1,4 @@
+import { writeTextAtomic } from '../lib/atomic-files';
 /** Validate canonical content first; explicitly apply metadata repairs and derived builds. */
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
@@ -128,7 +129,7 @@ function main() {
   for (const repair of repairs) console.log(`[content:sync] Count repair: ${repair.changes.join(', ')}`);
   if (!args.includes('--apply')) { console.log('[content:sync] Preview only: no files written. Use --apply to register pending references and rebuild derived data.'); return; }
   register(false);
-  for (const repair of repairs) sceneStore.writeTextAtomic(repair.file, popular.jsonText(repair.value));
+  for (const repair of repairs) writeTextAtomic(repair.file, popular.jsonText(repair.value));
   popular.writePopularAggregate();
   blueprints.writeBlueprintAggregate();
   sceneStore.writeAggregate(s.scenes);

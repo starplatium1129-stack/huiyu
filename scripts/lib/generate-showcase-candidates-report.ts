@@ -1,3 +1,4 @@
+import { writeJsonAtomic } from './atomic-files';
 'use strict';
 
 // generate-showcase-candidates: review manifest and contact-sheet rendering.
@@ -6,7 +7,7 @@ const path: typeof import('path') = require('path');
 const {
   MANIFEST_NAME, readJson, REVIEW_INDEX_NAME, CONTACT_SHEET_NAME,
 }: typeof import('./generate-showcase-candidates-settings.js') = require('./generate-showcase-candidates-settings.js');
-const { imageInfo, writeJsonAtomic }: typeof import('./generate-showcase-candidates-support.js') = require('./generate-showcase-candidates-support.js');
+const { imageInfo }: typeof import('./generate-showcase-candidates-support.js') = require('./generate-showcase-candidates-support.js');
 
 // ── mechanical verification + review index ─────────────────────────────────
 

@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
-import { inspectModelFiles, mapModelReferences, modelFile, modelFormat, type ModelManifest } from '../../services/live2d-manifest'
-import { localLive2dRoot } from '../../services/live2d-local'
+import { inspectModelFiles, mapModelReferences, modelFile, modelFormat, type ModelManifest } from '../lib/live2d/live2d-manifest'
+import { localLive2dRoot } from '../lib/live2d/live2d-local'
 
 interface Candidate {
   id: string; name: string; shortName?: string; directory: string; entry?: string; blocked?: string

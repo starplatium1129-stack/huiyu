@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
-import { readLocalCompanions } from '../../services/live2d-local'
-import { modelFile } from '../../services/live2d-manifest'
+import { readLocalCompanions } from '../lib/live2d/live2d-local'
+import { modelFile } from '../lib/live2d/live2d-manifest'
 
 const hash = (bytes: Buffer) => crypto.createHash('sha256').update(bytes).digest('hex')
 

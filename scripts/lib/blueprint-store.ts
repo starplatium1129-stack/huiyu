@@ -1,4 +1,4 @@
-import type { PathLike } from 'node:fs';
+import { writeTextAtomic } from './atomic-files';
 
 type Blueprint = { characterId?: any; [key: string]: any };
 type BlueprintManifestEntry = { file: string; franchise?: any; count?: number };
@@ -38,17 +38,7 @@ function jsonText(value: any) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
-function writeTextAtomic(source: PathLike, content: string) {
-  const target = String(source);
-  const temporary = path.join(path.dirname(target), `.${path.basename(target)}.${process.pid}.${Date.now()}.tmp`);
-  try {
-    fs.writeFileSync(temporary, content, 'utf8');
-    fs.renameSync(temporary, target);
-  } catch (error) {
-    try { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); } catch (cleanupError) {}
-    throw error;
-  }
-}
+
 
 function readManifest() {
   const manifest = readJson(manifestPath);

@@ -10,7 +10,7 @@
 
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
 
-The product backend uses Rust; Node remains a frontend/development build tool and a legacy behavior oracle. Version 1.7.4 has been installed locally. Later source fixes, real-model/device acceptance and native licensing gaps are tracked separately in [project status](docs/project-status.md) and the [Rust migration plan](plans/013-node-to-rust-migration.md).
+The product backend uses Rust. The old Node backend has been removed; Node remains for frontend builds, maintenance tools and isolated test fixtures. Historical compatibility is checked against fixed fixtures and independent SQLite reads. Installation identity, real-model/device acceptance and native licensing gaps are tracked separately in [project status](docs/project-status.md) and the [Rust migration plan](plans/013-node-to-rust-migration.md).
 
 ## About
 
@@ -50,7 +50,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 | Component | Required | Notes |
 | :--- | :---: | :--- |
-| Node.js | Source builds | `>= 22.18` (npm 11.x), for frontend, tooling and legacy comparison tests; not the product backend |
+| Node.js | Source builds | `>= 22.18` (npm 11.x), for frontend builds, maintenance tools and isolated tests |
 | Rust/MSVC toolchain | Source builds | Builds `runtime-rs` and the Windows desktop shell; a packaged installation does not need a compiler |
 | Windows | **Yes** | Primary environment; launcher & desktop shell are Windows-first |
 | A1111 / Forge / ReForge WebUI | Optional* | Started via Stability Matrix with `--api --port 7860` launch args — needed for SD/WAI generation |
@@ -78,7 +78,7 @@ npm install
 
 ### Step 3 — Build the tools and Rust backend
 
-Generated tooling and legacy-oracle `.js` files are gitignored. Build them and the actual backend separately:
+Generated tooling `.js` files are gitignored. `build:runtime` compiles the `node`, `tests` and `browser` TypeScript projects; build the actual backend separately:
 
 ```bash
 npm run build:runtime
@@ -134,7 +134,7 @@ Full setup details, optional components (voice, chat, dual-character composition
 ```powershell
 npm run workflow -- --help          # unified maintenance entry
 npm run workflow -- data:validate   # verify data shards & DATA_VERSION after editing scene data
-npm run workflow -- gate:quick ui   # layered quality gate by change area (ui/server/data/all)
+npm run workflow -- gate:quick ui   # layered quality gate by change area (ui/style/rust/data/all)
 npm run scenes:build                # rebuild scene products from source shards
 npm run popular:build               # rebuild data/popular-characters.json
 npm run build                       # production bundle + 140KB route budget + precompression
@@ -201,9 +201,9 @@ huiyu/
 ├── DESIGN.md               # Website and control-panel design contract
 ├── AGENTS.md               # Collaboration rules, quality gates & operational constraints
 ├── index.html              # Vite SPA entry point (no global scripts)
-├── vite.config.ts          # Vite build config + dev proxy to Express
+├── vite.config.ts          # Vite build config + dev proxy to the Rust gateway
 ├── control.bat             # Windows control panel launcher
-├── server.ts               # Gateway source; server.js is generated
+├── runtime-rs/             # Rust HTTP gateway, persistent tasks, SQLite and media services
 ├── src/                    # Vue 3 SPA source (Vite build target)
 │   ├── config/             #   Character constants, artist styles, prompt definitions
 │   ├── utils/              #   Stream parsing, character reference data, prompt compiler
@@ -215,14 +215,12 @@ huiyu/
 │   ├── components/         #   AppLayout, AppNav, SceneCard, Video Studio components
 │   ├── views/              #   One .vue per route (all lazy-loaded)
 │   └── assets/css/         #   Design system tokens, component styles
-├── routes/                 # Express API routes (chat, voice, live2d, video, maintenance)
-├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
 ├── desktop-tauri/          # Tauri 2 shell, Native Live2D overlay, sidecar and packaging
 ├── types/                  # Shared TypeScript type definitions
 ├── data/                   # Runtime JSON: scenes, characters, tags, blueprints, reference standards
 ├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
 ├── docs/                   # Creative standards, quality checks, master index (docs/INDEX.md)
-├── scripts/                # Maintenance, tests, reference generation, and runtime helpers
+├── scripts/                # Maintenance, tests and reference generation; shared tools in scripts/lib
 └── runtime/                # Local config, logs, process state, generated outputs (gitignored)
 ```
 

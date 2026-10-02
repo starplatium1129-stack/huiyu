@@ -34,8 +34,8 @@ const SKIP_DIRS = new Set([
 ]);
 
 // 只扫这些根级子树 + 根级配置文件（覆盖所有可能引用维护脚本的地方）
-const SCAN_ROOTS = ['scripts', 'src', 'routes', 'server', 'docs', 'tests', '.github', 'desktop-tauri', 'poc', 'tools', 'services', 'css', 'plans'];
-const SCAN_ROOT_FILES = new Set(['package.json', 'package-lock.json', 'server.ts', 'eslint.config.mts', 'start.ps1', 'deploy-desktop.bat', 'control.bat', 'README.md', 'README_zh.md', 'AGENTS.md', 'DESIGN.md', 'STARTUP.md']);
+const SCAN_ROOTS = ['scripts', 'src', 'docs', 'tests', '.github', 'desktop-tauri', 'poc', 'tools', 'css', 'plans'];
+const SCAN_ROOT_FILES = new Set(['package.json', 'package-lock.json', 'eslint.config.mts', 'start.ps1', 'deploy-desktop.bat', 'control.bat', 'README.md', 'README_zh.md', 'AGENTS.md', 'DESIGN.md', 'STARTUP.md']);
 
 function isGenerated(file: string): boolean {
   const source = file.replace(/\.d\.ts$/, '.ts').replace(/\.mjs$/, '.mts').replace(/\.cjs$/, '.cts').replace(/\.js$/, '.ts');

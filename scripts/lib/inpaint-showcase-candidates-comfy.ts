@@ -1,7 +1,7 @@
 // inpaint-showcase-candidates: workflow construction.
 const { UPSCALE }: typeof import('./inpaint-showcase-candidates-records.js') = require('./inpaint-showcase-candidates-records.js');
 
-// ── workflow builder (mirrors routes/generation.js + routes/anima.js) ──────
+// ── workflow builder (offline SD/Anima candidate graphs) ──────
 
 function modelNodes(cfg: any, graph: any, startId: any) {
   let next = startId;

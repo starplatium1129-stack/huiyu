@@ -43,7 +43,7 @@ function fixture(files: Record<string, string>, check: (report: Report, root: st
     };
     const sources = {
       'tsconfig.app.json': JSON.stringify({ compilerOptions, include: ['src/**/*'] }),
-      'tsconfig.node.json': JSON.stringify({ compilerOptions, include: ['server.ts', 'server/**/*', 'routes/**/*', 'services/**/*'] }),
+      'tsconfig.node.json': JSON.stringify({ compilerOptions, include: ['scripts/**/*'] }),
       'src/composables/useKVStore.ts': 'export const kvGet = () => undefined; export interface KVRecord { value: string }',
       'src/composables/useImageStore.ts': 'export const imgGet = () => undefined; export interface ImageRecord { id: string }',
       'node_modules/vue/package.json': JSON.stringify({ name: 'vue', types: 'index.d.ts' }),
@@ -97,7 +97,6 @@ test('keeps real Web persistence adapters and repository consumers legal', () =>
     'src/platform/desktop/bootstrap.ts': "import { invoke } from '@tauri-apps/api/core'; export const bootstrap = invoke",
     'src/application/artwork/save.ts': "import type { Artwork } from '@/types/artwork'; export const save = (value: Artwork) => value.id",
     'src/types/artwork.ts': 'export interface Artwork { id: string }',
-    'server/runtime.ts': "import fs from 'node:fs'; export const read = fs.readFileSync",
   }, clean);
 });
 
@@ -239,27 +238,15 @@ test('reachable vendor and shared runtime helpers cannot hide forbidden dependen
     'src/platform/web/artwork.ts': "export * from '@/vendor/barrel'",
     'src/vendor/barrel.ts': "export * from '@/platform/desktop/bootstrap'",
     'src/platform/desktop/bootstrap.ts': 'export const bootstrap = () => {}',
-    'server.ts': "export * from './scripts/lib/helper'",
-    'scripts/lib/helper.ts': "export * from '../tests/prototypes/demo'; export type { Artwork } from '../../src/types/artwork'",
+    'src/utils/tool.ts': "export * from '../../scripts/lib/helper'",
+    'scripts/lib/helper.ts': "export * from '../tests/prototypes/demo'",
     'scripts/tests/prototypes/demo.ts': 'export const save = () => {}',
     'src/types/artwork.ts': 'export interface Artwork { id: string }',
   }, report => {
     rejects(report, 'src/vendor/barrel.ts', 'src/platform/desktop/bootstrap.ts');
     rejects(report, 'scripts/lib/helper.ts', 'scripts/tests/prototypes/demo.ts');
-    rejects(report, 'scripts/lib/helper.ts', 'src/types/artwork.ts');
     assert.ok(report.files.includes('scripts/lib/helper.ts'));
     assert.ok(report.files.includes('src/vendor/barrel.ts'));
-  });
-});
-
-test('local declaration barrels preserve runtime type boundaries', () => {
-  fixture({
-    'server/runtime.ts': "export type { Artwork } from '../shared/types'",
-    'shared/types.d.ts': "export { Artwork } from '../src/types/artwork'",
-    'src/types/artwork.ts': 'export interface Artwork { id: string }',
-  }, report => {
-    rejects(report, 'shared/types.d.ts', 'src/types/artwork.ts');
-    assert.ok(report.edges.filter(edge => edge.source === 'shared/types.d.ts').every(edge => edge.typeOnly));
   });
 });
 
@@ -288,21 +275,7 @@ test('invalid Vue scripts and imports of frontend tests cannot yield a clean sca
   });
 });
 
-for (const source of ['server.ts', 'server/runtime.ts', 'routes/workspace.ts', 'services/workspace.ts']) {
-  test(`runtime source ${source} cannot depend on frontend, including types`, () => {
-    fixture({
-      [source]: "import type { Artwork } from '@/types/artwork'; export type Saved = Artwork; export { value } from '@/utils/value'",
-      'src/types/artwork.ts': 'export interface Artwork { id: string }',
-      'src/utils/value.ts': 'export const value = 1',
-    }, report => {
-      rejects(report, source, 'src/types/artwork.ts');
-      rejects(report, source, 'src/utils/value.ts');
-      assert.ok(report.violations.some(edge => edge.source === source && edge.typeOnly));
-    });
-  });
-}
-
-for (const source of ['src/utils/prototype.ts', 'server/runtime.ts', 'routes/workspace.ts', 'services/workspace.ts']) {
+for (const source of ['src/utils/prototype.ts']) {
   test(`production source ${source} cannot reuse test prototype code or types`, () => {
     const target = 'scripts/tests/prototypes/artwork.ts';
     let relative = path.posix.relative(path.posix.dirname(source), target);

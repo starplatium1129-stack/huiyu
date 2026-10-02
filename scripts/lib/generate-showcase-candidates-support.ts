@@ -20,12 +20,7 @@ function stableSeed(key: any) {
   return digest.readUInt32BE(0) & 0x7fffffff;
 }
 
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 
 function shouldReuse(record: any, imagePath: any, force: any) {
   if (force || !record || record.status !== 'succeeded' || !record.image) return false;
@@ -116,5 +111,5 @@ function imageRelFor(candidate: any) {
 
 export = {
   stableSeed, splitList, argument, assertNotShowcase, recordIdOf, shouldReuse, imageRelFor,
-  writeJsonAtomic, imageInfo,
+  imageInfo,
 };

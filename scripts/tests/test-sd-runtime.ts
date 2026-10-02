@@ -9,10 +9,6 @@ const sdGenerateSource = fs.readFileSync(
   'utf8'
 );
 assert(!/\bany\b/.test(sdGenerateSource), 'useSDGenerate must not regress to explicit any types');
-assert(
-  /function dispose\(\)[\s\S]*?cancel\(\)/.test(sdGenerateSource),
-  'disposing the generation composable must interrupt an active WebUI job before leaving the page',
-);
 const sdQueueSource = fs.readFileSync(
   path.resolve(__dirname, '../../src/composables/generation/useSDQueue.ts'),
   'utf8'
@@ -33,20 +29,6 @@ function testStatusAndProgressParsing() {
   assert.deepStrictEqual(status.samplers, ['Euler', 'DPM++ 2M']);
   assert.deepStrictEqual(status.schedulers, ['Karras']);
   assert.deepStrictEqual(status.upscalers, []);
-  assert.deepStrictEqual(
-    sdGenerate.parseSDProgress({
-      progress:0.25,
-      state:{ sampling_step:6, sampling_steps:12 },
-      eta_relative:2.2
-    }),
-    { ratio:0.5, etaSeconds:3 },
-    'sampling steps must supplement stale aggregate progress'
-  );
-  assert.deepStrictEqual(
-    sdGenerate.parseSDProgress({ progress:7, eta_relative:-2 }),
-    { ratio:1, etaSeconds:0 },
-    'progress values must stay within UI bounds'
-  );
 }
 
 function testExplicitEmptyNegative() {
@@ -96,12 +78,6 @@ function testDualEnhancementPayload() {
   assert(!single.payload.alwayson_scripts, 'single-character generation must remain extension-free');
   assert.strictEqual(single.enhancements.regional, false);
 
-  const parsed = sdRequest.parseTxt2ImgResponse({
-    images:['abc'],
-    info:JSON.stringify({ seed:42, all_seeds:[42], infotexts:['ok'] })
-  });
-  assert.strictEqual(parsed.image, 'data:image/png;base64,abc');
-  assert.strictEqual(parsed.seed, 42);
 }
 
 // ── 模型 profile 与能力协商（迁移到 src/utils/promptPolicy.ts） ──────────

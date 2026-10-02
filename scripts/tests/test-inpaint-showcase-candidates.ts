@@ -13,8 +13,8 @@ const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 
 const inpaint: typeof import('../../scripts/maintenance/inpaint-showcase-candidates.js') = require('../../scripts/maintenance/inpaint-showcase-candidates.js');
-const genConst = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
-const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
+const genConst = (require('../lib/generation/sd-catalog.js') as typeof import('../lib/generation/sd-catalog.js'));
+const animaConst = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 
 const W = inpaint.constants.SOURCE_WIDTH;
 const H = inpaint.constants.SOURCE_HEIGHT;

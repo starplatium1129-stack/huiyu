@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { gatewayJson } from '../lib/gateway-json';
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 /**
@@ -19,9 +21,9 @@ const promptCompiler: typeof import('../../src/utils/promptCompiler.ts') = requi
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const promptConstants: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
-const generationConstants: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
-const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
-const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
+const generationConstants: any = (require('../lib/generation/sd-catalog.js') as typeof import('../lib/generation/sd-catalog.js'));
+const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
+const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 const { buildShortPrompt }: typeof import('./short-prompt-builder.js') = require('./short-prompt-builder.js');
 
 type Scene = import('../../src/types/scene.ts').Scene;
@@ -67,12 +69,7 @@ function readJson(file: string): any {
 function readSceneData(file: string): Scene[] {
   return requireDataRecords(readJson(file), path.basename(file)) as unknown as Scene[];
 }
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 function stableSeed(sceneId: any, attempt: any) {
   const digest = crypto.createHash('sha256').update(`scene-showcase-current-2026-08-12:${sceneId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
@@ -299,17 +296,7 @@ function applyBaselineContract(candidate: any, baseline: any) {
   });
 }
 
-async function gatewayJson(base: any, pathname: any, options: any) {
-  let response;
-  try {
-    response = await fetch(base.replace(/\/$/, '') + pathname, Object.assign({ cache: 'no-store' }, options || {}));
-  } catch (error) {
-    return { response: null, data: null, error: error instanceof Error ? error.message : String(error) };
-  }
-  let data = null;
-  try { data = await response.json(); } catch (error) { /* keep null */ }
-  return { response, data };
-}
+
 function buildSubmissionBody(candidate: any) {
   const anima = candidate.engine === 'anima';
   const body: any = {

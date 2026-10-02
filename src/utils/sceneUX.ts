@@ -316,54 +316,6 @@ export function isPersonalFavorite(scene: { id: string }, profile: PreferencePro
   return !!(scene && profile?.scenes?.[scene.id]?.favorites)
 }
 
-function tagKey(value: unknown): string {
-  return String(value ?? '').trim().toLowerCase().replace(/[\s-]+/g, '_')
-}
-
-/**
- * 判断当前 story 是否仍等同于场景自带故事。
- * 用于「脱离场景」时决定该不该清空文本：场景原文要清，用户自己写的要留。
- */
-export function isSceneBoundStory(scene: unknown, story: unknown, baseStory?: unknown): boolean {
-  if (!isRecord(scene)) return false
-  const current = String(story ?? '').replace(/\s+/g, ' ').trim()
-  const original = String(baseStory || scene.story || '').replace(/\s+/g, ' ').trim()
-  return !!current && !!original && current === original
-}
-
-/**
- * 从历史记录恢复手动标签。
- * 老记录没有 manual_tags 快照时，用兼容场景的 tags 兜底；
- * 若场景与当前角色不兼容，则剔除该场景的内建标签，只留用户真正手加的。
- */
-export function restoreHistoryManualTags(entry: unknown, scene: unknown, sceneCompatible: boolean): string[] {
-  const history = isRecord(entry) ? entry : {}
-  const sceneRecord = isRecord(scene) ? scene : null
-  const hasSnapshot = Array.isArray(history.manual_tags)
-  const source: unknown[] = hasSnapshot
-    ? history.manual_tags as unknown[]
-    : (sceneRecord && sceneCompatible && Array.isArray(sceneRecord.tags) ? sceneRecord.tags : [])
-  const staleSceneTags = sceneRecord && !sceneCompatible
-    ? new Set<string>((Array.isArray(sceneRecord.tags) ? sceneRecord.tags : []).map(tagKey))
-    : null
-  const seen = new Set<string>()
-  return source.filter((tag): tag is string => {
-    if (typeof tag !== 'string' || !tag.trim()) return false
-    const key = tagKey(tag)
-    if (!key || (staleSceneTags && staleSceneTags.has(key)) || seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
-}
-
-/** 场景不兼容时，不要把仍绑定该场景的故事文本带回来 */
-export function restoreHistoryStory(entry: unknown, scene: unknown, sceneCompatible: boolean): string {
-  const history = isRecord(entry) ? entry : {}
-  const sceneRecord = isRecord(scene) ? scene : null
-  const story = typeof history.story === 'string' ? history.story : ''
-  return sceneRecord && !sceneCompatible && isSceneBoundStory(sceneRecord, story, sceneRecord.story) ? '' : story
-}
-
 export function readRecent(storage?: Storage): RecentScene[] {
   try {
     const items: unknown = JSON.parse((storage ?? localStorage).getItem(RECENT_KEY) ?? '[]')

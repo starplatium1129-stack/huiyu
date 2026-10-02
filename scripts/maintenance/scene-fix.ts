@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 import { PathOrFileDescriptor } from 'node:fs';
@@ -24,7 +25,7 @@ import { PathOrFileDescriptor } from 'node:fs';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const generationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
+const generationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 const promptContract: typeof import('./quality-prompt-contract.js') = require('./quality-prompt-contract.js');
 
 const DEFAULT_GATEWAY = 'http://127.0.0.1:3000';
@@ -56,12 +57,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJsonAtomic(file: string, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 
 function loadSceneIndex() {
   const scenes = new Map();

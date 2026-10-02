@@ -6,7 +6,6 @@ import ts from 'typescript';
 
 /** Bootstrap from TypeScript itself; works on a clean checkout before any JS exists. */
 export const PROJECTS = {
-  services: 'tsconfig.runtime.json',
   node: 'tsconfig.node.json',
   tests: 'tsconfig.tests.json',
   browser: 'tsconfig.browser-tools.json',
@@ -137,10 +136,9 @@ function sourceForOutput(relative: string): string {
 
 function ownedOutput(project: ProjectName, relative: string): boolean {
   if (!canonicalRelative(relative) || !/\.(?:[cm]?js|d\.ts)$/.test(relative)) return false;
-  if (project === 'services') return relative.startsWith('services/');
   if (project === 'browser') return /^(?:tools\/|assets\/theme-bootstrap\.|docs\/guides\/prompts\/)/.test(relative);
   if (project === 'tests') return relative.startsWith('scripts/tests/');
-  return /^(?:server\.|server\/|routes\/|scripts\/|poc\/|eslint\.config\.)/.test(relative)
+  return /^(?:scripts\/|poc\/|eslint\.config\.)/.test(relative)
     && !relative.startsWith('scripts/archive/') && !relative.startsWith('scripts/tests/') && !relative.includes('/vendor/');
 }
 
@@ -215,7 +213,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
         continue;
       }
       const emitted = program.emit(undefined, (file, text, _bom, _error, sourceFiles) => {
-        // Pure type imports from the SPA, and services built by their own project,
+        // Pure type imports from the SPA
         // participate in checking but must not create a second set of runtime files.
         if (!sourceFiles?.some(source => ownedSources.has(path.resolve(source.fileName)))) return;
         const relative = relativeInside(root, file);
@@ -272,10 +270,10 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
       else if (argument === '--force') options.force = true;
       else if (argument === '--project') {
         const project = process.argv[++index];
-        if (!project || !(project in PROJECTS)) throw new Error('Project must be services, node, tests, or browser');
+        if (!project || !(project in PROJECTS)) throw new Error('Project must be node, tests, or browser');
         (options.projects ||= []).push(project as ProjectName);
       } else if (argument === '--help' || argument === '--plan') {
-        console.log('build-node.mts [--check] [--force] [--project services|node|tests|browser]\nStrictly check and compile source files in place. --check writes nothing.\nProjects: ' + Object.values(PROJECTS).join(', '));
+        console.log('build-node.mts [--check] [--force] [--project node|tests|browser]\nStrictly check and compile source files in place. --check writes nothing.\nProjects: ' + Object.values(PROJECTS).join(', '));
         process.exit(0);
       } else throw new Error(`Unknown argument: ${argument}`);
     }

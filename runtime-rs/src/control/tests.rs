@@ -148,6 +148,124 @@ async fn healthy_external_service_is_not_adopted_by_watchdog() {
     s.close().await;
     server.abort();
 }
+
+#[tokio::test]
+async fn late_watchdog_probe_cannot_clear_retry_state_during_a_new_operation() {
+    for completed in [false, true] {
+        let (_temp, s) = fixture(json!({}));
+        let entered = Arc::new(tokio::sync::Notify::new());
+        let release = Arc::new(tokio::sync::Notify::new());
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        s.settings.write().unwrap()["comfyHost"] =
+            json!(format!("http://{}", listener.local_addr().unwrap()));
+        let app = Router::new().route(
+            "/system_stats",
+            get({
+                let (entered, release) = (entered.clone(), release.clone());
+                move || {
+                    let (entered, release) = (entered.clone(), release.clone());
+                    async move {
+                        entered.notify_one();
+                        release.notified().await;
+                        Json(json!({}))
+                    }
+                }
+            }),
+        );
+        let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        {
+            let mut state = s.state.lock().unwrap();
+            state.managed[1].owned = true;
+            state.managed[1].desired = true;
+        }
+        let probe = tokio::spawn({
+            let s = s.clone();
+            async move { s.watchdog().await }
+        });
+        tokio::time::timeout(Duration::from_secs(3), entered.notified())
+            .await
+            .unwrap();
+        let stop = s.begin("comfy-stop", &["stop"]).unwrap();
+        s.finish(&stop, Ok(()));
+        let restart = s.begin("comfy-start", &["start"]).unwrap();
+        {
+            let mut state = s.state.lock().unwrap();
+            state.managed[1].attempt = 3;
+            state.managed[1].last_error = "new-cycle-failure".into();
+            state.managed[1].next = Some(Instant::now() + Duration::from_secs(30));
+        }
+        if completed {
+            s.finish(&restart, Ok(()));
+        }
+        release.notify_one();
+        probe.await.unwrap();
+        let status = s.watchdog_status();
+        assert_eq!(status["services"]["comfy"]["attempt"], 3);
+        assert_eq!(
+            status["services"]["comfy"]["lastError"],
+            "new-cycle-failure"
+        );
+        assert_eq!(status["services"]["comfy"]["restarting"], true);
+        assert_eq!(
+            s.state.lock().unwrap().operation.as_ref().unwrap()["id"],
+            restart["id"]
+        );
+        s.close().await;
+        server.abort();
+    }
+}
+
+#[tokio::test]
+async fn shutdown_during_watchdog_restart_does_not_publish_a_late_completion() {
+    let (_temp, s) = fixture(json!({}));
+    let entered = Arc::new(tokio::sync::Notify::new());
+    let release = Arc::new(tokio::sync::Notify::new());
+    let calls = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    s.settings.write().unwrap()["comfyHost"] =
+        json!(format!("http://{}", listener.local_addr().unwrap()));
+    let app = Router::new().route(
+        "/system_stats",
+        get({
+            let (entered, release) = (entered.clone(), release.clone());
+            move || {
+                let (entered, release, calls) = (entered.clone(), release.clone(), calls.clone());
+                async move {
+                    if calls.fetch_add(1, std::sync::atomic::Ordering::SeqCst) == 0 {
+                        return axum::http::StatusCode::SERVICE_UNAVAILABLE;
+                    }
+                    entered.notify_one();
+                    release.notified().await;
+                    axum::http::StatusCode::OK
+                }
+            }
+        }),
+    );
+    let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    {
+        let mut state = s.state.lock().unwrap();
+        let entry = &mut state.managed[1];
+        entry.owned = true;
+        entry.desired = true;
+        entry.attempt = 2;
+        entry.next = Some(Instant::now());
+    }
+    let restart = tokio::spawn({
+        let s = s.clone();
+        async move { s.watchdog().await }
+    });
+    tokio::time::timeout(Duration::from_secs(3), entered.notified())
+        .await
+        .unwrap();
+    s.shutdown.cancel();
+    release.notify_one();
+    restart.await.unwrap();
+    let status = s.watchdog_status();
+    assert_eq!(status["services"]["comfy"]["attempt"], 2);
+    assert_eq!(status["services"]["comfy"]["lastRestartAt"], 0);
+    s.close().await;
+    server.abort();
+}
 #[tokio::test]
 async fn log_cursor_remains_monotonic_and_secrets_are_redacted() {
     let (_temp, s) = fixture(json!({}));

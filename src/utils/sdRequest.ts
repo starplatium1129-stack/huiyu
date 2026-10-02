@@ -75,16 +75,6 @@ export interface BuiltTxt2ImgRequest {
   enhancements: SDEnhancementState
 }
 
-export interface ParsedTxt2ImgResponse {
-  image: string
-  images: string[]
-  seed: number | null
-  seeds: number[]
-  infotexts: string[]
-  info: Record<string, unknown>
-  parameters: Record<string, unknown>
-}
-
 function splitRegionalSections(prompt: string): string[] {
   return String(prompt || '')
     .replace(/\s*,?\s*\bBREAK\b\s*,?\s*/gi, '\u001e')
@@ -293,38 +283,5 @@ export function buildTxt2ImgRequest(params: SDGenerateParams): BuiltTxt2ImgReque
       controlNet: Boolean(scripts.ControlNet),
       adetailer: Boolean(scripts.ADetailer),
     },
-  }
-}
-
-function dataUrl(image: unknown): string {
-  const value = String(image || '')
-  return /^data:image\//i.test(value) ? value : `data:image/png;base64,${value}`
-}
-
-export function parseTxt2ImgResponse(raw: unknown): ParsedTxt2ImgResponse {
-  const response = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {}
-  const images = Array.isArray(response.images) ? response.images.map(dataUrl).filter(Boolean) : []
-  if (!images.length) throw new Error('SD WebUI 返回数据中没有图片')
-  let info: Record<string, unknown> = {}
-  if (typeof response.info === 'string') {
-    try { info = JSON.parse(response.info || '{}') as Record<string, unknown> } catch {}
-  } else if (response.info && typeof response.info === 'object') {
-    info = response.info as Record<string, unknown>
-  }
-  const seeds = Array.isArray(info.all_seeds)
-    ? info.all_seeds.map(Number).filter(Number.isFinite)
-    : []
-  const seedValue = info.seed ?? seeds[0]
-    ?? (response.parameters && typeof response.parameters === 'object'
-      ? (response.parameters as Record<string, unknown>).seed : undefined)
-  return {
-    image: images[0],
-    images,
-    seed: Number.isFinite(Number(seedValue)) ? Number(seedValue) : null,
-    seeds,
-    infotexts: Array.isArray(info.infotexts) ? info.infotexts.map(String) : [],
-    info,
-    parameters: response.parameters && typeof response.parameters === 'object'
-      ? response.parameters as Record<string, unknown> : {},
   }
 }

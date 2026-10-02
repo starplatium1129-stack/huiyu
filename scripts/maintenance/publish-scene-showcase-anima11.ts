@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
@@ -67,12 +68,7 @@ function argument(name: any, fallback: any = '') {
 function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 function isRecord(value: any) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -338,7 +334,7 @@ function sourcePathFor(record: any, from: any) {
 /** 完整验证：manifest 可被生产解析器接受、计数自洽、id 唯一、资产存在且符合白名单。 */
 function verifyTarget(tempDir: any, manifest: any) {
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
-  const { isShowcaseAssetPath }: typeof import('../../server/showcase-assets.js') = require('../../server/showcase-assets.js');
+  const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
   const parsed = parseShowcaseManifest(manifest);
   if (parsed.entries.length !== manifest.entries.length) {
     throw new Error(`manifest lost entries during parse: ${parsed.entries.length} != ${manifest.entries.length}`);

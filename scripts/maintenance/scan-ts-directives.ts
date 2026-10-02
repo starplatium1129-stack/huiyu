@@ -22,7 +22,7 @@ import ts = require('typescript');
 const ROOT = path.resolve(__dirname, '..', '..');
 const TARGET_DIRS = ['src'];
 const EXTENSIONS = /\.(?:[cm]?ts|vue|tsx)$/;
-const RUNTIME_DIRS = ['server', 'routes', 'services', 'scripts', 'tools', 'docs/guides/prompts'];
+const RUNTIME_DIRS = ['scripts', 'tools', 'docs/guides/prompts'];
 
 const FORBIDDEN = [
   '@ts-nocheck',
@@ -76,7 +76,7 @@ function main() {
     }
   }
   const runtimeFiles = RUNTIME_DIRS.flatMap((dir: any) => walk(path.join(ROOT, dir)))
-    .concat(['server.ts', 'eslint.config.mts', 'assets/theme-bootstrap.ts'].map((file: any) => path.join(ROOT, file)))
+    .concat(['eslint.config.mts', 'assets/theme-bootstrap.ts'].map((file: any) => path.join(ROOT, file)))
     .filter((file: any) => fs.existsSync(file) && !file.endsWith('.d.ts'));
   for (const file of runtimeFiles) violations.push(...runtimeDirectives(fs.readFileSync(file, 'utf8'), file));
   if (violations.length) {

@@ -5,15 +5,14 @@
  *
  * 用法：
  *   node scripts/maintenance/gate-quick.js                自动检测 git 改动选面积
- *   node scripts/maintenance/gate-quick.js ui|style|server|rust|data|all|full [--verbose] [--all]
+ *   node scripts/maintenance/gate-quick.js ui|style|rust|data|all|full [--verbose] [--all]
  *
  * 面积 → 步骤：
  *   ui     typecheck:app + vitest；自动模式按导入图选择相关单测，显式 ui 跑全部
  *   style  字面值、双主题对比度、颜色、动画扫描；不跑无关 TS/单测
- *   server Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件（~2-3 分钟）
  *   rust   现行后端 fmt、Clippy 与隔离 Rust 行为测试
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
- *   all    ui + style + server + rust + data 各领域连跑
+ *   all    ui + style + rust + data 各领域连跑
  *   full   check 编排 + rust:check + vitest + unit + contract + optional + 生产打包预算。
  *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
@@ -41,7 +40,7 @@ const {
 
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'style' | 'server' | 'rust' | 'data' | 'tests' | 'browser' | 'full';
+type GateArea = 'ui' | 'style' | 'rust' | 'data' | 'tests' | 'browser' | 'full';
 interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[] }
 const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
   .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
@@ -96,13 +95,6 @@ function runNpmStep(name: string, script: string, timeout: number, verbose: bool
   return 1;
 }
 
-function suiteFiles(names: readonly string[], label: string, { verbose, keepGoing }: GateOptions) {
-  return runSuiteFiles(
-    names.map((file: any) => ({ name: file, file: path.join(testsDir, file) })),
-    { label, timeout: 180_000, verbose, keepGoing },
-  );
-}
-
 const AREA_STEPS = {
   rust(options: GateOptions) {
     return runTool('rust:check', path.join(root, 'scripts/maintenance/run-rust-runtime.js'), ['check'], options);
@@ -134,23 +126,6 @@ const AREA_STEPS = {
     return runSuiteFiles(['scan-style-literals', 'check-contrast', 'lint-colors', 'lint-animations'].map(name => ({
       name, file: path.join(root, 'scripts/maintenance', `${name}.js`), args: ['--check'],
     })), { label: 'style', timeout: 180_000, verbose, keepGoing });
-  },
-  server({ verbose, keepGoing }: GateOptions) {
-    const typecheck = runNpmStep('typecheck:node', 'typecheck:node', 300_000, verbose);
-    if (typecheck && !keepGoing) return typecheck;
-    return suiteFiles(
-      [
-        'test-anima-routes.js',
-        'test-generation-routes.js',
-        'test-video-routes.js',
-        'test-chat.js',
-        'test-security.js',
-        'test-desktop-tools-route.js',
-        'test-control-failure-contract.js',
-      ],
-      'server',
-      { verbose, keepGoing },
-    ) || typecheck;
   },
   data({ verbose, keepGoing }: GateOptions) {
     return runSuiteFiles(
@@ -205,10 +180,9 @@ function classifyFiles(files: readonly string[]): GatePlan {
       if (/^src\/.*\.(?:ts|vue)$/.test(p) && fs.existsSync(path.join(root, p))) frontendFiles.add(p);
       else allFrontend = true;
     }
-    if (/^(routes|server|services)\//.test(p) || /^server\.(?:js|ts)$/.test(p)) areas.add('server');
     if (/^(data|assets)\//.test(p)) areas.add('data');
-    if (!/^(docs\/|.*\.md$)/.test(p) && !/^(src|css|public|routes|server|services|data|assets)\//.test(p)
-      && !['index.html', 'server.js', 'server.ts'].includes(p)) return full();
+    if (!/^(docs\/|.*\.md$)/.test(p) && !/^(src|css|public|data|assets)\//.test(p)
+      && p !== 'index.html') return full();
   }
   return { areas: [...areas], testFiles: [...testFiles],
     ...(!allFrontend && frontendFiles.size ? { frontendFiles: [...frontendFiles] } : {}),
@@ -226,25 +200,25 @@ function detectAreas() {
 
 async function main(argv: string[]) {
   if (argv.includes('--help') || argv.includes('-h')) {
-    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|server|rust|data|all|full] [--verbose] [--all]');
+    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|rust|data|all|full] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
-  const invalid = argv.filter((arg: any) => !['ui', 'style', 'server', 'rust', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  const invalid = argv.filter((arg: any) => !['ui', 'style', 'rust', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
   if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const areaArg = argv.find((arg: any) => ['ui', 'style', 'server', 'rust', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
+  const areaArg = argv.find((arg: any) => ['ui', 'style', 'rust', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
   let testFiles: string[] = [];
   let frontendFiles: string[] | undefined, browserFiles: string[] = [];
   if (areaArg) {
     // 'full' 走完整门禁；'all' 展开领域检查。
-    areas = areaArg === 'all' ? ['ui', 'style', 'server', 'rust', 'data'] : [areaArg];
+    areas = areaArg === 'all' ? ['ui', 'style', 'rust', 'data'] : [areaArg];
   } else {
     try { ({ areas, testFiles, frontendFiles, browserFiles = [] } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
     if (!areas.length) {
@@ -260,7 +234,7 @@ async function main(argv: string[]) {
   }
   const started = Date.now();
   // Prepare generated entries once for all selected Node/browser areas.
-  if (!areas.includes('full') && areas.some(area => ['tests', 'server', 'rust', 'data', 'browser'].includes(area))) {
+  if (!areas.includes('full') && areas.some(area => ['tests', 'rust', 'data', 'browser'].includes(area))) {
     exitCode = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
     if (exitCode) return exitCode;
   }
@@ -286,10 +260,6 @@ async function main(argv: string[]) {
     }
     if (area === 'style') {
       exitCode = AREA_STEPS.style({ verbose, keepGoing }) || exitCode;
-      continue;
-    }
-    if (area === 'server') {
-      exitCode = AREA_STEPS.server({ verbose, keepGoing }) || exitCode;
       continue;
     }
     if (area === 'rust') {

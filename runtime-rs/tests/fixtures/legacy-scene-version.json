@@ -1,0 +1,6 @@
+{
+  "sourceCommit": "142f654cea2b30287a37bb9a0d60364e1b1c497f",
+  "scope": "Version hash of the exact neutral fixture in maintenance/tests.rs using old sceneContentVersion. Windows and POSIX relative-separator encodings; retained after Node retirement and never regenerated from Rust.",
+  "windows": 206999920746368,
+  "posix": 173532826971978
+}

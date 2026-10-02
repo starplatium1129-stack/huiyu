@@ -2,7 +2,6 @@ const assert: typeof import('assert') = require('assert');
 const { test }: typeof import('node:test') = require('node:test');
 const compiler: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const policy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
-const animaRoute: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 const loras: typeof import('../../data/loras.json') = require('../../data/loras.json');
 const artistStyles: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
@@ -108,7 +107,7 @@ test('artist token previews match the compiled catalog for both tag engines', ()
   }
 });
 
-test('Anima artist name escapes survive compilation, JSON transport, and both workflow branches', () => {
+test('Anima artist name escapes survive compilation and JSON transport', () => {
   const cases = [
     ['ask_(askzy)', String.raw`@ask \(askzy\)`],
     ['hiten_(hitenkei)', String.raw`@hiten \(hitenkei\)`],
@@ -130,27 +129,11 @@ test('Anima artist name escapes survive compilation, JSON transport, and both wo
       const body = JSON.parse(JSON.stringify({
         ...model, prompt: output.prompt, width: 832, height: 1216, seed: 42,
       }));
-      const input = animaRoute.validateInput(body, 'anima');
-      const graph = animaRoute.buildWorkflow(input);
-      const sampler = Object.values(graph).find(node => node.class_type === 'KSampler');
-      assert.ok(sampler, 'workflow must have a sampler');
-      const positiveNode = graph[sampler.inputs.positive[0]];
-      assert.strictEqual(positiveNode.class_type, 'CLIPTextEncode');
-      assert.strictEqual(positiveNode.inputs.text, output.prompt, `${id} / ${model.modelId}`);
+      assert.strictEqual(body.prompt, output.prompt);
     }
     assert.deepStrictEqual(artistStyles.artistTagsForEngine([id], 'sd'), [id]);
     assert.deepStrictEqual(artistStyles.artistTagsForEngine([id], 'krea2'), []);
   }
-});
-
-test('Krea official style LoRA is allowlisted and family-scoped', () => {
-  const input = animaRoute.validateInput({ prompt: 'a rainy cafe', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, styleLoraId: 'rainywindow' }, 'krea2');
-  const graph = animaRoute.buildWorkflow(input);
-  assert.strictEqual(graph['12'].class_type, 'LoraLoaderModelOnly');
-  assert.strictEqual(graph['12'].inputs.lora_name, 'krea2_rainywindow.safetensors');
-  assert.strictEqual(graph['12'].inputs.strength_model, 1);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene', styleLoraId: 'rainywindow' }, 'anima'), /Style LoRA/);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, styleLoraId: 'not-approved' }, 'krea2'), /未知 Krea/);
 });
 
 test('prompt compiler: Krea style leads the automatic 3-5 sentence description', () => {
@@ -260,35 +243,6 @@ test('Anima studio scene caption overrides automatic prose without repeating ide
   const prose = prompt.split('\n')[1];
   assert.strictEqual(prose, 'Ayachi Nene points at one open exam paper while seated behind a classroom desk.');
   assert.strictEqual((prose.match(/white hair/gi) || []).length, 0);
-});
-
-test('creative catalog rejects Krea LoRA/negative and emits the official Krea core workflow', () => {
-  const input = animaRoute.validateInput({ prompt: 'A rainy cafe scene.', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, seed: 7 });
-  assert.strictEqual(input.family, 'krea2');
-  assert.strictEqual(input.steps, 12);
-  assert.strictEqual(input.cfg, 1);
-  for (const size of [[1024, 1536], [1536, 1024]]) {
-    const sized = animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: size[0], height: size[1] });
-    assert.deepStrictEqual([sized.width, sized.height], size);
-  }
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, steps: 7 }), /steps/);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, cfg: 3 }), /CFG/);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, loraId: 'L_NENE_V21_ANIMA' }), /Krea/);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', negative: 'bad anatomy', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024 }), /Krea/);
-  const workflow = animaRoute.buildWorkflow(input);
-  const classes = Object.values(workflow).map(node => node.class_type);
-  assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage', 'ConditioningKrea2Rebalance', 'ComfyUI-Krea2T-Enhancer', 'ImageSharpenKJ']);
-  assert.strictEqual(workflow['2'].inputs.type, 'krea2');
-  assert.strictEqual(workflow['7'].inputs.steps, 12);
-  assert.strictEqual(workflow['7'].inputs.cfg, 1);
-  assert.strictEqual(workflow['7'].inputs.sampler_name, 'er_sde');
-  assert.strictEqual(workflow['7'].inputs.scheduler, 'simple');
-  assert.deepStrictEqual(workflow['7'].inputs.negative, ['5', 0]);
-  // 2026-08-23 链路替换：Krea 图无条件经 T-Enhancer 采样并落盘 RCAS 锐化结果。
-  assert.strictEqual(workflow['14'].class_type, 'ComfyUI-Krea2T-Enhancer');
-  assert.deepStrictEqual(workflow['7'].inputs.model, ['14', 0]);
-  assert.strictEqual(workflow['15'].class_type, 'ImageSharpenKJ');
-  assert.deepStrictEqual(workflow['10'].inputs.images, ['15', 0]);
 });
 
 test('Anima rating and controls remain aligned without safe/R18 contradiction', () => {

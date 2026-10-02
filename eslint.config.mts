@@ -94,9 +94,7 @@ export default tseslint.config(
   {
     ignores: [
       'dist/**', 'node_modules/**', 'assets/vendor/**', 'docs/**', 'test-results/**',
-      // services/*.d.ts 是 build:runtime 生成产物，不参与 lint
-      'services/*.d.ts', 'services/*.js',
-      'server.js', 'server/**/*.js', 'routes/**/*.js', 'scripts/**/*.js', 'scripts/**/*.mjs',
+      'scripts/**/*.js', 'scripts/**/*.mjs',
       'tools/**/*.js', 'assets/theme-bootstrap.js', 'eslint.config.mjs',
       'scripts/archive/**',
     ],
@@ -168,7 +166,7 @@ export default tseslint.config(
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
-      // 历史 services 代码的既有模式（this 别名、namespace、Function 类型），
+      // 维护脚本的既有模式（this 别名、namespace、Function 类型），
       // 重构时随文件一起治理，不在本次门禁里硬卡
       '@typescript-eslint/no-this-alias': 'off',
       '@typescript-eslint/no-namespace': 'off',
@@ -187,8 +185,8 @@ export default tseslint.config(
     },
   },
   {
-    // Node 域：网关、路由、服务层与维护脚本
-    files: ['server.ts', 'server/**', 'routes/**', 'services/**', 'scripts/**'],
+    // Node 域：开发维护脚本
+    files: ['scripts/**'],
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS },
     },
@@ -211,31 +209,27 @@ export default tseslint.config(
   },
   {
     // 维护/测试脚本：console 是 CLI 输出方式，不按应用代码的 no-console 管
-    files: ['scripts/**', 'routes/**'],
+    files: ['scripts/**'],
     rules: {
       'no-console': 'off',
     },
   },
-  // 体量硬门禁唯一入口：test-monolith-budget.ts（600 有效行），不保留 1000 行旧预警。
+  // 体量硬门禁唯一入口：test-monolith-budget.ts（500 有效行），不保留 1000 行旧预警。
   {
     files: ['src/**/*.{ts,vue}', 'tools/**/*.ts'],
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer'] },
-  },
-  {
-    files: ['server.ts', 'server/**/*.ts', 'routes/**/*.ts', 'services/**/*.ts'],
-    rules: { 'no-restricted-globals': ['error', 'window', 'document', 'localStorage', 'navigator'] },
   },
   {
     files: ['src/types/**/*.ts', 'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts'],
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer', 'window', 'document', 'localStorage', 'sessionStorage', 'indexedDB', 'navigator'] },
   },
   {
-    files: ['src/**/*.{ts,vue}', 'server/generation/**/*.ts'],
+    files: ['src/**/*.{ts,vue}'],
     plugins: { huiyu: { rules: { 'module-boundaries': moduleBoundaries } } },
     rules: { 'huiyu/module-boundaries': 'error' },
   },
   {
-    files: ['server/generation/**/*.ts', 'routes/generation.ts', 'src/stores/promptBuilderStore.ts',
+    files: ['src/stores/promptBuilderStore.ts',
       'src/utils/promptCatalog.ts', 'src/composables/prompt/usePromptDraft.ts',
       'src/composables/prompt/usePromptArtworkHistory.ts', 'src/composables/prompt/usePromptSceneFilters.ts'],
     rules: { '@typescript-eslint/no-explicit-any': 'error' },

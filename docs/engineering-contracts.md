@@ -1,6 +1,6 @@
 # 工程与角色接入契约
 
-> 维护日期：2026-09-28。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
+> 维护日期：2026-10-02。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
 
 ## 模块边界
 
@@ -8,7 +8,7 @@
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
   - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
-- **网关服务**：产品后端为 `runtime-rs/` 的独立 Rust 进程，桌面与独立服务共用 HTTP/流式协议；依赖锁定于 `runtime-rs/Cargo.lock`。SPA fallback 排除 `/api`，网页优先使用已构建的 `dist/`。旧 Node 源码及其测试暂留作行为对照，不随产品充当回退后端；Node/npm 仍可用于前端、开发维护与构建编排。
+- **网关服务**：产品后端为 `runtime-rs/` 的独立 Rust 进程，桌面与独立服务共用 HTTP/流式协议；依赖锁定于 `runtime-rs/Cargo.lock`。SPA fallback 排除 `/api`，网页优先使用已构建的 `dist/`。旧 `server.ts`、`server/`、`routes/`、`services/` 已删除，不能恢复为产品回退路径。仍有维护用途的纯工具归 `scripts/lib/`；Node/npm 用于前端、开发维护、假上游与构建编排。旧协议、任务指纹和存储格式由标注来源的固定夹具、独立 SQLite 检查及现行 Rust 行为测试验证，不以被测实现重写期望。
 - **Rust 任务契约**：`task_contract` 定义持久任务记录、状态与可变字段命令；runtime 和 SQLite worker 在内部使用强类型，HTTP/provider 与持久化边界负责 JSON 转换。更新中的缺省字段保持原值，显式 null 只可清空可空字段；任务命令继续经过身份、取消和 writer epoch 检查。`execution` 持有跨引擎的输出、观察结果与执行 hooks，不依赖具体引擎或存储。前端任务快照与待确认请求由 `src/stores/runtimeTaskState.ts` 持有，API 不再转导出展示状态。
 - **原生与交付边界**：图像和 ONNX DLL 按 `runtime-rs/native-dependencies.windows-x64.json` 的真实字节/哈希暂存，构建回执绑定 Rust 源码、EXE、DLL 与许可证清单。`releaseReady=false` 不等于可发行；真实权重、安装、UAC与设备效果必须另有证据。新运行时的回退不能启动另一后端同时写同一 workspace。
 - **运行时维护**：产品请求使用 Rust 内容/资源事务及原生恢复入口，不能 fork Node 脚本补未迁功能。启动聚合只从权威源生成产物；完整发布包保持只读。桌面场景维护以运行目录 `content/data` 为可写权威（首次从包内数据原子初始化，已有副本不被升级覆盖），维护快照、聚合静态读取和远程过滤必须使用同一副本；内置图片资源仍从安装资源根读取；自定义角色立绘在用户运行目录 `character-art` 中保存并原子发布原画、缩略图和粒子同一版本，仅经本机受限接口读取，不覆盖参考库或 Live2D 模型。pin、参考发布审核、资源独立审批及未知状态拒绝均保持原契约，静态挂载和哈希不代表视觉交付。

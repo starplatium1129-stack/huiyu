@@ -29,22 +29,16 @@ test('pilot import boundaries accept types and reject static, dynamic, require a
 
 test('active environment rules fail on wrong globals; generated output stays ignored', async () => {
   assert.ok((await errors('src/types/fixture.ts', 'window.location.href')).some(m => m.ruleId === 'no-restricted-globals'))
-  assert.equal(await lint.isPathIgnored('routes/generation.js'), true)
+  assert.equal(await lint.isPathIgnored('scripts/maintenance/build-node.js'), true)
   assert.ok((await errors('tools/fixture.ts', 'process.cwd()')).some(m => m.ruleId === 'no-restricted-globals'))
-  assert.ok((await errors('server/fixture.ts', 'document.createElement("div")')).some(m => m.ruleId === 'no-restricted-globals'))
+  assert.ok((await errors('scripts/maintenance/fixture.ts', 'document.createElement("div")')).some(m => m.ruleId === 'no-restricted-globals'))
   assert.deepEqual(await errors('tools/fixture.ts', 'document.createElement("div")'), [])
-  assert.deepEqual(await errors('server/fixture.ts', 'process.cwd()'), [])
+  assert.deepEqual(await errors('scripts/maintenance/fixture.ts', 'process.cwd()'), [])
 })
 
-test('generation and workbench persistence boundaries cannot regress', async () => {
+test('workbench persistence boundaries cannot regress', async () => {
   for (const [file, code] of [
-    ['server/generation/service.ts', "import router = require('../../routes/anima'); void router"],
-    ['server/generation/service.ts', "import type { Request } from 'express'; export type X = Request"],
-    ['server/generation/service.ts', "const p = '../../routes/anima'; void import(p)"],
     ['src/stores/promptBuilderStore.ts', "void import('@/storage/artworkRepository')"],
     ['src/composables/prompt/usePromptDraft.ts', "void import('@/stores/promptBuilderStore')"],
   ]) assert.ok((await errors(file, code)).some(m => m.ruleId === 'huiyu/module-boundaries'), code)
-  assert.deepEqual(await errors('server/generation/service.ts', "import engine = require('../../routes/anima/service'); void engine"), [])
-  assert.deepEqual(await errors('server/generation/validation.ts', "import type { Request } from 'express'; export type X = Request"), [])
-  assert.ok((await errors('server/generation/types.ts', 'export type Input = any')).some(m => m.ruleId === '@typescript-eslint/no-explicit-any'))
 })

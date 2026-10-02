@@ -15,13 +15,16 @@
     "rootDir": ".",
     "outDir": ".",
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
-    "types": ["node"]
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "types": [
+      "node"
+    ]
   },
   "include": [
-    "server.ts",
-    "server/**/*.ts",
-    "routes/**/*.ts",
     "scripts/**/*.ts",
     "scripts/**/*.mts",
     "poc/**/*.mts",

@@ -17,7 +17,7 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 1. 先联机准备符合 `package.json` 的 Node.js（最低 22.18，CI 版本见 `.github/workflows/quality.yml`）、Rust/Cargo 与 Windows 对应构建工具；在项目根目录执行 `npm ci`。完全离线的源码构建还需预先准备 npm/Cargo 依赖缓存与原生构建材料，Git 源码不包含这些环境。
 2. 执行 `npm run build` 生成网页和维护命令，再执行 `npm start`。当前产品入口经 `run-rust-runtime` 编译/启动 `runtime-rs`，默认访问 `http://127.0.0.1:3000`；旧 Node 网关已退出产品路径。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
-4. 数据聚合产物由现有构建流程补齐，不把生成的 `services/*.js` 或聚合 JSON 手工复制回 Git。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
+4. 数据聚合产物由现有构建流程补齐，不把生成的工具 `.js` 或聚合 JSON 手工复制回 Git。`build:runtime` 仅编译 `node`、`tests`、`browser` 三个工具项目，不生成旧 Node 网关。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
 5. 按 [工作流分层规则](docs/workflow.md#门禁与构建)选择代码、数据契约和构建检查；跨领域整合需要时执行 `npm run wf -- gate:full`，不在每次启动或小改后重复。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
 
 ## 本机 AI 服务与模型
@@ -29,7 +29,7 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 | 角色语音 | `http://127.0.0.1:9880` / `TTS_HOST` | GPT-SoVITS 权重与参考音频；控制面板配置角色声线 |
 | 本地聊天 | `http://127.0.0.1:11434` / `OLLAMA_HOST` | Ollama 模型由 `OLLAMA_MODEL` 或页面选择 |
 
-产品模型文件名以 `runtime-rs/src/images/catalog.json`、`runtime-rs/src/video/catalog.json` 为准，节点接线在相应 `workflow.rs` 中；目录源表保留在 `server/anima-model-catalog.ts`、`server/video-model-catalog.ts`。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目角色路径另需 v21 LoRA。新机公共起步可以明确选 Anima Aesthetic v1.1 的无 LoRA 路径。Krea 2 使用特定 Turbo FP8 与 Heretic 编码器，不能改名替换不同权重。`/api/anima/status` 的文件可用状态仍不代表节点或真实出图通过。
+产品模型文件名以 `runtime-rs/src/images/catalog.json`、`runtime-rs/src/video/catalog.json` 为准，节点接线在相应 `workflow.rs` 中。离线样张工具使用 `scripts/lib/generation/` 中的参数与模型目录，不承接产品 HTTP 或任务状态。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目角色路径另需 v21 LoRA。新机公共起步可以明确选 Anima Aesthetic v1.1 的无 LoRA 路径。Krea 2 使用特定 Turbo FP8 与 Heretic 编码器，不能改名替换不同权重。`/api/anima/status` 的文件可用状态仍不代表节点或真实出图通过。
 
 源码服务的 AI 外部工作区默认是应用同级 `AI/`，启动前可设置 `AI_WORKSPACE_ROOT`。**桌面端在 Companion「AI 工作区」设置中选新机实际目录**，该设置会重启网关，并用于 `ComfyUI/models/` 权重检查。WD14 可用继承的 `AICS_WD14_MODEL_DIR` 指向新机可写目录，翻译使用 `AICS_TRANSLATION_MODEL` / `TRANSLATION_PYTHON`。源码维护环境可运行 `npm run wf -- models:check --json`（默认只读取文件/硬件，`--verify-hashes` 另查已知权重 SHA-256）。体检的 `COMFYUI_MODELS_ROOT` 不改变网关模型路径。
 

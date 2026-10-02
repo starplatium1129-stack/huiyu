@@ -168,7 +168,7 @@ test('showcase manifest extended contract: scene/artist/popular/lora entries wit
 
 test('showcase asset allowlist rejects traversal, absolute urls, backslashes and stray paths', () => {
   const assert: typeof import('assert') = require('assert');
-  const { isShowcaseAssetPath }: typeof import('../../server/showcase-assets.js') = require('../../server/showcase-assets.js');
+  const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
 
   const allowed = [
     '/manifest.json',
@@ -619,7 +619,7 @@ test('scene-showcase route serves approved assets and blocks everything else ove
   const http: typeof import('http') = require('http');
   const os: typeof import('os') = require('os');
   const path: typeof import('path') = require('path');
-  const gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
+  const rustStack: typeof import('./mock-stack') = require('./mock-stack');
 
   const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-showcase-http-'));
   const showcaseDir = path.join(fixtureRoot, '2026-08-12_v15');
@@ -635,11 +635,10 @@ test('scene-showcase route serves approved assets and blocks everything else ove
   fs.writeFileSync(path.join(showcaseDir, 'thumbs', 'pc_emilia_rezero.png'), Buffer.from([7, 8]));
   fs.writeFileSync(path.join(showcaseDir, 'home', 'nene.jpg'), Buffer.from([9, 10]));
 
-  const stack = await gatewayTestStack.start({
-    token: 'showcase-http-fixture-token-0123456789abcdef01234',
-    configureConfig: (config: { SCENE_SHOWCASE_DIR: string; }) => { config.SCENE_SHOWCASE_DIR = showcaseDir; },
+  const stack = await rustStack.start({ dynamicPorts: true, lightweight: true,
+    prepare: ({ env }) => { env.SCENE_SHOWCASE_DIR = showcaseDir; },
   });
-  const PORT = stack.address.port;
+  const PORT = Number(new URL(stack.origin).port);
   const LOCAL = { Host: '127.0.0.1:' + PORT };
   function request(pathname: string, port?: any) {
     return new Promise((resolve, reject) => {
@@ -701,21 +700,20 @@ test('scene-showcase route serves approved assets and blocks everything else ove
 
     // 未配置 SCENE_SHOWCASE_DIR 时整个挂载点 404。
     // 显式清空该值，避免 config 的 auto-resolve 落到本机真实 AI/SceneShowcase。
-    plainStack = await gatewayTestStack.start({
-      token: 'showcase-http-fixture-token-0123456789abcdef01234',
-      configureConfig: (config: { SCENE_SHOWCASE_DIR: string; }) => { config.SCENE_SHOWCASE_DIR = ''; },
+    plainStack = await rustStack.start({ dynamicPorts: true, lightweight: true,
+        prepare: ({ env }) => { env.SCENE_SHOWCASE_DIR = ''; },
     });
-    const plainStatus = await request('/scene-showcase/manifest.json', plainStack.address.port);
+    const plainStatus = await request('/scene-showcase/manifest.json', Number(new URL(plainStack.origin).port));
     assert.strictEqual(plainStatus, 404, 'unconfigured showcase dir must 404');
   } finally {
-    if (plainStack) await plainStack.close();
-    await stack.close();
+    if (plainStack) await plainStack.shutdown();
+    await stack.shutdown();
     fs.rmSync(fixtureRoot, { recursive: true, force: true });
   }
 });
 
 test('showcase actual assets are self-consistent (skipped without AI workspace)', (t) => {
-  const { isShowcaseAssetPath }: typeof import('../../server/showcase-assets.js') = require('../../server/showcase-assets.js');
+  const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
 
   const showcaseRoot = path.resolve(root, '..', 'AI', 'SceneShowcase');
@@ -767,7 +765,7 @@ test('showcase actual assets are self-consistent (skipped without AI workspace)'
 
 test('local showcase config accepts a published collection or a parent library', () => {
   const os: typeof import('os') = require('os');
-  const { resolveSceneShowcaseDir, loadGatewayConfig }: typeof import('../../server/config') = require('../../server/config');
+  const { resolveSceneShowcaseDir }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-library-'));
   try {
     const library = path.join(temp, 'SceneShowcase');
@@ -779,8 +777,6 @@ test('local showcase config accepts a published collection or a parent library',
     const runtime = path.join(temp, 'runtime');
     fs.mkdirSync(runtime);
     fs.writeFileSync(path.join(runtime, 'config.json'), JSON.stringify({ sceneShowcaseDir:library }));
-    const config = loadGatewayConfig(temp, { AICS_RUNTIME_ROOT:runtime, AICS_DISABLE_LEGACY_RUNTIME_MIGRATION:'1' });
-    assert.strictEqual(config.SCENE_SHOWCASE_DIR, edition, 'saved local media path survives a gateway restart');
     assert.strictEqual(resolveSceneShowcaseDir(temp, path.join(temp, 'disconnected')), '');
   } finally { fs.rmSync(temp, { recursive:true, force:true }); }
 });

@@ -1,3 +1,4 @@
+import { writeJsonAtomic } from './atomic-files';
 'use strict';
 
 // inpaint-showcase-candidates: review manifest and contact-sheet rendering.
@@ -5,7 +6,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const {
   attemptFiveRecordId, outputImageRel, SOURCE_WIDTH, SOURCE_HEIGHT, sha256, MANIFEST_NAME, readJson,
-  imageInfo, writeJsonAtomic, REVIEW_INDEX_NAME, escapeHtml, writeTextAtomic, CONTACT_SHEET_NAME,
+  imageInfo, REVIEW_INDEX_NAME, escapeHtml, writeTextAtomic, CONTACT_SHEET_NAME,
 }: typeof import('./inpaint-showcase-candidates-records.js') = require('./inpaint-showcase-candidates-records.js');
 
 // ── manifest + review index ─────────────────────────────────────────────────

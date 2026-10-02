@@ -36,9 +36,6 @@ function rules(edge: RefactorEdge): string[] {
   if (/^scripts\/tests\//.test(target) || /\.(?:spec|test)\.[cm]?[jt]sx?$/.test(target)) {
     violations.push('production-no-test-dependency');
   }
-  if (/^(?:server\.ts|(?:server|routes|services)\/)/.test(source) && target.startsWith('src/')) {
-    violations.push('runtime-no-frontend');
-  }
   if (typeOnly) return violations;
   if (rawBrowserStorage.test(target)
     && !webStorageAdapters.has(source) && !source.startsWith('src/platform/web/')) {
@@ -86,7 +83,7 @@ export function inspectRefactorBoundaries(root: string): RefactorReport {
     if (/\.[cm]?js$/.test(file) && fs.existsSync(absolute.replace(/js$/, 'ts'))) return;
     report.files.push(file);
   };
-  for (const entry of ['src', 'server', 'routes', 'services', 'server.ts']) collect(path.join(root, entry));
+  collect(path.join(root, 'src'));
   report.files.sort();
   const scheduled = new Set(report.files);
 
@@ -177,16 +174,6 @@ export function inspectRefactorBoundaries(root: string): RefactorReport {
     }
   };
   for (const file of report.files.filter(file => file.startsWith('src/platform/web/'))) visitWeb(file);
-  const runtimeSeen = new Set<string>();
-  const visitRuntime = (file: string) => {
-    if (runtimeSeen.has(file)) return;
-    runtimeSeen.add(file);
-    for (const edge of adjacency.get(file) || []) {
-      if (edge.target.startsWith('src/')) report.violations.push({ ...edge, rule: 'runtime-no-frontend' });
-      else visitRuntime(edge.target);
-    }
-  };
-  for (const file of report.files.filter(file => /^(?:server\.ts|(?:server|routes|services)\/)/.test(file))) visitRuntime(file);
   inspectRustBoundaries(root, report);
   report.files.sort();
   report.violations = [...new Map(report.violations.map(edge => [refactorEdgeKey(edge), edge])).values()];

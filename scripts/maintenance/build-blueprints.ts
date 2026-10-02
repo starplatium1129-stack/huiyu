@@ -15,7 +15,7 @@ const {
   loadBlueprintShards,
   writeBlueprintAggregate,
 }: typeof import('../lib/blueprint-store') = require('../lib/blueprint-store');
-const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 const { refreshPrecompressed } = require('../lib/ensure-data-build');
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -44,8 +44,8 @@ if (check) {
   console.log('Built ' + aggregatePath + ': ' + blueprints.length + ' blueprints (' + counts + ')');
   // 同步 DATA_VERSION
   try {
-    const result = syncDataVersion(ROOT);
-    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${result.version}`);
+    const version = expectedDataVersion(ROOT);
+    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${version}`);
   } catch (e) {
     console.warn('[DATA_VERSION] 同步跳过:', runtimeErrorMessage(e));
   }

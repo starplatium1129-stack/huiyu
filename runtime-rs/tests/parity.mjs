@@ -3,65 +3,54 @@ import { createHash, createHmac, randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawn, fork, execFileSync } from 'node:child_process';
+import { spawn, execFileSync } from 'node:child_process';
 import { once } from 'node:events';
-import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import http from 'node:http';
+import { DatabaseSync } from 'node:sqlite';
 import { performance } from 'node:perf_hooks';
 
-const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repo = path.dirname(root);
 const appRoot = process.env.AICS_RUST_APP_ROOT ? fs.realpathSync(process.env.AICS_RUST_APP_ROOT) : repo;
 const binaryName = process.platform === 'win32' ? 'huiyu-runtime.exe' : 'huiyu-runtime';
 const runtimeBinary=process.env.AICS_RUST_RUNTIME_EXE||(process.env.AICS_RUST_APP_ROOT?path.join(appRoot,binaryName):path.join(root,'target/release',binaryName));
-const { openWorkspaceEngine } = require(path.join(repo, 'server/workspace/engine.js'));
-const workspaceId = '4ef78272-7b1c-4146-9292-dc2d3323cbf2';
-const sourceProfile = `profile-${'a'.repeat(64)}`;
-const principal = `desktop:${sourceProfile}`;
-const image = await require(path.join(repo, 'node_modules/sharp'))({ create: { width: 64, height: 64, channels: 4, background: '#73668b' } }).png().toBuffer();
+const legacy = JSON.parse(fs.readFileSync(new URL('./fixtures/legacy-workspace.json', import.meta.url), 'utf8'));
+const { workspaceId, sourceProfile, principal } = legacy;
+const image = Buffer.from(legacy.image, 'base64');
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 
-async function nodeHost() {
-  const express = require(path.join(repo, 'node_modules/express'));
-  const { createDesktopWorkspaceHost } = require(path.join(repo, 'server/workspace/host.js'));
-  const app = express();
-  const server = http.createServer(app);
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const origin = `http://127.0.0.1:${server.address().port}`;
-  const host = await createDesktopWorkspaceHost({ configRoot: process.argv[3], secret: process.env.AICS_DESKTOP_GATEWAY_TOKEN,
-    sourceProfileId: sourceProfile, gatewayOrigin: origin });
-  app.use(host.router);
-  process.send({ origin });
-  process.on('message', async message => {
-    if (message !== 'close') return;
-    await host.close(); server.close(); process.disconnect();
-  });
-}
-
-async function fixture(directory) {
-  const engine = openWorkspaceEngine({ root: directory, workspaceId, writerEpoch: 'fixture', create: true });
-  const context = { workspaceId, principalId: principal, protocolVersion: 1 };
-  const artwork = { id: 'seed-1', image_id: 'seed-image', custom_future_field: { '10': 10, '2': 2, nested: [true, null, 'kept'], z: 1e-7 }, prompt: '中性测试' };
-  const prepare = { kind: 'prepareSave', operationId: 'seed-save', artwork,
-    media: { alias: 'seed-image', sha256: digest(image), bytes: image.length, mime: 'image/png' } };
-  await engine.execute(prepare, context);
-  await engine.execute({ kind: 'uploadChunk', operationId: 'seed-save', offset: 0, data: image }, context);
-  const receipt = await engine.execute({ kind: 'commitSave', operationId: 'seed-save' }, context);
-  engine.close();
-  // Deterministic read-load fixture, not a claim that bulk import was migrated.
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.join(directory, 'huiyu.sqlite3'));
-  const { entityKey } = require(path.join(repo, 'server/workspace/records.js'));
-  db.exec('BEGIN');
-  const insert = db.prepare('INSERT INTO artworks VALUES(?,?,?,?,NULL)');
-  for (let index = 0; index < 1000; index++) {
-    const id = `item-${String(index).padStart(5, '0')}`;
-    insert.run(entityKey(id), JSON.stringify(id), JSON.stringify({ id, image_id: 'seed-image', note: 'read-load' }), 1);
+function fixture(directory) {
+  // Restore bytes and SQL captured from Node schema 3, never from the runtime
+  // under test. The fixture records its source commit and supported scope.
+  fs.mkdirSync(directory, { recursive: true });
+  for (const [relative, bytes] of Object.entries(legacy.database.files)) {
+    const target = path.resolve(directory, relative);
+    assert.ok(target.startsWith(path.resolve(directory) + path.sep));
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, Buffer.from(bytes, 'base64'));
   }
-  db.exec('COMMIT'); db.close();
-  return { prepare, receipt };
+  const db = new DatabaseSync(path.join(directory, 'huiyu.sqlite3'));
+  try {
+    db.exec('PRAGMA foreign_keys=OFF; BEGIN');
+    for (const { sql } of legacy.database.schema) db.exec(sql);
+    for (const [table, rows] of Object.entries(legacy.database.tables)) {
+      for (const row of rows) {
+        const columns = Object.keys(row).map(key => JSON.stringify(key));
+        db.prepare(`INSERT INTO ${JSON.stringify(table)} (${columns.join(',')}) VALUES (${columns.map(() => '?').join(',')})`).run(...Object.values(row));
+      }
+    }
+    db.exec(`PRAGMA user_version=${legacy.database.userVersion}`);
+    // Stable extra rows retain the existing read-load measurement independently
+    // of the historical one-artwork fixture and do not exercise bulk import.
+    const insert = db.prepare('INSERT INTO artworks VALUES(?,?,?,?,NULL)');
+    for (let index = 0; index < 1000; index++) {
+      const id = `item-${String(index).padStart(5, '0')}`;
+      insert.run(id, JSON.stringify(id), JSON.stringify({ id, image_id: 'seed-image', note: 'read-load' }), 1);
+    }
+    db.exec('COMMIT');
+    assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
+  } finally { db.close(); }
+  return legacy.baseline;
 }
 
 async function startRust(configRoot, secret) {
@@ -146,57 +135,60 @@ async function exercise(server, baseline) {
 }
 
 async function run() {
-  const tempBase = fs.realpathSync(os.tmpdir());
+  const tempBase = fs.realpathSync.native(os.tmpdir());
   const temp = fs.mkdtempSync(path.join(tempBase, 'huiyu-rust-parity-'));
   const children = [];
   try {
     const source = path.join(temp, 'fixture');
-    const baseline = await fixture(source);
-    const config = path.join(temp, 'node-config');
-    const nodeRoot = path.join(config, 'workspaces', workspaceId);
+    const baseline = fixture(source);
     const rustConfig = path.join(temp, 'rust-config');
     const rustRoot = path.join(rustConfig, 'workspaces', workspaceId);
-    fs.cpSync(source, nodeRoot, { recursive: true }); fs.cpSync(source, rustRoot, { recursive: true });
-    fs.writeFileSync(path.join(config, 'workspace-active.json'), JSON.stringify({ formatVersion: 1, workspaceId, generation: 1,
+    fs.cpSync(source, rustRoot, { recursive: true });
+    fs.writeFileSync(path.join(rustConfig, 'workspace-active.json'), JSON.stringify({ formatVersion: 1, workspaceId, generation: 1,
       activatedRevision: 1, domains: ['artwork', 'settings', 'chat', 'draft'], migrationId: 'fixture', backupId: null, restoreCandidateId: null, bundledUi: true }));
-    fs.copyFileSync(path.join(config, 'workspace-active.json'), path.join(rustConfig, 'workspace-active.json'));
     const secret = randomBytes(32).toString('hex');
-    const node = fork(fileURLToPath(import.meta.url), ['--node-host', config], { env: { ...process.env, AICS_DESKTOP_GATEWAY_TOKEN: secret },
-      windowsHide: true, stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
-    children.push(node);
-    let nodeError = ''; node.stderr.on('data', chunk => { nodeError = (nodeError + chunk).slice(-16000); });
-    const nodeOrigin = await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error(`Node fixture startup timed out: ${nodeError}`)), 15000);
-      node.once('message', message => { clearTimeout(timer); resolve(message.origin); });
-      node.once('error', error => { clearTimeout(timer); reject(error); });
-      node.once('exit', code => { clearTimeout(timer); reject(new Error(`Node fixture exited ${code}: ${nodeError}`)); });
-    });
-    const nodeServer = { origin: nodeOrigin, secret };
-    const nodeResult = await exercise(nodeServer, baseline);
-    const nodeExit = once(node, 'exit'); node.send('close'); await nodeExit;
     const rust = await startRust(rustConfig, secret); children.push(rust.child);
     const rustResult = await exercise(rust, baseline);
-    assert.deepEqual(rustResult.receipt, nodeResult.receipt);
-    assert.deepEqual(rustResult.saved, nodeResult.saved);
-    assert.deepEqual(rustResult.setting, nodeResult.setting);
+    assert.deepEqual(rustResult.receipt, legacy.expected.receipt);
+    assert.deepEqual(rustResult.saved, legacy.expected.saved);
+    assert.deepEqual(rustResult.setting, legacy.expected.setting);
     let browser;
     if (process.env.AICS_RUST_BROWSER_REPORT) {
       const { verifyBrowser } = await import('./browser.mjs');
       browser = await verifyBrowser(rust, sourceProfile, process.env.AICS_RUST_BROWSER_REPORT);
     }
     const rustExit = once(rust.child, 'exit'); await signed(rust, 'shutdown'); await rustExit;
-    // Read Rust writes through the old engine, including operation identities.
-    const reopened = openWorkspaceEngine({ root: rustRoot, workspaceId, writerEpoch: 'node-reopen', create: false });
+    // Read persisted rows with SQLite directly: no Rust/retired Node decoding
+    // implementation can make a matching HTTP response hide corrupt storage.
+    const reopened = new DatabaseSync(path.join(rustRoot, 'huiyu.sqlite3'), { readOnly: true });
     try {
-      const saved = await reopened.execute({ kind: 'getArtwork', id: 'seed-1' }, { workspaceId, principalId: principal, protocolVersion: 1 });
-      assert.deepEqual(saved, rustResult.receipt.artwork);
+      assert.deepEqual(reopened.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
+      assert.equal(reopened.prepare('SELECT count(*) AS n FROM artworks').get().n, 1002);
+      for (const receipt of [legacy.expected.receipt, legacy.expected.saved]) {
+        const row = reopened.prepare('SELECT * FROM artworks WHERE id_key=?').get(receipt.artwork.id);
+        assert.deepEqual({ id: JSON.parse(row.id_json), body: JSON.parse(row.body), revision: row.revision, deletedAt: row.deleted_at }, receipt.artwork);
+        const operation = reopened.prepare('SELECT * FROM operations WHERE principal_id=? AND operation_id=?').get(principal, receipt.operationId);
+        assert.equal(operation.state, 'committed');
+        assert.deepEqual(JSON.parse(operation.receipt_json), receipt);
+      }
+      const original = reopened.prepare('SELECT * FROM operations WHERE principal_id=? AND operation_id=?').get(principal, 'seed-save');
+      assert.deepEqual({ ...original }, legacy.database.tables.operations[0]);
+      const setting = reopened.prepare("SELECT body,revision FROM profile_records WHERE domain='settings' AND record_key='aics_theme'").get();
+      assert.deepEqual(JSON.parse(setting.body), legacy.expected.setting.value);
+      assert.equal(setting.revision, legacy.expected.setting.revision);
+      const hash = legacy.baseline.prepare.media.sha256;
+      for (const alias of ['seed-image', 'new-image']) {
+        assert.equal(reopened.prepare('SELECT hash FROM media_aliases WHERE alias=?').get(alias).hash, hash);
+      }
+      assert.deepEqual(fs.readFileSync(path.join(rustRoot, 'media/objects', hash.slice(0, 2), hash)), image);
     } finally { reopened.close(); }
     const binary = runtimeBinary;
     const report = { formatVersion: 1, measuredAt: new Date().toISOString(), fixtureRows: 1001, measuredRows: 1002,
       sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: repo, encoding: 'utf8' }).trim(), nodeVersion: process.version,
       runtimeSha256: digest(fs.readFileSync(binary)), cargoLockSha256: digest(fs.readFileSync(path.join(root, 'Cargo.lock'))), appRoot,
-      checks: ['Node receipt retried by Rust', 'unknown fields round-trip', 'idempotent patch', 'chunk upload and commit retry', 'profile CAS receipt', 'single-object media Range', 'Rust writes reopened by Node'],
-      latency: { node: nodeResult.rounds, rust: rustResult.rounds }, browser,
+      legacySourceCommit: legacy.sourceCommit,
+      checks: ['fixed Node schema-3 database opened by Rust', 'legacy receipt retried unchanged', 'unknown fields round-trip', 'idempotent patch', 'chunk upload and commit retry', 'profile CAS receipt', 'single-object media Range', 'Rust writes and legacy operation identity independently read by SQLite'],
+      latency: { rust: rustResult.rounds }, browser,
       limits: 'Isolated workspace HTTP slice; optional real gallery/control browser acceptance with neutral fixture settings only. No production data, model execution, installation, full-runtime memory or whole-product performance claim.' };
     if (process.env.AICS_RUST_PARITY_REPORT) fs.writeFileSync(process.env.AICS_RUST_PARITY_REPORT, JSON.stringify(report, null, 2) + '\n');
     console.log(JSON.stringify(report, null, 2));
@@ -213,5 +205,4 @@ async function stop(child) {
   const closed = once(child, 'exit'); child.kill(); await closed;
 }
 
-if (process.argv[2] === '--node-host') await nodeHost();
-else await run();
+await run();

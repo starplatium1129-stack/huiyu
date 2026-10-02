@@ -29,7 +29,6 @@ const SUITE_TIMEOUT_MS = Object.freeze({
   contract: 180_000,
   tooling: 300_000,
   release: 300_000,
-  legacy: 180_000,
 });
 const CAPTURE_MAX_BUFFER = 64 * 1024 * 1024;
 
@@ -237,7 +236,7 @@ async function main(argv: string[]) {
   }
   const suiteName = argv[0] as keyof typeof QUALITY_TEST_SUITES;
   if (!Object.hasOwn(QUALITY_TEST_SUITES, suiteName)) {
-    console.error(`usage: node ${path.basename(__filename)} <check|unit|contract|tooling|release|legacy|all> [test-file...] [--verbose] [--all]`);
+    console.error(`usage: node ${path.basename(__filename)} <check|unit|contract|tooling|release|all> [test-file...] [--verbose] [--all]`);
     return 2;
   }
   const verbose = argv.includes('--verbose');

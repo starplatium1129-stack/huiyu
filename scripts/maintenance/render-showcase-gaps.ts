@@ -29,7 +29,7 @@ const ENGINE = 'anima';
 
 function resolveManifest(opts: any) {
   if (opts.manifest) return safety.noLinks(path.resolve(opts.manifest));
-  const { resolveSceneShowcaseDir }: typeof import('../../server/config') = require('../../server/config');
+  const { resolveSceneShowcaseDir }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
   const workspace = opts.env.AI_WORKSPACE_ROOT || path.resolve(opts.root, '..', 'AI');
   const directory = resolveSceneShowcaseDir(opts.root, opts.env.SCENE_SHOWCASE_DIR, workspace);
   if (!directory) throw new Error('no source showcase manifest; supply --manifest explicitly');
