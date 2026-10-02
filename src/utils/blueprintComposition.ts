@@ -21,6 +21,7 @@ const personSuppression = new Set([
 const panelSuppression = new Set([
   'split image', 'split screen', 'split panel', 'two panels', 'diptych', 'triptych',
   'comic strip', 'multiple frames', 'panel borders', 'frame borders', 'double exposure',
+  'comic panel', 'border', 'white border',
   'double image', 'duplicated subject', 'duplicated body', 'duplicate', 'duplicated person',
   'clone', 'copy', 'doppelganger', 'twin', 'two of her', 'second instance of her', 'same character twice',
 ])

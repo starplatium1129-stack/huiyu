@@ -33,6 +33,7 @@ import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstan
 import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/promptCompiler'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { studioDualSubject } from '@/utils/studioDualSubject'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 
@@ -300,13 +301,20 @@ export function usePromptAssembly(
     return dedupeParts(applyFraming(parts, selections.shot))
   })
 
+  const structuredScene = computed(() => {
+    const scenePrompt = sceneTemplateText(effectiveScene.value, { char: pb.char, manualTags: pb.manualTags, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value })
+    return pb.char === 'triad' && engine.value === 'krea2'
+      ? studioDualSubject(scenePrompt)
+      : { scenePrompt, subjectProse: studioSubjectProse(pb.char) }
+  })
+
   const structuredPlan = computed(() => createPromptPlan({
     profile: modelProfile.value,
     identity: pb.charPrompt,
     controls: characterControlTokens(effectiveScene.value, pb.char, controlLoraIds.value),
     artists: artistTags.value,
     artistProse: artistProse.value,
-    scenePrompt: sceneTemplateText(effectiveScene.value, { char: pb.char, manualTags: pb.manualTags, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value }),
+    scenePrompt: structuredScene.value.scenePrompt,
     emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
     camera: pb.selections.shot ? [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''] : [],
     lighting: pb.selections.lighting ? [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''] : [],
@@ -316,7 +324,7 @@ export function usePromptAssembly(
     negative: effectiveScene.value?.negative || NEGATIVE_DEFAULT,
     rating: profileRatingTag(modelProfile.value, effectiveScene.value) || sceneRating(effectiveScene.value).toLowerCase(),
     visualDescription: pb.visualDescription,
-    subjectProse: studioSubjectProse(pb.char),
+    subjectProse: structuredScene.value.subjectProse,
     scene: sceneContext(effectiveScene.value),
   }))
 

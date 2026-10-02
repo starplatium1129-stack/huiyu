@@ -41,7 +41,7 @@ test('explicit SFW composition survives core and showcase guards without relaxin
     assert.ok(neg.includes('nude'), 'SFW content protection remains');
     if (b!.compositionIntent === 'triptych') {
       assert.ok(/three sequential panels/.test(p.prompt));
-      for (const token of ['triptych', 'comic strip', 'multiple frames', 'duplicated subject', 'same character twice']) assert.ok(!neg.includes(token), token);
+      for (const token of ['triptych', 'comic strip', 'comic panel', 'border', 'white border', 'multiple frames', 'duplicated subject', 'same character twice']) assert.ok(!neg.includes(token), token);
     } else {
       assert.ok(neg.includes('duplicate'), 'group still prevents accidental clones');
       assert.ok(neg.includes('triptych'), 'group remains one frame');
@@ -703,6 +703,49 @@ test('blueprint decisions: angle keywords outrank framing substrings; every blue
   let unresolved = blueprints.filter(function (item) { return !popular.inferBlueprintDecisions(item).shot; });
   assert.strictEqual(unresolved.length, 0,
     'every blueprint camera field must resolve to a director shot; unresolved: ' + unresolved.map(function (b) { return b.id; }).join(', '));
+});
+
+test('blueprint decisions: word boundaries and authored symmetry preserve explicit choices', () => {
+  const mash = blueprints.find(b => b.id === 'mash_kyrielight_ortinax_launch')!;
+  assert.strictEqual(popular.inferBlueprintDecisions(mash).shot, 'wide');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...mash, camera: 'close-up of closed fists' }).shot, 'close');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...mash, camera: 'full-body shot, low angle' }).shot, 'low');
+  const mika = blueprints.find(b => b.id === 'misono_mika_tea_throne')!;
+  const character = characters.find(c => c.id === mika.characterId)!;
+  const outfit = popular.findOutfit(character, mika.outfitId!)!;
+  const decisions = popular.inferBlueprintDecisions(mika);
+  assert.strictEqual(decisions.composition, 'center');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...mika, camera: 'medium shot, asymmetrical composition' }).composition, 'rule3');
+  for (const engine of ['anima', 'krea2'] as const) {
+    const automatic = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions })!;
+    assert.ok(automatic.prompt.includes('centered composition'));
+    assert.ok(!automatic.prompt.includes('rule of thirds'));
+    const explicit = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions, shot: 'wide', composition: 'right' })!;
+    assert.ok(explicit.prompt.includes('off-center composition'));
+    assert.ok(!explicit.prompt.includes('centered composition'));
+  }
+});
+
+test('shared compiler retains reference outfit, manual pose, visual background and camera', () => {
+  const source = blueprints.find(b => b.id === 'misono_mika_tea_throne')!;
+  const character = characters.find(c => c.id === source.characterId)!;
+  const outfit = popular.findOutfit(character, source.outfitId!)!;
+  const blueprint = { ...source, promptTokens: ['sitting', 'garden'], promptProse: 'A garden beside a stone path.', mood: '' };
+  const before = JSON.stringify({ character, outfit, blueprint });
+  for (const engine of ['anima', 'krea2'] as const) {
+    const result = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine,
+      outfitOverride: ['blue_coat'], manual: ['standing'], visualDescription: 'A forest path continues behind her.',
+      shot: 'close', composition: 'left', lighting: 'moon',
+    })!;
+    assert.ok(/blue coat/.test(result.prompt));
+    assert.ok(/standing/.test(result.prompt) && !/\bsitting\b/.test(result.prompt));
+    assert.ok(/forest/.test(result.prompt) && /garden/i.test(result.prompt));
+    assert.ok(/close-up/.test(result.prompt) && /moonlight/.test(result.prompt));
+    assert.ok(/off-center composition/.test(result.prompt));
+    assert.ok(result.prompt.includes('Mika'));
+    assert.ok(!result.prompt.includes(outfit.prose));
+  }
+  assert.strictEqual(JSON.stringify({ character, outfit, blueprint }), before);
 });
 
 test('krea prose: director shot/lighting decisions must reach the compiled prompt', function () {

@@ -23,7 +23,7 @@ export interface PromptCompilerInput {
 }
 
 const split = (value: string | undefined): string[] => tokenize(value || '').filter(Boolean)
-const clean = (value: string): string => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/gi, ', ').replace(/\s+/g, ' ').trim()
+const clean = (value: string): string => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').replace(/\s+/g, ' ').trim()
 const capFirst = (value: string): string => value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : ''
 const sentence = (value: string): string => { const text = clean(value); return text ? `${capFirst(text.replace(/[.!?]+$/, ''))}.` : '' }
 const proseList = (values: string[]): string => [...new Set(values.map(proseToken).filter(Boolean))].join(', ').replace(/(?:,\s*){2,}/g, ', ')
@@ -51,10 +51,10 @@ const KREA_IDENTITY_KEYS = new Set([
   'golden_yellow_eyes', 'yellow_eyes', 'ahoge', 'pink_hair_ribbons', 'hair_ribbon',
   'two_red_hairclips', 'two_red_hairclips_only', 'mole_under_eye', 'no_hair_ribbon',
 ])
-const KREA_ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|kitchen|palace|ruins|bridge|river|theater|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
+const KREA_ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|bookstore|kitchen|palace|ruins|bridge|river|theater|backstage|supermarket|aquarium|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
 const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
 const KREA_BODY_DETAIL_RE = /^(?:nude|naked|fully_nude|bare_|cleavage|sideboob|underboob|no_bra|no_panties|panties_aside|pulling_down_panties|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|navel|slender_thighs|nipples|areola|pussy|cameltoe|breasts_out|topless|bottomless|lifted_skirt|legs_apart|spread_legs|parted_lips|open_mouth|ahegao|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|heavy_breathing|drooling|wet_skin|wet_hair|wet_clothes|sweat|sweaty_skin|see_through|translucent|hugging_pillow|sex|intercourse|vaginal|anal|oral|fellatio|blowjob|deepthroat|cunnilingus|paizuri|titfuck|handjob|fingering|masturbation|female_masturbation|missionary|doggystyle|cowgirl_position|mating_press|spooning|grinding|penetration|cum|cum_on_face|cum_in_mouth|cum_on_breasts|cum_on_body|internal_cumshot|creampie|excessive_cum|after_sex|panty_pull|skirt_lift|grabbed_breasts|groping)/
-const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)/
+const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|sweeping|tripping|squeezing|hand_gripping|skirt_hem_caught|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)(?:_|$)/
 const KREA_MOOD_RE = /(?:^|_)(?:smile|blush|shy|happy|calm|relaxed|serious|sad|melancholic|nervous|expectant|panicked|embarrassed|tears|tearful|teary|tsundere|sensual|intimate|romantic|seductive|passionate|expressionless|in_love|soft_eyes|bright_eyes|red_ears|heavy_breathing)(?:_|$)/
 
 function naturalList(values: string[]): string {
@@ -156,7 +156,8 @@ const LOCATION_PHRASES: ReadonlyArray<readonly [RegExp, string]> = [
   [/客厅|家庭影音室/, 'inside a living room'],
   [/教室|课桌/, 'inside a classroom'],
   [/厨房|料理台|后厨/, 'inside a kitchen'],
-  [/图书馆|图书室|书库|书店/, 'inside a library'],
+  [/图书馆|图书室|书库/, 'inside a library'],
+  [/书店/, 'inside a bookstore'],
   [/海边|海滨|海岸|沙滩/, 'on a beach'],
   [/神社|古寺/, 'at a shrine'],
   [/天台|屋顶/, 'on a rooftop'],
@@ -214,6 +215,7 @@ function sceneLightingPhrases(scene: PromptSceneContext | null): string[] {
 
 function buildStructuredKreaDescription(plan: PromptPlan): string {
   const style = inferredKreaStyle(plan)
+  const dual = plan.identity.some(token => normalizeProseKey(token) === '2girls')
   const subject = clean(plan.subjectProse || proseList(plan.identity))
     .replace(/[.!?]+\s*/g, '; ')
     .replace(/;\s*$/, '')
@@ -266,7 +268,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   // Krea 内部扩写倾向把 IP 角色泛化（出图不认角色）。提取 subjectProse 头部
   // 角色名（兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
   // "Name (Alias) from" 四种常见身份散文开头），注入保护句。
-  if (subject) {
+  if (subject && !dual) {
     // 兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
     // "Name (Alias) from"（括号别名如 Reze (Bomb Devil)；连词如 Jeanne d'Arc）。
     // 取「从开头到大写单词序列结束」为止的名字：遇到 ", " / " (" / " from " 即停。
@@ -283,8 +285,8 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const actionText = naturalList(action.map(proseClause))
   const moodText = naturalList(compactMood(mood))
   const portrayal: string[] = []
-  if (actionText) portrayal.push(`She is ${actionText}`)
-  if (moodText) portrayal.push(`${actionText ? 'her' : 'Her'} expression is ${moodText}`)
+  if (actionText) portrayal.push(`${dual ? 'They are' : 'She is'} ${actionText}`)
+  if (moodText) portrayal.push(dual ? `their expressions are ${moodText}` : `${actionText ? 'her' : 'Her'} expression is ${moodText}`)
   if (plan.visualDescription) portrayal.push(clean(plan.visualDescription).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, ''))
   if (portrayal.length) parts.push(sentence(portrayal.join(actionText && moodText ? ', while ' : ', ')))
   const environmentText = plan.sceneProse
@@ -532,7 +534,7 @@ const KREA_BANNED_WORDS_RE = new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_
 function sanitizeKreaProse(value: string): string {
   return sanitizeVisualArtifacts(String(value || '')
     .replace(/<lora:[^>]+>/gi, '')
-    .replace(/\bBREAK\b/gi, ', ')
+    .replace(/\bBREAK\b/g, ', ')
     .replace(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi, '$1')
     .replace(KREA_BANNED_WORDS_RE, '')
     .replace(/_/g, ' ')

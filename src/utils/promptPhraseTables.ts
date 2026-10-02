@@ -21,6 +21,9 @@ export function proseToken(value: string): string {
     .replace(/^natsume_maid_uniform$/i, 'maid uniform')
     .replace(/^natsume_winter_coat$/i, 'winter coat')
     .replace(/^natsume_sleepwear$/i, 'sleepwear')
+    .replace(/^nene_holding_marriage_contract$/i, 'Nene is holding a marriage contract')
+    .replace(/^nene_interlacing_fingers_with_viewer$/i, "Nene is interlacing her fingers with the viewer's")
+    .replace(/^natsume_fixing_nene_hair_ornament$/i, "Natsume is fixing Nene's hair ornament")
   if (!readable) return ''
   if (/^(?:nene|natsume)_/i.test(readable)) return ''
   return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\bsolo\b/gi, 'alone')
@@ -43,11 +46,17 @@ const ACTION_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   blushing: 'with flushed cheeks', deep_blush: 'deeply blushing', heavy_blush: 'with bright rosy blushing cheeks',
   looking_at_viewer: 'looking toward the viewer', looking_back: 'looking back over her shoulder',
   holding_papers: 'holding a stack of papers', holding_hands: 'holding the viewer\'s hand',
+  holding_viewer_right_hand: "holding the viewer's right hand", holding_viewer_left_hand: "holding the viewer's left hand",
   one_hand_adjusting_hair_ribbon: 'using one hand to adjust her pink hair ribbon',
   holding_papers_in_other_arm: 'holding lecture papers securely in her other arm',
   carrying_sandals_in_one_hand: 'carrying her sandals visibly in one hand',
   walking_on_beach: 'walking barefoot along the wet beach',
   holding_letter: 'holding a letter', standing: 'standing', sitting: 'sitting', waiting: 'waiting',
+  sweeping_shrine_steps_with_bamboo_broom: 'sweeping the shrine steps with a bamboo broom',
+  skirt_hem_caught_on_flower_stand: 'caught by her skirt hem on a flower stand',
+  hand_gripping_dress_edge: 'gripping the edge of her dress with one hand',
+  tripping_on_long_kimono_hem: 'tripping on the hem of her long kimono',
+  squeezing_sweater_sleeve: 'squeezing her sweater sleeve',
   in_love: 'showing quiet affection', eye_contact: 'maintaining direct eye contact',
   tears: 'with tears in her eyes', crying: 'crying', sleeping: 'sleeping peacefully',
   sitting_on_counter: 'sitting on a counter', sitting_on_lap: 'sitting on the viewer\'s lap',
@@ -212,6 +221,8 @@ const ENVIRONMENT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   movie_theater: 'inside a dark movie theater', cafe: 'inside a cafe', cafe_interior: 'inside a cafe',
   bedroom: 'inside a bedroom', living_room: 'inside a living room', kitchen: 'inside a kitchen',
   bathroom: 'inside a bathroom', library: 'inside a library', shrine: 'at a shrine',
+  backstage: 'indoors backstage', supermarket: 'inside a supermarket', aquarium: 'inside an aquarium',
+  mirrored_elevator_walls: 'inside an elevator with mirrored walls',
   rooftop: 'on a rooftop', beach: 'on a beach', park: 'in a park', garden: 'in a garden',
   swimming_pool: 'beside a swimming pool', safehouse: 'inside a safehouse', hotel_room: 'inside a hotel room',
   morning: 'in the morning', afternoon: 'in the afternoon', evening: 'in the evening',
@@ -227,6 +238,6 @@ export function environmentPhrase(value: string): string {
   if (ENVIRONMENT_REWRITES[key]) return ENVIRONMENT_REWRITES[key]
   const phrase = proseToken(value)
   if (!phrase) return ''
-  if (/(?:interior|room|classroom|bedroom|bathroom|kitchen|library|cafe|theater|studio|office)$/.test(key)) return `inside ${phrase}`
+  if (/(?:^|_)(?:interior|room|classroom|bedroom|bathroom|kitchen|library|cafe|theater|studio|office)$/.test(key)) return `inside ${phrase}`
   return `with ${phrase}`
 }

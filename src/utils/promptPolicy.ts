@@ -91,7 +91,7 @@ export function norm(text: string): string {
       if (!s) return ''
       // lora 语法保持原样
       if (/^<lora:/i.test(s)) return s
-      if (/^BREAK$/i.test(s)) return 'BREAK'
+      if (s === 'BREAK') return 'BREAK'
       const lower = s.toLowerCase()
       for (const tag of UNDERSCORE_TAGS) {
         if (lower === tag) return tag.replace(/\s+/g, '_')
@@ -143,7 +143,7 @@ function formatAnimaToken(token: string, exactTokens: readonly string[] = [], ex
 export function formatPromptForEngine(text: string, engine: PromptEngine = 'sd', exactTokens: readonly string[] = [], exactPrefixes: readonly string[] = []): string {
   const raw = String(text || '')
   if (engine === 'sd') return norm(raw)
-  if (engine === 'krea2') return raw.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/gi, ', ').trim()
+  if (engine === 'krea2') return raw.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').trim()
   const clean = raw.replace(/<lora:[^>]+>/gi, '')
   return splitBreaks(dedupeText(clean))
      .map(section => tokenize(section).map(token => formatAnimaToken(token, exactTokens, exactPrefixes)).filter(Boolean).join(', '))
@@ -173,7 +173,7 @@ export function tokenize(text: string): string[] {
 
 export function splitBreaks(text: string): string[] {
   return String(text || '')
-    .replace(/\s*,?\s*\bBREAK\b\s*,?\s*/gi, '\u0000BREAK\u0000')
+    .replace(/\s*,?\s*\bBREAK\b\s*,?\s*/g, '\u0000BREAK\u0000')
     .split('\u0000BREAK\u0000')
     .map(section => section.trim())
 }
@@ -181,7 +181,7 @@ export function splitBreaks(text: string): string[] {
 function dedupeSegment(text: string, seen = new Set<string>()): string {
   return tokenize(text).filter(token => {
     const key = normalizeKey(token)
-    if (!key || key === 'break' || seen.has(key)) return false
+    if (!key || token === 'BREAK' || seen.has(key)) return false
     seen.add(key)
     return true
   }).join(', ')
@@ -424,7 +424,7 @@ export function dedupeParts(parts: PromptPart[]): PromptPart[] {
   return parts.map(part => {
     if (part.cls === 'l') return part
     const seen = part.cls === 'n' ? negativeSeen : positiveSeen
-    const scoped = /\bBREAK\b/i.test(part.text)
+    const scoped = /\bBREAK\b/.test(part.text)
     return { ...part, text: dedupeText(part.text, scoped ? undefined : seen) }
   }).filter(part => part.text.trim())
 }
@@ -477,7 +477,7 @@ export function sceneTemplateText(
   if (!scene?.prompt) return ''
   let template = String(scene.prompt)
     .replace(/<lora:[^>]+>/gi, '')
-    .replace(/_BREAK_/gi, ' BREAK ')
+    .replace(/_BREAK_/g, ' BREAK ')
     .split(',')
     .map(t => t.trim())
     .filter(Boolean)

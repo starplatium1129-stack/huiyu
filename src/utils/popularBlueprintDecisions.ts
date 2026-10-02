@@ -24,7 +24,7 @@ const CAMERA_TO_SHOT: Record<string, string> = {
 const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
   [/cowboy (?:shot)?|cowboy_shot/, 'medium'],
   [/dynamic action (?:shot|angle)|action shot/, 'wide'],
-  [/full body/, 'wide'],
+  [/\bfull[ -]body\b/, 'wide'],
   [/couch level|low level/, 'low'],
   [/three quarter/, 'medium'],
   [/upper body/, 'medium'],
@@ -75,11 +75,11 @@ function matchMoodGrammar(mood: string): { tokens: string[]; prose: string } | u
   return MOOD_CAMERA_GRAMMAR.find(([pattern]) => pattern.test(text))?.[1]
 }
 
-function matchFirst(text: string, table: Record<string, string>): string | null {
+function matchFirst(text: string, table: Record<string, string>, wholeWords = false): string | null {
   const lower = text.toLowerCase()
   const keys = Object.keys(table).sort((a, b) => b.length - a.length)
   for (const key of keys) {
-    if (lower.includes(key)) return table[key]
+    if (wholeWords ? new RegExp(`\\b${key}\\b`).test(lower) : lower.includes(key)) return table[key]
   }
   return null
 }
@@ -90,16 +90,16 @@ export function inferBlueprintDecisions(blueprint: SceneBlueprint | null): Popul
   const angleShot = blueprintAngleShot(blueprint.camera)
   const cameraText = String(blueprint.camera || '').toLowerCase()
   const prior = blueprint.adult ? existingBlueprintDecisions(blueprint) : null
-  const shot = prior ? prior.shot : angleShot ?? matchFirst(cameraText, CAMERA_TO_SHOT)
+  const shot = prior ? prior.shot : angleShot ?? matchFirst(cameraText, CAMERA_TO_SHOT, true)
     ?? EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1]
-    ?? matchFirst(hay, CAMERA_TO_SHOT)
+    ?? matchFirst(hay, CAMERA_TO_SHOT, true)
   const lighting = prior ? prior.lighting : inferBlueprintLighting(blueprint)
   const colorMood = matchFirst(hay, MOOD_TO_COLOR)
   const moodGrammar = matchMoodGrammar(blueprint.mood)
   return {
     shot,
     lighting,
-    composition: 'rule3',
+    composition: !blueprint.adult && /\bsymmetrical[ _-]composition\b/.test(cameraText) ? 'center' : 'rule3',
     colorMood,
     size: blueprint.recommendedSize || '832x1216',
     moodGrammar,

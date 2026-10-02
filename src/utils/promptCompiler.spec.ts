@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { plainEnglish, createPromptPlan, renderPromptPlan } from './promptCompiler'
+import { formatPromptForEngine, splitBreaks } from './promptPolicy'
+import { environmentPhrase } from './promptPhraseTables'
+import { usePromptAssembly } from '../composables/prompt/usePromptAssembly'
+import { ref } from 'vue'
+import sharedScenes from '../../data/scenes/shared.json'
 
 /** plainEnglish：仅放行「纯 ASCII 可打印」的英文短语文本；其余（CJK/空/非字符串）归零。
  *  这是词条→英文短语映射链的守门函数——中文场景描述必须走映射表而非直通。 */
@@ -26,6 +31,83 @@ describe('plainEnglish', () => {
  *     但从未织入渲染输出，此处验证织入与防重复；
  *  2) 空场景散文追加 "no characters, no people, no figures"。 */
 describe('renderPromptPlan krea2', () => {
+  it('preserves ordinary break words while consuming uppercase structural BREAK', () => {
+    for (const engine of ['anima', 'krea2'] as const) {
+      const prose = renderPromptPlan(createPromptPlan({
+        subjectProse: 'A woman', sceneProse: 'During a break beside the breakwater. BREAK Break time continues.',
+      }), engine).prompt
+      expect(prose).toContain('During a break beside the breakwater')
+      expect(prose).toContain('Break time continues')
+      expect(prose).not.toContain('BREAK')
+      const tags = formatPromptForEngine('taking a break, BREAK, break, windbreaker', engine)
+      expect(tags).toContain('taking a break')
+      expect(tags).toContain('break, windbreaker')
+    }
+    expect(splitBreaks('taking a break, BREAK, reading')).toEqual(['taking a break', 'reading'])
+  })
+
+  it('places known indoor settings in the environment and keeps outdoor weather and bookstore identity', () => {
+    for (const setting of ['backstage', 'supermarket', 'aquarium', 'mirrored_elevator_walls']) {
+      const { prompt } = renderPromptPlan(createPromptPlan({
+        subjectProse: 'A woman', scenePrompt: setting, scene: { weather: '晴' },
+      }), 'krea2')
+      expect(prompt).toMatch(/The scene takes place (?:inside|indoors)/)
+      expect(prompt).not.toContain('beneath a clear sky')
+    }
+    const bookstore = renderPromptPlan(createPromptPlan({ subjectProse: 'A woman', scene: { location: '旧书店', weather: '晴' } }), 'krea2').prompt
+    expect(bookstore).toContain('inside a bookstore')
+    expect(bookstore).not.toMatch(/inside a library|beneath a clear sky/)
+    const beach = renderPromptPlan(createPromptPlan({ subjectProse: 'A woman', scene: { location: '海边', weather: '晴' } }), 'krea2').prompt
+    expect(beach).toContain('beneath a clear sky')
+    expect(environmentPhrase('bamboo_broom')).toBe('with bamboo broom')
+    expect(environmentPhrase('empty_classroom')).toBe('inside empty classroom')
+  })
+
+  it('keeps clothing and location nouns inside actions even with an explicit outfit', () => {
+    const actions = 'sweeping_shrine_steps_with_bamboo_broom, skirt_hem_caught_on_flower_stand, hand_gripping_dress_edge, tripping_on_long_kimono_hem, squeezing_sweater_sleeve'
+    for (const outfitProse of ['', 'a blue dress']) {
+      const { prompt } = renderPromptPlan(createPromptPlan({
+        subjectProse: 'A woman', outfitProse, scenePrompt: `white_dress, ${actions}`,
+      }), 'krea2')
+      const action = prompt.split('She is ')[1]
+      expect(action).toContain('sweeping the shrine steps with a bamboo broom')
+      expect(action).toContain('caught by her skirt hem on a flower stand')
+      expect(action).toContain('gripping the edge of her dress with one hand')
+      expect(action).toContain('tripping on the hem of her long kimono')
+      expect(action).toContain('squeezing her sweater sleeve')
+      expect(prompt.split('She is ')[0]).not.toMatch(/caught|gripping|tripping|squeezing/)
+      expect(prompt).not.toContain('inside sweeping')
+      if (outfitProse) expect(prompt).not.toContain('white dress')
+    }
+  })
+
+  it('binds each studio woman to her own appearance, position, clothes and actions through assembly', () => {
+    for (const id of ['sc028', 'sc031']) {
+      const scene = sharedScenes.find(scene => scene.id === id)!
+      const pb = {
+        char: 'triad', charPrompt: '2girls', activeScene: scene, modelProfiles: [], characters: [], loraMeta: [],
+        tags: [], manualTags: new Set<string>(), directorMode: 'basic', artistStyleIds: [],
+        selections: {}, sdParams: {}, emotionPrompt: '', visualDescription: '',
+      } as unknown as Parameters<typeof usePromptAssembly>[0]
+      const { positivePrompt } = usePromptAssembly(pb, ref(''), ref('krea2'), ref('krea2'), ref(''))
+      const prompt = positivePrompt.value
+      const nene = prompt.split('Ayachi Nene on the left: ')[1].split('; Shiki Natsume')[0]
+      const natsume = prompt.split('Shiki Natsume on the right: ')[1].split('.')[0]
+      expect(nene).toMatch(/white hair.*purple eyes.*pink hair ribbons/)
+      expect(natsume).toMatch(/black hair.*mole under eye.*two red hairclips/)
+      expect(prompt).not.toMatch(/\bShe is\b|\bher expression is\b|2girls|no characters/)
+      if (id === 'sc028') {
+        expect(nene).toContain('Nene is holding a marriage contract')
+        expect(nene).toContain("Nene is interlacing her fingers with the viewer's")
+        expect(natsume).toContain("Natsume is fixing Nene's hair ornament")
+        expect(prompt).toContain('elegant white wedding gowns')
+      } else {
+        expect(nene).toMatch(/white formal gown.*holding the viewer's right hand/)
+        expect(natsume).toMatch(/black formal gown.*holding the viewer's left hand/)
+      }
+    }
+  })
+
   it.each(['anima', 'krea2'] as const)('does not invent a style or background for an undirected character in %s', engine => {
     const plan = createPromptPlan({
       identity: '1girl, solo, black_hair',
