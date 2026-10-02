@@ -1,4 +1,5 @@
 use super::*;
+pub(in crate::storage) mod commit;
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let id = string(command, "taskId")?;
@@ -8,12 +9,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         return prepare(c, task, &command["media"]);
     }
     let index = output_index(command["index"].as_u64())?;
-    let chunk = match kind {
-        "task.result.chunk" => Some(media::Chunk::Encoded(command)),
-        "task.result.commit" => None,
-        _ => return Err(invalid("Unknown task result command")),
-    };
-    prepared(c, principal, task, index, chunk)
+    if kind != "task.result.chunk" {
+        return Err(invalid("Unknown task result command"));
+    }
+    prepared(c, task, index, media::Chunk::Encoded(command))
 }
 
 pub(super) fn chunk(
@@ -24,7 +23,7 @@ pub(super) fn chunk(
     source: media::Chunk<'_>,
 ) -> Result<Value> {
     let task = result_task(c, principal, id)?;
-    prepared(c, principal, task, output_index(Some(index))?, Some(source))
+    prepared(c, task, output_index(Some(index))?, source)
 }
 
 fn result_task(c: &Context, principal: &str, id: &str) -> Result<TaskRecord> {
@@ -47,10 +46,9 @@ fn output_index(index: Option<u64>) -> Result<i64> {
 
 fn prepared(
     c: &mut Context,
-    principal: &str,
     task: TaskRecord,
     index: i64,
-    chunk: Option<media::Chunk<'_>>,
+    chunk: media::Chunk<'_>,
 ) -> Result<Value> {
     let id = task.task_id.as_str();
     let (body, committed): (String, bool) =
@@ -62,49 +60,9 @@ fn prepared(
         .ok_or_else(|| conflict("TASK_RESULT_MISSING", "Result was not prepared"))?;
     let media: Value = serde_json::from_str(&body)?;
     let key = canonical::digest(format!("task:{id}:{index}"));
-    if let Some(chunk) = chunk {
-        return Ok(
-            json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &media, chunk, false)? }}),
-        );
-    }
-    if committed {
-        media::cleanup(c, &key, &media);
-        return Ok(serde_json::to_value(task)?);
-    }
-    media::publish(c, &key, &media)?;
-    let result = c.transaction(|c| {
-        let mut task = require(c, principal, id)?;
-        let hash = string(&media, "sha256")?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_objects VALUES(?,?,?)",
-            params![hash, media["bytes"].as_i64(), string(&media, "mime")?],
-        )?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_aliases VALUES(?,?)",
-            params![string(&media, "alias")?, hash],
-        )?;
-        c.db.execute(
-            "INSERT OR IGNORE INTO media_refs VALUES('task-result',?,?)",
-            params![id, hash],
-        )?;
-        c.db.execute(
-            "UPDATE task_outputs SET committed=1 WHERE task_id=? AND output_index=?",
-            params![id, index],
-        )?;
-        c.db.execute("DELETE FROM leases WHERE id=?", [&key])?;
-        if !task
-            .result_refs
-            .iter()
-            .any(|item| item.index == index as u64)
-        {
-            task.result_refs
-                .push(serde_json::from_value(media.clone())?);
-        }
-        task.result_state = ResultState::Available;
-        write(c, task)
-    })?;
-    media::cleanup(c, &key, &media);
-    Ok(result)
+    Ok(
+        json!({"offset": if committed { media["bytes"].as_u64().unwrap() } else { media::upload_chunk(c, &key, &media, chunk, false)? }}),
+    )
 }
 
 pub(super) fn discard(c: &Context, id: &str) -> Result<()> {

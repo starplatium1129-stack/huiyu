@@ -4,6 +4,8 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use sha2::{Digest, Sha256};
 use std::time::Instant;
 
+pub(in crate::storage) mod commit_validation;
+
 const PRINCIPAL: &str = "desktop:binary-media";
 const ID: &str = "binary-task";
 

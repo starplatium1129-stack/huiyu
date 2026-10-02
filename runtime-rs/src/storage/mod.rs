@@ -9,6 +9,7 @@ mod organization;
 mod profile;
 mod project_commands;
 mod records;
+mod result_commit;
 mod saves;
 mod schema;
 mod tasks;
@@ -55,8 +56,11 @@ pub struct Storage {
     native_images: Option<Arc<PathBuf>>,
     verification: Arc<verification::Verifier>,
     thumbnails: Arc<thumbnail::Readers>,
+    result_writes: Arc<tokio::sync::Semaphore>,
 }
 enum Work {
+    AdmittedResult(Box<Work>, tokio::sync::OwnedSemaphorePermit),
+    ResultVerified(String, Result<result_commit::Verified>),
     TaskMediaChunk(
         TaskMediaChunk,
         String,
@@ -106,6 +110,7 @@ pub(super) struct Context {
     epoch: String,
     owner: schema::Owner,
     cancel: Arc<AtomicBool>,
+    result_commit: Option<result_commit::Pending>,
 }
 impl Context {
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {

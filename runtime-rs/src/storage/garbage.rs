@@ -91,6 +91,12 @@ pub(super) fn finish(
     })
 }
 fn protected(c: &Context, hash: &str) -> Result<bool> {
+    if c.result_commit
+        .as_ref()
+        .is_some_and(|job| job.hash() == hash)
+    {
+        return Ok(true);
+    }
     Ok(c.db.prepare_cached("SELECT EXISTS(SELECT 1 FROM media_refs WHERE hash=?1) OR EXISTS(SELECT 1 FROM leases WHERE hash=?1)")?
         .query_row([hash], |row| row.get(0))?)
 }
@@ -145,7 +151,10 @@ fn clean_staging(c: &Context) -> Result<()> {
         c.check_cancel()?;
         let item = item?;
         let key = item.file_name().to_string_lossy().into_owned();
-        if !media::valid_hash(&key) || leased.contains(&key) {
+        if !media::valid_hash(&key)
+            || leased.contains(&key)
+            || c.result_commit.as_ref().is_some_and(|job| job.key() == key)
+        {
             continue;
         }
         let Some(alias_hash) = completed.get(&key) else {

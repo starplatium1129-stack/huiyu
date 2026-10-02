@@ -113,10 +113,14 @@ async fn admitted_binary_mutation_with_lost_reply_remains_commit_unknown() {
     });
     // Capture admission before dropping the actor response; never classify an
     // accepted mutation as definitely unwritten merely because its reply vanished.
-    let Some(Work::TaskMediaChunk(_, _, _, reply)) = receiver.recv().await else {
+    let Some(Work::AdmittedResult(work, permit)) = receiver.recv().await else {
+        panic!("expected admitted result write");
+    };
+    let Work::TaskMediaChunk(_, _, _, reply) = *work else {
         panic!("expected admitted binary chunk");
     };
     drop(reply);
     assert_eq!(caller.await.unwrap().unwrap_err().code, "COMMIT_UNKNOWN");
+    drop(permit);
     storage.close().await.unwrap();
 }

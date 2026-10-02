@@ -30,6 +30,7 @@ impl Storage {
             native_images: None,
             verification: Arc::new(verification::Verifier::new()),
             thumbnails: Arc::new(thumbnail::Readers::new()),
+            result_writes: Arc::new(tokio::sync::Semaphore::new(1)),
         })
     }
     pub fn workspace_id(&self) -> &str {
@@ -59,15 +60,14 @@ impl Storage {
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::Request(
-                command,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
+        let work = Work::Request(command, principal.into(), cancel.0.clone(), reply);
+        let work = if matches!(&work, Work::Request(command, ..) if result_commit::is_write(command))
+        {
+            self.admit_result(work).await?
+        } else {
+            work
+        };
+        self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| {
             if mutation {
                 commit_unknown()
@@ -108,15 +108,14 @@ impl Storage {
     ) -> Result<u64> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::TaskMediaChunk(
-                chunk,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
+        let result_write = matches!(chunk.target, TaskMediaTarget::Result(_));
+        let work = Work::TaskMediaChunk(chunk, principal.into(), cancel.0.clone(), reply);
+        let work = if result_write {
+            self.admit_result(work).await?
+        } else {
+            work
+        };
+        self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| commit_unknown())?
     }
     pub async fn media(&self, alias: &str) -> Result<Media> {
@@ -132,6 +131,8 @@ impl Storage {
             .await
     }
     pub async fn close(&self) -> Result<()> {
+        // Wake result writers still outside the actor before draining admitted work.
+        self.result_writes.close();
         self.verification.close().await;
         self.thumbnails.close().await;
         let (reply, result) = oneshot::channel();
@@ -139,5 +140,14 @@ impl Storage {
             return Ok(());
         }
         result.await.unwrap_or(Ok(()))
+    }
+    async fn admit_result(&self, work: Work) -> Result<Work> {
+        let permit = self
+            .result_writes
+            .clone()
+            .acquire_owned()
+            .await
+            .map_err(|_| unavailable())?;
+        Ok(Work::AdmittedResult(Box::new(work), permit))
     }
 }

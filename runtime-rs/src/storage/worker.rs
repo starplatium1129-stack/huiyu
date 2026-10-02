@@ -31,7 +31,22 @@ pub(super) fn run(
     #[cfg(test)]
     let mut garbage_pause = None;
     while let Some(work) = receiver.blocking_recv() {
+        let (work, permit) = match work {
+            Work::AdmittedResult(work, permit) => (*work, Some(permit)),
+            work => (work, None),
+        };
         match work {
+            Work::AdmittedResult(..) => unreachable!("result admission cannot be nested"),
+            Work::ResultVerified(id, verified) => {
+                result_commit::finish(&mut context, id, verified, &sender);
+                if !closing.is_empty()
+                    && !copying
+                    && collecting.is_none()
+                    && context.result_commit.is_none()
+                {
+                    break;
+                }
+            }
             Work::TaskMediaChunk(chunk, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
@@ -39,6 +54,12 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
+                    if matches!(chunk.target, TaskMediaTarget::Result(_))
+                        && context.result_commit.is_some()
+                    {
+                        let _ = reply.send(Err(result_busy()));
+                        continue;
+                    }
                     let result = tasks::upload_chunk(&mut context, &principal, chunk);
                     let _ = reply.send(result);
                 }
@@ -61,6 +82,21 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if reply.is_closed() {
+                    continue;
+                }
+                if result_commit::is_write(&command) && context.result_commit.is_some() {
+                    let _ = reply.send(Err(result_busy()));
+                    continue;
+                }
+                if command["kind"] == "task.result.commit" {
+                    result_commit::start(
+                        &mut context,
+                        &command,
+                        &principal,
+                        reply,
+                        permit,
+                        &sender,
+                    );
                     continue;
                 }
                 if command["kind"] == "collectGarbage" {
@@ -208,7 +244,7 @@ pub(super) fn run(
                 let result = backup::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 copying = false;
-                if !closing.is_empty() && collecting.is_none() {
+                if !closing.is_empty() && collecting.is_none() && context.result_commit.is_none() {
                     break;
                 }
             }
@@ -216,7 +252,7 @@ pub(super) fn run(
                 let result = garbage::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 collecting = None;
-                if !closing.is_empty() && !copying {
+                if !closing.is_empty() && !copying && context.result_commit.is_none() {
                     break;
                 }
             }
@@ -225,7 +261,10 @@ pub(super) fn run(
                 if let Some(cancel) = &collecting {
                     cancel.store(true, Ordering::Relaxed);
                 }
-                if !copying && collecting.is_none() {
+                if let Some(pending) = &context.result_commit {
+                    pending.cancel();
+                }
+                if !copying && collecting.is_none() && context.result_commit.is_none() {
                     break;
                 }
             }
@@ -256,6 +295,14 @@ pub(super) fn run(
     if let Err(error) = result {
         eprintln!("workspace shutdown: {error}");
     }
+}
+
+fn result_busy() -> ApiError {
+    ApiError::new(
+        429,
+        "WORKSPACE_BUSY",
+        "A task result verification is already running",
+    )
 }
 
 #[cfg(test)]

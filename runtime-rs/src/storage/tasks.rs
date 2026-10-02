@@ -2,8 +2,8 @@ mod history;
 mod inputs;
 mod listing;
 #[cfg(test)]
-mod media_tests;
-mod outputs;
+pub(super) mod media_tests;
+pub(super) mod outputs;
 #[cfg(test)]
 mod tests;
 
