@@ -1,6 +1,6 @@
 # 项目文档索引
 
-最新安装包准备与第一至第八轮更新汇总见 [1.8.1 更新说明](releases/v1.8.1.md)。
+最新公开安装包与第一至第八轮更新汇总见 [1.8.1 更新说明](releases/v1.8.1.md)，实际发行及验证结果见[项目状态](project-status.md)。
 
 [Rust 画册读取优化](audits/2026-10-02/gallery-backend-reads.md)记录有效作品索引、正文重复分配消除、合成分页实测与当次回归，区分读取切片收益和桌面未验范围。
 
@@ -64,7 +64,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 | [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |
 | [桌面部署](desktop-deployment.md) | 构建、同步、完整安装与 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。公开发行说明见 [1.7.4](releases/v1.7.4.md)，新版本准备见 [1.8.0](releases/v1.8.0.md)。
+协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。最新公开发行说明见 [1.8.1](releases/v1.8.1.md)，此前素材与安装记录见 [1.8.0](releases/v1.8.0.md)。
 
 ## 现行契约与专项计划
 
