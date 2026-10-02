@@ -21,7 +21,7 @@ async function fixture() {
   const wrapper = mount(defineComponent({ setup() {
     const root = ref<HTMLElement | null>(null)
     motion = useCanvasClearMotion(root, () => source.value, () => busy.value, () => comparing.value)
-    return () => h('div', { ref: root }, source.value ? h('img', { class: 'cg-image-target', src: source.value }) : null)
+    return () => h('div', { ref: root }, source.value ? h('img', { class: 'cg-image-target', src: source.value }) : [])
   } }))
   cleanups.push(() => wrapper.unmount())
   const image = wrapper.get('img').element
