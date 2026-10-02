@@ -54,6 +54,7 @@
     "allow-save-image",
     "allow-desktop-update-check",
     "allow-desktop-update-install",
+    "allow-desktop-update-cancel",
     "allow-chat-credential-read",
     "allow-chat-credential-write"
   ],

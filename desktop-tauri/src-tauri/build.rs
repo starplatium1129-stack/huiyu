@@ -54,6 +54,7 @@ fn main() {
                 "aics_live2d_get_state",
                 "desktop_update_check",
                 "desktop_update_install",
+                "desktop_update_cancel",
             ]),
         ),
     )

@@ -104,4 +104,35 @@ describe('useDesktopUpdater', () => {
     banner.unmount()
   })
 
+  it('shows real download progress, cancels once and permits an explicit retry', async () => {
+    let finishInstall: ((installed: boolean) => void) | undefined
+    const listeners = new Map<string, (event: { payload: string }) => void>()
+    const invoke = vi.fn((command: string) => {
+      if (command === 'desktop_update_check') return Promise.resolve('1.9.0')
+      if (command === 'desktop_update_cancel') return Promise.resolve(true)
+      return new Promise<boolean>(resolve => { finishInstall = resolve })
+    })
+    ;(window as unknown as { __TAURI__: unknown }).__TAURI__ = { core: { invoke }, event: {
+      listen: vi.fn(async (name: string, listener: (event: { payload: string }) => void) => { listeners.set(name, listener); return () => {} }),
+    } }
+    const banner = mount(DesktopUpdateBanner)
+    await flushPromises()
+    await banner.get('button').trigger('click')
+    listeners.get('desktop-update-progress')!({ payload: '已下载 100.0 / 608.6 MiB（16%），平均 2.00 MiB/s' })
+    await flushPromises()
+    expect(banner.text()).toContain('100.0 / 608.6 MiB')
+    expect(banner.get('button').text()).toBe('取消更新')
+    await banner.get('button').trigger('click'); await flushPromises()
+    expect(banner.get('button').attributes('disabled')).toBeDefined()
+    expect(invoke.mock.calls.filter(([command]) => command === 'desktop_update_cancel')).toHaveLength(1)
+    finishInstall!(false); await flushPromises()
+    expect(banner.text()).toContain('更新已取消')
+    expect(banner.text()).toContain('重新下载完整安装包')
+    expect(banner.get('button').attributes('disabled')).toBeUndefined()
+    await banner.get('button').trigger('click'); await flushPromises()
+    expect(invoke.mock.calls.filter(([command]) => command === 'desktop_update_install')).toHaveLength(2)
+    finishInstall!(false); await flushPromises()
+    banner.unmount()
+  })
+
 })

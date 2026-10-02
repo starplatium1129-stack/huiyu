@@ -13,10 +13,12 @@ const {
   availableVersion,
   statusText,
   installing,
+  cancelling,
   errorText,
   supported,
   check: checkForUpdate,
   install: installUpdate,
+  cancel: cancelUpdate,
 } = useDesktopUpdater()
 
 onMounted(() => { if (supported) checkForUpdate(true) })
@@ -33,10 +35,10 @@ onMounted(() => { if (supported) checkForUpdate(true) })
       v-if="availableVersion"
       class="btn btn-primary"
       type="button"
-      :disabled="installing || undefined"
-      @click="installUpdate()"
+      :disabled="cancelling || undefined"
+      @click="installing ? cancelUpdate() : installUpdate()"
     >
-      {{ installing ? '正在更新…' : '一键升级' }}
+      {{ cancelling ? '请稍候…' : installing ? '取消更新' : '一键升级' }}
     </button>
   </div>
 </template>
@@ -47,5 +49,12 @@ onMounted(() => { if (supported) checkForUpdate(true) })
   padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-strong);
   background: var(--bg-surface);
+}
+.desktop-update-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.desktop-update-banner > button {
+  flex-shrink: 0;
 }
 </style>

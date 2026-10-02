@@ -12,6 +12,7 @@ export function useDesktopUpdater() {
   const availableVersion = ref('')
   const statusText = ref('')
   const installing = ref(false)
+  const cancelling = ref(false)
   const errorText = ref('')
   const subscriptions: number[] = []
   let disposed = false, checkRevision = 0
@@ -49,17 +50,39 @@ export function useDesktopUpdater() {
     errorText.value = ''
     statusText.value = '准备安装…'
     try {
-      await api.install()
+      const installed = await api.install()
+      if (disposed) return
+      if (!installed) {
+        installing.value = false
+        cancelling.value = false
+        statusText.value = '更新已取消；再次升级会重新下载完整安装包'
+      }
       // 成功路径：安装器重启应用，不会走到这里
     } catch (error) {
       if (disposed) return
       statusText.value = ''
       errorText.value = error instanceof Error ? error.message : String(error)
       installing.value = false
+      cancelling.value = false
+    }
+  }
+
+  async function cancel(): Promise<void> {
+    if (!api || disposed || !installing.value || cancelling.value) return
+    const revision = checkRevision
+    cancelling.value = true
+    try {
+      const accepted = await api.cancel()
+      if (disposed || !installing.value || checkRevision !== revision) return
+      statusText.value = accepted ? '正在取消更新…' : '已进入安装阶段，请等待安装器完成'
+    } catch (error) {
+      if (disposed || !installing.value || checkRevision !== revision) return
+      cancelling.value = false
+      errorText.value = error instanceof Error ? error.message : String(error)
     }
   }
 
   onScopeDispose(() => { disposed = true; checkRevision++; subscriptions.forEach(id => api?.off(id)) })
 
-  return { availableVersion, statusText, installing, errorText, supported, check, install }
+  return { availableVersion, statusText, installing, cancelling, errorText, supported, check, install, cancel }
 }
