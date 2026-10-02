@@ -1,5 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { buildMasonryGroups } from './useMasonryWall'
+import { describe, it, expect, vi } from 'vitest'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
+import { mount } from '@vue/test-utils'
+import { buildMasonryGroups, useMasonryColumns } from './useMasonryWall'
 import type { ArtworkRecord } from '@/types/artwork'
 
 function makeItem(id: string, ratio: number): ArtworkRecord {
@@ -44,4 +46,45 @@ describe('buildMasonryGroups', () => {
     const totalAssigned = result[0].columns.reduce((sum, col) => sum + col.length, 0)
     expect(totalAssigned).toBe(3)
   })
+})
+
+it('preserves cached gallery columns while hidden and measures the actual container on return', async () => {
+  let width = 1100
+  let columns!: ReturnType<typeof useMasonryColumns>
+  let resize!: ResizeObserverCallback
+  const observe = vi.fn(), disconnect = vi.fn()
+  vi.stubGlobal('ResizeObserver', class {
+    constructor(callback: ResizeObserverCallback) { resize = callback }
+    observe = observe
+    disconnect = disconnect
+  })
+  const active = ref(true)
+  const Gallery = defineComponent({ setup() {
+    const container = ref<HTMLElement | null>(null)
+    columns = useMasonryColumns(container)
+    return () => h('div', { ref: (value: unknown) => {
+      container.value = value as HTMLElement | null
+      if (container.value) Object.defineProperty(container.value, 'clientWidth', { configurable: true, get: () => width })
+    } })
+  } })
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Gallery) : null }) }))
+  try {
+    expect(columns.columnCount.value).toBe(3)
+    active.value = false
+    await nextTick()
+    expect(disconnect).toHaveBeenCalledOnce()
+    width = 0
+    window.dispatchEvent(new Event('resize'))
+    resize([], {} as ResizeObserver)
+    await nextTick()
+    expect(columns.columnCount.value).toBe(3)
+    width = 1850
+    active.value = true
+    await nextTick()
+    expect(columns.columnCount.value).toBe(5)
+    expect(observe).toHaveBeenCalledTimes(2)
+    width = 0
+    resize([], {} as ResizeObserver)
+    expect(columns.columnCount.value).toBe(5)
+  } finally { wrapper.unmount(); vi.unstubAllGlobals() }
 })

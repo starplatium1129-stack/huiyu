@@ -4,7 +4,7 @@ import { pickStudioOptionByValue } from './helpers/studioSelect'
 test.use({ baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}` })
 
 for (const theme of ['dark']) {
-  test(`model catalog failure, retry, search and character handoff ${theme}`, async ({ page }) => {
+  test(`model catalog failure, retry, search and character handoff ${theme}`, async ({ page }, info) => {
     const files: string[] = []
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     page.on('request', req => { const path = new URL(req.url()).pathname; if (path.startsWith('/data/')) files.push(path) })
@@ -19,6 +19,13 @@ for (const theme of ['dark']) {
     await page.getByRole('searchbox', { name: '搜索模型' }).fill('no-such-model-fixture')
     await expect(page.getByText('没有匹配的模型。')).toBeVisible()
     await page.getByRole('button', { name: '清除搜索' }).click()
+    await expect(page.getByRole('searchbox', { name: '搜索模型' })).toBeFocused()
+    await page.getByRole('searchbox', { name: '搜索模型' }).fill('natsume')
+    await expect(page.locator('.lora-card')).toHaveCount(2)
+    await page.getByRole('button', { name: '清除模型搜索', exact: true }).click()
+    await expect(page.getByRole('searchbox', { name: '搜索模型' })).toBeFocused()
+    await expect(page.locator('.lora-card')).toHaveCount(4)
+    await page.screenshot({ path:info.outputPath(`model-catalog-${theme}.png`) })
     const card = page.locator('.lora-card').filter({ has: page.locator('a[href="/prompt-builder?char=natsume"]') })
     await expect(card).toContainText('本机可用性尚未检测')
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true,
@@ -100,7 +107,7 @@ test('remote hostname refuses mature scene browsing even if a local fixture deli
   })
   await page.goto('http://audit-remote.invalid/scene-explorer')
   await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
-  await page.getByRole('button', { name: /^筛选与收藏/ }).click()
+  await page.getByRole('button', { name: /^精细筛选/ }).click()
   await expect(page.locator('.mature-hint')).toHaveText('成人场景 · 仅限本机')
   await pickStudioOptionByValue(page.getByRole('combobox', { name: /^分级/ }), 'R18')
   await expect(page.locator('.scene-grid .sc')).toHaveCount(0)

@@ -21,7 +21,7 @@
             <ArchiveIcon :name="state.danger ? 'warning' : 'info'" />
           </span>
           <h2 class="confirm-title">{{ state.title }}</h2>
-          <p v-if="state.message" :id="messageId" class="confirm-message">{{ state.message }}</p>
+          <p v-if="state.message" :id="messageId" class="confirm-message" tabindex="0">{{ state.message }}</p>
           <div class="confirm-actions">
             <button
               ref="cancelBtn"
@@ -29,7 +29,7 @@
               type="button"
               @click="cancel"
             >{{ state.cancelLabel }}</button>
-            <!-- Keep the safe choice first and confirmation last in keyboard order.
+            <!-- Keep the safe choice first among actions and confirmation last in keyboard order.
                  The alternate close action stays reachable at its visual corner. -->
             <button class="confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
             <button
@@ -92,8 +92,10 @@ onUnmounted(() => {
   backdrop-filter: blur(6px);
 }
 .confirm-panel {
-  @apply tw:relative;
+  @apply tw:relative tw:flex tw:flex-col;
   width: min(380px, calc(100vw - 32px));
+  max-height: calc(100dvh - 2 * var(--s-4));
+  overflow: hidden;
   @apply tw:p-s-5;
   border: 1px solid var(--glass-edge);
   @apply tw:text-primary;
@@ -102,19 +104,27 @@ onUnmounted(() => {
 .confirm-close:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .confirm-icon { @apply tw:pr-[44px] tw:min-h-[28px]; }
 .confirm-icon { @apply tw:block tw:mb-s-2 tw:text-secondary; }
+.confirm-icon, .confirm-title, .confirm-actions { flex-shrink:0; }
 .confirm-danger .confirm-icon { @apply tw:text-danger-text; }
 .confirm-title {
   margin: 0 0 var(--s-2);
+  overflow-wrap: anywhere;
   font-size: var(--fs-body-lg, var(--fs-body));
   @apply tw:font-bold tw:text-primary;
 }
 .confirm-message {
   margin: 0 0 var(--s-3);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   font-size: var(--fs-body-sm, var(--fs-body));
   @apply tw:text-secondary tw:leading-body;
 }
+.confirm-message:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .confirm-actions {
-  @apply tw:flex tw:justify-end tw:gap-s-2;
+  @apply tw:flex tw:flex-wrap tw:justify-end tw:gap-s-2;
 }
-.confirm-btn { @apply tw:min-w-[96px]; }
+.confirm-btn { @apply tw:min-w-[96px]; max-width:100%; white-space:normal; overflow-wrap:anywhere; }
 </style>

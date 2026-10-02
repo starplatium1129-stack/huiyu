@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end' }>(), { align:'end', contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
+const trigger = ref<{ $el: HTMLElement } | null>(null)
+// A showModal() dialog makes body portals inert. Keep nested controls in its top layer.
+const portalTarget = computed(() => trigger.value?.$el?.closest('dialog') ?? undefined)
 const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
 </script>
 
 <template>
   <PopoverRoot v-model:open="open">
-    <PopoverTrigger as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false"><slot name="trigger" /></PopoverTrigger>
-    <PopoverPortal>
+    <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false"><slot name="trigger" /></PopoverTrigger>
+    <PopoverPortal :to="portalTarget">
       <PopoverContent :align="align" :side-offset="10" :collision-padding="16"
         hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="emit('closeAutoFocus', $event)">
         <div :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass"><slot /></div>

@@ -104,6 +104,7 @@ export function useGalleryWorkspace() {
         masonryGroups,
         resetGalleryFilters,
         restoreFiltersFromQuery,
+        restoreDeferredFiltersFromQuery,
         cleanupFilterSync,
         loadMoreIfNeeded: triggerLoadMore,
     } = useGalleryFilters({
@@ -130,7 +131,7 @@ export function useGalleryWorkspace() {
     const { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step } = useGalleryViewer({
         history, visible, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
-    function onViewerClosed() { finishViewerClose(); restoreFiltersFromQuery(); }
+    function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
     const {
         compareMode,
@@ -333,6 +334,13 @@ export function useGalleryWorkspace() {
     /* ---------- 可见性驱动 HD 补图 ---------- */
     const observedCards = new Map<Element, ArtworkRecord>();
     let cardObserver: IntersectionObserver | null = null;
+    let wallScanPending = false;
+    function scheduleWallScan() {
+        if (wallScanPending || unmounted || !viewActive) return;
+        wallScanPending = true;
+        // Batch media invalidations and filter updates share the same DOM patch.
+        void nextTick(() => { wallScanPending = false; scanWallCards(); });
+    }
     /**
      * （重）扫描展墙卡片并挂观察器。筛选变化会重建部分节点，旧节点若不
      * unobserve 会一直被 IntersectionObserver 强引用——所以每次全量重挂。
@@ -442,14 +450,13 @@ export function useGalleryWorkspace() {
         // 缩略图。不阻塞首屏，失败静默（下次挂载再试）。
         void artworkRepository.purgeExpiredTrash().catch(e => console.warn('[gallery] trash purge failed', e));
         void hydrateThumbs();
-        await nextTick();
-        scanWallCards();
+        scheduleWallScan();
     });
     // KeepAlive preserves filters, pagination and small thumbnails. Leaving the
     // gallery releases original images; the next activation hydrates visible cards
     // and refreshes metadata so newly saved works appear without losing state.
     let activatedOnce = false;
-    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void nextTick(() => { scanWallCards(); if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
+    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); scheduleWallScan(); void nextTick(() => { if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
         viewActive = false; cleanupFilterSync(); releaseImages();
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
@@ -470,7 +477,7 @@ export function useGalleryWorkspace() {
         releaseCardImage(id); delete thumbUrls[id]; forgetRatio(id);
         cancelCardHydration(id);
         if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
-        void hydrateThumbs(); void nextTick(() => scanWallCards());
+        void hydrateThumbs(); scheduleWallScan();
     });
     watch(visible, () => {
         const ids = new Set(visible.value.map(item => item.id));
@@ -484,7 +491,7 @@ export function useGalleryWorkspace() {
         // pumpCardQueue's controller check keeps its late cleanup from owning the retry.
         for (const id of new Set([...cardQueue.map(item => item.id), ...cardReads.keys()])) if (!ids.has(id)) cancelCardHydration(id);
         void hydrateThumbs();
-        void nextTick(() => scanWallCards());
+        scheduleWallScan();
     });
     /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
     const sentinelEl = ref<HTMLElement | null>(null);

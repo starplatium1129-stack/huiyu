@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, computed, type Ref } from 'vue'
+import { ref, onActivated, onDeactivated, onMounted, onUnmounted, computed, type Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 
 export interface MasonryGroup {
@@ -50,9 +50,14 @@ export function buildMasonryGroups(
  */
 export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
   const columnCount = ref(4)
+  let active = false
 
   function update() {
-    const width = containerRef?.value?.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1440)
+    if (!active) return
+    const width = containerRef ? containerRef.value?.clientWidth ?? 0 : (typeof window !== 'undefined' ? window.innerWidth : 1440)
+    // A cached or temporarily hidden wall has no layout width. Retain its last
+    // columns instead of rebuilding it against the unrelated window width.
+    if (width <= 0) return
     if (width >= 2300) {
       columnCount.value = 6
     } else if (width >= 1800) {
@@ -70,18 +75,21 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
 
   let resizeObserver: ResizeObserver | null = null
 
-  onMounted(() => {
+  function start() {
+    if (active) return
+    active = true
     update()
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', update, { passive: true })
-    }
     if (containerRef?.value && typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => update())
       resizeObserver.observe(containerRef.value)
+    } else if (typeof window !== 'undefined') {
+      window.addEventListener('resize', update, { passive: true })
     }
-  })
+  }
 
-  onUnmounted(() => {
+  function stop() {
+    if (!active) return
+    active = false
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', update)
     }
@@ -89,7 +97,11 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
       resizeObserver.disconnect()
       resizeObserver = null
     }
-  })
+  }
+  onMounted(start)
+  onActivated(start)
+  onDeactivated(stop)
+  onUnmounted(stop)
 
   return {
     columnCount: computed(() => columnCount.value),

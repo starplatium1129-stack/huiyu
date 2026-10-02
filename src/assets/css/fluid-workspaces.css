@@ -99,9 +99,6 @@ html .page:has(> .model-search-row) .model-search-row {
   background: var(--bg-surface);
   box-shadow: var(--workspace-inset);
 }
-html .page:has(> .model-search-row) .lora-grid {
-  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-}
 html .page:has(> .model-search-row) .lora-card {
   @apply tw:rounded-xl;
   box-shadow: var(--workspace-inset);

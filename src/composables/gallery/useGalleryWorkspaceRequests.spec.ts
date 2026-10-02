@@ -101,3 +101,36 @@ it('cancels originals outside the scroll margin and drops their queued reads whi
   await flushPromises()
   expect(env.gallery.cardUrls[ordered[0].id]).toBe('blob:gallery-1')
 })
+
+it('coalesces a bulk media replacement into one wall scan and observes the current cards', async () => {
+  const history = Array.from({ length: 60 }, (_, index) => record(index + 1))
+  mocks.snapshot.mockResolvedValue({ history, projects: [] })
+  const { gallery } = await setup()
+  const scan = vi.spyOn(gallery.shellEl.value!, 'querySelectorAll')
+  const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
+  gallery.history.value = history.map(item => ({ ...item, image_id: `${item.image_id}-replacement` }))
+  await flushPromises()
+  expect(scan).toHaveBeenCalledTimes(1)
+  expect(observer.elements.size).toBe(60)
+  observer.intersect()
+  await flushPromises()
+  expect(mocks.getImage.mock.calls.every(([id]) => id.endsWith('-replacement'))).toBe(true)
+  expect(mocks.getImage).toHaveBeenCalledTimes(60)
+})
+
+it('keeps a viewer tag selection when its closing transition ends before the URL debounce', async () => {
+  mocks.snapshot.mockResolvedValue({ history: [
+    { ...record(1), manual_tags: ['春日'] }, record(2), { ...record(3), manual_tags: ['春日'] },
+  ], projects: [] })
+  const { gallery } = await setup()
+  vi.useFakeTimers()
+  gallery.openViewer(0)
+  gallery.closeViewer()
+  gallery.tagFilter.value = '春日'
+  await flushPromises()
+  gallery.onViewerClosed()
+  expect(gallery.tagFilter.value).toBe('春日')
+  expect(gallery.visible.value.map(item => item.id)).toEqual([3, 1])
+  await vi.advanceTimersByTimeAsync(300)
+  expect(mocks.replace).toHaveBeenLastCalledWith({ query: { tag: '春日' } })
+})

@@ -1,5 +1,7 @@
 # 项目状态
 
+2026-10-02 [二级界面与读取性能精修](audits/2026-10-02/atelier-experience-polish.md)完成四路协作：聊天菜单/确认框、创作资料导航/搜索、图库扫描与标签筛选竞态，以及 Rust 参考读取异步排队。60 条媒体更新的整墙扫描由 61 次降为 1 次；68 项前端定向、6 项 Rust、33 个浏览器场景最终通过，双主题三档桌面 CSS 视口及短窗口完成受影响范围验收，前端与 Rust release 候选已构建。本轮按用户要求提交至 `main`，未安装或公开发布；现有安装与公开版本仍按下方记录，原生 DPI 和真实大库吞吐未测。
+
 2026-10-02 [1.8.1 已公开发布](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)并设为程序 latest，包含第一至第八轮更新、安装／卸载界面及 `c1efc3d1` 工作流声明修复；发行源码为 `fa9bd65d`。新安装包 639,536,640 字节，SHA-256 为 `b4b9a1d2ea6c7f0bedf3ad546859765db19130bfcefaf5cf49aaf3a0d12412a9`。已重新完整构建，原更新密钥签名、源码／构建／分发绑定、离线助手入包及隔离网关验证通过；五个公开附件的服务端大小和摘要匹配，公开 latest.json 下载字节一致。38 项安装／更新检查通过、1 项按平台跳过，21 步静态检查范围通过（环境问题仅重跑失败项）；该源码的 Quality 与 Rust Runtime CI 通过，Windows Native Live2D 尚在排队。本次按用户明确指令发布，原生 `releaseReady=false` 和材料待验项保持原值，未改写为已审批；未执行真实安装／卸载、UAC、干净 Windows 或全部模型／设备验收，本机安装身份仍为下方旧版本记录。更新内容见 [1.8.1 说明](releases/v1.8.1.md)，可移交结果见[公开发行验证摘要](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.8.1/release-evidence-v1.8.1.json)。
 
 2026-10-02 接手远端[迁移激活身份修复](audits/2026-10-02/workspace-migration-authority.md)：目录取消不再接受迟到结果，回执丢失或任一窗口未确认时保留来源只读，全部适配器同步后才能解除屏障。完整前端/核心 Node、21 步检查、Rust 格式/Clippy/隔离回归和原生三窗口异常恢复通过；恢复菜单完成 175% DPI 下双主题 1080p/QHD/4K 及较窄窗口验收。没有迁移真实个人资料、安装或发布，当前安装身份仍按下方记录。

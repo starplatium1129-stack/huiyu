@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import ConfirmDialog from './ConfirmDialog.vue'
+import ChatActionsMenu from './ChatActionsMenu.vue'
 import { confirmAction, resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
@@ -57,6 +58,28 @@ it('focuses the affirmative option for a non-destructive action', async () => {
   await expect(result).resolves.toBe(true)
 })
 
+it('keeps destructive confirmation focus after the initiating menu finishes closing', async () => {
+  mountConfirm()
+  const menu = mount(ChatActionsMenu, {
+    attachTo: document.body,
+    props: { onClearAll: () => {
+      expect(document.activeElement?.classList.contains('chat-more-trigger')).toBe(true)
+      return confirmAction({ title: '清空房间', danger: true })
+    } },
+  })
+  mounted.push(menu)
+  await menu.get('.chat-more-trigger').trigger('click')
+  await flushPromises()
+  document.querySelector<HTMLElement>('.chat-more-item.is-danger')!.click()
+  await flushPromises()
+  await settle()
+  expect(document.querySelector('.chat-more-menu')).toBeNull()
+  expect(document.activeElement).toBe(button('cancel'))
+  button('cancel').click()
+  await settle()
+  expect(document.activeElement).toBe(menu.get('.chat-more-trigger').element)
+})
+
 it('takes focus and locks scrolling when mounted with a pending confirmation', async () => {
   const result = confirmAction('删除作品')
   mountConfirm()
@@ -80,18 +103,28 @@ it.each([false, true])('resets focus to cancel when a visible request is replace
   await expect(replacement).resolves.toBe(false)
 })
 
-it('cycles Tab in both directions and recaptures background focus', async () => {
+it.each([false, true])('cycles Tab around the reading stop and actions (description present: %s)', async hasMessage => {
   const outside = document.createElement('button')
   document.body.append(outside)
   mountConfirm()
-  confirmAction('删除作品')
+  confirmAction({ title: '删除作品', message: hasMessage ? '删除后无法恢复。\n'.repeat(30) : '', danger: true })
   await settle()
   const close = document.querySelector<HTMLButtonElement>('.confirm-close')!
-  button('cancel').focus()
-  button('cancel').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }))
+  const description = document.querySelector<HTMLElement>('.confirm-message')
+  const firstStop = description ?? button('cancel')
+  expect(document.activeElement).toBe(button('cancel'))
+  firstStop.focus()
+  firstStop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }))
   expect(document.activeElement).toBe(button('confirm'))
   button('confirm').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }))
-  expect(document.activeElement).toBe(button('cancel'))
+  expect(document.activeElement).toBe(firstStop)
+  if (description) {
+    expect(description.tabIndex).toBe(0)
+    const scroll = new KeyboardEvent('keydown', { key: 'PageDown', bubbles: true, cancelable: true })
+    description.dispatchEvent(scroll)
+    expect(scroll.defaultPrevented).toBe(false)
+    expect(useConfirmState().value.visible).toBe(true)
+  }
   // The corner close remains an ordinary keyboard stop between the decisions.
   close.focus()
   const middleTab = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })

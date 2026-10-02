@@ -109,3 +109,121 @@ fn linked_reference_files_are_rejected() {
     fs::hard_link(&original, &alias).unwrap();
     assert!(io::bytes(&alias).is_err());
 }
+
+#[test]
+fn queued_reads_leave_blocking_pool_available_and_exit_on_shutdown() {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .max_blocking_threads(1)
+        .build()
+        .unwrap()
+        .block_on(async {
+            let fixture = tempfile::tempdir().unwrap();
+            let root = fixture.path().to_owned();
+            let readers = Arc::new(Mutex::new(Some(Reader::new(root.clone(), None))));
+            let held = readers.clone().lock_owned().await;
+            let shutdown = CancellationToken::new();
+            let mut requests = (0..16)
+                .map(|_| {
+                    Box::pin(with_reader(
+                        readers.clone(),
+                        root.clone(),
+                        root.clone(),
+                        &shutdown,
+                        |_| -> Result<()> { panic!("cancelled waiter must not read") },
+                    ))
+                })
+                .collect::<Vec<_>>();
+            for request in &mut requests {
+                assert!(futures_util::poll!(request.as_mut()).is_pending());
+            }
+            // Even with only one blocking thread, unrelated filesystem work
+            // remains available while reference requests wait for the reader.
+            let probe = tokio::task::spawn_blocking(|| 17);
+            assert_eq!(
+                tokio::time::timeout(std::time::Duration::from_secs(1), probe)
+                    .await
+                    .unwrap()
+                    .unwrap(),
+                17
+            );
+            shutdown.cancel();
+            for request in requests {
+                assert_eq!(request.await.unwrap_err().code, "REFERENCE_UNAVAILABLE");
+            }
+            drop(held);
+            assert!(readers.try_lock().is_ok());
+        });
+}
+
+#[tokio::test]
+async fn cancelled_running_read_keeps_exclusive_access_until_worker_finishes() {
+    let fixture = tempfile::tempdir().unwrap();
+    let root = fixture.path().to_owned();
+    let readers = Arc::new(Mutex::new(Some(Reader::new(root.clone(), None))));
+    let shutdown = CancellationToken::new();
+    let (entered, started) = tokio::sync::oneshot::channel();
+    let (release, resumed) = std::sync::mpsc::channel();
+    let request = tokio::spawn({
+        let (readers, root, shutdown) = (readers.clone(), root.clone(), shutdown.clone());
+        async move {
+            with_reader(readers, root.clone(), root, &shutdown, move |_| {
+                entered.send(()).unwrap();
+                resumed
+                    .recv_timeout(std::time::Duration::from_secs(5))
+                    .unwrap();
+                Ok(())
+            })
+            .await
+        }
+    });
+    started.await.unwrap();
+    request.abort();
+    assert!(request.await.unwrap_err().is_cancelled());
+    let followup = with_reader(readers.clone(), root.clone(), root, &shutdown, |_| Ok(23));
+    tokio::pin!(followup);
+    assert!(futures_util::poll!(&mut followup).is_pending());
+    assert!(readers.try_lock().is_err());
+    release.send(()).unwrap();
+    assert_eq!(followup.await.unwrap(), 23);
+}
+
+#[test]
+fn disconnected_request_skips_reader_initialization_while_blocking_job_is_queued() {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .max_blocking_threads(1)
+        .build()
+        .unwrap()
+        .block_on(async {
+            let fixture = tempfile::tempdir().unwrap();
+            let root = fixture.path().to_owned();
+            let readers = Arc::new(Mutex::new(None));
+            let shutdown = CancellationToken::new();
+            let (entered, started) = tokio::sync::oneshot::channel();
+            let (release, resumed) = std::sync::mpsc::channel();
+            let occupied = tokio::task::spawn_blocking(move || {
+                entered.send(()).unwrap();
+                resumed
+                    .recv_timeout(std::time::Duration::from_secs(5))
+                    .unwrap();
+            });
+            started.await.unwrap();
+            let mut request = Box::pin(with_reader(
+                readers.clone(),
+                root.clone(),
+                root,
+                &shutdown,
+                |_| -> Result<()> { panic!("disconnected request must not read") },
+            ));
+            assert!(futures_util::poll!(request.as_mut()).is_pending());
+            assert!(readers.try_lock().is_err());
+            drop(request);
+            release.send(()).unwrap();
+            occupied.await.unwrap();
+            let slot = tokio::time::timeout(std::time::Duration::from_secs(1), readers.lock())
+                .await
+                .unwrap();
+            assert!(slot.is_none());
+        });
+}

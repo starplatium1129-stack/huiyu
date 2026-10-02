@@ -17,8 +17,10 @@ use std::{
     env,
     net::SocketAddr,
     path::{Path as FsPath, PathBuf},
-    sync::{Arc, Mutex},
+    sync::Arc,
 };
+use tokio::sync::Mutex;
+use tokio_util::sync::CancellationToken;
 
 type Result<T> = std::result::Result<T, ApiError>;
 type ReaderState = Arc<Mutex<Option<Reader>>>;
@@ -82,15 +84,14 @@ async fn respond(
     } else if id.as_ref().is_some_and(|id| !valid_id(id)) {
         Err(ApiError::new(400, "REFERENCE_ID", "角色 ID 无效"))
     } else {
-        let root = state.config.content_root();
-        let media = reference_root(&state.config.app_root);
-        tokio::task::spawn_blocking(move || {
-            let mut slot = readers.lock().map_err(|_| unavailable())?;
-            let reader = slot.get_or_insert_with(|| Reader::new(root.clone(), media));
-            reader.read(id.as_deref())
-        })
+        with_reader(
+            readers,
+            state.config.content_root(),
+            state.config.app_root.clone(),
+            &state.shutdown,
+            move |reader| reader.read(id.as_deref()),
+        )
         .await
-        .unwrap_or_else(|_| Err(unavailable()))
     };
     let mut response = match result {
         Ok(Some(profile)) => Json(profile).into_response(),
@@ -105,6 +106,45 @@ async fn respond(
         .headers_mut()
         .insert("cache-control", "private, no-cache".parse().unwrap());
     response
+}
+
+async fn with_reader<T: Send + 'static>(
+    readers: ReaderState,
+    root: PathBuf,
+    app_root: PathBuf,
+    shutdown: &CancellationToken,
+    operation: impl FnOnce(&mut Reader) -> Result<T> + Send + 'static,
+) -> Result<T> {
+    let cancelled = shutdown.child_token();
+    let _cancel = cancelled.clone().drop_guard();
+    let work = async {
+        // Waiting for the shared reader must not occupy Tokio's blocking pool:
+        // first-use release verification can be much slower than ordinary reads.
+        let mut slot =
+            tokio::time::timeout(std::time::Duration::from_secs(30), readers.lock_owned())
+                .await
+                .map_err(|_| unavailable())?;
+        let worker_cancel = cancelled.clone();
+        tokio::task::spawn_blocking(move || {
+            // Keep the guard in the worker even if the HTTP future is dropped.
+            // A queued blocking job can then skip all I/O after cancellation;
+            // a running filesystem call retains exclusive access until it ends.
+            if worker_cancel.is_cancelled() {
+                return Err(unavailable());
+            }
+            let reader = slot.get_or_insert_with(|| Reader::new(root, reference_root(&app_root)));
+            if worker_cancel.is_cancelled() {
+                return Err(unavailable());
+            }
+            operation(reader)
+        })
+        .await
+        .map_err(|_| unavailable())?
+    };
+    tokio::select! { biased;
+        _ = cancelled.cancelled() => Err(unavailable()),
+        result = work => result,
+    }
 }
 
 fn absolute(path: PathBuf) -> PathBuf {

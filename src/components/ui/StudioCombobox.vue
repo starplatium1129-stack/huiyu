@@ -16,6 +16,9 @@ const props = defineProps<{
 const value = defineModel<string>({ required: true })
 const open = ref(false)
 const pointerOpened = ref(false)
+const anchor = ref<{ $el: HTMLElement } | null>(null)
+// Match StudioSelect: body portals cannot receive input outside a native modal dialog.
+const portalTarget = computed(() => anchor.value?.$el?.closest('dialog') ?? undefined)
 const query = ref('')
 const displayValue = (key: string) => props.options.find(option => option.value === key)?.label ?? ''
 const selectedLabel = computed(() => displayValue(value.value))
@@ -25,7 +28,7 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
 
 <template>
   <ComboboxRoot v-model="value" v-model:open="open" :disabled="disabled" open-on-click class="studio-combobox tw:min-w-0 tw:w-full" @pointerdown.capture="pointerOpened = true" @keydown.capture="pointerOpened = false">
-    <ComboboxAnchor class="studio-combobox-anchor tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:pl-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary">
+    <ComboboxAnchor ref="anchor" class="studio-combobox-anchor tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:pl-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary">
       <ArchiveIcon name="search" class="studio-combobox-search tw:shrink-0 tw:w-[16px] tw:h-[16px] tw:text-muted" aria-hidden="true" />
       <ComboboxInput :id="id" v-model="query" :aria-label="label" :display-value="displayValue"
         :disabled="disabled" placeholder="输入名称查找…" class="studio-combobox-input tw:w-full tw:min-w-0 tw:py-s-2 tw:px-0 tw:border-0 tw:bg-transparent tw:text-primary tw:[font:500_var(--fs-label)/var(--lh-label)_var(--font-sans)] tw:[outline:none]"
@@ -34,7 +37,7 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
         <ArchiveIcon name="chevron-down" aria-hidden="true" />
       </ComboboxTrigger>
     </ComboboxAnchor>
-    <ComboboxPortal>
+    <ComboboxPortal :to="portalTarget">
       <ComboboxContent position="popper" align="start" :side-offset="8" :collision-padding="12"
         class="studio-combobox-content tw:[z-index:var(--z-popover)] tw:[width:max(260px,var(--reka-combobox-trigger-width,_260px))] tw:[max-width:calc(100vw_-_24px)] tw:[max-height:var(--reka-combobox-content-available-height,_320px)] tw:overflow-hidden tw:p-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:shadow-(--shadow-lg) tw:text-primary" :aria-label="label" :data-pointer-open="pointerOpened">
         <div class="studio-combobox-heading tw:flex tw:justify-between tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:[border-bottom:1px_solid_var(--border-soft)] tw:[font:600_var(--fs-label-sm)/var(--lh-body)_var(--font-sans)]" aria-hidden="true">{{ label }}<span class="tw:font-normal tw:text-muted">输入名称快速查找</span></div>
@@ -57,7 +60,7 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
 /* One focus ring surrounds the whole field, including its disclosure button. */
 .studio-combobox .studio-combobox-anchor .studio-combobox-input:focus-visible { outline:none; }
 .studio-combobox-input::placeholder { color:var(--text-muted); }
-.studio-combobox-trigger:hover { background:var(--bg-hover); }
+.studio-combobox-trigger:hover:not(:disabled) { background:var(--bg-hover); }
 .studio-combobox-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
 .studio-combobox-trigger .archive-icon { width:16px; height:16px; }
 .studio-combobox-trigger[data-state='open'] .archive-icon { transform:rotate(180deg); }
@@ -65,6 +68,10 @@ watch(selectedLabel, label => { if (!open.value) query.value = label }, { immedi
 .studio-combobox-option[data-state='checked'] { background:var(--accent-soft); color:var(--accent); }
 .studio-combobox-option[data-highlighted] { outline:1px solid var(--accent); outline-offset:-1px; background:var(--bg-hover); }
 .studio-combobox-check .archive-icon { width:16px; height:16px; }
+.studio-combobox-heading { flex-wrap:wrap; }
+.studio-combobox-content { display:flex; flex-direction:column; }
+.studio-combobox-heading { flex-shrink:0; }
+.studio-combobox-viewport { min-height:0; }
 .studio-combobox-content { transform-origin:var(--reka-combobox-content-transform-origin,top left); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
 @starting-style { .studio-combobox-content[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
 .studio-combobox-content[data-pointer-open='false'] { transition:none; }

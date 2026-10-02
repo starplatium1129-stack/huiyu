@@ -27,7 +27,7 @@
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
             <div class="act-format"><span>{{ currentChar === 'nene' ? '宁宁' : '夏目' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
             <details class="act-details">
-              <summary>提示词与参数</summary>
+              <summary><span>提示词与参数</span><ArchiveIcon name="chevron-down" /></summary>
               <div class="act-details-body">
                 <p class="act-settings">LoRA {{ a.lora }} · {{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>

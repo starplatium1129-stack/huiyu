@@ -4,12 +4,25 @@ import { textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 for (const theme of ['dark', 'light']) {
-  test(`chat menu lazily opens styled panels ${theme}`, async ({ page }) => {
+  test(`chat menu lazily opens styled panels ${theme}`, async ({ page }, info) => {
+    await page.setViewportSize({ width:1097, height:617 })
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json:{ ok:true, online:false, models:[], loras:[], styleLoras:[] } }))
     await page.goto('/chat')
     await expect(page.locator('h1')).toBeVisible()
+    const trigger = page.locator('.chat-more-trigger')
+    await trigger.press('ArrowDown')
+    const menu = page.getByRole('menu', { name:'更多房间操作', exact:true })
+    await expect(menu.getByRole('menuitem', { name:'对话归档', exact:true })).toBeFocused()
+    await contained(menu, 1097, 617)
+    expect(await menu.getByRole('menuitem', { name:'我的档案', exact:true }).evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+    await page.keyboard.press('End')
+    await expect(menu.getByRole('menuitem', { name:'清空聊天内容与个人档案', exact:true })).toBeFocused()
+    await page.screenshot({ path:info.outputPath(`chat-menu-${theme}.png`) })
+    await page.keyboard.press('Escape')
+    await expect(menu).toHaveCount(0)
+    await expect(trigger).toBeFocused()
     for (const [label, selector, closeLabel] of [
       ['对话归档', '.chat-archive-panel', '收起'],
       ['长期记忆', '.chat-memory-panel', '关闭长期记忆'],

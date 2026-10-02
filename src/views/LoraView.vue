@@ -23,9 +23,18 @@
     >
     </ArchiveStatePanel>
     <template v-else>
-    <div class="model-search-row tw:flex tw:flex-wrap tw:items-center tw:gap-s-4"><input v-model="modelQuery" type="search" aria-label="搜索模型" placeholder="按模型、角色或触发词查找…" /><span role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span></div>
+    <div class="model-search-row">
+      <div class="model-search-field">
+        <ArchiveIcon name="search" />
+        <input ref="searchInput" v-model="modelQuery" type="search" aria-label="搜索模型" placeholder="按模型、角色或触发词查找…" />
+        <button v-if="modelQuery" class="model-search-clear" type="button" aria-label="清除模型搜索" @click="clearSearch"><ArchiveIcon name="close" /></button>
+      </div>
+      <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
+    </div>
     <p class="model-catalog-note">资料收录与历史评测通过，均不代表本机已安装。可用性请在工作台检测。</p>
-    <p v-if="!visibleLoras.length">没有匹配的模型。<button class="btn btn-ghost btn-sm" @click="modelQuery = ''">清除搜索</button></p>
+    <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型。" message="试试角色名、模型名或触发词，或清除搜索重新查看全部资料。">
+      <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
+    </ArchiveStatePanel>
     <div class="lora-grid">
       <article v-for="l in visibleLoras" :key="l.id" class="lora-card">
         <header class="model-identity">
@@ -40,7 +49,7 @@
         </div>
         <p class="model-availability">本机可用性尚未检测。<template v-if="modelCharacter(l.id)">入口只选择角色，不强制加载此历史版本；引擎与模型由工作台现有规则决定。</template><template v-else>仅供资料参考，未配置直接使用入口。</template></p>
         <details class="model-details">
-          <summary>触发词与模型资料</summary>
+          <summary><span>触发词与模型资料</span><ArchiveIcon name="chevron-down" /></summary>
           <div class="model-details-body">
             <p v-if="l.description" class="lora-desc">{{ l.description }}</p>
             <dl class="model-facts">
@@ -57,7 +66,7 @@
         <section v-if="l.evaluation" class="evaluation-panel" aria-label="模型评测结果">
           <p class="evaluation-summary">历史评测 · {{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status || '已记录' }}<span v-if="l.evaluation.evaluatedAt"> · {{ l.evaluation.evaluatedAt }}</span></p>
           <details>
-            <summary>查看指标、方法与证据</summary>
+            <summary><span>查看指标、方法与证据</span><ArchiveIcon name="chevron-down" /></summary>
             <div class="evaluation-metrics">
               <div v-for="metric in l.evaluation.metrics" :key="metric[0]">
                 <span>{{ metric[0] }}</span>
@@ -95,6 +104,11 @@ import {
 const sceneStore = useSceneStore()
 const loras = ref<LoraCatalogEntry[]>([])
 const modelQuery = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
+function clearSearch() {
+  modelQuery.value = ''
+  searchInput.value?.focus()
+}
 const visibleLoras = computed(() => {
   const term = modelQuery.value.trim().toLocaleLowerCase()
   return loras.value.filter(model => !term || [model.name, model.character, model.baseModel, model.description,
@@ -136,13 +150,24 @@ onMounted(() => { void loadCatalog() })
 .model-availability { @apply tw:text-secondary tw:text-body-sm tw:leading-body; margin:var(--s-3) 0 var(--s-4); }
 .model-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .model-details { @apply tw:text-body-sm tw:text-secondary; border-top:1px solid var(--border-soft); }
-.model-details summary, .evaluation-panel summary { @apply tw:cursor-pointer tw:min-h-[44px]; padding-block:var(--s-3); }
+.model-details summary, .evaluation-panel summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:cursor-pointer tw:min-h-[44px] tw:rounded-sm; padding:var(--s-3) var(--s-2); margin-inline:calc(-1 * var(--s-2)); }
+.model-details summary:hover, .evaluation-panel summary:hover { background:var(--bg-hover); color:var(--text-primary); }
+.model-details summary .archive-icon, .evaluation-panel summary .archive-icon { width:16px; height:16px; flex-shrink:0; color:var(--accent); transition:transform var(--motion-control) var(--ease-out); }
+.model-details[open] > summary .archive-icon, .evaluation-panel details[open] > summary .archive-icon { transform:rotate(180deg); }
 .model-details-body { @apply tw:pb-s-4; }
 .model-facts { @apply tw:grid tw:gap-s-3 tw:m-0 tw:mb-s-3; }
 .model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
-.model-search-row input { width: min(440px, 100%); @apply tw:min-h-[42px] tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary; background: var(--bg-surface); font: inherit; }
-.model-search-row span { @apply tw:text-muted tw:text-label; }
+.model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
+.model-search-field { display:flex; align-items:center; gap:var(--s-2); flex:1 1 320px; max-width:560px; min-width:0; padding-inline:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
+.model-search-field:focus-within { border-color:var(--accent); outline:2px solid var(--accent); outline-offset:2px; }
+.model-search-field > .archive-icon { width:18px; height:18px; color:var(--text-muted); flex-shrink:0; }
+.model-search-row input { min-width:0; width:100%; min-height:44px; padding:var(--s-2) 0; border:0; border-radius:0; color:var(--text-primary); background:transparent; font:inherit; outline:none; box-shadow:none; }
+.model-search-row input:focus-visible { outline:none; }
+.model-search-row input::-webkit-search-cancel-button { -webkit-appearance:none; appearance:none; }
+.model-search-clear { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; border:0; border-radius:var(--r-sm); color:var(--text-secondary); background:transparent; cursor:pointer; }
+.model-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
+.model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
 .model-catalog-note { margin:var(--s-3) 0 var(--s-5); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-identity { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2; }
 .model-identity > div { @apply tw:flex tw:items-center tw:gap-s-2; }
@@ -190,4 +215,5 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) { .model-details summary .archive-icon, .evaluation-panel summary .archive-icon { transition:none; } }
 </style>

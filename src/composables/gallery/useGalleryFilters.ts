@@ -141,8 +141,10 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
 
   /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）---------- */
+  let queryRestorePending = false;
   function restoreFiltersFromQuery() {
-    if (deferQueryRestore?.()) return;
+    if (deferQueryRestore?.()) { queryRestorePending = true; return; }
+    queryRestorePending = false;
     const q = route.query;
     applyFilterSnapshot({
       favoriteOnly: q.fav === '1', projectFilter: typeof q.project === 'string' ? q.project : '',
@@ -150,6 +152,11 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
       searchQuery: typeof q.q === 'string' ? q.q : '', tagFilter: typeof q.tag === 'string' ? q.tag : '',
       generation: normalizeGenerationConditions(Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => [field, q[generationQueryKeys[field]]]))),
     });
+  }
+  function restoreDeferredFiltersFromQuery() {
+    // Closing the viewer alone is not a navigation. Its tag action may still
+    // be waiting for the URL debounce and must not be replaced by the old URL.
+    if (queryRestorePending) restoreFiltersFromQuery();
   }
 
   let syncTimer: ReturnType<typeof setTimeout> | null = null;
@@ -219,6 +226,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   // 筛选变化回到第一页，让用户始终从最新作品看起
   watch([favoriteOnly, projectFilter, characterFilter, searchQuery, tagFilter, generationConditions], () => {
+    // A newer local filter selection takes precedence over a deferred URL.
+    queryRestorePending = false;
     renderLimit.value = PAGE_SIZE;
     onFilterReset?.();
     syncFiltersToQuery();
@@ -244,6 +253,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     masonryGroups,
     resetGalleryFilters,
     restoreFiltersFromQuery,
+    restoreDeferredFiltersFromQuery,
     syncFiltersToQuery,
     cleanupFilterSync,
     loadMoreIfNeeded,

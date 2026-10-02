@@ -54,34 +54,6 @@
   @apply tw:text-primary;
 }
 
-/* 次要操作收进「更多」下拉：减少右上角文字链接拥挤与误触 */
-.chat-page .chat-actions-more { @apply tw:relative; }
-.chat-page .chat-more-caret { @apply tw:ml-[4px] tw:text-mono-xs; opacity: .7; }
-.chat-page .chat-more-menu {
-  @apply tw:absolute;
-  top: calc(100% + 6px);
-  @apply tw:right-0;
-  z-index: var(--z-popover);
-  @apply tw:flex tw:flex-col tw:min-w-[168px] tw:p-s-2;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-lg;
-  box-shadow: var(--shadow-lg);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-}
-.chat-page .chat-more-item {
-  @apply tw:flex tw:items-center tw:min-h-[36px];
-  padding: 0 var(--s-3);
-  border: 0;
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-secondary tw:text-label-sm tw:text-left tw:cursor-pointer;
-}
-.chat-page .chat-more-item:hover { background: var(--accent-soft); @apply tw:text-primary; }
-.chat-page .chat-more-item.is-danger { @apply tw:text-danger-text; }
-.chat-page .chat-more-item.is-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); }
-
 .chat-page > .workspace-archive-bar {
   @apply tw:min-h-[48px] tw:mb-s-2;
   border-color: color-mix(in srgb, var(--editorial-gold) 24%, var(--border-soft));
