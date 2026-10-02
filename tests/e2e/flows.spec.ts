@@ -89,6 +89,22 @@ async function switchToSdEngine(page: Page) {
   await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
 }
 
+async function openPromptPreview(page: Page) {
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
+  const monitor = page.locator('#promptMonitor');
+  if (await monitor.getAttribute('open') === null) await monitor.locator(':scope > summary').click();
+  await expect(monitor.locator('.prompt-health-body')).toBeVisible();
+}
+
+async function openVoiceSettings(page: Page) {
+  await page.getByRole('tab', { name: '任务', exact: true }).click();
+  const voice = page.locator('.inspector-voice');
+  if (await voice.getAttribute('open') === null) await voice.locator(':scope > summary').click();
+  const collapse = voice.locator('.voice-collapse');
+  if (await collapse.getAttribute('aria-expanded') === 'false') await collapse.click();
+  await expect(voice.locator('.voice-caption-text')).toBeVisible();
+}
+
 /**
  * 设计系统的开关是 <label><input><span class="slider"> —— slider 盖在 input 上，
  * 常规 check() 会被判成 pointer 被拦截。force 让点击直接落在 input 上，
@@ -134,7 +150,9 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
   await switchToSdEngine(page);
   await openGenerationSettings(page);
+  await openPromptPreview(page);
   await expect(page.locator('.prompt-health-body')).toContainText('lora');
+  await page.getByRole('tab', { name: '生成', exact: true }).click();
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
   await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '896x1344');
@@ -171,6 +189,7 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
 
 test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async ({ page }) => {
   await page.goto('/prompt-builder?scene=sc001');
+  await openVoiceSettings(page);
   const caption = page.locator('.voice-caption-text');
   await expect(caption).toHaveValue(/放学后的等待/);
 
@@ -190,9 +209,12 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
   await toggle(page, page.getByRole('switch', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
-  // 分类结果必须是显存不足，而不是笼统的"生成失败"
-  await expect(page.locator('.sd-recovery-title')).toHaveText('显存不足');
+  // 未访问任务组也必须能看到失败和恢复入口；点击后保留原分类/重试断言。
+  await expect(page.locator('.stage-placeholder.is-error')).toBeVisible();
+  await expect(page.locator('.stage-error-detail')).toContainText(/CUDA|out of memory/i);
   await page.getByRole('button', { name: '查看恢复选项', exact: true }).click();
+  await expect(page.getByRole('tab', { name: '任务', exact: true })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('.sd-recovery-title')).toHaveText('显存不足');
   const recovery = page.getByRole('button', { name: '降低负载后重试' });
   await expect(recovery).toBeVisible();
 
@@ -806,6 +828,7 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
   // 受控路线：basic 默认 Anima 格式，preview 是角色 exact-token（underscore）
   // 而非 SD 的 <lora:...>；shiki_natsume 是夏目的角色控制词
+  await openPromptPreview(page);
   await expect(page.locator('.preview-output-structured')).toContainText('shiki_natsume');
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await page.getByRole('tab', { name: '画面', exact: true }).click();
@@ -821,6 +844,7 @@ test('flow 6b · 深链：无场景时 ?char 生效', async ({ page }) => {
   await expect(page.locator('.pb')).toHaveAttribute('data-character', 'natsume');
   await expect(page.locator('.char-btn.active')).toContainText('夏目');
   // 声线随角色联动
+  await openVoiceSettings(page);
   await expect(page.locator('.voice-field').first().locator('.studio-select-trigger')).toHaveAttribute('data-value', 'natsume');
 });
 
@@ -957,6 +981,7 @@ test('flow 6g · popular→studio 深链：热门角色模式进灵感场景出�
   await page.locator('.pop-card .pop-draw-action').first().click();
   await page.waitForURL(/prompt-builder\?popular=/, { timeout: 20000 });
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular');
+  await openPromptPreview(page);
   const popPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
 
   // 第 2 步：顶栏 SPA 跳到灵感场景（不整页刷新，popular 模式仍留在 store），选工作室场景出图
@@ -971,6 +996,7 @@ test('flow 6g · popular→studio 深链：热门角色模式进灵感场景出�
   // 提示词组装必须整体切回工作室分支：subject=studio、不再残留热门角色身份词、
   // 预览随本场景变化（不能与 popular 预览相同）。
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'studio');
+  await openPromptPreview(page);
   const studioPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
   expect(studioPreview).not.toBe(popPreview);
   expect(studioPreview).toMatch(/ayachi[ _]nene|shiki[ _]natsume/i);
@@ -1008,6 +1034,7 @@ test('flow 6h · studio→popular 深链：工作室场景进热门角色出图�
   expect(popularStory).not.toBe(studioStory);
 
   // 提示词必须整体切到热门角色组装：不得残留工作室身份/服装锚点（漏词即回归）。
+  await openPromptPreview(page);
   const popularPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
   expect(popularPreview).not.toBe('');
   expect(popularPreview).not.toMatch(/ayachi[ _]nene|shiki[ _]natsume|nene_|natsume_/i);
