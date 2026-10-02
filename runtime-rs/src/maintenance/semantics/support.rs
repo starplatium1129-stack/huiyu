@@ -341,6 +341,7 @@ pub(super) fn validate(
         "wai_illustrious_v17",
         "anima_base_v10",
         "anima_aesthetic_v11",
+        "anima_miaomiao_v16",
         "krea2_turbo_fp8",
     ] {
         if !seen.contains(id) {

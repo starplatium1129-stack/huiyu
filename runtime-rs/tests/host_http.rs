@@ -422,6 +422,7 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     let token = session["token"].as_str().unwrap();
     assert_eq!(session["domains"], json!([]));
     assert_eq!(session["generation"], 0);
+    assert!(session["activeMigrationId"].is_null());
     let candidate: Value =
         serde_json::from_slice(&std::fs::read(root.join("workspace-candidate.json")).unwrap())
             .unwrap();
@@ -475,6 +476,10 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     let activated = json_body(activated).await;
     assert_eq!(status, StatusCode::OK, "{activated}");
     assert_eq!(activated["workspace"]["generation"], 1);
+    assert_eq!(
+        activated["workspace"]["activeMigrationId"],
+        "empty-migration"
+    );
     assert_eq!(activated["workspace"]["bundledUi"], false);
     assert_eq!(
         activated["workspace"]["domains"],
@@ -485,7 +490,16 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     let enabled = json_body(enabled).await;
     assert_eq!(status, StatusCode::OK, "{enabled}");
     assert_eq!(enabled["workspace"]["generation"], 2);
+    assert_eq!(enabled["workspace"]["activeMigrationId"], "empty-migration");
     assert_eq!(enabled["workspace"]["bundledUi"], true);
+    for window in ["atelier", "companion", "companion-chat"] {
+        let identity = json_body(signed(&app, "session", window).await).await;
+        assert_eq!(
+            identity["workspace"]["activeMigrationId"],
+            "empty-migration"
+        );
+        assert_eq!(identity["workspace"]["generation"], 2);
+    }
     let active: Value =
         serde_json::from_slice(&std::fs::read(root.join("workspace-active.json")).unwrap())
             .unwrap();
@@ -524,6 +538,7 @@ async fn verified_candidate_is_backed_up_activated_and_reopened_with_new_epoch()
     );
     let resumed = json_body(signed(&reopened, "session", "atelier").await).await;
     assert_ne!(resumed["workspace"]["runtimeEpoch"], old_epoch);
+    assert_eq!(resumed["workspace"]["activeMigrationId"], "empty-migration");
     assert_eq!(resumed["workspace"]["bundledUi"], true);
     storage.close().await.unwrap();
 }
