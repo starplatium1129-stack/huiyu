@@ -20,7 +20,7 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   const escapePath = (value: any) => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
-  output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 · 安装旅程"');
+  output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 HUIYU · 安装"');
   // Display branding is separate from PRODUCTNAME: that name is the legacy
   // uninstall registry key and installation directory used by update discovery.
   output = replaceOnce(output, 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "${PRODUCTNAME}"', 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "绘遇 · HUIYU"');
@@ -59,6 +59,23 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   output = replaceOnce(output, '${NSD_CreateRadioButton} 30u 70u -30u 8u $R3\n    Pop $R3',
     '${NSD_CreateRadioButton} 56% 73% 38% 8% $R3\n    Pop $R3\n    System::Call \'uxtheme::SetWindowTheme(p $R3,w "",w "")\'\n    SendMessage $R3 ${WM_SETFONT} $GameSmallFont 1\n    SetCtlColors $R3 "F6F0FA" "14192D"');
   output = replaceOnce(output, '    nsDialogs::Show', '    Call GameShowPage');
+  // Replace presentation callbacks only; the Uninstall section stays byte-identical.
+  const uninstallStart = output.indexOf('; Uninstaller Pages');
+  const uninstallEnd = output.indexOf(';Languages', uninstallStart);
+  if (uninstallStart < 0 || uninstallEnd < 0) throw new Error('Uninstaller page anchor drift');
+  output = output.slice(0, uninstallStart) + `; Uninstaller Pages
+UninstPage custom un.GameUninstallConfirm un.GameUninstallConfirmLeave
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW un.GameInstallShow
+!insertmacro MUI_UNPAGE_INSTFILES
+UninstPage custom un.GameUninstallFinish
+
+` + output.slice(uninstallEnd);
+  // Use the shared surface palette for the existing maintenance choices.
+  output = output.replaceAll('56%', '49%').replaceAll('38%', '46%').replaceAll('40%', '46%')
+    .replaceAll('SetCtlColors $R2 "F6F0FA" "14192D"', '!insertmacro GameColors $R2 Ink Surface')
+    .replaceAll('SetCtlColors $R3 "F6F0FA" "14192D"', '!insertmacro GameColors $R3 Ink Surface')
+    .replaceAll('SetCtlColors $R1 "CED0DF" "14192D"', '!insertmacro GameColors $R1 Muted Surface')
+    .replace('"继续你的旅程" $GameTitleFont "F6F0FA"', '"管理现有安装" $GameTitleFont Ink');
   return output;
 }
 
@@ -76,7 +93,7 @@ async function bitmap(source: any, destination: any, width: any = 1920, height: 
   fs.writeFileSync(destination, bmp);
 }
 
-async function buildGameInstaller({ preview = false, capture = false, page = 'welcome' }: any = {}) {
+async function buildGameInstaller({ preview = false, capture = false, page = 'welcome', theme = 'system' }: any = {}) {
   const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.0.nsi'));
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
@@ -85,18 +102,14 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   await bitmap(path.join(INSTALLER, 'atelier-keyart.png'), background);
   const leftArt = await sharp(path.join(INSTALLER, 'atelier-keyart.png')).resize(1920, 1200).extract({ left: 0, top: 0, width: 998, height: 1200 }).png().toBuffer();
   await bitmap(leftArt, path.join(generated, 'atelier-left.bmp'), 998, 1200);
-  for (const [name, label] of Object.entries({ welcome: '开始旅程  →', install: '安装绘遇  →', continue: '继续  →', finish: '进入绘遇  →', cancel: '暂别', back: '返回' })) {
-    const secondary = name === 'cancel' || name === 'back';
-    const width = secondary ? 280 : 440;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="72"><rect width="${width}" height="72" fill="${secondary ? '#252b43' : '#e7bcd2'}"/><text x="${width / 2}" y="47" text-anchor="middle" font-family="Microsoft YaHei UI" font-size="32" font-weight="600" fill="${secondary ? '#f6f0fa' : '#14192d'}">${label}</text></svg>`;
-    await bitmap(Buffer.from(svg), path.join(generated, `button-${name}.bmp`), width, 72);
-  }
   const uiFile = path.join(INSTALLER, 'game-ui.nsh');
   fs.writeFileSync(path.join(generated, 'installer.nsi'), customizeTemplate(vendor.toString('utf8'), background, uiFile));
   if (preview) {
-    if (!['welcome', 'directory', 'finish', 'install', 'maintenance'].includes(page)) throw new Error('Unknown preview page');
+    if (!['welcome', 'directory', 'finish', 'install', 'maintenance', 'uninstall', 'uninstall-progress', 'uninstall-finish'].includes(page)) throw new Error('Unknown preview page');
+    if (!['system', 'dark', 'light'].includes(theme)) throw new Error('Unknown preview theme');
     const compiler = path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe');
-    const result = spawnSync(compiler, ['/INPUTCHARSET', 'UTF8', '/V2', `/DGAME_BACKGROUND=${background}`, `/DGAME_ASSET_DIR=${generated}`, `/DGAME_UI=${uiFile}`, `/DGAME_PREVIEW_PAGE=${page}`, path.join(INSTALLER, 'preview.nsi')], {
+    const themeArgs = theme === 'system' ? [] : [`/DGAME_PREVIEW_${theme.toUpperCase()}`];
+    const result = spawnSync(compiler, ['/INPUTCHARSET', 'UTF8', '/V2', ...themeArgs, `/DGAME_BACKGROUND=${background}`, `/DGAME_ASSET_DIR=${generated}`, `/DGAME_UI=${uiFile}`, `/DGAME_PREVIEW_PAGE=${page}`, path.join(INSTALLER, 'preview.nsi')], {
       cwd: generated, stdio: 'inherit', windowsHide: true,
     });
     if (result.error || result.status !== 0) throw new Error(`NSIS preview compile failed: ${result.error?.message || result.status}`);
@@ -121,7 +134,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  if (args.includes('--help')) console.log('Build native game-style installer UI. Options: --preview [--capture] [--page=welcome|directory|install|finish|maintenance]');
-  else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
+  if (args.includes('--help')) console.log('Build native installer UI. Options: --preview [--capture] [--theme=system|dark|light] [--page=welcome|directory|install|finish|maintenance|uninstall|uninstall-progress|uninstall-finish]');
+  else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome', theme: args.find((arg: any) => arg.startsWith('--theme='))?.slice(8) || 'system' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
 }
 export = { buildGameInstaller, customizeTemplate };

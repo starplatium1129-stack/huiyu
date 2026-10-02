@@ -104,9 +104,11 @@ namespace Ayaki.Installer {
     private void Progress(InstallProgress value) {
       progressHost.Visibility = Visibility.Visible;
       if (value.Stage == "prepare") {
+        Get<TextBlock>("StepText").Text = "02  安装 / 正在准备资源";
         status.Text = "正在准备安装资源  " + Math.Round(value.Fraction * 100) + "%";
         scale.ScaleX = value.Fraction;
       } else {
+        Get<TextBlock>("StepText").Text = "02  安装 / 正在写入应用";
         installing = true; status.Text = "正在安装应用，请稍候"; space.Text = "正在写入应用与运行环境，个人创作记录将被保留。";
         scale.ScaleX = 0; sweepBar.Visibility = Visibility.Visible;
         if (SystemParameters.ClientAreaAnimation) sweep.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(-220, 1100, TimeSpan.FromSeconds(1.8)) { RepeatBehavior = RepeatBehavior.Forever });
@@ -139,9 +141,10 @@ namespace Ayaki.Installer {
       busy = false; installing = false; complete = true; ExitCode = 0;
       sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed; scale.ScaleX = 1;
       Get<TextBlock>("ExistingText").Text = "已安装 " + PayloadInfo.Version;
+      Get<TextBlock>("StepText").Text = "03  完成 / 已安装绘遇";
       status.Text = "安装完成"; status.SetResourceReference(TextBlock.ForegroundProperty, "Success");
       Get<TextBlock>("HeroTitle").Text = "绘遇已就绪";
-      Get<TextBlock>("HeroSubtitle").Text = "你的角色与故事，正在等待下一次相遇。";
+      Get<TextBlock>("HeroSubtitle").Text = "可以打开绘遇，开始创作。个人内容已保留。";
       space.Text = "已安装至 " + directory.Text;
       SetAction("进入绘遇"); main.IsEnabled = true;
       directory.IsReadOnly = true; browse.IsEnabled = false; shortcut.IsEnabled = false;
@@ -149,6 +152,7 @@ namespace Ayaki.Installer {
     private void Reset(string error) {
       busy = false; installing = false;
       sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed; progressHost.Visibility = Visibility.Collapsed;
+      Get<TextBlock>("StepText").Text = "02  安装 / 需要处理";
       status.Text = "安装尚未完成"; SetAction("重新尝试");
       main.IsEnabled = true; browse.IsEnabled = true; directory.IsReadOnly = false; shortcut.IsEnabled = true;
       ShowMessage(error, true);

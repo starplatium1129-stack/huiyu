@@ -6,9 +6,22 @@ RequestExecutionLevel user
 !define PRODUCTNAME "AI-CG-Studio"
 !define VERSION "PREVIEW"
 !define ESTIMATEDSIZE "520000"
+!define BUNDLEID "com.aics.studio"
+!if "${GAME_PREVIEW_PAGE}" == "uninstall"
+!define GAME_PREVIEW_UNINSTALL
+!else if "${GAME_PREVIEW_PAGE}" == "uninstall-progress"
+!define GAME_PREVIEW_UNINSTALL
+!else if "${GAME_PREVIEW_PAGE}" == "uninstall-finish"
+!define GAME_PREVIEW_UNINSTALL
+!endif
 !include "${GAME_UI}"
+!insertmacro GameUninstallPages ""
 Name "绘遇 · 安装界面预览（不安装）"
+!ifdef GAME_PREVIEW_UNINSTALL
+Caption "绘遇 HUIYU · 卸载界面预览（不会卸载）"
+!else
 Caption "绘遇 · 安装界面预览"
+!endif
 Icon "..\icons\icon.ico"
 OutFile "generated\atelier-preview-${GAME_PREVIEW_PAGE}.exe"
 InstallDir "$LOCALAPPDATA\AI-CG-Studio-Preview"
@@ -21,12 +34,29 @@ Page custom GameDirectory GameDirectoryLeave
 Page custom GameFinish GameFinishLeave
 !else if "${GAME_PREVIEW_PAGE}" == "maintenance"
 Page custom GameMaintenancePreview
+!else if "${GAME_PREVIEW_PAGE}" == "uninstall"
+Page custom GameUninstallConfirm GameUninstallConfirmLeave
+!else if "${GAME_PREVIEW_PAGE}" == "uninstall-finish"
+Page custom GameUninstallFinish
 !endif
 !define MUI_PAGE_CUSTOMFUNCTION_SHOW GameInstallShow
 !insertmacro MUI_PAGE_INSTFILES
+!if "${GAME_PREVIEW_PAGE}" == "uninstall"
+Page custom GameUninstallFinish
+!else if "${GAME_PREVIEW_PAGE}" == "uninstall-progress"
+Page custom GameUninstallFinish
+!else
 Page custom GameFinish GameFinishLeave
+!endif
 !insertmacro MUI_LANGUAGE "SimpChinese"
 Function SkipIfPassive
+FunctionEnd
+Function un.SkipIfPassive
+FunctionEnd
+Function .onInit
+  !if "${GAME_PREVIEW_PAGE}" == "uninstall-progress"
+    StrCpy $GameMode "卸载"
+  !endif
 FunctionEnd
 Function RunMainBinary
   ; Preview intentionally never starts or installs the application.
@@ -36,22 +66,22 @@ Function CreateOrUpdateDesktopShortcut
 FunctionEnd
 Function GameMaintenancePreview
   Call GameCreatePage
-  !insertmacro GameLabel 56% 22% 40% 13% "继续你的旅程" $GameTitleFont "F6F0FA"
-  !insertmacro GameLabel 56% 40% 38% 18% "检测到已安装的绘境，请选择如何更新。" $GameFont "CED0DF"
-  ${NSD_CreateRadioButton} 56% 62% 38% 8% "卸载旧版本后安装"
+  !insertmacro GameLabel 49% 28% 46% 13% "管理现有安装" $GameTitleFont Ink
+  !insertmacro GameLabel 49% 46% 46% 12% "检测到已安装的绘遇，请选择如何继续。" $GameFont Muted
+  ${NSD_CreateRadioButton} 49% 64% 46% 8% "重新安装当前版本"
   Pop $R2
   System::Call 'uxtheme::SetWindowTheme(p $R2,w "",w "")'
   SendMessage $R2 ${WM_SETFONT} $GameSmallFont 1
-  SetCtlColors $R2 "F6F0FA" "14192D"
-  ${NSD_CreateRadioButton} 56% 73% 38% 8% "保留并更新现有安装"
+  !insertmacro GameColors $R2 Ink Surface
+  ${NSD_CreateRadioButton} 49% 75% 46% 8% "卸载应用"
   Pop $R3
   System::Call 'uxtheme::SetWindowTheme(p $R3,w "",w "")'
   SendMessage $R3 ${WM_SETFONT} $GameSmallFont 1
-  SetCtlColors $R3 "F6F0FA" "14192D"
+  !insertmacro GameColors $R3 Ink Surface
   ${NSD_Check} $R2
   Call GameShowPage
 FunctionEnd
 Section
-  DetailPrint "预览模式：不会安装或修改现有软件。"
-  Sleep 4000
+  DetailPrint "界面预览：不会安装、卸载、删除数据或启动应用。"
+  Sleep 8000
 SectionEnd

@@ -60,52 +60,62 @@
       </ControlTemplate></Setter.Value></Setter>
     </Style>
   </Window.Resources>
-  <Border x:Name="RootFrame" BorderBrush="{DynamicResource Line}" BorderThickness="1" KeyboardNavigation.TabNavigation="Cycle">
+  <Border x:Name="RootFrame" BorderBrush="{DynamicResource Line}" BorderThickness="1" Background="{DynamicResource Surface}" KeyboardNavigation.TabNavigation="Cycle">
     <Grid>
-      <Image x:Name="HeroImage" Stretch="UniformToFill"/>
-      <Rectangle IsHitTestVisible="False"><Rectangle.Fill><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Offset="0" Color="#08081018"/><GradientStop Offset=".5" Color="#20081018"/><GradientStop Offset="1" Color="#DE081018"/></LinearGradientBrush></Rectangle.Fill></Rectangle>
-      <Grid><Grid.RowDefinitions><RowDefinition Height="48"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#CC0A111C" Padding="22,0,10,0">
-          <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Path Data="@ICON_ATELIER@" Width="18" Height="18" Stretch="Uniform" Stroke="#F2A8BE" StrokeThickness="1.5" Margin="0,0,10,0"/><TextBlock Text="绘遇" Foreground="#F1F4FA" FontSize="16" FontWeight="SemiBold"/><TextBlock Text=" /  HUIYU" Foreground="#BBC8DB" FontSize="10" VerticalAlignment="Center" Margin="8,1,0,0"/></StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
-              <Button x:Name="ThemeButton" Content="切换浅色" AutomationProperties.Name="切换安装界面主题" Style="{StaticResource ChromeButton}" Width="84" FontSize="11"/>
-              <Button x:Name="MinimizeButton" AutomationProperties.Name="最小化" ToolTip="最小化" Style="{StaticResource ChromeButton}"><Path Data="@ICON_MINIMIZE@" Stroke="#F1F4FA" StrokeThickness="1.5" StrokeStartLineCap="Round" Width="16" Height="16" Stretch="Uniform"/></Button>
-              <Button x:Name="CloseButton" AutomationProperties.Name="关闭安装器" ToolTip="关闭" Style="{StaticResource ChromeButton}"><Path Data="@ICON_CLOSE@" Stroke="#F1F4FA" StrokeThickness="1.5" StrokeStartLineCap="Round" Width="14" Height="14" Stretch="Uniform"/></Button>
-            </StackPanel>
-          </Grid>
-        </Border>
-        <Grid Grid.Row="1" Margin="40,36,40,26"><Grid.ColumnDefinitions><ColumnDefinition Width="55*"/><ColumnDefinition Width="45*"/></Grid.ColumnDefinitions>
-          <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="18,0,0,0">
-            <TextBlock Text="HUIYU ATELIER" FontFamily="Segoe UI" FontSize="11" Foreground="#F2A8BE" Margin="0,0,0,16"/>
-            <TextBlock x:Name="HeroTitle" Text="绘遇" FontSize="42" FontWeight="SemiBold" Foreground="#F4F6FB" LineHeight="54" TextWrapping="Wrap"/>
-            <TextBlock x:Name="HeroSubtitle" Text="让想象成形，让故事相遇。" FontSize="14" Foreground="#CFD8E6" Margin="0,18,0,0" TextWrapping="Wrap" LineHeight="23"/>
-            <Rectangle Width="36" Height="2" Fill="#F2A8BE" HorizontalAlignment="Left" Margin="0,24,0,0"/>
-          </StackPanel>
-        </Grid>
-        <Border Grid.Row="2" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="28,18,28,20">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="40*"/><ColumnDefinition Width="60*"/></Grid.ColumnDefinitions>
+      <Grid ClipToBounds="True">
+        <Image x:Name="HeroImage" Stretch="UniformToFill" HorizontalAlignment="Left" Width="880" Margin="-60,0,0,0"/>
+        <Border Background="#C914192D" VerticalAlignment="Bottom" Padding="30,24,30,30">
           <StackPanel>
-            <DockPanel Margin="0,0,0,12"><TextBlock x:Name="VersionText" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" FontSize="11" Text="Windows x64"/><TextBlock x:Name="StatusText" Text="安装位置" FontWeight="SemiBold" Foreground="{DynamicResource Text}" FontSize="13"/></DockPanel>
-            <Border x:Name="PathBorder" Background="{DynamicResource Card}" BorderBrush="{DynamicResource ControlLine}" BorderThickness="1" CornerRadius="5" Padding="12,7">
-              <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <TextBlock Text="让想象成形，" Foreground="#FFF8F4" FontSize="25" FontWeight="SemiBold"/>
+            <TextBlock Text="让故事相遇。" Foreground="#FFF8F4" FontSize="25" FontWeight="SemiBold" Margin="0,6,0,16"/>
+            <TextBlock Text="角色陪伴 / 图像创作 / 剧情短片" Foreground="#E7D8E5" FontSize="11"/>
+          </StackPanel>
+        </Border>
+        <Border Background="#E614192D" VerticalAlignment="Top" Padding="30,22">
+          <StackPanel Orientation="Horizontal"><Path Data="@ICON_ATELIER@" Width="25" Height="25" Stretch="Uniform" Stroke="#F2A8BE" StrokeThickness="1.5" Margin="0,0,12,0"/><TextBlock Text="绘遇" Foreground="#FFF8F4" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="HUIYU" Foreground="#E7D8E5" FontSize="11" VerticalAlignment="Center" Margin="12,3,0,0"/></StackPanel>
+        </Border>
+      </Grid>
+      <Grid Grid.Column="1">
+        <Grid.RowDefinitions><RowDefinition Height="48"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <Button x:Name="ThemeButton" Content="切换浅色" AutomationProperties.Name="切换安装界面主题" Width="84" Height="30" FontSize="11" Padding="8,4" Background="Transparent" BorderThickness="0"/>
+          <Button x:Name="MinimizeButton" AutomationProperties.Name="最小化" ToolTip="最小化" Width="34" Height="30" Padding="8" Background="Transparent" BorderThickness="0"><Path Data="@ICON_MINIMIZE@" Stroke="{DynamicResource Text}" StrokeThickness="1.5" Width="15" Height="15" Stretch="Uniform"/></Button>
+          <Button x:Name="CloseButton" AutomationProperties.Name="关闭安装器" ToolTip="关闭" Width="34" Height="30" Padding="8" Background="Transparent" BorderThickness="0"><Path Data="@ICON_CLOSE@" Stroke="{DynamicResource Text}" StrokeThickness="1.5" Width="13" Height="13" Stretch="Uniform"/></Button>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="34,12,34,12">
+          <StackPanel>
+            <TextBlock x:Name="StepText" Text="01  安装位置    /    02  安装    /    03  完成" Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,0,0,26"/>
+            <TextBlock x:Name="HeroTitle" Text="安装绘遇" FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
+            <TextBlock x:Name="HeroSubtitle" Text="为你的下一次创作，准备一个专属空间。" FontSize="13" Foreground="{DynamicResource Muted}" Margin="0,10,0,24" TextWrapping="Wrap" LineHeight="22"/>
+            <DockPanel Margin="0,0,0,10"><TextBlock x:Name="VersionText" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" FontSize="11" Text="Windows x64"/><TextBlock x:Name="StatusText" Text="选择安装位置" FontWeight="SemiBold" Foreground="{DynamicResource Text}" FontSize="13" AutomationProperties.LiveSetting="Polite"/></DockPanel>
+            <Border x:Name="PathBorder" Background="{DynamicResource Card}" BorderBrush="{DynamicResource ControlLine}" BorderThickness="1" CornerRadius="6" Padding="10,7">
+              <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <Path Data="@ICON_FOLDER@" Width="17" Height="17" Stretch="Uniform" Stroke="{DynamicResource Muted}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                 <TextBox x:Name="PathBox" Grid.Column="1" AutomationProperties.Name="安装位置" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Text}" VerticalContentAlignment="Center" Padding="2,4" FontSize="12"/>
-                <Button x:Name="BrowseButton" Grid.Column="2" Content="更改位置" AutomationProperties.Name="更改安装位置" FontSize="11" Padding="13,5" Margin="10,0,0,0"/>
+                <Button x:Name="BrowseButton" Grid.Column="2" Content="浏览…" AutomationProperties.Name="更改安装位置" FontSize="11" Padding="10,6" Margin="8,0,0,0"/>
               </Grid>
             </Border>
-            <DockPanel Margin="1,9,1,12"><TextBlock x:Name="ExistingText" DockPanel.Dock="Right" Foreground="{DynamicResource Success}" FontSize="11"/><TextBlock x:Name="SpaceText" Foreground="{DynamicResource Muted}" FontSize="11" Text="正在读取磁盘空间…"/></DockPanel>
-            <Grid x:Name="ProgressHost" Height="4" Margin="0,0,0,12" Background="{DynamicResource Card}" ClipToBounds="True" Visibility="Collapsed">
+            <TextBlock x:Name="SpaceText" Foreground="{DynamicResource Muted}" FontSize="11" Text="正在读取磁盘空间…" TextWrapping="Wrap" Margin="0,10,0,8"/>
+            <TextBlock x:Name="ExistingText" Foreground="{DynamicResource Success}" FontSize="11" Margin="0,0,0,12"/>
+            <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,18">
+              <StackPanel><TextBlock Text="个人内容会被保留" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold"/><TextBlock Text="重新安装与更新不会清理作品、个人设置和已导入资源。生成模型需要另行配置。" Foreground="{DynamicResource Muted}" FontSize="11" TextWrapping="Wrap" LineHeight="19" Margin="0,6,0,0"/></StackPanel>
+            </Border>
+            <CheckBox x:Name="ShortcutCheck" IsChecked="True" Content="创建桌面与开始菜单快捷方式" FontSize="12"/>
+            <Grid x:Name="ProgressHost" Height="5" Margin="0,18,0,12" Background="{DynamicResource Card}" ClipToBounds="True" Visibility="Collapsed">
               <Rectangle x:Name="ProgressFill" Fill="{DynamicResource ProgressColor}" RenderTransformOrigin="0,0"><Rectangle.RenderTransform><ScaleTransform x:Name="ProgressScale" ScaleX="0"/></Rectangle.RenderTransform></Rectangle>
-              <Rectangle x:Name="ProgressSweep" Width="220" HorizontalAlignment="Left" Fill="{DynamicResource ProgressColor}" Visibility="Collapsed"><Rectangle.RenderTransform><TranslateTransform x:Name="ProgressTranslate" X="-220"/></Rectangle.RenderTransform></Rectangle>
+              <Rectangle x:Name="ProgressSweep" Width="160" HorizontalAlignment="Left" Fill="{DynamicResource ProgressColor}" Visibility="Collapsed"><Rectangle.RenderTransform><TranslateTransform x:Name="ProgressTranslate" X="-160"/></Rectangle.RenderTransform></Rectangle>
             </Grid>
-            <TextBlock x:Name="MessageText" Foreground="{DynamicResource Error}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" AutomationProperties.LiveSetting="Polite"/>
-            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="236"/></Grid.ColumnDefinitions>
-              <StackPanel VerticalAlignment="Center"><CheckBox x:Name="ShortcutCheck" IsChecked="True" Content="创建桌面与开始菜单快捷方式" FontSize="12"/><TextBlock x:Name="Footnote" Text="应用本体安装 · 生成模型另行配置" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,8,0,0"/></StackPanel>
-              <Button x:Name="MainButton" Grid.Column="1" Height="50" BorderBrush="{DynamicResource Accent}" AutomationProperties.Name="安装绘遇">
-                <Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Foreground" Value="{DynamicResource AccentText}"/><Setter Property="Background" Value="{DynamicResource Accent}"/><Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource AccentHover}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource DisabledText}"/></Trigger></Style.Triggers></Style></Button.Style>
-                <StackPanel Orientation="Horizontal"><TextBlock x:Name="MainAction" Text="安装绘遇" FontSize="16" FontWeight="SemiBold"/><Path Data="@ICON_ARROW@" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Width="18" Height="18" Stretch="Uniform" Margin="16,1,0,0"/></StackPanel>
-              </Button>
-            </Grid>
+            <TextBlock x:Name="MessageText" Foreground="{DynamicResource Error}" FontSize="12" TextWrapping="Wrap" LineHeight="21" Margin="0,14,0,0" Visibility="Collapsed" AutomationProperties.LiveSetting="Polite"/>
+          </StackPanel>
+        </ScrollViewer>
+        <Border Grid.Row="2" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="34,18,34,20">
+          <StackPanel>
+            <Button x:Name="MainButton" Height="48" BorderBrush="{DynamicResource Accent}" AutomationProperties.Name="安装绘遇">
+              <Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Foreground" Value="{DynamicResource AccentText}"/><Setter Property="Background" Value="{DynamicResource Accent}"/><Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource AccentHover}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource DisabledText}"/></Trigger></Style.Triggers></Style></Button.Style>
+              <StackPanel Orientation="Horizontal"><TextBlock x:Name="MainAction" Text="安装绘遇" FontSize="15" FontWeight="SemiBold"/><Path Data="@ICON_ARROW@" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Width="18" Height="18" Stretch="Uniform" Margin="14,1,0,0"/></StackPanel>
+            </Button>
+            <TextBlock x:Name="Footnote" Text="安装时可能需要 Windows 管理员授权" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap"/>
           </StackPanel>
         </Border>
       </Grid>
