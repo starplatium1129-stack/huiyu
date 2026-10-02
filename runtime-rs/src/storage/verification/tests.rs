@@ -129,6 +129,50 @@ async fn disconnect_cancels_hash_and_close_waits_for_blocking_worker() {
 }
 
 #[tokio::test]
+async fn thumbnail_close_drains_detached_decoder_before_releasing_workspace() {
+    let (_directory, storage) = fixture().await;
+    let (entered, resume) = storage.thumbnails.pause();
+    let request_storage = storage.clone();
+    let request = tokio::spawn(async move {
+        request_storage
+            .request(json!({"kind":"readThumbnail","alias":"image"}), "test")
+            .await
+    });
+    ready(entered).await;
+    request.abort();
+    assert!(request.await.unwrap_err().is_cancelled());
+    let closing_storage = storage.clone();
+    let mut closing = tokio::spawn(async move { closing_storage.close().await });
+    assert!(
+        tokio::time::timeout(Duration::from_millis(20), &mut closing)
+            .await
+            .is_err()
+    );
+    assert!(
+        Storage::open(storage.root.as_ref().clone(), "verify-test".into(), false)
+            .await
+            .is_err()
+    );
+    resume.send(()).unwrap();
+    tokio::time::timeout(Duration::from_secs(2), closing)
+        .await
+        .unwrap()
+        .unwrap()
+        .unwrap();
+    assert!(!storage.root.join("cache").exists());
+    assert!(
+        storage
+            .request(json!({"kind":"readThumbnail","alias":"image"}), "test")
+            .await
+            .is_err()
+    );
+    let reopened = Storage::open(storage.root.as_ref().clone(), "verify-test".into(), false)
+        .await
+        .unwrap();
+    reopened.close().await.unwrap();
+}
+
+#[tokio::test]
 async fn verification_admission_is_bounded_and_waiters_observe_close() {
     let (_directory, storage) = fixture().await;
     let held = storage

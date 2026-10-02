@@ -95,12 +95,13 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 "SELECT id_json,body,revision,deleted_at,id_key FROM artworks WHERE id_key IN ({})",
                 vec!["?"; keys.len()].join(",")
             );
-            let rows =
-                c.db.prepare(&sql)?
-                    .query_map(rusqlite::params_from_iter(&keys), |r| {
-                        Ok((r.get::<_, String>(4)?, decode_artwork(r)?))
-                    })?
-                    .collect::<rusqlite::Result<HashMap<_, _>>>()?;
+            let mut statement = c.db.prepare(&sql)?;
+            let mut selected = statement.query(rusqlite::params_from_iter(&keys))?;
+            let mut rows = HashMap::new();
+            while let Some(row) = selected.next()? {
+                c.check_cancel()?;
+                rows.insert(row.get::<_, String>(4)?, decode_artwork(row)?);
+            }
             Ok(Value::Array(
                 keys.iter()
                     .map(|key| rows.get(key).cloned().unwrap_or(Value::Null))
@@ -138,6 +139,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             let mut last = String::new();
             let mut cursor = Value::Null;
             while let Some(row) = rows.next()? {
+                c.check_cancel()?;
                 if items.len() == limit as usize {
                     cursor = json!(last);
                     break;
@@ -148,10 +150,14 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             Ok(json!({"items":items,"nextCursor":cursor,"revision":c.revision()?}))
         }
         "listProjects" => {
-            let items =
-                c.db.prepare_cached("SELECT id_json,body,revision FROM projects ORDER BY id_key")?
-                    .query_map([], decode_project)?
-                    .collect::<rusqlite::Result<Vec<_>>>()?;
+            let mut statement =
+                c.db.prepare_cached("SELECT id_json,body,revision FROM projects ORDER BY id_key")?;
+            let mut rows = statement.query([])?;
+            let mut items = Vec::new();
+            while let Some(row) = rows.next()? {
+                c.check_cancel()?;
+                items.push(decode_project(row)?);
+            }
             Ok(json!({"items":items,"revision":c.revision()?}))
         }
         _ => Err(invalid("Unknown record query")),

@@ -1,4 +1,5 @@
 mod queue;
+pub(super) use queue::Readers;
 
 use super::{Storage, schema, string};
 use crate::error::{ApiError, Result};
@@ -9,12 +10,16 @@ use image::{
 };
 use serde_json::Value;
 use std::{fs, path::Path, sync::OnceLock};
-use tokio_util::sync::CancellationToken;
 
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
-    let source = match storage.media(string(command, "alias")?).await {
+    let (reader, cancelled) = storage.thumbnails.begin()?;
+    let _cancel = cancelled.clone().drop_guard();
+    let source = match tokio::select! { biased;
+        _ = cancelled.cancelled() => return Err(super::unavailable()),
+        source = storage.media(string(command, "alias")?) => source,
+    } {
         Ok(source) => source,
         Err(error) if error.status.as_u16() == 404 => return Ok(Value::Null),
         Err(error) => return Err(error),
@@ -40,20 +45,29 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     let queue = DECODERS.get_or_init(queue::Queue::new);
     // Coalesce the same workspace/hash/cache-version before taking a decoder
     // slot. Otherwise two windows can both miss the cache and decode it twice.
-    let image_guard = queue.image(cache.clone()).await;
+    let image_guard = tokio::select! { biased;
+        _ = cancelled.cancelled() => return Err(super::unavailable()),
+        guard = queue.image(cache.clone()) => guard,
+    };
     match tokio::fs::read(&cache).await {
         Ok(bytes) => return Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into()),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
         Err(error) => return Err(error.into()),
     }
-    let permit = queue.decoder().await?;
-    let cancelled = CancellationToken::new();
-    let _cancel = cancelled.clone().drop_guard();
+    let permit = tokio::select! { biased;
+        _ = cancelled.cancelled() => return Err(super::unavailable()),
+        permit = queue.decoder() => permit?,
+    };
+    let owner = storage.sender.clone();
+    #[cfg(test)]
+    let readers = storage.thumbnails.clone();
     tokio::task::spawn_blocking(move || {
-        let _permit = permit;
+        let (_permit, _reader, _owner) = (permit, reader, owner);
         // Cancellation drops the awaiting future, not a running blocking
         // decoder. Keep the image lock until that worker really finishes.
         let _image_guard = image_guard;
+        #[cfg(test)]
+        readers.paused();
         if cancelled.is_cancelled() {
             return Ok(Value::Null);
         }

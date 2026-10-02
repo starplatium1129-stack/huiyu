@@ -29,6 +29,7 @@ impl Storage {
             root: storage_root,
             native_images: None,
             verification: Arc::new(verification::Verifier::new()),
+            thumbnails: Arc::new(thumbnail::Readers::new()),
         })
     }
     pub fn workspace_id(&self) -> &str {
@@ -132,6 +133,7 @@ impl Storage {
     }
     pub async fn close(&self) -> Result<()> {
         self.verification.close().await;
+        self.thumbnails.close().await;
         let (reply, result) = oneshot::channel();
         if self.sender.send(Work::Close(reply)).await.is_err() {
             return Ok(());

@@ -54,6 +54,7 @@ pub struct Storage {
     root: Arc<PathBuf>,
     native_images: Option<Arc<PathBuf>>,
     verification: Arc<verification::Verifier>,
+    thumbnails: Arc<thumbnail::Readers>,
 }
 enum Work {
     TaskMediaChunk(

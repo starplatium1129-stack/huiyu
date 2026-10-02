@@ -1,5 +1,26 @@
 use super::*;
 
+#[test]
+fn batch_reads_honor_cancellation_before_deserializing_rows() {
+    let (_directory, mut c) = fixture();
+    c.db.execute(
+        "INSERT INTO projects VALUES(?,?,?,?)",
+        params!["project", "\"project\"", "{}", 1],
+    )
+    .unwrap();
+    for command in [
+        json!({"kind":"getArtworks","ids":["restored","missing","restored"]}),
+        json!({"kind":"listArtworks","limit":1}),
+        json!({"kind":"listProjects"}),
+    ] {
+        c.cancel.store(true, Ordering::Relaxed);
+        assert_eq!(read(&c, &command).unwrap_err().code, "CANCELLED");
+        c.cancel.store(false, Ordering::Relaxed);
+        assert!(read(&c, &command).is_ok());
+    }
+    c.shutdown().unwrap();
+}
+
 fn fixture() -> (tempfile::TempDir, Context) {
     let directory = tempfile::tempdir().unwrap();
     let c = schema::open(
