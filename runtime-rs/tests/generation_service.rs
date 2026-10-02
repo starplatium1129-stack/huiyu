@@ -25,6 +25,10 @@ use std::{
 use tokio::sync::{Semaphore, mpsc};
 use tokio_util::sync::CancellationToken;
 
+#[path = "generation_service/collection.rs"]
+mod collection;
+use collection::{Hooks, pending_collection};
+
 fn png() -> Vec<u8> {
     STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap()
 }
@@ -38,6 +42,7 @@ struct MockState {
     txt_count: AtomicUsize,
     prompt_count: AtomicUsize,
     gate: Semaphore,
+    next_gate: Semaphore,
     interrupt_gate: Semaphore,
     started: mpsc::UnboundedSender<String>,
     cancelled: AtomicBool,
@@ -129,6 +134,8 @@ async fn txt2img(
     state.started.send(format!("start:{count}")).unwrap();
     if count == 1 {
         state.gate.acquire().await.unwrap().forget();
+    } else if count == 2 {
+        state.next_gate.acquire().await.unwrap().forget();
     }
     state.calls.lock().unwrap().push(format!("finish:{count}"));
     if state.oom.load(Ordering::Relaxed) {
@@ -202,6 +209,7 @@ fn mock(web: bool, comfy: bool) -> (Arc<MockState>, mpsc::UnboundedReceiver<Stri
             txt_count: AtomicUsize::new(0),
             prompt_count: AtomicUsize::new(0),
             gate: Semaphore::new(0),
+            next_gate: Semaphore::new(1),
             interrupt_gate: Semaphore::new(0),
             started: tx,
             cancelled: AtomicBool::new(false),
@@ -360,69 +368,6 @@ async fn webui_serializes_global_interrupt_and_rejects_stale_provider_before_adm
     service.close().await;
 }
 
-async fn pending_collection(service: &Service, id: &str) {
-    tokio::time::timeout(Duration::from_secs(5), async {
-        loop {
-            if service.get_job(id, "owner").await.unwrap()["code"] == "RESULT_COLLECTION_PENDING" {
-                break;
-            }
-            tokio::time::sleep(Duration::from_millis(10)).await;
-        }
-    })
-    .await
-    .unwrap();
-    let observed = service.query(id, "owner").await.unwrap();
-    assert_eq!(observed.status, "running");
-    assert!(!observed.settled);
-    assert!(!observed.unknown);
-    assert_eq!(observed.outputs.len(), 1);
-}
-struct Hooks(Arc<Mutex<Vec<String>>>, AtomicBool);
-impl ExecutionHooks for Hooks {
-    fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            assert!(value["gatewayJobId"].is_string());
-            self.0.lock().unwrap().push("checkpoint".into());
-            Ok(())
-        })
-    }
-    fn submitting(&self, provider: String, _: String) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            assert!(["comfy", "webui"].contains(&provider.as_str()));
-            self.0.lock().unwrap().push("submitting".into());
-            Ok(())
-        })
-    }
-    fn observed(&self, id: String, _: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            assert_eq!(id, "p1");
-            self.0.lock().unwrap().push("observed".into());
-            Ok(())
-        })
-    }
-    fn collect(&self, outputs: Vec<Output>) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            assert!(!outputs[0].is_empty());
-            if let Output::File { path, bytes, .. } = &outputs[0] {
-                // Read on the first collection attempt, before any retry or wait.
-                let saved = std::fs::read(path).unwrap();
-                assert_eq!(*bytes, saved.len() as u64);
-                assert_eq!(saved, png());
-                assert_eq!(Sha256::digest(&saved), Sha256::digest(png()));
-            }
-            if self.1.load(Ordering::Relaxed) {
-                self.0.lock().unwrap().push("collect:failed".into());
-                return Err(ApiError::new(
-                    503,
-                    "FIXTURE_STORAGE_BUSY",
-                    "Temporary durable collection failure",
-                ));
-            }
-            self.0.lock().unwrap().push("collect".into());
-            Ok(())
-        })
-    }
-}
 #[tokio::test]
 async fn comfy_preserves_workflow_ledger_order_output_ownership_and_targeted_cancel() {
     let temp = tempfile::tempdir().unwrap();

@@ -147,7 +147,7 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     // A later reconciliation can finish an earlier failed durable collection.
     // The collection mutex also releases the claim if this query is dropped.
     if job.state.lock().await.collection_pending {
-        try_collect(&job).await;
+        try_collect(inner, &job).await;
     }
     let state = job.state.lock().await;
     let mut metadata = state.metadata.clone();
@@ -246,21 +246,28 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
         state.permit.take();
     }
     job.notify.notify_waiters();
-    if try_collect(job).await {
+    if job.hooks.is_none() {
         return;
     }
     let worker = inner.clone();
     let job = job.clone();
-    inner.tasks.spawn(async move{
-        for seconds in [1,2,4]{
-            tokio::select!{_=worker.cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(seconds))=>{}}
-            if try_collect(&job).await{return}
+    // Keep completion above in the queue runner so a late cancel sees a terminal
+    // job. Even the first storage attempt must not block the next WebUI request.
+    inner.tasks.spawn(async move {
+        if try_collect(&worker, &job).await {
+            return;
+        }
+        for seconds in [1, 2, 4] {
+            tokio::select! {_=worker.cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(seconds))=>{}}
+            if try_collect(&worker, &job).await {
+                return;
+            }
         }
         // No permanent worker: explicit/active query can retry once under the
         // same claim after the finite background budget has been used.
     });
 }
-async fn try_collect(job: &Job) -> bool {
+async fn try_collect(inner: &Inner, job: &Job) -> bool {
     let Ok(_claim) = job.collection.try_lock() else {
         return false;
     };
@@ -275,7 +282,13 @@ async fn try_collect(job: &Job) -> bool {
         output
     };
     let result = if let Some(hooks) = &job.hooks {
-        hooks.collect(vec![output]).await
+        // Applies to the first attempt, retries and query reconciliation. Drop
+        // the hook future/claim on shutdown before tracked workers can finish.
+        tokio::select! {
+            biased;
+            _ = inner.cancel.cancelled() => return true,
+            result = hooks.collect(vec![output]) => result,
+        }
     } else {
         Ok(())
     };
