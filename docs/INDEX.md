@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[三路视觉独立整合交付](audits/2026-10-02/visual-integration-handoff.md)汇总画布动效、灵感叠卡与画册展开的来源保留、round9/发布接入、组合类型与生产预算，以及主分支交接前提。
+
 [第九轮独立整合交付](audits/2026-10-02/round9-integration.md)汇总四路来源、原始提交保留、指定 Rust 回归与类型/接口检查，并明确主分支接入步骤及发布未验边界。
 
 [第九轮共享生命周期核查](audits/2026-10-02/round9-runtime-lifecycle.md)记录 20 轮合成导航的监听器、timer、observer、频道与 Blob URL 计数；未复现持续增长，保留产品代码，并列明原生桌面未验边界。
