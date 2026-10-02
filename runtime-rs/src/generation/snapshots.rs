@@ -42,43 +42,6 @@ async fn write(path: &Path, value: &Value) -> Result<()> {
     Ok(())
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn recovery_snapshot_cancel_reclaims_pending_and_preserves_old_bytes() {
-        let directory = tempfile::tempdir().unwrap();
-        let path = directory.path().join("running.json");
-        let old = b"{\"status\":\"running\",\"lostAt\":1}";
-        std::fs::write(&path, old).unwrap();
-        let runtime = tokio::runtime::Builder::new_current_thread()
-            .max_blocking_threads(1)
-            .enable_all()
-            .build()
-            .unwrap();
-        let (started_tx, started_rx) = std::sync::mpsc::channel();
-        let (release_tx, release_rx) = std::sync::mpsc::channel();
-        let blocker = runtime.spawn_blocking(move || {
-            started_tx.send(()).unwrap();
-            // A failed assertion cannot leave runtime shutdown waiting forever.
-            let _ = release_rx.recv_timeout(Duration::from_secs(5));
-        });
-        started_rx.recv_timeout(Duration::from_secs(5)).unwrap();
-        runtime.block_on(async {
-            let value = json!({"status": "running", "lostAt": 2});
-            let mut writing = Box::pin(write(&path, &value));
-            assert!(futures_util::poll!(writing.as_mut()).is_pending());
-            drop(writing);
-            release_tx.send(()).unwrap();
-            blocker.await.unwrap();
-        });
-        // Drain any file IO submitted before cancellation before inspecting disk.
-        runtime.shutdown_timeout(Duration::from_secs(5));
-        assert_eq!(std::fs::read(&path).unwrap(), old);
-        assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
-    }
-}
 pub(super) async fn save(inner: &Inner, job: &Job) -> Result<()> {
     let directory = directory(inner, job.provider);
     tokio::fs::create_dir_all(&directory).await?;
@@ -232,4 +195,42 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
         Ok::<_,ApiError>(Initialized {client_id,session_id:uuid::Uuid::new_v4().simple().to_string(),progress:std::sync::Mutex::new(Some(progress))})
     }).await?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn recovery_snapshot_cancel_reclaims_pending_and_preserves_old_bytes() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("running.json");
+        let old = b"{\"status\":\"running\",\"lostAt\":1}";
+        std::fs::write(&path, old).unwrap();
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .max_blocking_threads(1)
+            .enable_all()
+            .build()
+            .unwrap();
+        let (started_tx, started_rx) = std::sync::mpsc::channel();
+        let (release_tx, release_rx) = std::sync::mpsc::channel();
+        let blocker = runtime.spawn_blocking(move || {
+            started_tx.send(()).unwrap();
+            // A failed assertion cannot leave runtime shutdown waiting forever.
+            let _ = release_rx.recv_timeout(Duration::from_secs(5));
+        });
+        started_rx.recv_timeout(Duration::from_secs(5)).unwrap();
+        runtime.block_on(async {
+            let value = json!({"status": "running", "lostAt": 2});
+            let mut writing = Box::pin(write(&path, &value));
+            assert!(futures_util::poll!(writing.as_mut()).is_pending());
+            drop(writing);
+            release_tx.send(()).unwrap();
+            blocker.await.unwrap();
+        });
+        // Drain any file IO submitted before cancellation before inspecting disk.
+        runtime.shutdown_timeout(Duration::from_secs(5));
+        assert_eq!(std::fs::read(&path).unwrap(), old);
+        assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
+    }
 }

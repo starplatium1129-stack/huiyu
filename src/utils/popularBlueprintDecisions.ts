@@ -79,7 +79,8 @@ function matchFirst(text: string, table: Record<string, string>, wholeWords = fa
   const lower = text.toLowerCase()
   const keys = Object.keys(table).sort((a, b) => b.length - a.length)
   for (const key of keys) {
-    if (wholeWords ? new RegExp(`\\b${key}\\b`).test(lower) : lower.includes(key)) return table[key]
+    // Underscores delimit camera tags, while letters in "closed" must not match "close".
+    if (wholeWords ? new RegExp(`(?:^|[^a-z0-9])${key}(?=$|[^a-z0-9])`).test(lower) : lower.includes(key)) return table[key]
   }
   return null
 }

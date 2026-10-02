@@ -181,6 +181,7 @@ export default defineConfig(async ({ mode }) => {
               id.includes('src/utils/randomVariation') ||
               id.includes('src/utils/promptPolicy') ||
               id.includes('src/utils/promptCompiler') ||
+              id.includes('src/utils/studioDualSubject') ||
               id.includes('src/utils/popularContent') ||
               id.includes('src/config/artistStyleCatalog') ||
               id.includes('src/config/artistStyles')) {
