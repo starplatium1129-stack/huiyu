@@ -1,12 +1,25 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import GalleryProjectAlbums from './GalleryProjectAlbums.vue'
+import GalleryAlbumOverview from './GalleryAlbumOverview.vue'
 import { setRuntimeOrigin } from '@/platform/runtimeUrl'
 
 const album = { id: 'rain', title: '雨后的来信', count: 3, covers: [{ id: 1, src: 'blob:one' }], kind: 'manual' as const }
 afterEach(() => setRuntimeOrigin(null, false))
 
 describe('project album navigation', () => {
+  it('keeps existing covers and navigation while showing a failed refresh', async () => {
+    const wrapper = mount(GalleryAlbumOverview, { props: { albums: [album], selectedId: '', characters: false, loading: false, error: '', busy: false, hasHistory: true } })
+    const card = wrapper.get('button.gallery-album').element
+    await wrapper.setProps({ error: 'Snapshot unavailable' })
+    expect(wrapper.get('[role="alert"]').text()).toContain('Snapshot unavailable')
+    expect(wrapper.get('button.gallery-album').element).toBe(card)
+    expect(wrapper.get('img').attributes('src')).toBe('blob:one')
+    await wrapper.get('button.gallery-album').trigger('click')
+    expect(wrapper.emitted('select')).toEqual([['rain']])
+    wrapper.unmount()
+  })
+
   it('opens an album and reopens the same album after returning to the overview', async () => {
     const wrapper = mount(GalleryProjectAlbums, { props: { albums: [album], selectedId: '' } })
     const card = wrapper.get('button.gallery-album')

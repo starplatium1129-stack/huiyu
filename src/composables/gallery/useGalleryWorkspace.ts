@@ -418,21 +418,19 @@ export function useGalleryWorkspace() {
     onMounted(async () => {
         unmounted = false; syncNarrowViewer(); narrowViewerMedia?.addEventListener('change', syncNarrowViewer);
         document.addEventListener('keydown', onKeydown);
+        // Labels are supplemental: library browsing and saved filters do not
+        // depend on the studio's character/tag/preset/blueprint catalogs.
+        void sceneStore.loadHome().then(() => { scenes.value = sceneStore.scenes; })
+            .catch(e => console.warn('gallery scene labels load failed', e));
+        void sceneStore.loadLoraCatalog().then(() => { loras.value = sceneStore.loras; })
+            .catch(e => console.warn('gallery LoRA labels load failed', e));
         await loadGalleryStorage();
         compareFromRoute();
+        // Restore only after the artwork and album snapshot is available.
+        restoreFiltersFromQuery();
         // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与
         // 缩略图。不阻塞首屏，失败静默（下次挂载再试）。
         void artworkRepository.purgeExpiredTrash().catch(e => console.warn('[gallery] trash purge failed', e));
-        try {
-            await sceneStore.load();
-            scenes.value = sceneStore.scenes;
-            loras.value = sceneStore.loras;
-        }
-        catch (e) {
-            console.warn('gallery data load failed', e);
-        }
-        // 深链 / 刷新后恢复筛选：必须在项目列表读完之后，否则 select 没有选项可匹配
-        restoreFiltersFromQuery();
         void hydrateThumbs();
         await nextTick();
         scanWallCards();

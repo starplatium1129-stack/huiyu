@@ -7,13 +7,16 @@ import { createGalleryKeepAliveHost } from './galleryWorkspaceKeepAliveHost'
 const mocks = vi.hoisted(() => ({
   confirm: vi.fn(), softDeleteArtworks: vi.fn(), listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
   route: { path: '/gallery', query: {} }, replace: vi.fn(),
+  sceneStore: { load: vi.fn(), loadHome: vi.fn(), loadLoraCatalog: vi.fn(),
+    scenes: [] as Array<{ id: string; title: string }>, loras: [] as Array<{ id: string; name: string }>,
+    popularCharacters: [] as Array<{ id: string; displayName: string }> },
 }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
   softDeleteArtworks: mocks.softDeleteArtworks, listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
   readLibrarySnapshot: mocks.snapshot, purgeExpiredTrash: vi.fn(async () => ({ purged: 0 })),
 } }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mocks.confirm }))
-vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, scenes: [], loras: [], popularCharacters: [] }) }))
+vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => reactive(mocks.sceneStore) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => {} }))
 vi.mock('@/composables/useToast', () => ({ useToast: () => ({ show: vi.fn() }) }))
@@ -40,6 +43,10 @@ beforeEach(() => {
   vi.clearAllMocks()
   mocks.route.path = '/gallery'
   mocks.route.query = {}
+  mocks.sceneStore.load.mockReset().mockResolvedValue(undefined)
+  mocks.sceneStore.loadHome.mockReset().mockResolvedValue(undefined)
+  mocks.sceneStore.loadLoraCatalog.mockReset().mockResolvedValue(undefined)
+  mocks.sceneStore.scenes = []; mocks.sceneStore.loras = []; mocks.sceneStore.popularCharacters = []
   Observer.instances = []
   vi.stubGlobal('IntersectionObserver', Observer)
   let url = 0

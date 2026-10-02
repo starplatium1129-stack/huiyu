@@ -4,7 +4,7 @@
       <p>{{ characters ? '按保存的角色信息自动归集，换装和场景变化仍收在同一角色下。' : '手动精选与智能画册，一起收在这里。' }}</p>
       <template v-if="!characters"><button class="btn btn-ghost" type="button" @click="emit('smart')"><ArchiveIcon name="pin" />新建智能画册</button><button v-if="albums.length" class="btn btn-primary" type="button" @click="emit('manual')"><ArchiveIcon name="book" />新建画册</button></template>
     </div>
-    <GalleryProjectAlbums v-if="!loading && !error" :albums="albums" :selected-id="selectedId" :characters="characters" :busy="busy" @select="emit('select',$event)" @edit="emit('edit',$event)" @remove="emit('remove',$event)" @visible="emit('visible',$event)" />
+    <GalleryProjectAlbums v-if="!loading && (!error || albums.length)" :albums="albums" :selected-id="selectedId" :characters="characters" :busy="busy || !!error" @select="emit('select',$event)" @edit="emit('edit',$event)" @remove="emit('remove',$event)" @visible="emit('visible',$event)" />
     <ArchiveStatePanel v-if="!loading && !error && !albums.length" compact kind="empty" :title="characters ? '还没有角色作品' : '还没有成册的作品'" :message="characters ? '保存作品后，会根据角色信息自动显示在这里。' : '选择作品手动成册，或保存角色与标签条件，让画册持续自动更新。'">
       <button v-if="!characters" class="btn btn-primary" type="button" :disabled="!hasHistory" @click="emit('manual')">选择作品成册</button><button class="btn btn-ghost" type="button" @click="emit('images')">查看作品展墙</button>
     </ArchiveStatePanel>

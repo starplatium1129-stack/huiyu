@@ -28,7 +28,9 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
   const version = (loadVersions.get(history) || 0) + 1
   loadVersions.set(history, version)
   const isCurrent = () => loadVersions.get(history) === version
-  galleryLoading.value = true
+  // Only an empty workspace needs a blocking placeholder. Refreshes retain the
+  // last snapshot (including empty albums) until the latest read succeeds.
+  galleryLoading.value = !history.value.length && !projects.value.length
   galleryError.value = ''
   try {
     const snapshot = await artworkRepository.readLibrarySnapshot()

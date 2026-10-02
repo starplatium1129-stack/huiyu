@@ -2,6 +2,7 @@ import { expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { mocks, Observer, record, setup, useRoute } from './galleryWorkspaceTestHarness'
+import type { ArtworkLibrarySnapshot } from '@/application/artwork/artworkRepository'
 
 it('keeps the wall mounted when filter URL updates arrive while the viewer is open', async () => {
   const { gallery } = await setup()
@@ -75,8 +76,15 @@ it('releases gallery originals on deactivation while keeping filters and thumbna
   expect(env.gallery.viewerUrl.value).toBe('')
   expect(env.gallery.thumbUrls[1]).toBe('data:image/jpeg;base64,thumb')
   expect(env.gallery.favoriteOnly.value).toBe(true)
-  mocks.snapshot.mockResolvedValueOnce({ history: [{ ...record(1), story: 'edited while away' }], projects: [] })
+  let refresh!: (value: ArtworkLibrarySnapshot) => void
+  mocks.snapshot.mockImplementationOnce(() => new Promise(resolve => { refresh = resolve }))
   await env.show()
+  expect(mocks.snapshot).toHaveBeenCalledTimes(2)
+  expect(env.gallery.galleryLoading.value).toBe(false)
+  expect(env.gallery.history.value[0].story).toBeUndefined()
+  expect(env.wrapper.get('img').attributes('src')).toBe('data:image/jpeg;base64,thumb')
+  refresh({ history: [{ ...record(1), story: 'edited while away' }], projects: [] })
+  await flushPromises()
   expect(env.gallery.history.value[0].story).toBe('edited while away')
   await env.intersect()
   expect(env.gallery.cardUrls[1]).toBe('blob:gallery-3')
