@@ -149,8 +149,10 @@ impl TaskRuntime {
         }
         if current.upstream_settled
             && (current.status != TaskStatus::Succeeded
-                || current.result_state == ResultState::Available)
+                || current.result_state == ResultState::Available
+                || current.delivery_state == DeliveryState::Discarded)
         {
+            // Explicit discard is terminal, not an invitation to fetch the output again.
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             return Ok(current);
         }
