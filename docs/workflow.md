@@ -347,6 +347,8 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm 
 
 同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。定向与完整门禁共用当前登记清单，删除/合并须记录保留覆盖与当次验收。耗时比较使用同机、同输入和相同参数独占测量。
 
+2026-10-02 [测试精简](audits/2026-10-02/test-pruning.md)删除重复和纯实现拼写检查，合并重复页面加载；旧 `test:ux-regressions` 入口已退役，默认高清修复的数据约束保留在 `test-prompt-builder-modules`。日常仍用 `npm test` 按改动选测，不因这次清单精简增加常驻测试层。
+
 | 入口 | 实际范围 |
 | --- | --- |
 | npm test / gate:quick ui/style/server/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |

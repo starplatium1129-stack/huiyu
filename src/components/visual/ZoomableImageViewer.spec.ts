@@ -9,16 +9,12 @@ function preview() {
   return wrapper
 }
 
-it('shows the known thumbnail immediately without a skeleton or loading fade', () => {
-  const view = preview()
+it('keeps the thumbnail until the original has decoded and retains the visible image node', async () => {
+  const view = preview(), visible = view.get('.zoomable-img').element
   expect(view.find('.skeleton-placeholder').exists()).toBe(false)
   expect(view.get('.zoomable-img').attributes('src')).toBe('/thumb.jpg')
   expect(view.get('.zoomable-img').classes()).toContain('is-ready')
   expect(view.get('.zoomable-preload').attributes('src')).toBe('/original.jpg')
-})
-
-it('keeps the thumbnail until the original has decoded and retains the visible image node', async () => {
-  const view = preview(), visible = view.get('.zoomable-img').element
   const original = view.get('.zoomable-preload').element as HTMLImageElement
   let decoded!: () => void
   original.decode = vi.fn(() => new Promise<void>(resolve => { decoded = resolve }))

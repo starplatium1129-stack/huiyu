@@ -11,7 +11,7 @@ function fixture(props: { src: string; alt?: string; imgClass?: string }) {
 }
 
 describe('CgImageReveal component', () => {
-  it('renders the original image without allocating idle effects', () => {
+  it('renders a clickable original image without allocating idle effects', async () => {
     const wrapper = fixture({
       src: '/test-cg.png',
       alt: '测试成片',
@@ -27,22 +27,8 @@ describe('CgImageReveal component', () => {
     expect(wrapper.find('canvas').exists()).toBe(false)
     expect(img.attributes('loading')).toBe('eager')
     expect(img.attributes('decoding')).toBe('async')
-  })
-
-  it('emits click event when image is clicked', async () => {
-    const wrapper = fixture({ src: '/test-cg.png' })
-
-    await wrapper.find('img.cg-image-target').trigger('click')
+    await img.trigger('click')
     expect(wrapper.emitted('click')).toHaveLength(1)
-  })
-
-  it('handles image error and stops revealing gracefully', async () => {
-    const wrapper = fixture({ src: '/invalid.png' })
-
-    await wrapper.find('img.cg-image-target').trigger('error')
-    expect(wrapper.emitted('error')).toHaveLength(1)
-    expect(wrapper.classes()).toContain('is-loaded')
-    expect(wrapper.classes()).not.toContain('is-revealing')
   })
 
   it('does not create an image for an empty source', () => {

@@ -136,8 +136,7 @@
     "optimize-scenes": "node scripts/maintenance/optimize-scenes.js --write",
     "classify-ratings": "node scripts/maintenance/classify-scene-ratings.js --write",
     "lint:colors": "node scripts/maintenance/lint-colors.js",
-    "precompress": "node scripts/maintenance/precompress.js",
-    "test:ux-regressions": "node scripts/tests/test-ux-regressions.js"
+    "precompress": "node scripts/maintenance/precompress.js"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",

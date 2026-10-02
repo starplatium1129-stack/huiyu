@@ -1,10 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * 无障碍与多设备回归（Vue SPA 版本）
+ * 桌面无障碍回归（Vue SPA 版本）
  *
  * 骨架断言从各页 HTML 移到 AppLayout：整站共用一个 skip-link + main landmark，
- * 所以这里逐路由验证「唯一 landmark」而不是每页各自实现一份。
+ * 在主导航流程里验证唯一 landmark，避免重复启动相同首页。
  */
 
 function collectRuntimeErrors(page: Page) {
@@ -48,32 +48,19 @@ async function seedGallery(page: Page) {
   });
 }
 
-// 走 AppLayout 的路由：共享 skip-link 与 main landmark
-const layoutRoutes = [{ path: '/', name: 'shared app layout' }];
-
-for (const entry of layoutRoutes) {
-  test(`${entry.name} exposes a single skip link and main landmark`, async ({ page }) => {
-    const errors = collectRuntimeErrors(page);
-    await page.goto(entry.path);
-    await expect(page.locator('a.skip-link[href="#main"]')).toHaveCount(1);
-    await expect(page.locator('#main')).toHaveCount(1);
-    // 必须是真的 <main>，且全页恰好一个。
-    // 这条断言原先写的是 toHaveCount(0) —— 那是在锁定"没有 main 地标"这个 bug：
-    // AppLayout 当时输出 <div id="main">，skip-link 落在一个普通容器上。
-    await expect(page.locator('main')).toHaveCount(1);
-    await expect(page.locator('main#main')).toHaveCount(1);
-    expect(errors).toEqual([]);
-  });
-}
-
 test('not-found route gets a distinct document title', async ({ page }) => {
   await page.goto('/route-that-does-not-exist');
   await expect(page).toHaveTitle('页面未找到 · 绘遇');
 });
 
-test('primary navigation is reachable and marks the active route', async ({ page }) => {
+test('shared landmarks and primary navigation remain reachable and mark the active route', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/');
+  await expect(page.locator('a.skip-link[href="#main"]')).toHaveCount(1);
+  await expect(page.locator('#main')).toHaveCount(1);
+  // Keep the actual <main> contract: a div with the same ID is not a landmark.
+  await expect(page.locator('main')).toHaveCount(1);
+  await expect(page.locator('main#main')).toHaveCount(1);
 
   // 品牌字标必须完整渲染（曾被塞进方框裁成色块）
   const logo = page.locator('.nav-logo');

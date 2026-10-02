@@ -23,7 +23,6 @@ const REGISTERED_TESTS = Object.freeze({
     'test-bridge-acl.js',
     'test-icon-button-labels.js',
     'test-native-controls.js',
-    'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
     'test-reference-shards.js',

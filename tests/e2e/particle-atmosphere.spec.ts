@@ -10,6 +10,10 @@ test.beforeEach(async ({ page }) => {
 test('selected discovery artwork keeps search reachable with reduced motion', async ({ page }) => {
   const atlas = page.locator('.scene-atlas')
   await atlas.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await expect(atlas).toHaveAttribute('data-companion', 'natsume')
+  const portrait = page.locator('.scene-atlas-portrait img.current')
+  await expect.poll(() => portrait.evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect(atlas.locator('figcaption')).toContainText('今天的故事，由你来选')
   await page.locator('.scene-cats').getByRole('button', { name: /恋爱/ }).click()
   await expect(atlas.locator('.eyebrow')).toContainText('恋爱')
   await expect(atlas.locator('img.current')).toHaveAttribute('alt', '四季夏目')
@@ -17,7 +21,6 @@ test('selected discovery artwork keeps search reachable with reduced motion', as
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.evaluate(() => scrollTo(0, 0))
-  const portrait = page.locator('.scene-atlas-portrait img.current')
   expect(await portrait.evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s')
   await expect(page.locator('#sceneSearch')).toBeInViewport()
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1441)

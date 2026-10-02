@@ -5,7 +5,6 @@
  * 1. overlay 布局纯函数（computeOverlayRect / clampToMonitors / normalizeToOverlay）
  * 2. 后端工厂与回退（selectLive2DBackend：native 桥缺失 → browser + fallback 标记）
  * 3. 原生后端会话契约（stub 桥：setCharacter/motion/expression/意图通道/overlay 帧/销毁）
- * 4. 原生桥形状校验（防 Rust 侧实现遗漏命令/事件）
  *
  * 运行：node --test scripts/tests/test-live2d-backend.js
  */
@@ -335,23 +334,6 @@ test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async 
   assert.equal(bridge.calls.destroy.length, 1);
   assert.equal(bridge._readyListeners.length, 0, '销毁后事件不再派发');
 });
-
-// ---------- 桥形状校验（契约防漂移） ----------
-
-test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
-  const bridge: any = createStubBridge();
-  const commands = ['setCharacter', 'setFrame', 'setMaxFps', 'playMotion', 'setExpression', 'setMouthLevel', 'setEmotion', 'setGaze', 'hitTest', 'destroy'];
-  const events = ['onReady', 'onMotionStarted', 'onMotionFailed', 'onHitTest', 'onEntranceFinished', 'onStopped', 'off'];
-  for (const name of commands) {
-    assert.equal(typeof bridge[name], 'function', `缺失命令 ${name}`);
-  }
-  for (const name of events) {
-    assert.equal(typeof bridge[name], 'function', `缺失事件 ${name}`);
-  }
-  assert.equal(bridge.isNativeLive2D, true);
-});
-
-// ---------- stub 桥 ----------
 
 test('原生后端：取消挂起连接立即清理，迟到响应不影响重试会话', async () => {
   const bridge = createStubBridge();

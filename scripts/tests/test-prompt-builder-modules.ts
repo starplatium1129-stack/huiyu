@@ -5,6 +5,12 @@ import { test } from 'node:test';
 import persistence = require('../../src/utils/promptBuilderPersistence.ts');
 
 test('prompt persistence normalizes drafts, catalogs and restored scene stories', () => {
+// Guard real catalog defaults: implicit hires adds a costly second pass that
+// users cannot see in the default generation form.
+const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
+assert(presets.model_profiles.length > 0, 'generation profiles must be configured');
+assert(!presets.model_profiles.some(profile => profile.hires_fix === true),
+  'model profiles must not silently enable a second generation pass by default');
 const parsedDraft = persistence.parsePromptBuilderDraft({
   updatedAt:'123',
   story:'雨夜',
