@@ -139,7 +139,11 @@ pub(super) async fn receive(
     })
 }
 
-pub(super) fn publish(root: &Path, mut upload: Upload, cancel: &CancellationToken) -> Result<Value> {
+pub(super) fn publish(
+    root: &Path,
+    mut upload: Upload,
+    cancel: &CancellationToken,
+) -> Result<Value> {
     let _lock = EditorLock::acquire(root)?;
     let meta = &upload.metadata;
     let id = meta["id"]

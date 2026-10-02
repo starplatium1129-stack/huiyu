@@ -8,6 +8,8 @@ export interface DesktopWorkspaceSession {
   domains: Array<'artwork' | 'settings' | 'chat' | 'draft'>
   generation: number
   bundledUi: boolean
+  /** Host-owned durable activation identity; absent on older hosts. */
+  activeMigrationId?: string | null
 }
 export interface DesktopRuntimeDescriptor {
   origin: string

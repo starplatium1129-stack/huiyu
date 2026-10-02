@@ -25,6 +25,7 @@ export async function migrateProfileToCandidate(options: {
       if (envelope.blockers.length) throw new Error('来源包含未分类资料或未迁移凭据，已保留独立备份，尚未激活。')
       status = await importMigrationBackup(envelope, sink, options.candidate, options)
       if (status.state !== 'verified' || status.blockers.length) throw new Error('迁移校验发现缺失或冲突，来源与备份已保留，尚未激活。')
+      options.signal?.throwIfAborted()
       await options.activate?.(status)
     },
   })
@@ -46,6 +47,7 @@ async function resumeProfileMigration(options: Parameters<typeof migrateProfileT
       }
       status = await importMigrationBackup(reader.envelope, reader, options.candidate, options)
       if (status.state !== 'verified' || status.blockers.length) throw new Error('迁移副本尚未通过完整性校验。')
+      options.signal?.throwIfAborted()
       await options.activate?.(status)
     },
   })

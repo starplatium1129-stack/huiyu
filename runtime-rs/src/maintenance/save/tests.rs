@@ -64,7 +64,7 @@ fn fixture(root: &Path) {
         "data/characters.json",
         &json!([{"id":"nene","traits":[{"tag":"white_hair"},{"tag":"low_twintails"},{"tag":"purple_eyes"},{"tag":"ahoge"},{"tag":"hair_ribbon"}],"lora":{"name":"fixture","recommended_scene":["sc001"]}},{"id":"natsume","traits":[{"tag":"black_hair"},{"tag":"long_hair"},{"tag":"yellow_eyes"},{"tag":"mole_under_eye"},{"tag":"hairclip"}],"lora":{"name":"fixture","recommended_scene":["sc207"]}}]),
     );
-    let profiles=["wai_illustrious_v17","anima_base_v10","anima_aesthetic_v11","krea2_turbo_fp8"].map(|id|json!({"id":id,"match":["fixture"],"quality_prefix":"","negative_prefix":"text","sampler":"Euler","steps":20,"cfg":6,"size":"768×1024"}));
+    let profiles=["wai_illustrious_v17","anima_base_v10","anima_aesthetic_v11","anima_miaomiao_v16","krea2_turbo_fp8"].map(|id|json!({"id":id,"match":["fixture"],"quality_prefix":"","negative_prefix":"text","sampler":"Euler","steps":20,"cfg":6,"size":"768×1024"}));
     write(
         root,
         "data/presets.json",

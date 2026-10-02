@@ -164,6 +164,10 @@ async fn perform(
     let active = state.host.active();
     let pointer = active.as_ref();
     let mut workspace = serde_json::to_value(&session).expect("Session is serializable");
+    workspace["activeMigrationId"] = pointer
+        .and_then(|p| p.get("migrationId"))
+        .cloned()
+        .unwrap_or(Value::Null);
     workspace["domains"] = pointer
         .and_then(|p| p.get("domains"))
         .cloned()
