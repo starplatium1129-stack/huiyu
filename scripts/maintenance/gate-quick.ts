@@ -116,6 +116,9 @@ const AREA_STEPS = {
     })), { label: 'changed-tests', timeout: 180_000, verbose, keepGoing });
   },
   async ui({ verbose, keepGoing }: GateOptions, files?: readonly string[]) {
+    // App typechecking includes a catalog-backed frontend test. Fresh worktrees
+    // need that ignored artifact, not a full data rebuild or a broader test lane.
+    (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensurePopularBuilt({ onlyIfMissing: true });
     let code = runNpmStep('typecheck:app', 'typecheck:app', 300_000, verbose);
     if (code === 0 || keepGoing) code = (files?.length
       ? await runTool('vitest related', path.join(root, 'node_modules/vitest/vitest.mjs'),

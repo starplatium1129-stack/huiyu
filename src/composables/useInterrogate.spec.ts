@@ -1,5 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { useInterrogate } from './useInterrogate'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
+import { mount } from '@vue/test-utils'
 
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 const file = () => new File(['image'], 'test.png', { type: 'image/png' })
@@ -188,4 +190,32 @@ it('retains a real GPU failure without converting it to CPU or demo results', as
   expect(fetchMock).toHaveBeenCalledOnce()
   expect(task.lastResult.value).toBeNull()
   expect(task.busy.value).toBe(false)
+})
+
+
+it('cancels cached visits and rejects their late result without affecting the next image', async () => {
+  const requests: Array<{ signal: AbortSignal; finish: (response: Response) => void }> = []
+  vi.stubGlobal('fetch', vi.fn((_url, options) => new Promise<Response>(finish => { requests.push({ signal: options.signal, finish }) })))
+  const active = ref(true)
+  let task!: ReturnType<typeof useInterrogate>
+  const Panel = defineComponent({ setup() { task = useInterrogate(); return () => null } })
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Panel) : null }) }))
+  try {
+    const old = task.interrogate(file())
+    await vi.waitFor(() => expect(requests).toHaveLength(1))
+    active.value = false; await nextTick()
+    expect(requests[0].signal.aborted).toBe(true)
+    expect(await task.interrogate(file())).toBeNull()
+    active.value = true; await nextTick()
+    const current = task.interrogate(file())
+    await vi.waitFor(() => expect(requests).toHaveLength(2))
+    requests[0].finish(new Response(JSON.stringify(result)))
+    expect(await old).toBeNull()
+    expect(task.busy.value).toBe(true)
+    expect(task.lastResult.value).toBeNull()
+    requests[1].finish(new Response(JSON.stringify({ ...result, tags: ['sky'], scores: { sky: 0.87 } })))
+    expect(await current).toMatchObject({ tags: ['sky'] })
+    expect(task.busy.value).toBe(false)
+    expect(task.error.value).toBeNull()
+  } finally { wrapper.unmount() }
 })

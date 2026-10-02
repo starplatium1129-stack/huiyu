@@ -5,15 +5,19 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { AnimaGenerationState } from '@/types/anima'
+import { applyInterrogateResult } from './applyInterrogateResult'
 import { usePromptHistoryApply } from './usePromptHistoryApply'
 import { usePromptHistoryReuse } from './usePromptHistoryReuse'
+import { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import type { ApiClient } from '@/api/client'
+import type { HistoryReuseSelection } from '@/types/historyReuse'
 
 beforeEach(() => setActivePinia(createPinia()))
 function setup() {
   const pb = usePromptBuilderStore()
   const state = ref({ phase: 'idle', family: 'anima', models: [], loras: [], online: true, modelId: 'old', loraId: '', styleLoraId: '', width: 832, height: 1216, steps: 20, cfg: 5 } as unknown as AnimaGenerationState)
   const flash = vi.spyOn(pb, 'flash')
-  const refresh = vi.fn(async () => {})
+  const refresh = vi.fn(async () => true)
   const engine = ref<'sd' | 'anima' | 'krea2'>('sd'), size = ref('832x1216')
   const deps = { pb, animaState: state, patchAnimaState: (patch: Partial<AnimaGenerationState>) => { Object.assign(state.value, patch) }, clearAnimaResult: vi.fn(), refreshAnimaBackend: refresh, setDrawEngine: vi.fn(value => { engine.value = value }), resetBlueprintRotation: vi.fn(), sdSize: size, drawEngine: engine }
   const api = usePromptHistoryApply(deps)
@@ -42,7 +46,7 @@ it('restores saved popular decisions instead of leaving current or blueprint val
 })
 it('reports backend model and style fallback after discovery completes', async () => {
   const { pb, state, refresh, applyHistory } = setup()
-  refresh.mockImplementation(async () => { state.value.modelId = 'available'; state.value.styleLoraId = ''; state.value.width = 1024 })
+  refresh.mockImplementation(async () => { state.value.modelId = 'available'; state.value.styleLoraId = ''; state.value.width = 1024; return true })
   await applyHistory(entry({ engine: 'krea2', model: 'missing', styleLoraId: 'old-style' }))
   expect(pb.historyRestoreReport?.notes.join(';')).toContain('missing → available')
   expect(pb.historyRestoreReport?.notes.join(';')).toContain('old-style → 不可用')
@@ -137,4 +141,132 @@ it('cancels a detached reuse choice without changing the draft and blocks confir
   await reuse.resumeHistory(source); busy.value = true
   expect(await reuse.applyReuse('full')).toBe(false); expect(pb.story).toBe('Keep')
   scope.stop(); expect(reuse.reuseRequest.value).toBeNull()
+})
+
+
+it('waits for winning backend discovery before reporting recipe fallbacks', async () => {
+  const { pb, deps } = setup()
+  const responses: Array<{ resolve(value: object): void; reject(error: Error): void }> = []
+  const client = { request: () => new Promise((resolve, reject) => responses.push({ resolve, reject })) } as unknown as ApiClient
+  const session = useAnimaSession({ client, getCharacter: () => 'nene', isPopular: () => false,
+    getFamily: () => 'krea2', getRequest: () => null, preferredSize: () => '', onResult: vi.fn(), flash: vi.fn() })
+  const { applyHistory } = usePromptHistoryApply({ ...deps, animaState: session.state,
+    patchAnimaState: session.restoreSettings, refreshAnimaBackend: session.refreshBackend })
+  const before = pb.historyRestoreReport
+  const restoring = applyHistory(entry({ engine: 'krea2', model: 'missing', styleLoraId: 'old-style' }))
+  const replacement = session.refreshBackend()
+  responses[0].reject(new Error('superseded'))
+  await Promise.resolve(); await Promise.resolve()
+  expect(pb.historyRestoreReport).toBe(before)
+  responses[1].resolve({ ok: true, online: true, models: [{ id: 'available', family: 'krea2', available: true, sizes: ['1024x1024'] }] })
+  await replacement
+  expect(await restoring).toBe(true)
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('missing → available')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('old-style → 不可用')
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('832 → 1024')
+  session.dispose()
+})
+
+it.each([
+  { selection: 'full' as HistoryReuseSelection, failure: false, dispose: false },
+  { selection: { style: false, camera: false, prompts: false, parameters: true }, failure: false, dispose: true },
+  { selection: 'full' as HistoryReuseSelection, failure: true, dispose: false },
+])('suppresses late restore reports and flashes after cancellation (%j)', async ({ selection, failure, dispose }) => {
+  const { pb, deps, refresh, flash, engine } = setup(), scope = effectScope(), onApplied = vi.fn()
+  engine.value = 'anima'
+  let resolve!: (value: boolean) => void, reject!: (error: Error) => void
+  refresh.mockReturnValueOnce(new Promise<boolean>((done, fail) => { resolve = done; reject = fail }))
+  const reuse = scope.run(() => usePromptHistoryReuse({ ...deps, generationBusy: ref(false), onApplied }))!
+  await reuse.resumeHistory(entry({ engine: 'anima' }))
+  const restoring = reuse.applyReuse(selection)
+  await Promise.resolve()
+  expect(reuse.reuseBusy.value).toBe(true)
+  const before = pb.historyRestoreReport
+  flash.mockClear()
+  if (dispose) scope.stop()
+  else reuse.cancelReuse()
+  if (failure) reject(new Error('late failure'))
+  else resolve(true)
+  expect(await restoring).toBe(false)
+  expect(pb.historyRestoreReport).toBe(before)
+  expect(flash).not.toHaveBeenCalled()
+  expect(onApplied).not.toHaveBeenCalled()
+  expect(reuse.reuseBusy.value).toBe(false)
+  scope.stop()
+})
+
+it('keeps a direct restore active when another reuse is blocked during discovery', async () => {
+  const { pb, deps, refresh } = setup(), scope = effectScope()
+  let resolve!: (value: boolean) => void
+  refresh.mockReturnValueOnce(new Promise<boolean>(done => { resolve = done }))
+  const reuse = scope.run(() => usePromptHistoryReuse({ ...deps, generationBusy: ref(false), onApplied: vi.fn() }))!
+  // Load the lazy controller before starting the asynchronous direct restore.
+  await reuse.resumeHistory(entry())
+  const restoring = reuse.applyHistory(entry({ engine: 'anima' }))
+  await Promise.resolve()
+  expect(reuse.reuseBusy.value).toBe(true)
+  expect(await reuse.duplicateHistory(entry({ id: 99 }))).toBe(false)
+  resolve(true)
+  expect(await restoring).toBe(true)
+  expect(pb.historyRestoreReport?.title).toContain('12')
+  expect(reuse.reuseBusy.value).toBe(false)
+  scope.stop()
+})
+
+
+it('preserves untouched reference and variation ownership through an incomplete prompt restore', async () => {
+  const { pb, applyHistory } = setup()
+  pb.manualTags = new Set(['sitting', 'library', 'explicit_detail'])
+  pb.referenceInput = { tags: ['sitting', 'library'] }
+  const variation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: [] }
+  pb.randomVariation = variation
+  await applyHistory({ id: 'legacy-partial', engine: 'sd', character: 'nene', story: 'Restored story' }, true,
+    { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.story).toBe('Restored story')
+  expect(pb.referenceInput).toEqual({ tags: ['sitting', 'library'] })
+  expect(pb.randomVariation).toEqual(variation)
+  await applyInterrogateResult(pb, { engine: 'wd14', tags: ['standing', 'forest'] })
+  expect(pb.manualTags).toEqual(new Set(['explicit_detail', 'standing', 'forest']))
+  expect(pb.referenceInput).toEqual({ tags: ['standing', 'forest'] })
+})
+
+it.each(['tags', 'scene'] as const)('clears only replaced-layer provenance when restoring %s', async layer => {
+  const { pb, applyHistory } = setup()
+  pb.manualTags = new Set(['library'])
+  pb.referenceInput = { tags: ['library'] }
+  pb.randomVariation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: [] }
+  await applyHistory({ id: 'partial', engine: 'sd', character: 'nene',
+    ...(layer === 'tags' ? { manual_tags: ['historical_detail'] } : { scene: null }) }, true,
+    { style: false, camera: false, prompts: true, parameters: false })
+  expect(pb.randomVariation).toBeNull()
+  expect(pb.referenceInput).toEqual(layer === 'tags' ? null : { tags: ['library'] })
+  expect([...pb.manualTags]).toEqual(layer === 'tags' ? ['historical_detail'] : ['library'])
+})
+
+
+it('reports scene-only reuse and retires same-scene clothing before accepting saved tags', async () => {
+  const { pb, applyHistory, flash } = setup()
+  const scene = { id: 'same-scene', char: 'nene', title: 'Room', story: 'Scene story', rating: 'ALL', prompt: 'indoors' }
+  useSceneStore().scenes = [scene]
+  pb.loadScene(scene)
+  const selection = { style: false, camera: false, prompts: true, parameters: false }
+  const setOverlay = () => {
+    pb.manualTags = new Set(['jacket', 'explicit_detail', 'library'])
+    pb.referenceInput = { tags: ['library'] }
+    pb.randomVariation = { context: 'fixture', source: 'fixture', prompt: '', prose: '', tags: [], outfit: ['jacket'] }
+  }
+  setOverlay()
+  expect(await applyHistory({ id: 'scene-only', character: 'nene', scene: scene.id }, true, selection)).toBe(true)
+  expect(pb.randomVariation).toBeNull()
+  expect(pb.manualTags).toEqual(new Set(['explicit_detail', 'library']))
+  expect(pb.referenceInput).toEqual({ tags: ['library'] })
+  expect(flash.mock.lastCall?.[0]).toContain('已沿用')
+  setOverlay()
+  expect(await applyHistory({ id: 'saved-tags', character: 'nene', scene: scene.id, manual_tags: ['jacket'] }, true, selection)).toBe(true)
+  expect(pb.manualTags).toEqual(new Set(['jacket']))
+  expect(await applyHistory({ id: 'clear-scene', character: 'nene', scene: null }, true, selection)).toBe(true)
+  pb.setPopularSubject('fixture', 'daily', 'previous')
+  expect(await applyHistory({ id: 'clear-blueprint', subject: 'popular', characterId: 'fixture', outfitId: 'daily', blueprintId: null }, true, selection)).toBe(true)
+  expect(pb.subject).toMatchObject({ blueprintId: null })
+  expect(await applyHistory({ id: 'unsupported', character: 'natsume', scene: null }, true, selection)).toBe(false)
 })

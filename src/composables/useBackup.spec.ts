@@ -1,4 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, effectScope, h, KeepAlive, nextTick, ref } from 'vue'
+import { mount, flushPromises } from '@vue/test-utils'
+import * as backupActions from '@/platform/desktop/backupActions'
+import { restoreBackupData } from '@/storage/backupRestore'
 import { useBackup } from './useBackup'
 import { imgList, imgDeleteMany } from './useImageStore'
 import { downloadBlob } from '@/utils/downloadBlob'
@@ -36,6 +40,90 @@ describe('backup selection and cleanup', () => {
     await tool.loadFile(new File([contents], 'new.json'))
     resolve(contents); await pending
     expect(tool.pendingName.value).toBe('new.json')
+  })
+  it('binds replacement approval to the selected file and leaves preview cancellation usable', async () => {
+    const tool = useBackup()
+    await tool.loadFile(new File([contents], 'first.json'))
+    let approve!: (value: boolean) => void
+    vi.mocked(confirmAction).mockImplementationOnce(() => new Promise(resolve => { approve = resolve }))
+    const restoring = tool.restore('replace')
+    const signal = (vi.mocked(confirmAction).mock.calls[0]![0] as { signal: AbortSignal }).signal
+    expect(await tool.restore('replace')).toBe(false)
+    tool.discard()
+    expect(signal.aborted).toBe(true)
+    await tool.loadFile(new File([contents], 'second.json'))
+    approve(true)
+    expect(await restoring).toBe(false)
+    expect(restoreBackupData).not.toHaveBeenCalled()
+    expect(tool.pendingName.value).toBe('second.json')
+    expect(tool.busy.value).toBe(false)
+  })
+  it('clears cached preview ownership and rejects late approval after return', async () => {
+    const active = ref(true)
+    let tool!: ReturnType<typeof useBackup>
+    const Page = defineComponent({ setup() { tool = useBackup(); return () => h('div') } })
+    const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Page) : null }) }))
+    try {
+      await tool.loadFile(new File([contents], 'first.json'))
+      let approve!: (value: boolean) => void
+      vi.mocked(confirmAction).mockImplementationOnce(() => new Promise(resolve => { approve = resolve }))
+      const restoring = tool.restore('replace')
+      active.value = false; await nextTick()
+      expect(tool.pending.value).toBeNull()
+      active.value = true; await nextTick()
+      await tool.loadFile(new File([contents], 'second.json'))
+      approve(true); expect(await restoring).toBe(false)
+      expect(restoreBackupData).not.toHaveBeenCalled()
+      let read!: (value: string) => void
+      const loading = tool.loadFile({ name: 'late.json', size: 1, text: () => new Promise(resolve => { read = resolve }) } as File)
+      wrapper.unmount()
+      read(contents); await loading
+      expect(tool.pending.value).toBeNull()
+      expect(await tool.restore('merge')).toBe(false)
+    } finally { if (wrapper.exists()) wrapper.unmount() }
+  })
+  it('lets an accepted exact snapshot finish after its owner unmounts', async () => {
+    vi.useFakeTimers()
+    let tool!: ReturnType<typeof useBackup>
+    const wrapper = mount(defineComponent({ setup() { tool = useBackup(); return () => null } }))
+    let complete!: () => void
+    vi.mocked(restoreBackupData).mockImplementationOnce(() => new Promise(resolve => { complete = resolve }))
+    try {
+      await tool.loadFile(new File([contents], 'accepted.json'))
+      const selected = tool.pending.value
+      const restoring = tool.restore('merge')
+      expect(restoreBackupData).toHaveBeenCalledWith(selected, false)
+      wrapper.unmount()
+      complete()
+      expect(await restoring).toBe(true)
+      expect(tool.pending.value).toBeNull()
+      expect(tool.busy.value).toBe(false)
+    } finally { vi.clearAllTimers(); vi.useRealTimers() }
+  })
+  it('rejects orphan cleanup approval from an earlier cached-page visit', async () => {
+    const active = ref(true)
+    const flash = vi.fn()
+    let tool!: ReturnType<typeof useBackup>
+    const Page = defineComponent({ setup() { tool = useBackup(flash); return () => h('div') } })
+    const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Page) : null }) }))
+    vi.mocked(imgList).mockResolvedValue([{ id: 'orphan' }] as Awaited<ReturnType<typeof imgList>>)
+    let approve!: (value: boolean) => void
+    vi.mocked(confirmAction).mockImplementationOnce(() => new Promise(resolve => { approve = resolve }))
+    try {
+      const cleaning = tool.cleanOrphanImages()
+      await flushPromises()
+      const signal = (vi.mocked(confirmAction).mock.calls[0]![0] as { signal: AbortSignal }).signal
+      active.value = false; await nextTick()
+      expect(signal.aborted).toBe(true)
+      active.value = true; await nextTick()
+      approve(true)
+      expect(await cleaning).toBe(0)
+      expect(imgDeleteMany).not.toHaveBeenCalled()
+      expect(flash).not.toHaveBeenCalled()
+      expect(tool.busy.value).toBe(false)
+      expect(await tool.cleanOrphanImages()).toBe(1)
+      expect(imgDeleteMany).toHaveBeenCalledWith(['orphan'])
+    } finally { wrapper.unmount() }
   })
   it('protects project, trash and video-draft images during cleanup', async () => {
     vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_TRASH_KV_KEY ? [{ imageIds: ['trash'] }] : key === ARTWORK_PROJECTS_KV_KEY ? [{ imageId: 'project' }] : [])
@@ -123,6 +211,27 @@ describe('backup safety regressions', () => {
     expect(tool.busy.value).toBe(false)
     expect(tool.exportProgress.value).toBeNull()
     expect(flash).toHaveBeenCalledWith(expect.stringContaining('512 MB'))
+  })
+  it('aborts a disposed backup export and rejects a late native receipt without downloading', async () => {
+    const desktop = vi.spyOn(backupActions, 'workspaceBackupActive').mockReturnValue(true)
+    let receipt!: (value: backupActions.WorkspaceBackupReceipt) => void
+    const create = vi.spyOn(backupActions, 'createWorkspaceBackup').mockImplementation(() => new Promise(resolve => { receipt = resolve }))
+    const scope = effectScope()
+    const flash = vi.fn()
+    const tool = scope.run(() => useBackup(flash))!
+    try {
+      const exporting = tool.exportBackup()
+      const signal = create.mock.calls[0]![0]!
+      scope.stop()
+      expect(signal.aborted).toBe(true)
+      receipt({ format: 'huiyu-workspace-backup-receipt', version: 1, workspaceId: 'workspace', backupId: 'backup', createdAt: '', revision: 1, mediaCount: 0 })
+      await exporting
+      expect(downloadBlob).not.toHaveBeenCalled()
+      expect(tool.lastBackupAt.value).toBe(0)
+      expect(flash).toHaveBeenCalledTimes(1)
+      await tool.exportBackup()
+      expect(create).toHaveBeenCalledOnce()
+    } finally { scope.stop(); create.mockRestore(); desktop.mockRestore() }
   })
   it('supports cancelling export without touching existing records or timestamps', async () => {
     vi.mocked(imgList).mockResolvedValue([])

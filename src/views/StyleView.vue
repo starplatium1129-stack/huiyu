@@ -9,8 +9,10 @@
     <div class="mood-grid style-mood-grid" data-reveal data-reveal-delay="1">
       <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
         <RouterLink class="style-sample" :class="{ 'is-unavailable': !loading && !available.has(m.sceneId) }" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
-          <img :crossorigin="runtimeResourceCors()" v-if="available.has(m.sceneId) && !failedSamples.has(m.id)" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + m.sceneId + '.jpg')" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedSamples.add(m.id)" />
-          <span v-else class="style-sample-missing"><ArchiveIcon name="image" /><span>{{ loading ? '正在翻开画册…' : failedSamples.has(m.id) ? '参考图片加载失败' : '氛围参考暂未连接' }}</span><small>仍可选用下方配色</small></span>
+          <RuntimeImage :src="available.has(m.sceneId) ? '/scene-showcase/thumbs/' + m.sceneId + '.jpg' : undefined" v-slot="{ image, failed }">
+          <img v-if="image.src && !failed" v-bind="image" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
+          <span v-else class="style-sample-missing"><ArchiveIcon name="image" /><span>{{ loading ? '正在翻开画册…' : failed ? '参考图片加载失败' : '氛围参考暂未连接' }}</span><small>仍可选用下方配色</small></span>
+          </RuntimeImage>
         </RouterLink>
         <div class="style-card-body tw:p-s-4">
           <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ m.en }}</span></div>
@@ -31,9 +33,8 @@
 
 <script setup lang="ts">
 import '@/assets/css/mood.css'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
-import { ref } from 'vue'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -52,7 +53,6 @@ const references: Record<string, { sceneId: string; sampleTitle: string; caption
 }
 const MOODS = COLOR_MOODS.map(mood => ({ ...mood, ...references[mood.id]! }))
 const { available, loading } = useMoodReferences(MOODS.map(mood => mood.sceneId))
-const failedSamples = ref(new Set<string>())
 useScrollReveal()
 </script>
 

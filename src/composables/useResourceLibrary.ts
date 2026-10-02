@@ -23,9 +23,14 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     failed: '资源操作失败', cancelled: '已取消，可继续恢复', interrupted: '上次操作被中断，可继续恢复' }
   const taskMessage = computed(() => status.value?.task ? messages[status.value.task.state] : '')
 
+  const hidden = () => typeof document !== 'undefined' && document.hidden
+  function visibilityChanged() {
+    clearTimeout(poll)
+    if (!hidden()) void refresh()
+  }
   function schedule() {
     clearTimeout(poll)
-    if (!stopped && isLocal) poll = setTimeout(() => void refresh(), status.value?.busy ? 750 : 5000)
+    if (!stopped && isLocal && !hidden()) poll = setTimeout(() => void refresh(), status.value?.busy ? 750 : 5000)
   }
   async function refresh(fresh = false) {
     if (!isLocal || stopped || loading.value || submitting.value) return
@@ -79,7 +84,13 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     } catch { if (!stopped) error.value = '取消尚未确认，请检查任务状态。' }
     finally { submitting.value = false; command = null; if (!stopped) await refresh() }
   }
-  function stop() { stopped = true; generation++; clearTimeout(poll); request?.abort(); command?.abort(); loading.value = false }
+  function stop() {
+    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', visibilityChanged)
+    stopped = true; generation++; clearTimeout(poll); request?.abort(); command?.abort(); loading.value = false }
   return { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
-    taskMessage, refresh, run, cancel, start() { stopped = false; void refresh() }, stop }
+    taskMessage, refresh, run, cancel, start() {
+      stopped = false
+      if (isLocal && typeof document !== 'undefined') document.addEventListener('visibilitychange', visibilityChanged)
+      if (!hidden()) void refresh()
+    }, stop }
 }

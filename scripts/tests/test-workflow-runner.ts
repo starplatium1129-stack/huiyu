@@ -303,7 +303,7 @@ test('legacy invocations keep their exact commands after metadata landed', () =>
   // 无转发参数时 npm 链保持原样，不插 --（转发参数时才补分隔符）。
   assert.deepEqual(checkArgs.slice(1), ['run', 'test:content']);
   assert.equal(main(['showcase:scene-candidates', '--output', 'o', '--ids', 'sc001'], WORKFLOWS, root, run), 0);
-  assert.deepEqual(calls[2], [process.execPath, ['scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.2', '--output', 'o', '--ids', 'sc001']]);
+  assert.deepEqual(calls[2], [process.execPath, ['scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.6', '--output', 'o', '--ids', 'sc001']]);
 });
 
 test('help prints run conditions without spawning; plan tags steps with nature', () => {
@@ -429,4 +429,41 @@ test('single-dash metadata is limited to batch alphabetic flags', () => {
   for (const flag of ['-UseInstaller & whoami', '-InstallDir=elsewhere', '-']) {
     assert.ok(validateRun('batch', { ...def, run: { ...def.run, switches: { [flag]: ['writes-release'] } } }).length > 0);
   }
+});
+
+test('UI gate prepares only the missing popular catalog before unchanged targeted checks', async () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root, 'scripts/maintenance/gate-quick.js'), originalRequire = createRequire(entry);
+  const calls: string[] = []; let typecheckOk = true; let bootstrapError = false;
+  const fakeRequire = (name: string) => {
+    if (name === '../lib/ensure-data-build') return {
+      ensurePopularBuilt: (options: { onlyIfMissing: boolean }) => {
+        assert.equal(options.onlyIfMissing, true); calls.push('popular:only-if-missing');
+        if (bootstrapError) throw new Error('invalid catalog fixture');
+        return { rebuilt: false };
+      },
+      ensureAll: () => { throw new Error('UI must not prepare all data domains'); },
+    };
+    if (name === '../tests/run-quality-suite') return { ...originalRequire(name),
+      runNpmScript: (script: string) => { calls.push(script); return { ok: typecheckOk, duration: 1, output: '', reason: 'fixture' }; } };
+    if (name === '../lib/test-process-pool') return { runTestProcessPool: async (entries: Array<{ args: string[] }>) => {
+      assert.deepEqual(Array.from(entries[0].args), ['related', '--run', '--passWithNoTests', 'src/components/library/CharacterDirectory.vue']);
+      calls.push('vitest:related'); return { results: [{ ok: true, duration: 1, output: '', reason: '' }] };
+    } };
+    if (name === '../tests/quality-report') return { ...originalRequire(name), writeQualityReport: () => {} };
+    return originalRequire(name);
+  };
+  const module = { exports: {} as typeof import('../maintenance/gate-quick') };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, __dirname: path.dirname(entry), process,
+    AbortController, setTimeout, clearTimeout, console: { log() {}, error() {} } });
+  const run = () => module.exports.AREA_STEPS.ui({ verbose: false, keepGoing: false }, ['src/components/library/CharacterDirectory.vue']);
+  assert.equal(await run(), 0);
+  assert.deepEqual(calls, ['popular:only-if-missing', 'typecheck:app', 'vitest:related']); calls.length = 0;
+  typecheckOk = false;
+  assert.equal(await run(), 1);
+  assert.deepEqual(calls, ['popular:only-if-missing', 'typecheck:app']); calls.length = 0;
+  bootstrapError = true;
+  await assert.rejects(run(), /invalid catalog fixture/);
+  assert.deepEqual(calls, ['popular:only-if-missing']);
 });

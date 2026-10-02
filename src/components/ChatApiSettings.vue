@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 
-import { computed, ref, onUnmounted } from 'vue'
+import { computed, ref, watch, onBeforeUnmount, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -102,6 +102,7 @@ import {
   OPENCODE_GO_BASE_URL, OPENCODE_GO_DEFAULT_MODEL,
 } from '@/config/chatApi'
 import { chatApi } from '@/api/chatApi'
+import { ApiClientError } from '@/api/client'
 import { createChatApiDrafts } from '@/utils/chatApiDrafts'
 
 type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
@@ -173,15 +174,34 @@ const testing = ref(false)
 const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
+let draftRevision = 0
+let clearingKey = false
+let testController: AbortController | null = null
+function invalidateTest() {
+  draftRevision++
+  testController?.abort()
+  testController = null
+  testing.value = false
+  testState.value = ''
+  testMessage.value = ''
+  discoveredModels.value = []
+}
+watch(() => [props.vendor, props.baseUrl, props.model, props.apiKey], invalidateTest, { flush: 'sync' })
+onBeforeUnmount(invalidateTest)
 const draftStore = createChatApiDrafts(() => { testMessage.value = '旧密钥草稿暂未能安全迁移，原值已保留，请重试。' })
 const vendorDrafts = draftStore.drafts
 
 async function clearPersonalKey() {
+  if (clearingKey) return
+  clearingKey = true
+  const revision = draftRevision
   try {
     await draftStore.clear(props.vendor, { baseUrl: props.baseUrl, model: props.model, apiKey: props.apiKey })
+    if (revision !== draftRevision) return
     emit('update:apiKey', '')
     emit('clear-key')
-  } catch { testMessage.value = '个人密钥草稿清除失败，原值已保留，请重试。' }
+  } catch { if (revision === draftRevision) testMessage.value = '个人密钥草稿清除尚未确认，请检查后重试。' }
+  finally { clearingKey = false }
 }
 
 const vendorProxy = computed({
@@ -190,15 +210,15 @@ const vendorProxy = computed({
 })
 const baseUrlProxy = computed({
   get: () => props.baseUrl,
-  set: value => emit('update:baseUrl', value),
+  set: value => { invalidateTest(); emit('update:baseUrl', value) },
 })
 const modelProxy = computed({
   get: () => props.model,
-  set: value => emit('update:model', value),
+  set: value => { invalidateTest(); emit('update:model', value) },
 })
 const apiKeyProxy = computed({
   get: () => props.apiKey,
-  set: value => emit('update:apiKey', value),
+  set: value => { invalidateTest(); emit('update:apiKey', value) },
 })
 
 const canTest = computed(() =>
@@ -222,6 +242,7 @@ const modelNote = computed(() =>
 const statusText = computed(() => testMessage.value || props.hint || '先测试连接，再保存配置。')
 
 function selectVendor(vendor: ApiVendor) {
+  invalidateTest()
   const current = props.vendor
   // 先把当前商家的草稿存起来
   if (current !== vendor) {
@@ -262,6 +283,8 @@ function selectVendor(vendor: ApiVendor) {
 
 async function testConnection() {
   if (!canTest.value || testing.value) return
+  const controller = new AbortController()
+  testController = controller
   testing.value = true
   testState.value = 'testing'
   testMessage.value = '正在验证密钥并获取模型列表…'
@@ -270,7 +293,8 @@ async function testConnection() {
         baseUrl: props.baseUrl,
         model: props.model,
         apiKey: props.apiKey,
-    })
+    }, { signal: controller.signal })
+    if (testController !== controller || controller.signal.aborted) return
     discoveredModels.value = Array.isArray(data.models)
       ? data.models.map(String).filter(Boolean)
       : []
@@ -279,10 +303,14 @@ async function testConnection() {
       ? `连接成功，发现 ${discoveredModels.value.length} 个模型。`
       : '连接成功；该服务没有返回模型列表。'
   } catch (error) {
+    if (testController !== controller || controller.signal.aborted) return
     testState.value = 'error'
-    testMessage.value = error instanceof Error ? error.message : '连接测试失败'
+    // Provider error bodies may echo credentials or request URLs; never render them.
+    testMessage.value = error instanceof ApiClientError && error.status
+      ? `连接测试失败（HTTP ${error.status}），请检查地址、模型和凭据。`
+      : '连接测试失败，请检查地址、模型、凭据和网络后重试。'
   } finally {
-    testing.value = false
+    if (testController === controller) { testController = null; testing.value = false }
   }
 }
 </script>

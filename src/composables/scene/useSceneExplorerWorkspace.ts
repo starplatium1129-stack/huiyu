@@ -1,4 +1,5 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
+import { useToast } from '@/composables/useToast';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
@@ -41,6 +42,7 @@ export function useSceneExplorerWorkspace() {
     const route = useRoute();
     const router = useRouter();
     const sceneStore = useSceneStore();
+    const toast = useToast();
     const scenes = ref<ExplorerScene[]>([]);
     const curation = ref<ExplorerCuration>({ curatedSceneIds: [], moodRails: [], signatureSceneIds: [], reviewSceneIds: [] });
     const profile = ref<PreferenceProfile>(buildPreferenceProfile([]));
@@ -65,18 +67,20 @@ export function useSceneExplorerWorkspace() {
     const showHidden = ref(false);
     const adultEnabled = isLocalStudioHost();
     const showMature = ref(adultEnabled);
-    const searchQuery = ref('');
+    const routeQuery = () => typeof route.query.q === 'string' ? route.query.q : '';
+    const routeCharacter = () => ['nene', 'natsume', 'triad'].includes(String(route.query.character)) ? String(route.query.character) : 'all';
+    const searchQuery = ref(routeQuery());
     /** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
     let dataReady = false;
     /**
      * 输入框绑 searchQuery（打字要立刻回显），过滤/排序读 debouncedQuery。
      * 全 src/ 之前没有任何 debounce，297 条的过滤+排序每次击键都全量重跑。
-     * VueUse watchDebounced 替代手写 timer；清空立刻生效（debounceFilter 首个参数）。
+     * 普通输入防抖；路由导航立即替换结果，旧回调不得覆盖新意图。
      */
-    const debouncedQuery = ref('');
+    const debouncedQuery = ref(searchQuery.value);
     watchDebounced(searchQuery, (value) => {
-        debouncedQuery.value = value;
-    }, { debounce: 150, maxWait: 0, immediate: true });
+        if (value === searchQuery.value) debouncedQuery.value = value;
+    }, { debounce: 150, immediate: true });
     /**
      * 筛选期间的位置锚点（F3.2）：把列表抽短会让文档变矮，浏览器随即把滚动位置钳掉，
      * 清空筛选后用户就回不到原处（实测 700 → 473）。这里记住塌缩前的位置，等列表长回来再恢复。
@@ -116,35 +120,12 @@ export function useSceneExplorerWorkspace() {
     let loadRevision = 0;
     let flashTimer: ReturnType<typeof setTimeout> | undefined;
     onUnmounted(() => { dataReady = false; loadRevision++; clearTimeout(flashTimer); clearFilterAnchor(); });
-    /**
-     * 搜索词进 URL（2026-08-30 UX 审计 P2）：刷新或从别处返回时不至于白搜一次。
-     *
-     * 只同步这一个筛选：character / scene 是别的页面带进来的深链参数，本页的主题
-     * 与分组筛选若一并写进 query，会和它们互相覆盖。分页是「加载更多」式而非页码，
-     * 返回时点几下即可，不值得给它占一个参数位。
-     */
-    const queryTerm = typeof route.query.q === 'string' ? route.query.q : '';
-    if (queryTerm)
-        searchQuery.value = queryTerm;
-    // 防抖由上面的 watchDebounced 承担（150ms）；这里只在值真变了才改地址，
-    // 否则初次从 URL 恢复会多出一次无意义的导航
-    watch(debouncedQuery, (value) => {
-        const next = value.trim();
-        const current = typeof route.query.q === 'string' ? route.query.q : '';
-        if (next === current)
-            return;
-        const query: LocationQueryRaw = { ...route.query };
-        if (next)
-            query.q = next;
-        else
-            delete query.q;
-        void router.replace({ query }).catch(() => { });
-    });
     const activeTheme = ref('all');
     const activeThemeDefinition = computed(() => themeDefinition(activeTheme.value));
     const activeThemeLabel = computed(() => activeThemeDefinition.value.label);
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
     const companionId = computed<'nene' | 'natsume'>(() => {
+        if (manualCompanion.value) return manualCompanion.value;
         if (fChar.value === 'natsume')
             return 'natsume';
         if (fChar.value === 'nene')
@@ -154,9 +135,32 @@ export function useSceneExplorerWorkspace() {
             return 'natsume';
         if (q.includes('nene') || q.includes('宁宁'))
             return 'nene';
-        return manualCompanion.value || 'nene';
+        return 'nene';
     });
-    const fChar = ref('all');
+    const fChar = ref(routeCharacter());
+    let pendingRouteWrite: { q: string; character: string } | null = null;
+    // Only these two route-owned filters synchronize; mood, sort and other query fields stay intact.
+    watch([routeQuery, routeCharacter], ([q, character]) => {
+        if (route.path !== '/scene-explorer') return;
+        if (pendingRouteWrite?.q === q && pendingRouteWrite.character === character) {
+            if (searchQuery.value.trim() === q) debouncedQuery.value = q;
+            return;
+        }
+        pendingRouteWrite = null;
+        searchQuery.value = q; debouncedQuery.value = q; fChar.value = character;
+    }, { flush: 'sync' });
+    watch([debouncedQuery, fChar], () => {
+        if (route.path !== '/scene-explorer') return;
+        const next = { q: searchQuery.value.trim(), character: fChar.value };
+        if (next.q === routeQuery() && next.character === routeCharacter()) return;
+        const query: LocationQueryRaw = { ...route.query };
+        if (next.q) query.q = next.q; else delete query.q;
+        if (next.character !== 'all') query.character = next.character; else delete query.character;
+        pendingRouteWrite = next;
+        void router.replace({ query }).catch(() => {}).finally(() => {
+            if (pendingRouteWrite === next) pendingRouteWrite = null;
+        });
+    });
     const fSeason = ref('all');
     const fTime = ref('all');
     const fSeries = ref('all');
@@ -299,20 +303,20 @@ export function useSceneExplorerWorkspace() {
     });
     watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => { visible.value = PAGE_SIZE; });
     function toggleFav(id: string) {
-        if (favs.value.has(id))
-            favs.value.delete(id);
-        else
-            favs.value.add(id);
-        favs.value = new Set(favs.value);
-        localStorage.setItem(FAV_KEY, JSON.stringify([...favs.value]));
+        const next = new Set(favs.value);
+        if (next.has(id)) next.delete(id); else next.add(id);
+        try {
+            localStorage.setItem(FAV_KEY, JSON.stringify([...next]));
+            favs.value = next;
+        } catch { toast.error('收藏未保存，原有状态已保留，请稍后重试'); }
     }
     function toggleHidden(id: string) {
-        if (hiddenIds.value.has(id))
-            hiddenIds.value.delete(id);
-        else
-            hiddenIds.value.add(id);
-        hiddenIds.value = new Set(hiddenIds.value);
-        writeHiddenScenes(hiddenIds.value);
+        const next = new Set(hiddenIds.value);
+        if (next.has(id)) next.delete(id); else next.add(id);
+        try {
+            writeHiddenScenes(next);
+            hiddenIds.value = next;
+        } catch { toast.error('隐藏设置未保存，原有状态已保留，请稍后重试'); }
     }
     function showPersonalScenes() {
         showHidden.value = false;
@@ -364,7 +368,7 @@ export function useSceneExplorerWorkspace() {
         fTime.value = 'all';
         fSeries.value = 'all';
         fRating.value = 'all';
-        fTier.value = defaultTier;
+        fTier.value = 'all';
         sortBy.value = 'smart';
         showHidden.value = false;
     }
@@ -397,8 +401,6 @@ export function useSceneExplorerWorkspace() {
         const openingRevision = ++loadRevision;
         dataReady = false;
         preferenceLoad = undefined;
-        const charParam = typeof route.query.character === 'string' ? route.query.character : null;
-        if (['nene', 'natsume', 'triad'].includes(charParam || '')) fChar.value = charParam!;
         // Flush route-derived filters before enabling the user-intent watcher.
         await nextTick();
         if (openingRevision !== loadRevision) return;

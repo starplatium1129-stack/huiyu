@@ -26,7 +26,7 @@ onMounted(() => { if (supported) checkForUpdate(true) })
   <div v-if="supported && (availableVersion || errorText)" class="desktop-update-banner tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:rounded-md tw:text-primary tw:text-body-sm tw:leading-body" role="status">
     <span class="desktop-update-text">
       <template v-if="availableVersion">桌面端新版本 {{ availableVersion }} 可用</template>
-      <template v-else-if="errorText">更新检查失败：{{ errorText }}</template>
+      <template v-if="errorText">{{ availableVersion ? ' · ' : '' }}更新失败：{{ errorText }}</template>
       <template v-if="statusText"> · {{ statusText }}</template>
     </span>
     <button

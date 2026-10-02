@@ -1,5 +1,5 @@
 <template>
-  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" :style="referenceStyle" aria-label="当前场景参考">
+  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" :style="{ '--reference-image-ratio': imageRatio && !failed ? String(imageRatio) : undefined }" aria-label="当前场景参考">
     <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }">
       <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
       <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-secondary tw:text-label tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
@@ -76,8 +76,6 @@ function measureImage(event: Event) {
   imageRatio.value = image.naturalWidth / image.naturalHeight
 }
 const image = computed(() => ({ ...runtimeImage.value, onLoad: measureImage }))
-const referenceStyle = computed(() => imageRatio.value && !failed.value
-  ? { '--reference-image-ratio': String(imageRatio.value) } : undefined)
 const shot = computed(() => SHOT.find(item => item.id === pb.selections.shot)?.name ?? '跟随场景')
 const composition = computed(() => COMPOSITION.find(item => item.id === pb.selections.composition)?.name ?? '跟随场景')
 const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.lighting)?.name ?? '跟随场景')

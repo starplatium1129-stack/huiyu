@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, onActivated, onDeactivated, ref, type Ref } from 'vue'
 
 import { MaskTileHistory } from './maskTileHistory'
 
@@ -30,6 +30,7 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   const cursorVisible = ref(false)
   const cursorX = ref(0)
   const cursorY = ref(0)
+  let attached = true
   let drawing = false
   let erase = false
   let lastMaskPoint: { x: number; y: number } | null = null
@@ -63,11 +64,18 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   }
 
   function handleKeyDown(event: KeyboardEvent) {
-    if (!deps.active() || maskMode.value !== 'paint') return
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
-      event.preventDefault()
-      undoMask()
-    }
+    if (!attached || !deps.active() || maskMode.value !== 'paint' || event.defaultPrevented
+      || event.isComposing || event.keyCode === 229 || event.shiftKey || event.altKey
+      || event.ctrlKey === event.metaKey || event.key.toLowerCase() !== 'z') return
+    const target = event.target instanceof Element ? event.target : document.activeElement
+    const dialog = maskCanvasEl.value?.closest('[role="dialog"], dialog')
+    if (!target || !dialog || target.closest('[role="dialog"], [role="alertdialog"], dialog') !== dialog) return
+    const editable = target.closest('[contenteditable]')
+    if (target.closest('input, textarea, select, [inert], [hidden]') || editable && editable.getAttribute('contenteditable') !== 'false') return
+    const nativeModal = document.querySelector('dialog:modal')
+    if (nativeModal && !nativeModal.contains(dialog)) return
+    event.preventDefault()
+    undoMask()
   }
 
   function handleCanvasWheel(event: WheelEvent) {
@@ -81,10 +89,11 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   function syncMaskCanvas() {
     const image = deps.imageEl.value
     const canvas = maskCanvasEl.value
-    if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return
+    if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return false
     canvas.width = deps.resolution()?.width ?? image.naturalWidth
     canvas.height = deps.resolution()?.height ?? image.naturalHeight
     clearMask()
+    return true
   }
 
   function pointerPosition(event: PointerEvent): { x: number; y: number } | null {
@@ -134,6 +143,7 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
 
   function startMaskPaint(event: PointerEvent) {
     if (maskMode.value !== 'paint' || drawing || !maskContext()) return
+    maskCanvasEl.value?.focus({ preventScroll: true })
     history.begin()
     drawing = true
     erase = event.button === 2 || event.shiftKey
@@ -175,7 +185,11 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
     window.addEventListener('keydown', handleKeyDown)
   })
 
+  onActivated(() => { attached = true; window.addEventListener('keydown', handleKeyDown) })
+  onDeactivated(() => { attached = false; window.removeEventListener('keydown', handleKeyDown); stopMaskPaint() })
+
   onBeforeUnmount(() => {
+    attached = false
     window.removeEventListener('keydown', handleKeyDown)
     stopMaskPaint()
     history.clear()

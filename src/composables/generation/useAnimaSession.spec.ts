@@ -168,6 +168,7 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(session.state.value.phase).toBe('idle')
   session.patchState({ online: true, family })
   const generating = session.generate()
+  await vi.dynamicImportSettled()
   expect(call.mock.calls[0]?.[0]).toBe(base)
   expect(call.mock.calls[0]?.[1]?.method).toBe('POST')
   expect(call.mock.calls[0]?.[1]?.body).toMatchObject({ modelId: family === 'krea2' ? 'krea2-turbo-fp8' : 'anima-fixture', prompt: 'submitted prompt' })
@@ -205,10 +206,15 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   const recovery = createSession({ request: recoveryCall } as unknown as ApiClient, { getFamily: () => family })
   recovery.patchState({ online: true, family })
   await recovery.generate()
-  expect(recoveryCall.mock.calls.map(([url, options]) => [url, options?.method])).toEqual([[base, 'POST'], [`${base}/unobserved`, 'DELETE']])
-  expect(recovery.state.value.phase).toBe(family === 'anima' ? 'cancelled' : 'cancelling')
-  expect(recovery.state.value.job?.id).toBe('unobserved')
-  if (family === 'krea2') expect(recovery.state.value.statusText).toContain('取消尚未确认')
+  expect(recoveryCall).not.toHaveBeenCalled()
+  expect(recovery.state.value.phase).toBe('failed')
+  expect(recovery.state.value.job).toBeNull()
+  vi.doUnmock('./animaJobPolling')
+  recoveryCall.mockRejectedValue(new Error('retry reaches transport'))
+  await recovery.generate()
+  expect(recoveryCall).toHaveBeenCalledOnce()
+  expect(recoveryCall.mock.calls[0]).toEqual([base, expect.objectContaining({ method: 'POST' })])
+
 })
 
 it('uses the accepted Web Krea metadata after provider style processing, even if the panel changes', async () => {
@@ -228,4 +234,22 @@ it('uses the accepted Web Krea metadata after provider style processing, even if
   expect(session.state.value.result?.metadata).toMatchObject({ prompt: request.prompt + ', actual style trigger', seed: 0, sampler: 'actual-sampler' })
   metadata.prompt = 'Mutated transport response'
   expect(session.state.value.result?.metadata.prompt).toBe(request.prompt + ', actual style trigger')
+})
+
+it('cancels while the direct transport loads without POST, then permits a fresh retry', async () => {
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  vi.doMock('./animaJobPolling', async importOriginal => { await gate; return importOriginal() })
+  const call = vi.fn(async () => { throw new Error('retry reaches transport') })
+  const session = createSession({ request: call } as unknown as ApiClient)
+  session.patchState({ online: true })
+  const pending = session.generate()
+  expect(session.state.value.phase).toBe('submitting')
+  await session.cancel()
+  release()
+  await pending
+  expect(call).not.toHaveBeenCalled()
+  expect(session.state.value.phase).toBe('cancelled')
+  await session.generate()
+  expect(call).toHaveBeenCalledOnce()
 })

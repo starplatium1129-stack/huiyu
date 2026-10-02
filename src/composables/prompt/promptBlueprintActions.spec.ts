@@ -4,6 +4,8 @@ import { ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { loadBlueprint } from './promptBlueprintActions'
+import { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import type { ApiClient } from '@/api/client'
 
 function fixture() {
   const pb = usePromptBuilderStore()
@@ -32,7 +34,7 @@ function fixture() {
       const [width, height] = value.split('x').map(Number)
       patchAnimaState({ width, height })
     },
-    refreshAnimaBackend: vi.fn(async () => {}),
+    refreshAnimaBackend: vi.fn(async () => true),
     animaState,
     patchAnimaState,
     sdSize: size,
@@ -99,4 +101,57 @@ describe('director blueprint round-trip', () => {
     expect((await loadBlueprint({ subject: 'popular', characterId: 'missing', outfitId: 'missing' }, context as any)).applied).toBe(false)
     expect(pb.subject).toEqual(original)
   })
+})
+
+
+it.each(['new-owner', 'edited-draft', 'changed-engine', 'cancelled-refresh'] as const)('stops late blueprint parameter writes after %s', async reason => {
+  const { pb, engine, animaState, context } = fixture()
+  let finish!: (value: boolean) => void
+  let current = true
+  context.refreshAnimaBackend.mockImplementation(() => new Promise<boolean>(resolve => { finish = resolve }))
+  const pending = loadBlueprint({ story: 'Imported story', drawEngine: 'anima', anima: { cfg: 11 }, size: '1216x832' },
+    { ...context, isCurrent: () => current, getDrawEngine: () => engine.value } as any)
+  expect(pb.story).toBe('Imported story')
+  if (reason === 'new-owner') current = false
+  if (reason === 'edited-draft') pb.setStory('Newer story')
+  if (reason === 'changed-engine') engine.value = 'sd'
+  animaState.value.cfg = 6
+  finish(reason !== 'cancelled-refresh')
+  expect((await pending).applied).toBe(false)
+  expect(animaState.value.cfg).toBe(6)
+  expect(pb.story).toBe(reason === 'edited-draft' ? 'Newer story' : 'Imported story')
+})
+
+
+it.each(['refresh-defaults', 'cfg-only', 'overlapping-cfg', 'sd-size-only'] as const)('distinguishes owned defaults from %s changes during discovery', async edit => {
+  const { pb, engine, size, context } = fixture()
+  const data = { ok: true, online: true, loras: [], models: [
+    { id: 'first', family: 'anima', available: true, sizes: ['832x1216', '1216x832'], defaults: { cfg: 3, steps: 20 } },
+    { id: 'second', family: 'anima', available: true, sizes: ['832x1216'], defaults: { cfg: 5, steps: 25 } },
+  ] }
+  let finish!: (value: typeof data) => void
+  const request = vi.fn().mockImplementationOnce(() => new Promise(resolve => { finish = resolve })).mockResolvedValue(data)
+  const session = useAnimaSession({ client: { request } as unknown as ApiClient,
+    getCharacter: () => pb.char, isPopular: () => false, getFamily: () => 'anima',
+    getRequest: () => null, onResult: vi.fn(), flash: vi.fn(), preferredSize: () => size.value })
+  const pending = loadBlueprint({ story: 'Imported', drawEngine: 'anima', anima: { modelId: 'first', cfg: 11 }, size: '1216x832' }, {
+    ...context, animaState: session.state, patchAnimaState: session.patchState, refreshAnimaBackend: session.refreshBackend,
+    getDrawEngine: () => engine.value, getAnimaSettingsRevision: session.getSettingsRevision,
+  } as Parameters<typeof loadBlueprint>[1])
+  const editedCfg = edit === 'cfg-only' || edit === 'overlapping-cfg'
+  if (editedCfg) session.state.value.cfg = 6
+  if (edit === 'overlapping-cfg') void session.refreshBackend()
+  if (edit === 'sd-size-only') size.value = '1024x1024'
+  const revision = session.getSettingsRevision()
+  finish(data)
+  const result = await pending
+  expect(result.applied).toBe(edit === 'refresh-defaults')
+  expect(session.state.value.cfg).toBe(edit === 'refresh-defaults' ? 11 : editedCfg ? 6 : 3)
+  if (edit !== 'refresh-defaults') expect(session.getSettingsRevision()).toBe(revision)
+  if (edit === 'sd-size-only') expect(size.value).toBe('1024x1024')
+  await session.refreshBackend()
+  expect(session.state.value.cfg).toBe(edit === 'refresh-defaults' ? 11 : editedCfg ? 6 : 3)
+  session.applyModel('second')
+  expect(session.state.value.cfg).toBe(5)
+  session.dispose()
 })

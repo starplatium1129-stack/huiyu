@@ -15,11 +15,42 @@ use std::{
 use tokio::io::AsyncWriteExt;
 use tokio_util::sync::CancellationToken;
 
+struct UploadDirectory(Option<tempfile::TempDir>);
+impl UploadDirectory {
+    fn published(&mut self) {
+        if let Some(directory) = self.0.take() {
+            let _ = directory.keep();
+        }
+    }
+}
+impl Drop for UploadDirectory {
+    fn drop(&mut self) {
+        let Some(directory) = self.0.take() else {
+            return;
+        };
+        let path = directory.keep();
+        let cleanup = move || {
+            // Best-effort cleanup of this request's staging directory only.
+            // Skip ancestry currently containing links; this is not an atomic
+            // identity guard against external replacement. Never sweep old uploads.
+            if no_links(&path).is_ok() {
+                let _ = fs::remove_dir_all(path);
+            }
+        };
+        if let Ok(runtime) = tokio::runtime::Handle::try_current() {
+            runtime.spawn_blocking(cleanup);
+        } else {
+            cleanup();
+        }
+    }
+}
+
 pub(super) struct Upload {
     metadata: Value,
     paths: Vec<String>,
     directory: PathBuf,
     count: usize,
+    cleanup: UploadDirectory,
 }
 pub(super) async fn receive(
     root: &Path,
@@ -28,8 +59,11 @@ pub(super) async fn receive(
 ) -> Result<Upload> {
     no_links(root)?;
     tokio::fs::create_dir_all(root).await?;
-    let directory = root.join(format!(".editor-upload-{}", uuid::Uuid::new_v4()));
-    tokio::fs::create_dir(&directory).await?;
+    let owned = tempfile::Builder::new()
+        .prefix(".editor-upload-")
+        .tempdir_in(root)?;
+    let directory = owned.path().to_owned();
+    let cleanup = UploadDirectory(Some(owned));
     let (mut metadata, mut paths) = (None, None);
     let (mut count, mut total) = (0, 0usize);
     while let Some(mut field) = tokio::select! { field = form.next_field() => field.map_err(|_| invalid("Invalid multipart model files"))?, _ = cancel.cancelled() => return Err(ApiError::new(499,"CANCELLED","Model import cancelled")) }
@@ -101,10 +135,11 @@ pub(super) async fn receive(
         paths,
         directory,
         count,
+        cleanup,
     })
 }
 
-pub(super) fn publish(root: &Path, upload: Upload, cancel: &CancellationToken) -> Result<Value> {
+pub(super) fn publish(root: &Path, mut upload: Upload, cancel: &CancellationToken) -> Result<Value> {
     let _lock = EditorLock::acquire(root)?;
     let meta = &upload.metadata;
     let id = meta["id"]
@@ -240,5 +275,6 @@ pub(super) fn publish(root: &Path, upload: Upload, cancel: &CancellationToken) -
     editor::save_receipt(&upload.directory, &receipt)?;
     editor::check_cancel(cancel)?;
     fs::rename(&upload.directory, &target)?;
+    upload.cleanup.published();
     editor::get(root, id, cancel)
 }

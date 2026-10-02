@@ -1,5 +1,5 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
-import { SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
+import { CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
   const domain = classifyMigrationKey('local', key)
@@ -20,6 +20,8 @@ export interface ProfilePort {
 let port: ProfilePort | null = null
 let windowId = ''
 let generation = 0
+let writeVersion = 0
+let refreshVersion = 0
 let resetRevision = ''
 const values = new Map<string, ProfileRecord>()
 let pending = Promise.resolve()
@@ -77,14 +79,25 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const identity = cacheKey(key, session), selected = port!, epoch = generation
   let operationId = crypto.randomUUID()
   const previous = values.get(identity)
+  const sceneIdSet = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes')
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
+  writeVersion++
   values.set(identity, optimistic)
   let expectedRevision: number | null | undefined
   let expectedReset = resetRevision
-  let baseValue = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
+  let baseValue: unknown = structuredClone(previous?.value ?? null), sendValue: unknown = JSON.parse(JSON.stringify(value))
   outbox.push(async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
-    if (expectedRevision === undefined) expectedRevision = revisions.get(identity) ?? null
+    if (expectedRevision === undefined) {
+      // A queued predecessor may have merged another window's IDs. Carry only
+      // this write's original delta forward, once, before its first submission.
+      if (sceneIdSet && previous) {
+        const { mergeProfileSettingConflict } = await import('./profileConflict.ts')
+        sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, previous.value)
+        baseValue = structuredClone(previous.value)
+      }
+      expectedRevision = revisions.get(identity) ?? null
+    }
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         const input = { operationId, key, value: sendValue as string | null, expectedRevision }
@@ -92,6 +105,8 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           : domain === 'chat' ? await selected.saveChatRecord({ ...input, expectedReset })
             : await selected.saveDraft({ ...input, ...(session ? { windowId } : {}), expectedReset })
         revisions.set(identity, saved.revision)
+        // Successors already retain this record; no second authority/cache is needed.
+        if (sceneIdSet) Object.assign(optimistic, structuredClone(saved))
         if (values.get(identity) === optimistic) values.set(identity, structuredClone(saved))
         return
       } catch (error) {
@@ -102,15 +117,16 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           throw Object.assign(new Error('待处理队列已被其他窗口更新，请刷新页面后重试。'), { code })
         }
         const latest = domain === 'settings' ? await selected.readSettings() : domain === 'chat' ? await selected.readChat() : await selected.readDrafts(windowId)
-        if (key === SD_PENDING_QUEUE_KEY) {
-          // A definitive reset conflict did not commit. Refresh only this write's
-          // reset token; preserve its CAS revision and unrelated chat recovery.
+        if (domain === 'draft' && !key.startsWith(CHAT_DRAFT_PREFIX)
+          && (code === 'PROFILE_RESET_CONFLICT' || latest.resetRevision !== expectedReset)) {
+          // Runtime chat reset preserves drawing/video/model drafts. Retry only
+          // the reset token; retain CAS so an unrelated draft edit still conflicts.
           expectedReset = latest.resetRevision
           operationId = crypto.randomUUID()
           continue
         }
         const remote = latest.records.find(record => record.key === key)
-        if (domain !== 'settings' && latest.resetRevision !== expectedReset) {
+        if ((domain === 'chat' || key.startsWith(CHAT_DRAFT_PREFIX)) && latest.resetRevision !== expectedReset) {
           recovery.set(identity, { key, value, reason: 'chat-reset' })
           const chat = domain === 'chat' ? latest : await selected.readChat()
           for (const [entryId, record] of values) if (profileDomainForKey(record.key) === 'chat' || record.key.startsWith('aics_chat_draft_v1:')) {
@@ -124,7 +140,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
         }
         const { mergeProfileChatConflict, mergeProfileSettingConflict } = await import('./profileConflict.ts')
         if (domain === 'chat') sendValue = await mergeProfileChatConflict(key, baseValue, sendValue, remote?.value ?? null)
-        else if (domain === 'settings') sendValue = mergeProfileSettingConflict(baseValue, sendValue, remote?.value ?? null)
+        else if (domain === 'settings') sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, remote?.value ?? null)
         baseValue = structuredClone(remote?.value ?? null)
         expectedRevision = remote?.revision ?? null
         // A 409 proved this operation did not commit. Only this branch may use a
@@ -154,10 +170,14 @@ export async function activateProfileStorage(next: ProfilePort, id: string): Pro
 }
 export async function refreshProfileStorage(): Promise<void> {
   if (!port) return
+  const refresh = ++refreshVersion
   await flushProfileWrites()
-  const current = generation
+  if (refresh !== refreshVersion) return
+  const current = generation, writes = writeVersion
   const [settings, chat, drafts] = await Promise.all([port.readSettings(), port.readChat(), port.readDrafts(windowId)])
-  if (current !== generation || outbox.length) return
+  // A save may have started AND drained while these snapshots were in flight.
+  // A later refresh captures the new write version and can publish normally.
+  if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || outbox.length) return
   const before = new Map([...values].map(([identity, record]) => [identity, JSON.stringify(record.value)]))
   values.clear(); revisions.clear(); take(settings); take(chat)
   for (const record of drafts.records) {
@@ -216,6 +236,7 @@ export async function resetProfileChat(): Promise<void> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
   const snapshot = await port.resetChat({ operationId: crypto.randomUUID(), expectedReset: resetRevision })
+  writeVersion++
   for (const [identity, record] of values) if (profileDomainForKey(record.key) === 'chat' || record.key.startsWith('aics_chat_draft_v1:')) {
     values.delete(identity); revisions.delete(identity)
   }

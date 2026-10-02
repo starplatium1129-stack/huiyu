@@ -16,6 +16,9 @@
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </div>
+      <div class="control-section-jump" role="group" aria-label="控制室分区">
+        <a v-for="item in sections" :key="item.id" :href="'#' + item.id" :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">{{ item.label }}</a>
+      </div>
     </nav>
 
     <div class="control-layout">
@@ -114,7 +117,7 @@
           </button>
         </div>
 
-        <ToggleSwitch v-model="autoStartVoice" class="autostart-row" @change="saveAutoStartVoice">
+        <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>打开控制面板时自动启动语音（显存紧张时不建议开启）</span>
         </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
@@ -318,7 +321,7 @@ const actions = useControlActions(status, { showToast })
 const {
   tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
-  sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
+  sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,

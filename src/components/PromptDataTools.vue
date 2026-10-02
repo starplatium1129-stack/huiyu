@@ -103,7 +103,7 @@
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
           <button v-if="backup.pendingWorkspace.value" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">验证恢复副本</button>
           <template v-else><button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
-          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="restoreReplace">覆盖本地</button></template>
+          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="backup.restore('replace')">覆盖本地</button></template>
         </div>
       </div>
     </div>
@@ -116,10 +116,10 @@ import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useWorkspaceMigration } from '@/composables/useWorkspaceMigration'
-import { confirmAction, useConfirmState } from '@/composables/useConfirm'
+import { useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/director/components/PromptDataTools.css'
@@ -130,7 +130,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   flash: [message: string]
-  loadBlueprint: [data: Record<string, unknown>]
+  loadBlueprint: [data: Record<string, unknown>, signal: AbortSignal]
 }>()
 
 const backup = useBackup((message) => emit('flash', message))
@@ -143,6 +143,12 @@ const utilityTrigger = ref<HTMLButtonElement | null>(null)
 const confirmation = useConfirmState()
 const pendingSummary = ref<BackupSummary | null>(null)
 let backupFileVersion = 0
+let blueprintRead: AbortController | null = null
+let blueprintViewActive = true
+function stopBlueprintRead() { blueprintViewActive = false; blueprintRead?.abort(); blueprintRead = null }
+onActivated(() => { blueprintViewActive = true })
+onDeactivated(stopBlueprintRead)
+onScopeDispose(stopBlueprintRead)
 
 /** 超过 7 天未备份（或从未备份）时在触发器上亮角标，菜单内给提示 */
 const BACKUP_REMIND_DAYS = 7
@@ -207,20 +213,27 @@ function exportBlueprint() {
 async function onBlueprintFilePicked(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
-  if (!file) return
+  if (!file || !blueprintViewActive) return
+  blueprintRead?.abort()
+  const request = new AbortController()
+  const fingerprint = () => JSON.stringify({ ...props.blueprintData, updatedAt: undefined })
+  const draftAtPick = fingerprint()
+  blueprintRead = request
+  input.value = ''
+  const current = () => blueprintViewActive && !request.signal.aborted && blueprintRead === request
   try {
     const text = await file.text()
+    if (!current() || fingerprint() !== draftAtPick) return
     const parsed = JSON.parse(text)
     if (parsed && typeof parsed === 'object') {
-      emit('loadBlueprint', parsed as Record<string, unknown>)
+      emit('loadBlueprint', parsed as Record<string, unknown>, request.signal)
     } else {
       emit('flash', '无效的蓝图文件格式')
     }
   } catch {
-    emit('flash', '读取蓝图 JSON 失败')
+    if (current()) emit('flash', '读取蓝图 JSON 失败')
   }
-  input.value = ''
-  utilityOpen.value = false
+  if (current()) utilityOpen.value = false
 }
 
 function discard() {
@@ -228,29 +241,6 @@ function discard() {
   backupFileVersion++
   backup.discard()
   pendingSummary.value = null
-}
-
-/**
- * 覆盖式恢复（2026-08-30 UX 审计 P1）。
- *
- * 「覆盖本地」会替换全部历史、项目与图片，而此前只需单击即执行——弹窗正文
- * 里那句「覆盖会替换现有数据」只是说明，不是确认。误点一次等于清空本地
- * 作品库，且没有撤销通道（备份恢复不走软删，回收站兜不住它）。
- *
- * 合并恢复不拦：它按 id 保留较新的记录，不会丢东西，每次都弹问反而会让
- * 用户养成无脑确认的习惯。
- */
-async function restoreReplace() {
-  if (backup.busy.value) return
-  const count = pendingSummary.value?.history ?? 0
-  const ok = await confirmAction({
-    title: '覆盖本地数据？',
-    message: `当前 ${count} 条历史和项目将被替换。原图会保留，确认恢复结果后可通过存储清理释放空间。建议先导出备份，或改用合并恢复。`,
-    confirmLabel: '覆盖',
-    danger: true,
-  })
-  if (!ok) return
-  await backup.restore('replace', true)
 }
 
 async function onBackupFilePicked(event: Event) {

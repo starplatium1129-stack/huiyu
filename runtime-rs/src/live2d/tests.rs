@@ -5,6 +5,8 @@ use http_body_util::BodyExt;
 use std::fs;
 use tower::ServiceExt;
 
+mod import_cleanup;
+
 fn profile() -> Value {
     json!({"schemaVersion":1,"profileId":"profile-fixture","avatarId":"avatar-fixture","profileVersion":"1.0.0","backendCompatibility":["browser"],"parameterBindings":{},"verification":{"status":"verified"}})
 }

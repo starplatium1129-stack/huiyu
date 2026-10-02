@@ -142,6 +142,45 @@ describe('confirmDeleteAction', () => {
 })
 
 describe('bulkDeleteAction', () => {
+  it('locks the confirmation and deletes only its captured IDs while preserving newer selections', async () => {
+    const approval = deferred<boolean>()
+    confirmActionMock.mockReturnValueOnce(approval.promise)
+    repo.softDeleteArtworks.mockResolvedValue([{ id: 10, deleted: true }, { id: 20, deleted: false }])
+    const ctx = deleteContext([10, 20, 30])
+    ctx.selectedIds.value = new Set([10, 20])
+    const pending = bulkDeleteAction(ctx)
+    expect(ctx.bulkDeleting.value).toBe(true)
+    ctx.selectedIds.value = new Set([20, 30])
+    await bulkDeleteAction(ctx)
+    expect(confirmActionMock).toHaveBeenCalledOnce()
+    approval.resolve(true)
+    await pending
+    expect(repo.softDeleteArtworks).toHaveBeenCalledExactlyOnceWith([10, 20])
+    expect(ctx.onDeleted).toHaveBeenCalledExactlyOnceWith([10])
+    expect(ctx.history.value.map(item => item.id)).toEqual([20, 30])
+    expect(ctx.selectedIds.value).toEqual(new Set([20, 30]))
+    expect(ctx.bulkDeleting.value).toBe(false)
+  })
+
+  it('finishes an accepted batch without closing a viewer from a newer visit', async () => {
+    const write = deferred<Array<{ id: number; deleted: boolean }>>()
+    repo.softDeleteArtworks.mockReturnValueOnce(write.promise)
+    confirmActionMock.mockResolvedValueOnce(true)
+    let current = true
+    const ctx = { ...deleteContext([10, 20]), isCurrentView: () => current }
+    const pending = bulkDeleteAction(ctx)
+    await Promise.resolve()
+    current = false
+    ctx.viewerIndex.value = 0
+    write.resolve([{ id: 10, deleted: true }, { id: 20, deleted: true }])
+    await pending
+    expect(ctx.history.value).toEqual([])
+    expect(ctx.releaseCardResources).toHaveBeenCalledTimes(2)
+    expect(ctx.closeViewer).not.toHaveBeenCalled()
+    expect(ctx.onDeleted).not.toHaveBeenCalled()
+    expect(ctx.loadGalleryStorage).toHaveBeenCalledOnce()
+  })
+
   it('取消确认时不触发删除与资源释放；确认后才真正软删、释放资源并弹出撤销提示', async () => {
     repo.softDeleteArtworks.mockResolvedValue([{ id: 10, deleted: true }, { id: 20, deleted: true }])
 

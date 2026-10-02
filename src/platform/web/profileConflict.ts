@@ -15,12 +15,23 @@ function changedFields(base: RecordBody, local: RecordBody, remote: RecordBody):
   }
   return result
 }
-export function mergeProfileSettingConflict(baseValue: unknown, localValue: unknown, remoteValue: unknown): unknown {
+export function mergeProfileSettingConflict(key: string, baseValue: unknown, localValue: unknown, remoteValue: unknown): unknown {
   if (localValue === null) return null
   try {
     const base = typeof baseValue === 'string' ? JSON.parse(baseValue) : baseValue
     const local = typeof localValue === 'string' ? JSON.parse(localValue) : localValue
     const remote = typeof remoteValue === 'string' ? JSON.parse(remoteValue) : remoteValue
+    // These two settings are unordered scene-ID sets, unlike recent/history arrays.
+    if (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes') {
+      const ids = (value: unknown): value is string[] => Array.isArray(value) && value.every(id => typeof id === 'string')
+      if (ids(local) && (base === null || ids(base)) && (remote === null || ids(remote))) {
+        const before = new Set<string>(base ?? []), own = new Set(local), merged = new Set<string>(remote ?? [])
+        for (const id of before) if (!own.has(id)) merged.delete(id)
+        for (const id of own) if (!before.has(id)) merged.add(id)
+        const value = [...merged].sort()
+        return typeof localValue === 'string' ? JSON.stringify(value) : value
+      }
+    }
     if (!local || typeof local !== 'object' || Array.isArray(local)) return localValue
     const value = changedFields(object(base), object(local), object(remote))
     return typeof localValue === 'string' ? JSON.stringify(value) : value

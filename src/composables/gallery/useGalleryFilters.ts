@@ -6,7 +6,7 @@ import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
 import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
-import { artworkCharacterIds, matchesSmartAlbum, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
+import { artworkCharacterIds, createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
 
 const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
 
@@ -66,6 +66,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     .map(entry => entry.item));
   const selectedProject = computed(() => projects.value.find(item => item.id === projectFilter.value));
   const smartRule = computed(() => selectedProject.value?.smartRule);
+  const smartMatcher = computed(() => smartRule.value ? createSmartAlbumMatcher(smartRule.value, projects.value) : null);
   const searching = computed(() => searchQuery.value.trim().length > 0 || Boolean(smartRule.value?.search));
   const searchIndex = computed(() => searching.value
     ? new Map(history.value.map(item => [item, searchHaystack(item)])) : null);
@@ -83,9 +84,10 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const index = searching.value ? searchIndex.value : null;
     const generation = generationFilterCount.value ? generationIndex.value : null;
+    const matchesSmart = smartMatcher.value;
     return sortedHistory.value.filter(item => {
       if (projectFilter.value && !selectedProject.value) return false;
-      if (smartRule.value && !matchesSmartAlbum(item, smartRule.value, projects.value, index?.get(item))) return false;
+      if (matchesSmart && !matchesSmart(item, index?.get(item))) return false;
       if (characterFilter.value) {
         const ids = artworkCharacterIds(item);
         if (characterFilter.value === UNASSIGNED_CHARACTER_ID ? ids.length > 0 : !ids.includes(characterFilter.value)) return false;

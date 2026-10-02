@@ -111,8 +111,8 @@ export function useCharacterRoomSession() {
   }
 
   async function clearHostConfigAndRefresh() {
-    await clearHostConfig()
-    setError('站主配置已清除', 'info', 3000)
+    const cleared = await clearHostConfig()
+    setError(cleared ? '站主配置已清除' : '站主配置清除尚未确认，请检查连接后重试；请勿视为已停止托管。', cleared ? 'info' : 'error', 4000)
   }
 
   autoVoice.value = storage.state.settings.autoVoice

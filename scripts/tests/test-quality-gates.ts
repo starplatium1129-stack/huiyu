@@ -138,3 +138,34 @@ test('core CI avoids legacy SPA setup; optional legacy builds and nightly covera
   assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
     'route contract failures must remain fatal');
 });
+
+
+test('quality shallow lanes fetch only validated comparison commits and retain fallbacks', () => {
+  const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
+  const quality = read('.github/workflows/quality.yml');
+  const section = (name: string) => quality.split(`\n  ${name}:\n`)[1].split(/\n {2}[a-z-]+:\n/)[0];
+  assert.match(section('checks'), /fetch-depth: 0/);
+  assert.match(section('contract'), /fetch-depth: 1/);
+  assert.match(section('unit'), /else\s+ npm run test:frontend/s);
+  assert.match(read('scripts/tests/run-optional-test-lanes.ts'), /catch \(error\).*lanes = \[\.\.\.optional\]/);
+  for (const name of ['unit', 'optional']) {
+    const lane = section(name);
+    assert.match(lane, /fetch-depth: 2/);
+    const script = lane.split('      - name: Fetch only the comparison baseline\n')[1]
+      .split('        run: |\n')[1].split('      - name:')[0].replace(/^ {10}/gm, '');
+    const mockGit = 'git() { printf "git"; printf "<%s>" "$@"; printf "\\n"; if [[ "$1" == cat-file ]]; then return "$MOCK_PRESENT"; fi; return "$MOCK_FETCH"; }\n';
+    for (const [base, present, fetch, expected] of [
+      ['a'.repeat(40), '1', '0', true], ['b'.repeat(64), '1', '0', true],
+      ['a'.repeat(40), '0', '0', false], ['0'.repeat(40), '1', '0', false],
+      ['--upload-pack=bad', '1', '0', false], ['a'.repeat(41), '1', '0', false],
+      ['a'.repeat(40), '1', '1', true],
+    ] as const) {
+      const result = spawnSync('bash', ['-e', '-o', 'pipefail', '-c', mockGit + script], {
+        encoding: 'utf8', env: { ...process.env, AICS_HYGIENE_BASE_REF: base, MOCK_PRESENT: present, MOCK_FETCH: fetch },
+      });
+      assert.equal(result.status, 0, result.stderr);
+      assert.equal(result.stdout.includes(`git<fetch><--no-tags><--no-recurse-submodules><--depth=1><origin><${base}>`), expected);
+      if (fetch === '1') assert.match(result.stdout, /full fallback suites/);
+    }
+  }
+});

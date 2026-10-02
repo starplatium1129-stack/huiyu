@@ -4,9 +4,9 @@ import { confirmAction } from '@/composables/useConfirm';
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore';
 import { useVideoStore } from '@/stores/videoStore';
-import { ensureCharacterReferencesLoaded,getCharacterReferences } from '@/utils/characterReferenceData';
-import { computed,onBeforeUnmount,onMounted,ref,watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { getCharacterReferences } from '@/utils/characterReferenceData';
+import { computed,onActivated,onBeforeUnmount,onDeactivated,onMounted,ref,watch } from 'vue';
+import { useRoute,useRouter } from 'vue-router';
 import type { ShotDraft } from './shotListTypes';
 import { useReferenceCards, removeCastSlot } from './useReferenceCards';
 import { useShotAiTools } from './useShotAiTools';
@@ -18,7 +18,7 @@ import { inferShotParams,useShotImport } from './useShotImport';
 export function useShotWorkspace(props: {
     status: VideoStatusResponse | null;
 }) {
-    const route = useRoute();
+    const route = useRoute(), router = useRouter();
     const videoStore = useVideoStore();
     const sceneStore = useSceneStore();
     const sceneBlueprints = computed(() => sceneStore.sceneBlueprints);
@@ -55,10 +55,16 @@ export function useShotWorkspace(props: {
     const steps = ref<4 | 8>(8);
     const linkLastFrame = ref(true);
     const identityCard = ref('');
-    const characterId = ref('');
     const sceneFillId = ref('');
     const shots = ref<ShotDraft[]>([]);
     const frameInputs = ref<HTMLInputElement[]>([]);
+    const frameRequests = new Map<ShotDraft, AbortController>();
+    const frameUploads = ref(0);
+    function cancelFrameRequests() { for (const request of frameRequests.values()) request.abort(); }
+    onDeactivated(cancelFrameRequests);
+    watch(() => [...shots.value], next => {
+        for (const [shot, request] of frameRequests) if (!next.includes(shot)) request.abort();
+    });
     // ── 场景蓝图一键剧本（2026-08-23）：服务端起承转合四镜确定性派生 ──────────
     // 与「AI 生成脚本」互补：零 LLM 依赖、即时返回，台词取蓝图原文；生成会整体
     // 替换镜头草稿（用户主动点生成即明确意图，草稿未提交可随时撤销重生成）。
@@ -121,7 +127,7 @@ export function useShotWorkspace(props: {
         steps,
         linkLastFrame,
         shotReferences,
-        inputsBusy: computed(() => loadingRefAssets.value || firstFrameBusy.value),
+        inputsBusy: computed(() => loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0),
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,
@@ -162,7 +168,7 @@ export function useShotWorkspace(props: {
         if (retrying.value) return '正在重新提交失败镜头';
         if (cancelling.value) return '正在取消整批';
         if (concating.value) return '正在拼接成片';
-        if (loadingRefAssets.value || firstFrameBusy.value) return '正在准备参考图与首帧';
+        if (loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0) return '正在准备参考图与首帧';
         if (shots.value.some(shot => shot.seedText.trim() && (!Number.isSafeInteger(Number(shot.seedText)) || Number(shot.seedText) < 0 || Number(shot.seedText) > 0x7fffffff))) return '请检查镜头 Seed：需为 0–2147483647 的整数';
         if (!canSubmit.value)
             return `${shots.value.filter(shot => shot.prompt.trim().length < 8 || shot.prompt.trim().length > 4000).length} 个镜头描述需调整（8–4000 字）`;
@@ -260,32 +266,37 @@ export function useShotWorkspace(props: {
         const [item] = shots.value.splice(index, 1);
         shots.value.splice(target, 0, item);
     }
-    // 角色锚点：选择角色 → 自动注入身份描述，并自动装配标准 3 视角参考图（Ref2VA）。
-    watch(characterId, async (id, _previous, onCleanup) => {
-        let stale = false;
-        onCleanup(() => { stale = true; });
-        if (!id)
-            return;
-        await ensureCharacterReferencesLoaded(id).catch(() => undefined);
-        if (stale) return;
-        const stdProfile = getCharacterReferences(id);
-        if (stdProfile) {
-            identityCard.value = stdProfile.identityProse || '';
-            await autoLoadCharacterReferences(id);
-            if (stale) return;
-            shots.value.forEach((s) => {
-                if (!s.cast)
-                    s.cast = '1';
-            });
-            characterId.value = '';
-            return;
-        }
-        const character = popularCharacters.value.find((item) => item.id === id);
-        if (character?.identityProse) {
-            identityCard.value = character.identityProse;
-            characterId.value = '';
-        }
+    // Explicit character links win over restored drafts, but ordinary activation never resets edits.
+    const routeReady = ref(false), routeActive = ref(true);
+    let routeLoad: AbortController | null = null, consumedIntent = '';
+    const routeCharacter = () => typeof route.query.character === 'string' ? route.query.character.trim() : '';
+    const routeOutfit = () => typeof route.query.outfit === 'string' ? route.query.outfit.trim() : '';
+    watch([routeReady, routeActive, () => route.path, routeCharacter, routeOutfit], async () => {
+        if (!routeReady.value) return;
+        if (!routeActive.value || route.path !== '/video-studio') { if (routeLoad) consumedIntent = ''; routeLoad?.abort(); return; }
+        const id = routeCharacter(), outfit = routeOutfit(), intent = JSON.stringify([id, outfit]);
+        if (!id) { consumedIntent = ''; routeLoad?.abort(); return; }
+        if (intent === consumedIntent) return;
+        routeLoad?.abort();
+        const controller = new AbortController(); routeLoad = controller; consumedIntent = intent;
+        try {
+            await autoLoadCharacterReferences(id, 0, outfit || undefined, controller.signal);
+            if (controller.signal.aborted || !routeActive.value || route.path !== '/video-studio' || routeCharacter() !== id || routeOutfit() !== outfit) return;
+            const card = referenceCards.value[0];
+            if (card?.characterId === id && (!outfit || card.outfitId === outfit)) {
+                if (!getCharacterReferences(id)) {
+                    const character = popularCharacters.value.find(item => item.id === id);
+                    if (character?.identityProse) identityCard.value = character.identityProse;
+                }
+                shots.value.forEach(shot => { if (!shot.cast) shot.cast = '1'; });
+            }
+            await router.replace({ query: { ...route.query, character: undefined, outfit: undefined } });
+        } catch (error) {
+            if (!controller.signal.aborted && routeCharacter() === id && routeOutfit() === outfit) batchError.value = error instanceof Error ? error.message : '角色参考图载入失败，请重试';
+        } finally { if (routeLoad === controller) routeLoad = null; }
     });
+    onActivated(() => { routeActive.value = true; });
+    onDeactivated(() => { routeActive.value = false; if (routeLoad) consumedIntent = ''; routeLoad?.abort(); });
     // 场景蓝图 → 填入所有空镜头（用户已写的不覆盖），并顺带推断景别/镜头/运动。
     watch(sceneFillId, (id) => {
         if (!id)
@@ -312,38 +323,45 @@ export function useShotWorkspace(props: {
         frameInputs.value[index]?.click();
     }
     async function onFramePicked(index: number, event: Event) {
-        return withArtworkStaging(async () => {
-          const input = event.target as HTMLInputElement;
-          const file = input.files?.[0];
-          input.value = '';
-          if (!file || index >= shots.value.length)
-              return;
-          if (file.size > 20 * 1024 * 1024) {
-              batchError.value = '首帧图片需 ≤20MB';
-              return;
-          }
-          try {
-              const dataUrl = await readBlobAsDataURL(file);
-              const comma = dataUrl.indexOf(',');
-              if (comma < 0)
-                  throw new Error('图片编码失败');
-              const upload = await uploadVideoImage(dataUrl.slice(comma + 1));
-              const shot = shots.value[index];
-              if (shot.imageUrl)
-                  URL.revokeObjectURL(shot.imageUrl);
-              shot.imageName = upload.name;
-              shot.imageUrl = URL.createObjectURL(file);
-              // IndexedDB 耐久凭据：草稿恢复/失败重试都靠它（服务端受控名会被清理）。
-              shot.imageId = await artworkRepository.putImage(file).catch(() => shot.imageId || '');
-              batchError.value = '';
-          }
-          catch (error) {
-              batchError.value = error instanceof Error ? error.message : '首帧上传失败';
-          }
-      })
-      }
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0], shot = shots.value[index];
+        input.value = '';
+        if (!file || !shot) return;
+        if (file.size > 20 * 1024 * 1024) { batchError.value = '首帧图片需 ≤20MB'; return; }
+        frameRequests.get(shot)?.abort();
+        const controller = new AbortController();
+        frameRequests.set(shot, controller);
+        const previous = [shot.imageId, shot.imageName, shot.imageUrl];
+        const current = () => !controller.signal.aborted && frameRequests.get(shot) === controller
+            && shots.value.includes(shot) && [shot.imageId, shot.imageName, shot.imageUrl].every((value, i) => value === previous[i]);
+        frameUploads.value++;
+        try {
+            await withArtworkStaging(async () => {
+                if (!current()) return;
+                const dataUrl = await readBlobAsDataURL(file);
+                if (!current()) return;
+                const comma = dataUrl.indexOf(',');
+                if (comma < 0) throw new Error('图片编码失败');
+                const upload = await uploadVideoImage(dataUrl.slice(comma + 1), undefined, controller.signal);
+                if (!current()) return;
+                const imageId = await artworkRepository.putImage(file);
+                if (!current()) return;
+                if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl);
+                shot.imageName = upload.name;
+                shot.imageUrl = URL.createObjectURL(file);
+                shot.imageId = imageId;
+                batchError.value = '';
+            });
+        } catch (error) {
+            if (current()) batchError.value = error instanceof Error ? error.message : '首帧上传失败';
+        } finally {
+            if (frameRequests.get(shot) === controller) frameRequests.delete(shot);
+            frameUploads.value--;
+        }
+    }
     function clearFrame(index: number) {
         const shot = shots.value[index];
+        if (shot) frameRequests.get(shot)?.abort();
         if (shot?.imageUrl)
             URL.revokeObjectURL(shot.imageUrl);
         if (shot) {
@@ -428,14 +446,13 @@ export function useShotWorkspace(props: {
             await restoreShotsDraft();
             await runImportFromDrawing();
             importScenarioActs();
+            routeReady.value = true;
             await reconnectShotsBatch();
         })();
-        const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : '';
-        if (charParam) {
-            characterId.value = charParam;
-        }
     });
     onBeforeUnmount(() => {
+        cancelFrameRequests();
+        routeLoad?.abort(); routeActive.value = false;
         // 批量轮询与 disposed 标记归 useShotBatchMachine；这里只释镜头首帧 blob URL。
         shots.value.forEach((shot) => {
             if (shot.imageUrl)

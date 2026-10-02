@@ -79,24 +79,27 @@ fn is_finite_number(v: &serde_json::Value) -> Option<i64> {
     v.as_f64().filter(|f| f.is_finite()).map(|f| f.round() as i64)
 }
 
-pub fn load_window_bounds(file_path: &Path, fallback: Option<&WindowBounds>) -> WindowBounds {
+pub fn load_window_bounds(file_path: &Path, fallback: Option<&WindowBounds>) -> (WindowBounds, Option<WindowBounds>) {
     let fallback = fallback.unwrap_or(&DEFAULT_BOUNDS);
     let Ok(raw) = fs::read_to_string(file_path) else {
-        return fallback.clone();
+        return (fallback.clone(), None);
     };
     let Ok(value) = serde_json::from_str::<serde_json::Value>(&raw) else {
-        return fallback.clone();
+        return (fallback.clone(), None);
     };
-    let Some(obj) = value.as_object() else { return fallback.clone() };
+    let Some(obj) = value.as_object() else { return (fallback.clone(), None) };
     let (Some(x), Some(y), Some(width), Some(height)) = (
         obj.get("x").and_then(is_finite_number),
         obj.get("y").and_then(is_finite_number),
         obj.get("width").and_then(is_finite_number),
         obj.get("height").and_then(is_finite_number),
     ) else {
-        return fallback.clone();
+        return (fallback.clone(), None);
     };
-    WindowBounds { x, y, width, height }
+    let physical = obj.get("physicalBounds").cloned()
+        .and_then(|value| serde_json::from_value::<WindowBounds>(value).ok())
+        .filter(valid_saved_bounds);
+    (WindowBounds { x, y, width, height }, physical)
 }
 
 pub fn clamp_window_bounds(
@@ -134,14 +137,15 @@ fn try_save_json_atomic(file_path: &Path, value: &serde_json::Value) -> bool {
     false
 }
 
-pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
+fn valid_saved_bounds(bounds: &WindowBounds) -> bool {
+    bounds.width >= 40 && bounds.height >= 40 && bounds.width <= 100_000 && bounds.height <= 100_000
+        && (-10_000..=100_000).contains(&bounds.x) && (-10_000..=100_000).contains(&bounds.y)
+}
+
+pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds, physical: Option<&WindowBounds>) {
     // 拒绝异常状态（2026-08-15 实机：远程会话中窗口被最小化/虚拟屏切换后
     // 保存了 -18286 坐标与 158x26 尺寸，下次启动窗口在屏幕外不可见）。
-    if bounds.width < 40 || bounds.height < 40
-        || bounds.x < -10_000 || bounds.y < -10_000
-        || bounds.x > 100_000 || bounds.y > 100_000 {
-        return;
-    }
+    if !valid_saved_bounds(bounds) { return; }
     let _guard = WINDOW_STATE_WRITE.lock().unwrap_or_else(|error| error.into_inner());
     let mut value = window_state_json(file_path);
     let previous = value.clone();
@@ -149,6 +153,10 @@ pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
     value["y"] = serde_json::json!(bounds.y);
     value["width"] = serde_json::json!(bounds.width);
     value["height"] = serde_json::json!(bounds.height);
+    // Older readers ignore this optional field; new saves never retain a hint for old coordinates.
+    if let Some(physical) = physical.filter(|bounds| valid_saved_bounds(bounds)) {
+        value["physicalBounds"] = serde_json::json!(physical);
+    } else { value.as_object_mut().unwrap().remove("physicalBounds"); }
     if value != previous { save_json_atomic(file_path, &value); }
 }
 
@@ -233,16 +241,35 @@ mod tests {
         let tmp = std::env::temp_dir().join(format!("aics-window-presentation-{}", std::process::id()));
         let file = tmp.join("window.json");
         let normal = WindowBounds { x: 120, y: 72, width: 1100, height: 800 };
-        save_window_bounds(&file, &normal);
+        save_window_bounds(&file, &normal, None);
         assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
         save_window_presentation(&file, Some(1.5), Some(true));
-        assert_eq!(load_window_bounds(&file, None).width, normal.width);
+        assert_eq!(load_window_bounds(&file, None).0.width, normal.width);
         assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.5, maximized: true });
-        save_window_bounds(&file, &WindowBounds { x: 200, ..normal });
+        save_window_bounds(&file, &WindowBounds { x: 200, ..normal }, None);
         assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.5, maximized: true });
         save_window_presentation(&file, Some(1.0), Some(false));
-        assert_eq!(load_window_bounds(&file, None).x, 200);
+        assert_eq!(load_window_bounds(&file, None).0.x, 200);
         assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
+        let _ = fs::remove_dir_all(tmp);
+    }
+
+    #[test]
+    fn optional_physical_hint_round_trips_with_zoom_and_rejects_invalid_metadata() {
+        let tmp = std::env::temp_dir().join(format!("aics-window-physical-{}", std::process::id()));
+        let file = tmp.join("window.json");
+        let logical = WindowBounds { x: 2000, y: 100, width: 540, height: 760 };
+        let physical = WindowBounds { x: 4000, y: 200, width: 1080, height: 1520 };
+        save_window_bounds(&file, &logical, Some(&physical));
+        save_window_presentation(&file, Some(1.25), Some(true));
+        assert_eq!(load_window_bounds(&file, None), (logical.clone(), Some(physical.clone())));
+        save_window_bounds(&file, &logical, None);
+        assert_eq!(load_window_bounds(&file, None), (logical.clone(), None));
+        assert_eq!(load_window_presentation(&file).zoom, 1.25);
+        let mut value = window_state_json(&file);
+        value["physicalBounds"] = serde_json::json!({ "x": 4000, "y": 200, "width": 0, "height": 1520 });
+        save_json_atomic(&file, &value);
+        assert_eq!(load_window_bounds(&file, None), (logical, None));
         let _ = fs::remove_dir_all(tmp);
     }
 
@@ -310,8 +337,8 @@ mod tests {
         let tmp = std::env::temp_dir().join(format!("aics-ws-test-{}", std::process::id()));
         let file = tmp.join("window.json");
         let bounds = WindowBounds { x: 120, y: 80, width: 540, height: 760 };
-        save_window_bounds(&file, &bounds);
-        let loaded = load_window_bounds(&file, None);
+        save_window_bounds(&file, &bounds, None);
+        let loaded = load_window_bounds(&file, None).0;
         assert_eq!(loaded.x, 120);
         assert_eq!(loaded.height, 760);
         let _ = std::fs::remove_dir_all(&tmp);
@@ -348,7 +375,7 @@ mod tests {
         let file = tmp.join("window.json");
         fs::create_dir_all(&tmp).unwrap();
         fs::write(&file, "{corrupt").unwrap();
-        let loaded = load_window_bounds(&file, None);
+        let loaded = load_window_bounds(&file, None).0;
         assert_eq!(loaded.x, DEFAULT_BOUNDS.x);
         let _ = std::fs::remove_dir_all(&tmp);
     }
@@ -360,12 +387,12 @@ mod tests {
         let file = tmp.join("window.json");
         fs::create_dir_all(&tmp).unwrap();
         let bad = WindowBounds { x: -18286, y: -18286, width: 158, height: 26 };
-        save_window_bounds(&file, &bad);
+        save_window_bounds(&file, &bad, None);
         assert!(!file.exists(), "offscreen/minimized bounds must not be persisted");
         let ok = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
-        save_window_bounds(&file, &ok);
+        save_window_bounds(&file, &ok, None);
         assert!(file.exists());
-        let loaded = load_window_bounds(&file, None);
+        let loaded = load_window_bounds(&file, None).0;
         assert_eq!(loaded.x, 24);
         assert_eq!(loaded.width, 540);
         let _ = std::fs::remove_dir_all(&tmp);

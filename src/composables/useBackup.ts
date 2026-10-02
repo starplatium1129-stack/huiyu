@@ -8,7 +8,7 @@ import { restoreBackupData } from '@/storage/backupRestore'
 import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
 import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
-import { ref, onScopeDispose } from 'vue'
+import { ref, getCurrentInstance, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, readWebBackupImage, deleteWebBackupImages } from '../platform/web/profileBackupSource'
 import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRestoreCandidate, workspaceBackupActive, workspaceStorageHealth, collectWorkspaceGarbage, type WorkspaceBackupReceipt } from '../platform/desktop/backupActions'
@@ -76,6 +76,18 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const imageExportProgress = ref<BackupExportProgress | null>(null)
   let imageExportController: AbortController | null = null
   let disposed = false
+  let viewActive = true
+  let restoreConfirmation: AbortController | null = null
+  function invalidateSelection() {
+    fileRequest++
+    restoreConfirmation?.abort()
+    restoreConfirmation = null
+    pending.value = null; pendingWorkspace.value = null; pendingName.value = ''
+  }
+  if (getCurrentInstance()) {
+    onActivated(() => { viewActive = true })
+    onDeactivated(() => { viewActive = false; cleanupController?.abort(); invalidateSelection() })
+  }
   const imageDownloadUrls = new Map<string, number>()
   function releaseImageUrl(url: string) {
     window.clearTimeout(imageDownloadUrls.get(url))
@@ -85,13 +97,15 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   function cancelExport() { exportController?.abort(); imageExportController?.abort() }
   onScopeDispose(() => {
     disposed = true
+    invalidateSelection()
     cleanupController?.abort()
+    exportController?.abort()
     imageExportController?.abort()
     for (const url of imageDownloadUrls.keys()) releaseImageUrl(url)
   })
 
   async function exportBackup(): Promise<void> {
-    if (busy.value) return
+    if (busy.value || disposed) return
     busy.value = true
     onFlash('正在整理备份…')
     try {
@@ -99,6 +113,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       exportController = controller
       if (desktopActive.value) {
         const receipt = await createWorkspaceBackup(controller.signal)
+        // A native request can finish after its owner or cancel action stopped waiting.
+        controller.signal.throwIfAborted()
         downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `huiyu-backup-${receipt.backupId}.json`)
         lastBackupAt.value = Date.now()
         localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
@@ -127,6 +143,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(blob.size / 1024))} KB`
         + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
+      if (disposed) return
       if (exportController?.signal.aborted) onFlash('已取消备份，未生成文件，原有作品未改动')
       else {
         console.error('backup export failed', e)
@@ -227,8 +244,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   }
 
   async function loadFile(file: File): Promise<BackupSummary | null> {
-    if (!file || busy.value) return null
-    const request = ++fileRequest
+    if (!file || busy.value || disposed || !viewActive) return null
+    invalidateSelection()
+    const request = fileRequest
     pending.value = null
     pendingWorkspace.value = null
     pendingName.value = ''
@@ -258,47 +276,58 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  function discard() { if (busy.value) return; fileRequest++; pending.value = null; pendingWorkspace.value = null; pendingName.value = '' }
+  function discard() { if (!busy.value) invalidateSelection() }
 
-  async function restore(mode: 'replace' | 'merge', confirmed = false): Promise<boolean> {
+  async function restore(mode: 'replace' | 'merge'): Promise<boolean> {
+    if (busy.value || disposed || !viewActive || restoreConfirmation) return false
+    const selected = pending.value
+    const workspace = pendingWorkspace.value
+    const request = fileRequest
+    const current = () => !disposed && viewActive && request === fileRequest
+      && pending.value === selected && pendingWorkspace.value === workspace
     if (desktopActive.value) {
-      if (!pendingWorkspace.value || busy.value) return false
+      if (!workspace) return false
       busy.value = true
       try {
-        const candidate = await createWorkspaceRestoreCandidate(pendingWorkspace.value)
-        pendingWorkspace.value = null; pendingName.value = ''
-        onFlash(`恢复副本已验证：${candidate.candidateId}。当前工作区保持不变，可在维护切换时选择该副本。`)
+        const candidate = await createWorkspaceRestoreCandidate(workspace)
+        if (current()) {
+          invalidateSelection()
+          onFlash(`恢复副本已验证：${candidate.candidateId}。当前工作区保持不变，可在维护切换时选择该副本。`)
+        }
         return true
-      } catch (error) { onFlash('恢复校验失败：' + errorMessage(error, '备份不完整')); return false }
+      } catch (error) { if (current()) onFlash('恢复校验失败：' + errorMessage(error, '备份不完整')); return false }
       finally { busy.value = false }
     }
-    if (!pending.value || busy.value) return false
+    if (!selected) return false
     const replace = mode === 'replace'
-    if (replace && !confirmed && !(await confirmAction({
-      title: '覆盖恢复会替换当前项目与历史记录',
-      message: '原图保留；确认恢复后可通过存储清理释放空间。',
-      confirmLabel: '继续覆盖恢复',
-      danger: true,
-    }))) {
-      return false
+    if (replace) {
+      const confirmation = new AbortController()
+      restoreConfirmation = confirmation
+      try {
+        const approved = await confirmAction({
+          title: '覆盖本地数据？',
+          message: `将使用「${pendingName.value}」替换当前历史和项目。原图会保留；建议先导出备份，或改用合并恢复。`,
+          confirmLabel: '覆盖', danger: true, signal: confirmation.signal,
+        })
+        if (!approved || confirmation.signal.aborted || !current() || busy.value) return false
+      } finally { if (restoreConfirmation === confirmation) restoreConfirmation = null }
     }
     busy.value = true
     onFlash(replace ? '正在覆盖恢复…' : '正在合并恢复…')
     try {
-      await restoreBackupData(pending.value, replace)
-
-      pending.value = null
-      pendingName.value = ''
-      onFlash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…')
+      // Once accepted, this exact snapshot completes even if its preview closes.
+      await restoreBackupData(selected, replace)
+      if (current()) {
+        invalidateSelection()
+        onFlash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…')
+      }
       setTimeout(() => window.location.reload(), 700)
       return true
     } catch (e) {
       console.error('backup restore failed', e)
-      onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
+      if (current()) onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
       return false
-    } finally {
-      busy.value = false
-    }
+    } finally { busy.value = false }
   }
 
   /** 存储体检：历史条数、图片体积、配额占用 */
@@ -336,25 +365,27 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
    * deleting. Other tabs' session-only drafts cannot be safely guessed at.
    */
   async function cleanOrphanImages(): Promise<number> {
-    if (busy.value || disposed) return 0
+    if (busy.value || disposed || !viewActive) return 0
     busy.value = true
     const controller = new AbortController()
     cleanupController = controller
     try {
       if (desktopActive.value) {
         const removed = await collectWorkspaceGarbage()
-        onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
+        if (!disposed && viewActive && !controller.signal.aborted) onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
         return removed
       }
       const snapshot = await readCleanupState()
+      controller.signal.throwIfAborted()
       const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
       if (!(await confirmAction({
         title: `清理 ${candidates.size} 张未引用图片`,
         message: '请先备份并保存草稿，完成其他窗口的生成与保存操作。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。',
         confirmLabel: '继续清理',
-        danger: true,
+        danger: true, signal: controller.signal,
       }))) return 0
+      controller.signal.throwIfAborted()
       const removed = await withArtworkCleanup(async () => {
         const current = await readCleanupState()
         controller.signal.throwIfAborted()
@@ -363,10 +394,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         if (ids.length) await deleteWebBackupImages(ids)
         return ids.length
       }, controller.signal)
-      onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
+      if (!disposed && viewActive && !controller.signal.aborted) onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
       return removed
     } catch (e) {
-      onFlash('清理失败：' + errorMessage(e, '请重试'))
+      if (!disposed && viewActive && !controller.signal.aborted) onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
     } finally {
       cleanupController = null

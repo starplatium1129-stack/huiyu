@@ -1,6 +1,6 @@
-import { computed, getCurrentInstance, onUnmounted, ref, toRaw } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
@@ -9,7 +9,6 @@ import {
   animaRequestPayload,
   closestSupportedSize,
   jobPath,
-  type AnimaPublicJob,
   type AnimaRequest,
   type AnimaSessionOptions,
   type AnimaStatusResponse,
@@ -39,14 +38,30 @@ const INITIAL_STATE: AnimaGenerationState = {
 export function useAnimaSession(options: AnimaSessionOptions) {
   const client = options.client ?? apiClient
   const state = ref<AnimaGenerationState>({ ...INITIAL_STATE })
+  let settingsRevision = 0, reconcilingSettings = false
+  const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
+    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'teaCache', 'teaCacheThresh'] as const
+  // Observe direct v-model writes as well as patchState, excluding only our
+  // synchronous backend reconciliation, never the time spent awaiting status.
+  const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
+    if (!reconcilingSettings) settingsRevision++
+  }, { flush: 'sync' })
+  const getSettingsRevision = () => settingsRevision
 
   let statusTimer: ReturnType<typeof setInterval> | null = null
   let requestSerial = 0
   let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
+  let statusRefresh: Promise<boolean> | null = null
+  let statusEpoch = 0, refreshSettingsRevision = 0
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
   let disposed = false
+  let directTransport: typeof import('./animaJobPolling') | null = null
+  async function loadDirectTransport() {
+    // Cache only success: a missing deployment chunk must be retryable.
+    return directTransport ??= await import('./animaJobPolling')
+  }
   const completedSubmissions = new WeakMap<Blob, AnimaSubmission>()
 
   /**
@@ -121,16 +136,26 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 拉取 ComfyUI / 网关状态并按当前角色与引擎族收敛 model / lora 白名单。
    * 成功响应即使 offline 也采用（清空列表）；只有请求失败才标记离线。
    */
-  async function refreshBackend(): Promise<void> {
+  // Awaiters follow a superseding refresh; false means the view cancelled discovery.
+  function refreshBackend(): Promise<boolean> {
+    if (disposed) return Promise.resolve(false)
+    // Superseding discovery still belongs to the pending read's edit baseline.
+    if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
+    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision)
+    return statusRefresh
+  }
+
+  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number): Promise<boolean> {
+    const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
       const data = await client.request<AnimaStatusResponse>('/api/creative/status', {
         cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
         validate: value => value.ok === true,
       })
-      if (statusRequest !== controller || controller.signal.aborted) return
+      if (statusRequest !== controller || controller.signal.aborted) return latest()
       const models = Array.isArray(data.models) ? data.models : []
       const loras = (Array.isArray(data.loras) ? data.loras : [])
         .filter(lora => lora.character === options.getCharacter())
@@ -169,29 +194,35 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        * 现在：首次拉取 / 底模真的变了（用户换的，或原底模从后端消失导致的回落）
        * 才套用默认值，其余心跳只更新在线状态与候选列表。
        */
-      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent
+      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
       const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
         ? state.value.styleLoraId
         : ''
-      patchState({
-        online,
-        checkMsg: online
-          ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
-          : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
-        models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
-        family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-        steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
-        cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
-        sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
-        scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
-      })
-      if (shouldApplyDefaults) defaultsAppliedFor = modelIdCurrent
-      syncCharacter(options.getCharacter())
+      reconcilingSettings = true
+      try {
+        patchState({
+          online,
+          checkMsg: online
+            ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
+            : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
+          models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
+          family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
+          steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
+          cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
+          sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
+          scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
+        })
+        // An edit during discovery owns these defaults for this model, including later polls.
+        defaultsAppliedFor = modelIdCurrent
+        syncCharacter(options.getCharacter())
+      } finally { reconcilingSettings = false }
+      return true
     } catch (error) {
-      if (statusRequest !== controller || controller.signal.aborted) return
-      if (error instanceof ApiClientError && error.kind === 'aborted') return
+      if (statusRequest !== controller || controller.signal.aborted) return latest()
+      if (error instanceof ApiClientError && error.kind === 'aborted') return false
       patchState({ online: false, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      return true
     } finally {
       if (statusRequest === controller) statusRequest = null
     }
@@ -209,44 +240,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   /** Hidden/irrelevant workspaces stop health polling and discard its stale in-flight read. */
   function pauseStatusPolling() {
+    statusEpoch++
+    statusRefresh = null
     stopStatusPolling()
     statusRequest?.abort()
     statusRequest = null
   }
-
-  function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'anima' | 'krea2'): AnimaJobMetadata {
-    const supplied = job.metadata
-    if (supplied && supplied.id !== job.id) throw new Error('成片元数据与当前任务编号不一致，请核对任务')
-    const metadata = supplied
-      ? supplied
-      : {
-          engine: family,
-          id: job.id,
-          prompt: request.prompt,
-          negative: request.negative,
-          profileId: request.profileId,
-          modelId: request.modelId,
-          loraId: request.loraId,
-          loraStrength: request.loraStrength,
-          styleLoraId: request.styleLoraId ?? null,
-          width: request.width,
-          height: request.height,
-          steps: request.steps,
-          cfg: request.cfg,
-          sampler: '',
-          scheduler: '',
-          seed: job.seed,
-          character: request.character,
-          preview: false,
-          hiresFix: Boolean(request.hiresFix),
-          hiresScale: request.hiresScale,
-          hiresDenoise: request.hiresDenoise,
-          createdAt: Date.now(),
-          resultUrl: job.resultUrl,
-        }
-    return Object.freeze({ ...JSON.parse(JSON.stringify(metadata)), resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
-  }
-
 
   function clearResult() {
     const previous = state.value.result
@@ -335,37 +334,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
         return
       }
-      const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
-        method: 'POST',
-        body: animaRequestPayload(request),
-        signal: controller.signal,
-        timeoutMs: 30_000,
-      })
-      if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-      if (controller.signal.aborted || serial !== requestSerial) {
-        // A cancel can race the POST response. Once the server has accepted a
-        // job, delete that late job instead of leaving an unowned GPU task.
-        void client.request(jobPath(family, data.job.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
-        if (serial === requestSerial && controller.signal.aborted) {
-          patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
-        }
-        return
-      }
-      const metadata = metadataFromJob(data.job, request, family)
-      patchState({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', job: metadata })
-      const observation = { client, id: data.job.id, family, signal: controller.signal, deadline: Date.now() + 10 * 60 * 1000,
-        current: () => !controller.signal.aborted && serial === requestSerial, state, context: pendingContext,
-        patch: patchState, metadata: (job: AnimaPublicJob) => metadataFromJob(job, request, family), discardStashed: discardStashedResult, onResult }
-      const polling = await import('./animaJobPolling').catch(async error => {
-        if (observation.current()) {
-          // POST already accepted: an unavailable observer must cancel that job,
-          // retaining its identity and busy state when cancellation is unconfirmed.
-          await cancel()
-          if (observation.current()) patchState({ statusText: '进度工具加载失败，取消尚未确认，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
-        }
-        return null
-      })
-      if (polling && observation.current()) await polling.pollAnimaJob(observation)
+      // Load the complete direct transport before creating an upstream job.
+      const transport = await loadDirectTransport()
+      const current = () => !controller.signal.aborted && serial === requestSerial
+      if (!current()) return
+      await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
+        state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
     } catch (error) {
       if (serial !== requestSerial) return
       if (durableAttempt) {
@@ -414,30 +388,23 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       && ['running', 'cancelling'].includes(state.value.phase)
     patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
     try {
-      const data = await client.request<{ job?: AnimaPublicJob }>(jobPath(family, job.id), {
-        method: 'DELETE', timeoutMs: 15_000,
-      })
+      const transport = directTransport ?? await loadDirectTransport()
       if (!isCurrent()) return
-      if (data.job?.status === 'cancelled') {
-        requestSerial += 1
-        jobRequest?.abort()
-        patchState({ phase: 'cancelled', statusText: '任务已取消' })
-      }
+      await transport.cancelDirectAnima({ client, id: job.id, family, current: isCurrent, patch: patchState,
+        cancelled: () => { requestSerial += 1; jobRequest?.abort() } })
     } catch (error) {
-      if (!isCurrent()) return
-      patchState({ statusText: '取消尚未确认，正在继续查询任务', errorMsg: error instanceof Error ? error.message : '取消请求失败' })
+      if (isCurrent()) patchState({ statusText: '取消工具加载失败，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
     }
   }
 
   /** 离开导演台：停止轮询、取消在途任务、释放结果 URL（防止 GPU 任务悬挂与 blob 泄漏） */
   function dispose() {
     disposed = true
+    stopSettingsWatch()
     requestSerial += 1
-    statusRequest?.abort()
-    statusRequest = null
+    pauseStatusPolling()
     jobRequest?.abort()
     jobRequest = null
-    stopStatusPolling()
     const activeJob = state.value.job
     if (!durableAttempt && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
       void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
@@ -453,6 +420,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   return {
     state,
+    getSettingsRevision,
     modelId,
     patchState,
     restoreSettings,

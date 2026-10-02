@@ -238,6 +238,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
       schedulePoll()
       return true
     } catch (error) {
+      if (disposed || serial !== reconnectSerial || operation !== operationSerial) return true
       if (error instanceof ApiClientError && (error.status === 404 || error.status === 410)) return false
       batchError.value = error instanceof Error ? error.message : '批次暂时无法读取，请稍后重试'
       return true

@@ -21,7 +21,7 @@
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
           <StudioTooltip content="勾选后可批量加入分镜">
             <label class="history-pick tw:absolute tw:top-[6px] tw:left-[6px] tw:inline-flex tw:items-center tw:justify-center tw:cursor-pointer">
-              <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input tw:absolute tw:w-[1px] tw:h-[1px] tw:pointer-events-none" />
+              <input v-model="selectedSet" type="checkbox" :value="item.id" :aria-label="'选择作品：' + (item.sceneTitle || item.story || item.id)" class="history-pick-input tw:absolute tw:w-[1px] tw:h-[1px] tw:pointer-events-none" />
               <span class="history-pick-box tw:grid tw:w-[20px] tw:h-[20px] tw:rounded-sm" aria-hidden="true">
                 <ArchiveIcon name="success" class="history-pick-check" />
               </span>
@@ -90,7 +90,8 @@ const selectedEntries = computed(() =>
   props.history.filter(entry => selectedSet.value.has(entry.id)))
 
 const thumbs = reactive<Record<string | number, string>>({})
-const objectUrls = new Map<string | number, string>()
+const thumbnailRequests = new Map<string | number, { imageId: string }>()
+let disposed = false
 const items = computed(() => props.history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 12))
 
 function engineSummary(item: ArtworkRecord): string {
@@ -103,25 +104,44 @@ function engineSummary(item: ArtworkRecord): string {
   return `${engineName} · ${charLabel}`
 }
 
-async function ensureThumb(item: ArtworkRecord) {
-  if (!item.image_id || thumbs[item.id] || objectUrls.has(item.id)) return
+function releaseThumb(id: string | number) {
+  if (thumbs[id]) URL.revokeObjectURL(thumbs[id])
+  delete thumbs[id]
+  thumbnailRequests.delete(id)
+}
+
+async function ensureThumb(id: string | number, request: { imageId: string }) {
   try {
-    const blob = await artworkRepository.getImage(item.image_id)
-    if (!blob) return
-    const url = URL.createObjectURL(blob)
-    objectUrls.set(item.id, url)
-    thumbs[item.id] = url
+    const blob = await artworkRepository.getImage(request.imageId)
+    if (disposed || thumbnailRequests.get(id) !== request) return
+    if (blob) thumbs[id] = URL.createObjectURL(blob)
+    else thumbnailRequests.delete(id)
   } catch (e) {
-    console.warn('history thumb load failed', e)
+    if (!disposed && thumbnailRequests.get(id) === request) {
+      thumbnailRequests.delete(id)
+      console.warn('history thumb load failed', e)
+    }
   }
 }
 
-watch(items, next => { next.forEach(item => ensureThumb(item)) }, { immediate: true })
+watch(() => items.value.map(item => [item.id, item.image_id] as const), next => {
+  const visible = new Map(next)
+  for (const [id, request] of thumbnailRequests) {
+    if (visible.get(id) !== request.imageId) releaseThumb(id)
+  }
+  for (const [id, imageId] of next) {
+    if (!imageId || thumbnailRequests.has(id)) continue
+    const request = { imageId }
+    thumbnailRequests.set(id, request)
+    void ensureThumb(id, request)
+  }
+}, { immediate: true })
 
 onBeforeUnmount(() => {
-  objectUrls.forEach(url => URL.revokeObjectURL(url))
-  objectUrls.clear()
+  disposed = true
+  for (const id of thumbnailRequests.keys()) releaseThumb(id)
 })
+
 </script>
 
 <style scoped>

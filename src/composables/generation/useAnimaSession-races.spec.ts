@@ -127,11 +127,13 @@ describe('useAnimaSession · stale asynchronous work', () => {
   it('cleans up a late accepted job through its original engine after a cross-engine retry', async () => {
     const { session, calls, generate } = fixture()
     const old = generate()
+    await vi.dynamicImportSettled()
     const post = calls[0]
     await session.cancel()
     assert.equal(post.options?.signal?.aborted, true)
     session.patchState({ family: 'krea2' })
     const retry = generate()
+    await vi.dynamicImportSettled()
     const newPost = calls[1]
     post.resolve(accepted('late-anima'))
     await old
@@ -146,6 +148,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     const { session, calls, generate } = fixture()
     session.patchState({ phase: 'failed', job: { id: 'previous-job' } as AnimaJobMetadata, currentNode: 'old-node' })
     const pending = generate()
+    await vi.dynamicImportSettled()
     assert.equal(session.state.value.job, null)
     assert.equal(session.state.value.currentNode, null)
     await session.cancel()
@@ -163,10 +166,12 @@ describe('useAnimaSession · stale asynchronous work', () => {
       const { session, calls, generate } = fixture()
       session.patchState({ phase: 'running', job: { id: 'old-job' } as AnimaJobMetadata })
       const cancellation = session.cancel()
+    await vi.dynamicImportSettled()
       const deletion = calls[0]
       // The parallel status poll can confirm cancellation before DELETE settles.
       session.patchState({ phase: 'cancelled' })
       const retry = generate()
+    await vi.dynamicImportSettled()
       const post = calls[1]
       if (outcome === 'success') deletion.resolve(accepted('old-job', 'cancelled'))
       else deletion.reject(new Error('old cancellation failed'))
@@ -183,6 +188,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     const { session, calls } = fixture()
     session.patchState({ phase: 'running', job: { id: 'finished-job' } as AnimaJobMetadata })
     const cancellation = session.cancel()
+    await vi.dynamicImportSettled()
     session.patchState({ phase: 'succeeded', statusText: '生成完成' })
     calls[0].resolve(accepted('finished-job', 'cancelled'))
     await cancellation
@@ -194,6 +200,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     vi.useFakeTimers()
     const { session, calls, generate } = fixture()
     const pending = generate()
+    await vi.dynamicImportSettled()
     calls[0].resolve(accepted('running-job'))
     await flush()
     session.patchState({ family: 'krea2' })
@@ -203,6 +210,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     const progress = calls[1]
     assert.equal(progress.url, '/api/anima/jobs/running-job')
     const cancellation = session.cancel()
+    await vi.dynamicImportSettled()
     assert.equal(calls[2].url, '/api/anima/jobs/running-job')
     assert.equal(calls[2].options?.method, 'DELETE')
     calls[2].resolve(accepted('running-job', 'cancelled'))
@@ -224,6 +232,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     }
     session.patchState({ phase: 'succeeded', result: previous, job: previous.metadata })
     const pending = generate()
+    await vi.dynamicImportSettled()
     await session.cancel()
     assert.equal(session.restoreStashedResult(), true)
     calls[0].resolve(accepted('late-job'))
@@ -249,6 +258,22 @@ describe('useAnimaSession · stale asynchronous work', () => {
     })
   }
 
+  it.each(['success', 'failure'])('waits for replacement discovery when the superseded request ends with %s first', async outcome => {
+    const { session, calls } = fixture()
+    let settled = false
+    const old = session.refreshBackend().then(checked => { settled = true; return checked })
+    const current = session.refreshBackend()
+    expect(calls[0].options?.signal?.aborted).toBe(true)
+    if (outcome === 'success') calls[0].resolve({ ok: true, online: false, models: [] })
+    else calls[0].reject(new Error('superseded request'))
+    await flush()
+    expect(settled).toBe(false)
+    calls[1].resolve({ ok: true, online: true, models: [{ id: 'replacement', family: 'anima', available: true }] })
+    expect(await current).toBe(true)
+    expect(await old).toBe(true)
+    expect(session.state.value.modelId).toBe('replacement')
+  })
+
   it('discards a backend response after status polling is paused', async () => {
     const { session, calls } = fixture()
     session.patchState({ phase: 'running' })
@@ -257,7 +282,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     assert.equal(calls[0].options?.signal?.aborted, true)
     const before = { ...session.state.value }
     calls[0].resolve({ ok: true, online: false, models: [] })
-    await current
+    expect(await current).toBe(false)
     assert.deepEqual(session.state.value, before)
   })
 
@@ -265,6 +290,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     vi.useFakeTimers()
     const { session, calls, generate } = fixture()
     const pending = generate()
+    await vi.dynamicImportSettled()
     if (phase === 'running') { calls[0].resolve(accepted('disposed-job', 'running')); await flush() }
     session.startStatusPolling(50)
     session.dispose()

@@ -5,13 +5,14 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const mocks = vi.hoisted(() => ({
-  listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
+  confirm: vi.fn(), softDeleteArtworks: vi.fn(), listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
   route: { path: '/gallery', query: {} }, replace: vi.fn(),
 }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
-  listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
+  softDeleteArtworks: mocks.softDeleteArtworks, listTrash: mocks.listTrash, restoreArtwork: mocks.restoreArtwork, getImage: mocks.getImage, getThumbnail: mocks.getThumbnail, setThumbnail: mocks.setThumbnail,
   readLibrarySnapshot: mocks.snapshot, purgeExpiredTrash: vi.fn(async () => ({ purged: 0 })),
 } }))
+vi.mock('@/composables/useConfirm', () => ({ confirmAction: mocks.confirm }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, scenes: [], loras: [], popularCharacters: [] }) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => {} }))
@@ -428,4 +429,103 @@ it('loads trash exactly once on opening and on an active-trash KeepAlive return'
   env.gallery.toggleTrashMode()
   await flushPromises()
   expect(mocks.listTrash).toHaveBeenCalledTimes(3)
+})
+
+
+it('invalidates a bulk-delete approval when the gallery leaves and returns', async () => {
+  let resolve!: (approved: boolean) => void
+  mocks.confirm.mockReturnValueOnce(new Promise<boolean>(done => { resolve = done }))
+  const env = await setup()
+  env.gallery.selectedIds.value = new Set([1])
+  const pending = env.gallery.bulkDelete()
+  await env.hide()
+  await env.show()
+  resolve(true)
+  await pending
+  expect(mocks.softDeleteArtworks).not.toHaveBeenCalled()
+  expect(env.gallery.history.value.map(item => item.id)).toContain(1)
+  expect(env.gallery.bulkDeleting.value).toBe(false)
+})
+
+
+it('cancels obsolete in-flight originals so a newly selected album does not wait for their downloads', async () => {
+  const history = Array.from({ length: 8 }, (_, index) => record(index + 1))
+  history[0].prompt = 'new-album-target'
+  mocks.snapshot.mockResolvedValue({ history, projects: [] })
+  const reads: Array<{ id: string; signal: AbortSignal; resolve(blob: Blob): void }> = []
+  mocks.getImage.mockImplementation((id: string, signal: AbortSignal) => new Promise<Blob>((resolve, reject) => {
+    reads.push({ id, signal, resolve })
+    signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+  }))
+  const env = await setup()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  env.gallery.searchQuery.value = 'new-album-target'
+  await flushPromises()
+  expect(reads.slice(0, 4).every(read => read.signal.aborted)).toBe(true)
+  expect(reads.map(read => read.id)).toEqual(['image-8', 'image-7', 'image-6', 'image-5', 'image-1'])
+  reads[4].resolve(new Blob(['new target']))
+  await flushPromises()
+  expect(Object.keys(env.gallery.cardUrls)).toEqual(['1'])
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+})
+
+it.each(['album overview', 'trash'] as const)('stops hidden wall reads in %s and rejects late originals or fallbacks', async surface => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 6 }, (_, index) => ({ ...record(index + 1), image_url: '/old-fallback.png' })), projects: [] })
+  const reads: Array<{ signal: AbortSignal; resolve(blob: Blob): void }> = []
+  mocks.getImage.mockImplementation((_id: string, signal: AbortSignal) => new Promise<Blob>(resolve => { reads.push({ signal, resolve }) }))
+  const env = await setup()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  if (surface === 'album overview') env.gallery.collectionPreviewItems.value = []
+  else env.gallery.toggleTrashMode()
+  await flushPromises()
+  expect(reads.every(read => read.signal.aborted)).toBe(true)
+  reads.forEach(read => read.resolve(new Blob(['ignored late image'])))
+  await flushPromises()
+  await env.intersect()
+  expect(reads).toHaveLength(4)
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+  expect(env.gallery.cardUrls).toEqual({})
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+  mocks.getImage.mockResolvedValue(new Blob(['visible again']))
+  if (surface === 'album overview') env.gallery.collectionPreviewItems.value = null
+  else env.gallery.toggleTrashMode()
+  await flushPromises()
+  await env.intersect()
+  expect(Object.keys(env.gallery.cardUrls)).toHaveLength(6)
+})
+
+
+it('replaces same-ID media without evicting unchanged cards or publishing obsolete reads', async () => {
+  mocks.snapshot.mockResolvedValue({ history: [record(1), record(2)], projects: [] })
+  const env = await setup()
+  await env.intersect()
+  const old = env.gallery.cardUrls[1], unchanged = env.gallery.cardUrls[2]
+  env.gallery.openViewer(env.gallery.visible.value.findIndex(item => item.id === 1))
+  await flushPromises()
+  const oldViewer = env.gallery.viewerUrl.value
+  const oldReads: Array<{ signal: AbortSignal; finish: (blob: Blob) => void }> = []
+  mocks.getImage.mockImplementation((id, signal) => id === 'pending-image'
+    ? new Promise<Blob>(finish => { oldReads.push({ signal, finish }) })
+    : Promise.resolve(new Blob([id])))
+  env.gallery.history.value = [{ ...record(1), image_id: 'pending-image' }, record(2)]
+  await flushPromises()
+  await env.intersect()
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith(old)
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith(oldViewer)
+  expect(env.gallery.cardUrls[2]).toBe(unchanged)
+  mocks.getThumbnail.mockImplementation(async id => `data:image/jpeg;base64,${id}`)
+  env.gallery.history.value = [{ ...record(1), image_id: 'latest-image' }, record(2)]
+  await flushPromises()
+  await env.intersect()
+  expect(oldReads).toHaveLength(2)
+  expect(oldReads.every(read => read.signal.aborted)).toBe(true)
+  const latest = env.gallery.cardUrls[1], latestViewer = env.gallery.viewerUrl.value
+  expect(env.gallery.thumbUrls[1]).toBe('data:image/jpeg;base64,latest-image')
+  oldReads.forEach(read => read.finish(new Blob(['obsolete'])))
+  await flushPromises()
+  expect(env.gallery.cardUrls[1]).toBe(latest)
+  expect(env.gallery.viewerUrl.value).toBe(latestViewer)
+  expect(env.gallery.cardUrls[2]).toBe(unchanged)
 })

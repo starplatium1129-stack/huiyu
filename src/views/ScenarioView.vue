@@ -11,8 +11,10 @@
       <div class="scenario-list" role="group" aria-label="故事手帖">
         <button v-for="s in SCENARIOS" :key="s.id" type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
           <span class="scenario-cover" :class="{ 'is-unconnected': !loadingReferences && !available.has(coverId(s.id)) }" :data-character="currentChar">
-            <img :crossorigin="runtimeResourceCors()" v-if="available.has(coverId(s.id)) && !failedCovers.has(coverId(s.id))" :key="coverId(s.id)" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + coverId(s.id) + '.jpg')" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedCovers.add(coverId(s.id))" />
-            <span v-else class="scenario-cover-missing"><ArchiveIcon :name="s.iconName" /><span>{{ loadingReferences ? '正在翻开画册…' : failedCovers.has(coverId(s.id)) ? '封面加载失败' : '氛围参考暂未连接' }}</span></span>
+            <RuntimeImage :src="available.has(coverId(s.id)) ? '/scene-showcase/thumbs/' + coverId(s.id) + '.jpg' : undefined" v-slot="{ image, failed }">
+            <img v-if="image.src && !failed" v-bind="image" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
+            <span v-else class="scenario-cover-missing"><ArchiveIcon :name="s.iconName" /><span>{{ loadingReferences ? '正在翻开画册…' : failed ? '封面加载失败' : '氛围参考暂未连接' }}</span></span>
+            </RuntimeImage>
           </span>
           <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4"><span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2"><strong class="scenario-name">{{ s.name }}</strong><ArchiveIcon v-if="activeScenario?.id === s.id" name="success" /></span><span class="scenario-desc">{{ s.desc }}</span><span class="scenario-count">{{ s.acts.length }} 幕故事<span>{{ s.en }}</span></span></span>
         </button>
@@ -44,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
@@ -89,13 +91,12 @@ const COVER_IDS: Record<string, Record<ScenarioCharacter, string>> = {
   sakura: { nene: 'sc002', natsume: 'sc013' },
 }
 const { available, loading: loadingReferences } = useMoodReferences(Object.values(COVER_IDS).flatMap(pair => Object.values(pair)))
-const failedCovers = ref(new Set<string>())
 function coverId(id: string) { return COVER_IDS[id]?.[currentChar.value] || '' }
 function frameIcon(res: ScenarioResolution) { return res === 'Close-up' ? 'closeup' : res === 'Wide CG' || res === 'Full CG' ? 'wideshot' : 'midshot' }
 
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
-function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
+function norm(t: string) { return t.split(/[,\r\n\u2028\u2029]+/).map(s => s.trim().replace(/[\s-]+/g,'_')).filter(Boolean).join(', ') }
 function resInfo(res: ScenarioResolution) { return RES_MAP[res] }
 function violations(a: ScenarioAct) {
   const lower = a.prompt.toLowerCase()

@@ -251,7 +251,7 @@ test('popular creator · Krea 2 request has no negative and no LoRA', async ({ p
   expect(bodies[0].negative).toBe('')
   expect(bodies[0].modelId).toBe('krea2-turbo-fp8')
   expect(String(bodies[0].prompt)).toContain('Raiden Shogun')
-  expect(String(bodies[0].prompt)).toContain('color palette uses orange theme and candlelight')
+  expect(String(bodies[0].prompt)).toContain('color palette uses orange theme and warm tones')
   expect(String(bodies[0].prompt)).not.toMatch(/nene_|natsume_|ayachi_nene|shiki_natsume|<lora:/i)
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
@@ -514,6 +514,8 @@ test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, ad
   const animaEngine = page.locator('.engine-switch button').nth(1)
   await expect(animaEngine).toBeEnabled({ timeout: 30000 })
   await animaEngine.click()
+
+  await page.getByRole('tab', { name: '成片', exact: true }).click()
 
   // 验证空闲状态下「导入本地图片换装」按钮并点击打开弹窗
   const openInpaintBtn = page.getByRole('button', { name: /导入图片换装/ })

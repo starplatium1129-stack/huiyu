@@ -395,7 +395,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
-    setOutfitOverride, clearOutfitOverride, clearReferenceInput,
+    setOutfitOverride, clearOutfitOverride, clearReferenceInput, clearRandomVariation,
     snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,

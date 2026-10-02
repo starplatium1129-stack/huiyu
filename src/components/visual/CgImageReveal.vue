@@ -6,14 +6,14 @@
       :src="resolvedSrc" :alt="alt" loading="eager" decoding="async"
       @load="onImageLoad" @error="onImageError" @click="$emit('click', $event)"
     />
-    <div v-show="isRevealing" ref="grainRef" class="cg-reveal-grain tw:absolute tw:inset-0 tw:pointer-events-none" aria-hidden="true" />
-    <div v-show="isRevealing" ref="sweepRef" class="cg-reveal-sweep tw:absolute tw:pointer-events-none" aria-hidden="true" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
+import { startCanvasGather } from '@/utils/canvasGather'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-}>(), { alt: '生成的画面成片', imgClass: '', duration: 680, autoReveal: true })
+}>(), { alt: '生成的画面成片', imgClass: '', duration: 740, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
   error: [event: Event]
@@ -33,17 +33,19 @@ const emit = defineEmits<{
 const containerRef = ref<HTMLElement | null>(null)
 const resolvedSrc = computed(() => resolveRuntimeUrl(props.src))
 const imgRef = ref<HTMLImageElement | null>(null)
-const grainRef = ref<HTMLElement | null>(null)
-const sweepRef = ref<HTMLElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
 let animations: Animation[] = []
+let stopDust: (() => void) | null = null
+let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
 let revealedImage: HTMLImageElement | null = null
 
 function stopAnimation() {
+  stopDust?.()
+  stopDust = null
   generation += 1
   animations.splice(0).forEach(animation => animation.cancel())
   isRevealing.value = false
@@ -67,37 +69,22 @@ function triggerReveal() {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(160, Math.min(1000, props.duration)) : 680
+  const duration = Number.isFinite(props.duration) ? Math.max(160, Math.min(1000, props.duration)) : 740
   const token = generation
   try {
-    // Keep decoded pixels sharp and stationary. Decorative layers carry the
-    // finite development effect without pixel readback or an animation loop.
+    // Only a tiny color sample drives the dust; full-resolution pixels stay still.
+    const bounds = containerRef.value?.getBoundingClientRect()
+    if (bounds) revealSize = { width: bounds.width, height: bounds.height }
+    stopDust = containerRef.value ? startCanvasGather(img, containerRef.value, duration) : null
     const reveal = img.animate([
-      { opacity: 0.65 },
-      { opacity: 1, offset: 0.65 },
+      { opacity: stopDust ? 0.08 : 0.65 },
+      { opacity: 1, offset: 0.6 },
       { opacity: 1 },
     ], { duration, easing: 'cubic-bezier(.23,1,.32,1)' })
     animations.push(reveal)
     void reveal.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
     }).catch(() => { if (token === generation) finishReveal() })
-    if (grainRef.value) {
-      const grain = grainRef.value.animate([
-        { opacity: 0.38, transform: 'translate3d(0,0,0)' },
-        { opacity: 0, transform: 'translate3d(3px,-3px,0)' },
-      ], { duration, easing: 'cubic-bezier(.23,1,.32,1)' })
-      animations.push(grain)
-      void grain.finished.catch(() => {})
-    }
-    if (sweepRef.value) {
-      const sweep = sweepRef.value.animate([
-        { opacity: 0, transform: 'translate3d(-35%,-35%,0) rotate(-45deg)' },
-        { opacity: 0.2, offset: 0.25 },
-        { opacity: 0, transform: 'translate3d(35%,35%,0) rotate(-45deg)' },
-      ], { duration: duration * 0.85, easing: 'cubic-bezier(.23,1,.32,1)' })
-      animations.push(sweep)
-      void sweep.finished.catch(() => {})
-    }
     isRevealing.value = true
     emit('reveal-start')
   } catch {
@@ -138,21 +125,11 @@ watch(() => props.autoReveal, enabled => {
 watch([canAnimate, lowEffects], () => {
   if (isRevealing.value && (!canAnimate.value || lowEffects.value)) finishReveal()
 }, { flush: 'sync' })
+useResizeObserver(containerRef, () => {
+  const bounds = containerRef.value?.getBoundingClientRect()
+  if (isRevealing.value && bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) finishReveal()
+})
 onMounted(handleReadyImage)
 onBeforeUnmount(stopAnimation)
 defineExpose({ triggerReveal })
 </script>
-
-<style scoped>
-.cg-reveal-grain {
-  opacity: 0;
-  background-image:radial-gradient(var(--bg-deep) .65px,transparent .8px),radial-gradient(var(--glass-specular) .55px,transparent .8px);
-  background-size:5px 5px,7px 7px;
-  background-position:0 0,2px 3px;
-}
-.cg-reveal-sweep {
-  opacity:0;
-  inset:-50%;
-  background:linear-gradient(90deg,transparent 42%,color-mix(in srgb,var(--accent) 18%,transparent) 48%,var(--glass-specular) 50%,color-mix(in srgb,var(--accent-violet) 18%,transparent) 52%,transparent 58%);
-}
-</style>

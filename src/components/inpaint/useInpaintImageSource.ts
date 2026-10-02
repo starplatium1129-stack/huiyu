@@ -1,24 +1,30 @@
-import { runtimeFetch, resolveRuntimeUrl, runtimeResourceCors } from '../../platform/runtimeUrl.ts'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { inpaintCanvasSize } from '../../utils/inpaintCanvas.ts'
 import { useToast } from '../../composables/useToast.ts'
 
+export interface InpaintSource {
+  url: string | null | undefined
+  blob: Blob | null | undefined
+  historyId: string | number | null
+}
+
 export interface InpaintImageSourceDeps {
   open: () => boolean
-  imageUrl: () => string | null | undefined
-  imageBlob: () => Blob | null | undefined
+  source: () => InpaintSource
+  previewImage: () => HTMLImageElement | null
   /** 图片更换后清空遮罩（useInpaintMaskCanvas.clearMask）。 */
   clearMask: () => void
   /** 画幅探测完成后重同步遮罩画布尺寸（useInpaintMaskCanvas.syncMaskCanvas）。 */
-  syncMaskCanvas: () => void
+  syncMaskCanvas: () => boolean
 }
 
 /**
  * 局部换装弹窗「图片源 + 画幅探测」（2026-08-22 自 AnimaInpaintModal 下沉）。
  *
  * 三个来源的优先级：本地上传（拖拽/选择，blob URL 生命周期自持）→
-  props.imageBlob（引擎结果直通）→ props.imageUrl 兜底 fetch。换图时
- * 用 Image onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
+ * source.blob（引擎结果直通）→ source.url 兜底 fetch。换图时
+ * 用实际预览图 onload 探测 naturalWidth/Height 并经 inpaintCanvasSize 收敛
  * 到受支持画幅，同时重置遮罩画布；关闭/卸载释放 blob URL。
  */
 export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
@@ -27,8 +33,11 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   const fileInputRef = ref<HTMLInputElement | null>(null)
   const isDragging = ref(false)
   const detectedResolution = ref<{ width: number; height: number } | null>(null)
+  const imageReady = ref(false)
+  const sourceRevision = ref(0)
+  const sourceHistoryId = ref<string | number | null>(null)
 
-  const activeImageUrl = computed(() => uploadedUrl.value || deps.imageUrl() || '')
+  const activeImageUrl = computed(() => uploadedUrl.value || deps.source().url || '')
 
   // 自定义属性载体：预览画幅比例规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
   const previewSurfaceStyle = computed(() => ({
@@ -75,18 +84,18 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   }
 
-  /** 提交用原图 blob：上传 > props.imageBlob > url 兜底拉取。 */
-  async function getBlob(): Promise<Blob | null> {
+  /** 提交用原图 blob：上传 > source.blob > url 兜底拉取。 */
+  async function getBlob(signal?: AbortSignal): Promise<Blob | null> {
     if (uploadedBlob.value) {
       return uploadedBlob.value
     }
-    const propBlob = deps.imageBlob()
+    const propBlob = deps.source().blob
     if (propBlob && propBlob.size > 0) {
       return propBlob
     }
     if (activeImageUrl.value) {
       try {
-        const res = await runtimeFetch(activeImageUrl.value, { cache: 'no-store' })
+        const res = await runtimeFetch(activeImageUrl.value, { cache: 'no-store', signal })
         if (!res.ok) return null
         return await res.blob()
       } catch {
@@ -104,20 +113,25 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
   })
 
-  watch(activeImageUrl, (url) => {
-    if (!url) {
-      detectedResolution.value = null
-      return
-    }
-    const img = new Image()
-    img.crossOrigin = runtimeResourceCors() ?? null
-    img.onload = () => {
-      detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
-      void nextTick(deps.syncMaskCanvas)
-    }
-    img.onerror = () => { detectedResolution.value = null }
-    img.src = resolveRuntimeUrl(url)
-  }, { immediate: true })
+  watch([activeImageUrl, () => deps.source().blob, deps.open], () => {
+    sourceRevision.value++
+    // Adopt the URL/blob and its parent together; later gallery selection is not this source.
+    sourceHistoryId.value = uploadedBlob.value ? null : deps.source().historyId
+    imageReady.value = false
+    detectedResolution.value = null
+    deps.clearMask()
+  }, { immediate: true, flush: 'sync' })
+
+  function onPreviewLoad(event: Event) {
+    const image = deps.previewImage()
+    // The preview is keyed by revision: detached old images and duplicate loads
+    // must never resize the active canvas or erase a stroke already drawn on it.
+    if (!deps.open() || imageReady.value || !image || event.target !== image
+      || image.dataset.sourceRevision !== String(sourceRevision.value)
+      || !image.naturalWidth || !image.naturalHeight) return
+    detectedResolution.value = inpaintCanvasSize(image.naturalWidth, image.naturalHeight)
+    imageReady.value = deps.syncMaskCanvas()
+  }
 
   onBeforeUnmount(() => {
     clearUploadedImage()
@@ -127,6 +141,10 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     activeImageUrl,
     previewSurfaceStyle,
     detectedResolution,
+    imageReady,
+    sourceRevision,
+    sourceHistoryId,
+    onPreviewLoad,
     /** 本地上传的原图 blob（模板用它区分「已导入外部图片/原图基准」标签）。 */
     uploadedBlob,
     fileInputRef,

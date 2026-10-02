@@ -63,15 +63,17 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
    * 现在：已记录且当前仍支持的字段一律回放；合法零值（cfg=0 的 Turbo 档、
    * loraStrength=0）用显式判断保留；恢复不了的写进提示，不冒称「已恢复」。
    */
-  async function applyHistory(record: ArtworkRecord, keepAsVariant = false, selection: HistoryReuseSelection = 'full') {
+  async function applyHistory(record: ArtworkRecord, keepAsVariant = false, selection: HistoryReuseSelection = 'full', isActive = () => true) {
     const revision = ++restoreRevision
+    const isCurrent = () => revision === restoreRevision && isActive()
+    if (!isCurrent()) return false
     const parsed = parseHistoryRecipe(record)
     if (!parsed.ok) {
       pb.historyRestoreReport = { title: '配方未载入', notes: [parsed.error] }
       pb.flash(parsed.error, 9000, 'warning')
       return false
     }
-    if (selection !== 'full') return applyHistoryParts(deps, record, selection, () => revision === restoreRevision)
+    if (selection !== 'full') return applyHistoryParts(deps, record, selection, isCurrent)
     const { recipe: entry, notes: restoreNotes } = parsed
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
     if (popularEntry) {
@@ -253,8 +255,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
     if (entryEngine !== 'sd' && (!popularEntry || pb.isPopular)) {
       const before = { ...animaState.value }
-      await refreshAnimaBackend()
-      if (revision !== restoreRevision) return
+      const checked = await refreshAnimaBackend()
+      if (!isCurrent() || !checked) return false
       const after = animaState.value
       if (!after.online) restoreNotes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
       for (const [key, label] of [['modelId', '底模'], ['loraId', '角色 LoRA'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {

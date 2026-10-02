@@ -39,6 +39,8 @@ export interface AnimaResult {
  * （出视频/加入分镜）与历史入册必须跟随「这张图是谁」，而非当前表单。
  */
 export interface AnimaResultContext {
+  /** Source artwork for inpainting; null explicitly means an external/unarchived image. */
+  parentId?: string | number | null
   history?: HistorySnapshot
   /** 热门角色 id；工作室角色为空串。 */
   characterId?: string

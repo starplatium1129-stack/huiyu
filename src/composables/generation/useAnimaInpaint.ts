@@ -72,6 +72,7 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
     }
     const submission = deps.captureAnimaSubmission()
     if (!submission || submission.family !== 'anima') { pb.flash('当前 Anima 配方尚未就绪，请重新确认后换装'); return }
+    submission.context = { ...submission.context, parentId: payload.sourceHistoryId }
     // Capture before even the lazy import: no later upload or form edit owns this operation.
     const snapshot: InpaintSubmissionSnapshot = {
       payload: { ...payload },

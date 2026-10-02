@@ -54,6 +54,30 @@ it('cancels clearing without changing trash or touching the repository', async (
   expect(gallery.trashClearing.value).toBe(false)
 })
 
+it.each(['visit', 'trash panel', 'unmount'] as const)('rejects a permanent-delete confirmation after leaving the %s', async leave => {
+  const approval = deferred<boolean>()
+  confirm.mockReturnValueOnce(approval.promise)
+  const gallery = setup()
+  gallery.trashItems.value = [entry('old')]
+  const pending = gallery.clearTrash()
+  if (leave === 'visit') { await gallery.hide(); await gallery.show() }
+  else if (leave === 'trash panel') { gallery.trashMode.value = false; gallery.trashMode.value = true }
+  else gallery.unmount()
+  await gallery.clearTrash()
+  expect(confirm).toHaveBeenCalledOnce()
+  approval.resolve(true)
+  await pending
+  expect(repo.purgeTrash).not.toHaveBeenCalled()
+  expect(gallery.trashClearing.value).toBe(false)
+  if (leave !== 'unmount') {
+    expect(repo.listTrash).toHaveBeenCalledOnce()
+    gallery.trashItems.value = [entry('new', 2)]
+    confirm.mockResolvedValueOnce(true)
+    await gallery.clearTrash()
+    expect(repo.purgeTrash).toHaveBeenCalledExactlyOnceWith([{ id: 'new', deletedAt: 2 }])
+  }
+})
+
 it('owns clearing until it settles, snapshots confirmed tombstones and rejects stale reads', async () => {
   const stale = deferred<TrashEntry[]>(), cleared = deferred<{ purged: number }>()
   repo.listTrash.mockReturnValueOnce(stale.promise).mockResolvedValueOnce([entry('new', 3)])

@@ -156,13 +156,14 @@ See Installation Step 4-C (Rust gateway + Vite HMR). Use `rust:check` for backen
 [Change scope] ─► [Required checks] ─► [Build when in scope] ─► [Precise commit]
 ```
 
-```powershell
-npm run typecheck:app           # zero errors for Vue SFCs
-npm run workflow -- check:full  # quality checks + frontend/unit/contract suites
-npm run build                   # production build, 140KB per-route budget
-```
+Choose the smallest applicable check; these are alternatives, not a sequence:
 
-Choose the required checks using the [workflow scope table](docs/workflow.md#门禁与构建). `gate:quick ui|server|data|all` selects an area; cross-domain or build-chain changes use `gate:full`. Preparing a commit does not expand the verification scope. `npm run validate` does not run the production build; run `npm run build` when the bundle is in scope. When the private reference root is unavailable, use the structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
+- Current uncommitted changes: `npm test` selects the affected areas and related frontend tests
+- A known component behavior: run its existing test directly, for example `npm run test:frontend -- src/components/library/CharacterDirectory.spec.ts`
+- Cross-domain or build-chain changes: `npm run workflow -- gate:full`
+- Build only when the bundle or desktop synchronization is in scope: `npm run build`
+
+The [workflow scope table](docs/workflow.md#门禁与构建) defines the verification boundary. Batch related edits before checking; reuse passing evidence for unchanged code, and rerun only affected checks after a fix. Preparing a commit does not expand scope. `npm run validate` already includes app typechecking through `check`, then changed frontend tests and Node unit/contract/optional lanes; it is not the full frontend or Rust gate and does not build. Do not prepend a duplicate `typecheck:app` to it. A clean Git worktree may select no changed frontend tests. When the private reference root is unavailable, use the structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
 
 ### Commit discipline (hard rules)
 
@@ -227,11 +228,7 @@ huiyu/
 
 ## Validation
 
-```powershell
-npm run typecheck:app     # TypeScript check for Vue SFCs
-npm run validate          # Quality checks + frontend/unit/contract suites (does not build)
-npm run build             # Production bundle, route budgets, and precompression
-```
+Use the [scope-based checks above](#quality-gates--choose-by-change-scope). A fresh worktree reusing existing dependencies may need one `npm run build:runtime` to prepare generated JavaScript tool entries. Rebuild those entries after changing their TypeScript sources, rather than repeating all setup for each UI edit.
 
 For current implementation details, verification baselines, and the complete documentation index, see [docs/project-status.md](docs/project-status.md) and [docs/INDEX.md](docs/INDEX.md).
 

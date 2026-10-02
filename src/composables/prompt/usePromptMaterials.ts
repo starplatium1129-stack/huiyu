@@ -1,4 +1,4 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, onActivated, onDeactivated, onScopeDispose, getCurrentInstance, type Ref } from 'vue'
 import type { Scene } from '@/stores/promptBuilderStore'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
 import { useDirectorPopular, type UseDirectorPopularInput } from '@/composables/scene/useDirectorPopular'
@@ -10,6 +10,7 @@ export type VoiceStudioHandle = { setSuggestedCaption?: (caption: string) => voi
 
 interface PromptMaterialsInput extends UseDirectorPopularInput {
   voiceStudioRef: Ref<VoiceStudioHandle | null>
+  getAnimaSettingsRevision?: () => number
 }
 
 /** Owns material browsing and selection; scene/character business state stays in the store. */
@@ -69,17 +70,33 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
       teaCache: animaState.value.teaCache, teaCacheThresh: animaState.value.teaCacheThresh,
     },
   }))
-  async function handleLoadBlueprint(data: Record<string, unknown>) {
+  let blueprintRevision = 0, blueprintActive = true
+  const stopBlueprint = () => { blueprintActive = false; blueprintRevision++ }
+  if (getCurrentInstance()) {
+    onActivated(() => { blueprintActive = true })
+    onDeactivated(stopBlueprint)
+  }
+  onScopeDispose(stopBlueprint)
+  async function handleLoadBlueprint(data: Record<string, unknown>, signal?: AbortSignal) {
+    const revision = ++blueprintRevision
+    const current = () => blueprintActive && revision === blueprintRevision && !signal?.aborted && !generationBusy.value
+    if (!blueprintActive || signal?.aborted) return
     if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入蓝图'); return }
-    const { loadBlueprint } = await import('./promptBlueprintActions')
-    const result = await loadBlueprint(data, {
-      pb, selectScene, setDrawEngine, sdSize, setDirectorMode,
-      selectPopularSource: popular.selectPopularSource, selectBlueprint: popular.selectBlueprint,
-      applyRecommendedSize, refreshAnimaBackend, animaState, patchAnimaState,
-    })
-    pb.flash(result.applied
-      ? `${result.message}${result.warnings.length ? `（${result.warnings.join('；')}）` : ''}`
-      : `蓝图未载入：${result.message}`)
+    const fingerprint = () => { const { updatedAt: _updatedAt, ...draft } = currentBlueprintData.value; return JSON.stringify(draft) }
+    const before = fingerprint()
+    try {
+      const { loadBlueprint } = await import('./promptBlueprintActions')
+      if (!current() || before !== fingerprint()) return
+      const result = await loadBlueprint(data, {
+        pb, selectScene, setDrawEngine, sdSize, setDirectorMode, isCurrent: current, getDrawEngine: () => drawEngine.value, getAnimaSettingsRevision: input.getAnimaSettingsRevision,
+        selectPopularSource: popular.selectPopularSource, selectBlueprint: popular.selectBlueprint,
+        applyRecommendedSize, refreshAnimaBackend, animaState, patchAnimaState,
+      })
+      if (!current()) return
+      pb.flash(result.applied
+        ? `${result.message}${result.warnings.length ? `（${result.warnings.join('；')}）` : ''}`
+        : `蓝图未载入：${result.message}`)
+    } catch { if (current()) pb.flash('蓝图载入中断，请核对当前草稿后重试') }
   }
 
   return {

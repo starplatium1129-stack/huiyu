@@ -11,12 +11,14 @@ import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
 import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
-import { useInpaintImageSource } from './inpaint/useInpaintImageSource'
+import { useInpaintImageSource, type InpaintSource } from './inpaint/useInpaintImageSource'
 import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
+import { useInpaintPreparation } from './inpaint/useInpaintPreparation'
 import '@/assets/css/director/components/AnimaInpaintModal.css'
 
 export interface InpaintSubmitPayload {
   imageBlob: Blob
+  sourceHistoryId: string | number | null
   maskBlob: Blob | null
   maskPrompt: string
   maskThreshold: number
@@ -32,8 +34,7 @@ export interface InpaintSubmitPayload {
 
 const props = defineProps<{
   open: boolean
-  imageUrl?: string | null
-  imageBlob?: Blob | null
+  imageSource: InpaintSource
   currentPrompt?: string
   currentNegative?: string
   character?: 'nene' | 'natsume' | 'triad' | null
@@ -82,6 +83,10 @@ const {
   activeImageUrl,
   previewSurfaceStyle,
   detectedResolution,
+  imageReady,
+  sourceRevision,
+  sourceHistoryId,
+  onPreviewLoad,
   uploadedBlob,
   fileInputRef,
   isDragging,
@@ -91,8 +96,8 @@ const {
   getBlob,
 } = useInpaintImageSource({
   open: () => props.open,
-  imageUrl: () => props.imageUrl,
-  imageBlob: () => props.imageBlob,
+  source: () => props.imageSource,
+  previewImage: () => previewImageEl.value,
   clearMask,
   syncMaskCanvas,
 })
@@ -118,29 +123,17 @@ const {
 
 const toast = useToast()
 
-async function handleStart() {
-  const blob = await getBlob()
-  if (!blob) {
-    toast.error('请先上传或选择需要换装的图片')
-    return
-  }
-
-  const selectedMaskBlob = await maskBlob()
-  if (maskMode.value === 'paint' && !selectedMaskBlob) {
-    toast.error('请先在图片上涂出需要换装的区域，按住 Shift 或右键可擦除保护区')
-    return
-  }
-
+function captureDraft() {
   const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
   if (selectedPreset?.isNsfw && !props.adultEnabled) {
     toast.error('请先在工作台开启分级内容，才能使用该服装预设')
-    return
+    return null
   }
 
   const newPrompt = customPrompt.value.trim()
   if (!newPrompt) {
     toast.error('请输入或选择目标服装描述')
-    return
+    return null
   }
 
   const negative = props.currentNegative || 'worst quality, low quality'
@@ -152,9 +145,10 @@ async function handleStart() {
     ? (props.character ?? null)
     : characterMode.value
 
-  emit('submit', {
-    imageBlob: blob,
-    maskBlob: selectedMaskBlob,
+  return {
+    painted: maskMode.value === 'paint',
+    sourceHistoryId: sourceHistoryId.value,
+    requiresAdult: Boolean(selectedPreset?.isNsfw),
     maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
     maskThreshold: maskThreshold.value,
     newOutfitPrompt: newPrompt,
@@ -165,8 +159,16 @@ async function handleStart() {
     characterOverride: charOverride,
     targetWidth: detectedResolution.value?.width,
     targetHeight: detectedResolution.value?.height,
-  })
+  }
 }
+
+const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
+  open: () => props.open, sourceRevision: () => sourceRevision.value,
+  ready: () => imageReady.value, busy: () => Boolean(props.submitting),
+  adultEnabled: () => Boolean(props.adultEnabled),
+  capture: captureDraft, getBlob, maskBlob,
+  submit: payload => emit('submit', payload), error: message => toast.error(message),
+})
 </script>
 
 <template>
@@ -223,12 +225,13 @@ async function handleStart() {
                 class="preview-surface"
                 :style="previewSurfaceStyle"
               >
-                <img :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="syncMaskCanvas" />
+                <img :key="sourceRevision" :data-source-revision="sourceRevision" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" />
                 <canvas
                   ref="maskCanvasEl"
                   class="mask-canvas"
-                  :class="{ hidden: maskMode !== 'paint' }"
+                  :class="{ hidden: maskMode !== 'paint' || !imageReady }"
                   aria-label="换装区域遮罩画布"
+                  tabindex="0"
                   @contextmenu.prevent
                   @pointerenter="cursorVisible = true"
                   @pointerleave="cursorVisible = false; stopMaskPaint()"
@@ -448,9 +451,9 @@ async function handleStart() {
         <button class="btn btn-ghost" type="button" :disabled="submitting && !preparing" @click="emit('close')">
           取消
         </button>
-        <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting || !activeImageUrl" @click="handleStart">
+        <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting || readingSource || !imageReady" @click="handleStart">
           <ArchiveIcon name="lightning" />
-          <span>{{ preparing ? '正在准备换装…' : submitting ? '正在换装中…' : '开始智能换装 (~6秒)' }}</span>
+          <span>{{ preparing || readingSource ? '正在准备换装…' : submitting ? '正在换装中…' : '开始智能换装 (~6秒)' }}</span>
         </button>
       </footer>
     </div>

@@ -11,10 +11,10 @@ function setup() {
     { id: 'coat', name: '外套', tokens: ['coat'], prose: 'a long coat' },
   ] }
   const blueprint = { id: 'one', title: '雨夜', characterId: 'audit', outfitId: 'coat', promptProse: 'An adult woman sits beside a rainy cafe window', promptTokens: ['night', 'rain', 'sitting', 'cafe'], negativeTokens: ['watermark'], recommendedSize: '1216x832', adult: false, camera: 'medium shot', location: 'cafe', lighting: 'warm', sceneTags: [] }
-  const pb = { subject: { kind: 'popular', characterId: 'audit', outfitId: 'school', blueprintId: null }, char: 'nene', isPopular: true, selections: { shot: null, lighting: null, composition: null }, sdParams: { seedLock: true, seed: 42 }, manualTags: new Set<string>(), artistStyleIds: [], tags: [], outfitOverride: null as DraftOutfitOverride | null, referenceInput: null as DraftReferenceInput | null, tagDictionary: { canonicalize: (tag: string) => tag }, showMatureScenes: true, story: '', visualDescription: '', emotionPrompt: '', flash: vi.fn(), commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), popularCharacters: [character], sceneBlueprints: [blueprint], setOutfitOverride: vi.fn(), clearOutfitOverride: vi.fn() }
+  const pb = { subject: { kind: 'popular', characterId: 'audit', outfitId: 'school', blueprintId: null }, char: 'nene', isPopular: true, colorMood: 'joy', selections: { shot: null, lighting: null, composition: null }, sdParams: { seedLock: true, seed: 42 }, manualTags: new Set<string>(), artistStyleIds: [], tags: [], outfitOverride: null as DraftOutfitOverride | null, referenceInput: null as DraftReferenceInput | null, tagDictionary: { canonicalize: (tag: string) => tag }, showMatureScenes: true, story: '', visualDescription: '', emotionPrompt: '', flash: vi.fn(), commitHistoryEntry: vi.fn().mockResolvedValue({ id: 1 }), popularCharacters: [character], sceneBlueprints: [blueprint], setOutfitOverride: vi.fn(), clearOutfitOverride: vi.fn() }
   pb.setOutfitOverride.mockImplementation((tokens: string[], replaced: string | null) => { pb.outfitOverride = { tokens: [...tokens], replaced } })
   pb.clearOutfitOverride.mockImplementation(() => { pb.outfitOverride = null })
-  const state = ref({ online: true, family: 'anima', models: [], modelId: 'test-model', width: 832, height: 1216, loraId: 'wrong-studio-lora', cfg: 4.5, steps: 30, sampler: 'res_multistep', scheduler: 'simple' })
+  const state = ref({ online: true, family: 'anima', models: [], modelId: 'test-model', width: 832, height: 1216, loraId: 'wrong-studio-lora', cfg: 4.5, steps: 30, sampler: 'res_multistep', scheduler: 'simple', teaCache: false, teaCacheThresh: 0 })
   const deps = { pb, animaState: state, sd: {}, sdSize: ref('832x1216'), negativePrompt: ref('low quality'), loraSpecs: ref([]), modelProfile: ref(null), runJob: vi.fn(), historyGenerationFields: () => ({}), sceneBlueprints: () => [blueprint], popularCharacters: () => [character] } as unknown as PromptBatchRunnersDeps
   const runner = usePromptBatchRunners(deps)
   runner.batchEngine.value = 'anima'
@@ -22,8 +22,9 @@ function setup() {
 }
 afterEach(() => { sessionStorage.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
-it('retry keeps original model, seed, blueprint, clothing and negative prompt', async () => {
+it.each(['inferred', 'selected'] as const)('retry keeps original model, seed, blueprint, clothing, negative and %s palette', async palette => {
   const { runner, pb, state, blueprint } = setup()
+  if (palette === 'selected') blueprint.lighting = 'window'
   const request = vi.spyOn(apiClient, 'request').mockRejectedValue(new ApiClientError('invalid environment', { kind: 'http', status: 400 }))
   await runner.onBatchStart({ sceneIds: ['one'], count: 1 })
   const original = request.mock.calls[0][1]?.body as Record<string, unknown>
@@ -32,8 +33,13 @@ it('retry keeps original model, seed, blueprint, clothing and negative prompt', 
   expect(original.negative).toContain('watermark')
   expect(original.loraId).toBeUndefined()
   expect(original.character).toBeNull()
+  expect(original.teaCache).toBe(false)
+  expect(original.teaCacheThresh).toBe(0)
   expect(original.prompt).toContain('coat')
+  expect(String(original.prompt)).toMatch(palette === 'inferred' ? /orange[_ ]theme/ : /yellow[_ ]theme/)
+  pb.colorMood = 'sad'
   pb.manualTags.add('day'); blueprint.promptProse = 'changed scene'; state.value.modelId = 'changed'
+  state.value.teaCache = true; state.value.teaCacheThresh = 0.4
   runner.batchEngine.value = 'sd'
   await runner.onRetryFailed()
   expect(request.mock.calls[1][1]?.body).toEqual(original)

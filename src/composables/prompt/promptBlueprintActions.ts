@@ -10,6 +10,9 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 
 interface BlueprintContext {
+  isCurrent?: () => boolean
+  getDrawEngine?: () => DrawEngine
+  getAnimaSettingsRevision?: () => number
   pb: PromptBuilderStore
   selectScene: (scene: Scene) => void
   selectPopularSource: (source: 'studio' | 'popular') => void
@@ -87,6 +90,8 @@ function selection(value: unknown, allowed: ReadonlySet<string>): string | null 
 /** Versioned, allowlisted blueprint import. Legacy v1 objects without schema remain readable. */
 export async function loadBlueprint(raw: Record<string, unknown>, ctx: BlueprintContext): Promise<BlueprintLoadResult> {
   const { pb } = ctx
+  const interrupted = (): BlueprintLoadResult => ({ applied: false, message: '载入已中断，已应用部分保留；当前草稿未继续覆盖', warnings: [] })
+  if (ctx.isCurrent && !ctx.isCurrent()) return interrupted()
   if (raw.schema !== undefined && raw.schema !== SCHEMA) {
     return { applied: false, message: '蓝图版本不受支持', warnings: [] }
   }
@@ -168,7 +173,16 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     const anima = isRecord(raw.anima) ? raw.anima : {}
     const requestedModel = text(anima.modelId)
     if (requestedModel) ctx.patchAnimaState({ modelId: requestedModel })
-    await ctx.refreshAnimaBackend()
+    const draftFingerprint = () => {
+      const { updatedAt: _updatedAt, ...draft } = pb.snapshotDraft()
+      return JSON.stringify(draft)
+    }
+    const before = draftFingerprint(), sizeBefore = ctx.sdSize.value
+    const settingsBefore = ctx.getAnimaSettingsRevision?.()
+    const refreshed = await ctx.refreshAnimaBackend()
+    if (!refreshed || ctx.isCurrent && !ctx.isCurrent() || before !== draftFingerprint()
+      || ctx.getDrawEngine && ctx.getDrawEngine() !== engine
+      || settingsBefore !== ctx.getAnimaSettingsRevision?.() || sizeBefore !== ctx.sdSize.value) return interrupted()
     if (requestedModel && ctx.animaState.value.modelId !== requestedModel) {
       warnings.push(`原底模 ${requestedModel} 当前不可用，已回落到可用底模`)
     }

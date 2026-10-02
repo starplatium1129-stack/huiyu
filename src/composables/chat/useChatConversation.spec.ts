@@ -161,3 +161,37 @@ describe('chat recovery and tool lifecycle', () => {
 
 const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
 vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))
+
+
+it.each([false, true])('keeps tool rounds on their submitted connection while metadata respects edited=%s', async edited => {
+  let deliver!: (events: object[]) => void
+  const first = new Response(new ReadableStream({ start(controller) {
+    deliver = events => { controller.enqueue(new TextEncoder().encode(events.map(event => JSON.stringify(event)).join('\n') + '\n')); controller.close() }
+  } }))
+  const fetchMock = vi.fn().mockResolvedValueOnce(first).mockResolvedValueOnce(stream([
+    { type: 'meta', model: 'canonical-final' }, { type: 'token', content: 'Finished' }, { type: 'done' },
+  ]))
+  desktopFixture.current = { runTool: vi.fn(async () => ({ ok: true, output: 'fixture result' })) } as unknown as CompanionDesktopBridge
+  vi.stubGlobal('fetch', fetchMock)
+  const { conversation, options, messages } = setup()
+  const pending = conversation.sendMessage('fixture request')
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+  if (edited) {
+    options.apiBaseUrl.value = 'http://localhost:5678/v1'
+    options.apiModel.value = 'next-turn-model'
+    options.apiKey.value = 'synthetic-next-key'
+    options.webSearchEnabled.value = true
+  }
+  deliver([{ type: 'meta', model: 'canonical-first' }, { type: 'tool-call', id: 'fixture', name: 'get_status', arguments: '{}' }, { type: 'done' }])
+  await pending
+  const second = JSON.parse(fetchMock.mock.calls[1][1].body)
+  expect(second).toMatchObject({ provider: 'api', webSearch: false, api: {
+    baseUrl: 'http://localhost:1234/v1', model: 'canonical-first', apiKey: 'test',
+  } })
+  expect(options.apiModel.value).toBe(edited ? 'next-turn-model' : 'canonical-final')
+  if (edited) expect(options.storage.setApiSettings).not.toHaveBeenCalled()
+  else expect(options.storage.setApiSettings).toHaveBeenLastCalledWith({ baseUrl: 'http://localhost:1234/v1', model: 'canonical-final', apiKey: 'test' })
+  expect(messages).toHaveLength(2)
+  expect(messages[1].content).toBe('Finished')
+  conversation.destroy()
+})

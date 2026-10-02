@@ -41,11 +41,16 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     if (!sameSubject || pb.outfitOverride) {
       notes.push('原角色或服装与当前条件不同，提示词未沿用；可选择完整配方后再调整')
     } else if ([entry.story, entry.visualDescription, entry.emotion, entry.manual_tags, entry.scene, entry.blueprintId].some(value => value !== undefined)) {
+      // Retire the old scene overlay even when the saved scene ID is unchanged.
+      // Do this before adopting historical tags so their clothing is not removed.
+      if (popular ? entry.blueprintId !== undefined : entry.scene !== undefined) pb.clearRandomVariation()
       if (popular && entry.blueprintId !== undefined) {
+        applied = true
         const blueprint = entry.blueprintId ? findBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
         if (!entry.blueprintId || blueprint && blueprint.characterId === entry.characterId && (!blueprint.outfitId || blueprint.outfitId === entry.outfitId)) pb.setPopularBlueprint(entry.blueprintId ?? null)
         else { pb.setPopularBlueprint(null); notes.push('原蓝图不可用或角色不匹配，已清除蓝图；请核对提示词') }
       } else if (!popular && entry.scene !== undefined) {
+        applied = true
         const scene = pb.scenes.find(item => item.id === entry.scene)
         if (!entry.scene || scene && (!scene.char || scene.char === 'both' || scene.char === pb.char)) {
           pb.sceneId = scene?.id ?? null
@@ -56,9 +61,11 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
       apply(entry.visualDescription, value => { pb.visualDescription = value })
       apply(entry.emotion, value => { pb.selections.emotion = [...value] })
       apply(entry.manual_tags, value => { pb.manualTags = new Set(value) })
+      // Incomplete records leave unrecorded layers untouched. Removing their
+      // ownership alone would turn old reference tags into protected user edits.
+      if (entry.manual_tags !== undefined) pb.referenceInput = null
+      if (entry.manual_tags !== undefined || (popular ? entry.blueprintId !== undefined : entry.scene !== undefined)) pb.randomVariation = null
       // A stored negative is a compiled result, not a reusable custom layer.
-      pb.referenceInput = null
-      pb.randomVariation = null
       if (engine === 'sd') pb.sdParams.negativeCustom = ''
       notes.push('提示词按当前角色与编译规则重建；原作负向快照未写入自定义负面词')
     } else notes.push('原作未记录可重建的提示词输入，当前输入已保留')
@@ -95,8 +102,8 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
   }
   if (engine !== 'sd' && sameEngine && parts.parameters) {
     const before = { ...animaState.value }
-    await refreshAnimaBackend()
-    if (!isCurrent()) return false
+    const checked = await refreshAnimaBackend()
+    if (!isCurrent() || !checked) return false
     if (!animaState.value.online) notes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
     for (const [key, label] of [['modelId', '底模'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
       if (before[key] !== animaState.value[key]) notes.push(`${label}：${before[key] ?? '未设置'} → ${animaState.value[key] ?? '不可用'}`)

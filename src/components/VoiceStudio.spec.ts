@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import VoiceStudio from './VoiceStudio.vue'
+import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { voiceApi, type VoiceAudioResult } from '@/api/voiceApi'
 import type { TtsStatus, TranslateResult } from '@/types/api'
@@ -49,7 +50,7 @@ beforeEach(() => {
   vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:voice-test')
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
 })
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
 
 describe('VoiceStudio 异步操作生命周期', () => {
   it('生成时冻结声线、语言、情绪和速度，下载文件名沿用生成设置', async () => {
@@ -118,4 +119,53 @@ describe('VoiceStudio 异步操作生命周期', () => {
     expect(wrapper.text()).toContain('字幕已修改，请重新翻译')
     wrapper.unmount()
   })
+})
+
+
+it('owns cached-visit requests and speech callbacks without cancelling unrelated speech', async () => {
+  class Utterance {
+    onstart: (() => void) | null = null
+    onend: (() => void) | null = null
+    onerror: (() => void) | null = null
+  }
+  const spoken: Utterance[] = [], cancel = vi.fn()
+  vi.stubGlobal('SpeechSynthesisUtterance', Utterance)
+  vi.stubGlobal('speechSynthesis', { cancel, speak: (utterance: Utterance) => { spoken.push(utterance) } })
+  const active = ref(true)
+  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, {
+    default: () => active.value ? h(VoiceStudio, { initialVoice: 'nene', suggestedCaption: '你好' }) : null,
+  }) }), { global: { stubs: { RouterLink: true, ArchiveIcon: true, StudioMediaPlayer: true } } })
+  await flushPromises(); await chooseField(wrapper, 1, 'zh')
+  const preview = () => wrapper.findAll('button').find(button => button.text() === '系统试听')!
+  await preview().trigger('click')
+  expect(cancel).not.toHaveBeenCalled()
+  const oldEnd = spoken[0].onend!
+  spoken[0].onstart!()
+  const old = deferred<VoiceAudioResult>(), latest = deferred<VoiceAudioResult>()
+  vi.mocked(voiceApi.synthesize).mockReturnValueOnce(old.promise).mockReturnValueOnce(latest.promise)
+  await wrapper.find('button.btn-primary').trigger('click'); await flushPromises()
+  expect(cancel).toHaveBeenCalledTimes(1)
+  const oldSignal = vi.mocked(voiceApi.synthesize).mock.calls[0][1]!.signal!
+  active.value = false; await nextTick()
+  expect(oldSignal.aborted).toBe(true)
+  active.value = true; await flushPromises()
+  await wrapper.find('button.btn-primary').trigger('click'); await flushPromises()
+  expect(vi.mocked(voiceApi.synthesize).mock.calls[1][1]!.signal!.aborted).toBe(false)
+  oldEnd(); old.resolve({ blob: new Blob(['old']), queueWaitMs: 0 }); await flushPromises()
+  expect(wrapper.get('.voice-status').text()).toBe('正在生成 AI 角色声线…')
+  expect(wrapper.get('button.btn-primary').attributes('disabled')).toBeDefined()
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+  latest.resolve({ blob: new Blob(['latest']), queueWaitMs: 0 }); await flushPromises()
+  expect(toast.success).toHaveBeenCalledTimes(1)
+  await preview().trigger('click')
+  const lateStart = spoken[1].onstart!, lateEnd = spoken[1].onend!
+  active.value = false; await nextTick()
+  expect(cancel).toHaveBeenCalledTimes(2)
+  active.value = true; await flushPromises()
+  const status = wrapper.get('.voice-status').text()
+  lateStart(); lateEnd()
+  expect(wrapper.get('.voice-status').text()).toBe(status)
+  await preview().trigger('click'); spoken[2].onend!()
+  wrapper.unmount()
+  expect(cancel).toHaveBeenCalledTimes(2)
 })

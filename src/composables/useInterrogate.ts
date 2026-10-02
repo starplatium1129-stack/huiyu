@@ -1,6 +1,6 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { useTrackedTask } from './useTaskCenter.ts'
-import { getCurrentScope, onScopeDispose, ref } from 'vue'
+import { getCurrentScope, getCurrentInstance, onActivated, onDeactivated, onScopeDispose, ref } from 'vue'
 import { decodeInterrogateResult, type InterrogateMode, type InterrogateResult } from '../api/interrogateResult.ts'
 export type { InterrogateMode, InterrogateResult } from '../api/interrogateResult.ts'
 
@@ -54,7 +54,7 @@ export function useInterrogate() {
 
   const cancelled = ref(false)
   let activeController: AbortController | null = null
-  let disposed = false
+  let disposed = false, viewActive = true
   function cancel() {
     if (!activeController) return
     const controller = activeController
@@ -63,10 +63,14 @@ export function useInterrogate() {
     busy.value = false
     controller.abort()
   }
+  if (getCurrentInstance()) {
+    onDeactivated(() => { viewActive = false; cancel() })
+    onActivated(() => { viewActive = true })
+  }
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancel() })
 
   async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
-    if (busy.value || disposed) return null
+    if (busy.value || disposed || !viewActive) return null
     busy.value = true
     cancelled.value = false
     error.value = null
