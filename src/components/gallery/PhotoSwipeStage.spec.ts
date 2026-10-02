@@ -55,6 +55,38 @@ it('closing during decode immediately releases its URL and rejects late publicat
   expect(revoke).toHaveBeenCalledTimes(1)
 })
 
+it('leaving the preload neighborhood clears a pending decode without publishing it', async () => {
+  mocks.read.mockResolvedValue(new Blob(['fixture'], { type: 'image/png' }))
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:obsolete-decode')
+  const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  let finish!: () => void
+  let decodingImage!: HTMLImageElement
+  vi.spyOn(HTMLImageElement.prototype, 'decode').mockImplementation(function (this: HTMLImageElement) {
+    decodingImage = this
+    return new Promise<void>(resolve => { finish = resolve })
+  })
+  const wrapper = mount(PhotoSwipeStage, { props: { items: Array.from({ length: 4 }, (_, id) => ({ id, image_id: `image-${id}` })), index: 0 } })
+  try {
+    await flushPromises()
+    const signal = mocks.read.mock.calls[0][1] as AbortSignal
+    mocks.change(2)
+    expect(signal.aborted).toBe(false)
+    expect(decodingImage.getAttribute('src')).toBe('blob:obsolete-decode')
+    expect(revoke).not.toHaveBeenCalled()
+    mocks.change(3)
+    expect(signal.aborted).toBe(true)
+    expect(revoke).toHaveBeenCalledExactlyOnceWith('blob:obsolete-decode')
+    expect(decodingImage.getAttribute('src')).toBeNull()
+    finish(); await flushPromises()
+    expect(mocks.refreshed).not.toHaveBeenCalled()
+    expect(mocks.failed).not.toHaveBeenCalled()
+  } finally {
+    finish?.()
+    wrapper.unmount()
+    await flushPromises()
+  }
+})
+
 it.each([false, true])('media switching (same ID: %s) rejects old reads while metadata preserves the viewer', async sameId => {
   let first!: (blob: Blob) => void
   mocks.read.mockImplementationOnce(() => new Promise<Blob>(resolve => { first = resolve }))

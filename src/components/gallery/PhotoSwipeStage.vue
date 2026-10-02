@@ -123,8 +123,14 @@ function start() {
         urls.set(index, url)
         const image = new Image()
         decoding.add(image)
+        // Repository cancellation does not release an Image already decoding.
+        const cancelDecode = () => { image.removeAttribute('src'); decoding.delete(image) }
+        request.signal.addEventListener('abort', cancelDecode, { once: true })
         image.src = url
-        try { await image.decode() } finally { decoding.delete(image) }
+        try { await image.decode() } finally {
+          request.signal.removeEventListener('abort', cancelDecode)
+          decoding.delete(image)
+        }
         if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index]) || Math.abs(index - instance.currIndex) > 2) {
           releaseUrl(url)
           if (revision === token && urls.get(index) === url) urls.delete(index)

@@ -195,6 +195,10 @@ export function useGalleryWorkspace() {
     const queuedCardIds = new Set<string | number>();
     const cardReads = new Map<string | number, AbortController>();
     let cardWorkers = 0;
+    function cancelCardHydration(id: string | number) {
+        cardReads.get(id)?.abort(); cardReads.delete(id); queuedCardIds.delete(id);
+        for (let index = cardQueue.length - 1; index >= 0; index--) if (cardQueue[index].id === id) cardQueue.splice(index, 1);
+    }
     function touchCardLru(id: string | number) {
         cardLruOrder.delete(id);
         cardLruOrder.set(id, 1);
@@ -342,11 +346,12 @@ export function useGalleryWorkspace() {
         if (!cardObserver) {
             cardObserver = new IntersectionObserver(entries => {
                 for (const entry of entries) {
-                    if (!entry.isIntersecting)
-                        continue;
                     const item = observedCards.get(entry.target);
-                    if (item)
-                        requestCardHydration(item);
+                    if (!item) continue;
+                    // Pagination retains old DOM cards. Leaving the prefetch margin
+                    // must free queued/in-flight reads for the new viewport too.
+                    if (entry.isIntersecting) requestCardHydration(item);
+                    else cancelCardHydration(item.id);
                 }
             }, { rootMargin: '600px 0px' });
         }
@@ -458,8 +463,7 @@ export function useGalleryWorkspace() {
     });
     const isMediaCurrent = watchArtworkMedia(history, id => {
         releaseCardImage(id); delete thumbUrls[id]; forgetRatio(id);
-        cardReads.get(id)?.abort(); cardReads.delete(id); queuedCardIds.delete(id);
-        for (let index = cardQueue.length - 1; index >= 0; index--) if (cardQueue[index].id === id) cardQueue.splice(index, 1);
+        cancelCardHydration(id);
         if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
         void hydrateThumbs(); void nextTick(() => scanWallCards());
     });
@@ -471,14 +475,9 @@ export function useGalleryWorkspace() {
     // and trash hydrate their thumbnails separately; hidden HD work must not block them.
     watch([pagedVisible, collectionPreviewItems, trashMode], () => {
         const ids = new Set(!trashMode.value && collectionPreviewItems.value === null ? pagedVisible.value.map(item => item.id) : []);
-        for (let index = cardQueue.length - 1; index >= 0; index--) {
-            if (!ids.has(cardQueue[index].id)) queuedCardIds.delete(cardQueue.splice(index, 1)[0].id);
-        }
-        for (const [id, controller] of cardReads) if (!ids.has(id)) {
-            // Let a returning card retry before the cancelled read settles.
-            // Its late cleanup only owns the removed controller, never a new read.
-            controller.abort(); cardReads.delete(id); queuedCardIds.delete(id);
-        }
+        // Clearing ownership lets a returning card retry before an old read settles;
+        // pumpCardQueue's controller check keeps its late cleanup from owning the retry.
+        for (const id of new Set([...cardQueue.map(item => item.id), ...cardReads.keys()])) if (!ids.has(id)) cancelCardHydration(id);
         void hydrateThumbs();
         void nextTick(() => scanWallCards());
     });
