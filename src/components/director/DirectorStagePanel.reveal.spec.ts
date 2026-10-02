@@ -22,7 +22,7 @@ function fixture(overrides: { resultRevealUrl?: string; displayResultUrl?: strin
   const wrapper = mount(DirectorStagePanel, {
     props: { ...props, ...overrides },
     global: { stubs: {
-      CgImageReveal: Reveal, ImageSplitCompare: true, ThinkingOrb: true, GenerationDust: true,
+      CgImageReveal: Reveal, ImageSplitCompare: true, ThinkingOrb: true,
       DirectorResultTools: true, DirectorResultShelf: true, DirectorSceneReference: true, ArchiveIcon: true, StudioTooltip: true,
     } },
   })
@@ -92,6 +92,6 @@ describe('result reveal identity', () => {
     await wrapper.setProps({ generationBusy: true })
     expect(wrapper.getComponent(Reveal).props('src')).toBe('/result-a.png')
     expect(wrapper.get('.stage-result-status').text()).toContain('当前成片保留')
-    expect(wrapper.get('.stage-result-status generation-dust-stub').attributes('framed')).toBe('true')
+    expect(wrapper.get('.stage-result-status thinking-orb-stub').attributes('size')).toBe('sm')
   })
 })

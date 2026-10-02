@@ -5,7 +5,6 @@ import ThinkingOrb from './ThinkingOrb.vue'
 import VoiceGlow from './VoiceGlow.vue'
 import CgImageReveal from './CgImageReveal.vue'
 import BorderBeam from './BorderBeam.vue'
-import GenerationDust from './GenerationDust.vue'
 import { startCanvasPixelReveal } from '@/utils/canvasPixelReveal'
 
 let activity: {
@@ -446,21 +445,5 @@ describe('BorderBeam activity', () => {
     await nextTick()
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
     expect(wrapper.find('.border-beam-track').exists()).toBe(true)
-  })
-})
-
-describe('Generation flow activity', () => {
-  it('stops decorative motion when hidden or low effects, without scheduling JS paints', async () => {
-    const wrapper = own(mount(GenerationDust))
-    await nextTick()
-    expect(wrapper.classes()).toContain('is-running')
-    activity.canAnimate.value = false
-    await nextTick()
-    expect(wrapper.classes()).not.toContain('is-running')
-    activity.canAnimate.value = true
-    activity.lowEffects.value = true
-    await nextTick()
-    expect(wrapper.classes()).not.toContain('is-running')
-    expect(frames.size).toBe(0)
   })
 })

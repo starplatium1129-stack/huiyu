@@ -46,7 +46,8 @@ for (const theme of ['dark', 'light']) {
         await expect(page.getByRole('progressbar', { name: '生图进度' })).toBeVisible()
         expect(await page.locator('.stage-generating-title').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
         expect(await page.locator('.stage-generating-sub').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-        await expect(page.locator('.stage-generating-copy .generation-flow')).toHaveClass(/is-running/)
+        await expect(page.locator('.stage-generating-copy .thinking-orb-host')).not.toHaveClass(/is-paused/)
+        await expect(page.locator('.stage-generating-copy .thinking-orb-canvas')).toBeVisible()
         await page.screenshot({ path: info.outputPath('canvas-generating-' + theme + '-1920.png'), animations: 'allow' })
         for (const viewport of [{ width: 2560, height: 1440 }, { width: 3840, height: 2160 }, { width: 1280, height: 800 }]) {
           await page.setViewportSize(viewport)

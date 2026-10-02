@@ -26,7 +26,7 @@
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize">
           <div v-if="generationBusy" class="stage-generating-copy">
-            <GenerationDust />
+            <ThinkingOrb state="working" size="lg" color-variant="dual" aria-hidden="true" />
             <div class="stage-generation-feedback">
               <div class="stage-generating-title" role="status">正在绘制这一幕</div>
               <div class="stage-generating-sub">
@@ -88,7 +88,7 @@
       <div class="stage-result-heading">
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
-          <GenerationDust v-if="generationBusy" framed />
+          <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
           {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
         </span>
       </div>
@@ -126,7 +126,7 @@ import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
-import GenerationDust from '@/components/visual/GenerationDust.vue'
+import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'

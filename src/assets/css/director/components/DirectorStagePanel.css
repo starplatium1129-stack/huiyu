@@ -45,7 +45,7 @@
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
   .pb .stage-swap-leave-to { transform:scale(.985); }
-  /* Waiting has one pixel focal point beside the reference, never over its text. */
+  /* Waiting has one particle focal point beside the reference, never over its text. */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
     animation:none;
