@@ -220,7 +220,7 @@
       "description": "【后宫温室礼堂·午后】猫猫穿着带草木刺绣的淡绿色婚服坐在药草温室，头纱被她别在发髻后，捧花里混着能闻出药性的花叶；她先凑近确认无毒，随后抬眼向镜头露出难得坦率的好奇。",
       "location": "imperial palace medicinal greenhouse",
       "action": "温室里逐朵确认捧花无毒，最后抬眼向镜头露出坦率好奇",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "afternoon",
       "lighting": "warm filtered light through leaves and glass",
       "camera": "medium full shot, vertical framing",
       "mood": "药师也会认真准备一场花嫁",
@@ -245,8 +245,7 @@
         "hair_bun",
         "freckles",
         "curious_smile",
-        "botanical_light",
-        "twilight_light"
+        "botanical_light"
       ],
       "negativeTokens": [
         "worst_quality",

@@ -70,7 +70,7 @@
         "bystanders"
       ],
       "outfitId": "poor_school_uniform",
-      "promptProse": "Eating a simple handmade bento on the quiet school rooftop at sunset, Byakuya munches with a flat, deadpan expression. Golden hour rays illuminate her twin horn buns and worn sailor uniform in nostalgic tranquility.",
+      "promptProse": "On concrete steps beside the school rooftop's chain-link fence at sunset, Byakuya sits with a small bento containing only plain white rice and one pickled plum. She steadies the open box on her lap with one hand and lifts a bite with chopsticks in the other, glancing toward the viewer with a quiet, slightly embarrassed smile. Golden-hour light catches her twin horn buns and worn sailor uniform. A seated medium view includes the simple meal, her hands, the concrete steps and fence.",
       "promptTokens": [
         "school_rooftop",
         "bento_box",
@@ -78,12 +78,18 @@
         "school_uniform",
         "sunset",
         "golden_hour",
-        "deadpan",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sitting_on_concrete_steps",
+        "chain_link_fence",
+        "plain_white_rice",
+        "single_pickled_plum",
+        "holding_bento_box_on_lap",
+        "chopsticks",
+        "subtle_shy_smile",
+        "medium_shot"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -181,7 +187,7 @@
         "bystanders"
       ],
       "outfitId": "magical_girl_dress",
-      "promptProse": "Transforming in a dark rainy back alley to fight evil officers, Byakuya summons glowing blue star runes with her wand. Neon street reflections in water puddles highlight her determined, impoverished magical girl posture.",
+      "promptProse": "In a narrow, rain-wet back alley at night, Byakuya raises her star-tipped wand and summons a bright star-dust transformation circle around herself. Blue star runes and floating sparks rise from the circle, their light reflected in puddles on the pavement, as she faces a threat beyond the frame. Her magical-girl dress is illuminated by the blue glow. A wide shot keeps the raised wand, complete magic circle and narrow alley visible.",
       "promptTokens": [
         "back_alley",
         "magical_girl_dress",
@@ -189,11 +195,15 @@
         "star_sigils",
         "rain",
         "puddles",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "raising_wand",
+        "magic_circle",
+        "star_dust",
+        "night",
+        "wide_shot"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -915,18 +925,23 @@
         "bystanders"
       ],
       "outfitId": "magical_girl_dress",
-      "promptProse": "Channeling starlight atop the school rooftop as glowing blue magic circles swirl around her boots, Byakuya prepares to battle. Cold silver moonlight frames her resolute, magical girl transformation.",
+      "promptProse": "On a city rooftop surrounded by high-rise silhouettes, Byakuya turns her head toward the viewer as a luminous transformation ring rises from her feet. Fine star-dust particles drift upward around her beneath a visible full moon. Cool silver moonlight and blue magic light illuminate her twin horn buns and magical-girl outfit. A wide shot includes the rooftop edge, city skyline and complete rising transformation glow.",
       "promptTokens": [
         "rooftop",
         "moonlight",
         "magic_circle",
         "starlight",
         "night",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "city_rooftop",
+        "city_skyline",
+        "full_moon",
+        "rising_star_dust",
+        "looking_back",
+        "wide_shot"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [

@@ -169,7 +169,7 @@
         "old_school",
         "disciplinary_committee"
       ],
-      "timeOfDay": "傍晚",
+      "timeOfDay": "夜晚",
       "title": "空崎日奈 · 旧校舍天台的极目远眺"
     },
     {
@@ -1893,7 +1893,7 @@
       "title": "杏山和纱 · 空私人工作室的私密甜点品尝"
     },
     {
-      "action": "站在全息投影前听简报",
+      "action": "站在全息投影前敬礼汇报任务简报",
       "adult": false,
       "adultArtistHint": "",
       "animaStyleHint": "",
@@ -1953,7 +1953,7 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "candc_maid",
-      "promptProse": "Standing before the glowing holographic tactical map at C&C headquarters, Toki listens to the mission briefing with a deadpan, disciplined posture. Cool blue displays and high-tech equipment frame the quiet briefing room.",
+      "promptProse": "Standing before the glowing holographic tactical map at C&C headquarters, Toki gives a crisp salute and reports the mission briefing with a deadpan, disciplined posture. Cool blue displays and high-tech equipment frame the quiet briefing room.",
       "promptTokens": [
         "cc_base",
         "holographic_display",
@@ -1964,7 +1964,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "saluting",
+        "reporting_mission"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -2125,10 +2127,9 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "candc_maid",
-      "promptProse": "Aiming her high-caliber exoskeleton rifle downrange with icy precision, Toki executes tactical drills without blinking. Controlled muzzle smoke and directional range lighting highlight her combat-ready lethal efficiency.",
+      "promptProse": "At the firing range, Toki wears the Abi-Eshuh powered exoskeleton frame over her C&C combat suit and steadies an assault rifle aimed downrange with icy precision. Controlled muzzle smoke and directional range lighting define the mechanical armor around her combat-ready stance.",
       "promptTokens": [
         "firing_range",
-        "exoskeleton_rifle",
         "aiming",
         "headset",
         "tactical_stance",
@@ -2136,7 +2137,10 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "powered_exoskeleton",
+        "mechanical_armor",
+        "assault_rifle"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -2151,7 +2155,7 @@
       "title": "飞鸟马时 · 外骨骼射击训练"
     },
     {
-      "action": "冷脸吃草莓圣代",
+      "action": "面无表情地举起一勺草莓向观看者喂食",
       "adult": false,
       "adultArtistHint": "",
       "animaStyleHint": "",
@@ -2211,18 +2215,18 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "casual_maid",
-      "promptProse": "At a warm pastel cafe, Toki eats a strawberry parfait with an entirely poker-faced expression, holding the spoon close to the glass as if it were part of a formal procedure. The deadpan dessert break becomes a small, humorous slice-of-life moment.",
+      "promptProse": "At a warm pastel cafe, Toki sits before a large strawberry-chocolate sundae and holds a spoonful of strawberry toward the viewer with an entirely poker-faced expression, inviting them to take the bite. Warm cafe lamps frame her deadpan, carefully held offering and the dessert glass on the table.",
       "promptTokens": [
         "cafe",
-        "eating_sundae",
         "holding_spoon",
         "deadpan_expression",
-        "medium_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "strawberry_parfait"
+        "strawberry_parfait",
+        "offering_spoon",
+        "medium_close_up"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -3278,18 +3282,19 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "seminar_uniform",
-      "promptProse": "Consulting confidential Millennium records deep in the underground archives, Rio checks her watch with sharp precision. Soft recessed ceiling lighting and towering server banks frame her authoritative presence.",
+      "promptProse": "Deep in the classified Millennium archives, Rio leans beside the metal divider of an old bookshelf and studies an ancient record chip held in her hand. Her silver wristwatch catches the cool light as soft recessed ceiling lamps reveal the shadowed shelves around her thoughtful pose.",
       "promptTokens": [
         "classified_archives",
         "bookshelves",
-        "standing",
         "wristwatch",
         "soft_lighting",
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "leaning_on_bookshelf",
+        "holding_data_chip"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -7135,7 +7140,7 @@
         "explicit"
       ],
       "outfitId": "disciplinary_uniform",
-      "promptProse": "Leaning against the rooftop chain-link fence as the day ends, Iori takes a quiet breather with a rare, peaceful smile. Warm golden hour sunlight bathes the Gehenna cityscape in nostalgic, comforting amber tones.",
+      "promptProse": "Leaning against the rooftop chain-link fence as the day ends, Iori cradles her sniper rifle across her chest and tilts her face toward the evening breeze with a rare, peaceful smile. Warm golden hour sunlight bathes the Gehenna cityscape in nostalgic, comforting amber tones.",
       "promptTokens": [
         "school_rooftop",
         "chainlink_fence",
@@ -7144,7 +7149,8 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "holding_sniper_rifle"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [

@@ -1260,7 +1260,6 @@
       "outfitId": "ignition",
       "promptProse": "Inside the roaring heavy-weapon forge at Talos-II, she leans her weight on the alloy anvil in a medium shot, the greatsword driven point-down into the molten metal floor, orange sparks showering up with every pulse of the roaring forge. Around her: a glowing rack of half-finished blades, hanging chains and iron hooks, a bubbling crucible, raw ingots stacked by the wall.",
       "promptTokens": [
-        "full_body",
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",
@@ -1289,7 +1288,7 @@
       "title": "莱万汀 · 熔岩工坊"
     },
     {
-      "action": "穿着舒适的舱内机能便服，大口享用双球甜筒冰淇淋，赤红眼眸微微弯起，黑角与恶魔尾巴惬意晃动",
+      "action": "穿着舒适的舱内机能便服，大口享用三球甜筒冰淇淋，赤红眼眸微微弯起，黑角与恶魔尾巴惬意晃动",
       "camera": "medium shot",
       "category": "塔罗斯科幻",
       "characterId": "laevatain_arknights",
@@ -1299,7 +1298,7 @@
       "description": "【莱瓦汀 · 冰淇淋时间】休息区明亮的冷饮自动贩卖机前，莱瓦汀举着超大号的三球抹茶草莓冰淇淋甜筒，两只金红色的眼眸闪闪发亮，头顶的红角随着兴奋轻轻抖动——「哈！大战一场之后大口吃冰淇淋简直是世上最棒的享受！管理员，你要不要也尝尝这一大口？超级过瘾！」",
       "id": "laevatain_arknights_icecream_break",
       "lighting": "bright industrial canteen light",
-      "location": "塔罗斯-II 研究基地物资舱",
+      "location": "塔罗斯-II 研究基地食堂冷饮区",
       "mood": "可爱反差萌",
       "negativeTokens": [
         "worst quality",
@@ -1600,7 +1599,6 @@
       "outfitId": "standard",
       "promptProse": "In the riveted metal corridor of a Talos-II warship under cool white fluorescent light, she leans her back against the alloy bulkhead in a medium shot, arms crossed, one eyebrow raised with a smug grin. Around her: numbered bulkhead doors, stacked cargo containers, a glowing status display panel, a coiled cable, a distant porthole.",
       "promptTokens": [
-        "full_body",
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",
@@ -1707,7 +1705,6 @@
       "outfitId": "street_cafe_sweet",
       "promptProse": "At a bubbling nine-grid blazing-spicy hotpot in the ship canteen at noon, she sits leaning forward across the table in a medium shot, fishing a piece of hairy tripe from the roiling red broth with her chopsticks, delighted eyes sparkling. Around her: a riveted metal table, a glass of cold barley tea sweating with condensation, hanging lantern bulbs, a pot of pickled vegetables, a small window showing the midday sky.",
       "promptTokens": [
-        "full_body",
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",

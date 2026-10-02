@@ -1491,7 +1491,7 @@
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "便利店深夜的关东煮暖意",
+    "title": "便利店深夜的限定布丁暖意",
     "usage": [
       "新手推荐",
       "壁纸级"
@@ -1501,7 +1501,7 @@
   {
     "animaCaption": "In a medium shot on the observatory roof under a crisp autumn night sky, Shiki Natsume stands beside the telescope with one hot cocoa in hand and points toward Orion with the other. A second cup rests on the observatory rail while the telescope remains visible in the foreground under the moonlight.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "中景侧面特写",
+    "camera": "天文台侧面中景",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -1786,7 +1786,7 @@
   {
     "animaCaption": "At a sunny window table of a cool summer dessert shop, Shiki Natsume in a breezy white off-shoulder chiffon top and denim shorts sits across from you in a vivid cowboy shot. She naturally offers a spoonful of colorful ice cream she has already tasted toward your lips, but suddenly realizing the indirect kiss, her cheeks flush deeply with an embarrassed tsundere pout as bright afternoon sunlight pours across the table, no text, no extra people.",
     "auditRevision": "skill-refine-sc257-2026-09-05",
-    "camera": "七分身圆桌平视特写",
+    "camera": "七分身圆桌平视中景，人物与递勺动作同框",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -2146,7 +2146,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young_looking, plastic_bag, transparent_plastic, cellophane_wrapper, glassine_wrapper, baking_cup, cupcake_liner, clear_container, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
     "officialCgCandidate": "ocs14",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, waist_up, wearing_stella_cafe_uniform, maid_apron, ruffled_apron, white_collar, gold_bow, holding_pastry_pouch, gentle_smile, subtle_blush, looking_at_viewer, warm_wooden_cafe, wall_racks_with_cups, warm_lighting, soft_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, waist_up, wearing_stella_cafe_uniform, maid_apron, ruffled_apron, white_collar, gold_bow, holding_pastry_pouch, gentle_smile, subtle_blush, looking_at_viewer, warm_wooden_cafe, wall_racks_with_cups, warm_lighting, soft_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

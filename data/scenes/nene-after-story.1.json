@@ -44,7 +44,7 @@
     ],
     "time": "夜晚",
     "timeOfDay": "night",
-    "title": "新年被窝里的败局",
+    "title": "新年被炉旁的败局",
     "usage": [
       "展示图"
     ],
@@ -451,7 +451,7 @@
   {
     "animaCaption": "A white bridal skirt opens in a small circle as adult Ayachi Nene tries one gentle turn before the fitting-room mirror. The opaque gown has a lined lace bodice and a floor-length hem; she lifts the skirt slightly with one hand and extends the other toward the viewer after hearing his answer. Her eyes shine with relieved happiness. A full-body portrait keeps the flowing hem and white shoes inside the frame.",
     "auditRevision": "careful-batch14-2026-08-27",
-    "camera": "婚纱裙摆完整可见的全身中景",
+    "camera": "婚纱裙摆完整可见的全身远景",
     "category": "恋爱/After_Story",
     "char": "nene",
     "character": [
@@ -512,7 +512,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
-    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, oversized_white_t_shirt, blue_cotton_shorts, sitting_cross_legged_on_floor, holding_ice_cream_tub, holding_spoon, second_spoon, low_stool, guilty_smile, kitchen, open_refrigerator, midnight, fridge_light, warm_night_lamp, medium_shot, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:ayachi_nene_v21_anima:0.85>",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, oversized_white_t_shirt, blue_cotton_shorts, sitting_cross_legged_on_floor, pushing_ice_cream_tub_toward_viewer, spoon_in_right_hand, second_spoon_on_low_stool, low_stool, guilty_smile, kitchen, open_refrigerator, midnight, fridge_light, warm_night_lamp, medium_shot, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:ayachi_nene_v21_anima:0.85>",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -523,9 +523,9 @@
       "oversized_white_t_shirt",
       "blue_cotton_shorts",
       "sitting_cross_legged_on_floor",
-      "holding_ice_cream_tub",
-      "holding_spoon",
-      "second_spoon",
+      "pushing_ice_cream_tub_toward_viewer",
+      "spoon_in_right_hand",
+      "second_spoon_on_low_stool",
       "low_stool",
       "guilty_smile",
       "kitchen",

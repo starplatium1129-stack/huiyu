@@ -1121,7 +1121,8 @@
         "nsfw",
         "nude"
       ],
-      "recommendedSize": "1536x1152"
+      "recommendedSize": "1536x1152",
+      "compositionIntent": "group"
     },
     {
       "id": "cheshire_harbor_patrol_rigging_ready",

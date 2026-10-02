@@ -1704,7 +1704,7 @@
         "colorful_lights",
         "summer"
       ],
-      "promptProse": "Watching dazzling summer fireworks explode above the spinning Ferris wheel, Reze looks up in wonder with a genuine, youthful smile. Vibrant multicolor firework bursts cast vivid reflections across her flushed cheeks and jacket.",
+      "promptProse": "Inside a Ferris-wheel gondola at its highest point, Reze looks up through the large glass window at dazzling summer fireworks, a borrowed jacket draped loosely over her shoulders. Multicolor bursts reflect across the cabin glass and her quietly wistful face, while the window frame makes the enclosed viewpoint clear.",
       "promptTokens": [
         "amusement_park",
         "ferris_wheel",
@@ -1712,12 +1712,15 @@
         "summer_night",
         "bomber_jacket",
         "looking_up",
-        "happy_smile",
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "inside_ferris_wheel_gondola",
+        "window_frame",
+        "wistful_expression",
+        "jacket_on_shoulders"
       ],
       "negativeTokens": [
         "worst quality",

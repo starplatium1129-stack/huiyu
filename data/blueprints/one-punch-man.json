@@ -27,10 +27,9 @@
         "office_light",
         "medium_shot"
       ],
-      "promptProse": "Tatsumaki hovers just above an empty meeting chair, arms folded as she reads the report on the table below. Her short green curls frame an openly unimpressed expression. The closed-neck black dress and opaque tights remain still in the quiet room. Cool office light, a stack of folders and the visible gap beneath her shoes communicate both the routine meeting and her unmistakable way of taking part.",
+      "promptProse": "In the Hero Association meeting room, Tatsumaki hovers above the seated executives around the conference table, arms folded as she listens to their report. She gives an openly unimpressed look and clicks her tongue at a dull proposal. Her short green curls, closed-neck black dress and opaque tights remain clear above the lower row of fully clothed officials. Cool office light reveals the tabletop folders and the contrast between the seated delegates and her unsupported hovering posture.",
       "promptTokens": [
         "1girl",
-        "solo",
         "tatsumaki",
         "one-punch_man",
         "meeting_room",
@@ -42,7 +41,10 @@
         "unimpressed",
         "green_curls",
         "office_light",
-        "medium_shot"
+        "medium_shot",
+        "conference_table",
+        "seated_executives",
+        "background_characters"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -56,8 +58,6 @@
         "watermark",
         "text",
         "signature",
-        "2girls",
-        "1boy",
         "nude",
         "underwear",
         "see-through"
@@ -70,7 +70,8 @@
       "coverageTags": [
         "iconic",
         "daily"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "tatsumaki_sfw_b6_02",
@@ -97,7 +98,7 @@
         "shop_light",
         "medium_shot"
       ],
-      "promptProse": "At a tall dessert counter, Tatsumaki rests one hand on a sturdy chair back while pointing firmly toward an elaborate cake. Her green eyes narrow at an unseen misunderstanding, cheeks faintly warm beneath the curly bob. A moss-green cardigan and long skirt keep the scene ordinary. Soft bakery light highlights the cake display and the determined expression of someone choosing a treat entirely on her own terms.",
+      "promptProse": "At a tall dessert counter, Tatsumaki stands on the seat of a sturdy chair to reach the display and points firmly toward its most elaborate cake. Her green eyes narrow in offended irritation at an unseen clerk’s mistaken assumption. A moss-green cardigan and long skirt keep the scene ordinary. Soft bakery light connects her feet on the chair, the high counter and her determined expression as she chooses the expensive treat on her own terms.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -112,7 +113,8 @@
         "green_eyes",
         "cardigan",
         "shop_light",
-        "medium_shot"
+        "medium_shot",
+        "standing_on_chair"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -288,7 +290,7 @@
       "characterId": "tatsumaki",
       "outfitId": "sfw_beach",
       "description": "【私人海滨露台·正午】龙卷穿着黑绿色泳装悬浮在遮阳伞旁，手里端着冰镇青柠苏打；她故意把脚尖离开沙面，海风把卷发吹成一圈绿色光环，最后还是被浪花溅到裙边而恼怒地瞪向镜头。",
-      "location": "private rooftop beach terrace",
+      "location": "private beachside terrace",
       "action": "遮阳伞旁悬浮喝青柠苏打，被浪花溅到裙边后恼怒瞪海",
       "timeOfDay": "日间",
       "lighting": "hard noon sun softened by a turquoise parasol",
@@ -317,8 +319,7 @@
         "green_hair",
         "sea_splash",
         "annoyed",
-        "noon",
-        "afternoon_light"
+        "noon"
       ],
       "negativeTokens": [
         "worst_quality",

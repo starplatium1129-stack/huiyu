@@ -1209,7 +1209,7 @@
     "location": "茶室",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "prompt": "safe, 1girl, pov, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, dark_green_kimono, gold_obijime, kneeling_in_seiza_on_tatami, offering_tea_bowl_with_both_hands, tea_bowl, close_distance, lowered_gaze, restrained_blush, traditional_tea_room, shoji_window_light, medium_shot, detailed_background, cinematic_lighting, depth_of_field, @rella",
     "rating": "All",
     "season": "秋",
@@ -1284,7 +1284,7 @@
   {
     "animaCaption": "Sunlight forms a narrow band across the tatami as Shiki Natsume wakes beneath the blanket just placed over her. In a beige T-shirt and light-grey shorts, she remains lying on her side with her head on a cushion. Her fingers lightly close around the blanket corner while travel notes lie beside the low table. Show the resting posture in a calm full-length view through the washitsu.",
     "auditRevision": "careful-batch01-2026-08-27",
-    "camera": "和室午睡全身中景",
+    "camera": "和室午睡全身远景",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -1393,7 +1393,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dog, outdoor",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_sweater, grey_sweater, pleated_skirt, sheer_black_tights, loafers, sitting_at_cafe_table, holding_furry_calico_cat_in_arms, cat_purring, natsume_flustered_blush, embarrassed_glance_at_viewer, cafe_interior, warm_afternoon_sunlight, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_sweater, grey_sweater, pleated_skirt, sheer_black_tights, loafers, sitting_at_cafe_table, sleeping_calico_cat_on_lap, gently_petting_cat, natsume_flustered_blush, embarrassed_glance_at_viewer, cafe_interior, warm_afternoon_sunlight, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 猫咪替她说出的喜欢】冬日下午的猫咖里，一只猫蜷在夏目腿上睡得很熟。她表面嫌弃无法起身，手指却一直轻轻梳理猫毛。你说她其实很喜欢可爱的东西，她抬眼瞪你，又把旁边的位置让出来——「是它自己过来的。你如果也想坐，就安静一点……别把它吵醒。」",

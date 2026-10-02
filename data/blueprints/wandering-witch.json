@@ -34,11 +34,11 @@
         "wind_blown_hair",
         "happy_smile",
         "daylight",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "wide_shot"
       ],
       "negativeTokens": [
         "worst quality",

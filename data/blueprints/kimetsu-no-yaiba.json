@@ -881,17 +881,14 @@
         "watermark",
         "text",
         "signature",
-        "2girls",
-        "1boy",
         "nude",
         "underwear",
         "see-through"
       ],
       "outfitId": "sfw_home",
-      "promptProse": "At the dining hall table, Mitsuri beams over a surprisingly generous meal, hands brought together in thanks before she begins. A pink apron lies neatly over her cream blouse and green skirt. Bowls of rice and vegetables form an orderly foreground rather than an eating contest; warm overhead light reveals her bright green eyes and the soft pink-to-green braids that frame an entirely sincere appetite.",
+      "promptProse": "At the Demon Slayer Corps dining hall’s long table, Mitsuri brings her hands together in thanks before beginning to eat. Rice bowls form a conspicuously tall stack in front of her, and nearby fully clothed corps members stare at the generous meal in surprise while she smiles happily and pays them little attention. A pink apron lies neatly over her cream blouse and green skirt. Warm overhead light connects her bright green eyes, the pink-to-green braids and the tower of bowls on the table.",
       "promptTokens": [
         "1girl",
-        "solo",
         "kanroji_mitsuri",
         "kimetsu_no_yaiba",
         "dining_hall",
@@ -903,7 +900,10 @@
         "apron",
         "braids",
         "warm_light",
-        "medium_shot"
+        "medium_shot",
+        "stacked_bowls",
+        "bowl_tower",
+        "background_characters"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -920,7 +920,8 @@
         "medium_shot"
       ],
       "timeOfDay": "日间",
-      "title": "甘露寺蜜璃 · 食堂的大盛纪录"
+      "title": "甘露寺蜜璃 · 食堂的大盛纪录",
+      "compositionIntent": "group"
     },
     {
       "action": "推过去缝好的软垫，收好双手期待猫咪试坐。",
@@ -1737,7 +1738,7 @@
         "gradient_braids",
         "bright_eyes",
         "evening_light",
-        "afternoon_light"
+        "twilight_light"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -1753,7 +1754,7 @@
         "evening_light",
         "afternoon_light"
       ],
-      "timeOfDay": "日间",
+      "timeOfDay": "黄昏",
       "title": "甘露寺蜜璃 · 祭典灯笼的愿望"
     }
   ],

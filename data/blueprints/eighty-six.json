@@ -236,7 +236,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "casual_summer_dress",
-      "promptProse": "Vladilena Milize leans against the windowsill of a tidy officers' dormitory in soft morning light, wearing an oversized white shirt slipping off one shoulder and baring her long pale legs. Steam curls from the cup of black tea cradled in her hands as her unbound silver hair falls messily past her waist. She blinks away sleep and smiles gently at you, backlit by gauzy white curtains that outline her relaxed silhouette. Medium shot, warm cinematic lighting, volumetric morning haze, detailed interior background, depth of field.",
+      "promptProse": "Vladilena Milize leans against the windowsill of a tidy officers' dormitory in soft morning light, wearing an oversized white shirt. One hand cradles a steaming cup of black tea while the other gathers her uncombed silver hair away from her face. She blinks away sleep and smiles gently at the viewer, backlit by gauzy white curtains that outline her relaxed silhouette. Medium shot, warm cinematic lighting, detailed interior background.",
       "promptTokens": [
         "vladilena_millize",
         "1girl",
@@ -252,13 +252,14 @@
         "grey_eyes",
         "holding_cup",
         "tea",
-        "sitting_on_windowsill",
         "morning",
         "bedroom",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "leaning_on_windowsill",
+        "holding_hair"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",

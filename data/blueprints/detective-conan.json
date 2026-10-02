@@ -222,7 +222,7 @@
       "description": "【京都旧道场·春日午后】小兰穿着带浅蓝腰带的白色婚纱站在道场木廊，手边放着收好的护具与一束樱花；她先认真把裙摆整理得适合行走，再对镜头露出温暖而有力量的笑。",
       "location": "old Kyoto dojo veranda",
       "action": "道场木廊边收好护具整理婚纱，双手捧樱花束露出温暖有力的笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "午后",
       "lighting": "soft spring light through blooming cherry branches",
       "camera": "medium full shot, vertical framing",
       "mood": "柔软与坚韧并存的花嫁",
@@ -245,8 +245,7 @@
         "bouquet",
         "blue_sash",
         "warm_smile",
-        "afternoon_light",
-        "twilight_light"
+        "afternoon_light"
       ],
       "negativeTokens": [
         "worst_quality",

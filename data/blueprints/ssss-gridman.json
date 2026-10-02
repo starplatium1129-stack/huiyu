@@ -319,7 +319,7 @@
       "location": "夏祭捞水球摊",
       "action": "收起浴衣袖子蹲在水池边，钩起条纹水球后举起展示。",
       "timeOfDay": "夜晚",
-      "lighting": "soft daylight",
+      "lighting": "warm lantern light at night",
       "camera": "medium shot, environmental portrait",
       "mood": "自然日常、细腻表情",
       "sceneTags": [
@@ -699,7 +699,7 @@
         "roses",
         "monster_figures",
         "lavender_dress",
-        "pink_hair",
+        "purple_hair",
         "perfect_smile",
         "soft_gaze",
         "sunset",
@@ -768,11 +768,10 @@
         "sandcastle",
         "shells",
         "monster_sculpture",
-        "pink_hair",
+        "purple_hair",
         "red_eyes",
         "unguarded_smile",
         "noon",
-        "afternoon_light",
         "wooden_board"
       ],
       "negativeTokens": [

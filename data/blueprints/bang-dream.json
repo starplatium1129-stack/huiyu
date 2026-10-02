@@ -317,7 +317,7 @@
       "description": "【闭园海滨舞台·傍晚】祥子穿着深蓝泳装外搭黑色薄衫，坐在空舞台边拆下一串灯饰；海风把蓝发两侧的发带吹起，她把最后一盏灯重新点亮，抬头看向镜头时笑容带着少见的轻松。",
       "location": "closed seaside concert stage",
       "action": "闭园舞台边重新点亮最后一串蓝灯，海风吹起发带并轻松抬头",
-      "timeOfDay": "日间",
+      "timeOfDay": "傍晚",
       "lighting": "blue dusk with warm bulbs and ocean haze",
       "camera": "medium shot, horizontal framing",
       "mood": "演出结束后才属于自己的假日",
@@ -342,8 +342,7 @@
         "blue_hair",
         "unguarded_smile",
         "ocean",
-        "dusk",
-        "afternoon_light"
+        "dusk"
       ],
       "negativeTokens": [
         "worst_quality",

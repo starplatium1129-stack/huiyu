@@ -161,7 +161,7 @@
     "location": "图书馆",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nene_school_uniform, navy_blazer, pleated_skirt, white_thighhighs, peeking_from_behind_a_tall_bookshelf, holding_several_occult_reference_books, tucking_the_top_book_against_her_chest, relieved_shy_smile, library, afternoon_window_light, medium_shot, detailed_bookshelves, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
@@ -420,7 +420,7 @@
   {
     "animaCaption": "The train has just reached the winter platform when Ayachi Nene turns back and extends a small ticket-pass case toward the viewer. Her beige coat and red scarf lift in the draft while her other hand steadies the scarf. The open train door remains behind her. Frame her face, outstretched case and the platform edge at waist height in cold morning light.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
-    "camera": "月台票套与面部半身中景",
+    "camera": "月台票套与人物半身中景",
     "category": "日常",
     "char": "nene",
     "character": [
@@ -502,7 +502,7 @@
       "full_body",
       "standing"
     ],
-    "time": "清晨",
+    "time": "午后",
     "timeOfDay": "afternoon",
     "title": "浪花反击战",
     "usage": [
@@ -525,7 +525,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, hidden_hands, hands_out_of_frame, sitting_on_top_of_desk, empty_desk, missing_exam_paper, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, autumn, sitting_at_desk, exam_paper, holding_paper, desk, pointing, hands_on_table, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, autumn, sitting_at_desk, exam_paper, pushing_exam_paper_toward_viewer, desk, pointing, hands_on_table, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 考前一小时的求救】期中考试前的教室里，宁宁对着同一道题看了很久，草稿纸上已经画满凌乱的推导。见你经过，她先把卷子压住，几秒后又认命地推到你面前，呆毛也跟着垂下——「我知道平时应该早点复习……所以别说教了。教会这一题的话，放学后我请你喝东西。」",
@@ -649,7 +649,7 @@
   {
     "animaCaption": "At the observatory deck, Ayachi Nene opens her eyes after a shooting star has passed and catches the viewer watching her. One hand gathers the viewer's sleeve at the edge of the picture; the other rests inside her warm pink cardigan pocket. A faint meteor trail still crosses the autumn night above the railing. Her small hopeful smile is framed closely against the dark sky.",
     "auditRevision": "careful-batch06-2026-08-27",
-    "camera": "观星台面部与抓袖动作中景",
+    "camera": "观星台人物与抓袖动作半身中景",
     "category": "恋爱",
     "char": "nene",
     "character": [
@@ -1515,7 +1515,7 @@
   {
     "animaCaption": "Between towering sunflowers, Ayachi Nene turns back at the sound of her name, one hand parting a broad green leaf beside the narrow path. Her opaque white cotton dress and straw hat catch the hot summer breeze. She points along the path with her free hand toward the place she has found for their photograph. A full-length view follows the path through golden flowers and keeps her sandals visible on the dry earth.",
     "auditRevision": "careful-batch03-2026-08-27",
-    "camera": "花田路径全身中景",
+    "camera": "花田路径全身远景",
     "category": "旅行",
     "char": "nene",
     "character": [
@@ -1566,7 +1566,7 @@
   {
     "animaCaption": "Inside the shrine guest room, Ayachi Nene has finished trying on her new white tabi socks in front of a standing mirror. Dressed in a pale-blue kimono, she turns from the mirror and offers a small hand warmer to the viewer with both hands. The mirror reflects only the quiet room at an oblique angle. A full-body view shows the split-toe socks on the cool wooden floor in soft morning light.",
     "auditRevision": "careful-batch04-2026-08-27",
-    "camera": "镜前足袋可见的全身中景",
+    "camera": "镜前足袋可见的全身远景",
     "category": "祭典・节日",
     "char": "nene",
     "character": [
@@ -1697,7 +1697,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "At a summer night festival, Ayachi Nene in a light blue yukata stands with wooden geta between lanterns and the crowd, looking up at a blooming firework display, then turning toward the viewer with a shy radiant smile, reaching her hand out.",
+    "animaCaption": "At a summer night festival, Ayachi Nene stands in a light-blue yukata and wooden geta among red paper lanterns and softly blurred festival visitors. She turns her smiling face toward the viewer while holding the viewer's hand at the edge of the frame, with fireworks illuminating the sky behind her. A full-body view keeps her feet and the festival setting visible.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "全身远景",
     "category": "祭典・节日",
@@ -1711,8 +1711,8 @@
     "location": "祭典会场",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_yukata, bare_legs, geta, turning_around, looking_at_viewer, shy_smile, reaching_towards_viewer, night_sky, fireworks, red_paper_lanterns, festival_crowd_bokeh, depth_of_field, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_yukata, bare_legs, geta, turning_around, looking_at_viewer, shy_smile, holding_viewer_hand, night_sky, fireworks, red_paper_lanterns, festival_crowd_bokeh, depth_of_field, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 花火大会的侧脸】夏夜祭典上，宁宁穿着浴衣站在灯笼与人群之间，仰头等待下一束烟花。绚烂光影在她紫色眼睛里一层层盛开，她却在最响亮的瞬间转向你，笑着抓住你的手——「烟花很漂亮，但一下就会消失。所以你要认真记住……今晚我站在你身边的样子。」",
@@ -2027,7 +2027,7 @@
     "location": "温馨卧室床榻",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
     "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cute_loose_long_sleeve_pajamas, lying_prone_on_bedroom_pillow, propping_chin_on_both_hands, bare_legs_gently_swinging_behind_her, looking_at_viewer_with_wide_sparkling_eyes, contented_drooping_ahoge, rain_on_window, rainy_night_bedroom, warm_bedside_lamp, close_up, soft_lighting, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "不限",

@@ -2662,11 +2662,11 @@
         "white_hair",
         "cardigan",
         "indoor_light",
-        "medium_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "full_body"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9928,7 +9928,7 @@
         "bad anatomy",
         "bad hands",
         "extra limbs",
-        "fire, flames, burning ears",
+        "burning ears",
         "purple_bodysuit"
       ],
       "recommendedSize": "1536x1152",
@@ -11383,7 +11383,7 @@
         "bad anatomy",
         "bad hands",
         "extra limbs",
-        "fire, flames, burning ears"
+        "burning ears"
       ],
       "recommendedSize": "1536x1152",
       "adult": false,
@@ -11746,7 +11746,7 @@
         "bad anatomy",
         "bad hands",
         "extra limbs",
-        "fire, flames, burning ears"
+        "burning ears"
       ],
       "recommendedSize": "1152x1536",
       "adult": false,
@@ -12393,7 +12393,7 @@
     },
     {
       "id": "medusa_rider_sfw_b7_04",
-      "title": "美杜莎 Rider · 午夜图书馆的紫色花嫁",
+      "title": "美杜莎 Rider · 暮色图书馆的紫色花嫁",
       "category": "圣洁花嫁",
       "characterId": "medusa_rider",
       "outfitId": "sfw_bridal",
@@ -12619,7 +12619,7 @@
         "morning_light",
         "medium_shot"
       ],
-      "promptProse": "Chloe reaches across the breakfast table with chopsticks to move a piece of fried egg onto her plate, then quietly sets a portion of bacon on the spare dish beside it. Her orange eyes carry a mischievous grin above the blue apron. Morning light reveals warm brown skin, pale pink hair and the neatly prepared meal, turning a playful breakfast contest into a small, unmistakable gesture of consideration.",
+      "promptProse": "Chloe reaches across the breakfast table with chopsticks to move a piece of fried egg from Illya's plate at the far edge of the table onto her own, then quietly returns a portion of bacon to that same plate. Her orange eyes carry a mischievous grin above the blue apron. Morning light reveals warm brown skin, pale pink hair and the neatly prepared meal, turning a playful breakfast contest into a small, unmistakable gesture of consideration.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -12759,12 +12759,12 @@
         "grin",
         "red_cardigan",
         "colored_lighting",
-        "medium_shot"
+        "medium_shot",
+        "schoolchildren_spectators",
+        "watching_arcade_game"
       ],
-      "promptProse": "Chloe sits at an arcade cabinet with both hands poised over the buttons, orange eyes fixed on the bright game screen. Her red cardigan sleeves are pushed back from her wrists. A moment of victory opens into a broad delighted grin, while reflected colored lights trace her pale pink hair. The close seated view stays with her hands and face, leaving the rest of the arcade softly out of focus.",
+      "promptProse": "Chloe sits at an arcade cabinet with both hands poised over the buttons, orange eyes fixed on the bright game screen. Her red cardigan sleeves are pushed back from her wrists. A moment of victory opens into a broad delighted grin, while reflected colored lights trace her pale pink hair. A small group of fully clothed schoolchildren gathers behind the chair to watch her winning streak. Keep Chloe central, her hands and delighted face clear, while the cheering young spectators remain distinct in the softly focused arcade background.",
       "promptTokens": [
-        "1girl",
-        "solo",
         "chloe_von_einzbern",
         "fate/kaleid_liner_prisma_illya",
         "arcade",
@@ -12776,7 +12776,9 @@
         "grin",
         "red_cardigan",
         "colored_lighting",
-        "medium_shot"
+        "medium_shot",
+        "schoolchildren_spectators",
+        "watching_arcade_game"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -12790,8 +12792,6 @@
         "watermark",
         "text",
         "signature",
-        "2girls",
-        "1boy",
         "nude",
         "underwear",
         "see-through"
@@ -12803,7 +12803,8 @@
       "animaStyleHint": "anime_portrait_sharp",
       "coverageTags": [
         "daily"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "chloe_von_einzbern_sfw_b7_04",
@@ -13227,7 +13228,7 @@
       "description": "【柳洞寺庭院·清晨】美狄亚穿着深蓝长袖婚纱站在石灯笼与白梅之间，侧辫用银线束好；她将亲手做的蓝色花环放在掌心，面对镜头时古老魔女的严肃神情化作温柔而专注的祝福。",
       "location": "Ryuudou Temple plum garden",
       "action": "梅树下检查亲手编的蓝花环，确认无误后温柔递向镜头",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "清晨",
       "lighting": "clear morning light across stone lanterns",
       "camera": "medium full shot, vertical framing",
       "mood": "魔女亲手准备的温柔祝福",
@@ -13250,8 +13251,7 @@
         "blue_wreath",
         "side_braid",
         "protective_smile",
-        "morning_light",
-        "twilight_light"
+        "morning_light"
       ],
       "negativeTokens": [
         "worst_quality",

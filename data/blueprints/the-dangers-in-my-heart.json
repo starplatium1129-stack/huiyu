@@ -5,7 +5,7 @@
     {
       "id": "yamada_library_snack_caught",
       "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸·「市川……嘘！不许告诉图书委员！」",
-      "category": "战斗高光",
+      "category": "校园日常",
       "characterId": "yamada_anna",
       "outfitId": "official_school_uniform",
       "description": "午休的图书室里，杏奈躲在书架间吃薯片，腮帮子还鼓着，就看见你走进过道。她穿着整齐的校服和米色开衫，一手把零食袋藏到背后，另一手赶紧把食指抵在唇边，请你替她保守这个小秘密。",
@@ -371,7 +371,7 @@
       "action": "脱木屐揉脚踝，歪头依靠在身侧肩膀，烟花夜空下低语",
       "timeOfDay": "夏夜烟花盛开时",
       "lighting": "夜空烟花多重绚烂彩光与古树下纸灯笼",
-      "camera": "medium shot, sitting on stone bench, yukata, fireworks, leaning on shoulder",
+      "camera": "medium full shot, seated view, shoulder contact, hands and exposed ankle visible",
       "mood": "夏夜唯美、心跳依靠",
       "sceneTags": [
         "festival",
@@ -385,7 +385,7 @@
         "romantic",
         "one_sandal_removed"
       ],
-      "promptProse": "Anna Yamada rests on a stone bench beneath an ancient cedar tree during the summer shrine fireworks festival, clad in a rich indigo yukata with white goldfish motifs. Having slipped off one wooden geta sandal to nurse a blistered heel, she leans her head affectionately against your shoulder, holding a half-eaten candy apple. Brilliant bursts of multicolored fireworks blossom in the night sky above, illuminating the tender flush on her cheek and the small beauty mark on her neck. Medium shot, cinematic fireworks bokeh, detailed Japanese festival background, depth of field, solo 1girl, no text.",
+      "promptProse": "Anna Yamada rests on a stone bench beneath an ancient cedar tree during the summer shrine fireworks festival, wearing an indigo yukata with white goldfish motifs. One wooden geta sandal has been slipped off beside the bench. She rubs the exposed ankle with one hand while holding a half-eaten candy apple in the other, leaning her head against the viewer's shoulder with a shy flush. Multicolored fireworks light her cheek and neck beauty mark, while paper lanterns illuminate the stone bench and removed sandal. A seated medium-full view keeps the shoulder contact, her hands and the exposed ankle together.",
       "promptTokens": [
         "yamada_anna",
         "1girl",
@@ -409,7 +409,8 @@
         "cinematic_lighting",
         "depth_of_field",
         "volumetric_lighting",
-        "one_sandal_removed"
+        "one_sandal_removed",
+        "rubbing_ankle"
       ],
       "negativeTokens": [
         "worst quality",

@@ -457,7 +457,7 @@
       "description": "【艾莉 · 街角咖啡厅·夏日露天约会】夏日午后的林荫道露天咖啡座旁，艾莉双手捧着加满碎冰的柠檬红茶，白皙如雪的肌肤在树影碎光下透着晶莹的光泽。她微微偏过头看向你，唇角泛起温柔的笑意，随后用小得几乎听不见的俄语轻喃——「【Ты мне нравишься】（我喜欢你）……哼，刚才只是在练习俄语发音而已，政近同学可别自作多情！」",
       "id": "alya_street_cafe_summer",
       "lighting": "夏日午后明媚日光透过行道树洒下斑驳碎光，通透清新",
-      "location": "征岭学园阳光运动场",
+      "location": "征岭学园附近林荫道露天咖啡座",
       "mood": "惬意温柔与夏日明朗",
       "negativeTokens": [
         "worst quality",
@@ -1501,8 +1501,7 @@
         "half_up_hair",
         "ladylike_pose",
         "playful_wink",
-        "afternoon_light",
-        "twilight_light"
+        "afternoon_light"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1517,7 +1516,7 @@
         "playful_wink",
         "afternoon_light"
       ],
-      "timeOfDay": "黄昏",
+      "timeOfDay": "午后",
       "title": "周防有希 · 学生会礼堂的双面花嫁"
     },
     {
@@ -1568,8 +1567,7 @@
         "half_up_hair",
         "excited_smile",
         "sea_breeze",
-        "evening",
-        "afternoon_light"
+        "evening"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -1585,7 +1583,7 @@
         "sea_breeze",
         "evening"
       ],
-      "timeOfDay": "日间",
+      "timeOfDay": "傍晚",
       "title": "周防有希 · 海滨捞面具的夏日约会"
     },
     {
@@ -1915,8 +1913,7 @@
         "wavy_hair",
         "brown_ribbon",
         "considerate_smile",
-        "afternoon_light",
-        "twilight_light"
+        "afternoon_light"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1931,7 +1928,7 @@
         "considerate_smile",
         "afternoon_light"
       ],
-      "timeOfDay": "黄昏",
+      "timeOfDay": "午后",
       "title": "玛夏 · 温室钢琴旁的温柔花嫁"
     },
     {
@@ -1982,8 +1979,7 @@
         "wavy_hair",
         "gentle_invitation",
         "steam",
-        "dusk",
-        "afternoon_light"
+        "dusk"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -1999,7 +1995,7 @@
         "steam",
         "dusk"
       ],
-      "timeOfDay": "日间",
+      "timeOfDay": "黄昏",
       "title": "玛夏 · 冬日海湾的披肩与热可可"
     },
     {

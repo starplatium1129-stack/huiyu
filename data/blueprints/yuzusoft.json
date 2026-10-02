@@ -1049,7 +1049,8 @@
         "ahoge"
       ],
       "timeOfDay": "傍晚",
-      "title": "常陆茉子 · 榻榻米上的推拿羞红"
+      "title": "常陆茉子 · 榻榻米上的推拿羞红",
+      "compositionIntent": "group"
     },
     {
       "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
@@ -2505,8 +2506,7 @@
         "apron_detail",
         "ahoge",
         "relaxed_smile",
-        "morning_light",
-        "twilight_light"
+        "morning_light"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -2521,7 +2521,7 @@
         "relaxed_smile",
         "morning_light"
       ],
-      "timeOfDay": "黄昏",
+      "timeOfDay": "清晨",
       "title": "明月栞那 · 星光咖啡馆的白色花嫁"
     },
     {

@@ -1158,7 +1158,7 @@
         "looking_back",
         "night_sky"
       ],
-      "promptProse": "Turning back with a bashful, radiant smile in her floral summer yukata beneath bursting festival fireworks, Yui holds out a paper fan. Brilliant multicolored firework sparkles cast warm glowing reflections across her face.",
+      "promptProse": "On the stone steps beside the festival riverbank, Yui turns back with a bashful, radiant smile in her floral summer yukata beneath bursting fireworks and holds out a paper fan. Brilliant multicolored firework sparkles reflect across the river and cast warm glowing light over her face.",
       "promptTokens": [
         "summer_festival",
         "yukata",
@@ -1171,7 +1171,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "riverbank",
+        "stone_steps"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2089,7 +2091,7 @@
     {
       "id": "iroha_student_council_teasing_smile",
       "title": "一色彩羽 · 学生会室小恶魔托腮的虚假拒绝·「前辈，这算是告白吗？对不起，我们是不可能的♪」",
-      "category": "战斗高光",
+      "category": "校园日常",
       "characterId": "isshiki_iroha",
       "outfitId": "official_sobu_uniform",
       "description": "【学生会会长室·放学后】名台词名场面立魂。彩羽坐在会长专属办公椅上，单手托着下巴，另一手在胸前做出婉拒手势。蜜糖色波浪卷发垂落，那双狡黠灵动的大眼睛眯成恶魔般的月牙，脸上挂着戏谑而甜蜜的招牌坏笑。",
@@ -2516,7 +2518,7 @@
     {
       "id": "iroha_christmas_backstage_blush",
       "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
-      "category": "圣洁花嫁",
+      "category": "节日约会",
       "characterId": "isshiki_iroha",
       "outfitId": "student_council_blazer",
       "description": "【联合圣诞晚会礼堂后台·雪夜】大获成功的圣诞活动幕后。彩羽头戴小红帽发箍，身上披着红色天鹅绒小斗篷，怀里抱着给你的特制礼物盒。在彩灯与幕布之间，她难得收起了小恶魔面具，眼中泛起真诚温润的水光，通红着脸将礼物递到你的怀里。",

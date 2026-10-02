@@ -1,7 +1,7 @@
 {
   "blueprints": [
     {
-      "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，翠眸清澈凝视",
+      "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，湛蓝眼眸清澈凝视",
       "adult": false,
       "animaStyleHint": "anime_portrait_sharp",
       "camera": "medium shot, cinematic low angle, dawn mist atmosphere, emotional reflection",
@@ -58,7 +58,7 @@
         "emotional"
       ],
       "timeOfDay": "黎明破晓",
-      "title": "薇尔莉特 · 破晓废墟的怀表与胸针·「我也想明白……『我爱你』的含义」"
+      "title": "薇尔莉特 · 破晓废墟的祖母绿胸针·「我也想明白……『我爱你』的含义」"
     },
     {
       "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
@@ -236,7 +236,7 @@
       "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚·「书里描绘的幸福，就像现在这样吗？」"
     },
     {
-      "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，翡翠双眸顾盼生辉",
+      "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，湛蓝双眸顾盼生辉",
       "adult": false,
       "animaStyleHint": "anime_night_glamour",
       "camera": "dynamic wide shot, rotating dress flow, ballroom depth, royal grandeur",

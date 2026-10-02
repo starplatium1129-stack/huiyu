@@ -81,7 +81,7 @@
       "description": "深夜工作间，她对着一排小药瓶与研钵调配药剂，烛光把她的侧影投在古老的石墙上；动作精准得像仪式，是她「童话咒术与药学」的日常面。",
       "location": "深夜洋馆工作间",
       "action": "深夜工作间，她对着一排小药瓶与研钵调配药剂，烛光把她的侧影投在古老的石墙上",
-      "timeOfDay": "日间",
+      "timeOfDay": "深夜",
       "lighting": "candlelight",
       "camera": "medium shot",
       "mood": "自然日常",
@@ -97,7 +97,7 @@
         "candlelight",
         "side_view"
       ],
-      "promptProse": "In the manor workroom, Alice arranges small stoppered bottles beside a mortar, sleeves tied safely above her wrists. She lifts an empty glass vial toward the candlelight to check its cleanliness before setting it down. Dark blue fabric, old stone and carefully aligned tools surround the thoughtful profile. The scene shows patient preparation for a fictional craft without presenting a recipe, measurement or practical medicinal instruction.",
+      "promptProse": "In the manor workroom at night, Alice works a small mortar of fictional dried herbs with a pestle, her sleeves tied safely above her wrists. A row of stoppered glass vials waits beside the mortar while candlelight casts her quiet profile onto the old stone wall. Dark blue fabric and carefully aligned tools frame the precise, ritual-like motion, with no readable labels, recipe or measurements.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -112,7 +112,10 @@
         "focused",
         "stone_wall",
         "candlelight",
-        "side_view"
+        "side_view",
+        "mixing_fictional_herbs",
+        "holding_pestle",
+        "night"
       ],
       "negativeTokens": [
         "worst_quality",

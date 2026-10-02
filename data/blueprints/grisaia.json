@@ -1107,7 +1107,8 @@
         "nsfw",
         "nude"
       ],
-      "recommendedSize": "1152x1536"
+      "recommendedSize": "1152x1536",
+      "compositionIntent": "group"
     },
     {
       "id": "amane_rooftop_night_sky_confession_wind",

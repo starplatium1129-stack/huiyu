@@ -1119,7 +1119,7 @@
         "claws"
       ],
       "outfitId": "sayahime_stage",
-      "promptProse": "Delivering a powerhouse stage performance in Tokyo Blade holding her prop katana, Akane commands the scene with intense method-acting focus. Dramatic stage spotlights and billowing stage fog highlight her extraordinary artistic genius.",
+      "promptProse": "At the decisive moment of the Tokyo Blade stage performance, Akane draws her prop katana from its sheath with intense method-acting focus. Her star-lit eyes and billowing blue-violet hair catch the dramatic blood-red stage spotlights, while theatrical fog surrounds the blade as it clears the scabbard.",
       "promptTokens": [
         "theatre_stage",
         "tokyo_blade_costume",
@@ -1131,7 +1131,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "drawing_katana",
+        "sheath"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1337,7 +1339,7 @@
         "claws"
       ],
       "outfitId": "school_uniform",
-      "promptProse": "Captivating casting directors under bright audition lights, Akane channels star-filled eyes with breathtaking acting intensity. Crisp directional spotlights emphasize her magnetic, transformative stage presence.",
+      "promptProse": "Holding an audition script before a plain white wall under bright audition lights, Akane enters her role with star-filled eyes and intense concentration. Crisp directional spotlights connect the script in her hands with her composed face as she performs for the offscreen casting directors.",
       "promptTokens": [
         "audition_room",
         "standing_in_spotlight",
@@ -1349,7 +1351,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "holding_script",
+        "white_wall"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1407,7 +1411,7 @@
         "extra person"
       ],
       "outfitId": "pinafore_dress",
-      "promptProse": "Jotting down character analysis notes over iced tea at a sunny cafe table, Akane looks up with an affectionate, intelligent smile. Warm ambient daylight and quiet cafe bustle create a charming, thoughtful date moment.",
+      "promptProse": "A full-body view shows Akane seated at a sunny cafe table, jotting character-analysis notes beside her iced tea before looking up with an affectionate, intelligent smile. Warm ambient daylight connects her blue pinafore dress and white blouse with the notebook and glass, while her seated figure remains visible from head to toe against the quiet cafe.",
       "promptTokens": [
         "cafe",
         "iced_tea",
@@ -1416,11 +1420,11 @@
         "casual_blouse",
         "gentle_smile",
         "daylight",
-        "medium_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "full_body"
       ],
       "recommendedSize": "1216x832",
       "sceneTags": [
@@ -1521,7 +1525,7 @@
         "claws"
       ],
       "outfitId": "pinafore_dress",
-      "promptProse": "Answering interview questions gracefully on a televised talk show set holding a microphone, Akane charms the audience with poise. Professional studio lighting and vibrant set backdrops frame her rising star reputation.",
+      "promptProse": "Seated on the televised talk show’s studio sofa, Akane answers interview questions gracefully while holding a microphone. Professional studio lighting and vibrant set backdrops connect her poised smile, blue pinafore dress and the upholstered sofa in a composed broadcast interview view.",
       "promptTokens": [
         "talk_show_studio",
         "broadcast_cameras",
@@ -1532,7 +1536,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sitting_on_sofa",
+        "studio_sofa"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [

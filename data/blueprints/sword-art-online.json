@@ -975,7 +975,7 @@
       "description": "【郊外小教堂·清晨】诗乃穿着剪裁简洁的蓝白婚纱站在钢琴旁，黑框眼镜被换成细小的银色发饰；她指尖轻触捧花上的蓝色小花，面对镜头时的安静笑容像一段终于完成的旋律。",
       "location": "small countryside chapel with an upright piano",
       "action": "钢琴旁整理银色发饰并轻触蓝花捧花，安静回眸微笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "morning",
       "lighting": "clear morning light and pale blue window glow",
       "camera": "medium full shot, vertical framing",
       "mood": "现实世界里的安静誓约",
@@ -1001,7 +1001,6 @@
         "brown_eyes",
         "quiet_smile",
         "morning_light",
-        "twilight_light",
         "touching_flower"
       ],
       "negativeTokens": [
@@ -1058,7 +1057,7 @@
         "sea_breeze",
         "afternoon_light"
       ],
-      "promptProse": "Shino Asada from Sword Art Online wears a slate-blue athletic swimsuit with a pale windbreaker, waterproof headphones and a utility pouch. She sits at the edge of the glassy beach testing waterproof headphones while the tide glows around her. She offers one earbud toward the viewer so the rhythm of the surf can be shared, her ash-brown hair and loose jacket moving gently in the sea breeze. soft afternoon sun reflected on calm water.",
+      "promptProse": "On a quiet glass-pebble beach, Shino Asada sits in a folding beach chair wearing a slate-blue athletic swimsuit and a pale windbreaker. She offers one waterproof earbud toward the viewer with one hand while her other hand holds down the wind-blown jacket edge. Ash-brown hair frames her relaxed brown-eyed smile. Gentle afternoon sunlight reflects from the calm water behind the chair and illuminates the small earpiece. Her utility pouch rests within reach.",
       "promptTokens": [
         "swimsuit",
         "athletic_swimsuit",

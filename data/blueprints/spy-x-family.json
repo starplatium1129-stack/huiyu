@@ -892,7 +892,7 @@
       "outfitId": "wise_agent_trench",
       "category": "间谍日常",
       "location": "雨夜柏林特街头电话亭",
-      "action": "撑伞站在电话亭内单手持听筒汇报密电",
+      "action": "一手将收拢黑伞靠在玻璃门侧，一手握黑色听筒汇报密电。",
       "timeOfDay": "深夜",
       "lighting": "电话亭昏黄暖光与湿漉雨夜反光",
       "camera": "cowboy shot",
@@ -907,10 +907,9 @@
         "expressionless",
         "wet_glass"
       ],
-      "promptProse": "Inside a glowing glass telephone booth on a rain-slicked Berlint boulevard at night, Fiona Frost stands composed beneath her dark blue double-breasted WISE pea coat with its purple turtleneck collar turned up. Yellow incandescent lamplight reflects off the wet glass panels and rainy cobblestones outside, outlining her blunt-ended white bob and the long fringe that covers most of her right eye, while her calm grey eyes watch the empty street with cool intelligence. Atmospheric nocturnal espionage composition with wet street reflections and heavy rain haze.",
+      "promptProse": "Inside a glowing glass telephone booth on a rain-slicked Berlint boulevard at night, Fiona Frost holds a black telephone receiver to her ear while her other hand steadies a closed black umbrella against the glass door. Her dark-blue WISE pea coat and purple turtleneck remain buttoned against the cold. Yellow booth lamplight outlines her blunt white bob and long right-side fringe as she calmly reports a coded message, watching the empty street through rain-streaked glass. Wet cobblestone reflections and heavy rain haze establish the nocturnal espionage setting.",
       "promptTokens": [
         "telephone_booth",
-        "holding_phone",
         "rainy_night",
         "wet_pavement",
         "lamp_glow",
@@ -918,7 +917,10 @@
         "water_droplets",
         "cowboy_shot",
         "night",
-        "lamp"
+        "lamp",
+        "holding_telephone_receiver",
+        "telephone_receiver",
+        "closed_umbrella"
       ],
       "negativeTokens": [
         "worst quality",
@@ -965,7 +967,7 @@
         "sunbeam",
         "clean_aesthetic"
       ],
-      "promptProse": "Walking along the pristine tiled hallway of Berlint General Hospital in the morning light, Fiona Frost clutches a leather medical clipboard against her grey striped vest and dark blue sweater. Bright sunlight streams through tall corridor windows, casting crisp shadows across the polished floor and highlighting her blunt-ended white bob and the fringe covering most of her right eye. Her expression remains an unyielding mask of clerical composure while her grey eyes convey quiet inner determination. Vertical perspective down the hospital hallway.",
+      "promptProse": "In the morning hallway of Berlint General Hospital, Fiona Frost walks past Loid Forger approaching from the opposite direction in a white doctor’s coat. She clutches a leather medical clipboard against her grey striped vest and dark-blue sweater, keeping her eyes straight ahead and her clerical poker face composed at the instant their paths cross. Tall-window sunlight connects both clothed figures with the polished tiled floor and highlights her blunt white bob and long right-side fringe. Frame the passing encounter down the bright hospital corridor.",
       "promptTokens": [
         "hospital",
         "hallway",
@@ -976,7 +978,11 @@
         "sunbeam",
         "tiled_floor",
         "three_quarter_view",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures",
+        "passing_by",
+        "doctor",
+        "white_labcoat"
       ],
       "negativeTokens": [
         "worst quality",
@@ -989,7 +995,6 @@
         "extra fingers",
         "mutated hands",
         "bad anatomy",
-        "extra characters",
         "duplicate subject",
         "split screen"
       ],
@@ -997,7 +1002,8 @@
       "adult": false,
       "coverageTags": [
         "daily"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "fiona_frost_tennis_court_drive",
@@ -1080,7 +1086,7 @@
         "surveillance",
         "snowflakes"
       ],
-      "promptProse": "High above the sleeping city on a stone clock tower parapet, Fiona Frost conducts nocturnal surveillance with military-grade black binoculars. Chilly night winds toss her short white hair while her dark blue pea coat is buttoned tight to her throat against falling snowflakes, the purple turtleneck collar pulled up over her chin. City lights glint softly below in the distant background, contrasting with the dark architectural stone and her solitary standing silhouette. Vertical cowboy shot under cold winter moonlight.",
+      "promptProse": "High above the sleeping city on a stone clock-tower parapet, Fiona Frost aims military-grade black binoculars at the warmly lit windows of the distant Forger apartment on a street corner. Chilly night winds toss her short white hair while her dark-blue pea coat is buttoned tight to her throat against falling snow, the purple turtleneck pulled above her chin. The apartment’s small amber glow below contrasts with cold architectural stone and her solitary standing silhouette. Vertical cowboy shot under winter moonlight.",
       "promptTokens": [
         "clock_tower",
         "rooftop",
@@ -1092,7 +1098,9 @@
         "moonlight",
         "cowboy_shot",
         "night",
-        "cold_atmosphere"
+        "cold_atmosphere",
+        "apartment_windows",
+        "amber_window_light"
       ],
       "negativeTokens": [
         "worst quality",

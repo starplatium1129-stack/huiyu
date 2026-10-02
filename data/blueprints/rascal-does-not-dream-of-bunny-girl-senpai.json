@@ -1777,8 +1777,7 @@
         "crab",
         "safety_glasses",
         "brightened_gaze",
-        "noon",
-        "afternoon_light"
+        "noon"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2577,9 +2576,9 @@
       "characterId": "makinohara_shouko",
       "outfitId": "sfw_kitchen",
       "description": "【梓川家厨房·清晨】翔子把长发束成侧辫，穿着素雅围裙准备便当，先把每一块水果摆成整齐的小花，再把写好祝福的便签压在盒盖下。",
-      "location": "Kajigawa family kitchen",
+      "location": "梓川家厨房",
       "action": "准备便当把水果摆成小花，将祝福便签压在盒盖下",
-      "timeOfDay": "日间",
+      "timeOfDay": "清晨",
       "lighting": "soft morning light over a clean counter",
       "camera": "medium shot, vertical framing",
       "mood": "把照料写进每一个便当细节",
@@ -2603,8 +2602,7 @@
         "side_braid",
         "handwritten_note",
         "calm_smile",
-        "morning_light",
-        "afternoon_light"
+        "morning_light"
       ],
       "negativeTokens": [
         "worst_quality",

@@ -153,7 +153,7 @@
       "description": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融；确认大家都拿到之后才给自己盛，动作自然得像呼吸。",
       "location": "旅途篝火营地",
       "action": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融",
-      "timeOfDay": "日间",
+      "timeOfDay": "evening",
       "lighting": "firelight",
       "camera": "horizontal medium shot",
       "mood": "自然日常",
@@ -224,7 +224,7 @@
       "description": "【边境小镇石砌教堂·午后】旅途暂歇，她换上简洁的象牙白婚纱，浣熊耳朵紧张地竖起，双手捧着野花束走过彩窗下的长椅；尾巴小心收在裙后，听见钟声时终于露出可靠又羞涩的笑。",
       "location": "stone chapel beside a frontier town",
       "action": "彩窗下捧野花束回眸，兽耳竖起，尾巴藏在裙后露出可靠的羞涩笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "afternoon",
       "lighting": "warm afternoon rays through stained glass",
       "camera": "medium full shot, vertical framing",
       "mood": "旅途后的可靠幸福",
@@ -238,9 +238,9 @@
         "raccoon_tail",
         "grateful_smile",
         "blush",
-        "sitting"
+        "standing"
       ],
-      "promptProse": "Raphtalia from The Rising of the Shield Hero wears an ivory wedding dress with a short veil, chestnut ribbon details and practical lace-up boots. She pauses beneath the rose window with a hand-tied meadow bouquet, her ears lifting at the first bell while her striped tail peeks from behind the skirt. She turns toward the viewer with a steady, grateful smile that makes the quiet vow feel like a reward for the road behind her. warm afternoon rays through stained glass.",
+      "promptProse": "Raphtalia from The Rising of the Shield Hero wears an ivory wedding dress with a short veil, chestnut ribbon details and practical lace-up boots. She stands beneath the rose window, holding a hand-tied meadow bouquet in both hands, her ears lifting at the first bell while her striped tail stays tucked behind the skirt. She turns toward the viewer with a steady, grateful smile that makes the quiet vow feel like a reward for the road behind her. warm afternoon rays through stained glass.",
       "promptTokens": [
         "wedding_dress",
         "bridal_veil",
@@ -251,9 +251,10 @@
         "raccoon_tail",
         "grateful_smile",
         "blush",
-        "sitting",
         "afternoon_light",
-        "twilight_light"
+        "standing",
+        "holding_bouquet",
+        "both_hands"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -362,7 +363,7 @@
       "description": "旅馆壁炉前，她就着火光给故乡方向写一封没有收件人的信，耳朵低垂；写完后把信纸仔细折好收进怀里——有些思念不需要寄出。",
       "location": "旅馆壁炉边书桌",
       "action": "旅馆壁炉前，她就着火光给故乡方向写一封没有收件人的信，耳朵低垂",
-      "timeOfDay": "日间",
+      "timeOfDay": "night",
       "lighting": "firelight",
       "camera": "medium shot",
       "mood": "自然日常",
@@ -377,9 +378,10 @@
         "thoughtful",
         "winter",
         "firelight",
-        "medium_shot"
+        "medium_shot",
+        "night"
       ],
-      "promptProse": "By the inn fireplace, Raphtalia finishes a letter on a small wooden desk and carefully folds the paper along its center. Her wool shawl falls over a burgundy sweater, ears lowered in quiet thought. The unused envelope has no readable address. Amber firelight traces the edge of her cheek and the curled tail beneath her chair, turning a winter evening into a private moment of remembering home.",
+      "promptProse": "By the inn fireplace, Raphtalia finishes a letter on a small wooden desk and carefully folds the paper along its center. Her wool shawl falls over a burgundy sweater, ears lowered in quiet thought. The unused envelope has no readable address. Amber firelight traces the edge of her cheek and the curled tail beneath her chair, turning a winter night into a private moment of remembering home.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -395,7 +397,8 @@
         "thoughtful",
         "winter",
         "firelight",
-        "medium_shot"
+        "medium_shot",
+        "night"
       ],
       "negativeTokens": [
         "worst_quality",

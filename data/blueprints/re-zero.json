@@ -195,7 +195,7 @@
       "category": "奇幻",
       "characterId": "rem_rezero",
       "description": "【雷姆 · 雨夜告白】暴雨倾盆的王都钟楼下，被泪水与雨水浸湿的雷姆紧紧握着昴的手，哪怕面对全世界的放弃与绝望，她依然绽放出世间最美丽的笑容——「就算所有人都放弃了昴君，雷姆也绝对不会放弃！从这里开始吧……从一……不，从零开始！」",
-      "location": "雨夜的宅邸窗边",
+      "location": "王都钟楼下",
       "action": "在钟楼下回望，雨声如诉",
       "timeOfDay": "夜晚",
       "lighting": "暖灯与冷雨",
@@ -219,11 +219,11 @@
         "wet_clothes",
         "streetlights",
         "night",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "close-up"
       ],
       "negativeTokens": [
         "worst quality",
@@ -583,7 +583,7 @@
         "daylight",
         "indoor"
       ],
-      "promptProse": "Browsing through picture books in a quiet bookstore aisle, Rem turns pages with quiet, contented curiosity. Soft recessed lighting and neat wooden book racks create a relaxing, peaceful retreat.",
+      "promptProse": "Comparing stew recipes in thick cookbooks in the quiet corner bookstore, Rem turns the pages thoughtfully and then looks toward the viewer for advice on the evening meal. Soft recessed lighting falls across the cookbook shelves and the volume held in her hands, keeping the recipe-shopping errand clear without readable page text.",
       "promptTokens": [
         "bookstore",
         "bookshelves",
@@ -595,7 +595,8 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "cookbooks"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1203,7 +1204,7 @@
         "fantasy",
         "outdoors"
       ],
-      "promptProse": "Playing with spirit Puck amidst the vibrant flowers of the Roswaal garden, Emilia laughs with innocent, radiant warmth. Bright summer sunshine and fluttering butterflies create a joyful, heartwarming moment.",
+      "promptProse": "Seated beside a stone garden table among the Roswaal mansion roses, Emilia cups the yawning spirit Puck gently in her palms and turns a bright smile toward the viewer. Summer sunshine reaches her silver hair, the small spirit resting in her hands and the stone tabletop as butterflies drift above the flowers.",
       "promptTokens": [
         "mansion_garden",
         "blooming_flowers",
@@ -1215,7 +1216,10 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sitting",
+        "stone_table",
+        "cupped_hands"
       ],
       "negativeTokens": [
         "worst quality",

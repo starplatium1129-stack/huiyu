@@ -220,7 +220,7 @@
       "description": "【今州山庭·清晨】长离穿着红白层叠婚纱站在山庭长廊，手中捧着凤凰羽毛与白花；她先向镜头伸出手示范一段礼仪步伐，再在花瓣落下时笑着收势，像把耐心也变成了誓约。",
       "location": "mountain pavilion above Jinzhou",
       "action": "山庭长廊示范一段礼仪步伐，花瓣落下时收势微笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "清晨",
       "lighting": "clear morning light on red railings",
       "camera": "medium full shot, vertical framing",
       "mood": "老师把耐心教成花嫁誓约",
@@ -242,11 +242,10 @@
         "mountain_veranda",
         "phoenix_feather",
         "flower_fan",
-        "red_hair",
         "ceremonial_step",
         "patient_smile",
         "morning_light",
-        "twilight_light"
+        "pink_hair"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1048,7 +1047,7 @@
       "description": "【埃格拉小镇旧礼拜堂·清晨】卡提希娅穿着蓝白长裙婚纱站在石板路尽头，金色长辫落在披肩上，头顶光环在彩窗光里微亮；她握住花冠，近乡情怯的神情终于在看见镜头时变成回家的笑。",
       "location": "old chapel at the entrance to Egra",
       "action": "礼拜堂门口握花冠深呼吸，近乡情怯转成终于回家的笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "清晨",
       "lighting": "clear morning light through stained glass",
       "camera": "medium full shot, vertical framing",
       "mood": "归乡骑士的花嫁誓约",
@@ -1073,8 +1072,7 @@
         "gold_braid",
         "halo",
         "relieved_smile",
-        "morning_light",
-        "twilight_light"
+        "morning_light"
       ],
       "negativeTokens": [
         "worst_quality",

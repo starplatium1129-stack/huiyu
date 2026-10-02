@@ -1674,7 +1674,7 @@
       "description": "【AST 纪念花园·清晨】折纸换下作战装备，穿着线条利落的白色婚纱站在整齐的玫瑰拱门下；她先精准调整头纱角度，再把一朵白玫瑰别到胸前，冰蓝色眼神在看向镜头时罕见地显出柔软。",
       "location": "quiet memorial rose garden",
       "action": "玫瑰拱门下调整头纱并别上白玫瑰，转向镜头时露出罕见柔软微笑",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "清晨",
       "lighting": "cool morning light with silver dew highlights",
       "camera": "medium full shot, vertical framing",
       "mood": "克制表情里的温柔誓约",
@@ -1699,8 +1699,7 @@
         "blue_eyes",
         "precise_pose",
         "small_smile",
-        "morning_light",
-        "twilight_light"
+        "morning_light"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2928,7 +2927,7 @@
         "sunrise",
         "composed",
         "curiosity",
-        "afternoon_light"
+        "morning_light"
       ],
       "negativeTokens": [
         "worst_quality",

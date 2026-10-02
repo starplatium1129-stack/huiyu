@@ -156,7 +156,7 @@
         "nude"
       ],
       "outfitId": "apollon_battle",
-      "promptProse": "Unleashing the catastrophic power of the Uranus Queen, Ikaros draws back the monumental golden energy bow Apollon with an arrow of blinding thermonuclear light. Scorching crimson particle wings flare across the storm clouds, illuminating her resolute combat expression.",
+      "promptProse": "Unleashing the catastrophic power of the Uranus Queen, Ikaros draws back the monumental golden energy bow Apollon with an arrow of blinding thermonuclear light. Scorching crimson particle wings flare across the dark night storm clouds, illuminating her resolute combat expression.",
       "promptTokens": [
         "stormy_sky",
         "energy_wings",
@@ -169,7 +169,8 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "night"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [

@@ -1018,7 +1018,7 @@
       "description": "【凯尔希 · Mon3tr 身侧】被夜幕笼罩的罗德岛外甲板上，巨大的结晶生物 Mon3tr 静默地盘踞在她的身后，猩红的脊柱晶体散发出威慑的光芒。凯尔希负手而立，衣袂在荒原冷风中猎猎作响——「大地在低语，古老的阴影从未真正散去。但在那之前，罗德岛这艘船……依然会航行在正确的航道上。」",
       "id": "kaltsit_arknights_mon3tr_shadow",
       "lighting": "夜幕下的昏黄残光与 Mon3tr 幽绿源石荧光形成极度强烈的冷暖对冲光影",
-      "location": "泰拉切尔诺伯格废墟荒原",
+      "location": "罗德岛外甲板",
       "mood": "冷峻威严与震撼",
       "negativeTokens": [
         "worst quality",
@@ -2034,7 +2034,8 @@
         "night"
       ],
       "timeOfDay": "夜晚",
-      "title": "陈 · 龙门夜市"
+      "title": "陈 · 龙门夜市",
+      "compositionIntent": "group"
     },
     {
       "action": "凭栏远眺城市灯火",
@@ -2360,7 +2361,7 @@
         "two people"
       ],
       "outfitId": "lgd_detective_undercover",
-      "promptProse": "Waiting on the rainy train platform at midnight, Ch'en holds a black umbrella and watches the misty tracks with steady resolve. When the train doors open, she steps forward and angles the umbrella toward the arriving passenger as station lights shimmer across the wet ground.",
+      "promptProse": "Waiting on the rainy train platform at midnight, Ch'en holds a transparent umbrella and watches the misty tracks with steady resolve. When the train doors open, she steps forward and angles the umbrella toward the arriving passenger as station lights shimmer across the wet ground.",
       "promptTokens": [
         "train_station",
         "rain",
@@ -2372,7 +2373,7 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "black_umbrella"
+        "clear_umbrella"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -3214,7 +3215,6 @@
         "loungewear",
         "pajamas",
         "warm_bokeh",
-        "full_body",
         "clean_face",
         "medium_close_up",
         "atmospheric",
@@ -4182,7 +4182,6 @@
         "warm_shop_light",
         "laterano",
         "medium_close_up",
-        "full_body",
         "atmospheric",
         "cinematic_lighting",
         "volumetric_lighting",
@@ -5986,7 +5985,7 @@
     },
     {
       "action": "扛着战锤稳步前行",
-      "camera": "cowboy shot, resting warhammer on ground",
+      "camera": "wide shot, walking through knee-deep snow with warhammer over one shoulder",
       "category": "泰拉自然",
       "characterId": "mudrock_arknights",
       "description": "【泥岩 · 雪原行军】风雪呼啸的莱塔尼亚荒原之上，穿着全套厚重萨卡兹战甲的泥岩单手扛着比人还高的巨型破城战锤，在及膝的深雪中迈着如山岳般坚实沉稳的步伐。她回头确认同伴的距离——「大家跟紧我。只要我的护盾还在，就没有任何风雪与敌人能伤到你们。」",
@@ -7157,7 +7156,6 @@
         "water_droplets",
         "river",
         "water",
-        "swimming",
         "rainforest",
         "afternoon",
         "sunlight",
@@ -7177,7 +7175,6 @@
       "sceneTags": [
         "river",
         "water",
-        "swimming",
         "afternoon",
         "splash"
       ],
@@ -7281,7 +7278,8 @@
         "happy"
       ],
       "timeOfDay": "中午",
-      "title": "森蚺 · 食堂干饭"
+      "title": "森蚺 · 食堂干饭",
+      "compositionIntent": "group"
     },
     {
       "action": "把扳手扛在肩上，比了个大拇指",
@@ -7933,7 +7931,7 @@
       "description": "【澄闪 · 理发沙龙前台】罗德岛阳光温暖的生活区理发小店内，粉发粉耳的菲林少女苏茜正站在明亮的梳妆台前，极其细心地用软布擦拭整理着各式锋利的剪刀与梳子。看到你推门进来，她头顶毛茸茸的猫耳敏锐地抖了抖，绽放出甜美治愈的微笑——「博士！欢迎光临苏茜的理发屋！今天想剪一个什么样的新发型呢？」",
       "id": "goldenglow_arknights_library_desk",
       "lighting": "warm salon sunlight",
-      "location": "维多利亚理发沙龙",
+      "location": "罗德岛生活区理发沙龙",
       "mood": "专注温婉",
       "negativeTokens": [
         "worst quality",
@@ -9127,7 +9125,7 @@
       "description": "【斯卡蒂 · 夜航甲板】夜航中破浪前行的罗德岛甲板船舷旁，刺骨的夜风撕扯着斯卡蒂的风衣下摆，银发在夜空下如翻滚的白色浪花。察觉到你在身后为她披上毛毯，她微微侧过头——「深海猎人感受不到严寒……但你手心的温度，确实让我那颗早已冷却的心脏，重新有了跳动的感觉。」",
       "id": "skadi_arknights_ship_deck_night",
       "lighting": "dim deck lamps and starlight",
-      "location": "泰拉货轮甲板",
+      "location": "罗德岛夜航甲板",
       "mood": "深蓝寂寥",
       "negativeTokens": [
         "worst quality",
@@ -11342,7 +11340,8 @@
         "motion"
       ],
       "timeOfDay": "白天",
-      "title": "能天使 · 极速派送"
+      "title": "能天使 · 极速派送",
+      "compositionIntent": "group"
     },
     {
       "action": "仰靠在长椅上享受午后阳光，嘴角带着惬意微笑",
@@ -12153,7 +12152,7 @@
       "description": "【铃兰 · 雪中探望】白雪皑皑的寒冬走廊前，穿着厚厚毛绒斗篷的丽萨双手小心翼翼地拎着双层保温食盒，静静等候在博士办公室门前。呵出的白气在冷风中飘散，看到开门的你她甜甜一笑——「博士辛苦了！我和妈妈一起做了热腾腾的丸子汤，请趁热喝下暖暖身体吧！」",
       "id": "suzuran_arknights_snow_visit",
       "lighting": "warm window light against snow",
-      "location": "泰拉雪原小屋",
+      "location": "罗德岛博士办公室门前走廊",
       "mood": "温暖治愈",
       "negativeTokens": [
         "worst quality",
@@ -13242,7 +13241,8 @@
         "dragon_girl"
       ],
       "timeOfDay": "夜晚",
-      "title": "令 · 龙门酒肆独酌"
+      "title": "令 · 龙门酒肆独酌",
+      "compositionIntent": "group"
     },
     {
       "action": "半卧竹榻把玩酒葫芦听雨",
@@ -13562,7 +13562,8 @@
         "feathers"
       ],
       "timeOfDay": "夜晚",
-      "title": "令 · 大炎灯会"
+      "title": "令 · 大炎灯会",
+      "compositionIntent": "group"
     },
     {
       "action": "立于山巅仰望银河伸臂虚握流星",

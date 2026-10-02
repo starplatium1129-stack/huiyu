@@ -2242,7 +2242,7 @@
         "two people"
       ],
       "outfitId": "sword_king",
-      "promptProse": "Standing atop a rugged mountain cliff at the Holy Land of the Sword holding her blade, Eris glares forward with fierce warrior pride. High-altitude mountain winds whip her crimson curls in a powerful, awe-inspiring display of mastery.",
+      "promptProse": "Standing atop a rugged mountain cliff on the Demon Continent holding her blade, Eris glares forward with fierce warrior pride. High-altitude mountain winds whip her crimson curls in a powerful, awe-inspiring display of mastery.",
       "promptTokens": [
         "mountain_cliff",
         "sword",
@@ -2731,7 +2731,7 @@
         "two people"
       ],
       "outfitId": "noble_child",
-      "promptProse": "Sitting at the formal Greyrat family banquet table in her grand noble dress, Eris tolerates etiquette with a proud, slightly bored expression. Golden candelabra illumination and crystal dinnerware frame her noble, fiery presence.",
+      "promptProse": "A full-body view shows Eris sitting at the formal Greyrat family banquet table in her grand noble dress, tolerating etiquette with a proud, slightly bored expression. Golden candelabra illumination and crystal dinnerware frame her noble, fiery presence, with her seated figure visible from head to toe.",
       "promptTokens": [
         "banquet_hall",
         "dining_table",
@@ -2739,11 +2739,11 @@
         "candelabra",
         "sitting",
         "haughty_expression",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "full_body"
       ],
       "recommendedSize": "1216x832",
       "sceneTags": [
@@ -3455,18 +3455,18 @@
         "adult_portrait"
       ],
       "description": "花廊下，爱夏身体朝向石径，转头望向镜头，一只手轻扶被微风带起的头纱边缘，另一只手自然垂在腰侧。象牙白蕾丝长袖与象牙白腰带呼应白色发带。镜头取至大腿上部，白花只沿画面两侧形成边框，夕阳透过头纱，脸部保留柔和反光。",
-      "promptProse": "Under a flowering arbor, Aisha turns her head back toward the viewer while her shoulders remain angled along the path. One hand lightly catches the edge of her wind-lifted veil; the other rests beside the burgundy sash of her ivory lace-sleeved gown. Frame her from the upper thighs upward, with white blossoms confined to the side edges and open space around her face. Low evening sun passes through the veil from behind, while pale paving reflects gentle light into her eyes.",
+      "promptProse": "Under a flowering arbor, Aisha turns her head back toward the viewer while her shoulders remain angled along the path. One hand lightly catches the edge of her wind-lifted veil; the other rests beside the ivory sash of her ivory lace-sleeved gown. Frame her from the upper thighs upward, with white blossoms confined to the side edges and open space around her face. Low evening sun passes through the veil from behind, while pale paving reflects gentle light into her eyes.",
       "promptTokens": [
         "looking_back",
         "holding_veil",
         "wind_lifted_veil",
         "lace_sleeves",
-        "burgundy_sash",
         "white_blossoms",
         "flower_arch",
         "backlighting",
         "three_quarter_portrait",
-        "evening_sunlight"
+        "evening_sunlight",
+        "ivory_sash"
       ],
       "adult": false,
       "characterId": "aisha_greyrat",
