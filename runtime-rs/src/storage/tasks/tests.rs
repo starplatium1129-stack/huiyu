@@ -117,10 +117,17 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
     )
     .await
     .unwrap();
-    let terminal = patch(&storage, &terminal, json!({"status": "running"}))
-        .await
-        .unwrap();
+    // A reconciliation can retain its old observation while cancellation wins
+    // the CAS race. Its retry uses the current revision but still carries false.
+    let terminal = patch(
+        &storage,
+        &terminal,
+        json!({"status": "running", "upstreamSettled": false}),
+    )
+    .await
+    .unwrap();
     assert_eq!(terminal["status"], "cancelled");
+    assert_eq!(terminal["upstreamSettled"], true);
     assert!(
         storage
             .request(
@@ -142,6 +149,9 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
         .unwrap();
     assert_ne!(current["runtimeEpoch"], old_epoch);
     assert_eq!(current["status"], "cancelled");
+    assert_eq!(current["upstreamSettled"], true);
+    // A late unsettled observation must not leave the global admission gate
+    // blocked after reopen; another stable request key remains admissible.
     let early = reopened.request(json!({"kind": "task.accept", "record": incoming("task-fixture", "early", "early-cancel")}), PRINCIPAL).await.unwrap();
     assert_eq!(early["task"]["status"], "cancelled");
     assert_eq!(early["task"]["upstreamSettled"], true);

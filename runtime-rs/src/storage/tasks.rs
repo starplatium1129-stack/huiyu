@@ -237,6 +237,11 @@ fn patch(
         {
             patch.status = None;
         }
+        // CAS retries can replay an observation taken before cancellation or
+        // completion. A settled task must not block admission again.
+        if task.upstream_settled && patch.upstream_settled == Some(false) {
+            patch.upstream_settled = None;
+        }
         if task.cancel_requested_at.is_some_and(|time| time != 0)
             && !task.status.terminal()
             && patch.status.is_some_and(|status| {

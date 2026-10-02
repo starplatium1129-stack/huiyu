@@ -335,9 +335,9 @@ async fn changed_authority_lease_and_output_metadata_are_rechecked_after_hash() 
 
 #[tokio::test]
 async fn concurrent_task_metadata_is_merged_without_requiring_an_unchanged_revision() {
-    let (_directory, storage) = fixture().await;
-    patch(&storage, json!({"upstreamSettled":false})).await;
-    patch(&storage, json!({"status":"running"})).await;
+    // Start with a genuinely unfinished task; a settled task cannot be reopened
+    // by a patch merely to arrange this cancellation-during-validation fixture.
+    let (_directory, storage) = fixture_with_settled(false).await;
     let (staging, _) = uploaded(&storage, 0, &data(64)).await;
     let mut gate = Gate::new(&staging, "verified");
     let request = commit(&storage, 0);

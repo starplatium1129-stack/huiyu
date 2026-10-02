@@ -3,7 +3,7 @@ use crate::execution::Output;
 use crate::storage::{TaskMediaChunk, TaskMediaTarget};
 use axum::body::Bytes;
 use sha2::{Digest, Sha256};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use tokio::io::{AsyncReadExt, AsyncSeekExt};
 #[cfg(test)]
 mod tests;
@@ -127,13 +127,6 @@ pub(super) async fn persist(
     Ok(())
 }
 
-struct PendingFile(PathBuf);
-impl Drop for PendingFile {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_file(&self.0);
-    }
-}
-
 pub(super) async fn restore(
     storage: &Storage,
     principal: &str,
@@ -162,13 +155,9 @@ pub(super) async fn restore(
         .parent()
         .ok_or_else(|| ApiError::invalid("Input destination has no parent"))?;
     tokio::fs::create_dir_all(parent).await?;
-    let pending = PendingFile(parent.join(format!("{}.tmp", uuid::Uuid::new_v4())));
     let mut input = tokio::fs::File::open(&source.path).await?;
-    let mut output = tokio::fs::OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(&pending.0)
-        .await?;
+    let (output, pending) = tempfile::NamedTempFile::new_in(parent)?.into_parts();
+    let mut output = tokio::fs::File::from_std(output);
     let bytes = tokio::io::copy(&mut input, &mut output).await?;
     if bytes != source.total_bytes {
         return Err(ApiError::new(
@@ -179,6 +168,8 @@ pub(super) async fn restore(
     }
     output.sync_all().await?;
     drop(output);
-    tokio::fs::rename(&pending.0, path).await?;
+    pending
+        .persist(path)
+        .map_err(|error| ApiError::from(error.error))?;
     Ok(true)
 }

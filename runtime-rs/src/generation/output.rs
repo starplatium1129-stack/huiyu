@@ -103,21 +103,24 @@ pub(super) async fn materialize_scoped(
     let directory = inner.config.runtime_root.join("outputs").join(namespace);
     tokio::fs::create_dir_all(&directory).await?;
     let path = directory.join(format!("{id}.{extension}"));
-    let pending = directory.join(format!("{id}.{}.tmp", uuid::Uuid::new_v4()));
     let save = async {
-        let mut file = tokio::fs::OpenOptions::new()
-            .create_new(true)
-            .write(true)
-            .open(&pending)
-            .await?;
+        let root = tokio::fs::canonicalize(&directory).await?;
+        let (file, pending) = tempfile::Builder::new()
+            .prefix(&format!("{id}."))
+            .suffix(".tmp")
+            .tempfile_in(&directory)?
+            .into_parts();
+        let mut file = tokio::fs::File::from_std(file);
         file.write_all(&bytes).await?;
         // Tokio may still be writing in the background; finish and surface any
         // write error before publishing the path to result collection.
         file.flush().await?;
         drop(file);
-        tokio::fs::rename(&pending, &path).await?;
-        let root = tokio::fs::canonicalize(&directory).await?;
-        let target = tokio::fs::canonicalize(&path).await?;
+        // TempPath also cleans up when the caller drops recovery mid-write.
+        // Keep publication and return in one poll so cancellation cannot leave
+        // a renamed output that was never handed to its owner.
+        pending.persist(&path).map_err(|error| error.error)?;
+        let target = std::fs::canonicalize(&path)?;
         if !target.starts_with(root) {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::PermissionDenied,
@@ -128,7 +131,6 @@ pub(super) async fn materialize_scoped(
     }
     .await;
     if save.is_err() {
-        let _ = tokio::fs::remove_file(&pending).await;
         return Err(ApiError::new(
             507,
             "RESULT_SAVE_FAILED",

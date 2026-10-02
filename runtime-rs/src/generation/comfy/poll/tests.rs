@@ -1,6 +1,10 @@
 use super::*;
 use crate::upstream::progress::ProgressUpdate;
-use axum::{Json, Router, extract::State, routing::get};
+use axum::{
+    Json, Router,
+    extract::State,
+    routing::{get, post},
+};
 use std::sync::atomic::AtomicUsize;
 
 async fn fixture(root: &std::path::Path, host: &str) -> (Service, Arc<Job>) {
@@ -172,5 +176,120 @@ async fn websocket_terminal_hint_wakes_history_but_cannot_settle_the_job() {
     assert!(history.reads.load(Ordering::Relaxed) <= 4);
     drop(state);
     service.inner.cancel.cancel();
+    server.abort();
+}
+
+#[tokio::test]
+async fn failed_result_save_retries_download_without_resubmitting_generation() {
+    use base64::{Engine, engine::general_purpose::STANDARD};
+    let directory = tempfile::tempdir().unwrap();
+    let png = STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap();
+    let prompts = Arc::new(AtomicUsize::new(0));
+    let downloads = Arc::new(AtomicUsize::new(0));
+    let router = Router::new()
+        .route("/free", post(|| async { Json(json!({})) }))
+        .route("/prompt", post({
+            let prompts = prompts.clone();
+            move || {
+                prompts.fetch_add(1, Ordering::Relaxed);
+                async { Json(json!({"prompt_id":"owned"})) }
+            }
+        }))
+        .route("/history/{id}", get(|| async {
+            Json(json!({"owned":{"status":{"status_str":"success"},"outputs":{"10":{"images":[{"filename":"fixture_result.png","type":"output"}]}}}}))
+        }))
+        .route("/view", get({
+            let downloads = downloads.clone();
+            let png = png.clone();
+            move || {
+                downloads.fetch_add(1, Ordering::Relaxed);
+                let png = png.clone();
+                async { ([(axum::http::header::CONTENT_TYPE, "image/png")], png) }
+            }
+        }));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let host = format!("http://{}", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(listener, router).await.unwrap();
+    });
+    let (service, job) = fixture(directory.path(), &host).await;
+    // Exercise the actual prompt submission without an unrelated WebSocket
+    // reconnect worker changing the timing of this local disk failure.
+    assert!(
+        service
+            .inner
+            .initialized
+            .set(Initialized {
+                client_id: "fixture-client".into(),
+                session_id: "fixture-session".into(),
+                progress: std::sync::Mutex::new(None),
+            })
+            .is_ok()
+    );
+    {
+        let mut state = job.state.lock().await;
+        state.status = "queued".into();
+        state.upstream_id.clear();
+    }
+    let path = directory
+        .path()
+        .join("runtime/outputs/fixture")
+        .join(format!("{}.png", job.id));
+    std::fs::create_dir_all(&path).unwrap();
+    super::super::submit(service.inner.clone(), job.clone())
+        .await
+        .unwrap();
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            let changed = job.notify.notified();
+            tokio::pin!(changed);
+            changed.as_mut().enable();
+            if job.state.lock().await.code.as_deref() == Some("RESULT_SAVE_FAILED") {
+                break;
+            }
+            changed.await;
+        }
+    })
+    .await
+    .unwrap();
+    let failed = jobs::observe(&service.inner, &job.id, "owner")
+        .await
+        .unwrap();
+    assert_eq!(failed.error_code.as_deref(), Some("RESULT_SAVE_FAILED"));
+    assert!(
+        !failed.settled,
+        "A local save failure cannot settle a successful upstream job"
+    );
+    assert!(job.state.lock().await.permit.is_none());
+    assert_eq!(prompts.load(Ordering::Relaxed), 1);
+    assert_eq!(downloads.load(Ordering::Relaxed), 1);
+    std::fs::remove_dir(&path).unwrap();
+    job.notify.notify_one();
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            let changed = job.notify.notified();
+            tokio::pin!(changed);
+            changed.as_mut().enable();
+            if job.state.lock().await.status == "succeeded" {
+                break;
+            }
+            changed.await;
+        }
+    })
+    .await
+    .unwrap();
+    let recovered = jobs::observe(&service.inner, &job.id, "owner")
+        .await
+        .unwrap();
+    assert!(recovered.settled);
+    assert_eq!(std::fs::read(&path).unwrap(), png);
+    assert_eq!(prompts.load(Ordering::Relaxed), 1);
+    assert_eq!(downloads.load(Ordering::Relaxed), 2);
+    assert_eq!(
+        std::fs::read_dir(path.parent().unwrap()).unwrap().count(),
+        1
+    );
+    assert!(job.state.lock().await.permit.is_none());
+    service.close().await;
     server.abort();
 }

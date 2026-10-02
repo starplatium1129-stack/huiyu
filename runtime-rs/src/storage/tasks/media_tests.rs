@@ -10,6 +10,10 @@ const PRINCIPAL: &str = "desktop:binary-media";
 const ID: &str = "binary-task";
 
 async fn fixture() -> (tempfile::TempDir, Storage) {
+    fixture_with_settled(true).await
+}
+
+async fn fixture_with_settled(settled: bool) -> (tempfile::TempDir, Storage) {
     let directory = tempfile::tempdir().unwrap();
     let storage = Storage::open(
         directory.path().join("workspace"),
@@ -21,9 +25,9 @@ async fn fixture() -> (tempfile::TempDir, Storage) {
     let record = json!({"taskId":ID,"workspaceId":"binary-media","principalId":PRINCIPAL,
         "requestKey":"binary-request","requestFingerprint":"fixture","kind":"generation",
         "provider":"fixture","providerFingerprint":"fixture","upstreamId":null,
-        "status":"succeeded","recoveryState":"normal","revision":0,"runtimeEpoch":"",
+        "status":if settled {"succeeded"} else {"running"},"recoveryState":"normal","revision":0,"runtimeEpoch":"",
         "createdAt":1,"updatedAt":1,"submissionIntentAt":null,"submissionObservedAt":null,
-        "cancelRequestedAt":null,"upstreamSettled":true,"executionDeadline":60000,
+        "cancelRequestedAt":null,"upstreamSettled":settled,"executionDeadline":60000,
         "input":{},"inputMediaRefs":[],"resultState":"none","resultRefs":[],
         "deliveryState":"unseen","errorCode":null,"metadata":{},"checkpoint":null,
         "parentBatchId":null,"stepIndex":null});

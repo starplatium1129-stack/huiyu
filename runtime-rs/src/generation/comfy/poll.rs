@@ -195,14 +195,18 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                         jobs::succeed(&inner, &job, output).await;
                     }
                     Err(error) => {
-                        let known = matches!(
-                            error.code.as_str(),
-                            "INVALID_RESULT" | "COMFY_NO_IMAGE" | "RESULT_SAVE_FAILED"
-                        );
-                        if known {
-                            jobs::fail(&job, error, false).await;
-                        } else {
-                            failures += 1;
+                        match error.code.as_str() {
+                            "RESULT_SAVE_FAILED" => {
+                                // History already proves execution completed. A local
+                                // disk failure must allow result retry without keeping
+                                // GPU capacity or turning the task into a final failure.
+                                jobs::release(&job).await;
+                                jobs::fail(&job, error, true).await;
+                            }
+                            "INVALID_RESULT" | "COMFY_NO_IMAGE" => {
+                                jobs::fail(&job, error, false).await;
+                            }
+                            _ => failures += 1,
                         }
                     }
                 }

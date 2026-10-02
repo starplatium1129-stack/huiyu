@@ -1,5 +1,7 @@
 #[path = "task_recovery/bounds.rs"]
 mod bounds;
+#[path = "task_recovery/streaming.rs"]
+mod streaming;
 use axum::{
     Json, Router,
     extract::{Path, State},

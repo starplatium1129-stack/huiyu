@@ -92,7 +92,6 @@ pub(crate) async fn materialize(
         .append_pair("type", "output");
     tokio::fs::create_dir_all(root).await?;
     let canonical_root = tokio::fs::canonicalize(root).await?;
-    let pending = root.join(format!(".{id}.{}.part", uuid::Uuid::new_v4()));
     let transfer = async {
         let response = transport
             .client
@@ -151,11 +150,14 @@ pub(crate) async fn materialize(
             .filter(|_| !header.is_empty())
             .ok_or_else(|| ApiError::new(502, "INVALID_RESULT", "ComfyUI 返回的视频格式无效"))?;
         let destination = root.join(format!("{id}.{extension}"));
-        let mut file = tokio::fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&pending)
-            .await?;
+        // Own the temporary path before yielding. Recovery's shorter timeout
+        // can drop this entire future without reaching its normal error return.
+        let (file, pending) = tempfile::Builder::new()
+            .prefix(&format!(".{id}."))
+            .suffix(".part")
+            .tempfile_in(root)?
+            .into_parts();
+        let mut file = tokio::fs::File::from_std(file);
         file.write_all(&header).await?;
         let mut length = header.len() as u64;
         drop(header);
@@ -181,11 +183,11 @@ pub(crate) async fn materialize(
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "CANCELLED", "视频读取已取消"));
         }
-        tokio::fs::rename(&pending, &destination).await?;
-        if !tokio::fs::canonicalize(&destination)
-            .await?
-            .starts_with(&canonical_root)
-        {
+        // Publish without another cancellation point between rename and return.
+        pending
+            .persist(&destination)
+            .map_err(|error| ApiError::from(error.error))?;
+        if !std::fs::canonicalize(&destination)?.starts_with(&canonical_root) {
             return Err(ApiError::new(
                 500,
                 "VIDEO_STORAGE_INVALID",
@@ -198,9 +200,5 @@ pub(crate) async fn materialize(
             bytes: length,
         })
     };
-    let result = tokio::select! {result=tokio::time::timeout(Duration::from_secs(120),transfer)=>match result{Ok(value)=>value,Err(_)=>Err(ApiError::new(504,"COMFY_TIMEOUT","视频读取超时"))},_=cancel.cancelled()=>Err(ApiError::new(499,"CANCELLED","视频读取已取消"))};
-    if result.is_err() {
-        let _ = tokio::fs::remove_file(pending).await;
-    }
-    result
+    tokio::select! {result=tokio::time::timeout(Duration::from_secs(120),transfer)=>match result{Ok(value)=>value,Err(_)=>Err(ApiError::new(504,"COMFY_TIMEOUT","视频读取超时"))},_=cancel.cancelled()=>Err(ApiError::new(499,"CANCELLED","视频读取已取消"))}
 }

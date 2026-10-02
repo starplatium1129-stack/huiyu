@@ -260,6 +260,21 @@ async fn memory_and_file_outputs_persist_across_binary_chunk_boundaries() {
     .await
     .unwrap();
     tokio::fs::remove_file(source).await.unwrap();
+    let restored = directory.path().join("restored/input.png");
+    for _ in 0..2 {
+        assert!(
+            restore(&storage, principal, id, "image", &restored)
+                .await
+                .unwrap()
+        );
+        assert_eq!(tokio::fs::read(&restored).await.unwrap(), shared.as_slice());
+        assert_eq!(
+            std::fs::read_dir(restored.parent().unwrap())
+                .unwrap()
+                .count(),
+            1
+        );
+    }
     for target in [Target::Result(0), Target::Input("image".into())] {
         let stored = storage.media(&target.alias(id)).await.unwrap();
         assert_eq!(

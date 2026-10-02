@@ -90,10 +90,12 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     .await
     .unwrap();
     let request = json!({"requestKey":"stable-user-request","kind":"generation","input":{"prompt":"neutral test portrait","negative":"","width":1024,"height":1024,"seed":42}});
-    let accepted = runtime
-        .submit(storage.clone(), "alice".into(), request.clone())
-        .await
-        .unwrap();
+    let (accepted, concurrent) = tokio::join!(
+        runtime.submit(storage.clone(), "alice".into(), request.clone()),
+        runtime.submit(storage.clone(), "alice".into(), request.clone()),
+    );
+    let accepted = accepted.unwrap();
+    assert_eq!(concurrent.unwrap()["taskId"], accepted["taskId"]);
     let id = accepted["taskId"].as_str().unwrap();
     tokio::time::timeout(Duration::from_secs(5), state.started.notified())
         .await
