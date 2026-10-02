@@ -17,6 +17,15 @@ async fn request(storage: &Storage, command: Value) -> Value {
 fn assert_index(root: &Path) -> String {
     assert_media_indexes(root);
     let db = Connection::open(root.join("huiyu.sqlite3")).unwrap();
+    for sql in [
+        "SELECT id_json,body,revision,deleted_at,id_key FROM artworks WHERE id_key>'' AND deleted_at IS NULL ORDER BY id_key LIMIT 201",
+        "SELECT id_json,json_object('timestamp',body -> '$.timestamp'),revision FROM artworks WHERE deleted_at IS NULL ORDER BY id_key",
+    ] {
+        let plan: String = db
+            .query_row(&format!("EXPLAIN QUERY PLAN {sql}"), [], |r| r.get(3))
+            .unwrap();
+        assert!(plan.contains("artworks_live_id"), "{plan}");
+    }
     let plan: String = db
         .query_row(&format!("EXPLAIN QUERY PLAN {LOOKUP}"), ["17"], |r| {
             r.get(3)
@@ -97,7 +106,7 @@ async fn new_and_existing_v3_workspaces_receive_reverse_index_without_revision_c
     let identity = std::fs::read(root.join("workspace.json")).unwrap();
     Connection::open(root.join("huiyu.sqlite3"))
         .unwrap()
-        .execute_batch("DROP INDEX project_artworks_artwork; DROP INDEX media_aliases_hash; DROP INDEX media_refs_hash")
+        .execute_batch("DROP INDEX artworks_live_id; DROP INDEX project_artworks_artwork; DROP INDEX media_aliases_hash; DROP INDEX media_refs_hash")
         .unwrap();
     for _ in 0..2 {
         let storage = Storage::open(root.clone(), "index-test".into(), false)
@@ -258,8 +267,34 @@ async fn indexed_deletion_preserves_membership_order_and_backup_restore() {
     let deleted = request(&storage, json!({"kind":"softDeleteArtworks","operationId":"soft","items":[{"id":1,"expectedRevision":first["revision"]}]})).await;
     assert_eq!(deleted["softDeleteResults"][0]["deleted"], true);
     assert_eq!(members(&storage).await, json!([[3, 2], [2]]));
+    // Deleted rows must leave the live index while the all-records cursor still
+    // sees them. Both body projections keep the same cursor/revision contract.
+    for projection in [Value::Null, json!("preference")] {
+        let first_page = request(
+            &storage,
+            json!({"kind":"listArtworks","projection":projection,"limit":1}),
+        )
+        .await;
+        assert_eq!(first_page["items"][0]["id"], 2);
+        assert_eq!(first_page["nextCursor"], "2");
+        let next_page = request(&storage, json!({"kind":"listArtworks","projection":projection,"limit":1,"cursor":first_page["nextCursor"]})).await;
+        assert_eq!(next_page["items"][0]["id"], 3);
+        assert!(next_page["nextCursor"].is_null());
+        assert_eq!(next_page["revision"], first_page["revision"]);
+    }
+    let all = request(
+        &storage,
+        json!({"kind":"listArtworks","includeDeleted":true,"limit":1}),
+    )
+    .await;
+    assert_eq!(all["items"][0]["id"], 1);
+    assert!(!all["items"][0]["deletedAt"].is_null());
+    assert_eq!(all["nextCursor"], "1");
     request(&storage, json!({"kind":"restoreArtwork","operationId":"undo","id":1,"expectedRevision":deleted["revision"]})).await;
     assert_eq!(members(&storage).await, json!([[3, 1, 2], [2, 1]]));
+    let restored_page = request(&storage, json!({"kind":"listArtworks","limit":1})).await;
+    assert_eq!(restored_page["items"][0]["id"], 1);
+    assert!(restored_page["items"][0]["deletedAt"].is_null());
     request(&storage, json!({"kind":"hardDeleteArtwork","operationId":"hard","id":2,"expectedRevision":second["revision"]})).await;
     assert_eq!(members(&storage).await, json!([[3, 1], [1]]));
     assert!(

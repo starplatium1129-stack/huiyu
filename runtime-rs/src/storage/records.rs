@@ -12,12 +12,18 @@ fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     })
 }
 pub(super) fn decode_artwork(row: &Row<'_>) -> rusqlite::Result<Value> {
-    Ok(
-        json!({"id":json_column(row,0)?,"body":json_column(row,1)?,"revision":row.get::<_,i64>(2)?,"deletedAt":row.get::<_,Option<i64>>(3)?}),
-    )
+    // json! serializes Value expressions by reference, copying the whole body.
+    // Move decoded bodies so legacy inline images/recipes are allocated once.
+    let mut record = json!({"id":null,"body":null,"revision":row.get::<_,i64>(2)?,"deletedAt":row.get::<_,Option<i64>>(3)?});
+    record["id"] = json_column(row, 0)?;
+    record["body"] = json_column(row, 1)?;
+    Ok(record)
 }
 fn decode_project(row: &Row<'_>) -> rusqlite::Result<Value> {
-    Ok(json!({"id":json_column(row,0)?,"body":json_column(row,1)?,"revision":row.get::<_,i64>(2)?}))
+    let mut record = json!({"id":null,"body":null,"revision":row.get::<_,i64>(2)?});
+    record["id"] = json_column(row, 0)?;
+    record["body"] = json_column(row, 1)?;
+    Ok(record)
 }
 pub(super) fn artwork(c: &Context, key: &str) -> Result<Option<Value>> {
     Ok(c.db
@@ -147,7 +153,9 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 items.push(decode_artwork(row)?);
                 last = row.get(4)?;
             }
-            Ok(json!({"items":items,"nextCursor":cursor,"revision":c.revision()?}))
+            let mut result = json!({"items":null,"nextCursor":cursor,"revision":c.revision()?});
+            result["items"] = Value::Array(items);
+            Ok(result)
         }
         "listProjects" => {
             let mut statement =
@@ -158,7 +166,9 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 c.check_cancel()?;
                 items.push(decode_project(row)?);
             }
-            Ok(json!({"items":items,"revision":c.revision()?}))
+            let mut result = json!({"items":null,"revision":c.revision()?});
+            result["items"] = Value::Array(items);
+            Ok(result)
         }
         _ => Err(invalid("Unknown record query")),
     }

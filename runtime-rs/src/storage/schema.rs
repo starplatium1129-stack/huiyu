@@ -291,9 +291,10 @@ pub(super) fn open(
     verify_identity(&db, &workspace_id, 3)?;
     // Additive access-path optimization: keep the v3 data/backup protocol intact.
     // Reapply on open so existing v3 workspaces and restored older snapshots
-    // receive the reverse lookup used by artwork deletion and FK checks.
+    // receive the live artwork scan and reverse deletion/FK access paths.
     db.execute_batch(
-        "CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);
+        "CREATE INDEX IF NOT EXISTS artworks_live_id ON artworks(id_key) WHERE deleted_at IS NULL;
+         CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);
          CREATE INDEX IF NOT EXISTS media_aliases_hash ON media_aliases(hash);
          CREATE INDEX IF NOT EXISTS media_refs_hash ON media_refs(hash);
          CREATE INDEX IF NOT EXISTS tasks_revision ON tasks(principal_id,json_extract(record_json,'$.revision'));
