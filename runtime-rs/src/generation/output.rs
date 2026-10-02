@@ -111,6 +111,9 @@ pub(super) async fn materialize_scoped(
             .open(&pending)
             .await?;
         file.write_all(&bytes).await?;
+        // Tokio may still be writing in the background; finish and surface any
+        // write error before publishing the path to result collection.
+        file.flush().await?;
         drop(file);
         tokio::fs::rename(&pending, &path).await?;
         let root = tokio::fs::canonicalize(&directory).await?;

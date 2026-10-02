@@ -14,6 +14,7 @@ use huiyu_runtime::{
     upstream::LocalUpstream,
 };
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use std::{
     sync::{
         Arc, Mutex,
@@ -402,6 +403,13 @@ impl ExecutionHooks for Hooks {
     fn collect(&self, outputs: Vec<Output>) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             assert!(!outputs[0].is_empty());
+            if let Output::File { path, bytes, .. } = &outputs[0] {
+                // Read on the first collection attempt, before any retry or wait.
+                let saved = std::fs::read(path).unwrap();
+                assert_eq!(*bytes, saved.len() as u64);
+                assert_eq!(saved, png());
+                assert_eq!(Sha256::digest(&saved), Sha256::digest(png()));
+            }
             if self.1.load(Ordering::Relaxed) {
                 self.0.lock().unwrap().push("collect:failed".into());
                 return Err(ApiError::new(
