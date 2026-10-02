@@ -9,6 +9,7 @@ const {
   RELEASE_REPOSITORY,
   createManifest,
   releaseTag,
+  installerNames,
   publishRelease,
   MANUAL_MARKER,
 }: typeof import('../maintenance/release-desktop-update') = require('../maintenance/release-desktop-update');
@@ -33,6 +34,7 @@ function buildBindingFixture() {
   put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe', 'rust-A'); put('desktop-tauri/web/index.html', 'desktop-UI');
   const native = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'; put(native, 'native-A');
   const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
+  put('desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi', 'bound installer script');
   return { root, put, git, binding, native, payload, remove() {
     if (previousSdk === undefined) delete process.env.LIVE2D_CUBISM_SDK_DIR; else process.env.LIVE2D_CUBISM_SDK_DIR = previousSdk;
     assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(os.tmpdir()));
@@ -41,7 +43,7 @@ function buildBindingFixture() {
   } };
 }
 
-test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', () => {
+test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', async () => {
   const fixture = buildBindingFixture();
   const { root, put, git, binding, payload } = fixture;
   let sideEffects = 0;
@@ -67,7 +69,7 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
       ? { buildModernInstaller: () => { sideEffects++; throw Error('unexpected-wrapper'); } }
       : originalRequire(name);
     const sourceCode = fs.readFileSync(entry, 'utf8').replace(/^const ROOT =.*$/m, 'const ROOT = ' + JSON.stringify(root) + ';');
-    assert.throws(() => vm.runInNewContext(sourceCode + '\nmain();', {
+    await assert.rejects(() => vm.runInNewContext(sourceCode + '\nmain();', {
       require:guardedRequire, module:{ exports:{} }, exports:{}, __dirname:path.dirname(entry),
       process:{ ...process, argv:['node', 'fixture', '--skip-build', '--manual', '--publish'] }, console,
     }), /源码与构建不匹配/);
@@ -178,6 +180,20 @@ test('bundle and distribution binding failures preserve the last atomic receipt'
     failure.mock.restore();
     binding.bindDistribution(root, path.join(root, payload), output);
     binding.verifyDistribution(root, output);
+    const upgrade = path.join(root, 'runtime/upgrade-payload.exe'), upgradeOutput = path.join(root, 'runtime/upgrade-setup.exe');
+    put('runtime/upgrade-payload.exe', 'upgrade payload'); put('runtime/upgrade-setup.exe', 'upgrade wrapper');
+    assert.throws(() => binding.verifyBuild(root, upgrade), /payload 未绑定/);
+    binding.bindDerivedPayload(root, upgrade);
+    binding.verifyBuild(root, upgrade);
+    binding.bindDistribution(root, upgrade, upgradeOutput);
+    binding.verifyDistribution(root, output);
+    binding.verifyDistribution(root, upgradeOutput);
+    put('runtime/upgrade-payload.exe', 'changed payload');
+    assert.throws(() => binding.verifyBuild(root, upgrade), /payload 未绑定/);
+    put('runtime/upgrade-payload.exe', 'upgrade payload');
+    put('runtime/upgrade-setup.exe', 'changed wrapper');
+    assert.throws(() => binding.verifyDistribution(root, upgradeOutput), /封装产物已变化/);
+    binding.verifyDistribution(root, output);
     put('runtime/setup.exe', 'tampered-wrapper');
     assert.throws(() => binding.verifyDistribution(root, output), /封装产物已变化.*拒绝签名或上传/);
   } finally { fixture.remove(); }
@@ -192,17 +208,17 @@ test('桌面更新端点固定使用主项目 GitHub Releases', () => {
 });
 
 test('发布清单指向同版本公开 Release 安装包', () => {
-  const manifest = createManifest('1.5.9', 'signed', 'AI-CG-Studio_1.5.9_x64-setup.exe', new Date('2026-09-08T10:00:00Z'));
+  const manifest = createManifest('1.5.9', 'signed', installerNames('1.5.9').upgrade, new Date('2026-09-08T10:00:00Z'));
   assert.equal(releaseTag(manifest.version), 'v1.5.9');
   assert.equal(manifest.pub_date, '2026-09-08T10:00:00.000Z');
   assert.equal(manifest.platforms['windows-x86_64'].signature, 'signed');
   assert.equal(
     manifest.platforms['windows-x86_64'].url,
-    'https://github.com/starplatium1129-stack/huiyu/releases/download/v1.5.9/AI-CG-Studio_1.5.9_x64-setup.exe',
+    'https://github.com/starplatium1129-stack/huiyu/releases/download/v1.5.9/AI-CG-Studio_1.5.9_x64-upgrade-setup.exe',
   );
 });
 
-function releaseFixture(callback: any) {
+async function releaseFixture(callback: any) {
   const fixture = buildBindingFixture(), { root, put, binding, payload } = fixture;
   const directory = path.join(root, 'runtime/release');
   fs.mkdirSync(directory, { recursive:true });
@@ -227,12 +243,12 @@ function releaseFixture(callback: any) {
     updateNative();
     const notes = path.join(directory, 'notes.md');
     fs.writeFileSync(notes, '# Release notes\nVerified changes.\n');
-    const files = ['setup.exe', 'setup.exe.sha256'].map(name => {
+    const files = Object.values(installerNames('1.6.0')).flatMap(name => [name, name + '.sha256']).map(name => {
       const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file;
     });
-    const bind = () => { binding.recordBuild(root, binding.sourceIdentity(root)); binding.bindDistribution(root, path.join(root,payload), files[0]); };
+    const bind = () => { binding.recordBuild(root, binding.sourceIdentity(root)); for (const file of files.filter(file => file.endsWith('.exe'))) binding.bindDistribution(root, path.join(root,payload), file); };
     bind();
-    callback({ ...fixture, directory, notes, files, gateway, manifest, updateNative, bind });
+    await callback({ ...fixture, directory, notes, files, gateway, manifest, updateNative, bind });
   } finally { fixture.remove(); }
 }
 
@@ -288,7 +304,7 @@ test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixtur
 }));
 
 test('补签必须显式声明且匹配原标签，然后才晋升 latest', () => releaseFixture(({ root, directory, notes, files }: any) => {
-  const signedFiles = [...files, ...['latest.json', 'setup.exe.sig'].map(name => { const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file; })];
+  const signedFiles = [...files, ...['latest.json', ...Object.values(installerNames('1.6.0')).map(name => name + '.sig')].map(name => { const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file; })];
   const calls: any = [];
   const run = (command: any, args: any) => {
     calls.push(args);
@@ -297,12 +313,15 @@ test('补签必须显式声明且匹配原标签，然后才晋升 latest', () =
     if (args.includes('assets')) return JSON.stringify({ assets: signedFiles.map(file => ({ name: path.basename(file), size: fs.statSync(file).size })) });
     return '';
   };
+  assert.throws(() => publishRelease('1.6.0', 'source-head', signedFiles.filter(file => !file.endsWith('-upgrade-setup.exe.sig')),
+    { root, manual:false, completeManual:true, notesFile:notes, outputDir:directory, run }), /每种安装包/);
+  assert.equal(calls.length, 0, 'missing the second signature must fail before upload');
   publishRelease('1.6.0', 'source-head', signedFiles, { root, manual: false, completeManual: true, notesFile: notes, outputDir: directory, run });
   assert(calls.find((args: any) => args[1] === 'edit').includes('--latest=true'));
   assert(!fs.readFileSync(path.join(directory, 'release-notes-v1.6.0.md'), 'utf8').includes(MANUAL_MARKER));
 }));
 
-test('all public release modes reject unapproved or corrupt bound native materials before packaging or external calls', () => releaseFixture((fixture: any) => {
+test('all public release modes reject unapproved or corrupt bound native materials before packaging or external calls', () => releaseFixture(async (fixture: any) => {
   const { root, put, binding, payload, gateway, manifest, updateNative, bind, files, notes, directory } = fixture;
   const vm: typeof import('node:vm') = require('node:vm');
   const { createRequire }: typeof import('node:module') = require('node:module');
@@ -320,7 +339,7 @@ test('all public release modes reject unapproved or corrupt bound native materia
     for (const mode of modes) {
       assert.throws(() => publishRelease('1.0.0', 'head', files, { root, ...mode, notesFile:notes, outputDir:directory,
         run:() => { sideEffects++; throw Error('unexpected external call'); } }), /not approved/);
-      assert.throws(() => vm.runInNewContext(sourceCode + '\nmain();', { require:guardedRequire, module:{exports:{}}, exports:{},
+      await assert.rejects(() => vm.runInNewContext(sourceCode + '\nmain();', { require:guardedRequire, module:{exports:{}}, exports:{},
         __dirname:path.dirname(entry), process:{...process, env:{...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH:path.join(root,'runtime/keys/aics-updater.key')},
           argv:['node','fixture','--skip-build','--publish',...mode.args], exit:() => { throw Error('unexpected exit'); }}, console }), /not approved/);
     }

@@ -89,7 +89,7 @@ function buildSelection(root: string, includeBundle = true): Selection[] {
     { kind:'tree', path:'desktop-tauri/web' },
     { kind:'file', path:exe },
   ];
-  if (includeBundle) selected.push({ kind:'tree', path:bundle });
+  if (includeBundle) selected.push({ kind:'tree', path:bundle }, { kind:'tree', path:'desktop-tauri/src-tauri/target/release/nsis/x64' });
   return selected;
 }
 function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root)) {
@@ -117,7 +117,9 @@ function verifyBuild(root: string, payload?: string) {
   if (build.sha256 !== receipt.build.sha256) throw Error('桌面产物缺失或已改写，请从匹配源码完整重建');
   if (payload) {
     const relative = path.relative(root, payload).replace(/\\/g, '/');
-    if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === relative && entry.status === 'file')) throw Error('安装 payload 未绑定本次构建');
+    if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === relative && entry.status === 'file')) {
+      verifyBoundFile(root, receipt.derivedPayloads, payload, '安装 payload 未绑定本次构建');
+    }
   }
   return receipt;
 }
@@ -127,18 +129,38 @@ function extendBuild(root: string, receipt: ReturnType<typeof verifyBuild>) {
   if (original.sha256 !== receipt.build.sha256) throw Error('打包修改了原构建产物，拒绝绑定');
   recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs });
 }
+function addBoundFile(root: string, previous: any, output: string) {
+  const name = path.relative(root, output).replaceAll('\\', '/');
+  deliveryPaths.relative(name);
+  const others: Selection[] = previous?.selectors?.filter((item: Selection) => item.path !== name) || [];
+  if (previous) {
+    identity.validateSnapshot(previous);
+    for (const item of others) verifyBoundFile(root, previous, path.join(root, item.path), '已绑定的另一份产物已变化');
+  }
+  return completeSnapshot(root, [...others, { kind:'file', path:name }], '发行封装产物身份不完整');
+}
+function verifyBoundFile(root: string, snapshot: any, output: string, message: string) {
+  try { identity.validateSnapshot(snapshot); } catch { throw Error(message); }
+  const relative = path.relative(root, output).replaceAll('\\', '/');
+  const expected = snapshot.entries.find((item: { path:string; status:string }) => item.path === relative && item.status === 'file');
+  if (!expected) throw Error(message);
+  const actual = completeSnapshot(root, [{ kind:'file', path:relative }], message).entries[0];
+  if (actual.sha256 !== expected.sha256 || actual.bytes !== expected.bytes) throw Error(message);
+}
+function bindDerivedPayload(root: string, output: string) {
+  const receipt = verifyBuild(root);
+  writeReceipt(root, { ...receipt, derivedPayloads:addBoundFile(root, receipt.derivedPayloads, output) }, '升级载荷绑定');
+}
 function bindDistribution(root: string, payload: string, output: string) {
   const receipt = verifyBuild(root, payload);
-  const distribution = completeSnapshot(root, [{ kind:'file', path:path.relative(root, output).replace(/\\/g, '/') }], '发行封装产物身份不完整');
+  const distribution = addBoundFile(root, receipt.distribution, output);
   writeReceipt(root, { ...receipt, distribution, releaseCommit:identity.repository(root).commit }, '发行封装绑定');
 }
 function verifyDistribution(root: string, output: string) {
   const receipt = verifyBuild(root);
   try { identity.validateSnapshot(receipt.distribution); }
   catch (error) { throw Error('缺少或无效的发行封装绑定回执，请重新封装', { cause:error }); }
-  const relative = path.relative(root, output).replace(/\\/g, '/');
-  const actual = completeSnapshot(root, [{ kind:'file', path:relative }], '发行封装产物身份不完整，拒绝签名或上传');
-  if (actual.sha256 !== receipt.distribution.sha256) throw Error('发行封装产物已变化，拒绝签名或上传');
+  verifyBoundFile(root, receipt.distribution, output, '发行封装产物已变化，拒绝签名或上传');
 }
 function verifyDeployment(root:string,payload?:string){
   const receipt=verifyBuild(root);
@@ -152,4 +174,4 @@ if(require.main===module){
   try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
-export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };
+export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayload, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };

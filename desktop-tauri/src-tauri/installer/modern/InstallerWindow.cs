@@ -48,6 +48,19 @@ namespace Ayaki.Installer {
       Get<TextBlock>("VersionText").Text = "V" + PayloadInfo.Version + "  ·  WINDOWS x64";
       Get<TextBlock>("ExistingText").Text = String.IsNullOrEmpty(installed.Version) ? "" : "已安装 " + installed.Version;
       SetAction(String.IsNullOrEmpty(installed.Version) ? "安装绘遇" : installed.Version == PayloadInfo.Version ? "重新安装" : "更新绘遇");
+      if (PayloadInfo.UpgradeOnly) {
+        options.Update = true;
+        View.Title = "绘遇 · 轻量升级";
+        status.Text = "当前安装位置";
+        shortcut.Visibility = Visibility.Collapsed;
+        directory.IsReadOnly = true;
+        browse.Visibility = Visibility.Collapsed;
+        Get<TextBlock>("HeroTitle").Text = "升级绘遇";
+        Get<TextBlock>("HeroSubtitle").Text = "复用已安装的基础素材与运行环境，保留个人内容。";
+        SetAction("升级绘遇");
+      } else {
+        Get<TextBlock>("HeroSubtitle").Text = "完整安装包包含基础素材与运行环境；样张图片可另行导入。";
+      }
       if (options.Preview) Get<TextBlock>("Footnote").Text = "界面预览 · 不会安装或修改现有软件";
       ApplyTheme(options.Theme == "light");
       RefreshSpace();

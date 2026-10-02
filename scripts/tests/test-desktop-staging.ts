@@ -100,6 +100,20 @@ function remove(root: string) {
   assert.ok(/^aics-/.test(path.basename(actual)));
   fs.rmSync(actual,{recursive:true,force:true});
 }
+
+test('thin installer retains verified resources and refuses incomplete installations before writes', {
+  skip: process.platform !== 'win32' || !fs.existsSync(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe')),
+}, () => {
+  const root = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'aics-upgrade-fixture-$ '));
+  try {
+    const fixture = spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+      path.join(__dirname, 'fixtures/installer-upgrade.ps1'), '-workspaceRoot', path.resolve(__dirname, '../..'), '-auditRoot', root],
+    { encoding:'utf8', windowsHide:true, timeout:120_000 });
+    assert.ifError(fixture.error);
+    assert.equal(fixture.status, 0, fixture.stdout + fixture.stderr);
+    assert.match(fixture.stdout, /PASS: fresh-install refusal/);
+  } finally { remove(root); }
+});
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-stage-fixture-'));
   for (const directory of ['server', 'routes', 'services', 'scripts/lib', 'data', 'dist', 'assets', 'tools']) fs.mkdirSync(path.join(root, directory), { recursive: true });
