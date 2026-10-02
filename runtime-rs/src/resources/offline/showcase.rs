@@ -9,6 +9,40 @@ use crate::resources::{
     manifest::{self, Entry, Manifest},
 };
 use std::{collections::HashMap, path::Path};
+use tokio_util::sync::CancellationToken;
+
+/// Installed showcases are editable. Check their current references, rather
+/// than the original release hashes, before reporting a complete installation.
+pub(super) fn verify_current(root: &Path, cancel: &CancellationToken) -> Result<()> {
+    super::config::cancelled(cancel)?;
+    let value = fs::json(&root.join("manifest.json"), false, false)
+        .map_err(|error| {
+            Error::new(
+                &error.code,
+                "当前样张库清单无法读取，请检查 manifest.json；尚未确认安装完整。",
+            )
+        })?
+        .unwrap();
+    let entries = release::display(&value).map_err(|error| {
+        Error::new(
+            &error.code,
+            "当前样张库清单或图片路径无效，请检查 manifest.json；尚未确认安装完整。",
+        )
+    })?;
+    for item in entries.values() {
+        super::config::cancelled(cancel)?;
+        for field in ["image", "thumb"] {
+            let name = item[field].as_str().unwrap();
+            if fs::safe(&fs::child(root, name)?, true, false)?.is_none_or(|file| !file.is_file()) {
+                return Err(Error::new(
+                    "CONTENT_INVALID",
+                    format!("当前样张库引用的图片缺失或不是普通文件：{name}；尚未确认安装完整。"),
+                ));
+            }
+        }
+    }
+    Ok(())
+}
 
 pub(super) fn initialize(paths: &Paths) -> Result<()> {
     fs::ensure(&paths.showcase)?;

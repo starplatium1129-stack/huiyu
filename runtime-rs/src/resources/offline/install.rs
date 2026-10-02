@@ -97,7 +97,14 @@ pub(super) fn preview(
     configuration(options, paths, release)?;
     let transaction = pending(options, paths, release)?;
     let pointer = paths.pointer()?;
-    paths.current_root(&pointer)?;
+    let current_root = paths.current_root(&pointer)?;
+    // Pending recovery verifies its prepared target; a damaged old sample must
+    // not prevent resuming a healthy edition that was already copied.
+    if transaction.is_none()
+        && let Some(root) = current_root
+    {
+        showcase::verify_current(&root, cancel)?;
+    }
     let mut installed = Value::Null;
     if paths.policy.exists() && transaction.is_none() {
         let context = config::load(&options.gateway(), &paths.policy, cancel.clone())?.ctx;
@@ -158,7 +165,9 @@ pub(super) fn apply_with_progress(
         && before_resource["current"]["identity"] == release.approved["targetIdentity"]
     {
         state::verify(&op.ctx, &before_resource["current"], cancel)?;
-        paths.current_root(&before_showcase)?;
+        if let Some(root) = paths.current_root(&before_showcase)? {
+            showcase::verify_current(&root, cancel)?;
+        }
         fs::remove(&context_file)?;
         return Ok(
             json!({"ok":true,"kind":"huiyu-offline-import-result","action":"already-installed","releaseId":release.id,"releaseSha256":options.expected,"restartRequired":true}),

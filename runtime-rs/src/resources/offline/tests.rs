@@ -5,6 +5,7 @@ use crate::resources::{
     policy, resolve, state,
 };
 use std::{path::Path, sync::Arc};
+mod integrity;
 
 fn directory() -> tempfile::TempDir {
     // Windows can expose an 8.3 alias in TEMP. Fixture roots use the physical
@@ -298,6 +299,7 @@ fn interrupted_copy_keeps_old_policy_and_pointers_and_same_command_recovers() {
     let temp = directory();
     let first = fixture(temp.path(), "release_a", &["sc1000"]);
     apply(&first);
+    let old_root = show(&first);
     let second = fixture(temp.path(), "release_b", &["sc1000", "sc1001"]);
     let paths = paths::Paths::new(&second).unwrap();
     let old_policy = std::fs::read(&paths.policy).unwrap();
@@ -325,10 +327,14 @@ fn interrupted_copy_keeps_old_policy_and_pointers_and_same_command_recovers() {
         gateway_guard(&second.gateway()).err().unwrap().code,
         "PENDING_TRANSACTION"
     );
+    // Recovery uses the verified prepared target, even if an old sample is lost.
+    std::fs::remove_file(old_root.join("images/sc1000.jpg")).unwrap();
     let result = apply(&second);
     assert_eq!(result["action"], "recovered");
     assert!(!paths.pending.exists());
     assert_ne!(paths.pointer().unwrap(), old_showcase);
+    assert!(!old_root.join("images/sc1000.jpg").exists());
+    assert!(show(&second).join("images/sc1000.jpg").is_file());
     assert_eq!(
         std::fs::read(show(&second).join("images/sc1001.jpg")).unwrap(),
         b"neutral-sample-release_b-sc1001"
