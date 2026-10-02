@@ -6,6 +6,9 @@ export type { InterrogateMode, InterrogateResult } from '../api/interrogateResul
 
 const API = '/api/interrogate'
 const MAX_BYTES = 20 * 1024 * 1024
+// Both mounted entry points write the same reference draft. The latest request
+// owns that draft, while separate application roots remain independent.
+const activeRequests = new WeakMap<object, () => void>()
 
 function fileToDataUrl(file: File, signal: AbortSignal): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -48,6 +51,7 @@ function interrogateFailure(status: number, backendMessage: string): string {
 }
 
 export function useInterrogate() {
+  const appContext = getCurrentInstance()?.appContext
   const busy = ref(false)
   const error = ref<string | null>(null)
   const lastResult = ref<InterrogateResult | null>(null)
@@ -61,9 +65,10 @@ export function useInterrogate() {
     activeController = null
     cancelled.value = true
     busy.value = false
+    if (appContext && activeRequests.get(appContext) === cancel) activeRequests.delete(appContext)
     controller.abort()
   }
-  if (getCurrentInstance()) {
+  if (appContext) {
     onDeactivated(() => { viewActive = false; cancel() })
     onActivated(() => { viewActive = true })
   }
@@ -71,12 +76,14 @@ export function useInterrogate() {
 
   async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
     if (busy.value || disposed || !viewActive) return null
+    if (appContext) activeRequests.get(appContext)?.()
     busy.value = true
     cancelled.value = false
     error.value = null
     lastResult.value = null
     const controller = new AbortController()
     activeController = controller
+    if (appContext) activeRequests.set(appContext, cancel)
     const timeout = setTimeout(() => controller.abort(), 120_000)
     try {
       let file: File
@@ -130,6 +137,7 @@ export function useInterrogate() {
       if (activeController === controller) {
         activeController = null
         busy.value = false
+        if (appContext && activeRequests.get(appContext) === cancel) activeRequests.delete(appContext)
       }
     }
   }

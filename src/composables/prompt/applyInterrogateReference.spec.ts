@@ -87,6 +87,39 @@ it('keeps same-family clothing independently of the first target defaults', asyn
   expect(pb.outfitOverride?.tokens).toEqual(['school_uniform'])
 })
 
+it.each(['anima', 'krea2'] as const)('protects explicit director angle and time when applying a reference in %s', async engine => {
+  const pb = fixture()
+  pb.setShot('high')
+  pb.setLighting('golden')
+  await applyInterrogateResult(pb, extract(['pink_hair', 'white_coat', 'sitting', 'library', 'from_below', 'night']))
+  const prompt = usePopularPromptAssembly(pb, ref(engine), ref('fixture-model')).positivePrompt.value
+  expect(prompt).toMatch(/high[_ ]angle/)
+  expect(prompt).toMatch(/golden[_ -]hour/)
+  expect(prompt).not.toMatch(/from[_ ]below|night/)
+  expect(prompt).toMatch(/black[_ ]hair/)
+  expect(prompt).toMatch(/white[_ ]coat/)
+  expect(prompt).toContain('sitting')
+  expect(prompt).toContain('library')
+  expect(pb.referenceInput?.tags).toEqual(['sitting', 'library'])
+})
+
+it('lets a reference replace inherited director angle and time with the old studio scene', async () => {
+  const pb = usePromptBuilderStore()
+  cleanups.push(() => pb.$dispose())
+  const scene = { id: 'inherited-director', char: 'nene', title: 'Beach', rating: 'ALL',
+    prompt: 'beach, high_angle, golden_hour', tags: [], camera: 'high', lighting: 'golden' }
+  useSceneStore().scenes = [scene]
+  pb.loadScene(scene)
+  await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'library', 'from_below', 'night']))
+  expect(pb.selections.shot).toBeNull()
+  expect(pb.selections.lighting).toBeNull()
+  expect(pb.referenceInput?.tags).toEqual(['white_coat', 'sitting', 'library', 'from_below', 'night'])
+  const prompt = usePromptAssembly(pb, ref(''), ref('anima'), ref('fixture-model'), ref('')).positivePrompt.value
+  expect(prompt).toMatch(/from[_ ]below/)
+  expect(prompt).toContain('night')
+  expect(prompt).not.toMatch(/high[_ ]angle|golden[_ -]hour|beach/)
+})
+
 it('preserves explicit manual conflicts and overlapping tags while replacing only prior reference tags', async () => {
   const pb = fixture()
   pb.addManualTag('standing')

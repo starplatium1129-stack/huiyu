@@ -180,16 +180,21 @@ it('rejects malformed scores, incomplete ratings and character names mixed into 
   }
 })
 
-it('retains a real GPU failure without converting it to CPU or demo results', async () => {
-  const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+it('retains a real GPU failure and allows a fresh successful retry', async () => {
+  const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({
     ok: false, code: 'PIXAI_OUT_OF_MEMORY', error: 'PixAI GPU 显存不足，请停止占用显存的任务后重试',
-  }), { status: 503 }))
+  }), { status: 503 })).mockResolvedValueOnce(new Response(JSON.stringify(result)))
   vi.stubGlobal('fetch', fetchMock)
   const task = useInterrogate()
   await expect(task.interrogate(file())).rejects.toThrow('PixAI GPU 显存不足')
   expect(fetchMock).toHaveBeenCalledOnce()
   expect(task.lastResult.value).toBeNull()
   expect(task.busy.value).toBe(false)
+  expect(await task.interrogate(file())).toMatchObject({ tags: ['smile'] })
+  expect(fetchMock).toHaveBeenCalledTimes(2)
+  expect(task.error.value).toBeNull()
+  expect(task.busy.value).toBe(false)
+  expect(task.lastResult.value?.tags).toEqual(['smile'])
 })
 
 
@@ -218,4 +223,58 @@ it('cancels cached visits and rejects their late result without affecting the ne
     expect(task.busy.value).toBe(false)
     expect(task.error.value).toBeNull()
   } finally { wrapper.unmount() }
+})
+
+it('keeps the newest reference across mounted interrogation entries', async () => {
+  const requests: Array<{ signal: AbortSignal; finish: (response: Response) => void }> = []
+  vi.stubGlobal('fetch', vi.fn((_url, options) => new Promise<Response>(finish => { requests.push({ signal: options.signal, finish }) })))
+  const tasks: Array<ReturnType<typeof useInterrogate>> = []
+  const Entry = defineComponent({ setup() { tasks.push(useInterrogate()); return () => null } })
+  const wrapper = mount(defineComponent({ setup: () => () => h('div', [h(Entry), h(Entry)]) }))
+  let appliedTags: string[] = []
+  const apply = async (task: ReturnType<typeof useInterrogate>) => {
+    const data = await task.interrogate(file())
+    if (data) appliedTags = data.tags
+    return data
+  }
+  try {
+    const older = apply(tasks[0])
+    await vi.waitFor(() => expect(requests).toHaveLength(1))
+    const newer = apply(tasks[1])
+    await vi.waitFor(() => expect(requests).toHaveLength(2))
+    requests[1].finish(new Response(JSON.stringify({ ...result, tags: ['sky'], scores: { sky: 0.87 } })))
+    await newer
+    requests[0].finish(new Response(JSON.stringify(result)))
+    const oldResult = await older
+    expect(appliedTags).toEqual(['sky'])
+    expect(oldResult).toBeNull()
+    expect(requests[0].signal.aborted).toBe(true)
+    expect(tasks[0].busy.value).toBe(false)
+    expect(tasks[0].error.value).toBeNull()
+    expect(tasks[1].lastResult.value?.tags).toEqual(['sky'])
+  } finally { wrapper.unmount() }
+})
+
+it('keeps interrogation ownership separate between application roots', async () => {
+  const requests: Array<{ signal: AbortSignal; finish: (response: Response) => void }> = []
+  vi.stubGlobal('fetch', vi.fn((_url, options) => new Promise<Response>(finish => { requests.push({ signal: options.signal, finish }) })))
+  const tasks: Array<ReturnType<typeof useInterrogate>> = []
+  const Entry = defineComponent({ setup() { tasks.push(useInterrogate()); return () => null } })
+  const firstApp = mount(Entry)
+  const secondApp = mount(Entry)
+  let firstUnmounted = false
+  try {
+    const first = tasks[0].interrogate(file())
+    await vi.waitFor(() => expect(requests).toHaveLength(1))
+    const second = tasks[1].interrogate(file())
+    await vi.waitFor(() => expect(requests).toHaveLength(2))
+    expect(requests[0].signal.aborted).toBe(false)
+    requests[0].finish(new Response(JSON.stringify(result)))
+    expect(await first).toMatchObject({ tags: ['smile'] })
+    firstApp.unmount()
+    firstUnmounted = true
+    expect(requests[1].signal.aborted).toBe(false)
+    requests[1].finish(new Response(JSON.stringify({ ...result, tags: ['sky'], scores: { sky: 0.87 } })))
+    expect(await second).toMatchObject({ tags: ['sky'] })
+  } finally { if (!firstUnmounted) firstApp.unmount(); secondApp.unmount() }
 })
