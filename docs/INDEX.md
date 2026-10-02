@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[第九轮共享生命周期核查](audits/2026-10-02/round9-runtime-lifecycle.md)记录 20 轮合成导航的监听器、timer、observer、频道与 Blob URL 计数；未复现持续增长，保留产品代码，并列明原生桌面未验边界。
+
 [Rust 画册读取优化](audits/2026-10-02/gallery-backend-reads.md)记录有效作品索引、正文重复分配消除、合成分页实测与当次回归，区分读取切片收益和桌面未验范围。
 
 [角色场景同页导航核查](audits/2026-10-02/popular-scene-navigation.md)记录角色参数变化后旧列表与绘制目标修复、缩略图缓存试验的撤回依据及隔离浏览器验收边界。
