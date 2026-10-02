@@ -1,5 +1,5 @@
-import { computed, defineComponent, ref } from 'vue'
-import { mount } from '@vue/test-utils'
+import { computed, defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
+import { mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useShotBatchMachine } from './useShotBatchMachine'
 import * as api from '@/api/videoApi'
@@ -9,16 +9,18 @@ vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/api/videoApi', () => ({ cancelVideoBatch: vi.fn(), concatVideoBatch: vi.fn(), createVideoBatch: vi.fn(), fetchVideoBatch: vi.fn(), retryVideoShot: vi.fn() }))
 let wrapper: ReturnType<typeof mount> | undefined
 const batch = (status: api.VideoBatch['status'] = 'paused'): api.VideoBatch => ({ id: 'original', status, shots: [{ status: 'failed' }, { status: 'failed' }], progress: { total: 2, succeeded: 0, failed: 2 } } as api.VideoBatch)
-function setup() {
+function setup(cached = false) {
   const error = ref('')
+  const active = ref(true)
   const shots = ref<ShotDraft[]>([]), inputsBusy = ref(false)
   let machine!: ReturnType<typeof useShotBatchMachine>
-  wrapper = mount(defineComponent({ setup() {
+  const page = defineComponent({ setup() {
     machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error })
     return () => null
-  } }))
+  } })
+  wrapper = mount(cached ? defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(page) : null }) }) : page)
   machine.batch.value = batch()
-  return { machine, error, shots, inputsBusy }
+  return { machine, error, shots, inputsBusy, active }
 }
 beforeEach(() => { vi.clearAllMocks(); vi.useFakeTimers() })
 afterEach(() => { wrapper?.unmount(); vi.useRealTimers() })
@@ -31,6 +33,13 @@ describe('shot batch operation recovery', () => {
     expect(machine.canSubmit.value).toBe(false)
     await machine.submitBatch()
     expect(api.createVideoBatch).not.toHaveBeenCalled()
+    inputsBusy.value = false
+    shots.value[0].dialogue = ''
+    vi.mocked(api.createVideoBatch).mockResolvedValueOnce({ batch: batch('running') } as Awaited<ReturnType<typeof api.createVideoBatch>>)
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: batch('done') } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
+    await machine.submitBatch()
+    await vi.advanceTimersByTimeAsync(3000)
+    expect(machine.batch.value?.status).toBe('done')
   })
   it('resumes polling if only part of a retry-all request succeeded', async () => {
     vi.mocked(api.retryVideoShot).mockResolvedValueOnce({ batch: batch('running') } as Awaited<ReturnType<typeof api.retryVideoShot>>).mockRejectedValueOnce(new Error('retry failed'))
@@ -39,7 +48,7 @@ describe('shot batch operation recovery', () => {
     await machine.retryAllFailed()
     expect(error.value).toBe('retry failed')
     await vi.advanceTimersByTimeAsync(3000)
-    expect(api.fetchVideoBatch).toHaveBeenCalledWith('original')
+    expect(api.fetchVideoBatch).toHaveBeenCalledWith('original', expect.any(AbortSignal))
     expect(machine.batch.value?.status).toBe('done')
   })
   it('prevents duplicate retries and cancels the remainder of a retry loop', async () => {
@@ -79,6 +88,49 @@ describe('shot batch operation recovery', () => {
     expect(await old).toBe(true)
     expect(machine.batch.value?.id).toBe('new')
     expect(error.value).toBe('')
+  })
+
+  it('pauses cached storyboard polling, ignores abandoned read failures and refreshes once on return', async () => {
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: { ...batch('running'), id: 'saved' } } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
+    const { machine, error, active } = setup(true)
+    await machine.reconnectBatch('saved')
+    let reject!: (error: Error) => void
+    vi.mocked(api.fetchVideoBatch).mockReturnValueOnce(new Promise((_resolve, fail) => { reject = fail }))
+    await vi.advanceTimersByTimeAsync(3000)
+    const signal = vi.mocked(api.fetchVideoBatch).mock.calls[1][1]
+    expect(signal).toBeInstanceOf(AbortSignal)
+    active.value = false
+    await nextTick()
+    expect(signal!.aborted).toBe(true)
+    reject(new Error('obsolete read failed'))
+    await vi.advanceTimersByTimeAsync(12000)
+    expect(api.fetchVideoBatch).toHaveBeenCalledTimes(2)
+    expect(error.value).toBe('')
+    expect(api.cancelVideoBatch).not.toHaveBeenCalled()
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: { ...batch('done'), id: 'saved' } } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
+    active.value = true
+    await nextTick(); await flushPromises()
+    expect(api.fetchVideoBatch).toHaveBeenCalledTimes(3)
+    expect(machine.batch.value?.status).toBe('done')
+  })
+
+  it('holds scheduled status reads while cancelling and ignores an obsolete retry error', async () => {
+    vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: { ...batch('running'), id: 'saved' } } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)
+    const { machine, error } = setup()
+    await machine.reconnectBatch('saved')
+    let rejectRetry!: (error: Error) => void, finishCancel!: (value: Awaited<ReturnType<typeof api.cancelVideoBatch>>) => void
+    vi.mocked(api.retryVideoShot).mockReturnValueOnce(new Promise((_resolve, fail) => { rejectRetry = fail }))
+    vi.mocked(api.cancelVideoBatch).mockReturnValueOnce(new Promise(resolve => { finishCancel = resolve }))
+    const retry = machine.retryShotAt(0)
+    const cancellation = machine.cancelBatch()
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(api.fetchVideoBatch).toHaveBeenCalledOnce()
+    finishCancel({ batch: { ...batch('cancelled'), id: 'saved' } } as Awaited<ReturnType<typeof api.cancelVideoBatch>>)
+    await cancellation
+    rejectRetry(new Error('superseded retry failed'))
+    await retry
+    expect(error.value).toBe('')
+    expect(machine.batch.value?.status).toBe('cancelled')
   })
 
 })

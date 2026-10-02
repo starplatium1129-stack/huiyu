@@ -2,7 +2,7 @@
   <form class="api-settings" @submit.prevent="$emit('save')">
     <div class="api-settings-head">
       <div class="api-title-lockup">
-        <span class="api-mark" aria-hidden="true">↗</span>
+        <span class="api-mark" aria-hidden="true"><ArchiveIcon name="chat" /></span>
         <div>
           <small>MODEL GATEWAY</small>
           <strong>连接对话模型</strong>
@@ -42,14 +42,8 @@
           label="模型名"
           :options="modelOptions"
         />
-        <template v-else>
-          <input v-model.trim="modelProxy" list="chat-api-models" maxlength="200"
-            aria-label="模型名"
-            placeholder="填写服务商提供的模型 ID" autocomplete="off" required />
-          <datalist id="chat-api-models">
-            <option v-for="modelName in discoveredModels" :key="modelName" :value="modelName" />
-          </datalist>
-        </template>
+        <input v-else v-model.trim="modelProxy" maxlength="200" aria-label="模型名"
+          placeholder="填写服务商提供的模型 ID" autocomplete="off" required />
       </label>
       <label class="api-field">
         <span><i aria-hidden="true">03</i> API Key{{ vendorProxy === 'custom' ? '（可留空）' : '' }}</span>
@@ -60,13 +54,20 @@
           <button type="button" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
         </div>
       </label>
+      <div v-if="vendorProxy === 'custom' && discoveredModels.length" class="api-field api-discovered-models">
+        <span>当前服务可用模型</span>
+        <StudioSelect :model-value="modelProxy" label="从已发现模型中选择" :options="discoveredModelOptions"
+          placeholder="选择已发现的模型" @update:model-value="modelProxy = String($event)" />
+      </div>
       <p class="api-model-note">{{ modelNote }}</p>
     </div>
 
     <div class="api-settings-actions">
       <span class="api-test-status" :data-state="testState" role="status">{{ statusText }}</span>
       <div class="api-settings-buttons">
-          <button class="btn btn-ghost btn-sm" type="button" @click="clearPersonalKey">清除个人密钥</button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="clearingKey" @click="clearPersonalKey">
+          {{ clearingKey ? '清除中…' : '清除个人密钥' }}
+        </button>
         <button class="btn btn-ghost btn-sm" type="button"
           :disabled="testing || !canTest" @click="testConnection">
           {{ testing ? '测试中…' : '测试连接' }}
@@ -175,33 +176,38 @@ const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
 let draftRevision = 0
-let clearingKey = false
+const clearingKey = ref(false)
 let testController: AbortController | null = null
-function invalidateTest() {
+function invalidateTest(clearModels = true) {
   draftRevision++
   testController?.abort()
   testController = null
   testing.value = false
   testState.value = ''
   testMessage.value = ''
-  discoveredModels.value = []
+  if (clearModels) discoveredModels.value = []
 }
-watch(() => [props.vendor, props.baseUrl, props.model, props.apiKey], invalidateTest, { flush: 'sync' })
+watch(() => [props.vendor, props.baseUrl, props.apiKey], () => invalidateTest(), { flush: 'sync' })
+watch(() => props.model, () => invalidateTest(false), { flush: 'sync' })
 onBeforeUnmount(invalidateTest)
 const draftStore = createChatApiDrafts(() => { testMessage.value = '旧密钥草稿暂未能安全迁移，原值已保留，请重试。' })
 const vendorDrafts = draftStore.drafts
 
 async function clearPersonalKey() {
-  if (clearingKey) return
-  clearingKey = true
+  if (clearingKey.value) return
+  clearingKey.value = true
   const revision = draftRevision
   try {
     await draftStore.clear(props.vendor, { baseUrl: props.baseUrl, model: props.model, apiKey: props.apiKey })
     if (revision !== draftRevision) return
     emit('update:apiKey', '')
     emit('clear-key')
-  } catch { if (revision === draftRevision) testMessage.value = '个人密钥草稿清除尚未确认，请检查后重试。' }
-  finally { clearingKey = false }
+  } catch {
+    if (revision === draftRevision) {
+      testState.value = 'error'
+      testMessage.value = '个人密钥草稿清除尚未确认，请检查后重试。'
+    }
+  } finally { clearingKey.value = false }
 }
 
 const vendorProxy = computed({
@@ -214,7 +220,7 @@ const baseUrlProxy = computed({
 })
 const modelProxy = computed({
   get: () => props.model,
-  set: value => { invalidateTest(); emit('update:model', value) },
+  set: value => { invalidateTest(false); emit('update:model', value) },
 })
 const apiKeyProxy = computed({
   get: () => props.apiKey,
@@ -226,6 +232,7 @@ const canTest = computed(() =>
     && (props.vendor === 'custom' || props.apiKey.trim()))
 )
 const canSaveHost = computed(() => canTest.value)
+const discoveredModelOptions = computed(() => discoveredModels.value.map(value => ({ value, label: value })))
 const modelOptions = computed<ModelOption[]>(() => {
   if (props.vendor === 'custom') return []
   const known = PRESET_MODELS[props.vendor]
@@ -242,16 +249,16 @@ const modelNote = computed(() =>
 const statusText = computed(() => testMessage.value || props.hint || '先测试连接，再保存配置。')
 
 function selectVendor(vendor: ApiVendor) {
+  if (vendor === props.vendor) return
   invalidateTest()
+  showApiKey.value = false
   const current = props.vendor
   // 先把当前商家的草稿存起来
-  if (current !== vendor) {
-    draftStore.set(current, {
-      baseUrl: props.baseUrl,
-      model: props.model,
-      apiKey: props.apiKey,
-    })
-  }
+  draftStore.set(current, {
+    baseUrl: props.baseUrl,
+    model: props.model,
+    apiKey: props.apiKey,
+  })
   emit('update:vendor', vendor)
   discoveredModels.value = []
   testState.value = ''
@@ -265,19 +272,23 @@ function selectVendor(vendor: ApiVendor) {
     emit('update:apiKey', saved.apiKey)
     return
   }
+  // Credentials belong to their provider draft; never carry a key to a new endpoint.
+  emit('update:apiKey', vendor === 'cliproxy' ? CLIPROXY_API_KEY : '')
   if (vendor === 'deepseek') {
     emit('update:baseUrl', DEEPSEEK_BASE_URL)
     emit('update:model', DEEPSEEK_DEFAULT_MODEL)
   } else if (vendor === 'cliproxy') {
     emit('update:baseUrl', CLIPROXY_BASE_URL)
     emit('update:model', CLIPROXY_DEFAULT_MODEL)
-    emit('update:apiKey', CLIPROXY_API_KEY)
   } else if (vendor === 'opencode') {
     emit('update:baseUrl', OPENCODE_BASE_URL)
     emit('update:model', OPENCODE_DEFAULT_MODEL)
   } else if (vendor === 'opencode-go') {
     emit('update:baseUrl', OPENCODE_GO_BASE_URL)
     emit('update:model', OPENCODE_GO_DEFAULT_MODEL)
+  } else {
+    emit('update:baseUrl', '')
+    emit('update:model', '')
   }
 }
 
@@ -296,7 +307,7 @@ async function testConnection() {
     }, { signal: controller.signal })
     if (testController !== controller || controller.signal.aborted) return
     discoveredModels.value = Array.isArray(data.models)
-      ? data.models.map(String).filter(Boolean)
+      ? [...new Set(data.models.map(model => String(model).trim()).filter(Boolean))]
       : []
     testState.value = 'success'
     testMessage.value = discoveredModels.value.length

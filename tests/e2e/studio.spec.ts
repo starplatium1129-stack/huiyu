@@ -425,7 +425,8 @@ test('companion chat window renders history from storage and relays sends to the
   expect(errors).toEqual([]);
 });
 
-test('speech input: hold-talk entry hidden until ASR endpoint configured', async ({ page }) => {
+test('speech input: hold-talk entry hidden until ASR endpoint configured', async ({ page }, info) => {
+  await page.setViewportSize({ width:1097, height:617 });
   const errors = collectRuntimeErrors(page);
   await page.addInitScript(() => {
     localStorage.setItem('aics_chat_v1', JSON.stringify({
@@ -454,7 +455,18 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
   await page.getByRole('button', { name: '语音输入设置' }).click();
   await expect(page.locator('.speech-settings')).toBeVisible();
+  const settings = page.getByRole('dialog', { name:'语音输入设置', exact:true });
+  const bounds = (await settings.boundingBox())!;
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.y).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(1097);
+  expect(bounds.y + bounds.height).toBeLessThanOrEqual(617);
+  for (let index = 0; index < 16 && !await settings.getByRole('button', { name:'关闭', exact:true }).evaluate(el => el === document.activeElement); index++) await page.keyboard.press('Tab');
+  await expect(settings.getByRole('button', { name:'关闭', exact:true })).toBeFocused();
+  await expect(settings.getByRole('button', { name:'关闭', exact:true })).toBeInViewport({ ratio:1 });
+  await page.screenshot({ path:info.outputPath('speech-settings-narrow.png') });
   await page.getByRole('button', { name: '关闭' }).click();
+  await expect(page.getByRole('button', { name:'语音输入设置', exact:true })).toBeFocused();
 
   // 配置启用 + http 端点后出现
   await page.evaluate(() => {

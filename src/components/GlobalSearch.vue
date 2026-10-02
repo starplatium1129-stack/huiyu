@@ -284,6 +284,8 @@ function onInputKeydown(event: KeyboardEvent) {
 }
 
 function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = document.activeElement as HTMLElement | null) {
+  // Global navigation must not open an inert body portal underneath a modal editor.
+  if (!open.value && (document.querySelector('dialog:modal') || document.activeElement?.closest('[aria-modal="true"]'))) return
   previousActiveElement = trigger
   triggerSource.value = source
   open.value = true
@@ -404,14 +406,18 @@ onUnmounted(() => {
 <style scoped>
 @reference "../assets/css/tailwind.css";
 .global-search {
+  --search-inset: clamp(var(--s-4), 10dvh, 96px);
   @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
   @apply tw:flex tw:items-start tw:justify-center;
-  padding: clamp(8vh, 14vh, 20vh) var(--s-4) 0;
+  padding: var(--search-inset) var(--s-4);
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .gs-panel {
   width: min(640px, 96vw);
+  max-height: calc(100dvh - 2 * var(--search-inset));
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--glass-edge);
   @apply tw:rounded-2xl;
   background: var(--bg-surface);
@@ -440,7 +446,8 @@ onUnmounted(() => {
   padding: 2px var(--s-2);
   border: 1px solid var(--border-soft); font: 600 var(--fs-mono-xs) var(--font-mono);
 }
-.gs-results { max-height: min(52vh, 480px); }
+.gs-heading, .gs-input-row, .gs-footer, .gs-panel > .gs-empty { flex-shrink:0; }
+.gs-results { min-height:0; flex:1 1 auto; max-height: min(52vh, 480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
 .gs-group-title {
   margin: var(--s-2) var(--s-2) var(--s-1);
 }

@@ -333,7 +333,7 @@ const jobStatusLabel = computed(() => ({
 
 function schedulePoll() {
   window.clearTimeout(pollTimer)
-  if (!job.value || disposed || !pageActive || pollRequest || !jobActive.value) return
+  if (!job.value || disposed || !pageActive || pollRequest || cancelling.value || !jobActive.value) return
   pollTimer = window.setTimeout(() => { void pollJob() }, 1500)
 }
 
@@ -444,7 +444,7 @@ async function submitVideo() {
 
 
 async function pollJob() {
-  if (disposed || !pageActive || pollRequest || !job.value || !jobActive.value) return
+  if (disposed || !pageActive || pollRequest || cancelling.value || !job.value || !jobActive.value) return
   const id = job.value.id
   const controller = new AbortController(); pollRequest = controller
   try {
@@ -461,16 +461,21 @@ async function pollJob() {
 
 
 async function cancelJob() {
-  if (!job.value || cancelling.value) return
+  if (!job.value || disposed || cancelling.value) return
   const id = job.value.id
   cancelling.value = true
+  // Cancellation owns the next status; an earlier read cannot turn it back
+  // into a running job, and no fresh reads should race the pending command.
+  window.clearTimeout(pollTimer)
+  pollRequest?.abort(); pollRequest = null
   try {
     const response = await cancelVideoJob(id)
     if (!disposed && job.value?.id === id) job.value = response.job
   } catch (error) {
-    statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
+    if (!disposed && job.value?.id === id) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
   } finally {
     cancelling.value = false
+    schedulePoll()
   }
 }
 

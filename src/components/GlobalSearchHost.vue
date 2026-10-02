@@ -44,6 +44,8 @@ function onKeydown(event: KeyboardEvent) {
   const isInput = /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') || target?.isContentEditable === true
   if (((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') || (event.key === '/' && !isInput)) {
     event.preventDefault()
+    // Keep modal keyboard ownership and avoid downloading a search the user cannot reach.
+    if (document.querySelector('dialog:modal') || target?.closest('[aria-modal="true"]')) return
     if (event.repeat) return
     if (pendingOpen && event.key.toLowerCase() === 'k') pendingOpen = false
     else openGlobalSearch('keyboard')

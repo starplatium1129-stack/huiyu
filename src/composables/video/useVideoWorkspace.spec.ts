@@ -4,13 +4,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVideoWorkspace } from './useVideoWorkspace'
 import type { VideoFramesDeps } from '@/components/video/useVideoFrames'
 
-const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn(), fetch: vi.fn(), status: vi.fn() }))
+const mocks = vi.hoisted(() => ({ create: vi.fn(), frames: vi.fn(), record: vi.fn(), fetch: vi.fn(), status: vi.fn(), cancel: vi.fn() }))
 vi.mock('vue-router', () => ({ useRoute: () => ({ path: '/video-studio', query: {} }), useRouter: () => ({ replace: vi.fn() }) }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/composables/tasks/useBackendSelection', () => ({ useBackendSelection: () => ({ retry: vi.fn() }) }))
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ recordVideoTask: mocks.record }) }))
 vi.mock('@/api/videoApi', () => ({
-  createVideoJob: mocks.create, fetchVideoJob: mocks.fetch, cancelVideoJob: vi.fn(),
+  createVideoJob: mocks.create, fetchVideoJob: mocks.fetch, cancelVideoJob: mocks.cancel,
   fetchVideoStatus: mocks.status,
 }))
 vi.mock('@/components/video/useVideoFrames', () => ({ useVideoFrames: (deps: VideoFramesDeps) => {
@@ -116,6 +116,28 @@ describe('video submission recovery', () => {
     await older
     expect(workspace.status.value?.online).toBe(false)
     expect(workspace.statusLoading.value).toBe(false)
+  })
+  it('does not let a late poll undo cancellation or keep polling a cancelled job', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+    const workspace = await setup()
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockResolvedValueOnce({ job: { id: 'running', status: 'running' } })
+    let finishPoll!: (value: object) => void, finishCancel!: (value: object) => void
+    mocks.fetch.mockReturnValueOnce(new Promise(resolve => { finishPoll = resolve }))
+    mocks.cancel.mockReturnValueOnce(new Promise(resolve => { finishCancel = resolve }))
+    await workspace.submitVideo()
+    await vi.advanceTimersByTimeAsync(1500)
+    const signal = mocks.fetch.mock.calls[0][1] as AbortSignal
+    const cancellation = workspace.cancelJob()
+    expect(signal.aborted).toBe(true)
+    finishPoll({ job: { id: 'running', status: 'running' } })
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(mocks.fetch).toHaveBeenCalledOnce()
+    finishCancel({ job: { id: 'running', status: 'cancelled' } })
+    await cancellation
+    await vi.advanceTimersByTimeAsync(4500)
+    expect(workspace.job.value?.status).toBe('cancelled')
+    expect(mocks.fetch).toHaveBeenCalledOnce()
   })
   it('stops reading a cached page task and resumes without cancelling its backend job', async () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })

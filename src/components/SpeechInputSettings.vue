@@ -2,7 +2,7 @@
   <form class="speech-settings" @submit.prevent="save">
     <div class="speech-settings-head">
       <div class="speech-title-lockup">
-        <span class="speech-mark" aria-hidden="true">◉</span>
+        <span class="speech-mark" aria-hidden="true"><ArchiveIcon name="sound" /></span>
         <div>
           <small>SPEECH INPUT</small>
           <strong>语音输入（按住说话）</strong>
@@ -101,7 +101,7 @@
       <p class="speech-test-status" :data-state="testState" role="status" aria-label="地址检测状态">{{ testMessage }}</p>
     </div>
     <p class="speech-http-hint">
-      <i aria-hidden="true">i</i> 仅检测地址的 HTTP 响应，未验证语音转写、模型或密钥。若检测失败，请检查地址、服务及跨域（CORS）设置。
+      <ArchiveIcon name="info" /> 仅检测地址的 HTTP 响应，未验证语音转写、模型或密钥。若检测失败，请检查地址、服务及跨域（CORS）设置。
     </p>
     </template>
   </form>
@@ -112,6 +112,7 @@ import { computed, ref, watch, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import {
   isSpeechInputReady,

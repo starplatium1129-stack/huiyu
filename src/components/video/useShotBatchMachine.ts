@@ -1,5 +1,5 @@
 import { useTrackedTask } from '@/composables/useTaskCenter'
-import { computed, onBeforeUnmount, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, type ComputedRef, type Ref } from 'vue'
 import {
   cancelVideoBatch,
   concatVideoBatch,
@@ -48,8 +48,23 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const retrying = ref(false)
   let pollTimer = 0
   let disposed = false
+  let pageActive = true
+  let pollRequest: AbortController | null = null
+  let reconnectRequest: AbortController | null = null
+  let reconnectTarget = ''
   let reconnectSerial = 0
   let operationSerial = 0
+
+  function stopReads() {
+    window.clearTimeout(pollTimer)
+    pollRequest?.abort(); pollRequest = null
+    reconnectRequest?.abort(); reconnectRequest = null
+  }
+  function beginOperation() {
+    stopReads()
+    reconnectTarget = ''
+    return ++operationSerial
+  }
 
   const batchActive = computed(() => batch.value?.status === 'running')
   const canSubmit = computed(() =>
@@ -88,7 +103,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function submitBatch() {
     if (!canSubmit.value || !h3Ready.value) return
     submitting.value = true
-    const serial = ++operationSerial
+    const serial = beginOperation()
     batchError.value = ''
     try {
       const response = await createVideoBatch({
@@ -116,32 +131,35 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
       })
       if (disposed || serial !== operationSerial) return
       batch.value = response.batch
-      schedulePoll()
     } catch (error) {
-      batchError.value = error instanceof Error ? error.message : '批量提交失败'
+      if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '批量提交失败'
     } finally {
       submitting.value = false
+      schedulePoll()
     }
   }
 
   async function pollBatch() {
-    if (!batch.value || disposed) return
+    if (!batch.value || disposed || !pageActive || pollRequest || submitting.value || retrying.value || cancelling.value || concating.value) return
+    if (batch.value.status !== 'running' && batch.value.status !== 'paused') return
     const id = batch.value.id
     const serial = operationSerial
+    const controller = new AbortController(); pollRequest = controller
     try {
-      const response = await fetchVideoBatch(id)
-      if (disposed || batch.value?.id !== id || serial !== operationSerial) return
+      const response = await fetchVideoBatch(id, controller.signal)
+      if (disposed || !pageActive || controller.signal.aborted || batch.value?.id !== id || serial !== operationSerial) return
       batch.value = response.batch
     } catch (error) {
+      if (disposed || !pageActive || controller.signal.aborted || batch.value?.id !== id || serial !== operationSerial) return
       batchError.value = error instanceof Error ? error.message : '批量状态读取失败'
     } finally {
-      schedulePoll()
+      if (pollRequest === controller) { pollRequest = null; schedulePoll() }
     }
   }
 
   function schedulePoll() {
     window.clearTimeout(pollTimer)
-    if (!batch.value || disposed) return
+    if (!batch.value || disposed || !pageActive || pollRequest || submitting.value || retrying.value || cancelling.value || concating.value) return
     if (batch.value.status !== 'running' && batch.value.status !== 'paused') return
     pollTimer = window.setTimeout(() => { void pollBatch() }, 3000)
   }
@@ -149,14 +167,14 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function cancelBatch() {
     if (!batch.value || cancelling.value) return
     const id = batch.value.id
-    const serial = ++operationSerial
+    const serial = beginOperation()
     cancelling.value = true
     try {
       const response = await cancelVideoBatch(id)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
       batch.value = response.batch
     } catch (error) {
-      batchError.value = error instanceof Error ? error.message : '整批取消失败'
+      if (!disposed && batch.value?.id === id && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '整批取消失败'
     } finally {
       cancelling.value = false
       schedulePoll()
@@ -166,15 +184,14 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function retryShotAt(index: number) {
     if (!batch.value || retrying.value || cancelling.value || concating.value || !Number.isInteger(index) || !batch.value.shots[index]) return
     const id = batch.value.id
-    const serial = ++operationSerial
+    const serial = beginOperation()
     retrying.value = true
     try {
       const response = await retryVideoShot(id, index + 1)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
       batch.value = response.batch
-      schedulePoll()
     } catch (error) {
-      batchError.value = error instanceof Error ? error.message : '重抽失败'
+      if (!disposed && batch.value?.id === id && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '重抽失败'
     } finally {
       retrying.value = false
       schedulePoll()
@@ -184,7 +201,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function retryAllFailed() {
     if (!batch.value || retrying.value || cancelling.value || concating.value) return
     const id = batch.value.id
-    const serial = ++operationSerial
+    const serial = beginOperation()
     const indices = batch.value.shots.flatMap((shot, index) => shot.status === 'failed' || shot.status === 'cancelled' ? [index] : [])
     retrying.value = true
     batchError.value = ''
@@ -196,6 +213,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
           if (disposed || batch.value?.id !== id || serial !== operationSerial) return
           batch.value = response.batch
         } catch (error) {
+          if (disposed || batch.value?.id !== id || serial !== operationSerial) return
           batchError.value = error instanceof Error ? error.message : '重抽失败'
           return
         }
@@ -209,14 +227,14 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function concatBatch() {
     if (!batch.value || concating.value || retrying.value || cancelling.value || !canConcat.value) return
     const id = batch.value.id
-    const serial = ++operationSerial
+    const serial = beginOperation()
     concating.value = true
     try {
       const response = await concatVideoBatch(id)
       if (disposed || batch.value?.id !== id || serial !== operationSerial) return
       batch.value = response.batch
     } catch (error) {
-      batchError.value = error instanceof Error ? error.message : '拼接失败'
+      if (!disposed && batch.value?.id === id && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '拼接失败'
     } finally {
       concating.value = false
     }
@@ -229,25 +247,33 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
    */
   async function reconnectBatch(id: string): Promise<boolean> {
     if (batch.value?.id === id) return true
+    reconnectTarget = id
+    if (disposed || !pageActive) return true
+    stopReads()
+    const controller = new AbortController(); reconnectRequest = controller
     const serial = ++reconnectSerial
     const operation = ++operationSerial
     try {
-      const response = await fetchVideoBatch(id)
-      if (disposed || serial !== reconnectSerial || operation !== operationSerial) return true
+      const response = await fetchVideoBatch(id, controller.signal)
+      if (disposed || controller.signal.aborted || serial !== reconnectSerial || operation !== operationSerial) return true
+      reconnectTarget = ''
       batch.value = response.batch
       schedulePoll()
       return true
     } catch (error) {
-      if (disposed || serial !== reconnectSerial || operation !== operationSerial) return true
-      if (error instanceof ApiClientError && (error.status === 404 || error.status === 410)) return false
+      if (disposed || controller.signal.aborted || serial !== reconnectSerial || operation !== operationSerial) return true
+      if (error instanceof ApiClientError && (error.status === 404 || error.status === 410)) { reconnectTarget = ''; return false }
       batchError.value = error instanceof Error ? error.message : '批次暂时无法读取，请稍后重试'
       return true
-    }
+    } finally { if (reconnectRequest === controller) reconnectRequest = null }
   }
 
+  onDeactivated(() => { pageActive = false; stopReads() })
+  onActivated(() => { pageActive = true; if (reconnectTarget) void reconnectBatch(reconnectTarget); else void pollBatch() })
   onBeforeUnmount(() => {
     disposed = true
-    window.clearTimeout(pollTimer)
+    pageActive = false
+    stopReads()
   })
 
   useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', backend: !submitting.value && batch.value ? { kind: 'video-batch', id: batch.value.id } : undefined, route: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : '/video-studio?mode=shots', resultRoute: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : undefined, status: submitting.value || concating.value || batchActive.value ? 'running' : !batch.value ? 'idle' : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded', progress: progressPercent.value, message: batchError.value || (concating.value ? '正在拼接成片…' : batch.value ? `${batch.value.progress.succeeded} / ${batch.value.progress.total} 镜完成` : '') }), { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return batch.value?.progress.failed ? retryAllFailed : undefined } })

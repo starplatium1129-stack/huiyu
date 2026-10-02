@@ -22,7 +22,7 @@ const task = (id: string, complete = false): TaskRecord => ({
   errorCode: null, checkpoint: null, parentBatchId: null, stepIndex: null,
 })
 function setup() {
-  return mount(RuntimeTaskList, { global: { stubs: { RouterLink: true }, directives: { 'content-motion': {} } } })
+  return mount(RuntimeTaskList, { props: { active: true }, global: { stubs: { RouterLink: true }, directives: { 'content-motion': {} } } })
 }
 function deferred() {
   let resolve!: () => void
@@ -35,6 +35,23 @@ beforeEach(() => {
   pendingTaskRequests.value = []
 })
 afterEach(() => { taskRecords.value = []; pendingTaskRequests.value = [] })
+
+it('releases result previews when the panel closes and retains its selected inbox on reopening', async () => {
+  const wrapper = setup()
+  const button = (label: string) => wrapper.findAll('button').find(item => item.text() === label)!
+  try {
+    await button('结果收件箱').trigger('click')
+    await button('查看结果').trigger('click')
+    expect(wrapper.text()).toContain('synthetic result')
+    await wrapper.setProps({ active: false })
+    expect(wrapper.text()).not.toContain('synthetic result')
+    expect(api.cancel).not.toHaveBeenCalled()
+    expect(taskRecords.value[1].resultRefs).toHaveLength(1)
+    await wrapper.setProps({ active: true })
+    expect(button('结果收件箱').attributes('aria-pressed')).toBe('true')
+    expect(wrapper.text()).toContain('synthetic result')
+  } finally { wrapper.unmount() }
+})
 
 it('refresh cannot release an in-flight task cancellation and permit a second command', async () => {
   const pending = deferred()

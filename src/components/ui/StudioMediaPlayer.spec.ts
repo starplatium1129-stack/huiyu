@@ -1,8 +1,19 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import StudioMediaPlayer from './StudioMediaPlayer.vue'
 
 describe('StudioMediaPlayer', () => {
+  it('stops playback and releases its media source before removal', () => {
+    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '任务结果' } })
+    const element = wrapper.get('video').element
+    const pause = vi.spyOn(element, 'pause')
+    const load = vi.spyOn(element, 'load')
+    wrapper.unmount()
+    expect(pause).toHaveBeenCalledOnce()
+    expect(element.hasAttribute('src')).toBe(false)
+    expect(load).toHaveBeenCalledOnce()
+  })
+
   it('offers a labelled video transport without native browser chrome', () => {
     const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '生成的视频成片' } })
     const video = wrapper.find('video')

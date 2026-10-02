@@ -82,6 +82,10 @@
 .room-surface .composer-row { @apply tw:gap-s-2; }
 .room-surface .chat-input { @apply tw:min-h-[68px] tw:max-h-[150px]; }
 .room-surface .composer-tools { @apply tw:gap-s-2 tw:flex-wrap tw:pt-s-2; }
+/* Speech settings must escape the fixed-height conversation card; the shared
+   popover limits its height and scrolls within the actual desktop viewport. */
+.studio-popover.chat-speech-settings { width:min(520px,calc(100vw - 32px)); padding:0; }
+.chat-speech-settings > .speech-settings { width:100%; max-width:none; border:0; border-radius:0; }
 .room-surface .voice-console { @apply tw:flex-wrap tw:gap-s-2 tw:p-0; border: 0; background: transparent; box-shadow: none; }
 .room-surface .voice-toggle-copy small, .room-surface .voice-divider, .room-surface .keyboard-hint, .room-surface .replay-btn, .room-surface .volume-slider { @apply tw:hidden; }
 .room-surface .voice-toggle-copy strong { @apply tw:text-label-sm; }

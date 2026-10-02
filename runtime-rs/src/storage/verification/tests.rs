@@ -101,31 +101,63 @@ async fn identity_change_invalidates_warm_cache_and_closed_cache_cannot_be_read(
 }
 
 #[tokio::test]
-async fn disconnect_cancels_hash_and_close_waits_for_blocking_worker() {
+async fn warm_media_does_not_wait_for_cold_hash_worker_capacity() {
     let (_directory, storage) = fixture().await;
-    let (entered, resume) = pause(&storage);
-    let first = read(&storage);
-    ready(entered).await;
-    first.abort();
-    assert!(first.await.unwrap_err().is_cancelled());
-    let closing_storage = storage.clone();
-    let mut closing = tokio::spawn(async move { closing_storage.close().await });
-    assert!(
-        tokio::time::timeout(Duration::from_millis(20), &mut closing)
-            .await
-            .is_err()
-    );
-    resume.send(()).unwrap();
-    tokio::time::timeout(Duration::from_secs(2), closing)
+    let source = storage.media("image").await.unwrap();
+    let held = storage
+        .verification
+        .workers
+        .acquire_many(WORKERS)
         .await
-        .unwrap()
-        .unwrap()
         .unwrap();
-    assert!(storage.verification.cache.lock().unwrap().is_empty());
-    assert_eq!(
-        storage.verification.workers.available_permits(),
-        WORKERS as usize
-    );
+    let cached = tokio::time::timeout(Duration::from_secs(1), storage.media("image")).await;
+    drop(held);
+    storage.close().await.unwrap();
+    let cached = cached
+        .expect("verified media must bypass cold hash admission")
+        .unwrap();
+    assert_eq!(cached.sha256, source.sha256);
+    assert_eq!(storage.verification.hashes.load(Ordering::Relaxed), 1);
+}
+
+#[tokio::test]
+async fn disconnect_cancels_verification_and_close_waits_for_blocking_worker() {
+    for warm in [false, true] {
+        let (_directory, storage) = fixture().await;
+        if warm {
+            storage.media("image").await.unwrap();
+        }
+        let (entered, resume) = pause(&storage);
+        let first = read(&storage);
+        ready(entered).await;
+        first.abort();
+        assert!(first.await.unwrap_err().is_cancelled());
+        let closing_storage = storage.clone();
+        let mut closing = tokio::spawn(async move { closing_storage.close().await });
+        assert!(
+            tokio::time::timeout(Duration::from_millis(20), &mut closing)
+                .await
+                .is_err()
+        );
+        resume.send(()).unwrap();
+        tokio::time::timeout(Duration::from_secs(2), closing)
+            .await
+            .unwrap()
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            storage.verification.cache.lock().unwrap().len(),
+            usize::from(warm)
+        );
+        assert_eq!(
+            storage.verification.workers.available_permits(),
+            WORKERS as usize
+        );
+        assert_eq!(
+            storage.verification.checks.available_permits(),
+            CHECKERS as usize
+        );
+    }
 }
 
 #[tokio::test]

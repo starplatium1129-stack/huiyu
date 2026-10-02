@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body"><dialog ref="dialog" class="task-center" aria-labelledby="task-center-title" @click="onDialogClick" @cancel.prevent="opened = false" @close="onClosed">
     <header><div><h2 id="task-center-title">任务中心</h2><p>{{ activeCount ? `${activeCount} 项正在处理，切换工作区可继续查看进度。` : '创作进度与最近完成的任务都在这里。' }}</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭任务中心" @click="opened = false"><ArchiveIcon name="close" /></button></header>
-    <RuntimeTaskList v-if="runtimeTasksEnabled" @navigate="opened = false" />
+    <RuntimeTaskList v-if="runtimeTasksEnabled" :active="opened" @navigate="opened = false" />
     <details :open="!runtimeTasksEnabled"><summary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</summary>
     <nav v-if="!runtimeTasksEnabled" aria-label="任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></nav>
     <p v-if="storageError" role="status">{{ storageError }}</p><p v-if="recoveryError" role="status">{{ recoveryError }}</p><p v-if="feedback" role="status">{{ feedback }}</p>

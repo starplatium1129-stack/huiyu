@@ -1,5 +1,6 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect, type Locator, type Page } from '@playwright/test'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 import { mkdirSync, writeFileSync } from 'node:fs'
 
 async function desktopFixture(page: Page, theme: string, failRelay = false, credentials = false) {
@@ -92,7 +93,7 @@ async function paintedTextContrast(locator: Locator) {
 }
 
 for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for (const width of [1440]) {
-  test(`personal API credential controls ${desktop ? 'desktop' : 'web'} ${theme} ${width}`, async ({ page }) => {
+  test(`personal API credential controls ${desktop ? 'desktop' : 'web'} ${theme} ${width}`, async ({ page }, info) => {
     if (desktop) await desktopFixture(page, theme, false, true)
     await page.addInitScript(theme => {
       localStorage.setItem('aics_theme', theme)
@@ -106,6 +107,7 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
       await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ configured: false }) })
     })
     await page.route('**/api/chat-status', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ online: false, model: '', models: [] }) }))
+    await page.route('**/api/chat-provider/test', route => route.fulfill({ json: { ok:true, models:['fixture-first', 'fixture-second'] } }))
     await page.route('https://neutral-credential.example/**', route => { unexpectedWrites.push(route.request().url()); return route.abort() })
     await page.setViewportSize({ width, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -118,6 +120,7 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
     await expect(panel.locator('.api-storage-note')).toHaveText(desktop ? '密钥由 Windows 安全保存' : '密钥仅用于当前页面会话')
     await key.fill('neutral-ui-key')
     await panel.locator('[data-vendor="deepseek"]').click()
+    await expect(key).toHaveValue('')
     await panel.locator('[data-vendor="custom"]').click()
     await expect(key).toHaveValue('neutral-ui-key')
     expect(await page.evaluate(() => JSON.stringify({ ...localStorage }))).not.toContain('neutral-ui-key')
@@ -134,6 +137,14 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
     await panel.locator('[data-vendor="custom"]').click()
     await expect(key).toHaveValue('')
     expect(await page.evaluate(() => JSON.stringify({ ...localStorage }))).not.toContain('neutral-ui-key')
+    await panel.getByRole('button', { name:'测试连接', exact:true }).click()
+    const discovered = panel.getByRole('combobox', { name:'从已发现模型中选择', exact:true })
+    await expect(discovered).toBeVisible()
+    const model = panel.getByRole('textbox', { name:'模型名', exact:true })
+    await model.fill('hand-typed-model')
+    await expect(discovered).toBeVisible()
+    await pickStudioOptionByValue(discovered, 'fixture-second')
+    await expect(model).toHaveValue('fixture-second')
     const contrasts: Record<string, number> = {}
     for (const [name, locator] of [
       ['note', panel.locator('.api-storage-note')], ['clear', panel.getByRole('button', { name: '清除个人密钥', exact: true })], ['status', panel.locator('.api-test-status')],
@@ -147,7 +158,7 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
       expect(bounds && bounds.x >= 0 && bounds.x + bounds.width <= width).toBeTruthy()
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
-    const directory = 'runtime/audit-handoff-2026-09-21/ui'
+    const directory = info.outputPath('settings')
     mkdirSync(directory, { recursive: true })
     const name = `personal-api-${desktop ? 'desktop' : 'web'}-${theme}-${width}`
     // The chat viewport clips tall forms; capture both real scroll positions

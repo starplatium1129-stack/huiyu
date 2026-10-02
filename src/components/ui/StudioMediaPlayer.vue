@@ -110,7 +110,12 @@ watch(() => props.src, () => {
   failed.value = false
 })
 
-onBeforeUnmount(() => { document.removeEventListener('fullscreenchange', syncFullscreen) })
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', syncFullscreen)
+  // Removing the DOM node alone can leave an in-flight media response or decoder alive.
+  const element = media.value
+  if (element) { element.pause(); element.removeAttribute('src'); element.load() }
+})
 onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) })
 </script>
 

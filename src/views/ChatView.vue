@@ -192,11 +192,6 @@
           <ArchiveIcon name="spark" /> 思考中…
         </div>
 
-        <FluidTransition>
-<SpeechInputSettings v-if="speechSettingsOpen" class="speech-settings-host"
-          @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
-</FluidTransition>
-
         <div class="chat-composer">
           <div class="composer-row">
             <textarea class="chat-input" v-model="inputText" rows="2" maxlength="1200"
@@ -290,13 +285,13 @@
               </span>
               <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
             </template>
-            <StudioTooltip content="语音输入设置">
-              <button class="speech-config-btn" type="button" aria-label="语音输入设置"
-                :aria-expanded="speechSettingsOpen"
-                @click="speechSettingsOpen = !speechSettingsOpen">
-                语音输入设置
-              </button>
-            </StudioTooltip>
+            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" content-class="chat-speech-settings">
+              <template #trigger>
+                <button class="speech-config-btn" type="button" aria-label="语音输入设置">语音输入设置</button>
+              </template>
+              <SpeechInputSettings :data-character="activeChar"
+                @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+            </StudioPopover>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
           </div>
 
@@ -313,6 +308,7 @@
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useConversationReading } from '@/composables/chat/useConversationReading'

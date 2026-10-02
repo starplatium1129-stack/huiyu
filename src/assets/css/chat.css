@@ -595,15 +595,16 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .api-settings-head,
 .chat-page .api-settings-actions {
-  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3;
+  @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3;
 }
 
 .chat-page .api-title-lockup {
-  @apply tw:flex tw:items-center tw:gap-s-3;
+  @apply tw:flex tw:items-center tw:gap-s-3 tw:min-w-0;
+  flex:1 1 280px;
 }
 
 .chat-page .api-title-lockup > div {
-  @apply tw:grid tw:gap-[2px];
+  @apply tw:grid tw:gap-[2px] tw:min-w-0;
 }
 
 .chat-page .api-title-lockup strong {
@@ -633,6 +634,7 @@ body:has(.chat-page) .sakura-fall {
   color: var(--character-ink, var(--character-accent)) !important;
   @apply tw:text-title-sm!;
 }
+.chat-page .api-mark .archive-icon { @apply tw:w-[20px] tw:h-[20px]; }
 
 .chat-page .api-test-status[data-state="testing"] {
   @apply tw:text-warning-text;
@@ -656,9 +658,8 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-settings-buttons {
-  @apply tw:flex;
-  flex: 0 0 auto;
-  @apply tw:gap-s-2;
+  @apply tw:flex tw:flex-wrap tw:justify-end tw:max-w-full tw:gap-s-2;
+  margin-left:auto;
 }
 
 .chat-page .api-storage-note {
@@ -682,8 +683,8 @@ body:has(.chat-page) .sakura-fall {
    API 与引擎设置：提供商切换 / 密钥字段 / 测试状态
   ============================================================ */
 .chat-page .api-vendor-picker {
-  @apply tw:grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  @apply tw:grid tw:min-w-0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%,108px),1fr));
   @apply tw:gap-[4px] tw:m-0 tw:p-[4px];
   border: 1px solid var(--border-soft);
   border-radius: var(--r-terminal);
@@ -738,6 +739,7 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .api-field {
   @apply tw:grid tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-label-xs;
 }
+.chat-page .api-discovered-models { align-content:start; }
 
 .chat-page .api-field-wide,
 .chat-page .api-model-note {
@@ -1431,11 +1433,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .speech-config-btn:hover {
   @apply tw:border-accent tw:text-accent;
 }
-
-.chat-page .speech-settings-host {
-  margin: 0 var(--s-4) var(--s-3);
-}
-
 
 .chat-page .volume-slider {
   @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-muted tw:text-mono-sm;

@@ -20,7 +20,7 @@
         <button v-if="task.upstreamSettled && task.resultState === 'available'" class="btn btn-ghost" :disabled="!!busy" @click="discarding = task.taskId">移出收件箱</button>
       </div>
       <p v-if="discarding === task.taskId">已入册作品会保留；未入册结果将从收件箱移除。<button class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'discard')">确认移出</button><button class="btn btn-ghost" @click="discarding = ''">保留结果</button></p>
-      <RuntimeTaskResult v-if="expanded === task.taskId && task.resultRefs.length && task.deliveryState !== 'discarded'" :task="task" />
+      <RuntimeTaskResult v-if="active && expanded === task.taskId && task.resultRefs.length && task.deliveryState !== 'discarded'" :task="task" />
     </article>
     <p v-if="!visible.length" class="runtime-empty">{{ selected === 'inbox' ? '暂时没有未入册结果。' : '这里会保留已接收任务和可找回的结果。' }}</p>
     </div>
@@ -32,6 +32,7 @@ import RuntimeTaskResult from './RuntimeTaskResult.vue'
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
 import { confirmAction } from '@/composables/useConfirm'
+defineProps<{ active: boolean }>()
 const emit = defineEmits<{ navigate: [] }>()
 const selected = ref('all'), expanded = ref(''), busy = ref(''), feedback = ref(''), discarding = ref('')
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }]
