@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { mocks, record, setup } from './galleryWorkspaceTestHarness'
+import { mocks, Observer, record, setup } from './galleryWorkspaceTestHarness'
 import type { ArtworkLibrarySnapshot } from '@/application/artwork/artworkRepository'
 
 it('restores library filters after its snapshot without waiting for scene or LoRA labels', async () => {
@@ -74,4 +74,30 @@ it('retries a card that returns before its cancelled read settles without losing
   expect(env.gallery.cardUrls[1]).toBe('blob:gallery-1')
   expect(env.gallery.missingImageIds.value.size).toBe(0)
   expect(URL.createObjectURL).toHaveBeenCalledOnce()
+})
+
+it('cancels originals outside the scroll margin and drops their queued reads while retaining the wall', async () => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 8 }, (_, index) => record(index + 1)), projects: [] })
+  const reads: Array<{ id: string; signal: AbortSignal; finish(blob: Blob): void }> = []
+  mocks.getImage.mockImplementation((id: string, signal: AbortSignal) => new Promise<Blob>((finish, reject) => {
+    reads.push({ id, signal, finish })
+    signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true })
+  }))
+  const env = await setup()
+  const ordered = env.gallery.pagedVisible.value
+  await env.intersect()
+  const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
+  const leaving = [...observer.elements].slice(0, 5)
+  observer.callback(leaving.map(target => ({ target, isIntersecting: false }) as IntersectionObserverEntry), observer as unknown as IntersectionObserver)
+  await flushPromises()
+  expect(reads.slice(0, 4).every(read => read.signal.aborted)).toBe(true)
+  expect(reads.map(read => read.id)).toEqual([...ordered.slice(0, 4), ...ordered.slice(5)].map(item => item.image_id))
+  expect(env.gallery.pagedVisible.value).toHaveLength(8)
+  expect(env.gallery.missingImageIds.value.size).toBe(0)
+  observer.callback([{ target: leaving[0], isIntersecting: true } as IntersectionObserverEntry], observer as unknown as IntersectionObserver)
+  await flushPromises()
+  expect(reads.at(-1)?.id).toBe(ordered[0].image_id)
+  reads.at(-1)!.finish(new Blob(['returned image']))
+  await flushPromises()
+  expect(env.gallery.cardUrls[ordered[0].id]).toBe('blob:gallery-1')
 })
