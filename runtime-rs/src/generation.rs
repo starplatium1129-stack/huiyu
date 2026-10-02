@@ -15,6 +15,7 @@ mod types;
 mod validation;
 mod video_output;
 mod webui;
+mod webui_results;
 mod workflow;
 
 use crate::{

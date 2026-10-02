@@ -16,7 +16,7 @@ const RATIO_FALLBACK = 0.75
  * 缩略图与 HD 图是同源降采样，比例理论上一致、只差整数像素舍入（< 0.1%）；
  * 不设阈值的话，img src 从缩略图切到 HD 时还会再触发一次回填，进而重排整墙。
  * 0.1% 既足够过滤这类重复回填，又不会拦掉元数据失准的首次纠正
- * （首次 measuredRatios 为空、差异恒为比例本身，必然命中更新）。
+ * （先与当前有效比例比较，准确元数据无需因每次 load 再重排整墙）。
  */
 const RATIO_UPDATE_EPSILON = 0.001
 
@@ -75,7 +75,7 @@ export function useArtworkRatios(deps: ArtworkRatioDeps) {
     const img = e.target as HTMLImageElement
     if (!img.naturalWidth || !img.naturalHeight) return
     const r = img.naturalWidth / img.naturalHeight
-    if (Math.abs((measuredRatios[item.id] ?? 0) - r) > RATIO_UPDATE_EPSILON) measuredRatios[item.id] = r
+    if (Math.abs(ratioOf(item) - r) > RATIO_UPDATE_EPSILON) measuredRatios[item.id] = r
     if (img.naturalWidth >= 700) void backfillThumb(item, img)
   }
 

@@ -3,8 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { compile, Polyfills, toSourceMap } from '@tailwindcss/node'
 import { dirname, resolve } from 'node:path'
-import { createProxyMiddleware } from 'http-proxy-middleware'
-import type { IncomingMessage, ServerResponse } from 'node:http'
+import type { IncomingMessage } from 'node:http'
 import { createRequire } from 'node:module'
 import { fileURLToPath, URL } from 'node:url'
 
@@ -59,32 +58,14 @@ function dataVersionPlugin(): Plugin {
   }
 }
 
-// Express 默认运行在 3000 端口；Vite dev server 在 5173
-// 生产时 Express 直接 serve dist/
+// Rust gateway 默认运行在 3000 端口；Vite dev server 在 5173
+// 生产时 Rust gateway 直接 serve dist/
 export default defineConfig(async ({ mode }) => {
   const plugins = [
     componentTailwindPlugin(),
     tailwindcss(),
     vue(),
     dataVersionPlugin(),
-    // /assets/ 两头都要服务：SFC 模板里的 /assets/*.svg 会被 plugin-vue 改写成
-    // 模块导入（?import），必须由 Vite 转换成 JS；其余（角色立绘等大文件）仍由
-    // Express 提供。写进 proxy 表会把 ?import 请求也转给 Express，返回
-    // image/svg+xml 触发模块 MIME 检查失败，dev 模式整条路由链路挂掉。
-    {
-      name: 'express-assets-conditional-proxy',
-      configureServer(server) {
-        server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: (err?: unknown) => void) => {
-          const url = req.url ?? ''
-          // JSON module imports must reach Vite; runtime data still comes from the gateway.
-          if ((!url.startsWith('/assets/') && !url.startsWith('/data/')) || new URL(url, 'http://localhost').searchParams.has('import')) return next()
-          return createProxyMiddleware({
-            target: 'http://127.0.0.1:3000',
-            changeOrigin: true
-          })(req, res, next)
-        })
-      }
-    } satisfies Plugin
   ]
   if (mode === 'desktop') plugins.push({
     name: 'desktop-startup-assets',
@@ -121,6 +102,15 @@ export default defineConfig(async ({ mode }) => {
       ignored: ['**/desktop-tauri/**', '**/runtime-rs/target/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
     },
     proxy: {
+      // SFC 的 SVG 和 JSON 模块导入（?import）须由 Vite 转换成 JS；
+      // 其余运行时资源交给 Rust gateway，保留其访问控制和静态服务语义。
+      '^/(assets|data)/': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+        bypass(req: IncomingMessage) {
+          if (new URL(req.url ?? '', 'http://localhost').searchParams.has('import')) return req.url
+        }
+      },
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/sdapi':       { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/controlnet':  { target: 'http://127.0.0.1:3000', changeOrigin: true },
@@ -128,8 +118,7 @@ export default defineConfig(async ({ mode }) => {
       '/scene-showcase': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/character-references': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/docs':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      // dev 模式下 tools/ 由 Express 提供，Vite 需转发
-      // （/assets/ 见上方 express-assets-conditional-proxy 插件）
+      // dev 模式下 tools/ 由 Rust gateway 提供，Vite 需转发
       '/tools':       { target: 'http://127.0.0.1:3000', changeOrigin: true }
     }
   },
@@ -137,7 +126,7 @@ export default defineConfig(async ({ mode }) => {
     outDir: mode === 'desktop' ? 'desktop-tauri/web' : 'dist',
     emptyOutDir: true,
     manifest: true,
-    // 避免与 Express 已有的 /assets/ 路由（角色图等）冲突
+    // 避免与 Rust gateway 已有的 /assets/ 路由（角色图等）冲突
     assetsDir: '_app',
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],

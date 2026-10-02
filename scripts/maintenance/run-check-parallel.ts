@@ -11,12 +11,13 @@
  * 语义与旧链完全一致：任一步骤非零退出 → 整体失败并列出该步骤输出尾部；
  * 全部通过 → 打印每步耗时汇总。
  *
- * 并发度：CHECK_JOBS 环境变量（默认 6；重步骤已排在队列最前，
+ * 并发度：CHECK_JOBS 环境变量（默认 4；重步骤已排在队列最前，
  * 低配机器可设 CHECK_JOBS=2 回退近似串行）。
- * 用法：node scripts/maintenance/run-check-parallel.js [--list]
+ * 用法：node scripts/maintenance/run-check-parallel.js [--list] [--all]
  */
 
 const { spawn } = (require('child_process') as typeof import('child_process'));
+const { killOwnedTree }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
 
 // 重步骤优先入队（repo 卫生 ≈50s、双 typecheck、eslint 是关键路径）。
 // 样式债测试与四个完整扫描由同一 check 编排拥有，避免 full/CI 只跑
@@ -55,17 +56,22 @@ if (process.argv.includes('--list')) {
   process.exit(0);
 }
 
+const jobs = process.env.CHECK_JOBS ?? '4';
+if (!/^[1-4]$/.test(jobs)) throw new Error('CHECK_JOBS must be an integer from 1 to 4');
+const POOL = Number(jobs);
+const keepGoing = process.argv.includes('--all');
+let failed = false;
+let interrupted = false;
+let active = 0;
 (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensureAll({ onlyIfMissing: true });
-
-const POOL = Math.max(1, Math.min(STEPS.length, Number(process.env.CHECK_JOBS) || 6));
 const results = new Map<string, { code: number; ms: number; output: string }>();
 let cursor = 0;
-let finished = 0;
 
 console.log(`质量门禁并发编排：${STEPS.length} 步 / 并发 ${POOL}（CHECK_JOBS 可调）`);
 
 function next() {
-  if (cursor >= STEPS.length) return;
+  if (interrupted || cursor >= STEPS.length || (failed && !keepGoing)) return;
+  active += 1;
   const [name, cmd] = STEPS[cursor++];
   const startedAt = Date.now();
   const child = spawn(cmd, {
@@ -73,35 +79,49 @@ function next() {
     cwd: (require('path') as typeof import('path')).resolve(__dirname, '..', '..'),
     env: process.env,
     windowsHide: true,
+    detached: process.platform !== 'win32',
   });
   let output = '';
+  const timer = setTimeout(() => { output += '\nTIMEOUT(600000ms)'; killOwnedTree(child); }, 600_000);
+  const interrupt = () => { interrupted = true; output += '\nINTERRUPTED'; killOwnedTree(child); };
+  process.once('SIGINT', interrupt);
+  process.once('SIGTERM', interrupt);
   const capture = (chunk: Buffer | string) => { output += chunk; };
   child.stdout.on('data', capture);
   child.stderr.on('data', capture);
-  child.on('close', (code: any) => {
+  child.on('error', error => { output += `\n${error.message}`; });
+  child.on('close', (status: number | null) => {
+    const code = interrupted ? 1 : status;
+    clearTimeout(timer);
+    process.removeListener('SIGINT', interrupt);
+    process.removeListener('SIGTERM', interrupt);
+    active -= 1;
+    if (code !== 0) failed = true;
     const ms = Date.now() - startedAt;
     results.set(name, { code: code ?? 1, ms, output });
-    // Preserve the first failure as well as the terminal summary in CI artifacts.
-    if (process.env.CI) {
+    // Keep raw local and CI diagnostics; excerpts must not force a rerun.
+    {
       const fs: typeof import('node:fs') = require('node:fs');
       const path: typeof import('node:path') = require('node:path');
       const directory = path.resolve(__dirname, '..', '..', 'runtime', 'quality-checks');
       fs.mkdirSync(directory, { recursive: true });
       fs.writeFileSync(path.join(directory, name.replace(/[^a-zA-Z0-9_-]/g, '-') + '.log'), output, 'utf8');
     }
-    finished += 1;
     const mark = code === 0 ? '✅' : '❌';
     console.log(`  ${mark} ${name} (${(ms / 1000).toFixed(1)}s)`);
-    if (finished === STEPS.length) report();
-    else next();
+    next();
+    if (!active) report();
   });
 }
 
 function report() {
-  const failures = STEPS.filter(([name]: any) => (results.get(name)?.code ?? 1) !== 0);
+  const failures = STEPS.filter(([name]: any) => results.has(name) && results.get(name)?.code !== 0);
+  const notRun = STEPS.filter(([name]) => !results.has(name));
   const wallMs = wallTime();
   console.log('');
-  if (failures.length) {
+  if (failures.length || notRun.length) {
+    if (notRun.length) console.error(`未运行: ${notRun.map(([name]) => name).join(', ')}（失败后停止派发；--all 可显式收集全貌）`);
+    console.error('完整日志: runtime/quality-checks/');
     console.error(`门禁失败：${failures.length}/${STEPS.length} 步未通过（总耗时 ${(wallMs / 1000).toFixed(1)}s）：`);
     for (const [name] of failures) {
       const r = results.get(name);

@@ -48,7 +48,7 @@ pub(super) fn restore_backup(c: &Files, backup_id: &str, id: &str) -> Result<Val
     verify_snapshot(c, &source, &manifest)?;
     let existing = schema::safe(&c.root, format!("restore-candidates/{id}"))?;
     if schema::safe(&existing, "candidate.json")?.exists() {
-        let marker: Value = serde_json::from_slice(&fs::read(existing.join("candidate.json"))?)?;
+        let marker = read_json(&existing, "candidate.json")?;
         if marker["backupId"] != backup_id
             || marker["candidateId"] != id
             || marker["workspaceId"] != c.workspace_id

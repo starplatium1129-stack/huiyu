@@ -42,6 +42,17 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 describe('original image export lifecycle', () => {
+  it('continues after one failed image read and reports the partial batch accurately', async () => {
+    vi.mocked(readWebBackupImage).mockRejectedValueOnce(new Error('image missing'))
+    const { tool, flash } = setup()
+    const running = tool.exportImages()
+    await vi.runAllTimersAsync()
+    await running
+    expect(readWebBackupImage).toHaveBeenCalledTimes(2)
+    expect(click).toHaveBeenCalledOnce()
+    expect(flash).toHaveBeenLastCalledWith('已开始下载 1 张；1 张读取或下载失败，请重试')
+    expect(tool.busy.value).toBe(false)
+  })
   it('stops after cancel during a delayed read, without starting downloads or later reads', async () => {
     const image = deferred<Blob>()
     vi.mocked(readWebBackupImage).mockReturnValueOnce(image.promise)
@@ -105,6 +116,7 @@ describe('original image export lifecycle', () => {
     const running = tool.exportImages()
     await vi.waitFor(() => expect(artworkRepository.getImage).toHaveBeenCalledTimes(1))
     scope.stop()
+    expect(vi.mocked(artworkRepository.getImage).mock.calls[0][1]?.aborted).toBe(true)
     image.resolve(new Blob(['neutral']))
     await running
     expect(artworkRepository.getImage).toHaveBeenCalledTimes(1)

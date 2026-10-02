@@ -1,6 +1,6 @@
 # 绘遇 · HUIYU
 
-[下载 Windows 桌面版 1.7.4](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4) · [1.7.4 更新说明](docs/releases/v1.7.4.md)
+[下载 Windows 桌面版 1.8.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1) · [1.8.1 更新说明](docs/releases/v1.8.1.md)
 
 > 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG、4 视角角色参考档案与 AI 叙事短片。
 
@@ -32,7 +32,7 @@
   - 自动检查辅助人工审核；缺人工决定保持 pending，明确通过后才显式发布不可变版本。具体步骤见[候选审核与版本发布](docs/workflow.md#参考库候选审核与版本发布)。
   - 标准化参考资产契约为下游 MiniMax H3 Ref2VA 视频生成提供稳定的角色锁脸保障。
 - **多生成引擎协同与 精选动漫画风**：
-  - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima (`@artist` + 原生标签流，当前默认 MiaoMiao Harem v1.2) 与 Krea 2 Turbo (纯英文自然语言)。
+  - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima (`@artist` + 原生标签流，当前默认 MiaoMiao Harem v1.6) 与 Krea 2 Turbo (纯英文自然语言)。
   - 内置精选动漫画风与作监级风格（如猫富ちゃお/动画工房、浅野恭司/WIT Studio、Rella 星夜月光、深崎暮人、So-bin 等）。
   - 在 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 稳定站位。
 - **AI 叙事视频工作台（Video Studio）**：
@@ -46,6 +46,8 @@
   - 轻量 Tauri 2 桌面端（Companion + Atelier 窗口、托盘、Native Live2D overlay），通过 `deploy-desktop.bat` 同步桌面端。
 
 ## 安装
+
+普通 Windows 用户使用上方桌面安装包，按[离线安装指南](docs/guides/offline-resources.md)操作；完整素材 ZIP 单独下载。安装程序与导入素材均不要求 Node.js 或 Rust 构建工具。以下步骤适用于源码构建。
 
 ### 环境要求
 
@@ -75,7 +77,7 @@ cd huiyu
 npm install
 ```
 
-`control.bat` 首次启动时也会自动执行 `npm install`。
+`control.bat` 在缺少依赖时会自动执行 `npm ci`。
 
 ### 第 3 步 — 编译开发工具与 Rust 后端
 

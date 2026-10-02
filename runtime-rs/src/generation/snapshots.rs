@@ -8,7 +8,7 @@ fn providers(inner: &Inner) -> &'static [&'static str] {
     }
 }
 
-fn directory(inner: &Inner, provider: &str) -> std::path::PathBuf {
+pub(super) fn directory(inner: &Inner, provider: &str) -> std::path::PathBuf {
     inner
         .config
         .runtime_root
@@ -19,14 +19,14 @@ fn directory(inner: &Inner, provider: &str) -> std::path::PathBuf {
             inner.scope.namespace()
         })
 }
-fn safe_id(value: &str) -> bool {
+pub(super) fn safe_id(value: &str) -> bool {
     !value.is_empty()
         && value.len() <= 80
         && value
             .bytes()
             .all(|c| c.is_ascii_alphanumeric() || b"_.-".contains(&c))
 }
-async fn safe_directory(directory: &Path) -> bool {
+pub(super) async fn safe_directory(directory: &Path) -> bool {
     for path in [directory.parent().unwrap(), directory] {
         if !tokio::fs::symlink_metadata(path)
             .await
@@ -37,7 +37,7 @@ async fn safe_directory(directory: &Path) -> bool {
     }
     true
 }
-async fn write(path: &Path, value: &Value) -> Result<()> {
+pub(super) async fn write(path: &Path, value: &Value) -> Result<()> {
     let (file, pending) =
         tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
             .into_parts();
@@ -72,6 +72,9 @@ pub(super) async fn remove(inner: &Inner, id: &str) {
             let directory = directory(inner, provider);
             if safe_directory(&directory).await {
                 let _ = tokio::fs::remove_file(directory.join(format!("{id}.json"))).await;
+                if *provider == "webui" {
+                    let _ = tokio::fs::remove_file(directory.join(format!("{id}.png"))).await;
+                }
             }
         }
     }
@@ -124,23 +127,52 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
             }
             value["lostAt"] = json!(lost_at);
             let _ = write(&entry.path(), &value).await;
+            // Completed WebUI images are recoverable, unlike ordinary lost
+            // jobs. Keep them ahead of metadata-only records within the same
+            // 256-record startup budget; their separate TTL remains two hours.
+            let pending_result = *provider == "webui"
+                && value["webuiResult"]["expiresAt"]
+                    .as_i64()
+                    .is_some_and(|t| t > now() && t <= now() + 2 * 60 * 60 * 1000)
+                && tokio::fs::symlink_metadata(entry.path().with_extension("png"))
+                    .await
+                    .is_ok_and(|m| {
+                        m.is_file()
+                            && m.len() > 0
+                            && m.len() <= constants::MAX_IMAGE as u64
+                            && Some(m.len()) == value["webuiResult"]["bytes"].as_u64()
+                    });
+            let ordered_at = if pending_result {
+                value["webuiResult"]["expiresAt"].as_i64().unwrap()
+            } else {
+                lost_at
+            };
             records.push((
-                lost_at,
+                pending_result,
+                ordered_at,
                 id.to_string(),
                 Lost {
                     owner,
                     family: value["input"]["family"].as_str().map(str::to_owned),
                 },
                 entry.path(),
+                *provider == "webui",
             ));
         }
     }
-    records.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| a.1.cmp(&b.1)));
+    records.sort_by(|a, b| {
+        b.0.cmp(&a.0)
+            .then_with(|| b.1.cmp(&a.1))
+            .then_with(|| a.2.cmp(&b.2))
+    });
     let mut lost = HashMap::new();
-    for (index, (_, id, owner, path)) in records.into_iter().enumerate() {
+    for (index, (_, _, id, owner, path, webui)) in records.into_iter().enumerate() {
         if index < 256 {
             lost.insert(id, owner);
         } else {
+            if webui {
+                let _ = tokio::fs::remove_file(path.with_extension("png")).await;
+            }
             let _ = tokio::fs::remove_file(path).await;
         }
     }
@@ -204,6 +236,7 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
         let client_id=if (8..=80).contains(&existing.len())&&existing.bytes().all(|c|c.is_ascii_alphanumeric()||c==b'-'){existing.to_string()}else{
             let generated=format!("aics-{}-{}",inner.scope.client(),uuid::Uuid::new_v4().simple());let pending=state.join(format!("comfy_client_{}.{}.tmp",inner.scope.client(),uuid::Uuid::new_v4()));tokio::fs::write(&pending,format!("{generated}\n")).await?;tokio::fs::rename(pending,identity_file).await?;generated
         };
+        webui_results::prune(&inner).await;
         inner.state.lock().await.lost=drain(&inner).await;
         let progress=crate::upstream::progress::ProgressMonitor::new(&inner.config.comfy_host,&client_id)?;
         let mut events=progress.subscribe();let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
@@ -212,7 +245,7 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
             progress_event(&inner,event).await;
         }}}});
         let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
-        inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(60))=>{let Some(inner)=weak.upgrade()else{return};let jobs=inner.state.lock().await.jobs.values().cloned().collect::<Vec<_>>();for job in jobs{let expired={let state=job.state.lock().await;state.finished.is_some_and(|t|now()-t>=match &job.execution{Execution::Webui(_)=>2*60*60*1000,Execution::Comfy(plan)=>plan.retention.as_millis() as i64})&&state.permit.is_none()};if expired{jobs::remove(&inner,&job).await;}}}}}});
+        inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(60))=>{let Some(inner)=weak.upgrade()else{return};webui_results::prune(&inner).await;let jobs=inner.state.lock().await.jobs.values().cloned().collect::<Vec<_>>();for job in jobs{let expired={let state=job.state.lock().await;state.finished.is_some_and(|t|now()-t>=match &job.execution{Execution::Webui(_)=>2*60*60*1000,Execution::Comfy(plan)=>plan.retention.as_millis() as i64})&&state.permit.is_none()};if expired{jobs::remove(&inner,&job).await;}}}}}});
         Ok::<_,ApiError>(Initialized {client_id,session_id:uuid::Uuid::new_v4().simple().to_string(),progress:std::sync::Mutex::new(Some(progress))})
     }).await?;
     Ok(())
@@ -279,6 +312,64 @@ mod tests {
         let value: Value =
             serde_json::from_slice(&std::fs::read(folder.join("job-000.json")).unwrap()).unwrap();
         assert_eq!(value["lostAt"], timestamp);
+    }
+
+    #[tokio::test]
+    async fn completed_webui_results_outrank_lost_jobs_within_the_256_record_budget() {
+        let root = tempfile::tempdir().unwrap();
+        let service = fixture(root.path());
+        let webui = directory(&service.inner, "webui");
+        let comfy = directory(&service.inner, "comfy");
+        std::fs::create_dir_all(&webui).unwrap();
+        std::fs::create_dir_all(&comfy).unwrap();
+        let timestamp = now();
+        for index in 0..256 {
+            // Reverse names ensure ordering follows completion time, not ID.
+            let id = format!("webui-{:03}", 255 - index);
+            std::fs::write(webui.join(format!("{id}.png")), b"png").unwrap();
+            std::fs::write(
+                webui.join(format!("{id}.json")),
+                json!({
+                    "id":id,"owner":"owner","status":"running","lostAt":timestamp-1000,
+                    "webuiResult":{"expiresAt":timestamp+60_000+index,"bytes":3,"seed":42}
+                })
+                .to_string(),
+            )
+            .unwrap();
+            let id = format!("comfy-{index:03}");
+            std::fs::write(
+                comfy.join(format!("{id}.json")),
+                json!({
+                    "id":id,"owner":"owner","status":"running","lostAt":timestamp
+                })
+                .to_string(),
+            )
+            .unwrap();
+        }
+        let recovered = drain(&service.inner).await;
+        assert_eq!(recovered.len(), 256);
+        assert!(recovered.keys().all(|id| id.starts_with("webui-")));
+        assert!(webui.join("webui-255.png").exists());
+        assert!(webui.join("webui-255.json").exists());
+        assert!(!comfy.join("comfy-000.json").exists());
+
+        std::fs::write(webui.join("newest.png"), b"png").unwrap();
+        std::fs::write(
+            webui.join("newest.json"),
+            json!({
+                "id":"newest","owner":"owner","status":"running",
+                "webuiResult":{"expiresAt":timestamp+120_000,"bytes":3,"seed":43}
+            })
+            .to_string(),
+        )
+        .unwrap();
+        let bounded = drain(&service.inner).await;
+        assert_eq!(bounded.len(), 256);
+        assert!(bounded.contains_key("newest"));
+        assert!(!bounded.contains_key("webui-255"));
+        assert!(!webui.join("webui-255.json").exists());
+        assert!(!webui.join("webui-255.png").exists());
+        assert!(webui.join("webui-000.png").exists());
     }
 
     #[cfg(any(unix, windows))]

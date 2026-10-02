@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { randomCandidates } from './randomPromptRecipe'
 import { canVarySceneOutfit, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation'
-import { renderRandomVariationProse } from './randomVariationProse'
+import { hasVariableLight, renderRandomVariationProse } from './randomVariationProse'
 import { buildPopularPromptPlan } from './popularPromptBuilder'
 import type { PopularCharacter } from '../types/character'
 
@@ -88,5 +88,9 @@ describe('bounded scene-aware inspiration', () => {
     expect(changed).toContain('close-up')
     expect(changed).not.toContain('wide shot')
     expect(changed).toContain('looking back toward the viewer')
+    const lanternScene = 'She carries a paper lantern through the park in moonlight.'
+    expect(renderRandomVariationProse(lanternScene, null, 'back')).toBe('She carries a paper lantern through the park in backlighting.')
+    expect(hasVariableLight('She carries a paper lantern through the park.')).toBe(false)
+    expect(renderRandomVariationProse('She reads in lantern light.', null, 'moon')).toBe('She reads in moonlight.')
   })
 })

@@ -235,7 +235,9 @@ async fn failed_result_save_retries_download_without_resubmitting_generation() {
         .path()
         .join("runtime/outputs/fixture")
         .join(format!("{}.png", job.id));
-    std::fs::create_dir_all(&path).unwrap();
+    std::fs::create_dir_all(path.parent().unwrap().parent().unwrap()).unwrap();
+    // A file blocking the output directory must be reported like a failed write.
+    std::fs::write(path.parent().unwrap(), b"blocked directory").unwrap();
     super::super::submit(service.inner.clone(), job.clone())
         .await
         .unwrap();
@@ -263,7 +265,7 @@ async fn failed_result_save_retries_download_without_resubmitting_generation() {
     assert!(job.state.lock().await.permit.is_none());
     assert_eq!(prompts.load(Ordering::Relaxed), 1);
     assert_eq!(downloads.load(Ordering::Relaxed), 1);
-    std::fs::remove_dir(&path).unwrap();
+    std::fs::remove_file(path.parent().unwrap()).unwrap();
     job.notify.notify_one();
     tokio::time::timeout(Duration::from_secs(5), async {
         loop {
@@ -291,5 +293,55 @@ async fn failed_result_save_retries_download_without_resubmitting_generation() {
     );
     assert!(job.state.lock().await.permit.is_none());
     service.close().await;
+    server.abort();
+}
+
+#[tokio::test]
+async fn failed_result_save_video_reports_directory_and_publish_errors() {
+    let directory = tempfile::tempdir().unwrap();
+    let bytes = b"\x00\x00\x00\x18ftypisomfixture-video-body";
+    let router = Router::new().route(
+        "/view",
+        get(|| async {
+            (
+                [("content-type", "video/mp4")],
+                b"\x00\x00\x00\x18ftypisomfixture-video-body".as_slice(),
+            )
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let host = format!("http://{}", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        axum::serve(listener, router).await.unwrap();
+    });
+    let root = directory.path().join("outputs");
+    let transport = LocalUpstream::new();
+    let cancel = CancellationToken::new();
+    let output = json!({"filename":"aics_video_fixture.mp4","type":"output"});
+    std::fs::write(&root, b"blocked directory").unwrap();
+    let error = video_output::materialize(&transport, &host, &root, "video", &output, &cancel)
+        .await
+        .err()
+        .unwrap();
+    assert_eq!(error.code, "RESULT_SAVE_FAILED");
+    std::fs::remove_file(&root).unwrap();
+    let path = root.join("video.mp4");
+    std::fs::create_dir_all(&path).unwrap();
+    let error = video_output::materialize(&transport, &host, &root, "video", &output, &cancel)
+        .await
+        .err()
+        .unwrap();
+    assert_eq!(error.code, "RESULT_SAVE_FAILED");
+    assert_eq!(
+        std::fs::read_dir(&root).unwrap().count(),
+        1,
+        "Failed publication reclaims temporary bytes"
+    );
+    std::fs::remove_dir(&path).unwrap();
+    let recovered = video_output::materialize(&transport, &host, &root, "video", &output, &cancel)
+        .await
+        .unwrap();
+    assert_eq!(recovered.len(), bytes.len() as u64);
+    assert_eq!(std::fs::read(&path).unwrap(), bytes);
     server.abort();
 }

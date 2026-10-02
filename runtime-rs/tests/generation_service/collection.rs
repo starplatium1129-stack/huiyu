@@ -127,6 +127,12 @@ async fn webui_slow_collection_does_not_block_next_generation() {
         "succeeded"
     );
     assert!(
+        !temp
+            .path()
+            .join(format!("runtime/jobs/wai-webui/{first}.png"))
+            .exists()
+    );
+    assert!(
         !state
             .calls
             .lock()
@@ -142,6 +148,12 @@ async fn webui_slow_collection_does_not_block_next_generation() {
     settled(&service, &first, "succeeded").await;
     assert_eq!(hooks.calls.load(Ordering::SeqCst), 1);
     assert_eq!(state.txt_count.load(Ordering::SeqCst), 2);
+    assert!(
+        !temp
+            .path()
+            .join(format!("runtime/jobs/wai-webui/{first}.png"))
+            .exists()
+    );
     service.close().await;
     assert!(hooks.output.lock().unwrap().upgrade().is_none());
 }
@@ -171,6 +183,16 @@ async fn webui_close_cancels_initial_and_retry_collection() {
         assert!(hooks.output.lock().unwrap().upgrade().is_none());
         assert!(service.result(&id, "owner").await.is_err());
         assert_eq!(state.txt_count.load(Ordering::SeqCst), 1);
+        let folder = temp.path().join("runtime/jobs/wai-webui");
+        assert_eq!(
+            std::fs::read(folder.join(format!("{id}.png"))).unwrap(),
+            png()
+        );
+        let record: Value =
+            serde_json::from_slice(&std::fs::read(folder.join(format!("{id}.json"))).unwrap())
+                .unwrap();
+        assert_eq!(record["owner"], "owner");
+        assert!(record["webuiResult"]["expiresAt"].is_number());
     }
 }
 

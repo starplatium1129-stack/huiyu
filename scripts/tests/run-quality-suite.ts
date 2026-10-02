@@ -99,24 +99,12 @@ function runSuiteFiles(entries: string|any[], { label, timeout, verbose = false,
   return failed || skipped ? 1 : 0;
 }
 
-function planUnitTests(files: readonly string[], platform: NodeJS.Platform = process.platform) {
-  // Windows PowerShell process inspection timed out in the parallel suite but
-  // passed alone. Keep its real host/identity/drain assertions in a separate
-  // phase, after CPU-heavy Node fixtures; Linux keeps the original aggregate.
-  const guard = 'test-desktop-deploy-guard.js';
-  // The successful/malformed local HTTP scenarios keep their 250ms deadline;
-  // they failed under the aggregate CPU load and passed unchanged alone.
-  const generation = 'test-generation-workflow-safety.js';
-  const serial: readonly string[] = files.filter(file => file === generation || (platform === 'win32' && file === guard));
-  const parallel = files.filter(file => !serial.includes(file));
-  return [
-    ...(parallel.length ? [{ name: 'node --test (aggregate)', files: parallel, concurrency: 4 }] : []),
-    ...serial.map(file => ({ name: file === guard ? 'Windows deployment fixture' : 'Generation workflow fixture', files: [file], concurrency: 1 })),
-  ];
+function planUnitTests(files: readonly string[]) {
+  return files.length ? [{ name: 'node --test (aggregate)', files, concurrency: 4 }] : [];
 }
 
-/** unit aggregation keeps concurrency=4; the Windows process fixture follows alone. */
-function runUnitSuite({ verbose = false, files: selected = QUALITY_TEST_SUITES.unit }: { verbose?: boolean; files?: readonly string[] } = {}) {
+/** Product unit tests run once; maintenance and deployment fixtures have their own lanes. */
+function runUnitSuite({ verbose = false, keepGoing = false, files: selected = QUALITY_TEST_SUITES.unit }: { verbose?: boolean; keepGoing?: boolean; files?: readonly string[] } = {}) {
   console.log(`unit: ${selected.length}/${QUALITY_TEST_SUITES.unit.length} files`);
   if (!selected.length) throw new Error('Cannot execute an empty unit selection');
   const started = Date.now();
@@ -138,7 +126,7 @@ function runUnitSuite({ verbose = false, files: selected = QUALITY_TEST_SUITES.u
       output, reason, failureKind: classifyFailure({ status: result.status, signal: result.signal, error }, output), timeoutMs: remaining });
     if (verbose) console.log(output.trimEnd());
     else if (!ok) printExcerpt(output, group.name);
-    if (result.signal || error?.code === 'ETIMEDOUT') break;
+    if ((!ok && !keepGoing) || result.signal || error?.code === 'ETIMEDOUT') break;
   }
   for (const group of groups.slice(results.length)) results.push({ name: group.name, status: 'not-run', duration: 0 });
   const duration = Date.now() - started, ok = results.every(result => result.status === 'passed');
@@ -257,7 +245,7 @@ async function main(argv: string[]) {
       return 1;
     }
   }
-  if (suiteName === 'unit') return runUnitSuite({ verbose, files });
+  if (suiteName === 'unit') return runUnitSuite({ verbose, keepGoing, files });
   if (suiteName === 'contract') return runContractSuite({ verbose, keepGoing, files });
   return runSuiteFiles(entries, {
     label: suiteName,

@@ -180,7 +180,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       for (const record of records) {
         if (controller.signal.aborted) break
         try {
-          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? artworkRepository.getImage(record.id) : readWebBackupImage(record.id)) : null)
+          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? artworkRepository.getImage(record.id, controller.signal) : readWebBackupImage(record.id)) : null)
           // Storage reads may not be abortable. Never download their late result after cancellation.
           if (controller.signal.aborted) break
           if (!blob) failed++

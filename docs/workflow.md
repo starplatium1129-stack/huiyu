@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-28。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
+> 维护日期：2026-10-02。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
 
 ## 先查入口
 
@@ -320,7 +320,7 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。
 
-按影响面选验证，不按“改了代码”或“准备提交”一律升级：
+按影响面选验证，不按“改了代码”或“准备提交”一律升级；新增测试、证据复用与失败止损遵循 [协作指南](../AGENTS.md#风险验证)。失败先分类并缩小范围，没有相关修复或新诊断证据不原样重跑；同一失败再次出现须报告原因、影响和下一步，不用全量重跑或无关改动追求绿灯。
 
 | 本次改动 | 验证边界 |
 | --- | --- |
@@ -331,13 +331,15 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-日常使用 `npm test`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
+日常使用 `npm test` 或 `npm run validate`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
 
-Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，全部库存使用 `gate:all`；修改执行器自身后先 `npm run build:runtime` 更新生成入口。
+Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，整合验证使用 `gate:full`。unit/contract/optional 不自动 prebuild；工具源或配置变化、生成入口缺失时才先 `npm run build:runtime`，纯 Rust 检查不附带 Node 构建。
 
 短期限的 `test-generation-workflow-safety` 独立于 Node 并发批次执行，保留其 250ms 夹具期限与显式超时场景；Windows 的 `test-desktop-deploy-guard` 使用真实 PowerShell 进程探测，也单独执行。其他文件仍并发 4。每个选中文件只执行一次，整体仍共用原 300 秒上限，阶段失败/未运行分别记录，不放宽退出与锁清理断言。
 
 ### 验证并发与复用
+
+`npm run check` 的 `CHECK_JOBS` 默认 4、有效范围 1–4；首次失败停止待派发步骤，收完已在途任务并分别报告失败/未运行。`npm run check -- --all` 显式收集全貌；每步限时 10 分钟，超时只清理该执行器拥有的进程树，不原样循环重跑。
 
 `test-interrogate-engine` 默认只在临时空目录验证无模型降级，并屏蔽模型目录环境变量；`test-interrogate-routes` 始终用 WD14 替身和本地 HTTP 夹具。只有显式设置 `AICS_TEST_REAL_WD14=1` 再运行 `node scripts/tests/test-interrogate-engine.js`，才会查找本机权重并执行真实 CPU 推理；该开关不属于普通 unit/contract/full 门禁的默认验收。
 
@@ -353,14 +355,12 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node
 
 | 入口 | 实际范围 |
 | --- | --- |
-| npm test / gate:quick ui/style/server/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
+| npm test / validate / gate:quick ui/style/server/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
-| check:full | npm run validate：Node/Vue 核心check + Git关联前端 + 核心unit/contract + 变更触发专项；复用已有runtime，legacy专项按需构建SPA；不代替 Rust 检查 |
-| gate:full | 当前产品整合门禁：核心check、rust:check、完整前端、核心unit/contract、变更触发专项与打包预算；Rust 失败后停止后续步骤 |
-| gate:all / validate:all | 显式全部库存：构建、check、完整前端覆盖率和六个Node lane；用于整合/发行全面复核 |
-| test:tooling / test:release / test:legacy | 维护工具、发行/资源包、旧Node/迁移对照专项；不作为纯前端改动的固定成本 |
-| test:optional | 已登记测试自身变化精确到文件并去重；工具/旧Node/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
-| build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护/旧对照脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
+| gate:full / gate:all / check:full / validate:all | 同一 full 入口：check、Rust、前端覆盖率、unit、contract、tooling、release，最后一次 build:web:run（含打包预算）；默认失败即停，--all 收集全貌。不含浏览器、设备或真实模型验收 |
+| test:tooling / test:release | 维护工具、发行/资源包专项；不作为纯前端改动的固定成本 |
+| test:optional | 已登记测试自身变化精确到文件并去重；工具/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
+| build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |
@@ -369,11 +369,11 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node
 | test:e2e / test:e2e:all | 默认 `test:e2e` 构建后只跑 critical；已有构建的 `test:e2e:all` 运行 critical + nightly，不包含 manual/device |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
 
-质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和Node跳过数量；失败与未运行不改标通过。Quality的前端使用Git基线关联测试，无有效基线时全跑；完整前端覆盖率和既有门槛由夜间及显式全量入口执行。核心contract不再准备旧SPA，变更触发的legacy会在执行前构建；核心Rust CI与Node22.18检查保留。JSON与日志按[报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告)接入capture:delivery，报告不代替实际执行。
+质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和Node跳过数量；失败与未运行不改标通过。Quality的前端使用Git基线关联测试，无有效基线时全跑；完整前端覆盖率和既有门槛由夜间及显式全量入口执行。旧 Node 后端及 legacy lane 已退役，核心contract不准备旧SPA；核心Rust CI与Node22.18检查保留。JSON与日志按[报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告)接入capture:delivery，报告不代替实际执行。
 
 E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项目或手机、平板专用尺寸及触屏用例。保留桌面窄窗口、分屏、双主题、键鼠可达性与减少动态效果检查；桌宠原生小窗口尺寸不属于移动端，继续覆盖。不要把手机尺寸替换成同数量的桌面尺寸来扩大矩阵。
 
-分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 仍会发现全部文件，不作为常规回归入口。
+分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 默认只发现 critical + nightly，与 `test:e2e:all` 一致；显式文件、正则或 `--test-list` 仍可选择 manual/device，设备专项配置保留，运行条件与授权不因显式选择而省略。
 
 精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。实现与当次验证见 [日常测试精简](audits/2026-09-30/test-simplification.md)。
 
@@ -421,7 +421,7 @@ R13 的旧 Node Electron PoC 已随旧后端退役删除，其历史对照仍可
 
 无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。
 
-首次建立无构建产物的 worktree 时，先执行 `npm run build:runtime` 与 `npm run build`，再运行完整门禁；聊天契约会实际请求已构建的 SPA。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
+首次建立 worktree 仍按本次风险选检查：文档无需构建；所选 Node 工具缺少生成入口时才准备 `npm run build:runtime`；浏览器或产物检查需要匹配的 dist 时才执行 `npm run build`。缺少构建产物不自动升级为完整门禁。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
 
 每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞。
 

@@ -27,7 +27,9 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 
 生成安装包：`npm run package:tauri`。它只构建，不安装、不公开发布；完成后再按下面的部署入口选择增量同步或完整安装。
 
-面向用户的发行入口 `npm run release:desktop` 现在生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
+**公开发行与源码构建不同步**：2026-10-02 核对的 [1.8.1 公开版](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)只有 `AI-CG-Studio_1.8.1_x64-setup.exe` 完整包（639,536,640 字节），没有 upgrade 附件，公开自动更新仍下载该完整包。
+
+当前源码的发行入口 `npm run release:desktop` 已实现生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名，尚未公开交付；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
 
 正式构建会在 Tauri CLI 完成后将 Cargo 创建的固定 release EXE 硬链接核对字节并原子替换为独立文件，再执行原来的源码/产物绑定检查；其它位置的硬链接仍拒绝。CLI 成功不等于可发行：绑定失败返回非零并指出具体产物，回执原子更新失败保留旧回执，不再依赖一次性打包脚本修补。
 
@@ -110,7 +112,6 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 | `src/**` 前端代码，仍使用旧 HTTP UI 来源 | **增量** | 只需换网关 `dist/` |
 | `data/` 场景、热门角色数据 | **增量** | 只需换 `data/` 产物 |
 | `runtime-rs/src/`、Cargo 锁文件或后端 EXE | **完整安装** | 产品运行 Rust EXE，不能复制旧网关 JS 代替构建 |
-| 旧 `routes/` `server/` `services/` 对照代码 | 先核对实际用途 | 旧实现不随产品启动；改它们不等于修改 Rust 后端 |
 | `assets/` 新增/修改静态资源 | **增量** | 直接复制 |
 | `assets/` **删除**了资源 | **增量** | 必须带 `-Cleanup`，否则安装目录里那份会永久残留 |
 | 原生 DLL、依赖清单、载荷规则变化 | **完整安装** | 更新字节/哈希、许可清单和构建绑定，再验证实际 bundle |
@@ -169,6 +170,8 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 Rust 侧（`updater_cmd.rs`）、前端横幅（`useDesktopUpdater.ts` + `ControlView.vue`）均已落地；
 **只检查不自动下载；必须由用户点击“一键升级”后才下载安装**。
 
+后续源码已启用 HTTP/2，并实现失败、取消或超时后校验缓存再尝试续传；服务器不支持安全续传或资源身份变化时重新下载，完整签名校验通过后才安装。此实现尚未公开交付，不能据此认为已安装的 1.8.1 具备续传，或公开更新已改用轻量包。
+
 ### 发版工作流（一次命令）
 
 仓库现为 `starplatium1129-stack/huiyu`，发布标题使用“绘遇 HUIYU”。应用 identifier、公钥及内部安装兼容标识保留；不要为了仓库改名更换签名密钥或本地数据键。
@@ -183,14 +186,14 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
    客户端 updater 只在「远端版本 > 当前安装版本」时提示——**不 bump 就永远检不到更新**
    （2026-08-31 破案：发布与安装同为 1.5.0，功能从未触发）。
 2. 提交并推送 `main` 后用 `--skip-build --publish`，脚本会确认目标是公开主项目、
-   本地 `main` 与 `origin/main` 一致，再上传 `latest.json + setup.exe + .sig + .sha256`。
+   本地 `main` 与 `origin/main` 一致，再上传 full 与 upgrade 两份安装包、各自的 `.sig` / `.sha256`，以及指向 upgrade 的 `latest.json`。这描述当前源码流程，不改写既有 1.8.1 附件。
 3. 已装客户端下次启动自动检测；GitHub 暂时不可达时静默跳过，不影响本地使用。
 
 ### 原签名私钥暂不可用时
 
 用户明确选择公开手动安装版时，可运行 `node scripts/maintenance/release-desktop-update.js --manual --bump minor` 构建，再提交并推送源码，最后运行 `node scripts/maintenance/release-desktop-update.js --manual --skip-build --publish`。
 
-该模式只上传安装包与 SHA-256，不生成或覆盖 `latest.json`，不把新 Release 设为自动更新使用的 latest。发布先创建草稿，确认资产上传完整后才公开；Release 顶部会明确提示未签名、需手动安装。
+当前源码的该模式上传 full 与 upgrade 两种安装包及各自的 SHA-256，不生成或覆盖 `latest.json`，不把新 Release 设为自动更新使用的 latest。发布先创建草稿，确认资产上传完整后才公开；Release 顶部会明确提示未签名、需手动安装。
 
 原签名主机后续先获取标签并检出该版本的原始源码（`git fetch --tags`，然后 `git switch --detach v1.6.0`），按原密钥进行签名构建，再运行 `node scripts/maintenance/release-desktop-update.js --skip-build --publish --complete-manual` 补齐自动更新。补签必须匹配原版本标签，不能用后来修改过的同版本源码覆盖。密钥可位于默认 `runtime/keys/aics-updater.key`，或由 `TAURI_SIGNING_PRIVATE_KEY_PATH` 指定；不要将私钥粘贴到聊天、提交到 Git 或生成替代钥匙。
 

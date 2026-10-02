@@ -134,3 +134,36 @@ it('keeps a viewer tag selection when its closing transition ends before the URL
   await vi.advanceTimersByTimeAsync(300)
   expect(mocks.replace).toHaveBeenLastCalledWith({ query: { tag: '春日' } })
 })
+
+it('observes cards moved between masonry columns after image measurement without restarting unchanged cards', async () => {
+  mocks.snapshot.mockResolvedValue({ history: Array.from({ length: 12 }, (_, index) => record(index + 1)), projects: [] })
+  const { gallery } = await setup(true)
+  const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
+  const before = new Set(observer.elements)
+  const observe = vi.spyOn(observer, 'observe')
+  const initialGroups = gallery.masonryGroups.value
+  const first = gallery.pagedVisible.value[0]
+  gallery.measure(first, { target: { naturalWidth: 100, naturalHeight: 200 } } as unknown as Event)
+  await flushPromises()
+  expect(gallery.masonryGroups.value).toBe(initialGroups)
+  expect(observe).not.toHaveBeenCalled()
+  gallery.measure(first, { target: { naturalWidth: 100, naturalHeight: 600 } } as unknown as Event)
+  await flushPromises()
+  const current = new Set(gallery.shellEl.value!.querySelectorAll('.artwork'))
+  const moved = [...current].filter(element => !before.has(element))
+  expect(moved.length).toBeGreaterThan(0)
+  expect(observer.elements.size).toBe(current.size)
+  expect([...current].every(element => observer.elements.has(element))).toBe(true)
+  expect(observe).toHaveBeenCalledTimes(moved.length)
+  observer.callback(moved.map(target => ({ target, isIntersecting: true }) as IntersectionObserverEntry), observer as unknown as IntersectionObserver)
+  await flushPromises()
+  for (const element of moved) expect(gallery.cardUrls[(element as HTMLElement).dataset.cardId!]).toBeTruthy()
+  observe.mockClear()
+  first.image_id = 'replacement-in-place'
+  await flushPromises()
+  const replaced = gallery.shellEl.value!.querySelector(`[data-card-id="${first.id}"]`)!
+  expect(observe).toHaveBeenCalledWith(replaced)
+  observer.callback([{ target: replaced, isIntersecting: true } as IntersectionObserverEntry], observer as unknown as IntersectionObserver)
+  await flushPromises()
+  expect(mocks.getImage).toHaveBeenCalledWith('replacement-in-place', expect.any(AbortSignal))
+})

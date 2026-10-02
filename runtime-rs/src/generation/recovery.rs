@@ -91,6 +91,10 @@ impl Service {
             outputs: vec![],
         };
         if task["provider"] == "webui" {
+            snapshots::initialize(self.inner.clone()).await?;
+            if let Some(recovered) = webui_results::recover(&self.inner, task).await? {
+                return Ok(recovered);
+            }
             result.unknown = true;
             result.error_code = Some("WEBUI_RESTART_INTERRUPTED".into());
             return Ok(result);

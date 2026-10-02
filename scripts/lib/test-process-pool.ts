@@ -13,7 +13,7 @@ export interface TestPoolOptions {
 }
 
 /** Only terminate the process tree created by this runner. No shell interpolation. */
-function killOwnedTree(child: ChildProcess) {
+export function killOwnedTree(child: ChildProcess) {
   if (!child.pid) return;
   if (process.platform === 'win32') {
     const killer = spawn('taskkill.exe', ['/PID', String(child.pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' });

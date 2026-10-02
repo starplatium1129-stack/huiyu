@@ -1,8 +1,7 @@
 use super::*;
 use rusqlite::OpenFlags;
 pub(super) fn manifest(c: &Files, directory: &Path, id: &str) -> Result<Value> {
-    let value: Value =
-        serde_json::from_slice(&fs::read(schema::safe(directory, "manifest.json")?)?)?;
+    let value = read_json(directory, "manifest.json")?;
     if value["kind"] != "huiyu-workspace-backup"
         || value["formatVersion"] != 1
         || value["backupId"] != id
@@ -41,8 +40,7 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     if digest_file(c, &database)? != manifest["database"] {
         return Err(invalid_backup("Backup database hash mismatch"));
     }
-    let identity: Value =
-        serde_json::from_slice(&fs::read(schema::safe(root, "workspace.json")?)?)?;
+    let identity = read_json(root, "workspace.json")?;
     if identity["workspaceId"] != manifest["workspaceId"]
         || identity["schemaVersion"] != manifest["schemaVersion"]
         || identity["databaseKind"] != "huiyu-workspace"

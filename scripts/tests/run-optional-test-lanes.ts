@@ -71,7 +71,7 @@ async function main() {
     const result = run.results[0];
     if (!result) return 1;
     console.log(`${result.ok ? 'PASS' : 'FAIL'} ${lane}: ${(result.duration / 1000).toFixed(1)}s`);
-    if (!result.ok) { printExcerpt(result.output, lane); code = 1; }
+    if (!result.ok) { printExcerpt(result.output, lane); code = 1; break; }
   }
   } finally { process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt); }
   return code;

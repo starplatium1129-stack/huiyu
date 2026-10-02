@@ -38,8 +38,6 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build SPA
-        run: npm run build
       - name: Run static and generated-source checks
         run: |
           set -o pipefail
@@ -64,7 +62,7 @@ jobs:
           retention-days: 7
 
   unit:
-    name: Unit & Coverage Suite
+    name: Product Unit Suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -111,7 +109,7 @@ jobs:
           retention-days: 7
 
   contract:
-    name: Contract & Gateway Suite
+    name: Content Contract Suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -242,8 +240,8 @@ jobs:
         run: npm ci
       - name: Build on minimum runtime
         run: npm run build
-      - name: Check source config and isolated gateway startup
-        run: node --test scripts/tests/test-api-client.js scripts/tests/test-module-boundaries.mjs scripts/tests/test-gateway-contract.js
+      - name: Check Node consumer compatibility
+        run: node --test scripts/tests/test-api-client.js scripts/tests/test-module-boundaries.mjs scripts/tests/test-runtime-errors.js
 
   quality-summary:
     name: Quality Summary

@@ -90,8 +90,8 @@ pub(crate) async fn materialize(
         .query_pairs_mut()
         .append_pair("filename", &filename)
         .append_pair("type", "output");
-    tokio::fs::create_dir_all(root).await?;
-    let canonical_root = tokio::fs::canonicalize(root).await?;
+    tokio::fs::create_dir_all(root).await.map_err(save_error)?;
+    let canonical_root = tokio::fs::canonicalize(root).await.map_err(save_error)?;
     let transfer = async {
         let response = transport
             .client
@@ -155,15 +155,16 @@ pub(crate) async fn materialize(
         let (file, pending) = tempfile::Builder::new()
             .prefix(&format!(".{id}."))
             .suffix(".part")
-            .tempfile_in(root)?
+            .tempfile_in(root)
+            .map_err(save_error)?
             .into_parts();
         let mut file = tokio::fs::File::from_std(file);
-        file.write_all(&header).await?;
+        file.write_all(&header).await.map_err(save_error)?;
         let mut length = header.len() as u64;
         drop(header);
         if let Some(bytes) = remainder {
             length += bytes.len() as u64;
-            file.write_all(&bytes).await?;
+            file.write_all(&bytes).await.map_err(save_error)?;
         }
         while let Some(chunk) = stream.next().await {
             let chunk = chunk
@@ -176,9 +177,9 @@ pub(crate) async fn materialize(
                     "ComfyUI 返回的视频超过大小限制",
                 ));
             }
-            file.write_all(&chunk).await?;
+            file.write_all(&chunk).await.map_err(save_error)?;
         }
-        file.sync_all().await?;
+        file.sync_all().await.map_err(save_error)?;
         drop(file);
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "CANCELLED", "视频读取已取消"));
@@ -186,8 +187,11 @@ pub(crate) async fn materialize(
         // Publish without another cancellation point between rename and return.
         pending
             .persist(&destination)
-            .map_err(|error| ApiError::from(error.error))?;
-        if !std::fs::canonicalize(&destination)?.starts_with(&canonical_root) {
+            .map_err(|error| save_error(error.error))?;
+        if !std::fs::canonicalize(&destination)
+            .map_err(save_error)?
+            .starts_with(&canonical_root)
+        {
             return Err(ApiError::new(
                 500,
                 "VIDEO_STORAGE_INVALID",
@@ -201,4 +205,13 @@ pub(crate) async fn materialize(
         })
     };
     tokio::select! {result=tokio::time::timeout(Duration::from_secs(120),transfer)=>match result{Ok(value)=>value,Err(_)=>Err(ApiError::new(504,"COMFY_TIMEOUT","视频读取超时"))},_=cancel.cancelled()=>Err(ApiError::new(499,"CANCELLED","视频读取已取消"))}
+}
+
+fn save_error(error: std::io::Error) -> ApiError {
+    eprintln!("video result save: {error}");
+    ApiError::new(
+        507,
+        "RESULT_SAVE_FAILED",
+        "生成视频保存失败，请检查本地磁盘空间和目录写入权限",
+    )
 }

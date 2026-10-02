@@ -67,15 +67,23 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     await dialog.getByLabel('口型闭合值', { exact: true }).fill('2')
     await dialog.getByLabel('口型张开值', { exact: true }).fill('-1')
     await dialog.getByLabel('模拟语音电平').fill('0.5')
-    let body = ''
+    let metadata: unknown
     await page.route('**/api/live2d-import', async route => {
-      body = route.request().postDataBuffer()?.toString() || ''
+      const request = route.request()
+      const body = request.postDataBuffer()
+      expect(body, 'model import carries multipart metadata').not.toBeNull()
+      const form = await new Response(new Uint8Array(body!), { headers: {
+        'content-type': request.headers()['content-type'],
+      } }).formData()
+      metadata = JSON.parse(String(form.get('metadata')))
       await route.fulfill({ status: 201, json: { id: 'neutral_fixture', revision: 'fixture-revision', fingerprint: 'fixture-fingerprint' } })
     })
     await dialog.getByRole('button', { name: '保存并加入角色列表' }).click()
     await expect(dialog.getByRole('status')).toContainText('已保存')
-    expect(body).toContain('"closed":2,"open":-1')
-    expect(body).toContain('needs-confirmation')
+    expect(metadata).toMatchObject({ profile: {
+      parameterBindings: { mouth: { id: 'ParamMouthOpenY', closed: 2, open: -1 } },
+      verification: { status: 'needs-confirmation' },
+    } })
     await dialog.evaluate(el => { el.querySelector('.model-studio-scroll')!.scrollTop = 0 })
     await page.screenshot({ path: `runtime/model-studio-review/${theme}-${width}.png` })
     const bounds = await dialog.boundingBox()

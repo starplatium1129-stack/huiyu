@@ -154,3 +154,36 @@ async fn copies_release_writer_preserve_snapshot_and_cancel_without_receipt() {
     );
     storage.close().await.unwrap();
 }
+
+#[cfg(unix)]
+#[test]
+fn backup_metadata_rejects_fifo_before_opening_and_keeps_regular_json() {
+    use std::{ffi::CString, os::unix::ffi::OsStrExt};
+
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("incomplete.json");
+    let fifo = CString::new(path.as_os_str().as_bytes()).unwrap();
+    assert_eq!(unsafe { libc::mkfifo(fifo.as_ptr(), 0o600) }, 0);
+    let (done, waiting) = std::sync::mpsc::channel();
+    let unblock_path = path.clone();
+    let unblock = std::thread::spawn(move || {
+        // Keep a regression bounded: the old reader blocks until this writer
+        // supplies valid JSON, then fails the expected regular-file rejection.
+        if matches!(
+            waiting.recv_timeout(Duration::from_secs(2)),
+            Err(std::sync::mpsc::RecvTimeoutError::Timeout)
+        ) {
+            fs::write(unblock_path, b"{}").unwrap();
+        }
+    });
+    let result = read_json(directory.path(), "incomplete.json");
+    let _ = done.send(());
+    unblock.join().unwrap();
+    assert_eq!(result.unwrap_err().code, "BACKUP_INVALID");
+    fs::remove_file(&path).unwrap();
+    fs::write(&path, br#"{"identity":"fixture","workspaceId":"test"}"#).unwrap();
+    assert_eq!(
+        read_json(directory.path(), "incomplete.json").unwrap(),
+        json!({"identity":"fixture","workspaceId":"test"})
+    );
+}

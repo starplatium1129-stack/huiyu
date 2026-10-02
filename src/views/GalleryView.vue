@@ -58,6 +58,7 @@
     <div v-if="!trashMode && history.length" ref="tagControls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
+      <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
       <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可整理画册与标签、对比挑选或移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
     </div>
 
@@ -74,6 +75,7 @@
     </div>
     <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
 
+    <GalleryShowcase v-if="showcaseOpen" :items="visible" :title="collectionTitle" :card-urls="cardUrls" :thumb-urls="thumbUrls" @close="showcaseOpen = false" />
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
     <section v-content-motion="`${trashMode}:${projectFilter}:${characterFilter}:${favoriteOnly}:${tagFilter}`" aria-live="polite" data-reveal data-reveal-delay="1">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
@@ -377,9 +379,12 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, onDeactivated, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
+const GalleryShowcase = defineAsyncComponent(() => import('@/components/gallery/GalleryShowcase.vue'))
+const showcaseOpen = ref(false)
+onDeactivated(() => { showcaseOpen.value = false })
 const gestureViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
