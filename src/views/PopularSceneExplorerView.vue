@@ -104,7 +104,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -133,7 +133,6 @@ const sceneStore = useSceneStore()
 const loading = ref(true)
 const loadError = ref('')
 const query = ref('')
-const selectedId = ref('')
 const category = ref('all')
 const ratingFilter = ref<'all' | 'All' | 'R15' | 'R18'>('all')
 /** 成人场景仅限本机，远程和未知来源默认拒绝。 */
@@ -141,6 +140,12 @@ const showMature = isLocalStudioHost()
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
+// Same-page navigation reuses this view, so the URL remains the selection owner.
+const selectedId = computed(() => {
+  const requested = typeof route.query.character === 'string' ? route.query.character : ''
+  return characters.value.some(character => character.id === requested) ? requested : characters.value[0]?.id ?? ''
+})
+watch(selectedId, () => { category.value = 'all'; query.value = '' })
 
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases,
@@ -183,7 +188,6 @@ const filtered = computed(() => {
 })
 
 function selectCharacter(id: string) {
-  selectedId.value = id
   if (route.query.character !== id) void router.replace({ query: { ...route.query, character: id } })
   category.value = 'all'
   query.value = ''
@@ -213,9 +217,6 @@ async function init() {
   loadError.value = ''
   try {
     await sceneStore.loadBlueprintCatalog()
-    const charParam = typeof route.query.character === 'string' ? route.query.character : ''
-    const fallback = characters.value[0]?.id ?? ''
-    selectedId.value = characters.value.some(c => c.id === charParam) ? charParam : fallback
   } catch (error) {
     loadError.value = error instanceof Error ? error.message : String(error)
   } finally {

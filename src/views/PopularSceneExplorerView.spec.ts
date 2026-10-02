@@ -1,26 +1,36 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
+import { reactive } from 'vue'
 import PopularSceneExplorerView from './PopularSceneExplorerView.vue'
 
 const access = vi.hoisted(() => ({ local: true, eligibility: 'adult' }))
+const navigation = vi.hoisted(() => ({
+  route: { query: {} as Record<string, string> }, replace: vi.fn(), loadCatalog: vi.fn(async () => {}),
+}))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.local }))
-vi.mock('vue-router', () => ({ useRoute: () => ({ query: {} }), useRouter: () => ({ replace: vi.fn() }) }))
+vi.mock('vue-router', () => ({ useRoute: () => navigation.route, useRouter: () => ({ replace: navigation.replace }) }))
 vi.mock('@/stores/sceneStore', () => ({
   useSceneStore: () => ({
-    loadBlueprintCatalog: async () => {}, error: '',
-    popularCharacters: [{ id: 'fixture', displayName: '角色', franchise: '', adultEligibility: access.eligibility }],
+    loadBlueprintCatalog: navigation.loadCatalog, error: '',
+    popularCharacters: ['fixture', 'second'].map(id => ({ id, displayName: id, franchise: '', adultEligibility: access.eligibility })),
     sceneBlueprints: [
       { id: 'safe', adult: false, sampleRating: 'All' },
       { id: 'legacy-safe', adult: false, sampleRating: 'SFW' },
       { id: 'adult', adult: true, sampleRating: 'R18' },
       { id: 'rated-image', adult: false, sampleRating: 'R18' },
-    ].map(item => ({ ...item, characterId: 'fixture', title: item.id, category: '日常', description: '',
+      { id: 'second-safe', adult: false, sampleRating: 'All', characterId: 'second' },
+    ].map(item => ({ characterId: 'fixture', ...item, title: item.id, category: '日常', description: '',
       location: '', timeOfDay: 'day', lighting: '', camera: '', mood: '', sceneTags: [], promptProse: '', recommendedSize: '832x1216' })),
   }),
 }))
 
 let wrapper: VueWrapper | undefined
-beforeEach(() => { access.local = true; access.eligibility = 'adult' })
+beforeEach(() => {
+  access.local = true; access.eligibility = 'adult'
+  navigation.route = reactive({ query: {} })
+  navigation.replace.mockReset()
+  navigation.loadCatalog.mockClear()
+})
 afterEach(() => { wrapper?.unmount() })
 async function mountLibrary() {
   wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RuntimeImage: false, RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
@@ -77,5 +87,24 @@ describe('角色场景的本机访问边界', () => {
     expect(card.get('img').classes()).toContain('pop-thumb-missing')
     expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
     expect(page.get('[data-blueprint-id="legacy-safe"]').find('.pop-preview-missing').exists()).toBe(false)
+  })
+
+  it('同页角色导航更新列表和绘制目标，清除旧搜索且不重新读取目录', async () => {
+    access.local = false
+    navigation.route.query = { character: 'fixture', preserved: 'keep' }
+    const page = await mountLibrary()
+    page.findComponent({ name: 'StudioSearch' }).vm.$emit('update:modelValue', 'no matches')
+    await flushPromises()
+    expect(page.findAll('[data-blueprint-id]')).toHaveLength(0)
+    navigation.route.query = { character: 'second', preserved: 'keep' }
+    await flushPromises()
+    expect(page.get('.pop-hero-copy h2').text()).toBe('second')
+    expect(page.findAll('[data-blueprint-id]').map(card => card.attributes('data-blueprint-id'))).toEqual(['second-safe'])
+    expect(page.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=second&blueprint=second-safe')
+    navigation.route.query = { character: 'unknown', preserved: 'keep' }
+    await flushPromises()
+    expect(page.get('.pop-hero-copy h2').text()).toBe('fixture')
+    expect(navigation.loadCatalog).toHaveBeenCalledTimes(1)
+    expect(navigation.replace).not.toHaveBeenCalled()
   })
 })
