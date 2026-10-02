@@ -178,6 +178,20 @@
           ],
           "isDefault": false,
           "isNsfw": false
+        },
+        {
+          "id": "sfw_floral_yukata",
+          "name": "花纹轻棉浴衣",
+          "prose": "a lightweight cotton yukata with a floral pattern and a neatly tied obi sash",
+          "tokens": [
+            "yukata",
+            "floral_print",
+            "obi",
+            "japanese_clothes"
+          ],
+          "default": false,
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

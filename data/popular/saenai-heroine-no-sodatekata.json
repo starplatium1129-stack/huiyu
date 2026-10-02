@@ -136,6 +136,35 @@
             "large_breasts",
             "long_legs"
           ]
+        },
+        {
+          "id": "sfw_black_wool_coat",
+          "name": "黑呢大衣与酒红围巾",
+          "prose": "a black wool overcoat with a wine-red scarf wrapped snugly at the collar",
+          "tokens": [
+            "overcoat",
+            "black_coat",
+            "wool_coat",
+            "scarf",
+            "red_scarf"
+          ],
+          "default": false,
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_white_bridal_gown",
+          "name": "纯白婚纱与长头纱",
+          "prose": "a pure white wedding gown in opaque fabric with a long white bridal veil",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "bridal_veil",
+            "opaque_fabric"
+          ],
+          "default": false,
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },

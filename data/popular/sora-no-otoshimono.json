@@ -51,7 +51,7 @@
         {
           "id": "angeloid_dress",
           "name": "人造天使战略白裙装",
-          "prose": "canonical angeloid attire: a pure white sleeveless dress with soft translucent layered ruffles, delicate red ribbon bow at the collar, thick metal choker collar with a dangling snapped steel chain, mechanical ear ornaments, and magnificent broad white feathered wings unfurling majestically from her back",
+          "prose": "canonical angeloid attire: a pure white sleeveless dress with soft translucent layered ruffles, delicate red ribbon bow at the collar, thick metal choker collar with a dangling snapped steel chain, mechanical ear ornaments, and magnificent broad white feathered wings",
           "tokens": [
             "white_dress",
             "sleeveless_dress",

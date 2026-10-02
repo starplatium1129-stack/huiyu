@@ -61,7 +61,7 @@
         {
           "id": "official_knights_of_blood_uniform",
           "name": "血盟骑士团红白战袍副团长装",
-          "prose": "her iconic Knights of the Blood Oath battle uniform: a tailored white sleeveless tunic with crimson cross insignias, red pleated mini skirt, white thigh-high stockings with red cross garters, silver breastplate accents, and holding the rapier Lambent Light",
+          "prose": "her iconic Knights of the Blood Oath battle uniform: a tailored white sleeveless tunic with crimson cross insignias, red pleated mini skirt, white thigh-high stockings with red cross garters, silver breastplate accents",
           "tokens": [
             "knights_of_the_blood_uniform",
             "white_tunic",
@@ -70,7 +70,6 @@
             "thighhighs",
             "white_thighhighs",
             "rapier",
-            "holding_sword",
             "lambent_light"
           ],
           "default": true,

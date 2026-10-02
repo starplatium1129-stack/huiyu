@@ -22,7 +22,7 @@
       ],
       "franchise": "86 -Eighty Six-",
       "id": "vladilena_milize",
-      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, wearing the blue San Magnolia Republic military uniform with a tactical Para-RAID headset and unwavering resolve",
+      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, and unwavering resolve",
       "identityTokens": [
         "vladilena_millize",
         "86_-eighty_six-",
@@ -30,9 +30,6 @@
         "long_hair",
         "antenna_hair",
         "grey_eyes",
-        "military_uniform",
-        "boots",
-        "headset",
         "slender_figure"
       ],
       "negativeTokens": [
@@ -54,7 +51,7 @@
           "id": "official_republic_military_uniform",
           "isDefault": true,
           "name": "圣玛格诺利亚共和国蓝色军装",
-          "prose": "her crisp San Magnolia Republic Handler uniform: a blue high-collared cropped military jacket with an armband and rank insignia, a white shirt with blue and gold trim, a blue high-waist skirt, a white o-ring belt, white thighhighs supported by garter straps, tall blue officer boots, and a blue peaked cap",
+          "prose": "her crisp San Magnolia Republic Handler uniform: a blue high-collared cropped military jacket with an armband and rank insignia, a white shirt with blue and gold trim, a blue high-waist skirt, a white o-ring belt, white thighhighs supported by garter straps, tall blue officer boots, a blue peaked cap, and a tactical Para-RAID headset",
           "tokens": [
             "military_uniform",
             "blue_jacket",
@@ -71,7 +68,8 @@
             "boots",
             "peaked_cap",
             "military_hat",
-            "officer"
+            "officer",
+            "headset"
           ]
         },
         {
