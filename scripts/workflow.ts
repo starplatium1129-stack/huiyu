@@ -193,10 +193,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
     cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
     docs: 'docs/guides/desktop/game-installer.md',
-    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'], '--upgrade': ['writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
   },
   'installer:bundle': {
-    desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
+    desc: '用已绑定桌面构建生成完整包与升级包并分别签名（只改安装界面时使用）',
     cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
     docs: 'docs/guides/desktop/game-installer.md',
     run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--publish': ['publish-remote'], '--bump': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/release-desktop-update.js:33-39,76-86,215-242', unknown: [], notes: ['--publish 推送 GitHub Releases（外部发布）；需 updater 签名私钥'] },
