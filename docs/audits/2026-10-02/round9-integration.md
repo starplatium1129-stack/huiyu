@@ -4,7 +4,7 @@
 
 ## 来源保留
 
-采用保留原始提交祖先关系的合并。产品整合节点为 `6ecf90da`，后续交付提交只增加本报告和索引。除 `docs/INDEX.md` 的机械追加冲突外，各来源修改文件均逐一比对源提交与整合 HEAD，字节一致；索引两侧入口全部保留。
+采用保留原始提交祖先关系的合并。四路产品整合节点为 `6ecf90da`。交付前发现用户已将 main 推进到 `fa9bd65dcbf9037320984ccdb5ef4258780c20c3`，故在本分支补入其 1.8.1 版本号与发布说明，主工作区仍干净。除 `docs/INDEX.md` 的机械追加冲突外，各来源修改文件均逐一比对源提交与整合 HEAD，字节一致；索引各方入口全部保留。发布提交只改版本号和文档，没有改变依赖版本、产品行为源码或测试源码，因此复用已完成的类型和行为证据，仅复核新增文档链接。
 
 | 来源提交 | 本轮保留内容 | 复用的来源证据 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@
 | `f9362fc9bb41146c1cf402c963a6897619be839e` | 已 settled 且 discarded 的结果直接返回，拒绝重新查询下载 | 来源 rustfmt 通过；此前未编译的指定 Rust 回归由本轮补验通过 |
 | `6b68b2d3d2332840ce430d0cafbc29d191456bd8` | [共享生命周期有界核查](round9-runtime-lifecycle.md)及索引，仅文档 | 20 轮合成导航计数无持续增长，卸载后资源计数归零；没有产品改动或量化修复收益 |
 | `68690cb7d09e9fb169c8ffe118f253f72f111053` | 离开预取区取消原图请求，预览移出邻域立即清除旧图 decode 源，保留缓存/替换语义 | [图库报告](gallery-scroll-preview-cancellation.md)：38 项定向用例、lint、体量检查和双主题 3 个 CSS 视口通过；3,000 条合成记录的旧请求在回顶部 120ms 后由 4 个降至 0 |
-| `c1efc3d1c098e003bc74dff0eb60e15fc79d240e` | 第八轮离线助手工作流写入语义修复 | 开工时尚未进入 main，仅纳入本分支；不接管用户发布。复用第八轮 3 个 workflow-runner 用例证据 |
+| `c1efc3d1c098e003bc74dff0eb60e15fc79d240e` | 第八轮离线助手工作流写入语义修复 | 开工时尚未进入 main，先仅纳入本分支；交付前已随用户的 `fa9bd65d` 进入 main。复用第八轮 3 个 workflow-runner 用例证据，不接管发布 |
 
 来源原始材料仍在各自 worktree 被忽略的 runtime 目录：反推 `runtime/round9-interrogation-evidence/`、任务 `runtime/round9-task-evidence/`、Gallery `runtime/gallery-round9/`、生命周期 `runtime/round9-lifecycle/`。本轮没有重复执行这些已验证且字节未变的定向套件，也没有把原始截图或日志加入 Git。
 
@@ -41,4 +41,4 @@ cargo test --manifest-path runtime-rs/Cargo.toml --locked --test task_recovery r
 - 生命周期只覆盖实际 composable 的合成路由、假时钟及可计数替身；不宣称完整应用无泄漏。
 - 没有新生产前端/桌面构建、安装、签名、发布或完整全量回归；用户已有发布包不包含本轮变更，除非由发布会话后续明确接入并重建。
 
-用户发布会话结束后，先检查 main 工作区及最新提交，再判断其是否为本分支祖先。若仍为 `e9adae01` 或本分支已包含的 `c1efc3d1`，可由用户会话执行 `git merge --ff-only codex/round9-integration-oct2`。若 main 已有其他提交，不强推、不重置、不覆盖发布改动；先在独立整合分支合并最新 main、处理实际差异并仅补受影响验证。后续 push、构建、安装和发布仍归用户发布会话执行。
+用户发布会话结束后，先检查 main 工作区及最新提交，再判断其是否为本分支祖先。交付时的 main `fa9bd65d` 已完整包含，可由用户会话执行 `git merge --ff-only codex/round9-integration-oct2`。若 main 再有新提交，不强推、不重置、不覆盖发布改动；先在独立整合分支合并最新 main、处理实际差异并仅补受影响验证。后续 push、构建、安装和发布仍归用户发布会话执行。
