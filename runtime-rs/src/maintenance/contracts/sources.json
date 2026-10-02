@@ -30,7 +30,8 @@
     },
     {
       "path": "src/utils/blueprintComposition.ts",
-      "sha256": "177e10c0e9fc79064deb263b75664487733bd254089d957c6c255dc08e640a52"
+      "sha256": "d3f8d554018e1d17f43320429cc52e22d0a59016a5157af147afd81b13f790c9",
+      "note": "2026-10-02: 47e6950a adds three runtime triptych negative-filter tokens. The content gate only uses parseCompositionIntent through parseSceneBlueprint; that parser is byte-identical. Validation behavior and the mechanical recipe snapshot are unchanged. Original extraction date and recipeSha256 are retained."
     },
     {
       "path": "src/config/kreaStyleRecipes.ts",
