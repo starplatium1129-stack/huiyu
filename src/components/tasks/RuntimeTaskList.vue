@@ -1,10 +1,10 @@
 <template>
   <section class="runtime-task-list tw:flex tw:flex-col tw:gap-s-3 tw:min-h-0" aria-label="工作区任务和结果收件箱">
-    <nav aria-label="工作区任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" :disabled="busy === 'refresh'" @click="refresh">更新状态</button></nav>
+    <nav aria-label="工作区任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">更新状态</button></nav>
     <p class="inbox-explanation">切换页面后，已接收任务由本地运行时继续处理。结果先保存在收件箱，入册设置保持不变。</p>
     <p v-if="runtimeTaskError || feedback" role="status">{{ feedback || runtimeTaskError }}</p>
     <div v-content-motion="selected" class="runtime-task-items tw:grid tw:gap-s-3 tw:min-h-0">
-    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" @click="refresh">查询接收状态</button><button class="btn btn-ghost" @click="cancelKey(pending.key)">取消这次提交</button></article>
+    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" @click="refresh">查询接收状态</button><button class="btn btn-ghost" :disabled="!!busy" @click="cancelKey(pending.key)">取消这次提交</button></article>
     <article v-for="task in visible" :key="task.taskId" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
       <header><strong>{{ titles[task.kind] }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
       <p>{{ taskMessage(task) }}</p><time :datetime="new Date(task.createdAt).toISOString()">{{ new Date(task.createdAt).toLocaleString('zh-CN') }}</time>
@@ -40,8 +40,14 @@ const labels = { queued: '已接收', submitting: '提交中', running: '生成�
 const visible = computed(() => runtimeTasks.value.filter(task => selected.value === 'all' || (selected.value === 'active' ? !task.upstreamSettled : selected.value === 'inbox' ? task.resultRefs.length && !['saved', 'discarded'].includes(task.deliveryState) : task.recoveryState !== 'normal' || task.status === 'failed')))
 const routeFor = (task: TaskRecord) => task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${task.taskId}` : '/prompt-builder'
 const hasConcat = (task: TaskRecord) => Array.isArray(task.checkpoint?.shots) && task.resultRefs.some(result => result.index === (task.checkpoint!.shots as unknown[]).length)
-async function refresh() { busy.value = 'refresh'; feedback.value = ''; try { await refreshRuntimeTasks() } catch {} finally { busy.value = '' } }
-async function cancelKey(key: string) { try { await cancelRuntimeTaskKey(key); feedback.value = '取消意图已记录。' } catch { feedback.value = '取消尚未确认，请保持原操作并重试查询。' } }
+async function refresh() { if (busy.value) return; busy.value = 'refresh'; feedback.value = ''; try { await refreshRuntimeTasks() } catch {} finally { busy.value = '' } }
+async function cancelKey(key: string) {
+  if (busy.value) return
+  busy.value = key; feedback.value = ''
+  try { await cancelRuntimeTaskKey(key); feedback.value = '取消意图已记录。' }
+  catch { feedback.value = '取消尚未确认，请保持原操作并重试查询。' }
+  finally { busy.value = '' }
+}
 async function act(task: TaskRecord, action: 'cancel' | 'reconcile' | 'resume' | 'continue' | 'concat' | 'discard' | 'resolve-webui') {
   if (busy.value) return
   feedback.value = ''

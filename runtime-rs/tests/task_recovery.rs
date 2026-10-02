@@ -247,6 +247,24 @@ async fn restart_recovers_node_identity_without_resubmission_and_requires_cancel
     assert_eq!(mock.histories.load(Ordering::Relaxed), 3);
     assert_eq!(mock.downloads.load(Ordering::Relaxed), 2);
     assert_eq!(mock.posts.load(Ordering::Relaxed), 0);
+    let discarded = TaskRuntime::delivery(&storage, "alice", "complete", "discarded")
+        .await
+        .unwrap();
+    assert_eq!(discarded["deliveryState"], "discarded");
+    assert_eq!(discarded["resultState"], "unavailable");
+    // A stale/manual reconcile after discard must not redownload an output
+    // that the user deliberately removed, or leave a recovered temp file.
+    assert_eq!(
+        runtime
+            .reconcile(&storage, "alice", "complete")
+            .await
+            .unwrap(),
+        discarded
+    );
+    assert_eq!(mock.histories.load(Ordering::Relaxed), 3);
+    assert_eq!(mock.downloads.load(Ordering::Relaxed), 2);
+    assert_eq!(mock.posts.load(Ordering::Relaxed), 0);
+    assert!(!recovered_file.exists());
     seed(&storage, "cancel", &fingerprint, "missing-history", true).await;
     for _ in 0..2 {
         let unresolved = runtime
