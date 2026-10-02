@@ -621,7 +621,7 @@ test('scene-showcase route serves approved assets and blocks everything else ove
   const path: typeof import('path') = require('path');
   const rustStack: typeof import('./mock-stack') = require('./mock-stack');
 
-  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-showcase-http-'));
+  const fixtureRoot = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-showcase-http-')));
   const showcaseDir = path.join(fixtureRoot, '2026-08-12_v15');
   fs.mkdirSync(path.join(showcaseDir, 'images'), { recursive: true });
   fs.mkdirSync(path.join(showcaseDir, 'thumbs'), { recursive: true });
