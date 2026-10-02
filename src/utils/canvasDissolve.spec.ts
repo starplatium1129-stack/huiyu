@@ -148,13 +148,24 @@ describe('bounded canvas dust dissolve', () => {
     expect(columns * rows).toBeLessThanOrEqual(1200)
   })
 
-  it('keeps a full snapshot before staggered patches turn into moving, fading fine grains', () => {
+  it('keeps contiguous opaque patches before they turn into moving, fading fine grains', () => {
     const { image, host } = fixture()
     stop = startCanvasDissolve(image, host)
     const [overlay] = contexts
     tick(1017)
     expect(overlay.fillRect).not.toHaveBeenCalled()
     expect(overlay.drawImage.mock.calls.length).toBeGreaterThan(1)
+    const [scaleX, , , scaleY] = overlay.setTransform.mock.calls[0] as number[]
+    const patches = overlay.drawImage.mock.calls.filter(call => call.length === 9) as number[][]
+    for (const [, , , , , x, y, width, height] of patches) {
+      for (const [value, scale] of [[x, scaleX], [y, scaleY], [width, scaleX], [height, scaleY]]) {
+        expect(value * scale).toBeCloseTo(Math.round(value * scale), 8)
+      }
+    }
+    for (let index = 1; index < patches.length; index++) {
+      const previous = patches[index - 1], current = patches[index]
+      if (current[6] === previous[6]) expect(current[5]).toBeCloseTo(previous[5] + previous[7], 8)
+    }
     overlay.drawImage.mockClear()
     tick(1350)
     expect(overlay.fillRect).toHaveBeenCalled()

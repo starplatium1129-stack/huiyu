@@ -144,9 +144,14 @@
 
 /* Narrow desktop windows and high-DPI scaling keep browse scope reachable. */
 @media (max-width:1100px) {
+  .scene-toolbar { padding:var(--s-3); }
+}
+
+/* A 1024px desktop window still fits the compact header; stack only below it
+   so the first scene covers remain visible in short split-screen windows. */
+@media (max-width:900px) {
   .scene-atlas { grid-template-columns:minmax(0,1fr) 144px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods'; }
   .scene-atlas-portrait { min-height:160px; }
-  .scene-toolbar { padding:var(--s-3); }
 }
 
 @media (max-width:768px) {

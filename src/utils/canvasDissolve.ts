@@ -6,6 +6,10 @@ const MAX_EDGE = 1280
 const BLEED = 72
 
 interface Grain {
+  patchX: number
+  patchY: number
+  patchWidth: number
+  patchHeight: number
   sx: number
   sy: number
   x: number
@@ -79,12 +83,21 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
 
     const cellWidth = width / columns, cellHeight = height / rows
     const sourceWidth = snapshot.width / columns, sourceHeight = snapshot.height / rows
+    const backingScaleX = overlay.width / viewWidth, backingScaleY = overlay.height / viewHeight
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < columns; x++) {
         const p = (y * columns + x) * 4
         const noise = Math.random()
         const delay = 35 + x / columns * 205 + y / rows * 45 + noise * 35
+        // Align adjacent source patches to complete backing pixels. Fractional
+        // destinations leave antialiased seams before the breakup has started.
+        const x0 = Math.round((left + x * cellWidth) * backingScaleX)
+        const x1 = Math.round((left + (x + 1) * cellWidth) * backingScaleX)
+        const y0 = Math.round((top + y * cellHeight) * backingScaleY)
+        const y1 = Math.round((top + (y + 1) * cellHeight) * backingScaleY)
         grains.push({
+          patchX: x0 / backingScaleX, patchY: y0 / backingScaleY,
+          patchWidth: (x1 - x0) / backingScaleX, patchHeight: (y1 - y0) / backingScaleY,
           sx: x * sourceWidth, sy: y * sourceHeight,
           x: left + x * cellWidth, y: top + y * cellHeight,
           delay, life: DURATION - delay,
@@ -137,7 +150,7 @@ export function startCanvasDissolve(image: HTMLImageElement, host: HTMLElement, 
           if (patchAlpha > 0) {
             context!.globalAlpha = patchAlpha
             context!.drawImage(snapshot, grain.sx, grain.sy, sourceWidth, sourceHeight,
-              grain.x, grain.y, cellWidth, cellHeight)
+              grain.patchX, grain.patchY, grain.patchWidth, grain.patchHeight)
           }
           if (age <= 0 || grain.alpha <= 0) continue
           context!.globalAlpha = grain.alpha * Math.min(1, age * 12) * Math.pow(1 - age, 1.4)
