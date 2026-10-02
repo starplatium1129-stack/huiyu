@@ -1,4 +1,5 @@
-import { mutualGroupWithCategory, normalizeKey } from '@/utils/promptPolicy'
+import { mutualGroupWithCategory, normalizeKey, tokenize } from '@/utils/promptPolicy'
+import { LIGHTING, SHOT } from '@/config/promptConstants'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
@@ -45,10 +46,18 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const identityOnly = standaloneIdentityTokens(context.identityTokens)
   const decision = blueprint ? inferBlueprintDecisions(blueprint) : studioScene ? sceneStyleBaseline(studioScene) : null
   const inheritedShot = decision && pb.selections.shot === decision.shot
+  const inheritedLighting = decision && pb.selections.lighting === decision.lighting
+  // Explicit director choices participate in the same conflict rules as manual
+  // edits. Inherited scene defaults will be cleared below, so cannot veto the reference.
+  const protectedTags = new Set([
+    ...userTags,
+    ...tokenize(!inheritedShot ? SHOT.find(option => option.id === pb.selections.shot)?.prompt ?? '' : ''),
+    ...tokenize(!inheritedLighting ? LIGHTING.find(option => option.id === pb.selections.lighting)?.prompt ?? '' : ''),
+  ])
   const merged = mergeInterrogatedTags({
     tags: reference.tags,
-    manualTags: userTags,
-    protectedManualTags: userTags,
+    manualTags: protectedTags,
+    protectedManualTags: protectedTags,
     identityTokens: subject.kind === 'popular' ? identityOnly : context.identityTokens,
     sceneTokens: [],
     shot: inheritedShot ? null : pb.selections.shot,
@@ -80,7 +89,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   if (blueprint) pb.setPopularBlueprint(null)
   if (decision) {
     if (inheritedShot) pb.setShot(null)
-    if (pb.selections.lighting === decision.lighting) pb.setLighting(null)
+    if (inheritedLighting) pb.setLighting(null)
     if (pb.selections.composition === decision.composition) pb.setComposition(null)
     if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
   }
