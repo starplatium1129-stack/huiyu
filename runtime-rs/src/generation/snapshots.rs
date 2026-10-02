@@ -27,20 +27,57 @@ fn safe_id(value: &str) -> bool {
             .all(|c| c.is_ascii_alphanumeric() || b"_.-".contains(&c))
 }
 async fn write(path: &Path, value: &Value) -> Result<()> {
-    let pending = path.with_extension(format!("json.tmp-{}", uuid::Uuid::new_v4()));
-    let mut file = tokio::fs::OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(&pending)
-        .await?;
+    let (file, pending) =
+        tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
+            .into_parts();
+    // Own the path before yielding: cancelled Tokio file operations may finish
+    // in the background, but TempPath still removes only our temporary file.
+    let mut file = tokio::fs::File::from_std(file);
     file.write_all(&serde_json::to_vec(value)?).await?;
     file.sync_all().await?;
     drop(file);
-    if let Err(error) = tokio::fs::rename(&pending, path).await {
-        let _ = tokio::fs::remove_file(pending).await;
-        return Err(error.into());
-    }
+    pending
+        .persist(path)
+        .map_err(|error| ApiError::from(error.error))?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn recovery_snapshot_cancel_reclaims_pending_and_preserves_old_bytes() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("running.json");
+        let old = b"{\"status\":\"running\",\"lostAt\":1}";
+        std::fs::write(&path, old).unwrap();
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .max_blocking_threads(1)
+            .enable_all()
+            .build()
+            .unwrap();
+        let (started_tx, started_rx) = std::sync::mpsc::channel();
+        let (release_tx, release_rx) = std::sync::mpsc::channel();
+        let blocker = runtime.spawn_blocking(move || {
+            started_tx.send(()).unwrap();
+            // A failed assertion cannot leave runtime shutdown waiting forever.
+            let _ = release_rx.recv_timeout(Duration::from_secs(5));
+        });
+        started_rx.recv_timeout(Duration::from_secs(5)).unwrap();
+        runtime.block_on(async {
+            let value = json!({"status": "running", "lostAt": 2});
+            let mut writing = Box::pin(write(&path, &value));
+            assert!(futures_util::poll!(writing.as_mut()).is_pending());
+            drop(writing);
+            release_tx.send(()).unwrap();
+            blocker.await.unwrap();
+        });
+        // Drain any file IO submitted before cancellation before inspecting disk.
+        runtime.shutdown_timeout(Duration::from_secs(5));
+        assert_eq!(std::fs::read(&path).unwrap(), old);
+        assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
+    }
 }
 pub(super) async fn save(inner: &Inner, job: &Job) -> Result<()> {
     let directory = directory(inner, job.provider);

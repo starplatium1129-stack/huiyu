@@ -1,4 +1,5 @@
 use super::*;
+use crate::execution::Output;
 
 impl TaskRuntime {
     pub(super) async fn dispatch(
@@ -168,6 +169,7 @@ impl TaskRuntime {
             .await;
         }
         let job = self.job(storage, id).filter(|job| !job.is_empty());
+        let mut recovered_single = job.is_none() && current.kind != TaskKind::Batch;
         let mut observed = if let Some(job) = &job {
             self.query_provider(current.kind, job, principal).await
         } else {
@@ -178,6 +180,7 @@ impl TaskRuntime {
             && current.provider != "webui"
             && observed.as_ref().map_or(true, |o| o.unknown)
         {
+            recovered_single = current.kind != TaskKind::Batch;
             observed = self
                 .recover_provider(storage, principal, &current, &mut cancellation)
                 .await;
@@ -205,10 +208,35 @@ impl TaskRuntime {
             let _ = self.cancel_provider(current.kind, &job, principal).await;
         }
         let has_outputs = !observation.outputs.is_empty();
+        let mut recovered_files = Vec::new();
         if has_outputs && current.result_state != ResultState::Available {
+            // Only this single-task recovery owns these downloads. Live jobs
+            // retain their outputs, and batch shots still need theirs for
+            // tail-frame extraction and stitching.
+            if recovered_single
+                && observation.settled
+                && !observation.unknown
+                && observation.status == "succeeded"
+            {
+                recovered_files = observation
+                    .outputs
+                    .iter()
+                    .filter_map(|output| match output {
+                        Output::File { path, .. } => Some(path.clone()),
+                        Output::Bytes { .. } => None,
+                    })
+                    .collect();
+            }
             hooks::collect(storage, principal, id, observation.outputs).await?;
         }
         let latest = Self::get(storage, principal, id).await?;
+        if latest.result_state == ResultState::Available {
+            // Commit and read-back must both succeed before releasing the
+            // exact source paths. Cleanup failure cannot undo durable success.
+            for path in recovered_files {
+                let _ = tokio::fs::remove_file(path).await;
+            }
+        }
         if latest.upstream_settled
             && (latest.status != TaskStatus::Succeeded
                 || latest.result_state == ResultState::Available)
