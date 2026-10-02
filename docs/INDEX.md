@@ -10,6 +10,8 @@
 
 [生成光纹与水纹归静](audits/2026-10-02/magic-reveal-handoff.md)记录隔离视觉版、短时 GPU 预算、深浅主题前后对照与桌面高 DPI 性能未验边界。
 
+[Gallery 选图连续展开与收回](audits/2026-10-02/gallery-origin-expansion.md)记录缩略图预览衔接、限像素过渡层、离屏焦点与中断清理、真实组件双主题证据及第九轮整合依赖。
+
 [Rust 画册读取优化](audits/2026-10-02/gallery-backend-reads.md)记录有效作品索引、正文重复分配消除、合成分页实测与当次回归，区分读取切片收益和桌面未验范围。
 
 [角色场景同页导航核查](audits/2026-10-02/popular-scene-navigation.md)记录角色参数变化后旧列表与绘制目标修复、缩略图缓存试验的撤回依据及隔离浏览器验收边界。

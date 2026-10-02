@@ -4,7 +4,7 @@ import { prefersReducedMotion } from '@/utils/motionPreference'
 type ImageRect = { left: number; top: number; width: number; height: number }
 type Origin = { rect: ImageRect; src: string }
 type Flight = {
-  proxy: HTMLImageElement
+  proxy: HTMLImageElement | HTMLCanvasElement
   target: HTMLImageElement
   host: HTMLElement
   restore: () => void
@@ -48,7 +48,7 @@ function visibleTarget(rect: ImageRect, image: HTMLImageElement, host: HTMLEleme
 }
 
 /** A bounded, reversible image flight; native/Fluid dialog keeps owning focus and opacity. */
-export function useImageOriginTransition() {
+export function useImageOriginTransition(options: { proxyPixelBudget?: number } = {}) {
   let origin: Origin | null = null
   let capturedAt = 0
   let flight: Flight | null = null
@@ -67,6 +67,8 @@ export function useImageOriginTransition() {
     old.animation?.cancel()
     old.settle?.(); old.settle = null
     old.restore(); old.proxy.remove()
+    if (old.proxy instanceof HTMLCanvasElement) old.proxy.width = old.proxy.height = 0
+    else old.proxy.removeAttribute('src')
   }
   function cancel() {
     revision++
@@ -130,33 +132,52 @@ export function useImageOriginTransition() {
       flight.settle?.(); flight.settle = null
     } else {
       clearFlight()
-      const proxy = document.createElement('img')
-      pendingProxy = proxy
-      // The desktop gateway requires the same CORS provenance as the real image.
-      // Set request attributes before src; a decoded target does not make a new
-      // no-CORS request safe or guarantee that the proxy itself can be decoded.
-      if (target.crossOrigin !== null) proxy.crossOrigin = target.crossOrigin
-      proxy.referrerPolicy = target.referrerPolicy
-      proxy.decoding = 'async'; proxy.loading = 'eager'
-      proxy.alt = ''; proxy.setAttribute('aria-hidden', 'true')
+      let proxy: HTMLImageElement | HTMLCanvasElement
+      if (options.proxyPixelBudget) {
+        // Gallery already decoded this frame. Copy only its display pixels so a
+        // 4K original does not create another full-size animated image texture.
+        const canvas = document.createElement('canvas')
+        const scale = Math.min(window.devicePixelRatio || 1,
+          Math.sqrt(options.proxyPixelBudget / (destination.width * destination.height)),
+          target.naturalWidth / destination.width, target.naturalHeight / destination.height)
+        canvas.width = Math.max(1, Math.floor(destination.width * scale))
+        canvas.height = Math.max(1, Math.floor(destination.height * scale))
+        try {
+          const context = canvas.getContext('2d')
+          if (!context || !target.complete) return
+          context.drawImage(target, 0, 0, canvas.width, canvas.height)
+        } catch { canvas.width = canvas.height = 0; return }
+        proxy = canvas
+      } else {
+        proxy = document.createElement('img')
+        pendingProxy = proxy
+        // The desktop gateway requires the same CORS provenance as the real image.
+        // Set request attributes before src; a decoded target does not make a new
+        // no-CORS request safe or guarantee that the proxy itself can be decoded.
+        if (target.crossOrigin !== null) proxy.crossOrigin = target.crossOrigin
+        proxy.referrerPolicy = target.referrerPolicy
+        proxy.decoding = 'async'; proxy.loading = 'eager'
+        proxy.alt = ''
+        const requestSrc = target.currentSrc || target.src || source.src
+        proxy.src = requestSrc
+        // Leaving cannot delay the owning 300ms fade. A cache miss gets a plain
+        // fade; successful decode time is also deducted from the 280ms flight.
+        const remaining = direction === 'enter' ? enterDeadline - performance.now() : 20 - (performance.now() - startedAt)
+        const decoded = remaining > 0 && await ready(proxy, remaining)
+        if (pendingProxy === proxy) pendingProxy = null
+        if (!decoded || token !== revision || !target.isConnected || !host.isConnected || (target.currentSrc || target.src) !== requestSrc) {
+          proxy.removeAttribute('src')
+          if (token === revision) clearFlight()
+          return
+        }
+        destination = imageRect(target)
+        if (!destination.width || !destination.height || !visibleTarget(destination, target, host)
+          || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) {
+          proxy.removeAttribute('src'); return
+        }
+      }
+      proxy.setAttribute('aria-hidden', 'true')
       proxy.setAttribute('data-image-origin-proxy', '')
-      const requestSrc = target.currentSrc || target.src || source.src
-      proxy.src = requestSrc
-      // Leaving cannot delay the owning 300ms fade. A cache miss gets a plain
-      // fade; successful decode time is also deducted from the 280ms flight.
-      const remaining = direction === 'enter' ? enterDeadline - performance.now() : 20 - (performance.now() - startedAt)
-      const decoded = remaining > 0 && await ready(proxy, remaining)
-      if (pendingProxy === proxy) pendingProxy = null
-      if (!decoded || token !== revision || !target.isConnected || !host.isConnected || (target.currentSrc || target.src) !== requestSrc) {
-        proxy.removeAttribute('src')
-        if (token === revision) clearFlight()
-        return
-      }
-      destination = imageRect(target)
-      if (!destination.width || !destination.height || !visibleTarget(destination, target, host)
-        || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) {
-        proxy.removeAttribute('src'); return
-      }
       from = direction === 'enter' ? source.rect : destination
       Object.assign(proxy.style, {
         position: 'fixed', inset: '0 auto auto 0', display: 'block', margin: '0', border: '0',

@@ -1,4 +1,4 @@
-import { nextTick, watch, type Ref } from 'vue'
+import { nextTick, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 
@@ -12,7 +12,9 @@ export function useGalleryImageOrigin(options: {
   viewerUrl: Ref<string>
   current: Ref<ArtworkRecord | null>
 }) {
-  const motion = useImageOriginTransition()
+  const motion = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
+  const previewSrc = ref('')
+  let capturedId = ''
   let opening = false
   let capturedAt = 0
   function sourceImage() {
@@ -22,13 +24,17 @@ export function useGalleryImageOrigin(options: {
   }
   function capture(event: MouseEvent) {
     const button = event.currentTarget as HTMLElement
-    motion.capture(button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded') ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)'))
+    const id = button.closest<HTMLElement>('.artwork')?.dataset.cardId || ''
+    if (capturedId !== id) motion.cancel()
+    capturedId = id
+    previewSrc.value = motion.capture(button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded') ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)'))
     opening = true
     capturedAt = performance.now()
   }
   async function enter() {
     if (!opening || options.viewerIndex.value < 0) return
     await nextTick()
+    if (!opening || options.viewerIndex.value < 0) return
     if (performance.now() - capturedAt >= 180) { opening = false; return }
     const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(PREVIEW_IMAGE)
     if (!host || !image || options.viewerIndex.value < 0) return
@@ -36,6 +42,12 @@ export function useGalleryImageOrigin(options: {
     void motion.enter(image, host)
   }
   watch([options.viewerIndex, options.viewerUrl], () => { void enter() }, { flush: 'post' })
+  watch(() => { const item = options.current.value; return item && [item.id, item.image_id, item.image_url, item.image_data] }, (item, previous) => {
+    // The first selection consumes the capture. Later navigation/replacement
+    // must never borrow the previous artwork's preview or floating frame.
+    if (item && opening && String(item[0]) === capturedId && item[0] !== previous?.[0]) return
+    cancel()
+  }, { flush: 'sync' })
   function loaded(event: Event) {
     if (event.target instanceof HTMLImageElement) void enter()
   }
@@ -45,6 +57,18 @@ export function useGalleryImageOrigin(options: {
     if (host && image) void motion.leave(image, host, sourceImage())
     else motion.cancel()
   }
-  function cancel() { opening = false; motion.cancel() }
-  return { capture, enter, loaded, leave, cancel }
+  function interrupt() { opening = false; motion.cancel() }
+  function failed(event: Event) {
+    if (event.target instanceof HTMLImageElement && event.target.matches(PREVIEW_IMAGE)) interrupt()
+  }
+  function cancel() { interrupt(); previewSrc.value = ''; capturedId = '' }
+  window.addEventListener('resize', interrupt)
+  window.visualViewport?.addEventListener('resize', interrupt)
+  onDeactivated(cancel)
+  onUnmounted(() => {
+    cancel()
+    window.removeEventListener('resize', interrupt)
+    window.visualViewport?.removeEventListener('resize', interrupt)
+  })
+  return { capture, enter, loaded, leave, cancel, failed, previewSrc }
 }

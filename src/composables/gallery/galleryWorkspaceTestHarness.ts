@@ -18,7 +18,7 @@ vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mocks.confirm }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => reactive(mocks.sceneStore) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
-vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => {} }))
+vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: () => ({ returnFocus: ref(null) }) }))
 vi.mock('@/composables/useToast', () => ({ useToast: () => ({ show: vi.fn() }) }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: mocks.thumb, jpegThumbDataUrl: vi.fn(() => '') }))
 vi.mock('vue-router', () => ({ useRoute, useRouter: () => ({ replace: mocks.replace }) }))

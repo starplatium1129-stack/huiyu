@@ -31,6 +31,116 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
+test('gallery bounded origin survives cold originals and interruptions', async ({ page }, info) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  await seedGallery(page, 'dark', false, 'no-preference')
+  await expect(page.locator('[data-card-id]')).toHaveCount(6)
+  let release!: () => void
+  const originalReady = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/assets/gallery-origin-original', async route => {
+    await originalReady
+    await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="4000" height="2000"><rect width="4000" height="2000" fill="#746687"/><circle cx="2900" cy="600" r="360" fill="#f8e5bf"/><path d="M0 1600L1400 500L2800 1500L4000 1000V2000H0Z" fill="#4e737e"/></svg>' })
+  })
+  // Add a real stored thumbnail; the original stays cold until explicitly released.
+  await page.evaluate(() => new Promise<void>((resolve, reject) => {
+    const request = indexedDB.open('aics_kv_store', 1)
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const db = request.result, tx = db.transaction('kv', 'readwrite'), store = tx.objectStore('kv')
+      const history = store.get('aics_pb_history')
+      history.onsuccess = () => {
+        const entries = history.result.value
+        Object.assign(entries[0], { image_id: 'origin-cold', image_url: '/assets/gallery-origin-original', width: 4000, height: 2000 })
+        store.put({key:'aics_pb_history',value:entries})
+        store.put({key:'thumb:origin-cold',value:'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="560" height="280"><rect width="560" height="280" fill="#746687"/><circle cx="406" cy="84" r="50" fill="#f8e5bf"/><path d="M0 224L196 70L392 210L560 140V280H0Z" fill="#4e737e"/></svg>')})
+      }
+      tx.oncomplete = () => { db.close(); resolve() }; tx.onerror = tx.onabort = () => { db.close(); reject(tx.error) }
+    }
+  }))
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  const opener = page.locator('[data-card-id="gallery-review-0"] .artwork-button')
+  const viewer = page.locator('.art-viewer'), proxy = page.locator('[data-image-origin-proxy]')
+  await expect(opener.locator('.artwork-image:not(.artwork-image-hd)')).toBeVisible()
+  const frames = await opener.evaluate(async (element: HTMLButtonElement) => {
+    const frames: Array<{width:number; pixels:number; count:number; scroll:number}> = []
+    element.focus({preventScroll:true}); element.click()
+    const start = performance.now()
+    while (performance.now() - start < 650) {
+      await new Promise(requestAnimationFrame)
+      const layer = document.querySelector<HTMLCanvasElement>('[data-image-origin-proxy]')
+      if (layer) frames.push({width:layer.getBoundingClientRect().width,pixels:layer.width*layer.height,count:document.querySelectorAll('[data-image-origin-proxy]').length,scroll:scrollY})
+    }
+    return frames
+  })
+  expect(frames.length).toBeGreaterThan(2)
+  expect(frames.at(-1)!.width - frames[0].width).toBeGreaterThan(100)
+  expect(frames.every(frame => frame.pixels <= 1920*1080 && frame.count === 1 && frame.scroll === frames[0].scroll)).toBe(true)
+  await expect(viewer.locator('.zoomable-img')).toHaveJSProperty('naturalWidth', 560)
+  await info.attach('cold-original-flight', {body:JSON.stringify(frames),contentType:'application/json'})
+  release()
+  await expect(viewer.locator('.zoomable-img')).toHaveJSProperty('naturalWidth', 4000)
+  await page.keyboard.press('Escape')
+  await expect(viewer).toBeHidden()
+  await expect(opener).toBeFocused()
+
+  await opener.click(); await expect(proxy).toHaveCount(1)
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  await expect(proxy).toHaveCount(0)
+  await opener.click(); await expect(proxy).toHaveCount(1)
+  await page.keyboard.press('ArrowRight')
+  await expect(proxy).toHaveCount(0)
+  await expect(viewer.locator('.viewer-title')).toHaveText('光的形状')
+  await expect(viewer.locator('.zoomable-img')).toHaveJSProperty('naturalWidth', 600)
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  await opener.click(); await expect(proxy).toHaveCount(1)
+  await page.setViewportSize({width:1280,height:800})
+  await expect(proxy).toHaveCount(0)
+  await expect(viewer.locator('.zoomable-img')).toHaveCSS('opacity','1')
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  await opener.click(); await expect(proxy).toHaveCount(1)
+  await page.emulateMedia({reducedMotion:'reduce'})
+  await expect(proxy).toHaveCount(0)
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  await opener.click(); await expect(proxy).toHaveCount(0)
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  await page.emulateMedia({reducedMotion:'no-preference'})
+
+  const viewports = []
+  for (const theme of ['dark','light']) {
+    await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme)
+    for (const [width,height] of [[1920,1080],[2560,1440],[3840,2160]]) {
+      await page.setViewportSize({width,height})
+      await opener.click(); await expect(proxy).toHaveCount(1)
+      const pixels = await proxy.evaluate((layer:HTMLCanvasElement) => layer.width*layer.height)
+      expect(pixels).toBeLessThanOrEqual(1920*1080)
+      await expect(proxy).toHaveCount(0)
+      await expect(viewer).toHaveCSS('opacity','1')
+      expect(await viewer.locator('.viewer-title').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      await page.screenshot({path:info.outputPath(`gallery-origin-${theme}-${width}.png`)})
+      viewports.push(await page.evaluate(pixels => ({cssViewport:[innerWidth,innerHeight],devicePixelRatio,browserZoom:visualViewport?.scale,pixels,physicalDisplay:'not sampled; isolated desktop browser'}),pixels))
+      await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+    }
+  }
+  await info.attach('desktop-display-pixels',{body:JSON.stringify(viewports),contentType:'application/json'})
+  await page.setViewportSize({width:960,height:700})
+  await opener.click(); await expect(proxy).toHaveCount(0)
+  await page.evaluate(() => scrollTo(0,document.documentElement.scrollHeight))
+  await expect(opener).not.toBeInViewport()
+  const beforeClose = await page.evaluate(() => scrollY)
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  expect(await page.evaluate(() => scrollY)).toBe(beforeClose)
+  await expect(opener).not.toBeFocused()
+  await opener.scrollIntoViewIfNeeded()
+  await page.route('**/assets/gallery-origin-broken', route => route.fulfill({status:404,body:''}))
+  await opener.click(); await expect(proxy).toHaveCount(1)
+  await viewer.locator('.zoomable-img').evaluate((image:HTMLImageElement) => { image.src = '/assets/gallery-origin-broken' })
+  await expect(proxy).toHaveCount(0)
+  await expect(viewer.locator('.viewer-fallback')).toBeVisible()
+  await page.keyboard.press('Escape'); await expect(viewer).toBeHidden()
+  expect(errors).toEqual([])
+})
+
 for (const theme of ['light', 'dark']) {
   test(`gallery role albums and smart rule lifecycle ${theme}`, async ({ page }, info) => {
     await seedGallery(page, theme)
@@ -212,8 +322,10 @@ for (const theme of ['light', 'dark']) {
               const rect = proxy.getBoundingClientRect()
               frames.push({ left: rect.left, top: rect.top, width: rect.width })
             } else if (frames.length) {
-              const target = document.querySelector('.art-viewer .zoomable-img')!.getBoundingClientRect()
-              return { frames, sourceWidth: source.width, targetWidth: target.width, targetLeft: target.left, targetTop: target.top }
+              const image = document.querySelector<HTMLImageElement>('.art-viewer .zoomable-img')!
+              const target = image.getBoundingClientRect(), fit = Math.min(target.width / image.naturalWidth, target.height / image.naturalHeight)
+              const width = image.naturalWidth * fit, height = image.naturalHeight * fit
+              return { frames, sourceWidth: source.width, targetWidth: width, targetLeft: target.left + (target.width - width) / 2, targetTop: target.top + (target.height - height) / 2 }
             }
           }
           throw new Error('Gallery did not animate an image from its source card')

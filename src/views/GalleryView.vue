@@ -247,6 +247,7 @@
           aria-label="作品观赏模式"
           ref="viewerEl"
           @load.capture="imageOrigin.loaded"
+          @error.capture="imageOrigin.failed"
         >
       <section class="viewer-stage" @click.self="closeInfoDrawer">
         <button class="viewer-close" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn"><ArchiveIcon name="close" /></button>
@@ -263,8 +264,9 @@
         </template>
         <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
         <ZoomableImageViewer
-          v-else-if="viewerUrl"
-          :src="resolveRuntimeUrl(viewerUrl)"
+          v-else-if="viewerUrl || imageOrigin.previewSrc.value"
+          :src="resolveRuntimeUrl(viewerUrl || imageOrigin.previewSrc.value)"
+          :preview-src="imageOrigin.previewSrc.value"
           :alt="current ? sceneTitle(current.scene, current) : ''"
         >
           <template #fallback>
