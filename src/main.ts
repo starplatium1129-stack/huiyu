@@ -44,7 +44,12 @@ void (async () => {
   stopNavigationFeedback = installNavigationFeedback(router)
   await startArtworkSession().catch(error => console.warn('作品清理保护不可用', error))
   if (disposed) return
-  createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router).mount('#app')
+  const app = createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router)
+  // Keep first-paint feedback until the initial lazy route can replace it.
+  // A failed import still mounts RouteRecoveryBanner so retry remains reachable.
+  await router.isReady().catch(() => {})
+  if (disposed) return
+  app.mount('#app')
   const stopDesktopInteraction = installDesktopInteraction(router)
   const stopFluidGlass = installFluidGlass()
   const stopDesktopZoom = installDesktopZoom()

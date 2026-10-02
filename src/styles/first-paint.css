@@ -11,19 +11,20 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: var(--first-paint-background);
-  color: var(--first-paint-text);
+  background: var(--bg-base, var(--first-paint-background));
+  color: var(--text-primary, var(--first-paint-text));
   font: 600 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
   letter-spacing: 0.34em;
 }
 
 :root {
-  --first-paint-background: #211c30;
-  --first-paint-text: #fff8f4;
+  /* Match the theme before its full stylesheet arrives, then use its tokens. */
+  --first-paint-background: #151c24;
+  --first-paint-text: #edf3fa;
 }
 :root[data-theme="light"] {
-  --first-paint-background: #fff8f4;
-  --first-paint-text: #645c6e;
+  --first-paint-background: #faf8f4;
+  --first-paint-text: #202a33;
 }
 
 /* Native pet only: prevent the normal full-window loading card and theme wash. */

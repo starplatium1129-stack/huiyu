@@ -1,5 +1,35 @@
 import { expect, test } from '@playwright/test'
 
+test('initial lazy route keeps first-paint feedback until content is ready', async ({ page }) => {
+  let release!: () => void
+  const held = new Promise<void>(resolve => { release = resolve })
+  let requested!: () => void
+  const started = new Promise<void>(resolve => { requested = resolve })
+  await page.route(/\/(?:_app\/HomeView-[^/]+\.js|src\/views\/HomeView\.vue)$/, async route => {
+    requested()
+    await held
+    await route.continue()
+  })
+  try {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+    await started
+    await expect.poll(() => page.locator('#app').evaluate(el => getComputedStyle(el, '::before').content)).toContain('HUIYU')
+    await expect(page.locator('#app')).not.toHaveAttribute('data-v-app')
+  } finally { release() }
+  await expect(page.locator('.home-hero')).toBeVisible()
+  await expect.poll(() => page.locator('#app').evaluate(el => getComputedStyle(el, '::before').content)).toBe('none')
+  await expect(page.locator('#continueCta')).toBeEnabled()
+})
+
+test('failed initial lazy route exposes recovery instead of stranding first paint', async ({ page }) => {
+  await page.route(/\/(?:_app\/HomeView-[^/]+\.js|src\/views\/HomeView\.vue)$/, route => route.abort())
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+  const recovery = page.getByRole('alert', { name: '页面加载恢复' })
+  await expect(recovery).toBeVisible()
+  await expect(recovery.getByRole('link', { name: '重新打开目标页面' })).toHaveAttribute('href', '/')
+  await expect.poll(() => page.locator('#app').evaluate(el => getComputedStyle(el, '::before').content)).toBe('none')
+})
+
 
 test('same-route query updates and browser back preserve the route shell', async ({ page }) => {
   await page.goto('/scene-explorer')
