@@ -1,18 +1,22 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import SpeechInputSettings from './SpeechInputSettings.vue'
-import { saveSpeechInputConfig } from '@/utils/speechInputConfig'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { DEFAULT_SPEECH_INPUT_CONFIG, SPEECH_INPUT_KEY, saveSpeechInputConfig } from '@/utils/speechInputConfig'
+import { flushProfileWrites, profileLocalStorage } from '@/platform/web/profileStorage'
 
-vi.mock('@/platform/web/profileStorage', () => ({ profileLocalStorage: window.localStorage, flushProfileWrites: vi.fn() }))
+vi.mock('@/platform/web/profileStorage', async importOriginal => ({
+  ...await importOriginal<typeof import('@/platform/web/profileStorage')>(), flushProfileWrites: vi.fn(),
+}))
 
 vi.mock('@/utils/speechInputConfig', async importOriginal => {
   const actual = await importOriginal<typeof import('@/utils/speechInputConfig')>()
-  return { ...actual, loadSpeechInputConfig: () => actual.normalizeSpeechInputConfig(null), saveSpeechInputConfig: vi.fn() }
+  return { ...actual, saveSpeechInputConfig: vi.fn() }
 })
 
-beforeEach(() => {
-  vi.mocked(saveSpeechInputConfig).mockReset()
+beforeEach(async () => {
+  localStorage.clear()
+  const actual = await vi.importActual<typeof import('@/utils/speechInputConfig')>('@/utils/speechInputConfig')
+  vi.mocked(saveSpeechInputConfig).mockReset().mockImplementation(actual.saveSpeechInputConfig)
   vi.mocked(flushProfileWrites).mockReset().mockResolvedValue(undefined)
 })
 
@@ -24,6 +28,42 @@ afterEach(() => {
 function addressResponse(status: number, type: ResponseType = 'basic'): Response {
   return { status, type, ok: status >= 200 && status < 300 } as Response
 }
+
+it.each(['getItem', 'json'])('blocks edits and saves after a %s read failure, then restores the original draft on retry', async failure => {
+  const saved = { ...DEFAULT_SPEECH_INPUT_CONFIG, enabled: true, endpoint: 'https://speech.example.test/v1',
+    model: 'saved-model', apiKey: 'fixture-key', wakeEnabled: true, wakeWords: ['你好'], endWords: ['再见'] }
+  const nativeGet = localStorage.getItem.bind(localStorage)
+  localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify(saved))
+  const read = vi.spyOn(profileLocalStorage, 'getItem').mockImplementation(key => {
+    if (key !== SPEECH_INPUT_KEY) return nativeGet(key)
+    if (failure === 'json') return '{broken'
+    throw new DOMException('fixture read denied', 'SecurityError')
+  })
+  const writes = vi.spyOn(profileLocalStorage, 'setItem')
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    expect(wrapper.find('[aria-label="配置读取状态"]').text()).toContain('无法读取语音配置')
+    expect(wrapper.find('input').exists()).toBe(false)
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('.speech-settings-buttons button').trigger('click')
+    expect(wrapper.find('[aria-label="配置读取状态"]').exists()).toBe(true)
+    expect(writes).not.toHaveBeenCalled()
+    expect(saveSpeechInputConfig).not.toHaveBeenCalled()
+    expect(flushProfileWrites).not.toHaveBeenCalled()
+    expect(wrapper.emitted('save')).toBeUndefined()
+    expect(nativeGet(SPEECH_INPUT_KEY)).toBe(JSON.stringify(saved))
+    read.mockRestore()
+    await wrapper.find('.speech-settings-buttons button').trigger('click')
+    expect(wrapper.find('[aria-label="配置读取状态"]').exists()).toBe(false)
+    expect((wrapper.find('input[type="url"]').element as HTMLInputElement).value).toBe(saved.endpoint)
+    expect((wrapper.find('input[aria-label="唤醒词（逗号分隔）"]').element as HTMLInputElement).value).toBe('你好')
+    expect(wrapper.emitted('save')).toBeUndefined()
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(saveSpeechInputConfig).toHaveBeenCalledWith(saved)
+    expect(wrapper.emitted('save')).toEqual([[saved]])
+  } finally { wrapper.unmount() }
+})
 
 it('keeps the speech draft visible after a failed save and allows a successful retry', async () => {
   vi.mocked(saveSpeechInputConfig).mockImplementationOnce(() => { throw new Error('fixture storage denied') })
@@ -83,6 +123,27 @@ it('waits for durable confirmation and keeps newer word edits visible until they
     await flushPromises()
     expect(vi.mocked(saveSpeechInputConfig).mock.calls[2]?.[0]).toMatchObject({ wakeWords: ['绘遇', '听我说'] })
     expect(wrapper.emitted('save')).toHaveLength(1)
+  } finally { wrapper.unmount() }
+})
+
+it('retains the draft if the acknowledged result is unreadable and only emits the readable authoritative result', async () => {
+  const wrapper = mount(SpeechInputSettings)
+  const read = vi.spyOn(profileLocalStorage, 'getItem')
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1')
+    read.mockImplementationOnce(() => { throw new Error('fixture acknowledged result unavailable') })
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.emitted('save')).toBeUndefined()
+    expect(wrapper.find('[aria-label="配置保存状态"]').text()).toContain('配置已保存，但无法读取应用结果')
+    expect((wrapper.find('input[type="url"]').element as HTMLInputElement).value).toBe('https://speech.example.test/v1')
+    const confirmed = { ...DEFAULT_SPEECH_INPUT_CONFIG, endpoint: 'https://speech.example.test/v1', model: 'remote-merged-model' }
+    vi.mocked(flushProfileWrites).mockImplementationOnce(async () => {
+      profileLocalStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify(confirmed))
+    })
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.emitted('save')).toEqual([[confirmed]])
   } finally { wrapper.unmount() }
 })
 

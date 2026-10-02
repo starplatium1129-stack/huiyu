@@ -1,6 +1,7 @@
 import { ref, computed, watch, onBeforeUnmount, type Ref } from 'vue'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
-import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
+import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
+import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 import type { CharacterConfig } from '@/config/characters'
 
@@ -19,8 +20,8 @@ export function useChatSpeechInteraction({
   inputText,
   handleSend,
 }: UseChatSpeechInteractionOptions) {
-  const speechConfig = ref(loadSpeechInputConfig())
-  const speechSettingsOpen = ref(false)
+  const { config: speechConfig, loadError } = useSpeechInputConfig()
+  const speechSettingsOpen = ref(Boolean(loadError.value))
   const speechSession = createSpeechSession()
   const speechSessionState = ref(speechSession.state())
   const stopSpeechSessionWatch = speechSession.onChange(() => {
@@ -153,7 +154,7 @@ export function useChatSpeechInteraction({
 
   let manualSpeechHeld = false
   function onSpeechPress(): void {
-    if (speechBusy.value) return
+    if (!speechReady.value || speechBusy.value) return
     manualSpeechHeld = true
     void speechStart('manual')
   }
@@ -179,8 +180,8 @@ export function useChatSpeechInteraction({
     if (event.buttons > 0) onSpeechCancel()
   }
 
-  function onSpeechSettingsSaved(): void {
-    speechConfig.value = loadSpeechInputConfig()
+  function onSpeechSettingsSaved(config: SpeechInputConfig): void {
+    speechConfig.value = normalizeSpeechInputConfig(config)
     applySpeechSession()
     reconcileAutoListen()
     speechSettingsOpen.value = false

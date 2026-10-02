@@ -1,7 +1,8 @@
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
-import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
+import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
+import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 
 export interface CompanionSpeechInputDeps {
@@ -33,8 +34,8 @@ export interface CompanionSpeechInputDeps {
 export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   const { busy, chatReady, inputText, desktopBridge, desktopWindowVisible, dnd, inQuietHours } = deps
 
-  const speechConfig = ref(loadSpeechInputConfig())
-  const speechSettingsOpen = ref(false)
+  const { config: speechConfig, loadError } = useSpeechInputConfig()
+  const speechSettingsOpen = ref(Boolean(loadError.value))
   const speechNotice = ref('')
   const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
   const speechSession = createSpeechSession()
@@ -63,7 +64,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     return speechSession.isSessionActive()
   })
   const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
-  const speechButtonDisabled = computed(() => busy.value || !chatReady.value || !pageVisible.value
+  const speechButtonDisabled = computed(() => !speechReady.value || busy.value || !chatReady.value || !pageVisible.value
     || speechState.value === 'recognizing')
   const speechButtonText = computed(() => {
     if (speechState.value === 'acquiring') return '启动中…'
@@ -175,8 +176,8 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     if (speechHeldByPointer && event.buttons > 0) onSpeechCancel()
   }
 
-  function onSpeechSettingsSaved() {
-    speechConfig.value = loadSpeechInputConfig()
+  function onSpeechSettingsSaved(config: SpeechInputConfig) {
+    speechConfig.value = normalizeSpeechInputConfig(config)
     applySpeechSession()
     reconcileAutoListen()
     speechSettingsOpen.value = false

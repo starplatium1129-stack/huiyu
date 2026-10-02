@@ -12,7 +12,8 @@ import {
 } from '../../utils/companionRegistry.ts'
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoiceInput } from '../useVoiceInput.ts'
-import { isSpeechInputReady, loadSpeechInputConfig } from '../../utils/speechInputConfig.ts'
+import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '../../utils/speechInputConfig.ts'
+import { useSpeechInputConfig } from '../useSpeechInputConfig.ts'
 import { createSpeechSession } from '../../utils/speechSession.ts'
 import { createCompanionBehavior, normalizeCompanionConfig } from '../../utils/companionBehavior.ts'
 import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '../../utils/storageKeys.ts'
@@ -66,8 +67,8 @@ let liveInitialized = false
 const composerFocused = ref(false)
 const listRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLTextAreaElement>()
-const speechSettingsOpen = ref(false)
-const speechConfig = ref(loadSpeechInputConfig())
+const { config: speechConfig, loadError } = useSpeechInputConfig()
+const speechSettingsOpen = ref(Boolean(loadError.value))
 const speechSession = createSpeechSession()
 const speechSessionState = ref(speechSession.state())
 const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
@@ -319,8 +320,8 @@ function onSpeechSessionEnd() {
   listenerNotice('已结束连续对话')
   reconcileAutoListen()
 }
-function onSpeechSettingsSaved() {
-  speechConfig.value = loadSpeechInputConfig()
+function onSpeechSettingsSaved(config: SpeechInputConfig) {
+  speechConfig.value = normalizeSpeechInputConfig(config)
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   reconcileAutoListen()
   speechSettingsOpen.value = false

@@ -6,6 +6,9 @@ import { useCompanionChatWindow } from './useCompanionChatWindow'
 import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput'
 import { COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
 import { DEFAULT_SPEECH_INPUT_CONFIG, SPEECH_INPUT_KEY } from '@/utils/speechInputConfig'
+import { useChatSpeechInteraction } from './useChatSpeechInteraction'
+import { getCompanionCharacterConfig } from '@/utils/companionRegistry'
+import { profileLocalStorage } from '@/platform/web/profileStorage'
 
 const fixture = vi.hoisted(() => ({
   onText: (_text: string, _source: string) => {},
@@ -94,6 +97,48 @@ describe('companion chat speech ownership', () => {
 })
 
 describe('browser companion speech session', () => {
+  it.each([
+    { entry: 'companion', failure: 'getItem' }, { entry: 'chat', failure: 'getItem' },
+    { entry: 'desktop', failure: 'getItem' }, { entry: 'companion', failure: 'getter' },
+  ])('mounts $entry with speech disabled after a storage $failure failure', async ({ entry, failure }) => {
+    const saved = JSON.stringify({ ...DEFAULT_SPEECH_INPUT_CONFIG, enabled: true,
+      endpoint: 'https://speech.example.test/v1', wakeEnabled: true, wakeWords: ['你好'] })
+    localStorage.setItem(SPEECH_INPUT_KEY, saved)
+    live()
+    const getItem = localStorage.getItem.bind(localStorage)
+    vi.spyOn(profileLocalStorage, 'getItem').mockImplementation(key => {
+      if (key === SPEECH_INPUT_KEY && failure === 'getItem') throw new DOMException('fixture read denied', 'SecurityError')
+      if (failure === 'getter') return globalThis.localStorage.getItem(key)
+      return getItem(key)
+    })
+    const writes = vi.spyOn(profileLocalStorage, 'setItem')
+    if (failure === 'getter') vi.spyOn(globalThis, 'localStorage', 'get').mockImplementation(() => {
+      throw new DOMException('fixture storage unavailable', 'SecurityError')
+    })
+    let speech!: Pick<ReturnType<typeof useCompanionSpeechInput>, 'speechReady' | 'speechSettingsOpen' | 'onSpeechPress' | 'onSpeechSettingsSaved'>
+    mountSession(() => {
+      const common = { busy: ref(false), chatReady: ref(true), inputText: ref(''), handleSend: vi.fn() }
+      speech = entry === 'desktop' ? useCompanionChatWindow() : entry === 'chat'
+        ? useChatSpeechInteraction({ ...common, currentCharacter: ref(getCompanionCharacterConfig('nene')!) })
+        : useCompanionSpeechInput({ ...common, currentCharacter: ref('nene'), currentCharacterName: () => '宁宁',
+          desktopWindowVisible: ref(true), dnd: ref(false), inQuietHours: ref(false), isEditableTarget: () => false })
+    })
+    await nextTick()
+    expect(speech.speechReady.value).toBe(false)
+    expect(speech.speechSettingsOpen.value).toBe(true)
+    speech.onSpeechPress()
+    expect(start).not.toHaveBeenCalled()
+    expect(writes.mock.calls.filter(([key]) => key === SPEECH_INPUT_KEY)).toEqual([])
+    expect(getItem(SPEECH_INPUT_KEY)).toBe(saved)
+    // A confirmed save is applied directly even if storage reads are still denied.
+    speech.onSpeechSettingsSaved(JSON.parse(saved))
+    await nextTick()
+    expect(speech.speechReady.value).toBe(true)
+    expect(speech.speechSettingsOpen.value).toBe(false)
+    speech.onSpeechPress()
+    expect(start).toHaveBeenCalled()
+  })
+
   it.each([false, true])('accepts repeated drafts with wake=%s', async wakeEnabled => {
     localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify({ ...DEFAULT_SPEECH_INPUT_CONFIG,
       enabled: true, endpoint: 'http://127.0.0.1:9999', wakeEnabled, wakeWords: ['你好'] }))

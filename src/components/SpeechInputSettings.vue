@@ -12,6 +12,18 @@
       <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机浏览器</span>
     </div>
 
+    <template v-if="loadError">
+      <p class="speech-test-status" data-state="fail" role="status" aria-label="配置读取状态">
+        无法读取语音配置；原配置未被覆盖。请重试读取后再保存应用。
+      </p>
+      <div class="speech-settings-actions">
+        <div class="speech-settings-buttons tw:ml-auto">
+          <button class="btn btn-primary btn-sm" type="button" @click="retryLoad">重试读取</button>
+          <button class="btn btn-ghost btn-sm" type="button" @click="close">关闭</button>
+        </div>
+      </div>
+    </template>
+    <template v-else>
     <ToggleSwitch v-model="draft.enabled" class="speech-toggle-row" label="启用语音输入">
       <span class="speech-toggle-copy">
         <strong>启用语音输入</strong>
@@ -91,6 +103,7 @@
     <p class="speech-http-hint">
       <i aria-hidden="true">i</i> 仅检测地址的 HTTP 响应，未验证语音转写、模型或密钥。若检测失败，请检查地址、服务及跨域（CORS）设置。
     </p>
+    </template>
   </form>
 </template>
 
@@ -99,6 +112,7 @@ import { computed, ref, watch, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import {
   isSpeechInputReady,
   loadSpeechInputConfig,
@@ -106,12 +120,12 @@ import {
   type SpeechInputConfig,
 } from '@/utils/speechInputConfig'
 
-const emit = defineEmits<{ save: []; close: [] }>()
+const emit = defineEmits<{ save: [config: SpeechInputConfig]; close: [] }>()
 let disposed = false
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
 onUnmounted(() => { disposed = true; invalidateProbe() })
 
-const draft = ref<SpeechInputConfig>(loadSpeechInputConfig())
+const { config: draft, loadError, reload } = useSpeechInputConfig()
 const showApiKey = ref(false)
 const saving = ref(false)
 const saveMessage = ref('')
@@ -125,6 +139,13 @@ let probeTimer: ReturnType<typeof setTimeout> | undefined
 const wakeWordsInput = ref(draft.value.wakeWords.join('，'))
 const endWordsInput = ref(draft.value.endWords.join('，'))
 watch([draft, wakeWordsInput, endWordsInput], invalidateProbe, { deep: true, flush: 'sync' })
+
+function retryLoad(): void {
+  if (disposed) return
+  reload()
+  wakeWordsInput.value = draft.value.wakeWords.join('，')
+  endWordsInput.value = draft.value.endWords.join('，')
+}
 
 function splitWords(text: string): string[] {
   return text.split(/[,，、]/).map(word => word.trim()).filter(word => word.length > 0)
@@ -160,7 +181,7 @@ function close(): void {
 }
 
 async function testConnection(): Promise<void> {
-  if (!canTest.value || testing.value || saving.value || disposed) return
+  if (loadError.value || !canTest.value || testing.value || saving.value || disposed) return
   const generation = ++probeGeneration
   const controller = new AbortController()
   probeController = controller
@@ -198,25 +219,30 @@ async function testConnection(): Promise<void> {
 }
 
 async function save(): Promise<void> {
-  if (saving.value || disposed) return
+  if (loadError.value || saving.value || disposed) return
   invalidateProbe()
   saveMessage.value = ''
   saving.value = true
   commitWakeWords()
   commitEndWords()
   const submitted = JSON.stringify([draft.value, wakeWordsInput.value, endWordsInput.value])
+  let acknowledged = false
   try {
     saveSpeechInputConfig(draft.value)
     await flushProfileWrites()
+    acknowledged = true
     if (disposed) return
     if (JSON.stringify([draft.value, wakeWordsInput.value, endWordsInput.value]) !== submitted) {
       saveMessage.value = '提交时的设置已保存；当前修改尚未保存，请再次保存。'
       return
     }
-    emit('save')
+    // 权威端可能合并其他窗口的字段；读取结果也须成功，才能让父页面应用。
+    emit('save', loadSpeechInputConfig())
   } catch {
     if (!disposed) {
-      saveMessage.value = '配置保存尚未确认，请保留当前设置并重试。'
+      saveMessage.value = acknowledged
+        ? '配置已保存，但无法读取应用结果；请保留当前设置并重试。'
+        : '配置保存尚未确认，请保留当前设置并重试。'
     }
   } finally { saving.value = false }
 }

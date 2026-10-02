@@ -89,25 +89,15 @@ export interface KeyedStorage {
   removeItem(key: string): void
 }
 
-function defaultStorage(): KeyedStorage | null {
-  return typeof globalThis.localStorage !== 'undefined' ? localStorage : null
-}
-
-/** 读取并归一化语音输入配置（无参数时读浏览器 localStorage，测试可注入 storage）。 */
+/** 读取并归一化配置；读取/解析失败交由调用方展示重试，不能当作未配置。 */
 export function loadSpeechInputConfig(storage?: KeyedStorage): SpeechInputConfig {
-  const store = storage ?? defaultStorage()
-  if (!store) return { ...DEFAULT_SPEECH_INPUT_CONFIG }
+  // profile adapter 决定读取桌面权威缓存还是浏览器，避免先探测浏览器权限。
+  const store = storage ?? localStorage
   const raw = store.getItem(SPEECH_INPUT_KEY)
-  if (!raw) return { ...DEFAULT_SPEECH_INPUT_CONFIG }
-  try {
-    return normalizeSpeechInputConfig(JSON.parse(raw))
-  } catch {
-    return { ...DEFAULT_SPEECH_INPUT_CONFIG }
-  }
+  return normalizeSpeechInputConfig(raw === null ? null : JSON.parse(raw))
 }
 
 export function saveSpeechInputConfig(config: SpeechInputConfig, storage?: KeyedStorage): void {
-  const store = storage ?? defaultStorage()
-  if (!store) return
+  const store = storage ?? localStorage
   store.setItem(SPEECH_INPUT_KEY, JSON.stringify(normalizeSpeechInputConfig(config)))
 }

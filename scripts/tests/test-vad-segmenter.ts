@@ -258,10 +258,11 @@ test('speechInputConfig：normalize 非法值回退默认', () => {
   assert.deepEqual(normalizeSpeechInputConfig(null), DEFAULT_SPEECH_INPUT_CONFIG);
 });
 
-test('speechInputConfig：load 坏 JSON 回退默认，save 后 load 往返一致', () => {
+test('speechInputConfig：坏 JSON 保留原值并报告失败，save 后 load 往返一致', () => {
   const storage = { map: new Map(), getItem(k: any) { return this.map.get(k) ?? null; }, setItem(k: any, v: any) { this.map.set(k, v); }, removeItem(k: any) { this.map.delete(k); } };
   storage.map.set('aics_speech_input_v1', '{broken');
-  assert.deepEqual(loadSpeechInputConfig(storage), DEFAULT_SPEECH_INPUT_CONFIG);
+  assert.throws(() => loadSpeechInputConfig(storage), SyntaxError);
+  assert.equal(storage.map.get('aics_speech_input_v1'), '{broken');
   saveSpeechInputConfig({ ...DEFAULT_SPEECH_INPUT_CONFIG, enabled: true, endpoint: 'http://127.0.0.1:8000/v1' }, storage);
   const loaded = loadSpeechInputConfig(storage);
   assert.equal(loaded.enabled, true);
