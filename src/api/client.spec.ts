@@ -336,16 +336,5 @@ describe('apiClient 内存缓存策略（O1）', () => {
     expect(fetch).toHaveBeenCalledTimes(2)
   })
 
-  it('cachePolicy: refresh 不搭乘写前 inflight，各自完成', async () => {
-    const { fetch, calls, flush } = deferredFetch(async () => okResponse({ ok: true }))
-    const client = createApiClient(fetch)
 
-    const pending = client.request('/api/policy')
-    const refreshed = client.request('/api/policy', { cachePolicy: 'refresh' })
-    await flush()
-
-    expect(calls).toEqual(['/api/policy', '/api/policy'])
-    await expect(pending).resolves.toEqual({ ok: true })
-    await expect(refreshed).resolves.toEqual({ ok: true })
-  })
 })

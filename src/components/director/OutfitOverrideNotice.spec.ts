@@ -19,17 +19,12 @@ describe('OutfitOverrideNotice', () => {
     await wrapper.get('button').trigger('click')
     expect(pb.outfitOverride).toBeNull()
     expect(tokens).toEqual(['panties', 'high_heels', 'underwear'])
-    wrapper.unmount()
-  })
-
-  it('keeps the notice readable for unknown labels', async () => {
-    const pb = usePromptBuilderStore()
     pb.setOutfitOverride(['unknown_clothing'], null)
-    const wrapper = mount(OutfitOverrideNotice)
-    await vi.dynamicImportSettled()
     await flushPromises()
     expect(wrapper.get('.outfit-override-text').text()).toBe('已换装为「新服装」')
     expect(wrapper.get('button').text()).toBe('恢复默认服装')
     wrapper.unmount()
   })
+
+
 })

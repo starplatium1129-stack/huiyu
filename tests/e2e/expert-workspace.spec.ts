@@ -11,7 +11,10 @@ for (const [width, height, theme] of [[1440, 900, 'dark'], [1280, 800, 'light']]
     const canvas = await page.locator('.stage-slot').boundingBox()
     const action = await page.locator('.gen-bar').boundingBox()
     const rail = await inspector.boundingBox()
+    const materials = (await page.locator('#drawing-materials').boundingBox())!
     expect(canvas!.width).toBeGreaterThan(400)
+    expect(canvas!.width).toBeGreaterThan(materials.width)
+    expect(canvas!.width).toBeGreaterThan(rail!.width)
     expect(rail!.x).toBeGreaterThan(canvas!.x + canvas!.width)
     expect(action!.y + action!.height).toBeLessThanOrEqual(height)
     await page.locator('.engine-switch button').first().click()

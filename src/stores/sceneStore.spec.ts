@@ -279,6 +279,10 @@ describe('sceneStore · 按需加载与并发去重', () => {
     expect(calls.some(u => u.includes('scenes-natsume.json'))).toBe(true)
     expect(calls.some(u => u.includes('scenes-nene.json'))).toBe(false)
     expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc003'])
+    calls.length = 0
+    await store.ensureCharacter('natsume')
+    expect(calls).toEqual([])
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc003'])
   })
 
   it('inflight 去重：并发调用只发一轮请求', async () => {
@@ -288,17 +292,6 @@ describe('sceneStore · 按需加载与并发去重', () => {
 
     const neneCalls = calls.filter(u => u.includes('scenes-nene.json')).length
     expect(neneCalls).toBe(1)
-  })
-
-  it('ensureCharacter 命中已加载分片时零请求重建视图', async () => {
-    stubFetch()
-    const store = useSceneStore()
-    await store.loadCharacter('nene')
-    calls.length = 0
-
-    await store.ensureCharacter('nene')
-    expect(calls.length).toBe(0)
-    expect(store.scenes.map(s => s.id)).toContain('sc002')
   })
 
   it('分片拉取失败落 error 态并结束 loading', async () => {
@@ -503,6 +496,13 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
     expect(fetchCount('scenes-nene.json')).toBe(1)
     // 轻载有意不置全量完成标志：重元数据尚未就绪
     expect(store.loaded).toBe(false)
+    await store.load()
+    expect(store.loaded).toBe(true)
+    expect(fetchCount('scene-blueprints.json')).toBe(1)
+    expect(fetchCount('characters.json')).toBe(1)
+    expect(fetchCount('popular-characters.json')).toBe(1)
+    expect(fetchCount('scenes-nene.json')).toBe(1)
+    expect(fetchCount('curation.json')).toBe(1)
   })
 
   it('loadCharacterShell 只拉角色目录，不等待场景分片', async () => {
@@ -535,20 +535,4 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
     expect(store.loaded).toBe(false)
   })
 
-  it('轻载后全量 load() 增量补拉重元数据，已成功资源不重复请求', async () => {
-    routes = lightRoutes()
-    stubFetch()
-    const store = useSceneStore()
-    await store.loadHome()
-
-    await store.load()
-
-    expect(store.loaded).toBe(true)
-    expect(fetchCount('scene-blueprints.json')).toBe(1)
-    expect(fetchCount('characters.json')).toBe(1)
-    // 轻载阶段已成功的资源不重复请求
-    expect(fetchCount('popular-characters.json')).toBe(1)
-    expect(fetchCount('scenes-nene.json')).toBe(1)
-    expect(fetchCount('curation.json')).toBe(1)
-  })
 })

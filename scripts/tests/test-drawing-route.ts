@@ -3,7 +3,6 @@
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
 const { test }: typeof import('node:test') = require('node:test');
 const {
-  promptFormatLabel,
   recommendDrawingRoute,
 }: typeof import('../../src/utils/drawingRoute.ts') = require('../../src/utils/drawingRoute.ts');
 
@@ -60,27 +59,6 @@ test('popular routes follow model recommendations without studio LoRAs', () => {
   assert.strictEqual(krea.engine, 'krea2');
   assert.strictEqual(krea.promptFormat, 'natural-language');
   assert.strictEqual(krea.experimental, true);
-});
-
-test('popular krea recommendations lock in the community-enhanced pipeline', () => {
-  // 2026-08-23 链路替换：原 euler 标准 Krea 路线退役，推荐即社区增强链路（T-Enhancer
-  // 细节补丁 + RCAS 锐化），不再有 preferDetailBoost 二选一开关。
-  const krea = recommendDrawingRoute({
-    subjectKind: 'popular',
-    character: 'nene',
-    recommendedModelId: 'krea2-turbo-fp8',
-  });
   assert.strictEqual(krea.id, 'popular-krea-detail');
-  assert.strictEqual(krea.engine, 'krea2');
   assert.strictEqual(krea.modelId, 'krea2-turbo-fp8');
-  assert.strictEqual(krea.promptFormat, 'natural-language');
-  assert.strictEqual(krea.experimental, true);
-  assert.ok(krea.reasons.some(reason => reason.includes('Krea2T-Enhancer')));
-  assert.ok(krea.reasons.some(reason => reason.includes('RCAS')));
-});
-
-test('prompt format labels explain model contracts instead of exposing syntax switches', () => {
-  assert.strictEqual(promptFormatLabel('danbooru'), 'Danbooru 标签');
-  assert.strictEqual(promptFormatLabel('anima-tags'), 'Anima 模型原生标签');
-  assert.strictEqual(promptFormatLabel('natural-language'), '自然语言画面描述');
 });

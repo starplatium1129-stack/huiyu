@@ -26,6 +26,32 @@ test('home character selection keeps artwork, caption and accent together', asyn
   await expect(page.locator('#continueCta')).toHaveAttribute('href', '/scene-explorer')
   await page.emulateMedia({ reducedMotion: 'reduce' })
   expect(await page.locator('.hero-character').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s')
+  const create = page.getByRole('link', { name: '选场景，开始创作', exact: true })
+  await expect(page.locator('.tool-card[href="/chat?character=natsume"]')).toHaveCount(1)
+  await create.click()
+  await expect(page).toHaveURL(/\/scene-explorer$/)
+  await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
+  await page.goBack()
+  await page.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await page.locator('.tool-card[href="/chat?character=natsume"]').click()
+  await expect(page).toHaveURL(/\/chat\?character=natsume$/)
+  await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume')
+})
+
+test('adjusting a scene enters its workspace without submitting generation', async ({ page }) => {
+  const submitted: string[] = []
+  page.on('request', request => {
+    if (request.method() === 'POST' && /\/api\/(?:generation\/jobs|anima\/jobs|runtime-tasks)/.test(request.url())) submitted.push(request.url())
+  })
+  await openAtelier(page, '/scene-explorer')
+  await page.locator('.scene-grid').getByRole('button', { name: '故事', exact: true }).first().click()
+  const adjust = page.getByRole('link', { name: '进入工作台调整', exact: true })
+  await expect(adjust).not.toHaveAttribute('href', /generate=1|quick=1/)
+  await adjust.click()
+  await expect(page.locator('.gen-bar')).toBeVisible()
+  await page.locator('[aria-controls="material-story"]').click()
+  await expect(page.locator('.scene-context-title')).toBeVisible()
+  expect(submitted).toEqual([])
 })
 
 test('drawing invitation opens materials without starting generation', async ({ page }) => {

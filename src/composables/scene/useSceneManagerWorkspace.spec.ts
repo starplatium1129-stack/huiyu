@@ -7,10 +7,9 @@ import type { SceneMaintenanceSnapshot, SceneDraft } from '@/types/api'
 
 const mock = vi.hoisted(() => ({
   getState: vi.fn(), load: vi.fn(), reload: vi.fn(), loadMetadata: vi.fn(async () => {}), confirm: vi.fn(),
-  saveChanges: vi.fn(), preview: vi.fn(), invalidate: vi.fn(), packaged: false,
+  saveChanges: vi.fn(), preview: vi.fn(), invalidate: vi.fn(),
   maintenanceDeps: null as unknown as SceneMaintenanceDeps,
 }))
-vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => mock.packaged ? { isPackaged: async () => true } : undefined }))
 vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { getScenesState: mock.getState, saveSceneChanges: mock.saveChanges, previewSceneChanges: mock.preview } }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({
   load: mock.load, reload: mock.reload, invalidate: mock.invalidate, loadMetadata: mock.loadMetadata, popularCharacters: [], sceneBlueprints: [],
@@ -34,7 +33,7 @@ beforeEach(() => {
   mock.confirm.mockResolvedValue(true)
   mock.getState.mockResolvedValue({ ok: true, version: 7, nextSceneId: 'sc1000', snapshot: snapshot() })
 })
-afterEach(() => { wrapper?.unmount(); vi.resetAllMocks(); mock.packaged = false })
+afterEach(() => { wrapper?.unmount(); vi.resetAllMocks() })
 function setup() {
   let workspace!: ReturnType<typeof useSceneManagerWorkspace>
   wrapper = mount(defineComponent({ setup() { workspace = useSceneManagerWorkspace(); return () => null } }))
@@ -76,8 +75,7 @@ describe('scene editor snapshot loading', () => {
     expect(mock.maintenanceDeps.blueprints.value[0]).toMatchObject({ title: 'Renamed', promptTokens: [], negativeTokens: [], generatedRecipe: blueprint.generatedRecipe })
     expect(workspace.dirty.value).toBe(true)
   })
-  it('loads, saves and reloads the authoritative snapshot in a packaged desktop', async () => {
-    mock.packaged = true
+  it('loads, saves and reloads the authoritative snapshot', async () => {
     const workspace = setup()
     await flushPromises()
     expect(workspace.maintenanceReadonly.value).toBe(false)

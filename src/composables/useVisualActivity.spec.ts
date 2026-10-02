@@ -75,10 +75,12 @@ describe('visual activity policy', () => {
     document.dispatchEvent(new Event('visibilitychange'))
     await nextTick()
     expect(api.canPresent.value).toBe(false)
+    expect(api.canAnimate.value).toBe(false)
     visibility = 'visible'
     document.dispatchEvent(new Event('visibilitychange'))
     await nextTick()
     expect(api.canPresent.value).toBe(true)
+    expect(api.canAnimate.value).toBe(true)
   })
   it('gates offscreen effects and disconnects observers on unmount', async () => {
     const { wrapper } = mountedFixture()

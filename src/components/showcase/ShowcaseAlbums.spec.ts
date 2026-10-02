@@ -33,12 +33,10 @@ describe('ShowcaseAlbums', () => {
     expect(adultAlbum.find('.album-placeholder').exists()).toBe(true)
     await adultAlbum.trigger('click')
     expect(wrapper.emitted('select')).toEqual([['lora']])
-  })
-
-  it('renders a cover fallback after its own load failure', async () => {
-    const wrapper = render()
     await wrapper.get('img').trigger('error')
     expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.findAll('.album-placeholder')).toHaveLength(2)
   })
+
+
 })

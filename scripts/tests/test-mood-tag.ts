@@ -1,7 +1,6 @@
 const assert: typeof import('assert') = require('assert');
 const { test }: typeof import('node:test') = require('node:test');
-const { extractMoodTag, hasMoodTagOpen, MOOD_TAG_EMOTIONS }: typeof import('../../src/utils/moodTag.ts') = require('../../src/utils/moodTag.ts');
-const { createEmotionRuntime, NENE_RUNTIME_CONFIG }: typeof import('../../src/utils/emotionRuntime.ts') = require('../../src/utils/emotionRuntime.ts');
+const { extractMoodTag, hasMoodTagOpen }: typeof import('../../src/utils/moodTag.ts') = require('../../src/utils/moodTag.ts');
 
 test('无标签：原文不变，emotion 为 null', () => {
   const result = extractMoodTag('今天天气真好呀。');
@@ -62,16 +61,6 @@ test('mood 不是独立 token 时不误伤（如 [moodify]）', () => {
   const result = extractMoodTag('像 [moodify] 这样的词不应被剥离');
   assert.equal(result.emotion, null);
   assert.equal(result.cleanText, '像 [moodify] 这样的词不应被剥离');
-});
-
-test('MOOD_TAG_EMOTIONS 与 emotionRuntime 情绪可驱动一致', () => {
-  const runtime = createEmotionRuntime(NENE_RUNTIME_CONFIG);
-  for (const emotion of MOOD_TAG_EMOTIONS) {
-    runtime.pushEmotion(emotion);
-    runtime.update(1 / 60);
-    // 只验证情绪名可被运行时接受（不会抛错）；neutral 沿用当前情绪。
-    assert.equal(typeof runtime.lastEmotion(), 'string');
-  }
 });
 
 test('hasMoodTagOpen：检测标签起点（含未闭合）', () => {

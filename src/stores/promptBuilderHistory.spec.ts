@@ -32,6 +32,7 @@ beforeEach(() => {
 describe('入册抽取前后的兼容特征', () => {
   it('在暂存保护内依次写图、启动缩略图、测量并提交，成功前不发布历史', async () => {
     const pb = usePromptBuilderStore()
+    io.thumbnail.mockImplementation(async () => { io.events.push('thumbnail'); throw new Error('thumbnail failed') })
     const legacy = { id: 'legacy', parent_id: 'missing', extension: { keep: true } }
     pb.history = [legacy]
     io.stageExit.mockImplementation(() => expect(pb.history).toHaveLength(2))
@@ -44,6 +45,7 @@ describe('入册抽取前后的兼容特征', () => {
     expect(saved).toMatchObject({ width: 832, height: 1216, image_id: 'owned-image', styleLoraId: null })
     expect(pb.history).toEqual([saved, legacy])
     expect(io.read).not.toHaveBeenCalled()
+    expect(io.remove).not.toHaveBeenCalled()
   })
 
   it('显式 null/空值与零值按原优先级保留，model 优先于旧 checkpoint 字段', async () => {
@@ -129,10 +131,4 @@ describe('入册抽取前后的兼容特征', () => {
       cleanup: { status: 'commit-unknown', imageId: 'owned-image' }, operationId: expect.any(String) }))
   })
 
-  it('缩略图失败保持原图与成功记录', async () => {
-    io.thumbnail.mockRejectedValue(new Error('thumbnail failed'))
-    const saved = await usePromptBuilderStore().commitHistoryEntry({ blob: blob(), prompt: 'A quiet river.' })
-    expect(saved?.image_id).toBe('owned-image')
-    expect(io.remove).not.toHaveBeenCalled()
-  })
 })

@@ -2,16 +2,10 @@ const assert: typeof import('assert') = require('assert');
 const { test }: typeof import('node:test') = require('node:test');
 const { createBlinkScheduler }: typeof import('../../src/utils/blinkScheduler.ts') = require('../../src/utils/blinkScheduler.ts');
 
-test('初始状态：眼睛全睁，值不越界', () => {
-  const blink = createBlinkScheduler();
-  assert.equal(blink.value(), 1, '初始应全睁');
-  blink.update(1 / 60);
-  assert.equal(blink.value(), 1);
-});
-
 test('间隔到期后完成一次完整眨眼：闭眼 -> 保持闭合 -> 睁眼 -> 回到全睁', () => {
   // random() 恒 0 -> 间隔恒为 minIntervalMs = 2.5s
   const blink = createBlinkScheduler({ random: () => 0 });
+  assert.equal(blink.value(), 1, '初始应全睁');
   const closing = 0.09, closed = 0.06, opening = 0.16;
   const fps = 60, dt = 1 / fps;
 
@@ -53,7 +47,8 @@ test('reset：立即回到全睁并重新计时', () => {
   const blink = createBlinkScheduler({ random: () => 0 });
   for (let i = 0; i < 60 * 2; i++) blink.update(1 / 60);
   assert.equal(blink.value(), 1, '间隔期内保持全睁');
-  for (let i = 0; i < 60; i++) blink.update(1 / 60); // 进入闭眼
+  for (let i = 0; i < 33; i++) blink.update(1 / 60);
+  assert(blink.value() > 0 && blink.value() < 1, 'reset 必须实际打断正在闭合的眼睛');
   blink.reset();
   assert.equal(blink.value(), 1, 'reset 后必须全睁');
   for (let i = 0; i < 60 * 1.5; i++) blink.update(1 / 60);
@@ -62,9 +57,7 @@ test('reset：立即回到全睁并重新计时', () => {
 
 test('delta 超界被钳制，不会瞬间完成眨眼', () => {
   const blink = createBlinkScheduler({ random: () => 0 });
-  blink.update(10);
-  blink.update(10);
-  blink.update(10);
-  blink.update(10);
-  assert(blink.value() >= 0 && blink.value() <= 1);
+  const samples = Array.from({ length: 10 }, () => blink.update(10));
+  assert.deepEqual(samples, Array(10).fill(1), '十次长帧仅推进2.5秒，不能提前完成一轮眨眼');
+  assert.equal(blink.update(10), 0, '随后才进入全闭阶段，不能完全丢弃长帧');
 });

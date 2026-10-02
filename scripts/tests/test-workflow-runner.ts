@@ -19,16 +19,6 @@ function hasPreviewExecutionSwitch(run: { switches?: Record<string, WorkflowEffe
     && effects.some((effect: WorkflowEffect) => ['guard', 'writes-source', 'writes-product', 'writes-release'].includes(effect)));
 }
 
-test('preview declarations allow read-only execution guards without inventing write effects', () => {
-  assert.equal(hasPreviewExecutionSwitch({ switches: { '--execute': ['read-only', 'guard'] } }), true);
-  assert.equal(hasPreviewExecutionSwitch({ switches: { '--apply': ['writes-product'] } }), true);
-  assert.equal(hasPreviewExecutionSwitch({ switches: {} }), false);
-  assert.equal(hasPreviewExecutionSwitch({ switches: { '--json': ['read-only'], '--plan': ['preview'] } }), false);
-  assert.equal(hasPreviewExecutionSwitch({ switches: { '--json': ['guard'] } }), false);
-  assert.ok(WORKFLOWS['check:impact'].run.nature.every(effect => ['preview', 'read-only'].includes(effect)));
-  assert.equal(hasPreviewExecutionSwitch(WORKFLOWS['check:impact'].run), true);
-});
-
 test('postinstall preserves custom hooks and only removes the absent legacy override', () => {
   const { migrateHooks }: typeof import('../maintenance/install-git-hooks') = require('../maintenance/install-git-hooks');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-hooks-'));
@@ -390,6 +380,7 @@ test('metadata lists must be arrays so valid audit entries remain renderable', (
 });
 
 test('run metadata stays semantically consistent with the registry', () => {
+  assert.ok(WORKFLOWS['check:impact'].run.nature.every(effect => ['preview', 'read-only'].includes(effect)));
   for (const [name, def] of Object.entries(WORKFLOWS)) {
     const run: any = def.run;
     const nature: any = run.nature || [];

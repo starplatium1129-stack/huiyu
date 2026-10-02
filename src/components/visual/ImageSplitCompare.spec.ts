@@ -27,22 +27,10 @@ describe('ImageSplitCompare', () => {
     expect(slider.attributes('aria-valuenow')).toBe('36')
     expect(slider.attributes('aria-valuetext')).toBe('对比位置 36%：原图与换装后')
     expect(divider.attributes('style')).toContain('--split-pos: 36%')
-  })
-
-  it('supports boundary and page keys while keeping the value text synchronized', async () => {
-    const wrapper = mount(ImageSplitCompare, {
-      props: {
-        beforeSrc: '/before.png',
-        afterSrc: '/after.png',
-        initialPos: 50,
-      },
-    })
-    const slider = wrapper.find('.image-split-compare')
-
     await slider.trigger('keydown', { key: 'PageUp' })
-    expect(slider.attributes('aria-valuenow')).toBe('60')
+    expect(slider.attributes('aria-valuenow')).toBe('46')
     await slider.trigger('keydown', { key: 'PageDown' })
-    expect(slider.attributes('aria-valuenow')).toBe('50')
+    expect(slider.attributes('aria-valuenow')).toBe('36')
     await slider.trigger('keydown', { key: 'Home' })
     expect(slider.attributes('aria-valuenow')).toBe('0')
     await slider.trigger('keydown', { key: 'End' })
@@ -53,6 +41,8 @@ describe('ImageSplitCompare', () => {
     await slider.trigger('keydown', { key: 'ArrowLeft' })
     expect(slider.attributes('aria-valuenow')).toBe('99')
   })
+
+
 })
 
 describe('ImageCompareSlider', () => {

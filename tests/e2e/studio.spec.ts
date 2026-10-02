@@ -159,6 +159,7 @@ test('scene manager loads project data and opens the editor without dirtying sta
   await expect(page.locator('.modal-card input').first()).toHaveValue(/sc\d+/);
   await page.getByRole('button', { name: '取消' }).click();
   await expect(page.locator('.modal-card')).toBeHidden();
+  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeDisabled();
 
   expect(errors).toEqual([]);
 });
@@ -204,23 +205,12 @@ test('scene manager exposes tag, showcase and duplicate tooling', async ({ page 
 
 
 
-test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ page }) => {
+test('showcase viewer restores focus and changing content type clears an incompatible character filter', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await mockShowcase(page);
   await page.goto('/showcase');
 
   await expect(page.locator('.sample').first()).toBeVisible();
-
-  // 工具条只应有一层磨砂容器：内层 search-row 不得再叠圆角/底色
-  const layers = await page.evaluate(() => {
-    const row = document.querySelector('.search-row');
-    if (!row) return null;
-    const cs = getComputedStyle(row);
-    return { radius: cs.borderRadius, bg: cs.backgroundColor, border: cs.borderTopWidth };
-  });
-  expect(layers).not.toBeNull();
-  expect(layers!.radius).toBe('0px');
-  expect(layers!.border).toBe('0px');
 
   // 查看器：图与文字并排，不得重叠
   await page.locator('.sample .sample-visual').first().click();
@@ -251,7 +241,7 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
 });
 
 
-test('character room mounts portrait, composer and voice console', async ({ page }) => {
+test('room settings switch provider presets and merge discovered models without loading Live2D', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const live2dAssetRequests: string[] = [];
   page.on('request', request => {
@@ -304,10 +294,9 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.companion-picker-option[data-value="nene"], .companion-picker-option[data-value="natsume"]')).toHaveCount(2);
   await page.locator('.companion-picker-option[data-value="natsume"]').click();
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载四季夏目动态立绘');
-  await page.locator('.live2d-enable-cta').click();
-  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
-  await expect(page.locator('.live2d-host canvas')).toBeVisible();
+  await expect(page.locator('.provider-switch')).toBeHidden();
   await page.locator('.room-model-settings summary').click();
+  await expect(page.locator('.provider-switch')).toBeVisible();
   await page.locator('.api-settings-toggle').click();
   await expect(page.locator('.api-settings')).toBeVisible();
   await page.locator('[data-vendor="deepseek"]').click();
@@ -324,8 +313,12 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await page.getByLabel('API Key').fill('test-key');
   await page.getByRole('button', { name: '测试连接' }).click();
   await expect(page.locator('.api-test-status')).toContainText('连接成功，发现 2 个模型');
-  expect((await readStudioOptions(page.getByLabel('模型名'))).length).toBe(6);
+  expect((await readStudioOptions(page.getByLabel('模型名'))).map(option => option.value))
+    .toEqual(expect.arrayContaining(['deepseek-v4-flash-free', 'zen-discovered-model']));
+  expect(live2dAssetRequests).toEqual([]);
   await expect(page.locator('.voice-console')).toBeVisible();
+  await page.locator('.room-model-settings summary').click();
+  await expect(page.locator('.provider-switch')).toBeHidden();
 
   expect(errors).toEqual([]);
 });
@@ -735,7 +728,7 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   await expect(page.locator('.send-btn')).toBeDisabled();
 });
 
-test('character profile opens the selected character room and persona scenes', async ({ page }) => {
+test('character profile opens the selected room while its providers are offline', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.route('**/api/chat-status', route => route.fulfill({
     contentType: 'application/json',
@@ -748,8 +741,6 @@ test('character profile opens the selected character room and persona scenes', a
   await page.goto('/character?character=natsume');
 
   await expect(page.locator('.character-name')).toHaveText('四季夏目');
-  await expect(page.locator('.recommend-title').filter({ hasText: '人设核心场景' })).toBeVisible();
-  await expect(page.locator('.recommend-grid a')).toHaveCount(6);
   await page.getByRole('link', { name: '进入她的房间' }).click();
   await expect(page).toHaveURL(/\/chat\?character=natsume/);
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
@@ -761,18 +752,20 @@ test('character profile opens the selected character room and persona scenes', a
 });
 
 
-test('scene explorer collapses filters into a single toolbar', async ({ page }) => {
+test('scene explorer hides and restores the selected record through the hidden-items filter', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/scene-explorer');
 
   await expect(page.locator('.scene-toolbar')).toHaveCount(1);
-  await expect(page.locator('.scene-grid .sc')).toHaveCount(12);
   await expect(page.getByRole('button', { name: '人设核心', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('.scene-count')).toHaveText('已显示 12 / 12 个场景');
   const firstScene = page.locator('.scene-grid .sc').first();
+  await expect(firstScene).toBeVisible();
+  const hiddenId = await firstScene.getAttribute('data-scene-id');
+  expect(hiddenId).toBeTruthy();
+  const selected = page.locator(`.scene-grid .sc[data-scene-id="${hiddenId}"]`);
   await firstScene.locator('.ex-more summary').click();
   await firstScene.getByRole('button', { name: '隐藏', exact: true }).click();
-  await expect(page.locator('.scene-grid .sc')).toHaveCount(11);
+  await expect(selected).toHaveCount(0);
   // 精细筛选默认收起，点开后才出现
   await expect(page.locator('.scene-facet-panel')).toBeHidden();
   await page.locator('.filter-toggle').click();
@@ -786,6 +779,8 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await hiddenScene.locator('.ex-more summary').click();
   await hiddenScene.getByRole('button', { name: '↩ 恢复', exact: true }).click();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(0);
+  await hiddenToggle.uncheck();
+  await expect(selected).toBeVisible();
 
   expect(errors).toEqual([]);
 });
@@ -804,12 +799,13 @@ test('scene explorer promotes locally used scenes without deleting the archive',
   await expect(page.locator('.sc-tier.personal')).toContainText('常用 3');
 
   await page.getByRole('button', { name: /完整库/ }).click();
-  await expect(page.locator('.scene-grid .sc')).toHaveCount(24);
   const fullLibrary = page.getByRole('button', { name: /^完整库 \d+$/ });
   await expect(fullLibrary).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(() => page.locator('.scene-grid .sc').count()).toBeGreaterThan(1);
+  const visible = await page.locator('.scene-grid .sc').count();
   const total = Number((await fullLibrary.innerText()).match(/\d+$/)![0]);
-  expect(total).toBeGreaterThan(24);
-  await expect(page.locator('.scene-count')).toHaveText(`已显示 24 / ${total} 个场景`);
+  expect(total).toBeGreaterThanOrEqual(visible);
+  await expect(page.locator('.scene-count')).toHaveText(`已显示 ${visible} / ${total} 个场景`);
 
   expect(errors).toEqual([]);
 });

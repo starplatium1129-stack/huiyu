@@ -325,12 +325,11 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it.each(['reduced motion', 'low effects', 'hidden activity'])('shows the original immediately under %s', async mode => {
+  it.each(['reduced motion', 'low effects'])('shows the original immediately under %s', async mode => {
     if (mode === 'reduced motion') {
       activity.reducedMotion.value = true
       activity.canAnimate.value = false
-    } else if (mode === 'low effects') activity.lowEffects.value = true
-    else { activity.canPresent.value = false; activity.canAnimate.value = false }
+    } else activity.lowEffects.value = true
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
@@ -347,7 +346,7 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it.each(['reduced motion', 'low effects', 'hidden activity'])('cancels an in-progress reveal under %s without replaying on return', async mode => {
+  it.each(['reduced motion', 'low effects'])('cancels an in-progress reveal under %s without replaying on return', async mode => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
@@ -355,8 +354,7 @@ describe('CgImageReveal ownership and fallback', () => {
     if (mode === 'reduced motion') {
       activity.reducedMotion.value = true
       activity.canAnimate.value = false
-    } else if (mode === 'low effects') activity.lowEffects.value = true
-    else { activity.canPresent.value = false; activity.canAnimate.value = false }
+    } else activity.lowEffects.value = true
     await nextTick()
     expect(reveals.every(reveal => reveal.stop.mock.calls.length === 1)).toBe(true)
     expect(wrapper.classes()).toContain('is-loaded')

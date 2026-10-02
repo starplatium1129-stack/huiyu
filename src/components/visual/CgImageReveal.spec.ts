@@ -29,11 +29,10 @@ describe('CgImageReveal component', () => {
     expect(img.attributes('decoding')).toBe('async')
     await img.trigger('click')
     expect(wrapper.emitted('click')).toHaveLength(1)
-  })
-
-  it('does not create an image for an empty source', () => {
-    const wrapper = fixture({ src: '' })
+    await wrapper.setProps({ src: '' })
     expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.find('canvas').exists()).toBe(false)
   })
+
+
 })

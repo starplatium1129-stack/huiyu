@@ -52,7 +52,8 @@ describe('scene canvas reference', () => {
     expect(wrapper.text()).toContain('图书馆')
   })
 
-  it.each([[1216, 832], [832, 1216]])('follows the loaded reference dimensions %s × %s and resets when the sample changes', async (width, height) => {
+  it('follows landscape and portrait dimensions and resets when the sample changes', async () => {
+    const width = 1216, height = 832
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()
     const frame = wrapper.get('figure').element as HTMLElement

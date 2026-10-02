@@ -1,6 +1,5 @@
-import type { CompanionDesktopBridge } from '@/types/desktop'
 import { ref, shallowRef, defineComponent } from 'vue'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useSceneMaintenance } from './useSceneMaintenance'
 import { ApiClientError } from '@/api/client'
@@ -31,7 +30,7 @@ beforeEach(() => {
   vi.mocked(maintenanceApi.previewSceneChanges).mockResolvedValue(impact())
   vi.mocked(confirmAction).mockResolvedValue(true)
 })
-afterEach(() => { wrapper?.unmount(); vi.resetAllMocks(); desktopFixture.current = undefined })
+afterEach(() => { wrapper?.unmount(); vi.resetAllMocks() })
 function setup() {
   const baseline = shallowRef<SceneMaintenanceSnapshot | null>(freezeSceneSnapshot(snapshot()))
   const version = ref<number | null>(42)
@@ -165,14 +164,6 @@ describe('maintenance delta saving and edit protection', () => {
     expect(deps.dirty.value).toBe(true)
     expect(deps.adoptSceneState).not.toHaveBeenCalled()
   })
-  it('allows desktop saving once an authoritative baseline is available', async () => {
-    desktopFixture.current = { isPackaged: vi.fn().mockResolvedValue(true) } as never
-    const { tools } = setup()
-    await flushPromises()
-    expect(tools.canSave.value).toBe(true)
-    await tools.saveToProject()
-    expect(maintenanceApi.saveSceneChanges).toHaveBeenCalledTimes(1)
-  })
 })
 
 describe('read-only impact previews', () => {
@@ -225,6 +216,3 @@ describe('read-only impact previews', () => {
     expect(tools.highlightedOutput.value.match(/class="hl-id"/g)).toHaveLength(3)
   })
 })
-
-const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
-vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

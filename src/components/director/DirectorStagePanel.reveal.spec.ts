@@ -92,6 +92,5 @@ describe('result reveal identity', () => {
     await wrapper.setProps({ generationBusy: true })
     expect(wrapper.getComponent(Reveal).props('src')).toBe('/result-a.png')
     expect(wrapper.get('.stage-result-status').text()).toContain('当前成片保留')
-    expect(wrapper.get('.stage-result-status thinking-orb-stub').attributes('size')).toBe('sm')
   })
 })

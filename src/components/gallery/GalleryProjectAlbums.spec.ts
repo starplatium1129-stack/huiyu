@@ -32,6 +32,8 @@ describe('project album navigation', () => {
     await card.trigger('click')
     expect(card.attributes('data-album-id')).toBe('rain')
     expect(wrapper.emitted('select')).toEqual([['rain'], ['rain']])
+    await wrapper.setProps({ albums: [] })
+    expect(wrapper.find('section').exists()).toBe(false)
     wrapper.unmount()
   })
 
@@ -45,11 +47,7 @@ describe('project album navigation', () => {
     wrapper.unmount()
   })
 
-  it('does not show a project shelf for an empty collection', () => {
-    const wrapper = mount(GalleryProjectAlbums, { props: { albums: [], selectedId: '' } })
-    expect(wrapper.find('section').exists()).toBe(false)
-    wrapper.unmount()
-  })
+
 
   it('resolves runtime resources and keeps disconnected desktop covers as placeholders', async () => {
     setRuntimeOrigin(null, true)
