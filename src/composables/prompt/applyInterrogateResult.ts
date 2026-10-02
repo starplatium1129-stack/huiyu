@@ -3,6 +3,7 @@ import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
+import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown) {
   if (!result || typeof result !== 'object') return
@@ -28,6 +29,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const subject = pb.subject
   const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
   const blueprint = subject.kind === 'popular' && subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId) : null
+  const studioScene = subject.kind === 'studio' ? pb.activeScene : null
   const context = collectInterrogateContext(subject.kind === 'popular'
     ? { kind: 'popular', character: popularChar ? {
         identityTokens: popularChar.identityTokens,
@@ -35,20 +37,20 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
         aliases: popularChar.aliases,
         outfitTokens: pb.outfitOverride?.tokens ?? (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
       } : null }
-    : { kind: 'studio', charPrompt: pb.charPrompt, scenePrompt: pb.activeScene?.prompt, sceneTags: pb.activeScene?.tags })
+    : { kind: 'studio', charPrompt: pb.charPrompt })
   const priorReference = new Set((pb.referenceInput?.tags ?? []).map(normalizeKey))
   const userTags = new Set([...pb.manualTags].filter(tag => !priorReference.has(normalizeKey(tag))))
   // The new picture replaces the previous reference layer, never unrelated
   // explicit user edits. The target's identity is supplied only by its own data.
   const identityOnly = standaloneIdentityTokens(context.identityTokens)
-  const decision = blueprint ? inferBlueprintDecisions(blueprint) : null
+  const decision = blueprint ? inferBlueprintDecisions(blueprint) : studioScene ? sceneStyleBaseline(studioScene) : null
   const inheritedShot = decision && pb.selections.shot === decision.shot
   const merged = mergeInterrogatedTags({
     tags: reference.tags,
     manualTags: userTags,
     protectedManualTags: userTags,
     identityTokens: subject.kind === 'popular' ? identityOnly : context.identityTokens,
-    sceneTokens: subject.kind === 'popular' ? [] : context.sceneTokens,
+    sceneTokens: [],
     shot: inheritedShot ? null : pb.selections.shot,
     replaceOutfit: subject.kind === 'popular',
   })
@@ -66,17 +68,23 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
     return
   }
+  // A reference replaces inherited rendering input in both subject modes.
+  // Detach the studio scene only after accepting transferable tags; retain
+  // handwritten prose, story and explicit edits rather than clearing the draft.
+  if (studioScene) {
+    const style = pb.snapshotStyleLayers(), description = pb.visualDescription
+    pb.clearScene({ keepStory: true })
+    pb.restoreStyleLayers({ ...style, randomVariation: null, referenceInput: null })
+    pb.visualDescription = description
+  }
+  if (blueprint) pb.setPopularBlueprint(null)
+  if (decision) {
+    if (inheritedShot) pb.setShot(null)
+    if (pb.selections.lighting === decision.lighting) pb.setLighting(null)
+    if (pb.selections.composition === decision.composition) pb.setComposition(null)
+    if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
+  }
   if (subject.kind === 'popular') {
-    // Selecting a new reference replaces the inherited blueprint, rather than
-    // carrying the old scene prose into Krea or the next character. Preserve
-    // camera controls edited away from that blueprint's inferred defaults.
-    if (blueprint && decision) {
-      pb.setPopularBlueprint(null)
-      if (inheritedShot) pb.setShot(null)
-      if (pb.selections.lighting === decision.lighting) pb.setLighting(null)
-      if (pb.selections.composition === decision.composition) pb.setComposition(null)
-      if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
-    }
     if (referenceOutfit.length) pb.setOutfitOverride(referenceOutfit, merged.replacedOutfitGroup)
     else pb.clearOutfitOverride()
   }

@@ -6,6 +6,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/types/character'
 import { applyInterrogateResult } from './applyInterrogateResult'
 import { usePopularPromptAssembly } from './usePopularPromptAssembly'
+import { usePromptAssembly } from './usePromptAssembly'
 
 const character = (id: string, hair: string): PopularCharacter => ({
   id, displayName: id, originalName: id, franchise: 'Fixture', aliases: [id],
@@ -165,4 +166,60 @@ it.each(['anima', 'krea2'] as const)('keeps a reference background color without
   expect(assembly.positivePrompt.value).toMatch(/blue[_ ]eyes/)
   expect(assembly.positivePrompt.value).not.toMatch(/pink[_ ]background|standing|full[_ ]body|peace-sign|expressionless|warm sunset|saturated colors|cel shading|layered background|cinematic atmosphere|visual novel event CG/)
   expect(assembly.structuredPlan.value?.style).toEqual([])
+})
+
+it.each(['anima', 'krea2'] as const)('replaces an inherited studio scene with the reference while retaining target identity in %s', async engine => {
+  const pb = usePromptBuilderStore()
+  cleanups.push(() => pb.$dispose())
+  const scene = {
+    id: 'old-studio-scene', char: 'nene', title: 'Beach', story: 'Original scene story', rating: 'ALL',
+    prompt: 'beach, standing, school_uniform, golden_hour, medium_shot',
+    animaCaption: 'Standing on a beach, wearing a school uniform.', tags: [],
+    camera: 'medium', lighting: 'golden', composition: 'center', colorMood: 'joy',
+  }
+  useSceneStore().scenes = [scene]
+  pb.loadScene(scene)
+  const original = pb.snapshotDraft()
+  await applyInterrogateResult(pb, extract(['pink_hair', 'red_eyes']))
+  expect(pb.snapshotDraft()).toEqual(original)
+  await applyInterrogateResult(pb, extract(['pink_hair', 'red_eyes', 'white_coat', 'sitting', 'library', 'from_above']))
+  const assembly = usePromptAssembly(pb, ref(''), ref(engine), ref('fixture-model'), ref(''))
+  const prompt = assembly.positivePrompt.value
+  expect(prompt).not.toMatch(/beach|standing|school[_ ]uniform|golden[_ ]hour|medium[_ -]shot|pink[_ ]hair(?![_ ]ribbons)|red[_ ]eyes/)
+  expect(prompt).toMatch(/ayachi[_ ]nene/i)
+  expect(prompt).toMatch(/white[_ ]hair/)
+  expect(prompt).toMatch(/purple[_ ]eyes/)
+  expect(prompt).toMatch(/white[_ ]coat/)
+  expect(prompt).toContain('sitting')
+  expect(prompt).toContain('library')
+  expect(pb.sceneId).toBeNull()
+  expect(pb.selections).toEqual({ emotion: [], shot: null, lighting: null, composition: null })
+  expect(pb.colorMood).toBeNull()
+  expect(pb.story).toBe('Original scene story')
+})
+
+it('retains explicit studio edits when the reference replaces the inherited scene', async () => {
+  const pb = usePromptBuilderStore()
+  cleanups.push(() => pb.$dispose())
+  const scene = { id: 'old-studio-scene', char: 'natsume', title: 'Beach', story: 'Original', rating: 'ALL',
+    prompt: 'beach, standing, school_uniform', tags: [], camera: 'medium', lighting: 'golden', composition: 'center', colorMood: 'joy' }
+  useSceneStore().scenes = [scene]
+  pb.loadScene(scene)
+  pb.setShot('wide'); pb.setLighting('overcast'); pb.setComposition('rule3'); pb.setColorMood('sad')
+  pb.selections.emotion = ['serious']
+  pb.setStory('My handwritten story')
+  pb.visualDescription = 'She holds an open book.'
+  pb.addManualTag('paper_lantern')
+  pb.sdParams.cfg = 3.5; pb.markParamTouched('cfg')
+  await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'library']))
+  expect(pb.sceneId).toBeNull()
+  expect(pb.char).toBe('natsume')
+  expect(pb.selections).toEqual({ emotion: ['serious'], shot: 'wide', lighting: 'overcast', composition: 'rule3' })
+  expect(pb.colorMood).toBe('sad')
+  expect(pb.story).toBe('My handwritten story')
+  expect(pb.visualDescription).toBe('She holds an open book.')
+  expect(pb.manualTags).toEqual(new Set(['paper_lantern', 'white_coat', 'sitting', 'library']))
+  expect(pb.referenceInput?.tags).toEqual(['white_coat', 'sitting', 'library'])
+  expect(pb.sdParams.cfg).toBe(3.5)
+  expect(pb.sdParamsTouched.has('cfg')).toBe(true)
 })
