@@ -13,7 +13,8 @@ const ROOT = path.resolve(__dirname, '../..');
 const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
 const DATA_SHARDS=new Set(['blueprints','popular','references','scenes','tags']);
-const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','install-translation-model.ps1']);
+const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','install-translation-model.ps1',
+  'Install-OfflineResources.cmd','offline-resource-assistant.ps1','install-offline-resources.ps1']);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
 function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
