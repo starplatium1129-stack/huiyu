@@ -7,7 +7,14 @@
 
 ## 构建与预览
 
+发行入口一次完整构建后生成两份独立签名安装器：`AI-CG-Studio_<版本>_x64-full-setup.exe` 面向新用户、基础素材变化或修复，包含程序、基础素材和 WebView2 离线安装器；`AI-CG-Studio_<版本>_x64-upgrade-setup.exe` 面向已有完整安装，复用已安装的基础素材和 WebView2。约 1 GiB 的样张图片仍通过独立素材 ZIP 提供，两种程序包都不额外塞入样张合集。
+
+升级包在外层安装器和内层 NSIS 替换程序文件前核对安装登记、宿主版本、WebView2 与每个保留素材的大小/SHA-256，并拒绝链接路径。缺失、损坏或素材版本不匹配时明确要求使用本版本完整包；不把残缺安装升级成不可用状态。验证通过后使用既有 `/UPDATE` 原位覆盖程序，不调用旧卸载器。升级包保留完整的资源卸载清单，后续正常卸载仍清理程序自带素材，个人资料保持原有规则。
+
+两份安装器分别绑定源码、构建和分发字节，分别签名；`latest.json` 指向升级包，发布页同时提供完整包作为新装/修复入口。从同一构建派生升级包，不重复编译应用。新版绑定还覆盖渲染后的 NSIS 输入，旧回执缺少这项输入时需先完成一次正常桌面构建。
+
 - `npm run workflow -- installer:modern --preview --capture --theme=dark --state=ready --dpi=144`：编译原生预览；主题支持 dark/light，状态支持 ready/installing/done/error，DPI 支持 96–240。预览版本以及任何 --capture 调用都禁止安装。
+- 上述预览加 `--upgrade` 展示老用户升级界面；截图文件名区分 `full`/`upgrade`。真实升级验证器由双包发行流程生成，预览不检查或修改已安装程序。
 - `desktop-tauri/src-tauri/installer/modern/` 下的 `Installer.xaml` 管布局与主题，`controls.svg` 为手绘线条源；`InstallerWindow.cs` 管展示状态，`InstallEngine.cs` 管路径、校验、提权和安装结果。
 - `node scripts/maintenance/release-desktop-update.js --bump patch`：构建应用与 NSIS 核心，再嵌入现代展示层，**签名最终分发的 exe**，更新 latest.json。不能拿内层 NSIS 签名验证外层安装器。
 - `npm run workflow -- installer:bundle`：仅重打包已有程序的安装器，必须通过源码/产物绑定回执与版本校验；版本相同不能复用陈旧程序。应用变更仍需完整构建。
@@ -47,3 +54,11 @@ updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件
 已目视复核 WPF 深浅主题及准备、安装、成功、错误状态，NSIS 安装目录、双主题卸载确认、卸载进度和结果。原始截图保存在该 worktree 的 `runtime/installer-*.png`，汇总为 `runtime/installer-ui-evidence.json`，不入 Git。WPF 截图按 1040×650 DIP 渲染，输出 DPI 为 96/144；NSIS 原生截图为约 960×660 像素。系统显示环境查询被 CIM 访问权限阻止，系统 DPI 未独立确认；这些截图不等同于 1080p/QHD/4K 实机缩放验收，浏览器缩放及 CSS 视口不适用于本原生界面。
 
 未执行真实安装、卸载、应用数据清理、当前程序停止、UAC、真实签名或发布，也未重打完整载荷。清理二次确认逻辑已代码复核，交互点击分支与真实错误恢复仍需后续设备验收。NSIS 预览中“未写出卸载器”和“未引用页面函数”的编译警告源于无副作用预览结构。
+
+## 2026-10-02 双包流程验证
+
+在独立 `codex/installer-tiers-oct2` 分支复用既有安装／发行用例，补充一项实际 Windows NSIS 隔离夹具：新装误用升级包、未登记安装、缺少 WebView2、同尺寸坏素材均拒绝；有效升级不调用旧卸载器，素材字节保持；随后卸载清理保留的程序素材而不删除无关文件。夹具另覆盖带空格和 `$` 的路径。多产物绑定、派生载荷篡改、两个安装包各自的签名附件与远端摘要检查通过。
+
+完整／升级界面的深浅主题在 1040×650、96 DPI 原生安全预览中复核，四次原生自测通过；不等同于多显示器或物理 DPI 验收。实际已安装的 1.8.1 只读检查通过安装登记、WebView2、宿主版本及 636 个可复用文件哈希，共约 337.3 MiB。用真实 Tauri NSIS 输入核对省略资源及完整卸载清单，派生宿主的 NSS 字节变换与已安装宿主 SHA-256 一致。
+
+Node 工具编译、应用／工具类型检查、21 步静态检查范围、已有部署守卫和工作流用例通过；首轮新 PowerShell 夹具换行格式被卫生检查拦截，规范化后仅复跑失败项。原始日志与预览位于该 worktree 的忽略目录 `runtime/installer-tiers/`、`runtime/installer-modern-*.png`。本轮没有新程序全量构建、正式双包签名／发布、真实升级／卸载或用户数据写入；完整发行仍须正常构建和既有材料门禁。

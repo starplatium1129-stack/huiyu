@@ -471,6 +471,8 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 
+程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包复用字节一致的已安装素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均保留原生发行材料门禁，不以分包替代审批或设备验收。
+
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 

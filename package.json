@@ -57,6 +57,7 @@
     "test:generation": "node scripts/tests/test-generation-routes.js",
     "test:backup": "node scripts/tests/test-data-backup.js",
     "backup:git": "node scripts/maintenance/git-bundle-backup.js",
+    "prerelease:desktop": "npm run build:runtime",
     "release:desktop": "node scripts/maintenance/release-desktop-update.js",
     "test:storage-health": "node scripts/tests/test-storage-health.js",
     "test:security": "node scripts/tests/test-security.js && node scripts/tests/test-gateway-contract.js",

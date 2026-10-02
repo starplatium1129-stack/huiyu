@@ -5,9 +5,8 @@ import { errorMessage as runtimeErrorMessage, errorOutput as runtimeErrorOutput 
 /**
  * 桌面端更新发布（2026-08-29 产品运营审计 P1：Tauri updater 落地）。
  *
- * 流程：package:tauri（NSIS + updater 签名产物）→ 拷贝安装包与 .sig 到
- * runtime/desktop-updates/ → 生成 latest.json（tauri-plugin-updater 清单格式）
- * 与 SHA-256，再按需发布到主项目 GitHub Releases。
+ * 流程：完整构建一次 → 从已绑定 NSIS 输入生成完整包和轻量升级包 →
+ * 分别封装/签名并输出 SHA-256。latest.json 指向升级包；样张素材独立发布。
  *
  * 前置：签名密钥 runtime/keys/aics-updater.key（`npx tauri signer generate` 生成，
  * 私钥不入库；丢失则无法再给已装客户端推送更新）。
@@ -94,12 +93,15 @@ function bumpVersion(kind: any) {
 function releaseTag(version: any) {
   return `v${version}`;
 }
+function installerNames(version: string) {
+  return { full:`AI-CG-Studio_${version}_x64-full-setup.exe`, upgrade:`AI-CG-Studio_${version}_x64-upgrade-setup.exe` };
+}
 
 function createManifest(version: any, signature: any, exeName: any, publishedAt: any = new Date()) {
   const tag = releaseTag(version);
   return {
     version,
-    notes: `绘遇 HUIYU ${version}`,
+    notes: `绘遇 HUIYU ${version}。自动更新使用轻量升级包；如提示缺少运行环境或基础素材，请在本版本发布页下载完整安装包： https://github.com/${RELEASE_REPOSITORY}/releases/tag/${tag}`,
     pub_date: publishedAt.toISOString(),
     platforms: {
       'windows-x86_64': {
@@ -139,13 +141,19 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
   if (manual && files.some((file: any) => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
   const workspaceRoot = options.root || ROOT;
   const installers = files.filter((file: string) => file.endsWith('.exe'));
-  if (installers.length !== 1) throw Error('公开发布必须提供唯一的已绑定安装包');
-  binding.verifyDistribution(workspaceRoot, installers[0]);
+  if (installers.length !== 2 || new Set(installers.map((file: string) => path.basename(file))).size !== 2) throw Error('公开发布必须同时提供完整包与升级包');
+  for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer);
   assertNativeReleaseReady(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
+  const expectedNames = Object.values(installerNames(version));
+  if (installers.some((file: string) => !expectedNames.includes(path.basename(file)))) throw Error('安装包名称或版本不匹配');
+  for (const installer of installers) {
+    if (!files.includes(`${installer}.sha256`) || (!manual && !files.includes(`${installer}.sig`))) throw Error('每种安装包都必须附带校验文件及对应签名');
+  }
   const tag = releaseTag(version);
   const baseNotes = options.notesFile || path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
-  const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：请下载下方 Windows 安装包。自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + fs.readFileSync(baseNotes, 'utf8');
+  const packageHelp = `> 新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。样张素材继续独立提供。\n\n`;
+  const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
   const outputDir = options.outputDir || OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
   const notesPath = path.join(outputDir, `release-notes-${tag}.md`);
@@ -174,7 +182,7 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
   run(cli, ['release', 'edit', tag, '--repo', RELEASE_REPOSITORY, '--title', `绘遇 HUIYU ${version}${manual ? ' · 手动安装版' : ''}`, '--notes-file', notesPath, '--draft=false', `--latest=${manual ? 'false' : 'true'}`], writeOptions);
 }
 
-function main() {
+async function main() {
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
   if (PUBLISH && BUMP_KIND) fail('--publish 不能与 --bump 同时使用，请先构建、提交并推送版本');
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {
@@ -225,46 +233,58 @@ function main() {
   if (PUBLISH) assertNativeReleaseReady(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const exeName = artifact.exe;
-  const executable = path.join(OUT_DIR, exeName);
-  (require('./build-modern-installer') as typeof import('./build-modern-installer')).buildModernInstaller({
-    payload: path.join(BUNDLE_DIR, artifact.exe), output: executable,
-  });
-  const sha256 = crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase();
-  const shaPath = path.join(OUT_DIR, `${exeName}.sha256`);
-  fs.writeFileSync(shaPath, `${sha256}  ${exeName}\n`);
-  binding.verifyDistribution(ROOT, executable);
-  if (MANUAL) {
-    if (PUBLISH) publishRelease(version, assertPublishReady(version), [executable, shaPath]);
-    console.log(`[release-desktop-update] ${version} 手动安装包已生成，未修改自动更新清单`);
-    return;
-  }
-  // Sign the distributed wrapper, never reuse the embedded NSIS signature.
+  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT);
+  const variants = [
+    { kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined },
+    { kind:'upgrade', payload:upgrade.payload, verifier:upgrade.verifier },
+  ];
+  const files: string[] = [];
+  let upgradeSignature = '', upgradeName = '';
   const signerEnv: NodeJS.ProcessEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' };
   delete signerEnv.TAURI_SIGNING_PRIVATE_KEY;
-  execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
-    cwd: ROOT, stdio: 'inherit', windowsHide: true,
-    env: signerEnv,
-  });
-  const signature = fs.readFileSync(`${executable}.sig`, 'utf8').trim();
   const updater = JSON.parse(fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8')).plugins.updater;
-  (require('./build-modern-installer') as typeof import('./build-modern-installer')).verifyUpdaterSignature(executable, signature, updater.pubkey);
+  const modern = require('./build-modern-installer') as typeof import('./build-modern-installer');
+  const names = installerNames(version);
+  for (const variant of variants) {
+    const exeName = variant.kind === 'full' ? names.full : names.upgrade;
+    const executable = path.join(OUT_DIR, exeName);
+    modern.buildModernInstaller({ payload:variant.payload, output:executable, upgradeVerifier:variant.verifier });
+    const shaPath = `${executable}.sha256`;
+    fs.writeFileSync(shaPath, `${crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase()}  ${exeName}\n`);
+    binding.verifyDistribution(ROOT, executable);
+    files.push(executable, shaPath);
+    if (!MANUAL) {
+      execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
+        cwd:ROOT, stdio:'inherit', windowsHide:true, env:signerEnv,
+      });
+      const signature = fs.readFileSync(`${executable}.sig`, 'utf8').trim();
+      modern.verifyUpdaterSignature(executable, signature, updater.pubkey);
+      files.push(`${executable}.sig`);
+      if (variant.kind === 'upgrade') { upgradeSignature = signature; upgradeName = exeName; }
+    }
+  }
+  console.log(`[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2`);
+  if (MANUAL) {
+    if (PUBLISH) publishRelease(version, assertPublishReady(version), files);
+    console.log(`[release-desktop-update] ${version} 两种手动安装包已生成，自动更新清单未修改`);
+    return;
+  }
 
   const manifestPath = path.join(OUT_DIR, 'latest.json');
-  const manifest = createManifest(version, signature, exeName);
+  const manifest = createManifest(version, upgradeSignature, upgradeName);
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+  files.push(manifestPath);
 
   console.log(`[release-desktop-update] ${version} 已生成到 runtime/desktop-updates/`);
   if (PUBLISH) {
-    binding.verifyDistribution(ROOT, executable);
     const head = assertPublishReady(version);
-    publishRelease(version, head, [manifestPath, executable, `${executable}.sig`, shaPath]);
+    publishRelease(version, head, files);
     console.log(`[release-desktop-update] ${releaseTag(version)} 已发布到 ${RELEASE_REPOSITORY}`);
   } else {
     console.log('[release-desktop-update] 提交并推送 main 后，用 --skip-build --publish 发布 GitHub Release');
   }
 }
 
-if (require.main === module) main();
+if (require.main === module) main().catch(error => { console.error(runtimeErrorMessage(error)); process.exitCode = 1; });
 
-export = { RELEASE_REPOSITORY, createManifest, releaseTag, publishRelease, MANUAL_MARKER, bumpVersion };
+export = { RELEASE_REPOSITORY, createManifest, releaseTag, installerNames, publishRelease, MANUAL_MARKER, bumpVersion };

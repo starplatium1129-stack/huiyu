@@ -27,6 +27,8 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 
 生成安装包：`npm run package:tauri`。它只构建，不安装、不公开发布；完成后再按下面的部署入口选择增量同步或完整安装。
 
+面向用户的发行入口 `npm run release:desktop` 现在生成 **full 完整包**与 **upgrade 轻量升级包**，并分别绑定/签名；已有构建可用 `--skip-build`，本地无签名构建显式加 `--manual`。完整包带基础素材和 WebView2，升级包在写入前核对已有安装及保留资源的精确字节后原位更新；资源不匹配时使用完整包修复。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 自动选包时排除 upgrade 包，默认选择新装和修复均可用的完整包；如需验证升级包，应显式传入已核对的 `-InstallerPath`。
+
 正式构建会在 Tauri CLI 完成后将 Cargo 创建的固定 release EXE 硬链接核对字节并原子替换为独立文件，再执行原来的源码/产物绑定检查；其它位置的硬链接仍拒绝。CLI 成功不等于可发行：绑定失败返回非零并指出具体产物，回执原子更新失败保留旧回执，不再依赖一次性打包脚本修补。
 
 Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记改成 `NSS`，打包后恢复构建目录的原 EXE。因此安装校验从已绑定源字节计算这一精确变换后的完整 SHA-256；其它字节变化、重复/缺失标记仍拒绝，Rust 后端和 DLL 仍须原字节相等。这不用于接受签名或任意安装器修改；上游打包行为改变时需重新核验。
