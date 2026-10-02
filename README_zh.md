@@ -10,7 +10,7 @@
 
 当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
-产品后端使用 Rust；Node 保留于前端/开发构建和旧行为对照。1.7.4 已在本机安装，其后源码修复、真实模型/设备验收和原生许可缺口分别在[项目状态](docs/project-status.md)与[Rust 迁移计划](plans/013-node-to-rust-migration.md)维护。
+产品后端使用 Rust，旧 Node 后端源码已退役；Node 继续用于前端构建、维护工具和隔离测试。旧格式兼容由固定夹具与独立 SQLite 读取核验承接。安装身份、真实模型/设备验收和原生许可缺口分别在[项目状态](docs/project-status.md)与[Rust 迁移计划](plans/013-node-to-rust-migration.md)维护。
 
 ## 项目定位
 
@@ -51,7 +51,7 @@
 
 | 组件 | 必需 | 说明 |
 | :--- | :---: | :--- |
-| Node.js | 源码构建需要 | `>= 22.18`（npm 11.x），用于前端、开发工具与旧实现对照，不是产品后端 |
+| Node.js | 源码构建需要 | `>= 22.18`（npm 11.x），用于前端构建、维护工具和隔离测试 |
 | Rust/MSVC 工具链 | 源码构建需要 | 构建 `runtime-rs` 和 Windows 桌面壳；安装成品不需要编译器 |
 | Windows | **是** | 主要使用环境；启动器与桌面壳均为 Windows 优先 |
 | A1111 / Forge / ReForge WebUI | 可选* | 由 Stability Matrix 启动，启动参数带 `--api --port 7860` — SD/WAI 出图需要 |
@@ -79,7 +79,7 @@ npm install
 
 ### 第 3 步 — 编译开发工具与 Rust 后端
 
-生成的开发工具和旧实现对照 `.js` 不入库。它们与实际后端分开构建：
+生成的工具 `.js` 不入库。`build:runtime` 只编译 `node`、`tests`、`browser` 三个 TypeScript 项目，与实际后端分开构建：
 
 ```bash
 npm run build:runtime
@@ -135,7 +135,7 @@ npm run dev          # Vite 开发服务器 :5173（热更新）
 ```powershell
 npm run workflow -- --help          # 维护操作的统一入口
 npm run workflow -- data:validate   # 编辑场景数据后校验分片与 DATA_VERSION
-npm run workflow -- gate:quick ui   # 按改动面积分层跑门禁（ui/server/data/all）
+npm run workflow -- gate:quick ui   # 按改动面积分层跑门禁（ui/style/rust/data/all）
 npm run scenes:build                # 从源分片重建场景产物
 npm run popular:build               # 重建 data/popular-characters.json
 npm run build                       # 生产构建 + 140KB 路由预算 + 预压缩
@@ -203,7 +203,7 @@ huiyu/
 ├── index.html              # Vite SPA 入口（无全局脚本注入）
 ├── vite.config.ts          # Vite 构建配置 + dev 代理
 ├── control.bat             # Windows 控制面板入口
-├── server.ts               # 网关源码；server.js 为生成入口
+├── runtime-rs/             # Rust HTTP 网关、持久任务、SQLite 与媒体服务
 ├── src/                    # Vue 3 SPA 源码（Vite 构建目标）
 │   ├── config/             #   角色常量、画师库、导演台静态定义
 │   ├── utils/              #   流式解析、角色参考库数据、Prompt 编译器
@@ -215,8 +215,6 @@ huiyu/
 │   ├── components/         #   布局、导航、主题切换、视频工作台组件
 │   ├── views/              #   每路由一个 Vue 视图组件（全部懒加载）
 │   └── assets/css/         #   设计系统 Token、组件样式
-├── routes/                 # Express API 路由（chat / voice / live2d / video / maintenance）
-├── services/               # TypeScript 运行时服务（Ollama、TTS、HTTP…）
 ├── desktop-tauri/          # Tauri 2 壳、Native Live2D overlay、sidecar 与打包
 ├── types/                  # 共享 TypeScript 类型定义
 ├── data/                   # 运行时 JSON 数据（scenes / characters / blueprints / standards）

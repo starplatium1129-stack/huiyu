@@ -1,5 +1,5 @@
 import { kvPage } from '../../composables/useKVStore'
-import { imgGetRecord, imgPage } from '../../composables/useImageStore'
+import { imgPage } from '../../composables/useImageStore'
 import { classifyMigrationKey, credentialFields, parseMigrationValue } from './migrationClassification'
 import { freezeMigrationSource } from './migrationBarrier'
 import type { MigrationEnvelope, MigrationIdentity, MigrationRecord, MigrationRecordManifest } from '../../../types/migration'
@@ -124,13 +124,4 @@ export async function exportMigrationSource(options: {
     await options.consume?.(envelope)
     return envelope
   }, options.signal)
-}
-
-export async function* migrationMediaChunks(alias: string, signal?: AbortSignal): AsyncGenerator<{ offset: number; data: Uint8Array }> {
-  const record = await imgGetRecord(alias)
-  if (!record) throw new Error('迁移原图缺失，不能继续。')
-  for (let offset = 0; offset < record.blob.size; offset += 1024 * 1024) {
-    signal?.throwIfAborted()
-    yield { offset, data: new Uint8Array(await record.blob.slice(offset, offset + 1024 * 1024).arrayBuffer()) }
-  }
 }

@@ -7,7 +7,7 @@
  * 现统一到这里。
  */
 
-import { ELECTRON_UI_ORIGIN } from '../../services/desktopOrigins.ts'
+import { ELECTRON_UI_ORIGIN } from '../platform/desktopOrigins.ts'
 
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]', 'tauri.localhost'] as const
 

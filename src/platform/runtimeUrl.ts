@@ -1,6 +1,6 @@
 import { shallowRef } from 'vue'
 import type { FetchImplementation } from '../api/client.ts'
-import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
+import { isNativeDesktopOrigin } from './desktopOrigins.ts'
 import { remapCharacterArt } from './characterArtState.ts'
 const runtimeOrigin = shallowRef<string | null>(null)
 const resourceIdentity = shallowRef('')

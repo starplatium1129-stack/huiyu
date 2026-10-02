@@ -202,18 +202,6 @@ export function getCompanionProfile(profileId: string): Live2DAdapterProfile | u
   return profiles.get(profileId)
 }
 
-export function registerCompanionProfile(profile: Live2DAdapterProfile): void {
-  const { valid, errors } = validateAdapterProfile(profile)
-  if (!valid) {
-    throw new Error(`Invalid adapter profile: ${errors.join(', ')}`)
-  }
-  const avatar = avatars.get(profile.avatarId)
-  if (!avatar || avatar.profileId !== profile.profileId) {
-    throw new Error('Adapter profile must reference its registered avatar')
-  }
-  profiles.set(profile.profileId, profile)
-}
-
 export function resolveCompanionAvatar(
   characterId: string,
   avatarId?: string,

@@ -140,7 +140,7 @@ jobs:
           retention-days: 7
 
   optional:
-    name: Changed tooling, release and legacy consumers
+    name: Changed tooling and release consumers
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

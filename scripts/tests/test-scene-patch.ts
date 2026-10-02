@@ -20,7 +20,7 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   write(path.join(root, 'data/prompt-pinned-scenes.json'), { scenes: pinned });
   const script = path.join(root, 'scripts/maintenance/apply-scene-patch.js');
   write(script, fs.readFileSync(require.resolve('../maintenance/apply-scene-patch'), 'utf8'));
-  write(path.join(root, 'scripts/lib/data-version.js'), 'exports.syncDataVersion = () => { throw new Error("unexpected rebuild"); };');
+  write(path.join(root, 'scripts/lib/data-version.js'), 'exports.expectedDataVersion = () => { throw new Error("unexpected rebuild"); };');
   write(path.join(root, 'scripts/lib/runtime-errors.js'), 'exports.errorMessage = error => error && error.message ? String(error.message) : String(error);');
   write(path.join(root, 'scripts/lib/scene-store.js'), `module.exports = { loadSceneShards: () => ({sources: [{source: ${JSON.stringify(input[0].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/scenes.json'))}, browserShardPath: {}, corePath: ${JSON.stringify(path.join(root, 'data/core.json'))}, indexPath: ${JSON.stringify(path.join(root, 'data/index.json'))} };`);
   write(path.join(root, 'scripts/lib/blueprint-store.js'), `module.exports = { loadBlueprintShards: () => ({sources: [{source: ${JSON.stringify(input[1].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/blueprints.json'))} };`);

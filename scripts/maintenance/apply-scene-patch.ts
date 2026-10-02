@@ -10,7 +10,7 @@ const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const zlib: typeof import('node:zlib') = require('node:zlib');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 
 const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '../..'));
 const PROTECTED_SCENE_FIELDS = Object.freeze(['prompt', 'negative', 'animaCaption', 'recommendedSize', 'rating', 'mature']);
@@ -249,7 +249,7 @@ function main(argv: any = process.argv.slice(2)) {
       rebuild() {
         if (plan.writes.some((doc: any) => doc.type === 'scene')) sceneStore.writeAggregate(sceneStore.loadSceneShards().scenes);
         if (plan.writes.some((doc: any) => doc.type === 'blueprint')) blueprintStore.writeBlueprintAggregate();
-        return syncDataVersion(ROOT).version;
+        return expectedDataVersion(ROOT);
       },
       validate() {
         runValidation('scripts/maintenance/validate-scenes.js');

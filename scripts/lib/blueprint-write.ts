@@ -6,7 +6,7 @@ import { WithImplicitCoercion } from 'node:buffer';
 /**
  * scripts/lib/blueprint-write.js — 蓝图计划的磁盘准备与应用适配器（G16）
  *
- * 衔接 G12 纯规划器（blueprint-change-plan）与 routes/maintenance 的统一快照协议
+ * 衔接 G12 纯规划器（blueprint-change-plan）与维护工具的统一快照协议
  * （snapshotFiles / restoreSnapshot / saveSnapshotBackup）。职责只有两件事：
  *
  * - prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io })：
@@ -29,7 +29,7 @@ import { WithImplicitCoercion } from 'node:buffer';
  * 不存在——被未登记文件占用即拒绝，绝不覆盖。
  *
  * 不接路由、不改 DATA_VERSION、不动压缩伴生文件、不碰锁与 HTTP 响应；
- * 不修改 blueprint-change-plan / blueprint-store / routes/maintenance。
+ * 不修改 blueprint-change-plan / blueprint-store；产品保存由 Rust 事务实现。
  * io 可注入（realpathSync/lstatSync/readFileSync/unlinkSync），写适配器
  * writeFileAtomic(source, content) 可注入，缺省用内置原子写（同目录临时文件
  * + rename，不创建目录；目录边界已在准备/复核阶段验证）。

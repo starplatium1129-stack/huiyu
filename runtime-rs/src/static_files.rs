@@ -214,3 +214,211 @@ fn conditional(mut response: Response, tag: &str, condition: Option<&HeaderValue
     }
     response
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{config::Config, host::HostAuthority};
+    use serde_json::json;
+    use std::{
+        io::Write,
+        sync::Arc,
+        time::{Duration, SystemTime},
+    };
+    use tokio_util::sync::CancellationToken;
+
+    fn variants(file: &Path, bytes: &[u8]) -> [Vec<u8>; 3] {
+        let mut brotli = Vec::new();
+        brotli::BrotliCompress(
+            &mut std::io::Cursor::new(bytes),
+            &mut brotli,
+            &brotli::enc::BrotliEncoderParams::default(),
+        )
+        .unwrap();
+        let mut gzip = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
+        gzip.write_all(bytes).unwrap();
+        let gzip = gzip.finish().unwrap();
+        for (suffix, value) in [
+            ("", bytes),
+            (".br", brotli.as_slice()),
+            (".gz", gzip.as_slice()),
+        ] {
+            std::fs::write(format!("{}{suffix}", file.display()), value).unwrap();
+        }
+        [brotli, gzip, bytes.to_vec()]
+    }
+
+    #[tokio::test]
+    async fn static_http_preserves_document_redirects_and_mutable_encoding_etags() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path();
+        let config = Arc::new(Config {
+            app_root: root.into(),
+            runtime_root: root.join("runtime"),
+            ai_workspace_root: root.join("unused-ai"),
+            sd_host: "http://127.0.0.1:1".into(),
+            sd_auth: None,
+            comfy_host: "http://127.0.0.1:1".into(),
+            bind: "127.0.0.1:0".parse().unwrap(),
+            token: String::new(),
+            desktop_secret: Some("fixture".into()),
+            source_profile_id: None,
+            workspace_pointer: None,
+            workspace_candidate: None,
+            config_root: None,
+            gateway_origin: String::new(),
+            workspace_root: None,
+            workspace_id: None,
+            create_workspace: false,
+        });
+        std::fs::create_dir_all(root.join("docs")).unwrap();
+        std::fs::write(
+            root.join("docs/redirects.json"),
+            br#"{"/docs/art-direction.html":"/docs/guides/art/art-direction.html"}"#,
+        )
+        .unwrap();
+        let data = config.content_root().join("data");
+        std::fs::create_dir_all(&data).unwrap();
+        let file = data.join("scenes.json");
+        let old = variants(&file, br#"{"revision":"old"}"#);
+        let shutdown = CancellationToken::new();
+        let state = AppState::new(
+            config,
+            Arc::new(HostAuthority::new(
+                None,
+                Some(json!({"bundledUi":true})),
+                None,
+            )),
+            shutdown.clone(),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move {
+            axum::serve(
+                listener,
+                crate::router(state).into_make_service_with_connect_info::<std::net::SocketAddr>(),
+            )
+            .await
+            .unwrap();
+        });
+        let client = reqwest::Client::builder()
+            .no_proxy()
+            .redirect(reqwest::redirect::Policy::none())
+            .timeout(Duration::from_secs(3))
+            .build()
+            .unwrap();
+        let known = format!("{base}/docs/art-direction.html?v=2");
+        for method in [Method::GET, Method::HEAD] {
+            let response = client.request(method, &known).send().await.unwrap();
+            assert_eq!(response.status(), 308);
+            assert_eq!(
+                response.headers()["location"],
+                "/docs/guides/art/art-direction.html?v=2"
+            );
+        }
+        for (method, url) in [
+            (Method::GET, format!("{base}/docs/unknown.md")),
+            (Method::POST, known),
+        ] {
+            let response = client.request(method, url).send().await.unwrap();
+            assert!(!response.status().is_redirection());
+            assert!(!response.headers().contains_key("location"));
+        }
+        let resource = format!("{base}/data/scenes.json");
+        let mut etags = Vec::new();
+        for ((accept, encoding), bytes) in [
+            ("br", Some("br")),
+            ("br;q=0,gzip;q=1", Some("gzip")),
+            ("br;q=0,gzip;q=0", None),
+        ]
+        .into_iter()
+        .zip(old)
+        {
+            let response = client
+                .get(&resource)
+                .header("accept-encoding", accept)
+                .header("origin", "https://huiyu.localhost")
+                .send()
+                .await
+                .unwrap();
+            assert_eq!(response.status(), 200);
+            assert_eq!(
+                response
+                    .headers()
+                    .get("content-encoding")
+                    .map(|h| h.to_str().unwrap()),
+                encoding
+            );
+            assert_eq!(response.headers()["cache-control"], "private, no-cache");
+            if encoding.is_some() {
+                let vary = response
+                    .headers()
+                    .get_all("vary")
+                    .iter()
+                    .map(|v| v.to_str().unwrap())
+                    .collect::<Vec<_>>()
+                    .join(",")
+                    .to_lowercase();
+                assert!(
+                    vary.contains("origin") && vary.contains("accept-encoding"),
+                    "{vary}"
+                );
+            }
+            let tag = response.headers()["etag"].to_str().unwrap().to_owned();
+            assert_eq!(response.bytes().await.unwrap().as_ref(), bytes);
+            let fresh = client
+                .get(&resource)
+                .header("accept-encoding", accept)
+                .header("if-none-match", &tag)
+                .send()
+                .await
+                .unwrap();
+            assert_eq!(fresh.status(), 304);
+            assert!(fresh.bytes().await.unwrap().is_empty());
+            etags.push(tag);
+        }
+        assert_ne!(etags[0], etags[1]);
+        assert_ne!(etags[1], etags[2]);
+        let new = variants(&file, br#"{"revision":"new"}"#);
+        let changed = SystemTime::now() + Duration::from_secs(2);
+        for suffix in ["", ".br", ".gz"] {
+            std::fs::OpenOptions::new()
+                .write(true)
+                .open(format!("{}{suffix}", file.display()))
+                .unwrap()
+                .set_modified(changed)
+                .unwrap();
+        }
+        let response = client
+            .get(&resource)
+            .header("accept-encoding", "br")
+            .header("if-none-match", &etags[0])
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(response.status(), 200);
+        assert_ne!(response.headers()["etag"], etags[0]);
+        assert_eq!(response.bytes().await.unwrap().as_ref(), new[0]);
+        std::fs::remove_file(format!("{}.br", file.display())).unwrap();
+        let missing = client
+            .get(&resource)
+            .header("accept-encoding", "br,gzip")
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(missing.headers()["content-encoding"], "gzip");
+        std::fs::remove_file(&file).unwrap();
+        assert_eq!(
+            client
+                .get(&resource)
+                .header("accept-encoding", "gzip")
+                .send()
+                .await
+                .unwrap()
+                .status(),
+            404
+        );
+        shutdown.cancel();
+        server.abort();
+    }
+}

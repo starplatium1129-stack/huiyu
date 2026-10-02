@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import { buildReferenceDesignWorkflow } from '../lib/generation/reference-design-workflow';
 'use strict';
 
 
@@ -22,9 +23,9 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * 当前引擎与参数（2026-08-30 首轮 153 张底模为 Anima Aesthetic v1.1）：
  *   MiaoMiao Harem Anima v1.6 + qwen_3_06b CLIP + qwen_image_vae，
  *   960×1536，30 steps res_multistep，CFG 4.5，ImageSharpenKJ RCAS 0.75。
- *   2026-08-31 起不再手写 workflow——直接复用生产构建器
- *   routes/anima/workflows.js 的 buildWorkflow（模型/参数/TeaCache/RCAS
- *   全部由项目单一事实源决定），TeaCache 默认 rel_l1_thresh=0.08（生产默认），
+ *   使用离线参考图构建器 reference-design-workflow；Node 后端退役时只保留
+ *   此工具实际使用的节点图，模型/参数/TeaCache/RCAS 与原图一致。
+ *   TeaCache 默认 rel_l1_thresh=0.08，
  *   --no-teacache 可关。
  *
  * 用法：
@@ -116,7 +117,7 @@ const dryRun = args.includes('--dry-run');
 const limit = Number((args.find((a: any) => a.startsWith('--limit=')) || '').split('=')[1] || 0) || null;
 const seedShift = Number((args.find((a: any) => a.startsWith('--seed-shift=')) || '').split('=')[1] || 0) || 0;
 // TeaCache 加速（2026-08-31 接入）：默认关？不——与生产管线一致默认开。
-// 参数照抄 routes/anima/workflows.js 现成契约：rel_l1_thresh=0.08（生产默认 teaCacheThresh || 0.08），
+// 保留现成参考图契约：rel_l1_thresh=0.08，
 // start_percent 0 / end_percent 1 / cache_device cuda。res_multistep 必须保持
 // （docs 168 行：TeaCache 在 SDE 采样器下失效，1.90x vs 1.04x）。
 // 需要对照画质可 --no-teacache 关闭，或 --tea-thresh=<值> 调档（0 = 关闭）。
@@ -140,39 +141,9 @@ function buildPrompt(identityProse: any, identity: any, outfitProse: any, outfit
   return `score_7, score_6, masterpiece, best quality, ${identityProse}, ${outfitProse}, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
 }
 
-// ── 工作流：复用生产渲染管线构建器，不再平行实现 ────────────────────────────
-// 2026-08-31 教训：此前手写一份等价 workflow JSON 属「平行实现」，
-// 被用户点名「项目里都有现成的，为什么自己造」。现改为直接 require 生产
-// routes/anima/workflows.js 的 buildWorkflow——UNET/CLIP/VAE/KSampler/TeaCache/
-// RCAS 全部由项目单一事实源（anima-model-catalog + anima-generation-contract +
-// 生产节点图）决定。脚本只保留两处脚本专属：
-//   1) SaveImage filename_prefix（design_batch_tmp，避免与正式管线输出混名）
-//   2) 分辨率 960×1536（三视图竖版比例；属 anima 家族官方推荐尺寸集，
-//      anima-model-catalog 中 base/2.9b/yume 均列出 960x1536）
-const prodBuildWorkflow = require(path.join(ROOT, 'routes', 'anima', 'workflows.js')).buildWorkflow;
-const { MODELS } = require(path.join(ROOT, 'server', 'anima-model-catalog.js'));
-// 2026-09-06：按用户指定参考库本轮统一切 MiaoMiao Harem Anima v1.6（TeaCache 生产默认不变）。
-const MODEL_ID = 'anima-miaomiao-v1.6';
-const MODEL = MODELS[MODEL_ID];
-
+// The offline sheet builder owns the fixed model, 960×1536 canvas and candidate prefix.
 function buildWorkflow(text: any, seed: any) {
-  const wf = prodBuildWorkflow({
-    modelId: MODEL_ID,
-    prompt: text,
-    negative: NEGATIVE,
-    width: 960,
-    height: 1536,
-    seed,
-    steps: MODEL.steps,
-    cfg: MODEL.cfg,
-    sampler: MODEL.sampler,
-    scheduler: MODEL.scheduler,
-    teaCache: teaThresh > 0,
-    teaCacheThresh: teaThresh || 0.08,
-  });
-  // 输出文件名走本脚本专用前缀（生产构建器用 OUTPUT_FILENAME_PREFIX）
-  wf['10'].inputs.filename_prefix = 'design_batch_tmp';
-  return wf;
+  return buildReferenceDesignWorkflow({ prompt: text, negative: NEGATIVE, seed, teaCacheThresh: teaThresh });
 }
 
 async function comfyAlive() {

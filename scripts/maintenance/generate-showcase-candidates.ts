@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 /**
@@ -56,8 +57,7 @@ const {
   ARTIST_NEUTRAL_SUBJECT,
 }: typeof import('../lib/generate-showcase-candidates-settings.js') = require('../lib/generate-showcase-candidates-settings.js');
 const {
-  splitList, argument, assertNotShowcase, recordIdOf, shouldReuse, imageRelFor, writeJsonAtomic,
-  imageInfo,
+  splitList, argument, assertNotShowcase, recordIdOf, shouldReuse, imageRelFor, imageInfo,
 }: typeof import('../lib/generate-showcase-candidates-support.js') = require('../lib/generate-showcase-candidates-support.js');
 const {
   planAllBatches, filterPlanned, artistBatch, popularBatch, latestLoraBatch, reviewOverrideJobs,
@@ -267,8 +267,7 @@ export = {
   reviewOverrideJobs, buildAttemptTwo, buildAttemptThree, buildAttemptFour,
   reviewAttemptThreeJobs, reviewAttemptFourJobs,
   buildArtistPrompt, buildStudioPrompt, buildPopularPrompt,
-  assertNotShowcase, imageInfo, verifyOutput, shouldReuse, writeJsonAtomic,
-  recordIdOf, imageRelFor, filterPlanned,
+  assertNotShowcase, imageInfo, verifyOutput, shouldReuse, recordIdOf, imageRelFor, filterPlanned,
   REVIEW_OVERRIDES, ATTEMPT_3_OVERRIDES, ATTEMPT_4_OVERRIDES,
   constants: {
     DEFAULT_OUTPUT, MANIFEST_NAME, REVIEW_INDEX_NAME, CONTACT_SHEET_NAME,

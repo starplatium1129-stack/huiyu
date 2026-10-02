@@ -31,16 +31,6 @@ export function particleDirtyRect(points: readonly ParticleBodyPoint[], style: P
   return right > left && bottom > top ? { x: left, y: top, width: right - left, height: bottom - top } : null
 }
 
-/** Include stationary neighbours and tails crossing the clip, preserving the original paint order. */
-export function particlesInDirtyRect(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, dpr: number, rect: DirtyRect): ParticleBodyPoint[] {
-  const right = rect.x + rect.width, bottom = rect.y + rect.height
-  return points.filter(point => {
-    const margin = paintMargin(point, style, dpr)
-    return Math.max(point.x, point.prevX) + margin >= rect.x && Math.min(point.x, point.prevX) - margin <= right
-      && Math.max(point.y, point.prevY) + margin >= rect.y && Math.min(point.y, point.prevY) - margin <= bottom
-  })
-}
-
 /** Keep distant wakes separate instead of repainting the untouched space between them. */
 export function particleDirtyRegions(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, width: number, height: number, dpr: number): DirtyRect[] {
   const tile = Math.ceil(64 * dpr), w = Math.round(width * dpr), h = Math.round(height * dpr)

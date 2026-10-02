@@ -3,7 +3,7 @@
 // generate-showcase-candidates: historical review configuration and catalog inputs.
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const genConst: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
+const genConst: any = (require('./generation/sd-catalog.js') as typeof import('./generation/sd-catalog.js'));
 
 const ROOT = path.resolve(__dirname, '..', '..');
 

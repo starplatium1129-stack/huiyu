@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 /**
@@ -31,12 +32,7 @@ function argument(name: any, fallback: any = '') {
 function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 
 const characters = readJson(path.join(ROOT, 'data', 'popular-characters.json')).characters;
 

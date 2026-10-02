@@ -62,15 +62,6 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
     })
   }
 
-  /** 已「加入分镜」的镜头数（videoStore 持久，刷新不丢）。 */
-
-  async function refreshShotsPending() {
-    try {
-      const { readShotsCtx } = await import('@/composables/useVideoBridge')
-      shotsPending.value = readShotsCtx().length
-    } catch { /* 保持 0 */ }
-  }
-
   function flashAdded(count: number) {
     flash(`已加入分镜短片（当前 ${count} 个镜头）`)
   }
@@ -195,8 +186,6 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
   return {
     videoTargetData,
     goToVideo,
-    shotsPending,
-    refreshShotsPending,
     addToShots,
     goToShots,
     handleHistoryToShots,

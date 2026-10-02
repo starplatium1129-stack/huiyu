@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { gatewayJson } from '../lib/gateway-json';
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 /**
@@ -21,8 +23,8 @@ const path: typeof import('path') = require('path');
 const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
 const { showcaseSubjectGuards, compositionNegative }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
-const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
-const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
+const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
+const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -51,12 +53,7 @@ function readJson(file: string): any {
     throw new Error(`读取 ${path.relative(ROOT, file)} 失败：${error instanceof Error ? error.message : String(error)}`);
   }
 }
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 function stableSeed(characterId: any, blueprintId: any, attempt: any) {
   const digest = crypto.createHash('sha256').update(`popular-all-rella:${characterId}:${blueprintId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
@@ -173,17 +170,7 @@ function planAll(attempt: any, seedAttempt: any = attempt, keys: any = []) {
   return candidates;
 }
 
-async function gatewayJson(base: any, pathname: any, options: any) {
-  let response;
-  try {
-    response = await fetch(base.replace(/\/$/, '') + pathname, Object.assign({ cache: 'no-store' }, options || {}));
-  } catch (error) {
-    return { response: null, data: null, error: error instanceof Error ? error.message : String(error) };
-  }
-  let data = null;
-  try { data = await response.json(); } catch (error) { /* keep null */ }
-  return { response, data };
-}
+
 function buildSubmissionBody(candidate: any) {
   // no-LoRA 模式：不传 loraId / loraStrength / character。
   return {

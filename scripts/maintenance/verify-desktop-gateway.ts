@@ -6,7 +6,7 @@ import path = require('node:path');
 import net = require('node:net');
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-const { killProcessTree }: typeof import('../../server/process-tree') = require('../../server/process-tree');
+const { killProcessTree }: typeof import('../lib/process-tree') = require('../lib/process-tree');
 import safe = require('../lib/delivery-paths');
 import { loadNativeLicenseMaterials, NATIVE_MANIFEST, readNativeMaterialFromWorktree, verifyNativeLicenseMaterial } from '../lib/native-license-materials';
 const {copyDir}:typeof import('./desktop-stage-resources')=require('./desktop-stage-resources');

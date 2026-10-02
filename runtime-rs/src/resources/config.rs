@@ -1,4 +1,5 @@
 use super::{Error, PathBuf, Result, Value, fs, json, policy};
+use crate::file_paths;
 use std::{path::Path, sync::Arc};
 use tokio_util::sync::CancellationToken;
 #[derive(Clone)]
@@ -133,7 +134,7 @@ pub(super) fn load(
             "Absolute userDataRoot required",
         ));
     }
-    let user_root = fs::absolute(&user_root)?;
+    let user_root = file_paths::absolute(&user_root)?;
     let store = user_root.join("resource-library-v1");
     for root in roots {
         if !root.is_absolute() {

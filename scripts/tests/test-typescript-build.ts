@@ -1,12 +1,12 @@
-import assert = require('node:assert/strict');
-import fs = require('node:fs');
-import os = require('node:os');
-import path = require('node:path');
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 
-type ProjectName = 'services' | 'node' | 'tests' | 'browser';
+type ProjectName = 'node' | 'tests' | 'browser';
 const builder = import('../build-node.mjs');
 
 function fixture() {
@@ -19,12 +19,9 @@ function fixture() {
     fs.writeFileSync(file, content);
   };
   const configs: Record<ProjectName, Record<string, any>> = {
-    services: { compilerOptions: { target: 'ES2022', module: 'CommonJS', strict: true, declaration: true,
-      rootDir: 'services', outDir: 'services', types: [], skipLibCheck: true },
-      include: ['services/**/*.ts'], exclude: ['services/**/*.d.ts'] },
     node: { compilerOptions: { target: 'ES2022', module: 'Node16', moduleResolution: 'Node16',
       strict: true, noEmitOnError: true, rootDir: '.', outDir: '.', types: [], skipLibCheck: true },
-      include: ['server.ts', 'server/**/*.ts'], exclude: [] },
+      include: ['scripts/entry.ts', 'scripts/tool-value.ts', 'scripts/lib/**/*.ts'], exclude: [] },
     browser: { compilerOptions: { target: 'ES2022', module: 'None', strict: true, noEmitOnError: true,
       rootDir: '.', outDir: '.', types: [], lib: ['ES2022', 'DOM'], skipLibCheck: true },
       include: ['tools/*.ts'], exclude: [] },
@@ -33,14 +30,14 @@ function fixture() {
       include: ['scripts/tests/**/*.ts'], exclude: [] },
   };
   const configFile: Record<ProjectName, string> = {
-    services: 'tsconfig.runtime.json', node: 'tsconfig.node.json', tests: 'tsconfig.tests.json', browser: 'tsconfig.browser-tools.json',
+    node: 'tsconfig.node.json', tests: 'tsconfig.tests.json', browser: 'tsconfig.browser-tools.json',
   };
   for (const project of Object.keys(configs) as ProjectName[]) write(configFile[project], JSON.stringify(configs[project]));
   write('package.json', JSON.stringify({ name: 'isolated-typescript-fixture', private: true, type: 'commonjs' }));
   write('package-lock.json', JSON.stringify({ lockfileVersion: 3, packages: {} }));
-  write('services/value.ts', 'export const serviceValue: number = 1;\n');
-  write('server/value.ts', 'export const value: number = 41;\n');
-  write('server.ts', "import { value } from './server/value';\nexport = { value };\n");
+  write('scripts/tool-value.ts', 'export const toolValue: number = 1;\n');
+  write('scripts/lib/value.ts', 'export const value: number = 41;\n');
+  write('scripts/entry.ts', "import { value } from './lib/value';\nexport = { value };\n");
   write('scripts/tests/probe.ts', 'export const value: number = 7;\n');
   // These are separate classic scripts served on different pages, not one global module.
   write('tools/one.ts', "const label: string = 'one'; document.title = label;\n");
@@ -51,6 +48,8 @@ function fixture() {
     exists: (relative: string) => fs.existsSync(path.join(root, relative)),
     remove: () => {
       // Remove directory aliases first so Windows does not traverse a sibling twice.
+      const library = path.join(root, 'scripts/lib');
+      if (fs.lstatSync(library, { throwIfNoEntry: false })?.isSymbolicLink()) fs.unlinkSync(library);
       for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
         if (entry.isSymbolicLink()) fs.unlinkSync(path.join(root, entry.name));
       }
@@ -65,12 +64,11 @@ test('clean source checkout builds working CommonJS and independent classic brow
     const { buildProjects } = await builder;
     const result = buildProjects(f.root, { quiet: true });
     assert.deepEqual(result.map(item => [item.project, item.sources, item.outputs, item.cached]), [
-      ['services', 1, 2, false], ['node', 2, 2, false], ['tests', 1, 1, false], ['browser', 2, 2, false],
+      ['node', 3, 3, false], ['tests', 1, 1, false], ['browser', 2, 2, false],
     ]);
     const value = execFileSync(process.execPath,
-      ['-e', 'process.stdout.write(String(require(process.argv[1]).value))', path.join(f.root, 'server.js')], { encoding: 'utf8' });
+      ['-e', 'process.stdout.write(String(require(process.argv[1]).value))', path.join(f.root, 'scripts/entry.js')], { encoding: 'utf8' });
     assert.equal(value, '41');
-    assert.match(f.read('services/value.d.ts'), /serviceValue/);
     for (const file of ['tools/one.js', 'tools/two.js']) {
       assert.doesNotMatch(f.read(file), /\b(?:exports|require)\b/);
       assert.match(f.read(file), /document\.title = label/);
@@ -85,8 +83,8 @@ test('read-only check leaves both generated files and build cache absent', async
     const { buildProjects } = await builder;
     const result = buildProjects(f.root, { quiet: true, check: true });
     assert.ok(result.every(item => item.outputs === 0 && !item.cached));
-    assert.equal(f.exists('server.js'), false);
-    assert.equal(f.exists('services/value.js'), false);
+    assert.equal(f.exists('scripts/entry.js'), false);
+    assert.equal(f.exists('scripts/tool-value.js'), false);
     assert.equal(f.exists('tools/one.js'), false);
     assert.equal(f.exists('.cache'), false);
   } finally { f.remove(); }
@@ -97,16 +95,16 @@ test('type errors in any selected project prevent publication of all project out
   try {
     const { buildProjects } = await builder;
     buildProjects(f.root, { quiet: true });
-    const previous = f.read('services/value.js');
-    const record = f.read('.cache/typescript-build/services.json');
-    f.write('services/value.ts', 'export const serviceValue: number = 2;\n');
-    f.write('server/value.ts', "export const value: number = 'invalid';\n");
+    const previous = f.read('scripts/tool-value.js');
+    const record = f.read('.cache/typescript-build/node.json');
+    f.write('scripts/tool-value.ts', 'export const toolValue: number = 2;\n');
+    f.write('scripts/lib/value.ts', "export const value: number = 'invalid';\n");
     assert.throws(() => buildProjects(f.root, { quiet: true }), /not assignable to type 'number'/);
-    assert.equal(f.read('services/value.js'), previous);
-    assert.equal(f.read('.cache/typescript-build/services.json'), record);
-    f.write('server/value.ts', 'export const value: number = 42;\n');
+    assert.equal(f.read('scripts/tool-value.js'), previous);
+    assert.equal(f.read('.cache/typescript-build/node.json'), record);
+    f.write('scripts/lib/value.ts', 'export const value: number = 42;\n');
     buildProjects(f.root, { quiet: true });
-    assert.match(f.read('services/value.js'), /serviceValue = 2/);
+    assert.match(f.read('scripts/tool-value.js'), /toolValue = 2/);
   } finally { f.remove(); }
 });
 
@@ -114,7 +112,7 @@ test('browser source imports are checked in the test environment and execute thr
   const f = fixture();
   try {
     const { buildProjects } = await builder;
-    // The application is a mixed package: gateway scripts are CommonJS and browser sources use ESM.
+    // The application is a mixed package: maintenance scripts are CommonJS and browser sources use ESM.
     f.write('package.json', JSON.stringify({ name: 'isolated-typescript-fixture', private: true }));
     f.write('src/metadata.json', JSON.stringify({ value: 23 }));
     f.write('src/browser.ts', "import metadata from './metadata.json' with { type: 'json' };\nexport const value: number = metadata.value;\n");
@@ -129,21 +127,21 @@ test('browser source imports are checked in the test environment and execute thr
   } finally { f.remove(); }
 });
 
-test('a failing test type check blocks publication even when services and gateway sources pass', async () => {
+test('a failing test type check blocks publication even when tool sources pass', async () => {
   const f = fixture();
   try {
     const { buildProjects } = await builder;
     buildProjects(f.root, { quiet: true });
-    const previous = f.read('services/value.js');
-    const cache = f.read('.cache/typescript-build/services.json');
-    f.write('services/value.ts', 'export const serviceValue: number = 12;\n');
+    const previous = f.read('scripts/tool-value.js');
+    const cache = f.read('.cache/typescript-build/node.json');
+    f.write('scripts/tool-value.ts', 'export const toolValue: number = 12;\n');
     f.write('scripts/tests/probe.ts', "export const value: number = 'invalid test';\n");
     assert.throws(() => buildProjects(f.root, { quiet: true }), /not assignable to type 'number'/);
-    assert.equal(f.read('services/value.js'), previous);
-    assert.equal(f.read('.cache/typescript-build/services.json'), cache);
+    assert.equal(f.read('scripts/tool-value.js'), previous);
+    assert.equal(f.read('.cache/typescript-build/node.json'), cache);
     f.write('scripts/tests/probe.ts', 'export const value: number = 12;\n');
     buildProjects(f.root, { quiet: true });
-    assert.match(f.read('services/value.js'), /serviceValue = 12/);
+    assert.match(f.read('scripts/tool-value.js'), /toolValue = 12/);
   } finally { f.remove(); }
 });
 
@@ -154,15 +152,15 @@ test('source, compiler options, dependency lock and changed or missing outputs i
     const build = () => buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(build().cached, false);
     assert.equal(build().cached, true);
-    f.write('server/value.ts', 'export const value: number = 42;\n');
+    f.write('scripts/lib/value.ts', 'export const value: number = 42;\n');
     assert.equal(build().cached, false);
-    const compiled = f.read('server/value.js');
-    f.write('server/value.js', 'module.exports = { value: 0 };\n');
+    const compiled = f.read('scripts/lib/value.js');
+    f.write('scripts/lib/value.js', 'module.exports = { value: 0 };\n');
     assert.equal(build().cached, false);
-    assert.equal(f.read('server/value.js'), compiled);
-    fs.unlinkSync(path.join(f.root, 'server/value.js'));
+    assert.equal(f.read('scripts/lib/value.js'), compiled);
+    fs.unlinkSync(path.join(f.root, 'scripts/lib/value.js'));
     assert.equal(build().cached, false);
-    assert.equal(f.read('server/value.js'), compiled);
+    assert.equal(f.read('scripts/lib/value.js'), compiled);
     f.write('package-lock.json', JSON.stringify({ lockfileVersion: 3, packages: {}, fixtureRevision: 1 }));
     assert.equal(build().cached, false);
     const config = JSON.parse(f.read('tsconfig.node.json')) as { compilerOptions: Record<string, any> };
@@ -178,21 +176,21 @@ test('deleted source removes only its unchanged owned output, including after ca
   const f = fixture();
   try {
     const { buildProjects } = await builder;
-    f.write('server/retired.ts', 'export const retired = true;\n');
-    f.write('server/edited.ts', 'export const edited = true;\n');
+    f.write('scripts/lib/retired.ts', 'export const retired = true;\n');
+    f.write('scripts/lib/edited.ts', 'export const edited = true;\n');
     buildProjects(f.root, { quiet: true, projects: ['node'] });
     const record = JSON.parse(f.read('.cache/typescript-build/node.json')) as Record<string, unknown>;
     record.version = 1;
     delete record.queries;
     f.write('.cache/typescript-build/node.json', JSON.stringify(record));
-    f.write('server/edited.js', '// user-owned recovery note\n');
-    f.write('server/unrelated.js', '// pre-existing external fixture\n');
-    fs.unlinkSync(path.join(f.root, 'server/retired.ts'));
-    fs.unlinkSync(path.join(f.root, 'server/edited.ts'));
+    f.write('scripts/lib/edited.js', '// user-owned recovery note\n');
+    f.write('scripts/lib/unrelated.js', '// pre-existing external fixture\n');
+    fs.unlinkSync(path.join(f.root, 'scripts/lib/retired.ts'));
+    fs.unlinkSync(path.join(f.root, 'scripts/lib/edited.ts'));
     buildProjects(f.root, { quiet: true, projects: ['node'] });
-    assert.equal(f.exists('server/retired.js'), false);
-    assert.equal(f.read('server/edited.js'), '// user-owned recovery note\n');
-    assert.equal(f.read('server/unrelated.js'), '// pre-existing external fixture\n');
+    assert.equal(f.exists('scripts/lib/retired.js'), false);
+    assert.equal(f.read('scripts/lib/edited.js'), '// user-owned recovery note\n');
+    assert.equal(f.read('scripts/lib/unrelated.js'), '// pre-existing external fixture\n');
   } finally { f.remove(); }
 });
 
@@ -204,13 +202,13 @@ test('stale-output manifest traversal cannot remove a file outside the project',
     f.write('../sentinel.js', 'outside project sentinel');
     const record = JSON.parse(f.read('.cache/typescript-build/node.json')) as { outputs: Record<string, string> };
     const hash = createHash('sha256').update('outside project sentinel').digest('hex');
-    record.outputs['server/../../sentinel.js'] = hash;
-    record.outputs['server/.. /.. /sentinel.js'] = hash;
+    record.outputs['scripts/lib/../../../sentinel.js'] = hash;
+    record.outputs['scripts/lib/.. /.. /.. /sentinel.js'] = hash;
     f.write('.cache/typescript-build/node.json', JSON.stringify(record));
-    f.write('server/value.ts', 'export const value: number = 42;\n');
+    f.write('scripts/lib/value.ts', 'export const value: number = 42;\n');
     assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, false);
     assert.equal(f.read('../sentinel.js'), 'outside project sentinel');
-    assert.match(f.read('server/value.js'), /value = 42/);
+    assert.match(f.read('scripts/lib/value.js'), /value = 42/);
   } finally { f.remove(); }
 });
 
@@ -220,24 +218,24 @@ test('symbolic and hard-linked outputs reject all publication before altering ou
     const f = fixture();
     try {
       buildProjects(f.root, { quiet: true, projects: ['node'] });
-      const previous = f.read('server.js');
-      const outside = kind === 'symbolic' ? '../outside-server/value.js' : '../sentinel.js';
+      const previous = f.read('scripts/entry.js');
+      const outside = kind === 'symbolic' ? '../outside-library/value.js' : '../sentinel.js';
       if (kind === 'symbolic') {
-        fs.renameSync(path.join(f.root, 'server'), path.join(f.root, '../outside-server'));
-        fs.symlinkSync(path.join(f.root, '../outside-server'), path.join(f.root, 'server'),
+        fs.renameSync(path.join(f.root, 'scripts/lib'), path.join(f.root, '../outside-library'));
+        fs.symlinkSync(path.join(f.root, '../outside-library'), path.join(f.root, 'scripts/lib'),
           process.platform === 'win32' ? 'junction' : 'dir');
       }
       f.write(outside, 'outside project sentinel');
       if (kind === 'hard') {
-        const target = path.join(f.root, 'server/value.js');
+        const target = path.join(f.root, 'scripts/lib/value.js');
         fs.unlinkSync(target);
         fs.linkSync(path.join(f.root, outside), target);
       }
-      f.write('server.ts', "import { value } from './server/value';\nexport = { value, changed: true };\n");
+      f.write('scripts/entry.ts', "import { value } from './lib/value';\nexport = { value, changed: true };\n");
       assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }),
         kind === 'symbolic' ? /symbolic link or junction/ : /without hard links/);
       assert.equal(f.read(outside), 'outside project sentinel');
-      assert.equal(f.read('server.js'), previous, 'an earlier output must not publish before path validation finishes');
+      assert.equal(f.read('scripts/entry.js'), previous, 'an earlier output must not publish before path validation finishes');
     } finally { f.remove(); }
   }
 });
@@ -250,7 +248,7 @@ test('a cache-directory junction is rejected before generating outputs', async (
     fs.symlinkSync(path.join(f.root, '../outside-cache'), path.join(f.root, '.cache'),
       process.platform === 'win32' ? 'junction' : 'dir');
     assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /symbolic link or junction/);
-    assert.equal(f.exists('server.js'), false);
+    assert.equal(f.exists('scripts/entry.js'), false);
     assert.equal(f.exists('../outside-cache/typescript-build'), false);
     assert.equal(f.read('../outside-cache/sentinel.txt'), 'outside cache sentinel');
   } finally { f.remove(); }
@@ -274,26 +272,26 @@ test('newly added declaration file invalidates cache and catches introduced type
   const f = fixture();
   try {
     const { buildProjects } = await builder;
-    f.write('server/types.d.ts', 'interface ServerConfig { port: number; }\n');
-    f.write('server/value.ts', 'export const config: ServerConfig = { port: 8080 };\nexport const value: number = 41;\n');
+    f.write('scripts/lib/types.d.ts', 'interface ServerConfig { port: number; }\n');
+    f.write('scripts/lib/value.ts', 'export const config: ServerConfig = { port: 8080 };\nexport const value: number = 41;\n');
 
     const first = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(first.cached, false);
     const second = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(second.cached, true);
 
-    // 构建后新增 .d.ts，通过接口合并影响现有源码类型判断（增加必选字段导致 server/value.ts 报错）
-    f.write('server/conflict.d.ts', 'interface ServerConfig { secretKey: string; }\n');
+    // 构建后新增 .d.ts，通过接口合并影响现有源码类型判断（增加必选字段导致 scripts/lib/value.ts 报错）
+    f.write('scripts/lib/conflict.d.ts', 'interface ServerConfig { secretKey: string; }\n');
     assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /secretKey/);
 
     // 改为合法且兼容的新增声明文件，缓存必须失效并重新构建
-    f.write('server/conflict.d.ts', 'interface ServerConfig { optionalHost?: string; }\n');
+    f.write('scripts/lib/conflict.d.ts', 'interface ServerConfig { optionalHost?: string; }\n');
     const rebuilt = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(rebuilt.cached, false);
     assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
 
     // 删除新增的声明文件，同样触发缓存失效并重新构建
-    fs.unlinkSync(path.join(f.root, 'server/conflict.d.ts'));
+    fs.unlinkSync(path.join(f.root, 'scripts/lib/conflict.d.ts'));
     const unlinked = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(unlinked.cached, false);
     assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
@@ -311,11 +309,11 @@ test('modifying inherited base config invalidates child project cache and catche
     f.write('tsconfig.node.json', JSON.stringify({
       extends: './tsconfig.base.json',
       compilerOptions: { module: 'Node16', moduleResolution: 'Node16', noEmitOnError: true, rootDir: '.', outDir: '.', types: [] },
-      include: ['server.ts', 'server/**/*.ts'],
+      include: ['scripts/entry.ts', 'scripts/lib/**/*.ts'],
       exclude: [],
     }));
     // 源码包含未使用的局部变量，但当前未开启 noUnusedLocals，构建能够通过
-    f.write('server/value.ts', 'const unusedLocalValue = 100;\nexport const value: number = 41;\n');
+    f.write('scripts/lib/value.ts', 'const unusedLocalValue = 100;\nexport const value: number = 41;\n');
 
     const first = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     assert.equal(first.cached, false);
@@ -344,7 +342,7 @@ test('cached checking observes transitive sources, new resolution candidates and
     const { buildProjects } = await builder;
     const build = () => buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
     f.write('src/choice.d.ts', 'export declare const value: number;\n');
-    f.write('server/value.ts', "import { value } from '../src/choice';\nexport { value };\nconst checked: number = value;\n");
+    f.write('scripts/lib/value.ts', "import { value } from '../../src/choice';\nexport { value };\nconst checked: number = value;\n");
     assert.equal(build().cached, false);
     assert.equal(build().cached, true);
     // Neither imported path belongs to this project's root inventory.
@@ -358,7 +356,7 @@ test('cached checking observes transitive sources, new resolution candidates and
 
     f.write('node_modules/fixture-lib/package.json', JSON.stringify({ name: 'fixture-lib', types: 'index.d.ts' }));
     f.write('node_modules/fixture-lib/index.d.ts', 'export declare const value: number;\n');
-    f.write('server/value.ts', "import { value } from 'fixture-lib';\nexport { value };\nconst checked: number = value;\n");
+    f.write('scripts/lib/value.ts', "import { value } from 'fixture-lib';\nexport { value };\nconst checked: number = value;\n");
     assert.equal(build().cached, false);
     assert.equal(build().cached, true);
     f.write('node_modules/fixture-lib/index.d.ts', 'export declare const value: string;\n');

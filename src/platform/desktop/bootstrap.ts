@@ -1,5 +1,5 @@
 import type { DesktopBootstrap, DesktopWorkspaceSession } from '../../../types/desktop-bootstrap.ts'
-import { isNativeDesktopOrigin } from '../../../services/desktopOrigins.ts'
+import { isNativeDesktopOrigin } from '../desktopOrigins.ts'
 import { invokeHost as invoke } from './hostApi.ts'
 
 export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {

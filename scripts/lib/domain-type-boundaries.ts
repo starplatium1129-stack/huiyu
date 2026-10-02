@@ -25,7 +25,7 @@ export interface BoundaryReport {
 export const DOMAIN_TYPE_ROOTS = ['src/types/promptHistory.ts', 'src/types/artwork.ts', 'src/types/generation.ts', 'src/types/anima.ts', 'src/utils/resultContext.ts'];
 export const ARTWORK_USE_CASE_ROOTS = ['src/application/artwork/saveGeneratedArtwork.ts'];
 const slash = (file: string) => file.replace(/\\/g, '/');
-const forbiddenPath = /^(src\/(stores|composables|components|views|router|storage|api)(\/|\.)|routes\/)/;
+const forbiddenPath = /^src\/(stores|composables|components|views|router|storage|api)(\/|\.)/;
 const framework = /^(vue|pinia|vue-router)(\/|$)/;
 
 function imports(source: string, file: string, unknown: string[]): ModuleEdge[] {

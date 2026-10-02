@@ -1,10 +1,10 @@
 import { spawnSync } from 'node:child_process';
 import path = require('node:path');
 const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
-const { runNpmScript, printExcerpt, root }: typeof import('./run-quality-suite') = require('./run-quality-suite');
+const { printExcerpt, root }: typeof import('./run-quality-suite') = require('./run-quality-suite');
 const { runTestProcessPool }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
 
-const optional = ['tooling', 'release', 'legacy'] as const;
+const optional = ['tooling', 'release'] as const;
 type OptionalLane = typeof optional[number];
 interface OptionalSelection { lane: OptionalLane; files: readonly string[] }
 
@@ -28,7 +28,7 @@ function selectOptionalTests(files: readonly string[]): OptionalSelection[] {
     if (/^(package(?:-lock)?\.json|.*config\.[^/]+)$/.test(file) || /^\.github\//.test(file)) return all();
     if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(file)) continue;
     if (/^runtime-rs\/native-/.test(file)) includeLane('release');
-    else if (/^(routes|server|services|runtime-rs)\//.test(file) || /^server\.(ts|js)$/.test(file)) includeLane('legacy');
+    else if (/^runtime-rs\//.test(file)) continue;
     else if (/^desktop-tauri\//.test(file) || file === 'deploy-desktop.bat'
       || /^src\/(platform\/desktop|types\/live2dNative|utils\/live2dNativeAdapter)/.test(file)) includeLane('release');
     else if (/^scripts\/maintenance\//.test(file)) {
@@ -60,10 +60,6 @@ async function main() {
   catch (error) { console.log(String(error)); selection = optional.map(lane => ({ lane, files: QUALITY_TEST_SUITES[lane] })); }
   console.log(`optional tests: ${selection.map(({ lane, files }) => `${lane} ${files.length}/${QUALITY_TEST_SUITES[lane].length}`).join(', ') || 'none (product changes use core/related tests)'}`);
   let code = 0;
-  if (selection.some(({ lane }) => lane === 'legacy')) {
-    const build = runNpmScript('build:web:run', 600_000);
-    if (!build.ok) { printExcerpt(build.output, 'SPA for legacy HTTP'); return 1; }
-  }
   const controller = new AbortController();
   const interrupt = () => controller.abort();
   process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);

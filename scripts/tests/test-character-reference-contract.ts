@@ -17,7 +17,6 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const test: typeof import('node:test') = require('node:test');
 const Ajv: any = require('ajv');
-const { createReferenceResources }: typeof import('../../routes/resources-reference') = require('../../routes/resources-reference');
 
 const root = path.resolve(__dirname, '..', '..');
 const readJson = (...parts: any[]) => JSON.parse(fs.readFileSync(path.join(root, ...parts), 'utf8'));
@@ -125,7 +124,7 @@ test('character reference view: urls use external /character-references/ prefix 
 test('reference asset audit shares gateway roots, rejects missing URLs and directories', (t) => {
   const os: typeof import('node:os') = require('node:os');
   const { auditReferenceView }: typeof import('../maintenance/check-ref-urls') = require('../maintenance/check-ref-urls');
-  const { resolveCharRefRoot }: typeof import('../../server/config') = require('../../server/config');
+  const { resolveCharRefRoot }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-ref-root-'));
   t.after(() => {
     assert.ok(path.resolve(temp).startsWith(path.resolve(os.tmpdir()) + path.sep));
@@ -156,25 +155,4 @@ test('reference asset audit shares gateway roots, rejects missing URLs and direc
   assert.equal(auditReferenceView(invalid, temp, { AICS_REFERENCE_AUDIT_MODE: 'structure' }).missing, 3,
     'structure mode must still reject missing, traversal, and empty URLs');
   assert.equal(resolveCharRefRoot(temp, { AICS_CHARACTER_REF_ROOT: path.join(custom, 'face.png') }), '');
-});
-
-test('reference view stays local-only even when no external reference root is configured', () => {
-  const middleware = createReferenceResources({
-    CHARACTER_REF_ROOT: '', CHARACTER_REF_EXPLICIT_ROOT: '', ROOT_DIR: root, PORT: 3000,
-  });
-  let statusCode = 200;
-  let payload: any = null;
-  let nextCalled = false;
-  const res = {
-    setHeader() {},
-    status(code: number) { statusCode = code; return { json(value: any) { payload = value; } }; },
-  };
-  middleware({
-    path: '/data/character-reference-view.json', method: 'GET',
-    headers: { host: '127.0.0.1:3000', 'x-forwarded-for': '198.51.100.8' },
-    socket: { remoteAddress: '127.0.0.1' },
-  }, res, () => { nextCalled = true; });
-  assert.equal(statusCode, 403);
-  assert.deepEqual(payload, { ok: false, code: 'REFERENCE_LOCAL_ONLY', error: '该参考资源仅限本机使用' });
-  assert.equal(nextCalled, false);
 });

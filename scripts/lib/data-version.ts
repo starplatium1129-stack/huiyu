@@ -27,16 +27,11 @@ function expectedDataVersion(root: string) {
   const hash = crypto.createHash('sha1');
   for (const name of VERSIONED_FILES) {
     const file = path.join(root, 'data', name);
-    hash.update(name + '=' + fs.readFileSync(file, 'utf8').length + ';');
-    hash.update(fs.readFileSync(file));
+    const bytes = fs.readFileSync(file);
+    hash.update(name + '=' + bytes.toString('utf8').length + ';');
+    hash.update(bytes);
   }
   return Number.parseInt(hash.digest('hex').slice(0, 8), 16);
 }
 
-/** 兼容旧维护调用方：只计算版本，不再写入 src/stores/sceneStore.ts。 */
-function syncDataVersion(root: string) {
-  const version = expectedDataVersion(root);
-  return { wrote: false, version };
-}
-
-export = { VERSIONED_FILES, expectedDataVersion, syncDataVersion };
+export = { VERSIONED_FILES, expectedDataVersion };

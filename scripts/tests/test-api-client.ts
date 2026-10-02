@@ -604,9 +604,8 @@ test('API modules keep operation timeouts within the documented baselines', () =
 });
 
 test('generation decoder accepts the current Comfy serializer including cancelling and numeric codes', async () => {
-  const { publicJob }: typeof import('../../routes/anima/job-state') = require('../../routes/anima/job-state');
   for (const status of ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled']) {
-    const wire = publicJob({ id: 'fixture', status, createdAt: Date.now(), input: { seed: 0, modelId: 'fixture' }, errorCode: 500 }, '/api/generation');
+    const wire = { id: 'fixture', status, provider: 'comfy', createdAt: 1, progress: 0, seed: 0, modelId: 'fixture', code: 500, resultUrl: null, error: null };
     const result = await createGenerationApi(createApiClient(async () => jsonResponse({ ok: true, job: wire }))).getJob('fixture');
     assert.equal(result.job.status, status);
     assert.equal(result.job.seed, 0);

@@ -3,6 +3,7 @@
 let http: typeof import('http') = require('http');
 let https: typeof import('https') = require('https');
 let path: typeof import('path') = require('path');
+let fs: typeof import('fs') = require('fs');
 let performance = (require('perf_hooks') as typeof import('perf_hooks')).performance;
 let wavQuality: typeof import('../lib/wav-quality') = require('../lib/wav-quality');
 
@@ -142,8 +143,12 @@ async function main() {
   results.push(metric('TTS nene warm', neneWarm));
 
   if (directVoiceUrl) {
-    let config = (require('../../server/config') as typeof import('../../server/config')).loadGatewayConfig(path.resolve(__dirname, '..', '..'), process.env);
-    let profile: any = config.VOICE_PROFILES.nene;
+    const appRoot = path.resolve(process.env.AICS_APP_ROOT || path.resolve(__dirname, '..', '..'));
+    const runtimeRoot = path.resolve(process.env.AICS_RUNTIME_ROOT || path.join(appRoot, 'runtime'));
+    const saved: unknown = JSON.parse(fs.readFileSync(path.join(runtimeRoot, 'config.json'), 'utf8'));
+    const profile = saved && typeof saved === 'object' && 'voices' in saved
+      ? (saved as { voices?: Record<string, any> }).voices?.nene : undefined;
+    if (!profile?.references?.gentle) throw new Error('Direct voice benchmark requires the saved nene gentle reference.');
     for (let mode = 0; mode <= 3; mode += 1) {
       let direct = await timedRequest('POST', '/tts', {
         text:'私がそばにいますから、安心してください。',

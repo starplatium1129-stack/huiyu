@@ -195,12 +195,7 @@ function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 
 function imageInfo(buffer: any) {
   if (!Buffer.isBuffer(buffer) || buffer.length < 24) return null;
@@ -275,6 +270,6 @@ function shouldReuse(key: any, record: any, imageFile: any, force: any) {
 export = {
   SCENE_INPAINT_CONFIG, PREVIEW_GRID, PREVIEW_SCALE, JOB_TIMEOUT_MS, POLL_INTERVAL_MS, UPSCALE,
   MASKGEN, attemptFor, attemptRecordId, outputImageRel, sha256, sourceRecordFor, validateSourceRecord,
-  shouldReuse, DENOISE_CONFIGS, writeJsonAtomic, imageInfo, argument, DEFAULT_OUTPUT, MANIFEST_NAME,
+  shouldReuse, DENOISE_CONFIGS, imageInfo, argument, DEFAULT_OUTPUT, MANIFEST_NAME,
   assertNotShowcase, splitList, KEYS, readJson, ATTEMPT, ROOT, AI_ROOT, SCENE_SHOWCASE_DIR,
 };

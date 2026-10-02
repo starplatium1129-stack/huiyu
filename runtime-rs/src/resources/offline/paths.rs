@@ -1,5 +1,6 @@
 use super::{Error, Options, Result, Value, fs, json};
 use crate::config::Config;
+use crate::file_paths;
 use std::path::{Path, PathBuf};
 
 pub(super) struct Paths {
@@ -161,7 +162,7 @@ pub(crate) fn showcase_root(config: &Config) -> Option<PathBuf> {
                 .map(PathBuf::from)
         });
     if let Some(path) = explicit
-        .and_then(|path| fs::absolute(&path).ok())
+        .and_then(|path| file_paths::absolute(&path).ok())
         .and_then(|path| edition(&path))
     {
         return Some(path);

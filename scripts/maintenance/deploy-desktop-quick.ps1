@@ -48,7 +48,7 @@ if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -U
 $setup = $null
 if ($UseInstaller) {
   $setup = if ($InstallerPath) { Get-Item -LiteralPath $InstallerPath -ErrorAction Stop } else {
-    Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
+    Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike '*-upgrade-setup.exe' } |
       Sort-Object LastWriteTime -Descending | Select-Object -First 1
   }
   if (-not $setup) { throw 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri' }

@@ -1,6 +1,7 @@
 mod platform;
 use super::{Error, Result};
 use crate::file_identity;
+use crate::file_paths::{absolute, key};
 pub(super) use platform::{hostname, space};
 use serde_json::Value;
 use std::{
@@ -9,38 +10,6 @@ use std::{
     path::{Component, Path, PathBuf},
 };
 pub(super) const MAX_JSON: u64 = 16 * 1024 * 1024;
-pub(super) fn absolute(path: &Path) -> Result<PathBuf> {
-    let path = std::path::absolute(path)?;
-    let mut output = PathBuf::new();
-    for part in path.components() {
-        match part {
-            Component::CurDir => {}
-            Component::ParentDir => {
-                output.pop();
-            }
-            part => output.push(part.as_os_str()),
-        }
-    }
-    #[cfg(windows)]
-    {
-        let text = output.to_string_lossy();
-        if let Some(rest) = text.strip_prefix("\\\\?\\UNC\\") {
-            return Ok(PathBuf::from(format!("\\\\{rest}")));
-        }
-        if let Some(rest) = text.strip_prefix("\\\\?\\") {
-            return Ok(PathBuf::from(rest));
-        }
-    }
-    Ok(output)
-}
-pub(super) fn key(path: &Path) -> Result<String> {
-    let value = absolute(path)?.to_string_lossy().into_owned();
-    Ok(if cfg!(windows) {
-        value.to_lowercase()
-    } else {
-        value
-    })
-}
 pub(super) fn within(root: &Path, path: &Path) -> Result<bool> {
     let root = key(root)?;
     let path = key(path)?;

@@ -1,47 +1,13 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import os from 'node:os'
-import path from 'node:path'
-import net from 'node:net'
-import { createRequire } from 'node:module'
-import { createServer } from 'vite'
 import { chromium } from '@playwright/test'
-const require = createRequire(import.meta.url)
-const { openWorkspace } = require('../../server/workspace/client.js')
-const { createWorkspaceGateway } = require('../../server/workspace/gateway.js')
-const { createWorkspaceMediaRouter } = require('../../server/workspace/host-media.js')
-const { removeFixtureRoot } = require('./gateway-test-stack.js')
-const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-library-browser-'))
-const service = await openWorkspace({ root, workspaceId: 'browser-library', create: true })
-const reserved = net.createServer()
-await new Promise<void>(resolve => reserved.listen(0, '127.0.0.1', resolve))
-const port = (reserved.address() as net.AddressInfo).port
-await new Promise<void>(resolve => reserved.close(() => resolve()))
-const server = await createServer({ configFile: false, appType: 'custom', resolve: { alias: { '@': path.resolve('src') } },
-  optimizeDeps: { noDiscovery: true, entries: [] }, server: { host: '127.0.0.1', port, strictPort: true, watch: null } })
-server.middlewares.use((req, res, next) => { if (req.url !== '/fixture') return next(); res.setHeader('Content-Type', 'text/html'); res.setHeader('Referrer-Policy', 'no-referrer'); res.end('<!doctype html><title>Isolated desktop library</title>') })
-await server.listen()
-const address = server.httpServer!.address()
-if (!address || typeof address === 'string') throw new Error('No browser fixture port')
-const origin = `http://127.0.0.1:${address.port}`
-const binding = createWorkspaceGateway({ service, allowedOrigins: [origin] })
-const app = require('express')()
-const provenance: Array<{ origin: unknown; referer: unknown; site: unknown; destination: unknown }> = []
-app.use((req: import('express').Request, _res: import('express').Response, next: import('express').NextFunction) => {
-  if (req.method === 'GET' && req.path.startsWith('/api/workspace/')) provenance.push({ origin: req.headers.origin, referer: req.headers.referer, site: req.headers['sec-fetch-site'], destination: req.headers['sec-fetch-dest'] })
-  next()
-})
-app.use('/api/workspace', createWorkspaceMediaRouter(service, binding.authority))
-app.use('/api/workspace', binding.router)
-server.middlewares.use(app)
-const session = binding.authority.issue({ origin, principalId: 'browser-fixture', scopes: ['workspace:read', 'workspace:write', 'workspace:backup'] })
-const bootstrap = { protocolVersion: 1, windowRole: 'atelier', windowId: 'atelier', bundledUiAvailable: false, sourceProfileId: `profile-${'a'.repeat(64)}`,
-  sourceOrigin: origin, connection: 'ready', runtime: { origin, protocolVersion: 1, ownership: 'managed', runtimeEpoch: service.runtimeEpoch,
-    workspace: { ...session, domains: ['artwork', 'settings', 'chat', 'draft'], generation: 1, bundledUi: false } } }
+import { startRustBrowserFixture } from './rust-browser-fixture.mjs'
+const fixture = await startRustBrowserFixture()
+const { origin, bootstrap, provenance } = fixture
 const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file))
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 try {
-  const context = await browser.newContext()
+  const context = await fixture.context(browser)
   await context.addInitScript(descriptor => {
     Object.assign(window, { fixtureOffline: false, __TAURI__: { core: { invoke: async () => {
       if (Reflect.get(window, 'fixtureOffline')) throw new Error('fixture disconnected')
@@ -123,4 +89,4 @@ try {
   assert.equal(resumed.href, origin + '/fixture')
   await context.close()
   console.log('Desktop library browser: actual frontend adapters → private HTTP → SQLite/media, original bytes, settings without dual-write, reload, disconnect cached reads, denied writes and reconnect without navigation passed. Isolated browser, not native WebView2.')
-} finally { await browser.close(); await server.close(); await binding.close(); removeFixtureRoot(root) }
+} finally { await browser.close(); await fixture.close() }

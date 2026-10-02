@@ -41,3 +41,39 @@ pub(super) fn load(runtime: &Path, provided: Option<&str>) -> Result<String> {
     written?;
     Ok(token)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn token_is_persisted_repaired_and_explicit_override_does_not_replace_it() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().join("runtime");
+        assert_eq!(
+            load(&root, Some("explicit-fixture-token")).unwrap(),
+            "explicit-fixture-token"
+        );
+        assert!(!root.exists());
+        let generated = load(&root, None).unwrap();
+        assert_eq!(generated.len(), 64);
+        assert!(generated.bytes().all(|byte| byte.is_ascii_hexdigit()));
+        assert_eq!(load(&root, None).unwrap(), generated);
+        let file = root.join("state/gateway_token");
+        let before = std::fs::read(&file).unwrap();
+        assert_eq!(
+            load(&root, Some("another-explicit-token")).unwrap(),
+            "another-explicit-token"
+        );
+        assert_eq!(std::fs::read(&file).unwrap(), before);
+        for corrupt in ["", "bad-token", &"z".repeat(64), &"a".repeat(63)] {
+            std::fs::write(&file, corrupt).unwrap();
+            let repaired = load(&root, None).unwrap();
+            assert_eq!(repaired.len(), 64);
+            assert!(repaired.bytes().all(|byte| byte.is_ascii_hexdigit()));
+            assert_eq!(load(&root, Some("")).unwrap(), repaired);
+            assert_eq!(std::fs::read_to_string(&file).unwrap().trim(), repaired);
+        }
+        assert_eq!(std::fs::read_dir(root.join("state")).unwrap().count(), 1);
+    }
+}

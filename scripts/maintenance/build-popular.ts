@@ -3,7 +3,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { aggregatePath, aggregateIsCurrent, loadPopularShards, writePopularAggregate }: typeof import('../lib/popular-store') = require('../lib/popular-store');
-const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 const { refreshPrecompressed } = require('../lib/ensure-data-build');
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -32,8 +32,8 @@ if (check) {
   console.log('Built ' + aggregatePath + ': ' + characters.length + ' characters (' + counts + ')');
   // 同步 DATA_VERSION（与 build-scenes 共用哈希口径）
   try {
-    const result = syncDataVersion(ROOT);
-    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${result.version}`);
+    const version = expectedDataVersion(ROOT);
+    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${version}`);
   } catch (e) {
     console.warn('[DATA_VERSION] 同步跳过:', runtimeErrorMessage(e));
   }

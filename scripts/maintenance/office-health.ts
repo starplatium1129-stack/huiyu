@@ -18,7 +18,7 @@ function check(name: string, passed: boolean, detail: string) {
 
 check('package.json', fs.existsSync(path.join(root, 'package.json')), '项目入口文件');
 check('node_modules', fs.existsSync(path.join(root, 'node_modules')), '依赖目录');
-check('runtime source', fs.existsSync(path.join(root, 'src')) && fs.existsSync(path.join(root, 'services')), '前后端源码');
+check('runtime source', fs.existsSync(path.join(root, 'src')) && fs.existsSync(path.join(root, 'runtime-rs', 'src')), '前端与 Rust 运行时源码');
 check('desktop source', fs.existsSync(path.join(root, 'desktop-tauri')), '桌面端目录');
 check('docs index', fs.existsSync(path.join(root, 'docs', 'INDEX.md')), '工程索引');
 

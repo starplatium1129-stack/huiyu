@@ -24,7 +24,7 @@ ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 histo
 
 生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 与重构护栏保护用例及其可达依赖，拒绝具体存储/API 与 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
 
-WAI HTTP 入口只依赖 `server/generation/` 的类型、校验、业务和兼容导出。业务可复用 `routes/anima/service` 与纯超分资源模块，不可加载顶层 HTTP 路由或 Express；校验器仅允许 Express 的请求类型。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务。本次模块禁止显式 any；这些约束纳入既有 ESLint 门禁和允许/拒绝夹具，不声称覆盖全仓所有间接边。
+WAI HTTP、参数校验和任务执行位于 `runtime-rs/src/generation/`；图片引擎、公共执行契约与存储保持单向依赖，边界检查见 `scripts/lib/rust-boundaries.ts`。旧 Node HTTP 路由与服务已退役，离线样张工具仅保留 `scripts/lib/generation/` 中实际使用的参数、目录与窄用途节点图。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务。这些前端约束继续由既有 ESLint 与依赖夹具保护，不声称覆盖全仓所有间接边。
 
 | 资源 | 唯一拥有者 / 停止动作 | 保持的语义 |
 | --- | --- | --- |

@@ -1,4 +1,5 @@
 use super::*;
+use crate::file_paths;
 use crate::resources::{
     digest,
     manifest::{Entry, Manifest},
@@ -10,7 +11,7 @@ mod integrity;
 fn directory() -> tempfile::TempDir {
     // Windows can expose an 8.3 alias in TEMP. Fixture roots use the physical
     // long name while production path/link checks retain their strict contract.
-    let parent = fs::absolute(&std::env::temp_dir().canonicalize().unwrap()).unwrap();
+    let parent = file_paths::absolute(&std::env::temp_dir().canonicalize().unwrap()).unwrap();
     tempfile::tempdir_in(parent).unwrap()
 }
 

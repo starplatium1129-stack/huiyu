@@ -302,15 +302,12 @@ Reusable interaction primitives live in `src/components/ui/` and use Reka UI.
 `StudioSelect` provides single selection and replaces every native `<select>`;
 it accepts flat or grouped options, disabled entries, string or numeric values,
 and treats an empty-string value as a real choice ("all / auto / none") rather
-than as "nothing selected". `StudioCombobox` provides searchable single
-selection; `StudioPopover` provides non-modal anchored content with collision
+than as "nothing selected". `StudioPopover` provides non-modal anchored content with collision
 handling and focus restoration. `StudioTooltip` replaces the native `title`
 attribute for explanatory hints, opening on hover and on keyboard focus, and
 re-routing its portal into an ancestor `<dialog>` so it is not buried under a
 modal. `StudioMediaPlayer` renders audio and video without the browser's native
-control chrome, keeping the decoded element as the playback core. `StudioTabs`
-owns keyboard selection and a shared segmented appearance while keeping
-previously opened panels mounted. Views retain their deferred-loading
+control chrome, keeping the decoded element as the playback core. Views retain their deferred-loading
 boundaries. Data tools use `StudioPopover`, with file inputs kept outside the
 transient surface and an explicit focus handoff to the restore dialog.
 The secondary navigation also uses `StudioPopover`, loading `AppMoreMenu`

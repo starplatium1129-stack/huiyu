@@ -1,9 +1,5 @@
 use super::*;
 use crate::maintenance::{backup, context::Context, journal};
-use std::{
-    io::Write,
-    process::{Command, Stdio},
-};
 fn write(path: &Path, value: &Value) {
     std::fs::create_dir_all(path.parent().unwrap()).unwrap();
     std::fs::write(path, blueprints::json_text(value)).unwrap();
@@ -64,36 +60,10 @@ fn data(bytes: &[u8]) -> String {
     use base64::engine::general_purpose::STANDARD;
     format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes))
 }
-fn oracle(options: &Options, operations: &[Value]) -> Value {
-    let mut command = Command::new("node");
-    command
-        .arg(
-            Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join("src/maintenance/content_products/legacy-oracle.cjs"),
-        )
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        command.creation_flags(0x08000000);
-    }
-    let mut child = command.spawn().unwrap();
-    child.stdin.take().unwrap().write_all(&serde_json::to_vec(&json!({"options":{"root":options.root,"runtime":options.runtime,"showcase":options.showcase},"operations":operations})).unwrap()).unwrap();
-    let result = child.wait_with_output().unwrap();
-    assert!(
-        result.status.success(),
-        "{}",
-        String::from_utf8_lossy(&result.stderr)
-    );
-    serde_json::from_slice(&result.stdout).unwrap()
-}
 #[test]
-fn jpeg_products_match_node_manifests_and_preserve_transaction_digests() {
+fn jpeg_products_match_legacy_manifests_and_preserve_transaction_digests() {
     let temp = tempfile::tempdir().unwrap();
     let rust = fixture(&temp.path().join("rust"));
-    let node = fixture(&temp.path().join("node"));
     let bytes = image();
     let data = data(&bytes);
     let operations = vec![
@@ -102,7 +72,11 @@ fn jpeg_products_match_node_manifests_and_preserve_transaction_digests() {
         json!({"hero":true,"body":{"character":"nene","image":data}}),
         json!({"hero":true,"body":{"character":"nene","action":"reset"}}),
     ];
-    let expected = oracle(&node, &operations);
+    let fixture: Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/legacy-content-products.json"
+    ))
+    .unwrap();
+    let expected = &fixture["expected"];
     let mut responses = Vec::new();
     for operation in &operations {
         let mut value = save(
@@ -144,7 +118,7 @@ fn jpeg_products_match_node_manifests_and_preserve_transaction_digests() {
     assert_eq!(
         crate::storage::fingerprint(&actual),
         crate::storage::fingerprint(&expected),
-        "Rust {actual}\nNode {expected}"
+        "Rust {actual}\nLegacy contract {expected}"
     );
     assert_eq!(
         std::fs::read(showcase.join("images/sc001.jpg")).unwrap(),

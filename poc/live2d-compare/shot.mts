@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.join(__dirname, 'out');
 fs.mkdirSync(outDir, { recursive: true });
 
-// needs: npm run build && node server.js running on 127.0.0.1:3000
+// needs: npm run build && npm run start:run on 127.0.0.1:3000
 const base = process.env.GATEWAY_URL || 'http://localhost:5173';
 
 const browser = await chromium.launch({ channel: 'chrome' });

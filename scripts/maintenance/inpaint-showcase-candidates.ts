@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { writeJsonAtomic } from '../lib/atomic-files';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
@@ -75,14 +76,15 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const {
   sourceRecordFor, validateSourceRecord, outputImageRel, attemptFiveRecordId, shouldReuse,
-  DENOISE_CONFIGS, writeJsonAtomic, imageInfo, SOURCE_WIDTH, SOURCE_HEIGHT, sha256, argument,
+  DENOISE_CONFIGS, imageInfo, SOURCE_WIDTH, SOURCE_HEIGHT, sha256, argument,
   DEFAULT_OUTPUT, MANIFEST_NAME, assertNotShowcase, splitList, KEYS, INPAINT_CONFIG, readJson,
   isRecord, escapeHtml, ROOT, AI_ROOT, REVIEW_INDEX_NAME, CONTACT_SHEET_NAME, UPSCALE, CROP_SIZE,
   POLL_INTERVAL_MS, JOB_TIMEOUT_MS,
 }: typeof import('../lib/inpaint-showcase-candidates-records.js') = require('../lib/inpaint-showcase-candidates-records.js');
+const { buildOpWorkflow }: typeof import('../lib/inpaint-showcase-candidates-comfy.js') = require('../lib/inpaint-showcase-candidates-comfy.js');
 const {
-  uploadImage, resolveUploadName, buildOpWorkflow, submitAndWait, fetchOutputImage, comfyJson,
-}: typeof import('../lib/inpaint-showcase-candidates-comfy.js') = require('../lib/inpaint-showcase-candidates-comfy.js');
+  uploadImage, resolveUploadName, submitAndWait, fetchOutputImage, comfyJson,
+}: typeof import('../lib/inpaint-comfy-client.js') = require('../lib/inpaint-comfy-client.js');
 const {
   generateMask, opLooksDone, setPython, generatePreviews, buildMaskArgs,
 }: typeof import('../lib/inpaint-showcase-candidates-image.js') = require('../lib/inpaint-showcase-candidates-image.js');
@@ -146,7 +148,7 @@ async function runKey(config: any, manifest: any, key: any, outputDir: any, comf
 
       let outputBuffer;
       try {
-        const promptResult = await submitAndWait(comfyBase, workflow);
+        const promptResult = await submitAndWait(comfyBase, workflow, `aics-inpaint-${process.pid}`, JOB_TIMEOUT_MS, POLL_INTERVAL_MS);
         const outputNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'SaveImage');
         const images = promptResult.entry.outputs && promptResult.entry.outputs[outputNode]
           && promptResult.entry.outputs[outputNode].images;
@@ -280,8 +282,7 @@ if (require.main === module) {
 
 export = {
   INPAINT_CONFIG, KEYS, DENOISE_CONFIGS,
-  argument, splitList, readJson, writeJsonAtomic,
-  isRecord, imageInfo, sha256, escapeHtml, assertNotShowcase,
+  argument, splitList, readJson, isRecord, imageInfo, sha256, escapeHtml, assertNotShowcase,
   sourceRecordFor, validateSourceRecord, attemptFiveRecordId, outputImageRel,
   shouldReuse, buildOpWorkflow, buildMaskArgs, generateMask,
   opLooksDone, buildAttemptFiveRecord, verifyAndIndex, resolveUploadName,

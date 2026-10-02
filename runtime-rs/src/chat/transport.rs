@@ -241,7 +241,9 @@ fn no_proxy(host: &str, value: &str) -> bool {
 }
 fn proxy(target: &Url) -> Option<Url> {
     let bypass = env::var("NO_PROXY")
-        .or_else(|_| env::var("no_proxy"))
+        .ok()
+        .filter(|value| !value.is_empty())
+        .or_else(|| env::var("no_proxy").ok())
         .unwrap_or_default();
     if no_proxy(target.host_str().unwrap_or(""), &bypass) {
         return None;
@@ -269,3 +271,7 @@ fn proxy(target: &Url) -> Option<Url> {
     }
     Some(url)
 }
+
+#[cfg(test)]
+#[path = "transport_tests.rs"]
+mod tests;

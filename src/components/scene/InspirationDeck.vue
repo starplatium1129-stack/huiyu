@@ -23,7 +23,7 @@
       @pointerleave="!dragging && cancel()" @dragstart.prevent>
       <article v-for="(item, depth) in cards" :key="item.key" class="inspiration-deck-card"
         :class="{ front: depth === 0 }" :data-character="item.rail.character"
-        :style="cardStyle(depth)" :inert="depth !== 0" :aria-hidden="depth !== 0">
+        :style="{ '--deck-transform': cardTransform(depth), '--deck-opacity': depth === 0 && turning ? 0 : 1, '--deck-z': 3 - depth }" :inert="depth !== 0" :aria-hidden="depth !== 0">
         <span class="inspiration-deck-seal" aria-hidden="true"><ArchiveIcon :name="railIconName(item.rail.icon)" /></span>
         <div class="inspiration-deck-copy">
           <h2>{{ item.rail.title }}</h2>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useId, type CSSProperties } from 'vue'
+import { computed, ref, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { railIconName } from '@/composables/scene/sceneExplorerPresentation'
 import { useInspirationDeck } from '@/composables/scene/useInspirationDeck'
@@ -58,19 +58,16 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
   const offset = depth * (turning.value === -1 ? -1 : 1)
   return entries.value[(index.value + offset + entries.value.length) % entries.value.length]
 }))
-function cardStyle(depth: number): CSSProperties {
+function cardTransform(depth: number): string {
   const lift = turning.value && depth > 0 ? depth - 1 : depth
   const x = depth === 0 ? (turning.value ? -turning.value * 100 : canAnimate.value ? dragX.value : 0) : lift * 7
   const rotation = depth === 0 ? Math.max(-1.5, Math.min(1.5, x / 40)) : lift * 1.6
-  return {
-    zIndex: 3 - depth,
-    transform: `translate3d(${x}px, ${lift * -7}px, 0) rotate(${rotation}deg) scale(${1 - lift * .025})`,
-    opacity: depth === 0 && turning.value ? 0 : 1,
-  }
+  return `translate3d(${x}px, ${lift * -7}px, 0) rotate(${rotation}deg) scale(${1 - lift * .025})`
 }
 </script>
 
 <style scoped>
+.inspiration-deck-card { transform:var(--deck-transform); opacity:var(--deck-opacity); z-index:var(--deck-z); }
 .inspiration-deck { grid-area:moods; display:grid; grid-template-columns:minmax(150px,.45fr) minmax(0,1fr); align-items:center; gap:var(--s-4); min-width:0; padding:var(--s-3) var(--s-4) var(--s-4) 0; }
 .inspiration-deck-intro { min-width:0; }
 .inspiration-deck-kicker { display:flex; align-items:center; gap:var(--s-2); color:var(--accent); font-size:var(--fs-label); font-weight:600; }

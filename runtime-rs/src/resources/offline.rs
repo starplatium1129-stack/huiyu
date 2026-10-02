@@ -8,7 +8,7 @@ mod showcase;
 mod tests;
 
 use super::{Error, Result, Value, config, fs, json, lease};
-use crate::config::Config;
+use crate::{config::Config, file_paths};
 pub(crate) use paths::showcase_root;
 use std::{collections::HashMap, path::PathBuf};
 use tokio_util::sync::CancellationToken;
@@ -57,7 +57,7 @@ fn absolute(raw: Option<&String>, name: &str) -> Result<PathBuf> {
             format!("{name} must be absolute without parent traversal"),
         ));
     }
-    fs::absolute(&path)
+    Ok(file_paths::absolute(&path)?)
 }
 fn parse(args: &[String]) -> Result<Options> {
     let mut flags = HashMap::new();

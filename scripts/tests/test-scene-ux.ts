@@ -66,31 +66,6 @@ assert(sceneUx.personalScore(preferredScene, profile) > sceneUx.personalScore(we
 assert(sceneUx.isPersonalFavorite(preferredScene, profile), 'history favorites must be available to scene filters');
 assert(sceneUx.personalReason(preferredScene, profile).includes('收藏'), 'personal recommendation must explain why a scene is promoted');
 
-const sceneStory = { id:'story-bound', story:'宁宁在雨后的站台回头微笑' };
-assert(sceneUx.isSceneBoundStory(sceneStory, '宁宁在雨后的站台回头微笑', ''),
-  'an unchanged scene story must be recognized as scene-bound');
-assert(sceneUx.isSceneBoundStory(sceneStory, '  宁宁在雨后的站台回头微笑  ', sceneStory.story),
-  'scene-bound comparison must ignore surrounding whitespace');
-assert(!sceneUx.isSceneBoundStory(sceneStory, '我想画夏目在海边看日落', sceneStory.story),
-  'a free-form story must not be removed when an incompatible scene is cleared');
-
-const historyTagScene = { id:'history-tags', tags:['school_uniform', 'classroom', 'window_light'] };
-assert.deepStrictEqual(sceneUx.restoreHistoryManualTags({}, historyTagScene, true), historyTagScene.tags,
-  'legacy history must restore compatible scene tags so the scene template remains complete');
-assert.deepStrictEqual(sceneUx.restoreHistoryManualTags({ manual_tags:[] }, historyTagScene, true), [],
-  'an explicit empty manual tag snapshot must not fall back to scene defaults');
-assert.deepStrictEqual(
-  sceneUx.restoreHistoryManualTags({ manual_tags:['school_uniform', 'custom_hand_pose', 'CLASSROOM'] }, historyTagScene, false),
-  ['custom_hand_pose'],
-  'incompatible history must remove built-in scene tags while preserving genuine manual additions'
-);
-assert.strictEqual(sceneUx.restoreHistoryStory({ story:sceneStory.story }, sceneStory, false), '',
-  'an incompatible history scene must not restore story text still bound to that scene');
-assert.strictEqual(sceneUx.restoreHistoryStory({ story:'我想画夏目在海边看日落' }, sceneStory, false), '我想画夏目在海边看日落',
-  'an incompatible history scene must preserve a free-form story');
-assert.strictEqual(sceneUx.restoreHistoryStory({ story:sceneStory.story }, sceneStory, true), sceneStory.story,
-  'a compatible history scene must retain its original story');
-
 const memory = new Map();
 const storage: any = { getItem:(key: any) => memory.has(key) ? memory.get(key) : null, setItem:(key: any, value: any) => memory.set(key, value) };
 sceneUx.rememberRecent(scenes[0], storage);

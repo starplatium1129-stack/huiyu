@@ -8,7 +8,7 @@ import { workspaceRequest } from '@/api/workspace'
 import { createDesktopArtworkRepository } from './desktop/artworkRepository'
 import { getDesktopRuntime, initializeDesktopRuntime, onDesktopRuntime, refreshDesktopRuntime } from './desktop/runtime'
 import { hostApi } from './desktop/hostApi'
-import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
+import { isNativeDesktopOrigin } from './desktopOrigins.ts'
 import { artworkCleanupFrozen, maintenanceFrozen } from './maintenanceParticipants'
 
 export function isDesktopHost(): boolean {

@@ -4,7 +4,7 @@ import type { Rule } from 'eslint'
 /** Small pilot: type-only edges are allowed; runtime imports are checked after path normalization. */
 export function boundaryViolation(filename: string, specifier: string, typeOnly = false): string | null {
   const normalized = filename.replaceAll('\\', '/')
-  const marker = Math.max(normalized.lastIndexOf('/src/'), normalized.lastIndexOf('/server/'))
+  const marker = normalized.lastIndexOf('/src/')
   if (marker < 0) return null
   const source = normalized.slice(marker + 1)
   const target = specifier.startsWith('@/') ? path.posix.normalize('src/' + specifier.slice(2))
@@ -13,13 +13,6 @@ export function boundaryViolation(filename: string, specifier: string, typeOnly 
     : specifier
   if (/^photoswipe(?:\/|$)/.test(target) && source !== 'src/components/gallery/PhotoSwipeStage.vue') {
     return 'PhotoSwipe is private to PhotoSwipeStage; business code uses artwork identities and adapter events.'
-  }
-  if (source.startsWith('server/generation/') && (/^express(?:\/|$)/.test(target)
-    || /^routes\/[^/]+(?:\.ts|\.js)?$/.test(target) && !/^routes\/superres(?:\.ts|\.js)?$/.test(target))) {
-    // Validation is the only request adapter; the service cannot import HTTP handlers.
-    if (!(source === 'server/generation/validation.ts' && typeOnly && target === 'express')) {
-      return 'Generation services depend on engine services, never HTTP routers or Express.'
-    }
   }
   if (typeOnly) return null
   if (source === 'src/stores/promptBuilderStore.ts' && (/^src\/(?:storage|api|application)\//.test(target)
@@ -50,7 +43,7 @@ export const moduleBoundaries: Rule.RuleModule = {
       if (typeof value !== 'string') {
         const filename = context.filename.replaceAll('\\', '/')
         if (/\/src\/(?:types|storage)\//.test(filename) || /\/src\/utils\/(?:historyRecipe|generationTask|promptPolicy|promptCatalog)\.ts$/.test(filename)
-          || /\/server\/generation\//.test(filename) || /\/src\/stores\/promptBuilderStore\.ts$/.test(filename)
+          || /\/src\/stores\/promptBuilderStore\.ts$/.test(filename)
           || /\/src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(filename)) {
           context.report({ node, messageId: 'boundary', data: { reason: 'Pilot boundary imports must use a literal path.' } })
         }

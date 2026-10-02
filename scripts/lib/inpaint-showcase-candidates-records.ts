@@ -171,12 +171,7 @@ function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 
 function writeTextAtomic(file: any, content: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -263,7 +258,7 @@ function shouldReuse(record: any, imageFile: any, force: any) {
 export = {
   KEYS, INPAINT_CONFIG, CROP_SIZE, PREVIEW_GRID, PREVIEW_SCALE, JOB_TIMEOUT_MS, POLL_INTERVAL_MS,
   UPSCALE, MASKGEN, SOURCE_WIDTH, SOURCE_HEIGHT, attemptFiveRecordId, outputImageRel, sha256,
-  MANIFEST_NAME, readJson, imageInfo, writeJsonAtomic, REVIEW_INDEX_NAME, escapeHtml, writeTextAtomic,
+  MANIFEST_NAME, readJson, imageInfo, REVIEW_INDEX_NAME, escapeHtml, writeTextAtomic,
   CONTACT_SHEET_NAME, sourceRecordFor, validateSourceRecord, shouldReuse, DENOISE_CONFIGS, argument,
   DEFAULT_OUTPUT, assertNotShowcase, splitList, isRecord, ROOT, AI_ROOT,
 };

@@ -1,4 +1,5 @@
 use super::{Error, Result, codec, identity};
+use crate::file_paths::{absolute, key};
 use serde_json::{Value, json};
 use std::{
     fs::{self, File, OpenOptions},
@@ -6,38 +7,6 @@ use std::{
     path::{Component, Path, PathBuf},
 };
 
-pub(crate) fn absolute(path: &Path) -> Result<PathBuf> {
-    let path = std::path::absolute(path)?;
-    let mut output = PathBuf::new();
-    for part in path.components() {
-        match part {
-            Component::CurDir => {}
-            Component::ParentDir => {
-                output.pop();
-            }
-            part => output.push(part.as_os_str()),
-        }
-    }
-    #[cfg(windows)]
-    {
-        let text = output.to_string_lossy();
-        if let Some(rest) = text.strip_prefix("\\\\?\\UNC\\") {
-            return Ok(PathBuf::from(format!("\\\\{rest}")));
-        }
-        if let Some(rest) = text.strip_prefix("\\\\?\\") {
-            return Ok(PathBuf::from(rest));
-        }
-    }
-    Ok(output)
-}
-pub(crate) fn key(path: &Path) -> Result<String> {
-    let value = absolute(path)?.to_string_lossy().into_owned();
-    Ok(if cfg!(windows) {
-        value.to_lowercase()
-    } else {
-        value
-    })
-}
 pub(crate) fn same(left: &Path, right: &Path) -> bool {
     matches!((key(left),key(right)),(Ok(left),Ok(right)) if left==right)
 }

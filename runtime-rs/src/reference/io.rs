@@ -30,54 +30,14 @@ pub(super) fn no_links(path: &Path) -> Result<()> {
     Ok(())
 }
 
-#[cfg(windows)]
-fn single_link(file: &File) -> bool {
-    use std::os::windows::io::AsRawHandle;
-    #[repr(C)]
-    struct Information {
-        attributes: u32,
-        creation: [u32; 2],
-        access: [u32; 2],
-        write: [u32; 2],
-        volume: u32,
-        size_high: u32,
-        size_low: u32,
-        links: u32,
-        index_high: u32,
-        index_low: u32,
-    }
-    #[link(name = "kernel32")]
-    unsafe extern "system" {
-        fn GetFileInformationByHandle(
-            handle: *mut std::ffi::c_void,
-            output: *mut Information,
-        ) -> i32;
-    }
-    let mut value = std::mem::MaybeUninit::<Information>::uninit();
-    // Stable std metadata does not expose link count on Windows. This fixed Win32
-    // ABI preserves the Node reader's nlink=1 boundary without another dependency.
-    unsafe {
-        GetFileInformationByHandle(file.as_raw_handle(), value.as_mut_ptr()) != 0
-            && value.assume_init().links == 1
-    }
-}
-
-#[cfg(unix)]
-fn single_link(file: &File) -> bool {
-    use std::os::unix::fs::MetadataExt;
-    file.metadata().is_ok_and(|meta| meta.nlink() == 1)
-}
-
-#[cfg(not(any(windows, unix)))]
-fn single_link(_: &File) -> bool {
-    false
-}
-
 fn open(path: &Path) -> Result<(Take<File>, u64)> {
     no_links(path)?;
     let file = File::open(path).map_err(|_| unavailable())?;
     let meta = file.metadata().map_err(|_| unavailable())?;
-    if !meta.is_file() || meta.len() > MAX_FILE || !single_link(&file) {
+    if !meta.is_file()
+        || meta.len() > MAX_FILE
+        || !crate::file_identity::opened(&file).is_ok_and(|identity| identity.links == 1)
+    {
         return Err(unavailable());
     }
     Ok((file.take(MAX_FILE + 1), meta.len()))

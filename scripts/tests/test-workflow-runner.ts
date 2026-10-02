@@ -132,17 +132,17 @@ test('Rust-only gate avoids Node suites and a Rust failure stops explicit full b
 test('quick gate selects registered Node tests once across source and generated paths', () => {
   assert.deepEqual(classifyFiles([
     'scripts/tests/test-api-client.ts', 'scripts\\tests\\test-api-client.js',
-    'scripts/tests/test-chat.ts', 'scripts/tests/test-module-boundaries.mts', 'docs/workflow.md',
-  ]), { areas: ['tests'], testFiles: ['test-api-client.js', 'test-chat.js', 'test-module-boundaries.mjs'] });
-  assert.deepEqual(classifyFiles(['src/utils/stream.spec.ts', 'scripts/tests/test-chat.ts']), {
-    areas: ['ui', 'tests'], testFiles: ['test-chat.js'], frontendFiles: ['src/utils/stream.spec.ts'],
+    'scripts/tests/test-chat-storage.ts', 'scripts/tests/test-module-boundaries.mts', 'docs/workflow.md',
+  ]), { areas: ['tests'], testFiles: ['test-api-client.js', 'test-chat-storage.js', 'test-module-boundaries.mjs'] });
+  assert.deepEqual(classifyFiles(['src/utils/stream.spec.ts', 'scripts/tests/test-chat-storage.ts']), {
+    areas: ['ui', 'tests'], testFiles: ['test-chat-storage.js'], frontendFiles: ['src/utils/stream.spec.ts'],
   });
 });
 
 test('quick gate keeps shared runners, unknown or removed tests and device tests at full scope', () => {
   for (const file of [
     'scripts/tests/quality-test-inventory.ts', 'scripts/tests/run-quality-suite.ts',
-    'scripts/tests/gateway-test-stack.ts', 'scripts/build-node.mts',
+    'scripts/tests/mock-stack.ts', 'scripts/build-node.mts',
     'scripts/tests/test-unknown.ts', 'scripts/tests/test-removed-fixture.ts',
     'scripts/tests/test-electron-shell.mts', 'tests/e2e/studio-live2d.spec.ts', 'tests/e2e/helpers/sceneState.ts',
   ]) {
@@ -167,7 +167,7 @@ test('quality suite selection deduplicates exact source entries and rejects typo
   const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
   assert.deepEqual(selectSuiteFiles('unit', ['test-api-client.ts', 'scripts/tests/test-api-client.js', '--verbose']), ['test-api-client.js']);
   assert.deepEqual(selectSuiteFiles('contract', []), QUALITY_TEST_SUITES.contract);
-  for (const arg of ['test-api-clinet.ts', 'test-chat.ts', '../test-api-client.js', '--typo']) {
+  for (const arg of ['test-api-clinet.ts', 'test-chat-storage.ts', '../test-api-client.js', '--typo']) {
     assert.throws(() => selectSuiteFiles('unit', [arg]), /Unknown unit test/);
   }
 });
@@ -175,15 +175,15 @@ test('quality suite selection deduplicates exact source entries and rejects typo
 test('optional selection narrows test-only changes, deduplicates, and expands for affected consumers', async () => {
   const { selectOptionalTests }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
   const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
-  const full = (lane: 'tooling' | 'release' | 'legacy') => ({ lane, files: QUALITY_TEST_SUITES[lane] });
+  const full = (lane: 'tooling' | 'release') => ({ lane, files: QUALITY_TEST_SUITES[lane] });
   for (const [paths, lanes] of [
     [['src/views/HomeView.vue', 'data/scenes/core.json', 'docs/workflow.md'], []],
-    [['scripts/lib/scene-store.ts'], ['tooling', 'release', 'legacy']],
-    [['desktop-tauri/src-tauri/src/main.rs'], ['release']], [['routes/anima.ts'], ['legacy']],
+    [['scripts/lib/scene-store.ts'], ['tooling', 'release']],
+    [['desktop-tauri/src-tauri/src/main.rs'], ['release']], [['routes/anima.ts'], ['tooling', 'release']],
     [['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/Cargo.lock'], []],
-    [['runtime-rs/native-dependencies.windows-x64.json'], ['release']], [['runtime-rs/tests/parity.mjs'], ['legacy']],
-    [['unclassified-code.ts'], ['tooling', 'release', 'legacy']],
-    [['scripts/tests/test-removed.ts'], ['tooling', 'release', 'legacy']],
+    [['runtime-rs/native-dependencies.windows-x64.json'], ['release']], [['runtime-rs/tests/parity.mjs'], []],
+    [['unclassified-code.ts'], ['tooling', 'release']],
+    [['scripts/tests/test-removed.ts'], ['tooling', 'release']],
   ] as const) assert.deepEqual(selectOptionalTests(paths), lanes.map(full));
   const testFile = 'scripts/tests/test-blueprint-write.ts';
   assert.deepEqual(selectOptionalTests([testFile, 'scripts\\tests\\test-blueprint-write.js', 'scripts/tests/test-api-client.ts']),
@@ -216,7 +216,7 @@ test('optional selection narrows test-only changes, deduplicates, and expands fo
   assert.deepEqual(calls, [['tooling', 'test-blueprint-write.js']]); calls.length = 0;
   fakeProcess.env.AICS_HYGIENE_BASE_REF = 'invalid';
   assert.equal(await module.exports.main(), 0);
-  assert.deepEqual(calls, [['build:web:run'], ...(['tooling', 'release', 'legacy'] as const).map(lane => [lane, ...QUALITY_TEST_SUITES[lane]])]);
+  assert.deepEqual(calls, ([...(['tooling', 'release'] as const).map(lane => [lane, ...QUALITY_TEST_SUITES[lane]])]));
 });
 
 test('unit phases execute each selected file once and isolate Windows process inspection', () => {

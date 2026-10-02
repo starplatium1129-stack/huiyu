@@ -69,20 +69,13 @@ fn png() -> Vec<u8> {
     STANDARD.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=").unwrap()
 }
 fn old_identity(config: &Config) -> String {
-    let source = r#"const fs=require('node:fs'),path=require('node:path');
-const {taskFingerprint}=require('./server/tasks/runtime.js');
-const root=path.join(process.argv[1],'ComfyUI'),stat=fs.statSync(root);
-process.stdout.write(taskFingerprint({comfy:process.argv[2],webui:process.argv[2],identity:{root:fs.realpathSync(root),created:stat.birthtimeMs,inode:stat.ino}}));"#;
     let result = std::process::Command::new("node")
-        .arg("-e")
-        .arg(source)
+        .arg(
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("tests/task_recovery/legacy-provider.cjs"),
+        )
         .arg(&config.ai_workspace_root)
         .arg(&config.comfy_host)
-        .current_dir(
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .parent()
-                .unwrap(),
-        )
         .output()
         .unwrap();
     assert!(

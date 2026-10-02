@@ -7,11 +7,6 @@ export interface SDStatus {
   upscalers: string[]
 }
 
-export interface SDProgress {
-  ratio: number
-  etaSeconds: number
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
@@ -40,23 +35,5 @@ export function parseSDStatus(value: unknown): SDStatus {
     samplers: parseSDOptionList(status.samplers),
     schedulers: parseSDOptionList(status.schedulers, ['name', 'label']),
     upscalers: parseSDOptionList(status.upscalers),
-  }
-}
-
-export function parseSDProgress(value: unknown): SDProgress {
-  const progress = isRecord(value) ? value : {}
-  const state = isRecord(progress.state) ? progress.state : {}
-  const reported = Number(progress.progress)
-  const samplingSteps = Number(state.sampling_steps)
-  const stepProgress = samplingSteps > 0
-    ? Number(state.sampling_step ?? 0) / samplingSteps
-    : 0
-  const ratio = Math.max(
-    Number.isFinite(reported) ? reported : 0,
-    Number.isFinite(stepProgress) ? stepProgress : 0,
-  )
-  return {
-    ratio: Math.min(1, Math.max(0, ratio)),
-    etaSeconds: Math.max(0, Math.ceil(Number(progress.eta_relative) || 0)),
   }
 }

@@ -1,6 +1,6 @@
 # 场景库维护手册
 
-场景库采用“维护页面 → 分片源文件 → 自动构建 → 浏览器产物”的结构。开发工作区日常维护通过本机网页完成；底层按小文件保存，网页按需读取 core、index 与角色分组产物，完整聚合供维护和兼容读取。桌面安装版不开放场景源库写入接口。
+场景库采用“维护页面 → 分片源文件 → 自动构建 → 浏览器产物”的结构。日常维护通过本机页面完成；底层按小文件保存，网页按需读取 core、index 与角色分组产物，完整聚合供维护和兼容读取。Rust 承担内容事务；桌面安装版使用运行目录 `content/data` 中的可写副本，不改写安装包。
 
 ## 速查表
 
@@ -31,7 +31,7 @@
 | 目录 | 职责 |
 | --- | --- |
 | src/ | Vue 页面、组件、状态、样式与浏览器 API |
-| server/、routes/、services/ | 网关基础能力、HTTP 路由和服务逻辑 |
+| runtime-rs/ | Rust 网关、任务、SQLite、上游连接与内容/资源事务 |
 | data/、assets/ | 创作数据源与受版本控制的展示素材 |
 | desktop-tauri/ | 桌面壳、原生 Live2D 与安装器 |
 | scripts/、tests/ | 工作流、维护和自动化验证 |
@@ -70,12 +70,12 @@
 | `src/utils/sdError.ts` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
 | `src/utils/sdRequest.ts` | 前端 SD 请求构建、扩展参数和响应解析；网关输入与上游协议在 runtime 边界另行校验 | SD 参数或扩展协议变化时编辑 |
 | `src/utils/backupCore.ts`、`src/platform/desktop/backupActions.ts` | 网页备份格式/迁移规则与桌面 workspace 备份凭证/候选恢复 | 修改对应平台备份契约 |
-| `src/application/artwork/artworkRepository.ts`、`src/storage/artworkRepository.ts`、`src/platform/web/`、`src/platform/desktop/` | 作品端口、当前平台委派与两种持久化适配；桌面 workspace 由 `server/workspace/` 管理 SQLite 和媒体文件 | 不让 View 直接绑定数据库；桌面激活后不回落写旧浏览器库 |
+| `src/application/artwork/artworkRepository.ts`、`src/storage/artworkRepository.ts`、`src/platform/web/`、`src/platform/desktop/` | 作品端口、当前平台委派与两种持久化适配；桌面 workspace 由 `runtime-rs/src/storage/` 管理 SQLite 和媒体文件 | 不让 View 直接绑定数据库；桌面激活后不回落写旧浏览器库 |
 | `src/views/PromptBuilderView.vue`、`src/stores/promptBuilderStore.ts`、`src/components/` | 导演台编排、状态与独立生命周期组件 | 修改对应职责时编辑 |
-| `server.ts`（运行 `server.js`） | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
-| `server/config.ts`、`server/security.ts`（运行对应 .js） | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
-| `routes/*.ts`（运行对应 .js） | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
-| `services/*.ts`（源码）/ `*.js`（编译产物） | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
+| `runtime-rs/src/bootstrap.rs`、`runtime-rs/src/lib.rs` | 组装 Rust 网关、领域服务、中间件与静态资源 | 新增顶层能力时编辑 |
+| `runtime-rs/src/config.rs`、`runtime-rs/src/security.rs` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
+| `runtime-rs/src/generation/`、`images/`、`video/`、`chat/`、`voice/` | 各领域的 HTTP、输入校验、上游连接与资源生命周期；已接受持久任务由 task_runtime 持有 | API、引擎或调度行为变化时编辑 |
+| `scripts/lib/content/`、`generation/`、`live2d/` | 维护工具使用的目录解析、样张参数/窄用途节点图及本地模型文件检查 | 仅用于显式工具，不承接产品服务或任务状态 |
 | `src/views/ChatView.vue`、`src/composables/chat/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
 | `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
 
@@ -101,13 +101,13 @@
 
 1. `ChatView.vue` 只编排会话与用户操作；聊天记录由 `useChatStorage.ts` 统一迁移、裁剪和保存。
 2. `useVoice.ts` 负责句子切分、翻译/TTS 取消、顺序播放、重播与真实音频振幅口型；不要把这些状态重新写回视图。
-3. `ChatCharacterStage.vue` 与 `useLive2D.ts` 负责按需加载、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `services/live2d-service.js` 在服务端检查。
-4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
+3. `ChatCharacterStage.vue` 与 `useLive2D.ts` 负责按需加载、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `runtime-rs/src/live2d/` 在服务端检查。
+4. Rust 的 `chat`、`voice` 和 `control` 模块分别持有 HTTP 契约、上游请求、模型切换与队列；使用隔离目录和模拟上游验证，不恢复旧 Node 服务。
 5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
 
 `tools/local-status.ts` 是静态 HTML 手册共享的轻量状态入口，只探测现有
 `/api/health`、`/api/chat-status`、`/api/tts-status` 和 SD 代理，不管理进程。
-启动、停止和显存模式切换仍由 `routes/control.js`、共享服务与控制台负责，避免
+启动、停止和显存模式切换由 `runtime-rs/src/control/` 与控制台负责，避免
 每个页面各自实现一套调度逻辑。
 
 聊天页与导演台会在角色确定后调用 `POST /api/voice/prepare`，并行预热翻译模型和当前角色的 GPT-SoVITS 权重。一次聊天回复必须锁定同一个 `referenceEmotion` 与 `consistency: locked`，句子情绪只能驱动表情，不能逐句更换身份参考音。TTS 使用固定 seed 与完整短句非流式 WAV；客户端在当前句播放时继续生成下一句。导演台按句生成并立即播放已经完成的片段，完整 WAV 仍会在全部片段完成后提供重播与下载。
@@ -124,21 +124,20 @@ npm run benchmark:voice
 
 新增角色时，静态立绘可以先工作。若要启用 Live2D，在 `assets/live2d/<角色 ID>/` 放置 `<角色 ID>.model3.json` 及它引用的全部 Moc、纹理、动作、表情和物理文件；状态接口只有在引用完整时才声明可用。没有模型的角色会明确显示“静态立绘”，不会阻断聊天或语音。
 
-修改这些链路后至少运行：
+修改这些链路后按影响面选择检查；Rust 服务修改使用现行后端门禁，WAV 工具修改使用对应离线测试：
 
 ```powershell
-npm run test:chat
-npm run test:resource
+npm run wf -- rust:check
 npm run test:voice-quality
 ```
 
-`test:chat` 会使用模拟 Ollama 与 GPT-SoVITS 检查 NDJSON 分片恢复、模型切换卸载、完整音频结束前不换权重、Live2D 文件完整性，以及网关实际启动和安全响应头。`test:voice-quality` 使用合成 PCM 样本检查 WAV 解析、时长、响度、静音、削波和直流偏移。
+Rust 的聊天、语音、控制与 Live2D 既有测试使用隔离夹具检查流、切换、串行所有权、文件完整性和失败回收。`test:voice-quality` 使用合成 PCM 样本检查 WAV 解析、时长、响度、静音、削波和直流偏移；两者均不能替代真实听感或模型验收。
 
 ## 作品册
 
 作品册由 `src/views/GalleryView.vue` 提供展览布局，通过作品 Repository 读取当前平台数据：Web adapter 使用 IndexedDB，桌面激活后由 workspace 管理私库与媒体文件。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略图，进入观画模式后再加载选中作品；页面停用、卸载或切换筛选时释放高清原图与查看器 Blob URL，迟到读取不得填回旧激活代次。
 
-修改作品册后至少运行 `npm run test:gallery`，并分别检查横图、竖图、方图、空作品册、键盘方向键、侧栏和移动端两列布局。
+修改作品册后运行受影响的现有 Gallery 组件/composable 测试，并在桌面客户端或桌面浏览器检查横图、竖图、方图、空作品册、键盘方向键和侧栏；按本次布局范围覆盖双主题、桌面窗口大小与显示缩放。
 
 ## 页面与控制逻辑边界
 
@@ -148,25 +147,17 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-前端由 `vue-tsc` 检查 SFC 与 TypeScript；服务使用 `tsconfig.runtime.json`，网关/路由/维护使用 `tsconfig.node.json`，测试和独立浏览器脚本有各自配置。`build:runtime` 生成对应运行文件，产物被 Git 忽略。前端领域类型放 `src/types/`，跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不得反向依赖 `src/`，纯类型也受检查。测试直接加载生产 TypeScript，不维护另一份 JavaScript 源码。
+前端由 `vue-tsc` 检查 SFC 与 TypeScript；Node 维护工具、测试和独立浏览器脚本分别使用 `tsconfig.node.json`、`tsconfig.tests.json`、`tsconfig.browser-tools.json`。`build:runtime` 只生成这三个项目的运行文件，产物被 Git 忽略；Rust 由 Cargo 检查和构建，旧 `tsconfig.runtime.json` 已删除。前端领域类型放 `src/types/`，跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块。前端边界由 TypeScript AST 护栏检查，Rust 核心模块继续执行独立的依赖方向检查。
 
 CI 在 `.github/workflows/quality.yml`：push 与 PR 分别运行静态检查、前端覆盖率与 unit、contract 和最低 Node 兼容检查；关键 Chromium e2e 等待前三个检查任务通过。各任务独立安装和构建，不能复用另一任务工作区的 dist。
 
 `scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
 
-控制面板的操作状态机源文件是 `services/control-operation.ts`（emit 为同目录 `.js`）。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`routes/control.js` 编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。修改该模块后运行 `npm run build:runtime` 与 `npm run test:control-operation`。
+控制面板的操作互斥、阶段进度、完成/失败和迟到回调保护归 `runtime-rs/src/control/`；新增 GPU 操作复用现有操作身份与调度，不另建 busy 标志。聊天与语音各自持有串行任务的完整生命周期，失败或取消必须释放队列。
 
-GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js`）。语音、翻译与聊天等单通道任务通过它排队，失败任务不得阻断后续任务。修改后运行 `npm run build:runtime` 与 `npm run test:serial-queue`。
+受限本机 HTTP 连接在 `runtime-rs/src/upstream/client.rs`，聊天个人/托管端点在 `runtime-rs/src/chat/transport.rs`；两者保留各自的地址授权、代理、超时与响应体上限。不能把公网聊天代理规则套到只允许回环地址的模型连接。
 
-上游 HTTP 客户端源文件是 `services/http-client.ts`（emit 为同目录 `.js`）。Ollama、TTS、翻译与路由共用它处理超时、中止、JSON/二进制读取与 `UpstreamError`。修改后运行 `npm run build:runtime` 与 `npm run test:http-client`。
-
-TTS 服务源文件是 `services/tts-service.ts`（emit 为同目录 `.js`）。负责声线校验、参考音频/权重切换与 GPT-SoVITS 串行合成。修改后运行 `npm run build:runtime`、`npm run test:voice-profile` 与 `npm run test:chat`。
-
-Ollama 服务源文件是 `services/ollama-service.ts`（emit 为同目录 `.js`）。负责模型列表、keep_alive 切换与 NDJSON 流式对话。修改后运行 `npm run build:runtime`、`npm run test:chat` 与 `npm run test:resource`。
-
-翻译服务源文件是 `services/translation-service.ts`（emit 为同目录 `.js`）。负责常驻中日翻译进程、缓存、HTTP 请求与 spawn-per-call 回退。修改后运行 `npm run build:runtime` 与 `npm run test:resource`，并定向运行受影响的翻译行为测试。
-
-Live2D 服务源文件是 `services/live2d-service.ts`（emit 为同目录 `.js`）。负责模型清单引用收集、路径逃逸防护与可用性检查。修改后运行 `npm run build:runtime` 与 `npm run test:live2d`。
+TTS 的声线校验、参考权重切换和串行合成位于 `runtime-rs/src/voice/`；翻译子进程与缓存位于其 `translation` 模块。Ollama 模型与流式对话位于 `runtime-rs/src/chat/ollama.rs`。Live2D 文件、引用及本机导入检查位于 `runtime-rs/src/live2d/`，离线导入/同步工具复用 `scripts/lib/live2d/`。这些产品模块修改后选择相应 Rust 测试；跨域整合使用 `rust:check`，不再运行已退役的 Node 后端单测。
 
 ## 真实声线基线
 

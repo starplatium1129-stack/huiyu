@@ -33,7 +33,7 @@ test('standalone defaults and explicit historical selection reach the matching p
   assert.strictEqual(generator.buildSubmissionBody(defaults).modelId, defaults.modelId);
   assert.strictEqual(defaults.loraId, 'L_NENE_V21_ANIMA');
   const candidate = generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'anima-miaomiao-v1.2' });
-  const model = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants.MODELS[candidate.modelId];
+  const model = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js')).MODELS[candidate.modelId];
   assert.strictEqual(candidate.profileId, 'anima_miaomiao_v12');
   assert.strictEqual(candidate.checkpoint, model.file);
   assert.ok(model.sizes.includes(`${candidate.width}x${candidate.height}`));
@@ -51,8 +51,8 @@ const popularCount = popularData.characters.length;
 const sceneBlueprints = (readData('data/scene-blueprints.json') as BlueprintData).blueprints;
 const artistCatalog: typeof import('../../src/config/artistStyleCatalog.ts') = require('../../src/config/artistStyleCatalog.ts');
 const artistStyles: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
-const genConst = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
-const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
+const genConst = (require('../lib/generation/sd-catalog.js') as typeof import('../lib/generation/sd-catalog.js'));
+const animaConst = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
 
 test('batch plan expands consistently with the curated artist catalog', () => {
@@ -401,7 +401,7 @@ test('resume + atomic manifest behaviour', () => {
     assert.strictEqual(gen.shouldReuse(record, image, false), false, 'tiny/empty files must not be reused');
 
     const manifestPath = path.join(root, 'generation-manifest.json');
-    gen.writeJsonAtomic(manifestPath, [record]);
+    (require('../lib/atomic-files') as typeof import('../lib/atomic-files')).writeJsonAtomic(manifestPath, [record]);
     assert.ok(fs.existsSync(manifestPath), 'manifest must exist after atomic write');
     assert.deepStrictEqual(JSON.parse(fs.readFileSync(manifestPath, 'utf8')), [record]);
     const leftovers = fs.readdirSync(root).filter(name => name.endsWith('.tmp'));

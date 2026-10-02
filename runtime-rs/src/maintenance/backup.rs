@@ -1,4 +1,5 @@
 use super::{Error, Result, codec, context::Context, fs};
+use crate::file_paths;
 use serde_json::{Value, json};
 use std::{
     collections::HashSet,
@@ -23,7 +24,7 @@ pub(super) fn capture(ctx: &Context, targets: &[PathBuf]) -> Result<Vec<(PathBuf
     let mut result = Vec::new();
     for source in targets {
         let file = ctx.target(source)?;
-        if seen.insert(fs::key(&file)?) {
+        if seen.insert(file_paths::key(&file)?) {
             result.push((file.clone(), fs::state(&file)?));
         }
     }
@@ -55,7 +56,7 @@ pub(super) fn save(ctx: &Context, snapshot: &[(PathBuf, Value)], label: &str) ->
     let mut seen = HashSet::new();
     for (index, (source, state)) in snapshot.iter().enumerate() {
         let source = ctx.target(source)?;
-        if !seen.insert(fs::key(&source)?) {
+        if !seen.insert(file_paths::key(&source)?) {
             return Err(Error::new(409, "MAINTENANCE_ARGUMENT", "备份目标重复"));
         }
         let bytes = fs::read(&source, true)?;
@@ -149,7 +150,7 @@ pub(super) fn read(ctx: &Context, id: &str, expected: Option<&str>) -> Result<Ba
         let existed = item["existed"]
             .as_bool()
             .ok_or_else(|| invalid("备份 existed 无效"))?;
-        if !targets.insert(fs::key(&file)?) {
+        if !targets.insert(file_paths::key(&file)?) {
             return Err(invalid("备份目标重复"));
         }
         let content = if existed {

@@ -6,7 +6,7 @@ import { PathLike } from 'node:fs';
 // 与网关共用参考图根目录；缺素材仍然失败，不将开发机缺图变成虚假通过。
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const { resolveCharRefRoot }: typeof import('../../server/config') = require('../../server/config');
+const { resolveCharRefRoot }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
 const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
 function auditReferenceView(data: { [s: string]: any; }|ArrayLike<any>, root: string, env: any = process.env) {

@@ -40,20 +40,13 @@ const refRoot = (() => {
 // resolveSceneShowcaseDir 已读 v25，样张落错目录导致「效果样子没有新角色」）。
 // 复用网关同一份解析：含 manifest.json 的版本子目录按名倒序取最新（排除
 // .building-*），SCENE_SHOWCASE_DIR 环境变量显式覆盖契约与网关一致。
-const { resolveSceneShowcaseDir }: typeof import('../../server/config') = require('../../server/config');
+const { resolveSceneShowcaseDir }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
 const AI_WORKSPACE = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_DIR = resolveSceneShowcaseDir(ROOT, process.env.SCENE_SHOWCASE_DIR, AI_WORKSPACE);
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');
-// 2026-08-30：网页端（主工作区 server.js）与桌面端（resources/gateway sidecar）
-// 是两套独立网关，默认均监听 3000；3123 仅是历史 sidecar/桌面更新端点，不是
-// 当前网关端口。优先 AICS_COMMS_BASE 环境变量覆盖，默认回退 3000。
+// 网页与桌面均由 Rust 网关承接。优先 AICS_COMMS_BASE 显式覆盖，默认 3000。
 const COMMS_BASE = process.env.AICS_COMMS_BASE || 'http://127.0.0.1:3000';
 
-function syncDataVersion() {
-  const expected = expectedDataVersion(ROOT);
-  console.log(`[Version Sync] DATA_VERSION 将由 virtual:data-version 注入: ${expected}`);
-  return expected;
-}
 
 async function submitAnimaJob(payload: any) {
   const res = await fetch(`${COMMS_BASE}/api/anima/jobs`, {
@@ -325,7 +318,7 @@ async function runPipeline(charId: any, opts: any = {}) {
 
   // Step 6: 自动版本对齐与回归验证
   console.log(`\n[6/6 版本哈希与质量门禁] 对齐 DATA_VERSION 并执行回归...`);
-  syncDataVersion();
+  console.log(`[Version Sync] DATA_VERSION 将由 virtual:data-version 注入: ${expectedDataVersion(ROOT)}`);
 
   execSync('npm run typecheck:app', { cwd: ROOT, stdio: 'inherit' });
   execSync('npm run build', { cwd: ROOT, stdio: 'inherit' });
@@ -375,5 +368,5 @@ if (require.main === module) {
   });
 }
 
-export = { runPipeline, syncDataVersion };
+export = { runPipeline };
 

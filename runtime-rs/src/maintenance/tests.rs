@@ -125,7 +125,7 @@ fn node_oracle(options: &Options) -> Value {
     let repo = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
     // Development-only oracle invokes the original compiled metadata readers.
     // Every read root is this disposable fixture; no Node fallback ships in runtime.
-    let script = "const p=require('node:path'); const io=require(p.join(process.argv[1],'scripts/lib/maintenance-recovery-fs.js')); const lease=require(p.join(process.argv[1],'scripts/lib/maintenance-lease.js')); const state=require(p.join(process.argv[1],'routes/maintenance-scene-state.js')); const options={rootDir:process.argv[2],runtimeRoot:process.argv[3]}; console.log(JSON.stringify({identity:io.context(options).root,version:state.sceneContentVersion(options.rootDir),lease:lease.inspectMaintenanceLease(options)}));";
+    let script = "const p=require('node:path'); const io=require(p.join(process.argv[1],'scripts/lib/maintenance-recovery-fs.js')); const lease=require(p.join(process.argv[1],'scripts/lib/maintenance-lease.js')); const options={rootDir:process.argv[2],runtimeRoot:process.argv[3]}; console.log(JSON.stringify({identity:io.context(options).root,lease:lease.inspectMaintenanceLease(options)}));";
     let mut command = Command::new("node");
     command
         .arg("-e")
@@ -154,7 +154,14 @@ async fn scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract
     let (status, snapshot) = call(&app, "GET", "/api/maintenance/scenes-state", Value::Null).await;
     assert_eq!(status, StatusCode::OK);
     assert_eq!(snapshot["nextSceneId"], "sc008");
-    assert_eq!(snapshot["version"], node_oracle(&options)["version"]);
+    let versions: Value = serde_json::from_str(include_str!(
+        "../../tests/fixtures/legacy-scene-version.json"
+    ))
+    .unwrap();
+    assert_eq!(
+        snapshot["version"],
+        versions[if cfg!(windows) { "windows" } else { "posix" }]
+    );
     let mut changed = snapshot["snapshot"]["scenes"][0].clone();
     changed["title"] = json!("changed title");
     let body = json!({"baseVersion":snapshot["version"],"changeSet":{"version":1,"scenes":{"upsert":[changed],"remove":[]}}});

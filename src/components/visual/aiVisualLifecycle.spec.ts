@@ -6,7 +6,6 @@ import VoiceGlow from './VoiceGlow.vue'
 import CgImageReveal from './CgImageReveal.vue'
 import BorderBeam from './BorderBeam.vue'
 import { startCanvasParticleReveal } from '@/utils/canvasParticleReveal'
-import { useVoiceMeter } from '@/composables/useVoiceMeter'
 
 let activity: {
   canPresent: Ref<boolean>; canAnimate: Ref<boolean>; reducedMotion: Ref<boolean>
@@ -159,15 +158,7 @@ describe('VoiceGlow rendering lifecycle', () => {
     expect(frames.size).toBe(0)
   })
 
-  it('clears a manual voice level when its stream detaches', () => {
-    const meter = useVoiceMeter()
-    expect(meter.level.value).toBe(0)
-    meter.setManualLevel(0.8)
-    expect(meter.level.value).toBe(0.8)
-    meter.detachStream()
-    expect(meter.level.value).toBe(0)
-    expect(meter.isListening.value).toBe(false)
-  })
+
 })
 
 describe('CgImageReveal ownership and fallback', () => {

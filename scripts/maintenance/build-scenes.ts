@@ -5,7 +5,7 @@ const {
   aggregatePath, browserShardPath, corePath, indexPath,
   aggregateIsCurrent, loadSceneShards, writeAggregate,
 }: typeof import('../lib/scene-store') = require('../lib/scene-store');
-const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 const { refreshPrecompressed } = require('../lib/ensure-data-build');
 const path: typeof import('path') = require('path');
 
@@ -37,8 +37,8 @@ if (check) {
   console.log('Built ' + aggregatePath + ': ' + scenes.length + ' scenes (' + counts + ')');
   // 同步 DATA_VERSION（与 validate-content-contracts.js 共用哈希口径，避免手 bump 遗漏导致 immutable 缓存漂移）
   try {
-    const result = syncDataVersion(ROOT);
-    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${result.version}`);
+    const version = expectedDataVersion(ROOT);
+    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${version}`);
   } catch (e) {
     console.warn('[DATA_VERSION] 同步跳过:', runtimeErrorMessage(e));
   }

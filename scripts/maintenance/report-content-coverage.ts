@@ -17,11 +17,11 @@ import { PathOrFileDescriptor } from 'node:fs';
  *   - 覆盖差额是「覆盖待办」，不是悬空引用；本命令不登记服装、不出图、不改主题，
  *     退出码不因差额数量失败（信息性报告），仅结构错误才退出 1。
  *   - URL 非空只代表索引声明；「缺实图」以与 check-ref-urls 相同的素材根解析
- *     （server/config.resolveCharRefRoot）实际 statSync 为准；素材根不存在时归为
+ *     （scripts/lib/content/asset-roots.resolveCharRefRoot）实际 statSync 为准；素材根不存在时归为
  *     unverified，不冒充缺图，也不冒充通过。
  *
  * 按 popular-store 的 manifest 顺序只读加载；使用显式 root 避免该模块的环境变量
- * 缓存影响隔离夹具。复用 server/config 的素材根解析，不调用配置初始化。
+ * 缓存影响隔离夹具。复用 content/asset-roots 的素材根解析，不调用配置初始化。
  *
  * 用法：
  *   node scripts/maintenance/report-content-coverage.js [--json] [--root <目录>]
@@ -208,7 +208,7 @@ function analyseReferences({ popular, standards, view, fileExists }: any) {
 /** 由 URL 判定素材文件是否存在的工厂；返回 true|false|null（null=无法核实）。
  *  解析语义与 scripts/maintenance/check-ref-urls.js auditReferenceView 一致。 */
 function makeFileExists({ appRoot, env }: any) {
-  const { resolveCharRefRoot }: typeof import('../../server/config') = require('../../server/config');
+  const { resolveCharRefRoot }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const structureOnly = env.AICS_REFERENCE_AUDIT_MODE === 'structure';
   return function fileExists(url: any) {

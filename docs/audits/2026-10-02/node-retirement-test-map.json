@@ -1,0 +1,921 @@
+{
+  "baseline": "142f654c",
+  "status": "review-in-progress",
+  "entries": [
+    {
+      "source": "scripts/tests/test-character-reference-profile.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/reference/tests.rs#source_shards_are_authoritative_and_read_only",
+        "runtime-rs/src/reference/tests.rs#published_profiles_revoke_without_legacy_fallback",
+        "runtime-rs/src/reference/tests.rs#linked_reference_files_are_rejected"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "reference profile API returns one character, reloads changed data and denies remote requests"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-storage.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/storage_behavior.rs#durable_save_project_trash_profile_and_backup_round_trip",
+        "runtime-rs/tests/storage_indexes.rs#indexed_deletion_preserves_membership_order_and_backup_restore",
+        "runtime-rs/src/storage/worker/tests.rs#admitted_binary_mutation_with_lost_reply_remains_commit_unknown"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-workspace-thumbnails.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/storage_behavior.rs#durable_save_project_trash_profile_and_backup_round_trip",
+        "runtime-rs/tests/storage_indexes.rs#indexed_deletion_preserves_membership_order_and_backup_restore",
+        "runtime-rs/src/storage/worker/tests.rs#admitted_binary_mutation_with_lost_reply_remains_commit_unknown"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "workspace thumbnails survive restart, rebuild as disposable cache and respect original integrity and GC",
+        ","
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-client.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/host/authority.rs#shutdown_waits_for_admitted_writes",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch",
+        "runtime-rs/src/storage/garbage/lifecycle_tests.rs#close_keeps_ownership_until_both_discovery_and_backup_finish"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "a workspace owns one worker and closes before another writer can reopen its receipts",
+        "cancelled waits retain accepted save identity so the same operation can be reconciled",
+        "a second process cannot steal a live or orphaned owner; host recovery requires its exited child"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-backup.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/storage_behavior.rs#durable_save_project_trash_profile_and_backup_round_trip",
+        "runtime-rs/tests/storage_indexes.rs#indexed_deletion_preserves_membership_order_and_backup_restore",
+        "runtime-rs/src/storage/worker/tests.rs#admitted_binary_mutation_with_lost_reply_remains_commit_unknown"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "SQLite API snapshot releases writes during copying and restores the earlier WAL state",
+        "failed media verification keeps backup leases, and a retry repairs only its own incomplete output",
+        "backup honours cancellation during copying; restore rejects a valid-hash unknown schema"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-migration.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/storage_behavior.rs#durable_save_project_trash_profile_and_backup_round_trip",
+        "runtime-rs/tests/storage_indexes.rs#indexed_deletion_preserves_membership_order_and_backup_restore",
+        "runtime-rs/src/storage/worker/tests.rs#admitted_binary_mutation_with_lost_reply_remains_commit_unknown"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-task-runtime.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/task_execution.rs#accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_results",
+        "runtime-rs/tests/task_recovery.rs#restart_recovers_node_identity_without_resubmission_and_requires_cancel_ack",
+        "runtime-rs/src/task_runtime/tests.rs#reconciliation_and_resume_cannot_steal_an_accepted_dispatcher",
+        "runtime-rs/src/storage/tasks/tests.rs#task_cas_cancellation_and_terminal_state_survive_reopen"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "accepted response loss retries the same identity; conflicts and foreign owners cannot expose a task",
+        "desktop",
+        "desktop",
+        "desktop",
+        "lost upstream ID remains unknown across repeated restarts and blocks duplicate GPU admission",
+        "desktop",
+        "desktop",
+        "cancellation by request key survives create in flight and late IDs keep the intent",
+        "desktop",
+        "desktop",
+        "collector publishes verified inbox media without artwork creation; restart only re-reads results",
+        "desktop",
+        "changed backend binding never queries or cancels the replacement",
+        "desktop",
+        "existing Comfy service awaits durable intent and prompt identity, then collects without any page polling",
+        "desktop",
+        "input media is protected in workspace and reconstructs provider files without generating again",
+        "desktop",
+        "maintenance preserves accepted but never submitted work for explicit resume",
+        "desktop",
+        "concurrent resumes submit a never-sent task only once",
+        "desktop",
+        "resume cannot bypass accepted input preparation",
+        "desktop",
+        "queued work cannot resume against a replacement backend",
+        "desktop",
+        "shutdown drains an in-flight upstream identity write before the workspace can close",
+        "desktop",
+        "desktop",
+        "discard releases only settled task results and never resurrects them during recovery",
+        "desktop",
+        "desktop",
+        "migrated legacy task summaries are read-only and scoped to their verified principal",
+        "concurrent continuation owns one live batch and reconciles in order without resubmitting a shot"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-desktop-workspace-host.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/host/authority.rs#shutdown_waits_for_admitted_writes",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch",
+        "runtime-rs/src/storage/garbage/lifecycle_tests.rs#close_keeps_ownership_until_both_discovery_and_backup_finish"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "signed shutdown fences new HTTP work and drains already-admitted profile writes before releasing the owner",
+        "failed drain remains closed to admission and does not release the private owner",
+        "desktop authority imports, verifies backup, activates and reopens the same private library on a different port"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-chat-host-config.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/chat/tests.rs#compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches",
+        "runtime-rs/src/chat/tests.rs#malformed_or_truncated_stream_cannot_emit_success_or_partial_tools",
+        "runtime-rs/src/chat/tests.rs#persona_and_validation_keep_original_prompt_rules_and_public_ip_boundary",
+        "runtime-rs/src/chat/tests/stream_lifecycle.rs#stalled_body_times_out_releases_queue_and_preserves_error_after_buffered_events"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "host configuration cache isolates equally sized files with identical timestamps",
+        "failed atomic replacement preserves the previous configuration and cleans temporary files",
+        "permission failure while deleting a configuration is not reported as success"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-comfy-progress.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/upstream/tests.rs#proxy_streams_large_body_preserves_responses_and_enforces_exact_allowlist",
+        "runtime-rs/src/upstream/tests.rs#bounded_json_transport_cancels_and_refuses_nonlocal_targets",
+        "runtime-rs/src/upstream/client_tests.rs#json_transport_preserves_http_errors_and_bounds_chunked_bodies"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "close",
+        "ComfyUI progress monitor filters by prompt id and maps sampling steps",
+        "message",
+        "message",
+        "progress monitor reconnects only while work is subscribed and closes when idle",
+        "message",
+        "message",
+        "progress helpers reject invalid values and build the native websocket URL"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-comfy-client.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/generation_service.rs#webui_serializes_global_interrupt_and_rejects_stale_provider_before_admission",
+        "runtime-rs/tests/generation_service.rs#comfy_preserves_workflow_ledger_order_output_ownership_and_targeted_cancel",
+        "runtime-rs/tests/generation_service/collection.rs#webui_close_cancels_initial_and_retry_collection"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "orphan sweep recognizes native queue metadata and excludes this process new prompts",
+        "non-JSON cancellation response preserves HTTP status for fallback"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-control-operation.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/control/tests.rs#operation_is_exclusive_and_old_completion_cannot_finish_new_work",
+        "runtime-rs/src/control/tests.rs#config_commit_preserves_unknown_fields_and_requires_restart",
+        "runtime-rs/src/control/tests.rs#shutdown_cancels_owned_script_and_prevents_new_operations",
+        "runtime-rs/src/control/tests.rs#routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "Control operation tests passed: serialization, progress, stale guards, and failures"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-job-snapshots.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/task_execution.rs#accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_results",
+        "runtime-rs/tests/task_recovery.rs#restart_recovers_node_identity_without_resubmission_and_requires_cancel_ack",
+        "runtime-rs/src/task_runtime/tests.rs#reconciliation_and_resume_cannot_steal_an_accepted_dispatcher",
+        "runtime-rs/src/storage/tasks/tests.rs#task_cas_cancellation_and_terminal_state_survive_reopen"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "save writes only public fields, without prompts or tokens",
+        "loss records survive repeated process/store restarts without renewing retention",
+        "remove deletes only the exact owned record",
+        "corrupt and unrecognized files are rejected but preserved for diagnosis",
+        "restore requires matching filename, status and a valid owner",
+        "IDs are rejected, never lossy-normalized into another record",
+        "toSnapshot and restore apply the same field/type whitelist",
+        "loss records expire after seven days, measured from first loss detection",
+        "restored loss registry and retained files are bounded to 256 valid records",
+        "oversized JSON and directories are never read or removed as snapshots",
+        "snapshot links and linked store directories are not followed",
+        "failed atomic publish cleans temporary files, warns once and preserves prior bytes",
+        "unconfigured store is a no-op"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-live2d-service.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/live2d/tests.rs#native_texture_http_preserves_manifest_etag_and_scale",
+        "runtime-rs/src/live2d/tests.rs#multipart_import_publishes_only_bound_assets_and_profile_changes_require_cas",
+        "runtime-rs/src/live2d/tests.rs#legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becomes_a_model"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "live2d-service: complete model, path escape, missing assets, status"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-live2d-imports.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/live2d/tests.rs#native_texture_http_preserves_manifest_etag_and_scale",
+        "runtime-rs/src/live2d/tests.rs#multipart_import_publishes_only_bound_assets_and_profile_changes_require_cas",
+        "runtime-rs/src/live2d/tests.rs#legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becomes_a_model"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "local model import repairs optional entries, keeps source bytes, is idempotent and rejects broken core assets",
+        "local import editor validates files, publishes atomically and protects calibration with revision and byte fingerprints",
+        "import API accepts multipart on direct local requests and refuses forwarded/cross-site writes before parsing",
+        "upload byte validation rejects oversized JSON, unsafe nesting, invalid texture dimensions and moc headers",
+        "imports retain UserData and expression metadata, isolate identities, sanitize viewer extensions and bind every uploaded file"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-live2d-textures.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/live2d/tests.rs#native_texture_http_preserves_manifest_etag_and_scale",
+        "runtime-rs/src/live2d/tests.rs#multipart_import_publishes_only_bound_assets_and_profile_changes_require_cas",
+        "runtime-rs/src/live2d/tests.rs#legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becomes_a_model"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "derived manifests preserve atlas indices, author metadata, motions and source bytes",
+        "profiles resize both dimensions, retain alpha, coalesce work and preserve originals",
+        "cache invalidates after an asset update and a failed conversion can be retried",
+        "rejects unsupported profiles, characters, indices and escaping references",
+        "quality routes deliver actual WebP, honor conditional requests and return safe 404s"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-logger-safety.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/control/tests.rs#operation_is_exclusive_and_old_completion_cannot_finish_new_work",
+        "runtime-rs/src/control/tests.rs#config_commit_preserves_unknown_fields_and_requires_restart",
+        "runtime-rs/src/control/tests.rs#shutdown_cancels_owned_script_and_prevents_new_operations",
+        "runtime-rs/src/control/tests.rs#routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "enabled levels persist timestamped lines and debug remains opt-in",
+        "retention removes expired dated and undated logs while preserving active and unrelated files",
+        "redacts common credentials and prevents injected file/terminal log lines",
+        "\\n",
+        "reserves pending append bytes, even for a burst smaller than 500 writes",
+        "first write counts an existing daily file before appending",
+        "oversized individual messages and details are bounded; unprintable details are safe",
+        "repeated same-day rotations preserve earlier archives",
+        "rotation failure does not truncate the live log",
+        "malformed prefix cannot write outside the logging directory",
+        "log cleanup does not follow links or remove directories",
+        "disabled debug stays silent and unavailable output sinks do not throw"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-serial-queue.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/chat/tests.rs#compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches",
+        "runtime-rs/src/chat/tests.rs#malformed_or_truncated_stream_cannot_emit_success_or_partial_tools",
+        "runtime-rs/src/chat/tests.rs#persona_and_validation_keep_original_prompt_rules_and_public_ip_boundary",
+        "runtime-rs/src/chat/tests/stream_lifecycle.rs#stalled_body_times_out_releases_queue_and_preserves_error_after_buffered_events"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "Serial queue tests passed: FIFO order, wait context, failure isolation, admission control, and abort dequeue",
+        "queued abort settles before a blocked head and repeated aborts retain no backlog"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-service-watchdog.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/control/tests.rs#operation_is_exclusive_and_old_completion_cannot_finish_new_work",
+        "runtime-rs/src/control/tests.rs#config_commit_preserves_unknown_fields_and_requires_restart",
+        "runtime-rs/src/control/tests.rs#shutdown_cancels_owned_script_and_prevents_new_operations",
+        "runtime-rs/src/control/tests.rs#routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape"
+      ],
+      "review": "Risk successors identified; unique current-product assertions still being audited before final retirement.",
+      "oldTestTitles": [
+        "service watchdog: never-online services are not auto-restarted",
+        "service watchdog: online-to-offline restarts with backoff and resets on health",
+        "service watchdog: failed restart backs off and retries",
+        "service watchdog: stop clears timers and reports stopped",
+        "service watchdog: a scheduled restart respects a later manual stop",
+        "service watchdog: late probes cannot publish state after stop",
+        "service watchdog: health probes cannot release an in-flight restart slot",
+        "service watchdog: old restart completion cannot emit into a restarted lifecycle"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-translation-service.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/voice/tests.rs#tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_drop",
+        "runtime-rs/src/voice/tests.rs#translation_segments_are_cached_and_failed_weight_switch_restores_both_models"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "exit",
+        "translation close cancels active and queued work without starting a fallback process",
+        "an old translation child exit cannot clear the newly prepared instance",
+        "exit"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-voice-cache.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/voice/tests.rs#tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_drop",
+        "runtime-rs/src/voice/tests.rs#translation_segments_are_cached_and_failed_weight_switch_restores_both_models"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "voice cache follows saved profiles and backend addresses without restarting the router",
+        "shared voice generation survives one listener leaving and stops when its router closes"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-voice-profile-contract.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/voice/tests.rs#tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_drop",
+        "runtime-rs/src/voice/tests.rs#translation_segments_are_cached_and_failed_weight_switch_restores_both_models"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "Voice profile contract tests passed: VoiceProfile fields, validateInput, locked emotion refs"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/host/authority.rs#shutdown_waits_for_admitted_writes",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch",
+        "runtime-rs/src/storage/garbage/lifecycle_tests.rs#close_keeps_ownership_until_both_discovery_and_backup_finish"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "workspace API stays disabled without an explicit host binding",
+        "real gateway and storage worker enforce private sessions and preserve save/revision receipts"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-workspace-library-http.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/storage_behavior.rs#durable_save_project_trash_profile_and_backup_round_trip",
+        "runtime-rs/tests/storage_indexes.rs#indexed_deletion_preserves_membership_order_and_backup_restore",
+        "runtime-rs/src/storage/worker/tests.rs#admitted_binary_mutation_with_lost_reply_remains_commit_unknown"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "desktop library HTTP saves temporary originals, deduplicates lost acknowledgements, edits and restores with project references",
+        "existing v1 workspace upgrades in place and recovers a committed schema with an old identity file"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-maintenance-recovery.ts",
+      "action": "retain-tooling",
+      "successors": [
+        "scripts/tests/test-maintenance-recovery.ts"
+      ],
+      "reason": "Still exercises live maintenance library and CLI, not the retired HTTP server."
+    },
+    {
+      "source": "scripts/tests/test-maintenance-recovery-boundaries.ts",
+      "action": "retain-tooling",
+      "successors": [
+        "scripts/tests/test-maintenance-recovery-boundaries.ts"
+      ],
+      "reason": "Still exercises live maintenance library and CLI, not the retired HTTP server."
+    },
+    {
+      "source": "scripts/tests/test-maintenance-read-barrier.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/maintenance/save/tests.rs#actual_http_save_commits_and_failed_validation_restores_original_bytes",
+        "runtime-rs/src/maintenance/tests.rs#scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary",
+        "runtime-rs/src/maintenance/tests.rs#read_barrier_never_releases_bytes_after_transaction_epoch_changed",
+        "runtime-rs/src/maintenance/blueprints/tests.rs#prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "actual gateway early barrier protects gzip/br and showcase across a real writer SIGKILL"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-maintenance-transaction-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/maintenance/save/tests.rs#actual_http_save_commits_and_failed_validation_restores_original_bytes",
+        "runtime-rs/src/maintenance/tests.rs#scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary",
+        "runtime-rs/src/maintenance/tests.rs#read_barrier_never_releases_bytes_after_transaction_epoch_changed",
+        "runtime-rs/src/maintenance/blueprints/tests.rs#prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "neutral HTTP preview is zero-write; save updates source, products, compression and version",
+        "late HTTP failure rolls back precise new/deleted paths and preserves an unrelated new file",
+        "real HTTP writer SIGKILL: other process read/save/preview/static and startup reject half data",
+        "read fence discards a buffered response if a transaction completes during the read",
+        "packaged 501, forwarded-remote denial and pinned fields remain enforced"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-resource-gateway.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/resources/tests.rs#approved_full_delta_rollback_and_prepared_recovery_interoperate_with_node",
+        "runtime-rs/src/resources/tests/network.rs#http_cancel_recover_resumes_verified_download_and_installed_overlay_revokes",
+        "runtime-rs/src/resources/tests/overlay.rs#live2d_bodyless_requests_reject_same_length_requested_or_dependency_changes"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "gateway startup/status are read-only when not configured or not installed",
+        "environment alone selects resource policy and enables management",
+        "real gateway import, restart, second install and rollback use the approved original asset URL",
+        "installed resource bytes/metadata never leak through remote or arbitrary-path requests",
+        "post-start corruption and pending transaction fail closed to bundled media",
+        "config replacement or malformed policy cannot reuse old approval to start operations",
+        "HTTP task cancel, resume and explicit install work across manager restart with no automatic download",
+        "runtime configuration revocation cancels authorization during an active download",
+        "SIGKILL during a gateway-managed download retains task/partial state and resumes through the real API",
+        "complete Live2D models override both aliases; missing dependencies fall back as a group"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-resource-reference-gateway.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/reference/tests.rs#source_shards_are_authoritative_and_read_only",
+        "runtime-rs/src/reference/tests.rs#published_profiles_revoke_without_legacy_fallback",
+        "runtime-rs/src/reference/tests.rs#linked_reference_files_are_rejected"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "approved reference images and projection route together ahead of stale precompressed source index",
+        "bad reference ",
+        "reference corruption after startup disables index and images together",
+        "versioned references reject remote/forwarded access even with gateway token",
+        "unversioned libraries keep existing handling; explicit missing root cannot serve a project index as a new release"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-maintenance-blueprint-transaction.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/maintenance/save/tests.rs#actual_http_save_commits_and_failed_validation_restores_original_bytes",
+        "runtime-rs/src/maintenance/tests.rs#scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary",
+        "runtime-rs/src/maintenance/tests.rs#read_barrier_never_releases_bytes_after_transaction_epoch_changed",
+        "runtime-rs/src/maintenance/blueprints/tests.rs#prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "?",
+        "preview validates changes without creating backups or modifying source/products",
+        "HTTP blueprint save persists canonical shards, companions and survives fresh-process rebuild",
+        "late failure rolls back new/deleted blueprint shards, scenes, metadata and compressed bytes",
+        "real content validation failure rolls back a structurally valid but invalid blueprint",
+        "concurrent changes share the same lock and reject stale blueprint/source baselines",
+        "sc1000 can be saved, read, retired and never reused; malformed IDs are rejected",
+        "pinned fields, invalid removals, mixed payloads and packaged writes stay refused",
+        "preview rejects a new outfit binding that does not belong to the character",
+        "rollback leaves an unrelated newly created source file untouched"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-anima-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/images_contract.rs#images_validation_and_graphs_preserve_compiled_contracts",
+        "runtime-rs/tests/images_service.rs#uploaded_originals_are_decoded_deduplicated_and_held_to_owner_quota",
+        "runtime-rs/tests/images_service.rs#original_input_protection_precedes_post_and_family_outputs_remain_isolated"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "Anima routes enforce application job and result boundaries over real HTTP",
+        "Anima runtime TTL removes an unconsumed result file",
+        "Anima exposes and submits the promoted Natsume v20 LoRA without crossing character boundaries",
+        "Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a negative encode",
+        "Anima cancellation failure releases the pending slot after a bounded timeout",
+        "Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.1 rejects it",
+        "Anima input cleanup deletes expired unreferenced uploads but preserves active inputs",
+        "Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentNoiseMask workflow"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-desktop-tools-route.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/desktop_tools/tests.rs#file_tools_use_actual_workspace_and_reject_escape_or_oversized_data",
+        "runtime-rs/src/desktop_tools/tests.rs#image_and_draw_tools_return_bytes_or_drafts_without_claiming_generation",
+        "runtime-rs/src/desktop_tools/tests.rs#commands_remain_disabled_and_shutdown_blocks_work_without_starting_processes"
+      ],
+      "review": "Risk successors identified; unique current-product assertions still being audited before final retirement.",
+      "oldTestTitles": [
+        "默认文件工具拒绝外向目录链接，允许内部链接与新文件",
+        "通用命令必须由操作员启用，模型参数不能声明信任",
+        "受信任命令档：实际 npm/npx 版本查询与含空格工作目录",
+        "受信任 npm 脚本取消后，包装器下的父子进程均退出",
+        "工具路由沿用注入的网关工作区，进程环境不能覆盖它",
+        "run_command：取消已启动进程及子进程，不影响其他请求",
+        "run_command：提前取消、超时、输出超限和非零退出均不能冒充成功",
+        "生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程树",
+        "路径白名单：拒绝绝对路径与 .. 逃逸",
+        "路径边界：Windows 大小写不敏感",
+        "list_files：列出目录内容（含子目录标记）",
+        "read_file：文本可读、二进制拒绝、超限拒绝",
+        "write_file：写入并原子替换",
+        "run_command：参数数组执行，无 shell 注入面",
+        "read_image：图片转 data URL，非图片与超限拒绝",
+        "get_workspace_info 与未知工具",
+        "generate_character_image：仅保存草稿，不虚报图片、任务或奖励",
+        "generate_character_image：草稿写入失败明确返回失败",
+        "generate_character_image：R18 双门 fail-closed（白名单 × adultEnabled）",
+        "capture_screen：Windows 原生截屏",
+        "HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工具名 400"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-generation-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/generation_service.rs#webui_serializes_global_interrupt_and_rejects_stale_provider_before_admission",
+        "runtime-rs/tests/generation_service.rs#comfy_preserves_workflow_ledger_order_output_ownership_and_targeted_cancel",
+        "runtime-rs/tests/generation_service/collection.rs#webui_close_cancels_initial_and_retry_collection"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-webui-lifecycle.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/generation_service.rs#webui_serializes_global_interrupt_and_rejects_stale_provider_before_admission",
+        "runtime-rs/tests/generation_service.rs#comfy_preserves_workflow_ledger_order_output_ownership_and_targeted_cancel",
+        "runtime-rs/tests/generation_service/collection.rs#webui_close_cancels_initial_and_retry_collection"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "WebUI transport uses Basic auth and supports empty successful bodies",
+        "WebUI preserves HTTP error details without confusing them with transport errors",
+        "WebUI invalid JSON and unsupported URLs have stable errors",
+        "WebUI rejects oversized JSON with the size-limit code",
+        "WebUI settles a body truncated after headers",
+        "WebUI total deadline bounds a continuously dripping response",
+        "WebUI pre-abort never sends a request",
+        "WebUI abort closes a response already streaming",
+        "WebUI probe invalidates its cache when API authentication changes",
+        "WebUI captures input and connection; duplicate start publishes one actual seed",
+        "WebUI never restarts terminal jobs or exposes invalid result encodings",
+        "cancelling succeeded or failed WebUI jobs is an idempotent no-op",
+        "duplicate cancellations share an interrupt and fence the next queued job",
+        "failed cancellation is explicit and holds admission until execution settles",
+        "queued cancellation never submits to WebUI",
+        "WebUI close aborts in-flight transport and cannot resurrect jobs",
+        "WebUI retention timer starts at settlement rather than admission",
+        "an in-flight Comfy acceptance after close is not acknowledged or watched"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-chat.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/chat/tests.rs#compatible_stream_preserves_reasoning_tokens_and_complete_tool_batches",
+        "runtime-rs/src/chat/tests.rs#malformed_or_truncated_stream_cannot_emit_success_or_partial_tools",
+        "runtime-rs/src/chat/tests.rs#persona_and_validation_keep_original_prompt_rules_and_public_ip_boundary",
+        "runtime-rs/src/chat/tests/stream_lifecycle.rs#stalled_body_times_out_releases_queue_and_preserves_error_after_buffered_events"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "bounded compatible stream rejects incomplete, oversized and dripping upstreams",
+        "chat",
+        "\\n",
+        "remote API target policy rejects private DNS, mapped IPs and mixed answers",
+        "public API requests pin DNS, bypass proxy DNS and do not follow redirects"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-gateway-contract.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/security.rs#local_identity_does_not_trust_proxy_or_remote_origin",
+        "runtime-rs/src/remote_content/tests.rs#remote_token_cookies_cannot_reach_private_routes_or_bypass_precompressed_policy",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "跨站导航只打开本机 SPA，不能无令牌触发 GET 配音",
+        "远程同一身份不能借原生 SD 写接口绕过应用分级和方法限制",
+        "SD 代理：超过 15 秒的生成正常返回，复用连接不累积超时监听器",
+        "gateway WebSocket：仅本机可升级，持令牌的远程连接也不能获得原生双向通道",
+        "gateway-contract",
+        "SPA startup works below a hidden workspace ancestor without serving hidden assets"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-remote-content.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/security.rs#local_identity_does_not_trust_proxy_or_remote_origin",
+        "runtime-rs/src/remote_content/tests.rs#remote_token_cookies_cannot_reach_private_routes_or_bypass_precompressed_policy",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "remote release: same authorization before static, compression, HEAD, Range and cache",
+        "desktop health proves the launched instance without sending or echoing its credential"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-gateway-token.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/security.rs#local_identity_does_not_trust_proxy_or_remote_origin",
+        "runtime-rs/src/remote_content/tests.rs#remote_token_cookies_cannot_reach_private_routes_or_bypass_precompressed_policy",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch"
+      ],
+      "review": "Risk successors identified; unique current-product assertions still being audited before final retirement.",
+      "oldTestTitles": [
+        "Token 生成、持久化、覆盖与修复"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-http-client.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/upstream/tests.rs#proxy_streams_large_body_preserves_responses_and_enforces_exact_allowlist",
+        "runtime-rs/src/upstream/tests.rs#bounded_json_transport_cancels_and_refuses_nonlocal_targets",
+        "runtime-rs/src/upstream/client_tests.rs#json_transport_preserves_http_errors_and_bounds_chunked_bodies"
+      ],
+      "review": "Risk successors identified; unique current-product assertions still being audited before final retirement.",
+      "oldTestTitles": [
+        "abortError 识别",
+        "UpstreamError 字段",
+        "真实 HTTP：JSON 成功 / 状态错误 / 二进制 / 预中止",
+        "parseProxyEnv 解析",
+        "matchesNoProxy 匹配",
+        "HTTP_PROXY 生效：http 目标走正向代理",
+        "HTTPS CONNECT can be cancelled before proxy response headers arrive",
+        "cancellation during proxy TLS handshake closes the tunnel",
+        "total deadline bounds a response that continuously supplies bytes",
+        "public DNS lookup is bounded by cancellation and the total deadline",
+        "cancellation destroys an open response body and removes the abort listener",
+        "NO_PROXY 命中时绕过代理直连",
+        "resolveProxy 按协议选环境变量"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-maintenance.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/maintenance/save/tests.rs#actual_http_save_commits_and_failed_validation_restores_original_bytes",
+        "runtime-rs/src/maintenance/tests.rs#scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary",
+        "runtime-rs/src/maintenance/tests.rs#read_barrier_never_releases_bytes_after_transaction_epoch_changed",
+        "runtime-rs/src/maintenance/blueprints/tests.rs#prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "popular showcase partial publish preserves other samples and replaces only matching IDs",
+        "写盘回滚：原子写 + 快照恢复 + 备份清单",
+        "标签校验：重复英文名必须拒绝",
+        "策展清洗：招牌自动入精选、互斥与失效引用清理",
+        "策展清洗：personaCoreSceneIds 稳定去重、剔除非活跃引用，其他策展字段不受影响",
+        "策展清洗：personaCoreSceneIds 显式非数组必须报错并指出字段",
+        "策展清洗：personaCoreSceneIds 缺省保持缺省，空数组保留为空",
+        "策展清洗：仅继承旧核心精选，显式清空优先且不修改旧对象",
+        "JPEG 上传：规范魔数接受、非规范格式拒绝"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-scene-maintenance-save.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/maintenance/save/tests.rs#actual_http_save_commits_and_failed_validation_restores_original_bytes",
+        "runtime-rs/src/maintenance/tests.rs#scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary",
+        "runtime-rs/src/maintenance/tests.rs#read_barrier_never_releases_bytes_after_transaction_epoch_changed",
+        "runtime-rs/src/maintenance/blueprints/tests.rs#prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "scenes-state 返回内容版本与写入侧下一个稳定 ID",
+        "缺少读取基线的旧快照被 409 拒绝且不写盘",
+        "旧基线全量保存被 409 拒绝并给出可解释差异",
+        "正确基线保存走增量落盘：无关分片字节不变",
+        "下架场景登记退役，写入侧分配不再复用该 ID",
+        "保存携带退役 ID 的旧快照被拒绝且回滚",
+        "桌面打包模式拒绝保存与状态查询",
+        "夹具数据在保存链的维护校验后仍然完整",
+        "源分片未聚合的修改也使旧基线失效，读取快照来自源文件",
+        "聚合写入后失败会撤销新批次并恢复全部浏览器产物",
+        "相同基线的两个并发保存仅有一个成功，状态读取与保存串行",
+        "三位 ID 边界仍可读取内容并分配 sc1000",
+        "保存清洗 personaCoreSceneIds：稳定顺序去重、剔除非活跃引用、其他策展字段不动",
+        "保存拒绝非数组 personaCoreSceneIds 且不写盘",
+        "旧请求缺省 personaCoreSceneIds 保留现存核心精选，显式空数组才清空",
+        "validate-scenes 对坏核心精选夹具返回非零并指出字段、ID 与位置"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-interrogate-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/interrogate/tests.rs#pixai_is_the_local_default_and_unavailable_models_never_become_fake_results",
+        "runtime-rs/src/interrogate/pixai/tests.rs#cancellation_and_abandoned_request_keep_admission_until_cleanup",
+        "runtime-rs/src/interrogate/pixai/tests.rs#invalid_or_disconnected_protocol_never_returns_success_and_can_restart"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-interrogate-engine.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/interrogate/tests.rs#pixai_is_the_local_default_and_unavailable_models_never_become_fake_results",
+        "runtime-rs/src/interrogate/pixai/tests.rs#cancellation_and_abandoned_request_keep_admission_until_cleanup",
+        "runtime-rs/src/interrogate/pixai/tests.rs#invalid_or_disconnected_protocol_never_returns_success_and_can_restart"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-interrogate-client.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/interrogate/tests.rs#pixai_is_the_local_default_and_unavailable_models_never_become_fake_results",
+        "runtime-rs/src/interrogate/pixai/tests.rs#cancellation_and_abandoned_request_keep_admission_until_cleanup",
+        "runtime-rs/src/interrogate/pixai/tests.rs#invalid_or_disconnected_protocol_never_returns_success_and_can_restart"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "WD14 cancellation retains admission until worker exit and ignores late native output",
+        "message",
+        "exit",
+        "exit",
+        "message",
+        "message",
+        "WD14 real worker returns the isolated missing-model result and closes",
+        "gateway closes other owners while WD14 drains and never starts fallback after shutdown"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-live2d-route.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/live2d/tests.rs#native_texture_http_preserves_manifest_etag_and_scale",
+        "runtime-rs/src/live2d/tests.rs#multipart_import_publishes_only_bound_assets_and_profile_changes_require_cas",
+        "runtime-rs/src/live2d/tests.rs#legacy_cubism2_receipt_stays_browser_readable_and_traversal_never_becomes_a_model"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-sd-runtime.ts",
+      "action": "retain-unit",
+      "successors": [
+        "scripts/tests/test-sd-runtime.ts"
+      ],
+      "reason": "Current frontend request/status/queue behavior retained; only no-consumer progress decoder assertions removed."
+    },
+    {
+      "source": "scripts/tests/test-tunnel-restart.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/control/tests.rs#operation_is_exclusive_and_old_completion_cannot_finish_new_work",
+        "runtime-rs/src/control/tests.rs#config_commit_preserves_unknown_fields_and_requires_restart",
+        "runtime-rs/src/control/tests.rs#shutdown_cancels_owned_script_and_prevents_new_operations",
+        "runtime-rs/src/control/tests.rs#routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "tunnel auto-restarts after cloudflared exits unexpectedly",
+        "exit",
+        "restart attempts reset after a registered connection",
+        "exit",
+        "exit",
+        "stop prevents further auto-restarts",
+        "exit"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-upstream-health.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/upstream/tests.rs#proxy_streams_large_body_preserves_responses_and_enforces_exact_allowlist",
+        "runtime-rs/src/upstream/tests.rs#bounded_json_transport_cancels_and_refuses_nonlocal_targets",
+        "runtime-rs/src/upstream/client_tests.rs#json_transport_preserves_http_errors_and_bounds_chunked_bodies"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "requestJson：解析 JSON、保留 raw、非 2xx 不 throw",
+        "requestJson：POST body 与响应体上限",
+        "pingSd/pingTts/pingComfy 判定口径",
+        "pingOllamaDetail：/api/ps 汇总模型与显存，非 2xx 回落 /api/tags",
+        "bounded transports reject partial responses and enforce a total deadline",
+        "requestJson preserves an explicitly supplied false JSON payload"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-precompressed.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/security.rs#local_identity_does_not_trust_proxy_or_remote_origin",
+        "runtime-rs/src/remote_content/tests.rs#remote_token_cookies_cannot_reach_private_routes_or_bypass_precompressed_policy",
+        "runtime-rs/tests/host_http.rs#session_requires_bound_browser_origin_scope_and_current_epoch"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": [
+        "compression negotiation respects quality, exclusions, and existing Vary values",
+        "stale or missing compressed variants fall back without serving old content",
+        "compressed assets keep source boundaries and mutable-data cache policy",
+        "mutable data negotiates ETag consistently for br, gzip, and identity",
+        "refreshPrecompressed updates sibling .br and .gz files with matching decompressed content"
+      ]
+    },
+    {
+      "source": "scripts/tests/test-video-ai.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/video_contract.rs#video_validation_and_graphs_preserve_compiled_contracts",
+        "runtime-rs/tests/video_service.rs#protected_sequential_shots_skip_reference_tail_and_concat_retries_only_collection",
+        "runtime-rs/tests/video_service.rs#restart_with_unacknowledged_submission_never_replays_or_claims_cancelled",
+        "runtime-rs/src/video/ai/tests.rs#video_ai_contracts_and_storyboard_preserve_fixed_expectations"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/test-video-routes.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/tests/video_contract.rs#video_validation_and_graphs_preserve_compiled_contracts",
+        "runtime-rs/tests/video_service.rs#protected_sequential_shots_skip_reference_tail_and_concat_retries_only_collection",
+        "runtime-rs/tests/video_service.rs#restart_with_unacknowledged_submission_never_replays_or_claims_cancelled",
+        "runtime-rs/src/video/ai/tests.rs#video_ai_contracts_and_storyboard_preserve_fixed_expectations"
+      ],
+      "review": "Node-only implementation retired; listed existing Rust behavioral tests own the product risk; implementation-specific monkeypatch/process-private assertions no longer apply.",
+      "oldTestTitles": []
+    },
+    {
+      "source": "scripts/tests/evaluate-anima-param-matrix.ts",
+      "action": "retire-historical-experiment",
+      "reason": "Unregistered fixed historical batch with direct graph mutation; no production feature or maintenance command invokes it. Git history retains experiment and generated evidence."
+    },
+    {
+      "source": "scripts/tests/evaluate-anima-unified.ts",
+      "action": "retire-historical-experiment",
+      "reason": "Unregistered fixed historical batch with direct graph mutation; no production feature or maintenance command invokes it. Git history retains experiment and generated evidence."
+    },
+    {
+      "source": "scripts/tests/evaluate-video-i2va.ts",
+      "action": "retire-historical-experiment",
+      "reason": "Unregistered fixed historical batch with direct graph mutation; no production feature or maintenance command invokes it. Git history retains experiment and generated evidence."
+    },
+    {
+      "source": "scripts/tests/test-control-failure-contract.ts",
+      "action": "retire-node-implementation",
+      "successors": [
+        "runtime-rs/src/control/tests.rs#config_commit_preserves_unknown_fields_and_requires_restart",
+        "runtime-rs/src/control/tests.rs#shutdown_cancels_owned_script_and_prevents_new_operations",
+        "runtime-rs/tests/browser.mjs#verifyControl"
+      ],
+      "review": "Current saved/effective config behavior, shutdown and operation ownership remain covered; Node spawn event ordering belongs to removed implementation."
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { gatewayJson } from '../lib/gateway-json';
+import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
 /**
@@ -28,8 +30,8 @@ const path: typeof import('path') = require('path');
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
-const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
-const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
+const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
+const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 
 type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -68,12 +70,7 @@ function readJson(file: string): any {
 function readSceneData(file: string): Scene[] {
   return requireDataRecords(readJson(file), path.basename(file)) as unknown as Scene[];
 }
-function writeJsonAtomic(file: any, value: any) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const temporary = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
-  fs.renameSync(temporary, file);
-}
+
 function stableSeed(sceneId: any, attempt: any) {
   const digest = crypto.createHash('sha256').update(`scene-anima11-rella-v16:${sceneId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
@@ -181,17 +178,7 @@ function planScenes(selectedScenes: any, attempt: any, seedAttempt: any = attemp
   return selectedScenes.map((scene: any) => buildAnimaCandidate(scene, attempt, seedAttempt, overrides));
 }
 
-async function gatewayJson(base: any, pathname: any, options: any) {
-  let response;
-  try {
-    response = await fetch(base.replace(/\/$/, '') + pathname, Object.assign({ cache: 'no-store' }, options || {}));
-  } catch (error) {
-    return { response: null, data: null, error: error instanceof Error ? error.message : String(error) };
-  }
-  let data = null;
-  try { data = await response.json(); } catch (error) { /* keep null */ }
-  return { response, data };
-}
+
 function buildSubmissionBody(candidate: any) {
   const body: any = {
     prompt: candidate.prompt, negative: candidate.negative,

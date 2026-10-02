@@ -9,11 +9,13 @@
     },
     {
       "path": "scripts/maintenance/check-ref-urls.ts",
-      "sha256": "3fc97475e2d4f61afa19e4180036bde9cea808758803fcffa5f854f36b422f56"
+      "sha256": "7ef1bfb5ae9dca71063ef0d873715d47dc5ec9fd6c2523062258dcc48e90eea5",
+      "note": "2026-10-02: Node backend retirement moves resolveCharRefRoot to scripts/lib/content/asset-roots. Only the import owner changed; reference audit decisions and fixture oracle remain unchanged."
     },
     {
       "path": "scripts/lib/data-version.ts",
-      "sha256": "372d897487090651a769a57aef6560e0d7e73a736fdef50758d0211bcacd76c9"
+      "sha256": "ec4c5c7555542e4488cca989781db7aa09ea55ce4e676adb5f87a67c02d1d455",
+      "note": "2026-10-02: duplicate file reads now reuse the same buffer and unused syncDataVersion wrapper was removed. VERSIONED_FILES, UTF-16 length/hash serialization and expectedDataVersion output are unchanged."
     },
     {
       "path": "src/utils/popularContent.ts",

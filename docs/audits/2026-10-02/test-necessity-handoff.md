@@ -59,3 +59,7 @@
 - `tests/e2e/e2e-lanes.json`
 - `tests/e2e/expert-workspace.spec.ts`
 - `tests/e2e/studio.spec.ts`
+
+## 收口合并补记
+
+推送时远端 main 已包含其他会话的旧 Node 退役与安装包升级，收口时一并合入。原审查库存仍是合并前快照，续接必须先按当前源码重建，已删除的旧测试不要复活。用户要求停止后未执行此次合并的整合测试。共享工作区合并前的未提交副本保存在 Git stash（说明：preserve shared workspace before stop-request merge 2026-10-02）；不要直接整批恢复，以免覆盖远端已经更新的版本，确有独有改动再按文件取回。

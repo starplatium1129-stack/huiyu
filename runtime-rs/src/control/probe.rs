@@ -128,16 +128,27 @@ impl ControlService {
             if self.shutdown.is_cancelled() {
                 return;
             }
+            let sequence = self.state.lock().unwrap().seq;
             let healthy = self.online(index, &self.settings()).await;
-            if index == 3 {
-                let mut state = self.state.lock().unwrap();
-                if !state.health.is_object() {
-                    state.health = json!({});
-                }
-                state.health["translationOnline"] = json!(healthy);
-            }
             let ready = {
                 let mut state = self.state.lock().unwrap();
+                // An explicit operation or another watchdog restart supersedes
+                // the probe. It must not clear the new cycle's retry state.
+                if self.shutdown.is_cancelled()
+                    || state.seq != sequence
+                    || state
+                        .operation
+                        .as_ref()
+                        .is_some_and(|op| op["status"] == "running")
+                {
+                    continue;
+                }
+                if index == 3 {
+                    if !state.health.is_object() {
+                        state.health = json!({});
+                    }
+                    state.health["translationOnline"] = json!(healthy);
+                }
                 let entry = &mut state.managed[index];
                 if !entry.desired || !entry.owned {
                     false
@@ -163,6 +174,14 @@ impl ControlService {
             let result = self.service_action(index, true, &op).await;
             {
                 let mut state = self.state.lock().unwrap();
+                if self.shutdown.is_cancelled()
+                    || state
+                        .operation
+                        .as_ref()
+                        .is_none_or(|current| current["id"] != op["id"])
+                {
+                    return;
+                }
                 let entry = &mut state.managed[index];
                 entry.last_restart = now();
                 if let Err(error) = &result {

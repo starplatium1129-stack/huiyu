@@ -1,56 +1,20 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import net from 'node:net'
-import os from 'node:os'
-import path from 'node:path'
-import { createServer } from 'vite'
 import { chromium } from '@playwright/test'
-import { openWorkspaceEngine } from '../../server/workspace/engine.js'
-import type { WorkspaceCommand } from '../../server/workspace/types'
 
-const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-profile-windows-'))
-const workspace = openWorkspaceEngine({ root: workspaceRoot, workspaceId: 'profile-window-fixture', writerEpoch: 'fixture', create: true })
-const principal = { workspaceId: 'profile-window-fixture', principalId: 'fixture', protocolVersion: 1 as const }
+import { startRustBrowserFixture } from './rust-browser-fixture.mjs'
+const fixture = await startRustBrowserFixture()
+const { origin, workspaceId } = fixture
 const chatBase = { version: 3, historiesRevision: 0, historiesRevisions: { nene: 0 }, histories: { nene: [{ mid: 'base', role: 'user', content: 'base', stopped: false }] }, settings: {} }
-await workspace.execute({ kind: 'profile.saveSetting', operationId: 'seed-theme', key: 'aics_theme', value: 'dark', expectedRevision: null }, principal)
-await workspace.execute({ kind: 'profile.saveChatRecord', operationId: 'seed-chat', key: 'aics_chat_v1', value: JSON.stringify(chatBase), expectedRevision: null, expectedReset: '' }, principal)
+await fixture.request('/api/workspace/profile/settings', 'PUT', { protocolVersion: 1, workspaceId, operationId: 'seed-theme', key: 'aics_theme', value: 'dark', expectedRevision: null })
+await fixture.request('/api/workspace/profile/chat', 'PUT', { protocolVersion: 1, workspaceId, operationId: 'seed-chat', key: 'aics_chat_v1', value: JSON.stringify(chatBase), expectedRevision: null, expectedReset: '' })
 let revisionConflicts = 0
-
-const reserve = net.createServer()
-await new Promise<void>(resolve => reserve.listen(0, '127.0.0.1', resolve))
-const reserved = reserve.address()
-if (!reserved || typeof reserved === 'string') throw new Error('Fixture port reservation failed')
-await new Promise<void>(resolve => reserve.close(() => resolve()))
-const server = await createServer({ configFile: false, appType: 'custom', optimizeDeps: { noDiscovery: true, entries: [] },
-  server: { host: '127.0.0.1', port: reserved.port, strictPort: true, watch: null } })
-server.middlewares.use((request, response, next) => {
-  if (request.url === '/fixture-profile') {
-    void (async () => {
-      try {
-        const chunks: Buffer[] = []
-        for await (const chunk of request) chunks.push(Buffer.from(chunk))
-        const result = await workspace.execute(JSON.parse(Buffer.concat(chunks).toString()) as WorkspaceCommand, principal)
-        response.setHeader('Content-Type', 'application/json'); response.end(JSON.stringify({ result }))
-      } catch (error) {
-        const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : 'FIXTURE_ERROR'
-        if (code === 'REVISION_CONFLICT') revisionConflicts++
-        response.statusCode = 409; response.setHeader('Content-Type', 'application/json'); response.end(JSON.stringify({ code }))
-      }
-    })()
-    return
-  }
-  if (request.url !== '/fixture') { next(); return }
-  response.setHeader('Content-Type', 'text/html'); response.end('<!doctype html><title>Isolated migration fixture</title>')
-})
-await server.listen()
-const address = server.httpServer!.address()
-if (!address || typeof address === 'string') throw new Error('Fixture server did not bind a port')
-const origin = `http://127.0.0.1:${address.port}`
 const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe']
   .find(file => fs.existsSync(file))
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 try {
-  const context = await browser.newContext()
+  const context = await fixture.context(browser)
+  context.on('response', response => { if (response.url().includes('/api/workspace/profile/') && response.status() === 409) revisionConflicts++ })
   const first = await context.newPage(), second = await context.newPage()
   await Promise.all([first.goto(`${origin}/fixture`), second.goto(`${origin}/fixture`)])
   for (const [page, id] of [[first, 'main'], [second, 'chat']] as const) await page.evaluate(async windowId => {
@@ -107,13 +71,10 @@ try {
   for (const [page, id] of [[first, 'main'], [second, 'chat']] as const) await page.evaluate(async windowId => {
     const profile = await import(String('/src/platform/web/profileStorage.ts'))
     const { createProfilePort } = await import(String('/src/platform/web/profilePort.ts'))
-    const request = async (command: Record<string, unknown>) => {
-      const response = await fetch('/fixture-profile', { method: 'POST', body: JSON.stringify(command) })
-      const data = await response.json()
-      if (!response.ok) throw Object.assign(new Error(data.code), { code: data.code })
-      return data.result
-    }
-    await profile.activateProfileStorage(createProfilePort(request), windowId)
+    const { initializeDesktopRuntime } = await import(String('/src/platform/desktop/runtime.ts'))
+    const { workspaceRequest } = await import(String('/src/api/workspace.ts'))
+    await initializeDesktopRuntime()
+    await profile.activateProfileStorage(createProfilePort(workspaceRequest), windowId)
     Object.assign(window, { fixtureProfile: profile })
   }, id)
   await first.evaluate(async () => {
@@ -150,4 +111,4 @@ try {
   assert.match(reset.recovery, /unsaved recovery/)
   await context.close()
   console.log('Migration/profile browser: two real windows verified maintenance, independent backup, credential exclusion, SQLite revision rebase, message merge, offline outbox and reset recovery export.')
-} finally { await browser.close(); await server.close(); workspace.close(); fs.rmSync(workspaceRoot, { recursive: true, force: true }) }
+} finally { await browser.close(); await fixture.close() }

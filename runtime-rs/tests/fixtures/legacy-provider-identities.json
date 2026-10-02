@@ -1,0 +1,42 @@
+{
+  "sourceCommit": "142f654cea2b30287a37bb9a0d60364e1b1c497f",
+  "scope": "Old provider fingerprint wire shape only: comfy, identity(created,inode,root), webui. Node taskFingerprint captured independently before retirement. The recovery test still samples a real temporary filesystem root with Node builtins. Retain while legacy task records without fingerprintLocale are supported.",
+  "cases": [
+    {
+      "value": {
+        "comfy": "http://127.0.0.1:8188",
+        "webui": "http://127.0.0.1:7860",
+        "identity": {
+          "root": "C:\\fixture\\ComfyUI",
+          "created": 1725123456789.123,
+          "inode": 281474976710657
+        }
+      },
+      "sha256": "1890b4ca7532ca18e206009f6ae48b87c37f7d49cc44973723ac9c28b334b9bf"
+    },
+    {
+      "value": {
+        "comfy": "http://127.0.0.1:54321",
+        "webui": "http://127.0.0.1:54321",
+        "identity": {
+          "root": "/tmp/neutral \"fixture\"/ComfyUI",
+          "created": 1.25,
+          "inode": 9007199254740991
+        }
+      },
+      "sha256": "2a8086be7eeb727929ed9e231b8a287bb5a58665372fa002b8ad241dce9db5d8"
+    },
+    {
+      "value": {
+        "comfy": "http://localhost:8188",
+        "webui": "http://localhost:8188",
+        "identity": {
+          "root": "D:\\素材\\ComfyUI",
+          "created": 0,
+          "inode": 1e+21
+        }
+      },
+      "sha256": "59b145a837cc60074cd286de76ac7c3a7f0b1b576c68d0532e5237055d94107f"
+    }
+  ]
+}

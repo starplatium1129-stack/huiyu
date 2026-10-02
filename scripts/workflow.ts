@@ -193,10 +193,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
     cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
     docs: 'docs/guides/desktop/game-installer.md',
-    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'], '--upgrade': ['writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
   },
   'installer:bundle': {
-    desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
+    desc: '用已绑定桌面构建生成完整包与升级包并分别签名（只改安装界面时使用）',
     cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
     docs: 'docs/guides/desktop/game-installer.md',
     run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--publish': ['publish-remote'], '--bump': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/release-desktop-update.js:33-39,76-86,215-242', unknown: [], notes: ['--publish 推送 GitHub Releases（外部发布）；需 updater 签名私钥'] },
@@ -272,13 +272,6 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     cmd: ['node', 'scripts/maintenance/validate-content-contracts.js'],
     docs: 'docs/maintenance.md',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/validate-content-contracts.js:15', unknown: [] },
-  },
-  'data:apply': {
-    desc: '合并 refine-map chunks (替代 4 个 apply-*.js)',
-    cmd: ['node', 'scripts/maintenance/apply-chunks.js'],
-    docs: 'scripts/maintenance/apply-chunks.js:1',
-    opts: '--target popular|scenes --chunks 1-17',
-    run: { nature: ['writes-source'], machine: ['node'], switches: { '--help': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/apply-chunks.js:110,147', unknown: ['--target/--chunks 合法性由脚本自校验，注册表未声明 required'] },
   },
   'content:sync': {
     desc: '统一校验人物/服装/场景，修正清单计数、补登参考分片并构建聚合（默认只读预览）',
@@ -406,11 +399,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: { '--list': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/run-check-parallel.js:22-57', unknown: [], notes: ['22 步全部 --check/validate；例外：fresh clone 产物缺失时 ensureAll 落盘自愈'] },
   },
   'gate:quick': {
-    desc: '日常按 Git 改动选相关前端、样式、Node/Rust 和常规 E2E；显式 ui|style|server|rust|data|all 选择领域',
+    desc: '日常按 Git 改动选相关前端、样式、Node/Rust 和常规 E2E；显式 ui|style|rust|data|all 选择领域',
     cmd: ['node', 'scripts/maintenance/gate-quick.js'],
-    opts: '[ui|style|server|rust|data|all] [--verbose] [--all]',
+    opts: '[ui|style|rust|data|all] [--verbose] [--all]',
     docs: 'docs/workflow.md',
-    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check，不扩大Node legacy；自动 UI 按 Vitest 导入图选相关测试；常规 E2E 测试本身改动复用已有 dist，混合 UI/data 改动先构建；共享夹具、runner、配置、未知路径升级 full；纯文档跳过'] },
+    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check，不扩大维护与发行专项；自动 UI 按 Vitest 导入图选相关测试；常规 E2E 测试本身改动复用已有 dist，混合 UI/data 改动先构建；共享夹具、runner、配置、未知路径升级 full；纯文档跳过'] },
   },
   'gate:full': {
     desc: '全量门禁：check + rust:check + vitest + unit + contract + 变更专项 + 打包预算（横切重构/未知影响面）',
@@ -524,12 +517,6 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     docs: 'scripts/tests/test-popular-content.js:1',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-popular-content.js:933-945', unknown: [] },
   },
-  'check:anima-routes': {
-    desc: 'Anima 接口与生成边界契约',
-    cmd: ['node', 'scripts/tests/test-anima-routes.js'],
-    docs: 'scripts/tests/test-anima-routes.js:1',
-    run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-anima-routes.js:107-119,647-661', unknown: [] },
-  },
   'check:frontend': {
     desc: '前端单测（vitest，stores/utils/composables 主战场）',
     cmd: ['npm', 'run', 'test:frontend'],
@@ -584,9 +571,9 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node'], switches: { '--all': ['read-only'], '--verbose': ['read-only'] }, resume: 'na', evidence: 'scripts/tests/contract-test-policy.ts; scripts/tests/run-quality-suite.ts:runContractSuite', unknown: [], notes: ['CONTRACT_TEST_JOBS 默认 2，仅审核过的隔离夹具并行，其余串行；设 1 保持原顺序；有效范围 1–4；失败停止派发并等待在途任务，--all 继续全部文件'] },
   },
   'test:optional': {
-    desc: '按 Git 变更选择维护工具、发行和旧 Node 对照套件；未知影响面运行全部专项',
+    desc: '按 Git 变更选择维护工具和发行套件；未知影响面运行全部专项',
     cmd: ['npm', 'run', 'test:optional'], docs: 'docs/workflow.md#门禁与构建',
-    run: { nature: ['isolated-fixture', 'self-heal-missing', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/run-optional-test-lanes.ts', unknown: ['实际范围由 Git 变更决定'], notes: ['相关源码变更自动补专项；legacy 需要的 SPA 在运行前构建；保留失败退出码'] },
+    run: { nature: ['isolated-fixture', 'self-heal-missing', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/run-optional-test-lanes.ts', unknown: ['实际范围由 Git 变更决定'], notes: ['相关源码变更自动补专项，保留失败退出码'] },
   },
   'test:tooling': {
     desc: '维护CLI、构建器和扫描器夹具专项', cmd: ['npm', 'run', 'test:tooling'], docs: 'docs/workflow.md#门禁与构建',
@@ -596,13 +583,9 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '发行、安装、资源包和桌面ABI专项', cmd: ['npm', 'run', 'test:release'], docs: 'docs/workflow.md#门禁与构建',
     run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/quality-test-inventory.ts', unknown: ['Windows分支按宿主执行'], notes: ['不执行真实安装或发布'] },
   },
-  'test:legacy': {
-    desc: '旧Node后端与迁移互操作对照；复用当前SPA', cmd: ['npm', 'run', 'test:legacy'], docs: 'docs/workflow.md#门禁与构建',
-    run: { nature: ['isolated-fixture'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/tests/quality-test-inventory.ts', unknown: [], notes: ['Node对照通过不代替Rust产品验证'] },
-  },
   'gate:all': {
     desc: '显式全部库存：现有前端覆盖率门槛及所有Node执行lane', cmd: ['npm', 'run', 'validate:all'], docs: 'docs/workflow.md#门禁与构建',
-    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate:all', unknown: [], notes: ['包含旧Node、维护及发行专项；不包含浏览器、设备和真实模型'] },
+    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate:all', unknown: [], notes: ['包含维护及发行专项；不包含浏览器、设备和真实模型'] },
   },
   'test:e2e:critical': {
     desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',

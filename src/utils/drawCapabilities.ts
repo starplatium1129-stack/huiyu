@@ -65,8 +65,3 @@ export function resolveDrawCapabilities(
 export function isNaturalLanguage(capabilities: Pick<DrawCapabilities, 'promptFormat'>): boolean {
   return capabilities.promptFormat === 'natural-language'
 }
-
-/** 便捷判断：当前引擎是否使用 Danbooru/Anima 标签流（支持权重语法）。 */
-export function isTagPrompt(capabilities: Pick<DrawCapabilities, 'promptFormat' | 'weightSyntax'>): boolean {
-  return capabilities.promptFormat !== 'natural-language' && capabilities.weightSyntax
-}

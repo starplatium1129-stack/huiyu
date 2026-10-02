@@ -109,6 +109,10 @@ namespace Ayaki.Installer {
         Directory.CreateDirectory(temporary);
         string payload = Path.Combine(temporary, "setup.exe");
         try {
+          if (PayloadInfo.UpgradeOnly) {
+            VerifyUpgrade(directory, temporary, cancellation);
+            options.Update = true;
+          }
           using (Stream source = Assembly.GetExecutingAssembly().GetManifestResourceStream("Payload.exe")) {
             if (source == null || source.Length != PayloadInfo.Length) throw new IOException("安装资源不完整，请重新下载。");
             using (var output = new FileStream(payload, FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
@@ -138,6 +142,30 @@ namespace Ayaki.Installer {
           }
         }
       }, cancellation);
+    }
+    static void VerifyUpgrade(string directory, string temporary, CancellationToken cancellation) {
+      string checker = Path.Combine(temporary, "upgrade-check.exe");
+      using (Stream source = Assembly.GetExecutingAssembly().GetManifestResourceStream("UpgradeVerifier.exe")) {
+        if (source == null) throw new IOException("升级包校验组件缺失，请重新下载完整安装包。");
+        using (var output = new FileStream(checker, FileMode.CreateNew, FileAccess.Write, FileShare.None)) source.CopyTo(output);
+      }
+      using (var stream = File.OpenRead(checker)) if (Hash(stream) != PayloadInfo.UpgradeVerifierSha256) throw new IOException("升级包校验组件已损坏。");
+      using (Process process = Process.Start(new ProcessStartInfo(checker, "\"" + directory + "\"") {
+        UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden,
+        RedirectStandardOutput = true, RedirectStandardError = true,
+        StandardOutputEncoding = System.Text.Encoding.UTF8, StandardErrorEncoding = System.Text.Encoding.UTF8
+      })) {
+        if (process == null) throw new IOException("无法检查已有安装。");
+        try {
+          DateTime deadline = DateTime.UtcNow.AddSeconds(60);
+          while (!process.WaitForExit(100)) {
+            cancellation.ThrowIfCancellationRequested();
+            if (DateTime.UtcNow > deadline) throw new IOException("基础素材检查超时，请重试或使用完整安装包。");
+          }
+          string message = process.StandardOutput.ReadToEnd().Trim();
+          if (process.ExitCode != 0) throw new IOException(String.IsNullOrEmpty(message) ? "无法复用已有资源，请使用完整安装包。" : message);
+        } finally { if (!process.HasExited) { process.Kill(); process.WaitForExit(2000); } }
+      }
     }
   }
 }

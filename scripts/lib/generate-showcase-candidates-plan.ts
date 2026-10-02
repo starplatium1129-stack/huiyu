@@ -6,8 +6,8 @@ const popularContent: typeof import('../../src/utils/popularContent.ts') = requi
 const artistCatalog: typeof import('../../src/config/artistStyleCatalog.ts') = require('../../src/config/artistStyleCatalog.ts');
 const kreaRecipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
 const qualityPromptContract: typeof import('../maintenance/quality-prompt-contract.js') = require('../maintenance/quality-prompt-contract.js');
-const genConst: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
-const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
+const genConst: any = (require('./generation/sd-catalog.js') as typeof import('./generation/sd-catalog.js'));
+const animaConst = (require('./generation/anima-model-catalog.js') as typeof import('./generation/anima-model-catalog.js'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 const { resolveModelProfile } = promptPolicy;
 const {

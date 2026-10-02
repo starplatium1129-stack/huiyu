@@ -13,7 +13,7 @@ const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 
 const inpaint: typeof import('../../scripts/maintenance/inpaint-scene-candidates.js') = require('../../scripts/maintenance/inpaint-scene-candidates.js');
-const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
+const animaConst = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 
 function makePng(width: number, height: number, spot: { cx: number; cy: number; rx: number; ry: number } | null) {
   const pixels = Buffer.alloc(width * height * 3, 200);

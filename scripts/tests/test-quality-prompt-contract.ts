@@ -6,7 +6,7 @@ const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
 const { test }: typeof import('node:test') = require('node:test');
 
-const generationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
+const generationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
 const promptContract: typeof import('../maintenance/quality-prompt-contract.js') = require('../maintenance/quality-prompt-contract.js');
 const shortBuilder: typeof import('../maintenance/short-prompt-builder.js') = require('../maintenance/short-prompt-builder.js');
 const sceneFix: typeof import('../maintenance/scene-fix.js') = require('../maintenance/scene-fix.js');
