@@ -209,7 +209,11 @@ impl TaskRuntime {
         }
         let has_outputs = !observation.outputs.is_empty();
         let mut recovered_files = Vec::new();
-        if has_outputs && current.result_state != ResultState::Available {
+        // A provider query can retry a failed collection hook and commit the
+        // result. Consult durable state again before rereading its output.
+        if has_outputs
+            && Self::get(storage, principal, id).await?.result_state != ResultState::Available
+        {
             // Only this single-task recovery owns these downloads. Live jobs
             // retain their outputs, and batch shots still need theirs for
             // tail-frame extraction and stitching.
