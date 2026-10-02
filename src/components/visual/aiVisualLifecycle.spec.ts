@@ -5,6 +5,8 @@ import ThinkingOrb from './ThinkingOrb.vue'
 import VoiceGlow from './VoiceGlow.vue'
 import CgImageReveal from './CgImageReveal.vue'
 import BorderBeam from './BorderBeam.vue'
+import GenerationDust from './GenerationDust.vue'
+import { startCanvasRipple } from '@/utils/canvasRipple'
 
 let activity: {
   canPresent: Ref<boolean>; canAnimate: Ref<boolean>; reducedMotion: Ref<boolean>
@@ -12,6 +14,7 @@ let activity: {
 }
 vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => activity }))
 vi.mock('@vueuse/core', () => ({ useResizeObserver: vi.fn() }))
+vi.mock('@/utils/canvasRipple', () => ({ startCanvasRipple: vi.fn() }))
 
 const frames = new Map<number, FrameRequestCallback>()
 const cleanups: Array<() => void> = []
@@ -163,6 +166,11 @@ describe('CgImageReveal ownership and fallback', () => {
 
   beforeEach(() => {
     animations.length = 0
+    vi.mocked(startCanvasRipple).mockImplementation((_image, host) => {
+      const canvas = document.createElement('canvas')
+      host.append(canvas)
+      return { canvas, stop: () => canvas.remove() }
+    })
     animateDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'animate')
     animate = vi.fn(() => {
       let finish!: (animation: Animation) => void
@@ -200,11 +208,9 @@ describe('CgImageReveal ownership and fallback', () => {
       }
     }
     expect(wrapper.find('canvas').exists()).toBe(true)
-    expect(context.drawImage).toHaveBeenCalledOnce()
-    expect(context.getImageData).toHaveBeenCalledOnce()
-    expect(frames.size).toBe(1)
-    tick(200)
-    expect(context.fillRect).toHaveBeenCalled()
+    expect(startCanvasRipple).toHaveBeenCalledOnce()
+    expect(animate.mock.contexts[0]).toBe(wrapper.get('canvas').element)
+    expect(animate.mock.contexts[0]).not.toBe(img.element)
 
     animations[0].finish()
     await Promise.resolve()
@@ -377,7 +383,7 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it('falls back safely and releases dust when animation creation throws', async () => {
+  it('falls back safely and releases refraction when animation creation throws', async () => {
     const failureCall = 1
     const createAnimation = animate.getMockImplementation()! as () => Animation
     animate.mockImplementation(() => {
@@ -400,6 +406,18 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(animations.every(animation => animation.cancel.mock.calls.length === 1)).toBe(true)
     expect(frames.size).toBe(0)
+  })
+
+  it('keeps the original clear when WebGL or CORS cannot provide a layer', async () => {
+    vi.mocked(startCanvasRipple).mockReturnValue(null)
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png' } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    await img.trigger('load')
+    expect(animate).not.toHaveBeenCalled()
+    expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
+    expect(img.element.style.opacity).toBe('')
+    expect(wrapper.find('canvas').exists()).toBe(false)
   })
 
   it('cancels all animations when the current image fails', async () => {
@@ -443,5 +461,21 @@ describe('BorderBeam activity', () => {
     await nextTick()
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
     expect(wrapper.find('.border-beam-track').exists()).toBe(true)
+  })
+})
+
+describe('Generation flow activity', () => {
+  it('stops decorative motion when hidden or low effects, without scheduling JS paints', async () => {
+    const wrapper = own(mount(GenerationDust))
+    await nextTick()
+    expect(wrapper.classes()).toContain('is-running')
+    activity.canAnimate.value = false
+    await nextTick()
+    expect(wrapper.classes()).not.toContain('is-running')
+    activity.canAnimate.value = true
+    activity.lowEffects.value = true
+    await nextTick()
+    expect(wrapper.classes()).not.toContain('is-running')
+    expect(frames.size).toBe(0)
   })
 })
