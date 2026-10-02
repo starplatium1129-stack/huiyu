@@ -21,7 +21,7 @@ async function fixture() {
   const wrapper = mount(defineComponent({ setup() {
     const root = ref<HTMLElement | null>(null)
     motion = useCanvasClearMotion(root, () => source.value, () => busy.value, () => comparing.value)
-    return () => h('div', { ref: root }, h('img', { class: 'cg-image-target', src: source.value }))
+    return () => h('div', { ref: root }, source.value ? h('img', { class: 'cg-image-target', src: source.value }) : null)
   } }))
   cleanups.push(() => wrapper.unmount())
   const image = wrapper.get('img').element
@@ -63,6 +63,48 @@ it('does not allocate effects when reduced/hidden or busy, and ignores an empty 
   activity.canAnimate.value = false; motion.playClear()
   activity.canAnimate.value = true; busy.value = true; motion.playClear()
   busy.value = false; source.value = ''; motion.playClear()
+  expect(mock.dissolve).not.toHaveBeenCalled()
+})
+it('captures a stashed result before rendering the pending generation', async () => {
+  const { source, busy, image, wrapper } = await fixture()
+  mock.dissolve.mockImplementation(() => {
+    expect(source.value).toBe('')
+    expect(busy.value).toBe(true)
+    expect(wrapper.get('img').element).toBe(image)
+    return mock.release
+  })
+  source.value = ''; busy.value = true
+  expect(mock.dissolve).not.toHaveBeenCalled()
+  await nextTick()
+  expect(mock.dissolve).toHaveBeenCalledExactlyOnceWith(image, wrapper.element)
+  expect(wrapper.find('img').exists()).toBe(false)
+  busy.value = true
+  await nextTick()
+  expect(mock.dissolve).toHaveBeenCalledOnce()
+  expect(mock.release).not.toHaveBeenCalled()
+})
+it.each(['cancel', 'result', 'unmount'] as const)('releases the outgoing generation snapshot on %s without touching the result', async change => {
+  const { source, busy, wrapper } = await fixture()
+  source.value = ''; busy.value = true
+  await nextTick()
+  expect(mock.dissolve).toHaveBeenCalledOnce()
+  if (change === 'cancel') busy.value = false
+  if (change === 'result') source.value = '/next.png'
+  if (change === 'unmount') wrapper.unmount()
+  expect(mock.release).toHaveBeenCalledOnce()
+  await nextTick()
+  expect(source.value).toBe(change === 'result' ? '/next.png' : '')
+})
+it.each(['cancel', 'result', 'reduced', 'comparison', 'retained'] as const)('skips outgoing capture for %s in the same render', async change => {
+  const { source, busy, comparing } = await fixture()
+  if (change === 'comparison') { comparing.value = true; await nextTick() }
+  source.value = ''; busy.value = true
+  if (change === 'cancel') busy.value = false
+  if (change === 'result') source.value = '/fast.png'
+  if (change === 'reduced') activity.canAnimate.value = false
+  if (change === 'comparison') comparing.value = false
+  if (change === 'retained') source.value = '/neutral.png'
+  await nextTick()
   expect(mock.dissolve).not.toHaveBeenCalled()
 })
 it('falls back to bounded snapshot fading when pixel sampling is unavailable and releases it', async () => {

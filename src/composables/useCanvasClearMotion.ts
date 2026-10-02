@@ -4,7 +4,7 @@ import { useVisualActivity } from './useVisualActivity'
 
 type Dissolve = typeof import('@/utils/canvasDissolve')['startCanvasDissolve']
 
-/** Presentation only: the caller clears business state immediately after taking this snapshot. */
+/** Presentation only: snapshot the displayed pixels without owning the result. */
 export function useCanvasClearMotion(
   host: Ref<HTMLElement | null>, source: () => string, busy: () => boolean, comparing: () => boolean,
 ) {
@@ -22,19 +22,29 @@ export function useCanvasClearMotion(
       .catch(() => {}).finally(() => { loading = false })
   }, { immediate: true })
   function playClear() {
+    if (!source() || busy()) return stop()
+    playSnapshot()
+  }
+  function playSnapshot() {
     stop()
     const root = host.value
     // Comparison has two independently clipped images; never replace it with an incorrect full image.
-    if (!root || !source() || busy() || comparing() || !canAnimate.value || lowEffects.value) return
+    if (!root || comparing() || !canAnimate.value || lowEffects.value) return
     const image = root.querySelector<HTMLImageElement>('img.cg-image-target')
     if (!image?.complete || !image.naturalWidth) return
     hostWidth = root.getBoundingClientRect().width
     try { cleanup = dissolve?.(image, root) ?? fadeSnapshot(image, root) }
     catch { /* A decorative effect must never prevent the synchronous clear action. */ }
   }
-  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl]) => {
-    if ((url && url !== oldUrl) || generating || comparison) stop()
+  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, wasGenerating]) => {
+    if ((url && url !== oldUrl) || generating !== wasGenerating || comparison) stop()
   }, { flush: 'sync' })
+  // Anima/Krea stash the old result before submitting. Props settle before this
+  // pre-render watcher, while the decoded old image is still in the DOM. Capture
+  // only its pixels; submission and result ownership never wait on the effect.
+  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, , wasComparing]) => {
+    if (oldUrl && !url && generating && !comparison && !wasComparing) playSnapshot()
+  }, { flush: 'pre' })
   watch([canAnimate, lowEffects], () => {
     if (!canAnimate.value || lowEffects.value) stop()
   }, { flush: 'sync' })
