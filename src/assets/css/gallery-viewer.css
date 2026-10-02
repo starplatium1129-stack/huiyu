@@ -7,7 +7,7 @@
 .art-viewer .viewer-close .archive-icon,.art-viewer .viewer-nav .archive-icon,.art-viewer .viewer-info-toggle .archive-icon { @apply tw:w-[20px] tw:h-[20px]; }
 .art-viewer .viewer-stage .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) 56px; }
 .art-viewer .viewer-stage .zoom-transform-layer { @apply tw:w-full tw:h-full; }
-.art-viewer .viewer-stage .zoomable-img { @apply tw:max-h-full tw:w-auto tw:h-auto tw:rounded-md; }
+.art-viewer .viewer-stage .zoomable-img { @apply tw:max-h-full tw:w-full tw:h-full tw:object-contain tw:rounded-md; }
 .art-viewer .viewer-stage .zoom-toolbar { @apply tw:flex tw:items-center tw:justify-center tw:min-h-0; padding:0; cursor:default; }
 .art-viewer .viewer-stage .zoom-controls { position:static; transform:none; background:var(--bg-surface); backdrop-filter:none; padding:var(--s-1) var(--s-2); }
 .art-viewer .viewer-stage .zoom-level { color:var(--text-secondary); }

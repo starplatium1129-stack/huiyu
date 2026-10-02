@@ -369,10 +369,15 @@ export function useGalleryWorkspace() {
     function syncNarrowViewer() { const nextNarrow = narrowViewerMedia?.matches ?? false; narrowViewer.value = nextNarrow; if (!nextNarrow && infoOpen.value) { closeInfoDrawer(); void nextTick(() => closeBtn.value?.focus({ preventScroll: true })); } }
     // 父查看器与窄屏信息抽屉叠成两层陷阱：抽屉打开时 Escape 只交给顶层抽屉，
     // 关闭后由子陷阱把焦点还给 .viewer-info-toggle，再由父陷阱管理整个查看器。
-    useFocusTrap(viewerEl, () => viewerIndex.value >= 0, {
+    const { returnFocus: viewerReturnFocus } = useFocusTrap(viewerEl, () => viewerIndex.value >= 0, {
         onEscape: closeViewer,
         initialFocus: closeBtn,
     });
+    watch(viewerIndex, index => {
+        if (index >= 0 || !viewerReturnFocus.value) return;
+        const box = viewerReturnFocus.value.getBoundingClientRect();
+        if (box.bottom <= 0 || box.right <= 0 || box.top >= innerHeight || box.left >= innerWidth) viewerReturnFocus.value = null;
+    }, { flush: 'sync' });
     useFocusTrap(infoEl, () => viewerIndex.value >= 0 && narrowViewer.value && infoOpen.value, {
         onEscape: closeInfoDrawer, initialFocus: infoCloseBtn, lockScroll: false,
     });
