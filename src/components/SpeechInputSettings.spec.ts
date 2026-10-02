@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { beforeEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import SpeechInputSettings from './SpeechInputSettings.vue'
 import { saveSpeechInputConfig } from '@/utils/speechInputConfig'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
@@ -15,6 +15,15 @@ beforeEach(() => {
   vi.mocked(saveSpeechInputConfig).mockReset()
   vi.mocked(flushProfileWrites).mockReset().mockResolvedValue(undefined)
 })
+
+afterEach(() => {
+  vi.useRealTimers()
+  vi.unstubAllGlobals()
+})
+
+function addressResponse(status: number, type: ResponseType = 'basic'): Response {
+  return { status, type, ok: status >= 200 && status < 300 } as Response
+}
 
 it('keeps the speech draft visible after a failed save and allows a successful retry', async () => {
   vi.mocked(saveSpeechInputConfig).mockImplementationOnce(() => { throw new Error('fixture storage denied') })
@@ -75,4 +84,146 @@ it('waits for durable confirmation and keeps newer word edits visible until they
     expect(vi.mocked(saveSpeechInputConfig).mock.calls[2]?.[0]).toMatchObject({ wakeWords: ['绘遇', '听我说'] })
     expect(wrapper.emitted('save')).toHaveLength(1)
   } finally { wrapper.unmount() }
+})
+
+it.each([
+  { response: addressResponse(200), message: 'HTTP 200', state: 'ok' },
+  { response: addressResponse(404), message: 'HTTP 404', state: 'fail' },
+  { response: addressResponse(0, 'opaque'), message: '响应不可读', state: 'idle' },
+  { response: new TypeError('fixture network blocked'), message: '未能读取地址响应', state: 'fail' },
+])('reports $message without claiming transcription readiness', async ({ response, message, state }) => {
+  const fetchMock = vi.fn<typeof fetch>()
+  if (response instanceof Error) fetchMock.mockRejectedValue(response)
+  else fetchMock.mockResolvedValue(response)
+  vi.stubGlobal('fetch', fetchMock)
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1/')
+    await wrapper.find('.speech-settings-buttons button').trigger('click')
+    await flushPromises()
+    expect(fetchMock).toHaveBeenCalledWith('https://speech.example.test/v1', expect.objectContaining({
+      method: 'GET', mode: 'cors', signal: expect.any(AbortSignal),
+    }))
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    const status = wrapper.find('[aria-label="地址检测状态"]')
+    expect(status.text()).toContain(message)
+    expect(status.attributes('data-state')).toBe(state)
+    expect(wrapper.text()).toContain('未验证语音转写、模型或密钥')
+    expect(wrapper.text()).not.toContain('连接正常')
+    expect(wrapper.find('.speech-settings-buttons button').attributes('disabled')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+it('aborts after ten seconds, permits retry, and ignores a late timeout response', async () => {
+  vi.useFakeTimers()
+  let complete!: (response: Response) => void
+  const fetchMock = vi.fn<typeof fetch>()
+    .mockImplementationOnce(() => new Promise<Response>(resolve => { complete = resolve }))
+    .mockResolvedValueOnce(addressResponse(200))
+  vi.stubGlobal('fetch', fetchMock)
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1')
+    const probe = wrapper.find('.speech-settings-buttons button')
+    await probe.trigger('click')
+    const signal = fetchMock.mock.calls[0]?.[1]?.signal
+    await vi.advanceTimersByTimeAsync(9_999)
+    expect(signal?.aborted).toBe(false)
+    expect(probe.attributes('disabled')).toBeDefined()
+    await vi.advanceTimersByTimeAsync(1)
+    expect(signal?.aborted).toBe(true)
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).toContain('超时（10 秒）')
+    expect(probe.attributes('disabled')).toBeUndefined()
+    await probe.trigger('click')
+    await flushPromises()
+    complete(addressResponse(404))
+    await flushPromises()
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).toContain('HTTP 200')
+    expect(vi.getTimerCount()).toBe(0)
+  } finally { wrapper.unmount() }
+})
+
+it.each([
+  { selector: 'input[type="url"]', value: 'https://other.example.test/v1' },
+  { selector: 'input[aria-label="唤醒词（逗号分隔）"]', value: '绘遇，听我说' },
+])('invalidates probes when editing $selector and preserves the newer pending probe', async ({ selector, value }) => {
+  let first!: (response: Response) => void
+  let second!: (response: Response) => void
+  const fetchMock = vi.fn<typeof fetch>()
+    .mockImplementationOnce(() => new Promise<Response>(resolve => { first = resolve }))
+    .mockImplementationOnce(() => new Promise<Response>(resolve => { second = resolve }))
+  vi.stubGlobal('fetch', fetchMock)
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1')
+    await wrapper.find('[aria-label="唤醒词连续对话"]').trigger('click')
+    const probe = wrapper.find('.speech-settings-buttons button')
+    await probe.trigger('click')
+    await wrapper.find(selector).setValue(value)
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    expect(probe.attributes('disabled')).toBeUndefined()
+    await probe.trigger('click')
+    first(addressResponse(200))
+    await flushPromises()
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).toContain('正在检测')
+    expect(probe.attributes('disabled')).toBeDefined()
+    second(addressResponse(404))
+    await flushPromises()
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).toContain('HTTP 404')
+  } finally { wrapper.unmount() }
+})
+
+it('cancels probes for save, disables detection while saving, and keeps save failures separate', async () => {
+  let complete!: (response: Response) => void
+  let failSave!: (error: Error) => void
+  const fetchMock = vi.fn<typeof fetch>()
+    .mockImplementationOnce(() => new Promise<Response>(resolve => { complete = resolve }))
+    .mockResolvedValueOnce(addressResponse(200))
+  vi.stubGlobal('fetch', fetchMock)
+  vi.mocked(flushProfileWrites).mockImplementationOnce(() => new Promise<void>((_resolve, reject) => { failSave = reject }))
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1')
+    const probe = wrapper.find('.speech-settings-buttons button')
+    await probe.trigger('click')
+    await wrapper.find('form').trigger('submit')
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    expect(probe.attributes('disabled')).toBeDefined()
+    await probe.trigger('click')
+    expect(fetchMock).toHaveBeenCalledOnce()
+    complete(addressResponse(404))
+    await flushPromises()
+    expect(wrapper.find('[aria-label="配置保存状态"]').text()).toContain('正在保存')
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).not.toContain('HTTP 404')
+    failSave(new Error('fixture save acknowledgement unavailable'))
+    await flushPromises()
+    await probe.trigger('click')
+    await flushPromises()
+    expect(wrapper.find('[aria-label="地址检测状态"]').text()).toContain('HTTP 200')
+    expect(wrapper.find('[aria-label="配置保存状态"]').text()).toContain('配置保存尚未确认')
+    expect(wrapper.emitted('save')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+it.each(['close', 'unmount'])('aborts a pending probe on %s and releases its deadline', async action => {
+  vi.useFakeTimers()
+  let complete!: (response: Response) => void
+  const fetchMock = vi.fn<typeof fetch>().mockImplementation(() => new Promise<Response>(resolve => { complete = resolve }))
+  vi.stubGlobal('fetch', fetchMock)
+  const wrapper = mount(SpeechInputSettings)
+  try {
+    await wrapper.find('input[type="url"]').setValue('https://speech.example.test/v1')
+    await wrapper.find('.speech-settings-buttons button').trigger('click')
+    if (action === 'close') {
+      await wrapper.findAll('.speech-settings-buttons button').at(-1)!.trigger('click')
+      expect(wrapper.emitted('close')).toHaveLength(1)
+    } else wrapper.unmount()
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    expect(vi.getTimerCount()).toBe(0)
+    complete(addressResponse(200))
+    await flushPromises()
+    if (action === 'close') {
+      expect(wrapper.find('[aria-label="地址检测状态"]').text()).not.toContain('HTTP 200')
+    }
+  } finally { if (action === 'close') wrapper.unmount() }
 })

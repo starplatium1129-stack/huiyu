@@ -13,26 +13,44 @@
       @update:model-value="saveStartPageValue"
     />
     <p class="desktop-preferences-note" role="status">{{ feedback || '仅记住页面位置；从作品或场景打开时仍进入对应内容。' }}</p>
+    <button v-if="saveFailed" type="button" class="btn btn-ghost btn-sm" @click="saveStartPageValue(startPage)">重试保存</button>
   </section>
 </template>
 
 <script setup lang="ts">
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
 const isDesktop = Boolean(getDesktopCapabilities())
 const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
 const feedback = ref('')
-function saveStartPageValue(value: string | number) {
+const saveFailed = ref(false)
+let saveGeneration = 0
+onBeforeUnmount(() => { saveGeneration++ })
+
+async function saveStartPageValue(value: string | number) {
   const parsed = DESKTOP_START_PAGE_SETTING.parse(String(value))
   if (!parsed) return
-  settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)
-  const saved = settingsRepository.get(DESKTOP_START_PAGE_SETTING)
-  startPage.value = saved || '/'
-  feedback.value = saved === parsed ? '已保存，下次打开工作台时生效。' : '设置未能保存，请检查本地存储后重试。'
+  const generation = ++saveGeneration
+  startPage.value = parsed
+  saveFailed.value = false
+  feedback.value = '正在保存启动页，请稍候…'
+  try {
+    settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)
+    // Desktop reads are optimistic until the shared write queue confirms them.
+    await flushProfileWrites()
+    if (generation !== saveGeneration) return
+    if (settingsRepository.get(DESKTOP_START_PAGE_SETTING) !== parsed) throw new Error('Start page was not saved')
+    feedback.value = '已保存，下次打开工作台时生效。'
+  } catch {
+    if (generation !== saveGeneration) return
+    saveFailed.value = true
+    feedback.value = '启动页保存尚未确认，当前选择已保留，请重试保存。'
+  }
 }
 </script>
 

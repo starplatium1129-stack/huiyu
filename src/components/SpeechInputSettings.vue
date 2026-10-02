@@ -74,29 +74,32 @@
     </div>
 
     <div class="speech-settings-actions">
-      <span class="speech-test-status" :data-state="testState" role="status">{{ statusText }}</span>
-      <div class="speech-settings-buttons">
+      <div class="speech-settings-buttons tw:ml-auto">
         <button class="btn btn-ghost btn-sm" type="button"
-          :disabled="testing || !canTest" @click="testConnection">
-          {{ testing ? '测试中…' : '测试连接' }}
+          :disabled="testing || saving || !canTest" @click="testConnection">
+          {{ testing ? '检测中…' : '检测地址' }}
         </button>
         <button class="btn btn-primary btn-sm" type="submit" :disabled="saving">{{ saving ? '保存中…' : '保存' }}</button>
-        <button class="btn btn-ghost btn-sm" type="button" @click="emit('close')">关闭</button>
+        <button class="btn btn-ghost btn-sm" type="button" @click="close">关闭</button>
       </div>
     </div>
+    <div class="speech-http-hint">
+      <p v-if="saving || saveMessage" class="speech-test-status" :data-state="saving ? 'idle' : 'fail'"
+        role="status" aria-label="配置保存状态">{{ saving ? '正在保存配置…' : saveMessage }}</p>
+      <p class="speech-test-status" :data-state="testState" role="status" aria-label="地址检测状态">{{ testMessage }}</p>
+    </div>
     <p class="speech-http-hint">
-      <i aria-hidden="true">i</i> 若提示无法连接，请确认服务已启动，且允许跨域请求（CORS）。
+      <i aria-hidden="true">i</i> 仅检测地址的 HTTP 响应，未验证语音转写、模型或密钥。若检测失败，请检查地址、服务及跨域（CORS）设置。
     </p>
   </form>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onUnmounted } from 'vue'
+import { computed, ref, watch, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import {
-  DEFAULT_SPEECH_INPUT_CONFIG,
   isSpeechInputReady,
   loadSpeechInputConfig,
   saveSpeechInputConfig,
@@ -106,17 +109,22 @@ import {
 const emit = defineEmits<{ save: []; close: [] }>()
 let disposed = false
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
-onUnmounted(() => { disposed = true })
+onUnmounted(() => { disposed = true; invalidateProbe() })
 
 const draft = ref<SpeechInputConfig>(loadSpeechInputConfig())
 const showApiKey = ref(false)
 const saving = ref(false)
-const testing = ref(false)
+const saveMessage = ref('')
 const testState = ref<'idle' | 'testing' | 'ok' | 'fail'>('idle')
-const testMessage = ref('')
+const testMessage = ref('可直接保存配置，或先检测地址。')
+const testing = computed(() => testState.value === 'testing')
+let probeGeneration = 0
+let probeController: AbortController | null = null
+let probeTimer: ReturnType<typeof setTimeout> | undefined
 
 const wakeWordsInput = ref(draft.value.wakeWords.join('，'))
 const endWordsInput = ref(draft.value.endWords.join('，'))
+watch([draft, wakeWordsInput, endWordsInput], invalidateProbe, { deep: true, flush: 'sync' })
 
 function splitWords(text: string): string[] {
   return text.split(/[,，、]/).map(word => word.trim()).filter(word => word.length > 0)
@@ -133,39 +141,66 @@ function commitEndWords(): void {
   endWordsInput.value = draft.value.endWords.join('，')
 }
 
-const statusText = computed(() => {
-  if (saving.value) return '正在保存配置…'
-  if (testState.value === 'testing') return '正在检测服务可达性…'
-  if (testState.value === 'ok') return '连接正常'
-  if (testState.value === 'fail') return testMessage.value || '无法连接服务'
-  return '先测试连接，再保存配置。'
-})
-
 const canTest = computed(() => isSpeechInputReady({ ...draft.value, enabled: true }))
 
+function invalidateProbe(): void {
+  probeGeneration += 1
+  probeController?.abort()
+  probeController = null
+  clearTimeout(probeTimer)
+  probeTimer = undefined
+  testState.value = 'idle'
+  testMessage.value = '可直接保存配置，或先检测地址。'
+}
+
+function close(): void {
+  disposed = true
+  invalidateProbe()
+  emit('close')
+}
+
 async function testConnection(): Promise<void> {
-  if (!canTest.value || testing.value) return
-  testing.value = true
+  if (!canTest.value || testing.value || saving.value || disposed) return
+  const generation = ++probeGeneration
+  const controller = new AbortController()
+  probeController = controller
   testState.value = 'testing'
+  testMessage.value = '正在检测地址响应…'
   const endpoint = draft.value.endpoint.replace(/\/+$/, '')
+  probeTimer = setTimeout(() => {
+    if (generation !== probeGeneration) return
+    invalidateProbe()
+    testState.value = 'fail'
+    testMessage.value = '地址检测超时（10 秒），请重试。'
+  }, 10_000)
   try {
-    const response = await fetch(endpoint, { method: 'GET', mode: 'no-cors' })
-    if (response.type === 'opaque') {
-      testState.value = 'ok'
+    const response = await fetch(endpoint, { method: 'GET', mode: 'cors', signal: controller.signal })
+    if (generation !== probeGeneration || disposed) return
+    if (response.type === 'opaque' || response.status === 0) {
+      testState.value = 'idle'
+      testMessage.value = '响应不可读，无法确认 HTTP 状态。'
     } else {
       testState.value = response.ok ? 'ok' : 'fail'
-      testMessage.value = response.ok ? '' : `服务返回 ${response.status}`
+      testMessage.value = `地址返回 HTTP ${response.status}。`
     }
-  } catch (error) {
+  } catch {
+    if (generation !== probeGeneration || disposed) return
     testState.value = 'fail'
-    testMessage.value = error instanceof Error ? error.message : '无法连接服务'
+    testMessage.value = '未能读取地址响应，请检查地址、服务或跨域设置后重试。'
   } finally {
-    testing.value = false
+    controller.abort()
+    if (generation === probeGeneration) {
+      clearTimeout(probeTimer)
+      probeTimer = undefined
+      probeController = null
+    }
   }
 }
 
 async function save(): Promise<void> {
   if (saving.value || disposed) return
+  invalidateProbe()
+  saveMessage.value = ''
   saving.value = true
   commitWakeWords()
   commitEndWords()
@@ -175,15 +210,13 @@ async function save(): Promise<void> {
     await flushProfileWrites()
     if (disposed) return
     if (JSON.stringify([draft.value, wakeWordsInput.value, endWordsInput.value]) !== submitted) {
-      testState.value = 'fail'
-      testMessage.value = '提交时的设置已保存；当前修改尚未保存，请再次保存。'
+      saveMessage.value = '提交时的设置已保存；当前修改尚未保存，请再次保存。'
       return
     }
     emit('save')
   } catch {
     if (!disposed) {
-      testState.value = 'fail'
-      testMessage.value = '配置保存尚未确认，请保留当前设置并重试。'
+      saveMessage.value = '配置保存尚未确认，请保留当前设置并重试。'
     }
   } finally { saving.value = false }
 }
