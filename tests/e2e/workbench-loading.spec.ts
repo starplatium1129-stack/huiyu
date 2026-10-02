@@ -32,7 +32,7 @@ for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
     await page.goto('/prompt-builder')
     await expect(page.locator('.gen-bar')).toBeVisible()
     await expect(page.locator('#material-character .char-source')).toBeVisible()
-    await expect(page.locator('#stepResult')).toBeVisible()
+    await expect(page.getByRole('region', { name: '成片监看区', exact: true })).toBeVisible()
     await expect.poll(() => pending.size).toBe(0)
     for (const component of ['director/PromptMaterialScenes', 'director/DirectorStoryPanel', 'HistoryPanel',
       'director/PromptInspectorStyle', 'ArtistStylePicker', 'director/DirectorTagWorkbench', 'director/PromptResultDialogs']) {
@@ -53,6 +53,8 @@ for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
     await page.locator('[aria-controls="material-scenes"]').click()
     await expect(sceneSearch).toHaveValue('樱花')
     if (mode === 'basic') await page.getByRole('button', { name: '专家模式', exact: true }).click()
+    // Scene mode shows automatic settings; manual output controls appear in expert mode.
+    await expect(page.locator('#stepResult')).toBeVisible()
 
     await page.getByRole('tab', { name: '画面', exact: true }).click()
     await page.getByTestId('artist-style-picker').locator('summary').click()
