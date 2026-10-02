@@ -55,7 +55,7 @@ export function useDesktopUpdater() {
       if (!installed) {
         installing.value = false
         cancelling.value = false
-        statusText.value = '更新已取消；再次升级会重新下载完整安装包'
+        statusText.value = '更新已取消；再次升级将尝试续传，缓存失效时重新下载'
       }
       // 成功路径：安装器重启应用，不会走到这里
     } catch (error) {

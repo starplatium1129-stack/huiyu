@@ -8,10 +8,16 @@
 
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
-use tauri::{AppHandle, Emitter};
+use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 use tokio::sync::watch;
+
+mod cache;
+mod download;
+#[cfg(test)]
+mod download_tests;
+mod verify;
 
 // One process may have several windows, each with its own update banner.
 static SESSION: UpdateSession = UpdateSession(Mutex::new(SessionState {
@@ -69,13 +75,17 @@ impl Drop for SessionGuard<'_> {
 
 #[derive(Default)]
 struct DownloadProgress {
-    downloaded: u64,
     last_report: Option<Duration>,
 }
 
 impl DownloadProgress {
-    fn chunk(&mut self, bytes: usize, total: Option<u64>, elapsed: Duration) -> Option<String> {
-        self.downloaded = self.downloaded.saturating_add(bytes as u64);
+    fn report(
+        &mut self,
+        downloaded: u64,
+        total: Option<u64>,
+        transferred: u64,
+        elapsed: Duration,
+    ) -> Option<String> {
         if self
             .last_report
             .is_some_and(|last| elapsed.saturating_sub(last) < Duration::from_millis(500))
@@ -83,15 +93,18 @@ impl DownloadProgress {
             return None;
         }
         self.last_report = Some(elapsed);
-        let downloaded = self.downloaded as f64 / 1_048_576.0;
-        let rate = downloaded / elapsed.as_secs_f64().max(0.001);
+        let downloaded_mib = downloaded as f64 / 1_048_576.0;
+        // Cached bytes affect completion, never the measured network throughput.
+        let rate = transferred as f64 / 1_048_576.0 / elapsed.as_secs_f64().max(0.001);
         Some(match total.filter(|total| *total > 0) {
             Some(total) => format!(
-                "已下载 {downloaded:.1} / {:.1} MiB（{:.0}%），平均 {rate:.2} MiB/s",
+                "已下载 {downloaded_mib:.1} / {:.1} MiB（{:.0}%），本次平均 {rate:.2} MiB/s",
                 total as f64 / 1_048_576.0,
-                (self.downloaded as f64 / total as f64 * 100.0).min(100.0)
+                (downloaded as f64 / total as f64 * 100.0).min(100.0)
             ),
-            None => format!("已下载 {downloaded:.1} MiB，平均 {rate:.2} MiB/s（总大小未知）"),
+            None => {
+                format!("已下载 {downloaded_mib:.1} MiB，本次平均 {rate:.2} MiB/s（总大小未知）")
+            }
         })
     }
 }
@@ -125,11 +138,7 @@ async fn check(app: &AppHandle) -> Result<Option<tauri_plugin_updater::Update>, 
         .updater_builder()
         // Bound connect/stalled reads, not the entire 600 MiB download. A short
         // updater.timeout() would also apply to the package and break slow links.
-        .configure_client(|client| {
-            client
-                .connect_timeout(Duration::from_secs(15))
-                .read_timeout(Duration::from_secs(45))
-        })
+        .configure_client(download::configure_client)
         .build()
         .map_err(|error| error.to_string())?;
     tokio::time::timeout(Duration::from_secs(30), updater.check())
@@ -160,28 +169,84 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
         );
         let started = Instant::now();
         let mut progress = DownloadProgress::default();
-        // Tauri 2.13 buffers a complete package and verifies its signature before
-        // returning. No Range/resume support: interrupted downloads restart.
-        let bytes = update
-            .download(
-                |chunk, total| {
-                    if let Some(text) = progress.chunk(chunk, total, started.elapsed()) {
-                        let _ = app.emit("desktop-update-progress", text);
-                    }
-                },
-                || {
-                    let _ = app.emit("desktop-update-progress", "下载完成，正在校验更新签名…");
-                },
-            )
-            .await
-            .map_err(|error| match &error {
-                tauri_plugin_updater::Error::Reqwest(network) if network.is_timeout() =>
-                    "更新下载超时（连接超时或连续 45 秒未收到数据），请检查网络后重试；重试将重新下载完整安装包".to_string(),
-                _ => format!("下载或签名校验失败，请检查网络后重试（将重新下载完整安装包）：{error}"),
-            })?;
-        Ok((update, bytes))
+        let config: tauri_plugin_updater::Config = serde_json::from_value(
+            app.config()
+                .plugins
+                .0
+                .get("updater")
+                .cloned()
+                .ok_or("缺少更新配置")?,
+        )
+        .map_err(|error| error.to_string())?;
+        let identity_bytes = serde_json::to_vec(&(
+            1,
+            &app.config().identifier,
+            &update.current_version,
+            &update.version,
+            &update.target,
+            std::env::consts::ARCH,
+            update.download_url.as_str(),
+            &update.signature,
+            &config.pubkey,
+        ))
+        .map_err(|error| error.to_string())?;
+        let identity = ring::digest::digest(&ring::digest::SHA256, &identity_bytes)
+            .as_ref()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>();
+        let root = app
+            .path()
+            .app_local_data_dir()
+            .map_err(|e| e.to_string())?
+            .join("updater-cache-v1");
+        let mut cache = cache::Cache::open(&root, &identity)?;
+        if cache.len()? > 0 {
+            let _ = app.emit("desktop-update-progress", "正在检查已下载缓存并尝试续传…");
+        }
+        download::fetch(
+            &download::client(&update)?,
+            &update.download_url,
+            &update.headers,
+            &mut cache,
+            |downloaded, total, transferred| {
+                if let Some(text) =
+                    progress.report(downloaded, total, transferred, started.elapsed())
+                {
+                    let _ = app.emit("desktop-update-progress", text);
+                }
+            },
+        )
+        .await?;
+        let _ = app.emit(
+            "desktop-update-progress",
+            "下载完成，正在校验完整安装包签名…",
+        );
+        let signature = update.signature.clone();
+        let version = update.version.clone();
+        // Reading and verifying 600+ MiB must not block cancellation/event delivery.
+        // If cancelled, the worker can finish verification but can never install.
+        let (cache, bytes) = tauri::async_runtime::spawn_blocking(move || {
+            let bytes = cache.bytes()?;
+            if let Err(error) = verify::verify(
+                &bytes,
+                &signature,
+                &config.pubkey,
+                &version,
+                config.require_signed_version,
+            ) {
+                cache.reset(&identity)?;
+                return Err(format!(
+                    "更新签名校验失败，缓存已清除，请重新检查更新：{error}"
+                ));
+            }
+            Ok::<_, String>((cache, bytes))
+        })
+        .await
+        .map_err(|error| error.to_string())??;
+        Ok((update, bytes, cache))
     };
-    let (update, bytes) = tokio::select! {
+    let (update, bytes, mut cache) = tokio::select! {
         biased;
         _ = cancelled.wait_for(|cancelled| *cancelled) => return Ok(false),
         result = download => result?,
@@ -190,6 +255,9 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
         return Ok(false);
     }
     let _ = app.emit("desktop-update-progress", "签名校验通过，正在启动安装器…");
+    // Tauri exits this process on successful Windows hand-off, so retire only our
+    // slot now. An installer launch failure may require downloading again.
+    cache.reset("")?;
     update
         .install(bytes)
         .map_err(|error| format!("启动更新安装器失败：{error}"))?;
@@ -236,18 +304,32 @@ mod tests {
     fn progress_accumulates_chunks_and_handles_missing_length_without_event_flood() {
         let mut progress = DownloadProgress::default();
         let first = progress
-            .chunk(1_048_576, Some(4_194_304), Duration::from_secs(1))
+            .report(
+                1_048_576,
+                Some(4_194_304),
+                1_048_576,
+                Duration::from_secs(1),
+            )
             .unwrap();
         assert!(first.contains("1.0 / 4.0 MiB（25%）"));
         assert!(first.contains("1.00 MiB/s"));
         assert!(progress
-            .chunk(1_048_576, Some(4_194_304), Duration::from_millis(1100))
+            .report(
+                2_097_152,
+                Some(4_194_304),
+                2_097_152,
+                Duration::from_millis(1100)
+            )
             .is_none());
         let next = progress
-            .chunk(1_048_576, None, Duration::from_secs(2))
+            .report(3_145_728, None, 1_048_576, Duration::from_secs(2))
             .unwrap();
         assert!(next.contains("3.0 MiB"));
         assert!(next.contains("总大小未知"));
+        assert!(
+            next.contains("0.50 MiB/s"),
+            "cached bytes must not inflate speed"
+        );
         assert!(!next.contains('%'));
     }
 }

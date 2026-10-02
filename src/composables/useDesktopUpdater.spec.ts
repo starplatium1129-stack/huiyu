@@ -127,7 +127,7 @@ describe('useDesktopUpdater', () => {
     expect(invoke.mock.calls.filter(([command]) => command === 'desktop_update_cancel')).toHaveLength(1)
     finishInstall!(false); await flushPromises()
     expect(banner.text()).toContain('更新已取消')
-    expect(banner.text()).toContain('重新下载完整安装包')
+    expect(banner.text()).toContain('再次升级将尝试续传')
     expect(banner.get('button').attributes('disabled')).toBeUndefined()
     await banner.get('button').trigger('click'); await flushPromises()
     expect(invoke.mock.calls.filter(([command]) => command === 'desktop_update_install')).toHaveLength(2)
