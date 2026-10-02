@@ -1,39 +1,49 @@
 <template>
-  <div ref="root" class="generation-dust" :class="{ 'is-running': canAnimate && !lowEffects }" aria-hidden="true">
-    <i v-for="grain in grains" :key="grain.id" :style="{ '--dust-left': grain.left, '--dust-top': grain.top, '--dust-x': grain.x, '--dust-y': grain.y, '--dust-delay': grain.delay, '--dust-duration': grain.duration }" />
+  <div ref="root" class="generation-flow" :class="{ 'is-running': canAnimate && !lowEffects, 'is-framed': framed }" aria-hidden="true">
+    <svg v-for="(path, index) in threads" :key="index" class="flow-thread" :class="`flow-thread-${index}`" viewBox="0 0 600 400" fill="none">
+      <path class="flow-wash" :d="path" />
+      <path class="flow-line" :d="path" />
+      <path class="flow-fine" :d="path" transform="translate(0 6)" />
+    </svg>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useVisualActivity } from '@/composables/useVisualActivity'
-const props = withDefaults(defineProps<{ framed?: boolean }>(), { framed: false })
+withDefaults(defineProps<{ framed?: boolean }>(), { framed: false })
 const root = ref<HTMLElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(root)
-// Fixed phase offsets keep Vue out of the frame loop and avoid layout-sized layers.
-const grains = computed(() => Array.from({ length: 28 }, (_, id) => {
-  const right = id % 2 === 1
-  const band = Math.floor(id / 2)
-  return { id,
-    left: props.framed ? (right ? 'calc(100% - 10px)' : '8px') : `${right ? 75 - band * 1.1 : 25 + band * 1.1}%`,
-    top: `${props.framed ? 10 + band * 6 : 32 + (band % 7) * 6}%`,
-    x: `${(right ? -1 : 1) * (props.framed ? 5 : 22 + band % 5 * 4)}px`,
-    y: `${-5 - band % 4 * 3}px`,
-    delay: `${-id * 0.173}s`,
-    duration: `${3.2 + band % 4 * 0.23}s`,
-  }
-}))
+// Three ink-like arcs leave the portrait/status centre open. Rasterized once;
+// only transform/opacity changes during a long generation, with no JS frame loop.
+const threads = [
+  'M 46 260 C 15 172 128 64 254 88 C 323 101 310 165 223 144 C 126 119 160 40 356 66 C 446 78 500 137 537 173',
+  'M 76 277 C 140 340 304 361 419 313 C 526 268 553 164 481 151 C 428 142 426 204 495 227',
+  'M 64 192 C 68 110 177 57 253 79 M 367 324 C 476 315 543 249 537 188',
+]
 </script>
 
 <style scoped>
-.generation-dust { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2; }
-.generation-dust i { position:absolute; left:var(--dust-left); top:var(--dust-top); width:2px; height:2px; border-radius:50%; background:var(--accent); opacity:.22; }
-.generation-dust i:nth-child(3n) { background:var(--accent-violet); }
-.generation-dust i:nth-child(5n) { width:3px; height:3px; }
-.generation-dust.is-running i { animation:dust-converge var(--dust-duration) var(--dust-delay) ease-in-out infinite; }
-@keyframes dust-converge {
-  0%,100% { opacity:0; transform:translate3d(0,0,0); }
-  28% { opacity:.65; }
-  80% { opacity:0; transform:translate3d(var(--dust-x),var(--dust-y),0); }
+.generation-flow { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; color:color-mix(in srgb,var(--accent) 38%,var(--text-muted)); }
+.flow-thread { position:absolute; width:min(100%,680px); height:100%; left:50%; top:0; transform:translateX(-50%); opacity:.2; }
+.flow-thread-1 { color:color-mix(in srgb,var(--accent-violet) 32%,var(--text-muted)); }
+.flow-wash { stroke:currentColor; stroke-width:16; opacity:.055; }
+.flow-line { stroke:currentColor; stroke-width:1.2; opacity:.6; stroke-linecap:round; }
+.flow-fine { stroke:currentColor; stroke-width:.5; opacity:.32; stroke-linecap:round; }
+.is-running .flow-thread { animation:magic-flow 5.8s ease-in-out infinite; }
+.is-running .flow-thread-1 { animation-delay:-2.8s; animation-duration:7.2s; }
+.is-running .flow-thread-2 { animation-delay:-1.6s; animation-duration:6.4s; }
+/* The retained result remains the protagonist; restrict the threads to the image
+ * interior and keep the heading/actions outside the decorative area. */
+.is-framed { inset:52px 0 58px; z-index:1; }
+.is-framed .flow-thread { opacity:.14; }
+.is-framed.is-running .flow-thread { animation-name:magic-flow-framed; }
+@keyframes magic-flow {
+  0%,100% { opacity:.18; transform:translate3d(-50%,3px,0) rotate(-2deg); }
+  50% { opacity:.54; transform:translate3d(-49%,-4px,0) rotate(2deg); }
+}
+@keyframes magic-flow-framed {
+  0%,100% { opacity:.1; transform:translate3d(-50%,3px,0) rotate(-2deg); }
+  50% { opacity:.28; transform:translate3d(-49%,-4px,0) rotate(2deg); }
 }
 </style>

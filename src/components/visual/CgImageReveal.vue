@@ -13,7 +13,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { startCanvasGather } from '@/utils/canvasGather'
+import { startCanvasRipple } from '@/utils/canvasRipple'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-}>(), { alt: '生成的画面成片', imgClass: '', duration: 740, autoReveal: true })
+}>(), { alt: '生成的画面成片', imgClass: '', duration: 520, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
   error: [event: Event]
@@ -37,15 +37,15 @@ const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
 let animations: Animation[] = []
-let stopDust: (() => void) | null = null
+let stopRipple: (() => void) | null = null
 let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
 let revealedImage: HTMLImageElement | null = null
 
 function stopAnimation() {
-  stopDust?.()
-  stopDust = null
+  stopRipple?.()
+  stopRipple = null
   generation += 1
   animations.splice(0).forEach(animation => animation.cancel())
   isRevealing.value = false
@@ -69,18 +69,16 @@ function triggerReveal() {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(160, Math.min(1000, props.duration)) : 740
+  const duration = Number.isFinite(props.duration) ? Math.max(160, Math.min(600, props.duration)) : 520
   const token = generation
   try {
-    // Only a tiny color sample drives the dust; full-resolution pixels stay still.
+    // The original is clear immediately; only the short decorative overlay fades.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    stopDust = containerRef.value ? startCanvasGather(img, containerRef.value, duration) : null
-    const reveal = img.animate([
-      { opacity: stopDust ? 0.08 : 0.65 },
-      { opacity: 1, offset: 0.6 },
-      { opacity: 1 },
-    ], { duration, easing: 'cubic-bezier(.23,1,.32,1)' })
+    const ripple = containerRef.value ? startCanvasRipple(img, containerRef.value, duration) : null
+    if (!ripple) { emit('reveal-complete'); return }
+    stopRipple = ripple.stop
+    const reveal = ripple.canvas.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: 'ease-out' })
     animations.push(reveal)
     void reveal.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
