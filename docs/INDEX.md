@@ -6,7 +6,7 @@
 
 [第九轮图库滚动与预览取消](audits/2026-10-02/gallery-scroll-preview-cancellation.md)记录 3,000 条合成记录的旧请求占位复现、解码释放修复、缓存边界及当次定向验证。
 
-最新安装包准备与第一至第八轮更新汇总见 [1.8.1 更新说明](releases/v1.8.1.md)。
+最新公开安装包与第一至第八轮更新汇总见 [1.8.1 更新说明](releases/v1.8.1.md)，实际发行及验证结果见[项目状态](project-status.md)。
 
 [生成光纹与水纹归静](audits/2026-10-02/magic-reveal-handoff.md)记录隔离视觉版、短时 GPU 预算、深浅主题前后对照与桌面高 DPI 性能未验边界。
 
@@ -74,7 +74,7 @@ Rust 后端六项优化与后续热点见 [六项性能优化与继续审计](au
 | [工程契约](engineering-contracts.md) | 模块、数据与生命周期边界 |
 | [桌面部署](desktop-deployment.md) | 构建、同步、完整安装与 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。公开发行说明见 [1.7.4](releases/v1.7.4.md)，新版本准备见 [1.8.0](releases/v1.8.0.md)。
+协作规则见 [AGENTS.md](../AGENTS.md)。安装与换机查 [启动与排错](../STARTUP.md)、[离线资源指南](guides/offline-resources.md)与[模型开箱指南](guides/setup-and-models.md)。最新公开发行说明见 [1.8.1](releases/v1.8.1.md)，此前素材与安装记录见 [1.8.0](releases/v1.8.0.md)。
 
 ## 现行契约与专项计划
 
