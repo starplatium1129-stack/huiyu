@@ -4,9 +4,10 @@ import { chromium } from '@playwright/test'
 import { startRustBrowserFixture } from './rust-browser-fixture.mjs'
 const fixture = await startRustBrowserFixture()
 const { origin, bootstrap, provenance } = fixture
-const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file))
-const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
+let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined
 try {
+const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file))
+browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
   const context = await fixture.context(browser)
   await context.addInitScript(descriptor => {
     Object.assign(window, { fixtureOffline: false, __TAURI__: { core: { invoke: async () => {
@@ -15,6 +16,7 @@ try {
     } }, event: { listen: async () => () => {} } } })
   }, bootstrap)
   const page = await context.newPage()
+  await fixture.trackPage(page)
   await page.goto(origin + '/fixture')
   const original = await page.evaluate(async () => {
     const { kvSet } = await import(String('/src/composables/useKVStore.ts'))
@@ -46,8 +48,10 @@ try {
   })
   assert.equal(provenanceResult.rawStatus, 401, 'a token alone with omitted browser provenance remains denied')
   assert.equal(provenanceResult.transportedStatus, 200, 'private same-origin GET works under the production no-referrer document policy')
-  assert.ok(provenance.some(request => request.origin === undefined && request.referer === origin + '/' && request.site === 'same-origin'),
-    'the browser sends origin-only Referer, not the current private document path')
+  await fixture.flushProvenance()
+  const transportedRequest = provenance.filter(request => request.url === origin + '/api/workspace/status').at(-1)
+  assert.ok(transportedRequest && transportedRequest.origin === undefined && transportedRequest.referer === origin + '/' && transportedRequest.site === 'same-origin',
+    'the browser sends origin-only Referer, not the current private document path: ' + JSON.stringify(provenance))
   const mediaResponse = page.waitForResponse(response => response.url().includes('/api/workspace/media-content/') && response.request().resourceType() === 'media')
   await page.evaluate(async alias => {
     const { desktopRuntimeFetch } = await import(String('/src/platform/desktop/runtime.ts'))
@@ -89,4 +93,4 @@ try {
   assert.equal(resumed.href, origin + '/fixture')
   await context.close()
   console.log('Desktop library browser: actual frontend adapters → private HTTP → SQLite/media, original bytes, settings without dual-write, reload, disconnect cached reads, denied writes and reconnect without navigation passed. Isolated browser, not native WebView2.')
-} finally { await browser.close(); await fixture.close() }
+} finally { try { await fixture.close() } finally { await browser?.close() } }

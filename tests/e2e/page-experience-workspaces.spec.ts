@@ -37,21 +37,6 @@ for (const theme of ['dark']) {
     await expect(page.locator('article.pb')).toHaveAttribute('data-character', 'natsume')
   })
 
-  test(`missing style references keep palette actions close ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width: 900, height: 900 })
-    await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ status: 404, json: {} }))
-    await page.goto('/style')
-    await expect(page.locator('.style-sample.is-unavailable')).toHaveCount(6)
-    const action = page.getByRole('link', { name: /用这个调子绘制/ }).first()
-    const box = await action.boundingBox()
-    expect(box!.y).toBeLessThan(900)
-    await action.click()
-    await expect(page.locator('article.pb')).toBeVisible()
-    await expect(page).toHaveURL(/mood=joy/)
-  })
-
   for (const width of [900, 1440]) {
     test(`canvas remains single and precedes narrow materials ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })

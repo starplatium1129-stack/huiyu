@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test'
 import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOfficeRoute, onArtTextContrast } from './helpers/ui-fluidity-office'
 
 for (const theme of ['dark', 'light']) {
-  for (const mode of ['full', 'low', 'reduce'] as const) {
+  // Full effects own the dual-theme image/contrast review. The scheduler and
+  // cancellation paths for low/reduce have no additional theme branch.
+  for (const mode of (theme === 'light' ? ['full'] : ['full', 'low', 'reduce']) as readonly ('full' | 'low' | 'reduce')[]) {
     test(`009 preview keeps focus, scroll and fixed geometry ${theme} ${mode}`, async ({ page }) => {
       const errors: string[] = []; page.on('pageerror', error => errors.push(error.message))
       const writes = await prepareOffice(page, theme, mode)

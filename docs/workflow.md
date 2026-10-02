@@ -333,7 +333,7 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 
 日常使用 `npm test`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
 
-Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm run test:legacy -- test-anima-routes.ts`（已有当前SPA）、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，全部库存使用 `gate:all`；修改执行器自身后先 `npm run build:runtime` 更新生成入口。
+Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，全部库存使用 `gate:all`；修改执行器自身后先 `npm run build:runtime` 更新生成入口。
 
 短期限的 `test-generation-workflow-safety` 独立于 Node 并发批次执行，保留其 250ms 夹具期限与显式超时场景；Windows 的 `test-desktop-deploy-guard` 使用真实 PowerShell 进程探测，也单独执行。其他文件仍并发 4。每个选中文件只执行一次，整体仍共用原 300 秒上限，阶段失败/未运行分别记录，不放宽退出与锁清理断言。
 
@@ -349,7 +349,7 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm 
 
 同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。定向与完整门禁共用当前登记清单，删除/合并须记录保留覆盖与当次验收。耗时比较使用同机、同输入和相同参数独占测量。
 
-2026-10-02 [测试精简](audits/2026-10-02/test-pruning.md)后继续完成[测试体系重构](audits/2026-10-02/test-suite-refactor.md)：重复组件/专题测试合入所属行为套件，Node 六个 lane 直接登记，`validate:all` 的 check 只执行一次。旧 `test:ux-regressions` 已退役，其默认高清修复的数据约束保留在 `test-prompt-builder-modules`；旧失效别名 `test:gallery` 已删除。日常仍用 `npm test` 按改动选测。
+测试精简已逐项核对当前前端、Node、浏览器与 Rust/Tauri/Python 的行为覆盖；重复用例合入所属套件，无消费者的旧后端/实验入口及其自测退出。现行测试 lane 直接登记，日常使用 `npm test` 按实际改动选测，类型、AA、权限和数据安全断言保持。
 
 | 入口 | 实际范围 |
 | --- | --- |
@@ -407,11 +407,7 @@ E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项�
 
 `npm run wf -- desktop:renderer-process-check --exe <候选EXE> --assets-root <已有assets目录> --out <新证据目录>` 在 Windows 上验证 Live2D 独立渲染进程；先生成 Node 测试入口并构建支持 `--live2d-renderer-probe-host` / `--live2d-renderer-child` 的候选 EXE。脚本使用独立 config/profile、可见测试窗口与现有宁宁/夏目模型，记录 GPU 快照、帧数和 60/120/165 FPS 各两秒实测（可用 `--sample-ms` 调整），检验加载中杀子进程、超时、父进程存活、显式重连以及 Shutdown/EOF/父进程突然退出的无孤儿回收。GPU 快照须实际查看；帧率为测量值，没有把目标帧率视为性能门禁。只读模型资源，不启动已安装生产应用、不访问生产资料、不下载或调用 AI 生成。该入口与其他 GPU 测量串行，单独运行，不进入默认 unit/validate 套件；证据目录保留 JSONL、stderr、PNG 和结果 JSON。
 
-`npm run wf -- desktop:electron-prepare --out <新runtime目录>` 准备 Electron 44.4.5 Windows x64 官方运行时，先查同版本本机缓存，再从官方 GitHub 固定 release 下载，并与官方校验表、固定 SHA-256、npm 版本互核后解压。输出 `verified-runtime.json`；不执行安装、不改根 package 依赖。准备动作本身不证明壳验收通过。
-
-`npm run wf -- desktop:electron-check --electron <已校验electron.exe> --node <固定node.exe> --gateway-root <当前gateway构建根> --ui-root <同一份dist> --native-exe <R12候选EXE> --out <新证据目录>` 执行 R13 对照验收。`--assets-root` 可指定只读现有模型，`--sample-ms` 控制采样长度；`--skip-native` 只验证壳与runtime，不能计作模型验收，`--skip-metrics` 跳过成本采样。脚本使用新系统临时目录（私库不允许位于应用根内）通过真实空迁移、备份核验与激活建立 SQLite 私库，验证三窗身份、私库写入重开、runtime断开界面保留、新epoch拒绝旧session、单窗renderer崩溃隔离、宁宁/夏目实际原生渲染及无孤儿退出。保留日志、截图与进程树内存/CPU/GPU实测，GPU计数器不可用写null，包体只报告明确的未压缩组成部分。成本分为三窗深色首页且无Live2D，以及夏目原始纹理、原生60 FPS目标；取样前后核对目标，Electron额外的R12 supervisor与renderer进程计入完整子树，原生场景不可解释为纯框架差值。Electron与同UI同工作量的Tauri必须顺序测量，截图须实际检查；不访问生产profile、不安装、不调用AI，不并入默认测试套件。
-
-Electron 验收修复后可显式使用 `--resume-native <旧report.json>` 只补原生消费链与退出重开，或 `--resume-costs <旧report.json>` 仅补两个成本样本和退出重开。先确认改动未影响已通过范围；runner绑定原EXE/Node哈希及同一隔离资料目录；原生补测还要求相同UI，成本补测可接新UI，但旧功能/画面仍标原UI哈希，不能冒称当前UI当次验证。新报告标出引用，原失败报告保留，失效成本剔除而不重标通过。Windows GUI Electron 的 stdin 会启动即关闭，显式 `probe` 配置使用随机本机命名管道；控制连接不暴露给网页，关闭后正常退出。进程树通过父子创建时间排除历史ParentPid复用，异常清理只使用持有的根ChildProcess句柄，禁止枚举PID通杀。
+R13 的旧 Node Electron PoC 已随旧后端退役删除，其历史对照仍可从 Git 查询。当前默认继续使用 Tauri；重新评估 Electron 需基于现行 Rust 协议另定范围，旧 PoC 不再登记为可执行设备验收入口。
 
 `npm run wf -- desktop:thumbnail-benchmark` 复用生产 `galleryThumbnailWarmup.ts` 的调度核心，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码；它测量 Web 预热，桌面 workspace 当前不做全库预热。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
 

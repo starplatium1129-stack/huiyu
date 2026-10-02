@@ -5,6 +5,8 @@ import { chromium } from '@playwright/test'
 import { startRustBrowserFixture } from './rust-browser-fixture.mjs'
 const fixture = await startRustBrowserFixture()
 const { origin, bootstrap } = fixture
+let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined
+try {
 const completed = await fixture.request('/api/tasks/v1', 'POST', { kind: 'generation', requestKey: 'complete', input: { prompt: 'Fixture landscape', seed: 0, width: 832, height: 1216 }, context: { char: 'nene', story: '冻结的原始故事' } })
 const deadline = Date.now() + 30_000
 while (true) {
@@ -25,8 +27,7 @@ const router=createRouter({history:createWebHistory(),routes:[{path:'/:pathMatch
 createApp({render:()=>h('main',{style:'padding:32px'},[h(Button),h(TaskCenter)])}).use(router).mount('#app');
 </script></html>`
 const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file))
-const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
-try {
+browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
   const context = await fixture.context(browser, html, { viewport: { width: 1100, height: 850 } })
   await context.addInitScript(descriptor => Object.assign(window, { __TAURI__: { core: { invoke: async () => descriptor }, event: { listen: async () => () => {} } } }), bootstrap)
   const page = await context.newPage(); const errors: string[] = []; page.on('pageerror', error => errors.push(error.message))
@@ -70,4 +71,4 @@ try {
   assert.deepEqual(errors, [])
   console.log('Task Center: private HTTP/SQLite task list, both themes, reliable result preview, stable save without byte duplication and reload receipt passed. Isolated browser; no real provider calls.')
   await context.close()
-} finally { await browser.close(); await fixture.close() }
+} finally { try { await fixture.close() } finally { await browser?.close() } }

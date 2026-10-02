@@ -21,8 +21,8 @@ console.log('✓ 1. 好感度等级划分正确');
 
 // 2. 测试低好感度时无法触发 100 分专属动作
 const lowScore = 15;
-for (let i = 0; i < 50; i++) {
-  const pseudoRandom = () => Math.random();
+for (const draw of [0, 0.25, 0.5, 0.75, 0.999]) {
+  const pseudoRandom = () => draw;
   const pickedHead = pickAffectionMotion('natsume', 'TapHead', lowScore, pseudoRandom);
   assert.ok(pickedHead, '应该选出动作');
   assert.ok(pickedHead.index >= 0 && pickedHead.index <= 3, '低好感度下绝不可选到 index=4 (萌萌Q 满分动作)');
@@ -35,17 +35,10 @@ for (let i = 0; i < 50; i++) {
 console.log('✓ 2. 低好感度动作门控拦截正确（无越权触发）');
 
 // 3. 测试满好感度（100 分）时能够正常触发专属动作
-let hitFullIntimacyAction = false;
-for (let i = 0; i < 100; i++) {
-  const pickedHead = pickAffectionMotion('natsume', 'TapHead', 100, () => Math.random());
-  if (pickedHead && pickedHead.entry.equalIntimacy === 100) {
-    hitFullIntimacyAction = true;
-    assert.strictEqual(pickedHead.index, 4);
-    assert.strictEqual(pickedHead.entry.text, '请主人和我一起来施展萌萌的魔法吧，来，跟我一起--萌萌Q');
-    break;
-  }
-}
-assert.ok(hitFullIntimacyAction, '满好感度下必须可触发满分专属动作');
+const fullIntimacyAction = pickAffectionMotion('natsume', 'TapHead', 100, () => 0.9);
+assert.ok(fullIntimacyAction, '满好感度下必须可触发满分专属动作');
+assert.strictEqual(fullIntimacyAction.entry.equalIntimacy, 100);
+assert.strictEqual(fullIntimacyAction.index, 4);
 console.log('✓ 3. 满好感度解锁专属高阶动作与告白台词');
 
 // 4. 测试宁宁动作调度

@@ -4,8 +4,7 @@ import { expect, type Locator } from '@playwright/test'
  * StudioSelect 的 e2e 选择动作（2026-09-22）。
  *
  * 背景：全站原生 `<select>` 已换成 `src/components/ui/StudioSelect.vue` 的 Reka 下拉，
- * 组件不再渲染任何原生 select（`apple-hig-accessibility` / `companion-focus` 要求
- * 指定容器内原生控件数为 0）。Playwright 的 `selectOption()` 只作用于原生 select
+ * Playwright 的 `selectOption()` 只作用于原生 select
  * 元素，因此这里统一改成「点开 trigger → 点选项」。
  *
  * 定位约定仍然是可访问名（`label` prop 或 `<label for>`），与迁移前一致；

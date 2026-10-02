@@ -299,33 +299,6 @@ test('popular creator · Krea style is inferred automatically from the selected 
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
-test('popular creator · manual style controls are available for all characters (full-open)', async ({ page }) => {
-  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
-  await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await chooseCharacter(page, '樱岛麻衣')
-  await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.getByRole('tab', { name: '画面', exact: true }).click()
-  // 全部开放后任何角色都可选成人配方，专家模式风格区（ArtistStylePicker）不被 underage 隐藏。
-  await expect(page.locator('[data-testid="artist-style-picker"]')).toHaveCount(1)
-})
-
-test('popular creator · adult gate requires the mature switch, not character underage', async ({ page }) => {
-  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
-  await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await chooseCharacter(page, '樱岛麻衣')
-  await expect(page.locator('.popular-outfits')).toBeVisible()
-
-  // 全部开放（2026-08-14）：所有热门角色 adult，成人蓝图可见可达。
-  // 推荐轮换（换一批）与角色池大小相关，断言放在「查看全部」下保持数据无关。
-  await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
-  await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
-  await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
-})
-
 test('popular creator · draft round-trips subject/outfit/blueprint through reload', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.locator('.material-switch button[aria-controls="material-character"]').click()

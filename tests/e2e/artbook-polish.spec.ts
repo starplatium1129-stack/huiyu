@@ -77,11 +77,17 @@ test('unrated, adult and ambiguous mood references stay unpublished', async ({ p
 })
 
 test('offline catalogue and broken portraits leave usable choices', async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ status: 503, body: '' }))
   await page.goto('/style')
   await expect(page.getByText('氛围参考暂未连接', { exact: true })).toHaveCount(6)
-  await page.getByRole('link', { name: '用这个调子绘制' }).first().click()
+  await expect(page.locator('.style-sample.is-unavailable')).toHaveCount(6)
+  const action = page.getByRole('link', { name: '用这个调子绘制' }).first()
+  expect((await action.boundingBox())!.y).toBeLessThan(900)
+  await action.click()
   await expect(page).toHaveURL(/mood=joy$/)
+  await expect(page.locator('article.pb')).toBeVisible()
   await page.route('**/assets/characters/*-home-cg-512.webp', route => route.fulfill({ status: 404, body: '' }))
   await page.reload()
   const characters = page.getByRole('group', { name: '工作室角色', exact: true })

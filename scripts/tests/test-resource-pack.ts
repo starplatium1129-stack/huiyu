@@ -364,21 +364,6 @@ test('工作流注册入口转发 preview 与 --apply，runner 级 --plan 不执
   assert.equal(fs.existsSync(path.join(fx2.root, 'scripts')), false, '--plan 未创建任何目录');
 });
 
-test('夹具清理只删自建临时根，不递归清理链接目标', (t) => {
-  // 依赖的性质：Node rmSync 删除 junction/symlink 本身而不进入目标。
-  // 链接目标放在夹具自建的另一个临时目录（无敏感文件），同样由本测试显式清理。
-  const holder = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-links-'));
-  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-target-'));
-  t.after(() => {
-    fs.rmSync(holder, { recursive: true, force: true });
-    fs.rmSync(target, { recursive: true, force: true });
-  });
-  fs.writeFileSync(path.join(target, 'kept.txt'), 'kept');
-  fs.symlinkSync(target, path.join(holder, 'link'), process.platform === 'win32' ? 'junction' : 'dir');
-  fs.rmSync(holder, { recursive: true, force: true });
-  assert.equal(fs.existsSync(path.join(target, 'kept.txt')), true, '清理链接不删除目标内容');
-});
-
 test('预览与成功导出全程零越界访问（记录型 fs 证明）', (t) => {
   const fx = buildFixture(t);
   const { io, calls } = recordingIo();

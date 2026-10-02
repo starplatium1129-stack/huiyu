@@ -35,7 +35,7 @@ export interface CompiledSpring {
   }
 }
 
-export interface SpringSample {
+interface SpringSample {
   position: number
   velocity: number
 }
@@ -104,13 +104,6 @@ function resolveConfig(config: SpringConfig | SpringPresetName): ResolvedConfig 
   if (resolved.sampleCount < 24 || resolved.sampleCount > 240) throw new RangeError('Spring sampleCount must be between 24 and 240')
   if (resolved.maxStops < 4 || resolved.maxStops > 96) throw new RangeError('Spring maxStops must be between 4 and 96')
   return resolved
-}
-
-/** 求归一化弹簧（0 → 1）在指定时间的解析位置与速度。 */
-export function sampleSpring(config: SpringConfig | SpringPresetName, elapsedSeconds: number): SpringSample {
-  if (!Number.isFinite(elapsedSeconds) || elapsedSeconds < 0) throw new RangeError('elapsedSeconds must be a non-negative finite number')
-  const cfg = resolveConfig(config)
-  return solveOscillator(elapsedSeconds, cfg)
 }
 
 function solveOscillator(t: number, cfg: ResolvedConfig): SpringSample {

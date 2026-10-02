@@ -27,8 +27,14 @@ for (const theme of ['light', 'dark']) {
       await page.screenshot({ path: testInfo.outputPath(`room-${theme}-${width}.png`) })
       await page.getByRole('button', { name: '专注陪伴', exact: true }).click()
       await expect(page.locator('.room-current-line')).toBeVisible()
+      const conversation = (await page.locator('.conversation-card').boundingBox())!
+      expect(conversation.x).toBeGreaterThanOrEqual(0)
+      expect(conversation.x + conversation.width).toBeLessThanOrEqual(width + 1)
       await expect(page.locator('.chat-input')).toHaveValue('切换布局仍保留这段草稿')
       await page.getByRole('button', { name: '展开对话', exact: true }).click()
+      await expect(page.locator('.chat-list')).toBeVisible()
+      const send = (await page.locator('.send-btn').boundingBox())!
+      expect(send.y + send.height).toBeLessThanOrEqual(900)
     }
   })
 

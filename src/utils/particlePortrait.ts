@@ -79,24 +79,6 @@ export interface PortraitSample {
 const cloudCache = new Map<string, PortraitCloud | null>()
 const pendingLoads = new Map<string, Promise<PortraitCloud | null>>()
 
-/**
- * 极亮色是否需要深色轮廓描边（2026-08-16 用户反馈：浅色主题下亮色点阵看不清，
- * 修复后要求颜色还原原图——由 1.8× 半径大衬点改为 1.25× 细轮廓描边）：
- * 亮度 >0.72 的白/近白点在浅色背景上「隐形」，绘制时沿点外圈描一圈细深灰
- * 轮廓恢复辨识度；点本体保持原色不透明，颜色不失真。0.62-0.72 的中亮色裸奔
- * （与浅底仍有 0.25 左右对比；0.62 阈值时白发等密集亮色区连成灰雾、颜色失真）。
- * 判定输入应为**实际绘制色**（浅色主题=原始 palette，深色主题=提亮后）。
- */
-export function shouldUnderlay(hex: string): boolean {
-  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim())
-  if (!match) return false
-  const r = parseInt(match[1].slice(0, 2), 16) / 255
-  const g = parseInt(match[1].slice(2, 4), 16) / 255
-  const b = parseInt(match[1].slice(4, 6), 16) / 255
-  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-  return lum > 0.72
-}
-
 export function portraitCloudUrl(id: string): string {
   return characterArtEntry(id)?.particleUrl || `/assets/particles/p_${encodeURIComponent(id)}.json`
 }

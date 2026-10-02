@@ -54,7 +54,17 @@ fn live_references_leases_and_retention_override_discovered_candidates() {
     let (_directory, mut c) = fixture();
     let (referenced, referenced_file) = object(&c, "referenced", true);
     let (leased, leased_file) = object(&c, "leased", true);
-    let (_expired, expired_file) = object(&c, "expired", true);
+    let (expired, expired_file) = object(&c, "expired", true);
+    let caches = [
+        "thumbnails-v1",
+        "thumbnails-rust-v1",
+        "thumbnails-rust-vips-v1",
+    ]
+    .map(|version| c.root.join(format!("cache/{version}/{expired}.jpg")));
+    for cache in &caches {
+        fs::create_dir_all(cache.parent().unwrap()).unwrap();
+        fs::write(cache, b"disposable thumbnail").unwrap();
+    }
     let (_recent, recent_file) = object(&c, "recent", false);
     let missing = digest("missing");
     c.db.execute(
@@ -87,6 +97,7 @@ fn live_references_leases_and_retention_override_discovered_candidates() {
     assert_eq!(receipt["removed"], 1);
     assert!(referenced_file.exists() && leased_file.exists() && recent_file.exists());
     assert!(!expired_file.exists());
+    assert!(caches.iter().all(|cache| !cache.exists()));
     assert_eq!(
         c.db.query_row(
             "SELECT count(*) FROM media_objects WHERE hash=?",
@@ -375,6 +386,14 @@ async fn close_keeps_ownership_until_both_discovery_and_backup_finish() {
             .await
             .is_err()
     );
+    assert_eq!(
+        storage
+            .request(json!({"kind":"status"}), "test")
+            .await
+            .unwrap_err()
+            .code,
+        "STORAGE_UNAVAILABLE"
+    );
     gc_resume.send(()).unwrap();
     gc_finished.await.unwrap();
     assert_eq!(gc.await.unwrap().unwrap_err().code, "CANCELLED");
@@ -398,4 +417,16 @@ async fn close_keeps_ownership_until_both_discovery_and_backup_finish() {
         .unwrap()
         .unwrap();
     assert!(!root.join(".workspace-owner.json").exists());
+    assert_eq!(
+        storage
+            .request(
+                json!({"kind":"profile.saveSetting","operationId":"after-close",
+        "key":"aics_theme","value":"dark","expectedRevision":null}),
+                "test"
+            )
+            .await
+            .unwrap_err()
+            .code,
+        "STORAGE_UNAVAILABLE"
+    );
 }

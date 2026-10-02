@@ -190,14 +190,18 @@ export default tseslint.config(
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS },
     },
+    rules: { 'no-restricted-globals': ['error', ...Object.keys(BROWSER_ONLY_GLOBALS)] },
   },
   {
-    // CDP 调试脚本在 page.evaluate 回调里编写浏览器侧代码：
-    // 对这些文件补回浏览器全局，避免 no-undef 误报。
-    files: ['scripts/maintenance/cdp-*.ts'],
+    // 浏览器自动化在 evaluate/addInitScript 回调中执行 DOM 代码。
+    // 仅这些明确的混合环境入口允许浏览器全局；普通 Node 工具仍禁止。
+    files: ['scripts/maintenance/cdp-*.ts', 'scripts/maintenance/regress-chat-voice-live.mts',
+      'scripts/tests/{rust-browser-fixture,test-desktop-library-browser,test-task-center-browser,test-workspace-migration-browser,test-resource-ui-visual}.mts',
+      'scripts/tests/prototypes/benchmark-{artwork-storage,backup-restore,thumbnail-warmup}.ts'],
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
     },
+    rules: { 'no-restricted-globals': 'off' },
   },
   {
     files: ['**/*.vue'],

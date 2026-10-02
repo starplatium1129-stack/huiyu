@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { compileSpring, sampleSpring, BAKED_SPRINGS } from './springCompiler'
+import { compileSpring } from './springCompiler'
 
 describe('springCompiler (Spring-to-Linear-Easing)', () => {
   it('generates valid CSS linear(...) format starting at 0 and ending at 1', () => {
@@ -48,20 +48,10 @@ describe('springCompiler (Spring-to-Linear-Easing)', () => {
     expect(custom.duration).toBeGreaterThan(100)
   })
 
-  it('exposes the analytic sample used by the compiler', () => {
-    const start = sampleSpring('gentle', 0)
-    const end = sampleSpring('gentle', BAKED_SPRINGS.gentle.duration / 1000)
-    expect(start.position).toBeCloseTo(0, 5)
-    expect(start.velocity).toBeCloseTo(0, 5)
-    expect(end.position).toBeCloseTo(1, 2)
-    expect(Math.abs(end.velocity)).toBeLessThan(0.05)
-  })
-
   it('rejects physically invalid configurations', () => {
     expect(() => compileSpring({ stiffness: 0 })).toThrow(/stiffness/)
     expect(() => compileSpring({ mass: -1 })).toThrow(/mass/)
     expect(() => compileSpring({ damping: -1 })).toThrow(/damping/)
     expect(() => compileSpring({ precision: 0 })).toThrow(/precision/)
-    expect(() => sampleSpring('gentle', -1)).toThrow(/elapsedSeconds/)
   })
 })

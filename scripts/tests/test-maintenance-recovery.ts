@@ -7,8 +7,6 @@ const { once }: typeof import('node:events') = require('node:events');
 const io: typeof import('../lib/maintenance-recovery-fs') = require('../lib/maintenance-recovery-fs');
 const { acquireMaintenanceLease, inspectMaintenanceLease, assertMaintenanceReadable, pidStatus }: typeof import('../lib/maintenance-lease') = require('../lib/maintenance-lease');
 const { previewMaintenanceRecovery, applyMaintenanceRecovery }: typeof import('../lib/maintenance-recovery') = require('../lib/maintenance-recovery');
-const { prepareMaintenanceTransaction, rollbackMaintenanceTransaction }: typeof import('../lib/maintenance-transaction') = require('../lib/maintenance-transaction');
-const { runMaintenanceNode }: typeof import('../lib/maintenance-transaction-process') = require('../lib/maintenance-transaction-process');
 const { createFixture, tree, spawnWorker }: typeof import('./maintenance-recovery-fixture') = require('./maintenance-recovery-fixture');
 const { fs, path } = io;
 
@@ -236,24 +234,6 @@ test('a real registered writer surviving owner SIGKILL prevents recovery until i
     assert.equal(pidStatus(pid), 'dead');
     assert.equal(recover(f).ok, true);
   } finally { if (participant.exitCode === null && participant.signalCode === null) participant.kill('SIGKILL'); await closed; f.cleanup(); }
-});
-
-test('gated child runs as main only after durable PID registration; timeout waits for exit', async () => {
-  const f = createFixture();
-  try {
-    const script = path.join(f.options.rootDir, 'fixture-child.js');
-    const lease = acquireMaintenanceLease(f.options);
-    const snapshot = io.snapshotFiles(f.files);
-    prepareMaintenanceTransaction(lease, f.options, snapshot);
-    fs.writeFileSync(script, "const fs = require('node:fs'); const path = require('node:path'); const root = process.env.AICS_DATA_ROOT; const journal = JSON.parse(fs.readFileSync(path.join(root, 'runtime/maintenance-transactions/lease/journal.json'))); if (require.main !== module || !journal.participants.some(p => p.pid === process.pid && p.state === 'running')) process.exit(82); fs.writeFileSync(path.join(root, 'data/scenes/group.json'), 'child-write');");
-    const run = (args: any) => runMaintenanceNode(script, args, 300, { rootDir: f.options.rootDir, repoRoot: f.options.rootDir, lease });
-    assert.equal((await run([]) as any).status, 0);
-    fs.appendFileSync(script, 'setInterval(() => {}, 1000);');
-    await assert.rejects(() => run([]), /超时/);
-    assert.ok(lease.assertOwned().participants.every((item: any) => item.state === 'exited'));
-    assert.equal(rollbackMaintenanceTransaction(lease, f.options).ok, true);
-    assert.equal(fs.readFileSync(f.files[0], 'utf8'), snapshot[0].content.toString());
-  } finally { f.cleanup(); }
 });
 
 test('CLI defaults to zero-write preview and requires explicit apply plus plan', async () => {

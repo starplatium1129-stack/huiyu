@@ -117,7 +117,7 @@ fn jpeg_products_match_legacy_manifests_and_preserve_transaction_digests() {
     let actual = json!({"results":responses,"manifest":fs::json(&showcase.join("manifest.json")).unwrap(),"hero":hero});
     assert_eq!(
         crate::storage::fingerprint(&actual),
-        crate::storage::fingerprint(&expected),
+        crate::storage::fingerprint(expected),
         "Rust {actual}\nLegacy contract {expected}"
     );
     assert_eq!(

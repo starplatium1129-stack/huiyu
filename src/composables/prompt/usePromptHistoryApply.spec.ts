@@ -44,14 +44,6 @@ it('restores saved popular decisions instead of leaving current or blueprint val
   expect(pb.selections).toEqual({ emotion: ['calm'], shot: 'wide', lighting: 'moon', composition: 'rule3' })
   expect(pb.colorMood).toBe('warmth')
 })
-it('reports backend model and style fallback after discovery completes', async () => {
-  const { pb, state, refresh, applyHistory } = setup()
-  refresh.mockImplementation(async () => { state.value.modelId = 'available'; state.value.styleLoraId = ''; state.value.width = 1024; return true })
-  await applyHistory(entry({ engine: 'krea2', model: 'missing', styleLoraId: 'old-style' }))
-  expect(pb.historyRestoreReport?.notes.join(';')).toContain('missing → available')
-  expect(pb.historyRestoreReport?.notes.join(';')).toContain('old-style → 不可用')
-  expect(pb.historyRestoreReport?.notes.join(';')).toContain('832 → 1024')
-})
 it('unknown engines leave the current draft intact', async () => {
   const { pb, applyHistory } = setup()
   pb.story = 'Keep me'

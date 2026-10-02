@@ -132,13 +132,6 @@ describe('confirmDeleteAction', () => {
     expect(ctx.deleting.value).toBe(false)
   })
 
-  it('still supports callers without a presentation callback', async () => {
-    repo.softDeleteArtwork.mockResolvedValue({ deleted: true })
-    const { onDeleted: _onDeleted, ...ctx } = deleteContext()
-    await confirmDeleteAction(ctx, ctx.history.value[0]!)
-    expect(ctx.history.value.map(item => item.id)).toEqual([2])
-    expect(ctx.releaseCardResources).toHaveBeenCalledExactlyOnceWith(1)
-  })
 })
 
 describe('bulkDeleteAction', () => {

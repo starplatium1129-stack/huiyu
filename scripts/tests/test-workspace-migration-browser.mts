@@ -5,14 +5,15 @@ import { chromium } from '@playwright/test'
 import { startRustBrowserFixture } from './rust-browser-fixture.mjs'
 const fixture = await startRustBrowserFixture()
 const { origin, workspaceId } = fixture
+let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined
+try {
 const chatBase = { version: 3, historiesRevision: 0, historiesRevisions: { nene: 0 }, histories: { nene: [{ mid: 'base', role: 'user', content: 'base', stopped: false }] }, settings: {} }
 await fixture.request('/api/workspace/profile/settings', 'PUT', { protocolVersion: 1, workspaceId, operationId: 'seed-theme', key: 'aics_theme', value: 'dark', expectedRevision: null })
 await fixture.request('/api/workspace/profile/chat', 'PUT', { protocolVersion: 1, workspaceId, operationId: 'seed-chat', key: 'aics_chat_v1', value: JSON.stringify(chatBase), expectedRevision: null, expectedReset: '' })
 let revisionConflicts = 0
 const executablePath = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe']
   .find(file => fs.existsSync(file))
-const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
-try {
+browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
   const context = await fixture.context(browser)
   context.on('response', response => { if (response.url().includes('/api/workspace/profile/') && response.status() === 409) revisionConflicts++ })
   const first = await context.newPage(), second = await context.newPage()
@@ -111,4 +112,4 @@ try {
   assert.match(reset.recovery, /unsaved recovery/)
   await context.close()
   console.log('Migration/profile browser: two real windows verified maintenance, independent backup, credential exclusion, SQLite revision rebase, message merge, offline outbox and reset recovery export.')
-} finally { await browser.close(); await fixture.close() }
+} finally { try { await fixture.close() } finally { await browser?.close() } }

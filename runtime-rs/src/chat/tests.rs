@@ -218,6 +218,42 @@ async fn host_config_roundtrip_never_publishes_secret() {
     assert_eq!(public["configured"], true);
     assert!(!public.to_string().contains("isolated-secret"));
     assert!(public.get("apiKey").is_none());
+    let file = directory.path().join("state/chat_api_config.json");
+    let before = std::fs::metadata(&file).unwrap();
+    let replacement=validation::api(&json!({"baseUrl":"https://api.example.test/v1","model":"changed","apiKey":"replaced-secret"})).unwrap();
+    settings.write_host(&replacement).await.unwrap();
+    std::fs::OpenOptions::new()
+        .write(true)
+        .open(&file)
+        .unwrap()
+        .set_modified(before.modified().unwrap())
+        .unwrap();
+    assert_eq!(std::fs::metadata(&file).unwrap().len(), before.len());
+    assert_eq!(settings.read_host().await.unwrap().key, "replaced-secret");
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        let bytes = std::fs::read(&file).unwrap();
+        // A real handle without FILE_SHARE_DELETE deterministically refuses
+        // replacement and deletion; readonly removal varies by Rust/Windows.
+        let held = std::fs::OpenOptions::new()
+            .read(true)
+            .share_mode(3)
+            .open(&file)
+            .unwrap();
+        let failed_write = settings.write_host(&api).await;
+        let failed_delete = settings.delete_host().await;
+        let unchanged = std::fs::read(&file).unwrap();
+        let files = std::fs::read_dir(file.parent().unwrap()).unwrap().count();
+        drop(held);
+        assert_eq!(failed_write.unwrap_err().code, "HOST_CONFIG_UNAVAILABLE");
+        assert_eq!(failed_delete.unwrap_err().code, "HOST_CONFIG_UNAVAILABLE");
+        assert_eq!(unchanged, bytes);
+        assert_eq!(
+            files, 1,
+            "failed replacement must reclaim its temporary file"
+        );
+    }
     settings.delete_host().await.unwrap();
     assert!(settings.read_host().await.is_none());
 }

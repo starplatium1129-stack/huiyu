@@ -54,6 +54,6 @@ test('the existing contract pool honors per-file timeout and retains structured 
     assert.equal(run.results[0].timedOut, true);
     assert.equal(run.results[0].reason, 'TIMEOUT(75ms)');
     assert.equal(run.skipped, 1);
-    assert.equal(qualityTestMetadata('test-maintenance-blueprint-transaction.js').parallelSafety, 'isolated');
+    assert.equal(qualityTestMetadata('test-maintenance-recovery.js').parallelSafety, 'isolated');
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });

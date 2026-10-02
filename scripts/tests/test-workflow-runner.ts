@@ -90,8 +90,8 @@ test('npm argument forwarding preserves spaces and metacharacters', () => {
   assert.equal(cmd, process.execPath);
   assert.deepEqual(args.slice(-3), ['--', '--character', 'a & b']);
 });
-test('quick gate covers root server, dependencies, scripts and rejects typos', async () => {
-  assert.deepEqual(classifyFiles(['server.js']), { areas: ['server'], testFiles: [] });
+test('quick gate covers unknown root files, dependencies, scripts and rejects typos', async () => {
+  assert.deepEqual(classifyFiles(['unknown-root.js']), { areas: ['full'], testFiles: [] });
   for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), { areas: ['full'], testFiles: [] });
   assert.deepEqual(classifyFiles(['docs/workflow.md']), { areas: [], testFiles: [] });
   assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), { areas: ['ui', 'data'], testFiles: [] });
@@ -179,17 +179,17 @@ test('optional selection narrows test-only changes, deduplicates, and expands fo
   for (const [paths, lanes] of [
     [['src/views/HomeView.vue', 'data/scenes/core.json', 'docs/workflow.md'], []],
     [['scripts/lib/scene-store.ts'], ['tooling', 'release']],
-    [['desktop-tauri/src-tauri/src/main.rs'], ['release']], [['routes/anima.ts'], ['tooling', 'release']],
+    [['desktop-tauri/src-tauri/src/main.rs'], ['release']],
     [['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/Cargo.lock'], []],
     [['runtime-rs/native-dependencies.windows-x64.json'], ['release']], [['runtime-rs/tests/parity.mjs'], []],
     [['unclassified-code.ts'], ['tooling', 'release']],
     [['scripts/tests/test-removed.ts'], ['tooling', 'release']],
   ] as const) assert.deepEqual(selectOptionalTests(paths), lanes.map(full));
-  const testFile = 'scripts/tests/test-blueprint-write.ts';
-  assert.deepEqual(selectOptionalTests([testFile, 'scripts\\tests\\test-blueprint-write.js', 'scripts/tests/test-api-client.ts']),
-    [{ lane: 'tooling', files: ['test-blueprint-write.js'] }]);
+  const testFile = 'scripts/tests/test-scene-write.ts';
+  assert.deepEqual(selectOptionalTests([testFile, 'scripts\\tests\\test-scene-write.js', 'scripts/tests/test-api-client.ts']),
+    [{ lane: 'tooling', files: ['test-scene-write.js'] }]);
   assert.deepEqual(selectOptionalTests([testFile, 'scripts/tests/test-desktop-updates.ts']),
-    [{ lane: 'tooling', files: ['test-blueprint-write.js'] }, { lane: 'release', files: ['test-desktop-updates.js'] }]);
+    [{ lane: 'tooling', files: ['test-scene-write.js'] }, { lane: 'release', files: ['test-desktop-updates.js'] }]);
   for (const paths of [[testFile, 'scripts/maintenance/build-blueprints.ts'], ['scripts/maintenance/build-blueprints.ts', testFile]]) {
     assert.deepEqual(selectOptionalTests(paths), [full('tooling')]);
   }
@@ -213,7 +213,7 @@ test('optional selection narrows test-only changes, deduplicates, and expands fo
   vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, process: fakeProcess,
     __dirname: path.dirname(entry), AbortController, console: { log() {}, error() {} } });
   assert.equal(await module.exports.main(), 0);
-  assert.deepEqual(calls, [['tooling', 'test-blueprint-write.js']]); calls.length = 0;
+  assert.deepEqual(calls, [['tooling', 'test-scene-write.js']]); calls.length = 0;
   fakeProcess.env.AICS_HYGIENE_BASE_REF = 'invalid';
   assert.equal(await module.exports.main(), 0);
   assert.deepEqual(calls, ([...(['tooling', 'release'] as const).map(lane => [lane, ...QUALITY_TEST_SUITES[lane]])]));

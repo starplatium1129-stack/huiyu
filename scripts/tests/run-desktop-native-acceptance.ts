@@ -330,8 +330,8 @@ function installedExecutable(installLocation: any) {
 
 function buildResourceManifest(installLocation: any) {
   const required = [
-    'gateway/server.js',
-    'node.exe',
+    'gateway/huiyu-runtime.exe',
+    'gateway/native/libvips-42.dll', 'gateway/native/onnxruntime.dll',
     'gateway/dist',
     'gateway/assets/live2d/nene',
     'gateway/assets/live2d/natsume',
@@ -346,7 +346,7 @@ function buildResourceManifest(installLocation: any) {
       sha256: exists && fs.statSync(target).isFile() ? sha256File(target) : null,
     }
   })
-  return { installLocation, items, ok: items.every(item => item.exists) }
+  return { installLocation, items, ok: items.every(item => item.exists && item.type === (/\.(exe|dll)$/.test(item.relative) ? 'file' : 'directory')) }
 }
 
 async function installProduct(evidence: any, installer: any) {

@@ -106,7 +106,7 @@ describe('parseScenePromptLoras / resolveLoraSpecs', () => {
     )
     expect(specs.length).toBe(1)
     expect(specs[0].name).toBe('ayachi_nene_v18_wd14')
-    expect(typeof specs[0].weight).toBe('number')
+    expect(specs[0].weight).toBe(0.8)
   })
 })
 

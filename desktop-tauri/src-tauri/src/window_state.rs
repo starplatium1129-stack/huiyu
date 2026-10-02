@@ -242,6 +242,7 @@ mod tests {
         let file = tmp.join("window.json");
         let normal = WindowBounds { x: 120, y: 72, width: 1100, height: 800 };
         save_window_bounds(&file, &normal, None);
+        assert_eq!(load_window_bounds(&file, None).0, normal);
         assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
         save_window_presentation(&file, Some(1.5), Some(true));
         assert_eq!(load_window_bounds(&file, None).0.width, normal.width);
@@ -333,18 +334,6 @@ mod tests {
     }
 
     #[test]
-    fn round_trip_window_bounds() {
-        let tmp = std::env::temp_dir().join(format!("aics-ws-test-{}", std::process::id()));
-        let file = tmp.join("window.json");
-        let bounds = WindowBounds { x: 120, y: 80, width: 540, height: 760 };
-        save_window_bounds(&file, &bounds, None);
-        let loaded = load_window_bounds(&file, None).0;
-        assert_eq!(loaded.x, 120);
-        assert_eq!(loaded.height, 760);
-        let _ = std::fs::remove_dir_all(&tmp);
-    }
-
-    #[test]
     fn clamp_keeps_window_on_screen() {
         // 窗口比工作区大时收缩到工作区宽度（Electron 语义）
         let clamped = clamp_window_bounds(
@@ -418,10 +407,6 @@ mod tests {
         assert_eq!(logical.y, 50);
         assert_eq!(logical.width, 800);
         assert_eq!(logical.height, 600);
-    }
-
-    #[test]
-    fn invalid_scale_factor_is_treated_as_one() {
         let bounds = WindowBounds { x: 10, y: 20, width: 30, height: 40 };
         assert_eq!(physical_to_logical_bounds(&bounds, 0.0).width, 30);
         assert_eq!(physical_to_logical_bounds(&bounds, f64::NAN).height, 40);

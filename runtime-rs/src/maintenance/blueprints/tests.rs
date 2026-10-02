@@ -1,9 +1,4 @@
 use super::*;
-use std::{
-    io::Write,
-    process::{Command, Stdio},
-};
-
 fn blueprint(id: &str, character: &str, outfit: &str) -> Value {
     json!({"id":id,"characterId":character,"outfitId":outfit,"title":"Neutral fixture","promptTokens":["cup"],"negativeTokens":[],"promptProse":"A cup beside a book.","modelId":"fixture-model","unknown":{"retained":true}})
 }
@@ -16,63 +11,40 @@ fn input() -> Value {
 }
 #[test]
 fn complete_plan_text_and_delta_match_the_original_node_planner() {
-    let base = input();
-    let mut moved = base.clone();
-    let mut a = base["blueprints"][0].clone();
-    a["characterId"] = json!("beta");
-    a["outfitId"] = json!("coat");
-    moved["blueprints"] = json!([base["blueprints"][1], a, blueprint("c", "gamma", "coat")]);
-    let mut unknown = base.clone();
-    unknown["blueprints"][0]["characterId"] = json!("missing");
-    let mut reserved = base.clone();
-    reserved["franchiseByCharacter"]["gamma"] = json!("CON");
-    reserved["blueprints"]
-        .as_array_mut()
-        .unwrap()
-        .push(blueprint("c", "gamma", "coat"));
-    let change =
-        json!({"upsert":[moved["blueprints"][1],blueprint("c","gamma","coat")],"remove":["b"]});
-    let cases =
-        json!({"plans":[base,moved,unknown,reserved],"current":base["blueprints"],"change":change});
-    let oracle =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("src/maintenance/blueprints/legacy-oracle.cjs");
-    let mut command = Command::new("node");
-    command
-        .arg(oracle)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        command.creation_flags(0x08000000);
-    }
-    let mut process = command.spawn().unwrap();
-    process
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(js(&cases).as_bytes())
-        .unwrap();
-    let output = process.wait_with_output().unwrap();
-    assert!(
-        output.status.success(),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    let expected: Value = serde_json::from_slice(&output.stdout).unwrap();
-    for (index, case) in cases["plans"].as_array().unwrap().iter().enumerate() {
-        let actual = match plan(case) {
+    let fixture: Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/legacy-blueprint-plans.json"
+    ))
+    .unwrap();
+    for (index, case) in fixture["cases"].as_array().unwrap().iter().enumerate() {
+        let input = &case["input"];
+        let mut actual = match plan(input) {
             Ok(plan) => json!({"plan":plan}),
             Err(error) => json!({"problems":error.extra["problems"]}),
         };
-        assert_eq!(actual, expected["plans"][index], "planner case {index}");
+        let mut expected = case["expected"].clone();
+        // Serde and V8 provide different JSON parser diagnostics. Keep the
+        // exact project message/file and require a diagnostic on both paths.
+        for result in [&mut actual, &mut expected] {
+            if let Some(problems) = result["problems"].as_array_mut() {
+                for problem in problems {
+                    if let Some((prefix, detail)) =
+                        problem.as_str().unwrap().split_once("text 不是合法 JSON:")
+                    {
+                        assert!(!detail.trim().is_empty());
+                        *problem = format!("{prefix}text 不是合法 JSON:<parser diagnostic>").into();
+                    }
+                }
+            }
+        }
+        assert_eq!(actual, expected, "planner case {index}: {}", case["titles"]);
     }
+    let delta = &fixture["delta"];
     assert_eq!(
-        json!(changed(cases["current"].as_array().unwrap(), &change).unwrap()),
-        expected["delta"]
+        json!(changed(delta["current"].as_array().unwrap(), &delta["change"]).unwrap()),
+        delta["expected"]
     );
 }
+
 fn write(root: &Path, file: &str, value: &Value) {
     let file = root.join(file);
     std::fs::create_dir_all(file.parent().unwrap()).unwrap();

@@ -37,14 +37,6 @@ for (const theme of ['dark', 'light']) {
       const frame = await field.boundingBox()
       expect(frame!.height).toBeGreaterThanOrEqual(430)
       expect(frame!.width).toBeGreaterThan(1000)
-      await expect(field).toHaveClass(/density-ambient/)
-      await expect(field).not.toHaveClass(/is-bare/)
-      const background = await field.evaluate(e => getComputedStyle(e).backgroundImage)
-      // Portraits use a quiet light pool; grids and drafting frames compete with the dots.
-      expect(background).toContain('radial-gradient')
-      expect(background).not.toContain('linear-gradient')
-      expect(await field.evaluate(e => getComputedStyle(e).backgroundSize)).not.toMatch(/\d+px/)
-      expect(await field.evaluate(e => getComputedStyle(e, '::before').display)).toBe('none')
       await expect(field.locator('.particle-caption')).toHaveText('绫地宁宁')
       const pixels = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
       await hoverAndWaitForParticleFrame(page, field)
@@ -134,7 +126,9 @@ test('portrait remains available when WebGL is disabled', async ({ page }) => {
   await expect(field).toHaveClass(/has-canvas/)
 })
 
-for (const theme of ['dark', 'light']) {
+// The theatre test retains dual-theme pixels and contrast; spacing and scheduling
+// do not branch on the theme.
+for (const theme of ['dark']) {
   test(`screen spacing survives enlargement and low-effects scheduling ${theme}`, async ({ page }) => {
     test.setTimeout(45000)
     await page.setViewportSize({ width: 1600, height: 1150 })

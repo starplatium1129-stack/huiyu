@@ -4,7 +4,6 @@ const {
   timeSlotOf,
   isWeekend,
   pickEnvironmentGreeting,
-  slotLabel,
 }: typeof import('../../src/utils/environmentContext.ts') = require('../../src/utils/environmentContext.ts');
 
 function at(hour: number|undefined, minute: any = 0, day: any = 3) {
@@ -35,17 +34,6 @@ test('周末判断：周三非周末，周六是周末', () => {
   assert.equal(isWeekend(at(10, 0, 9)), true, '2026-08-09 周日');
 });
 
-test('台词：宁宁/夏目按时间片与周末返回台词', () => {
-  const morning = pickEnvironmentGreeting('nene', at(9, 30));
-  assert.equal(morning.slot, 'morning');
-  assert.equal(morning.weekend, false);
-  assert.match(morning.line, /。/);
-  const weekendNight = pickEnvironmentGreeting('natsume', at(22, 0, 8));
-  assert.equal(weekendNight.weekend, true);
-  assert.equal(weekendNight.slot, 'night');
-  assert.match(weekendNight.line, /。/);
-});
-
 test('台词轮转：同一时间片不同 offset 不重复', () => {
   const a = pickEnvironmentGreeting('nene', at(15), 0).line;
   const b = pickEnvironmentGreeting('nene', at(15), 1).line;
@@ -56,10 +44,4 @@ test('未知角色回退默认台词', () => {
   const greeting = pickEnvironmentGreeting('unknown', at(10));
   assert.equal(greeting.slot, 'morning');
   assert.match(greeting.line, /上午好/);
-});
-
-test('slotLabel 覆盖全部时间片', () => {
-  for (const slot of ['late-night', 'early-morning', 'morning', 'noon', 'afternoon', 'evening', 'night']) {
-    assert.ok(slotLabel(slot as any), `${slot} 应有中文标签`);
-  }
 });

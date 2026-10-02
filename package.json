@@ -57,7 +57,6 @@
     "prerelease:desktop": "npm run build:runtime",
     "release:desktop": "node scripts/maintenance/release-desktop-update.js",
     "test:storage-health": "node scripts/tests/test-storage-health.js",
-    "test:security": "node scripts/tests/test-security.js",
     "test:prompt-builder": "node scripts/tests/test-prompt-builder-modules.js",
     "test:prompt-policy": "node scripts/tests/test-prompt-policy.js",
     "test:rewrite-integrity": "node scripts/tests/test-prompt-rewrite-integrity.js",

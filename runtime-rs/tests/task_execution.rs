@@ -178,14 +178,21 @@ async fn accepted_jobs_outlive_callers_keep_identity_and_deliver_verified_result
     let provider =
         Arc::new(GenerationService::new(config, LocalUpstream::new(), restarted.clone()).unwrap());
     let runtime = Arc::new(TaskRuntime::new(provider, None, None, restarted).unwrap());
-    let resume = runtime
-        .resume(
+    let (resume, concurrent) = tokio::join!(
+        runtime.resume(
             reopened.clone(),
             "alice".into(),
-            "queued-before-restart".into(),
+            "queued-before-restart".into()
+        ),
+        runtime.resume(
+            reopened.clone(),
+            "alice".into(),
+            "queued-before-restart".into()
         )
-        .await
-        .unwrap();
+    );
+    let resume = resume.unwrap();
+    assert_eq!(resume["taskId"], concurrent.unwrap()["taskId"]);
+    assert_eq!(resume["taskId"], "queued-before-restart");
     assert_eq!(resume["input"]["seed"], 42);
     tokio::time::timeout(Duration::from_secs(5), state.started.notified())
         .await

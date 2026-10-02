@@ -464,20 +464,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn health_parsing() {
-        // 直接单元测解析逻辑（不依赖网络）
-        let health = serde_json::json!({
-            "ok": true, "app": "ai-cg-studio", "desktopProtocol": 1
-        });
-        let value: serde_json::Value = health;
-        let obj = value.as_object().unwrap();
-        let parsed = GatewayHealth {
-            ok: obj.get("ok").and_then(|v| v.as_bool()).unwrap_or(false),
-            app: obj.get("app").and_then(|v| v.as_str()).unwrap_or("").to_string(),
-            desktop_protocol: obj.get("desktopProtocol").and_then(|v| v.as_i64()).unwrap_or(0),
+    fn compatibility_requires_healthy_app_and_current_protocol() {
+        let mut parsed = GatewayHealth {
+            ok: true,
+            app: "ai-cg-studio".into(),
+            desktop_protocol: 1,
             desktop_proof: String::new(),
         };
         assert!(is_desktop_gateway_compatible(&parsed));
+        parsed.ok = false;
+        assert!(!is_desktop_gateway_compatible(&parsed));
+        parsed.ok = true;
+        parsed.app = "other-app".into();
+        assert!(!is_desktop_gateway_compatible(&parsed));
+        parsed.app = "ai-cg-studio".into();
+        parsed.desktop_protocol = 0;
+        assert!(!is_desktop_gateway_compatible(&parsed));
     }
 
     #[test]

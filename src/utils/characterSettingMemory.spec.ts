@@ -67,7 +67,7 @@ describe('characterSettingMemory · 召回', () => {
 
   it('关键词召回：query 命中某条时排它优先', () => {
     const entries = recallCharacterSetting(CARDS, 'nene', '害羞', 6)
-    expect(entries.some(entry => entry.includes('容易害羞慌乱'))).toBe(true)
+    expect(entries[0]).toContain('容易害羞慌乱')
   })
 
   it('关键词零命中时退回角色基础设定（背景+性格），保证注入不空', () => {
@@ -78,6 +78,6 @@ describe('characterSettingMemory · 召回', () => {
 
   it('limit 生效：截断条目数不超过上限', () => {
     const entries = recallCharacterSetting(CARDS, 'nene', '', 2)
-    expect(entries.length).toBeLessThanOrEqual(2)
+    expect(entries).toHaveLength(2)
   })
 })

@@ -61,6 +61,7 @@ test('drawing invitation opens materials without starting generation', async ({ 
   await page.locator('.stage-idle').getByRole('button', { name: '挑选场景', exact: true }).click()
   await expect(page).toHaveURL(/prompt-builder/)
   await expect(page.locator('#material-scenes')).toBeVisible()
+  await expect(page.locator('[aria-controls="material-scenes"]')).toBeFocused()
   expect(submissions).toBe(0)
 })
 

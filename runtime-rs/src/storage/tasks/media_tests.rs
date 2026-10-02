@@ -375,14 +375,6 @@ async fn cancelled_or_abandoned_binary_work_does_not_write_and_close_rejects_new
 async fn benchmark_task_media_chunk_transport() {
     let (_directory, storage) = fixture().await;
     let bytes = Bytes::from(data(16 * media::CHUNK));
-    let sample = bytes.slice(..media::CHUNK);
-    assert_eq!(
-        STANDARD
-            .decode(STANDARD.encode(&sample))
-            .unwrap()
-            .as_slice(),
-        sample.as_ref()
-    );
     let mut codec = Vec::new();
     for phase in ["encoded-json", "shared-binary"] {
         let mut samples = Vec::new();

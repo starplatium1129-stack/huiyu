@@ -26,6 +26,17 @@ fn safe_id(value: &str) -> bool {
             .bytes()
             .all(|c| c.is_ascii_alphanumeric() || b"_.-".contains(&c))
 }
+async fn safe_directory(directory: &Path) -> bool {
+    for path in [directory.parent().unwrap(), directory] {
+        if !tokio::fs::symlink_metadata(path)
+            .await
+            .is_ok_and(|metadata| metadata.is_dir() && !metadata.file_type().is_symlink())
+        {
+            return false;
+        }
+    }
+    true
+}
 async fn write(path: &Path, value: &Value) -> Result<()> {
     let (file, pending) =
         tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
@@ -44,8 +55,13 @@ async fn write(path: &Path, value: &Value) -> Result<()> {
 
 pub(super) async fn save(inner: &Inner, job: &Job) -> Result<()> {
     let directory = directory(inner, job.provider);
+    let jobs = directory.parent().unwrap();
+    tokio::fs::create_dir_all(jobs).await?;
+    if !tokio::fs::symlink_metadata(jobs).await?.is_dir() {
+        return Err(ApiError::new(503, "SNAPSHOT_UNSAFE", "任务记录目录不可用"));
+    }
     tokio::fs::create_dir_all(&directory).await?;
-    if !tokio::fs::symlink_metadata(&directory).await?.is_dir() {
+    if !safe_directory(&directory).await {
         return Err(ApiError::new(503, "SNAPSHOT_UNSAFE", "任务记录目录不可用"));
     }
     write(&directory.join(format!("{}.json",job.id)),&json!({"id":job.id,"owner":job.owner,"status":"running","createdAt":job.created,"estimatedSeconds":null,"input":{"modelId":job.input["modelId"],"width":job.input["width"],"height":job.input["height"],"duration":null,"family":job.input.get("family")}})).await
@@ -53,8 +69,10 @@ pub(super) async fn save(inner: &Inner, job: &Job) -> Result<()> {
 pub(super) async fn remove(inner: &Inner, id: &str) {
     if safe_id(id) {
         for provider in providers(inner) {
-            let _ =
-                tokio::fs::remove_file(directory(inner, provider).join(format!("{id}.json"))).await;
+            let directory = directory(inner, provider);
+            if safe_directory(&directory).await {
+                let _ = tokio::fs::remove_file(directory.join(format!("{id}.json"))).await;
+            }
         }
     }
 }
@@ -62,6 +80,9 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
     let mut records = Vec::new();
     for provider in providers(inner) {
         let directory = directory(inner, provider);
+        if !safe_directory(&directory).await {
+            continue;
+        }
         let Ok(mut files) = tokio::fs::read_dir(&directory).await else {
             continue;
         };
@@ -200,6 +221,104 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn fixture(root: &Path) -> Service {
+        Service::new(
+            Config {
+                sd_host: "http://127.0.0.1:1".into(),
+                comfy_host: "http://127.0.0.1:1".into(),
+                sd_auth: None,
+                ai_workspace_root: root.join("unused-ai"),
+                runtime_root: root.to_path_buf(),
+            },
+            LocalUpstream::new(),
+            CancellationToken::new(),
+        )
+        .unwrap()
+    }
+
+    #[tokio::test]
+    async fn recovery_keeps_newest_256_and_expires_only_valid_seven_day_records() {
+        let root = tempfile::tempdir().unwrap();
+        let service = fixture(root.path());
+        let folder = directory(&service.inner, "comfy");
+        std::fs::create_dir_all(&folder).unwrap();
+        let timestamp = now();
+        for index in 0..257 {
+            let id = format!("job-{index:03}");
+            std::fs::write(
+                folder.join(format!("{id}.json")),
+                json!({"id":id,"owner":"owner","status":"running","lostAt":timestamp-index,
+                    "input":{"family":"wai"}})
+                .to_string(),
+            )
+            .unwrap();
+        }
+        std::fs::write(
+            folder.join("expired.json"),
+            json!({"id":"expired","owner":"owner",
+            "status":"running","lostAt":timestamp-7*24*60*60*1000})
+            .to_string(),
+        )
+        .unwrap();
+        let malformed = b"{\"id\":\"other\",\"owner\":\"owner\",\"status\":\"running\"}";
+        std::fs::write(folder.join("malformed.json"), malformed).unwrap();
+        let recovered = drain(&service.inner).await;
+        assert_eq!(recovered.len(), 256);
+        assert!(recovered.contains_key("job-000"));
+        assert!(!recovered.contains_key("job-256"));
+        assert!(!folder.join("job-256.json").exists());
+        assert!(!folder.join("expired.json").exists());
+        assert_eq!(
+            std::fs::read(folder.join("malformed.json")).unwrap(),
+            malformed
+        );
+        assert_eq!(recovered["job-000"].family.as_deref(), Some("wai"));
+        let second = drain(&service.inner).await;
+        assert_eq!(second.len(), 256);
+        let value: Value =
+            serde_json::from_slice(&std::fs::read(folder.join("job-000.json")).unwrap()).unwrap();
+        assert_eq!(value["lostAt"], timestamp);
+    }
+
+    #[cfg(any(unix, windows))]
+    #[tokio::test]
+    async fn linked_snapshot_directories_never_recover_or_delete_external_records() {
+        fn link(source: &Path, target: &Path) {
+            #[cfg(unix)]
+            std::os::unix::fs::symlink(source, target).unwrap();
+            #[cfg(windows)]
+            assert!(std::process::Command::new("powershell.exe")
+                .args(["-NoProfile", "-NonInteractive", "-Command", "$ErrorActionPreference='Stop'; New-Item -ItemType Junction -Path $env:AICS_TEST_LINK -Target $env:AICS_TEST_TARGET | Out-Null"])
+                .env("AICS_TEST_LINK", target).env("AICS_TEST_TARGET", source).status().unwrap().success());
+        }
+        let external = tempfile::tempdir().unwrap();
+        let bytes = json!({"id":"outside","owner":"owner","status":"running",
+            "lostAt":now()-8*24*60*60*1000})
+        .to_string();
+        std::fs::write(external.path().join("outside.json"), &bytes).unwrap();
+        for parent in [false, true] {
+            let root = tempfile::tempdir().unwrap();
+            let service = fixture(root.path());
+            let folder = directory(&service.inner, "comfy");
+            if parent {
+                std::fs::create_dir_all(external.path().join("wai")).unwrap();
+                std::fs::write(external.path().join("wai/outside.json"), &bytes).unwrap();
+                link(external.path(), folder.parent().unwrap());
+            } else {
+                std::fs::create_dir_all(folder.parent().unwrap()).unwrap();
+                link(external.path(), &folder);
+            }
+            assert!(drain(&service.inner).await.is_empty());
+            remove(&service.inner, "outside").await;
+            let target = external.path().join(if parent {
+                "wai/outside.json"
+            } else {
+                "outside.json"
+            });
+            assert_eq!(std::fs::read(target).unwrap(), bytes.as_bytes());
+        }
+    }
 
     #[test]
     fn recovery_snapshot_cancel_reclaims_pending_and_preserves_old_bytes() {

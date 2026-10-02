@@ -109,7 +109,11 @@ fn expired(stat: &fs::Metadata) -> Result<bool> {
         <= now() - records::RETENTION)
 }
 fn remove_metadata(c: &Context, hash: &str) -> Result<()> {
-    for version in ["thumbnails-v1", "thumbnails-rust-v1"] {
+    for version in [
+        "thumbnails-v1",
+        "thumbnails-rust-v1",
+        "thumbnails-rust-vips-v1",
+    ] {
         let thumbnail = schema::safe(&c.root, format!("cache/{version}/{hash}.jpg"))?;
         if thumbnail.exists() {
             fs::remove_file(thumbnail)?;

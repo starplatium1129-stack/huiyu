@@ -68,15 +68,20 @@ it('discards stale unpublished clones immediately even with the comparison open'
   expect(snapshots.lastResult.value?.url).toBe('blob:clone-2')
 })
 
-it('keeps the valid pair when a new build rejects and releases its clone', async () => {
+it.each(['synchronous', 'asynchronous'])('keeps the valid pair and releases its clone after %s build failure', async mode => {
+  const failed = deferred<Snapshot>()
   const { snapshots } = setup(url => {
-    if (url === 'blob:clone-3') throw new Error('metadata unavailable')
+    if (url === 'blob:clone-3') {
+      if (mode === 'synchronous') throw new Error('metadata unavailable')
+      return failed.promise
+    }
     return { url }
   })
   for (const source of ['blob:first', 'blob:second', 'blob:failed']) {
     snapshots.rotate(source)
     await flushPromises()
   }
+  if (mode === 'asynchronous') { failed.reject(new Error('async metadata failure')); await flushPromises() }
   expect(snapshots.prevResult.value?.url).toBe('blob:clone-1')
   expect(snapshots.lastResult.value?.url).toBe('blob:clone-2')
   expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith('blob:clone-3')
@@ -117,16 +122,6 @@ it.each(['rejected', 'empty', 'http-error'])('retains the valid pair when the ne
   expect(snapshots.lastResult.value?.url).toBe('blob:clone-2')
   expect(URL.createObjectURL).toHaveBeenCalledTimes(2)
   expect(URL.revokeObjectURL).not.toHaveBeenCalled()
-})
-
-it('handles a later asynchronous build rejection without losing the previous pair', async () => {
-  const failed = deferred<Snapshot>()
-  const { snapshots } = setup(url => url === 'blob:clone-3' ? failed.promise : { url })
-  for (const source of ['blob:first', 'blob:second', 'blob:third']) { snapshots.rotate(source); await flushPromises() }
-  failed.reject(new Error('async metadata failure')); await flushPromises()
-  expect(snapshots.prevResult.value?.url).toBe('blob:clone-1')
-  expect(snapshots.lastResult.value?.url).toBe('blob:clone-2')
-  expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith('blob:clone-3')
 })
 
 it('releases replaced displayed clones on close while keeping the current pair readable', async () => {

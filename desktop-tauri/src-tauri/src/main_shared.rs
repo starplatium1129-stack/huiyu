@@ -381,10 +381,6 @@ mod tests {
         assert_eq!(normalize_atelier_path(Some("/training")), "/training");
         assert_eq!(normalize_atelier_path(Some("/chat")), "/chat");
         assert_eq!(normalize_atelier_path(Some("/scene-explorer")), "/scene-explorer");
-    }
-
-    #[test]
-    fn tolerates_trailing_slash_and_keeps_case() {
         assert_eq!(normalize_atelier_path(Some("/gallery/")), "/gallery");
         assert_eq!(normalize_atelier_path(Some("/UPPER-1")), "/UPPER-1");
     }

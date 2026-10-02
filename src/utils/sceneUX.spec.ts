@@ -91,10 +91,6 @@ describe('sceneUX · 排序评分', () => {
     expect(sceneUsageScore({ uses: 5, lastUsed: NOW - 20 * DAY }, NOW)).toBe(20 + 4) // 一月内
     expect(sceneUsageScore({ uses: 2, lastUsed: NOW - 60 * DAY }, NOW)).toBe(8 + 1)  // 三月内
     expect(sceneUsageScore({ uses: 2, lastUsed: NOW - 200 * DAY }, NOW)).toBe(8 + 0)  // 更早
-  })
-
-  it('uses 超过 12 后不再加分（封顶）', () => {
-    expect(sceneUsageScore({ uses: 50, lastUsed: NOW }, NOW))
-      .toBe(sceneUsageScore({ uses: 12, lastUsed: NOW }, NOW))
+    expect(sceneUsageScore({ uses: 50, lastUsed: NOW }, NOW)).toBe(60)
   })
 })

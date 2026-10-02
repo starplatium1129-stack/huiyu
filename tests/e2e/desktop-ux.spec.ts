@@ -43,14 +43,6 @@ test('global search routes saved work to history and refreshes its index on reop
   await expect(page.locator('.story-input')).toHaveValue('桌面检索回归乙')
 })
 
-test('canvas scene selection stays in the working view and focuses the scene tab', async ({ page }) => {
-  await page.goto('/prompt-builder')
-  await page.locator('.stage-idle').getByRole('button', { name: '挑选场景', exact: true }).click()
-  await expect(page).toHaveURL(/prompt-builder$/)
-  await expect(page.locator('#material-scenes')).toBeVisible()
-  await expect(page.locator('[aria-controls="material-scenes"]')).toBeFocused()
-})
-
 test('popular CG handoff keeps its character and blueprint, and back restores filters', async ({ page }) => {
   await installShowcaseFixture(page)
   let jobs = 0

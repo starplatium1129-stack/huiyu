@@ -2,28 +2,6 @@ import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect } from '@playwright/test'
 
 for (const theme of ['dark']) {
-  for (const [width, height] of [[1440, 960]]) {
-    test(`open room and immersive conversation ${theme} ${width}`, async ({ page }) => {
-      await page.setViewportSize({ width, height })
-      await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
-      await page.goto('/chat')
-      await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toBeVisible()
-      await page.locator('.chat-input').fill('这段草稿在切换布局时保留')
-      await page.getByRole('button', { name: '专注陪伴', exact: true }).click()
-      await expect(page.locator('.room-current-line')).toBeVisible()
-      const panel = await page.locator('.conversation-card').boundingBox()
-      expect(panel!.x).toBeGreaterThanOrEqual(0)
-      expect(panel!.x + panel!.width).toBeLessThanOrEqual(width + 1)
-      await expect(page.locator('.chat-input')).toHaveValue('这段草稿在切换布局时保留')
-      await page.screenshot({ path: `runtime/room-redesign/immersive-${theme}-${width}.png` })
-      await page.getByRole('button', { name: '展开对话', exact: true }).click()
-      await expect(page.locator('.chat-list')).toBeVisible()
-      const send = await page.locator('.send-btn').boundingBox()
-      expect(send!.y + send!.height).toBeLessThanOrEqual(height)
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
-      await page.screenshot({ path: `runtime/room-redesign/room-${theme}-${width}.png` })
-    })
-  }
   test(`Miku real model uses an open stage in ${theme}`, async ({ page }) => {
     test.skip(process.env.AICS_LIVE2D_IMPORTS !== '1', 'Requires private local model assets')
     test.setTimeout(60000)

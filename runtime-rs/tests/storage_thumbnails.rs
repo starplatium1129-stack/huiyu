@@ -48,16 +48,77 @@ async fn thumbnails(storage: &Storage, count: usize) -> Vec<Value> {
 
 #[tokio::test]
 async fn concurrent_thumbnails_keep_identical_bytes_and_reuse_published_cache() {
-    let (_directory, storage) = fixture(96, 128).await;
+    let (directory, storage) = fixture(96, 128).await;
+    let original = storage.media("original").await.unwrap();
+    let bytes = std::fs::read(&original.path).unwrap();
+    let revision = request(&storage, json!({"kind":"status"})).await["revision"].clone();
     let values = thumbnails(&storage, 8).await;
     let first = values[0].as_str().unwrap();
     assert!(first.starts_with("data:image/jpeg;base64,"));
     assert!(values.iter().all(|value| value == &values[0]));
     assert_eq!(thumbnails(&storage, 2).await, vec![values[0].clone(); 2]);
+    let (_large_directory, large) = fixture(1120, 700).await;
+    let resized = thumbnails(&large, 1).await;
+    let jpeg = STANDARD
+        .decode(resized[0].as_str().unwrap().split_once(',').unwrap().1)
+        .unwrap();
+    let resized = image::load_from_memory(&jpeg).unwrap();
+    assert_eq!((resized.width(), resized.height()), (560, 350));
+    large.close().await.unwrap();
     let jpeg = STANDARD.decode(first.split_once(',').unwrap().1).unwrap();
     let image = image::load_from_memory(&jpeg).unwrap();
     assert_eq!((image.width(), image.height()), (96, 128));
+    let root = directory.path().join("workspace");
+    let cache = ["thumbnails-rust-v1", "thumbnails-rust-vips-v1"]
+        .into_iter()
+        .map(|version| root.join(format!("cache/{version}/{}.jpg", original.sha256)))
+        .find(|cache| cache.is_file())
+        .unwrap();
+    let old = std::time::UNIX_EPOCH + std::time::Duration::from_secs(3_600);
+    std::fs::OpenOptions::new()
+        .write(true)
+        .open(&cache)
+        .unwrap()
+        .set_modified(old)
+        .unwrap();
+    let cached_time = std::fs::metadata(&cache).unwrap().modified().unwrap();
     storage.close().await.unwrap();
+    let reopened = Storage::open(root, "thumbnail-fixture".into(), false)
+        .await
+        .unwrap();
+    assert_eq!(thumbnails(&reopened, 1).await[0], values[0]);
+    assert_eq!(
+        std::fs::metadata(&cache).unwrap().modified().unwrap(),
+        cached_time
+    );
+    std::fs::remove_file(&cache).unwrap();
+    assert_eq!(thumbnails(&reopened, 1).await[0], values[0]);
+    assert!(cache.is_file());
+    assert!(
+        request(&reopened, json!({"kind":"readThumbnail","alias":"missing"}))
+            .await
+            .is_null()
+    );
+    assert_eq!(
+        request(&reopened, json!({"kind":"status"})).await["revision"],
+        revision
+    );
+    assert_eq!(std::fs::read(&original.path).unwrap(), bytes);
+    let mut changed = bytes.clone();
+    changed[0] ^= 1;
+    std::fs::write(&original.path, changed).unwrap();
+    assert_eq!(
+        reopened
+            .request(
+                json!({"kind":"readThumbnail","alias":"original"}),
+                "desktop:thumbnail-fixture"
+            )
+            .await
+            .unwrap_err()
+            .code,
+        "MEDIA_INVALID"
+    );
+    reopened.close().await.unwrap();
 }
 
 // Windows CPU time measures all native decoder threads, not only the async

@@ -13,7 +13,6 @@ use huiyu_runtime::{
 };
 use image::ImageEncoder;
 use serde_json::{Value, json};
-use sha2::{Digest, Sha256};
 use std::{
     collections::HashMap,
     path::PathBuf,
@@ -73,7 +72,6 @@ async fn uploaded_originals_are_decoded_deduplicated_and_held_to_owner_quota() {
     // Read synchronously before any further await can give a queued write time to finish.
     let stored = std::fs::read(root.join(&alice)).unwrap();
     assert_eq!(stored, bytes);
-    assert_eq!(Sha256::digest(&stored), Sha256::digest(&bytes));
     assert_eq!(
         alice,
         service

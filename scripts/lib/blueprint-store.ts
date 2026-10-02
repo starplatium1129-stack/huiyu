@@ -80,7 +80,7 @@ function aggregateIsCurrent() {
 function writeBlueprintShards() {
   const aggregate = readJson(aggregatePath);
   const blueprints = Array.isArray(aggregate.blueprints) ? aggregate.blueprints : [];
-  
+
   // 建立 characterId -> franchise 映射
   const { characters } = loadPopularShards();
   const charToFranchise = new Map(characters.map((c) => [c.id, c.franchise]));

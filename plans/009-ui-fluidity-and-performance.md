@@ -69,7 +69,7 @@
 | [路由预热](../src/router/prefetch.ts)、[交互入口](../src/components/AppInteractionLayer.vue) | 已有按用户意图预热、共享模块加载及失败重试路径 | 验证代码、业务数据、首屏图片三种就绪状态；模块预热不等于页面已可用 |
 | [router/index.ts](../src/router/index.ts)、[documentPolicy.ts](../src/router/documentPolicy.ts) | 有 savedPosition/锚点滚动；standard、voice、live2d-voice 策略不同，跨策略走文档重载 | 分开测普通 SPA 与跨策略导航，保留安全边界，不能将两者混为同一动画问题 |
 | [现有性能配置](../playwright.performance.config.ts)、[导演台基准](../tests/e2e/office-performance.bench.ts) | 单 worker；3 组新 context；每组两次 `page.goto('/prompt-builder')`，测可见入口与首次操作 | 当前 warm 是同 context 的再次文档导航，不等于 SPA 切换或 KeepAlive 激活；补独立场景，不改名冒充已有覆盖 |
-| [Live2D 纹理](../services/live2d-textures.ts)、[原生构建](../desktop-tauri/native-live2d/build.rs) | 已有 Sharp 处理、纹理缓存与串行队列；已有 Rust/C++ 原生集成 | 测共用 CPU/GPU 和生命周期；不要把现有原生依赖重写一遍 |
+| [Live2D 纹理](../runtime-rs/src/live2d/textures.rs)、[原生构建](../desktop-tauri/native-live2d/build.rs) | 现行 Rust/libvips 处理、纹理缓存与有界工作队列；已有 Rust/C++ 原生集成 | 测共用 CPU/GPU 和生命周期；不要把现有原生依赖重写一遍 |
 
 [剩余验收与规划](../docs/roadmap.md#pc-桌面架构整理后的验收)、[剩余验收与规划](../docs/roadmap.md#011--012-的剩余验收) 和 [当前项目状态](../docs/project-status.md) 仅提供已做范围与回归线索。本文不重新开启它们已经完成的开发批次，也不关闭其中尚未完成的设备验收。
 
@@ -359,7 +359,7 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 
 **交付：** 不可见部分少做无用工作，恢复时无重复循环；在资源压力下保住交互。
 
-**文件入口：** `RouteAtmosphere.vue`、实际粒子/Live2D composable、`services/live2d-textures.ts`、`desktop-tauri/native-live2d` 及已有可见性/偏好管理。必须先读实际生命周期，不建立第二套全局调度器。
+**文件入口：** `RouteAtmosphere.vue`、实际粒子/Live2D composable、`runtime-rs/src/live2d/textures.rs`、`desktop-tauri/native-live2d` 及已有可见性/偏好管理。必须先读实际生命周期，不建立第二套全局调度器。
 
 - [x] F5.1 盘点 rAF、timer、观察器、ticker、媒体与 IPC 的所有者；区分页面失活、文档隐藏、窗口最小化和用户仍需后台执行的任务。
 - [x] F5.2 在适当生命周期暂停无用视觉工作，恢复时只创建一个循环，丢弃过时视觉更新，不补播积压动画；媒体/生成保持既有契约。
