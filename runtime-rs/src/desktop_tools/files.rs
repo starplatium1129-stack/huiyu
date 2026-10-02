@@ -122,6 +122,9 @@ pub(super) async fn atomic(
             .open(&temporary)
             .await?;
         file.write_all(bytes).await?;
+        // Tokio may still have a background write after write_all returns.
+        // Complete it before publishing the path or acknowledging the draft.
+        file.flush().await?;
         drop(file);
         if cancel.is_cancelled() {
             return Err(Error::cancelled());
