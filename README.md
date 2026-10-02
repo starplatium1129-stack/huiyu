@@ -4,7 +4,7 @@
 
 [中文说明](README_zh.md)
 
-[Download HUIYU 1.7.4 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4) · [1.7.4 更新说明](docs/releases/v1.7.4.md)
+[Download HUIYU 1.8.1 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1) · [1.8.1 release notes](docs/releases/v1.8.1.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -31,7 +31,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
   - Generate isolated candidates and run automated checks, then record human review before explicitly publishing an immutable version. Missing review stays pending; see the [reference workflow](docs/workflow.md#参考库候选审核与版本发布).
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
 - **Multi-Engine Generation & Curated Artist Styles**:
-  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), and Krea 2 Turbo (natural language prose).
+  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.6), and Krea 2 Turbo (natural language prose).
   - Curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
   - Regional Prompter dual-character composition stabilization on reForge.
 - **AI Narrative Video Studio**:
@@ -45,6 +45,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
   - Lightweight desktop shell with Companion + Atelier windows, system tray, Native Live2D overlay, and desktop synchronization through `deploy-desktop.bat`.
 
 ## Installation
+
+For the packaged Windows app, use the release above and the [offline installation guide](docs/guides/offline-resources.md). The full resource ZIP is a separate download; neither the app nor resource import requires Node.js or Rust build tools. The steps below are for building from source.
 
 ### Prerequisites
 
@@ -74,7 +76,7 @@ cd huiyu
 npm install
 ```
 
-`control.bat` also runs this automatically on first launch.
+`control.bat` runs `npm ci` when dependencies are missing.
 
 ### Step 3 — Build the tools and Rust backend
 
@@ -117,7 +119,7 @@ Full setup details, optional components (voice, chat, dual-character composition
 
 1. Open the **Scene Library** (`场景库`), filter by character / content rating, and pick a Scene — story, mood, camera, lighting and prompt are already assembled.
 2. Enter the **Director's Studio** (`导演台`), pick a curated artist style, and hit generate.
-3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), or Krea 2 Turbo (English natural-language prose).
+3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.6), or Krea 2 Turbo (English natural-language prose).
 
 ### B. AI narrative short film (click-only flow)
 

@@ -263,8 +263,11 @@ pub(super) async fn close(inner: Arc<Inner>) {
     }
     let jobs = std::mem::take(&mut inner.state.lock().await.jobs);
     for job in jobs.values() {
+        let preserve = job.provider == "webui" && job.state.lock().await.collection_pending;
         jobs::discard_output(job).await;
         job.state.lock().await.permit.take();
-        snapshots::remove(&inner, &job.id).await;
+        if !preserve {
+            snapshots::remove(&inner, &job.id).await;
+        }
     }
 }

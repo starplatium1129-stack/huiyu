@@ -3,6 +3,13 @@ use std::{
     fs::{File, OpenOptions},
     io::{Read, Write},
 };
+pub(super) fn read_json(directory: &Path, name: &str) -> Result<Value> {
+    let path = schema::safe(directory, name)?;
+    if !fs::metadata(&path)?.is_file() {
+        return Err(invalid_backup("Backup metadata is not a regular file"));
+    }
+    Ok(serde_json::from_slice(&fs::read(path)?)?)
+}
 pub(super) fn marker(directory: &Path, name: &str, value: &Value) -> Result<()> {
     schema::write_new(&schema::safe(directory, format!("{name}.pending"))?, value)?;
     let target = schema::safe(directory, name)?;
@@ -18,7 +25,7 @@ pub(super) fn prepare_directory(c: &Files, relative: &str, identity: &str) -> Re
     if directory.exists() {
         let marker = schema::safe(&directory, "incomplete.json")?;
         let recorded: Value = if marker.exists() {
-            serde_json::from_slice(&fs::read(marker)?)?
+            read_json(&directory, "incomplete.json")?
         } else {
             Value::Null
         };

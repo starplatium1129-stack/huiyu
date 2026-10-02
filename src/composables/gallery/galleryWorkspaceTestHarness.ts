@@ -62,14 +62,17 @@ beforeEach(() => {
 })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers(); vi.unstubAllGlobals() })
 
-export async function setup() {
+export async function setup(masonry = false) {
   let gallery!: ReturnType<typeof useGalleryWorkspace>
   const active = ref(true)
   const Gallery = defineComponent({ name: 'GalleryView', setup() {
     gallery = useGalleryWorkspace()
-    return () => h('div', { ref: gallery.shellEl }, gallery.pagedVisible.value.map(item => h('article', {
+    const card = (item: ArtworkRecord) => h('article', {
       class: 'artwork', 'data-card-id': String(item.id), key: item.id,
-    }, [h('img', { src: gallery.cardUrls[item.id] || gallery.thumbUrls[item.id] || undefined })])))
+    }, [h('img', { src: gallery.cardUrls[item.id] || gallery.thumbUrls[item.id] || undefined })])
+    return () => h('div', { ref: gallery.shellEl }, masonry
+      ? gallery.masonryGroups.value.map(group => h('section', { key: group.key }, group.columns.map((column, index) => h('div', { key: index }, column.map(card)))))
+      : gallery.pagedVisible.value.map(card))
   } })
   const wrapper = mount(createGalleryKeepAliveHost(active, Gallery))
   wrappers.push(wrapper)

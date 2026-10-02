@@ -1,12 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。以下入口按 2026-09-30 的 1.7.4 源码核对；签名构建与本机 1.7.4 安装已有记录；后续源码修复和设备未验范围见[项目状态](docs/project-status.md)。[本轮发行说明](docs/releases/v1.7.4.md)区分资源版本、隔离导入证据与尚未完成的设备/公开发行状态。
+本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。当前公开桌面版为 [1.8.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.8.1 发行说明](docs/releases/v1.8.1.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
 
 ## 新机器的桌面离线安装
 
-准备匹配版本的桌面安装包、完整资源 ZIP、`Install-OfflineResources.ps1`、ZIP SHA-256、独立受信发布说明里的 `release.json` 审批 SHA-256 及离线安装 README。两种哈希用途不同，后者用于脚本的 `-ExpectedReleaseSha256`。本轮复用 r1 素材快照（元数据 1.7.3），可由 1.7.4 导入，不需要重导出。
+准备 [1.8.1 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)和[完整素材 `huiyu-resources-20261002-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261002-r1)（471 项基础资源、2,042 条样张），保留发布页的校验文件与离线安装 README。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
 
-本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。WebView2 前置按离线指南补齐。安装后完全退出绘遇及其运行时，再执行离线资源导入脚本；成功后重启。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.8.1 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；此公开包不含后续源码新增的开始菜单资源助手入口。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、VC++ 安装与 WD14 真实推理分别验收。
 
@@ -29,7 +29,7 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 | 角色语音 | `http://127.0.0.1:9880` / `TTS_HOST` | GPT-SoVITS 权重与参考音频；控制面板配置角色声线 |
 | 本地聊天 | `http://127.0.0.1:11434` / `OLLAMA_HOST` | Ollama 模型由 `OLLAMA_MODEL` 或页面选择 |
 
-产品模型文件名以 `runtime-rs/src/images/catalog.json`、`runtime-rs/src/video/catalog.json` 为准，节点接线在相应 `workflow.rs` 中。离线样张工具使用 `scripts/lib/generation/` 中的参数与模型目录，不承接产品 HTTP 或任务状态。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目角色路径另需 v21 LoRA。新机公共起步可以明确选 Anima Aesthetic v1.1 的无 LoRA 路径。Krea 2 使用特定 Turbo FP8 与 Heretic 编码器，不能改名替换不同权重。`/api/anima/status` 的文件可用状态仍不代表节点或真实出图通过。
+产品模型文件名以 `runtime-rs/src/images/catalog.json`、`runtime-rs/src/video/catalog.json` 为准，节点接线在相应 `workflow.rs` 中。离线样张工具使用 `scripts/lib/generation/` 中的参数与模型目录，不承接产品 HTTP 或任务状态。Anima 当前默认 MiaoMiao v1.6 使用 `diffusion_models/miaomiaoHarem_anima16.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目角色路径另需 v21 LoRA。新机公共起步可以明确选 Anima Aesthetic v1.1 的无 LoRA 路径。Krea 2 使用特定 Turbo FP8 与 Heretic 编码器，不能改名替换不同权重。`/api/anima/status` 的文件可用状态仍不代表节点或真实出图通过。
 
 源码服务的 AI 外部工作区默认是应用同级 `AI/`，启动前可设置 `AI_WORKSPACE_ROOT`。**桌面端在 Companion「AI 工作区」设置中选新机实际目录**，该设置会重启网关，并用于 `ComfyUI/models/` 权重检查。WD14 可用继承的 `AICS_WD14_MODEL_DIR` 指向新机可写目录，翻译使用 `AICS_TRANSLATION_MODEL` / `TRANSLATION_PYTHON`。源码维护环境可运行 `npm run wf -- models:check --json`（默认只读取文件/硬件，`--verify-hashes` 另查已知权重 SHA-256）。体检的 `COMFYUI_MODELS_ROOT` 不改变网关模型路径。
 

@@ -12,7 +12,6 @@ import {
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { applyGeneratedSceneSettings } from './applyGeneratedSceneSettings'
@@ -65,16 +64,6 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   const popularCharacter = computed<PopularCharacter | null>(() => {
     if (pb.subject.kind !== 'popular') return null
     return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
-  })
-  /** 顶部档案条的粒子形状：热门角色跟随她的专属轮廓（与角色场景库/角色档案一致），
-      工作室角色按模式区分（专家=spark / 场景=frame）。 */
-  const archiveBarShape = computed(() => {
-    if (pb.isPopular) {
-      return popularCharacter.value
-        ? characterParticleTheme(popularCharacter.value.id, popularCharacter.value.franchise).shape
-        : 'moon' as const
-    }
-    return pb.directorMode === 'pro' ? 'spark' as const : 'frame' as const
   })
   const managedRoute = ref<DrawingRouteRecommendation | null>(null)
   async function refreshManagedRoute(): Promise<DrawingRouteRecommendation> {
@@ -306,7 +295,6 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     popularCategory,
     showAllBlueprints,
     popularCharacter,
-    archiveBarShape,
     managedRoute,
     refreshManagedRoute,
     popularBlueprintPool,

@@ -100,10 +100,7 @@ async fn complete(inner: &Arc<Inner>, job: &Arc<Job>, value: Value) -> Result<()
         return Ok(());
     }
     let decoded = inner.decoder.image(value, &inner.cancel).await?;
-    let output = Output::Bytes {
-        bytes: Arc::new(decoded.bytes),
-        mime: "image/png".into(),
-    };
+
     {
         let mut state = job.state.lock().await;
         if state.status != "running" {
@@ -115,13 +112,35 @@ async fn complete(inner: &Arc<Inner>, job: &Arc<Job>, value: Value) -> Result<()
                 .unwrap_or(job.input["seed"].as_u64().unwrap_or(0))
         );
     }
-    jobs::succeed(inner, job, output).await;
+    if job.hooks.is_some() {
+        // Recovery is tied to the already-checkpointed job identity, never a
+        // repeat txt2img request. Keep memory usable if the staging disk fails.
+        if let Err(error) = webui_results::stage(inner, job, &decoded.bytes).await {
+            eprintln!("WebUI result staging: {}", error.code);
+        }
+    }
+    if job.state.lock().await.status != "running" {
+        snapshots::remove(inner, &job.id).await;
+        return Ok(());
+    }
+    jobs::succeed(
+        inner,
+        job,
+        Output::Bytes {
+            bytes: Arc::new(decoded.bytes),
+            mime: "image/png".into(),
+        },
+    )
+    .await;
     Ok(())
 }
 pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     let start = {
         let mut state = job.state.lock().await;
         if terminal(&state.status) {
+            // A late cancel must not interrupt the next global WebUI job, but
+            // it must revoke this completed task's restart recovery cache.
+            snapshots::remove(&inner, &job.id).await;
             return Ok(());
         }
         if state.status == "queued" {

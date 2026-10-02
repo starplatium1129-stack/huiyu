@@ -107,4 +107,4 @@ A refined anime fashion portrait of a 28-year-old woman preparing for an evening
 [^3]: Krea AI. [expansion.txt](https://raw.githubusercontent.com/krea-ai/krea-2/main/docs/expansion.txt)。忠实于已有主体、属性、动作及空间关系。
 [^4]: J. Paul Getty Museum Education. [Principles of Design](https://www.getty.edu/education/teachers/building_lessons/formal_analysis2.html)。视觉重量与强调。
 
-本地依据：[热门角色组装](../../../src/utils/popularContent.ts)、[编译器](../../../src/utils/promptCompiler.ts)、[profile](../../../data/presets.json)、[工作流](../../../routes/anima/workflows.js)、[工程契约](../../engineering-contracts.md)、[技能交付要求](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。
+本地依据：[热门角色组装](../../../src/utils/popularContent.ts)、[编译器](../../../src/utils/promptCompiler.ts)、[profile](../../../data/presets.json)、[工作流](../../../runtime-rs/src/images/workflow.rs)、[工程契约](../../engineering-contracts.md)、[技能交付要求](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。

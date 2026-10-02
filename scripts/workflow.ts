@@ -391,26 +391,26 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '并行质量门 npm run check（注册项全跑；与 gate:quick 区别：本命令全量并行，gate:quick 按改动面积只跑相关）',
     cmd: ['npm', 'run', 'check'],
     docs: 'AGENTS.md#实施与交付',
-    run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: { '--list': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/run-check-parallel.js:22-57', unknown: [], notes: ['22 步全部 --check/validate；例外：fresh clone 产物缺失时 ensureAll 落盘自愈'] },
+    run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: { '--list': ['read-only'], '--all': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/run-check-parallel.js:22-57', unknown: [], notes: ['所有步骤为 --check/validate；失败后停止派发，--all 收集全貌；例外：fresh clone 产物缺失时 ensureAll 落盘自愈'] },
   },
   'gate:quick': {
     desc: '日常按 Git 改动选相关前端、样式、Node/Rust 和常规 E2E；显式 ui|style|rust|data|all 选择领域',
     cmd: ['node', 'scripts/maintenance/gate-quick.js'],
     opts: '[ui|style|rust|data|all] [--verbose] [--all]',
     docs: 'docs/workflow.md',
-    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check，不扩大维护与发行专项；自动 UI 按 Vitest 导入图选相关测试；常规 E2E 测试本身改动复用已有 dist，混合 UI/data 改动先构建；共享夹具、runner、配置、未知路径升级 full；纯文档跳过'] },
+    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test / npm run validate 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check，不扩大维护与发行专项；自动 UI 按 Vitest 导入图选相关测试；常规 E2E 测试本身改动复用已有 dist，混合 UI/data 改动先构建；共享夹具、runner、配置、未知路径升级 full；纯文档跳过'] },
   },
   'gate:full': {
-    desc: '全量门禁：check + rust:check + vitest + unit + contract + 变更专项 + 打包预算（横切重构/未知影响面）',
+    desc: '全量门禁：check + Rust + 前端覆盖率 + unit + contract + tooling + release + 打包预算（横切重构/未知影响面）',
     cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
     docs: 'docs/workflow.md',
     run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts; scripts/maintenance/run-check-parallel.ts', unknown: ['需要 Rust 工具链；首次可能下载锁定 crate'], notes: ['显式full包含现行Rust后端fmt/Clippy/隔离行为检查，不含设备或真实模型；typecheck:app/typecheck 已包含在 check 编排内，不单独重复执行；末步执行 npm run build:web:run，复用 check 阶段已准备的 runtime（vite+预算+预压）'] },
   },
   'check:full': {
-    desc: 'Node/Vue校验：check + frontend + unit + contract',
-    cmd: ['npm', 'run', 'validate'],
+    desc: '显式全量，与 gate:full / validate:all 相同',
+    cmd: ['npm', 'run', 'validate:all'],
     docs: 'AGENTS.md',
-    run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate', unknown: [], notes: ['不含 build 或 Rust 检查；现行后端使用rust:check或gate:full'] },
+    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate:all', unknown: ['需要 Rust 工具链'], notes: ['与 gate:full 同一执行入口；不包含浏览器、设备或真实模型'] },
   },
   'check:content': {
     desc: '仅内容契约 + DATA_VERSION',
@@ -579,8 +579,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/quality-test-inventory.ts', unknown: ['Windows分支按宿主执行'], notes: ['不执行真实安装或发布'] },
   },
   'gate:all': {
-    desc: '显式全部库存：现有前端覆盖率门槛及所有Node执行lane', cmd: ['npm', 'run', 'validate:all'], docs: 'docs/workflow.md#门禁与构建',
-    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate:all', unknown: [], notes: ['包含维护及发行专项；不包含浏览器、设备和真实模型'] },
+    desc: '显式全部库存，与 gate:full / validate:all 相同', cmd: ['npm', 'run', 'validate:all'], docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['isolated-fixture', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate:all', unknown: ['需要 Rust 工具链'], notes: ['包含维护及发行专项；不包含浏览器、设备和真实模型'] },
   },
   'test:e2e:critical': {
     desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',

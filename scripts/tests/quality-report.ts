@@ -20,8 +20,7 @@ export function classifyFailure(result: { error?: { code?: string }; signal?: st
 }
 
 /** Per-run diagnostics, suitable as logs for capture:delivery; never a replacement evidence ledger. */
-export function writeQualityReport(label: string, results: QualityResult[], duration: number, directory = process.env.AICS_TEST_REPORT_DIR) {
-  if (!directory) return;
+export function writeQualityReport(label: string, results: QualityResult[], duration: number, directory = process.env.AICS_TEST_REPORT_DIR || path.resolve(__dirname, '../../runtime/quality-reports')) {
   fs.mkdirSync(directory, { recursive: true });
   const name = label.replace(/[^a-z0-9-]/gi, '-');
   const stem = name + '-' + Date.now() + '-' + randomUUID();
@@ -36,6 +35,7 @@ export function writeQualityReport(label: string, results: QualityResult[], dura
   };
   const reportFile = path.join(directory, stem + '.json');
   fs.writeFileSync(reportFile, JSON.stringify(report, null, 2) + '\n');
+  if (report.status === 'failed') console.error(`完整诊断: ${logFile}`);
   return reportFile;
 }
 

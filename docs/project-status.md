@@ -40,15 +40,16 @@
 
 2026-10-01 [创作流程、画布与大库响应优化](audits/2026-10-01/creator-workflow-optimization.md)已完成源码、网页与 Rust release 候选：保存不回读全库、最近作品两次读取、图库整理／对比、作品主导航、配方核对、显式批次恢复及 GC 查询响应。绘制台恢复原默认侧栏比例，配方表不占画布高度；浏览器与隔离运行时证据见报告。上述改动已随本次 Tauri／NSIS 本机安装到达客户端，不替代模型或原生设备验收。
 
-> 核对日期：2026-09-30；源码、签名构建与本机安装版本 1.7.4，公开发行状态见 [版本页面](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.4)。本轮发行材料与隔离资源导入见 [有限优化与离线交付](audits/2026-09-30/release-offline-optimization.md)，此前桌宠、加载、UI及SFW资料边界见 [本地覆盖账本](audits/2026-09-30/local-optimization.md)；数据规模表仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)。旧批次原文从 Git 历史查询。
+> 当前身份核对：2026-10-02 公开 latest 为 [1.8.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1)，本机最近安装记录仍为 1.8.0；后续源码未据此安装或公开发布。数据规模表仍为 9 月 27 日登记快照。源码、公开附件与安装身份分别见下表，待办查 [未来规划](roadmap.md)。
 
-本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；已随 10 月 1 日本机测试包安装，尚未重新签名或公开发布。下方签名发行记录仍对应原公开 1.7.4。
+本轮 [多维审计修复](audits/2026-09-30/project-audit-and-fixes.md) 已更新工作区源码、网页构建与 Rust release 候选，修复构建越界、任务/视频生命周期、Windows 工具路径和专家工作台大屏布局；已随 10 月 1 日本机测试包安装，尚未重新签名或公开发布。该段记录 10 月 1 日部署时的状态；当前签名发行与本机安装身份分别见下表。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前源码/构建 | 1.8.1 安装包绑定 `fa9bd65d`，原密钥签名并公开为 latest；原生材料待验状态保留，本机未安装此版 | [1.8.1 说明](releases/v1.8.1.md)；[此前 1.8.0 安装与素材](releases/v1.8.0.md) |
+| 当前源码 | 版本号仍为 1.8.1，包含公开发行后的修复；HTTP/2／校验续传、full／upgrade 分包及资源助手开始菜单入口已实现，尚未以新安装包公开交付 | [部署与升级边界](desktop-deployment.md)、[资源助手边界](guides/offline-resources.md) |
+| 公开发行 | 1.8.1 安装包绑定 `fa9bd65d`，原密钥签名并公开为 latest；完整包 639,536,640 字节，无 upgrade 附件；原生材料待验状态保留，本机未安装此版 | [1.8.1 说明](releases/v1.8.1.md)、[公开附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.8.1) |
 | 最近本机安装 | 2026-10-01 1.8.0 已完整安装至 `C:/Program Files/AI-CG-Studio`，宿主、Rust EXE 与两份 DLL 匹配候选哈希，认证启动 ready；216 个个人内容差异项已先备份后同步 | 日志在忽略的 `runtime/desktop-deploy-last.log`、`runtime/desktop-content-sync-20261001.log`；不替代完整设备／模型验收 |
 | 资料迁移 | 2026-09-26 曾登记旧来源 3002 迁入 SQLite；10 月 1 日本次机器未发现 active pointer，实际仍为旧来源 IndexedDB，未进行新迁移 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[历史迁移证据](evidence/architecture-mainline-2026-09-26.json) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程保留实验入口；R13 旧 Node Electron PoC 已退出 | [实验操作与验收边界](workflow.md#门禁与构建) |
@@ -73,7 +74,7 @@
 | 陪伴与 Live2D | 统一身份/Profile、独立聊天窗、模型检查、参数枚举、有界本机导入校准已接线；Cubism 2 候选保留浏览器回退 | [010 计划与记录](../plans/010-companion-experience-and-live2d-adapter.md)、[运行时维护](guides/desktop/live2d-native-runtime.md)；语音、多屏/DPI/休眠与长期资源趋势继续开放 |
 | 资源释放 | 桌宠隐藏/系统关闭释放模型与原生 GPU context，重开按偏好恢复；桌面取消全库缩略预热，缓存限 96 项/8 MiB；图库停用释放高清 URL | [内存优化证据](evidence/memory-optimization-2026-09-27.json)；880M 本机短样本不推广到独显、大图库或长期功耗 |
 | 桌面交付 | 图片统一解析 runtime URL；维护先保存各窗并排空网关；构建回执绑定实际输入/载荷，部署拒绝未退出进程或残留 workspace 锁 | [可靠性工程证据](evidence/reliability-followup-2026-09-27.json)、[部署指南](desktop-deployment.md)；UAC 由用户操作 |
-| 离线资源 | r1 完整素材可由 1.7.4 原生入口导入到用户目录；1,640 条历史样张与原分级元数据保留，不更改内容分类/过滤 | [1.7.4 发行材料](releases/v1.7.4.md)、[隔离验证与缺口](audits/2026-09-30/release-offline-optimization.md)；本轮不转载 VC++，新机先从微软备好离线安装材料；全图/设备及许可未验项保留 |
+| 离线资源 | 当前公开完整包 `huiyu-resources-20261002-r1` 含 471 项基础资源、2,042 条样张，可由 Rust 原生入口导入用户目录；程序升级不自动更新已导入素材，用户修改与原分级元数据保留 | [离线安装指南](guides/offline-resources.md)、[1.8.0 隔离导入证据](releases/v1.8.0.md)；1.8.1 助手入口为安装目录 `gateway\tools\Install-OfflineResources.cmd`；新机断网界面、全图/设备及许可未验项保留 |
 
 011 六项边界补强、012 办公机体验实施及 9 月 20–21 日审计修复已有分批记录。本机后续安装包含其受控提交中的实现；这不替代各专项仍缺的模型、素材、其他设备与大规模数据证据。
 

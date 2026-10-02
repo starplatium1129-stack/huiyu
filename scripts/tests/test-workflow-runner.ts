@@ -121,9 +121,9 @@ test('Rust-only gate avoids Node suites and a Rust failure stops explicit full b
   vm.runInNewContext(fs.readFileSync(entry,'utf8'), {require:fakeRequire,module,exports:module.exports,__dirname:path.dirname(entry),process,
     AbortController,setTimeout,clearTimeout,console:{log(){},error(){}}});
   assert.equal(await module.exports.main(['rust']),0);
-  assert.deepEqual(calls,['build:runtime','rust:check']); calls.length=0;
+  assert.deepEqual(calls,['rust:check']); calls.length=0;
   assert.equal(await module.exports.main(['full']),0);
-  assert.deepEqual(calls,['check','rust:check','test:frontend','unit','contract','test:optional','build:web:run']); calls.length=0;
+  assert.deepEqual(calls,['check','rust:check','test:frontend -- --coverage','unit','contract','test:tooling','test:release','build:web:run']); calls.length=0;
   rustCode=1;
   assert.equal(await module.exports.main(['full']),1);
   assert.deepEqual(calls,['check','rust:check']);
@@ -167,7 +167,7 @@ test('quality suite selection deduplicates exact source entries and rejects typo
   const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
   assert.deepEqual(selectSuiteFiles('unit', ['test-api-client.ts', 'scripts/tests/test-api-client.js', '--verbose']), ['test-api-client.js']);
   assert.deepEqual(selectSuiteFiles('contract', []), QUALITY_TEST_SUITES.contract);
-  for (const arg of ['test-api-clinet.ts', 'test-chat-storage.ts', '../test-api-client.js', '--typo']) {
+  for (const arg of ['test-api-clinet.ts', 'test-tag-shards.ts', '../test-api-client.js', '--typo']) {
     assert.throws(() => selectSuiteFiles('unit', [arg]), /Unknown unit test/);
   }
 });
@@ -219,22 +219,14 @@ test('optional selection narrows test-only changes, deduplicates, and expands fo
   assert.deepEqual(calls, ([...(['tooling', 'release'] as const).map(lane => [lane, ...QUALITY_TEST_SUITES[lane]])]));
 });
 
-test('unit phases execute each selected file once and isolate Windows process inspection', () => {
+test('product unit selection executes each file once without retired maintenance phases', () => {
   const { planUnitTests }: typeof import('./run-quality-suite') = require('./run-quality-suite');
-  const files = ['test-api-client.js', 'test-desktop-deploy-guard.js', 'test-comfy-client.js'];
-  const windows = planUnitTests(files, 'win32');
-  assert.deepEqual(windows.flatMap(group => group.files).sort(), [...files].sort());
-  assert.equal(windows[0].concurrency, 4);
-  assert.deepEqual(windows[1].files, ['test-desktop-deploy-guard.js']);
-  assert.equal(windows[1].concurrency, 1);
-  const linux = planUnitTests(files, 'linux');
-  assert.equal(linux.length, 1);
-  assert.deepEqual(linux[0].files, files);
-  assert.deepEqual(planUnitTests(['test-desktop-deploy-guard.js'], 'win32')[0].files, ['test-desktop-deploy-guard.js']);
-  const generation = planUnitTests(['test-api-client.js', 'test-generation-workflow-safety.js'], 'linux');
-  assert.deepEqual(generation.map(group => [group.files, group.concurrency]), [
-    [['test-api-client.js'], 4], [['test-generation-workflow-safety.js'], 1],
-  ]);
+  const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+  const groups = planUnitTests(QUALITY_TEST_SUITES.unit);
+  assert.equal(groups.length, 1);
+  assert.deepEqual(groups[0].files, QUALITY_TEST_SUITES.unit);
+  assert.equal(groups[0].concurrency, 4);
+  assert.deepEqual(planUnitTests([]), []);
 });
 
 test('quick gate does not execute stale generated tests when their registered source was deleted', t => {

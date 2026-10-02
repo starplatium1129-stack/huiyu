@@ -101,9 +101,9 @@ pub(super) async fn materialize_scoped(
         }
     };
     let directory = inner.config.runtime_root.join("outputs").join(namespace);
-    tokio::fs::create_dir_all(&directory).await?;
     let path = directory.join(format!("{id}.{extension}"));
     let save = async {
+        tokio::fs::create_dir_all(&directory).await?;
         let root = tokio::fs::canonicalize(&directory).await?;
         let (file, pending) = tempfile::Builder::new()
             .prefix(&format!("{id}."))

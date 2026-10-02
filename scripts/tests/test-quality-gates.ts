@@ -86,3 +86,54 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
     }
   }
 });
+
+// Retired backend tests must not survive in an npm or CI command.
+test('declared npm and CI Node entries have current source owners', () => {
+  const packageJson = JSON.parse(read('package.json'));
+  const commands = [...Object.values(packageJson.scripts) as string[], ...fs.readdirSync(path.join(root, '.github/workflows'))
+    .filter(file => /\.ya?ml$/.test(file)).map(file => read('.github/workflows/' + file))];
+  for (const command of commands) {
+    for (const match of command.matchAll(/(?:^|[\s&|])(?:node(?: --test)? )?(scripts\/[\w./-]+\.(?:m?js|m?ts))/g)) {
+      const file = match[1].replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts');
+      assert.ok(fs.existsSync(path.join(root, file)) || fs.existsSync(path.join(root, match[1])), `missing command entry: ${match[1]}`);
+    }
+  }
+  assert.equal(packageJson.scripts.validate, packageJson.scripts.test);
+  assert.equal(packageJson.scripts['validate:all'], packageJson.scripts.test + ' full');
+});
+
+test('static checks stop dispatching after failure or interruption, even with --all', async t => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { EventEmitter }: typeof import('node:events') = require('node:events');
+  const entry = path.join(root, 'scripts/maintenance/run-check-parallel.js');
+  for (const signal of [null, 'SIGINT', 'SIGTERM']) {
+  const spawned: string[] = [], errors: string[] = [];
+  let kills = 0, exits = 0;
+  const directory = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'check-runner-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const fakeProcess = Object.assign(new EventEmitter(), { env: { CHECK_JOBS: '2' }, argv: signal ? ['--all'] : [], platform: process.platform,
+    exit: (code: number) => { exits++; assert.equal(code, 1); } });
+  const fakeRequire = (name: string) => {
+    if (name === 'child_process') return { spawn: (command: string) => {
+      spawned.push(command);
+      const child = Object.assign(new EventEmitter(), { stdout: new EventEmitter(), stderr: new EventEmitter() });
+      const first = spawned.length === 1;
+      queueMicrotask(() => {
+        if (signal && first) fakeProcess.emit(signal);
+        child.emit('close', signal ? 0 : first ? 1 : 0);
+      });
+      return child;
+    } };
+    if (name === '../lib/ensure-data-build') return { ensureAll() {} };
+    if (name === '../lib/test-process-pool') return { killOwnedTree() { kills++; } };
+    return require(name);
+  };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, process: fakeProcess, exports: {},
+    __dirname: path.join(directory, 'scripts/maintenance'), setTimeout, clearTimeout, console: { log() {}, error: (line: string) => errors.push(line) } });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(spawned.length, 2, 'failure must stop queued checks, while already running checks settle');
+  assert.ok(errors.some(line => line.includes('未运行:')));
+  assert.equal(exits, 1);
+  assert.equal(kills, signal ? 2 : 0);
+  }
+});

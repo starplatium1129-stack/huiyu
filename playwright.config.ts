@@ -27,16 +27,19 @@ const browserUse = {
  * 清除另一个用例的任务或污染请求断言。普通页面与设备回归仍可并行。
  */
 const { MOCK_SPECS } = selection;
+const selectedSpecs = selection.selectE2eSpecs(process.argv.slice(2), lanes.specs);
 const servers = selection.selectE2eServers(process.argv.slice(2), lanes.specs.map(spec => spec.file));
 
 export default defineConfig({
   testDir: './tests/e2e',
+  testMatch: selectedSpecs.map(file => `**/${file}`),
   fullyParallel: false,
   // 共享模拟服务由 flows 项目的单 worker 独占；其他项目继续并行。
   workers: process.env.CI ? 2 : undefined,
   timeout: 30_000,
   expect: { timeout: 8_000 },
-  retries: process.env.CI ? 1 : 0,
+  // Preserve the first failure's trace; rerun only after diagnosis or a fix.
+  retries: 0,
   reporter: process.env.CI ? [['github'], ['line']] : 'line',
   use: {
     ...browserUse,
@@ -50,7 +53,7 @@ export default defineConfig({
     },
     {
       name: 'flows',
-      testMatch: MOCK_SPECS,
+      testMatch: selectedSpecs.filter(file => MOCK_SPECS.test(file)).map(file => `**/${file}`),
       workers: 1,
       use: {
         ...browserUse,

@@ -13,7 +13,7 @@
  *   rust   现行后端 fmt、Clippy 与隔离 Rust 行为测试
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
  *   all    ui + style + rust + data 各领域连跑
- *   full   check 编排 + rust:check + vitest + unit + contract + optional + 生产打包预算。
+ *   full   check + Rust + 前端覆盖率 + unit + contract + tooling + release + 生产打包预算。
  *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
  * 横切重构（目录改名、模块搬迁、依赖变更）请直接用 full——爆炸半径无法事先界定。
@@ -233,11 +233,6 @@ async function main(argv: string[]) {
     try { contractJobs(); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 2; }
   }
   const started = Date.now();
-  // Prepare generated entries once for all selected Node/browser areas.
-  if (!areas.includes('full') && areas.some(area => ['tests', 'rust', 'data', 'browser'].includes(area))) {
-    exitCode = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
-    if (exitCode) return exitCode;
-  }
   // Test-only edits do not change the SPA. Mixed UI/data edits need a new dist.
   if (areas.includes('browser') && areas.some(area => ['ui', 'style', 'data'].includes(area))) {
     exitCode = runNpmStep('build (changed UI/data)', 'build:web:run', 600_000, verbose);
@@ -281,12 +276,15 @@ async function main(argv: string[]) {
       exitCode = 1;
       return !keepGoing;
     };
-    if (failPhase(runNpmStep('check（质量门禁编排）', 'check', 900_000, verbose))) continue;
+    if (failPhase(runNpmStep('check（质量门禁编排）', keepGoing ? 'check -- --all' : 'check', 900_000, verbose))) continue;
     if (failPhase(await AREA_STEPS.rust({ verbose, keepGoing }))) continue;
-    if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
-    if (failPhase(runUnitSuite({ verbose }))) continue;
+    if (failPhase(runNpmStep('vitest coverage', 'test:frontend -- --coverage', 300_000, verbose))) continue;
+    if (failPhase(runUnitSuite({ verbose, keepGoing }))) continue;
     if (failPhase(await runContractSuite({ verbose, keepGoing }))) continue;
-    if (failPhase(runNpmStep('optional suites for changed consumers', 'test:optional', 900_000, verbose))) continue;
+    for (const suite of ['tooling', 'release']) {
+      if (failPhase(runNpmStep(suite, `test:${suite}${keepGoing ? ' -- --all' : ''}`, 900_000, verbose))) break;
+    }
+    if (exitCode && !keepGoing) continue;
     failPhase(runNpmStep('build（打包预算）', 'build:web:run', 600_000, verbose));
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);

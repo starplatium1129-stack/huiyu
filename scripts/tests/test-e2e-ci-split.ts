@@ -46,7 +46,7 @@ test('nightly screenshots are uploaded from the hidden review directory without 
 });
 
 test('exact browser selections start only required isolated stacks, unknown filters stay conservative', () => {
-  const { selectE2eServers }: typeof import('../lib/e2e-selection') = require('../lib/e2e-selection');
+  const { selectE2eServers, selectE2eSpecs }: typeof import('../lib/e2e-selection') = require('../lib/e2e-selection');
   const { loadLaneManifest }: typeof import('./run-e2e-lane') = require('./run-e2e-lane');
   const known = loadLaneManifest().specs.map(spec => spec.file);
   assert.deepStrictEqual(selectE2eServers(['test', 'tests/e2e/studio.spec.ts', '--project', 'desktop', '--grep', 'flows.spec.ts'], known), ['web']);
@@ -58,6 +58,17 @@ test('exact browser selections start only required isolated stacks, unknown filt
     assert.deepStrictEqual(selectE2eServers(args, known), ['web', 'gateway'], args.join(' '));
   }
   assert.deepStrictEqual(selectE2eServers(['test', '--project', 'flows'], known), ['gateway']);
+  const specs = loadLaneManifest().specs;
+  const automated = specs.filter(spec => ['critical', 'nightly'].includes(spec.lane)).map(spec => spec.file);
+  assert.deepEqual(selectE2eSpecs(['test'], specs), automated);
+  for (const args of [['test', '--project=desktop', '--grep', 'manual'],
+    ['test', '--trace', 'on', '--global-timeout', '30000'], ['test', '--project', 'desktop', 'flows'],
+    ['test', '--test-list-invert', 'excluded.txt'], ['test', '--only-changed', 'HEAD']]) {
+    assert.deepEqual(selectE2eSpecs(args, specs), automated, args.join(' '));
+  }
+  for (const args of [['test', 'desktop-ux.spec.ts'], ['test', 'atelier-design'], ['test', '--test-list=selection.txt']]) {
+    assert.deepEqual(selectE2eSpecs(args, specs), known, 'explicit acceptance selections preserve manual/device access');
+  }
 });
 
 test('desktop specs addressing the gateway keep their explicit stack prerequisite', () => {

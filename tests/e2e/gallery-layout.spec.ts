@@ -213,6 +213,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByRole('button',{name:/夏目的春日精选，/})).toHaveCount(0)
     await page.getByRole('button',{name:'全部作品',exact:true}).click()
     await expect(page.locator('[data-card-id]')).toHaveCount(6)
+    await expect(page).toHaveURL(/\/gallery$/)
     await page.reload()
     await expect(page.locator('[data-card-id]')).toHaveCount(6)
   })

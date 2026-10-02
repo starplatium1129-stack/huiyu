@@ -10,10 +10,18 @@ import stackFactory from './mock-stack.js'
  * origin/provenance checks without a replacement Node workspace implementation. */
 export async function startRustBrowserFixture() {
   const stack = await stackFactory.start({ dynamicPorts: true, workspace: true, lightweight: true })
-  const server = await createServer({ configFile: false, appType: 'custom', plugins: [vue()],
-    resolve: { alias: { '@': path.resolve('src') } }, optimizeDeps: { noDiscovery: true, entries: [] },
-    server: { host: '127.0.0.1', port: 0, watch: null } })
-  try { await server.listen() } catch (error) { await stack.shutdown(); throw error }
+  let server: Awaited<ReturnType<typeof createServer>> | undefined
+  let session: Awaited<ReturnType<typeof stack.session>>['workspace']
+  try {
+    session = (await stack.session()).workspace
+    server = await createServer({ configFile: false, appType: 'custom', plugins: [vue()],
+      resolve: { alias: { '@': path.resolve('src') } }, optimizeDeps: { noDiscovery: true, entries: [] },
+      server: { host: '127.0.0.1', port: 0, watch: null } })
+    await server.listen()
+  } catch (error) {
+    try { await server?.close() } finally { await stack.shutdown() }
+    throw error
+  }
   const address = server.httpServer!.address()
   assert.ok(address && typeof address === 'object')
   const assets = `http://127.0.0.1:${address.port}`
@@ -41,7 +49,7 @@ export async function startRustBrowserFixture() {
       }
       // ExtraInfo can precede requestWillBeSent. Join both by ID: Playwright's
       // allHeaders omits these browser-generated fields while routing assets.
-      cdp.on('Network.requestWillBeSent', event => {
+      const onRequest = (event: { requestId: string; request: { url: string; method: string } }) => {
         if (!event.request.url.startsWith(stack.origin + '/api/workspace/') || event.request.method !== 'GET') {
           extraHeaders.delete(event.requestId); return
         }
@@ -50,20 +58,25 @@ export async function startRustBrowserFixture() {
         provenanceReads.add(read)
         void read.finally(() => provenanceReads.delete(read))
         correlate(event.requestId)
-      })
-      cdp.on('Network.requestWillBeSentExtraInfo', event => {
+      }
+      const onHeaders = (event: { requestId: string; headers: Record<string, string> }) => {
         extraHeaders.set(event.requestId, event.headers)
         correlate(event.requestId)
-      })
-      cdp.on('Network.loadingFailed', event => {
+      }
+      const onFailure = (event: { requestId: string; errorText: string }) => {
         if (pending.has(event.requestId)) {
           provenanceFailures.push(`No request ExtraInfo: ${requests.get(event.requestId)} (${event.errorText})`)
           pending.get(event.requestId)?.(); pending.delete(event.requestId)
           requests.delete(event.requestId); extraHeaders.delete(event.requestId)
         }
-      })
+      }
+      cdp.on('Network.requestWillBeSent', onRequest)
+      cdp.on('Network.requestWillBeSentExtraInfo', onHeaders)
+      cdp.on('Network.loadingFailed', onFailure)
       page.once('close', () => {
-        cdp.removeAllListeners()
+        cdp.off('Network.requestWillBeSent', onRequest)
+        cdp.off('Network.requestWillBeSentExtraInfo', onHeaders)
+        cdp.off('Network.loadingFailed', onFailure)
         for (const resolve of pending.values()) resolve()
         pending.clear(); requests.clear(); extraHeaders.clear()
         void cdp.detach().catch(() => {})
@@ -73,7 +86,6 @@ export async function startRustBrowserFixture() {
     trackedPages.set(page, tracking)
     return tracking
   }
-  const session = (await stack.session()).workspace
   const bootstrap = { protocolVersion: 1, windowRole: 'atelier', windowId: 'atelier', bundledUiAvailable: false,
     sourceProfileId: stack.sourceProfileId, sourceOrigin: stack.origin, connection: 'ready',
     runtime: { origin: stack.origin, protocolVersion: 1, ownership: 'managed', runtimeEpoch: session.runtimeEpoch,
@@ -119,10 +131,11 @@ export async function startRustBrowserFixture() {
     },
     close: async () => {
       try {
-        for (const context of contexts) {
-          await context.unrouteAll({ behavior: 'wait' })
-          await context.close()
-        }
-      } finally { try { await server.close() } finally { await stack.shutdown() } }
+        const closed = await Promise.allSettled([...contexts].map(async context => {
+          try { await context.unrouteAll({ behavior: 'wait' }) } finally { await context.close() }
+        }))
+        const failures = closed.filter(result => result.status === 'rejected')
+        if (failures.length) throw new AggregateError(failures.map(result => result.reason), 'Browser fixture cleanup failed')
+      } finally { try { await server!.close() } finally { await stack.shutdown() } }
     } }
 }

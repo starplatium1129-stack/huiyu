@@ -70,8 +70,9 @@
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
 /* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
 a.artwork-tool:hover { color:var(--on-art-primary); }
-.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 28%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 12%,transparent); color:color-mix(in srgb,var(--danger-text) 92%,white); }
-.artwork-tool.danger:hover:not(:disabled) { background:color-mix(in srgb,var(--danger) 78%,var(--art-scrim)); @apply tw:border-danger tw:text-inverse; }
+/* 危险操作也在深色画膜上：白字沿用 on-art 语义，红色只染边框/底色，hover 不翻转文字。 */
+.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 28%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 12%,transparent); color:var(--on-art-primary); }
+.artwork-tool.danger:hover:not(:disabled) { background:color-mix(in srgb,var(--danger) 22%,var(--art-scrim)); @apply tw:border-danger; }
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 /* 审计修复: 处理中态也要读得清 */
 .artwork-tool:disabled { cursor:wait; @apply tw:text-disabled tw:border-soft; background: transparent; }

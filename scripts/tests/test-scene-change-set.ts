@@ -2,7 +2,7 @@
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
 const { test }: typeof import('node:test') = require('node:test');
 const { resolveSceneChangeSet, previewSceneChanges }: typeof import('../lib/scene-change-set') = require('../lib/scene-change-set');
-const { missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
+const { isSceneId, formatSceneId, missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
 const scene = (id: any, title: any = id) => ({ id, title, char: 'fixture' });
 const current = () => ({ scenes: [scene('sc001'), scene('sc002'), scene('sc999')],
   blueprints: [], tags: [{ tag: 'fixture' }], curation: { curatedSceneIds: ['sc002'] } });
@@ -60,4 +60,20 @@ test('missing-ID checks use finite ranges even at the largest safe identifier', 
     { start: 2, end: Number.MAX_SAFE_INTEGER - 1, count: Number.MAX_SAFE_INTEGER - 2 },
   ]);
   assert.deepEqual(missingSceneIdRanges(['sc001'], ['sc002', 'sc003']), []);
+});
+
+// Keep tooling validation in the tooling lane. Frontend identity tests must not
+// require generated scripts/lib/*.js just to exercise the browser allocator.
+test('tooling scene identities retain canonical spelling and safe-integer boundaries', () => {
+  for (const id of ['sc001', 'sc009', 'sc099', 'sc999', 'sc1000', 'sc9007199254740991']) {
+    assert.equal(isSceneId(id), true, id);
+    assert.equal(formatSceneId(Number(id.slice(2))), id);
+  }
+  for (const id of ['sc000', 'sc0001', 'sc0999', 'sc1', 'sc01', 'sc-001', 'sc1e3', 'sc1000x', 'SC1000',
+    ' sc1000', 'sc1000 ', 'sc9007199254740992', 'sc999999999999999999999', '', null, 1000]) {
+    assert.equal(isSceneId(id), false, String(id));
+  }
+  for (const number of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => formatSceneId(number));
+  }
 });

@@ -38,8 +38,6 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build SPA
-        run: npm run build
       - name: Run static and generated-source checks
         run: |
           set -o pipefail
@@ -64,7 +62,7 @@ jobs:
           retention-days: 7
 
   unit:
-    name: Unit & Coverage Suite
+    name: Product Unit Suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -111,7 +109,7 @@ jobs:
           retention-days: 7
 
   contract:
-    name: Contract & Gateway Suite
+    name: Content Contract Suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -167,6 +165,24 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Plan optional fixture prerequisites
+        id: optional-fixtures
+        run: |
+          node <<'NODE'
+          const { selectOptionalTests, changedFiles } = require('./scripts/tests/run-optional-test-lanes.js');
+          const { QUALITY_TEST_SUITES, qualityTestMetadata } = require('./scripts/tests/quality-test-inventory.js');
+          let files;
+          try { files = selectOptionalTests(changedFiles()).flatMap(selection => selection.files); }
+          catch { files = [...QUALITY_TEST_SUITES.tooling, ...QUALITY_TEST_SUITES.release]; }
+          const required = files.some(file => qualityTestMetadata(file).environment === 'rust-loopback');
+          require('node:fs').appendFileSync(process.env.GITHUB_OUTPUT, `rust-backend=${required}\n`);
+          NODE
+      - name: Build selected Rust fixture backend
+        if: steps.optional-fixtures.outputs.rust-backend == 'true'
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal
+          rustup default 1.98.1
+          npm run wf -- rust:build
       - name: Run optional lanes only when their consumers change
         run: npm run test:optional
       - name: Upload optional diagnostics
@@ -242,8 +258,8 @@ jobs:
         run: npm ci
       - name: Build on minimum runtime
         run: npm run build
-      - name: Check source config and isolated gateway startup
-        run: node --test scripts/tests/test-api-client.js scripts/tests/test-module-boundaries.mjs scripts/tests/test-gateway-contract.js
+      - name: Check Node consumer compatibility
+        run: node --test scripts/tests/test-api-client.js scripts/tests/test-module-boundaries.mjs scripts/tests/test-runtime-errors.js
 
   quality-summary:
     name: Quality Summary

@@ -341,16 +341,16 @@ export function useGalleryWorkspace() {
         // Batch media invalidations and filter updates share the same DOM patch.
         void nextTick(() => { wallScanPending = false; scanWallCards(); });
     }
-    /**
-     * （重）扫描展墙卡片并挂观察器。筛选变化会重建部分节点，旧节点若不
-     * unobserve 会一直被 IntersectionObserver 强引用——所以每次全量重挂。
-     */
+    /** Synchronize after Vue patches columns; a ratio correction can move keyed cards. */
     function scanWallCards() {
-        // An empty wall still releases detached nodes and rejects queued deliveries.
-        for (const el of observedCards.keys())
+        const active = !unmounted && viewActive && !trashMode.value && collectionPreviewItems.value === null;
+        const elements = new Set(active ? shellEl.value?.querySelectorAll<HTMLElement>('.artwork') : []);
+        for (const el of observedCards.keys()) {
+            if (elements.has(el as HTMLElement)) continue;
             cardObserver?.unobserve(el);
-        observedCards.clear();
-        if (unmounted || !viewActive || trashMode.value || collectionPreviewItems.value !== null || !shellEl.value || !visible.value.length) return;
+            observedCards.delete(el);
+        }
+        if (!elements.size) return;
         if (!cardObserver) {
             cardObserver = new IntersectionObserver(entries => {
                 for (const entry of entries) {
@@ -364,11 +364,14 @@ export function useGalleryWorkspace() {
             }, { rootMargin: '600px 0px' });
         }
         const byId = new Map(visible.value.map(item => [String(item.id), item]));
-        for (const el of shellEl.value.querySelectorAll<HTMLElement>('.artwork')) {
+        for (const el of elements) {
             const item = byId.get(el.dataset.cardId || '');
             if (!item)
                 continue;
-            observedCards.set(el, item);
+            const previous = observedCards.get(el);
+            observedCards.set(el, { ...item });
+            if (previous && sameArtworkMedia(previous, item)) continue;
+            if (previous) cardObserver.unobserve(el);
             cardObserver.observe(el);
         }
     }
@@ -493,6 +496,7 @@ export function useGalleryWorkspace() {
         void hydrateThumbs();
         scheduleWallScan();
     });
+    watch(masonryGroups, scheduleWallScan);
     /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
     const sentinelEl = ref<HTMLElement | null>(null);
     let moreObserver: IntersectionObserver | null = null;

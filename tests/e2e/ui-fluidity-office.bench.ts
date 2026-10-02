@@ -28,13 +28,15 @@ function buildIdentity() {
   const manifest = files.sort().map(path => `${relative('dist', path).replaceAll('\\', '/')}\0${hash(readFileSync(path))}`).join('\n')
   return { algorithm: 'sha256 of sorted relative-path NUL sha256(file) records', sha256: hash(manifest), files: files.length }
 }
-const identity = {
+function captureIdentity() { return {
   sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   sourceTree: execFileSync('git', ['rev-parse', 'HEAD^{tree}'], { encoding: 'utf8' }).trim(),
   build: buildIdentity(), fixtureSha256: hash(Buffer.concat([readFileSync('tests/e2e/helpers/ui-fluidity-fixture.ts'), readFileSync('tests/e2e/helpers/ui-fluidity-office.ts')])),
   fixture: { ...OFFICE_FIXTURE, base: UI_FLUIDITY_FIXTURE },
   platform: platform(), osRelease: release(), node: process.version,
-}
+} }
+let identity: ReturnType<typeof captureIdentity>
+test.beforeAll(() => { identity = captureIdentity() })
 const percentile = (values: number[], p: number) => [...values].sort((a, b) => a - b)[Math.ceil(values.length * p) - 1]
 
 async function showcaseRoundTrip(page: Page) {

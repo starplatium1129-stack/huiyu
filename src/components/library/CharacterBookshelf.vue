@@ -193,7 +193,10 @@ defineExpose({ focusSelected })
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }
 .bookshelf-back .archive-icon { transform: rotate(90deg); }
 .bookshelf-characters { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
-.bookshelf-character { border: 1px solid transparent; background: var(--bg-base); font: inherit; }
+.bookshelf-character { border: 1px solid transparent; background: var(--bg-base); font: inherit; transform-origin: center bottom; }
+/* A quiet card edge; fade a prepainted shadow instead of animating its blur. */
+.bookshelf-character::before { content: ''; position: absolute; inset: -1px; border: 1px solid var(--border-strong); border-radius: inherit; box-shadow: var(--shadow-sm); opacity: 0; pointer-events: none; }
+.bookshelf-character:focus-visible::before { opacity: 1; }
 .bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio: .78; border: 0; @apply tw:rounded-md; }
 .bookshelf-character :deep(img) { transform: none; }
 .bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
@@ -212,8 +215,15 @@ defineExpose({ focusSelected })
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character:hover { @apply tw:border-accent; }
+  html:not([data-reduced-motion="true"]) .bookshelf-character { transition: transform var(--motion-hover) var(--ease-out); }
+  html:not([data-reduced-motion="true"]) .bookshelf-character::before { transition: opacity var(--motion-hover) var(--ease-out); }
+  html:not([data-reduced-motion="true"]) .bookshelf-character:hover { transform: perspective(900px) translateY(-2px) rotateX(.6deg); }
+  html:not([data-reduced-motion="true"]) .bookshelf-character:active { transform: translateY(0) scale(.995); }
 }
+@media (hover: hover) and (pointer: fine) {
+  .bookshelf-character:hover::before { opacity: 1; }
+}
+.bookshelf-character[aria-pressed="true"]::before { border-color: var(--accent); }
 .is-keyboard-input .bookshelf-cover { transition:none; }
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

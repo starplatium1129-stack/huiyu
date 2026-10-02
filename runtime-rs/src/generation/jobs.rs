@@ -227,6 +227,9 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
         let mut state = job.state.lock().await;
         if state.status != "running" {
             drop(state);
+            if job.provider == "webui" {
+                snapshots::remove(inner, &job.id).await;
+            }
             if let Output::File { path, .. } = output {
                 let _ = tokio::fs::remove_file(path).await;
             }
@@ -299,6 +302,9 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
     }
     match result {
         Ok(()) => {
+            if job.provider == "webui" {
+                snapshots::remove(inner, &job.id).await;
+            }
             state.collection_pending = false;
             state.code = None;
             state.error = None;
