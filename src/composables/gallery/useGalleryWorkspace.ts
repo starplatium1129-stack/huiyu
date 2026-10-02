@@ -476,7 +476,11 @@ export function useGalleryWorkspace() {
         for (let index = cardQueue.length - 1; index >= 0; index--) {
             if (!ids.has(cardQueue[index].id)) queuedCardIds.delete(cardQueue.splice(index, 1)[0].id);
         }
-        for (const [id, controller] of cardReads) if (!ids.has(id)) controller.abort();
+        for (const [id, controller] of cardReads) if (!ids.has(id)) {
+            // Let a returning card retry before the cancelled read settles.
+            // Its late cleanup only owns the removed controller, never a new read.
+            controller.abort(); cardReads.delete(id); queuedCardIds.delete(id);
+        }
         void hydrateThumbs();
         void nextTick(() => scanWallCards());
     });
