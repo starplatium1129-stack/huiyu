@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[第九轮独立整合交付](audits/2026-10-02/round9-integration.md)汇总四路来源、原始提交保留、指定 Rust 回归与类型/接口检查，并明确主分支接入步骤及发布未验边界。
+
 [第九轮共享生命周期核查](audits/2026-10-02/round9-runtime-lifecycle.md)记录 20 轮合成导航的监听器、timer、observer、频道与 Blob URL 计数；未复现持续增长，保留产品代码，并列明原生桌面未验边界。
 
 [第九轮图库滚动与预览取消](audits/2026-10-02/gallery-scroll-preview-cancellation.md)记录 3,000 条合成记录的旧请求占位复现、解码释放修复、缓存边界及当次定向验证。
