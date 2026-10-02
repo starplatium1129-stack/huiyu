@@ -4,6 +4,7 @@ use super::{
     digest, fs, hash, identifier, json,
     manifest::{self, Manifest},
 };
+use crate::file_paths;
 use std::path::PathBuf;
 use tokio_util::sync::CancellationToken;
 pub(super) fn release(ctx: &Context, id: &str) -> Result<Value> {
@@ -183,7 +184,7 @@ pub(super) fn decode(raw: Vec<u8>, delta_raw: Option<Vec<u8>>, release: &Value) 
 pub(super) fn pack_root(ctx: &Context, release: &Value) -> Result<PathBuf> {
     if release["source"]["kind"] == "offline" {
         fs::child(
-            &fs::absolute(&PathBuf::from(release["source"]["root"].as_str().unwrap()))?,
+            &file_paths::absolute(&PathBuf::from(release["source"]["root"].as_str().unwrap()))?,
             release["path"].as_str().unwrap(),
         )
     } else {

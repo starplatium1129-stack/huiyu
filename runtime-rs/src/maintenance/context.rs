@@ -1,4 +1,5 @@
 use super::{Error, Result, codec, fs};
+use crate::file_paths;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::path::{Path, PathBuf};
@@ -37,12 +38,12 @@ impl Context {
     pub fn new(options: &Options) -> Result<Self> {
         let options = Options {
             assets_root: options.assets_root.clone(),
-            root: fs::absolute(&options.root)?,
-            runtime: fs::absolute(&options.runtime)?,
+            root: file_paths::absolute(&options.root)?,
+            runtime: file_paths::absolute(&options.runtime)?,
             showcase: options
                 .showcase
                 .as_ref()
-                .map(|path| fs::absolute(path))
+                .map(|path| file_paths::absolute(path))
                 .transpose()?,
         };
         let root_identity = fs::directory_identity(&options.root)?;
@@ -85,7 +86,7 @@ impl Context {
         if !source.is_absolute() {
             return Err(Error::path("备份 source 必须是绝对路径"));
         }
-        let path = fs::absolute(source)?;
+        let path = file_paths::absolute(source)?;
         if fs::within(&self.options.root, &path) {
             let relative = path
                 .strip_prefix(&self.options.root)

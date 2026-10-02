@@ -52,9 +52,10 @@ const {
   DEFAULT_OUTPUT, MANIFEST_NAME, assertNotShowcase, splitList, KEYS, readJson, ATTEMPT, ROOT, AI_ROOT,
   SCENE_SHOWCASE_DIR, MASKGEN, UPSCALE, POLL_INTERVAL_MS, JOB_TIMEOUT_MS,
 }: typeof import('../lib/inpaint-scene-candidates-records.js') = require('../lib/inpaint-scene-candidates-records.js');
+const { buildOpWorkflow }: typeof import('../lib/inpaint-scene-candidates-comfy.js') = require('../lib/inpaint-scene-candidates-comfy.js');
 const {
-  uploadImage, resolveUploadName, buildOpWorkflow, submitAndWait, fetchOutputImage, comfyJson,
-}: typeof import('../lib/inpaint-scene-candidates-comfy.js') = require('../lib/inpaint-scene-candidates-comfy.js');
+  uploadImage, resolveUploadName, submitAndWait, fetchOutputImage, comfyJson,
+}: typeof import('../lib/inpaint-comfy-client.js') = require('../lib/inpaint-comfy-client.js');
 const {
   generateMask, opLooksDone, setPython, generatePreviews, buildMaskArgs, maskCoreDelta,
 }: typeof import('../lib/inpaint-scene-candidates-image.js') = require('../lib/inpaint-scene-candidates-image.js');
@@ -175,7 +176,7 @@ async function runKey(key: any, manifest: any, outputDir: any, comfyBase: any, f
       let outputBuffer;
       let promptId = `${key.replace(/[:\/\\]/g, '_')}-${op.id}-${denoiseConfig.id}`;
       try {
-        const promptResult = await submitAndWait(comfyBase, workflow);
+        const promptResult = await submitAndWait(comfyBase, workflow, `aics-scene-inpaint-${process.pid}`, JOB_TIMEOUT_MS, POLL_INTERVAL_MS);
         const outputNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'SaveImage');
         const images = promptResult.entry.outputs && promptResult.entry.outputs[outputNode]
           && promptResult.entry.outputs[outputNode].images;

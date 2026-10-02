@@ -86,6 +86,8 @@
 
 ## 数据维护
 
+2026-10-02 代码精简移除旧 `data:apply`：其 `refine-map` 批次输入已不存在。场景变更继续使用 `npm run patch:scenes -- --patch <文件>`，默认预览，显式 `--apply` 才写入；历史批次脚本从 Git 历史查阅，不恢复为现行维护入口。
+
 | 操作 | 入口 | 注意事项 |
 | --- | --- | --- |
 | 场景分片聚合 | data:build | data/scenes → scenes.json |

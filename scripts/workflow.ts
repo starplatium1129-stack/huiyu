@@ -273,13 +273,6 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     docs: 'docs/maintenance.md',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/validate-content-contracts.js:15', unknown: [] },
   },
-  'data:apply': {
-    desc: '合并 refine-map chunks (替代 4 个 apply-*.js)',
-    cmd: ['node', 'scripts/maintenance/apply-chunks.js'],
-    docs: 'scripts/maintenance/apply-chunks.js:1',
-    opts: '--target popular|scenes --chunks 1-17',
-    run: { nature: ['writes-source'], machine: ['node'], switches: { '--help': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/apply-chunks.js:110,147', unknown: ['--target/--chunks 合法性由脚本自校验，注册表未声明 required'] },
-  },
   'content:sync': {
     desc: '统一校验人物/服装/场景，修正清单计数、补登参考分片并构建聚合（默认只读预览）',
     cmd: ['node', 'scripts/maintenance/sync-content.js'],

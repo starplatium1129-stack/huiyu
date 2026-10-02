@@ -1,4 +1,5 @@
 use super::*;
+use crate::file_paths;
 use std::path::PathBuf;
 
 pub(super) fn validate(root: &Path, assets_root: Option<&Path>, issues: &mut Vec<String>) -> Value {
@@ -67,7 +68,7 @@ pub(super) fn validate(root: &Path, assets_root: Option<&Path>, issues: &mut Vec
                     }
                     let fallback = root.join(".external-reference-audit");
                     let base = base.unwrap_or(&fallback);
-                    let path = fs::absolute(&base.join(suffix.as_ref())).ok()?;
+                    let path = file_paths::absolute(&base.join(suffix.as_ref())).ok()?;
                     fs::within(base, &path).then_some(path)
                 });
                 if target.is_some()

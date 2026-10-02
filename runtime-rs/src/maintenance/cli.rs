@@ -1,4 +1,5 @@
 use super::{Error, Options, Result, fs, recovery};
+use crate::file_paths;
 use serde_json::{Value, json};
 use std::{
     collections::HashMap,
@@ -21,7 +22,7 @@ fn root(value: Option<&String>, flag: &str) -> Result<PathBuf> {
     if !path.is_absolute() {
         return Err(usage(format!("{flag} must be an absolute path")));
     }
-    fs::absolute(path)
+    Ok(file_paths::absolute(path)?)
 }
 fn read_plan(path: &Path) -> Result<Value> {
     fs::safe(path, false, false)?;
@@ -130,11 +131,15 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             .transpose()?,
     };
     if let Some(file) = flags.get("--apply-plan") {
-        return recovery::apply(&options, read_plan(&fs::absolute(Path::new(file))?)?).map(Some);
+        return recovery::apply(
+            &options,
+            read_plan(&file_paths::absolute(Path::new(file))?)?,
+        )
+        .map(Some);
     }
     let plan = recovery::preview(&options, flags.get("--backup-id").map(|id| id.as_str()))?;
     if let Some(file) = flags.get("--out") {
-        save_new(&fs::absolute(Path::new(file))?, &plan)?;
+        save_new(&file_paths::absolute(Path::new(file))?, &plan)?;
     }
     Ok(Some(plan))
 }

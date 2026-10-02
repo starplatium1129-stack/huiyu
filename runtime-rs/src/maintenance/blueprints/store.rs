@@ -1,4 +1,5 @@
 use super::*;
+use crate::file_paths;
 struct Baseline {
     file: PathBuf,
     bytes: Option<Vec<u8>>,
@@ -75,14 +76,14 @@ fn read_sources(root: &Path, folder: &str, field: &str, empty: bool) -> Result<S
     })
 }
 pub fn load(root: &Path) -> Result<Vec<Value>> {
-    let root = fs::absolute(root)?;
+    let root = file_paths::absolute(root)?;
     Ok(read_sources(&root, "blueprints", "blueprints", false)?.rows)
 }
 pub(crate) fn load_popular(root: &Path) -> Result<Vec<Value>> {
-    Ok(read_sources(&fs::absolute(root)?, "popular", "characters", false)?.rows)
+    Ok(read_sources(&file_paths::absolute(root)?, "popular", "characters", false)?.rows)
 }
 pub fn aggregate_is_current(root: &Path) -> Result<bool> {
-    let root = fs::absolute(root)?;
+    let root = file_paths::absolute(root)?;
     let current = fs::read(&root.join("data/scene-blueprints.json"), true)?;
     let expected = json_text(&json!({"version":2,"blueprints":load(&root)?}));
     Ok(current.as_deref() == Some(expected.as_bytes()))
@@ -154,7 +155,7 @@ impl Prepared {
     }
 }
 pub fn prepare(options: &Options, incoming: &[Value], previous: &[Value]) -> Result<Prepared> {
-    let root = fs::absolute(&options.root)?;
+    let root = file_paths::absolute(&options.root)?;
     let mut sources = read_sources(&root, "blueprints", "blueprints", true)?;
     if !same(&json!(sources.rows), &json!(previous)) {
         return Err(Error::conflict(

@@ -121,6 +121,13 @@ function isDiagnostics(value: ApiResponseObject): boolean {
 }
 
 export function createControlApi(client: ApiClient = apiClient): ControlApi {
+  function post<T extends object>(path: string, body: unknown, options: ControlCallOptions): Promise<T> {
+    return client.request<T>(path, {
+      method: 'POST', cache: 'no-store', body, signal: options.signal,
+      timeoutMs: CONTROL_API_TIMEOUTS.action, validate: isSuccess,
+    })
+  }
+
   async function getStatus(options: ControlStatusOptions = {}): Promise<ControlStatus> {
     try {
       return await client.request<ControlStatus>(`/api/status${options.fresh ? '?fresh=1' : ''}`, {
@@ -136,34 +143,6 @@ export function createControlApi(client: ApiClient = apiClient): ControlApi {
       }
       throw error
     }
-  }
-
-  async function saveConfig(
-    payload: ControlConfigPayload,
-    options: ControlCallOptions = {},
-  ): Promise<ControlConfigResult> {
-    return client.request<ControlConfigResult>('/api/config', {
-      method: 'POST',
-      cache: 'no-store',
-      body: payload,
-      signal: options.signal,
-      timeoutMs: CONTROL_API_TIMEOUTS.action,
-      validate: isSuccess,
-    })
-  }
-
-  async function start(
-    enableTunnel: boolean,
-    options: ControlCallOptions = {},
-  ): Promise<ControlActionResult> {
-    return client.request<ControlActionResult>('/api/start', {
-      method: 'POST',
-      cache: 'no-store',
-      body: { enableTunnel },
-      signal: options.signal,
-      timeoutMs: CONTROL_API_TIMEOUTS.action,
-      validate: isSuccess,
-    })
   }
 
   return {
@@ -187,17 +166,12 @@ export function createControlApi(client: ApiClient = apiClient): ControlApi {
       })
     },
 
-    saveConfig,
+    saveConfig(payload, options = {}) {
+      return post('/api/config', payload, options)
+    },
 
     savePreference(autoStartVoice: boolean, options: ControlCallOptions = {}) {
-      return client.request<ControlPreferenceResult>('/api/preference', {
-        method: 'POST',
-        cache: 'no-store',
-        body: { autoStartVoice },
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.action,
-        validate: isSuccess,
-      })
+      return post('/api/preference', { autoStartVoice }, options)
     },
 
     serviceAction(
@@ -205,38 +179,19 @@ export function createControlApi(client: ApiClient = apiClient): ControlApi {
       action: ControlServiceAction,
       options: ControlCallOptions = {},
     ) {
-      return client.request<ControlActionResult>(`/api/service/${service}`, {
-        method: 'POST',
-        cache: 'no-store',
-        body: { action },
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.action,
-        validate: isSuccess,
-      })
+      return post(`/api/service/${service}`, { action }, options)
     },
 
     switchMode(mode: 'draw' | 'chat', options: ControlCallOptions = {}) {
-      return client.request<ControlActionResult>('/api/mode', {
-        method: 'POST',
-        cache: 'no-store',
-        body: { mode },
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.action,
-        validate: isSuccess,
-      })
+      return post('/api/mode', { mode }, options)
     },
 
-    start,
+    start(enableTunnel, options = {}) {
+      return post('/api/start', { enableTunnel }, options)
+    },
 
     stop(options: ControlCallOptions = {}) {
-      return client.request<ControlActionResult>('/api/stop', {
-        method: 'POST',
-        cache: 'no-store',
-        body: {},
-        signal: options.signal,
-        timeoutMs: CONTROL_API_TIMEOUTS.action,
-        validate: isSuccess,
-      })
+      return post('/api/stop', {}, options)
     },
 
     getDiagnostics(options: ControlCallOptions = {}) {

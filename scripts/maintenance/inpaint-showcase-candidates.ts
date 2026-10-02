@@ -80,9 +80,10 @@ const {
   isRecord, escapeHtml, ROOT, AI_ROOT, REVIEW_INDEX_NAME, CONTACT_SHEET_NAME, UPSCALE, CROP_SIZE,
   POLL_INTERVAL_MS, JOB_TIMEOUT_MS,
 }: typeof import('../lib/inpaint-showcase-candidates-records.js') = require('../lib/inpaint-showcase-candidates-records.js');
+const { buildOpWorkflow }: typeof import('../lib/inpaint-showcase-candidates-comfy.js') = require('../lib/inpaint-showcase-candidates-comfy.js');
 const {
-  uploadImage, resolveUploadName, buildOpWorkflow, submitAndWait, fetchOutputImage, comfyJson,
-}: typeof import('../lib/inpaint-showcase-candidates-comfy.js') = require('../lib/inpaint-showcase-candidates-comfy.js');
+  uploadImage, resolveUploadName, submitAndWait, fetchOutputImage, comfyJson,
+}: typeof import('../lib/inpaint-comfy-client.js') = require('../lib/inpaint-comfy-client.js');
 const {
   generateMask, opLooksDone, setPython, generatePreviews, buildMaskArgs,
 }: typeof import('../lib/inpaint-showcase-candidates-image.js') = require('../lib/inpaint-showcase-candidates-image.js');
@@ -146,7 +147,7 @@ async function runKey(config: any, manifest: any, key: any, outputDir: any, comf
 
       let outputBuffer;
       try {
-        const promptResult = await submitAndWait(comfyBase, workflow);
+        const promptResult = await submitAndWait(comfyBase, workflow, `aics-inpaint-${process.pid}`, JOB_TIMEOUT_MS, POLL_INTERVAL_MS);
         const outputNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'SaveImage');
         const images = promptResult.entry.outputs && promptResult.entry.outputs[outputNode]
           && promptResult.entry.outputs[outputNode].images;

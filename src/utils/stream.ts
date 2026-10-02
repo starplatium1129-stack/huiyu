@@ -200,7 +200,3 @@ export function streamErrorMessage(error: unknown, fallback: string): string {
   const detail = typeof error.detail === 'string' ? error.detail : ''
   return (detail ? `${message || fallback}：${detail}` : message) || fallback
 }
-
-export async function responseError(response: Response, fallback: string): Promise<Error> {
-  return errorFromResponse(response, fallback)
-}

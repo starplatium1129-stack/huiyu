@@ -9,6 +9,7 @@ pub mod desktop_tools;
 pub mod error;
 pub mod execution;
 pub(crate) mod file_identity;
+mod file_paths;
 pub mod generation;
 pub mod host;
 pub mod images;

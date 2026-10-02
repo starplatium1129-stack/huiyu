@@ -3,6 +3,7 @@ use super::{
     context::{Context, Options},
     fs, identity, journal,
 };
+use crate::file_paths;
 use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
@@ -104,8 +105,8 @@ impl Transaction {
             backup
                 .entries
                 .iter()
-                .map(|entry| fs::key(&entry.file))
-                .collect::<Result<_>>()?,
+                .map(|entry| file_paths::key(&entry.file))
+                .collect::<std::io::Result<_>>()?,
         ));
         Ok(backup.id)
     }
@@ -164,7 +165,7 @@ impl Transaction {
         };
         if journal["backup"]["id"] != *id
             || journal["backup"]["sha256"] != *hash
-            || !targets.contains(&fs::key(&path)?)
+            || !targets.contains(&file_paths::key(&path)?)
         {
             return Err(Error::new(
                 409,

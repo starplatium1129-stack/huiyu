@@ -32,7 +32,7 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
       .then(module => module.createPromptVideoActions(deps, shotsPending))
       .catch(error => { actions = null; throw error })
   }
-  function lazy<K extends keyof Omit<Actions, 'shotsPending'>>(key: K) {
+  function lazy<K extends keyof Actions>(key: K) {
     return async (...args: Parameters<Actions[K]>) => {
       const action = (await loadActions())[key] as (...values: Parameters<Actions[K]>) => ReturnType<Actions[K]>
       return action(...args)
