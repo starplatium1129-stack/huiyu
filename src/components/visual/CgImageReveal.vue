@@ -13,7 +13,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { startCanvasPixelReveal } from '@/utils/canvasPixelReveal'
+import { startCanvasParticleReveal } from '@/utils/canvasParticleReveal'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-}>(), { alt: '生成的画面成片', imgClass: '', duration: 860, autoReveal: true })
+}>(), { alt: '生成的画面成片', imgClass: '', duration: 960, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
   error: [event: Event]
@@ -36,7 +36,7 @@ const imgRef = ref<HTMLImageElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
-let stopPixels: (() => void) | null = null
+let stopParticles: (() => void) | null = null
 let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
@@ -44,8 +44,8 @@ let revealedImage: HTMLImageElement | null = null
 
 function stopAnimation() {
   generation += 1
-  stopPixels?.()
-  stopPixels = null
+  stopParticles?.()
+  stopParticles = null
   isRevealing.value = false
 }
 function finishReveal() {
@@ -67,17 +67,17 @@ function triggerReveal() {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(240, Math.min(1000, props.duration)) : 860
+  const duration = Number.isFinite(props.duration) ? Math.max(240, Math.min(1200, props.duration)) : 960
   const token = generation
   try {
-    // Prepare an opaque pixel image before covering the original. Any failure
-    // leaves the decoded full-resolution image immediately available.
+    // Prepare the particle field before fading the original. Any failure leaves
+    // the decoded full-resolution image immediately available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const pixels = containerRef.value ? startCanvasPixelReveal(img, containerRef.value, duration) : null
-    if (!pixels) { emit('reveal-complete'); return }
-    stopPixels = pixels.stop
-    void pixels.finished.then(() => {
+    const particles = containerRef.value ? startCanvasParticleReveal(img, containerRef.value, duration) : null
+    if (!particles) { emit('reveal-complete'); return }
+    stopParticles = particles.stop
+    void particles.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
     }).catch(() => { if (token === generation) finishReveal() })
     isRevealing.value = true

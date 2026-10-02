@@ -33,9 +33,9 @@ for (const theme of ['dark', 'light']) {
       // polling can miss a sub-second animation. The application path is unchanged.
       if (!reduced) await page.evaluate(() => {
         const observer = new MutationObserver(() => {
-          const layer = document.querySelector('.cg-pixel-reveal')
+          const layer = document.querySelector('.cg-particle-reveal')
           if (!layer) return
-          layer.getAnimations({ subtree: true }).forEach(animation => { animation.pause(); animation.currentTime = 0 })
+          layer.parentElement?.getAnimations({ subtree: true }).forEach(animation => { animation.pause(); animation.currentTime = 0 })
           observer.disconnect()
         })
         observer.observe(document.body, { childList: true, subtree: true })
@@ -61,8 +61,8 @@ for (const theme of ['dark', 'light']) {
       await expect(image).toBeVisible({ timeout: 15_000 })
       await expect.poll(() => image.evaluate((node: HTMLImageElement) => [node.naturalWidth, node.naturalHeight])).toEqual([width, height])
       if (!reduced) {
-        await expect(page.locator('.cg-pixel-reveal')).toBeVisible()
-        expect(await page.locator('.cg-pixel-reveal').evaluate(element => element.getAnimations({ subtree: true }).length)).toBeGreaterThan(0)
+        await expect(page.locator('.cg-particle-reveal')).toBeVisible()
+        expect(await page.locator('.cg-particle-reveal').evaluate(element => element.getAnimations({ subtree: true }).length)).toBeGreaterThan(0)
         for (const time of [80, 360, 720]) {
           await page.locator('.cg-image-reveal').evaluate((element, time) => {
             element.getAnimations({ subtree: true }).forEach(animation => { animation.currentTime = time })
@@ -71,7 +71,7 @@ for (const theme of ['dark', 'light']) {
         }
         await page.locator('.cg-image-reveal').evaluate(element => element.getAnimations({ subtree: true }).forEach(animation => animation.finish()))
       }
-      await expect(page.locator('.cg-pixel-reveal')).toHaveCount(0)
+      await expect(page.locator('.cg-particle-reveal')).toHaveCount(0)
       await expect(image).toHaveCSS('opacity', '1')
       await expect(image).toHaveCSS('transform', 'none')
       const after = (await page.locator('#drawing-canvas').boundingBox())!
