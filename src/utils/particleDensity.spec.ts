@@ -7,6 +7,25 @@ const settings = { density: 'ambient' as const, compact: false, lowMemory: false
 const cloud: PortraitCloud = { id: 'density-test', aspect: 2 / 3, palette: ['#777777'], grid: { w: 20, h: 30, cells: Array.from({ length: 600 }, (_, i) => i < 40 || i >= 560 || i % 20 < 2 || i % 20 > 17 ? '.' : '0').join('') } }
 
 describe('portrait screen density', () => {
+  it('keeps every encoded color and removes only explicitly transparent cells', () => {
+    const sample = (border: string, interior: string) => samplePortraitPoints({
+      id: 'colors', aspect: 1.2, palette: Array.from({ length: 20 }, (_, i) => `#${i.toString(16).padStart(2, '0')}0000`),
+      grid: { w: 12, h: 10, cells: Array.from({ length: 120 }, (_, i) => {
+        const x = i % 12, y = Math.floor(i / 12)
+        return x < 2 || x >= 10 || y < 2 || y >= 8 ? border[i % border.length] : interior
+      }).join('') },
+    }, 120, 120, 100)
+    const colored = sample('a', 'b'), solid = sample('a', 'a'), transparent = sample('.', 'b'), mixed = sample('acde', 'b')
+    expect(new Set(colored.points.map(point => point.paint))).toEqual(new Set([10, 11]))
+    expect(colored.points).toHaveLength(solid.points.length)
+    expect(solid.points.length).toBeGreaterThan(100)
+    expect(colored.boxW).toBeGreaterThan(.96)
+    expect(colored.boxW).toBeLessThanOrEqual(1.02)
+    expect(transparent.points.length).toBeGreaterThan(0)
+    expect(new Set(transparent.points.map(point => point.paint))).toEqual(new Set([11]))
+    expect(new Set(mixed.points.map(point => point.paint))).toEqual(new Set([10, 11, 12, 13, 14]))
+  })
+
   it('quadruples points when both portrait dimensions double, preserving point spacing and radius', () => {
     const small = samplePortraitPoints(cloud, preferredParticleCount({ ...settings, reference }), 500, 330)
     const count = preferredParticleCount({ ...settings, reference, width: 1200, height: 660 })

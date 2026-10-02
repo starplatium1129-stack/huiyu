@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { lightPortraitColor, particleNeedsOutline } from './particlePortrait'
+import { lightPortraitColor, particleNeedsOutline, shouldUnderlay } from './particlePortrait'
 describe('light particle contrast', () => {
+  it('uses a dark underlay only for very bright valid colors', () => {
+    for (const color of ['#f8f8f8', '#e8e8e8', '#c8c8c8']) expect(shouldUnderlay(color)).toBe(true)
+    for (const color of ['#b6b6b6', '#999999', '#666666', '#404040', 'not-a-color']) expect(shouldUnderlay(color)).toBe(false)
+  })
   it('adds an ink edge to pale colors while preserving their original fill', () => {
     expect(particleNeedsOutline('#ffffff', '#e7e0ed')).toBe(true)
     expect(particleNeedsOutline('#ffecd0', '#e7e0ed')).toBe(true)

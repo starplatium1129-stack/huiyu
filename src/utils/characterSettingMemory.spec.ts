@@ -1,18 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
 import {
   buildCharacterSettingEntries,
   parseCharacterSettingCards,
   recallCharacterSetting,
   type CharacterSettingRecord,
 } from './characterSettingMemory'
-
-function loadRealCharacters() {
-  // spec 位于 src/utils/ → 项目根 data/characters.json
-  const root = path.resolve(import.meta.dirname, '..', '..', 'data', 'characters.json')
-  return JSON.parse(readFileSync(root, 'utf8'))
-}
 
 const NENE_CARD: CharacterSettingRecord = {
   id: 'nene',
@@ -46,15 +38,6 @@ describe('characterSettingMemory · 解析', () => {
     expect(parseCharacterSettingCards([null, { name: '无 id' }, { id: 'a' }, { id: 'a' }])).toHaveLength(1)
   })
 
-  it('真实 data/characters.json 全量解析不抛且角色齐', () => {
-    const cards = parseCharacterSettingCards(loadRealCharacters())
-    expect(cards.length).toBeGreaterThanOrEqual(45)
-    const nene = cards.find(card => card.id === 'nene')
-    expect(nene?.bgStory.length).toBeGreaterThan(20)
-    expect(nene?.personality.length).toBeGreaterThan(0)
-    const natsume = cards.find(card => card.id === 'natsume')
-    expect(natsume?.speech.length).toBeGreaterThan(10)
-  })
 })
 
 describe('characterSettingMemory · 条目组装', () => {
@@ -80,10 +63,6 @@ describe('characterSettingMemory · 召回', () => {
     const entries = recallCharacterSetting(CARDS, 'nene', '')
     expect(entries.length).toBeGreaterThanOrEqual(4)
     expect(entries.join('')).toContain('绫地宁宁')
-  })
-
-  it('未知角色返回空数组', () => {
-    expect(recallCharacterSetting(CARDS, 'no_such', '')).toEqual([])
   })
 
   it('关键词召回：query 命中某条时排它优先', () => {

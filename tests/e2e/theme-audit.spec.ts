@@ -74,18 +74,11 @@ function collectErrors(page: Page): string[] {
   return errors;
 }
 
-async function applyTheme(page: Page, theme: string) {
-  await page.evaluate((value) => {
-    document.documentElement.setAttribute('data-theme', value);
-  }, theme);
-  // 等一帧,让 CSS 变量翻转后的样式生效
-  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve(null))));
-}
-
 for (const theme of THEMES) {
   for (const target of PAGES) {
     test(`[${theme}] ${target} renders without errors, overflow or unreadable text`, async ({ page }) => {
       const errors = collectErrors(page);
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme });
       if (target === '/scene-manager') await installSceneStateFixture(page);
       // The artwork assertion came from the selected-profile path, not the empty directory overview.
@@ -97,14 +90,15 @@ for (const theme of THEMES) {
         await expect(page).toHaveTitle(ROUTE_TITLES[target]);
       }
       if (ROUTE_ARTWORK[target]) await expect(page.locator(ROUTE_ARTWORK[target]).first()).toBeVisible();
-      await applyTheme(page, theme);
-      // SPA 路由要等异步场景数据与图片落位，否则会在半渲染状态上做判定。
-      // 控制面板每 3 秒轮询 /api/status（内部还要探测 SD/TTS/Ollama），
-      // networkidle 永远不会到达，这里只能定时等待。
-      if (target !== '/control') {
-        await page.waitForLoadState('networkidle').catch(() => {});
-      }
-      await page.waitForTimeout(900);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+      // Polling services never become network-idle. Wait for the rendered page,
+      // loaded fonts and finite entrance effects before measuring its pixels.
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await Promise.all(document.getAnimations()
+          .filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity)
+          .map(animation => animation.finished.catch(() => {})));
+      });
 
       // ---- 1. 运行时错误 ----
       expect(errors, `${target} @ ${theme} 有运行时错误`).toEqual([]);

@@ -32,21 +32,11 @@ function chooseKey(wrapper: ReturnType<typeof mountSelect>, key: string) {
 }
 
 describe('StudioSelect', () => {
-  it('renders the trigger with the label as accessible name', () => {
-    const wrapper = mountSelect({ modelValue: 'opt1', label: '测试下拉' })
-    const trigger = wrapper.find('.studio-select-trigger')
-    expect(trigger.attributes('aria-label')).toBe('测试下拉')
-    expect(wrapper.find('select').exists()).toBe(false)
-  })
-
-  it('puts the id on the visible trigger so label[for] names the control', () => {
-    const wrapper = mountSelect({ modelValue: 'opt1', id: 'demo-select' })
-    expect(wrapper.find('.studio-select-trigger').attributes('id')).toBe('demo-select')
-    expect(wrapper.find('.studio-select-wrapper').attributes('id')).toBeUndefined()
-  })
-
   it('shows the placeholder only when no option matches the value', async () => {
-    const wrapper = mountSelect({ modelValue: '', placeholder: '请选择' })
+    const wrapper = mountSelect({ modelValue: '', placeholder: '请选择', label: '测试下拉', id: 'demo-select' })
+    expect(wrapper.get('.studio-select-trigger').attributes('aria-label')).toBe('测试下拉')
+    expect(wrapper.get('.studio-select-trigger').attributes('id')).toBe('demo-select')
+    expect(wrapper.get('.studio-select-wrapper').attributes('id')).toBeUndefined()
     expect(wrapper.find('.studio-select-value').text()).toBe('请选择')
     expect(wrapper.find('.studio-select-trigger').attributes('data-empty')).toBeDefined()
 

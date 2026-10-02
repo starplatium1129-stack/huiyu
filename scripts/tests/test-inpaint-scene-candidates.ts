@@ -1,30 +1,10 @@
 'use strict';
 
-import { WithImplicitCoercion } from 'node:buffer';
+const sharp: typeof import('sharp').default = require('sharp');
 
-/**
- * Contract sentinels for the scene-candidate Anima masked repair pipeline
- * (scripts/maintenance/inpaint-scene-candidates.js).
- *
- * Pins, without touching the network:
- *   - the supported keys are exactly scene:sc037 and scene:sc280
- *   - sources: sc037 → its attempt-8 record, sc280 → its attempt-6 record
- *     (sc280 uses attempt-6 because its hands/cup racks are clean and the
- *     wrapper never overlaps the fingers — cross-audit source decision)
- *   - every crop/mask coordinate is inside the per-key source bounds
- *     (sc037 832x1216, sc280 1216x832) and prompts are position-agnostic
- *   - the Anima model chain mirrors routes/anima.js (UNETLoader + CLIPLoader +
- *     VAELoader + LoraLoader with the production natsume v20 Anima LoRA) and
- *     the official masked img2img node flow: ImageCrop → ImageScale →
- *     VAEEncode → SetLatentNoiseMask → KSampler(low denoise) → VAEDecode →
- *     ImageScale → ImageCompositeMasked → SaveImage
- *   - denoise configs are a bounded set (SetLatentNoiseMask 0.70 + one
- *     VAEEncodeForInpaint 1.00 fallback), never an unbounded loop
- *   - attempt-9 record contract: recordId "<key>@attempt-9", supersedes the
- *     source record, carries postprocess/inpaint provenance and sha256
- *   - the region-delta heuristic only gates the single fixed fallback
- *   - resume (shouldReuse) + hard refusal to write into SceneShowcase
- */
+/** Isolated repair-tool behavior: crop/mask bounds, finite attempts, compiled
+ * workflow, source identity, resumability and refusal to overwrite published
+ * assets. Historical art wording is not a code contract or render evidence. */
 
 const assert: typeof import('assert') = require('assert');
 const fs: typeof import('fs') = require('fs');
@@ -35,48 +15,12 @@ const { test }: typeof import('node:test') = require('node:test');
 const inpaint: typeof import('../../scripts/maintenance/inpaint-scene-candidates.js') = require('../../scripts/maintenance/inpaint-scene-candidates.js');
 const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 
-function makePng(width: number, height: number, spot: any) {
-  const zlib: typeof import('zlib') = require('zlib');
-  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(width, 0);
-  ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8;
-  ihdr[9] = 2;
-  function chunk(type: WithImplicitCoercion<string>, data: any) {
-    const name = Buffer.from(type, 'ascii');
-    const len = Buffer.alloc(4);
-    len.writeUInt32BE(data.length);
-    let crc = 0xffffffff;
-    for (const buf of [name, data]) {
-      for (const byte of buf) {
-        crc ^= byte;
-        for (let k = 0; k < 8; k += 1) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
-      }
-    }
-    crc = (crc ^ 0xffffffff) >>> 0;
-    const crcBuf = Buffer.alloc(4);
-    crcBuf.writeUInt32BE(crc);
-    return Buffer.concat([len, name, data, crcBuf]);
+function makePng(width: number, height: number, spot: { cx: number; cy: number; rx: number; ry: number } | null) {
+  const pixels = Buffer.alloc(width * height * 3, 200);
+  if (spot) for (let y = spot.cy - spot.ry; y <= spot.cy + spot.ry; y++) {
+    pixels.fill(40, (y * width + spot.cx - spot.rx) * 3, (y * width + spot.cx + spot.rx + 1) * 3);
   }
-  const raw = Buffer.alloc((1 + width * 3) * height);
-  for (let y = 0; y < height; y += 1) {
-    const row = y * (1 + width * 3);
-    raw[row] = 0;
-    for (let x = 0; x < width; x += 1) {
-      let lum = 200;
-      if (spot && Math.abs(x - spot.cx) <= spot.rx && Math.abs(y - spot.cy) <= spot.ry) lum = 40;
-      raw[row + 1 + x * 3] = lum;
-      raw[row + 1 + x * 3 + 1] = lum;
-      raw[row + 1 + x * 3 + 2] = lum;
-    }
-  }
-  return Buffer.concat([
-    signature,
-    chunk('IHDR', ihdr),
-    chunk('IDAT', zlib.deflateSync(raw)),
-    chunk('IEND', Buffer.alloc(0)),
-  ]);
+  return sharp(pixels, { raw: { width, height, channels: 3 } }).png().toBuffer();
 }
 
 function workflowTypes(wf: any) {
@@ -133,30 +77,6 @@ test('every crop/mask coordinate stays inside the per-key source bounds', () => 
   }
 });
 
-test('ops are position-agnostic and target only the reviewed defects', () => {
-  const sc037 = inpaint.SCENE_INPAINT_CONFIG['scene:sc037'];
-  const sc280 = inpaint.SCENE_INPAINT_CONFIG['scene:sc280'];
-  assert.deepStrictEqual(sc037.ops.map((op: any) => op.id), ['replace-charm']);
-  assert.deepStrictEqual(sc280.ops.map((op: any) => op.id), ['replace-wrapper', 'replace-wrapper-inpaint', 'replace-wrapper-blend']);
-  assert.deepStrictEqual(sc280.ops[1].denoiseOrder, ['inpaint-1.00'],
-    'attempt-9 masked-0.70 kept the transparent bag, so the second stage must force the true-inpaint fallback');
-  assert.deepStrictEqual(sc280.ops[2].denoiseOrder, ['masked-0.70'],
-    'the third stage blends the kraft pouch into the palms with a low-denoise masked pass');
-  assert.ok(sc280.ops[2].mask[0].ry >= sc280.ops[1].mask[0].ry,
-    'the blend mask must extend below the wrapper to reach the palm contact band');
-  const charm = sc037.ops[0];
-  assert.ok(/cloth omamori|omamori/i.test(charm.prompt), 'sc037 must request a fabric omamori');
-  assert.ok(/cat charm|porcelain cat|cat figurine|keychain/i.test(charm.negative), 'sc037 negative must suppress the cat trinket');
-  assert.ok(/deformed hand|fused fingers/i.test(charm.negative), 'sc037 negative must suppress fused hands');
-  const wrapper = sc280.ops[0];
-  assert.ok(/kraft paper/i.test(wrapper.prompt), 'sc280 must request opaque kraft paper');
-  assert.ok(/folded top closure|folded paper top/i.test(wrapper.prompt), 'sc280 must request a folded closure');
-  assert.ok(/cellophane|glassine|see-through|transparent plastic/i.test(wrapper.negative), 'sc280 negative must suppress transparent wrappers');
-  for (const op of [charm, wrapper]) {
-    assert.ok(!/(\bleft\b|\bright\b)/i.test(op.prompt), `${op.id} prompt must not encode a side`);
-  }
-});
-
 test('denoise configs are bounded: primary masked img2img + one true-inpaint fallback', () => {
   assert.strictEqual(inpaint.DENOISE_CONFIGS.length, 2);
   assert.deepStrictEqual(inpaint.DENOISE_CONFIGS.map(c => c.id), ['masked-0.70', 'inpaint-1.00']);
@@ -210,10 +130,10 @@ test('buildMaskArgs emits ellipse shape tokens for the python maskgen', () => {
   assert.strictEqual(args[1], String(cfg.ops[0].mask[0].cx));
 });
 
-test('region-delta heuristic gates only the single fixed fallback', () => {
+test('region-delta heuristic gates only the single fixed fallback', async () => {
   const shape = { kind: 'ellipse', cx: 32, cy: 32, rx: 16, ry: 16 };
-  const plain = makePng(64, 64, null);
-  const changed = makePng(64, 64, shape);
+  const plain = await makePng(64, 64, null);
+  const changed = await makePng(64, 64, shape);
   const op = { id: 'replace-wrapper', mask: [shape] };
   assert.strictEqual(inpaint.opLooksDone(op, changed, plain), true, 'changed mask region must pass');
   assert.strictEqual(inpaint.opLooksDone(op, plain, plain), false, 'unchanged mask region must fail and trigger the fallback');
@@ -260,7 +180,7 @@ test('attempt-9 record contract: recordId, supersedes, provenance, sha256, image
   assert.strictEqual(record.jobId, results[results.length - 1].promptId);
 });
 
-test('sourceRecordFor + validateSourceRecord: attempt, status, hash, and per-key dimensions gate', () => {
+test('sourceRecordFor + validateSourceRecord: attempt, status, hash, and per-key dimensions gate', async () => {
   const manifest = [
     { recordId: 'scene:sc037@attempt-8', status: 'succeeded', image: 'images/sc037/attempt-8.png', sha256: '' },
     { recordId: 'scene:sc280@attempt-6', status: 'succeeded', image: 'images/sc280/attempt-6.png', sha256: '' },
@@ -269,8 +189,8 @@ test('sourceRecordFor + validateSourceRecord: attempt, status, hash, and per-key
   try {
     fs.mkdirSync(path.join(root, 'images', 'sc037'), { recursive: true });
     fs.mkdirSync(path.join(root, 'images', 'sc280'), { recursive: true });
-    fs.writeFileSync(path.join(root, 'images', 'sc037', 'attempt-8.png'), makePng(832, 1216, null));
-    fs.writeFileSync(path.join(root, 'images', 'sc280', 'attempt-6.png'), makePng(1216, 832, null));
+    fs.writeFileSync(path.join(root, 'images', 'sc037', 'attempt-8.png'), await makePng(832, 1216, null));
+    fs.writeFileSync(path.join(root, 'images', 'sc280', 'attempt-6.png'), await makePng(1216, 832, null));
     const sc037 = inpaint.sourceRecordFor(manifest, 'scene:sc037');
     assert.strictEqual(sc037.recordId, 'scene:sc037@attempt-8');
     const ok = inpaint.validateSourceRecord('scene:sc037', sc037, root);
@@ -285,16 +205,16 @@ test('sourceRecordFor + validateSourceRecord: attempt, status, hash, and per-key
   }
 });
 
-test('shouldReuse honours --force, per-key dimensions, and hash gates', () => {
+test('shouldReuse honours --force, per-key dimensions, and hash gates', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-scene-inpaint-test-'));
   try {
     const image = path.join(root, 'ok.png');
-    fs.writeFileSync(image, makePng(832, 1216, null));
+    fs.writeFileSync(image, await makePng(832, 1216, null));
     const record = { status: 'succeeded', image: 'ok.png', sha256: '' };
     assert.strictEqual(inpaint.shouldReuse('scene:sc037', record, image, false), true);
     assert.strictEqual(inpaint.shouldReuse('scene:sc037', record, image, true), false, '--force must regenerate');
     assert.strictEqual(inpaint.shouldReuse('scene:sc037', { ...record, status: 'failed' }, image, false), false);
-    fs.writeFileSync(image, makePng(1216, 832, null));
+    fs.writeFileSync(image, await makePng(1216, 832, null));
     assert.strictEqual(inpaint.shouldReuse('scene:sc037', record, image, false), false, 'wrong dimensions must not be reused');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });

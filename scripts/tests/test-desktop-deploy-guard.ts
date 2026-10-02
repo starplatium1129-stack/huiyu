@@ -107,7 +107,10 @@ class FixtureHost {
   static void Main(string[] args) {
     string root=Environment.GetEnvironmentVariable("HUIYU_MAINTENANCE_FIXTURE"), config=Path.Combine(root,"config");
     var json=new JavaScriptSerializer();
-    if(args.Length>0 && args[0]=="--desktop-maintenance") {File.WriteAllText(Path.Combine(root,"signal-"+args[3]),args[3]);return;}
+    if(args.Length>0 && args[0]=="--desktop-maintenance") {
+      string pending=Path.Combine(root,"pending-"+args[3]);
+      File.WriteAllText(pending,args[3]);File.Move(pending,Path.Combine(root,"signal-"+args[3]));return;
+    }
     var process=Process.GetCurrentProcess();
     var identity=new Dictionary<string,object>{{"protocolVersion",1},{"instanceId",new string('a',64)},{"hostPid",process.Id},
       {"startedAtFiletime",process.StartTime.ToUniversalTime().ToFileTimeUtc().ToString()},{"executable",process.MainModule.FileName},{"instanceNamespace","com.aics.studio"}};
@@ -131,23 +134,37 @@ class FixtureHost {
     assert.equal(built.status, 0, built.stderr);
     const env = { ...process.env, HUIYU_MAINTENANCE_FIXTURE:f.root };
     const child = spawn(executable, ['--fixture-host'], { windowsHide:true, env, stdio:['ignore','pipe','pipe'] });
+    let hostStderr = '';
+    child.stderr!.on('data', chunk => { hostStderr += String(chunk); });
     try {
       await once(child.stdout!, 'data');
       const invoke = path.join(f.root, 'invoke.ps1');
       fs.writeFileSync(invoke, `param($Guard,$Install,$Config,$Action)\n$ErrorActionPreference='Stop'\n. $Guard\ntry { if($Action -eq 'status'){Invoke-DesktopMaintenance -InstallDir $Install -ConfigRoot $Config -Command status -TimeoutSeconds 5 | ConvertTo-Json -Compress}else{Stop-DesktopForDeployment -InstallDir $Install -ConfigRoot $Config};exit 0 }catch{Write-Output $_.Exception.Message;exit 27}\n`);
-      const run = (action: string) => spawnSync('powershell.exe', ['-NoProfile','-ExecutionPolicy','Bypass','-File',invoke,guard,f.install,f.config,action], { encoding:'utf8', env, windowsHide:true, timeout:15000 });
-      const status = run('status'); assert.equal(status.status, 0, status.stdout + status.stderr); assert.match(String(status.stdout), /ready/);
+      // Keep draining the fixture's stderr and exit event while PowerShell waits
+      // for its receipt; a blocked Node loop would hide the host's actual failure.
+      type Invocation = { status: number | null; error?: Error; stdout: string; stderr: string };
+      const run = (action: string) => new Promise<Invocation>(resolve => {
+        const client = spawn('powershell.exe', ['-NoProfile','-ExecutionPolicy','Bypass','-File',invoke,guard,f.install,f.config,action], { env, windowsHide:true, timeout:15000 });
+        let stdout = '', stderr = '', error: Error | undefined;
+        client.stdout.on('data', chunk => { stdout += String(chunk); });
+        client.stderr.on('data', chunk => { stderr += String(chunk); });
+        client.on('error', cause => { error = cause; });
+        client.on('close', status => resolve({ status, error, stdout, stderr }));
+      });
+      const diagnostics = (result: Invocation) => JSON.stringify({
+        error: result.error?.message, stdout: result.stdout, stderr: result.stderr,
+        hostStderr, hostExitCode: child.exitCode, hostSignal: child.signalCode,
+        drainStarted: fs.existsSync(path.join(f.root, 'drain-started')),
+        ownerPresent: fs.existsSync(f.owner),
+      });
+      const status = await run('status'); assert.equal(status.status, 0, diagnostics(status)); assert.match(String(status.stdout), /ready/);
       assert.deepEqual(fs.readdirSync(path.join(f.config,'desktop-maintenance')), [], 'only this request files are removed');
       const file = path.join(f.config, 'desktop-maintenance.json'), original = fs.readFileSync(file);
       const identity = JSON.parse(String(original)); identity.startedAtFiletime = '111111111111111111'; fs.writeFileSync(file, JSON.stringify(identity));
-      const refused = run('status'); assert.equal(refused.status, 27); assert.match(String(refused.stdout), /DESKTOP_MAINTENANCE_IDENTITY/);
+      const refused = await run('status'); assert.equal(refused.status, 27, diagnostics(refused)); assert.match(String(refused.stdout), /DESKTOP_MAINTENANCE_IDENTITY/);
       assert.equal(child.exitCode, null); fs.writeFileSync(file, original);
-      const exited = once(child, 'exit'), stopped = run('shutdown');
-      assert.equal(stopped.status, 0, JSON.stringify({
-        error: stopped.error?.message, stdout: stopped.stdout, stderr: stopped.stderr,
-        drainStarted: fs.existsSync(path.join(f.root, 'drain-started')),
-        ownerPresent: fs.existsSync(f.owner),
-      })); await exited;
+      const exited = once(child, 'exit'), stopped = await run('shutdown');
+      assert.equal(stopped.status, 0, diagnostics(stopped)); await exited;
       assert.equal(fs.existsSync(f.owner), false); assert.equal(fs.existsSync(path.join(f.root, 'drain-started')), true);
     } finally { if (child.exitCode === null) { const exited = once(child, 'exit'); child.kill(); await exited; } }
   });

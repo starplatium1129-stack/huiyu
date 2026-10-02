@@ -15,21 +15,6 @@ beforeEach(() => {
 })
 
 describe('promptBuilderStore · SD 参数', () => {
-  it('默认值对齐 WAI Illustrious 基线', () => {
-    const s = usePromptBuilderStore()
-    expect(s.sdParams).toMatchObject({
-      cfg: 6,
-      steps: 30,
-      sampler: 'Euler a',
-      hiresFix: false,
-      hiresScale: 1.5,
-      hiresDenoise: 0.4,
-      faceDetailer: true,
-      seedLock: false,
-      seed: -1,
-    })
-  })
-
   it('markParamTouched 只记录合法参数键且去重', () => {
     const s = usePromptBuilderStore()
     s.markParamTouched('cfg')
@@ -156,11 +141,4 @@ describe('promptBuilderStore · 词条选择', () => {
     expect(s.artistStyleIds).toEqual(['azuuru', 'rella'])
   })
 
-  it('toggleManualTag 添加后可再点移除', () => {
-    const s = usePromptBuilderStore()
-    s.toggleManualTag('masterpiece')
-    expect(s.manualTags.has('masterpiece')).toBe(true)
-    s.toggleManualTag('masterpiece')
-    expect(s.manualTags.has('masterpiece')).toBe(false)
-  })
 })

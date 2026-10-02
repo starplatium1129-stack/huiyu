@@ -35,6 +35,32 @@ async function appends(action: () => void): Promise<number> {
 }
 function read(dir: string) { return fs.readFileSync(path.join(dir, `gateway-${day()}.log`), 'utf8'); }
 
+test('enabled levels persist timestamped lines and debug remains opt-in', async t => {
+  const { dir } = fixture(t), logger = createLogger({ dir, debug: true });
+  assert.equal(await appends(() => { captureTerminal(() => {
+    logger.info('info message'); logger.warn('warning');
+    logger.error('failure', new Error('detail')); logger.debug('debug enabled');
+  }); }), 4);
+  const content = read(dir);
+  for (const line of ['[INFO] info message', '[WARN] warning', '[ERROR] failure', '[DEBUG] debug enabled']) {
+    assert.ok(content.includes(line), line);
+  }
+  assert.match(content, /\[\d{4}-\d{2}-\d{2}T/);
+  assert.ok(content.includes('detail'));
+});
+
+test('retention removes expired dated and undated logs while preserving active and unrelated files', t => {
+  const { dir } = fixture(t), old = new Date(Date.now() - 20 * 86400000);
+  const names = ['gateway-20250101.log', 'comfyui-20250101.log', 'gateway.log', 'translate.log', 'notes.txt'];
+  for (const name of names) {
+    const file = path.join(dir, name);
+    fs.writeFileSync(file, 'old'); fs.utimesSync(file, old, old);
+  }
+  for (const name of [`gateway-${day()}.log`, 'comfyui.stderr.log']) fs.writeFileSync(path.join(dir, name), 'active');
+  createLogger({ dir, retainDays: 14 });
+  assert.deepEqual(fs.readdirSync(dir).sort(), ['comfyui.stderr.log', `gateway-${day()}.log`, 'notes.txt']);
+});
+
 test('redacts common credentials and prevents injected file/terminal log lines', async t => {
   const { dir } = fixture(t), logger = createLogger({ dir });
   let terminal: string[] = [];
@@ -80,10 +106,14 @@ test('repeated same-day rotations preserve earlier archives', t => {
   const { dir } = fixture(t);
   const earlier = path.join(dir, `control-${day()}.log`), current = path.join(dir, 'control.log');
   fs.writeFileSync(earlier, 'original archive'); fs.writeFileSync(current, 'b'.repeat(32));
+  fs.writeFileSync(path.join(dir, 'tiny.log'), 'x');
+  fs.writeFileSync(path.join(dir, `gateway-${day()}.log`), 'already dated, larger than the rotation threshold');
   createLogger({ dir, maxBytes:8 });
   assert.equal(fs.readFileSync(earlier, 'utf8'), 'original archive');
   assert.equal(fs.readFileSync(path.join(dir, `control.1-${day()}.log`), 'utf8'), 'b'.repeat(32));
   assert.equal(fs.existsSync(current), false);
+  assert.equal(fs.readFileSync(path.join(dir, 'tiny.log'), 'utf8'), 'x');
+  assert.equal(fs.readFileSync(path.join(dir, `gateway-${day()}.log`), 'utf8'), 'already dated, larger than the rotation threshold');
 });
 
 test('rotation failure does not truncate the live log', t => {
@@ -127,4 +157,8 @@ test('disabled debug stays silent and unavailable output sinks do not throw', as
     finally { process.stdout.write = original; }
   });
   assert.ok(read(dir).includes('still persisted'));
+  const terminalOnly = createLogger({ dir: '' });
+  assert.doesNotThrow(() => captureTerminal(() => {
+    terminalOnly.info('no directory'); terminalOnly.error('no directory');
+  }));
 });

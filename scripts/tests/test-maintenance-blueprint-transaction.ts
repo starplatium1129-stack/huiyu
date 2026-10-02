@@ -26,18 +26,63 @@ const read = (name: any) => JSON.parse(fs.readFileSync(path.join(root, name), 'u
 const write = (name: any, value: any) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n');
 const describe = (body: any) => JSON.stringify({ ok: body.ok, error: body.error, conflict: body.conflict, count: body.count }).slice(0, 1600);
 
-function copyJson(source: any, target: any) {
-  fs.mkdirSync(target, { recursive: true });
-  for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
-    if (entry.isSymbolicLink()) continue;
-    if (entry.isDirectory()) copyJson(path.join(source, entry.name), path.join(target, entry.name));
-    else if (entry.name.endsWith('.json')) fs.copyFileSync(path.join(source, entry.name), path.join(target, entry.name));
+function fixtureData(): Record<string, unknown> {
+  const canonical = (name: string) => JSON.parse(fs.readFileSync(path.join(REPO, 'data', name), 'utf8'));
+  // The real ratings CLI adds these eight historical IDs when absent. Keep their
+  // canonical records so saving a neutral edit does not create unrelated scenes.
+  const selected = new Set(['sc001', 'sc002', 'sc003', 'sc207', 'sc208', 'sc209', 'sc210', 'sc301', 'sc302', 'sc303', 'sc304']);
+  const manifest = canonical('scenes/manifest.json');
+  const scenes = manifest.files.flatMap((entry: { file: string }) => {
+    const stem = entry.file.replace(/\.json$/, '');
+    if (!fs.existsSync(path.join(REPO, 'data/scenes', stem + '.1.json'))) return canonical('scenes/' + entry.file);
+    const rows = [];
+    for (let batch = 1; fs.existsSync(path.join(REPO, 'data/scenes', `${stem}.${batch}.json`)); batch++) {
+      rows.push(...canonical(`scenes/${stem}.${batch}.json`));
+    }
+    return rows;
+  }).filter((scene: { id: string }) => selected.has(scene.id));
+  assert.equal(scenes.length, selected.size, 'fixture must include each selected canonical scene');
+  const data: Record<string, unknown> = {
+    'scenes/manifest.json': manifest,
+    'curation.json': { curatedSceneIds: ['sc001'], signatureSceneIds: ['sc001'], reviewSceneIds: [],
+      recommendationReasons: { sc001: 'Fixture scene' }, searchAliases: {},
+      moodRails: [{ id: 'fixture', title: 'Fixture', query: 'sc001' }] },
+    'retired-scenes.json': { version: 1, records: Array.from({ length: 306 }, (_, i) => 'sc' + String(i + 1).padStart(3, '0'))
+      .filter(id => !selected.has(id)).map(id => ({ id, reason: 'Outside the isolated transaction fixture' })) },
+    'character-reference-view.json': {},
+    'tags.json': canonical('tags.json'), 'presets.json': canonical('presets.json'),
+  };
+  for (const entry of manifest.files) data['scenes/' + entry.file] = scenes.filter((scene: any) => sceneStore.targetFile(scene) === entry.file);
+  const pins = canonical('prompt-pinned-scenes.json');
+  data['prompt-pinned-scenes.json'] = { ...pins, scenes: Object.fromEntries(Object.entries(pins.scenes).filter(([id]) => selected.has(id))) };
+  data['characters.json'] = canonical('characters.json').filter((character: any) => ['nene', 'natsume'].includes(character.id))
+    .map((character: any) => ({ ...character, lora: { ...character.lora,
+      recommended_scene: scenes.filter((scene: any) => scene.char === character.id).map((scene: any) => scene.id) } }));
+  data['loras.json'] = canonical('loras.json').map((lora: any) => ({ ...lora, test_scene: (lora.test_scene || []).filter((id: string) => selected.has(id)) }));
+
+  // Two independent source shards exercise untouched bytes and shard migration.
+  // Their twenty authored blueprints also satisfy the unmodified content gate.
+  const entries = canonical('popular/manifest.json').files.slice(0, 2);
+  const blueprintEntries = [];
+  for (const entry of entries) {
+    const character = canonical('popular/' + entry.file).characters[0];
+    const blueprints = canonical('blueprints/' + entry.file).blueprints.filter((blueprint: any) => blueprint.characterId === character.id);
+    data['popular/' + entry.file] = { version: 1, franchise: entry.franchise, characters: [character] };
+    data['blueprints/' + entry.file] = { version: 2, franchise: entry.franchise, blueprints };
+    blueprintEntries.push({ ...entry, count: blueprints.length });
   }
+  data['popular/manifest.json'] = { version: 1, files: entries.map((entry: any) => ({ ...entry, count: 1 })) };
+  data['blueprints/manifest.json'] = { version: 1, files: blueprintEntries };
+  return data;
 }
+const seedData = fixtureData();
 
 function seed() {
   for (const name of ['data', 'src', 'runtime']) fs.rmSync(path.join(root, name), { recursive: true, force: true });
-  copyJson(path.join(REPO, 'data'), path.join(root, 'data'));
+  for (const [name, value] of Object.entries(seedData)) {
+    fs.mkdirSync(path.dirname(path.join(root, 'data', name)), { recursive: true });
+    write('data/' + name, value);
+  }
   fs.mkdirSync(path.join(root, 'src/stores'), { recursive: true });
   fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true });
   fs.copyFileSync(path.join(REPO, 'scripts/lib/manual-scene-ratings.js'), path.join(root, 'scripts/lib/manual-scene-ratings.js'));
@@ -49,6 +94,8 @@ function seed() {
     fs.writeFileSync(file, 'fixture placeholder; no image quality assertion');
   }
   sceneStore.writeAggregate(sceneStore.loadSceneShards().scenes);
+  popularStore.writePopularAggregate();
+  blueprintStore.writeBlueprintAggregate();
   fs.writeFileSync(path.join(root, 'src/stores/sceneStore.ts'), "import { DATA_VERSION } from 'virtual:data-version'; export { DATA_VERSION };\n");
   for (const name of ['scene-blueprints.json', 'scenes.json', 'curation.json']) {
     const raw = fs.readFileSync(path.join(root, 'data', name));

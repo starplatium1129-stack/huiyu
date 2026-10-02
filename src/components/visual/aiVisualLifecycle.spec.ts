@@ -6,6 +6,7 @@ import VoiceGlow from './VoiceGlow.vue'
 import CgImageReveal from './CgImageReveal.vue'
 import BorderBeam from './BorderBeam.vue'
 import { startCanvasParticleReveal } from '@/utils/canvasParticleReveal'
+import { useVoiceMeter } from '@/composables/useVoiceMeter'
 
 let activity: {
   canPresent: Ref<boolean>; canAnimate: Ref<boolean>; reducedMotion: Ref<boolean>
@@ -105,8 +106,10 @@ describe('ThinkingOrb rendering lifecycle', () => {
     wrapper.unmount()
     expect(frames.size).toBe(0)
   })
-  it('redraws static states without recurring frames when reduced motion is enabled', async () => {
-    const wrapper = own(mount(ThinkingOrb))
+  it('announces state changes and redraws static frames without a reduced-motion loop', async () => {
+    const wrapper = own(mount(ThinkingOrb, { props: { state: 'working' } }))
+    expect(wrapper.get('[role="status"]').attributes('aria-label')).toBe('心动画面显影生成中…')
+    expect(wrapper.get('canvas').attributes('aria-hidden')).toBe('true')
     activity.reducedMotion.value = true
     activity.canAnimate.value = false
     await nextTick()
@@ -115,12 +118,17 @@ describe('ThinkingOrb rendering lifecycle', () => {
     await wrapper.setProps({ state: 'searching' })
     expect(context.arc).toHaveBeenCalled()
     expect(frames.size).toBe(0)
+    await wrapper.setProps({ state: 'weaving' })
+    expect(wrapper.attributes('aria-label')).toBe('正在编织画面意境…')
+    await wrapper.setProps({ ariaLabel: '自定义加载文案' })
+    expect(wrapper.attributes('aria-label')).toBe('自定义加载文案')
   })
 })
 
 describe('VoiceGlow rendering lifecycle', () => {
   it('removes active presentation and cancels frames when deactivated', async () => {
     const wrapper = own(mount(VoiceGlow, { props: { level: 0.8 } }))
+    expect(wrapper.get('.voice-glow-container').attributes('aria-hidden')).toBe('true')
     await nextTick()
     tick(16)
     expect(context.fill).toHaveBeenCalled()
@@ -149,6 +157,16 @@ describe('VoiceGlow rendering lifecycle', () => {
     await nextTick()
     tick(16)
     expect(frames.size).toBe(0)
+  })
+
+  it('clears a manual voice level when its stream detaches', () => {
+    const meter = useVoiceMeter()
+    expect(meter.level.value).toBe(0)
+    meter.setManualLevel(0.8)
+    expect(meter.level.value).toBe(0.8)
+    meter.detachStream()
+    expect(meter.level.value).toBe(0)
+    expect(meter.isListening.value).toBe(false)
   })
 })
 
@@ -434,8 +452,11 @@ describe('CgImageReveal ownership and fallback', () => {
 })
 
 describe('BorderBeam activity', () => {
-  it('removes animation promotion when hidden and removes bloom for low effects', async () => {
-    const wrapper = own(mount(BorderBeam))
+  it('suspends decoration independently without replacing its interactive content', async () => {
+    const wrapper = own(mount(BorderBeam, { slots: { default: '<button>操作</button>' } }))
+    const content = wrapper.get('button').element
+    expect(wrapper.get('.border-beam-track').attributes('aria-hidden')).toBe('true')
+    expect(wrapper.find('.border-beam-bloom').exists()).toBe(true)
     await nextTick()
     expect(wrapper.classes()).toContain('is-running')
     activity.canAnimate.value = false
@@ -445,5 +466,14 @@ describe('BorderBeam activity', () => {
     await nextTick()
     expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
     expect(wrapper.find('.border-beam-track').exists()).toBe(true)
+    await wrapper.setProps({ active: false })
+    expect(wrapper.find('.border-beam-track').exists()).toBe(false)
+    expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
+    expect(wrapper.get('button').element).toBe(content)
+    activity.lowEffects.value = false
+    await wrapper.setProps({ active: true, glow: false })
+    expect(wrapper.find('.border-beam-track').exists()).toBe(true)
+    expect(wrapper.find('.border-beam-bloom').exists()).toBe(false)
+    expect(wrapper.get('button').element).toBe(content)
   })
 })

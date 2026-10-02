@@ -76,7 +76,8 @@ for (const theme of ['dark', 'light'] as const) {
       }, { theme, key: appearanceKey })
     })
 
-    test('navigation and generation bar render their installed optics', async ({ page }) => {
+    test('the real glass preference persists across chrome routes and restores optics', async ({ page }) => {
+      test.setTimeout(60_000)
       await page.goto('/prompt-builder')
       for (const selector of ['.nav', '.gen-bar']) {
         const surface = page.locator(selector)
@@ -84,13 +85,11 @@ for (const theme of ['dark', 'light'] as const) {
         await expectInstalledLens(surface)
         expect((await surfaceMetrics(surface)).alpha).toBeLessThan(255)
       }
-      await expect(page.locator('.gen-bar')).toHaveCSS('position', 'sticky')
       await expect(page.locator('#drawing-materials')).not.toHaveAttribute('data-fluid-refracted')
-    })
-
-    test('the real glass preference persists across chrome routes and restores optics', async ({ page }) => {
-      test.setTimeout(60_000)
-      await page.goto('/')
+      // Scene mode is a scrolling document; protect the action's reachability
+      // without prescribing sticky positioning to the current layout.
+      await page.getByRole('group', { name: '出图尺寸与生成', exact: true }).scrollIntoViewIfNeeded()
+      await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
       await setGlassPreference(page, true)
       for (const [route, selector] of chromeRoutes) {
         await page.goto(route)
@@ -104,35 +103,37 @@ for (const theme of ['dark', 'light'] as const) {
       await expectInstalledLens(page.locator('.gen-bar'))
     })
 
-    for (const [label, name, value] of [
-      ['reduced transparency', 'prefers-reduced-transparency', 'reduce'],
-      ['increased contrast', 'prefers-contrast', 'more'],
-      ['forced colors', 'forced-colors', 'active'],
-    ]) {
-      test(`${label} overrides full effects on navigation and toolbars`, async ({ page, context }) => {
-        const session = await context.newCDPSession(page)
-        await session.send('Emulation.setEmulatedMedia', {
-          features: [{ name: 'prefers-color-scheme', value: theme }, { name, value }],
-        })
+    test('system material overrides keep both toolbar surfaces opaque and readable', async ({ page, context }) => {
+      const session = await context.newCDPSession(page)
+      const preferences = [
+        ['prefers-reduced-transparency', 'reduce'],
+        ['prefers-contrast', 'more'],
+        ['forced-colors', 'active'],
+      ] as const
+      try {
+        // All media variants use the same two rendered pages. They do not need
+        // a new browser context and a document reload for every preference.
         for (const [route, selector] of [['/popular-scenes', '.pop-toolbar'], ['/prompt-builder', '.gen-bar']]) {
           await page.goto(route)
-          expect(await page.evaluate(query => matchMedia(query).matches, `(${name}: ${value})`)).toBe(true)
-          for (const surface of [page.locator('.nav'), page.locator(selector)]) {
-            await expectSolid(surface)
-            if (name !== 'prefers-reduced-transparency') {
-              expect((await surfaceMetrics(surface)).borderRatio).toBeGreaterThanOrEqual(3)
+          for (const [name, value] of preferences) {
+            await session.send('Emulation.setEmulatedMedia', {
+              features: [{ name: 'prefers-color-scheme', value: theme }, { name, value }],
+            })
+            expect(await page.evaluate(query => matchMedia(query).matches, `(${name}: ${value})`)).toBe(true)
+            for (const surface of [page.locator('.nav'), page.locator(selector)]) {
+              await expectSolid(surface)
+              if (name !== 'prefers-reduced-transparency') {
+                expect((await surfaceMetrics(surface)).borderRatio).toBeGreaterThanOrEqual(3)
+              }
             }
           }
         }
-        if (name === 'forced-colors') {
-          await setGlassPreference(page, true)
-          await expectSolid(page.locator('.nav'))
-          await expectSolid(page.locator('.gen-bar'))
-          expect((await surfaceMetrics(page.locator('.gen-bar'))).borderRatio).toBeGreaterThanOrEqual(3)
-        }
-        await session.detach()
-      })
-    }
+        await setGlassPreference(page, true)
+        await expectSolid(page.locator('.nav'))
+        await expectSolid(page.locator('.gen-bar'))
+        expect((await surfaceMetrics(page.locator('.gen-bar'))).borderRatio).toBeGreaterThanOrEqual(3)
+      } finally { await session.detach() }
+    })
 
     for (const width of [1440]) {
       test(`real dialog stays readable, keeps padding clicks and restores focus at ${width}px`, async ({ page }, info) => {

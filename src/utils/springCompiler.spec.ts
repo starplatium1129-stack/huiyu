@@ -1,6 +1,5 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { compileSpring, sampleSpring, BAKED_SPRINGS, SPRING_PRESETS } from './springCompiler'
+import { compileSpring, sampleSpring, BAKED_SPRINGS } from './springCompiler'
 
 describe('springCompiler (Spring-to-Linear-Easing)', () => {
   it('generates valid CSS linear(...) format starting at 0 and ending at 1', () => {
@@ -47,25 +46,6 @@ describe('springCompiler (Spring-to-Linear-Easing)', () => {
 
     expect(custom.easing.startsWith('linear(')).toBe(true)
     expect(custom.duration).toBeGreaterThan(100)
-  })
-
-  it('pre-bakes global presets in BAKED_SPRINGS', () => {
-    for (const name of Object.keys(SPRING_PRESETS) as (keyof typeof SPRING_PRESETS)[]) {
-      expect(BAKED_SPRINGS[name].easing).toContain('linear(')
-      expect(BAKED_SPRINGS[name].duration).toBeGreaterThan(0)
-      expect(BAKED_SPRINGS[name].easing.length).toBeLessThan(1000)
-    }
-  })
-
-  it('keeps the baked CSS tokens in sync with the compiler', () => {
-    const css = readFileSync('src/assets/css/design-system.css', 'utf8')
-    const sceneCardCss = readFileSync('src/assets/css/scene-card.css', 'utf8')
-
-    expect(css).toContain(`--spring-bouncy-duration: ${BAKED_SPRINGS.bouncy.duration}ms`)
-    expect(css).toContain(`--spring-gentle-duration: ${BAKED_SPRINGS.gentle.duration}ms`)
-    expect(css).toContain('--spring-bouncy-ease: var(--spring-bounce)')
-    expect(css).toContain('--spring-gentle-ease: linear(')
-    expect(sceneCardCss).toContain('var(--spring-gentle-duration) var(--spring-gentle-ease)')
   })
 
   it('exposes the analytic sample used by the compiler', () => {

@@ -40,6 +40,10 @@ afterEach(() => { archiveKv.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals()
 describe('independent chat preference persistence', () => {
   it('does not read or serialize message history or archives when typing or adjusting volume', async () => {
     const storage = await open()
+    for (const [input, expected] of [[-10, 0], [120, 100], [NaN, 80], [Infinity, 80], [24.8, 25]]) {
+      storage.setVolume(input)
+      expect(storage.state.settings.volume).toBe(expected)
+    }
     const content = vi.fn(() => 'expensive history')
     storage.messages().push({ mid: 'one', role: 'user', stopped: false, get content() { return content() } })
     const get = vi.spyOn(localStorage, 'getItem')

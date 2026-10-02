@@ -14,7 +14,11 @@ for (const theme of ['dark']) {
       await page.keyboard.press('F1')
       const dialog = page.getByRole('dialog', { name: '键盘快捷键' })
       await expect(dialog).toBeVisible()
-      await page.waitForTimeout(650)
+      await dialog.evaluate(async element => {
+        await Promise.all(element.getAnimations({ subtree: true })
+          .filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity)
+          .map(animation => animation.finished.catch(() => {})))
+      })
       const rect = (await dialog.boundingBox())!
       if (!baseline) baseline = rect
       expect(Math.abs(rect.width - baseline.width)).toBeLessThan(.5)
@@ -43,7 +47,7 @@ for (const theme of ['dark']) {
     await page.keyboard.press('Escape'); await expect(dialog).toBeHidden()
     await page.locator('.nav-search').click()
     await expect(page.locator('.global-search')).toHaveCSS('opacity', '1')
-    await expect(page.locator('.gs-panel')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)')
+    expect(await page.locator('.gs-panel').evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).isIdentity)).toBe(true)
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-reduced-motion', 'true')
     await expect(page.locator('html')).toHaveAttribute('data-fluid-effects', 'low')
@@ -63,7 +67,7 @@ for (const theme of ['dark']) {
     await page.getByRole('button', { name: '故事', exact: true }).first().click()
     const drawer = page.getByRole('dialog', { name: '场景故事' })
     await expect(drawer).toBeVisible()
-    await page.waitForTimeout(650)
+    await expect(drawer).toHaveCSS('opacity', '1')
     const title = await drawer.locator('h3').textContent()
     await page.screenshot({ path: `scripts/archive/fluid-complete/verified/${theme}-story.png` })
     await page.keyboard.press('Escape')

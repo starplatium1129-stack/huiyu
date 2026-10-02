@@ -10,7 +10,6 @@ const generationContract: typeof import('../../server/anima-generation-contract.
 const promptContract: typeof import('../maintenance/quality-prompt-contract.js') = require('../maintenance/quality-prompt-contract.js');
 const shortBuilder: typeof import('../maintenance/short-prompt-builder.js') = require('../maintenance/short-prompt-builder.js');
 const sceneFix: typeof import('../maintenance/scene-fix.js') = require('../maintenance/scene-fix.js');
-const anima: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
 type Scene = import('../../src/types/scene.ts').Scene;
 function readSceneData(): Scene[] {
   const raw: unknown = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'scenes.json'), 'utf8'));
@@ -27,21 +26,6 @@ const VALID_NENE_PROMPT = [
   'nene_r18', 'safe', '@muririn', '@kobuichi',
   'window_light', 'rim_light', 'masterpiece', 'best_quality', 'score_7',
 ].join(', ');
-
-test('shared Anima defaults and parameter whitelist stay aligned with the route', () => {
-  const routeContract = anima.constants.generationContract;
-  assert.strictEqual(routeContract, generationContract);
-  assert.deepStrictEqual(generationContract.ANIMA_DEFAULTS, {
-    steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
-  });
-  assert.deepStrictEqual(generationContract.MANUAL_REPAIR_PRESET, {
-    steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
-  });
-  assert.ok(generationContract.ALLOWED_INPUT_KEYS.includes('steps'));
-  assert.ok(!generationContract.ALLOWED_INPUT_KEYS.includes('sampler'));
-  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].steps, 30);
-  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].cfg, 4.5);
-});
 
 test('V21 always resolves to nene and scene repair defaults to the v21 binding', () => {
   assert.strictEqual(

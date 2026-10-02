@@ -18,8 +18,8 @@ for (const theme of ['dark']) {
     await expect(share).toBeChecked({ checked: initial })
     const voice = page.getByRole('switch', { name: /打开控制面板时自动启动语音/ })
     await voice.scrollIntoViewIfNeeded()
-    await voice.focus()
-    await expect(voice).toBeFocused()
+    // This offline fixture has no authoritative service status; auto-start is unavailable.
+    await expect(voice).toBeDisabled()
     // Keep auto-start off; toggling the sharing preference itself must persist.
     await share.setChecked(!initial)
     await page.reload()
@@ -47,3 +47,22 @@ for (const theme of ['dark']) {
     await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'basic')
   })
 }
+
+test('single studio characters can select Comfy engines; dual characters remain restricted', async ({ page }) => {
+  await page.goto('/prompt-builder')
+  await page.getByRole('button', { name: '夏目', exact: true }).click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  const engineGroup = page.getByRole('group', { name: '出图引擎' })
+  await expect(engineGroup).toBeVisible()
+  await expect(engineGroup.getByRole('button')).toHaveCount(3)
+  const engines = engineGroup.getByRole('button')
+  await expect(engines.nth(1)).toBeEnabled()
+  await expect(engines.nth(2)).toBeEnabled()
+  await engines.nth(1).click()
+  await expect(engines.nth(1)).toHaveAttribute('aria-pressed', 'true')
+  await page.locator('.char-row .char-btn').last().click()
+  await expect(engines.nth(1)).toBeDisabled()
+  await expect(engines.nth(2)).toBeDisabled()
+  await page.getByRole('button', { name: '宁宁', exact: true }).click()
+  await expect(engines.nth(1)).toBeEnabled()
+})

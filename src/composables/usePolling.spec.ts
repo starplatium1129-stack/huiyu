@@ -65,20 +65,6 @@ describe('usePolling —— 轮询通用底座', () => {
     polling.stop()
   })
 
-  it('start 立即 tick 一次并按 interval 排程；stop 清空计时器', async () => {
-    const t = fakeTimers()
-    const tick = vi.fn()
-    const polling = usePolling({ intervalMs: 1000, tick, ...t })
-
-    polling.start()
-    expect(tick).toHaveBeenCalledTimes(1)
-    expect(t.pendingCount()).toBe(1)
-
-    polling.stop()
-    expect(t.pendingCount()).toBe(0)
-    expect(polling.isActive()).toBe(false)
-  })
-
   it('in-flight 去重：tick 未完成时不触发下一次', async () => {
     const t = fakeTimers()
     let release: (() => void) | null = null
@@ -87,6 +73,8 @@ describe('usePolling —— 轮询通用底座', () => {
     const polling = usePolling({ intervalMs: 1000, tick, ...t })
 
     polling.start() // 立即 tick（挂在 gate 上）
+    expect(tick).toHaveBeenCalledTimes(1)
+    expect(t.pendingCount()).toBe(1)
     await t.runDue() // interval 触发第二次 tick —— 应被去重
     expect(tick).toHaveBeenCalledTimes(1)
 
@@ -94,6 +82,9 @@ describe('usePolling —— 轮询通用底座', () => {
     await Promise.resolve()
     await t.runDue()
     expect(tick).toHaveBeenCalledTimes(2)
+    polling.stop()
+    expect(t.pendingCount()).toBe(0)
+    expect(polling.isActive()).toBe(false)
   })
 
   it('tick 返回 false 自动停止', async () => {

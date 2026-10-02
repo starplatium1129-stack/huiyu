@@ -3,10 +3,15 @@ import { build } from 'esbuild'
 
 type GlassApi = typeof import('../../src/utils/fluidGlassRenderer')
 
-test('glass maps use async encoding, share matching geometry and preserve lens pixels', async ({ page }) => {
+let fixtureScript: string
+test.beforeAll(async () => {
   const bundle = await build({ stdin: { contents: "export * from './src/utils/fluidGlassRenderer'", resolveDir: process.cwd() }, bundle: true, write: false, format: 'iife', globalName: 'GlassFixture' })
+  fixtureScript = bundle.outputFiles[0].text
+})
+
+test('glass maps use async encoding, share matching geometry and preserve lens pixels', async ({ page }) => {
   await page.setContent('<style>.nav{width:300px;height:80px;border-radius:20px}</style><div class="nav"></div><div class="nav"></div>')
-  await page.addScriptTag({ content: bundle.outputFiles[0].text })
+  await page.addScriptTag({ content: fixtureScript })
   const result = await page.evaluate(async () => {
     const api = (window as unknown as { GlassFixture: GlassApi }).GlassFixture
     const root = document.documentElement; root.dataset.glassMaterial = 'liquid'
@@ -42,9 +47,8 @@ test('glass maps use async encoding, share matching geometry and preserve lens p
 })
 
 test('disposing glass while encoding prevents late filters from returning', async ({ page }) => {
-  const bundle = await build({ stdin: { contents: "export * from './src/utils/fluidGlassRenderer'", resolveDir: process.cwd() }, bundle: true, write: false, format: 'iife', globalName: 'GlassFixture' })
   await page.setContent('<div class="nav" style="width:300px;height:80px;border-radius:20px"></div>')
-  await page.addScriptTag({ content: bundle.outputFiles[0].text })
+  await page.addScriptTag({ content: fixtureScript })
   const result = await page.evaluate(async () => {
     const api = (window as unknown as { GlassFixture: GlassApi }).GlassFixture
     document.documentElement.dataset.glassMaterial = 'liquid'
