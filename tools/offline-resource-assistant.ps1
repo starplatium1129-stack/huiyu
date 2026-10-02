@@ -77,8 +77,9 @@ function Get-OfflineError([string]$Message) {
     'UNTRUSTED_RELEASE|approval|identity mismatch' { '资源包未获当前助手批准。请从官方来源取得匹配的助手和 ZIP；不要使用包内哈希代替审批。'; break }
     'LOCK|BUSY|lease|占用|锁' { '运行目录正在使用中。请保存工作，从托盘完全退出绘遇，等待退出完成后点击「重试安装」。'; break }
     'USAGE|Unknown.*argument' { '当前程序版本尚不支持图形助手的安全取消功能。请安装配套新版绘遇，再重试。'; break }
-    'CANCELLED|cancelled|取消|TIMEOUT' { '任务已取消或超时。未确认安装完成；保留的暂存目录可用于恢复。'; break }
+    'CANCELLED|cancelled|取消|TIMEOUT' { '任务已取消或超时，未确认安装完成。若已进入原生安装阶段，请先用同一 ZIP 重试完成恢复，再启动绘遇；待恢复事务可能阻止程序启动。'; break }
     'space|disk|空间' { '可用磁盘空间不足。请为临时解压目录与资源库准备空间后重试。'; break }
+    'UnauthorizedAccess|Access.*denied|拒绝访问|权限' { '当前用户无法写入所选目录。请在高级选项选择自己的可写运行目录；不要以其他管理员身份运行助手，以免安装到其他用户的资料中。'; break }
     'Missing path|Multiple installations' { '未找到唯一可用的绘遇安装。请在「安装位置与高级选项」选择程序目录后重新校验。'; break }
     'hash mismatch|ZIP|inventory|Metadata|Unsafe|Linked' { '资源包损坏、内容不一致或路径不安全。请从官方来源重新取得完整 ZIP 后再校验。'; break }
     default { '导入未确认完成。请查看下方诊断，保留暂存目录，排除问题后使用同一 ZIP 重试。' }
@@ -108,6 +109,11 @@ function Start-OfflineJob([bool]$Apply) {
   $state = [hashtable]::Synchronized(@{ Cancel=$false; Phase='inventory'; Done=0; Total=0; Finished=$false; Error=$null; Result=$null; Staging=$null; CanResume=$false })
   $options = @{ Archive=$controls.Archive.Text; InstallDir=$controls.InstallDir.Text.Trim(); RuntimeRoot=$controls.RuntimeRoot.Text.Trim();
     TrustedRelease=$true; Verify=$true; ProgressState=$state; Apply=$Apply }
+  if ($Apply) {
+    # Install exactly where the successful preview and confirmation said.
+    $options.InstallDir = $ui.Preview.installDir
+    $options.RuntimeRoot = $ui.Preview.runtimeRoot
+  }
   if ($Apply -and $ui.Staging) { $options.ResumeStaging = $ui.Staging }
   $shell = [PowerShell]::Create()
   $shell.AddScript({ param($worker, $options, $state)
@@ -172,13 +178,16 @@ $timer.Add_Tick({
   if ($state.Error) {
     $controls.Status.Text = '未完成 · 可以重试'
     $controls.Details.Text = Get-OfflineError $state.Error
-    if ($state.Staging) { $controls.Details.Text += "`r`n`r`n暂存目录已保留：$($state.Staging)`r`n请勿删除。完整暂存可用「重试安装」继续；关闭助手后也可重新选择同一 ZIP 恢复。" }
+    if ($state.Staging) {
+      $recovery = if ($state.CanResume) { '完整暂存可用「重试安装」继续。' } else { '解压尚未完成；重试会重新解压 ZIP。' }
+      $controls.Details.Text += "`r`n`r`n暂存目录已保留：$($state.Staging)`r`n请勿删除。$recovery 关闭助手后也可重新选择同一 ZIP 恢复。"
+    }
     if ($ui.Applying) { $controls.Install.Content = '重试安装' }
   } elseif ($ui.Applying) {
     $ui.Staging = $null; $ui.Ready = $false
     $controls.Progress.Value = 100
     $controls.Status.Text = '安装完成 · 请重新启动绘遇'
-    $controls.Details.Text = "已安装：$($state.Result.releaseId)`r`n`r`n请重新启动绘遇，断网检查角色原图、场景卡片及样张画册。模型需单独准备。"
+    $controls.Details.Text = "已安装：$($state.Result.releaseId)`r`n`r`n请重新启动绘遇，断网检查角色原图、场景卡片及样张画册。模型需单独准备。`r`n`r`n已有自定义样张目录和个人配置会保留；如仍显示旧样张，请检查当前样张目录设置。"
     if ($state.Staging) { $controls.Details.Text += "`r`n`r`n安装成功，临时文件未能清理：$($state.Staging)" }
   } else {
     $ui.Preview = $state.Result; $ui.Ready = $true

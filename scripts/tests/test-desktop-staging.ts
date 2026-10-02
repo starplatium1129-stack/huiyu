@@ -31,6 +31,15 @@ test('game installer preserves upstream install and maintenance behavior', () =>
   const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
   const sections = (text: any) => text.slice(text.indexOf('Section EarlyChecks'));
   let payload = sections(themed);
+  assert.equal((payload.match(/Call GameCheckStopped/g) || []).length, 2, 'check before prerequisites and again before application replacement');
+  assert.equal((payload.match(/Call un.GameCheckStopped/g) || []).length, 1, 'uninstall must reject active processes');
+  assert.equal((payload.match(/Call GameCreateResourceShortcut/g) || []).length, 1);
+  assert.equal((payload.match(/Call un.GameRemoveResourceShortcut/g) || []).length, 1);
+  payload = payload.replace('Section EarlyChecks\n  Call GameCheckStopped', 'Section EarlyChecks')
+    .replaceAll('Call GameCheckStopped', '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"')
+    .replaceAll('Call un.GameCheckStopped', '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"')
+    .replace('  Call GameCreateResourceShortcut\n\n', '')
+    .replace('\n    Call un.GameRemoveResourceShortcut', '');
   assert.equal((payload.match(/"\$INSTDIR\\huiyu-icon.ico" 0/g) || []).length, 3);
   payload = payload.replaceAll(' "" "$INSTDIR\\huiyu-icon.ico" 0', '')
     .replace("\n  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'", '');
@@ -49,18 +58,35 @@ test('game installer preserves upstream install and maintenance behavior', () =>
   }
   payload = payload.replaceAll('绘遇 HUIYU.lnk', '${PRODUCTNAME}.lnk')
     .replace('"DisplayName" "绘遇 · HUIYU"', '"DisplayName" "${PRODUCTNAME}"');
-  assert.equal(payload, sections(source), 'only display name and guarded shortcut migration may differ; payload and upgrade behavior stay upstream-owned');
+  assert.equal(payload, sections(source), 'only branding, owned shortcuts and non-destructive running checks may differ; payload and data removal stay upstream-owned');
   for (const key of ['PRODUCTNAME', 'UNINSTKEY', 'MANUPRODUCTKEY']) {
     const definition = new RegExp(`!define ${key} [^\\r\\n]+`);
     assert.equal(themed.match(definition)?.[0], source.match(definition)?.[0], key);
   }
   for (const name of ['.onInit', 'PageLeaveReinstall', 'RunMainBinary']) {
     const block = (text: any) => text.slice(text.indexOf(`Function ${name}`), text.indexOf('FunctionEnd', text.indexOf(`Function ${name}`)));
-    assert.equal(block(themed), block(source), name);
+    const actual = block(themed).replace('\n    Call GameCheckPreviousStopped', '');
+    assert.equal(actual, block(source), name);
   }
   assert.match(themed, /Page custom GameDirectory GameDirectoryLeave/);
   assert.match(themed, /Page custom GameFinish GameFinishLeave/);
   assert.throws(() => customizeTemplate(source.replace('!insertmacro MUI_PAGE_WELCOME', '; removed'), 'a', 'b'), /anchor drift/);
+});
+
+test('native installer refuses active processes and preserves shortcut ownership', {
+  skip: process.platform !== 'win32' || !fs.existsSync(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'))
+    || !fs.existsSync(path.resolve('desktop-tauri/src-tauri/target/release/nsis/x64/utils.nsh'))
+    ? 'requires Windows NSIS and generated Tauri NSIS helpers' : false,
+}, () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-installer-policy-中文 空格-'));
+  try {
+    const fixture = spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+      path.join(__dirname, 'fixtures/installer-policy.ps1'), '-workspaceRoot', path.resolve(__dirname, '../..'), '-auditRoot', root],
+    { encoding: 'utf8', windowsHide: true, timeout: 90_000 });
+    assert.ifError(fixture.error);
+    assert.equal(fixture.status, 0, fixture.stdout + fixture.stderr);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'result.json'), 'utf8').replace(/^\uFEFF/, '')).result, 'PASS');
+  } finally { remove(root); }
 });
 
 function write(filePath: any, content: any) {
@@ -146,6 +172,14 @@ test('Rust stage verifies bound inputs, excludes legacy/private files, and repla
     for (const name of ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1']) {
       assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools', name), 'utf8'), `offline helper: ${name}`);
     }
+    const assistant = path.join(root, 'tools/offline-resource-assistant.ps1');
+    fs.unlinkSync(assistant);
+    assert.throws(() => stageResources({ root, stage, logger: () => {} }), /offline resource assistant|ENOENT/);
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/tools/offline-resource-assistant.ps1'), 'utf8'), 'offline helper: offline-resource-assistant.ps1', 'failed staging must preserve the previous complete helper');
+    write(assistant, '');
+    assert.throws(() => stageResources({ root, stage, logger: () => {} }), /offline resource assistant/);
+    assert.equal(fs.readFileSync(path.join(stage, 'gateway/huiyu-runtime.exe'), 'utf8'), 'binary');
+    write(assistant, 'offline helper: offline-resource-assistant.ps1');
     assert.equal(fs.readFileSync(path.join(stage,'gateway/tools/interrogate/pixai_worker.py'),'utf8'),'# model worker');
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/pixai-manifest.json')),true);
     assert.equal(fs.existsSync(path.join(stage,'gateway/tools/interrogate/test_pixai_worker.py')),false);

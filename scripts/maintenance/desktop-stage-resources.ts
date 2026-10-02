@@ -13,8 +13,8 @@ const ROOT = path.resolve(__dirname, '../..');
 const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
 const DATA_SHARDS=new Set(['blueprints','popular','references','scenes','tags']);
-const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','install-translation-model.ps1',
-  'Install-OfflineResources.cmd','offline-resource-assistant.ps1','install-offline-resources.ps1']);
+const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1'];
+const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
 function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
@@ -60,6 +60,10 @@ function stageResources(options: StageOptions = {}) {
   const logger = options.logger || console.log, profile = options.resourceProfile || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'full';
   if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
   runtimeBuild(root); // Fail before replacing or copying anything if source/executable binding is stale.
+  for (const name of OFFLINE_TOOLS) {
+    const file = safe.resolveSafe(root, `tools/${name}`);
+    if (!fs.statSync(file).isFile() || fs.statSync(file).size === 0) throw Error(`Missing offline resource assistant: ${name}`);
+  }
   fs.mkdirSync(path.dirname(stage), { recursive: true });
   const temporary = fs.mkdtempSync(`${stage}.tmp-${process.pid}-`), gateway = path.join(temporary, 'gateway');
   fs.mkdirSync(gateway);

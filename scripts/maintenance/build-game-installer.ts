@@ -1,6 +1,6 @@
 'use strict';
 
-// Pinned Tauri template + small presentation patch; never fork payload/upgrade logic.
+// Pinned Tauri payload/data removal, with product UI, owned shortcuts and stop guards.
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
@@ -20,6 +20,13 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   const escapePath = (value: any) => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
+  output = replaceOnce(output, 'Section EarlyChecks', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nSection EarlyChecks\n  Call GameCheckStopped`);
+  const runningCheck = '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"';
+  if (output.split(runningCheck).length !== 3) throw new Error('Installer running-check anchor drift');
+  output = output.replace(runningCheck, 'Call GameCheckStopped').replace(runningCheck, 'Call un.GameCheckStopped');
+  output = replaceOnce(output, '  reinst_uninstall:\n    HideWindow', '  reinst_uninstall:\n    Call GameCheckPreviousStopped\n    HideWindow');
+  output = replaceOnce(output, '  !ifmacrodef NSIS_HOOK_POSTINSTALL', '  Call GameCreateResourceShortcut\n\n  !ifmacrodef NSIS_HOOK_POSTINSTALL');
+  output = replaceOnce(output, '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1', '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1\n    Call un.GameRemoveResourceShortcut');
   output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 HUIYU · 安装"');
   // Display branding is separate from PRODUCTNAME: that name is the legacy
   // uninstall registry key and installation directory used by update discovery.
@@ -59,7 +66,7 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   output = replaceOnce(output, '${NSD_CreateRadioButton} 30u 70u -30u 8u $R3\n    Pop $R3',
     '${NSD_CreateRadioButton} 56% 73% 38% 8% $R3\n    Pop $R3\n    System::Call \'uxtheme::SetWindowTheme(p $R3,w "",w "")\'\n    SendMessage $R3 ${WM_SETFONT} $GameSmallFont 1\n    SetCtlColors $R3 "F6F0FA" "14192D"');
   output = replaceOnce(output, '    nsDialogs::Show', '    Call GameShowPage');
-  // Replace presentation callbacks only; the Uninstall section stays byte-identical.
+  // Replace presentation callbacks; payload/data deletion remains upstream-owned.
   const uninstallStart = output.indexOf('; Uninstaller Pages');
   const uninstallEnd = output.indexOf(';Languages', uninstallStart);
   if (uninstallStart < 0 || uninstallEnd < 0) throw new Error('Uninstaller page anchor drift');

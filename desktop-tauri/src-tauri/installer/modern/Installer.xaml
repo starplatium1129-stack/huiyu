@@ -115,7 +115,7 @@
               <Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Foreground" Value="{DynamicResource AccentText}"/><Setter Property="Background" Value="{DynamicResource Accent}"/><Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource AccentHover}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource DisabledText}"/></Trigger></Style.Triggers></Style></Button.Style>
               <StackPanel Orientation="Horizontal"><TextBlock x:Name="MainAction" Text="安装绘遇" FontSize="15" FontWeight="SemiBold"/><Path Data="@ICON_ARROW@" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Width="18" Height="18" Stretch="Uniform" Margin="14,1,0,0"/></StackPanel>
             </Button>
-            <TextBlock x:Name="Footnote" Text="安装时可能需要 Windows 管理员授权" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock x:Name="Footnote" Text="安装需要 Windows 管理员授权。请先保存工作，并从托盘菜单完全退出绘遇。" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap"/>
           </StackPanel>
         </Border>
       </Grid>

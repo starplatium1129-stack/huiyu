@@ -10,8 +10,13 @@ const { planRelease, applyRelease }: typeof import('../lib/offline-release') = r
 const { digest }: typeof import('../lib/resource-install-fs') = require('../lib/resource-install-fs');
 
 function fixture(t: import('node:test').TestContext) {
-  const base = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-offline-release-test-'));
-  t.after(() => fs.rmSync(base, { recursive: true, force: true }));
+  const temporary = fs.realpathSync.native(os.tmpdir());
+  const base = fs.mkdtempSync(path.join(temporary, 'huiyu-offline-release-test-中文 空格-'));
+  t.after(() => {
+    assert.equal(path.dirname(fs.realpathSync.native(base)), temporary);
+    assert.ok(path.basename(base).startsWith('huiyu-offline-release-test-'));
+    fs.rmSync(base, { recursive: true, force: true });
+  });
   const root = path.join(base, 'project'), showcaseRoot = path.join(base, 'published'), destination = path.join(base, 'output/release');
   const write = (file: string, value: string | Buffer) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
   write(path.join(root, 'package.json'), JSON.stringify({ version: '1.7.2' }));
@@ -131,11 +136,14 @@ test('attachment failure publishes no output and the same publisher command can 
 test('graphical worker retains verified staging on native failure and cooperatively cancels a resumed child', { skip: process.platform !== 'win32' }, async t => {
   const f = fixture(t), plan = planRelease(f); await applyRelease(plan);
   const repo = path.resolve(__dirname, '../..'), archive = path.join(f.base, 'release.zip');
-  const install = path.join(f.base, 'installed with spaces'), runtime = path.join(f.base, 'userdata/gateway');
+  const install = path.join(f.base, '程序 安装'), runtime = path.join(f.base, '用户 资料/gateway');
   fs.mkdirSync(path.join(install, 'gateway'), { recursive: true });
+  for (const name of ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1']) {
+    f.write(path.join(install, 'gateway/tools', name), fs.readFileSync(path.join(repo, 'tools', name)));
+  }
   const quote = (value: string) => "'" + value.replaceAll("'", "''") + "'";
   const runner = path.join(f.base, 'exercise.ps1');
-  f.write(runner, `
+  f.write(runner, `\uFEFF
 $ErrorActionPreference='Stop'
 & ${quote(path.join(repo, 'scripts/maintenance/archive-offline-release.ps1'))} -Source ${quote(f.destination)} -Archive ${quote(archive)}
 Add-Type -OutputAssembly ${quote(path.join(install, 'gateway/huiyu-runtime.exe'))} -OutputType ConsoleApplication -TypeDefinition @'
@@ -143,19 +151,33 @@ using System;
 using System.IO;
 public class NativeFixture {
   public static int Main(string[] args) {
-    if (Array.IndexOf(args, "--help") >= 0) { Console.WriteLine("{\\\"ok\\\":true,\\\"usage\\\":\\\"--cancel-stdin\\\"}"); return 0; }
+    if (Array.IndexOf(args, "--help") >= 0) {
+      bool old = File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "old-runtime"));
+      Console.WriteLine(old ? "{\\\"ok\\\":true,\\\"usage\\\":\\\"old runtime\\\"}" : "{\\\"ok\\\":true,\\\"usage\\\":\\\"--cancel-stdin\\\"}"); return 0;
+    }
     string package = args[Array.IndexOf(args, "--package-root") + 1];
     string app = args[Array.IndexOf(args, "--app-root") + 1];
+    string runtime = args[Array.IndexOf(args, "--runtime-root") + 1];
+    if (Path.GetFullPath(app) != AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\\\') || !runtime.EndsWith("gateway\\\\")) return 43;
     if (Array.IndexOf(args, "--cancel-stdin") < 0 || !File.Exists(Path.Combine(package, "release.json"))) return 42;
     File.AppendAllText(Path.Combine(app, "calls.txt"), package + "\\n");
     if (File.Exists(Path.Combine(app, "wait"))) { Console.In.Read(); Console.Error.WriteLine("CANCELLED cooperatively"); return 7; }
+    if (File.Exists(Path.Combine(app, "succeed"))) { Console.WriteLine("{\\\"ok\\\":true,\\\"kind\\\":\\\"huiyu-offline-import-result\\\",\\\"releaseId\\\":\\\"fixture-r1\\\"}"); return 0; }
     Console.Error.WriteLine("LOCKED fixture"); return 9;
   }
 }
 '@
 $state=[hashtable]::Synchronized(@{Cancel=$false; CanResume=$false; Staging=$null})
-$options=@{Archive=${quote(archive)}; ExpectedReleaseSha256=${quote(plan.summary.expectedReleaseSha256)}; InstallDir=${quote(install)}; RuntimeRoot=${quote(runtime)}; Apply=$true; ProgressState=$state}
-$worker=${quote(path.join(repo, 'tools/install-offline-resources.ps1'))}
+$options=@{Archive=${quote(archive)}; ExpectedReleaseSha256=${quote(plan.summary.expectedReleaseSha256)}; RuntimeRoot=${quote(runtime + path.sep)}; Apply=$true; ProgressState=$state}
+$worker=${quote(path.join(install, 'gateway/tools/install-offline-resources.ps1'))}
+# Verification detects an incompatible binary without touching any user directory.
+[IO.File]::WriteAllText(${quote(path.join(install, 'gateway/old-runtime'))}, 'old')
+$options.Apply=$false; $options.Verify=$true
+try { & $worker @options; throw 'Expected incompatible native runtime' } catch { if ($_.Exception.Message -notmatch 'USAGE:') { throw } }
+Remove-Item -LiteralPath ${quote(path.join(install, 'gateway/old-runtime'))}
+$preview=(& $worker @options) | ConvertFrom-Json
+if ($preview.installDir -ne ${quote(install)} -or -not $preview.verified -or $state.Staging) { throw 'Bundled preview path/capability check failed' }
+$options.Apply=$true
 try { & $worker @options; throw 'Expected native failure' } catch { if ($_.Exception.Message -notmatch 'LOCKED fixture') { throw } }
 if (-not $state.CanResume -or -not (Test-Path -LiteralPath $state.Staging)) { throw 'Missing recovery staging' }
 $retained=$state.Staging
@@ -174,15 +196,20 @@ try {
   if ($state.Failure -notmatch 'CANCELLED cooperatively') { throw ('Unexpected cancellation: '+$state.Failure) }
   if ((Get-Content -LiteralPath ${quote(path.join(install, 'gateway/calls.txt'))}).Count -ne 2) { throw 'Retry did not invoke native importer' }
   if (-not (Test-Path -LiteralPath $retained)) { throw 'Recovery input was removed' }
+  Remove-Item -LiteralPath ${quote(path.join(install, 'gateway/wait'))}
+  [IO.File]::WriteAllText(${quote(path.join(install, 'gateway/succeed'))}, 'succeed')
+  $state.Cancel=$false
+  $result=(& $worker @options) | ConvertFrom-Json
+  if (-not $result.ok -or (Test-Path -LiteralPath $retained) -or $state.CanResume -or $state.Staging) { throw 'Retry after cancel did not confirm and clean staging' }
   if (Test-Path -LiteralPath ${quote(runtime)}) { throw 'Fixture touched target user runtime' }
-  Write-Output 'FAILURE_RESUME_CANCEL_OK'
+  Write-Output 'BUNDLED_UNICODE_PREVIEW_FAILURE_RESUME_CANCEL_RETRY_OK'
 } finally {
   $tempRoot=[IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp'))+'\\'
   $resolved=[IO.Path]::GetFullPath($retained)
   if (-not $resolved.StartsWith($tempRoot,[StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($resolved) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe fixture cleanup' }
-  Remove-Item -LiteralPath $resolved -Recurse -Force
+  if (Test-Path -LiteralPath $resolved) { Remove-Item -LiteralPath $resolved -Recurse -Force }
 }
 `);
   const output = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-File', runner], { windowsHide: true, encoding: 'utf8', stdio: 'pipe', timeout: 45000 });
-  assert.match(output, /FAILURE_RESUME_CANCEL_OK/);
+  assert.match(output, /BUNDLED_UNICODE_PREVIEW_FAILURE_RESUME_CANCEL_RETRY_OK/);
 });

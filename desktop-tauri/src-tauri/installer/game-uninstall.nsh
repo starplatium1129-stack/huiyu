@@ -1,5 +1,7 @@
 Var DeleteAppDataCheckbox
 Var DeleteAppDataCheckboxState
+Var GameAppDataRoot
+Var GameLocalAppDataRoot
 
 ; Preview uses these same pages in a no-op executable. Production uses un.*.
 !macro GameUninstallPages prefix
@@ -17,7 +19,7 @@ Function ${prefix}GameUninstallConfirm
   ${NSD_AddStyle} $GameControl ${ES_READONLY}
   SendMessage $GameControl ${WM_SETFONT} $GameSmallFont 1
   !insertmacro GameColors $GameControl Ink Card
-  ${NSD_CreateCheckbox} 49% 74% 46% 6% "同时清理当前用户的应用数据（可选）"
+  ${NSD_CreateCheckbox} 49% 74% 46% 6% "清理运行卸载器的账户数据（可选）"
   Pop $DeleteAppDataCheckbox
   System::Call 'uxtheme::SetWindowTheme(p $DeleteAppDataCheckbox,w "",w "")'
   SendMessage $DeleteAppDataCheckbox ${WM_SETFONT} $GameSmallFont 1
@@ -34,7 +36,13 @@ Function ${prefix}GameUninstallConfirmLeave
   ${NSD_GetState} $DeleteAppDataCheckbox $0
   ${If} $0 == ${BST_CHECKED}
     ; Match precisely the existing Tauri cleanup roots; never add a removal path.
-    MessageBox MB_YESNO|MB_ICONEXCLAMATION|MB_DEFBUTTON2 "确定同时清理当前用户的应用数据吗？$\r$\n$\r$\n将清理以下目录及其中的作品、设置和资源：$\r$\n%APPDATA%\${BUNDLEID}$\r$\n%LOCALAPPDATA%\${BUNDLEID}$\r$\n$\r$\n此操作无法通过绘遇撤销，请先备份。选择“否”将返回卸载选项。" IDYES confirmed
+    SetShellVarContext current
+    StrCpy $GameAppDataRoot "$APPDATA\${BUNDLEID}"
+    StrCpy $GameLocalAppDataRoot "$LOCALAPPDATA\${BUNDLEID}"
+    !ifmacrodef SetContext
+      !insertmacro SetContext
+    !endif
+    MessageBox MB_YESNO|MB_ICONEXCLAMATION|MB_DEFBUTTON2 "确定清理运行卸载器的 Windows 账户数据吗？使用其他管理员账户授权时，以下路径属于该管理员。$\r$\n$\r$\n将清理以下目录及其中的作品、设置和资源：$\r$\n$GameAppDataRoot$\r$\n$GameLocalAppDataRoot$\r$\n$\r$\n此操作无法通过绘遇撤销，请先备份。选择“否”将返回卸载选项。" IDYES confirmed
     ${NSD_Uncheck} $DeleteAppDataCheckbox
     Abort
     confirmed:

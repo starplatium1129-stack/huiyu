@@ -127,7 +127,8 @@ namespace Ayaki.Installer {
       cancellation = new CancellationTokenSource();
       try {
         int code = await InstallEngine.Run(options, new System.Progress<InstallProgress>(Progress), cancellation.Token);
-        if (code != 0) throw new IOException("安装未完成（代码 " + code + "）。请重试，或检查安装位置。");
+        if (code == 1618 || code == 1603) throw new IOException("绘遇或资源任务仍在运行，或无法确认程序已退出。请保存工作，从托盘菜单完全退出绘遇，等待资源任务结束，再点击重新尝试。");
+        if (code != 0) throw new IOException("安装未完成（代码 " + code + "）。请确认已从托盘完全退出绘遇，再重试或检查安装位置。");
         SetComplete();
         if (options.Passive || closeRequested) View.Close();
       } catch (OperationCanceledException) {
@@ -144,8 +145,9 @@ namespace Ayaki.Installer {
       Get<TextBlock>("StepText").Text = "03  完成 / 已安装绘遇";
       status.Text = "安装完成"; status.SetResourceReference(TextBlock.ForegroundProperty, "Success");
       Get<TextBlock>("HeroTitle").Text = "绘遇已就绪";
-      Get<TextBlock>("HeroSubtitle").Text = "可以打开绘遇，开始创作。个人内容已保留。";
+      Get<TextBlock>("HeroSubtitle").Text = "个人内容已保留。资源安装助手随程序交付，可安装已下载的资源 ZIP。";
       space.Text = "已安装至 " + directory.Text;
+      if (!options.Preview) Get<TextBlock>("Footnote").Text = "也可在安装位置的 gateway\\tools 文件夹中双击 Install-OfflineResources.cmd";
       SetAction("进入绘遇"); main.IsEnabled = true;
       directory.IsReadOnly = true; browse.IsEnabled = false; shortcut.IsEnabled = false;
     }

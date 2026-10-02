@@ -110,6 +110,16 @@ if ($TrustedRelease -and $ExpectedReleaseSha256) { throw 'Choose catalog approva
 if (-not $TrustedRelease -and -not $ExpectedReleaseSha256) { throw 'Independent release approval is required.' }
 if ($ResumeStaging -and -not $Apply) { throw 'Resume requires Apply.' }
 if (-not $InstallDir) {
+  # A bundled helper belongs to its own installation, even when another edition
+  # has the uninstall registry entry. Standalone release attachments use discovery.
+  $bundledRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+  if ((Split-Path $PSScriptRoot -Leaf) -eq 'tools' -and
+      (Split-Path (Split-Path $PSScriptRoot -Parent) -Leaf) -eq 'gateway' -and
+      (Test-Path -LiteralPath (Join-Path $bundledRoot 'gateway\huiyu-runtime.exe') -PathType Leaf)) {
+    $InstallDir = $bundledRoot
+  }
+}
+if (-not $InstallDir) {
   $locations = @('HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
     'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
     'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio') |
@@ -175,10 +185,12 @@ try {
     $totalBytes += $entry.Length
   }
   if ($seen.Count -ne $expected.Count) { throw 'ZIP is incomplete.' }
+  # Fail during graphical verification, before inviting the user to install or
+  # extracting gigabytes with an incompatible native runtime.
+  if ($ProgressState) { Invoke-NativeImport '' -Probe }
   # TEMP may use an 8.3 alias; the native importer requires the physical long path.
   $tempRoot = [IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp')) + '\'
   if ($Apply) {
-    if ($ProgressState) { Invoke-NativeImport '' -Probe }
     Check-Cancel
     if ($ResumeStaging) {
       $staging = Assert-OrdinaryPath $ResumeStaging

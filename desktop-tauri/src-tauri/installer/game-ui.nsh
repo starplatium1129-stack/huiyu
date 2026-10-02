@@ -29,7 +29,7 @@ Function GameWelcome
   Call GameCreatePage
   !insertmacro GameLabel 49% 29% 46% 10% "让故事，在此相遇。" $GameTitleFont Ink
   !insertmacro GameLabel 49% 46% 46% 16% "为角色、灵感与创作，准备一个专属空间。$\r$\n接下来选择安装位置，即可开始。" $GameFont Muted
-  !insertmacro GameLabel 49% 72% 46% 11% "已有的作品、个人设置与导入资源会被保留。$\r$\n生成模型需要另行配置。" $GameSmallFont Muted
+  !insertmacro GameLabel 49% 72% 46% 11% "个人内容会保留；资源助手随程序交付。$\r$\n安装前请保存并从托盘菜单完全退出绘遇。" $GameSmallFont Muted
   GetDlgItem $0 $HWNDPARENT 1
   SendMessage $0 ${WM_SETTEXT} 0 "STR:开始设置(&N)"
   Call GameShowPage
@@ -52,7 +52,7 @@ Function GameDirectory
   IntOp $GameRequiredSize ${ESTIMATEDSIZE} / 1024
   IntOp $GameRequiredSize $GameRequiredSize + 1
   !insertmacro GameLabel 49% 68% 46% 6% "所需空间约 $GameRequiredSize MB" $GameSmallFont Accent
-  !insertmacro GameLabel 49% 79% 46% 9% "重新安装会保留个人内容。$\r$\n安装时可能需要 Windows 管理员授权。" $GameSmallFont Muted
+  !insertmacro GameLabel 49% 79% 46% 9% "重新安装会保留个人内容。$\r$\n安装需要 Windows 管理员授权。" $GameSmallFont Muted
   GetDlgItem $0 $HWNDPARENT 1
   SendMessage $0 ${WM_SETTEXT} 0 "STR:安装绘遇(&I)"
   Call GameShowPage
@@ -107,7 +107,7 @@ Function GameFinish
   StrCpy $GameStep "03  完成  /  已安装绘遇"
   Call GameCreatePage
   !insertmacro GameLabel 49% 28% 46% 10% "绘遇已就绪" $GameTitleFont Ink
-  !insertmacro GameLabel 49% 43% 46% 12% "安装完成。$\r$\n可以从一个角色或一个念头，开始创作。" $GameFont Muted
+  !insertmacro GameLabel 49% 43% 46% 12% "安装完成，个人内容已保留。$\r$\n资源助手随程序交付：双击安装目录 gateway\tools 中的 Install-OfflineResources.cmd。" $GameFont Muted
   ${NSD_CreateCheckbox} 49% 65% 46% 7% "创建桌面快捷方式"
   Pop $GameShortcut
   System::Call 'uxtheme::SetWindowTheme(p $GameShortcut,w "",w "")'
