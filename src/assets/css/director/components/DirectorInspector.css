@@ -1,0 +1,31 @@
+@reference "../../tailwind.css";
+/* Internal allocation only; layout.css and useDirectorLayout own the canvas and rail widths. */
+.pb[data-director-mode] .inspector-workbench { display:flex; flex-direction:column; }
+.pb .inspector-workbench .inspector-heading { padding:var(--s-3) var(--s-4); }
+.pb .inspector-workbench .inspector-tabs {
+  display:flex; flex-shrink:0; gap:var(--s-1); margin:0 var(--s-3) var(--s-2); padding:var(--s-1);
+  border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base);
+}
+.pb .inspector-workbench .inspector-tabs button {
+  display:flex; flex:1; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:40px;
+  padding:var(--s-1); border:1px solid transparent; border-radius:var(--r-md);
+  background:transparent; color:var(--text-secondary); white-space:nowrap; cursor:pointer;
+  font:600 var(--fs-label)/var(--lh-label) var(--font-sans);
+}
+.pb .inspector-workbench .inspector-tabs button:hover { color:var(--text-primary); background:var(--bg-hover); }
+.pb .inspector-workbench .inspector-tabs button[data-state="active"] {
+  color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft);
+}
+.pb .inspector-workbench :is(.inspector-tabs button, .inspector-scroll):focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+.pb .inspector-count { font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.pb[data-director-mode] .inspector-workbench .inspector-scroll {
+  flex:1 1 auto; gap:var(--s-3); min-height:0; padding:var(--s-3); scrollbar-gutter:stable;
+}
+.pb .inspector-workbench .inspector-section[data-state="active"] { animation:inspector-reveal 120ms ease-out; }
+.pb .inspector-workbench .panel,
+.pb .inspector-workbench .result-frame { padding:0; border:0; background:transparent; box-shadow:none; }
+.pb .inspector-workbench .panel-title { margin-bottom:var(--s-2); }
+.pb .inspector-workbench .generation-settings .toggle-row { grid-column:auto; flex-wrap:wrap; gap:var(--s-1); }
+@keyframes inspector-reveal { from { opacity:0; } to { opacity:1; } }
+@media (prefers-reduced-motion:reduce) { .pb .inspector-workbench .inspector-section[data-state="active"] { animation:none; } }
+@media (forced-colors:active) { .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; } }

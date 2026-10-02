@@ -269,6 +269,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
   const VOICE_TIMEOUT = 12_000;
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder');
+  await page.getByRole('tab', { name: '任务', exact: true }).click();
   await page.locator('details.inspector-voice > summary').filter({ hasText: '配音与字幕' }).click();
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
@@ -316,6 +317,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
   const VOICE_TIMEOUT = 12_000;
   await fault(request, MOCK.tts, { ttsStatus: 500, ttsError: 'RuntimeError: reference audio missing' });
   await page.goto('/prompt-builder');
+  await page.getByRole('tab', { name: '任务', exact: true }).click();
   await page.locator('details.inspector-voice > summary').filter({ hasText: '配音与字幕' }).click();
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 

@@ -1,18 +1,17 @@
 @reference "../../tailwind.css";
 .pb .engine-switch {
   @apply tw:grid tw:gap-s-2 tw:m-0;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 /* Disabled-engine tooltips own a real wrapper; the button still fills its row. */
 .pb .engine-switch > .studio-tooltip-anchor { @apply tw:w-full tw:min-w-0; }
 .pb .engine-btn {
-  @apply tw:relative tw:flex tw:w-full tw:min-w-0 tw:items-center tw:gap-s-3 tw:p-s-3 tw:min-h-[58px] tw:text-left;
+  @apply tw:relative tw:flex tw:flex-col tw:w-full tw:h-full tw:min-w-0 tw:items-start tw:gap-s-2 tw:p-s-2 tw:min-h-[58px] tw:text-left;
   @apply tw:rounded-md;
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
   color: inherit;
   @apply tw:text-label tw:cursor-pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .pb .engine-btn:hover:not(:disabled):not(.active) {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft));
@@ -23,7 +22,7 @@
   @apply tw:border-accent;
   background: var(--accent-soft);
   @apply tw:text-accent;
-  box-shadow: inset 3px 0 var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
 }
 .pb .engine-btn:disabled {
   @apply tw:text-disabled tw:border-soft;
@@ -38,15 +37,12 @@
 .pb .base-model-picker {
   @apply tw:grid;
   grid-template-columns: minmax(0, 1fr);
-  @apply tw:min-w-0 tw:items-center tw:gap-s-2 tw:m-0 tw:p-s-3;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-deep);
+  @apply tw:min-w-0 tw:items-center tw:gap-s-2 tw:m-0;
 }
 .pb .base-model-picker label { @apply tw:text-secondary tw:text-label-xs tw:font-bold; }
 /* 原生 select 已迁至 StudioSelect：触发器沿用其统一样式，仅保留原 42px 高度 */
 .pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
 .pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[42px]; }
 
-.pb .engine-mark { @apply tw:w-[24px] tw:h-[24px] tw:shrink-0; }
+.pb .engine-mark { @apply tw:w-[18px] tw:h-[18px] tw:shrink-0; }
 .pb .engine-copy { @apply tw:block tw:min-w-0; overflow-wrap: anywhere; }

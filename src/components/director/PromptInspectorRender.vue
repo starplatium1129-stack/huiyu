@@ -1,20 +1,7 @@
 <template>
-<details v-if="managedRoute" class="inspector-route">
-  <summary><span>推荐配方与复用</span><ArchiveIcon name="chevron-down" /></summary>
-<ManagedDrawingRouteCard
-      class="pb-managed-route-banner"
-      :route="managedRoute"
-      :history="pb.history"
-      :subject="pb.subject"
-      :expert="pb.directorMode === 'pro'"
-      :busy="generationBusy"
-      @apply="applyManagedRoute"
-      @reuse="reuseSuccessfulRecipe"
-    />
-          </details>
         <!-- Result panel -->
         <div v-content-motion="drawEngine" class="result-frame step-panel" id="stepResult">
-          <div class="panel-title">引擎与输出</div>
+          <div v-if="pb.directorMode === 'pro'" class="panel-title">引擎与输出</div>
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <StudioTooltip anchor :content="engineTitle('sd')">
@@ -103,19 +90,19 @@
             :base-resolution-risk="baseResolutionRisk"
             :base-resolution-hint="baseResolutionHint"
             :can-use-face-detailer="canUseFaceDetailer"
-            :generating="generationBusy"
-            :result-seed="displayResultSeed"
-            :has-result="Boolean(displayResultUrl)"
-            :anima-hires-fix="Boolean(animaState.hiresFix)"
             :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
-            @update:anima-hires-fix="patchAnimaState({ hiresFix: $event })"
-            @upscale-current="upscaleCurrentResult"
             @touch="pb.markParamTouched"
             @enqueue="enqueueCurrent"
             @enqueue-variants="enqueue3Variants"
-            @reuse-seed="reuseLastSeed"
             @reset="resetAll"
           />
+        <details v-if="managedRoute" class="inspector-route">
+          <summary><span>推荐配方与复用</span><ArchiveIcon name="chevron-down" /></summary>
+          <ManagedDrawingRouteCard class="pb-managed-route-banner"
+            :route="managedRoute" :history="pb.history" :subject="pb.subject"
+            :expert="pb.directorMode === 'pro'" :busy="generationBusy"
+            @apply="applyManagedRoute" @reuse="reuseSuccessfulRecipe" />
+        </details>
 </template>
 
 <script setup lang="ts">
@@ -131,7 +118,7 @@ const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQui
 const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 
 const props = defineProps<{ bindings: PromptRenderBindings }>()
-const { pb, displayResultUrl, sd, generationBusy, animaState, drawEngine, upscaleCurrentResult, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute, reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.bindings
+const { pb, sd, generationBusy, animaState, drawEngine, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute, reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.bindings
 
 // —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
 const sdModelOptions = computed<StudioSelectOption[]>(() => [

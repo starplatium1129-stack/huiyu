@@ -49,8 +49,10 @@ for (const theme of ['dark', 'light']) {
       for (const text of await characters.locator('.studio-character-copy strong, .studio-character-copy small').all()) {
         expect(await text.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       }
-      await expect(page.locator('.inspector-route')).not.toHaveAttribute('open', '')
+      await expect(page.locator('.inspector-route').filter({ hasText: '推荐配方与复用' })).not.toHaveAttribute('open', '')
+      await page.getByRole('tab', { name: '任务', exact: true }).click()
       await expect(page.locator('.inspector-voice')).not.toHaveAttribute('open', '')
+      await page.getByRole('tab', { name: '提示词', exact: true }).click()
       await page.locator('#promptMonitor > summary').click()
       await expect(page.locator('#promptMonitor .prompt-health-body')).toBeVisible()
       await page.locator('#promptMonitor > summary').click()

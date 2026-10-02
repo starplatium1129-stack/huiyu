@@ -1,8 +1,6 @@
 @reference "../../tailwind.css";
 /* 多场景批量出图入口行 */
 .pb .batch-entry-row { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; margin: var(--s-2) 0; }
-.pb .batch-entry-count { @apply tw:text-secondary tw:text-label-xs; }
-.pb .linklike { border: 0; @apply tw:p-0; background: none; @apply tw:text-accent; font: inherit; text-decoration: underline; @apply tw:cursor-pointer; }
 
 /* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
 .pb .auto-save-gallery-row {

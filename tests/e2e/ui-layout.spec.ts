@@ -123,6 +123,7 @@ for (const theme of ['dark', 'light']) {
 
   test(`inpaint controls remain readable and reachable ${theme}`, async ({ page }) => {
     await open(page, '/prompt-builder', theme, 1024)
+    await page.getByRole('tab', { name: '成片', exact: true }).click()
     await page.getByRole('button', { name: '导入图片换装', exact: true }).click()
     const modal = page.getByRole('dialog', { name: '智能局部换装', exact: true })
     await expect(modal).toBeVisible()

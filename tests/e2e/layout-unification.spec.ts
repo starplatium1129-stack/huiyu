@@ -51,7 +51,7 @@ async function inspectorGeometry(page: Page, panel: 'render' | 'prompt') {
     const tabs = inspector.querySelector('.inspector-tabs')!
     const tabBox = tabs.getBoundingClientRect()
     const tabStyle = getComputedStyle(tabs)
-    const scroll = inspector.querySelector('.inspector-scroll')!
+    const scroll = inspector.querySelector(`#inspector-${panel}`)!
     const scrollBox = scroll.getBoundingClientRect()
     const section = inspector.querySelector(`#inspector-${panel}`)!
     const sectionBox = section.getBoundingClientRect()
@@ -100,12 +100,17 @@ for (const theme of ['light', 'dark'] as const) {
       const row = (await group.boundingBox())!
       // Tooltip anchors introduce a wrapper; measure the visible buttons rather
       // than assuming their parent grid tracks also size the button itself.
-      for (const button of await group.locator('.engine-btn').all()) {
+      const buttons = await group.locator('.engine-btn').all()
+      const first = (await buttons[0].boundingBox())!
+      expect(Math.abs(first.x - row.x)).toBeLessThanOrEqual(1)
+      for (const button of buttons) {
         const box = (await button.boundingBox())!
-        expect(Math.abs(box.x - row.x)).toBeLessThanOrEqual(1)
-        expect(Math.abs(box.width - row.width)).toBeLessThanOrEqual(1)
+        expect(Math.abs(box.y - row.y)).toBeLessThanOrEqual(1)
+        expect(Math.abs(box.width - first.width)).toBeLessThanOrEqual(1)
       }
-      await expectInsideScrollWidth(page.locator('.inspector-scroll'), group)
+      const last = (await buttons.at(-1)!.boundingBox())!
+      expect(Math.abs(last.x + last.width - row.x - row.width)).toBeLessThanOrEqual(1)
+      await expectInsideScrollWidth(page.locator('.inspector-scroll:visible'), group)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
       await group.screenshot({ path: info.outputPath('engine-cards.png') })
     })
@@ -121,7 +126,7 @@ for (const theme of ['light', 'dark'] as const) {
       await page.locator('.sd-advanced-options > summary').click()
       const grid = page.locator('.sd-advanced-grid')
       await expect(grid).toBeVisible()
-      const scroll = page.locator('.inspector-scroll')
+      const scroll = page.locator('.inspector-scroll:visible')
       const steps = grid.getByRole('spinbutton', { name: '二阶段步数', exact: true })
       const denoise = grid.getByRole('spinbutton', { name: '重绘幅度', exact: true })
       for (const [input, value] of [[steps, '24'], [denoise, '0.45']] as const) {

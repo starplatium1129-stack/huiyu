@@ -18,9 +18,6 @@
                 @click="batchOpen = true"
               >{{ batchRunning ? '查看批量进度' : '批量出图 · 场景 / 多角色' }}</button>
             </StudioTooltip>
-            <span v-if="shotsPending" class="batch-entry-count">
-              分镜待带入 {{ shotsPending }} 镜 · <button class="linklike" type="button" @click="goToShots">去分镜短片</button>
-            </span>
           </div>
 
           <!-- 进度统一由画布舞台的 is-generating 态承担（魔法阵 + 进度环，
@@ -77,7 +74,7 @@ import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 
 const props = defineProps<{ bindings: PromptDeliveryBindings }>()
-const { voiceStudioRef, pb, sdOnline, generationBusy, generationProgress, animaOnline, drawEngine, shotsPending, goToShots, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery, dismissError, queuePausedReason, scenes, batchPanelDeps } = props.bindings
+const { voiceStudioRef, pb, sdOnline, generationBusy, generationProgress, animaOnline, drawEngine, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery, dismissError, queuePausedReason, scenes, batchPanelDeps } = props.bindings
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorDelivery.css"></style>

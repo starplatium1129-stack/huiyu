@@ -31,27 +31,16 @@
       <strong>{{ presetSummary }}</strong>
     </div>
 
-    <div class="preview-actions">
-      <StudioTooltip v-if="hasResult && (engine === 'anima' || engine === 'sd')" anchor content="使用当前 Seed 生成放大版本，最终尺寸取决于原画布">
-        <button
-          class="btn btn-ghost btn-hires-action-quick"
-          type="button"
-          :disabled="generating"
-          @click="$emit('upscale-current')"
-        >
-          <ArchiveIcon name="spark" class="control-icon-inline" />
-          <span>高清放大 2×</span>
-        </button>
-      </StudioTooltip>
-      <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
-      <StudioTooltip v-if="engine === 'sd'" anchor content="一键将 3 组不同 Seed 候选变体加入队列">
+    <div v-if="engine === 'sd'" class="preview-actions">
+      <button class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
+      <StudioTooltip anchor content="一键将 3 组不同 Seed 候选变体加入队列">
         <button class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue-variants')">3 组候选</button>
       </StudioTooltip>
-      <button v-if="engine === 'sd' && expert" class="btn btn-ghost" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">
-        锁定这个 seed 微调
-      </button>
-      <button class="btn btn-ghost" type="button" @click="$emit('reset')">清空并重来</button>
     </div>
+    <details class="inspector-route output-reset">
+      <summary><span>重新开始</span><ArchiveIcon name="chevron-down" /></summary>
+      <button class="btn btn-ghost" type="button" @click="$emit('reset')">清空并重来</button>
+    </details>
   </div>
 </template>
 
@@ -74,11 +63,7 @@ defineProps<{
   baseResolutionRisk: string
   baseResolutionHint: string
   canUseFaceDetailer: boolean
-  generating: boolean
-  resultSeed: number | null
   queueAvailable: boolean
-  hasResult?: boolean
-  animaHiresFix?: boolean
 }>()
 
 // params 由 Pinia store 的 reactive 对象承载，子组件按契约直接改字段；
@@ -86,12 +71,9 @@ defineProps<{
 const params = defineModel<SDParams>('params', { required: true })
 
 const emit = defineEmits<{
-  'update:animaHiresFix': [value: boolean]
   touch: [key: keyof SDParams]
-  'upscale-current': []
   enqueue: []
   'enqueue-variants': []
-  'reuse-seed': []
   reset: []
 }>()
 
@@ -120,13 +102,6 @@ const upscalerOptions: StudioSelectOption[] = [
   vertical-align: -2px;
   @apply tw:text-accent;
 }
-.btn-hires-action-quick {
-  @apply tw:text-accent;
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
-  background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
-}
-.btn-hires-action-quick:hover {
-  background: var(--accent-soft);
-  @apply tw:border-accent;
-}
+.output-reset { margin-top:var(--s-3); }
+.output-reset > .btn { margin-top:var(--s-2); }
 </style>

@@ -61,6 +61,7 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await page.locator('.material-switch button[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toBeVisible();
   await expect(page.locator('.voice-studio')).toBeHidden();
+  await page.getByRole('tab', { name: '任务', exact: true }).click();
   await page.locator('.inspector-voice > summary').click();
   await expect(page.locator('.voice-studio')).toBeVisible();
   await page.locator('.inspector-voice > summary').click();
@@ -69,12 +70,13 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('#stepTags')).toBeHidden();
   await expect(page.locator('#projectSelect')).toHaveCount(0);
   await expect(page.locator('.director-inspector')).toBeVisible();
-  await expect(page.locator('.inspector-tabs')).toBeHidden();
+  await expect(page.locator('.inspector-tabs')).toBeVisible();
+  await page.getByRole('tab', { name: '生成', exact: true }).click();
   // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
   await expect(page.locator('#baseModel')).toBeHidden();
-  await page.locator('#inspector-render .inspector-route > summary').click();
+  await page.locator('#inspector-render .inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
   await expect(page.locator('.managed-route-card')).toBeVisible();
-  await page.locator('#inspector-render .inspector-route > summary').click();
+  await page.locator('#inspector-render .inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
