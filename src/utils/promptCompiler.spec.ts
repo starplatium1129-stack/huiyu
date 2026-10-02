@@ -119,6 +119,49 @@ describe('renderPromptPlan krea2', () => {
     expect(prompt).not.toMatch(/polished|cel shading|flat colors|layered background|cinematic atmosphere|wallpaper/)
   })
 
+  it('retains manual background priority alongside authored scene prose without replacing the subject or action', () => {
+    const base = {
+      subjectProse: 'Misono Mika from Blue Archive, with pastel pink hair', outfitProse: 'a blue coat',
+      sceneProse: 'She holds an open book beside a stone path in a garden.',
+      camera: ['close_up'], lighting: ['moonlight'], composition: ['off-center composition'],
+    }
+    for (const background of [['forest'], ['blue_background', 'simple_background']]) {
+      const plan = createPromptPlan({ ...base, manual: ['standing', ...background] })
+      const original = JSON.stringify(plan)
+      for (const engine of ['anima', 'krea2'] as const) {
+        const { prompt, negative } = renderPromptPlan(plan, engine)
+        for (const token of background) expect(prompt).toContain(token.replace(/_/g, ' '))
+        expect(prompt).toContain('Misono Mika')
+        expect(prompt).toContain('blue coat')
+        expect(prompt).toContain('standing')
+        expect(prompt).toContain(base.sceneProse.replace(/\.$/, ''))
+        expect(prompt).toMatch(/close-up.*off-center composition.*moonlight/)
+        if (engine === 'krea2') {
+          expect(prompt).toContain(`For the background, use ${background.map(tag => tag.replace(/_/g, ' ')).join(' and ')} in preference to the earlier setting`)
+          expect(prompt).not.toMatch(/no characters|no people|no figures|_/)
+          expect(negative).toBe('')
+        }
+      }
+      expect(JSON.stringify(plan)).toBe(original)
+    }
+  })
+
+  it('limits the background override to manual environment tags and restores inheritance when cleared', () => {
+    const base = { subjectProse: 'A woman', sceneProse: 'A garden beside a stone path.', scenePrompt: 'garden' }
+    const render = (manual: string[]) => renderPromptPlan(createPromptPlan({ ...base, manual }), 'krea2').prompt
+    const inherited = render([])
+    expect(inherited).toContain(base.sceneProse)
+    expect(inherited).not.toContain('in preference to the earlier setting')
+    expect(render(['forest'])).toContain('For the background, use forest in preference to the earlier setting')
+    const otherControls = render(['sweeping_shrine_steps_with_bamboo_broom', 'window_light', 'from_above', 'smile'])
+    expect(otherControls).toContain('sweeping the shrine steps with a bamboo broom')
+    expect(otherControls).toContain('soft window light')
+    expect(otherControls).toContain('a view from above')
+    expect(otherControls).toContain('smiling')
+    expect(otherControls).not.toContain('in preference to the earlier setting')
+    expect(render([])).toBe(inherited)
+  })
+
   it('medium 未出现在 lead 中时，以 polished X finish 收尾织入散文', () => {
     const plan = createPromptPlan({
       style: ['A 1990s cel anime illustration with bold outlines, crisp line art and nostalgic flat colors'],

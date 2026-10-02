@@ -216,6 +216,21 @@ export function lightPhrase(value: string): string {
   return LIGHT_REWRITES[key] || proseToken(value)
 }
 
+const ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|bookstore|kitchen|palace|ruins|bridge|river|theater|backstage|supermarket|aquarium|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
+
+export function isEnvironmentKey(key: string): boolean {
+  return ENVIRONMENT_RE.test(key)
+}
+
+/** Both renderers omit outdoor sky phrases when their environment is explicitly indoors. */
+export function removeIndoorSkyPhrases(environment: string[]): void {
+  if (environment.some(item => /inside|indoors/.test(item))) {
+    for (let index = environment.length - 1; index >= 0; index -= 1) {
+      if (/beneath a (?:clear|starry) sky/.test(environment[index])) environment.splice(index, 1)
+    }
+  }
+}
+
 const ENVIRONMENT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   classroom: 'inside a classroom', classroom_window: 'beside a classroom window',
   movie_theater: 'inside a dark movie theater', cafe: 'inside a cafe', cafe_interior: 'inside a cafe',

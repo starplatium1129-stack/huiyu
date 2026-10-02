@@ -10,7 +10,7 @@ import {
 } from './promptPolicy.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
-import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, environmentPhrase } from './promptPhraseTables.ts'
+import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
   profile?: ModelProfile | null; identity?: string; controls?: string[]; scenePrompt?: string
@@ -51,7 +51,6 @@ const KREA_IDENTITY_KEYS = new Set([
   'golden_yellow_eyes', 'yellow_eyes', 'ahoge', 'pink_hair_ribbons', 'hair_ribbon',
   'two_red_hairclips', 'two_red_hairclips_only', 'mole_under_eye', 'no_hair_ribbon',
 ])
-const KREA_ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|bookstore|kitchen|palace|ruins|bridge|river|theater|backstage|supermarket|aquarium|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
 const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
 const KREA_BODY_DETAIL_RE = /^(?:nude|naked|fully_nude|bare_|cleavage|sideboob|underboob|no_bra|no_panties|panties_aside|pulling_down_panties|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|navel|slender_thighs|nipples|areola|pussy|cameltoe|breasts_out|topless|bottomless|lifted_skirt|legs_apart|spread_legs|parted_lips|open_mouth|ahegao|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|heavy_breathing|drooling|wet_skin|wet_hair|wet_clothes|sweat|sweaty_skin|see_through|translucent|hugging_pillow|sex|intercourse|vaginal|anal|oral|fellatio|blowjob|deepthroat|cunnilingus|paizuri|titfuck|handjob|fingering|masturbation|female_masturbation|missionary|doggystyle|cowgirl_position|mating_press|spooning|grinding|penetration|cum|cum_on_face|cum_in_mouth|cum_on_breasts|cum_on_body|internal_cumshot|creampie|excessive_cum|after_sex|panty_pull|skirt_lift|grabbed_breasts|groping)/
 const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|sweeping|tripping|squeezing|hand_gripping|skirt_hem_caught|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)(?:_|$)/
@@ -63,10 +62,6 @@ function naturalList(values: string[]): string {
   if (unique.length === 1) return unique[0]
   if (unique.length === 2) return `${unique[0]} and ${unique[1]}`
   return `${unique.slice(0, -1).join(', ')}, and ${unique[unique.length - 1]}`
-}
-
-function isEnvironmentKey(key: string): boolean {
-  return KREA_ENVIRONMENT_RE.test(key)
 }
 
 function inferredKreaStyle(plan: PromptPlan): string {
@@ -227,6 +222,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const action: string[] = []
   const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
   const environment: string[] = []
+  const manualBackground: string[] = []
   const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
   const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
   for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
@@ -245,16 +241,13 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     if (KREA_MOOD_RE.test(key)) { mood.push(moodPhrase(token)); continue }
     if (isEnvironmentKey(key) || /^(?:morning|afternoon|evening|night|late_night|dawn|sunset|clear_sky|starry_sky|rain|snow|snowfall)$/.test(key)) {
       environment.push(environmentPhrase(token))
+      if (isEnvironmentKey(key) && plan.manual.includes(token)) manualBackground.push(proseToken(token))
       continue
     }
     action.push(actionPhrase(token))
   }
   environment.unshift(...sceneFieldPhrases(plan.scene))
-  if (environment.some(item => /inside|indoors/.test(item))) {
-    for (let index = environment.length - 1; index >= 0; index -= 1) {
-      if (/beneath a (?:clear|starry) sky/.test(environment[index])) environment.splice(index, 1)
-    }
-  }
+  removeIndoorSkyPhrases(environment)
   if (environment.includes('late at night')) {
     const nightIndex = environment.indexOf('at night')
     if (nightIndex >= 0) environment.splice(nightIndex, 1)
@@ -304,6 +297,11 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     parts.push(sentence(
       `${plan.sceneProse ? environmentText : `The scene takes place ${environmentText}`}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
     ))
+  }
+  // Authored blueprint/recipe prose also carries actions and spatial relations, so keep it.
+  // Its presence must not swallow manual background tags; make their narrower priority explicit.
+  if (plan.sceneProse && manualBackground.length) {
+    parts.push(sentence(`For the background, use ${naturalList(manualBackground)} in preference to the earlier setting`))
   }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
   const atmosphere = naturalList(lighting)
@@ -455,11 +453,7 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
   }
 
   environment.unshift(...sceneFieldPhrases(plan.scene))
-  if (environment.some(item => /inside|indoors/.test(item))) {
-    for (let index = environment.length - 1; index >= 0; index -= 1) {
-      if (/beneath a (?:clear|starry) sky/.test(environment[index])) environment.splice(index, 1)
-    }
-  }
+  removeIndoorSkyPhrases(environment)
 
   const subject = proseClause(plan.subjectProse || proseList(plan.identity))
   const outfit = outfitPhrases(plan)[0]
