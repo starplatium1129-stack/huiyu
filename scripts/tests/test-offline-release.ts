@@ -93,10 +93,18 @@ test('Windows importer preview authenticates external release hash and rejects u
     '-ExpectedReleaseSha256', plan.summary.expectedReleaseSha256, '-InstallDir', install, '-RuntimeRoot', runtime];
   const run = (argv: string[]) => execFileSync('powershell.exe', argv, { windowsHide: true, encoding: 'utf8', stdio: 'pipe' });
   const output = JSON.parse(run(args)); assert.equal(output.mode, 'preview'); assert.equal(output.files, plan.summary.files);
+  const verified = JSON.parse(run([...args, '-Verify'])); assert.equal(verified.verified, true);
+  const untrusted = [...args]; untrusted.splice(untrusted.indexOf('-ExpectedReleaseSha256'), 2);
+  assert.throws(() => run([...untrusted, '-TrustedRelease', '-Verify']), /UNTRUSTED_RELEASE/);
   assert.equal(fs.existsSync(runtime), false);
   const wrong = [...args]; wrong[wrong.indexOf('-ExpectedReleaseSha256') + 1] = '0'.repeat(64);
   assert.throws(() => run(wrong), /hash mismatch/);
   const quote = (value: string) => "'" + value.replaceAll("'", "''") + "'";
+  const damaged = path.join(f.base, 'damaged.zip'); fs.copyFileSync(archive, damaged);
+  run(['-NoProfile', '-NonInteractive', '-Command', `Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip=[IO.Compression.ZipFile]::Open(${quote(damaged)},'Update'); try { $entry=$zip.GetEntry('showcase/images/sc1000.jpg'); $entry.Delete(); $entry=$zip.CreateEntry('showcase/images/sc1000.jpg'); $stream=$entry.Open(); $bytes=[Text.Encoding]::ASCII.GetBytes('broken'); $stream.Write($bytes,0,$bytes.Length); $stream.Dispose() } finally { $zip.Dispose() }`]);
+  const damagedArgs = [...args, '-Verify']; damagedArgs[damagedArgs.indexOf('-Archive') + 1] = damaged;
+  assert.throws(() => run(damagedArgs), /hash mismatch/);
+  assert.equal(fs.existsSync(runtime), false);
   run(['-NoProfile', '-NonInteractive', '-Command', `Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip=[IO.Compression.ZipFile]::Open(${quote(archive)},'Update'); try { $entry=$zip.CreateEntry('unlisted.exe'); $stream=$entry.Open(); $stream.Dispose() } finally { $zip.Dispose() }`]);
   assert.throws(() => run(args), /inventory differs/);
   assert.equal(fs.existsSync(runtime), false);
@@ -109,10 +117,72 @@ test('attachment failure publishes no output and the same publisher command can 
   assert.equal(fs.existsSync(out), false);
   assert.ok(fs.readdirSync(f.base).some(name => name.startsWith('distribution.staging-')));
   f.write(path.join(f.root, 'tools/install-offline-resources.ps1'), fs.readFileSync(path.join(repo, 'tools/install-offline-resources.ps1')));
+  for (const name of ['offline-resource-assistant.ps1', 'Install-OfflineResources.cmd']) {
+    f.write(path.join(f.root, 'tools', name), fs.readFileSync(path.join(repo, 'tools', name)));
+  }
   const result = JSON.parse(execFileSync(process.execPath, args, { encoding: 'utf8', stdio: 'pipe', windowsHide: true }));
   assert.equal(result.applied, true);
-  for (const rel of [f.releaseId + '.zip', f.releaseId + '.zip.sha256', f.releaseId + '.release.sha256', 'Install-OfflineResources.ps1']) {
+  for (const rel of [f.releaseId + '.zip', f.releaseId + '.zip.sha256', f.releaseId + '.release.sha256', 'Install-OfflineResources.ps1', 'offline-resource-assistant.ps1', 'Install-OfflineResources.cmd']) {
     assert.ok(fs.statSync(path.join(out, rel)).isFile());
   }
   assert.equal(result.destination, path.join(out, f.releaseId));
+});
+
+test('graphical worker retains verified staging on native failure and cooperatively cancels a resumed child', { skip: process.platform !== 'win32' }, async t => {
+  const f = fixture(t), plan = planRelease(f); await applyRelease(plan);
+  const repo = path.resolve(__dirname, '../..'), archive = path.join(f.base, 'release.zip');
+  const install = path.join(f.base, 'installed with spaces'), runtime = path.join(f.base, 'userdata/gateway');
+  fs.mkdirSync(path.join(install, 'gateway'), { recursive: true });
+  const quote = (value: string) => "'" + value.replaceAll("'", "''") + "'";
+  const runner = path.join(f.base, 'exercise.ps1');
+  f.write(runner, `
+$ErrorActionPreference='Stop'
+& ${quote(path.join(repo, 'scripts/maintenance/archive-offline-release.ps1'))} -Source ${quote(f.destination)} -Archive ${quote(archive)}
+Add-Type -OutputAssembly ${quote(path.join(install, 'gateway/huiyu-runtime.exe'))} -OutputType ConsoleApplication -TypeDefinition @'
+using System;
+using System.IO;
+public class NativeFixture {
+  public static int Main(string[] args) {
+    if (Array.IndexOf(args, "--help") >= 0) { Console.WriteLine("{\\\"ok\\\":true,\\\"usage\\\":\\\"--cancel-stdin\\\"}"); return 0; }
+    string package = args[Array.IndexOf(args, "--package-root") + 1];
+    string app = args[Array.IndexOf(args, "--app-root") + 1];
+    if (Array.IndexOf(args, "--cancel-stdin") < 0 || !File.Exists(Path.Combine(package, "release.json"))) return 42;
+    File.AppendAllText(Path.Combine(app, "calls.txt"), package + "\\n");
+    if (File.Exists(Path.Combine(app, "wait"))) { Console.In.Read(); Console.Error.WriteLine("CANCELLED cooperatively"); return 7; }
+    Console.Error.WriteLine("LOCKED fixture"); return 9;
+  }
+}
+'@
+$state=[hashtable]::Synchronized(@{Cancel=$false; CanResume=$false; Staging=$null})
+$options=@{Archive=${quote(archive)}; ExpectedReleaseSha256=${quote(plan.summary.expectedReleaseSha256)}; InstallDir=${quote(install)}; RuntimeRoot=${quote(runtime)}; Apply=$true; ProgressState=$state}
+$worker=${quote(path.join(repo, 'tools/install-offline-resources.ps1'))}
+try { & $worker @options; throw 'Expected native failure' } catch { if ($_.Exception.Message -notmatch 'LOCKED fixture') { throw } }
+if (-not $state.CanResume -or -not (Test-Path -LiteralPath $state.Staging)) { throw 'Missing recovery staging' }
+$retained=$state.Staging
+try {
+  [IO.File]::WriteAllText(${quote(path.join(install, 'gateway/wait'))}, 'wait')
+  $options.ResumeStaging=$retained
+  $shell=[PowerShell]::Create()
+  $shell.AddScript({param($worker,$options,$state) try { & $worker @options } catch { $state.Failure=$_.Exception.Message }}).AddArgument($worker).AddArgument($options).AddArgument($state) | Out-Null
+  $state.Phase='starting'
+  $handle=$shell.BeginInvoke()
+  $deadline=[DateTime]::UtcNow.AddSeconds(20)
+  while ($state.Phase -ne 'installing' -and -not $handle.IsCompleted) { if ([DateTime]::UtcNow -gt $deadline) { throw 'Worker did not start' }; Start-Sleep -Milliseconds 20 }
+  $state.Cancel=$true
+  if (-not $handle.AsyncWaitHandle.WaitOne(10000)) { throw 'Cancellation did not settle' }
+  $shell.EndInvoke($handle) | Out-Null; $shell.Dispose()
+  if ($state.Failure -notmatch 'CANCELLED cooperatively') { throw ('Unexpected cancellation: '+$state.Failure) }
+  if ((Get-Content -LiteralPath ${quote(path.join(install, 'gateway/calls.txt'))}).Count -ne 2) { throw 'Retry did not invoke native importer' }
+  if (-not (Test-Path -LiteralPath $retained)) { throw 'Recovery input was removed' }
+  if (Test-Path -LiteralPath ${quote(runtime)}) { throw 'Fixture touched target user runtime' }
+  Write-Output 'FAILURE_RESUME_CANCEL_OK'
+} finally {
+  $tempRoot=[IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp'))+'\\'
+  $resolved=[IO.Path]::GetFullPath($retained)
+  if (-not $resolved.StartsWith($tempRoot,[StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($resolved) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe fixture cleanup' }
+  Remove-Item -LiteralPath $resolved -Recurse -Force
+}
+`);
+  const output = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-File', runner], { windowsHide: true, encoding: 'utf8', stdio: 'pipe', timeout: 45000 });
+  assert.match(output, /FAILURE_RESUME_CANCEL_OK/);
 });

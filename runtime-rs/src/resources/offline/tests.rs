@@ -75,6 +75,15 @@ fn fixture(root: &Path, id: &str, ids: &[&str]) -> Options {
         app,
         runtime: root.join("profile/gateway"),
         apply: false,
+        cancel_stdin: false,
+    }
+}
+#[test]
+fn helper_pipe_cancels_on_request_or_disconnect() {
+    for input in [&b"cancel\n"[..], &b""[..]] {
+        let cancel = CancellationToken::new();
+        cancel_on_input(input, &cancel);
+        assert!(cancel.is_cancelled());
     }
 }
 fn apply(options: &Options) -> Value {

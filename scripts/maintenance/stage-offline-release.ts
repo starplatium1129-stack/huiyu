@@ -15,7 +15,7 @@ Default: read-only plan and source hashing. --help/--plan do not read target fil
 Exports only serviceable assets and the current showcase manifest's original/thumbnail files.
 No model calls, downloads, content rewrites, public upload, private references or local model candidates.
 New-machine installer uses Windows PowerShell/.NET and the installed Rust executable, not Node.
-The external release.json SHA-256 must be copied from an independently trusted publication page.
+The graphical helper pins independently published release.json approvals; unknown editions fail closed.
 `;
 function parse(argv: string[]) {
   const flags: Record<string, string | true> = {};
@@ -59,6 +59,9 @@ async function main(argv = process.argv.slice(2)) {
     writeAtomic(fs, candidate + '.release.sha256', Buffer.from(result.expectedReleaseSha256 + '  release.json\n'));
     const installer = readBytes(fs, path.join(root, 'tools/install-offline-resources.ps1'));
     writeAtomic(fs, path.join(staging, 'Install-OfflineResources.ps1'), installer);
+    for (const name of ['offline-resource-assistant.ps1', 'Install-OfflineResources.cmd']) {
+      writeAtomic(fs, path.join(staging, name), readBytes(fs, path.join(root, 'tools', name)));
+    }
     abort.signal.throwIfAborted();
     if (noLinks(fs, output, { missing: true })) throw new Error('Output appeared during staging');
     // Publish the ZIP, checksums, installer and unpacked edition together. A
@@ -66,6 +69,7 @@ async function main(argv = process.argv.slice(2)) {
     fs.renameSync(staging, output);
     console.log(JSON.stringify({ ...result, destination, archive: destination + '.zip', archiveBytes: stat.size, archiveSha256: archiveHash,
       installer: path.join(output, 'Install-OfflineResources.ps1'),
+      assistant: path.join(output, 'Install-OfflineResources.cmd'),
       note: 'Candidate ZIP created and byte-verified. Public source approval, installed version and visual/device acceptance are separate.' }, null, 2));
   } catch (error) {
     throw new Error('Incomplete distribution retained in staging: ' + staging, { cause: error });
