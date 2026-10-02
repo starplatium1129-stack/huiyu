@@ -34,14 +34,6 @@
 .companion-pill.natsume { --cp-accent:var(--natsume-amber); }
 .companion-pill:hover, .companion-pill.active { @apply tw:text-primary; }
 .companion-switch :deep(.animated-selection) { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
-.mood-rails { grid-area:moods; @apply tw:min-w-0 tw:relative; z-index:var(--z-raised); @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-2; }
-.mood-rail { @apply tw:relative tw:overflow-hidden tw:min-h-[60px]; padding:var(--s-2) var(--s-3); border:1px solid transparent; @apply tw:rounded-md tw:text-primary tw:text-left; background:var(--bg-surface); @apply tw:cursor-pointer; box-shadow:none; }
-.mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 8%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
-.mood-rail.natsume { background:linear-gradient(135deg,color-mix(in srgb,var(--natsume-amber) 8%,transparent),color-mix(in srgb,var(--text-primary) 10%,transparent)),var(--bg-elevated); }
-.mood-rail:hover { @apply tw:border-accent; box-shadow:var(--shadow-sm); }
-.mood-icon { float:left; margin:var(--s-1) var(--s-2) 0 0; }
-.mood-rail strong { @apply tw:block tw:text-body-sm; }
-.mood-rail small { @apply tw:text-muted tw:text-label-sm; }
 
 .scene-search-wrap { @apply tw:relative tw:mb-s-4; }
 .scene-search { @apply tw:w-full; padding:var(--s-3) 42px var(--s-3) var(--s-4); background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body; outline:none; }
@@ -160,8 +152,6 @@
   .scene-atlas { grid-template-columns:minmax(0,1fr) 140px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods'; @apply tw:gap-s-3; }
   .scene-atlas .title { max-width:none; }
   .scene-atlas-portrait { @apply tw:min-h-[160px]; }
-  .mood-rails { @apply tw:flex tw:overflow-x-auto tw:pb-[3px]; }
-  .mood-rail { flex:0 0 200px; }
   .scene-cats { @apply tw:flex-nowrap tw:overflow-x-auto tw:pb-[4px]; }
   .scene-cat { flex:none; }
 }

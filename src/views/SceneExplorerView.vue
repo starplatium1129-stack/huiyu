@@ -34,14 +34,7 @@
         </template>
         <figcaption aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
       </figure>
-      <div class="mood-rails" aria-live="polite">
-        <button v-for="rail in moodRails" :key="rail.title" type="button" class="mood-rail"
-          :class="[rail.character === 'nene' || rail.character === 'natsume' ? rail.character : '']"
-          @click="applyMoodRail(rail)">
-          <span class="mood-icon"><ArchiveIcon :name="railIconName(rail.icon)" /></span>
-          <strong>{{ rail.title }}</strong><small>{{ rail.subtitle }}</small>
-        </button>
-      </div>
+      <InspirationDeck :rails="moodRails" @select="applyMoodRail" />
     </section>
 
     <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
@@ -227,6 +220,7 @@
 
 <script setup lang="ts">
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
+import InspirationDeck from '@/components/scene/InspirationDeck.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -252,7 +246,6 @@ scenes,
 manualCompanion,
 moodRails,
 applyMoodRail,
-railIconName,
 searchQuery,
 visible,
 filtered,
