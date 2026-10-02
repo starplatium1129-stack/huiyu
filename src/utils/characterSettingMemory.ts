@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
-import { DATA_VERSION } from '../stores/sceneStore.ts'
+import { DATA_VERSION } from 'virtual:data-version'
 
 /**
  * 角色设定记忆（2026-08-28 路线图第 6 条 · 最小闭环）。

@@ -2,7 +2,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import { changeStoredChatMemory, emptyChatMemoryState, normalizeChatMemoryState, rememberChatFact, mergeChatMemoryStates, editChatFact } from './chatMemory'
 import { parseCharacterSettingCards, recallCharacterSetting } from './characterSettingMemory'
 import { CHAT_MEMORY_KEY } from './storageKeys'
-vi.mock('@/stores/sceneStore', () => ({ DATA_VERSION: 'test' }))
+vi.mock('virtual:data-version', () => ({ DATA_VERSION: 'test' }))
 beforeEach(() => localStorage.clear())
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
 describe('character knowledge and memory reliability', () => {
