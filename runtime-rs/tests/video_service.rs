@@ -13,6 +13,7 @@ use huiyu_runtime::{
 };
 use image::ImageEncoder;
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, HashMap},
     path::PathBuf,
@@ -259,6 +260,10 @@ async fn protected_sequential_shots_skip_reference_tail_and_concat_retries_only_
         )
         .await
         .unwrap();
+    let stored =
+        std::fs::read(config.ai_workspace_root.join("ComfyUI/input").join(&image)).unwrap();
+    assert_eq!(stored, png());
+    assert_eq!(Sha256::digest(&stored), Sha256::digest(png()));
     let reference = service
         .upload(
             STANDARD.encode(png()),
@@ -268,6 +273,15 @@ async fn protected_sequential_shots_skip_reference_tail_and_concat_retries_only_
         )
         .await
         .unwrap();
+    let stored = std::fs::read(
+        config
+            .ai_workspace_root
+            .join("ComfyUI/input")
+            .join(&reference),
+    )
+    .unwrap();
+    assert_eq!(stored, png());
+    assert_eq!(Sha256::digest(&stored), Sha256::digest(png()));
     let raw = json!({"modelId":"minimax-h3","aspectRatio":"landscape","linkLastFrame":true,"shots":[{"prompt":"A quiet room.","seed":1,"image":image},{"prompt":"A calm forest.","seed":2},{"prompt":"A sunlit garden.","seed":3,"references":[reference]}]});
     let prepared = service
         .prepare_batch(raw, true, CancellationToken::new())

@@ -13,6 +13,7 @@ use huiyu_runtime::{
 };
 use image::ImageEncoder;
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use std::{
     collections::HashMap,
     path::PathBuf,
@@ -62,11 +63,17 @@ async fn uploaded_originals_are_decoded_deduplicated_and_held_to_owner_quota() {
         .await
         .unwrap_err();
     assert_eq!(invalid.code, "INVALID_IMAGE");
-    let image = STANDARD.encode(png(128));
+    let bytes = png(128);
+    let image = STANDARD.encode(&bytes);
+    let root = temp.path().join("ai/ComfyUI/input");
     let alice = service
         .upload(image.clone(), "alice".into(), CancellationToken::new())
         .await
         .unwrap();
+    // Read synchronously before any further await can give a queued write time to finish.
+    let stored = std::fs::read(root.join(&alice)).unwrap();
+    assert_eq!(stored, bytes);
+    assert_eq!(Sha256::digest(&stored), Sha256::digest(&bytes));
     assert_eq!(
         alice,
         service
@@ -87,7 +94,6 @@ async fn uploaded_originals_are_decoded_deduplicated_and_held_to_owner_quota() {
             .code,
         "IMAGE_QUOTA"
     );
-    let root = temp.path().join("ai/ComfyUI/input");
     assert_eq!(tokio::fs::read(root.join(alice)).await.unwrap(), png(128));
     assert!(!root.join(".aics-image-admission.lock").exists());
     service.close().await;

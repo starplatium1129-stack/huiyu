@@ -8,6 +8,8 @@ use tokio::{
     io::AsyncWriteExt,
     sync::{Mutex, Semaphore},
 };
+#[cfg(test)]
+mod tests;
 static CAPACITY: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 static SERIAL: Mutex<()> = Mutex::const_new(());
 static OWNED: LazyLock<Regex> = LazyLock::new(|| {
@@ -189,7 +191,15 @@ pub(crate) async fn store_for(
 if !entry.file_type().await?.is_file(){return Err(ApiError::new(409,"IMAGE_STORAGE_INVALID","素材库存在异常文件，请先检查。"))}used_bytes=used_bytes.saturating_add(entry.metadata().await?.len());files+=1;}
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
         decode::validate(bytes.clone(),&cancel).await?;if cancel.is_cancelled(){return Err(inputs::cancelled())}
-        let mut file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(&pending).await?;file.write_all(bytes.as_slice()).await?;drop(file);
+        let file=tokio::fs::OpenOptions::new().write(true).create_new(true).open(&pending).await?;
+        #[cfg(test)]
+        let file=tests::pending_file(file,&pending,&cancel);
+        let mut file=file;
+        file.write_all(bytes.as_slice()).await?;
+        // Tokio may still be writing in the background; finish and surface errors before publishing.
+        // This is a visibility barrier, not a new crash-durability guarantee for uploaded images.
+        file.flush().await?;
+        drop(file);
         if cancel.is_cancelled(){return Err(inputs::cancelled())}tokio::fs::hard_link(&pending,target).await?;Ok(filename)
     }.await;
     let _ = tokio::fs::remove_file(&pending).await;
