@@ -182,22 +182,51 @@ test('quality suite selection deduplicates exact source entries and rejects typo
   }
 });
 
-test('optional suites stay available and execute when their real consumers change', () => {
-  const { selectOptionalLanes }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
+test('optional selection narrows test-only changes, deduplicates, and expands for affected consumers', async () => {
+  const { selectOptionalTests }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
   const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
-  assert.deepEqual(selectOptionalLanes(['src/views/HomeView.vue', 'data/scenes/core.json', 'docs/workflow.md']), []);
-  assert.deepEqual(selectOptionalLanes(['scripts/lib/scene-store.ts']), ['tooling', 'release', 'legacy']);
-  assert.deepEqual(selectOptionalLanes(['desktop-tauri/src-tauri/src/main.rs']), ['release']);
-  assert.deepEqual(selectOptionalLanes(['routes/anima.ts']), ['legacy']);
-  assert.deepEqual(selectOptionalLanes(['runtime-rs/src/storage.rs','runtime-rs/tests/task_execution.rs','runtime-rs/Cargo.lock']), []);
-  assert.deepEqual(selectOptionalLanes(['runtime-rs/native-dependencies.windows-x64.json']), ['release']);
-  assert.deepEqual(selectOptionalLanes(['runtime-rs/tests/parity.mjs']), ['legacy']);
-  assert.deepEqual(selectOptionalLanes(['scripts/tests/test-blueprint-write.ts']), ['tooling']);
-  assert.deepEqual(selectOptionalLanes(['unclassified-code.ts']), ['tooling', 'release', 'legacy']);
-  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-api-client.js'));
-  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-data-backup.js'));
-  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-control-failure-contract.js'));
-  assert.ok(QUALITY_TEST_SUITES.legacy.includes('test-maintenance-blueprint-transaction.js'));
+  const full = (lane: 'tooling' | 'release' | 'legacy') => ({ lane, files: QUALITY_TEST_SUITES[lane] });
+  for (const [paths, lanes] of [
+    [['src/views/HomeView.vue', 'data/scenes/core.json', 'docs/workflow.md'], []],
+    [['scripts/lib/scene-store.ts'], ['tooling', 'release', 'legacy']],
+    [['desktop-tauri/src-tauri/src/main.rs'], ['release']], [['routes/anima.ts'], ['legacy']],
+    [['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/Cargo.lock'], []],
+    [['runtime-rs/native-dependencies.windows-x64.json'], ['release']], [['runtime-rs/tests/parity.mjs'], ['legacy']],
+    [['unclassified-code.ts'], ['tooling', 'release', 'legacy']],
+    [['scripts/tests/test-removed.ts'], ['tooling', 'release', 'legacy']],
+  ] as const) assert.deepEqual(selectOptionalTests(paths), lanes.map(full));
+  const testFile = 'scripts/tests/test-blueprint-write.ts';
+  assert.deepEqual(selectOptionalTests([testFile, 'scripts\\tests\\test-blueprint-write.js', 'scripts/tests/test-api-client.ts']),
+    [{ lane: 'tooling', files: ['test-blueprint-write.js'] }]);
+  assert.deepEqual(selectOptionalTests([testFile, 'scripts/tests/test-desktop-updates.ts']),
+    [{ lane: 'tooling', files: ['test-blueprint-write.js'] }, { lane: 'release', files: ['test-desktop-updates.js'] }]);
+  for (const paths of [[testFile, 'scripts/maintenance/build-blueprints.ts'], ['scripts/maintenance/build-blueprints.ts', testFile]]) {
+    assert.deepEqual(selectOptionalTests(paths), [full('tooling')]);
+  }
+  // Exercise dispatch as well as selection: a correct plan must not silently
+  // become a whole-lane subprocess, and an unavailable baseline must stay broad.
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root, 'scripts/tests/run-optional-test-lanes.js'), realRequire = createRequire(entry);
+  const calls: string[][] = [];
+  const fakeProcess = Object.create(process) as NodeJS.Process;
+  fakeProcess.env = { ...process.env, CI: '1', AICS_HYGIENE_BASE_REF: 'a'.repeat(40) };
+  const fakeRequire = (name: string) => {
+    if (name === 'node:child_process') return { spawnSync: (_file: string, args: string[]) => ({ status: 0, stdout: args[0] === 'diff' ? `${testFile}\0` : '' }) };
+    if (name === './run-quality-suite') return { ...realRequire(name), runNpmScript: (script: string) => {
+      calls.push([script]); return { ok: true }; } };
+    if (name === '../lib/test-process-pool') return { runTestProcessPool: async (entries: Array<{ args: string[] }>) => {
+      calls.push(Array.from(entries[0].args)); return { results: [{ ok: true, duration: 0 }] }; } };
+    return realRequire(name);
+  };
+  const module = { exports: {} as typeof import('./run-optional-test-lanes') };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, process: fakeProcess,
+    __dirname: path.dirname(entry), AbortController, console: { log() {}, error() {} } });
+  assert.equal(await module.exports.main(), 0);
+  assert.deepEqual(calls, [['tooling', 'test-blueprint-write.js']]); calls.length = 0;
+  fakeProcess.env.AICS_HYGIENE_BASE_REF = 'invalid';
+  assert.equal(await module.exports.main(), 0);
+  assert.deepEqual(calls, [['build:web:run'], ...(['tooling', 'release', 'legacy'] as const).map(lane => [lane, ...QUALITY_TEST_SUITES[lane]])]);
 });
 
 test('unit phases execute each selected file once and isolate Windows process inspection', () => {

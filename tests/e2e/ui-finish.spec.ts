@@ -4,9 +4,22 @@ for (const theme of ['light','dark']) for (const width of [1440]) {
   test(`home, bookshelf and navigation finish ${theme} ${width}`,async({page},info)=>{
     await page.setViewportSize({width,height:1000})
     await page.route(/^http:\/\/[^/]+\/api\//,route=>route.fulfill({status:503,json:{ok:false,error:'Isolated UI test'}}))
-    await page.addInitScript(theme=>localStorage.setItem('aics_theme',theme),theme)
+    await page.addInitScript(theme => {
+      localStorage.setItem('aics_theme', theme)
+      localStorage.setItem('aics_pb_history', JSON.stringify([
+        { id: 'ux-saved', timestamp: 1700000000000, character: 'nene', sceneTitle: '已保存的雨夜' },
+      ]))
+    }, theme)
     await page.emulateMedia({reducedMotion:'reduce'})
     await page.goto('/')
+    const recent = page.locator('.recent-card')
+    await expect(recent).toHaveCount(1)
+    await expect(recent).toHaveAttribute('href', '/prompt-builder?regen=ux-saved')
+    await expect(page.locator('#continueCta')).toHaveText('继续最近作品')
+    const order = await page.locator('.home-page > section').evaluateAll(sections => sections.map(el => el.className))
+    expect(order[0]).toContain('home-opening')
+    expect(order[1]).toContain('home-resume')
+    await expect(page.getByText('还没有最近作品', { exact: true })).toHaveCount(0)
     const cards=page.locator('.home-bento .tool-card')
     await expect(cards).toHaveCount(5)
     const first=await cards.first().boundingBox(),second=await cards.nth(1).boundingBox()

@@ -42,22 +42,6 @@ describe('apiClient GET inflight 去重与 TTL 缓存', () => {
     vi.useRealTimers()
   })
 
-  it('同 URL 并发 GET 只发一次底层请求，消费者各自拿到结果', async () => {
-    const { fetch, calls, flush } = deferredFetch(async () => okResponse({ ok: true, value: 1 }))
-    const client = createApiClient(fetch)
-
-    const first = client.request('/api/shared')
-    const second = client.request('/api/shared')
-    const third = client.request('/api/shared')
-    await flush()
-
-    const [a, b, c] = await Promise.all([first, second, third])
-    expect(calls).toEqual(['/api/shared'])
-    expect(a).toEqual({ ok: true, value: 1 })
-    expect(b).not.toBe(a)
-    expect(c).not.toBe(a)
-  })
-
   it('搭车者 abort 只取消自己，不影响共享请求与其他消费者', async () => {
     const { fetch, calls, flush } = deferredFetch(async () => okResponse({ ok: true }))
     const client = createApiClient(fetch)
@@ -235,20 +219,25 @@ describe('apiClient 隔离响应对象（R3）', () => {
     expect(fetch).toHaveBeenCalledTimes(1)
   })
 
-  it('共享响应：搭车者改动嵌套字段不影响发起者', async () => {
-    const { fetch, flush } = deferredFetch(async () =>
+  it('并发消费者共享一次传输，但各自修改响应不影响其他消费者', async () => {
+    const { fetch, calls, flush } = deferredFetch(async () =>
       okResponse({ ok: true, config: { engine: 'original', loras: ['a'] } }),
     )
     const client = createApiClient(fetch)
 
     const initiator = client.request<NestedPayload>('/api/isolated-shared')
     const rider = client.request<NestedPayload>('/api/isolated-shared')
+    const third = client.request<NestedPayload>('/api/isolated-shared')
     await flush()
 
     const riderValue = await rider
     riderValue.config.engine = 'rider-edited'
     const initiatorValue = await initiator
-    expect(initiatorValue.config.engine).toBe('original')
+    const thirdValue = await third
+    expect(calls).toEqual(['/api/isolated-shared'])
+    expect(initiatorValue).toEqual({ ok: true, config: { engine: 'original', loras: ['a'] } })
+    expect(thirdValue).toEqual(initiatorValue)
+    expect(thirdValue).not.toBe(initiatorValue)
   })
 })
 

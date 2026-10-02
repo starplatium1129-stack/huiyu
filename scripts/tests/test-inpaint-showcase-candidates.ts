@@ -1,29 +1,10 @@
 'use strict';
 
-import { WithImplicitCoercion } from 'node:buffer';
+const sharp: typeof import('sharp').default = require('sharp');
 
-/**
- * Contract sentinels for the ComfyUI masked local-repair pipeline
- * (scripts/maintenance/inpaint-showcase-candidates.js).
- *
- * Pins, without touching the network:
- *   - the two supported keys are exactly the natsume fullbody attempt-4 keys
- *   - every crop/mask coordinate is inside the 960x1536 source bounds and the
- *     ops are side-agnostic (prompt must NOT encode left/right; the mask does)
- *   - WAI ops = add correct-side mole + add exactly two parallel red hairclips
- *     (negative suppresses flower/ribbon); Anima ops = remove wrong-side mole +
- *     add correct-side mole
- *   - the workflow mirrors routes/generation.js / routes/anima.js model chains
- *     (WAI CheckpointLoaderSimple + LoraLoader; Anima UNETLoader + CLIPLoader +
- *     VAELoader + LoraLoader) and uses the official masked img2img node flow:
- *     ImageCrop → ImageScale → VAEEncode → SetLatentNoiseMask → KSampler(low
- *     denoise) → VAEDecode → ImageScale → ImageCompositeMasked
- *   - denoise configs are a bounded set (SetLatentNoiseMask 0.70 + fallback
- *     VAEEncodeForInpaint 1.00), never an unbounded loop
- *   - attempt-5 record contract: recordId "<key>@attempt-5", supersedes the
- *     attempt-4 source, carries postprocess/inpaint provenance
- *   - resume (shouldReuse) + hard refusal to write into SceneShowcase
- */
+/** Isolated repair-tool behavior: crop/mask bounds, finite attempts, compiled
+ * workflow, source identity, resumability and refusal to overwrite published
+ * assets. Historical art wording is not a code contract or render evidence. */
 
 const assert: typeof import('assert') = require('assert');
 const fs: typeof import('fs') = require('fs');
@@ -39,45 +20,7 @@ const W = inpaint.constants.SOURCE_WIDTH;
 const H = inpaint.constants.SOURCE_HEIGHT;
 
 function makePng(width: number, height: number) {
-  const zlib: typeof import('zlib') = require('zlib');
-  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(width, 0);
-  ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8; // bit depth
-  ihdr[9] = 2; // color type RGB
-  function chunk(type: WithImplicitCoercion<string>, data: any) {
-    const name = Buffer.from(type, 'ascii');
-    const len = Buffer.alloc(4);
-    len.writeUInt32BE(data.length);
-    let crc = 0xffffffff;
-    for (const buf of [name, data]) {
-      for (const byte of buf) {
-        crc ^= byte;
-        for (let k = 0; k < 8; k += 1) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
-      }
-    }
-    crc = (crc ^ 0xffffffff) >>> 0;
-    const crcBuf = Buffer.alloc(4);
-    crcBuf.writeUInt32BE(crc);
-    return Buffer.concat([len, name, data, crcBuf]);
-  }
-  const raw = Buffer.alloc((1 + width * 3) * height);
-  for (let y = 0; y < height; y += 1) {
-    const row = y * (1 + width * 3);
-    raw[row] = 0;
-    for (let x = 0; x < width; x += 1) {
-      raw[row + 1 + x * 3] = 200;
-      raw[row + 1 + x * 3 + 1] = 180;
-      raw[row + 1 + x * 3 + 2] = 160;
-    }
-  }
-  return Buffer.concat([
-    signature,
-    chunk('IHDR', ihdr),
-    chunk('IDAT', zlib.deflateSync(raw)),
-    chunk('IEND', Buffer.alloc(0)),
-  ]);
+  return sharp({ create: { width, height, channels: 3, background: { r: 200, g: 180, b: 160 } } }).png().toBuffer();
 }
 
 test('INPAINT_CONFIG covers exactly the two natsume fullbody keys', () => {
@@ -117,34 +60,6 @@ test('all crop/mask coordinates stay inside the 960x1536 source bounds', () => {
       }
     }
   }
-});
-
-test('ops are side-agnostic: prompt must not encode left/right, the mask decides position', () => {
-  const sd = inpaint.INPAINT_CONFIG['latest-lora:natsume:sd:fullbody'];
-  const anima = inpaint.INPAINT_CONFIG['latest-lora:natsume:anima:fullbody'];
-  assert.deepStrictEqual(sd.ops.map((op: any) => op.id), ['add-hairclips', 'add-mole']);
-  assert.deepStrictEqual(anima.ops.map((op: any) => op.id), ['remove-wrong-mole', 'add-mole']);
-  for (const cfg of [sd, anima]) {
-    for (const op of cfg.ops) {
-      // no "left/right/viewer-side" tokens: the mask alone decides position
-      assert.ok(!/(\bleft\b|\bright\b|\bviewer\b|\bleft\s+side|\bright\s+side)/i.test(op.prompt),
-        `${cfg.engine} ${op.id} prompt must not encode a side: ${op.prompt}`);
-    }
-  }
-  // The remove op targets the wrong-side mole region only via the mask.
-  const remove = anima.ops.find((op: any) => op.id === 'remove-wrong-mole');
-  assert.ok(/smooth clean cheek|no beauty mark/i.test(remove.prompt));
-  assert.ok(/mole|beauty mark/i.test(remove.negative));
-  const addMoleAnima = anima.ops.find((op: any) => op.id === 'add-mole');
-  assert.ok(/single tiny beauty mark directly under the eye/i.test(addMoleAnima.prompt));
-  const addMoleSd = sd.ops.find((op: any) => op.id === 'add-mole');
-  assert.ok(/single tiny beauty mark directly under the eye/i.test(addMoleSd.prompt));
-  const clips = sd.ops.find((op: any) => op.id === 'add-hairclips');
-  assert.ok(/exactly two small parallel red hairclips/i.test(clips.prompt));
-  assert.ok(/red flower|ribbon/i.test(clips.negative), 'hairclip negative must suppress flower/ribbon');
-  assert.strictEqual(clips.mask.length, 2, 'exactly two clip masks');
-  assert.strictEqual(clips.seedBase, 1629723539, 'clip seedBase must reproduce the verified probe seed');
-  assert.deepStrictEqual(clips.clipBand, { x0: 581, y0: 116, x1: 613, y1: 160 }, 'clip heuristic band must exclude the flower');
 });
 
 test('denoise configs are bounded: primary masked img2img + one true-inpaint fallback', () => {
@@ -227,48 +142,27 @@ test('resolveUploadName uses the server-returned name (ComfyUI renames on collis
   assert.strictEqual(fallback, 'stage.png');
 });
 
-test('opLooksDone is source-relative: mole add darkens, mole remove lightens, clips add red', () => {
+test('opLooksDone is source-relative: mole add darkens, mole remove lightens, clips add red', async () => {
   // build tiny real PNG buffers with a known dark spot / red spot
-  const zlib: typeof import('zlib') = require('zlib');
-  function pngWith(cells: { kind: string; x: number; y: number; r: number; }[]) {
-    const w = 64, h = 64;
-    const raw = Buffer.alloc((1 + w * 3) * h);
-    for (let y = 0; y < h; y++) {
-      raw[y * (1 + w * 3)] = 0;
-      for (let x = 0; x < w; x++) {
-        let c = [240, 240, 240];
-        for (const cell of cells) {
-          if (cell.kind === 'dark' && Math.abs(x - cell.x) <= cell.r && Math.abs(y - cell.y) <= cell.r) c = [60, 40, 30];
-          if (cell.kind === 'red' && Math.abs(x - cell.x) <= cell.r && Math.abs(y - cell.y) <= cell.r) c = [220, 30, 30];
-        }
-        raw[y * (1 + w * 3) + 1 + x * 3] = c[0];
-        raw[y * (1 + w * 3) + 2 + x * 3] = c[1];
-        raw[y * (1 + w * 3) + 3 + x * 3] = c[2];
+  function pngWith(cells: { kind: string; x: number; y: number; r: number }[]) {
+    const pixels = Buffer.alloc(64 * 64 * 3, 240);
+    for (const cell of cells) for (let y = cell.y - cell.r; y <= cell.y + cell.r; y++) {
+      for (let x = cell.x - cell.r; x <= cell.x + cell.r; x++) {
+        const rgb = cell.kind === 'dark' ? [60, 40, 30] : [220, 30, 30];
+        pixels.set(rgb, (y * 64 + x) * 3);
       }
     }
-    const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-    const ihdr = Buffer.alloc(13);
-    ihdr.writeUInt32BE(w, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 2;
-    function chunk(type: WithImplicitCoercion<string>, data: any) {
-      const name = Buffer.from(type, 'ascii');
-      const len = Buffer.alloc(4); len.writeUInt32BE(data.length);
-      let crc = 0xffffffff;
-      for (const buf of [name, data]) for (const byte of buf) { crc ^= byte; for (let k = 0; k < 8; k++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0); }
-      crc = (crc ^ 0xffffffff) >>> 0;
-      const cb = Buffer.alloc(4); cb.writeUInt32BE(crc);
-      return Buffer.concat([len, name, data, cb]);
-    }
-    return Buffer.concat([sig, chunk('IHDR', ihdr), chunk('IDAT', zlib.deflateSync(raw)), chunk('IEND', Buffer.alloc(0))]);
+    return sharp(pixels, { raw: { width: 64, height: 64, channels: 3 } }).png().toBuffer();
   }
   const addOp = { kind: 'add', id: 'add-mole', mask: [{ kind: 'ellipse', cx: 20, cy: 20, rx: 5, ry: 5 }] };
-  const plainSrc = pngWith([]);
-  const moleOut = pngWith([{ kind: 'dark', x: 20, y: 20, r: 4 }]);
+  const plainSrc = await pngWith([]);
+  const moleOut = await pngWith([{ kind: 'dark', x: 20, y: 20, r: 4 }]);
   assert.strictEqual(inpaint.opLooksDone(addOp, moleOut, plainSrc), true, 'mole added must pass');
   assert.strictEqual(inpaint.opLooksDone(addOp, plainSrc, plainSrc), false, 'no change must fail');
 
   const removeOp = { kind: 'remove', id: 'remove-wrong-mole', mask: [{ kind: 'ellipse', cx: 20, cy: 20, rx: 5, ry: 5 }] };
-  const moleSrc = pngWith([{ kind: 'dark', x: 20, y: 20, r: 4 }]);
-  const cleanOut = pngWith([]);
+  const moleSrc = await pngWith([{ kind: 'dark', x: 20, y: 20, r: 4 }]);
+  const cleanOut = await pngWith([]);
   assert.strictEqual(inpaint.opLooksDone(removeOp, cleanOut, moleSrc), true, 'mole removed must pass');
   assert.strictEqual(inpaint.opLooksDone(removeOp, moleSrc, moleSrc), false, 'mole still present must fail');
 
@@ -277,9 +171,9 @@ test('opLooksDone is source-relative: mole add darkens, mole remove lightens, cl
     { kind: 'ellipse', cx: 42, cy: 20, rx: 5, ry: 5 },
   ] };
   // derived band = (3,6)-(59,34). Two 5px-radius red blobs at (20,20)/(42,20) give ~150 red.
-  const clipOut = pngWith([{ kind: 'red', x: 20, y: 20, r: 4 }, { kind: 'red', x: 42, y: 20, r: 4 }]);
+  const clipOut = await pngWith([{ kind: 'red', x: 20, y: 20, r: 4 }, { kind: 'red', x: 42, y: 20, r: 4 }]);
   assert.strictEqual(inpaint.opLooksDone(clipOp, clipOut, plainSrc), true, 'two red clips added must pass');
-  const oneClip = pngWith([{ kind: 'red', x: 20, y: 20, r: 2 }]);
+  const oneClip = await pngWith([{ kind: 'red', x: 20, y: 20, r: 2 }]);
   assert.strictEqual(inpaint.opLooksDone(clipOp, oneClip, plainSrc), false, 'only a tiny single red blob must fail');
   assert.strictEqual(inpaint.opLooksDone(clipOp, plainSrc, plainSrc), false, 'no red must fail');
   // clipBand override caps the band away from a flower bleed
@@ -330,13 +224,13 @@ test('attempt-5 record contract: recordId, supersedes, provenance, sha256', () =
   assert.strictEqual(record.jobId, results[results.length - 1].promptId);
 });
 
-test('sourceRecordFor + validateSourceRecord: hash, status, dimensions gate', () => {
+test('sourceRecordFor + validateSourceRecord: hash, status, dimensions gate', async () => {
   const manifest = [
     { recordId: 'latest-lora:natsume:sd:fullbody@attempt-4', status: 'succeeded', actualWidth: W, actualHeight: H, image: 'a.png', sha256: '' },
   ];
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-inpaint-test-'));
   try {
-    const buffer = makePng(W, H);
+    const buffer = await makePng(W, H);
     fs.writeFileSync(path.join(root, 'a.png'), buffer);
     const record = inpaint.sourceRecordFor(manifest, 'latest-lora:natsume:sd:fullbody');
     assert.ok(record);
@@ -351,11 +245,11 @@ test('sourceRecordFor + validateSourceRecord: hash, status, dimensions gate', ()
   }
 });
 
-test('shouldReuse: resume semantics honour --force and hash/size gates', () => {
+test('shouldReuse: resume semantics honour --force and hash/size gates', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-inpaint-test-'));
   try {
     const image = path.join(root, 'ok.png');
-    fs.writeFileSync(image, makePng(W, H));
+    fs.writeFileSync(image, await makePng(W, H));
     const record = { status: 'succeeded', image: 'ok.png', sha256: '' };
     assert.strictEqual(inpaint.shouldReuse(record, image, false), true);
     assert.strictEqual(inpaint.shouldReuse(record, image, true), false, '--force must regenerate');

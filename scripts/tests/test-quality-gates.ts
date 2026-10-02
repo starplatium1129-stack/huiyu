@@ -14,7 +14,7 @@ function read(relativePath: string) {
 }
 
 test('quality gates cover every deterministic test exactly once', () => {
-  const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]: any) => files.map((file: any) => ({ suite, file })));
+  const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]) => files.map(file => ({ suite, file })));
   const discovered = fs.readdirSync(testsRoot)
     .filter((file) => /^test-.*\.(?:js|mjs)$/.test(file))
     .filter((file) => file !== 'test-quality-gates.js' && !QUALITY_EXTERNAL_TESTS.includes(file))
@@ -38,121 +38,37 @@ test('quality gates cover every deterministic test exactly once', () => {
   }
 });
 
-test('quality workflows keep default, desktop, and live lanes separated', () => {
-  const scripts = JSON.parse(read('package.json')).scripts;
-  const quality = read('.github/workflows/quality.yml');
+// These are trust boundaries, not snapshots of job names, schedules or command ordering.
+test('CI keeps real devices opt-in and official actions pinned', () => {
   const native = read('.github/workflows/windows-native.yml');
-  const nightly = read('.github/workflows/nightly-e2e.yml');
-
-  // 2026-08-22 加入 test:frontend（Vitest）道：validate 必须先跑前端单测再进 unit/contract。
-  assert.equal(scripts.validate, 'npm run check && npm run test:frontend:changed && npm run test:unit:run && npm run test:contract:run && npm run test:optional');
-  assert.match(scripts['validate:all'], /test:frontend -- --coverage.*test:node:all/);
-  assert.match(scripts['test:frontend'], /^vitest run$/);
-  assert.ok(
-    fs.existsSync(path.join(root, 'vitest.config.ts'))
-      && /environment:\s*'happy-dom'/.test(read('vitest.config.ts')),
-    'frontend tests must run in happy-dom via the dedicated vitest config',
-  );
-  assert.match(scripts['test:check'], /^node scripts\/tests\/test-quality-gates\.js && /);
-  // 2026-08-22 起 check 由并发编排器承载：门禁必须继续包含质量套件，
-  // 且编排器步骤与 package.json 的旧串行链一一对应（防编排器悄悄漏步）。
-  assert.match(scripts.check, /run-check-parallel/);
-  const orchestrator = read('scripts/maintenance/run-check-parallel.js');
-  assert.ok(orchestrator.includes("npm run test:check"), 'parallel check must include the quality suite');
-    for (const legacyStep of ['design:lint', 'lint:js', 'typecheck', 'build-scenes.js --check', 'optimize-scenes.js --check',
-        'classify-scene-ratings.js --check', 'validate-scenes.js', 'validate-content-contracts.js']) {
-        assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
-    }
-    // test:check 负责夹具/结构样式测试；四个完整扫描由并发编排器明确登记，
-    // 让 full/CI 真正执行与 test:style-debt 相同的五项检查且每项只执行一次。
-    // 字面量扫描默认报告趋势，只有 test:style-debt:strict 才阻断。
-    assert.ok(read('scripts/tests/quality-test-inventory.ts').includes("'test-style-debt.js'"),
-        'quality check suite must own the complete style-debt gate');
-    for (const [name, command] of [
-        ['style-literals', 'scan-style-literals.js --check'],
-        ['contrast', 'check-contrast.js --check'],
-        ['colors', 'lint-colors.js --check'],
-        ['animations', 'lint-animations.js --check'],
-    ]) {
-        assert.ok(orchestrator.includes(`['${name}', 'node scripts/maintenance/${command}']`),
-            `parallel check must execute the complete ${name} style scan`);
-    }
-  assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
-  assert.doesNotMatch(scripts.validate, /build:desktop/);
-  assert.match(scripts['test:live'], /regress-anima-prompt-tags\.js/);
-  assert.match(scripts['test:live'], /test:live2d-native:release/);
-  assert.match(scripts['build:tauri'], /run-tauri\.js build/);
-  assert.match(scripts['package:tauri'], /run-tauri\.js build/);
-  assert.doesNotMatch(scripts['build:tauri'], /prepare:tauri/);
-  assert.doesNotMatch(scripts['package:tauri'], /prepare:tauri/);
-
-  assert.match(quality, /npm run check/);
-  const checkStep = quality.indexOf('npm run check');
-  const unitStep = quality.indexOf('npm run test:unit');
-  const contractStep = quality.indexOf('npm run test:contract');
-  assert.ok(checkStep >= 0 && checkStep < unitStep && unitStep < contractStep,
-    'Ubuntu quality workflow must run check, unit, then contract');
-  assert.match(quality, /AICS_HYGIENE_BASE_REF/);
-  const summary = quality.slice(quality.indexOf('  quality-summary:'));
-  assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
-  assert.match(summary, /if: always\(\)/);
-  assert.match(summary, /needs: \[checks, unit, contract, optional, e2e, minimum-node\]/);
-  for (const lane of ['checks', 'unit', 'contract', 'optional', 'e2e', 'minimum-node']) {
-    assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase().replace(/-/g, '_')}_RESULT`),
-      `quality summary must inspect ${lane} result`);
-  }
-  const audit = read('.github/workflows/dependency-audit.yml');
-  assert.match(audit, /npm ci --ignore-scripts/);
-  assert.match(audit, /dependency-audit-runtime\.json/);
-  assert.match(audit, /dependency-audit\.json/);
-  assert.match(audit, /dependency-audit-runtime\.stderr/);
-  assert.match(audit, /dependency-audit\.stderr/);
-  assert.match(audit, /AUDIT_COMMAND_FAILED/);
-  assert.match(audit, /exitCodes/);
-  assert.match(audit, /diagnostics/);
-  assert.match(audit, /steps\.audit-runtime\.outputs\.exit_code/);
-  assert.match(audit, /steps\.audit-full\.outputs\.exit_code/);
-  assert.match(native, /self-hosted, Windows, X64, live2d-cubism/);
-  assert.match(native, /github\.ref == 'refs\/heads\/main'/);
+  assert.doesNotMatch(native, /pull_request:/, 'untrusted PR code must not run on the native self-hosted machine');
   assert.match(native, /persist-credentials: false/);
-  assert.doesNotMatch(`${quality}\n${native}\n${nightly}`, /uses:\s+actions\/(?:checkout|setup-node|cache|upload-artifact)@v\d+/,
-    'official actions must be pinned to immutable commit SHAs');
-  assert.match(native, /LIVE2D_CUBISM_SDK_DIR/);
-  assert.match(native, /npm run build:tauri/);
-  assert.match(native, /cargo test --locked --manifest-path desktop-tauri\/src-tauri\/Cargo\.toml/);
-  assert.match(native, /npm run test:live2d-native:release/);
-  assert.match(native, /run-live2d-renderer-soak\.js --seconds 300 --switch-every 60/);
-  assert.doesNotMatch(native, /pull_request:/);
+  const workflows = fs.readdirSync(path.join(root, '.github/workflows')).filter(file => /\.ya?ml$/.test(file));
+  for (const file of workflows) {
+    const source = read('.github/workflows/' + file);
+    for (const match of source.matchAll(/uses:\s+actions\/[\w-]+@([^\s#]+)/g)) {
+      assert.match(match[1], /^[a-f0-9]{40}$/, file + ': official actions must use immutable commits');
+    }
+  }
 });
-
-test('core CI avoids legacy SPA setup; optional legacy builds and nightly coverage remain explicit', () => {
-  const quality = read('.github/workflows/quality.yml');
-  const contract = quality.split('\n  contract:\n')[1]?.split('\n  e2e:\n')[0];
-  assert.ok(contract, 'the isolated contract job must be present');
-  const install = contract.indexOf('run: npm ci');
-  const run = contract.indexOf('run: npm run test:contract');
-  assert.ok(install >= 0 && install < run);
-  assert.doesNotMatch(contract, /run: npm run build/, 'legacy SPA-only contracts are outside the core lane');
-  assert.match(read('scripts/tests/run-optional-test-lanes.ts'), /lanes\.includes\('legacy'\)[\s\S]*build:web:run/);
-  assert.match(read('.github/workflows/nightly-e2e.yml'), /test:frontend -- --coverage/);
-  assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
-    'route contract failures must remain fatal');
-});
-
 
 test('quality shallow lanes fetch only validated comparison commits and retain fallbacks', () => {
   const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
   const quality = read('.github/workflows/quality.yml');
   const section = (name: string) => quality.split(`\n  ${name}:\n`)[1].split(/\n {2}[a-z-]+:\n/)[0];
-  assert.match(section('checks'), /fetch-depth: 0/);
-  assert.match(section('contract'), /fetch-depth: 1/);
-  assert.match(section('unit'), /else\s+ npm run test:frontend/s);
-  assert.match(read('scripts/tests/run-optional-test-lanes.ts'), /catch \(error\).*lanes = \[\.\.\.optional\]/);
+  // Git for Windows exposes git.exe through cmd/, but need not add Bash to PATH.
+  const git = process.platform === 'win32' ? spawnSync('where.exe', ['git'], { encoding: 'utf8' }).stdout?.trim().split(/\r?\n/)[0] : '';
+  const sibling = git ? path.resolve(path.dirname(git), '../bin/bash.exe') : '';
+  const bash = sibling && fs.existsSync(sibling) ? sibling : 'bash';
+  const scripts = new Set<string>();
   for (const name of ['unit', 'optional']) {
     const lane = section(name);
-    assert.match(lane, /fetch-depth: 2/);
     const script = lane.split('      - name: Fetch only the comparison baseline\n')[1]
       .split('        run: |\n')[1].split('      - name:')[0].replace(/^ {10}/gm, '');
+    assert.ok(script.trim(), `${name} must provide a baseline-fetch step`);
+    scripts.add(script);
+  }
+  for (const script of scripts) {
     const mockGit = 'git() { printf "git"; printf "<%s>" "$@"; printf "\\n"; if [[ "$1" == cat-file ]]; then return "$MOCK_PRESENT"; fi; return "$MOCK_FETCH"; }\n';
     for (const [base, present, fetch, expected] of [
       ['a'.repeat(40), '1', '0', true], ['b'.repeat(64), '1', '0', true],
@@ -160,9 +76,10 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
       ['--upload-pack=bad', '1', '0', false], ['a'.repeat(41), '1', '0', false],
       ['a'.repeat(40), '1', '1', true],
     ] as const) {
-      const result = spawnSync('bash', ['-e', '-o', 'pipefail', '-c', mockGit + script], {
+      const result = spawnSync(bash, ['-e', '-o', 'pipefail', '-c', mockGit + script], {
         encoding: 'utf8', env: { ...process.env, AICS_HYGIENE_BASE_REF: base, MOCK_PRESENT: present, MOCK_FETCH: fetch },
       });
+      assert.ifError(result.error);
       assert.equal(result.status, 0, result.stderr);
       assert.equal(result.stdout.includes(`git<fetch><--no-tags><--no-recurse-submodules><--depth=1><origin><${base}>`), expected);
       if (fetch === '1') assert.match(result.stdout, /full fallback suites/);

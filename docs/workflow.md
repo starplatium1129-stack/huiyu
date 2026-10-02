@@ -347,7 +347,7 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm 
 
 同一批内容已有通过证据时，后续局部修复只重跑受影响项；准备提交本身不要求再次构建。定向与完整门禁共用当前登记清单，删除/合并须记录保留覆盖与当次验收。耗时比较使用同机、同输入和相同参数独占测量。
 
-2026-10-02 [测试精简](audits/2026-10-02/test-pruning.md)删除重复和纯实现拼写检查，合并重复页面加载；旧 `test:ux-regressions` 入口已退役，默认高清修复的数据约束保留在 `test-prompt-builder-modules`。日常仍用 `npm test` 按改动选测，不因这次清单精简增加常驻测试层。
+2026-10-02 [测试精简](audits/2026-10-02/test-pruning.md)后继续完成[测试体系重构](audits/2026-10-02/test-suite-refactor.md)：重复组件/专题测试合入所属行为套件，Node 六个 lane 直接登记，`validate:all` 的 check 只执行一次。旧 `test:ux-regressions` 已退役，其默认高清修复的数据约束保留在 `test-prompt-builder-modules`；旧失效别名 `test:gallery` 已删除。日常仍用 `npm test` 按改动选测。
 
 | 入口 | 实际范围 |
 | --- | --- |
@@ -357,7 +357,7 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`npm 
 | gate:full | 当前产品整合门禁：核心check、rust:check、完整前端、核心unit/contract、变更触发专项与打包预算；Rust 失败后停止后续步骤 |
 | gate:all / validate:all | 显式全部库存：构建、check、完整前端覆盖率和六个Node lane；用于整合/发行全面复核 |
 | test:tooling / test:release / test:legacy | 维护工具、发行/资源包、旧Node/迁移对照专项；不作为纯前端改动的固定成本 |
-| test:optional | 按Git选择专项；相关工具/旧Node/桌面源码改动自动触发；纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
+| test:optional | 已登记测试自身变化精确到文件并去重；工具/旧Node/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
 | build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护/旧对照脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
@@ -375,7 +375,7 @@ E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项�
 
 精确指定常规页面 E2E 文件时，只启动隔离 web Rust 服务；仅选择 flows 文件时，只启动 gateway 与模拟上游。少数 desktop 文件显式请求 gateway，保留双栈。未知/正则文件过滤、测试列表和仅 `--project desktop` 无法证明所需范围，保守保留原双栈；不复用已有服务，不降低分级、权限、并发存储、AA 或故障断言。实现与当次验证见 [日常测试精简](audits/2026-09-30/test-simplification.md)。
 
-小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。当前 `test:e2e` 默认的95项也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。详情见 [全量必要性审计](audits/2026-09-28/e2e-necessity-audit.md)。
+小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。`test:e2e` 的 critical 清单也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。历史数量见 [全量必要性审计](audits/2026-09-28/e2e-necessity-audit.md)，当前清单由 `run-e2e-lane` 枚举。
 
 2026-09-28 第二轮逐项审计覆盖101个原始文件（98回归+3基准）、432处测试声明及参数组：回归库存913→646，critical225→95（8文件），nightly409、manual99、device43，自动全量504。首页预算移至独立性能入口，实际模型加载从 `studio.spec.ts` 拆至 `studio-live2d.spec.ts` 设备/资产专项。核心95项实际验证最终90通过、5失败；失败对应 Rust OOM/TTS 错误详情丢失及尾斜杠权限策略，原断言保留，未把失败移出门禁或标记跳过。报告记录全部文件的决定、定向复验与未执行范围。
 

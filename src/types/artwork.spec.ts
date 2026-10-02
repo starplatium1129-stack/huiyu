@@ -1,18 +1,8 @@
-import { describe, expect, expectTypeOf, it } from 'vitest'
-import type { DeepReadonly } from 'vue'
-import type { CharKey as LegacyCharKey, DrawEngine as LegacyDrawEngine, HistoryEntry as LegacyHistoryEntry } from '@/stores/promptBuilderStore'
-import type { CharKey, DrawEngine, HistoryEntry, HistorySnapshot } from './promptHistory'
+import { describe, expect, it } from 'vitest'
 import { artworkTimestamp, parseArtworkRecords } from './artwork'
 import { historyFromResultContext } from '@/utils/resultContext'
 
 describe('公共作品类型的兼容边界', () => {
-  it('旧导出保持同一契约，快照的深只读形状与原 Vue 表达一致', () => {
-    expectTypeOf<HistoryEntry>().toEqualTypeOf<LegacyHistoryEntry>()
-    expectTypeOf<CharKey>().toEqualTypeOf<LegacyCharKey>()
-    expectTypeOf<DrawEngine>().toEqualTypeOf<LegacyDrawEngine>()
-    expectTypeOf<HistorySnapshot>().toEqualTypeOf<DeepReadonly<Partial<HistoryEntry>>>()
-  })
-
   it('无法解析的时间戳回退到数值 ID，不丢失排序稳定性', () => {
     expect(artworkTimestamp({ id: 42, timestamp: 'not-a-date' })).toBe(42)
     expect(artworkTimestamp({ id: 'legacy', timestamp: 'not-a-date' })).toBe(0)

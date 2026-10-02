@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h, nextTick, ref } from 'vue'
 import { useFluidDialog, isBackdropClick } from './useFluidDialog'
+import PromptComparePanel from '@/components/director/PromptComparePanel.vue'
 
 /**
  * 模态弹窗的页面滚动锁定向回归。
@@ -61,6 +62,15 @@ describe('modal page scroll lock', () => {
     document.documentElement.style.overflow = ''
     document.documentElement.style.paddingRight = ''
     delete document.documentElement.dataset.motion
+  })
+
+  it('wires Escape through the real comparison panel exactly once', async () => {
+    const snapshot = { url: '/test.png', seed: 1234, size: '1024x1024', sampler: 'Euler a', cfg: 7, steps: 28, hires: 'off', styleLoraId: '', at: '12:00:00' }
+    const wrapper = mount(PromptComparePanel, { props: { previous: snapshot, current: snapshot }, attachTo: document.body })
+    mounted.push(wrapper)
+    await nextTick()
+    await wrapper.get('.pb-compare').trigger('keydown', { key: 'Escape' })
+    expect(wrapper.emitted('close')).toHaveLength(1)
   })
 
   it('locks while open and releases after a normal close', () => {

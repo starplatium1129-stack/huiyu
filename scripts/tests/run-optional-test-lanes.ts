@@ -6,9 +6,12 @@ const { runTestProcessPool }: typeof import('../lib/test-process-pool') = requir
 
 const optional = ['tooling', 'release', 'legacy'] as const;
 type OptionalLane = typeof optional[number];
+interface OptionalSelection { lane: OptionalLane; files: readonly string[] }
 
-function selectOptionalLanes(files: readonly string[]): OptionalLane[] {
-  const lanes = new Set<OptionalLane>();
+function selectOptionalTests(files: readonly string[]): OptionalSelection[] {
+  const selected = new Map<OptionalLane, Set<string>>();
+  const includeLane = (lane: OptionalLane) => selected.set(lane, new Set(QUALITY_TEST_SUITES[lane]));
+  const all = () => optional.map(lane => ({ lane, files: QUALITY_TEST_SUITES[lane] }));
   for (const raw of files) {
     const file = raw.replace(/\\/g, '/');
     if (/\.md$/.test(file) || /^docs\//.test(file)) continue;
@@ -16,23 +19,27 @@ function selectOptionalLanes(files: readonly string[]): OptionalLane[] {
     if (test) {
       const name = test[1] + (['mts', 'mjs'].includes(test[2]) ? '.mjs' : '.js');
       const lane = optional.find(lane => QUALITY_TEST_SUITES[lane].includes(name));
-      if (lane) lanes.add(lane);
-      else if (!Object.values(QUALITY_TEST_SUITES).some(files => files.includes(name))) return [...optional];
+      if (lane) {
+        if (!selected.has(lane)) selected.set(lane, new Set());
+        selected.get(lane)!.add(name);
+      } else if (!Object.values(QUALITY_TEST_SUITES).some(files => files.includes(name))) return all();
       continue;
     }
-    if (/^(package(?:-lock)?\.json|.*config\.[^/]+)$/.test(file) || /^\.github\//.test(file)) return [...optional];
+    if (/^(package(?:-lock)?\.json|.*config\.[^/]+)$/.test(file) || /^\.github\//.test(file)) return all();
     if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(file)) continue;
-    if (/^runtime-rs\/native-/.test(file)) lanes.add('release');
-    else if (/^(routes|server|services|runtime-rs)\//.test(file) || /^server\.(ts|js)$/.test(file)) lanes.add('legacy');
+    if (/^runtime-rs\/native-/.test(file)) includeLane('release');
+    else if (/^(routes|server|services|runtime-rs)\//.test(file) || /^server\.(ts|js)$/.test(file)) includeLane('legacy');
     else if (/^desktop-tauri\//.test(file) || file === 'deploy-desktop.bat'
-      || /^src\/(platform\/desktop|types\/live2dNative|utils\/live2dNativeAdapter)/.test(file)) lanes.add('release');
+      || /^src\/(platform\/desktop|types\/live2dNative|utils\/live2dNativeAdapter)/.test(file)) includeLane('release');
     else if (/^scripts\/maintenance\//.test(file)) {
-      lanes.add('tooling');
-      if (/(desktop|tauri|installer|release|resource|offline|model-download)/.test(file)) lanes.add('release');
-    } else if (/^scripts\//.test(file) || /^tools\//.test(file)) return [...optional];
-    else if (!/^(src|data|assets|public|css)\//.test(file) && file !== 'index.html') return [...optional];
+      includeLane('tooling');
+      if (/(desktop|tauri|installer|release|resource|offline|model-download)/.test(file)) includeLane('release');
+    } else if (/^scripts\//.test(file) || /^tools\//.test(file)) return all();
+    else if (!/^(src|data|assets|public|css)\//.test(file) && file !== 'index.html') return all();
   }
-  return optional.filter(lane => lanes.has(lane));
+  return optional.filter(lane => selected.has(lane)).map(lane => ({
+    lane, files: QUALITY_TEST_SUITES[lane].filter(file => selected.get(lane)!.has(file)),
+  }));
 }
 
 function changedFiles(): string[] {
@@ -48,12 +55,12 @@ function changedFiles(): string[] {
 }
 
 async function main() {
-  let lanes: OptionalLane[];
-  try { lanes = selectOptionalLanes(changedFiles()); }
-  catch (error) { console.log(String(error)); lanes = [...optional]; }
-  console.log(`optional lanes: ${lanes.join(', ') || 'none (product changes use core/related tests)'}`);
+  let selection: OptionalSelection[];
+  try { selection = selectOptionalTests(changedFiles()); }
+  catch (error) { console.log(String(error)); selection = optional.map(lane => ({ lane, files: QUALITY_TEST_SUITES[lane] })); }
+  console.log(`optional tests: ${selection.map(({ lane, files }) => `${lane} ${files.length}/${QUALITY_TEST_SUITES[lane].length}`).join(', ') || 'none (product changes use core/related tests)'}`);
   let code = 0;
-  if (lanes.includes('legacy')) {
+  if (selection.some(({ lane }) => lane === 'legacy')) {
     const build = runNpmScript('build:web:run', 600_000);
     if (!build.ok) { printExcerpt(build.output, 'SPA for legacy HTTP'); return 1; }
   }
@@ -61,9 +68,9 @@ async function main() {
   const interrupt = () => controller.abort();
   process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);
   try {
-  for (const lane of lanes) {
+  for (const { lane, files } of selection) {
     if (controller.signal.aborted) return 1;
-    const run = await runTestProcessPool([{ name: lane, file: path.join(root, 'scripts/tests/run-quality-suite.js'), args: [lane] }],
+    const run = await runTestProcessPool([{ name: lane, file: path.join(root, 'scripts/tests/run-quality-suite.js'), args: [lane, ...files] }],
       { cwd: root, jobs: 1, timeoutMs: 900_000, signal: controller.signal });
     const result = run.results[0];
     if (!result) return 1;
@@ -75,4 +82,4 @@ async function main() {
 }
 
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(error => { console.error(error); process.exitCode = 1; });
-export = { selectOptionalLanes, changedFiles, main };
+export = { selectOptionalTests, changedFiles, main };

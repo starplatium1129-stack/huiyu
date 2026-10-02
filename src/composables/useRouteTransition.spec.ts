@@ -235,7 +235,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(animations[0].cancelCalls, 1)
   })
 
-  it('settles the old entrance and skips first-entry motion on the same cached element', () => {
+  it('skips a cached element entrance but animates a replacement at the same URL', () => {
     const hooks = mountHooks(), { el, animations } = surface(), first = counter(), second = counter()
     hooks.onEnter(el, first.done)
     const staleFinish = animations[0].onfinish!
@@ -249,6 +249,12 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
       ['/gallery', 'shell-ready'], ['/gallery', 'settled'],
       ['/gallery?filter=new', 'shell-ready'], ['/gallery?filter=new', 'settled'],
     ])
+    const replacement = surface(el.dataset.routePath), fresh = counter()
+    hooks.onEnter(replacement.el, fresh.done)
+    assert.equal(replacement.animations.length, 1)
+    assert.equal(fresh.count, 0)
+    replacement.animations[0].onfinish!()
+    assert.equal(fresh.count, 1)
   })
 
   it('makes the leaving route inert and resets it when the cached element returns', () => {
@@ -261,6 +267,10 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(animations[0].onfinish, null)
     hooks.onBeforeEnter(el)
     assert.equal(el.inert, false)
+    const returned = counter()
+    hooks.onEnter(el, returned.done)
+    assert.equal(returned.count, 1)
+    assert.equal(animations.length, 1)
   })
 
   it('removes a route immediately even when no animation is active', () => {

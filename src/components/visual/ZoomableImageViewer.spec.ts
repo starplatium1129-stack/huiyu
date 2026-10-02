@@ -49,6 +49,9 @@ it('keeps an available thumbnail with a truthful status when the original fails'
 
 it('zooms around the wheel position and responds to keyboard zoom without handling child controls', async () => {
   const view = preview(), viewport = view.get('.zoom-viewport').element
+  expect(view.attributes('tabindex')).toBe('0')
+  const controls = view.findAll('.zoom-control')
+  expect(controls.map(control => control.attributes('aria-label'))).toEqual(['放大图片', '缩小图片', '还原图片缩放'])
   vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 200, height: 200 } as DOMRect)
   await view.trigger('wheel', { deltaY: -1, clientX: 150, clientY: 100 })
   expect(view.get('.zoom-transform-layer').attributes('style')).toContain('translate(-12.5px, 0px) scale(1.25)')
@@ -58,6 +61,15 @@ it('zooms around the wheel position and responds to keyboard zoom without handli
   expect(view.get('.zoom-level').text()).toBe('150%')
   await view.trigger('keydown', { key: 'Home' })
   expect(view.get('.zoom-level').text()).toBe('100%')
+  await controls[0].trigger('click')
+  expect(view.get('.zoom-level').text()).toBe('125%')
+  await controls[1].trigger('click')
+  expect(view.get('.zoom-level').text()).toBe('100%')
+  await controls[0].trigger('click')
+  await view.trigger('keydown', { key: 'ArrowRight' })
+  expect(view.get('.zoom-transform-layer').attributes('style')).toContain('translate(32px, 0px) scale(1.25)')
+  await view.trigger('keydown', { key: 'Home' })
+  expect(view.get('.zoom-transform-layer').attributes('style')).toContain('translate(0px, 0px) scale(1)')
 })
 
 it('keeps one pointer in control and releases it when the picture changes', async () => {

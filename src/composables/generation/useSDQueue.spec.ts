@@ -29,39 +29,12 @@ function controllableRunner() {
     if (!item) throw new Error('no active job to settle')
     item.settle(outcome)
     // 等 queue 状态机跑完 finally → 下一个 process()
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await Promise.resolve()
   }
-  return { run, settleActive, pendingCount: () => pending.length }
+  return { run, settleActive }
 }
 
 describe('useSDQueue · 批次进度计数（F6）', () => {
-  it('三张队列：分母固定为 3，位置随完成递增', async () => {
-    const { run, settleActive } = controllableRunner()
-    const q = useSDQueue({ run })
-
-    q.enqueue(makeJob('A'))
-    q.enqueue(makeJob('B'))
-    q.enqueue(makeJob('C'))
-    expect(q.activeJob.value?.title).toBe('A')
-    expect(q.done.value).toBe(0)
-    expect(q.batchTotal.value).toBe(3)
-
-    await settleActive({ status: 'success' })
-    // 旧算法此刻显示「第 1 / 共 2」；现在 done=1、分母仍为 3
-    expect(q.done.value).toBe(1)
-    expect(q.batchTotal.value).toBe(3)
-    expect(q.activeJob.value?.title).toBe('B')
-
-    await settleActive({ status: 'success' })
-    expect(q.done.value).toBe(2)
-    expect(q.batchTotal.value).toBe(3)
-
-    await settleActive({ status: 'success' })
-    expect(q.done.value).toBe(3)
-    expect(q.batchTotal.value).toBe(3)
-    expect(q.total.value).toBe(0)
-  })
-
   it('失败任务保留队首并暂停：不计完成、分母不变，恢复后重跑同一任务', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
@@ -96,19 +69,28 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     expect(warnings).toContain('成片未能入册')
   })
 
-  it('途中追加：本轮总量随追加增长，完成数不回退', async () => {
+  it('批次分母不随完成缩小，只在途中追加时增长，完成数不回退', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })
     q.enqueue(makeJob('A'))
     q.enqueue(makeJob('B'))
+    expect(q.activeJob.value?.title).toBe('A')
+    expect(q.done.value).toBe(0)
+    expect(q.batchTotal.value).toBe(2)
     await settleActive({ status: 'success' })
     expect(q.done.value).toBe(1)
+    expect(q.batchTotal.value).toBe(2)
+    expect(q.activeJob.value?.title).toBe('B')
 
     q.enqueue(makeJob('C'))
     expect(q.batchTotal.value).toBe(3)
     await settleActive({ status: 'success' })
+    expect(q.done.value).toBe(2)
+    expect(q.batchTotal.value).toBe(3)
+    expect(q.activeJob.value?.title).toBe('C')
     await settleActive({ status: 'success' })
     expect(q.done.value).toBe(3)
+    expect(q.batchTotal.value).toBe(3)
     expect(q.total.value).toBe(0)
   })
 

@@ -65,3 +65,25 @@ for (const theme of ['dark', 'light']) for (const width of [1440]) {
     await page.screenshot({ path: info.outputPath(`${theme}-${width}-u2.png`), fullPage: true })
   })
 }
+
+test('selected scene survives an expert-mode round trip', async ({ page }) => {
+  await page.goto('/prompt-builder?scene=sc006')
+  const studio = page.locator('article.pb')
+  const context = page.locator('.atelier-context')
+  const basicMode = page.getByRole('button', { name: '场景模式', exact: true })
+  const expertMode = page.getByRole('button', { name: '专家模式', exact: true })
+  await basicMode.click()
+  await expect(studio).toHaveAttribute('data-director-mode', 'basic')
+  await expect(studio).toHaveAttribute('data-character', 'nene')
+  await expect(context).toContainText('平安夜的手作礼物')
+  const sceneContext = await context.innerText()
+
+  await expertMode.click()
+  await expect(studio).toHaveAttribute('data-director-mode', 'pro')
+  await expect(studio).toHaveAttribute('data-character', 'nene')
+  await expect(context).toHaveText(sceneContext)
+  await basicMode.click()
+  await expect(studio).toHaveAttribute('data-director-mode', 'basic')
+  await expect(studio).toHaveAttribute('data-character', 'nene')
+  await expect(context).toHaveText(sceneContext)
+})

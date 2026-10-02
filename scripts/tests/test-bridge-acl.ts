@@ -21,7 +21,7 @@ function read(rel: string) {
 function shimCommands() {
   const src = ['bootstrap.ts', 'capabilities.ts', 'nativeLive2d.ts', 'updater.ts']
     .map(file => readFileSync(join(root, 'src/platform/desktop', file), 'utf8')).join('\n');
-  const set = new Set();
+  const set = new Set<string>();
   for (const m of src.matchAll(/invoke(?:Host)?(?:<[^\n]+>)?\(\s*'([a-z_0-9]+)'/g)) set.add(m[1]);
   return set;
 }
@@ -29,7 +29,7 @@ function shimCommands() {
 /** build.rs AppManifest commands["..."] 清单 */
 function buildRsCommands() {
   const src = read('build.rs');
-  const set = new Set();
+  const set = new Set<string>();
   for (const m of src.matchAll(/"([a-z_0-9]+)"/g)) set.add(m[1]);
   return set;
 }
@@ -49,8 +49,10 @@ function snakeToKebab(name: any) {
 function main() {
   const shim = shimCommands();
   const build = buildRsCommands();
+  assert.ok(shim.size > 0 && build.size > 0, 'command inventory must not pass an empty scan');
   const defaultCap = capability('capabilities/default.json');
   const live2dCap = capability('capabilities/companion-live2d.json');
+  assert.deepStrictEqual(live2dCap.windows, ['companion'], 'Live2D authority belongs to the Companion window');
   for (const cap of [defaultCap, live2dCap]) {
     assert.strictEqual(cap.local, true, 'bundled application windows need native capabilities');
     assert.strictEqual(cap.remote, undefined, 'remote authority must be granted only after authenticating the selected gateway origin');
@@ -59,6 +61,22 @@ function main() {
     'native IPC must still verify the application origin');
   assert.match(read('src/main_shared.rs'), /ui_entry::bundled\(app\) && crate::ui_entry::native_origin\(url\)/,
     'local origin authority must require verified bundled activation');
+  const mainSource = read('src/main.rs');
+  const handler = mainSource.match(/generate_handler!\[([\s\S]*?)\]/)?.[1] || '';
+  const handlerCommands = new Set([...handler.matchAll(/(?:\w+::)*(\w+)/g)].map(match => match[0].split('::').at(-1)));
+  assert.deepStrictEqual([...build].filter(command => !handlerCommands.has(command)), [],
+    'every registered command must reach the native invoke handler');
+  const authorization = read('src/main_shared.rs').split('pub fn authorize_gateway_origin(')[1] || '';
+  assert.match(authorization, /include_str!\("\.\.\/capabilities\/companion-live2d\.json"\)/,
+    'dynamic authorization must reuse the reviewed Companion capability');
+  assert.match(authorization, /capability\["remote"\] = serde_json::json!\(\{ "urls": \[format!\("\{\}\/\*", parsed\.origin\(\)\.ascii_serialization\(\)\)\]/,
+    'dynamic capability must bind only the authenticated gateway origin');
+  assert.match(authorization, /app\.add_capability\(/);
+  assert.match(mainSource, /main_shared::authorize_gateway_origin\(/);
+  const origin = read('src/gateway_origin.rs');
+  assert.match(origin, /gateway\.host_str\(\) == Some\("127\.0\.0\.1"\)/);
+  assert.match(origin, /url\.origin\(\) == gateway\.origin\(\)/,
+    'other loopback ports must not receive native authority');
   const allowed = new Set([
     ...permissionIds(defaultCap),
     ...permissionIds(live2dCap),

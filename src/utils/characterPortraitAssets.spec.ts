@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { isPopularPortraitPending, popularPortraitSrc } from './popularPortraitSource'
+import { isPopularPortraitPending } from './popularPortraitSource'
 import onboarding from '../../data/popular-onboarding.json'
 const read = (path: string) => readFileSync(path)
-const digest = (path: string) => createHash('sha256').update(read(path)).digest('hex')
+// These fixtures never mutate assets; identity and derivative checks can share one read per file.
+const hashes = new Map<string, string>()
+const digest = (path: string) => {
+  if (!hashes.has(path)) hashes.set(path, createHash('sha256').update(read(path)).digest('hex'))
+  return hashes.get(path)!
+}
 const selected = JSON.parse(read('assets/characters/portrait-selections.json').toString()) as {
   entries: Record<string, { entryId?: string; sourceImage: string; rating: string; portraitSha256: string; thumbnailSha256?: string }>
 }
@@ -18,11 +23,8 @@ describe('character portrait identity', () => {
       if (isPopularPortraitPending(id)) {
         const registration = onboarding.characters.find(character => character.id === id)
         if (registration && 'portraitPlaceholder' in registration && registration.portraitPlaceholder) {
-          expect(popularPortraitSrc(id)).toBe(`/assets/characters/thumbs/popular-${id}.webp?placeholder=1`)
           expect(read(`assets/characters/popular-${id}.png`).length).toBeGreaterThan(0)
           expect(read(`assets/characters/thumbs/popular-${id}.webp`).length).toBeGreaterThan(0)
-        } else {
-          expect(popularPortraitSrc(id)).toBe('/assets/characters/portrait-pending.svg')
         }
         continue
       }

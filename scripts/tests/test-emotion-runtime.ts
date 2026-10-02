@@ -3,16 +3,12 @@ const { test }: typeof import('node:test') = require('node:test');
 const { createEmotionRuntime, NATSUME_RUNTIME_CONFIG, NENE_RUNTIME_CONFIG }: typeof import('../../src/utils/emotionRuntime.ts') = require('../../src/utils/emotionRuntime.ts');
 const { createLive2dNativeAdapter, LIVE2D_NATIVE_POLICIES }: typeof import('../../src/utils/live2dNativeAdapter.ts') = require('../../src/utils/live2dNativeAdapter.ts');
 
-test('neutral 初始：无表情参数、零强度', () => {
+test('pushEmotion(happy)：初始中性、表情强度上升、随后自然衰减回零', () => {
   const rt = createEmotionRuntime(NENE_RUNTIME_CONFIG);
   rt.update(1 / 60);
   assert.deepEqual(rt.targets(), {});
   assert.equal(rt.intensity(), 0);
   assert.equal(rt.lastEmotion(), 'neutral');
-});
-
-test('pushEmotion(happy)：表情参数出现、强度上升、随后自然衰减回零', () => {
-  const rt = createEmotionRuntime(NENE_RUNTIME_CONFIG);
   rt.pushEmotion('happy');
   rt.update(1 / 60);
   const targets = rt.targets();

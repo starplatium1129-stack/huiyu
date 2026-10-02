@@ -36,8 +36,10 @@ it('defaults destructive confirmation to cancel, leaves Enter native, and restor
   document.body.append(opener)
   opener.focus()
   mountConfirm()
-  const result = confirmAction({ title: '删除作品', danger: true })
+  const result = confirmAction({ title: '删除作品', danger: true, message: '删除后无法恢复。' })
   await settle()
+  const dialog = document.querySelector('[role="alertdialog"]')!
+  expect(document.getElementById(dialog.getAttribute('aria-describedby')!)?.textContent).toBe('删除后无法恢复。')
   expect(document.activeElement).toBe(button('cancel'))
   const enter = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
   button('cancel').dispatchEvent(enter)
@@ -185,14 +187,4 @@ it('returns focus and safely resolves a pending request when the confirmation ho
   await result
   expect(document.activeElement).toBe(opener)
   expect(document.body.classList.contains('overlay-open')).toBe(false)
-})
-
-it('exposes the destructive consequence as the alert dialog description', async () => {
-  mountConfirm()
-  confirmAction({ title: '删除作品', message: '删除后无法恢复。' })
-  await settle()
-  const dialog = document.querySelector('[role="alertdialog"]')!
-  const description = dialog.getAttribute('aria-describedby')
-  expect(description).toBeTruthy()
-  expect(document.getElementById(description!)?.textContent).toBe('删除后无法恢复。')
 })

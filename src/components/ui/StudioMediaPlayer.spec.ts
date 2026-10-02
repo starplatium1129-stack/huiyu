@@ -1,10 +1,13 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import StudioMediaPlayer from './StudioMediaPlayer.vue'
 
+let wrapper: ReturnType<typeof mount> | undefined
+afterEach(() => { wrapper?.unmount(); wrapper = undefined; vi.restoreAllMocks() })
+
 describe('StudioMediaPlayer', () => {
   it('stops playback and releases its media source before removal', () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '任务结果' } })
+    wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '任务结果' } })
     const element = wrapper.get('video').element
     const pause = vi.spyOn(element, 'pause')
     const load = vi.spyOn(element, 'load')
@@ -14,23 +17,8 @@ describe('StudioMediaPlayer', () => {
     expect(load).toHaveBeenCalledOnce()
   })
 
-  it('offers a labelled video transport without native browser chrome', () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/clip.mp4', label: '生成的视频成片' } })
-    const video = wrapper.find('video')
-    expect(video.exists()).toBe(true)
-    // 原生 controls 属性一旦出现，系统皮肤就会盖住整套自定义播放条。
-    expect(video.attributes('controls')).toBeUndefined()
-    expect(video.attributes('preload')).toBe('metadata')
-    expect(wrapper.find('audio').exists()).toBe(false)
-    expect(wrapper.find('[aria-label="播放生成的视频成片"]').exists()).toBe(true)
-    expect(wrapper.find('[aria-label="静音生成的视频成片"]').exists()).toBe(true)
-    const seek = wrapper.find('input[type="range"]')
-    expect(seek.attributes('aria-label')).toBe('生成的视频成片播放进度')
-    expect(seek.attributes('disabled')).toBeDefined()
-  })
-
   it('renders audio kind without a visible native element', () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/voice.wav', kind: 'audio', label: 'AI 声线试听' } })
+    wrapper = mount(StudioMediaPlayer, { props: { src: '/media/voice.wav', kind: 'audio', label: 'AI 声线试听' } })
     expect(wrapper.find('audio').exists()).toBe(true)
     expect(wrapper.find('audio').attributes('controls')).toBeUndefined()
     expect(wrapper.find('video').exists()).toBe(false)
@@ -38,16 +26,27 @@ describe('StudioMediaPlayer', () => {
     expect(wrapper.find('[aria-label="全屏播放AI 声线试听"]').exists()).toBe(false)
   })
 
-  it('resets progress and error state when the source changes', async () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/a.mp4', label: '镜头一' } })
+  it('keeps video controls accessible and resets progress and failure when the source changes', async () => {
+    wrapper = mount(StudioMediaPlayer, { props: {
+      src: '/media/a.mp4', label: '镜头一', captionsSrc: '/media/clip.zh.vtt', transcript: '角色说出这一句台词。',
+    } })
     const video = wrapper.get('video')
+    expect(video.attributes('controls')).toBeUndefined()
+    expect(wrapper.get('[aria-label="播放镜头一"]').element.tagName).toBe('BUTTON')
+    expect(wrapper.get('[aria-label="静音镜头一"]').element.tagName).toBe('BUTTON')
+    const track = wrapper.get('track[kind="captions"]')
+    expect(track.attributes('src')).toBe('/media/clip.zh.vtt')
+    expect(track.attributes('srclang')).toBe('zh-CN')
+    expect(wrapper.get('.studio-media-transcript').text()).toContain('角色说出这一句台词。')
+    const seek = wrapper.get('input[type="range"]')
+    expect(seek.attributes('aria-label')).toBe('镜头一播放进度')
+    expect(seek.attributes('disabled')).toBeDefined()
     Object.defineProperty(video.element, 'duration', { configurable: true, value: 120 })
     await video.trigger('loadedmetadata')
-    const seek = wrapper.find('input[type="range"]')
     await seek.setValue('45')
     expect(wrapper.find('.studio-media-time').text()).toBe('0:45 / 2:00')
     await video.trigger('error')
-    expect(wrapper.find('.studio-media-error').exists()).toBe(true)
+    expect(wrapper.get('.studio-media-error').attributes('role')).toBe('status')
 
     await wrapper.setProps({ src: '/media/b.mp4' })
     expect(wrapper.find('.studio-media-time').text()).toBe('0:00 / 0:00')
@@ -55,25 +54,4 @@ describe('StudioMediaPlayer', () => {
     expect(wrapper.find('.studio-media-error').exists()).toBe(false)
   })
 
-  it('exposes optional captions and a readable transcript', () => {
-    const wrapper = mount(StudioMediaPlayer, {
-      props: {
-        src: '/media/clip.mp4',
-        label: '生成的视频成片',
-        captionsSrc: '/media/clip.zh.vtt',
-        transcript: '角色说出这一句台词。',
-      },
-    })
-    const track = wrapper.find('track[kind="captions"]')
-    expect(track.attributes('src')).toBe('/media/clip.zh.vtt')
-    expect(track.attributes('srclang')).toBe('zh-CN')
-    expect(wrapper.get('.studio-media-transcript').text()).toContain('角色说出这一句台词。')
-  })
-
-  it('reports an unplayable source instead of leaving a broken native frame', async () => {
-    const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/broken.mp4', label: '镜头一' } })
-    await wrapper.find('video').trigger('error')
-    expect(wrapper.find('.studio-media-error').exists()).toBe(true)
-    expect(wrapper.find('.studio-media-error').attributes('role')).toBe('status')
-  })
 })

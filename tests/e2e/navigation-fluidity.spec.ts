@@ -34,6 +34,8 @@ test('failed initial lazy route exposes recovery instead of stranding first pain
 test('same-route query updates and browser back preserve the route shell', async ({ page }) => {
   await page.goto('/scene-explorer')
   await expect(page.locator('.scene-toolbar')).toBeVisible()
+  const backdrop = await page.locator('.route-atmosphere').elementHandle()
+  await expect(page.locator('.route-atmosphere')).toHaveCount(1)
   await page.locator('#sceneSearch').fill('夜')
   await expect(page).toHaveURL(/scene-explorer\?q=/)
   await expect(page.locator('main > .route-view')).toHaveCount(1)
@@ -41,6 +43,8 @@ test('same-route query updates and browser back preserve the route shell', async
 
   await page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '绘制', exact: true }).click()
   await expect(page).toHaveURL(/prompt-builder$/)
+  expect(await backdrop!.evaluate(element => element.isConnected)).toBe(true)
+  await expect(page.locator('.route-atmosphere canvas,.route-cut,.sakura-fall')).toHaveCount(0)
   await page.goBack()
   await expect(page).toHaveURL(/scene-explorer\?q=/)
   await expect(page.locator('.scene-toolbar')).toBeVisible()

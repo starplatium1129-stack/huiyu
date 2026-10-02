@@ -18,7 +18,10 @@ for (const theme of ['dark', 'light'] as const) {
       page.on('pageerror', error => errors.push(error.message))
       await page.setViewportSize({ width, height: width === 1024 ? 720 : 960 })
       await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: theme })
-      await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+      await page.addInitScript(theme => {
+        localStorage.setItem('aics_theme', theme)
+        localStorage.setItem('atelier-desktop-appearance-v1', JSON.stringify({ theme, motion: 'reduce', reducedGlass: true }))
+      }, theme)
       await page.goto('/prompt-builder')
       await expect(page.locator('.char-row')).toBeVisible()
       await expect(page.locator('.random-menu-trigger')).toBeEnabled()
@@ -28,11 +31,21 @@ for (const theme of ['dark', 'light'] as const) {
 
       await page.screenshot({ path: info.outputPath(`${theme}-${width}-basic.png`) })
 
+      if (width === 1024) {
+        // The full summary lives in the output panel; the duplicate in the action bar is intentionally hidden.
+        for (const selector of ['.generation-auto-summary strong', '.gen-bar-blocked', '.material-heading', '.material-switch button:not([aria-pressed="true"])']) {
+          const element = page.locator(selector).first()
+          await expect(element).toBeVisible()
+          expect(await element.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(13)
+          expect(await element.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        }
+      }
+
       // Reflow must keep both existing popovers on screen and above the material panel.
       await page.locator('.random-menu-trigger').click()
       const random = page.getByRole('dialog', { name: '夏目的调色笔记', exact: true })
       await withinViewport(random, page)
-      await random.locator('input[type="checkbox"]').click({ trial: true })
+      await random.getByRole('switch', { name: '混入知名画师特调笔触', exact: true }).click({ trial: true })
       await expect(random.locator('.random-undo')).toBeDisabled()
       await page.screenshot({ path: info.outputPath(`${theme}-${width}-random.png`) })
       await page.locator('.random-menu-trigger').click()
@@ -65,19 +78,4 @@ for (const theme of ['dark', 'light'] as const) {
     })
   }
 
-  test(`workbench secondary text stays readable with solid glass ${theme}`, async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.addInitScript(theme => {
-      localStorage.setItem('atelier-desktop-appearance-v1', JSON.stringify({ theme, motion: 'reduce', reducedGlass: true }))
-    }, theme)
-    await page.goto('/prompt-builder')
-    await expect(page.locator('.gen-bar')).toBeVisible()
-    // The full summary lives in the output panel; the duplicate in the action bar is intentionally hidden.
-    for (const selector of ['.generation-auto-summary strong', '.gen-bar-blocked', '.material-heading', '.material-switch button:not([aria-pressed="true"])']) {
-      const element = page.locator(selector).first()
-      await expect(element).toBeVisible()
-      expect(await element.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(13)
-      expect(await element.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-    }
-  })
 }

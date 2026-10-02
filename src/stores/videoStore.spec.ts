@@ -9,9 +9,10 @@ import { useVideoStore, type VideoCtxPayload } from './videoStore'
  *  - 分镜列表追加与角标派生
  */
 
+let nextFixtureId = 0
 function makeCtx(overrides: Partial<VideoCtxPayload> = {}): VideoCtxPayload {
   return {
-    imageId: `img-${Math.random().toString(36).slice(2, 8)}`,
+    imageId: `fixture-image-${++nextFixtureId}`,
     prompt: 'a test prompt',
     story: 'a story',
     blueprintId: null,
@@ -27,14 +28,10 @@ describe('videoStore · 单图出视频交接', () => {
     setActivePinia(createPinia())
   })
 
-  it('空状态下 consume 返回 null 且不写存储', () => {
+  it('stage 后可消费，消费即清除（一次性语义）', () => {
     const store = useVideoStore()
     expect(store.consumeImageCtx()).toBeNull()
     expect(sessionStorage.getItem('aics_video_ctx')).toBeNull()
-  })
-
-  it('stage 后可消费，消费即清除（一次性语义）', () => {
-    const store = useVideoStore()
     const ctx = makeCtx({ imageId: 'img-once' })
     expect(store.stageImageCtx(ctx)).toBe(true)
     expect(store.pendingImageCtx?.imageId).toBe('img-once')
