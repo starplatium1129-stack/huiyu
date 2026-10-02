@@ -45,3 +45,11 @@
 原始材料仅保留在整合 worktree 的 `runtime/round4-validation/`：`build.log`、`bundle.json`、`bundle-comparison.json`、`source-parity.json`、`browser.json`、首轮失败 JSON 和截图。一次性采样脚本位于被忽略的 `scripts/archive/round4-browser.mjs`。源码组的原始截图、日志仍在各自 worktree 的 runtime 目录。
 
 未执行真实 Krea/Anima 出图、配音服务、桌面安装发布或原生 DPI 验收。右栏源任务的独立画册跨页检查因缺少参考图夹具未完成，本次只补图库→绘制→图库路径，不扩称完整画册或配音端到端通过。最终 main 推送及其 CI 状态以交付回执为准。
+
+## 最终 CI 入口修正
+
+`a6014f88` 的 Quality `36975057699` 浏览器结果为 99 通过、7 失败，其余质量阶段、Rust 和 Prompt 检查成功。七项均在 `flows.spec.ts` 直接访问尚未进入的提示词/任务分组。修正现有用例，从真实标签、外层折叠和配音面板展开按钮进入，保留字幕联动、声线、身份词、出图请求及恢复动作断言；没有删除、跳过用例或放宽期限。
+
+生成失败本来就会在中央画布显示错误与“查看恢复选项”，该入口会选中任务组。本次在 OOM 用例中增加这条可见路径的断言，再核验原有“显存不足”分类和降低负载后的第二次请求，确认关键错误没有被隐藏。产品源码未改，复用 `115bae9e` 生产包，未再次构建。
+
+本机复用已有 Rust/libvips，使用独立偏移端口、临时空资料库、无头浏览器与 mock 上游执行指定七条流程：五条首次通过；两条配音用例补齐内层展开、消除嵌套 summary 匹配歧义后定向通过（6.3 秒）。测试类型检查、定向 ESLint（0 error，9 条原有 warning）和 diff 检查通过。日志在 `runtime/round4-validation/ci-seven-first-run.log`、`ci-voice-selector-attempt.log` 与 `ci-voice-flows.log`。这是实际 Rust 网关加替身模型的浏览器证据；最终提交后端仍由 CI 从源码构建验证，不能当作真实出图/配音或原生桌面验收。
