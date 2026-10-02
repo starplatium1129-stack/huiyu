@@ -15,8 +15,10 @@
         <div><dt>光照</dt><dd>{{ lighting }}</dd></div>
         <div v-if="size"><dt>画幅</dt><dd>{{ size }}</dd></div>
       </dl>
+      <slot />
     </figcaption>
   </figure>
+  <slot v-else />
 </template>
 
 <script setup lang="ts">
@@ -96,6 +98,13 @@ figcaption p { margin:var(--s-2) 0 var(--s-3); @apply tw:text-secondary tw:text-
 .scene-reference-settings { gap:var(--s-2) var(--s-4); }
 .scene-reference-settings dt { @apply tw:text-secondary; }
 .scene-reference-settings dd { margin:var(--s-1) 0 0; @apply tw:text-primary; }
+.scene-reference:has(.stage-generating-copy) { margin-bottom:0; }
+@container canvas-column (max-width:640px) {
+  .scene-reference:has(.stage-generating-copy) { --reference-max-height:clamp(80px,calc(var(--drawing-viewport-height,100vh) - 610px),160px); grid-template-columns:1fr; }
+  /* Narrow desktop panes keep the reference identity and live progress in view;
+   * the same detailed generation settings remain available in the inspector. */
+  .scene-reference:has(.stage-generating-copy) :is(figcaption p,.scene-reference-settings) { display:none; }
+}
 @container canvas-column (max-width:440px) { .scene-reference { --reference-max-height:190px; grid-template-columns:1fr; } }
 @media (min-width:901px) and (max-height:760px) { .scene-reference { --reference-max-height:180px; } }
 </style>

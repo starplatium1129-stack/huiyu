@@ -13,7 +13,6 @@
       }"
       aria-label="成片监看区"
     >
-      <GenerationDust v-if="generationBusy" />
       <div class="stage-chrome">
         <span>绘制画布</span>
         <span class="stage-ready" role="status" aria-live="polite">
@@ -25,21 +24,24 @@
       <img :crossorigin="runtimeResourceCors()" class="stage-muse natsume" :src="resolveRuntimeUrl(stageMuseUrl.natsume)" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
         <div class="stage-content">
-        <DirectorSceneReference :size="canvasSize" />
-        <div v-if="generationBusy" class="stage-generating-copy">
-          <ThinkingOrb state="working" size="lg" color-variant="dual" />
-          <div class="stage-generating-title">心动画面正在显影…</div>
-          <div class="stage-generating-sub">
-            {{ generationStatusText || '正在绘制这一幕，请稍候。' }}
-            <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
-            <template v-else-if="drawEngine !== 'sd'"> · 已等待 {{ animaElapsed }} 秒</template>
-            <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
+        <DirectorSceneReference :size="canvasSize">
+          <div v-if="generationBusy" class="stage-generating-copy">
+            <GenerationDust />
+            <div class="stage-generation-feedback">
+              <div class="stage-generating-title" role="status">正在绘制这一幕</div>
+              <div class="stage-generating-sub">
+                <span>{{ generationStatusText || '正在准备画面…' }}</span>
+                <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
+              </div>
+              <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
+                <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
+              </div>
+              <span v-if="drawEngine !== 'sd'" class="stage-generating-elapsed">已等待 {{ animaElapsed }} 秒</span>
+              <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
+            </div>
           </div>
-          <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
-            <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
-          </div>
-        </div>
-        <div v-else-if="generationError" class="stage-idle">
+        </DirectorSceneReference>
+        <div v-if="!generationBusy && generationError" class="stage-idle">
           <div class="stage-placeholder-title">这次画面未能生成</div>
           <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
@@ -54,7 +56,7 @@
             </button>
           </div>
         </div>
-        <div v-else-if="generationStopped" class="stage-idle">
+        <div v-else-if="!generationBusy && generationStopped" class="stage-idle">
           <div class="stage-placeholder-title">这一幕已暂停</div>
           <div class="stage-placeholder-copy">
             可以调整场景与参数，准备好后继续。
@@ -66,7 +68,7 @@
             </button>
           </div>
         </div>
-        <div v-else class="stage-idle stage-idle-guide">
+        <div v-else-if="!generationBusy" class="stage-idle stage-idle-guide">
           <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
@@ -83,11 +85,10 @@
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <GenerationDust v-if="generationBusy" framed />
       <div class="stage-result-heading">
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
-          <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
+          <GenerationDust v-if="generationBusy" framed />
           {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
         </span>
       </div>
@@ -121,13 +122,13 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, ref, defineAsyncComponent, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import GenerationDust from '@/components/visual/GenerationDust.vue'
-import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
+import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
@@ -176,9 +177,6 @@ function rememberResultReveal() {
 watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive], () => {
   if (props.inpaintCompareActive && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
 }, { immediate: true })
-
-// Result-only tools load after an image exists.
-const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))
 
 const emit = defineEmits<{
   generate: []

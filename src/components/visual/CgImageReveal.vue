@@ -13,7 +13,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { startCanvasRipple } from '@/utils/canvasRipple'
+import { startCanvasPixelReveal } from '@/utils/canvasPixelReveal'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-}>(), { alt: '生成的画面成片', imgClass: '', duration: 520, autoReveal: true })
+}>(), { alt: '生成的画面成片', imgClass: '', duration: 860, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
   error: [event: Event]
@@ -36,18 +36,16 @@ const imgRef = ref<HTMLImageElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
-let animations: Animation[] = []
-let stopRipple: (() => void) | null = null
+let stopPixels: (() => void) | null = null
 let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
 let revealedImage: HTMLImageElement | null = null
 
 function stopAnimation() {
-  stopRipple?.()
-  stopRipple = null
   generation += 1
-  animations.splice(0).forEach(animation => animation.cancel())
+  stopPixels?.()
+  stopPixels = null
   isRevealing.value = false
 }
 function finishReveal() {
@@ -69,18 +67,17 @@ function triggerReveal() {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(160, Math.min(600, props.duration)) : 520
+  const duration = Number.isFinite(props.duration) ? Math.max(240, Math.min(1000, props.duration)) : 860
   const token = generation
   try {
-    // The original is clear immediately; only the short decorative overlay fades.
+    // Prepare an opaque pixel image before covering the original. Any failure
+    // leaves the decoded full-resolution image immediately available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const ripple = containerRef.value ? startCanvasRipple(img, containerRef.value, duration) : null
-    if (!ripple) { emit('reveal-complete'); return }
-    stopRipple = ripple.stop
-    const reveal = ripple.canvas.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: 'ease-out' })
-    animations.push(reveal)
-    void reveal.finished.then(() => {
+    const pixels = containerRef.value ? startCanvasPixelReveal(img, containerRef.value, duration) : null
+    if (!pixels) { emit('reveal-complete'); return }
+    stopPixels = pixels.stop
+    void pixels.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
     }).catch(() => { if (token === generation) finishReveal() })
     isRevealing.value = true

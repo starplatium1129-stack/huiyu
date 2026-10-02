@@ -45,10 +45,10 @@
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
   .pb .stage-swap-leave-to { transform:scale(.985); }
-  /* ── 生成等待：保留画布微弱呼吸，工作光限定在 BorderBeam 边缘。 ── */
+  /* Waiting has one pixel focal point beside the reference, never over its text. */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
-    animation:stageBreath 3.2s ease-in-out infinite;
+    animation:none;
   }
   .pb .stage-placeholder.is-generating::after {
     opacity:0;
@@ -56,15 +56,21 @@
   }
   .pb .stage-generating-copy {
     @apply tw:relative; z-index:var(--z-raised);
-    @apply tw:grid tw:gap-s-2; justify-items:center;
+    @apply tw:grid tw:gap-s-4 tw:items-center;
+    grid-template-columns:auto minmax(0,1fr);
+    width:min(100%,440px); margin:0 auto; text-align:left;
   }
+  .pb .scene-reference .stage-generating-copy { width:100%; margin:var(--s-5) 0 0; padding-top:var(--s-5); border-top:1px solid var(--border-soft); }
+  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; }
   .pb .stage-generating-title {
     @apply tw:text-primary tw:text-title-xs; font-weight:720;
     letter-spacing:-.01em;
   }
-  .pb .stage-generating-sub { @apply tw:text-muted; font:500 var(--fs-mono-sm) var(--font-mono); }
+  .pb .stage-generating-sub { @apply tw:text-secondary; display:flex; justify-content:space-between; gap:var(--s-3); font:500 var(--fs-mono-sm) var(--font-mono); }
+  .pb .stage-generating-sub strong { color:var(--text-primary); font-variant-numeric:tabular-nums; }
+  .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
-    @apply tw:w-full tw:max-w-[260px] tw:h-[4px] tw:mt-s-2 tw:rounded-pill tw:overflow-hidden;
+    @apply tw:w-full tw:h-[4px] tw:rounded-pill tw:overflow-hidden;
     background:color-mix(in srgb,var(--text-muted) 22%,transparent);
   }
   .pb .stage-progress-ring > i {
@@ -90,16 +96,22 @@
 @media (max-width:600px) {
   .pb .result-image-actions > .btn { @apply tw:min-h-[44px]; }
 }
-.pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
+.pb .stage-progress-details { @apply tw:text-secondary tw:text-label; overflow-wrap:anywhere; }
 .pb .stage-progress-details summary { @apply tw:cursor-pointer; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:64px var(--s-5) var(--s-5); }
+.pb.atelier-workspace .is-generating .stage-content { padding:var(--s-5); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
-.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
+.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
 .pb .stage-result-heading > :first-child { @apply tw:text-primary tw:font-semibold; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
+@media (min-width:1024px) {
+  /* Reserve the artwork slot before decoding. A late footer/auto-sized image
+   * must not resize the reveal and make its safety observer cancel on arrival. */
+  .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
+}
