@@ -116,7 +116,7 @@ Getty 的美术教育资料把空间、线条、色彩和质感作为画面要�
 | `popularContent.ts` 的构图映射 | left／right 都可落到 off-center 类标签 | 精确左右关系需要在当前有效描述通道中明确，并实测 |
 | `buildStructuredKreaDescription` | 拼接身份、服装、场景及风格；可加入身份保护句，存在女性单数代词表述 | 多人或其他主体不能只套单人示例，需检查最终语法与属性归属 |
 | `scene-render-contract.js` | 对齐通用场景的模板过滤与负向组装 | 是编译检查的一部分，不自动等于完整工作台最终请求 |
-| `routes/anima/workflows.js` | Krea 使用固定增强与采样节点 | 锐度、纹理变化不能全部归因于提示词 |
+| `runtime-rs/src/images/workflow.rs` | Krea 使用固定增强与采样节点 | 锐度、纹理变化不能全部归因于提示词 |
 
 这些是源码观察与实验风险清单，不是未看图就认定的全部画质缺陷。本轮不修改编译器、模型参数或生产内容。
 
@@ -157,4 +157,4 @@ T2I-CompBench 把属性绑定、物体关系和复杂构图拆成可评价项目
 [^11]: J. Paul Getty Museum Education. [Elements of Art](https://www.getty.edu/education/teachers/building_lessons/formal_analysis.html)。未标注发布日期；线条、空间、色彩与质感。
 [^12]: Kaiyi Huang, Kaiyue Sun, Enze Xie, Zhenguo Li, Xihui Liu. [T2I-CompBench](https://papers.neurips.cc/paper_files/paper/2023/hash/f8ad010cdd9143dbb0e9308c093aff24-Abstract-Datasets_and_Benchmarks.html)。NeurIPS 2023；借鉴评测维度，不作为本项目模型排名或成功率证据。
 
-本地实现来源：[模型目录](../../../server/anima-model-catalog.js)、[profile](../../../data/presets.json)、[工作流](../../../routes/anima/workflows.js)、[编译器](../../../src/utils/promptCompiler.ts)、[格式与负向策略](../../../src/utils/promptPolicy.ts)、[热门角色组装](../../../src/utils/popularContent.ts)、[工作室组装](../../../src/composables/prompt/usePromptAssembly.ts)、[构图意图](../../../src/utils/blueprintComposition.ts)、[通用场景检查](../../../scripts/lib/scene-render-contract.js)。
+本地实现来源：[模型目录](../../../runtime-rs/src/images/catalog.rs)、[profile](../../../data/presets.json)、[工作流](../../../runtime-rs/src/images/workflow.rs)、[编译器](../../../src/utils/promptCompiler.ts)、[格式与负向策略](../../../src/utils/promptPolicy.ts)、[热门角色组装](../../../src/utils/popularContent.ts)、[工作室组装](../../../src/composables/prompt/usePromptAssembly.ts)、[构图意图](../../../src/utils/blueprintComposition.ts)、[通用场景检查](../../../scripts/lib/scene-render-contract.js)。
