@@ -129,15 +129,16 @@ function extendBuild(root: string, receipt: ReturnType<typeof verifyBuild>) {
   if (original.sha256 !== receipt.build.sha256) throw Error('打包修改了原构建产物，拒绝绑定');
   recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs });
 }
-function addBoundFile(root: string, previous: any, output: string) {
-  const name = path.relative(root, output).replaceAll('\\', '/');
-  deliveryPaths.relative(name);
-  const others: Selection[] = previous?.selectors?.filter((item: Selection) => item.path !== name) || [];
+function addBoundFiles(root: string, previous: any, outputs: string[]) {
+  const names = outputs.map(output => path.relative(root, output).replaceAll('\\', '/'));
+  if (!names.length || new Set(names).size !== names.length) throw Error('绑定产物集合为空或重复');
+  names.forEach(name => deliveryPaths.relative(name));
+  const others: Selection[] = previous?.selectors?.filter((item: Selection) => !names.includes(item.path)) || [];
   if (previous) {
     identity.validateSnapshot(previous);
     for (const item of others) verifyBoundFile(root, previous, path.join(root, item.path), '已绑定的另一份产物已变化');
   }
-  return completeSnapshot(root, [...others, { kind:'file', path:name }], '发行封装产物身份不完整');
+  return completeSnapshot(root, [...others, ...names.map(name => ({ kind:'file' as const, path:name }))], '发行封装产物身份不完整');
 }
 function verifyBoundFile(root: string, snapshot: any, output: string, message: string) {
   try { identity.validateSnapshot(snapshot); } catch { throw Error(message); }
@@ -147,13 +148,13 @@ function verifyBoundFile(root: string, snapshot: any, output: string, message: s
   const actual = completeSnapshot(root, [{ kind:'file', path:relative }], message).entries[0];
   if (actual.sha256 !== expected.sha256 || actual.bytes !== expected.bytes) throw Error(message);
 }
-function bindDerivedPayload(root: string, output: string) {
+function bindDerivedPayloads(root: string, outputs: string[]) {
   const receipt = verifyBuild(root);
-  writeReceipt(root, { ...receipt, derivedPayloads:addBoundFile(root, receipt.derivedPayloads, output) }, '升级载荷绑定');
+  writeReceipt(root, { ...receipt, derivedPayloads:addBoundFiles(root, receipt.derivedPayloads, outputs) }, '升级载荷绑定');
 }
 function bindDistribution(root: string, payload: string, output: string) {
   const receipt = verifyBuild(root, payload);
-  const distribution = addBoundFile(root, receipt.distribution, output);
+  const distribution = addBoundFiles(root, receipt.distribution, [output]);
   writeReceipt(root, { ...receipt, distribution, releaseCommit:identity.repository(root).commit }, '发行封装绑定');
 }
 function verifyDistribution(root: string, output: string) {
@@ -174,4 +175,4 @@ if(require.main===module){
   try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
-export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayload, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };
+export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };

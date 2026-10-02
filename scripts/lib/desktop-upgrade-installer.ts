@@ -112,8 +112,7 @@ export async function buildUpgradeInstaller(root: string) {
     const script = path.join(directory, 'upgrade.nsi');
     fs.writeFileSync(script, upgradeScript(fs.readFileSync(path.join(root, renderedPath), 'utf8'), assets, verifier, host, output));
     command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(path.join(root, renderedPath)));
-    binding.bindDerivedPayload(root, output);
-    binding.bindDerivedPayload(root, verifier);
+    binding.bindDerivedPayloads(root, [output, verifier]);
     return { payload: output, verifier, retainedFiles: assets.length, retainedBytes: assets.reduce((sum, file) => sum + file.bytes, 0),
       requirementsSha256: crypto.createHash('sha256').update(fs.readFileSync(manifest)).digest('hex') };
   });
