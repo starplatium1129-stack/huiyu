@@ -500,6 +500,8 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 | Nightly visual regression | 每日北京时间 02:00 / 手动：完整前端覆盖率门槛、主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
+Windows Native Live2D 的 `LIVE2D_CUBISM_SDK_DIR` 优先使用 runner 进程环境；未设置或仅含空白时才回退到同名仓库变量，避免不同机器的 SDK 路径互相覆盖。预检确认 Core 头文件、Framework 源文件和 Windows x64/143 Core 静态库均存在后，通过 `GITHUB_ENV` 传给后续步骤；显式配置的路径缺失或不完整会直接失败，不切换到另一个 SDK。
+
 当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。发行范围见 [1.7.4 说明](releases/v1.7.4.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
 
 ### 011 发行输入绑定（2026-09-21）

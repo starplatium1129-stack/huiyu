@@ -17,8 +17,6 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: [self-hosted, Windows, X64, live2d-cubism]
     timeout-minutes: 45
-    env:
-      LIVE2D_CUBISM_SDK_DIR: ${{ vars.LIVE2D_CUBISM_SDK_DIR }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -32,12 +30,22 @@ jobs:
           cache: npm
       - name: Verify native toolchain
         shell: powershell
+        env:
+          REPOSITORY_CUBISM_SDK_DIR: ${{ vars.LIVE2D_CUBISM_SDK_DIR }}
         run: |
           node --version
           rustc --version
           cargo --version
-          if (-not $env:LIVE2D_CUBISM_SDK_DIR) { throw 'LIVE2D_CUBISM_SDK_DIR is required on the self-hosted runner' }
-          if (-not (Test-Path -LiteralPath $env:LIVE2D_CUBISM_SDK_DIR)) { throw "Cubism SDK not found: $env:LIVE2D_CUBISM_SDK_DIR" }
+          # Runner-local paths take precedence; the repository variable is a fallback.
+          if ([string]::IsNullOrWhiteSpace($env:LIVE2D_CUBISM_SDK_DIR)) {
+            $env:LIVE2D_CUBISM_SDK_DIR = $env:REPOSITORY_CUBISM_SDK_DIR
+          }
+          if ([string]::IsNullOrWhiteSpace($env:LIVE2D_CUBISM_SDK_DIR)) { throw 'LIVE2D_CUBISM_SDK_DIR is required on the runner or in repository variables' }
+          foreach ($relativePath in @('Core/include/Live2DCubismCore.h', 'Framework/src/CubismFramework.cpp', 'Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib')) {
+            $requiredFile = Join-Path $env:LIVE2D_CUBISM_SDK_DIR $relativePath
+            if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) { throw "Cubism SDK file not found: $requiredFile" }
+          }
+          "LIVE2D_CUBISM_SDK_DIR=$env:LIVE2D_CUBISM_SDK_DIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Install dependencies
         run: npm ci
       - name: Build Tauri
