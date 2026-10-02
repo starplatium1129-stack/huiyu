@@ -1,8 +1,8 @@
-/* eslint-disable vue/one-component-per-file -- KeepAlive lifecycle tests need a host and its cached child. */
 import { afterEach, beforeEach, vi } from 'vitest'
-import { defineComponent, h, KeepAlive, nextTick, reactive, ref } from 'vue'
+import { defineComponent, h, nextTick, reactive, ref } from 'vue'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { ArtworkRecord } from '@/types/artwork'
+import { createGalleryKeepAliveHost } from './galleryWorkspaceKeepAliveHost'
 
 const mocks = vi.hoisted(() => ({
   confirm: vi.fn(), softDeleteArtworks: vi.fn(), listTrash: vi.fn(), restoreArtwork: vi.fn(), getImage: vi.fn(), getThumbnail: vi.fn(), setThumbnail: vi.fn(), snapshot: vi.fn(), thumb: vi.fn(),
@@ -64,7 +64,7 @@ export async function setup() {
       class: 'artwork', 'data-card-id': String(item.id), key: item.id,
     }, [h('img', { src: gallery.cardUrls[item.id] || gallery.thumbUrls[item.id] || undefined })])))
   } })
-  const wrapper = mount(defineComponent({ setup: () => () => h(KeepAlive, null, { default: () => active.value ? h(Gallery) : null }) }))
+  const wrapper = mount(createGalleryKeepAliveHost(active, Gallery))
   wrappers.push(wrapper)
   await flushPromises()
   return { gallery, wrapper,
