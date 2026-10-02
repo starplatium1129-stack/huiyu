@@ -3,6 +3,10 @@ vi.mock('@/composables/useKVStore', () => ({
   kvGet: vi.fn(async (key: string) => archiveKv.get(key) ?? null),
   kvSet: vi.fn(async (key: string, value: unknown) => { archiveKv.set(key, JSON.parse(JSON.stringify(value))) }),
 }))
+vi.mock('@/platform/web/profileStorage', async importOriginal => ({
+  ...await importOriginal<typeof import('@/platform/web/profileStorage')>(),
+  flushProfileWrites: vi.fn(async () => {}),
+}))
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { STORAGE_KEY, MAX_LOCAL_MESSAGES } from '@/config/characters'
 import { kvGet, kvSet } from '@/composables/useKVStore'
@@ -10,6 +14,7 @@ import { CHAT_ARCHIVE_KEY } from '@/utils/chatArchive'
 import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_RESET_KEY, collectLiveLocalSettings } from '@/utils/storageKeys'
 import { prepareBackupSettings } from '@/utils/backupSettings'
 import { useChatStorage } from './useChatStorage'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 async function open(onError = vi.fn()) {
   const storage = useChatStorage(onError)
@@ -18,6 +23,7 @@ async function open(onError = vi.fn()) {
 }
 beforeEach(() => {
   vi.clearAllMocks()
+  vi.mocked(flushProfileWrites).mockResolvedValue(undefined)
   vi.stubGlobal('navigator', { locks: { request: async (_name: string, action: () => unknown) => action() } })
   const values = new Map<string, string>()
   vi.stubGlobal('localStorage', {
@@ -129,6 +135,56 @@ describe('independent chat preference persistence', () => {
 })
 
 describe('chat archive writes', () => {
+  it('rejects a failed restore without losing the archive and lets the same action retry', async () => {
+    const storage = await open()
+    const message = { mid: 'restored', role: 'user', content: 'from archive', stopped: false }
+    await storage.importArchiveJson(JSON.stringify({ version: 1, archived: { nene: [message] } }))
+    storage.messages('nene').push({ mid: 'current', role: 'user', content: 'current', stopped: false })
+    storage.save()
+    const original = localStorage.getItem(STORAGE_KEY)
+    const write = localStorage.setItem.bind(localStorage)
+    const set = vi.spyOn(localStorage, 'setItem').mockImplementation((key, value) => {
+      if (key === STORAGE_KEY) throw new Error('quota')
+      write(key, value)
+    })
+    await expect(storage.restoreFromArchive('nene')).rejects.toThrow('尚未保存')
+    expect(storage.messages('nene').map(item => item.mid)).toEqual(['current'])
+    expect(localStorage.getItem(STORAGE_KEY)).toBe(original)
+    expect(JSON.parse(await storage.exportArchiveJson()).archived.nene).toEqual([message])
+    set.mockRestore()
+    expect(await storage.restoreFromArchive('nene')).toBe(1)
+    expect((await open()).messages('nene').map(item => item.mid)).toEqual(['current', 'restored'])
+  })
+
+  it('rejects a version-protected restore instead of reporting an empty archive', async () => {
+    const storage = await open()
+    const original = JSON.stringify({ version: 999, histories: { nene: [] } })
+    localStorage.setItem(STORAGE_KEY, original)
+    await expect(storage.restoreFromArchive('nene')).rejects.toThrow('版本保护')
+    expect(localStorage.getItem(STORAGE_KEY)).toBe(original)
+    expect(storage.messages('nene')).toEqual([])
+  })
+
+  it('waits for desktop confirmation and preserves a failed confirmation for retry', async () => {
+    const storage = await open()
+    const message = { mid: 'pending', role: 'user', content: 'from archive', stopped: false }
+    await storage.importArchiveJson(JSON.stringify({ version: 1, archived: { nene: [message] } }))
+    let reject!: (error: Error) => void
+    vi.mocked(flushProfileWrites).mockImplementationOnce(() => new Promise((_, fail) => { reject = fail }))
+    const restored = vi.fn()
+    const pending = storage.restoreFromArchive('nene').then(restored)
+    const failed = expect(pending).rejects.toThrow('receipt unconfirmed')
+    await vi.waitFor(() => expect(reject).toBeTypeOf('function'))
+    expect(restored).not.toHaveBeenCalled()
+    reject(Error('receipt unconfirmed'))
+    await failed
+    expect(storage.messages('nene').map(item => item.mid)).toEqual(['pending'])
+    expect(storage.archiveCount('nene')).toBe(1)
+    expect(await storage.restoreFromArchive('nene')).toBe(0)
+    expect(vi.mocked(flushProfileWrites)).toHaveBeenCalledTimes(2)
+    expect((await open()).messages('nene').map(item => item.mid)).toEqual(['pending'])
+  })
+
   it('reports background synchronization read failures without erasing the current archive', async () => {
     const error = vi.fn(), storage = await open(error)
     await storage.importArchiveJson(JSON.stringify({ version: 1, archived: { nene: [{ mid: 'keep', role: 'user', content: 'keep' }] } }))

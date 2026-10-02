@@ -80,7 +80,7 @@
           :disabled="testing || !canTest" @click="testConnection">
           {{ testing ? '测试中…' : '测试连接' }}
         </button>
-        <button class="btn btn-primary btn-sm" type="submit">保存</button>
+        <button class="btn btn-primary btn-sm" type="submit" :disabled="saving">{{ saving ? '保存中…' : '保存' }}</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="emit('close')">关闭</button>
       </div>
     </div>
@@ -93,6 +93,7 @@
 <script setup lang="ts">
 import { computed, ref, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import {
   DEFAULT_SPEECH_INPUT_CONFIG,
@@ -103,10 +104,13 @@ import {
 } from '@/utils/speechInputConfig'
 
 const emit = defineEmits<{ save: []; close: [] }>()
+let disposed = false
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
+onUnmounted(() => { disposed = true })
 
 const draft = ref<SpeechInputConfig>(loadSpeechInputConfig())
 const showApiKey = ref(false)
+const saving = ref(false)
 const testing = ref(false)
 const testState = ref<'idle' | 'testing' | 'ok' | 'fail'>('idle')
 const testMessage = ref('')
@@ -130,6 +134,7 @@ function commitEndWords(): void {
 }
 
 const statusText = computed(() => {
+  if (saving.value) return '正在保存配置…'
   if (testState.value === 'testing') return '正在检测服务可达性…'
   if (testState.value === 'ok') return '连接正常'
   if (testState.value === 'fail') return testMessage.value || '无法连接服务'
@@ -159,11 +164,28 @@ async function testConnection(): Promise<void> {
   }
 }
 
-function save(): void {
+async function save(): Promise<void> {
+  if (saving.value || disposed) return
+  saving.value = true
   commitWakeWords()
   commitEndWords()
-  saveSpeechInputConfig(draft.value)
-  emit('save')
+  const submitted = JSON.stringify([draft.value, wakeWordsInput.value, endWordsInput.value])
+  try {
+    saveSpeechInputConfig(draft.value)
+    await flushProfileWrites()
+    if (disposed) return
+    if (JSON.stringify([draft.value, wakeWordsInput.value, endWordsInput.value]) !== submitted) {
+      testState.value = 'fail'
+      testMessage.value = '提交时的设置已保存；当前修改尚未保存，请再次保存。'
+      return
+    }
+    emit('save')
+  } catch {
+    if (!disposed) {
+      testState.value = 'fail'
+      testMessage.value = '配置保存尚未确认，请保留当前设置并重试。'
+    }
+  } finally { saving.value = false }
 }
 </script>
 

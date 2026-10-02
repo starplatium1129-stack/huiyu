@@ -1,4 +1,4 @@
-import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
+import { profileLocalStorage as localStorage, flushProfileWrites } from '../../platform/web/profileStorage.ts'
 import { reactive, ref, getCurrentScope, onScopeDispose } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
@@ -466,7 +466,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   /** 把该角色归档并回当前对话；返回并入条数。 */
   async function restoreFromArchive(char = state.active): Promise<number> {
-    if (!canWrite()) return 0
+    if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全恢复。')
     if (!characterIds.includes(char)) return 0
     await archiveStorage.refresh(true)
     const archived = archive.value.archived[char] || []
@@ -478,8 +478,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       // 完整并回（不截断）：超过 20 条的部分在下次 trim 时会再次归档，
       // 归档按 mid 去重，不会产生副本，也不会丢失。
       state.histories[char] = merged
-      save()
+      const restoring = state.histories[char]
+      if (!save()) {
+        if (state.histories[char] === restoring) state.histories[char] = history
+        throw new Error('并入的对话尚未保存，原归档已保留，请重试。')
+      }
     }
+    // Desktop writes remain queued in memory until the runtime confirms them.
+    // A failed confirmation must keep that retryable state and the source archive.
+    await flushProfileWrites()
     return added
   }
   async function clearArchive(char?: string) {

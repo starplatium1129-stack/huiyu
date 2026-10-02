@@ -233,7 +233,7 @@ VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
 
 ## 本地备份与生成队列
 
-- 网页备份通过 `src/utils/backupCore.ts` 声明格式与版本；合并恢复按记录 ID 去重，备份中的同 ID 数据优先，覆盖恢复先明确确认。旧历史继续经过已有迁移函数。
+- 网页备份通过 `src/utils/backupCore.ts` 声明格式与版本；合并恢复按记录 ID 去重并保留较新的记录，时间相同时备份数据优先，覆盖恢复先明确确认。旧历史继续经过已有迁移函数。
 - 桌面 workspace 备份由 `src/platform/desktop/backupActions.ts` 请求 runtime 保存私库与媒体，并下载恢复凭证；恢复先创建核验候选，不将网页 JSON 直接覆盖为桌面主库。
 - 网关维护备份落在 `runtime/maintenance-backups/`，每次“保存到项目”或替换样张前都会写入一份带时间戳与 label 的完整快照；场景管理 → 维护工具 → 备份历史可查看最近 50 份清单（ID / label / 创建时间 / 文件数）。
 - 队列任务在加入时冻结 Prompt、负面词、角色、场景、构图、项目和 SD 参数，后续修改工作台不会污染已排队任务或其作品记录。
