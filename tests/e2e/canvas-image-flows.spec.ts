@@ -33,7 +33,7 @@ for (const theme of ['dark', 'light']) {
       // polling can miss a sub-second animation. The application path is unchanged.
       if (!reduced) await page.evaluate(() => {
         const observer = new MutationObserver(() => {
-          const layer = document.querySelector('.cg-particle-reveal')
+          const layer = document.querySelector('.cg-development-reveal')
           if (!layer) return
           layer.parentElement?.getAnimations({ subtree: true }).forEach(animation => { animation.pause(); animation.currentTime = 0 })
           observer.disconnect()
@@ -52,7 +52,7 @@ for (const theme of ['dark', 'light']) {
         for (const viewport of [{ width: 2560, height: 1440 }, { width: 3840, height: 2160 }, { width: 1280, height: 800 }]) {
           await page.setViewportSize(viewport)
           await expect(page.getByRole('progressbar', { name: '生图进度' })).toBeInViewport({ ratio: 1 })
-          await expect(page.getByRole('button', { name: '先停一下', exact: true })).toBeInViewport({ ratio: 1 })
+          await expect(page.getByRole('button', { name: '停止绘制', exact: true })).toBeInViewport({ ratio: 1 })
           await page.screenshot({ path: info.outputPath(`canvas-generating-${theme}-${viewport.width}.png`), animations: 'allow' })
         }
         await page.setViewportSize({ width: 1920, height: 1080 })
@@ -61,9 +61,9 @@ for (const theme of ['dark', 'light']) {
       await expect(image).toBeVisible({ timeout: 15_000 })
       await expect.poll(() => image.evaluate((node: HTMLImageElement) => [node.naturalWidth, node.naturalHeight])).toEqual([width, height])
       if (!reduced) {
-        await expect(page.locator('.cg-particle-reveal')).toBeVisible()
-        expect(await page.locator('.cg-particle-reveal').evaluate(element => element.getAnimations({ subtree: true }).length)).toBeGreaterThan(0)
-        for (const time of [80, 360, 720]) {
+        await expect(page.locator('.cg-development-reveal')).toBeVisible()
+        expect(await page.locator('.cg-development-reveal').evaluate(element => element.getAnimations({ subtree: true }).length)).toBeGreaterThan(0)
+        for (const time of [80, 300, 540]) {
           await page.locator('.cg-image-reveal').evaluate((element, time) => {
             element.getAnimations({ subtree: true }).forEach(animation => { animation.currentTime = time })
           }, time)
@@ -71,7 +71,7 @@ for (const theme of ['dark', 'light']) {
         }
         await page.locator('.cg-image-reveal').evaluate(element => element.getAnimations({ subtree: true }).forEach(animation => animation.finish()))
       }
-      await expect(page.locator('.cg-particle-reveal')).toHaveCount(0)
+      await expect(page.locator('.cg-development-reveal')).toHaveCount(0)
       await expect(image).toHaveCSS('opacity', '1')
       await expect(image).toHaveCSS('transform', 'none')
       const after = (await page.locator('#drawing-canvas').boundingBox())!

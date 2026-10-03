@@ -16,7 +16,7 @@
       <div class="stage-chrome">
         <span>绘制画布</span>
         <span class="stage-ready" role="status" aria-live="polite">
-          {{ generationBusy ? '正在显影' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
+          {{ generationBusy ? '正在生成' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
         </span>
       </div>
       <i class="stage-magic-ring" aria-hidden="true"></i>
@@ -95,7 +95,7 @@
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
           <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
-          {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
+          {{ generationBusy ? '下一张正在生成 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
         </span>
       </div>
       <ImageSplitCompare
@@ -179,7 +179,7 @@ async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
-  // The page and canvas must settle at the decoded ratio before particles sample them.
+  // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
   if (source === props.displayResultUrl) loadedResultUrl.value = source
 }

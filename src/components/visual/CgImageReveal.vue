@@ -3,6 +3,7 @@
     <img
       v-if="resolvedSrc" :key="resolvedSrc" :crossorigin="runtimeResourceCors()" ref="imgRef"
       class="cg-image-target tw:block tw:w-full tw:h-full tw:object-contain" :class="imgClass"
+      :style="{ visibility: isLoaded ? undefined : 'hidden' }"
       :src="resolvedSrc" :alt="alt" loading="eager" decoding="async"
       @load="onImageLoad" @error="onImageError" @click="$emit('click', $event)"
     />
@@ -13,7 +14,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { startCanvasParticleReveal } from '@/utils/canvasParticleReveal'
+import { startImageDevelopmentReveal } from '@/utils/imageDevelopmentReveal'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
 const props = withDefaults(defineProps<{
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-}>(), { alt: '生成的画面成片', imgClass: '', duration: 960, autoReveal: true })
+}>(), { alt: '生成的画面成片', imgClass: '', duration: 600, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
   error: [event: Event]
@@ -36,16 +37,20 @@ const imgRef = ref<HTMLImageElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
-let stopParticles: (() => void) | null = null
+let stopEffect: (() => void) | null = null
 let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
 let revealedImage: HTMLImageElement | null = null
+let decodedImage: HTMLImageElement | null = null
+let decodingImage: HTMLImageElement | null = null
+let pendingDecode: Promise<boolean> | null = null
+let sourceRevision = 0
 
 function stopAnimation() {
   generation += 1
-  stopParticles?.()
-  stopParticles = null
+  stopEffect?.()
+  stopEffect = null
   isRevealing.value = false
 }
 function finishReveal() {
@@ -57,27 +62,44 @@ function finishReveal() {
 function isCurrentImage(img: HTMLImageElement | null): img is HTMLImageElement {
   return Boolean(img && img === imgRef.value && img.getAttribute('src') === resolvedSrc.value)
 }
-function triggerReveal() {
+function decodeImage(img: HTMLImageElement): Promise<boolean> {
+  if (decodedImage === img) return Promise.resolve(true)
+  if (decodingImage === img && pendingDecode) return pendingDecode
+  const revision = sourceRevision
+  decodingImage = img
+  pendingDecode = (async () => {
+    try { if (typeof img.decode === 'function') await img.decode() }
+    catch {
+      if (revision === sourceRevision && isCurrentImage(img)) isLoaded.value = true
+      return false
+    }
+    if (revision !== sourceRevision || !isCurrentImage(img) || !img.complete || !img.naturalWidth) return false
+    decodedImage = img
+    isLoaded.value = true
+    return true
+  })()
+  return pendingDecode
+}
+async function triggerReveal() {
   const img = imgRef.value
   if (!isCurrentImage(img) || !img.complete || !img.naturalWidth) return
   stopAnimation()
-  isLoaded.value = true
+  const token = generation
+  if (!await decodeImage(img) || token !== generation || !isCurrentImage(img)) return
   revealedImage = img
   if (!canAnimate.value || lowEffects.value || typeof img.animate !== 'function') {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(240, Math.min(1200, props.duration)) : 960
-  const token = generation
+  const duration = Number.isFinite(props.duration) ? Math.max(450, Math.min(700, props.duration)) : 600
   try {
-    // Prepare the particle field before fading the original. Any failure leaves
-    // the decoded full-resolution image immediately available.
+    // Preparation precedes fading. Any failure leaves the decoded work available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const particles = containerRef.value ? startCanvasParticleReveal(img, containerRef.value, duration) : null
-    if (!particles) { emit('reveal-complete'); return }
-    stopParticles = particles.stop
-    void particles.finished.then(() => {
+    const effect = containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null
+    if (!effect) { emit('reveal-complete'); return }
+    stopEffect = effect.stop
+    void effect.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
     }).catch(() => { if (token === generation) finishReveal() })
     isRevealing.value = true
@@ -92,8 +114,8 @@ function handleReadyImage() {
   const img = imgRef.value
   if (!isCurrentImage(img) || !img.complete || !img.naturalWidth || handledImage === img) return
   handledImage = img
-  isLoaded.value = true
-  if (props.autoReveal) triggerReveal()
+  if (props.autoReveal) void triggerReveal()
+  else void decodeImage(img)
 }
 function onImageLoad(event: Event) {
   if (event.target !== imgRef.value || !isCurrentImage(imgRef.value)) return
@@ -102,20 +124,25 @@ function onImageLoad(event: Event) {
 }
 function onImageError(event: Event) {
   if (event.target !== imgRef.value) return
+  sourceRevision += 1
   stopAnimation()
   isLoaded.value = true
   emit('error', event)
 }
 watch(resolvedSrc, () => {
+  sourceRevision += 1
   stopAnimation()
   isLoaded.value = false
   handledImage = null
   revealedImage = null
+  decodedImage = null
+  decodingImage = null
+  pendingDecode = null
 }, { flush: 'sync' })
 watch(resolvedSrc, handleReadyImage, { flush: 'post' })
 // A success callback can arrive just after a cached image's load event.
 watch(() => props.autoReveal, enabled => {
-  if (enabled && revealedImage !== imgRef.value) triggerReveal()
+  if (enabled && revealedImage !== imgRef.value) void triggerReveal()
 })
 watch([canAnimate, lowEffects], () => {
   if (isRevealing.value && (!canAnimate.value || lowEffects.value)) finishReveal()
@@ -125,6 +152,6 @@ useResizeObserver(containerRef, () => {
   if (isRevealing.value && bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) finishReveal()
 })
 onMounted(handleReadyImage)
-onBeforeUnmount(stopAnimation)
+onBeforeUnmount(() => { sourceRevision += 1; stopAnimation() })
 defineExpose({ triggerReveal })
 </script>
