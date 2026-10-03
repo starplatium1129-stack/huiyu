@@ -7,10 +7,17 @@ for (const theme of ['dark', 'light']) {
   test(`chat menu lazily opens styled panels ${theme}`, async ({ page }, info) => {
     await page.setViewportSize({ width:1097, height:617 })
     await page.emulateMedia({ reducedMotion:'reduce' })
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.addInitScript(value => {
+      localStorage.setItem('aics_theme', value)
+      localStorage.setItem('aics_chat_v1', JSON.stringify({ version:1, activeChar:'nene', conversations:{ nene:[], natsume:[] }, settings:{ live2dEnabled:false } }))
+      localStorage.setItem('aics_chat_memories_v1', JSON.stringify({ version:1, byCharacter:{ nene:Array.from({ length:12 }, (_, index) => ({
+        id:`panel-memory-${index}`, character:'nene', text:`用于布局验收的记忆 ${index}`, sourceMid:'', createdAt:1, updatedAt:1, pinned:true,
+      })) } }))
+    }, theme)
     await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json:{ ok:true, online:false, models:[], loras:[], styleLoras:[] } }))
     await page.goto('/chat')
     await expect(page.locator('h1')).toBeVisible()
+    const layoutHeight = (await page.locator('.chat-layout').boundingBox())!.height
     const trigger = page.locator('.chat-more-trigger')
     await trigger.press('ArrowDown')
     const menu = page.getByRole('menu', { name:'更多房间操作', exact:true })
@@ -31,11 +38,37 @@ for (const theme of ['dark', 'light']) {
       await page.locator('.chat-more-trigger').click()
       await page.getByRole('menuitem', { name:label, exact:true }).click()
       const panel = page.locator(selector).filter({ visible:true })
+      const dialog = page.getByRole('dialog', { name:label, exact:true })
       await expect(panel).toHaveCount(1)
-      await expect(panel).toHaveCSS('border-top-style', 'solid')
+      await contained(dialog, 1097, 617)
+      await expect(dialog).toHaveCSS('border-top-style', 'solid')
+      await expect(dialog.locator(':scope > section')).toHaveCount(1)
+      expect((await page.locator('.chat-layout').boundingBox())!.height).toBeCloseTo(layoutHeight, 0)
+      await expect(page.locator('.chat-composer')).toBeInViewport({ ratio:1 })
+      await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeFocused()
       expect(await panel.locator('strong').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-      await panel.getByRole('button', { name:closeLabel, exact:true }).click()
+      if (label === '长期记忆') {
+        await expect(panel.locator('.memory-item')).toHaveCount(12)
+        const remove = panel.locator('.memory-item').last().getByRole('button', { name:'删除', exact:true })
+        await remove.click()
+        const confirmation = dialog.getByRole('alertdialog', { name:'删除这条长期记忆？', exact:true })
+        await expect(confirmation).toBeVisible()
+        await page.keyboard.press('Escape')
+        await expect(confirmation).toBeHidden()
+        await expect(remove).toBeFocused()
+        await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeInViewport({ ratio:1 })
+        await page.screenshot({ path:info.outputPath(`chat-memory-panel-${theme}.png`) })
+        await page.keyboard.press('Escape')
+      } else if (label === '我的档案') {
+        const relationship = panel.getByRole('combobox', { name:'关系定位', exact:true })
+        await pickStudioOptionByValue(relationship, 'friend')
+        await expect(relationship).toHaveAttribute('data-value', 'friend')
+        await page.screenshot({ path:info.outputPath(`chat-profile-panel-${theme}.png`) })
+        await panel.getByRole('button', { name:'保存档案', exact:true }).click()
+      } else await panel.getByRole('button', { name:closeLabel, exact:true }).click()
       await expect(panel).toHaveCount(0)
+      await expect(dialog).toBeHidden()
+      await expect(trigger).toBeFocused()
     }
   })
 }

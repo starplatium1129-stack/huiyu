@@ -3,7 +3,8 @@
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
-const props = withDefaults(defineProps<{ target?: string }>(), { target: '[aria-pressed="true"]' })
+import '@/assets/css/studio-segments.css'
+const props = withDefaults(defineProps<{ target?: string }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]' })
 const indicator = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
 let mutations: MutationObserver | undefined
@@ -18,7 +19,28 @@ let parent: HTMLElement | null = null
 let observedTarget: HTMLElement | null = null
 let destinationBox = ''
 let keyboardInput = false
-function keyboard() { keyboardInput = true; fluid?.settle(); indicator.value?.style.setProperty('transition','none') }
+function keyboard(event: KeyboardEvent) {
+  if (parent?.classList.contains('studio-segments')) {
+    keyboardInput = false
+    // Reka owns tab/radio roving focus. Plain pressed-button groups use the same keys.
+    if (parent.getAttribute('role') === 'tablist' || parent.dataset.segmentKeyboard === 'managed' || event.altKey || event.ctrlKey || event.metaKey) return
+    const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']
+    if (!keys.includes(event.key) || !(event.target instanceof HTMLButtonElement)) return
+    const buttons = Array.from(parent.querySelectorAll<HTMLButtonElement>('button')).filter(button =>
+      !button.disabled && button.getAttribute('aria-disabled') !== 'true' && button.getBoundingClientRect().width > 0)
+    const index = buttons.indexOf(event.target)
+    if (index < 0 || !buttons.length) return
+    const rtl = getComputedStyle(parent).direction === 'rtl'
+    const previous = event.key === 'ArrowUp' || event.key === (rtl ? 'ArrowRight' : 'ArrowLeft')
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (previous ? -1 : 1) + buttons.length) % buttons.length
+    event.preventDefault()
+    event.stopPropagation()
+    buttons[next].focus({ preventScroll: true })
+    buttons[next].click()
+    return
+  }
+  keyboardInput = true; fluid?.settle(); indicator.value?.style.setProperty('transition','none')
+}
 function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
 // Motion batches all indicator reads before any indicator writes in this frame.
 function schedule() { if (!suspended && !document.hidden) frame.read(update) }
@@ -93,7 +115,7 @@ onMounted(() => {
   resize = new ResizeObserver(schedule)
   resize.observe(parent)
   mutations = new MutationObserver(schedule)
-  mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-pressed', 'aria-selected', 'hidden'] })
+  mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
   parent.addEventListener('scroll', schedule, { passive: true })
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)

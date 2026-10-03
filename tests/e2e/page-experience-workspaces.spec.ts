@@ -38,27 +38,31 @@ for (const theme of ['dark']) {
   })
 
   for (const width of [900, 1440]) {
-    test(`canvas remains single and precedes narrow materials ${theme} ${width}`, async ({ page }) => {
+    test(`canvas remains single while switching workspace modes ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.goto('/prompt-builder?char=natsume')
       await expect(page.locator('#drawing-canvas')).toHaveCount(1)
       await expect(page.locator('#drawing-materials .material-drawer')).toBeVisible()
+      await expect(page.locator('.director-inspector')).toBeVisible()
       const canvas = await page.locator('#drawing-canvas').boundingBox()
       const materials = await page.locator('#drawing-materials').boundingBox()
       if (width <= 900) {
         expect(canvas!.y).toBeLessThan(materials!.y)
-        expect(canvas!.y).toBeLessThan(450)
-        const title = await page.locator('.stage-placeholder-title').boundingBox()
-        expect(title!.width).toBeGreaterThan(canvas!.width * .6)
-        expect(title!.height).toBeLessThan(100)
         expect(await page.locator('#drawing-canvas').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#drawing-materials')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true)
+        expect(canvas!.y).toBeLessThan(450)
+        await expect(page.locator('#drawing-canvas').getByRole('button', { name: '挑选场景', exact: true })).toBeInViewport({ ratio: 1 })
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+      await expect(page.locator('#drawing-materials')).toBeVisible()
+      await expect(page.locator('.director-inspector')).toBeVisible()
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       await expect(page.locator('article.pb')).toHaveAttribute('data-character', 'natsume')
       await expect(page.locator('#drawing-canvas')).toHaveCount(1)
+      await expect(page.locator('#drawing-materials .material-drawer')).toBeVisible()
+      await expect(page.locator('.director-inspector')).toBeVisible()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
     })
   }
 }

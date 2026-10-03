@@ -25,7 +25,7 @@
         </figure>
         <div class="companion-choices">
           <span class="companion-label">陪你翻阅<span v-if="companionFailed[companionId]"> · 角色图片暂未加载</span></span>
-          <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
+          <div class="companion-switch studio-segments" role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
             <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
               <span class="dot"></span>绫地宁宁

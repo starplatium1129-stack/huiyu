@@ -2,7 +2,8 @@
   <section class="character-particle-stage tw:min-w-0 tw:overflow-hidden tw:rounded-lg" :style="{ '--archive-blue': theme.accent, '--character-aura': theme.aura }" :aria-label="`${name}的形象展台`">
     <header class="portrait-stage-heading tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-4">
       <div><span class="portrait-stage-kicker tw:text-secondary">角色画页</span><h2>{{ name }}</h2></div>
-      <div class="portrait-stage-modes tw:flex tw:gap-s-1 tw:p-s-1 tw:rounded-pill" role="group" aria-label="形象展示方式">
+      <div class="portrait-stage-modes studio-segments tw:flex tw:gap-s-1 tw:p-s-1 tw:rounded-pill" role="group" aria-label="形象展示方式">
+        <AnimatedSelection />
         <button type="button" :aria-pressed="!showOriginal" :disabled="!loading && !available" @click="mode = 'particles'"><ArchiveIcon name="spark" />粒子形象</button>
         <button type="button" :aria-pressed="showOriginal" @click="mode = 'original'"><ArchiveIcon name="image" />人物原画</button>
       </div>
@@ -25,6 +26,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { loadPortraitCloud, portraitCloudIdentity } from '@/utils/particlePortrait'
 

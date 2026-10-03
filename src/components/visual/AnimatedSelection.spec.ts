@@ -85,6 +85,26 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
       else document.documentElement.dataset.motion = previous
     }
   })
+  it('supports arrow and boundary keys on plain segmented radio groups', async () => {
+    const selected = ref('a')
+    const Container = defineComponent({ setup: () => () => h('div', { class: 'studio-segments', role: 'radiogroup' }, [
+      ...['a', 'b', 'c'].map(id => h('button', {
+        id, role: 'radio', disabled: id === 'b', 'aria-checked': selected.value === id ? 'true' : 'false',
+        onClick: () => { selected.value = id },
+      }, id)), h(AnimatedSelection),
+    ]) })
+    const wrapper = mount(Container, { attachTo: document.body })
+    try {
+      for (const button of wrapper.findAll('button')) vi.spyOn(button.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 80, 40))
+      await wrapper.get('#a').trigger('keydown', { key: 'ArrowRight' })
+      expect(wrapper.get('#c').attributes('aria-checked')).toBe('true')
+      expect(document.activeElement).toBe(wrapper.get('#c').element)
+      await wrapper.get('#c').trigger('keydown', { key: 'Home' })
+      expect(wrapper.get('#a').attributes('aria-checked')).toBe('true')
+      await wrapper.get('#a').trigger('keydown', { key: 'End' })
+      expect(wrapper.get('#c').attributes('aria-checked')).toBe('true')
+    } finally { wrapper.unmount() }
+  })
   it('suspends rAF when document becomes hidden', async () => {
     let isHidden = false
     Object.defineProperty(document, 'hidden', {

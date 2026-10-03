@@ -8,6 +8,27 @@
   --bg-elevated: #eee7e0;
   --bg-surface-elevated: #fffcf6;
   --bg-hover: #e8dfd7;
+  --studio-ink: #111a23;
+  --studio-deep: #f3eee7;
+  --studio-base: #faf8f4;
+  --studio-surface: #ffffff;
+  --studio-elevated: #f0eee9;
+  --studio-edge: rgba(58, 75, 91, .16);
+  --studio-edge-strong: rgba(58, 75, 91, .30);
+  --studio-text: #202a33;
+  --studio-text-secondary: #4d5963;
+  --studio-text-muted: #5b6771;
+  --studio-text-disabled: #5c6872;
+  --studio-accent: #92365f;
+  --studio-accent-hover: #752246;
+  --studio-accent-soft: rgba(146, 54, 95, .08);
+  --studio-accent-glow: rgba(146, 54, 95, .13);
+  --studio-nav: rgba(250, 248, 244, .96);
+  --studio-glass: rgba(255, 255, 255, .82);
+  --studio-glass-edge: rgba(58, 75, 91, .16);
+  --studio-art-mat: #eeeef0;
+  --studio-hover: #e8e8e5;
+  --studio-surface-elevated: #eee8f0;
   --border-soft: rgba(79, 59, 65, .18);
   --border-strong: rgba(79, 59, 65, .32);
   --text-primary: #29242a;
@@ -96,7 +117,6 @@
 :root[data-theme="light"] .control-page .status-tile { opacity: 1; }
 :root[data-theme="light"] .workspace-code { @apply tw:text-accent; }
 :root[data-theme="light"] .chat-page .api-settings-toggle { color: var(--character-ink, var(--accent)); }
-:root[data-theme="light"] .pb .director-mode-option.active { @apply tw:text-accent; background: var(--bg-surface); }
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 
 :root[data-theme="light"] .desktop-titlebar {

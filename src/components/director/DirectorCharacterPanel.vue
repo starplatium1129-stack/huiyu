@@ -1,7 +1,8 @@
 <template>
   <div class="panel step-panel" id="stepChar">
     <div class="panel-title">角色 · Character</div>
-    <div class="char-source" role="group" aria-label="角色来源">
+    <div class="char-source studio-segments studio-segments--compact" role="group" aria-label="角色来源">
+      <AnimatedSelection />
       <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
         :aria-pressed="!pb.isPopular" @click="$emit('selectSource', 'studio')">
         <ArchiveIcon name="character" class="char-source-icon" />
@@ -55,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { ref, defineAsyncComponent } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'

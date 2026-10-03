@@ -1,12 +1,15 @@
 <template>
   <section v-if="scenes.length" class="art-journal container" aria-labelledby="journal-title" data-reveal>
-    <header class="journal-heading"><div><span class="eyebrow">CG JOURNAL / 精选画页</span><h2 id="journal-title">把下一幕，留给想象。</h2></div><RouterLink to="/showcase" class="journal-more">翻阅参考画册 <span aria-hidden="true">↗</span></RouterLink></header>
-    <div class="journal-spread">
-      <RuntimeImage v-for="scene in scenes" :key="scene.id" :src="'/scene-showcase/images/' + scene.id + '.jpg'" v-slot="{ image, failed }">
-        <RouterLink class="journal-entry" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
-          <div class="journal-art" :style="{ '--journal-ratio': ratioOf(scene) }"><img v-if="image.src && !failed" v-bind="image" :alt="scene.title || '精选场景样张'" loading="lazy" decoding="async" @load="measure(scene.id, $event)" /><span v-else class="journal-missing"><ArchiveIcon name="image" /><span>样张暂未连接</span><span>先看看这一幕的设定</span></span></div>
-          <div class="journal-caption"><div><span class="journal-category">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3></div><span class="journal-read">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
-        </RouterLink>
+    <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
+      <div><span class="eyebrow">CG JOURNAL / 画里的日常</span><h2 id="journal-title">在喜欢的世界，多停留一会。</h2></div>
+      <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
+    </header>
+    <div class="journal-spread tw:grid">
+      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="'/scene-showcase/images/' + scene.id + '.jpg'" v-slot="{ image, failed }">
+      <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
+        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><span v-else class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
+        <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
+      </RouterLink>
       </RuntimeImage>
     </div>
   </section>
@@ -14,39 +17,28 @@
 <script setup lang="ts">
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { ref } from 'vue'
-type JournalScene = { id: string; title?: string; category?: string; recommendedSize?: unknown }
-defineProps<{ scenes: JournalScene[] }>()
-const ratios = ref<Record<string, number>>({})
-function ratioOf(scene: JournalScene) {
-  if (ratios.value[scene.id]) return ratios.value[scene.id]
-  const dimensions = typeof scene.recommendedSize === 'string' ? scene.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i) : null
-  return dimensions && Number(dimensions[1]) > 0 && Number(dimensions[2]) > 0 ? Number(dimensions[1]) / Number(dimensions[2]) : .75
-}
-function measure(id: string, event: Event) {
-  const image = event.target as HTMLImageElement
-  if (image.naturalWidth && image.naturalHeight) ratios.value[id] = image.naturalWidth / image.naturalHeight
-}
+defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string }> }>()
+function excerpt(story?: string) { return (story || '一些想留下的光影，一段只属于角色的时光。').replace(/^【[^】]+】/, '').slice(0, 84) }
 </script>
 <style scoped>
-.art-journal { margin-block: var(--s-6); }
-.journal-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--s-5); margin-bottom: var(--s-4); }
-.eyebrow { color: var(--text-muted); font: 500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing: .08em; }
-.journal-heading h2 { margin: var(--s-2) 0 0; color: var(--text-primary); font: 600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing: -.03em; }
-.journal-more { display: inline-flex; align-items: center; gap: var(--s-3); min-height: 44px; color: var(--text-secondary); font-size: var(--fs-label-sm); white-space: nowrap; }
-.journal-spread { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: var(--workspace-panel-gap); }
-.journal-entry { min-width: 0; padding: var(--s-2); border: 1px solid var(--album-edge); border-radius: var(--r-lg); background: var(--album-surface); box-shadow: var(--album-shadow); color: var(--text-primary); }
-.journal-art { display: grid; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); place-items: center; aspect-ratio: var(--journal-ratio, .75); overflow: hidden; border-radius: var(--r-sm); background: var(--bg-deep); }
-.journal-art img { display: block; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; }
-.journal-missing { display: grid; justify-items: center; gap: var(--s-2); padding: var(--s-5); color: var(--text-secondary); font-size: var(--fs-label-sm); text-align: center; }
-.journal-missing > .archive-icon { width: 32px; height: 32px; margin-bottom: var(--s-2); }
-.journal-missing > span:last-child { color: var(--text-muted); font-size: var(--fs-label-xs); }
-.journal-caption { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding: var(--s-4) var(--s-3) var(--s-2); }
-.journal-category { color: var(--accent); font-size: var(--fs-label-xs); }
-.journal-caption h3 { margin: var(--s-1) 0 0; color: var(--text-primary); font: 600 var(--fs-title-sm)/var(--lh-label) var(--font-sans); }
-.journal-read { display: inline-flex; align-items: center; gap: var(--s-3); color: var(--text-secondary); font-size: var(--fs-label-sm); white-space: nowrap; }
-.journal-entry:focus-visible, .journal-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--r-sm); }
-@media (hover: hover) and (pointer: fine) { .journal-entry:hover .journal-read, .journal-more:hover { color: var(--accent); } }
-@media (max-width: 900px) { .journal-caption { align-items: start; flex-direction: column; gap: var(--s-2); } }
-@media (max-width: 600px) { .journal-heading { align-items: start; gap: var(--s-3); } .journal-heading h2 { font-size: var(--fs-title-sm); } .journal-spread { grid-template-columns: minmax(0, 1fr); } }
+@reference "../../assets/css/tailwind.css";
+.art-journal { margin-block: var(--s-7); }
+.journal-heading { align-items: end; }
+.journal-heading h2 { font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); margin:var(--s-2) 0 0; }
+.journal-heading .eyebrow { @apply tw:text-label-xs; letter-spacing: .16em; @apply tw:text-muted; }
+.journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-label tw:text-secondary tw:whitespace-nowrap; }
+.journal-spread { grid-template-columns: 1.2fr 1fr; gap: var(--s-5); }
+.journal-entry { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); @apply tw:items-center tw:gap-s-5 tw:text-primary tw:min-w-0; }
+.journal-entry.lead { grid-row: span 2; @apply tw:flex tw:flex-col tw:items-stretch; }
+.journal-art { background: var(--bg-surface); aspect-ratio: 4 / 5; }
+.journal-missing > span { @apply tw:text-label tw:text-muted; }
+.lead .journal-art { aspect-ratio: 4 / 3; }
+.journal-art img { @apply tw:w-full tw:h-full tw:object-cover; object-position: center 32%; }
+.journal-caption h3 { margin-block: var(--s-2); font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.lead h3 { @apply tw:text-title; }
+.journal-caption p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; @apply tw:overflow-hidden tw:text-label tw:leading-body tw:text-secondary; }
+.journal-entry:focus-visible, .journal-more:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:var(--r-md); }
+@media (hover: hover) and (pointer: fine) { .journal-entry:hover .journal-read { text-decoration:underline; text-underline-offset:.25em; } }
+@media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } }
+@media (max-width: 600px) { .art-journal { margin-block: var(--s-7); } .journal-heading { align-items: start; @apply tw:flex-col tw:gap-s-3; } .journal-spread { grid-template-columns: minmax(0, 1fr); } .journal-entry:not(.lead) { grid-template-columns: 112px minmax(0, 1fr); @apply tw:pt-s-5; border-top: 1px solid var(--border-soft); } }
 </style>

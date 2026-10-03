@@ -35,9 +35,10 @@ for (const theme of ['dark', 'light']) {
         await page.goto(`${info.project.use.baseURL}/prompt-builder?scene=sc006`)
         await expect(page.locator('.desktop-titlebar')).toBeVisible()
         const generate = page.getByRole('button', { name: '生成图片', exact: true })
-        await expect(page.getByRole('heading', { name: '开始绘制', exact: true })).toBeVisible()
-        // Scene mode is a scrolling document; expert mode below owns a fixed viewport.
+        await expect(page.getByRole('heading', { name: '绘图画室', exact: true })).toBeVisible()
         await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'basic')
+        await expect(page.locator('#drawing-materials')).toBeVisible()
+        await expect(page.locator('.director-inspector')).toBeVisible()
         await expect(generate).toBeVisible()
         // Service readiness can replace the tooltip-wrapped button. Scroll its
         // persistent action group, then check the current button instance.
@@ -46,12 +47,17 @@ for (const theme of ['dark', 'light']) {
         await page.getByRole('button', { name: '专家模式', exact: true }).click()
         await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro')
         await expect(page.locator('.director-inspector')).toBeVisible()
-        const materials = (await page.locator('#drawing-materials').boundingBox())!
         const canvas = (await page.locator('#drawing-canvas').boundingBox())!
         const inspector = (await page.locator('.director-inspector').boundingBox())!
+        const materials = (await page.locator('#drawing-materials').boundingBox())!
         expect(materials.x + materials.width).toBeLessThanOrEqual(canvas.x)
         expect(canvas.x + canvas.width).toBeLessThanOrEqual(inspector.x)
         expect(Math.abs(materials.y - inspector.y)).toBeLessThan(2)
+        const actions = (await page.locator('.gen-bar').boundingBox())!
+        expect(actions.x).toBeCloseTo(canvas.x, 0)
+        expect(actions.width).toBeCloseTo(canvas.width, 0)
+        const stage = (await page.locator('.stage-slot').boundingBox())!
+        expect(stage.y + stage.height).toBeLessThanOrEqual(actions.y + 1)
         const button = (await generate.boundingBox())!
         expect(button.y + button.height).toBeLessThanOrEqual(display.height)
         expect(inspector.y + inspector.height).toBeLessThanOrEqual(display.height)
@@ -163,6 +169,7 @@ for (const theme of ['dark', 'light']) {
         await page.getByRole('button', { name: '进入专注成片模式', exact: true }).click()
         await expect(page.locator('#drawing-materials')).toBeHidden()
         await expect(page.locator('.director-inspector')).toBeHidden()
+        await expect(page.locator('.gen-bar')).toBeVisible()
         const canvas = (await page.locator('#drawing-canvas').boundingBox())!
         const workspace = (await page.locator('.director-workspace').boundingBox())!
         expect(Math.abs(canvas.width - workspace.width)).toBeLessThan(2)
@@ -193,6 +200,10 @@ for (const theme of ['dark', 'light']) {
       const search = page.locator('#stepScene .scene-search')
       await expect(search).toBeVisible()
       await search.fill('雨')
+      await page.locator('[aria-controls="material-story"]').click()
+      const story = page.locator('.story-input')
+      await story.fill('雨天的窗边，桌上留着一本打开的书。')
+      await page.locator('[aria-controls="material-scenes"]').click()
       const materialHandle = page.getByRole('separator', { name: '调整素材栏宽度' })
       const before = Number(await materialHandle.getAttribute('aria-valuenow'))
       await materialHandle.focus()
@@ -216,6 +227,7 @@ for (const theme of ['dark', 'light']) {
       const canvas = (await page.locator('#drawing-canvas').boundingBox())!
       const workspace = (await page.locator('.director-workspace').boundingBox())!
       expect(Math.abs(canvas.width - workspace.width)).toBeLessThan(2)
+      await expect(story).toHaveValue('雨天的窗边，桌上留着一本打开的书。')
       await page.reload()
       await page.getByRole('button', { name: '工作台布局', exact: true }).click()
       await expect(page.getByRole('button', { name: '展开素材', exact: true })).toBeVisible()

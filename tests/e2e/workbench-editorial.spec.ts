@@ -26,12 +26,13 @@ for (const theme of ['light', 'dark']) {
   test(`atelier panels preserve drafts and focus mode ${theme}`, async ({ page }, testInfo) => {
     await prepare(page, theme)
     await expect(page.locator('.gen-bar-actions .btn-primary')).toBeDisabled()
+    await expect(page.getByRole('button', { name: '绘制这一幕', exact: true })).toHaveCount(0)
     await expect(page.locator('.gen-bar-blocked')).not.toBeEmpty()
     const canvas = (await page.locator('.col-center').boundingBox())!
     const rail = (await page.locator('.director-inspector').boundingBox())!
     expect(rail.x).toBeGreaterThanOrEqual(canvas.x + canvas.width)
-    expect((await page.locator('.gen-bar').boundingBox())!.height).toBeLessThanOrEqual(80)
-    for (const selector of ['.atelier-kicker', '.stage-placeholder-title', '.stage-placeholder-copy', '.gen-bar-blocked', '.inspector-heading strong']) {
+    await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
+    for (const selector of ['.scene-reference figcaption > strong', '.scene-reference-label', '.gen-bar-blocked']) {
       expect(await page.locator(selector).evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
     }
     await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-basic.png`) })
@@ -40,6 +41,8 @@ for (const theme of ['light', 'dark']) {
     await page.locator('[aria-controls="material-character"]').click()
     await page.locator('[aria-controls="material-story"]').click()
     await expect(page.locator('.story-input')).toHaveValue('安静的午后，窗边的咖啡与一本打开的书。')
+    await expect(page.locator('#drawing-materials')).toBeVisible()
+    await expect(page.locator('.director-inspector')).toBeVisible()
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
     await page.getByRole('tab', { name: '提示词', exact: true }).click()
     await expect(page.locator('#promptMonitor')).toBeVisible()
@@ -65,6 +68,9 @@ for (const theme of ['light', 'dark']) {
       await page.setViewportSize({ width, height: 720 })
       await page.locator('.stage-quick-actions .btn').last().scrollIntoViewIfNeeded()
       await expect(page.locator('.stage-quick-actions .btn').last()).toBeInViewport()
+      await page.locator('.stage-quick-actions .btn').last().click()
+      await expect(page.locator('[aria-controls="material-scenes"]')).toBeFocused()
+      await expect(page.locator('#drawing-materials')).toBeVisible()
       await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${width}-short.png`) })
       await page.getByRole('tab', { name: '任务', exact: true }).click()
       await expect(page.locator('.inspector-delivery')).toBeVisible()
@@ -101,8 +107,11 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   state = 'failed'
   await page.getByTestId('sd-generate').click()
   await expect(page.locator('.stage-error-detail')).toContainText('隔离测试')
+  await page.getByRole('button', { name: '查看恢复选项', exact: true }).click()
+  await expect(page.locator('#inspector-tab-delivery')).toBeFocused()
+  await expect(page.locator('.director-inspector')).toBeVisible()
   state = 'succeeded'
-  await page.getByRole('button', { name: '重新生成', exact: true }).click()
+  await page.getByRole('button', { name: '生成图片', exact: true }).click()
   await expect(page.locator('.result-image')).toBeVisible()
   await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
   await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)

@@ -1,11 +1,12 @@
 <template>
   <TabsRoot v-model="active" as="aside" :unmount-on-hide="false" id="drawing-inspector"
     class="director-inspector inspector-workbench" aria-label="创作参数">
-    <div class="inspector-heading"><strong>编辑台</strong><span v-if="busy">正在绘制</span></div>
-    <TabsList class="inspector-tabs" aria-label="参数分类">
+    <div class="inspector-heading"><strong>编辑台</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
+    <TabsList class="inspector-tabs studio-segments studio-segments--compact" aria-label="参数分类">
+      <AnimatedSelection />
       <TabsTrigger v-for="tab in visibleTabs" :key="tab.id" :value="tab.id" as-child>
         <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">
-          <ArchiveIcon :name="tab.icon" aria-hidden="true" /><span>{{ tab.label }}</span><span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
+          {{ tab.label }}<span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
         </button>
       </TabsTrigger>
     </TabsList>
@@ -20,18 +21,18 @@
 </template>
 
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import DeferredPanel from './DeferredPanel.vue'
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/director/expert-workspace.css'
 import '@/assets/css/director/components/DirectorInspector.css'
 
 const props = defineProps<{ expert: boolean; queueCount: number; busy: boolean }>()
-const tabs: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
-  { id: 'render', label: '生成', icon: 'spark' }, { id: 'style', label: '画面', icon: 'image' },
-  { id: 'tools', label: '成片', icon: 'gallery' }, { id: 'prompt', label: '提示词', icon: 'detail' }, { id: 'delivery', label: '任务', icon: 'manager' },
+const tabs = [
+  { id: 'render', label: '生成' }, { id: 'style', label: '画面' },
+  { id: 'tools', label: '成片' }, { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },
 ]
 const visibleTabs = computed(() => tabs.filter(tab => props.expert || tab.id !== 'style'))
 const active = ref('render')

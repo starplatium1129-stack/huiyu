@@ -45,6 +45,7 @@
     </template>
   </div>
   <button
+    ref="artworkButton"
     class="artwork-button"
     type="button"
     :aria-pressed="selectionMode ? selected : undefined"
@@ -56,27 +57,30 @@
     <div class="artwork-media" :style="{ '--art-ratio': String(ratio) }">
       <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
       <img :crossorigin="cors"
-        v-if="thumbUrl"
+        v-if="thumbUrl && !thumbFailed"
+        :key="`thumb:${thumbUrl}:${retryAttempt}`"
         class="artwork-image"
         :src="thumbUrl"
         :alt="title"
         loading="lazy"
         decoding="async"
         referrerpolicy="no-referrer"
-        @load="emit('measure', $event)"
+        @load="thumbLoaded = true; emit('measure', $event)"
+        @error="thumbFailed = true"
       />
       <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
       <img :crossorigin="cors"
-        v-if="imageUrl"
+        v-if="imageUrl && !imageFailed"
+        :key="`image:${imageUrl}:${retryAttempt}`"
         class="artwork-image artwork-image-hd"
         :src="imageUrl"
         :alt="title"
         decoding="async"
         referrerpolicy="no-referrer"
-        @load="emit('load', $event)"
+        @load="imageLoaded = true; emit('load', $event)"
+        @error="imageFailed = true"
       />
-      <div v-if="!imageUrl && !thumbUrl && missing" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-      <div v-else-if="!imageUrl && !thumbUrl" class="artwork-skeleton" aria-hidden="true"></div>
+      <div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div>
     </div>
       <div class="artwork-caption">
         <span class="artwork-caption-copy tw:min-w-0">
@@ -86,18 +90,38 @@
         <span v-if="item.favorite" class="artwork-mark"><ArchiveIcon name="love" /></span>
       </div>
   </button>
+  <div v-if="previewFailed || (!imageUrl && !thumbUrl && missing)" class="artwork-recovery" role="status">
+    <ArchiveIcon name="image" />
+    <span>作品图片暂时无法读取</span>
+    <button v-if="previewFailed" class="artwork-retry" type="button" :aria-label="`重新读取图片：${title}`" @click="retryPreview">重新读取</button>
+  </div>
 </article>
 </template>
 
 <script setup lang="ts">
 import type { ArtworkRecord } from '@/types/artwork'
+import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-defineProps<{
+const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
+const artworkButton = ref<HTMLButtonElement | null>(null)
+const thumbFailed = ref(false), imageFailed = ref(false)
+const thumbLoaded = ref(false), imageLoaded = ref(false), retryAttempt = ref(0)
+watch(() => props.thumbUrl, () => { thumbFailed.value = false; thumbLoaded.value = false }, { flush: 'sync' })
+watch(() => props.imageUrl, () => { imageFailed.value = false; imageLoaded.value = false }, { flush: 'sync' })
+const previewFailed = computed(() => Boolean((props.imageUrl || props.thumbUrl)
+  && (!props.imageUrl || imageFailed.value) && (!props.thumbUrl || thumbFailed.value)))
+const previewPending = computed(() => !previewFailed.value && !thumbLoaded.value && !imageLoaded.value
+  && Boolean(props.imageUrl || props.thumbUrl || !props.missing))
+function retryPreview() {
+  thumbFailed.value = false; imageFailed.value = false
+  thumbLoaded.value = false; imageLoaded.value = false; retryAttempt.value++
+  void nextTick(() => artworkButton.value?.focus({ preventScroll: true }))
+}
 const emit = defineEmits<{
   select: []; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];
   measure: [event: Event]; load: [event: Event];

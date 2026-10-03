@@ -151,8 +151,9 @@ and the feeling of entering a story. Apple supplies the discipline: a predictabl
 layout, optical spacing, readable typography, quiet materials, and immediate
 feedback. Every surface belongs to this same atelier.
 
-The home opening is a single character scene with a calm reading plane and
-manual Nene/Natsume selection. Scene and character discovery precede the tool
+The home opening and character archive retain the installed desktop layout from
+`faddab4a`. The opening pairs one character artwork with a calm reading plane,
+manual Nene/Natsume selection, a serif title and character accent. Scene and character discovery precede the tool
 catalog. Utilities use short labels and progressive disclosure. Status bars
 communicate actual state without decorative radar, arbitrary coordinates, or
 repeated chapter totals. Compact collection headers reserve the space for works.
@@ -249,8 +250,14 @@ The director workspace follows an image-first hierarchy:
 4. Prompt internals, model details, backup, and diagnostics are utilities, not
    the default visual focus.
 
-At wide desktop sizes, side rails should be approximately `268–324px`; remaining
-width belongs to the stage. After an image exists, do not shrink it merely to
+Home, the character archive and drawing retain the original studio surfaces
+through the scoped `--studio-*` palette. Drawing follows the `v1.8.1` release
+layout: resizable material, canvas and parameter columns on desktop, horizontal
+category controls, and generation and artwork actions below the canvas. Keep
+the current generation, reveal and clear animations. Segmented choices share
+`AnimatedSelection` and its continuous spring, with a softly lit raised surface
+and a shallow contact shadow; navigation and ordinary buttons keep their own
+forms. After an image exists, do not shrink it merely to
 show every control without scrolling. Empty space must either frame the artwork,
 clarify grouping, or improve touch/click accuracy. Large blank zones with no
 communicative purpose are a layout defect.

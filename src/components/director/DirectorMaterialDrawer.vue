@@ -1,7 +1,7 @@
 <template>
   <section ref="drawerEl" class="material-drawer" aria-label="创作素材">
     <div class="material-heading"><span>创作素材</span><small>YOUR MATERIALS</small></div>
-    <div class="material-switch" role="group" aria-label="素材分类">
+    <div class="material-switch studio-segments" role="group" aria-label="素材分类">
       <AnimatedSelection />
       <button v-for="item in sections" :key="item.id" type="button"
         :aria-pressed="active === item.id" :aria-controls="`material-${item.id}`"
@@ -55,7 +55,7 @@ watch(() => props.expert, value => {
 .material-drawer { @apply tw:min-w-0; container-type: inline-size; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-clip; }
 .material-heading { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2; padding: var(--s-3) var(--s-4); @apply tw:text-primary tw:text-body tw:font-semibold; }
 .material-heading small { @apply tw:text-muted; font: 400 var(--fs-label-sm) var(--font-sans); letter-spacing: normal; }
-.material-switch { @apply tw:relative tw:isolate tw:flex tw:gap-s-1; padding: 0 var(--s-3) var(--s-2); }
+.material-switch { margin: 0 var(--s-3) var(--s-2); }
 .material-switch button { @apply tw:relative; z-index: var(--z-raised); flex: 1; @apply tw:min-w-0 tw:min-h-[44px] tw:flex tw:items-center tw:justify-center tw:gap-s-1; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: 500 var(--fs-body) var(--font-sans); @apply tw:cursor-pointer; }
 .material-switch button[aria-pressed="true"] { background: transparent; @apply tw:text-accent; border-color: transparent; }
 .material-switch button:hover { @apply tw:text-accent; }
@@ -64,11 +64,4 @@ watch(() => props.expert, value => {
 .material-content { @apply tw:p-s-3; }
 .material-content :deep(.panel) { border: 0; box-shadow: none; background: transparent; @apply tw:p-s-1 tw:m-0; }
 .material-content :deep(.panel::before), .material-content :deep(.panel::after) { @apply tw:hidden; }
-@media (min-width:1024px) {
-  .material-drawer { display:grid; grid-template-columns:48px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
-  .material-heading { grid-column:1 / -1; }
-  .material-switch { grid-column:1; grid-row:2; display:flex; flex-direction:column; align-self:start; margin:0 0 var(--s-2) var(--s-1); padding:var(--s-1); }
-  .material-switch button { flex:none; flex-direction:column; gap:var(--s-1); min-height:58px; padding:var(--s-1); font-size:var(--fs-label-xs); }
-  .material-content { grid-column:2; grid-row:2; padding:var(--s-2); border-left:1px solid var(--border-soft); }
-}
 </style>

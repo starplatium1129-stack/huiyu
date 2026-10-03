@@ -22,7 +22,8 @@
           <div class="batch-config-row">
             <div class="batch-field">
               <span class="field-label">模式</span>
-              <div class="batch-seg" role="group" aria-label="选择批量模式">
+              <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="选择批量模式">
+                <AnimatedSelection />
                 <button type="button" :aria-pressed="batchMode === 'scene'"
                   :class="{ active: batchMode === 'scene' }" @click="batchMode = 'scene'">按场景蓝图</button>
                 <button type="button" :aria-pressed="batchMode === 'character'"
@@ -31,7 +32,8 @@
             </div>
             <div class="batch-field">
               <span class="field-label">引擎</span>
-              <div class="batch-seg" role="group" aria-label="选择批量出图引擎">
+              <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="选择批量出图引擎">
+                <AnimatedSelection />
                 <StudioTooltip anchor :content="!sdAvailable ? 'SD WebUI 当前离线' : undefined">
                   <button type="button" :aria-pressed="batchEngine === 'sd'"
                     :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
@@ -46,7 +48,8 @@
             </div>
             <div class="batch-field">
               <span class="field-label">每项张数</span>
-              <div class="batch-seg" role="group" aria-label="每项出几张">
+              <div class="batch-seg studio-segments studio-segments--compact" role="group" aria-label="每项出几张">
+                <AnimatedSelection />
                 <button type="button" :aria-pressed="count === 1"
                   :class="{ active: count === 1 }" @click="count = 1">1 张</button>
                 <button type="button" :aria-pressed="count === 3"
@@ -250,6 +253,7 @@ import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
 import type { BatchDrawJob } from '@/composables/generation/useBatchDraw'
 import type { SceneBlueprint } from '@/utils/popularContent'

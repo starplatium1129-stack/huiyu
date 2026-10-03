@@ -10,14 +10,16 @@
       <div v-if="section === 'appearance'" class="appearance-fields">
         <fieldset class="appearance-choice-field">
           <legend>画室主题</legend>
-          <RadioGroupRoot v-model="selectedTheme" class="appearance-segments" aria-label="画室主题">
+          <RadioGroupRoot v-model="selectedTheme" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="画室主题">
+            <AnimatedSelection />
             <RadioGroupItem v-for="choice in themeChoices" :key="choice.value" :value="choice.value"
               :data-value="choice.value" @focus="selectedTheme = choice.value">{{ choice.label }}</RadioGroupItem>
           </RadioGroupRoot>
         </fieldset>
         <fieldset class="appearance-choice-field">
           <legend>动态效果</legend>
-          <RadioGroupRoot v-model="selectedMotion" class="appearance-segments" aria-label="动态效果">
+          <RadioGroupRoot v-model="selectedMotion" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="动态效果">
+            <AnimatedSelection />
             <RadioGroupItem v-for="choice in motionChoices" :key="choice.value" :value="choice.value"
               :data-value="choice.value" @focus="selectedMotion = choice.value">{{ choice.label }}</RadioGroupItem>
           </RadioGroupRoot>
@@ -47,6 +49,7 @@
 import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import AnimatedSelection from './visual/AnimatedSelection.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
 import { desktopShortcutAllowed, usableFocus, useDesktopPreferences } from '@/composables/useDesktopInteraction'

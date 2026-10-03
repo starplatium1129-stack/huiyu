@@ -295,6 +295,8 @@ export function usePromptWorkspace() {
             return '先选择场景或填写故事';
         if (pb.isPopular && drawEngine.value === 'sd')
             return '热门角色请切到 Anima 或 Krea 2';
+        if (!engineOnline.value)
+            return '绘图服务未连接，请先在控制面板启动并检查连接。';
         return '';
     });
     /** 分类恢复：对应旧版 runSDRecovery */

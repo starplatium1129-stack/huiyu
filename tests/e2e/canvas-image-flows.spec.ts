@@ -91,6 +91,19 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('#drawing-inspector .result-shelf')).toHaveCount(0)
       await page.screenshot({ path: info.outputPath(`canvas-artwork-${theme}-${size}.png`) })
       await info.attach('display-context', { body: JSON.stringify(await page.evaluate(() => ({ cssViewport: [innerWidth, innerHeight], devicePixelRatio, browserZoom: visualViewport?.scale, physicalDisplay: 'not sampled; isolated desktop browser, not native DPI validation' }))), contentType: 'application/json' })
+      if (size === '896x1344') {
+        await page.setViewportSize({ width: 1024, height: 720 })
+        const painted = await image.evaluate((node: HTMLImageElement) => {
+          const box = node.getBoundingClientRect(), ratio = node.naturalWidth / node.naturalHeight
+          return { width: Math.min(box.width, box.height * ratio), height: Math.min(box.height, box.width / ratio) }
+        })
+        expect(painted.width).toBeGreaterThanOrEqual(245)
+        expect(painted.height).toBeGreaterThanOrEqual(365)
+        await expect(page.getByRole('button', { name: '存入作品册', exact: true })).toBeInViewport({ ratio: 1 })
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1024)
+        await page.screenshot({ path: info.outputPath(`canvas-portrait-${theme}-1024.png`) })
+        await page.setViewportSize({ width: 1920, height: 1080 })
+      }
       if (size === '1344x896') {
         for (const viewport of [{ width: 2560, height: 1440 }, { width: 3840, height: 2160 }, { width: 1280, height: 800 }]) {
           await page.setViewportSize(viewport)

@@ -21,6 +21,29 @@
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
   --bg-surface-elevated: #302b33;
 
+  /* Home and drawing retain the original studio's blue-gray reading planes. */
+  --studio-ink: #080f17;
+  --studio-deep: #10161d;
+  --studio-base: #151c24;
+  --studio-surface: #1e2935;
+  --studio-elevated: #25313d;
+  --studio-edge: rgba(170, 198, 223, 0.14);
+  --studio-edge-strong: rgba(187, 214, 235, 0.28);
+  --studio-text: #edf3fa;
+  --studio-text-secondary: #bdcbd8;
+  --studio-text-muted: #a8b9c9;
+  --studio-text-disabled: #a6b3c0;
+  --studio-accent: #f2a8be;
+  --studio-accent-hover: #ffc4d8;
+  --studio-accent-soft: rgba(242, 168, 190, .10);
+  --studio-accent-glow: rgba(242, 168, 190, .16);
+  --studio-nav: rgba(21, 28, 36, .96);
+  --studio-glass: rgba(30, 41, 53, .94);
+  --studio-glass-edge: rgba(187, 214, 235, .18);
+  --studio-art-mat: #101820;
+  --studio-hover: var(--studio-elevated);
+  --studio-surface-elevated: var(--studio-elevated);
+
   --border-soft:   rgba(228, 211, 218, 0.16);
   --border-strong: rgba(228, 211, 218, 0.32);
 
@@ -1774,3 +1797,36 @@ kbd,
     @apply tw:hidden;
   }
 }
+
+/* The drawing desk and home opening retain their original studio reading planes. */
+body:has(:is(.pb.journal-workspace,.home-page,.character-page)) {
+  --ink-base:var(--studio-ink);
+  --bg-deep:var(--studio-deep);
+  --bg-base:var(--studio-base);
+  --bg-surface:var(--studio-surface);
+  --bg-elevated:var(--studio-elevated);
+  --bg-surface-elevated:var(--studio-surface-elevated);
+  --bg-hover:var(--studio-hover);
+  --border-soft:var(--studio-edge);
+  --border-strong:var(--studio-edge-strong);
+  --text-primary:var(--studio-text);
+  --text-secondary:var(--studio-text-secondary);
+  --text-muted:var(--studio-text-muted);
+  --text-disabled:var(--studio-text-disabled);
+  --text-tertiary:var(--text-muted);
+  --accent:var(--studio-accent);
+  --accent-hover:var(--studio-accent-hover);
+  --accent-soft:var(--studio-accent-soft);
+  --accent-glow:var(--studio-accent-glow);
+  --nav-bg:var(--studio-nav);
+  --glass-fill:var(--studio-glass);
+  --glass-fill-strong:var(--bg-elevated);
+  --glass-edge:var(--studio-glass-edge);
+  --art-mat:var(--studio-art-mat);
+  --album-surface:var(--bg-surface);
+  --album-raised:var(--bg-elevated);
+  --album-edge:var(--border-soft);
+  --app-navigation-height:80px;
+}
+@media (min-width:2200px) { body:has(:is(.pb.journal-workspace,.home-page,.character-page)) { --app-navigation-height:88px; } }
+@media (min-width:3000px) { body:has(:is(.pb.journal-workspace,.home-page,.character-page)) { --app-navigation-height:104px; } }

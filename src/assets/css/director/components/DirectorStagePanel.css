@@ -7,10 +7,10 @@
    .pb .result-image-wrap {
      @apply tw:relative tw:overflow-hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
      /* 只让新成片显现；历史、恢复与操作文字不跟随容器重播。 */
-     border-radius:var(--r-lg); background:var(--art-stage);
-     box-shadow:var(--art-frame-shadow);
+     @apply tw:rounded-stage; background:var(--bg-deep);
+     box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
    }
-    .pb .result-image-wrap.archive-canvas { border-color:var(--art-frame-line); border-radius:var(--r-lg); }
+    .pb .result-image-wrap.archive-canvas { border-color:color-mix(in srgb,var(--archive-cyan) 38%,var(--border-soft)); border-radius:var(--r-dossier); }
     .pb .result-image-reveal {
       @apply tw:block tw:w-full; max-height:min(78vh,920px); margin:0 auto;
     }
@@ -26,7 +26,7 @@
      @apply tw:flex tw:items-center tw:justify-center tw:flex-wrap tw:gap-s-2 tw:p-s-3; border-top:1px solid var(--border-soft);
      background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
    }
-   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:var(--border-soft); font-family:var(--font-sans); }
+   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:color-mix(in srgb,var(--archive-cyan) 24%,var(--border-soft)); @apply tw:font-mono; }
   .pb[data-character="triad"] .stage-placeholder {
     background:
       radial-gradient(circle at 22% 20%,color-mix(in srgb,var(--nene-violet) 13%,transparent),transparent 34%),
@@ -37,7 +37,7 @@
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
      只补间 opacity/transform。结果容器保持静止，图片由 CgImageReveal 接管。 */
-  .pb .stage-slot { @apply tw:relative; container-type:inline-size; container-name:result-stage; }
+  .pb .stage-slot { @apply tw:relative; }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
     @apply tw:absolute; inset:0; z-index:var(--z-raised);
@@ -45,10 +45,10 @@
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
   .pb .stage-swap-leave-to { transform:scale(.985); }
-  /* Waiting has one particle focal point beside the reference, never over its text. */
+  /* ── 生成等待：保留画布微弱呼吸，工作光限定在 BorderBeam 边缘。 ── */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
-    animation:none;
+    animation:stageBreath 3.2s ease-in-out infinite;
   }
   .pb .stage-placeholder.is-generating::after {
     opacity:0;
@@ -57,10 +57,8 @@
   .pb .stage-generating-copy {
     @apply tw:relative; z-index:var(--z-raised);
     @apply tw:grid tw:gap-s-4 tw:items-center;
-    grid-template-columns:auto minmax(0,1fr);
-    width:min(100%,440px); margin:0 auto; text-align:left;
+    grid-template-columns:auto minmax(0,1fr); width:min(100%,440px); margin:0 auto; text-align:left;
   }
-  .pb .scene-reference .stage-generating-copy { width:100%; margin:var(--s-5) 0 0; padding-top:var(--s-5); border-top:1px solid var(--border-soft); }
   .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; }
   .pb .stage-generating-title {
     @apply tw:text-primary tw:text-title-xs; font-weight:720;
@@ -70,7 +68,7 @@
   .pb .stage-generating-sub strong { color:var(--text-primary); font-variant-numeric:tabular-nums; }
   .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
-    @apply tw:w-full tw:h-[4px] tw:rounded-pill tw:overflow-hidden;
+    @apply tw:w-full tw:max-w-[260px] tw:h-[4px] tw:mt-s-2 tw:rounded-pill tw:overflow-hidden;
     background:color-mix(in srgb,var(--text-muted) 22%,transparent);
   }
   .pb .stage-progress-ring > i {
@@ -96,49 +94,22 @@
 @media (max-width:600px) {
   .pb .result-image-actions > .btn { @apply tw:min-h-[44px]; }
 }
-.pb .stage-progress-details { @apply tw:text-secondary tw:text-label; overflow-wrap:anywhere; }
+.pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
 .pb .stage-progress-details summary { @apply tw:cursor-pointer; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:64px var(--s-5) var(--s-5); }
-.pb.atelier-workspace .is-generating .stage-content { padding:var(--s-5); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
-.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-2) var(--s-3); background:var(--art-stage); color:var(--on-art-secondary); @apply tw:text-label; border-bottom:1px solid var(--art-frame-line); }
-.pb .stage-result-heading > :first-child { color:var(--on-art-primary); @apply tw:font-semibold; }
+.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
+.pb .stage-result-heading > :first-child { @apply tw:text-primary tw:font-semibold; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
+
 @media (min-width:1024px) {
-  /* Reserve the artwork slot before decoding. A late footer/auto-sized image
-   * must not resize the reveal and make its safety observer cancel on arrival. */
+  /* Reserve the image slot before decoding so the existing reveal keeps stable bounds. */
   .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
-  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-wrap { display:grid; grid-template-columns:minmax(0,1fr) 180px; grid-template-rows:auto minmax(0,1fr); gap:var(--s-2) var(--s-4); border:0; border-radius:0; box-shadow:none; background:transparent; }
-  .pb.atelier-workspace .stage-result-heading { grid-column:1; padding:0; min-height:24px; border:0; background:transparent; color:var(--text-secondary); }
-  .pb.atelier-workspace .stage-result-heading > :first-child { color:var(--text-primary); }
-  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-reveal { grid-column:1; grid-row:2; width:auto; height:100%; max-width:100%; aspect-ratio:var(--drawing-result-aspect,1); justify-self:center; background:transparent; border-radius:var(--r-md); }
-  .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; height:100%; background:transparent; }
-  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-actions { grid-column:2; grid-row:1 / -1; align-self:start; display:flex; flex-direction:column; align-items:stretch; padding:0; border:0; background:transparent; }
-  .pb.atelier-workspace .result-image-actions .result-archive-action { margin-left:0; }
-  .pb.atelier-workspace .result-image-actions .stage-archive-badge { justify-content:center; }
-  .pb.journal-workspace.atelier-workspace.focus-mode .result-image-wrap { grid-template-columns:minmax(0,1fr) 200px; }
-  .pb.journal-workspace.atelier-workspace.focus-mode .result-image-actions { padding-top:260px; }
-  .pb.journal-workspace.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto; }
-  .pb.journal-workspace.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) .result-image-actions { grid-column:1; grid-row:3; flex-direction:row; align-items:center; }
-  .pb.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) .result-archive-action { margin-left:auto; }
+  .pb.journal-workspace[data-director-mode] .result-image-reveal .result-image { position:absolute; inset:0; height:100%; }
 }
-/* Below this width, use two rows with the status beside the archive action.
-   All three controls remain 40px high before and after saving. */
-@container result-stage (max-width:520px) {
-  .pb.journal-workspace.atelier-workspace .result-image-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .pb.atelier-workspace .result-image-actions .result-archive-action { margin-left:0; }
-  .pb .result-image-actions .btn { min-width:0; white-space:normal; }
-}
-.pb.atelier-workspace .result-image-actions .stage-archive-badge { min-width:0; min-height:var(--control-height-sm); }
-.pb.atelier-workspace .result-image-actions .btn { min-height:var(--control-height); font-size:var(--fs-label); }
-.pb.journal-workspace.atelier-workspace .stage-placeholder { background:transparent; border:0; box-shadow:none; }
-.pb.atelier-workspace .stage-chrome { min-height:28px; padding:0; background:transparent; border:0; color:var(--text-secondary); }
-.pb.atelier-workspace .stage-chrome > :first-child { color:var(--text-primary); }
-.pb.atelier-workspace .stage-ready { color:var(--text-secondary); }
-.pb.atelier-workspace .stage-placeholder .stage-content { width:100%; margin:0; padding:var(--s-3) 0; }

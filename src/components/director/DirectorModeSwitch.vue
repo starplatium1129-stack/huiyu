@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { ToggleGroupItem, ToggleGroupRoot, type AcceptableValue } from 'reka-ui'
 
 defineProps<{ modelValue: 'basic' | 'pro' }>()
@@ -11,7 +12,8 @@ function select(value: AcceptableValue | AcceptableValue[]) {
 
 <template>
   <ToggleGroupRoot type="single" :model-value="modelValue" orientation="horizontal"
-    class="director-mode-switch" aria-label="切换绘图工作模式" @update:model-value="select">
+    class="director-mode-switch studio-segments studio-segments--compact" data-segment-keyboard="managed" aria-label="切换绘图工作模式" @update:model-value="select">
+    <AnimatedSelection />
     <ToggleGroupItem value="basic" class="director-mode-option" :class="{ active: modelValue === 'basic' }">场景模式</ToggleGroupItem>
     <ToggleGroupItem value="pro" class="director-mode-option" :class="{ active: modelValue === 'pro' }">专家模式</ToggleGroupItem>
   </ToggleGroupRoot>

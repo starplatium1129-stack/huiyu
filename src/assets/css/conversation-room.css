@@ -90,6 +90,12 @@
 .room-surface .voice-toggle-copy small, .room-surface .voice-divider, .room-surface .keyboard-hint, .room-surface .replay-btn, .room-surface .volume-slider { @apply tw:hidden; }
 .room-surface .voice-toggle-copy strong { @apply tw:text-label-sm; }
 .room-surface .voice-status:empty, .room-surface .chat-error:empty { @apply tw:hidden; }
+/* Low-frequency room tools scroll in the top layer without shrinking the conversation. */
+.room-tools-dialog { width:min(760px,calc(100vw - 48px)); max-height:calc(100dvh - 48px); margin:auto; padding:0; overflow:auto; overscroll-behavior:contain; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); }
+.room-tools-dialog::backdrop { background:var(--art-scrim); }
+.room-tools-dialog[open] > :is(.chat-archive-panel,.chat-user-profile,.chat-memory-panel) { margin:0; border:0; border-radius:0; background:var(--bg-surface); box-shadow:none; }
+.room-tools-dialog :is(.archive-panel-head,.chat-user-profile > header,.chat-memory-panel > header) { position:sticky; top:0; z-index:var(--z-raised); padding-bottom:var(--s-3); background:var(--bg-surface); }
+.room-tools-dialog :is(button,input,textarea):focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .room-surface .room-setup { @apply tw:m-s-3; }
 .room-latest { @apply tw:self-center tw:shrink-0 tw:mb-s-2; }
 .room-current-line { @apply tw:overflow-auto tw:max-h-[160px]; padding: 0 var(--s-5); @apply tw:text-primary; line-height: 1.85; }

@@ -5,7 +5,8 @@
       <header class="preferences-heading tw:flex tw:items-center tw:justify-between"><div><h2>桌宠设置</h2><small>{{ characterName }}</small></div>
         <button type="button" aria-label="关闭桌宠设置" autofocus @click="close"><ArchiveIcon name="close" /></button>
       </header>
-      <nav class="preferences-tabs tw:grid tw:gap-[4px] tw:p-[4px] tw:rounded-lg" role="tablist" aria-label="设置分类" @keydown="tabKey">
+      <nav class="preferences-tabs studio-segments tw:grid tw:gap-[4px] tw:p-[4px] tw:rounded-lg" role="tablist" aria-label="设置分类" @keydown="tabKey">
+        <AnimatedSelection />
         <button v-for="tab in tabs" :id="`${id}-${tab.value}`" :key="tab.value" type="button" role="tab"
           :aria-selected="pane === tab.value" :aria-controls="`${id}-panel`" :tabindex="pane === tab.value ? 0 : -1"
           @click="pane = tab.value"><ArchiveIcon :name="tab.icon" />{{ tab.label }}</button>
@@ -19,6 +20,7 @@
 <script setup lang="ts">
 import { ref, useId, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; desktop: boolean; characterId: string; characterName: string }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()

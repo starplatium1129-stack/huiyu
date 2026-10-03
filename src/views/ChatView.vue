@@ -10,42 +10,25 @@
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
         <ChatActionsMenu
           @clear-all="clearAllMemory"
-          @toggle-archive="archiveOpen = !archiveOpen"
-          @toggle-memory="memoryOpen = !memoryOpen"
-          @toggle-profile="profileOpen = !profileOpen"
+          @toggle-archive="openRoomPanel('archive')"
+          @toggle-memory="openRoomPanel('memory')"
+          @toggle-profile="openRoomPanel('profile')"
         />
       </div>
     </header>
 
-    <FluidTransition>
-<ChatArchivePanel
-      v-if="archiveOpen"
-      :storage="storage"
-      :active-char="activeChar"
-      @close="archiveOpen = false"
-      @notice="(message, kind) => setError(message, kind || 'info', 4500)"
-    />
-</FluidTransition>
-
-    <FluidTransition>
-<ChatUserProfilePanel
-      v-if="profileOpen"
-      :profile="userProfile"
-      @save="onUserProfileSave"
-      @close="profileOpen = false"
-    />
-</FluidTransition>
-
-    <FluidTransition>
-<ChatMemoryPanel
-      v-if="memoryOpen"
-      :items="currentMemories"
-      :character-name="currentCharacter.name"
-      @update="updateMemory"
-      @delete="deleteMemory"
-      @close="memoryOpen = false"
-    />
-</FluidTransition>
+    <Teleport to="body">
+      <dialog ref="roomPanelDialog" class="room-tools-dialog" :aria-label="roomPanel ? roomPanelLabels[roomPanel] : undefined"
+        @cancel.prevent="closeRoomPanel" @close="onRoomPanelClosed" @click="closeRoomPanelFromBackdrop">
+        <ChatArchivePanel v-if="roomPanel === 'archive'" :storage="storage" :active-char="activeChar"
+          @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
+          @notice="(message, kind) => setError(message, kind || 'info', 4500)" />
+        <ChatUserProfilePanel v-else-if="roomPanel === 'profile'" :profile="userProfile"
+          @vue:mounted="focusRoomPanel" @save="onUserProfileSave" @close="closeRoomPanel" />
+        <ChatMemoryPanel v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
+          @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
+      </dialog>
+    </Teleport>
 
     <section class="chat-layout" aria-label="角色聊天">
       <ChatCharacterStage
@@ -312,6 +295,7 @@ import StudioPopover from '@/components/ui/StudioPopover.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useConversationReading } from '@/composables/chat/useConversationReading'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
@@ -348,7 +332,6 @@ const {
   autoVoice,
   volume,
   preparingRoom,
-  archiveOpen,
   storage,
   ollamaOnline,
   models,
@@ -409,8 +392,25 @@ const {
   replayLast,
 } = useCharacterRoomSession()
 
-const profileOpen = ref(false)
-const memoryOpen = ref(false)
+type RoomPanel = 'archive' | 'memory' | 'profile'
+const roomPanel = ref<RoomPanel | null>(null)
+const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案' }
+const roomPanelDialog = ref<HTMLDialogElement | null>(null)
+const roomPanelMotion = useFluidDialog(roomPanelDialog)
+async function openRoomPanel(panel: RoomPanel) {
+  roomPanel.value = panel
+  await nextTick()
+  roomPanelMotion.open(document.querySelector<HTMLElement>('.chat-more-trigger'))
+  focusRoomPanel()
+}
+function focusRoomPanel() {
+  if (roomPanelDialog.value?.open) roomPanelDialog.value.querySelector<HTMLElement>('button')?.focus({ preventScroll: true })
+}
+function closeRoomPanel() { roomPanelMotion.close(() => { roomPanel.value = null }) }
+function onRoomPanelClosed() { if (!roomPanelDialog.value?.open) roomPanel.value = null }
+function closeRoomPanelFromBackdrop(event: MouseEvent) {
+  if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
+}
 const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, activeChar)
@@ -434,7 +434,7 @@ const personalizedGreeting = computed(() => {
 
 function onUserProfileSave(profile: ChatUserProfile) {
   updateUserProfile(profile)
-  profileOpen.value = false
+  closeRoomPanel()
 }
 
 const {

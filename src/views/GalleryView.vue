@@ -15,7 +15,7 @@
     </header>
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
-      <div class="gallery-browse-controls" role="group" aria-label="浏览作品">
+      <div class="gallery-browse-controls studio-segments" role="group" aria-label="浏览作品">
       <AnimatedSelection />
       <button class="gallery-filter" :class="{ active: !albumsOpen && !favoriteOnly && !trashMode && !projectFilter && !characterFilter }" type="button"
         :aria-pressed="!albumsOpen && !favoriteOnly && !trashMode && !projectFilter && !characterFilter" @click="trashMode && toggleTrashMode(); showAllWorks()">全部作品</button>

@@ -20,7 +20,6 @@ beforeEach(() => {
     { id: 'pc_alice_library', title: '书架之间', char: 'alice', type: 'popular', rating: 'All' },
   ] }) }))
   context.store = reactive({
-    char: 'nene',
     subject: { kind: 'studio', characterId: 'nene' },
     activeScene: { id: 'scene_one', title: '放学后', rating: 'All' },
     sceneBlueprints: [],
@@ -35,8 +34,7 @@ describe('scene canvas reference', () => {
     vi.mocked(fetch).mockRejectedValueOnce(new Error('runtime unavailable'))
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
-    expect(wrapper.find('.scene-reference-studio').exists()).toBe(false)
+    expect(wrapper.find('img').exists()).toBe(false)
     setRuntimeOrigin('http://127.0.0.1:3002', true, 'ready')
     await flushPromises()
     expect(wrapper.get('img').attributes('src')).toBe('http://127.0.0.1:3002/scene-showcase/thumbs/scene_one.jpg')
@@ -47,16 +45,14 @@ describe('scene canvas reference', () => {
     expect(wrapper.text()).toContain('非本次生成')
     expect(wrapper.get('img').attributes('src')).toBe('/scene-showcase/thumbs/scene_one.jpg')
     await wrapper.get('img').trigger('error')
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
-    expect(wrapper.text()).toContain('画室素材 · 非本次生成')
+    expect(wrapper.text()).toContain('暂未提供可核实的样张')
     context.store.activeScene = { id: 'scene_two', title: '图书馆', rating: 'All' }
     await nextTick()
     expect(wrapper.get('img').attributes('src')).toBe('/scene-showcase/thumbs/scene_two.jpg')
     expect(wrapper.text()).toContain('图书馆')
   })
 
-  it('follows landscape and portrait dimensions and resets when the sample changes', async () => {
-    const width = 1216, height = 832
+  it.each([[1216, 832], [832, 1216]])('follows the loaded reference dimensions %s × %s and resets when the sample changes', async (width, height) => {
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()
     const frame = wrapper.get('figure').element as HTMLElement
@@ -74,16 +70,16 @@ describe('scene canvas reference', () => {
     await replacement.trigger('load')
     expect(Number(frame.style.getPropertyValue('--reference-image-ratio'))).toBeCloseTo(height / width)
     await replacement.trigger('error')
-    expect(Number(frame.style.getPropertyValue('--reference-image-ratio'))).toBeCloseTo(832 / 1216)
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
-    expect(wrapper.find('.scene-reference-studio').exists()).toBe(true)
+    expect(frame.style.getPropertyValue('--reference-image-ratio')).toBe('')
+    expect(wrapper.find('img').exists()).toBe(false)
+    expect(wrapper.text()).toContain('暂未提供可核实的样张')
   })
 
   it.each(['R18', 'R15', 'All', undefined])('uses the sample rating even if scene metadata differs (%s)', async rating => {
     context.store.activeScene = { id: 'private', title: '场景', rating }
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
+    expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.text()).toContain('分级参考已遮挡')
   })
 
@@ -106,9 +102,7 @@ describe('scene canvas reference', () => {
     expect(wrapper.get('img').attributes('src')).toBe('/scene-showcase/thumbs/pc_alice_library.jpg')
     context.store.subject = { kind: 'popular', characterId: 'bob', blueprintId: 'library' }
     await nextTick()
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
-    expect(wrapper.text()).not.toContain('放学后')
-    expect(wrapper.text()).toContain('从这一幕开始')
+    expect(wrapper.find('figure').exists()).toBe(false)
   })
 
   it('uses the current manifest thumbnail instead of reconstructing an old filename', async () => {
@@ -130,7 +124,7 @@ describe('scene canvas reference', () => {
     ] }) }))
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()
-    expect(wrapper.find('.scene-reference-sample').exists()).toBe(false)
-    expect(wrapper.text()).toContain('画室素材 · 非本次生成')
+    expect(wrapper.find('img').exists()).toBe(false)
+    expect(wrapper.text()).toContain('暂未提供可核实的样张')
   })
 })

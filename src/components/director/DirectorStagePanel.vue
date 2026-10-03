@@ -16,7 +16,7 @@
       <div class="stage-chrome">
         <span>绘制画布</span>
         <span class="stage-ready" role="status" aria-live="polite">
-          {{ generationBusy ? '正在生成' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
+          {{ generationBusy ? '正在显影' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
         </span>
       </div>
       <i class="stage-magic-ring" aria-hidden="true"></i>
@@ -24,8 +24,7 @@
       <img :crossorigin="runtimeResourceCors()" class="stage-muse natsume" :src="resolveRuntimeUrl(stageMuseUrl.natsume)" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
         <div class="stage-content">
-        <DirectorSceneReference :size="canvasSize">
-          <template #default>
+        <DirectorSceneReference :size="canvasSize" />
           <div v-if="generationBusy" class="stage-generating-copy">
             <ThinkingOrb state="working" size="lg" color-variant="dual" aria-hidden="true" />
             <div class="stage-generation-feedback">
@@ -41,25 +40,22 @@
               <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
             </div>
           </div>
-          </template>
-          <template #actions="{ hasScene }">
-        <div v-if="!generationBusy && generationError" class="stage-idle" role="alert">
-          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="warning" /></div>
+        <div v-else-if="generationError" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
+          <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
-            构思与参数已保留，调整后可以再试一次。
+            查看错误原因，调整后再试一次。
+            <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
           </div>
-          <p class="stage-error-detail">{{ generationError }}</p>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">重新生成</button>
-            <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
             <!-- F2：本次失败不毁掉上一张未入册成片——它还在暂存里，一键找回 -->
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
               找回上一张未入册成片
             </button>
           </div>
         </div>
-        <div v-else-if="!generationBusy && generationStopped" class="stage-idle">
+        <div v-else-if="generationStopped" class="stage-idle">
           <div class="stage-placeholder-title">这一幕已暂停</div>
           <div class="stage-placeholder-copy">
             可以调整场景与参数，准备好后继续。
@@ -71,26 +67,28 @@
             </button>
           </div>
         </div>
-        <div v-else-if="!generationBusy" class="stage-idle stage-idle-guide">
+        <div v-else class="stage-idle stage-idle-guide">
+          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
+          <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
+          <div class="stage-placeholder-copy">
+            选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
+          </div>
           <div class="stage-quick-actions">
-            <button v-if="hasScene" class="btn btn-primary" type="button" @click="$emit('generate')"><ArchiveIcon name="spark" />绘制这一幕</button>
-            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '换一幕' : '挑选场景' }}</button>
+            <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
           </div>
         </div>
-          </template>
-        </DirectorSceneReference>
         </div>
       </div>
     </section>
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-wide': resultAspect >= 1.2, 'is-square': resultAspect > .85 && resultAspect < 1.2 }">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
       <div class="stage-result-heading">
-        <span>画布</span>
+        <span>生成结果</span>
         <span class="stage-result-status" role="status">
           <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
-          {{ generationBusy ? '下一张正在生成 · 当前成片保留' : resultDimensions || '原比例预览' }}
+          {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
         </span>
       </div>
       <ImageSplitCompare
@@ -164,19 +162,16 @@ const stageRoot = ref<HTMLElement | null>(null)
 const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 const resultAspect = ref(1)
-const resultDimensions = ref('')
 const loadedResultUrl = ref('')
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
-  resultDimensions.value = ''
 }, { immediate: true })
 async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
-  resultDimensions.value = `${image.naturalWidth} × ${image.naturalHeight}`
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
   if (source === props.displayResultUrl) loadedResultUrl.value = source

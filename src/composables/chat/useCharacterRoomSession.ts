@@ -54,7 +54,6 @@ export function useCharacterRoomSession() {
   const isSpeaking = ref(false)
   const autoVoice = ref(true)
   const volume = ref(80)
-  const archiveOpen = ref(false)
 
   let statusTimer = 0
   let errorTimer = 0
@@ -462,7 +461,6 @@ export function useCharacterRoomSession() {
     volume,
     preparingRoom,
     roomSetupText,
-    archiveOpen,
     storage,
     ollamaOnline,
     models,

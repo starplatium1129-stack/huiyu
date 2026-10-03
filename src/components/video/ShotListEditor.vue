@@ -17,7 +17,8 @@
 
         <div class="video-choice-group">
           <span class="field-label">画幅（整批统一，拼接成片需要）</span>
-          <div class="video-segmented" role="group" aria-label="选择分镜画幅">
+          <div class="video-segmented studio-segments studio-segments--compact" role="group" aria-label="选择分镜画幅">
+            <AnimatedSelection />
             <button
               v-for="item in aspectOptions"
               :key="item.id"
@@ -429,6 +430,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'

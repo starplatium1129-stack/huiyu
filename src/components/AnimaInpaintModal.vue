@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
@@ -301,7 +302,8 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <span>重绘区域</span>
               </span>
             </label>
-            <div class="mask-mode-switch" role="group" aria-label="遮罩模式">
+            <div class="mask-mode-switch studio-segments studio-segments--compact" role="group" aria-label="遮罩模式">
+      <AnimatedSelection />
               <button type="button" :aria-pressed="maskMode === 'paint'"
                 :class="{ active: maskMode === 'paint' }" @click="maskMode = 'paint'">手绘精确遮罩</button>
               <button type="button" :aria-pressed="maskMode === 'auto'"

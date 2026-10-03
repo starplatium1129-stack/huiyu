@@ -2,7 +2,8 @@
   <details class="room-model-settings">
     <summary>对话设置</summary>
     <div class="model-controls">
-      <div class="provider-switch" role="group" aria-label="对话模型来源">
+      <div class="provider-switch studio-segments studio-segments--compact" role="group" aria-label="对话模型来源">
+        <AnimatedSelection />
         <button
           type="button"
           :class="{ active: chatProvider === 'local' }"
@@ -37,7 +38,8 @@
         <StudioTooltip content="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
           <div class="thinking-group">
             <span class="thinking-title">推理</span>
-            <div class="thinking-segments" role="radiogroup" aria-label="模型推理强度">
+            <div class="thinking-segments studio-segments studio-segments--compact" role="radiogroup" aria-label="模型推理强度">
+              <AnimatedSelection />
               <button
                 v-for="opt in reasoningOptions"
                 :key="opt.value"
@@ -68,6 +70,7 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 

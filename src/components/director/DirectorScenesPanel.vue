@@ -21,7 +21,8 @@
     </template>
     <template v-else>
       <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
-      <div class="scene-scope" role="group" aria-label="场景库范围">
+      <div class="scene-scope studio-segments studio-segments--compact" role="group" aria-label="场景库范围">
+      <AnimatedSelection />
         <button type="button" :class="{ active: sceneCollection === 'core' }"
           :aria-pressed="sceneCollection === 'core'"
           @click="$emit('update:sceneCollection', 'core')">人设核心 {{ personaCoreCount }}</button>
@@ -83,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { SCENE_THEMES } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

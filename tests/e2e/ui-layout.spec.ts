@@ -46,6 +46,21 @@ test('contrast audit includes text alpha and nested group opacity', async ({ pag
 })
 
 for (const theme of ['dark', 'light']) {
+  test(`inspiration search uses the available desktop width ${theme}`, async ({ page }) => {
+    await open(page, '/scene-explorer', theme, 1320, 800)
+    for (const width of [1320, 1280, 960]) {
+      await page.setViewportSize({ width, height: 800 })
+      const toolbar = (await page.locator('.scene-toolbar').boundingBox())!
+      const search = (await page.locator('.toolbar-primary').boundingBox())!
+      const inset = await page.locator('.scene-toolbar').evaluate(element => {
+        const style = getComputedStyle(element)
+        return ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce((sum, key) => sum + parseFloat(style[key as keyof CSSStyleDeclaration] as string), 0)
+      })
+      if (width <= 1300) expect(search.width).toBeGreaterThanOrEqual(toolbar.width - inset - 2)
+      else expect(search.width).toBeGreaterThan(toolbar.width / 2)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+    }
+  })
   test(`popular scene count labels retain AA contrast ${theme}`, async ({ page }) => {
     await open(page, '/popular-scenes', theme, 1440)
     await expect(page.locator('.pop-cat').first()).toBeVisible()
@@ -57,14 +72,20 @@ for (const theme of ['dark', 'light']) {
   for (const width of [1024]) {
     test(`material and inspector do not overlap ${theme} ${width}`, async ({ page }) => {
       await open(page, '/prompt-builder', theme, width)
+      await expect(page.locator('#drawing-materials')).toBeVisible()
+      await expect(page.locator('.director-inspector')).toBeVisible()
+      await page.locator('.trait-chip').first().click({ trial: true })
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       await page.locator('#inspector-tab-prompt').click()
+      await expect(page.locator('#drawing-materials')).toBeVisible()
+      await expect(page.locator('.director-inspector')).toBeVisible()
+      await expect(page.locator('#promptMonitor')).toBeVisible()
+      const canvas = (await page.locator('#drawing-canvas').boundingBox())!
       const material = (await page.locator('#drawing-materials').boundingBox())!
       const inspector = (await page.locator('.director-inspector').boundingBox())!
-      const overlapWidth = Math.min(material.x + material.width, inspector.x + inspector.width) - Math.max(material.x, inspector.x)
-      const overlapHeight = Math.min(material.y + material.height, inspector.y + inspector.height) - Math.max(material.y, inspector.y)
-      expect(overlapWidth <= 1 || overlapHeight <= 1).toBe(true)
-      await page.locator('.trait-chip').first().click({ trial: true })
+      expect(material.x + material.width).toBeLessThanOrEqual(canvas.x + 1)
+      expect(canvas.x + canvas.width).toBeLessThanOrEqual(inspector.x + 1)
+      await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeInViewport({ ratio: 1 })
     })
   }
 
