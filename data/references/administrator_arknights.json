@@ -1,0 +1,666 @@
+{
+  "standard": {
+    "id": "administrator_arknights",
+    "displayName": "管理员",
+    "originalName": "Endministrator",
+    "source": "Arknights: Endfield",
+    "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with long dark hair fading to a lighter color at the ends. Her eyes are partly covered by a dark visor.",
+    "identityTokens": [
+      "female_endministrator_(arknights)",
+      "1girl",
+      "solo",
+      "black_hair",
+      "long_hair",
+      "gradient_hair",
+      "arknights_endfield"
+    ],
+    "outfits": [
+      {
+        "id": "standard",
+        "name": "女性管理员黑白黄机能服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her black technical jacket with yellow accents, white high-neck inner layer, dark visor, black trousers and practical boots",
+        "tokens": [
+          "black_jacket",
+          "yellow_trim",
+          "white_shirt",
+          "high_collar",
+          "visor",
+          "black_pants",
+          "boots",
+          "techwear"
+        ]
+      },
+      {
+        "id": "tactical_bodysuit",
+        "name": "中枢轻量战巡服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a sleek black and charcoal form-fitting tactical compression bodysuit with gold tech lines and fingerless combat gloves",
+        "tokens": [
+          "bodysuit",
+          "compression_suit",
+          "tight_clothes",
+          "black_bodysuit",
+          "fingerless_gloves",
+          "thigh_holster",
+          "boots"
+        ]
+      },
+      {
+        "id": "cryo_recovery_garb",
+        "name": "休眠苏醒服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a minimalist white cryo-stasis recovery tunic with a loose collar exposing collarbones and bare feet",
+        "tokens": [
+          "white_tunic",
+          "sleeveless_tunic",
+          "loose_collar",
+          "collarbone",
+          "bare_legs",
+          "bare_feet"
+        ]
+      },
+      {
+        "id": "silk_nightgown",
+        "name": "私人寝舱吊带睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a delicate black-and-silver silk slip nightdress with spaghetti straps and a low-cut neckline",
+        "tokens": [
+          "nightgown",
+          "slip_dress",
+          "spaghetti_straps",
+          "low_neckline",
+          "bare_shoulders",
+          "cleavage",
+          "silk"
+        ]
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, athletic toned female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "breasts",
+          "pink_nipples",
+          "navel",
+          "bare_shoulders",
+          "collarbone",
+          "bare_legs",
+          "bare_feet"
+        ]
+      }
+    ]
+  },
+  "view": {
+    "characterId": "administrator_arknights",
+    "displayName": "管理员",
+    "source": "Arknights: Endfield",
+    "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with long dark hair fading to a lighter color at the ends. Her eyes are partly covered by a dark visor.",
+    "outfits": [
+      {
+        "outfitId": "standard",
+        "outfitName": "女性管理员黑白黄机能服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her black technical jacket with yellow accents, white high-neck inner layer, dark visor, black trousers and practical boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "tactical_bodysuit",
+        "outfitName": "中枢轻量战巡服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a sleek black and charcoal form-fitting tactical compression bodysuit with gold tech lines and fingerless combat gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "cryo_recovery_garb",
+        "outfitName": "休眠苏醒服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a minimalist white cryo-stasis recovery tunic with a loose collar exposing collarbones and bare feet",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "silk_nightgown",
+        "outfitName": "私人寝舱吊带睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a delicate black-and-silver silk slip nightdress with spaghetti straps and a low-cut neckline",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, athletic toned female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  }
+}

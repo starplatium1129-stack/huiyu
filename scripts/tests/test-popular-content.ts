@@ -592,8 +592,8 @@ test('blueprint decisions: angle keywords outrank framing substrings; every blue
     'authored "wide shot, dramatic low angle" must resolve to low angle, not lose to the longer "wide shot"/"medium" substring');
   assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'medium shot', sceneTags: ['looking_back'], promptProse: 'Looking back over her shoulder.' } as any).shot, 'medium',
     'an action in scene prose must not replace the explicit camera distance');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'full body, front view' } as any).shot, 'wide', 'frontal full-body camera must not become looking back');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'medium close-up, front view' } as any).shot, 'close', 'frontal close view must retain its framing');
+  for (const adult of [false, true]) assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'full body, front view' } as any).shot, 'wide', 'frontal full-body camera must not become looking back');
+  for (const adult of [false, true]) assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, adult, camera: 'medium close-up, front view' } as any).shot, 'close', 'frontal close view must retain its framing');
   let maiLibrary = blueprints.find(function (item) { return item.id === 'sakurajima_mai_library'; })!;
   assert.strictEqual(popular.inferBlueprintDecisions(maiLibrary).shot, 'low',
     '"cinematic low angle medium shot" must keep the authored low angle');

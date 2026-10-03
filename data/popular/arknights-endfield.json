@@ -496,6 +496,452 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Zhuang Fangyi",
+        "庄方宜",
+        "Zhuang",
+        "Fangyi"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "world": "塔卫二",
+        "formNotes": "麒麟分叉角、尖耳与长尾，白绿主色的改良中式衣装",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://endfield.hypergryph.com/operator"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "庄方宜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "zhuang_fangyi_(arknights)",
+        "zhuang_fangyi (arknights)"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "zhuang_fangyi_arknights",
+      "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair, branching dark red horns, pointed ears and a long tail.",
+      "identityTokens": [
+        "zhuang_fangyi_(arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "horns",
+        "pointy_ears",
+        "tail",
+        "arknights_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Zhuang Fangyi",
+      "outfits": [
+        {
+          "default": true,
+          "id": "standard",
+          "isDefault": true,
+          "name": "武陵白绿中式衣装",
+          "prose": "her white-and-green Chinese-inspired long outfit, black waist belt and industrial protective accessories",
+          "tokens": [
+            "chinese_clothes",
+            "white_clothes",
+            "green_clothes",
+            "long_coat",
+            "belt",
+            "protective_gear",
+            "boots"
+          ]
+        },
+        {
+          "default": false,
+          "id": "yan_scholar_robe",
+          "isDefault": false,
+          "name": "文雅研学深衣",
+          "prose": "an elegant traditional scholar robe in dark ink and celadon silk with wide flowing sleeves, a subtle embroidered sash and delicate cloud patterns",
+          "tokens": [
+            "traditional_clothes",
+            "hanfu",
+            "robe",
+            "wide_sleeves",
+            "sash",
+            "silk",
+            "embroidery"
+          ]
+        },
+        {
+          "default": false,
+          "id": "wasteland_traveler",
+          "isDefault": false,
+          "name": "荒原风沙行装",
+          "prose": "a rugged dust-resistant travel mantle with tactical cargo trousers, utility belt and heavy desert combat boots",
+          "tokens": [
+            "mantle",
+            "cape",
+            "hood",
+            "cargo_pants",
+            "utility_belt",
+            "combat_boots",
+            "techwear"
+          ]
+        },
+        {
+          "default": false,
+          "id": "lingerie_silk_robe",
+          "isDefault": false,
+          "name": "罗帷薄纱亵衣",
+          "prose": "a sheer translucent oriental silk night robe loosely draped over bare shoulders and delicate undergarments",
+          "tokens": [
+            "sheer_robe",
+            "nightgown",
+            "translucent",
+            "see_through",
+            "silk",
+            "bare_shoulders",
+            "collarbone"
+          ]
+        },
+        {
+          "default": false,
+          "id": "spring_bath_wrap",
+          "isDefault": false,
+          "name": "清泉透湿浴巾",
+          "prose": "a wet white bath towel wrapped snugly around her chest and hips, clinging translucent against damp skin",
+          "tokens": [
+            "bath_towel",
+            "towel_wrap",
+            "wet_clothes",
+            "translucent",
+            "bare_shoulders",
+            "wet_skin"
+          ]
+        },
+        {
+          "default": false,
+          "id": "nsfw_nude",
+          "isDefault": false,
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Administrator",
+        "Endministrator",
+        "管理员",
+        "女性管理员"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "world": "塔卫二",
+        "formNotes": "深色渐变长发，黑白黄配色机能服与护目面罩",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://endfield.hypergryph.com/operator"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "管理员",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "female_endministrator_(arknights)",
+        "endministrator_(arknights)",
+        "administrator_(arknights)",
+        "administrator (arknights)",
+        "endministrator"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "administrator_arknights",
+      "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with long dark hair fading to a lighter color at the ends. Her eyes are partly covered by a dark visor.",
+      "identityTokens": [
+        "female_endministrator_(arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "gradient_hair",
+        "arknights_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Endministrator",
+      "outfits": [
+        {
+          "default": true,
+          "id": "standard",
+          "isDefault": true,
+          "name": "女性管理员黑白黄机能服",
+          "prose": "her black technical jacket with yellow accents, white high-neck inner layer, dark visor, black trousers and practical boots",
+          "tokens": [
+            "black_jacket",
+            "yellow_trim",
+            "white_shirt",
+            "high_collar",
+            "visor",
+            "black_pants",
+            "boots",
+            "techwear"
+          ]
+        },
+        {
+          "default": false,
+          "id": "tactical_bodysuit",
+          "isDefault": false,
+          "name": "中枢轻量战巡服",
+          "prose": "a sleek black and charcoal form-fitting tactical compression bodysuit with gold tech lines and fingerless combat gloves",
+          "tokens": [
+            "bodysuit",
+            "compression_suit",
+            "tight_clothes",
+            "black_bodysuit",
+            "fingerless_gloves",
+            "thigh_holster",
+            "boots"
+          ]
+        },
+        {
+          "default": false,
+          "id": "cryo_recovery_garb",
+          "isDefault": false,
+          "name": "休眠苏醒服",
+          "prose": "a minimalist white cryo-stasis recovery tunic with a loose collar exposing collarbones and bare feet",
+          "tokens": [
+            "white_tunic",
+            "sleeveless_tunic",
+            "loose_collar",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        },
+        {
+          "default": false,
+          "id": "silk_nightgown",
+          "isDefault": false,
+          "name": "私人寝舱吊带睡裙",
+          "prose": "a delicate black-and-silver silk slip nightdress with spaghetti straps and a low-cut neckline",
+          "tokens": [
+            "nightgown",
+            "slip_dress",
+            "spaghetti_straps",
+            "low_neckline",
+            "bare_shoulders",
+            "cleavage",
+            "silk"
+          ]
+        },
+        {
+          "default": false,
+          "id": "nsfw_nude",
+          "isDefault": false,
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, athletic toned female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Rossi",
+        "洛茜",
+        "洛茜娜·狼珀·卢皮诺"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "world": "塔卫二",
+        "formNotes": "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://endfield.hypergryph.com/operator"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "洛茜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "rossi_(arknights)",
+        "rossy_(arknights)",
+        "rossy (arknights)"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "rossy_arknights",
+      "identityProse": "Rossi from Arknights: Endfield, a Lupo sword user and Wulfgard's younger sister who leads a wolf pack, with long light-blonde hair, wolf ears and a fluffy wolf tail.",
+      "identityTokens": [
+        "rossi_(arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "wolf_ears",
+        "wolf_tail",
+        "arknights_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Rossi",
+      "outfits": [
+        {
+          "default": true,
+          "id": "standard",
+          "isDefault": true,
+          "name": "洛茜红斗篷剑士服",
+          "prose": "her red hooded cloak, white dress with black waist protection, black boots and a sheathed sword",
+          "tokens": [
+            "red_cape",
+            "hood",
+            "white_dress",
+            "waist_guard",
+            "black_boots",
+            "sheathed_sword"
+          ]
+        },
+        {
+          "default": false,
+          "id": "engineer_tank_top",
+          "isDefault": false,
+          "name": "车间工字背心",
+          "prose": "a fitted grey and bright orange ribbed racerback tank top with heavy-duty work shorts and grease smudges",
+          "tokens": [
+            "tank_top",
+            "racerback",
+            "crop_top",
+            "shorts",
+            "gloves",
+            "boots",
+            "grease_smudge"
+          ]
+        },
+        {
+          "default": false,
+          "id": "pioneer_hoodie",
+          "isDefault": false,
+          "name": "拓荒休闲卫衣",
+          "prose": "an oversized yellow-and-black hooded pioneer sweatshirt with casual denim shorts and chunky sneakers",
+          "tokens": [
+            "hoodie",
+            "oversized_hoodie",
+            "shorts",
+            "sneakers",
+            "casual_clothes"
+          ]
+        },
+        {
+          "default": false,
+          "id": "wet_camisole",
+          "isDefault": false,
+          "name": "汗湿清凉背心",
+          "prose": "a thin translucent white camisole drenched in sweat and clinging tightly across perky breasts",
+          "tokens": [
+            "camisole",
+            "wet_clothes",
+            "translucent",
+            "see_through",
+            "bare_shoulders",
+            "collarbone"
+          ]
+        },
+        {
+          "default": false,
+          "id": "nsfw_nude",
+          "isDefault": false,
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, cute youthful female body, perky breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
     }
   ],
   "franchise": "Arknights: Endfield",

@@ -298,6 +298,38 @@
       "references": "pending",
       "samples": "sfw-partial",
       "sceneCount": 10
+    },
+    {
+      "id": "zhuang_fangyi_arknights",
+      "batch": 10,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "pending",
+      "sceneCount": 10
+    },
+    {
+      "id": "administrator_arknights",
+      "batch": 10,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "pending",
+      "sceneCount": 10
+    },
+    {
+      "id": "rossy_arknights",
+      "batch": 10,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "pending",
+      "sceneCount": 10
+    },
+    {
+      "id": "typhon_arknights",
+      "batch": 10,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "pending",
+      "sceneCount": 10
     }
   ]
 }

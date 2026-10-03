@@ -12328,5 +12328,226 @@
       "title": "夜色下的暗号交接",
       "description": "细雨霏霏的街头，她撑着黑伞在电话亭中以毫无波澜的声音汇报情报，眼神却穿透玻璃凝视着远处的微光。"
     }
+  },
+  {
+    "id": "zhuang_fangyi_arknights",
+    "name": "庄方宜",
+    "alias": [
+      "Zhuang Fangyi",
+      "庄方宜",
+      "Zhuang",
+      "Fangyi"
+    ],
+    "type": "popular",
+    "icon": "🪭",
+    "visual_dna": {
+      "hair": "披散的墨黑色超长发，不设低髻或发簪",
+      "hair_color": "披散的墨黑色超长发，不设低髻或发簪",
+      "eyes": "浅色眼眸（不指定未经核实的精确色值）",
+      "hairstyle": "披散的墨黑色超长发，不设低髻或发簪",
+      "uniform": "白绿主色改良中式长衣、黑色腰带及工业护具；不配折扇",
+      "expression": "认真负责、沉稳",
+      "style": "明日方舟：终末地官方形象为基础",
+      "signature": "麒麟分叉角、尖耳与长尾，白绿主色的改良中式衣装"
+    },
+    "personality": [
+      "认真负责",
+      "沉稳"
+    ],
+    "likes": [],
+    "identity": {
+      "role": "武陵科学发展区管代 / 息壤新材项目负责天师",
+      "age": "官方未公开（原稿年龄缺少来源，待核实）",
+      "occupation": "裂隙研究与息壤新材项目研究者",
+      "faction": "武陵科学发展区"
+    },
+    "tags": [
+      "麒麟分叉角、尖耳与长尾，白绿主色的改良中式衣装"
+    ],
+    "bg_story": "庄方宜是武陵科学发展区管代、息壤新材项目负责天师，经宏科院推荐与终末地合作开展裂隙研究。种族为麒麟。年龄未公开；日常场景与非默认衣装为创作设定。",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "zhuang_fangyi_(arknights)",
+      "1girl",
+      "solo",
+      "black_hair",
+      "very_long_hair",
+      "horns",
+      "pointy_ears",
+      "tail",
+      "arknights_endfield"
+    ],
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "庄方宜立绘待补（占位图）"
+    },
+    "speech": "我是庄方宜，武陵科学发展区管代。",
+    "accent_color": "#4ecdc4",
+    "bg_color": "#0f172a"
+  },
+  {
+    "id": "administrator_arknights",
+    "name": "管理员",
+    "alias": [
+      "Administrator",
+      "Endministrator",
+      "管理员",
+      "女性管理员"
+    ],
+    "type": "popular",
+    "icon": "⚡",
+    "visual_dna": {
+      "hair": "深色长发，发梢渐浅；不是银白短发",
+      "hair_color": "深色长发，发梢渐浅；不是银白短发",
+      "eyes": "官方立绘面部有深色护目面罩，不固定未核实的眼色",
+      "hairstyle": "深色长发，发梢渐浅；不是银白短发",
+      "uniform": "白色高领内搭、黑色机能外套与黄色饰边、黑色下装和靴",
+      "expression": "冷静、坚定",
+      "style": "明日方舟：终末地官方形象为基础",
+      "signature": "深色渐变长发，黑白黄配色机能服与护目面罩"
+    },
+    "personality": [
+      "冷静",
+      "坚定"
+    ],
+    "likes": [],
+    "identity": {
+      "role": "终末地管理员 / 塔卫二文明保护者",
+      "age": "官方未公开（原稿年龄缺少来源，待核实）",
+      "occupation": "终末地管理员",
+      "faction": "终末地工业"
+    },
+    "tags": [
+      "深色渐变长发，黑白黄配色机能服与护目面罩"
+    ],
+    "bg_story": "管理员与终末地工业的源石和协议网络密切相关，并被视作塔卫二文明的保护者。本档案选用女性形态；种族与精确年龄未公开。日常场景与非默认衣装为创作设定。",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "female_endministrator_(arknights)",
+      "1girl",
+      "solo",
+      "black_hair",
+      "long_hair",
+      "gradient_hair",
+      "arknights_endfield"
+    ],
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "管理员立绘待补（占位图）"
+    },
+    "speech": "协议网络已连接，继续推进开拓。",
+    "accent_color": "#eab308",
+    "bg_color": "#0f172a"
+  },
+  {
+    "id": "rossy_arknights",
+    "name": "洛茜",
+    "alias": [
+      "Rossi",
+      "洛茜",
+      "洛茜娜·狼珀·卢皮诺"
+    ],
+    "type": "popular",
+    "icon": "🔧",
+    "visual_dna": {
+      "hair": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+      "hair_color": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+      "eyes": "眼色待进一步核实，不固定绿眸",
+      "hairstyle": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+      "uniform": "红色兜帽斗篷、白色裙装、黑色腰身护具与黑靴，佩剑",
+      "expression": "果敢、关心同伴",
+      "style": "明日方舟：终末地官方形象为基础",
+      "signature": "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑"
+    },
+    "personality": [
+      "果敢",
+      "关心同伴"
+    ],
+    "likes": [],
+    "identity": {
+      "role": "狼群领导者 / 狼卫的妹妹",
+      "age": "官方未公开（原稿年龄缺少来源，待核实）",
+      "occupation": "近卫干员 / 剑士",
+      "faction": "狼群（与终末地合作）"
+    },
+    "tags": [
+      "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑"
+    ],
+    "bg_story": "洛茜，本名洛茜娜·狼珀·卢皮诺，是鲁珀族剑士、狼卫的妹妹，也是狼群领导者。官方简介未提供精确年龄，不采用原稿未经证实的18岁设定，日常场景与非默认衣装为创作设定。",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "rossi_(arknights)",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "long_hair",
+      "wolf_ears",
+      "wolf_tail",
+      "arknights_endfield"
+    ],
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "洛茜立绘待补（占位图）"
+    },
+    "speech": "狼群的伙伴都准备好了，出发吧。",
+    "accent_color": "#c84242",
+    "bg_color": "#0f172a"
+  },
+  {
+    "id": "typhon_arknights",
+    "name": "提丰",
+    "alias": [
+      "Typhon",
+      "提丰",
+      "ティフォン",
+      "小提丰",
+      "Typhon Arknights"
+    ],
+    "type": "popular",
+    "icon": "🏹",
+    "visual_dna": {
+      "hair": "浅紫色长发，额前刘海与少量细编发",
+      "hair_color": "浅紫 / 淡粉紫",
+      "eyes": "粉紫色眼眸",
+      "hairstyle": "披散长发与少量细编发",
+      "uniform": "黑色猎人上装、浅色立领与颈部护具、暗色披肩，大型弓",
+      "expression": "警觉、沉静",
+      "style": "萨米猎人",
+      "signature": "大型黑色角及金属角饰、浅紫长发、粉紫眼、大弓"
+    },
+    "personality": [
+      "警觉",
+      "沉静"
+    ],
+    "likes": [],
+    "identity": {
+      "role": "萨米猎人 / 罗德岛合作干员",
+      "age": "官方未公开（原稿年龄缺少来源，待核实）",
+      "occupation": "萨米猎人 / 狙击干员",
+      "faction": "萨米 / 罗德岛"
+    },
+    "tags": [
+      "萨卡兹猎人",
+      "萨米"
+    ],
+    "bg_story": "提丰是来自萨米的萨卡兹猎人，使用大型弓作战并与罗德岛合作。年龄未公开，日常场景与非默认衣装为创作设定。",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "traits": [
+      "typhon_(arknights)",
+      "1girl",
+      "solo",
+      "purple_hair",
+      "long_hair",
+      "pink_eyes",
+      "horns",
+      "braid"
+    ],
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "提丰立绘待补（占位图）"
+    },
+    "speech": "风向变了，小心前方。",
+    "accent_color": "#10b981",
+    "bg_color": "#0f172a"
   }
 ]

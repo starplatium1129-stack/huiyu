@@ -2883,6 +2883,145 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "typhon",
+        "typhon arknights",
+        "arknights",
+        "提丰"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "泰拉科幻",
+        "world": "泰拉 / 萨米",
+        "formNotes": "浅紫长发、粉紫眼、大型黑角及金属角饰、大弓",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://www.bilibili.com/video/BV1tz4y1E7WY/",
+          "https://ak.hypergryph.com/news/3046"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "提丰",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "typhon (arknights)",
+        "typhon_(arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "typhon_arknights",
+      "identityProse": "Typhon from Arknights, a female Sarkaz hunter from Sami with long pale lavender hair, pink-magenta eyes and large dark horns fitted with metal ornaments.",
+      "identityTokens": [
+        "typhon_(arknights)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "pink_eyes",
+        "horns",
+        "braid"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Typhon",
+      "outfits": [
+        {
+          "default": true,
+          "id": "standard",
+          "isDefault": true,
+          "name": "萨米猎人装",
+          "prose": "her dark hunter top, light standing collar and neck protection, dark shoulder mantle, practical boots and large hunting bow",
+          "tokens": [
+            "black_shirt",
+            "high_collar",
+            "neck_guard",
+            "dark_mantle",
+            "boots",
+            "bow_(weapon)"
+          ]
+        },
+        {
+          "default": false,
+          "id": "tundra_tracker_mantle",
+          "isDefault": false,
+          "name": "极北雪地潜行装",
+          "prose": "a snow-white fur mantle with leather chest guard, thermal leggings and insulated hunting boots",
+          "tokens": [
+            "white_cape",
+            "fur_trim",
+            "leather_armor",
+            "leggings",
+            "boots"
+          ]
+        },
+        {
+          "default": false,
+          "id": "rhodes_casual_knit",
+          "isDefault": false,
+          "name": "罗德岛舰内休闲毛衣",
+          "prose": "a cozy oversized thick-knit forest green sweater with casual shorts and soft slippers",
+          "tokens": [
+            "oversized_sweater",
+            "knit_sweater",
+            "shorts",
+            "slippers",
+            "casual_clothes"
+          ]
+        },
+        {
+          "default": false,
+          "id": "hot_spring_towel",
+          "isDefault": false,
+          "name": "极北暖泉湿浴巾",
+          "prose": "a damp linen bath towel wrapped around her torso, translucent from hot spring water, droplets glistening on skin",
+          "tokens": [
+            "bath_towel",
+            "towel_wrap",
+            "wet_clothes",
+            "translucent",
+            "wet_skin",
+            "bare_shoulders"
+          ]
+        },
+        {
+          "default": false,
+          "id": "nsfw_nude",
+          "isDefault": false,
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural supple female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
     }
   ],
   "franchise": "Arknights",

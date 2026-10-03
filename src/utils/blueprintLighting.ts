@@ -54,7 +54,7 @@ const CAMERA_TO_SHOT: Record<string, string> = {
   'cowboy shot': 'medium', cowboy_shot: 'medium', cowboy: 'medium',
   'wide shot': 'wide', wide_shot: 'wide', full_body: 'wide', wide: 'wide',
   pov: 'pov', 'high angle': 'high', from_above: 'high', 'low angle': 'low',
-  from_below: 'low', 'side view': 'side', looking_back: 'turn', 'front view': 'turn',
+  from_below: 'low', 'side view': 'side', looking_back: 'turn',
 }
 /** 蓝图 camera 字段漏网短语补映射（2026-08-24 全量审计：23 例 shot=null）。 */
 const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
@@ -68,6 +68,7 @@ const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
   // back_view/back shot：ShotId 枚举无「背面」槽位，取中景为中性框架，
   // 背面视角语义由蓝图 promptProse 自由文本兜底。
   [/back[_ ](?:view|shot)/, 'medium'],
+  [/front[_ ]view/, 'medium'],
 ]
 /**
  * 角度词优先预扫：低/高机位是比取景景别更罕见的作者意图信号。
@@ -112,7 +113,8 @@ function matchFirst(text: string, table: Record<string, string>): string | null 
 export function existingBlueprintDecisions(blueprint: { camera: string; lighting: string; mood: string; promptProse: string; sceneTags: string[] }): {shot: string | null; lighting: string | null} {
   const hay = [blueprint.camera, blueprint.lighting, blueprint.mood, blueprint.promptProse, blueprint.sceneTags.join(', ')].join(' ').toLowerCase()
   const cameraText = String(blueprint.camera || '').toLowerCase()
-  let shot = blueprintAngleShot(blueprint.camera) ?? matchFirst(hay, CAMERA_TO_SHOT)
+  let shot = blueprintAngleShot(blueprint.camera) ?? matchFirst(cameraText, CAMERA_TO_SHOT)
   if (!shot) shot = EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1] ?? null
+  if (!shot) shot = matchFirst(hay, CAMERA_TO_SHOT)
   return { shot, lighting: matchFirst(hay, LIGHTING_TO_ID) }
 }
