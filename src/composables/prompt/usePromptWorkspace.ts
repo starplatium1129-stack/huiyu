@@ -69,7 +69,7 @@ export function usePromptWorkspace() {
         flash: message => pb.flash(message),
         preferredSize: () => pb.lastRecommendedSize,
     });
-    const { state: animaState, patchState: patchAnimaState, modelId: animaModelId, refreshBackend: refreshAnimaBackend, syncCharacter: syncAnimaCharacter, applyModel, generate: generateAnima, cancel: cancelAnimaJob, clearResult: clearAnimaResult, startStatusPolling } = animaSession;
+    const { state: animaState, patchState: patchAnimaState, modelId: animaModelId, refreshBackend: refreshAnimaBackend, syncCharacter: syncAnimaCharacter, applyModel, generate: generateAnima, cancel: cancelAnimaJob, clearResult: clearAnimaResult } = animaSession;
     // Anima 会话先于引擎协调层创建：请求装配与结果协调经桥接函数转发到
     // useDirectorEngine（生成/结果事件均在 setup 完成后才触发，沿用提升函数模式）。
     function buildAnimaRequest() {
@@ -125,8 +125,7 @@ export function usePromptWorkspace() {
             ? sdSize.value
             : `${animaState.value.width}x${animaState.value.height}`,
         set: (value: string) => {
-            if (drawEngine.value === 'sd')
-                sdSize.value = value;
+            if (drawEngine.value === 'sd') { sdSize.value = value; pb.markParamTouched('size'); }
             else
                 applyRecommendedSize(value);
         },
@@ -510,7 +509,7 @@ export function usePromptWorkspace() {
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({
-        refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY,
+        refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
         applyManagedRoute, refreshManagedRoute, restorePopularDraft,
         animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative,
