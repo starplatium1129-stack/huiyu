@@ -110,8 +110,9 @@
         class="result-image-reveal"
         img-class="result-image"
         :src="resolveRuntimeUrl(displayResultUrl)"
-        :auto-reveal="displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
+        :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
         alt="当前生成的画面成片"
+        @load="fitResult"
         @reveal-start="rememberResultReveal"
         @reveal-complete="rememberResultReveal"
       />
@@ -128,7 +129,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
@@ -166,6 +167,22 @@ const props = defineProps<{
 
 const stageRoot = ref<HTMLElement | null>(null)
 const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
+
+const resultAspect = ref(1)
+const loadedResultUrl = ref('')
+watch(() => props.displayResultUrl, () => {
+  const [width, height] = (props.canvasSize || '').split('x').map(Number)
+  resultAspect.value = width > 0 && height > 0 ? width / height : 1
+  loadedResultUrl.value = ''
+}, { immediate: true })
+async function fitResult(event: Event) {
+  const image = event.target as HTMLImageElement
+  const source = props.displayResultUrl
+  resultAspect.value = image.naturalWidth / image.naturalHeight
+  // The page and canvas must settle at the decoded ratio before particles sample them.
+  await nextTick()
+  if (source === props.displayResultUrl) loadedResultUrl.value = source
+}
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
@@ -266,7 +283,7 @@ async function interrogateCurrentImage() {
     if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
-defineExpose({ playClear, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
+defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
 
 <style scoped>

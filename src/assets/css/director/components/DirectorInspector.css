@@ -19,7 +19,10 @@
 .pb .inspector-workbench :is(.inspector-tabs button, .inspector-scroll):focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
 .pb .inspector-count { font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .pb[data-director-mode] .inspector-workbench .inspector-scroll {
-  flex:1 1 auto; gap:var(--s-3); min-height:0; padding:var(--s-3); scrollbar-gutter:stable;
+  flex:0 1 auto; gap:var(--s-3); min-height:0; padding:var(--s-3); scrollbar-gutter:stable;
+}
+@media (min-width:1024px) {
+  .pb.journal-workspace[data-director-mode] .inspector-workbench { align-self:start; max-height:100%; }
 }
 .pb .inspector-workbench .inspector-section[data-state="active"] { animation:inspector-reveal 120ms ease-out; }
 .pb .inspector-workbench .panel,
