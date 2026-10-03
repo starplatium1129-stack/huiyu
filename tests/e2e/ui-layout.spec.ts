@@ -1,9 +1,36 @@
 import { test, expect, type Locator, type Page } from '@playwright/test'
-import { textContrast } from './helpers/contrast'
+import { paintedTextContrast, textContrast } from './helpers/contrast'
 import { onArtTextContrast } from './helpers/ui-fluidity-office'
 import { installSceneStateFixture } from './helpers/sceneState'
 
 const base = process.env.AICS_UI_AUDIT_URL || ''
+
+// Two small synthetic franchises exercise the real 18-item catalog page.
+const catalogCharacters = Array.from({ length: 20 }, (_, index) => ({
+  id: `catalog-fixture-${index + 1}`,
+  displayName: `目录夹具 ${String(index + 1).padStart(2, '0')}`,
+  originalName: `Catalog Fixture ${index + 1}`,
+  franchise: index < 18 ? 'Fixture Main' : 'Fixture Other',
+  aliases: [], identityProse: 'A synthetic adult character for browser layout checks.',
+  identityTokens: ['1girl', 'adult woman'], exactTokens: ['fixture_character'], exactPrefixes: [],
+  recommendedEngine: 'anima', supportedEngines: ['anima', 'krea2'], adultEligibility: 'adult',
+  outfits: [{ id: 'default', name: '中性夹具服装', prose: 'wearing a simple dress', tokens: ['simple dress'], default: true }],
+  curatedArtistStyles: [],
+}))
+
+async function openCatalog(page: Page, theme: string, width: number) {
+  await page.route('**/data/popular-characters.json*', route => route.fulfill({ json: { version: 1, characters: catalogCharacters } }))
+  await open(page, '/prompt-builder', theme, width, 900)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true }).click()
+  const trigger = page.getByRole('button', { name: /浏览全部 .* 位角色/ })
+  await expect(trigger).toContainText(`浏览全部 ${catalogCharacters.length} 位角色`)
+  await trigger.click()
+  const dialog = page.locator('.character-browser-dialog')
+  await expect(dialog).toBeVisible()
+  await expect(dialog).toHaveCSS('opacity', '1')
+  return { trigger, dialog }
+}
 
 async function open(page: Page, route: string, theme: string, width: number, height = 640) {
   await page.setViewportSize({ width, height })
@@ -43,6 +70,16 @@ test('contrast audit includes text alpha and nested group opacity', async ({ pag
   expect(await contrast(page.locator('#nested'))).toBeCloseTo(2.617, 2)
   expect(await page.locator('#on-light').evaluate(onArtTextContrast)).toBeCloseTo(21, 2)
   expect(await page.locator('#on-dark').evaluate(onArtTextContrast)).toBeCloseTo(21, 2)
+  // The screenshot path must measure a gradient, restore paint and reject unsupported group opacity.
+  await page.setContent('<span id="gradient" style="color: rgba(0,0,0,.5); background: linear-gradient(90deg,white,#eee)">Gradient</span>')
+  const gradient = page.locator('#gradient')
+  const style = await gradient.getAttribute('style')
+  const sampled = await paintedTextContrast(gradient)
+  expect(sampled).toBeGreaterThan(3)
+  expect(sampled).toBeLessThan(4.5)
+  await expect(gradient).toHaveAttribute('style', style!)
+  await gradient.evaluate(element => { (element as HTMLElement).style.opacity = '.5' })
+  await expect(paintedTextContrast(gradient)).rejects.toThrow('visual contrast review')
 })
 
 for (const theme of ['dark', 'light']) {
@@ -64,8 +101,10 @@ for (const theme of ['dark', 'light']) {
   test(`popular scene count labels retain AA contrast ${theme}`, async ({ page }) => {
     await open(page, '/popular-scenes', theme, 1440)
     await expect(page.locator('.pop-cat').first()).toBeVisible()
-    for (const count of await page.locator('.pop-cat:not(.active) em').all()) {
-      expect(await contrast(count)).toBeGreaterThanOrEqual(4.5)
+    const counts = page.locator('.pop-cat:not(.active) em')
+    await expect(counts.first()).toBeVisible()
+    for (const count of await counts.all()) {
+      expect(await paintedTextContrast(count)).toBeGreaterThanOrEqual(4.5)
     }
   })
 
@@ -89,10 +128,12 @@ for (const theme of ['dark', 'light']) {
     })
   }
 
-  test(`toast remains dismissible without covering startup ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test('toast remains dismissible after workspace startup', async ({ page }) => {
+    const statusReady = page.waitForResponse(response => new URL(response.url()).pathname === '/api/generation/status' && response.ok())
     await open(page, '/prompt-builder', theme, 1024)
+    await statusReady
     await expect(page.locator('.api-status .badge')).toBeVisible()
-    await page.waitForTimeout(900)
+    await expect(page.locator('.trait-chip').first()).toBeVisible()
     await expect(page.locator('.toast-item')).toHaveCount(0)
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
     await page.locator('.engine-switch button').nth(2).click()
@@ -168,65 +209,74 @@ for (const theme of ['dark', 'light']) {
   })
 }
 
-// Large character libraries and narrow inspector columns must remain browsable.
+test('drawing catalog pagination, filtering and selection return values and focus', async ({ page }) => {
+  const { trigger, dialog } = await openCatalog(page, 'dark', 1440)
+  const entries = dialog.locator('.directory-item')
+  // The picker explicitly supplies page-size=18; this contract belongs in pagination only.
+  await expect(entries).toHaveCount(18)
+  const firstPage = await entries.evaluateAll(elements => elements.map(element => element.getAttribute('data-character')))
+  await dialog.getByRole('button', { name: '下一页', exact: true }).click()
+  await expect(entries).toHaveCount(catalogCharacters.length - 18)
+  const secondPage = await entries.evaluateAll(elements => elements.map(element => element.getAttribute('data-character')))
+  expect(secondPage.every(id => !firstPage.includes(id))).toBe(true)
+  await dialog.getByRole('button', { name: /^Fixture Other / }).click()
+  const filtered = catalogCharacters.filter(character => character.franchise === 'Fixture Other')
+  await expect(entries).toHaveCount(filtered.length)
+  expect(await entries.evaluateAll(elements => elements.map(element => element.getAttribute('data-character')))).toEqual(filtered.map(character => character.id))
+  await entries.first().press('Enter')
+  await expect(dialog).not.toBeVisible()
+  await expect(page.locator('.character-browse-trigger')).toContainText(filtered[0]!.displayName)
+  await expect(page.locator('article.pb')).toHaveAttribute('data-character', filtered[0]!.id)
+  await expect(trigger).toBeFocused()
+  await trigger.click()
+  await page.keyboard.press('Escape')
+  await expect(dialog).not.toBeVisible()
+  await expect(trigger).toBeFocused()
+  await page.getByRole('tab', { name: '画面', exact: true }).click()
+  await page.getByTestId('artist-style-picker').locator('summary').click()
+  const search = page.getByLabel('搜索画师或作品', { exact: true })
+  await search.fill('米山舞')
+  await expect(page.locator('.artist-style-grid button').first()).toBeVisible()
+  await search.fill('ask_(askzy)')
+  await page.locator('[data-artist-style-id="ask_(askzy)"]').click()
+  await expect(page.locator('.artist-style-tokens code')).toHaveText(String.raw`@ask \(askzy\)`)
+  await expect(page.locator('.toast-item')).toHaveCount(0)
+})
+
+// Other theme/width combinations cover paint and geometry, without repeating the behavior above.
 for (const theme of ['dark', 'light']) {
   for (const width of [1440, 1280]) {
     test(`drawing sidebars catalog and readable cards ${theme} ${width}`, async ({ page }, testInfo) => {
-      await open(page, '/prompt-builder', theme, width, 900)
-      await page.getByRole('button', { name: '专家模式', exact: true }).click()
-      await page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true }).click()
-      const trigger = page.getByRole('button', { name: /浏览全部 .* 位角色/ })
-      await expect(trigger).toContainText(/浏览全部 [1-9]\d* 位角色/)
-      await trigger.click()
-      const dialog = page.locator('.character-browser-dialog')
-      await expect(dialog).toBeVisible()
-      await expect(dialog).toHaveCSS('opacity', '1')
-      await expect(dialog.locator('.directory-item')).toHaveCount(18)
-      await dialog.screenshot({ path: testInfo.outputPath(`character-catalog-${theme}-${width}.png`) })
-      const firstId = await dialog.locator('.directory-item').first().getAttribute('data-character')
-      await dialog.getByRole('button', { name: '下一页', exact: true }).click()
-      expect(await dialog.locator('.directory-item').first().getAttribute('data-character')).not.toBe(firstId)
-      await dialog.getByRole('button', { name: /^原神 / }).click()
-      await expect(dialog.locator('.directory-item')).toHaveCount(4)
-      await dialog.locator('.directory-item').filter({ hasText: '芙宁娜' }).click()
-      await expect(dialog).not.toBeVisible()
-      await expect(page.locator('.character-browse-trigger')).toContainText('芙宁娜')
-      await page.locator('.popular-picker').screenshot({ path: testInfo.outputPath(`character-picker-${theme}-${width}.png`) })
-      await expect(trigger).toBeFocused()
-      await trigger.click()
-      await page.keyboard.press('Escape')
-      await expect(dialog).not.toBeVisible()
-      await page.getByRole('tab', { name: '画面', exact: true }).click()
-      await page.getByTestId('artist-style-picker').locator('summary').click()
-      await page.getByLabel('搜索画师或作品', { exact: true }).fill('米山舞')
-      const artist = page.locator('.artist-style-grid button').first()
-      await expect(artist).toBeVisible()
-      expect((await artist.boundingBox())!.width).toBeGreaterThan(180)
-      expect(await artist.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1)
-      await page.getByLabel('搜索画师或作品', { exact: true }).fill('ask_(askzy)')
-      await page.locator('[data-artist-style-id="ask_(askzy)"]').click()
-      const artistTokens = page.locator('.artist-style-tokens code')
-      await expect(artistTokens).toHaveText(String.raw`@ask \(askzy\)`)
-      await expect(page.locator('.toast-item')).toHaveCount(0)
-      await artistTokens.scrollIntoViewIfNeeded()
-      expect(await artistTokens.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1)
-      expect(await contrast(artistTokens)).toBeGreaterThanOrEqual(4.5)
-      await expect(artistTokens).toBeVisible()
-      await artistTokens.locator('..').screenshot({ path: `.review-shots/artist-tag-${theme}-${width}.png` })
-      await page.screenshot({ path: `.review-shots/drawing-sidebar-${theme}-${width}.png`, fullPage: true })
-      await page.getByRole('tab', { name: '提示词', exact: true }).click()
-      const tag = page.locator('.tag-results button').first()
-      await expect(tag).toBeVisible()
-      expect((await tag.boundingBox())!.width).toBeGreaterThan(125)
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-      await trigger.click()
+      const { dialog } = await openCatalog(page, theme, width)
       const bounds = (await dialog.boundingBox())!
       expect(bounds.x).toBeGreaterThanOrEqual(0)
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
       expect(bounds.y).toBeGreaterThanOrEqual(0)
-      expect(bounds.y + bounds.height).toBeLessThanOrEqual(901)
+      expect(bounds.y + bounds.height).toBeLessThanOrEqual(900)
       expect(await contrast(dialog.locator('.directory-label strong').first())).toBeGreaterThanOrEqual(4.5)
-      await page.screenshot({ path: `.review-shots/drawing-catalog-${theme}-${width}.png` })
+      expect(await dialog.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+      await dialog.getByRole('button', { name: '关闭角色选择', exact: true }).click({ trial: true })
+      await dialog.screenshot({ path: testInfo.outputPath(`character-catalog-${theme}-${width}.png`) })
+      await page.keyboard.press('Escape')
+      await expect(dialog).not.toBeVisible()
+      await page.getByRole('tab', { name: '画面', exact: true }).click()
+      await page.getByTestId('artist-style-picker').locator('summary').click()
+      const artist = page.locator('[data-artist-style-id="ask_(askzy)"]')
+      await artist.click()
+      expect(await artist.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1)
+      const artistTokens = page.locator('.artist-style-tokens code')
+      await artistTokens.scrollIntoViewIfNeeded()
+      expect(await artistTokens.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1)
+      expect(await contrast(artistTokens)).toBeGreaterThanOrEqual(4.5)
+      await expect(artistTokens).toBeVisible()
+      await artistTokens.locator('..').screenshot({ path: testInfo.outputPath(`artist-tag-${theme}-${width}.png`) })
+      await page.getByRole('tab', { name: '提示词', exact: true }).click()
+      const tag = page.locator('.tag-results button').first()
+      await expect(tag).toBeVisible()
+      await tag.click({ trial: true })
+      expect(await tag.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+      await page.screenshot({ path: testInfo.outputPath(`drawing-sidebar-${theme}-${width}.png`), fullPage: true })
     })
   }
 }

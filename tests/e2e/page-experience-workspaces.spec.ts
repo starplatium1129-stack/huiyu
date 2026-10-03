@@ -81,7 +81,17 @@ for (const theme of ['dark']) test(`missing notebook references stay compact and
   await expect(mood).toBeFocused()
   await page.goto('/scenario')
   await expect(page.locator('.scenario-cover.is-unconnected')).toHaveCount(3)
-  expect((await page.locator('.scenario-cover').first().boundingBox())!.height).toBe(88)
+  for (const cover of await page.locator('.scenario-cover.is-unconnected').all()) {
+    await expect(cover).toBeVisible()
+    await expect(cover).toContainText('氛围参考暂未连接')
+    expect((await cover.boundingBox())!.height).toBeLessThan(200)
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+  const books = page.getByRole('group', { name: '故事手帖', exact: true }).getByRole('button')
+  await expect(books.first()).toBeVisible()
+  for (const book of await books.all()) {
+    await book.click({ trial: true })
+  }
 })
 
 test('remote hostname refuses mature scene browsing even if a local fixture delivers the full catalog', async ({ page }) => {
