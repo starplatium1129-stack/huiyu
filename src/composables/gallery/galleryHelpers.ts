@@ -87,10 +87,12 @@ export function sceneTitle(
   return id || '未命名作品'
 }
 
+const artworkDateFormatter = new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+
 export function formatDate(ts: number) {
         const d = new Date(ts);
         return Number.isFinite(d.getTime())
-            ? d.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+            ? artworkDateFormatter.format(d)
             : '时间未记录';
     }
 
@@ -127,4 +129,3 @@ export function artworkFacts(item: ArtworkRecord | null | undefined, loras: Lora
     { label: '步数', value: item.steps == null ? '' : String(item.steps) },
   ];
 }
-

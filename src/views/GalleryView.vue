@@ -131,96 +131,18 @@
               :key="`${group.key}-col-${colIdx}`"
               class="gallery-col"
             >
-              <article
-                v-for="item in col"
-                :key="item.id"
-                class="artwork"
-                :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
-                :data-card-id="String(item.id)"
-                :style="{ '--art-ratio': String(ratioOf(item)) }"
-              >
-                <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
-                <span v-if="selectMode" class="artwork-check" aria-hidden="true">
-                  <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
-                </span>
-                <!--
-                  快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
-                  进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
-                -->
-                <div v-if="!selectMode" class="artwork-tools">
-                  <template v-if="pendingDeleteId === item.id">
-                    <button class="artwork-tool danger" type="button" :disabled="deleting"
-                      @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
-                    <button class="artwork-tool" type="button" :disabled="deleting"
-                      @click="pendingDeleteId = null">取消</button>
-                  </template>
-                  <template v-else>
-                    <StudioTooltip content="收藏后可在顶部按「收藏」筛选">
-                      <button class="artwork-tool" type="button"
-                        :class="{ 'artwork-tool-on': item.favorite }"
-                        :aria-pressed="!!item.favorite"
-                        :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
-                        @click="toggleFavorite(item)">
-                        <ArchiveIcon name="love" />
-                      </button>
-                    </StudioTooltip>
-                    <StudioTooltip content="以此作品配方回填创作台">
-                      <RouterLink class="artwork-tool" :aria-label="`沿用配方：${sceneTitle(item.scene, item)}`" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
-                        <ArchiveIcon name="spark" />
-                      </RouterLink>
-                    </StudioTooltip>
-                    <StudioTooltip content="删除作品">
-                      <button class="artwork-tool danger" type="button"
-                        :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                        @click="pendingDeleteId = item.id">
-                        <ArchiveIcon name="trash" />
-                      </button>
-                    </StudioTooltip>
-                  </template>
-                </div>
-                <button
-                  class="artwork-button"
-                  type="button"
-                  :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
-                  :aria-label="selectMode
-                    ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
-                    : `欣赏作品：${sceneTitle(item.scene, item)}`"
-                  @click="selectMode ? toggleSelect(item.id) : openFromCard(indexOf(item), $event)"
-                >
-                  <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
-                    <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
-                    <img :crossorigin="runtimeResourceCors()"
-                      v-if="thumbUrls[item.id]"
-                      class="artwork-image"
-                      :src="resolveRuntimeUrl(thumbUrls[item.id])"
-                      :alt="sceneTitle(item.scene, item)"
-                      loading="lazy"
-                      decoding="async"
-                      referrerpolicy="no-referrer"
-                      @load="measure(item, $event)"
-                    />
-                    <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
-                    <img :crossorigin="runtimeResourceCors()"
-                      v-if="cardUrls[item.id]"
-                      class="artwork-image artwork-image-hd"
-                      :src="resolveRuntimeUrl(cardUrls[item.id])"
-                      :alt="sceneTitle(item.scene, item)"
-                      decoding="async"
-                      referrerpolicy="no-referrer"
-                      @load="onHdLoad(item, $event)"
-                    />
-                    <div v-if="!cardUrls[item.id] && !thumbUrls[item.id] && missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-                    <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
-                  </div>
-                    <div class="artwork-caption">
-                      <span class="artwork-caption-copy tw:min-w-0">
-                        <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
-                        <span class="artwork-date">{{ characterName(item.character, item) }} · {{ formatDate(stamp(item)) }}</span>
-                      </span>
-                      <span v-if="item.favorite" class="artwork-mark"><ArchiveIcon name="love" /></span>
-                    </div>
-                </button>
-              </article>
+              <GalleryArtworkCard
+                v-for="item in col" :key="item.id" :item="item"
+                :title="sceneTitle(item.scene, item)" :character="characterName(item.character, item)"
+                :formatted-date="formatDate(stamp(item))" :ratio="ratioOf(item)"
+                :thumb-url="resolveRuntimeUrl(thumbUrls[item.id] || '')" :image-url="resolveRuntimeUrl(cardUrls[item.id] || '')"
+                :cors="runtimeResourceCors()" :missing="missingImageIds.has(item.id)"
+                :selection-mode="selectMode" :selected="selectedIds.has(item.id)"
+                :confirming-delete="pendingDeleteId === item.id" :deleting="pendingDeleteId === item.id && deleting"
+                @select="toggleSelect(item.id)" @open="openFromCard(indexOf(item), $event)"
+                @favorite="toggleFavorite(item)" @request-delete="pendingDeleteId = item.id" @cancel-delete="pendingDeleteId = null"
+                @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)"
+              />
             </div>
           </div>
         </template>
@@ -379,6 +301,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import { defineAsyncComponent, nextTick, onDeactivated, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
