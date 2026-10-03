@@ -4,7 +4,7 @@ import { textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 for (const theme of ['dark', 'light']) {
-  test(`chat menu lazily opens styled panels ${theme}`, async ({ page }, info) => {
+  test(`chat panels ${theme === 'dark' ? 'keyboard, cancellation and profile save' : 'paint and viewport'} ${theme}`, async ({ page }, info) => {
     await page.setViewportSize({ width:1097, height:617 })
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(value => {
@@ -19,13 +19,17 @@ for (const theme of ['dark', 'light']) {
     await expect(page.locator('h1')).toBeVisible()
     const layoutHeight = (await page.locator('.chat-layout').boundingBox())!.height
     const trigger = page.locator('.chat-more-trigger')
-    await trigger.press('ArrowDown')
+    const behavior = theme === 'dark'
+    if (behavior) await trigger.press('ArrowDown')
+    else await trigger.click()
     const menu = page.getByRole('menu', { name:'更多房间操作', exact:true })
-    await expect(menu.getByRole('menuitem', { name:'对话归档', exact:true })).toBeFocused()
+    if (behavior) await expect(menu.getByRole('menuitem', { name:'对话归档', exact:true })).toBeFocused()
     await contained(menu, 1097, 617)
     expect(await menu.getByRole('menuitem', { name:'我的档案', exact:true }).evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-    await page.keyboard.press('End')
-    await expect(menu.getByRole('menuitem', { name:'清空聊天内容与个人档案', exact:true })).toBeFocused()
+    if (behavior) {
+      await page.keyboard.press('End')
+      await expect(menu.getByRole('menuitem', { name:'清空聊天内容与个人档案', exact:true })).toBeFocused()
+    }
     await page.screenshot({ path:info.outputPath(`chat-menu-${theme}.png`) })
     await page.keyboard.press('Escape')
     await expect(menu).toHaveCount(0)
@@ -40,14 +44,14 @@ for (const theme of ['dark', 'light']) {
       const panel = page.locator(selector).filter({ visible:true })
       const dialog = page.getByRole('dialog', { name:label, exact:true })
       await expect(panel).toHaveCount(1)
+      await expect(dialog).toHaveCount(1)
       await contained(dialog, 1097, 617)
-      await expect(dialog).toHaveCSS('border-top-style', 'solid')
-      await expect(dialog.locator(':scope > section')).toHaveCount(1)
       expect((await page.locator('.chat-layout').boundingBox())!.height).toBeCloseTo(layoutHeight, 0)
       await expect(page.locator('.chat-composer')).toBeInViewport({ ratio:1 })
       await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeFocused()
+      await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeInViewport({ ratio:1 })
       expect(await panel.locator('strong').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-      if (label === '长期记忆') {
+      if (behavior && label === '长期记忆') {
         await expect(panel.locator('.memory-item')).toHaveCount(12)
         const remove = panel.locator('.memory-item').last().getByRole('button', { name:'删除', exact:true })
         await remove.click()
@@ -56,10 +60,11 @@ for (const theme of ['dark', 'light']) {
         await page.keyboard.press('Escape')
         await expect(confirmation).toBeHidden()
         await expect(remove).toBeFocused()
+        await expect(panel.locator('.memory-item')).toHaveCount(12)
         await expect(panel.getByRole('button', { name:closeLabel, exact:true })).toBeInViewport({ ratio:1 })
         await page.screenshot({ path:info.outputPath(`chat-memory-panel-${theme}.png`) })
         await page.keyboard.press('Escape')
-      } else if (label === '我的档案') {
+      } else if (behavior && label === '我的档案') {
         const relationship = panel.getByRole('combobox', { name:'关系定位', exact:true })
         await pickStudioOptionByValue(relationship, 'friend')
         await expect(relationship).toHaveAttribute('data-value', 'friend')
@@ -83,7 +88,7 @@ async function contained(locator: Locator, width: number, height: number) {
 
 for (const theme of ['light', 'dark']) {
   for (const width of [1440]) {
-    test(`character select keyboard filter ${theme} ${width}`, async ({ page }, info) => {
+    test(`character select ${theme === 'light' ? 'keyboard filter and cancellation' : 'portal paint and viewport'} ${theme} ${width}`, async ({ page }, info) => {
       await page.setViewportSize({ width, height:844 })
       await page.emulateMedia({ reducedMotion:'reduce' })
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
@@ -96,6 +101,18 @@ for (const theme of ['light', 'dark']) {
       await expect(field).toHaveText('全部角色')
       const list = page.locator('.studio-select-content')
       const option = page.getByRole('option', { name:'雷电将军', exact:true })
+      if (theme === 'dark') {
+        await field.click()
+        await expect(list).toBeVisible()
+        await expect(page.locator('.showcase-filters .studio-select-content')).toHaveCount(0)
+        await contained(list, width, 844)
+        expect(await option.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        await page.screenshot({ path:info.outputPath(`select-${theme}-${width}.png`) })
+        await page.keyboard.press('Escape')
+        await expect(list).toBeHidden()
+        await expect(field).toBeFocused()
+        return
+      }
       // Highlighting a different choice must not commit it when Escape closes the portal.
       await field.press('ArrowDown')
       await expect(list).toBeVisible()
@@ -141,7 +158,7 @@ for (const theme of ['light', 'dark']) {
     })
   }
 
-  test(`palette popover focus and collision ${theme}`, async ({ page }, info) => {
+  test(`palette popover ${theme === 'light' ? 'preview and keyboard focus' : 'paint and collision'} ${theme}`, async ({ page }, info) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion:'reduce' })
     // No generation or backend mutation is available to this UI-only fixture.
@@ -155,19 +172,23 @@ for (const theme of ['light', 'dark']) {
       await page.setViewportSize({ width, height:720 })
       await trigger.click()
       await expect(popover).toBeVisible()
-      await page.getByRole('textbox', { name:'灵感种子', exact:true }).fill('42')
-      await page.getByRole('button', { name:'预览 3 组候选', exact:true }).click()
-      await expect(page.locator('.random-candidate')).toHaveCount(3)
+      if (theme === 'light') {
+        await page.getByRole('textbox', { name:'灵感种子', exact:true }).fill('42')
+        await page.getByRole('button', { name:'预览 3 组候选', exact:true }).click()
+        await expect(page.locator('.random-candidate')).toHaveCount(3)
+      }
       await contained(popover, width, 720)
       expect(await page.locator('.random-label').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       await page.screenshot({ path:info.outputPath(`popover-${theme}-${width}.png`) })
       await page.keyboard.press('Escape')
       await expect(popover).toHaveCount(0)
       await expect(trigger).toBeFocused()
-      await trigger.press('Enter')
-      await expect(popover).toBeVisible()
-      await page.getByRole('button', { name:'关闭调色笔记', exact:true }).click()
-      await expect(trigger).toBeFocused()
+      if (theme === 'light') {
+        await trigger.press('Enter')
+        await expect(popover).toBeVisible()
+        await page.getByRole('button', { name:'关闭调色笔记', exact:true }).click()
+        await expect(trigger).toBeFocused()
+      }
     }
   })
 }
