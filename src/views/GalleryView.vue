@@ -108,7 +108,7 @@
         v-if="!galleryLoading && !galleryError && !history.length"
         kind="empty"
         title="展墙还在等你的第一幅作品"
-        message="画好之后，它会按自己的横竖比例住进来。作品只存在这台电脑，参数不挡画面。"
+        message="每幅画作都会以属于它的原画比例，静静珍藏在这本私属画册里。"
       >
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
       </ArchiveStatePanel>
@@ -116,7 +116,7 @@
         v-else-if="!galleryLoading && history.length && !visible.length"
         kind="filtered"
         title="当前筛选下没有作品"
-        message="作品仍在本地档案中，重置角色、文本、标签、收藏、画册及生成条件即可重新查找。"
+        message="所有心动画作仍在本地画册中，重置或放宽筛选即可重新翻阅。"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>

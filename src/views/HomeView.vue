@@ -5,7 +5,7 @@
         <div class="hero-copy">
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
-          <p class="hero-sub">选角色、挑场景，用 AI 生成二次元 CG。<br />从现成灵感开始，也能自己编排画面与光影。</p>
+          <p class="hero-sub">选一位心动主角，开启专属日常。<br />无论是随心点缀的灵感，还是亲手编排的光影。</p>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
             <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
@@ -117,16 +117,16 @@
     <section class="container home-section" data-reveal>
       <div class="home-section-head">
         <div>
-          <span class="eyebrow">创作，从一个念头开始</span>
-          <h2>今天，想创作些什么？</h2>
-          <p class="hint">从画一张图，到讲一个故事。让灵感有个去处。</p>
+          <span class="eyebrow">灵感，在指尖悄然发生</span>
+          <h2>今天，想写下怎样的相遇？</h2>
+          <p class="hint">定格一帧心动，留住一段温柔。让想象都有去处。</p>
         </div>
       </div>
       <div class="tools-grid home-bento">
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
+          <span class="d">选一位主角与场景，把心动的模样画下来。</span>
           <span class="home-entry-preview" aria-hidden="true"><RuntimeImage v-if="heroLoaded[homeMuse]" :src="homeMuse === 'nene' ? neneHero.src : natsumeHero.src" alt="" loading="lazy" /><ArchiveIcon v-else name="image" class="home-entry-placeholder" /></span>
           <span class="go">→ 打开</span>
         </RouterLink>
@@ -145,14 +145,14 @@
         <RouterLink :to="`/chat?character=${homeMuse}`" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">04 / ROOM</span>
           <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">与宁宁或夏目静享片刻独白，聊聊今天的心情。</span>
+          <span class="d">专属轻语时刻，静静聊聊今天的心情。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
         <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
           <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
           <span class="ic"><ArchiveIcon name="image" /></span>
-          <span class="banner-copy"><span class="t">参考画册</span><span class="d">翻阅角色与场景的定稿样张，找到下一张画的灵感。</span></span>
+          <span class="banner-copy"><span class="t">参考画册</span><span class="d">翻阅心动样张，遇见下一幕的灵感。</span></span>
           <span class="go">→ 浏览完整画册</span>
         </RouterLink>
       </div>
@@ -171,25 +171,25 @@
         <RouterLink to="/character" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
           <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
-          <span class="d">认识角色的模样、性格与故事。</span>
+          <span class="d">读懂她的性格与过往，认识下一位主角。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
           <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
-          <span class="d">探寻画面色阶、情绪氛围与色彩剧本。</span>
+          <span class="d">调配色彩情绪与光影色阶。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">07 / MODEL</span>
           <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
-          <span class="d">找到适合这次创作的模型与推荐设置。</span>
+          <span class="d">挑选契合这次笔触的底模与特征。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">08 / WORKS</span>
           <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">我的作品</span>
-          <span class="d">以纯净原始画幅，安静收存属于你的每一张心动创作。</span>
+          <span class="d">安静珍藏属于你的每一幅心动创作。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
       </div>
@@ -202,8 +202,8 @@
           class="recent-empty-state"
           compact
           kind="empty"
-          title="还没有最近作品"
-          message="画好之后，它会收进你的本地作品档案。"
+          title="画板还在等第一抹色彩"
+          message="画好之后，属于你的心动画页会静静收录在这里。"
         >
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
@@ -238,7 +238,7 @@ useScrollReveal()
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
-const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
+const sceneLibraryCopy = ref('定格心动瞬间，备好镜头与专属光影。')
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('先选喜欢的画面；确认参数后再生成。')

@@ -51,7 +51,7 @@
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">00 · 首帧</span>
-              <h2>视频从这里开始</h2>
+              <h2>故事从这里展开</h2>
             </div>
             <button v-if="videoImageUrl" class="btn btn-ghost" type="button" @click="clearFirstFrame">移除</button>
           </div>
@@ -59,11 +59,11 @@
           <label v-else class="video-upload-drop video-upload-drop--single" :data-busy="uploadingImage || undefined">
             <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
             <ArchiveIcon name="image" />
-            <strong>{{ uploadingImage ? '正在准备首帧…' : '选一张画，让故事开始' }}</strong>
-            <span>点击上传首帧，或在绘制台点击「生成短片」带入作品。</span>
+            <strong>{{ uploadingImage ? '正在准备首帧…' : '选一幅画，让故事继续' }}</strong>
+            <span>上传首帧，或从画室一键带入。</span>
           </label>
           <p v-if="videoImageUrl" class="video-install-note">
-            输入首帧 · 这张图是故事的起点，生成的短片将在「当前成片」中展示。选择「跟随原图」可保留画面比例。
+            输入首帧 · 故事的起点，生成的短片将在「当前成片」中展示。选择「跟随原图」保留比例。
           </p>
         </section>
 

@@ -49,7 +49,7 @@
         <div v-else-if="generationStopped" class="stage-idle">
           <div class="stage-placeholder-title">这一幕已暂停</div>
           <div class="stage-placeholder-copy">
-            可以调整场景与参数，准备好后继续。
+            停歇片刻。随时准备好，随时继续。
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">重新开始生成</button>
@@ -62,7 +62,7 @@
           <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
-            选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
+            挑一幕心动场景，或写下你的构想。静待画面绽放，留存这一帧温柔。
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
