@@ -296,14 +296,12 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
           conflict(key, hit.label, `反推结果包含多套服装，已优先采用「${incomingOutfit}」`)
           continue
         }
-        incomingOutfit = hit.group
       } else {
         const priorIncoming = incomingGroupByCat.get(hit.category)
         if (priorIncoming && priorIncoming !== hit.group) {
           conflict(key, hit.label, `反推结果包含多个${hit.label}，已优先还原首选「${priorIncoming}」`)
           continue
         }
-        incomingGroupByCat.set(hit.category, hit.group)
       }
 
       const prior = [...occupied].map(mutualGroupWithCategory).filter(value => value?.category === hit.category)
@@ -318,6 +316,7 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
         }
         if (hit.category === 'outfit') {
           if (input.replaceOutfit !== false) {
+            incomingOutfit = hit.group
             outfitReplacement.push(key)
             replacedOutfitGroup = foreign.group
             continue
@@ -353,6 +352,10 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       if (!obsoleteManualTags.includes(tag)) obsoleteManualTags.push(tag)
       if (!fixedTokens.has(normalized) && !accepted.includes(normalized)) occupied.delete(normalized)
     }
+    // Only accepted candidates reserve a group. Rejected reference tags must
+    // not veto a later candidate compatible with the protected user settings.
+    if (hit?.category === 'outfit') incomingOutfit = hit.group
+    else if (hit) incomingGroupByCat.set(hit.category, hit.group)
     accepted.push(key)
     occupied.add(key)
   }

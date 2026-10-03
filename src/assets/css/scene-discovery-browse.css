@@ -165,6 +165,17 @@
 @media (prefers-reduced-transparency:reduce) {
   .scene-atlas { background:var(--bg-surface); }
 }
+:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) .story-drawer {
+  background:var(--bg-surface);
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
+  .story-drawer { background:var(--bg-surface); -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
+@media (forced-colors:active) {
+  .story-drawer { background:Canvas; -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
 
 
 .companion-label { color:var(--text-muted); font-size:var(--fs-label-sm); }

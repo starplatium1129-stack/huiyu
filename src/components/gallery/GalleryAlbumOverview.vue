@@ -8,7 +8,9 @@
     <ArchiveStatePanel v-if="!loading && !error && !albums.length" compact kind="empty" :title="characters ? '还没有角色作品' : '还没有成册的作品'" :message="characters ? '保存作品后，会根据角色信息自动显示在这里。' : '选择作品手动成册，或保存角色与标签条件，让画册持续自动更新。'">
       <button v-if="!characters" class="btn btn-primary" type="button" :disabled="!hasHistory" @click="emit('manual')">选择作品成册</button><button class="btn btn-ghost" type="button" @click="emit('images')">查看作品展墙</button>
     </ArchiveStatePanel>
-    <ArchiveStatePanel v-if="loading || error" :kind="error ? 'error' : 'loading'" :title="error ? '画册读取失败' : '正在整理画册'" :message="error || '正在读取角色与作品目录。'" />
+    <ArchiveStatePanel v-if="loading || error" :kind="error ? 'error' : 'loading'" :title="error ? '画册读取失败' : '正在整理画册'" :message="error || '正在读取角色与作品目录。'">
+      <button v-if="error" class="btn btn-primary" type="button" @click="emit('retry')">重新读取</button>
+    </ArchiveStatePanel>
   </div>
 </template>
 <script setup lang="ts">
@@ -17,7 +19,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import GalleryProjectAlbums from './GalleryProjectAlbums.vue'
 import type { GalleryProjectAlbum } from '@/composables/gallery/useGalleryProjectAlbums'
 defineProps<{ albums: readonly GalleryProjectAlbum[]; selectedId: string; characters: boolean; loading: boolean; error: string; busy: boolean; hasHistory: boolean }>()
-const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id: string]; visible: [ids: string[]]; smart: []; manual: []; images: [] }>()
+const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id: string]; visible: [ids: string[]]; smart: []; manual: []; images: []; retry: [] }>()
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";

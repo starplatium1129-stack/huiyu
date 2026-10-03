@@ -236,6 +236,18 @@ describe('反推冲突审计回归', () => {
     expect(result.accepted).toEqual([])
     expect(result.conflicts.map(item => item.domain)).toEqual(['时段', '天气'])
   })
+  it('rejected incoming groups do not veto later tags compatible with protected manual settings', () => {
+    const manualTags = new Set(['night', 'sitting', 'school_uniform'])
+    const result = mergeInterrogatedTags({
+      tags: ['day', 'moonlight', 'standing', 'sitting_on_chair', 'kimono', 'blazer'],
+      identityTokens: [], manualTags, protectedManualTags: manualTags,
+    })
+    expect(result.accepted).toEqual(['moonlight', 'sitting_on_chair', 'blazer'])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['day', 'standing', 'kimono'])
+    expect(result.obsoleteManualTags).toEqual([])
+    expect([...manualTags]).toEqual(['night', 'sitting', 'school_uniform'])
+  })
+
   it('归一去重且同一批反推中只保留首个发色与姿势', () => {
     const result = merge(['Blush', 'pink_hair', 'pink hair', 'blue_hair'], [], [], new Set(['blush']))
     expect(result.accepted).toEqual(['pink_hair'])
