@@ -48,7 +48,7 @@ test('adjusting a scene enters its workspace without submitting generation', asy
   })
   await openAtelier(page, '/scene-explorer')
   await page.locator('.scene-grid').getByRole('button', { name: '故事', exact: true }).first().click()
-  const adjust = page.getByRole('link', { name: '进入工作台调整', exact: true })
+  const adjust = page.getByRole('dialog', { name: '场景故事', exact: true }).getByRole('link', { name: '开始绘制这一幕', exact: true })
   await expect(adjust).not.toHaveAttribute('href', /generate=1|quick=1/)
   await adjust.click()
   await expect(page.locator('.gen-bar')).toBeVisible()

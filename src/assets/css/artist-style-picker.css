@@ -5,10 +5,11 @@
   @apply tw:rounded-lg;
   background: var(--bg-surface);
 }
-.artist-style-picker summary {
+.artist-picker-trigger {
   @apply tw:flex tw:flex-wrap tw:text-body-sm tw:leading-body tw:items-center tw:justify-between tw:gap-s-3;
   padding: var(--s-3) var(--s-4);
   @apply tw:text-primary tw:cursor-pointer tw:font-bold;
+  width:100%; border:0; background:transparent; text-align:left;
 }
 .artist-summary-title {
   @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2;
@@ -43,6 +44,24 @@
 .artist-style-body {
   padding: 0 var(--s-4) var(--s-4);
 }
+.artist-style-panel { width:min(960px,calc(100vw - 32px)); height:min(720px,calc(100dvh - 32px)); max-height:calc(100dvh - 32px); margin:auto; padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); }
+.artist-style-panel[open] { display:flex; flex-direction:column; gap:var(--s-4); }
+.artist-style-panel::backdrop { background:var(--art-scrim); backdrop-filter:blur(5px); }
+.artist-dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); flex-shrink:0; }
+.artist-dialog-heading h2 { margin:0; font-size:var(--fs-title-sm); }
+.artist-style-panel .artist-style-body { display:flex; flex-direction:column; min-height:0; flex:1; gap:var(--s-3); padding:0; }
+.artist-style-panel .artist-presets-section { margin:0; padding:var(--s-2) var(--s-3); flex-shrink:0; }
+.artist-presets-section summary { cursor:pointer; color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.artist-style-panel .artist-controls-bar { display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--s-3); margin:0; }
+.artist-style-panel .artist-category-tabs { grid-column:1/-1; grid-row:2; }
+.artist-style-panel .artist-scope { min-width:225px; }
+.artist-style-panel .artist-style-search { min-width:0; width:auto; }
+.artist-style-panel .artist-style-grid { grid-template-columns:repeat(3,minmax(0,1fr)); min-height:0; flex:1; align-content:start; overflow-y:auto; overscroll-behavior:contain; padding:var(--s-1); }
+.artist-dialog-selected { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); flex-shrink:0; padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.artist-dialog-selected > div { display:grid; gap:var(--s-2); font-size:var(--fs-label-sm); }
+.artist-selected-chips { display:flex; flex-wrap:wrap; gap:var(--s-2); align-items:center; }
+.artist-style-panel .artist-style-tokens { margin:0; max-height:56px; overflow-y:auto; flex-shrink:0; }
+@media (max-width:780px) { .artist-style-panel { padding:var(--s-4); } .artist-style-panel .artist-style-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .artist-style-panel .artist-category-tabs { flex-wrap:nowrap; overflow-x:auto; } .artist-style-panel .artist-cat-btn { flex-shrink:0; } }
 
 /* 黄金混搭预设行 */
 .artist-presets-section {

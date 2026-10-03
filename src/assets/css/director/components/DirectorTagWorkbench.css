@@ -6,13 +6,6 @@
    ============================================================ */
   .pb .expert-tags-header { @apply tw:gap-s-2; }
   .pb .expert-tags-actions { @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:ml-auto; }
-  .pb .expert-tags-actions .search-icon { @apply tw:w-[12px] tw:h-[12px]; }
-  /* PixAI 本地反推引擎徽标 */
-  .pb .tag-interrogate-engine {
-    @apply tw:inline-flex tw:items-center tw:gap-[4px] tw:text-mono-xs tw:font-mono tw:text-accent;
-    padding:2px 8px; @apply tw:rounded-pill; border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border-soft));
-    background:var(--accent-soft); @apply tw:whitespace-nowrap; cursor:help;
-  }
   .pb .expert-tags-header { @apply tw:flex tw:items-center tw:justify-between tw:w-full; }
   .pb .expert-tag-count { @apply tw:ml-s-2 tw:text-label-xs tw:text-accent tw:font-semibold; padding:2px 6px; @apply tw:rounded-pill; background:var(--accent-soft); }
   .pb .clear-tags-btn { @apply tw:text-label-xs; padding:2px 8px; @apply tw:rounded-sm tw:text-muted; }

@@ -12,12 +12,24 @@ async function setup(catalog = true) {
     props: { catalog, selectedId: '', items: [{ id: 'one', name: '角色', source: '原神' }], search: '角色' },
   })
   await nextTick()
-  const input = wrapper.get('input').element as HTMLInputElement
+  const input = wrapper.get('[aria-label="搜索角色或作品"]').element as HTMLInputElement
   input.focus()
   return input
 }
 
 describe('character search keyboard', () => {
+  it('searches the work rail without replacing the character search or result list', async () => {
+    await setup()
+    const railSearch = wrapper!.get('[aria-label="搜索作品目录"]')
+    await railSearch.setValue('没有匹配的作品')
+    expect(wrapper!.findAll('.directory-series button')).toHaveLength(1)
+    expect(wrapper!.findAll('.directory-item')).toHaveLength(1)
+    expect((wrapper!.get('[aria-label="搜索角色或作品"]').element as HTMLInputElement).value).toBe('角色')
+    await railSearch.setValue('原神')
+    expect(wrapper!.findAll('.directory-series button')).toHaveLength(2)
+    await railSearch.trigger('keydown', { key: 'ArrowDown' })
+    expect(document.activeElement).toBe(wrapper!.get('.directory-series button').element)
+  })
   it.each(['Escape', 'Enter', 'ArrowDown'])('leaves composing %s to the IME', async key => {
     const input = await setup()
     for (const composition of [{ isComposing: true }, { keyCode: 229 }]) {
@@ -49,9 +61,9 @@ describe('character search keyboard', () => {
 
   it('moves to results and selects with Enter after composition', async () => {
     await setup()
-    await wrapper!.get('input').trigger('keydown', { key: 'ArrowDown' })
+    await wrapper!.get('[aria-label="搜索角色或作品"]').trigger('keydown', { key: 'ArrowDown' })
     expect(document.activeElement).toBe(wrapper!.get('.directory-item').element)
-    await wrapper!.get('input').trigger('keydown', { key: 'Enter' })
+    await wrapper!.get('[aria-label="搜索角色或作品"]').trigger('keydown', { key: 'Enter' })
     expect(wrapper!.emitted('select')).toEqual([['one']])
   })
 })
@@ -94,7 +106,7 @@ describe('character result roving focus', () => {
     expect(document.activeElement).toBe(wrapper!.get('[data-character="one"]').element)
     await wrapper!.setProps({ selectedId: 'three' })
     expect(wrapper!.get('.directory-item[tabindex="0"]').attributes('data-character')).toBe('three')
-    const input = wrapper!.get('input')
+    const input = wrapper!.get('[aria-label="搜索角色或作品"]')
     ;(input.element as HTMLInputElement).focus()
     await input.setValue('没有匹配')
     expect(wrapper!.findAll('.directory-item')).toHaveLength(0)

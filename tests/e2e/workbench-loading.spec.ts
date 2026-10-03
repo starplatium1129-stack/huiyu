@@ -35,8 +35,11 @@ for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
     await expect(page.getByRole('region', { name: '成片监看区', exact: true })).toBeVisible()
     await expect.poll(() => pending.size).toBe(0)
     for (const component of ['director/PromptMaterialScenes', 'director/DirectorStoryPanel', 'HistoryPanel',
-      'director/PromptInspectorStyle', 'ArtistStylePicker', 'director/DirectorTagWorkbench', 'director/PromptResultDialogs']) {
+      'director/DirectorTagWorkbench', 'director/PromptResultDialogs']) {
       expect(scripts.has(chunk(component)), `${component} must wait for its visible panel`).toBe(false)
+    }
+    for (const component of ['director/PromptInspectorStyle', 'ArtistStylePicker']) {
+      expect(scripts.has(chunk(component)), `${component} is a visible common control`).toBe(true)
     }
     if (mode === 'pro') {
       for (const component of ['director/PromptInspectorPrompt', 'director/PromptInspectorDelivery', 'VoiceStudio']) {
@@ -56,13 +59,14 @@ for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
     // Scene mode shows automatic settings; manual output controls appear in expert mode.
     await expect(page.locator('#stepResult')).toBeVisible()
 
-    await page.getByRole('tab', { name: '画面', exact: true }).click()
-    await page.getByTestId('artist-style-picker').locator('summary').click()
+    await page.getByRole('tab', { name: '生成', exact: true }).click()
+    await page.getByTestId('artist-style-picker').locator('.artist-picker-trigger').click()
     const artistSearch = page.getByLabel('搜索画师或作品', { exact: true })
     await artistSearch.fill('米山舞')
     await expect(page.locator('.artist-style-grid button').first()).toBeVisible()
     expect(scripts.has(chunk('ArtistStylePicker'))).toBe(true)
     await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${mode}-style.png`), fullPage: true })
+    await page.keyboard.press('Escape')
 
     await page.getByRole('tab', { name: '提示词', exact: true }).click()
     const tagSearch = page.getByRole('searchbox', { name: '搜索词条', exact: true })
@@ -72,8 +76,10 @@ for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
     await page.getByRole('tab', { name: '生成', exact: true }).click()
     await page.getByRole('tab', { name: '提示词', exact: true }).click()
     await expect(tagSearch).toHaveValue('sky')
-    await page.getByRole('tab', { name: '画面', exact: true }).click()
+    await page.getByRole('tab', { name: '生成', exact: true }).click()
+    await page.getByTestId('artist-style-picker').locator('.artist-picker-trigger').click()
     await expect(artistSearch).toHaveValue('米山舞')
+    await page.keyboard.press('Escape')
 
     await page.getByRole('tab', { name: '任务', exact: true }).click()
     await expect(page.getByRole('group', { name: '出图自动入册', exact: true })).toBeVisible()

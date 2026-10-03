@@ -72,8 +72,8 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('.director-inspector')).toBeVisible();
   await expect(page.locator('.inspector-tabs')).toBeVisible();
   await page.getByRole('tab', { name: '生成', exact: true }).click();
-  // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
-  await expect(page.locator('#baseModel')).toBeHidden();
+  // Common controls remain available without opening advanced parameters.
+  await expect(page.locator('#baseModel')).toBeVisible();
   await page.locator('#inspector-render .inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
   await expect(page.locator('.managed-route-card')).toBeVisible();
   await page.locator('#inspector-render .inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
@@ -86,10 +86,7 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   // 专家模式放开引擎选择；SD 格式断言（<lora: / [NEG]）需显式切回 SD 引擎
   await page.locator('.engine-switch button').first().click();
   await expect(page.locator('#baseModel')).toBeVisible();
-  // Camera controls load with the style tab; verify their initial state after opening it.
-  await page.getByRole('tab', { name: '画面', exact: true }).click();
-  await expect(page.locator('#stepCamera')).toBeVisible();
-  await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
+  await expect(page.getByTestId('artist-style-picker')).toBeVisible();
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('#stepTags')).toBeVisible();
   await expect(page.locator('.inspector-section[data-panel="prompt"] > #stepTags')).toHaveCount(1);
@@ -114,20 +111,21 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   expect(errors).toEqual([]);
 });
 
-test('director expert artist tags use model-native syntax and stay out of scene mode', async ({ page }) => {
+test('common artist choice enters expert mode, uses native tags and leaves scene mode automatic', async ({ page }) => {
   await page.goto('/prompt-builder');
-  await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
-  await page.getByRole('button', { name: /专家模式/ }).click();
-  await page.getByRole('tab', { name: '画面', exact: true }).click();
   const picker = page.getByTestId('artist-style-picker');
   await expect(picker).toBeVisible();
-  await picker.locator('summary').click();
-  await picker.locator('[data-artist-style-id="kantoku"]').click();
+  await picker.locator('.artist-picker-trigger').click();
+  const dialog = page.getByRole('dialog', { name: '画师风格', exact: true });
+  await dialog.locator('[data-artist-style-id="kantoku"]').click();
+  await expect(page.getByRole('button', { name: '专家模式', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await dialog.getByRole('button', { name: '完成', exact: true }).click();
+  await page.getByRole('group', { name: '出图引擎', exact: true }).getByRole('button', { name: 'SD', exact: true }).click();
   // 有 prompt 后面板渲染结构化 token 流，画师词条以 chip 呈现
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText('kantoku');
   await page.getByRole('tab', { name: '生成', exact: true }).click();
-  await page.getByRole('button', { name: /Anima 引擎/ }).click();
+  await page.getByRole('group', { name: '出图引擎', exact: true }).getByRole('button', { name: 'Anima', exact: true }).click();
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText('@kantoku');
   await page.getByRole('tab', { name: '生成', exact: true }).click();
@@ -135,8 +133,10 @@ test('director expert artist tags use model-native syntax and stay out of scene 
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText(/clear and soft Japanese anime style/i);
   await page.getByRole('button', { name: /场景模式/ }).click();
-  await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
+  await page.getByRole('tab', { name: '生成', exact: true }).click();
+  await expect(picker).toBeVisible();
   // 场景模式收起专家编译面板；无论空态还是结构态，kantoku 都不得出现
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).not.toContainText(/kantoku/i);
 
 });

@@ -185,6 +185,9 @@
           </div>
         </template>
         <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
+        <GalleryOrbitStage v-else-if="!originalViewer && displayedCurrent" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0"
+          :current-src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls"
+          :neighbor-urls="neighborPreviews" :title="item => sceneTitle(item.scene, item)" @select="openViewer" />
         <ZoomableImageViewer
           v-else-if="viewerUrl || imageOrigin.previewSrc.value"
           :src="resolveRuntimeUrl(viewerUrl || imageOrigin.previewSrc.value)"
@@ -197,6 +200,7 @@
         </ZoomableImageViewer>
         <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)"><ArchiveIcon name="chevron-down" /></button>
+        <button class="viewer-mode-switch" type="button" :aria-pressed="originalViewer" @click="toggleOriginalViewer"><ArchiveIcon name="image" />{{ originalViewer ? '立体观画' : '原图 / 缩放' }}</button>
         <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
           <button class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" @click="compareMode = !compareMode">
             <ArchiveIcon name="spark" /> 对比
@@ -300,6 +304,7 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
+import GalleryOrbitStage from '@/components/gallery/GalleryOrbitStage.vue'
 import { defineAsyncComponent, nextTick, onDeactivated, ref, watch } from 'vue'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
@@ -307,6 +312,7 @@ const GalleryShowcase = defineAsyncComponent(() => import('@/components/gallery/
 const showcaseOpen = ref(false)
 onDeactivated(() => { showcaseOpen.value = false })
 const gestureViewer = ref(false)
+const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryOrganization from '@/components/gallery/GalleryOrganization.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
@@ -384,6 +390,7 @@ step,
 compareMode,
 hasComparableImage,
 viewerUrl,
+neighborPreviews,
 parentImageUrl,
 current,
 characterName,
@@ -392,6 +399,11 @@ downloadCurrent,
 copiedPrompt,
 copyPrompt
 } = workspace
+function toggleOriginalViewer() {
+  originalViewer.value = !originalViewer.value; gestureViewer.value = false; compareMode.value = false
+  void nextTick(() => viewerEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll:true }))
+}
+watch(viewerIndex, (index, previous) => { if (index >= 0 && previous < 0) { originalViewer.value = false; gestureViewer.value = false } })
 const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
 function openFromCard(index: number, event: MouseEvent) {
   imageOrigin.capture(event)

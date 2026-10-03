@@ -128,8 +128,8 @@ export function useGalleryWorkspace() {
         clearSelection,
     } = useGallerySelection(visible);
 
-    const { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step } = useGalleryViewer({
-        history, visible, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
+    const { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step } = useGalleryViewer({
+        history, visible, previewSource: item => cardUrls[item.id] || thumbUrls[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
@@ -547,7 +547,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed, step,
-        compareMode, hasComparableImage, viewerUrl, parentImageUrl, current, characterName,
+        compareMode, hasComparableImage, viewerUrl, neighborPreviews, parentImageUrl, current, characterName,
         facts, downloadCurrent, copiedPrompt, copyPrompt, showToast, releaseCardResources,
     };
 }

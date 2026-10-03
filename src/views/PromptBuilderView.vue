@@ -147,41 +147,36 @@
         </DirectorMaterialDrawer>
       </div>
 
-      <DirectorInspector ref="inspector" :expert="pb.directorMode === 'pro'" :queue-count="sdQueue.total.value" :busy="generationBusy">
+      <DirectorInspector ref="inspector" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
-          <PromptInspectorRender :bindings="renderBindings" />
-          <OutfitOverrideNotice v-if="outfitOverridden" />
-        </template>
-        <template #style>
-          <PromptInspectorStyle :bindings="styleBindings" />
-        </template>
-        <template #tools>
-          <DirectorImageTools
-            v-if="stagePanel"
-            :generation-busy="generationBusy"
-            :interrogate-busy="stagePanel.interrogateBusy"
-            :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
-            :interrogate-error="stagePanel.interrogateError"
-            :display-result-url="displayResultUrl"
-            :draw-engine="drawEngine"
-            :inpaint-original-url="inpaintOriginalUrl"
-            :inpaint-compare-active="inpaintCompareActive"
-            :shots-pending="shotsPending"
-            @interrogateCurrent="stagePanel.interrogateCurrentImage()"
-            @interrogateUpload="stagePanel.triggerInterrogatePick()"
-            @interrogatePaste="stagePanel.onInterrogatePaste($event)"
-            @openInpaint="inpaintOpen = true"
-            @update:inpaintCompareActive="inpaintCompareActive = $event"
-            @upscale="upscaleCurrentResult"
-            @goVideo="goToVideo"
-            @addToShots="addToShots"
-            @goShots="goToShots"
-          />
-          <details class="inspector-route" @toggle="resultShelfOpen = ($event.target as HTMLDetailsElement).open">
-            <summary><span>候选与最近作品</span><ArchiveIcon name="chevron-down" /></summary>
-            <DirectorResultShelf v-if="resultShelfOpen" :history="pb.history" :previous="prevResult" :current-url="displayResultUrl" :busy="generationBusy"
-              @resume="resumeHistory" @saved="pb.loadHistory" />
-          </details>
+          <PromptInspectorRender :bindings="renderBindings">
+            <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
+            <template #reference>
+              <DirectorImageTools
+                v-if="stagePanel"
+                :generation-busy="generationBusy"
+                :interrogate-busy="stagePanel.interrogateBusy"
+                :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
+                :interrogate-error="stagePanel.interrogateError"
+                :display-result-url="displayResultUrl"
+                :draw-engine="drawEngine"
+                :inpaint-original-url="inpaintOriginalUrl"
+                :inpaint-compare-active="inpaintCompareActive"
+                :shots-pending="shotsPending"
+                @interrogateCurrent="stagePanel.interrogateCurrentImage()"
+                @interrogateUpload="stagePanel.triggerInterrogatePick()"
+                @interrogatePaste="stagePanel.onInterrogatePaste($event)"
+                @interrogateCancel="stagePanel.cancelInterrogate()"
+                @openInpaint="inpaintOpen = true"
+                @update:inpaintCompareActive="inpaintCompareActive = $event"
+                @upscale="upscaleCurrentResult"
+                @goVideo="goToVideo"
+                @addToShots="addToShots"
+                @goShots="goToShots"
+              />
+              <OutfitOverrideNotice v-if="outfitOverridden" />
+            </template>
+          </PromptInspectorRender>
         </template>
         <template #prompt>
           <PromptInspectorPrompt :bindings="healthBindings" />
@@ -231,7 +226,6 @@ const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/d
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
 const DirectorImageTools = defineAsyncComponent(() => import('@/components/director/DirectorImageTools.vue'))
-const DirectorResultShelf = defineAsyncComponent(() => import('@/components/director/DirectorResultShelf.vue'))
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
@@ -240,7 +234,6 @@ const workspace = usePromptWorkspace()
 const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
 const inspectorActions = ref<HTMLElement | null>(null)
-const resultShelfOpen = ref(false)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
 const {

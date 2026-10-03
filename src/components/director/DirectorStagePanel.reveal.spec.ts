@@ -23,7 +23,7 @@ async function fixture(overrides: { resultRevealUrl?: string; displayResultUrl?:
     props: { ...props, ...overrides },
     global: { stubs: {
       CgImageReveal: Reveal, ImageSplitCompare: true, ThinkingOrb: true,
-      DirectorResultTools: true, DirectorResultShelf: true, DirectorSceneReference: true, ArchiveIcon: true, StudioTooltip: true,
+      DirectorResultTools: true, DirectorSceneReference: true, ArchiveIcon: true, StudioTooltip: true,
     } },
   })
   cleanup.push(() => wrapper.unmount())

@@ -74,7 +74,7 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :style="ambientStyle">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :style="{ '--canvas-ambient-1': ambientColors[0] || '0 0 0', '--canvas-ambient-2': ambientColors[1] || '0 0 0', '--canvas-ambient-3': ambientColors[2] || '0 0 0' }">
       <div class="canvas-ambient" :class="{ 'is-enabled': ambientEnabled && ambientColors.length > 0 }" aria-hidden="true" />
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
@@ -153,7 +153,6 @@ const resultAspect = ref(1)
 const loadedResultUrl = ref('')
 const ambientEnabled = ref(true)
 const ambientColors = ref<string[]>([])
-const ambientStyle = computed(() => Object.fromEntries(ambientColors.value.map((color, index) => [`--canvas-ambient-${index + 1}`, color])))
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
@@ -264,7 +263,7 @@ async function interrogateCurrentImage() {
     if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
-defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
+defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
 
 <style scoped>

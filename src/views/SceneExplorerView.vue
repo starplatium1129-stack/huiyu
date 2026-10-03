@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" />
+      <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">

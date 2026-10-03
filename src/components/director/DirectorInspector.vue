@@ -4,7 +4,7 @@
     <div class="inspector-heading"><strong>编辑台</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
     <TabsList class="inspector-tabs studio-segments studio-segments--compact" aria-label="参数分类">
       <AnimatedSelection />
-      <TabsTrigger v-for="tab in visibleTabs" :key="tab.id" :value="tab.id" as-child>
+      <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
         <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">
           {{ tab.label }}<span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
         </button>
@@ -23,24 +23,21 @@
 
 <script setup lang="ts">
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import DeferredPanel from './DeferredPanel.vue'
 import '@/assets/css/director/expert-workspace.css'
 import '@/assets/css/director/components/DirectorInspector.css'
 
-const props = defineProps<{ expert: boolean; queueCount: number; busy: boolean }>()
+defineProps<{ queueCount: number; busy: boolean }>()
 const tabs = [
-  { id: 'render', label: '生成' }, { id: 'style', label: '画面' },
-  { id: 'tools', label: '成片' }, { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },
+  { id: 'render', label: '生成' }, { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },
 ]
-const visibleTabs = computed(() => tabs.filter(tab => props.expert || tab.id !== 'style'))
 const active = ref('render')
-watch(() => props.expert, expert => { if (!expert && active.value === 'style') active.value = 'render' })
 
 async function selectSection(section: string) {
-  if (!visibleTabs.value.some(tab => tab.id === section)) return
+  if (!tabs.some(tab => tab.id === section)) return
   active.value = section
   await nextTick()
   const button = document.getElementById(`inspector-tab-${section}`)

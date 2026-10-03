@@ -31,6 +31,41 @@ async function seedGallery(page: Page, theme: string, empty = false, reducedMoti
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
+test('gallery orbit reverses continuously and keeps original zoom, pan and return focus', async ({ page }) => {
+  await seedGallery(page, 'dark', false, 'no-preference')
+  const opener = page.locator('[data-card-id="gallery-review-2"] .artwork-button')
+  await opener.click()
+  const viewer = page.locator('.art-viewer'), orbit = viewer.locator('.gallery-orbit')
+  await expect(orbit).toBeVisible()
+  await expect(viewer.locator('.gallery-orbit-neighbor')).toHaveCount(2)
+  const positions = await viewer.evaluate(async host => {
+    const surface = host.querySelector<HTMLElement>('.gallery-orbit')!
+    host.querySelector<HTMLButtonElement>('.viewer-next')!.click()
+    for (let frame = 0; frame < 3; frame++) await new Promise(requestAnimationFrame)
+    const before = Number(surface.dataset.position), samples: number[] = []
+    host.querySelector<HTMLButtonElement>('.viewer-prev')!.click()
+    for (let frame = 0; frame < 3; frame++) { await new Promise(requestAnimationFrame); samples.push(Number(surface.dataset.position)) }
+    return { before, samples }
+  })
+  expect(positions.before).toBeGreaterThan(2)
+  expect(positions.before).toBeLessThan(3)
+  expect(positions.samples[0]).toBeGreaterThan(positions.before)
+  await expect.poll(() => orbit.getAttribute('data-position')).toBe('2')
+  await viewer.getByRole('button', { name:'原图 / 缩放', exact:true }).click()
+  await expect(orbit).toHaveCount(0)
+  const zoom = viewer.locator('.zoomable-image-viewer')
+  await expect(zoom).toBeFocused()
+  await page.keyboard.press('+')
+  const layer = zoom.locator('.zoom-transform-layer'), beforePan = await layer.getAttribute('style')
+  await page.keyboard.press('ArrowRight')
+  expect(await layer.getAttribute('style')).not.toBe(beforePan)
+  await expect(viewer.locator('.viewer-position')).toContainText('3 / 6')
+  await page.keyboard.press('Home')
+  await page.keyboard.press('Escape')
+  await expect(viewer).toBeHidden()
+  await expect(opener).toBeFocused()
+})
+
 test('gallery bounded origin survives cold originals and interruptions', async ({ page }, info) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))

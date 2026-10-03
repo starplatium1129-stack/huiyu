@@ -8,11 +8,13 @@ import { artworkIndexById, safeImageUrl } from './galleryHelpers'
 export function useGalleryViewer(options: {
   history: Ref<ArtworkRecord[]>
   visible: Ref<ArtworkRecord[]>
+  previewSource?: (item: ArtworkRecord) => string
   resetControls: () => void
 }) {
   const viewerIndex = ref(-1)
   const viewerItemId = ref<string | number | null>(null)
   const viewerUrl = ref('')
+  const neighborPreviews = ref<Record<string, string>>({})
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
     return index >= 0 ? options.history.value[index] : null
@@ -22,6 +24,28 @@ export function useGalleryViewer(options: {
   let loadToken = 0
   let disposed = false
   let loading: AbortController | null = null
+  let previewRevision = 0
+
+  function hydratePreviews() {
+    const revision = ++previewRevision
+    const center = artworkIndexById(options.visible.value, viewerItemId.value)
+    neighborPreviews.value = {}
+    if (viewerIndex.value < 0 || center < 0) return
+    for (const source of options.visible.value.slice(Math.max(0, center - 1), center + 2)) {
+      if (options.previewSource?.(source)) continue
+      const item = { ...source }
+      void (async () => {
+        let url = ''
+        try {
+          const thumbnail = item.image_id ? await artworkRepository.getThumbnail(item.image_id) : null
+          if (thumbnail?.startsWith('data:image/')) url = thumbnail
+        } catch { /* Missing previews stay empty; neighboring originals are never fetched here. */ }
+        const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
+        if (!disposed && viewerIndex.value >= 0 && revision === previewRevision && sameArtworkMedia(live, item) && url)
+          neighborPreviews.value = { ...neighborPreviews.value, [item.id]: url }
+      })()
+    }
+  }
 
   function releaseImage() {
     if (objectUrl) URL.revokeObjectURL(objectUrl)
@@ -61,11 +85,13 @@ export function useGalleryViewer(options: {
     viewerIndex.value = index
     options.resetControls()
     if (!reuseImage) void hydrate(item)
+    hydratePreviews()
   }
 
   function closeViewer() {
     loading?.abort(); loading = null
     loadToken++
+    previewRevision++
     viewerIndex.value = -1
     // Keep image, comparison and metadata intact while the surface leaves.
   }
@@ -74,6 +100,7 @@ export function useGalleryViewer(options: {
     // A reversed leave must never clear the image of the reopened viewer.
     if (viewerIndex.value >= 0) return
     viewerItemId.value = null
+    neighborPreviews.value = {}
     releaseImage()
     options.resetControls()
   }
@@ -88,13 +115,14 @@ export function useGalleryViewer(options: {
     const index = artworkIndexById(options.visible.value, viewerItemId.value)
     if (index < 0) closeViewer()
     else viewerIndex.value = index
+    hydratePreviews()
   })
   watch(() => { const item = current.value; return item && [item.image_id, item.image_url, item.image_data] }, () => {
-    if (viewerIndex.value >= 0 && current.value && !sameArtworkMedia(loadedMedia ?? undefined, current.value)) void hydrate(current.value)
+    if (viewerIndex.value >= 0 && current.value && !sameArtworkMedia(loadedMedia ?? undefined, current.value)) { void hydrate(current.value); hydratePreviews() }
   })
   function dispose() { closeViewer(); onViewerClosed() }
   onDeactivated(dispose)
   onUnmounted(() => { disposed = true; dispose() })
 
-  return { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed, step }
+  return { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step }
 }

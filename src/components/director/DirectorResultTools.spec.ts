@@ -101,4 +101,19 @@ describe('result tools', () => {
     }
     wrapper.unmount()
   })
+  it('routes all reference sources and cancellation through the shared owner', async () => {
+    const wrapper = mount(DirectorImageTools, { props })
+    await wrapper.findAll('button').find(item => item.text() === '上传反推')!.trigger('click')
+    await wrapper.findAll('button').find(item => item.text() === '反推当前图')!.trigger('click')
+    const clipboard = new Event('paste') as ClipboardEvent
+    wrapper.get('.reference-paste').element.dispatchEvent(clipboard)
+    expect(wrapper.emitted('interrogateUpload')).toHaveLength(1)
+    expect(wrapper.emitted('interrogateCurrent')).toHaveLength(1)
+    expect(wrapper.emitted('interrogatePaste')?.[0]).toEqual([clipboard])
+    await wrapper.setProps({ interrogateBusy:true })
+    await wrapper.findAll('button').find(item => item.text() === '取消反推')!.trigger('click')
+    expect(wrapper.emitted('interrogateCancel')).toHaveLength(1)
+    expect(wrapper.get('.reference-paste').attributes('disabled')).toBeDefined()
+    wrapper.unmount()
+  })
 })

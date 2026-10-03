@@ -132,7 +132,7 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   const overlap = Math.min(actionsBox.x + actionsBox.width, imageBox.x + imageBox.width) - Math.max(actionsBox.x, imageBox.x) > 1
     && Math.min(actionsBox.y + actionsBox.height, imageBox.y + imageBox.height) - Math.max(actionsBox.y, imageBox.y) > 1
   expect(overlap, 'result controls must not cover the artwork').toBe(false)
-  await page.getByRole('tab', { name:'成片', exact:true }).click()
+  await page.locator('.image-continuation > summary').click()
   await expect(page.getByRole('button', { name: '加入分镜', exact: true })).toBeVisible()
   await page.getByRole('tab', { name:'生成', exact:true }).click()
   await page.getByRole('button', { name: '存入作品册', exact: true }).click()

@@ -1,23 +1,18 @@
 <template>
-  <details class="artist-style-picker advanced-decision" data-testid="artist-style-picker">
-    <summary>
+  <div class="artist-style-picker basic-visible" data-testid="artist-style-picker">
+    <button type="button" class="artist-picker-trigger" aria-haspopup="dialog" :aria-expanded="dialogOpen" @click="openPicker">
       <div class="artist-summary-title">
         <span>画师风格</span>
         <small v-if="selected.length" class="artist-active-pill">已启用 {{ selected.length }}/2</small>
       </div>
       <div class="artist-summary-right">
         <strong :class="{ active: selected.length }">{{ selectionSummary }}</strong>
-        <StudioTooltip v-if="selected.length" content="清空画师风格">
-          <button
-            type="button"
-            class="artist-clear-inline"
-            @click.stop="clearSelected"
-          >
-            清空
-          </button>
-        </StudioTooltip>
+        <ArchiveIcon name="chevron-down" />
       </div>
-    </summary>
+    </button>
+    <Teleport to="body">
+    <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = false" @click.self="closePicker" @keydown="onPickerKeydown">
+    <header class="artist-dialog-heading"><h2 :id="titleId">画师风格</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭画师选择" @click="closePicker"><ArchiveIcon name="close" /></button></header>
     <div class="artist-style-body">
       <!--
         达上限提示（2026-08-30 UX 审计）：超上限时点选原本是静默丢弃，用户会
@@ -25,7 +20,8 @@
       -->
       <p v-if="limitHint" class="artist-limit-hint" role="status">{{ limitHint }}</p>
       <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
-      <div class="artist-presets-section">
+      <details class="artist-presets-section">
+        <summary>画风组合</summary>
         <div class="artist-presets-head">
           <span class="artist-presets-head-title">
             <ArchiveIcon name="spark" class="artist-header-icon" />
@@ -52,9 +48,10 @@
             </button>
           </StudioTooltip>
         </div>
-      </div>
+      </details>
 
       <div class="artist-controls-bar">
+        <div class="artist-scope studio-segments studio-segments--compact" role="group" aria-label="画师范围"><AnimatedSelection /><button v-for="scope in scopes" :key="scope.id" type="button" :aria-pressed="currentScope === scope.id" @click="currentScope = scope.id">{{ scope.label }}</button></div>
         <!-- 分类选项卡 -->
         <div class="artist-category-tabs" role="group" aria-label="画师分类">
           <button
@@ -78,6 +75,7 @@
             placeholder="搜索画师名、中文名或代表作…"
             aria-label="搜索画师或作品"
             autocomplete="off"
+            autofocus
           >
         </label>
       </div>
@@ -131,11 +129,15 @@
         <code>{{ modelTokens }}</code>
       </div>
     </div>
-  </details>
+    <footer class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="toggle(option.id)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-style-empty">自然画风</span></div></div><button class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
+    </dialog>
+    </Teleport>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onDeactivated, ref, useId } from 'vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import {
@@ -167,17 +169,34 @@ const ARTIST_STYLE_LIMIT = 2
 
 const query = ref('')
 const currentCategory = ref<string>('all')
+const currentScope = ref('all')
+const scopes = [{ id: 'all', label: '全部' }, { id: 'frequent', label: '常用' }, { id: 'recent', label: '最近' }]
+const panel = ref<HTMLDialogElement | null>(null)
+const dialogOpen = ref(false)
+const titleId = useId()
+function openPicker() { panel.value?.showModal(); dialogOpen.value = true }
+function closePicker() { panel.value?.close(); dialogOpen.value = false }
+function onPickerKeydown(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
+  event.preventDefault(); event.stopPropagation(); closePicker()
+}
+onDeactivated(closePicker)
+onBeforeUnmount(closePicker)
 /** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
 const limitHint = ref('')
 
 // 三级漏斗排序逻辑（Top3 常用 + 角色专属 + 目录）已收敛至
 // @/composables/useArtistStyleFunnel（2026-09-05 单体拆分）。
-const { recordUsage, frequentTop3Ids } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
+const { recordUsage, frequentTop3Ids, recentIds } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
 
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 
 const filteredOptions = computed(() => {
   let list = ARTIST_STYLE_OPTIONS
+  if (!query.value && currentScope.value !== 'all') {
+    const ids = currentScope.value === 'frequent' ? frequentTop3Ids.value : recentIds.value
+    list = list.filter(option => ids.includes(option.id))
+  }
   if (currentCategory.value !== 'all') {
     list = list.filter(option => option.category === currentCategory.value)
   }

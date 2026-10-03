@@ -52,3 +52,9 @@ it('cancels in-flight extraction when switching caption/tag engines', async () =
   await wrapper.setProps({ drawEngine: 'krea2' })
   expect(mocks.cancel).toHaveBeenCalledOnce()
 })
+
+it('exposes the existing extraction cancellation for the shared reference controls', () => {
+  const wrapper = fixture()
+  wrapper.vm.cancelInterrogate()
+  expect(mocks.cancel).toHaveBeenCalledOnce()
+})

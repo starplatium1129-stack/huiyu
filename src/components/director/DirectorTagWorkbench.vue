@@ -3,19 +3,9 @@
     <div class="panel-title expert-tags-header">
       <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
       <div class="expert-tags-actions">
-        <StudioTooltip anchor content="用 PixAI 本地反推图片标签；首次需加载模型，后续复用 GPU 常驻模型，可切人直出">
-          <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" @click="triggerInterrogatePick">
-            <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '正在反推…' : '本地反推' }}
-          </button>
-        </StudioTooltip>
-        <StudioTooltip v-if="interrogateMeta" :content="interrogateMeta.title">
-          <span class="tag-interrogate-engine">{{ interrogateMeta.label }}</span>
-        </StudioTooltip>
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
-      <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
     </div>
-    <div v-if="interrogateError" class="tag-interrogate-error" role="alert">{{ interrogateError }}</div>
     <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
         <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
@@ -128,9 +118,7 @@ import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { useInterrogate } from '@/composables/useInterrogate'
 import { confirmAction } from '@/composables/useConfirm'
-import { applyInterrogateResult } from '@/composables/prompt/applyInterrogateResult'
 import {
   OUTFIT_BUNDLES,
   OUTFIT_TAG_LABELS,
@@ -184,33 +172,6 @@ async function clearTags() {
   if (!ok) return
   pb.manualTags = new Set()
   pb.flash('已清空词条')
-}
-
-// 本地反推（Tag → manualTags / Caption → visualDescription，切人保留）
-const interrogateInputRef = ref<HTMLInputElement | null>(null)
-const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
-const interrogateError = computed(() => interrogateErrorRaw.value)
-const interrogateMeta = ref<{ label: string; title: string } | null>(null)
-function triggerInterrogatePick() { interrogateInputRef.value?.click() }
-async function onInterrogateFile(e: Event) {
-  var input = e.target as HTMLInputElement
-  var file = input.files && input.files[0]
-  if (!file) return
-  input.value = ''
-  interrogateMeta.value = null
-  try {
-    var result = await interrogate(file, 'tag')
-    if (!result) return
-    interrogateMeta.value = {
-      label: 'PixAI · v1.0',
-      title: `PixAI 本地 GPU 反推（${result.model}），模型加载后常驻。识别角色仅作参考：${result.characterTags.join(', ') || '未识别'}`,
-    }
-    await applyInterrogateResult(pb, result)
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e)
-    pb.flash('反推失败：' + msg)
-    console.warn('[interrogate]', msg)
-  }
 }
 
 const tagCatalog = computed<TagEntry[]>(() => {

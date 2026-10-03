@@ -4,8 +4,8 @@ import { defineComponent, ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useGalleryViewer } from './useGalleryViewer'
 
-const mocks = vi.hoisted(() => ({ read: vi.fn() }))
-vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
+const mocks = vi.hoisted(() => ({ read: vi.fn(), thumbnail: vi.fn() }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read, getThumbnail: mocks.thumbnail } }))
 
 it('switching, closing and unmounting cancel obsolete original reads without late publication', async () => {
   const signals: AbortSignal[] = [], finish: Array<(blob: Blob) => void> = []
@@ -104,5 +104,31 @@ it('does not publish fallback from an obsolete or closed original read', async (
     failures[1]()
     await flushPromises()
     expect(viewer.viewerUrl.value).toBe('')
+  } finally { wrapper.unmount() }
+})
+
+it('borrows cached neighbor media and ignores late thumbnail replies after switching and closing', async () => {
+  const reads: Array<{ id: string; finish(value: string): void }> = []
+  mocks.read.mockReset().mockResolvedValue(null)
+  mocks.thumbnail.mockReset().mockImplementation(id => new Promise<string>(finish => reads.push({ id, finish })))
+  let viewer!: ReturnType<typeof useGalleryViewer>
+  const history = ref<ArtworkRecord[]>(Array.from({ length: 5 }, (_, index) => ({ id: String(index), image_id: `image-${index}` })))
+  const wrapper = mount(defineComponent({ setup() {
+    viewer = useGalleryViewer({ history, visible: history, previewSource: item => item.id === '0' ? 'blob:borrowed' : '', resetControls() {} })
+    return () => null
+  } }))
+  try {
+    viewer.openViewer(0)
+    expect(reads.map(item => item.id)).toEqual(['image-1'])
+    viewer.openViewer(3)
+    expect(reads.slice(1).map(item => item.id)).toEqual(['image-2', 'image-3', 'image-4'])
+    reads[0].finish('data:image/png;base64,obsolete')
+    reads[1].finish('data:image/png;base64,neighbor')
+    await flushPromises()
+    expect(viewer.neighborPreviews.value).toEqual({ '2': 'data:image/png;base64,neighbor' })
+    viewer.closeViewer(); viewer.onViewerClosed()
+    reads[2].finish('data:image/png;base64,closed'); reads[3].finish('data:image/png;base64,closed')
+    await flushPromises()
+    expect(viewer.neighborPreviews.value).toEqual({})
   } finally { wrapper.unmount() }
 })

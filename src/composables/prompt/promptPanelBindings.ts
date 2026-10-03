@@ -41,7 +41,7 @@ export interface PromptRenderBindings extends
   Pick<Popular, 'managedRoute' | 'applyManagedRoute'>,
   Pick<Derived, 'vramHint' | 'vramLevel' | 'baseResolutionRisk' | 'baseResolutionHint' | 'canUseFaceDetailer'>,
   Pick<Queue, 'enqueueCurrent' | 'enqueue3Variants'> {
-  pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
+  pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
   sd: Pick<Sd, 'models' | 'samplers' | 'schedulers'>
   sdQueue: Pick<Queue['sdQueue'], 'canEnqueue'>
   drawEngine: Ref<DrawEngine>
@@ -57,7 +57,7 @@ export interface PromptRenderBindings extends
   resetAll: () => Promise<void>
 }
 
-export interface PromptStyleBindings extends Pick<Derived, 'emotionSummary' | 'shotSummary' | 'lightingSummary' | 'compositionSummary' | 'moodSummary'> {
+export interface PromptStyleBindings {
   pb: Pick<Store, 'directorMode' | 'artistStyleIds' | 'currentCuratedArtistStyles' | 'setArtistStyleIds'>
   drawEngine: Ref<DrawEngine>
   onArtistLimitReached: (max: number) => void

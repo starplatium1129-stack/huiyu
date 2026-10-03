@@ -103,11 +103,11 @@
 }
 
 /* Only the unused image margins receive colour. The decoded original stays untouched. */
-.pb.atelier-workspace .result-image-wrap.archive-canvas { border:0; border-radius:0; background:var(--bg-deep); box-shadow:none; }
+.pb.atelier-workspace .result-image-wrap.archive-canvas { border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-2); background:var(--bg-deep); box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image,
 .pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:0; }
-.pb .canvas-ambient { position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); background:radial-gradient(ellipse 60% 80% at 24% 44%,rgb(var(--canvas-ambient-1) / .26),transparent 88%),radial-gradient(ellipse 60% 80% at 76% 40%,rgb(var(--canvas-ambient-2) / .24),transparent 88%),radial-gradient(ellipse 70% 60% at 50% 88%,rgb(var(--canvas-ambient-3) / .22),transparent 90%); }
+.pb .canvas-ambient { --canvas-ambient-1:0 0 0; --canvas-ambient-2:0 0 0; --canvas-ambient-3:0 0 0; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); background:radial-gradient(ellipse 60% 80% at 24% 44%,rgb(var(--canvas-ambient-1) / .26),transparent 88%),radial-gradient(ellipse 60% 80% at 76% 40%,rgb(var(--canvas-ambient-2) / .24),transparent 88%),radial-gradient(ellipse 70% 60% at 50% 88%,rgb(var(--canvas-ambient-3) / .22),transparent 90%); }
 .pb .canvas-ambient.is-enabled { opacity:1; }
 .pb.atelier-workspace .result-image-actions { height:52px; min-width:0; flex-wrap:nowrap; padding:var(--s-1) var(--s-2); gap:var(--s-2); }
 .pb .canvas-ambient-toggle[aria-pressed='true'] { color:var(--accent); background:var(--accent-soft); }

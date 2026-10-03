@@ -93,7 +93,7 @@ for (const css of ['director.css', 'chat.css', 'scene-card.css', 'mood.css', 'vi
 // restoring them to the shared entry merely to satisfy a source-string test.
 for (const [css, owners] of [
   ['scene-card.css', ['src/components/SceneCard.vue']],
-  ['mood.css', ['src/views/ColorScriptView.vue', 'src/views/StyleView.vue', 'src/components/director/DirectorDecisionsRail.vue']],
+  ['mood.css', ['src/views/ColorScriptView.vue', 'src/views/StyleView.vue']],
   ['viewer.css', ['src/views/GalleryView.vue', 'src/views/ShowcaseView.vue']],
 ] as const) {
   for (const owner of owners) {

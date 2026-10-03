@@ -10,7 +10,7 @@ const wrappers: ReturnType<typeof mount>[] = []
 beforeEach(() => { vi.useFakeTimers(); activity.canPresent.value = true; activity.canAnimate.value = true })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers() })
 function fixture(scenes: NonNullable<InstanceType<typeof InspirationDeck>['$props']['scenes']> = []) {
-  const wrapper = mount(InspirationDeck, { props: { rails: DEFAULT_RAILS, scenes } })
+  const wrapper = mount(InspirationDeck, { props: { rails: DEFAULT_RAILS, scenes }, global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } } })
   wrappers.push(wrapper)
   const stage = wrapper.get('.inspiration-deck-stage')
   const captured = new Set<number>()
@@ -111,18 +111,30 @@ it('preserves the page after a catalog reload, resets on changed rails and suppo
 it('uses matching All-rated catalog scenes and keeps absent or failed previews browsable', async () => {
   const base = { char: 'nene', tags: ['library'], mature: false, location: '学院图书馆' }
   const sample = { ...base, id: 'sc215', title: '月光书页', rating: 'All' }
+  const second = { ...base, char: 'natsume', id: 'sc220', title: '咖啡馆的灯', tags: ['cafe'], rating: 'All' }
   const { wrapper, title } = fixture([
     { ...base, id: 'sc105', title: '受限样张', rating: 'R18' },
     { ...base, id: 'sc264', title: '未确认分级' },
     { ...sample, id: 'sc106', mature: true }, sample,
-    { ...sample, id: 'sc002', tags: ['park'] },
+    { ...sample, id: 'sc002', tags: ['park'] }, second,
   ])
   expect(title()).toBe(sample.title)
-  expect(wrapper.findAll('img')).toHaveLength(1) // Hidden pages do not prefetch artwork.
+  expect(wrapper.findAll('img')).toHaveLength(2) // Only the active thumbnail and its complete artwork load.
   const img = wrapper.get('.front img')
   expect(img.attributes('src')).toBe('/scene-showcase/thumbs/sc215.jpg')
   expect(img.attributes('alt')).toContain(sample.title)
-  await img.trigger('error')
+  expect(wrapper.get('.inspiration-feature img').attributes('src')).toBe('/scene-showcase/images/sc215.jpg')
+  expect(wrapper.get('.inspiration-feature-draw').attributes('href')).toBe('/prompt-builder?scene=sc215')
+  await wrapper.get('.inspiration-feature-image').trigger('click')
+  expect(wrapper.emitted('open')).toEqual([[sample]])
+  await wrapper.get('[aria-label="下一张灵感"]').trigger('click')
+  await vi.advanceTimersByTimeAsync(280)
+  expect(wrapper.get('.inspiration-feature img').attributes('src')).toBe('/scene-showcase/images/sc220.jpg')
+  expect(wrapper.get('.inspiration-feature-draw').attributes('href')).toBe('/prompt-builder?scene=sc220')
+  await wrapper.get('[aria-label="上一张灵感"]').trigger('click')
+  await vi.advanceTimersByTimeAsync(280)
+  const returnedImage = wrapper.get('.front img')
+  await returnedImage.trigger('error')
   expect(wrapper.get('.front [role="status"]').text()).toContain('预览未能加载')
   await wrapper.get('.front button').trigger('click')
   expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[0]]])

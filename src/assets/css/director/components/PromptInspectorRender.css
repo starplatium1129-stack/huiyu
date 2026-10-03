@@ -1,48 +1,18 @@
 @reference "../../tailwind.css";
-.pb .engine-switch {
-  @apply tw:grid tw:gap-s-2 tw:m-0;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-/* Disabled-engine tooltips own a real wrapper; the button still fills its row. */
-.pb .engine-switch > .studio-tooltip-anchor { @apply tw:w-full tw:min-w-0; }
-.pb .engine-btn {
-  @apply tw:relative tw:flex tw:flex-col tw:w-full tw:h-full tw:min-w-0 tw:items-start tw:gap-s-2 tw:p-s-2 tw:min-h-[58px] tw:text-left;
-  @apply tw:rounded-md;
-  border: 1px solid var(--border-soft);
-  background: var(--bg-surface);
-  color: inherit;
-  @apply tw:text-label tw:cursor-pointer;
-}
-.pb .engine-btn:hover:not(:disabled):not(.active) {
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft));
-  background: var(--bg-hover);
-}
-.pb .engine-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.pb .engine-btn.active {
-  @apply tw:border-accent;
-  background: var(--accent-soft);
-  @apply tw:text-accent;
-  box-shadow: inset 0 -2px var(--accent);
-}
-.pb .engine-btn:disabled {
-  @apply tw:text-disabled tw:border-soft;
-  background: var(--bg-deep);
-  @apply tw:cursor-not-allowed;
-  opacity: 1;
-}
-.pb .engine-sub {
-  @apply tw:block tw:mt-s-1 tw:text-label-xs tw:leading-body tw:text-muted;
-}
-.pb .engine-btn:disabled .engine-sub { @apply tw:text-disabled; }
-.pb .base-model-picker {
-  @apply tw:grid;
-  grid-template-columns: minmax(0, 1fr);
-  @apply tw:min-w-0 tw:items-center tw:gap-s-2 tw:m-0;
-}
-.pb .base-model-picker label { @apply tw:text-secondary tw:text-label-xs tw:font-bold; }
-/* 原生 select 已迁至 StudioSelect：触发器沿用其统一样式，仅保留原 42px 高度 */
+/* Engine choices use the shared lit surface and continuous selection spring. */
+.pb .engine-switch.studio-segments { @apply tw:w-full tw:min-w-0; }
+.pb .engine-switch.studio-segments[role] > .studio-tooltip-anchor { flex:1 1 0; @apply tw:min-w-0; }
+.pb .engine-switch.studio-segments .engine-btn { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; }
+.pb .base-model-picker { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
+.pb .base-model-picker label,.pb .inspector-visual-description > span { @apply tw:text-secondary tw:text-label-xs tw:font-semibold; }
 .pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
-.pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[42px]; }
-
-.pb .engine-mark { @apply tw:w-[18px] tw:h-[18px] tw:shrink-0; }
-.pb .engine-copy { @apply tw:block tw:min-w-0; overflow-wrap: anywhere; }
+.pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[40px]; }
+.pb .inspector-visual-description { @apply tw:grid tw:gap-s-2; }
+.pb .inspector-visual-description textarea { @apply tw:w-full tw:min-h-[82px] tw:rounded-md tw:text-primary tw:text-label tw:leading-body; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); background:var(--bg-deep); resize:vertical; max-height:220px; font-family:inherit; }
+.pb .inspector-visual-description textarea:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.pb .inspector-advanced summary > span { @apply tw:flex tw:items-center tw:gap-s-2; }
+.pb .inspector-advanced summary small { @apply tw:ml-auto tw:text-secondary tw:text-label-xs; }
+.pb .inspector-advanced-body { @apply tw:grid tw:gap-s-3 tw:pt-s-3; }
+.pb .inspector-advanced-body .anima-quick-panel { margin:0; }
+.pb .inspector-advanced-body .generation-auto-summary { font-size:var(--fs-label); }
+.pb .inspector-advanced-body .panel { margin:0; }

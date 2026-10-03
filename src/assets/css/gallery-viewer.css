@@ -46,6 +46,16 @@
   @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent;
 }
 .art-viewer .viewer-stage { @apply tw:relative tw:min-w-0 tw:min-h-0 tw:grid; place-items:center; padding:64px clamp(48px,4vw,72px) var(--s-4); @apply tw:overflow-hidden; }
+.art-viewer .viewer-mode-switch { position:absolute; top:18px; left:74px; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-primary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); cursor:pointer; }
+.art-viewer .viewer-mode-switch:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.art-viewer .gallery-orbit { position:relative; width:100%; height:100%; min-width:0; min-height:0; perspective:1400px; transform-style:preserve-3d; }
+.art-viewer .gallery-orbit-card { --orbit-transform:none; --orbit-opacity:1; --orbit-visibility:visible; position:absolute; inset:0; display:grid; grid-template-rows:minmax(0,1fr); justify-items:center; min-height:0; max-height:100%; transform-style:preserve-3d; transform:var(--orbit-transform); opacity:var(--orbit-opacity); visibility:var(--orbit-visibility); backface-visibility:hidden; pointer-events:none; }
+.art-viewer .gallery-orbit-card > :is(.zoomable-image-viewer,.gallery-orbit-neighbor) { width:54%; height:100%; max-height:100%; min-width:0; min-height:0; }
+.art-viewer .gallery-orbit-card.is-current > .zoomable-image-viewer { pointer-events:auto; }
+.art-viewer .gallery-orbit-neighbor { display:flex; align-items:center; justify-content:center; padding:0 0 56px; border:0; background:transparent; cursor:pointer; pointer-events:auto; }
+.art-viewer .gallery-orbit-preview { display:block; width:auto; height:auto; min-width:0; min-height:0; max-width:100%; max-height:100%; object-fit:contain; border:1px solid var(--art-frame-line); border-radius:var(--r-md); box-shadow:var(--art-frame-shadow); }
+.art-viewer .gallery-orbit.is-reduced { perspective:none; }
+.art-viewer .gallery-orbit.is-reduced .gallery-orbit-card > .zoomable-image-viewer { width:100%; }
 .art-viewer .viewer-image { @apply tw:block tw:max-w-full; max-height:calc(100dvh - 120px); @apply tw:w-auto tw:h-auto tw:object-contain; }
 .art-viewer .viewer-fallback { @apply tw:text-secondary tw:text-glyph-lg; }
 .art-viewer .viewer-close { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:left-[18px]; }

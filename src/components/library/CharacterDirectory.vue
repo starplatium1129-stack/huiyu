@@ -1,11 +1,12 @@
 <template>
   <aside class="character-directory" :class="{ 'directory-catalog': catalog }" aria-label="角色目录">
-    <!-- 作品筛选：宽屏独立侧栏，窄屏折叠为单行横向筛选，始终只有一个纵向滚动区 -->
+    <!-- Catalog searches stay fixed while the series and result lists scroll independently. -->
     <div v-if="catalog" class="directory-rail tw:flex tw:flex-col tw:gap-s-2 tw:min-w-0 tw:min-h-0 tw:pr-s-3">
-      <p class="directory-rail-title tw:m-0 tw:text-muted tw:text-label-xs tw:font-semibold">按作品筛选</p>
+      <label :for="seriesInputId" class="directory-rail-title tw:m-0 tw:text-muted tw:text-label-xs tw:font-semibold">按作品筛选</label>
+      <input :id="seriesInputId" v-model="seriesQuery" class="directory-series-search" type="search" aria-label="搜索作品目录" placeholder="搜索作品…" @keydown="onSeriesSearchKeydown" />
       <div ref="rail" class="directory-series tw:flex tw:flex-col tw:gap-s-1 tw:min-h-0 tw:overflow-y-auto" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
         <button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button>
-        <button v-for="group in groups" :key="group.key" type="button"
+        <button v-for="group in filteredGroups" :key="group.key" type="button"
           :aria-pressed="series === group.key" @click="series = group.key">{{ group.label }} <span>{{ group.count }}</span></button>
       </div>
     </div>
@@ -51,6 +52,8 @@ export interface DirectoryCharacter { id: string; name: string; source: string; 
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()
 const inputId = useId()
+const seriesInputId = useId()
+const seriesQuery = ref('')
 const query = defineModel<string>('search', { default: '' })
 const series = ref('')
 const page = ref(1)
@@ -72,6 +75,7 @@ const groups = computed(() => {
   return [...counts].map(([key, count]) => ({ key, count, label: franchiseLabel(key) })).sort((a, b) => (props.catalog ? b.count - a.count : 0) || a.label.localeCompare(b.label, 'zh-CN'))
 })
 const indexed = computed(() => props.items.map(item => ({ item, key: franchiseKey(item.source), text: [item.id, item.name, item.source, franchiseLabel(franchiseKey(item.source)), ...(item.aliases || [])].join(' ').toLocaleLowerCase() })))
+const filteredGroups = computed(() => groups.value.filter(group => [group.key, group.label].join(' ').toLocaleLowerCase().includes(seriesQuery.value.trim().toLocaleLowerCase())))
 const results = computed(() => {
   const term = query.value.trim().toLocaleLowerCase()
   return indexed.value.filter(row => (!series.value || row.key === series.value) && (!term || row.text.includes(term))).map(row => row.item)
@@ -145,12 +149,17 @@ function onSearchKeydown(event: KeyboardEvent) {
   }
 }
 async function locateSelected() {
-  query.value = ''; series.value = ''; await nextTick()
+  query.value = ''; series.value = ''; seriesQuery.value = ''; await nextTick()
   const index = results.value.findIndex(item => item.id === props.selectedId)
   page.value = props.pageSize && index >= 0 ? Math.floor(index / props.pageSize) + 1 : 1
   await nextTick()
   const button = list.value?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')
   button?.scrollIntoView({ block: 'nearest' }); button?.focus({ preventScroll: true })
+}
+function onSeriesSearchKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  if (event.key === 'Escape') { event.preventDefault(); emit('dismiss') }
+  else if (event.key === 'ArrowDown') { event.preventDefault(); rail.value?.querySelector<HTMLButtonElement>('button')?.focus() }
 }
 </script>
 <style scoped>
@@ -183,6 +192,7 @@ async function locateSelected() {
 /* catalog：作品筛选侧栏 + 角色结果区，滚动职责分别归属筛选栏与结果列表。 */
 .directory-catalog { @apply tw:static; max-height: none; @apply tw:min-h-0; flex: 1 1 auto; @apply tw:grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); @apply tw:gap-s-4; border: 0; background: transparent; }
 .directory-rail { border-right: 1px solid var(--border-soft); }
+.directory-series-search { flex-shrink:0; width:100%; min-width:0; min-height:36px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-primary); font:inherit; font-size:var(--fs-label-sm); }
 .directory-series { overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
 .directory-series button, .directory-pagination button { border: 1px solid transparent; @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
@@ -208,13 +218,6 @@ async function locateSelected() {
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
 .directory-catalog .directory-current { padding-inline: 0; }
 /* 窄屏：作品筛选折叠成单行横向条，不再用固定高度裁掉第三行。 */
-@media (max-width: 900px) {
-  .directory-catalog { @apply tw:flex tw:flex-col tw:gap-s-3; }
-  /* 筛选条按内容取高，不参与纵向收缩，否则会被结果区挤成只有几像素高的裁切条。 */
-  .directory-rail { flex: 0 0 auto; padding: 0 0 var(--s-2); border-right: 0; border-bottom: 1px solid var(--border-soft); }
-  .directory-rail-title { @apply tw:mb-s-1; }
-  .directory-series { flex: 0 0 auto; @apply tw:flex-row tw:flex-nowrap tw:min-h-[44px] tw:overflow-x-auto tw:overflow-y-hidden; padding: var(--s-1) 0 var(--s-2); }
-  .directory-series button { flex: 0 0 auto; @apply tw:w-auto tw:whitespace-nowrap; }
-}
+@media (max-width:900px) { .directory-catalog { grid-template-columns:minmax(140px,170px) minmax(0,1fr); gap:var(--s-3); } .directory-rail { padding-right:var(--s-2); } }
 @media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { @apply tw:h-[138px]; } }
 </style>

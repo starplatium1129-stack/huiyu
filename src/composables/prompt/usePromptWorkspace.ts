@@ -158,7 +158,7 @@ export function usePromptWorkspace() {
         flash: message => pb.flash(message),
     });
     const { popularCategory, showAllBlueprints, popularCharacter, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = materials.popular;
-    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
+    const { personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
     const { sceneLimit, sceneCollection, setDirectorMode, setSceneCollection, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
     // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
     // URL 克隆保活/延迟释放/token 防乱序/焦点陷阱等生命周期归
@@ -472,7 +472,7 @@ export function usePromptWorkspace() {
     const renderBindings: PromptRenderBindings = {
         pb: reactive({
             directorMode: toRef(pb, 'directorMode'), history: toRef(pb, 'history'),
-            subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'),
+            subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
             sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
         }),
         sd: { models: sd.models, samplers: sd.samplers, schedulers: sd.schedulers },
@@ -487,7 +487,7 @@ export function usePromptWorkspace() {
     const styleBindings: PromptStyleBindings = {
         pb: reactive({ directorMode: toRef(pb, 'directorMode'), artistStyleIds: toRef(pb, 'artistStyleIds'),
             currentCuratedArtistStyles: toRef(pb, 'currentCuratedArtistStyles'), setArtistStyleIds: pb.setArtistStyleIds }),
-        drawEngine, emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, onArtistLimitReached,
+        drawEngine, onArtistLimitReached,
     };
     const healthBindings: PromptHealthBindings = {
         pb: reactive({ directorMode: toRef(pb, 'directorMode'), isPopular: toRef(pb, 'isPopular') }),
