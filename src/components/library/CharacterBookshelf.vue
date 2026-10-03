@@ -1,6 +1,7 @@
 <template>
   <section class="character-bookshelf tw:min-w-0 tw:rounded-xl tw:text-primary" :class="{ 'is-keyboard-input': keyboardInput }" aria-label="角色作品书架" @keydown.capture="keyboardInput = true" @pointerdown.capture="keyboardInput = false">
     <header class="bookshelf-header tw:flex tw:items-center tw:justify-between tw:gap-s-5">
+      <StudioSearch :id="searchId" ref="searchInput" v-model="query" class="bookshelf-search" label="搜索角色、别名或作品" placeholder="搜索角色、别名或作品…" @keydown="onSearchKeydown" />
       <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><strong>{{ items.length }}</strong> 位角色<span aria-hidden="true"> · </span><strong>{{ groups.length }}</strong> 部作品</p>
       <div class="bookshelf-modes tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" role="group" aria-label="角色浏览方式">
         <AnimatedSelection />
@@ -8,11 +9,6 @@
         <button type="button" :aria-pressed="!showingShelf" @click="switchMode('characters')"><ArchiveIcon name="character" />全部角色</button>
       </div>
     </header>
-
-    <div class="bookshelf-search-row tw:flex tw:items-center tw:gap-s-4 tw:mt-s-4 tw:pb-s-4">
-      <StudioSearch :id="searchId" ref="searchInput" v-model="query" class="bookshelf-search" label="搜索角色、别名或作品" placeholder="搜索角色、别名或作品…" @keydown="onSearchKeydown" />
-      <p class="bookshelf-hint tw:m-0 tw:text-muted tw:text-label tw:leading-body">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
-    </div>
 
     <div ref="contentRoot">
     <template v-if="showingShelf">
@@ -25,8 +21,7 @@
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder tw:absolute tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:rounded-lg tw:text-muted tw:text-label-xs"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
           </span>
-          <span class="bookshelf-work-title tw:max-w-full tw:text-body tw:font-semibold tw:leading-body tw:text-center">{{ group.label }}</span>
-          <span class="bookshelf-work-count tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2 tw:text-muted tw:text-label">{{ group.count }} 位角色<ArchiveIcon name="chevron-down" /></span>
+          <span class="bookshelf-work-caption"><span class="bookshelf-work-title tw:max-w-full tw:text-body tw:font-semibold tw:leading-body">{{ group.label }}</span><span class="bookshelf-work-count tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs">{{ group.count }} 位角色<ArchiveIcon name="chevron-down" /></span></span>
         </button>
         <div v-if="group.covers.length > 1" class="bookshelf-flip-row tw:flex tw:items-center tw:justify-center tw:gap-s-2 tw:w-full tw:mt-s-2 tw:text-secondary tw:text-label-xs">
           <span aria-live="polite">{{ rotatedCovers(group.key, group.covers)[0]?.name }}</span>
@@ -159,32 +154,37 @@ defineExpose({ focusSelected })
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.character-bookshelf { padding: clamp(20px, 2.5vw, 32px); border: 1px solid var(--border-soft); background: var(--bg-surface); }
+.character-bookshelf { padding:0; border:0; border-radius:0; background:transparent; }
+.bookshelf-header { padding-bottom:var(--s-4); border-bottom:1px solid var(--border-soft); @apply tw:gap-s-3; }
+.bookshelf-total { @apply tw:text-label-xs; white-space:nowrap; }
 .bookshelf-total strong { @apply tw:text-primary tw:font-semibold; }
 .bookshelf-total span { margin-inline: var(--s-2); }
-.bookshelf-modes { --selection-radius:var(--r-pill); border: 1px solid transparent; background: var(--bg-base); }
+.bookshelf-modes { --selection-radius:var(--r-pill); border:1px solid var(--border-soft); background:var(--bg-surface); }
 .bookshelf-modes button { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; border: 1px solid transparent; @apply tw:rounded-pill; padding: var(--s-2) var(--s-4); @apply tw:min-h-[40px]; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .bookshelf-modes button[aria-pressed="true"] { @apply tw:text-accent; }
-.bookshelf-search-row { border-bottom: 0; }
-.bookshelf-search { flex:1; @apply tw:max-w-[620px]; }
-.bookshelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); @apply tw:gap-y-s-6; padding: var(--s-5) 0 var(--s-3); }
+.bookshelf-search { flex:1 1 260px; max-width:420px; min-width:180px; }
+.bookshelf-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-5) clamp(20px,2.3vw,32px); padding:var(--s-4) 0 var(--s-3); }
 .bookshelf-open { border:0; background:transparent; color:inherit; font:inherit; }
+.bookshelf-flip-row { @apply tw:justify-between; margin-top:0; padding-inline:var(--s-2); }
 .bookshelf-flip-row > span { @apply tw:min-w-0 tw:max-w-[60%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
 .bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-accent; }
-.bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
-.bookshelf-cover-stage { aspect-ratio: 1.15; }
-.bookshelf-cover { border: 3px solid var(--bg-surface); box-shadow: var(--shadow-md); transform-origin: center 85%; transition: transform var(--motion-hover) var(--ease-out); }
+.bookshelf-work { padding:var(--s-2) 0 0; border:0; background:transparent; color:inherit; font:inherit; }
+.bookshelf-cover-stage { aspect-ratio:.9; margin-bottom:var(--s-3); }
+.bookshelf-cover { left:13%; top:3%; width:74%; height:92%; border:3px solid var(--bg-surface); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-hover) var(--ease-out); }
 .bookshelf-cover :deep(.character-portrait) { @apply tw:w-full tw:h-full; border: 0; border-radius: 0; }
-.bookshelf-cover :deep(img) { transform: none; }
+.bookshelf-cover :deep(img) { object-fit:contain; object-position:center; transform:none; background:var(--art-stage); }
 .bookshelf-cover[data-slot="0"] { z-index: calc(var(--z-base) + 4); transform: translateY(-3%); }
-.bookshelf-cover[data-slot="1"] { z-index: calc(var(--z-base) + 3); transform: translate(-12%, 2%) rotate(-6deg); }
-.bookshelf-cover[data-slot="2"] { z-index: calc(var(--z-base) + 2); transform: translate(12%, 3%) rotate(6deg); }
-.bookshelf-cover[data-slot="3"] { z-index: calc(var(--z-base) + 1); transform: translate(-17%, 6%) rotate(-10deg); }
-.bookshelf-cover[data-slot="4"] { z-index: var(--z-base); transform: translate(17%, 6%) rotate(10deg); }
-.bookshelf-work-title { padding-inline: var(--s-2); overflow-wrap: anywhere; }
+/* Larger covers keep their fan inside the work's own column, including hover. */
+.bookshelf-cover[data-slot="1"] { z-index:calc(var(--z-base) + 3); transform:translate(-3%,2%) rotate(-2deg); }
+.bookshelf-cover[data-slot="2"] { z-index:calc(var(--z-base) + 2); transform:translate(3%,2%) rotate(2deg); }
+.bookshelf-cover[data-slot="3"] { z-index:calc(var(--z-base) + 1); transform:translate(-6%,2%) rotate(-4deg); }
+.bookshelf-cover[data-slot="4"] { z-index:var(--z-base); transform:translate(6%,2%) rotate(4deg); }
+.bookshelf-work-caption { display:flex; align-items:baseline; justify-content:space-between; gap:var(--s-2); width:100%; padding-inline:var(--s-2); text-align:left; }
+.bookshelf-work-title { padding:0; overflow-wrap:anywhere; }
+.bookshelf-work-count { flex:none; }
 .bookshelf-work-count .archive-icon { transform: rotate(-90deg); @apply tw:text-accent; }
-.bookshelf-cover-placeholder { inset: 5% 21% 9%; border: 1px dashed var(--border-soft); background: var(--bg-base); }
+.bookshelf-cover-placeholder { inset:3% 13% 5%; border:1px dashed var(--border-soft); background:var(--bg-surface); }
 .bookshelf-cover-placeholder > .archive-icon { @apply tw:text-glyph; }
 .bookshelf-text-button { @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[40px] tw:p-s-2; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-accent; font: inherit; @apply tw:text-label tw:cursor-pointer tw:shrink-0; }
 .bookshelf-text-button:hover { background: var(--accent-soft); }
@@ -192,14 +192,14 @@ defineExpose({ focusSelected })
 .bookshelf-results-heading h2 { @apply tw:m-0 tw:text-body-lg tw:leading-body tw:font-semibold; }
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }
 .bookshelf-back .archive-icon { transform: rotate(90deg); }
-.bookshelf-characters { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
-.bookshelf-character { border: 1px solid transparent; background: var(--bg-base); font: inherit; transform-origin: center bottom; }
+.bookshelf-characters { grid-template-columns:repeat(6,minmax(0,1fr)); gap:var(--s-4); }
+.bookshelf-character { padding:0; border:1px solid var(--border-soft); background:var(--bg-surface); font:inherit; transform-origin:center bottom; overflow:hidden; }
 /* A quiet card edge; fade a prepainted shadow instead of animating its blur. */
 .bookshelf-character::before { content: ''; position: absolute; inset: -1px; border: 1px solid var(--border-strong); border-radius: inherit; box-shadow: var(--shadow-sm); opacity: 0; pointer-events: none; }
 .bookshelf-character:focus-visible::before { opacity: 1; }
-.bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio: .78; border: 0; @apply tw:rounded-md; }
-.bookshelf-character :deep(img) { transform: none; }
-.bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
+.bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio:.74; border:0; border-radius:0; background:var(--art-stage); }
+.bookshelf-character :deep(img) { object-fit:contain; object-position:center; transform:none; }
+.bookshelf-character-copy { padding:var(--s-3); border-top:1px solid var(--border-soft); overflow-wrap:anywhere; }
 .bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-label; }
 .bookshelf-character-copy small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
 .bookshelf-character[aria-pressed="true"] { @apply tw:border-accent; background: var(--accent-soft); }
@@ -213,8 +213,8 @@ defineExpose({ focusSelected })
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
-  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
+  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform:translate(-4%,2%) rotate(-3deg); }
+  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform:translate(4%,2%) rotate(3deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-character { transition: transform var(--motion-hover) var(--ease-out); }
   html:not([data-reduced-motion="true"]) .bookshelf-character::before { transition: opacity var(--motion-hover) var(--ease-out); }
   html:not([data-reduced-motion="true"]) .bookshelf-character:hover { transform: perspective(900px) translateY(-2px) rotateX(.6deg); }
@@ -228,23 +228,24 @@ defineExpose({ focusSelected })
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bookshelf-characters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .bookshelf-header { @apply tw:items-start; }
-  .bookshelf-search-row > .bookshelf-hint { @apply tw:hidden; }
+  .bookshelf-header { flex-wrap:wrap; }
+  .bookshelf-total { margin-left:auto; }
+  .bookshelf-modes { margin-left:auto; }
+  .bookshelf-work-caption { flex-wrap:wrap; }
 }
 @media (max-width: 760px) {
-  .character-bookshelf { @apply tw:p-s-5; }
-  .bookshelf-header { @apply tw:flex-col tw:gap-s-4; }
+  .bookshelf-header { @apply tw:gap-s-2; }
+  .bookshelf-search { flex-basis:100%; max-width:none; }
+  .bookshelf-total { margin-left:0; }
   .bookshelf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-x-s-4; }
   .bookshelf-characters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {
-  .character-bookshelf { @apply tw:p-s-4 tw:rounded-xl; }
   .bookshelf-grid { @apply tw:gap-x-s-3 tw:gap-y-s-4; }
   .bookshelf-work-title { @apply tw:text-body-sm; }
   .bookshelf-cover { border-width: 2px; @apply tw:rounded-md; }
   .bookshelf-cover-stage { @apply tw:mb-s-2; }
   .bookshelf-characters { grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; }
-  .bookshelf-search-row { @apply tw:gap-s-1 tw:mt-s-4; }
   .bookshelf-results-heading { @apply tw:gap-s-2; }
   .bookshelf-pagination { @apply tw:gap-s-3; }
 }
