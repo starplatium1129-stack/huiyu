@@ -23,19 +23,19 @@
     -->
     <span v-if="unavailableReason && !busy" class="gen-bar-blocked" role="status">{{ unavailableReason }}</span>
     <div class="gen-bar-actions">
-      <StudioTooltip anchor :content="unavailableReason || undefined">
+      <StudioTooltip anchor :content="busy ? '停止当前绘制' : unavailableReason || undefined">
         <button
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-          class="btn btn-primary"
+          class="btn"
+          :class="busy ? 'btn-ghost' : 'btn-primary'"
           type="button"
-          :disabled="busy || !online || !!blockedReason"
-          @click="$emit('generate')"
-        >{{ busy ? '正在绘制…' : '生成图片' }}</button>
+          :disabled="!busy && (!online || !!blockedReason)"
+          @click="busy ? $emit('cancel') : $emit('generate')"
+        >{{ busy ? '停止绘制' : '生成图片' }}</button>
       </StudioTooltip>
       <StudioTooltip anchor content="清除当前画布图片，已入册的作品不受影响">
         <button class="btn btn-ghost" type="button" :disabled="!hasResult" @click="$emit('clearResult')">清除图片</button>
       </StudioTooltip>
-      <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
     </div>
   </div>
 </template>
