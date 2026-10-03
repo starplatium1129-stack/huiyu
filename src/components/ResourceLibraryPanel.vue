@@ -25,6 +25,7 @@
       </div>
       <div v-if="status?.task" class="resource-task" :aria-busy="status.busy">
         <strong role="status" aria-live="polite">{{ taskMessage }}</strong>
+        <p v-if="taskDetail" class="resource-description">{{ taskDetail }}</p>
         <p v-if="status.task.error">{{ status.task.error.message }}</p>
         <progress v-if="status.busy" :value="status.task.total ? status.task.bytes : undefined" :max="status.task.total || 1" aria-label="当前资源文件处理进度" />
       </div>
@@ -49,7 +50,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
-  taskMessage, refresh, run, cancel } = library
+  taskMessage, taskDetail, refresh, run, cancel } = library
 onMounted(library.start)
 onUnmounted(library.stop)
 </script>

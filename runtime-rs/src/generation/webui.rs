@@ -64,12 +64,15 @@ pub(super) async fn run_queue(inner: Arc<Inner>) {
                 &inner.cancel,
             )
             .await;
-        let result = match result {
-            Ok(value) => complete(&inner, &job, value).await,
-            Err(error) => Err(error),
-        };
-        if let Err(error) = result {
-            jobs::fail(&job, error, true).await;
+        match result {
+            Ok(value) => {
+                if let Err(error) = complete(&inner, &job, value).await {
+                    // The original request returned. Local output decoding
+                    // cannot leave upstream execution unknown or hold admission.
+                    jobs::fail(&job, error, false).await;
+                }
+            }
+            Err(error) => jobs::fail(&job, error, true).await,
         }
         // /interrupt is global: both the original generation and its interrupt
         // must settle before the next queued request can acquire the WebUI slot.

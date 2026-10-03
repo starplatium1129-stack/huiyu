@@ -38,24 +38,25 @@ export function useGalleryViewer(options: {
     releaseImage()
     loadedMedia = item
     const token = ++loadToken
-    const fallback = safeImageUrl(item.image_url)
+    const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
     try {
       const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
-      if (disposed || token !== loadToken || !sameArtworkMedia(current.value ?? undefined, item)) return
+      if (disposed || request.signal.aborted || token !== loadToken || !sameArtworkMedia(current.value ?? undefined, item)) return
       if (blob) {
         objectUrl = URL.createObjectURL(blob)
         viewerUrl.value = objectUrl
-      } else if (fallback) viewerUrl.value = fallback
-      else if (item.image_data?.startsWith('data:image/')) viewerUrl.value = item.image_data
+      } else viewerUrl.value = fallback
     } catch {
-      if (!disposed && token === loadToken) viewerUrl.value = ''
+      if (!disposed && !request.signal.aborted && token === loadToken && sameArtworkMedia(current.value ?? undefined, item)) viewerUrl.value = fallback
     } finally { if (loading === request) loading = null }
   }
 
   function openViewer(index: number) {
     const item = options.visible.value[index]
     if (disposed || !item) return
-    const reuseImage = sameArtworkMedia(loadedMedia ?? undefined, item) && Boolean(viewerUrl.value)
+    // Double clicks and gesture-viewer change events can select the same image
+    // before its original finishes. Keep the owned read until close or a switch.
+    const reuseImage = sameArtworkMedia(loadedMedia ?? undefined, item) && Boolean(viewerUrl.value || (loading && !loading.signal.aborted))
     viewerItemId.value = item.id
     viewerIndex.value = index
     options.resetControls()
