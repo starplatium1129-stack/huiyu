@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[创作、灵感返回与长期运行统筹](audits/2026-10-03/creation-inspiration-longrun-integration.md)记录草稿重复操作、筛选/浏览器返回、完整图片预览、后台健康请求和有限资源计数，以及四路交付、预算修错、真实 SFW 验收和原生设备边界。
+
 [创作恢复、图库性能与数据安全统筹](audits/2026-10-03/workflow-performance-data-integration.md)记录四路独立边界、迟到成片恢复修复、真实 SFW 浏览与有限下载源测量、隔离保存恢复检查及本轮集成验收边界。
 
 [设置、媒体生命周期与缓存读取审计](audits/2026-10-02/settings-media-lifecycle-audit.md)记录服务商密钥隔离、语音/搜索浮层、任务预览释放、视频轮询竞态和 Rust 暖缓存排队优化，附隔离构建与定向验证。
