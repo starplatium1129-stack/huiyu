@@ -9,6 +9,14 @@ function documents(dir: string): string[] {
     return entry.isDirectory() ? documents(file) : /\.(md|html)$/.test(entry.name) ? [file] : [];
   });
 }
+function generatedSourceExists(target: string): boolean {
+  const relative = path.relative(root, target).replaceAll('\\', '/');
+  const script = /^scripts\/(?!archive\/).*\.m?js$/.test(relative) && !relative.includes('/vendor/');
+  const browser = /^(?:tools\/.*|assets\/theme-bootstrap|docs\/guides\/prompts\/[^/]+)\.js$/.test(relative);
+  if ((!script && !browser) || /\.d\.m?js$/.test(relative)) return false;
+  const source = target.replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts');
+  return fs.statSync(source, { throwIfNoEntry: false })?.isFile() === true;
+}
 function check() {
   const files = [...documents(path.join(root, 'docs')), ...documents(path.join(root, 'plans')),
     ...['README.md', 'README_zh.md', 'DESIGN.md', 'AGENTS.md', 'STARTUP.md'].map((file: any) => path.join(root, file))];
@@ -27,15 +35,16 @@ function check() {
       const target = url.startsWith('/') ? path.join(root, url.slice(1)) : path.resolve(path.dirname(file), url);
       links += 1;
       const route = '/' + path.relative(root, target).replaceAll('\\', '/');
-      if (!fs.existsSync(target) && !appPaths.has(route)) errors.push(path.relative(root, file).replaceAll('\\', '/') + ': ' + url);
+      if (!fs.existsSync(target) && !generatedSourceExists(target) && !appPaths.has(route)) errors.push(path.relative(root, file).replaceAll('\\', '/') + ': ' + url);
     }
   }
   const redirects: Record<string, any> = JSON.parse(fs.readFileSync(path.join(root, 'docs/redirects.json'), 'utf8'));
   for (const [old, target] of Object.entries(redirects)) {
-    if (!old.startsWith('/docs/') || typeof target !== 'string' || !target.startsWith('/docs/') || target.includes('..') || !fs.existsSync(path.join(root, target.slice(1)))) errors.push('Invalid document redirect: ' + old + ' -> ' + String(target));
+    if (!old.startsWith('/docs/') || typeof target !== 'string' || !target.startsWith('/docs/') || target.includes('..')
+      || (!fs.existsSync(path.join(root, target.slice(1))) && !generatedSourceExists(path.join(root, target.slice(1))))) errors.push('Invalid document redirect: ' + old + ' -> ' + String(target));
   }
   console.log(`Documentation: ${files.length} files, ${links} local links, ${Object.keys(redirects).length} redirects, ${errors.length} broken links.`);
   if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
 }
 if (require.main === module) check();
-export = { check };
+export = { check, generatedSourceExists };

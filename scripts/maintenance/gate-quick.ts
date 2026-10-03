@@ -22,10 +22,12 @@
 const { spawnSync } = (require('node:child_process') as typeof import('node:child_process'));
 const path = (require('node:path') as typeof import('node:path'));
 const fs: typeof import('node:fs') = require('node:fs');
+const { parse: parseSfc }: typeof import('vue/compiler-sfc') = require('vue/compiler-sfc');
 const { contractJobs }: typeof import('../tests/contract-test-policy') = require('../tests/contract-test-policy');
 const { QUALITY_TEST_SUITES, qualityTestMetadata }: typeof import('../tests/quality-test-inventory') = require('../tests/quality-test-inventory');
 const { loadLaneManifest }: typeof import('../tests/run-e2e-lane') = require('../tests/run-e2e-lane');
 const { writeQualityReport, classifyFailure }: typeof import('../tests/quality-report') = require('../tests/quality-report');
+const { consumerTests }: typeof import('../tests/run-optional-test-lanes') = require('../tests/run-optional-test-lanes');
 const { runTestProcessPool }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
 const {
   runSuiteFiles,
@@ -40,16 +42,20 @@ const {
 
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'style' | 'rust' | 'data' | 'tests' | 'browser' | 'full';
-interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[] }
+type GateArea = 'ui' | 'style' | 'rust' | 'data' | 'tests' | 'browser' | 'browser-types' | 'docs' | 'full';
+interface GatePlan { areas: GateArea[]; testFiles: string[]; frontendFiles?: string[]; browserFiles?: string[]; manualFiles?: string[] }
 const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
   .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
+registeredTests.set('test-quality-gates.js', 'check');
 const browserSpecs = new Set(loadLaneManifest().specs.filter(spec => ['critical', 'nightly'].includes(spec.lane))
   .map(spec => `tests/e2e/${spec.file}`));
+const manualSpecs = new Set(loadLaneManifest().specs.filter(spec => ['manual', 'device'].includes(spec.lane))
+  .map(spec => `tests/e2e/${spec.file}`));
+let interrupted = false;
 
 async function runTool(name: string, file: string, args: string[], { verbose }: GateOptions) {
   const controller = new AbortController();
-  const interrupt = () => controller.abort();
+  const interrupt = () => { interrupted = true; controller.abort(); };
   process.once('SIGINT', interrupt);
   process.once('SIGTERM', interrupt);
   let step: import('../lib/test-process-pool').TestProcessResult;
@@ -96,6 +102,12 @@ function runNpmStep(name: string, script: string, timeout: number, verbose: bool
 }
 
 const AREA_STEPS = {
+  browserTypes(options: GateOptions) {
+    return runTool('manual/device test sources (typecheck only)', require.resolve('typescript/lib/tsc.js'), ['-p', 'tsconfig.json'], options);
+  },
+  docs(options: GateOptions) {
+    return runTool('documentation links', path.join(root, 'scripts/maintenance/check-doc-links.js'), [], options);
+  },
   rust(options: GateOptions) {
     return runTool('rust:check', path.join(root, 'scripts/maintenance/run-rust-runtime.js'), ['check'], options);
   },
@@ -149,21 +161,55 @@ const AREA_STEPS = {
   },
 };
 
-function classifyFiles(files: readonly string[]): GatePlan {
+/** CSS bindings and module exports can change generated script; keep those at UI scope. */
+function isVueStyleOnlyChange(previous: string | undefined, current: string, filename: string): boolean {
+  if (previous === undefined || previous === current) return false;
+  try {
+    const before = parseSfc(previous, { filename }), after = parseSfc(current, { filename });
+    if (before.errors.length || after.errors.length) return false;
+    const block = (value: import('vue/compiler-sfc').SFCBlock | null) => value && ({ type: value.type, content: value.content, attrs: value.attrs });
+    const behavior = (value: import('vue/compiler-sfc').SFCDescriptor) => ({
+      script: block(value.script), setup: block(value.scriptSetup), template: block(value.template),
+      custom: value.customBlocks.map(block), cssVars: value.cssVars, styles: value.styles.map(style => style.attrs),
+    });
+    return !after.descriptor.styles.some(style => style.module)
+      && JSON.stringify(behavior(before.descriptor)) === JSON.stringify(behavior(after.descriptor))
+      && before.descriptor.styles.some((style, index) => style.content !== after.descriptor.styles[index].content);
+  } catch { return false; }
+}
+
+function sourceAtHead(file: string, base = 'HEAD'): string | undefined {
+  const result = spawnSync('git', ['show', `${base}:${file}`], { cwd: root, encoding: 'utf8', windowsHide: true });
+  return !result.error && result.status === 0 ? result.stdout : undefined;
+}
+
+function classifyFiles(files: readonly string[], baseline = sourceAtHead): GatePlan {
   const areas = new Set<GateArea>();
   const testFiles = new Set<string>();
   const frontendFiles = new Set<string>(), browserFiles = new Set<string>();
+  const manualFiles = new Set<string>();
   let allFrontend = false;
   const full = (): GatePlan => ({ areas: ['full'], testFiles: [] });
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
     if (/^runtime-rs\/(?:src\/|tests\/.*\.(?:rs|json)$|Cargo\.(?:toml|lock)$)/.test(p)) { areas.add('rust'); continue; }
+    if (/^runtime-rs\/native-/.test(p)) { areas.add('tests'); QUALITY_TEST_SUITES.release.forEach(file => testFiles.add(file)); continue; }
+    if (/^(docs\/|.*\.md$)/.test(p)) { areas.add('docs'); continue; }
+    if (['tsconfig.app.json', 'vitest.config.ts'].includes(p)) { areas.add('ui'); allFrontend = true; continue; }
     if (/^src\/.*\.(?:spec|test)\.ts$/.test(p) && !fs.existsSync(path.join(root, p))) return full();
     if (/^(src|css)\/.*\.css$/.test(p)) { areas.add('style'); continue; }
+    if (/^src\/.*\.vue$/.test(p) && fs.existsSync(path.join(root, p))
+      && isVueStyleOnlyChange(baseline(p), fs.readFileSync(path.join(root, p), 'utf8'), p)) {
+      areas.add('style');
+      continue;
+    }
     if (browserSpecs.has(p) && fs.existsSync(path.join(root, p))) {
       areas.add('browser');
       browserFiles.add(p);
       continue;
+    }
+    if (manualSpecs.has(p) && fs.existsSync(path.join(root, p))) {
+      areas.add('browser-types'); manualFiles.add(p); continue;
     }
     const testName = /^scripts\/tests\/(test-[^/]+\.(?:ts|mts|js|mjs))$/.exec(p)?.[1]
       .replace(/\.mts$/, '.mjs').replace(/\.ts$/, '.js');
@@ -171,6 +217,13 @@ function classifyFiles(files: readonly string[]): GatePlan {
       && fs.existsSync(path.join(testsDir, testName.replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts')))) {
       areas.add('tests');
       testFiles.add(testName);
+      continue;
+    }
+    const consumers = consumerTests(p);
+    if (consumers) {
+      if (!fs.existsSync(path.join(root, p.replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts')))) return full();
+      areas.add('tests');
+      consumers.forEach(file => testFiles.add(file));
       continue;
     }
     if (/^(scripts|desktop-tauri|tests|\.github)\//.test(p)
@@ -186,25 +239,44 @@ function classifyFiles(files: readonly string[]): GatePlan {
   }
   return { areas: [...areas], testFiles: [...testFiles],
     ...(!allFrontend && frontendFiles.size ? { frontendFiles: [...frontendFiles] } : {}),
-    ...(browserFiles.size ? { browserFiles: [...browserFiles] } : {}) };
+    ...(browserFiles.size ? { browserFiles: [...browserFiles] } : {}),
+    ...(manualFiles.size ? { manualFiles: [...manualFiles] } : {}) };
 }
 
-function detectAreas() {
+function detectAreas(base = process.env.AICS_HYGIENE_BASE_REF || 'HEAD') {
+  if (!/^(HEAD|[a-f0-9]{40}|[a-f0-9]{64})$/i.test(base) || /^0+$/.test(base)) throw new Error('Unavailable Git comparison baseline');
+  if (process.env.CI && base === 'HEAD') throw new Error('Missing CI comparison baseline');
   const collect = (args: string[]) => {
     const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
     if (result.error || result.status !== 0) throw new Error(`Git 改动检测失败: ${result.error?.message || result.stderr}`);
     return result.stdout.split('\0').filter(Boolean);
   };
-  return classifyFiles([...collect(['diff', '--name-only', '-z', 'HEAD']), ...collect(['ls-files', '-z', '--others', '--exclude-standard'])]);
+  return classifyFiles([...collect(['diff', '--name-only', '-z', base, '--']), ...collect(['ls-files', '-z', '--others', '--exclude-standard'])],
+    file => sourceAtHead(file, base));
+}
+
+function gatePrerequisites(plan: GatePlan) {
+  const browser = plan.areas.includes('browser');
+  const files = plan.areas.includes('full') ? Object.values(QUALITY_TEST_SUITES).flat() : plan.testFiles;
+  const rustBuild = browser || files.some(file => qualityTestMetadata(file).environment === 'rust-loopback');
+  return { rustToolchain: rustBuild || plan.areas.some(area => ['rust', 'full'].includes(area)), rustBuild, webBuild: browser, browser };
 }
 
 async function main(argv: string[]) {
+  interrupted = false;
   if (argv.includes('--help') || argv.includes('-h')) {
-    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|rust|data|all|full] [--verbose] [--all]');
+    console.log('用法: node scripts/maintenance/gate-quick.js [ui|style|rust|data|all|full] [--base HEAD|SHA] [--plan] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
-  const invalid = argv.filter((arg: any) => !['ui', 'style', 'rust', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  let base = process.env.AICS_HYGIENE_BASE_REF || 'HEAD';
+  const baseIndex = argv.indexOf('--base');
+  if (baseIndex >= 0) {
+    base = argv[baseIndex + 1];
+    if (!base || !/^(HEAD|[a-f0-9]{40}|[a-f0-9]{64})$/i.test(base)) { console.error('Invalid --base; expected HEAD or a commit SHA'); return 2; }
+    argv = argv.filter((_arg, index) => index !== baseIndex && index !== baseIndex + 1);
+  }
+  const invalid = argv.filter((arg: any) => !['ui', 'style', 'rust', 'data', 'all', 'full', '--plan', '--verbose', '--all'].includes(arg));
   if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
@@ -215,14 +287,26 @@ async function main(argv: string[]) {
 
   let areas: GateArea[];
   let testFiles: string[] = [];
-  let frontendFiles: string[] | undefined, browserFiles: string[] = [];
+  let frontendFiles: string[] | undefined, browserFiles: string[] = [], manualFiles: string[] = [];
   if (areaArg) {
     // 'full' 走完整门禁；'all' 展开领域检查。
     areas = areaArg === 'all' ? ['ui', 'style', 'rust', 'data'] : [areaArg];
   } else {
-    try { ({ areas, testFiles, frontendFiles, browserFiles = [] } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
+    try { ({ areas, testFiles, frontendFiles, browserFiles = [], manualFiles = [] } = detectAreas(base)); }
+    catch (error) {
+      console.error(`${error instanceof Error ? error.message : String(error)}; falling back to full validation`);
+      areas = ['full'];
+    }
+  }
+  if (argv.includes('--plan')) {
+    const plan: GatePlan = { areas, testFiles, ...(frontendFiles ? { frontendFiles } : {}),
+      ...(browserFiles.length ? { browserFiles } : {}), ...(manualFiles.length ? { manualFiles } : {}) };
+    console.log(JSON.stringify({ ...plan, prerequisites: gatePrerequisites(plan), baseline: base }));
+    return 0;
+  }
+  if (!areaArg) {
     if (!areas.length) {
-      console.log('gate:quick 未检测到需运行门禁的代码改动（可能仅文档）；显式指定面积或用 full。');
+      console.log('gate:quick 未检测到需要验证的改动；显式指定面积或用 full。');
       return 0;
     }
     console.log(`gate:quick 自动检测面积: ${areas.join(' + ')}`);
@@ -233,14 +317,16 @@ async function main(argv: string[]) {
     try { contractJobs(); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 2; }
   }
   const started = Date.now();
+  let browserBuildFailed = false;
   // Test-only edits do not change the SPA. Mixed UI/data edits need a new dist.
   if (areas.includes('browser') && areas.some(area => ['ui', 'style', 'data'].includes(area))) {
     exitCode = runNpmStep('build (changed UI/data)', 'build:web:run', 600_000, verbose);
-    if (exitCode) return exitCode;
+    browserBuildFailed = exitCode !== 0;
   }
   for (const area of areas) {
-    if (exitCode && !keepGoing) break;
+    if (interrupted || (areas.includes('full') && exitCode && !keepGoing)) break;
     console.log(`── gate ${area} ──`);
+    try {
     if (area === 'tests') {
       exitCode = AREA_STEPS.tests(testFiles, { verbose, keepGoing }) || exitCode;
       continue;
@@ -250,7 +336,20 @@ async function main(argv: string[]) {
       continue;
     }
     if (area === 'browser') {
+      if (browserBuildFailed) {
+        writeQualityReport('browser', [{ name: 'changed E2E specs', status: 'not-run', duration: 0, reason: 'current UI build failed' }], 0);
+        console.error('browser 未运行：当前页面构建失败；其余独立领域继续验证。');
+        continue;
+      }
       exitCode = await AREA_STEPS.browser(browserFiles, { verbose, keepGoing }) || exitCode;
+      continue;
+    }
+    if (area === 'browser-types') {
+      exitCode = await AREA_STEPS.browserTypes({ verbose, keepGoing }) || exitCode;
+      continue;
+    }
+    if (area === 'docs') {
+      exitCode = await AREA_STEPS.docs({ verbose, keepGoing }) || exitCode;
       continue;
     }
     if (area === 'style') {
@@ -286,6 +385,13 @@ async function main(argv: string[]) {
     }
     if (exitCode && !keepGoing) continue;
     failPhase(runNpmStep('build（打包预算）', 'build:web:run', 600_000, verbose));
+    } catch (error) {
+      exitCode = 1;
+      const message = error instanceof Error ? error.message : String(error);
+      writeQualityReport(area, [{ name: `${area} preparation`, status: 'failed', duration: 0,
+        reason: message, failureKind: classifyFailure({ status: 1 }, message) }], 0);
+      console.error(`${area} 准备失败：${message}；保留失败，继续其余独立领域。`);
+    }
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
   return exitCode;
@@ -295,4 +401,4 @@ if (require.main === module) {
   main(process.argv.slice(2)).then(code => { process.exitCode = code; }).catch(error => { console.error(error); process.exitCode = 1; });
 }
 
-export = { detectAreas, classifyFiles, main, AREA_STEPS };
+export = { detectAreas, classifyFiles, gatePrerequisites, isVueStyleOnlyChange, main, AREA_STEPS };

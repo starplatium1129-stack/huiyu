@@ -8,6 +8,34 @@ const optional = ['tooling', 'release'] as const;
 type OptionalLane = typeof optional[number];
 interface OptionalSelection { lane: OptionalLane; files: readonly string[] }
 
+// Explicit consumers include VM/CLI callers that a static import graph cannot discover.
+const runnerTests = ['test-workflow-runner.js', 'test-quality-report.js', 'test-test-process-pool.js', 'test-quality-gates.js'];
+const buildTests = ['test-typescript-build.js', 'test-typescript-development.js', 'test-runtime-generated.js', 'test-quality-gates.js'];
+const TEST_CONSUMERS: Readonly<Record<string, readonly string[]>> = {
+  'scripts/workflow.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
+  'scripts/lib/workflow-runner.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
+  'scripts/lib/workflow-types.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
+  'scripts/maintenance/report-workflow-conditions.ts': ['test-workflow-conditions.js'],
+  'scripts/maintenance/gate-quick.ts': runnerTests,
+  'scripts/tests/run-optional-test-lanes.ts': runnerTests,
+  'scripts/tests/run-quality-suite.ts': runnerTests,
+  'scripts/lib/test-process-pool.ts': runnerTests,
+  'scripts/tests/contract-test-policy.ts': runnerTests,
+  'scripts/tests/quality-report.ts': ['test-quality-report.js'],
+  'scripts/maintenance/check-doc-links.ts': ['test-doc-redirects.js'],
+  'scripts/lib/scene-write.ts': ['test-scene-write.js'],
+  'scripts/lib/scene-change-set.ts': ['test-scene-change-set.js'],
+  'scripts/maintenance/apply-scene-patch.ts': ['test-scene-patch.js'],
+  'scripts/build-node.mts': buildTests,
+  '.github/workflows/quality.yml': ['test-quality-gates.js', 'test-e2e-ci-split.js'],
+  '.github/workflows/rust-runtime.yml': ['test-quality-gates.js'],
+  '.github/workflows/windows-native.yml': ['test-quality-gates.js'],
+  '.github/workflows/nightly-e2e.yml': ['test-quality-gates.js', 'test-e2e-ci-split.js'],
+};
+function consumerTests(file: string): readonly string[] | undefined {
+  return TEST_CONSUMERS[file.replace(/\\/g, '/').replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts')];
+}
+
 function selectOptionalTests(files: readonly string[]): OptionalSelection[] {
   const selected = new Map<OptionalLane, Set<string>>();
   const includeLane = (lane: OptionalLane) => selected.set(lane, new Set(QUALITY_TEST_SUITES[lane]));
@@ -15,6 +43,16 @@ function selectOptionalTests(files: readonly string[]): OptionalSelection[] {
   for (const raw of files) {
     const file = raw.replace(/\\/g, '/');
     if (/\.md$/.test(file) || /^docs\//.test(file)) continue;
+    const consumers = consumerTests(file);
+    if (consumers) {
+      for (const name of consumers) {
+        const lane = optional.find(lane => QUALITY_TEST_SUITES[lane].includes(name));
+        if (!lane) continue;
+        if (!selected.has(lane)) selected.set(lane, new Set());
+        selected.get(lane)!.add(name);
+      }
+      continue;
+    }
     const test = /^scripts\/tests\/(test-[^/]+)\.(ts|mts|js|mjs)$/.exec(file);
     if (test) {
       const name = test[1] + (['mts', 'mjs'].includes(test[2]) ? '.mjs' : '.js');
@@ -78,4 +116,4 @@ async function main() {
 }
 
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(error => { console.error(error); process.exitCode = 1; });
-export = { selectOptionalTests, changedFiles, main };
+export = { selectOptionalTests, consumerTests, changedFiles, main };

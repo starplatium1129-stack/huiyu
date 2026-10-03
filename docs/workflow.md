@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-10-02。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
+> 维护日期：2026-10-03。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
 
 ## 先查入口
 
@@ -326,20 +326,32 @@ PixAI 接入后，旧 WD14 ONNX／448 像素预处理代码已退出 Rust 产品
 | --- | --- |
 | 文档、AGENTS、skill | 结构、链接、规则一致性及典型请求走查；不构建、不出图 |
 | 局部颜色、间距等样式 | 相关样式/对比度检查和受影响组件的双主题视觉检查；不默认跑 TypeScript、后端契约或全站回归 |
-| UI 行为或局部业务逻辑 | 定向行为测试，或显式选择 `gate:quick ui/server/data`；补受影响的浏览器流程 |
-| 依赖、配置、工作流、跨域重构、未知影响面，或用户明确要求 | `gate:full`，再按风险补浏览器/设备验收 |
+| UI 行为或局部业务逻辑 | 定向行为测试，或显式选择 `gate:quick ui/rust/data`；补受影响的浏览器流程 |
+| 依赖、跨域重构、未知影响面，或用户明确要求完整验证 | `gate:full`，再按风险补浏览器/设备验收 |
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-日常使用 `npm test` 或 `npm run validate`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。共享夹具、runner、注册表、配置、未知或删除的测试仍升级 full；manual/device 专项继续显式选择，不自动访问设备或模型。
+日常使用 `npm test` 或 `npm run validate`（与 `gate:quick` 同一入口），默认按当前 Git 改动选择测试。前端 TS/Vue 使用 Vitest 原生导入图运行相关单测；UI 门禁在类型检查前仅补齐缺失的 `data/popular-characters.json`（复用 `ensurePopularBuilt({ onlyIfMissing: true })`），不重建其他数据域，也不覆盖已存在的陈旧产物；CSS 独立选择 `style` 的字面值、双主题对比度、颜色、动画扫描，不跑无关类型检查/单测；其他静态资源与显式 `ui` 仍运行整个前端套件。没有相关单测时明确显示只完成类型检查，不能当作浏览器验收。已登记的 Node 测试按文件选择并去重；critical/nightly 中的 E2E 测试本身变化只跑所改文件并复用已有 dist，混合 UI/style/data 改动先构建。已登记工具/CI消费者按现有用例定向；应用/Vitest配置选UI，Node整体构建配置仍保留full；未登记共享夹具、注册表、依赖、未知或删除的测试仍升级 full；manual/device 测试源修改只验证浏览器测试类型，不执行专项；真实设备与模型仍显式选择。
 
 Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node scripts/tests/run-quality-suite.js check test-native-controls.ts`。支持登记的源文件或生成入口、稳定去重；错误文件名、跨套件文件及未知选项失败，不静默跳过。省略参数执行所选lane完整清单，整合验证使用 `gate:full`。unit/contract/optional 不自动 prebuild；工具源或配置变化、生成入口缺失时才先 `npm run build:runtime`，纯 Rust 检查不附带 Node 构建。
 
 短期限的 `test-generation-workflow-safety` 独立于 Node 并发批次执行，保留其 250ms 夹具期限与显式超时场景；Windows 的 `test-desktop-deploy-guard` 使用真实 PowerShell 进程探测，也单独执行。其他文件仍并发 4。每个选中文件只执行一次，整体仍共用原 300 秒上限，阶段失败/未运行分别记录，不放宽退出与锁清理断言。
 
+自动模式进一步比较已有 Vue 文件与 HEAD：仅 style 内容变化时选择 style；script、template、自定义块、style 属性或 CSS v-bind 依赖变化，以及 module 样式、新增/缺失基线、解析异常，继续选择 UI。显式 ui 的范围不变；纯样式仍需受影响页面的双主题视觉检查。
+
 ### 验证并发与复用
 
+直接运行 `node scripts/maintenance/gate-quick.js --plan [--base <HEAD或完整SHA>]` 输出纯JSON选测范围及干净checkout所需的前置条件；只读Git与源码，不准备产物或执行测试。CI默认从 `AICS_HYGIENE_BASE_REF` 取基线；基线不可用时明确回退full，参数错误仍失败。统一workflow的 `--plan` 仍只预览命令，不替代这个选测报告。
+
+`typecheck:app` 保持全部应用及前端测试的严格类型检查，通过 `.cache/typecheck/app.tsbuildinfo` 复用编译器信息。每次重新读取当前输入并保留错误退出码，不缓存PASS；冷启动仍完整检查。CI按工具链、依赖和配置恢复编译信息，源文件变化由编译器核对。
+
+quick的独立领域分别保留结果：测试失败或准备异常不记为通过，但其余已选领域继续；混合改动的页面构建失败只将依赖新dist的浏览器标为未运行。中断仍停止后续派发，完整full仍保持失败即停。失败须说明现行要求、与本次改动的关系及影响范围，不用无关全仓重跑替代归因。
+
+文档链接检查在生成JS缺失时，仅接受已登记生成范围内存在的对应TS权威源；缺源、非生成范围和真实断链仍失败。新checkout的纯文档CI可直接运行TS工具，不必为这些链接先安装依赖或编译全部工具。
+
 `npm run check` 的 `CHECK_JOBS` 默认 4、有效范围 1–4；首次失败停止待派发步骤，收完已在途任务并分别报告失败/未运行。`npm run check -- --all` 显式收集全貌；每步限时 10 分钟，超时只清理该执行器拥有的进程树，不原样循环重跑。
+
+Quality CI 日常复用同一选测计划与 npm test，文档免依赖安装，Rust/浏览器/SPA仅按前置条件准备。quality-summary 必须要求所选任务成功；未选的最低 Node 专项仅允许 skipped。完整门禁、关键浏览器与最低 Node 兼容留在手动及北京时间02:15夜间入口；02:00扩展视觉继续独立执行，完整前端覆盖率集中到Quality。Rust专项只在相关路径变化时验证parity，日常rust:check由Quality承接；真实原生/GPU专项仅手动触发，不进入普通推送。
 
 `test-interrogate-engine` 默认只在临时空目录验证无模型降级，并屏蔽模型目录环境变量；`test-interrogate-routes` 始终用 WD14 替身和本地 HTTP 夹具。只有显式设置 `AICS_TEST_REAL_WD14=1` 再运行 `node scripts/tests/test-interrogate-engine.js`，才会查找本机权重并执行真实 CPU 推理；该开关不属于普通 unit/contract/full 门禁的默认验收。
 
@@ -355,11 +367,11 @@ Node套件也可直接定向：`npm run test:unit -- test-api-client.ts`、`node
 
 | 入口 | 实际范围 |
 | --- | --- |
-| npm test / validate / gate:quick ui/style/server/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；共享工具、依赖、配置及未知影响面升级 full；纯文档跳过 |
+| npm test / validate / gate:quick ui/style/rust/data/all | 自动模式按文件选相关前端、样式、Node、Rust、常规 E2E；Rust 源码、Cargo 与 Rust 隔离夹具只派发 rust:check；显式参数选整个领域；已登记工具与域配置选相关检查；依赖及未知影响面升级full；文档只查链接 |
 | check:quick | npm run check 的全部已注册并行检查 |
 | gate:full / gate:all / check:full / validate:all | 同一 full 入口：check、Rust、前端覆盖率、unit、contract、tooling、release，最后一次 build:web:run（含打包预算）；默认失败即停，--all 收集全貌。不含浏览器、设备或真实模型验收 |
 | test:tooling / test:release | 维护工具、发行/资源包专项；不作为纯前端改动的固定成本 |
-| test:optional | 已登记测试自身变化精确到文件并去重；工具/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
+| test:optional | 已登记测试自身变化精确到文件并去重；已登记工具消费者定向；其余工具/桌面消费者源码改动执行相关完整专项。纯 Rust 源码/Cargo/隔离夹具由 gate:quick 的 rust 区域处理，原生发行材料仍派发 release；未知影响面、无有效CI基线及配置变更保守全跑 |
 | build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |

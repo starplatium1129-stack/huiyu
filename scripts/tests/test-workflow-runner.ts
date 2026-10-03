@@ -92,8 +92,8 @@ test('npm argument forwarding preserves spaces and metacharacters', () => {
 });
 test('quick gate covers unknown root files, dependencies, scripts and rejects typos', async () => {
   assert.deepEqual(classifyFiles(['unknown-root.js']), { areas: ['full'], testFiles: [] });
-  for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), { areas: ['full'], testFiles: [] });
-  assert.deepEqual(classifyFiles(['docs/workflow.md']), { areas: [], testFiles: [] });
+  for (const file of ['package-lock.json', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), { areas: ['full'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['docs/workflow.md']), { areas: ['docs'], testFiles: [] });
   assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), { areas: ['ui', 'data'], testFiles: [] });
   for (const file of ['runtime-rs/src/storage.rs', 'runtime-rs/tests/task_execution.rs', 'runtime-rs/tests/fixtures/task-fingerprints.json', 'runtime-rs/Cargo.toml', 'runtime-rs/Cargo.lock']) {
     assert.deepEqual(classifyFiles([file]), { areas:['rust'], testFiles:[] });
@@ -133,21 +133,38 @@ test('quick gate selects registered Node tests once across source and generated 
   assert.deepEqual(classifyFiles([
     'scripts/tests/test-api-client.ts', 'scripts\\tests\\test-api-client.js',
     'scripts/tests/test-chat-storage.ts', 'scripts/tests/test-module-boundaries.mts', 'docs/workflow.md',
-  ]), { areas: ['tests'], testFiles: ['test-api-client.js', 'test-chat-storage.js', 'test-module-boundaries.mjs'] });
+  ]), { areas: ['tests', 'docs'], testFiles: ['test-api-client.js', 'test-chat-storage.js', 'test-module-boundaries.mjs'] });
   assert.deepEqual(classifyFiles(['src/utils/stream.spec.ts', 'scripts/tests/test-chat-storage.ts']), {
     areas: ['ui', 'tests'], testFiles: ['test-chat-storage.js'], frontendFiles: ['src/utils/stream.spec.ts'],
   });
 });
 
-test('quick gate keeps shared runners, unknown or removed tests and device tests at full scope', () => {
+test('quick gate keeps unbounded fixtures, unknown or removed tests and device tests at full scope', () => {
   for (const file of [
-    'scripts/tests/quality-test-inventory.ts', 'scripts/tests/run-quality-suite.ts',
-    'scripts/tests/mock-stack.ts', 'scripts/build-node.mts',
+    'scripts/tests/quality-test-inventory.ts', 'scripts/tests/mock-stack.ts',
     'scripts/tests/test-unknown.ts', 'scripts/tests/test-removed-fixture.ts',
-    'scripts/tests/test-electron-shell.mts', 'tests/e2e/studio-live2d.spec.ts', 'tests/e2e/helpers/sceneState.ts',
+    'scripts/tests/test-electron-shell.mts', 'tests/e2e/helpers/sceneState.ts', 'tsconfig.tests.json',
   ]) {
     assert.deepEqual(classifyFiles(['scripts/tests/test-api-client.ts', file]), { areas: ['full'], testFiles: [] }, file);
   }
+});
+
+test('known tool and CI consumers stay targeted without dropping shared runner failure checks', () => {
+  assert.deepEqual(classifyFiles(['scripts/workflow.ts']), {
+    areas: ['tests'], testFiles: ['test-workflow-runner.js', 'test-workflow-conditions.js'],
+  });
+  assert.deepEqual(classifyFiles(['scripts/tests/run-quality-suite.ts', 'scripts/lib/test-process-pool.ts']), {
+    areas: ['tests'], testFiles: ['test-workflow-runner.js', 'test-quality-report.js', 'test-test-process-pool.js', 'test-quality-gates.js'],
+  });
+  assert.deepEqual(classifyFiles(['.github/workflows/quality.yml']), {
+    areas: ['tests'], testFiles: ['test-quality-gates.js', 'test-e2e-ci-split.js'],
+  });
+  assert.deepEqual(classifyFiles(['tsconfig.app.json']), { areas: ['ui'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['tests/e2e/studio-live2d.spec.ts']), {
+    areas: ['browser-types'], testFiles: [], manualFiles: ['tests/e2e/studio-live2d.spec.ts'],
+  });
+  const { selectOptionalTests }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
+  assert.deepEqual(selectOptionalTests(['scripts/lib/scene-write.ts']), [{ lane: 'tooling', files: ['test-scene-write.js'] }]);
 });
 
 test('quick gate selects related frontend sources and exact regular browser specs', () => {
@@ -160,6 +177,29 @@ test('quick gate selects related frontend sources and exact regular browser spec
   assert.deepEqual(classifyFiles(['src/assets/css/companion.css']), { areas: ['style'], testFiles: [] });
   assert.deepEqual(classifyFiles(['tests/e2e/unknown.spec.ts']), { areas: ['full'], testFiles: [] });
   assert.deepEqual(classifyFiles(['src/utils/deleted-test.spec.ts']), { areas: ['full'], testFiles: [] });
+});
+
+test('Vue style-only changes avoid UI checks while script, template and generated bindings stay protected', () => {
+  const { isVueStyleOnlyChange }: typeof import('../maintenance/gate-quick') = require('../maintenance/gate-quick');
+  const previous = '<script setup>const accent = "red"</script><template><p>hello</p></template><style scoped>p { color: red }</style>';
+  const current = previous.replace('color: red', 'color: blue');
+  assert.equal(isVueStyleOnlyChange(previous, current, 'fixture.vue'), true);
+  for (const source of [
+    previous, current.replace('const accent = "red"', 'const accent = "blue"'),
+    current.replace('<p>hello</p>', '<p>changed</p>'), current.replace('scoped', 'module'),
+    current.replace('color: blue', 'color: v-bind(accent)'), current.replace('<style scoped>', '<style>'),
+    current + '<i18n>{"hello":"changed"}</i18n>', current + '<template>duplicate</template>',
+  ]) assert.equal(isVueStyleOnlyChange(previous, source, 'fixture.vue'), false);
+  assert.equal(isVueStyleOnlyChange(undefined, current, 'fixture.vue'), false);
+  assert.equal(isVueStyleOnlyChange(previous + '<i18n>{}</i18n>', current + '<route>{}</route>', 'fixture.vue'), false);
+  const file = 'src/components/library/CharacterDirectory.vue';
+  const source = fs.readFileSync(path.join(root, file), 'utf8');
+  assert.match(source, /<style[^>]*>/);
+  const baseline = () => source.replace(/(<style[^>]*>)/, '$1\n.baseline-only { color: red }');
+  assert.deepEqual(classifyFiles([file], baseline), { areas: ['style'], testFiles: [] });
+  assert.deepEqual(classifyFiles([file, 'src/utils/characterTheme.ts'], baseline), {
+    areas: ['style', 'ui'], testFiles: [], frontendFiles: ['src/utils/characterTheme.ts'],
+  });
 });
 
 test('quality suite selection deduplicates exact source entries and rejects typos or wrong suites', () => {

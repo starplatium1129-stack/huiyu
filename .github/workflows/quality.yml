@@ -3,68 +3,28 @@ name: Quality
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    # Full gates and critical flows at 02:15 Asia/Shanghai; extended visuals keep their own workflow.
+    - cron: '15 18 * * *'
 
 permissions:
   contents: read
 
-# 普通验证按分支／PR 收敛（2026-09-10 复核 O4）：连续提交只保留最新一次完整流水线。
-# tag 推送可能对应发布验证，不做自动取消；Windows 原生与定时任务各自独立分组。
 concurrency:
-  group: quality-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+  group: quality-${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && 'full' || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'schedule' && github.ref_type != 'tag' }}
 
 env:
   AICS_HYGIENE_BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
-  # 参考媒体按项目契约不入 Git；CI 验证索引结构，本机 gate:full 仍逐文件查验。
   AICS_REFERENCE_AUDIT_MODE: structure
   AICS_TEST_REPORT_DIR: runtime/quality-reports
 
 jobs:
-  checks:
-    name: Static & Quality Checks
+  changed:
+    name: Selected Quality Checks
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          # 测试直接 require() src/ 下的 .ts（Node 内建类型剥离），需要 22.18+
-          node-version: 24.18.0
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run static and generated-source checks
-        run: |
-          set -o pipefail
-          mkdir -p runtime/quality-checks
-          npm run check 2>&1 | tee runtime/quality-checks/check.log
-      - name: Preserve complete static diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: quality-static-results
-          path: runtime/quality-checks
-          if-no-files-found: ignore
-          retention-days: 14
-
-      - name: Upload quality diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: quality-checks
-          path: runtime/quality-reports
-          if-no-files-found: ignore
-          retention-days: 7
-
-  unit:
-    name: Product Unit Suite
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -72,10 +32,10 @@ jobs:
           fetch-depth: 2
           persist-credentials: false
       - name: Fetch only the comparison baseline
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
         shell: bash
         run: |
-          # Git consumers in these lanes compare trees, not repository ancestry.
-          # Missing/new-branch baselines retain the existing full-suite fallback.
+          # Missing/new-branch baselines retain the planner's full fallback.
           base="$AICS_HYGIENE_BASE_REF"
           if [[ "$base" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ && ! "$base" =~ ^0+$ ]] &&
              ! git cat-file -e "$base^{commit}" 2>/dev/null; then
@@ -87,161 +47,129 @@ jobs:
         with:
           node-version: 24.18.0
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run frontend tests related to this change
-        run: |
-          if git rev-parse --verify "$AICS_HYGIENE_BASE_REF^{commit}" >/dev/null 2>&1; then
-            npx vitest run --changed="$AICS_HYGIENE_BASE_REF" --passWithNoTests
-          else
-            npm run test:frontend
-          fi
-      - name: Run parallel-safe unit suite
-        run: npm run test:unit
-
-      - name: Upload quality diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: quality-unit
-          path: runtime/quality-reports
-          if-no-files-found: ignore
-          retention-days: 7
-
-  contract:
-    name: Content Contract Suite
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-      - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 24.18.0
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run controlled contract suite
-        run: npm run test:contract
-
-      - name: Upload quality diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: quality-contract
-          path: runtime/quality-reports
-          if-no-files-found: ignore
-          retention-days: 7
-
-  optional:
-    name: Changed tooling and release consumers
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 2
-          persist-credentials: false
-      - name: Fetch only the comparison baseline
-        shell: bash
-        run: |
-          # Git consumers in these lanes compare trees, not repository ancestry.
-          # Missing/new-branch baselines retain the existing full-suite fallback.
-          base="$AICS_HYGIENE_BASE_REF"
-          if [[ "$base" =~ ^([a-fA-F0-9]{40}|[a-fA-F0-9]{64})$ && ! "$base" =~ ^0+$ ]] &&
-             ! git cat-file -e "$base^{commit}" 2>/dev/null; then
-            git fetch --no-tags --no-recurse-submodules --depth=1 origin "$base" ||
-              echo "::warning::Comparison baseline unavailable; running the full fallback suites"
-          fi
-      - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
-        with:
-          node-version: 24.18.0
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Plan optional fixture prerequisites
-        id: optional-fixtures
+      - name: Select validation scope
+        id: scope
         run: |
           node <<'NODE'
-          const { selectOptionalTests, changedFiles } = require('./scripts/tests/run-optional-test-lanes.js');
-          const { QUALITY_TEST_SUITES, qualityTestMetadata } = require('./scripts/tests/quality-test-inventory.js');
-          let files;
-          try { files = selectOptionalTests(changedFiles()).flatMap(selection => selection.files); }
-          catch { files = [...QUALITY_TEST_SUITES.tooling, ...QUALITY_TEST_SUITES.release]; }
-          const required = files.some(file => qualityTestMetadata(file).environment === 'rust-loopback');
-          require('node:fs').appendFileSync(process.env.GITHUB_OUTPUT, `rust-backend=${required}\n`);
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          let full = ['schedule', 'workflow_dispatch'].includes(process.env.GITHUB_EVENT_NAME);
+          let docs = false;
+          const base = process.env.AICS_HYGIENE_BASE_REF || '';
+          if (!full) {
+            try {
+              if (!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(base) || /^0+$/.test(base)) throw new Error('Invalid baseline');
+              execFileSync('git', ['cat-file', '-e', base + '^{commit}']);
+              const files = execFileSync('git', ['diff', '--name-only', '-z', base, '--'], { encoding: 'utf8' }).split('\0').filter(Boolean);
+              docs = files.length > 0 && files.every(file => /^(docs|plans)\//.test(file)
+                || (/\.md$/.test(file) && !/^runtime-rs\/native-/.test(file)));
+            } catch (error) {
+              console.error('Unavailable comparison baseline; full validation selected:', error.message);
+              full = true;
+            }
+          }
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `full=${full}\ndocs=${docs}\n`);
           NODE
-      - name: Build selected Rust fixture backend
-        if: steps.optional-fixtures.outputs.rust-backend == 'true'
+      - name: Validate documentation
+        if: steps.scope.outputs.docs == 'true'
         run: |
-          rustup toolchain install 1.98.1 --profile minimal
-          rustup default 1.98.1
-          npm run wf -- rust:build
-      - name: Run optional lanes only when their consumers change
-        run: npm run test:optional
-      - name: Upload optional diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: quality-optional
-          path: runtime/quality-reports
-          if-no-files-found: ignore
-          retention-days: 7
-
-  e2e:
-    name: Browser Regression (Critical)
-    needs: [checks, unit, contract, optional]
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 24.18.0
-          cache: npm
+          git diff --check "$AICS_HYGIENE_BASE_REF" --
+          node --experimental-transform-types scripts/maintenance/check-doc-links.ts
       - name: Install dependencies
+        if: steps.scope.outputs.docs != 'true'
         run: npm ci
-      - name: Build SPA
-        run: npm run build
-      - name: Build Rust browser backend
+      - name: Plan selected prerequisites
+        if: steps.scope.outputs.docs != 'true'
+        id: plan
+        env:
+          FULL_MODE: ${{ steps.scope.outputs.full }}
         run: |
-          rustup toolchain install 1.98.1 --profile minimal
+          mkdir -p runtime/quality-checks
+          node <<'NODE'
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const full = process.env.FULL_MODE === 'true';
+          const args = ['scripts/maintenance/gate-quick.js', ...(full ? ['full'] : []), '--plan'];
+          const raw = execFileSync(process.execPath, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
+          const plan = JSON.parse(raw);
+          const prerequisites = plan.prerequisites;
+          const keys = ['rustToolchain', 'rustBuild', 'webBuild', 'browser'];
+          if (!prerequisites || keys.some(key => typeof prerequisites[key] !== 'boolean')) throw new Error('Invalid gate prerequisites');
+          fs.writeFileSync('runtime/quality-checks/plan.json', raw);
+          // Mixed UI/data/browser gates build the SPA once inside npm test.
+          const gateBuildsUi = plan.areas.some(area => ['ui', 'style', 'data', 'full'].includes(area));
+          const outputs = { ...prerequisites, webBuild: prerequisites.webBuild && !gateBuildsUi };
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, keys.map(key => `${key}=${full || outputs[key]}`).join('\n') + '\n');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `typecheck=${plan.areas.some(area => ['ui', 'full'].includes(area))}\n`);
+          NODE
+      - name: Cache frontend compilation information
+        if: steps.plan.outputs.typecheck == 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .cache/typecheck/app.tsbuildinfo
+          # The compiler still checks current inputs; this caches compilation information, never PASS.
+          key: ${{ runner.os }}-typecheck-node24-${{ hashFiles('package-lock.json', 'tsconfig.app.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: |
+            ${{ runner.os }}-typecheck-node24-${{ hashFiles('package-lock.json', 'tsconfig.app.json') }}-
+      - name: Cache Rust dependencies and compilation
+        if: steps.plan.outputs.rustToolchain == 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            runtime-rs/target
+          key: ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-${{ hashFiles('runtime-rs/**/*.rs') }}
+          restore-keys: |
+            ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-
+      - name: Prepare selected Rust toolchain
+        if: steps.plan.outputs.rustToolchain == 'true'
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal --component rustfmt --component clippy
           rustup default 1.98.1
-          npm run wf -- rust:build
+      - name: Build selected Rust fixture backend
+        if: steps.plan.outputs.rustBuild == 'true'
+        run: npm run wf -- rust:build
+      - name: Build selected browser UI
+        # Browser-only edits need dist on a clean runner; mixed/full gates build it themselves.
+        if: steps.plan.outputs.webBuild == 'true' && steps.scope.outputs.full != 'true'
+        run: npm run build
       - name: Cache Playwright browsers
+        if: steps.plan.outputs.browser == 'true'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install browser runtime
+      - name: Install selected browser runtime
+        if: steps.plan.outputs.browser == 'true'
         run: npx playwright install --with-deps chromium
-      - name: Run browser regression
-        run: npm run test:e2e:critical:run
+      - name: Run selected checks
+        if: steps.scope.outputs.docs != 'true'
         env:
-          CI: '1'
-      - name: Upload Playwright artifacts
-        if: failure()
+          FULL_MODE: ${{ steps.scope.outputs.full }}
+        run: |
+          set -o pipefail
+          if [[ "$FULL_MODE" == true ]]; then
+            npm run validate:all -- --verbose 2>&1 | tee runtime/quality-checks/check.log
+            npm run test:e2e:critical:run 2>&1 | tee runtime/quality-checks/critical.log
+          else
+            npm test -- --verbose 2>&1 | tee runtime/quality-checks/check.log
+          fi
+      - name: Preserve selected diagnostics
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: playwright-report
+          name: quality-selected-results
           path: |
-            playwright-report
+            runtime/quality-checks
+            runtime/quality-reports
             test-results
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 14
 
   minimum-node:
     name: Minimum Node compatibility
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -264,23 +192,20 @@ jobs:
   quality-summary:
     name: Quality Summary
     if: always()
-    needs: [checks, unit, contract, optional, e2e, minimum-node]
+    needs: [changed, minimum-node]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Require every quality lane to pass
+      - name: Require every selected quality lane to pass
         env:
-          CHECKS_RESULT: ${{ needs.checks.result }}
-          UNIT_RESULT: ${{ needs.unit.result }}
-          CONTRACT_RESULT: ${{ needs.contract.result }}
-          OPTIONAL_RESULT: ${{ needs.optional.result }}
+          SELECTED_RESULT: ${{ needs.changed.result }}
           MINIMUM_NODE_RESULT: ${{ needs.minimum-node.result }}
-          E2E_RESULT: ${{ needs.e2e.result }}
+          FULL_EVENT: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          printf 'checks=%s unit=%s contract=%s e2e=%s\n' "$CHECKS_RESULT" "$UNIT_RESULT" "$CONTRACT_RESULT" "$E2E_RESULT"
-          test "$CHECKS_RESULT" = "success"
-          test "$UNIT_RESULT" = "success"
-          test "$CONTRACT_RESULT" = "success"
-          test "$OPTIONAL_RESULT" = "success"
-          test "$E2E_RESULT" = "success"
-          test "$MINIMUM_NODE_RESULT" = "success"
+          printf 'selected=%s minimum-node=%s full-event=%s\n' "$SELECTED_RESULT" "$MINIMUM_NODE_RESULT" "$FULL_EVENT"
+          test "$SELECTED_RESULT" = success
+          if [[ "$FULL_EVENT" == true ]]; then
+            test "$MINIMUM_NODE_RESULT" = success
+          else
+            test "$MINIMUM_NODE_RESULT" = skipped
+          fi

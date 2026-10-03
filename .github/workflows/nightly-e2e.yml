@@ -31,8 +31,7 @@ jobs:
         run: npm ci
       - name: Build SPA
         run: npm run build
-      - name: Full frontend coverage with existing thresholds
-        run: npm run test:frontend -- --coverage
+      # Full coverage and its thresholds are owned by Quality's full gate.
       - name: Build Rust browser backend
         run: |
           rustup toolchain install 1.98.1 --profile minimal

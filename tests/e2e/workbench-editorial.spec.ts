@@ -109,7 +109,15 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   await expect(page.locator('.result-image')).toHaveCSS('opacity', '1')
   await expect(page.locator('.stage-placeholder')).toHaveCount(0)
   await expect(page.getByRole('button', { name: '存入作品册', exact: true })).toBeInViewport()
-  expect((await page.locator('.result-image-actions').boundingBox())!.height).toBeLessThanOrEqual(80)
+  const actionsBox = (await page.locator('.result-image-actions').boundingBox())!
+  const imageBox = (await page.locator('.result-image-reveal').boundingBox())!
+  const viewport = page.viewportSize()!
+  expect(actionsBox.x).toBeGreaterThanOrEqual(0)
+  expect(actionsBox.x + actionsBox.width).toBeLessThanOrEqual(viewport.width + 1)
+  expect(actionsBox.y + actionsBox.height).toBeLessThanOrEqual(viewport.height + 1)
+  const overlap = Math.min(actionsBox.x + actionsBox.width, imageBox.x + imageBox.width) - Math.max(actionsBox.x, imageBox.x) > 1
+    && Math.min(actionsBox.y + actionsBox.height, imageBox.y + imageBox.height) - Math.max(actionsBox.y, imageBox.y) > 1
+  expect(overlap, 'result controls must not cover the artwork').toBe(false)
   await page.getByRole('tab', { name:'成片', exact:true }).click()
   await expect(page.getByRole('button', { name: '加入分镜', exact: true })).toBeVisible()
   await page.getByRole('tab', { name:'生成', exact:true }).click()

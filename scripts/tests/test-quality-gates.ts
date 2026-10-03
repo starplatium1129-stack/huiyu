@@ -61,7 +61,7 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
   const sibling = git ? path.resolve(path.dirname(git), '../bin/bash.exe') : '';
   const bash = sibling && fs.existsSync(sibling) ? sibling : 'bash';
   const scripts = new Set<string>();
-  for (const name of ['unit', 'optional']) {
+  for (const name of ['changed']) {
     const lane = section(name);
     const script = lane.split('      - name: Fetch only the comparison baseline\n')[1]
       .split('        run: |\n')[1].split('      - name:')[0].replace(/^ {10}/gm, '');
@@ -85,6 +85,93 @@ test('quality shallow lanes fetch only validated comparison commits and retain f
       if (fetch === '1') assert.match(result.stdout, /full fallback suites/);
     }
   }
+});
+
+test('gate plans are read-only, use the CI baseline and retain full fallback when it is unavailable', async () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root, 'scripts/maintenance/gate-quick.js'), realRequire = createRequire(entry);
+  const output: string[] = [], calls: string[][] = [];
+  let unavailable = false;
+  const fakeProcess = Object.create(process) as NodeJS.Process;
+  fakeProcess.env = { ...process.env, CI: '1', AICS_HYGIENE_BASE_REF: 'a'.repeat(40) };
+  const fakeRequire = (name: string) => {
+    if (name === 'node:child_process') return { spawnSync: (file: string, args: string[]) => {
+      assert.equal(file, 'git', 'planning must never run a test or build'); calls.push(args);
+      return { status: unavailable ? 128 : 0, stderr: unavailable ? 'missing baseline' : '', stdout: args[0] === 'diff' ? 'docs/workflow.md\0' : '' };
+    } };
+    return realRequire(name);
+  };
+  const module = { exports: {} as typeof import('../maintenance/gate-quick') };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, process: fakeProcess,
+    __dirname: path.dirname(entry), console: { log: (line: string) => output.push(line), error() {} } });
+  assert.equal(await module.exports.main(['--plan']), 0);
+  assert.equal(output.length, 1);
+  assert.equal(calls[0][3], 'a'.repeat(40));
+  const plan = JSON.parse(output.pop()!);
+  assert.deepEqual(plan.areas, ['docs']);
+  assert.deepEqual(plan.prerequisites, { rustToolchain: false, rustBuild: false, webBuild: false, browser: false });
+  unavailable = true;
+  assert.equal(await module.exports.main(['--plan']), 0);
+  const fallback = JSON.parse(output.pop()!);
+  assert.deepEqual(fallback.areas, ['full']);
+  assert.equal(fallback.prerequisites.rustBuild, true);
+  assert.equal(await module.exports.main(['--base', '--bad', '--plan']), 2);
+});
+
+test('a selected failure stays fatal while independent quick scopes still produce evidence', async () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root, 'scripts/maintenance/gate-quick.js'), realRequire = createRequire(entry);
+  const calls: string[] = [];
+  let preparationThrows = false;
+  const fakeProcess = Object.create(process) as NodeJS.Process;
+  fakeProcess.env = { ...process.env, CI: '1', AICS_HYGIENE_BASE_REF: 'a'.repeat(40) };
+  const fakeRequire = (name: string) => {
+    if (name === 'node:child_process') return { spawnSync: (_file: string, args: string[]) => ({ status: 0, stdout: args[0] === 'diff' ? 'scripts/tests/test-api-client.ts\0docs/workflow.md\0' : '' }) };
+    if (name === '../lib/ensure-data-build') return { ensureAll() { if (preparationThrows) throw new Error('MODULE_NOT_FOUND fixture'); } };
+    if (name === '../tests/run-quality-suite') return { ...realRequire(name), runSuiteFiles: () => { calls.push('failed-test'); return 1; } };
+    if (name === '../lib/test-process-pool') return { runTestProcessPool: async () => {
+      calls.push('independent-docs'); return { results: [{ ok: true, duration: 0, output: '', reason: '' }] };
+    } };
+    if (name === '../tests/quality-report') return { ...realRequire(name), writeQualityReport() {} };
+    return realRequire(name);
+  };
+  const module = { exports: {} as typeof import('../maintenance/gate-quick') };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, process: fakeProcess,
+    __dirname: path.dirname(entry), AbortController, console: { log() {}, error() {} } });
+  assert.equal(await module.exports.main([]), 1);
+  assert.deepEqual(calls, ['failed-test', 'independent-docs']);
+  calls.length = 0; preparationThrows = true;
+  assert.equal(await module.exports.main([]), 1);
+  assert.deepEqual(calls, ['independent-docs']);
+});
+
+test('failed mixed browser builds skip only their dependent E2E and keep independent checks', async () => {
+  const vm: typeof import('node:vm') = require('node:vm');
+  const { createRequire }: typeof import('node:module') = require('node:module');
+  const entry = path.join(root, 'scripts/maintenance/gate-quick.js'), realRequire = createRequire(entry);
+  const calls: string[] = [], statuses: string[] = [];
+  const fakeProcess = Object.create(process) as NodeJS.Process;
+  fakeProcess.env = { ...process.env, CI: '1', AICS_HYGIENE_BASE_REF: 'a'.repeat(40) };
+  const fakeRequire = (name: string) => {
+    if (name === 'node:child_process') return { spawnSync: (_file: string, args: string[]) => ({ status: 0, stdout: args[0] === 'diff' ? 'src/utils/characterTheme.ts\0tests/e2e/studio.spec.ts\0docs/workflow.md\0' : '' }) };
+    if (name === '../lib/ensure-data-build') return { ensurePopularBuilt() {} };
+    if (name === '../tests/run-quality-suite') return { ...realRequire(name), runNpmScript: (script: string) => {
+      calls.push(script); return { ok: script !== 'build:web:run', duration: 0, output: '', reason: 'fixture' };
+    } };
+    if (name === '../lib/test-process-pool') return { runTestProcessPool: async (entries: Array<{ file: string }>) => {
+      calls.push(path.basename(entries[0].file)); return { results: [{ ok: true, duration: 0, output: '', reason: '' }] };
+    } };
+    if (name === '../tests/quality-report') return { ...realRequire(name), writeQualityReport: (_name: string, results: Array<{ status: string }>) => { statuses.push(results[0].status); } };
+    return realRequire(name);
+  };
+  const module = { exports: {} as typeof import('../maintenance/gate-quick') };
+  vm.runInNewContext(fs.readFileSync(entry, 'utf8'), { require: fakeRequire, module, exports: module.exports, process: fakeProcess,
+    __dirname: path.dirname(entry), AbortController, console: { log() {}, error() {} } });
+  assert.equal(await module.exports.main([]), 1);
+  assert.deepEqual(calls, ['build:web:run', 'typecheck:app', 'vitest.mjs', 'check-doc-links.js']);
+  assert.ok(statuses.includes('not-run'), 'dependent browsers must not count as passed');
 });
 
 // Retired backend tests must not survive in an npm or CI command.

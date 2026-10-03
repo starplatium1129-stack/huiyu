@@ -33,7 +33,10 @@ test('browser inventory covers each spec once and automated lanes exclude manual
 test('nightly screenshots are uploaded from the hidden review directory without silent loss', () => {
   const root = path.resolve(__dirname, '..', '..');
   const nightly = fs.readFileSync(path.join(root, '.github', 'workflows', 'nightly-e2e.yml'), 'utf8');
-  const upload = nightly.split('      - name: Upload visual review screenshots\n')[1]?.split('\n      - name:')[0];
+  const uploads = nightly.split(/\r?\n(?= {6}- )/).filter(step => /uses:\s+actions\/upload-artifact@/.test(step)
+    && /^\s+path:\s+\.review-shots\/\*\.png\s*$/m.test(step));
+  assert.equal(uploads.length, 1, 'nightly must have one dedicated review screenshot upload');
+  const upload = uploads[0];
   assert.ok(upload, 'nightly must keep the dedicated screenshot upload step');
   assert.match(upload, /^\s+if:\s+always\(\)\s*$/m,
     'screenshots must remain available when another visual assertion fails');

@@ -5,6 +5,8 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/typecheck/app.tsbuildinfo",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "jsx": "preserve",

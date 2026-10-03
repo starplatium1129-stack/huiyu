@@ -4,19 +4,20 @@ import {
   characterThemeStyle,
   clearCharacterAtmosphere,
   resolveCharacterTheme,
+  STUDIO_CHARACTER_THEMES,
 } from './characterTheme'
 
 afterEach(() => clearCharacterAtmosphere())
 
 describe('characterTheme', () => {
   it('keeps a tuned character palette while exposing derived custom properties', () => {
-    const theme = resolveCharacterTheme('natsume', [])
-    const style = characterThemeStyle('natsume', []) as Record<string, string>
+    const records = [{ id: 'natsume', accent_color: '#123abc' }]
+    const theme = resolveCharacterTheme('natsume', records)
+    const style = characterThemeStyle('natsume', records) as Record<string, string>
 
-    expect(theme.accent).toBe('#fbb040')
-    expect(theme.aura).toBe('rgba(251,176,64,.30)')
-    expect(style['--character-accent']).toBe('#fbb040')
-    expect(style['--character-soft']).toContain('16%')
+    expect(theme).toEqual(STUDIO_CHARACTER_THEMES.natsume)
+    expect(style['--character-accent']).toBe(theme.accent)
+    expect(style['--character-soft']).toContain(theme.accent)
   })
 
   it('uses a valid data accent for a character without a tuned override', () => {
@@ -26,14 +27,17 @@ describe('characterTheme', () => {
 
     expect(theme.accent).toBe('#123abc')
     expect(style['--character-accent-hover']).toContain('#123abc')
-    expect(style['--character-aura']).toContain('22%')
+    expect(style['--character-aura']).toContain(theme.accent)
   })
 
   it('sets and clears atmosphere document tokens', () => {
     applyCharacterAtmosphere('natsume')
-    expect(document.documentElement.style.getPropertyValue('--character-aura')).toBe('rgba(251,176,64,.30)')
+    const theme = resolveCharacterTheme('natsume')
+    expect(document.documentElement.style.getPropertyValue('--character-aura')).toBe(theme.aura)
+    expect(document.documentElement.style.getPropertyValue('--character-aura-secondary')).toBe(theme.auraSecondary)
     clearCharacterAtmosphere()
     expect(document.documentElement.style.getPropertyValue('--character-aura')).toBe('')
+    expect(document.documentElement.style.getPropertyValue('--character-aura-secondary')).toBe('')
   })
 })
 

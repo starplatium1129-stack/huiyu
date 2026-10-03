@@ -3,7 +3,24 @@ name: Rust Runtime
 on:
   push:
     branches: [main]
+    paths:
+      - 'runtime-rs/**'
+      - 'scripts/maintenance/run-rust-runtime.*'
+      - 'scripts/maintenance/desktop-rust-inputs.*'
+      - 'scripts/lib/delivery-identity.*'
+      - 'scripts/workflow.*'
+      - 'package*.json'
+      - '.github/workflows/rust-runtime.yml'
   pull_request:
+    paths:
+      - 'runtime-rs/**'
+      - 'scripts/maintenance/run-rust-runtime.*'
+      - 'scripts/maintenance/desktop-rust-inputs.*'
+      - 'scripts/lib/delivery-identity.*'
+      - 'scripts/workflow.*'
+      - 'package*.json'
+      - '.github/workflows/rust-runtime.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,11 +45,27 @@ jobs:
           cache: npm
       - name: Prepare toolchain and locked Node fixtures
         run: |
-          rustup toolchain install 1.98.1 --profile minimal --component rustfmt --component clippy
+          if [[ "${{ github.event_name }}" == workflow_dispatch ]]; then
+            rustup toolchain install 1.98.1 --profile minimal --component rustfmt --component clippy
+          else
+            rustup toolchain install 1.98.1 --profile minimal
+          fi
           rustup default 1.98.1
           npm ci --ignore-scripts
           npm run build:runtime
+      - name: Cache Rust dependencies and compilation
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            runtime-rs/target
+          key: ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-${{ hashFiles('runtime-rs/**/*.rs') }}
+          restore-keys: |
+            ${{ runner.os }}-runtime-1.98.1-${{ hashFiles('runtime-rs/Cargo.lock') }}-
       - name: Check Rust runtime
+        # Daily source checks are owned by Quality's selected npm test gate.
+        if: github.event_name == 'workflow_dispatch'
         run: npm run wf -- rust:check
       - name: Build and verify Node compatibility
         env:

@@ -466,7 +466,8 @@ test('useControlActions.doStart stops after a real config API failure', async ()
   assert.ok(toasts.some(toast => toast.isError && /配置保存失败：disk full/.test(toast.message)));
 });
 
-test('useControlStatus stopPolling aborts isolated in-flight status and logs requests', async () => {
+test('useControlStatus stopPolling aborts isolated in-flight status and logs requests', async t => {
+  t.mock.timers.enable({ apis: ['setInterval'] });
   const statusSignals: any = [];
   const logSignals: any = [];
   const waitForAbort = (signal: AbortSignal|undefined, bucket: any[]) => new Promise((_resolve, reject) => {
@@ -486,7 +487,8 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
     assert.equal(statusSignals.length, 1);
     assert.equal(logSignals.length, 1);
     assert.notEqual(statusSignals[0], logSignals[0]);
-    await new Promise(resolve => setTimeout(resolve, 3100));
+    t.mock.timers.tick(3100);
+    await Promise.resolve();
     assert.equal(statusSignals.length, 1, 'slow status must not be replaced by a timer tick');
     assert.equal(logSignals.length, 1, 'slow logs must not be replaced by a timer tick');
     assert.equal(statusSignals[0].aborted, false);

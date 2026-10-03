@@ -396,9 +396,9 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'gate:quick': {
     desc: '日常按 Git 改动选相关前端、样式、Node/Rust 和常规 E2E；显式 ui|style|rust|data|all 选择领域',
     cmd: ['node', 'scripts/maintenance/gate-quick.js'],
-    opts: '[ui|style|rust|data|all] [--verbose] [--all]',
+    opts: '[ui|style|rust|data|all] [--base HEAD|SHA] [--verbose] [--all]；直接 gate-quick.js --plan 输出选测 JSON',
     docs: 'docs/workflow.md',
-    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test / npm run validate 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check，不扩大维护与发行专项；自动 UI 按 Vitest 导入图选相关测试；常规 E2E 测试本身改动复用已有 dist，混合 UI/data 改动先构建；共享夹具、runner、配置、未知路径升级 full；纯文档跳过'] },
+    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.ts', unknown: ['实际范围由 Git 变更或位置参数决定；Rust 检查需要既有工具链，首次可能下载锁定 crate'], notes: ['npm test / npm run validate 同一入口；Rust源码/Cargo/隔离夹具变更只派发rust:check；自动 UI 按 Vitest 导入图选相关测试，纯style不跑类型与单测；已登记工具/CI消费者定向，依赖及未知影响面升级full；文档只查链接；CI用AICS_HYGIENE_BASE_REF，--base可覆盖；直接脚本--plan只读输出范围与clean checkout前置条件'] },
   },
   'gate:full': {
     desc: '全量门禁：check + Rust + 前端覆盖率 + unit + contract + tooling + release + 打包预算（横切重构/未知影响面）',
