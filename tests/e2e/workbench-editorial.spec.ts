@@ -95,7 +95,7 @@ test(`atelier mocked generation states and saving dark`, async ({ page }, testIn
   await expect(page.locator('.stage-generating-title')).toBeVisible()
   await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeDisabled()
   await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-running.png`) })
-  await page.getByRole('button', { name: '先停一下', exact: true }).click()
+  await page.getByRole('button', { name: '停止绘制', exact: true }).click()
   await expect.poll(() => cancellations).toBe(1)
   await expect(page.locator('.stage-placeholder')).toHaveClass(/is-paused/)
   state = 'failed'
