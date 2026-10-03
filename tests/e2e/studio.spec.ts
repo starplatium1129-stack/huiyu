@@ -796,7 +796,7 @@ test('scene explorer promotes locally used scenes without deleting the archive',
   await page.goto('/scene-explorer');
   await expect(page.getByRole('button', { name: '常用 1', exact: true })).toHaveClass(/active/);
   await expect(page.locator('.scene-grid .sc')).toHaveCount(1);
-  await expect(page.locator('.sc-tier.personal')).toContainText('常用 3');
+  await expect(page.locator('.scene-grid .sc[data-scene-id="sc001"] .scene-curation-note')).toHaveText('常用 3');
 
   await page.getByRole('button', { name: /完整库/ }).click();
   const fullLibrary = page.getByRole('button', { name: /^完整库 \d+$/ });

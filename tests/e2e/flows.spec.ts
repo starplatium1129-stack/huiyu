@@ -138,7 +138,7 @@ test.beforeEach(async ({ request }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送到 SD', async ({ page, request }) => {
   const errors = collectRuntimeErrors(page);
-  // 让出图耗时 2.5 秒，好让 1.2 秒一次的进度轮询真的跑起来
+  // 留出观察任务等待态的时间；WebUI 未返回进度时保持不确定状态。
   await fault(request, MOCK.sd, { renderMs: 2500 });
   await page.goto('/prompt-builder?scene=sc001');
 
@@ -161,10 +161,13 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
 
   await page.getByRole('button', { name: '生成图片' }).click();
 
-  // 生成中的等待态：舞台切到 RENDERING，进度条出现
-  await expect(page.locator('.stage-ready')).toHaveText('正在显影');
-  await expect(page.locator('.stage-progress-ring')).toBeVisible();
-  await expect(page.locator('.stage-generating-sub')).toContainText(/%/);
+  // 后台生成与成片显现分开；取消可达，未返回进度时不编造百分比。
+  await expect(page.locator('.stage-ready')).toHaveText('正在生成');
+  await expect(page.getByRole('button', { name: '停止绘制', exact: true })).toBeEnabled();
+  const progress = page.getByRole('progressbar', { name: '生图进度', exact: true });
+  await expect(progress).toBeVisible();
+  await expect(progress).not.toHaveAttribute('aria-valuenow', /.+/);
+  await expect(page.locator('.stage-generating-sub')).toContainText(/SD WebUI 生成中.*已等待/);
 
   // 成片出现 → blob URL 来自 mock 返回的 base64 PNG
   await expect(page.locator('.result-image')).toBeVisible({ timeout: 15_000 });
