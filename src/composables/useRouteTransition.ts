@@ -49,7 +49,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const crossRoute = !!departingPath && departingPath !== pathname(path)
     // A same-page/query refresh does not replay motion. Returning to a cached page
     // gets only a short opacity settle: no remount, translation or scroll reset.
-    if ((!current && (restored || (cachedActivation && !crossRoute))) || prefersReducedMotion() || typeof el.animate !== 'function') {
+    if ((!current && (restored || (cachedActivation && !crossRoute))) || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') {
       delete el.dataset.routeEntering
       if (path) markUiFluidityForPath(path, 'settled')
       done()
@@ -124,7 +124,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     el.inert = true
     settle(el)
     const destination = pathname(destinationPath?.() || '')
-    if (!destination || destination === departingPath || prefersReducedMotion()
+    if (!destination || destination === departingPath || prefersReducedMotion() || document.hidden
       || typeof el.animate !== 'function') { done(); return }
     let animation: Animation | undefined, finished = false
     const finish = () => {
@@ -159,10 +159,13 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     el.dataset.routeEntering = 'true'
   }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
+  function visibilityChanged() { if (document.hidden) settleAll() }
   let removeMediaListener: (() => void) | undefined
   onMounted(() => {
     // The app preference event remains available even without matchMedia.
     window.addEventListener('atelier:motion-preference', motionChanged)
+    // Hidden tabs can suspend animation timelines; release Vue callbacks now.
+    document.addEventListener('visibilitychange', visibilityChanged)
     if (typeof window.matchMedia !== 'function') return
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (typeof media.addEventListener === 'function') {
@@ -178,6 +181,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     settleAll()
     removeMediaListener?.()
     window.removeEventListener('atelier:motion-preference', motionChanged)
+    document.removeEventListener('visibilitychange', visibilityChanged)
   })
   return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled }
 }
