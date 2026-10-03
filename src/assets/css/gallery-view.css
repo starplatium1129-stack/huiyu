@@ -1,73 +1,83 @@
 @reference "./tailwind.css";
 /* Browse headers share the existing display/body steps; the wall keeps its wider frame. */
-.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:var(--s-5) var(--s-5) var(--s-8); }
-.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-4); }
+.gallery-shell { --page-max:var(--desktop-workspace-max); position:relative; width:min(var(--page-max),100%); margin:0 auto; padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-8); }
+.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-3); }
+.gallery-heading-copy { min-width:0; }
+.gallery-kicker { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-1); color:var(--text-secondary); font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.1em; }
+.gallery-kicker .archive-icon { width:16px; height:16px; color:var(--accent); }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
 .gallery-breadcrumb button { border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; padding:var(--s-1) 0; @apply tw:min-h-[32px]; }
 .gallery-breadcrumb button:hover { @apply tw:text-accent; }
 .gallery-breadcrumb button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
-.gallery-title { @apply tw:m-0 tw:text-primary tw:font-display; font-size:var(--fs-title); @apply tw:font-semibold; letter-spacing:-.03em; @apply tw:leading-tight; }
+.gallery-title { margin:0; color:var(--text-primary); font:500 var(--fs-display)/var(--lh-tight) var(--font-serif); letter-spacing:-.03em; }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
 
-.gallery-toolbar { margin:0 auto; @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); }
+/* This artbook owns a solid reading rail; shared glass washes would obscure its labels. */
+:root body .gallery-page .gallery-toolbar.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) 0 var(--s-3); border:0; border-block:1px solid var(--border-soft); border-radius:0; background:var(--bg-base); box-shadow:none; backdrop-filter:none; }
 .gallery-toolbar::before { @apply tw:hidden; }
 /* 展开的生成条件留在文档流中，短窗口仍能滚到作品与批量操作。 */
 .gallery-toolbar:has(.gallery-generation-filters details[open]) { position:relative; top:auto; }
-.gallery-refine-controls { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-3 tw:w-full; border-top:1px solid var(--border-soft); padding-top:var(--s-3); }
+.gallery-refine-controls { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-2 tw:w-full; }
 .gallery-collection-controls { flex:1 1 28rem; min-width:0; }
 .gallery-refine-controls :deep(.gallery-generation-filters:has(details[open])) { flex-basis:100%; }
 .gallery-browse-controls,.gallery-manage-controls { @apply tw:flex tw:items-center tw:gap-s-1 tw:flex-wrap; }
-.gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-sm); @apply tw:mr-auto tw:p-s-1 tw:rounded-md; border:1px solid var(--border-soft); background:var(--bg-base); }
-.gallery-manage-controls { @apply tw:pl-s-2; border-left:1px solid var(--border-soft); }
-.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; min-height:var(--control-height-sm); margin:var(--s-3) 0 var(--s-3); }
+.gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-sm); @apply tw:mr-auto tw:p-s-1; border:0; background:transparent; }
+.gallery-browse-controls .gallery-filter > span { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); margin-left:var(--s-1); }
+.gallery-manage-controls { margin-left:auto; }
+.gallery-manage-controls .gallery-filter { min-height:var(--control-height-sm); }
+.gallery-select-toggle.active { color:var(--accent); background:var(--accent-soft); border-color:var(--accent); }
+.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; min-height:var(--control-height-sm); margin:var(--s-2) 0; }
 .gallery-album-overview { margin-top:var(--s-5); }
 .gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
 .gallery-album-overview:focus,.gallery-summary:focus { outline:none; }
 .gallery-filter :deep(.archive-icon) { @apply tw:w-[16px] tw:h-[16px]; vertical-align:-.2em; @apply tw:mr-[3px]; }
 /* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
-.gallery-search-field { @apply tw:relative; flex:1 1 210px; @apply tw:min-w-[160px] tw:max-w-[280px]; }
+.gallery-search-field { @apply tw:relative; flex:1 1 260px; min-width:160px; max-width:360px; }
 .gallery-filter { @apply tw:relative; z-index:var(--z-raised); min-height:var(--control-height); padding:0 var(--s-3); border:1px solid transparent; @apply tw:rounded-sm; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
-.gallery-select-toggle { min-width:104px; }
+.gallery-select-toggle { min-width:84px; }
 .gallery-filter:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 8%,var(--bg-surface)); @apply tw:text-accent; }
 .gallery-filter:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.gallery-project { @apply tw:w-auto tw:min-w-[140px]; }
+.gallery-project { width:180px; max-width:100%; min-width:140px; }
 .gallery-tags { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-secondary tw:text-label-xs; }
 .gallery-tags :deep(.studio-select-wrapper) { width:min(260px,100%); }
 .gallery-tags .gallery-filter { @apply tw:max-w-full; overflow-wrap:anywhere; @apply tw:h-auto; padding-block:var(--s-2); }
 .gallery-toolbar-note { @apply tw:text-secondary tw:text-label-xs tw:leading-body tw:text-right; }
 
 /* 固定操作层不改变展墙位置；额外尾部空间让最后一幅能滚到操作层上方。 */
-.gallery-selection-dock { position:fixed; z-index:var(--z-sticky); left:50%; bottom:var(--s-4); transform:translateX(-50%); width:min(calc(100% - var(--s-5) * 2),1560px); display:flex; flex-direction:column; gap:var(--s-2); max-height:50vh; pointer-events:none; }
+.gallery-selection-dock { position:fixed; z-index:var(--z-sticky); left:50%; bottom:var(--s-4); transform:translateX(-50%); width:min(calc(100% - var(--s-5) * 2),1080px); display:flex; flex-direction:column; gap:var(--s-2); max-height:50dvh; pointer-events:none; }
 .gallery-selection-dock:has(> .gallery-bulkbar, > .gallery-organization) { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 32%,var(--border-soft)); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-lg); pointer-events:auto; }
 .gallery-image-browse:has(.gallery-selection-dock > .gallery-bulkbar, .gallery-selection-dock > .gallery-organization) { padding-bottom:140px; }
 .gallery-image-browse:has(.gallery-selection-dock .organization-form) { padding-bottom:50vh; }
 .gallery-bulkbar { @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; flex-shrink:0; min-height:var(--control-height); }
 .gallery-bulk-actions { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:ml-auto; }
-.gallery-bulk-count { @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-mono); @apply tw:whitespace-nowrap; }
+.gallery-bulk-count { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); font:500 var(--fs-label-sm) var(--font-sans); white-space:nowrap; }
+.gallery-bulk-count > .archive-icon,.gallery-bulk-count strong { color:var(--accent); }
+.gallery-bulk-count strong { font:600 var(--fs-body) var(--font-mono); }
+.gallery-bulk-count > span { color:var(--text-secondary); }
 .gallery-selection-dock :deep(.gallery-organization) { min-height:0; overflow:auto; overscroll-behavior:contain; margin:0; padding:var(--s-2) 0 0; border:0; border-top:1px solid var(--border-soft); border-radius:0; }
 
 /* 画廊多列瀑布流展墙：等宽列流式拼接，上下紧密咬合，零垂直多余空位 */
 .gallery-wall {
   @apply tw:w-full;
   margin: 0 auto;
-  @apply tw:flex tw:flex-col tw:gap-s-4;
+  @apply tw:flex tw:flex-col tw:gap-s-2;
 }
 .gallery-columns {
   @apply tw:grid;
   grid-template-columns: repeat(var(--wall-cols, 4), minmax(0, 1fr));
-  gap: var(--s-3);
+  gap: var(--workspace-panel-gap,var(--s-4));
   align-items: start;
 }
 .gallery-col {
   @apply tw:flex tw:flex-col;
-  gap: var(--s-3);
+  gap: var(--workspace-panel-gap,var(--s-4));
   @apply tw:min-w-0;
 }
 .gallery-loading-wall { @apply tw:min-h-[340px]; }
-.gallery-section { grid-column:1 / -1; @apply tw:flex tw:items-center tw:gap-s-3 tw:m-0 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); letter-spacing:.08em; }
+.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:0; color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.04em; }
 .gallery-more { grid-column:1 / -1; @apply tw:flex tw:items-center tw:justify-center tw:gap-s-2; margin:var(--s-5) 0 0; @apply tw:p-s-3 tw:text-muted; font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; @apply tw:h-[1px]; flex:1; background:var(--border-soft); }
 
@@ -96,4 +106,4 @@
   .gallery-columns { @apply tw:gap-s-3; }
   .gallery-col { @apply tw:gap-s-3; }
 }
-.gallery-browse-controls .gallery-filter.active { @apply tw:text-accent tw:font-semibold; background:transparent; border-color:transparent; }
+.gallery-browse-controls .gallery-filter.active { color:var(--accent); font-weight:600; background:transparent; border-color:transparent; }

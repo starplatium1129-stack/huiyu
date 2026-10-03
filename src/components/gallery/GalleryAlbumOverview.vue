@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading && !error" class="album-overview-actions">
-      <p>{{ characters ? '按保存的角色信息自动归集，换装和场景变化仍收在同一角色下。' : '手动精选与智能画册，一起收在这里。' }}</p>
+      <p>{{ characters ? '同一位角色，不同的故事。' : '把喜欢的作品，整理成册。' }}</p>
       <template v-if="!characters"><button class="btn btn-ghost" type="button" @click="emit('smart')"><ArchiveIcon name="pin" />新建智能画册</button><button v-if="albums.length" class="btn btn-primary" type="button" @click="emit('manual')"><ArchiveIcon name="book" />新建画册</button></template>
     </div>
     <GalleryProjectAlbums v-if="!loading && (!error || albums.length)" :albums="albums" :selected-id="selectedId" :characters="characters" :busy="busy || !!error" @select="emit('select',$event)" @edit="emit('edit',$event)" @remove="emit('remove',$event)" @visible="emit('visible',$event)" />

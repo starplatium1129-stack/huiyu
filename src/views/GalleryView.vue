@@ -1,7 +1,8 @@
 <template>
   <article class="gallery-shell gallery-page" ref="shellEl">
     <header class="gallery-intro">
-      <div>
+      <div class="gallery-heading-copy">
+        <div class="gallery-kicker"><ArchiveIcon name="book" />MY ARTBOOK / 私人画册</div>
         <h1 class="gallery-title">我的作品</h1>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
@@ -31,23 +32,12 @@
         故事与完整 prompt——很多旧作只记得里面出现过某个词。
       -->
       <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
-      <StudioSelect v-show="!albumsOpen" v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
       <!--
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
       -->
-      <div v-show="!albumsOpen" class="gallery-manage-controls" role="group" aria-label="管理作品">
-      <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }"
-        :aria-pressed="selectMode" @click="toggleSelectMode">
-        <ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}
-      </button>
-      <!-- 回收站（2026-08-31）：查看/恢复软删作品，30 天保留 -->
-      <button class="gallery-filter" type="button" :class="{ active: trashMode }"
-        :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()">
-        <ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}
-      </button>
-      </div>
       <div v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-controls">
+        <StudioSelect v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
         <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
         <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
       </div>
@@ -58,13 +48,17 @@
     <div v-show="!albumsOpen" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
-      <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
+      <div class="gallery-manage-controls" role="group" aria-label="管理作品">
+        <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
+        <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }" :aria-pressed="selectMode" @click="toggleSelectMode"><ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}</button>
+        <button class="gallery-filter gallery-trash-toggle" type="button" :class="{ active: trashMode }" :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()"><ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}</button>
+      </div>
       <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
 
     <div class="gallery-selection-dock">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
-      <span class="gallery-bulk-count" aria-live="polite">已选 {{ selectedIds.size }} / {{ visible.length }}</span>
+      <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
