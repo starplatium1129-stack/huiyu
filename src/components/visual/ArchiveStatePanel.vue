@@ -51,9 +51,11 @@ const iconName = computed<ArchiveIconName>(() => ({
 [data-kind="filtered"] { --state-accent:var(--archive-blue); }
 [data-kind="error"] { --state-accent:var(--danger-text); }
 [data-kind="success"] { --state-accent:var(--success-text); }
+[data-kind="warning"] { --state-accent:var(--warning-text); }
 [data-kind="loading"] :deep(.archive-icon) { animation:state-counter 1.1s linear infinite; }
 [data-kind="error"] h2 { color:var(--danger-text); }
 [data-kind="success"] h2 { color:var(--success-text); }
+[data-kind="warning"] h2 { color:var(--warning-text); }
 @keyframes state-counter{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.archive-state-mark i,.archive-state-mark :deep(.archive-icon),.archive-state-mark{animation:none!important}}
 :root:is([data-motion='reduce'],[data-motion='reduced']) .archive-state-mark :deep(.archive-icon) { animation:none!important; }

@@ -51,7 +51,7 @@
       </div>
     </div>
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
+      <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
     <div v-show="!albumsOpen" class="gallery-image-browse">
     <GalleryGenerationFilters v-if="!trashMode" v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
