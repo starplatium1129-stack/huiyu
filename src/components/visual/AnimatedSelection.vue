@@ -19,6 +19,7 @@ let parent: HTMLElement | null = null
 let observedTarget: HTMLElement | null = null
 let destinationBox = ''
 let keyboardInput = false
+let measureFrame = 0
 function keyboard(event: KeyboardEvent) {
   if (parent?.classList.contains('studio-segments')) {
     keyboardInput = false
@@ -43,8 +44,19 @@ function keyboard(event: KeyboardEvent) {
 }
 function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
 // Motion batches all indicator reads before any indicator writes in this frame.
-function schedule() { if (!suspended && !document.hidden) frame.read(update) }
+function schedule() {
+  if (suspended || document.hidden || measureFrame) return
+  // Navigation first commits and paints its content. Decorative geometry reads
+  // then use that layout, rather than forcing a large new image page to lay out.
+  measureFrame = requestAnimationFrame(() => {
+    measureFrame = requestAnimationFrame(() => {
+      measureFrame = 0
+      if (!suspended && !document.hidden) frame.read(update)
+    })
+  })
+}
 function cancelScheduled() {
+  cancelAnimationFrame(measureFrame); measureFrame = 0
   cancelFrame(update); cancelFrame(render); measurement = null
   // Reactivation must snap to the selected target, not retain a paused spring.
   initialized = false; destinationBox = ''

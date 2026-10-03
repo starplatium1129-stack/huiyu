@@ -1,6 +1,7 @@
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 import { parseSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
+import { toRaw } from 'vue'
 import type { ArtworkProjectRecord } from '@/application/artwork/artworkRepository'
 
 export interface GalleryProject {
@@ -24,6 +25,20 @@ export function galleryProjects(records: ArtworkProjectRecord[]): GalleryProject
 
 const loadVersions = new WeakMap<object, number>()
 
+function unchangedRecords(current: object[], incoming: object[]): boolean {
+  return current.length === incoming.length && toRaw(current).every((record, index) => {
+    const previous = toRaw(record) as Record<string, unknown>, next = incoming[index] as Record<string, unknown>
+    const keys = Object.keys(previous)
+    return keys.length === Object.keys(next).length && keys.every(key => {
+      const left = previous[key], right = next[key]
+      // Compare large legacy image strings directly, without copying them into
+      // another full-library JSON string on each navigation.
+      return Object.hasOwn(next, key) && (Object.is(left, right) || (left !== null && right !== null
+        && typeof left === 'object' && typeof right === 'object' && JSON.stringify(toRaw(left)) === JSON.stringify(right)))
+    })
+  })
+}
+
 export async function loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }: Pick<ReturnType<typeof useGalleryWorkspace>, 'galleryLoading' | 'galleryError' | 'history' | 'projects'>): Promise<void> {
   const version = (loadVersions.get(history) || 0) + 1
   loadVersions.set(history, version)
@@ -35,8 +50,11 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
   try {
     const snapshot = await artworkRepository.readLibrarySnapshot()
     if (!isCurrent()) return
-    history.value = snapshot.history
-    projects.value = galleryProjects(snapshot.projects)
+    // A refresh still reads the authority, but unchanged metadata must not
+    // invalidate every filter, album and keyed image card on a cached return.
+    if (!unchangedRecords(history.value, snapshot.history)) history.value = snapshot.history
+    const nextProjects = galleryProjects(snapshot.projects)
+    if (!unchangedRecords(projects.value, nextProjects)) projects.value = nextProjects
   } catch (error) {
     if (isCurrent()) galleryError.value = error instanceof Error ? error.message : String(error)
   } finally {

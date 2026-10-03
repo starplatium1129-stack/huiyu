@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="pop-results-bar">
-        <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }} 幕</span>
+        <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
         <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
           <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
@@ -56,7 +56,7 @@
 
       <!-- 场景卡片网格 -->
       <div v-content-motion="`${category}:${ratingFilter}`" class="pop-grid">
-        <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
+        <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id"
           :style="{ '--scene-preview-ratio': blueprint.recommendedSize.replace('x', ' / ') }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
@@ -83,8 +83,9 @@
             <footer class="pop-card-actions">
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
-            <details class="pop-scene-details">
+            <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
               <summary><span>场景细节</span><ArchiveIcon name="chevron-down" /></summary>
+              <template v-if="openDetails.has(blueprint.id)">
               <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
               <dl class="pop-decision">
                 <div><dt>镜头</dt><dd>{{ shotLabel(blueprint) }}</dd></div>
@@ -93,9 +94,13 @@
                 <div><dt>画幅</dt><dd>{{ blueprint.recommendedSize.replace('x', '×') }}</dd></div>
                 <div v-if="blueprint.adult && artistLabel(blueprint)" class="pop-artist"><dt>画师</dt><dd>{{ artistLabel(blueprint) }}</dd></div>
               </dl>
+              </template>
             </details>
           </div>
         </article>
+      </div>
+      <div v-if="paged.length < filtered.length" ref="loadSentinel" class="tw:mt-s-5 tw:text-center">
+        <button class="btn btn-ghost" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }} 幕）</button>
       </div>
     </template>
       </div>
@@ -109,7 +114,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -214,6 +219,27 @@ const filtered = computed(() => {
       .some(text => String(text).toLowerCase().includes(q))
   })
 })
+
+const visibleCount = ref(24)
+const paged = computed(() => filtered.value.slice(0, visibleCount.value))
+const loadSentinel = ref<HTMLElement | null>(null)
+const openDetails = ref(new Set<string>())
+let moreObserver: IntersectionObserver | undefined
+function loadMore() { visibleCount.value = Math.min(visibleCount.value + 24, filtered.value.length) }
+function setDetailsOpen(id: string, event: Event) {
+  if ((event.target as HTMLDetailsElement).open) openDetails.value.add(id)
+  else openDetails.value.delete(id)
+}
+watch([selectedId, query, category, ratingFilter], () => { visibleCount.value = 24 })
+watch(loadSentinel, element => {
+  moreObserver?.disconnect()
+  if (!element) return
+  moreObserver ??= new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) loadMore()
+  }, { rootMargin: '600px' })
+  moreObserver.observe(element)
+}, { flush: 'post' })
+onUnmounted(() => moreObserver?.disconnect())
 
 function selectCharacter(id: string) {
   const next: LocationQueryRaw = { ...route.query, character: id }

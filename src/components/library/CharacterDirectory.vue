@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
-import { computed, nextTick, ref, useId, watch } from 'vue'
+import { computed, nextTick, onUnmounted, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
@@ -61,13 +61,23 @@ const list = ref<HTMLElement | null>(null)
 const rail = ref<HTMLElement | null>(null)
 const focusedId = ref(props.selectedId)
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
+let locateFrame = 0
+onUnmounted(() => cancelAnimationFrame(locateFrame))
 /** 选中项变化时把结果区落到它所在的页并滚入视野：打开弹窗即可看到当前角色，不用先找页。 */
 watch([() => props.selectedId, () => props.pageSize], async () => {
   await nextTick()
   const index = results.value.findIndex(item => item.id === props.selectedId)
   if (props.pageSize && index >= 0) page.value = Math.floor(index / props.pageSize) + 1
   await nextTick()
-  list.value?.querySelector<HTMLElement>('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' })
+  cancelAnimationFrame(locateFrame)
+  // Position the supplemental directory after the main page's first paint;
+  // scrollIntoView otherwise forces the whole newly mounted page to lay out.
+  locateFrame = requestAnimationFrame(() => {
+    locateFrame = requestAnimationFrame(() => {
+      locateFrame = 0
+      list.value?.querySelector<HTMLElement>('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' })
+    })
+  })
 }, { immediate: true })
 const groups = computed(() => {
   const counts = new Map<string, number>()

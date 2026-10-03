@@ -38,6 +38,18 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     const path = el.dataset.routePath || ''
+    // Peer workspaces already have navigation feedback. Present their content
+    // immediately instead of compositing an entire image wall for another fade.
+    if (destinationPath && !archivePair(departingPath, pathname(path)) && !interrupted.has(el)) {
+      settle(el)
+      el.inert = false
+      el.dataset.routeEntered = 'true'
+      delete el.dataset.routeEntering
+      departed.delete(el)
+      if (path) { markUiFluidityForPath(path, 'shell-ready'); markUiFluidityForPath(path, 'settled') }
+      done()
+      return
+    }
     const current = presentation(el)
     interrupted.delete(el)
     settle(el)
@@ -84,10 +96,10 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (crossRoute) {
       // Peer workspaces have no forward/back hierarchy. Keep their geometry
       // still; only the real directory/detail pair below gets a spatial cue.
-      frames = [{ opacity: 0 }, { opacity: 1 }]
+      frames = [{ opacity: .96 }, { opacity: 1 }]
       duration = 180
     } else if (options.initialFade) {
-      frames = [{ opacity: 0 }, { opacity: 1 }]
+      frames = [{ opacity: .96 }, { opacity: 1 }]
     }
     if (archive) {
       frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
@@ -119,11 +131,18 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
     departingPath = pathname(el.dataset.routePath || '')
+    const destination = pathname(destinationPath?.() || '')
+    if (destinationPath && !archivePair(departingPath, destination)) {
+      interrupted.delete(el)
+      el.inert = true
+      settle(el)
+      done()
+      return
+    }
     const current = presentation(el)
     interrupted.delete(el)
     el.inert = true
     settle(el)
-    const destination = pathname(destinationPath?.() || '')
     if (!destination || destination === departingPath || prefersReducedMotion() || document.hidden
       || typeof el.animate !== 'function') { done(); return }
     let animation: Animation | undefined, finished = false

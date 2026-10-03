@@ -92,87 +92,73 @@ beforeEach(() => {
 afterEach(() => { unmount(); vi.unstubAllGlobals() })
 
 describe('route motion lifecycle and optional capability fallback (009 F4.6a)', () => {
-  it('continues from the displayed frame when an entering page is immediately left', () => {
-    let destination = '/style'
-    const hooks = useRouteTransition(() => destination), page = surface('/style')
+  it('continues from the displayed archive frame when its entrance is interrupted', () => {
+    let destination = '/character'
+    const hooks = useRouteTransition(() => destination), previous = surface('/popular-scenes'), page = surface('/character')
     const entered = counter(), left = counter()
-    hooks.onEnter(page.el, entered.done)
+    hooks.onLeave(previous.el, () => {}); hooks.onEnter(page.el, entered.done)
     vi.stubGlobal('getComputedStyle', () => ({ opacity: '.34', transform: 'matrix(1, 0, 0, 1, 3, 0)' }))
-    // Vue calls enter-cancelled first; that must not discard the visible frame.
-    hooks.onEnterCancelled(page.el)
-    destination = '/gallery'
+    hooks.onEnterCancelled(page.el); destination = '/popular-scenes'
     hooks.onLeave(page.el, left.done)
     assert.equal(entered.count, 1)
     assert.deepEqual(page.calls[1][0], [
       { opacity: .34, transform: 'matrix(1, 0, 0, 1, 3, 0)' },
       { opacity: 0, transform: 'matrix(1, 0, 0, 1, 3, 0)' },
     ])
-    page.animations[1].onfinish!()
-    assert.equal(left.count, 1)
+    page.animations[1].onfinish!(); assert.equal(left.count, 1)
   })
 
-  it('reverses a partially faded cached page without restarting at .88 or zero', () => {
-    let destination = '/gallery'
-    const hooks = useRouteTransition(() => destination), page = surface('/gallery')
-    hooks.onEnter(page.el, () => {}); page.animations[0].onfinish!()
-    destination = '/style'; const left = counter()
+  it('reverses a partially faded archive page from its displayed opacity', () => {
+    let destination = '/character'
+    const hooks = useRouteTransition(() => destination), page = surface('/popular-scenes'), left = counter()
     hooks.onLeave(page.el, left.done)
     vi.stubGlobal('getComputedStyle', () => ({ opacity: '.27', transform: 'none' }))
-    hooks.onLeaveCancelled(page.el)
-    destination = '/gallery'; hooks.onBeforeEnter(page.el)
+    hooks.onLeaveCancelled(page.el); destination = '/popular-scenes'; hooks.onBeforeEnter(page.el)
     const returned = counter(); hooks.onEnter(page.el, returned.done)
-    assert.deepEqual(page.calls[2][0], [{ opacity: .27 }, { opacity: 1 }])
-    assert.equal(page.el.inert, false)
-    assert.equal(left.count, 1)
-    page.animations[2].onfinish!()
-    assert.equal(returned.count, 1)
+    assert.deepEqual(page.calls[1][0], [{ opacity: .27 }, { opacity: 1 }])
+    assert.equal(page.el.inert, false); assert.equal(left.count, 1)
+    page.animations[1].onfinish!(); assert.equal(returned.count, 1)
   })
 
-  it('animates ordinary page changes and gives cached returns an opacity-only settle', () => {
+  it('presents ordinary workspaces and cached returns immediately', () => {
     let destination = '/gallery'
-    const hooks = useRouteTransition(() => destination)
-    const gallery = surface(), style = surface()
-    gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
-    hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
-    destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
-    assert.deepEqual(style.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
-    destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
+    const hooks = useRouteTransition(() => destination), gallery = surface('/gallery'), style = surface('/style')
+    const first = counter(), second = counter(), returned = counter()
+    hooks.onEnter(gallery.el, first.done)
+    destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, second.done)
+    destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, returned.done)
+    assert.equal(first.count, 1); assert.equal(second.count, 1); assert.equal(returned.count, 1)
     assert.equal(gallery.el.inert, false)
-    assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 120, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
-    hooks.onEnterCancelled(gallery.el); hooks.onLeaveCancelled(style.el)
+    assert.equal(gallery.animations.length + style.animations.length, 0)
   })
 
-  it('keeps peer workspaces still in either navigation direction', () => {
+  it('keeps peer workspaces still and completes both hooks without a compositing layer', () => {
     let destination = '/style'
-    const hooks = useRouteTransition(() => destination)
-    const style = surface('/style'), scene = surface('/scene-explorer')
-    hooks.onEnter(style.el, () => {}); style.animations[0].onfinish!()
-    destination = '/scene-explorer'; hooks.onLeave(style.el, () => {}); hooks.onEnter(scene.el, () => {})
-    assert.deepEqual(scene.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
-    hooks.onEnterCancelled(scene.el); hooks.onLeaveCancelled(style.el)
+    const hooks = useRouteTransition(() => destination), style = surface('/style'), scene = surface('/scene-explorer')
+    hooks.onEnter(style.el, () => {})
+    const left = counter(), entered = counter()
+    destination = '/scene-explorer'; hooks.onLeave(style.el, left.done); hooks.onEnter(scene.el, entered.done)
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
+    assert.deepEqual(style.calls, []); assert.deepEqual(scene.calls, [])
   })
 
   it('fades standalone layouts without translating native overlay anchors', () => {
     const hooks = useRouteTransition(undefined, { initialFade: true }), { el, calls } = surface()
     el.dataset.routePath = '/control'
     hooks.onEnter(el, () => {})
-    assert.deepEqual(calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    assert.deepEqual(calls[0][0], [{ opacity: .96 }, { opacity: 1 }])
     hooks.onEnterCancelled(el)
   })
 
-  it('keeps only one departing page during rapid navigation', () => {
+  it('does not retain departing peer pages during rapid navigation', () => {
     let destination = '/style'
-    const hooks = useRouteTransition(() => destination), first = surface(), second = surface()
-    first.el.dataset.routePath = '/gallery'; second.el.dataset.routePath = '/style'
+    const hooks = useRouteTransition(() => destination), first = surface('/gallery'), second = surface('/style')
     const leftFirst = counter(), leftSecond = counter()
     hooks.onLeave(first.el, leftFirst.done)
-    assert.equal(leftFirst.count, 0)
     destination = '/lora'; hooks.onLeave(second.el, leftSecond.done)
-    assert.equal(leftFirst.count, 1)
-    assert.equal(first.animations[0].cancelCalls, 1)
-    assert.equal(leftSecond.count, 0)
-    hooks.onLeaveCancelled(second.el)
-    assert.equal(leftSecond.count, 1)
+    assert.equal(leftFirst.count, 1); assert.equal(leftSecond.count, 1)
+    assert.equal(first.animations.length + second.animations.length, 0)
+    hooks.onLeaveCancelled(second.el); assert.equal(second.el.inert, false)
   })
   it('crossfades the archive pair without blocking input and supports cancellation', () => {
     const hooks = useRouteTransition(() => '/character')
@@ -363,9 +349,9 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
   })
 
   it('settles both route callbacks when the tab hides and skips hidden navigation', () => {
-    const hooks = useRouteTransition(() => '/style')
+    const hooks = useRouteTransition(() => '/character')
     for (const callback of state.mounted.splice(0)) callback()
-    const oldPage = surface('/gallery'), newPage = surface('/style'), left = counter(), entered = counter()
+    const oldPage = surface('/popular-scenes'), newPage = surface('/character'), left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onBeforeEnter(newPage.el); hooks.onEnter(newPage.el, entered.done)
     const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
     document.dispatchEvent(new Event('visibilitychange'))
@@ -373,7 +359,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(newPage.el.dataset.routeEntering, undefined)
     assert.equal(oldPage.animations[0].cancelCalls, 1)
     assert.equal(newPage.animations[0].cancelCalls, 1)
-    const hiddenPage = surface('/lora'), hiddenEnter = counter(), hiddenLeave = counter()
+    const hiddenPage = surface('/popular-scenes'), hiddenEnter = counter(), hiddenLeave = counter()
     hooks.onBeforeEnter(hiddenPage.el); hooks.onEnter(hiddenPage.el, hiddenEnter.done)
     hooks.onLeave(hiddenPage.el, hiddenLeave.done)
     assert.equal(hiddenEnter.count, 1); assert.equal(hiddenLeave.count, 1)
@@ -381,13 +367,13 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(hiddenPage.el.dataset.routeEntering, undefined)
     hidden.mockReturnValue(false)
     document.dispatchEvent(new Event('visibilitychange'))
-    const visiblePage = surface('/showcase'), visibleEnter = counter()
+    const visiblePage = surface('/character'), visibleEnter = counter()
     hooks.onEnter(visiblePage.el, visibleEnter.done)
     assert.equal(visibleEnter.count, 0)
     visiblePage.animations[0].onfinish!()
     unmount()
     // A removed listener must not settle motion started after teardown.
-    const detached = surface('/settings'), detachedEnter = counter()
+    const detached = surface('/character'), detachedEnter = counter()
     hooks.onEnter(detached.el, detachedEnter.done)
     hidden.mockReturnValue(true)
     document.dispatchEvent(new Event('visibilitychange'))
@@ -477,54 +463,36 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.deepEqual(state.marks, [])
   })
 
-  it('crossfades peer workspaces without moving controls or retaining a fill', () => {
+  it('releases peer workspaces immediately while keeping destination input enabled', () => {
     const hooks = useRouteTransition(() => '/style'), oldPage = surface('/gallery'), newPage = surface('/style')
     const left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
-    assert.deepEqual(oldPage.calls[0], [[
-      { opacity: 1 },
-      { opacity: 0 },
-    ], { duration: 140, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
-    assert.deepEqual(newPage.calls[0][1], { duration: 180, easing: 'cubic-bezier(.22, 1, .36, 1)' })
-    for (const { calls } of [oldPage, newPage]) {
-      for (const frame of calls[0][0] as Keyframe[]) {
-        assert.ok(Object.keys(frame).every(key => key === 'transform' || key === 'opacity'))
-      }
-    }
-    oldPage.animations[0].onfinish!(); newPage.animations[0].onfinish!()
+    assert.equal(oldPage.el.inert, true); assert.equal(newPage.el.inert, false)
     assert.equal(left.count, 1); assert.equal(entered.count, 1)
-    assert.equal(oldPage.animations[0].cancelCalls, 1)
-    assert.equal(newPage.animations[0].cancelCalls, 1)
+    assert.equal(oldPage.animations.length + newPage.animations.length, 0)
+    hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
   })
 
-  it('does not invent a horizontal direction for an unranked workspace', () => {
+  it('also presents an unranked workspace without a page-wide animation', () => {
     const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
     hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
-    assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0 },
-      { opacity: 1 },
-    ])
-    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0 })
-    hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
+    assert.deepEqual(newPage.calls, []); assert.deepEqual(oldPage.calls, [])
   })
 
-  it('keeps AppLayout initialFade limited to first paint, not subsequent workspace navigation', () => {
+  it('does not hide AppLayout content on initial paint or subsequent navigation', () => {
     const hooks = useRouteTransition(() => '/style', { initialFade: true })
-    const oldPage = surface('/gallery'), newPage = surface('/style')
-    hooks.onEnter(oldPage.el, () => {}); oldPage.animations[0].onfinish!()
-    assert.deepEqual(oldPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
-    hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
-    assert.deepEqual(newPage.calls[0][0], [
-      { opacity: 0 },
-      { opacity: 1 },
-    ])
-    hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
+    const oldPage = surface('/gallery'), newPage = surface('/style'), first = counter(), second = counter()
+    hooks.onEnter(oldPage.el, first.done)
+    hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, second.done)
+    assert.equal(first.count, 1); assert.equal(second.count, 1)
+    assert.deepEqual(oldPage.calls, []); assert.deepEqual(newPage.calls, [])
   })
 
   it('settles both halves of the depth transition immediately when reduced motion changes', () => {
-    const events = browser(), hooks = useRouteTransition(() => '/style')
+    const events = browser(), hooks = useRouteTransition(() => '/character')
     for (const callback of state.mounted.splice(0)) callback()
-    const oldPage = surface('/gallery'), newPage = surface('/style'), left = counter(), entered = counter()
+    const oldPage = surface('/popular-scenes'), newPage = surface('/character'), left = counter(), entered = counter()
     hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
     state.reduced = true; events.dispatchEvent(new Event('atelier:motion-preference'))
     assert.equal(left.count, 1); assert.equal(entered.count, 1)

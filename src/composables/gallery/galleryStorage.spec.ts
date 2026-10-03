@@ -54,6 +54,17 @@ it('read failure preserves displayed artwork and the next load can recover', asy
   expect(ctx.galleryError.value).toBe('')
 })
 
+it('retains unchanged metadata references and still applies a later persisted change', async () => {
+  const ctx = context(), previous = ctx.history.value
+  storage.read.mockResolvedValueOnce({ history: [{ id: 'existing', prompt: 'keep me' }], projects: [] })
+  await loadGalleryStorageAction(ctx)
+  expect(ctx.history.value).toBe(previous)
+  storage.read.mockResolvedValueOnce({ history: [{ id: 'existing', prompt: 'updated', favorite: true }], projects: [] })
+  await loadGalleryStorageAction(ctx)
+  expect(ctx.history.value).not.toBe(previous)
+  expect(ctx.history.value[0]).toMatchObject({ prompt: 'updated', favorite: true })
+})
+
 it('keeps the last snapshot usable during refresh and replaces it with an authoritative empty snapshot', async () => {
   const ctx = context()
   ctx.projects.value = [{ id: 'album', title: 'Album', history_ids: ['existing'] }]

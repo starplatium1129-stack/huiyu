@@ -5,7 +5,7 @@ import PopularSceneExplorerView from './PopularSceneExplorerView.vue'
 
 const access = vi.hoisted(() => ({ local: true, eligibility: 'adult' }))
 const navigation = vi.hoisted(() => ({
-  route: { path: '/popular-scenes', query: {} as Record<string, string> }, replace: vi.fn(), loadCatalog: vi.fn(async () => {}),
+  route: { path: '/popular-scenes', query: {} as Record<string, string> }, replace: vi.fn(), loadCatalog: vi.fn(async () => {}), extra: 0,
 }))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.local }))
 vi.mock('vue-router', () => ({ useRoute: () => navigation.route, useRouter: () => ({ replace: navigation.replace }) }))
@@ -19,6 +19,7 @@ vi.mock('@/stores/sceneStore', () => ({
       { id: 'adult', adult: true, sampleRating: 'R18' },
       { id: 'rated-image', adult: false, sampleRating: 'R18' },
       { id: 'second-safe', adult: false, sampleRating: 'All', characterId: 'second' },
+      ...Array.from({ length: navigation.extra }, (_, index) => ({ id: `extra-${index}`, adult: false, sampleRating: 'All' })),
     ].map(item => ({ characterId: 'fixture', ...item, title: item.id, category: '日常', description: '',
       location: '', timeOfDay: 'day', lighting: '', camera: '', mood: '', sceneTags: [], promptProse: '', recommendedSize: '832x1216' })),
   }),
@@ -31,6 +32,7 @@ beforeEach(() => {
   navigation.replace.mockReset()
   navigation.replace.mockResolvedValue(undefined)
   navigation.loadCatalog.mockClear()
+  navigation.extra = 0
 })
 afterEach(() => { wrapper?.unmount() })
 async function mountLibrary() {
@@ -73,11 +75,28 @@ describe('角色场景的本机访问边界', () => {
     const card = page.get('[data-blueprint-id="safe"]')
     expect(card.get('details').element.open).toBe(false)
     expect(card.get('summary').text()).toBe('场景细节')
+    expect(card.find('.pop-decision').exists()).toBe(false)
+    card.get('details').element.open = true
+    await card.get('details').trigger('toggle')
     expect(card.get('.pop-decision').text()).toContain('832×1216')
     expect(card.get('.pop-draw-action').text()).toBe('绘制这一幕')
     expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
     expect(card.get('.pop-thumb').attributes('href')).toBe(card.get('.pop-draw-action').attributes('href'))
     expect(card.find('details .pop-draw-action').exists()).toBe(false)
+  })
+
+  it('renders a bounded first batch and preserves all results through load-more and search', async () => {
+    navigation.extra = 25
+    const page = await mountLibrary()
+    expect(page.findAll('[data-blueprint-id]')).toHaveLength(24)
+    await page.findAll('button').find(button => button.text().startsWith('加载更多'))!.trigger('click')
+    expect(page.findAll('[data-blueprint-id]')).toHaveLength(29)
+    page.findComponent({ name: 'StudioSearch' }).vm.$emit('update:modelValue', 'extra-24')
+    await flushPromises()
+    expect(page.findAll('[data-blueprint-id]').map(card => card.attributes('data-blueprint-id'))).toEqual(['extra-24'])
+    page.findComponent({ name: 'StudioSearch' }).vm.$emit('update:modelValue', '')
+    await flushPromises()
+    expect(page.findAll('[data-blueprint-id]')).toHaveLength(24)
   })
 
   it('图片失败明确显示待补充，并保留对应场景的绘制入口', async () => {

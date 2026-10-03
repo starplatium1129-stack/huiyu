@@ -4,6 +4,13 @@ import { defineComponent, h, nextTick, ref } from 'vue'
 import AnimatedSelection from './AnimatedSelection.vue'
 import { frameData, frameSteps } from 'motion'
 
+async function flushIndicator() {
+  await flushPromises()
+  await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+  frameSteps.read.process(frameData)
+  frameSteps.render.process(frameData)
+}
+
 describe('AnimatedSelection lifecycle and background suspension', () => {
   let originalHidden: PropertyDescriptor | undefined
 
@@ -42,17 +49,13 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
           vi.spyOn(wrapper.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 300, 40))
           vi.spyOn(wrapper.get('#a').element, 'getBoundingClientRect').mockReturnValue(new DOMRect(10, 5, 80, 30))
           vi.spyOn(wrapper.get('#b').element, 'getBoundingClientRect').mockReturnValue(new DOMRect(110, 5, 100, 30))
-          await flushPromises()
-          frameSteps.read.process(frameData)
-          frameSteps.render.process(frameData)
+          await flushIndicator()
           const indicator = wrapper.get('.animated-selection').element as HTMLElement
           expect(indicator.style.opacity).toBe('1')
           expect(indicator.style.width).toBe('80px')
           expect(indicator.style.transform).toContain('translate(10px,5px)')
           selected.value = 'b'
-          await flushPromises()
-          frameSteps.read.process(frameData)
-          frameSteps.render.process(frameData)
+          await flushIndicator()
           expect(indicator.style.width).toBe('100px')
           expect(indicator.style.transform).toContain('translate(110px,5px)')
         } finally { wrapper.unmount() }
@@ -75,9 +78,9 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
       vi.spyOn(wrapper.element,'getBoundingClientRect').mockReturnValue(new DOMRect(0,0,300,40))
       vi.spyOn(wrapper.get('#a').element,'getBoundingClientRect').mockReturnValue(new DOMRect(10,5,80,30))
       vi.spyOn(wrapper.get('#b').element,'getBoundingClientRect').mockReturnValue(new DOMRect(110,5,100,30))
-      await flushPromises(); frameSteps.read.process(frameData); frameSteps.render.process(frameData)
+      await flushIndicator()
       await wrapper.get('#b').trigger('keydown',{key:'ArrowRight'}); selected.value = 'b'
-      await flushPromises(); frameSteps.read.process(frameData); frameSteps.render.process(frameData)
+      await flushIndicator()
       expect((wrapper.get('.animated-selection').element as HTMLElement).style.transform).toContain('translate(110px,5px)')
     } finally {
       wrapper.unmount()
@@ -135,7 +138,7 @@ describe('AnimatedSelection lifecycle and background suspension', () => {
     expect(readSpy).not.toHaveBeenCalled()
     isHidden = false
     document.dispatchEvent(new Event('visibilitychange'))
-    frameSteps.read.process(frameData)
+    await flushIndicator()
     expect(readSpy).toHaveBeenCalled()
 
     wrapper.unmount()

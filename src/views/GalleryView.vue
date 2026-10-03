@@ -35,9 +35,9 @@
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
       -->
-      <details v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-disclosure" :open="!!projectFilter || !!characterFilter || !!tagFilter || !!generationFilterCount">
+      <details v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-disclosure" :open="!!projectFilter || !!characterFilter || !!tagFilter || !!generationFilterCount" @toggle="refineOpen = ($event.target as HTMLDetailsElement).open">
         <summary><ArchiveIcon name="pin" /><span>细选作品</span><span v-if="hasActiveFilters">已筛选</span><ArchiveIcon name="chevron-down" /></summary>
-      <div class="gallery-refine-controls">
+      <div v-if="refineOpen || projectFilter || characterFilter || tagFilter || generationFilterCount" class="gallery-refine-controls">
         <StudioSelect v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
         <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
         <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
@@ -328,6 +328,7 @@ import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 const workspace = useGalleryWorkspace()
+const refineOpen = ref(false)
 const {
 tagFilter, tagOptions, characterFilter, collectionPreviewItems,
 generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,

@@ -51,10 +51,11 @@ export function buildMasonryGroups(
 export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
   const columnCount = ref(4)
   let active = false
+  let measured = false
 
-  function update() {
+  function update(measuredWidth?: number) {
     if (!active) return
-    const width = containerRef ? containerRef.value?.clientWidth ?? 0 : (typeof window !== 'undefined' ? window.innerWidth : 1440)
+    const width = measuredWidth ?? (containerRef ? containerRef.value?.clientWidth ?? 0 : (typeof window !== 'undefined' ? window.innerWidth : 1440))
     // A cached or temporarily hidden wall has no layout width. Retain its last
     // columns instead of rebuilding it against the unrelated window width.
     if (width <= 0) return
@@ -74,16 +75,23 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
   }
 
   let resizeObserver: ResizeObserver | null = null
+  const onWindowResize = () => update()
 
   function start() {
     if (active) return
     active = true
-    update()
     if (containerRef?.value && typeof ResizeObserver !== 'undefined') {
-      resizeObserver = new ResizeObserver(() => update())
+      // The first mount needs its actual columns immediately. Cached returns
+      // keep them until ResizeObserver supplies fresh geometry after layout.
+      if (!measured) { update(); measured = true }
+      resizeObserver = new ResizeObserver(entries => {
+        const entry = entries[0]
+        if (entry) update(entry.contentRect.width)
+      })
       resizeObserver.observe(containerRef.value)
     } else if (typeof window !== 'undefined') {
-      window.addEventListener('resize', update, { passive: true })
+      update()
+      window.addEventListener('resize', onWindowResize, { passive: true })
     }
   }
 
@@ -91,7 +99,7 @@ export function useMasonryColumns(containerRef?: Ref<HTMLElement | null>) {
     if (!active) return
     active = false
     if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', update)
+      window.removeEventListener('resize', onWindowResize)
     }
     if (resizeObserver) {
       resizeObserver.disconnect()

@@ -81,6 +81,8 @@ it('preserves cached gallery columns while hidden and measures the actual contai
     width = 1850
     active.value = true
     await nextTick()
+    expect(columns.columnCount.value).toBe(3)
+    resize([{ contentRect: { width } } as ResizeObserverEntry], {} as ResizeObserver)
     expect(columns.columnCount.value).toBe(5)
     expect(observe).toHaveBeenCalledTimes(2)
     width = 0

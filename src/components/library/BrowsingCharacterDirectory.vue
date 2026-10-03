@@ -9,7 +9,7 @@
     <!-- One directory keeps search, franchise and selection when the window changes size. -->
     <Teleport v-if="dialogHost" :to="dialogHost" :disabled="!narrow">
       <CharacterDirectory :items="items" :selected-id="selectedId" v-model:search="search"
-        :catalog="narrow" :page-size="narrow ? 18 : 0" @select="choose" @dismiss="motion.close()" />
+        :catalog="narrow" :page-size="narrow ? 18 : 24" @select="choose" @dismiss="motion.close()" />
     </Teleport>
     <Teleport to="body">
       <dialog ref="dialog" class="directory-sheet tw:m-auto tw:p-s-5 tw:rounded-xl tw:text-primary tw:overflow-hidden" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
