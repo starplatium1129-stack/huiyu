@@ -15,7 +15,7 @@
 .pb.atelier-workspace .material-switch { border-bottom:0; }
 .pb.atelier-workspace .material-switch button { @apply tw:text-label tw:whitespace-nowrap; }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { @apply tw:rounded-xl; box-shadow:none; }
-.pb.journal-workspace.atelier-workspace .stage-placeholder { @apply tw:rounded-xl; background:var(--bg-surface); border:1px solid var(--border-soft); }
+.pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; background:var(--bg-surface); box-shadow:none; }
 .pb.atelier-workspace .stage-placeholder::before,
 .pb.atelier-workspace .stage-muse,
 .pb.atelier-workspace .stage-magic-ring { @apply tw:hidden; }

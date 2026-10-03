@@ -2,23 +2,23 @@
 /* Day atelier: paper surfaces and ink accents; artwork colors stay independent. */
 :root[data-theme="light"] {
   --ink-base: #111a23;
-  --bg-deep: #f3eee7;
-  --bg-base: #faf8f4;
-  --bg-surface: #ffffff;
-  --bg-elevated: #f0eee9;
-  --bg-surface-elevated: #eee8f0;
-  --bg-hover: #e8e8e5;
-  --border-soft: rgba(58, 75, 91, .16);
-  --border-strong: rgba(58, 75, 91, .30);
-  --text-primary: #202a33;
-  --text-secondary: #4d5963;
-  --text-muted: #5b6771;
-  --text-disabled: #5c6872;
+  --bg-deep: #eee7df;
+  --bg-base: #f5efe7;
+  --bg-surface: #fffcf6;
+  --bg-elevated: #eee7e0;
+  --bg-surface-elevated: #fffcf6;
+  --bg-hover: #e8dfd7;
+  --border-soft: rgba(79, 59, 65, .18);
+  --border-strong: rgba(79, 59, 65, .32);
+  --text-primary: #29242a;
+  --text-secondary: #585059;
+  --text-muted: #6d6069;
+  --text-disabled: #6d6069;
   --text-inverse: #fffafd;
-  --accent: #92365f;
-  --accent-hover: #752246;
-  --accent-soft: rgba(146, 54, 95, .08);
-  --accent-glow: rgba(146, 54, 95, .13);
+  --accent: #9b3e61;
+  --accent-hover: #7e2c4c;
+  --accent-soft: rgba(155, 62, 97, .08);
+  --accent-glow: rgba(155, 62, 97, .12);
   --accent-violet: #6d3bb4;
   --nene-violet: #71409d;
   --natsume-amber: #855014;
@@ -31,9 +31,9 @@
   --archive-line: rgba(62, 44, 72, .15);
   --archive-grid: rgba(62, 44, 72, .04);
   --archive-glass: rgba(255, 255, 255, .88);
-  --nav-bg: rgba(250, 248, 244, .96);
-  --glass-fill: rgba(255, 255, 255, .82);
-  --glass-fill-strong: var(--bg-elevated);
+  --nav-bg: var(--bg-base);
+  --glass-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent);
+  --glass-fill-strong: var(--bg-surface);
   --glass-edge: var(--border-soft);
   --glass-highlight: rgba(255, 255, 255, .72);
   --glass-shadow: 0 18px 48px rgba(55, 32, 65, .12);
@@ -63,7 +63,7 @@
   --mood-sad-text: #245d9b;
   --mood-tension-text: #754096;
   --mood-warmth-text: #855014;
-  --art-mat: #eeeef0;
+  --art-mat: var(--bg-elevated);
   --particle-surface: #f2eff1;
   --particle-outline: #3c3548;
 }

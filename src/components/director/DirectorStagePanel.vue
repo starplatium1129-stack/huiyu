@@ -96,6 +96,7 @@
       />
     </div>
     <DirectorResultTools
+      v-if="displayResultUrl"
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
       :has-result="Boolean(displayResultUrl)" :ambient-enabled="ambientEnabled"
       @update:ambientEnabled="ambientEnabled = $event"

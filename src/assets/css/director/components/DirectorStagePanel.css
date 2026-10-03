@@ -28,6 +28,8 @@
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
      只补间 opacity/transform。结果容器保持静止，图片由 CgImageReveal 接管。 */
   .pb .stage-slot { @apply tw:relative; }
+  /* The canvas and its result actions share one frame; the empty canvas has no action row. */
+  .pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
     @apply tw:absolute; inset:0; z-index:var(--z-raised);
@@ -103,7 +105,7 @@
 }
 
 /* Only the unused image margins receive colour. The decoded original stays untouched. */
-.pb.atelier-workspace .result-image-wrap.archive-canvas { border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-2); background:var(--bg-deep); box-shadow:none; }
+.pb.atelier-workspace .result-image-wrap.archive-canvas { border:0; border-radius:0; padding:var(--s-2); background:var(--bg-deep); box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image,
 .pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:0; }

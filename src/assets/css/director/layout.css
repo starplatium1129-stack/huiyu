@@ -99,7 +99,7 @@
   .pb.journal-workspace[data-director-mode] .stage-slot {
     flex: 1;
     @apply tw:min-h-0 tw:overflow-hidden tw:grid;
-    grid-template-rows:minmax(0,1fr) 52px;
+    grid-template-rows:minmax(0,1fr) auto;
   }
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
