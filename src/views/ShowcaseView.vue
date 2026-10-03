@@ -1,11 +1,11 @@
 <template>
   <article class="page showcase-page">
     <header class="showcase-heading">
-      <div class="heading-copy tw:min-w-0"><div class="page-kicker">CG COLLECTION / 参考画册</div>
-        <div class="heading-title"><h1>把心动，一页页收藏。</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅样张</span></div>
-        <p>翻阅场景样张，找到想画的下一幕。自己的创作收在「我的作品」。</p>
+      <div class="heading-copy tw:min-w-0"><div class="page-kicker"><ArchiveIcon name="book" />THE INSPIRATION WALL</div>
+        <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅灵感</span></div>
+        <p>从画中一刻，找到下一幕。</p>
       </div>
-      <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
+      <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest"><ArchiveIcon name="refresh" /></button></div>
     </header>
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
@@ -42,7 +42,7 @@
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'" message="画册按已发布样张的类型整理。"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
     <div v-show="!albumsOpen" class="showcase-image-browse">
-    <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status">显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊</span></div>
+    <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ typeFilter === 'all' ? '全部样张' : (albums.find(album => album.type === typeFilter)?.title || typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
     <ArchiveStatePanel
       v-if="unavailable"
       class="empty empty-block"
