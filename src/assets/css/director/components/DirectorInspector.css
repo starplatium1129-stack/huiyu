@@ -4,17 +4,17 @@
 .pb .inspector-workbench .inspector-heading { padding:var(--s-3) var(--s-4); }
 .pb .inspector-workbench .inspector-tabs {
   display:flex; flex-shrink:0; gap:var(--s-1); margin:0 var(--s-3) var(--s-2); padding:var(--s-1);
-  border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base);
+  border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base);
 }
 .pb .inspector-workbench .inspector-tabs button {
-  display:flex; flex:1; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:40px;
+  display:flex; flex:1; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:var(--control-height-sm);
   padding:var(--s-1); border:1px solid transparent; border-radius:var(--r-md);
   background:transparent; color:var(--text-secondary); white-space:nowrap; cursor:pointer;
   font:600 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 .pb .inspector-workbench .inspector-tabs button:hover { color:var(--text-primary); background:var(--bg-hover); }
 .pb .inspector-workbench .inspector-tabs button[data-state="active"] {
-  color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft);
+  color:var(--accent); border-color:color-mix(in srgb,var(--accent) 36%,var(--border-soft)); background:var(--accent-soft); box-shadow:var(--selection-shadow);
 }
 .pb .inspector-workbench :is(.inspector-tabs button, .inspector-scroll):focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
 .pb .inspector-count { font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }

@@ -30,10 +30,6 @@
 .pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
 .pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
 .pb .shelf-preview .zoom-controls { position:static; transform:none; background:var(--bg-base); }
-.pb .result-shelf { border:0; background:transparent; padding:0; }
-.pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
-.pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
-.pb .shelf-preview .zoom-controls { position:static; transform:none; background:var(--bg-base); }
 .pb[data-director-mode="pro"] .director-inspector .controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pb[data-director-mode="pro"] .director-inspector .panel-title { @apply tw:mb-[10px]; }
 .pb[data-director-mode="pro"] .director-inspector .settings-summary { padding: 0 0 var(--s-2); }
