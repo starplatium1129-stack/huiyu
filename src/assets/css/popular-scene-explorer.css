@@ -42,9 +42,10 @@
   contain-intrinsic-size: auto 470px;
 }
 .pop-card:focus-within { @apply tw:border-accent; }
+/* Reserve the planned frame while loading; contain keeps the whole thumbnail visible. */
 .pop-thumb {
   @apply tw:relative tw:block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: var(--scene-preview-ratio, 4 / 3);
   @apply tw:overflow-hidden tw:rounded-md;
   background: var(--bg-elevated);
   text-decoration: none;
@@ -53,7 +54,7 @@
 .pop-thumb img {
   @apply tw:absolute;
   inset: 0;
-  @apply tw:w-full tw:h-full tw:object-cover;
+  @apply tw:w-full tw:h-full tw:object-contain;
   object-position: center 22%;
   opacity: 0;
   transition: opacity var(--motion-hover) var(--ease-out);
