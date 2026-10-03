@@ -82,7 +82,6 @@ beforeEach(() => {
   })
   Object.defineProperty(Element.prototype, 'animate', { configurable: true, writable: true, value: animate })
 })
-
 afterEach(async () => {
   effects.forEach(effect => effect.stop())
   await Promise.allSettled(effects.map(effect => effect.finished))
@@ -192,4 +191,3 @@ it('skips empty, undecoded, and zero-size images without allocating an effect', 
   expect(animate).not.toHaveBeenCalled()
   expect(drawImage).not.toHaveBeenCalled()
 })
-

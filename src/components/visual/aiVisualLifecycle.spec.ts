@@ -436,7 +436,7 @@ describe('CgImageReveal ownership and fallback', () => {
     await old.trigger('load')
     expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     expect(wrapper.classes()).not.toContain('is-loaded')
-    expect(old.element.style.visibility).toBe('hidden')
+    expect(old.classes()).toContain('is-decoding')
     await wrapper.setProps({ src: '/new.png' })
     const fresh = wrapper.get('img')
     readyImage(fresh.element)

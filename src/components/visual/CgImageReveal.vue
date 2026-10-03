@@ -2,8 +2,7 @@
   <div ref="containerRef" class="cg-image-reveal tw:relative tw:block tw:overflow-hidden tw:[border-radius:inherit] tw:bg-deep" :class="{ 'is-revealing': isRevealing, 'is-loaded': isLoaded }">
     <img
       v-if="resolvedSrc" :key="resolvedSrc" :crossorigin="runtimeResourceCors()" ref="imgRef"
-      class="cg-image-target tw:block tw:w-full tw:h-full tw:object-contain" :class="imgClass"
-      :style="{ visibility: isLoaded ? undefined : 'hidden' }"
+      class="cg-image-target tw:block tw:w-full tw:h-full tw:object-contain" :class="[imgClass, { 'is-decoding': !isLoaded }]"
       :src="resolvedSrc" :alt="alt" loading="eager" decoding="async"
       @load="onImageLoad" @error="onImageError" @click="$emit('click', $event)"
     />
@@ -155,3 +154,6 @@ onMounted(handleReadyImage)
 onBeforeUnmount(() => { sourceRevision += 1; stopAnimation() })
 defineExpose({ triggerReveal })
 </script>
+<style scoped>
+.cg-image-target.is-decoding { visibility: hidden; }
+</style>
