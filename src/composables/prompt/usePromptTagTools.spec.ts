@@ -126,6 +126,24 @@ describe('usePromptTagTools · outfit bundles', () => {
   })
 })
 
+describe('usePromptTagTools · offline meanings', () => {
+  it('loads normalized and weighted aliases and keeps unknown fallback and prompt tokens intact', async () => {
+    const pb = usePromptBuilderStore()
+    pb.manualTags = new Set(['(DOF:+1.25)', '(Long _ Hair:.8)', "(jeanne_d'arc_alter_(fate):0.85)", 'happy_on_fixture', 'mystery_shirt'])
+    const original = [...pb.manualTags]
+    const tools = usePromptTagTools(pb)
+    tools.tagLabel('(DOF:+1.25)')
+    await vi.dynamicImportSettled()
+    expect(tools.tagLabel('(DOF:+1.25)')).toBe('前景虚化与景深')
+    expect(tools.tagLabel('(Long _ Hair:.8)')).toBe('长发')
+    expect(tools.tagLabel("(jeanne_d'arc_alter_(fate):0.85)")).toBe('贞德·Alter（Fate）')
+    expect(tools.tagLabel('happy_on_fixture')).toBe('')
+    expect(tools.tagMeaning('happy_on_fixture')).toBe('Happy On Fixture')
+    expect(tools.tagLabel('mystery_shirt')).toBe('mystery · 衬衫')
+    expect([...pb.manualTags]).toEqual(original)
+  })
+})
+
 describe('usePromptTagTools · outfit override label', () => {
   it('describes the current reference outfit in Chinese without changing its prompt tokens', async () => {
     const pb = usePromptBuilderStore()

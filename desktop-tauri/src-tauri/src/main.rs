@@ -227,6 +227,7 @@ fn main() {
             bridge::pick_files,
             bridge::save_image,
             updater_cmd::desktop_update_check,
+            updater_cmd::desktop_update_state,
             updater_cmd::desktop_update_install,
             updater_cmd::desktop_update_cancel,
             live2d_overlay::aics_live2d_set_character,

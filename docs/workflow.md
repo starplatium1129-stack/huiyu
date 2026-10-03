@@ -96,6 +96,7 @@
 | 热门角色聚合 | popular:build | data/popular → popular-characters.json |
 | 蓝图聚合 | blueprints:build | 使用既有蓝图分片源，不直接改聚合产物 |
 | 词条分片与字典 | tags:build / tags:check | 校验 manifest、重复词/别名决策和源路径；保留旧 ID，生成聚合与字典，失效旧压缩 |
+| 离线释义待补词统计 | tags:untranslated --input <文件> | 读取本地 PixAI JSON/JSONL 或 WD14 CSV；按现行界面释义区分完整中文、部分中文与英文回退，保留原词；--json 输出清单，--general-top / --character-top 只限制待补候选；分别标明样本出现次数与 Danbooru 频次，不以置信度代替频次；不上传、不翻译、不写词典 |
 | 聚合反向写回分片 | data:import / popular:import / blueprints:import | 覆盖写入操作，先核对 diff；popular:split/blueprints:split 只拆分 |
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |

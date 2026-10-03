@@ -48,6 +48,9 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
       notes: ['只生成 runtime/live2d-imports 本机副本，拒绝覆盖不同内容；不解包 lpk，不上传或发布'] },
   },
   ...(require('./lib/workflows-content-checks') as typeof import('./lib/workflows-content-checks')),
+  'tags:untranslated': { desc: '按现行离线释义统计本地 PixAI 结果或 WD14 CSV 的待补中文词条', cmd: ['node', 'scripts/tests/extract-wd14-untranslated.js'], required: ['--input'],
+    opts: '--input <PixAI JSON/JSONL 或 WD14 CSV> [--general-top <n>] [--character-top <n>] [--json]', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/extract-wd14-untranslated.ts', unknown: ['统计限输入样本；部分中文与英文回退不代表准确翻译'], notes: ['只读取本地文件并输出清单；不上传、不翻译、不写词典；PixAI 置信度不计为频次'] } },
   ...(require('./lib/workflows-diagnostics') as typeof import('./lib/workflows-diagnostics')),
   'maintenance:recover': {
     desc: '预览已中断维护事务的精确文件恢复；显式apply绑定预览后执行',

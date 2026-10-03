@@ -161,11 +161,14 @@ test('known tool and CI consumers stay targeted without dropping shared runner f
   });
   assert.deepEqual(classifyFiles(['tsconfig.app.json']), { areas: ['ui'], testFiles: [] });
   assert.deepEqual(classifyFiles(['start.ps1', 'control.bat']), { areas: ['tests'], testFiles: ['test-desktop-staging.js'] });
+  assert.deepEqual(classifyFiles(['scripts/tests/extract-wd14-untranslated.ts', 'scripts/tests/test-untranslated-tags.ts']),
+    { areas: ['tests'], testFiles: ['test-untranslated-tags.js'] });
   assert.deepEqual(classifyFiles(['tests/e2e/studio-live2d.spec.ts']), {
     areas: ['browser-types'], testFiles: [], manualFiles: ['tests/e2e/studio-live2d.spec.ts'],
   });
   const { selectOptionalTests }: typeof import('./run-optional-test-lanes') = require('./run-optional-test-lanes');
   assert.deepEqual(selectOptionalTests(['scripts/lib/scene-write.ts']), [{ lane: 'tooling', files: ['test-scene-write.js'] }]);
+  assert.deepEqual(selectOptionalTests(['scripts/tests/extract-wd14-untranslated.ts']), [{ lane: 'tooling', files: ['test-untranslated-tags.js'] }]);
 });
 
 test('quick gate selects related frontend sources and exact regular browser specs', () => {

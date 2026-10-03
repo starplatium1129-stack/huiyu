@@ -19,6 +19,7 @@ const TEST_CONSUMERS: Readonly<Record<string, readonly string[]>> = {
   'scripts/lib/workflow-types.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
   'scripts/maintenance/report-workflow-conditions.ts': ['test-workflow-conditions.js'],
   'scripts/maintenance/gate-quick.ts': runnerTests,
+  'scripts/tests/extract-wd14-untranslated.ts': ['test-untranslated-tags.js'],
   'scripts/tests/run-optional-test-lanes.ts': runnerTests,
   'scripts/tests/run-quality-suite.ts': runnerTests,
   'scripts/lib/test-process-pool.ts': runnerTests,

@@ -1,76 +1,129 @@
 /**
- * 提取 WD14 词表中尚未收录中文释义的高频词（按 Danbooru 出现次数排序）。
- *
- * 用途：扩充 src/utils/tagMeaningZh.ts 的下一批词条。
- *   node scripts/tests/extract-wd14-untranslated.js [generalTop] [characterTop]
- *
- * 输出两段：general 高频 / character 高频，人工翻译后追加进
- * tagMeaningZh.ts 的 WD14_ZH（键为 cleanTag 归一形式：小写、连字符转下划线、
- * 整词括号保留，如 jeanne_d'arc_alter_(fate)）。
+ * Offline glossary coverage for saved PixAI results or a WD14 frequency CSV.
+ * node scripts/tests/extract-wd14-untranslated.js --input <JSON|JSONL|CSV>
+ *   [--general-top 300] [--character-top 80] [--json]
+ * Legacy generalTop/characterTop arguments and AICS_WD14_MODEL_DIR remain supported.
+ * Reads only; English fallbacks and partial glosses remain translation candidates.
  */
-const fs: typeof import('fs') = require('fs')
+const fs: typeof import('node:fs') = require('node:fs')
+const path: typeof import('node:path') = require('node:path')
+const { resolveTagMeaning }: typeof import('../../src/utils/tagMeaning.ts') = require('../../src/utils/tagMeaning.ts')
 
-const WD14_CSV = process.env.AICS_WD14_MODEL_DIR
-  ? fs.readdirSync(process.env.AICS_WD14_MODEL_DIR)
-      .filter(f => /\.onnx$/i.test(f))
-      .map(base => (require('path') as typeof import('path')).join(process.env.AICS_WD14_MODEL_DIR!, base.slice(0, -5) + '.csv'))
-      .find(p => fs.existsSync(p))
-  : 'E:/code/2/lora/AI/ComfyUI/custom_nodes/ComfyUI-WD14-Tagger/models/wd-v1-4-moat-tagger-v2.csv'
-if (!WD14_CSV || !fs.existsSync(WD14_CSV)) { console.error('找不到 WD14 CSV，请设置 AICS_WD14_MODEL_DIR'); process.exit(1) }
+type Coverage = ReturnType<typeof resolveTagMeaning>['coverage']
+type Category = 'general' | 'character'
+interface TagRow { tag: string; count: number; meaning: string; coverage: Coverage }
+interface CoverageCounts { full: number; partial: number; english: number }
+interface CoverageReport {
+  source: 'pixai' | 'wd14-csv'
+  frequency: 'sample-occurrences' | 'danbooru-count'
+  totals: Record<Category, CoverageCounts>
+  general: TagRow[]
+  character: TagRow[]
+}
 
-function loadDicts() {
-  const files = ['src/utils/tagMeaning.ts', 'src/utils/tagMeaningExact.ts', 'src/utils/tagMeaningZh.ts']
-  const dicts = []
-  for (const file of files) {
-    const src = fs.readFileSync(file, 'utf8')
-    for (const name of ['EXACT_MEANINGS', 'WORD_MEANINGS', 'WD14_ZH']) {
-      const m = src.match(new RegExp('const ' + name + ': Record<string, string> = \\{([\\s\\S]*?)\\n\\}'))
-      if (!m) continue
-      const dict: any = {}
-      for (const line of m[1].split('\n')) {
-        for (const pair of line.split(',')) {
-          const kv = pair.match(/^\s*(?:'([^']*)'|"([^"]*)"|([a-z0-9_+]+)):\s*'([^']*)'/)
-          if (kv) dict[kv[1] || kv[2] || kv[3]] = kv[4]
-        }
+function extractCoverage(input: string, format: 'json' | 'jsonl' | 'csv', generalTop = 300, characterTop = 80): CoverageReport {
+  const rows: Record<Category, Map<string, number>> = { general: new Map(), character: new Map() }
+  const add = (category: Category, tag: string, count: number) => {
+    rows[category].set(tag, (rows[category].get(tag) || 0) + count)
+  }
+  if (format === 'csv') {
+    const skip = new Set(['general', 'sensitive', 'questionable', 'explicit'])
+    for (const line of input.trim().split(/\r?\n/).slice(1)) {
+      // WD14 CSV quotes tags that contain commas; do not split inside those names.
+      const columns = line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+        .map(value => value.replace(/^"|"$/g, '').replace(/""/g, '"'))
+      const [, tag, category, rawCount] = columns
+      if (!tag || skip.has(tag) || (category !== '0' && category !== '4')) continue
+      const count = Number(rawCount)
+      if (!Number.isFinite(count) || count < 0) throw new Error(`无效 WD14 频次：${tag}`)
+      add(category === '0' ? 'general' : 'character', tag, count)
+    }
+  } else {
+    const parsed: unknown = format === 'jsonl'
+      ? input.trim().split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line))
+      : JSON.parse(input.replace(/^\uFEFF/, ''))
+    const samples = Array.isArray(parsed) ? parsed : [parsed]
+    for (const sample of samples) {
+      if (!sample || typeof sample !== 'object') throw new Error('输入必须为 PixAI 本地结果或结果数组')
+      const result = sample as Record<string, unknown>
+      if (result.engine !== 'pixai') throw new Error('输入必须为 PixAI 本地结果或结果数组')
+      for (const [category, values] of [['general', result.tags], ['character', result.characterTags]] as const) {
+        if (!Array.isArray(values) || values.some(tag => typeof tag !== 'string' || !tag.trim())) throw new Error(`PixAI ${category} 词条无效`)
+        // The number of samples containing a tag is frequency; scores are confidence.
+        for (const tag of new Set<string>(values)) add(category, tag, 1)
       }
-      dicts.push(dict)
     }
   }
-  return dicts
+  const totals: Record<Category, CoverageCounts> = {
+    general: { full: 0, partial: 0, english: 0 }, character: { full: 0, partial: 0, english: 0 },
+  }
+  const candidates = (category: Category, top: number) => [...rows[category]]
+    .map(([tag, count]) => {
+      const result = resolveTagMeaning(tag)
+      totals[category][result.coverage]++
+      return { tag, count, ...result }
+    })
+    .filter(row => row.coverage !== 'full')
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+    .slice(0, top)
+  return {
+    source: format === 'csv' ? 'wd14-csv' : 'pixai',
+    frequency: format === 'csv' ? 'danbooru-count' : 'sample-occurrences',
+    totals, general: candidates('general', generalTop), character: candidates('character', characterTop),
+  }
 }
-const [EXACT, WORD, WD14]: any = loadDicts()
 
-function cleanTag(t: string) {
-  let raw = String(t || '').trim()
-  if (/^\(.+\)$/.test(raw)) raw = raw.replace(/^\(+|\)+$/g, '')
-  return raw.toLowerCase().replace(/[\s\-/]+/g, '_')
-}
-function known(tag: string) {
-  const n = cleanTag(tag)
-  if (EXACT[n] || WORD[n] || WD14[n]) return true
-  const words = n.split('_').filter(Boolean)
-  return words.some(w => WORD[w] || WD14[w])
+function main(args = process.argv.slice(2)): number {
+  try {
+    let inputFile = ''
+    let generalTop = 300
+    let characterTop = 80
+    let json = false
+    let positional = 0
+    const count = (value: string | undefined) => {
+      if (!value || !/^\d+$/.test(value) || !Number.isSafeInteger(Number(value))) throw new Error('top 必须为非负整数')
+      return Number(value)
+    }
+    for (let index = 0; index < args.length; index++) {
+      const arg = args[index]
+      if (arg === '--input') {
+        inputFile = args[++index]
+        if (!inputFile || inputFile.startsWith('--')) throw new Error('--input 缺少本地文件路径')
+      } else if (arg === '--general-top') generalTop = count(args[++index])
+      else if (arg === '--character-top') characterTop = count(args[++index])
+      else if (arg === '--json') json = true
+      else if (arg === '--help') {
+        console.log('node scripts/tests/extract-wd14-untranslated.js --input <PixAI JSON|JSONL|WD14 CSV> [--general-top 300] [--character-top 80] [--json]')
+        return 0
+      } else if (/^\d+$/.test(arg) && positional < 2) {
+        if (positional++ === 0) generalTop = count(arg)
+        else characterTop = count(arg)
+      } else throw new Error(`未知参数：${arg}`)
+    }
+    if (!inputFile && process.env.AICS_WD14_MODEL_DIR) {
+      const modelDir = process.env.AICS_WD14_MODEL_DIR
+      inputFile = fs.readdirSync(modelDir).filter(file => /\.onnx$/i.test(file))
+        .map(file => path.join(modelDir, file.slice(0, -5) + '.csv')).find(file => fs.existsSync(file)) || ''
+    }
+    if (!inputFile) throw new Error('请用 --input 指定本地 PixAI 结果，或设置 AICS_WD14_MODEL_DIR')
+    const extension = path.extname(inputFile).toLowerCase()
+    if (!['.csv', '.json', '.jsonl'].includes(extension)) throw new Error('输入仅支持 JSON、JSONL 或 CSV')
+    const report = extractCoverage(fs.readFileSync(inputFile, 'utf8'), extension.slice(1) as 'csv' | 'json' | 'jsonl', generalTop, characterTop)
+    if (json) console.log(JSON.stringify(report))
+    else {
+      console.log(`频次来源：${report.frequency === 'sample-occurrences' ? '本地样本出现次数' : 'Danbooru 词表出现次数'}`)
+      for (const category of ['general', 'character'] as const) {
+        const summary = report.totals[category]
+        console.log(`=== ${category} · 完整中文 ${summary.full} / 部分中文 ${summary.partial} / 英文回退 ${summary.english} ===`)
+        report[category].forEach(row => console.log(`${row.tag}  #${row.count}  [${row.coverage}] ${row.meaning}`))
+      }
+    }
+    return 0
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error))
+    return 1
+  }
 }
 
-const SKIP = new Set(['general', 'sensitive', 'questionable', 'explicit'])
-const lines = fs.readFileSync(WD14_CSV, 'utf8').split(/\r?\n/).filter(Boolean)
-const general = []
-const character = []
-for (let i = 1; i < lines.length; i++) {
-  const parts = lines[i].split(',')
-  const name = parts[1] || ''
-  const cat = parts[2]
-  const count = Number(parts[3]) || 0
-  if (!name || SKIP.has(name) || known(name)) continue
-  if (cat === '0') general.push({ name, count })
-  else if (cat === '4') character.push({ name, count })
-}
-const byCount = (a: { count: number; }, b: { count: number; }) => b.count - a.count
-general.sort(byCount)
-character.sort(byCount)
-const takeGeneral = Number(process.argv[2] || 300)
-const takeCharacter = Number(process.argv[3] || 80)
-console.log('=== general top', takeGeneral, '===')
-general.slice(0, takeGeneral).forEach(g => console.log(`${g.name}  #${g.count}`))
-console.log('=== character top', takeCharacter, '===')
-character.slice(0, takeCharacter).forEach(c => console.log(`${c.name}  #${c.count}`))
+if (require.main === module) process.exitCode = main()
+export = { extractCoverage, main }

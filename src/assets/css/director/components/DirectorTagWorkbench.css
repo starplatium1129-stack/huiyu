@@ -10,12 +10,12 @@
   .pb .expert-tag-count { @apply tw:ml-s-2 tw:text-label-xs tw:text-accent tw:font-semibold; padding:2px 6px; @apply tw:rounded-pill; background:var(--accent-soft); }
   .pb .clear-tags-btn { @apply tw:text-label-xs; padding:2px 8px; @apply tw:rounded-sm tw:text-muted; }
   .pb .clear-tags-btn:hover { @apply tw:text-danger-text tw:border-danger; }
-  .pb .manual-tags { @apply tw:flex tw:flex-wrap tw:gap-[6px] tw:min-h-[32px] tw:mb-s-2 tw:p-s-2 tw:rounded-md; background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
+  .pb .manual-tags { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-1 tw:min-h-[32px] tw:mb-s-2 tw:p-s-2 tw:rounded-md; background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
   .pb .manual-tags.empty { border-style:dashed; padding:var(--s-2) var(--s-3); }
   .pb .manual-tags-empty-hint { @apply tw:m-0 tw:text-label-xs tw:text-muted tw:leading-body; }
   .pb .manual-tag {
-    @apply tw:inline-flex tw:flex-col tw:items-start tw:gap-[1px];
-    padding:4px 22px 4px 10px; @apply tw:relative;
+    @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-w-0 tw:max-w-full tw:leading-tight;
+    padding:2px;
     border:1px solid var(--border-strong); @apply tw:rounded-md;
     background:color-mix(in srgb, var(--bg-elevated) 88%, transparent); @apply tw:text-primary tw:text-label-xs;
     box-shadow:inset 0 1px 0 var(--glass-highlight);
@@ -31,7 +31,6 @@
   .pb .manual-tag[data-weight-tier="strong-boost"] {
     border-color:color-mix(in srgb, var(--accent) 80%, #fff);
     background:color-mix(in srgb,var(--accent) 30%,var(--bg-surface));
-    color:color-mix(in srgb, var(--accent) 85%, #fff);
     box-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%,transparent), inset 0 1px 0 var(--glass-specular);
   }
   .pb .manual-tag[data-weight-tier="reduce"] {
@@ -41,9 +40,11 @@
     box-shadow:none;
     opacity:.88;
   }
+  .pb .manual-tag-text { @apply tw:min-w-0; overflow-wrap:anywhere; }
   .pb .manual-tag-en { @apply tw:font-mono tw:font-bold; letter-spacing:.02em; }
-  .pb .manual-tag-cn { @apply tw:text-secondary tw:text-label-xs tw:leading-tight; }
-  .pb .manual-tag .tag-remove { @apply tw:absolute tw:top-[2px] tw:right-[4px]; }
+  .pb .manual-tag-cn { @apply tw:inline-block tw:max-w-full tw:text-secondary tw:text-label-xs; padding-inline-start:var(--s-1); }
+  .pb .manual-tag .tag-remove { @apply tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:rounded-xs; width:20px; height:20px; opacity:1; }
+  .pb .manual-tag .tag-remove:hover { background:var(--bg-hover); }
   .pb .universal-wardrobe-section {
     border-color: color-mix(in srgb, var(--mood-love) 40%, var(--border-soft));
     background: color-mix(in srgb, var(--mood-love) 8%, var(--bg-deep));

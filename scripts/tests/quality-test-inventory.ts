@@ -109,6 +109,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-scene-change-set.js',
     'test-showcase.js',
     'test-showcase-candidate-contract.js',
+    'test-untranslated-tags.js',
   ]),
   // Packaging, installation and delivery evidence; no real device or model calls.
   release: Object.freeze([

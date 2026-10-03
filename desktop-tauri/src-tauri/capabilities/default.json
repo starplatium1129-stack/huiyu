@@ -53,6 +53,7 @@
     "allow-pick-files",
     "allow-save-image",
     "allow-desktop-update-check",
+    "allow-desktop-update-state",
     "allow-desktop-update-install",
     "allow-desktop-update-cancel",
     "allow-chat-credential-read",

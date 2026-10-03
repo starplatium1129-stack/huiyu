@@ -9,8 +9,10 @@
     <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
         <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
-          <span class="manual-tag-en">{{ tag }}</span>
-          <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
+          <span class="manual-tag-text">
+            <span class="manual-tag-en">{{ tag }}</span>
+            <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
+          </span>
           <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
         </span>
       </StudioTooltip>

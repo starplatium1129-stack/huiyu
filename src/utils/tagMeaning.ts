@@ -1,4 +1,4 @@
-import { EXACT_MEANINGS } from './tagMeaningExact'
+import { EXACT_MEANINGS } from './tagMeaningExact.ts'
 
 const WORD_MEANINGS: Record<string, string> = {
   all: '全部', angle: '角度', angel: '天使', apron: '围裙', at: '在', back: '背部',
@@ -64,8 +64,8 @@ const WORD_MEANINGS: Record<string, string> = {
 const GENERIC_MEANINGS = new Set(['场景词条', '场景成人词', 'v18 训练服装词'])
 
 // WD14 反推高频词条中英词典（2026-08-29 新增，同 chunk 懒加载）。
-import { WD14_ZH } from './tagMeaningZh'
-import tagDictionary from '../../data/tags-dictionary.json'
+import { WD14_ZH } from './tagMeaningZh.ts'
+import tagDictionary from '../../data/tags-dictionary.json' with { type: 'json' }
 
 function cleanTag(tag: string): string {
   let raw = String(tag || '')
@@ -73,9 +73,9 @@ function cleanTag(tag: string): string {
     .trim()
   // 仅当整词被括号整体包裹时才剥括号（如 (masterpiece:1.2) 加权语法）；
   // WD14 角色词尾的 (fate)/(genshin_impact) 等括号是词条的一部分，不能剥。
-  if (/^\(.+\)$/.test(raw)) raw = raw.replace(/^\(+|\)+$/g, '')
-  raw = raw.replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
-  return raw.toLowerCase().replace(/[\s\-/]+/g, '_')
+  while (raw.startsWith('(') && raw.endsWith(')')) raw = raw.slice(1, -1).trim()
+  raw = raw.replace(/:\s*[+-]?(?:\d*\.)?\d+\s*$/g, '')
+  return raw.trim().toLowerCase().replace(/[\s_\-/]+/g, '_')
 }
 
 const PREPOSITION_WORDS = new Set([
@@ -88,39 +88,60 @@ function formatNaturalTitle(tag: string): string {
   return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 }
 
-/** Returns the catalog Chinese label when present, otherwise a readable token glossary. */
-export function tagMeaning(tag: string, catalogLabel = ''): string {
+export interface TagMeaningResult {
+  meaning: string
+  coverage: 'full' | 'partial' | 'english'
+}
+
+/** Display coverage, not a claim that word-by-word glosses are accurate translations. */
+export function resolveTagMeaning(tag: string, catalogLabel = ''): TagMeaningResult {
+  const whole = (meaning: string): TagMeaningResult => ({
+    meaning, coverage: /[\u4e00-\u9fa5]/.test(meaning) ? 'full' : 'english',
+  })
   const supplied = String(catalogLabel || '').trim()
-  if (supplied && !GENERIC_MEANINGS.has(supplied)) return supplied
+  if (supplied && !GENERIC_MEANINGS.has(supplied)) return whole(supplied)
 
   const normalized = cleanTag(tag)
   // 分片权威字典优先：分片维护的中文直接作为最高权威单一真相源
   const fromDict = (tagDictionary.meanings as Record<string, string>)[normalized]
-  if (fromDict) return fromDict
+  if (fromDict) return whole(fromDict)
 
-  if (EXACT_MEANINGS[normalized]) return EXACT_MEANINGS[normalized]
+  // 只查已审核目录别名的中文，不把别名目标（可能是一组 tokens）回写到提示词。
+  const alias = (tagDictionary.aliases as Record<string, string>)[normalized]
+  const aliasMeaning = alias && (tagDictionary.meanings as Record<string, string>)[cleanTag(alias)]
+  if (aliasMeaning) return whole(aliasMeaning)
+
+  if (EXACT_MEANINGS[normalized]) return whole(EXACT_MEANINGS[normalized])
 
   // WD14 反推高频词整词命中（2026-08-29）：只做整词精确匹配，不参与逐词回退
-  if (WD14_ZH[normalized]) return WD14_ZH[normalized]
+  if (WD14_ZH[normalized]) return whole(WD14_ZH[normalized])
 
   // 整词优先：词表里的复合词（convenience_store、winter_coat…）先整体命中，
   // 否则回退到逐词翻译
-  if (WORD_MEANINGS[normalized]) return WORD_MEANINGS[normalized]
+  if (WORD_MEANINGS[normalized]) return whole(WORD_MEANINGS[normalized])
 
   const words = normalized.split('_').filter(Boolean)
   // 如果包含介词短语（如 depth_of_field、standing_on_tiptoe 等未在精选表收录的短语），
   // 逐词直接拼接必然导致机翻车祸，此时优雅回退为自然英文标题
   const hasPreposition = words.some(w => PREPOSITION_WORDS.has(w))
   if (hasPreposition) {
-    return formatNaturalTitle(tag)
+    return { meaning: formatNaturalTitle(tag), coverage: 'english' }
   }
 
   const translated = words.map(word => WORD_MEANINGS[word])
   const translatedCount = translated.filter(Boolean).length
   // 只有当所有实词均有翻译，或者词数<=3且未翻译单词仅1个时，才进行“ · ”平滑拼接
   if (translatedCount === words.length || (words.length <= 3 && translatedCount >= words.length - 1 && translatedCount >= 1)) {
-    return translated.map((meaning, index) => meaning || words[index]).join(' · ')
+    return {
+      meaning: translated.map((meaning, index) => meaning || words[index]).join(' · '),
+      coverage: translatedCount === words.length ? 'full' : 'partial',
+    }
   }
 
-  return formatNaturalTitle(tag)
+  return { meaning: formatNaturalTitle(tag), coverage: 'english' }
+}
+
+/** Returns the catalog Chinese label when present, otherwise a readable token glossary. */
+export function tagMeaning(tag: string, catalogLabel = ''): string {
+  return resolveTagMeaning(tag, catalogLabel).meaning
 }
