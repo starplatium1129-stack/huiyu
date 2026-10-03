@@ -994,7 +994,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 /* 弹层打开时锁背景滚动。由 useFocusTrap 统一挂这个 class ——
    之前只有 GalleryView 在自己的 scoped 块里写 body.viewer-open，
    而 scoped 样式加不到 body 上，其余弹层背景一直能滚。 */
-body.overlay-open { @apply tw:overflow-hidden; }
+body.overlay-open { @apply tw:overflow-hidden; margin-right:var(--overlay-scrollbar-gap,0px); }
 .overlay {
   @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
   @apply tw:grid; place-items: center;

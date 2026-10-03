@@ -139,7 +139,10 @@ export function useFocusTrap(
       }
       trapStack.splice(index, 1)
     }
-    if (scrollLocks.delete(owner) && !scrollLocks.size && !previouslyLocked) document.body.classList.remove('overlay-open')
+    if (scrollLocks.delete(owner) && !scrollLocks.size && !previouslyLocked) {
+      document.body.classList.remove('overlay-open')
+      document.body.style.removeProperty('--overlay-scrollbar-gap')
+    }
     if (restoreFocus && top) {
       if (returnFocus.value && isAvailable(returnFocus.value)) returnFocus.value.focus({ preventScroll: true })
       else trapStack.at(-1)?.focus()
@@ -155,7 +158,15 @@ export function useFocusTrap(
       returnFocus.value = document.activeElement as HTMLElement | null
       trapStack.push(trap)
       if (lockScroll) {
-        if (!scrollLocks.size) previouslyLocked = document.body.classList.contains('overlay-open')
+        if (!scrollLocks.size) {
+          previouslyLocked = document.body.classList.contains('overlay-open')
+          if (!previouslyLocked) {
+            // Keep document geometry when the scrollbar disappears. A CSS
+            // property survives nested Reka locks clearing their inline padding.
+            const gap = Math.max(0, window.innerWidth - document.documentElement.clientWidth)
+            document.body.style.setProperty('--overlay-scrollbar-gap', `${gap}px`)
+          }
+        }
         scrollLocks.add(owner)
         document.body.classList.add('overlay-open')
       }
