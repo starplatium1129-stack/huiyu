@@ -11,35 +11,35 @@
    离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
-  /* 蓝灰夜幕承载结构，樱粉与角色色只用于交互和局部氛围。 */
-  --ink-base: #080f17;
-  --bg-deep:       #10161d;
-  --bg-base:       #151c24;
-  --bg-surface:    #1e2935;
-  --bg-elevated:   #25313d;
-  --bg-hover:      #25313d;
+  /* 暖石墨承载结构，玫粉与角色色只用于交互和局部氛围。 */
+  --ink-base: #111014;
+  --bg-deep:       #17161b;
+  --bg-base:       #1d1b21;
+  --bg-surface:    #26232a;
+  --bg-elevated:   #302c34;
+  --bg-hover:      #302c34;
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #25313d;
+  --bg-surface-elevated: #302c34;
 
-  --border-soft:   rgba(170, 198, 223, 0.14);
-  --border-strong: rgba(187, 214, 235, 0.28);
+  --border-soft:   rgba(228, 211, 218, 0.16);
+  --border-strong: rgba(228, 211, 218, 0.32);
 
   /* ---- Text ---- */
-  --text-primary:   #edf3fa;
-  --text-secondary: #bdcbd8;
+  --text-primary:   #f5efe9;
+  --text-secondary: #cfc2cc;
   /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-muted:     #a8b9c9;
+  --text-muted:     #bdb0ba;
   --text-inverse:   #111923;   /* 浅色高光底深色字反色 */
   /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
   --text-tertiary:  var(--text-muted);
   /* 禁用态文字：直接用达标色值，不再用 opacity 压字。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-disabled:  #a6b3c0;
+  --text-disabled:  #b9acb6;
 
   /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
-  --accent:         #f2a8be;
-  --accent-hover:   #ffc4d8;
-  --accent-soft:    rgba(242, 168, 190, 0.10);
-  --accent-glow:    rgba(242, 168, 190, 0.16);
+  --accent:         #edabc1;
+  --accent-hover:   #f6c1d2;
+  --accent-soft:    rgba(237, 171, 193, 0.10);
+  --accent-glow:    rgba(237, 171, 193, 0.14);
   --accent-violet:  #b784f6;
   --archive-blue:   #5eead4;
   --archive-blue-soft: rgba(94, 234, 212, 0.16);
@@ -76,7 +76,7 @@
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(21, 28, 36, 0.96);
+  --nav-bg: rgba(29, 27, 33, 0.97);
   --glass-highlight: rgba(227, 240, 252, 0.07);
   /* 内衬高光以共享令牌表达，面板正文保持稳定底色。 */
   --hl-inset-04: rgba(255, 255, 255, 0.04);
@@ -87,9 +87,9 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(30, 41, 53, 0.94);
-  --glass-fill-strong: #25313d;
-  --glass-edge: rgba(187, 214, 235, 0.18);
+  --glass-fill: rgba(38, 35, 42, 0.96);
+  --glass-fill-strong: #302c34;
+  --glass-edge: var(--border-soft);
   --glass-specular: color-mix(in srgb, #eaf4ff 15%, transparent);
   --glass-shadow: 0 16px 40px rgba(5, 11, 18, 0.40);
 
@@ -182,6 +182,8 @@
   /* ---- Spacing scale (8px base) ---- */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --control-height: 40px;
+  --control-height-sm: 32px;
 
   /* ---- Radius (DESIGN.md §Shapes) ----
      sm/md 输入与紧凑控件 | lg/xl 卡片与区块 | 2xl 浮层 | stage 画面框 | pill 筛选与状态
@@ -213,6 +215,7 @@
   --ring-color: var(--accent);
   --ring: 0 0 0 3px color-mix(in srgb, var(--ring-color) 34%, transparent);
   --ring-strong: 0 0 0 3px color-mix(in srgb, var(--ring-color) 55%, transparent);
+  --selection-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
 
   /* ---- Motion -----------------------------------------------------------
      语义 token 按交互目的命名，避免同一个 "fast" 同时承担按压、浮层和路由。
@@ -268,7 +271,11 @@
   --art-backdrop: rgba(8, 13, 19, 0.86);
   /* 画作衬垫(画廊卡片与 letterbox 留边):这一项**随主题翻转**,
      因为它是画框而不是画面本身 —— 浅色主题下是画册纸白,深色下是暗房底。 */
-  --art-mat: #101820;
+  --art-mat: #1b191e;
+  /* 成片与卡片画框使用固定深墨衬垫；纸面控件继续使用主题表面。 */
+  --art-stage: #1b191e;
+  --art-frame-line: rgba(245, 239, 233, 0.26);
+  --art-frame-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
 
   /* ---- 立绘舞台底(首页 hero、角色页画框) ----
      这些是"人物身后的空间",随主题翻转:深色是暗房,浅色是画册纸。
@@ -512,10 +519,7 @@ body > *:has(+ .footer),
 }
 .page-header h1 {
   @apply tw:font-display tw:text-display tw:font-bold tw:mb-s-3;
-  background: linear-gradient(135deg, var(--text-primary) 18%, var(--accent) 62%, var(--accent-hover));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 18%, transparent));
+  color: var(--text-primary);
 }
 .page-header .subtitle {
   @apply tw:text-secondary tw:text-title-xs tw:max-w-[600px]; margin: 0 auto;
@@ -574,7 +578,7 @@ body > *:has(+ .footer),
 
 .page-title {
   @apply tw:m-0 tw:text-primary tw:font-display;
-  font-size: clamp(1.55rem, 2.4vw, 2.4rem);
+  font-size: var(--fs-title);
   font-weight: 760;
   letter-spacing: -0.03em;
   @apply tw:leading-flush;
@@ -588,12 +592,12 @@ body > *:has(+ .footer),
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   @apply tw:gap-s-5;
-  margin-bottom: clamp(20px, 3vw, 40px);
+  margin-bottom: var(--s-4);
 }
 .atelier-shell {
   width: min(1880px, 100%);
   margin: 0 auto;
-  padding: clamp(20px, 3.5vw, 48px) clamp(14px, 3vw, 40px) var(--s-8);
+  padding: var(--s-5) clamp(16px, 2vw, 32px) var(--s-7);
 }
 
 .sticky-toolbar {
@@ -820,10 +824,11 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
    尺寸修饰: .btn-sm 紧凑行内 / 默认 40px / .btn-lg 页面主入口
    所有变体共享 disabled 与 :active 行为,页面不要再造第二套 */
 .btn {
-  @apply tw:relative tw:overflow-hidden tw:isolate tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[40px];
+  @apply tw:relative tw:overflow-hidden tw:isolate tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2;
+  min-height: var(--control-height);
   padding: var(--s-2) var(--s-4);
   @apply tw:rounded-md;
-  font: 600 var(--fs-body) / 1.2 var(--font-sans);
+  font: 600 var(--fs-label) / 1.2 var(--font-sans);
   border: 1px solid transparent;
   @apply tw:cursor-pointer;
   text-decoration: none;
@@ -870,7 +875,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 }
 .btn:disabled::before,
 .btn[aria-disabled="true"]::before { @apply tw:hidden; }
-.btn-sm { @apply tw:min-h-[32px]; padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
+.btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
 .btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-lg; }
 /* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */
 .btn-icon { @apply tw:min-w-[40px] tw:p-s-2; }
