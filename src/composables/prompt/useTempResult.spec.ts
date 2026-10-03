@@ -39,7 +39,7 @@ function setup() {
   const scope = effectScope(); scopes.push(scope)
   const tools = scope.run(() => useTempResult({
     pb: { commitHistoryEntry: commit, flash }, sd: { resultPrompt: submittedPrompt },
-    drawEngine: ref('sd'), displayResultUrl: computed(() => url.value), displayResultSeed: computed(() => seed.value),
+    drawEngine: ref('sd'), displayResultUrl: computed(() => url.value), displayResultSeed: computed(() => seed.value), generationBusy: ref(false),
     livePrompt: computed(() => 'edited prompt'), negativePrompt: computed(() => 'negative'),
     resultContext: context, animaState: ref({}), historyGenerationFields: () => ({ sdSteps: seed.value }),
   } as unknown as TempResultDeps))!
@@ -98,7 +98,7 @@ function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
     pb: { commitHistoryEntry: commit, flash: vi.fn() },
     sd: { resultSeed: ref(41), resultPrompt: ref('fixture') },
     drawEngine: ref(engine), animaState, resultContext: context,
-    displayResultSeed: computed(() => 41), livePrompt: computed(() => ''), negativePrompt: computed(() => ''),
+    displayResultSeed: computed(() => 41), generationBusy: ref(false), livePrompt: computed(() => ''), negativePrompt: computed(() => ''),
     displayResultUrl: computed(() => url.value), autoSaveToGallery: autoSave,
     historyGenerationFields: () => ({}), commitJobResult: commit,
   } as unknown as TempResultDeps))!
@@ -204,13 +204,13 @@ function restoreFixture() {
   runtime.fetch.mockResolvedValue(new Blob(['pixels'], { type: 'image/png' }))
   runtime.mark.mockImplementation(async (id, state) => { taskRecords.value = taskRecords.value.map(task => task.taskId === id ? { ...copyTask(task), deliveryState: state } : copyTask(task)) })
   vi.stubGlobal('URL', class extends URL { static createObjectURL = vi.fn(() => 'blob:restored'); static revokeObjectURL = vi.fn() })
-  const url = ref(''), resultTaskId = ref(''), resultContext = ref(null)
+  const url = ref(''), resultTaskId = ref(''), resultContext = ref(null), generationBusy = ref(false)
   const sd = { resultTaskId, adoptResult: vi.fn((next: string, _seed: number | null, _prompt: string, id: string) => { url.value = next; resultTaskId.value = id }) }
   const scope = effectScope(); scopes.push(scope)
   const tools = scope.run(() => useTempResult({ sd, pb: { flash: vi.fn(), setChar: vi.fn() }, drawEngine: ref('sd'), animaState: ref({}),
-    resultContext, displayResultUrl: computed(() => url.value), setDrawEngine: vi.fn(),
+    resultContext, displayResultUrl: computed(() => url.value), generationBusy, setDrawEngine: vi.fn(),
   } as unknown as TempResultDeps))!
-  return { tools, url, sd, taskId, resultContext, scope }
+  return { tools, url, sd, taskId, resultContext, generationBusy, scope }
 }
 
 it('restores the observed Seed and actual prompt from the runtime inbox', async () => {
@@ -220,18 +220,53 @@ it('restores the observed Seed and actual prompt from the runtime inbox', async 
   expect(resultContext.value).toMatchObject({ story: 'Original story', history: { seed: 0, prompt: 'Actual prompt' } })
 })
 
-it.each(['replacement', 'dispose'] as const)('a late inbox restore cannot allocate or replace a result after %s', async action => {
-  const { tools, url, sd, scope } = restoreFixture()
+it.each(['replacement', 'generation', 'failed-generation', 'dispose'] as const)('a late inbox restore cannot allocate or replace a result after %s', async action => {
+  const { tools, url, sd, generationBusy, scope } = restoreFixture()
   const pending = deferred<Blob>()
   runtime.fetch.mockReturnValueOnce(pending.promise)
   const restoring = tools.restoreTempResult()
   await vi.waitFor(() => expect(runtime.fetch).toHaveBeenCalledOnce())
   if (action === 'replacement') url.value = 'blob:new-result'
-  else scope.stop()
+  else if (action === 'dispose') scope.stop()
+  else {
+    generationBusy.value = true
+    if (action === 'failed-generation') generationBusy.value = false
+  }
   pending.resolve(new Blob(['late'], { type: 'image/png' }))
   expect(await restoring).toBe(false)
   expect(sd.adoptResult).not.toHaveBeenCalled()
   expect(URL.createObjectURL).not.toHaveBeenCalled()
+})
+
+it('does not start inbox restoration while a new generation is active', async () => {
+  const { tools, sd, generationBusy } = restoreFixture()
+  generationBusy.value = true
+  expect(await tools.restoreTempResult()).toBe(false)
+  expect(runtime.fetch).not.toHaveBeenCalled()
+  expect(sd.adoptResult).not.toHaveBeenCalled()
+})
+
+it('a new attempt invalidates a pending browser restore without discarding its stored image', async () => {
+  const { tools, sd, generationBusy } = restoreFixture()
+  runtime.enabled = false
+  const record: TempResultRecord = { imageId: 'previous-image', engine: 'sd', prompt: 'Previous scene', negative: '', seed: 41, size: '832x1216', savedAt: 1 }
+  vi.mocked(readTempResult).mockReturnValue(record)
+  const pending = deferred<Blob>()
+  vi.mocked(artworkRepository.getImage).mockReturnValueOnce(pending.promise)
+  const restoring = tools.restoreTempResult()
+  await vi.waitFor(() => expect(artworkRepository.getImage).toHaveBeenCalledOnce())
+  generationBusy.value = true
+  generationBusy.value = false
+  pending.resolve(new Blob(['late'], { type: 'image/png' }))
+  expect(await restoring).toBe(false)
+  expect(sd.adoptResult).not.toHaveBeenCalled()
+  expect(URL.createObjectURL).not.toHaveBeenCalled()
+  expect(clearTempResult).not.toHaveBeenCalled()
+  expect(imgDelete).not.toHaveBeenCalled()
+
+  vi.mocked(artworkRepository.getImage).mockResolvedValueOnce(new Blob(['previous'], { type: 'image/png' }))
+  expect(await tools.restoreTempResult()).toBe(true)
+  expect(sd.adoptResult).toHaveBeenCalledWith('blob:restored', 41, 'Previous scene')
 })
 
 it('explicitly cleared runtime results do not return on the next inbox restore', async () => {

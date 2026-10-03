@@ -28,6 +28,7 @@ export interface TempResultDeps {
   patchAnimaState: AnimaSession['patchState']
   displayResultUrl: ComputedRef<string>
   displayResultSeed: ComputedRef<number | null>
+  generationBusy: ComputedRef<boolean>
   livePrompt: ComputedRef<string>
   negativePrompt: ComputedRef<string>
   historyGenerationFields: () => Partial<HistoryEntry>
@@ -56,11 +57,15 @@ export function useTempResult(deps: TempResultDeps) {
   const displayedResultHistoryId = ref<string | number | null>(null)
   const savingResult = ref(false)
   let resultRevision = 0
+  let generationRevision = 0
   let disposed = false
   watch(deps.displayResultUrl, () => {
     resultRevision += 1
     displayedResultHistoryId.value = null
   }, { flush: 'sync' })
+  // An empty canvas still belongs to the new attempt, including after failure
+  // or cancellation. A late startup restore must not replace that attempt.
+  watch(deps.generationBusy, busy => { if (busy) generationRevision += 1 }, { flush: 'sync' })
   onScopeDispose(() => { disposed = true; resultRevision += 1 }, true)
   function ownsResult(url: string) {
     const revision = resultRevision
@@ -217,10 +222,12 @@ export function useTempResult(deps: TempResultDeps) {
    * 返回是否发生了恢复（调用方据此提示）。
    */
   async function restoreTempResult(): Promise<boolean> {
-    if (deps.displayResultUrl.value) return false
+    if (deps.displayResultUrl.value || deps.generationBusy.value) return false
     const current = ownsResult('')
+    const revision = generationRevision
     const { restoreUnarchivedResult } = await import('./tempResultRestore')
-    return restoreUnarchivedResult(deps, storedResultUrl, current)
+    return restoreUnarchivedResult(deps, storedResultUrl,
+      () => current() && revision === generationRevision && !deps.generationBusy.value)
   }
 
   /** 用户显式「清除」舞台结果：临时缓冲一并丢弃（显式丢弃优于一切恢复）。 */

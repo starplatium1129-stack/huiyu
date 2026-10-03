@@ -8,6 +8,8 @@ import { generationApi } from '@/api/generationApi'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { DRAW_ENGINE_SETTING, settingsRepository } from '@/storage/settingsRepository'
+import { artworkRepository } from '@/storage/artworkRepository'
+import { readTempResult } from '@/utils/tempResult'
 import { usePromptWorkspace } from './usePromptWorkspace'
 import type { AnimaSubmission } from '@/composables/generation/animaSessionContract'
 import type { PromptGenerationContext } from './promptGenerationActions'
@@ -24,6 +26,7 @@ beforeEach(() => {
   sessionStorage.clear()
   localStorage.setItem('aics_pb_director_mode', 'pro')
   settingsRepository.set(DRAW_ENGINE_SETTING, 'sd')
+  vi.mocked(readTempResult).mockReturnValue(null)
   // Every backend request is an isolated fixture; no local gateway or model is contacted.
   vi.spyOn(apiClient, 'request').mockResolvedValue({ ok: true, online: false, models: [], samplers: [], schedulers: [] })
 })
@@ -194,5 +197,24 @@ describe('workspace ownership and panel boundaries', () => {
     expect(loadHistory).not.toHaveBeenCalled()
     expect(restoreDraft).not.toHaveBeenCalled()
     expect(generate).not.toHaveBeenCalled()
+  })
+
+  it('preserves a new failed attempt when startup image recovery finishes later', async () => {
+    let release!: (image: Blob) => void
+    vi.mocked(readTempResult).mockReturnValueOnce({ imageId: 'previous-image', engine: 'sd', prompt: 'Previous scene',
+      negative: '', seed: 41, size: '832x1216', savedAt: 1 })
+    const read = vi.spyOn(artworkRepository, 'getImage').mockImplementationOnce(() => new Promise(resolve => { release = resolve }))
+    const { workspace } = await setup()
+    await vi.waitFor(() => expect(read).toHaveBeenCalledOnce())
+    workspace.materialBindings.selectScene(scene)
+    const generate = vi.spyOn(generationApi, 'createJob').mockRejectedValue(new Error('new attempt failed'))
+    await workspace.callGenerate()
+    expect(generate).toHaveBeenCalledOnce()
+    expect(workspace.generationBusy.value).toBe(false)
+    release(new Blob(['previous image'], { type: 'image/png' }))
+    await flushPromises()
+    expect(workspace.displayResultUrl.value).toBe('')
+    expect(workspace.sd.taskState.value).toBe('failed')
+    expect(workspace.deliveryBindings.sdErrorReport.value).not.toBeNull()
   })
 })

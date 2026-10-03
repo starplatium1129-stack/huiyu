@@ -217,6 +217,7 @@ export function usePromptWorkspace() {
         patchAnimaState,
         displayResultUrl,
         displayResultSeed,
+        generationBusy,
         livePrompt,
         negativePrompt,
         historyGenerationFields,

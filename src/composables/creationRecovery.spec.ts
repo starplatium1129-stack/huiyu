@@ -150,7 +150,7 @@ function tempHarness() {
   const deps = {
     pb, sd: {}, drawEngine: ref('anima'), animaState: state,
     patchAnimaState: (patch: Partial<AnimaGenerationState>) => Object.assign(state.value, patch),
-    displayResultUrl: computed(() => state.value.result?.url ?? ''), displayResultSeed: computed(() => 7),
+    displayResultUrl: computed(() => state.value.result?.url ?? ''), displayResultSeed: computed(() => 7), generationBusy: ref(false),
     livePrompt: computed(() => ''), negativePrompt: computed(() => ''),
     historyGenerationFields: () => ({}), resultContext: ref(null), autoSaveToGallery: ref(true), setDrawEngine: vi.fn(),
   } as unknown as TempResultDeps
