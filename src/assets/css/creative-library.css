@@ -1,8 +1,9 @@
 @reference "./tailwind.css";
 /* One reading frame for the four creative-library routes; their bodies keep their own task layouts. */
-.page.creative-library-page { --page-max:1600px; @apply tw:pt-s-5 tw:pb-s-8; }
-.creative-library-header { @apply tw:mb-s-6; }
+.page.creative-library-page { --page-max:1600px; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); }
+.creative-library-header { @apply tw:mb-s-5; }
 .creative-library-heading { @apply tw:mb-s-5; }
-.creative-library-kicker { @apply tw:m-0 tw:text-accent tw:text-label-xs tw:font-semibold; letter-spacing:.12em; }
-.creative-library-heading h1 { margin:var(--s-2) 0 var(--s-3); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:clamp(2rem,2.8vw,3rem); line-height:var(--lh-label); letter-spacing:-.03em; }
-.creative-library-description { @apply tw:m-0 tw:text-secondary tw:text-body tw:leading-body; }
+.creative-library-heading h1 { margin:0 0 var(--s-2); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:clamp(1.55rem,2.4vw,var(--fs-display)); line-height:var(--lh-tight); letter-spacing:-.03em; }
+.creative-library-description { @apply tw:max-w-[640px] tw:m-0 tw:text-secondary tw:text-body tw:leading-body; }
+/* Route destinations keep their 44px targets, with the same label size as browse filters. */
+.page.creative-library-page .creative-library-nav a { font-size:var(--fs-label-sm); line-height:var(--lh-label); }

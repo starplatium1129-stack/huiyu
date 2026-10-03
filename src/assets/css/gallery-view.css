@@ -1,15 +1,15 @@
 @reference "./tailwind.css";
-.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
-.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto clamp(24px,2.5vw,32px); }
-.gallery-kicker { @apply tw:mb-s-3 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.18em; }
+/* Browse headers share the existing display/body steps; the wall keeps its wider frame. */
+.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); background:var(--bg-base); }
+.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-5); }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
 .gallery-breadcrumb button { border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; padding:var(--s-1) 0; @apply tw:min-h-[32px]; }
 .gallery-breadcrumb button:hover { @apply tw:text-accent; }
 .gallery-breadcrumb button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
-.gallery-title { @apply tw:m-0 tw:text-primary tw:font-display; font-size:clamp(2rem,3.5vw,3.2rem); @apply tw:font-semibold; letter-spacing:-.035em; @apply tw:leading-tight; }
+.gallery-title { @apply tw:m-0 tw:text-primary tw:font-display; font-size:clamp(1.55rem,2.4vw,var(--fs-display)); @apply tw:font-semibold; letter-spacing:-.03em; @apply tw:leading-tight; }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
-.gallery-subtitle { @apply tw:max-w-[660px]; margin:var(--s-3) 0 0; @apply tw:text-secondary; font-size:clamp(.86rem,1.2vw,1rem); @apply tw:leading-loose; }
+.gallery-subtitle { margin:var(--s-2) 0 0; @apply tw:max-w-[640px] tw:text-secondary tw:text-body tw:leading-body; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
 
@@ -25,7 +25,7 @@
 .gallery-filter :deep(.archive-icon) { @apply tw:w-[16px] tw:h-[16px]; vertical-align:-.2em; @apply tw:mr-[3px]; }
 /* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
 .gallery-search-field { @apply tw:relative; flex:1 1 210px; @apply tw:min-w-[160px] tw:max-w-[280px]; }
-.gallery-filter { @apply tw:relative; z-index:var(--z-raised); @apply tw:min-h-[40px]; padding:0 15px; border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
+.gallery-filter { @apply tw:relative; z-index:var(--z-raised); @apply tw:min-h-[36px]; padding:0 var(--s-3); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
 .gallery-filter:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 8%,var(--bg-surface)); @apply tw:text-accent; }
 .gallery-filter:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .gallery-project { @apply tw:w-auto tw:min-w-[140px]; }
@@ -117,7 +117,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .gallery-intro { @apply tw:items-start tw:flex-wrap tw:gap-s-4; }
-  .gallery-kicker { @apply tw:text-mono-xs; }
   .gallery-subtitle { @apply tw:mt-s-2; }
   .gallery-toolbar { @apply tw:p-s-3 tw:gap-s-2; }
   .gallery-browse-controls { @apply tw:w-full; }
@@ -141,4 +140,4 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @keyframes gallerySkeleton { to { transform: translateX(-54.5%); } }
 /* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
 @keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
-.gallery-browse-controls .gallery-filter.active { @apply tw:text-accent; background:transparent; border-color:transparent; }
+.gallery-browse-controls .gallery-filter.active { @apply tw:text-accent tw:font-semibold; background:transparent; border-color:transparent; }

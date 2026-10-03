@@ -2,7 +2,6 @@
   <article class="gallery-shell gallery-page" ref="shellEl">
     <header class="gallery-intro">
       <div>
-        <div class="gallery-kicker">HUIYU / PRIVATE COLLECTION</div>
         <h1 class="gallery-title">我的作品</h1>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
