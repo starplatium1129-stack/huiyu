@@ -1,7 +1,7 @@
 <template>
 <article
   class="artwork"
-  :class="{ 'artwork-pending': confirmingDelete, 'artwork-selected': selectionMode && selected }"
+  :class="{ 'artwork-pending': confirmingDelete, 'artwork-selectable': selectionMode, 'artwork-selected': selectionMode && selected }"
   :data-card-id="String(item.id)"
   :style="{ '--art-ratio': String(ratio) }"
 >

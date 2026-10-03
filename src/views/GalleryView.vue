@@ -37,7 +37,7 @@
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
       -->
       <div v-show="!albumsOpen" class="gallery-manage-controls" role="group" aria-label="管理作品">
-      <button v-if="!trashMode" class="gallery-filter" type="button" :class="{ active: selectMode }"
+      <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }"
         :aria-pressed="selectMode" @click="toggleSelectMode">
         <ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}
       </button>
@@ -59,21 +59,23 @@
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
-      <span v-if="trashMode || selectMode" class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : '选择作品后，可整理画册与标签、对比挑选或移入回收站' }}</span>
+      <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
 
+    <div class="gallery-selection-dock">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite">已选 {{ selectedIds.size }} / {{ visible.length }}</span>
-      <span class="gallery-bulk-actions tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:ml-auto">
+      <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
           @click="selectAllVisible">{{ allVisibleSelected ? '取消全选' : '全选当前' }}</button>
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size || bulkDeleting"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
-        <button class="btn btn-ghost btn-sm" type="button" @click="toggleSelectMode">完成</button>
+        <button class="btn btn-ghost btn-sm" type="button" @click="finishSelection">完成</button>
       </span>
     </div>
     <GalleryOrganization :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
+    </div>
 
     <GalleryShowcase v-if="showcaseOpen" :items="visible" :title="collectionTitle" :card-urls="cardUrls" :thumb-urls="thumbUrls" @close="showcaseOpen = false" />
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
@@ -416,6 +418,12 @@ function startAlbumSelection() {
   void showImages()
 }
 const tagControls = ref<HTMLElement | null>(null)
+const selectionToggle = ref<HTMLButtonElement | null>(null)
+async function finishSelection() {
+  toggleSelectMode()
+  await nextTick()
+  selectionToggle.value?.focus({ preventScroll: true })
+}
 async function filterByTag(tag: string) {
   closeViewer(); tagFilter.value = tag
   await nextTick(); tagControls.value?.querySelector<HTMLElement>('[aria-label="按标签筛选"]')?.focus()

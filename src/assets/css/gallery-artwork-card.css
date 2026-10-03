@@ -1,15 +1,16 @@
 @reference "./tailwind.css";
-.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid transparent; @apply tw:rounded-lg; background:var(--bg-base); content-visibility:auto; contain-intrinsic-size:auto 340px; transition:transform var(--motion-surface); }
+.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); content-visibility:auto; contain-intrinsic-size:auto 340px; transition:transform var(--motion-surface); }
 .artwork:hover { @apply tw:border-strong; }
-.artwork-button { @apply tw:block tw:w-full tw:p-0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
-.gallery-bulkbar ~ section .artwork-button { cursor:pointer; }
+.artwork-button { @apply tw:block tw:w-full; padding:var(--s-2) var(--s-2) 0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
+.artwork-selectable .artwork-button { cursor:pointer; }
+.artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
 /* 多选选中态：描边与题注底色保持原有画框尺寸。 */
-.artwork-selected { @apply tw:border-accent; box-shadow:inset 0 0 0 2px var(--accent); }
+.artwork-selected,.artwork-selected:hover { @apply tw:border-accent; box-shadow:var(--selection-shadow); }
 .artwork-selected .artwork-caption { background:var(--accent-soft); }
-.artwork-check { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:inline-flex tw:items-center tw:justify-center tw:w-[28px] tw:h-[28px]; border:1.5px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+.artwork-check { @apply tw:absolute; z-index:var(--z-raised); top:var(--s-3); right:var(--s-3); @apply tw:inline-flex tw:items-center tw:justify-center tw:w-[28px] tw:h-[28px]; border:1.5px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); }
 .artwork-selected .artwork-check { @apply tw:border-accent; background:var(--accent); @apply tw:text-inverse; }
 .artwork-tool { @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[32px] tw:min-w-[32px] tw:justify-center; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); @apply tw:cursor-pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
@@ -24,8 +25,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
 .artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; vertical-align:-.12em; }
-.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); @apply tw:overflow-hidden tw:rounded-md; background:var(--art-mat); }
-.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); transition:transform var(--motion-surface); }
+.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); @apply tw:overflow-hidden tw:rounded-sm; border:1px solid var(--art-frame-line); background:var(--art-stage); box-shadow:0 0 0 var(--s-1) var(--art-stage),var(--art-frame-shadow); }
+.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); animation:galleryImageIn .35s var(--ease-out); transition:transform var(--motion-surface); }
 /* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
    消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
 .artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
@@ -39,8 +40,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%);
   animation:gallerySkeleton 1.3s linear infinite;
 }
-.artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-2) var(--s-1) var(--s-1); @apply tw:text-primary; background:var(--bg-base); @apply tw:text-left; }
-.artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-title-xs tw:font-semibold; }
+.artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; margin-inline:calc(var(--s-2) * -1); padding:var(--s-3); @apply tw:text-primary; background:var(--bg-surface); @apply tw:text-left; }
+.artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-body tw:font-semibold; }
 .artwork-date { @apply tw:block tw:mt-s-1 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary tw:text-label-xs; }
 .artwork-mark { flex:0 0 auto; @apply tw:text-accent tw:text-label-sm; }
 
