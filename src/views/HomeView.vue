@@ -1,222 +1,97 @@
 <template>
   <article class="home-page">
-    <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
+    <section class="container home-opening" aria-label="创作画室">
       <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
         <div class="hero-copy">
-          <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
+          <span class="hero-register"><span aria-hidden="true"></span> YOUR CREATIVE ROOM</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
-          <p class="hero-sub">选角色、挑场景，用 AI 生成二次元 CG。<br />从现成灵感开始，也能自己编排画面与光影。</p>
-          <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
-            <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
-          </div>
-          <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses" role="group" aria-label="首页角色视觉">
             <AnimatedSelection />
-            <button type="button" :aria-pressed="homeMuse === 'nene'" @click="selectMuse('nene', $event)"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
-            <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
+            <button type="button" :aria-pressed="homeMuse === 'nene'" @click="selectMuse('nene', $event)"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span>绫地宁宁</button>
+            <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span>四季夏目</button>
           </div>
-          <div class="hero-links">
-          <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
-            :aria-label="`欣赏${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的粒子形象`">
-            <ArchiveIcon name="spark" /><span>欣赏粒子形象</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
-          </RouterLink>
-          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />先看参考样张</RouterLink>
+          <div class="hero-create">
+            <span class="eyebrow">CREATION / 继续这一页</span>
+            <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /><span>{{ continueLink.label }}</span><span aria-hidden="true">↗</span></RouterLink>
+            <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
+            <RouterLink to="/prompt-builder" class="hero-direct"><ArchiveIcon name="image" />打开绘制台<ArchiveIcon name="chevron-down" /></RouterLink>
           </div>
+          <nav class="hero-shortcuts" aria-label="创作快捷入口">
+            <RouterLink to="/scene-explorer"><ArchiveIcon name="scene" /><span>找灵感</span><span aria-hidden="true">↗</span></RouterLink>
+            <RouterLink to="/gallery"><ArchiveIcon name="gallery" /><span>我的作品</span><span aria-hidden="true">↗</span></RouterLink>
+            <RouterLink to="/video-studio"><ArchiveIcon name="play" /><span>故事短片</span><span aria-hidden="true">↗</span></RouterLink>
+            <RouterLink :to="`/chat?character=${homeMuse}`"><ArchiveIcon name="chat" /><span>角色房间</span><span aria-hidden="true">↗</span></RouterLink>
+          </nav>
+          <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`" :aria-label="`欣赏${heroName}的粒子形象`"><ArchiveIcon name="spark" /><span>欣赏粒子形象</span></RouterLink>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" :aria-label="`${heroName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
-          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
-          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
-          <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="homeMuse">
-            <ArchiveIcon name="image" />
-            <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
-            <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
+          <div class="hero-art-frame">
+            <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1497" sizes="45vw" loading="eager" decoding="async" fetchpriority="high" />
+            <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1497" sizes="45vw" loading="eager" decoding="async" />
+            <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="homeMuse">
+              <ArchiveIcon name="image" />
+              <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
+              <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
+            </div>
+            <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" role="status">正在载入{{ heroName }}的画页…</p>
           </div>
-          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" role="status">正在载入{{ heroName }}的画页…</p>
-          <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
+          <div class="orbit-label" aria-live="polite"><div><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div><span class="hero-page-number" aria-hidden="true">{{ homeMuse === 'nene' ? '01' : '02' }}</span></div>
         </aside>
-        <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
+        <div class="hero-study">
+          <div class="hero-study-head"><span class="eyebrow">INSPIRATION / 今日画页</span><ArchiveIcon name="image" /></div>
+          <RuntimeImage v-if="featuredScenes[0]" :src="'/scene-showcase/images/' + featuredScenes[0].id + '.jpg'" v-slot="{ image, failed }">
+            <RouterLink class="hero-study-link" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(featuredScenes[0].id)">
+              <div class="hero-study-art"><img v-if="image.src && !failed" v-bind="image" :alt="featuredScenes[0].title || '今日精选场景'" loading="lazy" decoding="async" /><span v-else class="hero-study-missing"><ArchiveIcon name="scene" />先看看这一幕的设定</span></div>
+              <span class="hero-study-category">{{ featuredScenes[0].category || '角色片刻' }}</span>
+              <h2>{{ featuredScenes[0].title }}</h2>
+              <span class="hero-study-open">{{ failed ? '查看场景' : '翻开这一幕' }}<span aria-hidden="true">↗</span></span>
+            </RouterLink>
+          </RuntimeImage>
+          <RouterLink v-else to="/scene-explorer" class="hero-study-empty"><ArchiveIcon name="scene" /><span>挑一幕喜欢的场景</span><span aria-hidden="true">↗</span></RouterLink>
+          <RouterLink to="/showcase" class="hero-study-all">翻阅参考画册<ArchiveIcon name="chevron-down" /></RouterLink>
+        </div>
       </div>
     </section>
 
-    <!-- 最近创作 -->
-    <section class="container home-section home-resume" v-if="recentWorks.length">
-      <div class="home-section-head">
-        <h2>最近创作</h2>
-        <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
-      </div>
-      <div class="recent-grid stagger-container">
-        <RouterLink
-          v-for="h in recentWorks"
-          :key="h.id"
-          class="recent-card"
-          :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
-        >
-          <div class="recent-cover" :data-image-id="h.image_id">
-            <img :crossorigin="runtimeResourceCors()" v-if="coverUrl(h)" :src="resolveRuntimeUrl(coverUrl(h))" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
-            <ArchiveIcon v-else name="image" class="placeholder" />
-          </div>
-          <div class="recent-body">
-            <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
-            <div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div>
-          </div>
+    <section class="container home-section home-resume" aria-labelledby="recent-title">
+      <div class="home-section-head"><div><span class="eyebrow">YOUR WORKS</span><h2 id="recent-title">继续你的创作</h2></div><RouterLink to="/gallery" class="link">打开我的作品 <span aria-hidden="true">↗</span></RouterLink></div>
+      <div v-if="recentWorks.length" class="recent-grid">
+        <RouterLink v-for="h in recentWorks" :key="h.id" class="recent-card" :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`" :style="{ '--work-ratio': workRatio(h) }">
+          <div class="recent-cover" :data-image-id="h.image_id"><img :crossorigin="runtimeResourceCors()" v-if="coverUrl(h)" :src="resolveRuntimeUrl(coverUrl(h))" :alt="h.sceneTitle || h.scene || '最近作品'" class="recent-cover-img" loading="lazy" decoding="async" @load="measureWork(h, $event)" /><ArchiveIcon v-else name="image" class="placeholder" /></div>
+          <div class="recent-body"><div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div><div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div><span aria-hidden="true">↗</span></div>
         </RouterLink>
+      </div>
+      <RouterLink v-else to="/prompt-builder" class="recent-empty"><span class="recent-empty-icon"><ArchiveIcon name="image" /></span><span><strong>给你的画册，添上第一张作品。</strong><span>画好之后，会收进这里。</span></span><span class="recent-empty-action">开始绘制 <span aria-hidden="true">↗</span></span></RouterLink>
+    </section>
+
+    <HomeArtJournal :scenes="featuredScenes.slice(1, 3)" />
+
+    <section v-if="popularCharacters.length" class="container home-section home-inspiration" aria-labelledby="popStripLabel">
+      <div class="pop-strip">
+        <div class="home-section-head"><div><span class="eyebrow">CHARACTER COLLECTION</span><h2 id="popStripLabel">下一页，和谁一起？</h2></div><RouterLink to="/popular-scenes" class="link">{{ popularCharacters.length }} 位角色 <span aria-hidden="true">↗</span></RouterLink></div>
+        <div class="pop-scroll">
+          <RouterLink v-for="c in popularCharacters.slice(0, 12)" :key="c.id" class="pop-card-mini" :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`">
+            <RuntimeImage :src="portraitSrc(c.id)" :alt="c.displayName" loading="lazy" decoding="async"><template #fallback><span class="pop-portrait-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span></template></RuntimeImage>
+            <span class="pop-cap"><span class="pop-cap-name">{{ c.displayName }}</span><span class="pop-cap-franchise">{{ franchiseLabel(c.franchise) }}</span></span>
+          </RouterLink>
+        </div>
       </div>
     </section>
-    <!-- 最近用过的场景 -->
-    <section class="container home-section" v-if="recentScenes.length" data-reveal>
-      <div class="home-section-head">
-        <h2>最近用过的场景</h2>
-        <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
-      </div>
-      <div class="recent-scenes-row">
-        <!-- 同上：进场景，不自动开跑 -->
-        <RouterLink
-          v-for="s in recentScenes"
-          :key="s.id"
-          class="sc-link"
-          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
-        >
-          <SceneCard :scene="s" mode="strip" :clickable="false" />
-        </RouterLink>
-      </div>
+
+    <section class="container home-section home-recent-scenes" v-if="recentScenes.length" aria-labelledby="recent-scenes-title" data-reveal>
+      <div class="home-section-head"><div><span class="eyebrow">RECENT INSPIRATION</span><h2 id="recent-scenes-title">再回到这一幕</h2></div><RouterLink to="/scene-explorer" class="link">继续找灵感 <span aria-hidden="true">↗</span></RouterLink></div>
+      <div class="recent-scenes-row"><RouterLink v-for="s in recentScenes" :key="s.id" class="sc-link" :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"><SceneCard :scene="s" mode="strip" :clickable="false" /></RouterLink></div>
     </section>
 
     <HomeCreationGuide />
-    <HomeArtJournal :scenes="featuredScenes" />
-
-    <section class="container home-inspiration" aria-label="场景与角色灵感">
-        <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
-        <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
-          <div class="strip-label" id="popStripLabel">
-            <span class="dot"></span> 在这里，遇见你的本命 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部角色 →</RouterLink>
-          </div>
-          <div class="pop-scroll">
-            <RouterLink
-              v-for="c in popularCharacters.slice(0, 12)"
-              :key="c.id"
-              class="pop-card-mini"
-              :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
-            >
-              <RuntimeImage
-                :src="portraitSrc(c.id)"
-                :alt="c.displayName"
-                loading="lazy"
-                decoding="async"
-              ><template #fallback><span class="pop-portrait-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span></template></RuntimeImage>
-              <span class="pop-cap">
-                <span class="pop-cap-name">{{ c.displayName }}</span>
-                <span class="pop-cap-franchise">{{ franchiseLabel(c.franchise) }}</span>
-              </span>
-            </RouterLink>
-          </div>
-        </div>
-    </section>
-
-    <!-- 创作入口 -->
-    <section class="container home-section" data-reveal>
-      <div class="home-section-head">
-        <div>
-          <span class="eyebrow">创作，从一个念头开始</span>
-          <h2>今天，想创作些什么？</h2>
-          <p class="hint">从画一张图，到讲一个故事。让灵感有个去处。</p>
-        </div>
-      </div>
-      <div class="tools-grid home-bento">
-        <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">01 / MAKE</span>
-          <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
-          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage v-if="heroLoaded[homeMuse]" :src="homeMuse === 'nene' ? neneHero.src : natsumeHero.src" alt="" loading="lazy" /><ArchiveIcon v-else name="image" class="home-entry-placeholder" /></span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">02 / SCENE</span>
-          <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
-          <span class="d">{{ sceneLibraryCopy }}</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/video-studio" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">03 / MOTION</span>
-          <span class="ic"><ArchiveIcon name="play" /></span><span class="t">故事短片</span>
-          <span class="d">让静止的画面，成为一段会呼吸的故事。</span>
-          <span class="go">→ 开始创作</span>
-        </RouterLink>
-        <RouterLink :to="`/chat?character=${homeMuse}`" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">04 / ROOM</span>
-          <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">与宁宁或夏目静享片刻独白，聊聊今天的心情。</span>
-          <span class="go">→ 进入房间</span>
-        </RouterLink>
-        <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
-        <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
-          <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
-          <span class="ic"><ArchiveIcon name="image" /></span>
-          <span class="banner-copy"><span class="t">参考画册</span><span class="d">翻阅角色与场景的定稿样张，找到下一张画的灵感。</span></span>
-          <span class="go">→ 浏览完整画册</span>
-        </RouterLink>
-      </div>
-    </section>
-
-    <!-- 资料区 -->
-    <section class="container home-section home-section-quiet" data-reveal>
-      <div class="home-section-head">
-        <div>
-          <span class="eyebrow">资料与回顾</span>
-          <h2>画室里的小抽屉</h2>
-          <p class="hint">角色、画风、模型和旧作，都收在这里。</p>
-        </div>
-      </div>
-      <div class="tools-grid">
-        <RouterLink to="/character" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
-          <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
-          <span class="d">认识角色的模样、性格与故事。</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/style" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
-          <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
-          <span class="d">探寻画面色阶、情绪氛围与色彩剧本。</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/lora" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">07 / MODEL</span>
-          <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
-          <span class="d">找到适合这次创作的模型与推荐设置。</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/gallery" class="tool-card card-create">
-          <span class="tool-index" aria-hidden="true">08 / WORKS</span>
-          <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">我的作品</span>
-          <span class="d">以纯净原始画幅，安静收存属于你的每一张心动创作。</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-      </div>
-    </section>
-
-    <section class="container home-section" v-if="!recentWorks.length" data-reveal>
-      <div class="home-section-head"><h2>最近创作</h2><RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink></div>
-      <div class="recent-grid">
-        <ArchiveStatePanel
-          class="recent-empty-state"
-          compact
-          kind="empty"
-          title="还没有最近作品"
-          message="画好之后，它会收进你的本地作品档案。"
-        >
-          <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
-        </ArchiveStatePanel>
-      </div>
-    </section>
   </article>
 </template>
-
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
+import type { ArtworkRecord } from '@/types/artwork'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
@@ -227,7 +102,6 @@ import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
 import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
@@ -238,7 +112,6 @@ useScrollReveal()
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
-const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('先选喜欢的画面；确认参数后再生成。')
@@ -285,6 +158,18 @@ function portraitSrc(id: string): string {
 }
 
 
+const measuredWorkRatios = ref<Record<string, number>>({})
+function workRatio(work: ArtworkRecord): number {
+  const measured = measuredWorkRatios.value[work.id]
+  if (measured) return measured
+  const width = Number(work.width || work.image_width || work.actual?.width)
+  const height = Number(work.height || work.image_height || work.actual?.height)
+  return Number.isFinite(width / height) && width > 0 && height > 0 ? width / height : .75
+}
+function measureWork(work: ArtworkRecord, event: Event) {
+  const image = event.target as HTMLImageElement
+  if (image.naturalWidth && image.naturalHeight) measuredWorkRatios.value[work.id] = image.naturalWidth / image.naturalHeight
+}
 function charName(id: string | undefined) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
 }
@@ -354,7 +239,6 @@ async function loadSceneHighlights() {
     const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []
     const curated: string[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : []
     const ids = [...signatures, ...curated.filter((id: string) => !signatures.includes(id))]
-    sceneLibraryCopy.value = `${ids.length} 个招牌与精选，完整库共 ${scenes.length} 个。`
 
     featuredScenes.value = pickFeatured(ids, scenes, 6)
 
