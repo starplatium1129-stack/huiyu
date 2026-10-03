@@ -25,6 +25,7 @@
       <div class="stage-message">
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize">
+          <template #default>
           <div v-if="generationBusy" class="stage-generating-copy">
             <ThinkingOrb state="working" size="lg" color-variant="dual" aria-hidden="true" />
             <div class="stage-generation-feedback">
@@ -40,16 +41,18 @@
               <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
             </div>
           </div>
-        </DirectorSceneReference>
-        <div v-if="!generationBusy && generationError" class="stage-idle">
+          </template>
+          <template #actions="{ hasScene }">
+        <div v-if="!generationBusy && generationError" class="stage-idle" role="alert">
+          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="warning" /></div>
           <div class="stage-placeholder-title">这次画面未能生成</div>
-          <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
-            查看错误原因，调整后再试一次。
-            <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
+            构思与参数已保留，调整后可以再试一次。
           </div>
+          <p class="stage-error-detail">{{ generationError }}</p>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">重新生成</button>
+            <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
             <!-- F2：本次失败不毁掉上一张未入册成片——它还在暂存里，一键找回 -->
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
               找回上一张未入册成片
@@ -74,10 +77,13 @@
           <div class="stage-placeholder-copy">
             选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
           </div>
+          <p v-if="hasScene" class="stage-guide-note">这一幕已选好，确认下方画幅后即可生成。</p>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
+            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '调整场景' : '挑选场景' }}</button>
           </div>
         </div>
+          </template>
+        </DirectorSceneReference>
         </div>
       </div>
     </section>
