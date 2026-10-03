@@ -92,6 +92,8 @@ const router = createRouter({
     cancelPendingScrollRestore()
     if (savedPosition) {
       routeScrollMemory.delete(to.fullPath)
+      // Browser back can arrive before the destination's async list grows.
+      if (savedPosition.top || savedPosition.left) scheduleScrollRestore(to.fullPath, savedPosition)
       return { ...savedPosition, behavior: 'instant' }
     }
     if (to.path === from.path && !to.hash && !from.hash) return false

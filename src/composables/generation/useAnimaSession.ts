@@ -1,6 +1,6 @@
 import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
@@ -25,6 +25,7 @@ export * from './animaSessionContract'
  * 和跨引擎协调（SD 结果互斥）通过注入的选项回调保留在视图侧。
  */
 
+const BUSY_PHASES = ['submitting', 'running', 'cancelling']
 const INITIAL_STATE: AnimaGenerationState = {
   phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
   prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA',
@@ -116,6 +117,16 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     patchState(patch)
   }
 
+  function modelDefaults(model: AnimaOption | undefined) {
+    const defaults = model?.defaults
+    return {
+      steps: Number(defaults?.steps) || state.value.steps,
+      cfg: Number(defaults?.cfg) || state.value.cfg,
+      sampler: String(defaults?.sampler || state.value.sampler),
+      scheduler: String(defaults?.scheduler || state.value.scheduler),
+    }
+  }
+
   function applyModel(modelIdToApply: string) {
     const model = state.value.models.find(item => item.id === modelIdToApply)
     const size = closestSupportedSize(model, options.preferredSize() || `${state.value.width}x${state.value.height}`)
@@ -124,10 +135,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     patchState({
       modelId: modelIdToApply,
       family: model?.family === 'krea2' ? 'krea2' : 'anima',
-      steps: Number(model?.defaults?.steps) || state.value.steps,
-      cfg: Number(model?.defaults?.cfg) || state.value.cfg,
-      sampler: String(model?.defaults?.sampler || state.value.sampler),
-      scheduler: String(model?.defaults?.scheduler || state.value.scheduler),
+      ...modelDefaults(model),
       styleLoraId: '',
       ...(Number.isInteger(width) && Number.isInteger(height) ? { width, height } : {}),
     })
@@ -210,10 +218,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
             : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
           models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-          steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
-          cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
-          sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
-          scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
+          ...(shouldApplyDefaults ? modelDefaults(selectedModel) : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent
@@ -265,23 +270,25 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     discardStatusRead()
   }
 
+  function resetResult() {
+    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, resultContext: null })
+  }
+
   function clearResult() {
     const previous = state.value.result
     if (previous) URL.revokeObjectURL(previous.url)
-    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, resultContext: null })
+    resetResult()
   }
 
   /** generate 提交前调用：当前结果移入 stash（所有权移交，不 revoke）。 */
   function stashCurrentResult() {
     const current = state.value.result
     if (!current) return // 连续失败重试仍保留最近一次成功成片。
-    if (stashedResult.value && stashedResult.value.result.url !== current?.url) {
+    if (stashedResult.value && stashedResult.value.result.url !== current.url) {
       URL.revokeObjectURL(stashedResult.value.result.url)
     }
-    stashedResult.value = current
-      ? { result: current, context: state.value.resultContext ?? null }
-      : null
-    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, resultContext: null })
+    stashedResult.value = { result: current, context: state.value.resultContext ?? null }
+    resetResult()
   }
 
   /** 新结果成功：stash 被超越，释放其 blob URL。 */
@@ -310,7 +317,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }
 
   function captureSubmission(overrides: Partial<AnimaRequest> = {}): AnimaSubmission | null {
-    if (disposed || ['submitting', 'running', 'cancelling'].includes(state.value.phase)) return null
+    if (disposed || BUSY_PHASES.includes(state.value.phase)) return null
     const request = options.getRequest()
     return request ? JSON.parse(JSON.stringify({ family: state.value.family, request: { ...request, ...overrides }, context: options.getSubmitContext?.() ?? null })) as AnimaSubmission : null
   }
@@ -323,7 +330,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }
 
   async function generate(overrides: Partial<AnimaRequest> = {}, frozen?: AnimaSubmission): Promise<void> {
-    if (disposed || ['submitting', 'running', 'cancelling'].includes(state.value.phase)) return
+    if (disposed || BUSY_PHASES.includes(state.value.phase)) return
     const submission = frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : captureSubmission(overrides)
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
@@ -378,9 +385,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }
 
   async function cancel(): Promise<void> {
-    if (durableAttempt && durableKey && ['submitting', 'running', 'cancelling'].includes(state.value.phase)) {
+    if (durableAttempt && durableKey && BUSY_PHASES.includes(state.value.phase)) {
       const serial = requestSerial, key = durableKey
-      const isCurrent = () => serial === requestSerial && key === durableKey && ['submitting', 'running', 'cancelling'].includes(state.value.phase)
+      const isCurrent = () => serial === requestSerial && key === durableKey && BUSY_PHASES.includes(state.value.phase)
       patchState({ phase: 'cancelling', statusText: '正在记录取消请求…' })
       try {
         const { cancelRuntimeTaskKey, taskMessage } = await import('@/api/runtimeTasks')

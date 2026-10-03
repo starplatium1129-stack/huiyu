@@ -27,6 +27,7 @@ test('home keeps the correct bundled covers even with an older external home man
 
 test('global search routes saved work to history and refreshes its index on reopen', async ({ page }) => {
   await page.goto('/')
+  await expect(page.locator('.home-hero')).toBeVisible()
   await seedWork(page, 424201, '桌面检索回归甲')
   await page.keyboard.press('Control+k')
   await page.getByRole('combobox', { name: '搜索场景、作品或页面' }).fill('桌面检索回归甲')
@@ -50,8 +51,7 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
   await page.goto('/showcase')
   await page.locator('.showcase-filters > summary').press('Enter')
   await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular')
-  await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('雷电')
-  await page.getByRole('option', { name:'雷电将军', exact:true }).click()
+  await pickStudioOptionByValue(page.getByRole('combobox', { name:'筛选角色', exact:true }), 'raiden_shogun')
   await page.getByRole('searchbox', { name: '搜索画册' }).fill('天守阁')
   await expect(page.locator('.sample-title').first()).toContainText('天守阁')
   await page.getByRole('button', { name: '查看 雷电将军 · 天守阁内廷 大图', exact: true }).click()
@@ -62,7 +62,7 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
   await expect(page.locator('dialog[open]')).toHaveCount(0)
   await page.goBack()
   await expect(page.getByRole('searchbox', { name: '搜索画册' })).toHaveValue('天守阁')
-  await expect(page.getByRole('combobox', { name:'筛选角色', exact:true })).toHaveValue('雷电将军')
+  await expect(page.getByRole('combobox', { name:'筛选角色', exact:true })).toHaveAttribute('data-value', 'raiden_shogun')
   await page.getByRole('button', { name: '清除筛选' }).click()
   await expect(page.getByRole('searchbox', { name: '搜索画册' })).toHaveValue('')
   expect(jobs).toBe(0)

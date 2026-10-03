@@ -64,7 +64,7 @@ test('changing motion preference settles an active route transition', async ({ p
   await expect(page.locator('main > .route-view')).not.toHaveAttribute('inert')
 })
 
-test('explicitly revisiting a cached page restores its window scroll position', async ({ page }) => {
+test('explicit revisit and browser back restore the scene list window scroll position', async ({ page }) => {
   await page.goto('/scene-explorer')
   await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 640))
@@ -76,6 +76,12 @@ test('explicitly revisiting a cached page restores its window scroll position', 
   await expect(page).toHaveURL(/prompt-builder$/)
   await nav.getByRole('link', { name: '灵感', exact: true }).click()
   await expect(page).toHaveURL(/scene-explorer$/)
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(saved - 2)
+  await nav.getByRole('link', { name: '绘制', exact: true }).click()
+  await expect(page).toHaveURL(/prompt-builder$/)
+  await page.goBack()
+  await expect(page).toHaveURL(/scene-explorer$/)
+  await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(saved - 2)
 })
 

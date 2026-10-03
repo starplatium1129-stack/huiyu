@@ -28,7 +28,7 @@ test('selective recipe reuse keeps the draft on cancellation and replaces only s
   await page.getByRole('button', { name: /^SD 引擎/ }).click()
   await page.getByRole('link', { name: '我的作品', exact: true }).click()
   await page.locator('.artwork').first().hover()
-  await page.getByRole('link', { name: '沿用配方', exact: true }).first().click()
+  await page.getByRole('link', { name: '沿用配方：沿用夹具', exact: true }).click()
   await expect(reuse).toBeVisible()
   await reuse.getByRole('radio', { name: /选择沿用/ }).check()
   await reuse.getByRole('button', { name: '载入所选配方', exact: true }).click()
