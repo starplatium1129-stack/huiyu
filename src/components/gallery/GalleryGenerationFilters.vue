@@ -74,9 +74,12 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.gallery-generation-filters { @apply tw:min-w-0 tw:my-s-3 tw:text-primary tw:text-label-sm; }
-details { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); padding:var(--s-3); }
-summary { @apply tw:flex tw:items-center tw:gap-s-2; cursor:pointer; list-style:none; }
+.gallery-generation-filters { @apply tw:min-w-0 tw:text-primary tw:text-label-sm; }
+details { border:0; border-radius:var(--r-md); background:transparent; }
+details[open] { padding:var(--s-3); background:var(--bg-base); }
+summary { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding-inline:var(--s-2); cursor:pointer; list-style:none; }
+summary .archive-icon { width:16px; height:16px; flex-shrink:0; }
+details[open] summary > :last-child { transform:rotate(180deg); }
 summary::-webkit-details-marker { display:none; }
 summary > :last-child { margin-left:auto; }
 summary:focus-visible,input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }

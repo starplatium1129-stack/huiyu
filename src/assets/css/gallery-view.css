@@ -1,24 +1,28 @@
 @reference "./tailwind.css";
 /* Browse headers share the existing display/body steps; the wall keeps its wider frame. */
-.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); background:var(--bg-base); }
-.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-5); }
+.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:var(--s-5) var(--s-5) var(--s-8); background:var(--bg-base); }
+.gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-4); }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
 .gallery-breadcrumb button { border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; padding:var(--s-1) 0; @apply tw:min-h-[32px]; }
 .gallery-breadcrumb button:hover { @apply tw:text-accent; }
 .gallery-breadcrumb button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
-.gallery-title { @apply tw:m-0 tw:text-primary tw:font-display; font-size:clamp(1.55rem,2.4vw,var(--fs-display)); @apply tw:font-semibold; letter-spacing:-.03em; @apply tw:leading-tight; }
+.gallery-title { @apply tw:m-0 tw:text-primary tw:font-display; font-size:var(--fs-title); @apply tw:font-semibold; letter-spacing:-.03em; @apply tw:leading-tight; }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
-.gallery-subtitle { margin:var(--s-2) 0 0; @apply tw:max-w-[640px] tw:text-secondary tw:text-body tw:leading-body; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
 
 .gallery-toolbar { margin:0 auto; @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); }
 .gallery-toolbar::before { @apply tw:hidden; }
+/* 展开的生成条件留在文档流中，短窗口仍能滚到作品与批量操作。 */
+.gallery-toolbar:has(.gallery-generation-filters details[open]) { position:relative; top:auto; }
+.gallery-refine-controls { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-3 tw:w-full; border-top:1px solid var(--border-soft); padding-top:var(--s-3); }
+.gallery-collection-controls { flex:1 1 28rem; min-width:0; }
+.gallery-refine-controls :deep(.gallery-generation-filters:has(details[open])) { flex-basis:100%; }
 .gallery-browse-controls,.gallery-manage-controls { @apply tw:flex tw:items-center tw:gap-s-1 tw:flex-wrap; }
 .gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-pill); @apply tw:mr-auto tw:p-s-1 tw:rounded-pill; background:var(--bg-base); }
 .gallery-manage-controls { @apply tw:pl-s-2; border-left:1px solid var(--border-soft); }
-.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; margin:var(--s-4) 0 var(--s-5); }
+.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; margin:var(--s-3) 0 var(--s-3); }
 .gallery-album-overview { margin-top:var(--s-5); }
 .gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
 .gallery-album-overview:focus,.gallery-summary:focus { outline:none; }
@@ -47,26 +51,28 @@
 .gallery-columns {
   @apply tw:grid;
   grid-template-columns: repeat(var(--wall-cols, 4), minmax(0, 1fr));
-  gap: clamp(16px, 1.8vw, 24px);
+  gap: var(--s-3);
   align-items: start;
 }
 .gallery-col {
   @apply tw:flex tw:flex-col;
-  gap: clamp(16px, 1.8vw, 24px);
+  gap: var(--s-3);
   @apply tw:min-w-0;
 }
 .gallery-loading-wall { @apply tw:min-h-[340px]; }
 .artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid transparent; @apply tw:rounded-lg; background:var(--bg-base); content-visibility:auto; contain-intrinsic-size:auto 340px; transition:transform var(--motion-surface); }
 .artwork:hover { @apply tw:border-strong; }
 .artwork-button { @apply tw:block tw:w-full tw:p-0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
+.gallery-bulkbar ~ section .artwork-button { cursor:pointer; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
-/* 多选选中态：外描边用 box-shadow 而非 border 位移，不改布局、不触发重排 */
-.artwork-selected { @apply tw:border-accent; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 42%,transparent), var(--shadow-md); }
+/* 多选选中态：描边与题注底色保持原有画框尺寸。 */
+.artwork-selected { @apply tw:border-accent; box-shadow:inset 0 0 0 2px var(--accent); }
+.artwork-selected .artwork-caption { background:var(--accent-soft); }
 .artwork-check { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:inline-flex tw:items-center tw:justify-center tw:w-[28px] tw:h-[28px]; border:1.5px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
 .artwork-selected .artwork-check { @apply tw:border-accent; background:var(--accent); @apply tw:text-inverse; }
-.artwork-tool { @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[28px]; padding:0 11px; border:1px solid transparent; @apply tw:rounded-pill; background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); @apply tw:cursor-pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
+.artwork-tool { @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[32px] tw:min-w-[32px] tw:justify-center; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); @apply tw:cursor-pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
 /* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
 a.artwork-tool:hover { color:var(--on-art-primary); }
@@ -94,8 +100,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%);
   animation:gallerySkeleton 1.3s linear infinite;
 }
-.artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-3) var(--s-2) var(--s-4); @apply tw:text-primary; background:var(--bg-base); @apply tw:text-left; }
-.artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-body-sm tw:font-semibold; }
+.artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-2) var(--s-1) var(--s-1); @apply tw:text-primary; background:var(--bg-base); @apply tw:text-left; }
+.artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-title-xs tw:font-semibold; }
 .artwork-date { @apply tw:block tw:mt-s-1 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary tw:text-label-xs; }
 .artwork-mark { flex:0 0 auto; @apply tw:text-accent tw:text-label-sm; }
 
@@ -117,7 +123,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .gallery-intro { @apply tw:items-start tw:flex-wrap tw:gap-s-4; }
-  .gallery-subtitle { @apply tw:mt-s-2; }
   .gallery-toolbar { @apply tw:p-s-3 tw:gap-s-2; }
   .gallery-browse-controls { @apply tw:w-full; }
   .gallery-search-field { flex-basis:100%; }

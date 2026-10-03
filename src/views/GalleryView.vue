@@ -8,7 +8,6 @@
           <ArchiveIcon name="chevron-down" />
           <span aria-current="page">{{ collectionTitle }}</span>
         </nav>
-        <p class="gallery-subtitle">收藏每一次心动，让灵感从这里继续。</p>
       </div>
       <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
         <ArchiveIcon name="spark" />新建创作
@@ -48,17 +47,19 @@
         <ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}
       </button>
       </div>
+      <div v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-controls">
+        <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
+        <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
+      </div>
     </div>
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
     <div v-show="!albumsOpen" class="gallery-image-browse">
-    <GalleryGenerationFilters v-if="!trashMode" v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
-    <div v-if="!trashMode && history.length" ref="tagControls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <button v-if="!trashMode && !selectMode && visible.length && !galleryLoading" class="btn btn-ghost btn-sm" type="button" @click="showcaseOpen = true"><ArchiveIcon name="image" />作品展台</button>
-      <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可整理画册与标签、对比挑选或移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
+      <span v-if="trashMode || selectMode" class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : '选择作品后，可整理画册与标签、对比挑选或移入回收站' }}</span>
     </div>
 
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
@@ -160,19 +161,19 @@
                         :aria-pressed="!!item.favorite"
                         :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
                         @click="toggleFavorite(item)">
-                        <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
+                        <ArchiveIcon name="love" />
                       </button>
                     </StudioTooltip>
                     <StudioTooltip content="以此作品配方回填创作台">
-                      <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
-                        <ArchiveIcon name="spark" /><span>沿用配方</span>
+                      <RouterLink class="artwork-tool" :aria-label="`沿用配方：${sceneTitle(item.scene, item)}`" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
+                        <ArchiveIcon name="spark" />
                       </RouterLink>
                     </StudioTooltip>
                     <StudioTooltip content="删除作品">
                       <button class="artwork-tool danger" type="button"
                         :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
                         @click="pendingDeleteId = item.id">
-                        <ArchiveIcon name="close" /><span>删除</span>
+                        <ArchiveIcon name="trash" />
                       </button>
                     </StudioTooltip>
                   </template>
@@ -304,9 +305,19 @@
         <div class="viewer-meta">
           {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
         </div>
+        <div class="viewer-actions viewer-primary-actions" aria-label="作品操作">
+          <button class="btn btn-ghost" type="button"
+            :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
+            :aria-pressed="!!displayedCurrent.favorite"
+            @click="toggleFavorite(displayedCurrent)">
+            <ArchiveIcon name="love" /><span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
+          </button>
+          <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
+          <RouterLink class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+        </div>
         <section class="viewer-section" aria-label="作品信息">
           <h3>作品信息</h3>
-          <p class="viewer-story">{{ displayedCurrent.story || '这幅作品还没有附加文字。' }}</p>
+          <p v-if="displayedCurrent.story" class="viewer-story">{{ displayedCurrent.story }}</p>
           <div v-if="artworkTags(displayedCurrent).length" class="viewer-tags" aria-label="作品标签">
             <button v-for="tag in artworkTags(displayedCurrent)" :key="tag" type="button" @click="filterByTag(tag)">{{ tag }}</button>
           </div>
@@ -327,16 +338,6 @@
           </div>
           <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
         </details>
-        <div class="viewer-actions viewer-primary-actions" aria-label="作品操作">
-          <button class="btn btn-ghost" type="button"
-            :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
-            :aria-pressed="!!displayedCurrent.favorite"
-            @click="toggleFavorite(displayedCurrent)">
-            <ArchiveIcon name="love" /><span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
-          </button>
-          <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
-          <RouterLink class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
-        </div>
         <details class="viewer-details viewer-more" :key="`tools-${displayedCurrent.id}`">
           <summary>更多操作 <ArchiveIcon name="chevron-down" /><span>重跑、复制与管理</span></summary>
           <div class="viewer-actions">

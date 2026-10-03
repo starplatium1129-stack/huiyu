@@ -22,8 +22,8 @@ const characterOptions = computed(() => [{value:'',label:'全部角色'}, ...pro
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.collection-filters { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3; }
-.collection-filters :deep(.studio-select-wrapper) { width:220px; max-width:100%; }
+.collection-filters { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }
+.collection-filters :deep(.studio-select-wrapper) { width:200px; max-width:100%; }
 .collection-save { margin-left:auto; }
 .collection-rule { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; width:100%; overflow-wrap:anywhere; }
 .collection-rule .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }

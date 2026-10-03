@@ -423,10 +423,35 @@ for (const theme of ['light', 'dark']) {
     const media = await cards.first().locator('.artwork-media').boundingBox()
     const caption = await cards.first().locator('.artwork-caption').boundingBox()
     expect(caption!.y).toBeGreaterThanOrEqual(media!.y + media!.height - 1)
-    for (const selector of ['.artwork-name', '.artwork-date', '.gallery-title', '.gallery-subtitle', '.gallery-count', '.gallery-filter.active']) {
+    for (const selector of ['.artwork-name', '.artwork-date', '.gallery-title', '.gallery-count', '.gallery-filter.active']) {
       expect(await page.locator(selector).first().evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
     }
     await page.screenshot({ path: testInfo.outputPath(`gallery-${theme}.png`), fullPage: true })
+    const selectedCard = page.locator('[data-card-id="gallery-review-0"]')
+    await page.getByRole('button', { name: '选择', exact: true }).click()
+    await expect(cards.locator('.artwork-check')).toHaveCount(6)
+    await expect(cards.locator('.artwork-tools')).toHaveCount(0)
+    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'false')
+    await selectedCard.locator('.artwork-button').click()
+    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'true')
+    await expect(selectedCard.locator('.artwork-check .archive-icon')).toBeVisible()
+    await page.locator('[data-card-id="gallery-review-1"] .artwork-button').click()
+    await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
+    const deleteDialog = page.getByRole('alertdialog')
+    await expect(deleteDialog).toContainText('把 2 幅作品移入回收站？')
+    await deleteDialog.getByRole('button', { name: '取消', exact: true }).click()
+    await expect(deleteDialog).toBeHidden()
+    await expect(cards).toHaveCount(6)
+    await expect(selectedCard.locator('.artwork-button')).toHaveAttribute('aria-pressed', 'true')
+    await page.getByRole('button', { name: '退出选择', exact: true }).click()
+    await expect(page.getByRole('button', { name: '选择', exact: true })).toHaveAttribute('aria-pressed', 'false')
+    await expect(cards.locator('.artwork-check')).toHaveCount(0)
+    await selectedCard.hover()
+    await selectedCard.getByRole('button', { name: '删除作品：午后，和你', exact: true }).click()
+    await expect(selectedCard.getByRole('button', { name: '确认删除', exact: true })).toBeVisible()
+    await selectedCard.getByRole('button', { name: '取消', exact: true }).click()
+    await expect(selectedCard.getByRole('button', { name: '确认删除', exact: true })).toHaveCount(0)
+    await expect(cards).toHaveCount(6)
     await page.getByRole('button', { name: /收藏 2/ }).click()
     await expect(cards).toHaveCount(2)
     await page.getByRole('button', { name: '全部作品', exact: true }).click()
@@ -464,8 +489,13 @@ for (const theme of ['light', 'dark']) {
     await expect(viewer.getByRole('button', { name: '下载原图', exact: true })).toBeVisible()
     await expect(viewer.getByRole('link', { name: '原参重跑', exact: true })).toBeHidden()
     await expect(viewer.locator('.viewer-facts')).toBeHidden()
-    for (const selector of ['.viewer-title', '.viewer-meta', '.viewer-story', '.viewer-section h3', '.viewer-details summary']) {
-      expect(await viewer.locator(selector).first().evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
+    for (const selector of ['.viewer-title', '.viewer-meta', '.viewer-details summary']) {
+      const text = viewer.locator(selector).first()
+      await expect(text).toBeVisible()
+      expect(await text.evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
+    }
+    for (const text of await viewer.locator('.viewer-story:visible, .viewer-section h3:visible').all()) {
+      expect(await text.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
     }
     await viewer.locator('.viewer-more summary').click()
     await expect(viewer.getByRole('link', { name: '原参重跑', exact: true })).toBeVisible()

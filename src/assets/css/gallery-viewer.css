@@ -13,13 +13,13 @@
 .art-viewer .viewer-stage .zoom-level { color:var(--text-secondary); }
 .art-viewer .viewer-stage .zoom-control { background:transparent; }
 .art-viewer .viewer-stage .zoom-hint { @apply tw:hidden; }
-.art-viewer .viewer-section { @apply tw:mt-s-5; }
+.art-viewer .viewer-section { @apply tw:mt-s-4; }
 .art-viewer .viewer-section h3 { margin:0 0 var(--s-2); @apply tw:text-secondary tw:text-label-sm tw:font-semibold; }
 .art-viewer .viewer-story { overflow-wrap:anywhere; }
 .art-viewer .viewer-tags { @apply tw:flex tw:flex-wrap tw:gap-s-2; margin-block:var(--s-3); }
 .art-viewer .viewer-tags button { @apply tw:max-w-full; overflow-wrap:anywhere; border:0; @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent; padding:var(--s-2) var(--s-3); font:inherit; @apply tw:text-label-xs tw:cursor-pointer; }
 .art-viewer .viewer-tags button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.art-viewer .viewer-record { @apply tw:grid tw:gap-s-2 tw:p-s-3 tw:rounded-md; margin:var(--s-4) 0; background:var(--bg-base); @apply tw:text-label-sm; }
+.art-viewer .viewer-record { @apply tw:grid tw:gap-s-2; margin:var(--s-3) 0; padding-block:var(--s-3); border-block:1px solid var(--border-soft); @apply tw:text-label-sm; }
 .art-viewer .viewer-record div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-3; }
 .art-viewer .viewer-record dt { @apply tw:text-secondary; }
 .art-viewer .viewer-record dd { @apply tw:m-0 tw:text-primary; overflow-wrap:anywhere; }
@@ -28,13 +28,13 @@
 .art-viewer .viewer-details[open] > summary > .archive-icon { transform:rotate(180deg); }
 .art-viewer .viewer-details summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .art-viewer .viewer-info .viewer-primary-actions { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:mt-s-4; }
-.art-viewer .viewer-primary-actions .btn { @apply tw:min-h-[44px]; padding-inline:var(--s-2); }
+.art-viewer .viewer-primary-actions .btn { @apply tw:min-h-[40px]; padding-inline:var(--s-2); }
 .art-viewer .viewer-primary-actions .viewer-remix { grid-column:1 / -1; }
 .art-viewer .viewer-prev .archive-icon { transform:rotate(90deg); }
 .art-viewer .viewer-next .archive-icon { transform:rotate(-90deg); }
 .art-viewer .viewer-info .viewer-more { @apply tw:mt-s-5; }
 .art-viewer .viewer-more .viewer-actions { margin:0 0 var(--s-3); }
-.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(310px,380px); background:var(--bg-deep); @apply tw:text-primary; }
+.art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); background:var(--bg-deep); @apply tw:text-primary; }
 .art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }
 .art-viewer .viewer-compare-toggle {
   @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:right-[64px] tw:inline-flex tw:items-center tw:gap-[4px];
@@ -61,7 +61,7 @@
 /* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
 .art-viewer .viewer-nav:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-default; }
 .art-viewer .viewer-position { @apply tw:absolute tw:left-[50%] tw:top-[30px]; transform:translateX(-50%); @apply tw:text-secondary; font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:overflow-y-auto; padding:var(--s-6) clamp(20px,2vw,32px); border-left:1px solid var(--border-soft); background:var(--bg-surface); overscroll-behavior:contain; }
+.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:overflow-y-auto; padding:var(--s-5) var(--s-5); border-left:1px solid var(--border-soft); background:var(--bg-surface); overscroll-behavior:contain; }
 .art-viewer .viewer-info-header { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
 .art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
 .art-viewer .viewer-info-close:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
@@ -70,7 +70,7 @@
 .art-viewer .viewer-kicker { @apply tw:text-secondary; }
 .art-viewer .viewer-meta { @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
 .art-viewer .viewer-facts { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-2 tw:mb-s-3; }
-.art-viewer .viewer-fact { @apply tw:min-w-0 tw:p-s-3 tw:rounded-md; background:var(--bg-base); }
+.art-viewer .viewer-fact { @apply tw:min-w-0; padding-block:var(--s-2); border-bottom:1px solid var(--border-soft); }
 .art-viewer .viewer-fact small,.art-viewer .viewer-fact strong { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .art-viewer .viewer-fact small { @apply tw:text-secondary tw:text-mono-xs tw:uppercase; letter-spacing:.08em; }
 .art-viewer .viewer-fact strong { @apply tw:mt-s-1 tw:text-primary tw:text-label-xs; }
