@@ -1,5 +1,7 @@
 @reference "./tailwind.css";
-.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); content-visibility:auto; contain-intrinsic-size:auto 340px; }
+/* Keep card geometry real when a cached wall is reattached. A shared intrinsic
+   height collapses mixed portrait/landscape rows before their next paint. */
+.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
 .artwork:hover { @apply tw:border-strong; }
 :root body .gallery-page .artwork { border-radius:var(--r-sm); transition:none; }
 :root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:none; }
@@ -28,7 +30,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
 .artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; vertical-align:-.12em; }
-.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--art-stage); }
+/* Defer offscreen image painting inside the reserved, exact-ratio media box. */
+.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--art-stage); content-visibility:auto; }
 .artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); animation:galleryImageIn .28s var(--ease-out); }
 /* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
    消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */

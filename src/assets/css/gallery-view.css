@@ -84,7 +84,9 @@
   gap: var(--workspace-panel-gap,var(--s-4));
   @apply tw:min-w-0;
 }
-.gallery-loading-wall { @apply tw:min-h-[340px]; }
+/* Reserve the first screen so the footer does not appear and then jump out
+   when the real image wall replaces the initial library placeholder. */
+.gallery-loading-wall { min-height:calc(100svh - var(--app-navigation-height,80px)); }
 .gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:0; color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.04em; }
 .gallery-more { grid-column:1 / -1; @apply tw:flex tw:items-center tw:justify-center tw:gap-s-2; margin:var(--s-5) 0 0; @apply tw:p-s-3 tw:text-muted; font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; @apply tw:h-[1px]; flex:1; background:var(--border-soft); }
