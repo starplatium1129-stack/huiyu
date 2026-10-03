@@ -1,6 +1,6 @@
 @reference "../tailwind.css";
 /* Shared archive typography, with a denser layout for the creation workspace. */
-.pb.journal-workspace.atelier-workspace { max-width:var(--desktop-workspace-max); padding:var(--s-4); background:var(--bg-base); }
+.pb.journal-workspace.atelier-workspace { max-width:var(--desktop-workspace-max); padding:var(--workspace-pad-top,var(--s-4)) var(--workspace-gutter,var(--s-4)) var(--s-4); background:var(--bg-base); }
 .pb.atelier-workspace .atelier-kicker { @apply tw:mb-s-2 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.15em; }
 .pb.atelier-workspace .atelier-context { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label; overflow-wrap:anywhere; }
 .pb.atelier-workspace .pb-topline { padding-bottom:var(--s-3); border-bottom:1px solid var(--border-soft); }

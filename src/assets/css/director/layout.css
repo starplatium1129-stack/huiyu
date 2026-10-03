@@ -50,7 +50,7 @@
   @apply tw:grid;
   grid-template-columns: 300px minmax(0, 1fr);
   grid-template-areas: "story stage" "story decisions";
-  @apply tw:gap-s-4;
+  gap:var(--workspace-panel-gap,var(--s-4));
   align-items: start;
 }
 /* The route owns page entry; nested columns remain opaque and immediately readable. */
@@ -98,7 +98,8 @@
     max-width:min(var(--desktop-workspace-max),calc(
       max(480px,(var(--drawing-viewport-height) - var(--drawing-navigation-height) - 180px) * var(--drawing-result-aspect,1))
       + var(--director-material-width,clamp(260px,15vw,21rem))
-      + var(--director-inspector-width,clamp(300px,22vw,24rem)) + var(--s-4) * 6));
+      + var(--director-inspector-width,clamp(300px,22vw,24rem))
+      + var(--workspace-gutter,var(--s-4)) * 2 + var(--workspace-panel-gap,var(--s-4)) * 2 + var(--s-4) * 2));
   }
   .pb.journal-workspace.atelier-workspace.has-result:is([data-materials-collapsed],[data-inspector-collapsed],.focus-mode) { max-width:var(--desktop-workspace-max); }
   .pb.atelier-workspace[data-materials-collapsed] .col-left,.pb.atelier-workspace[data-inspector-collapsed] .director-inspector { display:none; }
