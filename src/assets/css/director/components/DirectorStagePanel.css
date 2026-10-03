@@ -7,10 +7,10 @@
    .pb .result-image-wrap {
      @apply tw:relative tw:overflow-hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
      /* 只让新成片显现；历史、恢复与操作文字不跟随容器重播。 */
-     @apply tw:rounded-stage; background:var(--bg-deep);
-     box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
+     border-radius:var(--r-lg); background:var(--art-stage);
+     box-shadow:var(--art-frame-shadow);
    }
-    .pb .result-image-wrap.archive-canvas { border-color:color-mix(in srgb,var(--archive-cyan) 38%,var(--border-soft)); border-radius:var(--r-dossier); }
+    .pb .result-image-wrap.archive-canvas { border-color:var(--art-frame-line); border-radius:var(--r-lg); }
     .pb .result-image-reveal {
       @apply tw:block tw:w-full; max-height:min(78vh,920px); margin:0 auto;
     }
@@ -26,7 +26,7 @@
      @apply tw:flex tw:items-center tw:justify-center tw:flex-wrap tw:gap-s-2 tw:p-s-3; border-top:1px solid var(--border-soft);
      background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
    }
-   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:color-mix(in srgb,var(--archive-cyan) 24%,var(--border-soft)); @apply tw:font-mono; }
+   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:var(--border-soft); font-family:var(--font-sans); }
   .pb[data-character="triad"] .stage-placeholder {
     background:
       radial-gradient(circle at 22% 20%,color-mix(in srgb,var(--nene-violet) 13%,transparent),transparent 34%),
@@ -105,8 +105,8 @@
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
-.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
-.pb .stage-result-heading > :first-child { @apply tw:text-primary tw:font-semibold; }
+.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--art-stage); color:var(--on-art-secondary); @apply tw:text-label; border-bottom:1px solid var(--art-frame-line); }
+.pb .stage-result-heading > :first-child { color:var(--on-art-primary); @apply tw:font-semibold; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
@@ -115,8 +115,12 @@
    * must not resize the reveal and make its safety observer cancel on arrival. */
   .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
 }
+/* Below this width, use two rows with the status beside the archive action.
+   All three controls remain 40px high before and after saving. */
 @container result-stage (max-width:640px) {
   .pb.journal-workspace.atelier-workspace .result-image-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
   .pb.atelier-workspace .result-image-actions .result-archive-action { margin-left:0; }
   .pb .result-image-actions .btn { min-width:0; white-space:normal; }
 }
+.pb.atelier-workspace .result-image-actions .stage-archive-badge { min-width:0; min-height:var(--control-height-sm); }
+.pb.atelier-workspace .result-image-actions .btn { min-height:var(--control-height); font-size:var(--fs-label); }
