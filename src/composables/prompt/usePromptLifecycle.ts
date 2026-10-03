@@ -21,7 +21,6 @@ export interface PromptLifecycleDeps extends
     Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
     route: RouteLocationNormalizedLoaded;
     DIRECTOR_MODE_KEY: string;
-    startStatusPolling: ReturnType<typeof useAnimaSession>['startStatusPolling'];
     syncAnimaCharacter: ReturnType<typeof useAnimaSession>['syncCharacter'];
     animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling' | 'pauseStatusPolling'>;
     livePrompt: ReturnType<typeof useUnifiedPromptAssembly>['positivePrompt'];
@@ -30,11 +29,18 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
+export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
     // A delayed storage/backend response must not resume setup or submit a deep-link job
     // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
     let disposed = false;
     let viewActive = true;
+    let draftInitialized = false;
+    function saveWorkspaceDraft() {
+        // Backend defaults may arrive before the saved inputs have been adopted.
+        if (!draftInitialized) return;
+        if (drawEngine.value === 'sd') pb.sdParams.size = sdSize.value;
+        pb.saveDraft?.();
+    }
     onBeforeUnmount(() => { disposed = true; viewActive = false; });
     onDeactivated(() => { viewActive = false; animaSession.pauseStatusPolling(); });
     onActivated(() => {
@@ -51,7 +57,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
         // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。
         if (drawEngine.value !== 'sd')
-            startStatusPolling();
+            animaSession.startStatusPolling();
         const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY);
         if (savedMode === 'pro' || savedMode === 'basic') {
             pb.directorMode = savedMode;
@@ -80,8 +86,11 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             if (disposed) return;
         }
         const restoredRecipe = handledDeepLink && ['remix', 'regen', 'variant'].some(key => typeof route.query[key] === 'string');
-        // 推荐尺寸同步到出图选择
-        if (!restoredRecipe && pb.lastRecommendedSize)
+        // Explicit history/scene links own their size; resumed drafts keep a user-picked SD size.
+        if (!restoredRecipe && drawEngine.value === 'sd' && (!handledDeepLink || route.query.resume === '1')
+            && pb.sdParamsTouched.has('size') && /^\d+x\d+$/.test(pb.sdParams.size))
+            sdSize.value = pb.sdParams.size;
+        else if (!restoredRecipe && pb.lastRecommendedSize)
             sdSize.value = pb.lastRecommendedSize;
         if (!restoredRecipe && pb.directorMode === 'basic')
             await applyManagedRoute({ silent: true });
@@ -90,6 +99,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         if (disposed) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
         if (!restoredRecipe) restorePopularDraft();
+        draftInitialized = true;
+        saveWorkspaceDraft();
         if (route.query.quick === '1') {
             const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
             if (disposed) return;
@@ -134,9 +145,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
     // 离开导演台时的 Anima 会话清理（轮询停止、在途任务取消、结果 URL 释放）
     // 由 useAnimaSession 的自动 onUnmounted(dispose) 承担。
     // Autosave draft
-    watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.artistStyleIds, () => pb.colorMood, () => pb.subject], () => {
-        pb.saveDraft?.();
-    }, { deep: true });
+    watch(() => [pb.story, pb.visualDescription, pb.char, pb.sceneId, pb.selections, pb.manualTags,
+        pb.artistStyleIds, pb.colorMood, pb.subject, pb.sdParams, pb.sdParamsTouched, pb.projectId, sdSize.value], saveWorkspaceDraft, { deep: true });
     watch([livePrompt, effectiveNegative], () => updateAnimaPromptState(), { immediate: true });
     watch(() => pb.directorMode, mode => {
         localStorage.setItem(DIRECTOR_MODE_KEY, mode);

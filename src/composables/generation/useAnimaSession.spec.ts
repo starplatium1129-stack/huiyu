@@ -47,6 +47,48 @@ it('keeps the default MiaoMiao 1.6 offline rather than silently substituting an 
 })
 
 describe('useAnimaSession · backend status and polling', () => {
+  it('stops hidden health polling, refreshes once on return, and releases visibility ownership', async () => {
+    vi.useFakeTimers()
+    const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    const remove = vi.spyOn(document, 'removeEventListener')
+    const call = vi.fn(async (_url: string, _options?: ApiRequestOptions) => ({ ok: true, online: false, models: [], loras: [] }))
+    let complete = () => {}
+    call.mockImplementationOnce(() => new Promise(resolve => { complete = () => resolve({ ok: true, online: false, models: [], loras: [] }) }))
+    const session = createSession({ request: call } as unknown as ApiClient)
+    session.startStatusPolling()
+    session.startStatusPolling()
+    expect(vi.getTimerCount()).toBe(1)
+    await vi.advanceTimersByTimeAsync(15000)
+    expect(call).toHaveBeenCalledTimes(1)
+    hidden.mockReturnValue(true)
+    document.dispatchEvent(new Event('visibilitychange'))
+    expect(call.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    expect(vi.getTimerCount()).toBe(0)
+    complete()
+    await vi.advanceTimersByTimeAsync(32000)
+    expect(call).toHaveBeenCalledTimes(1)
+    hidden.mockReturnValue(false)
+    document.dispatchEvent(new Event('visibilitychange'))
+    document.dispatchEvent(new Event('visibilitychange'))
+    expect(call).toHaveBeenCalledTimes(2)
+    expect(vi.getTimerCount()).toBe(1)
+    session.pauseStatusPolling()
+    expect(remove).toHaveBeenCalledWith('visibilitychange', expect.any(Function))
+    document.dispatchEvent(new Event('visibilitychange'))
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(call).toHaveBeenCalledTimes(2)
+    expect(vi.getTimerCount()).toBe(0)
+    hidden.mockReturnValue(true)
+    session.startStatusPolling()
+    expect(vi.getTimerCount()).toBe(0)
+    session.dispose()
+    hidden.mockReturnValue(false)
+    document.dispatchEvent(new Event('visibilitychange'))
+    session.startStatusPolling()
+    expect(call).toHaveBeenCalledTimes(2)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('底模未发生改变的心跳轮询不覆写用户手动调整的 cfg、steps 与已选风格 LoRA', async () => {
     const statusData = {
       ok: true,
@@ -149,6 +191,7 @@ it.each([false, true])('filters backend discovery and character LoRA with popula
 
 it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and remains restorable after repeated failures', async family => {
   vi.useFakeTimers()
+  const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
   vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['image']), { headers: { 'content-type': 'image/png' } })))
   vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:completed')
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
@@ -167,16 +210,20 @@ it.each(['anima', 'krea2'] as const)('%s success freezes submitted context and r
   expect(flash).toHaveBeenCalledWith(expect.stringContaining('当前未连接'))
   expect(session.state.value.phase).toBe('idle')
   session.patchState({ online: true, family })
+  session.startStatusPolling()
   const generating = session.generate()
   await vi.dynamicImportSettled()
   expect(call.mock.calls[0]?.[0]).toBe(base)
   expect(call.mock.calls[0]?.[1]?.method).toBe('POST')
   expect(call.mock.calls[0]?.[1]?.body).toMatchObject({ modelId: family === 'krea2' ? 'krea2-turbo-fp8' : 'anima-fixture', prompt: 'submitted prompt' })
   expect(call.mock.calls[0]?.[1]?.body).not.toHaveProperty('loraId')
+  hidden.mockReturnValue(true)
+  document.dispatchEvent(new Event('visibilitychange'))
   prompt = 'later prompt'; context.characterId = 'task-b'; context.outfitId = 'outfit-b'
   await vi.dynamicImportSettled()
   await vi.advanceTimersByTimeAsync(2000)
   await generating
+  expect(call.mock.calls.every(([url]) => url.startsWith(base))).toBe(true)
   expect(session.state.value.phase).toBe('succeeded')
   expect(onResult).toHaveBeenCalledOnce()
   expect(session.state.value.result).toMatchObject({ url: 'blob:completed', metadata: { id: 'success', seed: 0, prompt: 'submitted prompt' } })

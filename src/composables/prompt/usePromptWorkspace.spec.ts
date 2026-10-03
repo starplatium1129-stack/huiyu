@@ -36,7 +36,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-async function setup(query = '', loadData: () => Promise<void> = async () => {}) {
+async function setup(query = '', loadData: () => Promise<void> = async () => {}, restoreSavedDraft = false) {
   const pinia = createPinia()
   setActivePinia(pinia)
   const pb = usePromptBuilderStore()
@@ -45,7 +45,8 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {})
   catalog.curation = { personaCoreSceneIds: [scene.id], curatedSceneIds: [secondScene.id] }
   const load = vi.spyOn(pb, 'loadData').mockImplementation(loadData)
   const loadHistory = vi.spyOn(pb, 'loadHistory').mockResolvedValue()
-  const restoreDraft = vi.spyOn(pb, 'restoreDraft').mockReturnValue(false)
+  const restoreDraft = vi.spyOn(pb, 'restoreDraft')
+  if (!restoreSavedDraft) restoreDraft.mockReturnValue(false)
   const saveDraft = vi.spyOn(pb, 'saveDraft').mockImplementation(() => {})
   const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/prompt-builder', component: { render: () => null } }] })
   await router.push('/prompt-builder' + query)
@@ -61,6 +62,42 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {})
 }
 
 describe('workspace ownership and panel boundaries', () => {
+  it('waits for initialization, then autosaves parameter-only and album edits', async () => {
+    let release!: () => void
+    const waiting = new Promise<void>(resolve => { release = resolve })
+    const { pb, saveDraft } = await setup('', () => waiting)
+    pb.sdParams.cfg = 0; pb.story = 'Saved input not loaded yet'
+    await nextTick()
+    expect(saveDraft).not.toHaveBeenCalled()
+    release(); await vi.dynamicImportSettled(); await flushPromises()
+    expect(saveDraft).toHaveBeenCalled()
+    saveDraft.mockClear()
+    pb.sdParams.cfg = 8.5; pb.sdParams.steps = 41; pb.sdParams.seed = 0; pb.sdParams.seedLock = true
+    pb.sdParams.sampler = 'Euler'; pb.sdParams.scheduler = 'Karras'; pb.projectId = 'next-album'; pb.markParamTouched('cfg')
+    await nextTick()
+    expect(saveDraft).toHaveBeenCalledOnce()
+  })
+
+  it('keeps a user-picked SD draft size, while explicit scenes and history own their dimensions', async () => {
+    localStorage.setItem('aics_pb_last_draft', JSON.stringify({ updatedAt: 1, story: scene.story,
+      sceneId: scene.id, sceneBaseStory: scene.story, sdParams: { size: '1024x1024' }, sdParamsTouched: ['size'] }))
+    const { workspace, pb, saveDraft, router } = await setup('', undefined, true)
+    expect(workspace.genBarSize.value).toBe('1024x1024')
+    expect(saveDraft).toHaveBeenCalled()
+    saveDraft.mockClear()
+    workspace.genBarSize.value = '1344x896'
+    await nextTick(); await nextTick()
+    expect(pb.sdParams.size).toBe('1344x896'); expect(pb.sdParamsTouched.has('size')).toBe(true)
+    expect(saveDraft).toHaveBeenCalled()
+    await router.push('/prompt-builder?scene=fixture-two'); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.genBarSize.value).toBe(secondScene.recommendedSize)
+    expect(pb.sdParamsTouched.has('size')).toBe(false)
+    pb.history = [{ id: 'saved', engine: 'sd', character: 'nene', story: 'Saved scene', size: '1216x832', seed: 0 }]
+    await router.push('/prompt-builder?regen=saved'); await vi.dynamicImportSettled(); await flushPromises()
+    expect(workspace.genBarSize.value).toBe('1216x832')
+    expect(pb.sdParams.size).toBe('1216x832')
+  })
+
   it('hires freezes the completed recipe before cold loading, supports loading cancellation and refuses unknown recipes', async () => {
     const anima: AnimaSubmission = { family: 'anima', request: { prompt: 'recipe A', negative: 'negative A', profileId: 'profile A',
       modelId: 'model A', loraId: null, loraStrength: null, character: null, width: 832, height: 1216, steps: 28, cfg: 4.5, seed: 0 }, context: { characterId: 'role A' } }
@@ -151,10 +188,11 @@ describe('workspace ownership and panel boundaries', () => {
   })
 
   it('replays changed scene links on the same instance and preserves the material ref', async () => {
-    const { workspace, pb, router, restoreDraft } = await setup('?scene=fixture-one')
+    const { workspace, pb, router, restoreDraft, saveDraft } = await setup('?scene=fixture-one')
     const limit = workspace.materialBindings.sceneLimit
     expect(pb.sceneId).toBe(scene.id)
     expect(restoreDraft).not.toHaveBeenCalled()
+    expect(saveDraft).toHaveBeenCalled()
     await router.push('/prompt-builder?scene=fixture-two')
     await flushPromises()
     expect(pb.sceneId).toBe(secondScene.id)
