@@ -5,7 +5,7 @@ import ThinkingOrb from './ThinkingOrb.vue'
 import VoiceGlow from './VoiceGlow.vue'
 import CgImageReveal from './CgImageReveal.vue'
 import BorderBeam from './BorderBeam.vue'
-import { startCanvasParticleReveal } from '@/utils/canvasParticleReveal'
+import { startImageDevelopmentReveal } from '@/utils/imageDevelopmentReveal'
 
 let activity: {
   canPresent: Ref<boolean>; canAnimate: Ref<boolean>; reducedMotion: Ref<boolean>
@@ -13,7 +13,7 @@ let activity: {
 }
 vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => activity }))
 vi.mock('@vueuse/core', () => ({ useResizeObserver: vi.fn() }))
-vi.mock('@/utils/canvasParticleReveal', () => ({ startCanvasParticleReveal: vi.fn() }))
+vi.mock('@/utils/imageDevelopmentReveal', () => ({ startImageDevelopmentReveal: vi.fn() }))
 
 const frames = new Map<number, FrameRequestCallback>()
 const cleanups: Array<() => void> = []
@@ -173,9 +173,9 @@ describe('CgImageReveal ownership and fallback', () => {
 
   beforeEach(() => {
     reveals.length = 0
-    vi.mocked(startCanvasParticleReveal).mockImplementation((_image, host) => {
+    vi.mocked(startImageDevelopmentReveal).mockImplementation((_image, host) => {
       const layer = document.createElement('div')
-      layer.dataset.particleReveal = ''
+      layer.dataset.developmentReveal = ''
       host.append(layer)
       let finish!: () => void
       let reject!: (reason: Error) => void
@@ -206,9 +206,9 @@ describe('CgImageReveal ownership and fallback', () => {
     await img.trigger('load')
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
     expect(wrapper.classes()).toContain('is-revealing')
-    expect(startCanvasParticleReveal).toHaveBeenCalledOnce()
-    expect(startCanvasParticleReveal).toHaveBeenCalledWith(img.element, wrapper.element, expect.any(Number))
-    expect(wrapper.find('[data-particle-reveal]').exists()).toBe(true)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledWith(img.element, wrapper.element, expect.any(Number))
+    expect(wrapper.find('[data-development-reveal]').exists()).toBe(true)
     expect(img.element.animate).not.toHaveBeenCalled()
 
     reveals[0].finish()
@@ -217,7 +217,7 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(wrapper.classes()).not.toContain('is-revealing')
     expect(wrapper.classes()).toContain('is-loaded')
-    expect(wrapper.find('[data-particle-reveal]').exists()).toBe(false)
+    expect(wrapper.find('[data-development-reveal]').exists()).toBe(false)
     expect(reveals.every(reveal => reveal.stop.mock.calls.length === 1)).toBe(true)
     expect(img.element.style.opacity).toBe('')
     expect(img.element.style.transform).toBe('')
@@ -235,11 +235,11 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.classes()).toContain('is-loaded')
     expect(wrapper.emitted('reveal-start')).toBeUndefined()
     expect(wrapper.emitted('reveal-complete')).toBeUndefined()
-    expect(startCanvasParticleReveal).not.toHaveBeenCalled()
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     expect(frames.size).toBe(0)
     wrapper.vm.triggerReveal()
     await nextTick()
-    expect(startCanvasParticleReveal).toHaveBeenCalledTimes(1)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
   })
 
@@ -248,14 +248,14 @@ describe('CgImageReveal ownership and fallback', () => {
     const img = wrapper.get('img')
     readyImage(img.element)
     await img.trigger('load')
-    expect(startCanvasParticleReveal).not.toHaveBeenCalled()
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     await wrapper.setProps({ autoReveal: true })
-    expect(startCanvasParticleReveal).toHaveBeenCalledTimes(1)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
     await img.trigger('load')
     await wrapper.setProps({ autoReveal: false })
     await wrapper.setProps({ autoReveal: true })
-    expect(startCanvasParticleReveal).toHaveBeenCalledTimes(1)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-start')).toHaveLength(1)
   })
 
@@ -296,11 +296,11 @@ describe('CgImageReveal ownership and fallback', () => {
   it('replaces an explicit replay and ignores completion of the canceled animation', async () => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: false } }))
     readyImage(wrapper.get('img').element)
-    wrapper.vm.triggerReveal()
+    await wrapper.vm.triggerReveal()
     const previous = [...reveals]
-    wrapper.vm.triggerReveal()
+    await wrapper.vm.triggerReveal()
     await nextTick()
-    expect(startCanvasParticleReveal).toHaveBeenCalledTimes(2)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledTimes(2)
     expect(previous.every(reveal => reveal.stop.mock.calls.length === 1)).toBe(true)
     expect(wrapper.emitted('reveal-start')).toHaveLength(2)
     previous.forEach(reveal => reveal.finish())
@@ -327,7 +327,7 @@ describe('CgImageReveal ownership and fallback', () => {
     await img.trigger('load')
     expect(wrapper.classes()).toContain('is-loaded')
     expect(wrapper.classes()).not.toContain('is-revealing')
-    expect(startCanvasParticleReveal).not.toHaveBeenCalled()
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
     expect(wrapper.emitted('reveal-start')).toBeUndefined()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     await img.trigger('load')
@@ -337,7 +337,7 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it.each(['reduced motion', 'low effects'])('cancels an in-progress reveal under %s without replaying on return', async mode => {
+  it.each(['reduced motion', 'low effects', 'background'])('cancels an in-progress reveal under %s without replaying on return', async mode => {
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
@@ -345,7 +345,8 @@ describe('CgImageReveal ownership and fallback', () => {
     if (mode === 'reduced motion') {
       activity.reducedMotion.value = true
       activity.canAnimate.value = false
-    } else activity.lowEffects.value = true
+    } else if (mode === 'background') activity.canAnimate.value = false
+    else activity.lowEffects.value = true
     await nextTick()
     expect(reveals.every(reveal => reveal.stop.mock.calls.length === 1)).toBe(true)
     expect(wrapper.classes()).toContain('is-loaded')
@@ -360,7 +361,7 @@ describe('CgImageReveal ownership and fallback', () => {
     reveals.forEach(reveal => reveal.reject())
     await Promise.resolve()
     await nextTick()
-    expect(startCanvasParticleReveal).toHaveBeenCalledTimes(1)
+    expect(startImageDevelopmentReveal).toHaveBeenCalledTimes(1)
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(frames.size).toBe(0)
   })
@@ -380,35 +381,35 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(frames.size).toBe(0)
   })
 
-  it('shows the original when particle reveal preparation throws', async () => {
-    vi.mocked(startCanvasParticleReveal).mockImplementationOnce(() => { throw new Error('Particle reveal is unavailable') })
+  it('shows the original when image reveal preparation throws', async () => {
+    vi.mocked(startImageDevelopmentReveal).mockImplementationOnce(() => { throw new Error('Image reveal is unavailable') })
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
     const img = wrapper.get('img')
     readyImage(img.element)
     await img.trigger('load')
     await Promise.resolve()
     await nextTick()
-    expect(startCanvasParticleReveal).toHaveBeenCalledOnce()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
     expect(wrapper.classes()).toContain('is-loaded')
     expect(wrapper.classes()).not.toContain('is-revealing')
     expect(wrapper.emitted('reveal-start')).toBeUndefined()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
-    expect(wrapper.find('[data-particle-reveal]').exists()).toBe(false)
+    expect(wrapper.find('[data-development-reveal]').exists()).toBe(false)
     expect(img.element.style.opacity).toBe('')
     expect(img.element.style.transform).toBe('')
     expect(frames.size).toBe(0)
   })
 
   it('keeps the original clear when canvas sampling cannot provide a layer', async () => {
-    vi.mocked(startCanvasParticleReveal).mockReturnValue(null)
+    vi.mocked(startImageDevelopmentReveal).mockReturnValue(null)
     const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png' } }))
     const img = wrapper.get('img')
     readyImage(img.element)
     await img.trigger('load')
-    expect(startCanvasParticleReveal).toHaveBeenCalledOnce()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
     expect(wrapper.emitted('reveal-complete')).toHaveLength(1)
     expect(img.element.style.opacity).toBe('')
-    expect(wrapper.find('[data-particle-reveal]').exists()).toBe(false)
+    expect(wrapper.find('[data-development-reveal]').exists()).toBe(false)
   })
 
   it('stops the reveal when the current image fails', async () => {
@@ -423,6 +424,53 @@ describe('CgImageReveal ownership and fallback', () => {
     expect(wrapper.classes()).not.toContain('is-revealing')
     reveals.forEach(reveal => reveal.finish())
     await Promise.resolve()
+    expect(wrapper.emitted('reveal-complete')).toBeUndefined()
+  })
+
+  it('waits for decoding and never lets an older decode replace the current result', async () => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/old.png', autoReveal: true } }))
+    const old = wrapper.get('img')
+    readyImage(old.element)
+    let decoded!: () => void
+    old.element.decode = vi.fn(() => new Promise<void>(resolve => { decoded = resolve }))
+    await old.trigger('load')
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
+    expect(wrapper.classes()).not.toContain('is-loaded')
+    expect(old.element.style.visibility).toBe('hidden')
+    await wrapper.setProps({ src: '/new.png' })
+    const fresh = wrapper.get('img')
+    readyImage(fresh.element)
+    fresh.element.decode = vi.fn(async () => {})
+    await fresh.trigger('load')
+    await Promise.resolve()
+    await nextTick()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledWith(fresh.element, wrapper.element, 600)
+    decoded()
+    await Promise.resolve()
+    await nextTick()
+    expect(startImageDevelopmentReveal).toHaveBeenCalledOnce()
+    expect(wrapper.classes()).toContain('is-revealing')
+    expect(wrapper.get('img').attributes('src')).toBe('/new.png')
+  })
+
+  it.each(['rejected', 'load error', 'unmount'])('cleans a pending decode after %s without announcing completion', async failure => {
+    const wrapper = own(mount(CgImageReveal, { props: { src: '/image.png', autoReveal: true } }))
+    const img = wrapper.get('img')
+    readyImage(img.element)
+    let decoded!: () => void, rejected!: () => void
+    img.element.decode = vi.fn(() => new Promise<void>((resolve, reject) => {
+      decoded = resolve; rejected = () => reject(new Error('decode failed'))
+    }))
+    await img.trigger('load')
+    if (failure === 'load error') await img.trigger('error')
+    else if (failure === 'unmount') wrapper.unmount()
+    if (failure === 'rejected') rejected()
+    else decoded()
+    await Promise.resolve()
+    await nextTick()
+    expect(startImageDevelopmentReveal).not.toHaveBeenCalled()
+    expect(wrapper.emitted('reveal-start')).toBeUndefined()
     expect(wrapper.emitted('reveal-complete')).toBeUndefined()
   })
 

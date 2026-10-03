@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { startCanvasParticleReveal } from './canvasParticleReveal'
+import { startImageDevelopmentReveal } from './imageDevelopmentReveal'
 
-type Effect = NonNullable<ReturnType<typeof startCanvasParticleReveal>>
+type Effect = NonNullable<ReturnType<typeof startImageDevelopmentReveal>>
 type MockAnimation = {
   finished: Promise<Animation>
   cancel: ReturnType<typeof vi.fn>
@@ -11,10 +11,10 @@ type MockAnimation = {
 const canvases: HTMLCanvasElement[] = []
 const animations: MockAnimation[] = []
 const effects: Effect[] = []
-const drawImage = vi.fn(), getImageData = vi.fn(), requestFrame = vi.fn(), arc = vi.fn(), fill = vi.fn()
+const drawImage = vi.fn(), getImageData = vi.fn(), requestFrame = vi.fn(), fill = vi.fn()
 let animateDescriptor: PropertyDescriptor | undefined
 let animate: ReturnType<typeof vi.fn>
-let failure: 'context' | 'draw' | 'animate' | 'readback' | null
+let failure: 'context' | 'draw' | 'animate' | 'security' | null
 let peakPixels = 0
 
 function fixture(naturalWidth = 4000, naturalHeight = 2000) {
@@ -33,7 +33,7 @@ function fixture(naturalWidth = 4000, naturalHeight = 2000) {
 }
 
 function start(image: HTMLImageElement, host: HTMLElement) {
-  const effect = startCanvasParticleReveal(image, host, 960)
+  const effect = startImageDevelopmentReveal(image, host, 600)
   expect(effect).not.toBeNull()
   effects.push(effect!)
   return effect!
@@ -51,27 +51,19 @@ beforeEach(() => {
   failure = null; peakPixels = 0
   vi.stubGlobal('devicePixelRatio', 3)
   vi.stubGlobal('requestAnimationFrame', requestFrame)
-  getImageData.mockImplementation((_x: number, _y: number, width: number, height: number) => {
-    if (failure === 'readback') throw new DOMException('Cross-origin canvas', 'SecurityError')
-    const data = new Uint8ClampedArray(width * height * 4)
-    for (let index = 0; index < data.length; index += 4) {
-      data[index] = 80; data[index + 1] = 120; data[index + 2] = 180; data[index + 3] = 255
-    }
-    return { data }
-  })
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(function (this: HTMLCanvasElement, kind: string) {
     expect(kind).toBe('2d')
-    const index = canvases.push(this) - 1
+    canvases.push(this)
     peakPixels = Math.max(peakPixels, canvases.reduce((sum, canvas) => sum + canvas.width * canvas.height, 0))
-    if (failure === 'context' && index === 3) return null
+    if (failure === 'context') return null
     return {
-      drawImage,
-      getImageData,
-      setTransform: vi.fn(), beginPath: vi.fn(), arc,
-      fill: (...args: unknown[]) => {
-        if (failure === 'draw' && index === 3) throw new Error('Canvas draw failed')
-        fill(...args)
+      drawImage: (...args: unknown[]) => {
+        if (failure === 'draw') throw new Error('Canvas draw failed')
+        if (failure === 'security') throw new DOMException('Image cannot be painted', 'SecurityError')
+        drawImage(...args)
       },
+      getImageData,
+      fillRect: fill,
     } as unknown as CanvasRenderingContext2D
   })
   animateDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'animate')
@@ -103,24 +95,20 @@ afterEach(async () => {
 it.each([
   { shape: 'landscape', natural: [4000, 2000], bounds: [69, 294, 1000, 500] },
   { shape: 'portrait', natural: [2000, 4000], bounds: [344, 94, 450, 900] },
-])('prepares bounded $shape particles aligned to contain, host borders, and scrolling', ({ natural, bounds }) => {
+])('prepares bounded $shape paper study aligned to contain, host borders, and scrolling', ({ natural, bounds }) => {
   const { image, host } = fixture(natural[0], natural[1])
   image.style.opacity = '.85'; image.style.transform = 'none'
   const originalStyle = image.getAttribute('style')
   start(image, host)
   const layer = host.lastElementChild as HTMLElement
   expect([layer.style.left, layer.style.top, layer.style.width, layer.style.height].map(Number.parseFloat)).toEqual(bounds)
-  expect(peakPixels).toBeLessThanOrEqual(1_000_000 + 2600)
+  expect(peakPixels).toBeLessThanOrEqual(320_000)
   expect(peakPixels).toBeGreaterThan(0)
-  expect(canvases[0].width * canvases[0].height).toBe(0)
   expect(drawImage.mock.calls.filter(([source]) => source === image)).toHaveLength(1)
-  expect(getImageData).toHaveBeenCalledOnce()
-  const [, , sampleWidth, sampleHeight] = getImageData.mock.calls[0]
-  expect(sampleWidth * sampleHeight).toBeLessThanOrEqual(2600)
-  expect(canvases.slice(1).reduce((sum, canvas) => sum + canvas.width * canvas.height, 0)).toBeLessThanOrEqual(1_000_000)
-  expect(canvases.slice(1).every(canvas => Math.max(canvas.width, canvas.height) <= 768)).toBe(true)
-  expect(arc).toHaveBeenCalled()
-  expect(fill).toHaveBeenCalled()
+  expect(getImageData).not.toHaveBeenCalled()
+  expect(canvases).toHaveLength(1)
+  expect(canvases.every(canvas => Math.max(canvas.width, canvas.height) <= 768)).toBe(true)
+  expect(fill).toHaveBeenCalledOnce()
   expect(requestFrame).not.toHaveBeenCalled()
   expect(image.getAttribute('style')).toBe(originalStyle)
   expect(animate.mock.contexts.filter(context => context === image)).toHaveLength(1)
@@ -128,11 +116,11 @@ it.each([
     const allowed = animate.mock.contexts[index] === image ? ['opacity', 'offset', 'easing'] : ['opacity', 'transform', 'offset', 'easing']
     expect((frames as Keyframe[]).every(frame => Object.keys(frame).every(key => allowed.includes(key)))).toBe(true)
     expect(options.fill).toBe('both')
-    expect(options.duration + (options.delay ?? 0)).toBeLessThanOrEqual(960)
+    expect(options.duration + (options.delay ?? 0)).toBeLessThanOrEqual(600)
   }
 })
 
-it('keeps the layers until every group finishes, then releases them without another paint', async () => {
+it('keeps the layers until every layer finishes, then releases them without another paint', async () => {
   const { image, host } = fixture()
   const effect = start(image, host)
   const paints = fill.mock.calls.length
@@ -152,7 +140,7 @@ it('keeps the layers until every group finishes, then releases them without anot
   expect(image.style.transform).toBe('')
 })
 
-it.each(['stop', 'rejected animation'])('releases every group after %s and tolerates repeated cleanup', async reason => {
+it.each(['stop', 'rejected animation'])('releases every layer after %s and tolerates repeated cleanup', async reason => {
   const { image, host } = fixture()
   image.style.opacity = '.85'; image.style.transform = 'none'
   const originalStyle = image.getAttribute('style')
@@ -166,25 +154,25 @@ it.each(['stop', 'rejected animation'])('releases every group after %s and toler
   expect(image.getAttribute('style')).toBe(originalStyle)
 })
 
-it.each(['context', 'draw', 'animate'] as const)('cleans earlier groups when a later %s operation fails', async operation => {
+it.each(['context', 'draw', 'animate'] as const)('releases allocated layers when %s preparation fails', async operation => {
   failure = operation
   const { image, host } = fixture()
-  expect(startCanvasParticleReveal(image, host, 960)).toBeNull()
+  expect(startImageDevelopmentReveal(image, host, 600)).toBeNull()
   if (operation === 'animate') expect(animations).toHaveLength(2)
-  else expect(canvases.length).toBeGreaterThanOrEqual(4)
+  else expect(canvases).toHaveLength(1)
   await Promise.allSettled(animations.map(animation => animation.finished))
   expectReleased(host)
   expect(image.style.opacity).toBe('')
   expect(image.style.transform).toBe('')
 })
 
-it('leaves the original available when cross-origin sampling is rejected', () => {
-  failure = 'readback'
+it('leaves the original available when the source cannot be painted', () => {
+  failure = 'security'
   const { image, host } = fixture()
   image.style.opacity = '.85'; image.style.transform = 'none'
   const originalStyle = image.getAttribute('style')
-  expect(startCanvasParticleReveal(image, host, 960)).toBeNull()
-  expect(getImageData).toHaveBeenCalledOnce()
+  expect(startImageDevelopmentReveal(image, host, 600)).toBeNull()
+  expect(getImageData).not.toHaveBeenCalled()
   expect(animate).not.toHaveBeenCalled()
   expectReleased(host)
   expect(image.getAttribute('style')).toBe(originalStyle)
@@ -197,10 +185,11 @@ it('skips empty, undecoded, and zero-size images without allocating an effect', 
   const hidden = fixture()
   vi.mocked(hidden.image.getBoundingClientRect).mockReturnValue(new DOMRect(0, 0, 0, 0))
   for (const { image, host } of [empty, pending, hidden]) {
-    expect(startCanvasParticleReveal(image, host, 960)).toBeNull()
+    expect(startImageDevelopmentReveal(image, host, 600)).toBeNull()
     expect(host.children).toHaveLength(1)
   }
   expect(canvases).toHaveLength(0)
   expect(animate).not.toHaveBeenCalled()
   expect(drawImage).not.toHaveBeenCalled()
 })
+
