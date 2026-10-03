@@ -44,7 +44,7 @@
 .pb .generation-settings .ctrl { @apply tw:min-w-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); }
 .pb .generation-settings .ctrl > label { @apply tw:text-secondary tw:leading-body; }
 .pb .generation-settings .ctrl input:not([type="range"]) { @apply tw:min-h-[40px] tw:w-full tw:min-w-0; background: var(--bg-surface); @apply tw:rounded-md; }
-.pb .generation-settings .ctrl-range { @apply tw:w-full tw:cursor-pointer tw:mt-s-1; }
+.pb .generation-settings .ctrl-range { @apply tw:w-full tw:mt-s-1; }
 /* 原生 select 已迁至 StudioSelect：触发器统一样式，无需保留此处外观规则 */
 .pb .generation-settings .ctrl-seed { grid-column: 1 / -1; }
 .pb .generation-settings .seed-input-wrap { @apply tw:mt-s-2; }

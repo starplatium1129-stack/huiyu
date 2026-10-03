@@ -3,7 +3,7 @@
 :root {
   --desktop-layout-scale: 1;
   --desktop-workspace-max: 1840px;
-  --app-navigation-height: 68px;
+  --app-navigation-height: 80px;
   --workspace-gutter: clamp(16px, 2.25vw, 40px);
   --workspace-pad-top: 24px; --workspace-panel-gap: 20px;
 }
@@ -12,7 +12,7 @@
   :root {
     --desktop-layout-scale: 1.2;
     --desktop-workspace-max: 2320px;
-    --app-navigation-height: 76px;
+    --app-navigation-height: 88px;
     --s-3: 14px; --s-4: 20px; --s-5: 28px; --s-6: 40px;
   }
 }
@@ -21,7 +21,7 @@
   :root {
     --desktop-layout-scale: 1.6;
     --desktop-workspace-max: 3200px;
-    --app-navigation-height: 88px;
+    --app-navigation-height: 104px;
     --s-3: 18px; --s-4: 24px; --s-5: 36px; --s-6: 48px;
   }
 }

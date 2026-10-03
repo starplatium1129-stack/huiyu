@@ -52,7 +52,6 @@
                 tabindex="-1"
                 @pointermove="activeIndex = filteredActions.length + i" @click="run(filteredActions.length + i)">
                 <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-                <small>{{ item.path }}</small>
               </button>
             </section>
           </template>
@@ -67,7 +66,6 @@
                 tabindex="-1"
                 @pointermove="activeIndex = i" @click="run(i)">
                 <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-                <small>{{ item.path }}</small>
               </button>
             </section>
             <section v-if="filteredScenes.length" class="gs-group tw:mb-s-2">

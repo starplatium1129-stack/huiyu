@@ -371,7 +371,6 @@
   border: 0;
   outline: 0;
   background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px);
-  @apply tw:cursor-pointer;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -381,7 +380,6 @@
   border-radius: 50%;
   background: var(--archive-blue);
   box-shadow: var(--shadow-sm);
-  @apply tw:cursor-grab;
   -webkit-appearance: none;
 }
 .slider::-moz-range-thumb {
@@ -390,7 +388,6 @@
   border-radius: 50%;
   background: var(--archive-blue);
   box-shadow: var(--shadow-sm);
-  @apply tw:cursor-grab;
 }
 .slider:focus-visible {
   outline: 2px solid var(--archive-blue);

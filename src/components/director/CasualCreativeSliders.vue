@@ -165,7 +165,7 @@ function onStepsInput(event: Event) {
 }
 
 .casual-range-input {
-  @apply tw:w-full tw:cursor-pointer;
+  @apply tw:w-full;
 }
 
 .casual-slider-hint {

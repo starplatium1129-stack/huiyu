@@ -96,7 +96,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
             <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
           </div>
           <input type="range" min="1" max="60" step="1" :value="steps"
-            class="anima-slider tw:w-full tw:cursor-pointer" aria-label="采样步数滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+            class="anima-slider tw:w-full" aria-label="采样步数滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
             @input="steps = Number(($event.target as HTMLInputElement).value)" />
         </div>
         <div class="anima-field anima-field--slider">
@@ -105,7 +105,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
             <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
           </div>
           <input type="range" min="0.5" max="10" step="0.5" :value="cfg"
-            class="anima-slider tw:w-full tw:cursor-pointer" aria-label="引导强度滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+            class="anima-slider tw:w-full" aria-label="引导强度滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
             @input="cfg = Number(($event.target as HTMLInputElement).value)" />
         </div>
         <div class="anima-field">
