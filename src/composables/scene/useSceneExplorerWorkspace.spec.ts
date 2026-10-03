@@ -90,7 +90,7 @@ it('tracks same-path query navigation without replaying stale typing or reloadin
     expect(workspace.fChar.value).toBe('all')
     expect(catalog).toHaveBeenLastCalledWith('core')
     workspace.searchQuery.value = 'obsolete typing'; await nextTick()
-    route.query = { q: 'back-forward', character: 'natsume', extra: 'keep' }
+    route.query = { q: 'back-forward', character: 'natsume', theme: 'daily', sort: 'title', extra: 'keep' }
     await flushPromises(); await vi.advanceTimersByTimeAsync(150)
     expect(workspace.searchQuery.value).toBe('back-forward')
     expect(workspace.fChar.value).toBe('natsume')
@@ -102,14 +102,14 @@ it('tracks same-path query navigation without replaying stale typing or reloadin
     await vi.advanceTimersByTimeAsync(149)
     expect(replace).not.toHaveBeenCalled()
     await vi.advanceTimersByTimeAsync(1); await flushPromises()
-    expect(route.query).toEqual({ q: 'typed', extra: 'keep' })
+    expect(route.query).toEqual({ q: 'typed', extra: 'keep', tier: 'core' })
     expect(catalog).toHaveBeenLastCalledWith('all')
     const calls = catalog.mock.calls.length
     workspace.searchQuery.value = 'typed more'; await nextTick()
     await vi.advanceTimersByTimeAsync(150); await flushPromises()
     expect(catalog).toHaveBeenCalledTimes(calls)
     workspace.fChar.value = 'nene'; await flushPromises()
-    expect(route.query).toEqual({ q: 'typed more', character: 'nene', extra: 'keep' })
+    expect(route.query).toEqual({ q: 'typed more', character: 'nene', extra: 'keep', tier: 'core' })
     let acknowledge!: () => void
     replace.mockImplementationOnce(({ query }) => new Promise(resolve => { acknowledge = () => { route.query = query; resolve() } }))
     workspace.searchQuery.value = 'slow navigation'; await nextTick()
@@ -119,5 +119,29 @@ it('tracks same-path query navigation without replaying stale typing or reloadin
     expect(workspace.searchQuery.value).toBe('newer typing')
     await vi.advanceTimersByTimeAsync(150); await flushPromises()
     expect(route.query.q).toBe('newer typing')
+  } finally { wrapper.unmount() }
+})
+
+it('restores combined filters from the URL after creating a scene changes the startup scope', async () => {
+  let workspace!: ReturnType<typeof useSceneExplorerWorkspace>
+  const component = defineComponent({ setup() { workspace = useSceneExplorerWorkspace(); return () => null } })
+  let wrapper = mount(component)
+  try {
+    await flushPromises()
+    workspace.showAllScenes(); workspace.activeTheme.value = 'daily'; workspace.fChar.value = 'nene'
+    workspace.fSeason.value = '夏'; workspace.fTime.value = 'night'; workspace.fSeries.value = 'after'
+    workspace.fRating.value = 'All'; workspace.sortBy.value = 'title'; workspace.showHidden.value = true
+    await flushPromises()
+    expect(route.query).toEqual({ character: 'nene', theme: 'daily', season: '夏', time: 'night', series: 'after',
+      rating: 'All', sort: 'title', tier: 'all', hidden: '1' })
+    wrapper.unmount()
+    localStorage.setItem('aics_scene_favorites', JSON.stringify(['available']))
+    wrapper = mount(component); await flushPromises()
+    expect([workspace.activeTheme.value, workspace.fChar.value, workspace.fSeason.value, workspace.fTime.value,
+      workspace.fSeries.value, workspace.fRating.value, workspace.fTier.value, workspace.sortBy.value, workspace.showHidden.value])
+      .toEqual(['daily', 'nene', '夏', 'night', 'after', 'All', 'all', 'title', true])
+    expect(catalog).toHaveBeenLastCalledWith('nene')
+    workspace.resetFilters(); await flushPromises()
+    expect(route.query).toEqual({ tier: 'all' })
   } finally { wrapper.unmount() }
 })

@@ -5,7 +5,7 @@ import PopularSceneExplorerView from './PopularSceneExplorerView.vue'
 
 const access = vi.hoisted(() => ({ local: true, eligibility: 'adult' }))
 const navigation = vi.hoisted(() => ({
-  route: { query: {} as Record<string, string> }, replace: vi.fn(), loadCatalog: vi.fn(async () => {}),
+  route: { path: '/popular-scenes', query: {} as Record<string, string> }, replace: vi.fn(), loadCatalog: vi.fn(async () => {}),
 }))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.local }))
 vi.mock('vue-router', () => ({ useRoute: () => navigation.route, useRouter: () => ({ replace: navigation.replace }) }))
@@ -27,8 +27,9 @@ vi.mock('@/stores/sceneStore', () => ({
 let wrapper: VueWrapper | undefined
 beforeEach(() => {
   access.local = true; access.eligibility = 'adult'
-  navigation.route = reactive({ query: {} })
+  navigation.route = reactive({ path: '/popular-scenes', query: {} })
   navigation.replace.mockReset()
+  navigation.replace.mockResolvedValue(undefined)
   navigation.loadCatalog.mockClear()
 })
 afterEach(() => { wrapper?.unmount() })
@@ -105,6 +106,22 @@ describe('角色场景的本机访问边界', () => {
     await flushPromises()
     expect(page.get('.pop-hero-copy h2').text()).toBe('fixture')
     expect(navigation.loadCatalog).toHaveBeenCalledTimes(1)
-    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(navigation.replace).toHaveBeenCalledTimes(1)
+  })
+
+  it('重开页面沿用搜索和组合筛选，换角色时清除全部旧条件并保留其他查询', async () => {
+    access.local = false
+    navigation.route.query = { character: 'fixture', q: 'safe', category: '日常', rating: 'All', preserved: 'keep' }
+    navigation.replace.mockImplementation(async ({ query }) => { navigation.route.query = query })
+    const page = await mountLibrary()
+    expect(page.findAll('[data-blueprint-id]').map(card => card.attributes('data-blueprint-id'))).toEqual(['safe', 'legacy-safe'])
+    expect(page.findComponent({ name: 'StudioSearch' }).props('modelValue')).toBe('safe')
+    page.findComponent({ name: 'BrowsingCharacterDirectory' }).vm.$emit('select', 'second')
+    await flushPromises()
+    expect(navigation.route.query).toEqual({ character: 'second', preserved: 'keep' })
+    expect(page.findComponent({ name: 'StudioSearch' }).props('modelValue')).toBe('')
+    expect(page.get('.pop-rating-pill.active').text()).toBe('全部分级')
+    expect(page.get('.pop-cat.active').text()).toContain('全部')
+    expect(page.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=second&blueprint=second-safe')
   })
 })

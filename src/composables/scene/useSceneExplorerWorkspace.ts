@@ -69,6 +69,18 @@ export function useSceneExplorerWorkspace() {
     const showMature = ref(adultEnabled);
     const routeQuery = () => typeof route.query.q === 'string' ? route.query.q : '';
     const routeCharacter = () => ['nene', 'natsume', 'triad'].includes(String(route.query.character)) ? String(route.query.character) : 'all';
+    const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core';
+    const routeOption = (key: string, options: string[], fallback: string) =>
+        typeof route.query[key] === 'string' && options.includes(route.query[key] as string) ? route.query[key] as string : fallback;
+    const routeFilters = () => ({ q: routeQuery().trim(), character: routeCharacter(),
+        theme: routeOption('theme', THEME_DEFS.map(theme => theme.id), 'all'),
+        season: routeOption('season', ['春', '夏', '秋', '冬'], 'all'),
+        time: routeOption('time', ['morning', 'afternoon', 'sunset', 'night', 'dawn'], 'all'),
+        series: routeOption('series', ['after', 'fanwork', 'active'], 'all'),
+        rating: routeOption('rating', ['All', 'R15', 'R18'], 'all'),
+        tier: routeOption('tier', ['personal', 'core', 'featured', 'signature', 'curated', 'all'], defaultTier),
+        sort: routeOption('sort', ['smart', 'used', 'curated', 'favorite', 'newest', 'title'], 'smart'), hidden: route.query.hidden === '1' });
+    const openingFilters = routeFilters();
     const searchQuery = ref(routeQuery());
     /** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
     let dataReady = false;
@@ -120,7 +132,7 @@ export function useSceneExplorerWorkspace() {
     let loadRevision = 0;
     let flashTimer: ReturnType<typeof setTimeout> | undefined;
     onUnmounted(() => { dataReady = false; loadRevision++; clearTimeout(flashTimer); clearFilterAnchor(); });
-    const activeTheme = ref('all');
+    const activeTheme = ref(openingFilters.theme);
     const activeThemeDefinition = computed(() => themeDefinition(activeTheme.value));
     const activeThemeLabel = computed(() => activeThemeDefinition.value.label);
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
@@ -138,36 +150,48 @@ export function useSceneExplorerWorkspace() {
         return 'nene';
     });
     const fChar = ref(routeCharacter());
-    let pendingRouteWrite: { q: string; character: string } | null = null;
-    // Only these two route-owned filters synchronize; mood, sort and other query fields stay intact.
-    watch([routeQuery, routeCharacter], ([q, character]) => {
+    const fSeason = ref(openingFilters.season);
+    const fTime = ref(openingFilters.time);
+    const fSeries = ref(openingFilters.series);
+    const fRating = ref(openingFilters.rating);
+    const fTier = ref(openingFilters.tier);
+    const sortBy = ref(openingFilters.sort);
+    showHidden.value = openingFilters.hidden;
+    const currentFilters = () => ({ q: searchQuery.value.trim(), character: fChar.value, theme: activeTheme.value,
+        season: fSeason.value, time: fTime.value, series: fSeries.value, rating: fRating.value,
+        tier: fTier.value, sort: sortBy.value, hidden: showHidden.value });
+    let pendingRouteWrite: ReturnType<typeof currentFilters> | null = null;
+    // The URL owns browsing filters so returning from creation restores the same list.
+    watch(routeFilters, filters => {
         if (route.path !== '/scene-explorer') return;
-        if (pendingRouteWrite?.q === q && pendingRouteWrite.character === character) {
-            if (searchQuery.value.trim() === q) debouncedQuery.value = q;
+        if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) {
+            if (searchQuery.value.trim() === filters.q) debouncedQuery.value = filters.q;
             return;
         }
         pendingRouteWrite = null;
-        searchQuery.value = q; debouncedQuery.value = q; fChar.value = character;
+        searchQuery.value = filters.q; debouncedQuery.value = filters.q; fChar.value = filters.character;
+        activeTheme.value = filters.theme; fSeason.value = filters.season; fTime.value = filters.time;
+        fSeries.value = filters.series; fRating.value = filters.rating; fTier.value = filters.tier;
+        sortBy.value = filters.sort; showHidden.value = filters.hidden;
     }, { flush: 'sync' });
-    watch([debouncedQuery, fChar], () => {
+    watch([debouncedQuery, fChar, activeTheme, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => {
         if (route.path !== '/scene-explorer') return;
-        const next = { q: searchQuery.value.trim(), character: fChar.value };
-        if (next.q === routeQuery() && next.character === routeCharacter()) return;
+        const next = currentFilters();
+        if (JSON.stringify(next) === JSON.stringify(routeFilters())) return;
         const query: LocationQueryRaw = { ...route.query };
-        if (next.q) query.q = next.q; else delete query.q;
-        if (next.character !== 'all') query.character = next.character; else delete query.character;
+        for (const key of ['q', 'character', 'theme', 'season', 'time', 'series', 'rating', 'sort'] as const) {
+            const value = next[key];
+            if (value && value !== 'all' && !(key === 'sort' && value === 'smart')) query[key] = value;
+            else delete query[key];
+        }
+        // Persist the chosen scope even if starting creation changes the next visit's default.
+        query.tier = next.tier;
+        if (next.hidden) query.hidden = '1'; else delete query.hidden;
         pendingRouteWrite = next;
         void router.replace({ query }).catch(() => {}).finally(() => {
             if (pendingRouteWrite === next) pendingRouteWrite = null;
         });
     });
-    const fSeason = ref('all');
-    const fTime = ref('all');
-    const fSeries = ref('all');
-    const fRating = ref('all');
-    const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core';
-    const fTier = ref(defaultTier);
-    const sortBy = ref('smart');
     const visible = ref(PAGE_SIZE);
     const filtersOpen = ref(false);
     /** 已生效的精细筛选数量，收起时也能看出「有筛选在起作用」 */

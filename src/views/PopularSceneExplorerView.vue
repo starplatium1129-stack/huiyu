@@ -52,7 +52,8 @@
       <!-- 场景卡片网格 -->
       <div v-content-motion="`${category}:${ratingFilter}`" class="pop-grid">
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
-          :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
+          :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id"
+          :style="{ '--scene-preview-ratio': blueprint.recommendedSize.replace('x', ' / ') }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
           <RuntimeImage v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" v-slot="{ image, loaded, failed }">
           <RouterLink class="pop-thumb" :class="{ 'is-missing': failed }" :to="drawUrl(blueprint)"
@@ -105,7 +106,7 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
@@ -132,9 +133,33 @@ const sceneStore = useSceneStore()
 
 const loading = ref(true)
 const loadError = ref('')
-const query = ref('')
-const category = ref('all')
-const ratingFilter = ref<'all' | 'All' | 'R15' | 'R18'>('all')
+const routeFilters = () => ({ q: typeof route.query.q === 'string' ? route.query.q : '',
+  category: typeof route.query.category === 'string' ? route.query.category : 'all',
+  rating: RATING_OPTS.find(option => option.v === route.query.rating)?.v ?? 'all' })
+const openingFilters = routeFilters()
+const query = ref(openingFilters.q)
+const category = ref(openingFilters.category)
+const ratingFilter = ref(openingFilters.rating)
+let pendingRouteWrite: ReturnType<typeof routeFilters> | null = null
+watch(routeFilters, filters => {
+  if (route.path !== '/popular-scenes') return
+  if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) return
+  pendingRouteWrite = null
+  query.value = filters.q; category.value = filters.category; ratingFilter.value = filters.rating
+}, { flush: 'sync' })
+watch([query, category, ratingFilter], () => {
+  if (route.path !== '/popular-scenes') return
+  const filters = { q: query.value, category: category.value, rating: ratingFilter.value }
+  if (JSON.stringify(filters) === JSON.stringify(routeFilters())) return
+  const next = { ...route.query }
+  if (filters.q) next.q = filters.q; else delete next.q
+  if (filters.category !== 'all') next.category = filters.category; else delete next.category
+  if (filters.rating !== 'all') next.rating = filters.rating; else delete next.rating
+  pendingRouteWrite = filters
+  void router.replace({ query: next }).catch(() => {}).finally(() => {
+    if (pendingRouteWrite === filters) pendingRouteWrite = null
+  })
+})
 /** 成人场景仅限本机，远程和未知来源默认拒绝。 */
 const showMature = isLocalStudioHost()
 
@@ -145,7 +170,6 @@ const selectedId = computed(() => {
   const requested = typeof route.query.character === 'string' ? route.query.character : ''
   return characters.value.some(character => character.id === requested) ? requested : characters.value[0]?.id ?? ''
 })
-watch(selectedId, () => { category.value = 'all'; query.value = '' })
 
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases,
@@ -188,9 +212,10 @@ const filtered = computed(() => {
 })
 
 function selectCharacter(id: string) {
-  if (route.query.character !== id) void router.replace({ query: { ...route.query, character: id } })
-  category.value = 'all'
-  query.value = ''
+  const next: LocationQueryRaw = { ...route.query, character: id }
+  delete next.q; delete next.category; delete next.rating
+  if (route.query.character !== id) void router.replace({ query: next })
+  else resetFilters()
 }
 function drawUrl(blueprint: SceneBlueprint): string {
   return `/prompt-builder?popular=${encodeURIComponent(selectedId.value)}&blueprint=${encodeURIComponent(blueprint.id)}`
