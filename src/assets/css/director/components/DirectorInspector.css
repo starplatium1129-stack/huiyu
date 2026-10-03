@@ -26,7 +26,7 @@
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
 .pb.journal-workspace.atelier-workspace .inspector-actions .gen-bar { display:flex; flex-direction:column; align-items:stretch; position:static; padding:var(--s-3); border:0; border-radius:0; gap:var(--s-2); }
 .pb .inspector-actions .gen-bar-size { flex:0 0 auto; }
-.pb .inspector-actions .gen-bar-blocked { font-size:var(--fs-label); }
+.pb .inspector-actions .gen-bar-blocked { flex:0 0 auto; font-size:var(--fs-label); }
 .pb .inspector-actions .gen-bar-actions { margin:0; display:flex; flex-wrap:nowrap; }
 .pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action { flex:1; min-width:0; width:auto; }
 .pb.journal-workspace .inspector-actions .gen-bar-actions .generation-action.is-drawing { min-height:var(--control-height); }
