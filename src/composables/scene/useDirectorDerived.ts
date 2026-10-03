@@ -56,10 +56,6 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
     pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && curatedIds.value.has(scene.id)).length,
   )
 
-  const modeDescription = computed(() => pb.directorMode === 'basic'
-    ? '挑一幕喜欢的场景，镜头与光影已经备好。'
-    : '角色、光影和画面细节，这次由你来导演。')
-
   // ── 显存预算提示 ─────────────────────────────────────────────────────────
   const vramBudget = computed(() => {
     const [w, h] = sdSize.value.split('x').map(Number)
@@ -114,7 +110,6 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
     visibleScenes,
     personaCoreCount,
     curatedCount,
-    modeDescription,
     vramBudget,
     vramLevel,
     baseResolutionRisk,

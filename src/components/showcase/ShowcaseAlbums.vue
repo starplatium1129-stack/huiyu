@@ -46,14 +46,14 @@ const emit = defineEmits<{
 .albums-count { @apply tw:text-muted tw:text-label; }
 .albums-track { grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); padding:var(--s-2) var(--s-1) var(--s-3); }
 .album-card { border: 0; background: transparent; font: inherit; scroll-snap-align: start; }
-.album-art { margin: var(--s-1) var(--s-1) var(--s-3); aspect-ratio: 1.65; }
-.album-art::before { content: ''; @apply tw:absolute; z-index: -1; inset: -5px 7px 5px; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-base); transform: rotate(-2deg); }
-.album-cover { border: 2px solid var(--bg-surface); background: var(--bg-base); box-shadow: var(--shadow-sm); }
-.album-cover :deep(img) { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position: center 28%; }
+.album-art { margin:var(--s-1) var(--s-1) var(--s-3); aspect-ratio:1.25; }
+.album-art::before { content:''; position:absolute; z-index:-1; inset:-5px 7px 5px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); transform:rotate(-2deg); }
+.album-cover { border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--art-mat); }
+.album-cover :deep(img) { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
 .album-placeholder > .archive-icon { @apply tw:text-title; }
 .album-card[aria-pressed="true"] .album-cover { outline: 2px solid var(--accent); outline-offset: 2px; }
 .album-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
-.album-copy { padding-inline: var(--s-1); }
+.album-copy { padding:0 var(--s-1) var(--s-2); border-bottom:1px solid var(--border-soft); }
 .album-copy strong { @apply tw:text-body tw:font-semibold; }
 .album-copy > span { @apply tw:shrink-0 tw:text-secondary tw:text-label; font-variant-numeric: tabular-nums; }
 .album-description { padding-inline: var(--s-1); }

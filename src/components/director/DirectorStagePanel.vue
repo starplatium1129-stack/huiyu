@@ -72,14 +72,9 @@
           </div>
         </div>
         <div v-else-if="!generationBusy" class="stage-idle stage-idle-guide">
-          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
-          <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
-          <div class="stage-placeholder-copy">
-            选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
-          </div>
-          <p v-if="hasScene" class="stage-guide-note">这一幕已选好，确认下方画幅后即可生成。</p>
           <div class="stage-quick-actions">
-            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '调整场景' : '挑选场景' }}</button>
+            <button v-if="hasScene" class="btn btn-primary" type="button" @click="$emit('generate')"><ArchiveIcon name="spark" />绘制这一幕</button>
+            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '换一幕' : '挑选场景' }}</button>
           </div>
         </div>
           </template>
@@ -90,12 +85,12 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-wide': resultAspect >= 1.2, 'is-square': resultAspect > .85 && resultAspect < 1.2 }">
       <div class="stage-result-heading">
-        <span>生成结果</span>
+        <span>画布</span>
         <span class="stage-result-status" role="status">
           <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
-          {{ generationBusy ? '下一张正在生成 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
+          {{ generationBusy ? '下一张正在生成 · 当前成片保留' : resultDimensions || '原比例预览' }}
         </span>
       </div>
       <ImageSplitCompare
@@ -169,16 +164,19 @@ const stageRoot = ref<HTMLElement | null>(null)
 const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 const resultAspect = ref(1)
+const resultDimensions = ref('')
 const loadedResultUrl = ref('')
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
+  resultDimensions.value = ''
 }, { immediate: true })
 async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
+  resultDimensions.value = `${image.naturalWidth} × ${image.naturalHeight}`
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
   if (source === props.displayResultUrl) loadedResultUrl.value = source

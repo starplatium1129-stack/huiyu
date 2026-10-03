@@ -25,7 +25,7 @@ it('persists independent rail visibility and widths, and clamps restored widths 
   const first = setup(1200)
   const initialWidth = first.api.materialsWidth.value
   first.api.key('materials', new KeyboardEvent('keydown', { key: 'ArrowRight', shiftKey: true }))
-  expect(first.api.materialsWidth.value).toBe(initialWidth + 40)
+  expect(first.api.materialsWidth.value).toBe(Math.round(initialWidth + 40))
   first.api.toggle('inspector')
   const chosenWidth = first.api.materialsWidth.value
   expect(first.api.collapsed.value).toEqual({ materials: false, inspector: true })

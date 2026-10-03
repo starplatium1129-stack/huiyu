@@ -35,6 +35,7 @@ describe('result tools', () => {
       animaSizes: ['896x1344'], presetSummary: '', hasResult: true,
     } })
     const clear = bar.findAll('button').find(button => button.text() === '清除图片')!
+    const action = bar.get('[data-testid="anima-generate"]').element
     await clear.trigger('click')
     expect(bar.emitted('clearResult')).toHaveLength(1)
     await bar.setProps({ hasResult: false })
@@ -43,11 +44,17 @@ describe('result tools', () => {
     expect(bar.emitted('clearResult')).toHaveLength(1)
     await bar.setProps({ busy: true, online: false })
     const stop = bar.get('[data-testid="anima-generate"]')
+    expect(stop.element).toBe(action)
     expect(stop.text()).toBe('停止绘制')
     expect(stop.attributes('disabled')).toBeUndefined()
     await stop.trigger('click')
     expect(bar.emitted('cancel')).toHaveLength(1)
     expect(bar.emitted('generate')).toBeUndefined()
+    await bar.setProps({ progress: .45 })
+    expect(bar.get('[role="progressbar"]').attributes('aria-valuenow')).toBe('45')
+    expect(stop.text()).toContain('45%')
+    await bar.setProps({ progress: null })
+    expect(bar.get('[role="progressbar"]').attributes('aria-valuenow')).toBeUndefined()
     await bar.setProps({ busy: false, online: true })
     await stop.trigger('click')
     expect(bar.emitted('generate')).toHaveLength(1)

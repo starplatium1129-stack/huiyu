@@ -1,10 +1,15 @@
 <template>
-  <article class="page library-page popular-scene-library" style="--page-max:1500px;" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>翻一翻角色的日常与远方，挑选想要绘制的那一幕。</p></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
+  <article class="page library-page popular-scene-library" :style="{ '--character-ornament': portraitPalette.accent }">
+    <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1>角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div class="library-detail" v-content-motion="selectedId">
     <section class="pop-hero" aria-label="当前角色场景">
+      <figure v-if="selectedCharacter" class="pop-character-art">
+        <RuntimeImage :src="popularPortraitSrc(selectedId)" :alt="selectedCharacter.displayName" decoding="async">
+          <template #fallback><ArchiveIcon name="image" /></template>
+        </RuntimeImage>
+      </figure>
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
@@ -74,8 +79,10 @@
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
-            <p class="pop-desc">{{ displayDescription(blueprint) }}</p>
             <div class="pop-meta"><span>{{ blueprint.location }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
+            <footer class="pop-card-actions">
+              <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
+            </footer>
             <details class="pop-scene-details">
               <summary><span>场景细节</span><ArchiveIcon name="chevron-down" /></summary>
               <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
@@ -87,9 +94,6 @@
                 <div v-if="blueprint.adult && artistLabel(blueprint)" class="pop-artist"><dt>画师</dt><dd>{{ artistLabel(blueprint) }}</dd></div>
               </dl>
             </details>
-            <footer class="pop-card-actions">
-              <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
-            </footer>
           </div>
         </article>
       </div>

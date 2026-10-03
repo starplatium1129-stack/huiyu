@@ -13,8 +13,8 @@ const emit = defineEmits<{ start: [event: PointerEvent]; move: [event: PointerEv
 .director-resize-handle { display: none; }
 @media (min-width: 1024px) {
   .director-resize-handle { display: block; position: absolute; z-index: var(--z-raised); top: 0; bottom: 0; width: 16px; cursor: col-resize; touch-action: none; }
-  .director-resize-handle.materials { left: var(--director-material-width,clamp(260px,18vw,21rem)); }
-  .director-resize-handle.inspector { right: var(--director-inspector-width,clamp(300px,24vw,26rem)); }
+  .director-resize-handle.materials { left: var(--director-material-width,clamp(240px,13.5vw,20rem)); }
+  .director-resize-handle.inspector { right: var(--director-inspector-width,clamp(280px,19vw,22rem)); }
   .director-resize-handle::after { content: ''; position: absolute; inset: 20% 6px; border-radius: var(--r-pill); background: transparent; transition: background var(--motion-hover); }
   .director-resize-handle:hover::after, .director-resize-handle:focus-visible::after { background: var(--accent); }
   .director-resize-handle:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: var(--r-sm); }

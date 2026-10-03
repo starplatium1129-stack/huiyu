@@ -50,7 +50,7 @@
   @apply tw:grid;
   grid-template-columns: 300px minmax(0, 1fr);
   grid-template-areas: "story stage" "story decisions";
-  @apply tw:gap-s-4;
+  gap:var(--workspace-panel-gap,var(--s-4));
   align-items: start;
 }
 /* The route owns page entry; nested columns remain opaque and immediately readable. */
@@ -87,10 +87,17 @@
   .pb.journal-workspace[data-director-mode] .director-workspace {
     flex: 1;
     @apply tw:min-h-0;
-    grid-template-columns: clamp(260px, 18vw, 21rem) minmax(320px, 1fr) clamp(300px, 24vw, 26rem);
+    position:relative;
+    grid-template-columns:var(--director-material-width,clamp(240px,13.5vw,20rem)) minmax(320px,1fr) var(--director-inspector-width,clamp(280px,19vw,22rem));
     grid-template-areas: "story stage inspector";
     @apply tw:items-stretch;
   }
+  .pb.atelier-workspace[data-materials-collapsed] .col-left,.pb.atelier-workspace[data-inspector-collapsed] .director-inspector { display:none; }
+  .pb.journal-workspace.atelier-workspace[data-materials-collapsed] .director-workspace { grid-template-columns:minmax(320px,1fr) var(--director-inspector-width,clamp(280px,19vw,22rem)); grid-template-areas:"stage inspector"; }
+  .pb.journal-workspace.atelier-workspace[data-inspector-collapsed] .director-workspace { grid-template-columns:var(--director-material-width,clamp(240px,13.5vw,20rem)) minmax(320px,1fr); grid-template-areas:"story stage"; }
+  .pb.journal-workspace.atelier-workspace[data-materials-collapsed][data-inspector-collapsed] .director-workspace,
+  .pb.journal-workspace.atelier-workspace.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
+  .pb.atelier-workspace[data-resizing] { user-select:none; cursor:col-resize; }
   /* Rails allocate space only; their content regions own scrolling. */
   .pb.journal-workspace[data-director-mode] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
   .pb.journal-workspace[data-director-mode] .col-center { @apply tw:min-h-0; }
@@ -100,11 +107,21 @@
     flex: 1;
     @apply tw:min-h-0 tw:overflow-y-auto;
     scrollbar-width: thin;
-    scrollbar-gutter: stable;
     overscroll-behavior-y: contain;
   }
-  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; order:-1; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
+  /* Focus gives the artwork the height previously occupied by the page and
+     generation bars. Existing controls stay in the adjacent action dock. */
+  .pb.journal-workspace.atelier-workspace.focus-mode { position:relative; }
+  .pb.atelier-workspace.focus-mode .col-center { position:relative; }
+  .pb.atelier-workspace.focus-mode .pb-topline { position:absolute; top:var(--workspace-pad-top,var(--s-4)); right:var(--workspace-gutter,var(--s-4)); z-index:var(--z-raised); width:200px; padding:0; margin:0; border:0; }
+  .pb.atelier-workspace.focus-mode :is(.pb-header,.pb-utility-actions,.director-mode-switch) { display:none; }
+  .pb.atelier-workspace.focus-mode :is(.pb-top-actions,.pb-mode-actions) { display:block; width:100%; }
+  .pb.atelier-workspace.focus-mode .focus-mode-btn { width:100%; }
+  .pb.journal-workspace.atelier-workspace.focus-mode .gen-bar { position:absolute; top:52px; right:0; width:200px; z-index:var(--z-raised); grid-template-columns:1fr; }
+  .pb.atelier-workspace.focus-mode .gen-bar-actions { grid-column:1; grid-row:auto; width:100%; display:flex; flex-direction:column; align-items:stretch; }
+  .pb.atelier-workspace.focus-mode .gen-bar-actions .btn { width:100%; }
 }
 .pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }

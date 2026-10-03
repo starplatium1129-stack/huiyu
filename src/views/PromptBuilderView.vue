@@ -20,7 +20,7 @@
       <div class="pb-header">
         <div class="atelier-kicker">HUIYU / CREATIVE STUDIO</div>
         <div class="pb-heading-row">
-          <h1 class="pb-title">开始绘制</h1>
+          <h1 class="pb-title">绘图画室</h1>
           <div class="api-status">
             <StudioTooltip :content="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`">
               <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
@@ -32,7 +32,6 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
-        <p class="pb-sub">{{ modeDescription }}</p>
         <p class="atelier-context">{{ pb.isPopular ? popularCharacter?.displayName || '热门角色' : charOptions.find(item => item.id === pb.char)?.label }}<template v-if="pb.activeScene"> · {{ pb.activeScene.title }}</template></p>
       </div>
       <div class="pb-top-actions">
@@ -106,6 +105,7 @@
         <GenerationActionBar
           :engine="drawEngine"
           :busy="generationBusy"
+          :progress="generationProgress"
           :online="engineOnline"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
@@ -253,7 +253,6 @@ currentCharacterThemeStyle,
 popularCharacter,
 sd,
 animaSession,
-modeDescription,
 setDirectorMode,
 engineOnline,
 engineStatusText,

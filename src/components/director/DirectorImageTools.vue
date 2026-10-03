@@ -1,8 +1,7 @@
 <template>
   <div class="image-tools" aria-label="修图与短片">
-    <h3 class="panel-title">修图与短片</h3>
     <section class="image-tools-group" aria-label="修图">
-      <h4>修图</h4>
+      <h4>处理画面</h4>
       <div class="image-tool-buttons">
         <StudioTooltip v-if="displayResultUrl" anchor :content="(interrogateMode === 'caption' ? '用 PixAI 整理当前画面的标签（适合 Krea）' : '用 PixAI 提取当前画面的标签（适合 Anima/SD）') + '；首次需加载模型，后续复用 GPU 常驻模型'">
           <button class="btn btn-ghost" type="button" :disabled="interrogateBusy" @click="$emit('interrogateCurrent')">
@@ -33,7 +32,7 @@
       <p v-if="interrogateError" class="image-tools-error" role="alert">{{ interrogateError }}</p>
     </section>
     <section v-if="(displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')) || shotsPending > 0" class="image-tools-group" aria-label="短片">
-      <h4>短片<span v-if="shotsPending" class="image-tools-count">{{ shotsPending }} 个分镜</span></h4>
+      <h4>延续创作<span v-if="shotsPending" class="image-tools-count">{{ shotsPending }} 个分镜</span></h4>
       <div class="image-tool-buttons">
         <StudioTooltip v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')" anchor :content="generationBusy ? BUSY_HINT : '将当前成片作为首帧，前往故事短片生成动画'">
           <button class="btn btn-ghost btn-video-action" type="button" :disabled="generationBusy" @click="$emit('goVideo')">

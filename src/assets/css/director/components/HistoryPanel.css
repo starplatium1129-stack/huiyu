@@ -16,15 +16,15 @@
     @apply tw:text-muted tw:text-body-sm tw:leading-loose;
   }
   .pb .history-list { @apply tw:grid tw:gap-s-2 tw:mt-s-2; grid-template-columns:minmax(0,1fr); }
-  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:grid; grid-template-columns:80px minmax(0,1fr); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:transform var(--motion-hover); }
+  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:grid; grid-template-columns:92px minmax(0,1fr); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:transform var(--motion-hover); }
   .pb .history-item:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-1px); box-shadow:var(--shadow-sm); }
   .pb.atelier-workspace .history-item[data-selected="true"] { border-color:var(--accent); border-radius:var(--r-md); outline:1px solid var(--accent); outline-offset:-1px; box-shadow:var(--selection-shadow); }
-  .pb .history-thumb { @apply tw:relative tw:overflow-hidden; min-height:112px; background:var(--art-stage); }
+  .pb .history-thumb { @apply tw:relative tw:overflow-hidden; min-height:132px; background:var(--art-stage); }
   .pb .history-thumb img { @apply tw:absolute tw:w-full tw:h-full tw:block tw:object-contain; object-position:center; }
   .pb .history-item:hover .history-thumb img { transform:none; }
   .pb .history-thumb img.history-placeholder { @apply tw:object-contain; object-position:right bottom; opacity:.38; filter:saturate(.72); }
   .pb .history-thumb-badge { @apply tw:absolute tw:left-s-1 tw:bottom-s-1; padding:var(--s-1); border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-mono-xs) var(--font-sans); backdrop-filter:blur(12px); }
-  .pb .history-main { @apply tw:min-w-0 tw:flex tw:flex-col tw:gap-s-1 tw:p-s-2; }
+  .pb .history-main { @apply tw:min-w-0 tw:flex tw:flex-col tw:gap-s-2 tw:p-s-2; justify-content:center; }
   .pb .history-card-title { @apply tw:text-primary tw:text-body-sm; font-weight:720; @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
   .pb .history-text { @apply tw:m-0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; @apply tw:overflow-hidden tw:text-secondary tw:text-label-xs tw:leading-label; }
   .pb .history-meta { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:text-label-xs tw:text-muted; }
@@ -35,17 +35,15 @@
     @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:text-muted tw:text-label-xs tw:whitespace-nowrap;
   }
   .pb .history-rating .favorite { @apply tw:text-accent; }
-  .pb .history-actions {
-    @apply tw:inline-flex tw:flex-wrap tw:max-w-full tw:shrink-0 tw:overflow-hidden;
-    border: 1px solid var(--border-soft); @apply tw:rounded-md;
-    background: var(--bg-deep);
-  }
+  .pb .history-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1); max-width:100%; }
   .pb .history-head, .pb .history-batch { @apply tw:flex-wrap; }
   .pb .history-action {
-    min-height:var(--control-height-sm); padding:0 var(--s-1); border:0; border-right:1px solid var(--border-soft);
+    display:inline-flex; align-items:center; justify-content:center; min-width:28px; min-height:var(--control-height-sm); padding:0 var(--s-1); border:0; border-radius:var(--r-sm);
     background: transparent; @apply tw:text-secondary tw:cursor-pointer;
     font: 600 var(--fs-label-sm) var(--font-sans); transition: color var(--motion-hover), background var(--motion-hover);
   }
+  .pb .history-action .archive-icon { width:15px; height:15px; }
+  .pb .history-meta { gap:var(--s-1); }
   .pb .history-action:last-child { border-right: 0; }
   .pb .history-action:hover { @apply tw:text-accent; background: var(--accent-soft); }
   .pb .history-action:focus-visible { @apply tw:relative; z-index: var(--z-base); outline: 2px solid var(--accent); outline-offset: -2px; }
@@ -55,3 +53,9 @@
   .pb .history-action.delete:hover { @apply tw:text-danger-text; background: color-mix(in srgb,var(--danger) 10%,transparent); }
   @media (max-width: 768px) { .pb .history-list { grid-template-columns:1fr; } .pb .history-rating { @apply tw:justify-start; } }
   @media (max-width: 480px) { .pb .history-actions { flex:1; } .pb .history-action { flex:1; } .pb .history-action.delete { flex:0 0 34px; @apply tw:w-[34px]; } }
+  @media (min-width:1024px) {
+    .pb .history-item { grid-template-columns:68px minmax(0,1fr); }
+    .pb .history-thumb { min-height:110px; }
+    .pb .history-meta .primary { display:none; }
+    .pb .history-meta .sep { display:none; }
+  }

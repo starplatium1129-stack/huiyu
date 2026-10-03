@@ -17,9 +17,9 @@
       </RouterView>
     </main>
     <footer class="site-footer tw:relative tw:z-(--z-raised) tw:text-center tw:text-body-sm tw:text-muted">
-      <!-- 文档入口与朱印在同一行，页脚独立占位。 -->
+      <!-- 页脚保留独立文档入口。 -->
       <p>
-        © {{ currentYear }} 绘遇 HUIYU · 让想象成形，让故事相遇
+        © {{ currentYear }} 绘遇 HUIYU
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
         <a class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" href="/docs/getting-started.html" target="_blank" rel="noopener">使用指南</a>
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
@@ -63,9 +63,9 @@ const currentYear = new Date().getFullYear()
 }
 .site-footer {
   @apply tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:shrink-0;
-  padding: var(--s-4) var(--s-6);
+  padding: var(--s-3) var(--workspace-gutter);
   border-top: 1px solid var(--border-soft);
-  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
+  background: var(--bg-base);
 }
 .site-footer p { margin: 0; }
 /* 页脚文档入口：docs/ 静态托管目录的应用内唯一入口 */
@@ -73,19 +73,4 @@ const currentYear = new Date().getFullYear()
 .site-footer-link { text-decoration: underline; }
 .site-footer-link:hover { @apply tw:text-accent; }
 .site-footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
-/* 朱印印章：页脚签名（色值由 --danger 派生，无硬编码） */
-.site-footer::after {
-  content: "綾季";
-  @apply tw:inline-grid;
-  place-items: center;
-  @apply tw:w-[2.4rem] tw:h-[2.4rem] tw:shrink-0 tw:whitespace-nowrap;
-  border: 2px solid color-mix(in srgb, var(--danger) 42%, transparent);
-  @apply tw:rounded-sm;
-  /* 审计修复：朱印字原为 55% 透明的 danger（2.09:1 不可读），改用文字专用令牌 */
-  @apply tw:text-danger-text;
-  font: 700 var(--fs-body-sm) var(--font-serif);
-  letter-spacing: 0.06em;
-  transform: rotate(-8deg);
-  vertical-align: middle;
-}
 </style>

@@ -179,7 +179,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-body { padding: 12px 14px 14px }
 .anima-row { @apply tw:flex tw:items-center tw:gap-[6px] tw:flex-wrap }
 .anima-hires-row { @apply tw:pt-[6px]; border-top: 1px dashed var(--border-soft); @apply tw:mt-[2px] }
-.anima-hires-toggle { @apply tw:text-label-xs tw:font-semibold tw:text-accent }
+.anima-hires-toggle { @apply tw:text-label-xs tw:font-semibold tw:text-accent tw:max-w-full tw:flex-wrap }
 .anima-hires-icon { @apply tw:w-[14px] tw:h-[14px] tw:text-accent tw:shrink-0 }
 .anima-row label, .anima-label { @apply tw:text-label-xs tw:text-secondary tw:min-w-[44px] }
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；行内布局（flex/min-width）

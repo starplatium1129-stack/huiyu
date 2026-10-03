@@ -8,7 +8,7 @@ test('home page stays inside the performance budget', async ({ page }) => {
   const heroImages = page.locator('.hero-character');
   await expect(heroImages).toHaveCount(2);
   await expect(heroImages.first()).toHaveAttribute('width', '1024');
-  await expect(heroImages.first()).toHaveAttribute('height', '1344');
+  await expect(heroImages.first()).toHaveAttribute('height', '1497');
   const selectedHeroSources = await heroImages.evaluateAll(images =>
     images.map(image => (image as HTMLImageElement).currentSrc)
   );

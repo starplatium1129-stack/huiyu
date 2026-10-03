@@ -158,7 +158,7 @@ export function usePromptWorkspace() {
         flash: message => pb.flash(message),
     });
     const { popularCategory, showAllBlueprints, popularCharacter, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = materials.popular;
-    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, modeDescription, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
+    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
     const { sceneLimit, sceneCollection, setDirectorMode, setSceneCollection, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
     // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
     // URL 克隆保活/延迟释放/token 防乱序/焦点陷阱等生命周期归
@@ -519,7 +519,7 @@ export function usePromptWorkspace() {
     return {
         capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse,
         pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
-        animaSession, modeDescription, setDirectorMode, engineOnline, engineStatusText,
+        animaSession, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
