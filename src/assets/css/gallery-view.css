@@ -1,6 +1,6 @@
 @reference "./tailwind.css";
 /* Browse headers share the existing display/body steps; the wall keeps its wider frame. */
-.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:var(--s-5) var(--s-5) var(--s-8); background:var(--bg-base); }
+.gallery-shell { @apply tw:relative; width:min(calc(1660px * var(--desktop-layout-scale,1)),100%); margin:0 auto; padding:var(--s-5) var(--s-5) var(--s-8); }
 .gallery-intro { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-5; margin:0 auto var(--s-4); }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
 .gallery-breadcrumb button { border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; padding:var(--s-1) 0; @apply tw:min-h-[32px]; }
@@ -20,16 +20,17 @@
 .gallery-collection-controls { flex:1 1 28rem; min-width:0; }
 .gallery-refine-controls :deep(.gallery-generation-filters:has(details[open])) { flex-basis:100%; }
 .gallery-browse-controls,.gallery-manage-controls { @apply tw:flex tw:items-center tw:gap-s-1 tw:flex-wrap; }
-.gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-pill); @apply tw:mr-auto tw:p-s-1 tw:rounded-pill; background:var(--bg-base); }
+.gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-sm); @apply tw:mr-auto tw:p-s-1 tw:rounded-md; border:1px solid var(--border-soft); background:var(--bg-base); }
 .gallery-manage-controls { @apply tw:pl-s-2; border-left:1px solid var(--border-soft); }
-.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; margin:var(--s-3) 0 var(--s-3); }
+.gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; min-height:var(--control-height-sm); margin:var(--s-3) 0 var(--s-3); }
 .gallery-album-overview { margin-top:var(--s-5); }
 .gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
 .gallery-album-overview:focus,.gallery-summary:focus { outline:none; }
 .gallery-filter :deep(.archive-icon) { @apply tw:w-[16px] tw:h-[16px]; vertical-align:-.2em; @apply tw:mr-[3px]; }
 /* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
 .gallery-search-field { @apply tw:relative; flex:1 1 210px; @apply tw:min-w-[160px] tw:max-w-[280px]; }
-.gallery-filter { @apply tw:relative; z-index:var(--z-raised); @apply tw:min-h-[36px]; padding:0 var(--s-3); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
+.gallery-filter { @apply tw:relative; z-index:var(--z-raised); min-height:var(--control-height); padding:0 var(--s-3); border:1px solid transparent; @apply tw:rounded-sm; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
+.gallery-select-toggle { min-width:104px; }
 .gallery-filter:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 8%,var(--bg-surface)); @apply tw:text-accent; }
 .gallery-filter:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .gallery-project { @apply tw:w-auto tw:min-w-[140px]; }
@@ -38,9 +39,15 @@
 .gallery-tags .gallery-filter { @apply tw:max-w-full; overflow-wrap:anywhere; @apply tw:h-auto; padding-block:var(--s-2); }
 .gallery-toolbar-note { @apply tw:text-secondary tw:text-label-xs tw:leading-body tw:text-right; }
 
-/* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */
-.gallery-bulkbar { margin:0 auto var(--s-3); @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
+/* 固定操作层不改变展墙位置；额外尾部空间让最后一幅能滚到操作层上方。 */
+.gallery-selection-dock { position:fixed; z-index:var(--z-sticky); left:50%; bottom:var(--s-4); transform:translateX(-50%); width:min(calc(100% - var(--s-5) * 2),1560px); display:flex; flex-direction:column; gap:var(--s-2); max-height:50vh; pointer-events:none; }
+.gallery-selection-dock:has(> .gallery-bulkbar, > .gallery-organization) { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 32%,var(--border-soft)); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-lg); pointer-events:auto; }
+.gallery-image-browse:has(.gallery-selection-dock > .gallery-bulkbar, .gallery-selection-dock > .gallery-organization) { padding-bottom:140px; }
+.gallery-image-browse:has(.gallery-selection-dock .organization-form) { padding-bottom:50vh; }
+.gallery-bulkbar { @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; flex-shrink:0; min-height:var(--control-height); }
+.gallery-bulk-actions { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:ml-auto; }
 .gallery-bulk-count { @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-mono); @apply tw:whitespace-nowrap; }
+.gallery-selection-dock :deep(.gallery-organization) { min-height:0; overflow:auto; overscroll-behavior:contain; margin:0; padding:var(--s-2) 0 0; border:0; border-top:1px solid var(--border-soft); border-radius:0; }
 
 /* 画廊多列瀑布流展墙：等宽列流式拼接，上下紧密咬合，零垂直多余空位 */
 .gallery-wall {
@@ -68,6 +75,7 @@
 
 /* 列数由容器 ResizeObserver 决定，避免视口断点与实际分列数不一致。 */
 @media (max-width:900px) { .gallery-search-field { max-width:none; } }
+@media (max-width:1000px) { .gallery-selection-dock { width:calc(100% - var(--s-3) * 2); bottom:var(--s-3); } .gallery-bulk-actions { gap:var(--s-1); } }
 @media (max-width:820px) {
   .gallery-columns { @apply tw:gap-s-3; }
   .gallery-col { @apply tw:gap-s-3; }
