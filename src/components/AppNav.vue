@@ -333,7 +333,7 @@ onUnmounted(() => {
 .nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   /* Keep compact desktop windows on the existing two-column navigation surface. */
   .nav-links {
     --selection-radius: var(--r-md);
