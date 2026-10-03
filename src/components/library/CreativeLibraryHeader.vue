@@ -1,7 +1,6 @@
 <template>
   <header class="creative-library-header">
     <div class="creative-library-heading">
-      <p class="creative-library-kicker">HUIYU / CREATIVE LIBRARY</p>
       <h1>{{ title }}</h1>
       <p class="creative-library-description">{{ description }}</p>
     </div>
