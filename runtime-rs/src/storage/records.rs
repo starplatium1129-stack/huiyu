@@ -108,9 +108,19 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 c.check_cancel()?;
                 rows.insert(row.get::<_, String>(4)?, decode_artwork(row)?);
             }
+            // Move each decoded body into its last requested position; only
+            // duplicate IDs need a copy, preserving order and missing rows.
+            let last: HashMap<_, _> = keys.iter().enumerate().map(|(i, key)| (key, i)).collect();
             Ok(Value::Array(
                 keys.iter()
-                    .map(|key| rows.get(key).cloned().unwrap_or(Value::Null))
+                    .enumerate()
+                    .map(|(i, key)| {
+                        if last.get(key) == Some(&i) {
+                            rows.remove(key).unwrap_or(Value::Null)
+                        } else {
+                            rows.get(key).cloned().unwrap_or(Value::Null)
+                        }
+                    })
                     .collect(),
             ))
         }

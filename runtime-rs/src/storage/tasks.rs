@@ -157,10 +157,14 @@ fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Valu
             }
             return Ok(json!({"task": previous, "created": false}));
         }
-        let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
-        if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting")); }
         let cancellation: Option<i64> = c.db.query_row("SELECT requested_at FROM task_cancel_intents WHERE principal_id=? AND request_key=?",
             params![principal, incoming.request_key], |r| r.get(0)).optional()?;
+        // A cancellation recorded before acceptance settles this request
+        // without using the provider. Unrelated running work cannot block it.
+        if cancellation.is_none() {
+            let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
+            if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting")); }
+        }
         let mut task = incoming;
         if let Some(at) = cancellation {
             task.cancel_requested_at = Some(at.try_into().map_err(|_| invalid("Invalid task cancellation time"))?);

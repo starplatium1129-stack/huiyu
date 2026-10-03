@@ -9,14 +9,21 @@ fn batch_reads_honor_cancellation_before_deserializing_rows() {
     )
     .unwrap();
     for command in [
-        json!({"kind":"getArtworks","ids":["restored","missing","restored"]}),
+        json!({"kind":"getArtworks","ids":["restored","missing","restored","other"]}),
         json!({"kind":"listArtworks","limit":1}),
         json!({"kind":"listProjects"}),
     ] {
         c.cancel.store(true, Ordering::Relaxed);
         assert_eq!(read(&c, &command).unwrap_err().code, "CANCELLED");
         c.cancel.store(false, Ordering::Relaxed);
-        assert!(read(&c, &command).is_ok());
+        let result = read(&c, &command).unwrap();
+        if command["kind"] == "getArtworks" {
+            assert_eq!(result.as_array().unwrap().len(), 4);
+            assert_eq!(result[0]["id"], "restored");
+            assert!(result[1].is_null());
+            assert_eq!(result[2], result[0]);
+            assert_eq!(result[3]["id"], "other");
+        }
     }
     c.shutdown().unwrap();
 }

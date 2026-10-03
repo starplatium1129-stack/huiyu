@@ -87,7 +87,7 @@ async fn body(response: Response) -> Value {
 
 #[tokio::test]
 async fn task_reads_are_principal_scoped_and_never_claim_resumed_execution() {
-    let (_directory, state, router, alice) = fixture().await;
+    let (directory, mut state, router, alice) = fixture().await;
     let storage = state.host.storage().unwrap();
     for (id, principal, settled) in [
         ("a1", "alice", true),
@@ -160,6 +160,64 @@ async fn task_reads_are_principal_scoped_and_never_claim_resumed_execution() {
         .await
         .unwrap();
     assert_eq!(before, after);
+
+    let provider = Arc::new(
+        crate::generation::GenerationService::new(
+            crate::generation::Config {
+                sd_host: state.config.sd_host.clone(),
+                sd_auth: None,
+                comfy_host: state.config.comfy_host.clone(),
+                ai_workspace_root: state.config.ai_workspace_root.clone(),
+                runtime_root: state.config.runtime_root.clone(),
+            },
+            crate::upstream::LocalUpstream::new(),
+            state.shutdown.clone(),
+        )
+        .unwrap(),
+    );
+    let runtime = Arc::new(
+        crate::task_runtime::TaskRuntime::new(provider, None, None, state.shutdown.clone())
+            .unwrap(),
+    );
+    state.tasks = Some(runtime.clone());
+    let router = super::router().with_state(state);
+    // The old task's recovery cannot commit. Stable-key queries and a new
+    // cancellation intent must still work without recovering that task first.
+    let fault =
+        rusqlite::Connection::open(directory.path().join("workspace/huiyu.sqlite3")).unwrap();
+    fault
+        .execute_batch(
+            "CREATE TRIGGER fail_task_recovery BEFORE UPDATE ON tasks
+             WHEN OLD.task_id='a2'
+             BEGIN SELECT RAISE(ABORT, 'isolated recovery failure'); END;",
+        )
+        .unwrap();
+    assert_eq!(
+        body(call(&router, &alice, "GET", "/api/tasks/v1/by-key/key%2Fa2").await).await["result"]["taskId"],
+        "a2"
+    );
+    let response = call(
+        &router,
+        &alice,
+        "DELETE",
+        "/api/tasks/v1/by-key/cancel-before-accept",
+    )
+    .await;
+    assert_eq!(response.status(), StatusCode::OK);
+    assert!(body(response).await["result"].is_null());
+    let mut cancelled = task("cancelled", "alice", false);
+    cancelled["requestKey"] = json!("cancel-before-accept");
+    let accepted = storage
+        .request(json!({"kind":"task.accept","record":cancelled}), "alice")
+        .await
+        .unwrap();
+    assert_eq!(accepted["task"]["status"], "cancelled");
+    assert!(accepted["task"]["cancelRequestedAt"].is_number());
+    fault
+        .execute_batch("DROP TRIGGER fail_task_recovery;")
+        .unwrap();
+    drop(fault);
+    runtime.close().await;
     storage.close().await.unwrap();
 }
 

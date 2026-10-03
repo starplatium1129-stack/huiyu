@@ -14,14 +14,21 @@ fn field(body: &Value, name: &str) -> Value {
 }
 
 fn memberships(c: &Context, key: &str) -> Result<Vec<Value>> {
-    records::project_refs(c, key)?
-        .iter()
-        .map(|reference| {
-            let project = records::project(c, string(reference, "project_key")?)?
-                .ok_or_else(|| conflict("MEMBERSHIP_INVALID", "Album membership is unavailable"))?;
-            Ok(json!({"projectId":project["id"],"position":reference["position"]}))
-        })
-        .collect()
+    // Membership snapshots need IDs and positions, not each album's complete
+    // body/history_ids. Keep missing-album rejection through the LEFT JOIN.
+    let mut statement = c.db.prepare_cached(
+        "SELECT p.id_json,r.position FROM project_artworks r
+         LEFT JOIN projects p ON p.id_key=r.project_key WHERE r.artwork_key=?",
+    )?;
+    let mut rows = statement.query([key])?;
+    let mut references = Vec::new();
+    while let Some(row) = rows.next()? {
+        let id: Option<String> = row.get(0)?;
+        let id =
+            id.ok_or_else(|| conflict("MEMBERSHIP_INVALID", "Album membership is unavailable"))?;
+        references.push(json!({"projectId":serde_json::from_str::<Value>(&id)?,"position":row.get::<_,i64>(1)?}));
+    }
+    Ok(references)
 }
 
 fn state(c: &Context, art: &Value, project: bool, tags: bool) -> Result<Value> {
@@ -67,17 +74,24 @@ fn replace_memberships(c: &Context, key: &str, references: &[Value], revision: i
         .collect::<Result<BTreeSet<_>>>()?;
     for album in albums {
         let mut keys = records::membership(c, &album)?;
+        let previous = keys.iter().position(|value| value == key);
         keys.retain(|value| value != key);
-        if let Some(reference) = references
+        let next = if let Some(reference) = references
             .iter()
             .find(|reference| entity_key(&reference["projectId"]).is_ok_and(|value| value == album))
         {
             let position = reference["position"]
                 .as_u64()
                 .ok_or_else(|| invalid("Album position is invalid"))?;
-            keys.insert((position as usize).min(keys.len()), key.to_owned());
+            let position = (position as usize).min(keys.len());
+            keys.insert(position, key.to_owned());
+            Some(position)
+        } else {
+            None
+        };
+        if previous != next {
+            records::update_membership(c, &album, &keys, revision)?;
         }
-        records::update_membership(c, &album, &keys, revision)?;
     }
     Ok(())
 }
@@ -140,10 +154,11 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
         if project_change {
             let refs = if let Some(project) = &project {
                 let project_key = entity_key(&project["id"])?;
-                let position = records::membership(c, &project_key)?
+                let members = records::membership(c, &project_key)?;
+                let position = members
                     .iter()
                     .position(|id| id == &key)
-                    .unwrap_or(records::membership(c, &project_key)?.len());
+                    .unwrap_or(members.len());
                 // The recipe project field is text; album IDs retain their
                 // original JSON type in project rows and membership arrays.
                 art["body"]["project"] = json!(project_key);

@@ -55,6 +55,14 @@ fn organization_is_atomic_idempotent_and_undo_preserves_other_fields() {
     assert_eq!(art["body"]["project"], "7");
     assert_eq!(records::project(&c, "7").unwrap().unwrap()["id"], json!(7));
     assert_eq!(art["body"]["manual_tags"], json!(["generated"]));
+    let album = records::project(&c, "7").unwrap().unwrap();
+    let mut unchanged = command("same-album");
+    for row in unchanged["expectedRevisions"].as_array_mut().unwrap() {
+        row["revision"] = receipt["revision"].clone();
+    }
+    let unchanged = c.execute(&unchanged, "owner").unwrap();
+    assert_eq!(unchanged["changes"], json!([]));
+    assert_eq!(records::project(&c, "7").unwrap().unwrap(), album);
     c.db.execute("UPDATE artworks SET body=json_set(body,'$.favorite',json('true')),revision=revision+1 WHERE id_key='1'", []).unwrap();
     let undo =
         json!({"kind":"undoArtworkOrganization","operationId":"undo","sourceOperationId":"move"});

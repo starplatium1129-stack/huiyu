@@ -140,7 +140,12 @@ async fn perform(
         ));
     }
     let path = path_segments(uri)?;
-    if let Some(runtime) = &state.tasks {
+    // Scoped reads and actions must remain reachable when another task's
+    // recovery fails. In particular, persist cancellation before any probe.
+    if path.is_empty()
+        && (reading || *method == Method::POST)
+        && let Some(runtime) = &state.tasks
+    {
         runtime
             .ensure_recovered(&storage, &session.principal_id)
             .await?;
