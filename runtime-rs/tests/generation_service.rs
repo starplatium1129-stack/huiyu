@@ -27,6 +27,8 @@ use tokio_util::sync::CancellationToken;
 
 #[path = "generation_service/collection.rs"]
 mod collection;
+#[path = "generation_service/failures.rs"]
+mod failures;
 use collection::{Hooks, pending_collection};
 
 fn png() -> Vec<u8> {
@@ -51,6 +53,7 @@ struct MockState {
     auth: Mutex<Vec<String>>,
     history_fails: AtomicBool,
     oom: AtomicBool,
+    invalid_image: AtomicBool,
 }
 struct Server {
     url: String,
@@ -145,6 +148,9 @@ async fn txt2img(
         )
             .into_response();
     }
+    if state.invalid_image.load(Ordering::Relaxed) {
+        return Json(json!({"images":["invalid-base64"]})).into_response();
+    }
     Json(json!({"images":[STANDARD.encode(png())],"info":"{\"seed\":123}"})).into_response()
 }
 async fn interrupt(State(state): State<Arc<MockState>>) -> Json<Value> {
@@ -218,6 +224,7 @@ fn mock(web: bool, comfy: bool) -> (Arc<MockState>, mpsc::UnboundedReceiver<Stri
             auth: Mutex::new(Vec::new()),
             history_fails: AtomicBool::new(false),
             oom: AtomicBool::new(false),
+            invalid_image: AtomicBool::new(false),
         }),
         rx,
     )
@@ -350,6 +357,8 @@ async fn webui_serializes_global_interrupt_and_rejects_stale_provider_before_adm
     .await
     .unwrap();
     assert_eq!(error["code"], "UPSTREAM_ERROR");
+    let uncertain = service.query(failed_id, "owner").await.unwrap();
+    assert!(uncertain.unknown && !uncertain.settled);
     assert!(
         error["error"]
             .as_str()

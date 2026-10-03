@@ -19,9 +19,34 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
   const enabled = computed(() => isLocal && status.value?.managementEnabled === true && !busy.value && !error.value)
   const canImport = computed(() => enabled.value && !!selected.value && (selected.value.source === 'offline' || selected.value.downloaded))
   const canDownload = computed(() => enabled.value && selected.value?.source === 'http')
-  const messages: Record<string, string> = { running: '正在处理资源', cancelling: '正在安全取消', completed: '资源操作已完成',
+  const messages: Record<string, string> = { cancelling: '正在安全取消', completed: '资源操作已完成',
     failed: '资源操作失败', cancelled: '已取消，可继续恢复', interrupted: '上次操作被中断，可继续恢复' }
-  const taskMessage = computed(() => status.value?.task ? messages[status.value.task.state] : '')
+  const taskMessage = computed(() => {
+    const task = status.value?.task
+    if (!task) return ''
+    const action = task.resumeAction || task.action
+    if (task.state === 'completed' && action === 'download') return '资源下载已完成，请安装该版本后使用'
+    if (task.state !== 'running') return messages[task.state]
+    if (action === 'download') return '正在下载资源'
+    if (action === 'import') return '正在安装资源'
+    if (action === 'rollback') return '正在回退资源版本'
+    return '正在恢复资源'
+  })
+  const taskDetail = computed(() => {
+    const task = status.value?.task
+    if (!task || task.state !== 'running') return ''
+    // The backend reports bytes for one file, not the entire resource release.
+    const stages: Record<string, string> = { checking: '正在检查资源', journal: '正在准备安装',
+      'download-progress': '下载当前文件', 'copy-progress': '安装当前文件',
+      downloaded: '文件已下载，正在处理后续资源', 'download-reused': '正在复用已校验的下载缓存',
+      copied: '文件已复制，正在处理后续资源', 'copy-reused': '正在复用已校验的资源',
+      staged: '正在校验并准备切换版本', prepared: '正在校验并准备切换版本', switched: '正在校验已切换的版本' }
+    const stage = stages[task.phase] || '正在处理资源，请稍候'
+    if (!['download-progress', 'copy-progress'].includes(task.phase) || !task.total) return stage
+    const format = (bytes: number) => bytes < 1024 ? `${bytes} B`
+      : bytes < 1024 ** 2 ? `${(bytes / 1024).toFixed(1)} KiB` : `${(bytes / 1024 ** 2).toFixed(1)} MiB`
+    return `${stage}：${format(task.bytes)} / ${format(task.total)}（单文件进度）`
+  })
 
   const hidden = () => typeof document !== 'undefined' && document.hidden
   function visibilityChanged() {
@@ -88,7 +113,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
     if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', visibilityChanged)
     stopped = true; generation++; clearTimeout(poll); request?.abort(); command?.abort(); loading.value = false }
   return { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
-    taskMessage, refresh, run, cancel, start() {
+    taskMessage, taskDetail, refresh, run, cancel, start() {
       stopped = false
       if (isLocal && typeof document !== 'undefined') document.addEventListener('visibilitychange', visibilityChanged)
       if (!hidden()) void refresh()

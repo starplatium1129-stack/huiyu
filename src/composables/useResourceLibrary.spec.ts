@@ -1,4 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
+import ResourceLibraryPanel from '../components/ResourceLibraryPanel.vue'
+import { resourceApi } from '../api/resourceApi'
 import { useResourceLibrary } from './useResourceLibrary'
 import type { ResourceApi } from '../api/resourceApi'
 import type { ResourceStatus, ResourceTask } from '../../types/resources'
@@ -17,6 +20,34 @@ function api(): ResourceApi {
 afterEach(() => vi.useRealTimers())
 
 describe('resource library interaction', () => {
+  it('renders the current-file stage and progress without implying overall completion', async () => {
+    vi.spyOn(resourceApi, 'status').mockResolvedValue(status({ busy: true,
+      task: { ...task, action: 'download', phase: 'download-progress', bytes: 1024, total: 2048 } }))
+    const panel = mount(ResourceLibraryPanel, { global: { stubs: { ArchiveIcon: true, StudioSelect: true, StudioTooltip: true } } })
+    try {
+      await flushPromises()
+      expect(panel.text()).toContain('正在下载资源')
+      expect(panel.text()).toContain('下载当前文件：1.0 KiB / 2.0 KiB（单文件进度）')
+      expect(panel.get('progress').attributes('value')).toBe('1024')
+      expect(panel.get('progress').attributes('max')).toBe('2048')
+    } finally { panel.unmount() }
+  })
+  it('distinguishes download completion from installation and resumed actions', async () => {
+    const calls = api(); const model = useResourceLibrary(calls, true)
+    vi.mocked(calls.status).mockResolvedValue(status({ task: { ...task, action: 'recover', resumeAction: 'download', state: 'completed' } }))
+    await model.refresh()
+    expect(model.taskMessage.value).toBe('资源下载已完成，请安装该版本后使用')
+    expect(model.taskDetail.value).toBe('')
+    vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task: { ...task, action: 'download', phase: 'download-progress', bytes: 1024 ** 2, total: 2 * 1024 ** 2 } }))
+    await model.refresh()
+    expect(model.taskMessage.value).toBe('正在下载资源')
+    expect(model.taskDetail.value).toBe('下载当前文件：1.0 MiB / 2.0 MiB（单文件进度）')
+    vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task: { ...task, phase: 'staged', bytes: 0, total: 0 } }))
+    await model.refresh()
+    expect(model.taskMessage.value).toBe('正在安装资源')
+    expect(model.taskDetail.value).toBe('正在校验并准备切换版本')
+    model.stop()
+  })
   it('never fetches, downloads or writes on remote hosts', async () => {
     const calls = api(); const model = useResourceLibrary(calls, false)
     model.start(); await model.refresh(); await model.run('download'); await model.cancel(); model.stop()
