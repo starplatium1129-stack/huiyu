@@ -1,8 +1,8 @@
 <template>
-  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-lg" aria-labelledby="desktop-preferences-title">
+  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
     <div>
+      <span class="desktop-preferences-kicker">桌面偏好</span>
       <h2 id="desktop-preferences-title">我的桌面工作台</h2>
-      <p>从常用页面开始，外观沿用你选择的深浅主题。</p>
     </div>
     <label for="desktop-start-page">打开工作台时</label>
     <StudioSelect
@@ -56,36 +56,12 @@ async function saveStartPageValue(value: string | number) {
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.desktop-preferences { margin-block: var(--s-5); border: 1px solid var(--border-soft); background: var(--bg-surface); }
-.desktop-preferences h2 { margin: 0 0 var(--s-2); @apply tw:text-primary tw:text-body; }
-.desktop-preferences p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
-.desktop-preferences label { @apply tw:text-primary; }
-.desktop-preferences select {
-  @apply tw:w-full tw:min-h-[44px];
-  padding: var(--s-3) var(--s-7) var(--s-3) var(--s-3);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md tw:bg-elevated tw:text-primary;
-  font: inherit;
-  @apply tw:cursor-pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-.desktop-preferences select:hover {
-  @apply tw:border-accent;
-}
-.desktop-preferences select:focus-visible {
-  @apply tw:border-accent;
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
+.desktop-preferences { min-width:0; border: 1px solid var(--border-soft); background: var(--bg-surface); }
+.desktop-preferences-kicker { color:var(--text-muted); font-size:var(--fs-label-xs); }
+.desktop-preferences h2 { margin:var(--s-2) 0 0; @apply tw:text-primary tw:text-title-sm; }
+.desktop-preferences p { @apply tw:m-0 tw:text-secondary tw:text-label tw:leading-body; }
+.desktop-preferences label { @apply tw:text-primary tw:text-label; }
+.desktop-preferences .studio-select-wrapper { width:100%; min-width:0; }
+.desktop-preferences :deep(.studio-select-trigger) { min-height:40px; }
+.desktop-preferences .btn { justify-self:start; }
 </style>

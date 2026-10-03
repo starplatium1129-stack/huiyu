@@ -16,7 +16,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 <template>
   <div class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-pill tw:bg-base tw:text-secondary">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[44px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <input :id="id" ref="input" v-model="value" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[38px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
     <button v-if="value" type="button" class="tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>

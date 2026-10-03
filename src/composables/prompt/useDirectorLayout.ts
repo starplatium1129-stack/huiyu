@@ -26,8 +26,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number } | null = null
   const baseMaterials = computed(() => Math.max(260, Math.min(21 * rootFont.value, viewport.value * .18)))
   const baseInspector = computed(() => Math.max(300, Math.min(26 * rootFont.value, viewport.value * .24)))
-  const canvasMinimum = computed(() => Math.max(320, Math.min(720, width.value - baseMaterials.value - baseInspector.value - 32)))
-  const available = computed(() => Math.max(0, width.value - canvasMinimum.value - 32))
+  // Resizing may use spare canvas width, including a compact portrait workspace.
+  const available = computed(() => Math.max(0, width.value - 320 - 32))
   const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? baseMaterials.value,
     available.value - (preferences.value.hideInspector ? 0 : Math.min(preferences.value.inspector ?? baseInspector.value, Math.max(280, available.value - 240))))))
   const inspectorWidth = computed(() => Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,

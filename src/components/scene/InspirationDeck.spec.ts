@@ -9,8 +9,8 @@ vi.mock('@/composables/useVisualActivity', () => ({ useVisualActivity: () => act
 const wrappers: ReturnType<typeof mount>[] = []
 beforeEach(() => { vi.useFakeTimers(); activity.canPresent.value = true; activity.canAnimate.value = true })
 afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers() })
-function fixture() {
-  const wrapper = mount(InspirationDeck, { props: { rails: DEFAULT_RAILS } })
+function fixture(scenes: NonNullable<InstanceType<typeof InspirationDeck>['$props']['scenes']> = []) {
+  const wrapper = mount(InspirationDeck, { props: { rails: DEFAULT_RAILS, scenes } })
   wrappers.push(wrapper)
   const stage = wrapper.get('.inspiration-deck-stage')
   const captured = new Set<number>()
@@ -107,4 +107,27 @@ it('preserves the page after a catalog reload, resets on changed rails and suppo
   expect(wrapper.get('[aria-label="下一张灵感"]').attributes('disabled')).toBeDefined()
   await wrapper.get('.front button').trigger('click')
   expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[2]]])
+})
+it('uses matching All-rated catalog scenes and keeps absent or failed previews browsable', async () => {
+  const base = { char: 'nene', tags: ['library'], mature: false, location: '学院图书馆' }
+  const sample = { ...base, id: 'sc215', title: '月光书页', rating: 'All' }
+  const { wrapper, title } = fixture([
+    { ...base, id: 'sc105', title: '受限样张', rating: 'R18' },
+    { ...base, id: 'sc264', title: '未确认分级' },
+    { ...sample, id: 'sc106', mature: true }, sample,
+    { ...sample, id: 'sc002', tags: ['park'] },
+  ])
+  expect(title()).toBe(sample.title)
+  expect(wrapper.findAll('img')).toHaveLength(1) // Hidden pages do not prefetch artwork.
+  const img = wrapper.get('.front img')
+  expect(img.attributes('src')).toBe('/scene-showcase/thumbs/sc215.jpg')
+  expect(img.attributes('alt')).toContain(sample.title)
+  await img.trigger('error')
+  expect(wrapper.get('.front [role="status"]').text()).toContain('预览未能加载')
+  await wrapper.get('.front button').trigger('click')
+  expect(wrapper.emitted('select')).toEqual([[DEFAULT_RAILS[0]]])
+  await wrapper.setProps({ scenes: [] })
+  expect(title()).toBe(DEFAULT_RAILS[0].title)
+  expect(wrapper.find('img').exists()).toBe(false)
+  expect(wrapper.get('.front').text()).toContain('场景预览待收录')
 })

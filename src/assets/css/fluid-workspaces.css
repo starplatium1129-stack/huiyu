@@ -41,10 +41,14 @@ html .library-page :is(.pop-cat, .pop-rating-pill) {
 }
 html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */
-html .gallery-page .artwork:not(.artwork-selected),
+html .gallery-page .artwork,
 html .showcase-page .sample,
 html .library-page .pop-card {
   @apply tw:rounded-xl;
+}
+html .gallery-page .artwork:not(.artwork-selected),
+html .showcase-page .sample,
+html .library-page .pop-card {
   box-shadow: var(--workspace-inset);
   transition: transform var(--motion-surface) var(--ease-out);
 }

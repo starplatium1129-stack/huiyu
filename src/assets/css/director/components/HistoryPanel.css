@@ -7,11 +7,7 @@
   /* History */
   /* 历史区原先裸在页面上,与全站卡片语言不一致 */
   .pb .history-wrap {
-    @apply tw:mt-s-5 tw:p-s-4;
-    border: 1px solid var(--border-soft);
-    @apply tw:rounded-lg;
-    background: var(--bg-surface);
-    box-shadow: var(--shadow-glass-sm);
+    @apply tw:m-0 tw:p-0;
   }
   /* 空态文案由 history.js 输出为 .history-empty,此处只给版式 */
   .pb .history-empty {
@@ -19,23 +15,23 @@
     padding: var(--s-3) 0 var(--s-1);
     @apply tw:text-muted tw:text-body-sm tw:leading-loose;
   }
-  .pb .history-list { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr)); @apply tw:gap-s-3 tw:mt-s-3; }
-  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:flex tw:flex-col; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-lg; transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover),box-shadow var(--motion-hover); }
+  .pb .history-list { @apply tw:grid tw:gap-s-2 tw:mt-s-2; grid-template-columns:minmax(0,1fr); }
+  .pb .history-item { @apply tw:min-w-0 tw:overflow-hidden tw:grid; grid-template-columns:72px minmax(0,1fr); background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-lg; transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover),box-shadow var(--motion-hover); }
   .pb .history-item:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-2px); box-shadow:var(--shadow-md); }
-  .pb .history-thumb { @apply tw:relative; aspect-ratio:16/10; @apply tw:overflow-hidden; background:radial-gradient(circle at 30% 25%,var(--accent-soft),transparent 42%),var(--bg-deep); }
-  .pb .history-thumb img { @apply tw:w-full tw:h-full tw:block tw:object-cover; object-position:center 20%; transition:transform var(--motion-surface) var(--ease-out),filter var(--motion-surface) var(--ease-out); }
-  .pb .history-item:hover .history-thumb img { transform:scale(1.025); }
+  .pb .history-thumb { @apply tw:relative tw:overflow-hidden; min-height:96px; background:var(--bg-deep); }
+  .pb .history-thumb img { @apply tw:absolute tw:w-full tw:h-full tw:block tw:object-contain; object-position:center; }
+  .pb .history-item:hover .history-thumb img { transform:none; }
   .pb .history-thumb img.history-placeholder { @apply tw:object-contain; object-position:right bottom; opacity:.38; filter:saturate(.72); }
-  .pb .history-thumb-badge { @apply tw:absolute tw:left-[10px] tw:bottom-[10px]; padding:4px 8px; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-mono-xs) var(--font-sans); backdrop-filter:blur(12px); }
-  .pb .history-main { @apply tw:min-w-0 tw:flex; flex:1; @apply tw:flex-col tw:gap-[8px] tw:p-s-3; }
+  .pb .history-thumb-badge { @apply tw:absolute tw:left-s-1 tw:bottom-s-1; padding:var(--s-1); border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-mono-xs) var(--font-sans); backdrop-filter:blur(12px); }
+  .pb .history-main { @apply tw:min-w-0 tw:flex tw:flex-col tw:gap-s-1 tw:p-s-2; }
   .pb .history-card-title { @apply tw:text-primary tw:text-body-sm; font-weight:720; @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-  .pb .history-text { @apply tw:min-h-[2.8em]; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; @apply tw:overflow-hidden tw:text-secondary tw:text-label-xs tw:leading-label; }
+  .pb .history-text { @apply tw:m-0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; @apply tw:overflow-hidden tw:text-secondary tw:text-label-xs tw:leading-label; }
   .pb .history-meta { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:text-label-xs tw:text-muted; }
   .pb .history-meta .primary { @apply tw:text-secondary tw:font-semibold; }
   .pb .history-meta .sep { @apply tw:text-strong; }
-  .pb .history-side { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2 tw:mt-auto tw:pt-[2px]; }
+  .pb .history-side { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-1; }
   .pb .history-rating {
-    @apply tw:min-w-[70px] tw:inline-flex tw:items-center tw:justify-end tw:gap-s-2 tw:text-muted tw:text-label-xs tw:whitespace-nowrap;
+    @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:text-muted tw:text-label-xs tw:whitespace-nowrap;
   }
   .pb .history-rating .favorite { @apply tw:text-accent; }
   .pb .history-actions {
@@ -45,7 +41,7 @@
   }
   .pb .history-head, .pb .history-batch { @apply tw:flex-wrap; }
   .pb .history-action {
-    @apply tw:min-h-[32px]; padding: 0 var(--s-3); border: 0; border-right: 1px solid var(--border-soft);
+    @apply tw:min-h-[32px]; padding: 0 var(--s-2); border: 0; border-right: 1px solid var(--border-soft);
     background: transparent; @apply tw:text-secondary tw:cursor-pointer;
     font: 600 var(--fs-label-sm) var(--font-sans); transition: color var(--motion-hover), background var(--motion-hover);
   }

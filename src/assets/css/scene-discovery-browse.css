@@ -1,18 +1,17 @@
 @reference "./tailwind.css";
 .page.scene-discovery { --page-max:1600px; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); }
 
-.scene-atlas { @apply tw:relative tw:overflow-hidden tw:grid; grid-template-columns:minmax(0,1fr) auto 176px; grid-template-areas:'copy choices portrait' 'moods moods portrait'; gap:var(--s-3) var(--s-4); @apply tw:mb-s-5; border:0; @apply tw:rounded-xl; background:transparent; box-shadow:none; }
+.scene-atlas { @apply tw:relative tw:grid; grid-template-columns:minmax(0,1fr) minmax(0,480px) 144px; grid-template-areas:'copy moods portrait' 'choices moods portrait' 'filters moods portrait'; grid-template-rows:max-content max-content 1fr; align-items:start; gap:var(--s-3) var(--s-4); @apply tw:mb-s-4; border:0; @apply tw:rounded-xl; background:transparent; box-shadow:none; }
 /* contrast-exempt: 装饰性巨型水印（SCENE 底噪，4% 透明度、pointer-events:none、无信息含义），
    不是可阅读文本，不适用 WCAG 1.4.3；若日后让它承载信息，删掉本标记并按 4.5:1 选色。 */
 .scene-atlas::before { content:none; @apply tw:absolute tw:left-[-.04em] tw:bottom-[-.22em]; color:color-mix(in srgb,var(--text-primary) 4%,transparent); font:800 clamp(4rem,10vw,8rem) var(--font-mono); letter-spacing:-.08em; @apply tw:pointer-events-none; }
 .scene-atlas .page-kicker { display:block; margin:0 0 var(--s-2); font:500 var(--fs-mono-xs)/var(--lh-body) var(--font-mono); letter-spacing:.12em; }
 .scene-atlas .page-kicker::before { @apply tw:hidden; }
 .scene-atlas-copy { grid-area:copy; @apply tw:relative; z-index:var(--z-raised); @apply tw:min-w-0; }
-.scene-atlas .title { margin:0 0 var(--s-2); font:600 clamp(1.55rem,2.4vw,var(--fs-display))/var(--lh-tight) var(--font-display); letter-spacing:-.03em; }
-.scene-atlas .subtitle { @apply tw:max-w-[640px] tw:m-0 tw:text-secondary tw:text-body tw:leading-body; }
-.scene-atlas[data-companion="nene"] { --accent: var(--nene-violet); }
-.scene-atlas[data-companion="natsume"] { --accent: var(--natsume-amber); }
-.scene-atlas-portrait { grid-area:portrait; @apply tw:relative tw:min-h-[160px] tw:m-0 tw:overflow-hidden tw:rounded-lg; background: var(--bg-deep); }
+.scene-atlas .title { margin:0; font:600 var(--fs-title)/var(--lh-tight) var(--font-display); letter-spacing:-.03em; }
+.scene-atlas[data-companion="nene"] { --accent:color-mix(in srgb,var(--nene-violet) 70%,var(--text-primary)); }
+.scene-atlas[data-companion="natsume"] { --accent:color-mix(in srgb,var(--natsume-amber) 70%,var(--text-primary)); }
+.scene-atlas-portrait { grid-area:portrait; align-self:start; height:176px; @apply tw:relative tw:min-h-[160px] tw:m-0 tw:overflow-hidden tw:rounded-lg; background: var(--bg-deep); }
 .scene-atlas-portrait img { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:object-cover; object-position: center 30%; opacity: 0; transition: opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait img.current { opacity: 1; }
 .scene-atlas-portrait figcaption { @apply tw:absolute; inset: auto 0 0; @apply tw:p-s-2; background: var(--bg-deep); @apply tw:text-primary tw:text-center; font: 400 var(--fs-label-sm)/var(--lh-body) var(--font-serif); }
@@ -26,9 +25,9 @@
 :root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait img,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait .companion-fallback { transition:none; }
 .scene-atlas:has(.companion-pill:focus-visible) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }
-.curation-intro { display:grid; justify-items:start; gap:var(--s-1); grid-area:choices; @apply tw:min-w-0 tw:self-center; }
+.curation-intro { display:grid; justify-items:start; gap:var(--s-1); grid-area:choices; @apply tw:min-w-0 tw:self-start; }
 .companion-switch { --selection-radius:var(--r-pill); --selection-shadow:inset 0 1px var(--glass-highlight); @apply tw:relative tw:isolate tw:flex tw:items-center; width:fit-content; @apply tw:max-w-full tw:gap-s-1 tw:p-s-1; border:1px solid var(--workspace-edge); @apply tw:rounded-pill; background:var(--bg-surface); }
-.companion-pill { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-s-2; padding:var(--s-2) var(--s-3); @apply tw:min-h-[44px] tw:rounded-pill; border:1px solid transparent; background:transparent; @apply tw:text-muted; font:500 var(--fs-label)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; box-shadow:none; }
+.companion-pill { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-s-2; padding:var(--s-2) var(--s-3); @apply tw:min-h-[40px] tw:rounded-pill; border:1px solid transparent; background:transparent; @apply tw:text-muted; font:500 var(--fs-label)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; box-shadow:none; }
 .companion-pill .dot { @apply tw:w-[6px] tw:h-[6px]; border-radius:50%; background:var(--cp-accent); }
 .companion-pill.nene { --cp-accent:var(--nene-violet); }
 .companion-pill.natsume { --cp-accent:var(--natsume-amber); }
@@ -36,7 +35,7 @@
 .companion-switch :deep(.animated-selection) { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
 
 .scene-search-wrap { @apply tw:relative tw:mb-s-4; }
-.scene-search { @apply tw:w-full; padding:var(--s-3) 42px var(--s-3) var(--s-4); background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body; outline:none; }
+.scene-search { @apply tw:w-full; padding:var(--s-2) 42px var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body-sm; outline:none; }
 .scene-search:focus { @apply tw:border-accent; }
 .scene-search:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .scene-search::placeholder { @apply tw:text-muted; }
@@ -45,7 +44,7 @@
 .search-intent { @apply tw:min-h-[22px]; margin:0; @apply tw:text-muted tw:text-label-sm; }
 :deep(.search-intent strong) { @apply tw:text-accent; }
 
-.scene-toolbar { @apply tw:relative tw:grid tw:gap-s-3 tw:mb-s-5 tw:p-s-4 tw:rounded-xl; border:1px solid var(--border-soft); background:var(--bg-surface); }
+.scene-toolbar { grid-area:filters; @apply tw:relative tw:grid tw:gap-s-3 tw:m-0 tw:p-s-4 tw:rounded-xl; border:1px solid var(--border-soft); background:var(--bg-surface); }
 .toolbar-primary { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
 .toolbar-primary .scene-search-wrap { flex:1 1 260px; @apply tw:min-w-0 tw:m-0; }
 .scene-personal-nav { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; scrollbar-width:thin; }
@@ -136,25 +135,21 @@
 
 /* Narrow desktop windows and high-DPI scaling keep browse scope reachable. */
 @media (max-width:1100px) {
+  .scene-atlas { grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 144px; grid-template-areas:'copy moods portrait' 'choices moods portrait' 'filters filters filters'; }
   .scene-toolbar { padding:var(--s-3); }
-}
-
-/* Keep the notebook beside the heading in short desktop windows so covers enter the first view. */
-@media (min-width:901px) and (max-width:1100px) and (max-height:800px) {
-  .scene-atlas { grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 144px; grid-template-areas:'copy moods portrait' 'choices moods portrait'; }
 }
 
 /* A 1024px desktop window still fits the compact header; stack only below it
    so the first scene covers remain visible in short split-screen windows. */
 @media (max-width:900px) {
-  .scene-atlas { grid-template-columns:minmax(0,1fr) 144px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods'; }
+  .scene-atlas { grid-template-columns:minmax(0,1fr) 144px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods' 'filters filters'; }
   .scene-atlas-portrait { min-height:160px; }
 }
 
 @media (max-width:768px) {
 
   .scene-facet-grid { grid-template-columns:1fr 1fr; }
-  .scene-atlas { grid-template-columns:minmax(0,1fr) 140px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods'; @apply tw:gap-s-3; }
+  .scene-atlas { grid-template-columns:minmax(0,1fr) 140px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods' 'filters filters'; @apply tw:gap-s-3; }
   .scene-atlas .title { max-width:none; }
   .scene-atlas-portrait { @apply tw:min-h-[160px]; }
   .scene-cats { @apply tw:flex-nowrap tw:overflow-x-auto tw:pb-[4px]; }
@@ -162,7 +157,7 @@
 }
 @media (max-width: 480px) {
   .scene-discovery { @apply tw:pt-s-5; }
-  .scene-atlas { grid-template-columns:minmax(0,1fr) 100px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods'; @apply tw:p-s-3; }
+  .scene-atlas { grid-template-columns:minmax(0,1fr) 100px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods' 'filters filters'; @apply tw:p-s-3; }
   .scene-atlas-portrait { @apply tw:min-h-[140px]; }
   .companion-switch { @apply tw:mt-0; }
   .scene-facet-grid { grid-template-columns:1fr; }

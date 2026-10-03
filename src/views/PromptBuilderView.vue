@@ -2,7 +2,7 @@
   <article
     class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :style="[currentCharacterThemeStyle, directorLayout.style.value]"
+    :style="[currentCharacterThemeStyle, directorLayout.style.value, { '--drawing-result-aspect': stagePanel?.resultAspect }]"
     :data-materials-collapsed="directorLayout.collapsed.value.materials || undefined"
     :data-inspector-collapsed="directorLayout.collapsed.value.inspector || undefined"
     :data-resizing="directorLayout.dragging.value || undefined"

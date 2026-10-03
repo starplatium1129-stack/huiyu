@@ -85,9 +85,16 @@
   .pb.atelier-workspace[data-director-mode='basic'] .director-inspector .controls-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (min-width:1024px) {
-  /* Expert mode allocates the available desktop width to its canvas; rail widths
-     stay bounded by layout.css and the existing page padding owns the gutter. */
-  .pb.journal-workspace.atelier-workspace[data-director-mode='pro'] { max-width:none; }
+  /* A decoded portrait brings the rails and actions closer to the artwork.
+     Landscape results still use the available desktop workspace width. */
+  .pb.journal-workspace.atelier-workspace.has-result {
+    max-width:min(var(--desktop-workspace-max),calc(
+      max(320px,(var(--drawing-viewport-height) - var(--drawing-navigation-height) - 220px) * var(--drawing-result-aspect,1))
+      + var(--director-material-width,clamp(260px,18vw,21rem))
+      + var(--director-inspector-width,clamp(300px,24vw,26rem))
+      + var(--s-4) * 2 + var(--s-6) * 2));
+  }
+  .pb.journal-workspace.atelier-workspace.has-result:is([data-materials-collapsed],[data-inspector-collapsed],.focus-mode) { max-width:var(--desktop-workspace-max); }
   /* The canvas header occupies its own row; only unusually long messages scroll. */
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-placeholder { @apply tw:justify-start; }
   .pb.atelier-workspace[data-director-mode] .stage-chrome { @apply tw:static tw:w-full tw:shrink-0; }

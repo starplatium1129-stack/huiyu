@@ -4,7 +4,6 @@
       <div class="scene-atlas-copy">
         <div class="page-kicker eyebrow">场景手帖 · {{ activeThemeLabel }}</div>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <p class="subtitle">挑一个想走进的瞬间，把灵感带进工作台。</p>
       </div>
       <div class="curation-intro">
         <span class="companion-label">陪你翻阅</span>
@@ -34,10 +33,7 @@
         </template>
         <figcaption aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
       </figure>
-      <InspirationDeck :rails="moodRails" @select="applyMoodRail" />
-    </section>
-
-    <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
+      <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
@@ -110,6 +106,10 @@
         </div>
       </div>
     </div>
+
+    </section>
+
+    <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
 
     <header class="scene-results-heading">
       <div><h2>{{ sortBy === 'favorite' && !showHidden ? '我的收藏' : tierLabel }}<span v-if="activeTheme !== 'all'"> · {{ activeThemeLabel }}</span></h2><p>先看画面与故事，再选一幕开始绘制</p></div>
