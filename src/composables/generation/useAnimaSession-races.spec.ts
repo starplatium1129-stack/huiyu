@@ -292,7 +292,7 @@ describe('useAnimaSession · stale asynchronous work', () => {
     const pending = generate()
     await vi.dynamicImportSettled()
     if (phase === 'running') { calls[0].resolve(accepted('disposed-job', 'running')); await flush() }
-    session.startStatusPolling(50)
+    session.startStatusPolling()
     session.dispose()
     const before = { ...session.state.value }
     assert.equal(calls[0].options?.signal?.aborted, true)

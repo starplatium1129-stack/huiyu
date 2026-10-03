@@ -4,6 +4,7 @@ import type { AnimaGenerationState, AnimaResult, AnimaResultContext } from '@/ty
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
+import { usePolling } from '@/composables/usePolling'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -48,7 +49,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }, { flush: 'sync' })
   const getSettingsRevision = () => settingsRevision
 
-  let statusTimer: ReturnType<typeof setInterval> | null = null
   let requestSerial = 0
   let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
@@ -57,6 +57,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
   let disposed = false
+  const statusPolling = usePolling({ intervalMs: 15_000, immediate: false, paused: () => document.hidden,
+    tick: async () => { await refreshBackend() } })
   let directTransport: typeof import('./animaJobPolling') | null = null
   async function loadDirectTransport() {
     // Cache only success: a missing deployment chunk must be retryable.
@@ -228,23 +230,39 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     }
   }
 
-  function startStatusPolling(intervalMs = 15_000) {
+  function startStatusPolling() {
     stopStatusPolling()
-    statusTimer = setInterval(() => { void refreshBackend() }, intervalMs) as unknown as ReturnType<typeof setInterval>
+    if (disposed) return
+    document.addEventListener('visibilitychange', statusVisibilityChanged)
+    if (!document.hidden) statusPolling.start()
+  }
+
+  function statusVisibilityChanged() {
+    if (document.hidden) {
+      statusPolling.stop()
+      discardStatusRead()
+    } else if (!statusPolling.isActive()) {
+      statusPolling.start()
+      void refreshBackend()
+    }
   }
 
   function stopStatusPolling() {
-    if (statusTimer) clearInterval(statusTimer)
-    statusTimer = null
+    statusPolling.stop()
+    document.removeEventListener('visibilitychange', statusVisibilityChanged)
   }
 
-  /** Hidden/irrelevant workspaces stop health polling and discard its stale in-flight read. */
-  function pauseStatusPolling() {
+  function discardStatusRead() {
     statusEpoch++
     statusRefresh = null
-    stopStatusPolling()
     statusRequest?.abort()
     statusRequest = null
+  }
+
+  /** Health discovery is separate from accepted-job observation and result recovery. */
+  function pauseStatusPolling() {
+    stopStatusPolling()
+    discardStatusRead()
   }
 
   function clearResult() {
