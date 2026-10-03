@@ -104,7 +104,7 @@
 
       <!-- 显存调度 -->
       <section id="control-resources" class="panel-card resource-panel">
-        <div class="panel-kicker">01 / 常用操作</div>
+        <div class="panel-kicker">常用操作</div>
         <h2 class="panel-heading">显存与运行偏好</h2>
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
@@ -118,7 +118,7 @@
         </div>
 
         <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
-          <span>打开控制面板时自动启动语音（显存紧张时不建议开启）</span>
+          <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
         </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
         <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
@@ -131,12 +131,16 @@
       </section>
 
       <div class="control-work-grid">
-      <!-- 本机生成服务配置 -->
+      <div class="control-settings-stack">
       <ResourceLibraryPanel />
+      <DesktopPreferences />
+      </div>
+      <div class="control-settings-stack">
+      <!-- 本机生成服务配置 -->
       <section id="control-services" class="panel-card service-config-panel">
-        <div class="panel-kicker">02 / 连接设置</div>
+        <div class="panel-kicker">连接设置</div>
         <h2 class="panel-heading">服务地址与声线</h2>
-        <p class="panel-desc">设置绘图引擎与语音服务的本机地址。修改后统一保存并检测。</p>
+        <p class="panel-desc">修改本机地址与角色声线后，统一保存并检测。</p>
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
@@ -152,7 +156,7 @@
             <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="comfy-host-help" class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
+        <p id="comfy-host-help" class="field-help">Anima、Krea 与视频生成共用此地址。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
@@ -160,7 +164,7 @@
             <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="tts-host-help" class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
+        <p id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
 
         <details class="voice-config">
           <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
@@ -181,13 +185,13 @@
             </div>
           </div>
         </details>
-        <div class="config-save-row" :aria-busy="savingConfig"><p>地址与声线一起保存，自动检测不会覆盖未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
+        <div class="config-save-row" :aria-busy="savingConfig"><p>自动检测保留未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
       </section>
 
       <!-- 公网分享 -->
-      <section id="control-share" class="panel-card share-panel">
-        <div class="panel-kicker">03 / 分享与访问</div>
-        <h2 class="panel-heading">邀请朋友来画室</h2>
+      <details id="control-share" class="panel-card share-panel">
+        <summary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}<ArchiveIcon name="chevron-down" /></span></summary>
+        <div class="share-content">
         <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
 
         <div class="tunnel-toggle-row">
@@ -204,7 +208,7 @@
         </div>
 
         <button
-          class="btn btn-lg btn-primary"
+          class="btn btn-primary share-start"
           type="button"
           :disabled="actionBusy || opBusy"
           @click="tunnelActive ? doStop() : doStart()"
@@ -241,13 +245,14 @@
           </div>
           <p class="build-desc">{{ buildDesc }}</p>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="buildingWeb || opBusy" @click="buildWeb">
-            {{ buildingWeb ? '构建中…' : (webBuildStale ? '重新构建前端' : '重新构建前端') }}
+            {{ buildingWeb ? '构建中…' : '重新构建前端' }}
           </button>
         </div>
-      </section>
+        </div>
+      </details>
 
       </div>
-      <DesktopPreferences />
+      </div>
 
       <!-- 日志 -->
       <details id="control-logs" class="log-panel">

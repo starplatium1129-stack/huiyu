@@ -35,6 +35,9 @@ for (const theme of ['dark'] as const) {
         const body = request.postDataJSON() as { action?: ResourceAction; releaseId?: string }
         writes.push({ path: new URL(request.url()).pathname, body })
         if (request.url().endsWith('/cancel')) state = { ...state, busy: false, recoveryRequired: true, task: task('import', 'cancelled') }
+        else if (body.action === 'download') state = { ...state, busy: false,
+          releases: state.releases.map(release => release.id === body.releaseId ? { ...release, downloaded: true } : release),
+          task: { ...task('download', 'completed'), releaseId: body.releaseId! } }
         else if (body.action === 'recover') state = { ...state, busy: false, mounted: true, recoveryRequired: false, task: task('recover', 'completed') }
         else if (body.action === 'rollback') state = { ...state, busy: false, mounted: true,
           current: { identity: 'd'.repeat(64), releaseId: 'portraits-v0', files: 2 }, canRollback: false, task: task('rollback', 'completed') }
@@ -44,7 +47,7 @@ for (const theme of ['dark'] as const) {
       await page.goto('/control')
       const panel = page.locator('#control-library')
       await panel.scrollIntoViewIfNeeded()
-      await expect(panel.getByRole('heading')).toContainText('让喜欢的画面')
+      await expect(panel.getByRole('heading')).toHaveText('离线资源库')
       await expect(panel).toContainText('portraits-v1')
       expect(writes).toEqual([])
       const select = panel.getByRole('combobox', { name: '选择资源版本' })
@@ -52,6 +55,11 @@ for (const theme of ['dark'] as const) {
       await expect(panel.getByRole('button', { name: '安装所选版本' })).toBeDisabled()
       await expect(panel.getByRole('button', { name: '下载资源' })).toBeEnabled()
       expect(writes).toEqual([])
+      await panel.getByRole('button', { name: '下载资源' }).click()
+      await expect(panel).toContainText('资源下载已完成，请安装该版本后使用')
+      await expect(panel.getByRole('button', { name: '安装所选版本' })).toBeEnabled()
+      await expect(panel.locator('.resource-version')).toContainText('portraits-v1')
+      expect(state.current?.releaseId).toBe('portraits-v1')
       await pickStudioOptionByValue(select, 'portraits')
       const install = panel.getByRole('button', { name: '安装所选版本' })
       await install.focus(); await expect(install).toBeFocused()
@@ -67,6 +75,7 @@ for (const theme of ['dark'] as const) {
       await panel.getByRole('button', { name: '回退上一版本' }).click()
       await expect(panel).toContainText('portraits-v0')
       expect(writes).toEqual([
+        { path: '/api/resources/tasks', body: { action: 'download', releaseId: 'hd' } },
         { path: '/api/resources/tasks', body: { action: 'import', releaseId: 'portraits' } },
         { path: '/api/resources/tasks/b5be9b25-3cb6-46e7-9b03-a78b6739e8f4/cancel', body: {} },
         { path: '/api/resources/tasks', body: { action: 'recover' } },
