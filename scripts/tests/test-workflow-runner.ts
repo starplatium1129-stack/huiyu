@@ -160,6 +160,7 @@ test('known tool and CI consumers stay targeted without dropping shared runner f
     areas: ['tests'], testFiles: ['test-quality-gates.js', 'test-e2e-ci-split.js'],
   });
   assert.deepEqual(classifyFiles(['tsconfig.app.json']), { areas: ['ui'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['start.ps1', 'control.bat']), { areas: ['tests'], testFiles: ['test-desktop-staging.js'] });
   assert.deepEqual(classifyFiles(['tests/e2e/studio-live2d.spec.ts']), {
     areas: ['browser-types'], testFiles: [], manualFiles: ['tests/e2e/studio-live2d.spec.ts'],
   });

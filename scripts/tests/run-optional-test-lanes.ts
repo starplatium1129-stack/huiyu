@@ -12,6 +12,8 @@ interface OptionalSelection { lane: OptionalLane; files: readonly string[] }
 const runnerTests = ['test-workflow-runner.js', 'test-quality-report.js', 'test-test-process-pool.js', 'test-quality-gates.js'];
 const buildTests = ['test-typescript-build.js', 'test-typescript-development.js', 'test-runtime-generated.js', 'test-quality-gates.js'];
 const TEST_CONSUMERS: Readonly<Record<string, readonly string[]>> = {
+  'start.ps1': ['test-desktop-staging.js'],
+  'control.bat': ['test-desktop-staging.js'],
   'scripts/workflow.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
   'scripts/lib/workflow-runner.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],
   'scripts/lib/workflow-types.ts': ['test-workflow-runner.js', 'test-workflow-conditions.js'],

@@ -250,6 +250,103 @@ test('non-Windows development does not read the Windows native manifest',{skip:p
   const result=developmentNativeEnvironment('/missing-fixture-root',supplied);
   assert.deepEqual(result,supplied);assert.notEqual(result,supplied);assert.equal(result.AICS_VIPS_DYLIB_PATH,undefined);
 });
+test('Windows launcher opens only on Rust readiness and preserves startup failures', { skip:process.platform!=='win32' }, () => {
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'aics-launcher-fixture-'));
+  const driver=path.join(root,'probe.ps1'), eventsFile=path.join(root,'events.txt');
+  try {
+    fs.copyFileSync(path.resolve(__dirname,'../../start.ps1'),path.join(root,'start.ps1'));
+    write(path.join(root,'node_modules/fixture'),'isolated');write(path.join(root,'dist/index.html'),'fixture');
+    write(path.join(root,'native-stderr.cjs'), "process.stderr.write('   Compiling isolated-fixture v0.0.0\\nisolated runtime diagnostic\\n');\n");
+    write(driver,String.raw`param($Scenario,$Origin)
+$global:opened=0
+$nativeNode=(Get-Command node -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
+$env:PORT='43111'
+function Trace($event) { Add-Content -LiteralPath (Join-Path $PSScriptRoot 'events.txt') -Value $event -Encoding UTF8 }
+function npm {
+  if (($args -join ' ') -ne 'run build:runtime') { throw 'Unexpected npm invocation' }
+  Trace 'build-runtime'
+  Write-Output 'npm fixture detail'
+  if($Scenario -eq 'build-failed'){Write-Output 'isolated preparation diagnostic'}
+  $global:LASTEXITCODE=if($Scenario -eq 'build-failed'){17}else{0}
+}
+function Get-NetTCPConnection {
+  param($LocalPort,$State)
+  Trace "port:$LocalPort"
+  if($Scenario -eq 'occupied'){[pscustomobject]@{OwningProcess=123}}
+}
+function Start-Process {
+  [CmdletBinding()]param($FilePath)
+  $global:opened++
+  Trace "open:$FilePath"
+}
+function cmd { throw 'Unexpected command-shell invocation' }
+function Stop-Process { throw 'Unexpected process termination' }
+function Read-Host { param($Prompt) Trace "prompt:$Prompt" }
+function node {
+  if($args[0] -eq '--version'){'v22.18.0';return}
+  if($args[0] -eq 'scripts/maintenance/git-bundle-backup.js'){
+    Trace 'backup';Write-Output 'backup fixture detail'
+    $global:LASTEXITCODE=if($Scenario -eq 'ready-backup-failed'){42}else{0};return
+  }
+  if(($args -join ' ') -ne 'scripts/maintenance/run-rust-runtime.js start'){throw 'Unexpected node invocation'}
+  Trace 'runtime'
+  Write-Output 'Compiling isolated Rust fixture'
+  & $nativeNode (Join-Path $PSScriptRoot 'native-stderr.cjs')
+  Write-Output '{ invalid json'
+  Write-Output '{"event":"ready","runtime":"node","origin":"http://127.0.0.1:43210"}'
+  Write-Output '{"event":"ready","runtime":"rust","origin":"https://example.test:43210"}'
+  if($global:opened -ne 0){throw 'Browser opened before Rust readiness'}
+  Trace 'before-ready'
+  if($Scenario.StartsWith('ready')){
+    Write-Output ('{"event":"ready","runtime":"rust","origin":"'+$Origin+'"}')
+    if($global:opened -ne 1){throw 'Browser did not open while ready output was processed'}
+    Trace 'after-ready'
+    Write-Output ('{"event":"ready","runtime":"rust","origin":"'+$Origin+'"}')
+  }
+  $global:LASTEXITCODE=23
+}
+. (Join-Path $PSScriptRoot 'start.ps1')
+exit $LASTEXITCODE
+`);
+    for(const [scenario,origin,control,status] of [
+      ['ready4','http://127.0.0.1:43210','http://127.0.0.1:43210/control',23],
+      ['ready6','http://[::]:43212','http://[::1]:43212/control',23],
+      ['ready-backup-failed','http://127.0.0.1:43210','http://127.0.0.1:43210/control',23],
+      ['failed','','',23],['build-failed','','',1],['occupied','','',1],
+    ] as const){
+      fs.rmSync(eventsFile,{force:true});
+      const result=spawnSync('powershell.exe',['-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',driver,scenario,origin],
+        {encoding:'utf8',windowsHide:true,timeout:15000});
+      assert.ifError(result.error);assert.equal(result.status,status,result.stdout+result.stderr);
+      const events=fs.readFileSync(eventsFile,'utf8').replace(/^\uFEFF/,'').trim().split(/\r?\n/);
+      assert.deepEqual(events.filter(event=>event.startsWith('open:')),control?[`open:${control}`]:[],scenario);
+      assert.equal(events.filter(event=>event.startsWith('prompt:')).length,1,scenario);
+      if(control){
+        assert.ok(events.indexOf('before-ready')<events.indexOf(`open:${control}`));
+        assert.ok(events.indexOf(`open:${control}`)<events.indexOf('after-ready'));
+      }
+      const logName=fs.readdirSync(path.join(root,'runtime/logs')).find(file=>file.startsWith('startup-')&&file.endsWith(`-${result.pid}.log`));
+      assert.ok(logName,'the launcher must keep a per-process startup log');
+      const log=fs.readFileSync(path.join(root,'runtime/logs',logName),'utf8');
+      assert.match(log,/npm fixture detail/);
+      assert.doesNotMatch(result.stdout,/"event":"ready"|backup fixture detail|Compiling isolated Rust fixture/);
+      assert.doesNotMatch(result.stdout,/Compiling isolated-fixture v0\.0\.0/);
+      if(scenario!=='build-failed')assert.doesNotMatch(result.stdout,/npm fixture detail/);
+      if(control)assert.equal(result.stdout.split(`Control panel ready: ${control}`).length-1,1,scenario);
+      if(scenario==='ready-backup-failed')assert.match(result.stdout,/backup was not completed/);
+      if(status===23){
+        assert.match(log,/Compiling isolated Rust fixture/);assert.match(log,/Compiling isolated-fixture v0\.0\.0/);assert.match(log,/backup fixture detail/);
+        assert.match(result.stdout,/isolated runtime diagnostic/);assert.match(result.stdout,/Server exited with code 23/);
+      }
+      else {
+        assert.equal(events.includes('runtime'),false,scenario);
+        assert.match(result.stdout,scenario==='occupied'?/Port 43111 is occupied/:/Development command build failed/);
+        if(scenario==='build-failed')assert.match(result.stdout,/isolated preparation diagnostic/);
+      }
+      if(scenario!=='build-failed')assert.ok(events.includes('port:43111'));
+    }
+  } finally { remove(root); }
+});
 test('workspace lock serializes concurrent build critical sections', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-lock-fixture-'));
   const lockRoot = path.join(root, 'locks');
