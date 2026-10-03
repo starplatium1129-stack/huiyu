@@ -9,7 +9,7 @@ vi.mock('@/api/runtimeTasks', () => ({
   refreshRuntimeTasks: api.refresh, cancelRuntimeTask: api.cancel, cancelRuntimeTaskKey: api.cancelKey,
   actOnRuntimeTask: api.act, confirmWebuiTaskStopped: vi.fn(), markRuntimeTask: vi.fn(), taskMessage: () => 'fixture',
 }))
-vi.mock('./RuntimeTaskResult.vue', () => ({ default: { template: '<div>synthetic result</div>' } }))
+vi.mock('./RuntimeTaskResult.vue', () => ({ __esModule: true, default: { template: '<div>synthetic result</div>' } }))
 
 const task = (id: string, complete = false): TaskRecord => ({
   taskId: id, requestKey: `key-${id}`, kind: 'anima', status: complete ? 'succeeded' : 'running',
@@ -42,12 +42,14 @@ it('releases result previews when the panel closes and retains its selected inbo
   try {
     await button('结果收件箱').trigger('click')
     await button('查看结果').trigger('click')
+    await flushPromises()
     expect(wrapper.text()).toContain('synthetic result')
     await wrapper.setProps({ active: false })
     expect(wrapper.text()).not.toContain('synthetic result')
     expect(api.cancel).not.toHaveBeenCalled()
     expect(taskRecords.value[1].resultRefs).toHaveLength(1)
     await wrapper.setProps({ active: true })
+    await flushPromises()
     expect(button('结果收件箱').attributes('aria-pressed')).toBe('true')
     expect(wrapper.text()).toContain('synthetic result')
   } finally { wrapper.unmount() }
@@ -60,6 +62,7 @@ it('refresh cannot release an in-flight task cancellation and permit a second co
   const button = (label: string) => wrapper.findAll('button').find(item => item.text() === label)!
   try {
     await button('查看结果').trigger('click')
+    await flushPromises()
     await button('取消任务').trigger('click')
     await button('更新状态').trigger('click')
     await flushPromises()

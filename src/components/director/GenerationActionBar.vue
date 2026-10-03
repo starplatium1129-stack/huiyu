@@ -38,7 +38,7 @@
           <span class="generation-action-content">
             <span class="generation-action-label"><ArchiveIcon :name="busy ? 'close' : 'spark'" aria-hidden="true" /><span v-content-motion="busy">{{ busy ? '停止绘制' : '生成图片' }}</span></span>
             <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
-            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="progressValue === null ? undefined : { transform: `scaleX(${progressValue / 100})` }" /></span>
+            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
           </span>
         </button>
       </StudioTooltip>
@@ -136,3 +136,7 @@ function onSizeChange(value: string | number) {
   if (value !== '' && value != null) emit('update:size', String(value))
 }
 </script>
+
+<style scoped>
+.generation-track:not(.is-indeterminate) i { transform:scaleX(var(--generation-progress,0)); }
+</style>
