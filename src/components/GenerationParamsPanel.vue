@@ -12,22 +12,28 @@
       </StudioTooltip>
     </summary>
     <div class="controls-grid">
-      <div class="ctrl"><label :for="idOf('cfg')">相关性 (CFG)</label>
+      <div class="ctrl ctrl-with-slider"><label :for="idOf('cfg')">相关性 (CFG)</label>
         <StudioTooltip content="提示词遵循强度：值越高越贴近提示词，过低画面会漂。常用 5–8，也可直接输入任意值。">
           <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
             min="1" max="20" step="0.5" :list="idOf('cfg-presets')"
             @change="normalize('cfg', 7, 1, 20)">
         </StudioTooltip>
+        <input type="range" min="1" max="20" step="0.5" :value="params.cfg ?? 7"
+          class="ctrl-range" aria-label="相关性 (CFG) 滑块"
+          @input="onCfgSlider(($event.target as HTMLInputElement).value)">
         <datalist :id="idOf('cfg-presets')">
           <option v-for="v in CFG_PRESETS" :key="v" :value="v"></option>
         </datalist>
       </div>
-      <div class="ctrl"><label :for="idOf('steps')">步数 (Steps)</label>
+      <div class="ctrl ctrl-with-slider"><label :for="idOf('steps')">步数 (Steps)</label>
         <StudioTooltip content="采样步数：越多细节越足、耗时越长，常用 20-40，也可直接输入任意值。">
           <input :id="idOf('steps')" v-model.number="params.steps" class="input ctrl-num" type="number"
             min="1" max="150" step="1" :list="idOf('steps-presets')"
             @change="normalize('steps', 28, 1, 150)">
         </StudioTooltip>
+        <input type="range" min="1" max="150" step="1" :value="params.steps ?? 28"
+          class="ctrl-range" aria-label="采样步数滑块"
+          @input="onStepsSlider(($event.target as HTMLInputElement).value)">
         <datalist :id="idOf('steps-presets')">
           <option v-for="v in STEPS_PRESETS" :key="v" :value="v"></option>
         </datalist>
@@ -158,5 +164,15 @@ function normalize(key: 'cfg' | 'steps', fallback: number, min: number, max: num
   const next = Number.isFinite(parsed) && parsed !== 0 ? parsed : fallback
   params.value[key] = Math.min(max, Math.max(min, next))
   touch(key)
+}
+
+function onCfgSlider(value: string) {
+  params.value.cfg = Number(value)
+  touch('cfg')
+}
+
+function onStepsSlider(value: string) {
+  params.value.steps = Number(value)
+  touch('steps')
 }
 </script>

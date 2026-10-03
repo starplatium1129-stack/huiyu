@@ -40,6 +40,25 @@
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
+      <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" role="group" aria-label="我的场景视图">
+        <AnimatedSelection />
+        <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
+          :aria-pressed="fTier === 'core' && !showHidden"
+          @click="showRecommendedScenes">人设核心</button>
+        <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
+          :aria-pressed="fTier === 'personal' && !showHidden"
+          @click="showPersonalScenes">常用 {{ usedCount }}</button>
+        <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
+          :aria-pressed="sortBy === 'favorite' && !showHidden"
+          @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
+        <button type="button" :class="{ active: showHidden }"
+          :aria-pressed="showHidden"
+          @click="showHiddenScenes">已隐藏 {{ hiddenCount }}</button>
+        <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
+          :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
+          @click="showAllScenes">完整库 {{ availableCount }}</button>
+      </div>
+
       <div class="toolbar-primary">
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
@@ -56,24 +75,6 @@
         >
           <ArchiveIcon name="filter" />精细筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
         </button>
-      </div>
-
-      <div id="scenePersonalViews" class="scene-personal-nav" aria-label="我的场景视图">
-        <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
-          :aria-pressed="fTier === 'core' && !showHidden"
-          @click="showRecommendedScenes">人设核心</button>
-        <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
-          :aria-pressed="fTier === 'personal' && !showHidden"
-          @click="showPersonalScenes">常用 {{ usedCount }}</button>
-        <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
-          :aria-pressed="sortBy === 'favorite' && !showHidden"
-          @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
-        <button type="button" :class="{ active: showHidden }"
-          :aria-pressed="showHidden"
-          @click="showHiddenScenes">已隐藏 {{ hiddenCount }}</button>
-        <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
-          :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
-          @click="showAllScenes">完整库 {{ availableCount }}</button>
       </div>
 
       <div class="scene-cats" role="group" aria-label="场景主题">

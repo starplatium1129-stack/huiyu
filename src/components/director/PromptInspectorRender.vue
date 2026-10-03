@@ -33,6 +33,15 @@
     </div>
     <slot name="style" />
     <slot name="reference" />
+    <CasualCreativeSliders
+      v-if="pb.directorMode !== 'pro'"
+      :draw-engine="drawEngine"
+      :disabled="generationBusy"
+      :sd-params="pb.sdParams"
+      :anima-state="animaState"
+      @touch-sd="pb.markParamTouched"
+      @patch-anima="patchAnimaState"
+    />
     <details class="inspector-route inspector-advanced">
       <summary><span><ArchiveIcon name="gear" />高级设置</span><small>采样、Seed 与输出</small><ArchiveIcon name="chevron-down" /></summary>
       <div class="inspector-advanced-body">
@@ -64,6 +73,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
+const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/GenerationParamsPanel.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
