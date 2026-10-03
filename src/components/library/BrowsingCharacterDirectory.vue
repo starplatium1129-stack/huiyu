@@ -1,9 +1,9 @@
 <template>
-  <div class="browsing-directory tw:sticky tw:top-[82px] tw:min-w-0">
+  <div class="browsing-directory tw:sticky tw:min-w-0">
     <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
-      <span class="pocket-copy tw:grid tw:gap-s-1 tw:min-w-0"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
+      <span class="pocket-copy tw:grid tw:gap-s-1 tw:min-w-0"><small>当前主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
       <span class="pocket-action tw:ml-auto tw:flex tw:gap-s-2 tw:items-center tw:shrink-0 tw:text-accent">换一位<ArchiveIcon name="search" /></span>
     </button>
     <!-- One directory keeps search, franchise and selection when the window changes size. -->
@@ -64,8 +64,11 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .browsing-directory :deep(.character-directory) { @apply tw:static; }
-.directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[80px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
-.pocket-copy small { @apply tw:text-secondary tw:text-body-sm; }
+.browsing-directory { top:calc(var(--app-navigation-height,68px) + var(--s-3)); }
+.directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[68px]; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
+.directory-pocket :deep(.character-portrait) { width:36px; height:48px; border:0; background:var(--art-stage); }
+.directory-pocket :deep(.character-portrait img) { object-fit:contain; object-position:center; }
+.pocket-copy small { @apply tw:text-secondary tw:text-label-xs; }
 .pocket-copy strong { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
 .pocket-action { font:500 var(--fs-body-sm) var(--font-sans); }
 .directory-sheet { width:min(960px,calc(100vw - 32px)); height:min(780px,calc(100dvh - 32px)); max-width:none; max-height:none; border:1px solid var(--border-strong); background:var(--bg-surface); box-shadow:var(--shadow-lg); }

@@ -155,9 +155,9 @@ async function locateSelected() {
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.character-directory { @apply tw:sticky tw:top-[82px] tw:flex tw:flex-col; max-height: max(360px, calc(100dvh - 280px)); border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
+.character-directory { @apply tw:sticky tw:top-[82px] tw:flex tw:flex-col; max-height:max(360px,calc(100dvh - 160px)); border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:overflow-hidden; }
 .directory-main { @apply tw:flex-col; flex: 1 1 auto; }
-.directory-tools { @apply tw:p-s-4 tw:grid tw:gap-s-3 tw:shrink-0; }
+.directory-tools { @apply tw:p-s-3 tw:grid tw:gap-s-2 tw:shrink-0; }
 .directory-heading { @apply tw:flex tw:justify-between tw:text-body-sm tw:font-semibold; }
 .directory-heading span, .directory-count { @apply tw:text-muted tw:text-label-xs; }
 .directory-tools input { @apply tw:min-w-0 tw:w-full tw:min-h-[40px]; padding: var(--s-2) var(--s-3); @apply tw:text-primary; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; font: inherit; @apply tw:text-label; }
@@ -167,16 +167,19 @@ async function locateSelected() {
 .directory-count button, .directory-current button { @apply tw:min-h-[32px] tw:px-s-2 tw:py-s-1 tw:rounded-md tw:shrink-0; border: 0; background: transparent; @apply tw:text-accent tw:cursor-pointer; font: inherit; }
 .directory-count button:hover, .directory-current button:hover { background:var(--accent-soft); }
 .directory-list { flex: 1 1 auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
-.directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:text-left; background: transparent; border: 1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; }
+.directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-2 tw:p-s-2 tw:mb-s-1 tw:text-left; background:transparent; border:1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; }
 .directory-item:hover { background: var(--bg-hover); }
-.directory-item[aria-pressed="true"] { background: var(--accent-soft); }
+.directory-item[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-soft); }
+.directory-item :deep(.character-portrait) { width:40px; height:54px; border:0; background:var(--art-stage); }
+.directory-item :deep(.character-portrait img) { object-fit:contain; object-position:center; }
 .directory-item img, .directory-placeholder { @apply tw:w-[48px] tw:h-[60px] tw:shrink-0 tw:rounded-sm tw:object-cover; object-position: center 20%; background: var(--bg-elevated); }
 .directory-placeholder { @apply tw:grid; place-items: center; @apply tw:text-accent; }
 .directory-label { @apply tw:min-w-0 tw:grid tw:gap-s-1; }
-.directory-label strong { @apply tw:text-body-sm tw:font-semibold; }
+.directory-label strong { @apply tw:text-label-sm tw:font-semibold tw:leading-body; }
 .directory-label small { @apply tw:text-label-xs tw:text-secondary tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .directory-current { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--border-soft); }
 .directory-empty { padding: var(--s-5) var(--s-3); }
+.character-directory button:focus-visible,.directory-tools input:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
 @media (max-width: 900px) { .character-directory { @apply tw:static tw:max-h-[360px]; } }
 @media (prefers-reduced-motion: reduce) { .directory-item { transition: none; } }
 
@@ -197,8 +200,8 @@ async function locateSelected() {
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
 .directory-catalog .directory-list { @apply tw:min-h-0 tw:grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); @apply tw:gap-s-2; padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
 .directory-catalog .directory-item { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:gap-s-3 tw:m-0 tw:min-w-0 tw:p-s-2; background: var(--bg-surface); @apply tw:rounded-lg; }
-.directory-catalog .directory-item :deep(.character-portrait) { @apply tw:w-full tw:h-[170px]; border: 0; @apply tw:rounded-md; background: var(--bg-elevated); }
-.directory-catalog .directory-item :deep(.character-portrait img) { transform: none; object-position: center 20%; }
+.directory-catalog .directory-item :deep(.character-portrait) { width:100%; height:auto; aspect-ratio:.74; border:0; @apply tw:rounded-md; background:var(--art-stage); }
+.directory-catalog .directory-item :deep(.character-portrait img) { transform:none; object-fit:contain; object-position:center; }
 .directory-catalog .directory-label { padding: 0 var(--s-1) var(--s-2); }
 .directory-catalog .directory-label small { @apply tw:whitespace-normal tw:leading-body; }
 .directory-catalog .directory-selected { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items: center; @apply tw:w-[28px] tw:h-[28px]; border: 1px solid var(--accent); @apply tw:rounded-pill; background: var(--bg-surface); }
@@ -216,5 +219,5 @@ async function locateSelected() {
   .directory-series { flex: 0 0 auto; @apply tw:flex-row tw:flex-nowrap tw:min-h-[44px] tw:overflow-x-auto tw:overflow-y-hidden; padding: var(--s-1) 0 var(--s-2); }
   .directory-series button { flex: 0 0 auto; @apply tw:w-auto tw:whitespace-nowrap; }
 }
-@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { @apply tw:h-[138px]; } }
+@media (max-width:540px) { .directory-catalog .directory-list { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>

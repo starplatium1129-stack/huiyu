@@ -2,8 +2,9 @@
   <article class="page scene-discovery">
     <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
+        <span class="scene-chapter" aria-hidden="true">SCENE / 01</span>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <span class="page-kicker eyebrow">{{ activeThemeLabel }}</span>
+        <p class="scene-atlas-note">挑一幕心动，让故事从这里开始。</p>
       </div>
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
@@ -43,7 +44,7 @@
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
           <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
-            placeholder="搜索场景、情绪或镜头，如：雨夜、夏目经典感" />
+            placeholder="寻找雨夜、夏日，或一个心动的镜头…" />
           <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()"><ArchiveIcon name="close" /></button>
         </div>
         <button
@@ -149,19 +150,14 @@
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
           :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
-          <template #band>
-            <div class="ex-scene-badges">
-            <span v-if="usageFor(s)" class="sc-tier personal">常用 {{ usageFor(s)?.uses }}</span>
-            <span v-if="isCore(s)" class="sc-tier signature">人设核心</span>
-            <span v-else-if="tier(s) === 'signature'" class="sc-tier signature">招牌</span>
-            <span v-else-if="tier(s) === 'curated'" class="sc-tier curated">精选</span>
-            </div>
-          </template>
           <template #body="{ scene: s2 }">
             <div class="ex-scene-line">
               <span><strong>{{ charName(s2) }}</strong></span>
-              <span>{{ s2.emotion || '情绪待定' }}</span>
+              <span>{{ s2.category }}</span>
               <span>{{ [seasonLabel(s2.season), timeLabel(s2.timeOfDay)].filter(Boolean).join(' · ') || '时间不限' }}</span>
+              <span v-if="usageFor(s2)" class="scene-curation-note">常用 {{ usageFor(s2)?.uses }}</span>
+              <span v-else-if="isCore(s2)" class="scene-curation-note">人设核心</span>
+              <span v-else-if="tier(s2) === 'signature' || tier(s2) === 'curated'" class="scene-curation-note">{{ tier(s2) === 'signature' ? '招牌' : '精选' }}</span>
             </div>
             <div class="ex-actions" @click.stop>
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
@@ -202,16 +198,20 @@
         <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" :aria-hidden="!drawerScene" aria-label="场景故事"
           @click.self="drawerScene = null">
           <div class="story-card" v-if="displayedDrawerScene">
+            <div class="story-art" aria-label="场景完整作品">
+              <SceneCard :scene="displayedDrawerScene" mode="grid" :clickable="false" completePreview suppressTags />
+            </div>
+            <div class="story-copy">
             <div class="story-card-head">
-              <h3><ArchiveIcon name="cherry" /> {{ displayedDrawerScene.title }}</h3>
+              <div><span class="scene-chapter">STORY / 场景故事</span><h3>{{ displayedDrawerScene.title }}</h3></div>
               <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" @click="drawerScene = null"><ArchiveIcon name="close" /></button>
             </div>
             <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
             <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
             <div class="story-actions">
-              <RouterLink class="btn btn-primary" :to="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</RouterLink>
-              <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
-              <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
+              <RouterLink class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="spark" /> 开始绘制这一幕</RouterLink>
+              <RouterLink class="btn btn-ghost" :to="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</RouterLink>
+            </div>
             </div>
           </div>
         </div>

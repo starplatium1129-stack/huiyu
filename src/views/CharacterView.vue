@@ -1,6 +1,6 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" style="--page-max:1600px">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开喜欢的作品，认识下一位故事主角。' : '认识她的故事，从一个心动的瞬间开始创作。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER COLLECTION</div><h1>{{ showShelf ? '角色画集' : '角色档案' }}</h1><p>{{ showShelf ? '翻开作品，找到故事的主角。' : '从人物原画，走进下一幅作品。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -47,14 +47,11 @@
             <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
-            <StudioTooltip :content="current.source">
-              <span class="portrait-source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
-            </StudioTooltip>
           </div>
         </div>
         </CharacterParticleStage>
         <div class="character-profile">
-          <div class="profile-kicker">人物档案</div>
+          <StudioTooltip :content="current.source"><div class="profile-kicker">{{ franchiseLabel(franchiseKey(current.source)) || '原创角色' }}</div></StudioTooltip>
           <h2 class="character-name">{{ current.name }}</h2>
           <div v-if="hasIdentity" class="identity-row">
             <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
@@ -64,16 +61,13 @@
           </div>
           <div v-if="current.alias?.length" class="character-alias">{{ current.alias.join(' / ') }}</div>
           <div class="character-actions" aria-label="角色快捷操作">
-            <RouterLink class="btn btn-primary" :to="isPopular
+            <RouterLink class="btn btn-primary character-create" :to="isPopular
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
-              : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />以她开始绘制</RouterLink>
+              : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />以她开始绘图</RouterLink>
             <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
               : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
-          </div>
-          <div v-if="current.voice" class="voice-block">
-            <span class="voice-label">语气示例</span>{{ current.voice }}
           </div>
           <div class="tags-grid">
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
@@ -83,10 +77,14 @@
             <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
             <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}</button>
           </section>
-          <div class="detail-grid">
+          <details :key="current.id" class="character-personality">
+            <summary>性格、偏好与语气</summary>
+            <div v-if="current.voice" class="voice-block"><span class="voice-label">语气示例</span>{{ current.voice }}</div>
+            <div class="detail-grid">
             <section class="detail-section"><div class="lab">性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
             <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
-          </div>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -107,8 +105,8 @@
         <div class="recommend-head">
           <div>
             <div class="page-kicker">VISUAL REFERENCES</div>
-            <h2 class="recommend-title">服装与四视角参考</h2>
-            <p>选择服装，查看不同视角下的形象细节，再带入分镜创作。</p>
+            <h2 class="recommend-title">服装与视角参考</h2>
+            <p>选择服装，把人物细节带入分镜。</p>
           </div>
           <RouterLink class="btn btn-primary btn-sm" :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`">
             去分镜短片创作 ↗
@@ -249,7 +247,7 @@
           <div>
             <div class="page-kicker">Persona core</div>
             <h2 class="recommend-title">人设核心场景</h2>
-            <p>先从最像她的瞬间开始；其他换装、AU 与成人向变体仍可在完整场景库中找到。</p>
+            <p>选择一个属于她的瞬间，接着绘制。</p>
           </div>
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
         </div>

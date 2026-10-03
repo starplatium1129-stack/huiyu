@@ -90,7 +90,6 @@
 .pop-card-head h3 { @apply tw:m-0 tw:text-primary; font: 600 var(--fs-title-xs)/var(--lh-tight) var(--font-display); overflow-wrap: anywhere; }
 .pop-rating { flex: 0 0 auto; padding: 1px var(--s-2); border: 1px solid var(--danger-text); @apply tw:rounded-pill tw:text-danger-text; font: 600 var(--fs-label-xs) var(--font-sans); }
 .pop-rating.rating-R15 { @apply tw:border-strong tw:text-secondary; }
-.pop-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; min-height: 2lh; @apply tw:overflow-hidden tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
 .pop-meta { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:text-muted tw:text-label-xs; }
 .pop-meta span:empty { @apply tw:hidden; }
 .pop-meta span + span:not(:empty)::before { content: '·'; @apply tw:mr-s-1; }
