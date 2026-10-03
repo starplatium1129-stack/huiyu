@@ -1,7 +1,7 @@
 @reference "../../tailwind.css";
 /* Shared control bases retain selector precedence and avoid repeated template payload. */
 .studio-select-wrapper { @apply tw:relative tw:inline-flex tw:w-full tw:min-w-0; }
-.studio-select-trigger { @apply tw:inline-flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:min-h-[40px] tw:py-s-2 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-deep tw:text-primary tw:[font:500_var(--fs-body-sm)_var(--font-sans)] tw:text-start tw:cursor-pointer tw:[outline:none]; }
+.studio-select-trigger { @apply tw:inline-flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:py-s-2 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-primary tw:[font:500_var(--fs-label)_var(--font-sans)] tw:text-start tw:cursor-pointer tw:[outline:none]; min-height: var(--control-height); }
 .studio-select-value { @apply tw:min-w-0 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .studio-select-icon { @apply tw:w-[15px] tw:h-[15px] tw:shrink-0 tw:text-muted; }
 .studio-select-content { @apply tw:[z-index:var(--z-popover)] tw:[width:var(--reka-select-trigger-width,_max-content)] tw:min-w-[140px] tw:[max-width:calc(100vw_-_24px)] tw:[max-height:var(--reka-select-content-available-height,_320px)] tw:overflow-hidden tw:p-s-1 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:shadow-(--shadow-lg) tw:text-primary; }
@@ -19,7 +19,7 @@
 }
 .studio-select-wrapper[data-size='sm'] .studio-select-trigger {
   gap: var(--s-1);
-  min-height: 32px;
+  min-height: var(--control-height-sm);
   padding: var(--s-1) var(--s-2);
   font-size: var(--fs-label-sm);
 }

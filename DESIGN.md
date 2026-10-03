@@ -3,24 +3,23 @@ version: "alpha"
 name: "绘遇 · HUIYU"
 description: "绘遇 HUIYU：温暖、细腻的角色创作与故事画室。让想象成形，让故事相遇。"
 colors:
-  primary: "#F2A8BE"
+  primary: "#EDABC1"
   on-primary: "#111923"
-  primary-hover: "#FFC4D8"
+  primary-hover: "#F6C1D2"
   secondary: "#B784F6"
   tertiary: "#7FE7FF"
-  neutral: "#151C24"
-  neutral-deep: "#10161D"
-  surface: "#1E2935"
-  surface-elevated: "#25313D"
-  text-primary: "#EDF3FA"
-  text-secondary: "#BDCBD8"
+  neutral: "#1D1B21"
+  neutral-deep: "#17161B"
+  surface: "#26232A"
+  surface-elevated: "#302C34"
+  text-primary: "#F5EFE9"
+  text-secondary: "#CFC2CC"
   success: "#81C784"
   warning: "#FFA726"
   danger: "#FF9B8F"
   info: "#90CAF9"
   # 2026-09-08: 此元数据表描述深色基线；浅色覆盖见 src/assets/css/light-theme.css。
-  # 2026-09-28: 蓝灰夜幕作为结构底色，樱花粉与角色专属色承载强调。
-  # 2026-09-02: 方向 A 二次元博客质感优化：基底调校为澄澈绀蓝夜空、升级日系药丸胶囊微光标签与亚克力边缘高光。
+  # 暖石墨作为深色结构底色，玫粉与角色专属色承载强调。
   # 应用支持深浅主题；两种主题都需要视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
@@ -28,7 +27,7 @@ colors:
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
   #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#A6B3C0"
+  disabled-text: "#B9ACB6"
   nene: "#B784F6"
   natsume: "#FBB040"
 typography:
@@ -167,7 +166,7 @@ or voice feedback—not to periodic transforms on a still portrait.
 ## Colors
 
 The atelier supports dark and light themes, with dark as the default. Dark
-surfaces use graphite-violet; light surfaces use paper-white and readable ink
+surfaces use warm graphite; light surfaces use warm paper and readable rose-ink
 accents. Both themes preserve the same layout, action hierarchy, and character identity.
 
 > **2026-09-08 · 当前双主题契约**
@@ -215,6 +214,23 @@ harder to understand.
 Use the 4/8/12/16/24/32/48/64 spacing scale. Normal pages use a `1200px` content
 maximum. Dense creative workspaces may use the available viewport width while
 preserving at least `16px` outer breathing room.
+
+Drawing, inspiration and gallery share compact 24px page headings, 15px body
+text and 13px control labels at the default root size. Use 40px controls and
+32px compact controls (`--control-height` / `--control-height-sm`), 8/10px
+control radii and 16px panel radii. Keep headers short and actions in stable
+slots. Selected artwork uses a rose border, a check or existing selection
+indicator, and `--selection-shadow`; it must not change the wall geometry.
+
+The light paper is `#F7F2EC`, the paper surface is `#FFFCF8` and the rose ink
+is `#9B3E61`. Both themes use `--art-stage` (`#1B191E`) for the main artwork
+stage and framed card mats, with `--art-frame-line` and `--art-frame-shadow`
+providing quiet depth. Display real SFW images at their original proportions;
+the main canvas always contains the complete work. Character colors remain
+available for context. Normal controls respond in 120–200ms. A newly decoded
+result may reveal once in 450–700ms using the same image; waiting states must
+describe actual generation progress. Preserve the existing dissolve effect,
+reduced motion, visibility cleanup and anchored-viewer fallbacks.
 
 Shared page chrome uses `1000 / 768 / 480px` as its default responsive scale.
 Content-driven layouts can use their own thresholds: the director workspace
