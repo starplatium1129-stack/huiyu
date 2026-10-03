@@ -4,7 +4,7 @@
 .pb.atelier-workspace .atelier-kicker { @apply tw:mb-s-2 tw:text-secondary; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.15em; }
 .pb.atelier-workspace .atelier-context { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label; overflow-wrap:anywhere; }
 .pb.atelier-workspace .pb-topline { @apply tw:pb-s-3; border-bottom:1px solid var(--border-soft); }
-.pb.journal-workspace.atelier-workspace .pb-title { font-size:var(--fs-title); line-height:var(--lh-tight); letter-spacing:-.02em; }
+.pb.journal-workspace.atelier-workspace .pb-title { font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing:-.02em; }
 .pb.atelier-workspace .pb-sub { max-width:54ch; }
 .pb.atelier-workspace .pb-utility-actions { @apply tw:pl-s-3; border-left:1px solid var(--border-soft); }
 .pb.atelier-workspace .material-drawer,
@@ -14,14 +14,16 @@
 .pb.atelier-workspace .material-heading small { @apply tw:hidden; }
 .pb.atelier-workspace .inspector-heading strong { @apply tw:text-body tw:font-semibold; }
 .pb.atelier-workspace .inspector-heading span { @apply tw:text-secondary; }
-.pb.atelier-workspace .material-switch { border-bottom:0; }
-.pb.atelier-workspace .material-switch button { @apply tw:text-label tw:whitespace-nowrap; }
+.pb.atelier-workspace .material-switch { margin:0 var(--s-3) var(--s-2); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.pb.atelier-workspace .material-switch button { @apply tw:min-h-[40px] tw:whitespace-nowrap; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { @apply tw:rounded-xl; box-shadow:none; }
-.pb.journal-workspace.atelier-workspace .stage-placeholder { @apply tw:rounded-xl; background:var(--bg-surface); border:1px solid var(--border-soft); }
+.pb.journal-workspace.atelier-workspace .stage-placeholder { @apply tw:rounded-xl; background:var(--bg-base); border:1px solid var(--border-soft); }
 .pb.atelier-workspace .stage-placeholder::before,
 .pb.atelier-workspace .stage-muse,
 .pb.atelier-workspace .stage-magic-ring { @apply tw:hidden; }
-.pb.atelier-workspace .stage-chrome { @apply tw:top-0 tw:left-0 tw:right-0; padding:var(--s-3) var(--s-4); @apply tw:min-h-[48px]; border-radius:var(--r-xl) var(--r-xl) 0 0; border-bottom:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-secondary; }
+.pb.atelier-workspace .stage-chrome { @apply tw:top-0 tw:left-0 tw:right-0; padding:var(--s-3) var(--s-4); @apply tw:min-h-[48px]; border-radius:var(--r-xl) var(--r-xl) 0 0; border-bottom:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-secondary; font:500 var(--fs-label)/var(--lh-label) var(--font-sans); letter-spacing:0; }
+.pb.atelier-workspace .stage-chrome > :first-child { color:var(--text-primary); font-weight:600; }
+.pb.atelier-workspace .stage-ready::before { box-shadow:none; }
 .pb.atelier-workspace .stage-message { @apply tw:w-full tw:min-w-0; transform:none; }
 .pb.atelier-workspace .stage-idle { padding:64px var(--s-5) var(--s-5); }
 .pb.atelier-workspace .atelier-canvas-mark { @apply tw:grid; place-items:center; @apply tw:w-[64px] tw:h-[64px]; margin:0 auto var(--s-5); border:0; @apply tw:rounded-lg; background:var(--character-soft,var(--accent-soft)); @apply tw:text-accent; }
@@ -29,6 +31,13 @@
 .pb.atelier-workspace .stage-placeholder-title { @apply tw:text-primary tw:font-semibold; }
 .pb.atelier-workspace .stage-placeholder-copy { margin-inline:auto; @apply tw:leading-loose; }
 .pb.atelier-workspace .stage-quick-actions { @apply tw:flex-wrap; }
+.pb.atelier-workspace .stage-guide-note { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
+.pb.atelier-workspace .stage-content { max-width:720px; margin:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.pb.atelier-workspace .stage-placeholder .stage-content { width:calc(100% - var(--s-5) * 2); padding:var(--s-5); }
+.pb.atelier-workspace .stage-content .stage-idle { padding:0; }
+.pb.atelier-workspace .stage-content:has(.scene-reference) .stage-idle { padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.pb.atelier-workspace .stage-content .stage-error-detail { margin:var(--s-3) 0 0; padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-base); color:var(--danger-text); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); text-align:left; }
+.pb.atelier-workspace .is-error .atelier-canvas-mark { color:var(--danger-text); background:color-mix(in srgb,var(--danger-text) 8%,var(--bg-surface)); }
 .pb.atelier-workspace .result-image-wrap.archive-canvas { border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-deep); box-shadow:none; }
 .pb.atelier-workspace .result-image { opacity:1; transform:none; background:var(--bg-deep); }
 .pb.atelier-workspace .result-image-actions { @apply tw:gap-s-2 tw:p-s-3; border-top:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:justify-start; }
@@ -36,7 +45,7 @@
 .pb.atelier-workspace .stage-archive-badge[data-archived='true'] { @apply tw:text-success-text; border-color:color-mix(in srgb,var(--success-text) 28%,var(--border-soft)); background:color-mix(in srgb,var(--success-text) 8%,var(--bg-surface)); }
 .pb.atelier-workspace .stage-archive-badge[data-archived='false'] { @apply tw:text-accent; border-color:color-mix(in srgb,var(--accent) 28%,var(--border-soft)); background:var(--accent-soft); }
 .pb.atelier-workspace .col-center { container-type:inline-size; container-name:canvas-column; }
-.pb.journal-workspace.atelier-workspace .gen-bar { @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-2) var(--s-3); @apply tw:rounded-xl; background:var(--bg-surface); box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.pb.journal-workspace.atelier-workspace .gen-bar { @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-2) var(--s-3); @apply tw:rounded-xl; border-color:var(--border-soft); background:var(--bg-surface); box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
 .pb.atelier-workspace .gen-bar-size { @apply tw:min-w-0; flex:1 1 220px; @apply tw:text-secondary; }
 .pb.atelier-workspace .gen-bar-size .studio-select-wrapper { flex:1; @apply tw:min-w-0 tw:max-w-full; }
 /* 完整参数摘要保留在右侧输出面板，画布下不重复占行。 */

@@ -19,6 +19,7 @@
     </figcaption>
   </figure>
   <slot v-else />
+  <slot name="actions" :has-scene="Boolean(scene)" />
 </template>
 
 <script setup lang="ts">
