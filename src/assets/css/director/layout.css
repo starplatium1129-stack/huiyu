@@ -87,10 +87,26 @@
   .pb.journal-workspace[data-director-mode] .director-workspace {
     flex: 1;
     @apply tw:min-h-0;
-    grid-template-columns: clamp(260px, 18vw, 21rem) minmax(320px, 1fr) clamp(300px, 24vw, 26rem);
+    position:relative;
+    grid-template-columns:var(--director-material-width,clamp(260px,15vw,21rem)) minmax(320px,1fr) var(--director-inspector-width,clamp(300px,22vw,24rem));
     grid-template-areas: "story stage inspector";
     @apply tw:items-stretch;
   }
+  /* Keep portrait rails beside the artwork, rather than around a wide empty
+     letterbox. The decoded aspect is shared with the unchanged reveal slot. */
+  .pb.journal-workspace.atelier-workspace.has-result {
+    max-width:min(var(--desktop-workspace-max),calc(
+      max(480px,(var(--drawing-viewport-height) - var(--drawing-navigation-height) - 180px) * var(--drawing-result-aspect,1))
+      + var(--director-material-width,clamp(260px,15vw,21rem))
+      + var(--director-inspector-width,clamp(300px,22vw,24rem)) + var(--s-4) * 6));
+  }
+  .pb.journal-workspace.atelier-workspace.has-result:is([data-materials-collapsed],[data-inspector-collapsed],.focus-mode) { max-width:var(--desktop-workspace-max); }
+  .pb.atelier-workspace[data-materials-collapsed] .col-left,.pb.atelier-workspace[data-inspector-collapsed] .director-inspector { display:none; }
+  .pb.journal-workspace.atelier-workspace[data-materials-collapsed] .director-workspace { grid-template-columns:minmax(320px,1fr) var(--director-inspector-width,clamp(300px,22vw,24rem)); grid-template-areas:"stage inspector"; }
+  .pb.journal-workspace.atelier-workspace[data-inspector-collapsed] .director-workspace { grid-template-columns:var(--director-material-width,clamp(260px,15vw,21rem)) minmax(320px,1fr); grid-template-areas:"story stage"; }
+  .pb.journal-workspace.atelier-workspace[data-materials-collapsed][data-inspector-collapsed] .director-workspace,
+  .pb.journal-workspace.atelier-workspace.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
+  .pb.atelier-workspace[data-resizing] { user-select:none; cursor:col-resize; }
   /* Rails allocate space only; their content regions own scrolling. */
   .pb.journal-workspace[data-director-mode] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
   .pb.journal-workspace[data-director-mode] .col-center { @apply tw:min-h-0; }
@@ -100,10 +116,9 @@
     flex: 1;
     @apply tw:min-h-0 tw:overflow-y-auto;
     scrollbar-width: thin;
-    scrollbar-gutter: stable;
     overscroll-behavior-y: contain;
   }
-  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
+  .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; order:-1; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
 }
 .pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }

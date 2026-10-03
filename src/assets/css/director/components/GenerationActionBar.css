@@ -33,9 +33,19 @@
     flex: 1 1 16rem; @apply tw:min-w-0 tw:ml-auto tw:text-danger-text tw:text-body tw:leading-body;
   }
   .pb .gen-bar-actions { @apply tw:flex tw:flex-wrap tw:justify-end tw:items-center tw:gap-s-2 tw:ml-auto; }
+  .pb .generation-ring { display:inline-flex; width:20px; height:20px; flex:none; }
+  .pb .generation-ring svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2; transform:rotate(-90deg); }
+  .pb .generation-ring-track { stroke:var(--border-strong); }
+  .pb .generation-ring-value { stroke-linecap:round; }
+  .pb .generation-ring.is-indeterminate svg { animation:generation-turn 900ms linear infinite; }
+  .pb .generation-percent { font:600 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
+  .pb .gen-bar-actions .is-drawing { min-width:156px; color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+  @keyframes generation-turn { to { transform:rotate(270deg); } }
+  @media (prefers-reduced-motion:reduce) { .pb .generation-ring.is-indeterminate svg { animation:none; } }
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
   .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
   .pb.journal-workspace .gen-bar-actions .btn { min-height:var(--control-height); min-width:104px; @apply tw:text-label; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); }
+  .pb.journal-workspace .gen-bar-actions [data-testid] { min-width:156px; }
   .pb .gen-bar-actions .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pb .gen-bar-actions .btn-primary:not(:disabled) {
     box-shadow: 0 0 16px -2px var(--character-glow, var(--accent-glow));

@@ -105,7 +105,7 @@
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
-.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--art-stage); color:var(--on-art-secondary); @apply tw:text-label; border-bottom:1px solid var(--art-frame-line); }
+.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:shrink-0 tw:justify-between tw:gap-s-2; padding:var(--s-2) var(--s-3); background:var(--art-stage); color:var(--on-art-secondary); @apply tw:text-label; border-bottom:1px solid var(--art-frame-line); }
 .pb .stage-result-heading > :first-child { color:var(--on-art-primary); @apply tw:font-semibold; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
@@ -117,7 +117,7 @@
 }
 /* Below this width, use two rows with the status beside the archive action.
    All three controls remain 40px high before and after saving. */
-@container result-stage (max-width:640px) {
+@container result-stage (max-width:520px) {
   .pb.journal-workspace.atelier-workspace .result-image-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
   .pb.atelier-workspace .result-image-actions .result-archive-action { margin-left:0; }
   .pb .result-image-actions .btn { min-width:0; white-space:normal; }

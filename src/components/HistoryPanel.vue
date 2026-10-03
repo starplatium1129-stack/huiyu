@@ -1,7 +1,7 @@
 <template>
   <section class="history-wrap" aria-label="作品历史">
     <div class="panel-title history-head">
-      <span>历史 · History</span>
+      <span>最近作品</span>
       <span v-if="selectedEntries.length" class="history-batch">
         <button class="history-action primary" type="button" @click="$emit('to-shots-batch', selectedEntries)">
           加入分镜 ({{ selectedEntries.length }})
@@ -30,7 +30,6 @@
         </div>
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
-          <p class="history-text">{{ item.prompt }}</p>
           <div class="history-meta">
             <span v-if="item.engine === 'anima' && item.preview" class="history-preview-badge">实验预览</span>
             <span v-if="item.engine === 'anima' || item.engine === 'krea2'" class="history-engine">{{ engineSummary(item) }}</span>
@@ -45,10 +44,10 @@
             <div class="history-actions" aria-label="历史操作">
               <button class="history-action primary" type="button" @click="$emit('resume', item)">继续</button>
               <StudioTooltip content="把这张图加入分镜短片待带入列表">
-                <button class="history-action" type="button" @click="$emit('to-shots', item)">加入分镜</button>
+              <button class="history-action" type="button" aria-label="加入分镜" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
               </StudioTooltip>
-              <button class="history-action" type="button" @click="$emit('duplicate', item)">复制</button>
-              <button class="history-action delete" type="button" aria-label="删除历史" @click="$emit('delete', item)">×</button>
+              <StudioTooltip content="复制配方"><button class="history-action" type="button" aria-label="复制配方" @click="$emit('duplicate', item)"><ArchiveIcon name="copy" /></button></StudioTooltip>
+              <StudioTooltip content="删除历史"><button class="history-action delete" type="button" aria-label="删除历史" @click="$emit('delete', item)"><ArchiveIcon name="close" /></button></StudioTooltip>
             </div>
           </div>
         </div>

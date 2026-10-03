@@ -64,4 +64,11 @@ watch(() => props.expert, value => {
 .material-content { @apply tw:p-s-3; }
 .material-content :deep(.panel) { border: 0; box-shadow: none; background: transparent; @apply tw:p-s-1 tw:m-0; }
 .material-content :deep(.panel::before), .material-content :deep(.panel::after) { @apply tw:hidden; }
+@media (min-width:1024px) {
+  .material-drawer { display:grid; grid-template-columns:48px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
+  .material-heading { grid-column:1 / -1; }
+  .material-switch { grid-column:1; grid-row:2; display:flex; flex-direction:column; align-self:start; margin:0 0 var(--s-2) var(--s-1); padding:var(--s-1); }
+  .material-switch button { flex:none; flex-direction:column; gap:var(--s-1); min-height:58px; padding:var(--s-1); font-size:var(--fs-label-xs); }
+  .material-content { grid-column:2; grid-row:2; padding:var(--s-2); border-left:1px solid var(--border-soft); }
+}
 </style>
