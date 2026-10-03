@@ -86,7 +86,7 @@ onUnmounted(() => {
   @apply tw:flex tw:items-center tw:justify-between;
   height: var(--desktop-chrome-height, 38px);
   padding: 0 0 0 14px;
-  background: var(--bg-surface);
+  background: var(--nav-bg);
   box-shadow: inset 0 -1px 0 var(--border-soft);
   -webkit-app-region: drag;
   @apply tw:select-none;
@@ -98,7 +98,7 @@ onUnmounted(() => {
 .desktop-titlebar::after {
   content: "";
   @apply tw:absolute tw:left-0 tw:right-0 tw:bottom-0 tw:h-[1px];
-  background: linear-gradient(90deg, transparent 2%, var(--accent-soft) 18%, transparent 98%);
+  background: linear-gradient(90deg, var(--accent) 0, var(--accent-soft) 18%, transparent 60%);
   @apply tw:pointer-events-none;
 }
 .titlebar-dot {

@@ -5,6 +5,7 @@
            中键新标签页,而 Space 激活链接也不是标准行为 -->
       <RouterLink to="/" class="nav-brand">
         <BrandLogo class="nav-logo" />
+        <span class="nav-brand-note" aria-hidden="true">创作工作室</span>
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
@@ -41,25 +42,23 @@
             @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
             @close-auto-focus="onMoreCloseAutoFocus" />
         </div>
-
-
-        <!-- 工具保留独立 Tab 焦点；搜索快捷键同时在悬停提示中可见。 -->
-        <div class="nav-utilities" role="group" aria-label="工作台工具">
-          <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
-            <button
-              type="button"
-              class="nav-search tw:cursor-pointer"
-              aria-label="搜索页面、场景与作品"
-              @click="openSearch"
-            ><ArchiveIcon name="search" /></button>
-          </StudioTooltip>
-          <TaskCenterButton />
-          <span class="nav-utility-divider" aria-hidden="true"></span>
-          <AppThemeToggle />
-          <AppSoundToggle />
-        </div>
       </div>
 
+      <!-- 高频工具在紧凑窗口中也保持可达。 -->
+      <div class="nav-utilities" role="group" aria-label="工作台工具">
+        <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
+          <button
+            type="button"
+            class="nav-search tw:cursor-pointer"
+            aria-label="搜索页面、场景与作品"
+            @click="openSearch"
+          ><ArchiveIcon name="search" /></button>
+        </StudioTooltip>
+        <TaskCenterButton />
+        <span class="nav-utility-divider" aria-hidden="true"></span>
+        <AppThemeToggle />
+        <AppSoundToggle />
+      </div>
       <!-- 较窄桌面窗口导航 -->
       <button
         ref="menuToggleEl"
@@ -121,10 +120,11 @@ interface NavItem {
 }
 
 const primaryNav: NavItem[] = [
-  { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
+  { id: 'home', label: '首页', to: '/', icon: 'gallery' },
+  { id: 'director', label: '绘制', to: '/prompt-builder', icon: 'spark' },
   { id: 'character', label: '角色', to: '/character', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
-  { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
+  { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
   { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
   { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
 ]
@@ -162,7 +162,7 @@ const activeId = computed(() => {
   if (!p) return 'home'
   if (p === 'popular-scenes' || (p === 'scene-explorer' && ['nene', 'natsume'].includes(String(route.query.character)))) return 'character'
   const all = [...primaryNav, ...secondaryNav]
-  const match = all.find(n => n.to.replace(/^\//, '') === p || p.startsWith(n.to.replace(/^\//, '')))
+  const match = all.find(n => n.to !== '/' && (n.to.replace(/^\//, '') === p || p.startsWith(n.to.replace(/^\//, ''))))
   return match?.id ?? ''
 })
 
@@ -283,40 +283,42 @@ onUnmounted(() => {
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
 .nav-logo {
-  @apply tw:block tw:w-auto; height: 2.15rem; max-width: 12.7rem;
+  @apply tw:block tw:w-auto; height: 2.2rem; max-width: 12.7rem;
 }
-.nav-brand { @apply tw:gap-s-2; }
-.nav-links { border-color:transparent; background:transparent; box-shadow:none; }
+.nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
+.nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
+.nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
+.nav-links :deep(.animated-selection) { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 .nav-links > a { transition:transform var(--motion-press) var(--ease-out); }
 .nav-more-chevron { transition:none; }
 .nav-links > a { white-space:nowrap; }
-@media (min-width:901px) and (max-width:1200px) {
-  .nav-inner { gap:var(--s-2); padding-inline:var(--s-3); }
+@media (min-width:1600px) { .nav-brand-note { display: block; } }
+@media (min-width:1001px) and (max-width:1200px) {
+  .nav-inner { gap:var(--s-2); }
+  .nav-links { gap: 0; }
   .nav-links > a { padding-inline:var(--s-2); gap:var(--s-1); font-size:var(--fs-label-sm); }
+  .nav-links > a .archive-icon { display: none; }
   .nav-logo { height:1.9rem; }
-  .nav-links .nav-utilities { margin-left:var(--s-1); padding-left:var(--s-1); }
-}
-@media (max-width: 480px) {
-  .nav-logo { @apply tw:h-[28px] tw:max-w-[150px]; }
+  .nav-utilities { gap: 0; margin-left: 0; padding-left: var(--s-1); }
 }
 
 /* 轻量工具组：统一点击区，用淡色任务签与细分隔区分工作和偏好。 */
 .nav-utilities {
   @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0;
-  margin-left: var(--s-2);
-  padding-left: var(--s-2);
+  margin-left: auto;
+  padding-left: var(--s-3);
   border-left: 1px solid var(--border-soft);
 }
 .nav-utilities :deep(button) {
   @apply tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:rounded-md tw:text-secondary;
-  height: 2.4rem; min-height: 2.4rem;
+  height: 40px; min-height: 40px;
   border: 1px solid transparent;
   background: transparent;
   transition: transform var(--motion-hover) var(--ease-out);
 }
 .nav-utilities :deep(.nav-search),
 .nav-utilities :deep(.app-theme-toggle),
-.nav-utilities :deep(.sound-toggle) { width: 2.4rem; @apply tw:p-0; }
+.nav-utilities :deep(.sound-toggle) { width: 40px; @apply tw:p-0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
   padding: 0 var(--s-3);
@@ -351,13 +353,9 @@ onUnmounted(() => {
     border-radius: var(--r-md);
   }
   .nav-utilities {
-    grid-column: 1 / -1;
-    flex-wrap: wrap;
-    margin: 0;
-    padding: var(--s-2) 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--border-soft);
+    padding-left: 0;
+    border: 0;
   }
-  .nav-utilities :deep(button) { min-width: 44px; min-height: 44px; }
+  .nav-menu-toggle { width: 40px; height: 40px; flex: none; background: var(--album-surface); }
 }
 </style>

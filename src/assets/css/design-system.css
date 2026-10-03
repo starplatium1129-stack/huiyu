@@ -13,13 +13,13 @@
 :root {
   /* 暖石墨承载结构，玫粉与角色色只用于交互和局部氛围。 */
   --ink-base: #111014;
-  --bg-deep:       #17161b;
-  --bg-base:       #1d1b21;
-  --bg-surface:    #26232a;
-  --bg-elevated:   #302c34;
-  --bg-hover:      #302c34;
+  --bg-deep:       #16151a;
+  --bg-base:       #1b191f;
+  --bg-surface:    #252229;
+  --bg-elevated:   #302b33;
+  --bg-hover:      #302b33;
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #302c34;
+  --bg-surface-elevated: #302b33;
 
   --border-soft:   rgba(228, 211, 218, 0.16);
   --border-strong: rgba(228, 211, 218, 0.32);
@@ -76,7 +76,7 @@
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(29, 27, 33, 0.97);
+  --nav-bg: var(--bg-base);
   --glass-highlight: rgba(227, 240, 252, 0.07);
   /* 内衬高光以共享令牌表达，面板正文保持稳定底色。 */
   --hl-inset-04: rgba(255, 255, 255, 0.04);
@@ -87,11 +87,13 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(38, 35, 42, 0.96);
-  --glass-fill-strong: #302c34;
+  --glass-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent);
+  --glass-fill-strong: var(--bg-elevated);
   --glass-edge: var(--border-soft);
   --glass-specular: color-mix(in srgb, #eaf4ff 15%, transparent);
-  --glass-shadow: 0 16px 40px rgba(5, 11, 18, 0.40);
+  --glass-shadow: 0 12px 32px rgba(5, 11, 18, 0.30);
+  --album-surface: var(--bg-surface); --album-raised: var(--bg-elevated);
+  --album-edge: var(--border-soft); --album-shadow: var(--shadow-sm);
 
   /* ---- Functional ---- */
   --success:        #4ade80;
@@ -365,9 +367,9 @@ img { @apply tw:max-w-full tw:block; }
    注意：CSS 自定义属性不能用在 @media 查询里（媒体查询在级联解析前
    求值），上面的 --bp-* 是给 JS 与文档用的，媒体查询里照旧写字面值。 */
 .container {
-  @apply tw:max-w-[1200px];
+  max-width: var(--desktop-workspace-max, 1840px);
   margin: 0 auto;
-  padding: 0 var(--s-5);
+  padding: 0 var(--workspace-gutter, var(--s-5));
 }
 
 .container-narrow { @apply tw:max-w-[800px]; }
@@ -381,12 +383,13 @@ body > *:has(+ .footer),
 .nav {
   @apply tw:sticky tw:top-0; z-index: var(--z-nav);
   @apply tw:isolate tw:w-full;
-  margin: 0 auto; padding: var(--s-3) 0;
+  margin: 0 auto; padding: 0;
   background: var(--nav-bg); border-bottom: 1px solid var(--border-soft);
-  backdrop-filter: blur(20px);
 }
 .nav-inner {
-  @apply tw:relative tw:flex tw:items-center tw:justify-between tw:gap-s-4 tw:max-w-[1440px]; margin: 0 auto; padding: 0 var(--s-5);
+  @apply tw:relative tw:flex tw:items-center tw:justify-between tw:gap-s-4;
+  min-height: var(--app-navigation-height, 68px); max-width: var(--desktop-workspace-max, 1840px);
+  margin: 0 auto; padding: 0 var(--workspace-gutter, var(--s-5));
 }
 .nav-brand {
   @apply tw:font-bold tw:text-title-xs tw:text-primary; letter-spacing: .02em;
@@ -408,8 +411,8 @@ body > *:has(+ .footer),
 .nav-links { @apply tw:relative tw:isolate tw:flex tw:gap-s-1 tw:items-center; }
 .nav-links a {
   @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-secondary tw:text-body-sm tw:font-semibold;
-  transition: color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
-  padding: 10px 14px; @apply tw:rounded-md;
+  transition: transform var(--motion-hover) var(--ease-out);
+  padding: 10px 12px; @apply tw:rounded-md;
 }
 .nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: var(--accent-soft); }
 .nav-links a.active { @apply tw:text-accent; background: transparent; }
@@ -1045,7 +1048,7 @@ body.overlay-open { @apply tw:overflow-hidden; }
 .page {
   width: min(var(--page-max, 1200px), 100%);
   margin: 0 auto;
-  padding: var(--s-7) var(--s-5) var(--s-8);
+  padding: var(--workspace-pad-top, var(--s-5)) var(--workspace-gutter, var(--s-5)) var(--s-7);
 }
 .page-narrow { --page-max: 860px; }
 .page-wide   { --page-max: 1480px; }
