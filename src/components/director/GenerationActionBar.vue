@@ -1,6 +1,5 @@
 <template>
-  <!-- 吸附式出图条：画布正下方、滚动时钉在导航下沿，尺寸与生成随时可达
-       （2026-08-28 审计：尺寸原在栏底 AnimaQuickPanel/输出面板内，改一次要滚全页） -->
+  <!-- 桌面常驻侧栏；窄窗口与专注模式紧随画布，保留尺寸、生成与停止。 -->
   <div class="gen-bar" :class="{ 'is-generating': busy }" role="group" aria-label="出图尺寸与生成">
     <label class="gen-bar-size">
       <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />

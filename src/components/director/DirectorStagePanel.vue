@@ -13,15 +13,6 @@
       }"
       aria-label="成片监看区"
     >
-      <div class="stage-chrome">
-        <span>绘制画布</span>
-        <span class="stage-ready" role="status" aria-live="polite">
-          {{ generationBusy ? '正在显影' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
-        </span>
-      </div>
-      <i class="stage-magic-ring" aria-hidden="true"></i>
-      <img :crossorigin="runtimeResourceCors()" class="stage-muse nene" :src="resolveRuntimeUrl(stageMuseUrl.nene)" alt="" aria-hidden="true" decoding="async">
-      <img :crossorigin="runtimeResourceCors()" class="stage-muse natsume" :src="resolveRuntimeUrl(stageMuseUrl.natsume)" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize" />
@@ -83,14 +74,8 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <div class="stage-result-heading">
-        <span>生成结果</span>
-        <span class="stage-result-status" role="status">
-          <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
-          {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
-        </span>
-      </div>
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :style="ambientStyle">
+      <div class="canvas-ambient" :class="{ 'is-enabled': ambientEnabled && ambientColors.length > 0 }" aria-hidden="true" />
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
         :before-src="inpaintOriginalUrl"
@@ -109,18 +94,20 @@
         @reveal-start="rememberResultReveal"
         @reveal-complete="rememberResultReveal"
       />
-      <DirectorResultTools
-        v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
-        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
-      />
     </div>
+    <DirectorResultTools
+      v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
+      :has-result="Boolean(displayResultUrl)" :ambient-enabled="ambientEnabled"
+      @update:ambientEnabled="ambientEnabled = $event"
+      @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
+    />
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -130,6 +117,7 @@ import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
+import { sampleCanvasAmbient } from '@/utils/canvasAmbient'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
 import '@/assets/css/director/components/DirectorStagePanel.css'
@@ -163,15 +151,20 @@ const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultU
 
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
+const ambientEnabled = ref(true)
+const ambientColors = ref<string[]>([])
+const ambientStyle = computed(() => Object.fromEntries(ambientColors.value.map((color, index) => [`--canvas-ambient-${index + 1}`, color])))
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
+  ambientColors.value = []
 }, { immediate: true })
 async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
   const source = props.displayResultUrl
   resultAspect.value = image.naturalWidth / image.naturalHeight
+  ambientColors.value = sampleCanvasAmbient(image)
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
   if (source === props.displayResultUrl) loadedResultUrl.value = source
@@ -205,11 +198,6 @@ const emit = defineEmits<{
   interrogateResult: [result: InterrogateResult]
   interrogateError: [message: string]
 }>()
-
-const stageMuseUrl = {
-  nene: '/assets/characters/nene-official.webp',
-  natsume: '/assets/characters/natsume-official.webp',
-}
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate()

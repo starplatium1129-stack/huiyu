@@ -17,6 +17,7 @@
         <DeferredPanel :active="active === tab.id"><slot :name="tab.id" /></DeferredPanel>
       </section>
     </TabsContent>
+    <slot name="actions" />
   </TabsRoot>
 </template>
 

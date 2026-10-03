@@ -41,7 +41,7 @@
   .pb.journal-workspace[data-director-mode] .stage-placeholder { @apply tw:min-h-0 tw:h-full; max-height: none; }
   .pb.journal-workspace[data-director-mode] .result-image-wrap { @apply tw:h-full tw:flex tw:flex-col tw:overflow-hidden; }
   .pb.journal-workspace[data-director-mode] .result-image { flex: 1; @apply tw:w-full tw:min-h-0; max-height: none; @apply tw:object-contain; }
-  .pb.journal-workspace[data-director-mode] .result-image-actions { @apply tw:shrink-0; max-height: none; @apply tw:overflow-visible tw:p-[10px]; }
+  .pb.journal-workspace[data-director-mode] .result-image-actions { @apply tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:gap-[10px] tw:p-[12px]; }
   .pb.journal-workspace[data-director-mode] .gen-bar-preset { @apply tw:hidden; }
   .pb.journal-workspace[data-director-mode] .material-drawer { --scene-list-max-height: none; @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }

@@ -113,5 +113,5 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   onActivated(observe)
   onDeactivated(stopObserving)
   onBeforeUnmount(stopObserving)
-  return { style, collapsed, dragging, materialsWidth, inspectorWidth, start, move, finish, key, toggle, reset }
+  return { style, collapsed, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, key, toggle, reset }
 }

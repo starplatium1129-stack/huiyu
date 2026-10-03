@@ -2,7 +2,7 @@
   <article
     class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :style="[currentCharacterThemeStyle, directorLayout.style.value, { '--drawing-result-aspect': stagePanel?.resultAspect }]"
+    :style="[currentCharacterThemeStyle, directorLayout.style.value]"
     :data-materials-collapsed="directorLayout.collapsed.value.materials || undefined"
     :data-inspector-collapsed="directorLayout.collapsed.value.inspector || undefined"
     :data-resizing="directorLayout.dragging.value || undefined"
@@ -18,7 +18,6 @@
     <DrawingTaskObserver :sd="sd" :anima="animaSession" />
     <div class="pb-topline">
       <div class="pb-header">
-        <div class="atelier-kicker">HUIYU / CREATIVE STUDIO</div>
         <div class="pb-heading-row">
           <h1 class="pb-title">绘图画室</h1>
           <div class="api-status">
@@ -32,7 +31,6 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
-        <p class="atelier-context">{{ pb.isPopular ? popularCharacter?.displayName || '热门角色' : charOptions.find(item => item.id === pb.char)?.label }}<template v-if="pb.activeScene"> · {{ pb.activeScene.title }}</template></p>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -101,7 +99,8 @@
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
         />
-        <!-- 吸附出图条：尺寸 + 生成紧跟画布，滚动时钉在导航下沿（同步加载保首屏） -->
+        <!-- 主行动常驻编辑台底部；专注或收起编辑台时回到画布下方。 -->
+        <Teleport :to="inspectorActions" :disabled="!inspectorActions || !directorLayout.desktop.value || pb.focusMode || directorLayout.collapsed.value.inspector">
         <GenerationActionBar
           :engine="drawEngine"
           :busy="generationBusy"
@@ -117,8 +116,7 @@
           @cancel="cancelGeneration"
           @clearResult="clearCanvasResult"
         />
-        <!-- 特典服装换装提示：当服装被通用特典或反推顶替时出现，附一键恢复 -->
-        <OutfitOverrideNotice v-if="outfitOverridden" />
+        </Teleport>
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
@@ -152,6 +150,7 @@
       <DirectorInspector ref="inspector" :expert="pb.directorMode === 'pro'" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
           <PromptInspectorRender :bindings="renderBindings" />
+          <OutfitOverrideNotice v-if="outfitOverridden" />
         </template>
         <template #style>
           <PromptInspectorStyle :bindings="styleBindings" />
@@ -190,6 +189,7 @@
         <template #delivery>
           <PromptInspectorDelivery :bindings="deliveryBindings" />
         </template>
+        <template #actions><div ref="inspectorActions" class="inspector-actions" /></template>
       </DirectorInspector>
     </div>
 
@@ -209,7 +209,6 @@ import { defineAsyncComponent, ref } from 'vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
 import DirectorResizeHandle from '@/components/director/DirectorResizeHandle.vue'
 import DirectorLayoutControls from '@/components/director/DirectorLayoutControls.vue'
-import { charOptions } from '@/composables/scene/directorOptions'
 const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))
@@ -240,6 +239,7 @@ import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
 const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
+const inspectorActions = ref<HTMLElement | null>(null)
 const resultShelfOpen = ref(false)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)

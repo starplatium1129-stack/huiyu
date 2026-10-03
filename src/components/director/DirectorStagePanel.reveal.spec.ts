@@ -109,6 +109,6 @@ describe('result reveal identity', () => {
     const wrapper = await fixture()
     await wrapper.setProps({ generationBusy: true })
     expect(wrapper.getComponent(Reveal).props('src')).toBe('/result-a.png')
-    expect(wrapper.get('.stage-result-status').text()).toContain('当前成片保留')
+    expect(wrapper.getComponent({ name: 'DirectorResultTools' }).props('generationBusy')).toBe(true)
   })
 })

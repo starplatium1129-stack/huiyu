@@ -82,7 +82,7 @@
 @media (min-width: 1024px) {
   .pb.journal-workspace[data-director-mode] {
     height: calc(var(--drawing-viewport-height) - var(--drawing-navigation-height));
-    @apply tw:min-h-[520px] tw:flex tw:flex-col tw:max-w-[2000px];
+    @apply tw:min-h-[520px] tw:flex tw:flex-col;
   }
   .pb.journal-workspace[data-director-mode] .director-workspace {
     flex: 1;
@@ -95,13 +95,11 @@
   .pb.journal-workspace[data-director-mode] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
   .pb.journal-workspace[data-director-mode] .col-center { @apply tw:min-h-0; }
   .pb.journal-workspace[data-director-mode] .director-inspector { grid-area: inspector; @apply tw:min-h-0; }
-  /* 画布和候选架共用有限槽位；内容增高时在槽内滚动，不能溢出盖住出图条和页脚。 */
+  /* Both empty and finished states share the same frame and compact action row. */
   .pb.journal-workspace[data-director-mode] .stage-slot {
     flex: 1;
-    @apply tw:min-h-0 tw:overflow-y-auto;
-    scrollbar-width: thin;
-    scrollbar-gutter: stable;
-    overscroll-behavior-y: contain;
+    @apply tw:min-h-0 tw:overflow-hidden tw:grid;
+    grid-template-rows:minmax(0,1fr) 52px;
   }
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }

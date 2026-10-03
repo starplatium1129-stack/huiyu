@@ -4,29 +4,19 @@
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
     保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
-   .pb .result-image-wrap {
-     @apply tw:relative tw:overflow-hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
-     /* 只让新成片显现；历史、恢复与操作文字不跟随容器重播。 */
-     @apply tw:rounded-stage; background:var(--bg-deep);
-     box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
-   }
-    .pb .result-image-wrap.archive-canvas { border-color:color-mix(in srgb,var(--archive-cyan) 38%,var(--border-soft)); border-radius:var(--r-dossier); }
+   .pb .result-image-wrap { @apply tw:relative tw:overflow-hidden; background:var(--bg-deep); }
     .pb .result-image-reveal {
       @apply tw:block tw:w-full; max-height:min(78vh,920px); margin:0 auto;
     }
     .pb .result-image {
      @apply tw:block tw:w-full; max-height:min(78vh,920px); @apply tw:object-contain;
-     margin:0 auto; background:radial-gradient(circle at 50% 40%,var(--bg-elevated),var(--bg-deep));
+     margin:0 auto; background:transparent;
      opacity:0; transform:scale(.98); filter:none;
      animation:aicsBloomReveal var(--motion-control) var(--ease-out) both;
    }
    /* CgImageReveal owns its image; the legacy animation must not pin opacity/transform. */
    .pb .result-image-reveal .result-image { animation:none; opacity:1; transform:none; }
-   .pb .result-image-actions {
-     @apply tw:flex tw:items-center tw:justify-center tw:flex-wrap tw:gap-s-2 tw:p-s-3; border-top:1px solid var(--border-soft);
-     background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
-   }
-   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:color-mix(in srgb,var(--archive-cyan) 24%,var(--border-soft)); @apply tw:font-mono; }
+   .pb .result-image-actions { @apply tw:flex tw:items-center tw:gap-s-2; padding:var(--s-1) var(--s-2); border-top:1px solid var(--border-soft); background:var(--bg-surface); }
   .pb[data-character="triad"] .stage-placeholder {
     background:
       radial-gradient(circle at 22% 20%,color-mix(in srgb,var(--nene-violet) 13%,transparent),transparent 34%),
@@ -98,12 +88,10 @@
 .pb .stage-progress-details summary { @apply tw:cursor-pointer; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
-.pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:64px var(--s-5) var(--s-5); }
+.pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:var(--s-4); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
-.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
-.pb .stage-result-heading > :first-child { @apply tw:text-primary tw:font-semibold; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
@@ -112,4 +100,21 @@
   /* Reserve the image slot before decoding so the existing reveal keeps stable bounds. */
   .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
   .pb.journal-workspace[data-director-mode] .result-image-reveal .result-image { position:absolute; inset:0; height:100%; }
+}
+
+/* Only the unused image margins receive colour. The decoded original stays untouched. */
+.pb.atelier-workspace .result-image-wrap.archive-canvas { border:0; border-radius:0; background:var(--bg-deep); box-shadow:none; }
+.pb.atelier-workspace .result-image-reveal.cg-image-reveal,
+.pb.atelier-workspace .result-image-reveal .result-image,
+.pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:0; }
+.pb .canvas-ambient { position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); background:radial-gradient(ellipse 60% 80% at 24% 44%,rgb(var(--canvas-ambient-1) / .26),transparent 88%),radial-gradient(ellipse 60% 80% at 76% 40%,rgb(var(--canvas-ambient-2) / .24),transparent 88%),radial-gradient(ellipse 70% 60% at 50% 88%,rgb(var(--canvas-ambient-3) / .22),transparent 90%); }
+.pb .canvas-ambient.is-enabled { opacity:1; }
+.pb.atelier-workspace .result-image-actions { height:52px; min-width:0; flex-wrap:nowrap; padding:var(--s-1) var(--s-2); gap:var(--s-2); }
+.pb .canvas-ambient-toggle[aria-pressed='true'] { color:var(--accent); background:var(--accent-soft); }
+.pb.atelier-workspace .result-image-actions .stage-archive-badge { margin:0; padding:0; background:transparent; }
+.pb.atelier-workspace .result-image-actions .btn { white-space:nowrap; flex-shrink:0; }
+@container canvas-column (max-width:740px) {
+  .pb .result-image-actions .stage-archive-badge { display:none; }
+  .pb .canvas-secondary-action span,.pb .canvas-ambient-toggle span { display:none; }
+  .pb .result-image-actions :is(.canvas-secondary-action,.canvas-ambient-toggle) { width:40px; padding-inline:0; }
 }

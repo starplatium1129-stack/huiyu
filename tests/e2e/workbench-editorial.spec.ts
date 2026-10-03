@@ -77,6 +77,11 @@ for (const theme of ['light', 'dark']) {
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await page.getByRole('button', { name: '场景模式', exact: true }).click()
     }
+    if (theme === 'dark') {
+      await page.setViewportSize({ width:900, height:720 })
+      await expect(page.locator('#drawing-canvas .gen-bar')).toBeVisible()
+      await expect(page.locator('#drawing-inspector .gen-bar')).toHaveCount(0)
+    }
   })
 }
 

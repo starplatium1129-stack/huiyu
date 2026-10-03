@@ -6,7 +6,7 @@ import { textContrast } from './helpers/contrast'
 
 // Real Rust generation/storage with a neutral raster from the isolated mock provider.
 for (const theme of ['dark', 'light']) {
-  for (const size of ['896x1344', '1344x896']) {
+  for (const size of theme === 'dark' ? ['896x1344', '1344x896', '1024x1024'] : ['896x1344', '1344x896']) {
     test(`desktop canvas keeps artwork space ${theme} ${size}`, async ({ page, request }, info) => {
       const [width, height] = size.split('x').map(Number)
       const svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#b9c9d0"/><circle cx="${width * .7}" cy="${height * .25}" r="${width * .13}" fill="#eee5ce"/><path d="M0 ${height * .65}Q${width * .3} ${height * .35} ${width} ${height * .7}V${height}H0Z" fill="#61797d"/></svg>`
@@ -27,7 +27,7 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/)
       await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), size)
       const before = (await page.locator('#drawing-canvas').boundingBox())!
-      expect(before.width).toBeGreaterThan(1050)
+      expect(before.width).toBeGreaterThan(1920 / 2)
       expect(before.height).toBeGreaterThan(650)
       // Freeze the first actual reveal when it is attached, before test-runner
       // polling can miss a sub-second animation. The application path is unchanged.
@@ -42,7 +42,7 @@ for (const theme of ['dark', 'light']) {
       })
       await page.getByRole('button', { name: '生成图片', exact: true }).click()
       if (size === '1344x896') {
-        await expect(page.locator('.scene-reference figcaption .stage-generating-copy')).toBeVisible()
+        await expect(page.locator('.stage-placeholder .stage-generating-copy')).toBeVisible()
         await expect(page.getByRole('progressbar', { name: '生图进度' })).toBeVisible()
         expect(await page.locator('.stage-generating-title').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
         expect(await page.locator('.stage-generating-sub').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
@@ -74,6 +74,20 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('.cg-development-reveal')).toHaveCount(0)
       await expect(image).toHaveCSS('opacity', '1')
       await expect(image).toHaveCSS('transform', 'none')
+      const light = page.getByRole('button', { name: '作品环境光', exact: true })
+      await expect(page.locator('.canvas-ambient')).toHaveClass(/is-enabled/)
+      const palette = await page.locator('.result-image-wrap').evaluate(node => node.style.getPropertyValue('--canvas-ambient-1'))
+      expect(palette).not.toBe('')
+      await light.click()
+      await expect(light).toHaveAttribute('aria-pressed', 'false')
+      await expect(page.locator('.canvas-ambient')).not.toHaveClass(/is-enabled/)
+      await expect(image).toHaveCSS('opacity', '1')
+      await light.click()
+      await expect(light).toHaveAttribute('aria-pressed', 'true')
+      const imageBounds = await image.boundingBox()
+      expect(imageBounds!.height).toBeGreaterThan(650)
+      await expect(page.locator('#drawing-canvas .gen-bar')).toHaveCount(0)
+      await expect(page.locator('#drawing-inspector .gen-bar')).toBeVisible()
       const after = (await page.locator('#drawing-canvas').boundingBox())!
       expect(Math.abs(after.width - before.width)).toBeLessThan(2)
       expect(Math.abs(after.height - before.height)).toBeLessThan(2)
