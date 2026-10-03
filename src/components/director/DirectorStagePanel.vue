@@ -72,14 +72,9 @@
           </div>
         </div>
         <div v-else-if="!generationBusy" class="stage-idle stage-idle-guide">
-          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
-          <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
-          <div class="stage-placeholder-copy">
-            选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
-          </div>
-          <p v-if="hasScene" class="stage-guide-note">这一幕已选好，确认下方画幅后即可生成。</p>
           <div class="stage-quick-actions">
-            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '调整场景' : '挑选场景' }}</button>
+            <button v-if="hasScene" class="btn btn-primary" type="button" @click="$emit('generate')"><ArchiveIcon name="spark" />绘制这一幕</button>
+            <button class="btn" :class="hasScene ? 'btn-ghost' : 'btn-primary'" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> {{ hasScene ? '换一幕' : '挑选场景' }}</button>
           </div>
         </div>
           </template>
@@ -90,7 +85,7 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-wide': resultAspect >= 1.2, 'is-square': resultAspect > .85 && resultAspect < 1.2 }">
       <div class="stage-result-heading">
         <span>画布</span>
         <span class="stage-result-status" role="status">

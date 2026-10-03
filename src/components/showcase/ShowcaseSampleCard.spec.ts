@@ -6,6 +6,22 @@ import ShowcaseSampleCard from './ShowcaseSampleCard.vue'
 const entry: ShowcaseEntry = { id: 'scene', title: '窗边', char: 'nene', type: 'scene', rating: 'R18', category: '日常', story: '', attempt: 1, width: 800, height: 1200 }
 
 describe('ShowcaseSampleCard', () => {
+  it('shows a repeated character prefix once while retaining the full accessible title', () => {
+    const title = '周防有希 / 周防有希 · 学生会室'
+    const wrapper = mount(ShowcaseSampleCard, { props: { entry: { ...entry, title }, src: '/scene.jpg', featured: false, characterLabel: '周防有希', ratingLabel: 'R18' } })
+    expect(wrapper.get('.sample-title').text()).toBe('学生会室')
+    expect(wrapper.get('.sample-kicker').text()).toContain('周防有希')
+    expect(wrapper.get('img').attributes('alt')).toBe(title)
+    expect(wrapper.get('.sample-visual').attributes('aria-label')).toContain(title)
+    wrapper.unmount()
+  })
+
+  it('preserves a character name that is part of the actual artwork title', () => {
+    const wrapper = mount(ShowcaseSampleCard, { props: { entry: { ...entry, title: '宁宁的放学路' }, src: '/scene.jpg', featured: false, characterLabel: '宁宁', ratingLabel: 'R18' } })
+    expect(wrapper.get('.sample-title').text()).toBe('宁宁的放学路')
+    wrapper.unmount()
+  })
+
   it('retains decoded proportions across metadata refresh and resets only for a new image', async () => {
     const unmeasured = { ...entry, width: undefined, height: undefined }
     const wrapper = mount(ShowcaseSampleCard, { props: { entry: unmeasured, src: '/wide.jpg', featured: false, characterLabel: '宁宁', typeLabel: '场景样张', ratingLabel: 'R18' } })

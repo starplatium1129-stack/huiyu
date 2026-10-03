@@ -9,14 +9,8 @@
       <span v-if="entry.rating === 'R18'" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
     <div class="sample-caption">
-      <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
-      <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ entry.title }}</h3>
-      <div class="sample-badges tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:min-h-[24px] tw:text-muted tw:text-label-xs">
-        <span v-if="featured" class="sample-badge"><ArchiveIcon name="star" /> 精选</span>
-        <span v-else-if="entry.type !== 'scene'" class="sample-badge sample-badge-type">{{ typeLabel }}</span>
-        <span v-else class="sample-category tw:overflow-hidden tw:whitespace-nowrap tw:text-ellipsis">{{ entry.category || '场景样张' }}</span>
-        <span class="sample-open-hint tw:inline-flex tw:items-center tw:gap-s-1 tw:shrink-0" aria-hidden="true"><ArchiveIcon name="eye" /> 查看大图</span>
-      </div>
+      <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured" title="精选"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
+      <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ displayTitle }}</h3>
     </div>
   </article>
 </template>
@@ -27,7 +21,19 @@ import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import { computed, ref, watch } from 'vue'
 
-const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; typeLabel: string; ratingLabel: string }>()
+const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; ratingLabel: string }>()
+const displayTitle = computed(() => {
+  const name = props.characterLabel.trim(), original = props.entry.title.trim()
+  let title = original
+  while (name && title.startsWith(name)) {
+    const suffix = title.slice(name.length)
+    if (!/^[\s·•｜|/：:—-]/u.test(suffix)) break
+    const next = suffix.replace(/^[\s·•｜|/：:—-]+/u, '').trim()
+    if (!next) break
+    title = next
+  }
+  return title
+})
 const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
 const naturalSize = ref<{ width: number; height: number } | null>(null)
 watch([() => props.src, () => props.entry.id], () => { naturalSize.value = null })
@@ -62,7 +68,9 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-caption { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-1) var(--s-2); padding:var(--s-3); border-top:1px solid var(--border-soft); }
 .sample-kicker { grid-column:1 / -1; }
 .sample-kicker > span:first-child { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-.sample-title { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-body-sm); }
+.sample-title { grid-column:1 / -1; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-body-sm); }
+.sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
+.sample-featured .archive-icon { width:14px; height:14px; }
 .sample-badges { justify-content:end; }
 .sample-category,.sample-open-hint { display:none; }
 .sample-badge { @apply tw:inline-flex tw:items-center tw:gap-s-1; padding:var(--s-1) var(--s-2); border:0; @apply tw:rounded-pill tw:text-accent; background:var(--accent-soft); @apply tw:text-label-xs; }

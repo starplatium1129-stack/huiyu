@@ -2,7 +2,6 @@
   <article class="gallery-shell gallery-page" ref="shellEl">
     <header class="gallery-intro">
       <div class="gallery-heading-copy">
-        <div class="gallery-kicker"><ArchiveIcon name="book" />MY ARTBOOK / 私人画册</div>
         <h1 class="gallery-title">我的作品</h1>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
@@ -36,11 +35,14 @@
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
       -->
-      <div v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-controls">
+      <details v-if="!trashMode" v-show="!albumsOpen" class="gallery-refine-disclosure" :open="!!projectFilter || !!characterFilter || !!tagFilter || !!generationFilterCount">
+        <summary><ArchiveIcon name="pin" /><span>细选作品</span><span v-if="hasActiveFilters">已筛选</span><ArchiveIcon name="chevron-down" /></summary>
+      <div class="gallery-refine-controls">
         <StudioSelect v-model="projectFilter" class="gallery-project" label="按画册筛选" :options="projectOptions" />
         <div v-if="history.length" ref="tagControls" class="gallery-collection-controls"><GalleryCollectionFilters v-model:character="characterFilter" v-model:tag="tagFilter" :characters="characterOptions" :tags="tagOptions" :smart-rule="currentSmartRule" :character-name="characterName" :disabled="galleryLoading || !!galleryError || saving" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" /></div>
         <GalleryGenerationFilters v-model:conditions="generationConditions" :options="generationOptions" :filter-count="generationFilterCount" :snapshot="filterSnapshot" :has-active="hasActiveFilters" :project-unavailable="projectUnavailable" @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @clear="clearGenerationConditions" />
       </div>
+      </details>
     </div>
     <div v-show="albumsOpen" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />

@@ -3,8 +3,8 @@
 .showcase-heading { @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap; gap:var(--s-3) var(--s-5); padding-block:0 var(--s-3); }
 .showcase-heading .page-kicker { display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.1em; }
 .showcase-heading .page-kicker .archive-icon { width:16px; height:16px; color:var(--accent); }
-.heading-title { @apply tw:flex tw:items-baseline tw:flex-wrap; gap:var(--s-2) var(--s-4); margin-block:var(--s-2); }
-.showcase-heading h1 { font:500 var(--fs-display)/var(--lh-tight) var(--font-serif); margin:0; letter-spacing:-.03em; }
+.heading-title { @apply tw:flex tw:items-baseline tw:flex-wrap; gap:var(--s-2) var(--s-4); margin:0; }
+.showcase-heading h1 { font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); margin:0; letter-spacing:-.03em; }
 .showcase-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
 .collection-count { @apply tw:whitespace-nowrap tw:text-label tw:text-muted; }
 .collection-count strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric:tabular-nums; }
@@ -19,7 +19,10 @@
 @media (hover:hover) and (pointer:fine) { .filter-pill:hover { color:var(--accent); background:var(--accent-soft); } }
 .filter-reset { @apply tw:min-h-[36px] tw:p-s-2; border:0; @apply tw:rounded-sm; background:transparent; @apply tw:text-accent; font:inherit; @apply tw:text-label tw:cursor-pointer; }
 .filter-reset:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.showcase-filters { margin-top:var(--s-1); }
+.showcase-page .toolbar-shell { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); }
+.showcase-page .search-row { flex:1; min-width:0; }
+.showcase-filters { margin:0; min-width:160px; }
+.showcase-filters[open] { flex-basis:100%; }
 .showcase-filters > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[36px]; list-style:none; @apply tw:cursor-pointer tw:text-secondary tw:text-label; }
 :root body .showcase-page .toolbar-shell:has(.showcase-filters[open]) { position:relative; top:auto; }
 .showcase-filters > summary::-webkit-details-marker { @apply tw:hidden; }

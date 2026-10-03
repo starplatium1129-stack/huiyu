@@ -1,9 +1,8 @@
 <template>
   <article class="page showcase-page">
     <header class="showcase-heading">
-      <div class="heading-copy tw:min-w-0"><div class="page-kicker"><ArchiveIcon name="book" />THE INSPIRATION WALL</div>
+      <div class="heading-copy tw:min-w-0">
         <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅灵感</span></div>
-        <p>从画中一刻，找到下一幕。</p>
       </div>
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest"><ArchiveIcon name="refresh" /></button></div>
     </header>
@@ -76,7 +75,7 @@
     <div v-else v-content-motion="`${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
         :featured="featured.has(entry.id)"
-        :character-label="charLabel(entry.char)" :type-label="typeLabel(entry.type)" :rating-label="ratingLabel(entry.rating)"
+        :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
         @open="openViewer" />
     </div>
 

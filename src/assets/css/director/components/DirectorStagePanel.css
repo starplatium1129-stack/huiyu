@@ -114,6 +114,19 @@
   /* Reserve the artwork slot before decoding. A late footer/auto-sized image
    * must not resize the reveal and make its safety observer cancel on arrival. */
   .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
+  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-wrap { display:grid; grid-template-columns:minmax(0,1fr) 180px; grid-template-rows:auto minmax(0,1fr); gap:var(--s-2) var(--s-4); border:0; border-radius:0; box-shadow:none; background:transparent; }
+  .pb.atelier-workspace .stage-result-heading { grid-column:1; padding:0; min-height:24px; border:0; background:transparent; color:var(--text-secondary); }
+  .pb.atelier-workspace .stage-result-heading > :first-child { color:var(--text-primary); }
+  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-reveal { grid-column:1; grid-row:2; width:auto; height:100%; max-width:100%; aspect-ratio:var(--drawing-result-aspect,1); justify-self:center; background:transparent; border-radius:var(--r-md); }
+  .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; height:100%; background:transparent; }
+  .pb.journal-workspace.atelier-workspace[data-director-mode] .result-image-actions { grid-column:2; grid-row:1 / -1; align-self:start; display:flex; flex-direction:column; align-items:stretch; padding:0; border:0; background:transparent; }
+  .pb.atelier-workspace .result-image-actions .result-archive-action { margin-left:0; }
+  .pb.atelier-workspace .result-image-actions .stage-archive-badge { justify-content:center; }
+  .pb.journal-workspace.atelier-workspace.focus-mode .result-image-wrap { grid-template-columns:minmax(0,1fr) 200px; }
+  .pb.journal-workspace.atelier-workspace.focus-mode .result-image-actions { padding-top:260px; }
+  .pb.journal-workspace.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto; }
+  .pb.journal-workspace.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) .result-image-actions { grid-column:1; grid-row:3; flex-direction:row; align-items:center; }
+  .pb.atelier-workspace:not(.focus-mode) .result-image-wrap:is(.is-wide,.is-square) .result-archive-action { margin-left:auto; }
 }
 /* Below this width, use two rows with the status beside the archive action.
    All three controls remain 40px high before and after saving. */
@@ -124,3 +137,8 @@
 }
 .pb.atelier-workspace .result-image-actions .stage-archive-badge { min-width:0; min-height:var(--control-height-sm); }
 .pb.atelier-workspace .result-image-actions .btn { min-height:var(--control-height); font-size:var(--fs-label); }
+.pb.journal-workspace.atelier-workspace .stage-placeholder { background:transparent; border:0; box-shadow:none; }
+.pb.atelier-workspace .stage-chrome { min-height:28px; padding:0; background:transparent; border:0; color:var(--text-secondary); }
+.pb.atelier-workspace .stage-chrome > :first-child { color:var(--text-primary); }
+.pb.atelier-workspace .stage-ready { color:var(--text-secondary); }
+.pb.atelier-workspace .stage-placeholder .stage-content { width:100%; margin:0; padding:var(--s-3) 0; }

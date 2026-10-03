@@ -32,10 +32,10 @@
 .pb.atelier-workspace .stage-placeholder-copy { margin-inline:auto; @apply tw:leading-loose; }
 .pb.atelier-workspace .stage-quick-actions { @apply tw:flex-wrap; }
 .pb.atelier-workspace .stage-guide-note { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
-.pb.atelier-workspace .stage-content { max-width:720px; margin:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.pb.atelier-workspace .stage-content { max-width:none; margin:var(--s-4); padding:0; border:0; border-radius:0; background:transparent; }
 .pb.atelier-workspace .stage-placeholder .stage-content { width:calc(100% - var(--s-5) * 2); padding:var(--s-5); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:0; }
-.pb.atelier-workspace .stage-content:has(.scene-reference) .stage-idle { padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.pb.atelier-workspace .stage-content:has(.scene-reference) .stage-idle { padding-top:var(--s-3); border:0; }
 .pb.atelier-workspace .stage-content .stage-error-detail { margin:var(--s-3) 0 0; padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-base); color:var(--danger-text); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); text-align:left; }
 .pb.atelier-workspace .is-error .atelier-canvas-mark { color:var(--danger-text); background:color-mix(in srgb,var(--danger-text) 8%,var(--bg-surface)); }
 .pb.atelier-workspace .result-image-wrap.archive-canvas { border:1px solid var(--art-frame-line); border-radius:var(--r-lg); background:var(--art-stage); box-shadow:var(--art-frame-shadow); }
@@ -87,7 +87,7 @@
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-placeholder { @apply tw:justify-start; }
   .pb.atelier-workspace[data-director-mode] .stage-chrome { @apply tw:static tw:w-full tw:shrink-0; }
   .pb.atelier-workspace[data-director-mode] .stage-message { flex:1; @apply tw:min-h-0 tw:flex; align-items:safe center; @apply tw:justify-center tw:overflow-y-auto; scrollbar-width:thin; }
-  .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-idle { @apply tw:w-full; padding:var(--s-5) var(--s-4); }
+  .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-idle { width:100%; padding:var(--s-3) 0 0; }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-quick-actions { @apply tw:flex-row tw:items-center; }
   .pb.atelier-workspace[data-director-mode] .atelier-canvas-mark { @apply tw:mb-s-4; }
   /* A short character selection should not stretch into an empty full-height card. */

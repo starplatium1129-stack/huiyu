@@ -10,7 +10,7 @@
 .gallery-breadcrumb button:hover { @apply tw:text-accent; }
 .gallery-breadcrumb button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
-.gallery-title { margin:0; color:var(--text-primary); font:500 var(--fs-display)/var(--lh-tight) var(--font-serif); letter-spacing:-.03em; }
+.gallery-title { margin:0; color:var(--text-primary); font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing:-.03em; }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
@@ -19,7 +19,15 @@
 :root body .gallery-page .gallery-toolbar.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) 0 var(--s-3); border:0; border-block:1px solid var(--border-soft); border-radius:0; background:var(--bg-base); box-shadow:none; backdrop-filter:none; }
 .gallery-toolbar::before { @apply tw:hidden; }
 /* 展开的生成条件留在文档流中，短窗口仍能滚到作品与批量操作。 */
-.gallery-toolbar:has(.gallery-generation-filters details[open]) { position:relative; top:auto; }
+.gallery-toolbar:has(.gallery-refine-disclosure[open]) { position:relative; top:auto; }
+.gallery-refine-disclosure { flex:0 0 auto; color:var(--text-secondary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.gallery-refine-disclosure > summary { display:flex; align-items:center; gap:var(--s-2); min-height:var(--control-height); padding-inline:var(--s-2); list-style:none; cursor:pointer; }
+.gallery-refine-disclosure > summary::-webkit-details-marker { display:none; }
+.gallery-refine-disclosure > summary .archive-icon { width:16px; height:16px; }
+.gallery-refine-disclosure > summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.gallery-refine-disclosure[open] { flex-basis:100%; }
+.gallery-refine-disclosure[open] > summary .archive-icon:last-child { transform:rotate(180deg); }
+.gallery-refine-disclosure[open] .gallery-refine-controls { padding-top:var(--s-2); }
 .gallery-refine-controls { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-2 tw:w-full; }
 .gallery-collection-controls { flex:1 1 28rem; min-width:0; }
 .gallery-refine-controls :deep(.gallery-generation-filters:has(details[open])) { flex-basis:100%; }

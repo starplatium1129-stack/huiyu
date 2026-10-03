@@ -88,23 +88,13 @@
     flex: 1;
     @apply tw:min-h-0;
     position:relative;
-    grid-template-columns:var(--director-material-width,clamp(260px,15vw,21rem)) minmax(320px,1fr) var(--director-inspector-width,clamp(300px,22vw,24rem));
+    grid-template-columns:var(--director-material-width,clamp(240px,13.5vw,20rem)) minmax(320px,1fr) var(--director-inspector-width,clamp(280px,19vw,22rem));
     grid-template-areas: "story stage inspector";
     @apply tw:items-stretch;
   }
-  /* Keep portrait rails beside the artwork, rather than around a wide empty
-     letterbox. The decoded aspect is shared with the unchanged reveal slot. */
-  .pb.journal-workspace.atelier-workspace.has-result {
-    max-width:min(var(--desktop-workspace-max),calc(
-      max(480px,(var(--drawing-viewport-height) - var(--drawing-navigation-height) - 180px) * var(--drawing-result-aspect,1))
-      + var(--director-material-width,clamp(260px,15vw,21rem))
-      + var(--director-inspector-width,clamp(300px,22vw,24rem))
-      + var(--workspace-gutter,var(--s-4)) * 2 + var(--workspace-panel-gap,var(--s-4)) * 2 + var(--s-4) * 2));
-  }
-  .pb.journal-workspace.atelier-workspace.has-result:is([data-materials-collapsed],[data-inspector-collapsed],.focus-mode) { max-width:var(--desktop-workspace-max); }
   .pb.atelier-workspace[data-materials-collapsed] .col-left,.pb.atelier-workspace[data-inspector-collapsed] .director-inspector { display:none; }
-  .pb.journal-workspace.atelier-workspace[data-materials-collapsed] .director-workspace { grid-template-columns:minmax(320px,1fr) var(--director-inspector-width,clamp(300px,22vw,24rem)); grid-template-areas:"stage inspector"; }
-  .pb.journal-workspace.atelier-workspace[data-inspector-collapsed] .director-workspace { grid-template-columns:var(--director-material-width,clamp(260px,15vw,21rem)) minmax(320px,1fr); grid-template-areas:"story stage"; }
+  .pb.journal-workspace.atelier-workspace[data-materials-collapsed] .director-workspace { grid-template-columns:minmax(320px,1fr) var(--director-inspector-width,clamp(280px,19vw,22rem)); grid-template-areas:"stage inspector"; }
+  .pb.journal-workspace.atelier-workspace[data-inspector-collapsed] .director-workspace { grid-template-columns:var(--director-material-width,clamp(240px,13.5vw,20rem)) minmax(320px,1fr); grid-template-areas:"story stage"; }
   .pb.journal-workspace.atelier-workspace[data-materials-collapsed][data-inspector-collapsed] .director-workspace,
   .pb.journal-workspace.atelier-workspace.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
   .pb.atelier-workspace[data-resizing] { user-select:none; cursor:col-resize; }
@@ -121,6 +111,17 @@
   }
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; order:-1; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
+  /* Focus gives the artwork the height previously occupied by the page and
+     generation bars. Existing controls stay in the adjacent action dock. */
+  .pb.journal-workspace.atelier-workspace.focus-mode { position:relative; }
+  .pb.atelier-workspace.focus-mode .col-center { position:relative; }
+  .pb.atelier-workspace.focus-mode .pb-topline { position:absolute; top:var(--workspace-pad-top,var(--s-4)); right:var(--workspace-gutter,var(--s-4)); z-index:var(--z-raised); width:200px; padding:0; margin:0; border:0; }
+  .pb.atelier-workspace.focus-mode :is(.pb-header,.pb-utility-actions,.director-mode-switch) { display:none; }
+  .pb.atelier-workspace.focus-mode :is(.pb-top-actions,.pb-mode-actions) { display:block; width:100%; }
+  .pb.atelier-workspace.focus-mode .focus-mode-btn { width:100%; }
+  .pb.journal-workspace.atelier-workspace.focus-mode .gen-bar { position:absolute; top:52px; right:0; width:200px; z-index:var(--z-raised); grid-template-columns:1fr; }
+  .pb.atelier-workspace.focus-mode .gen-bar-actions { grid-column:1; grid-row:auto; width:100%; display:flex; flex-direction:column; align-items:stretch; }
+  .pb.atelier-workspace.focus-mode .gen-bar-actions .btn { width:100%; }
 }
 .pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }

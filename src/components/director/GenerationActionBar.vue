@@ -1,7 +1,7 @@
 <template>
   <!-- 吸附式出图条：画布正下方、滚动时钉在导航下沿，尺寸与生成随时可达
        （2026-08-28 审计：尺寸原在栏底 AnimaQuickPanel/输出面板内，改一次要滚全页） -->
-  <div class="gen-bar" role="group" aria-label="出图尺寸与生成">
+  <div class="gen-bar" :class="{ 'is-generating': busy }" role="group" aria-label="出图尺寸与生成">
     <label class="gen-bar-size">
       <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />
       <span class="gen-bar-label">画幅</span>
@@ -25,20 +25,21 @@
     <div class="gen-bar-actions">
       <StudioTooltip anchor :content="busy ? '停止当前绘制' : unavailableReason || '生成当前画面'">
         <button
+          ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-          class="btn"
+          class="btn generation-action"
           :class="[busy ? 'btn-ghost' : 'btn-primary', { 'is-drawing': busy }]"
           type="button"
           :aria-label="busy ? '停止绘制' : '生成图片'"
           :disabled="!busy && (!online || !!blockedReason)"
           @click="busy ? $emit('cancel') : $emit('generate')"
         >
-          <span v-if="busy" class="generation-ring" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100">
-            <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="generation-ring-track" cx="10" cy="10" r="7" /><circle class="generation-ring-value" cx="10" cy="10" r="7" pathLength="100" :stroke-dasharray="`${progressValue ?? 24} 100`" /></svg>
+          <span class="generation-action-surface" aria-hidden="true" />
+          <span class="generation-action-content">
+            <span class="generation-action-label"><ArchiveIcon :name="busy ? 'close' : 'spark'" aria-hidden="true" /><span v-content-motion="busy">{{ busy ? '停止绘制' : '生成图片' }}</span></span>
+            <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
+            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="progressValue === null ? undefined : { transform: `scaleX(${progressValue / 100})` }" /></span>
           </span>
-          <ArchiveIcon v-else name="spark" aria-hidden="true" />
-          <span v-content-motion="busy">{{ busy ? '停止绘制' : '生成图片' }}</span>
-          <span v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</span>
         </button>
       </StudioTooltip>
       <StudioTooltip anchor content="清除当前画布图片，已入册的作品不受影响">
@@ -49,7 +50,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -84,6 +86,16 @@ const props = defineProps<{
 const unavailableReason = computed(() => props.blockedReason || (!props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : ''))
 const progressValue = computed(() => typeof props.progress === 'number' && Number.isFinite(props.progress)
   ? Math.round(Math.max(0, Math.min(1, props.progress)) * 100) : null)
+const generationAction = ref<HTMLButtonElement | null>(null)
+let captureMorph: typeof import('@/utils/generationControlMorph')['captureGenerationMorph'] | undefined
+let cancelMorph: typeof import('@/utils/generationControlMorph')['cancelGenerationMorph'] | undefined
+void import('@/utils/generationControlMorph').then(module => { captureMorph = module.captureGenerationMorph; cancelMorph = module.cancelGenerationMorph })
+watch(() => props.busy, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
+const settleMorph = () => cancelMorph?.(generationAction.value)
+useEventListener(document, 'visibilitychange', () => { if (document.hidden) settleMorph() })
+useEventListener(window, 'atelier:motion-preference', settleMorph)
+useEventListener(window.matchMedia('(prefers-reduced-motion: reduce)'), 'change', settleMorph)
+onBeforeUnmount(settleMorph)
 
 const emit = defineEmits<{
   'update:size': [value: string]

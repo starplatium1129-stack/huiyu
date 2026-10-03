@@ -27,8 +27,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import RuntimeTaskResult from './RuntimeTaskResult.vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
+const RuntimeTaskResult = defineAsyncComponent(() => import('./RuntimeTaskResult.vue'))
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { runtimeTasks, runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
 import { confirmAction } from '@/composables/useConfirm'
