@@ -1,7 +1,7 @@
 <template>
   <div
     class="sc"
-    :class="[`sc-${mode}`, { 'sc-static': !clickable }]"
+    :class="[`sc-${mode}`, { 'sc-static': !clickable, 'sc-complete-preview': completePreview }]"
     :data-rating="contentRating"
     :role="clickable ? 'button' : undefined"
     :tabindex="clickable ? 0 : undefined"
@@ -67,12 +67,14 @@ const props = withDefaults(defineProps<{
   mode?: 'grid' | 'strip' | 'recent'
   clickable?: boolean
   suppressTags?: boolean
+  completePreview?: boolean
   meta?: string
   imgVersion?: string | number
 }>(), {
   mode: 'grid',
   clickable: undefined,
   suppressTags: false,
+  completePreview: false,
 })
 
 const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()

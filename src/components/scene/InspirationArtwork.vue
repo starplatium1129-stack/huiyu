@@ -18,12 +18,11 @@ const { image, src, loaded, failed } = useRuntimeImage(() => props.scene
 </script>
 
 <style scoped>
-.inspiration-artwork { position:relative; display:flex; align-items:center; height:clamp(192px,30vh,320px); min-width:0; margin:0; padding:0; background:transparent; overflow:hidden; }
+.inspiration-artwork { position:relative; display:flex; align-items:center; justify-content:center; height:96px; min-width:0; margin:0; padding:0; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); background:var(--art-stage); overflow:hidden; }
 .inspiration-artwork img { display:block; width:auto; max-width:100%; height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity 160ms var(--ease-out); }
 .inspiration-artwork.ready img { opacity:1; }
-.inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-sm); text-align:center; }
-.inspiration-artwork-fallback .archive-icon { width:40px; height:40px; color:var(--card-accent,var(--accent)); }
-@media (max-width:1100px) { .inspiration-artwork { height:clamp(176px,28vh,240px); } }
+.inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); padding:var(--s-1); color:var(--on-art-primary); font-size:var(--fs-label-xs); text-align:center; }
+.inspiration-artwork-fallback .archive-icon { width:24px; height:24px; color:var(--on-art-primary); }
 @media (prefers-reduced-motion:reduce) { .inspiration-artwork img { transition:none; } }
 :global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .inspiration-artwork img { transition:none; }
 </style>

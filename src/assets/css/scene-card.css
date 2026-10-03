@@ -61,6 +61,11 @@
   opacity:0; transition: opacity var(--motion-hover) var(--ease-out);
 }
 .sc-thumb-ready { opacity:1; }
+/* The inspiration library displays reviewed artwork at its natural ratio.
+   Other card consumers retain the compact cover preview. */
+.sc-complete-preview .sc-band { aspect-ratio:auto; display:block; min-height:120px; padding:var(--s-2); background:var(--art-stage); }
+.sc-complete-preview .sc-thumb { position:relative; inset:auto; display:block; width:100%; height:auto; object-fit:contain; object-position:center; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); box-shadow:var(--art-frame-shadow); }
+.sc-complete-preview .sc-band::after { inset:var(--s-2); border-radius:var(--r-sm); }
 /* Keep a static mat until the decoded thumbnail arrives. */
 .sc-thumb-skeleton { @apply tw:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; @apply tw:overflow-hidden; transition:opacity var(--motion-hover); }
 .sc-thumb-skeleton::after {

@@ -27,9 +27,7 @@
         :style="{ '--deck-transform': cardTransform(depth), '--deck-opacity': depth === 0 && turning ? 0 : 1, '--deck-z': 3 - depth }" :inert="depth !== 0" :aria-hidden="depth !== 0">
         <InspirationArtwork :scene="depth === 0 ? item.scene : undefined" :icon="railIconName(item.rail.icon)" />
         <div class="inspiration-deck-copy">
-          <span v-if="item.scene" class="inspiration-deck-topic"><ArchiveIcon :name="railIconName(item.rail.icon)" /> {{ characterLabel(item.scene.char || '') }}</span>
           <h2>{{ item.scene?.title || item.rail.title }}</h2>
-          <p v-if="item.scene?.location" class="inspiration-deck-location">{{ item.scene.location }}</p>
           <button class="mood-rail inspiration-deck-open" type="button" :disabled="Boolean(turning)"
             :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">
             探索场景 <ArchiveIcon name="chevron-down" class="next-icon" />
@@ -46,7 +44,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import InspirationArtwork from './InspirationArtwork.vue'
 import { railIconName, type ExplorerScene } from '@/composables/scene/sceneExplorerPresentation'
 import { useInspirationDeck } from '@/composables/scene/useInspirationDeck'
-import { characterLabel, matchesSearch, searchScore } from '@/utils/sceneUX'
+import { matchesSearch, searchScore } from '@/utils/sceneUX'
 
 interface MoodRail { character: string; icon?: string; title: string; subtitle: string; query: string }
 const props = withDefaults(defineProps<{ rails: MoodRail[]; scenes?: ExplorerScene[] }>(), { scenes: () => [] })
@@ -79,42 +77,28 @@ function cardTransform(depth: number): string {
 
 <style scoped>
 .inspiration-deck-card { transform:var(--deck-transform); opacity:var(--deck-opacity); z-index:var(--deck-z); }
-.inspiration-deck { grid-area:moods; position:relative; display:grid; width:100%; max-width:480px; gap:0; min-width:0; padding:0 var(--s-3) var(--s-2) 0; }
-.inspiration-deck-intro { position:absolute; z-index:4; top:var(--s-3); right:calc(var(--s-3) * 2 + 1px); display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); width:176px; min-width:0; }
-.inspiration-deck-kicker { display:flex; align-items:center; gap:var(--s-2); color:var(--accent); font-size:var(--fs-label); font-weight:600; }
-.inspiration-deck-controls { display:flex; align-items:center; gap:var(--s-2); }
+.inspiration-deck { grid-area:moods; position:relative; display:grid; width:100%; max-width:390px; min-width:0; padding:0 var(--s-3) var(--s-1) 0; }
+.inspiration-deck-intro { position:absolute; z-index:4; top:var(--s-2); right:calc(var(--s-3) + var(--s-2) + 1px); display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); width:calc(100% - 120px); min-width:0; }
+.inspiration-deck-kicker { display:flex; align-items:center; gap:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:600; white-space:nowrap; }
+.inspiration-deck-kicker .archive-icon { width:14px; height:14px; }
+.inspiration-deck-controls { display:flex; align-items:center; gap:var(--s-1); }
 .inspiration-deck-keys { display:none; }
-.inspiration-deck-controls button { display:grid; place-items:center; width:36px; height:36px; border:1px solid var(--border-strong); border-radius:var(--r-pill); color:var(--text-secondary); background:var(--bg-surface); cursor:pointer; }
+.inspiration-deck-controls button { display:grid; place-items:center; width:var(--control-height-sm); height:var(--control-height-sm); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-secondary); background:var(--bg-surface); cursor:pointer; }
 .inspiration-deck-controls button:hover { color:var(--accent); border-color:var(--accent); }
 .inspiration-deck-controls button:active { transform:scale(.94); }
 .inspiration-deck-controls button:disabled, .inspiration-deck-open:disabled { color:var(--text-disabled); cursor:default; }
-.inspiration-deck-count { color:var(--text-muted); font:500 var(--fs-label-sm)/1 var(--font-mono); font-variant-numeric:tabular-nums; }
+.inspiration-deck-count { color:var(--text-muted); font:500 var(--fs-label-xs)/1 var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .previous-icon { transform:rotate(90deg); }
 .next-icon { transform:rotate(-90deg); }
 .inspiration-deck-stage { display:grid; position:relative; min-width:0; isolation:isolate; touch-action:pan-y; cursor:grab; border-radius:var(--r-lg); }
 .inspiration-deck-stage.dragging { cursor:grabbing; user-select:none; }
-.inspiration-deck-card { grid-area:1/1; display:grid; grid-template-columns:minmax(0,1fr) 176px; align-items:center; gap:var(--s-4); position:relative; min-width:0; padding:var(--s-3); border:1px solid color-mix(in srgb,var(--card-accent,var(--accent)) 32%,var(--border-soft)); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-sm); transform-origin:65% 80%; transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
-.inspiration-deck-card[data-character="nene"] { --card-accent:var(--nene-violet); }
-.inspiration-deck-card[data-character="natsume"] { --card-accent:var(--natsume-amber); }
-.inspiration-deck-copy { display:flex; flex-direction:column; align-self:end; align-items:flex-start; min-width:0; padding:var(--s-2) 0; }
-.inspiration-deck-topic { display:flex; align-items:center; gap:var(--s-1); margin-bottom:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.inspiration-deck-topic .archive-icon { flex:none; color:var(--card-accent,var(--accent)); }
-.inspiration-deck-copy h2 { margin:0; color:var(--text-primary); font:600 var(--fs-body-lg)/var(--lh-tight) var(--font-display); letter-spacing:-.02em; overflow-wrap:anywhere; }
-.inspiration-deck-location { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); overflow-wrap:anywhere; }
-.inspiration-deck-open { display:inline-flex; align-items:center; gap:var(--s-2); min-height:36px; margin-top:var(--s-3); padding:var(--s-1) var(--s-3); border:1px solid color-mix(in srgb,var(--card-accent,var(--accent)) 40%,var(--border-soft)); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--card-accent,var(--accent)); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); cursor:pointer; }
-.inspiration-deck-open:hover { background:color-mix(in srgb,var(--card-accent,var(--accent)) 8%,var(--bg-surface)); border-color:var(--card-accent,var(--accent)); }
+.inspiration-deck-card { grid-area:1/1; display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:var(--s-3); position:relative; min-width:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-sm); transform-origin:65% 80%; transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
+.inspiration-deck-copy { display:flex; flex-direction:column; align-items:flex-start; min-width:0; padding-top:var(--control-height-sm); }
+.inspiration-deck-copy h2 { max-width:100%; margin:0; color:var(--text-primary); font:600 var(--fs-body)/var(--lh-tight) var(--font-display); letter-spacing:-.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.inspiration-deck-open { display:inline-flex; align-items:center; gap:var(--s-2); min-height:var(--control-height-sm); margin-top:var(--s-1); padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--accent); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); cursor:pointer; }
+.inspiration-deck-open:hover { background:var(--accent-soft); border-color:var(--accent); }
 .inspiration-deck-open:active { transform:translateY(1px); }
 .inspiration-deck-stage:focus-visible, .inspiration-deck button:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
 .inspiration-deck-stage.dragging .front, .inspiration-deck-stage.still .inspiration-deck-card { transition:none; }
 @media (prefers-reduced-motion:reduce) { .inspiration-deck-card { transition:none; } }
-@media (max-width:1100px) {
-  .inspiration-deck { padding-bottom:var(--s-1); }
-  .inspiration-deck-intro { top:var(--s-2); right:calc(var(--s-3) + var(--s-2) + 1px); width:152px; }
-  .inspiration-deck-card { grid-template-columns:minmax(0,1fr) 152px; gap:var(--s-3); padding:var(--s-2); }
-  .inspiration-deck-copy { padding-block:0; }
-  .inspiration-deck-copy h2 { font-size:var(--fs-body); line-height:var(--lh-body); }
-  .inspiration-deck-topic { font-size:var(--fs-label-xs); margin-bottom:var(--s-1); }
-  .inspiration-deck-open { margin-top:var(--s-2); padding-inline:var(--s-2); }
-  .inspiration-deck-keys { display:none; }
-}
 </style>

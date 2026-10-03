@@ -2,37 +2,39 @@
   <article class="page scene-discovery">
     <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
-        <div class="page-kicker eyebrow">场景手帖 · {{ activeThemeLabel }}</div>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
+        <span class="page-kicker eyebrow">{{ activeThemeLabel }}</span>
       </div>
       <div class="curation-intro">
-        <span class="companion-label">陪你翻阅</span>
-        <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
-          <AnimatedSelection />
-          <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
-            <span class="dot"></span>绫地宁宁
-          </button>
-          <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" :aria-pressed="companionId === 'natsume'" @click="manualCompanion = 'natsume'">
-            <span class="dot"></span>四季夏目
-          </button>
+        <figure class="scene-atlas-portrait" aria-label="陪伴角色">
+          <template v-for="character in ['nene', 'natsume']" :key="character">
+            <img :crossorigin="runtimeResourceCors()" v-if="!companionFailed[character]"
+              :src="resolveRuntimeUrl('/assets/characters/' + character + '-home-cg-1024.webp')"
+              :class="[character, { current: companionId === character }]"
+              :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
+              :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async"
+              @error="companionFailed[character] = true" />
+            <div v-else class="companion-fallback" :class="[character, { current: companionId === character }]"
+              role="status" :aria-hidden="companionId !== character">
+              <ArchiveIcon name="image" />
+              <span class="companion-fallback-text">{{ character === 'nene' ? '绫地宁宁' : '四季夏目' }}的主视觉暂未加载</span>
+            </div>
+          </template>
+          <figcaption class="sr-only" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
+        </figure>
+        <div class="companion-choices">
+          <span class="companion-label">陪你翻阅<span v-if="companionFailed[companionId]"> · 角色图片暂未加载</span></span>
+          <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
+            <AnimatedSelection />
+            <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
+              <span class="dot"></span>绫地宁宁
+            </button>
+            <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" :aria-pressed="companionId === 'natsume'" @click="manualCompanion = 'natsume'">
+              <span class="dot"></span>四季夏目
+            </button>
+          </div>
         </div>
       </div>
-      <figure class="scene-atlas-portrait" aria-label="陪伴角色">
-        <template v-for="character in ['nene', 'natsume']" :key="character">
-          <img :crossorigin="runtimeResourceCors()" v-if="!companionFailed[character]"
-            :src="resolveRuntimeUrl('/assets/characters/' + character + '-home-cg-1024.webp')"
-            :class="[character, { current: companionId === character }]"
-            :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
-            :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async"
-            @error="companionFailed[character] = true" />
-          <div v-else class="companion-fallback" :class="[character, { current: companionId === character }]"
-            role="status" :aria-hidden="companionId !== character">
-            <ArchiveIcon name="image" />
-            <span class="companion-fallback-text">{{ character === 'nene' ? '绫地宁宁' : '四季夏目' }}的主视觉暂未加载</span>
-          </div>
-        </template>
-        <figcaption aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
-      </figure>
       <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
@@ -51,12 +53,11 @@
           aria-controls="sceneFacetPanel"
           @click="filtersOpen = !filtersOpen"
         >
-          精细筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
+          <ArchiveIcon name="filter" />精细筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
         </button>
       </div>
 
       <div id="scenePersonalViews" class="scene-personal-nav" aria-label="我的场景视图">
-        <span class="scene-personal-label">浏览范围</span>
         <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
           :aria-pressed="fTier === 'core' && !showHidden"
           @click="showRecommendedScenes">人设核心</button>
@@ -112,7 +113,7 @@
     <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
 
     <header class="scene-results-heading">
-      <div><h2>{{ sortBy === 'favorite' && !showHidden ? '我的收藏' : tierLabel }}<span v-if="activeTheme !== 'all'"> · {{ activeThemeLabel }}</span></h2><p>先看画面与故事，再选一幕开始绘制</p></div>
+      <div><h2>{{ sortBy === 'favorite' && !showHidden ? '我的收藏' : tierLabel }}<span v-if="activeTheme !== 'all'"> · {{ activeThemeLabel }}</span></h2></div>
       <div class="scene-results-meta"><span class="scene-count" role="status" aria-live="polite">{{ loading ? '正在读取…' : loadError ? '读取失败' : `已显示 ${Math.min(visible, filtered.length)} / ${filtered.length} 个场景` }}</span><button v-if="searchQuery || activeTheme !== 'all' || activeFacetCount" class="scene-reset" type="button" @click="resetFilters">重置筛选</button></div>
     </header>
 
@@ -145,8 +146,9 @@
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
     <div v-else v-content-motion="`${activeTheme}:${fTier}:${sortBy}:${showHidden}`" class="scene-grid">
-      <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
-          :class="flashId === s.id ? 'scene-flash' : ''" :data-scene-id="s.id">
+      <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
+          :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
+          :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
           <template #band>
             <div class="ex-scene-badges">
             <span v-if="usageFor(s)" class="sc-tier personal">常用 {{ usageFor(s)?.uses }}</span>
@@ -161,14 +163,14 @@
               <span>{{ s2.emotion || '情绪待定' }}</span>
               <span>{{ [seasonLabel(s2.season), timeLabel(s2.timeOfDay)].filter(Boolean).join(' · ') || '时间不限' }}</span>
             </div>
-            <div class="ex-actions">
+            <div class="ex-actions" @click.stop>
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
               <StudioTooltip :content="favs.has(s2.id) ? '取消收藏' : '收藏场景'">
               <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
               </StudioTooltip>
             </div>
-            <details class="ex-more" @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
+            <details class="ex-more" @click.stop @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
               <DeferredPanel :active="openedDetails.has(s2.id)">
               <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
               <div class="ex-decision">
