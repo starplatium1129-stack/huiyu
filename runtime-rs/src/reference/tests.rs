@@ -12,12 +12,17 @@ fn source_shards_are_authoritative_and_read_only() {
     let root = fixture.path();
     write(
         &root.join("data/references/manifest.json"),
-        &json!({"version":1,"standards":{"perspectives":[]},"characterIds":["nene"],"viewOrder":["nene"]}),
+        &json!({"version":1,"standards":{"perspectives":[]},"characterIds":["nene","natsume"],"viewOrder":["natsume","nene"]}),
     );
     let profile = json!({"characterId":"nene","outfits":[{"outfitId":"one","references":[{"pending":true}]}]});
     write(
         &root.join("data/references/nene.json"),
         &json!({"standard":{"id":"nene","outfits":[]},"view":profile}),
+    );
+    let second = json!({"characterId":"natsume","outfits":[]});
+    write(
+        &root.join("data/references/natsume.json"),
+        &json!({"standard":{"id":"natsume","outfits":[]},"view":second}),
     );
     write(
         &root.join("data/character-reference-view.json"),
@@ -26,7 +31,33 @@ fn source_shards_are_authoritative_and_read_only() {
     let mut reader = Reader::new(root.into(), None);
     assert_eq!(reader.read(Some("nene")).unwrap(), Some(profile.clone()));
     assert_eq!(reader.read(Some("unknown")).unwrap(), None);
-    assert_eq!(reader.read(None).unwrap(), Some(json!({"nene":profile})));
+    let expected_view = json!({"natsume":second,"nene":profile});
+    assert_eq!(reader.read(None).unwrap(), Some(expected_view.clone()));
+    let (standards, view) = source_products(root).unwrap();
+    assert_eq!(
+        standards,
+        json!({"perspectives":[],"characters":[
+        {"id":"nene","outfits":[]},{"id":"natsume","outfits":[]}]})
+    );
+    assert_eq!(view, expected_view);
+    assert_eq!(
+        view.as_object().unwrap().keys().collect::<Vec<_>>(),
+        vec!["natsume", "nene"]
+    );
+    let legacy = root.join("legacy");
+    write(
+        &legacy.join("data/character-reference-view.json"),
+        &json!({"present":{"custom":[]},"null":null,"false":false,"zero":0}),
+    );
+    for (id, expected) in [
+        ("present", Some(json!({"custom":[]}))),
+        ("null", None),
+        ("false", None),
+        ("missing", None),
+        ("zero", Some(json!(0))),
+    ] {
+        assert_eq!(shards::profile(&legacy, id).unwrap(), expected);
+    }
     assert_eq!(
         io::json(&root.join("data/character-reference-view.json")).unwrap(),
         json!({"nene":{"stale":true}})

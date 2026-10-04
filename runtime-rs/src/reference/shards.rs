@@ -70,15 +70,13 @@ pub(super) fn profile(root: &Path, id: &str) -> Result<Option<Value>> {
         }
         // The authoritative per-character shard is read lazily; no aggregate is
         // written and unrelated character profiles are not parsed for this request.
-        return Ok(shard(&directory, id)?.get("view").cloned());
+        return Ok(Some(shard(&directory, id)?["view"].take()));
     }
-    let view = io::json(&root.join("data/character-reference-view.json"))?;
-    if !view.is_object() {
-        return Err(unavailable());
-    }
+    let mut view = io::json(&root.join("data/character-reference-view.json"))?;
     Ok(view
-        .get(id)
-        .cloned()
+        .as_object_mut()
+        .ok_or_else(unavailable)?
+        .remove(id)
         .filter(|value| !value.is_null() && value != &Value::Bool(false)))
 }
 
@@ -98,7 +96,7 @@ pub(super) fn view(root: &Path) -> Result<Value> {
     let manifest = manifest(&directory)?;
     let mut profiles = Map::new();
     for id in ids(&manifest["viewOrder"])? {
-        profiles.insert(id.into(), shard(&directory, id)?["view"].clone());
+        profiles.insert(id.into(), shard(&directory, id)?["view"].take());
     }
     Ok(Value::Object(profiles))
 }
@@ -122,14 +120,14 @@ pub(super) fn check_products(root: &Path, standards: &[u8], view: &[u8]) -> Resu
 }
 pub(crate) fn source_products(root: &Path) -> Result<(Value, Value)> {
     let directory = root.join("data/references");
-    let manifest = manifest(&directory)?;
+    let mut manifest = manifest(&directory)?;
     let character_ids = ids(&manifest["characterIds"])?;
     let mut characters = Vec::new();
     let mut profiles = Map::new();
     for id in &character_ids {
-        let item = shard(&directory, id)?;
-        characters.push(item["standard"].clone());
-        profiles.insert((*id).into(), item["view"].clone());
+        let mut item = shard(&directory, id)?;
+        characters.push(item["standard"].take());
+        profiles.insert((*id).into(), item["view"].take());
     }
     for entry in std::fs::read_dir(&directory).map_err(|_| unavailable())? {
         let entry = entry.map_err(|_| unavailable())?;
@@ -142,7 +140,7 @@ pub(crate) fn source_products(root: &Path) -> Result<(Value, Value)> {
             return Err(unavailable());
         }
     }
-    let mut expected = manifest["standards"].clone();
+    let mut expected = manifest["standards"].take();
     expected["characters"] = characters.into();
     let mut ordered = Map::new();
     for id in ids(&manifest["viewOrder"])? {
