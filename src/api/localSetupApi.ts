@@ -1,5 +1,6 @@
 import { apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
 import { verifyLocalSetupModel, type VerificationOptions } from './localSetupVerification.ts'
+import { downloadLocalSetupModel, type DownloadOptions } from './localSetupDownload.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import type { LocalSetupResponse } from '../../types/local-setup.ts'
 
@@ -42,6 +43,7 @@ function validSetup(value: ApiResponseObject): boolean {
 
 export function createLocalSetupApi(client: ApiClient = apiClient, fetch?: FetchImplementation) {
   return {
+    downloadModel: (modelId: string, options: DownloadOptions) => downloadLocalSetupModel(modelId, options, fetch),
     verifyModel: (modelId: string, options: VerificationOptions) => verifyLocalSetupModel(modelId, options, fetch),
     async getStatus(options: { signal?: AbortSignal } = {}): Promise<LocalSetupResponse> {
       if (!isLocalStudioHost()) throw new Error('首次配置检查仅限本机使用')

@@ -39,6 +39,7 @@ describe('local setup read-only HTTP boundary', () => {
     const { fetch, api } = setup(snapshot())
     await expect(api.getStatus()).rejects.toThrow('仅限本机')
     await expect(api.verifyModel('qwen-vae', { signal: new AbortController().signal, onProgress: vi.fn() })).rejects.toThrow('仅限本机')
+    await expect(api.downloadModel('qwen-vae', { workspacePath: 'D:\\AI', signal: new AbortController().signal, onProgress: vi.fn() })).rejects.toThrow('仅限本机')
     expect(fetch).not.toHaveBeenCalled()
   })
   it('rejects absent recommended-model evidence and malformed device reports', async () => {
@@ -73,6 +74,21 @@ describe('local setup read-only HTTP boundary', () => {
     expect(cancel).toHaveBeenCalled()
   })
 
+  it('downloads only fixed model IDs with the confirmed workspace and requires a complete integrity result', async () => {
+    const terminal = { type: 'result', modelId: 'qwen-vae', path: snapshot().models[2].path, state: 'downloaded', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '下载校验通过，未出图' }
+    const progress = { type: 'progress', modelId: 'qwen-vae', phase: 'downloading', bytesRead: 5, expectedBytes: 10 }
+    const fetch = vi.fn<FetchImplementation>(async () => new Response(JSON.stringify(progress) + '\n' + JSON.stringify(terminal) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
+    const api = createLocalSetupApi(createApiClient(fetch), fetch), onProgress = vi.fn()
+    const options = { workspacePath: 'D:\\AI', signal: new AbortController().signal, onProgress }
+    await expect(api.downloadModel('../../other', options)).rejects.toThrow('起步下载清单')
+    expect(fetch).not.toHaveBeenCalled()
+    await expect(api.downloadModel('qwen-vae', options)).resolves.toEqual(terminal)
+    expect(JSON.parse(fetch.mock.calls[0][1]!.body as string)).toEqual({ workspacePath: 'D:\\AI', reviewed: true })
+    expect(onProgress).toHaveBeenCalledWith(progress)
+    fetch.mockResolvedValueOnce(new Response(JSON.stringify({ ...terminal, sha256: null }) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
+    await expect(api.downloadModel('qwen-vae', options)).rejects.toThrow('无效数据')
+  })
+
   it('routes bundled desktop hash streams through the runtime transport and aborts on epoch replacement', async () => {
     const origin = 'http://127.0.0.1:4312', sourceOrigin = 'http://tauri.localhost'
     const descriptor = { protocolVersion: 1, windowRole: 'atelier', windowId: 'atelier', sourceProfileId: `profile-${'a'.repeat(64)}`, sourceOrigin, bundledUiAvailable: true, connection: 'ready', runtime: { origin, protocolVersion: 1, ownership: 'managed', runtimeEpoch: 'hash-desktop-1', workspace: null } }
@@ -88,6 +104,9 @@ describe('local setup read-only HTTP boundary', () => {
       await expect(api.verifyModel('qwen-vae', { signal: new AbortController().signal, onProgress: vi.fn() })).resolves.toEqual(terminal)
       expect(fetch.mock.calls[0][0]).toBe(origin + '/api/local-setup/verify/qwen-vae')
       expect(fetch.mock.calls[0][1]?.method).toBe('POST')
+      fetch.mockResolvedValueOnce(new Response(JSON.stringify({ ...terminal, state: 'downloaded', code: null }) + '\n', { headers: { 'content-type': 'application/x-ndjson' } }))
+      await expect(api.downloadModel('qwen-vae', { workspacePath: 'D:\\AI', signal: new AbortController().signal, onProgress: vi.fn() })).resolves.toMatchObject({ state: 'downloaded' })
+      expect(fetch.mock.calls[1][0]).toBe(origin + '/api/local-setup/download/qwen-vae')
       let started!: () => void
       const waiting = new Promise<void>(resolve => { started = resolve })
       let transportSignal: AbortSignal | undefined

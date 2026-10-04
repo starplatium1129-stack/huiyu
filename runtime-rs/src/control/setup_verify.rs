@@ -13,11 +13,11 @@ use std::{
 };
 use tokio::sync::mpsc::UnboundedSender;
 
-#[derive(Deserialize)]
-struct ModelFile {
-    path: String,
-    bytes: u64,
-    sha256: String,
+#[derive(Clone, Deserialize)]
+pub(super) struct ModelFile {
+    pub path: String,
+    pub bytes: u64,
+    pub sha256: String,
 }
 #[derive(Deserialize)]
 struct Manifest {
@@ -60,17 +60,7 @@ fn same_file_at(path: &Path, identity: &crate::file_identity::Identity) -> bool 
 
 impl ControlService {
     pub(super) fn verify_setup_model(self: &Arc<Self>, id: String) -> Result<Response> {
-        let index = match id.as_str() {
-            "anima-aesthetic-v1.1" => 0,
-            "qwen-encoder" => 1,
-            "qwen-vae" => 2,
-            _ => return Err(ApiError::invalid("只可校验起步清单中的三个模型文件")),
-        };
-        let spec = serde_json::from_str::<Manifest>(include_str!("setup-models.json"))?
-            .files
-            .into_iter()
-            .nth(index)
-            .unwrap();
+        let spec = model_file(&id)?;
         let permit = self
             .setup_verify_lock
             .clone()
@@ -117,6 +107,22 @@ impl ControlService {
     }
 }
 
+pub(super) fn model_file(id: &str) -> Result<ModelFile> {
+    let index = match id {
+        "anima-aesthetic-v1.1" => 0,
+        "qwen-encoder" => 1,
+        "qwen-vae" => 2,
+        _ => return Err(ApiError::invalid("只可操作起步清单中的三个模型文件")),
+    };
+    Ok(
+        serde_json::from_str::<Manifest>(include_str!("setup-models.json"))?
+            .files
+            .into_iter()
+            .nth(index)
+            .unwrap(),
+    )
+}
+
 fn terminal(
     id: &str,
     path: &Path,
@@ -129,7 +135,7 @@ fn terminal(
         "sha256":hash,"checkedAt":now(),"message":message})
 }
 
-fn inspect(
+pub(super) fn inspect(
     root: &Path,
     spec: &ModelFile,
     id: &str,

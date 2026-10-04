@@ -57,3 +57,18 @@ export interface LocalSetupVerificationResult {
   checkedAt: number
   message: string
 }
+
+export interface LocalSetupDownloadProgress extends LocalSetupVerificationProgress {
+  phase: 'checking' | 'downloading' | 'verifying'
+}
+export interface LocalSetupDownloadResult {
+  type: 'result'
+  modelId: string
+  path: string
+  state: 'downloaded' | 'already-present' | 'failed'
+  bytes: number | null
+  sha256: string | null
+  code: string | null
+  checkedAt: number
+  message: string
+}

@@ -2,7 +2,7 @@
   <details class="preparation">
     <summary>按缺项准备 ComfyUI 与模型<span>{{ models.length - matched }} 项文件待核对</span></summary>
     <div class="preparation-body">
-      <p>这是手动准备向导。先核对运行方式、真实目录与来源，再查看下载清单。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
+      <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
       <select id="setup-comfy-route" v-model="route" class="route-select">
         <option value="desktop">官方 Desktop（新用户推荐，由 Desktop 启动）</option>
@@ -27,7 +27,7 @@
             <p>Windows 受控启动只识别 ComfyUI/main.py 与 ComfyUI/venv/Scripts/python.exe。发现这两个文件仍不代表依赖可用；其他布局沿用原启动入口，不要重命名 .venv 或复制解释器来通过检查。</p>
             <a href="https://docs.comfy.org/installation/manual_install" target="_blank" rel="noopener noreferrer">打开官方手动安装说明</a>
           </template>
-          <p>硬件兼容性未确认；GPU / 内存上报不等于此模型可运行。驱动、Python 环境、临时下载和出图还需要额外空间，当前未测磁盘剩余量。</p>
+          <p>硬件兼容性未确认；GPU / 内存上报不等于此模型可运行。每次下载会检查目标盘可用空间；驱动、Python 环境和真实出图仍需另行准备与验证。</p>
           <a href="https://docs.comfy.org/installation/system_requirements" target="_blank" rel="noopener noreferrer">核对官方系统与硬件要求</a>
         </li>
         <li>
@@ -61,7 +61,7 @@
               <a v-if="model.preparation?.upstreamLicenseUrl" :href="model.preparation.upstreamLicenseUrl" target="_blank" rel="noopener noreferrer">组件上游许可</a>
               <p v-if="model.preparation">应为 {{ formatBytes(model.preparation.expectedBytes) }} · {{ model.preparation.expectedBytes.toLocaleString('zh-CN') }} 字节<span v-if="model.bytes !== null">；本次发现 {{ model.bytes.toLocaleString('zh-CN') }} 字节</span></p>
               <div class="verification-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || !!downloadId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
                 <button v-if="activeId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancel">取消校验</button>
               </div>
               <p v-if="activeId === model.id" role="status">正在只读校验 {{ formatBytes(bytesRead) }} / {{ formatBytes(expectedBytes) }}（{{ Math.floor(bytesRead / expectedBytes * 100) }}%）</p>
@@ -71,13 +71,21 @@
           </ul>
           <p>SHA-256 只在点击时逐块读取本机文件，不联网、不改写。一次校验一个文件，可随时取消；重新检查或离开本页会停止校验并清除本次结果。成功只证明本次读取与固定摘要一致，不代表出图或未来文件仍未改变。</p>
           <label class="preparation-ack"><input v-model="reviewed" type="checkbox">我已核对运行方式、真实 models 目录、容量与来源许可说明</label>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="!reviewed" @click="confirmed = true">查看准备清单</button>
-          <div v-if="confirmed && reviewed" class="download-checklist" role="region" aria-label="手动下载与校验清单">
-            <p>下面每个链接仅在你点击时交给浏览器下载。将完整文件放到对应路径，不改名替代其他版本；不要用下载中的临时文件覆盖已有模型。</p>
+          <p v-if="workspacePending" role="status">已保存的工作区尚未生效。完全退出并重启绘遇后重新检查、核对目录，再下载。</p>
+          <p v-else-if="workspaceUnconfirmed" role="status">当前桌面工作区尚未确认。请重新检查或选择 AI 工作区核对目录，再下载。</p>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="!reviewed || workspaceBlocked" @click="confirmed = true">查看准备清单</button>
+          <div v-if="confirmed && reviewed && !workspaceBlocked" class="download-checklist" role="region" aria-label="模型下载与校验清单">
+            <p>点击下载后，文件写入当前确认工作区的临时文件，大小与 SHA-256 全部匹配后才发布。同名不同内容会报告冲突；取消或失败保留已有模型。一次仅下载或校验一个文件。</p>
             <ol>
               <li v-for="model in models" :key="model.id">
                 <template v-if="model.preparation">
                   <strong>{{ model.label }}</strong>
+                  <div class="verification-actions">
+                    <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || !!downloadId" @click="download(model)">{{ downloadFailed[model.id] ? '重试下载' : '下载' }} {{ model.label }}（{{ formatBytes(model.preparation.expectedBytes) }}）</button>
+                    <button v-if="downloadId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancelDownload">取消下载</button>
+                  </div>
+                  <p v-if="downloadId === model.id" role="status">{{ downloadPhaseLabel }} {{ formatBytes(downloadBytes) }} / {{ formatBytes(downloadExpected) }}（{{ Math.floor(downloadBytes / downloadExpected * 100) }}%）</p>
+                  <p v-if="downloadNotices[model.id]" role="status">{{ downloadNotices[model.id] }}</p>
                   <a :href="model.preparation.url" target="_blank" rel="noopener noreferrer">取得固定版本文件（{{ formatBytes(model.preparation.expectedBytes) }}）</a>
                   <p>保存到：</p><code>{{ model.path }}</code>
                   <p>SHA-256：</p><code>{{ model.preparation.sha256 }}</code>
@@ -87,7 +95,7 @@
             </ol>
             <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制这份准备清单</button>
             <span v-if="copyNotice" role="status">{{ copyNotice }}</span>
-            <p>放置完成、确认完整性并重启 ComfyUI 后重新检查。只读检查通过后，还需手动选择 Anima Aesthetic v1.1，按无 LoRA 的基础参数真实生成一张图片。</p>
+            <p>下载成功后自动重新检查；手动放置时用下方按钮重新检查。确认文件后仍需手动重启 ComfyUI，选择 Anima Aesthetic v1.1，按无 LoRA 的基础参数真实生成一张图片。下载成功不等于已能出图。</p>
             <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">放置后重新检查</button>
           </div>
         </li>
@@ -98,17 +106,24 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup.ts'
+import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 import { modelPreparationState as state, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import { useLocalSetupVerification } from '../composables/useLocalSetupVerification.ts'
+import { useLocalSetupDownload } from '../composables/useLocalSetupDownload.ts'
 import { copyText } from '../utils/clipboard.ts'
 
-const props = defineProps<{ snapshot: LocalSetupResponse; desktop: boolean }>()
-const emit = defineEmits<{ workspace: []; refresh: []; 'verification-result': [result: LocalSetupVerificationResult] }>()
+const props = defineProps<{ snapshot: LocalSetupResponse; desktop: boolean; workspacePending?: boolean; workspaceUnconfirmed?: boolean }>()
+const emit = defineEmits<{ workspace: []; refresh: []; 'verification-result': [result: LocalSetupVerificationResult]; 'download-result': [result: LocalSetupDownloadResult] }>()
 const route = ref(props.snapshot.comfy.layout === 'portable' ? 'portable' : props.snapshot.comfy.layout === 'venv' ? 'manual' : 'desktop')
 const reviewed = ref(false), confirmed = ref(false), copyNotice = ref('')
 const models = computed(() => props.snapshot.models.filter(model => model.required))
 const { activeId, bytesRead, expectedBytes, results, notices, verify, cancel } = useLocalSetupVerification(models)
+const workspaceBlocked = computed(() => props.workspacePending || props.workspaceUnconfirmed)
+const downloadReady = computed(() => reviewed.value && confirmed.value && !workspaceBlocked.value && !activeId.value)
+const { activeId: downloadId, bytesRead: downloadBytes, expectedBytes: downloadExpected, phase: downloadPhase,
+  notices: downloadNotices, failed: downloadFailed, download, cancel: cancelDownload } = useLocalSetupDownload(
+  computed(() => props.snapshot.workspace.path), downloadReady, result => emit('download-result', result))
+const downloadPhaseLabel = computed(() => ({ checking: '正在核对已有文件', downloading: '正在下载', verifying: '正在验证并发布' })[downloadPhase.value] ?? '正在处理')
 watch(results, values => { for (const result of Object.values(values)) emit('verification-result', result) })
 const matched = computed(() => models.value.filter(model => state(model) === 'bytes-match').length)
 const totalBytes = computed(() => models.value.reduce((sum, model) => sum + (model.preparation?.expectedBytes ?? 0), 0))
@@ -121,6 +136,7 @@ function stateLabel(model: LocalSetupModel): string {
 function hashCommand(path: string): string { return `Get-FileHash -LiteralPath '${path.replaceAll("'", "''")}' -Algorithm SHA256` }
 watch([route, () => props.snapshot], () => { reviewed.value = false; confirmed.value = false; copyNotice.value = '' })
 watch(reviewed, () => { confirmed.value = false; copyNotice.value = '' })
+watch(workspaceBlocked, () => { reviewed.value = false; confirmed.value = false })
 async function copyPlan() {
   const plan = ['绘遇手动准备清单（不自动安装或接受许可）', `运行方式：${route.value}`, `工作区：${props.snapshot.workspace.path}`, `ComfyUI：${props.snapshot.comfy.path}`, `服务地址：${props.snapshot.comfy.host}`, '确认此实例实际读取同一 models 目录；需要当前 ComfyUI 环境与 KJNodes。', ...models.value.map(model => `${model.label}\n保存到：${model.path}\n字节：${model.preparation?.expectedBytes}\n来源：${model.preparation?.url}\n许可与上游说明：${model.preparation?.licenseUrl}\n${model.preparation?.modelCardUrl}\n组件上游许可：${model.preparation?.upstreamLicenseUrl ?? '见作者许可'}\nSHA-256：${model.preparation?.sha256}\n只读校验：${hashCommand(model.path)}`), '放置并核对 SHA-256 后重启 ComfyUI、重新检查，再真实出图；文件或节点检查不等于出图通过。'].join('\n\n')
   copyNotice.value = await copyText(plan) ? '清单已复制' : '复制失败，请手动选中清单文字'

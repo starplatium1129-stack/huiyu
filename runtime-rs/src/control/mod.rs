@@ -3,6 +3,7 @@ mod http;
 mod probe;
 mod settings;
 mod setup;
+mod setup_download;
 mod setup_verify;
 #[cfg(test)]
 mod tests;

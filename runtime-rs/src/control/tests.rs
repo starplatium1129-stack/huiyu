@@ -385,10 +385,11 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
         "/api/share-link",
         "/api/local-setup",
         "/api/local-setup/verify/qwen-vae",
+        "/api/local-setup/download/qwen-vae",
     ] {
         let request = Request::builder()
             .uri(path)
-            .method(if path.contains("/verify/") {
+            .method(if path.contains("/verify/") || path.contains("/download/") {
                 "POST"
             } else {
                 "GET"

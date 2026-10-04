@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import LocalSetupPanel from './LocalSetupPanel.vue'
-import type { LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup'
+import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup'
 
-const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
+const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), downloadModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
-vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel } }))
+vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel, downloadModel: fixture.downloadModel } }))
 vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
@@ -30,6 +30,7 @@ beforeEach(() => {
   fixture.local = true; fixture.desktop = false
   fixture.getStatus.mockReset().mockResolvedValue(complete())
   fixture.verifyModel.mockReset()
+  fixture.downloadModel.mockReset()
   fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'F:\\ChosenAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.pickWorkspace.mockReset().mockResolvedValue('F:\\ChosenAI')
@@ -143,9 +144,43 @@ describe('first local setup panel', () => {
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('checked')
     wrapper.unmount()
   })
+  it('downloads explicitly, cancels without accepting late success, retries failures and rechecks after verified publication', async () => {
+    const value = complete(); value.models[0].state = 'missing'; value.models[0].bytes = null
+    fixture.getStatus.mockResolvedValueOnce(value)
+    const wrapper = render(); await flushPromises()
+    const review = async () => { await wrapper.find('.preparation-ack input').setValue(true); await wrapper.findAll('button').find(button => button.text() === '查看准备清单')!.trigger('click') }
+    expect(fixture.downloadModel).not.toHaveBeenCalled()
+    await review()
+    const button = () => wrapper.findAll('button').find(button => button.text().includes('anima-aesthetic-v1.1（'))!
+    let finish!: (value: LocalSetupDownloadResult) => void
+    fixture.downloadModel.mockImplementationOnce((_id, options) => {
+      options.onProgress({ type: 'progress', modelId: 'anima-aesthetic-v1.1', phase: 'downloading', bytesRead: 5, expectedBytes: 10 })
+      return new Promise<LocalSetupDownloadResult>(resolve => { finish = resolve })
+    })
+    await button().trigger('click'); await button().trigger('click')
+    expect(fixture.downloadModel).toHaveBeenCalledTimes(1)
+    expect(fixture.downloadModel.mock.calls[0][1].workspacePath).toBe('D:\\AI')
+    expect(wrapper.text()).toContain('正在下载'); expect(wrapper.text()).toContain('50%')
+    await wrapper.findAll('button').find(button => button.text() === '取消下载')!.trigger('click')
+    expect(fixture.downloadModel.mock.calls[0][1].signal.aborted).toBe(true)
+    const success: LocalSetupDownloadResult = { type: 'result', modelId: 'anima-aesthetic-v1.1', path: value.models[0].path, state: 'downloaded', bytes: 10, sha256: 'b'.repeat(64), code: null, checkedAt: 1, message: '下载校验通过，尚未真实出图' }
+    finish(success); await flushPromises()
+    expect(fixture.getStatus).toHaveBeenCalledTimes(1); expect(wrapper.text()).toContain('已有模型保留')
+    fixture.downloadModel.mockResolvedValueOnce({ ...success, state: 'failed', bytes: null, sha256: null, code: 'MODEL_CONFLICT', message: '同名文件冲突' })
+    await button().trigger('click'); await flushPromises()
+    expect(wrapper.text()).toContain('同名文件冲突'); expect(button().text()).toContain('重试下载')
+    fixture.downloadModel.mockResolvedValueOnce(success)
+    await button().trigger('click'); await flushPromises()
+    expect(fixture.getStatus).toHaveBeenCalledTimes(2)
+    expect(wrapper.text()).toContain(success.message); expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    wrapper.unmount()
+  })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {
     fixture.desktop = true
     const wrapper = render(true); await flushPromises()
+    expect(fixture.getWorkspace).toHaveBeenCalledTimes(1)
+    await wrapper.find('.preparation-ack input').setValue(true)
+    expect(wrapper.findAll('button').find(button => button.text() === '查看准备清单')!.attributes('disabled')).toBeDefined()
     await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
     const dialog = wrapper.findComponent({ name: 'CompanionWorkspaceSettings' })
     expect(dialog.props('modelValue')).toBe('E:\\NewAI')
@@ -162,6 +197,8 @@ describe('first local setup panel', () => {
     expect(fixture.getStatus).toHaveBeenCalledTimes(1)
     expect(wrapper.text()).toContain('完全退出并重启绘遇后生效')
     expect(wrapper.text()).toContain('D:\\AI')
+    await wrapper.find('.preparation-ack input').setValue(true)
+    expect(wrapper.findAll('button').find(button => button.text() === '查看准备清单')!.attributes('disabled')).toBeDefined()
     fixture.setWorkspace.mockResolvedValueOnce({ root: 'D:\\AI', exists: true, activeRoot: 'D:\\AI', restartRequired: false })
     await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
     dialog.vm.$emit('update:modelValue', 'D:\\AI'); dialog.vm.$emit('save'); await flushPromises()

@@ -30,8 +30,9 @@
         <RouterLink v-if="basicComplete" class="btn btn-ghost btn-sm" to="/prompt-builder"><ArchiveIcon name="spark" />前往工作台验证</RouterLink>
       </div>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
+      <p v-if="downloadNotice" class="setup-note" role="status">{{ downloadNotice }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
-      <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" />
+      <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />
       <details class="setup-details">
         <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
         <div class="setup-detail-body">
@@ -101,12 +102,16 @@ import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { localSetupApi } from '../api/localSetupApi.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
-import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup.ts'
+import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 
 const isLocal = isLocalStudioHost()
 const desktop = isLocal ? getDesktopCapabilities() : undefined
 const snapshot = ref<LocalSetupResponse | null>(null)
 const verificationFailures = ref<Record<string, string>>({})
+const downloadNotice = ref(''), workspacePending = ref(false)
+const workspaceActiveRoot = ref<string | null>(null)
+const workspaceUnconfirmed = computed(() => !!desktop && workspaceActiveRoot.value !== snapshot.value?.workspace.path)
+let workspaceRead = 0
 const loading = ref(false), error = ref(''), cancelled = ref(false)
 let controller: AbortController | null = null
 let disposed = false
@@ -120,6 +125,15 @@ function recordVerification(result: LocalSetupVerificationResult) {
   if (result.state === 'sha256-match') delete failures[result.modelId]
   else failures[result.modelId] = result.path
   verificationFailures.value = failures
+}
+function recordDownload(result: LocalSetupDownloadResult) {
+  if (result.state === 'failed') {
+    if (result.code === 'MODEL_CONFLICT') verificationFailures.value = { ...verificationFailures.value, [result.modelId]: result.path }
+    return
+  }
+  downloadNotice.value = result.message
+  const failures = { ...verificationFailures.value }; delete failures[result.modelId]; verificationFailures.value = failures
+  void refresh()
 }
 const basicComplete = computed(() => failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
   && snapshot.value.comfy.installation === 'present' && snapshot.value.comfy.connection === 'online'
@@ -149,6 +163,7 @@ async function refresh() {
   const request = new AbortController()
   controller = request
   loading.value = true; error.value = ''; cancelled.value = false; snapshot.value = null
+  if (desktop) void readWorkspaceBinding()
   try {
     const result = await localSetupApi.getStatus({ signal: request.signal })
     if (!disposed && controller === request && !request.signal.aborted) snapshot.value = result
@@ -165,13 +180,28 @@ function cancelCheck() {
 const workspaceButton = ref<HTMLElement | null>(null)
 const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceLoading = ref(false), workspaceSaving = ref(false)
 const workspaceNotice = ref(''), workspaceError = ref('')
+async function readWorkspaceBinding() {
+  if (!desktop || disposed) return
+  const read = ++workspaceRead
+  workspaceActiveRoot.value = null
+  workspaceError.value = ''
+  try {
+    const result = await desktop.getWorkspace()
+    if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = result.activeRoot; workspacePending.value = result.restartRequired }
+  } catch (cause) {
+    if (!disposed && read === workspaceRead) workspaceError.value = cause instanceof Error ? cause.message : '当前工作区尚未确认，请重新读取。'
+  }
+}
 async function openWorkspace() {
   if (!desktop || workspaceLoading.value || workspaceSaving.value || disposed) return
   workspaceLoading.value = true; workspaceError.value = ''
+  ++workspaceRead
   try {
     const result = await desktop.getWorkspace()
     if (!disposed) {
       workspaceDraft.value = result.root
+      workspacePending.value = result.restartRequired
+      workspaceActiveRoot.value = result.activeRoot
       workspaceNotice.value = result.restartRequired ? '已保存的 AI 工作区尚未生效，完全退出并重启绘遇后使用新目录。当前检查仍基于本次运行时目录。' : ''
       workspaceOpen.value = true
     }
@@ -183,10 +213,13 @@ function closeWorkspace() { if (!workspaceSaving.value) workspaceOpen.value = fa
 async function saveWorkspace() {
   if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
   workspaceSaving.value = true; workspaceError.value = ''; workspaceNotice.value = ''
+  ++workspaceRead
   try {
     const result = await desktop.setWorkspace(workspaceDraft.value.trim())
     if (!disposed) {
       workspaceDraft.value = result.root
+      workspacePending.value = result.restartRequired
+      workspaceActiveRoot.value = result.activeRoot
       workspaceOpen.value = false
       workspaceNotice.value = result.restartRequired
         ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'

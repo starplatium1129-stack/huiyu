@@ -14,6 +14,10 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .route("/api/status", get(status))
         .route("/api/local-setup", get(local_setup))
         .route("/api/local-setup/verify/{model}", post(verify_setup_model))
+        .route(
+            "/api/local-setup/download/{model}",
+            post(download_setup_model),
+        )
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))
         .route("/api/diagnostics", get(diagnostics))
@@ -37,6 +41,13 @@ async fn verify_setup_model(
     Path(model): Path<String>,
 ) -> Result<Response> {
     s.verify_setup_model(model)
+}
+async fn download_setup_model(
+    Extension(s): Extension<Arc<ControlService>>,
+    Path(model): Path<String>,
+    Json(body): Json<setup_download::DownloadRequest>,
+) -> Result<Response> {
+    s.download_setup_model(model, body)
 }
 async fn local(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
