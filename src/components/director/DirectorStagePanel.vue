@@ -4,10 +4,11 @@
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
-        v-if="!displayResultUrl"
+        v-if="!displayResultUrl || waitingForResult"
         class="stage-placeholder"
       :class="{
-        'is-generating': generationBusy,
+        'is-generating': generationBusy || waitingForResult,
+        'is-awaiting-result': waitingForResult,
         'is-error': !!generationError,
         'is-paused': generationStopped,
       }"
@@ -16,12 +17,12 @@
       <div class="stage-message">
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize" />
-          <div v-if="generationBusy" class="stage-generating-copy">
-            <ThinkingOrb state="working" size="lg" color-variant="dual" aria-hidden="true" />
+          <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
+            <GenerationParticles :progress="generationProgress" />
             <div class="stage-generation-feedback">
               <div class="stage-generating-title" role="status">正在绘制这一幕</div>
               <div class="stage-generating-sub">
-                <span>{{ generationStatusText || '正在准备画面…' }}</span>
+                <span>{{ waitingForResult ? '正在显现画面…' : generationStatusText || '正在准备画面…' }}</span>
                 <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
               </div>
               <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuemin="0" :aria-valuemax="100">
@@ -93,6 +94,7 @@
         @load="fitResult"
         @reveal-start="rememberResultReveal"
         @reveal-complete="rememberResultReveal"
+        @error="onResultImageError"
       />
     </div>
     <DirectorResultTools
@@ -114,7 +116,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
-import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
+import GenerationParticles from '@/components/visual/GenerationParticles.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
@@ -152,12 +154,14 @@ const { playClear } = useCanvasClearMotion(stageRoot, () => props.displayResultU
 
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
+const failedResultUrl = ref('')
 const ambientEnabled = ref(true)
 const ambientColors = ref<string[]>([])
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
+  failedResultUrl.value = ''
   ambientColors.value = []
 }, { immediate: true })
 async function fitResult(event: Event) {
@@ -172,6 +176,9 @@ async function fitResult(event: Event) {
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
+const waitingForResult = computed(() => Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
+  && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
+function onResultImageError() { failedResultUrl.value = props.displayResultUrl }
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return

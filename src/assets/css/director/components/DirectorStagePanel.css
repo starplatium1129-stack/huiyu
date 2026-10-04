@@ -33,11 +33,13 @@
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
     @apply tw:absolute; inset:0; z-index:var(--z-raised);
-    transition:opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
+    transition:opacity var(--motion-control) var(--ease-out);
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
-  .pb .stage-swap-leave-to { transform:scale(.985); }
-  /* ── 生成等待：保留画布微弱呼吸，工作光限定在 BorderBeam 边缘。 ── */
+  .pb .stage-swap-leave-active .generation-particles { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
+  .pb .stage-swap-leave-to .generation-particles { transform:scale(.62); opacity:0; }
+  .pb .stage-placeholder.is-awaiting-result { position:absolute; inset:0; z-index:var(--z-raised); min-height:0; max-height:none; animation:none; pointer-events:none; }
+  /* ── 生成等待：中央聚合粒子与局部呼吸光，保留边缘状态提示。 ── */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
     animation:stageBreath 3.2s ease-in-out infinite;
@@ -48,10 +50,10 @@
   }
   .pb .stage-generating-copy {
     @apply tw:relative; z-index:var(--z-raised);
-    @apply tw:grid tw:gap-s-4 tw:items-center;
-    grid-template-columns:auto minmax(0,1fr); width:min(100%,440px); margin:0 auto; text-align:left;
+    @apply tw:grid tw:gap-s-3 tw:items-center tw:justify-items-center;
+    width:min(100%,480px); margin:0 auto; text-align:center;
   }
-  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; }
+  .pb .stage-generation-feedback { display:grid; gap:var(--s-2); min-width:0; width:min(100%,300px); }
   .pb .stage-generating-title {
     @apply tw:text-primary tw:text-title-xs; font-weight:720;
     letter-spacing:-.01em;
@@ -61,7 +63,7 @@
   .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
     @apply tw:w-full tw:max-w-[260px] tw:h-[4px] tw:mt-s-2 tw:rounded-pill tw:overflow-hidden;
-    background:color-mix(in srgb,var(--text-muted) 22%,transparent);
+    background:color-mix(in srgb,var(--text-muted) 22%,transparent); margin-inline:auto;
   }
   .pb .stage-progress-ring > i {
     @apply tw:block tw:h-full; border-radius:inherit;
@@ -80,6 +82,7 @@
     /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
        stage-swap 退出去掉 scale 只留淡出 */
     .pb .stage-swap-leave-active { transition:opacity var(--motion-hover) var(--ease-out); }
+    .pb .stage-swap-leave-to .generation-particles { transform:none; }
   }
 
 .pb .result-image-actions > .btn { @apply tw:min-h-[40px]; }

@@ -50,7 +50,7 @@
   .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
   .pb.journal-workspace .gen-bar-actions .btn { min-height:var(--control-height); min-width:104px; @apply tw:text-label; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); }
   .pb.journal-workspace .gen-bar-actions .generation-action { min-width:156px; width:156px; min-height:var(--control-height); border:0; border-radius:var(--r-pill); background:transparent; }
-  .pb.journal-workspace .gen-bar-actions .generation-action.is-drawing { width:clamp(220px,36cqw,420px); min-height:64px; border-radius:var(--r-md); }
+  .pb.journal-workspace .gen-bar-actions .generation-action.is-drawing { min-height:64px; border-radius:var(--r-md); }
   .pb .is-drawing .generation-action-label { justify-content:flex-start; }
   .pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-deep); }
   .pb.atelier-workspace .generation-action.btn-primary:not(:disabled) { box-shadow:none; }

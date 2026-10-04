@@ -7,22 +7,22 @@ vi.mock('@/composables/useInterrogate', () => ({
   useInterrogate: () => ({ busy: ref(false), error: ref(null), interrogate: vi.fn(), cancel: vi.fn() }),
 }))
 const Reveal = defineComponent({
-  name: 'CgImageReveal', props: { src: String, autoReveal: Boolean }, emits: ['load', 'reveal-start', 'reveal-complete'],
+  name: 'CgImageReveal', props: { src: String, autoReveal: Boolean }, emits: ['load', 'reveal-start', 'reveal-complete', 'error'],
   setup: () => () => h('div'),
 })
 const props = {
   displayResultUrl: '/result-a.png', generationBusy: false, generationError: null,
-  generationStopped: false, generationStatusText: null, generationProgress: null,
+  generationStopped: false, generationStatusText: null, generationProgress: null as number | null,
   animaElapsed: 0, animaCurrentNode: '', drawEngine: 'anima', inpaintOriginalUrl: '/original.png',
   inpaintCompareActive: false, hasPrevResult: false,
 }
 const cleanup: Array<() => void> = []
 afterEach(() => cleanup.splice(0).forEach(fn => fn()))
-async function fixture(overrides: { resultRevealUrl?: string; displayResultUrl?: string; inpaintCompareActive?: boolean } = {}, loaded = true) {
+async function fixture(overrides: Partial<typeof props> & { resultRevealUrl?: string } = {}, loaded = true) {
   const wrapper = mount(DirectorStagePanel, {
     props: { ...props, ...overrides },
     global: { stubs: {
-      CgImageReveal: Reveal, ImageSplitCompare: true, ThinkingOrb: true,
+      CgImageReveal: Reveal, ImageSplitCompare: true, GenerationParticles: true,
       DirectorResultTools: true, DirectorSceneReference: true, ArchiveIcon: true, StudioTooltip: true,
     } },
   })
@@ -35,6 +35,26 @@ async function fixture(overrides: { resultRevealUrl?: string; displayResultUrl?:
 }
 
 describe('result reveal identity', () => {
+  it('retains real-progress particles until image reveal starts and releases them on load failure', async () => {
+    const wrapper = await fixture({ displayResultUrl: '', generationBusy: true, generationProgress: 0.37 }, false)
+    expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('progress')).toBe(0.37)
+    await wrapper.setProps({ generationProgress: null })
+    expect(wrapper.getComponent({ name: 'GenerationParticles' }).props('progress')).toBeNull()
+    expect(wrapper.get('[role="progressbar"]').attributes('aria-valuenow')).toBeUndefined()
+    await wrapper.setProps({ generationBusy: false, displayResultUrl: '/result-a.png', resultRevealUrl: '/result-a.png' })
+    wrapper.getComponent(Reveal).vm.$emit('load', { target: { naturalWidth: 832, naturalHeight: 1216 } })
+    await nextTick(); await nextTick()
+    expect(wrapper.getComponent(Reveal).props('autoReveal')).toBe(true)
+    expect(wrapper.findComponent({ name: 'GenerationParticles' }).exists()).toBe(true)
+    wrapper.getComponent(Reveal).vm.$emit('reveal-start')
+    await nextTick()
+    expect(wrapper.findComponent({ name: 'GenerationParticles' }).exists()).toBe(false)
+    await wrapper.setProps({ displayResultUrl: '/failed.png', resultRevealUrl: '/failed.png' })
+    expect(wrapper.findComponent({ name: 'GenerationParticles' }).exists()).toBe(true)
+    wrapper.getComponent(Reveal).vm.$emit('error')
+    await nextTick()
+    expect(wrapper.findComponent({ name: 'GenerationParticles' }).exists()).toBe(false)
+  })
   it('settles the decoded image ratio before starting the reveal', async () => {
     const wrapper = await fixture({ resultRevealUrl: '/result-a.png' }, false)
     const reveal = wrapper.getComponent(Reveal)
