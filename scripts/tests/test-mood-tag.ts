@@ -1,6 +1,6 @@
 const assert: typeof import('assert') = require('assert');
 const { test }: typeof import('node:test') = require('node:test');
-const { extractMoodTag, hasMoodTagOpen }: typeof import('../../src/utils/moodTag.ts') = require('../../src/utils/moodTag.ts');
+const { extractMoodTag, createMoodTagStream, hasMoodTagOpen }: typeof import('../../src/utils/moodTag.ts') = require('../../src/utils/moodTag.ts');
 
 test('无标签：原文不变，emotion 为 null', () => {
   const result = extractMoodTag('今天天气真好呀。');
@@ -44,11 +44,14 @@ test('悬挂标签（未闭合）：剥离到末尾，情绪不生效', () => {
 });
 
 test('流式增量：悬挂闭合后情绪生效且文本干净', () => {
-  const first = extractMoodTag('开头的话 [mood=hap');
-  assert.equal(first.emotion, null);
-  const second = extractMoodTag('开头的话 [mood=happy]真高兴呀！');
-  assert.equal(second.emotion, 'happy');
-  assert.equal(second.cleanText, '开头的话 真高兴呀！');
+  const stream = createMoodTagStream();
+  assert.deepEqual(stream.push('开头['), { emotion: null, cleanText: '开头[' });
+  assert.deepEqual(stream.push('MO'), { emotion: null, cleanText: '开头[MO' });
+  assert.deepEqual(stream.push('OD : HA'), { emotion: null, cleanText: '开头' });
+  assert.deepEqual(stream.push('PPY]开心[mood=excited]，'), { emotion: 'happy', cleanText: '开头开心，' });
+  assert.deepEqual(stream.push('[mood=sa'), { emotion: 'happy', cleanText: '开头开心，' });
+  assert.deepEqual(stream.push('d]结尾[mood=hap'), { emotion: 'sad', cleanText: '开头开心，结尾' });
+  assert.deepEqual(stream.push('py]好'), { emotion: 'happy', cleanText: '开头开心，结尾好' });
 });
 
 test('标签中间有空白也识别', () => {

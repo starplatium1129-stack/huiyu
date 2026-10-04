@@ -32,35 +32,49 @@ export interface MoodTagExtract {
 }
 
 const TAG_START = /\[mood\s*[:=]/i
+const TAG_PREFIX = /\[(?:m(?:o(?:o(?:d\s*)?)?)?)?$/i
 
 export function extractMoodTag(raw: string): MoodTagExtract {
+  return createMoodTagStream().push(raw)
+}
+
+/** 只重读可能继续组成标签的尾部；未形成起点的前缀仍立即显示。 */
+export function createMoodTagStream() {
   let clean = ''
+  let pending = ''
   let emotion: ChatEmotion | null = null
-  let index = 0
-  const length = raw.length
 
-  while (index < length) {
-    const match = TAG_START.exec(raw.slice(index))
-    if (!match) {
-      clean += raw.slice(index)
-      break
-    }
-    const open = index + match.index
-    clean += raw.slice(index, open)
-    const close = raw.indexOf(']', open + match[0].length)
-    if (close < 0) {
-      // 悬挂标签：剥离到文本末尾（等待下一个增量闭合）。
-      index = length
-      break
-    }
-    const value = raw.slice(open + match[0].length, close).trim().toLowerCase()
-    if (value && (MOOD_TAG_EMOTIONS as readonly string[]).includes(value)) {
-      emotion = value as ChatEmotion
-    }
-    index = close + 1
+  return {
+    /** 下个片段无法改写的干净前缀，供启发式保留跨标签的关键词衔接。 */
+    get committedLength() { return clean.length },
+    push(delta: string): MoodTagExtract {
+      const raw = pending + delta
+      pending = ''
+      let index = 0
+      while (index < raw.length) {
+        const match = TAG_START.exec(raw.slice(index))
+        if (!match) {
+          const tail = raw.slice(index)
+          const prefix = TAG_PREFIX.exec(tail)
+          clean += prefix ? tail.slice(0, prefix.index) : tail
+          pending = prefix ? tail.slice(prefix.index) : ''
+          return { emotion, cleanText: clean + pending }
+        }
+        const open = index + match.index
+        clean += raw.slice(index, open)
+        const close = raw.indexOf(']', open + match[0].length)
+        if (close < 0) {
+          // 起点已确认的悬挂标签不显示，等待后续片段闭合。
+          pending = raw.slice(open)
+          break
+        }
+        const value = raw.slice(open + match[0].length, close).trim().toLowerCase()
+        if (value && (MOOD_TAG_EMOTIONS as readonly string[]).includes(value)) emotion = value as ChatEmotion
+        index = close + 1
+      }
+      return { emotion, cleanText: clean }
+    },
   }
-
-  return { emotion, cleanText: clean }
 }
 
 /** 判断文本是否包含（可能是未闭合的）标签起点，用于提示词约束场景。 */

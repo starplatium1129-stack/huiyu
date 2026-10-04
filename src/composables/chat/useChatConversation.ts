@@ -11,7 +11,7 @@ import {
   parseNdjsonResponse,
   streamErrorMessage,
 } from '../../utils/stream.ts'
-import { extractMoodTag } from '../../utils/moodTag.ts'
+import { createMoodTagStream } from '../../utils/moodTag.ts'
 import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserProfile.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { abortableTask } from '../../utils/abortableTask.ts'
@@ -167,12 +167,20 @@ export function useChatConversation(options: ChatConversationOptions) {
     // 情绪双通道：本回合出现过协议标签（[mood=xxx]）后协议主导情绪，
     // 文本启发式整回合让位，避免两条通道互相覆盖。
     const emotionState = { value: 'neutral', moodTagged: false }
-    // 本回合原始流（含未闭合标签），与干净展示文本分离累积。
-    const streamState = { rawContent: '' }
+    let moodStream = createMoodTagStream()
+    const hintPriority = ['shy', 'happy', 'sad', 'serious', 'gentle', 'neutral']
+    let hintRank = hintPriority.length - 1
+    let fallbackEmotion = 'neutral'
 
-    function maybeStreamEmotion(replyText: string) {
+    function maybeStreamEmotion(replyText: string, committedLength: number) {
       if (!options.onStreamEmotion || replyText.length < 4) return
-      const emotion = inferEmotion(replyText, characterId)
+      // inferEmotion 最长关键词为 4 字，保留 3 字即可衔接跨片段命中。
+      // 标签确认时回退的尾部只含 [mood 与空白，不会撤销已命中的关键词。
+      const tail = replyText.slice(Math.max(0, committedLength - 3))
+      const hint = inferEmotion(tail)
+      hintRank = Math.min(hintRank, hintPriority.indexOf(hint))
+      if (hintRank === hintPriority.length - 1 && fallbackEmotion === 'neutral') fallbackEmotion = inferEmotion(tail, characterId)
+      const emotion = hintRank < hintPriority.length - 1 ? hintPriority[hintRank]! : fallbackEmotion
       if (emotion !== emotionState.value) {
         emotionState.value = emotion
         options.onStreamEmotion(emotion)
@@ -182,10 +190,8 @@ export function useChatConversation(options: ChatConversationOptions) {
     return {
       applyTokenDelta(assistant, delta) {
         const prevCleanLen = assistant.content.length
-        // 原始流单独累积（含未闭合标签），展示/历史/配音只吃剥离后的干净文本；
-        // 不能用 cleanText 反推 raw，否则被剥离的标签前缀会在下一 token 错位。
-        streamState.rawContent += delta
-        const extracted = extractMoodTag(streamState.rawContent)
+        const committedLength = moodStream.committedLength
+        const extracted = moodStream.push(delta)
         assistant.content = extracted.cleanText
         if (extracted.emotion) {
           emotionState.moodTagged = true
@@ -194,7 +200,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             options.onStreamEmotion?.(extracted.emotion)
           }
         } else if (!emotionState.moodTagged) {
-          maybeStreamEmotion(assistant.content)
+          maybeStreamEmotion(assistant.content, committedLength)
         }
         options.voice.append(extracted.cleanText.slice(prevCleanLen))
       },
@@ -204,7 +210,9 @@ export function useChatConversation(options: ChatConversationOptions) {
           options.onStreamEmotion('neutral')
         }
         emotionState.moodTagged = false
-        streamState.rawContent = ''
+        moodStream = createMoodTagStream()
+        hintRank = hintPriority.length - 1
+        fallbackEmotion = 'neutral'
       },
     }
   }

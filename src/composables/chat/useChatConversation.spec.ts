@@ -24,7 +24,7 @@ function setup() {
     apiBaseUrl: ref('http://localhost:1234/v1'), apiModel: ref('gpt-4'), apiKey: ref('test'),
     webSearchEnabled: ref(false), useHostConfig: ref(false), companionTools: ref(true),
     reasoning: ref('off'), userProfile: ref({}), recallMemories: () => [],
-    setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), nearBottom: () => false, scrollBottom: vi.fn(),
+    setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), onStreamEmotion: vi.fn(), nearBottom: () => false, scrollBottom: vi.fn(),
   }
   const conversation = useChatConversation(options as unknown as Parameters<typeof useChatConversation>[0])
   return { conversation, options, messages, busy }
@@ -32,6 +32,34 @@ function setup() {
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); desktopFixture.current = undefined })
 
 describe('chat recovery and tool lifecycle', () => {
+  it('keeps each token visible and spoken while mood tags override hints and the next character starts fresh', async () => {
+    const deltas = ['那', '个，好', '开心', '，脸', '红[moo', 'd=ha', 'ppy]难过', '[mood=BAD]', '[MOOD:sa', 'd]尾声', '[mood=hap']
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(stream([...deltas.map(content => ({ type: 'token', content })), { type: 'done' }]))
+      .mockResolvedValueOnce(stream([{ type: 'token', content: '我在' }, { type: 'token', content: '这里' }, { type: 'done' }]))
+      .mockResolvedValueOnce(stream([{ type: 'token', content: '不好[mood    ' }, { type: 'token', content: '=BAD]意思' }, { type: 'done' }]))
+    vi.stubGlobal('fetch', fetchMock)
+    const { conversation, options, messages } = setup()
+    const displayed: string[] = []
+    options.voice.append.mockImplementation(() => {
+      displayed.push(messages.at(-1)!.content)
+      options.activeChar.value = 'natsume'
+    })
+    await conversation.sendMessage('你好')
+    expect(displayed).toEqual(['那', '那个，好', '那个，好开心', '那个，好开心，脸', '那个，好开心，脸红[moo',
+      '那个，好开心，脸红', '那个，好开心，脸红难过', '那个，好开心，脸红难过', '那个，好开心，脸红难过',
+      '那个，好开心，脸红难过尾声', '那个，好开心，脸红难过尾声'])
+    expect(options.voice.append.mock.calls.map(([delta]) => delta)).toEqual(['那', '个，好', '开心', '，脸', '红[moo', '', '难过', '', '', '尾声', ''])
+    expect(options.onStreamEmotion.mock.calls.map(([emotion]) => emotion)).toEqual(['shy', 'happy', 'shy', 'happy', 'sad', 'neutral'])
+    options.onStreamEmotion.mockClear()
+    await conversation.sendMessage('继续')
+    expect(options.onStreamEmotion.mock.calls.map(([emotion]) => emotion)).toEqual(['gentle', 'neutral'])
+    options.onStreamEmotion.mockClear()
+    await conversation.sendMessage('继续')
+    expect(messages.at(-1)?.content).toBe('不好意思')
+    expect(options.onStreamEmotion.mock.calls.map(([emotion]) => emotion)).toEqual(['shy', 'neutral'])
+    conversation.destroy()
+  })
   it('discards a queued draft when another window clears content, then accepts new input', async () => {
     vi.useFakeTimers()
     const { conversation, options } = setup()
