@@ -5,6 +5,7 @@ import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
 import { useConversationReading } from './useConversationReading.ts';
 import { publishChatReceipt } from '../../utils/chatRelayReceipt.ts';
 import { useRoomPresentation } from './useRoomPresentation.ts';
+import { useWorkspaceDirectorySettings } from './useWorkspaceDirectorySettings.ts';
 import { useCompanionAffection } from '../useCompanionAffection.ts';
 import { useCompanionBehaviorRuntime } from '../useCompanionBehaviorRuntime.ts';
 import { useCompanionClipboardImport } from '../useCompanionClipboardImport.ts';
@@ -92,17 +93,9 @@ export function useCompanionWorkspace() {
         chatReady,
     });
     const settingsOpen = ref(false);
-    const workspaceOpen = ref(false);
-    const workspaceInput = ref('');
-    const workspaceExists = ref(false);
-    const workspaceSaving = ref(false);
-    const workspaceError = ref('');
-    const workspaceSavedRoot = ref('');
-    const workspaceRestartRequired = ref(false);
-    const workspaceTooltip = computed(() => workspaceRestartRequired.value
-        ? `AI 工作区已保存：${workspaceSavedRoot.value}；完全退出并重启绘遇后生效`
-        : workspaceExists.value ? `AI 工作区：${workspaceSavedRoot.value || '已配置'}`
-        : '未配置 AI 工作区：样张预览与训练不可用，点击设置');
+    const { workspaceOpen, workspaceInput, workspaceExists, workspaceSaving, workspaceError,
+        workspaceRestartRequired, workspaceTooltip, saveWorkspace } = useWorkspaceDirectorySettings(
+        desktopBridge, (message, kind) => { chatError.value = message; chatErrorKind.value = kind; });
     let uiIdleTimer = 0;
     const uiHidden = ref(false);
     let lastPointerMove = Date.now();
@@ -298,40 +291,6 @@ export function useCompanionWorkspace() {
                 setUiHidden(true);
         }, 3200) as unknown as number;
     }
-    async function refreshWorkspaceState() {
-        if (!desktopBridge) return;
-        try {
-            const workspace = await desktopBridge.getWorkspace();
-            if (!viewAlive) return;
-            workspaceInput.value = workspaceSavedRoot.value = workspace.root;
-            workspaceExists.value = workspace.exists;
-            workspaceRestartRequired.value = workspace.restartRequired;
-        }
-        catch {
-            // 桌面桥未就绪时忽略
-        }
-    }
-    async function saveWorkspace() {
-        if (!desktopBridge || workspaceSaving.value) return;
-        const value = workspaceInput.value.trim();
-        if (!value) return;
-        workspaceSaving.value = true; workspaceError.value = '';
-        try {
-            const result = await desktopBridge.setWorkspace(value);
-            if (!viewAlive) return;
-            workspaceInput.value = workspaceSavedRoot.value = result.root;
-            workspaceExists.value = result.exists;
-            workspaceRestartRequired.value = result.restartRequired;
-            workspaceOpen.value = false;
-            chatError.value = result.restartRequired ? 'AI 工作区已保存，完全退出并重启绘遇后生效。' : 'AI 工作区已保存，当前目录已生效。';
-            chatErrorKind.value = 'info';
-        }
-        catch (error) {
-            chatError.value = workspaceError.value = (error as Error).message || '工作区设置失败';
-            chatErrorKind.value = 'error';
-        }
-        finally { workspaceSaving.value = false; }
-    }
     function readDesktopLive2dOverride(): boolean | null {
         if (!desktopBridge)
             return null;
@@ -424,7 +383,6 @@ export function useCompanionWorkspace() {
         window.addEventListener('wheel', noteActivity, { passive: true });
         window.addEventListener('pointermove', onPointerMove, { passive: true });
         reconcileAutoListen();
-        void refreshWorkspaceState();
         if (desktopBridge) {
             document.documentElement.classList.add('companion-desktop');
             lastPointerMove = Date.now();

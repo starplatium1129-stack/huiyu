@@ -1,6 +1,8 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { afterEach, expect, it, vi } from 'vitest'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
+import { useWorkspaceDirectorySettings } from '../composables/chat/useWorkspaceDirectorySettings'
+import type { DesktopAiWorkspace } from '../types/desktop'
 
 const pickWorkspace = vi.hoisted(() => vi.fn())
 vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => ({ pickWorkspace }) }))
@@ -53,5 +55,42 @@ it('blocks repeated selection and ignores a selection returned after closing and
     await flushPromises()
     expect(wrapper.get('[role="alert"]').text()).toContain('picker unavailable')
     expect(wrapper.get('input').attributes('disabled')).toBeUndefined()
+  } finally { wrapper.unmount() }
+})
+
+it('reloads directories saved elsewhere on reopen without overwriting an edited or newer draft', async () => {
+  const directory = (root: string): DesktopAiWorkspace => ({ root, exists: true, activeRoot: 'D:\\AI', restartRequired: root !== 'D:\\AI' })
+  const getWorkspace = vi.fn().mockResolvedValue(directory('D:\\AI'))
+  const setWorkspace = vi.fn()
+  let state!: ReturnType<typeof useWorkspaceDirectorySettings>
+  const wrapper = mount({ setup() { state = useWorkspaceDirectorySettings({ getWorkspace, setWorkspace }, vi.fn()); return () => null } })
+  try {
+    await flushPromises()
+    expect(state.workspaceInput.value).toBe('D:\\AI')
+    // The control room has saved E while Companion has remained mounted.
+    getWorkspace.mockResolvedValueOnce(directory('E:\\AI'))
+    state.workspaceOpen.value = true; await flushPromises()
+    expect(state.workspaceInput.value).toBe('E:\\AI')
+    expect(state.workspaceRestartRequired.value).toBe(true)
+    expect(state.workspaceTooltip.value).toContain('E:\\AI')
+    state.workspaceOpen.value = false
+    let finish!: (value: DesktopAiWorkspace) => void
+    getWorkspace.mockImplementationOnce(() => new Promise<DesktopAiWorkspace>(resolve => { finish = resolve }))
+    state.workspaceOpen.value = true
+    expect(state.workspaceInput.value).toBe('')
+    await state.saveWorkspace()
+    expect(setWorkspace).not.toHaveBeenCalled()
+    state.workspaceInput.value = 'F:\\manual draft'
+    finish(directory('E:\\AI')); await flushPromises()
+    expect(state.workspaceInput.value).toBe('F:\\manual draft')
+    state.workspaceOpen.value = false
+    getWorkspace.mockImplementationOnce(() => new Promise<DesktopAiWorkspace>(resolve => { finish = resolve }))
+    state.workspaceOpen.value = true
+    state.workspaceOpen.value = false
+    getWorkspace.mockResolvedValueOnce(directory('G:\\latest'))
+    state.workspaceOpen.value = true; await flushPromises()
+    finish(directory('E:\\stale')); await flushPromises()
+    expect(state.workspaceInput.value).toBe('G:\\latest')
+    expect(state.workspaceTooltip.value).toContain('G:\\latest')
   } finally { wrapper.unmount() }
 })
