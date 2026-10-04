@@ -133,7 +133,7 @@ test('attachment failure publishes no output and the same publisher command can 
   assert.equal(result.destination, path.join(out, f.releaseId));
 });
 
-test('graphical worker retains verified staging on native failure and cooperatively cancels a resumed child', { skip: process.platform !== 'win32' }, async t => {
+test('graphical worker resumes staging across sessions with approved release and directory binding, retaining cancellation', { skip: process.platform !== 'win32' }, async t => {
   const f = fixture(t), plan = planRelease(f); await applyRelease(plan);
   const repo = path.resolve(__dirname, '../..'), archive = path.join(f.base, 'release.zip');
   const install = path.join(f.base, '程序 安装'), runtime = path.join(f.base, '用户 资料/gateway');
@@ -143,6 +143,26 @@ test('graphical worker retains verified staging on native failure and cooperativ
   }
   const quote = (value: string) => "'" + value.replaceAll("'", "''") + "'";
   const runner = path.join(f.base, 'exercise.ps1');
+  const previewFile = path.join(f.base, 'preview.json'), reopened = path.join(f.base, 'reopened.ps1');
+  const otherInstall = path.join(f.base, 'other-program'), otherRuntime = path.join(f.base, 'other-user/gateway');
+  f.write(path.join(otherInstall, 'gateway/directory-marker'), 'fixture');
+  f.write(reopened, `\uFEFF
+param([string]$ExpectedStaging)
+$ErrorActionPreference='Stop'
+. ${quote(path.join(repo, 'tools/offline-resource-assistant.ps1'))}
+$preview=Get-Content -LiteralPath ${quote(previewFile)} -Raw | ConvertFrom-Json
+if ($ExpectedStaging -notin @(Get-OfflineResumeRecords).staging) { throw 'Reopened helper did not discover retained staging' }
+$matched=@(Get-OfflineResumeRecords $preview)
+if ($matched.Count -ne 1 -or $matched[0].staging -ne $ExpectedStaging) { throw 'Reopened helper did not bind preview to staging' }
+$preview.runtimeRoot=${quote(otherRuntime)}
+if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Changed runtime selected old staging' }
+$preview.runtimeRoot=${quote(runtime + path.sep)}; $preview.installDir=${quote(otherInstall)}
+if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Changed installation selected old staging' }
+$window=New-OfflineWindow
+if ($window.FindName('Install').IsEnabled -or $window.FindName('Archive').Text) { throw 'Recovery discovery authorized installation' }
+$window.Close()
+Write-Output 'REOPEN_DISCOVERY_BINDING_WITHOUT_AUTHORIZATION_OK'
+`);
   f.write(runner, `\uFEFF
 $ErrorActionPreference='Stop'
 & ${quote(path.join(repo, 'scripts/maintenance/archive-offline-release.ps1'))} -Source ${quote(f.destination)} -Archive ${quote(archive)}
@@ -177,11 +197,47 @@ try { & $worker @options; throw 'Expected incompatible native runtime' } catch {
 Remove-Item -LiteralPath ${quote(path.join(install, 'gateway/old-runtime'))}
 $preview=(& $worker @options) | ConvertFrom-Json
 if ($preview.installDir -ne ${quote(install)} -or -not $preview.verified -or $state.Staging) { throw 'Bundled preview path/capability check failed' }
+$preview | ConvertTo-Json | Set-Content -LiteralPath ${quote(previewFile)} -Encoding UTF8
 $options.Apply=$true
 try { & $worker @options; throw 'Expected native failure' } catch { if ($_.Exception.Message -notmatch 'LOCKED fixture') { throw } }
 if (-not $state.CanResume -or -not (Test-Path -LiteralPath $state.Staging)) { throw 'Missing recovery staging' }
 $retained=$state.Staging
 try {
+  $recordPath=$retained+'.resume.json'
+  $recordBytes=[IO.File]::ReadAllText($recordPath)
+  $record=$recordBytes | ConvertFrom-Json
+  if ($record.releaseSha256 -ne $preview.releaseSha256 -or $record.releaseId -ne $preview.releaseId -or $record.installDir -ne $preview.installDir -or $record.runtimeRoot -ne $preview.runtimeRoot) { throw 'Incorrect persisted recovery binding' }
+  $reopenOutput=& powershell.exe -NoProfile -NonInteractive -STA -File ${quote(reopened)} -ExpectedStaging $retained
+  if ($LASTEXITCODE -ne 0 -or $reopenOutput -notmatch 'REOPEN_DISCOVERY_BINDING_WITHOUT_AUTHORIZATION_OK') { throw 'Reopened helper failed' }
+  . ${quote(path.join(repo, 'tools/offline-resource-assistant.ps1'))}
+  $options.ResumeStaging=$retained
+  $changed=$options.Clone(); $changed.RuntimeRoot=${quote(otherRuntime)}
+  try { & $worker @changed; throw 'Expected runtime binding rejection' } catch { if ($_.Exception.Message -notmatch 'Recovery record does not match') { throw } }
+  Copy-Item -LiteralPath ${quote(path.join(install, 'gateway/huiyu-runtime.exe'))} -Destination ${quote(path.join(otherInstall, 'gateway/huiyu-runtime.exe'))}
+  $changed=$options.Clone(); $changed.InstallDir=${quote(otherInstall)}
+  try { & $worker @changed; throw 'Expected install binding rejection' } catch { if ($_.Exception.Message -notmatch 'Recovery record does not match') { throw } }
+  $record.releaseSha256='0'*64
+  [IO.File]::WriteAllText($recordPath, ($record | ConvertTo-Json))
+  if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Wrong approval selected old staging' }
+  try { & $worker @options; throw 'Expected approval binding rejection' } catch { if ($_.Exception.Message -notmatch 'Recovery record does not match') { throw } }
+  $record.releaseSha256=$preview.releaseSha256; $record.releaseId='fixture-r2'
+  [IO.File]::WriteAllText($recordPath, ($record | ConvertTo-Json))
+  if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Wrong release selected old staging' }
+  try { & $worker @options; throw 'Expected release binding rejection' } catch { if ($_.Exception.Message -notmatch 'Recovery record does not match') { throw } }
+  [IO.File]::WriteAllText($recordPath, '{broken')
+  if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Damaged recovery record selected staging' }
+  [IO.File]::Delete($recordPath)
+  if (@(Get-OfflineResumeRecords $preview).Count) { throw 'Missing recovery record selected staging' }
+  try { & $worker @options; throw 'Expected missing record rejection' } catch { if ($_.Exception.Message -notmatch 'Missing path') { throw } }
+  [IO.File]::WriteAllText($recordPath, $recordBytes)
+  $absent=Join-Path (Split-Path $retained -Parent) ('huiyu-offline-import-'+[Guid]::NewGuid().ToString())
+  [IO.File]::WriteAllText(($absent+'.resume.json'), $recordBytes)
+  try {
+    if ($absent -in @(Get-OfflineResumeRecords $preview).staging) { throw 'Missing staging selected for recovery' }
+    $changed=$options.Clone(); $changed.ResumeStaging=$absent
+    try { & $worker @changed; throw 'Expected missing staging rejection' } catch { if ($_.Exception.Message -notmatch 'Missing path') { throw } }
+  } finally { [IO.File]::Delete($absent+'.resume.json') }
+  if ((Get-Content -LiteralPath ${quote(path.join(install, 'gateway/calls.txt'))}).Count -ne 1) { throw 'Mismatched recovery invoked native install' }
   [IO.File]::WriteAllText(${quote(path.join(install, 'gateway/wait'))}, 'wait')
   $options.ResumeStaging=$retained
   $shell=[PowerShell]::Create()
@@ -200,7 +256,7 @@ try {
   [IO.File]::WriteAllText(${quote(path.join(install, 'gateway/succeed'))}, 'succeed')
   $state.Cancel=$false
   $result=(& $worker @options) | ConvertFrom-Json
-  if (-not $result.ok -or (Test-Path -LiteralPath $retained) -or $state.CanResume -or $state.Staging) { throw 'Retry after cancel did not confirm and clean staging' }
+  if (-not $result.ok -or (Test-Path -LiteralPath $retained) -or (Test-Path -LiteralPath $recordPath) -or $state.CanResume -or $state.Staging) { throw 'Retry after cancel did not confirm and clean staging' }
   if (Test-Path -LiteralPath ${quote(runtime)}) { throw 'Fixture touched target user runtime' }
   Write-Output 'BUNDLED_UNICODE_PREVIEW_FAILURE_RESUME_CANCEL_RETRY_OK'
 } finally {
@@ -208,6 +264,7 @@ try {
   $resolved=[IO.Path]::GetFullPath($retained)
   if (-not $resolved.StartsWith($tempRoot,[StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($resolved) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe fixture cleanup' }
   if (Test-Path -LiteralPath $resolved) { Remove-Item -LiteralPath $resolved -Recurse -Force }
+  if (Test-Path -LiteralPath ($resolved+'.resume.json')) { Remove-Item -LiteralPath ($resolved+'.resume.json') -Force }
 }
 `);
   const output = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-File', runner], { windowsHide: true, encoding: 'utf8', stdio: 'pipe', timeout: 45000 });

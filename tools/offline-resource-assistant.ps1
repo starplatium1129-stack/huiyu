@@ -86,6 +86,39 @@ function Get-OfflineError([string]$Message) {
   }
   return "$hint`r`n`r`n诊断：$Message"
 }
+function Assert-OfflineResumePath([string]$Value, [switch]$AllowMissing) {
+  $absolute = [IO.Path]::GetFullPath($Value)
+  if ($absolute.StartsWith('\\')) { throw 'Network recovery paths are not supported.' }
+  $current = $absolute
+  while ($current) {
+    if (Test-Path -LiteralPath $current) {
+      $item = Get-Item -LiteralPath $current -Force
+      if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $item.LinkType) { throw 'Linked recovery paths are not supported.' }
+    } elseif (-not $AllowMissing -and $current -eq $absolute) { throw 'Recovery path is missing.' }
+    $current = [IO.Path]::GetDirectoryName($current)
+  }
+  return $absolute
+}
+function Get-OfflineResumeRecords($Preview) {
+  $tempRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp'
+  try { $tempRoot = Assert-OfflineResumePath $tempRoot } catch { return }
+  foreach ($file in (Get-ChildItem -LiteralPath $tempRoot -Filter 'huiyu-offline-import-*.resume.json' -File | Sort-Object LastWriteTimeUtc -Descending)) {
+    try {
+      if ($file.Name -notmatch '^huiyu-offline-import-[a-f0-9-]{36}\.resume\.json$' -or $file.Length -gt 8192) { continue }
+      Assert-OfflineResumePath $file.FullName | Out-Null
+      $staging = Assert-OfflineResumePath ($file.FullName -replace '\.resume\.json$', '')
+      if (-not (Test-Path -LiteralPath $staging -PathType Container)) { continue }
+      $record = [IO.File]::ReadAllText($file.FullName) | ConvertFrom-Json
+      if ($record.schemaVersion -ne 1 -or $record.kind -ne 'huiyu-offline-staging' -or
+          $record.releaseSha256 -cnotmatch '^[a-f0-9]{64}$' -or -not $record.releaseId) { continue }
+      $install = Assert-OfflineResumePath $record.installDir
+      $runtime = Assert-OfflineResumePath $record.runtimeRoot -AllowMissing
+      if ($Preview -and ($record.releaseSha256 -cne $Preview.releaseSha256 -or $record.releaseId -cne $Preview.releaseId -or
+          $install.TrimEnd('\') -ine $Preview.installDir.TrimEnd('\') -or $runtime.TrimEnd('\') -ine $Preview.runtimeRoot.TrimEnd('\'))) { continue }
+      @{ staging=$staging; releaseId=$record.releaseId; installDir=$install; runtimeRoot=$runtime }
+    } catch { continue }
+  }
+}
 # Dot-sourcing exposes the actual view and theme functions for isolated visual QA.
 if ($MyInvocation.InvocationName -eq '.') { return }
 $window = New-OfflineWindow
@@ -96,6 +129,11 @@ $ui.Light = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\T
 Set-OfflineTheme $window $ui.Light
 $controls.RuntimeRoot.Text = Join-Path $env:APPDATA 'com.aics.studio\gateway'
 $controls.Details.Text = '自动核验独立审批指纹、完整文件集合及每项 SHA-256。校验不会写入资源库。安装后保留原有版本与用户修改的样张。'
+$retained = @(Get-OfflineResumeRecords)
+if ($retained.Count) {
+  $controls.Status.Text = '发现可恢复暂存 · 请选择同一 ZIP 校验'
+  $controls.Details.Text += "`r`n`r`n发现 $($retained.Count) 份完整暂存记录，尚未授权或复核。最近记录：$($retained[0].releaseId)`r`n程序：$($retained[0].installDir)`r`n运行目录：$($retained[0].runtimeRoot)`r`n暂存：$($retained[0].staging)`r`n选择同一批准发行与上述目录并校验后，才能确认继续安装。"
+}
 $worker = Join-Path $PSScriptRoot 'install-offline-resources.ps1'
 function Update-OfflineActions {
   foreach ($name in 'Choose','BrowseInstall','BrowseRuntime') { $controls[$name].IsEnabled = -not $ui.Busy }
@@ -139,8 +177,14 @@ $controls.Choose.Add_Click({
 $controls.Verify.Add_Click({ Start-OfflineJob $false })
 $controls.Install.Add_Click({
   if (-not $ui.Ready -or $ui.Busy -or -not $controls.Closed.IsChecked) { return }
-  $message = "安装 $($ui.Preview.releaseId)？`r`n`r`n运行目录：$($ui.Preview.runtimeRoot)`r`n原有版本和用户修改的样张会保留。请确保已从托盘完全退出绘遇。"
-  if ([Windows.MessageBox]::Show($window, $message, '确认安装离线资源', 'OKCancel', 'Question') -eq 'OK') { Start-OfflineJob $true }
+  $message = "安装 $($ui.Preview.releaseId)？`r`n`r`n程序：$($ui.Preview.installDir)`r`n运行目录：$($ui.Preview.runtimeRoot)`r`n原有版本和用户修改的样张会保留。请确保已从托盘完全退出绘遇。"
+  if ($ui.Staging) {
+    $message += "`r`n`r`n完整暂存：$($ui.Staging)`r`n「是」：复用暂存，跳过重新解压，原生导入仍核对全部文件。`r`n「否」：重新解压 ZIP 后安装，保留旧暂存；暂存损坏时选此项。`r`n「取消」：不安装。"
+    $choice = [Windows.MessageBox]::Show($window, $message, '确认继续安装离线资源', 'YesNoCancel', 'Question')
+    if ($choice -eq 'Cancel') { return }
+    if ($choice -eq 'No') { $ui.Staging = $null }
+    Start-OfflineJob $true
+  } elseif ([Windows.MessageBox]::Show($window, $message, '确认安装离线资源', 'OKCancel', 'Question') -eq 'OK') { Start-OfflineJob $true }
 })
 $controls.Cancel.Add_Click({ if ($ui.Job) { $ui.Job.State.Cancel = $true; $controls.Status.Text = '正在安全取消，请稍候…'; Update-OfflineActions } })
 $controls.Closed.Add_Click({ Update-OfflineActions })
@@ -174,13 +218,13 @@ $timer.Add_Tick({
   try { $ui.Job.Shell.EndInvoke($ui.Job.Handle) | Out-Null } catch { $state.Error = $_.Exception.Message }
   $ui.Job.Shell.Dispose(); $ui.Job = $null; $ui.Busy = $false
   $controls.Progress.IsIndeterminate = $false
-  if ($state.CanResume) { $ui.Staging = $state.Staging }
+  if ($ui.Applying) { $ui.Staging = if ($state.CanResume) { $state.Staging } else { $null } }
   if ($state.Error) {
     $controls.Status.Text = '未完成 · 可以重试'
     $controls.Details.Text = Get-OfflineError $state.Error
     if ($state.Staging) {
       $recovery = if ($state.CanResume) { '完整暂存可用「重试安装」继续。' } else { '解压尚未完成；重试会重新解压 ZIP。' }
-      $controls.Details.Text += "`r`n`r`n暂存目录已保留：$($state.Staging)`r`n请勿删除。$recovery 关闭助手后也可重新选择同一 ZIP 恢复。"
+      $controls.Details.Text += "`r`n`r`n暂存目录已保留：$($state.Staging)`r`n请勿删除。$recovery 重开后选择同一批准 ZIP 和相同目录，校验并确认后可继续；部分解压会重新解压。"
     }
     if ($ui.Applying) { $controls.Install.Content = '重试安装' }
   } elseif ($ui.Applying) {
@@ -194,6 +238,13 @@ $timer.Add_Tick({
     $controls.Progress.Value = 100
     $controls.Status.Text = '校验通过 · 等待确认安装'
     $controls.Details.Text = "版本：$($state.Result.releaseId)`r`n文件：$($state.Result.files) 项，解压后 $([Math]::Round($state.Result.bytes / 1GB, 2)) GiB`r`n程序：$($state.Result.installDir)`r`n运行目录：$($state.Result.runtimeRoot)`r`n`r`n批准来源：$($state.Result.trustedSource)`r`n审批指纹：$($state.Result.releaseSha256)"
+    $resume = @(Get-OfflineResumeRecords $ui.Preview)
+    $ui.Staging = if ($resume.Count) { $resume[0].staging } else { $null }
+    $controls.Install.Content = if ($ui.Staging) { '继续安装' } else { '确认安装' }
+    if ($ui.Staging) {
+      $controls.Status.Text = '校验通过 · 可确认继续安装'
+      $controls.Details.Text += "`r`n`r`n可复用完整暂存：$($ui.Staging)`r`n发行、程序和运行目录一致；点击「继续安装」并确认后才复用，原生导入仍会完整校验。"
+    }
   }
   Update-OfflineActions
 })

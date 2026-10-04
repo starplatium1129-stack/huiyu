@@ -161,6 +161,7 @@ try {
     $trustedSource = $approved.source
   }
   if ($releaseHash -ne $ExpectedReleaseSha256.ToLowerInvariant()) { throw 'Release approval hash mismatch. Obtain the hash from a trusted publication page.' }
+  $ExpectedReleaseSha256 = $ExpectedReleaseSha256.ToLowerInvariant()
   $release = [Text.Encoding]::UTF8.GetString($releaseBytes) | ConvertFrom-Json
   if ($TrustedRelease -and $release.releaseId -cne $approved.id) { throw 'Trusted release identity mismatch.' }
   if ($release.schemaVersion -ne 1 -or $release.kind -ne 'huiyu-offline-release' -or -not $release.files) { throw 'Unsupported offline release.' }
@@ -194,7 +195,14 @@ try {
     Check-Cancel
     if ($ResumeStaging) {
       $staging = Assert-OrdinaryPath $ResumeStaging
-      if (-not $staging.StartsWith($tempRoot, [StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($staging) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe recovery staging.' }
+      if ([IO.Path]::GetDirectoryName($staging) -ine $tempRoot.TrimEnd('\') -or [IO.Path]::GetFileName($staging) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe recovery staging.' }
+      $recordPath = Assert-OrdinaryPath ($staging + '.resume.json')
+      if ((Get-Item -LiteralPath $recordPath).Length -gt 8192) { throw 'Invalid recovery record.' }
+      $record = [IO.File]::ReadAllText($recordPath) | ConvertFrom-Json
+      if ($record.schemaVersion -ne 1 -or $record.kind -ne 'huiyu-offline-staging' -or
+          $record.releaseSha256 -cne $ExpectedReleaseSha256 -or $record.releaseId -cne $release.releaseId -or
+          (Assert-OrdinaryPath $record.installDir).TrimEnd('\') -ine $installPath.TrimEnd('\') -or
+          (Assert-OrdinaryPath $record.runtimeRoot -AllowMissing).TrimEnd('\') -ine $runtimePath.TrimEnd('\')) { throw 'Recovery record does not match approved release or selected directories.' }
       if ($ProgressState) { $ProgressState.Staging = $staging; $ProgressState.CanResume = $true }
       # The native importer rechecks every retained byte and its complete inventory.
     } else {
@@ -255,6 +263,21 @@ try {
        releaseSha256=$ExpectedReleaseSha256; trustedSource=$trustedSource } | ConvertTo-Json
     return
   }
+  if (-not $ResumeStaging) {
+    # Keep recovery metadata outside the package's exact native inventory. Publish
+    # only after every extracted byte passed its independently approved hash.
+    $recordPath = $staging + '.resume.json'
+    $recordTemp = $recordPath + '.tmp'
+    $record = @{ schemaVersion=1; kind='huiyu-offline-staging'; releaseId=$release.releaseId;
+      releaseSha256=$ExpectedReleaseSha256; installDir=$installPath; runtimeRoot=$runtimePath } | ConvertTo-Json
+    Assert-OrdinaryPath $recordTemp -AllowMissing | Out-Null
+    $recordStream = [IO.File]::Open($recordTemp, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write)
+    try {
+      $recordBytes = [Text.Encoding]::UTF8.GetBytes($record)
+      $recordStream.Write($recordBytes, 0, $recordBytes.Length); $recordStream.Flush($true)
+    } finally { $recordStream.Dispose() }
+    [IO.File]::Move($recordTemp, $recordPath)
+  }
   if ($ProgressState) { $ProgressState.CanResume = $true }
   Check-Cancel
   Report-Progress 'installing' 0 0
@@ -275,6 +298,8 @@ try {
         # is a cleanup warning, not an installation failure or permission to retry.
         Write-Warning "Installed successfully; temporary files retained: $staging. $_"
       }
+      try { if (Test-Path -LiteralPath $recordPath) { Remove-Item -LiteralPath (Assert-OrdinaryPath $recordPath) -Force } }
+      catch { Write-Warning "Installed successfully; recovery record retained: $recordPath. $_" }
       if ($ProgressState) { $ProgressState.CanResume = $false }
     } else { Write-Warning "Incomplete import staging retained: $staging" }
   }
