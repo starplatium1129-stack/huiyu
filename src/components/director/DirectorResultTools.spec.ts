@@ -105,10 +105,12 @@ describe('result tools', () => {
     const wrapper = mount(DirectorImageTools, { props })
     await wrapper.findAll('button').find(item => item.text() === '上传反推')!.trigger('click')
     await wrapper.findAll('button').find(item => item.text() === '反推当前图')!.trigger('click')
+    await wrapper.get('.reference-paste').trigger('click')
     const clipboard = new Event('paste') as ClipboardEvent
     wrapper.get('.reference-paste').element.dispatchEvent(clipboard)
     expect(wrapper.emitted('interrogateUpload')).toHaveLength(1)
     expect(wrapper.emitted('interrogateCurrent')).toHaveLength(1)
+    expect(wrapper.emitted('interrogateClipboard')).toHaveLength(1)
     expect(wrapper.emitted('interrogatePaste')?.[0]).toEqual([clipboard])
     await wrapper.setProps({ interrogateBusy:true })
     await wrapper.findAll('button').find(item => item.text() === '取消反推')!.trigger('click')

@@ -16,9 +16,9 @@
                 <ArchiveIcon name="image" /><span>反推当前图</span>
               </button>
             </StudioTooltip>
-            <StudioTooltip anchor content="聚焦此按钮后按 Ctrl+V 粘贴图片">
-              <button class="btn btn-ghost reference-paste" type="button" :disabled="interrogateBusy" @paste="$emit('interrogatePaste', $event)">
-                <ArchiveIcon name="copy" /><span>粘贴图片</span><small>Ctrl+V</small>
+            <StudioTooltip anchor content="点击读取剪贴板图片并反推，也可按 Ctrl+V 粘贴">
+              <button class="btn btn-ghost reference-paste" type="button" :disabled="interrogateBusy" @click="$emit('interrogateClipboard')" @paste="$emit('interrogatePaste', $event)">
+                <ArchiveIcon name="copy" /><span>粘贴反推</span><small>Ctrl+V</small>
               </button>
             </StudioTooltip>
             <button v-if="interrogateBusy" class="btn btn-ghost" type="button" @click="$emit('interrogateCancel')"><ArchiveIcon name="close" />取消反推</button>
@@ -81,6 +81,7 @@ const BUSY_HINT = '生成中，等这一张出完就能用'
 defineEmits<{
   interrogateCurrent: []
   interrogateUpload: []
+  interrogateClipboard: []
   interrogatePaste: [event: ClipboardEvent]
   interrogateCancel: []
   openInpaint: []

@@ -219,13 +219,7 @@ async function onInterrogateFile(e: Event) {
   if (file) await runInterrogateFile(file)
 }
 
-/**
- * 剪贴板里的图片直接反推（2026-08-30 UX 审计 P2）。
- *
- * 本地反推此前只能走文件选择器，而真要用的那一刻，图往往已经在剪贴板里了
- * （刚截的图、从参考站复制的），多一趟「打开对话框找文件」纯属多余。
- * 监听挂在按钮上是因为浏览器只把 paste 派发给焦点元素，按钮天然可聚焦。
- */
+/** 保留按钮上的 Ctrl+V 入口，与点击读取共用反推路径。 */
 function onInterrogatePaste(e: ClipboardEvent) {
   const image = Array.from(e.clipboardData?.files ?? []).find(f => f.type.startsWith('image/'))
   if (!image) return
@@ -233,8 +227,29 @@ function onInterrogatePaste(e: ClipboardEvent) {
   void runInterrogateFile(image)
 }
 
-/** 反推一张图片：文件选择与剪贴板粘贴共用这一条路径 */
-async function runInterrogateFile(file: File) {
+async function interrogateClipboardImage() {
+  await runInterrogateFile(async () => {
+    if (!navigator.clipboard?.read) throw new Error('当前环境无法点击读取剪贴板，请上传图片或在此按钮按 Ctrl+V 粘贴')
+    try {
+      const items = await navigator.clipboard.read()
+      for (const item of items) {
+        const type = item.types.find(type => type.startsWith('image/'))
+        if (!type) continue
+        const blob = await item.getType(type)
+        return new File([blob], 'clipboard-image', { type: blob.type || type })
+      }
+      throw new Error('剪贴板中没有图片，请先复制图片再点击粘贴反推')
+    } catch (error) {
+      if (error instanceof DOMException && (error.name === 'NotAllowedError' || error.name === 'SecurityError')) {
+        throw new Error('未获准读取剪贴板，请允许剪贴板访问后重试，或上传图片')
+      }
+      throw error
+    }
+  })
+}
+
+/** 文件选择、粘贴事件与点击剪贴板共用同一请求及取消机制。 */
+async function runInterrogateFile(file: File | (() => Promise<File>)) {
   try {
     const result = await interrogate(file, interrogateMode.value)
     if (result) emit('interrogateResult', result)
@@ -264,7 +279,7 @@ async function interrogateCurrentImage() {
     if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
-defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, triggerInterrogatePick, onInterrogatePaste })
+defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, interrogateClipboardImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
 
 <style scoped>

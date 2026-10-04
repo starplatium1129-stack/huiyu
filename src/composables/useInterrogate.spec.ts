@@ -87,7 +87,7 @@ it('rejects demo fallback and clears an older successful result', async () => {
   expect(task.busy.value).toBe(false)
 })
 
-it('aborts a stalled request and exposes the same readable error to its caller', async () => {
+it.each(['request', 'clipboard permission'])('aborts a stalled %s and exposes the same readable error to its caller', async stalled => {
   vi.useFakeTimers()
   vi.stubGlobal('FileReader', class {
     result = 'data:image/png;base64,aW1hZ2U='
@@ -98,26 +98,35 @@ it('aborts a stalled request and exposes the same readable error to its caller',
     options.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))
   })))
   const task = useInterrogate()
-  const pending = expect(task.interrogate(file())).rejects.toThrow('反推超时')
+  const source = stalled === 'clipboard permission' ? () => new Promise<File>(() => {}) : file()
+  const pending = expect(task.interrogate(source)).rejects.toThrow('反推超时')
   await vi.advanceTimersByTimeAsync(120_000)
   await pending
   expect(task.error.value).toContain('反推超时')
   expect(task.busy.value).toBe(false)
 })
 
-it('locks and cancels current-image loading before the POST begins', async () => {
+it.each(['current image', 'clipboard image'])('locks and cancels %s loading before the POST begins', async sourceKind => {
   let resolve!: (value: Response) => void
+  let resolveImage!: (value: File) => void
   const fetchMock = vi.fn((_input: RequestInfo | URL, _init?: RequestInit) => new Promise<Response>(done => { resolve = done }))
+  const loadImage = vi.fn(() => new Promise<File>(done => { resolveImage = done }))
   vi.stubGlobal('fetch', fetchMock)
   const task = useInterrogate()
-  const pending = task.interrogate('/result-a.png')
+  const source = sourceKind === 'current image' ? '/result-a.png' : loadImage
+  const pending = task.interrogate(source)
   expect(task.busy.value).toBe(true)
-  expect(await task.interrogate('/result-a.png')).toBeNull()
+  expect(await task.interrogate(source)).toBeNull()
   task.cancel()
-  expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
-  resolve(new Response('image', { headers: { 'Content-Type': 'image/png' } }))
+  if (sourceKind === 'current image') {
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true)
+    resolve(new Response('image', { headers: { 'Content-Type': 'image/png' } }))
+  } else {
+    expect(loadImage).toHaveBeenCalledOnce()
+    resolveImage(file())
+  }
   expect(await pending).toBeNull()
-  expect(fetchMock).toHaveBeenCalledOnce()
+  expect(fetchMock).toHaveBeenCalledTimes(sourceKind === 'current image' ? 1 : 0)
   expect(task.error.value).toBeNull()
 })
 

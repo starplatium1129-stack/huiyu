@@ -165,6 +165,7 @@
                 :shots-pending="shotsPending"
                 @interrogateCurrent="stagePanel.interrogateCurrentImage()"
                 @interrogateUpload="stagePanel.triggerInterrogatePick()"
+                @interrogateClipboard="stagePanel.interrogateClipboardImage()"
                 @interrogatePaste="stagePanel.onInterrogatePaste($event)"
                 @interrogateCancel="stagePanel.cancelInterrogate()"
                 @openInpaint="inpaintOpen = true"

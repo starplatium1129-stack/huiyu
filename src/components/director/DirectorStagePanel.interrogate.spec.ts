@@ -13,6 +13,7 @@ afterEach(async () => {
   await vi.dynamicImportSettled()
   cleanups.splice(0).forEach(fn => fn())
   vi.clearAllMocks()
+  vi.unstubAllGlobals()
   busy.value = false
 })
 function fixture() {
@@ -57,4 +58,29 @@ it('exposes the existing extraction cancellation for the shared reference contro
   const wrapper = fixture()
   wrapper.vm.cancelInterrogate()
   expect(mocks.cancel).toHaveBeenCalledOnce()
+})
+
+it('reads a clipboard image on click and reports missing images or denied access', async () => {
+  const image = new Blob(['copied image'], { type: 'image/png' })
+  const getType = vi.fn().mockResolvedValue(image)
+  const read = vi.fn().mockResolvedValue([{ types: ['text/plain'] }, { types: ['image/png'], getType }])
+  vi.stubGlobal('navigator', { clipboard: { read } })
+  const result = { tags: ['smile'] }
+  let copied!: File
+  mocks.interrogate.mockImplementation(async (source: () => Promise<File>) => { copied = await source(); return result })
+  const wrapper = fixture()
+  await wrapper.vm.interrogateClipboardImage()
+  expect(read).toHaveBeenCalledOnce()
+  expect(getType).toHaveBeenCalledExactlyOnceWith('image/png')
+  expect(copied.type).toBe('image/png')
+  expect(copied.size).toBe(image.size)
+  expect(mocks.interrogate.mock.calls[0][1]).toBe('tag')
+  expect(wrapper.emitted('interrogateResult')).toEqual([[result]])
+  read.mockResolvedValueOnce([{ types: ['text/plain'] }])
+  await wrapper.vm.interrogateClipboardImage()
+  expect(wrapper.emitted('interrogateError')?.[0]?.[0]).toContain('剪贴板中没有图片')
+  read.mockRejectedValueOnce(new DOMException('Denied', 'NotAllowedError'))
+  await wrapper.vm.interrogateClipboardImage()
+  expect(wrapper.emitted('interrogateError')?.[1]?.[0]).toContain('未获准读取剪贴板')
+  expect(wrapper.emitted('interrogateResult')).toHaveLength(1)
 })

@@ -74,7 +74,7 @@ export function useInterrogate() {
   }
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancel() })
 
-  async function interrogate(source: File | string, mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
+  async function interrogate(source: File | string | (() => Promise<File>), mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
     if (busy.value || disposed || !viewActive) return null
     if (appContext) activeRequests.get(appContext)?.()
     busy.value = true
@@ -87,7 +87,18 @@ export function useInterrogate() {
     const timeout = setTimeout(() => controller.abort(), 120_000)
     try {
       let file: File
-      if (typeof source === 'string') {
+      // Clipboard permission/loading belongs to the same busy/cancel owner as
+      // current-image loading, before any image can reach the POST.
+      if (typeof source === 'function') {
+        let abortLoading = () => {}
+        try {
+          file = await new Promise<File>((resolve, reject) => {
+            abortLoading = () => reject(new DOMException('Aborted', 'AbortError'))
+            controller.signal.addEventListener('abort', abortLoading, { once: true })
+            source().then(resolve, reject)
+          })
+        } finally { controller.signal.removeEventListener('abort', abortLoading) }
+      } else if (typeof source === 'string') {
         const response = await runtimeFetch(source, { signal: controller.signal })
         if (!response.ok) throw new Error('获取当前成片失败，请重试或上传图片')
         const blob = await response.blob()
