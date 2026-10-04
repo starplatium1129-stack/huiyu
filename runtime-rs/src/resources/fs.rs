@@ -192,14 +192,22 @@ pub(super) fn atomic(path: &Path, bytes: &[u8]) -> Result<()> {
         options.mode(0o600);
     }
     let mut file = options.open(&temp)?;
-    safe(&temp, false, false)?;
-    file.write_all(bytes)?;
-    file.sync_all()?;
-    drop(file);
-    safe(&temp, false, false)?;
-    safe(path, true, false)?;
-    fs::rename(&temp, path)?;
-    sync(parent)
+    let result = (|| {
+        safe(&temp, false, false)?;
+        file.write_all(bytes)?;
+        file.sync_all()?;
+        drop(file);
+        safe(&temp, false, false)?;
+        safe(path, true, false)?;
+        fs::rename(&temp, path)?;
+        sync(parent)
+    })();
+    // Only a successful create_new gives us cleanup ownership. The closure
+    // drops the file before cleanup, including on Windows and early errors.
+    if result.is_err() {
+        let _ = remove(&temp);
+    }
+    result
 }
 pub(super) fn write_json(path: &Path, value: &Value) -> Result<()> {
     atomic(

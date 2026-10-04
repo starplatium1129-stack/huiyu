@@ -110,15 +110,23 @@ impl Live2dService {
         if let Some(snapshot) = self.catalog.cached() {
             return Ok(snapshot);
         }
-        self.run(|service, _| Ok(service.catalog.read(&service.builtins, &service.local)))
-            .await
+        self.run(|service, cancel| {
+            service
+                .catalog
+                .read(&service.builtins, &service.local, cancel)
+        })
+        .await
     }
     async fn public_snapshot(&self) -> Result<Arc<catalog::Snapshot>> {
         if let Some(snapshot) = self.public_catalog.cached() {
             return Ok(snapshot);
         }
-        self.run(|service, _| Ok(service.public_catalog.read_builtin(&service.builtins)))
-            .await
+        self.run(|service, cancel| {
+            service
+                .public_catalog
+                .read_builtin(&service.builtins, cancel)
+        })
+        .await
     }
 }
 
@@ -209,8 +217,10 @@ async fn asset(
 ) -> Response {
     let local = request.uri().path().starts_with("/api/live2d-local/");
     let resolved = service
-        .run(move |service, _| {
-            let snapshot = service.catalog.read(&service.builtins, &service.local);
+        .run(move |service, cancel| {
+            let snapshot = service
+                .catalog
+                .read(&service.builtins, &service.local, cancel)?;
             let model = snapshot
                 .models
                 .iter()
@@ -240,8 +250,10 @@ async fn derived(
     Path((character, quality)): Path<(String, String)>,
 ) -> Response {
     match service
-        .run(move |service, _| {
-            let snapshot = service.catalog.read(&service.builtins, &service.local);
+        .run(move |service, cancel| {
+            let snapshot = service
+                .catalog
+                .read(&service.builtins, &service.local, cancel)?;
             textures::projected(&snapshot, &character, &quality)
         })
         .await

@@ -86,7 +86,10 @@ impl Settings {
             #[cfg(unix)] {options.mode(0o600);}
             let mut output=options.open(&temp).await.map_err(|_|io_error())?;
             let bytes=serde_json::to_vec_pretty(&json!({"baseUrl":api.base_url,"pathname":api.pathname,"model":api.model,"apiKey":api.key})).unwrap();
-            output.write_all(&bytes).await.map_err(|_|io_error())?;output.sync_all().await.map_err(|_|io_error())?;drop(output);
+            output.write_all(&bytes).await.map_err(|_|io_error())?;
+            output.flush().await.map_err(|_|io_error())?;
+            output.sync_all().await.map_err(|_|io_error())?;
+            drop(output);
             tokio::fs::rename(&temp,&file).await.map_err(|_|io_error())
         }.await;
         let _ = tokio::fs::remove_file(temp).await;

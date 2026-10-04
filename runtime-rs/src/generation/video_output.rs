@@ -8,23 +8,9 @@ const MAX_BYTES: u64 = 256 * 1024 * 1024;
 static NAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^[A-Za-z0-9][A-Za-z0-9._-]{0,180}\.(?:mp4|webm|mov)$").unwrap()
 });
-fn decoded(value: &str) -> Result<String> {
-    let mut current = value.to_string();
-    for _ in 0..3 {
-        let next = percent_encoding::percent_decode_str(&current)
-            .decode_utf8()
-            .map_err(|_| ApiError::new(400, "INVALID_RESULT", "结果路径编码无效"))?
-            .into_owned();
-        if next == current {
-            break;
-        }
-        current = next;
-    }
-    Ok(current)
-}
 pub(super) fn reference(value: &Value) -> Result<String> {
-    let file = decoded(value["filename"].as_str().unwrap_or(""))?;
-    let folder = decoded(value["subfolder"].as_str().unwrap_or(""))?;
+    let file = output::decode(value["filename"].as_str().unwrap_or(""))?;
+    let folder = output::decode(value["subfolder"].as_str().unwrap_or(""))?;
     let lower = file.to_ascii_lowercase();
     if !value.is_object()
         || !value["type"]
@@ -179,6 +165,7 @@ pub(crate) async fn materialize(
             }
             file.write_all(&chunk).await.map_err(save_error)?;
         }
+        file.flush().await.map_err(save_error)?;
         file.sync_all().await.map_err(save_error)?;
         drop(file);
         if cancel.is_cancelled() {

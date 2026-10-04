@@ -35,6 +35,17 @@ fn assert_index(root: &Path) -> String {
         plan.contains("SEARCH") && plan.contains("project_artworks_artwork"),
         "{plan}"
     );
+    let admission: String = db
+        .query_row(
+            "EXPLAIN QUERY PLAN SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1",
+            [],
+            |r| r.get(3),
+        )
+        .unwrap();
+    assert!(
+        admission.contains("COVERING INDEX tasks_unsettled"),
+        "{admission}"
+    );
     let version: i64 = db
         .query_row("PRAGMA user_version", [], |r| r.get(0))
         .unwrap();
@@ -106,7 +117,7 @@ async fn new_and_existing_v3_workspaces_receive_reverse_index_without_revision_c
     let identity = std::fs::read(root.join("workspace.json")).unwrap();
     Connection::open(root.join("huiyu.sqlite3"))
         .unwrap()
-        .execute_batch("DROP INDEX artworks_live_id; DROP INDEX project_artworks_artwork; DROP INDEX media_aliases_hash; DROP INDEX media_refs_hash")
+        .execute_batch("DROP INDEX artworks_live_id; DROP INDEX project_artworks_artwork; DROP INDEX media_aliases_hash; DROP INDEX media_refs_hash; DROP INDEX tasks_unsettled")
         .unwrap();
     for _ in 0..2 {
         let storage = Storage::open(root.clone(), "index-test".into(), false)

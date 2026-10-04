@@ -289,3 +289,32 @@ fn resource_manifest_and_delta_contract_match_original_pure_node() {
     tampered["totals"]["unchanged"] = 2.into();
     assert!(super::delta::reconstruct(&base, &changed, &tampered).is_err());
 }
+
+#[test]
+fn atomic_metadata_failure_reclaims_only_its_own_temporary_file() {
+    let root = tempfile::tempdir().unwrap();
+    let target = root.path().join("current.json");
+    std::fs::create_dir(&target).unwrap();
+    std::fs::write(target.join("retained"), b"old state").unwrap();
+    std::fs::write(root.path().join("download.part"), b"resume bytes").unwrap();
+    std::fs::write(root.path().join("unrelated.tmp"), b"other writer").unwrap();
+    assert!(fs::atomic(&target, b"new state").is_err());
+    assert_eq!(
+        std::fs::read(target.join("retained")).unwrap(),
+        b"old state"
+    );
+    let mut names: Vec<_> = std::fs::read_dir(root.path())
+        .unwrap()
+        .map(|entry| entry.unwrap().file_name())
+        .collect();
+    names.sort();
+    assert_eq!(
+        names,
+        ["current.json", "download.part", "unrelated.tmp"].map(std::ffi::OsString::from)
+    );
+    let state = root.path().join("task.json");
+    fs::atomic(&state, b"first").unwrap();
+    fs::atomic(&state, b"replacement").unwrap();
+    assert_eq!(std::fs::read(state).unwrap(), b"replacement");
+    assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 4);
+}

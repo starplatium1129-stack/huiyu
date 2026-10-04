@@ -72,6 +72,19 @@ async fn proxy_child(base: &str) {
         .await
         .unwrap();
     assert_eq!(bounded(local, 1024).await.unwrap(), b"direct");
+    for (path, expected) in [
+        ("/body-stall", "UPSTREAM_TIMEOUT"),
+        ("/body-truncated", "UPSTREAM_UNAVAILABLE"),
+        ("/body-large", "RESPONSE_TOO_LARGE"),
+    ] {
+        let mut options = request();
+        options.total = Duration::from_millis(300);
+        let response = transport
+            .send(Url::parse(&format!("{base}{path}")).unwrap(), options)
+            .await
+            .unwrap();
+        assert_eq!(bounded(response, 4).await.unwrap_err().code, expected);
+    }
     // Each cancellation waits for an observed CONNECT or ClientHello, not a fixed sleep.
     let control = builder().build().unwrap();
     for stage in ["connect", "tls"] {
@@ -175,6 +188,18 @@ async fn configured_proxy_routes_and_releases_cancelled_tunnels() {
                     return;
                 }
                 let target = line.split_whitespace().nth(1).unwrap();
+                if target.starts_with("/body-") {
+                    let reply: &[u8] = if target == "/body-large" {
+                        b"HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n5\r\nlarge\r\n0\r\n\r\n"
+                    } else {
+                        b"HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nx"
+                    };
+                    socket.write_all(reply).await.unwrap();
+                    if target == "/body-stall" {
+                        while socket.read(&mut bytes).await.is_ok_and(|count| count > 0) {}
+                    }
+                    return;
+                }
                 let body = if target == "http://upstream-fixture.invalid/ok" {
                     "{\"via\":\"proxy\"}".to_string()
                 } else if target == "/local" {

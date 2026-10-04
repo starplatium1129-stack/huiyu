@@ -54,13 +54,13 @@ fn entity_id(value: &Value) -> Result<Value> {
     }
     Ok(value.clone())
 }
-fn record(value: &Value) -> Result<Value> {
+fn record(value: &Value) -> Result<&Value> {
     if !value.is_object() {
         return Err(ApiError::invalid("Expected an object"));
     }
-    Ok(value.clone())
+    Ok(value)
 }
-fn body(value: &Value) -> Result<Value> {
+fn body(value: &Value) -> Result<&Value> {
     entity_id(&value["id"])?;
     record(value)
 }
@@ -99,14 +99,14 @@ fn media(value: &Value) -> Result<Value> {
         json!({"alias": text(&value["alias"])?, "sha256": sha, "bytes": integer(&value["bytes"], 1)?, "mime": text(&value["mime"])?}),
     )
 }
-fn chunk(value: &Value) -> Result<Value> {
+fn chunk(value: &Value) -> Result<&str> {
     let data = value
         .as_str()
         .filter(|s| !s.is_empty() && s.len() <= 1_398_104)
         .ok_or_else(|| ApiError::invalid("Invalid media chunk"))?;
-    // Keep the base64 allocation intact across the actor boundary. The storage
-    // decoder checks canonical encoding and byte length exactly once.
-    Ok(json!(data))
+    // Borrow while validating; command construction owns the actor-bound value.
+    // The storage decoder checks canonical encoding and byte length exactly once.
+    Ok(data)
 }
 fn query_int(query: &Query, key: &str, default: u64, min: u64) -> Result<Value> {
     let value = query
@@ -222,7 +222,7 @@ pub(super) fn command(
                 };
             }
             if let Some(tags) = input.get("collectionTags") {
-                command["collectionTags"] = record(tags)?;
+                command["collectionTags"] = record(tags)?.clone();
             }
             command
         }
@@ -407,5 +407,36 @@ mod tests {
         assert_eq!(converted["kind"], "getArtwork");
         assert_eq!(converted["id"].as_f64(), Some(42.0));
         assert_eq!(segments("media/a%2Fb+z/chunks").unwrap()[1], "a/b+z");
+        let mut artwork = json!({"operationId":"append", "artwork":{"id":42,"nested":[true,null,{"text":"retained"}]}});
+        let append = command(
+            &Method::POST,
+            &segments("artworks").unwrap(),
+            &Query::default(),
+            &artwork,
+        )
+        .unwrap();
+        assert_eq!(append["artwork"], artwork["artwork"]);
+        artwork["artwork"]["id"] = json!(99);
+        assert_eq!(append["artwork"]["id"], 42);
+        let mut upload = json!({"offset":0,"data":"A".repeat(1_398_104)});
+        let chunk_command = command(
+            &Method::PUT,
+            &segments("media-uploads/upload/chunks").unwrap(),
+            &Query::default(),
+            &upload,
+        )
+        .unwrap();
+        assert_eq!(chunk_command["kind"], "uploadMediaChunk");
+        assert_eq!(chunk_command["data"], upload["data"]);
+        upload["data"] = json!("changed");
+        assert_eq!(chunk_command["data"].as_str().unwrap().len(), 1_398_104);
+        assert_eq!(
+            chunk(&json!("A".repeat(1_398_105))).unwrap_err().message,
+            "Invalid media chunk"
+        );
+        assert_eq!(
+            record(&json!([])).unwrap_err().message,
+            "Expected an object"
+        );
     }
 }

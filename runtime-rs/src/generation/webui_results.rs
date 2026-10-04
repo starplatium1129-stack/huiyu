@@ -17,6 +17,7 @@ pub(super) async fn stage(inner: &Inner, job: &Job, bytes: &[u8]) -> Result<()> 
         .into_parts();
     let mut file = tokio::fs::File::from_std(file);
     file.write_all(bytes).await?;
+    file.flush().await?;
     file.sync_all().await?;
     drop(file);
     pending

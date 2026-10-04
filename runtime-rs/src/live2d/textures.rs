@@ -142,8 +142,10 @@ impl Textures {
     ) -> Result<Entry> {
         let scale = scale(&quality)?;
         let key = service
-            .run(move |service, _| {
-                let snapshot = service.catalog.read(&service.builtins, &service.local);
+            .run(move |service, cancel| {
+                let snapshot = service
+                    .catalog
+                    .read(&service.builtins, &service.local, cancel)?;
                 let (model, document) = selected(&snapshot, &character)?;
                 let textures = if manifest::format(&document)? == "cubism3" {
                     &document["FileReferences"]["Textures"]

@@ -18,6 +18,7 @@ pub(super) async fn list(root: &Path, input: &Value) -> Result<Value> {
         entries.push((
             kind.is_dir(),
             entry.file_name().to_string_lossy().into_owned(),
+            entries.len(),
         ));
     }
     let locale: Locale = crate::collation::system_locale()
@@ -25,10 +26,21 @@ pub(super) async fn list(root: &Path, input: &Value) -> Result<Value> {
         .map_err(|_| Error::plain("目录排序区域设置不可用"))?;
     let collator = Collator::try_new(locale.into(), CollatorOptions::default())
         .map_err(|_| Error::plain("目录排序不可用"))?;
-    entries.sort_by(|(ad, an), (bd, bn)| bd.cmp(ad).then_with(|| collator.compare(an, bn)));
+    // ICU can consider distinct names equal. Preserve their enumeration order
+    // when selecting the first page, just as the previous stable full sort did.
+    let compare = |(ad, an, ai): &(bool, String, usize), (bd, bn, bi): &(bool, String, usize)| {
+        bd.cmp(ad)
+            .then_with(|| collator.compare(an, bn))
+            .then_with(|| ai.cmp(bi))
+    };
     let total = entries.len();
+    if total > 200 {
+        entries.select_nth_unstable_by(200, &compare);
+        entries.truncate(200);
+    }
+    entries.sort_unstable_by(compare);
     let mut rows = Vec::new();
-    for (dir, name) in entries.into_iter().take(200) {
+    for (dir, name, _) in entries {
         if dir {
             rows.push(format!("{name}/"));
         } else {

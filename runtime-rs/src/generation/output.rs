@@ -9,7 +9,7 @@ static FILENAME: LazyLock<Regex> = LazyLock::new(|| {
 static DENIED: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)(?:^|[-_.])(?:input|temp|annotation|annotations|hash)(?:[-_.]|$)").unwrap()
 });
-fn decode(value: &str) -> Result<String> {
+pub(super) fn decode(value: &str) -> Result<String> {
     let mut value = value.to_owned();
     for _ in 0..3 {
         let next = percent_encoding::percent_decode_str(&value)

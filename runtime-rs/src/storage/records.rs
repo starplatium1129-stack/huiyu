@@ -200,7 +200,34 @@ pub(super) fn update_membership(
     let Some(mut record) = project(c, key)? else {
         return Ok(());
     };
-    c.db.execute("DELETE FROM project_artworks WHERE project_key=?", [key])?;
+    // Keep the unchanged prefix in place. Append and reverse-order undo need
+    // only a tail insert/delete; other edits rebuild the changed suffix.
+    let prefix = {
+        let mut statement = c.db.prepare_cached(
+            "SELECT artwork_key,position FROM project_artworks WHERE project_key=? ORDER BY position",
+        )?;
+        let mut rows = statement.query([key])?;
+        let mut prefix = 0;
+        while let Some(row) = rows.next()? {
+            if row.get::<_, i64>(1).ok() != Some(prefix as i64) {
+                prefix = 0; // Preserve the old normalization of irregular positions.
+                break;
+            }
+            if keys.get(prefix) != Some(&row.get::<_, String>(0)?) {
+                break;
+            }
+            prefix += 1;
+        }
+        prefix
+    };
+    if prefix == 0 {
+        c.db.execute("DELETE FROM project_artworks WHERE project_key=?", [key])?;
+    } else {
+        c.db.execute(
+            "DELETE FROM project_artworks WHERE project_key=? AND position>=?",
+            params![key, prefix as i64],
+        )?;
+    }
     let mut ids = Vec::with_capacity(keys.len());
     let mut find =
         c.db.prepare_cached("SELECT id_json,deleted_at FROM artworks WHERE id_key=?")?;
@@ -219,7 +246,9 @@ pub(super) fn update_membership(
                 "Project artwork does not exist",
             ));
         };
-        insert.execute(params![key, artwork_key, position as i64])?;
+        if position >= prefix {
+            insert.execute(params![key, artwork_key, position as i64])?;
+        }
         ids.push(id);
     }
     record["body"]["history_ids"] = json!(ids);
@@ -271,7 +300,9 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
             .is_none_or(|r| r.receipt.is_none())
     {
         let key = entity_key(&command["id"])?;
-        let refs=c.db.prepare("SELECT m.hash,m.bytes,m.mime FROM media_refs r JOIN media_objects m ON m.hash=r.hash WHERE r.owner_id=?")?.query_map([key],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?)))?.collect::<rusqlite::Result<Vec<_>>>()?;
+        // Owner IDs are shared across namespaces; unrelated task/temporary media
+        // must not block artwork restoration or add work to its integrity check.
+        let refs=c.db.prepare("SELECT m.hash,m.bytes,m.mime FROM media_refs r JOIN media_objects m ON m.hash=r.hash WHERE r.owner_kind IN ('artwork','trash') AND r.owner_id=?")?.query_map([key],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?)))?.collect::<rusqlite::Result<Vec<_>>>()?;
         for (hash, bytes, mime) in refs {
             media::verify(
                 c,

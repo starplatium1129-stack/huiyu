@@ -166,11 +166,13 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>) -> Result<Value> {
         } else {
             key.strip_prefix(&prefix).unwrap_or(&key)
         };
-        records.push(
-            json!({"key":key,"value":serde_json::from_str::<Value>(&body)?,"revision":revision}),
-        );
+        let mut record = json!({"key":key,"value":null,"revision":revision});
+        record["value"] = serde_json::from_str(&body)?;
+        records.push(record);
     }
-    Ok(json!({"records":records,"revision":c.revision()?,"resetRevision":reset(c)?}))
+    let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset(c)?});
+    snapshot["records"] = Value::Array(records);
+    Ok(snapshot)
 }
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;

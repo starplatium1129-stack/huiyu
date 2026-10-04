@@ -1,5 +1,5 @@
 use super::manifest::{self, identity, invalid, model_file, no_links, read_json};
-use crate::error::Result;
+use crate::error::{ApiError, Result};
 use serde_json::{Value, json};
 use std::{
     fs,
@@ -34,22 +34,40 @@ impl Catalog {
             .filter(|(at, _)| at.elapsed() < Duration::from_secs(4))
             .map(|(_, snapshot)| snapshot.clone())
     }
-    pub fn read(&self, builtins: &Path, local: &Path) -> Arc<Snapshot> {
-        self.read_selected(builtins, Some(local))
+    pub fn read(
+        &self,
+        builtins: &Path,
+        local: &Path,
+        cancel: &tokio_util::sync::CancellationToken,
+    ) -> Result<Arc<Snapshot>> {
+        self.read_selected(builtins, Some(local), cancel)
     }
-    pub fn read_builtin(&self, builtins: &Path) -> Arc<Snapshot> {
-        self.read_selected(builtins, None)
+    pub fn read_builtin(
+        &self,
+        builtins: &Path,
+        cancel: &tokio_util::sync::CancellationToken,
+    ) -> Result<Arc<Snapshot>> {
+        self.read_selected(builtins, None, cancel)
     }
-    fn read_selected(&self, builtins: &Path, local: Option<&Path>) -> Arc<Snapshot> {
+    fn read_selected(
+        &self,
+        builtins: &Path,
+        local: Option<&Path>,
+        cancel: &tokio_util::sync::CancellationToken,
+    ) -> Result<Arc<Snapshot>> {
         let mut cache = self.cached.lock().unwrap();
+        super::editor::check_cancel(cancel)?;
         if let Some((at, value)) = &*cache
             && at.elapsed() < Duration::from_secs(4)
         {
-            return value.clone();
+            return Ok(value.clone());
         }
-        let value = Arc::new(scan(builtins, local, None).expect("uncancellable catalog scan"));
+        let value = scan(builtins, local, Some(cancel))
+            .ok_or_else(|| ApiError::new(499, "CANCELLED", "Live2D operation cancelled"))?;
+        super::editor::check_cancel(cancel)?;
+        let value = Arc::new(value);
         *cache = Some((Instant::now(), value.clone()));
-        value
+        Ok(value)
     }
 }
 // Health scans do not take the catalog mutex: a slow strict catalog read must
@@ -219,6 +237,66 @@ mod health_tests {
     use super::*;
     use crate::live2d::Live2dService;
     use tokio_util::sync::CancellationToken;
+
+    #[tokio::test]
+    async fn abandoned_catalog_read_does_not_publish_a_snapshot() {
+        let root = tempfile::tempdir().unwrap();
+        for public in [false, true] {
+            let service = Live2dService::with_roots(
+                root.path().join("builtins"),
+                root.path().join("imports"),
+                CancellationToken::new(),
+            );
+            let catalog = if public {
+                &service.public_catalog
+            } else {
+                &service.catalog
+            };
+            let held = catalog.cached.lock().unwrap();
+            let (entered, ready) = tokio::sync::oneshot::channel();
+            let worker = service.clone();
+            let request = tokio::spawn(async move {
+                worker
+                    .run(move |service, cancel| {
+                        let _ = entered.send(());
+                        if public {
+                            service
+                                .public_catalog
+                                .read_builtin(&service.builtins, cancel)
+                        } else {
+                            service
+                                .catalog
+                                .read(&service.builtins, &service.local, cancel)
+                        }
+                    })
+                    .await
+            });
+            ready.await.unwrap();
+            request.abort();
+            assert!(request.await.err().unwrap().is_cancelled());
+            drop(held);
+            let drained = tokio::time::timeout(
+                Duration::from_secs(3),
+                service.workers.clone().acquire_many_owned(2),
+            )
+            .await
+            .unwrap()
+            .unwrap();
+            assert!(
+                catalog.cached().is_none(),
+                "Abandoned read populated the catalog"
+            );
+            drop(drained);
+            let active = if public {
+                service.public_snapshot().await
+            } else {
+                service.snapshot().await
+            };
+            assert!(active.is_ok());
+            assert!(catalog.cached().is_some());
+            service.close().await;
+        }
+    }
 
     #[tokio::test]
     async fn health_snapshot_never_waits_for_catalog_lock() {

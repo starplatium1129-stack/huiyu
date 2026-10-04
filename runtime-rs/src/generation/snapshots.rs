@@ -45,6 +45,8 @@ pub(super) async fn write(path: &Path, value: &Value) -> Result<()> {
     // in the background, but TempPath still removes only our temporary file.
     let mut file = tokio::fs::File::from_std(file);
     file.write_all(&serde_json::to_vec(value)?).await?;
+    // sync_all waits for pending writes but does not propagate their errors.
+    file.flush().await?;
     file.sync_all().await?;
     drop(file);
     pending
@@ -409,6 +411,46 @@ mod tests {
             });
             assert_eq!(std::fs::read(target).unwrap(), bytes.as_bytes());
         }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn snapshot_write_failure_preserves_previous_record() {
+        const CHILD: &str = "HUIYU_TEST_SNAPSHOT_WRITE_FAILURE_CHILD";
+        if std::env::var_os(CHILD).is_none() {
+            let status = std::process::Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", "generation::snapshots::tests::snapshot_write_failure_preserves_previous_record", "--nocapture"])
+                .env(CHILD, "1")
+                .status()
+                .unwrap();
+            assert!(status.success());
+            return;
+        }
+        // File-size limits are process-wide: fault only this isolated child,
+        // never concurrent tests, user files or the parent runtime.
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("running.json");
+        let old = br#"{"status":"running","lostAt":1}"#;
+        std::fs::write(&path, old).unwrap();
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        unsafe {
+            libc::signal(libc::SIGXFSZ, libc::SIG_IGN);
+            let limit = libc::rlimit {
+                rlim_cur: 0,
+                rlim_max: 0,
+            };
+            assert_eq!(libc::setrlimit(libc::RLIMIT_FSIZE, &limit), 0);
+        }
+        let result = runtime.block_on(write(&path, &json!({"lostAt":2})));
+        assert!(
+            result.is_err(),
+            "A failed buffered write must not be published"
+        );
+        assert_eq!(std::fs::read(path).unwrap(), old);
+        assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
     }
 
     #[test]

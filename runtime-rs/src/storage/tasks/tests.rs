@@ -65,6 +65,17 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
         .await
         .unwrap();
     assert_eq!(untouched["errorCode"], "TEMPORARY");
+    let identical = patch(
+        &storage,
+        &untouched,
+        json!({"metadata":{"checked":true},"input":{},"checkpoint":null}),
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        identical, untouched,
+        "Identical fields must not advance revision"
+    );
     let task = patch(&storage, &untouched, json!({"errorCode":null}))
         .await
         .unwrap();
@@ -106,10 +117,25 @@ async fn task_cas_cancellation_and_terminal_state_survive_reopen() {
         .await
         .unwrap();
     assert_eq!(cancelled["status"], "cancelling");
+    let repeated_cancel = storage
+        .request(
+            json!({"kind": "task.cancel", "requestKey": "request-1"}),
+            PRINCIPAL,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        repeated_cancel, cancelled,
+        "Repeated cancellation is read-only"
+    );
     let still_cancelling = patch(&storage, &cancelled, json!({"status": "running"}))
         .await
         .unwrap();
     assert_eq!(still_cancelling["status"], "cancelling");
+    assert_eq!(
+        still_cancelling, cancelled,
+        "Ignored status regressions are read-only"
+    );
     let terminal = patch(
         &storage,
         &still_cancelling,

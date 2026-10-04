@@ -40,6 +40,11 @@ fn command(operation: &str) -> Value {
 #[test]
 fn organization_is_atomic_idempotent_and_undo_preserves_other_fields() {
     let (_directory, mut c) = fixture();
+    c.db.execute(
+        "UPDATE projects SET body=json_set(body,'$.custom','retained') WHERE id_key='old'",
+        [],
+    )
+    .unwrap();
     let receipt = c.execute(&command("move"), "owner").unwrap();
     assert_eq!(receipt["changes"].as_array().unwrap().len(), 2);
     assert_eq!(c.execute(&command("move"), "owner").unwrap(), receipt);
@@ -77,6 +82,42 @@ fn organization_is_atomic_idempotent_and_undo_preserves_other_fields() {
     assert_eq!(art["body"]["favorite"], true);
     assert_eq!(art["body"]["collectionTags"], json!(["draft"]));
     assert_eq!(art["body"]["prompt"], "original");
+    c.db.execute(
+        "INSERT INTO artworks VALUES('third','\"third\"',?,1,NULL)",
+        [stringify(&json!({"id":"third","project":"old"}))],
+    )
+    .unwrap();
+    for ids in [vec!["1", "two", "third"], vec!["1", "third", "two"]] {
+        let keys = ids.into_iter().map(str::to_owned).collect::<Vec<_>>();
+        c.transaction(|c| records::update_membership(c, "old", &keys, 9))
+            .unwrap();
+    }
+    assert_eq!(
+        records::project(&c, "old").unwrap().unwrap()["body"]["history_ids"],
+        json!([1, "third", "two"])
+    );
+    c.db.execute(
+        "UPDATE project_artworks SET position=8 WHERE project_key='old' AND artwork_key='two'",
+        [],
+    )
+    .unwrap();
+    c.transaction(|c| {
+        records::update_membership(c, "old", &["1".into(), "third".into(), "two".into()], 10)
+    })
+    .unwrap();
+    let positions = c
+        .db
+        .prepare("SELECT position FROM project_artworks WHERE project_key='old' ORDER BY position")
+        .unwrap()
+        .query_map([], |row| row.get::<_, i64>(0))
+        .unwrap()
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .unwrap();
+    assert_eq!(positions, vec![0, 1, 2]);
+    assert_eq!(
+        records::project(&c, "old").unwrap().unwrap()["body"]["custom"],
+        "retained"
+    );
     c.shutdown().unwrap();
 }
 
@@ -99,6 +140,24 @@ fn stale_revision_rolls_back_the_whole_batch_and_wrong_principal_cannot_undo() {
     );
     c.execute(&command("move"), "owner").unwrap();
     assert_eq!(c.execute(&json!({"kind":"undoArtworkOrganization","operationId":"undo","sourceOperationId":"move"}), "other").unwrap_err().code, "UNDO_UNAVAILABLE");
+    let before = records::project(&c, "7").unwrap().unwrap();
+    assert_eq!(
+        c.transaction(|c| records::update_membership(c, "7", &["1".into(), "missing".into()], 9))
+            .unwrap_err()
+            .code,
+        "NOT_FOUND"
+    );
+    assert_eq!(records::membership(&c, "7").unwrap(), vec!["1", "two"]);
+    assert_eq!(records::project(&c, "7").unwrap().unwrap(), before);
+    c.db.execute("UPDATE artworks SET deleted_at=1 WHERE id_key='1'", [])
+        .unwrap();
+    assert_eq!(
+        c.transaction(|c| records::update_membership(c, "7", &["1".into(), "two".into()], 9))
+            .unwrap_err()
+            .code,
+        "NOT_FOUND"
+    );
+    assert_eq!(records::project(&c, "7").unwrap().unwrap(), before);
     c.shutdown().unwrap();
 }
 

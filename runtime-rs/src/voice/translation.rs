@@ -276,11 +276,13 @@ impl Translation {
         let mut input = child
             .take_input()
             .ok_or_else(|| ApiError::new(503, "TRANSLATION_FAILED", "翻译进程输入不可用"))?;
-        input
-            .write_all(&serde_json::to_vec(&json!({"text": text}))?)
-            .await?;
-        drop(input);
         let work = async {
+            // Writing stdin can block before the child starts reading. Keep it
+            // under the same cancellation and deadline as output and exit waits.
+            input
+                .write_all(&serde_json::to_vec(&json!({"text": text}))?)
+                .await?;
+            drop(input);
             let stdout = async {
                 let mut bytes = Vec::new();
                 if let Some(stdout) = stdout {
@@ -329,5 +331,50 @@ impl Translation {
         self.processes.close().await;
         self.cache.lock().unwrap().clear();
         self.ready.store(false, Ordering::Relaxed);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn legacy_cancellation_interrupts_blocked_stdin() {
+        let directory = tempfile::tempdir().unwrap();
+        let script = directory.path().join("blocked-stdin.cjs");
+        std::fs::write(&script, "setInterval(() => {}, 1000);").unwrap();
+        let cancel = CancellationToken::new();
+        let translation = Translation::new(
+            Arc::new(Settings {
+                tts_host: "http://127.0.0.1:1".into(),
+                profiles: Default::default(),
+                translation_url: "http://127.0.0.1:1".into(),
+                translation_port: 1,
+                python: "node".into(),
+                script,
+                log: directory.path().join("unused.log"),
+            }),
+            LocalUpstream::new(),
+            cancel.clone(),
+        );
+        // Exercise the internal pipe boundary independently of the HTTP text
+        // limit and OS-specific pipe capacity. No translator or model is used.
+        let text = "x".repeat(2 * 1024 * 1024);
+        let outcome = {
+            let request = translation.legacy(&text);
+            tokio::pin!(request);
+            assert!(futures_util::poll!(request.as_mut()).is_pending());
+            cancel.cancel();
+            tokio::time::timeout(Duration::from_secs(1), request.as_mut()).await
+        };
+        // Always reap the owned fixture, including when the assertion fails.
+        translation.close().await;
+        assert_eq!(
+            outcome
+                .expect("stdin write ignored cancellation")
+                .unwrap_err()
+                .code,
+            "ABORTED"
+        );
     }
 }

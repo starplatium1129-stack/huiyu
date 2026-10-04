@@ -231,3 +231,53 @@ fn smart_album_validation_rejects_manual_membership_replacement_and_recursive_ru
     );
     c.shutdown().unwrap();
 }
+
+#[test]
+fn restore_verifies_only_artwork_owned_media_and_keeps_integrity_checks() {
+    let (_directory, mut c) = fixture();
+    let bytes = b"\x89PNG\r\n\x1a\nowned media";
+    let hash = canonical::digest(bytes);
+    let unrelated = canonical::digest(b"unrelated missing media");
+    for hash in [&hash, &unrelated] {
+        c.db.execute(
+            "INSERT INTO media_objects VALUES(?,?,'image/png')",
+            params![hash, bytes.len() as i64],
+        )
+        .unwrap();
+    }
+    c.db.execute(
+        "INSERT INTO media_refs VALUES('trash','selected',?)",
+        [&hash],
+    )
+    .unwrap();
+    c.db.execute("INSERT INTO media_refs VALUES('trash','other',?)", [&hash])
+        .unwrap();
+    c.db.execute(
+        "INSERT INTO media_refs VALUES('temporary','selected',?)",
+        [&unrelated],
+    )
+    .unwrap();
+    let file = media::object_path(&c.root, &hash).unwrap();
+    std::fs::create_dir_all(file.parent().unwrap()).unwrap();
+    std::fs::write(&file, bytes).unwrap();
+    let restored = c.execute(&json!({"kind":"restoreArtwork","operationId":"restore-owned","id":"selected","expectedRevision":1}), "test").unwrap();
+    assert!(restored["artwork"]["deletedAt"].is_null());
+    assert_eq!(
+        c.db.query_row(
+            "SELECT COUNT(*) FROM media_refs WHERE owner_kind='temporary' AND owner_id='selected'",
+            [],
+            |row| row.get::<_, i64>(0)
+        )
+        .unwrap(),
+        1
+    );
+    std::fs::write(file, b"corrupt").unwrap();
+    for (id, revision) in [
+        ("selected", restored["revision"].as_i64().unwrap()),
+        ("other", 1),
+    ] {
+        assert_eq!(c.execute(&json!({"kind":"restoreArtwork","operationId":format!("verify-{id}"),"id":id,"expectedRevision":revision}), "test").unwrap_err().code, "MEDIA_INVALID");
+    }
+    assert!(!artwork(&c, "other").unwrap().unwrap()["deletedAt"].is_null());
+    c.shutdown().unwrap();
+}

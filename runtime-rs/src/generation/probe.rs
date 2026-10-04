@@ -92,8 +92,11 @@ pub(super) async fn webui_status(
     }
     let generation = inner.probe_generation.fetch_add(1, Ordering::Relaxed) + 1;
     let status = webui(inner, cancel).await;
-    if inner.probe_generation.load(Ordering::Relaxed) == generation {
-        *inner.probe_cache.lock().await = Some((Instant::now(), status.clone()));
+    let mut cache = inner.probe_cache.lock().await;
+    // Cancellation is not an offline observation. Check the generation after
+    // waiting for publication too, since a newer probe may have started meanwhile.
+    if !cancel.is_cancelled() && inner.probe_generation.load(Ordering::Relaxed) == generation {
+        *cache = Some((Instant::now(), status.clone()));
     }
     status
 }
@@ -109,4 +112,63 @@ pub(super) async fn comfy_status(inner: &Inner, cancel: &CancellationToken) -> b
         )
         .await
         .is_ok_and(|(status, _)| (200..300).contains(&status))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn cancelled_and_superseded_probes_preserve_the_status_cache() {
+        let directory = tempfile::tempdir().unwrap();
+        for cancelled in [true, false] {
+            let mut service = Service::new(
+                Config {
+                    sd_host: "http://127.0.0.1:1".into(),
+                    sd_auth: None,
+                    comfy_host: "http://127.0.0.1:1".into(),
+                    ai_workspace_root: directory.path().join("unused-ai"),
+                    runtime_root: directory.path().join("runtime"),
+                },
+                LocalUpstream::new(),
+                CancellationToken::new(),
+            )
+            .unwrap();
+            // Reject the probe synchronously before sockets or decoder work;
+            // only the actual cache publication waits on the controlled lock.
+            Arc::get_mut(&mut service.inner)
+                .unwrap()
+                .config
+                .sd_host
+                .clear();
+            let inner = &service.inner;
+            let mut cache = inner.probe_cache.lock().await;
+            *cache = Some((
+                Instant::now(),
+                WebUiStatus {
+                    online: true,
+                    checkpoint: "known-good".into(),
+                    ..Default::default()
+                },
+            ));
+            let cancel = CancellationToken::new();
+            if cancelled {
+                cancel.cancel();
+            }
+            let probe = webui_status(inner, true, &cancel);
+            tokio::pin!(probe);
+            assert!(futures_util::poll!(probe.as_mut()).is_pending());
+            assert_eq!(inner.probe_generation.load(Ordering::Relaxed), 1);
+            if !cancelled {
+                // A newer probe starts while this completed response is waiting
+                // to publish; its generation must be checked after that wait.
+                inner.probe_generation.fetch_add(1, Ordering::Relaxed);
+            }
+            drop(cache);
+            assert!(!probe.await.online);
+            let status = webui_status(inner, false, &CancellationToken::new()).await;
+            assert!(status.online, "cancelled={cancelled} polluted the cache");
+            assert_eq!(status.checkpoint, "known-good");
+        }
+    }
 }

@@ -75,13 +75,7 @@ impl Transport {
         )
         .await
         .map_err(|_| timeout())?
-        .map_err(|error| {
-            if error.is_timeout() {
-                timeout()
-            } else {
-                unavailable()
-            }
-        })
+        .map_err(network_error)
     }
 }
 
@@ -95,7 +89,7 @@ pub(super) async fn bounded(response: reqwest::Response, limit: usize) -> Result
     let mut stream = response.bytes_stream();
     let mut bytes = Vec::new();
     while let Some(chunk) = stream.next().await {
-        let chunk = chunk.map_err(|_| unavailable())?;
+        let chunk = chunk.map_err(network_error)?;
         if bytes.len().saturating_add(chunk.len()) > limit {
             return Err(Error::stream(
                 "RESPONSE_TOO_LARGE",
@@ -127,6 +121,13 @@ pub(super) async fn success(
     );
     error.detail = String::from_utf8_lossy(&body).chars().take(500).collect();
     Err(error)
+}
+fn network_error(error: reqwest::Error) -> Error {
+    if error.is_timeout() {
+        timeout()
+    } else {
+        unavailable()
+    }
 }
 fn unavailable() -> Error {
     Error::stream("UPSTREAM_UNAVAILABLE", "聊天上游暂不可用")

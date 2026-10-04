@@ -176,6 +176,11 @@ impl ExecutionHooks for Hooks {
     }
     fn restore_input(&self, name: String, path: PathBuf) -> BoxFuture<'_, Result<bool>> {
         Box::pin(async move {
+            // Restore one durable input; let the service restore the other
+            // captured original through its filesystem fallback.
+            if self.restored.load(Ordering::Relaxed) > 0 {
+                return Ok(false);
+            }
             let bytes = self.bytes.lock().unwrap().get(&name).cloned().unwrap();
             tokio::fs::write(path, bytes).await?;
             self.restored.fetch_add(1, Ordering::Relaxed);
@@ -263,9 +268,11 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         .prepare(input, "anima", true, CancellationToken::new())
         .await
         .unwrap();
-    tokio::fs::remove_file(cfg.ai_workspace_root.join("ComfyUI/input").join(&original))
-        .await
-        .unwrap();
+    for name in [&original, &mask] {
+        tokio::fs::remove_file(cfg.ai_workspace_root.join("ComfyUI/input").join(name))
+            .await
+            .unwrap();
+    }
     let hooks = Arc::new(Hooks {
         bytes: Mutex::new(HashMap::new()),
         events: events.clone(),
@@ -284,6 +291,12 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
             .await
             .unwrap(),
         png(10)
+    );
+    assert_eq!(
+        tokio::fs::read(cfg.ai_workspace_root.join("ComfyUI/input").join(&mask))
+            .await
+            .unwrap(),
+        png(255)
     );
     let order = events.lock().unwrap().clone();
     assert!(order.iter().rposition(|e| e == "protected") < order.iter().position(|e| e == "POST"));

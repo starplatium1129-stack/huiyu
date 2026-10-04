@@ -127,6 +127,7 @@ pub(super) async fn protect_and_restore(
                     .await?;
                 let result = async {
                     output.write_all(original.bytes.as_slice()).await?;
+                    output.flush().await?;
                     output.sync_all().await?;
                     drop(output);
                     tokio::fs::hard_link(&pending, &file).await

@@ -189,7 +189,7 @@ fn patch(
 ) -> Result<Value> {
     c.transaction(|c| {
         let mut task = require(c, principal, id)?;
-        let previous = task.clone();
+        let mut changed = false;
         if task.revision != expected_revision {
             return Err(conflict("REVISION_CONFLICT", "Task revision changed"));
         }
@@ -231,6 +231,7 @@ fn patch(
             outputs::discard(c, &task.task_id)?;
             task.result_refs.clear();
             task.result_state = ResultState::Unavailable;
+            changed = true;
         }
         if task.delivery_state == DeliveryState::Discarded {
             patch.delivery_state = None;
@@ -264,55 +265,48 @@ fn patch(
                 "Upstream identity cannot be replaced",
             ));
         }
-        if let Some(value) = patch.status {
-            task.status = value;
-        }
-        if let Some(value) = patch.recovery_state {
-            task.recovery_state = value;
-        }
-        if let Some(value) = patch.upstream_id {
-            task.upstream_id = value;
-        }
-        if let Some(value) = patch.provider {
-            task.provider = value;
-        }
-        if let Some(value) = patch.provider_fingerprint {
-            task.provider_fingerprint = value;
-        }
-        if let Some(value) = patch.submission_intent_at {
-            task.submission_intent_at = value;
-        }
-        if let Some(value) = patch.submission_observed_at {
-            task.submission_observed_at = value;
-        }
-        if let Some(value) = patch.upstream_settled {
-            task.upstream_settled = value;
-        }
-        if let Some(value) = patch.result_state {
-            task.result_state = value;
-        }
-        if let Some(value) = patch.delivery_state {
-            task.delivery_state = value;
-        }
-        if let Some(value) = patch.error_code {
-            task.error_code = value;
-        }
+        changed |= replace(&mut task.status, patch.status);
+        changed |= replace(&mut task.recovery_state, patch.recovery_state);
+        changed |= replace(&mut task.upstream_id, patch.upstream_id);
+        changed |= replace(&mut task.provider, patch.provider);
+        changed |= replace(&mut task.provider_fingerprint, patch.provider_fingerprint);
+        changed |= replace(&mut task.submission_intent_at, patch.submission_intent_at);
+        changed |= replace(
+            &mut task.submission_observed_at,
+            patch.submission_observed_at,
+        );
+        changed |= replace(&mut task.upstream_settled, patch.upstream_settled);
+        changed |= replace(&mut task.result_state, patch.result_state);
+        changed |= replace(&mut task.delivery_state, patch.delivery_state);
+        changed |= replace(&mut task.error_code, patch.error_code);
         if let Some(value) = patch.metadata {
-            task.metadata.extend(value);
+            for (key, value) in value {
+                if task.metadata.get(&key) != Some(&value) {
+                    task.metadata.insert(key, value);
+                    changed = true;
+                }
+            }
         }
-        if let Some(value) = patch.checkpoint {
-            task.checkpoint = value;
-        }
-        if let Some(value) = patch.input {
-            task.input = value;
-        }
+        changed |= replace(&mut task.checkpoint, patch.checkpoint);
+        changed |= replace(&mut task.input, patch.input);
         // Writer, CAS, cancellation and submission checks still apply.
-        // Compare after normalization so ignored regressions are also read-only.
-        if task == previous {
+        // Compare only supplied fields after normalization; polling must not clone
+        // frozen inputs or checkpoints just to discover that nothing changed.
+        if !changed {
             return Ok(serde_json::to_value(task)?);
         }
         write(c, task)
     })
+}
+fn replace<T: PartialEq>(current: &mut T, change: Option<T>) -> bool {
+    if let Some(value) = change
+        && *current != value
+    {
+        *current = value;
+        true
+    } else {
+        false
+    }
 }
 fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> {
     if request_key.is_empty() || request_key.len() > 200 {
@@ -326,11 +320,15 @@ fn cancel(c: &mut Context, principal: &str, request_key: &str) -> Result<Value> 
         let Some(mut task) = read(c, principal, None, Some(request_key))? else {
             return Ok(Value::Null);
         };
-        if task.upstream_settled {
+        let submitted = task.submission_intent_at.is_some_and(|time| time != 0);
+        if task.upstream_settled
+            || (submitted
+                && task.cancel_requested_at.is_some()
+                && task.status == TaskStatus::Cancelling)
+        {
             return Ok(serde_json::to_value(task)?);
         }
         task.cancel_requested_at.get_or_insert(now() as u64);
-        let submitted = task.submission_intent_at.is_some_and(|time| time != 0);
         task.status = if submitted {
             TaskStatus::Cancelling
         } else {
