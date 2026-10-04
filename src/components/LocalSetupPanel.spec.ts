@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import LocalSetupPanel from './LocalSetupPanel.vue'
-import type { LocalSetupResponse } from '../../types/local-setup'
+import type { LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup'
 
-const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
+const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), verifyModel: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
-vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus } }))
+vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus, verifyModel: fixture.verifyModel } }))
 vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
 vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
@@ -13,7 +13,7 @@ function complete(): LocalSetupResponse {
   return { ok: true, checkedAt: 1_791_083_000_000,
     workspace: { path: 'D:\\AI', state: 'present' },
     comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'unrecognized', host: 'http://127.0.0.1:8188', connection: 'online' },
-    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true })),
+    models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true, preparation: { url: 'https://huggingface.co/circlestone-labs/Anima/resolve/' + 'a'.repeat(40) + '/model.safetensors', modelCardUrl: 'https://huggingface.co/circlestone-labs/Anima', licenseUrl: 'https://huggingface.co/circlestone-labs/Anima/blob/' + 'a'.repeat(40) + '/LICENSE.md', upstreamLicenseUrl: null, revision: 'a'.repeat(40), expectedBytes: 10, sha256: 'b'.repeat(64) } })),
     nodes: { state: 'checked', required: ['ImageSharpenKJ'], missing: [] },
     hardware: { state: 'unknown', devices: [], ramBytes: null } }
 }
@@ -29,6 +29,7 @@ function render(realSettings = false) {
 beforeEach(() => {
   fixture.local = true; fixture.desktop = false
   fixture.getStatus.mockReset().mockResolvedValue(complete())
+  fixture.verifyModel.mockReset()
   fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'F:\\ChosenAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
   fixture.pickWorkspace.mockReset().mockResolvedValue('F:\\ChosenAI')
@@ -71,7 +72,7 @@ describe('first local setup panel', () => {
   })
   it('shows recommendation gaps without declaring existing alternative models unusable', async () => {
     const value = complete(); value.models[0].state = 'missing'
-    value.models.push({ id: 'other', label: 'Existing model', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 42, required: false })
+    value.models.push({ id: 'other', label: 'Existing model', path: 'D:\\AI\\ComfyUI\\models\\other', state: 'present', bytes: 42, required: false, preparation: null })
     fixture.getStatus.mockResolvedValue(value)
     const wrapper = render(); await flushPromises()
     expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
@@ -79,6 +80,67 @@ describe('first local setup panel', () => {
     expect(wrapper.text()).toContain('Existing model')
     expect(wrapper.text()).toContain('设备报告未知')
     expect(wrapper.find('details').attributes('open')).toBeUndefined()
+    wrapper.unmount()
+  })
+  it('keeps downloads behind explicit plan review and resets review when the route changes', async () => {
+    const value = complete(); value.models[0].bytes = 3
+    fixture.getStatus.mockResolvedValue(value)
+    const wrapper = render(); await flushPromises()
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    expect(wrapper.find('.preparation').text()).toContain('大小不符')
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    const confirm = wrapper.findAll('button').find(button => button.text() === '查看准备清单')!
+    expect(confirm.attributes('disabled')).toBeDefined()
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    expect(wrapper.find('.download-checklist').findAll('a')).toHaveLength(3)
+    expect(wrapper.find('.download-checklist').text()).toContain("Get-FileHash -LiteralPath 'D:\\AI")
+    expect(fixture.getStatus).toHaveBeenCalledTimes(1)
+    await wrapper.find('#setup-comfy-route').setValue('portable')
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    expect(confirm.attributes('disabled')).toBeDefined()
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    await wrapper.find('.preparation-ack input').setValue(false)
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    await wrapper.find('.preparation-ack input').setValue(true)
+    await confirm.trigger('click')
+    await wrapper.findAll('button').find(button => button.text() === '放置后重新检查')!.trigger('click')
+    await flushPromises()
+    expect(fixture.getStatus).toHaveBeenCalledTimes(2)
+    expect(wrapper.find('.download-checklist').exists()).toBe(false)
+    wrapper.unmount()
+  })
+  it('hashes only on request, cancels late results and keeps a failed digest out of readiness', async () => {
+    let finish!: (result: LocalSetupVerificationResult) => void
+    fixture.verifyModel.mockImplementationOnce((_id, options) => {
+      options.onProgress({ type: 'progress', modelId: 'anima-aesthetic-v1.1', bytesRead: 5, expectedBytes: 10 })
+      return new Promise<LocalSetupVerificationResult>(resolve => { finish = resolve })
+    })
+    const wrapper = render(); await flushPromises()
+    expect(fixture.verifyModel).not.toHaveBeenCalled()
+    const button = wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!
+    await button.trigger('click'); await button.trigger('click')
+    expect(fixture.verifyModel).toHaveBeenCalledTimes(1)
+    expect(wrapper.text()).toContain('50%')
+    const signal = fixture.verifyModel.mock.calls[0][1].signal as AbortSignal
+    await wrapper.findAll('button').find(button => button.text() === '取消校验')!.trigger('click')
+    expect(signal.aborted).toBe(true)
+    const result: LocalSetupVerificationResult = { type: 'result', modelId: 'anima-aesthetic-v1.1', path: complete().models[0].path, state: 'hash-mismatch', bytes: 10, sha256: 'c'.repeat(64), checkedAt: 1, message: '摘要不符' }
+    finish(result); await flushPromises()
+    expect(wrapper.text()).toContain('已取消校验')
+    expect(wrapper.text()).not.toContain('摘要不符')
+    fixture.verifyModel.mockResolvedValueOnce(result)
+    await button.trigger('click'); await flushPromises()
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    expect(wrapper.find('.setup-next').text()).toContain('完整性校验未通过')
+    await wrapper.find('.setup-heading button').trigger('click'); await flushPromises()
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('pending')
+    expect(wrapper.find('.setup-next').text()).toContain('重新检查不会清除')
+    fixture.verifyModel.mockResolvedValueOnce({ ...result, state: 'sha256-match', sha256: 'b'.repeat(64), message: '本次读取的字节一致' })
+    await wrapper.findAll('button').find(button => button.text() === '校验 anima-aesthetic-v1.1 的 SHA-256')!.trigger('click'); await flushPromises()
+    expect(wrapper.find('[data-verification="sha256-match"]').exists()).toBe(true)
+    expect(wrapper.find('.setup-result').attributes('data-state')).toBe('checked')
     wrapper.unmount()
   })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {

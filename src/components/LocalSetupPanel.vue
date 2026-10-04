@@ -19,7 +19,7 @@
       <div v-if="snapshot" class="setup-overview" aria-label="基础检查摘要">
         <span>ComfyUI 入口：{{ fileLabel(snapshot.comfy.installation) }}</span>
         <span>服务：{{ connectionLabel }}</span>
-        <span>推荐文件：{{ presentRecommended }} / {{ recommendedModels.length }} 已发现</span>
+        <span>推荐文件：{{ presentRecommended }} / {{ recommendedModels.length }} 大小相符</span>
         <span>节点：{{ nodeLabel }}</span>
       </div>
       <p class="setup-next"><strong>下一步</strong> {{ nextStep }}</p>
@@ -31,6 +31,7 @@
       </div>
       <p v-if="workspaceNotice" class="setup-note" role="status">{{ workspaceNotice }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
+      <LocalSetupPreparation v-if="snapshot" :snapshot="snapshot" :desktop="!!desktop" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" />
       <details class="setup-details">
         <summary>查看路径与详细检查<span v-if="snapshot">{{ checkedAtLabel }}</span></summary>
         <div class="setup-detail-body">
@@ -41,6 +42,7 @@
               <p>ComfyUI 目录：{{ fileLabel(snapshot.comfy.installation) }}</p><code>{{ snapshot.comfy.path }}</code>
               <p>选择包含 ComfyUI/main.py 的 AI 工作区父目录，模型按下方精确路径放置。</p>
               <p v-if="snapshot.comfy.layout === 'portable'">已识别便携版布局。请使用原便携包的启动入口手动启动；绘遇的受控启动尚不支持便携版。</p>
+              <p v-else-if="snapshot.comfy.layout === 'external-venv'">已识别 .venv 布局，可能由 Desktop 或其他环境管理器维护。请由原入口启动后连接，不交给绘遇受控启动。</p>
               <p v-else-if="snapshot.comfy.layout === 'venv'">已识别 venv 布局；检测到目录不代表 Python、PyTorch 或驱动已可运行。</p>
               <p v-else>未识别 venv / 便携版布局；Conda 等环境请沿用自己的启动入口，不据此判定服务不可用。</p>
               <p>检查的服务地址：</p><code>{{ snapshot.comfy.host }}</code>
@@ -93,23 +95,33 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import LocalSetupPreparation from './LocalSetupPreparation.vue'
+import { modelPreparationState, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { localSetupApi } from '../api/localSetupApi.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
-import type { LocalSetupFileState, LocalSetupResponse } from '../../types/local-setup.ts'
+import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult } from '../../types/local-setup.ts'
 
 const isLocal = isLocalStudioHost()
 const desktop = isLocal ? getDesktopCapabilities() : undefined
 const snapshot = ref<LocalSetupResponse | null>(null)
+const verificationFailures = ref<Record<string, string>>({})
 const loading = ref(false), error = ref(''), cancelled = ref(false)
 let controller: AbortController | null = null
 let disposed = false
 const recommendedModels = computed(() => snapshot.value?.models.filter(model => model.required) ?? [])
 const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required) ?? [])
-const presentRecommended = computed(() => recommendedModels.value.filter(model => model.state === 'present').length)
+const presentRecommended = computed(() => recommendedModels.value.filter(model => modelPreparationState(model) === 'bytes-match').length)
 const nodesChecked = computed(() => snapshot.value?.nodes.state === 'checked' && snapshot.value.nodes.required.length > 0)
-const basicComplete = computed(() => !!snapshot.value && snapshot.value.workspace.state === 'present'
+const failedModels = computed(() => recommendedModels.value.filter(model => verificationFailures.value[model.id] === model.path))
+function recordVerification(result: LocalSetupVerificationResult) {
+  const failures = { ...verificationFailures.value }
+  if (result.state === 'sha256-match') delete failures[result.modelId]
+  else failures[result.modelId] = result.path
+  verificationFailures.value = failures
+}
+const basicComplete = computed(() => failedModels.value.length === 0 && !!snapshot.value && snapshot.value.workspace.state === 'present'
   && snapshot.value.comfy.installation === 'present' && snapshot.value.comfy.connection === 'online'
   && recommendedModels.value.length >= 3 && presentRecommended.value === recommendedModels.value.length
   && nodesChecked.value && snapshot.value.nodes.missing.length === 0)
@@ -117,23 +129,21 @@ const connectionLabel = computed(() => snapshot.value?.comfy.connection === 'onl
 const nodeLabel = computed(() => !nodesChecked.value ? '尚未确认' : snapshot.value!.nodes.missing.length ? `缺少 ${snapshot.value!.nodes.missing.length} 项` : '所需节点已注册')
 const checkedAtLabel = computed(() => snapshot.value ? new Date(snapshot.value.checkedAt).toLocaleTimeString('zh-CN') + ' 检查' : '')
 const summary = computed(() => loading.value ? '正在读取本机配置…' : error.value ? '检查未完成，状态待确认'
-  : cancelled.value ? '检查已取消' : basicComplete.value ? '基础检查已完成，可尝试验证出图'
+  : cancelled.value ? '检查已取消' : basicComplete.value ? '基础只读检查已完成，尚未真实出图'
     : snapshot.value ? '推荐起步路径还有项目待确认' : '尚未检查')
 const nextStep = computed(() => {
   const value = snapshot.value
   if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
   if (!value) return '重新检查以读取当前配置；此操作不会安装文件或启动服务。'
+  if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
   if (value.workspace.state !== 'present' || value.comfy.installation !== 'present') return '确认 AI 工作区父目录，并在其下准备包含 main.py 的 ComfyUI。已有服务可能使用不同目录，请先核对。'
-  if (presentRecommended.value < recommendedModels.value.length) return '展开详细检查，按精确路径补齐或核对推荐组合；已有其他底模仍可按原配置使用。'
+  if (presentRecommended.value < recommendedModels.value.length) return '打开准备向导，按来源、大小与精确路径补齐或核对推荐组合；已有其他底模仍可按原配置使用。'
   if (value.comfy.connection !== 'online') return '用现有环境或便携包的启动入口手动启动 ComfyUI，核对服务地址后重新检查。'
   if (!nodesChecked.value) return '节点注册信息尚未确认，请核对连接的 ComfyUI 服务后重新检查。'
   if (value.nodes.missing.length) return '按下方缺少的节点注册名检查 ComfyUI 扩展，手动重启该服务后重新检查。'
   return '去工作台手动选择 Anima Aesthetic v1.1，关闭 LoRA、TeaCache、高清修复和局部重绘，验证一张图片。'
 })
 const fileLabel = (state: LocalSetupFileState) => ({ present: '已发现', missing: '未发现', unknown: '未知' })[state]
-function formatBytes(value: number): string {
-  return value >= 1024 ** 3 ? `${(value / 1024 ** 3).toFixed(2)} GiB` : value >= 1024 ** 2 ? `${(value / 1024 ** 2).toFixed(1)} MiB` : `${value.toLocaleString('zh-CN')} B`
-}
 async function refresh() {
   if (!isLocal || loading.value || disposed) return
   const request = new AbortController()

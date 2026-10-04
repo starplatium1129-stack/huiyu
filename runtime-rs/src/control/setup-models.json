@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-30",
+  "modelCardUrl": "https://huggingface.co/circlestone-labs/Anima",
+  "licenseUrl": "https://huggingface.co/circlestone-labs/Anima/blob/f973fc41ec7545364ac9776c2440285f43ff2a30/LICENSE.md",
+  "files": [
+    {
+      "path": "diffusion_models/anima-aesthetic-v1.1.safetensors",
+      "repo": "circlestone-labs/Anima",
+      "revision": "f973fc41ec7545364ac9776c2440285f43ff2a30",
+      "remotePath": "split_files/diffusion_models/anima-aesthetic-v1.1.safetensors",
+      "bytes": 4182230656,
+      "sha256": "3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082"
+    },
+    {
+      "path": "text_encoders/qwen_3_06b_base.safetensors",
+      "repo": "circlestone-labs/Anima",
+      "revision": "f973fc41ec7545364ac9776c2440285f43ff2a30",
+      "remotePath": "split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "bytes": 1192135096,
+      "sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+      "upstreamLicenseUrl": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/blob/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/LICENSE"
+    },
+    {
+      "path": "vae/qwen_image_vae.safetensors",
+      "repo": "circlestone-labs/Anima",
+      "revision": "f973fc41ec7545364ac9776c2440285f43ff2a30",
+      "remotePath": "split_files/vae/qwen_image_vae.safetensors",
+      "bytes": 253806246,
+      "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "upstreamLicenseUrl": "https://huggingface.co/Qwen/Qwen-Image/blob/a861db9cde8d041a350d4a9ba9fe0718aa966e6d/LICENSE"
+    }
+  ]
+}

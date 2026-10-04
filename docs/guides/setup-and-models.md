@@ -70,6 +70,16 @@ Rust 网关检查图像/视频权重的固定根是 `AI_WORKSPACE_ROOT/ComfyUI/m
 
 上游只支持本机 loopback：`SD_HOST` 默认 `http://127.0.0.1:7860`，`COMFY_HOST` 默认 `http://127.0.0.1:8188`，`TTS_HOST` 默认 `http://127.0.0.1:9880`。地址/角色声线可在控制室保存；更换机器后重配参考音频和权重的绝对路径，不复制旧 PID 当作新服务已启动。
 
+### 控制室的手动准备向导
+
+控制室「首次配置 → 按缺项准备 ComfyUI 与模型」把当前运行时目录、运行方式、依赖和固定三件套放在同一页。先核对真实 `models` 目录、容量与许可，再点击「查看准备清单」展开逐文件来源、目标路径和 SHA-256；下载链接只在用户点击时交给浏览器处理。可复制清单，放置后重新检查。改变运行方式、取消勾选或重新检查都会撤销本次清单确认；确认清单不会安装、执行脚本或接受许可证。
+
+截至 2026-10-04，官方新用户推荐 Desktop，其 Python 环境由 Desktop 自行管理，布局因版本与实例类型而异；Portable 使用 `python_embeded`，官方 Manual 示例也可能使用 Conda。这些都不能直接当成绘遇受控启动要求的 `ComfyUI/main.py + ComfyUI/venv/Scripts/python.exe`。Desktop、Portable 及其他环境由原入口启动后连接；不要重命名环境或复制解释器来通过检查。[Desktop 官方文档](https://docs.comfy.org/installation/desktop/windows)、[Portable 官方文档](https://docs.comfy.org/installation/comfyui_portable_windows)、[硬件要求](https://docs.comfy.org/installation/system_requirements)。
+
+新向导会识别 `.venv` 为外部管理，但不承诺任意旧 Desktop 目录自动匹配。用户必须查看实际实例的模型目录，让它与页面显示的三个精确路径对应；仅服务在线或更改 `COMFY_HOST` 不能证明目录一致。工作区改变仍须完全退出并重启绘遇。
+
+三件套固定元数据由 `runtime-rs/src/control/setup-models.json` 统一提供给 Rust 首次检查和 Node 维护清单，避免不同入口维护两份字节/摘要。快照只做文件存在与长度检查，不自动读取数 GB 做哈希；大小不符不会算作基础检查完成，大小相符仍标明未校验 SHA-256。每个大小相符的文件可显式点击 SHA-256 校验：Rust 独立工作线程以 1 MiB 块读取，同一运行时只允许一个任务，进度按 64 MiB 更新，取消/离页断流后停止后续读取；重新检查会清除本次展示结果；同一页面会保留已知失败对就绪状态的阻止，直到该文件重新校验相符。只校验固定三个文件，不接收任意路径，不自动联网或改写；单独文件链接越出实际 models 根会拒绝，整个 models 共享目录可核对真实根后使用。相符只证明本次读取，文件后续变化与真正出图另验。Windows 命令保留为可选方法。Anima 固定版本许可、Qwen 编码器与 VAE 的上游许可分别提供审阅入口，不能以该页面代替授权。
+
 ## 3. 公共模型下载清单
 
 容量按 2026-09-30 发布者文件元数据计算，GB 为十进制，GiB/MiB 为二进制。下面列的是**当前绘遇工作流支持的指定版本**，发布页的最新版本不自动成为兼容版本。下载后按清单放置，不以改名替代不同架构/量化。

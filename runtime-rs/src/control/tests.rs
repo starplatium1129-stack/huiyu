@@ -381,9 +381,18 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
         s.shutdown.clone(),
     );
     let app = router(s.clone()).with_state(state);
-    for path in ["/api/share-link", "/api/local-setup"] {
+    for path in [
+        "/api/share-link",
+        "/api/local-setup",
+        "/api/local-setup/verify/qwen-vae",
+    ] {
         let request = Request::builder()
             .uri(path)
+            .method(if path.contains("/verify/") {
+                "POST"
+            } else {
+                "GET"
+            })
             .header("host", "localhost:3210")
             .header("x-forwarded-for", "203.0.113.1")
             .extension(ConnectInfo(

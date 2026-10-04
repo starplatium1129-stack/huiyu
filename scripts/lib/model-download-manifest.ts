@@ -1,3 +1,5 @@
+import setupModels from '../../runtime-rs/src/control/setup-models.json'
+
 /** Publisher metadata checked on 2026-09-30; no model weights were downloaded.
  * Revisions and digests describe the app's exact workflow, not each upstream's latest model.
  * Sources: https://huggingface.co/api/models/<repo>?blobs=true (CSV hashed separately).
@@ -47,12 +49,7 @@ const ANIMA_REVISION = 'f973fc41ec7545364ac9776c2440285f43ff2a30'
 export const ANIMA_FILES: readonly ModelFile[] = [
   file(ANIMA_REPO, ANIMA_REVISION, 'diffusion_models/anima-base-v1.0.safetensors', 4182218328,
     'bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e', 'split_files/diffusion_models/anima-base-v1.0.safetensors'),
-  file(ANIMA_REPO, ANIMA_REVISION, 'diffusion_models/anima-aesthetic-v1.1.safetensors', 4182230656,
-    '3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082', 'split_files/diffusion_models/anima-aesthetic-v1.1.safetensors'),
-  file(ANIMA_REPO, ANIMA_REVISION, 'text_encoders/qwen_3_06b_base.safetensors', 1192135096,
-    'cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba', 'split_files/text_encoders/qwen_3_06b_base.safetensors'),
-  file(ANIMA_REPO, ANIMA_REVISION, 'vae/qwen_image_vae.safetensors', 253806246,
-    'a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f', 'split_files/vae/qwen_image_vae.safetensors'),
+  ...setupModels.files,
 ]
 
 export const KREA_FILES: readonly ModelFile[] = [

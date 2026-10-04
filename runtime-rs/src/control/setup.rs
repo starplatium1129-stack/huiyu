@@ -103,6 +103,10 @@ impl ControlService {
             .0
             == "present"
             || presence(&comfy.join("venv/bin/python"), false).await.0 == "present";
+        let external_venv = presence(&comfy.join(".venv/Scripts/python.exe"), false)
+            .await
+            .0
+            == "present";
         let portable = presence(&workspace.join("python_embeded/python.exe"), false)
             .await
             .0
@@ -141,11 +145,22 @@ impl ControlService {
                 ));
             }
         }
+        // One pinned source shared with the maintenance downloader. Never fetch
+        // metadata/weights or infer license acceptance while inspecting setup.
+        let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
         let mut models = Vec::new();
         for (id, label, kind, name, required) in files {
             let path = comfy.join("models").join(kind).join(name);
             let (state, size) = presence(&path, false).await;
-            models.push(json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required}));
+            let relative = format!("{kind}/{name}");
+            let preparation = manifest["files"].as_array().unwrap().iter()
+                .find(|entry| entry["path"] == relative).map(|entry| {
+                    json!({"url":format!("https://huggingface.co/{}/resolve/{}/{}",
+                        entry["repo"].as_str().unwrap(), entry["revision"].as_str().unwrap(), entry["remotePath"].as_str().unwrap()),
+                        "modelCardUrl":manifest["modelCardUrl"],"licenseUrl":manifest["licenseUrl"],
+                        "upstreamLicenseUrl":entry["upstreamLicenseUrl"],"revision":entry["revision"],"expectedBytes":entry["bytes"],"sha256":entry["sha256"]})
+                });
+            models.push(json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required,"preparation":preparation}));
         }
 
         let ram = stats_value.and_then(|s| bytes(&s["system"]["ram_total"]));
@@ -159,7 +174,7 @@ impl ControlService {
             }).collect();
         Ok(json!({"ok":true,"checkedAt":now(),
             "workspace":{"path":workspace,"state":workspace_state},
-            "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection},
+            "comfy":{"path":comfy,"installation":installation,"layout":if venv{"venv"}else if external_venv{"external-venv"}else if portable{"portable"}else{"unrecognized"},"host":host,"connection":connection},
             "models":models,"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
             "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}))
     }
@@ -176,6 +191,37 @@ mod tests {
         assert_eq!(report["workspace"]["state"], "missing");
         assert_eq!(report["comfy"]["installation"], "missing");
         assert_eq!(report["comfy"]["connection"], "offline");
+        assert_eq!(
+            report["models"][0]["preparation"]["expectedBytes"],
+            4182230656_u64
+        );
+        assert_eq!(
+            report["models"][0]["preparation"]["sha256"],
+            "3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082"
+        );
+        for model in report["models"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|m| m["required"] == true)
+        {
+            let source = &model["preparation"];
+            assert!(
+                source["url"]
+                    .as_str()
+                    .unwrap()
+                    .contains(source["revision"].as_str().unwrap())
+            );
+            assert!(
+                source["url"].as_str().unwrap().ends_with(
+                    Path::new(model["path"].as_str().unwrap())
+                        .file_name()
+                        .unwrap()
+                        .to_str()
+                        .unwrap()
+                )
+            );
+        }
         assert_eq!(report["nodes"]["state"], "unknown");
         assert_eq!(report["hardware"]["state"], "unknown");
         assert!(report["hardware"]["ramBytes"].is_null());
@@ -245,6 +291,13 @@ mod tests {
             8589934592_u64
         );
         assert_eq!(report["hardware"]["ramBytes"], 17179869184_u64);
+        let interpreter = root.join("ComfyUI/.venv/Scripts/python.exe");
+        std::fs::create_dir_all(interpreter.parent().unwrap()).unwrap();
+        std::fs::write(&interpreter, b"fixture").unwrap();
+        assert_eq!(
+            service.local_setup().await.unwrap()["comfy"]["layout"],
+            "external-venv"
+        );
         service.close().await;
         upstream.abort();
     }
