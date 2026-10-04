@@ -1,3 +1,4 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import type { FetchImplementation } from './client.ts'
 import type { LocalSetupVerificationProgress, LocalSetupVerificationResult } from '../../types/local-setup.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
@@ -11,7 +12,7 @@ const nullableBytes = (value: unknown) => value === null || integer(value)
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value)
 
 /** This explicit request has no cache and must receive a terminal result. */
-export async function verifyLocalSetupModel(modelId: string, options: VerificationOptions, fetch: FetchImplementation = (url, init) => globalThis.fetch(url, init)): Promise<LocalSetupVerificationResult> {
+export async function verifyLocalSetupModel(modelId: string, options: VerificationOptions, fetch: FetchImplementation = runtimeFetch): Promise<LocalSetupVerificationResult> {
   if (!isLocalStudioHost()) throw new Error('模型校验仅限本机使用')
   if (!['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].includes(modelId)) throw new Error('模型不在起步校验清单中')
   options.signal.throwIfAborted()

@@ -24,6 +24,40 @@ struct Manifest {
     files: Vec<ModelFile>,
 }
 
+// Metadata is checked before open, and Unix open stays nonblocking if a
+// concurrent replacement turns this fixed model path into a FIFO or symlink.
+fn open_regular(path: &Path) -> std::io::Result<File> {
+    if !std::fs::symlink_metadata(path)?.is_file() {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Expected a regular model file",
+        ));
+    }
+    let mut options = std::fs::OpenOptions::new();
+    options.read(true);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::OpenOptionsExt;
+        options.custom_flags(libc::O_NONBLOCK | libc::O_NOFOLLOW);
+    }
+    let file = options.open(path)?;
+    if !file.metadata()?.is_file() {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Model path changed type",
+        ));
+    }
+    Ok(file)
+}
+
+fn same_file_at(path: &Path, identity: &crate::file_identity::Identity) -> bool {
+    // Reuse the cross-platform identity authority, but reopen through the
+    // nonblocking regular-file guard rather than allowing a replacement FIFO.
+    open_regular(path)
+        .and_then(|current| crate::file_identity::opened(&current))
+        .is_ok_and(|current| current == *identity)
+}
+
 impl ControlService {
     pub(super) fn verify_setup_model(self: &Arc<Self>, id: String) -> Result<Response> {
         let index = match id.as_str() {
@@ -134,13 +168,24 @@ fn inspect(
             );
         }
     };
-    let mut file = match File::open(&real_path) {
+    let mut file = match open_regular(&real_path) {
         Ok(value) => value,
         Err(_) => return finish("unknown", None, None, "无法打开模型文件"),
     };
     let before = match file.metadata() {
         Ok(value) if value.is_file() => value,
         _ => return finish("unknown", None, None, "目标不是可读取的普通文件"),
+    };
+    let identity = match crate::file_identity::opened(&file) {
+        Ok(value) => value,
+        Err(_) => {
+            return finish(
+                "unknown",
+                None,
+                None,
+                "无法确认文件身份，请检查文件系统支持",
+            );
+        }
     };
     if before.len() != spec.bytes {
         return finish(
@@ -213,6 +258,7 @@ fn inspect(
     if count != spec.bytes
         || current_path != real_path
         || !current_path.starts_with(real_root)
+        || !same_file_at(&current_path, &identity)
         || !unchanged(file.metadata())
         || !unchanged(std::fs::metadata(&path))
     {
@@ -282,6 +328,40 @@ mod tests {
             "unknown"
         );
     }
+    #[test]
+    fn replacement_with_preserved_metadata_is_not_the_verified_file() {
+        let temp = tempfile::tempdir().unwrap();
+        let path = temp.path().join("model.safetensors");
+        std::fs::write(&path, b"original").unwrap();
+        let opened = open_regular(&path).unwrap();
+        let identity = crate::file_identity::opened(&opened).unwrap();
+        let before = opened.metadata().unwrap();
+        std::fs::rename(&path, temp.path().join("previous.safetensors")).unwrap();
+        std::fs::write(&path, b"replaced").unwrap();
+        File::options()
+            .write(true)
+            .open(&path)
+            .unwrap()
+            .set_times(std::fs::FileTimes::new().set_modified(before.modified().unwrap()))
+            .unwrap();
+        let after = std::fs::metadata(&path).unwrap();
+        assert_eq!(before.len(), after.len());
+        assert_eq!(before.modified().unwrap(), after.modified().unwrap());
+        assert!(!same_file_at(&path, &identity));
+        #[cfg(unix)]
+        {
+            use std::os::unix::ffi::OsStrExt;
+            std::fs::remove_file(&path).unwrap();
+            let name = std::ffi::CString::new(path.as_os_str().as_bytes()).unwrap();
+            assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
+            assert!(
+                open_regular(&path).is_err(),
+                "FIFO must be rejected before a blocking open"
+            );
+            assert!(!same_file_at(&path, &identity));
+        }
+    }
+
     #[tokio::test]
     async fn verification_is_allowlisted_serialized_and_released_after_disconnect() {
         let (_temp, service) = super::super::tests::fixture(json!({}));
