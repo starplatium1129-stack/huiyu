@@ -26,7 +26,6 @@ vi.mock('@/composables/useKVStore', () => ({ kvGet: io.kvGet, kvSet: io.kvSet, k
 vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: vi.fn(), thumbKey: (id: string) => id }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: io.upload, fetchVideoJob: io.fetchJob }))
-vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: () => null }))
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -89,25 +88,30 @@ describe('创作状态交接回归', () => {
     for (const id of ['a', 'b']) store.appendShotCtx({ imageId: id, characterId: 'same', outfitId: id, prompt: 'A quiet landscape', story: '', blueprintId: null, sceneId: null })
     const shots = ref<ShotDraft[]>([])
     const cards = ref<ReferenceCard[]>([{ label: '', images: [] }])
-    const assemble = vi.fn(async () => 1)
-    const importer = useShotImport({ shots, referenceCards: cards, identityCard: ref(''), autoLoadCharacterReferences: assemble, popularIdentityProse: () => '' })
+    const assemble = vi.fn(async (id: string, index = 0) => { cards.value[index].label = id; return true })
+    const importer = useShotImport({ shots, referenceCards: cards, selectCardCharacter: assemble })
     const result = await importer.importShotsFromDrawing()
     expect(assemble.mock.calls).toEqual([['same', 0, 'a'], ['same', 1, 'b']])
     expect(shots.value.map(shot => shot.cast)).toEqual(['1', '2'])
     expect(shots.value.map(shot => shot.imageId)).toEqual(['a', 'b'])
     expect(result).toMatchObject({ imported: 2, framesReady: 0, framesPending: 2 })
     expect(store.shotsPending).toBe(0)
+    store.appendShotCtx({ imageId: 'next', characterId: 'same', outfitId: 'a', prompt: 'Another quiet landscape', story: '', blueprintId: null, sceneId: null })
+    await importer.importShotsFromDrawing()
+    expect(assemble).toHaveBeenCalledTimes(2)
+    expect(cards.value).toHaveLength(2)
+    expect(shots.value[2].cast).toBe('1')
   })
 
   it('导入过程中离页，不消费还未落位的镜头', async () => {
     const store = useVideoStore()
     store.appendShotCtx({ imageId: 'a', characterId: 'a', prompt: 'A quiet landscape', story: '', blueprintId: null, sceneId: null })
-    let finish!: (value: number) => void
+    let finish!: (value: boolean) => void
     const scope = effectScope()
-    const importer = scope.run(() => useShotImport({ shots: ref([]), referenceCards: ref([{ label: '', images: [] }]), identityCard: ref(''), popularIdentityProse: () => '', autoLoadCharacterReferences: () => new Promise(resolve => { finish = resolve }) }))!
+    const importer = scope.run(() => useShotImport({ shots: ref([]), referenceCards: ref([{ label: '', images: [] }]), selectCardCharacter: () => new Promise(resolve => { finish = resolve }) }))!
     const running = importer.importShotsFromDrawing()
     scope.stop()
-    finish(1)
+    finish(true)
     expect(await running).toBeNull()
     expect(store.shotsPending).toBe(1)
   })

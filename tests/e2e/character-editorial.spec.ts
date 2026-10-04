@@ -13,27 +13,12 @@ const profiles = [
   { id: 'fixture-popular', name: '长名字的档案测试角色', type: 'popular', source: '测试作品', alias: ['测试别名'], tags: [], personality: [], likes: [],
     portrait: { image: '/assets/editorial-missing.jpg' } },
 ]
-const references = { natsume: { characterId: 'natsume', outfits: ['default', 'coat'].map((outfitId, i) => ({
-  outfitId, outfitName: i ? '秋日外套' : '日常服装', isDefault: !i, isNsfw: false,
-  references: ['正面', '侧面', '背面', '近景'].map((name, index) => ({
-    id: `${outfitId}-${index}`, name, shotType: name, lens: '50 mm', targetUsage: ['形象参考', '分镜'],
-    url: index < 2 ? `/character-references/editorial/${outfitId}/${index}.jpg` : '', pending: index >= 2,
-  })),
-})) } }
-
 async function fixture(page: Page, theme: string) {
   const picture = readFileSync('assets/characters/natsume-home-cg.jpg')
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false } }))
-  await page.route('**/api/character-reference-profile/*', route => {
-    const id = new URL(route.request().url()).pathname.split('/').at(-1)
-    return id === 'natsume'
-      ? route.fulfill({ json: references.natsume })
-      : route.fulfill({ status: 404, json: { error: '角色参考档案尚未登记' } })
-  })
   await page.route('**/assets/editorial-fixture.jpg', route => route.fulfill({ body: picture, contentType: 'image/jpeg' }))
   await page.route('**/assets/editorial-missing.jpg', route => route.fulfill({ status: 404 }))
   await page.route('**/assets/characters/thumbs/popular-fixture-popular.webp*', route => route.fulfill({ status: 404 }))
-  await page.route('**/character-references/editorial/**', route => route.fulfill({ body: picture, contentType: 'image/jpeg' }))
   await page.route(/^http:\/\/[^/]+\/data\//, route => {
     const url = new URL(route.request().url())
     if (url.searchParams.has('import')) return route.continue()
@@ -57,7 +42,7 @@ async function fixture(page: Page, theme: string) {
 }
 
 for (const theme of ['light', 'dark']) {
-  test(`character archive actions and references ${theme}`, async ({ page }, testInfo) => {
+  test(`character archive actions and model information ${theme}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1280, height: 960 })
     await fixture(page, theme)
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -75,21 +60,8 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByRole('button', { name: '收起介绍' })).toHaveAttribute('aria-expanded', 'true')
     await page.getByRole('button', { name: '收起介绍' }).click()
     await page.locator('.character-production summary').click()
-    await expect(page.getByRole('region', { name: '角色素材状态' })).toBeVisible()
-    await expect(page.getByText('默认服装参考图 2 / 4 可读取')).toBeVisible()
     await expect(page.getByText('档案测试模型', { exact: true })).toBeVisible()
     await page.locator('.character-production summary').click()
-    await page.getByRole('button', { name: '秋日外套', exact: true }).click()
-    await expect(page.locator('.char-reference-section').getByRole('link')).toHaveAttribute('href', '/video-studio?mode=shots&character=natsume&outfit=coat')
-    await expect(page.locator('.char-ref-card[aria-disabled="true"]')).toHaveCount(2)
-    await page.locator('.char-reference-section').screenshot({ path: testInfo.outputPath(`references-${theme}.png`) })
-    await page.getByRole('button', { name: '查看 正面 高清大图' }).click()
-    await expect(page.getByRole('dialog')).toBeVisible()
-    await page.keyboard.press('ArrowRight')
-    await expect(page.locator('.ref-modal-copy h2')).toContainText('侧面')
-    await expect(page.getByRole('button', { name: '下一视角', exact: true })).toBeDisabled()
-    await page.keyboard.press('Escape')
-    await expect(page.getByRole('dialog')).toBeHidden()
     await expect(page.locator('.recommend-section')).toContainText('窗边的午后')
     await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('测试别名')
     await expect(page.locator('.directory-item')).toHaveCount(1)

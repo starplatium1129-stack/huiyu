@@ -64,8 +64,6 @@
 }
 .shot-card-outfit-pill:hover { @apply tw:border-accent tw:text-primary; }
 .shot-card-outfit-pill.active { @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse tw:font-semibold; }
-.shot-card-outfit-pill.pill-nsfw { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); }
-.shot-card-outfit-pill.pill-nsfw.active { @apply tw:border-danger; background: var(--danger); /* 审计修复：白字压 danger 底仅 3.49:1，改反色深字 5.2:1 */ @apply tw:text-inverse; }
 .shot-reference-images { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .shot-reference-remove { @apply tw:inline-flex tw:p-0; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:cursor-pointer; }
 .shot-reference-remove:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

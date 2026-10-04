@@ -1,80 +1,86 @@
 import { effectScope, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useReferenceCards, removeCastSlot } from './useReferenceCards'
-import { ensureCharacterReferencesLoaded } from '@/utils/characterReferenceData'
-const profiles = vi.hoisted(() => ({ value: {} as Record<string, unknown> }))
-vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: (id: string) => profiles.value[id], ensureCharacterReferencesLoaded: vi.fn(async () => {}) }))
+import { catalogApi } from '@/api/catalogApi'
+
+vi.mock('@/api/catalogApi', () => ({ catalogApi: { character: vi.fn() } }))
+const character = {
+  id: 'one', displayName: 'One', originalName: 'One', franchise: 'Fixture', aliases: [],
+  identityProse: 'One identity', identityTokens: ['brown_hair'], adultEligibility: 'adult',
+  recommendedEngine: 'anima', outfits: [
+    { id: 'a', name: 'A', default: true, prose: 'outfit A', tokens: ['dress'] },
+    { id: 'b', name: 'B', prose: 'outfit B', tokens: ['coat'] },
+  ],
+}
+const response = { ok: true as const, version: 1, character, profile: null, blueprints: [] }
 function setup() {
   const scope = effectScope()
   const deps = { identityCard: ref(''), batchError: ref(''), readBlobAsDataURL: vi.fn(async () => 'data:image/png;base64,eA=='), uploadVideoImage: vi.fn(async () => ({ ok: true as const, name: 'uploaded.png', bytes: 1 })), onCardRemoved: vi.fn() }
   return { scope, deps, cards: scope.run(() => useReferenceCards(deps))! }
 }
 beforeEach(() => {
-  profiles.value = { one: { displayName: 'One', identityProse: 'One identity', outfits: [
-    { outfitId: 'a', outfitName: 'A', isDefault: true, prose: 'outfit A', references: [{ url: '/a.png' }] },
-    { outfitId: 'b', outfitName: 'B', prose: 'outfit B', references: [{ url: '/b.png' }] },
-  ] } }
-  vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['x'], { type: 'image/png' }))))
+  vi.mocked(catalogApi.character).mockReset().mockResolvedValue(response)
   vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:preview')
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
 })
-afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
-describe('reference-card async ownership', () => {
+afterEach(() => { vi.restoreAllMocks() })
+describe('optional reference cards', () => {
+  it('uses catalog identity and outfits without requiring or uploading reference images', async () => {
+    const { cards, deps, scope } = setup()
+    expect(await cards.selectCardCharacter('one')).toBe(true)
+    expect(deps.identityCard.value).toBe('[Character 1 - One]: One identity, outfit A')
+    expect(cards.getCharOutfits('one').map(outfit => outfit.id)).toEqual(['a', 'b'])
+    await cards.switchCardOutfit(0, 'b')
+    expect(cards.referenceCards.value[0]).toMatchObject({ outfitId: 'b', images: [] })
+    expect(deps.identityCard.value).toBe('[Character 1 - One]: One identity, outfit B')
+    expect(deps.batchError.value).toBe('')
+    expect(deps.uploadVideoImage).not.toHaveBeenCalled()
+    expect(catalogApi.character).toHaveBeenCalledTimes(1)
+    expect(cards.shotReferences({ cast: '1' })).toBeUndefined()
+    scope.stop()
+  })
+  it('reads studio character traits and wardrobe from its catalog profile', async () => {
+    vi.mocked(catalogApi.character).mockResolvedValueOnce({ ...response, character: null, profile: {
+      id: 'nene', name: '宁宁', alias: ['Ayachi Nene'], traits: [{ tag: 'white_hair' }, { tag: 'purple_eyes' }],
+      lora: { special_outfits: { official_witch: ['nene_witch_canonical', 'witch_hat'] } },
+    } })
+    const { cards, deps, scope } = setup()
+    expect(await cards.selectCardCharacter('nene')).toBe(true)
+    expect(deps.identityCard.value).toContain('Ayachi Nene, white hair, purple eyes')
+    expect(deps.identityCard.value).toContain('witch costume, witch hat')
+    expect(cards.referenceCards.value[0].outfitId).toBe('official_witch')
+    scope.stop()
+  })
   it('cancels an externally owned load without changing a newer card and removes its listener', async () => {
-    let finish!: () => void
-    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    let finish!: (value: typeof response) => void
+    vi.mocked(catalogApi.character).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
     const { cards, scope } = setup()
     const controller = new AbortController()
     const remove = vi.spyOn(controller.signal, 'removeEventListener')
-    const pending = cards.autoLoadCharacterReferences('one', 0, 'b', controller.signal)
+    const pending = cards.selectCardCharacter('one', 0, 'b', controller.signal)
     controller.abort()
-    await cards.autoLoadCharacterReferences('one', 0, 'a')
-    finish(); await pending
+    await cards.selectCardCharacter('one', 0, 'a')
+    finish(response); await pending
     expect(cards.referenceCards.value[0].outfitId).toBe('a')
     expect(remove).toHaveBeenCalledWith('abort', expect.any(Function))
     scope.stop()
   })
-  it('ignores a previous character profile arriving after a new selection', async () => {
-    let finish!: () => void
-    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
-    const { cards, scope } = setup()
-    const old = cards.autoLoadCharacterReferences('one')
-    await cards.autoLoadCharacterReferences('missing')
-    finish()
-    await old
-    expect(cards.referenceCards.value[0].characterId).toBe('missing')
-    expect(cards.referenceCards.value[0].images).toHaveLength(0)
-    expect(cards.loadingRefAssets.value).toBe(false)
-    scope.stop()
-  })
-  it('clears old images when a newly selected character has no loaded profile', async () => {
+  it('clears old images and generated identities when catalog selection fails', async () => {
     const { cards, deps, scope } = setup()
-    await cards.autoLoadCharacterReferences('one')
-    await cards.autoLoadCharacterReferences('missing')
+    await cards.selectCardCharacter('one')
+    cards.referenceCards.value[0].images = [{ name: 'old.png', url: 'blob:old' }]
+    vi.mocked(catalogApi.character).mockRejectedValueOnce(new Error('unavailable'))
+    expect(await cards.selectCardCharacter('missing')).toBe(false)
     expect(cards.referenceCards.value[0].images).toHaveLength(0)
-    expect(cards.referenceCards.value[0].characterId).toBe('missing')
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:old')
     expect(deps.identityCard.value).toBe('')
-    expect(deps.batchError.value).toContain('尚未就绪')
-    scope.stop()
-  })
-  it('does not mix an old outfit response into a newly selected outfit', async () => {
-    let resolve!: (response: Response) => void
-    vi.mocked(fetch).mockReturnValueOnce(new Promise(done => { resolve = done }))
-    const { cards, deps, scope } = setup()
-    const old = cards.autoLoadCharacterReferences('one', 0, 'a')
-    await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(1))
-    await cards.autoLoadCharacterReferences('one', 0, 'b')
-    resolve(new Response(new Blob(['old'], { type: 'image/png' })))
-    await old
-    expect(cards.referenceCards.value[0].outfitId).toBe('b')
-    expect(cards.referenceCards.value[0].images).toHaveLength(1)
-    expect(deps.identityCard.value).toContain('outfit B')
+    expect(deps.batchError.value).toContain('读取失败')
     expect(cards.loadingRefAssets.value).toBe(false)
     scope.stop()
   })
-  it('aborts removed cards and clears auto-generated identities without removing manual text', async () => {
+  it('clears auto-generated identities without removing manual text on card removal', async () => {
     const { cards, deps, scope } = setup()
-    await cards.autoLoadCharacterReferences('one')
+    await cards.selectCardCharacter('one')
     cards.removeReferenceCard(0)
     expect(deps.identityCard.value).toBe('')
     expect(deps.onCardRemoved).toHaveBeenCalledWith(0)
@@ -83,16 +89,7 @@ describe('reference-card async ownership', () => {
     expect(deps.identityCard.value).toBe('User authored identity')
     scope.stop()
   })
-  it('continues after individual failed images and never counts pending assets', async () => {
-    profiles.value.one = { displayName: 'One', outfits: [{ outfitId: 'a', isDefault: true, references: [{ url: '/bad.png' }, { url: '/ready.png' }, { url: '/pending.png', pending: true }] }] }
-    vi.mocked(fetch).mockRejectedValueOnce(new Error('offline'))
-    const { cards, deps, scope } = setup()
-    expect(await cards.autoLoadCharacterReferences('one')).toBe(1)
-    expect(fetch).toHaveBeenCalledTimes(2)
-    expect(deps.batchError.value).toContain('1/2')
-    scope.stop()
-  })
-  it('reserves concurrent manual upload slots so the four-image limit cannot be exceeded', async () => {
+  it('reserves concurrent manual upload slots and releases uploaded images on disposal', async () => {
     const { cards, deps, scope } = setup()
     cards.referenceCards.value[0].images = [{ name: 'one', url: '' }, { name: 'two', url: '' }]
     const resolvers: Array<(value: { ok: true; name: string; bytes: number }) => void> = []
@@ -105,41 +102,23 @@ describe('reference-card async ownership', () => {
     await Promise.all([first, second])
     expect(cards.referenceCards.value[0].images).toHaveLength(4)
     scope.stop()
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview')
   })
-  it('releases loading and reports a timed-out profile instead of using stale cached data', async () => {
-    vi.mocked(ensureCharacterReferencesLoaded).mockRejectedValueOnce(new DOMException('timeout', 'TimeoutError'))
-    const { cards, deps, scope } = setup()
-    expect(await cards.autoLoadCharacterReferences('one')).toBe(0)
-    expect(cards.loadingRefAssets.value).toBe(false)
-    expect(deps.batchError.value).toContain('读取失败')
-    expect(fetch).not.toHaveBeenCalled()
-    scope.stop()
-  })
-  it('cancels the profile consumer when its card is removed', async () => {
-    let signal!: AbortSignal
-    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce((_id, _refresh, consumerSignal) => new Promise((_resolve, reject) => {
+  it('cancels catalog loading when its card is removed and ignores late responses', async () => {
+    let signal!: AbortSignal, finish!: (value: typeof response) => void
+    vi.mocked(catalogApi.character).mockImplementationOnce((_id, consumerSignal) => new Promise(resolve => {
       signal = consumerSignal!
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+      finish = resolve
     }))
     const { cards, deps, scope } = setup()
-    const pending = cards.autoLoadCharacterReferences('one')
+    const pending = cards.selectCardCharacter('one')
     cards.removeReferenceCard(0)
-    expect(await pending).toBe(0)
+    finish(response)
+    expect(await pending).toBe(false)
     expect(signal.aborted).toBe(true)
     expect(cards.loadingRefAssets.value).toBe(false)
     expect(deps.batchError.value).toBe('')
-    scope.stop()
-  })
-  it('times out a stalled image body and permits selection retry', async () => {
-    vi.useFakeTimers()
-    vi.mocked(fetch).mockResolvedValueOnce({ ok: true, blob: () => new Promise(() => {}) } as Response)
-    const { cards, deps, scope } = setup()
-    const pending = cards.autoLoadCharacterReferences('one')
-    await vi.advanceTimersByTimeAsync(15_001)
-    expect(await pending).toBe(0)
-    expect(cards.loadingRefAssets.value).toBe(false)
-    expect(deps.batchError.value).toContain('0/1')
-    expect(await cards.autoLoadCharacterReferences('one')).toBe(1)
+    expect(deps.identityCard.value).toBe('')
     scope.stop()
   })
   it('keeps actor references attached to the same remaining cards after removal', () => {

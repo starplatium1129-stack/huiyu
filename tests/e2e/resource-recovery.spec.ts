@@ -56,36 +56,6 @@ function failureCase(caseId: string, title: string, body: (page: Page, theme: Th
   }
 }
 
-function controlledReferenceIndex(fixtureUrl: string): Record<string, unknown> {
-  return {
-    nene: {
-      characterId: 'nene',
-      displayName: '绫地宁宁',
-      source: 'glm-next-d fixture',
-      identityProse: '',
-      outfits: [
-        {
-          outfitId: 'fixture-default',
-          outfitName: '验收夹具制服',
-          isDefault: true,
-          isNsfw: false,
-          prose: '',
-          references: [
-            {
-              id: 'f08-fixture-front',
-              name: '正面基准',
-              shotType: '正面',
-              fileName: 'fixture-front.png',
-              lens: '50mm',
-              targetUsage: ['文生图'],
-              url: fixtureUrl,
-            },
-          ],
-        },
-      ],
-    },
-  }
-}
 
 function controlledShowcaseManifest(entryId: string): Record<string, unknown> {
   return {
@@ -148,32 +118,6 @@ failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme)
   await page.reload({ waitUntil: 'domcontentloaded' })
   await expect(page.locator('img.sc-thumb.sc-thumb-missing')).toHaveCount(0)
   await expect(page.locator('img.sc-thumb.sc-thumb-ready').first()).toBeVisible({ timeout: 15_000 })
-})
-
-failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme) => {
-  const FIXTURE_URL = '/character-references/f08-fixture/front.png'
-  await page.route('**/api/character-reference-profile/nene', jsonFixture(controlledReferenceIndex(FIXTURE_URL).nene))
-  const pattern = '**/character-references/**'
-  const probe = await intercept(page, pattern, refused)
-  await openWithTheme(page, '/character?character=nene', theme)
-  const refCard = page.locator('.char-ref-card').first()
-  await expect(refCard).toBeVisible()
-  await refCard.scrollIntoViewIfNeeded()
-  await assertIntercepted(probe)
-  const unavailable = page.locator('[aria-label*="本机暂无参考图"]').first()
-  await expect(unavailable).toBeVisible()
-  await expect(unavailable).toHaveAttribute('aria-disabled', 'true')
-  await expect(refCard).toBeDisabled()
-  await expect(page.locator('dialog[open]')).toHaveCount(0)
-  // 恢复：解除拒绝 → 发放有效参考图 → 重载，卡片回到可放大状态
-  await page.unroute(pattern)
-  const restored = await intercept(page, pattern, pngFixture)
-  await page.reload({ waitUntil: 'domcontentloaded' })
-  await expect(page.locator('[aria-label*="高清大图"]').first()).toBeVisible({ timeout: 15_000 })
-  await refCard.scrollIntoViewIfNeeded()
-  await assertIntercepted(restored)
-  await expect(refCard.locator('img')).toHaveJSProperty('complete', true)
-  await expect(refCard.locator('img')).not.toHaveJSProperty('naturalWidth', 0)
 })
 
 failureCase('F09', '画册灯箱 404 可关闭可恢复', async (page, theme) => {

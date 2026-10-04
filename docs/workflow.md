@@ -110,6 +110,8 @@
 
 ## 参考库
 
+参考图库已退出角色档案及新增角色/服装的必备清单。分镜的角色和服装文字读取内容目录，参考图片按项目需要上传。以下入口仅用于主动维护既有参考素材；`content:sync` 与 `character:onboard` 不再自动登记或生成参考图库。
+
 评级诊断：`node scripts/maintenance/classify-scene-ratings.js --check --json`（`--explain` 同义）只读输出 totals、changedCount、changes 的 current/expected rating/mature/category/usage 及推导来源。sources 汇总 manual/policy/existing-mature/pinned；差异退出 1，参数或结构无效退出 2。诊断禁止与 `--write` 组合，不生成文件；默认人类汇总及正常 `--write` 路径保留。隔离测试通过 `AICS_DATA_ROOT` 定位夹具，入口为 `node scripts/tests/test-scene-rating-diagnostics.js`。
 
 归属报告支持 `node scripts/workflow.js audit:ownership --domain scene-ratings --json`：人工表 `scripts/lib/manual-scene-ratings.js` 为源，`classify-scene-ratings.js` 为读取/派生入口，场景分片的 rating/mature/category/usage 为字段产物。这些字段不属于提示词正文；人工审核语义与真实画面仍未验证。人工表静态解析，缺失、未知值、重复键或缺值报告 missing/invalid，不执行表内代码。

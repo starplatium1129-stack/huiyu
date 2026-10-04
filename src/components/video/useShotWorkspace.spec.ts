@@ -9,18 +9,17 @@ const route = reactive({ path: '/video-studio', query: {} as Record<string, stri
 const replace = vi.fn(async ({ query }: { query: Record<string, string | undefined> }) => { route.query = query })
 const restoreDraft = vi.fn(async () => {})
 const cards = ref<Array<{ characterId?: string; outfitId?: string }>>([{}])
-const loadReferences = vi.fn(async (_id: string, _index: number, _outfit?: string, _signal?: AbortSignal) => 0)
+const loadReferences = vi.fn(async (_id: string, _index: number, _outfit?: string, _signal?: AbortSignal) => false)
 beforeEach(() => { route.path = '/video-studio'; route.query = {}; cards.value = [{}]; loadReferences.mockReset(); replace.mockClear(); restoreDraft.mockReset() })
 vi.mock('vue-router', () => ({ useRoute: () => route, useRouter: () => ({ replace }) }))
 vi.mock('@/storage/artworkSession', () => ({ withArtworkStaging: (run: () => unknown) => run() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { putImage: vi.fn().mockResolvedValue('saved-image') } }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: vi.fn() }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
-vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints: [], popularCharacters: [] }) }))
+vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ sceneBlueprints: [], popularCharacters: [], loadCharacterShell: async () => {} }) }))
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ consumeScenarioActs: () => [] }) }))
-vi.mock('@/utils/characterReferenceData', () => ({ ensureCharacterReferencesLoaded: vi.fn(), getCharacterReferences: vi.fn() }))
 vi.mock('./useShotFirstFrames', () => ({ useShotFirstFrames: () => ({ firstFrameBusy: ref(false) }) }))
-vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: cards, loadingRefAssets: ref(false), shotReferences: () => undefined, autoLoadCharacterReferences: loadReferences }) }))
+vi.mock('./useReferenceCards', () => ({ useReferenceCards: () => ({ referenceCards: cards, loadingRefAssets: ref(false), shotReferences: () => undefined, selectCardCharacter: loadReferences }) }))
 vi.mock('./useShotAiTools', () => ({ useShotAiTools: () => ({}) }))
 vi.mock('./useShotDraft', () => ({ useShotDraft: () => ({ restoreShotsDraft: restoreDraft }) }))
 vi.mock('./useShotImport', () => ({ useShotImport: () => ({ importShotsFromDrawing: async () => null }) }))
@@ -82,7 +81,7 @@ it('applies only the latest explicit character/outfit after draft restore and do
   const pending: Array<() => void> = []
   loadReferences.mockImplementation((id, _index, outfit, signal) => new Promise(resolve => pending.push(() => {
     if (!signal?.aborted) cards.value[0] = { characterId: id, outfitId: outfit }
-    resolve(0)
+    resolve(false)
   })))
   const active = ref(true)
   let tools!: ReturnType<typeof useShotWorkspace>

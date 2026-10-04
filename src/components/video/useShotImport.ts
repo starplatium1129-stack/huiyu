@@ -4,7 +4,6 @@ import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore } from '@/stores/videoStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { uploadVideoImage } from '@/api/videoApi'
-import { getCharacterReferences } from '@/utils/characterReferenceData'
 
 /**
  * 分镜编辑器·绘图页镜头导入（2026-09-06 自 ShotListEditor 下沉，体验报告 F4）。
@@ -16,26 +15,23 @@ import { getCharacterReferences } from '@/utils/characterReferenceData'
  *
  * 现在：先窥视待办 → 逐镜建草稿并单独确认首帧 → 全部处理完才消费待办；
  * 首帧失败的镜头保留 sourceImageId（= 草稿 imageId）可单独重试；
- * 参考卡按「角色 + 服装」对装配，同一角色多服装各占一卡槽。
+ * 参考卡按「角色 + 服装」对装配，同一角色多服装各占一卡槽；图片按需手动上传。
  */
 
 export interface ShotImportDeps {
   shots: Ref<ShotDraft[]>
-  identityCard: Ref<string>
   referenceCards: Ref<ReferenceCard[]>
-  /** 装配指定卡槽的角色参考图（返回成功装配的张数）。 */
-  autoLoadCharacterReferences: (charId: string, cardIndex?: number, outfitId?: string) => Promise<number>
-  /** 热门角色身份散文兜底（参考档案缺失时）。 */
-  popularIdentityProse: (charId: string) => string
+  /** 选择指定卡槽的角色与服装（返回文字资料是否就绪）。 */
+  selectCardCharacter: (charId: string, cardIndex?: number, outfitId?: string) => Promise<boolean>
 }
 
 export interface ShotImportOutcome {
   imported: number
   framesReady: number
   framesPending: number
-  /** 本次新装配参考卡的角色数与失败数。 */
-  refCardsAssembled: number
-  refCardsFailed: number
+  /** 本次读取角色资料的成功数与失败数。 */
+  charactersReady: number
+  charactersFailed: number
 }
 
 /** 参数自动推断：按描述关键词选景别/镜头/主体运动（中英文都认）。 */
@@ -72,7 +68,7 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
 }
 
 export function useShotImport(deps: ShotImportDeps) {
-  const { shots, identityCard, referenceCards } = deps
+  const { shots, referenceCards } = deps
   const videoStore = useVideoStore()
   let disposed = false
   if (getCurrentScope()) onScopeDispose(() => { disposed = true })
@@ -131,7 +127,7 @@ export function useShotImport(deps: ShotImportDeps) {
     const assembly: Array<{ charId: string; cardIndex: number; outfitId: string }> = []
     for (const pair of pairs.slice(0, 4)) {
       const existing = referenceCards.value.findIndex(
-        card => card.characterId === pair.characterId && (card.outfitId || '') === pair.outfitId && card.images.length > 0,
+        card => card.characterId === pair.characterId && (card.outfitId || '') === pair.outfitId && !!card.label,
       )
       if (existing >= 0) { pairCardIndex.set(pairKey(pair.characterId, pair.outfitId), existing); continue }
       let cardIndex = referenceCards.value.findIndex(card => !card.characterId && !card.images.length && !card.label)
@@ -150,20 +146,13 @@ export function useShotImport(deps: ShotImportDeps) {
     // 2. 并行装配参考卡（携带服装参数），逐卡记成败。
     const assembled = await Promise.all(assembly.map(async item => {
       try {
-        const count = await deps.autoLoadCharacterReferences(item.charId, item.cardIndex, item.outfitId || undefined)
-        return count > 0
+        const ready = await deps.selectCardCharacter(item.charId, item.cardIndex, item.outfitId || undefined)
+        return ready
       } catch { return false }
     }))
-    const refCardsAssembled = assembled.filter(Boolean).length
-    const refCardsFailed = assembled.length - refCardsAssembled
+    const charactersReady = assembled.filter(Boolean).length
+    const charactersFailed = assembled.length - charactersReady
     if (disposed) return null
-
-    // 3. 身份锚点：首位出场角色的标准人设（不覆盖用户已写内容）。
-    if (!identityCard.value && pairs.length > 0) {
-      const first = pairs[0]
-      const stdProfile = getCharacterReferences(first.characterId)
-      identityCard.value = stdProfile?.identityProse || deps.popularIdentityProse(first.characterId) || identityCard.value
-    }
 
     // 4. 逐镜建草稿并单独确认首帧：失败的镜头照常带入（文本不丢），
     //    imageId 留在草稿上，供「重试首帧」精确补救。
@@ -194,7 +183,7 @@ export function useShotImport(deps: ShotImportDeps) {
 
     // 5. 全部落位后才消费待办（一次性语义保持不变，但不再有「先清后败」）。
     videoStore.stageShotCtxs(videoStore.pendingShotCtxs.filter(ctx => !list.includes(ctx)))
-    return { imported: list.length, framesReady, framesPending, refCardsAssembled, refCardsFailed }
+    return { imported: list.length, framesReady, framesPending, charactersReady, charactersFailed }
   }
 
   return { importShotsFromDrawing, retryPendingFrames, mountShotFrame }

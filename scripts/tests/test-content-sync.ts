@@ -44,7 +44,7 @@ try {
   const preview = run();
   assert.equal(preview.status, 0, preview.stderr);
   assert.equal(snapshot(), before, 'default preview must be byte-for-byte read only');
-  rejected(/Unknown selected character/, '--ids=missing');
+  rejected(/Unknown option/, '--ids=missing');
   write('blueprints/demo.json', { version: 2, franchise: 'Demo', blueprints: [{ ...blueprint, outfitId: 'missing' }] });
   rejected(/unknown outfitId/);
   write('blueprints/demo.json', { version: 2, franchise: 'Demo', blueprints: [blueprint, blueprint] });
@@ -64,10 +64,10 @@ try {
   assert.deepEqual(read('scene-blueprints.json').blueprints, [blueprint]);
   assert.deepEqual(read('scenes.json'), []);
   const references = loadReferenceShards(fixture);
-  assert.equal(references.standards.characters[0].id, 'alice');
-  assert.ok(references.view.alice.outfits[0].references.every((ref: any) => ref.pending && !ref.url));
+  assert.deepEqual(references.standards.characters, [], 'content sync must not create reference records');
+  assert.deepEqual(references.view, {});
   const after = snapshot(); const repeat = run('--apply'); assert.equal(repeat.status, 0, repeat.stderr);
   assert.equal(snapshot(), after, 'repeated synchronization must preserve content');
-  console.log('PASS content:sync preview, registration, count repair, aggregates, idempotence and write-before-validation protection');
+  console.log('PASS content:sync preview, optional references, count repair, aggregates, idempotence and write-before-validation protection');
 } finally { fs.rmSync(fixture, { recursive: true, force: true }); }
 export {};

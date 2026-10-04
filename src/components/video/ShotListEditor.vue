@@ -94,9 +94,9 @@
           <div class="shot-reference-header-row">
             <div class="shot-reference-title-group">
               <h2 id="shotReferencesTitle">角色参考卡</h2>
-              <span class="field-hint">跨镜锁定形象 · 支持多角色 4 视角装配</span>
+              <span class="field-hint">角色与服装设定 · 参考图片按需上传</span>
               <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">
-                <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...
+                <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 读取角色资料或上传参考图片…
               </span>
             </div>
             <button
@@ -119,7 +119,7 @@
                   maxlength="20"
                   placeholder="角色名（如 宁宁 / 夏目）"
                 />
-                <StudioSelect class="shot-card-quick-select" size="sm" label="一键预设装配此角色" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => selectCardCharacter(cardIndex, String(value))" />
+                <StudioSelect class="shot-card-quick-select" size="sm" label="选择角色资料" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => selectCardCharacter(cardIndex, String(value))" />
                 <StudioTooltip v-if="referenceCards.length > 1" anchor content="移除此角色卡">
                   <button
                     class="btn btn-ghost btn-xs shot-card-remove-btn"
@@ -135,16 +135,16 @@
               <div v-if="getCharOutfits(card.characterId).length > 1" class="shot-card-outfit-pills">
                 <button
                   v-for="outfit in getCharOutfits(card.characterId)"
-                  :key="outfit.outfitId"
+                  :key="outfit.id"
                   type="button"
                   class="shot-card-outfit-pill"
-                  :class="{ active: (card.outfitId || 'default') === outfit.outfitId || (!card.outfitId && outfit.isDefault), 'pill-nsfw': outfit.isNsfw }"
-                  :aria-pressed="(card.outfitId || 'default') === outfit.outfitId || (!card.outfitId && outfit.isDefault)"
+                  :class="{ active: (card.outfitId || 'default') === outfit.id || (!card.outfitId && outfit.default) }"
+                  :aria-pressed="(card.outfitId || 'default') === outfit.id || (!card.outfitId && outfit.default)"
                   :disabled="batchActive || submitting"
-                  @click="switchCardOutfit(cardIndex, outfit.outfitId)"
+                  @click="switchCardOutfit(cardIndex, outfit.id)"
                 >
-                  <ArchiveIcon :name="outfit.isNsfw ? 'lock' : 'wardrobe'" />
-                  <span>{{ outfit.outfitName }}</span>
+                  <ArchiveIcon name="wardrobe" />
+                  <span>{{ outfit.name }}</span>
                 </button>
               </div>
 
@@ -170,7 +170,8 @@
                   @click="pickReference(cardIndex)"
                 ><ArchiveIcon name="upload" />本地上传</button>
               </div>
-              <p v-if="card.images.length" class="shot-reference-hint">已装配 {{ card.images.length }}/4 张参考图 · 点击缩略图可移除</p>
+              <p v-if="!card.images.length" class="shot-reference-hint">参考图可选，需要时再上传。</p>
+              <p v-if="card.images.length" class="shot-reference-hint">已上传 {{ card.images.length }} 张参考图（最多 4 张）· 点击缩略图可移除</p>
               <input
                 :ref="(el) => setReferenceInput(el, cardIndex)"
                 type="file"
@@ -316,7 +317,7 @@
             <div class="shot-selects">
               <label class="field">
                 <span class="field-label">角色</span>
-              <StudioSelect size="sm" label="本镜出场角色" hint="本镜出场角色（对应顶部角色参考卡，生成时自动带参考图）" v-model="shot.cast" :options="castOptions" :disabled="batchActive || submitting" />
+              <StudioSelect size="sm" label="本镜出场角色" hint="选择出场角色，已上传的参考图会随镜头带入" v-model="shot.cast" :options="castOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">景别</span>
@@ -488,7 +489,7 @@ const storyboardOptions = computed<StudioSelectOption[]>(() => [
 ])
 
 const castOptions = computed<StudioSelectOption[]>(() => {
-  const options: StudioSelectOption[] = [{ value: '', label: '无参考' }]
+  const options: StudioSelectOption[] = [{ value: '', label: '无指定角色' }]
   referenceCards.value.forEach((card, cardIdx) => {
     options.push({ value: String(cardIdx + 1), label: `角色 ${cardIdx + 1}${card.label ? ' · ' + card.label : ''}` })
   })

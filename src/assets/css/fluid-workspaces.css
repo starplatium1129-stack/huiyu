@@ -64,7 +64,7 @@ html .character-page .voice-block {
   border: 1px solid var(--border-soft);
   @apply tw:p-s-4 tw:leading-loose;
 }
-html .character-page :is(.bg-story, .char-reference-section, .recommend-section) {
+html .character-page :is(.bg-story, .recommend-section) {
   @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--workspace-inset);

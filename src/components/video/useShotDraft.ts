@@ -14,13 +14,13 @@ interface ShotDraftDeps {
   referenceCards: Ref<ReferenceCard[]>
   shots: Ref<ShotDraft[]>
   batchError: Ref<string>
-  autoLoadCharacterReferences: (id: string, index?: number, outfit?: string) => Promise<number>
+  selectCardCharacter: (id: string, index?: number, outfit?: string) => Promise<boolean>
   retryPendingFrames: () => Promise<{ fixed: number; remaining: number }>
 }
 
 export function useShotDraft(deps: ShotDraftDeps) {
   const { aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
-    batchError, autoLoadCharacterReferences, retryPendingFrames } = deps
+    batchError, selectCardCharacter, retryPendingFrames } = deps
   const videoStore = useVideoStore()
 let restoringDraft = false
 let shotsDraftTimer = 0
@@ -72,7 +72,7 @@ watch(
   { deep: true },
 )
 
-/** 草稿水合：参考卡重装配（角色+服装）→ 首帧重挂载 → 身份锚点以草稿为准。 */
+/** 草稿水合：角色与服装资料恢复→ 首帧重挂载 → 身份锚点以草稿为准。 */
 async function restoreShotsDraft() {
   const draft = videoStore.shotsDraft
   if (!draft || (!draft.shots.length && !draft.identityCard && !draft.cards.length)) return
@@ -107,9 +107,9 @@ async function restoreShotsDraft() {
   } finally {
     restoringDraft = false
   }
-  // 参考档案为运行时 JSON：先就位再按「角色+服装」重装配参考卡（F3）。
+  // 从内容目录恢复角色和服装；参考图片不再从固定图库自动装配。
   for (const [index, card] of referenceCards.value.entries()) {
-    if (card.characterId) await autoLoadCharacterReferences(card.characterId, index, card.outfitId || undefined)
+    if (card.characterId) await selectCardCharacter(card.characterId, index, card.outfitId || undefined)
   }
   // 身份锚点以草稿为准（用户可能手改过），卡装配的合并结果不覆盖它。
   if (draft.identityCard) identityCard.value = draft.identityCard

@@ -6,12 +6,10 @@
  *
  * 一站式完成新增角色全链路闭环：
  *   1. 档案与场景注册（popular-characters.json / characters.json / scene-blueprints.json）
- *   2. 参考规范同步（character-reference-standards.json / character-reference-view.json）
- *   3. 头像立绘渲染与点阵粒子场构建（assets/characters/ / assets/particles/）
- *   4. 4 视角电影级标准参考资产库生成（4 视角 × N 套服装 + 私密全裸形态）
- *   5. Showcase 官方样张渲染与大盘注册（SFW + 显式解剖 NSFW × @rella 统一样式）
- *   6. DATA_VERSION 自动哈希校验（由 Vite virtual:data-version 注入）
- *   7. 质量门禁验证与桌面端一键增量部署
+ *   2. 头像立绘渲染与点阵粒子场构建（assets/characters/ / assets/particles/）
+ *   3. Showcase 官方样张渲染与大盘注册（SFW + 显式解剖 NSFW × @rella 统一样式）
+ *   4. DATA_VERSION 自动哈希校验（由 Vite virtual:data-version 注入）
+ *   5. 质量门禁验证与桌面端一键增量部署
  *
  * 用法:
  *   node scripts/maintenance/workflow-onboard-popular-character.js --character <id> [--skip-render] [--deploy]
@@ -26,16 +24,9 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DATA_DIR = path.join(ROOT, 'data');
 const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
-const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
 const MODEL_ID = 'anima-miaomiao-v1.6';
 const PROFILE_ID = 'anima_miaomiao_v16';
 const CHECKPOINT = 'miaomiaoHarem_anima16.safetensors';
-// 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences；找不到退回项目 assets。
-const refRoot = (() => {
-  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
-  const candidate = path.join(ws, 'CharacterReferences');
-  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
-})();
 // 样张目录不再写死版本号（2026-08-30 教训：写死 2026-08-15_v23 而应用经
 // resolveSceneShowcaseDir 已读 v25，样张落错目录导致「效果样子没有新角色」）。
 // 复用网关同一份解析：含 manifest.json 的版本子目录按名倒序取最新（排除
@@ -123,14 +114,10 @@ async function runPipeline(charId: any, opts: any = {}) {
   }
 
   const charBlueprints = blueprints.filter((b: any) => b.characterId === charId);
-  console.log(`[1/6 契约检查] 角色: ${character.displayName} (${character.id})，服装: ${character.outfits.length} 套，专属蓝图: ${charBlueprints.length} 个`);
-
-  // Step 2: 规范与 TS 契约同步
-  console.log(`\n[2/6 同步多服装标准] 运行 sync-multi-outfit-standards.js...`);
-  execSync(`node scripts/maintenance/sync-multi-outfit-standards.js`, { cwd: ROOT, stdio: 'inherit' });
+  console.log(`[1/4 契约检查] 角色: ${character.displayName} (${character.id})，服装: ${character.outfits.length} 套，专属蓝图: ${charBlueprints.length} 个`);
 
   // Step 3: 构建点阵粒子场
-  console.log(`\n[3/6 粒子场构建] 运行 build-particle-portraits.py...`);
+  console.log(`\n[2/4 粒子场构建] 运行 build-particle-portraits.py...`);
   const avatarPath = path.join(ROOT, 'assets', 'characters', `popular-${charId}.png`);
   if (fs.existsSync(avatarPath)) {
     execSync(`python scripts/maintenance/build-particle-portraits.py ${charId}`, { cwd: ROOT, stdio: 'inherit' });
@@ -141,89 +128,9 @@ async function runPipeline(charId: any, opts: any = {}) {
     console.log(`  警告: 头像立绘未找到: ${avatarPath}`);
   }
 
-  // Step 4: 渲染 4 视角参考资产库
-  if (!opts.skipRender) {
-    console.log(`\n[4/6 参考资产库渲染] 检查 4 视角资产...`);
-    const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
-    const stdChar = standards.characters.find((c: any) => c.id === charId);
-    const refBaseDir = path.join(refRoot, charId);
-
-    const PERSPECTIVE_CONFIGS: any = {
-      ref_01_face_closeup: {
-        suffix: "face and eyes extreme close-up portrait, 85mm f/1.4 shallow depth of field, soft bokeh, expressive anime eyes, looking at viewer, subtle gentle expression, soft cinematic studio key light, highly detailed facial features and skin texture",
-        negSuffix: "full body, upper body, hands, extra limbs, blurry face, bad eyes, lowres",
-      },
-      ref_02_half_medium: {
-        suffix: "upper body focus, medium shot, waist up, cowboy shot, 3/4 view angle, hands visible resting naturally near waist, detailed outfit layers, fabric folds, cinematic soft studio lighting",
-        negSuffix: "full body, legs, feet, shoes, boots, bad anatomy, bad hands, extra limbs, cropped shoulders, blurry",
-      },
-      ref_03_full_dynamic: {
-        suffix: "full body standing, entire figure visible from head to toe, front view, facing camera, looking at viewer, complete head, entire legs, full feet and shoes completely on the ground without cropping, clean studio floor shadow, balanced standing posture, full outfit details",
-        negSuffix: "back view, from behind, rear view, cropped head, cropped feet, cut off feet, out of frame, bad proportions, distorted legs",
-      },
-      ref_04_back_rear: {
-        suffix: "45 degree angle from behind, looking back over shoulder toward camera, back view focus, back of hair, hair flow, rear outfit details, cinematic rim lighting, dramatic backlight, edge glow",
-        negSuffix: "front view, facing camera, frontal face, bad anatomy, lowres",
-      }
-    };
-
-    if (stdChar) {
-      for (const outfit of stdChar.outfits) {
-        const outfitDir = path.join(refBaseDir, outfit.id);
-        if (!fs.existsSync(outfitDir)) fs.mkdirSync(outfitDir, { recursive: true });
-        const isNude = outfit.id === 'nsfw_nude' || outfit.isNsfw;
-
-        let charTokens = stdChar.identityTokens ? stdChar.identityTokens.join(', ') : stdChar.id;
-        if (isNude) {
-          charTokens = charTokens.replace(/\b(witch_hat|cape|dress|uniform|blazer|skirt|shoes|boots|gloves|jacket|coat|hoodie|thighhighs|socks)\b/gi, '');
-        }
-
-        const outfitTokens = Array.isArray(outfit.tokens) ? outfit.tokens.join(', ') : '';
-        const outfitProse = outfit.prose || '';
-
-        for (const persId of Object.keys(PERSPECTIVE_CONFIGS)) {
-          const targetPng = path.join(outfitDir, `${persId}.png`);
-          if (fs.existsSync(targetPng) && fs.statSync(targetPng).size > 10000) {
-            console.log(`  [已存在] ${outfit.name} (${persId})`);
-            continue;
-          }
-
-          console.log(`  [渲染中] ${outfit.name} (${persId})...`);
-          const pConfig = PERSPECTIVE_CONFIGS[persId];
-          const promptParts = [
-            isNude ? "nude, completely naked, uncensored, full body bare, natural skin" : "",
-            charTokens,
-            outfitTokens,
-            outfitProse,
-            pConfig.suffix,
-            "@rella, masterpiece, best quality, pristine anime aesthetic, clean cinematic lighting"
-          ].filter(Boolean);
-
-          const negParts = [
-            "bad anatomy, bad hands, extra limbs, extra arms, extra legs, poorly drawn face, poorly drawn hands, missing fingers, extra digits, cropped, split image, split screen, multiple views, comic panel, collaged, sketch, lowres, blurry, jpeg artifacts, watermark, signature",
-            isNude ? "clothes, clothing, shirt, pants, dress, kimono, robe, towel, underwear, bra, panties, panties_pull, swimsuit, bikini, skirt, socks, footwear, shoes, fabric covering, censors, mosaic" : "",
-            pConfig.negSuffix
-          ].filter(Boolean);
-
-          const imgBuf = await renderImage({
-            prompt: promptParts.join(', '),
-            negative: negParts.join(', '),
-            width: 832,
-            height: 1216,
-            steps: 28,
-            cfg: isNude ? 5.2 : 4.5,
-            seed: 50000000 + Math.floor(Math.random() * 1000000)
-          });
-          fs.writeFileSync(targetPng, imgBuf);
-          console.log(`  [已保存] ${targetPng}`);
-        }
-      }
-    }
-  }
-
   // Step 5: Showcase 样张渲染与大盘注册
   if (!opts.skipRender) {
-    console.log(`\n[5/6 Showcase 样张流水线] 检查与更新官方样张...`);
+    console.log(`\n[3/4 Showcase 样张流水线] 检查与更新官方样张...`);
     if (!SHOWCASE_DIR || !fs.existsSync(MANIFEST_FILE)) {
       throw new Error('未解析到活跃样张目录（SceneShowcase 版本子目录缺失或无 manifest.json）；请设置 SCENE_SHOWCASE_DIR 指向目标版本目录后重试');
     }
@@ -317,7 +224,7 @@ async function runPipeline(charId: any, opts: any = {}) {
   }
 
   // Step 6: 自动版本对齐与回归验证
-  console.log(`\n[6/6 版本哈希与质量门禁] 对齐 DATA_VERSION 并执行回归...`);
+  console.log(`\n[4/4 版本哈希与质量门禁] 对齐 DATA_VERSION 并执行回归...`);
   console.log(`[Version Sync] DATA_VERSION 将由 virtual:data-version 注入: ${expectedDataVersion(ROOT)}`);
 
   execSync('npm run typecheck:app', { cwd: ROOT, stdio: 'inherit' });

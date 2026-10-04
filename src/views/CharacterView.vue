@@ -90,10 +90,9 @@
         </div>
       </section>
 
-      <details v-if="current" :key="current.id" class="character-production">
-        <summary><span><ArchiveIcon name="image" />素材与模型</span><span class="production-hint">参考图可用状态 · LoRA 与触发词</span></summary>
+      <details v-if="current?.lora" :key="current.id" class="character-production">
+        <summary><span><ArchiveIcon name="image" />模型信息</span><span class="production-hint">LoRA 与触发词</span></summary>
         <div class="production-content">
-          <CharacterAssetSummary :character-id="current.id" />
           <section v-if="current.lora" class="detail-section">
             <h3 class="lab">绑定 LoRA</h3>
             <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>
@@ -102,147 +101,6 @@
           </section>
         </div>
       </details>
-
-      <section v-if="characterReferences" class="char-reference-section card-direct card-level-2" data-reveal data-reveal-delay="1.5">
-        <div class="recommend-head">
-          <div>
-            <div class="page-kicker">VISUAL REFERENCES</div>
-            <h2 class="recommend-title">服装与四视角参考</h2>
-            <p>选择服装，查看不同视角下的形象细节，再带入分镜创作。</p>
-          </div>
-          <RouterLink class="btn btn-primary btn-sm" :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`">
-            去分镜短片创作 ↗
-          </RouterLink>
-        </div>
-
-        <!-- 多服装 / 形态切换器 -->
-        <div v-if="characterReferences.outfits.length > 1" class="char-outfit-tabs" aria-label="角色服装与形态切换">
-          <button
-            v-for="outfit in characterReferences.outfits"
-            :key="outfit.outfitId"
-            type="button"
-            class="char-outfit-tab"
-            :class="{ active: activeOutfit?.outfitId === outfit.outfitId, 'tab-nsfw': outfit.isNsfw }"
-            :aria-pressed="activeOutfit?.outfitId === outfit.outfitId"
-            @click="selectedOutfitId = outfit.outfitId"
-          >
-            <ArchiveIcon :name="outfit.isNsfw ? 'lock' : 'wardrobe'" class="outfit-tab-icon" />
-            <span class="outfit-tab-name">{{ outfit.outfitName }}</span>
-          </button>
-        </div>
-
-        <div v-if="activeOutfit" class="char-reference-grid" v-content-motion="activeOutfit.outfitId">
-          <div
-            v-for="(refItem, idx) in activeOutfit.references"
-            :key="refItem.id"
-            class="char-ref-card"
-            role="button"
-            :tabindex="refItem.url && !unavailableReferences.has(refItem.url) ? 0 : -1"
-            :aria-disabled="!refItem.url || unavailableReferences.has(refItem.url)"
-            :aria-label="refItem.url && !unavailableReferences.has(refItem.url) ? `查看 ${refItem.name} 高清大图` : `${refItem.name} · 本机暂无参考图`"
-            @click="openRefViewer(idx)"
-            @keydown.enter="openRefViewer(idx)"
-            @keydown.space.prevent="openRefViewer(idx)"
-          >
-            <div class="char-ref-image-wrap">
-              <img
-                :crossorigin="runtimeResourceCors()"
-                v-if="refItem.url && !unavailableReferences.has(refItem.url)"
-                :src="resolveRuntimeUrl(`${refItem.url}?t=${refVersion}`)"
-                :alt="refItem.name"
-                @error="unavailableReferences.add(refItem.url)"
-                class="char-ref-image"
-                loading="lazy"
-              />
-              <!-- 2026-08-31 设计图基线占位：pending 无 url，显示待生成卡片不请求 404 -->
-              <div v-else class="char-ref-image char-ref-pending">
-                <ArchiveIcon name="spark" />
-                <span>{{ refItem.url ? '本机暂无参考图' : '待生成' }}</span>
-              </div>
-              <span class="char-ref-badge">{{ refItem.shotType }}</span>
-              <div v-if="refItem.url && !unavailableReferences.has(refItem.url)" class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击查看细节</div>
-            </div>
-            <div class="char-ref-info">
-              <h3 class="char-ref-title">{{ refItem.name }}</h3>
-              <p class="char-ref-lens"><code>{{ refItem.lens }}</code></p>
-              <p class="char-ref-desc">{{ current?.name }} · {{ activeOutfit.outfitName }}</p>
-              <div class="char-ref-usages">
-                <span v-for="usage in refItem.targetUsage" :key="usage" class="char-ref-tag">{{ usage }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4 视角参考基准高清放大审查灯箱 -->
-      <Teleport to="body">
-        <dialog
-          ref="refDialogEl"
-          class="char-ref-modal"
-          aria-label="4 视角标准参考基准审查"
-          @click.self="closeRefViewer"
-          @cancel.prevent="closeRefViewer"
-          @keydown="onRefKeydown"
-        >
-          <div v-if="activeRefModal" class="ref-modal-layout">
-            <div class="ref-modal-art">
-              <ZoomableImageViewer
-                :src="resolveRuntimeUrl(`${activeRefModal.url}?t=${refVersion}`)"
-                :alt="activeRefModal.name"
-              >
-                <template #fallback>
-                  <div class="ref-fallback">参考图暂时无法读取</div>
-                </template>
-              </ZoomableImageViewer>
-            </div>
-            <div class="ref-modal-copy">
-              <button class="ref-modal-close" type="button" aria-label="关闭审查" @click="closeRefViewer">
-                <ArchiveIcon name="close" />
-              </button>
-              <div class="ref-modal-kicker">Cinematic 4-View Bible</div>
-              <h2>{{ current?.name }} · {{ activeRefModal.name }}</h2>
-              <div class="ref-modal-meta">
-                <span class="ref-badge-tag">{{ activeRefModal.shotType }}</span>
-                <span><code>{{ activeRefModal.lens }}</code></span>
-                <span v-if="activeOutfit">{{ activeOutfit.outfitName }}</span>
-              </div>
-              <p class="ref-modal-desc">
-                锁死五官轮廓、发丝高光、服饰缝线与身材比例。支持滚轮 100%~400% 缩放与抓手平移，严密审查跨镜一致性。
-              </p>
-              <div class="ref-modal-usages">
-                <span class="usages-title">标准适用阶段：</span>
-                <div class="usages-chips">
-                  <span v-for="u in activeRefModal.targetUsage" :key="u" class="usage-chip">{{ u }}</span>
-                </div>
-              </div>
-              <div class="ref-modal-actions">
-                <StudioTooltip anchor content="上一视角 (键盘 ←)">
-                  <button class="btn btn-ghost btn-sm" type="button" :disabled="nextRefIndex(-1) < 0" aria-label="上一视角" @click="moveRef(-1)">
-                    ← <kbd>←</kbd>
-                  </button>
-                </StudioTooltip>
-                <StudioTooltip anchor content="下一视角 (键盘 →)">
-                  <button
-                    class="btn btn-ghost btn-sm"
-                    type="button"
-                    :disabled="nextRefIndex(1) < 0"
-                    aria-label="下一视角"
-                    @click="moveRef(1)"
-                  >
-                    <kbd>→</kbd> →
-                  </button>
-                </StudioTooltip>
-                <RouterLink
-                  class="btn btn-primary btn-sm"
-                  :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`"
-                >
-                  去分镜短片创作 ↗
-                </RouterLink>
-              </div>
-            </div>
-          </div>
-        </dialog>
-      </Teleport>
 
       <section v-if="recommendations.length" class="recommend-section" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
@@ -277,11 +135,9 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { characterArtEntry } from '@/platform/characterArtState'
 
-import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
-import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
-import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
@@ -290,11 +146,9 @@ import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDi
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { usePortraitFallback } from '@/composables/usePortraitFallback'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
-import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import {
   parseCharacterProfiles, popularPortraitSrc, isPopularPortraitPending,
   parseCharacterScenes,
@@ -347,67 +201,6 @@ const showFallbackNote = computed(() => portraitView.value.state === 'fallback' 
   && !!current.value && !isPopularPortraitPending(current.value.id))
 
 function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
-
-const characterReferences = computed(() => {
-  if (!current.value) return undefined
-  return getCharacterReferences(current.value.id)
-})
-const selectedOutfitId = ref<string>('')
-const activeOutfit = computed(() => {
-  if (!characterReferences.value?.outfits?.length) return undefined
-  if (selectedOutfitId.value) {
-    const found = characterReferences.value.outfits.find(o => o.outfitId === selectedOutfitId.value)
-    if (found) return found
-  }
-  return characterReferences.value.outfits.find(o => o.isDefault) || characterReferences.value.outfits[0]
-})
-const unavailableReferences = ref(new Set<string>())
-const refVersion = ref(Date.now())
-
-const refDialogEl = ref<HTMLDialogElement | null>(null)
-const refMotion = useFluidDialog(refDialogEl)
-const activeRefIndex = ref(-1)
-const activeRefModal = computed(() => {
-  if (activeRefIndex.value < 0 || !activeOutfit.value?.references) return null
-  return activeOutfit.value.references[activeRefIndex.value] ?? null
-})
-
-function openRefViewer(index: number) {
-  const refItem = activeOutfit.value?.references?.[index]
-  // 2026-08-31 设计图基线占位：pending 无 url，不打开查看器（避免加载坏图）。
-  if (!refItem || !refItem.url || unavailableReferences.value.has(refItem.url)) return
-  activeRefIndex.value = index
-  nextTick(() => {
-    refMotion.open()
-  })
-}
-
-function closeRefViewer() {
-  refMotion.close(() => { activeRefIndex.value = -1 })
-}
-
-function nextRefIndex(delta: number): number {
-  if (!activeOutfit.value?.references.length) return -1
-  const len = activeOutfit.value.references.length
-  for (let next = activeRefIndex.value + delta; next >= 0 && next < len; next += delta) {
-    const item = activeOutfit.value.references[next]
-    if (item?.url && !unavailableReferences.value.has(item.url)) {
-      return next
-    }
-  }
-  return -1
-}
-function moveRef(delta: number) {
-  const next = nextRefIndex(delta)
-  if (next >= 0) activeRefIndex.value = next
-}
-function onRefKeydown(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return
-  if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable="true"]')) return
-  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
-  event.preventDefault()
-  moveRef(event.key === 'ArrowLeft' ? -1 : 1)
-}
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
@@ -463,10 +256,8 @@ async function loadProfiles() {
 }
 
 watch(() => current.value?.id, id => {
-  selectedOutfitId.value = ''; bgExpanded.value = false; activeRefIndex.value = -1
-  refMotion.dispose()
+  bgExpanded.value = false
   if (!id) return
-  void ensureCharacterReferencesLoaded(id).catch(() => undefined)
   // The bookshelf needs only the character shell; load scene details on entry.
   void Promise.all([sceneStore.loadBrowserScenes('all'), sceneStore.loadBlueprintCatalog()]).then(([catalog]) => {
     scenes.value = parseCharacterScenes(catalog.scenes)

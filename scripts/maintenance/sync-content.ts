@@ -2,15 +2,14 @@ import { writeTextAtomic } from '../lib/atomic-files';
 /** Validate canonical content first; explicitly apply metadata repairs and derived builds. */
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 
 function main() {
   const args = process.argv.slice(2);
   if (args.includes('--help')) {
-    console.log('content:sync [--apply] [--ids=a,b] [--root=directory]\nDefault: validate and preview without writing. --ids limits pending reference registration; all content is validated and rebuilt.');
+    console.log('content:sync [--apply] [--root=directory]\nDefault: validate and preview without writing. Content is validated and rebuilt without reference registration.');
     return;
   }
-  for (const arg of args) if (!['--apply', '--dry-run'].includes(arg) && !arg.startsWith('--root=') && !arg.startsWith('--ids=')) throw new Error(`Unknown option: ${arg}`);
+  for (const arg of args) if (!['--apply', '--dry-run'].includes(arg) && !arg.startsWith('--root=')) throw new Error(`Unknown option: ${arg}`);
   if (args.includes('--apply') && args.includes('--dry-run')) throw new Error('--apply and --dry-run cannot be combined');
   const root = path.resolve(args.find(a => a.startsWith('--root='))?.slice(7) || process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
   process.env.AICS_DATA_ROOT = root;
@@ -74,7 +73,7 @@ function main() {
   const profiles = read(path.join(data, 'characters.json'));
   if (!Array.isArray(profiles)) throw new Error('characters.json must be an array');
   const profileIds = unique(profiles, 'characters.json');
-  const characterIds = unique(p.characters, 'popular');
+  unique(p.characters, 'popular');
   unique(b.blueprints, 'blueprints');
   unique(s.scenes, 'scenes');
   const byId = new Map(p.characters.map(c => [c.id, c]));
@@ -111,34 +110,18 @@ function main() {
       if (sceneStore.targetFile(scene) !== source.entry.file) errors.push(`${scene.id}: incorrect scene shard ${source.file}`);
     }
   }
-  const idsArg = args.find(a => a.startsWith('--ids='));
-  if (idsArg) {
-    const ids = idsArg.slice(6).split(',').map(id => id.trim()).filter(Boolean);
-    if (!ids.length) errors.push('--ids must not be empty');
-    for (const id of ids) if (!characterIds.has(id)) errors.push(`Unknown selected character: ${id}`);
-  }
   if (errors.length) throw new Error(errors.join('\n'));
-  // Run the same registration preflight before *any* metadata or aggregate writes.
-  function register(dryRun: boolean) {
-    const result = spawnSync(process.execPath, [path.join(__dirname, 'register-pending-reference-outfits.js'), ...(dryRun ? ['--dry-run'] : []), ...(idsArg ? [idsArg] : [])], { env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8' });
-    if (result.status !== 0 || result.error) throw new Error(result.error?.message || result.stderr || result.stdout || 'Reference registration failed');
-    if (result.stdout) process.stdout.write(result.stdout);
-  }
-  register(true);
   console.log(`[content:sync] Validated ${p.characters.length} characters, ${b.blueprints.length} blueprints, ${s.scenes.length} scenes`);
   for (const repair of repairs) console.log(`[content:sync] Count repair: ${repair.changes.join(', ')}`);
-  if (!args.includes('--apply')) { console.log('[content:sync] Preview only: no files written. Use --apply to register pending references and rebuild derived data.'); return; }
-  register(false);
+  if (!args.includes('--apply')) { console.log('[content:sync] Preview only: no files written. Use --apply to repair counts and rebuild derived data.'); return; }
   for (const repair of repairs) writeTextAtomic(repair.file, popular.jsonText(repair.value));
   popular.writePopularAggregate();
   blueprints.writeBlueprintAggregate();
   sceneStore.writeAggregate(s.scenes);
-  const references: typeof import('../lib/reference-store') = require('../lib/reference-store');
-  references.writeReferenceAggregate(root);
   const { refreshPrecompressed }: typeof import('../lib/ensure-data-build') = require('../lib/ensure-data-build');
   refreshPrecompressed([popular.aggregatePath, blueprints.aggregatePath, sceneStore.aggregatePath,
     ...Object.values(sceneStore.browserShardPath), sceneStore.corePath, sceneStore.indexPath]);
-  console.log('[content:sync] Applied manifest counts, reference registration and all content aggregates. Pending records are not rendered assets.');
+  console.log('[content:sync] Applied manifest counts and content aggregates. Reference assets were not changed.');
 }
 
 try { main(); } catch (error) { console.error(`[content:sync] ${error instanceof Error ? error.message : String(error)}`); process.exitCode = 1; }

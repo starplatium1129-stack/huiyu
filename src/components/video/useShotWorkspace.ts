@@ -4,7 +4,6 @@ import { confirmAction } from '@/composables/useConfirm';
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore';
 import { useVideoStore } from '@/stores/videoStore';
-import { getCharacterReferences } from '@/utils/characterReferenceData';
 import { computed,onActivated,onBeforeUnmount,onDeactivated,onMounted,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import type { ShotDraft } from './shotListTypes';
@@ -111,7 +110,7 @@ export function useShotWorkspace(props: {
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, autoLoadCharacterReferences, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
+    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
         identityCard,
         batchError,
         readBlobAsDataURL,
@@ -142,10 +141,8 @@ export function useShotWorkspace(props: {
     // ── 绘图页「加入分镜」导入（逐镜确认 + 失败可重试，已下沉 useShotImport）──
     const { importShotsFromDrawing, retryPendingFrames, mountShotFrame } = useShotImport({
         shots,
-        identityCard,
         referenceCards,
-        autoLoadCharacterReferences,
-        popularIdentityProse: (charId) => popularCharacters.value.find((item) => item.id === charId)?.identityProse || '',
+        selectCardCharacter,
     });
     /** 单镜首帧重试（F4）：导入失败/草稿恢复图失效的镜头可单独补救。 */
     async function retryShotFrame(index: number) {
@@ -280,19 +277,15 @@ export function useShotWorkspace(props: {
         routeLoad?.abort();
         const controller = new AbortController(); routeLoad = controller; consumedIntent = intent;
         try {
-            await autoLoadCharacterReferences(id, 0, outfit || undefined, controller.signal);
+            await selectCardCharacter(id, 0, outfit || undefined, controller.signal);
             if (controller.signal.aborted || !routeActive.value || route.path !== '/video-studio' || routeCharacter() !== id || routeOutfit() !== outfit) return;
             const card = referenceCards.value[0];
             if (card?.characterId === id && (!outfit || card.outfitId === outfit)) {
-                if (!getCharacterReferences(id)) {
-                    const character = popularCharacters.value.find(item => item.id === id);
-                    if (character?.identityProse) identityCard.value = character.identityProse;
-                }
                 shots.value.forEach(shot => { if (!shot.cast) shot.cast = '1'; });
             }
             await router.replace({ query: { ...route.query, character: undefined, outfit: undefined } });
         } catch (error) {
-            if (!controller.signal.aborted && routeCharacter() === id && routeOutfit() === outfit) batchError.value = error instanceof Error ? error.message : '角色参考图载入失败，请重试';
+            if (!controller.signal.aborted && routeCharacter() === id && routeOutfit() === outfit) batchError.value = error instanceof Error ? error.message : '角色资料载入失败，请重试';
         } finally { if (routeLoad === controller) routeLoad = null; }
     });
     onActivated(() => { routeActive.value = true; });
@@ -386,8 +379,8 @@ export function useShotWorkspace(props: {
         const parts = [`已从绘图页带入 ${outcome.imported} 个镜头`, `首帧就绪 ${outcome.framesReady} 张`];
         if (outcome.framesPending)
             parts.push(`${outcome.framesPending} 张待处理（可在镜头上单独重试）`);
-        if (outcome.refCardsFailed)
-            parts.push(`${outcome.refCardsFailed} 张角色参考卡装配失败，请检查参考库`);
+        if (outcome.charactersFailed)
+            parts.push(`${outcome.charactersFailed} 位角色资料读取失败，请重新选择`);
         batchError.value = parts.join('，') + '。';
         aiFlowStep.value = 0;
     }
@@ -410,14 +403,14 @@ export function useShotWorkspace(props: {
             imageUrl: '',
             cast: '',
         }));
-        batchError.value = `已载入剧本 ${acts.length} 幕。建议挂角色参考卡（锁身份）后点「一键首帧」，再批量生成。`;
+        batchError.value = `已载入剧本 ${acts.length} 幕。可选择角色并按需上传参考图，再点「一键首帧」或批量生成。`;
     }
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
     const { restoreShotsDraft } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
-        batchError, autoLoadCharacterReferences, retryPendingFrames,
+        batchError, selectCardCharacter, retryPendingFrames,
     });
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {
@@ -442,6 +435,7 @@ export function useShotWorkspace(props: {
         }
     });
     onMounted(() => {
+        void sceneStore.loadCharacterShell().catch(() => { batchError.value = '角色目录读取失败，请刷新页面重试'; });
         void (async () => {
             await restoreShotsDraft();
             await runImportFromDrawing();

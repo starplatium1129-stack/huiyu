@@ -1,13 +1,17 @@
-import { readCharacterReference } from '../../utils/characterReferenceRead.ts'
-import { runtimeFetch } from '../../platform/runtimeUrl.ts'
-import { ref, onScopeDispose, getCurrentScope, type Ref } from 'vue'
-import { ensureCharacterReferencesLoaded, getCharacterReferences } from '../../utils/characterReferenceData.ts'
+import { ref, shallowRef, onScopeDispose, getCurrentScope, type Ref } from 'vue'
+import { catalogApi } from '../../api/catalogApi'
+import { parsePopularCharacter } from '../../utils/popularContent'
+import { parseCharacterProfiles } from '../../utils/characterProfiles'
+import { isRecord, stringList } from '../../utils/popularParseGuards'
+import { proseToken } from '../../utils/promptPhraseTables'
+import { OUTFIT_BUNDLES } from '../../composables/scene/useDirectorCatalog'
+import type { PopularOutfit } from '../../types/character'
 import type { VideoImageUploadResponse } from '../../api/videoApi.ts'
 
 /**
  * 分镜编辑器·角色参考卡（Ref2VA）编排（2026-08-22 自 ShotListEditor 下沉）。
- * 支持 1~4 个角色槽，每槽最多 4 张 4 视角参考图；负责参考图的自动装配
- * （角色→服装→4 视角基准图）、手动上传、身份锚点 prose 合并。
+ * 角色与服装文字来自内容目录；每槽可按需手动上传最多 4 张图片。
+ * 未上传图片不影响角色选择与身份描述，不再要求固定机位图库。
  */
 
 export interface ReferenceImage {
@@ -39,6 +43,7 @@ export interface ReferenceCardsDeps {
 
 const MAX_CARDS = 4
 const MAX_IMAGES_PER_CARD = 4
+type CardProfile = { displayName: string; identityProse: string; outfits: PopularOutfit[] }
 
 export function removeCastSlot(cast: string, removedIndex: number): string {
   if (!/^\d+$/.test(cast)) return cast
@@ -53,6 +58,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   const referenceInputs = ref<HTMLInputElement[]>([])
   const loadingRefAssets = ref(false)
   const loadingRefCardIndex = ref<number | null>(null)
+  const profiles = shallowRef<Record<string, CardProfile>>({})
   const operations = new Map<ReferenceCard, Set<AbortController>>()
   let disposed = false
   let lastAutoIdentity = ''
@@ -91,7 +97,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
 
   function getCharOutfits(charId?: string) {
     if (!charId) return []
-    const profile = getCharacterReferences(charId)
+    const profile = profiles.value[charId]
     return profile?.outfits || []
   }
 
@@ -116,93 +122,66 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   async function switchCardOutfit(cardIndex: number, outfitId: string) {
     const card = referenceCards.value[cardIndex]
     if (!card || !card.characterId) return
-    await autoLoadCharacterReferences(card.characterId, cardIndex, outfitId)
+    await selectCardCharacter(card.characterId, cardIndex, outfitId)
   }
 
-  /**
-   * 自动装配角色参考图（角色 → 服装 → 4 视角基准图）。
-   * 返回成功装配的张数（2026-09-06 体验报告 F4：导入汇报需要逐卡如实计数，
-   * 不再让装配失败被「全部成功」的文案掩盖）。
-   */
-  async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string, signal?: AbortSignal): Promise<number> {
-    if (signal?.aborted) return 0
-    if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return 0
-    const targetCard = referenceCards.value[cardIndex]
-    cancelCard(targetCard)
-    clearImages(targetCard)
-    const controller = start(targetCard)
+  /** 读取目录文字资料，不请求或上传参考图片。 */
+  async function selectCardCharacter(charId: string, cardIndex = 0, outfitId?: string, signal?: AbortSignal): Promise<boolean> {
+    if (signal?.aborted || !referenceCards.value[cardIndex]) return false
+    const card = referenceCards.value[cardIndex]
+    cancelCard(card)
+    clearImages(card)
+    const controller = start(card)
     const abort = () => controller.abort()
     signal?.addEventListener('abort', abort, { once: true })
+    card.characterId = charId
+    card.outfitId = ''
+    card.label = ''
+    updateMultiCharacterIdentity()
     try {
-      targetCard.characterId = charId
-      targetCard.outfitId = ''
-      targetCard.label = ''
-      try {
-        await ensureCharacterReferencesLoaded(charId, false, controller.signal)
-      } catch {
-        if (current(targetCard, controller)) deps.batchError.value = '角色参考档案读取失败，请重新选择重试'
-        return 0
-      }
-      if (!current(targetCard, controller)) { return 0 }
-      const profile = getCharacterReferences(charId)
-      if (!profile) {
-        targetCard.characterId = charId
-        targetCard.outfitId = ''
-        targetCard.label = ''
-        updateMultiCharacterIdentity()
-        deps.batchError.value = '角色参考档案尚未就绪，请稍后重新选择'
-        return 0
-      }
-
-      // 匹配特定 outfit 或默认 outfit
-      let chosenOutfit = profile.outfits.find(o => o.outfitId === outfitId)
-      if (!chosenOutfit && !outfitId) {
-        chosenOutfit = profile.outfits.find(o => o.isDefault) || profile.outfits[0]
-      }
-
-      // 记录角色元信息
-      targetCard.characterId = charId
-      targetCard.outfitId = chosenOutfit?.outfitId || ''
-      targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
-
-      updateMultiCharacterIdentity()
-      if (!chosenOutfit) { deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
-      let loaded = 0
-      try {
-        // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
-        // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
-        const targets = chosenOutfit.references.filter(r => r.url && !r.pending).slice(0, MAX_IMAGES_PER_CARD)
-        for (const item of targets) {
-          if (!current(targetCard, controller)) return 0
-          if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
-          try {
-          const imgUrl = new URL(item.url, location.href)
-          imgUrl.searchParams.set('t', String(Date.now()))
-          const blob = await readCharacterReference(async signal => {
-            const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal })
-            return resp.ok ? resp.blob() : null
-          }, controller.signal)
-          if (!blob) continue
-          if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue
-          const dataUrl = await deps.readBlobAsDataURL(blob)
-          const comma = dataUrl.indexOf(',')
-          if (comma < 0) continue
-          const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
-          if (!current(targetCard, controller)) return 0
-          if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
-          targetCard.images.push({
-            name: upload.name,
-            url: URL.createObjectURL(blob),
-          })
-          loaded += 1
-          } catch { if (!current(targetCard, controller)) return 0 }
+      if (!profiles.value[charId]) {
+        const result = await catalogApi.character(charId, controller.signal)
+        let profile: CardProfile
+        if (result.character !== null) {
+          const character = parsePopularCharacter(result.character)
+          if (!character || character.id !== charId) throw new Error('角色资料无效')
+          profile = character
+        } else {
+          const character = parseCharacterProfiles([result.profile])[0]
+          if (!character || character.id !== charId || !isRecord(result.profile)) throw new Error('角色资料无效')
+          const raw = result.profile
+          const traits = Array.isArray(raw.traits) ? raw.traits.map(value => typeof value === 'string' ? value : isRecord(value) ? value.tag : '').filter((value): value is string => typeof value === 'string') : []
+          const wardrobe = isRecord(raw.lora) && isRecord(raw.lora.special_outfits) ? raw.lora.special_outfits : {}
+          profile = {
+            displayName: character.name,
+            identityProse: [character.alias[0] || character.name, ...traits.map(proseToken)].filter(Boolean).join(', '),
+            outfits: Object.entries(wardrobe).map(([id, value], index) => {
+              const tokens = stringList(value)
+              const bundle = OUTFIT_BUNDLES.find(item => item.character === charId && tokens.includes(item.tags[0]))
+              return { id, name: bundle?.label || proseToken(tokens[0] || '') || '自定义服装', prose: tokens.map(proseToken).filter(Boolean).join(', '), tokens, default: index === 0 }
+            }),
+          }
         }
-        if (current(targetCard, controller)) deps.batchError.value = loaded === targets.length && loaded > 0 ? '' : `已装配 ${loaded}/${targets.length} 张参考图，缺失或待补素材未计入完成，可重新选择服装重试`
-      } catch (error) {
-        console.warn(`[ShotList] 自动装配角色 ${cardIndex + 1} 标准参考图失败:`, error)
+        if (!current(card, controller)) return false
+        profiles.value = { ...profiles.value, [charId]: profile }
       }
-      return loaded
-    } finally { signal?.removeEventListener('abort', abort); finish(targetCard, controller) }
+      if (!current(card, controller)) return false
+      const profile = profiles.value[charId]
+      const outfit = outfitId ? profile.outfits.find(item => item.id === outfitId)
+        : profile.outfits.find(item => item.default) || profile.outfits[0]
+      card.outfitId = outfit?.id || ''
+      card.label = profile.displayName + (outfit && !outfit.default ? ` · ${outfit.name}` : '')
+      updateMultiCharacterIdentity()
+      if (outfitId && !outfit) { deps.batchError.value = '该服装不存在，请重新选择'; return false }
+      deps.batchError.value = ''
+      return true
+    } catch {
+      if (current(card, controller)) deps.batchError.value = '角色资料读取失败，请重新选择重试'
+      return false
+    } finally {
+      signal?.removeEventListener('abort', abort)
+      finish(card, controller)
+    }
   }
 
   /**
@@ -214,9 +193,9 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const activeDescriptions: string[] = []
     referenceCards.value.forEach((card, idx) => {
       if (!card.characterId && !card.label) return
-      const profile = card.characterId ? getCharacterReferences(card.characterId) : undefined
+      const profile = card.characterId ? profiles.value[card.characterId] : undefined
       const baseProse = profile?.identityProse || ''
-      const outfitObj = profile?.outfits?.find(o => o.outfitId === card.outfitId)
+      const outfitObj = profile?.outfits?.find(o => o.id === card.outfitId)
       const outfitProse = outfitObj?.prose ? `, ${outfitObj.prose}` : ''
       const fullProse = (baseProse + outfitProse).trim()
 
@@ -251,8 +230,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       return
     }
 
-    // 装配参考图到对应卡槽
-    await autoLoadCharacterReferences(charId, cardIndex)
+    await selectCardCharacter(charId, cardIndex)
   }
 
   async function onReferencePicked(cardIndex: number, event: Event) {
@@ -263,7 +241,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const card = referenceCards.value[cardIndex]
     if (!card || disposed) return
     if (card.images.length + (operations.get(card)?.size || 0) >= MAX_IMAGES_PER_CARD) {
-      deps.batchError.value = '每个角色最多 4 张参考图（4 视角）'
+      deps.batchError.value = '每个角色最多上传 4 张参考图'
       return
     }
     if (file.size > 20 * 1024 * 1024) {
@@ -337,7 +315,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     addReferenceCard,
     removeReferenceCard,
     switchCardOutfit,
-    autoLoadCharacterReferences,
+    selectCardCharacter,
     onCardCharacterSelected,
     onReferencePicked,
     pickReference,

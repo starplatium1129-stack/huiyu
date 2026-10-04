@@ -274,11 +274,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/validate-content-contracts.js:15', unknown: [] },
   },
   'content:sync': {
-    desc: '统一校验人物/服装/场景，修正清单计数、补登参考分片并构建聚合（默认只读预览）',
+    desc: '统一校验人物/服装/场景，修正清单计数并构建聚合（默认只读预览）',
     cmd: ['node', 'scripts/maintenance/sync-content.js'],
     docs: 'docs/guides/characters/character-onboarding-workflow.md',
-    opts: '[--apply] [--ids=a,b] [--root=目录]；ids 仅限制参考登记，全部内容均校验/构建',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/sync-content.ts', unknown: [], notes: ['不调用模型、不安装、不发布；pending 不代表图片完成'] },
+    opts: '[--apply] [--root=目录]；不登记或补齐角色参考图',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/sync-content.ts', unknown: [], notes: ['不调用模型、不安装、不发布；不读取或写入参考库'] },
   },
   'reference:build': {
     desc: '从每人物参考分片构建兼容 standards/view 聚合',
@@ -603,10 +603,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'playwright.performance.config.ts:7', unknown: [] },
   },
   'character:onboard': {
-    desc: '历史活跃库维护流水线（直接写源/资产）；新角色使用候选审核发布流程',
+    desc: '历史立绘/样张流水线（直接写资产）；不登记或生成参考图库',
     cmd: ['npm', 'run', 'character:onboard'],
     docs: 'docs/guides/characters/character-onboarding-workflow.md',
-    run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['--skip-render 跳过出图但不能据此声明资产完成；历史 --deploy 仍直连 deploy-desktop-quick.ps1 -NoRestart，现行桌面同步另用 deploy-desktop.bat'] },
+    run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['不登记或生成角色参考图库；--skip-render 跳过样张出图；历史 --deploy 仍直连 deploy-desktop-quick.ps1 -NoRestart，现行桌面同步另用 deploy-desktop.bat'] },
   },
   'audit:coverage': {
     desc: '只读差额报告：热门服装→参考登记、角色→主题选择器覆盖差额（信息性，不作为门禁失败依据）',
