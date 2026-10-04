@@ -17,6 +17,13 @@ async function mockControl(page: Page) {
       return route.fulfill({ json: { ok: true } })
     }
     if (path === '/api/status') return route.fulfill({ json: state })
+    if (path === '/api/local-setup') return route.fulfill({ json: {
+      ok: true, checkedAt: 1_791_083_000_000, workspace: { path: 'D:\\AI', state: 'present' },
+      comfy: { path: 'D:\\AI\\ComfyUI', installation: 'present', layout: 'venv', host: state.comfyHost, connection: 'online' },
+      models: ['anima-aesthetic-v1.1', 'qwen-encoder', 'qwen-vae'].map(id => ({ id, label: id, path: `D:\\AI\\ComfyUI\\models\\${id}`, state: 'present', bytes: 10, required: true })),
+      nodes: { state: 'checked', required: ['ImageSharpenKJ'], missing: [] },
+      hardware: { state: 'unknown', devices: [], ramBytes: null },
+    } })
     if (path === '/api/logs') return route.fulfill({ json: { logs: ['[16:00:00] 服务已连接'], total: 1, operation: null } })
     return route.fulfill({ json: { ok: true } })
   })
@@ -33,7 +40,7 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('.status-tile')).toHaveCount(4)
       await expect(page.locator('.control-mobile-nav')).toBeHidden()
       await expect(page.locator('.control-rail')).toBeVisible()
-      await expect(page.locator('.control-rail-link')).toHaveCount(6)
+      await expect(page.locator('.control-rail-link')).toHaveCount(7)
       await expect(page.locator('.control-rail-foot button').first()).toBeVisible()
       const controls = (await page.locator('.service-rows').boundingBox())!
       expect(controls.y + controls.height).toBeLessThan(1000)

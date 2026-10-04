@@ -12,6 +12,7 @@ use std::{collections::HashMap, net::SocketAddr};
 pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
     Router::new()
         .route("/api/status", get(status))
+        .route("/api/local-setup", get(local_setup))
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))
         .route("/api/diagnostics", get(diagnostics))
@@ -26,6 +27,9 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .layer(middleware::from_fn(local))
         .route("/api/sd-status", get(sd_status))
         .layer(Extension(service))
+}
+async fn local_setup(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
+    Ok(Json(s.local_setup().await?))
 }
 async fn local(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
