@@ -204,6 +204,7 @@ pub fn validate(body: &Value, direct_local: bool) -> Result<Input> {
         hires_fix,
         hires_scale,
         hires_upscaler: upscaler.into(),
+        requested_hires_upscaler: Some(upscaler.into()),
         hires_steps,
         denoising_strength,
         face_detailer: truthy(&body["faceDetailer"]),

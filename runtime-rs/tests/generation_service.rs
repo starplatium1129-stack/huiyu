@@ -29,6 +29,8 @@ use tokio_util::sync::CancellationToken;
 mod collection;
 #[path = "generation_service/failures.rs"]
 mod failures;
+#[path = "generation_service/upscale.rs"]
+mod upscale;
 use collection::{Hooks, pending_collection};
 
 fn png() -> Vec<u8> {

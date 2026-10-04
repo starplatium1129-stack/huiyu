@@ -12,10 +12,11 @@ pub const UPSCALERS: &[&str] = &[
     "R-ESRGAN 4x+",
 ];
 pub const SUPER_RES: &[&str] = &["Remacri", "R-ESRGAN 4x+ Anime6B", "R-ESRGAN 4x+"];
-pub const SUPER_RES_FILES: &[&str] = &[
-    "4x_foolhardy_Remacri.safetensors",
-    "R-ESRGAN 4x+ Anime6B.pth",
-    "RealESRGAN_x4plus.pth",
+pub const SUPER_RES_FILES: &[(&str, &str)] = &[
+    ("4x_foolhardy_Remacri.safetensors", "Remacri"),
+    ("RealESRGAN_x4plus_anime_6B.pth", "R-ESRGAN 4x+ Anime6B"),
+    ("R-ESRGAN 4x+ Anime6B.pth", "R-ESRGAN 4x+ Anime6B"),
+    ("RealESRGAN_x4plus.pth", "R-ESRGAN 4x+"),
 ];
 pub const ALLOWED: &[&str] = &[
     "prompt",

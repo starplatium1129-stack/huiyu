@@ -45,15 +45,17 @@ pub(super) async fn prepare(
             input.comfy_unsupported = true;
             "webui"
         } else if comfy_usable && !input.face_detailer && !input.comfy_unsupported {
-            let model = resources::super_res(&inner.config).await;
+            let requested = input
+                .super_res_wanted
+                .then_some(input.hires_upscaler.as_str());
+            let model = resources::super_res(&inner.config, requested).await;
             if input.auto_hires {
                 input.auto_hires = false;
-                input.hires_upscaler = if model.is_some() {
-                    "Remacri"
-                } else {
-                    "Latent (nearest-exact)"
-                }
-                .into();
+                input.hires_upscaler = model
+                    .as_deref()
+                    .and_then(resources::super_res_name)
+                    .unwrap_or("Latent (nearest-exact)")
+                    .into();
                 input.super_res_model = model;
                 input.comfy_hires = true;
                 input.comfy_unsupported = false;
@@ -62,7 +64,10 @@ pub(super) async fn prepare(
                     return Err(ApiError::new(
                         503,
                         "SUPER_RES_MODEL_UNAVAILABLE",
-                        "Comfy 本地未安装 ESRGAN 超分模型（Remacri / R-ESRGAN 4x+），请改用 WebUI 或 Latent",
+                        format!(
+                            "Comfy 本地未安装所选 {} 超分模型，请改用已安装模型或 Latent",
+                            input.hires_upscaler
+                        ),
                     ));
                 }
                 input.super_res_model = model;
@@ -194,7 +199,7 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
     let comfy = comfy_online
         && resources::available(&inner.config, "checkpoints", constants::CHECKPOINT).await;
     let web = webui.online && webui.wai_available;
-    let super_res = resources::super_res(&inner.config).await;
+    let super_res = resources::super_res(&inner.config, None).await;
     let mut hires = Vec::new();
     if comfy
         || (web
@@ -203,8 +208,15 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
     {
         hires.push("Auto".to_string());
     }
-    if comfy && super_res.is_some() {
-        hires.push("Remacri".into());
+    if comfy {
+        for name in constants::SUPER_RES {
+            if resources::super_res(&inner.config, Some(name))
+                .await
+                .is_some()
+            {
+                hires.push((*name).into());
+            }
+        }
     }
     if comfy || webui.upscalers.iter().any(|s| s == "Latent") {
         hires.extend(["Latent".into(), "Latent (nearest-exact)".into()]);

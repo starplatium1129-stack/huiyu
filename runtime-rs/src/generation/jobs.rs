@@ -6,6 +6,12 @@ pub(super) fn wai_metadata(input: &Input, provider: &str) -> Value {
         .map(|l| json!({"id":l.id,"strength":l.strength}))
         .collect::<Vec<_>>();
     let mut metadata = json!({"engine":"sd","provider":provider,"modelId":input.model_id,"profileId":input.profile,"loras":loras,"loraId":input.loras.first().map(|l|&l.id),"loraStrength":input.loras.first().map(|l|l.strength),"width":input.width,"height":input.height,"steps":input.steps,"cfg":input.cfg,"sampler":input.sampler,"scheduler":input.scheduler,"seed":input.seed,"hiresFix":input.hires_fix,"hiresUpscaler":if input.hires_fix{Some(&input.hires_upscaler)}else{None},"hiresScale":input.hires_fix.then_some(input.hires_scale)});
+    if let Some(requested) = &input.requested_hires_upscaler {
+        metadata["requestedHiresUpscaler"] = json!(requested);
+    }
+    if let Some(model) = &input.super_res_model {
+        metadata["superResModel"] = json!(model);
+    }
     if provider == "comfy" {
         metadata["prompt"] = json!(input.prompt);
         metadata["negative"] = json!(input.negative);

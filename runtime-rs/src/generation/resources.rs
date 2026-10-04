@@ -28,8 +28,16 @@ pub(super) async fn available(config: &Config, kind: &str, file: &str) -> bool {
     .await
     .is_ok_and(|m| m.is_file())
 }
-pub(super) async fn super_res(config: &Config) -> Option<String> {
-    for file in constants::SUPER_RES_FILES {
+pub(crate) fn super_res_name(file: &str) -> Option<&'static str> {
+    constants::SUPER_RES_FILES
+        .iter()
+        .find_map(|(candidate, name)| (*candidate == file).then_some(*name))
+}
+pub(crate) async fn super_res(config: &Config, requested: Option<&str>) -> Option<String> {
+    for (file, name) in constants::SUPER_RES_FILES {
+        if requested.is_some_and(|requested| requested != *name) {
+            continue;
+        }
         if available(config, "upscale_models", file).await {
             return Some((*file).into());
         }

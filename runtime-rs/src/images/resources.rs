@@ -1,9 +1,4 @@
 use super::*;
-const SUPER_RES: &[&str] = &[
-    "4x_foolhardy_Remacri.safetensors",
-    "R-ESRGAN 4x+ Anime6B.pth",
-    "RealESRGAN_x4plus.pth",
-];
 async fn file(config: &Config, kind: &str, name: &str) -> Option<PathBuf> {
     let path = config
         .ai_workspace_root
@@ -15,14 +10,6 @@ async fn file(config: &Config, kind: &str, name: &str) -> Option<PathBuf> {
         .ok()
         .filter(|m| m.is_file())
         .map(|_| path)
-}
-async fn super_res(config: &Config) -> Option<String> {
-    for name in SUPER_RES {
-        if file(config, "upscale_models", name).await.is_some() {
-            return Some((*name).into());
-        }
-    }
-    None
 }
 async fn required(config: &Config, input: &Value) -> Result<Vec<PathBuf>> {
     let model = catalog::model(input["modelId"].as_str().unwrap_or(""))?;
@@ -117,11 +104,25 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     } else {
         "anima"
     };
+    if !frozen {
+        input["requestedHiresUpscaler"] = input["hiresUpscaler"].clone();
+    }
     if input["hiresFix"] == true && family != "krea2" && input["hiresUpscaler"] != "Latent" {
         let selected = if frozen {
             input["superResModel"].as_str().map(str::to_owned)
         } else {
-            super_res(config).await
+            let requested = input["hiresUpscaler"]
+                .as_str()
+                .filter(|name| *name != "Auto");
+            let model = generation::super_res(config, requested).await;
+            if model.is_none() && requested.is_some() {
+                return Err(ApiError::new(
+                    503,
+                    "SUPER_RES_MODEL_UNAVAILABLE",
+                    "所选超分模型文件不可用，请选择已安装模型或 Latent",
+                ));
+            }
+            model
         };
         if let Some(model) = selected {
             resources.push(
@@ -130,7 +131,10 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
                     .join("ComfyUI/models/upscale_models")
                     .join(&model),
             );
+            input["hiresUpscaler"] = json!(generation::super_res_name(&model));
             input["superResModel"] = json!(model);
+        } else if !frozen {
+            input["hiresUpscaler"] = json!("Latent");
         }
     }
     let loras = if generation::truthy(&input["loraId"]) {
@@ -139,22 +143,28 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
         json!([])
     };
     let mut metadata = json!({"engine":family,"provider":"comfy","prompt":input["prompt"],"negative":input["negative"],"profileId":input["profileId"].as_str().unwrap_or(""),"modelId":input["modelId"],"loras":loras,"loraStrength":input["loraStrength"],"styleLoraId":input["styleLoraId"],"width":input["width"],"height":input["height"],"hiresFix":input["hiresFix"]==true,"hiresScale":input["hiresScale"],"denoisingStrength":input["denoisingStrength"],"faceDetailer":generation::truthy(&input["faceDetailer"]),"steps":input["steps"],"cfg":input["cfg"],"sampler":input["sampler"].as_str().unwrap_or("res_multistep"),"scheduler":input["scheduler"].as_str().unwrap_or("simple"),"teaCache":generation::truthy(&input["teaCache"]),"teaCacheThresh":input["teaCacheThresh"],"seed":input["seed"],"character":if generation::truthy(&input["character"]){input["character"].clone()}else{Value::Null},"preview":false,"resultUrl":null});
-    for key in ["loraId", "hiresSteps"] {
+    for key in [
+        "loraId",
+        "hiresSteps",
+        "requestedHiresUpscaler",
+        "superResModel",
+    ] {
         if let Some(value) = input.get(key) {
             metadata[key] = value.clone();
         }
     }
-    metadata["hiresUpscaler"] = if input["superResModel"].is_string() {
-        json!("Remacri")
+    metadata["hiresUpscaler"] = input["hiresUpscaler"].clone();
+    metadata["hiresSampler"] = if family != "krea2"
+        && input["hiresFix"] == true
+        && ((generation::truthy(&input["initImage"])
+            && (generation::truthy(&input["maskImage"])
+                || generation::truthy(&input["maskPrompt"])))
+            || !input["superResModel"].is_string())
+    {
+        catalog::contract()["HIRES_SAMPLER"].clone()
     } else {
-        input["hiresUpscaler"].clone()
+        Value::Null
     };
-    metadata["hiresSampler"] =
-        if family != "krea2" && input["hiresFix"] == true && !input["superResModel"].is_string() {
-            catalog::contract()["HIRES_SAMPLER"].clone()
-        } else {
-            Value::Null
-        };
     metadata["hiresScheduler"] = if !metadata["hiresSampler"].is_null() {
         catalog::contract()["HIRES_SCHEDULER"].clone()
     } else {
@@ -208,6 +218,6 @@ pub(super) async fn status(
         styles.push(json!({"id":id,"trigger":style["trigger"],"recommendedStrength":1,"available":file(config,"loras",style["file"].as_str().unwrap()).await.is_some()}));
     }
     Ok(
-        json!({"online":backend.comfy_online().await&&models.iter().any(|m|m["available"]==true),"models":models,"loras":loras,"styleLoras":styles,"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":super_res(config).await},"pending":backend.pending(),"maxPending":4}),
+        json!({"online":backend.comfy_online().await&&models.iter().any(|m|m["available"]==true),"models":models,"loras":loras,"styleLoras":styles,"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":generation::super_res(config, None).await},"pending":backend.pending(),"maxPending":4}),
     )
 }

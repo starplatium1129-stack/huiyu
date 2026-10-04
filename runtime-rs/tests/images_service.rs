@@ -237,6 +237,7 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         ),
         ("vae", "qwen_image_vae.safetensors"),
         ("loras", "krea2_retroanime.safetensors"),
+        ("upscale_models", "RealESRGAN_x4plus_anime_6B.pth"),
     ] {
         let dir = cfg.ai_workspace_root.join("ComfyUI/models").join(kind);
         tokio::fs::create_dir_all(&dir).await.unwrap();
@@ -263,7 +264,7 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         )
         .await
         .unwrap();
-    let input = json!({"modelId":"anima-miaomiao-v1.6","prompt":"literal_trigger, a clear illustrated scene","negative":"source_negative_anchor","width":896,"height":1280,"seed":1234,"initImage":original,"maskImage":mask,"growMaskBy":0});
+    let input = json!({"modelId":"anima-miaomiao-v1.6","prompt":"literal_trigger, a clear illustrated scene","negative":"source_negative_anchor","width":896,"height":1280,"seed":1234,"initImage":original,"maskImage":mask,"growMaskBy":0,"hiresFix":true,"hiresUpscaler":"Auto"});
     let prepared = service
         .prepare(input, "anima", true, CancellationToken::new())
         .await
@@ -285,6 +286,24 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
         .unwrap();
     let id = job["id"].as_str().unwrap();
     wait(&service, id, "anima").await;
+    let metadata = service.get_job(id, "owner", "anima").await.unwrap()["metadata"].clone();
+    assert_eq!(metadata["requestedHiresUpscaler"], "Auto");
+    assert_eq!(metadata["hiresUpscaler"], "R-ESRGAN 4x+ Anime6B");
+    assert_eq!(metadata["superResModel"], "RealESRGAN_x4plus_anime_6B.pth");
+    assert!(metadata["hiresSampler"].is_string());
+    assert!(metadata["hiresScheduler"].is_string());
+    {
+        let graphs = state.workflows.lock().unwrap();
+        let graph = &graphs[0]["prompt"];
+        assert_eq!(
+            graph["24"]["inputs"]["sampler_name"],
+            metadata["hiresSampler"]
+        );
+        assert_eq!(
+            graph["24"]["inputs"]["scheduler"],
+            metadata["hiresScheduler"]
+        );
+    }
     assert_eq!(hooks.restored.load(Ordering::Relaxed), 1);
     assert_eq!(
         tokio::fs::read(cfg.ai_workspace_root.join("ComfyUI/input").join(&original))
@@ -337,5 +356,32 @@ async fn original_input_protection_precedes_post_and_family_outputs_remain_isola
             .count(),
         2
     );
+    assert_eq!(
+        service.get_status("anima").await.unwrap()["hires"]["superResModel"],
+        "RealESRGAN_x4plus_anime_6B.pth"
+    );
+    let mut pure = json!({"modelId":"anima-miaomiao-v1.6","prompt":"A clear scene","width":896,"height":1280,"seed":9,"hiresFix":true,"hiresUpscaler":"R-ESRGAN 4x+ Anime6B","initImage":original});
+    let prepared = service
+        .prepare(pure.clone(), "anima", true, CancellationToken::new())
+        .await
+        .unwrap();
+    let job = service
+        .clone()
+        .submit(prepared, "owner".into(), None)
+        .await
+        .unwrap();
+    let pure_id = job["id"].as_str().unwrap();
+    wait(&service, pure_id, "anima").await;
+    let metadata = service.get_job(pure_id, "owner", "anima").await.unwrap()["metadata"].clone();
+    assert_eq!(metadata["requestedHiresUpscaler"], "R-ESRGAN 4x+ Anime6B");
+    assert_eq!(metadata["hiresUpscaler"], "R-ESRGAN 4x+ Anime6B");
+    assert_eq!(metadata["superResModel"], "RealESRGAN_x4plus_anime_6B.pth");
+    assert!(metadata["hiresSampler"].is_null());
+    assert!(metadata["hiresScheduler"].is_null());
+    pure["hiresUpscaler"] = json!("Remacri");
+    let missing = service
+        .prepare(pure, "anima", true, CancellationToken::new())
+        .await;
+    assert!(matches!(missing, Err(error) if error.code == "SUPER_RES_MODEL_UNAVAILABLE"));
     service.close().await;
 }

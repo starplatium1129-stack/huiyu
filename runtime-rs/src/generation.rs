@@ -27,6 +27,7 @@ pub(crate) use http::{RateLimit, limit_request, owner as request_owner};
 use plan::Execution;
 pub(crate) use plan::{ComfyPlan, MediaKind};
 pub use resources::{is_wai_checkpoint, normalize_checkpoint};
+pub(crate) use resources::{super_res, super_res_name};
 use serde_json::{Value, json};
 use std::{
     collections::{HashMap, VecDeque},

@@ -40,6 +40,8 @@ pub struct Input {
     pub hires_fix: bool,
     pub hires_scale: f64,
     pub hires_upscaler: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requested_hires_upscaler: Option<String>,
     pub hires_steps: u32,
     pub denoising_strength: f64,
     pub face_detailer: bool,
