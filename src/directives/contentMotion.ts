@@ -1,5 +1,5 @@
 import type { ObjectDirective } from 'vue'
-import { prefersReducedMotion } from '@/utils/motionPreference'
+import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
 // One animation per changed surface, never one per list item. No cloned DOM,
 // delayed state update, persistent layer, or height animation during a switch.
@@ -55,7 +55,6 @@ export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
 
 /** Native details and both motion preferences share the same bounded lifecycle. */
 export function installContentMotion() {
-  const media = window.matchMedia('(prefers-reduced-motion: reduce)')
   function preference() { if (document.hidden || prefersReducedMotion()) settle() }
   function keyboard() { keyboardInput = true; settle() }
   function pointer() { keyboardInput = false }
@@ -65,17 +64,13 @@ export function installContentMotion() {
   document.addEventListener('toggle', toggle, true)
   document.addEventListener('keydown', keyboard, true)
   document.addEventListener('pointerdown', pointer, true)
-  document.addEventListener('visibilitychange', preference)
-  window.addEventListener('atelier:motion-preference', preference)
-  media.addEventListener('change', preference)
+  const stopListening = listenMotionChanges(preference)
   return () => {
     settle()
     keyboardInput = false
     document.removeEventListener('toggle', toggle, true)
     document.removeEventListener('keydown', keyboard, true)
     document.removeEventListener('pointerdown', pointer, true)
-    document.removeEventListener('visibilitychange', preference)
-    window.removeEventListener('atelier:motion-preference', preference)
-    media.removeEventListener('change', preference)
+    stopListening()
   }
 }

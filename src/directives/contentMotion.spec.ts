@@ -1,7 +1,9 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { DirectiveBinding, VNode } from 'vue'
 import { contentMotion, installContentMotion } from './contentMotion'
-vi.mock('@/utils/motionPreference', () => ({ prefersReducedMotion: () => false }))
+vi.mock('@/utils/motionPreference', async importOriginal => ({
+  ...await importOriginal<typeof import('@/utils/motionPreference')>(), prefersReducedMotion: () => false,
+}))
 const elements: HTMLElement[] = []
 function panel() {
   const el = document.createElement('div')

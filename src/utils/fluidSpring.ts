@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from './motionPreference'
+import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 
 /** Analytic, critically damped motion. Retargeting preserves position and velocity. */
 export class FluidSpring {
@@ -23,7 +23,6 @@ export class FluidSpring {
 /** One frame loop per surface; hidden/reduced motion settles, disposal is terminal. */
 export function createFluidMotion(values: number[], write: (values: number[]) => void, frequency = 5) {
   const springs = values.map(value => new FluidSpring(value, frequency))
-  const media = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null
   let frame: number | null = null, last: number | null = null
   let active = false, disposed = false, revision = 0
   let complete: (() => void) | undefined
@@ -56,11 +55,7 @@ export function createFluidMotion(values: number[], write: (values: number[]) =>
     else schedule()
   }
   function preference() { if (prefersReducedMotion() || document.hidden) finish() }
-  const modern = typeof media?.addEventListener === 'function'
-  if (modern) media?.addEventListener('change', preference)
-  else media?.addListener?.(preference)
-  document.addEventListener('visibilitychange', preference)
-  window.addEventListener('atelier:motion-preference', preference)
+  const stopListening = listenMotionChanges(preference)
   return {
     to(targets: number[], instant = false, done?: () => void) {
       if (disposed) return
@@ -77,10 +72,7 @@ export function createFluidMotion(values: number[], write: (values: number[]) =>
       if (disposed) return
       disposed = true; active = false; revision++
       stop(); complete = undefined
-      if (modern) media?.removeEventListener('change', preference)
-      else media?.removeListener?.(preference)
-      document.removeEventListener('visibilitychange', preference)
-      window.removeEventListener('atelier:motion-preference', preference)
+      stopListening()
     },
   }
 }

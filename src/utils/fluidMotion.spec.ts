@@ -2,7 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createFluidMotion } from './fluidSpring'
 
 const preference = vi.hoisted(() => ({ reduced: false }))
-vi.mock('./motionPreference', () => ({ prefersReducedMotion: () => preference.reduced }))
+vi.mock('./motionPreference', async importOriginal => ({
+  ...await importOriginal<typeof import('./motionPreference')>(), prefersReducedMotion: () => preference.reduced,
+}))
 let frames: Map<number, FrameRequestCallback>, nextId: number, now: number
 let media: EventTarget
 let disposers: Array<() => void>

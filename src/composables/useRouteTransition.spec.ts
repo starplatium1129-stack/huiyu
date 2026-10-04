@@ -15,7 +15,9 @@ vi.mock('vue', () => ({
   onDeactivated: (callback: () => void) => state.deactivated.push(callback),
   onUnmounted: (callback: () => void) => state.unmounted.push(callback),
 }))
-vi.mock('@/utils/motionPreference', () => ({ prefersReducedMotion: () => state.reduced }))
+vi.mock('@/utils/motionPreference', async importOriginal => ({
+  ...await importOriginal<typeof import('@/utils/motionPreference')>(), prefersReducedMotion: () => state.reduced,
+}))
 vi.mock('@/utils/uiFluidityMeasurement', () => ({
   markUiFluidityForPath: (path: string, phase: string) => state.marks.push([path, phase]),
 }))

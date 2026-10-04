@@ -1,5 +1,5 @@
 import { onDeactivated, onMounted, onUnmounted } from 'vue'
-import { prefersReducedMotion } from '@/utils/motionPreference'
+import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
@@ -179,28 +179,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
   function visibilityChanged() { if (document.hidden) settleAll() }
-  let removeMediaListener: (() => void) | undefined
+  let stopListening: (() => void) | undefined
   onMounted(() => {
-    // The app preference event remains available even without matchMedia.
-    window.addEventListener('atelier:motion-preference', motionChanged)
     // Hidden tabs can suspend animation timelines; release Vue callbacks now.
-    document.addEventListener('visibilitychange', visibilityChanged)
-    if (typeof window.matchMedia !== 'function') return
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (typeof media.addEventListener === 'function') {
-      media.addEventListener('change', motionChanged)
-      removeMediaListener = () => media.removeEventListener('change', motionChanged)
-    } else if (typeof media.addListener === 'function') {
-      media.addListener(motionChanged)
-      removeMediaListener = () => media.removeListener(motionChanged)
-    }
+    stopListening = listenMotionChanges(motionChanged, visibilityChanged)
   })
   onDeactivated(settleAll)
   onUnmounted(() => {
     settleAll()
-    removeMediaListener?.()
-    window.removeEventListener('atelier:motion-preference', motionChanged)
-    document.removeEventListener('visibilitychange', visibilityChanged)
+    stopListening?.()
   })
   return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled }
 }
