@@ -34,6 +34,78 @@ fn images_validation_and_graphs_preserve_compiled_contracts() {
     }
 }
 
+#[test]
+fn inpaint_hires_keeps_mask_and_reference_aligned_through_final_composite() {
+    let body = json!({"prompt":"a new jacket","modelId":"anima-miaomiao-v1.6","width":832,"height":1216,"seed":42,"hiresFix":true,"hiresScale":1.3125,"hiresDenoise":0.4,"initImage":"aics_anima_input_0123456789abcdef.png","maskImage":"aics_anima_input_abcdef0123456789.png"});
+    let mut input = images::validate(&body, "anima", true).unwrap();
+    for super_res in [false, true] {
+        input["superResModel"] = if super_res {
+            json!("4x_foolhardy_Remacri.safetensors")
+        } else {
+            Value::Null
+        };
+        let graph = images::build_workflow(&input).unwrap();
+        assert_eq!(
+            graph["hires_mask_image"]["inputs"]["mask"],
+            graph["17"]["inputs"]["mask"]
+        );
+        // The latent branch rounds at latent resolution using ties-to-even;
+        // the pixel-upscale branch keeps its existing 8-pixel rounding.
+        for id in ["hires_mask_scale", "hires_reference"] {
+            assert_eq!(
+                graph[id]["inputs"]["width"],
+                if super_res { 1096 } else { 1088 }
+            );
+            assert_eq!(graph[id]["inputs"]["height"], 1600);
+        }
+        assert_eq!(
+            graph["hires_mask_scale"]["inputs"]["upscale_method"],
+            "nearest-exact"
+        );
+        assert_eq!(
+            graph["hires_reference"]["inputs"]["image"],
+            json!(["19", 0])
+        );
+        assert_eq!(
+            graph["hires_noise_mask"]["class_type"],
+            "SetLatentNoiseMask"
+        );
+        assert_eq!(
+            graph["hires_noise_mask"]["inputs"]["samples"],
+            json!([if super_res { "23" } else { "32" }, 0])
+        );
+        let sampler = if super_res { "24" } else { "33" };
+        assert_eq!(
+            graph[sampler]["inputs"]["latent_image"],
+            json!(["hires_noise_mask", 0])
+        );
+        assert_eq!(graph[sampler]["inputs"]["denoise"], 0.4);
+        assert_eq!(
+            graph["hires_composite"]["inputs"]["mask"],
+            graph["hires_noise_mask"]["inputs"]["mask"]
+        );
+        assert_eq!(
+            graph["hires_composite"]["inputs"]["destination"],
+            json!(["hires_reference", 0])
+        );
+        assert_eq!(
+            graph["hires_composite"]["inputs"]["source"],
+            json!([if super_res { "25" } else { "35" }, 0])
+        );
+        if !super_res {
+            assert_eq!(graph["35"]["inputs"]["image"], json!(["34", 0]));
+        }
+        assert_eq!(
+            graph["10"]["inputs"]["images"],
+            json!(["hires_composite", 0])
+        );
+    }
+    input["hiresFix"] = json!(false);
+    let graph = images::build_workflow(&input).unwrap();
+    assert_eq!(graph["10"]["inputs"]["images"], json!(["30", 0]));
+    assert!(graph.get("hires_composite").is_none());
+}
+
 // Moved from test-prompt-compiler.ts when the retired Node graph builder was
 // removed. These exercise the product compiler after the actual JSON boundary.
 #[test]

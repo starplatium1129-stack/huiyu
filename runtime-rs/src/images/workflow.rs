@@ -106,7 +106,7 @@ pub fn build(input: &Value) -> Result<Value> {
             graph[decoded]["inputs"]["samples"] = link("12", 0);
         }
     }
-    if (hires && !truthy(&input["superResModel"])) || (!hires && !init) {
+    if (hires && !truthy(&input["superResModel"]) && !(init && masked)) || (!hires && !init) {
         graph["35"] = node(
             "ImageSharpenKJ",
             json!({"image":graph["10"]["inputs"]["images"],"method":"rcas","method.strength":0.75}),
@@ -185,7 +185,34 @@ fn append_super_res(graph: &mut Value, input: &Value, first: &str) {
     graph["10"]["inputs"]["images"] = link("23", 0);
 }
 fn inpaint_hires(graph: &mut Value, input: &Value, model: Value, positive: &str, negative: &str) {
-    if truthy(&input["superResModel"]) {
+    let super_res = truthy(&input["superResModel"]);
+    // Reuse the effective first-pass mask, including grow/CLIPSeg feathering.
+    // LatentUpscaleBy uses Python's ties-to-even rounding at latent resolution.
+    let dimension = |key: &str| {
+        let units = input[key].as_f64().unwrap() * input["hiresScale"].as_f64().unwrap() / 8.;
+        validation::num(
+            if super_res {
+                units.round()
+            } else {
+                units.round_ties_even()
+            } * 8.,
+        )
+    };
+    graph["hires_mask_image"] = node("MaskToImage", json!({"mask":graph["17"]["inputs"]["mask"]}));
+    for (id, source, method) in [
+        ("hires_mask_scale", "hires_mask_image", "nearest-exact"),
+        ("hires_reference", "19", "lanczos"),
+    ] {
+        graph[id] = node(
+            "ImageScale",
+            json!({"image":link(source,0),"upscale_method":method,"width":dimension("width"),"height":dimension("height"),"crop":"disabled"}),
+        );
+    }
+    graph["hires_mask"] = node(
+        "ImageToMask",
+        json!({"image":["hires_mask_scale",0],"channel":"red"}),
+    );
+    let decoded = if super_res {
         graph["20"] = node(
             "UpscaleModelLoader",
             json!({"model_name":input["superResModel"]}),
@@ -196,19 +223,52 @@ fn inpaint_hires(graph: &mut Value, input: &Value, model: Value, positive: &str,
         );
         graph["22"] = scale(input, "21");
         graph["23"] = node("VAEEncode", json!({"pixels":["22",0],"vae":["3",0]}));
-        graph["24"] = sample(input, model, positive, negative, link("23", 0), true);
+        graph["hires_noise_mask"] = node(
+            "SetLatentNoiseMask",
+            json!({"samples":["23",0],"mask":["hires_mask",0]}),
+        );
+        graph["24"] = sample(
+            input,
+            model,
+            positive,
+            negative,
+            link("hires_noise_mask", 0),
+            true,
+        );
         graph["25"] = node("VAEDecode", json!({"samples":["24",0],"vae":["3",0]}));
-        graph["10"]["inputs"]["images"] = link("25", 0);
+        "25"
     } else {
         graph["31"] = node("VAEEncode", json!({"pixels":["30",0],"vae":["3",0]}));
         graph["32"] = node(
             "LatentUpscaleBy",
             json!({"samples":["31",0],"upscale_method":"bicubic","scale_by":input["hiresScale"]}),
         );
-        graph["33"] = sample(input, model, positive, negative, link("32", 0), true);
+        graph["hires_noise_mask"] = node(
+            "SetLatentNoiseMask",
+            json!({"samples":["32",0],"mask":["hires_mask",0]}),
+        );
+        graph["33"] = sample(
+            input,
+            model,
+            positive,
+            negative,
+            link("hires_noise_mask", 0),
+            true,
+        );
         graph["34"] = node("VAEDecode", json!({"samples":["33",0],"vae":["3",0]}));
-        graph["10"]["inputs"]["images"] = link("34", 0);
-    }
+        // Sharpen the generated source before compositing so unselected areas
+        // remain the resized reference, rather than receiving whole-image RCAS.
+        graph["35"] = node(
+            "ImageSharpenKJ",
+            json!({"image":["34",0],"method":"rcas","method.strength":0.75}),
+        );
+        "35"
+    };
+    graph["hires_composite"] = node(
+        "ImageCompositeMasked",
+        json!({"destination":["hires_reference",0],"source":link(decoded,0),"x":0,"y":0,"resize_source":false,"mask":["hires_mask",0]}),
+    );
+    graph["10"]["inputs"]["images"] = link("hires_composite", 0);
 }
 fn krea(input: &Value, model: &Value) -> Result<Value> {
     let mut graph = json!({"1":node("UNETLoader",json!({"unet_name":model["file"],"weight_dtype":"default"})),"2":node("CLIPLoader",json!({"clip_name":"qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors","type":"krea2"})),"3":node("VAELoader",json!({"vae_name":"qwen_image_vae.safetensors"})),"4":node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]})),"5":node("ConditioningZeroOut",json!({"conditioning":["4",0]})),"6":node("EmptyLatentImage",json!({"width":input["width"],"height":input["height"],"batch_size":1})),"8":node("VAEDecode",json!({"samples":["7",0],"vae":["3",0]})),"10":node("SaveImage",json!({"images":["8",0],"filename_prefix":"creative_app"}))});
