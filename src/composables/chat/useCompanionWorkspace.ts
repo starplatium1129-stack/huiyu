@@ -96,8 +96,12 @@ export function useCompanionWorkspace() {
     const workspaceInput = ref('');
     const workspaceExists = ref(false);
     const workspaceSaving = ref(false);
-    const workspaceTooltip = computed(() => workspaceExists.value
-        ? `AI 工作区：${workspaceInput.value || '已配置'}`
+    const workspaceError = ref('');
+    const workspaceSavedRoot = ref('');
+    const workspaceRestartRequired = ref(false);
+    const workspaceTooltip = computed(() => workspaceRestartRequired.value
+        ? `AI 工作区已保存：${workspaceSavedRoot.value}；完全退出并重启绘遇后生效`
+        : workspaceExists.value ? `AI 工作区：${workspaceSavedRoot.value || '已配置'}`
         : '未配置 AI 工作区：样张预览与训练不可用，点击设置');
     let uiIdleTimer = 0;
     const uiHidden = ref(false);
@@ -295,42 +299,38 @@ export function useCompanionWorkspace() {
         }, 3200) as unknown as number;
     }
     async function refreshWorkspaceState() {
-        if (!desktopBridge)
-            return;
+        if (!desktopBridge) return;
         try {
             const workspace = await desktopBridge.getWorkspace();
-            if (!viewAlive)
-                return;
-            workspaceInput.value = workspace.root;
+            if (!viewAlive) return;
+            workspaceInput.value = workspaceSavedRoot.value = workspace.root;
             workspaceExists.value = workspace.exists;
+            workspaceRestartRequired.value = workspace.restartRequired;
         }
         catch {
             // 桌面桥未就绪时忽略
         }
     }
     async function saveWorkspace() {
-        if (!desktopBridge || workspaceSaving.value)
-            return;
+        if (!desktopBridge || workspaceSaving.value) return;
         const value = workspaceInput.value.trim();
-        if (!value)
-            return;
-        workspaceSaving.value = true;
+        if (!value) return;
+        workspaceSaving.value = true; workspaceError.value = '';
         try {
             const result = await desktopBridge.setWorkspace(value);
-            workspaceInput.value = result.root;
-            workspaceExists.value = true;
+            if (!viewAlive) return;
+            workspaceInput.value = workspaceSavedRoot.value = result.root;
+            workspaceExists.value = result.exists;
+            workspaceRestartRequired.value = result.restartRequired;
             workspaceOpen.value = false;
-            chatError.value = 'AI 工作区已更新，网关已重启。';
+            chatError.value = result.restartRequired ? 'AI 工作区已保存，完全退出并重启绘遇后生效。' : 'AI 工作区已保存，当前目录已生效。';
             chatErrorKind.value = 'info';
-            void refreshRoomState();
         }
         catch (error) {
-            chatError.value = (error as Error).message || '工作区设置失败';
+            chatError.value = workspaceError.value = (error as Error).message || '工作区设置失败';
             chatErrorKind.value = 'error';
         }
-        finally {
-            workspaceSaving.value = false;
-        }
+        finally { workspaceSaving.value = false; }
     }
     function readDesktopLive2dOverride(): boolean | null {
         if (!desktopBridge)
@@ -523,7 +523,7 @@ characterStageRef,
         currentCharacter, affectionScore, affectionInfo, companionCharacters, switchCharacter, settingsOpen,
         autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef,
         onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,
-        workspaceExists, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,
+        workspaceExists, workspaceRestartRequired, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,
         isSpeaking, chatStatusText, statusKind, companionAutoLoad, desktopWindowBounds, storage,
         handleLive2dPreference, pendingReminders, openReminderRoute, dismissReminder, clipboardCard, inspectClipboardImage,
         acceptClipboardCard, dismissClipboardCard, companionMessages, immersiveMessages, hasNewMessages, latestMessages, toolActivity, thinkingActivity,
@@ -533,6 +533,6 @@ characterStageRef,
         speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText,
         speechStateText, speechAutoListening, speechSessionActive, onSpeechSessionEnd, speechSettingsOpen, voiceStatusText,
         inQuietHours, quietHoursText, onSpeechSettingsSaved, chatErrorKind, chatError, replyAnnouncement,
-        workspaceInput, saveWorkspace, workspaceSaving, openChatWindow, liveDotState, liveDotText,
+        workspaceInput, saveWorkspace, workspaceSaving, workspaceError, openChatWindow, liveDotState, liveDotText,
     };
 }

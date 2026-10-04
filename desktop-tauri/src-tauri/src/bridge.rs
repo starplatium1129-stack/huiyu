@@ -142,29 +142,43 @@ pub fn is_packaged(app: AppHandle) -> bool {
 
 #[tauri::command]
 pub fn get_workspace(state: State<AppState>) -> serde_json::Value {
-    let root = state.workspace_root.lock().unwrap().clone();
+    let active_root = state.workspace_root.lock().unwrap().clone();
+    let saved_root = crate::window_state::load_ai_workspace(&state.paths.ai_workspace_file);
+    let root = if saved_root.is_empty() { active_root.clone() } else { saved_root };
     serde_json::json!({
+        "exists": std::path::Path::new(&root).is_dir(),
+        "restartRequired": root != active_root,
         "root": root,
-        "exists": !root.is_empty() && std::path::Path::new(&root).exists()
+        "activeRoot": active_root,
     })
 }
 
 #[tauri::command]
 pub async fn set_workspace(
-    _app: AppHandle,
     state: State<'_, AppState>,
     root: String,
 ) -> Result<serde_json::Value, String> {
-    if root.trim().is_empty() {
-        return Err("工作区路径不能为空".into());
-    }
-    if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, root.trim()) {
-        return Err("工作区目录不存在或不是文件夹".into());
-    }
+    if root.trim().is_empty() { return Err("工作区路径不能为空".into()); }
     let resolved = std::path::absolute(root.trim()).map_err(|e| e.to_string())?;
-    *state.workspace_root.lock().unwrap() = resolved.to_string_lossy().to_string();
-    state.info(&format!("AI workspace updated to {}", resolved.display()));
-    Ok(serde_json::json!({ "root": resolved.to_string_lossy() }))
+    if !resolved.is_dir() { return Err("工作区目录不存在或不是文件夹".into()); }
+    if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, root.trim()) {
+        return Err("工作区配置未能保存，请检查配置目录的写入权限".into());
+    }
+    // The running gateway keeps its startup environment until the application exits.
+    state.info(&format!("AI workspace saved for next application start: {}", resolved.display()));
+    Ok(get_workspace(state))
+}
+
+#[tauri::command]
+pub async fn pick_workspace(window: tauri::WebviewWindow, root: Option<String>) -> Result<Option<String>, String> {
+    use tauri_plugin_dialog::DialogExt;
+    let mut dialog = window.dialog().file().set_parent(&window).set_title("选择 AI 工作区目录");
+    if let Some(root) = root.filter(|root| std::path::Path::new(root).is_dir()) {
+        dialog = dialog.set_directory(root);
+    }
+    dialog.blocking_pick_folder().map(|path| {
+        path.into_path().map(|path| path.to_string_lossy().into_owned()).map_err(|error| error.to_string())
+    }).transpose()
 }
 
 #[tauri::command]

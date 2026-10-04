@@ -32,6 +32,7 @@
     "allow-is-packaged",
     "allow-get-workspace",
     "allow-set-workspace",
+    "allow-pick-workspace",
     "allow-notify",
     "allow-open-atelier",
     "allow-open-companion-chat",

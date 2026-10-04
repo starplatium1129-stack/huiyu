@@ -3,15 +3,18 @@
 # Report installed versions at launch; do not claim an old dependency combination is active.
 # This command starts only one local instance and preserves the installed model environment.
 
+param([switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -eq '1'))
+
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 $workspaceRoot = if ($env:AI_WORKSPACE_ROOT) { $env:AI_WORKSPACE_ROOT } else { Join-Path $projectRoot '..\AI' }
 $comfyRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot 'ComfyUI'))
 $python = Join-Path $comfyRoot 'venv\Scripts\python.exe'
+$mainPath = Join-Path $comfyRoot 'main.py'
 $logDir = Join-Path $comfyRoot 'user'
 
-if (-not (Test-Path $python)) {
-  Write-Host "venv python not found: $python"
+if (-not (Test-Path -LiteralPath $python -PathType Leaf) -or -not (Test-Path -LiteralPath $mainPath -PathType Leaf)) {
+  Write-Host "Managed startup requires ComfyUI/main.py and ComfyUI/venv/Scripts/python.exe under the AI workspace: $comfyRoot"
   exit 1
 }
 
@@ -23,18 +26,21 @@ if ($existing) {
 }
 
 Write-Host 'Starting local ComfyUI with the installed environment...'
-& $python -c "import importlib.metadata as m; print('torch=' + m.version('torch') + ' comfy-aimdo=' + m.version('comfy-aimdo'))"
+& $python -c "import importlib.metadata as m; print('torch=' + m.version('torch'))"
+New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $out = Join-Path $logDir 'comfyui-run.log'
 $err = Join-Path $logDir 'comfyui-run.err.log'
-Start-Process -FilePath $python -ArgumentList @(
+$arguments = @(
   '-u',
-  (Join-Path $comfyRoot 'main.py'),
+  ('"{0}"' -f $mainPath),
   '--listen', '127.0.0.1',
   '--port', '8188',
-  '--use-sage-attention',
   '--fast-disk',
   '--vram-headroom', '1'
-) -WorkingDirectory $comfyRoot -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden
+)
+# Optional optimization; the default also works without the SageAttention package.
+if ($UseSageAttention) { $arguments += '--use-sage-attention' }
+Start-Process -FilePath $python -ArgumentList $arguments -WorkingDirectory $comfyRoot -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden
 
 Write-Host 'Waiting for health check...'
 $deadline = (Get-Date).AddSeconds(90)

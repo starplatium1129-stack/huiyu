@@ -5,6 +5,13 @@ export interface DesktopFile {
   type: string
 }
 
+export interface DesktopAiWorkspace {
+  root: string
+  exists: boolean
+  activeRoot: string
+  restartRequired: boolean
+}
+
 export interface CompanionDesktopBridge {
   readChatCredential?(endpoint: string): Promise<string | null>
   writeChatCredential?(endpoint: string, secret: string): Promise<void>
@@ -40,8 +47,9 @@ export interface CompanionDesktopBridge {
   openWorkspace(): Promise<boolean>
   openRuntime(): Promise<boolean>
   openLog(): Promise<boolean>
-  getWorkspace(): Promise<{ root: string; exists: boolean }>
-  setWorkspace(root: string): Promise<{ root: string }>
+  getWorkspace(): Promise<DesktopAiWorkspace>
+  setWorkspace(root: string): Promise<DesktopAiWorkspace>
+  pickWorkspace(root?: string): Promise<string | null>
   notify(title: string, body: string): void
   setProgress(progress: number | null): void
   runTool(name: string, args: Record<string, unknown>, options?: { signal?: AbortSignal }): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>

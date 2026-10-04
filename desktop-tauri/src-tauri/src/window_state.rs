@@ -228,8 +228,7 @@ pub fn save_ai_workspace(file_path: &Path, root: &str) -> bool {
     if !resolved.is_dir() {
         return false;
     }
-    save_json_atomic(file_path, &serde_json::json!({ "root": resolved }));
-    true
+    try_save_json_atomic(file_path, &serde_json::json!({ "root": resolved }))
 }
 
 #[cfg(test)]
@@ -394,6 +393,8 @@ mod tests {
         fs::create_dir_all(&tmp).unwrap();
         assert!(save_ai_workspace(&file, tmp.to_str().unwrap()));
         assert_eq!(load_ai_workspace(&file), std::path::absolute(&tmp).unwrap().to_string_lossy());
+        // A valid workspace must still report a failed configuration write.
+        assert!(!save_ai_workspace(&file.join("blocked.json"), tmp.to_str().unwrap()));
         // 不存在目录拒绝
         assert!(!save_ai_workspace(&file, "Z:/definitely/not/a/dir"));
         let _ = std::fs::remove_dir_all(&tmp);

@@ -3,7 +3,8 @@ param(
     [ValidateSet('Start', 'Stop', 'Status')][string]$Action = 'Status',
     [Parameter(Mandatory = $true)][string]$AIWorkspaceRoot,
     [Parameter(Mandatory = $true)][string]$RuntimeRoot,
-    [Parameter(Mandatory = $true)][string]$ComfyHost
+    [Parameter(Mandatory = $true)][string]$ComfyHost,
+    [switch]$UseSageAttention = ($env:AICS_COMFY_USE_SAGE_ATTENTION -eq '1')
 )
 $ErrorActionPreference = 'Stop'
 $workspace = [IO.Path]::GetFullPath($AIWorkspaceRoot)
@@ -99,13 +100,12 @@ if (Test-ComfyApi) {
 }
 if ($managedProcess) { Write-Result $true 'starting' $true 'ComfyUI is still starting.' $managedProcess.ProcessId; exit 0 }
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path -LiteralPath $mainPath -PathType Leaf)) {
-    Write-Result $false 'unavailable' $false 'Configured ComfyUI installation was not found.'; exit 1
+    Write-Result $false 'unavailable' $false ("Managed startup requires ComfyUI/main.py and ComfyUI/venv/Scripts/python.exe under the AI workspace. Expected: $mainPath ; $pythonPath . Start other layouts manually and connect through the configured ComfyUI address."); exit 1
 }
-# 2026-08-25: --use-sage-attention 与 start-comfyui.ps1 保持一致（sageattention 2.2.0
-# wheel 已装入 venv，实测入口见 scripts/tests/benchmark-anima-teacache.js，
-# 当前操作入口见 docs/workflow.md）。两条启动路径必须同步此 flag，否则面板重启后
-# sage 静默失效。
-$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory', '--use-sage-attention', '--fast-disk', '--vram-headroom', '1')
+# SageAttention is optional and must be installed in this venv before explicitly enabling it.
+# Both launchers accept -UseSageAttention or inherit AICS_COMFY_USE_SAGE_ATTENTION=1.
+$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory', '--fast-disk', '--vram-headroom', '1')
+if ($UseSageAttention) { $arguments += '--use-sage-attention' }
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $comfyRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 Set-Content -LiteralPath $pidFile -Value $process.Id -Encoding ASCII
 if (Wait-Ready) { Write-Result $true 'ready' $true 'Started ComfyUI and waited for /system_stats.' $process.Id; exit 0 }
