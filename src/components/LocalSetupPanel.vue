@@ -160,7 +160,11 @@ async function openWorkspace() {
   workspaceLoading.value = true; workspaceError.value = ''
   try {
     const result = await desktop.getWorkspace()
-    if (!disposed) { workspaceDraft.value = result.root; workspaceOpen.value = true }
+    if (!disposed) {
+      workspaceDraft.value = result.root
+      workspaceNotice.value = result.restartRequired ? '已保存的 AI 工作区尚未生效，完全退出并重启绘遇后使用新目录。当前检查仍基于本次运行时目录。' : ''
+      workspaceOpen.value = true
+    }
   } catch (cause) {
     if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '读取 AI 工作区失败。'
   } finally { if (!disposed) workspaceLoading.value = false }
@@ -170,10 +174,13 @@ async function saveWorkspace() {
   if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
   workspaceSaving.value = true; workspaceError.value = ''; workspaceNotice.value = ''
   try {
-    await desktop.setWorkspace(workspaceDraft.value.trim())
+    const result = await desktop.setWorkspace(workspaceDraft.value.trim())
     if (!disposed) {
+      workspaceDraft.value = result.root
       workspaceOpen.value = false
-      workspaceNotice.value = 'AI 工作区已保存，重启应用后生效。当前检查仍基于本次运行时目录；不会自动重启或切换目录。'
+      workspaceNotice.value = result.restartRequired
+        ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'
+        : 'AI 工作区已保存，当前运行时目录未改变。'
     }
   } catch (cause) {
     if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '保存失败，工作区尚未确认变更。'

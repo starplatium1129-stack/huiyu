@@ -3,10 +3,11 @@ import { flushPromises, mount } from '@vue/test-utils'
 import LocalSetupPanel from './LocalSetupPanel.vue'
 import type { LocalSetupResponse } from '../../types/local-setup'
 
-const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn() }))
+const fixture = vi.hoisted(() => ({ local: true, desktop: false, getStatus: vi.fn(), getWorkspace: vi.fn(), setWorkspace: vi.fn(), pickWorkspace: vi.fn() }))
 vi.mock('../utils/runtimeEnvironment.ts', () => ({ isLocalStudioHost: () => fixture.local }))
 vi.mock('../api/localSetupApi.ts', () => ({ localSetupApi: { getStatus: fixture.getStatus } }))
-vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace } : undefined }))
+vi.mock('../platform/desktop/capabilities.ts', () => ({ getDesktopCapabilities: () => fixture.desktop ? { getWorkspace: fixture.getWorkspace, setWorkspace: fixture.setWorkspace, pickWorkspace: fixture.pickWorkspace } : undefined }))
+vi.mock('../composables/useFluidDialog', () => ({ useFluidDialog: () => ({ open: vi.fn(), close: vi.fn() }) }))
 
 function complete(): LocalSetupResponse {
   return { ok: true, checkedAt: 1_791_083_000_000,
@@ -21,15 +22,16 @@ function deferred() {
   const promise = new Promise<LocalSetupResponse>(finish => { resolve = finish })
   return { promise, resolve }
 }
-function render() {
-  return mount(LocalSetupPanel, { global: { stubs: { ArchiveIcon: true, RouterLink: { template: '<a><slot /></a>' },
-    CompanionWorkspaceSettings: { name: 'CompanionWorkspaceSettings', props: ['open', 'modelValue', 'saving', 'error'], emits: ['save', 'close', 'update:modelValue'], template: '<div />' } } } })
+function render(realSettings = false) {
+  return mount(LocalSetupPanel, { global: { stubs: { ArchiveIcon: true, Teleport: true, RouterLink: { template: '<a><slot /></a>' },
+    CompanionWorkspaceSettings: realSettings ? false : { name: 'CompanionWorkspaceSettings', props: ['open', 'modelValue', 'saving', 'error'], emits: ['save', 'close', 'update:modelValue'], template: '<div />' } } } })
 }
 beforeEach(() => {
   fixture.local = true; fixture.desktop = false
   fixture.getStatus.mockReset().mockResolvedValue(complete())
-  fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true })
-  fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI' })
+  fixture.getWorkspace.mockReset().mockResolvedValue({ root: 'E:\\NewAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
+  fixture.setWorkspace.mockReset().mockResolvedValue({ root: 'F:\\ChosenAI', exists: true, activeRoot: 'D:\\AI', restartRequired: true })
+  fixture.pickWorkspace.mockReset().mockResolvedValue('F:\\ChosenAI')
 })
 afterEach(() => vi.restoreAllMocks())
 
@@ -81,19 +83,28 @@ describe('first local setup panel', () => {
   })
   it('saves a workspace only on explicit save and retains the active runtime evidence until restart', async () => {
     fixture.desktop = true
-    const wrapper = render(); await flushPromises()
+    const wrapper = render(true); await flushPromises()
     await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
     const dialog = wrapper.findComponent({ name: 'CompanionWorkspaceSettings' })
     expect(dialog.props('modelValue')).toBe('E:\\NewAI')
     dialog.vm.$emit('close'); await flushPromises()
     expect(fixture.setWorkspace).not.toHaveBeenCalled()
     await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
+    await dialog.findAll('button').find(button => button.text() === '选择文件夹')!.trigger('click'); await flushPromises()
+    expect(fixture.pickWorkspace).toHaveBeenCalledWith('E:\\NewAI')
+    expect(dialog.props('modelValue')).toBe('F:\\ChosenAI')
+    expect(fixture.setWorkspace).not.toHaveBeenCalled()
     dialog.vm.$emit('save'); dialog.vm.$emit('save'); await flushPromises()
     expect(fixture.setWorkspace).toHaveBeenCalledTimes(1)
-    expect(fixture.setWorkspace).toHaveBeenCalledWith('E:\\NewAI')
+    expect(fixture.setWorkspace).toHaveBeenCalledWith('F:\\ChosenAI')
     expect(fixture.getStatus).toHaveBeenCalledTimes(1)
-    expect(wrapper.text()).toContain('重启应用后生效')
+    expect(wrapper.text()).toContain('完全退出并重启绘遇后生效')
     expect(wrapper.text()).toContain('D:\\AI')
+    fixture.setWorkspace.mockResolvedValueOnce({ root: 'D:\\AI', exists: true, activeRoot: 'D:\\AI', restartRequired: false })
+    await wrapper.findAll('button').find(button => button.text().includes('选择 AI 工作区'))!.trigger('click'); await flushPromises()
+    dialog.vm.$emit('update:modelValue', 'D:\\AI'); dialog.vm.$emit('save'); await flushPromises()
+    expect(wrapper.text()).toContain('当前运行时目录未改变')
+    expect(wrapper.find('.setup-note[role="status"]').text()).not.toContain('重启')
     wrapper.unmount()
   })
 })
