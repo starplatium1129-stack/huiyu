@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 import { resourceApi, type ResourceApi } from '../api/resourceApi'
+import { ApiClientError } from '../api/client'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { ResourceAction, ResourceStatus } from '../../types/resources'
 
@@ -14,6 +15,7 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
   let request: AbortController | null = null
   let command: AbortController | null = null
   let stopped = false
+  let rejectedStart = ''
   const busy = computed(() => submitting.value || status.value?.busy === true)
   const selected = computed(() => status.value?.releases.find(item => item.id === selectedId.value) || null)
   const enabled = computed(() => isLocal && status.value?.managementEnabled === true && !busy.value && !error.value)
@@ -66,7 +68,8 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
       const result = await api.status(fresh, request.signal)
       if (ticket !== generation || stopped) return
       status.value = result
-      error.value = ''
+      if (fresh) rejectedStart = ''
+      error.value = rejectedStart
       if (!result.releases.some(item => item.id === selectedId.value)) selectedId.value = result.releases[0]?.id || ''
     } catch {
       if (ticket === generation && !stopped) error.value = '资源状态暂时无法读取，请重新检查。'
@@ -87,8 +90,12 @@ export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isL
       if (stopped) return
       if (status.value) status.value = { ...status.value, busy: true, mounted: false, task: result.task }
       error.value = ''
-    } catch {
-      if (!stopped) error.value = '操作结果尚未确认，正在重新读取任务状态。请勿重复提交。'
+    } catch (cause) {
+      if (!stopped) {
+        rejectedStart = cause instanceof ApiClientError && cause.kind === 'http' && cause.status >= 400 && cause.status < 500
+          ? cause.message : ''
+        error.value = rejectedStart || '操作结果尚未确认，正在重新读取任务状态。请勿重复提交。'
+      }
     } finally {
       submitting.value = false; command = null
       // A lost POST response can still mean the task started. Inspect it; never auto-retry a write.

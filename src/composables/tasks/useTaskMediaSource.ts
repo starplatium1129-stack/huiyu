@@ -27,12 +27,13 @@ export function useTaskMediaSource(source: () => string) {
     } catch (cause) { if (!disposed && current === revision && !request.signal.aborted) error.value = cause instanceof Error ? cause.message : '媒体暂时无法读取' }
   }
   watch(source, () => { url.value = ''; void refresh() }, { immediate: true })
-  let runtimeIdentity = ''
+  // The source watcher owns the first lookup; the subscription renews on later identity changes.
+  let runtimeIdentity: string | undefined
   const unsubscribe = onDesktopRuntime(state => {
     const identity = `${state.connection}:${state.bootstrap?.runtime?.workspace?.runtimeEpoch || ''}`
-    if (identity === runtimeIdentity) return
+    const previous = runtimeIdentity
     runtimeIdentity = identity
-    if (state.connection === 'ready' && isRuntimeResultPath(source())) void refresh()
+    if (previous !== undefined && identity !== previous && state.connection === 'ready' && isRuntimeResultPath(source())) void refresh()
   })
   onUnmounted(() => { disposed = true; controller?.abort(); clearTimeout(timer); unsubscribe() })
   return { url, error, refresh }

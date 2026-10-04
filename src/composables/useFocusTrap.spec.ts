@@ -1,8 +1,10 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { useFocusTrap } from './useFocusTrap'
 import { useFluidDialog } from './useFluidDialog'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 
 vi.mock('./useFluidSurface', () => ({
   useFluidSurface: () => ({
@@ -75,6 +77,59 @@ function mountNativeDialog(target: HTMLElement = document.body) {
   })
   return { dialog, motion }
 }
+
+it.each(['popover', 'select'])('Escape closes a nested shared %s before its owning custom dialog', async (control) => {
+  const close = vi.fn()
+  const { panel } = await mountTrap('<div id="nested-tools"></div>', close)
+  panel.setAttribute('role', 'dialog')
+  panel.setAttribute('aria-modal', 'true')
+  const target = panel.querySelector<HTMLElement>('#nested-tools')!
+  const nested = control === 'popover' ? mount(StudioPopover, {
+    props: { label: '工具' },
+    slots: { trigger: '<button>打开工具</button>', default: '<button id="tool-action">工具操作</button>' },
+    attachTo: target,
+  }) : mount(StudioSelect, {
+    props: { label: '分类', modelValue: 'one', options: [{ value: 'one', label: '第一项' }] },
+    attachTo: target,
+  })
+  mounted.push(nested)
+  if (control === 'popover') await nested.get('button').trigger('click')
+  else await nested.get('button').trigger('keydown', { key: 'ArrowDown' })
+  await flushPromises()
+  const action = control === 'popover' ? document.getElementById('tool-action')! : document.querySelector<HTMLElement>('[role="option"]')!
+  action.focus()
+  expect(document.activeElement).toBe(action)
+  expect(key('Escape').defaultPrevented).toBe(true)
+  await flushPromises()
+  expect(close).not.toHaveBeenCalled()
+  expect(document.querySelector(control === 'popover' ? '.studio-popover' : '[role="listbox"]')).toBeNull()
+})
+
+it('restores the opener when a custom dialog closes with its select still open', async () => {
+  const opener = document.createElement('button')
+  document.body.append(opener)
+  opener.focus()
+  const open = ref(true)
+  const owner = mount(defineComponent({ setup() {
+    const root = ref<HTMLElement | null>(null)
+    useFocusTrap(root, () => open.value)
+    return () => open.value ? h('section', { ref: root, role: 'dialog', 'aria-modal': 'true' }, [
+      h(StudioSelect, { modelValue: 'one', label: '分类', options: [{ value: 'one', label: '第一项' }] }),
+    ]) : null
+  } }), { attachTo: document.body })
+  mounted.push(owner)
+  await nextTick()
+  await owner.get('.studio-select-trigger').trigger('keydown', { key: 'ArrowDown' })
+  await flushPromises()
+  const option = document.querySelector<HTMLElement>('[role="option"]')!
+  option.focus()
+  expect(document.activeElement).toBe(option)
+  open.value = false
+  await flushPromises()
+  expect(document.activeElement).toBe(opener)
+  expect(document.querySelector('[role="listbox"]')).toBeNull()
+  expect(document.body.classList.contains('overlay-open')).toBe(false)
+})
 
 it('does not close a dialog when Escape belongs to an input method composition', async () => {
   const close = vi.fn()

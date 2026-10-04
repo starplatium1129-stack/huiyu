@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResourceLibraryPanel from '../components/ResourceLibraryPanel.vue'
 import { resourceApi } from '../api/resourceApi'
+import { ApiClientError } from '../api/client'
 import { useResourceLibrary } from './useResourceLibrary'
 import type { ResourceApi } from '../api/resourceApi'
 import type { ResourceStatus, ResourceTask } from '../../types/resources'
@@ -84,12 +85,31 @@ describe('resource library interaction', () => {
     await model.run('import'); old(status()); await pending
     expect(model.status.value?.task?.id).toBe(task.id); expect(model.busy.value).toBe(true); model.stop()
   })
+  it('keeps an explicit start rejection visible across idle polls until a fresh check', async () => {
+    const calls = api(), model = useResourceLibrary(calls, true)
+    const reason = '资源操作未通过检查，请核对本地配置与资源包。'
+    try {
+      await model.refresh()
+      vi.mocked(calls.start).mockRejectedValueOnce(new ApiClientError(reason, { kind: 'http', status: 403, code: 'RESOURCE_FAILED' }))
+      await model.run('import')
+      expect(model.error.value).toBe(reason)
+      expect(model.status.value?.task).toBeNull()
+      await model.refresh()
+      expect(model.error.value).toBe(reason)
+      expect(model.enabled.value).toBe(false)
+      expect(calls.start).toHaveBeenCalledOnce()
+      await model.refresh(true)
+      expect(model.error.value).toBe('')
+      expect(model.enabled.value).toBe(true)
+    } finally { model.stop() }
+  })
   it('reconciles a lost start response without retrying the operation', async () => {
     const calls = api(); const model = useResourceLibrary(calls, true); await model.refresh()
     vi.mocked(calls.start).mockRejectedValue(new Error('response lost'))
     vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task }))
     await model.run('import')
-    expect(calls.start).toHaveBeenCalledOnce(); expect(model.status.value?.task?.id).toBe(task.id); model.stop()
+    expect(calls.start).toHaveBeenCalledOnce(); expect(model.status.value?.task?.id).toBe(task.id)
+    expect(model.error.value).toBe(''); model.stop()
   })
   it('cancels the exact active task and ignores a concurrent old poll', async () => {
     const calls = api(); vi.mocked(calls.status).mockResolvedValue(status({ busy: true, task }))

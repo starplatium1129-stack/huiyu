@@ -37,7 +37,7 @@ const anchorEl = ref<HTMLElement | null>(null)
 const hasDisabledChild = ref(false)
 
 function syncDisabled() {
-  if (!props.anchor || !anchorEl.value) {
+  if (!props.content || !props.anchor || !anchorEl.value) {
     hasDisabledChild.value = false
     return
   }
@@ -150,7 +150,7 @@ watch(() => props.anchor, () => {
   <span
     ref="anchorEl"
     class="studio-tooltip-anchor"
-    :data-anchor="anchor ? '' : undefined"
+    :data-anchor="anchor && content ? '' : undefined"
     :tabindex="anchor && hasDisabledChild ? 0 : undefined"
     :aria-disabled="anchor && hasDisabledChild ? 'true' : undefined"
     @pointermove="onAnchorPointerMove"

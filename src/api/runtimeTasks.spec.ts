@@ -13,7 +13,7 @@ vi.mock('../platform/desktop/runtime.ts', () => ({
 }))
 import { refreshRuntimeTasks, getRuntimeTask, waitForRuntimeTask } from './runtimeTasks'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
-import { taskRecords, runtimeTasks, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
+import { taskRecords, runtimeTasks, runtimeTaskError, unresolvedTaskRequests, pendingTaskRequests } from '../stores/runtimeTaskState'
 
 const task = (id: number, revision = 1): TaskRecord => ({
   taskId: String(id), runtimeEpoch: mocks.epoch, revision, createdAt: id,
@@ -103,6 +103,21 @@ describe('runtime task snapshot merging', () => {
 
 
 describe('runtime task pagination', () => {
+  it('does not replace a newer successful refresh with an older read error', async () => {
+    let fail!: (error: Error) => void
+    mocks.request.mockImplementationOnce(() => new Promise((_, reject) => { fail = reject }))
+    const earlier = refreshRuntimeTasks()
+    respond([task(2, 2)], null, 2)
+    await refreshRuntimeTasks()
+    const current = taskRecords.value
+    expect(runtimeTaskError.value).toBe('')
+    fail(new Error('late poll failure'))
+    await expect(earlier).rejects.toThrow('late poll failure')
+    expect(runtimeTaskError.value).toBe('')
+    expect(taskRecords.value).toBe(current)
+    expect(taskRecords.value.map(item => item.taskId)).toEqual(['2'])
+  })
+
   it('collects all pages atomically and polls only revisions after the complete snapshot', async () => {
     respond([task(3, 3)], 3, 3)
     respond([task(2, 2), task(1, 1)], null, 3)
@@ -123,6 +138,7 @@ describe('runtime task pagination', () => {
     respond([task(3, 3)], 3, 3)
     mocks.request.mockRejectedValueOnce(new Error('connection lost'))
     await expect(refreshRuntimeTasks()).rejects.toThrow('connection lost')
+    expect(runtimeTaskError.value).toBe('connection lost')
     expect(taskRecords.value).toEqual([])
     respond([task(3, 3), task(2, 2)], null, 3)
     await refreshRuntimeTasks()

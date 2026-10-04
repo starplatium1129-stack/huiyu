@@ -152,6 +152,7 @@ export function useFocusTrap(
     if (fallbackRoot) { fallbackRoot.removeAttribute('tabindex'); fallbackRoot = null }
   }
 
+  // A nested Reka scope must release its listeners before restoring the opener.
   watch(() => attached.value && isOpen(), (open, wasOpen) => {
     if (open === wasOpen) return
     if (open) {
@@ -174,7 +175,7 @@ export function useFocusTrap(
     } else {
       release(attached.value)
     }
-  }, { immediate: true })
+  }, { immediate: true, flush: 'post' })
   onActivated(() => { attached.value = true })
   onDeactivated(() => { attached.value = false })
 

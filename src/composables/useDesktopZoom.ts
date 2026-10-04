@@ -8,18 +8,24 @@ let installation = 0
 const bounded = (value: number) => Math.max(.75, Math.min(2, Math.round(value * 100) / 100))
 
 async function flush() {
-  if (saving || !bridge) return
+  const activeBridge = bridge, generation = installation
+  if (saving || !activeBridge || disposed) return
   saving = true
   try {
-    while (!disposed) {
+    while (!disposed && generation === installation) {
       const target = requested
-      const actual = await bridge.setWindowZoom(target)
-      if (disposed) break
+      const actual = await activeBridge.setWindowZoom(target)
+      if (disposed || generation !== installation) break
       zoom.value = bounded(actual); error.value = ''
       if (target === requested) break
     }
-  } catch { requested = zoom.value; error.value = '缩放未保存，请重试。' }
-  finally { saving = false }
+  } catch {
+    if (!disposed && generation === installation) { requested = zoom.value; error.value = '缩放未保存，请重试。' }
+  } finally {
+    saving = false
+    // A replacement installation may have queued its target while this write was pending.
+    if (generation !== installation && available.value) void flush()
+  }
 }
 function setZoom(value: number) {
   if (!available.value || !Number.isFinite(value)) return

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
 
@@ -29,7 +29,16 @@ const taskMedia = useTaskMediaSource(() => props.src)
 const mediaSource = taskMedia.url
 const mediaError = taskMedia.error
 let resumeAt = 0, resumePlaying = false
-watch(mediaSource, (_next, previous) => { if (previous && media.value) { resumeAt = media.value.currentTime || 0; resumePlaying = !media.value.paused } })
+let playRevision = 0
+// Capture a URL renewal before the logical-source watcher clears old playback.
+// A deferred snapshot would restore the previous clip after switching sources.
+watch(mediaSource, (_next, previous) => {
+  playRevision++
+  if (previous && media.value) {
+    resumeAt = media.value.currentTime || 0
+    resumePlaying = !media.value.paused
+  }
+}, { flush: 'sync' })
 const playing = ref(false)
 const muted = ref(false)
 const duration = ref(0)
@@ -50,8 +59,11 @@ function formatTime(seconds: number): string {
 async function togglePlay() {
   const element = media.value
   if (!element) return
+  const revision = ++playRevision
   if (element.paused) {
-    try { await element.play() } catch { failed.value = true }
+    try { await element.play() } catch {
+      if (revision === playRevision && element === media.value) failed.value = true
+    }
   } else {
     element.pause()
   }
@@ -110,7 +122,14 @@ watch(() => props.src, () => {
   failed.value = false
 })
 
+onDeactivated(() => {
+  playRevision++
+  resumePlaying = false
+  playing.value = false
+  media.value?.pause()
+})
 onBeforeUnmount(() => {
+  playRevision++
   document.removeEventListener('fullscreenchange', syncFullscreen)
   // Removing the DOM node alone can leave an in-flight media response or decoder alive.
   const element = media.value

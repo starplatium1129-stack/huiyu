@@ -5,7 +5,8 @@ import { maintenanceApi } from '@/api/maintenanceApi'
 import { setRuntimeFetch, setRuntimeOrigin } from '@/platform/runtimeUrl'
 import { useSceneShowcaseUpload } from './useSceneShowcaseUpload'
 
-vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { saveShowcase: vi.fn() }, maintenanceFailure: () => null }))
+vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { saveShowcase: vi.fn(), resetHomeHero: vi.fn() }, maintenanceFailure: () => null }))
+vi.mock('@/composables/useConfirm', () => ({ confirmAction: vi.fn().mockResolvedValue(true) }))
 vi.mock('@/composables/useHomeHeroes', () => ({ useHomeHeroes: () => ({ heroes: ref({}), reload: vi.fn() }) }))
 const scopes: EffectScope[] = []
 const entry = {
@@ -81,7 +82,9 @@ describe('maintenance showcase sources', () => {
     expect(signal.aborted).toBe(true)
   })
 
-  it('reloads the manifest after an upload switches the current resource paths', async () => {
+  it.each(['current', 'changed', 'disposed'])('keeps decoded uploads with their original scene (%s)', async (selection) => {
+    let completeImage!: () => void
+    vi.mocked(maintenanceApi.saveShowcase).mockClear()
     vi.stubGlobal('FileReader', class {
       result = 'data:image/png;base64,fixture'
       onload?: () => void
@@ -91,7 +94,7 @@ describe('maintenance showcase sources', () => {
       naturalWidth = 832
       naturalHeight = 1216
       onload?: () => void
-      set src(_value: string) { queueMicrotask(() => this.onload?.()) }
+      set src(_value: string) { completeImage = () => this.onload?.() }
     })
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ drawImage: vi.fn() } as unknown as CanvasRenderingContext2D)
     vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue('data:image/jpeg;base64,normalized')
@@ -101,13 +104,59 @@ describe('maintenance showcase sources', () => {
     upload.previewImage({ id: entry.id, title: entry.title, char: entry.char, type: 'popular' })
     vi.mocked(fetch).mockResolvedValue(response([{ ...entry, image: `images/${entry.id}.jpg`, thumb: `thumbs/${entry.id}.jpg` }]))
     const input = { files: [new File(['fixture'], 'sample.png', { type: 'image/png' })], value: 'fixture' }
-    await upload.onShowcasePicked({ target: input } as unknown as Event)
-    expect(maintenanceApi.saveShowcase).toHaveBeenCalledWith({
-      id: entry.id, image: 'data:image/jpeg;base64,normalized', thumbnail: 'data:image/jpeg;base64,normalized',
-    })
-    expect(upload.showcaseUrl.value).toContain(`/scene-showcase/images/${entry.id}.jpg`)
-    expect(upload.thumbUrl(entry.id)).toContain(`/scene-showcase/thumbs/${entry.id}.jpg`)
-    expect(upload.showcaseFeedback.value).toBe('样张已保存')
+    const pending = upload.onShowcasePicked({ target: input } as unknown as Event)
+    await flushPromises()
+    if (selection === 'changed') upload.previewImage({ id: 'pc_other', title: '另一场景', char: 'alice', type: 'popular' })
+    if (selection === 'disposed') scopes[0].stop()
+    const feedback = upload.showcaseFeedback.value
+    completeImage()
+    await pending
+    if (selection === 'disposed') {
+      expect(maintenanceApi.saveShowcase).not.toHaveBeenCalled()
+      expect(fetch).toHaveBeenCalledTimes(1)
+    } else {
+      expect(maintenanceApi.saveShowcase).toHaveBeenCalledExactlyOnceWith({
+        id: entry.id, image: 'data:image/jpeg;base64,normalized', thumbnail: 'data:image/jpeg;base64,normalized',
+      })
+      expect(upload.thumbUrl(entry.id)).toContain(`/scene-showcase/thumbs/${entry.id}.jpg`)
+      if (selection === 'changed') {
+        expect(upload.selectedImageId.value).toBe('pc_other')
+        expect(upload.showcaseFeedback.value).toBe(feedback)
+      } else {
+        expect(upload.showcaseUrl.value).toContain(`/scene-showcase/images/${entry.id}.jpg`)
+        expect(upload.showcaseFeedback.value).toBe('样张已保存')
+      }
+    }
+    expect(upload.uploadBusy.value).toBe(false)
     expect(input.value).toBe('')
   })
+})
+
+it.each(['saved', 'refresh-failed', 'reset-failed', 'current-refresh-failed'])('keeps home hero feedback with its submitted character (%s)', async (outcome) => {
+  const upload = setup()
+  await flushPromises()
+  let settle!: () => void
+  vi.mocked(maintenanceApi.resetHomeHero).mockImplementationOnce(() => new Promise((resolve, reject) => {
+    settle = () => outcome === 'reset-failed' ? reject(new Error('reset failure')) : resolve({ ok: true, character: 'nene', action: 'reset', backup: 'fixture', message: '已恢复内置图' })
+  }))
+  vi.mocked(upload.loadHomeHeroes).mockReset()
+  if (outcome.endsWith('refresh-failed')) vi.mocked(upload.loadHomeHeroes).mockRejectedValueOnce(new Error('refresh failure'))
+  upload.previewHero({ id: 'nene', title: '宁宁', image: '/fixture-nene.webp', updatedAt: '' })
+  const pending = upload.resetHero()
+  await flushPromises()
+  if (outcome !== 'current-refresh-failed') upload.previewHero({ id: 'natsume', title: '夏目', image: '/fixture-natsume.webp', updatedAt: '' })
+  const feedback = upload.showcaseFeedback.value
+  settle()
+  await pending
+  if (outcome === 'current-refresh-failed') {
+    expect(upload.selectedHeroId.value).toBe('nene')
+    expect(upload.showcaseFeedback.value).toContain('已恢复内置图，但预览未能刷新')
+    expect(upload.showcaseError.value).toBe(true)
+  } else {
+    expect(upload.selectedHeroId.value).toBe('natsume')
+    expect(upload.showcaseFeedback.value).toBe(feedback)
+    expect(upload.showcaseError.value).toBe(false)
+  }
+  expect(upload.uploadBusy.value).toBe(false)
+  expect(maintenanceApi.resetHomeHero).toHaveBeenLastCalledWith('nene', { signal: expect.any(AbortSignal) })
 })

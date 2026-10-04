@@ -132,18 +132,25 @@ it('a quick return cancels the outgoing connection and never retains two clones'
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
 })
 
-it('reduced motion skips the connection and a preference change clears an active connection', async () => {
+it.each(['reduced motion', 'hidden document'])('%s skips the connection and cancels an active connection', async mode => {
   const { shelf, motion } = await setup()
-  state.reduced = true
+  const hidden = mode === 'hidden document' ? vi.spyOn(document, 'hidden', 'get') : null
+  const inactive = (value: boolean) => { if (hidden) hidden.mockReturnValue(value); else state.reduced = value }
+  inactive(true)
   shelf.value = false; await flushPromises()
   expect(animations).toHaveLength(0)
+  expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
   expect(motion.preferOriginal.value).toBe(true)
   shelf.value = true; await flushPromises()
-  state.reduced = false
+  inactive(false)
   shelf.value = false; await flushPromises()
   expect(document.querySelector('[data-archive-portrait-flight]')).not.toBeNull()
-  state.reduced = true; window.dispatchEvent(new Event('atelier:motion-preference'))
+  inactive(true)
+  if (hidden) document.dispatchEvent(new Event('visibilitychange'))
+  else window.dispatchEvent(new Event('atelier:motion-preference'))
   expect(document.querySelector('[data-archive-portrait-flight]')).toBeNull()
+  expect(animations.every(call => call.animation.cancel.mock.calls.length === 1)).toBe(true)
+  expect(wrapper!.get('.portrait-image').attributes('style') || '').not.toContain('opacity: 0')
 })
 
 it('keyboard entry stays immediate while opening the same original image', async () => {

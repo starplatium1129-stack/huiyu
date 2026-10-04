@@ -33,8 +33,8 @@ async function request<T>(path: string, method = 'GET', body?: unknown, signal?:
 export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   if (!hasRuntimeTasks()) return
   const read = ++sequence; activeRead = read
+  const expected = epoch()
   try {
-    const expected = epoch()
     const after = readEpoch === expected ? readRevision : 0
     const items: TaskRecord[] = []
     let before: number | null = null, through: number | undefined
@@ -54,7 +54,12 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     mergeTasks(items, expected)
     readEpoch = expected; readRevision = through!
     runtimeTaskError.value = ''
-  } catch (error) { if (!signal?.aborted) runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'; throw error }
+  } catch (error) {
+    if (read === activeRead && expected === epoch() && !signal?.aborted) {
+      runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'
+    }
+    throw error
+  }
 }
 export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
   observation: { signal?: AbortSignal; onSubmitting?: () => void } = {}): Promise<TaskRecord> {

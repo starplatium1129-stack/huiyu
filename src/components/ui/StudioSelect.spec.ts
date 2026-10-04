@@ -1,5 +1,6 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { defineComponent, h, KeepAlive, onMounted, ref } from 'vue'
 import { SelectRoot } from 'reka-ui'
 import StudioSelect from './StudioSelect.vue'
 
@@ -32,6 +33,20 @@ function chooseKey(wrapper: ReturnType<typeof mountSelect>, key: string) {
 }
 
 describe('StudioSelect', () => {
+  it('keeps its options inside the custom modal that owns keyboard focus', async () => {
+    const dialog = document.createElement('section')
+    dialog.setAttribute('role', 'dialog')
+    dialog.setAttribute('aria-modal', 'true')
+    document.body.append(dialog)
+    const wrapper = mount(StudioSelect, { props: { options: flatOptions, modelValue: 'opt1', label: '分类' }, attachTo: dialog })
+    mounted.push(wrapper)
+    await wrapper.get('.studio-select-trigger').trigger('keydown', { key: 'ArrowDown' })
+    await flushPromises()
+    const content = document.querySelector('[role="listbox"]')
+    expect(content).not.toBeNull()
+    expect(dialog.contains(content)).toBe(true)
+  })
+
   it('shows the placeholder only when no option matches the value', async () => {
     const wrapper = mountSelect({ modelValue: '', placeholder: '请选择', label: '测试下拉', id: 'demo-select' })
     expect(wrapper.get('.studio-select-trigger').attributes('aria-label')).toBe('测试下拉')
@@ -104,4 +119,43 @@ describe('StudioSelect', () => {
     await flushPromises()
     expect(document.querySelector('[role="tooltip"]')?.textContent).toContain('生成中不可切换')
   })
+})
+
+it('closes a cached select without returning focus to its hidden page', async () => {
+  const active = ref(true)
+  const Page = defineComponent({ name: 'CachedSelectPage', setup: () => () => h('section', [
+    h(StudioSelect, { modelValue: 'opt2', label: '分类', options: flatOptions }),
+  ]) })
+  const Destination = defineComponent({ setup() {
+    const button = ref<HTMLElement | null>(null)
+    onMounted(() => button.value?.focus())
+    return () => h('button', { ref: button }, '下一页操作')
+  } })
+  const owner = mount(defineComponent({ setup: () => () => h(KeepAlive, { include: ['CachedSelectPage'] }, {
+    default: () => active.value ? h(Page) : h(Destination),
+  }) }), { attachTo: document.body })
+  mounted.push(owner)
+  const trigger = owner.get<HTMLButtonElement>('.studio-select-trigger')
+  await trigger.trigger('keydown', { key: 'ArrowDown' })
+  await flushPromises()
+  expect(document.querySelector('[role="listbox"]')).not.toBeNull()
+  const focus = vi.spyOn(trigger.element, 'focus')
+  active.value = false
+  await flushPromises()
+  expect(document.querySelector('[role="listbox"]')).toBeNull()
+  expect(document.body.hasAttribute('data-scroll-locked')).toBe(false)
+  expect(document.body.style.pointerEvents).not.toBe('none')
+  expect(document.activeElement).toBe(owner.get('button').element)
+  expect(focus).not.toHaveBeenCalled()
+  active.value = true
+  await flushPromises()
+  expect(owner.get('.studio-select-value').text()).toBe('选项二')
+  expect(document.querySelector('[role="listbox"]')).toBeNull()
+  await owner.get('.studio-select-trigger').trigger('keydown', { key: 'ArrowDown' })
+  await flushPromises()
+  focus.mockClear()
+  await owner.get('.studio-select-trigger').trigger('keydown', { key: 'Escape' })
+  await flushPromises()
+  expect(document.querySelector('[role="listbox"]')).toBeNull()
+  expect(document.activeElement).toBe(trigger.element)
 })

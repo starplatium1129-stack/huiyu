@@ -202,9 +202,11 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       : message
   }
 
-  async function refreshSavedHero(message: string) {
-    showcaseFeedback.value = message
+  async function refreshSavedHero(character: HomeHeroCharacter, message: string) {
+    if (!alive) return
+    if (selectedHeroId.value === character) showcaseFeedback.value = message
     try { await loadHomeHeroes() } catch (error) {
+      if (!alive || selectedHeroId.value !== character) return
       showcaseError.value = true
       showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
     }
@@ -220,8 +222,9 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
     heroRequest = new AbortController()
     try {
       const data = await maintenanceApi.resetHomeHero(character, { signal: heroRequest.signal })
-      await refreshSavedHero(data.message || '已恢复内置图')
+      await refreshSavedHero(character, data.message || '已恢复内置图')
     } catch (err) {
+      if (!alive || selectedHeroId.value !== character) return
       showcaseError.value = true
       showcaseFeedback.value = '未能恢复：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally { uploadBusy.value = false; heroRequest = undefined }
@@ -231,6 +234,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
     const input = e.target as HTMLInputElement
     const file = input.files?.[0]
     if (!file || !selectedImageId.value) return
+    const id = selectedImageId.value
     showcaseError.value = false
     if (file.size > 15 * 1024 * 1024) {
       showcaseError.value = true
@@ -242,23 +246,28 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
     showcaseFeedback.value = '正在保存样张…'
     try {
       const image = await readFileAsImage(file)
+      if (!alive) return
       if (image.naturalWidth * image.naturalHeight > 60_000_000) {
         throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
       }
       const normalized = jpegAtWidth(image, 4096, 0.94)
       const thumbnail = jpegAtWidth(image, 560, 0.86)
       const data = await maintenanceApi.saveShowcase({
-        id: selectedImageId.value,
+        id,
         image: normalized,
         thumbnail,
       })
-      showcaseFeedback.value = data.message || '样张已保存'
+      if (!alive) return
+      const message = data.message || '样张已保存'
+      if (selectedImageId.value === id) showcaseFeedback.value = message
       showcaseVersion.value = Date.now()
       try { await loadShowcaseManifest() } catch (error) {
+        if (!alive || selectedImageId.value !== id) return
         showcaseError.value = true
-        showcaseFeedback.value += `，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
+        showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
       }
     } catch (err) {
+      if (!alive || selectedImageId.value !== id) return
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally {
@@ -283,8 +292,9 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
       const normalized = jpegAtWidth(image, 4096, 0.94)
       const data = await maintenanceApi.saveHomeHero(character, normalized, { signal: heroRequest.signal })
-      await refreshSavedHero(data.message || '首页主视觉已保存')
+      await refreshSavedHero(character, data.message || '首页主视觉已保存')
     } catch (err) {
+      if (!alive || selectedHeroId.value !== character) return
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally { uploadBusy.value = false; heroRequest = undefined; input.value = '' }

@@ -115,7 +115,7 @@ export function useCharacterPortraitTransition(root: Ref<HTMLElement | null>, sh
   watch(showShelf, async shelf => {
     const version = ++revision, id = characterId()
     const ready = currentFlight() || portrait(shelf ? originalImage() : shelfImage())
-    const source = prefersReducedMotion() || keyboard ? null : ready
+    const source = document.hidden || prefersReducedMotion() || keyboard ? null : ready
     clear(); pending = source
     if (!shelf) preferOriginal.value = !!ready
     // Navigation restores scroll/focus in its post-render watcher. Measure

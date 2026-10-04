@@ -12,11 +12,21 @@ function mountTooltip(props: Record<string, unknown> = {}) {
 
 describe('StudioTooltip', () => {
 
-  it('内容为空时退化为只渲染子元素，不挂任何提示语义', () => {
-    const wrapper = mountTooltip({ content: '' })
+  it('内容为空时退化为只渲染子元素，不挂任何提示语义', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '', anchor: true },
+      slots: { default: '<button type="button" disabled>步数</button>' },
+      attachTo: document.body,
+    })
+    await flushPromises()
     const button = wrapper.find('button')
     expect(button.attributes('aria-describedby')).toBeUndefined()
     expect(document.querySelector('.studio-tooltip')).toBeNull()
+    expect(wrapper.get('.studio-tooltip-anchor').attributes('tabindex')).toBeUndefined()
+    await wrapper.setProps({ content: '生成中不可调整步数' })
+    expect(wrapper.get('.studio-tooltip-anchor').attributes('tabindex')).toBe('0')
+    await wrapper.setProps({ content: '' })
+    expect(wrapper.get('.studio-tooltip-anchor').attributes('tabindex')).toBeUndefined()
     wrapper.unmount()
   })
 

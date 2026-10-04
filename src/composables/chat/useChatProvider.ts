@@ -54,6 +54,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   let settingsRequest = 0
   let settingsWrites = 0
   let disposed = false
+  const readController = new AbortController()
   watch(() => [apiVendor.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiSettingsOpen.value], () => { settingsRevision++ }, { flush: 'sync' })
   watch(() => storage.state.settings.apiKey, (value, previous) => {
     if (!settingsWrites && apiKey.value === previous && apiBaseUrl.value === storage.state.settings.apiBaseUrl
@@ -69,10 +70,11 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   /** 拉取站主托管配置（接口不回传密钥，只告知是否可用） */
   async function refreshHostConfig() {
+    if (disposed) return
     const revision = ++hostRevision
     try {
-      const data = await chatApi.getHostConfig()
-      if (revision !== hostRevision) return
+      const data = await chatApi.getHostConfig({ signal: readController.signal })
+      if (disposed || revision !== hostRevision) return
       hostApiConfigured.value = data.configured
       hostApiModel.value = data.model || ''
       hostApiBaseUrl.value = data.baseUrl || ''
@@ -144,8 +146,10 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   async function refreshChatStatus() {
+    if (disposed) return
     try {
-      const data = parseChatStatus(await chatApi.getStatus())
+      const data = parseChatStatus(await chatApi.getStatus({ signal: readController.signal }))
+      if (disposed) return
       ollamaOnline.value = data.online && Boolean(data.models.length)
       models.value = data.models
       if (!isBusy.value && chatProvider.value === 'local') {
@@ -163,6 +167,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
         if (chatProvider.value === 'local') setChatStatus('Ollama 未启动')
       }
     } catch {
+      if (disposed) return
       ollamaOnline.value = false
       models.value = []
       if (!isBusy.value && chatProvider.value === 'local') setChatStatus('Ollama 未启动')
@@ -243,7 +248,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
   window.addEventListener('storage', syncApiSettingsFromStorage)
   if (getCurrentScope()) {
-    onScopeDispose(() => { disposed = true; window.removeEventListener('storage', syncApiSettingsFromStorage) })
+    onScopeDispose(() => { disposed = true; readController.abort(); window.removeEventListener('storage', syncApiSettingsFromStorage) })
   }
 
   return {

@@ -3,9 +3,16 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { defineComponent, ref } from 'vue'
 import { useTaskMediaSource } from './useTaskMediaSource'
 
-const mocks = vi.hoisted(() => ({ get: vi.fn(), fetch: vi.fn(), unsubscribe: vi.fn() }))
+const mocks = vi.hoisted(() => ({ get: vi.fn(), fetch: vi.fn(), unsubscribe: vi.fn(), subscribe: vi.fn() }))
 vi.mock('@/api/runtimeTasks', () => ({ getRuntimeTask: mocks.get, isRuntimeResultPath: (path: string) => path.startsWith('/api/runtime/') }))
-vi.mock('@/platform/desktop/runtime', () => ({ desktopRuntimeFetch: mocks.fetch, onDesktopRuntime: () => mocks.unsubscribe }))
+vi.mock('@/platform/desktop/runtime', () => ({
+  desktopRuntimeFetch: mocks.fetch,
+  onDesktopRuntime: (listener: (state: { connection: string; bootstrap: null }) => void) => {
+    mocks.subscribe(listener)
+    listener({ connection: 'ready', bootstrap: null })
+    return mocks.unsubscribe
+  },
+}))
 vi.mock('@/platform/runtimeUrl', () => ({ resolveRuntimeUrl: (url: string) => url }))
 
 it('a superseded task lookup cannot borrow the new request signal or request a stale capability', async () => {
@@ -16,6 +23,7 @@ it('a superseded task lookup cannot borrow the new request signal or request a s
   const path = ref('/api/runtime/tasks/old/results/0')
   let media!: ReturnType<typeof useTaskMediaSource>
   const wrapper = mount(defineComponent({ setup() { media = useTaskMediaSource(() => path.value); return () => null } }))
+  expect(mocks.get).toHaveBeenCalledOnce()
   const oldSignal = mocks.get.mock.calls[0][1] as AbortSignal
   path.value = '/api/runtime/tasks/new/results/0'
   await flushPromises()
@@ -26,7 +34,18 @@ it('a superseded task lookup cannot borrow the new request signal or request a s
   await flushPromises()
   expect(mocks.fetch).toHaveBeenCalledTimes(1)
   expect(media.url.value).toBe('/media/new')
+  const runtimeChanged = mocks.subscribe.mock.calls[0][0]
+  runtimeChanged({ connection: 'ready', bootstrap: null })
+  await flushPromises()
+  expect(mocks.get).toHaveBeenCalledTimes(2)
+  runtimeChanged({ connection: 'starting', bootstrap: null })
+  runtimeChanged({ connection: 'ready', bootstrap: null })
+  await flushPromises()
+  expect(mocks.get).toHaveBeenCalledTimes(3)
+  expect(mocks.fetch).toHaveBeenCalledTimes(2)
+  const renewedSignal = mocks.get.mock.calls[2][1] as AbortSignal
   wrapper.unmount()
   expect(newSignal.aborted).toBe(true)
+  expect(renewedSignal.aborted).toBe(true)
   expect(mocks.unsubscribe).toHaveBeenCalledOnce()
 })

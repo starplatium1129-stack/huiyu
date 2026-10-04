@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useAttrs } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, ref, useAttrs } from 'vue'
 import {
   SelectRoot,
   SelectTrigger,
@@ -87,7 +87,23 @@ function applyKey(key: string) {
 }
 
 const attrs = useAttrs()
+const open = ref(false)
 const pointerOpened = ref(false)
+let viewActive = true
+onActivated(() => { viewActive = true })
+onDeactivated(() => {
+  viewActive = false
+  open.value = false
+})
+// Closing a cached page must release the portal without focusing its hidden trigger.
+function onCloseAutoFocus(event: Event) {
+  if (!viewActive) event.preventDefault()
+}
+function onEscape(event: KeyboardEvent) {
+  if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  event.preventDefault()
+  open.value = false
+}
 // class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
 // aria-*）连同 id 一起加到可见 trigger。样式一律走 class —— 仓库禁止内联 style
 // （test-style-debt 的内联样式预算只允许承载自定义属性），所以 style 不透传。
@@ -104,21 +120,22 @@ const triggerAttrs = computed(() => {
  * 原生 <dialog> 用 showModal() 打开后进入顶层模态，body 的其余部分对指针与读屏都是
  * inert：默认 portal 到 body 的弹层会落在 dialog 之外，看着在屏幕上却点不动
  * （ModelStudio 这类把下拉放在 <dialog> 里的宿主就是这么坏的）。
- * 所以存在祖先 dialog 时，弹层跟着它渲染；否则保持 portal 到 body。
+ * 自定义模态的 useFocusTrap 同样只接受容器内的焦点。弹层留在所属模态内；
+ * 自定义面板可能在入场时带 transform/overflow，碰撞边界也应使用该面板。
  * DESIGN.md 的「portalled content inside legacy trapped dialogs needs an explicit
  * integration check」说的就是这件事。
  */
 const wrapperEl = ref<HTMLElement | null>(null)
 const portalTarget = ref<HTMLElement | undefined>(undefined)
+const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
 onMounted(() => {
-  const dialog = wrapperEl.value?.closest('dialog')
-  if (dialog) portalTarget.value = dialog
+  portalTarget.value = wrapperEl.value?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
 })
 </script>
 
 <template>
   <div ref="wrapperEl" class="studio-select-wrapper" :class="wrapperClass" :data-size="size">
-    <SelectRoot :model-value="currentKey" :disabled="disabled" @update:model-value="applyKey">
+    <SelectRoot v-model:open="open" :model-value="currentKey" :disabled="disabled" @update:model-value="applyKey">
       <StudioTooltip :content="effectiveHint" :anchor="disabled">
         <SelectTrigger
           v-bind="triggerAttrs"
@@ -130,6 +147,7 @@ onMounted(() => {
           :data-pointer-open="pointerOpened"
           @pointerdown="pointerOpened = true"
           @keydown="pointerOpened = false"
+          @keydown.esc="onEscape"
         >
           <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
           <ArchiveIcon name="chevron-down" class="studio-select-icon" aria-hidden="true" />
@@ -137,7 +155,7 @@ onMounted(() => {
       </StudioTooltip>
 
       <SelectPortal :to="portalTarget">
-        <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false">
+        <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @close-auto-focus="onCloseAutoFocus">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">

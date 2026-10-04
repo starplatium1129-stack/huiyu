@@ -1,23 +1,40 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { computed, ref } from 'vue'
+import { computed, onActivated, onDeactivated, ref } from 'vue'
 
 withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end' }>(), { align:'end', contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
 const trigger = ref<{ $el: HTMLElement } | null>(null)
-// A showModal() dialog makes body portals inert. Keep nested controls in its top layer.
-const portalTarget = computed(() => trigger.value?.$el?.closest('dialog') ?? undefined)
+// Native top layers and custom focus traps both require content inside their modal.
+const portalTarget = computed(() => trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined)
+const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
 const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
+let viewActive = true
+onActivated(() => { viewActive = true })
+onDeactivated(() => {
+  viewActive = false
+  open.value = false
+})
+// Closing a cached page must release the portal without focusing its hidden trigger.
+function onCloseAutoFocus(event: Event) {
+  if (!viewActive) event.preventDefault()
+  emit('closeAutoFocus', event)
+}
+function onEscape(event: KeyboardEvent) {
+  if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  event.preventDefault()
+  open.value = false
+}
 </script>
 
 <template>
   <PopoverRoot v-model:open="open">
-    <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false"><slot name="trigger" /></PopoverTrigger>
+    <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false" @keydown.esc="onEscape"><slot name="trigger" /></PopoverTrigger>
     <PopoverPortal :to="portalTarget">
-      <PopoverContent :align="align" :side-offset="10" :collision-padding="16"
-        hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="emit('closeAutoFocus', $event)">
-        <div :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass"><slot /></div>
+      <PopoverContent :align="align" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
+        hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
+        <div :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc="onEscape"><slot /></div>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>

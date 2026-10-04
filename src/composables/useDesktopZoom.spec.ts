@@ -36,6 +36,31 @@ describe('native zoom input', () => {
     expect(setWindowZoom.mock.calls.map(call => call[0])).toEqual([1.1, 1.3])
     expect(useDesktopZoom().zoom.value).toBe(1.3)
   })
+  it.each(['successful', 'failed'])('a %s response from a disposed installation cannot overwrite the current zoom or drop its queued input', async outcome => {
+    desktop()
+    let resolveOld!: (value: number) => void, rejectOld!: (reason: Error) => void
+    let resolveCurrent: ((value: number) => void) | undefined
+    const setWindowZoom = vi.mocked(desktopWindowZoom.setWindowZoom)
+      .mockImplementationOnce(() => new Promise((resolve, reject) => { resolveOld = resolve; rejectOld = reject }))
+      .mockImplementation(() => new Promise(resolve => { resolveCurrent = resolve }))
+    stop = installDesktopZoom(); await tick()
+    useDesktopZoom().setZoom(1.2)
+    stop()
+    vi.mocked(desktopWindowZoom.getWindowZoom).mockResolvedValue(1.5)
+    stop = installDesktopZoom(); await tick()
+    useDesktopZoom().setZoom(1.7)
+    try {
+      expect(setWindowZoom).toHaveBeenCalledOnce()
+      if (outcome === 'successful') resolveOld(1.2)
+      else rejectOld(new Error('disposed zoom failed'))
+      await tick()
+      expect(setWindowZoom.mock.calls.map(call => call[0])).toEqual([1.2, 1.7])
+      expect(useDesktopZoom().zoom.value).toBe(1.5)
+      expect(useDesktopZoom().error.value).toBe('')
+      resolveCurrent!(1.7); await tick()
+      expect(useDesktopZoom().zoom.value).toBe(1.7)
+    } finally { resolveCurrent?.(1.7); await tick() }
+  })
   it('leaves normal browser shortcuts untouched without the native capability', () => {
     stop = installDesktopZoom()
     const event = new KeyboardEvent('keydown', { key: '+', ctrlKey: true, cancelable: true })
