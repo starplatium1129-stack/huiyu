@@ -28,10 +28,6 @@
 .appearance-shortcuts dt { @apply tw:text-primary; }
 .appearance-shortcuts dd { @apply tw:m-0 tw:text-secondary tw:text-label; }
 .appearance-dialog :focus-visible, .appearance-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.appearance-dialog :is(button,a[href],summary):focus-visible:active, .appearance-entry:focus-visible:active { transform:none; transition:none; }
-:root:is([data-motion="reduce"],[data-motion="reduced"]) .appearance-dialog :is(button,a[href],summary):active { transform:none; transition:none; }
-:root:is([data-motion="reduce"],[data-motion="reduced"]) .appearance-dialog .toggle-knob { transition:none; }
-@media (prefers-reduced-motion:reduce) { .appearance-dialog .toggle-knob { transition:none; } }
 html[data-reduced-glass="true"] .appearance-dialog::backdrop { backdrop-filter: none; }
 @media (forced-colors: active) {
   .appearance-dialog, .appearance-segments, .appearance-check, .appearance-close { color: CanvasText; background: Canvas; border: 1px solid CanvasText; box-shadow: none; }

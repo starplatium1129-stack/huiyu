@@ -20,16 +20,11 @@
   .nav-links :is(> a, .studio-tooltip-anchor > a, a) { @apply tw:rounded-md; }
 }
 .btn-primary { box-shadow: var(--shadow-glass-sm); }
-.btn:active:not(:disabled):not([aria-disabled="true"]) { transition-duration: 80ms; }
 .nav-more-menu {
   @apply tw:p-s-3 tw:rounded-xl;
   box-shadow: var(--shadow-glass-elevated);
 }
 .nav-more-group-label { font: 600 var(--fs-label-sm) var(--font-sans); letter-spacing: normal; }
-.nav-links :is(> a, .studio-tooltip-anchor > a, a):active, .nav-more-trigger:active { transform: scale(.97); }
-@media (prefers-reduced-motion: reduce) {
-  .nav-links :is(> a, .studio-tooltip-anchor > a, a):active, .nav-more-trigger:active { transform: none; }
-}
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .nav, .nav-links, .nav-more-menu { background: var(--bg-surface); backdrop-filter: none; }
 }

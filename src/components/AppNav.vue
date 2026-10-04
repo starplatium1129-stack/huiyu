@@ -289,7 +289,6 @@ onUnmounted(() => {
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
-.nav-links > a { transition:transform var(--motion-press) var(--ease-out); }
 .nav-more-chevron { transition:none; }
 .nav-links > a { white-space:nowrap; }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
@@ -314,7 +313,7 @@ onUnmounted(() => {
   height: 40px; min-height: 40px;
   border: 1px solid transparent;
   background: transparent;
-  transition: transform var(--motion-hover) var(--ease-out);
+  transition: transform var(--motion-press) var(--ease-out);
 }
 .nav-utilities :deep(.nav-search),
 .nav-utilities :deep(.app-theme-toggle),
@@ -331,8 +330,7 @@ onUnmounted(() => {
   border-color: var(--border-soft);
   @apply tw:text-accent;
 }
-.nav-utilities :deep(button:active) { transform: scale(.96); }
-.nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; }
+.nav-utilities :deep(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none; transition: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 
 @media (max-width: 1000px) {

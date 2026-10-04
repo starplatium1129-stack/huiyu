@@ -411,9 +411,10 @@ body > *:has(+ .footer),
 .nav-links { @apply tw:relative tw:isolate tw:flex tw:gap-s-1 tw:items-center; }
 .nav-links a {
   @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-secondary tw:text-body-sm tw:font-semibold;
-  transition: transform var(--motion-hover) var(--ease-out);
+  transition: transform var(--motion-press) var(--ease-out);
   padding: 10px 12px; @apply tw:rounded-md;
 }
+.nav-links a:focus-visible { transition: none; }
 .nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: var(--accent-soft); }
 .nav-links a.active { @apply tw:text-accent; background: transparent; }
 .nav-links :is(> a, .studio-tooltip-anchor > a, a)::after {
@@ -425,7 +426,7 @@ body > *:has(+ .footer),
 .nav-more { @apply tw:relative; }
 .nav-more-trigger {
   @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer tw:min-h-[36px]; border:0; background:transparent; font-family:inherit;
-  @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-pill tw:text-body-sm tw:font-semibold; transition:color var(--motion-hover),background var(--motion-hover);
+  @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-pill tw:text-body-sm tw:font-semibold; transition:color var(--motion-hover),background var(--motion-hover),transform var(--motion-press) var(--ease-out);
 }
 .nav-more-trigger:disabled { @apply tw:text-disabled; cursor:wait; }
 .nav-more-trigger:hover, .nav-more-trigger[aria-expanded="true"], .nav-more[data-active="true"] .nav-more-trigger {
@@ -859,8 +860,8 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
    填充型变体在此钉回各自的墨色；ghost 的 accent 悬停字是有意设计，不在其列。 */
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
-/* 统一按下反馈:抵消 hover 的上移,避免"按下去反而更高" */
-.btn:active:not(:disabled):not([aria-disabled="true"]) { transform: translateY(0) scale(.97); box-shadow: none; }
+/* 按压位移由 interaction-motion 的控件层负责；按钮保留阴影反馈。 */
+.btn:active:not(:disabled):not([aria-disabled="true"]) { box-shadow: none; }
 /* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接
    2026-08-28 审计修复：不再用 opacity 压字。alpha 合成后实测文字对比度只剩
    3.45:1（深色 --bg-elevated 上），而按钮文案是「生成」「发送」这类需要读懂
@@ -1715,10 +1716,8 @@ kbd,
   .pop-char-btn,
   .pop-cat,
   .director-mode-option,
-  .nav-more-trigger,
   .prompt-tag,
-  .sc-tag,
-  .nav-links > a
+  .sc-tag
 ):active:not(:disabled):not([aria-disabled="true"]) {
   transform: scale(0.96);
   transition: transform var(--motion-press) var(--ease-out);
