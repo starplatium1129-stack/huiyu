@@ -201,15 +201,21 @@ it('discards thumbnail reads and original-derived thumbnail backfills from an ea
   expect(mocks.setThumbnail).not.toHaveBeenCalled()
 })
 
-it('keeps only 40 gallery originals while active and releases the remaining URLs on exit', async () => {
+it('keeps only 40 gallery originals while active and retains only return previews on exit', async () => {
   mocks.snapshot.mockImplementation(async () => ({ history: Array.from({ length: 45 }, (_, index) => record(index + 1)), projects: [] }))
   const env = await setup()
   await env.intersect()
   expect(Object.keys(env.gallery.cardUrls)).toHaveLength(40)
   expect(URL.revokeObjectURL).toHaveBeenCalledTimes(5)
+  const observer = Observer.instances.find(value => value.options.rootMargin === '600px 0px')!
+  observer.callback([...observer.elements].slice(5).map(target => ({ target, isIntersecting: false }) as IntersectionObserverEntry), observer as unknown as IntersectionObserver)
   await env.hide()
   expect(URL.revokeObjectURL).toHaveBeenCalledTimes(45)
   expect(env.gallery.cardUrls).toEqual({})
+  expect(Object.keys(env.gallery.thumbUrls)).toHaveLength(5)
+  await env.show()
+  expect(Object.keys(env.gallery.thumbUrls)).toHaveLength(45)
+  expect(mocks.getThumbnail).toHaveBeenCalledTimes(85)
 })
 
 it('keeps gallery previews usable when optional thumbnail persistence fails', async () => {

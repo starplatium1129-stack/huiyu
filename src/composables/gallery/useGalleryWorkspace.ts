@@ -333,6 +333,7 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 可见性驱动 HD 补图 ---------- */
     const observedCards = new Map<Element, ArtworkRecord>();
+    const returnThumbIds = new Set<string>();
     let cardObserver: IntersectionObserver | null = null;
     let wallScanPending = false;
     function scheduleWallScan() {
@@ -348,6 +349,7 @@ export function useGalleryWorkspace() {
         for (const el of observedCards.keys()) {
             if (elements.has(el as HTMLElement)) continue;
             cardObserver?.unobserve(el);
+            returnThumbIds.delete(String(observedCards.get(el)!.id));
             observedCards.delete(el);
         }
         if (!elements.size) return;
@@ -358,8 +360,8 @@ export function useGalleryWorkspace() {
                     if (!item) continue;
                     // Pagination retains old DOM cards. Leaving the prefetch margin
                     // must free queued/in-flight reads for the new viewport too.
-                    if (entry.isIntersecting) requestCardHydration(item);
-                    else cancelCardHydration(item.id);
+                    if (entry.isIntersecting) { returnThumbIds.add(String(item.id)); requestCardHydration(item); }
+                    else { returnThumbIds.delete(String(item.id)); cancelCardHydration(item.id); }
                 }
             }, { rootMargin: '600px 0px' });
         }
@@ -455,22 +457,24 @@ export function useGalleryWorkspace() {
         void hydrateThumbs();
         scheduleWallScan();
     });
-    // KeepAlive preserves filters, pagination and small thumbnails. Leaving the
-    // gallery releases original images; the next activation hydrates visible cards
-    // and refreshes metadata so newly saved works appear without losing state.
+    // KeepAlive preserves filters, pagination and the return viewport's previews.
+    // A long browse must not keep every thumbnail/decoded image while inactive;
+    // activation refills missing previews without blanking the restored viewport.
     let activatedOnce = false;
-    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); scheduleWallScan(); void nextTick(() => { if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
+    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); void nextTick(() => { if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
         viewActive = false; cleanupFilterSync(); releaseImages();
+        const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
+        for (const id of Object.keys(thumbUrls)) if (!keep.has(id)) delete thumbUrls[id];
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
-        cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear();
+        cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); returnThumbIds.clear();
     });
     onUnmounted(() => {
         unmounted = true;
         cleanupFilterSync();
         cardObserver?.disconnect();
         cardObserver = null;
-        observedCards.clear();
+        observedCards.clear(); returnThumbIds.clear();
         moreObserver?.disconnect();
         moreObserver = null; narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
