@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/sensual_crimson_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 137,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "sensual_crimson_lace_lingerie",
+      "name": "绯影蕾丝女王内衣",
+      "prose": "a black and crimson lace lingerie set: a strappy lace bra digging into her full breasts, a matching garter belt and black lace thighhighs sheathing her long powerful legs, and thin crimson straps crossing her toned stomach",
+      "tokens": [
+        "black_lingerie",
+        "lace_bra",
+        "garter_straps",
+        "black_thighhighs",
+        "tight_straps",
+        "cleavage",
+        "underboob",
+        "sensual"
+      ]
+    }
+  }
+}

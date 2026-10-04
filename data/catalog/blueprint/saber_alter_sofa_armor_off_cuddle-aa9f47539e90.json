@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_sofa_armor_off_cuddle",
+  "revision": 1,
+  "sortOrder": 224,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_sofa_armor_off_cuddle",
+    "title": "黑呆 · 卸甲依偎的沉静温存",
+    "category": "温柔陪伴",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 卸甲依偎的沉静温存】深夜寂静无声的客厅里，黑呆将笨重的黑色战甲全部卸在墙角，仅穿着一件纯黑无光的哥特抹胸短裙。她有些疲惫地靠在沙发上，随后顺从地将头轻轻靠在你的胸膛上，长发散开垂在肩头。没有了暴君的威压与黑泥的侵蚀，她闭上眼眸安静地聆听着你的心跳声，呼吸轻微而平稳——「只有在没有铠甲的时候，我才不是什么冷酷的暴君……不要松手，就这样抱紧我。」",
+    "location": "客厅宽大柔软的深色皮质转角沙发上",
+    "action": "卸下铠甲身着抹胸黑裙靠在视角胸膛上闭目小憩，双手自然搭在腹前",
+    "timeOfDay": "深夜",
+    "lighting": "壁挂式暖光夜灯散发的静谧微黄色",
+    "camera": "three-quarter side medium shot, two clothed seated figures and supporting sofa visible",
+    "mood": "卸下防备",
+    "sceneTags": [
+      "living_room",
+      "sofa",
+      "two_clothed_figures",
+      "head_on_companion_chest",
+      "black_gothic_dress",
+      "loose_hair",
+      "closed_eyes",
+      "hands_on_lap",
+      "warm_wall_lamp",
+      "side_view"
+    ],
+    "promptProse": "On the dark living-room sofa, Saber Alter rests her head against the shirt-covered upper chest of the companion seated beside her. Both are fully clothed in a quiet, nonsexual moment of comfort. Her opaque black velvet gothic dress stays securely in place, and her loose platinum-blonde hair falls across her shoulder. Her hands rest together over her lap; the companion’s plain grey sleeve lies behind her shoulders. The discarded armor is stacked at the far wall. Warm wall-lamp light and a side view make the actual head-to-companion contact clear. No lettering.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "two_clothed_figures",
+      "head_on_companion_chest",
+      "black_gothic_dress",
+      "loose_hair",
+      "closed_eyes",
+      "hands_on_lap",
+      "warm_wall_lamp",
+      "side_view",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "worn armor",
+      "blue dress",
+      "hair bun",
+      "cleavage"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_gothic_lolita_dress",
+    "coverageTags": [
+      "healing",
+      "peaceful",
+      "cuddle"
+    ],
+    "compositionIntent": "group"
+  }
+}

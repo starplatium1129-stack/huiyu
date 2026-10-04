@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/festive_shrine_kimono",
+  "revision": 1,
+  "sortOrder": 824,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "festive_shrine_kimono",
+      "name": "新春参拜雅致和服",
+      "prose": "a traditional high-class silk furisode kimono in pale wisteria purple patterned with white cranes and cherry blossoms, cinched with a golden obi sash, and her long black hair styled in an elegant chignon with a floral kanzashi",
+      "tokens": [
+        "furisode",
+        "kimono",
+        "purple_kimono",
+        "floral_print",
+        "obi",
+        "japanese_clothes",
+        "chignon",
+        "kanzashi",
+        "geta"
+      ]
+    }
+  }
+}

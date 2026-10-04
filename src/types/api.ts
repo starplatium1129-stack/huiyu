@@ -241,84 +241,10 @@ export interface CurationData {
   [key: string]: unknown
 }
 
-/** 与维护版本一同读取或保存的编辑快照。 */
-export interface SceneMaintenanceSnapshot {
-  scenes: SceneDraft[]
-  tags: TagRecord[]
-  curation: CurationData
-  blueprints: import('./sceneBlueprint').SceneBlueprint[]
-}
-
-export interface SceneChangeSet {
-  version: 1
-  scenes: { upsert: SceneDraft[]; remove: string[] }
-  blueprints?: { upsert: import('./sceneBlueprint').SceneBlueprint[]; remove: string[] }
-  tags?: TagRecord[]
-  curation?: CurationData
-}
-
-export interface SceneChangesPayload {
-  baseVersion: number
-  changeSet: SceneChangeSet
-}
-
-export interface SceneChangeImpact {
-  added: string[]
-  updated: string[]
-  removed: string[]
-}
-
-/** POST /api/maintenance/scenes/preview: read-only structural impact. */
-export interface SceneChangesPreview extends SceneChangeImpact {
-  ok: true
-  baseVersion: number
-  version: number
-  blueprints: SceneChangeImpact
-  related: Array<{ kind: string; id: string; reason: string }>
-  checks: string[]
-  unknown: string[]
-}
-
-/** POST /api/maintenance/scenes/changes (also returned by legacy/full import). */
-export interface SceneSaveResult {
-  ok: true
-  count: number
-  tagCount?: number
-  blueprintCount?: number
-  backup: string
-  /** 保存后服务端内容版本；作为下一次保存的读取基线。 */
-  version: number
-  snapshot: SceneMaintenanceSnapshot
-  added?: string[]
-  updated?: string[]
-  removed?: string[]
-  message?: string
-}
-
-/** 旧快照冲突（409）的可解释差异：服务器多出的 ID / 同 ID 内容差异 / 本次新增。 */
-export interface SceneConflictSummary {
-  baseVersion?: number
-  currentVersion?: number | null
-  serverOnlyIds?: string[]
-  clientNewIds?: string[]
-  changedIds?: string[]
-}
-
-/** GET /api/maintenance/scenes-state：快照及维护版本；ID 是未预留的下界候选，null 表示容量用尽。 */
-export interface ScenesStateResult {
-  ok: true
-  version: number
-  nextSceneId: string | null
-  snapshot: SceneMaintenanceSnapshot
-  sceneCount: number
-  retiredCount: number
-}
-
 export interface MaintenanceFailure extends ApiFailure {
   rolledBack?: boolean
   dataIntegrity?: 'restored' | 'INCONSISTENT'
   recovery?: string
-  conflict?: SceneConflictSummary
 }
 
 /** POST /api/maintenance/run */

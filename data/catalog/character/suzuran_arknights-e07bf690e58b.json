@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "suzuran_arknights",
+  "revision": 1,
+  "sortOrder": 35,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "suzuran_arknights",
+    "profile": {
+      "id": "suzuran_arknights",
+      "name": "铃兰",
+      "alias": [
+        "Suzuran",
+        "铃兰",
+        "丽萨",
+        "Lisa",
+        "小狐狸"
+      ],
+      "type": "popular",
+      "icon": "🦊",
+      "visual_dna": {
+        "hair": "浅淡温暖的米金色/浅金色长发（light golden blonde hair），发丝柔顺细腻，双鬓垂落着细长微卷的发绺与精致小发辫，额前有轻薄齐眉的空气刘海，发顶两侧有着天然的蓬松发弧，发尾呈自然波浪微卷垂至腰间。",
+        "hair_color": "浅金色 / 米金色（blonde / pale gold）",
+        "eyes": "清澈透亮的浅天蓝色/冰蓝色大眼睛（light blue / cyan eyes），眼眸纯真温润、神采明亮，带有柔和的高光与大眼睛萝莉神韵。",
+        "hairstyle": "过腰微卷浅金长发（long wavy blonde hair），头戴铃兰花朵饰品与白色发饰，两侧垂有小细辫，长发自然散落于身后。",
+        "uniform": "融合日式传统和风与现代剪裁的改良白色羽织短和服（white kimono-style jacket / haori），领缘与前襟带有墨绿/藏青色滚边与和风绳结；内搭深色打底衫与高腰百褶短裙（pleated skirt）；腰间束有典雅的腰封与铃兰花挂穗；配白色过膝长袜与深棕色系带短靴。整体风格典雅纯洁。",
+        "expression": "温柔体贴、乖巧懂事、天真纯洁又带着几分羞涩与坚毅；嘴角常含治愈人心的温暖微笑（gentle healing smile），神情真诚而富有礼貌。",
+        "style": "日式奇幻、和风改良萌系、纯真圣洁、治愈系田园（anime, fantasy, holy miko fusion, cute, healing）",
+        "signature": "身后生有九条极其蓬松庞大的金白色狐狸尾巴（9 fluffy fox tails / kitsune tails）、头顶直立的一对毛茸茸金黄色狐狸耳朵（fox ears / animal ears）、手持顶端饰有盛开铃兰花簇与发光金铃的金色法杖（golden lily of the valley staff）、精致纯洁的萝莉身形（petite / loli）。"
+      },
+      "personality": [
+        "懂事乖巧",
+        "温柔善良",
+        "坚强隐忍",
+        "纯真有礼",
+        "体贴他人",
+        "富有责任感",
+        "偶尔害羞"
+      ],
+      "likes": [
+        "芝士巧克力（午睡后必喝）",
+        "亲手制作并与大家分享小糕点/小蛋糕",
+        "照料花草与铃兰盆栽",
+        "晨读诗歌选集",
+        "给他人祈福与提供帮助",
+        "和同龄伙伴待在一起（如阿米娅、泡普卡、巫恋）"
+      ],
+      "identity": {
+        "role": "罗德岛干员 / 叙拉古沃尔珀家族千金与东国神职神民后裔",
+        "age": "未知（外表与心智表现约为9-12岁幼女阶段）",
+        "occupation": "罗德岛辅助干员（凝滞师） / 见习干员",
+        "faction": "罗德岛（Rhodes Island） / 出生地：东国（Higashi） / 家族势力：叙拉古（Siracusa）"
+      },
+      "tags": [
+        "浅金色 / 米金色（blonde / pale gold）",
+        "清澈透亮的浅天蓝色/冰蓝色大眼睛（light blue / cyan eyes），眼眸纯真温润、神采明亮，带有柔和的高光与大眼睛萝莉神韵。"
+      ],
+      "bg_story": "本名丽萨（Lisa），父亲是东国小有名气的神职人员，母亲是叙拉古某黑手党核心家族的得力成员。铃兰继承了父亲的神民血统生来拥有九尾，一度被视作东国神社继承人，但父母为了让她拥有更自由广阔的未来，秘密将她带至叙拉古生活。然而好景不长，母亲所在家族卷入城邦内乱，年幼的丽萨被暗中用藏有源石结晶的玩偶刺伤左臂而感染矿石病。为了保护女儿，父母将其托付给罗德岛接受医疗与引导，而父母则信守承诺在远方为守护女儿的未来继续奋斗。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "suzuran (arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "fox_ears",
+        "fox_tail",
+        "nine_tails",
+        "white_clothes",
+        "kimono",
+        "pleated_skirt",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-suzuran_arknights.png?v=5",
+        "alt": "铃兰热门角色立绘"
+      },
+      "speech": "铃兰向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "suzuran",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
+        "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "displayName": "铃兰",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "suzuran (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "suzuran_arknights",
+      "identityProse": "Suzuran (Lisa) from Arknights, an adorable young Vulpo nine-tailed fox with silky blonde hair, expressive fox ears, bright blue eyes, and nine fluffy golden tails.",
+      "identityTokens": [
+        "suzuran (arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "fox_ears",
+        "nine_tails",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Suzuran",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

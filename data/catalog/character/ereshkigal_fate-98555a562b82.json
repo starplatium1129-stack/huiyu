@@ -1,0 +1,134 @@
+{
+  "kind": "character",
+  "id": "ereshkigal_fate",
+  "revision": 1,
+  "sortOrder": 63,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ereshkigal_fate",
+    "profile": {
+      "id": "ereshkigal_fate",
+      "name": "埃列什基伽勒",
+      "alias": [
+        "Ereshkigal",
+        "埃列什基伽勒",
+        "艾蕾",
+        "冥界女王",
+        "冥界幽府之主"
+      ],
+      "type": "popular",
+      "icon": "🕯️",
+      "portrait": {
+        "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
+        "alt": "埃列什基伽勒 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金色超长发双马尾 · 三破散落",
+        "hair_color": "黄金 / 浅金",
+        "eyes": "红色眼眸 · 温柔而孤独",
+        "hairstyle": "超长双马尾 · 幽光微澜",
+        "uniform": "冥界女王黑衣 · 蓝缎带与金冠",
+        "expression": "端庄忧郁 · 被温暖击中时的不敢置信",
+        "style": "lonely underworld queen",
+        "signature": "金冠黑衣、枪型宝具发热神殿与千年孤独"
+      },
+      "personality": [
+        "统御冥界的端正女王",
+        "千年孤独养成的温柔与不安",
+        "对人间一切温暖如获至宝",
+        "恋爱时认真到令人心疼"
+      ],
+      "likes": [
+        "冥界的第一场雪",
+        "亲手种下的白色花田",
+        "被特意活着来看的每一天"
+      ],
+      "classic_cg": {
+        "title": "冥界初雪",
+        "description": "幽蓝雪原上，她接住生平第一片雪花的掌心久久没有收回。"
+      },
+      "identity": "Fate/Grand Order · Lancer · 冥界女王（凭依凛的真身）",
+      "tags": [
+        "FGO",
+        "冥界女王",
+        "金发红瞳",
+        "黑衣",
+        "孤独",
+        "圣诞女神"
+      ],
+      "bg_story": "统治死者之国的孤独女王。她把整个冥界打理得井井有条，却数不清自己有多久没被谁温柔以待。某个圣诞夜，冥界飘起了第一场雪——从那天起，她的国土上有了花田、泳池，和一个人的名字。连死亡都拆不散的契约，是她此生最勇敢的判决。",
+      "palette": [
+        "#60a5fa",
+        "#f8fafc",
+        "#172554",
+        "#fde68a"
+      ],
+      "weather": "冥界的幽蓝魂火 / 地面上的第一个日出",
+      "speech": "「欢迎来到冥界。……呐，谢谢你愿意活着跑来看我。这种事，比整个冥界都重哦。」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "underworld_queen",
+        "lancer_class",
+        "kur_kigal",
+        "first_snow"
+      ],
+      "accent_color": "#60a5fa",
+      "bg_color": "#172554"
+    },
+    "popular": {
+      "id": "ereshkigal_fate",
+      "displayName": "埃列什基伽勒",
+      "originalName": "エレシュキガル",
+      "franchise": "Fate",
+      "aliases": [
+        "Ereshkigal",
+        "埃列什基伽勒",
+        "艾蕾",
+        "冥界女王",
+        "冥界幽府之主"
+      ],
+      "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with very long blonde hair in twintails, and gentle yet solemn red eyes",
+      "identityTokens": [
+        "ereshkigal (fate)",
+        "fate/grand_order",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "twintails",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "ereshkigal (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ereshkigal (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "CloverWorks",
+      "curatedArtistStyles": [
+        "Morii Shizuki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "waguri_kaoruko",
+  "revision": 1,
+  "sortOrder": 117,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "waguri_kaoruko",
+    "profile": {
+      "id": "waguri_kaoruko",
+      "name": "和栗薰子",
+      "alias": [
+        "Kaoruko Waguri",
+        "和栗薰子",
+        "薰子",
+        "和栗",
+        "蛋糕店小吃货",
+        "薰香花朵"
+      ],
+      "type": "popular",
+      "icon": "🍰",
+      "portrait": {
+        "image": "../assets/characters/popular-waguri_kaoruko.png?v=95daffe55c0d",
+        "alt": "和栗薰子 · 蛋糕店里的第一小口场景样张"
+      },
+      "visual_dna": {
+        "hair": "黑紫色长发，可随日常造型编发",
+        "hair_color": "黑色／黑紫色",
+        "eyes": "蓝色眼眸",
+        "hairstyle": "长发与整齐刘海，编发属于可变造型",
+        "uniform": "桔梗女子学园制服；体验烘焙时另穿围裙",
+        "expression": "治愈全世界的太阳般灿烂笑容 · 吃到美味蛋糕时陶醉满足的红晕",
+        "style": "warm sweet radiant bakery girl",
+        "signature": "黑紫长发、蓝眼与享用蛋糕时自然明亮的笑容"
+      },
+      "personality": [
+        "待人真诚，不凭外表或学校标签判断他人",
+        "重视朋友与家人，认真对待自己的学习和生活",
+        "享用美食时反应坦率，笑容温暖自然"
+      ],
+      "likes": [
+        "蛋糕与各式美食",
+        "偶尔的小睡",
+        "与信任的人坦诚交谈"
+      ],
+      "classic_cg": {
+        "title": "橱窗后的初晨招手",
+        "description": "晨曦洒满蛋糕店橱窗，金发双麻花辫的少女贴着玻璃窗，欢快地向窗外少年挥手绽放笑容。"
+      },
+      "identity": "薰香花朵凛然绽放 女主角 · 名门千鸟女子高中二年级生 · 和栗蛋糕工坊独生女",
+      "tags": [
+        "薰香花朵",
+        "和栗薰子",
+        "金发双麻花辫",
+        "蛋糕店女孩",
+        "治愈系小太阳",
+        "吃货",
+        "水手服"
+      ],
+      "bg_story": "桔梗女子学园的学生，喜欢吃东西，也是紬凛太郎家蛋糕店的常客。她不以千鸟与桔梗之间的成见判断人，而在真诚交往中逐渐认识凛太郎。蛋糕店属于凛太郎家；烘焙体验等新增场景属于日常创作设想。",
+      "palette": [
+        "#f59e0b",
+        "#fef3c7",
+        "#78350f",
+        "#10b981"
+      ],
+      "weather": "烤箱刚出炉温暖香气溢满的清晨 / 夏夜烟花大会倒映在浅蓝浴衣上的光辉",
+      "speech": "「凛太郎烤出来的蛋糕……真的是世界上最好吃的东西！明天……也可以再吃一次吗？」",
+      "source": "Kaoru Hana wa Rin to Saku",
+      "traits": [
+        "kaoru_hana_heroine",
+        "bakery_heiress",
+        "twin_braids",
+        "radiant_sunshine"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#78350f"
+    },
+    "popular": {
+      "id": "waguri_kaoruko",
+      "displayName": "和栗薰子",
+      "originalName": "和栗薫子",
+      "franchise": "Kaoru Hana wa Rin to Saku",
+      "aliases": [
+        "Kaoruko Waguri",
+        "和栗薰子",
+        "薰子",
+        "和栗",
+        "蛋糕店小吃货",
+        "薰香花朵"
+      ],
+      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, a sincere Kikyo Girls Academy student with long blackish-purple hair, large blue eyes and a warm, expressive smile. Braids and work aprons belong to the selected daily outfit rather than a permanent identity.",
+      "identityTokens": [
+        "waguri_kaoruko",
+        "kaoru_hana_wa_rin_to_saku",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "blue_eyes",
+        "smile"
+      ],
+      "exactTokens": [
+        "waguri_kaoruko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, waguri_kaoruko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "CloverWorks",
+      "curatedArtistStyles": [
+        "Saka Mikami"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

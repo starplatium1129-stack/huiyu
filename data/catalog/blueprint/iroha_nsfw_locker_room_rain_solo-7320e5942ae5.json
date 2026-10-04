@@ -1,0 +1,80 @@
+{
+  "kind": "blueprint",
+  "id": "iroha_nsfw_locker_room_rain_solo",
+  "revision": 1,
+  "sortOrder": 366,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "iroha_nsfw_locker_room_rain_solo",
+    "title": "一色彩羽 · 暴雨更衣室的湿身白衬衫独奏 ·「被雨淋湿成这样……前辈要负责擦干哦」",
+    "category": "水光湿身",
+    "characterId": "isshiki_iroha",
+    "description": "【体育馆器材更衣室·雨天】被暴雨困住的放学后。彩羽坐在长椅上，完全被雨水淋湿的白衬衫半透明贴在肌肤上，粉嫩的胸罩和轮廓一览无余。她单手伸进被水浸湿的百褶裙内，眼神挑衅又迷离——「前辈的呼吸好粗重哦……明明只是衣服湿了而已，眼睛到底在往哪里看呀？」",
+    "location": "体育馆器材更衣室·雨天",
+    "action": "坐在更衣室长椅湿透白衬衫透肉，单手伸入裙底自抚，眼神戏谑挑逗",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Iroha Isshiki sits on a wooden gym locker bench stranded by an afternoon deluge, her white school blouse soaked completely see-through and plastered to her creamy skin, clearly detailing pink nipples and soft curves. One hand slips audaciously beneath her wet pleated hem between her thighs, rubbing herself with slow insolence while her hazel-brown eyes fixate on you through heavy lashes. A mocking, blush-stained smirk plays across her parted lips. Sensual vertical shot, raindrops streaking locker room glass behind her, cinematic cool lighting, detailed background, solo 1girl, no text.",
+    "nsfwProse": "Sitting on the gym locker bench in a rain-soaked blouse that clings sheerly over blushing pink nipples, Iroha Isshiki touches herself beneath her wet skirt with mocking, teasing desire.",
+    "promptTokens": [
+      "locker_room",
+      "bench",
+      "rain",
+      "rainy_day",
+      "window",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "sitting_on_bench",
+      "locker_room",
+      "wet_shirt",
+      "see-through",
+      "translucent_clothing",
+      "nipples_visible_through_clothes",
+      "skirt_lift",
+      "black_pantyhose",
+      "hand_between_legs",
+      "masturbation",
+      "pussy_juice",
+      "heavy_blush",
+      "smirk",
+      "parted_lips"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "cc_cathedral_straitjacket_bridal_vow",
+  "revision": 1,
+  "sortOrder": 1317,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "拘束带散开如婚纱，头戴洁白头纱，伸手伸向视角，眼眶含泪带着释然微笑",
+    "camera": "cowboy shot, eye level, solemn and deeply moving",
+    "category": "纯白誓约",
+    "characterId": "cc_code_geass",
+    "coverageTags": [
+      "bridal",
+      "vow",
+      "redemption"
+    ],
+    "description": "【C.C. · 破晓圣堂的誓约解脱】黎明破晓的古老圣堂内，第一缕朝阳穿透破碎的彩绘玻璃。C.C.身上的拘束带被彻底解开垂落在地，宛如化作了一袭圣洁的纯白婚纱。长长的透明头纱笼罩着她苍白如玉的绝美容颜，眼角的泪光在朝阳中折射出耀眼的光芒。她向你伸出一只纤细白皙的手掌，那是历经数百年孤独后终于找到归宿的安宁——「如果这是你给我的契约……那我愿意，一辈子都不解开它。」",
+    "id": "cc_cathedral_straitjacket_bridal_vow",
+    "lighting": "初升朝阳冲破破晓云层的万丈金芒",
+    "location": "晨光穿透断壁的大教堂残存圣坛前",
+    "mood": "救赎誓约",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_straitjacket",
+    "promptProse": "Bathed in the golden rays of dawn inside a solemn cathedral, C.C. stands transformed. The unbuckled straps of her pure white straitjacket trail gracefully like a bridal train, and a sheer gossamer veil rests over her radiant green hair. Extending one delicate hand toward the viewer, tears of profound peace and love sparkle in her amber eyes. Ethereal, deeply moving anime visual novel art style, solo 1girl, no text.",
+    "promptTokens": [
+      "cathedral",
+      "altar",
+      "dawn_sun",
+      "light_rays",
+      "straitjacket",
+      "unbuckled_belts",
+      "bridal_veil",
+      "reaching_towards_viewer",
+      "green_hair",
+      "yellow_eyes",
+      "teary_eyes",
+      "happy_tears",
+      "serene_smile",
+      "cowboy_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cathedral",
+      "altar",
+      "dawn_light",
+      "straitjacket",
+      "bridal_veil",
+      "unfastened_belts",
+      "reaching_towards_viewer",
+      "teary_eyes",
+      "happy_tears",
+      "serene_smile"
+    ],
+    "timeOfDay": "清晨破晓",
+    "title": "C.C. · 破晓圣堂的誓约解脱"
+  }
+}

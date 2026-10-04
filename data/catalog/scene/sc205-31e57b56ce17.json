@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc205",
+  "revision": 1,
+  "sortOrder": 200,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc205",
+    "title": "破晓露台的半透晨光",
+    "category": "日常/同人/After_Story",
+    "story": "【成年 After Story · 宁宁 · 轻薄夏裙与破晓逆光】黎明初醒的海滨木屋露台，带着潮气的海风掠过栏杆。宁宁穿着一袭轻薄的白色无袖长裙站在晨光里，柔软布料被风贴上身体，又被初升的朝阳照出朦胧轮廓。她红着脸回头，眼神里既有羞意，也有藏不住的幸福；头顶呆毛顺从地弯成小小的心形——「看够了吗，大色狼？风有点凉……还不快从后面抱紧宁宁。」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "极致温柔依恋",
+    "season": "夏",
+    "time": "拂晓",
+    "timeOfDay": "dawn",
+    "tags": [
+      "hair_ribbon",
+      "sundress",
+      "bare_legs",
+      "beach_house_veranda",
+      "full_body",
+      "barefoot",
+      "dawn"
+    ],
+    "mature": false,
+    "location": "海滨度假木屋露台",
+    "weather": "清爽海风",
+    "camera": "主观逆光近景",
+    "lighting": "朝阳逆光与柔和边缘光",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bare_legs, standing, kissing, on_tiptoes, beach, ocean, waves, barefoot, warm, dawn, veranda, collarbone, slender_waist, full_body, morning_light, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, pants, underwear, bra, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "storyJa": "【寧々・大人のアフターストーリー・・・夏の軽やかなスカートと夜明けの逆光】夜明けに目覚めると、海辺の木造住宅のテラスでは、手すりを伝って湿った海風が吹き抜けていた。寧々は、薄い白いノースリーブのドレスを着て、朝の光の中に立っていた。柔らかい布地が風によって彼女の体に押し付けられ、彼女のぼんやりとした輪郭が朝日に照らされました。彼女は顔を赤らめて振り返り、その目には恥じらいと抑えがたい幸福感が表れていた。彼女の頭のてっぺんは小さなハートの形に素直に曲がっていました――「もう見飽きた？　風が少し冷たいんです……早く後ろから、寧々を抱きしめてください。」",
+    "rating": "R15",
+    "animaCaption": "On a beach house veranda at dawn in a breezy white sundress with thin straps, Ayachi Nene stands with sun-kissed bare legs, bare feet on veranda wood, holding the rail with a gentle loving smile in warm dawn light.",
+    "auditRevision": "careful-batch08-2026-08-27"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "ellen_joe/school_uniform",
+  "revision": 1,
+  "sortOrder": 582,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ellen_joe",
+    "outfit": {
+      "default": false,
+      "id": "school_uniform",
+      "isDefault": false,
+      "name": "新艾利都女子高制服",
+      "prose": "New Eridu high school uniform: crisp white sailor shirt with short sleeves, navy collar, red silk neckerchief, pleated navy miniskirt, loose black slouch socks, dark school loafers, and a casual school backpack with shark plush strap charm",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "sailor_collar",
+        "neckerchief",
+        "red_neckerchief",
+        "pleated_skirt",
+        "navy_skirt",
+        "miniskirt",
+        "loose_socks",
+        "loafers",
+        "schoolbag"
+      ]
+    }
+  }
+}

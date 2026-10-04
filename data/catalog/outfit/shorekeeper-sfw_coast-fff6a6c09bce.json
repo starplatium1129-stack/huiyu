@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shorekeeper/sfw_coast",
+  "revision": 1,
+  "sortOrder": 938,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shorekeeper",
+    "outfit": {
+      "id": "sfw_coast",
+      "name": "黑海岸不透内衬长裙",
+      "prose": "an opaque white ankle-length dress with blue embroidered outer layers and a light veil over her blue hair",
+      "tokens": [
+        "white_dress",
+        "long_dress",
+        "blue_embroidery",
+        "layered_clothes",
+        "veil"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

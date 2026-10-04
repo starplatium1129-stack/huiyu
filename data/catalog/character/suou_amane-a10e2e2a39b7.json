@@ -1,0 +1,163 @@
+{
+  "kind": "character",
+  "id": "suou_amane",
+  "revision": 1,
+  "sortOrder": 88,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "suou_amane",
+    "profile": {
+      "id": "suou_amane",
+      "name": "周防天音",
+      "alias": [
+        "Suou Amane",
+        "周防天音",
+        "天音姐",
+        "樱桃大姐姐",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🍒",
+      "portrait": {
+        "image": "../assets/characters/popular-suou_amane.png?v=5",
+        "alt": "周防天音 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "酒红超长发 · 双侧环形发圈发髻 · 飘逸长侧束",
+        "hair_color": "酒红色/深深樱桃红",
+        "eyes": "温润明亮深海蓝瞳",
+        "hairstyle": "极长卷发 · 标志性发环发带（hair rings） · 丰满性感",
+        "uniform": "美浜学园大开领制服 / 烈焰机车紧身皮衣",
+        "expression": "包容温柔 · 成熟色气 · 豪爽大姐姐",
+        "style": "voluptuous caring older sister",
+        "signature": "酒红长发带发环、深蓝美眸、傲人丰满三围与机车大姐姐气质"
+      },
+      "personality": [
+        "开朗豪爽、极具包容力与母性光辉",
+        "料理手艺精湛、照顾同伴无微不至",
+        "喜欢主动挑逗雄二，色气又大胆",
+        "内心深处背负着泷园事故对一姬的深沉负罪感",
+        "深爱着雄二，甘愿用全部身心去救赎和温暖他"
+      ],
+      "likes": [
+        "骑着重型机车在沿海公路上兜风",
+        "为美浜学园的同伴们做满满一桌丰盛大餐",
+        "捉弄雄二看他害羞脸红的窘样",
+        "夏日海滩晒太阳"
+      ],
+      "classic_cg": {
+        "title": "暮色公里的机车依偎",
+        "description": "夕阳染红的海边公路旁，天音倚在重型机车边单手摘下头盔，酒红长发在晚风中飞扬，神态温柔动情。"
+      },
+      "identity": {
+        "role": "美浜学园三年级生 / 泷园事故唯一幸存者",
+        "age": "高中三年生",
+        "occupation": "美浜学园学生 / 重型机车骑士",
+        "faction": "美浜学园"
+      },
+      "tags": [
+        "红发",
+        "发环",
+        "蓝瞳",
+        "巨乳",
+        "大姐姐",
+        "机车皮衣",
+        "美浜制服",
+        "灰色的果实"
+      ],
+      "bg_story": "周防天音是《灰色的果实》的主要女主角之一，美浜学园中如同大姐姐般照顾所有人的存在。十年前在风见一姬的舍身掩护下九死一生逃出深山，因而视一姬为救命恩人，在得知雄二是其弟弟后，毅然决然将全部爱意与献身精神倾注在雄二身上。拥有极具压迫感的身材曲线与招牌的双侧发环发型。",
+      "palette": [
+        "樱桃红",
+        "深海蓝",
+        "皮衣黑"
+      ],
+      "weather": [
+        "落日金辉",
+        "夏日海风",
+        "星夜沿海"
+      ],
+      "speech": "雄二！今天想吃什么？不管是咖喱、炸猪排还是……我，我都完全可以准备好哦~♪",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "suou_amane",
+        "1girl",
+        "solo",
+        "red_hair",
+        "very_long_hair",
+        "hair_rings",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#1c0a10"
+    },
+    "popular": {
+      "id": "suou_amane",
+      "displayName": "周防天音",
+      "originalName": "周防 天音 (Suou Amane)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "suou_amane",
+        "amane",
+        "amane_(grisaia)",
+        "周防天音",
+        "天音",
+        "天音姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Suou Amane from Grisaia by Frontwing, the voluptuous and caring older-sister heroine with very long flowing crimson-red hair styled with distinctive circular hair rings at the sides, striking deep sapphire blue eyes, towering curvy figure with an ample bust, and a warm seductive smile.",
+      "identityTokens": [
+        "suou_amane",
+        "1girl",
+        "solo",
+        "red_hair",
+        "very_long_hair",
+        "hair_rings",
+        "hair_bow",
+        "sidelocks",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "suou_amane"
+      ],
+      "exactPrefixes": [
+        "amane_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "美浜学园 · 泷园水难幸存者",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园三年生，性格豪爽、极具包容力的大姐姐，照顾同伴料理全能；因曾经受风见一姬的牺牲拯救而对风见雄二怀有无限深情与救赎执念，擅长驾驶重型机车",
+        "research": "2026-09-02 调研（Danbooru suou_amane 290+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "yunsang",
+        "kappe"
+      ]
+    }
+  }
+}

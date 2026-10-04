@@ -1,0 +1,166 @@
+{
+  "kind": "character",
+  "id": "asuka_langley",
+  "revision": 1,
+  "sortOrder": 68,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuka_langley",
+    "profile": {
+      "id": "asuka_langley",
+      "name": "惣流/式波·明日香·兰格雷",
+      "alias": [
+        "Asuka Langley",
+        "明日香",
+        "惣流·明日香·兰格雷",
+        "式波·明日香·兰格雷",
+        "第二适格者",
+        "EVA二号机驾驶员"
+      ],
+      "type": "popular",
+      "icon": "🔥",
+      "portrait": {
+        "image": "../assets/characters/popular-asuka_langley.png?v=5",
+        "alt": "明日香 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "亮橙红及腰长双马尾",
+        "hair_color": "橙红色 / 赤金",
+        "eyes": "天蓝色 / 湛蓝瞳",
+        "hairstyle": "高马尾双发辫 · A10神经接口发夹",
+        "uniform": "二号机猩红战斗驾驶服 / 明黄吊带裙",
+        "expression": "傲娇自信 · 骄傲好胜 · 偶尔流露脆弱",
+        "style": "fiery tsundere ace pilot",
+        "signature": "橙红双马尾、蓝瞳与赤红二号机驾驶服"
+      },
+      "personality": [
+        "极度骄傲自信",
+        "傲娇好强",
+        "渴望被认可与瞩目",
+        "战斗天赋出众骁勇善战",
+        "内心害怕孤独与被抛弃"
+      ],
+      "likes": [
+        "完美的驾驶同步率",
+        "受到赞赏与崇拜",
+        "二号机的强大性能",
+        "夏日的明媚阳光"
+      ],
+      "classic_cg": {
+        "title": "赤红王牌的咆哮",
+        "description": "赤红的EVA二号机立于翻滚的红海与战火之上，少女傲然昂首，红发在狂风中肆意飞扬。"
+      },
+      "identity": {
+        "role": "EVA二号机专属王牌驾驶员 / 第二适格者",
+        "age": "14岁",
+        "occupation": "初中生 / NERV特务机关王牌驾驶员",
+        "faction": "NERV特务机关 / 德国分部 / 第3新东京市立第1中学"
+      },
+      "tags": [
+        "橙红双马尾",
+        "蓝瞳",
+        "红色驾驶服",
+        "傲娇女王",
+        "EVA二号机",
+        "王牌驾驶员"
+      ],
+      "bg_story": "惣流·明日香·兰格雷是《新世纪福音战士》的女主角之一，德日混血天才少女，EVA二号机王牌驾驶员，二次元「傲娇」概念的集大成者。性格火爆、自尊心极强，拥有极其深厚的心理刻画与战力表现，是动漫史上无可撼动的经典角色。",
+      "palette": [
+        "猩红",
+        "明黄",
+        "钴蓝"
+      ],
+      "weather": [
+        "烈日当空",
+        "红海黄昏",
+        "战火硝烟"
+      ],
+      "speech": "你是笨蛋吗？看着吧，真正的王牌是怎样战斗的！",
+      "source": "GAINAX / Khara《新世纪福音战士 / Neon Genesis Evangelion》",
+      "traits": [
+        "asuka_langley",
+        "1girl",
+        "solo",
+        "long_hair",
+        "orange_hair",
+        "twintails",
+        "blue_eyes",
+        "interface_headset",
+        "plugsuit",
+        "red_plugsuit",
+        "neon_genesis_evangelion"
+      ],
+      "accent_color": "#f87171",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "asuka_langley",
+        "asuka langley",
+        "asuka langley soryu",
+        "asuka langley shikinami",
+        "soryu asuka langley",
+        "shikinami asuka langley",
+        "neon genesis evangelion",
+        "evangelion",
+        "明日香",
+        "惣流·明日香·兰格雷",
+        "式波·明日香·兰格雷",
+        "第二适格者",
+        "二号机驾驶员"
+      ],
+      "animeStudio": "Gainax, Studio Khara, official anime screencap, anime coloring",
+      "canon": {
+        "era": "近未来（2015）",
+        "formNotes": "红棕长发双马尾+红色A10神经接头发卡+蓝瞳；二号机专属驾驶员；第二适格者；傲娇女王鼻祖；红色战斗服/黄色连衣裙/测试战斗服/Q版猫耳帽夹克",
+        "research": "2026-08-31 调研",
+        "world": "末世机甲科幻（新世纪福音战士）"
+      },
+      "curatedArtistStyles": [
+        "sadamoto_yoshiyuki",
+        "yoneyama_mai",
+        "swav",
+        "rella"
+      ],
+      "defaultOutfitId": "plugsuit_red",
+      "displayName": "惣流·明日香·兰格雷",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "asuka_langley"
+      ],
+      "franchise": "Neon Genesis Evangelion",
+      "id": "asuka_langley",
+      "identityProse": "Asuka Langley from Neon Genesis Evangelion, a spirited and fiercely confident Eva pilot with long flowing ginger-orange hair tied into high twintails with red A10 neural interface clips, vibrant sapphire-blue eyes, and a bold, charismatic tsundere expression",
+      "identityTokens": [
+        "asuka_langley",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "interface_headset",
+        "hair_ornament",
+        "neon_genesis_evangelion"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "惣流・アスカ・ラングレー",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

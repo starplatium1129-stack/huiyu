@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "fiona_frost_hospital_corridor_encounter",
+  "revision": 1,
+  "sortOrder": 819,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost_hospital_corridor_encounter",
+    "characterId": "fiona_frost",
+    "title": "菲奥娜 · 医院长廊的冷面交错",
+    "description": "【菲奥娜 · 医院长廊的冷面交错】巴林特综合医院明净肃穆的白瓷长廊间，晨间阳光穿过连排高窗洒在光洁地板上。菲奥娜身穿深蓝毛衣配灰底黑条纹背心的医院事务员制服，双手紧抱厚重病历文件夹快步行走。在与前方迎面而来的白色大褂身影交错的一瞬，她维持着绝对冷静的扑克脸平视前方，内心深处却如海啸般剧烈翻涌着对前辈的炽热狂潮。",
+    "outfitId": "hospital_clerk_uniform",
+    "category": "职场日常",
+    "location": "巴林特综合医院走廊",
+    "action": "抱紧病历文件夹与黄昏擦肩而过，目不斜视",
+    "timeOfDay": "早晨",
+    "lighting": "高窗透射的明亮晨光与白色走廊漫射",
+    "camera": "three-quarter medium shot",
+    "mood": "冷静压抑",
+    "sceneTags": [
+      "hospital_corridor",
+      "morning_sun",
+      "clipboard",
+      "office_lady",
+      "black_skirt",
+      "expressionless",
+      "sunbeam",
+      "clean_aesthetic"
+    ],
+    "promptProse": "In the morning hallway of Berlint General Hospital, Fiona Frost walks past Loid Forger approaching from the opposite direction in a white doctor’s coat. She clutches a leather medical clipboard against her grey striped vest and dark-blue sweater, keeping her eyes straight ahead and her clerical poker face composed at the instant their paths cross. Tall-window sunlight connects both clothed figures with the polished tiled floor and highlights her blunt white bob and long right-side fringe. Frame the passing encounter down the bright hospital corridor.",
+    "promptTokens": [
+      "hospital",
+      "hallway",
+      "clipboard",
+      "black_skirt",
+      "grey_vest",
+      "morning_sun",
+      "sunbeam",
+      "tiled_floor",
+      "three_quarter_view",
+      "two_clothed_figures",
+      "passing_by",
+      "doctor",
+      "white_labcoat"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "duplicate subject",
+      "split screen"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "group"
+  }
+}

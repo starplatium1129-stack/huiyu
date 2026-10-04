@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "maomao/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 984,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "猫猫·成人私密造型",
+      "prose": "a private adult ensemble built around completely_nude",
+      "tokens": [
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

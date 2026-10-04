@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc120",
+  "revision": 1,
+  "sortOrder": 118,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the leather sofa of the private lounge, Shiki Natsume in a glossy high-cut black bunny bodysuit and sheer black tights straddles the viewer's lap with both hands shielding her chest, her tear mole misted with humiliation as she bites her teeth and throws a weak tsundere warning under the warm spotlight.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "主观正面特写",
+    "category": "恋爱/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "绝对防御崩溃",
+    "id": "sc120",
+    "lighting": "头顶射灯强烈局部阴影",
+    "location": "私人休息室大沙发",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, glossy_black_bunny_suit, highleg_bunny_suit, sheer_black_tights, straddling, sitting_on_lap, arms_shielding_chest, cleavage, heavy_blush, shamed, tsundere_glare, private_lounge, leather_sofa, warm_spotlight, dramatic_shadows, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【夏目 · 漆黑兔女郎极度羞嗔】私人高级休息室的皮革沙发上。作为任务失败的惩罚要求，高冷傲娇的特工少女夏目被迫换上了极其性感的漆黑高叉兔女郎连体衣与超薄黑丝袜。她正面红耳赤地跨坐在你的怀里，紧身乳胶衣死死勾勒出她惊人饱满的侧乳轮廓与双峰线条。她眼角的泪痣因为极度羞耻蒙上了一层朦胧的水汽，修长的双手遮挡在胸前，咬着银牙对你发出最后的虚弱警告——「哈？！你是无可救药的变态笨蛋吗？敢用这种衣服来羞辱我...明天绝对会把你秘密处决的...唔嗯...」",
+    "storyJa": "【夏目・黒バニーガールは極度に恥ずかしい】プライベートプレミアムラウンジの革張りソファ。任務失敗の罰として、冷酷で傲慢なエージェント少女夏目は、ハイクロッチの超セクシーな漆黒のバニーガールボディスーツと極薄の黒ストッキングを着用させられる。彼女は顔を紅潮させてあなたの腕にまたがり、タイトなラテックスの服が彼女の驚くほど豊満な横乳と胸の輪郭を輪郭を描きます。極度の恥ずかしさで、目尻の泣きぼくろが霞んだ湿気の膜で覆われていた。彼女は細い手で胸を覆い、銀歯を食いしばって最後の弱い警告を発した。――「はあ？　本当に救いようのない変態ね。こんな服を着せて恥ずかしがらせるなんて……明日は覚えておきなさい。」",
+    "tags": [
+      "mole_under_eye",
+      "bunny_suit",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "straddling_lap",
+      "hands_covering_chest",
+      "private_lounge",
+      "full_body",
+      "heels"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "特工的惊喜指令：高叉兔女郎的反差",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "weather": "静谧"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shiranui_mai/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 1009,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiranui_mai",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "靛蓝练习作务衣",
+      "prose": "a securely tied indigo long-sleeved samue jacket, matching loose full-length trousers and white tabi socks",
+      "tokens": [
+        "indigo_samue",
+        "long_sleeves",
+        "loose_pants",
+        "tabi"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

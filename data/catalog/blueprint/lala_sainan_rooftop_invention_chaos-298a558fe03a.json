@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "lala_sainan_rooftop_invention_chaos",
+  "revision": 1,
+  "sortOrder": 1234,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手高举发光的奇特外星发明道具，制服领口微敞，及踝粉发与爱心尾巴欢快甩动",
+    "camera": "dynamic low angle, cowboy shot, vibrant anime slapstick depth",
+    "category": "发明王女",
+    "characterId": "lala_satalin_deviluke",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【菈菈 · 彩南天台的发明大骚乱】彩南高中明媚艳阳下的天台铁丝网前，各种冒烟奇特外星道具散落一地。菈菈身穿彩南水手服制服，领口微敞露出傲人丰满的雪白深沟。她双手高高举起一只刚刚组装完成、闪烁着粉红激光的外星神奇机械道具，极长及踝的泡泡糖粉色秀发在天台强风中如瀑飞扬，头顶呆毛欢快抖动，身后的黑色爱心恶魔尾巴兴奋摇摆——「梨斗快看！这是菈菈刚刚改良好的‘万能换装君DX’哦！只要按下这个按钮——哇啊啊！怎么突然冒烟了啦？！」",
+    "id": "lala_sainan_rooftop_invention_chaos",
+    "lighting": "万里晴空洒下的透亮夏日强光与机械道具闪烁的荧光粉紫辉光",
+    "location": "彩南高中露天天台铁丝网与水箱旁",
+    "mood": "元气欢快",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Holding up a glowing pink extraterrestrial mechanical gadget with proud jubilation atop Sainan High’s sunny rooftop, Lala beams in her school sailor uniform. Breezy winds whip her ankle-length bubblegum pink hair and sprightly spade-heart tail across the open sky.",
+    "promptTokens": [
+      "school_rooftop",
+      "alien_gadget",
+      "smoke_puff",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "demon_tail",
+      "ahoge",
+      "very_long_hair",
+      "cleavage",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_rooftop",
+      "gadget",
+      "invention",
+      "smoke",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "demon_tail",
+      "ahoge",
+      "very_long_hair"
+    ],
+    "timeOfDay": "午后",
+    "title": "菈菈 · 彩南天台的发明大骚乱"
+  }
+}

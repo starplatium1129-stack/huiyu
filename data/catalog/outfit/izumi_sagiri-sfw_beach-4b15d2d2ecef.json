@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/sfw_beach",
+  "revision": 1,
+  "sortOrder": 859,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "海边写生防晒装",
+      "prose": "a long-sleeved opaque sun jacket, full-length trousers, a broad sunhat and large sunglasses",
+      "tokens": [
+        "sunhat",
+        "sunglasses",
+        "long_sleeves",
+        "jacket",
+        "pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

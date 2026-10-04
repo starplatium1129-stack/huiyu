@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc227",
+  "revision": 1,
+  "sortOrder": 222,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the neon-soaked retro arcade at night, Shiki Natsume wears a black baseball cap, thin choker, fitted long-sleeve jacket and tight jeans. After clearing the rhythm machine with a perfect score, she turns and unceremoniously pushes the limited plush toy toward the viewer, her cool face hiding faintly reddening ears.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景平视特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc227",
+    "lighting": "面部侧边高饱和度粉紫与冷蓝霓虹炫彩强侧光",
+    "location": "复古街头电玩城街机前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dress, cafe_uniform",
+    "prompt": "1girl, solo, shiki_natsume, short_black_hair, black_baseball_cap, black_choker, golden_yellow_eyes, mole_under_eye, fitted_long_sleeve_jacket, tight_denim_jeans, playing_rhythm_arcade_machine, perfect_score, handing_limited_plush_toy_to_viewer, cool_bored_expression, flushed_ears, retro_arcade, neon_lights, night, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 潮酷机能风私服】深夜光影交错、充满赛博霓虹色彩的街头复古电玩城。脱下咖啡馆制服的夏目今天穿得极为率性休闲：一顶纯黑色的棒球帽斜斜扣在乌黑的短发上，脖子上戴着一条酷劲十足的窄黑色Choker，修身的长袖夹克与利落的紧身牛仔裤勾勒出她完美的双腿线条。她正全神贯注地用极为高效灵敏的手速操作着音乐街机，在以绝对完美的积分通关后，她微微转过头，眼角的泪痣在粉紫色的霓虹灯光下折射出极具个性的光芒。她将机器吐出来的限量版玩偶一把塞进你怀里，用毫无起伏却微微有些别扭的冷淡口吻掩饰动摇——「……拿着。这只是通关的附赠产物，放在包里很占空间，属于多余的负重。不准露出那种感动的表情……大变态。」",
+    "storyJa": "【夏目】【ナツメ・サイバーネオンのアミューズメント街とストリートの触動】深夜、光と影が交錯し、サイバーネオンの色彩に満ちたレトロなゲームセンター。カフェの制服を脱いだナツメは、今日はずいぶんとマニッシュでカジュアルな服装をしていた。真っ黒なベースボールキャップを艶やかな黒髪に斜めに深く被り、首元にはクールな細い黒のチョーカー、スタイリッシュな長袖のジャケットときれいめのタイトなジーンズが彼女の美しい脚のラインを描き出している。彼女は極めて効率的で鋭敏な手つきで音ゲーのマシンを操作することに全神経を集中させていた。絶対的に完璧なスコアでクリアした後、彼女はわずかに顔を巡らせ、目尻の泣きぼくろがピンクパープルのネオン光の下で極めて個性的な光を放っていた。彼女はマシンから吐き出された限定版のぬいぐるみをあなたの胸にぐいと押し付け、起伏のない、しかし少し不器用で冷淡な口調で動揺を隠した――「……持ってて。これはただのクリアの副産物、バッグに入れると場所を取るし、余計な重量になるだけ。そんな感動したような顔しないで……大変態」",
+    "tags": [
+      "mole_under_eye",
+      "baseball_cap",
+      "choker",
+      "slim_jacket",
+      "jeans",
+      "rhythm_game",
+      "arcade",
+      "plush_toy",
+      "neon_light",
+      "night",
+      "red_ears",
+      "medium_shot",
+      "perfect_score",
+      "handing_plush"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "霓虹电玩城中的街头触动",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "静谧深夜"
+  }
+}

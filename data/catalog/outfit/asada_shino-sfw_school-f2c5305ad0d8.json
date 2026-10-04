@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_school",
+  "revision": 1,
+  "sortOrder": 751,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "现实形态校服与眼镜",
+      "prose": "a neat navy school blazer, white shirt, knee-length skirt and non-prescription black-rimmed glasses",
+      "tokens": [
+        "school_uniform",
+        "navy_blazer",
+        "white_shirt",
+        "pleated_skirt",
+        "black-framed_eyewear"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

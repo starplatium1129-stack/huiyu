@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_infirmary_gentle_checkup_care",
+  "revision": 1,
+  "sortOrder": 1082,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_infirmary_gentle_checkup_care",
+    "title": "大凤 · 私密保健室的贴身诊疗",
+    "category": "制服医护",
+    "characterId": "taihou_azur",
+    "outfitId": "school_nurse",
+    "coverageTags": [
+      "nurse"
+    ],
+    "description": "【大凤 · 私密保健室的贴身诊疗】拉紧遮光帘的港区医务室诊查床前，大凤身穿粉色紧身护士超短裙，领口敞开露出惹火深沟。她将银色的听诊器贴在指挥官心口处，自己饱满柔软的巨乳却有意无意地压在对方的手臂上。她吐气如兰地贴近耳畔轻语——「指挥官大人的心跳……好快呢。是不是因为只有大凤在身边而感到兴奋了呢？」",
+    "location": "港区医务室病床遮帘内",
+    "action": "手持听诊器探身贴近，护士裙领口大敞，巨乳贴近指挥官手臂，眼神迷离",
+    "timeOfDay": "下午",
+    "lighting": "白布帘过滤出的柔和苍白冷光与肌肤粉红暖色",
+    "camera": "medium close-up, pov angle, extreme physical proximity",
+    "mood": "暧昧撩人",
+    "sceneTags": [
+      "infirmary",
+      "nurse",
+      "stethoscope",
+      "nurse_cap",
+      "cleavage",
+      "blush",
+      "whispering",
+      "twintails"
+    ],
+    "promptProse": "Leaning intimately close over a white examination bed with a silver stethoscope in hand, Taihou provides private medical care in her low-cut pink nurse mini-dress. The secluded curtained infirmary glows with soft white lighting that emphasizes her flushed cheeks and teasing smile.",
+    "promptTokens": [
+      "infirmary",
+      "clinic",
+      "nurse_dress",
+      "stethoscope",
+      "cleavage",
+      "twintails",
+      "blush",
+      "close_proximity",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

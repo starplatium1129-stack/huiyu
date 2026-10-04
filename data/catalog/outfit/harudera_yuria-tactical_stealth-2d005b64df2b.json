@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/tactical_stealth",
+  "revision": 1,
+  "sortOrder": 654,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "tactical_stealth",
+      "name": "特勤暗夜潜行紧身衣",
+      "prose": "field operative tactical gear: high-tech matte black stealth combat catsuit with kevlar reinforcement panels, drop-leg tactical holster with sidearm pistol, fingerless combat gloves, utility belt with communication earpiece, and combat boots",
+      "tokens": [
+        "bodysuit",
+        "tight_suit",
+        "stealth_suit",
+        "tactical_gear",
+        "holster",
+        "pistol",
+        "fingerless_gloves",
+        "boots",
+        "combat_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

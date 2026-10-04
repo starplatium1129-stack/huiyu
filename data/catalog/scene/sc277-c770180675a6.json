@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc277",
+  "revision": 1,
+  "sortOrder": 272,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc277",
+    "recommendedSize": "1344×768",
+    "title": "更衣室椅上的紫色心事",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】演出后台的更衣室里，夏目斜靠在转椅上，双手正微微提拉着黑色过膝袜边缘的细系带。她将一条修长的大腿笔直抬向你的镜头前方，化妆镜一圈暖黄色的灯泡在她乌黑的发丝与白皙锁骨边缘勾勒出温润的光晕。撞见这一幕的你刚要退开，她却微微启唇，琥珀色的眼眸在羞赧中带着一丝不容置疑的克制与认真：「……既然是你选的，就负责看到最后。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult",
+      "natsume_r18"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "R15"
+    ],
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, extreme_clockwise_dutch_angle, high_angle_perspective, wide_angle, 1girl, solo, very_long_black_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, soft_blush, parted_lips, looking_at_viewer, underwear, purple_bra, floral_embroidery, purple_panties, cleavage, collarbone, black_thighhighs, ribbon_ties, thighhighs_pull, sitting_on_chair, backstage_dressing_room, grey_metal_lockers, vanity_mirror, warm_light_bulbs, warm_rim_lighting, soft_ambient_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "R15",
+    "officialCgCandidate": "ocs11",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs11:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_085911_103.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs11-a1.png",
+      "result": "pass"
+    },
+    "animaCaption": "In a dynamic Dutch angle wide shot inside a backstage dressing room, she sits leaning back on a black chair adjusting her black thighhigh stocking with one leg extended forward in perspective, wearing a lavender lace lingerie set under soft ambient light with warm glowing vanity mirror bulbs."
+  }
+}

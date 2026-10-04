@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/festival_yukata",
+  "revision": 1,
+  "sortOrder": 186,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "festival_yukata",
+      "name": "祭典葱绿短浴衣",
+      "tokens": [
+        "yukata",
+        "short_yukata",
+        "green_yukata",
+        "onion_green",
+        "cloth_sash",
+        "obi",
+        "geta",
+        "wooden_geta",
+        "bare_legs",
+        "summer_clothes"
+      ],
+      "prose": "wearing a short modified onion-green yukata with a slim cloth sash at the waist, a shortened hemline above the knees, and wooden geta sandals, bright festive summer robe",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

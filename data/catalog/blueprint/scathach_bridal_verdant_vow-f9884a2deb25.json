@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_bridal_verdant_vow",
+  "revision": 1,
+  "sortOrder": 248,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_bridal_verdant_vow",
+    "title": "斯卡哈 · 绿野花环的永恒誓约·「比起不死的永恒，我选择了会结束的今日」",
+    "category": "圣洁花嫁",
+    "characterId": "scathach_fate",
+    "description": "【影之国边缘的翠绿谷地·花时】影之国罕见地开满了白花，身着素白婚纱的斯卡哈立于花海中央，头纱之下紫色的长发编成温柔的花环发辫。她向你伸出手，赤红的眼眸罕见地湿润——「不死者本没有资格站在这里……但我把永恒还了回去，换来了这个会结束的、独一无二的今日。」",
+    "location": "影之国边缘翠绿谷地花海",
+    "action": "立于花海中央向你伸出手，头纱花环编发，赤瞳罕见湿润",
+    "timeOfDay": "花时午后",
+    "lighting": "柔白花光与穿过花枝的暖阳光斑",
+    "camera": "wide shot, environmental portrait, flower field bridal, extended hand invitation",
+    "mood": "永恒落幕、深情倾城",
+    "sceneTags": [
+      "white_flower_valley",
+      "standing",
+      "white_wedding_gown",
+      "floral_hair_braid",
+      "veil",
+      "extended_hand",
+      "crimson_eyes",
+      "restrained_smile",
+      "afternoon_light",
+      "full_body"
+    ],
+    "promptProse": "In the white-flowered valley, Scathach stands in an opaque white wedding gown with her purple hair arranged in a flower-braided crown beneath the veil. She extends one hand toward the viewer while the other rests lightly against the gown, her crimson eyes bright with restrained emotion. Warm afternoon light filters through flowering branches and traces the veil’s edge. The ceremonial scene retains the original imagined vow of choosing one finite day over eternity. Show her complete standing figure, offered hand and floral setting within the vertical frame. No lettering.",
+    "promptTokens": [
+      "white_flower_valley",
+      "standing",
+      "white_wedding_gown",
+      "floral_hair_braid",
+      "veil",
+      "extended_hand",
+      "crimson_eyes",
+      "restrained_smile",
+      "afternoon_light",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "sfw_verdant_bridal",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ]
+  }
+}

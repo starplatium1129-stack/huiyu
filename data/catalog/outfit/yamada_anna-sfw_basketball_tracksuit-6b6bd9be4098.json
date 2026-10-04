@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/sfw_basketball_tracksuit",
+  "revision": 1,
+  "sortOrder": 840,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "sfw_basketball_tracksuit",
+      "name": "篮球练习运动套装",
+      "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck, with her long black hair in a high ponytail",
+      "tokens": [
+        "blue_track_jacket",
+        "white_sports_shirt",
+        "track_pants",
+        "white_sneakers",
+        "towel_around_neck",
+        "ponytail"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/sfw_kitchen_apron",
+  "revision": 1,
+  "sortOrder": 28,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "sfw_kitchen_apron",
+      "name": "晨间围裙便服",
+      "prose": "a long-sleeved knit top and casual skirt beneath a light kitchen apron, with long black hair gathered clear of the stove",
+      "tokens": [
+        "long_sleeves",
+        "knit_top",
+        "skirt",
+        "light_apron",
+        "hair_tied_back"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

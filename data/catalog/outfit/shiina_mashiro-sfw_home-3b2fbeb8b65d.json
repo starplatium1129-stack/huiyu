@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/sfw_home",
+  "revision": 1,
+  "sortOrder": 852,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "柔软针织居家装",
+      "prose": "a cream knitted sweater and loose brown trousers",
+      "tokens": [
+        "cream_sweater",
+        "knitwear",
+        "brown_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_morning_dining_double_burger_cheeks",
+  "revision": 1,
+  "sortOrder": 221,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_morning_dining_double_burger_cheeks",
+    "title": "黑呆 · 晨间餐桌的双层汉堡鼓腮帮",
+    "category": "晨间女友",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 晨间餐桌的双层汉堡鼓腮帮】温暖的公寓餐桌前，黑呆脱下了沉重的铠甲，身着宽松的机车卫衣坐在餐椅上。她双手紧紧抓着一个硕大的双层芝士巨无霸汉堡大口咬下，两颊被塞得像小仓鼠一样高高鼓起，嘴角还沾着一滴金黄的浓郁芝士酱。当看到你端着刚炸好的薯条走过来时，她动作瞬间僵住，暗金眼眸圆睁，咽下食物冷冷别过头——「唔……看什么看。暴君的肉体也是需要充足的高热量供给的，快把薯条也交出来。」",
+    "location": "摆满快餐与热可乐的现代公寓木质餐桌前",
+    "action": "穿宽松卫衣坐在餐桌前，双手捧汉堡，刚咬一口后停住并看向端来的薯条",
+    "timeOfDay": "清晨",
+    "lighting": "柔和温暖的室内晨曦洒在白皙脸颊上",
+    "camera": "cowboy shot, eye level, hilarious and cute gap moe",
+    "mood": "极品反差萌",
+    "sceneTags": [
+      "breakfast_table",
+      "sitting",
+      "double_cheeseburger",
+      "both_hands",
+      "puffed_cheeks",
+      "cheese_sauce",
+      "french_fries",
+      "oversized_sweatshirt",
+      "morning_light",
+      "medium_shot"
+    ],
+    "promptProse": "At the morning dining table, Saber Alter pauses with a large double cheeseburger held in both hands. Her cheeks are still puffed from one bite, and a tiny dot of cheese sauce sits at the corner of her mouth. An oversized dark sweatshirt and comfortable trousers replace the battle outfit. She glances toward a plate of fries arriving at the edge of the table, trying to recover her usual composure. Warm window light catches her blonde bun and surprised golden eyes. Keep the burger, two occupied hands and seated posture clear, without lettering.",
+    "promptTokens": [
+      "breakfast_table",
+      "sitting",
+      "double_cheeseburger",
+      "both_hands",
+      "puffed_cheeks",
+      "cheese_sauce",
+      "french_fries",
+      "oversized_sweatshirt",
+      "morning_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_breakfast_sweater",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "burger"
+    ]
+  }
+}

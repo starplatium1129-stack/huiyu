@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc117",
+  "revision": 1,
+  "sortOrder": 115,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Late at night in the private master bedroom, Nene in a dark pink satin slip kneels on the disheveled bed, leaning forward in an intimate first-person POV close-up, hands gripping the smooth sheets with a heavy blush under the warm bedside rim lighting.",
+    "auditRevision": "careful-batch14-2026-08-27",
+    "camera": "主观正面特写",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致动情占有",
+    "id": "sc117",
+    "lighting": "桌上台灯柔和侧光",
+    "location": "私人书房老板椅",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, dark_pink_camisole, satin_fabric, bare_back, bare_shoulders, cleavage, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, hands_gripping_bedsheets, heavy_blush, bedroom, on_bed, late_night, private_room, collarbone, slender_waist, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 缎面裙极度动情】深夜静谧的私人书房。宁宁在你的霸道要求下，换上了一件极具肉感诱惑的暗粉色缎面露背吊带裙。此时她软绵绵地跪伏在你身上，光滑细腻的缎面料死死贴紧她完美的娇躯曲线。她双手死死抓着你的肩膀，头顶的呆毛早已因为爱意过载而完全软瘫成一个极其工口的心形。她双眼含泪地俯视着你，温热的喘息扑在你的脖颈上——「呜...柊史...这样抱着好热...魔女的身体和灵魂...今晚全部都被你彻底独占了啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・サテンスカートがとってもエモい】深夜の静かな個人勉強。あなたの強引なリクエストに応じて、寧々は非常にセクシーで魅惑的なダークピンクのサテンのバックレスサスペンダースカートを着ました。この瞬間、彼女はあなたの足の上にそっと座っており、滑らかで繊細なサテン生地が彼女の完璧なボディの曲線にぴったりと張り付いています。両手であなたの肩をしっかりと抱き、頭の上のアホ毛は愛のあまりに完全にエロティックなハート型に崩れ落ちています。彼女は涙ぐんだ目であなたを見下ろし、彼女の温かい息があなたの首にかかりました。――「柊史……こうしていると、すごく暖かいです。魔女の心も、今夜は全部あなたのものですよ。」",
+    "tags": [
+      "hair_ribbon",
+      "satin_dress",
+      "backless_dress",
+      "bare_back",
+      "bare_shoulders",
+      "kneeling_on_bed",
+      "straddling_viewer",
+      "grabbing_viewer_shoulders",
+      "tears_in_eyes",
+      "heavy_blush",
+      "ahoge",
+      "private_study",
+      "night",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "缎面吊带的绝对独占视界",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "炙热"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/official_school_uniform",
+  "revision": 1,
+  "sortOrder": 832,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "official_school_uniform",
+      "name": "圣立学园初中部制服与长开衫",
+      "prose": "her school uniform: a buttoned white collared blouse beneath a loose beige cardigan, a navy pleated skirt, black over-knee socks and white sneakers, with a snack bag in her tote, with her long black hair in a high ponytail",
+      "tokens": [
+        "school_uniform",
+        "white_shirt",
+        "open_cardigan",
+        "beige_cardigan",
+        "pleated_skirt",
+        "navy_skirt",
+        "thighhighs",
+        "black_socks",
+        "sneakers",
+        "tall_female",
+        "ponytail"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

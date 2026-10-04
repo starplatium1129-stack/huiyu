@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "asuna_yuuki",
+  "revision": 1,
+  "sortOrder": 105,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuna_yuuki",
+    "profile": {
+      "id": "asuna_yuuki",
+      "name": "结城明日奈",
+      "alias": [
+        "Asuna Yuuki",
+        "亚丝娜",
+        "闪光亚丝娜",
+        "血盟骑士团副团长",
+        "闪电之光"
+      ],
+      "type": "popular",
+      "icon": "🌹",
+      "portrait": {
+        "image": "../assets/characters/popular-asuna_yuuki.png?v=1",
+        "alt": "结城明日奈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "腰际栗色长发 · 侧编发辫半扎",
+        "hair_color": "栗色 / 蜜糖棕",
+        "eyes": "琥珀色大眼 · 坚定英气",
+        "hairstyle": "及腰长直发 · 前额碎刘海",
+        "uniform": "血盟骑士团红白战袍 · 白色无袖束身上衣与红十字裙",
+        "expression": "自信英气 · 恋爱时娇羞软化 · 战斗时锐不可当",
+        "style": "elegant sword knight heroine",
+        "signature": "栗色长发、细剑闪烁之光、红白骑士战袍与副团长威严"
+      },
+      "personality": [
+        "名校优等生的自尊与要强",
+        "对认定之人毫无保留的深情",
+        "战斗中果断凌厉的副团长气场",
+        "居家时贤惠人妻感与傲娇反差"
+      ],
+      "likes": [
+        "与你在湖畔木屋一起下厨",
+        "下午茶与高级甜品",
+        "被摸头时嘴硬却不动"
+      ],
+      "classic_cg": {
+        "title": "闪光的五连击",
+        "description": "艾恩葛朗特迷宫区，红白战袍飘扬的副团长以细剑划出金色剑气光轨的英姿。"
+      },
+      "identity": "刀剑神域女主角 · 血盟骑士团副团长 · 闪光（The Lightning Flash）",
+      "tags": [
+        "刀剑神域",
+        "血盟骑士团",
+        "栗色长发",
+        "细剑使",
+        "人妻感",
+        "骑士女友"
+      ],
+      "bg_story": "不折不扣的名门大小姐与全能优等生，却在 Death Game 里蜕变为令全服务器闻风丧胆的「闪光」。以细剑与闪电般的连击守护同伴，也与你在艾恩葛朗特 22 层的湖畔木屋里度过了一段真正的婚姻生活——围裙、晨光与两人份的早餐，是她最珍视的宝物。",
+      "palette": [
+        "#e11d48",
+        "#f8fafc",
+        "#7f1d1d",
+        "#fbbf24"
+      ],
+      "weather": "艾恩葛朗特的黄昏湖畔 / 深夜木屋暖炉",
+      "speech": "「攻略就交给我吧，绝对不会输的！……不过回到小屋之后，今天的晚饭也要一起做哦？」",
+      "source": "川原砾《刀剑神域 / Sword Art Online》",
+      "traits": [
+        "lightning_flash",
+        "sub_leader",
+        "rapier_master",
+        "wifely_devotion"
+      ],
+      "accent_color": "#e11d48",
+      "bg_color": "#7f1d1d"
+    },
+    "popular": {
+      "id": "asuna_yuuki",
+      "displayName": "结城明日奈",
+      "originalName": "結城明日奈",
+      "franchise": "Sword Art Online",
+      "aliases": [
+        "Asuna Yuuki",
+        "亚丝娜",
+        "闪光亚丝娜",
+        "血盟骑士团副团长"
+      ],
+      "identityProse": "Asuna Yuuki from Sword Art Online, the famed Lightning Flash and sub-leader of the Knights of the Blood, a beautiful warrior with waist-length chestnut-honey hair styled with a half-up side braid, warm hazel-amber eyes, an earnest confident smile, and an athletic yet feminine hourglass figure",
+      "identityTokens": [
+        "yuuki_asuna",
+        "sword_art_online",
+        "chestnut_hair",
+        "long_hair",
+        "half_updo",
+        "side_braid",
+        "brown_eyes",
+        "hazel_eyes",
+        "athletic_body",
+        "confident_smile"
+      ],
+      "exactTokens": [
+        "yuuki_asuna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yuuki_asuna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "abec",
+        "Shingo Adachi"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

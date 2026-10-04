@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc173",
+  "revision": 1,
+  "sortOrder": 170,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the empty commander office lit by moonlight filtering through venetian blinds, Shiki Natsume sits on the edge of the cool desk with her pencil skirt hiked up to the waist, the sheer black tights completely ripped open exposing her pale thighs; both hands propped behind her, she pants and turns her head away with a shameful moan, the tear mole trembling under the sharp blind shadows.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc173",
+    "lighting": "百叶窗透进的月光",
+    "location": "特工指挥办公室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, pencil_skirt_unzipped, garter_straps, torn_thighhighs, laddering, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_office_desk, looking_away_embarrassed, heavy_blush, panting, night_office, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 职场OL裂丝高能】深夜空无一人的特工指挥中心办公室。高冷的职场OL夏目正面红耳赤地坐在冰凉的办公桌上，她身上的职业包臀裙已经被掀到了腰际，腿上那条性感的薄黑丝袜已经被你完全撕裂开来，露出了大片白皙细腻的绝对领域和大腿肌肤。她双手死死撑在身后，眼角的泪痣因为承受着极大的感官冲击而剧烈颤动，一边急促地娇喘，一边扭过头发出羞耻至极的呻吟——「哈啊...你这变态大笨蛋...把人家的丝袜扯成这样...准备怎么补偿我啊...嗯嗯...」",
+    "storyJa": "【夏目・職場OLの亀裂ハイエネルギー】シークレットサービス指令センターのオフィスは深夜には閑散としていた。寒い職場でOL夏目は顔を真っ赤にして冷たい机に座っています。彼女の体にあるプロ仕様のヒップ抱きスカートは腰まで持ち上げられています。彼女の脚のセクシーな薄い黒のストッキングは完全に引き裂かれ、白く繊細な絶対領域と太ももの皮膚が広範囲に露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
+    "tags": [
+      "mole_under_eye",
+      "pencil_skirt",
+      "skirt_hiked_up",
+      "torn_tights",
+      "sheer_black_tights",
+      "commander_office",
+      "sitting_on_desk",
+      "moonlight",
+      "blinds",
+      "full_body",
+      "heels"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "破损黑丝与特工的绝对防御崩溃",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

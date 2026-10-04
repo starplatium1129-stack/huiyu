@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "lala_bedroom_nightgown_tail_touch_giggle",
+  "revision": 1,
+  "sortOrder": 1238,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "侧卧床上被触碰尾巴尖端，满面通红蜷缩娇笑，薄纱睡裙半透雪肌，身姿曼妙",
+    "camera": "medium shot, bedside intimate framing, sensitive blush focus",
+    "category": "日常挑逗",
+    "characterId": "lala_satalin_deviluke",
+    "coverageTags": [
+      "bedroom"
+    ],
+    "description": "【菈菈 · 闺房薄纱睡裙的尾巴敏感小调】月光如水洒入的少女卧房大床上，菈菈侧卧在柔软蓬松的羽绒被中。她身穿半透明的薄透粉色丝绸睡裙，深V胸口大敞露出深邃事业线。梨斗不小心碰到了她尾巴末端的黑色爱心尖端，菈菈整个人猛地缩起双肩，满面通红地弓起腰肢，嘴里发出断续娇羞的轻笑喘息——「呀啊……！梨斗，尾巴……尾巴不行啦！碰那里的话……身体会变得麻酥酥的没有力气哦……！」",
+    "id": "lala_bedroom_nightgown_tail_touch_giggle",
+    "lighting": "窗外皎洁月华与床头暖色小夜灯交融的浪漫柔光",
+    "location": "女生卧房纯白大床被褥中央",
+    "mood": "娇羞敏感",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "pajamas_negligee",
+    "promptProse": "Curling up blushingly on soft white bedsheets in a translucent pink lace negligee, Lala shivers adorably as her sensitive spade tail is accidentally brushed. Moonlight through sheer curtains outlines her generous cleavage and flustered laughter in tender intimate warmth.",
+    "promptTokens": [
+      "bedroom_bed",
+      "nightgown",
+      "negligee",
+      "sheer_fabric",
+      "cleavage",
+      "demon_tail",
+      "heavy_blush",
+      "sensitive_tail",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "nightgown",
+      "negligee",
+      "sheer_clothing",
+      "demon_tail",
+      "sensitive",
+      "blushing",
+      "cleavage"
+    ],
+    "timeOfDay": "深夜",
+    "title": "菈菈 · 闺房薄纱睡裙的尾巴敏感小调"
+  }
+}

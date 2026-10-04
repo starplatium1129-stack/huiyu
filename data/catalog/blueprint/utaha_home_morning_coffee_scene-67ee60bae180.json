@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_home_morning_coffee_scene",
+  "revision": 1,
+  "sortOrder": 1432,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_home_morning_coffee_scene",
+    "title": "霞之丘诗羽 · 居家的咖啡与睡袍·「学姐模式，今天关机」",
+    "category": "居家日常",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【诗羽的公寓·周末上午】毒舌学姐难得关机。她穿着丝质睡袍窝在沙发里，黑发随意披散，捧着一杯冒热气的黑咖啡，杂志摊在膝上却一眼没看——「……你就坐那么远做什么。过来。学姐模式今天关机……只是一个想撒娇的女人而已，不许笑。」",
+    "location": "公寓客厅沙发",
+    "action": "睡袍窝沙发捧黑咖啡，披发红瞳慵懒，招手让你靠近",
+    "timeOfDay": "周末上午",
+    "lighting": "客厅落地窗的柔和晨光",
+    "camera": "medium shot, sofa lounging, coffee steam, lazy mood",
+    "mood": "卸下毒舌、慵懒撒娇",
+    "sceneTags": [
+      "living_room",
+      "sofa",
+      "silk_robe",
+      "coffee",
+      "morning",
+      "messy_hair",
+      "casual",
+      "daily"
+    ],
+    "promptProse": "Kasumigaoka Utaha curls up on her apartment sofa on a weekend morning in a silk robe, black hair loose without its headband, cradling steaming black coffee with a magazine open on her lap that she has not read once. She beckons you closer with lazy red eyes, declaring that senpai mode is switched off today and only a woman who wants to be spoiled remains, so you had better not laugh. Medium shot, cinematic lighting, morning glow, detailed apartment background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "silk_robe",
+      "nightgown",
+      "loose_clothes",
+      "sitting",
+      "holding_cup",
+      "coffee",
+      "messy_hair",
+      "hair_down",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "smile",
+      "living_room",
+      "sofa",
+      "morning",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "daily",
+      "girlfriend",
+      "morning"
+    ]
+  }
+}

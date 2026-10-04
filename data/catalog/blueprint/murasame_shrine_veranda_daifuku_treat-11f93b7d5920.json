@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_shrine_veranda_daifuku_treat",
+  "revision": 1,
+  "sortOrder": 1124,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双膝并拢端坐在走廊坐垫上，双手捧着草莓大福小口品尝，嘴角沾粉，眼神陶醉",
+    "camera": "medium shot, seated eye-level, intimate cozy framing",
+    "category": "日常甜美",
+    "characterId": "murasame",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【丛雨 · 神社回廊的草莓大福小憩】初夏午后阳光温暖的朝武家木质回廊上，微风拂动风铃发出叮咚脆响。丛雨双膝跪坐在木地板坐垫上，双手捧着一只软糯雪白的草莓大福。嘴角还沾着一小抹白色的糯米粉，两只红宝石般的眸子笑成了幸福的弯月牙，身后的神刀靠在柱旁，整个人洋溢着对人间美味无法抗拒的满足感。",
+    "id": "murasame_shrine_veranda_daifuku_treat",
+    "lighting": "檐角透入的温润暖金斜阳与庭院水池反射的清澈微光",
+    "location": "神社木质走廊日式缘侧",
+    "mood": "治愈甜美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "spirit_kimono",
+    "promptProse": "Sitting comfortably on a polished cedar shrine veranda during a breezy summer afternoon, Murasame happily nibbles a fresh strawberry daifuku pastry with both hands, a dusting of sweet rice flour at the corner of her mouth. Soft golden sunlight washes across her porcelain cheeks and the wooden wind chime chiming softly beside her.",
+    "promptTokens": [
+      "wooden_veranda",
+      "engawa",
+      "eating_pastry",
+      "daifuku",
+      "sitting",
+      "wind_chime",
+      "bare_shoulders",
+      "sweet_smile",
+      "detailed_background",
+      "cinematic_lighting",
+      "powder_on_mouth"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "veranda",
+      "engawa",
+      "daifuku",
+      "eating",
+      "sweet_smile",
+      "wind_chime",
+      "kimono",
+      "ahoge",
+      "powder_on_mouth"
+    ],
+    "timeOfDay": "午后",
+    "title": "丛雨 · 神社回廊的草莓大福小憩"
+  }
+}

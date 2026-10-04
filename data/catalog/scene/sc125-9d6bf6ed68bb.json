@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc125",
+  "revision": 1,
+  "sortOrder": 123,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
+    "camera": "平视俯瞰近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "巫女服绝对服从",
+    "id": "sc125",
+    "lighting": "传统纸灯笼朦胧暖光",
+    "location": "神社社务所客房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成年 After Story · 宁宁 · 巫女服解开极致工口】夏日祭典彻底结束后的神社后山厢房，空气里弥漫着榻榻米的清香。宁宁被迫穿上了神圣高雅的日式巫女服，此刻她已被你温柔地推倒在松软的被窝中央。纯白的巫女上衣被你解开并半褪至两侧手臂，露出了里面大片娇嫩泛红的雪白胴体与精致的丝织内衣，红色的绯裤也被掀到了腰际。她扯着宽大的纯白袖口死死遮住自己几乎融化的羞耻面颊，头顶的呆毛早已因为快感软瘫成工口的心形螺旋——「呜... 柊史... 竟然在社务所拆人家的巫女服...你这个大色狼绝对会遭天谴的啦...快点...抱紧我...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・巫女コスチュームが究極のエロティカを解き放つ】夏祭りが終わると、神社裏の山棟には畳の香りが漂います。寧々は、神聖で優雅な日本の魔女の衣装を着ることを強制されました。この瞬間、彼女はあなたによって柔らかいベッドの真ん中でそっと押し倒されました。純白の巫女のトップスのボタンを外して両腕に半分縛り、赤みを帯びた雪のように白く繊細な体と極上の絹の下着が広範囲に露わになった。赤い緋色のズボンも腰まで上げられていた。彼女は純白の広い袖口を引っ張り、恥ずかしさで溶けそうになった頬を覆った。頭の上のアホ毛はすでに快感で麻痺しており、口の中でハート型の螺旋を描いていた。――「もう、柊史……社務所で巫女服を引っ張るなんて、罰が当たりますよ。だから……早く、ちゃんと抱きしめてください。」",
+    "tags": [
+      "miko_uniform",
+      "disheveled_clothes",
+      "unbuttoned_shirt",
+      "cleavage",
+      "bare_shoulders",
+      "lying_on_bed",
+      "bare_legs",
+      "heavy_blush",
+      "tears_in_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "shrine",
+      "night",
+      "lantern_light",
+      "tatami",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "神圣领域的禁忌仪式",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "风铃微动"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "fiona_frost_tennis_bench_rest",
+  "revision": 1,
+  "sortOrder": 823,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost_tennis_bench_rest",
+    "characterId": "fiona_frost",
+    "title": "菲奥娜 · 赛场长椅微喘小憩",
+    "description": "【菲奥娜 · 赛场长椅微喘小憩】激烈战局的中场换边时刻，菲奥娜斜倚在球场边缘的木质长椅上。白毛巾搭在微热的香肩上，网球拍斜倚膝旁。无袖球衣下的胸脯随着微促的呼吸轻微起伏，洁白的百褶超短裙下展露出因运动而泛着健康淡粉色的紧致双腿。她单手拧开水壶仰头小饮，侧颜冷艳动人，汗水在聚光灯下闪烁如钻石。",
+    "outfitId": "tennis_sportswear",
+    "category": "运动休闲",
+    "location": "网球场边休息长椅",
+    "action": "侧坐在长椅上披着毛巾小口饮水，双腿微伸",
+    "timeOfDay": "夜晚",
+    "lighting": "球场侧后方的柔和泛光灯",
+    "camera": "wide shot",
+    "mood": "从容休憩",
+    "sceneTags": [
+      "tennis_court",
+      "bench",
+      "drinking_water",
+      "towel_around_neck",
+      "sweaty",
+      "athletic_legs",
+      "spotlight",
+      "rest_break"
+    ],
+    "promptProse": "Resting during an interval beside the tennis court, Fiona Frost sits sideways along a painted wooden bench with a clean white towel draped around her neck. Her white tennis skirt fans across the slatted seat while her long athletic legs stretch outward toward the baseline. Overhead court spotlights highlight the glistening sheen of perspiration on her bare collarbones and arms as she takes a quiet sip from an aluminum water flask. Wide horizontal composition capturing her poised athletic rest.",
+    "promptTokens": [
+      "tennis_court",
+      "wooden_bench",
+      "sitting_sideways",
+      "towel_on_shoulders",
+      "water_bottle",
+      "sweat_sheen",
+      "pleated_skirt",
+      "tennis_racket",
+      "spotlight",
+      "wide_shot",
+      "athletic_beauty"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "kind": "character",
+  "id": "komine_sachi",
+  "revision": 1,
+  "sortOrder": 89,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "komine_sachi",
+    "profile": {
+      "id": "komine_sachi",
+      "name": "小岭幸",
+      "alias": [
+        "Komine Sachi",
+        "小嶺幸",
+        "幸",
+        "全能女仆",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🧹",
+      "portrait": {
+        "image": "../assets/characters/popular-komine_sachi.png?v=5",
+        "alt": "小岭幸 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉色短发 · 双侧小麻花辫 · 斜刘海",
+        "hair_color": "柔和樱粉",
+        "eyes": "纯净剔透天空蓝眼眸",
+        "hairstyle": "短发双小辫 · 荷叶边女仆发箍 · 黑色发带",
+        "uniform": "经典法式黑白荷叶边女仆装 / 美浜学园学生制服",
+        "expression": "毕恭毕敬 · 温柔顺从 · 天然认真",
+        "style": "dutiful obedient maid archetype",
+        "signature": "粉色短发双小辫、白色荷叶边发箍、经典女仆围裙与鲨鱼抱枕"
+      },
+      "personality": [
+        "无条件顺从命令的绝对执行者",
+        "家务打扫、机械修理与爆破全能",
+        "待人礼貌恭敬，随时面带得体的微笑",
+        "因为过去的心理阴影，把“做好孩子”当做绝对信条",
+        "其实是雄二的青梅竹马，深爱着曾经给予她希望的雄二"
+      ],
+      "likes": [
+        "将美浜学园的每个角落打扫得一尘不染",
+        "收集可爱的鲨鱼公仔与周边",
+        "制作各种小点心与茶水",
+        "遵从雄二下达的任何指令"
+      ],
+      "classic_cg": {
+        "title": "晨光长廊的恭敬屈膝",
+        "description": "美浜学园清晨静谧的长廊中，粉发女仆双手轻挽裙摆深情行礼，阳光在女仆蕾丝上勾勒出纯洁光晕。"
+      },
+      "identity": {
+        "role": "美浜学园一年级生 / 美浜专属女仆兼班长",
+        "age": "高中一年生",
+        "occupation": "学生女仆 / 班长",
+        "faction": "美浜学园"
+      },
+      "tags": [
+        "粉发",
+        "短发双辫",
+        "蓝瞳",
+        "女仆装",
+        "围裙",
+        "绝对服从",
+        "青梅竹马",
+        "灰色的果实"
+      ],
+      "bg_story": "小岭幸是《灰色的果实》的主要女主角之一，美浜学园全校第一的优等生，同时也是学园里唯一的专职女仆。过去因家庭矛盾自责而封闭情感，发誓做个“百依百顺的好孩子”。事实上她正是雄二童年时期的青梅竹马，一直默默珍藏着雄二送给她的定情信物，是个动手能力极强、甚至能自制防爆工具的硬核女仆。",
+      "palette": [
+        "樱花粉",
+        "女仆黑",
+        "纯洁白"
+      ],
+      "weather": [
+        "晨光清丽",
+        "午后晴空",
+        "微雨长廊"
+      ],
+      "speech": "早上好，雄二先生。学园内的所有打扫与早茶已准备完毕。只要是您的命令，幸都会全力以赴执行。",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "komine_sachi",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "two_side_up",
+        "blue_eyes",
+        "maid",
+        "maid_dress",
+        "large_breasts",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#f472b6",
+      "bg_color": "#1a0d18"
+    },
+    "popular": {
+      "id": "komine_sachi",
+      "displayName": "小岭幸",
+      "originalName": "小嶺 幸 (Komine Sachi)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "komine_sachi",
+        "sachi",
+        "sachi_(grisaia)",
+        "小岭幸",
+        "幸",
+        "女仆幸",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Komine Sachi from Grisaia by Frontwing, the polite and unconditionally obedient maid of Mihama Academy with short pastel pink hair styled in two sweet low side braids, swept bangs, bright innocent blue eyes, polite demure smile, and a curvaceous figure beneath her maid apron.",
+      "identityTokens": [
+        "komine_sachi",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "swept_bangs",
+        "two_side_up",
+        "hair_bow",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "komine_sachi"
+      ],
+      "exactPrefixes": [
+        "sachi_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "美浜学园 · 专属女仆",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园的女仆兼学生，成绩全校第一；因过去家庭悲剧而封闭自我，坚守“绝对服从所有要求”的准则，家务与动手能力堪比工程兵，随身携带着防爆工具与自制爆炸物",
+        "research": "2026-09-02 调研（Danbooru komine_sachi 240+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "kappe",
+        "mika_pikazo"
+      ]
+    }
+  }
+}

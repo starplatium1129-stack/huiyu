@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/standard",
+  "revision": 1,
+  "sortOrder": 300,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "龙门近卫局制服",
+      "prose": "her blue-and-black short-sleeve stand-collar tactical jacket over a white shirt with a black tie, a black pleated skirt, knee-high socks and combat boots, twin swords at her back",
+      "tokens": [
+        "jacket",
+        "short_sleeves",
+        "stand_collar",
+        "white_shirt",
+        "necktie",
+        "pleated_skirt",
+        "kneehighs",
+        "combat_boots",
+        "twin_swords",
+        "military_uniform"
+      ]
+    }
+  }
+}

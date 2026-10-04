@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/ceremonial_dance",
+  "revision": 1,
+  "sortOrder": 626,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "default": false,
+      "id": "ceremonial_dance",
+      "isDefault": false,
+      "name": "奉纳神乐华彩神装",
+      "prose": "elaborate Shinto ceremonial kagura dance attire: an opulent white silk kimono gown trimmed with gilded cloud patterns, trailing pink brocade haori, golden kagura bell staff held in two hands, and fluffy white dog ears sprouting adorably from her silver hair under ancestral enchantment",
+      "tokens": [
+        "kimono",
+        "haori",
+        "white_kimono",
+        "gold_trim",
+        "wide_sleeves",
+        "bells",
+        "dog_ears",
+        "animal_ears",
+        "hair_flower",
+        "dance",
+        "shinto"
+      ]
+    }
+  }
+}

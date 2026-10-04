@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "togawa_sakiko",
+  "revision": 1,
+  "sortOrder": 159,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "togawa_sakiko",
+    "profile": {
+      "id": "togawa_sakiko",
+      "name": "丰川祥子",
+      "alias": [
+        "丰川祥子",
+        "Sakiko Togawa"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-togawa_sakiko.png?v=4f1d3dbfdccd",
+        "alt": "丰川祥子 · 观众席上的乐团起点场景样张"
+      },
+      "visual_dna": {
+        "signature": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+        "hair": "blue_hair, hair_ribbon, long_hair",
+        "eyes": "yellow_eyes",
+        "uniform": "音乐教室端正制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "重视礼节与体面，对音乐抱有强烈决心",
+        "承受压力时倾向于独自维持秩序，不轻易示弱",
+        "练琴时专注细致，微小进步也能让紧绷神态短暂放松"
+      ],
+      "likes": [
+        "钢琴与键盘",
+        "推敲曲谱",
+        "安静聆听乐团演出"
+      ],
+      "classic_cg": {
+        "title": "丰川祥子 · 月之森音乐祭的憧憬",
+        "description": "初三的她在月之森音乐祭观众席仰望 Morfonica 的舞台，琥珀色的眼睛被舞台灯光点亮；「我也要组乐队」——一切开始的瞬间。"
+      },
+      "identity": "BanG Dream! · 丰川祥子",
+      "tags": [
+        "丰川祥子",
+        "BanG Dream!／少女乐团派对",
+        "日常"
+      ],
+      "bg_story": "把音乐看得十分认真的键盘手，在端正外表下承受着生活与创作的压力。蓝发双侧发束、发带与金色眼睛为识别点，本批关注学习、工作和乐团练习。",
+      "palette": [
+        "#9facd1",
+        "#282532"
+      ],
+      "source": "BanG Dream!",
+      "speech": "这一小节，再从头练一次。",
+      "traits": [
+        "togawa_sakiko",
+        "bang_dream!",
+        "blue_hair",
+        "two_side_up",
+        "hair_ribbon"
+      ],
+      "accent_color": "#9facd1",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "togawa_sakiko",
+      "displayName": "丰川祥子",
+      "originalName": "Sakiko Togawa",
+      "franchise": "BanG Dream!",
+      "aliases": [
+        "丰川祥子",
+        "Sakiko Togawa"
+      ],
+      "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+      "identityTokens": [
+        "togawa_sakiko",
+        "bang_dream!",
+        "blue_hair",
+        "two_side_up",
+        "hair_ribbon",
+        "yellow_eyes",
+        "long_hair"
+      ],
+      "exactTokens": [
+        "togawa_sakiko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, togawa_sakiko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

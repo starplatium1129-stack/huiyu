@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "mouri_ran",
+  "revision": 1,
+  "sortOrder": 133,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "mouri_ran",
+    "profile": {
+      "id": "mouri_ran",
+      "name": "毛利兰",
+      "alias": [
+        "毛利兰",
+        "Ran Mouri"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-mouri_ran.png?v=9cd5568f5619",
+        "alt": "毛利兰 · 空手道社的晨训场景样张"
+      },
+      "visual_dna": {
+        "signature": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",
+        "hair": "black_hair, long_hair, hair_horn",
+        "eyes": "blue_eyes",
+        "uniform": "空手道训练道服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "温柔体贴，习惯主动照料家庭与朋友",
+        "遇到危险会勇敢行动，不因善良而缺少判断",
+        "运动时专注坚定，日常也有少女式的期待与烦恼"
+      ],
+      "likes": [
+        "空手道练习",
+        "为家人做饭",
+        "和朋友逛商店街"
+      ],
+      "classic_cg": {
+        "title": "毛利兰 · 空手道社的晨训",
+        "description": "清晨道场，她扎起头发穿着道服练习正拳，动作干净利落；朝阳从道场高窗斜照进来，汗水与呼出的白气——「主将」二字的说服力全在这一帧。"
+      },
+      "identity": "Detective Conan · 毛利兰",
+      "tags": [
+        "毛利兰",
+        "名侦探柯南",
+        "日常"
+      ],
+      "bg_story": "毛利侦探事务所里可靠的家人，也是空手道社的主将。角状发尖、温柔眼神与果断动作共同构成形象，日常既有料理和学习，也有等待与信任。",
+      "palette": [
+        "#a9a1d0",
+        "#282532"
+      ],
+      "source": "Detective Conan",
+      "speech": "晚饭快好了，记得早点回来。",
+      "traits": [
+        "mouri_ran",
+        "meitantei_conan",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "accent_color": "#a9a1d0",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "mouri_ran",
+      "displayName": "毛利兰",
+      "originalName": "Ran Mouri",
+      "franchise": "Detective Conan",
+      "aliases": [
+        "毛利兰",
+        "Ran Mouri"
+      ],
+      "identityProse": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",
+      "identityTokens": [
+        "mouri_ran",
+        "meitantei_conan",
+        "black_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_horn"
+      ],
+      "exactTokens": [
+        "mouri_ran"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, mouri_ran"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

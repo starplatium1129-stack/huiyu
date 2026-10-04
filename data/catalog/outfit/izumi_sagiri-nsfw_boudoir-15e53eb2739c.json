@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 861,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "和泉纱雾·成人私密造型",
+      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "tokens": [
+        "private_lingerie",
+        "sheer_lace",
+        "soft_shadows"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

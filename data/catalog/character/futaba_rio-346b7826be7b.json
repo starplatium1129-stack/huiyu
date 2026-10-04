@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "futaba_rio",
+  "revision": 1,
+  "sortOrder": 145,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "futaba_rio",
+    "profile": {
+      "id": "futaba_rio",
+      "name": "双叶理央",
+      "alias": [
+        "双叶理央",
+        "Rio Futaba"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-futaba_rio.png?v=7bdb3383cb71",
+        "alt": "双叶理央 · 实验室的烧杯咖啡场景样张"
+      },
+      "visual_dna": {
+        "signature": "Rio Futaba from Rascal Does Not Dream, a thoughtful science-club member with long wavy grey-brown hair and brown eyes. Her practical glasses and reserved movements fit the selected school or study outfit.",
+        "hair": "grey_hair, long_hair, wavy_hair",
+        "eyes": "brown_eyes",
+        "uniform": "科学部校服与白大褂",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "以观察与验证整理困惑，讲话直接而克制",
+        "外表理性，面对自己的心事也会犹豫",
+        "帮助朋友时认真可靠，关心常藏在实际行动里"
+      ],
+      "likes": [
+        "科学部的研究时间",
+        "整理实验笔记",
+        "休息区的一杯咖啡"
+      ],
+      "classic_cg": {
+        "title": "双叶理央 · 实验室的烧杯咖啡",
+        "description": "放学后的科学部休息桌，理央放下一只烧杯造型的干净咖啡杯，白大褂袖口挽好，长发扎起。实验用品与食物分区放置，她对着咖啡和合起的笔记短暂放松，夕阳照亮眼镜后的棕瞳。"
+      },
+      "identity": "Rascal Does Not Dream of Bunny Girl Senpai · 双叶理央",
+      "tags": [
+        "双叶理央",
+        "青春猪头少年不会梦到兔女郎学姐",
+        "日常"
+      ],
+      "bg_story": "科学部成员，习惯用理性分析整理疑问，也会在独处时显露细腻感受。长发、棕瞳与眼镜为识别重点，实验外的读书、咖啡和观星体现她的兴趣。",
+      "palette": [
+        "#b1acbd",
+        "#282532"
+      ],
+      "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "speech": "先整理观察结果，再考虑解释。",
+      "traits": [
+        "futaba_rio",
+        "seishun_buta_yarou",
+        "grey_hair",
+        "long_hair",
+        "wavy_hair"
+      ],
+      "accent_color": "#b1acbd",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "futaba_rio",
+      "displayName": "双叶理央",
+      "originalName": "Rio Futaba",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "aliases": [
+        "双叶理央",
+        "Rio Futaba"
+      ],
+      "identityProse": "Rio Futaba from Rascal Does Not Dream, a thoughtful science-club member with long wavy grey-brown hair and brown eyes. Her practical glasses and reserved movements fit the selected school or study outfit.",
+      "identityTokens": [
+        "futaba_rio",
+        "seishun_buta_yarou",
+        "grey_hair",
+        "long_hair",
+        "wavy_hair",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "futaba_rio"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, futaba_rio"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

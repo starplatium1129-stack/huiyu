@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "mash_kyrielight",
+  "revision": 1,
+  "sortOrder": 57,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "mash_kyrielight",
+    "profile": {
+      "id": "mash_kyrielight",
+      "name": "玛修",
+      "alias": [
+        "Mash Kyrielight",
+        "マシュ・キリエライト",
+        "Shielder"
+      ],
+      "type": "popular",
+      "icon": "🛡️",
+      "portrait": {
+        "image": "../assets/characters/popular-mash_kyrielight.png?v=5",
+        "alt": "玛修 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉紫色短发（遮住右眼）",
+        "hair_color": "粉紫",
+        "eyes": "紫色",
+        "hairstyle": "齐肩短发 · 刘海遮右眼",
+        "uniform": "迦勒底便服：黑裙 / 灰外套 / 红领结 / 眼镜",
+        "expression": "温柔认真的亚从者少女 · 战斗时眼神坚定",
+        "style": "demi-servant violet",
+        "signature": "粉紫短发、紫瞳与十字大盾"
+      },
+      "personality": [
+        "温柔认真",
+        "勇敢坚定",
+        "天然",
+        "以守护为使命",
+        "会害羞"
+      ],
+      "likes": [
+        "守护前辈",
+        "读书",
+        "收集资料",
+        "训练",
+        "甜点"
+      ],
+      "classic_cg": {
+        "title": "圆桌之盾",
+        "description": "模拟战场的全息光中，粉紫短发的少女举起十字大盾挡在队友身前，紫瞳燃着战意。"
+      },
+      "identity": {
+        "role": "亚从者（Shielder）",
+        "age": "主线开场 15 岁 · 第 2 部 18 岁",
+        "occupation": "迦勒底从者",
+        "faction": "Fate/Grand Order · 迦勒底"
+      },
+      "tags": [
+        "粉紫短发",
+        "紫瞳",
+        "十字盾",
+        "红领结",
+        "亚从者"
+      ],
+      "bg_story": "玛修·基列莱特是《Fate/Grand Order》中迦勒底的亚从者少女，融合了加拉哈德英灵之力的 Shielder（盾兵），与前辈（藤丸立香）一同跨越七大特异点与七大异闻带。从最初生命短暂、缺乏人类情感认知的试管婴儿，在漫长旅途中逐渐体会到世界的美好、守护的意义以及对生命的渴望与热爱。平日里是礼貌端庄、抱着厚厚资料协助日常的贴心学妹，战斗时则会毫不犹豫地举起如山峦般坚不可摧的十字大盾「Lord Chaldeas」挡在前辈身前。场景应突出迦勒底机构日常的温馨治愈与战场守护的坚定决绝——模拟训练场、走廊夜话、阳光休息室与海岛木屋，紫罗兰与纯白是她的主色。",
+      "palette": [
+        "紫罗兰",
+        "黑",
+        "灰"
+      ],
+      "weather": [
+        "迦勒底走廊",
+        "模拟战场",
+        "常夏海滩"
+      ],
+      "speech": "玛修抱着资料向你行礼——「前辈，今天也要一起努力哦。」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "mash_kyrielight",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "hair_over_one_eye",
+        "purple_eyes",
+        "demi_servant",
+        "shield",
+        "fgo"
+      ],
+      "accent_color": "#6A4FA3",
+      "bg_color": "#120f1f",
+      "series": "TYPE-MOON《Fate 系列》"
+    },
+    "popular": {
+      "id": "mash_kyrielight",
+      "displayName": "玛修",
+      "originalName": "Mash Kyrielight",
+      "franchise": "Fate",
+      "aliases": [
+        "mash_kyrielight",
+        "mash",
+        "matthew kyrielight",
+        "fgo",
+        "shielder"
+      ],
+      "identityProse": "Mash Kyrielight from Fate/Grand Order, a petite Demi-Servant girl with short pink-lavender hair covering her right eye, violet eyes, and a gentle devoted smile",
+      "identityTokens": [
+        "mash_kyrielight",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "hair_over_one_eye",
+        "purple_eyes",
+        "demi_servant",
+        "fgo"
+      ],
+      "exactTokens": [
+        "mash_kyrielight"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "人理保障机构迦勒底（近未来）",
+        "era": "近未来科幻",
+        "formNotes": "盾牌=Lord Chaldeas；紫瞳粉紫发=标识色；亚从者=Shielder；强调色 #6A4FA3 紫罗兰",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "lack",
+        "rella"
+      ]
+    }
+  }
+}

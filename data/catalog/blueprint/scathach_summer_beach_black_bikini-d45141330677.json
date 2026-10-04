@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_summer_beach_black_bikini",
+  "revision": 1,
+  "sortOrder": 246,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_summer_beach_black_bikini",
+    "title": "斯卡哈 · 夏海黑纱的女王度假·「晒黑了？无妨，反正很快会复原」",
+    "category": "海滨度假",
+    "characterId": "scathach_fate",
+    "description": "【南方群岛的碧海·正午】黑色细带比基尼勾勒出斯卡哈经年武艺淬炼出的完美身段，紫色的薄纱罗裙在腰际松松打结。她斜倚在沙滩遮阳伞下，长发铺满白沙如夜色倾泻，指间摇晃着一杯冰镇果汁——「不死者连晒伤都不会有……不过，你若想替我补涂防晒，倒也不必客气。」",
+    "location": "南方群岛白沙海滩",
+    "action": "斜倚遮阳伞下摇晃果汁，黑比基尼紫纱裙，长发铺白沙望向你",
+    "timeOfDay": "正午",
+    "lighting": "炽白阳光与碧海反光，肌肤泛着健康光泽",
+    "camera": "medium shot, lounging under parasol, tropical sea sparkle, teasing mood",
+    "mood": "女王惬意、挑逗从容",
+    "sceneTags": [
+      "tropical_beach",
+      "parasol_shade",
+      "resting_on_towel",
+      "iced_fruit_juice",
+      "holding_glass",
+      "supporting_forearm",
+      "black_bikini",
+      "violet_sarong",
+      "summer_light",
+      "medium_shot"
+    ],
+    "promptProse": "Beneath a beach parasol on the white sand, Scathach rests at a comfortable angle and holds a glass of iced fruit juice in one hand. Her other forearm supports the relaxed pose on a folded beach towel. The black bikini with gold ring details and a violet sarong retain the chosen summer outfit, while long purple hair lies clear of the drink. She looks toward the viewer with an easy, confident smile as the tropical sea sparkles beyond the shade. Use the horizontal frame to keep the glass, supported posture and beach setting together. No lettering.",
+    "promptTokens": [
+      "tropical_beach",
+      "parasol_shade",
+      "resting_on_towel",
+      "iced_fruit_juice",
+      "holding_glass",
+      "supporting_forearm",
+      "black_bikini",
+      "violet_sarong",
+      "summer_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "summer_swimsuit_assassin",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ]
+  }
+}

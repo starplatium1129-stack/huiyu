@@ -1,0 +1,76 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_r18_futon_cowgirl_straddle",
+  "revision": 1,
+  "sortOrder": 1177,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_r18_futon_cowgirl_straddle",
+    "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
+    "category": "深层欢愉",
+    "characterId": "kazami_kazuki",
+    "outfitId": "white_dress",
+    "coverageTags": [
+      "cowgirl"
+    ],
+    "description": "【风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏】深夜静谧的卧室内，一姬身上的白色睡裙下摆被拉起堆在小腹上，露出光洁白皙的修长美腿。她罕见地微红着脸主动跨坐在恋人腹部上方，双手按在恋人胸膛借力。及膝的银白秀发如飞瀑般披散在身后，她挺动纤细柔软的柳腰上下轻柔起伏，深红美眸泛着羞涩与爱意凝视着恋人——「在上面侍奉你……也是身为姐姐的职责……哈啊……好舒服……」",
+    "location": "纯白棉被坐席中央骑乘姿势",
+    "action": "白裙拉起跨坐骑乘，双手抵胸，主动轻柔起伏套弄，银发翻飞，红瞳含羞俯视",
+    "timeOfDay": "深夜",
+    "lighting": "床头暖橙地灯照耀在起伏的雪肤与银白发丝上的温润反光",
+    "camera": "straddling pov, looking up at delicate face and flowing silver hair",
+    "mood": "极乐沉沦",
+    "sceneTags": [
+      "cowgirl_position",
+      "straddling",
+      "white_dress",
+      "white_hair",
+      "very_long_hair",
+      "red_eyes",
+      "heavy_blush"
+    ],
+    "promptProse": "A shaded lamp surrounds adult Kazami Kazuki seated alone astride a narrow futon bolster. Her white blouse is open beneath bare breasts and a dark skirt gathers at the waist above black stockings. She rests one hand on her thigh and fingers herself with the other while a closed medical case anchors the room. Long black hair frames cool violet eyes, wet lashes and a controlled blush. Vertical single-subject portrait, no text or extra people.",
+    "promptTokens": [
+      "cowgirl_position",
+      "straddling",
+      "white_dress",
+      "white_hair",
+      "very_long_hair",
+      "red_eyes",
+      "flat_chest",
+      "heavy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_bedroom",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [
+      "cowgirl",
+      "straddling",
+      "white_hair",
+      "red_eyes",
+      "heavy_blush"
+    ],
+    "nsfwProse": ""
+  }
+}

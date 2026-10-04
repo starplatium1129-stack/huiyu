@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "caren_summer_poolside_white_swimsuit",
+  "revision": 1,
+  "sortOrder": 276,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_summer_poolside_white_swimsuit",
+    "title": "卡莲 · 盛夏泳池白泳装的休日午后",
+    "category": "夏日休日",
+    "characterId": "caren_hortensia",
+    "outfitId": "sacred_white_swimsuit",
+    "description": "【卡莲 · 盛夏泳池白泳装的休日午后】盛夏休日的教会学校泳池，蝉鸣与水声交织。卡莲罕见地换下了庄重的祭服，穿着圣洁纯白的高开叉竞速泳装坐在池边，把白皙的脚尖轻轻浸在波光里。侧腰的开衩勾勒出她纤细又匀称的身段，银白短发用发夹别在耳后。她单手撑着池畔回眸，琥珀色的眼眸里带着一丝促狭的笑意——「难得的休日哦。要不要陪我一起泡水？放心，今天的布道……改成了水中的告白。」",
+    "location": "盛夏骄阳下的教会学校泳池池畔",
+    "action": "坐在池畔单手撑地回眸，脚尖点水漾起涟漪，泳装侧衩勾勒身段促狭浅笑",
+    "timeOfDay": "盛夏午后",
+    "lighting": "高照度夏日阳光在池面折射的粼粼光斑",
+    "camera": "cowboy shot, eye level, sunny poolside portrait",
+    "mood": "清冷中带着休日的松弛",
+    "sceneTags": [
+      "swimming_pool",
+      "summer",
+      "sunny_day",
+      "white_swimsuit",
+      "competition_swimsuit",
+      "sitting",
+      "pool_edge",
+      "teasing_smile",
+      "looking_back"
+    ],
+    "promptProse": "Sitting at the edge of a sun-drenched church-school pool on a high-summer holiday, Caren Hortensia has traded her solemn habit for her sacred white high-cut competitive swimsuit. Her pale toes dip lazily into the shimmering water, the high-cut hip line tracing her slender silhouette as she props herself up on one hand to glance back, a rare, mischievous smile playing on her lips beneath neatly clipped silver hair. Luminous, peaceful anime visual novel art, solo 1girl, no text.",
+    "promptTokens": [
+      "swimming_pool",
+      "summer",
+      "sunny_day",
+      "white_swimsuit",
+      "competition_swimsuit",
+      "sitting",
+      "pool_edge",
+      "feet_in_water",
+      "white_hair",
+      "yellow_eyes",
+      "teasing_smile",
+      "looking_back",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "iconic",
+      "summer",
+      "poolside"
+    ]
+  }
+}

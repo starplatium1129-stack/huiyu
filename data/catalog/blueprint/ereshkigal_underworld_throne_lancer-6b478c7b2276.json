@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ereshkigal_underworld_throne_lancer",
+  "revision": 1,
+  "sortOrder": 264,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ereshkigal_underworld_throne_lancer",
+    "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
+    "category": "战斗高光",
+    "characterId": "ereshkigal_fate",
+    "description": "【冥界·库萨尔王座厅】幽蓝的灵魂之火在无垠的黑暗里漂浮，埃列什基伽勒端坐在巨大的王座上，金色的长发与王冠在幽光里泛着冷冽的美。枪型宝具发热神殿（Meslamtaea）立在身侧，她俯视着来客，红瞳里盛着千年孤独——「欢迎来到冥界。这里……就是我的全部国土。觉得阴森的话，现在退出还来得及哦。」",
+    "location": "冥界库萨尔王座厅",
+    "action": "端坐王座，一手轻扶立在身侧的枪型宝具发热神殿，另一手放扶手上",
+    "timeOfDay": "冥界永夜",
+    "lighting": "幽蓝灵魂之火与金色王冠的冷冽对比",
+    "camera": "throne room wide shot, seated goddess, soul fire glow, lonely majesty",
+    "mood": "孤独女王、幽美威严",
+    "sceneTags": [
+      "underworld_throne",
+      "sitting_upright",
+      "meslamtaea",
+      "upright_spear",
+      "hand_on_armrest",
+      "black_dress",
+      "blue_ribbons",
+      "golden_tiara",
+      "soul_fire_light",
+      "wide_shot"
+    ],
+    "promptProse": "Ereshkigal sits upright on the great throne while blue soul fires drift through the dark hall. The ornate spear-shaped Noble Phantasm Meslamtaea stands on the floor beside her, steadied by one hand; the other rests on the throne arm. Her black dress, pale blue ribbons and golden tiara catch the ghostly light around her long blonde twintails. She looks toward the visitor with restrained welcome and a trace of loneliness in her red eyes. Use a wide view that keeps her hands, supported weapon and throne clearly related. No lettering.",
+    "promptTokens": [
+      "underworld_throne",
+      "sitting_upright",
+      "meslamtaea",
+      "upright_spear",
+      "hand_on_armrest",
+      "black_dress",
+      "blue_ribbons",
+      "golden_tiara",
+      "soul_fire_light",
+      "wide_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "official_lancer_attire",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ]
+  }
+}

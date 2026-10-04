@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc022",
+  "revision": 1,
+  "sortOrder": 21,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At the low apartment table holding an open photo album, Shiki Natsume rests her cheek on one palm with a nostalgic smile. Warm spring afternoon window light highlights her sheer black tights with glossy thigh sheen, smooth thighs at the plaid hem, and brown loafers fully visible on the wooden floor.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "思念",
+    "id": "sc022",
+    "lighting": "春日下午窗光",
+    "location": "公寓书房",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, classroom, upper_body",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_natsume_winter_casual_with_cream_oversized_cardigan_over_white_blouse_and_plaid_miniskirt, sheer_black_tights_with_glossy_thigh_sheen_and_calf_contours, smooth_thighs_at_hem_with_soft_pressure_line, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_on_apartment_wooden_floor, sitting_at_low_apartment_table_holding_open_photo_album_with_both_hands, resting_cheek_on_palm_with_nostalgic_soft_smile, warm_spring_afternoon_window_light_with_soft_shadows, cinematic_depth_of_field, graceful_neck_and_slender_fingers, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "春",
+    "story": "【夏目 · 相册停留的那一页】春日午后，夏目在公寓整理大学毕业相册，翻到有你的小组照时停了很久。照片里的她仍刻意站得离人群稍远，目光却正好落在你身上。你从身后靠近，她立刻合上相册，却没有真正收走——「只是确认照片有没有拍糊。想看的话坐过来……但不准分析我的视线。」",
+    "storyJa": "【夏目・フォトアルバムが置かれているページ】春の午後、夏目はアパートで大学の卒業写真アルバムを整理していました。彼女はあなたの集合写真に目を向けたとき、長い間立ち止まりました。写真の中で、彼女はまだ人混みから意図的に少し離れて立っていますが、彼女の目はあなたに向かっています。あなたが後ろから近づくと、彼女はすぐにアルバムを閉じましたが、実際にはアルバムを取り上げませんでした。――「写真がぶれていないか確認していただけ。見たいならこっちに座って……でも、私の視線まで分析するのは禁止。」",
+    "tags": [
+      "mole_under_eye",
+      "photo_album",
+      "sitting_at_desk",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "apartment",
+      "window_light",
+      "nostalgic",
+      "loafers",
+      "depth_of_field",
+      "medium_shot",
+      "closed_photo_album"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "相册停留的那一页",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

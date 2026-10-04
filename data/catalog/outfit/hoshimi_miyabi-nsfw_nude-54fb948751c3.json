@@ -1,0 +1,34 @@
+{
+  "kind": "outfit",
+  "id": "hoshimi_miyabi/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 591,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshimi_miyabi",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, twitching white fox ears with dark ear tufts, large luxurious fluffy white fox tail curled alongside her thighs, bare feet, soft moonlight ambience",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "medium_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "fox_ears",
+        "fox_tail",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_snowy_shrine_shiromuku_vow",
+  "revision": 1,
+  "sortOrder": 1295,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_snowy_shrine_shiromuku_vow",
+    "title": "姬岛朱乃 · 白雪神社的纯白无垢",
+    "category": "纯白誓约",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 白雪神社的纯白无垢】冬日落雪纷飞的神社庭院里，万籁俱寂。朱乃身披传统华贵的日本新娘“白无垢”和服，头戴纯白角隐，雪花静静落在她的肩头与长发上。她微微揭开角隐的一角，露出一张美到令人窒息的含羞脸庞，眼尾微翘泛着绯红，双手交叠于袖前深深向你行礼——「从今天起，不管是雷电还是阴霾，朱乃都会一直在您身边守护您。」",
+    "location": "银装素裹、静谧落雪的冬日神社古庭",
+    "action": "身着传统白无垢新娘服，双手交叠在袖前微微躬身行礼，眼神含情脉脉微带娇羞",
+    "timeOfDay": "雪后晴晨",
+    "lighting": "纯白雪地折射的清冽纯净光线",
+    "camera": "cowboy shot, eye level, solemn and romantic",
+    "mood": "神圣纯爱",
+    "sceneTags": [
+      "snow",
+      "shrine_garden",
+      "falling_snow",
+      "shiromuku",
+      "white_kimono",
+      "bridal_kimono",
+      "traditional_japanese",
+      "bowing",
+      "shy_smile",
+      "blush"
+    ],
+    "promptProse": "Surrounded by softly falling snow in a quiet winter shrine garden, Akeno Himejima stands resplendent in traditional Japanese bridal Shiromuku attire. The immaculate white silk kimono with delicate crane embroidery frames her porcelain face, her black hair styled in traditional elegance. Her cheeks blush with tender bashfulness as she gazes at the viewer with eternal devotion. Ethereal, romantic anime visual novel style, solo 1girl, no text.",
+    "promptTokens": [
+      "winter_shrine",
+      "snowing",
+      "snow_ground",
+      "shiromuku",
+      "traditional_kimono",
+      "white_kimono",
+      "bridal_attire",
+      "hands_folded",
+      "gentle_bow",
+      "heavy_blush",
+      "blushing_ears",
+      "purple_eyes",
+      "cowboy_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_white_shiromuku",
+    "coverageTags": [
+      "bridal",
+      "vow",
+      "snow"
+    ]
+  }
+}

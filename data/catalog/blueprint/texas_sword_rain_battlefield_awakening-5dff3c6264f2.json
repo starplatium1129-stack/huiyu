@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "texas_sword_rain_battlefield_awakening",
+  "revision": 1,
+  "sortOrder": 660,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手持剑凌空挥斩，周身金色源石剑阵万剑齐发从天而降",
+    "camera": "cowboy shot, dynamic low angle, epic action",
+    "category": "战场决胜",
+    "characterId": "texas_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【德克萨斯 · 剑雨降临万物肃杀】荒芜焦黑的源石战场中央，狂暴的气流激荡。德克萨斯拔剑出鞘，双眸中闪耀着璀璨的金芒。随着她的剑指挥下，虚空中数百柄璀璨的金色源石光剑如暴雨般轰然坠落，将敌阵瞬间贯穿封锁——「剑雨，肃清。」",
+    "id": "texas_sword_rain_battlefield_awakening",
+    "lighting": "金色剑雨爆裂强光与夕阳血色天幕",
+    "location": "泰拉荒野源石感染重灾战场",
+    "mood": "霸气凌厉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "penguin_logistics",
+    "promptProse": "In the center of a scarred desolate wasteland battlefield at crimson sunset, Texas unleashes her devastating Originium Arts in a magnificent display of lethal power. She lunges forward with dual luminous golden swords, her amber eyes glowing with focused intensity as a cascading storm of radiant energy blades rains down from the storm clouds above. Dust and crackling energy arcs swirl around her slender form and fluffy wolf tail, highlighting her immaculate combat stance. A thrilling dynamic cowboy shot captures the epic scale, brilliant particle effects, and razor-sharp anime key visual aesthetics.",
+    "promptTokens": [
+      "battlefield",
+      "sword_rain",
+      "floating_swords",
+      "energy_blades",
+      "magic_circle",
+      "glowing_eyes",
+      "amber_eyes",
+      "action_pose",
+      "wolf_ears",
+      "cowboy_shot",
+      "dynamic_angle",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "battlefield",
+      "sword_rain",
+      "floating_swords",
+      "energy_blades",
+      "magic_circle",
+      "glowing_eyes",
+      "amber_eyes",
+      "action_pose",
+      "wolf_ears"
+    ],
+    "timeOfDay": "黄昏日落",
+    "title": "德克萨斯 · 剑雨降临万物肃杀"
+  }
+}

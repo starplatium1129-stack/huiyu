@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc274",
+  "revision": 1,
+  "sortOrder": 269,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she rests comfortably against soft pillows with glistening, emotive eyes, under soft ambient lighting.",
+    "audit": {
+      "attempt": 1,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_08.png",
+      "result": "pass",
+      "reviewer": "direct-vision",
+      "seedKey": "official-cg:ocs08:1"
+    },
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "官方CG横幅构图",
+    "category": "官方CG灵感",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "心动",
+    "id": "sc274",
+    "lighting": "柔和自然光",
+    "location": "卧室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "officialCgCandidate": "ocs08",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, natsume_sleepwear, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【官方 CG 灵感】清晨的被窝还带着余温，夏目从白色枕边睁开眼。她没有立刻起身，只看着你说：「早安。再躺一分钟，也不算赖床。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "time": "白天",
+    "timeOfDay": "morning",
+    "title": "枕边醒来的安静目光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

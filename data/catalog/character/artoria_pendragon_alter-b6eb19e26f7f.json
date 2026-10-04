@@ -1,0 +1,141 @@
+{
+  "kind": "character",
+  "id": "artoria_pendragon_alter",
+  "revision": 1,
+  "sortOrder": 59,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "artoria_pendragon_alter",
+    "profile": {
+      "id": "artoria_pendragon_alter",
+      "name": "阿尔托莉雅·Alter",
+      "alias": [
+        "Artoria Pendragon Alter",
+        "Saber Alter",
+        "阿尔托莉雅·Alter",
+        "黑呆",
+        "黑无毛",
+        "暴君骑士王"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=1",
+        "alt": "阿尔托莉雅·Alter 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅铂金发",
+        "hair_color": "铂金 / 浅金",
+        "eyes": "暗金眼眸 · 冰冷无光瞳孔",
+        "hairstyle": "铠装与便服发髻 · 黑裙散发",
+        "uniform": "漆黑哥特重铠战袍 / 新宿机车皮夹克热裤",
+        "expression": "冷酷傲慢 · 暴君威压 · 抱着快餐大快朵颐的极品反差",
+        "style": "tyrannical corrupted knight king",
+        "signature": "漆黑哥特重铠、暗金眼眸、无光礼服与誓约胜利之剑Morgan"
+      },
+      "personality": [
+        "绝对理智、残酷高效的暴君",
+        "对垃圾食品（汉堡炸鸡）的执着狂热",
+        "被攻陷后的霸道傲娇",
+        "强烈的占有欲与保护欲"
+      ],
+      "likes": [
+        "双层芝士巨无霸汉堡与粗薯条",
+        "骑重型机车在深夜新宿街头狂飙",
+        "把心爱之人宣告为自己的所有物"
+      ],
+      "classic_cg": {
+        "title": "冬木残垣的卑王铁槌",
+        "description": "在黑泥翻涌的冬木废墟高举漆黑誓约胜利之剑轰炸撕裂大地的暴君骑士王姿态。"
+      },
+      "identity": "Fate/stay night [HF]核心女主角 · 黑化骑士王 · 暴君阿尔托莉雅",
+      "tags": [
+        "Fate",
+        "Saber_Alter",
+        "黑呆",
+        "哥特黑铠",
+        "汉堡狂魔",
+        "机车御姐",
+        "反差萌"
+      ],
+      "bg_story": "被冬木圣杯黑泥彻底侵蚀反转的骑士王阿尔托莉雅。摒弃了原本骑士道的仁慈与迷茫，成为贯彻绝对理智、冷酷施展强权的铁血暴君。战斗力摧枯拉朽。私底下却对现代快餐（尤其是双层汉堡与可乐）展现出令人啼笑皆非的执着食欲，在卸下防备后有着近乎霸道却极尽专一的深情。",
+      "palette": [
+        "#f59e0b",
+        "#18181b",
+        "#09090b",
+        "#f8fafc"
+      ],
+      "weather": "血月深夜 / 霓虹新宿",
+      "speech": "「本王已经接受你的求婚。从今天起，你的生命、你的灵魂与你的爱……全都是本王的私有物！」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "corrupted_king",
+        "black_plate_armor",
+        "burger_lover",
+        "golden_eyes",
+        "kuudere"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#18181b"
+    },
+    "popular": {
+      "id": "artoria_pendragon_alter",
+      "displayName": "阿尔托莉雅·Alter",
+      "originalName": "アルトリア・ペンドラゴン[オルタ]",
+      "franchise": "Fate",
+      "aliases": [
+        "Artoria Pendragon Alter",
+        "Saber Alter",
+        "saber_alter",
+        "artoria_pendragon_alter",
+        "阿尔托莉雅·Alter",
+        "黑呆",
+        "黑无毛",
+        "暴君骑士王"
+      ],
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with pale platinum-blonde hair, amber-gold eyes, ivory skin and a reserved, composed presence",
+      "identityTokens": [
+        "saber_alter",
+        "fate/stay_night",
+        "blonde_hair",
+        "yellow_eyes",
+        "golden_eyes",
+        "pale_skin",
+        "kuudere",
+        "cool_beauty"
+      ],
+      "exactTokens": [
+        "saber_alter"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, saber_alter"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Tomonori Sudou"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "kind": "character",
+  "id": "shiina_mahiru",
+  "revision": 1,
+  "sortOrder": 112,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shiina_mahiru",
+    "profile": {
+      "id": "shiina_mahiru",
+      "name": "椎名真昼",
+      "alias": [
+        "Mahiru Shiina",
+        "椎名真昼",
+        "天使大人",
+        "真昼",
+        "隔壁天使"
+      ],
+      "type": "popular",
+      "icon": "🪽",
+      "portrait": {
+        "image": "../assets/characters/popular-shiina_mahiru.png?v=1",
+        "alt": "椎名真昼 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "如亚麻般垂至腰际的丝滑浅金长发",
+        "hair_color": "浅金 / 亚麻金",
+        "eyes": "清亮剔透的琥珀金色眼眸 · 动情时水雾弥漫",
+        "hairstyle": "及腰长直金发 · 居家低侧马尾",
+        "uniform": "私立高中深蓝西装制服 · 居家粉色荷叶边料理围裙",
+        "expression": "校内礼貌端庄的完美假面 · 私下极度害羞的傲娇撒娇",
+        "style": "flawless angel student next door",
+        "signature": "雨中递出的透明雨伞、围裙玉子烧与把邻家少年惯成废人的自立料理力"
+      },
+      "personality": [
+        "在学校近乎完美的‘天使大人’，私下极度缺乏安全感",
+        "料理与持家能力超一流，渴望用照料他人来填补孤独",
+        "在周面前从最初的冷淡防备到完全放下心防的依赖与娇嗔",
+        "恋爱时认真而笨拙，被夸奖时会害羞地用抱枕捂住脸"
+      ],
+      "likes": [
+        "给周做营养均衡的每日三餐",
+        "雨后公园的秋千与透明伞",
+        "两人并肩坐在沙发上看电视的安宁"
+      ],
+      "classic_cg": {
+        "title": "细雨中的透明雨伞",
+        "description": "雨水打湿金发与制服，清冷的少女将透明雨伞默默递给浑身湿透的少年。"
+      },
+      "identity": "关于邻家的天使大人不知不觉把我惯成了废人这档子事 女主角 · 容貌成绩运动全能的‘天使’",
+      "tags": [
+        "隔壁天使",
+        "椎名真昼",
+        "金发琥珀瞳",
+        "料理娘",
+        "透明雨伞",
+        "围裙",
+        "被惯成废人"
+      ],
+      "bg_story": "外人眼里的天使大人，其实只是个从小被父母忽视、习惯了独自一人生存的坚强少女。直到那场暴雨里把雨伞借给隔壁的邋遢邻居，两张相隔咫尺的阳台终于被一碗热气腾腾的味噌汤相连。她把周的生活照顾得井井有条，却在不知不觉中，被周那毫无杂质的温柔彻底融化了冰封的内心。",
+      "palette": [
+        "#f59e0b",
+        "#fef3c7",
+        "#78350f",
+        "#38bdf8"
+      ],
+      "weather": "微雨黄昏社区公园 / 晨曦初洒的温馨料理厨房",
+      "speech": "「周总是生活得这么散漫……不看着你的话，真的会变成废人呢。……所以，今天的晚餐也是我来做哦。」",
+      "source": "Otonari no Tenshi-sama",
+      "traits": [
+        "angel_of_school",
+        "master_cook",
+        "apron_girl",
+        "amber_eyes"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#78350f"
+    },
+    "popular": {
+      "id": "shiina_mahiru",
+      "displayName": "椎名真昼",
+      "originalName": "椎名真昼",
+      "franchise": "Otonari no Tenshi-sama",
+      "aliases": [
+        "Mahiru Shiina",
+        "椎名真昼",
+        "天使大人",
+        "真昼",
+        "隔壁天使"
+      ],
+      "identityProse": "Mahiru Shiina from The Angel Next Door, the perfect school angel with silky flaxen blonde hair reaching her waist, striking amber-gold eyes, a graceful slender figure, and an unconsciously radiant, gentle smile",
+      "identityTokens": [
+        "shiina_mahiru",
+        "otonari_no_tenshi-sama_ni_itsunomanika_dame_ningen_ni_sareteita_ken",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "amber_eyes",
+        "slender_body"
+      ],
+      "exactTokens": [
+        "shiina_mahiru"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shiina_mahiru"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Project No.9",
+      "curatedArtistStyles": [
+        "Hanekoto"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

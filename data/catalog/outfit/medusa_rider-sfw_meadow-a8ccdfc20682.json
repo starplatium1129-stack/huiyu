@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/sfw_meadow",
+  "revision": 1,
+  "sortOrder": 157,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "sfw_meadow",
+      "name": "草原白色长裙",
+      "prose": "an opaque white long-sleeved maxi dress and flat sandals",
+      "tokens": [
+        "white_dress",
+        "long_sleeves",
+        "maxi_dress",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

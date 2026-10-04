@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc250",
+  "revision": 1,
+  "sortOrder": 245,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the cold winter-night living room lit by a dim orange heater and the cold glow of the TV, Ayachi Nene in cozy pink fleece loungewear curls in the sofa corner watching a movie and quietly shares half the blanket with the viewer, leaning closer under it, shy lowered eyelids and ahoge quivering in the warm light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景侧面特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc250",
+    "lighting": "暖炉微弱的橙光与电视屏幕的冷调光",
+    "location": "公寓客厅沙发角落",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cozy_pink_fleece_loungewear, curled_up_in_sofa_corner_under_shared_blanket, leaning_closer_to_viewer_under_blanket, watching_a_movie, winter_night_living_room, dim_orange_heater_glow, cool_tv_glow, shy_lowered_eyelids, ahoge_quivering, close_up, warm_and_cool_mixed_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【宁宁 · 冬夜的靠近】冬夜寒冷的公寓客厅，暖炉的温度不够。宁宁裹着毯子缩在沙发角落看电影，银白色的长发在昏暗的光线中泛着柔和的光泽。当你坐到她身边时，她犹豫了一下，然后悄悄把毯子分了一半给你。两人在毯子下的距离越来越近，她的体温带着沐浴后的淡淡香气，隔着薄薄的毯子传来。她微垂着眼睑，呆毛在暖黄的光线中轻轻颤动，声音小得几乎听不见——「……只是觉得两个人盖比较暖和而已。柊史……你身上好热。靠、靠太近了啦……不过，再近一点点……也是可以的。」",
+    "storyJa": "【寧々・毛布の下の距離】冬の夜、暖房の弱いリビングで寧々はソファの隅にいた。あなたが隣に座ると、彼女は迷いながら毛布の半分を差し出す。灯りの下でアホ毛が小さく揺れた――「……二人で使った方が暖かいだけ。近すぎるけど……もう少しだけなら、いいよ」",
+    "tags": [
+      "hair_ribbon",
+      "pink_fleece",
+      "sofa",
+      "close_up",
+      "blanket",
+      "shared_blanket",
+      "winter_night",
+      "tv_glow"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "沙发角落的毯下温度",
+    "usage": [
+      "壁纸级"
+    ],
+    "weather": "冬夜寒冷"
+  }
+}

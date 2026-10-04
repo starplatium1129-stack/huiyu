@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc175",
+  "revision": 1,
+  "sortOrder": 172,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the lazy holiday morning sunlight, Shiki Natsume wakes from the rumpled blankets wearing only an oversized pure black shirt with nothing underneath, half-propping herself into a sideways lying pose on the white sheets with long bare legs lazily crossed, eyebrow raised and tear mole lit by the morning light as she throws a possessive tsundere smile at the viewer.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc175",
+    "lighting": "侧向柔和晨曦",
+    "location": "温馨双人床榻",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, white_shirt, pale_shirt, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, black_shirt, oversized_shirt, bare_legs, bar, leaning_back, lying, bed, barefoot, messy_bed, blush, morning, cinematic, depth, field, bare_shoulders, full_body, detailed_background, cinematic_lighting",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 晨间真空衬衫绝对独占】一个无限慵懒的假日清晨，阳光透过巨大的落地窗。昨晚宿醉过后的夏目从凌乱的被窝里醒来，身上仅仅松垮垮地套着你那一身纯黑色的长袖衬衫，里面完全是真空状态。她眼神带着一丝微醺过后的慵懒与极致妩媚，半撑着身体侧卧在白色床单上，大片白皙笔直的长腿毫无防备地交叠裸露。眼角的泪痣被清晨的碎光照亮，性感得让人屏息。她挑了挑眉，用极具占有欲的傲娇微笑注视着你——「早安，大变态。盯着人家的腿看够了没有？看够了的话...就过来抱我。」",
+    "storyJa": "【夏目・モーニングバキュームシャツ絶対独占】どこまでも怠惰な休日の朝、床から天井まで届く大きな窓から太陽の光が降り注いでいます。昨夜、二日酔いの後、夏目は散らかったベッドから目覚めました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。彼女の目はほのかに酔った怠惰と極度の魅力で満たされており、彼女は白いシーツの上に半分伸ばして横たわり、白くてまっすぐな脚を無防備に重ねて露出させていました。目尻の泣きぼくろが朝の壊れた光に照らされて、息を呑むほどセクシーです。彼女は眉を上げて、独占欲と傲慢な笑みを浮かべてあなたを見つめました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
+    "tags": [
+      "mole_under_eye",
+      "oversized_shirt",
+      "black_shirt",
+      "bare_legs",
+      "smooth_thighs",
+      "sideways_lying",
+      "half_propped",
+      "bedroom",
+      "morning_light",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "宿醉清晨的纯黑衬衫单线支配",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "温暖初晴"
+  }
+}

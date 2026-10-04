@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/kitchen_apron_homewear",
+  "revision": 1,
+  "sortOrder": 97,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "kitchen_apron_homewear",
+      "name": "居家粉色毛衣与围裙",
+      "tokens": [
+        "pink_sweater",
+        "apron",
+        "frilled_apron",
+        "long_skirt",
+        "casual_clothes",
+        "side_ponytail"
+      ],
+      "prose": "a light pink knit sweater, a white frilled kitchen apron and a long skirt, with purple hair tied over one shoulder clear of the cooking area",
+      "styleHint": "warm domestic golden hour",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

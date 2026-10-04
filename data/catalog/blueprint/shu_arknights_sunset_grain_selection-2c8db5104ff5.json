@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_sunset_grain_selection",
+  "revision": 1,
+  "sortOrder": 710,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_sunset_grain_selection",
+    "characterId": "shu_arknights",
+    "title": "黍 · 晒场拣穗",
+    "description": "夕阳照着晒场铺开的竹席，黍穿田间便装坐在矮凳上，把一束饱满谷穗举到眼前比较，另一手扶着腿边的小竹篮。长尾绕过凳脚，谷穗的影子沿竹席拉向画面前景。",
+    "category": "大荒农事",
+    "location": "大荒城收获季晒场",
+    "action": "坐在矮凳上举起谷穗检查，另一手扶着选种竹篮",
+    "mood": "踏实欣慰",
+    "lighting": "低角度金色夕照",
+    "timeOfDay": "黄昏",
+    "camera": "full body, eye level",
+    "outfitId": "field_work",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "harvest",
+      "grain",
+      "bamboo_basket",
+      "sitting",
+      "sunset",
+      "full_body"
+    ],
+    "promptTokens": [
+      "outdoors",
+      "harvest",
+      "grain",
+      "bamboo_basket",
+      "stool",
+      "sitting",
+      "holding",
+      "looking_at_object",
+      "sunset",
+      "long_shadows",
+      "full_body"
+    ],
+    "promptProse": "A golden sunset skims the bamboo drying mats in the harvest yard. Seated on a low stool, Shu raises a compact bunch of ripe grain heads to eye level and studies their fullness, keeping her other hand on the small selection basket beside her knee. Her work boots rest on the clear stone margin, and her dragon tail loops behind the stool rather than across the grain. Use a full-body horizontal view with the drying mats extending into the foreground, their grain shadows pointing toward the viewer and the sun outlining her horns and blue-tipped hair.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_forest_cabin_hearth_warmth",
+  "revision": 1,
+  "sortOrder": 1172,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_forest_cabin_hearth_warmth",
+    "title": "风见一姬 · 避难木屋的炉火温存",
+    "category": "深山逆境",
+    "characterId": "kazami_kazuki",
+    "outfitId": "white_dress",
+    "coverageTags": [
+      "cabin"
+    ],
+    "description": "【风见一姬 · 避难木屋的炉火温存】风雨交加的夜晚，深山简陋原木避难小屋内，壁炉中燃烧着劈啪作响的橘红柴火。一姬抱膝蜷坐在厚厚的毛毯堆上，火光将她雪白的肌肤与连身裙镀上一层暖金色的光晕。她静静凝视着跳动的炭火，单手轻拨着发梢，在狂风呼啸的孤岛中，展现出能融化一切严寒的心灵坚韧。",
+    "location": "深山避难原木小屋柴火壁炉前",
+    "action": "抱膝蜷坐在火炉旁毛毯上，火光映照侧脸，眼神温柔而坚定",
+    "timeOfDay": "深夜",
+    "lighting": "壁炉木柴燃烧的炽热橙红暖光与小屋外漆黑风雨的强烈冷暖反差",
+    "camera": "medium close-up, eye-level warmth, intimate cozy contrast",
+    "mood": "坚毅温暖",
+    "sceneTags": [
+      "cabin",
+      "fireplace",
+      "fire",
+      "blanket",
+      "curled_up",
+      "barefoot",
+      "white_dress",
+      "red_eyes"
+    ],
+    "promptProse": "Curled up comfortably on a thick wool blanket before a crackling stone hearth inside a rustic mountain cabin, Kazuki gazes pensively into dancing orange flames. Flickering firelight casts a warm amber glow across her bare shoulders and floor-length silver hair against the dark stormy night.",
+    "promptTokens": [
+      "log_cabin",
+      "fireplace",
+      "fire_glow",
+      "wool_blanket",
+      "curled_up",
+      "barefoot",
+      "white_dress",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

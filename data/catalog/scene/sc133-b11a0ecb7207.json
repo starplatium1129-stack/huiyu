@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc133",
+  "revision": 1,
+  "sortOrder": 131,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting on a wooden cafe counter after hours, Ayachi Nene in only a white lace apron over nude shows slender bare legs with sideboob visible, bare feet dangling, heavy embarrassed blush under warm cafe night light.",
+    "auditRevision": "careful-batch02-2026-08-27",
+    "camera": "主观正面近景特写",
+    "category": "恋爱/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极度羞耻羞怯",
+    "id": "sc133",
+    "lighting": "厨房局部温馨暖光",
+    "location": "咖啡馆木质吧台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli, artist_name, chromatic_aberration, clothes, underwear, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, apron, maid_apron, bare_legs, sitting, cafe, cafe_window, barefoot, blush, warm_lighting, collarbone, slender_waist, full_body, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 围裙绝对服从】彻底打烊后的安静咖啡馆厨房。宁宁在你的霸道惩罚下，被迫换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地被你抱上了大理石吧台桌面，细窄的围裙带子根本遮挡不住两侧大片暴露的白皙侧乳，光洁的双腿毫无防备地悬在吧台边缘。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜... 柊史你这个大色狼！故意把厨房门反锁...今晚...真的要把宁宁吃掉吗...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・裸エプロン極限羞恥】深夜閉店後の静かなカフェキッチン。あなたの高圧的な罰の下で、寧々はカフェエプロンのみというタブーな服装を強制されました。彼女は顔を赤らめ、あなたによって大理石のバーテーブルに運ばれました。細いエプロンのストラップでは、露出した色白の大きな横乳を両側から覆うことができませんでした。彼女の滑らかな白い背中と完全にバキュームの脚は無防備でした。彼女の顔の熱い赤面は耳の根元まで達し、頭のてっぺんのアホ毛はとても恥ずかしがり屋で狂ったように震えて、完璧な愛のスパイラルに曲がりました。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
+    "tags": [
+      "hair_ribbon",
+      "naked_apron",
+      "bare_legs",
+      "smooth_thighs",
+      "cafe_counter",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "深夜厨房的禁忌家务",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

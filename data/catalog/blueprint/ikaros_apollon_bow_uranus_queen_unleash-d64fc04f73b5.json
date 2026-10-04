@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_apollon_bow_uranus_queen_unleash",
+  "revision": 1,
+  "sortOrder": 1214,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在空中完全拉满金色阿波罗光之巨弓，深红光子翼喷薄能量，眼神冷静凌厉如霜",
+    "camera": "dynamic low angle, sweeping wide shot, epic warhead impact",
+    "category": "终极觉醒",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "combat"
+    ],
+    "description": "【伊卡洛斯 · 空之女王阿波罗天诛之箭】被硝烟与赤红火海吞噬的残破空域之中，伊卡洛斯完全解放战略作战形态。白羽化作狂暴喷射的深红光子能量翼，左眼变色战术瞄准镜锁定目标。她悬立虚空拉满黄金巨弓「阿波罗」，炽烈耀眼的毁灭光矢将整片天幕照亮如白昼，平日温顺的天使在这一刻显现出摧毁地表的绝对神罚威能——「变态主人……由我来彻底消灭！」",
+    "id": "ikaros_apollon_bow_uranus_queen_unleash",
+    "lighting": "阿波罗光矢爆发的极亮炽金强光与深红能量翼的烈焰粒子光效",
+    "location": "雷云密布与高热能量涡流天空战场",
+    "mood": "毁灭霸气",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "apollon_battle",
+    "promptProse": "Unleashing the catastrophic power of the Uranus Queen, Ikaros draws back the monumental golden energy bow Apollon with an arrow of blinding thermonuclear light. Scorching crimson particle wings flare across the dark night storm clouds, illuminating her resolute combat expression.",
+    "promptTokens": [
+      "stormy_sky",
+      "energy_wings",
+      "apollon_bow",
+      "energy_bow",
+      "aiming_bow",
+      "sci-fi_armor",
+      "laser_glow",
+      "combat_stance",
+      "detailed_background",
+      "cinematic_lighting",
+      "night"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "sky",
+      "energy_wings",
+      "holding_bow",
+      "energy_bow",
+      "aiming",
+      "flying",
+      "armor",
+      "apollon",
+      "laser"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "伊卡洛斯 · 空之女王阿波罗天诛之箭"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/sfw_cabin_apron",
+  "revision": 1,
+  "sortOrder": 749,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "sfw_cabin_apron",
+      "name": "木屋早餐围裙装",
+      "prose": "a cream knit sweater under a pink floral cooking apron, a navy knee-length skirt and simple house slippers",
+      "tokens": [
+        "cream_knit_sweater",
+        "pink_floral_apron",
+        "navy_skirt",
+        "house_slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

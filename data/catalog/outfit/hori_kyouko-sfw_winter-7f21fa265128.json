@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/sfw_winter",
+  "revision": 1,
+  "sortOrder": 879,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "sfw_winter",
+      "name": "冬夜针织居家装",
+      "prose": "a warm cream sweater and dark trousers, with chestnut hair loose around her shoulders",
+      "tokens": [
+        "cream_sweater",
+        "dark_pants",
+        "hair_down"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

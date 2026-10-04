@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/lethe_poet_gown",
+  "revision": 1,
+  "sortOrder": 393,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "default": false,
+      "id": "lethe_poet_gown",
+      "isDefault": false,
+      "name": "莱塔尼亚贵族诗集礼裙",
+      "prose": "a romantic Leithanien aristocratic evening gown of deep sapphire-blue velvet with translucent sheer black lace sleeves, a delicate golden choker necklace, pearl hairpins woven among her antlers, holding a leather-bound poetry book, radiating poetic grace",
+      "tokens": [
+        "evening_gown",
+        "blue_dress",
+        "velvet_dress",
+        "lace_sleeves",
+        "choker",
+        "necklace",
+        "hairpins",
+        "holding_book",
+        "poetry_book",
+        "elegant",
+        "noble",
+        "leithanien"
+      ]
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "illyasviel_von_einzbern",
+  "revision": 1,
+  "sortOrder": 18,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "illyasviel_von_einzbern",
+    "profile": {
+      "id": "illyasviel_von_einzbern",
+      "name": "伊莉雅丝菲尔",
+      "alias": [
+        "Illyasviel von Einzbern",
+        "イリヤスフィール・フォン・アインツベルン"
+      ],
+      "type": "popular",
+      "icon": "🏰",
+      "portrait": {
+        "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=5",
+        "alt": "伊莉雅丝菲尔 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白长直发",
+        "hair_color": "银白",
+        "eyes": "红",
+        "hairstyle": "长直发 · 鬓发",
+        "uniform": "紫色冬装 / 便服洋装",
+        "expression": "天真烂漫 · 隐藏冷酷",
+        "style": "innocent homunculus girl",
+        "signature": "银发红瞳与紫色裙装"
+      },
+      "personality": [
+        "天真烂漫",
+        "孩子气",
+        "黏人",
+        "隐藏的冷酷",
+        "渴望爱"
+      ],
+      "likes": [
+        "士郎",
+        "雪",
+        "城堡的庭院",
+        "撒娇"
+      ],
+      "classic_cg": {
+        "title": "雪林古堡",
+        "description": "爱因兹贝伦城堡的窗边，雪林之外月光冷冽，银发少女的身影既纯真又孤寂。"
+      },
+      "identity": {
+        "role": "人造人（爱因兹贝伦家）",
+        "age": "约 18 岁（外貌幼态）",
+        "occupation": "Master（圣杯战争）",
+        "faction": "爱因兹贝伦家"
+      },
+      "tags": [
+        "银发",
+        "红瞳",
+        "紫裙",
+        "人造人",
+        "古堡"
+      ],
+      "bg_story": "伊莉雅丝菲尔是《Fate/stay night》中爱因兹贝伦家制造的人造人，银发红瞳、幼态外貌。天真烂漫与隐藏的冷酷并存。场景应偏古堡、雪林与月夜庭院。",
+      "palette": [
+        "银白",
+        "爱因兹贝伦紫",
+        "雪蓝"
+      ],
+      "weather": [
+        "雪林之夜",
+        "城堡烛光",
+        "月夜庭院"
+      ],
+      "speech": "伊莉雅丝菲尔向你致以问候。",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "illyasviel_von_einzbern",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "straight_hair",
+        "red_eyes",
+        "ruby_eyes",
+        "fate/stay_night"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "illyasviel_von_einzbern",
+      "displayName": "伊莉雅丝菲尔",
+      "originalName": "Illyasviel von Einzbern",
+      "franchise": "Fate",
+      "aliases": [
+        "illyasviel_von_einzbern",
+        "illya",
+        "ilys",
+        "snow field",
+        "fate/stay night"
+      ],
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with flowing silky pure white hair, deep ruby-red eyes, and porcelain fair skin.",
+      "identityTokens": [
+        "illyasviel von einzbern",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "ruby_eyes",
+        "petite",
+        "fate/stay_night"
+      ],
+      "exactTokens": [
+        "illyasviel_von_einzbern"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "silver link, ufotable, official anime screencap",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "anmi",
+        "morikura_en"
+      ]
+    }
+  }
+}

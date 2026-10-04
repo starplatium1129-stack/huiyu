@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "lappland_refined_horrormare_gothic_waltz",
+  "revision": 1,
+  "sortOrder": 672,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在旋转舞步中单手轻撩黑色蕾丝眼罩面具，黑红礼裙飞扬，优雅而危险地微笑",
+    "camera": "cowboy shot, medium angle, gothic elegance",
+    "category": "宴会舞会",
+    "characterId": "lappland_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【拉普兰德 · 典雅噩兆的血色华尔兹】叙拉古黑帮假面舞会的华丽大厅内，金色烛台与暗红玫瑰交织出奢靡的死亡气息。拉普兰德身着黑红渐变的哥特蕾丝晚礼裙，修长戴着黑皮手套的手指轻轻挑起面具一角，在旋转的舞步中朝博士递上一个致命优雅的微笑——「在这场虚伪的宴会上……只有与你的这支舞，是真实的。」",
+    "id": "lappland_refined_horrormare_gothic_waltz",
+    "lighting": "金色水晶吊灯与暗红玫瑰烛光微晕",
+    "location": "叙拉古贵族假面舞会大厅",
+    "mood": "致命优雅",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "refined_horrormare",
+    "promptProse": "Swirling through a lavish candlelit masquerade ballroom in Siracusa, Lappland turns gracefully in her breathtaking Refined Horrormare gothic evening gown. The layered black and blood-red velvet skirt ripples dramatically around her legs as she tilts her delicate lace eye mask, revealing piercing silvery eyes and an intoxicating, predatory smirk. Elaborate golden chandeliers and cascading red roses frame the grand ballroom behind her with baroque extravagance. A masterfully composed cowboy shot captures her dangerous aristocratic allure and lethal beauty in stunning visual novel event CG detail.",
+    "promptTokens": [
+      "ballroom",
+      "chandelier",
+      "red_roses",
+      "gothic_dress",
+      "ballgown",
+      "lace_mask",
+      "opera_gloves",
+      "dancing",
+      "wolf_ears",
+      "cowboy_shot",
+      "medium_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "ballroom",
+      "chandelier",
+      "red_roses",
+      "gothic_dress",
+      "ballgown",
+      "lace_mask",
+      "opera_gloves",
+      "dancing",
+      "wolf_ears"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "拉普兰德 · 典雅噩兆的血色华尔兹"
+  }
+}

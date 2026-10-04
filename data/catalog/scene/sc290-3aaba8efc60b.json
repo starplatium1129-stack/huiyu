@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc290",
+  "revision": 1,
+  "sortOrder": 285,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc290",
+    "title": "私拍·真丝晨袍的延长线",
+    "category": "同人/After_Story",
+    "story": "【成年 After Story · 宁宁 · 私拍·真丝晨袍的延长线】同人社团的私房摄影收工，工作室恢复了安静。大部分器材已经装箱，唯独角落那盏常亮灯还开着，暖光打在一侧的道具床铺上。宁宁还穿着最后一组拍摄用的真丝晨袍，坐在床沿翻阅着相机里的预览照片。银白色的长发散落在肩头，晨袍的系带松松垮垮，领口在低头时滑落一侧，露出了白皙圆润的肩头与若隐若现的锁骨曲线。她察觉到你的目光，抬头时耳根已经泛红，却没有拉上衣领——「刚才那几张……光打得不太对，要不要……」她的话没说完，因为你已经走近。她没有后退，反而轻轻咬住下唇，紫色瞳孔在暖光里微微闪烁，晨袍的系带在你指尖触碰时无声散开——「如果这是拍摄的延长线……那导演的指令，我会全部遵守。」",
+    "char": "nene",
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "半羞怯半主动的引诱",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "silk_robe",
+      "robe_slipped_off_shoulder",
+      "camera",
+      "photo_studio",
+      "bed_edge",
+      "bare_legs",
+      "full_body"
+    ],
+    "mature": false,
+    "location": "深夜的摄影工作室",
+    "weather": "室内",
+    "camera": "床边近景平视",
+    "lighting": "常亮灯暖光单侧照明",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, white, silk, robe, collar, slipped, collarbone_visible, bare_legs, sitting, bedroom, on_bed, holding, digital, camera, biting_lower_lip, blush, shy_smile, warm, key, light, bokeh, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
+    "rating": "R15",
+    "character": [
+      "nene"
+    ],
+    "storyJa": "【寧々・大人のAfter Story・私的撮影・シルクガウンの延長線】同人サークルのプライベート撮影が深夜に終了し、スタジオは静けさを取り戻していた。大部分の機材はすでに箱詰めされていたが、隅のキーライトだけがまだ点いたままで、暖かな光が備え付けのベッドの端を照らしていた。寧々は最後の撮影で着ていたシルクのガウンだけを身にまとい、ベッドの端に座ってカメラのプレビュー画像を眺めていた。銀色の長い髪が肩に流れ、ガウンの紐は緩く結ばれており、うつむいた拍子に襟元が片方の肩から滑り落ち、白く丸みを帯びた肩と鎖骨の曲線がかすかにのぞいていた。彼女はあなたの視線に気づいて顔を上げ、耳の裏がすでに赤くなっていたが、衣襟を引き上げようとはしなかった——「さっきの何枚か……ライティングがちょっと合ってなかったから、もう一度……」言葉は最後まで続かなかった。あなたが近づいてきたからだ。彼女は後退せず、むしろ軽く下唇を噛み、紫の瞳が暖かな光の中で微かに揺れ、ガウンの紐があなたの指先に触れた瞬間に音もなく解けていった——「これが撮影の延長線なら……ディレクターの指示には、すべて従います。」",
+    "animaCaption": "After the private shoot wraps, Nene in the last silk morning robe sits on the edge of the prop bed in the dim studio, loose tie slack, one side of the collar slipping off her shoulder as she reviews preview photos on the camera, ears red and biting her lower lip under the single warm key light.",
+    "auditRevision": "careful-batch15-2026-08-27"
+  }
+}

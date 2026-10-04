@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_summer_beach_white_bikini",
+  "revision": 1,
+  "sortOrder": 235,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_summer_beach_white_bikini",
+    "title": "圣女贞德 · 夏海的白色圣光·「防晒霜……那、那就拜托你了吧，只准涂在背后！」",
+    "category": "海滨度假",
+    "characterId": "jeanne_d_arc",
+    "description": "【诺曼底夏日海岸·正午】纯白比基尼被阳光晒得发亮，贞德坐在被浪花打湿的礁石上，薄纱帕瑞奥松松系在腰际。海水顺着白皙的小腿滑落，她抬手遮挡刺眼的阳光回头望你，湿透的发梢贴着锁骨——「托、托你的福，自己够不到的地方……那、那就拜托你了吧，只准涂在背后哦！」",
+    "location": "诺曼底海岸礁石滩",
+    "action": "稳坐礁石，一手遮阳看向同行者，另一手递出防晒霜瓶",
+    "timeOfDay": "正午",
+    "lighting": "炽白正午阳光与海面镜面反光，肌肤泛着水光",
+    "camera": "medium shot, sitting on rock, sparkling sea backdrop, playful summer mood",
+    "mood": "清凉明媚、圣女反差",
+    "sceneTags": [
+      "normandy_coast",
+      "sitting_on_rock",
+      "shading_eyes",
+      "offering_sunscreen",
+      "white_bikini",
+      "blue_ribbon_accents",
+      "pareo",
+      "golden_braid",
+      "midday_sunlight",
+      "medium_shot"
+    ],
+    "promptProse": "On a broad wave-washed rock at the Normandy coast, Jeanne sits upright and shades her eyes with one hand while offering a closed sunscreen bottle with the other. Her white bikini with blue ribbon accents and light pareo remain secure for the ordinary summer outing. A few damp strands have loosened from the golden braid near her face, and she smiles toward the viewer across the bright water. Midday reflections sparkle beyond the rock. The horizontal view includes the stable seated pose, both hand actions and sunscreen bottle, without lettering.",
+    "promptTokens": [
+      "normandy_coast",
+      "sitting_on_rock",
+      "shading_eyes",
+      "offering_sunscreen",
+      "white_bikini",
+      "blue_ribbon_accents",
+      "pareo",
+      "golden_braid",
+      "midday_sunlight",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "summer_beach_swimsuit",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/sleepy_oversized_loungewear",
+  "revision": 1,
+  "sortOrder": 358,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "sleepy_oversized_loungewear",
+      "isDefault": false,
+      "name": "迷糊小憩慵懒大号连帽卫衣居家睡衣",
+      "prose": "an oversized dusty pink-lilac pullover hoodie with sleeves far past the fingertips, white cotton lounge shorts underneath, cozy sleepy loungewear",
+      "tokens": [
+        "oversized_hoodie",
+        "pullover",
+        "pink",
+        "loungewear",
+        "mengkawaii"
+      ]
+    }
+  }
+}

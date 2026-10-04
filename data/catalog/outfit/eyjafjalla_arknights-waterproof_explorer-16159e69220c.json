@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/waterproof_explorer",
+  "revision": 1,
+  "sortOrder": 315,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "default": false,
+      "id": "waterproof_explorer",
+      "isDefault": false,
+      "name": "防水探险服",
+      "prose": "wearing a water-resistant expedition outfit: a tough layered expedition jacket with zip closure and cargo pockets, durable cargo trousers, and sturdy hiking boots",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "eyjafjalla_waterproof_explorer",
+        "expedition_jacket",
+        "waterproof_jacket",
+        "hooded_jacket",
+        "long_sleeves",
+        "zipper",
+        "cargo_pockets",
+        "gloves",
+        "cargo_pants",
+        "hiking_boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "kind": "character",
+  "id": "ryougi_shiki",
+  "revision": 1,
+  "sortOrder": 102,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ryougi_shiki",
+    "profile": {
+      "id": "ryougi_shiki",
+      "name": "两仪式",
+      "alias": [
+        "Ryougi Shiki",
+        "两仪式",
+        "式姐",
+        "直死之魔眼",
+        "伽蓝之堂"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-ryougi_shiki.png?v=1",
+        "alt": "两仪式 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及肩碎发 · 乌黑柔顺",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "直死之魔眼 · 湛蓝赤红流转",
+        "hairstyle": "清爽短发 · 侧分刘海 · 孤高英气",
+        "uniform": "纯白传统和服配赤红皮夹克 · 短靴短刀",
+        "expression": "孤高冷冽 · 眉宇英气 · 面对心爱之人别扭温柔",
+        "style": "cool lethal mystic knife combatant",
+        "signature": "白和服配红皮夹克、直死之魔眼与反手短刀"
+      },
+      "personality": [
+        "孤高冷彻、言辞利落",
+        "骨子里的温柔与专一",
+        "酷爱草莓哈根达斯的甜品反差",
+        "对认同之人绝不退缩的守护"
+      ],
+      "likes": [
+        "草莓味哈根达斯冰淇淋",
+        "黑桐干也亲手泡的茶",
+        "在安静的长椅上放空"
+      ],
+      "classic_cg": {
+        "title": "踏雪折梅的直死之瞳",
+        "description": "在暴风雪路灯下反手拔出短刀，双眸闪烁湛蓝绯红魔眼神光的孤高杀手姿态。"
+      },
+      "identity": "空之境界女主角 · 两仪家正统继承人 · 直死之魔眼持有者",
+      "tags": [
+        "空之境界",
+        "两仪式",
+        "直死之魔眼",
+        "和服皮夹克",
+        "短发御姐",
+        "反差萌"
+      ],
+      "bg_story": "型月四大台柱之一，退魔名门两仪家的继承人。拥有能看穿万物死线、触碰即可令其灭亡的『直死之魔眼』。平日里身穿纯白和服与红色皮夹克穿梭于都市夜幕之中，性格孤僻冷淡；但只要被心爱之人融化了心房，就会展现出极具杀伤力的笨拙、娇羞与一生相托的纯情。",
+      "palette": [
+        "#dc2626",
+        "#1e293b",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "雪夜清冷 / 细雨霏霏",
+      "speech": "「只要是活着的东西，就算是神也杀给你看……不过，如果是你的话，随便你怎样都可以。」",
+      "source": "TYPE-MOON《空之境界 / Kara no Kyoukai》",
+      "traits": [
+        "mystic_eyes",
+        "knife_master",
+        "kimono_leather",
+        "cool_beauty",
+        "tsundere"
+      ],
+      "accent_color": "#dc2626",
+      "bg_color": "#1e293b",
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "kimono",
+          "leather_jacket",
+          "holding_knife",
+          "mystic_eyes_of_death_perception"
+        ]
+      }
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Ryougi Shiki",
+        "两仪式",
+        "式姐",
+        "直死之魔眼",
+        "伽蓝之堂"
+      ],
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Tomonori Sudou"
+      ],
+      "displayName": "两仪式",
+      "dna_lock": {
+        "avoid": [
+          "kimono",
+          "leather_jacket",
+          "holding_knife",
+          "mystic_eyes_of_death_perception"
+        ],
+        "flexible": [],
+        "must": []
+      },
+      "exactPrefixes": [
+        "1girl, solo, ryougi_shiki"
+      ],
+      "exactTokens": [
+        "ryougi_shiki"
+      ],
+      "franchise": "Kara no Kyoukai",
+      "id": "ryougi_shiki",
+      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome beauty with chin-length layered raven-black hair, calm deep dark eyes, and a cool, graceful and composed demeanor",
+      "identityTokens": [
+        "ryougi_shiki",
+        "kara_no_kyoukai",
+        "black_hair",
+        "short_hair",
+        "blue_eyes",
+        "dark_eyes",
+        "slender_body",
+        "cool_beauty"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "両儀式",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

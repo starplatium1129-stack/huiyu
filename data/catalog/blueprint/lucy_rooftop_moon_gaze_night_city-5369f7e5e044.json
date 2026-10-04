@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_rooftop_moon_gaze_night_city",
+  "revision": 1,
+  "sortOrder": 1101,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "倚靠栏杆仰望夜空巨大月球，指间夹着泛紫光的电子烟，渐变短发随风飘散",
+    "camera": "wide cinematic low angle, grand city and moon backdrop",
+    "category": "赛博夜空",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【露西 · 沃森天台的月球凝望与霓虹】夜之城沃森区摩天大楼锈迹斑斑的天台边缘，脚下是无边无际、闪烁着赛博幻彩广告牌的钢铁巨兽之城。露西倚坐在生锈的铁栏杆上，手里夹着一根泛着淡紫荧光的赛博香烟。她抬起头，那对涂着鲜艳红眼影的眸子静静凝望着天幕中洁白无瑕的巨型月球，彩虹渐变的短发在夜风中轻盈飞扬——「总有一天……我会去那里的。离开这个令人窒息的地狱。」",
+    "id": "lucy_rooftop_moon_gaze_night_city",
+    "lighting": "下方城市汹涌的青蓝紫红霓虹天光与苍白月光交汇",
+    "location": "沃森区高空大厦废弃天台边缘",
+    "mood": "孤独清冷",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "netrunner_suit",
+    "promptProse": "Perched solitary along a rusted rooftop railing high above Night City, Lucy gazes up at the radiant white moon while holding a glowing cybernetic cigarette. Sweeping holographic neon advertisements bathe her rainbow-tinted hair in melancholy cybernetic hues.",
+    "promptTokens": [
+      "cyberpunk_city",
+      "night_sky",
+      "full_moon",
+      "rooftop_ledge",
+      "cigarette",
+      "smoking",
+      "neon_reflections",
+      "gradient_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "night_city",
+      "cyberpunk",
+      "rooftop",
+      "moon",
+      "cigarette",
+      "smoking",
+      "neon_lights",
+      "gradient_hair",
+      "skyscrapers"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "露西 · 沃森天台的月球凝望与霓虹"
+  }
+}

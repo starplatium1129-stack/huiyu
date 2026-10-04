@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_veranda_rain_tea",
+  "revision": 1,
+  "sortOrder": 708,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_veranda_rain_tea",
+    "characterId": "shu_arknights",
+    "title": "黍 · 檐下听雨",
+    "description": "细雨落在院中芭蕉叶上，黍穿青黛常服坐在屋檐下，把一杯刚沏好的茶放向桌子空着的一侧。她抬眼露出轻笑，杯口白汽与雨帘之间隔着一段温暖安静的距离。",
+    "category": "闲居日常",
+    "location": "炎国庭院屋檐下茶桌",
+    "action": "坐在檐下，将热茶放到茶桌另一侧并抬眼微笑",
+    "mood": "安静亲切",
+    "lighting": "檐下柔和天光与室内暖色回光",
+    "timeOfDay": "下午",
+    "camera": "medium shot, eye level",
+    "outfitId": "evening_hanfu",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "veranda",
+      "rain",
+      "tea",
+      "teacup",
+      "sitting",
+      "smile"
+    ],
+    "promptTokens": [
+      "veranda",
+      "courtyard",
+      "rain",
+      "tea",
+      "teacup",
+      "wooden_table",
+      "sitting",
+      "looking_at_viewer",
+      "gentle_smile",
+      "steam",
+      "medium_shot"
+    ],
+    "promptProse": "Under the veranda eaves, Shu sets a steaming teacup on the empty side of a low wooden table and lifts her eyes with a small welcoming smile. Her ivory cross-collar blouse and deep-teal skirt settle naturally over the seat; her dragon tail rests beside its outer leg. Across the courtyard, fine rain beads on broad green leaves and breaks the reflections on the paving. Frame her and the offered cup together from table height, with cool rainy daylight outside and a faint warm reflection from the open room behind her.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

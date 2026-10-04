@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kotegawa_yui/cat_costume",
+  "revision": 1,
+  "sortOrder": 681,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kotegawa_yui",
+    "outfit": {
+      "default": false,
+      "id": "cat_costume",
+      "isDefault": false,
+      "name": "羞耻猫娘变身毛绒装",
+      "prose": "an overwhelmingly embarrassing transformed costume: fluffy black cat ears attached to a headband, a tight strapless black leather leotard mini-corset showing deep cleavage, furry paw mittens, a long black cat tail swishing above her hips, thigh-high black stockings, and bright blushing cheeks",
+      "tokens": [
+        "cat_costume",
+        "cat_ears",
+        "cat_tail",
+        "fake_animal_ears",
+        "strapless_leotard",
+        "cleavage",
+        "paw_gloves",
+        "thighhighs",
+        "black_thighhighs",
+        "heavy_blush",
+        "tsundere"
+      ]
+    }
+  }
+}

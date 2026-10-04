@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "kisara_engage_kiss",
+  "revision": 1,
+  "sortOrder": 20,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kisara_engage_kiss",
+    "profile": {
+      "id": "kisara_engage_kiss",
+      "name": "木更",
+      "alias": [
+        "Kisara",
+        "キサラ"
+      ],
+      "type": "popular",
+      "icon": "🔥",
+      "portrait": {
+        "image": "../assets/characters/popular-kisara_engage_kiss.png?v=5",
+        "alt": "木更 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉樱长发",
+        "hair_color": "粉",
+        "eyes": "红（酒红）",
+        "hairstyle": "长发 · 头侧发饰 · 厚刘海",
+        "uniform": "校服 / 白色系便服",
+        "expression": "傲娇病娇 · 独占欲强",
+        "style": "possessive demon girl",
+        "signature": "粉发红瞳、发饰与傲娇气质"
+      },
+      "personality": [
+        "傲娇",
+        "病娇",
+        "独占欲强",
+        "吃醋",
+        "深情"
+      ],
+      "likes": [
+        "重要的人",
+        "同居日常",
+        "（代价是）记忆"
+      ],
+      "classic_cg": {
+        "title": "都市恶魔战",
+        "description": "Baylong City 的霓虹夜空，她恶魔化形态红角显现，白色战衣在火光中炽烈。"
+      },
+      "identity": {
+        "role": "恶魔少女（伪装高中生）",
+        "age": "外貌 17 岁（恶魔）",
+        "occupation": "学生 / 契约恶魔",
+        "faction": "（Baylong City）"
+      },
+      "tags": [
+        "粉发",
+        "红瞳",
+        "发饰",
+        "恶魔",
+        "傲娇"
+      ],
+      "bg_story": "木更是《Engage Kiss》的女主角，与男主签订契约的恶魔少女，粉发红瞳。恶魔形态为红角+白发+白色战衣。场景应偏近未来都市、战斗与居家日常。",
+      "palette": [
+        "樱粉",
+        "酒红",
+        "契约白"
+      ],
+      "weather": [
+        "都市霓虹夜",
+        "公寓窗光",
+        "校园晴日"
+      ],
+      "speech": "木更向你致以问候。",
+      "source": "丸戸史明《Engage Kiss / 契约之吻》",
+      "traits": [
+        "kisara (engage kiss)",
+        "1girl",
+        "solo",
+        "long_pink_hair",
+        "very_long_hair",
+        "red_eyes",
+        "crimson_eyes",
+        "ahoge",
+        "black_hair_ribbon",
+        "thigh_bandage",
+        "engage_kiss"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "kisara_engage_kiss",
+      "displayName": "木更",
+      "originalName": "Kisara",
+      "franchise": "Engage Kiss",
+      "aliases": [
+        "kisara (engage kiss)",
+        "kisara engage kiss",
+        "engage kiss",
+        "kisara from engage kiss"
+      ],
+      "identityProse": "Kisara from Engage Kiss, an affectionate pink-haired demon girl with floor-length pastel pink hair, striking crimson eyes, a cute ahoge, and a slender frame.",
+      "identityTokens": [
+        "kisara (engage kiss)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "red_eyes",
+        "ahoge",
+        "black_hair_ribbon",
+        "engage_kiss"
+      ],
+      "exactTokens": [
+        "kisara (engage kiss)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "negativeTokens": [
+        "black_hair",
+        "dark_hair",
+        "brown_hair",
+        "blue_hair",
+        "purple_hair",
+        "blonde_hair",
+        "green_hair",
+        "dark_skin"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "tsunako",
+        "rella",
+        "morikura_en"
+      ],
+      "canon": {
+        "world": "近未来（Engage Kiss）",
+        "era": "近未来",
+        "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "a-1 pictures, tsunako, official anime screencap"
+    }
+  }
+}

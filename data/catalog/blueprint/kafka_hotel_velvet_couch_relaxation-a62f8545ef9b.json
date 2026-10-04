@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_hotel_velvet_couch_relaxation",
+  "revision": 1,
+  "sortOrder": 1038,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_hotel_velvet_couch_relaxation",
+    "title": "卡芙卡 · 匹诺康尼丝绒小憩",
+    "category": "奢华日常",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 匹诺康尼丝绒小憩】梦之国度匹诺康尼豪华酒店顶层套房中，复古留声机低吟着爵士乐。卡芙卡慵懒斜倚在墨绿色复古丝绒沙发上，交叠着修长白皙的高开叉美腿，指尖摇曳着香槟杯，眼神迷离而充满玩味——「在这场永不落幕的美梦里……你想要和我一起，做些什么呢？」",
+    "location": "匹诺康尼奢华酒店总统套房",
+    "action": "慵懒斜倚在墨绿色复古丝绒沙发上，交叠修长美腿，指尖摇曳香槟杯，嘴角挂着神秘浅笑",
+    "timeOfDay": "午夜",
+    "lighting": "水晶吊灯昏黄暖光与落地窗外霓虹梦境色彩",
+    "camera": "medium shot, eye level",
+    "mood": "慵懒魅惑",
+    "sceneTags": [
+      "luxury_hotel",
+      "penacony",
+      "velvet_couch",
+      "sitting",
+      "crossed_legs",
+      "high_slit_dress",
+      "wine_glass",
+      "champagne_bucket",
+      "seductive_smile",
+      "city_skyline"
+    ],
+    "promptProse": "Lounging on a plush velvet sofa in her luxury Penacony hotel suite with crossed legs, Kafka smiles seductively over her champagne. Panoramic floor-to-ceiling windows display the dazzling, dreamscape city skyline in golden brilliance.",
+    "promptTokens": [
+      "penacony_hotel",
+      "velvet_couch",
+      "sitting",
+      "crossed_legs",
+      "high_slit_dress",
+      "champagne",
+      "seductive_smile",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "nightclub_evening_dress",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc033",
+  "revision": 1,
+  "sortOrder": 31,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In an apartment genkan holding a birthday gift box behind her back, Shiki Natsume in a crisp white shirt with navy pleated miniskirt and glossy black tights stands with a shy excited blush under warm genkan light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "门后半身中景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "期待",
+    "id": "sc033",
+    "lighting": "玄关暗部与生日烛光",
+    "location": "温馨公寓玄关",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white border, framed, letterbox, pillarbox, padding, margin, inset, comic panel, split screen, worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration, 3d render, photorealistic, 2girls, white thighhighs, bare legs, cropped feet, upper body, nsfw, nude, explicit",
+    "prompt": "safe, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, black headband, wearing crisp white shirt with navy pleated miniskirt and sheer black tights, glossy black tights hugging smooth thighs and calf with subtle knee contours, entire legs and feet fully visible in frame, black mary jane shoes on apartment floor, standing in apartment genkan holding birthday gift box behind back with shy excited blush, warm apartment genkan light with gift box and floor bokeh, cinematic depth of field, slender waist and hands, medium shot\n<lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 门后藏不住的生日惊喜】冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
+    "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
+    "tags": [
+      "mole_under_eye",
+      "white_shirt",
+      "pleated_skirt",
+      "sheer_black_tights",
+      "apartment_genkan",
+      "birthday_cake",
+      "candle",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "门后藏不住的生日惊喜",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

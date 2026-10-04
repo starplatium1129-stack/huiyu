@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/sakura_kimono",
+  "revision": 1,
+  "sortOrder": 597,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "sakura_kimono",
+      "name": "重樱烈焰金鱼华服",
+      "prose": "Sakura Empire imperial carrier attire: an opulent vermilion red and obsidian black kimono dress with billowing gold-trimmed sleeves, trailing phoenix brocade, deep plunging cleavage revealing heavy bust, daring high hip slit, wide black and gold obi sash, and red lacquer geta heels",
+      "tokens": [
+        "kimono",
+        "japanese_clothes",
+        "red_kimono",
+        "cleavage",
+        "deep_cleavage",
+        "wide_sleeves",
+        "gold_trim",
+        "obi",
+        "high_slit",
+        "geta",
+        "hair_ornament",
+        "sakura_empire"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

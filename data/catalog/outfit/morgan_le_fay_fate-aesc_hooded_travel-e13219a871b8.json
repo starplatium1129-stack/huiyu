@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "morgan_le_fay_fate/aesc_hooded_travel",
+  "revision": 1,
+  "sortOrder": 105,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "morgan_le_fay_fate",
+    "outfit": {
+      "id": "aesc_hooded_travel",
+      "name": "梣·雨后兜帽行旅变体",
+      "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots, carrying a wooden staff",
+      "tokens": [
+        "aesc (fate)",
+        "blue_hooded_robe",
+        "hood",
+        "robe",
+        "boots",
+        "staff"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

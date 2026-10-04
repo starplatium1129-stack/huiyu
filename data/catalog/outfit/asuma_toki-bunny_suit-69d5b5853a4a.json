@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "asuma_toki/bunny_suit",
+  "revision": 1,
+  "sortOrder": 498,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuma_toki",
+    "outfit": {
+      "default": false,
+      "id": "bunny_suit",
+      "isDefault": false,
+      "name": "兔女郎装",
+      "prose": "a white bunny suit with a princess braid, white over-knee stockings and high heels, playful secret agent look",
+      "tokens": [
+        "bunny_suit",
+        "white_clothes",
+        "princess_braid",
+        "white_stockings",
+        "high_heels",
+        "bunny_ears"
+      ]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "vivy/sfw_rest",
+  "revision": 1,
+  "sortOrder": 976,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vivy",
+    "outfit": {
+      "id": "sfw_rest",
+      "name": "后台修补针织便装",
+      "prose": "a cream long-sleeved blouse and comfortable navy trousers",
+      "tokens": [
+        "cream_blouse",
+        "long_sleeves",
+        "navy_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

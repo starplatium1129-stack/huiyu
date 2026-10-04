@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc287",
+  "revision": 1,
+  "sortOrder": 282,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc287",
+    "title": "深蓝夜晚的约定",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 夏目 · 酒店屋顶泳池的深蓝夜晚】旅行最后一晚，你发现夏目独自在屋顶的恒温泳池中游着。城市灯火在脚下铺开，池底的蓝色灯光勾勒出她如同深海人鱼的身影。她听见水声以外的脚步，从水面浮起，湿透的黑发紧贴着肩颈，水珠顺着锁骨滑落。你没说话，只是放下外套滑入水中。她转身背对着你，却在你靠近的那一瞬间向后靠进了你的怀里。池水在两人之间晃动，她偏过头，呼吸带着隐约的颤抖——「明天就要回去了……可我还不想和这个地方说再见。」你将她转过来，她在水中的身体比平时更轻、更暖。城市的灯光在她的瞳孔里碎成无数星点。她闭上眼睛，额头轻轻抵上你的——「那就——至少今晚，假装我们还有很久很久的时间。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "克制而深情的留恋",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "dark_bikini",
+      "swimsuit",
+      "in_water",
+      "wet_hair",
+      "embracing_from_behind",
+      "leaning_back",
+      "forehead_touch",
+      "rooftop_pool",
+      "infinity_pool",
+      "night",
+      "city_lights",
+      "blue_light",
+      "medium_shot"
+    ],
+    "mature": true,
+    "rating": "R18",
+    "location": "高层酒店屋顶恒温无边泳池",
+    "weather": "晴朗夏夜",
+    "camera": "水中平视近景",
+    "lighting": "池底蓝色灯光与城市夜景反射",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, micro_bikini, black_string_bikini, untied_bikini_top, exposed_breasts, bare_breasts, nipples, areola, string_panties, exposed_pussy, resting_back_against_pool_edge_in_water, pressing_forehead_gently_to_viewer, trembling_breath, golden_eyes, night_pool, blue_underwater_lights, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "storyJa": "【大人のAfter Story・夏目・ホテル屋上プールの深い青の夜】旅の最後の夜、あなたは夏目が一人で屋上の温水プールで泳いでいるのを見つけた。街の灯りが足元に広がり、プールの青い灯りが彼女を深海の人魚のように照らし出していた。水音以外の足音に気づき、彼女は水面から浮かび上がった。濡れた黒髪が肩に張り付き、水滴が鎖骨を伝う。あなたは何も言わずに上着を脱ぎ、水の中へ滑り込んだ。彼女は背を向けていたが、あなたが近づいた瞬間、後ろにもたれかかってきた。二人の間で水が揺れ、彼女は顔を横に向け、息が微かに震えていた——「明日には帰るけど……まだ、ここにさよならを言いたくない。」あなたが彼女を振り向かせると、水の中の体はいつもより軽く、温かかった。街の灯りが彼女の瞳の中で無数の星に砕けていた。彼女は目を閉じ、額をそっとあなたに押し付けた——「それなら——せめて今夜だけは、まだまだ時間があるふりをしよう。」",
+    "animaCaption": "On the last night of the trip at the high-rise hotel rooftop heated infinity pool, city lights spread far below and the blue underwater glow outlines Shiki Natsume like a deep-sea mermaid; wet hair clings to her shoulders and water droplets run along her collarbone, and the moment you slide into the water she leans back into your arms, her back against your chest amid the swaying pool, eyes closed as her forehead gently touches yours, the city lights shattering into points of starlight in her eyes.",
+    "auditRevision": "careful-batch08-2026-08-27"
+  }
+}

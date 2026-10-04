@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/lungmen_streetwear_skater",
+  "revision": 1,
+  "sortOrder": 366,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "default": false,
+      "id": "lungmen_streetwear_skater",
+      "isDefault": false,
+      "name": "龙门街头机能滑板潮服",
+      "prose": "a dynamic streetwear outfit: an oversized red-and-white colorblock hoodie over a translucent techwear utility vest, over-ear wireless headphones around the neck, black cargo pants and chunky sneakers",
+      "tokens": [
+        "colorblock",
+        "hoodie",
+        "techwear",
+        "vest",
+        "headphones",
+        "streetwear"
+      ]
+    }
+  }
+}

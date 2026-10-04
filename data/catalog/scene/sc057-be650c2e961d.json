@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc057",
+  "revision": 1,
+  "sortOrder": 55,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "After her swim, Shiki Natsume shifts along the wooden beach bench to leave a place beside her. A large white towel covers her shoulders and the navy one-piece swimsuit; its loose corner rests across the empty part of the seat. She holds the newly offered warm drink in one hand and looks toward the viewer with a small, grateful smile. Damp hair and the parasol shade keep the scene close and quiet beside the bright sea.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "遮阳伞下半身中景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "羞怯",
+    "id": "sc057",
+    "lighting": "遮阳伞下柔光与海面反射",
+    "location": "海滩遮阳伞下木长椅",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, navy_one_piece_swimsuit, white_towel, towel_over_shoulders, damp_hair, sitting_on_wooden_bench, holding_warm_drink, towel_on_bench, looking_at_viewer, small_smile, parasol, beach, ocean, afternoon, open_shade, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【夏目 · 浪花退去后的浴巾】游泳结束后，夏目用大浴巾裹住肩膀坐在遮阳伞下，黑色长发还滴着水。她发现你递来的热饮，沉默片刻便往长椅内侧挪出位置，把浴巾的一角也盖到你腿上——「海风比想象中凉。坐近一点只是为了挡风……饮料不错，谢谢。」",
+    "storyJa": "【夏目・波が引いたらバスタオル】泳ぎ終えた夏目さんは大きなバスタオルを肩に巻き、長い黒髪に水が滴ったまま傘の下に座っていた。彼女はあなたが手渡した温かい飲み物に気づきました。一瞬の沈黙の後、彼女はベンチの内側に移動し、タオルの角をあなたの足の上に置きました。――「海風、思ったより冷たい。近くに座るのは風よけのためだから……飲み物、おいしい。ありがとう。」",
+    "tags": [
+      "navy_one_piece_swimsuit",
+      "white_towel",
+      "towel_over_shoulders",
+      "damp_hair",
+      "sitting_on_wooden_bench",
+      "holding_warm_drink",
+      "towel_on_bench",
+      "looking_at_viewer",
+      "small_smile",
+      "parasol",
+      "beach",
+      "ocean",
+      "afternoon",
+      "open_shade",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "浪花退去后的浴巾",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

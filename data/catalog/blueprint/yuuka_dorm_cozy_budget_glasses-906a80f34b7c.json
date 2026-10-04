@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_dorm_cozy_budget_glasses",
+  "revision": 1,
+  "sortOrder": 920,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "戴着红框眼镜蜷坐在布艺沙发上，抱着抱枕与手账本，神情放松慵懒",
+    "camera": "medium shot, slightly low angle",
+    "category": "居家生活",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【早濑优香 · 宿舍夜灯下的账簿与可可】温馨静谧的学生宿舍内，暖黄色的床头灯将房间照得一片柔和。优香戴着一副秀气的红色细框眼镜，穿着宽松的淡蓝色毛衣蜷坐在柔软的沙发软垫上，膝上摊着手账本，身边搁着一杯冒着香气的热可可——「呼……终于把下季度的预算做完了。偶尔像这样戴着眼镜偷个懒，可千万不能让研讨会其他人看到哦……」",
+    "id": "yuuka_dorm_cozy_budget_glasses",
+    "lighting": "温馨暖黄床头台灯与壁炉微光",
+    "location": "千年学生宿舍私人房间",
+    "mood": "温馨治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "budget_cozy_no_mug",
+    "promptProse": "In her cozy dorm at night, Yuuka curls up on the fabric sofa wearing red-framed glasses, hugging a cushion with her household notebook open on her lap. A warm cocoa mug rests beside her while the bedside lamp and fireplace cast a quiet amber glow.",
+    "promptTokens": [
+      "dormitory",
+      "couch",
+      "red_framed_glasses",
+      "oversized_sweater",
+      "notebook",
+      "detailed_background",
+      "cinematic_lighting",
+      "hugging_cushion",
+      "notebook_on_lap",
+      "cocoa_on_table"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "dormitory",
+      "bedroom",
+      "couch",
+      "cushion",
+      "glasses",
+      "red_framed_glasses",
+      "oversized_sweater",
+      "bare_legs",
+      "notebook",
+      "holding_mug"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "早濑优香 · 宿舍夜灯下的账簿与可可"
+  }
+}

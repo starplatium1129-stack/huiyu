@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_vip_lounge_billiards_leaning",
+  "revision": 1,
+  "sortOrder": 942,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "俯身趴在台球桌上架杆瞄准，翘臀与紧绷黑丝长腿线条展露无遗",
+    "camera": "low angle, side 3/4 view, curvature emphasis",
+    "category": "俱乐部风尚",
+    "characterId": "ichinose_asuna",
+    "coverageTags": [
+      "glamour"
+    ],
+    "description": "【一之濑明日奈 · 贵宾桌球的俯身瞄准】奢华幽静的高级俱乐部台球厅，一盏锥形吊灯低垂在绿色台呢上方。明日奈身穿高叉黑丝兔女郎装，深俯下身趴在台球桌沿瞄准白球。这个姿势让她的蜜桃翘臀高高翘起，紧绷的黑丝美腿绷直出极致线条，领口内巨乳几乎贴在台球桌面上。她闭起一只眼睛专注瞄准，尾巴位置的毛茸茸白兔球可爱地晃动着。",
+    "id": "asuna_vip_lounge_billiards_leaning",
+    "lighting": "台球桌正上方锥形吊灯的强聚光与周围暗调环境",
+    "location": "豪华俱乐部绿色桌球台前",
+    "mood": "优雅惹火",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "bunny_suit",
+    "promptProse": "Leaning low across a green felt billiards table while carefully aiming a pool cue, Asuna accentuates her hourglass curves in her high-cut bunny suit and sheer black tights. A focused overhead pendant lamp casts deep dramatic shadows along her sculpted thighs and fluffy rabbit tail.",
+    "promptTokens": [
+      "billiards_hall",
+      "pool_table",
+      "cue_stick",
+      "aiming",
+      "bunny_suit",
+      "black_pantyhose",
+      "high_heels",
+      "cleavage",
+      "halo",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "billiards",
+      "pool_table",
+      "aiming",
+      "cue_stick",
+      "bunny_suit",
+      "pantyhose",
+      "cleavage",
+      "halo"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "一之濑明日奈 · 贵宾桌球的俯身瞄准"
+  }
+}

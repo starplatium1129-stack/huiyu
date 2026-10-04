@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/official_demon_slayer_uniform",
+  "revision": 1,
+  "sortOrder": 801,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "default": true,
+      "id": "official_demon_slayer_uniform",
+      "isDefault": true,
+      "name": "虫柱队服与蝶翼羽织",
+      "prose": "her Demon Slayer uniform under a butterfly-patterned haori: a black high-collared jacket with gold buttons, hakama pants tucked with white belt, white tabi socks, waraji sandals with purple straps, and the butterfly-wing haori flowing behind her — a hidden blade in one heel",
+      "tokens": [
+        "demon_slayer_uniform",
+        "black_jacket",
+        "high_collar",
+        "gold_buttons",
+        "hakama",
+        "white_belt",
+        "tabi",
+        "waraji",
+        "haori",
+        "butterfly_print",
+        "animal_print",
+        "hair_bun",
+        "butterfly_hair_ornament"
+      ]
+    }
+  }
+}

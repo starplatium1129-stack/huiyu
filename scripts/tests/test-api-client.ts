@@ -395,7 +395,7 @@ test('maintenanceApi preserves desktop 501 code and rollback metadata', async ()
     assert.equal(error.detail, '请在源码开发模式中运行');
     return true;
   });
-  await assert.rejects(api.saveScenes({ scenes: [], tags: [], curation: {} }), error => {
+  await assert.rejects(api.saveShowcase({ id: 'sc001', image: 'fixture-image', thumbnail: 'fixture-thumb' }), error => {
     const failure = maintenanceFailure(error);
     assert.ok(failure);
     assert.equal(failure.rolledBack, false);
@@ -403,21 +403,6 @@ test('maintenanceApi preserves desktop 501 code and rollback metadata', async ()
     assert.equal(failure.recovery, '从 content-* 备份恢复');
     return true;
   });
-});
-
-test('maintenanceApi requires an atomic content snapshot and supports exhausted IDs', async () => {
-  const snapshot = { scenes: [], tags: [], curation: {}, blueprints: [] };
-  const responses = [
-    jsonResponse({ ok: true, version: 7, nextSceneId: null, sceneCount: 0, retiredCount: 1, snapshot }),
-    jsonResponse({ ok: true, version: 8, count: 0, backup: 'test', snapshot }),
-    jsonResponse({ ok: true, version: 9, nextSceneId: 'sc002', sceneCount: 1, retiredCount: 0 }),
-    jsonResponse({ ok: true, count: 1, backup: 'old' }),
-  ];
-  const api = createMaintenanceApi(createApiClient((async () => responses.shift()!) as any));
-  assert.equal((await api.getScenesState()).nextSceneId, null);
-  assert.deepEqual((await api.saveScenes({ scenes: [], baseVersion: 7 } as any)).snapshot, snapshot);
-  await assert.rejects(api.getScenesState(), error => error instanceof ApiClientError);
-  await assert.rejects(api.saveScenes({ scenes: [], baseVersion: 8 } as any), error => error instanceof ApiClientError);
 });
 
 test('useControlActions.doStart stops after a real config API failure', async () => {

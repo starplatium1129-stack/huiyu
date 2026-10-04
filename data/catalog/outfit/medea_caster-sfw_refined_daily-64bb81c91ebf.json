@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "medea_caster/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 175,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medea_caster",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "梅紫针织手作装",
+      "prose": "a plum long-sleeved knitted dress, an ivory shawl and a small linen sewing apron",
+      "tokens": [
+        "purple_knit_dress",
+        "long_sleeves",
+        "ivory_shawl",
+        "linen_apron"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

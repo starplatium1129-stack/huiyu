@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 161,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "米色骑行风衣",
+      "prose": "a knee-length beige lightweight coat over a black turtleneck, dark straight trousers, simple glasses and low leather shoes",
+      "tokens": [
+        "beige_coat",
+        "black_turtleneck",
+        "pants",
+        "glasses",
+        "flat_shoes"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

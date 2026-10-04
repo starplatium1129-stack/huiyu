@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc280",
+  "revision": 1,
+  "sortOrder": 275,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a waist-up cafe view, she presents one pastry in a folded opaque kraft-paper pouch with both cupped hands, backed by wooden racks of white cups.",
+    "audit": {
+      "attempt": 1,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090755_311.png",
+      "result": "pass",
+      "reviewer": "direct-vision",
+      "seedKey": "official-cg:ocs14:1"
+    },
+    "camera": "官方CG横幅构图",
+    "category": "官方CG灵感",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "心动",
+    "id": "sc280",
+    "lighting": "夜色氛围光",
+    "location": "咖啡馆",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young_looking, plastic_bag, transparent_plastic, cellophane_wrapper, glassine_wrapper, baking_cup, cupcake_liner, clear_container, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
+    "officialCgCandidate": "ocs14",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, waist_up, wearing_stella_cafe_uniform, maid_apron, ruffled_apron, white_collar, gold_bow, holding_pastry_pouch, gentle_smile, subtle_blush, looking_at_viewer, warm_wooden_cafe, wall_racks_with_cups, warm_lighting, soft_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【官方 CG 灵感】杯架前，夏目把小点心仔细捧在掌心递来。「试吃品只有一份，」她微笑着补充，“所以你的评价要认真一点。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "杯架前递来的点心",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

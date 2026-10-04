@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "rias_cathedral_bridal_vow",
+  "revision": 1,
+  "sortOrder": 1284,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_cathedral_bridal_vow",
+    "title": "莉雅丝 · 逆光圣殿的真红誓约",
+    "category": "纯白誓约",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 逆光圣殿的真红誓约】古老而庄严的哥特式大教堂内，彩色琉璃窗透下绚烂璀璨的圣洁光束。莉雅丝身披纯白露肩鱼尾婚纱与半透明蕾丝长头纱，手中捧着一束白玫瑰与红山茶花。红发与洁白头纱形成强烈的神圣反差，她抬起含着泪光的清澈紫蓝双瞳凝视着你，轻启樱唇许下一生的誓言——「无论未来是天界还是冥府，我的灵魂与身心，皆永远属于你。」",
+    "location": "庄严哥特式古老教堂中央圣坛前",
+    "action": "双手捧着鲜花捧花站在彩窗光芒下，眼眶湿润带着幸福浅笑仰视视角",
+    "timeOfDay": "正午圣光",
+    "lighting": "彩绘玻璃透下的绚丽丁达尔神圣光柱",
+    "camera": "cowboy shot, slightly low angle, grand perspective",
+    "mood": "圣洁深情",
+    "sceneTags": [
+      "cathedral",
+      "stained_glass",
+      "light_rays",
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "holding_flowers",
+      "teary_eyes",
+      "gentle_smile",
+      "holy"
+    ],
+    "promptProse": "Standing before the grand altar of an ancient cathedral illuminated by radiant stained-glass light rays, Rias Gremory appears breathtaking in an off-shoulder white bridal wedding gown and gossamer veil. Her vibrant crimson hair contrasts exquisitely with the pure white lace. Holding a delicate bouquet, her aquamarine eyes glisten with tears of absolute devotion and boundless happiness. Cinematic anime visual novel style, solo 1girl, no text.",
+    "promptTokens": [
+      "cathedral",
+      "stained_glass",
+      "sunbeams",
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "holding_bouquet",
+      "bare_shoulders",
+      "cleavage",
+      "teary_eyes",
+      "gentle_smile",
+      "happy_tears",
+      "crimson_hair",
+      "cowboy_shot",
+      "cinematic_lighting",
+      "detailed_background",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_white_bridal_gown",
+    "coverageTags": [
+      "bridal",
+      "romantic",
+      "vow"
+    ]
+  }
+}

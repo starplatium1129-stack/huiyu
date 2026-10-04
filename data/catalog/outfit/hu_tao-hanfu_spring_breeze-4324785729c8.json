@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "hu_tao/hanfu_spring_breeze",
+  "revision": 1,
+  "sortOrder": 11,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hu_tao",
+    "outfit": {
+      "id": "hanfu_spring_breeze",
+      "name": "春风汉服",
+      "prose": "a traditional Liyue crimson and black silk hanfu robe embroidered with golden butterfly motifs, wide flowing sheer sleeves, jade hairpin, and a fluttering sash",
+      "tokens": [
+        "hanfu",
+        "traditional_clothes",
+        "chinese_clothes",
+        "wide_sleeves",
+        "silk_robe",
+        "embroidery",
+        "hairpin",
+        "jade_ornament"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

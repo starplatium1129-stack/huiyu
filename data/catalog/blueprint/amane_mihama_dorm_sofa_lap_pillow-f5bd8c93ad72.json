@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "amane_mihama_dorm_sofa_lap_pillow",
+  "revision": 1,
+  "sortOrder": 1181,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_mihama_dorm_sofa_lap_pillow",
+    "title": "周防天音 · 宿舍沙发的膝枕温香",
+    "category": "日常挑逗",
+    "characterId": "suou_amane",
+    "outfitId": "mihama_uniform",
+    "coverageTags": [
+      "lap_pillow"
+    ],
+    "description": "【周防天音 · 宿舍沙发的膝枕温香】美浜学园女生宿舍温馨的真皮沙发上，午后微风吹动着窗帘。天音端坐在沙发中央，美浜制服领口微解，修长丰满的黑丝美腿并拢成完美的枕头。她双手轻轻拍打着自己的大腿，微偏着头露出狡黠又色气的笑容招手——「雄二，学习累了吧？来，姐姐的专属膝枕随时为你开放哦！想要采耳服务也是完全可以的呢~」",
+    "location": "美浜学园宿舍起居室长沙发",
+    "action": "并拢黑丝美腿端坐沙发轻拍大腿示意膝枕，微敞衣领展露傲人胸脯，笑容娇媚",
+    "timeOfDay": "午后",
+    "lighting": "落地窗透射入的温暖金色斜阳与沙发皮质反光",
+    "camera": "medium shot, seated eye-level, intimate seductive invitation",
+    "mood": "色气温柔",
+    "sceneTags": [
+      "dormitory",
+      "sofa",
+      "lap_pillow",
+      "pantyhose",
+      "black_pantyhose",
+      "cleavage",
+      "hair_rings",
+      "inviting"
+    ],
+    "promptProse": "Sitting upon a cozy dormitory leather couch with her black-stockinged thighs offered as a gentle lap pillow, Amane pats her lap with an affectionate teasing grin. Golden afternoon sunbeams illuminate her unbuttoned school shirt and radiant crimson locks.",
+    "promptTokens": [
+      "living_room",
+      "leather_couch",
+      "lap_pillow",
+      "thighhighs",
+      "cleavage",
+      "unbuttoned_shirt",
+      "hair_rings",
+      "seductive_smile",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_eva09_ruins",
+  "revision": 1,
+  "sortOrder": 1017,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "立于钢铁残骸之上，神情清冷孤傲",
+    "camera": "wide shot, dramatic low angle",
+    "category": "科幻机甲",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【绫波丽 · 漆黑作战服与赤红大地】近第三次冲击后的荒凉大地上，赤红色的结晶地貌向地平线无尽延伸。黑丽身着紧身哑光黑战斗服，站在锈蚀的钢铁骨架之上，红色眼眸茫然地环视着这片死寂的世界——「命令是什么？我必须驾驶九号机吗？除了命令之外……真正的我，又该去往何方？」",
+    "id": "ayanami_rei_eva09_ruins",
+    "lighting": "血色残阳与昏暗废土反光",
+    "location": "近第三次冲击后废墟荒野",
+    "mood": "末世苍凉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "black_plugsuit_q",
+    "promptProse": "Standing solitary amidst the crimson wasteland in her black plugsuit, Rei observes the post-apocalyptic horizon without fear. Ominous red skies and jagged metal ruins create a haunting, powerful apocalyptic portrait.",
+    "promptTokens": [
+      "wasteland",
+      "red_earth",
+      "ruins",
+      "red_sky",
+      "standing_on_rubble",
+      "gloomy",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "wasteland",
+      "red_earth",
+      "post-apocalyptic",
+      "ruined_structures",
+      "red_sky",
+      "crimson_horizon",
+      "standing_on_rubble",
+      "gloomy"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "绫波丽 · 漆黑作战服与赤红大地"
+  }
+}

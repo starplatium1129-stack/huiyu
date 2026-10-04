@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/sfw_beach",
+  "revision": 1,
+  "sortOrder": 268,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "海滨夏日装",
+      "isDefault": false,
+      "default": false,
+      "prose": "a modest dark-green one-piece swimsuit with a light linen cover-up, a wide-brim sunhat and flat sandals",
+      "tokens": [
+        "one_piece_swimsuit",
+        "beach_cover_up",
+        "linen",
+        "sunhat",
+        "sandals"
+      ]
+    }
+  }
+}

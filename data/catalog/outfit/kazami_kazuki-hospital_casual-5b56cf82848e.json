@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/hospital_casual",
+  "revision": 1,
+  "sortOrder": 640,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "hospital_casual",
+      "name": "安宁静养宽松白衬衫",
+      "prose": "comfortable convalescent loungewear: an oversized crisp white cotton button-up collared shirt loosely draped over her slender frame, top buttons undone revealing fragile collarbones, rolled-up cuffs, bare legs, and slippers",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "collared_shirt",
+        "unbuttoned",
+        "collarbone",
+        "bare_legs",
+        "slippers",
+        "casual"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

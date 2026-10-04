@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "saint_cecilia/town_summer_sundress",
+  "revision": 1,
+  "sortOrder": 478,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "saint_cecilia",
+    "outfit": {
+      "default": false,
+      "id": "town_summer_sundress",
+      "isDefault": false,
+      "name": "小镇漫步碎花连衣裙与草帽",
+      "prose": "wearing a charming light floral sundress with a wide-brimmed straw hat while strolling through town with Lawrence",
+      "styleHint": "bright cheerful summer breeze",
+      "tokens": [
+        "sundress",
+        "straw_hat",
+        "floral_dress",
+        "ribbon",
+        "sandals"
+      ]
+    }
+  }
+}

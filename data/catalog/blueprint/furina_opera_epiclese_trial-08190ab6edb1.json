@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "furina_opera_epiclese_trial",
+  "revision": 1,
+  "sortOrder": 10,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "furina_opera_epiclese_trial",
+    "title": "芙宁娜 · 欧庇克莱的独舞审判",
+    "category": "舞台法庭",
+    "characterId": "furina",
+    "description": "【芙宁娜 · 欧庇克莱的独舞审判】欧庇克莱大歌剧院宏伟的法庭之上，华丽的金色吊灯洒下如梦似幻的蔚蓝光芒。芙宁娜优雅端坐在高耸的丝绒审判席王座上，单手轻扶华丽礼帽，微微俯身注视着舞台中央的法庭辩论——「欢迎来到审判的舞台！在这里，律法与戏剧同样值得最热烈的掌声！」",
+    "location": "欧庇克莱大歌剧院最高审判席",
+    "action": "戏剧性端坐于华贵天鹅绒审判椅上，单手优雅扶帽微俯身倾听",
+    "timeOfDay": "下午",
+    "lighting": "金色水晶吊灯顶光与蔚蓝水幕泛光",
+    "camera": "cowboy shot, dynamic low angle",
+    "mood": "戏剧高雅",
+    "sceneTags": [
+      "opera_house",
+      "courtroom",
+      "throne",
+      "velvet_chair",
+      "crystal_chandelier",
+      "ornate_balcony",
+      "cane",
+      "sitting",
+      "hand_on_hat",
+      "theatrical_pose"
+    ],
+    "promptProse": "Perched grandly on the Opera Epiclese judgement throne with one hand tipping her top hat, Furina commands the stage with dramatic flair. Towering crystal chandeliers and velvet drapery cast sparkling, theatrical lighting across her silhouette.",
+    "promptTokens": [
+      "opera_house",
+      "courtroom",
+      "throne",
+      "velvet_chair",
+      "crystal_chandelier",
+      "hand_on_hat",
+      "theatrical_pose",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_archon",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

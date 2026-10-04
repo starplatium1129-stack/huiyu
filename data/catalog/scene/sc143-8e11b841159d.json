@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc143",
+  "revision": 1,
+  "sortOrder": 141,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up on the living-room sofa late at night, Shiki Natsume in an oversized heather-grey hoodie and black shorts sits with her legs folded and bare feet tucked up, poking the viewer's side with a game controller while pouting under the TV glow.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc143",
+    "lighting": "屏幕弱光",
+    "location": "公寓客厅",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, child, loli, underage, nsfw, nude, explicit, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_heather_grey_hoodie, black_shorts, sitting_on_sofa_with_legs_folded, barefoot, holding_game_controller, poking_viewer's_side_with_game_controller, competitive_pout, heavy_blush, late_night_living_room, tv_glow, dim_lighting, close_up, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 After Story】大学毕业同居后的某个深夜，客厅的地毯上散落着零食。电视里正放着高难度的双人合作游戏，因为你的“故意放水”，夏目的角色连续落命。平时冷静的夏目彻底炸毛，把双腿盘在沙发上，光着脚丫用手柄气呼呼地戳你的侧腰，嘴里嘟囔着标志性的毒舌——「哈？刚才绝对是你的延迟问题！你是笨蛋吗？再来一局，这次输了的人要去洗一个星期的碗！」",
+    "storyJa": "【夏目・アフターストーリー】大学を卒業して同棲を始めたある夜遅く、リビングのカーペットの上にスナック菓子が散乱していた。難しい2人協力型ゲームがテレビでプレイされています。あなたの「は？　今のは絶対、そっちの遅延！　ばかなの？　もう一回。今度負けたほうは、一週間皿洗いだから！」",
+    "tags": [
+      "mole_under_eye",
+      "grey_hoodie",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
+      "living_room",
+      "sofa",
+      "close_up",
+      "barefoot",
+      "game_controller",
+      "controller_poking"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "同居生活：深夜手柄争夺战",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "温暖"
+  }
+}

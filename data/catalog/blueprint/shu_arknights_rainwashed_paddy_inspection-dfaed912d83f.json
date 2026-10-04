@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_rainwashed_paddy_inspection",
+  "revision": 1,
+  "sortOrder": 706,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_rainwashed_paddy_inspection",
+    "characterId": "shu_arknights",
+    "title": "黍 · 雨后巡田",
+    "description": "天刚放晴，黍沿大荒城的窄田埂走到稻田边，蹲下用金色指尖托起一片带水珠的叶子。银灰、金色与钴蓝交织的长发垂在身后，龙尾沿干燥田埂弯开，水面倒映散开的晨云。",
+    "category": "大荒农事",
+    "location": "大荒城雨后稻田与田埂",
+    "action": "蹲在田埂上，指尖轻托稻叶检查雨后叶面",
+    "mood": "专注温柔",
+    "lighting": "雨后晨光与稻田水面反光",
+    "timeOfDay": "早晨",
+    "camera": "wide shot, eye level",
+    "outfitId": "field_work",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rice_paddy",
+      "field",
+      "water_drop",
+      "crouching",
+      "looking_at_object",
+      "morning"
+    ],
+    "promptTokens": [
+      "outdoors",
+      "rice_paddy",
+      "field",
+      "wet_leaves",
+      "water_drop",
+      "crouching",
+      "looking_down",
+      "cloudy_sky",
+      "reflection",
+      "wide_shot"
+    ],
+    "promptProse": "Morning clouds open above the flooded rice paddies outside Dahuang. Shu crouches on the narrow dry bank and supports one dew-covered rice leaf with her golden fingertips to inspect its surface. Rows of young plants recede across the reflective water, while her long tricolored hair falls behind her shoulders and her dragon tail curves along the bank away from the seedlings. A level wide view keeps her hands, the leaf and the nearest rows clearly visible in the soft light after rain.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

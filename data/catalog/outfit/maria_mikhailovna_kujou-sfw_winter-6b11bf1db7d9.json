@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/sfw_winter",
+  "revision": 1,
+  "sortOrder": 454,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "sfw_winter",
+      "name": "冬季披肩通学装",
+      "prose": "a warm beige coat, thick cream shawl, long skirt and winter shoes",
+      "tokens": [
+        "beige_coat",
+        "cream_shawl",
+        "long_skirt",
+        "winter_shoes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

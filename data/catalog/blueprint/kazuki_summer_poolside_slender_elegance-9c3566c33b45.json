@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_summer_poolside_slender_elegance",
+  "revision": 1,
+  "sortOrder": 1171,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_summer_poolside_slender_elegance",
+    "title": "风见一姬 · 碧蓝池畔的银月清波",
+    "category": "清凉夏日",
+    "characterId": "kazami_kazuki",
+    "outfitId": "summer_swimsuit",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【风见一姬 · 碧蓝池畔的银月清波】美浜学园静谧露天泳池边缘，碧蓝池水在微风下荡漾起层层潋滟波纹。一姬身穿极简修身的银白色连体泳装，修长匀称的纤细双腿浸在清澈的水池中。她单手撑在池边白色防滑瓷砖上微微仰头，水珠顺着白皙如玉的肌肤滑落，及膝的白发随水流在池水中缓缓舒展，宛如一条栖息在人间的冰雪人鱼。",
+    "location": "露天游泳池深水区瓷砖水边台阶",
+    "action": "坐在池边单手撑地，双腿垂入水中轻轻划动，水珠顺着修长脖颈滑落",
+    "timeOfDay": "上午",
+    "lighting": "澄澈热带阳光与池水折射的跳跃明亮焦散水纹光斑",
+    "camera": "medium shot, seated side 3/4 perspective, shimmering water caustics",
+    "mood": "清冷出尘",
+    "sceneTags": [
+      "pool",
+      "swimming_pool",
+      "water_reflections",
+      "swimsuit",
+      "one-piece_swimsuit",
+      "wet_skin",
+      "sitting_on_edge",
+      "red_eyes"
+    ],
+    "promptProse": "Resting beside the azure shallows of an outdoor swimming pool with her legs dipping into crystal water, Kazuki leans back gracefully in her sleek silver one-piece swimsuit. Brilliant sunlight casts dancing aquatic caustics across her porcelain skin and floating white hair.",
+    "promptTokens": [
+      "swimming_pool",
+      "poolside",
+      "water_ripples",
+      "one-piece_swimsuit",
+      "wet_skin",
+      "sitting_on_edge",
+      "water_caustics",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

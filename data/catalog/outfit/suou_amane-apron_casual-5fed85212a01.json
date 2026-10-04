@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/apron_casual",
+  "revision": 1,
+  "sortOrder": 645,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "apron_casual",
+      "name": "温馨居家乐膳围裙",
+      "prose": "sweet domestic housewife attire: a frilled pastel pink kitchen apron tied snugly around her slender waist over an off-shoulder cream knitted sweater dress, bare shoulders, sheer pantyhose, and house slippers",
+      "tokens": [
+        "apron",
+        "pink_apron",
+        "sweater_dress",
+        "knit_sweater",
+        "off_shoulder",
+        "cleavage",
+        "pantyhose",
+        "slippers",
+        "casual"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

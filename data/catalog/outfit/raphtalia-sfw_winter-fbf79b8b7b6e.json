@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/sfw_winter",
+  "revision": 1,
+  "sortOrder": 884,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "sfw_winter",
+      "name": "冬季旅馆针织装",
+      "prose": "a warm burgundy sweater, long brown skirt and wool shawl",
+      "tokens": [
+        "burgundy_sweater",
+        "long_skirt",
+        "wool_shawl"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/home_cooking_apron",
+  "revision": 1,
+  "sortOrder": 816,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "home_cooking_apron",
+      "name": "邻家料理粉白围裙",
+      "prose": "her cozy homestyle outfit: a pastel-pink ruffled cooking apron tied over an oversized beige knit sweater and long dark skirt, her golden hair tied up in a loose side ponytail",
+      "tokens": [
+        "apron",
+        "pink_apron",
+        "ruffled_apron",
+        "oversized_sweater",
+        "knit_sweater",
+        "long_skirt",
+        "side_ponytail",
+        "hair_scrunchie"
+      ]
+    }
+  }
+}

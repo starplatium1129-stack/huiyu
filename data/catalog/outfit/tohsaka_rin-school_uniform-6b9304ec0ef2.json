@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/school_uniform",
+  "revision": 1,
+  "sortOrder": 79,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "school_uniform",
+      "name": "校服",
+      "prose": "her navy Homurahara school uniform with a ribbon",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "navy_clothes",
+        "ribbon",
+        "pleated_skirt",
+        "black_thighhighs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

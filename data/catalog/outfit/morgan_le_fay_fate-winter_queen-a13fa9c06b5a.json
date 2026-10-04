@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "morgan_le_fay_fate/winter_queen",
+  "revision": 1,
+  "sortOrder": 101,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "morgan_le_fay_fate",
+    "outfit": {
+      "id": "winter_queen",
+      "name": "冬之女王本貌",
+      "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown",
+      "tokens": [
+        "crown",
+        "gothic_dress",
+        "black_dress",
+        "blue_dress",
+        "high_collar",
+        "detached_sleeves",
+        "layered_skirt",
+        "long_dress"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

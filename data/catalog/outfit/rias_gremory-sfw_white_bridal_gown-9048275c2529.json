@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/sfw_white_bridal_gown",
+  "revision": 1,
+  "sortOrder": 697,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "sfw_white_bridal_gown",
+      "name": "纯白鱼尾婚纱",
+      "prose": "an off-shoulder white mermaid wedding gown with opaque fabric, fine lace trim, and a long translucent lace bridal veil",
+      "tokens": [
+        "wedding_dress",
+        "white_dress",
+        "mermaid_dress",
+        "off_shoulder",
+        "lace_trim",
+        "bridal_veil"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

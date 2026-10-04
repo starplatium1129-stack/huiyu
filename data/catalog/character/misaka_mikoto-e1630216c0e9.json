@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "misaka_mikoto",
+  "revision": 1,
+  "sortOrder": 11,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "misaka_mikoto",
+    "profile": {
+      "id": "misaka_mikoto",
+      "name": "御坂美琴",
+      "alias": [
+        "Misaka Mikoto",
+        "御坂美琴"
+      ],
+      "type": "popular",
+      "icon": "⚡",
+      "portrait": {
+        "image": "../assets/characters/popular-misaka_mikoto.png?v=5",
+        "alt": "御坂美琴 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "茶色及肩短发",
+        "hair_color": "茶色（栗色）",
+        "eyes": "棕色",
+        "hairstyle": "及肩短发 · 齐刘海 · 签名发夹",
+        "uniform": "常盘台制服（白衬衫+浅棕背心+卡其百褶裙）",
+        "expression": "热血正义 · 不服输",
+        "style": "energetic railgun ace",
+        "signature": "茶色短发、棕瞳与额前电光"
+      },
+      "personality": [
+        "热血正义",
+        "不服输",
+        "倔强傲娇",
+        "运动系",
+        "守护弱者"
+      ],
+      "likes": [
+        "学园都市的日常",
+        "自动售货机",
+        "（隐藏的）蛙太周边"
+      ],
+      "classic_cg": {
+        "title": "超电磁炮",
+        "description": "夜空下，她指尖弹出一枚硬币，蓝白色电光贯穿夜幕——学园都市最强电击使。"
+      },
+      "identity": {
+        "role": "学园都市 LV5 超能力者（第三位）",
+        "age": "14 岁（初中二年级）",
+        "occupation": "常盘台中学学生",
+        "faction": "常盘台中学"
+      },
+      "tags": [
+        "茶色短发",
+        "棕瞳",
+        "常盘台制服",
+        "电击使",
+        "发夹"
+      ],
+      "bg_story": "御坂美琴是《某科学的超电磁炮》的主角，学园都市 7 名 LV5 超能力者之一（第三位），能力为电击使（Electromaster），招牌技超电磁炮以街机硬币为弹。常盘台制服为白衬衫+浅棕背心+卡其百褶裙（非水手服）。",
+      "palette": [
+        "电光蓝",
+        "茶棕",
+        "常盘台卡其"
+      ],
+      "weather": [
+        "学园都市晴日",
+        "电光夜空",
+        "放学街道"
+      ],
+      "speech": "御坂美琴向你致以问候。",
+      "source": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+      "traits": [
+        "misaka_mikoto",
+        "1girl",
+        "solo",
+        "short_brown_hair",
+        "brown_eyes",
+        "hair_clip",
+        "flower_hair_clip",
+        "sparks",
+        "electricity",
+        "toaru_kagaku_no_railgun"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "misaka_mikoto",
+        "mikoto",
+        "mikoto misaka",
+        "railgun",
+        "railgun sis"
+      ],
+      "animeStudio": "j.c.staff, official anime screencap, anime coloring",
+      "canon": {
+        "era": "近未来",
+        "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
+        "research": "2026-08-14 调研",
+        "world": "学园都市（超电磁炮）"
+      },
+      "curatedArtistStyles": [
+        "kantoku",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "displayName": "御坂美琴",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "misaka_mikoto"
+      ],
+      "franchise": "A Certain Scientific Railgun",
+      "id": "misaka_mikoto",
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut-brown hair carrying a soft glossy sheen, warm brown eyes, and a white flower hair clip",
+      "identityTokens": [
+        "misaka_mikoto",
+        "1girl",
+        "solo",
+        "short_brown_hair",
+        "brown_eyes",
+        "hair_clip",
+        "flower_hair_clip",
+        "toaru_kagaku_no_railgun"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Misaka Mikoto",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "kind": "character",
+  "id": "eyjafjalla_arknights",
+  "revision": 1,
+  "sortOrder": 25,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "eyjafjalla_arknights",
+    "profile": {
+      "id": "eyjafjalla_arknights",
+      "name": "艾雅法拉",
+      "alias": [
+        "Eyjafjalla",
+        "艾雅法拉",
+        "小羊",
+        "阿黛尔·冯·艾雅法拉",
+        "Adele von Eyjafjalla"
+      ],
+      "type": "popular",
+      "icon": "🌋",
+      "visual_dna": {
+        "hair": "浅茶褐色/灰粉棕色中长发，发质蓬松柔顺，带有微微的波浪卷弧度与轻盈的羊毛质感；额前配有整齐轻薄的空气刘海与修饰脸颊的自然垂落碎发鬓角。",
+        "hair_color": "浅茶褐色/粉棕色 (light ash brown / dusty pinkish brown)",
+        "eyes": "深红宝石色/酒红色清澈眼眸 (ruby red / wine red eyes)，眼神纯澈温润且富有知性光芒，瞳孔高光通透。",
+        "hairstyle": "本体基础为蓬松低双马尾（双侧低扎发辫，带波浪卷弧度），耳侧长有一对向外前侧弯曲生长的卡普里尼羊角以及微垂的毛茸茸浅色兽耳；异格纯烬形态为侧低单马尾配毛绒发饰。",
+        "uniform": "基础立绘服装为继承自母亲的火山科考防护大衣改良版：深灰色/近黑色的立领带兜帽保暖外套大衣，内穿带有白色蕾丝褶皱花边的衬衫连衣裙与深色百褶短裙，下身搭配黑色过膝高筒长袜（绝对领域）与黑色短靴，颈部配有金属锁扣及罗德岛干员身份标识。",
+        "expression": "温柔恬静、坚毅专注且带有惹人怜爱的纯真气质；面对学术时眼神认真知性，平时展露温和柔美的微笑。",
+        "style": "学术少女 / 地质学者 / 软萌小羊 / 火山奇幻 / 日系清纯幻想风 (Academic, Wholesome Fantasy, Soft Anime Girl)",
+        "signature": "头顶两侧标志性向前微弯的温润米褐色卡普里尼羊角、下垂绒毛羊耳、身边常伴的可爱熔岩小羊（火山法术精灵）、手持的大型红宝石火山研究源石法杖、听力受损佩戴的助听设备。"
+      },
+      "personality": [
+        "温柔体贴",
+        "坚强独立",
+        "学术专注",
+        "谦逊有礼",
+        "纯真善良",
+        "敬爱前辈",
+        "乐观勇敢",
+        "惹人怜爱"
+      ],
+      "likes": [
+        "火山学与地质考察",
+        "阅读父母留下的学术笔记",
+        "与博士（称呼为前辈）一起工作和交流",
+        "照顾和观察可爱的小羊",
+        "汐斯塔温泉与海风",
+        "晴朗天气下的野餐"
+      ],
+      "identity": {
+        "role": "罗德岛资深研究员 / 中坚术师 / 行医",
+        "age": "未知（外貌为年轻少女，已完成高等学府深造并发表顶级学术论文）",
+        "occupation": "火山学家 / 地质灾害研究专家",
+        "faction": "莱塔尼亚 (Leithanien) / 罗德岛 (Rhodes Island)"
+      },
+      "tags": [
+        "浅茶褐色/粉棕色",
+        "深红宝石色/酒红色清澈眼眸"
+      ],
+      "bg_story": "艾雅法拉出身于莱塔尼亚著名的学者家庭，本名阿黛尔·冯·艾雅法拉，自幼随父母投身火山研究。在父母因火山科考天灾不幸遇难后，她毅然继承了父母未竟的火山学课题，并在极年轻时便取得了卓越的学术成果。因长期在一线考察而感染了重度矿石病，导致听力与视力出现不可逆的衰退，但她依然以无比坚韧乐观的态度面对生活。加入罗德岛后，她不仅接受针对性矿石病抑制治疗，更作为资深火山与天灾专家为舰船提供专业的学术支持与前线法术支援。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "eyjafjalla (arknights)",
+        "1girl",
+        "solo",
+        "light_brown_hair",
+        "twintails",
+        "red_eyes",
+        "horns",
+        "white_dress",
+        "black_thighhighs",
+        "coat",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-eyjafjalla_arknights.png?v=5",
+        "alt": "艾雅法拉热门角色立绘"
+      },
+      "speech": "艾雅法拉向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "eyjafjalla",
+        "eyja",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "粉发红瞳羊角；火山学家",
+        "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "rella",
+        "morikura_en"
+      ],
+      "displayName": "艾雅法拉",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eyjafjalla (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "eyjafjalla_arknights",
+      "identityProse": "Eyjafjalla from Arknights, a gentle Caprinae volcanologist with soft light brown hair tied in twintails, curved sheep horns, and warm crimson eyes.",
+      "identityTokens": [
+        "eyjafjalla (arknights)",
+        "1girl",
+        "solo",
+        "light_brown_hair",
+        "twintails",
+        "red_eyes",
+        "horns",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Eyjafjalla",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

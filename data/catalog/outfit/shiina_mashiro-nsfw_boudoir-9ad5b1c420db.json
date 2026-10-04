@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 854,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "椎名真白·成人私密造型",
+      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "tokens": [
+        "private_lingerie",
+        "sheer_lace",
+        "soft_shadows"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

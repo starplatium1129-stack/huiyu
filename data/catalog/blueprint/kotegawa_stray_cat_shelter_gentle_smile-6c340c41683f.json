@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_stray_cat_shelter_gentle_smile",
+  "revision": 1,
+  "sortOrder": 1257,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "蹲在纸箱前单手轻抚小花猫下巴，百褶裙微拢，眼神极尽温柔，嘴角漾起浅笑",
+    "camera": "medium close-up, seated eye-level, intimate gentle depth of field",
+    "category": "日常纯善",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【古手川唯 · 雨后巷口的心软小猫呢喃】放学后雨过天晴的安静小巷拐角处，水洼倒映着碧蓝天光。唯换上端庄的针织开衫与百褶长裙，收起雨伞，温柔地蹲在一只躲在纸箱里的受伤小花猫面前。她伸出一只纤细白嫩的手指，轻轻挠着小猫的下巴，嘴角绽放出平日严厉外表下绝难得见的圣洁纯真微笑，眼神中满是少女独有的纯情与怜爱。",
+    "id": "kotegawa_stray_cat_shelter_gentle_smile",
+    "lighting": "雨后初霁的透亮金黄斜阳穿透巷道木格栅形成的丁达尔光束",
+    "location": "居民区青石板小巷木栅栏旁纸箱前",
+    "mood": "纯真温柔",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "casual_sweater",
+    "promptProse": "Crouching tenderly beside a cardboard box sheltering a tiny stray kitten in a sunlit stone alleyway after rain, Yui gently strokes its chin in a modest cardigan and pleated skirt. Warm evening sunbeams illuminate puddles and her soft, unguarded smile.",
+    "promptTokens": [
+      "quiet_alleyway",
+      "stray_cat",
+      "cardboard_box",
+      "crouching",
+      "touching_cat",
+      "gentle_smile",
+      "knit_cardigan",
+      "pleated_skirt",
+      "white_hairband",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "alley",
+      "cat",
+      "stray_cat",
+      "crouching",
+      "gentle_smile",
+      "cardigan",
+      "pleated_skirt",
+      "white_hairband"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "古手川唯 · 雨后巷口的心软小猫呢喃"
+  }
+}

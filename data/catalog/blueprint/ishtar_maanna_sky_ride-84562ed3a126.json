@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_maanna_sky_ride",
+  "revision": 1,
+  "sortOrder": 253,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_maanna_sky_ride",
+    "title": "伊什塔尔 · 天舟玛安娜的巡空·「看好了，这就是女神的领空」",
+    "category": "战斗高光",
+    "characterId": "ishtar_fate",
+    "description": "【群山云海上空·白昼】白色天舟Maanna掠过云层，伊什塔尔稳稳站在前端，一手叉腰俯瞰远方的山脊。金色耳环与王冠在阳光下闪耀，黑色双侧束发随风扬起。她回头得意地招呼同行者欣赏这片高空景色。",
+    "location": "群山云海上空",
+    "action": "立于天舟船首叉腰俯瞰，金饰灼灼黑发飞扬",
+    "timeOfDay": "白昼",
+    "lighting": "高空烈阳与云海反光的强对比",
+    "camera": "wide dynamic shot, boat prow, cloud sea, goddess framing",
+    "mood": "女神威光、意气飞扬",
+    "sceneTags": [
+      "maanna",
+      "cloud_sea",
+      "mountain_ridges",
+      "standing_on_craft",
+      "hand_on_hip",
+      "supported_stance",
+      "golden_tiara",
+      "hoop_earrings",
+      "high_sunlight",
+      "wide_shot"
+    ],
+    "promptProse": "Ishtar stands securely at the forward section of the large white heavenly craft Maanna as it passes above a sea of clouds and distant mountain ridges. One hand rests on her hip while the other steadies her stance against the craft’s structure. Her black goddess outfit, golden tiara and hoop earrings catch the high sunlight, with dark two-side-up hair moving in the wind. She looks out with an exuberant, proud smile. Use a wide view that connects the figure, supported feet and Maanna clearly, with no lettering.",
+    "promptTokens": [
+      "maanna",
+      "cloud_sea",
+      "mountain_ridges",
+      "standing_on_craft",
+      "hand_on_hip",
+      "supported_stance",
+      "golden_tiara",
+      "hoop_earrings",
+      "high_sunlight",
+      "wide_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "official_goddess_attire",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ]
+  }
+}

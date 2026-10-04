@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/sfw_casual",
+  "revision": 1,
+  "sortOrder": 155,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "书店与采购针织便装",
+      "prose": "a black long-sleeved knit top, ankle-length purple skirt and simple reading glasses",
+      "tokens": [
+        "black_sweater",
+        "long_sleeves",
+        "long_purple_skirt",
+        "glasses"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "momo_morning_futon_cuddle_tease",
+  "revision": 1,
+  "sortOrder": 1246,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "侧卧被窝内手撑香腮贴近对方，半透薄纱睡裙露出深邃乳沟，爱心尾巴暗中缠腿调情",
+    "camera": "close-up, intimate side view inside bedding, seductive eye contact",
+    "category": "日常晨起",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【梦梦 · 清晨被窝里的甜蜜偷袭】清晨薄雾弥漫的结城家卧室内，柔和的淡金朝阳刚刚穿透窗帘。梦梦早已脱去外衣，身穿一袭半透明的浅紫蕾丝吊带睡裙悄悄钻进了梨斗的被窝里。她侧卧在枕边，一手撑着香腮，整个人像柔滑的小猫般贴紧梨斗，身后纤细的黑色恶魔尾巴早已在被子下缠上了梨斗的小腿，眼波流转带着娇媚微喘——「早上好，梨斗先生……今天的晨间唤醒服务，还令您感到满意吗？」",
+    "id": "momo_morning_futon_cuddle_tease",
+    "lighting": "白色棉被边缘漏进的柔和清冽晨光与床头暗调温暖色温",
+    "location": "结城家卧室大床羽绒被窝内部",
+    "mood": "极其撩人",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "harem_negligee",
+    "promptProse": "Cuddling playfully beneath soft white morning bedsheets in a sheer lavender lace negligee, Momo props her chin on one palm right beside her partner’s pillow. Gentle dawn sunbeams illuminate her ample cleavage and the black spade tail teasingly coiled beneath the blanket.",
+    "promptTokens": [
+      "bedroom_bed",
+      "lying_in_bed",
+      "negligee",
+      "sheer_fabric",
+      "cleavage",
+      "demon_tail",
+      "seductive_smile",
+      "morning_sunlight",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "lying_in_bed",
+      "negligee",
+      "sheer_clothing",
+      "cleavage",
+      "demon_tail",
+      "seductive_smile"
+    ],
+    "timeOfDay": "清晨",
+    "title": "梦梦 · 清晨被窝里的甜蜜偷袭"
+  }
+}

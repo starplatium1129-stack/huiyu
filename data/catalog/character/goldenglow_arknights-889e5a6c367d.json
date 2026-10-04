@@ -1,0 +1,142 @@
+{
+  "kind": "character",
+  "id": "goldenglow_arknights",
+  "revision": 1,
+  "sortOrder": 26,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "goldenglow_arknights",
+    "profile": {
+      "id": "goldenglow_arknights",
+      "name": "澄闪",
+      "alias": [
+        "Goldenglow",
+        "澄闪",
+        "苏茜·格里特",
+        "Susie Glitter",
+        "粉毛"
+      ],
+      "type": "popular",
+      "icon": "✂️",
+      "visual_dna": {
+        "hair": "淡粉色长发（末端微卷蓬松，带有暖金微光的柔和质感），梳成双低马尾（双马尾），额前留有整齐的齐刘海与细碎鬓角发丝",
+        "hair_color": "淡粉色 / 桃粉色（Pink / Peach pink）",
+        "eyes": "清澈明亮的蓝绿色/青碧色眼眸（Teal / Cyan eyes），大眼圆润温柔，眼神中带有一丝腼腆与羞怯感",
+        "hairstyle": "双低马尾 / 双马尾（Twintails），两侧各垂一条蓬松柔顺的粉色长发束，发尾呈自然微卷",
+        "uniform": "维多利亚学徒工装与可爱洋装结合：内穿白色翻领短袖衬衫，外搭深蓝灰色/黑灰色的修身短款背带马甲式吊带裙，领口系有明亮金黄色领巾/领结；下身穿深色百褶短裙与不对称长筒袜/过膝袜、复古皮鞋；腰间系有皮质理发师工具包（配有剪刀与梳子挂扣），手戴深色短手套与护腕",
+        "expression": "温柔文静、害羞治愈、有些容易紧张但眼神清澈真诚；施法或战斗时专注坚定",
+        "style": "维多利亚英伦学徒工装风、甜美治愈系少女、魔法科技与雷电特效结合、微蒸汽朋克元素",
+        "signature": "菲林族特征（一对向下微折的粉色折耳猫耳朵、身后一条毛茸茸的粉色猫尾巴）、身旁漂浮的机械浮游球单元（小电狗/浮游炮机械宠物）、金色与天蓝色的静电火花/电弧流光、理发剪刀造型的源石法杖、标志性黄色领巾"
+      },
+      "personality": [
+        "温柔体贴",
+        "坚韧乐观",
+        "勤奋懂事",
+        "害羞腼腆",
+        "心怀梦想",
+        "关爱家人",
+        "待人真诚",
+        "责任感强"
+      ],
+      "likes": [
+        "美发与造型设计（梦想开属于自己的理发店）",
+        "烘焙甜点与制作下午茶",
+        "给家人寄信与汇款",
+        "和罗德岛的朋友们聊天聚会",
+        "摆弄与维护机械浮游单元",
+        "收集可爱的小饰品与发饰"
+      ],
+      "identity": {
+        "role": "罗德岛干员 / 驭械术师 / 前理发店学徒",
+        "age": "未知（外表与心智为年轻少女）",
+        "occupation": "术师 / 理发师（学徒）",
+        "faction": "维多利亚（卡拉顿） / 罗德岛"
+      },
+      "tags": [
+        "淡粉色 / 桃粉色（Pink / Peach pink）",
+        "清澈明亮的蓝绿色/青碧色眼眸（Teal / Cyan eyes），大眼圆润温柔，眼神中带有一丝腼腆与羞怯感"
+      ],
+      "bg_story": "苏茜·格里特出身于维多利亚卡拉顿的一个普通大家庭，为了减轻家庭负担并实现成为一名优秀理发师的梦想，她来到理发店刻苦当学徒。在不幸感染矿石病后，她觉醒了异常强大的雷电静电系源石技艺，却因难以自主控制而在一次火灾误会中遭致排挤与困境。在经历波折与罗德岛的救援后，苏茜以代号「澄闪」加入罗德岛，在接受矿石病治疗的同时学会了精准掌控自己的源石技艺，并始终没有放弃开一家属于自己理发店的美好心愿。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "goldenglow (arknights)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "cat_ears",
+        "cat_tail",
+        "white_shirt",
+        "scarf",
+        "black_clothes",
+        "pleated_skirt",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-goldenglow_arknights.png?v=5",
+        "alt": "澄闪热门角色立绘"
+      },
+      "speech": "澄闪向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "goldenglow",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
+        "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "displayName": "澄闪",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "goldenglow (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "goldenglow_arknights",
+      "identityProse": "Goldenglow (Susie) from Arknights, a sweet Scottish Fold hairdresser with fluffy pastel pink twintails, folded feline ears, blue eyes, and a slender cat tail.",
+      "identityTokens": [
+        "goldenglow (arknights)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "cat_ears",
+        "cat_tail",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Goldenglow",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

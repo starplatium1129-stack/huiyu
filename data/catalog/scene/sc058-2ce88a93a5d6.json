@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc058",
+  "revision": 1,
+  "sortOrder": 56,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Standing before the bedroom mirror on a spring morning in a new white lace lingerie set with a soft silk robe draped loosely over her shoulders, Ayachi Nene hides her phone behind her back and pulls the robe over her shoulder with the other hand, a shy flustered blush mirrored under soft morning light.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "camera": "镜中肩上近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "羞怯",
+    "id": "sc058",
+    "lighting": "春日清晨柔光",
+    "location": "同居公寓卧室镜前",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, new, white, standing, bedroom, on_bed, barefoot, blush, shy_smile, bokeh, collarbone, slender_waist, full_body, morning_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "春",
+    "story": "【成年 After Story · 镜前没有发出的照片】同居后的春日清晨，成年的宁宁在卧室镜前试穿新买的内衣，本想悄悄拍下搭配效果，却从镜子里看见刚醒来的你。她慌忙把手机藏到身后，红着脸侧过身想遮掩，最后又慢慢转了回来——「本来想等准备好再给你看的……既然已经醒了，只能由你负责告诉我合不合适。」",
+    "storyJa": "【寧々・大人のアフターストーリー・鏡の前の未送信写真】同棲を終えた春の朝、大人の寧々は寝室の鏡の前で新しく買った下着を試着した。彼女はこっそりとマッチング効果の写真を撮りたかったのですが、起きたばかりのあなたが鏡に映っていました。彼女は慌てて携帯電話を背中に隠し、顔を赤らめてナイトガウンで肩を覆い、ようやくゆっくりと携帯電話を下ろした。――「ちゃんと準備してから見せようと思っていたのに……もう起きてしまったなら、似合うかどうか、あなたが責任を持って教えてください。」",
+    "tags": [
+      "hair_ribbon",
+      "lingerie",
+      "robe",
+      "mirror",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "hiding_phone",
+      "spring_morning"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "镜前没有发出的照片",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

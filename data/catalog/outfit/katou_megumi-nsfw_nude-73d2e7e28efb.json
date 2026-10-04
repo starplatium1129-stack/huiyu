@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 797,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, porcelain-skinned body with her brown hair falling softly around her delicate collarbones, modest perky breasts with tender pink nipples, a smooth flat stomach, and a slender frame",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body",
+        "pale_skin"
+      ]
+    }
+  }
+}

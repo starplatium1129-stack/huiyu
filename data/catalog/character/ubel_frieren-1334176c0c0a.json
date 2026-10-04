@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "ubel_frieren",
+  "revision": 1,
+  "sortOrder": 127,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ubel_frieren",
+    "profile": {
+      "id": "ubel_frieren",
+      "name": "尤贝尔",
+      "alias": [
+        "尤贝尔",
+        "Übel"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-ubel_frieren.png?v=a5631bb658e2",
+        "alt": "尤贝尔 · 考试会场的缠人精场景样张"
+      },
+      "visual_dna": {
+        "signature": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
+        "hair": "green_hair, long_hair",
+        "eyes": "purple_eyes, half-closed_eyes",
+        "uniform": "黑裙旅行装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "行动随性，目光敏锐，善于捕捉他人的反应",
+        "面对陌生环境仍带着近乎漫不经心的自信",
+        "轻快笑容与危险判断力并存，不宜写成单纯温顺"
+      ],
+      "likes": [
+        "观察往来旅人",
+        "旅途中短暂歇脚",
+        "尝试小镇日常"
+      ],
+      "classic_cg": {
+        "title": "尤贝尔 · 考试会场的缠人精",
+        "description": "一级魔法使考试等候区，她整个人凑到别人面前叽叽喳喳地问个不停，半睁的眼睛里没有恶意也没有分寸；对方后退半步她就前进半步，是她的社交距离。"
+      },
+      "identity": "Frieren: Beyond Journey's End · 尤贝尔",
+      "tags": [
+        "尤贝尔",
+        "葬送的芙莉莲",
+        "日常"
+      ],
+      "bg_story": "以独特想象力施法的魔法使，习惯靠近观察、随口发问。绿发侧马尾与半睁紫瞳是识别重点，日常侧重旅途见闻、挑选法杖和不太可靠的厨艺。",
+      "palette": [
+        "#7fba9b",
+        "#282532"
+      ],
+      "source": "Frieren: Beyond Journey's End",
+      "speech": "这个看起来挺有意思，试试看吧。",
+      "traits": [
+        "ubel_(sousou_no_frieren)",
+        "sousou_no_frieren",
+        "green_hair",
+        "long_hair",
+        "side_ponytail"
+      ],
+      "accent_color": "#7fba9b",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "ubel_frieren",
+      "displayName": "尤贝尔",
+      "originalName": "Übel",
+      "franchise": "Frieren: Beyond Journey's End",
+      "aliases": [
+        "尤贝尔",
+        "Übel"
+      ],
+      "identityProse": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
+      "identityTokens": [
+        "ubel_(sousou_no_frieren)",
+        "sousou_no_frieren",
+        "green_hair",
+        "long_hair",
+        "side_ponytail",
+        "purple_eyes",
+        "half-closed_eyes"
+      ],
+      "exactTokens": [
+        "ubel_(sousou_no_frieren)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ubel_(sousou_no_frieren)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

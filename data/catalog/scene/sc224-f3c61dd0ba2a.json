@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc224",
+  "revision": 1,
+  "sortOrder": 219,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Standing on the locked school rooftop at sunset, Ayachi Nene in a pure white angel dress with large feathered wings and a glowing halo above her head flushes bright red and presses her skirt hem with one hand as the wind lifts her silver hair, sacred halo glow blazing in the golden sunset backlight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全身远景，人物居中",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc224",
+    "lighting": "完美的黄金时刻夕阳逆光与发丝轮廓光",
+    "location": "教学楼反锁的天台中央",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_angel_dress, white_thighhighs, large_white_feathered_wings, glowing_halo, mary_janes, standing_on_locked_school_rooftop, holding_skirt_hem, bright_blush, shy_smile, silver_hair_and_skirt_windblown, sunset, golden_hour, bokeh, full_body, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 天台天使装反差萌】学园祭前夕被晚霞染红的学校天台。为了帮戏剧部试衣，宁宁换上了一套极其精致的纯白圣洁天使连衣裙，背后一对洁白的羽毛翅膀与头顶的发光光环在强烈的夕阳逆光中散发着神圣的光晕。微风吹过，她银白色的低双马尾与裙摆一同飞扬。原本正有些羞耻地在镜子前练习动作，一回头却发现你正靠在门边含笑注视着她。宁宁瞬间满脸通红，头顶的呆毛慌乱地跟着翅膀一起颤动起来，急忙用手捂住裙摆大声自曝——「呜啊！柊、柊史！什么时候进来的啦！不准看！人家、人家只是帮戏剧部试一下衣服而已，绝对没有故意穿成这样在等你哦……呜，笨蛋，快转过头去！」",
+    "storyJa": "【寧々・屋上の純白の福音と恥ずかしさ】文化祭の前夜、夕暮れに染まる学校の屋上。演劇部の手伝いで、寧々は非常に精緻な純白の聖なる天使のワンピースに着替えていた。背中の白い羽の翼と頭上の光る輪が、強い夕日の逆光の中で神聖な光輪を放っている。微風が吹き抜け、彼女の銀髪のローツインテールとスカートの裾が一緒に舞い上がる。少し恥ずかしそうに鏡の前でポーズの練習をしていたが、振り返るとあなたがドアの傍に寄りかかって微笑みながら見つめているのに気づいた。寧々は瞬間的に顔を真っ赤にし、頭の上のアホ毛が慌てて翼と一緒に震え出し、手でスカートを覆いながら大声で自爆した――「うあぁ！柊、柊史！いつからそこにいたの？！見ちゃダメ！私、私はただ演劇部の衣装を試着してるだけで、決してわざとこんな格好であなたを待ってたわけじゃ……うう、バカ、早く後ろを向いて！」",
+    "tags": [
+      "hair_ribbon",
+      "angel_wings",
+      "halo",
+      "white_dress",
+      "sheer_white_thighhigh_stockings",
+      "rooftop",
+      "full_body",
+      "mary_jane",
+      "sunset"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "落日天台上的纯白福音",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "秋日晴空"
+  }
+}

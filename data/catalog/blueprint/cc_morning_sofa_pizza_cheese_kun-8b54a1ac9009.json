@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "cc_morning_sofa_pizza_cheese_kun",
+  "revision": 1,
+  "sortOrder": 1312,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "抱着奶酪君玩偶蜷在沙发上，张口接受视角的披萨投喂，眼神慵懒满足",
+    "camera": "cowboy shot, eye level, cozy home view",
+    "category": "晨间女友",
+    "characterId": "cc_code_geass",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "cozy"
+    ],
+    "description": "【C.C. · 居家沙发的披萨投喂早晨】清晨温暖的客厅里，阳光透过窗帘在地毯上映出斑驳光斑。C.C.穿着宽大的米白色大号粗线毛衣蜷缩在布艺沙发角落，怀里紧紧抱着黄色的奶酪君玩偶，露出修长白皙的光洁双腿。茶几上放着刚送来的外卖披萨，她微启樱唇咬住你递过来的拉丝热披萨，金色眼眸含着一丝慵懒惬意——「嗯……还是刚烤出来的芝士最好吃。喂，下一片也要你喂我才行。」",
+    "id": "cc_morning_sofa_pizza_cheese_kun",
+    "lighting": "柔和金黄的室内晨光与窗帘光晕",
+    "location": "温馨阳光明媚的公寓客厅布艺沙发角",
+    "mood": "慵懒甜美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_oversized_sweater",
+    "promptProse": "Curled comfortably upon a plush living room sofa bathed in warm morning sunlight, C.C. hugs her beloved yellow Cheese-kun plushie in her lap. Wearing a loose, off-shoulder cream knit sweater that reveals her delicate collarbone and bare legs, she leans forward slightly to take a bite from a cheesy slice of pizza held by the viewer. Her amber eyes gleam with lazy, affectionate contentment. Cozy, domestic anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "cozy",
+      "oversized_sweater",
+      "off-shoulder",
+      "bare_legs",
+      "holding_plushie",
+      "eating_food",
+      "pizza",
+      "green_hair",
+      "yellow_eyes",
+      "lazy_smile",
+      "morning_light",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "living_room",
+      "sofa",
+      "couch",
+      "holding_plushie",
+      "cheese-kun",
+      "oversized_sweater",
+      "bare_legs",
+      "eating_pizza",
+      "feeding_viewer",
+      "lazy_smile"
+    ],
+    "timeOfDay": "清晨",
+    "title": "C.C. · 居家沙发的披萨投喂早晨"
+  }
+}

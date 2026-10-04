@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_maid_cafe_tea_service_deadpan",
+  "revision": 1,
+  "sortOrder": 1061,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手端托盘奉茶，面无表情俯视客人，女仆围裙与鲨鱼尾相得益彰",
+    "camera": "close-up, slight low angle from the guest's perspective",
+    "category": "工作日常",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "cafe"
+    ],
+    "description": "【艾莲·乔 · 营业微死感的端茶执事】高档欧式红木装潢的执事咖啡厅内，艾莲身穿精致女仆装，单手端着银质托盘走来。红茶杯升腾着热气，她脸上带着标准“被迫营业”的无口厌世表情，红宝石般的双眸居高临下地俯视——「您的伯爵红茶，主人。趁热喝，凉了我可不负责换新的。」",
+    "id": "ellen_maid_cafe_tea_service_deadpan",
+    "lighting": "典雅水晶吊灯与壁炉火焰晕染的暖金室内光",
+    "location": "欧式典雅执事咖啡厅包间",
+    "mood": "反差傲娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "maid_service_uniform",
+    "promptProse": "With one hand, Ellen carries a steaming cup of Earl Grey on an ornate silver tray through an elegant Victoria Housekeeping cafe salon. She looks down at the guest with her signature tired deadpan expression while the other hand stays clear of the tray. Polished mahogany furniture and amber chandelier light frame the quiet tea service. Close-up, slight low angle from the guest's perspective, cinematic lighting.",
+    "promptTokens": [
+      "maid_cafe",
+      "tea_tray",
+      "teacup",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting",
+      "earl_grey",
+      "one_hand_holding_tray",
+      "serving_tea",
+      "maid_service_uniform",
+      "indoor_salon",
+      "looking_down",
+      "close_up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cafe",
+      "tea_service",
+      "tray",
+      "teacup",
+      "maid_apron",
+      "deadpan",
+      "shark_tail",
+      "earl_grey",
+      "one_hand",
+      "service"
+    ],
+    "timeOfDay": "下午",
+    "title": "艾莲·乔 · 营业微死感的端茶执事"
+  }
+}

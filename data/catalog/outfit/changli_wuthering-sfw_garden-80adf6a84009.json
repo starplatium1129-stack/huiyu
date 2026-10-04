@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/sfw_garden",
+  "revision": 1,
+  "sortOrder": 932,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "sfw_garden",
+      "name": "庭院茶叙轻便和装",
+      "prose": "a soft peach jacket over a cream blouse and ankle-length red skirt",
+      "tokens": [
+        "peach_jacket",
+        "cream_blouse",
+        "long_red_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

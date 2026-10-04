@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/casual",
+  "revision": 1,
+  "sortOrder": 194,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "casual",
+      "name": "私服",
+      "prose": "a chic casual outfit with a white shirt and long coat",
+      "tokens": [
+        "casual_clothes",
+        "white_shirt",
+        "long_coat",
+        "skirt"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

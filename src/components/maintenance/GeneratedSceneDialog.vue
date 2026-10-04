@@ -18,7 +18,7 @@
               <div v-if="popular" class="form-group"><StudioSelect v-model="composition" label="画面构图" :disabled="saving" :options="compositionOptions" /></div>
               <label class="generated-scene-check"><input v-model="attachImage" type="checkbox" :disabled="saving" />同时把这张图保存为场景样张</label>
             </template>
-            <p v-else class="generated-scene-success" role="status">「{{ title }}」已保存。可在场景维护中继续编辑，也可回到创作页选择它。</p>
+            <p v-else class="generated-scene-success" role="status">「{{ title }}」已保存。可在内容维护中继续编辑，也可回到创作页选择它。</p>
           </div>
         </div>
         <details class="generated-scene-details">
@@ -31,11 +31,11 @@
         <p v-if="loading" class="generated-scene-note" role="status">正在读取场景库…</p>
         <p v-if="error" class="generated-scene-error" role="alert">{{ error }}</p>
         <p v-if="imageError" class="generated-scene-error" role="alert">{{ imageError }}</p>
-        <div v-if="preview && !savedId" class="generated-scene-review" role="status">检查完成：新增 1 个{{ popular ? '角色场景' : '场景' }}，不会修改已有场景。保存后可在场景维护中找到。结构检查不代表已验证再次出图效果。</div>
+        <div v-if="preview && !savedId" class="generated-scene-review" role="status">检查完成：新增 1 个{{ popular ? '角色场景' : '场景' }}，不会修改已有场景。保存后可在内容维护中找到。结构检查不代表已验证再次出图效果。</div>
         <footer class="modal-actions">
           <button v-if="!baseline && !loading && !savedId" class="btn btn-ghost" type="button" @click="load">重新读取</button>
           <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重试保存样张</button>
-          <button v-if="savedId" class="btn btn-primary" type="button" :disabled="saving" @click="openMaintenance">去场景维护</button>
+          <button v-if="savedId" class="btn btn-primary" type="button" :disabled="saving" @click="openMaintenance">去内容维护</button>
           <button v-else-if="preview" class="btn btn-primary" type="button" :disabled="saving" @click="save">{{ saving ? '正在保存…' : '确认保存场景' }}</button>
           <button v-else class="btn btn-primary" type="button" :disabled="!canReview" @click="review">{{ previewing ? '正在检查…' : '检查并继续' }}</button>
           <button class="btn btn-ghost" type="button" :disabled="saving" @click="close">{{ savedId ? '完成' : '取消' }}</button>

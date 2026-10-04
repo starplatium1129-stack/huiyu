@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/sfw_grocery_disguise",
+  "revision": 1,
+  "sortOrder": 27,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "sfw_grocery_disguise",
+      "name": "针织帽眼镜采购便服",
+      "prose": "a soft cardigan over a simple blouse, a long skirt, plain clear-lens glasses and a knitted beanie",
+      "tokens": [
+        "cardigan",
+        "blouse",
+        "long_skirt",
+        "glasses",
+        "knit_hat"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

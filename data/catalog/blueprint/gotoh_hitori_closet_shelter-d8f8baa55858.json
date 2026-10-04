@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "gotoh_hitori_closet_shelter",
+  "revision": 1,
+  "sortOrder": 1003,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
+    "camera": "medium shot, eye level",
+    "category": "现代日常",
+    "characterId": "gotoh_hitori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【后藤一里 · 壁橱秘密基地】逼仄而充满安全感的卧室壁橱里，四壁贴满了喜爱的摇滚乐队海报与暖黄色小串灯。波奇酱蜷坐在软垫上，头戴专业监听耳机，怀抱吉他专注练琴，眼神温柔又安心——「这里是属于我一个人的安全岛……只有吉他和录音麦克风，不用担心任何人的目光。」",
+    "id": "gotoh_hitori_closet_shelter",
+    "lighting": "暖黄串灯微光与电脑屏幕冷光交融",
+    "location": "家中卧室壁橱内部",
+    "mood": "静谧安详",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "closet_pajamas_casual",
+    "promptProse": "Inside a cozy dimly lit bedroom closet sanctuary, Gotoh Hitori sits curled up on a soft floor cushion wearing large monitor headphones and loose pastel loungewear. Warm golden fairy lights and the subtle bluish glow of a laptop screen illuminate the surrounding rock band posters and guitar cables. She cradles her acoustic guitar gently with a peaceful, reflective expression, gazing down at handwritten tablature sheets. Rich interior shadows and gentle rim lighting create an intimate, heartwarming slice-of-life atmosphere.",
+    "promptTokens": [
+      "closet",
+      "bedroom",
+      "fairy_lights",
+      "headphones",
+      "sheet_music",
+      "posters_on_wall",
+      "sitting",
+      "curled_up",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "closet",
+      "bedroom",
+      "fairy_lights",
+      "headphones",
+      "over-ear_headphones",
+      "sheet_music",
+      "posters_on_wall",
+      "sitting",
+      "curled_up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "后藤一里 · 壁橱秘密基地"
+  }
+}

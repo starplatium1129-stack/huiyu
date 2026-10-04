@@ -1,0 +1,117 @@
+{
+  "kind": "character",
+  "id": "shinjou_akane",
+  "revision": 1,
+  "sortOrder": 149,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shinjou_akane",
+    "profile": {
+      "id": "shinjou_akane",
+      "name": "新条茜",
+      "alias": [
+        "新条茜",
+        "Akane Shinjou"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-shinjou_akane.png?v=3f8d3257c088",
+        "alt": "新条茜 · 教室中心的完美微笑场景样张"
+      },
+      "visual_dna": {
+        "signature": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+        "hair": "short_hair, purple_hair",
+        "eyes": "red_eyes",
+        "uniform": "教室整齐制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "社交时笑容圆融，独处时更专注于自己的世界",
+        "对怪兽造型的细节有强烈兴趣",
+        "轻松表情之下也有挫败与脆弱，需要真实的理解"
+      ],
+      "likes": [
+        "拼装怪兽模型",
+        "整理模型工具",
+        "研究特摄造型"
+      ],
+      "classic_cg": {
+        "title": "新条茜 · 教室中心的完美微笑",
+        "description": "课间教室，茜一手托腮，用恰到好处的亲切笑容回应画外的话语。另一只手在合起的笔记旁无意识地转着橡皮，午间光线照出她完美表情与小动作之间的差异。"
+      },
+      "identity": "SSSS.GRIDMAN · 新条茜",
+      "tags": [
+        "新条茜",
+        "SSSS.古立特",
+        "日常"
+      ],
+      "bg_story": "外表亲切、喜爱怪兽模型的少女，会在社交与独处间呈现不同神情。浅紫短发和红瞳保持一致，眼镜为制作模型时的可选配件。",
+      "palette": [
+        "#b79fca",
+        "#282532"
+      ],
+      "source": "SSSS.GRIDMAN",
+      "speech": "背鳍的线条还差一点，我想再修修。",
+      "traits": [
+        "shinjou_akane",
+        "gridman_universe",
+        "short_hair",
+        "purple_hair",
+        "red_eyes"
+      ],
+      "accent_color": "#b79fca",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "shinjou_akane",
+      "displayName": "新条茜",
+      "originalName": "Akane Shinjou",
+      "franchise": "SSSS.GRIDMAN",
+      "aliases": [
+        "新条茜",
+        "Akane Shinjou"
+      ],
+      "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+      "identityTokens": [
+        "shinjou_akane",
+        "gridman_universe",
+        "short_hair",
+        "purple_hair",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "shinjou_akane"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shinjou_akane"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

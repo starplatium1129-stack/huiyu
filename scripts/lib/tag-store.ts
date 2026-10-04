@@ -95,6 +95,18 @@ function readManifest(): TagManifest {
 }
 
 export function loadTagShards(): { manifest: TagManifest; sources: Array<{ entry: TagManifestEntry; source: string; tags: TagEntry[] }>; tags: TagEntry[] } {
+  const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
+  const records = catalog.read(root);
+  if (records) {
+    const view = catalog.views(records);
+    const tags: TagEntry[] = view.documents.tags;
+    const groups = new Map<string, TagEntry[]>();
+    for (const tag of tags) { if (!groups.has(tag.cat)) groups.set(tag.cat, []); groups.get(tag.cat)!.push(tag); }
+    const sources = [...groups].map(([category, tags]) => ({ entry: { file: categorySlug(category) + '.json', category, count: tags.length }, source: path.join(shardsDir, categorySlug(category) + '.json'), tags }));
+    const manifest: TagManifest = { version: 1, files: sources.map(s => s.entry), dictionary: view.documents['tag-dictionary-policy'] };
+    buildTagDictionary(tags, manifest.dictionary);
+    return { manifest, sources, tags };
+  }
   const manifest = readManifest();
   const sources = manifest.files.map((entry) => {
     const source = path.join(shardsDir, entry.file);
@@ -153,6 +165,7 @@ export function aggregateIsCurrent(): boolean {
 
 /** 从已有的 data/tags.json 拆分为各分类分片文件（按 Category 分组） */
 export function writeTagShards(): number {
+  (require('./catalog-snapshot') as typeof import('./catalog-snapshot')).assertLegacyWrite(root);
   checkTagPath(root, aggregatePath);
   const tags = readJson<TagEntry[]>(aggregatePath);
   const previous = fs.existsSync(manifestPath) ? readManifest() : null;

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "miyabi_executive_office_report_reading",
+  "revision": 1,
+  "sortOrder": 1072,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在皮椅上翻阅机密卷宗签字，神态专注端庄，黑丝长腿交叠",
+    "camera": "cowboy shot, medium close-up, commanding presence",
+    "category": "职场威严",
+    "characterId": "hoshimi_miyabi",
+    "coverageTags": [
+      "office"
+    ],
+    "description": "【星见雅 · 对空六课课长的严谨案卷】充满现代机能美感的对空六课总指挥办公室内，巨幅防弹落地窗外俯瞰着繁华璀璨的新艾利都天际线。雅坐在高背真皮皮椅上，面前整齐码放着机密空洞调查卷宗。她手执钢笔正专注签批报告，修长黑丝美腿在办公桌下优雅交叠，狐尾从椅背侧面垂下自然蜷曲，散发出上位者不可侵犯的清冷威严。",
+    "id": "miyabi_executive_office_report_reading",
+    "lighting": "落地窗外落日熔金晚霞与室内冷白科技全息光幕",
+    "location": "对空六课总指挥官高空办公室",
+    "mood": "清冷威严",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "section6_uniform",
+    "promptProse": "Reviewing classified Hollow survey documents behind a sleek executive desk in Section 6 headquarters, Miyabi sits with poised authority before glowing panoramic twilight windows. The warm metropolitan sunset highlights her tailored military coat and elegant crossed black stockings.",
+    "promptTokens": [
+      "modern_office",
+      "desk",
+      "documents",
+      "executive_chair",
+      "cityscape_window",
+      "sunset",
+      "military_uniform",
+      "fox_ears",
+      "fox_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "office",
+      "desk",
+      "paperwork",
+      "documents",
+      "pen",
+      "executive_chair",
+      "city_view",
+      "fox_ears",
+      "fox_tail"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "星见雅 · 对空六课课长的严谨案卷"
+  }
+}

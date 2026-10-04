@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 39,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "双叶理央·成人私密造型",
+      "prose": "a private adult ensemble built around sheer lace and soft shadows",
+      "tokens": [
+        "private_lingerie",
+        "sheer_fabric"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

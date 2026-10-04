@@ -1,0 +1,148 @@
+{
+  "kind": "character",
+  "id": "elaina",
+  "revision": 1,
+  "sortOrder": 10,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "elaina",
+    "profile": {
+      "id": "elaina",
+      "name": "伊雷娜",
+      "alias": [
+        "Elaina",
+        "イレイナ"
+      ],
+      "type": "popular",
+      "icon": "🧹",
+      "portrait": {
+        "image": "../assets/characters/popular-elaina.png?v=5",
+        "alt": "伊雷娜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "灰银长发",
+        "hair_color": "灰银",
+        "eyes": "紫",
+        "hairstyle": "中长直发 · 齐刘海",
+        "uniform": "黑色魔女装 · 尖顶魔女帽",
+        "expression": "聪慧自信 · 略带自恋",
+        "style": "elegant traveling witch",
+        "signature": "灰银发、紫瞳与黑魔女帽"
+      },
+      "personality": [
+        "聪慧自信",
+        "略带自恋",
+        "毒舌",
+        "表面优雅实则狡猾",
+        "热爱旅行"
+      ],
+      "likes": [
+        "飞行",
+        "异国见闻",
+        "魔法书",
+        "旅途小憩"
+      ],
+      "classic_cg": {
+        "title": "云端飞行",
+        "description": "她跨坐扫帚穿行云海，黑帽与斗篷在风中猎猎——灰之魔女的旅途永无终点。"
+      },
+      "identity": {
+        "role": "旅行魔女（灰之魔女）",
+        "age": "约 18 岁（魔女）",
+        "occupation": "旅人 / 魔女",
+        "faction": "无（独自旅行）"
+      },
+      "tags": [
+        "灰银发",
+        "紫瞳",
+        "魔女帽",
+        "黑色魔女装",
+        "扫帚"
+      ],
+      "bg_story": "伊雷娜是《魔女之旅》的主角，天才魔女「灰之魔女」。以单元式旅行见闻游历各国，聪慧自信略带自恋。场景应偏魔法旅行、云端飞行与异国小镇。",
+      "palette": [
+        "灰银",
+        "魔女黑",
+        "旅行紫"
+      ],
+      "weather": [
+        "云海晴空",
+        "星夜营地",
+        "异国市集"
+      ],
+      "speech": "伊雷娜向你致以问候。",
+      "source": "白石定规《魔女之旅 / Majo no Tabitabi》",
+      "traits": [
+        "elaina (majo no tabitabi)",
+        "1girl",
+        "solo",
+        "long_grey_hair",
+        "ash_hair",
+        "purple_eyes",
+        "witch_hat",
+        "gold_buckle",
+        "majo_no_tabitabi"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "elaina",
+      "displayName": "伊雷娜",
+      "originalName": "Elaina",
+      "franchise": "Wandering Witch",
+      "aliases": [
+        "elaina",
+        "elaina of the journey",
+        "majo no tabitabi",
+        "wandering witch",
+        "elaina (majo no tabitabi)"
+      ],
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair with a silvery sheen, violet eyes, a black witch hat with gold buckle, with a confident smile",
+      "identityTokens": [
+        "elaina (majo no tabitabi)",
+        "1girl",
+        "solo",
+        "long_grey_hair",
+        "ash_hair",
+        "purple_eyes",
+        "witch_hat",
+        "gold_buckle",
+        "majo_no_tabitabi"
+      ],
+      "exactTokens": [
+        "elaina (majo no tabitabi)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "魔法旅行（魔女之旅）",
+        "era": "魔法世界",
+        "formNotes": "灰银发（已修正）；黑魔女帽+扫帚；灰之魔女",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "c2c, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "azuuru",
+        "rella",
+        "kantoku"
+      ]
+    }
+  }
+}

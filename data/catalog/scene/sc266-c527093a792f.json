@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc266",
+  "revision": 1,
+  "sortOrder": 261,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc266",
+    "recommendedSize": "1344×768",
+    "title": "金色软枕上的晨光告白",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】晨光越过金色软枕，宁宁红着脸拉住滑开的衣襟。她明明紧张得指尖发抖，仍认真地说：「不要躲开，我想让你看见真正的我。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult",
+      "nene_r18"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "成人向"
+    ],
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "R18",
+    "officialCgCandidate": "ocn11",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn11:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231408_046.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
+      "result": "pass"
+    },
+    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with a focused and calm expression, under soft ambient lighting.",
+    "auditRevision": "careful-batch02-2026-08-27"
+  }
+}

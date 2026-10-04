@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "texas_arknights/willpower_winter",
+  "revision": 1,
+  "sortOrder": 384,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "texas_arknights",
+    "outfit": {
+      "default": false,
+      "id": "willpower_winter",
+      "isDefault": false,
+      "name": "意志 / 寒冬信使日常便服",
+      "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
+      "tokens": [
+        "parka",
+        "winter_coat",
+        "scarf",
+        "knit_scarf",
+        "jeans",
+        "pants",
+        "boots",
+        "messenger_bag",
+        "casual",
+        "winter_clothes"
+      ]
+    }
+  }
+}

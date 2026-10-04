@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc035",
+  "revision": 1,
+  "sortOrder": 33,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Two limited-edition dessert cups have turned an ordinary shopping trip into a serious decision for Shiki Natsume. Standing before the chilled supermarket display, she lowers one cup into the basket hooked over her left forearm while the other cup is already inside. Her cream cardigan covers a white blouse above a navy skirt. She glances toward the viewer with the restrained satisfaction of someone who has found a reason to buy both flavors.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "甜品柜前半身中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "日常",
+    "id": "sc035",
+    "lighting": "超市柔和顶光",
+    "location": "超市冷藏甜品柜前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cream_cardigan, white_blouse, navy_skirt, black_tights, standing, holding_shopping_basket, basket_on_forearm, holding_dessert_cup, dessert_cups, pudding_cup, placing_food_in_basket, thoughtful_smile, supermarket, refrigerated_display, soft_overhead_light, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【夏目 · 超市货架前的选择题】夏日下午，夏目在超市甜品柜前比较两种限定口味，表情严肃得像在做重要决定。你随口选了一款，她便立刻放进购物篮，随后又拿了另一款。面对你的目光，她平静解释——「一种是你的，一种是我的，这样才方便比较。别误会，我没有打算和你分享同一杯。」",
+    "storyJa": "【夏目・スーパーマーケットの棚の前での多肢選択式の質問】夏の午後、夏目さんはスーパーのデザート売り場の前で、2つの限定フレーバーを食べ比べていました。その表情は、まるで重要な決断を下しているかのような真剣な表情でした。あなたがランダムに1つを選ぶと、彼女はすぐにそれを買い物かごに入れ、別の1つを受け取りました。君の視線に向かって彼女は冷静に説明する――「片方はあなたの、もう片方は私の。そうすれば比べやすいでしょ。勘違いしないで。同じカップを分け合うつもりはないから。」",
+    "tags": [
+      "cream_cardigan",
+      "white_blouse",
+      "navy_skirt",
+      "black_tights",
+      "standing",
+      "holding_shopping_basket",
+      "basket_on_forearm",
+      "holding_dessert_cup",
+      "dessert_cups",
+      "pudding_cup",
+      "placing_food_in_basket",
+      "thoughtful_smile",
+      "supermarket",
+      "refrigerated_display",
+      "soft_overhead_light",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "超市货架前的选择题",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

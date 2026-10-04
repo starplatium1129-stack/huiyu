@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "sylphiette/casual_day_dress",
+  "revision": 1,
+  "sortOrder": 258,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sylphiette",
+    "outfit": {
+      "default": false,
+      "id": "casual_day_dress",
+      "isDefault": false,
+      "name": "居家便服连衣裙",
+      "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "sylphiette_casual_day_dress",
+        "cardigan",
+        "knit_cardigan",
+        "cream_cardigan",
+        "simple_dress",
+        "knitwear",
+        "casual_clothes",
+        "long_sleeves",
+        "dress"
+      ]
+    }
+  }
+}

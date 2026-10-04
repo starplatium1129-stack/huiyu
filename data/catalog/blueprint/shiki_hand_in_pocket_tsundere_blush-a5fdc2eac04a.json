@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "shiki_hand_in_pocket_tsundere_blush",
+  "revision": 1,
+  "sortOrder": 1347,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手被拉入对方大衣口袋握紧，侧过脸红透耳根，咬唇假装看别处任由牵手",
+    "camera": "medium close-up, eye level, deeply embarrassed tsundere view",
+    "category": "反差娇羞",
+    "characterId": "ryougi_shiki",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "gap_moe",
+      "flustered",
+      "tsundere"
+    ],
+    "description": "【两仪式 · 寒风中被牵手的大衣口袋】冬日寒风呼啸的红绿灯路口旁，两仪式的手原本插在皮夹克口袋里取暖。当你不由分说地把她冰凉的手拉出来、紧紧包裹在自己温热的大衣口袋里十指相扣时，这位平日里杀伐果断的冰山少女彻底破防。她整张脸瞬间涨得通红，耳根红透，别过头看着路旁行道树，嘴唇动了动却任由你握着不肯抽回——「……笨蛋。谁准你随便牵我的手的……不过，很暖和就是了。」",
+    "id": "shiki_hand_in_pocket_tsundere_blush",
+    "lighting": "街边店铺暖色橱窗灯与落雪微光",
+    "location": "飘着细雪的冬日十字路口红绿灯斑马线旁",
+    "mood": "反差傲娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "outfitId": "kimono_red_jacket_no_knife",
+    "promptProse": "Standing at a snowy winter street corner, Ryougi Shiki is swept into an intensely flustered moment as the viewer slips her cold hand into their warm coat pocket. Wearing her signature red leather jacket over her white kimono, a bright crimson flush rushes across her pale cheeks and delicate ears. Biting her lower lip, she stubbornly turns her head away, unable to hide the soft warmth in her dark eyes. Emotional anime key visual with two clothed figures, no text.",
+    "promptTokens": [
+      "winter_street",
+      "snowing",
+      "crosswalk",
+      "white_kimono",
+      "red_jacket",
+      "hands_in_pocket",
+      "handholding",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "looking_away",
+      "biting_lip",
+      "black_hair",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "winter",
+      "street",
+      "snowing",
+      "red_jacket",
+      "white_kimono",
+      "hands_in_pocket",
+      "handholding",
+      "heavy_blush",
+      "blushing_ears",
+      "looking_away",
+      "biting_lip"
+    ],
+    "timeOfDay": "冬日黄昏",
+    "title": "两仪式 · 寒风中被牵手的大衣口袋"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yami_park_overalls_stroll_peaceful",
+  "revision": 1,
+  "sortOrder": 1227,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手抱书漫步在绿荫石板路上，背带裤与帆布鞋显出少女活力，神态安宁祥和",
+    "camera": "cowboy shot, medium framing, gentle summer atmosphere",
+    "category": "休日悠然",
+    "characterId": "golden_darkness",
+    "coverageTags": [
+      "casual"
+    ],
+    "description": "【小暗 · 绿荫公园的背带短裤漫步】初夏清晨微风徐徐的城市中央公园林荫道上，小暗换上一身可爱的浅蓝牛仔背带短裤与黄白条纹T恤。她单手抱着一本日记本，脚踩白色帆布鞋轻快地走在青石板路上。褪去黑哥特战裙的杀手少女，融入了普通地球女高的平凡日常，金发在树影下流淌出如蜂蜜般的温暖光晕。",
+    "id": "yami_park_overalls_stroll_peaceful",
+    "lighting": "茂密绿叶间漏下的斑驳晨曦金色光斑与清新空气透视",
+    "location": "公园参天大树与花坛边石板林荫道",
+    "mood": "安详恬淡",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "casual_overalls",
+    "promptProse": "Strolling leisurely along a paved cobblestone pathway shaded by emerald tree canopies, Yami embraces peaceful weekend freedom in faded denim overall shorts. Warm morning sunbeams filter through summer foliage, illuminating her radiant blonde tresses and gentle expression.",
+    "promptTokens": [
+      "sunlit_park",
+      "cobblestone_path",
+      "denim_overalls",
+      "striped_t-shirt",
+      "sneakers",
+      "holding_book",
+      "walking",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "park",
+      "tree_canopy",
+      "overalls",
+      "denim_overalls",
+      "t-shirt",
+      "sneakers",
+      "walking",
+      "holding_book",
+      "very_long_hair"
+    ],
+    "timeOfDay": "上午",
+    "title": "小暗 · 绿荫公园的背带短裤漫步"
+  }
+}

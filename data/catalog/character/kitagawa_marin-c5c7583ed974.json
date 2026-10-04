@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "kitagawa_marin",
+  "revision": 1,
+  "sortOrder": 19,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kitagawa_marin",
+    "profile": {
+      "id": "kitagawa_marin",
+      "name": "喜多川海梦",
+      "alias": [
+        "Kitagawa Marin",
+        "喜多川海夢"
+      ],
+      "type": "popular",
+      "icon": "🧵",
+      "portrait": {
+        "image": "../assets/characters/popular-kitagawa_marin.png?v=5",
+        "alt": "喜多川海梦 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金色长发（高马尾/双马尾）",
+        "hair_color": "金",
+        "eyes": "蓝",
+        "hairstyle": "长发 · 常扎高马尾",
+        "uniform": "西装校服 / 辣妹私服",
+        "expression": "元气辣妹 · 下垂眼",
+        "style": "energetic gyaru cosplayer",
+        "signature": "金发蓝眼与辣妹妆"
+      },
+      "personality": [
+        "开朗外向",
+        "元气",
+        "直率可爱",
+        "对 cosplay 狂热",
+        "动手能力强"
+      ],
+      "likes": [
+        "cosplay",
+        "缝纫制衣",
+        "漫展",
+        "游乐园"
+      ],
+      "classic_cg": {
+        "title": "制衣工房",
+        "description": "家里的手作工房，缝纫机前她专注量体裁衣——为下一套 cos 倾注全部热情。"
+      },
+      "identity": {
+        "role": "cosplayer（辣妹高中生）",
+        "age": "高中一年级",
+        "occupation": "学生 / cosplayer",
+        "faction": "（原作学校）"
+      },
+      "tags": [
+        "金发",
+        "蓝眼",
+        "辣妹",
+        "cosplayer",
+        "制衣"
+      ],
+      "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发蓝眼与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
+      "palette": [
+        "亮金",
+        "海梦粉",
+        "元气蓝"
+      ],
+      "weather": [
+        "工房晴日",
+        "漫展灯光",
+        "游乐园夏日"
+      ],
+      "speech": "喜多川海梦向你致以问候。",
+      "source": "福田晋一《更衣人偶坠入爱河 / My Dress-Up Darling》",
+      "traits": [
+        "kitagawa_marin",
+        "1girl",
+        "solo",
+        "long_blonde_hair",
+        "gradient_hair",
+        "pink_hair_tips",
+        "pink_eyes",
+        "earrings",
+        "piercing",
+        "painted_nails",
+        "sono_bisque_doll_wa_koi_wo_suru"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "kitagawa_marin",
+        "marin",
+        "marin kitagawa",
+        "my dress-up darling",
+        "sono bisque doll"
+      ],
+      "animeStudio": "cloverworks, official anime screencap, anime coloring",
+      "canon": {
+        "era": "当代",
+        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
+        "research": "2026-08-14 调研",
+        "world": "现代日常（更衣人偶）"
+      },
+      "curatedArtistStyles": [
+        "morikura_en",
+        "momoco_haru",
+        "kantoku"
+      ],
+      "displayName": "喜多川海梦",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kitagawa_marin"
+      ],
+      "franchise": "My Dress-Up Darling",
+      "id": "kitagawa_marin",
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous bubbly high school gyaru with long blonde hair with pink dip-dyed tips and a glossy sheen, bright dark-pink contact lenses, long painted nails and silver ear piercings",
+      "identityTokens": [
+        "kitagawa_marin",
+        "1girl",
+        "solo",
+        "long_blonde_hair",
+        "gradient_hair",
+        "pink_hair_tips",
+        "pink_eyes",
+        "earrings",
+        "piercing",
+        "painted_nails",
+        "sono_bisque_doll_wa_koi_wo_suru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Kitagawa Marin",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

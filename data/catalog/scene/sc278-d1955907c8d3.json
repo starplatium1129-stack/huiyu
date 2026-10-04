@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc278",
+  "revision": 1,
+  "sortOrder": 273,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc278",
+    "recommendedSize": "1344×768",
+    "title": "夜蓝床单上的黑蕾丝",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】夜蓝床铺映着黑色蕾丝，夏目把双手交握在胸前。她注视着你，声音比平时更轻：「灯不用关，我想看清你的表情。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "R15"
+    ],
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, diagonal_overhead_view, 1girl, solo, adult_shiki_natsume, very_long_black_hair_fanned_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, detailed_black_lace_bra, matching_black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_her_back_on_dark_desaturated_blue_bedding, hands_clasped_modestly_over_upper_chest, knees_slightly_apart, shy_direct_eye_contact, subtle_blush, cool_dim_bedroom_light, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "R15",
+    "officialCgCandidate": "ocs12",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs12:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090942_797.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs12-a1.png",
+      "result": "pass"
+    },
+    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "careful-batch06-2026-08-27"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "changli_wuthering_sfw_b7_04",
+  "revision": 1,
+  "sortOrder": 1640,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "changli_wuthering_sfw_b7_04",
+    "title": "长离 · 今州红绸的花嫁授课",
+    "category": "圣洁花嫁",
+    "characterId": "changli_wuthering",
+    "outfitId": "sfw_bridal",
+    "description": "【今州山庭·清晨】长离穿着红白层叠婚纱站在山庭长廊，手中捧着凤凰羽毛与白花；她先向镜头伸出手示范一段礼仪步伐，再在花瓣落下时笑着收势，像把耐心也变成了誓约。",
+    "location": "mountain pavilion above Jinzhou",
+    "action": "山庭长廊示范一段礼仪步伐，花瓣落下时收势微笑",
+    "timeOfDay": "清晨",
+    "lighting": "clear morning light on red railings",
+    "camera": "medium full shot, vertical framing",
+    "mood": "老师把耐心教成花嫁誓约",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "mountain_veranda",
+      "phoenix_feather",
+      "flower_fan",
+      "red_hair",
+      "ceremonial_step",
+      "patient_smile",
+      "morning_light"
+    ],
+    "promptProse": "Changli from Wuthering Waves wears a layered white-and-red bridal gown with phoenix embroidery, a light veil and a white flower fan. She steps along the mountain veranda with a flower fan and a phoenix feather tucked beside the bouquet. She demonstrates one precise ceremonial turn toward the viewer, then relaxes into a patient smile as red petals drift through the lesson. clear morning light on red railings.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "mountain_veranda",
+      "phoenix_feather",
+      "flower_fan",
+      "ceremonial_step",
+      "patient_smile",
+      "morning_light",
+      "pink_hair"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ]
+  }
+}

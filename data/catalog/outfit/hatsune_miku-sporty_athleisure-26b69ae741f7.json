@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/sporty_athleisure",
+  "revision": 1,
+  "sortOrder": 187,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "sporty_athleisure",
+      "name": "晨跑运动休闲装",
+      "tokens": [
+        "track_jacket",
+        "zip_up_jacket",
+        "track_suit",
+        "running_shorts",
+        "sportswear",
+        "athleisure",
+        "activewear",
+        "sneakers",
+        "matching_set",
+        "quick_dry_fabric"
+      ],
+      "prose": "wearing a fresh athletic set of a zip-up track jacket and matching running shorts, lightweight quick-dry sportswear with a bright energetic color palette",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

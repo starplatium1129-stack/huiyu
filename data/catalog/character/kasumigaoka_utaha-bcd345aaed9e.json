@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "kasumigaoka_utaha",
+  "revision": 1,
+  "sortOrder": 109,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kasumigaoka_utaha",
+    "profile": {
+      "id": "kasumigaoka_utaha",
+      "name": "霞之丘诗羽",
+      "alias": [
+        "Kasumigaoka Utaha",
+        "霞之丘诗羽",
+        "诗羽学姐",
+        "霞诗子",
+        "毒舌学姐"
+      ],
+      "type": "popular",
+      "icon": "🖋️",
+      "portrait": {
+        "image": "../assets/characters/popular-kasumigaoka_utaha.png?v=1",
+        "alt": "霞之丘诗羽 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长直发 · 白色发箍",
+        "hair_color": "墨黑 / 夜黑",
+        "eyes": "红色凤眼 · 讥诮里藏温柔",
+        "hairstyle": "长直发齐刘海",
+        "uniform": "丰桥学园制服 · 黑丝裤袜",
+        "expression": "毒舌从容 · 撒娇时成熟妖艳 · 认真时灼热",
+        "style": "sharp-tongued novelist senpai",
+        "signature": "白発箍、黑丝长腿与毒舌作家的红瞳"
+      },
+      "personality": [
+        "笔名霞诗子的天才恋爱小说家",
+        "毒舌是铠甲也是调情的语言",
+        "对后辈毫不客气却处处留心",
+        "把真心话全部写进书里的笨拙"
+      ],
+      "likes": [
+        "截稿后的深夜散步",
+        "黑咖啡与旧书馆",
+        "把你的名字写进稿纸"
+      ],
+      "classic_cg": {
+        "title": "深夜阳台的黑裙取材",
+        "description": "开衩黑裙倚着栏杆，下一章的恶役角色正对你微笑宣判。"
+      },
+      "identity": "路人女主的养成方法 女主角之一 · 丰桥学园三年级 · 恋爱小说家霞诗子",
+      "tags": [
+        "路人女主",
+        "毒舌学姐",
+        "黑长直",
+        "红瞳",
+        "黑丝",
+        "小说家"
+      ],
+      "bg_story": "笔名霞诗子的天才小说家，丰桥学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
+      "palette": [
+        "#ef4444",
+        "#f8fafc",
+        "#7f1d1d",
+        "#e2e8f0"
+      ],
+      "weather": "旧书馆的晨光 / 完稿夜的阳台",
+      "speech": "「要签名可以，先把这一卷的感想写满一页。……啊，别摆出那种表情，学长可是本作家的终身取材对象哦♪」",
+      "source": "丸戸史明《路人女主的养成方法 / Saenai Heroine no Sodatekata》",
+      "traits": [
+        "novelist",
+        "sharp_tongue",
+        "white_hairband",
+        "black_pantyhose"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#7f1d1d"
+    },
+    "popular": {
+      "id": "kasumigaoka_utaha",
+      "displayName": "霞之丘诗羽",
+      "originalName": "霞ヶ丘詩羽",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "aliases": [
+        "Kasumigaoka Utaha",
+        "霞之丘诗羽",
+        "诗羽学姐",
+        "霞诗子",
+        "毒舌学姐"
+      ],
+      "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, the sharp-tongued romantic novelist senpai, a bewitching beauty with long black hair and blunt bangs, piercing red eyes, and a mature curvaceous figure she uses to tease without mercy",
+      "identityTokens": [
+        "kasumigaoka_utaha",
+        "saenai_heroine_no_sodatekata",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "bangs",
+        "red_eyes",
+        "large_breasts",
+        "smirk"
+      ],
+      "exactTokens": [
+        "kasumigaoka_utaha"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kasumigaoka_utaha"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Fukashigi"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

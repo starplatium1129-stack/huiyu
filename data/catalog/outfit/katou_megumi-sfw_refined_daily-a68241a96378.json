@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 798,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "夜归连帽外套",
+      "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers, with her short brown bob",
+      "tokens": [
+        "green_hoodie",
+        "white_t-shirt",
+        "jeans",
+        "sneakers",
+        "short_hair",
+        "bob_cut"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

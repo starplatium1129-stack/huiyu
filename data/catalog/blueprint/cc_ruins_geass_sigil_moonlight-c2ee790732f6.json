@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "cc_ruins_geass_sigil_moonlight",
+  "revision": 1,
+  "sortOrder": 1311,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "迎着夜风立于断壁残垣之上，纯白拘束带飘舞，额间Geass红光微闪，侧身回眸从容浅笑",
+    "camera": "cowboy shot, low angle, dramatic wind perspective",
+    "category": "身份高光",
+    "characterId": "cc_code_geass",
+    "coverageTags": [
+      "iconic",
+      "contract"
+    ],
+    "description": "【C.C. · 废墟月下的契约魔女】荒芜的钟楼废墟顶端，夜风吹卷起纯白拘束服的松散系带在风中猎猎作响。C.C.站在残垣断壁之上面迎夜风，额前泛起血红色的飞鸟状Geass契约印记，翠绿色如瀑长发肆意飞舞。她微微转过头，金珀色的双瞳深邃地注视着你，嘴角扬起一抹神秘从容的浅笑——「你我都清楚，我们不仅是契约者……还是背负世间所有罪孽的共犯。」",
+    "id": "cc_ruins_geass_sigil_moonlight",
+    "lighting": "清冷苍穹月色与额间飞鸟Geass的幽红荧光",
+    "location": "废弃哥特式钟楼残垣断壁高处",
+    "mood": "神秘孤高",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_straitjacket",
+    "promptProse": "Standing atop ancient ruined clock tower ramparts under a luminous full moon, C.C. gazes over her shoulder. The flowing straps of her white straitjacket billow dynamically in the chill night wind as her long lime-green hair dances like silk ribbons. A glowing scarlet Geass sigil shines upon her forehead, and her amber eyes hold an enigmatic, knowing smirk. Cinematic anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "ruins",
+      "clock_tower",
+      "full_moon",
+      "night_sky",
+      "windy",
+      "straitjacket",
+      "flowing_belts",
+      "green_hair",
+      "very_long_hair",
+      "yellow_eyes",
+      "geass_sigil",
+      "enigmatic_smile",
+      "cowboy_shot",
+      "low_angle",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "ruins",
+      "clock_tower",
+      "night_sky",
+      "full_moon",
+      "wind",
+      "straitjacket",
+      "flowing_hair",
+      "green_hair",
+      "geass_sigil",
+      "enigmatic_smile"
+    ],
+    "timeOfDay": "月明深夜",
+    "title": "C.C. · 废墟月下的契约魔女"
+  }
+}

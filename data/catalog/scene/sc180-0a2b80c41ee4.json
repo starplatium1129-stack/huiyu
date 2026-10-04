@@ -1,0 +1,46 @@
+{
+  "kind": "scene",
+  "id": "sc180",
+  "revision": 1,
+  "sortOrder": 177,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the warm lazy morning bedroom, completely naked under the blanket, Nene lies entangled with her partner like an octopus, only her flushed face peeking out of the covers, both hands gripping the blanket edge, watery eyes and an ahoge curling into a heart under the soft morning light.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc180",
+    "lighting": "侧向柔和晨曦",
+    "location": "温馨卧榻被窝",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, clothed, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, completely_naked, bare_shoulders, lying, blanket, wrapped, legs, arms, entangled, only, face, peeking, both, hands, gripping, shy_embarrassed_blush, watery_eyes, heart_ahoge, warm, morning, sunlight, bokeh, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 晨间完全真空极致温柔】一个慵懒的假日清晨，温暖的碎光透过窗帘泼洒下来。你从暖烘烘的床铺中醒来，震惊地发现宁宁整个人一丝不挂地钻在你的被窝里，白皙如玉的娇躯像八爪鱼一样死死缠绕在你身上。因为你的苏醒，她缩在被子里只露出一个红透的俏脸，头顶的呆毛因为极度的安心与羞涩而温顺地弯成了一个完美的心形螺旋。她攥紧被角，亮晶晶的眼睛里蒙着一层水汽，声音软绵绵的娇嗔着——「早安...大色狼...不准在被子里乱摸啦...宁宁的身体...今晚之前都随你处置了啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·朝の完全真空と究極の優しさ】怠惰な休日の朝、暖かい壊れた光がカーテンを通って飛び散りました。あなたは暖かいベッドから目覚めると、寧々がベッドで裸で、翡翠のように白い繊細な体がタコのように体を包み込んでいるのを見つけてショックを受けました。あなたが目覚めたおかげで、彼女はキルトの下に身を寄せて、かなり赤い顔だけを見せました、そして、彼女の極度の心の安らぎと恥ずかしがり屋のせいで、頭の上のアホ毛はおとなしく完璧なハート型の螺旋を描きました。彼女は布団の角をしっかりと握り締め、輝く瞳は潤いの層で覆われ、声は柔らかくコケティッシュだった。――「おはようございます……もう、布団の中でいたずらしないでください。起きる前に、もう一度だけ抱きしめて。」",
+    "tags": [
+      "hair_ribbon",
+      "completely_naked",
+      "bare_shoulders",
+      "embracing_under_blanket",
+      "warm_bed",
+      "full_body"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "晨间过载协议：被窝里的羞耻任凭支配",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "温暖初晴"
+  }
+}

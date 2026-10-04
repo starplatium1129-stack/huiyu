@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shinjou_akane/sfw_school",
+  "revision": 1,
+  "sortOrder": 869,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinjou_akane",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "教室整齐制服",
+      "prose": "a white school blouse, blue cardigan and knee-length pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "white_blouse",
+        "blue_cardigan",
+        "pleated_skirt"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

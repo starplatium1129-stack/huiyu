@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_dorm_room_shark_pajamas_hug",
+  "revision": 1,
+  "sortOrder": 1192,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_dorm_room_shark_pajamas_hug",
+    "title": "小岭幸 · 睡前卧房的鲨鱼睡衣私语",
+    "category": "可爱居家",
+    "characterId": "komine_sachi",
+    "outfitId": "shark_pajamas",
+    "coverageTags": [
+      "cute"
+    ],
+    "description": "【小岭幸 · 睡前卧房的鲨鱼睡衣私语】暖色台灯照耀下的少女温馨寝室木地板上，幸换上了宽松可爱的天蓝色鲨鱼连体睡衣。她整个人坐在柔软的羊毛坐垫上，双手紧紧抱着一只比她身体还大的灰色毛绒鲨鱼抱枕。脱下女仆身份的她，粉色短发蓬松微翘，蓝宝石般的双眸流露出少女独有的娇憨与毫无防备的纯真。",
+    "location": "女生宿舍卧房地毯与矮茶几旁",
+    "action": "穿着鲨鱼连体睡衣席地而坐紧抱巨型鲨鱼玩偶，下巴搁在玩偶上，眼神娇憨依恋",
+    "timeOfDay": "夜晚",
+    "lighting": "床头暖黄色蘑菇台灯柔和的微光与地毯暖色光晕",
+    "camera": "medium close-up, seated eye-level, intimate cozy framing",
+    "mood": "可爱治愈",
+    "sceneTags": [
+      "bedroom",
+      "onesie",
+      "pajamas",
+      "shark_hoodie",
+      "plushie",
+      "hugging",
+      "sitting",
+      "pink_hair"
+    ],
+    "promptProse": "Sitting cozily on a fluffy bedroom rug in a charming pastel-blue shark kigurumi onesie, Sachi hugs an oversized grey shark plushie tightly to her chest. Soft warm bedside lamplight casts peaceful shadows across her rosy cheeks and innocent blue eyes.",
+    "promptTokens": [
+      "cozy_bedroom",
+      "shark_onesie",
+      "kigurumi",
+      "plushie_toy",
+      "hugging_pillow",
+      "sitting_on_floor",
+      "pink_hair",
+      "blue_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

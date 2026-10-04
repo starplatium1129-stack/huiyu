@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "skadi_arknights_cabin_window",
+  "revision": 1,
+  "sortOrder": 611,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "站在窗前，指尖抵着玻璃",
+    "camera": "medium close-up",
+    "category": "泰拉日常",
+    "characterId": "skadi_arknights",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【斯卡蒂 · 舱室窗畔】深夜航行中的单人舱室内，斯卡蒂静静伫立在紧闭的圆舷窗前，修长的指尖轻轻抵在起雾的冰冷玻璃上。她回过头看着走近的你，声音低沉而充满依恋——「只要闭上眼睛，就能听见深海的呼唤……但只要睁开眼看见你，我就知道自己属于这片陆地。」",
+    "id": "skadi_arknights_cabin_window",
+    "lighting": "moonlight",
+    "location": "罗德岛舱室",
+    "mood": "心事深重",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "extra fingers",
+      "bright sunny",
+      "modern city"
+    ],
+    "outfitId": "oceanic_symphony_gown",
+    "promptProse": "At the round porthole of a quiet cabin at night, Skadi stands with one fingertip pressed to the fogged glass, moonlight tracing the velvet folds of her oceanic symphony gown as she glances back over her shoulder.",
+    "promptTokens": [
+      "atmospheric",
+      "cabin",
+      "chiffon",
+      "cinematic_lighting",
+      "clean_face",
+      "detailed_background",
+      "dynamic_lighting",
+      "evening_gown",
+      "gradient",
+      "moonlight",
+      "night",
+      "side_slit",
+      "standing",
+      "strapless",
+      "velvet",
+      "window",
+      "touching_glass",
+      "fogged_window",
+      "over_shoulder",
+      "medium_close_up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cabin",
+      "window",
+      "moonlight",
+      "night",
+      "standing"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "斯卡蒂 · 舱室窗畔"
+  }
+}

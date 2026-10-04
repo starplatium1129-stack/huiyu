@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc245",
+  "revision": 1,
+  "sortOrder": 240,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "After closing under the single warm lamp at the Café Stella marble counter, Shiki Natsume in her cafe uniform leans with one hand under her chin and takes a sip from the teacup of hot black tea you brewed for her, the mole by her eye quivering softly in the lamplight as she watches your busy back, warm silence in her reddened ears.",
+    "auditRevision": "careful-batch07-2026-08-27",
+    "camera": "近景平视特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc245",
+    "lighting": "吧台吊灯的温馨局部暖光与强烈阴影",
+    "location": "Café Stella 大理石吧台前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daylight",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_cafe_uniform, white_shirt, suspender_skirt, purple_ribbon, black_thighhighs, sitting_on_bar_stool_after_closing, sipping_fresh_hot_black_tea_from_porcelain_cup, gaze_trailing_viewer_cleaning, soft_red_ears, cafe_night, warm_amber_pendant_lamps, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "不限",
+    "story": "【夏目 · 疲惫的温柔】深夜打烊后的Café Stella，只剩吧台一盏暖灯。夏目靠在柜台边，单手托着下巴，金瞳毫无干劲地盯着面前的账本。你默默走过去，把一杯刚泡好的红茶放在她面前，然后开始帮她整理散落的订单。夏目愣了一下，看着你忙碌的背影，眼角的泪痣在灯光下微微颤动。她端起红茶抿了一口，温度刚刚好。沉默了很久，她才用几乎听不见的声音说了一句——「……谢谢。还有，明天的班……我帮你顶。大笨蛋，早点回去睡。」",
+    "storyJa": "【夏目】【ナツメ・閉店後の無声の紅茶と優しさ】深夜、閉店後のカフェ・ステラにはカウンターの暖色灯だけが残っていた。ナツメはカウンターに寄りかかり、片手で頬杖をつきながら金の瞳でやる気なく目の前の帳簿を見つめていた。あなたがそっと歩み寄り、淹れたての紅茶を彼女の前に置くと、散らばった伝票を整理し始めた。ナツメは少し驚き、あなたの忙しい背中を見つめ、目尻の泣きぼくろが灯光の中で微微震えた。彼女は紅茶を一口飲むと、温度はちょうどよかった。長い沈黙の後、彼女はalmost 聞こえないほどの小さな声で一言呟いた――「……ありがとう。それと、明日のシフト……代わってあげる。大バカ者、早く帰って寝なさい」",
+    "tags": [
+      "mole_under_eye",
+      "cafe_uniform",
+      "white_blouse",
+      "navy_apron",
+      "cafe_counter",
+      "teacup",
+      "black_tea",
+      "ledger",
+      "night",
+      "red_ears",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "闭店后吧台的无声红茶",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "深夜静谧"
+  }
+}

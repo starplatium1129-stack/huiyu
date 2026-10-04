@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/obsidian_formal_gown",
+  "revision": 1,
+  "sortOrder": 418,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "default": false,
+      "id": "obsidian_formal_gown",
+      "isDefault": false,
+      "name": "黑曜夜华·萨卡兹晚礼服",
+      "prose": "a dramatic black-to-crimson gradient haute couture evening gown: a halter-neck deep plunge gown with an open back, the black tail emerging seamlessly from the open back, elegant high fashion",
+      "tokens": [
+        "evening_gown",
+        "halter_neckline",
+        "deep_plunge",
+        "open_back",
+        "black",
+        "crimson"
+      ]
+    }
+  }
+}

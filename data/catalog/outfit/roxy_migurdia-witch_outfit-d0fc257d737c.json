@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/witch_outfit",
+  "revision": 1,
+  "sortOrder": 249,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "default": true,
+      "id": "witch_outfit",
+      "isDefault": true,
+      "name": "魔女服",
+      "prose": "her short witch outfit with a blue hat, white blouse and blue skirt",
+      "tokens": [
+        "witch",
+        "witch_hat",
+        "white_shirt",
+        "blue_skirt",
+        "frills",
+        "thighhighs",
+        "wooden_staff"
+      ]
+    }
+  }
+}

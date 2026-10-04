@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "goldenglow_arknights/salon_dreamer_work_apron",
+  "revision": 1,
+  "sortOrder": 345,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "goldenglow_arknights",
+    "outfit": {
+      "default": false,
+      "id": "salon_dreamer_work_apron",
+      "isDefault": false,
+      "name": "梦想剪刀手·理发沙龙工装",
+      "prose": "a vintage hair-salon stylist work outfit: high twin ponytails with cat-paw scrunchies, a clean light pink-and-white striped shirt, and a soft sage work apron with pockets, folding pink cat ears visible",
+      "tokens": [
+        "apron",
+        "twin_ponytails",
+        "striped_shirt",
+        "stylist",
+        "cat_ears"
+      ]
+    }
+  }
+}

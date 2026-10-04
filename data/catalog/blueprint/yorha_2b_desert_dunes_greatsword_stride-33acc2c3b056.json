@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_desert_dunes_greatsword_stride",
+  "revision": 1,
+  "sortOrder": 1115,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_desert_dunes_greatsword_stride",
+    "title": "2B · 苍茫沙丘的风沙斗篷与大剑独行",
+    "category": "废墟探索",
+    "characterId": "yorha_2b",
+    "outfitId": "ruins_cape",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【2B · 苍茫沙丘的风沙斗篷与大剑独行】在狂风呼啸的金色沙漠废墟深处，古代机械巨兽的残骸被无垠黄沙半掩。2B身披随风狂舞的深灰旅行者斗篷与兜帽，紧身战术胶衣紧紧包裹着曼妙柔韧的躯体，背负着沉重的双刃重剑在金色沙浪中独自跋涉。狂风吹拂下摆露出修长黑丝美腿，她停下脚步回过头，深邃眼眸在风沙中满含关切，向你伸出戴着黑皮手套的手——「前面的沙暴很猛烈。跟在我身后，不要掉队。」",
+    "location": "广袤无垠的古代机械沙漠沙丘废墟上",
+    "action": "披风沙旅行斗篷背负大剑漫步沙丘，狂风卷动衣摆，回头伸手示意跟紧",
+    "timeOfDay": "下午",
+    "lighting": "金色荒漠强烈的烈日光照与沙浪波纹阴影形成的苍茫史诗感",
+    "camera": "cowboy shot, desert landscape perspective, focus on windblown cloak and greatsword",
+    "mood": "苍茫依恋",
+    "sceneTags": [
+      "desert",
+      "sand",
+      "dunes",
+      "ruins",
+      "cape",
+      "cloak",
+      "hood",
+      "greatsword",
+      "boots",
+      "mole_under_mouth"
+    ],
+    "promptProse": "Walking resolutely across rolling golden desert dunes under brilliant sunlight, 2B wears a tattered dark gray traveler's cloak and hood that billow in the desert wind above her form-fitting tactical suit and heavy greatsword. Pausing atop a sandy crest beside half-buried ancient machine titan ruins, she glances back over her shoulder with quiet concern, reaching out a gloved hand to guide her companion. Grand desert vistas, shimmering heat waves, pristine anime linework, no text.",
+    "promptTokens": [
+      "desert",
+      "sand_dunes",
+      "ruins",
+      "cape",
+      "cloak",
+      "hood",
+      "greatsword",
+      "tattered_clothes",
+      "boots",
+      "mole_under_mouth",
+      "white_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

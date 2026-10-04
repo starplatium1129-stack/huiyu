@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "murasame/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 618,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, luminous flawless fair skin, delicate petite frame with small smooth breasts and sensitive pale pink nipples, slender supple waist, exposed pussy, cascading pale-green hair draping softly over her shoulders, cute ahoge, bare feet, warm tranquil tatami room lantern glow",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "flat_chest",
+        "petite",
+        "small_breasts",
+        "tiny_pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "very_long_hair",
+        "ahoge",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

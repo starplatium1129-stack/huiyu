@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/hot_spring_towel",
+  "revision": 1,
+  "sortOrder": 400,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "default": false,
+      "id": "hot_spring_towel",
+      "isDefault": false,
+      "name": "极北暖泉湿浴巾",
+      "prose": "a damp linen bath towel wrapped around her torso, translucent from hot spring water, droplets glistening on skin",
+      "tokens": [
+        "towel",
+        "wet_clothes",
+        "translucent",
+        "wet",
+        "bare_shoulders"
+      ]
+    }
+  }
+}

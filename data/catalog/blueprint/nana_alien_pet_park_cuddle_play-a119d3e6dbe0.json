@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "nana_alien_pet_park_cuddle_play",
+  "revision": 1,
+  "sortOrder": 1268,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "盘膝坐在草地上怀抱毛茸茸外星小宠贴脸蹭蹭，眼神充满纯洁宠爱，尾巴轻摆",
+    "camera": "medium shot, seated eye-level, intimate gentle depth of field",
+    "category": "日常萌宠",
+    "characterId": "nana_asta_deviluke",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【娜娜 · 绿荫公园的异星小宠呢喃】微风和畅的彩南街心公园绿草坪上，蒲公英在阳光下轻盈飞散。娜娜盘腿坐在树荫下的格纹野餐垫上，身穿休闲无袖短背心与牛仔短裤。她怀里正抱着一只长着毛茸茸大耳朵的外星小动物，正温柔地用脸颊蹭着小家伙，嘴角洋溢着与动物心灵相通时的纯真甜美笑意，尽显假小子外表下柔软的心灵。",
+    "id": "nana_alien_pet_park_cuddle_play",
+    "lighting": "树荫间透射出的斑驳金黄日光与草坪反射的清新绿意",
+    "location": "街心公园大树荫下草坪野餐垫",
+    "mood": "温馨治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "casual_denim",
+    "promptProse": "Sitting cross-legged upon a grassy park lawn under dappled leafy shade, Nana affectionately snuggles a fluffy alien critter against her cheek. Gentle summer sunbeams highlight her sporty denim shorts, pink twintails, and an unguarded smile of pure warmth.",
+    "promptTokens": [
+      "sunlit_park",
+      "grassy_lawn",
+      "holding_animal",
+      "alien_pet",
+      "cuddling",
+      "denim_shorts",
+      "crop_top",
+      "demon_tail",
+      "twintails",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "park",
+      "grass",
+      "alien_creature",
+      "cuddling",
+      "denim_shorts",
+      "crop_top",
+      "demon_tail",
+      "gentle_smile"
+    ],
+    "timeOfDay": "下午",
+    "title": "娜娜 · 绿荫公园的异星小宠呢喃"
+  }
+}

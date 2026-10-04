@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 867,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "宝多六花·成人私密造型",
+      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "tokens": [
+        "private_lingerie",
+        "sheer_lace",
+        "soft_shadows"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/leithanien_volcanology_lab_coat",
+  "revision": 1,
+  "sortOrder": 314,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "default": false,
+      "id": "leithanien_volcanology_lab_coat",
+      "isDefault": false,
+      "name": "【学者之思】莱塔尼亚地质研究白大褂",
+      "prose": "an intellectual volcanologist outfit: a white lab coat over a soft knit sweater and skirt, gold half-rim reading glasses, and a tiny silver hearing aid at the ear",
+      "tokens": [
+        "lab_coat",
+        "academic",
+        "sweater",
+        "glasses",
+        "hearing_aid"
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc112",
+  "revision": 1,
+  "sortOrder": 110,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the secluded old library reading room on a stormy afternoon, Shiki Natsume in a school uniform with the white shirt unbuttoned at the top pins the seated viewer against the window-side armchair, both hands gripping the chair back while her black hair brushes the viewer's face, the tear mole gleaming dangerously in the dim rainy backlight.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "主观仰视近景",
+    "category": "恋爱/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "强势傲娇诱惑",
+    "id": "sc112",
+    "lighting": "昏暗雨天局部弱光",
+    "location": "旧书库阅览室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, crowded",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, school_uniform, blazer_unbuttoned, pleated_skirt, black_thighhighs, zettai_ryouiki, mary_janes, pinned_against_bookshelf, kabedon, looking_up_at_viewer, heavy_blush, parted_lips, quiet_after_school_library, golden_sunset_slanted_light, dust_motes, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【夏目 · 阅览室强势壁咚】骤雨初歇的午后，学校最偏僻的旧书库阅览室。夏目脱下了平时掩饰身份的制服外套，解开了衬衫最上方的三颗纽扣。她直接将你推到靠窗的单人沙发上，双手撑在椅背两侧将你完全“壁咚”。黑色发丝拂过你的脸颊，眼角的泪痣在昏暗的斜阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的文献看，把我当空气吗？长官...现在是我的专属审讯时间了。」",
+    "storyJa": "【夏目・閲覧室での強い壁衝突】雨の午後、学校で一番辺鄙な古い図書館の読書室。夏目は、普段は身分を隠している制服の上着を脱ぎ、シャツの上の3つのボタンを外した。窓際の一人掛けソファに直接あなたを押し倒し、椅子の背もたれの両側に両手をついて完全に壁に押しつけました。黒髪が頬をなで、目尻の泣きぼくろが、雨の日の薄暗い逆光の中で危険でセクシーな魅力を醸し出す。――「ふん、午後ずっとほかの資料ばかり見て、私のことは無視？　店長……ここからは、私だけの質問時間。」",
+    "tags": [
+      "mole_under_eye",
+      "school_uniform",
+      "sheer_black_tights",
+      "kabedon",
+      "pinning_against_chair",
+      "library_study_room",
+      "raining",
+      "afternoon",
+      "full_body",
+      "mary_jane"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "密闭阅览室的越界心跳",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "窗外暴雨如注"
+  }
+}

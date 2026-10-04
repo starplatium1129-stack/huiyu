@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_granary_seed_sorting",
+  "revision": 1,
+  "sortOrder": 707,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_granary_seed_sorting",
+    "characterId": "shu_arknights",
+    "title": "黍 · 谷仓分种",
+    "description": "谷仓的侧窗照亮一张旧木桌。黍穿农业天师装，将一小撮谷种从掌心拨进浅陶碟，桌边排着几只种袋；挂起的谷穗与窗光里的细尘交代出收储季节。",
+    "category": "大荒农事",
+    "location": "大荒城谷仓侧窗木桌",
+    "action": "站在木桌前，将掌心谷种逐粒拨入陶碟分类",
+    "mood": "耐心专注",
+    "lighting": "侧窗斜入的午后暖光",
+    "timeOfDay": "午后",
+    "camera": "medium shot, eye level",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "granary",
+      "seed",
+      "table",
+      "ceramic_bowl",
+      "window",
+      "working"
+    ],
+    "promptTokens": [
+      "indoors",
+      "wooden_table",
+      "window",
+      "seed",
+      "ceramic_bowl",
+      "standing",
+      "looking_down",
+      "sunbeam",
+      "dust_motes",
+      "medium_shot"
+    ],
+    "promptProse": "At a worn wooden table inside the granary, Shu separates a small handful of grain seeds from her open left palm into a shallow ceramic dish with her right fingertips. Three cloth seed bags sit within reach, with tied grain heads hanging against the rear wall. Her original white-and-blue Tianshi jacket frames the geometric ornaments at her chest. An oblique afternoon sunbeam lights her attentive face and both hands; a vertical medium view includes the dish and the table edge beneath them.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

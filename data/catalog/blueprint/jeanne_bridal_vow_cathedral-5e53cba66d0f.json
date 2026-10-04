@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_bridal_vow_cathedral",
+  "revision": 1,
+  "sortOrder": 237,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_bridal_vow_cathedral",
+    "title": "圣女贞德 · 大教堂的纯白花嫁·「这份幸福……真的可以由我收下吗？」",
+    "category": "圣洁花嫁",
+    "characterId": "jeanne_d_arc",
+    "description": "【沙特尔式大教堂·正午】彩绘玫瑰窗把正午阳光滤成万花筒，倾泻在身着纯白婚纱的贞德身上。她双手捧着白玫瑰与铃兰的花束，长长的头纱自金辫上温柔垂落。听见你的脚步声，她抬起头来，紫蓝色的眼眸里蓄满不敢置信的泪光——为法兰西献出了一生的圣女，此刻终于有人对她说：这一次，换我来守护你的一生。",
+    "location": "哥特式大教堂玫瑰窗下",
+    "action": "捧白玫瑰花束立于玫瑰窗光瀑中，闻声抬头，泪光与圣洁微笑交织",
+    "timeOfDay": "正午",
+    "lighting": "玫瑰彩窗滤出的七彩光瀑笼罩婚纱与面庞",
+    "camera": "wide shot, environmental portrait, rose window light cascade, sacred bridal grandeur",
+    "mood": "神圣感动、泪光倾城",
+    "sceneTags": [
+      "cathedral_rose_window",
+      "standing",
+      "white_wedding_gown",
+      "long_veil",
+      "white_roses",
+      "lily_of_the_valley",
+      "both_hands_on_bouquet",
+      "golden_braid",
+      "stained_glass_light",
+      "full_body"
+    ],
+    "promptProse": "Beneath the cathedral rose window, Jeanne stands with a bouquet of white roses and lilies of the valley supported in both hands. An opaque white wedding gown and long veil replace the armored outfit, with the veil descending from her golden braid to the train. At the sound of approaching footsteps, she lifts her eyes and gives a tearful, relieved smile. Colored midday light reaches the flowers and fabric folds while the distant columns frame the scene. Show the complete formal silhouette and bouquet within the vertical view, without lettering.",
+    "promptTokens": [
+      "cathedral_rose_window",
+      "standing",
+      "white_wedding_gown",
+      "long_veil",
+      "white_roses",
+      "lily_of_the_valley",
+      "both_hands_on_bouquet",
+      "golden_braid",
+      "stained_glass_light",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "armor",
+      "breastplate",
+      "gauntlets",
+      "flag"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "sfw_white_bridal",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ]
+  }
+}

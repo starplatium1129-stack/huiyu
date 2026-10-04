@@ -55,6 +55,38 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     }
     let root = &state.config.app_root;
     let assets = state.config.assets_root();
+    if let Some(name) = path.strip_prefix("/data/").filter(|_| {
+        state
+            .config
+            .runtime_root
+            .join("content/catalog.sqlite")
+            .is_file()
+            || state
+                .config
+                .runtime_root
+                .join("content/catalog.identity.json")
+                .is_file()
+            || state
+                .config
+                .content_root()
+                .join("data/catalog/manifest.json")
+                .is_file()
+    }) {
+        let config = state.config.clone();
+        let selected = name.to_owned();
+        match tokio::task::spawn_blocking(move || crate::catalog::projection(&config, &selected))
+            .await
+        {
+            Ok(Ok(Some(value))) => {
+                return ([("cache-control", "no-cache")], axum::Json(value)).into_response();
+            }
+            Ok(Err(error)) => return error.into_response(),
+            Err(_) => {
+                return ApiError::new(503, "CATALOG_UNAVAILABLE", "内容读取失败").into_response();
+            }
+            _ => (),
+        }
+    }
     if let Some(response) = extra::redirect(&state, &path, request.uri().query()).await {
         return response;
     }

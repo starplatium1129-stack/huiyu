@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "viviana_rhodes_tea_salon_conversation",
+  "revision": 1,
+  "sortOrder": 685,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐在复古木椅前，优雅执白瓷茶壶为对面斟茶，眉眼含笑温和",
+    "camera": "medium shot, eye level",
+    "category": "基地日常",
+    "characterId": "viviana_arknights",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【薇薇安娜 · 罗德岛茶室的温茶叙话】罗德岛阳光温和的欧式贵宾茶室内，白瓷茶具散发着大吉岭红茶的清香。薇薇安娜端坐在古典木椅前，双手稳稳提起精致的瓷质茶壶，将金红色的红茶注入眼前的茶杯中，金鹿巨角在室内绿植掩映下显得格外温柔——「博士，请用茶。在忙碌的事务之余，偶尔也让身心沉浸在茶香与宁静中吧。」",
+    "id": "viviana_rhodes_tea_salon_conversation",
+    "lighting": "柔和窗光与室内暖白壁灯漫射",
+    "location": "罗德岛欧式贵宾会客茶室",
+    "mood": "端庄温婉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "autumn_stroll_casual",
+    "promptProse": "Inside an elegant Victorian tea parlor aboard Rhodes Island, Viviana Droste sits gracefully at a small polished mahogany tea table. She pours fragrant amber Darjeeling tea from a fine white porcelain teapot into a matching teacup with delicate, poised hand movements. Soft afternoon sunlight through sheer white drapes illuminates her flowing flaxen hair, noble deer antlers, and the warm, welcoming smile on her porcelain face. An intimate eye-level medium shot captures her exquisite high-society manners and tranquil warmth with clean anime visual novel fidelity.",
+    "promptTokens": [
+      "tea_room",
+      "table",
+      "teacup",
+      "teapot",
+      "pouring_tea",
+      "sitting",
+      "antlers",
+      "gentle_smile",
+      "elegant",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "tea_room",
+      "table",
+      "teacup",
+      "teapot",
+      "pouring_tea",
+      "sitting",
+      "antlers",
+      "gentle_smile",
+      "elegant"
+    ],
+    "timeOfDay": "下午",
+    "title": "薇薇安娜 · 罗德岛茶室的温茶叙话"
+  }
+}

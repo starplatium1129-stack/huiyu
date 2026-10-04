@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_r18_carpet_cowgirl_maid_straddle",
+  "revision": 1,
+  "sortOrder": 1199,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_r18_carpet_cowgirl_maid_straddle",
+    "title": "小岭幸 · 地毯跨坐女仆装主动轻柔起伏",
+    "category": "深层欢愉",
+    "characterId": "komine_sachi",
+    "outfitId": "maid_uniform",
+    "coverageTags": [
+      "cowgirl"
+    ],
+    "description": "【小岭幸 · 地毯跨坐女仆装主动轻柔起伏】深夜静谧的房间地毯上，幸的女仆长裙被拉起堆在腰间。她脸颊通红却无比认真地跨坐在主人腰腹上方，双手撑在主人胸前借力。她挺动纤细柔软的柳腰，认真按照主人的喜好上下轻柔起伏套弄，饱满白皙的双乳在围裙领口随着动作微晃——「主人……请告诉幸……这样起伏的速度……您觉得舒服吗……？」",
+    "location": "室内地毯中央骑乘姿态",
+    "action": "女仆装拉起跨坐骑乘，双手抵胸借力轻柔起伏，双乳微晃，双眸认真顺从凝视",
+    "timeOfDay": "深夜",
+    "lighting": "室内暗调落地灯照亮起伏的雪肤与黑色女仆裙",
+    "camera": "straddling pov, looking up into earnest blushing face and heaving bust",
+    "mood": "极乐沉沦",
+    "sceneTags": [
+      "cowgirl_position",
+      "straddling",
+      "maid_dress",
+      "skirt_lift",
+      "large_breasts",
+      "heavy_blush"
+    ],
+    "promptProse": "A low manor lamp finds adult Komine Sachi seated alone astride a thick carpet bolster. Her maid dress is opened and gathered below bare breasts while white stockings tighten around folded legs. She places one gloved hand on her knee and fingers herself with the bare other hand, cleaning tools arranged neatly in the background. Dark hair and blue eyes remain dutiful through wet lashes, parted breath and a deep blush. Vertical solo portrait, no text or extra people.",
+    "promptTokens": [
+      "cowgirl_position",
+      "straddling",
+      "maid_dress",
+      "skirt_lift",
+      "large_breasts",
+      "heavy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_bedroom",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [
+      "cowgirl",
+      "straddling",
+      "large_breasts",
+      "maid_dress",
+      "heavy_blush"
+    ],
+    "nsfwProse": ""
+  }
+}

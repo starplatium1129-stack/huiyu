@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/official_straitjacket",
+  "revision": 1,
+  "sortOrder": 710,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "default": true,
+      "id": "official_straitjacket",
+      "isDefault": true,
+      "name": "纯白拘束服风衣",
+      "prose": "her iconic white straitjacket uniform with long sleeves extending past her hands, high zippered collar, loose buckled belts trailing behind her, and tight white leggings accentuating her slender legs",
+      "tokens": [
+        "straitjacket",
+        "white_jacket",
+        "belts",
+        "buckles",
+        "long_sleeves",
+        "zipper",
+        "high_collar",
+        "white_pants",
+        "tight_pants"
+      ]
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "yami_street_taiyaki_bench_eating",
+  "revision": 1,
+  "sortOrder": 1223,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在长凳上双手捧鲷鱼烧小口品尝，双腿并拢，金发如瀑垂落，眼神满足而矜持",
+    "camera": "medium shot, seated eye-level, intimate charming framing",
+    "category": "日常萌趣",
+    "characterId": "golden_darkness",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【金色暗影 · 商店街长凳的鲷鱼烧美味】彩南町熙熙攘攘的复古商业街红木长凳上，午后阳光透过树冠洒下斑驳光斑。小暗身穿标志性的黑色哥特抹胸皮战裙，双手捧着一只刚刚出炉、热气腾腾的红豆鲷鱼烧。她微微鼓起腮帮小口咬下酥脆的鱼尾，深红如血的眼眸闪烁着像小猫一样的满足光泽，及踝的金发在长凳后铺散开来，散发着杀手独有的反差萌。",
+    "id": "yami_street_taiyaki_bench_eating",
+    "lighting": "商业街暖色遮阳篷洒下的明亮日光与鲷鱼烧升腾的微弱热气",
+    "location": "彩南町繁华商店街路边木质休闲长凳",
+    "mood": "反差萌动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "gothic_dress",
+    "promptProse": "Sitting quietly on a wooden park bench along a sunny shopping street in her iconic strapless black gothic dress, Yami delicately nibbles a warm red-bean taiyaki pastry with both hands. Golden afternoon sunbeams highlight her floor-length blonde hair and calm ruby eyes.",
+    "promptTokens": [
+      "shopping_street",
+      "wooden_bench",
+      "holding_taiyaki",
+      "taiyaki",
+      "eating_pastry",
+      "gothic_dress",
+      "strapless_dress",
+      "very_long_hair",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "street",
+      "bench",
+      "holding_taiyaki",
+      "taiyaki",
+      "eating",
+      "gothic_dress",
+      "black_dress",
+      "blonde_hair",
+      "very_long_hair"
+    ],
+    "timeOfDay": "下午",
+    "title": "金色暗影 · 商店街长凳的鲷鱼烧美味"
+  }
+}

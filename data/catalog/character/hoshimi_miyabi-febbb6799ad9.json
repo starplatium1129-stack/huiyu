@@ -1,0 +1,158 @@
+{
+  "kind": "character",
+  "id": "hoshimi_miyabi",
+  "revision": 1,
+  "sortOrder": 78,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hoshimi_miyabi",
+    "profile": {
+      "id": "hoshimi_miyabi",
+      "name": "星见雅",
+      "alias": [
+        "Hoshimi Miyabi",
+        "雅",
+        "星见课长",
+        "对空六课"
+      ],
+      "type": "popular",
+      "icon": "🦊",
+      "portrait": {
+        "image": "../assets/characters/popular-hoshimi_miyabi.png?v=5",
+        "alt": "星见雅 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "乌黑丝缎高马尾 · 灵动白狐耳",
+        "hair_color": "墨黑",
+        "eyes": "锐利澄澈金黄狐瞳",
+        "hairstyle": "高束单马尾 · 纯白毛茸狐耳 · 黑尖白狐尾",
+        "uniform": "对空六课课长军官制服 / 传统御守巫女服",
+        "expression": "清冷肃穆 · 一丝不苟 · 偶尔天然呆",
+        "style": "stoic fox swordmaster",
+        "signature": "雪白狐耳、黑发高马尾、锐利金瞳与佩刀居合"
+      },
+      "personality": [
+        "极度自律且坚守法度",
+        "武痴心性一心向剑",
+        "对待部下与平民深沉负责",
+        "生活常识偶露反差萌",
+        "面对邪恶绝不手软"
+      ],
+      "likes": [
+        "清晨道场的挥刀静修",
+        "神社回廊的苦涩抹茶",
+        "刀具保养与研磨石",
+        "新艾利都的安宁街景"
+      ],
+      "classic_cg": {
+        "title": "月夜竹林的虚空居合",
+        "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，狐尾迎风招展，宛若画中剑仙。"
+      },
+      "identity": {
+        "role": "新艾利都治安局对空六课课长 / 星见流宗家之女",
+        "age": "青年",
+        "occupation": "对空六课课长 / 武学宗师",
+        "faction": "新艾利都 · 治安局对空六课"
+      },
+      "tags": [
+        "狐耳",
+        "狐尾",
+        "黑发高马尾",
+        "金瞳",
+        "太刀",
+        "居合斩",
+        "军服制服"
+      ],
+      "bg_story": "星见雅是《绝区零》中对空事务六课的课长，出身于武学名门星见流，是新艾利都公认的顶尖太刀居合斩名手。她性格冷峻严肃、恪尽职守，面对再凶险的以太灾害也面不改色，但在日常生活上偶尔有着不谙世故的纯真天然反差。",
+      "palette": [
+        "曜石黑",
+        "霜月蓝",
+        "银狐白"
+      ],
+      "weather": [
+        "寒夜清月",
+        "初雪霜天",
+        "竹林晨曦"
+      ],
+      "speech": "对空六课，星见雅。拔刀之令既下，自当荡平诸恶。",
+      "source": "HoYoverse《绝区零 / Zenless Zone Zero》",
+      "traits": [
+        "hoshimi miyabi",
+        "1girl",
+        "solo",
+        "black_hair",
+        "high_ponytail",
+        "fox_ears",
+        "fox_tail",
+        "amber_eyes",
+        "katana",
+        "zenless_zone_zero"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#070b14"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "hoshimi_miyabi",
+        "miyabi",
+        "miyabi (zenless zone zero)",
+        "星见雅",
+        "雅",
+        "对空六课",
+        "section 6"
+      ],
+      "animeStudio": "Zenless Zone Zero official art, HoYoverse style",
+      "canon": {
+        "era": "后空洞灾害近未来都市",
+        "formNotes": "对空六课课长，著名的居合斩名手，武学门第星见流宗主之女，性格冷峻清雅、秉公执法，偶尔在生活常识上展现天然呆反差",
+        "research": "2026-09-02 调研（Danbooru hoshimi_miyabi 4500+ posts）",
+        "world": "新艾利都（New Eridu）· 对空六课"
+      },
+      "curatedArtistStyles": [
+        "rella",
+        "krenz_cushart",
+        "wlop"
+      ],
+      "displayName": "星见雅",
+      "exactPrefixes": [
+        "miyabi_"
+      ],
+      "exactTokens": [
+        "hoshimi miyabi"
+      ],
+      "franchise": "Zenless Zone Zero",
+      "id": "hoshimi_miyabi",
+      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, and a refined stoic expression.",
+      "identityTokens": [
+        "hoshimi miyabi",
+        "1girl",
+        "solo",
+        "black_hair",
+        "high_ponytail",
+        "fox_ears",
+        "fox_tail",
+        "amber_eyes",
+        "yellow_eyes",
+        "zenless_zone_zero"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Hoshimi Miyabi",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

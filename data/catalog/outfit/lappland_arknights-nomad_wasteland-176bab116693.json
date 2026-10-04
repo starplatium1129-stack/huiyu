@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/nomad_wasteland",
+  "revision": 1,
+  "sortOrder": 390,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "default": false,
+      "id": "nomad_wasteland",
+      "isDefault": false,
+      "name": "叙拉古荒原行者",
+      "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
+      "tokens": [
+        "poncho",
+        "cloak",
+        "hood",
+        "fur_trim",
+        "bandolier",
+        "leather_pants",
+        "pants",
+        "traveling",
+        "wasteland",
+        "wanderer"
+      ]
+    }
+  }
+}

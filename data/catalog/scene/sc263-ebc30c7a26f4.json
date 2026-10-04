@@ -1,0 +1,65 @@
+{
+  "kind": "scene",
+  "id": "sc263",
+  "revision": 1,
+  "sortOrder": 258,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a dramatic cinematic wide action shot with extreme perspective foreshortening, Ayachi Nene in her official witch outfit stands on the left with a determined expression, aiming an oversized silver revolver with her outstretched arm directly toward the right foreground at the viewer, surrounded by a swirling cosmic starfield, floating magic circles, and glowing blue magical particles under vivid rim lighting.",
+    "audit": {
+      "attempt": 1,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_11.png",
+      "result": "pass",
+      "reviewer": "direct-vision",
+      "seedKey": "official-cg:ocn08:1"
+    },
+    "auditRevision": "careful-batch15-2026-08-27",
+    "camera": "大透视持枪横幅构图",
+    "category": "官方CG灵感",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "心动",
+    "id": "sc263",
+    "lighting": "星海逆光与银色金属高光",
+    "location": "星海与魔法阵",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, extra person, multiple persons, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
+    "officialCgCandidate": "ocn08",
+    "prompt": "masterpiece, best_quality, score_7, visual_novel_event_cg, cinematic_16:9_action_composition, dynamic_angle, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, floating_hair, purple_eyes, ahoge, official_witch_outfit, witch_hat, black_headwear, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, detached_sleeves, black_wrist_cuffs_with_pink_stripes, holding_gun, revolver, aiming, outstretched_arm, aiming_an_oversized_silver_revolver_toward_the_viewer, gun_dominating_right_foreground_with_sharp_perspective, determined_face_on_left_side, looking_at_viewer, swirling_purple_starfield, magic_circle, glowing_blue_magic_particles, dramatic_rim_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【官方 CG 灵感】紫色星海在魔法阵外翻涌，宁宁压低帽檐，将银色枪口稳稳指向异变中心。「躲在我身后——这一次，轮到我保护你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo",
+      "nene_witch_canonical",
+      "witch_hat",
+      "holding_gun",
+      "revolver",
+      "aiming",
+      "foreshortening",
+      "starry_sky",
+      "rim_lighting"
+    ],
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "title": "星海中的魔女枪口",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "R15"
+    ],
+    "weather": "星空异变"
+  }
+}

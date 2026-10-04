@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "lena_handler_one_moonlit_command",
+  "revision": 1,
+  "sortOrder": 1355,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, low angle, holographic display glow, commanding presence",
+    "category": "军旅高光",
+    "characterId": "vladilena_milize",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ],
+    "description": "【共和国防线地下指挥室·深夜】全息沙盘的幽蓝光束切开黑暗，身着蓝色共和国军装的蕾娜立于指挥桌前，军帽檐下的银白长发泛着冷冽光泽。她单手扶着全息投影边缘，颈侧的Para-RAID秘话耳机亮起微光，银灰色的双眸倒映着战线光点，果决地下达一道道指令——那是既是温柔又绝不容侵犯的指挥官威严。",
+    "id": "lena_handler_one_moonlit_command",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "全息沙盘幽蓝光束自下而上勾勒军装轮廓与银发冷光",
+    "location": "共和国防线地下作战指挥室",
+    "mood": "凛然果决、威严动人",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_republic_military_uniform",
+    "promptProse": "Vladilena Milize from 86 -Eighty Six- stands in a dim underground command room at night, wearing her blue San Magnolia military uniform with a peaked cap. Her long silver hair spills over her shoulders as she leans one hand on a glowing holographic strategy table, blue light washing up her composed face and silver-grey eyes. A Para-RAID headset glows faintly on her neck while she issues calm, resolute orders across the glowing front-line markers. Medium shot with dramatic under-glow, cinematic lighting, detailed background of dark console banks.",
+    "promptTokens": [
+      "vladilena_millize",
+      "1girl",
+      "solo",
+      "military_uniform",
+      "blue_jacket",
+      "peaked_cap",
+      "headset",
+      "hologram",
+      "silver_hair",
+      "long_hair",
+      "grey_eyes",
+      "standing",
+      "commanding",
+      "night",
+      "indoors",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "command_room",
+      "hologram",
+      "military_uniform",
+      "headset",
+      "commanding",
+      "night",
+      "iconic"
+    ],
+    "timeOfDay": "深夜",
+    "title": "芙拉蒂蕾娜 · 月光指挥室的秘话同调·「这里是我的声音，也永远是你们的」"
+  }
+}

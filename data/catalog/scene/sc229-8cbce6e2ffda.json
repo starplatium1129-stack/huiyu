@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc229",
+  "revision": 1,
+  "sortOrder": 224,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the rainy-afternoon attic study, Shiki Natsume wears a light-coffee thick-knit sweater and small round glasses while keeping her eyes on the handheld console. She pulls half of the wool blanket over the viewer's legs from the sofa beside them, her mole catching the cool screen glow.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc229",
+    "lighting": "窗外阴雨朦胧弱光与室内台灯柔和暖光",
+    "location": "温馨阁楼地毯单人沙发",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, small_round_glasses, light_coffee_thick_knit_sweater, sitting_on_attic_sofa, playing_handheld_game_console, sharing_wool_blanket_with_viewer, one_half_of_blanket_over_viewer's_legs, rainy_window, cozy_attic_study, rainy_afternoon, cool_screen_glow, gentle_smile, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 阴雨午后的阁楼书房】窗外细雨绵绵的温馨阁楼书房。没有排班的假日午后，夏目穿着一件宽大松软的浅咖啡色粗针毛衣，乌黑的长发随意散落，鼻梁上罕见地架着一副精巧的细圆框眼镜，正全神贯注地看着掌机屏幕。当你端着热茶坐到她身边时，她自然地拉起身上柔软的羊毛毯，分出一半盖在你腿上。距离瞬间拉近，她眼角的泪痣在屏幕荧光映照下分外动人，耳根悄悄泛起红晕，语气依然带着几分特有的淡然——「……别误会。我只是觉得两个人一起盖毯子比较暖和。……喂，顺便帮我把桌上的红茶递过来一下。」",
+    "storyJa": "【夏目】【ナツメ・雨音響く屋根裏の書房】窓外に雨が降り続く居心地の良い屋根裏部屋。休日の午後、ナツメはざっくり編まれたモカ色のセーターをまとい、珍しく丸眼鏡をかけて携帯ゲームに夢中になっていた。温かいお茶を持って隣に腰掛けると、彼女は無造作にウール毛布の半分をあなたの膝へと掛けた。急に縮まった距離の中、目尻の泣きぼくろが液晶の光に揺れ、耳を赤らめながら淡々と口を開く――「……勘違いしないで。一緒に使った方が暖かいだけよ。……ねえ、ついでに机の紅茶取って」",
+    "tags": [
+      "mole_under_eye",
+      "round_glasses",
+      "light_coffee_sweater",
+      "thick_knit_sweater",
+      "handheld_console",
+      "wool_blanket",
+      "attic",
+      "sofa",
+      "rain",
+      "red_ears",
+      "medium_shot",
+      "shared_blanket"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "雨落阁楼的镜中余温",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "阴天窗光"
+  }
+}

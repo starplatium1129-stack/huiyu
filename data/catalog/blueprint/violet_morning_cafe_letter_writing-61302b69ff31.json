@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "violet_morning_cafe_letter_writing",
+  "revision": 1,
+  "sortOrder": 1388,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "eye level medium close-up, girlfriend POV, antique stationery aesthetic, sunlit warmth",
+    "category": "现代日常",
+    "characterId": "violet_evergarden",
+    "coverageTags": [
+      "daily",
+      "casual",
+      "girlfriend"
+    ],
+    "description": "【阳光倾泻的露天咖啡桌】清晨的莱顿港微风和煦。薇尔莉特在咖啡馆的白色铸铁圆桌上端正摆放着便携式机械打字机，修长的银白金属指节在键帽上轻快跳跃。打完最后一朵花体的收尾句后，她双手托起散发着墨香的信纸递向你，瓷白的面庞上露出一抹浅浅却极尽温柔的微笑。",
+    "id": "violet_morning_cafe_letter_writing",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "明净澄澈的晨曦直射，树影与白色蕾丝桌布交织出透亮光斑",
+    "location": "C.H.邮政公司旁阳光露天咖啡座",
+    "mood": "宁静优雅、甜润治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "doll_cafe_no_parasol",
+    "promptProse": "Violet Evergarden sits poised at a sun-drenched outdoor cafe terrace with an antique metal typewriter before her. Her delicate silver prosthetic hands present a beautifully written letter towards you, her doll-like porcelain face gracing you with a soft tender smile. Crisp morning sunlight illuminates the flutter of white lace and warm coffee steam dancing in the breeze.",
+    "promptTokens": [
+      "cafe",
+      "terrace",
+      "sitting",
+      "typewriter",
+      "letter",
+      "holding_letter",
+      "mechanical_hands",
+      "gentle_smile",
+      "coffee_cup",
+      "morning",
+      "close-up",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "cafe",
+      "terrace",
+      "typewriter",
+      "letter",
+      "mechanical_hands",
+      "holding_letter",
+      "gentle_smile",
+      "morning"
+    ],
+    "timeOfDay": "清晨",
+    "title": "薇尔莉特 · 邮政露台的打字机晨光·「为您代笔的情书，已经完成了」"
+  }
+}

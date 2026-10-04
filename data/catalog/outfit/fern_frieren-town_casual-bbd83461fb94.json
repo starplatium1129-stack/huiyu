@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "fern_frieren/town_casual",
+  "revision": 1,
+  "sortOrder": 65,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fern_frieren",
+    "outfit": {
+      "id": "town_casual",
+      "name": "城镇甜品便服",
+      "prose": "a soft knitted cardigan over a blouse and a long pleated skirt, with purple hair tied half up",
+      "tokens": [
+        "cardigan",
+        "long_skirt",
+        "blouse",
+        "ribbon",
+        "half_updo"
+      ]
+    }
+  }
+}

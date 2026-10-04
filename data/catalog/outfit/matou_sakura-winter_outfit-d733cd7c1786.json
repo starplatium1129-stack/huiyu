@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/winter_outfit",
+  "revision": 1,
+  "sortOrder": 99,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "winter_outfit",
+      "name": "冬日大衣",
+      "tokens": [
+        "matou_sakura_winter_outfit",
+        "winter_coat",
+        "coat",
+        "winter_clothes",
+        "warm_clothes",
+        "long_sleeves",
+        "skirt",
+        "umbrella",
+        "pink_umbrella"
+      ],
+      "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

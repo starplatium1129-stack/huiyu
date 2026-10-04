@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "caren_dawn_altar_shroud_bridal_vow",
+  "revision": 1,
+  "sortOrder": 215,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_dawn_altar_shroud_bridal_vow",
+    "title": "卡莲 · 破晓圣坛的圣骸之誓",
+    "category": "纯白誓约",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 破晓圣坛的圣骸之誓】破晓时分的宏伟大教堂圣坛前，第一束金色晨曦穿透破损的穹顶照亮整个圣域。卡莲身着纯白圣洁的露肩婚纱，金色的抹大拉圣骸布化作头纱与后摆在朝阳中散发着神圣光辉。她双手捧着一束白百合花走向你，眼眶湿润泛着晶莹的泪珠，清冷的声线带着无尽的释怀与爱意——「承载了世间所有恶意的我……终于在你的怀里，找到了唯一的救赎与归宿。」",
+    "location": "金色晨曦破晓照耀的大教堂宏伟圣坛前",
+    "action": "双手捧白百合缓步走向圣坛前方，抬眼微笑，保持双手托花",
+    "timeOfDay": "破晓晨曦",
+    "lighting": "穿透破晓云层与大理石穹顶的万丈神圣天光",
+    "camera": "full-body frontal shot, slow step, complete gown and bouquet visible",
+    "mood": "神圣救赎",
+    "sceneTags": [
+      "dawn_altar",
+      "walking_slowly",
+      "white_bridal_gown",
+      "golden_shroud_veil",
+      "white_lilies",
+      "both_hands_on_bouquet",
+      "short_silver_hair",
+      "amber_eyes",
+      "relieved_smile",
+      "dawn_light",
+      "full_body"
+    ],
+    "promptProse": "Caren takes a slow step forward before the dawn-lit altar, holding a bouquet of white lilies securely in both hands. Her opaque white formal bridal gown falls to the floor, with the golden shroud arranged as a veil and trailing cloth rather than exposing the body. Short silver hair frames her amber-yellow eyes as she offers a small, relieved smile. Warm light from the dome reveals the lilies, fabric folds and careful step. Show the complete ceremonial outfit and two hands supporting the flowers within the vertical frame. No lettering.",
+    "promptTokens": [
+      "dawn_altar",
+      "walking_slowly",
+      "white_bridal_gown",
+      "golden_shroud_veil",
+      "white_lilies",
+      "both_hands_on_bouquet",
+      "short_silver_hair",
+      "amber_eyes",
+      "relieved_smile",
+      "dawn_light",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "bridal_dress",
+    "coverageTags": [
+      "bridal",
+      "vow",
+      "redemption"
+    ]
+  }
+}

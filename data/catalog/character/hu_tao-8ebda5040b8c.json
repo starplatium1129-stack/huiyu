@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "hu_tao",
+  "revision": 1,
+  "sortOrder": 70,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao",
+    "profile": {
+      "id": "hu_tao",
+      "name": "胡桃",
+      "alias": [
+        "Hu Tao",
+        "胡堂主",
+        "往生堂堂主"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-hu_tao.png?v=5",
+        "alt": "胡桃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "深褐渐变红发尾及腰双马尾",
+        "hair_color": "深褐透红",
+        "eyes": "绯红梅花瓣瞳孔",
+        "hairstyle": "高束长双马尾 · 乾坤泰卦黑礼帽 · 红梅花饰",
+        "uniform": "往生堂中式对襟深褐立领长风衣 · 短裤",
+        "expression": "古灵精怪 · 俏皮机敏 · 严肃时庄重玄奥",
+        "style": "playful ghost-ferrying director",
+        "signature": "梅花瞳、乾坤帽、小幽灵与护摩之杖"
+      },
+      "personality": [
+        "古灵精怪思维跳脱",
+        "热爱作打油诗",
+        "通晓阴阳生死大事",
+        "看似轻浮实则通透豁达",
+        "待人热情真挚"
+      ],
+      "likes": [
+        "作诗与讲鬼故事",
+        "无妄坡的幽静梅花",
+        "往生堂大酬宾活动",
+        "捉弄钟离与旅行者"
+      ],
+      "classic_cg": {
+        "title": "幽夜红梅引游魂",
+        "description": "月黑风高的无妄坡老梅树下，少女手扶帽檐巧笑嫣然，火蝶与晶莹小幽灵在身畔盘旋起舞。"
+      },
+      "identity": {
+        "role": "往生堂第七十七代堂主",
+        "age": "约18岁",
+        "occupation": "往生堂堂主 / 诗人",
+        "faction": "提瓦特 · 璃月港 / 往生堂"
+      },
+      "tags": [
+        "梅花瞳",
+        "渐变双马尾",
+        "中式黑风衣",
+        "小幽灵",
+        "火元素",
+        "护摩之杖"
+      ],
+      "bg_story": "胡桃是《原神》中璃月「往生堂」第七十七代堂主，掌管璃月葬仪死生之事。平日古灵精怪、喜爱作诗与推销业务，但对待阴阳秩序与逝者安息有着极高的见地与责任感。持有火元素神之眼，作战时枪出如龙、烈焰蝶舞。",
+      "palette": [
+        "深褐",
+        "朱红",
+        "赤金"
+      ],
+      "weather": [
+        "月夜无妄",
+        "海灯节万家灯火",
+        "晴空璃月"
+      ],
+      "speech": "月黑风高夜，正是往生堂大酬宾的好时机！要不要预订一份特惠套餐呀？",
+      "source": "miHoYo《原神 / Genshin Impact》",
+      "traits": [
+        "hu tao (genshin impact)",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "twin_tails",
+        "flower-shaped_pupils",
+        "red_eyes",
+        "porkpie_hat",
+        "plum_blossoms",
+        "chinese_clothes",
+        "genshin_impact"
+      ],
+      "accent_color": "#f87171",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "hu_tao",
+      "displayName": "胡桃",
+      "originalName": "Hu Tao",
+      "franchise": "Genshin Impact",
+      "aliases": [
+        "hu_tao",
+        "hu tao",
+        "77th director",
+        "wangsheng funeral parlor",
+        "genshin impact",
+        "胡桃"
+      ],
+      "identityProse": "Hu Tao from Genshin Impact, the quirky and spirited 77th Director of the Wangsheng Funeral Parlor, with long rich walnut-brown twintails with crimson gradient tips, bright scarlet blossom-shaped floral pupils, a mischievous wide smile, wearing a traditional dark porkpie hat adorned with red plum blossoms and a wooden talisman",
+      "identityTokens": [
+        "hu_tao (genshin impact)",
+        "1girl",
+        "solo",
+        "long_hair",
+        "brown_hair",
+        "twintails",
+        "gradient_hair",
+        "red_eyes",
+        "flower-shaped_pupils",
+        "symbol-shaped_pupils",
+        "porkpie_hat",
+        "plum_blossom",
+        "hair_flower",
+        "talisman",
+        "genshin_impact"
+      ],
+      "exactTokens": [
+        "hu_tao (genshin impact)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "奇幻东方（提瓦特·契约之国璃月）",
+        "era": "古风商港时代",
+        "formNotes": "往生堂七十七代堂主，梅花赤瞳与红渐变双马尾，伴生火灵小幽灵（Boo Tao），古灵精怪幽默豁达，精通阴阳两界之理",
+        "research": "2026-08 调研"
+      },
+      "animeStudio": "genshin impact, official anime art, miHoYo style",
+      "curatedArtistStyles": [
+        "rella",
+        "swav",
+        "ask_(askzy)"
+      ]
+    }
+  }
+}

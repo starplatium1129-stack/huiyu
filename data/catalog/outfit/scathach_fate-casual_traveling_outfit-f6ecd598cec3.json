@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/casual_traveling_outfit",
+  "revision": 1,
+  "sortOrder": 135,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "casual_traveling_outfit",
+      "name": "影之国旅装斗篷便服",
+      "prose": "a worldly traveling outfit: a crisp white shirt under a brown corset vest, a long worn travel coat, a wide-brimmed hat shading her eyes, tall leather boots, and a staff pack slung over her shoulder",
+      "tokens": [
+        "traveling_outfit",
+        "white_shirt",
+        "corset",
+        "brown_vest",
+        "long_coat",
+        "hat",
+        "boots",
+        "casual_wear"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/forgemaster",
+  "revision": 1,
+  "sortOrder": 336,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "default": false,
+      "id": "forgemaster",
+      "isDefault": false,
+      "name": "熔锻铸匠（工装）",
+      "prose": "a black fire-resistant top with rolled-down coveralls tied at her waist, heat-resistant gloves and a heavy forging hammer",
+      "tokens": [
+        "coveralls",
+        "black_clothes",
+        "gloves",
+        "hammer",
+        "workwear"
+      ]
+    }
+  }
+}

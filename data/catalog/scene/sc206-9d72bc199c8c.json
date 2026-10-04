@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc206",
+  "revision": 1,
+  "sortOrder": 201,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Lying on the leather bench in the empty executive changing room under a single warm lamp, Shiki Natsume's black pencil skirt has slid to her waist and her thin black stockings are cracked with torn marks over skin; she raises a hand to cover her flushed face, the mole trembling between her fingers while she keeps her voice tough despite the disordered breath.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "略微仰视近景特写",
+    "category": "恋爱/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "防御全面沦陷支配",
+    "id": "sc206",
+    "lighting": "局部暖光与柔和阴影",
+    "location": "独立高管更衣室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, pencil_skirt_unbuttoned, garter_straps, torn_thighhighs, laddering, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, lying_back_on_leather_bench, dressing_room, heavy_blush, flustered_pant, dim_warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 职业装下的裂丝反差】深夜，空无一人的公司高管更衣室只留着一盏暖灯。夏目躺在皮革长椅中央，平整的黑色包臀裙已经滑至腰侧，薄黑丝袜也在拉扯中留下大片裂纹，露出若隐若现的肌肤。她抬手遮住泛红的脸，眼角泪痣在指缝间轻轻颤动；明明已经乱了呼吸，语气却仍旧强硬——「把我的丝袜弄成这样……明天记得赔。至于今晚，就别想装作什么都没发生。」",
+    "storyJa": "【夏目・ビジネス服装のコントラスト】深夜、誰もいない会社役員更衣室には暖かいランプだけが残されていた。革張りのベンチの真ん中に夏目が横たわっていた。彼女の腰を覆う平らな黒のスカートは腰までずり落ち、薄い黒のストッキングには引っ張られた際に大きな亀裂が生じ、迫りくる肌が露出していた。彼女は赤い顔を覆うために手を上げ、目の端の泣きぼくろが指の間でわずかに震えた。彼女の呼吸は明らかに乱れていたが、それでも彼女の口調は力強かった。――「ストッキングをこんなにして……明日、ちゃんと弁償して。今夜のことまで、何もなかったふりはさせないから。」",
+    "tags": [
+      "mole_under_eye",
+      "office_blouse",
+      "pencil_skirt",
+      "skirt_slipped_down",
+      "cracked_stockings",
+      "leather_bench",
+      "changing_room",
+      "hand_over_face",
+      "night",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "封闭更衣室的黑丝溶解",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "室内微热"
+  }
+}

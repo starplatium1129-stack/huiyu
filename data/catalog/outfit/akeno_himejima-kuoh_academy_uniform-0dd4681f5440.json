@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "akeno_himejima/kuoh_academy_uniform",
+  "revision": 1,
+  "sortOrder": 699,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "akeno_himejima",
+    "outfit": {
+      "id": "kuoh_academy_uniform",
+      "name": "驹王学园副会长制服",
+      "prose": "her tailored Kuoh Academy uniform with a crisp white blouse straining over her bountiful bust, a fitted black vest corset, a short pleated skirt, a magenta cross tie, and black sheer pantyhose",
+      "tokens": [
+        "kuoh_academy_school_uniform",
+        "kuoh_academy_uniform",
+        "white_shirt",
+        "black_vest",
+        "black_skirt",
+        "pleated_skirt",
+        "cross_tie",
+        "black_pantyhose",
+        "sheer_pantyhose"
+      ]
+    }
+  }
+}

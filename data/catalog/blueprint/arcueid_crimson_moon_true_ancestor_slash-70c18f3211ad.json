@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_crimson_moon_true_ancestor_slash",
+  "revision": 1,
+  "sortOrder": 1322,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
+    "camera": "cowboy shot, low angle, majestic combat view",
+    "category": "身份高光",
+    "characterId": "arcueid_brunestud",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ],
+    "description": "【爱尔奎特 · 绯红真祖月下神威】高耸摩天大楼顶端的血月之夜，爱尔奎特凌空而立。原本清澈的眼眸化为摄人心魄的鲜红赤瞳，指尖闪烁着撕裂大气的金色月弧利刃风暴，金色短发在狂乱的夜风中肆意飞扬，嘴角扬起唯我独尊的真祖暴君浅笑——「今晚的月色，是不是比任何时候都要美丽呢？」",
+    "id": "arcueid_crimson_moon_true_ancestor_slash",
+    "lighting": "猩红圆月洒下的冷冽月光与金色魔力刀光",
+    "location": "摩天大楼天台悬空俯瞰城市夜景处",
+    "mood": "真祖神威",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "archetype_earth_regal_gown",
+    "promptProse": "Hovering effortlessly above a sprawling skyscraper skyline beneath an ominous crimson moon, Arcueid Brunestud unleashes her True Ancestor power. Golden claws of atmospheric pressure slash through the gale around her fingers as her short blonde hair whips dynamically. Her glowing ruby eyes gleam with playful yet terrifying ancient supremacy. Dynamic low-angle anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "rooftop",
+      "city_skyline",
+      "red_moon",
+      "full_moon",
+      "floating",
+      "wind",
+      "energy_slash",
+      "blonde_hair",
+      "red_eyes",
+      "dominant_smile",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "red_moon",
+      "full_moon",
+      "floating",
+      "slash_effect",
+      "flowing_hair",
+      "red_eyes",
+      "dominant_smile"
+    ],
+    "timeOfDay": "血月深夜",
+    "title": "爱尔奎特 · 绯红真祖月下神威"
+  }
+}

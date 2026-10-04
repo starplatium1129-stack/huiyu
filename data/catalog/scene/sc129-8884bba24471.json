@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc129",
+  "revision": 1,
+  "sortOrder": 127,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with a focused and calm expression, as warm golden-hour sunlight illuminates the scene.",
+    "camera": "主观近景特写",
+    "category": "恋爱/成年_AU/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致羞耻动情",
+    "id": "sc129",
+    "lighting": "夕阳通透逆光",
+    "location": "共同生活后的私人神秘学工作室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, silk_blouse, high_waist_skirt, unbuttoned_shirt, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, open_mouth, private_studio, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【成年 AU · 宁宁 · 夕暮私人工作室】成年后的秋日周末，落日铺满两人共同布置的神秘学私人工作室。宁宁先确认门锁与彼此的约定，才主动跨坐到你腿上，一起校对刚完成的契约笔记。动作间，她的丝质衬衫领口微微敞开，高腰长裙在暖光里铺成柔软褶皱；她攥住你的衣领，心形呆毛随着加快的呼吸轻轻发颤——「今天的练习只属于成年的我们……如果还想继续，就先认真抱住宁宁。不许拿以前的社团活动当借口哦。」",
+    "storyJa": "【成年 AU・寧々・夕暮れのプライベートアトリエ】大人になった秋の週末、夕日が二人で整えたオカルト研究用の私設アトリエを満たしていた。寧々は鍵と二人の約束を確かめてから、自分からあなたの膝に跨り、完成した契約ノートを一緒に確認する。動くたびに絹のブラウスの襟元が少し開き、ハイウエストのロングスカートが暖かな光の中で柔らかなひだを作った。彼女はあなたの襟を掴み、ハート形のアホ毛を震わせながら囁いた――「今日の練習は、大人になった私たちだけのものです……続けたいなら、まず寧々をちゃんと抱きしめて。昔の部活動を言い訳にするのは禁止です。」",
+    "tags": [
+      "adult",
+      "silk_blouse",
+      "high_waist_skirt",
+      "unbuttoned_shirt",
+      "bare_legs",
+      "sitting_on_lap",
+      "straddling_viewer",
+      "heavy_blush",
+      "tears_in_eyes",
+      "open_mouth",
+      "private_studio",
+      "sunset",
+      "golden_hour",
+      "shadows",
+      "hair_ribbon",
+      "ahoge",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "夕暮工作室的私密刻印",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "weather": "落日熔金"
+  }
+}

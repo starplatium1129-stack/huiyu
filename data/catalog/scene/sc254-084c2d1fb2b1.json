@@ -1,0 +1,60 @@
+{
+  "kind": "scene",
+  "id": "sc254",
+  "revision": 1,
+  "sortOrder": 249,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing along the quiet city street, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "中景侧面拉近特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc254",
+    "lighting": "背景高大繁华彩灯引发的绚丽大光斑模糊（Bokeh）与温暖侧光",
+    "location": "繁华商业街璀璨彩灯大树旁",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, coat, trench_coat, turtleneck_sweater, jeans, boots, scarf, sharing_scarf, street, snowing, city_lights, bokeh, red_ears, subtle_blush, expressionless, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 初雪街头的围巾温度】深夜初雪纷飞的繁华商业街，两旁亮满暖金色的节日彩灯。换下工作服的夏目身穿驼色双排扣毛呢大衣与米白高领毛衣，长发随风微扬。夜间气温骤降，你在雪中驻足时自然地解下围巾，绕过去将两个人圈在一起。夏目身子微微一缩，半垂着清冷的金瞳任由你动作。在璀璨灯火的映照下，她那泛红的耳根格外可爱，用微弱的音量小声说着——「……别误会，我只是觉得两个人围一条比较暖和，要是你感冒了明天就没人顶班了。……笨蛋，手要是冷的话，可以伸进我大衣口袋里。」",
+    "storyJa": "【夏目】【ナツメ・初雪の街とマフラーの温もり】深夜、初雪が舞う並木道。キャメルのコートに身を包んだナツメの隣で、あなたはマフラーを広げて二人を包み込んだ。ナツメは身をすくめ、金の瞳を伏せたまま受け入れる。イルミネーションに照らされて赤くなった耳を隠すように、小さな声で呟く――「……勘違いしないで。風邪を引かれたら明日のシフトが困るからよ。……バカ、手が冷たいなら、私のポケットに入れなさい」",
+    "tags": [
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
+      "mole_under_eye",
+      "hairclip",
+      "wool_coat",
+      "turtleneck_sweater",
+      "jeans",
+      "boots",
+      "scarf",
+      "sharing_scarf",
+      "street",
+      "snowing",
+      "city_lights",
+      "bokeh",
+      "red_ears",
+      "subtle_blush",
+      "expressionless",
+      "romantic_atmosphere",
+      "close_up"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "初雪街头大衣下的无声升温",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "初雪夜晚"
+  }
+}

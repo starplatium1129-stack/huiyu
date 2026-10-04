@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ereshkigal_fate/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 152,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ereshkigal_fate",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "冥府幽蓝蕾丝内衣",
+      "prose": "a pale-blue and black lace lingerie set: a soft lace bra over her modest chest, matching panties with a blue ribbon at the hip, sheer blue thighhighs, and a translucent black peignoir like the veil of the underworld",
+      "tokens": [
+        "blue_lingerie",
+        "black_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "blue_thighhighs",
+        "peignoir",
+        "ribbon",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

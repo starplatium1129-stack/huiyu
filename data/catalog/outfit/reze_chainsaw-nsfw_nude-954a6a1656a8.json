@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 242,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "full_body_bare",
+        "choker",
+        "exposed_pussy",
+        "detailed_vulva",
+        "bare_breasts",
+        "pink_nipples",
+        "bare_feet"
+      ],
+      "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
+      "styleHint": "alluring moody cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_orleans_countryside_stroll",
+  "revision": 1,
+  "sortOrder": 233,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_orleans_countryside_stroll",
+    "title": "圣女贞德 · 奥尔良乡野的草帽散步·「今天不是圣女，只是贞德小姐」",
+    "category": "乡野日常",
+    "characterId": "jeanne_d_arc",
+    "description": "【奥尔良乡间麦田小径·午后】卸下圣装的贞德换上白衬衫与宝蓝色长裙，头顶系带的麦秆草帽。她提着藤篮走在麦浪间的小径上，白皙的手指偶尔拂过麦穗尖端，被路过的农妇塞了一束雏菊便笑得眉眼弯弯。风吹起帽带与裙摆，那个背负法兰西的圣女，此刻只是一个在故乡阳光里散步的姑娘。",
+    "location": "奥尔良乡间麦田小径",
+    "action": "一臂提稳装着雏菊的藤篮，另一手拂过麦穗，沿小径微笑行走",
+    "timeOfDay": "午后",
+    "lighting": "温暖通透的夏日午后阳光，麦浪反光柔和",
+    "camera": "medium full shot, walking with basket, pastoral golden fields, gentle smile",
+    "mood": "田园治愈、笑容烂漫",
+    "sceneTags": [
+      "orleans_wheat_lane",
+      "walking",
+      "basket_on_arm",
+      "daisies_in_basket",
+      "touching_wheat",
+      "white_blouse",
+      "blue_skirt",
+      "straw_hat",
+      "afternoon_light",
+      "medium_full_shot"
+    ],
+    "promptProse": "Jeanne walks along the wheat-field lane with a wicker basket resting in the crook of one arm. The freshly received daisies are tucked safely inside it, leaving her free hand to brush the wheat tips as she smiles. Her white blouse, long royal-blue skirt and ribbon-tied straw hat match the countryside outfit, with the golden braid falling behind her shoulder. Warm afternoon sunlight moves over the wheat and basket weave. The horizontal medium-full view follows the clear walking path and two distinct arm roles, without lettering.",
+    "promptTokens": [
+      "orleans_wheat_lane",
+      "walking",
+      "basket_on_arm",
+      "daisies_in_basket",
+      "touching_wheat",
+      "white_blouse",
+      "blue_skirt",
+      "straw_hat",
+      "afternoon_light",
+      "medium_full_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_french_civilian",
+    "coverageTags": [
+      "daily",
+      "girlfriend"
+    ]
+  }
+}

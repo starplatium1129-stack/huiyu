@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shinjou_akane/sfw_festival",
+  "revision": 1,
+  "sortOrder": 871,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinjou_akane",
+    "outfit": {
+      "id": "sfw_festival",
+      "name": "文化祭工作围裙装",
+      "prose": "a blue school cardigan over a white blouse, knee-length skirt and cream apron",
+      "tokens": [
+        "blue_cardigan",
+        "white_blouse",
+        "pleated_skirt",
+        "cream_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

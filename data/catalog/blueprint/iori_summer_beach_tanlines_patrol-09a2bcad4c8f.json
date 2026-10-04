@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "iori_summer_beach_tanlines_patrol",
+  "revision": 1,
+  "sortOrder": 930,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "站在海浪浅水区单手叉腰，另一手扛着特制水枪，微抬下巴傲娇侧视",
+    "camera": "cowboy shot, low angle",
+    "category": "海滨度假",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【银镜伊织 · 灼热沙滩的风纪巡查】阳光炽热的蔚蓝海滩上，白色的浪花拍打着金色细沙。伊织穿着惹眼的黑白绑带比基尼，戴着遮阳镜，小麦色的肌肤在阳光下闪耀着健康的光泽，身上清晰的浅色晒痕更是诱人至极。她手里端着特制水枪，有些害羞地叉着腰巡视——「看什么看！我可是在认真执行海滩风纪巡逻！才不是特意穿泳装给老师看的……！」",
+    "id": "iori_summer_beach_tanlines_patrol",
+    "lighting": "明媚阳光直射与碧蓝海水反射光",
+    "location": "学园都市海滨沙滩浅水区",
+    "mood": "热烈傲娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "swimsuit",
+    "promptProse": "Patrolling the beach in a white bikini showing off sharp tanlines, Iori carries a heavy water gun with tough-girl confidence. Sparkling turquoise waves and intense tropical sunshine highlight her toned, athletic physique.",
+    "promptTokens": [
+      "beach",
+      "white_bikini",
+      "tanlines",
+      "water_gun",
+      "sunglasses",
+      "ocean_waves",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean",
+      "waves",
+      "sunlight",
+      "bikini",
+      "white_bikini",
+      "tanlines",
+      "dark_skin",
+      "water_gun",
+      "sunglasses",
+      "demon_tail"
+    ],
+    "timeOfDay": "正午",
+    "title": "银镜伊织 · 灼热沙滩的风纪巡查"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 202,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "full_body_bare",
+        "large_breasts",
+        "exposed_pussy",
+        "detailed_vulva",
+        "pink_nipples",
+        "bare_feet"
+      ],
+      "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+      "styleHint": "sensual soft room lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

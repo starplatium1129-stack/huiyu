@@ -3,6 +3,9 @@ import type { ExplorerScene } from './sceneExplorerPresentation'
 
 const idOrder = new Intl.Collator(undefined, { numeric: true })
 const titleOrder = new Intl.Collator('zh-CN')
+const baseOrder = (a: ExplorerScene, b: ExplorerScene) => (typeof a.sortOrder === 'number' ? a.sortOrder : Number.MAX_SAFE_INTEGER)
+  - (typeof b.sortOrder === 'number' ? b.sortOrder : Number.MAX_SAFE_INTEGER) || idOrder.compare(a.id, b.id)
+const created = (scene: ExplorerScene) => typeof scene.createdAt === 'string' ? Date.parse(scene.createdAt) || 0 : 0
 
 /** Score each result once, instead of rescanning curation/history on every comparison. */
 export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
@@ -25,8 +28,7 @@ export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
       }))
     }
     for (const scene of scenes) {
-      const curated = needsCuration ? ranks.get(scene.id) ?? ([scene.story, scene.emotion, scene.camera, scene.lighting, scene.location].filter(Boolean).length * 100
-        + Math.min((scene.story || '').length, 500) + (scene.rating === 'All' ? 20 : 0)) : 0
+      const curated = needsCuration ? ranks.get(scene.id) ?? 0 : 0
       const used = mode === 'used' || mode === 'favorite' || mode === 'smart' ? sceneUsageScore(usage[scene.id]) : 0
       const personal = mode === 'favorite' || mode === 'smart' ? personalScore(scene, profile) : 0
       scores.set(scene.id, mode === 'used' ? used : mode === 'favorite'
@@ -37,8 +39,8 @@ export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
   return [...scenes].sort((a, b) => {
     const relevant = (relevance.get(b.id) ?? 0) - (relevance.get(a.id) ?? 0)
     if (relevant) return relevant
-    if (mode === 'newest') return idOrder.compare(String(b.id), String(a.id))
-    if (mode === 'title') return titleOrder.compare(String(a.title), String(b.title))
-    return (scores.get(b.id) ?? 0) - (scores.get(a.id) ?? 0)
+    if (mode === 'newest') return created(b) - created(a) || baseOrder(a, b)
+    if (mode === 'title') return titleOrder.compare(String(a.title), String(b.title)) || baseOrder(a, b)
+    return (scores.get(b.id) ?? 0) - (scores.get(a.id) ?? 0) || baseOrder(a, b)
   })
 }

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ciel_tsukihime/casual_knit_sweater_jeans",
+  "revision": 1,
+  "sortOrder": 724,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ciel_tsukihime",
+    "outfit": {
+      "id": "casual_knit_sweater_jeans",
+      "name": "知性针织毛衣紧身裤",
+      "prose": "a relaxed cream knit turtleneck sweater accentuating her surprisingly full bust, paired with form-fitting dark blue jeans and ankle boots",
+      "tokens": [
+        "turtleneck_sweater",
+        "knit_sweater",
+        "jeans",
+        "tight_pants",
+        "glasses",
+        "casual_wear"
+      ]
+    }
+  }
+}

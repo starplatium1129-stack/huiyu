@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc258",
+  "revision": 1,
+  "sortOrder": 253,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the ancient shrine stone steps amid falling red maple leaves, Ayachi Nene in a red-and-white arrow-feather kimono top with deep purple hakama and black lace-up boots, silver hair tied with a huge red ribbon, trips on the hakama hem while carrying props and is caught steadily in the viewer's arms, blushing with teary eyes and an anxiously curling ahoge under warm maple-filtered sunlight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "中景正面仰视拉近特写",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc258",
+    "lighting": "穿透红枫树叶洒在脸颊上的温暖斑驳夕阳红晕与极高通透感",
+    "location": "神社后山漫天红枫的石阶中央",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, huge_red_hair_ribbon, red_and_white_arrow_feather_kimono_top, deep_purple_hakama, black_lace_up_boots, tripping_on_hakama_hem_while_carrying_props, falling_into_viewer's_arms, viewer_catching_her, ancient_shrine_stone_steps, red_maple_leaves, warm_maple_filtered_sunlight, teary_blush, heart_spiral_ahoge, medium_close_up, golden_hour, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 大正风袴裙古典反差】秋意浓郁、漫天红枫如火般飘落的学院古老神社后山石阶。为了参加民俗部的传统节日拍摄，宁宁换上了一整套极其优雅华丽的大正风格袴裙：上身是红白相间的正统箭羽纹和服，下身搭配深紫色的传统袴裙与一双秀气的黑色系带皮靴，银白色的长发用巨大的红色蝴蝶结发带优雅地束在脑后，显得格外的明艳端庄。然而由于袴裙摆过于繁复，她在抱着道具走下石阶时下摆不慎绊了一下，整个人惊呼着直接失去了平稳。你眼疾手快地跨上一步将她稳稳抱进怀里，宁宁在对视的瞬间瞬间面红耳赤，头顶那根心形呆毛在漫天飘落的红色枫叶中慌乱地打着卷，挂着眼泪当场语无伦次自曝——「呜啊！柊、柊史！为什么每次你都能接住人家啦！人家、人家绝对没有故意借助被裙子绊倒来让你抱住哦……呜，越解释越像在狡辩了，笨蛋快闭上眼睛不准看！」",
+    "storyJa": "【寧々】【寨々・華麗な大正ロマン袴と紅葉の自爆】秋の気配が深まり、満天の紅葉が火のように舞い散る学院の古き神社裏山の石段。民俗部の伝統行事撮影の手伝いのため、寨々は非常にエレガントで華麗な大正ロマン風の袴裙一式に身を包んでいた。上衣は紅白の正統な矢絣柄の着物、ボトムスには深紫色の伝統的な袴とスマートな黒のレースアップブーツを合わせ、銀髪のローツインテールを大きな赤いリボンのヘアバンドで背後に優雅に束ね、ひとき外あでやかで端正に見える。しかし、袴の裾が複雑すぎたせいで、小道具を抱えて石段を降りる途中に裾に足を取られてしまい、彼女は小さく悲鳴を上げてバランスを崩した。あなたが目端を利かせて一歩踏み出し、彼女をしっかりと胸の中に抱きとめると、寨々は視線が交わった瞬間に顔を真っ赤にし、頭のアホ毛が舞い散る赤い楓の中で慌てて完璧なハート型に丸まり、涙を浮かべて即座に自爆した――「うあぁ！柊、柊史！なぜ毎回私を受け止められるのよ？！私、私は決してわざとスカートに躓いたフリをしてあなたに抱きしめてもらったわけじゃ……うう、言い訳すればするほど言い逃れっぽくなる、バカ、目を閉じて見ちゃダメ！」",
+    "tags": [
+      "hair_ribbon",
+      "hakama",
+      "arrow_feather_kimono",
+      "leather_boots",
+      "autumn_steps",
+      "medium_shot",
+      "maple",
+      "caught_in_arms"
+    ],
+    "time": "白天",
+    "timeOfDay": "all_day",
+    "title": "秋枫石阶上的绯红大正羁绊",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "秋日晴朗"
+  }
+}

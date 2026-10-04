@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_royal_tea_party_cat_pounce",
+  "revision": 1,
+  "sortOrder": 1090,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_royal_tea_party_cat_pounce",
+    "title": "柴郡 · 皇家红茶会的猫扑撒娇",
+    "category": "皇家茶会",
+    "characterId": "cheshire_azur",
+    "outfitId": "royal_maid",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【柴郡 · 皇家红茶会的猫扑撒娇】盛开着白色蔷薇的皇家海军后花园遮阳伞下，三层甜点瓷盘摆满了刚出炉的草莓司康。柴郡戴着标志性的优雅的白色蕾丝女仆手套，整个人扑在铺着蕾丝桌布的圆桌边缘。黑色猫耳发箍欢快地扑棱着，翠绿色的大眼睛闪闪发亮，甜腻腻地向指挥官扑来——「亲爱的~！今天给柴郡准备了好多好多好吃的吗？快摸摸头，不然柴郡要抓你啦！」",
+    "location": "皇家海军玫瑰花园下午茶凉亭",
+    "action": "戴着蕾丝手套趴在茶桌上向前倾身扑抱，猫耳晃动，碧绿大眼满是撒娇笑意",
+    "timeOfDay": "午后",
+    "lighting": "透过藤蔓蔷薇花架洒落的斑驳柔金暖光",
+    "camera": "close-up cowboy shot, eye-level, intimate focal depth",
+    "mood": "甜美治愈",
+    "sceneTags": [
+      "tea_party",
+      "garden",
+      "roses",
+      "table",
+      "gloves",
+      "white_gloves",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "maid_dress",
+      "happy"
+    ],
+    "promptProse": "Leaning across a lavish tea table adorned with tiers of strawberry pastries in a Royal Navy rose garden, Cheshire pounces forward with her elegant white lace gloves. Golden sunlight filters through blossoming white trellises, highlighting her twitching cat ear headband and beaming turquoise gaze.",
+    "promptTokens": [
+      "rose_garden",
+      "tea_party",
+      "pastries",
+      "teacup",
+      "gloves",
+      "white_gloves",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "maid_dress",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

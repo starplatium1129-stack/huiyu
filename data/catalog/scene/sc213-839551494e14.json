@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc213",
+  "revision": 1,
+  "sortOrder": 208,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc213",
+    "title": "影音室巨幕晃动下的防线溃败",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 影音室高叉连帽衫过载】深夜彻底隔音的家庭影音室，巨幕亮光幽暗。原本嘴硬要陪你通关恐怖游戏的宁宁，此时被屏幕上的高能画面吓得防线彻底崩溃。她身上仅穿着一件宽大松垮的灰色高叉连帽卫衣，真空未着寸缕，白皙丰满的双腿因为恐惧剧烈颤抖。在又一次惊吓中，她尖叫着丢掉手柄，整个人彻底失控地扑进你怀里，瘫软地陷在沙发上紧紧抓着你不放，巨大的连帽衫衣领完全扯开，饱满的酥胸随着急促的哭腔剧烈起伏，头顶的呆毛早就瘫软成卷曲的爱心——「呜啊！柊、柊史！刚才那个怪物过去了没有？！呜呜……骗子，你故意选这个游戏对不对……人家、人家才没有借机投怀送抱呢！快抱紧我啦，笨蛋！」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "恋爱",
+    "season": "秋",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "grey_hoodie",
+      "high_cut",
+      "no_underwear",
+      "straddling",
+      "crying",
+      "game_controller",
+      "home_theater",
+      "full_body"
+    ],
+    "mature": true,
+    "location": "家庭影音室地毯中央",
+    "weather": "静谧深夜",
+    "camera": "近景仰视特写",
+    "lighting": "屏幕荧光弱光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, oversized_hoodie, grey_hoodie, no_underwear, bare_thighs, trembling, sitting_on_sofa, leaning_forward, reaching_towards_viewer, close-up, looking_at_viewer, open_mouth, crying_with_fear, teary_eyes, heavy_blush, heart_ahoge, dropped_game_controller, carpet, living_room, dark_room, screen_glow, cinematic_lighting, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, sitting, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "storyJa": "【寧々・ホームシアターの過負荷自爆】深夜、完全に遮音されたホームシアタールーム、巨大スクリーンの光だけが薄暗く揺れていた。強がって一緒にホラーゲームをクリアすると言っていた寧々は、今や画面上のショックシーンに防衛線が完全に崩壊していた。彼女は中には何も着ていない真空状態の、大きくてルーズなグレーのハイレグパーカー一枚だけを身に着けており、白く豊満な両脚が恐怖で激しく震えている。突然の恐怖に彼女は悲鳴を上げてコントローラーを放り出し、我を忘れてあなたの胸に飛び込み、大腿の上に跨ってきつくしがみついた。パーカーの襟元が大きくはだけ、豊かな胸元が荒い呼吸と共に激しく上下し、頭の上のアホ毛は極度の恥ずかしさと恐怖でハート型に丸まっていた――「うあぁ！柊、柊史！今の怪物、もう通り過ぎた？！うう……嘘つき、わざとこのゲームを選んだんでしょ……わ、私、別にどさくさに紛れて抱きついたわけじゃないんだからね！早くきつく抱きしめてよ、バカ！」",
+    "rating": "R18",
+    "animaCaption": "In the soundproofed home theater, the horror game has shattered Nene's composure — she screams, drops the controller, and lunges toward the camera on the sofa with her loose grey hoodie open at the collar, trembling and crying with an ahoge curled into a heart under the flickering screen glow.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

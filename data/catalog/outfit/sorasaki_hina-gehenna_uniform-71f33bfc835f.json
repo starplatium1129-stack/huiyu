@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/gehenna_uniform",
+  "revision": 1,
+  "sortOrder": 486,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "default": true,
+      "id": "gehenna_uniform",
+      "isDefault": true,
+      "name": "风纪委员制服",
+      "prose": "Gehenna Academy Disciplinary Committee military uniform with an oversized black trench coat with gold epaulettes draped over shoulders like a cape, white collared shirt, black necktie, black vest, red disciplinary armband, black pleated skirt, over-knee socks and lace-up boots",
+      "tokens": [
+        "military_uniform",
+        "black_uniform",
+        "black_coat",
+        "coat_on_shoulders",
+        "epaulettes",
+        "white_shirt",
+        "black_necktie",
+        "black_vest",
+        "armband",
+        "red_armband",
+        "black_skirt",
+        "pleated_skirt",
+        "thighhighs",
+        "over-knee_socks",
+        "boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/sfw_library_cardigan",
+  "revision": 1,
+  "sortOrder": 829,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "sfw_library_cardigan",
+      "name": "浅绿开衫图书馆便装",
+      "prose": "a pale-green cardigan over an ivory high-collared blouse, a charcoal calf-length skirt and flat brown shoes",
+      "tokens": [
+        "green_cardigan",
+        "ivory_blouse",
+        "high_collar",
+        "long_skirt",
+        "flat_shoes"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

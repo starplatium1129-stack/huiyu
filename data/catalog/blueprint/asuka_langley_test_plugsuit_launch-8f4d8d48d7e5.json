@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "asuka_langley_test_plugsuit_launch",
+  "revision": 1,
+  "sortOrder": 1027,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手微护胸口满脸通红，倔强瞪视镜头",
+    "camera": "medium shot, eye level",
+    "category": "科幻机甲",
+    "characterId": "asuka_langley",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【惣流·明日香 · 三号机测试服的羞赧】松代基地高精度的无尘整备室内，荧光检测仪在四壁投下科技蓝光。明日香换上了半透明材质的橙白测试用战斗服，双手羞涩地交叉护在胸前，脸颊飞起大片羞红，却依然倔强地昂着头——「这、这种羞死人的透明衣服到底是谁设计的啊！可恶……为了启动三号机，我才不会轻易认输呢！」",
+    "id": "asuka_langley_test_plugsuit_launch",
+    "lighting": "实验室内高亮度白色与琥珀色工业泛光灯",
+    "location": "松代第三试验场准备室",
+    "mood": "羞愤逞强",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "test_plugsuit_translucent",
+    "promptProse": "Standing embarrassed in the laboratory testing chamber in her translucent test plugsuit, Asuka covers her chest with a furious, adorable blush. Glowing diagnostic monitors cast warm amber highlights across her flushed silhouette.",
+    "promptTokens": [
+      "laboratory",
+      "testing_chamber",
+      "arms_crossed_over_chest",
+      "angry_blush",
+      "pout",
+      "glowing_monitors",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "laboratory",
+      "testing_chamber",
+      "diagnostic_monitors",
+      "orange_theme",
+      "arms_crossed_over_chest",
+      "blushing",
+      "angry_blush",
+      "pout",
+      "glowing_panels"
+    ],
+    "timeOfDay": "白天",
+    "title": "惣流·明日香 · 三号机测试服的羞赧"
+  }
+}

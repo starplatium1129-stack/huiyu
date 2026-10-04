@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "momo_velia_deviluke/harem_negligee",
+  "revision": 1,
+  "sortOrder": 676,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "momo_velia_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "harem_negligee",
+      "isDefault": false,
+      "name": "乐园计划透视薄纱蕾丝睡裙",
+      "prose": "an alluring and seductive private negligee: translucent lavender-violet sheer silk baby-doll nightgown with intricate white floral lace trim along the low-cut bust, spaghetti straps slipping slightly, bare shoulders, panties visible underneath, and spade tail coiling sensually",
+      "tokens": [
+        "negligee",
+        "nightgown",
+        "purple_dress",
+        "sheer_clothing",
+        "translucent_fabric",
+        "see-through",
+        "lace_trim",
+        "cleavage",
+        "bare_shoulders",
+        "demon_tail"
+      ]
+    }
+  }
+}

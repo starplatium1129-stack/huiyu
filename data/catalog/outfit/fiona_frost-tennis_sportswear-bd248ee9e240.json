@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "fiona_frost/tennis_sportswear",
+  "revision": 1,
+  "sortOrder": 467,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fiona_frost",
+    "outfit": {
+      "id": "tennis_sportswear",
+      "name": "地下网球赛潜入运动装",
+      "tokens": [
+        "sleeveless_shirt",
+        "tennis_uniform",
+        "pleated_skirt",
+        "wristbands",
+        "tennis_racket",
+        "athletic"
+      ],
+      "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands, holding her tournament racket during the underground Campbelldon match",
+      "styleHint": "dynamic high-speed tennis court drama",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

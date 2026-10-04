@@ -1,0 +1,166 @@
+{
+  "kind": "character",
+  "id": "cheshire_azur",
+  "revision": 1,
+  "sortOrder": 79,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_azur",
+    "profile": {
+      "id": "cheshire_azur",
+      "name": "柴郡",
+      "alias": [
+        "Cheshire",
+        "猫猫头",
+        "皇家柴郡",
+        "猫爪重巡"
+      ],
+      "type": "popular",
+      "icon": "🐾",
+      "portrait": {
+        "image": "../assets/characters/popular-cheshire_azur.png?v=5",
+        "alt": "柴郡 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "蓝灰长发 · 湖青挑染 · 及腰双马尾",
+        "hair_color": "蓝灰色带青色挑染",
+        "eyes": "澄澈灵动宝石绿水眸",
+        "hairstyle": "微卷长双马尾 · 黑色猫耳发饰发箍 · 荷叶边女仆发带",
+        "uniform": "皇家黑白典雅荷叶边女仆装 / 冰雪仙子丝绸高叉旗袍",
+        "expression": "元气撒娇 · 灿烂如阳 · 娇俏黏人",
+        "style": "cheerful royal cat-headband maid",
+        "signature": "蓝灰长双马尾青挑染、黑色猫耳发箍、宝石绿大眼与黑白女仆裙"
+      },
+      "personality": [
+        "超级自来熟与黏人",
+        "对指挥官一见钟情喊“亲爱的”",
+        "极度喜欢佩戴猫耳发饰却坚称自己不是猫",
+        "性格像贪玩娇俏的小猫一样活泼",
+        "战斗中重巡防空对海火力极其强悍"
+      ],
+      "likes": [
+        "整天黏在指挥官身边飞扑求抱抱",
+        "收集各种可爱的猫耳发箍发饰",
+        "皇家后花园的惬意红茶时光",
+        "被指挥官温柔摸头"
+      ],
+      "classic_cg": {
+        "title": "皇家茶会的飞扑拥抱",
+        "description": "玫瑰花园茶桌前，柴郡晃动着蓝灰双马尾与猫耳发箍，张开双臂元气满满地向指挥官飞扑撒娇。"
+      },
+      "identity": {
+        "role": "皇家海军最高方案科研重巡洋舰",
+        "age": "少女",
+        "occupation": "重巡洋舰舰船 / 皇家女仆团荣誉成员",
+        "faction": "碧蓝航线 · 皇家海军"
+      },
+      "tags": [
+        "猫耳发饰",
+        "猫耳发箍",
+        "蓝灰长发",
+        "青色挑染",
+        "双马尾",
+        "女仆装",
+        "绿瞳",
+        "皇家重巡"
+      ],
+      "bg_story": "柴郡是《碧蓝航线》中皇家阵营的最高方案重巡洋舰。她留着一头极具辨识度的蓝灰色长双马尾并带有青色挑染，头上常年佩戴着可爱的黑色猫耳发饰。她特别喜欢猫咪，却在台词里一本正经地声明“柴郡才不是猫呢”，平时对指挥官一见钟情、亲昵地唤作“亲爱的”，娇俏黏人的外表下却隐藏着皇家海军顶级的对海防空战力。",
+      "palette": [
+        "冰魄蓝",
+        "宝石绿",
+        "奶油白"
+      ],
+      "weather": [
+        "晴空温阳",
+        "午后花园",
+        "微风拂面"
+      ],
+      "speech": "亲爱的亲爱的~！柴郡今天也超级超级想你哦！快给柴郡摸摸头嘛~柴郡才不是猫呢，但柴郡最喜欢你啦！",
+      "source": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "cheshire (azur lane)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "blue_hair",
+        "streaked_hair",
+        "twintails",
+        "cat_ear_headband",
+        "fake_animal_ears",
+        "green_eyes",
+        "large_breasts",
+        "azur_lane"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0a1322"
+    },
+    "popular": {
+      "id": "cheshire_azur",
+      "displayName": "柴郡",
+      "originalName": "Cheshire",
+      "franchise": "Azur Lane",
+      "aliases": [
+        "cheshire_azur",
+        "cheshire",
+        "cheshire (azur lane)",
+        "柴郡",
+        "猫猫头",
+        "皇家重巡",
+        "royal navy"
+      ],
+      "identityProse": "Cheshire from Azur Lane, Royal Navy priority heavy cruiser with long flowing bluish-grey hair with subtle cyan streaks in twintails, an iconic black cat-ear headband, vivid jewel-green eyes, a lush curvy figure, and a joyful energetic smile.",
+      "identityTokens": [
+        "cheshire (azur lane)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "blue_hair",
+        "two-tone_hair",
+        "streaked_hair",
+        "long_hair",
+        "twintails",
+        "cat_ear_headband",
+        "fake_animal_ears",
+        "hair_ornament",
+        "green_eyes",
+        "large_breasts",
+        "azur_lane"
+      ],
+      "exactTokens": [
+        "cheshire (azur lane)"
+      ],
+      "exactPrefixes": [
+        "cheshire_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "碧蓝航线（Azur Lane）· 皇家海军",
+        "era": "架空近现代舰船拟人世界",
+        "formNotes": "皇家最高方案重巡洋舰；留着蓝灰色挑染青色超长双马尾，极度喜欢佩戴猫耳发饰，虽总声明“柴郡才不是猫”，但一见钟情般黏着指挥官喊“亲爱的”，有着令人闻风丧胆的重巡防空对海火力",
+        "research": "2026-09-02 调研（BWIKI 柴郡官方图鉴：蓝灰青挑染长发、猫耳发饰、宝石绿眼）"
+      },
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "curatedArtistStyles": [
+        "yunsang",
+        "mika_pikazo",
+        "kappe"
+      ]
+    }
+  }
+}

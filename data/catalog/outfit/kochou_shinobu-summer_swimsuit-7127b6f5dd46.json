@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 803,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "蝶屋敷紫蝶比基尼",
+      "prose": "a purple-and-white butterfly-print string bikini, her wavy gradient hair pinned up with the butterfly ornament, a gauzy violet sarong at her hip, and sun lotion glistening on her petite frame",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "string_bikini",
+        "purple_bikini",
+        "butterfly_print",
+        "sarong",
+        "petite",
+        "bare_shoulders",
+        "wet_skin"
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc289",
+  "revision": 1,
+  "sortOrder": 284,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the deep shadow of the old warehouse behind the shrine after the last fireworks scatter, Shiki Natsume in a dark navy yukata steps close to you until her obi falls open at the tug of your hand; she closes her eyes, lashes trembling in the faint afterglow, her flushed collarbone and the mole beside it glowing softly as she whispers that tonight they need not hurry home.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "暗处近景平视",
+    "category": "祭典・节日",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "克制到溃散的依恋",
+    "id": "sc289",
+    "lighting": "远处花火余烬与微弱月光",
+    "location": "神社主殿后的古老仓库阴影",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, yukata, dark_blue_floral_yukata, loose_yukata, bare_shoulders, collarbone, bare_legs, geta, standing_in_shadow_of_shrine_warehouse_after_fireworks, eyes_closed_with_trembling_lashes, stepping_close_toward_viewer, quiet_breath, moonlight_filtering_through_trees, summer_night, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "夏",
+    "story": "【成年 After Story · 夏目 · 花火散尽的秘密余温】夏日祭典的最后一发巨大花火在空中散尽，人群的欢呼声渐渐变为离去的脚步声。夏目穿着深色浴衣，拉着你的袖子逆着人潮拐进神社主殿后方的古老仓库阴影里。远离灯笼的光线，只有远处零星的花火余烬映在她金色的瞳孔里。她松开你的袖子，却没有后退，反而往前迈了半步。浴衣的襟口在奔跑中微微敞开，露出了锁骨和泪痣旁泛红的肌肤。她抬眼望着你，呼吸有些乱，却还是努力维持着平静的语调——「人太多了……在这里等他们走完再回去。」然而她没有再说话，只是静静地靠近你，直到浴衣的腰带被你轻轻一拉便散开。她闭上眼，睫毛在花火余烬的微光中颤动——「只是今晚……可以不必马上回家。」",
+    "storyJa": "【夏目・大人のAfter Story・花火が終わった後の秘密の余韻】夏祭りの最後の巨大な花火が夜空に散り、人々の歓声が次第に遠ざかっていった。夏目は濃い色の浴衣を着て、あなたの袖を引いて人混みを逆流し、神社の本殿裏手にある古い倉庫の影の中へと入っていった。提灯の明かりは届かず、遠くの花火の残り火だけが彼女の金色の瞳に映っていた。彼女はあなたの袖を離したが、後退せず、むしろ半歩前に出た。走るうちに浴衣の襟が少し緩み、鎖骨と泣きぼくろの周りの赤くなった肌がのぞいていた。彼女はあなたを見上げ、息が少し乱れていたが、それでも平静を装った声で言った——「人が多すぎる……ここで彼らが帰り終わるまで待とう。」しかし彼女はそれ以上何も言わず、ただ静かにあなたに近づき、あなたが帯をそっと引くと浴衣がはだけた。彼女は目を閉じ、まつげが花火の残り火の中で震えていた——「今夜だけは……すぐに家に帰らなくてもいい。」",
+    "tags": [
+      "mole_under_eye",
+      "yukata",
+      "obi_loosened",
+      "yukata_falling_open",
+      "bare_legs",
+      "white_tabi",
+      "geta",
+      "warehouse_shadow",
+      "fireworks",
+      "eyes_closed",
+      "night",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "花火散尽的秘密余温",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "晴朗夏夜"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/casual_home_shirt",
+  "revision": 1,
+  "sortOrder": 214,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "casual_home_shirt",
+      "name": "单身公寓大号男式衬衫",
+      "prose": "her off-duty apartment lounge attire: an oversized white button-down shirt slipping down both her smooth shoulders, unbuttoned low to reveal her deep cleavage, no pants, and bare legs",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "open_shirt",
+        "bare_shoulders",
+        "cleavage",
+        "bottomless",
+        "no_pants",
+        "bare_legs",
+        "casual_wear"
+      ]
+    }
+  }
+}

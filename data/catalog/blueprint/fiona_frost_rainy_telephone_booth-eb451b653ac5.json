@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "fiona_frost_rainy_telephone_booth",
+  "revision": 1,
+  "sortOrder": 818,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost_rainy_telephone_booth",
+    "characterId": "fiona_frost",
+    "title": "菲奥娜 · 雨夜公用电话亭暗号接头",
+    "description": "【菲奥娜 · 雨夜公用电话亭暗号接头】冷雨绵绵的柏林特深夜街头，深蓝双排扣大衣下包裹着挺拔冷艳的身姿。菲奥娜一手收拢黑伞靠在玻璃门侧，一手握住泛着微温的黑色听筒。电话亭顶灯昏黄的暖光穿透雨水滑落的玻璃壁，描摹出她冷若冰霜的侧颜与被右侧长刘海遮住半边的脸。在毫无波澜的语调下，西国代号「夜帷」的密文准确无误地传出。",
+    "outfitId": "wise_agent_trench",
+    "category": "间谍日常",
+    "location": "雨夜柏林特街头电话亭",
+    "action": "一手将收拢黑伞靠在玻璃门侧，一手握黑色听筒汇报密电。",
+    "timeOfDay": "深夜",
+    "lighting": "电话亭昏黄暖光与湿漉雨夜反光",
+    "camera": "cowboy shot",
+    "mood": "冷峻机警",
+    "sceneTags": [
+      "telephone_booth",
+      "rainy_night",
+      "pea_coat",
+      "black_umbrella",
+      "city_street",
+      "dim_lighting",
+      "expressionless",
+      "wet_glass"
+    ],
+    "promptProse": "Inside a glowing glass telephone booth on a rain-slicked Berlint boulevard at night, Fiona Frost holds a black telephone receiver to her ear while her other hand steadies a closed black umbrella against the glass door. Her dark-blue WISE pea coat and purple turtleneck remain buttoned against the cold. Yellow booth lamplight outlines her blunt white bob and long right-side fringe as she calmly reports a coded message, watching the empty street through rain-streaked glass. Wet cobblestone reflections and heavy establish the nocturnal espionage setting.",
+    "promptTokens": [
+      "telephone_booth",
+      "rainy_night",
+      "wet_pavement",
+      "lamp_glow",
+      "glass_reflection",
+      "water_droplets",
+      "cowboy_shot",
+      "night",
+      "lamp",
+      "holding_telephone_receiver",
+      "telephone_receiver",
+      "closed_umbrella"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
+  }
+}

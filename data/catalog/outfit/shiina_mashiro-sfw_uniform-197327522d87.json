@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/sfw_uniform",
+  "revision": 1,
+  "sortOrder": 851,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "sfw_uniform",
+      "name": "水明艺大附高校服",
+      "prose": "a white school blouse with a red ribbon, navy school blazer and knee-length pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "white_shirt",
+        "red_ribbon",
+        "blazer",
+        "pleated_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

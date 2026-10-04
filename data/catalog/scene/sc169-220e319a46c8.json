@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc169",
+  "revision": 1,
+  "sortOrder": 166,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the cold floor of the underground safehouse still smelling of gunpowder, Shiki Natsume's black agent bodysuit is ripped open from the collar down to her abdomen exposing her cleavage and stomach; she straddles the viewer drenched in sweat, both hands clutching his neck as she drags him into a deep kiss while panting roughly, the tear mole gleaming with near-crazed possessiveness.",
+    "auditRevision": "careful-batch12-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc169",
+    "lighting": "动态强烈暗影",
+    "location": "地下安全屋地板",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bodysuit, unzipped, cleavage, straddling, dimly_lit, kiss, blush, sweat, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, rim_light, warm_lighting, detailed_background, cinematic_lighting",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 特工服战损跨坐】刚刚结束激烈遭遇战的地下安全屋，空气中弥漫着硝烟与荷尔蒙的微热。夏目那一身漆黑的特工连体衣从领口被一路拉开、撕裂到了腹部，露出了里面让人血脉偾张的饱满线条。她跨坐在地板上的你身上，大汗淋漓，黑色发丝凌乱地贴在潮红的脸颊上。眼角的泪痣因为极度亢奋和动情而闪烁着近乎疯狂的独占欲。她纤细的双手死死掐住你的脖子将你带入深吻，一边急促喘息一边在你耳边呢喃——「长官...任务成功了...现在...我要收回属于我的全部战利品...」",
+    "storyJa": "【夏目・またがって座るエージェントスーツのバトルダメージ】熾烈な対決が終わったばかりの地下セーフハウスは、空気が煙とホルモンの熱で満たされていた。夏目の真っ黒なエージェントジャンプスーツは、襟から腹部まで引き裂かれ、内側の完全なラインが明らかになり、人々の血を騒がせました。彼女は床の上であなたにまたがり、汗が滴り落ち、黒髪が乱れて紅潮した頬に張り付いていました。彼女の目の隅にある泣きぼくろは、極度の興奮と感情のため、ほとんど狂ったような独占欲で輝いていました。彼女の細い手はあなたの首をしっかりと掴み、深いキスをし、耳元でささやきながら息を早くします。――「店長……任務は成功。ここからは、私が大切なものを全部取り戻す番。」",
+    "tags": [
+      "mole_under_eye",
+      "tactical_bodysuit",
+      "torn_bodysuit",
+      "ripped_clothes",
+      "straddling",
+      "riding",
+      "hands_on_neck",
+      "deep_kiss",
+      "kissing",
+      "sweat",
+      "cold_floor",
+      "safehouse",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "战损沦陷：特工紧身衣的撕裂支配",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "炙热"
+  }
+}

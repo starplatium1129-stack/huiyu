@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_winter_streets_novelist",
+  "revision": 1,
+  "sortOrder": 1434,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_winter_streets_novelist",
+    "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
+    "category": "街头约会",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【冬夜街头·完稿庆祝】截稿日的深夜，诗羽难得心情大好，黑呢大衣配酒红围巾地陪你走过冬夜的街。路灯下她忽然伸出手，指尖冻得微红却语气如常——「手冷的话……借你一次也没关系。啊，别误会，这是作家调研——把心动写进书里的、宝贵的取材素材。」",
+    "location": "冬夜商业街路灯下",
+    "action": "大衣围巾伸手牵手，指尖微红语气如常",
+    "timeOfDay": "冬夜",
+    "lighting": "路灯暖黄与雪夜冷蓝",
+    "camera": "medium two-shot, winter street, hand reach, warm-cold contrast",
+    "mood": "毒舌温柔、取材借口",
+    "sceneTags": [
+      "winter",
+      "night",
+      "coat",
+      "scarf",
+      "holding_hands",
+      "street_lamp",
+      "smile",
+      "date"
+    ],
+    "promptProse": "Kasumigaoka Utaha walks the winter streets in celebration of a met deadline, black wool coat and wine-red scarf wrapped against the cold. Under a streetlamp she suddenly extends her hand, fingertips chilled pink, offering to lend it to you exactly once — purely, she insists, as writer's research for writing heart-flutter into her next book. Warm lamp glow against blue snow-night in a medium two-shot, cinematic lighting, detailed street background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "coat",
+      "black_coat",
+      "scarf",
+      "red_scarf",
+      "winter_clothes",
+      "standing",
+      "reaching",
+      "hand_out",
+      "smirk",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "street",
+      "night",
+      "winter",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_black_wool_coat",
+    "coverageTags": [
+      "daily",
+      "date",
+      "girlfriend"
+    ]
+  }
+}

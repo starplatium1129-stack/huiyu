@@ -1,0 +1,46 @@
+{
+  "kind": "scene",
+  "id": "sc203",
+  "revision": 1,
+  "sortOrder": 198,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc203",
+    "title": "夏夜花火的滑落余温",
+    "category": "日常/同人/After_Story",
+    "story": "【成年 After Story · 宁宁 · 花火散场后的浴衣余温】夏日祭典散场后，古风旅馆终于安静下来。榻榻米上，宁宁的浴衣腰带已经松开，宽大的衣襟滑落至肩侧，露出被夜风吹得微微泛红的肩颈。她慌忙揪住袖口挡住脸，头顶的呆毛却早已害羞地卷成了心形。远处最后一声花火闷响传来，她小声抱怨着向你靠近——「都怪你一路闹个不停……现在不许笑，快点帮宁宁整理好啦。」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "极度羞耻防线崩溃",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "yukata",
+      "bare_legs",
+      "white_tabi",
+      "tatami",
+      "full_body"
+    ],
+    "mature": false,
+    "location": "旅馆传统榻榻米",
+    "weather": "夏夜晴朗",
+    "camera": "平视俯瞰近景",
+    "lighting": "日式灯笼朦胧暖光",
+    "usage": [
+      "新手推荐",
+      "R15"
+    ],
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, bare_legs, sitting, white, tabi, socks, blush, shy_smile, collarbone, slender_waist, full_body, warm_lighting, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "storyJa": "【寧々・大人のアフターストーリー・・・花火のあとの浴衣の余韻】夏祭りが終わり、古風な旅館もようやく静かになった。畳の上では寧々の浴衣の帯が緩み、幅広のスカートが肩まで滑り落ち、夜風で少し赤くなった肩と首が露わになっていた。慌てて袖を掴んで顔を覆ったが、頭のアホ毛はすでに恥ずかしそうにハート型に丸まっていた。花火の最後のくぐもった音が遠くから聞こえ、彼女は静かに文句を言い、あなたに近づきました。――「もう、道中ずっとふざけるから……笑ってないで、早く寧々の服を整えるのを手伝ってください。」",
+    "rating": "R15",
+    "animaCaption": "Sitting on tatami in a traditional ryokan room in a light pink yukata with floral pattern, Ayachi Nene holds her collar with a shy flustered blush, slender bare calves with white tabi socks, warm tatami lantern light.",
+    "auditRevision": "careful-batch05-2026-08-27"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "kuonji_alice",
+  "revision": 1,
+  "sortOrder": 139,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kuonji_alice",
+    "profile": {
+      "id": "kuonji_alice",
+      "name": "久远寺有珠",
+      "alias": [
+        "久远寺有珠",
+        "Alice Kuonji"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-kuonji_alice.png?v=badc3f5ca62e",
+        "alt": "久远寺有珠 · 洋馆客厅的炉火场景样张"
+      },
+      "visual_dna": {
+        "signature": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+        "hair": "black_hair, short_hair, hair_intakes",
+        "eyes": "black_eyes",
+        "uniform": "洋馆黑色长袖洋装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "寡言而自持，习惯以精确动作维持生活秩序",
+        "重视自己的空间与习惯，不轻易让人靠近",
+        "细微的停顿与目光变化比夸张表情更能传达心意"
+      ],
+      "likes": [
+        "旧书",
+        "按自己的节奏喝茶",
+        "洋馆中安静的夜晚"
+      ],
+      "classic_cg": {
+        "title": "久远寺有珠 · 洋馆客厅的炉火",
+        "description": "久远寺宅的客厅，她坐在高背扶手椅上读一本旧书，壁炉的火光在黑色洋装上跳动；红茶的热气与古董家具之间，她是这座屋子唯一的主人。"
+      },
+      "identity": "Witch on the Holy Night · 久远寺有珠",
+      "tags": [
+        "久远寺有珠",
+        "魔法使之夜",
+        "日常"
+      ],
+      "bg_story": "独居洋馆、延续古老魔女传统的少女。短黑发、沉静眼神和端正姿态是核心；童话书、红茶与工作间里的细致手艺承载她的日常。",
+      "palette": [
+        "#9aa9ba",
+        "#282532"
+      ],
+      "source": "Witch on the Holy Night",
+      "speech": "茶已经泡好，请不要让它凉掉。",
+      "traits": [
+        "kuonji_alice",
+        "mahou_tsukai_no_yoru",
+        "black_hair",
+        "short_hair",
+        "hair_intakes"
+      ],
+      "accent_color": "#9aa9ba",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "kuonji_alice",
+      "displayName": "久远寺有珠",
+      "originalName": "Alice Kuonji",
+      "franchise": "Witch on the Holy Night",
+      "aliases": [
+        "久远寺有珠",
+        "Alice Kuonji"
+      ],
+      "identityProse": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+      "identityTokens": [
+        "kuonji_alice",
+        "mahou_tsukai_no_yoru",
+        "black_hair",
+        "short_hair",
+        "hair_intakes",
+        "black_eyes"
+      ],
+      "exactTokens": [
+        "kuonji_alice"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kuonji_alice"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

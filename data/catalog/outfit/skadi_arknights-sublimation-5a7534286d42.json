@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/sublimation",
+  "revision": 1,
+  "sortOrder": 350,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "default": false,
+      "id": "sublimation",
+      "isDefault": false,
+      "name": "升华（神官礼服）",
+      "prose": "a pure white backless divine priestess gown with gold hollow ornaments and a sacred ritual staff",
+      "tokens": [
+        "white_dress",
+        "gown",
+        "gold_trim",
+        "backless",
+        "staff"
+      ]
+    }
+  }
+}

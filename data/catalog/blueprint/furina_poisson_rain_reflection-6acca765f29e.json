@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "furina_poisson_rain_reflection",
+  "revision": 1,
+  "sortOrder": 11,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "furina_poisson_rain_reflection",
+    "title": "芙宁娜 · 雨幕中的落寞独白",
+    "category": "剧情高潮",
+    "characterId": "furina",
+    "description": "细雨落在枫丹廷露台的石雕栏杆上，远处街灯隔着雨幕泛出微弱暖光。芙宁娜身着蓝色礼服，轻靠栏杆，伸出的掌心里积着几滴雨水。她低头看着水面的小小涟漪，另一手扶住湿冷的石面，平日夸张的笑容暂时收起，只剩安静而疲惫的神情。",
+    "location": "枫丹廷雨中幽深露台",
+    "action": "倚靠枫丹廷露台栏杆，一手接雨滴，一手扶石面，低头凝视掌心。",
+    "timeOfDay": "evening",
+    "lighting": "cool diffuse rain light with distant warm street lamps",
+    "camera": "medium shot, eye level",
+    "mood": "凄美忧郁",
+    "sceneTags": [
+      "fontaine_terrace",
+      "stone_balustrade",
+      "leaning_on_railing",
+      "open_palm",
+      "raindrops_in_hand",
+      "hand_on_stone",
+      "looking_down",
+      "tired_expression",
+      "rain",
+      "distant_streetlights",
+      "medium_shot"
+    ],
+    "promptProse": "On a terrace in the Court of Fontaine, Furina leans against the wet carved balustrade and watches a few raindrops gather in her open palm. Her other hand rests on the stone, steadying her quiet posture in the blue formal coat and small top hat. The public smile has faded into tired, private reflection. Cool rain light softens the terrace while a few warm street lamps blur in the distance. Keep the palm, lowered eyes and stone rail together in a medium portrait.",
+    "promptTokens": [
+      "1girl",
+      "fontaine_terrace",
+      "stone_balustrade",
+      "leaning_on_railing",
+      "open_palm",
+      "raindrops_in_hand",
+      "hand_on_stone",
+      "looking_down",
+      "tired_expression",
+      "rain",
+      "distant_streetlights",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "extra_fingers",
+      "extra_limbs",
+      "text",
+      "watermark",
+      "duplicate",
+      "2girls",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_archon",
+    "coverageTags": [
+      "story_climax"
+    ]
+  }
+}

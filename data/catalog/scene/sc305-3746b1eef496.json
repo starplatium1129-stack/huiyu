@@ -1,0 +1,62 @@
+{
+  "kind": "scene",
+  "id": "sc305",
+  "revision": 1,
+  "sortOrder": 300,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc305",
+    "title": "闭店后的专属交付",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 夏目 · 闭店后的专属交付】咖啡馆打烊后的深处，暖木色的地板上只留下两人的温度。夏目仰躺着，女仆外衣被完全解开，黄色文胸拉下紧贴在双乳下方，褪至单腿的内裤与黑色腿环在暖光中格外分明。她脸颊泛红、微微张着唇，琥珀色眼眸带着无处可逃的信任直直望向你——「全部都照你喜欢的做了……既然把夏目弄成这个样子，就给我负责到底。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v18_wd14",
+    "emotion": "羞涩而彻底的交付",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "adult",
+      "natsume",
+      "solo",
+      "maid",
+      "lying_on_back",
+      "yellow_bra",
+      "yellow_panties",
+      "from_above"
+    ],
+    "rating": "R18",
+    "mature": true,
+    "location": "打烊后的咖啡馆暖木地板",
+    "weather": "室内暖光",
+    "camera": "电影级16:9对角线俯视构图",
+    "lighting": "暖金色漫射光与柔和暗影",
+    "usage": [
+      "官方CG灵感",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "natsume_r18, natsume_maid_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, high_angle, diagonal_composition, head_in_upper_right, legs_to_lower_left, 1girl, solo_focus, pov, adult_shiki_natsume, shiki_natsume, black_hair, very_long_hair_spread_on_warm_wooden_floor, two_red_hairclips, golden_yellow_eyes, mole_under_eye, blushing_cheeks, open_mouth, heavy_blush, open_dark_gray_maid_dress, yellow_bra_pulled_down_under_breasts, breasts_out, bare_breasts, nipples, collarbone, navel, yellow_panties_around_one_leg, panties_around_one_knee, black_thigh_strap, garter_strap, thighs_spread, knees_raised, lying_on_back, on_back, warm_brown_wooden_floor, warm_amber_lighting, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, 2boys, multiple girls, couple, extra person, multiple persons, fully dressed, closed dress, blue bed, dark blue bedding, night, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【大人のAfter Story・夏目・閉店後の専属の受け渡し】カフェの営業が終わった奥の部屋、温かな木目の床の上に二人の体温だけが残っていた。夏目は仰向けに横たわり、メイド服の前を完全に開き、黄色いブラジャーを胸の下まで引き下げて豊満な胸をさらけ出している。片方の脚に引っかかったショーツと黒のガーターストラップが暖かな光に照らし出されていた。彼女は頬を紅潮させ、かすかに唇を開き、琥珀色の瞳でまっすぐにあなたを見つめる。「あなたの言う通りにしたよ……夏目をこんな姿にしたんだから、最後まで責任を取って。」",
+    "audit": {
+      "reviewer": "user-selection-and-direct-vision",
+      "seed": 20260827,
+      "model": "anima-base-v1.0",
+      "lora": "L_NATSUME_V21_ANIMA",
+      "loraStrength": 0.85,
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V20_Anima_Scientific_Unified\\train\\036_natsume_v17_0066.png",
+      "image": "E:\\code\\2\\lora\\AI\\SceneShowcase\\2026-08-18_v24\\images\\sc305.jpg",
+      "result": "pass"
+    },
+    "animaCaption": "In a cinematic high-angle view looking down at a diagonal, Shiki Natsume lies on her back across a warm wooden surface with her head in the upper right, her dark maid dress pulled open with her yellow bra pulled down under her bare breasts, her yellow panties slipped down around one knee, looking up toward the viewer with blushing cheeks, under bright warm indoor lighting.",
+    "auditRevision": "careful-batch15-2026-08-27"
+  }
+}

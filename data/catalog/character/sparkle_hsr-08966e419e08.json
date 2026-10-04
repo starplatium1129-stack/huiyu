@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "sparkle_hsr",
+  "revision": 1,
+  "sortOrder": 100,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_hsr",
+    "profile": {
+      "id": "sparkle_hsr",
+      "name": "花火",
+      "alias": [
+        "Sparkle",
+        "花火",
+        "假面愚者花火",
+        "千面戏子"
+      ],
+      "type": "popular",
+      "icon": "🎭",
+      "portrait": {
+        "image": "../assets/characters/popular-sparkle_hsr.png?v=1",
+        "alt": "花火 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "乌黑如墨双马尾 · 鲜红发带",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "璀璨绯红眼眸 · 樱花花瓣瞳光",
+        "hairstyle": "高低不称双马尾 · 斜戴狐狸面具",
+        "uniform": "红黑金和风短裙洛丽塔 / 匹诺康尼街头卫衣",
+        "expression": "戏谑坏笑 · 狡黠挑衅 · 被反制时面红耳赤",
+        "style": "theatrical masked fool girl with kitsune charm",
+        "signature": "红黑和风短裙、狐狸面具、黑发双马尾与赤红眼眸"
+      },
+      "personality": [
+        "愉悦犯与小恶魔乐子人",
+        "以假面游戏人间",
+        "攻防反转后的嘴硬羞恼",
+        "卸下面具后的真诚依恋"
+      ],
+      "likes": [
+        "策划颠覆狂欢的恶作剧",
+        "收集各式面具",
+        "和喜欢的人在天台吹风喝汽水"
+      ],
+      "classic_cg": {
+        "title": "梦境千面的狂欢序幕",
+        "description": "在匹诺康尼黄金时刻的钟表广场夜空，勾起狐狸面具露出戏谑坏笑的千面戏子。"
+      },
+      "identity": "崩坏：星穹铁道高人气角色 · 假面愚者成员 · 欢愉令使门徒",
+      "tags": [
+        "崩坏星穹铁道",
+        "假面愚者",
+        "和风洛丽塔",
+        "双马尾",
+        "狐狸面具",
+        "雌小鬼反差"
+      ],
+      "bg_story": "难以捉摸、视世间一切为狂欢舞台的假面愚者。拥有千变万化的化身与无尽的面具，擅长将所有人玩弄于鼓掌之间。看似疯狂而混乱，实则内心有着独属于她自己的浪漫法则，一旦被真正看穿了脆弱防线，就会变成满脸涨红、手足无措的傲娇小少女。",
+      "palette": [
+        "#f43f5e",
+        "#881337",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "梦境繁华 / 霓虹深夜",
+      "speech": "「喂……谁准你随便碰本小姐的面具了？！快还给我啦……不准盯着我的脸看，笨蛋！」",
+      "source": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "traits": [
+        "masked_fool",
+        "black_twintails",
+        "red_eyes",
+        "kitsune_mask",
+        "smirk"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#881337",
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "fox_mask",
+          "kitsune_mask"
+        ]
+      }
+    },
+    "popular": {
+      "id": "sparkle_hsr",
+      "displayName": "花火",
+      "originalName": "花火",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "Sparkle",
+        "sparkle",
+        "hanabi",
+        "sparkle_(honkai:_star_rail)",
+        "花火",
+        "假面愚者花火",
+        "千面戏子"
+      ],
+      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant pink eyes with cherry blossom-like highlights, and a wicked, theatrical smirk",
+      "identityTokens": [
+        "sparkle_(honkai:_star_rail)",
+        "honkai:_star_rail",
+        "black_hair",
+        "twintails",
+        "red_ribbon",
+        "pink_eyes",
+        "smirk",
+        "petite"
+      ],
+      "exactTokens": [
+        "sparkle_(honkai:_star_rail)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, sparkle_(honkai:_star_rail)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "miHoYo / HoYoverse",
+      "curatedArtistStyles": [
+        "HoYoverse Official",
+        "Mika Pikazo"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "fox_mask",
+          "kitsune_mask"
+        ]
+      }
+    }
+  }
+}

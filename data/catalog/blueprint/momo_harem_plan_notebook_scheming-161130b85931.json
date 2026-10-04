@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "momo_harem_plan_notebook_scheming",
+  "revision": 1,
+  "sortOrder": 1245,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "交叠双腿端坐长椅翻阅秘密笔记本，钢笔抵唇微笑，爱心尾巴晃动，眼神充满小恶魔狡黠",
+    "camera": "cowboy shot, seated eye-level, intimate charming focus",
+    "category": "小恶魔策士",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【梦梦 · 乐园计划秘密手帐的腹黑小恶魔】彩南高中放学后空无一人的中庭花坛长椅边，落日将常春藤染上一层温暖金红。梦梦身穿彩南高校水手服短裙与黑色及膝丝袜，优雅地交叠着双腿坐在长椅上。她膝上摊开着写满全校女孩攻略心智图的粉色皮质“乐园计划”秘密笔记，单手握着钢笔抵着下唇，身后爱心小恶魔尾巴轻轻摇晃，紫粉色的眼眸闪烁着运筹帷幄的狡黠光芒——「呵呵呵……只要按照梦梦的计划进行，梨斗先生就能毫无负担地坐拥全员乐园了哦♪」",
+    "id": "momo_harem_plan_notebook_scheming",
+    "lighting": "透过常春藤枝叶倾泻下的温润金红夕阳与黑丝长腿上的柔和高光",
+    "location": "彩南高中中庭常春藤花坛木质长椅",
+    "mood": "腹黑娇媚",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Sitting with elegant crossed legs on an ivy-framed garden bench at sunset, Momo studies her secret harem agenda inside a pink leather notebook while holding a pen against her lower lip. Warm golden dusk rays illuminate her lavender-pink curls and the sly flick of her spade-heart tail. Seated eye-level portrait, detailed courtyard background, cinematic lighting.",
+    "promptTokens": [
+      "school_courtyard",
+      "garden_bench",
+      "holding_notebook",
+      "holding_pen",
+      "sainan_high_school_uniform",
+      "black_thighhighs",
+      "demon_tail",
+      "mischievous_smile",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "secret_notebook",
+      "pen_to_lips",
+      "crossed_legs"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "courtyard",
+      "bench",
+      "notebook",
+      "pen",
+      "sainan_high_school_uniform",
+      "thighhighs",
+      "demon_tail",
+      "mischievous_smile",
+      "secret_notebook",
+      "pen_to_lips"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "梦梦 · 乐园计划秘密手帐的腹黑小恶魔"
+  }
+}

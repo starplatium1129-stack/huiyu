@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shiranui_mai/sfw_festival",
+  "revision": 1,
+  "sortOrder": 1004,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiranui_mai",
+    "outfit": {
+      "id": "sfw_festival",
+      "name": "夏祭红白花纹浴衣",
+      "prose": "a modest red-and-white floral yukata with an opaque inner collar and a dark obi",
+      "tokens": [
+        "red_yukata",
+        "floral_print",
+        "inner_collar",
+        "dark_obi"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

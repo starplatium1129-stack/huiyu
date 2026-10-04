@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc025",
+  "revision": 1,
+  "sortOrder": 23,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Standing inside the curved glass tunnel of a grand aquarium, Ayachi Nene gazes up in pure wonder at a massive whale shark gliding overhead. Wearing a breezy summer sundress and sheer white stockings, radiant cyan-blue water caustics and piercing sunbeams illuminate the glass tunnel from above, casting shimmering light across her laughing face and framing her white shoes on the reflective walkway.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "全身远景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "平静",
+    "id": "sc025",
+    "lighting": "窗光",
+    "location": "水族馆",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_cute_summer_sundress_and_sheer_white_thighhigh_socks, standing_inside_glass_underwater_aquarium_tunnel, looking_up_in_awe_at_massive_whale_shark_swimming_overhead, raising_one_hand_toward_camera_with_shy_laughing_smile, entire_legs_and_feet_fully_visible_in_frame, white_flat_shoes_standing_on_aquarium_floor, luminous_cyan-blue_water_reflections_and_shafts_of_sunlight_piercing_through_aquarium_dome, schools_of_vibrant_tropical_fish_and_glowing_manta_rays_in_background, detailed_background, cinematic_lighting, full_body, @rella",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 鲸鲨游过头顶的时候】水族馆的蓝光漫过长廊，巨大的鲸鲨从玻璃穹顶缓缓游过。宁宁忘记了矜持，贴近玻璃仰头追着它，紫色眼睛像被海水点亮。回过神发现你在拍她，她立即伸手挡镜头，却忍不住笑——「不准只拍我，鲸鲨才是主角。至少……下一张要和我一起入镜。」",
+    "storyJa": "【寧々・ジンベエザメが頭上を泳ぐ中】水族館の青い光が廊下に溢れ、巨大なジンベエザメがガラスドームの中をゆっくりと泳ぎます。寧々は遠慮することも忘れてグラスに身を寄せて追いかけた、その紫色の瞳が海水で輝いているようだった。彼女は正気に戻り、あなたが自分を撮影していることに気づき、すぐにカメラを遮ろうと手を伸ばしましたが、笑いをこらえることができませんでした。――「私ばかり撮るのは禁止です。主役はジンベエザメなんですから。せめて……次の一枚は、私と一緒に写ってください。」",
+    "tags": [
+      "hair_ribbon",
+      "sundress",
+      "sheer_white_thighhigh_stockings",
+      "aquarium",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "鲸鲨游过头顶的时候",
+    "usage": [
+      "展示图",
+      "壁纸"
+    ],
+    "weather": "晴"
+  }
+}

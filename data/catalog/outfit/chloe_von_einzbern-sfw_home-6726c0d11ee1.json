@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "chloe_von_einzbern/sfw_home",
+  "revision": 1,
+  "sortOrder": 162,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chloe_von_einzbern",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "早餐料理围裙便装",
+      "prose": "a peach long-sleeved T-shirt, loose brown trousers and a blue apron",
+      "tokens": [
+        "peach_shirt",
+        "long_sleeves",
+        "brown_pants",
+        "blue_apron"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

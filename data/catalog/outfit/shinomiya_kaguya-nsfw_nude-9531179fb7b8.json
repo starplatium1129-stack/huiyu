@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shinomiya_kaguya/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 769,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinomiya_kaguya",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, porcelain-skinned body with black hair let down past her shoulders in her soft 'ice-melted' mode, modest perky breasts with pink nipples, and an elegant slender frame",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hair_down",
+        "slender_body"
+      ]
+    }
+  }
+}

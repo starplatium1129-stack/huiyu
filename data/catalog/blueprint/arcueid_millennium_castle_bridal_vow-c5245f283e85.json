@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_millennium_castle_bridal_vow",
+  "revision": 1,
+  "sortOrder": 1328,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "身着纯白王后花嫁大礼服与长头纱，头戴王冠，捧花步向视角，眼含热泪幸福微笑",
+    "camera": "cowboy shot, slightly low angle, grand regal bridal view",
+    "category": "纯白誓约",
+    "characterId": "arcueid_brunestud",
+    "coverageTags": [
+      "bridal",
+      "romantic",
+      "vow"
+    ],
+    "description": "【爱尔奎特 · 千年王城的真祖花嫁】梦幻般的千年之城巍峨主殿内，无尽的纯白蔷薇从王座阶梯一直蔓延至殿门。爱尔奎特身披纯白层叠华丽大礼服与及地透明蕾丝长头纱，头戴精致的金色真祖王冠。原本桀骜冷酷的白姬，此刻眼中满含幸福的泪光，双手捧着一束白山茶向你轻步走来——「跨越千年的孤寂与轮回，我的王座与我的永恒……自此刻起全都是你的。」",
+    "id": "arcueid_millennium_castle_bridal_vow",
+    "lighting": "王城高耸穹顶透射下来的纯白神圣天光",
+    "location": "千年之城晶莹大理石王座大殿圣坛前",
+    "mood": "神圣至高",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "archetype_earth_regal_gown",
+    "promptProse": "Gliding down the marble aisle of the Millennium Castle strewn with pristine white roses, Arcueid Brunestud appears majestic in a royal white bridal gown and delicate gossamer veil beneath a golden tiara. Tears of transcendent, eternal happiness glisten in her crimson eyes as she holds a bridal bouquet close to her heart. Breathtaking regal anime key visual style, solo 1girl, no text.",
+    "promptTokens": [
+      "castle_hall",
+      "throne_room",
+      "white_roses",
+      "ball_gown",
+      "white_dress",
+      "bridal_veil",
+      "tiara",
+      "bouquet",
+      "holding_bouquet",
+      "teary_eyes",
+      "happy_tears",
+      "radiant_smile",
+      "red_eyes",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "palace",
+      "throne_room",
+      "white_roses",
+      "royal_dress",
+      "bridal_veil",
+      "tiara",
+      "bouquet",
+      "teary_eyes",
+      "happy_tears",
+      "serene_smile"
+    ],
+    "timeOfDay": "破晓圣光",
+    "title": "爱尔奎特 · 千年王城的真祖花嫁"
+  }
+}

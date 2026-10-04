@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/doll_cafe_no_parasol",
+  "revision": 1,
+  "sortOrder": 763,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "default": false,
+      "id": "doll_cafe_no_parasol",
+      "isDefault": false,
+      "name": "咖啡店人偶礼服·无伞",
+      "prose": "her tailored Prussian-blue Auto Memories Doll jacket with ruffled ascot, emerald brooch, pleated white skirt, brown travel boots and articulated silver mechanical hands, with no parasol",
+      "tokens": [
+        "blue_jacket",
+        "pleated_skirt",
+        "brooch",
+        "ascot",
+        "boots",
+        "mechanical_hands"
+      ]
+    }
+  }
+}

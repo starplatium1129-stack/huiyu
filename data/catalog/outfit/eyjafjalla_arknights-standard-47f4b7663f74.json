@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/standard",
+  "revision": 1,
+  "sortOrder": 310,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "研究员裙装",
+      "prose": "her dark grey hooded volcano research coat over a white frilled blouse with a black pleated skirt, black thighhighs and black boots",
+      "tokens": [
+        "coat",
+        "hooded",
+        "frills",
+        "white_shirt",
+        "pleated_skirt",
+        "thighhighs",
+        "boots",
+        "black_clothes"
+      ]
+    }
+  }
+}

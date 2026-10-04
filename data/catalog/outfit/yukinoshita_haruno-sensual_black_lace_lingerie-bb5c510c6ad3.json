@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/sensual_black_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 215,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "sensual_black_lace_lingerie",
+      "name": "极魅纯黑蕾丝吊带内衣",
+      "prose": "a provocative sheer black floral lace lingerie set: an underwire balconette bra lifting her large heavy breasts, matching strappy garter belt holding sheer black thigh-high stockings, and a black silk peignoir robe",
+      "tokens": [
+        "black_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "garter_straps",
+        "black_thighhighs",
+        "silk_robe",
+        "cleavage",
+        "large_breasts",
+        "sensual",
+        "mature_female"
+      ]
+    }
+  }
+}

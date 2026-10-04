@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asuma_toki/casual_maid",
+  "revision": 1,
+  "sortOrder": 499,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuma_toki",
+    "outfit": {
+      "default": false,
+      "id": "casual_maid",
+      "isDefault": false,
+      "name": "日常便服",
+      "prose": "a simple black casual dress with a light jacket, loose blonde hair and a small headset, relaxed off-duty look",
+      "tokens": [
+        "dress",
+        "black_dress",
+        "jacket",
+        "headset",
+        "casual"
+      ]
+    }
+  }
+}

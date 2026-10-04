@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "zero_two/sfw_beach",
+  "revision": 1,
+  "sortOrder": 894,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "zero_two",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "02·海滨泳装",
+      "prose": "a red-and-white sailor swimsuit with a loose white overshirt, striped socks and a candy pouch",
+      "tokens": [
+        "sailor_swimsuit",
+        "red_white_swimsuit",
+        "overshirt",
+        "candy_pouch",
+        "striped_socks"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

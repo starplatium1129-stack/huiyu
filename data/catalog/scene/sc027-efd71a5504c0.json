@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc027",
+  "revision": 1,
+  "sortOrder": 25,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a bedroom at night, Ayachi Nene in a soft pink pajama set sits on the bed edge with slender bare legs, bare feet on sheets, holding a phone to her ear with a gentle affectionate blush under warm night light.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "枕边面部近景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "思念",
+    "id": "sc027",
+    "lighting": "手机屏幕微光与床头灯",
+    "location": "卧室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas, sleepwear_shirt",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sheer_babydoll, open-front_negligee, white_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, sitting_on_bed, holding_smartphone_to_ear, arched_back, heavy_blush, shy_smile, bedroom, night, bedside_lamp, warm_dim_lighting, soft_shadows, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【宁宁 · 没有挂断的深夜电话】秋夜里，宁宁在床上反复点开你的号码，终于拨通后却紧张得一句话也说不出。你没有催促，只隔着听筒陪她听窗外的风。很久以后，她把脸埋进枕头，小声承认——「其实没有急事……只是今天一直没见到你。听到声音以后，好像就能安心睡着了。」",
+    "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
+    "tags": [
+      "hair_ribbon",
+      "pink_pajamas",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "phone"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "没有挂断的深夜电话",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

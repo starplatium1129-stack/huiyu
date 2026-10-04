@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_casual",
+  "revision": 1,
+  "sortOrder": 752,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "现实形态周末便装",
+      "prose": "a grey cardigan, white top and dark trousers",
+      "tokens": [
+        "grey_cardigan",
+        "white_shirt",
+        "dark_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

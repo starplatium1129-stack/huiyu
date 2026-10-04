@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "caren_hortensia/official_exorcist_habit",
+  "revision": 1,
+  "sortOrder": 112,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "caren_hortensia",
+    "outfit": {
+      "id": "official_exorcist_habit",
+      "name": "无下裙特殊驱魔祭服",
+      "prose": "her signature skirtless white and black Catholic clerical vestment with gold embroidery, long detached clerical sleeves, pure white cross collar, black thigh-high stockings, bare hips and upper thighs, and flowing red Shroud of Magdalene ribbons",
+      "tokens": [
+        "habit",
+        "church_uniform",
+        "sleeveless",
+        "no_skirt",
+        "thighhighs",
+        "black_thighhighs",
+        "detached_sleeves",
+        "shroud_of_magdalene",
+        "cross"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

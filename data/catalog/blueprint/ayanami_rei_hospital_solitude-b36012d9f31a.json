@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_hospital_solitude",
+  "revision": 1,
+  "sortOrder": 1016,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "赤足坐在白色病床边，双手静静捧着眼镜",
+    "camera": "medium shot, eye level",
+    "category": "现代日常",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【绫波丽 · 晨曦病房与苍白绷带】极简冷清的单人病房内，素白的窗帘被晨风轻轻掀起。身着宽松病服、缠绕着层层医疗绷带的绫波丽赤足坐在床沿，手中静静捧着那副属于碇司令的破损眼镜，眼神空灵而带着一丝难以捉摸的依恋——「疼痛……只是肉体存在的证明。但我心中的那份羁绊，又究竟属于谁呢？」",
+    "id": "ayanami_rei_hospital_solitude",
+    "lighting": "清晨冷白晨光与柔和微光",
+    "location": "NERV总医院极简病房",
+    "mood": "脆弱孤寂",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "hospital_bed_gown",
+    "promptProse": "Sitting on the edge of her white hospital bed and holding Gendo's cracked spectacles in both hands, Rei looks up with calm, vulnerable crimson eyes. Soft morning sunlight streams through sheer curtains, highlighting her delicate bandaged frame.",
+    "promptTokens": [
+      "hospital_room",
+      "white_bed",
+      "bandages",
+      "eyepatch",
+      "holding_glasses",
+      "morning_sun",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "sitting_on_bed"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "hospital_room",
+      "white_bed",
+      "bandages",
+      "eyepatch",
+      "holding_glasses",
+      "barefoot",
+      "sitting_on_bed",
+      "morning_light",
+      "white_curtains"
+    ],
+    "timeOfDay": "黎明",
+    "title": "绫波丽 · 晨曦病房与苍白绷带"
+  }
+}

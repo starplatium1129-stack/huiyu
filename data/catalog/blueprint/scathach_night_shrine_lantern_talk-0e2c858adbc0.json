@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_night_shrine_lantern_talk",
+  "revision": 1,
+  "sortOrder": 247,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_night_shrine_lantern_talk",
+    "title": "斯卡哈 · 灯笼夜祠的师匠嘱托·「把刀擦亮，明天……我要把一切都托付给你」",
+    "category": "专属羁绊",
+    "characterId": "scathach_fate",
+    "description": "【古祠石阶·灯笼夜】参道两侧的石灯笼一路亮到祠前，斯卡哈与你并肩坐在石阶上。旅装的外套盖住了你的膝盖，她远眺着山下的万家灯火，声音难得地放软——「我活得太久了……久到忘了『明天』是什么滋味。是你让我又想起了它。所以明天的战斗，我要你活着回来，这是师匠的命令，也是……女人的请求。」",
+    "location": "古祠参道石阶",
+    "action": "与穿着完整的同行者并肩坐石阶，脱下的长外套盖在对方膝上，一同望向山下灯火",
+    "timeOfDay": "夜晚",
+    "lighting": "石灯笼暖黄光带与月光冷辉交映",
+    "camera": "wide three-quarter rear two-shot, both seated figures and lantern approach visible",
+    "mood": "深情嘱托、静谧心动",
+    "sceneTags": [
+      "shrine_steps",
+      "two_clothed_figures",
+      "sitting_side_by_side",
+      "coat_over_companion_lap",
+      "white_shirt",
+      "brown_vest",
+      "looking_at_city",
+      "stone_lanterns",
+      "moonlight",
+      "wide_two_shot"
+    ],
+    "promptProse": "Scathach and her fully clothed companion sit side by side on the shrine steps, looking toward the scattered city lights below. Her long travelling coat is draped across the companion’s knees, leaving her white shirt and brown vest visible. Their relaxed hands rest on their own laps, and the hat shades the edge of her purple hair. Warm stone lanterns lead up the path behind them, balanced by cool moonlight. A wide three-quarter rear view includes both figures, the shared coat and the distant town, conveying a quiet conversation without lettering.",
+    "promptTokens": [
+      "shrine_steps",
+      "two_clothed_figures",
+      "sitting_side_by_side",
+      "coat_over_companion_lap",
+      "white_shirt",
+      "brown_vest",
+      "looking_at_city",
+      "stone_lanterns",
+      "moonlight",
+      "wide_two_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_shrine_coat_off",
+    "coverageTags": [
+      "daily",
+      "signature",
+      "romance"
+    ],
+    "compositionIntent": "group"
+  }
+}

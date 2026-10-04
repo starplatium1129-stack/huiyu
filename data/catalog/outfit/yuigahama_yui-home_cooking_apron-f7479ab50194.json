@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/home_cooking_apron",
+  "revision": 1,
+  "sortOrder": 203,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "home_cooking_apron",
+      "name": "粉色料理围裙居家装",
+      "prose": "a cute pink cooking apron worn over a casual short-sleeve top",
+      "tokens": [
+        "apron",
+        "pink_apron",
+        "short_sleeves",
+        "casual_wear"
+      ]
+    }
+  }
+}

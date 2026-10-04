@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc123",
+  "revision": 1,
+  "sortOrder": 121,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the lazy afternoon kitchen filled with warm baking scent, Ayachi Nene wearing only the viewer's large chunky knit sweater with nothing underneath sits on the marble counter, the loose collar slipped off one shoulder. Her flour-dusted hands press against the viewer's chest as she blushes furiously with a heart-shaped ahoge, bare legs dangling above the floor.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "主观正面特写",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "新婚娇羞动情",
+    "id": "sc123",
+    "lighting": "午后慵懒侧窗光",
+    "location": "新婚公寓厨房吧台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, black_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, clothes, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sweater, oversized_sweater, sweating, loose, collar, slipped, sitting, kitchen, counter, bare_legs, blush, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "春",
+    "story": "【成年 After Story · 宁宁 · 居家毛衣真空高能】午后阳光慵懒的公寓厨房里，空气中弥漫着烘焙的微热甜香。宁宁在你的惩罚要求下，身上仅仅套着一件你送的大号粗线针织毛衣，里面完全真空未着寸缕。她面红耳赤地被你抱上了大理石工作台，松垮的衣领随性地向一侧完全滑落，展现出大片柔嫩圆润的香肩与若隐若现的侧乳轮廓。她有些羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已因为情绪过载软瘫成完美的爱心螺旋——「呜...柊史...一大清早就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・ホームセーターバキュームハイエナジー】午後の気だるい日差しが降り注ぐアパートのキッチンでは、温かく甘いパンの香りが空気に満ちています。あなたの処罰要求に基づいて、寧々はあなたが彼女に与えた大きな太い糸のニットセーターを着ただけで、それは完全に空で結ばれていませんでした。彼女は顔を赤らめながら、あなたによって大理石の作業台に運ばれ、緩んだ襟が完全に片側にずれて、柔らかく丸い肩の広い範囲と横乳のかすかな輪郭が現れました。彼女は恥ずかしそうに小麦粉がついた手をあなたの胸に押し付けました。彼女の頭上のアホ毛は、感情的な過負荷により、すでに完全な愛のスパイラルに崩壊していました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
+    "tags": [
+      "hair_ribbon",
+      "oversized_sweater",
+      "no_underwear",
+      "off_shoulder",
+      "sideboob",
+      "flour_hands",
+      "marble_counter",
+      "kitchen",
+      "bare_legs",
+      "full_body",
+      "heavy_blush",
+      "ahoge",
+      "afternoon"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "甜点协议的额外惩罚",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "温暖"
+  }
+}

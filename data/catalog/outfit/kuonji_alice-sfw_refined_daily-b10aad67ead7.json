@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kuonji_alice/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 930,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kuonji_alice",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "烟灰羊毛居家裙",
+      "prose": "a smoke-grey long-sleeved wool dress with a high ivory collar, a dark plum shawl and opaque tights",
+      "tokens": [
+        "grey_dress",
+        "wool",
+        "high_collar",
+        "shawl",
+        "opaque_tights"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

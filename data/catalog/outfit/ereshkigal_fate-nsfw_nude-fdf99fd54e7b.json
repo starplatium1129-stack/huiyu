@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ereshkigal_fate/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 153,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ereshkigal_fate",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, graceful body with very long blonde hair unbound and glowing faintly in the underworld's pale light, modest soft breasts with pink nipples, and skin cool as the underworld yet warm to the touch",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "very_long_hair",
+        "hair_down",
+        "glowing"
+      ]
+    }
+  }
+}

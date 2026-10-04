@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_throne_room_hermes_armor_strike",
+  "revision": 1,
+  "sortOrder": 1300,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_throne_room_hermes_armor_strike",
+    "title": "雅儿贝德 · 赫尔墨斯三层黑铠之威",
+    "category": "身份高光",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 赫尔墨斯三层黑铠之威】纳萨力克大坟墓王座之厅巍峨的台阶前，雅儿贝德身披全覆式纯黑重铠赫尔墨斯·特里斯墨吉斯特斯。漆黑战甲缝隙中流淌着幽紫魔力光纹，手中双手巨斧狠狠顿在地面上震碎白玉石板，头顶双角威严耸立，金色竖瞳中闪烁着斩杀一切入侵者的绝顶霸气——「竟敢以肮脏的脚踏入安兹大人的圣域，在此受碎骨之刑吧！」",
+    "location": "纳萨力克大坟墓王座之厅宏伟阶梯前",
+    "action": "身着黑色全身重铠双手持战斧顿地，漆黑羽翼展开，金色竖瞳冰冷俯瞰前方",
+    "timeOfDay": "王座幽光",
+    "lighting": "宏伟水晶吊灯幽绿光辉与战甲紫色魔力流光",
+    "camera": "cowboy shot, low angle, majestic armor perspective",
+    "mood": "绝对威严",
+    "sceneTags": [
+      "throne_room",
+      "marble_floor",
+      "black_armor",
+      "plate_armor",
+      "holding_axe",
+      "battle_axe",
+      "black_wings",
+      "curved_horns",
+      "intense_gaze"
+    ],
+    "promptProse": "Standing protectively before the grand marble throne inside the Great Tomb of Nazarick, Albedo is clad in her formidable full-body black plate armor. Holding her colossal Bardiche poleaxe grounded into cracked marble, her black feathered wings flare majestically. Her golden slitted eyes glow with chilling, sovereign authority against the opulent chandeliers. Epic low-angle anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "throne_room",
+      "marble_floor",
+      "black_armor",
+      "plate_armor",
+      "holding_weapon",
+      "battle_axe",
+      "black_wings",
+      "curved_horns",
+      "yellow_eyes",
+      "slit_pupils",
+      "intense_gaze",
+      "cowboy_shot",
+      "low_angle",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "hermes_black_armor",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ]
+  }
+}

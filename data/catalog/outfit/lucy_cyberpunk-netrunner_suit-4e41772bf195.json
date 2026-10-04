@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "lucy_cyberpunk/netrunner_suit",
+  "revision": 1,
+  "sortOrder": 602,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lucy_cyberpunk",
+    "outfit": {
+      "default": true,
+      "id": "netrunner_suit",
+      "isDefault": true,
+      "name": "深潜黑客战术紧身衣",
+      "prose": "an iconic netrunner combat outfit: cropped high-collar black techwear leather jacket with white line accents, asymmetrical sleeveless white netrunner bodysuit with deep hip cutouts, high-waisted dark shorts, monowire spool on her right wrist, sheer dark stockings, and futuristic over-the-knee thigh-high cyber boots",
+      "tokens": [
+        "bodysuit",
+        "white_bodysuit",
+        "jacket",
+        "black_jacket",
+        "crop_top",
+        "shorts",
+        "cutouts",
+        "side_cutout",
+        "thighhighs",
+        "boots",
+        "cyberware",
+        "futuristic",
+        "netrunner"
+      ]
+    }
+  }
+}

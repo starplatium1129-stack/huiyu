@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/cafe_white_dress",
+  "revision": 1,
+  "sortOrder": 542,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "default": false,
+      "id": "cafe_white_dress",
+      "isDefault": false,
+      "name": "咖啡店白裙开衫",
+      "prose": "a simple white day dress with a soft knit cardigan and dark boots",
+      "tokens": [
+        "white_dress",
+        "cardigan",
+        "dark_boots",
+        "casual_clothes"
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "lala_deviluke_palace_princess_throne",
+  "revision": 1,
+  "sortOrder": 1236,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐悬浮王座单手托腮，露肩战服勾勒出完美曲线，长粉发铺展于台阶，神态优雅尊贵",
+    "camera": "full body, 3/4 low angle majestic perspective, grand palace scale",
+    "category": "银河王族",
+    "characterId": "lala_satalin_deviluke",
+    "coverageTags": [
+      "royal"
+    ],
+    "description": "【菈菈 · 戴比路克星际圣殿的王女威仪】统领浩瀚银河的戴比路克王星皇宫圣殿内，宏伟的悬浮水晶柱与全息星图环绕。菈菈身着戴比路克王族露肩科幻战服，端坐在悬浮的黄金王座之上。及踝的粉色长发铺陈在晶莹的水晶台阶上，褪去了日常的迷糊，绿瞳带着帝王长女特有的从容与威严，爱心尾巴在王座扶手边优雅蜷曲，尽显银河至高王女的绝世尊荣。",
+    "id": "lala_deviluke_palace_princess_throne",
+    "lighting": "水晶穹顶透射入的宇宙星云幻彩冷光与黄金王座璀璨光泽",
+    "location": "戴比路克王星悬浮水晶大殿王座前",
+    "mood": "高贵威严",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "deviluke_dress",
+    "promptProse": "Seated regally upon a floating golden throne in the grand imperial sanctuary of Planet Deviluke, Lala rests her chin on one hand in her futuristic white-and-yellow royal battle dress. Her floor-length pink hair spreads across the crystalline steps while holographic star charts cast cosmic violet rays around her coiled spade tail. Full-body three-quarter low-angle portrait, grand palace scale, cinematic lighting.",
+    "promptTokens": [
+      "sci-fi_palace",
+      "floating_throne",
+      "futuristic_dress",
+      "strapless_dress",
+      "cleavage",
+      "demon_tail",
+      "holographic_display",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting",
+      "golden_throne",
+      "resting_chin_on_one_hand",
+      "hair_spread_on_steps"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "palace",
+      "throne",
+      "futuristic",
+      "sci-fi",
+      "strapless_dress",
+      "demon_tail",
+      "crystal",
+      "very_long_hair",
+      "golden_throne",
+      "one_hand_on_chin",
+      "hair_on_steps"
+    ],
+    "timeOfDay": "白天",
+    "title": "菈菈 · 戴比路克星际圣殿的王女威仪"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "mako_autumn_woods_kunai_training",
+  "revision": 1,
+  "sortOrder": 1139,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
+    "camera": "full body, dynamic action wide shot, low perspective",
+    "category": "武道特训",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "training"
+    ],
+    "description": "【常陆茉子 · 红枫树下的忍道飞掷】漫山遍野红枫如烈火燃烧的后山林道中，秋风卷起漫天赤色落叶。茉子身体微沉踏在一块青苔古岩上，右手正精准将一枚锋利苦无脱手掷出。破空呼啸的气流带起翻飞的枫叶，黑色短发与忍者服下摆在动静之间展露出极致的力量美与矫健身手。",
+    "id": "mako_autumn_woods_kunai_training",
+    "lighting": "浓烈深秋枫树冠层透出的金红漫射光与苦无金属反光",
+    "location": "红枫密林深处落叶林道",
+    "mood": "飒爽果敢",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "ninja_suit",
+    "promptProse": "Leaning forward atop a mossy boulder in a vibrant autumn forest of scarlet maple trees, Mako releases a spinning steel kunai with expert shinobi precision. Swirling crimson leaves trail the rush of wind around her athletic form in dynamic martial splendor.",
+    "promptTokens": [
+      "maple_forest",
+      "autumn_leaves",
+      "ninja_suit",
+      "throwing_kunai",
+      "dynamic_pose",
+      "wind_blown_leaves",
+      "athletic",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "autumn_leaves",
+      "maple_trees",
+      "ninja",
+      "kunai",
+      "throwing",
+      "rock",
+      "motion",
+      "large_breasts"
+    ],
+    "timeOfDay": "下午",
+    "title": "常陆茉子 · 红枫树下的忍道飞掷"
+  }
+}

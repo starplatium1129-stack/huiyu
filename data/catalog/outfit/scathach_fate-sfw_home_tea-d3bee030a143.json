@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/sfw_home_tea",
+  "revision": 1,
+  "sortOrder": 139,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "sfw_home_tea",
+      "name": "茶室白衫居家装",
+      "prose": "a loose white long-sleeved house shirt and dark lounge trousers, with very long purple hair loosely tied back",
+      "tokens": [
+        "white_house_shirt",
+        "long_sleeves",
+        "dark_pants",
+        "loosely_tied_hair"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

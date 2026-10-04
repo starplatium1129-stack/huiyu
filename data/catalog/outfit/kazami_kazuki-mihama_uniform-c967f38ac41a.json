@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 639,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园紫衫白裙制服",
+      "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with wide sailor collar, royal blue plaid necktie, high-waisted white pleated mid-length skirt, dark knee socks, and brown school penny loafers",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "sailor_collar",
+        "plaid_necktie",
+        "blue_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "knee_socks",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

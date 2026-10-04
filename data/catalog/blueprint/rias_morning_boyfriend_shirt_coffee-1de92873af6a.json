@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "rias_morning_boyfriend_shirt_coffee",
+  "revision": 1,
+  "sortOrder": 1279,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_morning_boyfriend_shirt_coffee",
+    "title": "莉雅丝 · 晨光微熹的大号衬衫",
+    "category": "晨间女友",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 晨光微熹的大号衬衫】公寓厨房柔和的晨曦透过白纱帘洒在木质地板上。莉雅丝穿着你宽松的大号白衬衫，衣领歪斜露出一侧圆润白皙的香肩与精致锁骨，修长双腿赤足轻点。她双手端着冒着热气的黑咖啡回眸浅笑，刚睡醒的眼眸水润迷离——「醒了？咖啡刚刚煮好，今天也要打起精神哦。」",
+    "location": "阳光洒满的现代公寓木质厨房",
+    "action": "身着宽大白衬衫赤足立于灶台旁，双手捧着热咖啡杯侧首回眸温柔微笑",
+    "timeOfDay": "清晨",
+    "lighting": "柔和晨曦丁达尔光线透过薄纱",
+    "camera": "cowboy shot, eye level, environmental portrait",
+    "mood": "温馨甜美",
+    "sceneTags": [
+      "kitchen",
+      "morning_sunlight",
+      "holding_mug",
+      "steaming_coffee",
+      "bare_shoulders",
+      "bare_legs",
+      "gentle_smile",
+      "blush"
+    ],
+    "promptProse": "Basking in soft golden morning light inside a cozy kitchen, Rias Gremory stands barefoot holding a steaming ceramic mug of coffee with both hands. She wears an oversized white boyfriend shirt slipping down one shoulder, exposing her slender collarbone and delicate cleavage. Looking back with a warm, affectionate smile, her crimson locks tumble gently over her shoulders. Clean anime aesthetic, solo 1girl, no text.",
+    "promptTokens": [
+      "kitchen",
+      "countertop",
+      "holding_cup",
+      "steaming_drink",
+      "oversized_shirt",
+      "white_shirt",
+      "off-shoulder",
+      "bare_legs",
+      "barefoot",
+      "gentle_smile",
+      "blush",
+      "morning_light",
+      "sunlight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "lower_body, cropped_head, headless"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "oversized_white_shirt",
+    "coverageTags": [
+      "daily",
+      "gap_moe",
+      "romantic"
+    ]
+  }
+}

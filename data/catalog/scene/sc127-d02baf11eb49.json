@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc127",
+  "revision": 1,
+  "sortOrder": 125,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a silent summer night by the private rooftop pool, Nene in a tiny black bikini sits on the poolside edge, water droplets glistening on her pale skin, leaning forward toward the viewer with a shy smile and trembling blush under the gentle pool light reflections.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "主观水平视线特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "感官极乐决堤",
+    "id": "sc127",
+    "lighting": "皎洁月光与水面折射弱光",
+    "location": "别墅露天泳池边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, clothes, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, tiny_black_bikini, wet_skin, water_droplets, cleavage, bare_thighs, sitting_on_edge, poolside, leaning_forward, close-up, looking_at_viewer, shy_smile, heavy_blush, poolside_lighting, water_reflections, silent_summer_night, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 微型比基尼极致肉感】夏夜寂静无人的私人别墅露天泳池。蔚蓝的水波荡漾倒映着满天星斗。宁宁今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。布料少得近乎可怜，根本无法包裹住她饱满的傲人线条。她浑身挂满晶莹剔透的水珠，大片雪白的细腻肌肤完全暴露在清冷月光下。她双手羞耻地护在胸前，被你拉着一同坐在池边，头顶的呆毛早已因为情绪过载疯狂卷曲成工口的心形螺旋——「呜...带子好像快要散掉了啦...大色狼不准看！今晚的魔女...随你怎么样支配都行了啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・極エロマイクロビキニ】夏の夜、プライベートヴィラの屋外プールは静かです。波打つ青い水が空の星を映していました。今夜の寧々はあなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。生地は非常にまばらで、彼女のふくよかで誇らしいラインを隠すことができませんでした。彼女の全身は透き通った水滴で覆われ、雪のように白く繊細な肌の広い範囲が冷たい月光にさらされていました。彼女は恥知らずにも手で胸を守り、プールサイドであなたの膝にまたがって座ります。彼女の頭の上のアホ毛は、感情的な過負荷のためにすでに狂ったようにカールしてハート型の螺旋を描いています。――「帯がほどけそうです……見ちゃだめですよ！　今夜の魔女は……あなたにだけ、少しわがままを聞いてほしいんです。」",
+    "tags": [
+      "hair_ribbon",
+      "black_bikini",
+      "string_bikini",
+      "sitting_on_edge",
+      "straddling_viewer",
+      "pool_edge",
+      "bare_legs",
+      "smooth_thighs",
+      "full_body",
+      "barefoot",
+      "night",
+      "moonlight"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "露天泳池的意外熔断",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "夏夜澄澈"
+  }
+}

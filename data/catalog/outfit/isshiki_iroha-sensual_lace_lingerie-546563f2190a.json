@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 207,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "鹅黄薄纱小恶魔内衣",
+      "prose": "a flirty pale-yellow and black lace lingerie set: a balconette bra lifting her perky young breasts with contrasting black ribbon bows, matching lace boyshort panties with a cheeky peekaboo cutout, and garter straps",
+      "tokens": [
+        "yellow_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "black_ribbon",
+        "garter_straps",
+        "cleavage",
+        "sensual",
+        "flirty"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yae_miko/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 21,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yae_miko",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "藤紫日常小纹",
+      "prose": "an opaque wisteria-purple long-sleeved komon kimono with a pale cream obi and a discreet pink hair tie",
+      "tokens": [
+        "purple_kimono",
+        "komon",
+        "long_sleeves",
+        "cream_obi",
+        "hair_tie"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

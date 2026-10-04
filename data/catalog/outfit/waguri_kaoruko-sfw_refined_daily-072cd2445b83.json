@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 848,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "烘焙体验格纹衬衫",
+      "prose": "a cream-and-brown checked long-sleeved shirt, dark straight trousers, a mint-green cotton apron and padded oven mitts",
+      "tokens": [
+        "checkered_shirt",
+        "long_sleeves",
+        "pants",
+        "green_apron",
+        "oven_mitts"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

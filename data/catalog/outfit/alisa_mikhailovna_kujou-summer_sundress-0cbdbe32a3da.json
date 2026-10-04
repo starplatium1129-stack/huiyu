@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "alisa_mikhailovna_kujou/summer_sundress",
+  "revision": 1,
+  "sortOrder": 441,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfit": {
+      "id": "summer_sundress",
+      "name": "夏日便服连衣裙",
+      "prose": "a light and elegant white summer sundress with a pale blue cardigan, delicate silver necklace and sandals",
+      "tokens": [
+        "casual_clothes",
+        "sundress",
+        "white_dress",
+        "cardigan",
+        "sandals"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

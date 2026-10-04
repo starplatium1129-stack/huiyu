@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_ruined_city_highway_blade_stance",
+  "revision": 1,
+  "sortOrder": 1112,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_ruined_city_highway_blade_stance",
+    "title": "2B · 废墟倾塌高架的白之契约持刃",
+    "category": "机械决战",
+    "characterId": "yorha_2b",
+    "outfitId": "gothic_dress",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【2B · 废墟倾塌高架的白之契约持刃】被巨树与青苔彻底吞噬的人类废墟都市高架桥断崖边，狂风猎猎作响。2B 屹立在倾塌的钢筋混凝土边缘，黑色眼罩遮挡着视线却掩盖不住周身的肃杀剑意。纯白太刀「白之契约」在半空悬浮蓄势待发，哥特战斗裙的高开叉裙摆随风翻涌，露出纯白紧身连体衣与修长结实的黑皮靴大腿——「全机体……歼灭指令确认。」",
+    "location": "废墟都市断裂高架公路边缘悬崖",
+    "action": "手按虚空悬浮长刀独立断桥，海风吹卷羽毛裙摆与银白短发，英姿冷峻肃杀",
+    "timeOfDay": "下午",
+    "lighting": "废墟大楼林立间穿透的冷冽日光与长刀白刃冷白寒芒",
+    "camera": "dynamic low angle, full body wide shot, sweeping post-apocalyptic scale",
+    "mood": "孤高决绝",
+    "sceneTags": [
+      "ruins",
+      "overgrown",
+      "highway",
+      "overgrown_city",
+      "katana",
+      "floating_sword",
+      "gothic_dress",
+      "blindfold",
+      "wind"
+    ],
+    "promptProse": "Standing resolute along a crumbling elevated highway overlooking overgrown city ruins, 2B commands her hovering white katana with silent android grace. Gusty coastal winds whip her feather-trimmed black skirt and silvery bob against the post-apocalyptic horizon.",
+    "promptTokens": [
+      "city_ruins",
+      "crumbling_highway",
+      "overgrown_buildings",
+      "katana",
+      "floating_weapon",
+      "gothic_dress",
+      "blindfold",
+      "windy",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

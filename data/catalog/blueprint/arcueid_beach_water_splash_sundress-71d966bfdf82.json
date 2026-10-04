@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_beach_water_splash_sundress",
+  "revision": 1,
+  "sortOrder": 1327,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
+    "camera": "cowboy shot, eye level, dynamic summer beach view",
+    "category": "海滨漫步",
+    "characterId": "arcueid_brunestud",
+    "coverageTags": [
+      "vacation",
+      "summer",
+      "beach"
+    ],
+    "description": "【爱尔奎特 · 碧海清波的赤足踏浪】海天一色的清澈白沙滩边，海浪轻柔地拍打着海岸。爱尔奎特双手提起白色吊带裙的下摆，光着雪白玲珑的小脚踩在清凉的海水泡沫中，溅起阵阵晶莹的水花。海风吹起她金色的发丝与白裙，她站在水波中回过头，向你张开双手露出极具感染力的大笑——「快看！海水凉凉的超舒服！你也快把鞋子脱掉一起过来呀！」",
+    "id": "arcueid_beach_water_splash_sundress",
+    "lighting": "热带海滨刺目灿烂的金色阳光与水面反光",
+    "location": "阳光灿烂、碧浪翻涌的白色沙滩浅水区",
+    "mood": "开朗元气",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_summer_sundress",
+    "promptProse": "Wading barefoot through crystal-clear turquoise waves along a sun-drenched tropical beach, Arcueid Brunestud lifts the hem of her white summer sundress. Salty sea spray glistens on her smooth skin as sea breezes toss her golden hair. Turning back toward the viewer with arms open in pure joyful excitement, her ruby eyes shine with vivacious life. Brilliant summer anime film visual style, solo 1girl, no text.",
+    "promptTokens": [
+      "beach",
+      "ocean_waves",
+      "white_sand",
+      "clear_water",
+      "white_dress",
+      "skirt_lift",
+      "barefoot",
+      "splashing_water",
+      "radiant_smile",
+      "open_arms",
+      "red_eyes",
+      "sunny",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean",
+      "waves",
+      "white_sand",
+      "white_dress",
+      "skirt_lift",
+      "barefoot",
+      "splashing_water",
+      "radiant_smile",
+      "windy"
+    ],
+    "timeOfDay": "正午晴日",
+    "title": "爱尔奎特 · 碧海清波的赤足踏浪"
+  }
+}

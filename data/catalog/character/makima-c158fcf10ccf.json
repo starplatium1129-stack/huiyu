@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "makima",
+  "revision": 1,
+  "sortOrder": 13,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "makima",
+    "profile": {
+      "id": "makima",
+      "name": "玛奇玛",
+      "alias": [
+        "Makima",
+        "マキマ"
+      ],
+      "type": "popular",
+      "icon": "🖤",
+      "portrait": {
+        "image": "../assets/characters/popular-makima.png?v=5",
+        "alt": "玛奇玛 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "淡粉长发（日常）/ 红发麻花辫（真身）",
+        "hair_color": "淡粉（日常）/ 红（真身）",
+        "eyes": "红（日常正常瞳孔）/ 金圈圈眼（真身）",
+        "hairstyle": "长发 · 红色发饰（日常）",
+        "uniform": "白色西装 / 黑裤",
+        "expression": "冷静掌控 · 高深莫测",
+        "style": "calm unnerving dominator",
+        "signature": "淡粉长发、红瞳与白西装；真身为红发圈圈眼"
+      },
+      "personality": [
+        "冷静掌控",
+        "高深莫测",
+        "支配欲强",
+        "表面温柔",
+        "危险"
+      ],
+      "likes": [
+        "电影",
+        "狗（和人的关系）",
+        "支配的乐趣"
+      ],
+      "classic_cg": {
+        "title": "电影院",
+        "description": "荧幕冷光映在她脸上，她并肩而坐，微笑里藏着支配一切的从容。"
+      },
+      "identity": {
+        "role": "支配之恶魔（公安对魔特异课）",
+        "age": "成年（恶魔）",
+        "occupation": "公安对魔特异课负责人",
+        "faction": "公安 / 支配之恶魔"
+      },
+      "tags": [
+        "淡粉长发",
+        "红瞳",
+        "白西装",
+        "红发饰",
+        "支配"
+      ],
+      "bg_story": "玛奇玛是《电锯人》中的支配之恶魔，公安对魔特异课负责人。日常形态为淡粉长发与正常红瞳，真身为红发+圈圈眼+麻花辫（见独立变体）。场景应偏现代都市、电影院与办公室，避免阳光田园。",
+      "palette": [
+        "淡粉",
+        "西装白",
+        "支配红"
+      ],
+      "weather": [
+        "电影院",
+        "雨夜都市",
+        "办公室冷光"
+      ],
+      "speech": "玛奇玛向你致以问候。",
+      "source": "藤本タツキ《电锯人 / Chainsaw Man》",
+      "traits": [
+        "makima (chainsaw man)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "single_braid",
+        "long_braid",
+        "yellow_eyes",
+        "ringed_eyes",
+        "concentric_circles",
+        "chainsaw_man"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "makima",
+      "displayName": "玛奇玛",
+      "originalName": "Makima",
+      "franchise": "Chainsaw Man",
+      "aliases": [
+        "makima",
+        "makima_(chainsaw_man)",
+        "chainsaw man",
+        "control devil",
+        "makima (chainsaw man)"
+      ],
+      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid with a silky texture, golden concentric-ring eyes, and an unreadable magnetic smile",
+      "identityTokens": [
+        "makima (chainsaw man)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "single_braid",
+        "long_braid",
+        "yellow_eyes",
+        "ringed_eyes",
+        "concentric_circles",
+        "chainsaw_man"
+      ],
+      "exactTokens": [
+        "makima (chainsaw man)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代暗黑（电锯人）",
+        "era": "当代",
+        "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "mappa, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "yoneyama_mai",
+        "swav"
+      ]
+    }
+  }
+}

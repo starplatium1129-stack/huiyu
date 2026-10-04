@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "yami_rooftop_sunset_hair_flowing_wind",
+  "revision": 1,
+  "sortOrder": 1228,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手轻扶铁丝网侧立，晚风将及踝金色长发大面积吹拂卷起，红眸凝望远方落日",
+    "camera": "wide dramatic shot, low angle, sweeping sunset sky scale",
+    "category": "黄昏意境",
+    "characterId": "golden_darkness",
+    "coverageTags": [
+      "scenic"
+    ],
+    "description": "【金色暗影 · 暮色天台的金晖拂面】彩南高中空无一人的天台铁丝网边，金红色的壮烈夕阳席卷长空。小暗双手扶着微凉的铁网护栏侧立，晚风将她足足有数米长、及踝的金色秀发大面积吹拂飞散开来，在落日余晖中宛如一轮金色的烈日幕布。她侧过脸庞，红瞳静静注视着远方，展现出顶级刺客孤独而又向往光明的复杂心境。",
+    "id": "yami_rooftop_sunset_hair_flowing_wind",
+    "lighting": "浓烈壮丽的金红晚霞逆光穿透发丝形成的剔透轮廓光晕",
+    "location": "学园高空天台铁丝网边缘",
+    "mood": "凄美辽阔",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "gothic_dress_no_snack",
+    "promptProse": "Gazing across a fiery orange sunset from the windy rooftop of Sainan High, Yami braces both hands against the chain-link fence as the evening gale sends her floor-length blonde hair billowing like a golden cape. The blazing dusk sun paints her black leather dress and red eyes in cinematic rim light. Wide dramatic rooftop shot, detailed sunset sky.",
+    "promptTokens": [
+      "school_rooftop",
+      "chainlink_fence",
+      "blazing_sunset",
+      "wind_blown_hair",
+      "very_long_hair",
+      "blonde_hair",
+      "gothic_dress",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "both_hands_on_fence",
+      "looking_into_distance"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "chainlink_fence",
+      "sunset",
+      "sunset_sky",
+      "wind",
+      "very_long_hair",
+      "blonde_hair",
+      "gothic_dress",
+      "red_eyes",
+      "hands_on_fence",
+      "distant_gaze"
+    ],
+    "timeOfDay": "日落",
+    "title": "金色暗影 · 暮色天台的金晖拂面"
+  }
+}

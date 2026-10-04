@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "tohsaka_rin",
+  "revision": 1,
+  "sortOrder": 14,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tohsaka_rin",
+    "profile": {
+      "id": "tohsaka_rin",
+      "name": "远坂凛",
+      "alias": [
+        "Tohsaka Rin",
+        "遠坂凛"
+      ],
+      "type": "popular",
+      "icon": "💎",
+      "portrait": {
+        "image": "../assets/characters/popular-tohsaka_rin.png?v=5",
+        "alt": "远坂凛 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色双马尾",
+        "hair_color": "黑",
+        "eyes": "蓝",
+        "hairstyle": "高双马尾 · 红色蝴蝶结发带",
+        "uniform": "红黑配色制服 / 红色外套",
+        "expression": "傲娇自信 · 外冷内热",
+        "style": "proud tsundere mage",
+        "signature": "黑发双马尾、红丝带与蓝瞳"
+      },
+      "personality": [
+        "傲娇",
+        "聪明好胜",
+        "外冷内热",
+        "认真有计划",
+        "重情重义"
+      ],
+      "likes": [
+        "宝石魔术",
+        "远坂家的名誉",
+        "学校天台",
+        "（勉强承认的）搭档"
+      ],
+      "classic_cg": {
+        "title": "宝石工坊",
+        "description": "远坂宅的深夜工坊，宝石与魔术阵在烛光中泛光，她专注研习的身影一丝不苟。"
+      },
+      "identity": {
+        "role": "魔术师（远坂家当主）",
+        "age": "高中二年级",
+        "occupation": "学生 / 魔术师",
+        "faction": "冬木市远坂家"
+      },
+      "tags": [
+        "黑发双马尾",
+        "红丝带",
+        "蓝瞳",
+        "宝石魔术",
+        "傲娇"
+      ],
+      "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。黑发双马尾与红丝带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
+      "palette": [
+        "红",
+        "黑",
+        "宝石蓝"
+      ],
+      "weather": [
+        "学校天台",
+        "工坊烛光",
+        "冬木黄昏"
+      ],
+      "speech": "远坂凛向你致以问候。",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "tohsaka_rin",
+        "1girl",
+        "solo",
+        "long_brown_hair",
+        "twintails",
+        "black_hair_ribbons",
+        "blue_eyes",
+        "ahoge",
+        "fate/stay_night"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "tohsaka_rin",
+      "displayName": "远坂凛",
+      "originalName": "Tohsaka Rin",
+      "franchise": "Fate",
+      "aliases": [
+        "tohsaka_rin",
+        "rin",
+        "rin tohsaka",
+        "fate/stay night"
+      ],
+      "identityProse": "Tohsaka Rin from Fate/stay night, an elegant twin-tailed mage with long brown hair tied in twintails with black ribbons, aqua-blue eyes, and a tsundere expression.",
+      "identityTokens": [
+        "tohsaka rin",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "twintails",
+        "aqua_eyes",
+        "black_hair_ribbon",
+        "fate/stay_night"
+      ],
+      "exactTokens": [
+        "tohsaka_rin"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "morikura_en"
+      ]
+    }
+  }
+}

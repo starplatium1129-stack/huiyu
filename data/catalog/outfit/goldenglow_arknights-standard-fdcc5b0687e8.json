@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "goldenglow_arknights/standard",
+  "revision": 1,
+  "sortOrder": 341,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "goldenglow_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "理发师学徒工装",
+      "prose": "a white shirt with a yellow ascot scarf, a dark suspender pinafore dress, a black pleated skirt, asymmetric thighhighs and a hairdresser tool pouch with scissors",
+      "tokens": [
+        "white_shirt",
+        "scarf",
+        "pinafore_dress",
+        "black_clothes",
+        "pleated_skirt",
+        "thighhighs",
+        "scissors"
+      ]
+    }
+  }
+}

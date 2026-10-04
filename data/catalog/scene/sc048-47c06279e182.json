@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc048",
+  "revision": 1,
+  "sortOrder": 46,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a sunlit spring bedroom, Shiki Natsume lies half-covered by a blanket in a pale blue pajama shirt with white piping and shorts, slender bare legs with morning skin sheen, bare feet on sheets, holding the blanket edge for the viewer with a sleepy, gentle blush.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "枕边主观近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "温柔",
+    "id": "sc048",
+    "lighting": "春日柔和晨光",
+    "location": "同居公寓卧室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, blue_shirt, pajamas",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, open-front_negligee, black_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, reclining_on_pillows, looking_at_viewer, bedroom, soft_morning_light, sheer_curtains, sensual, playful_smile, blush, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "春",
+    "story": "【夏目 · 晨光叫醒的真心话】春日晨光穿过窗帘，夏目还缩在被子里熟睡。你替她挡住刺眼的光，她醒来后本想把脸藏起来，却发现你的手一直停在窗边。沉默几秒，她把被角分给你一半——「一直看别人睡觉很没礼貌。不过今天不用道歉……再躺十分钟，闹钟响了再起来。」",
+    "storyJa": "【夏目・朝の光で目覚めるという真実】春の朝の光がカーテンを通り抜け、夏目はまだ布団の中で丸まってぐっすり眠っていました。あなたは彼女のまぶしい光を遮りました。彼女が目を覚ましたとき、彼女は顔を隠そうとしましたが、あなたの手が窓の上に置かれていることに気づきました。数秒の沈黙の後、彼女はあなたにキルトの半分を渡します。――「人の寝顔をずっと見ているなんて失礼ね。でも今日は謝らなくていい……あと十分だけ、このまま。目覚ましが鳴ったら起きましょう。」",
+    "tags": [
+      "mole_under_eye",
+      "pajama_shirt",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "morning_light"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "晨光叫醒的真心话",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

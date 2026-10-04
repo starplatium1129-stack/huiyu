@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makima/casual",
+  "revision": 1,
+  "sortOrder": 235,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "casual",
+      "name": "私服",
+      "prose": "a relaxed casual outfit off the clock",
+      "tokens": [
+        "casual_clothes",
+        "shirt",
+        "skirt",
+        "open_jacket"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

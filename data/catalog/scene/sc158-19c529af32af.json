@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc158",
+  "revision": 1,
+  "sortOrder": 155,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as clear window sunlight streams across the frame.",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc158",
+    "lighting": "柔和窗光",
+    "location": "温馨卧室床榻",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, lingerie, camisole, lying_on_bed, lying_on_stomach, bare_shoulders, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, indoors, window_light, soft_lighting, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 午后床榻极致索求】白纱窗帘遮挡住午后的碎光，卧室里一片微热。宁宁完全褪去了繁琐的外衣，只穿着一件近乎透明的蕾丝吊带私服软软地趴在被窝里。她将泛着重度红晕的俏脸深深埋在枕头中，头顶的呆毛因为极度动情而完全软瘫成了一个极其工口的心形。她纤细的手指抓紧你衣角，半睁着水汪汪的含泪双眼凝视着你，声音带着温热的喘息——「柊史...不准只看着我...魔女身体的每一寸早就是你的私有财产了...快点抱紧我啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·午後のベッドの究極の追求】白いガーゼのカーテンが午後の日差しを遮り、寝室はほんのりと暖かかった。寧々は煩わしい上着を完全に脱いで、ほぼ透明なレースのサスペンダー私服だけを着て、ベッドにそっと横たわっていた。真っ赤に染まった可憐な顔を枕に深く埋め込み、頭頂部のアホ毛は完全にぐったりとして、極度の感情のせいで極めてエロティックなハート型になった。彼女の細い指があなたの服の裾をつかみ、彼女は半開きの涙ぐんだ目であなたを見つめ、声は温かく息づいていました。――「柊史……見ているだけじゃなくて、もっと近くへ来てください。今夜の寧々は……あなたに抱きしめてもらいたいんです。」",
+    "tags": [
+      "lingerie",
+      "camisole",
+      "hair_ribbon",
+      "ahoge",
+      "lying_on_bed",
+      "lying_on_stomach",
+      "bare_shoulders",
+      "heavy_blush",
+      "tears_in_eyes",
+      "heavy_breathing",
+      "bedroom",
+      "indoors",
+      "window_light",
+      "soft_lighting",
+      "cozy",
+      "warm_lighting",
+      "close_up"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "枕边契约的绝对私密印记",
+    "usage": [
+      "壁纸级",
+      "核心协议",
+      "R15"
+    ],
+    "weather": "微热"
+  }
+}

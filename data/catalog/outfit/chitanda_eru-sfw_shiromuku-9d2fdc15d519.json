@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/sfw_shiromuku",
+  "revision": 1,
+  "sortOrder": 830,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "sfw_shiromuku",
+      "name": "白无垢婚礼和服",
+      "prose": "a formal opaque white shiromuku wedding kimono, white brocade obi, layered white uchikake and a simple white bridal hair ornament",
+      "tokens": [
+        "shiromuku",
+        "white_kimono",
+        "white_uchikake",
+        "white_obi",
+        "bridal_hair_ornament"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

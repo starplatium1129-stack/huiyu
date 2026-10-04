@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/sfw_winter_trenchcoat_boots",
+  "revision": 1,
+  "sortOrder": 220,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "sfw_winter_trenchcoat_boots",
+      "name": "雪街束腰风衣与高跟长靴",
+      "prose": "a camel double-breasted winter trench coat fastened and belted over a black turtleneck and pencil skirt, with opaque black tights and knee-high black leather heeled boots",
+      "tokens": [
+        "camel_trench_coat",
+        "belted_coat",
+        "closed_coat",
+        "black_turtleneck",
+        "pencil_skirt",
+        "black_tights",
+        "knee_high_boots",
+        "heeled_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

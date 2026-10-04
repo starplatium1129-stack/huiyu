@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/gal_casual",
+  "revision": 1,
+  "sortOrder": 272,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "gal_casual",
+      "isDefault": false,
+      "name": "日常辣妹",
+      "prose": "a bright gyaru street outfit with a cropped top and skirt",
+      "tokens": [
+        "gyaru",
+        "crop_top",
+        "miniskirt",
+        "sneakers",
+        "casual_clothes"
+      ]
+    }
+  }
+}

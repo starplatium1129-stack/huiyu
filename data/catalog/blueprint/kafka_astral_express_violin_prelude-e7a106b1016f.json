@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_astral_express_violin_prelude",
+  "revision": 1,
+  "sortOrder": 1035,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_astral_express_violin_prelude",
+    "title": "卡芙卡 · 空间站虚空小提琴",
+    "category": "经典开场",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 空间站虚空小提琴】黑塔空间站幽蓝全息回廊之中，反物质军团入侵的警报声回荡在空旷大厅。卡芙卡优雅侧身架起虚空中的无形小提琴，指尖拉动看不见的琴弓，酒红长发在气流中微扬，神情从容自若犹如在指挥一场盛大的交响乐——「听到了吗？这是为艾利欧预见的未来所奏响的序曲。」",
+    "location": "空间站「黑塔」全息控制回廊",
+    "action": "优雅侧身架起虚空中的无形小提琴，单手虚拉琴弓，眼眸低垂神情从容优雅",
+    "timeOfDay": "空间站人造光",
+    "lighting": "冷蓝全息光幕与头顶科幻环形灯带",
+    "camera": "cowboy shot, dynamic angle",
+    "mood": "神秘优雅",
+    "sceneTags": [
+      "space_station",
+      "herta_space_station",
+      "hologram",
+      "futuristic_corridor",
+      "playing_violin",
+      "air_violin",
+      "miming",
+      "spider_web_tights",
+      "sunglasses_on_head",
+      "composed_smile"
+    ],
+    "promptProse": "Miming an invisible violin performance in the sleek corridor of Herta Space Station, Kafka smiles with enigmatic, theatrical composure. Floating holographic monitors and cool blue ambient lights frame her mesmerizing, graceful air-concert.",
+    "promptTokens": [
+      "space_station",
+      "futuristic_corridor",
+      "playing_air_violin",
+      "miming",
+      "sunglasses_on_head",
+      "composed_smile",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_hunter_coat",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_asuna/cleaning_maid",
+  "revision": 1,
+  "sortOrder": 519,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ichinose_asuna",
+    "outfit": {
+      "default": false,
+      "id": "cleaning_maid",
+      "isDefault": false,
+      "name": "C&C 特勤女仆战术制服",
+      "prose": "Millennium C&C combat maid uniform: frilled white maid headband, short-sleeved tailored black maid dress with a white apron, sweetheart neckline, tactical sidearm leather holster strapped to her thigh over sheer black stockings, and combat heels",
+      "tokens": [
+        "maid",
+        "maid_dress",
+        "maid_apron",
+        "maid_headdress",
+        "cleavage",
+        "thighhighs",
+        "black_thighhighs",
+        "holster",
+        "high_heels",
+        "millennium_science_school"
+      ]
+    }
+  }
+}

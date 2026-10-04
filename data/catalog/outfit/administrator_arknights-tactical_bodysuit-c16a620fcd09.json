@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "administrator_arknights/tactical_bodysuit",
+  "revision": 1,
+  "sortOrder": 431,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "administrator_arknights",
+    "outfit": {
+      "default": false,
+      "id": "tactical_bodysuit",
+      "isDefault": false,
+      "name": "中枢轻量战巡服",
+      "prose": "a sleek black and charcoal form-fitting tactical compression bodysuit with gold tech lines and fingerless combat gloves",
+      "tokens": [
+        "bodysuit",
+        "tight_clothes",
+        "black_bodysuit",
+        "fingerless_gloves",
+        "thigh_holster",
+        "boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "sylphiette_grayrat_kitchen_morning",
+  "revision": 1,
+  "sortOrder": 472,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "穿着宽松睡衣哼着歌准备早餐",
+    "adult": false,
+    "camera": "medium shot, turning bacon and fried eggs in a frying pan at the country stove",
+    "category": "温馨日常",
+    "characterId": "sylphiette",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【希露菲 · 新婚宅邸晨间】飘散着刚出炉面包香气的新家厨房里，希露菲穿着可爱的宽松居家服，一边哼着轻快的家乡小调一边熟练地翻动平底锅里的培根煎蛋。听到你的脚步声，她回过头笑靥如花——「早餐马上就好啦！快去洗手坐好，今天也为你准备了满满的能量哦！」",
+    "id": "sylphiette_grayrat_kitchen_morning",
+    "lighting": "soft_morning_light",
+    "location": "格雷拉特家厨房",
+    "mood": "cozy",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "dark shadowed face",
+      "flat lighting",
+      "extra characters",
+      "night",
+      "outdoor",
+      "modern",
+      "crowd",
+      "empty scene",
+      "deserted"
+    ],
+    "outfitId": "oversized_nightshirt",
+    "promptProse": "Cooking bacon and fried eggs in the sunny kitchen while wearing an oversized nightshirt, Sylphiette turns toward the doorway with a radiant, loving smile. Warm morning sunlight and the aroma of fresh bread create a blissful newlywed domestic scene.",
+    "promptTokens": [
+      "kitchen",
+      "cooking_breakfast",
+      "frying_pan",
+      "bacon",
+      "fried_egg",
+      "oversized_shirt",
+      "morning_sunlight",
+      "happy_smile",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "kitchen",
+      "morning_sunlight",
+      "cooking",
+      "breakfast",
+      "cozy",
+      "home",
+      "oversized_shirt",
+      "bare_shoulders"
+    ],
+    "timeOfDay": "morning",
+    "title": "希露菲叶特 · 新婚宅邸晨间"
+  }
+}

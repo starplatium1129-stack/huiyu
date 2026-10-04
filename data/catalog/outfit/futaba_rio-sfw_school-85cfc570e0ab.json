@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/sfw_school",
+  "revision": 1,
+  "sortOrder": 36,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "科学部校服与白大褂",
+      "prose": "a white laboratory coat over a fully buttoned school blouse and navy skirt, with plain glasses",
+      "tokens": [
+        "labcoat",
+        "school_blouse",
+        "navy_skirt",
+        "glasses"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

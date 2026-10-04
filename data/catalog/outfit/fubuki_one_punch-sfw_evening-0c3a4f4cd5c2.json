@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/sfw_evening",
+  "revision": 1,
+  "sortOrder": 905,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "sfw_evening",
+      "name": "晚间端庄聚会装",
+      "prose": "a long-sleeved emerald dress with a modest neckline and pearl necklace",
+      "tokens": [
+        "emerald_dress",
+        "long_sleeves",
+        "high_neck",
+        "pearl_necklace"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

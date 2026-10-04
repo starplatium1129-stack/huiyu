@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/school_swimsuit",
+  "revision": 1,
+  "sortOrder": 651,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "school_swimsuit",
+      "name": "深蓝连体竞技死库水",
+      "prose": "classic Japanese navy blue one-piece school competition swimsuit (sukumizu), white name tag stitched on the chest, form-fitting stretch fabric accentuating her voluptuous bust, white swim cap held in hand, and bare feet on poolside tiles",
+      "tokens": [
+        "swimsuit",
+        "school_swimsuit",
+        "one-piece_swimsuit",
+        "navy_blue_swimsuit",
+        "cleavage",
+        "wet_skin",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

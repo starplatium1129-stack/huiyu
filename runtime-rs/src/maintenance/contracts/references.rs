@@ -2,7 +2,11 @@ use super::*;
 use crate::file_paths;
 use std::path::PathBuf;
 
-pub(super) fn validate(root: &Path, assets_root: Option<&Path>, issues: &mut Vec<String>) -> Value {
+pub(super) fn validate(
+    root: &DataRoot,
+    assets_root: Option<&Path>,
+    issues: &mut Vec<String>,
+) -> Value {
     let view = match read(root, "data/character-reference-view.json") {
         Ok(v) => v,
         Err(error) => {

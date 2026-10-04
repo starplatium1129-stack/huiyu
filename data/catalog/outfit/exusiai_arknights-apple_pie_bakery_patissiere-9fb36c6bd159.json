@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/apple_pie_bakery_patissiere",
+  "revision": 1,
+  "sortOrder": 365,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "default": false,
+      "id": "apple_pie_bakery_patissiere",
+      "isDefault": false,
+      "name": "甜心烘焙师·苹果派围裙装",
+      "prose": "a warm home-baking outfit: a cream loose-knit sweater, beige pleated mini skirt, brown cotton tights, and a vintage beige strap apron with a small apple print",
+      "tokens": [
+        "loose_knit",
+        "sweater",
+        "pleated_skirt",
+        "apron",
+        "baking",
+        "tights"
+      ]
+    }
+  }
+}

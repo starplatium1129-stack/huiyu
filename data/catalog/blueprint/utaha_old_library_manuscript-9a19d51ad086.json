@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_old_library_manuscript",
+  "revision": 1,
+  "sortOrder": 1431,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_old_library_manuscript",
+    "title": "霞之丘诗羽 · 旧书馆的稿纸晨光·「灵感这种东西，是偷懒者的借口」",
+    "category": "校园日常",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【学校旧书馆·清晨】晨光从高窗落下，诗羽坐在旧书架间的长桌前，稿纸铺满桌面。她咬着钢笔尾端思考的样子罕见地认真，白衬衫的袖口挽到手肘——「嗯？被看到了呢……灵感这种东西是偷懒者的借口。写作，靠的是纪律。……不过，你坐过来的话，效率确实会变高就是了。」",
+    "location": "旧书馆长桌",
+    "action": "咬笔杆思考写稿，挽袖白衬衫，红瞳认真",
+    "timeOfDay": "清晨",
+    "lighting": "高窗落下的丁达尔晨光",
+    "camera": "medium shot, manuscript writing, dust motes, focused mood",
+    "mood": "作家纪律、罕见认真",
+    "sceneTags": [
+      "library",
+      "writing",
+      "holding_pen",
+      "papers",
+      "sleeves_rolled_up",
+      "morning",
+      "focused",
+      "daily"
+    ],
+    "promptProse": "Kasumigaoka Utaha sits at a long table among the old stacks in morning light, manuscript pages spread across the wood as she bites the end of her fountain pen in rare, genuine concentration, white sleeves rolled to her elbows. Sunbeams slant between the bookshelves with drifting dust motes, and without looking up she admits that her writing efficiency does measurably improve when you sit nearby. Medium shot, cinematic lighting, volumetric god rays, detailed library background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "school_uniform",
+      "white_shirt",
+      "sleeves_rolled_up",
+      "sitting",
+      "writing",
+      "holding_pen",
+      "papers",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "bangs",
+      "library",
+      "morning",
+      "light_rays",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "official_toyogasaki_uniform",
+    "coverageTags": [
+      "daily",
+      "school"
+    ]
+  }
+}

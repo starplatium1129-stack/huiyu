@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 846,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, sweet and voluptuous body with golden-blonde hair spilling loose over her shoulders, full rounded breasts with soft peach-pink nipples, a gentle tummy, and smooth radiant porcelain skin",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "plump_body",
+        "pale_skin"
+      ]
+    }
+  }
+}

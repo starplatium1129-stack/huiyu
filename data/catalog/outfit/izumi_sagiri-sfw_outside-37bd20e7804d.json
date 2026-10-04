@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/sfw_outside",
+  "revision": 1,
+  "sortOrder": 857,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "sfw_outside",
+      "name": "初次外出的帽衫便装",
+      "prose": "a zipped pink hoodie over a white T-shirt, loose blue jeans, a sun cap and a plain face mask",
+      "tokens": [
+        "pink_hoodie",
+        "t-shirt",
+        "jeans",
+        "cap",
+        "face_mask"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

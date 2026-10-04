@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "artoria_pendragon",
+  "revision": 1,
+  "sortOrder": 6,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "artoria_pendragon",
+    "profile": {
+      "id": "artoria_pendragon",
+      "name": "阿尔托莉雅",
+      "alias": [
+        "Artoria Pendragon",
+        "阿尔托莉雅·潘德拉贡",
+        "セイバー"
+      ],
+      "type": "popular",
+      "icon": "⚔️",
+      "portrait": {
+        "image": "../assets/characters/popular-artoria_pendragon.png?v=5",
+        "alt": "Saber 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金发 · 低盘发",
+        "hair_color": "金",
+        "eyes": "绿",
+        "hairstyle": "骑士盘发 · 呆毛",
+        "uniform": "蓝白铠裙（礼服+甲胄）",
+        "expression": "冷峻自律 · 庄严骑士王",
+        "style": "dignified knight king",
+        "signature": "金发绿眼、呆毛与蓝白铠裙"
+      },
+      "personality": [
+        "冷峻自律",
+        "骑士道",
+        "使命感极强",
+        "庄严正直",
+        "克制"
+      ],
+      "likes": [
+        "骑士的荣誉",
+        "剑术",
+        "王的责任",
+        "（隐藏的）美食"
+      ],
+      "classic_cg": {
+        "title": "月下现身",
+        "description": "冬木市月夜，路灯下她自光芒中现身，蓝白铠裙与誓约胜利之剑在月色中泛光。"
+      },
+      "identity": {
+        "role": "不列颠骑士王（英灵 Saber）",
+        "age": "英灵（生前 15 岁即位）",
+        "occupation": "Servant（剑之骑士）",
+        "faction": "卫宫士郎契约"
+      },
+      "tags": [
+        "金发",
+        "绿眼",
+        "呆毛",
+        "蓝白铠裙",
+        "圣剑"
+      ],
+      "bg_story": "Saber 即阿尔托莉雅·潘德拉贡，不列颠传说中的亚瑟王，以 Servant 身份现于现代冬木市。庄严肃穆的骑士王气质与蓝白铠裙是核心识别。场景可兼容现代都市月下与中世纪王座两种语境。",
+      "palette": [
+        "骑士蓝",
+        "白",
+        "圣剑金"
+      ],
+      "weather": [
+        "月夜",
+        "王座厅斜光",
+        "决战黄昏"
+      ],
+      "speech": "阿尔托莉雅向你致以问候。",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "artoria_pendragon",
+        "saber (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "braided_bun",
+        "hair_bun",
+        "blue_hair_ribbon",
+        "ahoge",
+        "green_eyes",
+        "fate/stay_night"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "artoria_pendragon",
+      "displayName": "阿尔托莉雅",
+      "originalName": "Artoria Pendragon",
+      "franchise": "Fate",
+      "aliases": [
+        "artoria_pendragon",
+        "artoria_pendragon_(fate)",
+        "saber",
+        "artoria",
+        "king arthur",
+        "fate/stay night",
+        "artoria_pendragon (fate)"
+      ],
+      "identityProse": "Artoria Pendragon (Saber) from Fate/stay night, the noble King of Knights with braided golden-blonde hair tied in a bun with a blue ribbon, emerald green eyes, and an ahoge.",
+      "identityTokens": [
+        "artoria pendragon (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "braided_bun",
+        "green_eyes",
+        "ahoge",
+        "fate/stay_night"
+      ],
+      "exactTokens": [
+        "artoria_pendragon (fate)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate）",
+        "era": "当代+中世纪英灵",
+        "formNotes": "金发绿眼呆毛；蓝白铠裙；圣剑 Excalibur",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot, emiya-san chi no kyou no gohan",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "so-bin"
+      ]
+    }
+  }
+}

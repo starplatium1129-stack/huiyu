@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_d_arc/official_ruler_flag_armor",
+  "revision": 1,
+  "sortOrder": 125,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_d_arc",
+    "outfit": {
+      "id": "official_ruler_flag_armor",
+      "name": "白银胸铠圣旗Ruler圣装",
+      "prose": "white-and-blue Ruler armored vestments with a silver breastplate, faulds, gauntlets and white cape, carrying the sacred banner Luminosite Eternelle, with golden hair in a long braid",
+      "tokens": [
+        "white_dress",
+        "armored_dress",
+        "breastplate",
+        "faulds",
+        "gauntlets",
+        "white_cape",
+        "flag",
+        "holding_flag",
+        "holding_polearm",
+        "luminosite_eternelle",
+        "braid"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/mage_battle",
+  "revision": 1,
+  "sortOrder": 81,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "mage_battle",
+      "name": "魔术战斗",
+      "prose": "her mage combat outfit with glowing magic circuits and gems",
+      "tokens": [
+        "magic_circuits",
+        "jewelry",
+        "dress",
+        "glowing",
+        "long_sleeves"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

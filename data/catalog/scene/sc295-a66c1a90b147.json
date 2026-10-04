@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc295",
+  "revision": 1,
+  "sortOrder": 290,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Late at night in the cozy old station-side inn room, Shiki Natsume sits relaxed on the edge of the bed in an intimate cowboy shot. Wearing a loosely tied cotton yukata after her bath with a white towel draped over one bare shoulder, droplets of warm water glisten along her collarbone and wet black hair clings to her neck; With a tender, gentle smile and a soft blush, she pats the mattress beside her, illuminated by the warm room light while faint platform lights flicker through the window, no text, no extra people.",
+    "auditRevision": "skill-refine-sc295-2026-09-05",
+    "camera": "床沿七分身亲密平视",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "旅途末尾的松弛与依恋",
+    "id": "sc295",
+    "lighting": "旅馆温馨暖调吊灯与窗外站台微弱清冷夜光交融",
+    "location": "小站旁的老旅馆客房",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, japanese_yukata, loose_yukata, bare_shoulders, collarbone, water_droplets, wet_skin, white_towel_around_neck, sitting_on_bed, bed_edge, bare_legs, hand_patting_bed, sideways_glance, relaxed_smile, subtle_blush, looking_at_viewer, traditional_inn_room, tatami, window, night, station_platform_lights_outside, warm_ambient_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【成年 After Story · 夏目 · 车站旅馆的最后一夜】旅行最后一晚错过了末班车，两人在小站旁边的老旅馆找到最后一间房。房间很小，窗户正对着车站月台，夜里只剩下零星几盏灯。夏目洗完澡出来，穿着旅馆的浴衣，用毛巾擦着湿漉漉的黑发。她站在窗前往外看了一会儿，然后转身坐到床沿，浴衣的下摆在她坐下时微微敞开，露出修长的腿线。她拍了拍身边的位置，语气里带着旅途特有的那种松弛——「床不算大……不过应该够两个人躺。前提是你不乱动。」她把毛巾挂在一旁，侧过脸看着你，湿发贴着脖颈，水珠顺着锁骨往下滑。窗外的站台灯光在她瞳孔里微微晃动，她低声补了一句——「明天就要回去了……今晚至少暖气够足。」",
+    "storyJa": "【夏目・大人のAfter Story・駅前旅館の最後の夜】旅行最終日、終電を逃した二人は小さな駅の近くの古い旅館で最後の一室を見つけた。部屋は狭く、窓は駅のホームに面しており、夜になると数少ない灯りだけが残っていた。夏目は風呂から上がり、旅館の浴衣を着て、タオルで濡れた黒い髪を拭いていた。彼女は窓辺に立ってしばらく外を眺め、それから振り返ってベッドの端に腰かけた。浴衣の裾が座った拍子に少し開き、細い脚のラインが覗いた。彼女は隣の場所を軽く叩き、旅特有のくつろいだ口調で言った——「ベッドは大きくないけど……二人で寝るには十分。ただし、変に動かないって約束して。」タオルを脇に掛け、顔を向けてあなたを見た。濡れた髪が首に貼りつき、水滴が鎖骨を伝って落ちていった。窓の外のホームの灯りが彼女の瞳の中で微かに揺れていた。彼女は低い声で付け加えた——「明日には帰るけど……今夜は少なくとも暖房が十分効いてるから。」",
+    "tags": [
+      "mole_under_eye",
+      "yukata",
+      "loose_yukata",
+      "wet_hair",
+      "water_droplets",
+      "towel_on_shoulders",
+      "sitting_on_bed",
+      "bed_edge",
+      "bare_shoulders",
+      "collarbone",
+      "slender_legs",
+      "patting_bed",
+      "relaxed",
+      "tender_expression",
+      "inn_room",
+      "night",
+      "station_platform_lights",
+      "cowboy_shot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "车站旅馆的最后一夜",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "冬夜晴朗"
+  }
+}

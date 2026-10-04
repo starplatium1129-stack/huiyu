@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_shrine_veranda_tea_sweets",
+  "revision": 1,
+  "sortOrder": 1146,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐捧着红豆点心偷吃，两颊鼓鼓，被撞见瞬间慌乱藏在身后，脸颊通红",
+    "camera": "medium shot, seated eye-level, intimate charming framing",
+    "category": "日常甜美",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【朝武芳乃 · 暖阳缘侧的金锷烧偷欢】静谧温暖的神社中庭木质回廊下，微风吹落数片粉白花瓣。芳乃优雅地并膝端坐在缘侧垫子上，平日冷淡端庄的千金巫女，此刻双手捧着一块咬了一小口的金锷烧红豆点心。她两颊鼓鼓的泛着红晕，眼眸微眯满是幸福陶醉，在被将臣突然撞破时，像受惊的小鹿一样慌忙把点心藏在身后——「将、将臣先生？！不、这不是您想的那样，在下只是在做甜度检定而已……！」",
+    "id": "yoshino_shrine_veranda_tea_sweets",
+    "lighting": "庭院树荫洒下的斑驳温润金光与走廊木地板反射",
+    "location": "神社内苑木质回廊走廊坐垫旁",
+    "mood": "反差娇萌",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_maiden",
+    "promptProse": "Sitting in refined posture on a sunlit cedar veranda, Yoshino secretly nibbles a sweet red-bean kintsuba pastry with pure bliss across her blushing face. Golden afternoon warmth highlights her elegant silver twin tails and cherry blossom pin as she flusters in adorable surprise.",
+    "promptTokens": [
+      "wooden_veranda",
+      "engawa",
+      "eating_sweets",
+      "miko_attire",
+      "seiza",
+      "heavy_blush",
+      "flustered",
+      "hair_flower",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "veranda",
+      "engawa",
+      "sweets",
+      "eating",
+      "blushing",
+      "flustered",
+      "miko",
+      "twintails",
+      "hair_flower"
+    ],
+    "timeOfDay": "午后",
+    "title": "朝武芳乃 · 暖阳缘侧的金锷烧偷欢"
+  }
+}

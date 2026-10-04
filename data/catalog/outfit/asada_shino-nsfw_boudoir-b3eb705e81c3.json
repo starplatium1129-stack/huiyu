@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 754,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "朝田诗乃·成人私密造型",
+      "prose": "a private adult ensemble built around bodysuit, completely_nude, dressing_room",
+      "tokens": [
+        "bodysuit",
+        "completely_nude",
+        "dressing_room"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

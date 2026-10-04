@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc003",
+  "revision": 1,
+  "sortOrder": 2,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Perched upon a weathered bench on the school rooftop during golden hour, Ayachi Nene holds open a colorful bento box with a sweet, blushing gaze directed toward the viewer. Her silver-white low twintails and pink ribbons catch the dramatic sunset rays, highlighting the silky weave of her sheer black thigh-high stockings and clearly framing her polished school loafers resting on the rooftop floor.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "侧后方半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "紧张",
+    "id": "sc003",
+    "lighting": "夕阳逆光与海面反光",
+    "location": "天台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_prominent_pink_hair_ribbons_tying_low_twintails, wearing_classic_stella_school_uniform_and_navy_pleated_skirt, sheer_black_thighhigh_socks_with_white_stripes, sitting_on_rooftop_wooden_bench_with_knees_together, opening_bento_box_on_lap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_resting_on_concrete_floor, looking_up_with_shy_teasing_smile, school_rooftop_at_golden_sunset, dramatic_orange_and_purple_clouds, chain-link_fence_with_fluttering_ribbons, cinematic_lighting, depth_of_field, full_body, @rella",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 只告诉你的天台秘密】放学后的天台被夏日晚风吹得格外安静，远处海面正吞下最后一层夕光。宁宁扶着栏杆，把一直不敢说出口的烦恼讲到一半，又因为你的注视紧张地捏住裙角。她深吸一口气，终于没有逃开——「我不是想让你替我解决一切……只是觉得，如果是你的话，可以知道真正的我。」",
+    "storyJa": "【寧々・屋上の秘密を教えてください】放課後の屋上は夏の夜風のせいで特に静かで、遠くの海は夕焼けの光の最後の層を飲み込んでいた。寧々は手すりにつかまり、表現するのが怖かった悩みについて話している途中で、あなたの視線を気にして緊張しながらスカートの角をつねっています。彼女は深呼吸をした、そしてついに逃げなかった――「何もかも解決してほしいわけじゃないんです……ただ、あなたになら本当の私を知ってもらってもいいって、そう思っただけで。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "rooftop",
+      "holding_railing",
+      "pinching_skirt_hem",
+      "nervous",
+      "sunset",
+      "sea",
+      "loafers",
+      "depth_of_field",
+      "medium_shot",
+      "sheer_white_thighhigh_stockings",
+      "standing_at_railing"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "只告诉你的天台秘密",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

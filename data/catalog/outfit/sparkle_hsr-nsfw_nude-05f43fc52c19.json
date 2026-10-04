@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 579,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely naked and petite body, with glossy black twintails cascading across her shoulders, perky natural breasts with tender pink nipples, slender waist, and smooth fair skin",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "small_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
+      ]
+    }
+  }
+}

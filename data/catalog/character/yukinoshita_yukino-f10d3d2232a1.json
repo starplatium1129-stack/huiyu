@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "yukinoshita_yukino",
+  "revision": 1,
+  "sortOrder": 9,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yukinoshita_yukino",
+    "profile": {
+      "id": "yukinoshita_yukino",
+      "name": "雪之下雪乃",
+      "alias": [
+        "Yukinoshita Yukino",
+        "雪ノ下雪乃"
+      ],
+      "type": "popular",
+      "icon": "📖",
+      "portrait": {
+        "image": "../assets/characters/popular-yukinoshita_yukino.png?v=5",
+        "alt": "雪之下雪乃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长直发（黑长直）",
+        "hair_color": "黑",
+        "eyes": "蓝",
+        "hairstyle": "黑长直 · 后颈束起 · 刘海遮额",
+        "uniform": "总武高校服 / 冬季外套围巾",
+        "expression": "清冷高冷 · 冰山美人",
+        "style": "cool black-haired beauty",
+        "signature": "黑长直、蓝瞳与清冷气质"
+      },
+      "personality": [
+        "冰山美人",
+        "高冷毒舌",
+        "理性独立",
+        "认真负责",
+        "外冷内热"
+      ],
+      "likes": [
+        "读书",
+        "茶",
+        "安静",
+        "独自解决问题"
+      ],
+      "classic_cg": {
+        "title": "侍奉部的午后",
+        "description": "旧教室里，她安静地读书，一杯茶在手边冒热气——侍奉部的日常。"
+      },
+      "identity": {
+        "role": "侍奉部副部长",
+        "age": "高中二年级",
+        "occupation": "学生",
+        "faction": "总武高中侍奉部"
+      },
+      "tags": [
+        "黑长直",
+        "蓝瞳",
+        "清冷",
+        "侍奉部",
+        "书"
+      ],
+      "bg_story": "雪之下雪乃是《春物》的女主角之一，侍奉部副部长。黑长直与清冷毒舌之下是认真与温柔。场景应偏现代校园、冬季街头与图书馆。",
+      "palette": [
+        "夜黑",
+        "冰山蓝",
+        "茶褐"
+      ],
+      "weather": [
+        "雪夜",
+        "图书馆午后",
+        "侍奉部窗光"
+      ],
+      "speech": "雪之下雪乃向你致以问候。",
+      "source": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
+      "traits": [
+        "yukinoshita_yukino",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "blue_eyes",
+        "ahoge",
+        "red_hair_ribbons",
+        "side_locks",
+        "beauty_mark",
+        "oregairu"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "yukinoshita_yukino",
+      "displayName": "雪之下雪乃",
+      "originalName": "Yukinoshita Yukino",
+      "franchise": "Oregairu",
+      "aliases": [
+        "yukinoshita_yukino",
+        "yukino",
+        "yukino yukinoshita",
+        "oregairu",
+        "yahari ore no seishun"
+      ],
+      "identityProse": "Yukinoshita Yukino from Oregairu, an elegant high-school student with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityTokens": [
+        "yukinoshita_yukino",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "blue_eyes",
+        "ahoge",
+        "red_hair_ribbons",
+        "side_locks",
+        "beauty_mark",
+        "oregairu"
+      ],
+      "exactTokens": [
+        "yukinoshita_yukino"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代校园（春物）",
+        "era": "当代",
+        "formNotes": "黑长直蓝眼；侍奉部；清冷气质",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ]
+    }
+  }
+}

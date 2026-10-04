@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "rem_rezero",
+  "revision": 1,
+  "sortOrder": 15,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rem_rezero",
+    "profile": {
+      "id": "rem_rezero",
+      "name": "雷姆",
+      "alias": [
+        "Rem",
+        "レム"
+      ],
+      "type": "popular",
+      "icon": "🪄",
+      "portrait": {
+        "image": "../assets/characters/popular-rem_rezero.png?v=5",
+        "alt": "雷姆 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "蓝色短发（遮住右眼）",
+        "hair_color": "蓝",
+        "eyes": "蓝",
+        "hairstyle": "齐颈短发 · 发鬓 · 遮眼",
+        "uniform": "黑白女仆装",
+        "expression": "倔强忠诚 · 温柔与果断并存",
+        "style": "devoted oni maid",
+        "signature": "蓝发蓝眼、隐藏独角与女仆装"
+      },
+      "personality": [
+        "倔强忠诚",
+        "温柔",
+        "杀伐果断",
+        "自我牺牲倾向",
+        "崇拜姐姐拉姆"
+      ],
+      "likes": [
+        "侍奉",
+        "宅邸的日常",
+        "重要的人",
+        "（隐藏的）自卑"
+      ],
+      "classic_cg": {
+        "title": "月光庭院",
+        "description": "罗兹瓦尔宅的月下庭院，她静静整理花丛——女仆的温柔藏在夜色里。"
+      },
+      "identity": {
+        "role": "鬼族女仆（罗兹瓦尔宅）",
+        "age": "17 岁（鬼族）",
+        "occupation": "女仆",
+        "faction": "罗兹瓦尔宅邸"
+      },
+      "tags": [
+        "蓝发",
+        "蓝瞳",
+        "女仆装",
+        "鬼族",
+        "独角"
+      ],
+      "bg_story": "雷姆是《Re:Zero》中罗兹瓦尔宅邸的鬼族女仆，蓝发蓝眼（官方立绘），隐藏单角。黑白色女仆装与晨星流星锤是标志。场景应偏奇幻宅邸、月光与雨夜。",
+      "palette": [
+        "女仆黑",
+        "雷姆蓝",
+        "白"
+      ],
+      "weather": [
+        "宅邸晴日",
+        "月光庭院",
+        "雨夜"
+      ],
+      "speech": "雷姆向你致以问候。",
+      "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+      "traits": [
+        "rem (re zero)",
+        "1girl",
+        "solo",
+        "short_blue_hair",
+        "blue_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "flower_hair_clip",
+        "hair_ribbon",
+        "maid_headdress",
+        "re:zero"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "rem_rezero",
+      "displayName": "雷姆",
+      "originalName": "Rem",
+      "franchise": "Re:Zero",
+      "aliases": [
+        "rem (re zero)",
+        "rem rezero",
+        "re zero",
+        "rem from re zero"
+      ],
+      "identityProse": "Rem from Re:Zero, a devoted oni maid with short cerulean blue hair covering one eye, sweet light blue eyes, and a white lace maid headdress.",
+      "identityTokens": [
+        "rem (re:zero)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "blue_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "maid_headdress",
+        "re:zero"
+      ],
+      "exactTokens": [
+        "rem (re zero)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "蓝发蓝眼（官方立绘为准）；隐藏鬼角；黑白色女仆装；晨星流星锤",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "anmi"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon_alter/sfw_breakfast_sweater",
+  "revision": 1,
+  "sortOrder": 122,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "artoria_pendragon_alter",
+    "outfit": {
+      "id": "sfw_breakfast_sweater",
+      "name": "晨间宽松卫衣便服",
+      "prose": "an oversized dark biker-style sweatshirt with comfortable black trousers, with platinum-blonde hair secured in a braided bun",
+      "tokens": [
+        "oversized_sweatshirt",
+        "black_pants",
+        "hair_bun"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

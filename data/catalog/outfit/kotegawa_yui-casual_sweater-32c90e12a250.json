@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kotegawa_yui/casual_sweater",
+  "revision": 1,
+  "sortOrder": 683,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kotegawa_yui",
+    "outfit": {
+      "default": false,
+      "id": "casual_sweater",
+      "isDefault": false,
+      "name": "休日端庄开衫百褶长裙",
+      "prose": "modest and ladylike weekend casual attire: an ivory knitted cardigan buttoned modestly over a pastel lavender blouse, high-waisted pleated navy mid-length skirt, sheer black tights, brown low-heeled strap shoes, and a leather handbag",
+      "tokens": [
+        "casual",
+        "cardigan",
+        "knit_cardigan",
+        "blouse",
+        "pleated_skirt",
+        "pantyhose",
+        "black_pantyhose",
+        "shoes",
+        "white_hairband"
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc042",
+  "revision": 1,
+  "sortOrder": 40,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "After the apartment heater stops, Shiki Natsume settles on her side beneath the extra blanket with her back toward the viewer. She wears a black camisole and long grey pajama trousers. One hand reaches backward from under the blanket to find the viewer's palm, and her reddened ear is visible against the pillow. Only the bedside lamp lights this quiet winter-night close view.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "枕边侧面与毯外牵手近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "羞怯",
+    "id": "sc042",
+    "lighting": "单一暖色床头灯",
+    "location": "同居公寓卧室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_camisole, grey_pajama_trousers, lying_on_side, back_to_viewer, under_blanket, hand_reaching_back, holding_hands, pillow, blushing_ear, bedroom, winter_night, bedside_lamp, warm_dim_light, close_up, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【夏目 · 深夜被窝里的借口】冬夜公寓的暖气突然停摆，夏目抱着备用毯子来到卧室，先替你盖好一半，才在另一侧躺下。她背对着你坚持说只是节省取暖空间，几分钟后却悄悄把冰冷的手指塞进你的掌心——「不准笑。这里确实比较暖……今晚借我一点位置，明天我会把毯子洗好。」",
+    "storyJa": "【夏目・夜遅くまで寝ている言い訳】ある冬の夜、アパートの暖房が突然止まりました。夏目が予備の毛布を持って寝室にやって来ました。彼女はあなたのために半分を覆ってから、反対側に横になりました。彼女はあなたに背を向けて、暖房のためのスペースを確保しているだけだと主張しましたが、数分後、静かに冷たい指をあなたの手のひらに置きました。――「笑わないで。ここが本当に暖かいだけ……今夜は少し場所を借りるわ。毛布は明日、ちゃんと洗って返すから。」",
+    "tags": [
+      "black_camisole",
+      "grey_pajama_trousers",
+      "lying_on_side",
+      "back_to_viewer",
+      "under_blanket",
+      "hand_reaching_back",
+      "holding_hands",
+      "pillow",
+      "blushing_ear",
+      "bedroom",
+      "winter_night",
+      "bedside_lamp",
+      "warm_dim_light",
+      "close_up"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "深夜被窝里的借口",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

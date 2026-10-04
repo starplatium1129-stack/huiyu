@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_sauce_wipe_flustered_reaction",
+  "revision": 1,
+  "sortOrder": 223,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_sauce_wipe_flustered_reaction",
+    "title": "黑呆 · 擦拭唇角酱汁的瞳孔地震",
+    "category": "反差娇羞",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 擦拭唇角酱汁的瞳孔地震】快餐店靠窗的卡座里，吃完炸鸡的黑呆嘴角还留着一点红色的番茄酱。当你突然伸出指尖轻柔地抚过她的唇瓣为她擦去酱汁、并微笑着放入口中尝了一下时，这位杀人不眨眼的暴君骑士王当场宕机。暗金色的眼眸剧烈收缩震颤，整张白皙高傲的俏脸从脸颊瞬间红到耳根，双手紧紧揪住桌布，嘴硬地咬牙切齿——「你、你在做什么无礼的举动！……信不信我用魔剑把你轰飞啊……笨蛋！」",
+    "location": "温馨明亮的街边快餐店靠窗红色皮质卡座",
+    "action": "同行者伸手擦去唇角番茄酱，黑呆停住动作，双手揪住桌布，惊讶地睁大眼睛",
+    "timeOfDay": "午后",
+    "lighting": "窗外明媚阳光斜照在瞬间通红的白皙脸庞上",
+    "camera": "medium close-up, eye level, intense flustered gap moe",
+    "mood": "反差暴击",
+    "sceneTags": [
+      "fast_food_booth",
+      "ketchup_spot",
+      "companion_hand",
+      "wiping_mouth_corner",
+      "gripping_tablecloth",
+      "surprised_eyes",
+      "embarrassed_expression",
+      "window_light",
+      "medium_closeup"
+    ],
+    "promptProse": "In the fast-food booth, Saber Alter freezes as her clothed companion reaches across the table and gently removes a small spot of ketchup from the corner of her mouth with a fingertip. Her hands bunch the tablecloth while her golden eyes widen in surprised embarrassment. The companion is represented by a separate sleeve and hand entering from the side; her own two hands stay on the cloth. Her biker jacket and blonde bun remain tidy after the meal. Window light keeps the brief, playful reaction readable in a medium close view. No lettering.",
+    "promptTokens": [
+      "fast_food_booth",
+      "ketchup_spot",
+      "companion_hand",
+      "wiping_mouth_corner",
+      "gripping_tablecloth",
+      "surprised_eyes",
+      "embarrassed_expression",
+      "window_light",
+      "medium_closeup",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_shinjuku_jacket_shorts",
+    "coverageTags": [
+      "gap_moe",
+      "flustered",
+      "tsundere"
+    ],
+    "compositionIntent": "group"
+  }
+}

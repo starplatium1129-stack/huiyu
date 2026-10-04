@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_seaside_sunset_breeze_bikini",
+  "revision": 1,
+  "sortOrder": 1081,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_seaside_sunset_breeze_bikini",
+    "title": "大凤 · 暮色海潮的细带红比基尼",
+    "category": "海滨诱惑",
+    "characterId": "taihou_azur",
+    "outfitId": "seaside_daydream",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【大凤 · 暮色海潮的细带红比基尼】落日熔金的暮色海滩，炽热浪潮拍打着金红沙砾。大凤仅着一身极其大胆惹眼的深红细带微型比基尼，沉甸甸的巨乳几乎无法被纤细布料包裹。薄如蝉翼的黑色薄纱披肩在海风中如烈火般烈烈翻飞，海水沾湿了她细腻如玉的雪肤，在黄昏落日下拉出震撼无比的黄金沙漏身段剪影。",
+    "location": "晚霞暮色海滨沙滩与礁石",
+    "action": "涉足于退潮浪花中，单手撩起湿润黑长双马尾，身形侧展展示惊人三围",
+    "timeOfDay": "日落",
+    "lighting": "壮丽金红火烧云晚霞与湿润肌肤上的高光反差",
+    "camera": "full body, 3/4 side angle, dramatic sunset horizon",
+    "mood": "热烈妖艳",
+    "sceneTags": [
+      "beach",
+      "sunset",
+      "ocean_waves",
+      "bikini",
+      "micro_bikini",
+      "wet_skin",
+      "sarong",
+      "twintails",
+      "cleavage"
+    ],
+    "promptProse": "Walking through warm foamy ocean tide pools beneath an intense fiery orange sunset sky, Taihou flaunts her hourglass figure in a daring crimson string bikini. Ocean breezes send her sheer black sarong and trailing twin tails swirling into the golden dusk.",
+    "promptTokens": [
+      "sunset_beach",
+      "ocean_tide",
+      "crimson_bikini",
+      "string_bikini",
+      "sarong",
+      "wet_skin",
+      "twintails",
+      "cleavage",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -114,7 +114,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, onActivated, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -272,6 +272,7 @@ async function init() {
   loadError.value = ''
   try {
     await sceneStore.loadBlueprintCatalog()
+    if (selectedId.value) await sceneStore.loadBlueprintCharacter(selectedId.value)
   } catch (error) {
     loadError.value = error instanceof Error ? error.message : String(error)
   } finally {
@@ -280,6 +281,12 @@ async function init() {
 }
 
 onMounted(() => { void init() })
+onActivated(() => { if (!loading.value) void init() })
+watch(selectedId, async id => {
+  if (!id) return
+  try { await sceneStore.loadBlueprintCharacter(id) }
+  catch (error) { loadError.value = error instanceof Error ? error.message : String(error) }
+})
 </script>
 
 <style scoped src="@/assets/css/popular-scene-explorer.css"></style>

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 881,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "薄荷条纹家务装",
+      "prose": "a mint-and-white striped long-sleeved cotton shirt, indigo full-length dungarees and indoor slippers",
+      "tokens": [
+        "striped_shirt",
+        "long_sleeves",
+        "overalls",
+        "slippers"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

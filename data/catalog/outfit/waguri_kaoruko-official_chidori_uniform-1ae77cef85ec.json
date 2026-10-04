@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/official_chidori_uniform",
+  "revision": 1,
+  "sortOrder": 842,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "official_chidori_uniform",
+      "name": "千鸟女子高校名媛水手制服",
+      "prose": "her prestigious Kikyo Girls' High School uniform: an elegant white-and-navy sailor blazer with a crisp pleated white collar, a navy necktie, a pleated navy skirt below the knees, white knee-high socks, and polished dark loafers",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "blazer",
+        "white_collar",
+        "necktie",
+        "pleated_skirt",
+        "navy_skirt",
+        "knee_socks",
+        "white_socks",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

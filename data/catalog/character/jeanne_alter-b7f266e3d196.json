@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "jeanne_alter",
+  "revision": 1,
+  "sortOrder": 39,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_alter",
+    "profile": {
+      "id": "jeanne_alter",
+      "name": "贞德[Alter]",
+      "alias": [
+        "Jeanne d'Arc (Alter)",
+        "Jeanne Alter",
+        "Jalter",
+        "ジャンヌ・ダルク〔オルタ〕",
+        "黑贞德"
+      ],
+      "type": "popular",
+      "icon": "🐉",
+      "portrait": {
+        "image": "../assets/characters/popular-jeanne_alter.png?v=5",
+        "alt": "贞德[Alter] 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白短发 · 姬发式微卷",
+        "hair_color": "银白（Platinum Silver）",
+        "eyes": "金（Golden Yellow）",
+        "hairstyle": "短发 · 齐刘海 · 微卷发尾",
+        "uniform": "复仇者黑铠 / 新宿皮夹克 / 黑色晚礼服",
+        "expression": "傲慢恶役微笑 · 实则傲娇",
+        "style": "fierce avenger beauty",
+        "signature": "银发金瞳、黑色战铠与龙之魔女"
+      },
+      "source": "TYPE-MOON《Fate 系列》",
+      "bg_story": "贞德[Alter]是《Fate/Grand Order》中登场的复仇者职阶从者，由对自身命运的憎恨与诅咒中诞生的「另一面」贞德。银白短发与金色瞳孔、黑色战铠与龙之魔女的旗帜是她的标志。她以傲慢和毒舌武装自己，内心却藏着不坦率的温柔。",
+      "personality": [
+        "傲慢",
+        "傲娇",
+        "毒舌",
+        "外冷内热",
+        "独占欲强"
+      ],
+      "likes": [
+        "战斗",
+        "嘲笑对手",
+        "不坦率的关心",
+        "御主"
+      ],
+      "traits": [
+        "jeanne d'arc alter (fate)",
+        "jeanne_alter",
+        "1girl",
+        "solo",
+        "short_hair",
+        "silver_hair",
+        "yellow_eyes",
+        "evil_smile"
+      ],
+      "speech": "贞德[Alter]向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "龙之魔女的旗",
+        "description": "黑铠少女立于尸山之上，龙旗猎猎作响。她转过脸，金瞳里是傲慢与一点点不知所措。"
+      },
+      "identity": {
+        "role": "复仇者（Avenger）从者",
+        "age": "英灵（外表约 17 岁）",
+        "occupation": "英灵 / 龙之魔女",
+        "faction": "迦勒底（FGO）"
+      },
+      "tags": [
+        "银发",
+        "金瞳",
+        "黑铠",
+        "复仇者",
+        "傲娇"
+      ],
+      "palette": [
+        "玄黑",
+        "银白",
+        "鎏金"
+      ],
+      "weather": [
+        "黑贞德城堡",
+        "新宿雨夜",
+        "迦勒底走廊"
+      ]
+    },
+    "popular": {
+      "id": "jeanne_alter",
+      "displayName": "贞德[Alter]",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "avenger_black_armor",
+      "identityTokens": [
+        "jeanne d'arc alter (fate)",
+        "fate/grand_order",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "short_hair",
+        "yellow_eyes",
+        "smirk"
+      ],
+      "identityProse": "Jeanne d'Arc (Alter) from Fate, the vengeful dragon witch with messy short silver hair, piercing golden-yellow eyes, and a confident smirk.",
+      "animeStudio": "type-moon, ufotable, official anime screencap",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "so-bin"
+      ],
+      "originalName": "贞德[Alter]",
+      "exactTokens": [
+        "jeanne d'arc alter (fate)"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "jeanne alter",
+        "jalter",
+        "jeanne d'arc alter",
+        "fate grand order",
+        "fgo",
+        "贞德[Alter]",
+        "黑贞德"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/Grand Order）",
+        "era": "当代+英灵",
+        "formNotes": "银白短发；金色瞳；复仇者职阶；黑色战铠+龙之魔女披风+军旗；新宿篇皮夹克便服；水着黑色系带比基尼+武士刀；黑色高开叉晚礼服",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

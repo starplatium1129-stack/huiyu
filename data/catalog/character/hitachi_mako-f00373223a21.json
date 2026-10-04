@@ -1,0 +1,163 @@
+{
+  "kind": "character",
+  "id": "hitachi_mako",
+  "revision": 1,
+  "sortOrder": 85,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hitachi_mako",
+    "profile": {
+      "id": "hitachi_mako",
+      "name": "常陆茉子",
+      "alias": [
+        "Hitachi Mako",
+        "常陸茉子",
+        "茉子",
+        "忍者妹"
+      ],
+      "type": "popular",
+      "icon": "🍃",
+      "portrait": {
+        "image": "../assets/characters/popular-hitachi_mako.png?v=5",
+        "alt": "常陆茉子 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色齐耳短发 · 耳侧垂颊长发束 · 活泼呆毛",
+        "hair_color": "乌黑",
+        "eyes": "清澈透亮翡翠绿瞳",
+        "hairstyle": "短发带侧发束 · 呆毛 · 猫嘴笑颜",
+        "uniform": "常陆流贴身无袖忍者战装 / 朝武家日常围裙",
+        "expression": "爽朗幽默 · 猫嘴调皮 · 害羞自曝",
+        "style": "athletic devoted shinobi girl",
+        "signature": "黑短发侧长束、猫嘴笑意、翠绿眼眸、苦无飞镖与丰满身段"
+      },
+      "personality": [
+        "家务料理与潜行护卫全能",
+        "性格爽朗幽默、爱开玩笑（天然黑）",
+        "容易害羞、紧张时会不小心自我爆料",
+        "对自己丰满的身材有些许害羞与在意",
+        "极度忠诚负责，为了守护重要之人甘愿涉险"
+      ],
+      "likes": [
+        "为朝武家操持美味的家常饭菜",
+        "忍者体术与苦无投掷训练",
+        "和将臣开玩笑看到将臣害羞的样子",
+        "安静温馨的居家生活"
+      ],
+      "classic_cg": {
+        "title": "月夜瓦顶的忍者护卫",
+        "description": "神社屋檐黑瓦之上，茉子手持苦无轻盈半跪在夜风中，猫嘴笑意中带着令人安心的敏锐守护。"
+      },
+      "identity": {
+        "role": "常陆一族现任女忍者 / 朝武家专属护卫与侍女",
+        "age": "少女",
+        "occupation": "忍者护卫 / 侍从家政",
+        "faction": "穗织镇 · 常陆一族"
+      },
+      "tags": [
+        "黑发短发",
+        "绿瞳",
+        "猫嘴",
+        "忍者",
+        "苦无",
+        "呆毛",
+        "丰满",
+        "千恋万花"
+      ],
+      "bg_story": "常陆茉子是柚子社《千恋＊万花》的女主角之一，出身于代代侍奉朝武家的常陆一族，是负责贴身保护巫女姬朝武芳乃的年轻女忍者。身手矫健、精通各种忍术与家务料理，看似调皮爱开玩笑，内心其实极度纯情温柔。常常不自觉地做出可爱的猫嘴表情，在严肃任务与少女恋爱之间有着极其可爱的反差魅力。",
+      "palette": [
+        "暗影黑",
+        "翡翠绿",
+        "纯净白"
+      ],
+      "weather": [
+        "夜风微凉",
+        "竹林晨曦",
+        "细雨檐下"
+      ],
+      "speech": "初次见面，在下是常陆茉子。只要有在下在，就绝不会让任何危险靠近芳乃大人和您哦！",
+      "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "traits": [
+        "hitachi_mako",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair_with_long_locks",
+        "sidelocks",
+        "ahoge",
+        "green_eyes",
+        "cat_mouth",
+        "large_breasts",
+        "ninja",
+        "senren_banka"
+      ],
+      "accent_color": "#22c55e",
+      "bg_color": "#08170c"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "hitachi_mako",
+        "mako",
+        "mako_(senren)",
+        "常陆茉子",
+        "茉子",
+        "千恋万花",
+        "senren banka"
+      ],
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "canon": {
+        "era": "和风奇幻美少女世界",
+        "formNotes": "常陆一族的年轻女忍者，负责贴身护卫朝武芳乃；家务料理全能、刀术身手敏捷，看似稳重可靠但经常害羞自曝，有着招牌的猫嘴笑意与丰满反差身段",
+        "research": "2026-09-02 调研（Danbooru hitachi_mako + 萌娘百科官方设定）",
+        "world": "穗织镇（Hoori）· 常陆家"
+      },
+      "curatedArtistStyles": [
+        "kobuichi",
+        "muririn",
+        "kappe"
+      ],
+      "displayName": "常陆茉子",
+      "exactPrefixes": [
+        "mako_"
+      ],
+      "exactTokens": [
+        "hitachi_mako"
+      ],
+      "franchise": "YUZUSOFT",
+      "id": "hitachi_mako",
+      "identityProse": "Hitachi Mako from Senren Banka by YUZUSOFT, the skilled shinobi guardian of the Tomotake family with short black hair and distinctive long sidelocks, a playful ahoge, bright emerald green eyes, an adorable cat-like mouth, and a curvaceous athletic figure.",
+      "identityTokens": [
+        "hitachi_mako",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair_with_long_locks",
+        "sidelocks",
+        "ahoge",
+        "green_eyes",
+        "cat_mouth",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "常陸 茉子 (Hitachi Mako)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

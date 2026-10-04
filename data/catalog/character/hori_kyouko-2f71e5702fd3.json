@@ -1,0 +1,117 @@
+{
+  "kind": "character",
+  "id": "hori_kyouko",
+  "revision": 1,
+  "sortOrder": 123,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hori_kyouko",
+    "profile": {
+      "id": "hori_kyouko",
+      "name": "堀京子",
+      "alias": [
+        "堀京子",
+        "Kyouko Hori"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-hori_kyouko.png",
+        "alt": "堀京子 全年龄日常立绘"
+      },
+      "visual_dna": {
+        "signature": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
+        "hair": "brown_hair, long_hair",
+        "eyes": "brown_eyes",
+        "uniform": "片桐高校长发制服",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "开朗利落",
+        "重视家人",
+        "亲近的人面前更坦率"
+      ],
+      "likes": [
+        "看恐怖电影"
+      ],
+      "classic_cg": {
+        "title": "放学到主妇的十分钟切换",
+        "description": "玄关，她一只手还拎着书包，另一只手已经抓起围裙，头发随手扎起；镜子里还是学校的精致形象，镜外的她已经切换到家务模式，构图定格在「变身中」的瞬间。"
+      },
+      "identity": "Horimiya · 堀京子",
+      "tags": [
+        "Horimiya",
+        "堀京子",
+        "全年龄日常"
+      ],
+      "bg_story": "在学校开朗受欢迎、回家便熟练操持家务的高中生。照顾弟弟、准备晚饭和与宫村相处，让旁人看见她利落外表下会害羞、会赌气也会温柔的一面。校园长发与后期短发造型应按时间线区分。",
+      "palette": [
+        "#d2a475",
+        "#775438"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "先放好书包，晚饭马上就好。",
+      "source": "Horimiya",
+      "traits": [
+        "hori_kyouko",
+        "hori-san_to_miyamura-kun",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes"
+      ],
+      "accent_color": "#d2a475",
+      "bg_color": "#775438"
+    },
+    "popular": {
+      "id": "hori_kyouko",
+      "displayName": "堀京子",
+      "originalName": "Kyouko Hori",
+      "franchise": "Horimiya",
+      "aliases": [
+        "堀京子",
+        "Kyouko Hori"
+      ],
+      "identityProse": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
+      "identityTokens": [
+        "hori_kyouko",
+        "hori-san_to_miyamura-kun",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes",
+        "sidelocks"
+      ],
+      "exactTokens": [
+        "hori_kyouko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, hori_kyouko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

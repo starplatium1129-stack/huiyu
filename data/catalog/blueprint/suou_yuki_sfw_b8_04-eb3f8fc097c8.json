@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "suou_yuki_sfw_b8_04",
+  "revision": 1,
+  "sortOrder": 791,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium full shot, vertical framing",
+    "category": "圣洁花嫁",
+    "characterId": "suou_yuki",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ],
+    "description": "【学生会礼堂·午后】有希穿着端庄白色婚纱坐在宣传板旁，黑色半扎发用紫色缎带固定；她先以淑女姿态整理桌上的花卡，确认四下无人后才对镜头露出“俺模式”的淘气眨眼。",
+    "id": "suou_yuki_sfw_b8_04",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "soft afternoon light over violet decorations",
+    "location": "student council hall prepared for a ceremony",
+    "mood": "淑女端庄与宅系淘气的花嫁切换",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_bridal",
+    "promptProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian wears a white bridal dress with a violet sash, black ribbon veil and a neat half-up hairstyle. She sits beside the student-council flower cards, keeping every ribbon perfectly aligned. Once the formal arrangement is complete, she leans toward the viewer with a playful wink that lets her lively private self peek through the polished bridal pose. soft afternoon light over violet decorations.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "hall",
+      "flower_cards",
+      "violet_sash",
+      "half_up_hair",
+      "ladylike_pose",
+      "playful_wink",
+      "afternoon_light"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "hall",
+      "flower_cards",
+      "violet_sash",
+      "half_up_hair",
+      "ladylike_pose",
+      "playful_wink",
+      "afternoon_light"
+    ],
+    "timeOfDay": "午后",
+    "title": "周防有希 · 学生会礼堂的双面花嫁"
+  }
+}

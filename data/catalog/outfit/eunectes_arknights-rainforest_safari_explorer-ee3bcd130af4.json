@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/rainforest_safari_explorer",
+  "revision": 1,
+  "sortOrder": 337,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "default": false,
+      "id": "rainforest_safari_explorer",
+      "isDefault": false,
+      "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
+      "prose": "a rainforest safari utility outfit: an olive sports bralette under an open khaki short-sleeve utility shirt, quick-release climbing harness with metal carabiners at the waist, rugged cargo pants, explorer boots",
+      "tokens": [
+        "safari",
+        "utility_shirt",
+        "cargo_pants",
+        "harness",
+        "explorer",
+        "adventure"
+      ]
+    }
+  }
+}

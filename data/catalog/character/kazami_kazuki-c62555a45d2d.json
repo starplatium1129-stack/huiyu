@@ -1,0 +1,161 @@
+{
+  "kind": "character",
+  "id": "kazami_kazuki",
+  "revision": 1,
+  "sortOrder": 87,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazami_kazuki",
+    "profile": {
+      "id": "kazami_kazuki",
+      "name": "风见一姬",
+      "alias": [
+        "Kazami Kazuki",
+        "風見一姫",
+        "一姬",
+        "天才姐姐",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "❄️",
+      "portrait": {
+        "image": "../assets/characters/popular-kazami_kazuki.png?v=5",
+        "alt": "风见一姬 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及膝银白超长发 · 齐刘海 · 优雅侧发束",
+        "hair_color": "银白/雪白",
+        "eyes": "清冷锐利深红眼眸",
+        "hairstyle": "齐腰及膝直发 · 极简中分齐刘海 · 纤细病弱美感",
+        "uniform": "极简无瑕纯白连身裙 / 美浜学园紫衫白裙制服",
+        "expression": "高傲冷峻 · 毒舌从容 · 对弟弟深情执念",
+        "style": "transcendent genius silver-haired sister",
+        "signature": "及膝如瀑银发、绯红双瞳、纯白素裙与超凡脱俗的天才神态"
+      },
+      "personality": [
+        "智商极高、逻辑严密的天才少女",
+        "性格冷峻从容、说话直切要害（轻微毒舌）",
+        "对弟弟风见雄二怀有无限深情与近乎溺爱的守护欲",
+        "在极端逆境中拥有超越常人的意志与生存决断力",
+        "外冷内热，内心渴望弟弟能获得普通人的幸福"
+      ],
+      "likes": [
+        "教导和注视着弟弟雄二",
+        "深奥的书籍、哲学思考与解谜",
+        "安静无人的靠窗阅读时光",
+        "简单的红茶与白面包"
+      ],
+      "classic_cg": {
+        "title": "泷园断崖的天才抉择",
+        "description": "翻覆的校车废墟旁，白发少女立于险峻崖壁之上，神情平静地指挥着救援与生存，展现惊人宿命感。"
+      },
+      "identity": {
+        "role": "风见雄二的亲生姐姐 / 泷园学园事故幸存者",
+        "age": "青年",
+        "occupation": "战略战术研究 / 天才思想者",
+        "faction": "风见家 · 美浜学园"
+      },
+      "tags": [
+        "银发",
+        "红瞳",
+        "及膝长发",
+        "天才",
+        "姐姐",
+        "毒舌",
+        "白裙",
+        "灰色的果实"
+      ],
+      "bg_story": "风见一姬是《灰色的果实》及灰色系列中灵魂般的核心角色，男主角风见雄二的亲生姐姐。自幼展现出无人能及的超级天才智商，被周围人视为“怪物”，唯有弟弟雄二是她精神世界中无可替代的绝对至宝。十年前在惨烈的泷园水难事故中以超凡决断拯救了全车人，并在暗处默默守望着雄二的救赎之路。",
+      "palette": [
+        "纯洁白",
+        "冷月银",
+        "绯红色"
+      ],
+      "weather": [
+        "高山飞雪",
+        "幽寂寒月",
+        "晨曦微光"
+      ],
+      "speech": "怎么了，雄二？遇到困难了吗？只要你向我求助，姐姐无论何时都会为你扫平障碍哦。",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "kazami_kazuki",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "blunt_bangs",
+        "sidelocks",
+        "red_eyes",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#fca5a5",
+      "bg_color": "#180e0e"
+    },
+    "popular": {
+      "id": "kazami_kazuki",
+      "displayName": "风见一姬",
+      "originalName": "風見 一姫 (Kazami Kazuki)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "kazami_kazuki",
+        "kazuki",
+        "kazuki_(grisaia)",
+        "风见一姬",
+        "一姬",
+        "天才姐姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Kazami Kazuki from Grisaia by Frontwing, the legendary genius older sister of Yuuji with floor-sweeping silvery-white hair, blunt bangs framing her delicate face, sharp yet intensely devoted crimson red eyes, slender graceful figure, and a cool stoic demeanor.",
+      "identityTokens": [
+        "kazami_kazuki",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "blunt_bangs",
+        "sidelocks",
+        "red_eyes",
+        "long_eyelashes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "kazami_kazuki"
+      ],
+      "exactPrefixes": [
+        "kazuki_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "美浜学园 · 泷园水难事故",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "风见雄二的亲生姐姐，智商惊人的绝对天才，在十年前的事故中展现出超越常人的冷静与决断；外表冷峻毒舌，却对弟弟雄二抱有极度深沉且近乎病态的关爱与执念",
+        "research": "2026-09-02 调研（Danbooru kazami_kazuki 210+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kobuichi"
+      ]
+    }
+  }
+}

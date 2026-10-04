@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 517,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, pointy elf ears, black hair ribbons, wagging demon tail, bare legs and bare feet, soft sensual lighting",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "dark_skin",
+        "tanlines",
+        "breasts",
+        "pink_nipples",
+        "slender_body",
+        "navel",
+        "pussy",
+        "pointy_ears",
+        "demon_tail",
+        "hair_ribbon",
+        "bare_feet"
+      ]
+    }
+  }
+}

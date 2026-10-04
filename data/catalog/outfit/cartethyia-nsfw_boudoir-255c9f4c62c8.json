@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "cartethyia/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 948,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cartethyia",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "卡提希娅·成人私密造型",
+      "prose": "a private adult ensemble built around armor, plate_armor, silver_armor, armory, completely_nude",
+      "tokens": [
+        "armor",
+        "plate_armor",
+        "silver_armor",
+        "armory",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

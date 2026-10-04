@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "rem_rezero/casual",
+  "revision": 1,
+  "sortOrder": 244,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rem_rezero",
+    "outfit": {
+      "id": "casual",
+      "name": "便服",
+      "prose": "a soft casual outfit off duty",
+      "tokens": [
+        "casual_clothes",
+        "sweater",
+        "skirt"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -58,6 +58,15 @@ function readManifest() {
 }
 
 function loadPopularShards() {
+  const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
+  const records = catalog.read(root);
+  if (records) {
+    const characters = catalog.views(records).popular;
+    const groups = new Map<string, PopularCharacter[]>();
+    for (const character of characters) { const key = character.franchise || 'unknown'; if (!groups.has(key)) groups.set(key, []); groups.get(key)!.push(character); }
+    const sources = [...groups].map(([franchise, characters]) => ({ entry: { file: franchiseSlug(franchise) + '.json', franchise, count: characters.length }, source: path.join(shardsDir, franchiseSlug(franchise) + '.json'), characters }));
+    return { manifest: { version: 1, files: sources.map(s => s.entry) }, sources, characters };
+  }
   const manifest = readManifest();
   const sources = manifest.files.map((entry) => {
     const source = path.join(shardsDir, entry.file);
@@ -87,6 +96,7 @@ function aggregateIsCurrent() {
 /** 聚合 -> 分片（覆盖写入）：按 franchise 分组保持组内顺序，
  *  manifest 按首次出现顺序维护；聚合中已消失的系列文件会被清理。 */
 function writePopularShards() {
+  (require('./catalog-snapshot') as typeof import('./catalog-snapshot')).assertLegacyWrite(root);
   const aggregate = readJson(aggregatePath);
   const characters = Array.isArray(aggregate.characters) ? aggregate.characters : [];
   const manifest = fs.existsSync(manifestPath)

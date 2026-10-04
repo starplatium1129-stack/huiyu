@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_asuna/casual_sweater",
+  "revision": 1,
+  "sortOrder": 521,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ichinose_asuna",
+    "outfit": {
+      "default": false,
+      "id": "casual_sweater",
+      "isDefault": false,
+      "name": "假日露肩软糯毛衣",
+      "prose": "a cozy casual date outfit: an oversized ivory off-shoulder ribbed knit sweater casually drooping over one shoulder, dark denim skater miniskirt, sheer black tights, stylish tan ankle booties, and long golden hair swaying naturally",
+      "tokens": [
+        "casual",
+        "sweater",
+        "knit_sweater",
+        "off_shoulder",
+        "skirt",
+        "denim_skirt",
+        "pantyhose",
+        "black_pantyhose",
+        "boots",
+        "date"
+      ]
+    }
+  }
+}

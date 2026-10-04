@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "morgan_le_fay_fate/aesc_savior",
+  "revision": 1,
+  "sortOrder": 103,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "morgan_le_fay_fate",
+    "outfit": {
+      "id": "aesc_savior",
+      "name": "救世主梣",
+      "prose": "her Aesc form as the Savior, a blue robe with a capelet and magic staff",
+      "tokens": [
+        "aesc (fate)",
+        "capelet",
+        "robe",
+        "staff",
+        "blue_dress",
+        "magic"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

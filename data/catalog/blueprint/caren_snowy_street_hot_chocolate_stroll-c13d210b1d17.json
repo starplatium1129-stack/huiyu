@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "caren_snowy_street_hot_chocolate_stroll",
+  "revision": 1,
+  "sortOrder": 211,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_snowy_street_hot_chocolate_stroll",
+    "title": "卡莲 · 冬日雪街的热可可小憩",
+    "category": "冬日漫步",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 冬日雪街的热可可小憩】白雪覆盖的商店街长椅旁，卡莲双手捧着热可可纸杯，在啜饮后停下脚步回头。短短的银白发梢露在毛线帽边，红色大衣挡住寒风；她的琥珀色眼眸在路灯下泛起一丝安宁的笑意。",
+    "location": "银装素裹、华灯初上的冬日商店街街角长椅",
+    "action": "啜饮后双手稳住纸杯，停在长椅旁回头微笑",
+    "timeOfDay": "冬日黄昏",
+    "lighting": "街边暖黄路灯与初雪反光的清冽微芒",
+    "camera": "cowboy shot, eye level, peaceful winter street view",
+    "mood": "静谧纯情",
+    "sceneTags": [
+      "snowy_shopping_street",
+      "bench",
+      "paper_cup",
+      "hot_chocolate",
+      "both_hands",
+      "looking_back",
+      "short_silver_hair",
+      "amber_eyes",
+      "red_coat",
+      "streetlamp_light",
+      "medium_shot"
+    ],
+    "promptProse": "Beside a snowy shopping-street bench, Caren pauses after a small sip of hot chocolate and turns toward the viewer. Both hands remain wrapped around the paper cup beneath her chin. Short silver strands show at the edge of the white beanie rather than falling down the back of her closed red coat. Her amber-yellow eyes soften slightly in the streetlamp glow, with a small breath cloud visible in the cold air. The evening view includes the bench, cup and warmly clothed figure, without readable labels or lettering.",
+    "promptTokens": [
+      "snowy_shopping_street",
+      "bench",
+      "paper_cup",
+      "hot_chocolate",
+      "both_hands",
+      "looking_back",
+      "short_silver_hair",
+      "amber_eyes",
+      "red_coat",
+      "streetlamp_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_winter_duffle_coat",
+    "coverageTags": [
+      "date",
+      "winter",
+      "romantic"
+    ]
+  }
+}

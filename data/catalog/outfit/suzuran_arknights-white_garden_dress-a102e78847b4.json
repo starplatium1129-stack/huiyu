@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "suzuran_arknights/white_garden_dress",
+  "revision": 1,
+  "sortOrder": 373,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suzuran_arknights",
+    "outfit": {
+      "default": false,
+      "id": "white_garden_dress",
+      "isDefault": false,
+      "name": "洁白花园连衣裙",
+      "prose": "wearing a pure white garden dress of soft cotton with a flowing skirt, short sleeves, and a clean innocent silhouette",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "suzuran_white_garden_dress",
+        "white_dress",
+        "garden_dress",
+        "summer_dress",
+        "simple_dress",
+        "soft_skirt",
+        "white_clothes",
+        "short_sleeves"
+      ]
+    }
+  }
+}

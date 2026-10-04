@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/swimsuit",
+  "revision": 1,
+  "sortOrder": 509,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "default": false,
+      "id": "swimsuit",
+      "isDefault": false,
+      "name": "夏日海滨泳装",
+      "prose": "a sporty and charming dark navy and white two-piece bikini with cross-strap waist accents, translucent white beach cover-up pareo, sun visor hat, and sandals, highlighting her toned waist and soft thighs",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "navy_blue_bikini",
+        "two-piece_swimsuit",
+        "straps",
+        "pareo",
+        "sun_visor",
+        "sandals",
+        "beachwear"
+      ]
+    }
+  }
+}

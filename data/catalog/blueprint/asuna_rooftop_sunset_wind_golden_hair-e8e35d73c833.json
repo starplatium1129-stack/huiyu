@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_rooftop_sunset_wind_golden_hair",
+  "revision": 1,
+  "sortOrder": 944,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "张开双臂迎接晚风，长及脚踝的金色长发大面积飞散，面向落日神采飞扬",
+    "camera": "sweeping wide shot, low angle, majestic silhouette",
+    "category": "天台晚霞",
+    "characterId": "ichinose_asuna",
+    "coverageTags": [
+      "scenic"
+    ],
+    "description": "【一之濑明日奈 · 夕阳天台的金辉流转】千年科技学园主楼顶层天台，无遮拦的浩瀚晚霞如金红烈火席卷长空。明日奈站在防风铁网边，背对着壮丽日落。晚风将她足足有两米长的金色秀发吹拂成一面遮天蔽日的金色幕布，女仆装的白围裙与黑裙角猎猎翻飞。她闭上眼伸展双臂深吸一口清凉晚风，纯洁如天使般的光晕环绕全身。",
+    "id": "asuna_rooftop_sunset_wind_golden_hair",
+    "lighting": "浓烈宏大的金红落日逆光与发丝边缘晶莹的金芒光晕",
+    "location": "学园摩天主楼露天天台边缘",
+    "mood": "辽阔纯净",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "cleaning_maid",
+    "promptProse": "Standing on the windy high-altitude rooftop of Millennium Tower at blazing orange dusk, Asuna spreads her arms to welcome the evening gale. Sunset rays transform her floor-length golden hair into a shimmering radiant mantle alongside her floating technological halo.",
+    "promptTokens": [
+      "skyscrapers_rooftop",
+      "blazing_sunset",
+      "windy",
+      "very_long_hair",
+      "blonde_hair",
+      "maid_dress",
+      "halo",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "sunset",
+      "wind",
+      "very_long_hair",
+      "blonde_hair",
+      "maid_dress",
+      "halo"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "一之濑明日奈 · 夕阳天台的金辉流转"
+  }
+}

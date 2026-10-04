@@ -1,0 +1,61 @@
+{
+  "kind": "scene",
+  "id": "sc242",
+  "revision": 1,
+  "sortOrder": 237,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she stands poised with a focused and calm expression, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "中景正面特写",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc242",
+    "lighting": "冬日柔和晨光与初雪反射",
+    "location": "神社绘马架前",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel",
+    "prompt": "(single girl only:1.5), (one person only:1.5), holding a completely blank sheet of paper, empty background, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, holding_ema, shrine, snow, morning, sunlight, heavy_blush, panicked, open_mouth, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【宁宁 · 新年参拜】新年第一天的清晨，神社石阶上覆盖着薄薄的初雪。宁宁穿着一整套华丽的粉色振袖和服，银白色的长发用精致的发饰高高束起，在冬日的阳光下泛着柔和的光泽。她在绘马架前认真地写完愿望，刚要把绘马挂上去，却发现你正站在不远处含笑望着她。宁宁瞬间满脸通红，慌忙把绘马藏到身后，头顶的呆毛在寒风中微微颤抖——「不、不准看！愿望被看到就不灵了啦！才、才没有写关于柊史的事情呢……呜，笨蛋，转过头去！」",
+    "storyJa": "【寧々・絵馬に隠した願い】元旦の朝、薄い雪が残る神社の石段。振袖姿の寧々は絵馬に願い事を書き終えるが、あなたの視線に気づいて慌てて背中へ隠す。寒風の中、アホ毛まで揺れていた――「み、見ちゃだめ！ 願い事は見られたら叶わないんだから……柊史のことなんて、書いてないよ！」",
+    "tags": [
+      "white_hair",
+      "very_long_hair",
+      "low_twintails",
+      "purple_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "kimono",
+      "furisode",
+      "obi",
+      "holding_ema",
+      "shrine",
+      "snow",
+      "morning",
+      "sunlight",
+      "heavy_blush",
+      "panicked",
+      "open_mouth",
+      "romantic_atmosphere",
+      "close_up",
+      "ema_rack",
+      "hiding_ema_behind_back"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "神社绘马下的秘密愿望",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "初雪清晨"
+  }
+}

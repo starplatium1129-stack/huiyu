@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_sixth_street_convenience_store_snack",
+  "revision": 1,
+  "sortOrder": 1059,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在长凳上品尝草莓冰淇淋，大号卫衣露出单肩，鲨鱼尾在凳后轻扫",
+    "camera": "cowboy shot, medium shot, slight low angle",
+    "category": "潮流街头",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "street"
+    ],
+    "description": "【艾莲·乔 · 六分街夜市的冰淇淋补给】六分街繁华夜市的霓虹灯牌下，艾莲身穿宽松大号连帽卫衣，坐在便利店外的红色长凳上。她手握草莓甜筒冰淇淋小口品尝，双腿交叉晃荡，肥硕沉稳的鲨鱼尾巴在长凳后方蜷曲，冷淡的死鱼眼在尝到甜味的瞬间泛起极难察觉的满足微光。",
+    "id": "ellen_sixth_street_convenience_store_snack",
+    "lighting": "街头霓虹招牌与便利店橱窗溢出的暖白漫射光",
+    "location": "六分街便利店外街角长凳",
+    "mood": "潮流治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "streetwear_hoodie",
+    "promptProse": "Sitting on an outdoor convenience store bench beneath Sixth Street neon signs, Ellen happily savors a strawberry ice cream cone in her oversized slouchy hoodie. Colorful neon reflections illuminate her large spiky shark tail resting behind the bench in soft night ambience.",
+    "promptTokens": [
+      "city_street",
+      "neon_sign",
+      "convenience_store",
+      "bench",
+      "eating_ice_cream",
+      "hoodie",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "street",
+      "neon_lights",
+      "convenience_store",
+      "bench",
+      "ice_cream",
+      "eating",
+      "shark_tail"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "艾莲·乔 · 六分街夜市的冰淇淋补给"
+  }
+}

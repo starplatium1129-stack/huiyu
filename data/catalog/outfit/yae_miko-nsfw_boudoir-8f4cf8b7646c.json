@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yae_miko/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 18,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yae_miko",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "八重神子·成人私密造型",
+      "prose": "a private adult ensemble built around completely_nude, dressing_room, robe",
+      "tokens": [
+        "completely_nude",
+        "dressing_room",
+        "robe"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

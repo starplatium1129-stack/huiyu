@@ -207,6 +207,7 @@ function runValidation(script: any) {
 }
 
 function main(argv: any = process.argv.slice(2)) {
+  (require('../lib/catalog-snapshot') as typeof import('../lib/catalog-snapshot')).assertLegacyWrite(ROOT);
   const args = parseArgs(argv);
   if (args.help) {
     console.log('用法: node scripts/maintenance/apply-scene-patch.js --patch <patch.json> [--apply] [--out <report.json>]');

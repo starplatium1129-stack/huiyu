@@ -1,0 +1,231 @@
+{
+  "kind": "character",
+  "id": "nene",
+  "revision": 1,
+  "sortOrder": 0,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "nene",
+    "profile": {
+      "id": "nene",
+      "name": "绫地宁宁",
+      "alias": [
+        "Ayachi Nene",
+        "綾地寧々",
+        "宁宁"
+      ],
+      "type": "heroine",
+      "icon": "🔮",
+      "portrait": {
+        "image": "../assets/characters/nene-official.webp",
+        "alt": "绫地宁宁魔女服立绘"
+      },
+      "visual_dna": {
+        "hair": "银白色长发 · 低双马尾",
+        "hair_color": "银白",
+        "eyes": "紫罗兰色",
+        "hairstyle": "低双马尾 · 呆毛 · 发带",
+        "uniform": "姬松学院制服 / 黑色魔女服",
+        "expression": "温柔端庄 · 慌乱时满脸通红",
+        "style": "gentle school witch heroine",
+        "signature": "银白低双马尾、紫瞳与呆毛"
+      },
+      "personality": [
+        "温柔体贴",
+        "认真负责",
+        "在校人缘很好",
+        "容易害羞慌乱",
+        "紧张时会不慎自曝",
+        "关键时刻坚定"
+      ],
+      "likes": [
+        "家人平安",
+        "安稳的校园生活",
+        "与信任的人分享秘密",
+        "超自然研究会的伙伴"
+      ],
+      "classic_cg": {
+        "title": "图书馆里被撞破的秘密",
+        "description": "平日从容温柔的宁宁，因为无法说明的契约代价陷入慌乱；秘密被看见后，她的羞耻、脆弱与信任也由此展开。"
+      },
+      "identity": {
+        "role": "与契约代价抗争的魔女",
+        "age": "本篇高中生 / After Story 成年",
+        "occupation": "姬松学院学生",
+        "faction": "超自然研究会"
+      },
+      "voice": "等、等等！刚才的事情不准说出去……绝对不准！",
+      "voiceJa": "気にしないで下さい。自分の分を毎日作ってますから",
+      "tags": [
+        "银白长发",
+        "低双马尾",
+        "紫瞳",
+        "呆毛",
+        "发带",
+        "魔女服"
+      ],
+      "bg_story": "绫地宁宁是《魔女的夜宴》的女主角之一。她在学校里温柔、认真又受欢迎，却一直独自隐瞒成为魔女后必须承担的契约代价。被柊史察觉秘密后，她会因为羞耻和焦虑变得语无伦次，甚至不小心越解释越暴露；但真正面对家人、契约与重要之人的选择时，她又有非常坚定的一面。After Story 场景应突出她获得安全感后的依恋、生活感与仍然容易害羞的反差，而不是把她写成契约设定之外的诱惑型角色或无条件顺从的人偶。",
+      "palette": [
+        "月光银",
+        "魔女紫",
+        "柔和粉"
+      ],
+      "weather": [
+        "春日晴空",
+        "图书馆午后",
+        "雨夜暖灯"
+      ],
+      "speech": "gentle and considerate; flusters easily; may reveal too much while panicking; becomes resolute when protecting loved ones",
+      "source": "YUZUSOFT《サノバウィッチ / 魔女的夜宴》",
+      "lora": {
+        "name": "ayachi_nene_v18_wd14",
+        "weight": 0.85,
+        "recommended_scene": [
+          "sc001",
+          "sc002",
+          "sc007",
+          "sc025",
+          "sc049",
+          "sc080"
+        ],
+        "special_outfits": {
+          "official_witch": [
+            "nene_witch_canonical",
+            "official_witch_outfit",
+            "witch_hat",
+            "pink_striped_hat_ribbon",
+            "black_cape",
+            "vivid_pink_lining",
+            "criss_cross_halter",
+            "crop_top",
+            "strap_between_breasts",
+            "striped_bow",
+            "bare_midriff",
+            "cleavage",
+            "sideboob",
+            "underboob",
+            "no_bra",
+            "black_pleated_mini_skirt",
+            "asymmetrical_legwear",
+            "striped_thighhighs",
+            "single_thighhigh",
+            "frilled_socks",
+            "black_boots"
+          ],
+          "official_school": [
+            "nene_school_uniform",
+            "school_uniform",
+            "blazer",
+            "yellow_bowtie",
+            "plaid_skirt",
+            "pleated_skirt",
+            "grey_skirt",
+            "black_thighhighs",
+            "zettai_ryouiki"
+          ],
+          "official_sailor": [
+            "nene_sailor_uniform",
+            "grey_sailor_collar",
+            "black_shirt",
+            "sailor_shirt",
+            "serafuku"
+          ],
+          "official_blue_pajamas": [
+            "nene_blue_pajamas",
+            "pajamas",
+            "animal_print",
+            "cat_print",
+            "long_sleeves"
+          ],
+          "official_green_sleepwear": [
+            "nene_green_sleepwear",
+            "sleepwear",
+            "nightgown",
+            "polka_dot",
+            "short_sleeves",
+            "twin_braids"
+          ],
+          "special_virgin_killer": [
+            "virgin_killer_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "bare_legs",
+            "frilled_socks"
+          ],
+          "special_sheer_bunny": [
+            "sheer_bunny_suit",
+            "bunny_suit",
+            "bunny_ears",
+            "translucent_cloth",
+            "see-through",
+            "cleavage_cutout",
+            "bare_shoulders",
+            "garter_straps",
+            "black_thighhighs",
+            "stiletto_heels"
+          ],
+          "special_front_tie_bikini": [
+            "front-tie_bikini",
+            "triangle_bikini",
+            "striped_bikini",
+            "side-tie_panties",
+            "cleavage",
+            "bare_shoulders",
+            "bare_midriff",
+            "barefoot"
+          ],
+          "special_santa": [
+            "santa_costume",
+            "red_dress",
+            "white_fur_trim",
+            "santa_hat",
+            "santa_capelet",
+            "off_shoulder",
+            "black_belt",
+            "white_thighhighs",
+            "black_boots"
+          ]
+        }
+      },
+      "traits": [
+        {
+          "tag": "white_hair",
+          "label": "银白发",
+          "icon": "◇"
+        },
+        {
+          "tag": "very_long_hair",
+          "label": "长发",
+          "icon": "〰"
+        },
+        {
+          "tag": "low_twintails",
+          "label": "低双马尾",
+          "icon": "⑅"
+        },
+        {
+          "tag": "purple_eyes",
+          "label": "紫瞳",
+          "icon": "◉"
+        },
+        {
+          "tag": "ahoge",
+          "label": "呆毛",
+          "icon": "⌁"
+        },
+        {
+          "tag": "hair_ribbon",
+          "label": "发带",
+          "icon": "⊹"
+        }
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    }
+  }
+}

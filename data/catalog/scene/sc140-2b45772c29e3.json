@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc140",
+  "revision": 1,
+  "sortOrder": 138,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc140",
+    "title": "打烊办公室的秘密审讯",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 职场OL窄裙裂丝绝对沦陷】深夜空无一人的特工指挥中心办公室，百叶窗外透进零星的城市霓虹。高冷的职场OL夏目正面红耳赤地坐在冰凉的办公桌边缘，身上的白衬衫纽扣已被你解开了大半，露出了极其诱人的饱满曲线。腿上性感的黑色丝袜已经被你大面积暴力撕裂，露出了光洁细腻的大腿绝对领域。她双手死死撑在身后，眼角的泪痣在台灯强阴影下散发着极致动情的危险红晕，大口喘息着呻吟——「哈啊...长官...今晚这场『秘密越界审讯』...你已经彻底赢了...随你把我坏掉吧...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "防御全面沦陷支配",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "white_office_shirt",
+      "unbuttoned_shirt",
+      "cleavage",
+      "torn_stockings",
+      "torn_clothes",
+      "sitting_on_desk",
+      "hands_braced_behind",
+      "panting",
+      "moaning",
+      "office",
+      "night",
+      "desk_lamp",
+      "strong_shadow",
+      "medium_shot"
+    ],
+    "mature": true,
+    "location": "指挥官办公室桌上",
+    "weather": "微热",
+    "camera": "略微仰视近景特写",
+    "lighting": "局部台灯打在面部强阴影",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, white_office_shirt, open_shirt, pencil_skirt_unzipped, garter_straps, torn_thighhighs, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_office_desk, leaning_back_on_hands, heavy_blush, biting_lip, panting, night, office_window_city_lights, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "storyJa": "【夏目・職場OLの狭いスカートが絶対波打つ】シークレットサービス指令センターのオフィスは深夜、人影もなく、散発的に都会のネオンがブラインドから差し込んでいた。寒い職場で、OL夏目は顔を真っ赤にして冷たい机の端に座っています。あなたは体の白いシャツのほとんどのボタンを外し、非常に魅力的な豊満な曲線を明らかにしています。あなたの脚のセクシーな黒ストッキングはあなたによって激しく引き裂かれ、滑らかで繊細な太ももの絶対領域が露出します。彼女は両手を背中の後ろでしっかりと握り、電気スタンドの強い影の下で目の端の泣きぼくろが非常に感情的で危険な赤面をにじみ出し、彼女は息を呑んでうめき声を上げました。――「店長……今夜の『秘密の越境尋問』は、あなたの勝ち。だからもう少しだけ……私のそばにいて。」",
+    "rating": "R18",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "animaCaption": "In the empty command center office at midnight with faint city neon seeping through the blinds, Shiki Natsume sits on the edge of the cold desk with her hands braced behind her, her white office shirt unbuttoned most of the way to reveal her alluring full curves, black stockings torn open over large patches of smooth bare thigh; she pants with parted lips, her tear-mole glowing with a dangerously aroused red in the harsh shadow of the desk lamp."
+  }
+}

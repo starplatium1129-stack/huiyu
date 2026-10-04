@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/survey_corps_uniform",
+  "revision": 1,
+  "sortOrder": 538,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "default": true,
+      "id": "survey_corps_uniform",
+      "isDefault": true,
+      "name": "调查兵团制服 850 年",
+      "prose": "her Survey Corps uniform with a brown jacket, white shirt and pants, brown boots and green cape, ODM gear harness and blades, with the iconic red scarf",
+      "tokens": [
+        "survey_corps_uniform",
+        "brown_jacket",
+        "white_shirt",
+        "white_pants",
+        "brown_boots",
+        "green_cape",
+        "odm_gear",
+        "harness",
+        "swords",
+        "red_scarf",
+        "belt"
+      ]
+    }
+  }
+}

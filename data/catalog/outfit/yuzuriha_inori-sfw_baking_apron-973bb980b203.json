@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yuzuriha_inori/sfw_baking_apron",
+  "revision": 1,
+  "sortOrder": 192,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuzuriha_inori",
+    "outfit": {
+      "id": "sfw_baking_apron",
+      "name": "烘焙围裙便服",
+      "prose": "a long-sleeved knee-length casual dress beneath a plain white kitchen apron",
+      "tokens": [
+        "casual_dress",
+        "long_sleeves",
+        "knee_length_dress",
+        "white_apron"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

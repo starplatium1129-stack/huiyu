@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/sfw_school",
+  "revision": 1,
+  "sortOrder": 961,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "高中黑色开襟西装制服",
+      "prose": "her high school uniform: an open black blazer with gold buttons over a beige sweater vest and white shirt, a red bow tie, a short grey pleated skirt, white socks and dark brown loafers",
+      "tokens": [
+        "school_uniform",
+        "black_jacket",
+        "blazer",
+        "open_jacket",
+        "sweater_vest",
+        "white_shirt",
+        "red_bowtie",
+        "grey_skirt",
+        "pleated_skirt",
+        "white_socks",
+        "loafers",
+        "two_side_up",
+        "pink_ribbon"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

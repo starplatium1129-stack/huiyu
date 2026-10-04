@@ -112,14 +112,9 @@ pub(super) fn save(config: &Config, body: &Value, cancel: &CancellationToken) ->
         .as_str()
         .filter(|id| id_ok(id))
         .ok_or_else(|| invalid("角色 ID 无效"))?;
-    let characters: Value = serde_json::from_slice(
-        &disk(fs::read(
-            &config.content_root().join("data/characters.json"),
-            false,
-        ))?
-        .ok_or_else(corrupt)?,
-    )
-    .map_err(|_| corrupt())?;
+    let characters = crate::catalog::Catalog::open(crate::catalog::Options::from_config(config))?
+        .projection("characters.json")?
+        .ok_or_else(corrupt)?;
     if !characters
         .as_array()
         .is_some_and(|rows| rows.iter().any(|row| row["id"] == id))

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shu_arknights/field_work",
+  "revision": 1,
+  "sortOrder": 403,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shu_arknights",
+    "outfit": {
+      "id": "field_work",
+      "name": "田间便装（创作）",
+      "default": false,
+      "isDefault": false,
+      "tokens": [
+        "linen_shirt",
+        "green_shirt",
+        "long_sleeves",
+        "rolled_up_sleeves",
+        "white_pants",
+        "belt",
+        "boots"
+      ],
+      "prose": "an opaque sage-green linen shirt with sleeves rolled to the forearms, cream ankle-length trousers, a woven brown belt and practical dark work boots"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/cafe_apron_outfit",
+  "revision": 1,
+  "sortOrder": 240,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "cafe_apron_outfit",
+      "name": "咖啡厅打工围裙装",
+      "tokens": [
+        "cafe_uniform",
+        "apron",
+        "white_shirt",
+        "jeans",
+        "choker"
+      ],
+      "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
+      "styleHint": "warm nostalgic cafe ambient light",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

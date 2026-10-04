@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/casual",
+  "revision": 1,
+  "sortOrder": 250,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "default": false,
+      "id": "casual",
+      "isDefault": false,
+      "name": "便服",
+      "prose": "a relaxed casual dress in soft blue tones",
+      "tokens": [
+        "casual_clothes",
+        "dress",
+        "blue_clothes"
+      ]
+    }
+  }
+}

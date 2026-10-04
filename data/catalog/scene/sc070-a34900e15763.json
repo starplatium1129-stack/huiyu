@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc070",
+  "revision": 1,
+  "sortOrder": 68,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Before a floor-to-ceiling window at dusk, Ayachi Nene in a thin sheer silk nightgown holds a watering can beside potted flowers, her bare legs and figure silhouetted by the golden sunset backlight through the light curtain. Realizing the fabric is too translucent in the evening glow, she reaches to draw the curtain shut with a shy, flustered blush, her ahoge trembling.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "纱帘后的半身剪影",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "诱惑",
+    "id": "sc070",
+    "lighting": "傍晚夕阳逆光",
+    "location": "同居公寓落地窗边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sunset, golden_hour, bare_legs, standing, barefoot, bedroom, on_bed, blush, shy_smile, bokeh, collarbone, slender_waist, full_body, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【成年 After Story · 傍晚窗边的剪影】成年后的夏日黄昏，宁宁刚冲完凉，赤足站在公寓窗边给花浇水，逆光将身影映在纱帘上。听见你回家，她才意识到布料在夕阳下过于通透，慌忙拉拢窗帘。你从身后帮忙，她红着脸靠进怀里——「不准故意站在光后面看……先把窗帘关好，然后再让我抱一下。」",
+    "storyJa": "【寧々・大人のアフターストーリー・夕方の窓辺のシルエット】大人になった夏の夜、寧々さんは薄手のナイトガウンを着てアパートの窓辺に立って花に水をあげていました。逆光で彼の姿が紗のカーテンに映った。あなたが帰ってきたと聞いたとき、彼女は夕日の下で生地が透けすぎていることに気づき、急いでカーテンを閉めました。あなたが後ろから助けると、彼女は顔を赤らめてあなたの腕に寄りかかる――「わざと光の後ろに立って見ないでください……先にカーテンを閉めて、それからもう一度、抱きしめさせてください。」",
+    "tags": [
+      "hair_ribbon",
+      "silk_negligee",
+      "bare_legs",
+      "floor_window",
+      "watering_can",
+      "sunset_backlight",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "傍晚窗边的剪影",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_summer_ocean_splash_sunshine",
+  "revision": 1,
+  "sortOrder": 1093,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_summer_ocean_splash_sunshine",
+    "title": "柴郡 · 盛夏蔚蓝浪花的猫耳嬉水",
+    "category": "海滨盛夏",
+    "characterId": "cheshire_azur",
+    "outfitId": "summer_bikini",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【柴郡 · 盛夏蔚蓝浪花的猫耳嬉水】碧海连天的热带白沙滩上，浪花欢快地拍打礁石。柴郡戴着带猫耳开孔的宽檐草帽，粉白荷叶边比基尼衬托出她惊人饱满的丰腴身段。她双手捧起清凉的海水向镜头泼洒，晶莹剔透的水珠在阳光下折射成绚烂彩虹，纯真无邪的笑容洋溢着夏日特有的充沛活力。",
+    "location": "热带海岛细白沙滩浪花边",
+    "action": "站在浅海中双手扬起浪花水珠，草帽微歪，粉色比基尼胸口水珠滚落",
+    "timeOfDay": "正午",
+    "lighting": "明烈热带骄阳与澄澈海面折射的晶莹焦散光斑",
+    "camera": "cowboy shot, action shot, water splashing in foreground",
+    "mood": "热情开朗",
+    "sceneTags": [
+      "beach",
+      "ocean",
+      "bikini",
+      "sun_hat",
+      "splashing_water",
+      "rainbow",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "summer"
+    ],
+    "promptProse": "Splashing crystal sea spray towards the viewer while standing ankle-deep in turquoise ocean surf, Cheshire laughs warmly in her frilled pink bikini. Radiant tropical sunlight forms faint miniature rainbows in the flying water droplets around her sunhat and cat ears.",
+    "promptTokens": [
+      "tropical_beach",
+      "splashing_water",
+      "ocean_waves",
+      "bikini",
+      "sun_hat",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "sunlight_caustics",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/casual_home_apron_sweater",
+  "revision": 1,
+  "sortOrder": 746,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "casual_home_apron_sweater",
+      "name": "22层湖畔木屋毛衣围裙人妻装",
+      "prose": "a cozy domestic outfit: an oversized cream knit sweater, pink floral cooking apron tied around her waist, bare legs, holding a wooden spoon with sweet domestic warmth",
+      "tokens": [
+        "apron",
+        "cooking_apron",
+        "sweater",
+        "knit_sweater",
+        "bare_legs",
+        "holding_spoon",
+        "domestic"
+      ]
+    }
+  }
+}

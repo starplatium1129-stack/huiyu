@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/summer_yukata",
+  "revision": 1,
+  "sortOrder": 226,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "default": false,
+      "id": "summer_yukata",
+      "isDefault": false,
+      "name": "夏日淡蓝浴衣",
+      "prose": "wearing a fresh light-blue summer yukata with a white sash obi, a shortened hemline above the knees, and wooden geta sandals",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "yukata",
+        "summer_yukata",
+        "light_blue_yukata",
+        "blue_yukata",
+        "white_obi",
+        "waist_sash",
+        "geta",
+        "wooden_geta",
+        "short_hem",
+        "bare_legs"
+      ]
+    }
+  }
+}

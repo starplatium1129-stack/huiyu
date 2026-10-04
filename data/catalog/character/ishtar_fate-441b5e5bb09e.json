@@ -1,0 +1,133 @@
+{
+  "kind": "character",
+  "id": "ishtar_fate",
+  "revision": 1,
+  "sortOrder": 62,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_fate",
+    "profile": {
+      "id": "ishtar_fate",
+      "name": "伊什塔尔",
+      "alias": [
+        "Ishtar",
+        "伊什塔尔",
+        "天之女主人",
+        "美与战争的女神",
+        "Rin脸女神"
+      ],
+      "type": "popular",
+      "icon": "🌟",
+      "portrait": {
+        "image": "../assets/characters/popular-ishtar_fate.png?v=1",
+        "alt": "伊什塔尔 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑发 two-side_up 高双马尾",
+        "hair_color": "墨黑 / 深棕黑",
+        "eyes": "红色眼眸 · 得意时神采飞扬",
+        "hairstyle": "two-side_up 高束双马尾",
+        "uniform": "女神神装 · 金冠金环与不对称绑腿",
+        "expression": "高傲得意 · 撒娇时理直气壮 · 动情时恍惚温柔",
+        "style": "haughty babylonian goddess",
+        "signature": "金冠金环、天舟玛安娜与『赞美我』"
+      },
+      "personality": [
+        "美与战争的女神，威压无双",
+        "好奇心旺盛的现代沉迷者",
+        "嘴上要供品，心里要陪伴",
+        "恋爱时笨拙得完全不像女神"
+      ],
+      "likes": [
+        "人类的甜甜圈",
+        "金星与星空",
+        "被你『赞美』时的暗爽"
+      ],
+      "classic_cg": {
+        "title": "天舟巡空的宣言",
+        "description": "维纳斯号划破云海，金冠女神叉腰俯瞰人间领空。"
+      },
+      "identity": "Fate/Grand Order · Archer · 巴比伦爱与战争女神（凭依凛的躯体）",
+      "tags": [
+        "FGO",
+        "女神",
+        "金冠",
+        "黑发红瞳",
+        "天舟",
+        "傲娇女神"
+      ],
+      "bg_story": "美索不达米亚的美与战争女神，凭依在与她灵魂波长相合的少女之躯降临现代。她管着战争所以很吵，管着爱所以很笨——三千年的神史里从不缺信徒，缺的只是一个不靠供品、纯粹因为喜欢而走近的人。女神下嫁，空前绝后，请写进史诗。",
+      "palette": [
+        "#eab308",
+        "#f8fafc",
+        "#78350f",
+        "#3b82f6"
+      ],
+      "weather": "神殿的金色清晨 / 屋顶的星河深夜",
+      "speech": "「看到了吗！天空的一切都归本女神管辖！……供品之后再说，先赞美我。……诶，甜甜圈也可以吗？」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "goddess_of_love_war",
+        "archer_class",
+        "maanna",
+        "two_side_up"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#78350f"
+    },
+    "popular": {
+      "id": "ishtar_fate",
+      "displayName": "伊什塔尔",
+      "originalName": "イシュタル",
+      "franchise": "Fate",
+      "aliases": [
+        "Ishtar",
+        "伊什塔尔",
+        "天之女主人",
+        "美与战争的女神",
+        "Rin脸女神"
+      ],
+      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, and radiant red eyes that soften when flustered",
+      "identityTokens": [
+        "ishtar (fate)",
+        "fate/grand_order",
+        "1girl",
+        "solo",
+        "black_hair",
+        "two_side_up",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "ishtar (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ishtar (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Morii Shizuki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

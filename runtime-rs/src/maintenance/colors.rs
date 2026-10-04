@@ -143,7 +143,7 @@ fn files(
     }
     Ok(())
 }
-pub(super) fn report(root: &Path, cancel: &CancellationToken) -> Result<String> {
+pub(crate) fn report(root: &Path, cancel: &CancellationToken) -> Result<String> {
     let started = Instant::now();
     let mut paths = Vec::new();
     for directory in ["src", "docs", "css"] {

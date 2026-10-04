@@ -1,0 +1,164 @@
+{
+  "kind": "character",
+  "id": "tomotake_yoshino",
+  "revision": 1,
+  "sortOrder": 86,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tomotake_yoshino",
+    "profile": {
+      "id": "tomotake_yoshino",
+      "name": "朝武芳乃",
+      "alias": [
+        "Tomotake Yoshino",
+        "朝武芳乃",
+        "芳乃",
+        "巫女姬大人"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-tomotake_yoshino.png?v=5",
+        "alt": "朝武芳乃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白及腰长双马尾 · 中分前额刘海 · 樱花头饰",
+        "hair_color": "银白/月光银",
+        "eyes": "深邃高雅海蓝美眸",
+        "hairstyle": "高束银双马尾 · 樱花发饰 · 黑色连裤袜",
+        "uniform": "正统神职红白大袖巫女服 / 奉纳神乐金绣礼装",
+        "expression": "端庄典雅 · 高洁清冷 · 纯情娇羞",
+        "style": "dignified elegant shrine princess",
+        "signature": "银白双马尾、樱花发饰、红白正统巫女服、黑丝连裤袜与深蓝凤眸"
+      },
+      "personality": [
+        "举止端庄有礼的大小姐气质",
+        "责任感极强、独自背负家族除祟使命",
+        "超级甜食控，遇到好吃点心就瞬间破防",
+        "面对恋爱手足无措、极其容易害羞红脸",
+        "外冷内热，全心全意为镇民与所爱之人付出"
+      ],
+      "likes": [
+        "穗织产的传统金锷烧与甜点",
+        "跳神道奉纳神乐舞",
+        "神社庭院的早樱漫步",
+        "安静地和将臣独处喝茶"
+      ],
+      "classic_cg": {
+        "title": "月夜神乐的奉纳华舞",
+        "description": "神社神乐殿前，芳乃手执神乐铃翩跹起舞，绯红行灯袴与银白长发流转，神圣而绝美。"
+      },
+      "identity": {
+        "role": "朝武神社掌管者 / 穗织巫女姬",
+        "age": "少女",
+        "occupation": "神社巫女姬 / 除祟神职",
+        "faction": "穗织镇 · 朝武神社"
+      },
+      "tags": [
+        "银白长发",
+        "双马尾",
+        "蓝瞳",
+        "巫女服",
+        "黑色连裤袜",
+        "樱花头饰",
+        "千恋万花"
+      ],
+      "bg_story": "朝武芳乃是柚子社《千恋＊万花》的女主角之一，穗织镇朝武神社的巫女姬，肩负着朝武一族历代传承的除祟使命。外表高洁典雅、宛如古代神道画卷中走出的千金巫女，实际内心纯洁真挚、极度钟爱各种甜点美食。面对将臣从起初的提防疏离到深陷爱恋，举手投足间散发出令人心醉的神圣与娇羞。",
+      "palette": [
+        "月光白",
+        "朱砂绯",
+        "深海蓝"
+      ],
+      "weather": [
+        "落樱霏霏",
+        "秋月和风",
+        "白雪神社"
+      ],
+      "speech": "我是朝武芳乃。作为穗织的巫女，守护这片土地是我的职责……请多多指教。",
+      "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "traits": [
+        "tomotake_yoshino",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "twintails",
+        "sidelocks",
+        "blue_eyes",
+        "hair_flower",
+        "miko",
+        "senren_banka"
+      ],
+      "accent_color": "#e0f2fe",
+      "bg_color": "#0a101d"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "tomotake_yoshino",
+        "yoshino",
+        "yoshino_(senren)",
+        "朝武芳乃",
+        "芳乃",
+        "巫女姬",
+        "千恋万花",
+        "senren banka"
+      ],
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "canon": {
+        "era": "和风奇幻美少女世界",
+        "formNotes": "穗织镇朝武神社的巫女姬，背负着朝武一族世代驱除祟神的神圣使命；外表端庄典雅有千金小姐的贵气，内心纯情、极度喜爱甜食，由于家族诅咒在特定时刻会长出惹人怜爱的犬耳",
+        "research": "2026-09-02 调研（Danbooru tomotake_yoshino + 萌娘百科官方设定）",
+        "world": "穗织镇（Hoori）· 朝武神社"
+      },
+      "curatedArtistStyles": [
+        "muririn",
+        "kobuichi",
+        "rella"
+      ],
+      "displayName": "朝武芳乃",
+      "exactPrefixes": [
+        "yoshino_"
+      ],
+      "exactTokens": [
+        "tomotake_yoshino"
+      ],
+      "franchise": "YUZUSOFT",
+      "id": "tomotake_yoshino",
+      "identityProse": "Tomotake Yoshino from Senren Banka by YUZUSOFT, the revered shrine maiden princess of Hoori with silky silver-white hair styled in elegant twin tails, parted center bangs framing her face, gentle yet dignified deep blue eyes, delicate cherry blossom hair ornaments, and a slender voluptuous figure.",
+      "identityTokens": [
+        "tomotake_yoshino",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "twintails",
+        "sidelocks",
+        "blunt_bangs",
+        "blue_eyes",
+        "hair_flower",
+        "hair_ornament",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "朝武 芳乃 (Tomotake Yoshino)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

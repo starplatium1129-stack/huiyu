@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/summer_bikini",
+  "revision": 1,
+  "sortOrder": 646,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "summer_bikini",
+      "name": "夏日灼阳细带比基尼",
+      "prose": "a provocative cherry-red string triangle micro-bikini accentuating her colossal bust and sculpted hourglass waist, halterneck ties behind her neck, translucent white sarong loosely tied on her hip, sunglasses perched in hair, and sun-warmed skin",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "red_bikini",
+        "string_bikini",
+        "halterneck",
+        "micro_bikini",
+        "sarong",
+        "wet_skin",
+        "sunglasses"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

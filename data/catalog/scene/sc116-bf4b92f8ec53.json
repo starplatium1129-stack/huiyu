@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc116",
+  "revision": 1,
+  "sortOrder": 114,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a closed cafe counter, Shiki Natsume in elegant black lace lingerie with sheer black tights and garter accents sits with legs crossed, glossy tights hugging smooth thighs, black heels on the counter, composed alluring blush under dim counter light.",
+    "auditRevision": "careful-batch02-2026-08-27",
+    "camera": "主观略微仰视",
+    "category": "日常/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "绝对独占占有",
+    "id": "sc116",
+    "lighting": "吧台上方微弱局部光",
+    "location": "打烊后的咖啡吧台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_lace_lingerie, bra_lift, exposed_breasts, bare_breasts, nipples, areola, garter_straps, black_thighhighs, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_cafe_bar_counter, arched_back, heavy_blush, panting, dim_amber_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 蕾丝内衣极致诱惑】深夜闭店后的星光咖啡馆。在一片寂静的昏暗中，夏目在你的霸道惩罚下，褪去了所有的校服外套，仅仅穿着一套充满了危险禁忌感的黑色蕾丝内衣和超薄黑丝袜坐在吧台上。平时高冷克制的她此时面红赤，双手撑在吧台边缘，眼角的泪痣被脸颊的红晕彻底浸透。她大汗淋漓地斜睨着居高临下的你，咬着银牙发出最后的傲娇宣言——「喂，大色狼。今晚不准让我回家...你最好做足了被我彻底吃掉的觉悟。」",
+    "storyJa": "【夏目・レース下着の究極の誘惑】深夜閉店後のスターライトカフェ。静かな暗闇の中、夏目はあなたの高圧的なお仕置きに学生服の上着を全て脱ぎ、危険なタブーが詰まった黒いレースの下着と極薄の黒ストッキングだけを身に着けてバーに座りました。彼女はいつも冷たく控えめで、今では顔は赤く、手はバーの端にあり、目の端の泣きぼくろは頬の赤面で完全に濡れていました。彼女は汗だくになり、見下すようなあなたを横目に、銀歯を食いしばって傲慢な最後の宣言をした。――「ねえ、このすけべ。今夜は私を一人で帰さないで……最後まで付き合う覚悟くらい、しておいて。」",
+    "tags": [
+      "mole_under_eye",
+      "lace_lingerie",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "cafe_counter",
+      "full_body",
+      "heels"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "星光打烊后的蕾丝过载",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

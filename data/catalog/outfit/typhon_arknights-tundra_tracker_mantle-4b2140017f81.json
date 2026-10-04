@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/tundra_tracker_mantle",
+  "revision": 1,
+  "sortOrder": 398,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "default": false,
+      "id": "tundra_tracker_mantle",
+      "isDefault": false,
+      "name": "极北雪地潜行装",
+      "prose": "a snow-white fur mantle with leather chest guard, thermal leggings and insulated hunting boots",
+      "tokens": [
+        "white_cape",
+        "fur_trim",
+        "leather_armor",
+        "leggings",
+        "boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/casual",
+  "revision": 1,
+  "sortOrder": 281,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "casual",
+      "name": "便服",
+      "prose": "a modern casual outfit with a jacket and jeans",
+      "tokens": [
+        "casual_clothes",
+        "jacket",
+        "jeans",
+        "shirt"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/sfw_casual",
+  "revision": 1,
+  "sortOrder": 446,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "居家漫画连帽衫",
+      "prose": "a roomy opaque grey hoodie and loose dark trousers",
+      "tokens": [
+        "grey_hoodie",
+        "dark_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

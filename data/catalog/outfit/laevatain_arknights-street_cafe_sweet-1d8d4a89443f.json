@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/street_cafe_sweet",
+  "revision": 1,
+  "sortOrder": 417,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "default": false,
+      "id": "street_cafe_sweet",
+      "isDefault": false,
+      "name": "绯红甜意·街头机能便服",
+      "prose": "a light techwear street outfit for a cafe visit: a black halter crop top under a slightly open cropped sheer grey techwear jacket, black high-waist pleated utility miniskirt with metal buckles and dark red lining, chunky sneakers",
+      "tokens": [
+        "crop_top",
+        "techwear",
+        "pleated_skirt",
+        "miniskirt",
+        "streetwear"
+      ]
+    }
+  }
+}

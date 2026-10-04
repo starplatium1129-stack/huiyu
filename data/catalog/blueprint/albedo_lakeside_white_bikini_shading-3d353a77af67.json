@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_lakeside_white_bikini_shading",
+  "revision": 1,
+  "sortOrder": 1305,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_lakeside_white_bikini_shading",
+    "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
+    "category": "海滨度假",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 湖畔水光的黑翼遮阳】在阳光灿烂的人工湖泊水波旁，微风吹拂绿茵。雅儿贝德身着一袭贴身的纯白细带比基尼坐在白岩石上，玉足轻点清澈见底的湖水。见烈日有些刺眼，她主动展开单侧柔软深黑的羽翼轻柔地遮挡在你额前充当阳伞，另一手托着自己饱满滚圆的丰腴雪乳，眼眸弯弯狡黠轻笑——「烈日会晒伤您尊贵的肌肤呢，就用雅儿贝德的羽翼为您遮阳吧。」",
+    "location": "翠绿森林环抱的清澈人工湖畔白色礁石",
+    "action": "身穿纯白比基尼坐在岩石上，单侧黑翼前倾为视角遮阳，侧头露出调皮魅惑笑容",
+    "timeOfDay": "正午晴日",
+    "lighting": "湖面反射的波光粼粼与羽翼下的清凉暗影",
+    "camera": "cowboy shot, diagonal angle, summer water view",
+    "mood": "唯美惬意",
+    "sceneTags": [
+      "lake",
+      "lakeside",
+      "water_reflections",
+      "white_bikini",
+      "string_bikini",
+      "curved_horns",
+      "black_wings",
+      "wing_shading",
+      "cleavage",
+      "wet_legs",
+      "seductive_smile"
+    ],
+    "promptProse": "Perched upon smooth white stones by a shimmering emerald lake, Albedo radiates summer allure in a pure white string bikini. Her curvaceous hourglass figure gleams in the bright sunlight as she playfully unfurls one large black feathered wing to cast a cooling shadow over the viewer. Looking back with a fond, teasing smile, her horns catch the sunlit glint. Gorgeous anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "lake",
+      "lakeside",
+      "clear_water",
+      "white_bikini",
+      "micro_bikini",
+      "curved_horns",
+      "black_wings",
+      "wing_shading",
+      "cleavage",
+      "wet_skin",
+      "playful_smile",
+      "yellow_eyes",
+      "sunny",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "pure_white_bikini",
+    "coverageTags": [
+      "swimsuit",
+      "summer",
+      "vacation"
+    ]
+  }
+}

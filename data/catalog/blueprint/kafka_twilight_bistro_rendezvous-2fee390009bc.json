@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_twilight_bistro_rendezvous",
+  "revision": 1,
+  "sortOrder": 1041,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_twilight_bistro_rendezvous",
+    "title": "卡芙卡 · 街角酒馆黄昏邂逅",
+    "category": "现代浪漫",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 街角酒馆黄昏邂逅】异星殖民都市具有欧式复古风情的街角露天咖啡酒馆，金黄色的落日余晖洒在铸铁圆桌上。卡芙卡坐在遮阳篷下的靠背椅上，双手交叉抵住下颌，微笑着注视着坐到对面的你——「比预定的时间晚了三分钟哦。不过……我愿意为你破例等待。」",
+    "location": "欧式复古街角露天咖啡馆",
+    "action": "坐在铸铁圆桌旁微笑着注视对面，双手交叉抵住下颌，夕阳余晖洒在红酒发丝上",
+    "timeOfDay": "黄昏日落",
+    "lighting": "温暖绚烂的金色落日余晖与街角路灯初上",
+    "camera": "medium shot, eye level",
+    "mood": "浪漫惬意",
+    "sceneTags": [
+      "outdoor_bistro",
+      "street_cafe",
+      "cast_iron_table",
+      "sunset",
+      "golden_hour",
+      "wine_bottle",
+      "hands_clasped",
+      "charming_smile",
+      "cobblestone_street"
+    ],
+    "promptProse": "Sitting at an outdoor cafe table at golden hour with hands clasped over her wine, Kafka welcomes the viewer with a captivating, intimate smile. Cobblestone street lights and warm amber twilight create a romantic, unforgettable rendezvous.",
+    "promptTokens": [
+      "street_cafe",
+      "cast_iron_table",
+      "sunset",
+      "golden_hour",
+      "wine_bottle",
+      "hands_clasped",
+      "charming_smile",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_trench_coat",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_lunar_spring_garden_qipao_stroll",
+  "revision": 1,
+  "sortOrder": 1092,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_lunar_spring_garden_qipao_stroll",
+    "title": "柴郡 · 冰雪仙子新春旗袍漫步",
+    "category": "新春国风",
+    "characterId": "cheshire_azur",
+    "outfitId": "cheongsam_spring",
+    "coverageTags": [
+      "festival"
+    ],
+    "description": "【柴郡 · 冰雪仙子新春旗袍漫步】张灯结彩的重樱东煌庭院雪景中，红灯笼在白雪屋檐下摇曳。柴郡身穿冰蓝刺金的高叉丝绸旗袍，肩披雪白狐毛披肩，双腿裹在薄透白丝中亭亭玉立。她俏皮地单脚点地转身，高叉下白皙丰腴的腿根若隐若现，笑颜如春花般灿烂——「亲爱的快看！东煌的这套旗袍是不是显得柴郡更可爱了呢？」",
+    "location": "积雪覆檐的东煌水榭回廊",
+    "action": "身穿高叉旗袍单脚轻盈转身，手提毛绒暖手筒，发髻猫耳相映生辉",
+    "timeOfDay": "下午",
+    "lighting": "红灯笼暖光与庭院白雪漫射的明丽冷暖交织",
+    "camera": "full body, 3/4 dynamic angle, flowing fabric",
+    "mood": "明媚喜庆",
+    "sceneTags": [
+      "cheongsam",
+      "snow",
+      "lanterns",
+      "courtyard",
+      "high_slit",
+      "white_tights",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "smile"
+    ],
+    "promptProse": "Spinning playfully along a snow-lined oriental pavilion beneath glowing red lanterns, Cheshire showcases her icy cyan embroidered qipao with a daring thigh slit. Her fluffy hair buns and cat ear headband tremble with excitement against the winter snowscape.",
+    "promptTokens": [
+      "oriental_garden",
+      "snowy_courtyard",
+      "red_lanterns",
+      "cheongsam",
+      "high_slit",
+      "white_tights",
+      "fur_trim",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

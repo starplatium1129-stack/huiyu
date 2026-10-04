@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc026",
+  "revision": 1,
+  "sortOrder": 24,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting on a gym mat in an equipment room in a white T-shirt with navy gym shorts, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet and white sneakers on floor, knees drawn up with a shy embarrassed blush.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "狭窄空间近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "紧张",
+    "id": "sc026",
+    "lighting": "高窗斜射光",
+    "location": "大学体育馆器材室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, gym_uniform, school_uniform, shirt",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, virgin_killer_sweater, black_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, leaning_against_storage_shelf, arms_crossed_under_breasts, looking_at_viewer_with_amused_smirk, storeroom, dust_motes, dim_sunlight_slanted_through_slats, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "夏",
+    "story": "【夏目 · 器材室里被困的五分钟】大学体育馆活动结束后，夏目请你帮忙归还器材，门却被风意外带上。狭小仓库里只剩高窗漏进来的光，她检查门锁时还很冷静，转身发现你们距离过近才迅速红了耳根——「先想办法开门，别露出那种表情。还有……退后一点，我不是在紧张，只是这里太闷。」",
+    "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
+    "tags": [
+      "mole_under_eye",
+      "white_tshirt",
+      "gym_shorts",
+      "bare_legs",
+      "gym_mat",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "器材室里被困的五分钟",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

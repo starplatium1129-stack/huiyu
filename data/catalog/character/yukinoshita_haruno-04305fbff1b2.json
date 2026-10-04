@@ -1,0 +1,138 @@
+{
+  "kind": "character",
+  "id": "yukinoshita_haruno",
+  "revision": 1,
+  "sortOrder": 115,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yukinoshita_haruno",
+    "profile": {
+      "id": "yukinoshita_haruno",
+      "name": "雪之下阳乃",
+      "alias": [
+        "Haruno Yukinoshita",
+        "雪之下阳乃",
+        "阳乃",
+        "阳乃小姐",
+        "魔性姐姐"
+      ],
+      "type": "popular",
+      "icon": "🍷",
+      "portrait": {
+        "image": "../assets/characters/popular-yukinoshita_haruno.png?v=1",
+        "alt": "雪之下阳乃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "修剪至锁骨处的乌黑靓丽直发",
+        "hair_color": "纯黑 / 墨黑",
+        "eyes": "修长如凤眸般的深邃暗褐眼眸 · 充满穿透力与醉意",
+        "hairstyle": "干练及肩短发 · 偏分刘海",
+        "uniform": "双排扣名牌米色长风衣 · 黑色高领紧身针织衫与黑丝高跟",
+        "expression": "玩世不恭的妖艳冷笑 · 洞察一切的戏谑挑衅 · 偶尔流露的寂寞怅惘",
+        "style": "alluring mature older sister femme fatale",
+        "signature": "微醺红酒杯、拉低墨镜的审视与‘比企谷君，雪乃真的被你改变了呢’的复杂感叹"
+      },
+      "personality": [
+        "雪之下家的长女，兼具绝顶才智、社交手腕与名媛风度",
+        "性格恶趣味十足，极度热衷于撕破虚伪的人际伪装与制造混乱",
+        "对妹妹雪乃抱有病态般复杂的爱护与嫉妒，最渴望看透八幡所追寻的‘真物’",
+        "光鲜亮丽的外表之下，深藏着对家族提线木偶命运的无力与无尽虚无"
+      ],
+      "likes": [
+        "高层公寓阳台夜景与法国勃艮第干红",
+        "看比企谷八幡和雪之下雪乃面对现实时的狼狈与纠结",
+        "在深夜居酒屋卸下名媛面具放肆痛饮"
+      ],
+      "classic_cg": {
+        "title": "深夜阳台的红酒杯",
+        "description": "高层公寓俯瞰千叶港夜景，黑发美人在风中轻晃红酒杯，眼神在醉意中流露深邃孤高。"
+      },
+      "identity": "我的青春恋爱物语果然有问题。 关键人物 · 雪之下雪乃的亲姐姐 · 千叶名门雪之下家长女",
+      "tags": [
+        "春物",
+        "雪之下阳乃",
+        "黑发御姐",
+        "长风衣",
+        "黑丝",
+        "名门长女",
+        "恶趣味"
+      ],
+      "bg_story": "千叶名门雪之下家的长女，拥有让所有人艳羡的美貌、才华与社交手段。但只有她自己知道，她不过是母亲手中合格的继承人玩偶。她残酷地撕碎妹妹和八幡那温吞的青春游戏，逼迫他们面对成年人世界的冰冷现实。然而在酒精麻醉的深夜，那个在落地窗前晃动酒杯的孤傲女人，心底渴望真物的程度，其实比谁都要狂烈。",
+      "palette": [
+        "#e11d48",
+        "#ffe4e6",
+        "#4c0519",
+        "#3b82f6"
+      ],
+      "weather": "霓虹初上的都市繁华街头 / 暴风雨夜俯瞰万家灯火的豪华阳台",
+      "speech": "「比企谷君总是在寻找所谓‘真物’呢。……可是，如果真物的尽头只是一片漆黑，你还能像现在这样骄傲地活着吗？」",
+      "source": "Oregairu",
+      "traits": [
+        "yukinoshita_heiress",
+        "femme_fatale",
+        "wine_and_trenchcoat",
+        "mature_beauty"
+      ],
+      "accent_color": "#e11d48",
+      "bg_color": "#4c0519"
+    },
+    "popular": {
+      "id": "yukinoshita_haruno",
+      "displayName": "雪之下阳乃",
+      "originalName": "雪ノ下陽乃",
+      "franchise": "Oregairu",
+      "aliases": [
+        "Haruno Yukinoshita",
+        "雪之下阳乃",
+        "阳乃",
+        "阳乃小姐",
+        "魔性姐姐"
+      ],
+      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp brown eyes with a dangerous intoxicating gaze, and a mature, composed figure",
+      "identityTokens": [
+        "yukinoshita_haruno",
+        "oregairu",
+        "1girl",
+        "solo",
+        "black_hair",
+        "medium_hair",
+        "brown_eyes",
+        "purple_eyes",
+        "mature_female",
+        "medium_breasts",
+        "smirk"
+      ],
+      "exactTokens": [
+        "yukinoshita_haruno"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yukinoshita_haruno"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "feel.",
+      "curatedArtistStyles": [
+        "Ponkan8"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

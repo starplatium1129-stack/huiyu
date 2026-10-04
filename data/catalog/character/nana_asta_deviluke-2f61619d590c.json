@@ -1,0 +1,164 @@
+{
+  "kind": "character",
+  "id": "nana_asta_deviluke",
+  "revision": 1,
+  "sortOrder": 96,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "nana_asta_deviluke",
+    "profile": {
+      "id": "nana_asta_deviluke",
+      "name": "娜娜·阿斯达·戴比路克",
+      "alias": [
+        "Nana Asta Deviluke",
+        "ナナ",
+        "娜娜",
+        "第二王女",
+        "出包王女"
+      ],
+      "type": "popular",
+      "icon": "🐾",
+      "portrait": {
+        "image": "../assets/characters/popular-nana_asta_deviluke.png?v=5",
+        "alt": "娜娜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉色长双马尾 · 齐刘海 · 娇小萝莉身姿",
+        "hair_color": "粉色",
+        "eyes": "深邃紫粉色眼眸 · 傲娇虎牙",
+        "hairstyle": "双马尾 · 黑色爱心恶魔尾巴 · 贫乳平胸",
+        "uniform": "彩南高校标准水手制服 / 戴比路克王女科技短装",
+        "expression": "傲娇好胜 · 假小子气 · 容易害羞",
+        "style": "feisty tomboyish alien princess",
+        "signature": "粉发长双马尾、小虎牙、爱心恶魔尾巴、小巧平胸与傲娇神态"
+      },
+      "personality": [
+        "活泼好动、争强好胜的假小子性格",
+        "对自己的平胸十分在意，羡慕姐姐和妹妹的丰满",
+        "拥有与全宇宙各类动物生物心灵相通的奇妙能力",
+        "平时对结城梨斗口诛笔伐，但内心其实十分信赖且暗生好感",
+        "爱心恶魔尾巴同样是敏感点与弱点"
+      ],
+      "likes": [
+        "和宇宙小动物们一起聊天玩耍",
+        "和梨斗拌嘴斗气",
+        "各种高热量的甜食与肉类",
+        "偷偷测量自己的胸围希望长大"
+      ],
+      "classic_cg": {
+        "title": "走廊拐角的傲娇斗嘴",
+        "description": "彩南学园走廊上，粉发双马尾的第二王女双手叉腰露出小虎牙，爱心尾巴气鼓鼓地甩动，正傲娇地质问梨斗。"
+      },
+      "identity": {
+        "role": "戴比路克星第二王女 / 结城梨斗小姨子",
+        "age": "少女",
+        "occupation": "王女 / 彩南高中学生 / 动物心灵师",
+        "faction": "戴比路克星际帝国 · 彩南高中"
+      },
+      "tags": [
+        "粉发",
+        "双马尾",
+        "平胸",
+        "傲娇",
+        "恶魔尾巴",
+        "王女",
+        "小虎牙",
+        "出包王女"
+      ],
+      "bg_story": "娜娜·阿斯达·戴比路克是《出包王女》的主要女主角之一，戴比路克帝国第二王女，菈菈的妹妹、梦梦的双胞胎姐姐。性格直爽外向、带有假小子的豪气与傲娇，非常在意自己不如姐妹丰满的平胸身材。拥有能与宇宙各种外星凶猛动物心灵相通的神奇天性，看似对结城梨斗态度蛮横，其实内心早已深深陷在梨斗的温柔之中。",
+      "palette": [
+        "珊瑚粉",
+        "星空黑",
+        "草绿"
+      ],
+      "weather": [
+        "阳光公园",
+        "夏日草坪",
+        "晴空走廊"
+      ],
+      "speech": "笨蛋梨斗！又在偷看姐姐的胸部了吧？我就知道你是个满脑子不知羞耻的大变态！哼！",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "nana_asta_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "flat_chest",
+        "to_love-ru"
+      ],
+      "accent_color": "#fb7185",
+      "bg_color": "#1a0b12"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "nana_asta_deviluke",
+        "nana",
+        "nana_(to_love-ru)",
+        "娜娜",
+        "第二王女",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第二王女，性格活泼好胜的傲娇假小子，自幼能与各类宇宙生物心灵沟通，对自己的贫乳十分在意，常常跟梨斗斗嘴却暗生情愫",
+        "research": "2026-09-02 调研（Danbooru nana_asta_deviluke 650+ posts）",
+        "world": "彩南町 · 戴比路克星王族"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "娜娜·阿斯达·戴比路克",
+      "exactPrefixes": [
+        "nana_"
+      ],
+      "exactTokens": [
+        "nana_asta_deviluke"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "nana_asta_deviluke",
+      "identityProse": "Nana Asta Deviluke from To LOVE-Ru by Kentaro Yabuki, the second princess of Planet Deviluke with long pink twin-tails, sharp yet endearing purple-pink eyes, a slender athletic petite figure, a delicate black spade-heart devil tail, and a feisty tsundere expression.",
+      "identityTokens": [
+        "nana_asta_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "hair_between_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "flat_chest",
+        "small_breasts",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "ナナ・アスタ・デビルーク (Nana)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

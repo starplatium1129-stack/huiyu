@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_victoria_maid_shear_strike_ice",
+  "revision": 1,
+  "sortOrder": 1057,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手持巨型冰刃剪刀贴地突进，巨大鲨鱼尾巴甩动激起冰屑气旋，神情冷峻酷飒",
+    "camera": "dynamic low angle, sweeping wide shot",
+    "category": "战斗执事",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【艾莲·乔 · 维多利亚执事极寒剪击】新艾利都深层以骸空洞废墟，幽蓝色的以太结晶如尖刺般耸立。艾莲拖动沉重巨大的冰刃剪刀，在冰霜结晶地面滑行留下森白尾迹。她微眯起冷酷的赤红双眸，巨大厚重的鲨鱼尾巴在身后强劲甩动掀起暴风雪气流，整个人宛如巡弋猎物的顶级深海掠食者——「工作快点结束，我还想赶在四点前去吃限定圣代呢。」",
+    "id": "ellen_victoria_maid_shear_strike_ice",
+    "lighting": "以太结晶幽蓝冷光与落日余晖交织的高对比侧光",
+    "location": "新艾利都空洞以太冰晶废墟",
+    "mood": "冷酷英勇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "maid_uniform",
+    "promptProse": "Gliding aggressively across a frost-covered Eridu hollow ruins, Ellen drags her colossal ice-edged shears while sweeping her spiky shark tail with predatory speed. Blue crystalline frost blooms across the shattered concrete in dramatic cinematic focus.",
+    "promptTokens": [
+      "frozen_ruins",
+      "ice_crystals",
+      "shears",
+      "weapon",
+      "charging",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "ice",
+      "crystals",
+      "ruins",
+      "shears",
+      "shark_tail",
+      "charging",
+      "dynamic_pose"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "艾莲·乔 · 维多利亚执事极寒剪击"
+  }
+}

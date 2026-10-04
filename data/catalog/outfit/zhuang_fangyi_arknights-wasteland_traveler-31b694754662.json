@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "zhuang_fangyi_arknights/wasteland_traveler",
+  "revision": 1,
+  "sortOrder": 426,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "zhuang_fangyi_arknights",
+    "outfit": {
+      "default": false,
+      "id": "wasteland_traveler",
+      "isDefault": false,
+      "name": "荒原风沙行装",
+      "prose": "a rugged dust-resistant travel mantle with tactical cargo trousers, utility belt and heavy desert combat boots",
+      "tokens": [
+        "cape",
+        "hood",
+        "cargo_pants",
+        "utility_belt",
+        "combat_boots",
+        "techwear"
+      ]
+    }
+  }
+}

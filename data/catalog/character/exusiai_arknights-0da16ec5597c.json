@@ -1,0 +1,142 @@
+{
+  "kind": "character",
+  "id": "exusiai_arknights",
+  "revision": 1,
+  "sortOrder": 24,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "exusiai_arknights",
+    "profile": {
+      "id": "exusiai_arknights",
+      "name": "能天使",
+      "alias": [
+        "Exusiai",
+        "能天使",
+        "阿能",
+        "企鹅物流",
+        "蕾缪尔"
+      ],
+      "type": "popular",
+      "icon": "🔫",
+      "visual_dna": {
+        "hair": "明亮且富有朝气的红橙色/红褐色碎短发（Red/Russet short hair），发尾略微向外翘起，额前配有自然分层的碎刘海，带有几缕俏皮的呆毛",
+        "hair_color": "红橙色/红棕色（官方设定为鲜艳的红发/Red hair，绝非白发。AI绘图常因萨科塔天使光环刻板印象或与蕾缪安/送葬人混淆而误出白发，提示词中需明确指定 red hair / orange-red hair）",
+        "eyes": "深红色/红棕色瞳孔（Red / Hazel-red eyes），双眼清澈明亮，眼神中透露出自信、率真与蓬勃的元气活力",
+        "hairstyle": "层次感丰富的鲍伯短发/齐耳碎短发（Short bob hair with messy bangs），两鬓自然垂落至下颌，后脑发梢微翘，极富动感",
+        "uniform": "企鹅物流经典工作制服：外穿浅灰白色连帽运动机能夹克（Light grey / white hooded windbreaker），带有企鹅物流标志性的黑色撞色饰边与拉链；内穿贴身纯黑色短袖内衬T恤（Black fitted inner shirt）；下身搭配黑色修身战术短裤（Black shorts）、黑色过膝长筒袜（Black thigh-high socks）与黑白相间的机能高帮运动鞋（Sneakers）；胸前和腰侧配有黑色快速穿脱战术背带、弹匣袋与工牌挂绳",
+        "expression": "开朗元气、自信张扬、充满感染力的阳光笑容，战斗时神情专注帅气，嘴角常带俏皮从容的微笑",
+        "style": "赛博都市机能风（Techwear）、现代街头潮流（Streetwear）、圣洁宗教神圣感与现代战术枪械的完美融合（Cyber Angel / Gun-Kata）",
+        "signature": "头顶悬浮的乳白色/淡金发光萨科塔光环（Luminescent Sankta Halo）；背后悬浮的一对半透明白色发光小羽翼（Translucent light wings）；单手持握的改良版拉特兰Vector冲锋枪（Submachine Gun）；胸前战术挂带与企鹅物流身份标牌"
+      },
+      "personality": [
+        "热情开朗",
+        "乐观乐天",
+        "元气满满",
+        "嗜甜如命",
+        "重情重义",
+        "热爱派对",
+        "虔诚但随性",
+        "行动派"
+      ],
+      "likes": [
+        "苹果派（Apple Pie，最狂热的挚爱）",
+        "甜食与快餐（炸鸡、碳酸饮料、披萨）",
+        "派对与摇滚乐",
+        "拉特兰铳械保养与打靶射击",
+        "和德克萨斯、莫斯提马等企鹅物流伙伴摸鱼闲聊"
+      ],
+      "identity": {
+        "role": "企鹅物流核心信使 / 罗德岛合作干员 / 拉特兰公民",
+        "age": "未知",
+        "occupation": "狙击干员（速射手 / 快狙）",
+        "faction": "企鹅物流（Penguin Logistics） / 拉特兰（Laterano）"
+      },
+      "tags": [
+        "红橙色/红棕色（官方设定为鲜艳的红发/Red hair，绝非白发。AI绘图常因萨科塔天使光环刻板印象或与蕾缪安/送葬人混淆而误出白发，提示词中需明确指定 red hair / orange-red hair）",
+        "深红色/红棕色瞳孔（Red / Hazel-red eyes），双眼清澈明亮，眼神中透露出自信、率真与蓬勃的元气活力"
+      ],
+      "bg_story": "能天使（真名蕾缪尔）出生于宗教圣邦拉特兰，是一位天性热爱自由、痴迷摇滚与甜点的萨科塔少女。为了寻找多年在外游历音讯稀少的好友莫斯提马，并体验拉特兰律法之外丰富刺激的世界，她来到龙门并加入了由大帝创立的地下物流组织‘企鹅物流’。在龙门街头，她与搭档德克萨斯、可颂等人经历了无数次惊险的武装运送与黑帮冲突，凭借精湛绝伦的铳术打出赫赫威名。在与罗德岛建立合作协议后，能天使作为外援干员参与作战，无论面对多么险恶的战场，她总能用满载元气的笑容与暴风骤雨般的弹幕为同伴带去胜利的福音。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "exusiai (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "short_hair",
+        "red_eyes",
+        "halo",
+        "wings",
+        "white_jacket",
+        "black_clothes",
+        "black_shirt",
+        "shorts",
+        "thighhighs",
+        "gun",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-exusiai_arknights.png?v=5",
+        "alt": "能天使热门角色立绘"
+      },
+      "speech": "能天使向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "exusiai",
+        "arknights",
+        "penguin logistics"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
+        "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）",
+        "world": "泰拉（企鹅物流）"
+      },
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "mika_pikazo",
+        "rella"
+      ],
+      "displayName": "能天使",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "exusiai (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "exusiai_arknights",
+      "identityProse": "Exusiai from Arknights, an energetic Sankta courier with vibrant short red hair, bright red eyes, a radiant golden halo, and luminous white wings.",
+      "identityTokens": [
+        "exusiai (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "short_hair",
+        "red_eyes",
+        "halo",
+        "wings",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Exusiai",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

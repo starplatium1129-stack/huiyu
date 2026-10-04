@@ -11,7 +11,7 @@ vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => access.l
 vi.mock('vue-router', () => ({ useRoute: () => navigation.route, useRouter: () => ({ replace: navigation.replace }) }))
 vi.mock('@/stores/sceneStore', () => ({
   useSceneStore: () => ({
-    loadBlueprintCatalog: navigation.loadCatalog, error: '',
+    loadBlueprintCatalog: navigation.loadCatalog, loadBlueprintCharacter: vi.fn(async () => {}), error: '',
     popularCharacters: ['fixture', 'second'].map(id => ({ id, displayName: id, franchise: '', adultEligibility: access.eligibility })),
     sceneBlueprints: [
       { id: 'safe', adult: false, sampleRating: 'All' },

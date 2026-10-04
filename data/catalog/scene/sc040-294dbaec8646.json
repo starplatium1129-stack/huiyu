@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc040",
+  "revision": 1,
+  "sortOrder": 38,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a serene snow-dusted winter setting, she stands poised with bright expectant eyes, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "领奖台半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "开心",
+    "id": "sc040",
+    "lighting": "舞台聚光与观众席暗部",
+    "location": "舞台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dramatic, stage, spotlight, award_ceremony, school_uniform, holding_certificate, looking_into_crowd, bright_smile, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【宁宁 · 掌声里只找一个人】冬日校园表彰仪式上，宁宁站在聚光灯下接过奖状，礼貌地向全场鞠躬。掌声响起时，她的目光却越过人群，直到找到后排的你才真正笑开。结束后她抱着奖状跑来，把最先准备好的感谢留给你——「我没有辜负大家的期待吧？其实刚才最想确认的，是你有没有看到。」",
+    "storyJa": "【寧々・拍手の中から一人だけ見つけてください】冬期キャンパス表彰式では、寧々さんはスポットライトの下に立ち、賞状を受け取り、聴衆に丁寧にお辞儀をしました。拍手が始まったとき、彼女は群衆を見渡しましたが、後列にいるあなたを見つけるまで、本当の笑顔はありませんでした。終わった後、彼女は賞状を抱えて駆け寄り、最初に用意していたお礼状を残して去っていきました。――「みんなの期待を裏切らずに済みましたよね？　本当はさっき、一番確かめたかったのは、あなたが見ていてくれたかどうかなんです。」",
+    "tags": [
+      "hair_ribbon",
+      "dramatic",
+      "stage",
+      "spotlight",
+      "award_ceremony",
+      "school_uniform",
+      "holding_certificate",
+      "looking_into_crowd",
+      "bright_smile",
+      "afternoon",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "smile",
+      "happy"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "掌声里只找一个人",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

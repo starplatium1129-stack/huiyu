@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "eris_greyrat",
+  "revision": 1,
+  "sortOrder": 52,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "eris_greyrat",
+    "profile": {
+      "id": "eris_greyrat",
+      "name": "艾莉丝",
+      "alias": [
+        "Eris Greyrat",
+        "艾莉丝·伯雷亚斯·格雷拉特",
+        "狂犬"
+      ],
+      "type": "popular",
+      "icon": "⚔️",
+      "portrait": {
+        "image": "../assets/characters/popular-eris_greyrat.png?v=5",
+        "alt": "艾莉丝 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "深红波浪长发",
+        "hair_color": "深红（#CC0000）",
+        "eyes": "红色",
+        "hairstyle": "长卷发 · 小呆毛 · 粗眉 · 发带",
+        "uniform": "剑王时期：露脐短上衣 / 开衩内侧短裤 / 吊带袜",
+        "expression": "凶悍野性 · 好胜心强 · 偶尔显露贵族教养",
+        "style": "sword queen crimson",
+        "signature": "深红卷发、红瞳、粗眉与白色发带"
+      },
+      "personality": [
+        "凶悍好斗",
+        "自尊心极强",
+        "口嫌体正直",
+        "战斗直觉惊人",
+        "忠诚重情"
+      ],
+      "likes": [
+        "挥剑",
+        "变强",
+        "吃肉",
+        "与强者交手",
+        "罗路迪的冒险"
+      ],
+      "classic_cg": {
+        "title": "剑王试炼",
+        "description": "魔大陆试炼悬崖上，深红卷发的剑士持剑立于风中，红瞳燃着不屈的战意。"
+      },
+      "identity": {
+        "role": "格雷拉特家大小姐 → 剑王",
+        "age": "登场 9 岁 · 剑王期约 20 岁",
+        "occupation": "剑士（剑王）",
+        "faction": "无职转生 · 六面世界"
+      },
+      "tags": [
+        "深红卷发",
+        "红瞳",
+        "粗眉",
+        "呆毛",
+        "发带",
+        "大剑"
+      ],
+      "bg_story": "艾莉丝·伯雷亚斯·格雷拉特是《无职转生》的女主角之一，菲托亚领领主千金。天生拥有狂犬般的野性直觉与爆烈脾气，在鲁迪乌斯成为家庭教师后被其才华折服并定下终生契约。经历领地转移事件后，在残酷的魔大陆与鲁迪组成「Dead End」小队历经生死磨砺，从任性大小姐蜕变为独当一面的战士。在龙神一战意识到自身弱小后，为了能真正与鲁迪并肩作战，毅然前往剑之圣地闭关苦修，历经千锤百炼登顶「剑王」。场景应突出异世界剑士的野性与纯粹——试炼悬崖、魔大陆荒野、道场晨休与边境旅店的撕肉休整，深红是她的灵魂主色，避免将她写成柔弱娇气或扁平暴躁的角色。",
+      "palette": [
+        "深红",
+        "白",
+        "皮革棕"
+      ],
+      "weather": [
+        "试炼悬崖烈日",
+        "魔大陆旷野",
+        "黄昏训练场"
+      ],
+      "speech": "艾莉丝向你发出剑术挑战——敢应战吗？",
+      "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "traits": [
+        "eris_greyrat",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "curly_hair",
+        "red_eyes",
+        "ahoge",
+        "thick_eyebrows",
+        "headband",
+        "sword",
+        "athletic",
+        "mushoku_tensei"
+      ],
+      "accent_color": "#CC0000",
+      "bg_color": "#1a0f0f",
+      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "eris_greyrat",
+        "eris boreas greyrat",
+        "eris",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "animeStudio": "mushoku tensei, official anime art, Studio Bind style",
+      "canon": {
+        "era": "中世纪魔大陆与王族领地",
+        "formNotes": "成年版 tag=eris_greyrat_(adult)；红发红瞳=格雷拉特家族特征；武器=大剑；强调色 #CC0000 深红",
+        "research": "2026-08-31 调研",
+        "world": "奇幻异世界（六面世界）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "displayName": "艾莉丝",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eris_greyrat"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "eris_greyrat",
+      "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+      "identityTokens": [
+        "eris_greyrat",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "curly_hair",
+        "red_eyes",
+        "ahoge",
+        "thick_eyebrows",
+        "headband",
+        "athletic",
+        "mushoku_tensei"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Eris Greyrat",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

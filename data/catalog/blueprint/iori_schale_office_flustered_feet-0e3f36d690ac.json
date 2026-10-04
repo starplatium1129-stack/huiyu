@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "iori_schale_office_flustered_feet",
+  "revision": 1,
+  "sortOrder": 929,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在木椅上双手抱胸别过头，一只黑丝小腿向前伸出，满脸通红羞愤娇嗔",
+    "camera": "medium shot, slightly high angle",
+    "category": "学园日常",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【银镜伊织 · 夏莱办公室的羞愤惩戒】夏莱办公室安静的茶歇区内，伊织气鼓鼓地坐在木椅上，一只裹着黑丝的修长美腿被老师捧在手心里。她整张小脸涨得通红，尖尖的恶魔小尖牙紧咬，头顶的浅紫准星光环剧烈闪烁，双手抱胸拼命别过头去——「变、变态老师！你在摸哪里啊！只是稍微有些扭伤而已……不许舔！绝对不许舔啊——！！」",
+    "id": "iori_schale_office_flustered_feet",
+    "lighting": "室内温馨漫射光与透过窗帘的柔和日光",
+    "location": "夏莱（SCHALE）中央办公室接待区",
+    "mood": "羞愤傲娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "disciplinary_uniform",
+    "promptProse": "Sitting flustered in Sensei’s office chair with her gartered black stockings on display, Iori glares back with furious tsundere shame. Warm afternoon sunbeams stream across the wooden desk, highlighting her flushed dark skin.",
+    "promptTokens": [
+      "schale_office",
+      "office_chair",
+      "black_thighhighs",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "garter_straps"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "office",
+      "chair",
+      "feet",
+      "stockings",
+      "black_thighhighs",
+      "garter_straps",
+      "blush",
+      "heavy_blush",
+      "tsundere",
+      "flustered",
+      "fangs"
+    ],
+    "timeOfDay": "下午",
+    "title": "银镜伊织 · 夏莱办公室的羞愤惩戒"
+  }
+}

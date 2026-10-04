@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ryougi_shiki/sfw_white_kimono_without_jacket",
+  "revision": 1,
+  "sortOrder": 734,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ryougi_shiki",
+    "outfit": {
+      "default": false,
+      "id": "sfw_white_kimono_without_jacket",
+      "isDefault": false,
+      "name": "白和服·卸下夹克",
+      "prose": "a simple opaque white kimono with its collar neatly overlapped and a dark woven obi",
+      "tokens": [
+        "white_kimono",
+        "opaque_fabric",
+        "closed_collar",
+        "dark_obi"
+      ]
+    }
+  }
+}

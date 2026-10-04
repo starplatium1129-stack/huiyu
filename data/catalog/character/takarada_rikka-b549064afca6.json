@@ -1,0 +1,116 @@
+{
+  "kind": "character",
+  "id": "takarada_rikka",
+  "revision": 1,
+  "sortOrder": 120,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "takarada_rikka",
+    "profile": {
+      "id": "takarada_rikka",
+      "name": "宝多六花",
+      "alias": [
+        "宝多六花",
+        "Rikka Takarada"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-takarada_rikka.png?v=2ca59eb0d691",
+        "alt": "宝多六花 · 夏祭的捞水球场景样张"
+      },
+      "visual_dna": {
+        "signature": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",
+        "hair": "black_hair, long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "杜鹃台高校制服与耳机",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "言语随性",
+        "情绪表达克制",
+        "留意朋友的感受"
+      ],
+      "likes": [
+        "爱用的智能手机"
+      ],
+      "classic_cg": {
+        "title": "绚 JUNK SHOP 的柜台",
+        "description": "放学后的自家旧货店，她趴在堆着旧收音机与卡带的玻璃柜台上写作业，耳机挂在脖子上放着音乐；夕阳穿过摆满旧物的货架，尘埃在光柱里浮动。"
+      },
+      "identity": "SSSS.GRIDMAN · 宝多六花",
+      "tags": [
+        "SSSS.GRIDMAN",
+        "宝多六花",
+        "全年龄日常"
+      ],
+      "bg_story": "在绚JUNK SHOP生活的普通高中生，被卷入古立特与怪兽事件。她说话随意、反应克制，却一直认真留意朋友的变化；旧货店、通学路与耳机里的音乐构成了她珍惜的日常。",
+      "palette": [
+        "#91b5dc",
+        "#344e70"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "先把作业写完吧，音乐可以一起听。",
+      "source": "SSSS.GRIDMAN",
+      "traits": [
+        "takarada_rikka",
+        "ssss.gridman",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "accent_color": "#91b5dc",
+      "bg_color": "#344e70"
+    },
+    "popular": {
+      "id": "takarada_rikka",
+      "displayName": "宝多六花",
+      "originalName": "Rikka Takarada",
+      "franchise": "SSSS.GRIDMAN",
+      "aliases": [
+        "宝多六花",
+        "Rikka Takarada"
+      ],
+      "identityProse": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",
+      "identityTokens": [
+        "takarada_rikka",
+        "ssss.gridman",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "takarada_rikka"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, takarada_rikka"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

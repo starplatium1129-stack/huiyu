@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc012",
+  "revision": 1,
+  "sortOrder": 11,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "The train has just reached the winter platform when Ayachi Nene turns back and extends a small ticket-pass case toward the viewer. Her beige coat and red scarf lift in the draft while her other hand steadies the scarf. The open train door remains behind her. Frame her face, outstretched case and the platform edge at waist height in cold morning light.",
+    "auditRevision": "audit-v25-2026-08-26-batch3",
+    "camera": "月台票套与人物半身中景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "悲伤",
+    "id": "sc012",
+    "lighting": "冬日清晨冷调漫射光",
+    "location": "冬日车站月台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, beige_winter_coat, red_scarf, brown_boots, holding_pass_case, offering_pass_case, one_hand_on_scarf, turning_back, outstretched_arm, wistful_expression, winter_train_platform, train_door, morning, cold_daylight, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【宁宁 · 月台上没有说完的话】冬日清晨，列车进站的风卷起宁宁的银白长发。她原本已经走到车门前，却在提示音响起时突然转身，隔着匆忙的人群朝你跑回两步。她把一直攥在掌心的车票套塞给你，眼里泛着不舍——「这个先放在你那里。等我回来，再陪我把没走完的那段路补上。」",
+    "storyJa": "【寧々・プラットフォーム上の書き残された言葉】冬の早朝、駅に入る電車の風が寧々さんの長い銀髪をなびかせた。彼女はすでに車のドアに向かって歩いていましたが、ブザーが鳴ると、突然振り向いて、急いでいる群衆の中をあなたのほうに二歩後ずさりして走りました。彼女は手のひらに抱えていたチケットホルダーを、名残惜しそうな目で差し出した。――「これはしばらく、あなたが持っていてください。戻ってきたら、歩きそびれた道の続きを一緒に歩いてくださいね。」",
+    "tags": [
+      "beige_winter_coat",
+      "red_scarf",
+      "brown_boots",
+      "holding_pass_case",
+      "offering_pass_case",
+      "one_hand_on_scarf",
+      "turning_back",
+      "outstretched_arm",
+      "wistful_expression",
+      "winter_train_platform",
+      "train_door",
+      "morning",
+      "cold_daylight",
+      "medium_shot"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "月台上没有说完的话",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

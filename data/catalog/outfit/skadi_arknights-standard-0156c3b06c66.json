@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/standard",
+  "revision": 1,
+  "sortOrder": 349,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "深海猎人作战服",
+      "prose": "her black high-cut sleeveless bodysuit with red accents, a black cropped jacket with red lining, a black wide-brimmed hunter hat and black thigh-high boots",
+      "tokens": [
+        "bodysuit",
+        "black_clothes",
+        "red_clothes",
+        "jacket",
+        "wide_brimmed_hat",
+        "thighhighs",
+        "high_boots"
+      ]
+    }
+  }
+}

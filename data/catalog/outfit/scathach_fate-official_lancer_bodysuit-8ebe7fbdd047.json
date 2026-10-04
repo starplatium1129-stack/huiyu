@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/official_lancer_bodysuit",
+  "revision": 1,
+  "sortOrder": 134,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "official_lancer_bodysuit",
+      "name": "影之国紫色紧身衣双红枪",
+      "prose": "her signature Lancer battle attire: a skin-tight purple bodysuit with an open chest window and cutout hips that bares her sides, silver pauldrons and gauntlets, dark sheer panels along her thighs, and the twin crimson death spears Gae Bolg wielded in both hands",
+      "tokens": [
+        "bodysuit",
+        "purple_bodysuit",
+        "leotard",
+        "pauldrons",
+        "gauntlets",
+        "bare_shoulders",
+        "sideboob",
+        "hip_vent",
+        "holding_polearm",
+        "dual_wield",
+        "gae_bolg"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

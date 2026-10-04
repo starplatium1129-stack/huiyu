@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc208",
+  "revision": 1,
+  "sortOrder": 203,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc208",
+    "title": "夜灯下的黑发余温",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 夏目 · 夜灯下的安静邀请】深夜的卧室只开着床头暖灯。结束一天工作的夏目披着深色睡袍坐在床沿，黑色长发散落在肩背，疲惫被难得的柔和取代。她把杯子放到一旁，抬眼示意你靠近，语气仍有一点逞强——「别误会，我只是想安静待一会儿。门锁好了，今晚不许用工作当借口逃跑。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "克制的独占欲",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "dark_bathrobe",
+      "bathrobe",
+      "sitting_on_bed_edge",
+      "long_hair",
+      "cup",
+      "bedside_table",
+      "apartment_bedroom",
+      "night",
+      "bedside_lamp",
+      "soft_shadows",
+      "medium_shot"
+    ],
+    "rating": "R15",
+    "mature": false,
+    "location": "夏目成年后的私人公寓卧室",
+    "weather": "室内恒温",
+    "camera": "平视中近景",
+    "lighting": "单一床头暖灯与深色阴影",
+    "usage": [
+      "氛围优先",
+      "R15"
+    ],
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, silk_bathrobe, loose_bathrobe, off_shoulder, bare_shoulders, collarbone, bare_legs, sitting_on_messy_bed, holding_blanket_edge, looking_up_at_viewer, gentle_weary_expression, affectionate_blush, bedside_lamp, warm_night_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "storyJa": "【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」",
+    "animaCaption": "Late at night in the private apartment bedroom lit only by one warm bedside lamp, Shiki Natsume sits on the edge of the bed wrapped in a dark bathrobe, her long black hair falling across her shoulders; she sets a cup aside on the bedside table and lifts her eyes to invite you closer, tiredness softened by a rare gentleness that still carries a hint of stubborn pride.",
+    "auditRevision": "careful-batch07-2026-08-27"
+  }
+}

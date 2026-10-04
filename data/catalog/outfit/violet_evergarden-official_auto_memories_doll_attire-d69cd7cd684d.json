@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/official_auto_memories_doll_attire",
+  "revision": 1,
+  "sortOrder": 758,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "default": true,
+      "id": "official_auto_memories_doll_attire",
+      "isDefault": true,
+      "name": "自动手记人偶宝蓝骑士礼服",
+      "prose": "her signature Auto Memories Doll attire: a tailored Prussian-blue officer jacket with ruffled ascot, an emerald brooch at her collar, a pleated pure white Prussian silk skirt, brown leather travel boots, and intricate articulated silver mechanical prosthetic hands",
+      "tokens": [
+        "blue_jacket",
+        "white_dress",
+        "pleated_skirt",
+        "brooch",
+        "ascot",
+        "boots",
+        "mechanical_hands",
+        "parasol"
+      ]
+    }
+  }
+}

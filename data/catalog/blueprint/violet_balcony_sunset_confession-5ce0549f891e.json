@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "violet_balcony_sunset_confession",
+  "revision": 1,
+  "sortOrder": 1393,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
+    "adult": false,
+    "animaStyleHint": "anime_cinematic_scenic",
+    "camera": "medium close-up, dramatic sunset bokeh, wind swept hair, profound emotional confession",
+    "category": "永恒誓约",
+    "characterId": "violet_evergarden",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "sunset",
+      "romantic",
+      "confession"
+    ],
+    "description": "【俯瞰大海的海崖白石露台】漫天如梦似幻的粉紫晚霞映照着翻涌的金色海浪。薇尔莉特身着白色夏日连身裙，海风吹散了她编起的发辫，金色长发在霞光中如金色缎带般漫天起伏。她抬起冰凉而精致的银色机械双手，小心翼翼地捧起你的脸庞，在两唇相碰前，轻声诉说着她一生唯一的誓言。",
+    "id": "violet_balcony_sunset_confession",
+    "kreaStyleHint": "anime_cinematic_scenic",
+    "lighting": "粉紫与暖金交融的梦幻落日晚霞，水面波光粼粼的逆光反光",
+    "location": "海滨灯塔旁的白色大理石观海露台",
+    "mood": "史诗纯爱、浪漫巅峰",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_white_summer_dress",
+    "promptProse": "Violet Evergarden gently cups your cheeks with both silver prosthetic hands upon a marble clifftop terrace overlooking the radiant twilight sea. The wind unfurls her golden hair across the violet and rose-tinted sunset horizon, her azure-blue eyes glistening with absolute devotion. Brilliant golden sunbeams illuminate her pure white dress and the shimmering waves far below.",
+    "promptTokens": [
+      "balcony",
+      "sea",
+      "ocean",
+      "sunset",
+      "twilight",
+      "white_dress",
+      "mechanical_hands",
+      "cupping_face",
+      "wind_blown",
+      "close-up",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "balcony",
+      "sea",
+      "ocean",
+      "sunset",
+      "golden_hour",
+      "cupping_cheek",
+      "mechanical_hands",
+      "confession",
+      "wind_blown"
+    ],
+    "timeOfDay": "黄昏晚霞",
+    "title": "薇尔莉特 · 海崖晚霞的指尖抚触·「我的生命与爱意，全部奉献给您」"
+  }
+}

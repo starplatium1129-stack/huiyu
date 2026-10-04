@@ -1,0 +1,157 @@
+{
+  "kind": "character",
+  "id": "ayanami_rei",
+  "revision": 1,
+  "sortOrder": 67,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ayanami_rei",
+    "profile": {
+      "id": "ayanami_rei",
+      "name": "绫波丽",
+      "alias": [
+        "Ayanami Rei",
+        "丽",
+        "第一适格者",
+        "绫波零"
+      ],
+      "type": "popular",
+      "icon": "🌕",
+      "portrait": {
+        "image": "../assets/characters/popular-ayanami_rei.png?v=5",
+        "alt": "绫波丽 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "淡蓝碎短发 · 齐刘海",
+        "hair_color": "淡蓝色",
+        "eyes": "绯红 / 宝石红瞳",
+        "hairstyle": "清爽层叠短发 · 神经元接口发卡",
+        "uniform": "零号机纯白战斗驾驶服 / 蓝白校服",
+        "expression": "三无沉静 · 空灵无垢 · 极少流露情感",
+        "style": "ethereal first child pilot",
+        "signature": "淡蓝短发、红眸与纯白战斗驾驶服"
+      },
+      "personality": [
+        "三无寡言",
+        "清冷沉静",
+        "视死如归的奉献意志",
+        "内心深处渴望温情与羁绊",
+        "超然神性"
+      ],
+      "likes": [
+        "安静的房间",
+        "浸润在LCL中的平静",
+        "碇源堂的眼镜",
+        "与同伴无声的默契"
+      ],
+      "classic_cg": {
+        "title": "月光下的微笑",
+        "description": "银色满月映照下的插入栓座舱内，红眸少女在金色LCL液体中露出直击灵魂的温柔浅笑。"
+      },
+      "identity": {
+        "role": "EVA零号机专属驾驶员 / 第一适格者",
+        "age": "14岁",
+        "occupation": "初中生 / NERV特务机关驾驶员",
+        "faction": "NERV特务机关 / 第3新东京市立第1中学"
+      },
+      "tags": [
+        "短蓝发",
+        "红瞳",
+        "白色驾驶服",
+        "三无始祖",
+        "EVA零号机",
+        "神性少女"
+      ],
+      "bg_story": "绫波丽是《新世纪福音战士》的女主角，二次元「三无」属性的鼻祖与永恒经典。她是EVA零号机的专属驾驶员，身世充满谜团，灵魂与莉莉丝相通。在与碇真嗣等人的相处中逐渐体会到人类的温暖与自我意志，是跨时代的日本动漫象征符号。",
+      "palette": [
+        "冰蓝",
+        "纯白",
+        "绯红"
+      ],
+      "weather": [
+        "满月夜空",
+        "要塞都市夕照",
+        "红海之畔"
+      ],
+      "speech": "即使我死去了，也会有替代品……但现在，我想留在这里。",
+      "source": "GAINAX / Khara《新世纪福音战士 / Neon Genesis Evangelion》",
+      "traits": [
+        "ayanami_rei",
+        "1girl",
+        "solo",
+        "short_hair",
+        "blue_hair",
+        "pale_blue_hair",
+        "red_eyes",
+        "pale_skin",
+        "plugsuit",
+        "white_plugsuit",
+        "neon_genesis_evangelion"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "ayanami_rei",
+        "ayanami rei",
+        "rei ayanami",
+        "neon genesis evangelion",
+        "evangelion",
+        "绫波丽",
+        "第一适格者",
+        "零号机驾驶员"
+      ],
+      "animeStudio": "Gainax, Studio Khara, official anime screencap, anime coloring",
+      "canon": {
+        "era": "近未来（2015）",
+        "formNotes": "浅蓝短发+红瞳+雪白肤色；零号机专属驾驶员；第一适格者；三无少女始祖；白色战斗服/校服/绷带病服/黑战斗服",
+        "research": "2026-08-31 调研",
+        "world": "末世机甲科幻（新世纪福音战士）"
+      },
+      "curatedArtistStyles": [
+        "sadamoto_yoshiyuki",
+        "tsuruta_kenji",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "defaultOutfitId": "plugsuit_white",
+      "displayName": "绫波丽",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "ayanami_rei"
+      ],
+      "franchise": "Neon Genesis Evangelion",
+      "id": "ayanami_rei",
+      "identityProse": "Ayanami Rei from Neon Genesis Evangelion, an ethereal and introverted Eva pilot with short feathery pale sky-blue hair, translucent fair porcelain skin, calm piercing crimson-red albino eyes, and an enigmatic, quiet presence",
+      "identityTokens": [
+        "ayanami_rei",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "short_hair",
+        "red_eyes",
+        "pale_skin",
+        "neon_genesis_evangelion"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "綾波レイ",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

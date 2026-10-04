@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 649,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园正统学生制服",
+      "prose": "Mihama Private Academy uniform: neat lavender-purple button-up shirt with dark sailor collar, blue plaid necktie tied crisply, high-waisted white pleated skirt, sheer black pantyhose tights, and polished dark loafers",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "sailor_collar",
+        "plaid_necktie",
+        "blue_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "pantyhose",
+        "black_pantyhose",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

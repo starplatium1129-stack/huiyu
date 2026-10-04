@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ciel_tsukihime/holy_white_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 725,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ciel_tsukihime",
+    "outfit": {
+      "id": "holy_white_lace_lingerie",
+      "name": "纯白神圣蕾丝情趣吊带",
+      "prose": "a delicate white lace lingerie set featuring sheer cups, fine floral embroidery, matching garter belt over sheer white thigh-high stockings",
+      "tokens": [
+        "lingerie",
+        "white_lingerie",
+        "lace",
+        "garter_straps",
+        "white_thighhighs",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

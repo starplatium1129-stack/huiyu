@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc023",
+  "revision": 1,
+  "sortOrder": 22,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At the observatory deck, Ayachi Nene opens her eyes after a shooting star has passed and catches the viewer watching her. One hand gathers the viewer's sleeve at the edge of the picture; the other rests inside her warm pink cardigan pocket. A faint meteor trail still crosses the autumn night above the railing. Her small hopeful smile is framed closely against the dark sky.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "观星台人物与抓袖动作半身中景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc023",
+    "lighting": "星光与低照度月光",
+    "location": "郊外观星台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pink_cardigan, white_blouse, navy_skirt, holding_viewer_sleeve, hand_in_pocket, standing, looking_at_viewer, hopeful_smile, observatory_deck, railing, meteor_trail, starry_sky, autumn_night, moonlight, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "秋",
+    "story": "【宁宁 · 流星之前先看向你】秋夜的观星台风很轻，宁宁裹着外套守了很久，终于在流星划过时匆忙闭眼许愿。再次睁眼，她没有追随消失的光，而是先偷偷确认你是否也在看她。被发现后，她握住你的袖口小声补充——「愿望当然不能说。不过它能不能实现，大概有一半要看你愿不愿意配合。」",
+    "storyJa": "【寧々・星が流れる前に君を見て】秋の夜の星空観察のための台風はとても軽かったです。寧々はコートを巻いて、長い間見ていました。最後に、流れ星が通り過ぎたとき、彼女は目を閉じて願い事をしました。再び目を開けると、彼女は消えていく光を追うのではなく、あなたも自分を見ているかどうかをこっそり確認しました。発見された後、彼女はあなたの袖を掴んでささやきました。――「願い事はもちろん内緒です。でも叶うかどうかは、たぶん半分くらい、あなたが協力してくれるかにかかっています。」",
+    "tags": [
+      "pink_cardigan",
+      "white_blouse",
+      "navy_skirt",
+      "holding_viewer_sleeve",
+      "hand_in_pocket",
+      "standing",
+      "looking_at_viewer",
+      "hopeful_smile",
+      "observatory_deck",
+      "railing",
+      "meteor_trail",
+      "starry_sky",
+      "autumn_night",
+      "moonlight",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "流星之前先看向你",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

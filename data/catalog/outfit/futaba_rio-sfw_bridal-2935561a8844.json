@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 40,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "双叶理央·圣洁花嫁",
+      "prose": "a clean white bridal dress with a silver-grey sash, simple veil, black-rimmed glasses and a tiny blue-flower beaker",
+      "tokens": [
+        "wedding_dress",
+        "white_dress",
+        "silver_sash",
+        "simple_veil",
+        "flower_beaker"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

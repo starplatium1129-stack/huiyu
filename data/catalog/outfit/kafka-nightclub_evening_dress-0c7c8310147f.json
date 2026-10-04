@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kafka/nightclub_evening_dress",
+  "revision": 1,
+  "sortOrder": 571,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kafka",
+    "outfit": {
+      "id": "nightclub_evening_dress",
+      "name": "夜幕晚礼裙",
+      "prose": "an alluring dark velvet plum backless evening gown with a high thigh-high slit, delicate gold jewelry, sheer black satin opera gloves, and stiletto high heels",
+      "tokens": [
+        "evening_gown",
+        "black_dress",
+        "backless_dress",
+        "side_slit",
+        "long_gloves",
+        "necklace",
+        "high_heels",
+        "cleavage",
+        "elegant"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

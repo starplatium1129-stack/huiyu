@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "cecilia_garden_watering_flowers",
+  "revision": 1,
+  "sortOrder": 845,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "提着水壶浇花，阳光洒落",
+    "adult": false,
+    "camera": "medium shot, watering rose bushes with brass watering can",
+    "category": "温馨日常",
+    "characterId": "saint_cecilia",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【塞西莉亚 · 教堂庭院浇花】清晨阳光洒满教堂后院的花园，塞西莉亚提着小铜水壶笨拙却认真地给白玫瑰花丛浇水，几缕薄荷绿发丝在阳光下熠熠生辉。她擦了擦额头的小汗珠转过脸甜甜一笑——「花儿喝饱水之后开得真精神呢！劳伦斯，今天早上的浇花任务我可是超额完成了哦！」",
+    "id": "cecilia_garden_watering_flowers",
+    "lighting": "morning_sunlight",
+    "location": "教堂庭院",
+    "mood": "serene",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "dark shadowed face",
+      "flat lighting",
+      "extra characters",
+      "night",
+      "indoor",
+      "rain",
+      "crowd",
+      "empty scene",
+      "deserted"
+    ],
+    "outfitId": "saint_nun_habit",
+    "promptProse": "Watering blooming white roses in the peaceful church garden, Cecilia smiles as sparkling water droplets glisten in the sunlight. Gentle summer breezes rustle her robes in serene pastoral beauty.",
+    "promptTokens": [
+      "church_garden",
+      "watering_can",
+      "blooming_roses",
+      "nun_robes",
+      "daylight",
+      "gentle_smile",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "church_garden",
+      "watering_can",
+      "flowers",
+      "morning_sunlight",
+      "white_habit",
+      "veil",
+      "serene",
+      "gentle_smile"
+    ],
+    "timeOfDay": "morning",
+    "title": "塞西莉亚 · 教堂庭院浇花"
+  }
+}

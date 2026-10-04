@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "momo_velia_deviluke/summer_bikini",
+  "revision": 1,
+  "sortOrder": 678,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "momo_velia_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "summer_bikini",
+      "isDefault": false,
+      "name": "娇艳浅紫荷叶边分体比基尼",
+      "prose": "a seductive pastel lilac-violet two-piece bikini with delicate ruffled lace trim along the sweetheart bustline, side-tie micro bottoms, golden belly chain, and spade-shaped tail flicking through sunlit ocean spray",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "purple_bikini",
+        "halterneck",
+        "frills",
+        "cleavage",
+        "belly_chain",
+        "side-tie_bikini_bottom",
+        "demon_tail",
+        "wet_skin"
+      ]
+    }
+  }
+}

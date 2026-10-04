@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/candle_silk_slip",
+  "revision": 1,
+  "sortOrder": 395,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "default": false,
+      "id": "candle_silk_slip",
+      "isDefault": false,
+      "name": "烛影夜曲丝绸睡裙",
+      "prose": "a luxurious champagne-gold silk camisole slip nightgown with delicate French lace trim along the plunging neckline and hem, thin straps resting on her porcelain shoulders, barefoot, surrounded by soft glowing candlelights",
+      "tokens": [
+        "nightgown",
+        "slip_dress",
+        "silk_dress",
+        "camisole",
+        "lace_trim",
+        "plunging_neckline",
+        "thin_straps",
+        "barefoot",
+        "sensual",
+        "sleepwear"
+      ]
+    }
+  }
+}

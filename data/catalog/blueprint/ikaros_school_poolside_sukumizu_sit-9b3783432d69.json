@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_school_poolside_sukumizu_sit",
+  "revision": 1,
+  "sortOrder": 1216,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在池边双腿浸水紧抱大西瓜，死库水贴身水珠滚落，眼神好奇注视水面波纹",
+    "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
+    "category": "夏日校园",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【伊卡洛斯 · 校园泳池边的西瓜浮力实验】夏日蝉鸣阵阵的空美中学露天游泳池畔，伊卡洛斯身穿深蓝色连体死库水，胸前白名牌端端正正写着她的名字。她双腿并拢坐在波光粼粼的瓷砖水边，将整个大西瓜紧紧抱在胸前浸入浅水中，好奇地观察着西瓜的浮力。清凉的池水沾湿了她洁白的羽毛与粉色发丝，水珠在微翘的鼻尖晶莹闪烁。",
+    "id": "ikaros_school_poolside_sukumizu_sit",
+    "lighting": "盛夏炽烈阳光与碧蓝池水反射的跳跃焦散光斑",
+    "location": "中学露天游泳池深蓝浅水台阶处",
+    "mood": "清凉童趣",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_swimsuit",
+    "promptProse": "Sitting at the edge of the outdoor school pool with both legs in the shallow water, Ikaros hugs a large striped watermelon and lowers it partly into the pool while watching its buoyancy. Clear ripples and summer caustics move around the melon, her navy sukumizu and folded white wings.",
+    "promptTokens": [
+      "swimming_pool",
+      "school_swimsuit",
+      "sukumizu",
+      "holding_watermelon",
+      "watermelon",
+      "wet_skin",
+      "water_caustics",
+      "angel_wings",
+      "detailed_background",
+      "cinematic_lighting",
+      "watermelon_in_water",
+      "observing_buoyancy"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "swimming_pool",
+      "poolside",
+      "school_swimsuit",
+      "sukumizu",
+      "holding_watermelon",
+      "watermelon",
+      "wet_skin",
+      "angel_wings"
+    ],
+    "timeOfDay": "正午",
+    "title": "伊卡洛斯 · 校园泳池边的西瓜浮力实验"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kasugano_sora/sfw_home",
+  "revision": 1,
+  "sortOrder": 918,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kasugano_sora",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "居家针织衫与长裤",
+      "prose": "a cream long-sleeved sweater and loose grey trousers",
+      "tokens": [
+        "cream_sweater",
+        "long_sleeves",
+        "grey_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

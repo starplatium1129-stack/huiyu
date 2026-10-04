@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "gotoh_hitori_park_bench_sunset",
+  "revision": 1,
+  "sortOrder": 1005,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "缩在长椅一侧抱膝沉思，吉他包靠在身旁",
+    "camera": "medium shot, eye level",
+    "category": "现代日常",
+    "characterId": "gotoh_hitori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【后藤一里 · 黄昏公园长椅】放学后的静谧街心公园，夕阳将天空染成温柔的金粉色。后藤一里独自坐在木质长椅一角，把下巴深深埋进粉色运动服的高领里，身旁放着心爱的黑色吉他包，静静看着飘落的晚霞落叶——「今天也没有鼓起勇气去搭话……不过，有吉他陪伴的黄昏，似乎也没有那么难熬。」",
+    "id": "gotoh_hitori_park_bench_sunset",
+    "lighting": "金色落日逆光与柔和余晖轮廓光",
+    "location": "社区公园长椅",
+    "mood": "宁静微忧",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "pink_tracksuit",
+    "promptProse": "In a peaceful neighborhood park during a breathtaking golden hour sunset, Gotoh Hitori sits quietly on a weathered wooden park bench with her knees drawn slightly up. She buries her chin shyly inside the collar of her oversized pink tracksuit jacket, her black guitar gig bag resting upright against the bench beside her. Golden amber sunlight streams through autumn tree branches, casting long luminous shadows and dazzling rim light across her pink hair and the drifting leaves. The widescreen composition captures a serene, melancholic yet comforting slice-of-life moment.",
+    "promptTokens": [
+      "park",
+      "park_bench",
+      "sitting",
+      "sunset",
+      "golden_hour",
+      "fallen_leaves",
+      "guitar_case",
+      "backlight",
+      "rim_light",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "park",
+      "park_bench",
+      "sitting",
+      "sunset",
+      "golden_hour",
+      "fallen_leaves",
+      "guitar_case",
+      "backlight",
+      "rim_light"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "后藤一里 · 黄昏公园长椅"
+  }
+}

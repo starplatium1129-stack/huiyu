@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/rhodes_canteen_hoodie_shorts",
+  "revision": 1,
+  "sortOrder": 292,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "default": false,
+      "id": "rhodes_canteen_hoodie_shorts",
+      "isDefault": false,
+      "name": "食堂甜品·卫衣短裤便服",
+      "prose": "a loose oatmeal-grey cropped hoodie over a black camisole, black high-waisted shorts, mismatched grey thigh-high socks and retro black-and-white skate sneakers",
+      "tokens": [
+        "casual_clothes",
+        "hoodie",
+        "camisole",
+        "shorts",
+        "thighhighs",
+        "sneakers"
+      ]
+    }
+  }
+}

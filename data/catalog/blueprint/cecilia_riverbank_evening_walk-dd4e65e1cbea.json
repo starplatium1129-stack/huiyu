@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "cecilia_riverbank_evening_walk",
+  "revision": 1,
+  "sortOrder": 847,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "提着草帽散步，晚风拂过裙摆",
+    "adult": false,
+    "camera": "medium_shot",
+    "category": "日常羁绊",
+    "characterId": "saint_cecilia",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【塞西莉亚 · 河畔黄昏散步】夕阳西下的清凉河畔草坡上，塞西莉亚提着草帽赤脚踩在柔软的浅草间，晚风吹拂着她轻盈的白色长裙。她转过身拉住你的手，翠绿眼眸中映着整片晚霞——「镇上的人们都说圣女带来了奇迹……但对我而言，能遇到劳伦斯才是世界上最棒的奇迹。」",
+    "id": "cecilia_riverbank_evening_walk",
+    "lighting": "golden_hour",
+    "location": "小镇河畔",
+    "mood": "gentle",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "dark shadowed face",
+      "flat lighting",
+      "extra characters",
+      "night",
+      "indoor",
+      "rain",
+      "crowd",
+      "empty scene",
+      "deserted"
+    ],
+    "outfitId": "town_summer_sundress",
+    "promptProse": "Walking along the tranquil riverbank path at sunset, Cecilia carries her straw hat in one hand while holding her companion's hand with the other. Glowing golden-hour water reflections and evening breezes frame their peaceful walk.",
+    "promptTokens": [
+      "riverbank",
+      "sunset",
+      "golden_hour",
+      "walking",
+      "holding_hands",
+      "blushing_smile",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "holding_hat",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "riverbank",
+      "golden_hour",
+      "evening",
+      "sundress",
+      "straw_hat",
+      "breeze",
+      "peaceful",
+      "flowers"
+    ],
+    "timeOfDay": "evening",
+    "title": "塞西莉亚 · 河畔黄昏散步"
+  }
+}

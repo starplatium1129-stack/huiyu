@@ -114,7 +114,7 @@ describe('sceneStore · 全量加载', () => {
 
     expect(store.loaded).toBe(true)
     expect(store.characters).toEqual([{ id: 'char-1', name: 'new' }])
-    expect(store.sceneBlueprints).toHaveLength(1)
+    expect(store.sceneBlueprints).toHaveLength(0)
     expect(calls.filter(url => url.includes('curation.json')).length).toBe(1)
   })
 
@@ -155,7 +155,7 @@ describe('sceneStore · 全量加载', () => {
     }
     expect(store.loaded).toBe(true)
     expect(store.characters).toEqual([{ id: 'char-1' }])
-    expect(store.sceneBlueprints).toHaveLength(1)
+    expect(store.sceneBlueprints).toHaveLength(0)
   })
 
   it('轻载必需资源失败后，完整加载可以只重试失败资源', async () => {
@@ -244,10 +244,10 @@ describe('sceneStore · 全量加载', () => {
     }))
     const store = useSceneStore()
     const initial = store.load()
-    for (let attempt = 0; attempt < 20 && oldMetadata.length < 8; attempt += 1) {
+    for (let attempt = 0; attempt < 20 && oldMetadata.length < 7; attempt += 1) {
       await new Promise(resolve => setImmediate(resolve))
     }
-    expect(oldMetadata.length).toBe(8)
+    expect(oldMetadata.length).toBe(7)
 
     await store.reload()
     expect(store.characters).toEqual([{ id: 'char-1', name: 'new' }])
@@ -498,7 +498,7 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
     expect(store.loaded).toBe(false)
     await store.load()
     expect(store.loaded).toBe(true)
-    expect(fetchCount('scene-blueprints.json')).toBe(1)
+    expect(fetchCount('scene-blueprints.json')).toBe(0)
     expect(fetchCount('characters.json')).toBe(1)
     expect(fetchCount('popular-characters.json')).toBe(1)
     expect(fetchCount('scenes-nene.json')).toBe(1)

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "misaki_rainy_day_shared_umbrella",
+  "revision": 1,
+  "sortOrder": 407,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "钻进你的伞下紧贴肩膀，星瞳别扭又满足",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "medium two-shot, shared umbrella, rain bokeh, cozy mood",
+    "category": "都市日常",
+    "characterId": "shokuhou_misaki",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "date",
+      "girlfriend"
+    ],
+    "description": "【学园都市街道·雨】突如其来的夏日骤雨里，女王蜂的白色手提包被她举过头顶挡雨的样子实在称不上优雅。你撑开的伞递过去，她愣了一瞬，随即若无其事地钻进来，肩膀却紧紧贴着你——「哼、本小姐只是给你面子才进来的……伞下三厘米以内，都是本小姐的领域哦。」",
+    "id": "misaki_rainy_day_shared_umbrella",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "雨幕青灰与街灯暖光交映",
+    "location": "学园都市街道伞下",
+    "mood": "别扭甜蜜、雨日心动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_tokiwadai_uniform",
+    "promptProse": "Caught in a sudden summer downpour on an Academy City street, Shokuhou Misaki ducks under your offered umbrella, pretending total indifference while her shoulder presses firmly against yours. Rain curtains the world in blue-grey and warm streetlamp glow, and she declares that everything within three centimeters beneath this umbrella is her sovereign territory, star-shaped pupils betraying how satisfied she really is. Medium two-shot, cinematic lighting, detailed wet street background, depth of field.",
+    "promptTokens": [
+      "shokuhou_misaki",
+      "1girl",
+      "solo",
+      "school_uniform",
+      "sweater_vest",
+      "sharing_umbrella",
+      "umbrella",
+      "rain",
+      "wet_clothes",
+      "walking",
+      "blush",
+      "star-shaped_pupils",
+      "yellow_eyes",
+      "blonde_hair",
+      "very_long_hair",
+      "day",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "rain",
+      "umbrella",
+      "sharing_umbrella",
+      "walking",
+      "blush",
+      "casual",
+      "date"
+    ],
+    "timeOfDay": "雨天",
+    "title": "食蜂操祈 · 雨日共伞的小秘密·「伞下三厘米，是本小姐的领域」"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_starlit_express_window_gaze",
+  "revision": 1,
+  "sortOrder": 1040,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_starlit_express_window_gaze",
+    "title": "卡芙卡 · 星海巡弋舷窗凝望",
+    "category": "唯美日常",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 星海巡弋舷窗凝望】星际穿梭飞船宁静的观景座舱内，巨大的全景舷窗外是一片绚丽无垠的深紫色星云与星辰光带。卡芙卡身穿休闲皮风衣坐在高脚椅上，单手托腮凝望着深邃的宇宙深处，神情难得地流露出一丝温柔与沉思——「宇宙是如此辽阔，但每个人的命运……早已在星图上写好了终局。」",
+    "location": "星际穿梭飞船全景舷窗前",
+    "action": "坐在观景座舱高脚椅上，单手扶腮凝视舷窗外浩瀚绚烂的紫色星云，目光深邃神秘",
+    "timeOfDay": "星际巡航",
+    "lighting": "深紫与幽蓝星云浩瀚反光与座舱暖色壁灯",
+    "camera": "cowboy shot, eye level",
+    "mood": "深邃唯美",
+    "sceneTags": [
+      "spaceship",
+      "cockpit",
+      "large_window",
+      "space_view",
+      "nebula",
+      "stars",
+      "galaxy",
+      "leather_trench_coat",
+      "hand_on_cheek",
+      "pensive_smile"
+    ],
+    "promptProse": "Gazing through the panoramic starship cockpit window into a swirling purple nebula, Kafka rests her cheek on her hand with a pensive smile. Distant galaxies and glowing cosmic dust clouds cast radiant stellar highlights across her black leather coat.",
+    "promptTokens": [
+      "spaceship_cockpit",
+      "large_window",
+      "nebula",
+      "stars",
+      "leather_coat",
+      "hand_on_cheek",
+      "pensive_smile",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_trench_coat",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

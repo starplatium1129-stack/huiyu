@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yae_miko/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 19,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yae_miko",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "八重神子·圣洁花嫁",
+      "prose": "a red-and-white shrine bridal kimono with a translucent veil, gold cords and a sacred sakura bouquet",
+      "tokens": [
+        "wedding_kimono",
+        "red_white_bridal",
+        "translucent_veil",
+        "gold_cords",
+        "sacred_sakura_bouquet"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

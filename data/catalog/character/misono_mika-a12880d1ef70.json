@@ -1,0 +1,178 @@
+{
+  "kind": "character",
+  "id": "misono_mika",
+  "revision": 1,
+  "sortOrder": 46,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "misono_mika",
+    "profile": {
+      "id": "misono_mika",
+      "name": "圣园未花",
+      "alias": [
+        "Misono Mika",
+        "聖園ミカ",
+        "圣园弥香",
+        "未花"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-misono_mika.png?v=5",
+        "alt": "圣园未花 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅粉长发 · 内侧宇宙星空银河渐变",
+        "hair_color": "粉",
+        "eyes": "金",
+        "hairstyle": "侧丸子头 · 月桂枝发饰 · 星芒发夹",
+        "uniform": "崔尼蒂茶会校服 / 茶会礼装 / 夏日泳装",
+        "expression": "天真烂漫，偶尔笨蛋与病娇",
+        "style": "graceful airheaded tea party lady",
+        "signature": "粉发内侧星空、璀璨星芒光环、带金色星徽羽翼、星眸"
+      },
+      "personality": [
+        "天真烂漫",
+        "笨蛋",
+        "大小姐",
+        "怪力",
+        "酒品差"
+      ],
+      "likes": [
+        "聊天",
+        "收集首饰",
+        "被人注视",
+        "甜点"
+      ],
+      "classic_cg": {
+        "title": "茶话会的微笑",
+        "description": "崔尼蒂午后茶会上，她端着红茶回眸一笑，阳光穿过发丝，像天使又像陷阱。"
+      },
+      "identity": {
+        "role": "崔尼蒂综合学院学生 · 前茶话会成员",
+        "age": "17岁",
+        "occupation": "学生",
+        "faction": "崔尼蒂综合学院 / 茶话会"
+      },
+      "tags": [
+        "粉发",
+        "星空渐变",
+        "金瞳",
+        "星芒瞳",
+        "羽翼",
+        "金色星徽",
+        "光环",
+        "白色连裤袜"
+      ],
+      "bg_story": "圣园未花是《碧蓝档案》中崔尼蒂综合学院学生会「茶话会」前三巨头之一，帕特尔分派领袖。外表是拥有星空渐变发色与甜美微笑的优雅名媛，实则拥有徒手拆墙的逆天怪力与反差萌。曾因天真与迷茫卷入伊甸条约政治漩涡深陷自责与囚徒深渊，在老师的无条件信任与拯救下解开心结，重拾自我并化身为在任何绝境下都誓死守护老师的“无敌魔女”。场景应突出崔尼蒂大圣堂的神圣浪漫与未花天真又病娇的极度反差——大理石茶会、晨曦寝殿、忏悔室私语与蔷薇花瓣浴池，粉紫星空与圣白是她的灵魂色。",
+      "palette": [
+        "浅粉",
+        "蓝",
+        "白"
+      ],
+      "weather": [
+        "午后阳光",
+        "雨天",
+        "茶会暖光"
+      ],
+      "speech": "未花向你优雅地问候。",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "misono_mika",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "multicolored_hair",
+        "inner_hair_pastel_galaxy_gradient",
+        "starry_hair",
+        "side_bun",
+        "hair_bun",
+        "plant_hair_ornament",
+        "hair_flower",
+        "halo",
+        "pink_halo",
+        "star_halo",
+        "angel_wings",
+        "white_wings",
+        "feathered_wings",
+        "wings_with_gold_star_brooches",
+        "golden_eyes",
+        "starry_eyes",
+        "star-shaped_pupils",
+        "gentle_smile",
+        "blush",
+        "trinity",
+        "blue_archive"
+      ],
+      "accent_color": "#f9a8d4",
+      "bg_color": "#1e3a8a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "misono_mika",
+        "mika",
+        "mika_(blue_archive)",
+        "圣园弥香",
+        "未花",
+        "blue archive",
+        "trinity",
+        "tea party",
+        "mika (blue archive)"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "前茶话会成员 / 帕特尔派领导人；优雅、天真又带危险感",
+        "research": "2026-08-27 调研",
+        "world": "基沃托斯（Kivotos）· 崔尼蒂综合学院"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "displayName": "圣园未花",
+      "exactPrefixes": [
+        "misono_"
+      ],
+      "exactTokens": [
+        "mika (blue archive)"
+      ],
+      "franchise": "Blue Archive",
+      "id": "misono_mika",
+      "identityProse": "Misono Mika from Blue Archive, Trinity Tea Party princess with pastel pink hair in a side ponytail, gradient starry eyes, feathered white wings, an intricate gold halo, and a curvy figure.",
+      "identityTokens": [
+        "mika (blue archive)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "side_ponytail",
+        "orange_eyes",
+        "wings",
+        "halo",
+        "large_breasts",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Misono Mika",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

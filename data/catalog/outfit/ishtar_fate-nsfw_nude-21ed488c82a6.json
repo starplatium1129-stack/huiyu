@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ishtar_fate/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 146,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ishtar_fate",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, divine body with black hair let loose from its two-side-up style, pert goddess breasts with pink nipples, a slim divine waist, and golden earrings still on — even naked she is radiantly regal",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hoop_earrings",
+        "divine_body"
+      ]
+    }
+  }
+}

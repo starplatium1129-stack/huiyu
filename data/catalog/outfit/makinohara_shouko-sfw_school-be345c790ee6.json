@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/sfw_school",
+  "revision": 1,
+  "sortOrder": 30,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "校园水手制服",
+      "prose": "a neat navy sailor uniform with a white collar, knee-length skirt and school shoes",
+      "tokens": [
+        "sailor_uniform",
+        "white_collar",
+        "navy_skirt",
+        "school_shoes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

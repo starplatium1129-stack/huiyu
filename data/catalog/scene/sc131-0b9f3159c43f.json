@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc131",
+  "revision": 1,
+  "sortOrder": 129,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the big warm bed during a midnight thunderstorm, Ayachi Nene in an extremely thin semi-transparent pink silk nightgown lies on her side on the white sheet, one slender strap slipped down her arm baring her shoulder and a hint of her breast. Her heart-shaped ahoge droops contentedly as she gazes with a shy intimate blush under the warm bedside lamp.",
+    "auditRevision": "careful-batch14-2026-08-27",
+    "camera": "平视近景俯瞰",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致温柔依恋",
+    "id": "sc131",
+    "lighting": "柔和微弱床头灯暖光",
+    "location": "温馨卧室大床上",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, bra, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, extremely, thin, one, shoulder, strap, smooth, bare, thighs, barefoot, bedroom, on_bed, blush, shy_smile, collarbone, slender_waist, full_body, warm_lighting, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 薄衫单肩滑落】暖黄灯光的温馨卧室大床边。宁宁今晚在你的柔情欺负下彻底向你敞开了心扉。她身上是一件极薄的浅粉色吊带式薄衫，单肩的细带在一侧完全无力地滑落到了手臂以下，露出了大片圆润的香肩。她有些脱力地斜倚在床边，红着脸任由你的视线停留——她头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形螺旋——「大色狼...一直盯着人家的身体看什么呢...被窝里好热...快点抱紧人家啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·シルクのネグリジェが肩からずり落ちます】深夜の雷雨の中、居心地の良い寝室の大きなベッド。今夜、あなたの優しいいじめを受けて、寧々はあなたに完全に心を開きました。彼女は非常に薄い半透明のピンクのシルクのナイトガウンを着ているだけで、それは全裸でした。彼女は白いベッドシーツの上に横向きに横たわり、ナイトガウンの細いサスペンダーが片方の腕に完全に力なく滑り落ち、丸い肩とふっくらとしたセクシーな白い胸の半分が露出した。彼女の頭のアホ毛は、究極の快適さと安心感により、完璧なハート型の螺旋を描くように素直に垂れ下がりました。――「もう、どこを見てるんですか……布団の中、暑いですね。そんなところにいないで、早く抱きしめてください。」",
+    "tags": [
+      "hair_ribbon",
+      "pink_silk_nightgown",
+      "translucent_clothing",
+      "one_shoulder_strap_slipped",
+      "bare_legs",
+      "lying_on_side",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "night"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "午夜私语的真丝熔断",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "窗外雷雨交加"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kanroji_mitsuri/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 811,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kanroji_mitsuri",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_boudoir",
+      "isDefault": false,
+      "name": "甘露寺蜜璃·成人私密造型",
+      "prose": "a private adult ensemble built around dressing_room, completely_nude",
+      "tokens": [
+        "dressing_room",
+        "completely_nude"
+      ]
+    }
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "kind": "character",
+  "id": "fern_frieren",
+  "revision": 1,
+  "sortOrder": 43,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fern_frieren",
+    "profile": {
+      "id": "fern_frieren",
+      "name": "菲伦",
+      "alias": [
+        "Fern",
+        "フェルン",
+        "菲伦"
+      ],
+      "type": "popular",
+      "icon": "🪄",
+      "portrait": {
+        "image": "../assets/characters/popular-fern_frieren.png?v=5",
+        "alt": "菲伦 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "紫色长发",
+        "hair_color": "紫（Violet）",
+        "eyes": "紫（Calm Violet）",
+        "hairstyle": "日常半束发 · 礼服盘发",
+        "uniform": "魔法长袍 / 冬日大衣",
+        "expression": "冷静淡然 · 偶尔嘟嘴",
+        "style": "cool composed mage",
+        "signature": "紫色长发、紫瞳与冷静神情"
+      },
+      "source": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
+      "bg_story": "菲伦是《葬送的芙莉莲》的女主角之一，芙莉莲收留并养育的人类少女，成长为第一阶魔法使。紫色长发束成低侧马尾，紫色眼眸冷静而敏锐。她性格沉稳、偶尔毒舌，最爱睡懒觉，与芙莉莲、修塔尔克一同踏上漫长旅途。",
+      "personality": [
+        "冷静",
+        "毒舌",
+        "认真",
+        "爱睡懒觉",
+        "外冷内热"
+      ],
+      "likes": [
+        "睡觉",
+        "甜点",
+        "吐槽",
+        "旅行"
+      ],
+      "traits": [
+        "fern (sousou no frieren)",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "side_ponytail",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "speech": "菲伦向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "旅途的篝火",
+        "description": "她裹着毯子在篝火边打瞌睡，脑袋一点一点——芙莉莲轻轻扶住她的头，没有叫醒她。"
+      },
+      "identity": {
+        "role": "第一阶魔法使 / 芙莉莲的弟子",
+        "age": "人类（旅行中成长）",
+        "occupation": "魔法使",
+        "faction": "芙莉莲一行"
+      },
+      "tags": [
+        "紫发",
+        "魔法使",
+        "冷静"
+      ],
+      "palette": [
+        "紫藤",
+        "纯白",
+        "篝火橙"
+      ],
+      "weather": [
+        "旅途旷野",
+        "旅店清晨",
+        "篝火夜话"
+      ]
+    },
+    "popular": {
+      "id": "fern_frieren",
+      "displayName": "菲伦",
+      "franchise": "Frieren: Beyond Journey's End",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "journey_robe",
+      "identityTokens": [
+        "fern (sousou no frieren)",
+        "sousou_no_frieren",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "straight_bangs",
+        "long_sidelocks",
+        "purple_eyes"
+      ],
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair, straight bangs and long sidelocks, violet eyes, delicate facial features and a quietly attentive manner",
+      "animeStudio": "madhouse, official anime screencap, anime coloring",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist",
+        "belly flab"
+      ],
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "菲伦",
+      "exactTokens": [
+        "fern (sousou no frieren)"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "fern",
+        "fern frieren",
+        "sousou no frieren",
+        "frieren beyond journeys end",
+        "菲伦"
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

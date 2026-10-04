@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/executive_suit",
+  "revision": 1,
+  "sortOrder": 653,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "executive_suit",
+      "name": "CIRS 职场黑色西装套裙",
+      "prose": "authoritative intelligence agency executive wear: an impeccably fitted dark charcoal business suit jacket, crisp white button-down collared shirt with top buttons loosened revealing modest cleavage, matching high-waisted pencil miniskirt, sheer black tights, stylish red-framed glasses perched on her nose, and patent high stiletto heels",
+      "tokens": [
+        "business_suit",
+        "suit_jacket",
+        "black_jacket",
+        "pencil_skirt",
+        "white_shirt",
+        "collared_shirt",
+        "cleavage",
+        "glasses",
+        "red-framed_eyewear",
+        "pantyhose",
+        "black_pantyhose",
+        "high_heels",
+        "professional"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

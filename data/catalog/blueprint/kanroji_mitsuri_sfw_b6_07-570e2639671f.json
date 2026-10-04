@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "kanroji_mitsuri_sfw_b6_07",
+  "revision": 1,
+  "sortOrder": 1472,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "抱粉色灯笼写下分享美食的愿望，将绘马举向镜头",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, horizontal framing",
+    "category": "节日约会",
+    "characterId": "kanroji_mitsuri",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【夏日祭神社·黄昏】蜜璃穿着浅绿浴衣抱着粉色灯笼，在绘马架前认真写下“大家一起吃很多好吃的”；她把绘马举向镜头，绿瞳里的愿望比灯火更亮。",
+    "id": "kanroji_mitsuri_sfw_b6_07",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "pink lantern light beneath the evening sky",
+    "location": "summer festival shrine courtyard",
+    "mood": "恋柱把幸福愿望写给所有人",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_festival",
+    "promptProse": "Mitsuri Kanroji from Kimetsu no Yaiba wears a light green floral yukata with a pink obi and sandals. She holds a pink paper lantern while writing a generous wish on a wooden plaque. She raises the finished wish toward the viewer, her long gradient braids and bright green eyes glowing beside the festival stalls and evening shrine lights. pink lantern light beneath the evening sky.",
+    "promptTokens": [
+      "festival",
+      "green_yukata",
+      "pink_obi",
+      "paper_lantern",
+      "wooden_plaque",
+      "wish",
+      "gradient_braids",
+      "bright_eyes",
+      "evening_light",
+      "twilight_light"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "festival",
+      "green_yukata",
+      "pink_obi",
+      "paper_lantern",
+      "wooden_plaque",
+      "wish",
+      "gradient_braids",
+      "bright_eyes",
+      "evening_light",
+      "afternoon_light"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "甘露寺蜜璃 · 祭典灯笼的愿望"
+  }
+}

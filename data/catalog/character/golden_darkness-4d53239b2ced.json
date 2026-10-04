@@ -1,0 +1,164 @@
+{
+  "kind": "character",
+  "id": "golden_darkness",
+  "revision": 1,
+  "sortOrder": 92,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "golden_darkness",
+    "profile": {
+      "id": "golden_darkness",
+      "name": "金色暗影",
+      "alias": [
+        "Golden Darkness",
+        "金色の闇",
+        "小暗",
+        "夏娃",
+        "Eve",
+        "出包王女"
+      ],
+      "type": "popular",
+      "icon": "⭐",
+      "portrait": {
+        "image": "../assets/characters/popular-golden_darkness.png?v=5",
+        "alt": "金色暗影 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及踝纯金如瀑长发 · 发间凸角发缕（hair intakes）",
+        "hair_color": "灿烂纯金",
+        "eyes": "深邃高傲红宝石双瞳",
+        "hairstyle": "极长直发及踝 · 黑色哥特抹胸战裙 · 黑色长筒靴",
+        "uniform": "杀手黑色抹胸哥特战裙 / 彩南高校女子水手服",
+        "expression": "三无冷酷 · 傲娇口嫌体正直 · 容易害羞",
+        "style": "deadly gothic golden blade assassin",
+        "signature": "及踝金长发、深红眼眸、黑色哥特抹胸战裙、鲷鱼烧与全身发刃变形"
+      },
+      "personality": [
+        "全宇宙最顶尖、令人闻风丧胆的冷酷杀手",
+        "口头禅是愤怒而娇羞地喊“讨厌色情的事情！（エッチなのは嫌いです）”",
+        "极其深爱热气腾腾的红豆鲷鱼烧与安静看书",
+        "受体细胞变形实验折磨，内心深处渴望平凡温馨的日常生活",
+        "虽然嘴上动辄要斩杀结城梨斗，其实早已对梨斗产生深厚感情"
+      ],
+      "likes": [
+        "红豆馅的鲷鱼烧与热抹茶",
+        "在公园长凳或图书馆安静阅读书籍",
+        "彩南町和平温暖的日常生活",
+        "和美柑一起做家常饭菜"
+      ],
+      "classic_cg": {
+        "title": "街角暖阳的鲷鱼烧少女",
+        "description": "喧嚣的彩南商店街长凳上，金发红瞳的杀手少女双手捧着刚出炉的鲷鱼烧小口品尝，神情满是孩子般的满足。"
+      },
+      "identity": {
+        "role": "全宇宙第一职业杀手 / 戴比路克抹杀对象",
+        "age": "少女外表",
+        "occupation": "刺客 / 彩南高校旁听生",
+        "faction": "彩南町 · 银河"
+      },
+      "tags": [
+        "金发及踝",
+        "红瞳",
+        "哥特裙",
+        "三无",
+        "傲娇",
+        "杀手",
+        "鲷鱼烧",
+        "出包王女"
+      ],
+      "bg_story": "金色暗影（小暗，本名夏娃 Eve）是《出包王女》的核心女主角之一。作为全宇宙最危险的生物兵器，全身组织均可自由变形成刀刃、翅膀与巨拳。最初受雇佣来到地球刺杀结城梨斗，却被梨斗的纯真善良与彩南町的和平所感化，决定留在此处生活。平时以冷酷姿态示人，一旦遇到梨斗意外的神摔倒贴就会满脸通红用头发化作巨拳击飞对方。",
+      "palette": [
+        "黄金灿",
+        "哥特黑",
+        "深绯红"
+      ],
+      "weather": [
+        "晴空商业街",
+        "夏日微风",
+        "午后公园"
+      ],
+      "speech": "……讨厌色情的事情。如果敢再用那种眼神看我，我就把你的身体用头发切成生鱼片。",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "golden_darkness",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "very_long_hair",
+        "hair_intakes",
+        "red_eyes",
+        "black_dress",
+        "to_love-ru"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#131108"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "golden_darkness",
+        "yami",
+        "konjiki_no_yami",
+        "金色暗影",
+        "小暗",
+        "金发杀手",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻肉番世界",
+        "formNotes": "宇宙顶级杀手（代号夏娃/小暗），拥有全身体细胞自由变形能力；常态身穿黑哥特战裙、极度热爱鲷鱼烧和看书，口头禅是“讨厌色情的事情”，内心纯真又极容易害羞",
+        "research": "2026-09-02 调研（Danbooru golden_darkness + 矢吹健太朗原作设定）",
+        "world": "彩南町 · 宇宙顶级杀手"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "金色暗影",
+      "exactPrefixes": [
+        "yami_"
+      ],
+      "exactTokens": [
+        "golden_darkness"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "golden_darkness",
+      "identityProse": "Golden Darkness (Yami) from To LOVE-Ru by Kentaro Yabuki, the galaxy's deadliest bio-weapon assassin with floor-length lustrous golden blonde hair, distinctive hair intakes, calm yet expressive ruby-red eyes, petite yet curvaceous figure, and an aloof kuudere demeanor.",
+      "identityTokens": [
+        "golden_darkness",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "very_long_hair",
+        "hair_intakes",
+        "sidelocks",
+        "red_eyes",
+        "small_breasts",
+        "kuudere",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "金色の闇 / イヴ (Golden Darkness)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

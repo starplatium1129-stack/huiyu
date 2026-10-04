@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "hu_tao/official_funeral_director",
+  "revision": 1,
+  "sortOrder": 10,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hu_tao",
+    "outfit": {
+      "id": "official_funeral_director",
+      "name": "堂主神装",
+      "prose": "the 77th Director uniform with a tailored dark brown traditional Chinese coat with tails, mandarin collar, golden crest buttons, black shorts, white collared shirt, red ribbon tie, black fingerless gloves with multiple silver rings, white socks with floral cuffs, and black loafers",
+      "tokens": [
+        "mandarin_collar",
+        "jacket",
+        "coat",
+        "shorts",
+        "black_shorts",
+        "white_shirt",
+        "red_ribbon",
+        "fingerless_gloves",
+        "rings",
+        "white_socks",
+        "loafers",
+        "porkpie_hat"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

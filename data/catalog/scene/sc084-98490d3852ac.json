@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc084",
+  "revision": 1,
+  "sortOrder": 82,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At a summer night festival, Ayachi Nene stands in a light-blue yukata and wooden geta among red paper lanterns and softly blurred festival visitors. She turns her smiling face toward the viewer while holding the viewer's hand at the edge of the frame, with fireworks illuminating the sky behind her. A full-body view keeps her feet and the festival setting visible.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "全身远景",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc084",
+    "lighting": "灯笼光",
+    "location": "祭典会场",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_yukata, bare_legs, geta, turning_around, looking_at_viewer, shy_smile, holding_viewer_hand, night_sky, fireworks, red_paper_lanterns, festival_crowd_bokeh, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 花火大会的侧脸】夏夜祭典上，宁宁穿着浴衣站在灯笼与人群之间，仰头等待下一束烟花。绚烂光影在她紫色眼睛里一层层盛开，她却在最响亮的瞬间转向你，笑着抓住你的手——「烟花很漂亮，但一下就会消失。所以你要认真记住……今晚我站在你身边的样子。」",
+    "storyJa": "【寧々・花火大会を横から見たところ】夏の夜祭りで、寧々は提灯と観客の間に浴衣姿で立ち、見上げながら次の花火の花束を待っていました。紫色の瞳に華やかな光と影が重ねて咲いたでも一番大きな瞬間に彼女は君に向き直って微笑んで君の手を掴んだ――「花火は綺麗ですけど、すぐ消えてしまいます。だから、ちゃんと覚えていてください……今夜、私があなたの隣にいた姿を。」",
+    "tags": [
+      "hair_ribbon",
+      "yukata",
+      "bare_legs",
+      "fireworks",
+      "firework_display",
+      "night_festival",
+      "holding_hands",
+      "looking_up",
+      "lanterns",
+      "full_body",
+      "geta"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "花火大会",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

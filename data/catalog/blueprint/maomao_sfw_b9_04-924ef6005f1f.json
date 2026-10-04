@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "maomao_sfw_b9_04",
+  "revision": 1,
+  "sortOrder": 1712,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "maomao_sfw_b9_04",
+    "title": "猫猫 · 后宫药房的草木花嫁",
+    "category": "圣洁花嫁",
+    "characterId": "maomao",
+    "outfitId": "sfw_bridal",
+    "description": "【后宫温室礼堂·午后】猫猫穿着带草木刺绣的淡绿色婚服坐在药草温室，头纱被她别在发髻后，捧花里混着能闻出药性的花叶；她先凑近确认无毒，随后抬眼向镜头露出难得坦率的好奇。",
+    "location": "imperial palace medicinal greenhouse",
+    "action": "温室里逐朵确认捧花无毒，最后抬眼向镜头露出坦率好奇",
+    "timeOfDay": "afternoon",
+    "lighting": "warm filtered light through leaves and glass",
+    "camera": "medium full shot, vertical framing",
+    "mood": "药师也会认真准备一场花嫁",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "greenhouse",
+      "medicinal_flowers",
+      "bouquet",
+      "hair_bun",
+      "freckles",
+      "curious_smile",
+      "botanical_light"
+    ],
+    "promptProse": "Maomao from The Apothecary Diaries wears a pale green bridal robe with botanical embroidery, a cream veil, practical hair bun and a bouquet of safe medicinal flowers. She sits in the palace greenhouse testing the scent of each flower before allowing it into the bouquet. Her practical bun and freckles stay sharply defined beneath the veil; after the final check she looks to the viewer with an unusually open, curious smile. warm filtered light through leaves and glass.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "greenhouse",
+      "medicinal_flowers",
+      "bouquet",
+      "hair_bun",
+      "freckles",
+      "curious_smile",
+      "botanical_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_shrine_steps_sunset_patrol",
+  "revision": 1,
+  "sortOrder": 1260,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手按红色风纪袖章伫立石阶顶端迎风侧立，黑长直发丝飞舞，眼神清澈而坚定",
+    "camera": "full body, 3/4 low angle majestic perspective, sweeping town view",
+    "category": "黄昏巡礼",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "scenic"
+    ],
+    "description": "【古手川唯 · 彩南神社黄昏的风纪巡查】俯瞰彩南町全景的神社长石阶顶端，一轮壮丽的金红落日将石鸟居与落樱染成暖橙色。唯手扶着身侧的红色风纪袖章，停步伫立在石阶中央。晚风将她齐腰的乌黑长发与水手服百褶裙吹拂起动人的弧度，深琥珀色的眸子静静守望着下方的街道，展现出恪尽职守的风纪委员令人心动的责任美感。",
+    "id": "kotegawa_shrine_steps_sunset_patrol",
+    "lighting": "浓烈宏大的金红晚霞逆光勾勒出的发丝金边与石阶阴影深度",
+    "location": "彩南神社高耸石阶与朱红鸟居前",
+    "mood": "庄严凄美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Pausing her school disciplinary patrol atop the long stone stairs of a hillside shrine at blazing orange dusk, Yui rests one hand on the red disciplinary armband at her sleeve and looks out over the town below. The fiery sunset gale sends her waist-length black hair and sailor skirt fluttering across glowing stone lights. Full-body three-quarter low-angle view, detailed shrine background, cinematic lighting.",
+    "promptTokens": [
+      "shinto_shrine",
+      "stone_stairs",
+      "torii_gate",
+      "blazing_sunset",
+      "sainan_high_school_uniform",
+      "red_armband",
+      "wind_blown_hair",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting",
+      "hand_on_armband"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "shrine",
+      "stone_stairs",
+      "torii",
+      "sunset",
+      "sainan_high_school_uniform",
+      "armband",
+      "wind",
+      "very_long_hair",
+      "hand_on_armband"
+    ],
+    "timeOfDay": "日落",
+    "title": "古手川唯 · 彩南神社黄昏的风纪巡查"
+  }
+}

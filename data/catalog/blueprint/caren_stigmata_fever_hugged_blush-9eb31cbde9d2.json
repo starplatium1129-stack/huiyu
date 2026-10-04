@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "caren_stigmata_fever_hugged_blush",
+  "revision": 1,
+  "sortOrder": 212,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_stigmata_fever_hugged_blush",
+    "title": "卡莲 · 圣痕发作的拥抱索温",
+    "category": "反差娇羞",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 圣痕发作的拥抱索温】教会昏暗静谧的忏悔室内，卡莲因圣痕共鸣引发剧烈的体温骤降与高烧。她娇小的身躯蜷缩在长木椅上微微发颤，双手无力地揪住你的衣襟，整个人被你紧紧揽入怀中取暖。原本苍白的双颊泛起异样的潮红，紫眸水润迷离，嘴唇紧咬却忍不住发出微弱的呢喃——「身体……好冷……但是，被你抱住的地方……又烫得像要烧融了一样……」",
+    "location": "幽暗狭窄、烛光摇曳的教会私密忏悔室",
+    "action": "蜷缩在怀中双手紧揪对方衣襟索取体温，双颊泛着高烧潮红，眼神水润迷乱",
+    "timeOfDay": "深夜",
+    "lighting": "忏悔室单盏微弱烛台的暖橙光泽",
+    "camera": "medium close-up, eye level, tender and emotional",
+    "mood": "极度依恋",
+    "sceneTags": [
+      "confession_booth",
+      "candlelight",
+      "held_by_viewer",
+      "clutching_shirt",
+      "trembling",
+      "stigmata",
+      "heavy_blush",
+      "blushing_ears",
+      "teary_eyes",
+      "parted_lips"
+    ],
+    "promptProse": "Trembling with intense cold inside a candlelit confession booth as her stigmata flares, Caren Hortensia clings tightly to the viewer's chest for warmth. Her usually cool facade melts completely under a deep feverish blush across her cheeks and ears. Clutching the viewer's collar with weak fingers, her tearful violet eyes reveal profound, fragile dependency. Deeply moving anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "church_room",
+      "candlelight",
+      "clutching_clothes",
+      "trembling",
+      "habit",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "teary_eyes",
+      "parted_lips",
+      "white_hair",
+      "purple_eyes",
+      "fragile",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_exorcist_habit",
+    "coverageTags": [
+      "gap_moe",
+      "fragile",
+      "sweet"
+    ],
+    "adult": true,
+    "sampleRating": "R18"
+  }
+}

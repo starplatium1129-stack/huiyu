@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc233",
+  "revision": 1,
+  "sortOrder": 228,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Late at night behind the warm cafe counter, Shiki Natsume in her Stella cafe uniform and sheer black tights rests her cheek on one hand and pushes a cup of hot macchiato toward the viewer in a cowboy shot, sleepy golden eyes and gentle shy blush under the warm hanging lamp.",
+    "auditRevision": "fix-cowboy-framing-sc233-2026-09-05",
+    "camera": "七分身吧台平视",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc233",
+    "lighting": "吧台吊灯打在面部侧边的温馨局部弱光与强烈阴影",
+    "location": "Café Stella 大理石吧台前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, extra limbs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, white_thighhighs, bare_legs, coat, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, looking_at_viewer, head_tilt, gentle_shy_blush, subtle_smile, wearing_stella_cafe_uniform, white_blouse, navy_apron, red_necktie, leaning_on_cafe_counter, one_hand_on_cheek, offering_coffee_cup, hot_macchiato_cup_on_counter, cafe_counter, sheer_black_tights, warm_hanging_lamp_light, cafe_interior_bokeh, cinematic_depth_of_field, late_night, night_shift, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【夏目 · 闭店后的无声关心】深夜彻底打烊后的Café Stella。店内只留着吧台上方一盏昏黄温暖的吊灯。夏目单手托腮靠在吧台旁，清冷的金瞳带着几分困倦望着你。见你为了结算账目疲惫揉着眉头，她将一杯刚才特意留下的热玛奇朵推到你面前。她微微侧过头避开视线，耳根在暖光下悄悄透着微红，语气依然平静却格外温柔——「……别误会。我只是觉得好不容易调好的咖啡放凉倒掉太可惜了。……真是的，赶紧趁热喝完，然后早点收拾回去休息吧。」",
+    "storyJa": "【夏目】【ナツメ・閉店後の無言の気遣い】深夜、営業を終えたカフェ・ステラ。店内にはカウンターを照らす温かい明かりが一つだけ灯っていた。ナツメは頬杖をつき、少し眠たげな金の瞳であなたを見つめている。事務作業に疲れた様子のあなたを見て、彼女は淹れたてのマキアートをすっと差し出した。ふいと視線を逸らし、赤くなった耳を隠すように呟く――「……勘違いしないで。せっかく淹れたのに冷めて捨てたらもったいないからよ。……ほら、早く飲んで帰る準備しなさい」",
+    "tags": [
+      "mole_under_eye",
+      "cafe_uniform",
+      "sheer_black_tights",
+      "cafe_counter",
+      "cowboy_shot",
+      "coffee_cup",
+      "depth_of_field"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "闭店后的无声咖啡关心",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "闭店暖灯"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "fiona_frost/cozy_nightfall_knit",
+  "revision": 1,
+  "sortOrder": 468,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fiona_frost",
+    "outfit": {
+      "id": "cozy_nightfall_knit",
+      "name": "私密独处修身高领毛衣",
+      "tokens": [
+        "turtleneck_sweater",
+        "ribbed_sweater",
+        "purple_sweater",
+        "lounge_shorts",
+        "thighhighs"
+      ],
+      "prose": "wearing a form-fitting purple ribbed turtleneck sweater with casual lounge shorts and dark thighhighs in private quarters",
+      "styleHint": "soft moody evening boudoir",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

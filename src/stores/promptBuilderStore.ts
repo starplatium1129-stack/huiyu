@@ -196,6 +196,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
     clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
+    if (characterId) void sceneStore.loadBlueprintCharacter(characterId).catch(error => flash(error instanceof Error ? error.message : '角色蓝图读取失败'))
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
@@ -317,6 +318,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     applyModelProfile()
     dataReady.value = true
   }
+  function loadPopularCharacter(id: string) { return sceneStore.loadBlueprintCharacter(id) }
 
   function applyModelProfile(modelName?: string, options: { applySize?: boolean } = {}): ModelProfile | null {
     return applyModelProfileToParams(modelProfiles.value, modelName || sdModelName.value, sdParams, sdParamsTouched.value, lastRecommendedSize, options)
@@ -368,7 +370,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
-    popularCharacters, sceneBlueprints, dataReady,
+    popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
     history, projects,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,

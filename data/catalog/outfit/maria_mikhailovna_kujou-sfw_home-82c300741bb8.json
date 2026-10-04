@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/sfw_home",
+  "revision": 1,
+  "sortOrder": 453,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "家政教室素雅围裙装",
+      "prose": "a cream long-sleeved blouse, long brown skirt and pale pink apron",
+      "tokens": [
+        "cream_blouse",
+        "long_sleeves",
+        "long_skirt",
+        "pink_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

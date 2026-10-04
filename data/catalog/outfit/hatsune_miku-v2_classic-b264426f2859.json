@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/v2_classic",
+  "revision": 1,
+  "sortOrder": 183,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "v2_classic",
+      "name": "V2 经典",
+      "prose": "a silver-grey sleeveless collared top with a teal necktie, a dark pleated skirt with teal edging, black detached arm covers, dark thigh-high legwear and black footwear",
+      "tokens": [
+        "sleeveless_top",
+        "grey_top",
+        "teal_necktie",
+        "dark_pleated_skirt",
+        "teal_trim",
+        "detached_sleeves",
+        "dark_thighhighs",
+        "black_footwear"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "mikasa_ackerman",
+  "revision": 1,
+  "sortOrder": 64,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "mikasa_ackerman",
+    "profile": {
+      "id": "mikasa_ackerman",
+      "name": "三笠",
+      "alias": [
+        "Mikasa Ackerman",
+        "ミカサ・アッカーマン",
+        "阿克曼"
+      ],
+      "type": "popular",
+      "icon": "🧣",
+      "portrait": {
+        "image": "../assets/characters/popular-mikasa_ackerman.png?v=5",
+        "alt": "三笠 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色齐颈短发（长刘海）",
+        "hair_color": "黑",
+        "eyes": "灰色（动画灰瞳）",
+        "hairstyle": "齐颈短发 · 长刘海 · 遮耳发",
+        "uniform": "调查兵团制服：棕夹克 / 白衬衫 / 绿披风 / 立体机动装置",
+        "expression": "冷静寡言 · 战斗时凌厉如刀",
+        "style": "survey corps crimson",
+        "signature": "黑发灰瞳（动画色）与标志性红围巾"
+      },
+      "personality": [
+        "冷静寡言",
+        "战力超群",
+        "重情护短",
+        "对艾伦执念深",
+        "偶尔展现温柔"
+      ],
+      "likes": [
+        "红围巾",
+        "战斗",
+        "守护重要的人",
+        "墙内的安宁",
+        "和艾伦一起散步"
+      ],
+      "classic_cg": {
+        "title": "自由之翼下",
+        "description": "王都城堡屋顶，黑发士兵的绿披风与红围巾同时被风托起，她望向墙外的远方。"
+      },
+      "identity": {
+        "role": "阿克曼血脉的精英士兵",
+        "age": "少年期 15 岁（850 年）· 成年期 19 岁（854 年）",
+        "occupation": "调查兵团士兵",
+        "faction": "进击的巨人 · 帕拉迪岛"
+      },
+      "tags": [
+        "黑发",
+        "灰瞳",
+        "红围巾",
+        "立体机动",
+        "士兵"
+      ],
+      "bg_story": "三笠·阿克曼是《进击的巨人》中帕拉迪岛调查兵团第104期首席毕业生，流淌着阿克曼血脉与东洋一族血统的绝顶精英战士，战力堪比一个完整旅团。幼年惨遭变故被艾伦解救后，将艾伦赠予的「红围巾」视作人世间最珍贵的情感锚点与生存支柱，毕生以守护重要之人为唯一信条。无论是在托洛斯特区防卫战、墙外树海立体机动疾驰，还是在马莱雷霆奇袭中，她始终以钢铁般的冷静与凌厉如刀的刀法横扫战场，冷峻的外表下是对同伴深藏的温柔与执着。场景应突出末世高墙的史诗沧桑感与阿克曼战士的冷冽深情——城墙垛口巡逻、树海林隙疾驰、明亮木屋晨曦与旅店午后，暗红与军绿是她的视觉灵魂。",
+      "palette": [
+        "暗红",
+        "棕",
+        "绿"
+      ],
+      "weather": [
+        "城墙日光",
+        "树海光束",
+        "马莱阴天"
+      ],
+      "speech": "三笠握紧刀柄，红围巾随风扬起——「我会保护你。」",
+      "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+      "traits": [
+        "mikasa_ackerman",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "gray_eyes",
+        "pale_skin",
+        "red_scarf",
+        "attack_on_titan"
+      ],
+      "accent_color": "#B22222",
+      "bg_color": "#140f0f"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "mikasa_ackerman",
+        "mikasa",
+        "attack on titan",
+        "shingeki no kyojin"
+      ],
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "canon": {
+        "era": "架空近代（墙内）",
+        "formNotes": "红围巾=全剧视觉锚点；立体机动装置 odm_gear；阿克曼血脉=战斗天赋；强调色 #B22222 暗红",
+        "research": "2026-08-31 调研",
+        "world": "高墙内人类世界（帕拉迪岛）"
+      },
+      "curatedArtistStyles": [
+        "asano_kyoji",
+        "isayama_hajime",
+        "yoneyama_mai"
+      ],
+      "displayName": "三笠",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "mikasa_ackerman"
+      ],
+      "franchise": "Attack on Titan",
+      "id": "mikasa_ackerman",
+      "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair that covers her ears, gray eyes, pale skin and no scar, always wearing her iconic red scarf",
+      "identityTokens": [
+        "mikasa_ackerman",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "gray_eyes",
+        "pale_skin",
+        "red_scarf",
+        "attack_on_titan"
+      ],
+      "negativeTokens": [
+        "scar",
+        "scar on cheek",
+        "facial scar",
+        "wound",
+        "battle damage",
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Mikasa Ackerman",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

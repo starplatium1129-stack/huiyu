@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_beach",
+  "revision": 1,
+  "sortOrder": 756,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "朝田诗乃·海滨泳装",
+      "prose": "a slate-blue athletic swimsuit with a pale windbreaker, waterproof headphones and a utility pouch",
+      "tokens": [
+        "athletic_swimsuit",
+        "slate_blue_swimsuit",
+        "windbreaker",
+        "waterproof_headphones",
+        "utility_pouch"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

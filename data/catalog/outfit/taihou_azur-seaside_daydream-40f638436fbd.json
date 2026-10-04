@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/seaside_daydream",
+  "revision": 1,
+  "sortOrder": 599,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "seaside_daydream",
+      "name": "海风潮韵细带比基尼",
+      "prose": "a provocative crimson red string micro-bikini accentuating her colossal bust and hourglass waist, delicate gold chain belly chain, translucent sheer black sarong casually tied around her thighs, and wet sand glistening on her sun-warmed skin",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "micro_bikini",
+        "red_bikini",
+        "string_bikini",
+        "belly_chain",
+        "sarong",
+        "wet_skin",
+        "beachwear",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

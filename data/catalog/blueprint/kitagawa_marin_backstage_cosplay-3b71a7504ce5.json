@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "kitagawa_marin_backstage_cosplay",
+  "revision": 1,
+  "sortOrder": 496,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
+    "camera": "medium shot, adjusting her wig and accessories before a dressing-room mirror",
+    "category": "现代日常",
+    "characterId": "kitagawa_marin",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【喜多川海梦 · 漫展后台】开幕前十分钟的后台更衣区，化妆镜的环形灯亮得晃眼。穿着泛用 cosplay 服的海梦对着随身镜最后调整假发角度，忽然回眸冲你比出角色的招牌姿势——「怎么样怎么样！这个还原度！等会儿走场的时候，眼睛只准看我一个人哦！」",
+    "id": "kitagawa_marin_backstage_cosplay",
+    "lighting": "后台化妆镜环形灯与帘缝漏进的日光交错，碎金般落在肩头",
+    "location": "漫展后台更衣区",
+    "mood": "元气闪耀",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "extra fingers",
+      "gloomy",
+      "dark"
+    ],
+    "outfitId": "cosplay",
+    "promptProse": "Making final costume adjustments before the dressing-room mirror, Marin checks her makeup and adjusts her wig and accessories with pure excitement. Warm backstage vanity lights create a focused pre-event moment.",
+    "promptTokens": [
+      "cosplay_dressing_room",
+      "mirror",
+      "adjusting_wig",
+      "accessories",
+      "cosplay_outfit",
+      "excited_smile",
+      "warm_lighting",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "convention_backstage",
+      "dressing_mirror",
+      "cosplay",
+      "wig",
+      "ring_light",
+      "cheerful"
+    ],
+    "timeOfDay": "上午",
+    "title": "喜多川海梦 · 漫展后台·开幕前的最后调整"
+  }
+}

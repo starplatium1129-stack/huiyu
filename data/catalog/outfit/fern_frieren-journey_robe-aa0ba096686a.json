@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fern_frieren/journey_robe",
+  "revision": 1,
+  "sortOrder": 63,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fern_frieren",
+    "outfit": {
+      "id": "journey_robe",
+      "name": "旅途魔法长袍",
+      "prose": "a long black hooded wizard coat over a white high-collared dress, with practical boots and purple hair tied half up",
+      "tokens": [
+        "black_coat",
+        "white_dress",
+        "high_collar",
+        "long_sleeves",
+        "boots",
+        "half_updo"
+      ],
+      "default": true
+    }
+  }
+}

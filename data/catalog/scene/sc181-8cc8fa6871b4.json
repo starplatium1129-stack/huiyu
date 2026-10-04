@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc181",
+  "revision": 1,
+  "sortOrder": 178,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the steamy safehouse bathroom after her shower, Shiki Natsume sits on the cool washbasin counter wearing only a soaked, nearly translucent white camisole clinging to her chest with nothing beneath, her long bare legs locked tightly around the viewer's waist while she hugs his neck and surrenders to the deep kiss, the tear mole beaded with water and trembling under the mirror light.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc181",
+    "lighting": "镜前灯局部聚光",
+    "location": "安全屋洗手台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_white_camisole, translucent_cloth, see-through, clinging_fabric, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_bathroom_vanity_counter, legs_wrapped_around_viewer, steamy_mirror, water_droplets, heavy_blush, kissing, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 湿透背心绝对防线决堤】酷暑夏日的私人安全屋浴室，刚冲完凉的水汽弥漫。平时防线高筑、嘴硬高冷的夏目此时面红耳赤地被你抱上了微凉的洗手台。她身上仅仅穿着一件被温水完全浸透、近乎半透明死死贴紧饱满双峰的白色小背心，里面空无一物。她大片光洁细腻的修长美腿毫无防备地死死环绕在你的腰间，眼角的泪痣挂着晶莹的水滴，因为承受着极大的情欲冲击而剧烈颤动。她一边紧紧搂住你的脖子承受你的深吻，一边发出羞耻至极的呻吟——「哈啊...你这变态笨蛋...把人家的衣服都弄得这么湿...今晚...就彻底随你的便了...嗯嗯...」",
+    "storyJa": "【夏目・濡れたベストは必ずディフェンスラインを突破する】暑い夏の夜のプライベートセーフハウスのバスルームは、シャワーを浴びただけで湯気で満たされます。普段は防御力が高く口も冷たい夏目が、今は顔を真っ赤にして少し冷たいシンクに運ばれます。彼女は、ぬるま湯に完全に浸かってほぼ半透明の、豊満な胸にぴったりと張り付いた小さな白いタンクトップを着ているだけで、中には何も入っていない。滑らかで繊細なすらりとした大きな脚が無防備に腰に絡みつき、瞳の端には水晶の水滴が垂れ下がり、大きな愛欲の衝撃に激しく震えている。彼女はあなたの首をしっかりと抱きしめ、恥ずかしそうにうめき声を上げながらディープキスを受け入れました。――「もう、この変態……服までこんなに濡らして。今夜は、乾くまでちゃんと付き合ってもらうから。」",
+    "tags": [
+      "mole_under_eye",
+      "wet_camisole",
+      "translucent",
+      "soaked_shirt",
+      "legs_wrapped_around_waist",
+      "washbasin",
+      "hugging_neck",
+      "deep_kiss",
+      "kissing",
+      "bare_legs",
+      "bathroom"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "浴室的绝对越界：洗手台上的长腿缠绕",
+    "usage": [
+      "核心协议",
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "水汽氤氲"
+  }
+}

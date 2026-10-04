@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc246",
+  "revision": 1,
+  "sortOrder": 241,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light. A few water droplets still glisten on her damp collarbone from the bath.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "近景正面特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc246",
+    "lighting": "旅馆暖色壁灯与窗外月光",
+    "location": "温泉旅馆和室客房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, water_droplets_on_body, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "夏",
+    "story": "【宁宁 · 旅行夜晚的靠近】夏日旅行的温泉旅馆双人房。洗完澡的宁宁穿着旅馆提供的薄款浴衣，因为腰带系得松垮，衣襟在动作间微微敞开，露出精致的锁骨与一小片白皙的胸口。她盘腿坐在你对面的榻榻米上整理照片，完全没注意到自己走光的边缘。当你提醒她时，她低头一看，瞬间满脸通红地捂住衣襟，头顶的呆毛在湿润的发丝间慌乱地颤动——「呜啊！柊、柊史你看到了多少！不准回忆！才、才没有故意穿成这样……浴衣的带子太滑了嘛……笨蛋，转过去！」",
+    "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」",
+    "tags": [
+      "hair_ribbon",
+      "yukata",
+      "bare_legs",
+      "white_tabi",
+      "tatami",
+      "full_body",
+      "depth_of_field"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "深夜客房的衣襟微敞",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "夏夜微热"
+  }
+}

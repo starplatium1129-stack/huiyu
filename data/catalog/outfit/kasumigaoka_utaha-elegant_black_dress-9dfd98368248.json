@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/elegant_black_dress",
+  "revision": 1,
+  "sortOrder": 787,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "elegant_black_dress",
+      "name": "深夜作家黑裙礼服",
+      "prose": "an elegant off-shoulder black evening dress hugging her mature curves, a long side slit revealing one black-stockinged leg, silver earrings, and her white hairband traded for a low chignon",
+      "tokens": [
+        "evening_dress",
+        "black_dress",
+        "off_shoulder",
+        "side_slit",
+        "black_stockings",
+        "jewelry",
+        "chignon",
+        "mature_female"
+      ]
+    }
+  }
+}

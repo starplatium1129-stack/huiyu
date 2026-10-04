@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc232",
+  "revision": 1,
+  "sortOrder": 227,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the deserted reading room of the academy library at sunset, Ayachi Nene in a navy school uniform shirt collapsed limply over the long wooden table, silver hair spread across the surface, she covers her face with weak trembling hands, teary with embarrassment and a completely limp ahoge as her shirt heaves with rapid breaths under dim orange stained-glass light.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "近景水平俯瞰特写",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc232",
+    "lighting": "夕阳穿透彩色玻璃的朦胧橙黄逆光",
+    "location": "学院图书馆深处长条木桌",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, nene_school_uniform, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_shirt_and_pleated_miniskirt_with_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, collapsed_limply_over_reading_room_long_table_with_silver_hair_spread_across_wooden_surface_and_school_shirt_heaving_with_rapid_breaths, covering_face_with_weak_hands_and_teary_embarrassed_blush_with_limp_ahoge, trembling_slender_body_on_deserted_reading_room_table, sunset_light_through_stained_glass_with_dim_orange_backlight_and_shelf_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【宁宁 · 图书馆里的契约失控】放学后阳光西斜的静谧学院图书馆深处。平日里优雅完美的优等生宁宁，此时因为魔女契约的残酷代价突然超载，整个人彻底瘫软在无人的阅览室长桌上。她娇躯剧烈颤抖，柔顺的银白发丝凌乱地散落在木质台面上，校服衬衫因为急促的喘息而剧烈起伏。被你推门撞破秘密的瞬间，她面红耳赤地试图用无力的双手遮挡视线，眼角挂着羞耻的泪水，头顶那根心形呆毛早已完全软瘫下来，语无伦次地大声哭腔自曝——「等、等等！刚才的事情不准说出去……绝对不准！求求你……不要看人家现在这个样子啦……笨蛋，快把眼睛闭上！」",
+    "storyJa": "【寧々・図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_black_tights",
+      "library",
+      "full_body",
+      "loafers",
+      "collapsed",
+      "covering_face",
+      "teary",
+      "trembling",
+      "depth_of_field"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "图书馆里被撞破的魔女契约",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "图书馆午后"
+  }
+}

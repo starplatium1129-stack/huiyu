@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_snowy_mountain_ridge_solitary_stride",
+  "revision": 1,
+  "sortOrder": 1174,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_snowy_mountain_ridge_solitary_stride",
+    "title": "风见一姬 · 朔风飞雪中的傲雪回眸",
+    "category": "绝境求生",
+    "characterId": "kazami_kazuki",
+    "outfitId": "white_dress",
+    "coverageTags": [
+      "snow"
+    ],
+    "description": "【风见一姬 · 朔风飞雪中的傲雪回眸】白雪覆盖的荒凉雪山山脊之巅，狂暴的暴风雪呼啸撕扯着天地。一姬踏在深厚的积雪之中，不仅毫无畏惧，反而在风雪中心停步侧身回眸。雪花沾落在她如瀑布般的长长银发与长长睫毛上，深红色的眼眸在纯白的世界中璀璨如火，展现出与天地抗争的超越性生命力量。",
+    "location": "暴风雪席卷的陡峭雪山山脊",
+    "action": "在深雪中独立驻足侧身回眸，风雪撕扯长发与白裙，红瞳如炬傲雪凌霜",
+    "timeOfDay": "白天",
+    "lighting": "暴风雪中极高亮度的白光漫射与冷冽灰影",
+    "camera": "full body, 3/4 dynamic perspective, majestic snowscape scale",
+    "mood": "傲岸超凡",
+    "sceneTags": [
+      "snow",
+      "snowstorm",
+      "mountain_ridge",
+      "wind",
+      "blizzard",
+      "white_dress",
+      "very_long_hair",
+      "red_eyes"
+    ],
+    "promptProse": "Halting her solitary stride along a windswept snowbound mountain crest amidst a raging blizzard, Kazuki glances back with calm transcendental beauty. Swirling white snowflakes dust her floor-length silver mane as her vivid crimson eyes pierce through the howling winter storm.",
+    "promptTokens": [
+      "snowy_mountain_ridge",
+      "blizzard",
+      "falling_snow",
+      "windy",
+      "white_dress",
+      "gazing_back",
+      "very_long_hair",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

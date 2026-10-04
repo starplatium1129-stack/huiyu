@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/sfw_silk_dorm_robe",
+  "revision": 1,
+  "sortOrder": 232,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "default": false,
+      "id": "sfw_silk_dorm_robe",
+      "isDefault": false,
+      "name": "宿舍丝绸长睡袍",
+      "prose": "an opaque pale-blue silk dressing gown with long sleeves, a closed overlapping front securely tied at the waist, and an ankle-length hem worn over full-length pajamas",
+      "tokens": [
+        "dressing_gown",
+        "blue_robe",
+        "long_sleeves",
+        "closed_front",
+        "waist_sash",
+        "opaque_fabric",
+        "long_robe",
+        "pajamas"
+      ]
+    }
+  }
+}

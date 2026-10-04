@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "akeno_himejima/black_sensual_bikini",
+  "revision": 1,
+  "sortOrder": 702,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "akeno_himejima",
+    "outfit": {
+      "id": "black_sensual_bikini",
+      "name": "极细黑带诱惑比基尼",
+      "prose": "a skimpy glossy black micro-bikini held together by slender string ties, highlighting her curvaceous hourglass proportions and sun-kissed fair skin",
+      "tokens": [
+        "bikini",
+        "black_bikini",
+        "string_bikini",
+        "halterneck",
+        "cleavage",
+        "hourglass_body",
+        "wet_skin"
+      ]
+    }
+  }
+}

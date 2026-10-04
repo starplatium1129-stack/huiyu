@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_chapel_morning_prayer",
+  "revision": 1,
+  "sortOrder": 232,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_chapel_morning_prayer",
+    "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
+    "category": "神圣日常",
+    "characterId": "jeanne_d_arc",
+    "description": "【乡野小教堂·清晨】晨光斜斜地穿过高窗，落在跪于祭坛前的贞德身上。她已卸下胸铠，只着素白的Ruler礼裙，双手合十抵着额头，金色的长辫安静地垂过腰际。睫毛在圣光下泛着细软的金边，唇间流淌着为逝者与生者诵出的祷词——连尘埃都在光柱里缓缓起伏，仿佛应和着圣女的呼吸。",
+    "location": "乡野小教堂祭坛前",
+    "action": "跪于祭坛前双手合十祈祷，白裙金辫垂落，晨光光柱笼罩周身",
+    "timeOfDay": "清晨",
+    "lighting": "高窗斜射的丁达尔晨光光柱，尘埃微粒浮游其间",
+    "camera": "medium shot, kneel profile, god rays through window, serene sacred mood",
+    "mood": "圣洁静谧、温柔慈悲",
+    "sceneTags": [
+      "village_chapel",
+      "altar",
+      "kneeling",
+      "hands_together_at_forehead",
+      "plain_white_dress",
+      "closed_eyes",
+      "golden_braid",
+      "morning_window_light",
+      "side_view",
+      "medium_shot"
+    ],
+    "promptProse": "Kneeling before the small chapel altar at sunrise, Jeanne presses her ungloved hands together against her forehead. She wears a plain opaque white prayer dress after setting aside the armor, and her long golden braid rests quietly over her back. Slanting window light illuminates the joined fingers, closed eyes and gentle folds of the dress. The nearby bench and modest altar keep the interior intimate in scale. Use a medium side view centered on the prayer posture and quiet morning light. No lettering.",
+    "promptTokens": [
+      "village_chapel",
+      "altar",
+      "kneeling",
+      "hands_together_at_forehead",
+      "plain_white_dress",
+      "closed_eyes",
+      "golden_braid",
+      "morning_window_light",
+      "side_view",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "armor",
+      "breastplate",
+      "gauntlets",
+      "flag"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_unarmored_prayer",
+    "coverageTags": [
+      "daily",
+      "signature",
+      "story"
+    ]
+  }
+}

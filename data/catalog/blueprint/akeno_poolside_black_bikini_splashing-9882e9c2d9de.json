@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_poolside_black_bikini_splashing",
+  "revision": 1,
+  "sortOrder": 1294,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_poolside_black_bikini_splashing",
+    "title": "姬岛朱乃 · 阳光池畔的水光嬉戏",
+    "category": "海滨度假",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 阳光池畔的水光嬉戏】湛蓝波光粼粼的露天无边泳池旁，朱乃身穿性感的细黑带比基尼坐在池边，双脚轻踢起晶莹剔透的水花。湿润的黑发有几缕贴在她丰满傲人的雪乳与纤细小腹上，阳光在饱满的肌肤上勾勒出耀眼的水光光环。她歪着头用手轻撩起一捧水花泼向你，眼角弯成魅惑的月牙——「啊啦，偷看被发现了呢~要不要一起下水凉快一下呀？」",
+    "location": "度假酒店露天无边际游泳池畔",
+    "action": "坐在池畔双脚踢水，单手轻捧池水撩向前方，歪头露出魅惑灿烂的笑容",
+    "timeOfDay": "夏日午后",
+    "lighting": "水面反射出的金蓝相间波纹光晕",
+    "camera": "cowboy shot, dynamic water splash perspective",
+    "mood": "开朗调戏",
+    "sceneTags": [
+      "swimming_pool",
+      "poolside",
+      "water_splash",
+      "black_bikini",
+      "string_bikini",
+      "wet_skin",
+      "wet_hair",
+      "splashing_water",
+      "seductive_smile"
+    ],
+    "promptProse": "Sitting playfully at the edge of an azure infinity pool, Akeno Himejima kicks her feet, sending crystalline water droplets flying into the summer air. She wears a minimalist glossy black string bikini accentuating her hourglass curves. Strands of wet raven hair cling enticingly to her damp chest and shoulders as she splashes water playfully toward the viewer with a dazzling, mischievous smirk. Bright tropical anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "swimming_pool",
+      "poolside",
+      "water_splash",
+      "black_bikini",
+      "string_bikini",
+      "wet_skin",
+      "wet_hair",
+      "cleavage",
+      "splashing_water",
+      "seductive_smirk",
+      "purple_eyes",
+      "high_ponytail",
+      "sunny",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "black_sensual_bikini",
+    "coverageTags": [
+      "swimsuit",
+      "summer",
+      "pool"
+    ]
+  }
+}

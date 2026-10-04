@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "kurokawa_akane",
+  "revision": 1,
+  "sortOrder": 54,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kurokawa_akane",
+    "profile": {
+      "id": "kurokawa_akane",
+      "name": "黑川茜",
+      "alias": [
+        "Kurokawa Akane",
+        "黑川あかね",
+        "纱姬"
+      ],
+      "type": "popular",
+      "icon": "🎭",
+      "portrait": {
+        "image": "../assets/characters/popular-kurokawa_akane.png?v=5",
+        "alt": "黑川茜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "蓝紫色长直发",
+        "hair_color": "蓝紫（#8A7CD8）",
+        "eyes": "蓝紫色 · 演剧时亮起星形瞳孔",
+        "hairstyle": "长直发 · 日常戴细框眼镜",
+        "uniform": "阳东高中制服：白衬衫 / 黑针织马甲 / 灰褶裙",
+        "expression": "清冷理性的美少女演员 · 入戏后判若两人",
+        "style": "cool actress violet",
+        "signature": "蓝紫长发、蓝紫瞳与演剧时的星形瞳孔"
+      },
+      "personality": [
+        "冷静理性",
+        "演技天才",
+        "钻研狂",
+        "外冷内热",
+        "对自己极狠"
+      ],
+      "likes": [
+        "研究角色",
+        "舞台剧",
+        "剧本",
+        "咖啡",
+        "把演技打磨到极致"
+      ],
+      "classic_cg": {
+        "title": "东京之刃",
+        "description": "血色布景光中，蓝紫长发的女演员以纱姬之姿提剑而立，瞳孔点亮为璀璨的星形。"
+      },
+      "identity": {
+        "role": "天才舞台剧/影视演员",
+        "age": "登场高二 17 岁 · 电影篇 19 岁",
+        "occupation": "演员",
+        "faction": "我推的孩子 · 艺能界"
+      },
+      "tags": [
+        "蓝紫长发",
+        "蓝紫瞳",
+        "星瞳",
+        "眼镜",
+        "演员"
+      ],
+      "bg_story": "黑川茜是《我推的孩子》中剧团「Lalalai」备受瞩目的演技天才，拥有极其罕见的人物心理洞察力与沉浸式体验派演技，能将剧本角色的一切过往与微表情推演到极致。曾因真人秀风波陷入至暗绝境，被阿库亚救下后重获新生，为了回报阿库亚将推演天赋发挥到极致，甚至能精准复刻星野爱的星眸与举止。在《东京之刃》舞台剧中饰演「纱姬」以惊艳全场的提剑星瞳技惊四座，逐步成长为横跨舞台剧与电影界的实力派大女优。场景应突出清冷知性日常与入戏狂热的极度反差——从日常戴细框眼镜的书店、咖啡馆与阳光厨房，到舞台上光芒万丈的提剑星瞳，蓝紫是她的主色。",
+      "palette": [
+        "蓝紫",
+        "灰",
+        "白"
+      ],
+      "weather": [
+        "舞台公演夜",
+        "试镜午后",
+        "书店黄昏"
+      ],
+      "speech": "黑川茜推了推眼镜打量你——「要来看我的下一场公演吗？」",
+      "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+      "traits": [
+        "kurokawa_akane",
+        "1girl",
+        "solo",
+        "blue_purple_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_purple_eyes",
+        "actress",
+        "star_eyes",
+        "oshi_no_ko"
+      ],
+      "accent_color": "#8A7CD8",
+      "bg_color": "#14121f"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "kurokawa_akane",
+        "akane kurokawa",
+        "oshi no ko",
+        "sayahime tokyo blade",
+        "actress"
+      ],
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "canon": {
+        "era": "现代",
+        "formNotes": "纱姬造型 tag=sayahime_(tokyo_blade)；演剧时眼睛=星形高光 star_eyes；强调色 #8A7CD8 蓝紫",
+        "research": "2026-08-31 调研",
+        "world": "现代日本娱乐圈（舞台剧与影视）"
+      },
+      "curatedArtistStyles": [
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "momoco_haru"
+      ],
+      "displayName": "黑川茜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kurokawa_akane"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "kurokawa_akane",
+      "identityProse": "Kurokawa Akane from Oshi no Ko, a slim cool-beauty actress with blue-violet long straight hair and blue-purple eyes, who gains intense brilliant star-shaped pupils during passionate performances",
+      "identityTokens": [
+        "kurokawa_akane",
+        "1girl",
+        "solo",
+        "blue_purple_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_purple_eyes",
+        "actress",
+        "star_eyes",
+        "oshi_no_ko"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Kurokawa Akane",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

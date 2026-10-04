@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_morning_bed_catlike_pounce_cuddle",
+  "revision": 1,
+  "sortOrder": 1323,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手撑在视角胸膛两侧俯身凑近，双腿向后翘起，露出可爱小虎牙与灿烂笑脸",
+    "camera": "cowboy shot, high angle, playful bed POV",
+    "category": "晨间女友",
+    "characterId": "arcueid_brunestud",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "catlike"
+    ],
+    "description": "【爱尔奎特 · 晨曦床榻的白猫飞扑撒娇】温暖的卧室晨光透过白纱帘洒在床上。爱尔奎特像一只好奇又黏人的大白猫一样扑上床榻，双手按在你胸膛两侧，金发凌乱垂落，小巧的虎牙微微探出唇瓣。她双腿在身后轻快翘起，金色发梢在晨曦中闪耀，眨巴着红宝石眼眸向你索吻——「早安！今天的太阳好舒服，快点陪我出门玩，不然我就咬你咯！」",
+    "id": "arcueid_morning_bed_catlike_pounce_cuddle",
+    "lighting": "柔和透亮的晨曦丁达尔光束",
+    "location": "洒满金色阳光的公寓主卧柔软大床",
+    "mood": "元气撒娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_summer_sundress",
+    "promptProse": "Pouncing affectionately onto the viewer's bed in the warm morning sun, Arcueid Brunestud rests her hands playfully on the viewer's chest. Dressed in a relaxed white sundress, her bare legs kick behind her as her golden bangs frame a bright, feline smile with a cute vampire fang peeking out. Her ruby eyes sparkle with mischievous adoration. Charming, domestic anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "bedroom",
+      "bed",
+      "morning_light",
+      "white_dress",
+      "bare_shoulders",
+      "leaning_forward",
+      "hands_on_chest",
+      "bare_legs",
+      "feline_smile",
+      "fang",
+      "red_eyes",
+      "blush",
+      "cowboy_shot",
+      "high_angle",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "morning_sun",
+      "leaning_forward",
+      "hands_on_chest",
+      "sundress",
+      "bare_legs",
+      "playful_smile",
+      "fang",
+      "blush"
+    ],
+    "timeOfDay": "清晨",
+    "title": "爱尔奎特 · 晨曦床榻的白猫飞扑撒娇"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc041",
+  "revision": 1,
+  "sortOrder": 39,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Returning to the street where she once answered his confession, adult Ayachi Nene leans closer beneath their shared umbrella. She wears a navy long-sleeved dress and keeps one hand around the umbrella handle while the other holds the viewer's hand below it. Rainwater shines on the pavement behind her. The close composition includes their joined hands and her assured smile under a warm streetlamp.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "伞下交握双手半身近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc041",
+    "lighting": "雨夜路灯与湿地反射",
+    "location": "雨夜街头伞下",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, navy_long_sleeved_dress, shared_umbrella, holding_umbrella, holding_viewer_hand, joined_hands, leaning_closer, warm_smile, rainy_street, wet_pavement, night, streetlamp, rain_reflections, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【成年 After Story · 雨夜后的答案】成年后的夏夜，两个人在同一把伞下重新走过当年告白的街口。宁宁故意问你是否还记得那天的回答，没等你说完便握紧你的手，把肩膀贴得更近。雨光映亮她眼里的笑意——「这次不需要雨声替我遮掩了。柊史，我还是同一个答案，而且比那时候更确定。」",
+    "storyJa": "【寧々・大人のアフターストーリー・雨の夜の答え】成人後の夏の夜、二人は同じ傘の下で再び告白し合った交差点を歩いた。寧々は、その日の答えをまだ覚えているかどうかを意図的に尋ねました。あなたが話し終わる前に、彼女はあなたの手をしっかりと握り、肩を近づけました。雨の光が彼女の瞳の笑顔を照らした――「今度は、雨音に隠してもらう必要はありません。柊史、私の答えは今も同じです。それに、あの頃よりずっと確かです。」",
+    "tags": [
+      "adult",
+      "navy_long_sleeved_dress",
+      "shared_umbrella",
+      "holding_umbrella",
+      "holding_viewer_hand",
+      "joined_hands",
+      "leaning_closer",
+      "warm_smile",
+      "rainy_street",
+      "wet_pavement",
+      "night",
+      "streetlamp",
+      "rain_reflections",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "雨夜后的答案",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "雨"
+  }
+}

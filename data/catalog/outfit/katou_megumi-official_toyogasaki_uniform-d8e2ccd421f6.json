@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/official_toyogasaki_uniform",
+  "revision": 1,
+  "sortOrder": 793,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "official_toyogasaki_uniform",
+      "name": "丰之崎学园水手服与红开衫",
+      "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers, with her short brown bob",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "navy_dress",
+        "white_collar",
+        "ribbon_tie",
+        "red_cardigan",
+        "open_cardigan",
+        "white_socks",
+        "loafers",
+        "short_hair",
+        "bob_cut"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

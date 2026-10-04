@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/yellow_summer_sundress",
+  "revision": 1,
+  "sortOrder": 565,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "default": false,
+      "id": "yellow_summer_sundress",
+      "isDefault": false,
+      "name": "经典黄色夏日吊带连衣裙",
+      "prose": "wearing a bright cheerful canary yellow sleeveless summer sundress with thin spaghetti straps, open collarbone, and sun-kissed shoulders",
+      "styleHint": "golden summer afternoon sunlight with warm lens flares",
+      "tokens": [
+        "sundress",
+        "yellow_dress",
+        "sleeveless_dress",
+        "spaghetti_strap",
+        "summer_dress",
+        "bare_shoulders",
+        "sandals",
+        "interface_headset"
+      ]
+    }
+  }
+}

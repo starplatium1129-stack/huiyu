@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/sailor_uniform",
+  "revision": 1,
+  "sortOrder": 278,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "sailor_uniform",
+      "isDefault": false,
+      "name": "清凉水手制服",
+      "prose": "a light sailor-style school uniform with a sailor collar and pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "sailor_collar",
+        "pleated_skirt",
+        "short_sleeves"
+      ]
+    }
+  }
+}

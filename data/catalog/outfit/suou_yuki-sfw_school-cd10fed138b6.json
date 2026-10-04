@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/sfw_school",
+  "revision": 1,
+  "sortOrder": 445,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "学生会端庄制服",
+      "prose": "a navy school jacket, white blouse, ribbon and knee-length pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "navy_jacket",
+        "white_blouse",
+        "ribbon",
+        "pleated_skirt"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

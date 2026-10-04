@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc204",
+  "revision": 1,
+  "sortOrder": 199,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc204",
+    "title": "私人酒廊的独占契约",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 高开叉旗袍下的微醺攻势】打烊后的复古酒廊只剩包厢里一圈昏暗灯影。夏目卸下平日的冷硬防线，穿着暗红丝绸旗袍跨坐在你腿上；高开叉裙摆随着动作滑向一侧，黑色丝袜包裹的长腿在光影中交叠。她漫不经心地晃着酒杯，眼角泪痣被微醺的红晕衬得格外醒目，迷离目光里却仍带着强势的占有欲——「既然今晚不打算让我走……那就先做好被我反过来支配的觉悟吧。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "微醺强势占有",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "dark_crimson_qipao",
+      "high_slit",
+      "black_stockings",
+      "sitting_on_lap",
+      "straddling",
+      "wine_glass",
+      "tipsy",
+      "flushed",
+      "possessive_gaze",
+      "private_lounge",
+      "night",
+      "dim_lighting",
+      "medium_shot",
+      "depth_of_field"
+    ],
+    "mature": false,
+    "location": "复古酒廊私密包厢",
+    "weather": "室内恒温",
+    "camera": "主观略微仰视",
+    "lighting": "霓虹弱光与局部聚光",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, solo, natsume_official_qipao, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_dark_crimson_silk_qipao_with_high_slit_gliding_to_one_side_as_she_moves, glossy_sheer_black_stockings_wrapped_long_legs_crossed_over_your_lap, sitting_astride_your_lap_on_the_private_lounge_couch, casually_swirling_a_wine_glass_in_her_hand, tipsy_flush_accentuating_her_tear_mole, dazed_eyes_still_carrying_dominant_possessive_gaze, dim_retro_lounge_private_booth_after_closing_with_neon_glow_and_focused_spotlight, cinematic_depth_of_field, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "storyJa": "【夏目・スリットの高いチャイナドレスの下での泥酔攻撃】閉店後、レトロなラウンジの個室には薄暗い光の輪だけが残った。夏目はいつもの冷酷で固い防御を脱ぎ捨て、濃い赤のシルクのチャイナドレスを着てあなたの膝にまたがって座りました。動きに合わせてハイスリットのスカートが横にずれ、黒いストッキングに包まれた長い脚が光と影で重なり合う。ワイングラスを無造作に振り、酔った赤面で目尻が赤く浮き出て、ぼやけた瞳にはまだ強い独占欲が残っている。――「今夜、私を帰すつもりがないなら……逆に私に振り回される覚悟くらい、しておいて。」",
+    "rating": "R15",
+    "animaCaption": "In the dim private booth of the retro lounge after closing, Shiki Natsume in a dark crimson silk high-slit qipao sits astride your lap, the slit gliding open as her black-stockinged long legs cross over you; she swirls a wine glass with a casual air, her tear-mole vivid in the tipsy flush while her dazed eyes still hold a dominant, possessive edge.",
+    "auditRevision": "careful-batch10-2026-08-27"
+  }
+}

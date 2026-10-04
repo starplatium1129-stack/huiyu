@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc053",
+  "revision": 1,
+  "sortOrder": 51,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting on the laundromat bench leaning on the viewer's shoulder, Shiki Natsume in a loose white T-shirt and denim shorts shows glossy black tights hugging toned thighs, white sneakers on the bench, warm window light with drum reflections.",
+    "auditRevision": "audit-v25-2026-08-26-batch3",
+    "camera": "长椅双人中景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc053",
+    "lighting": "冬日下午窗光与室内柔光",
+    "location": "自助洗衣房",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, coat, skirt",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sleeveless_bodysuit, black_bodysuit, skin-tight, highleg, cleavage, bare_shoulders, bare_legs, sitting_on_washing_machine, leaning_back_on_hands, crossing_legs, laundromat, neon_sign_glow, night, urban, sensual, smirk, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【夏目 · 烘干结束前的十分钟】冬日下午的自助洗衣房只剩滚筒转动的低响。夏目坐在长椅上看着倒计时，困意上来时不自觉靠到你肩上。醒来发现姿势后，她没有立刻坐直，只把视线移向旋转的衣物——「还有十分钟，移动反而麻烦。你就暂时保持不动……如果肩膀酸了，可以提前说。」",
+    "storyJa": "【夏目・乾燥終了10分前】冬の午後、セルフサービスのランドリールームに残るのは、ドラムが回る低い音だけだ。夏目はベンチに座ってカウントダウンを見守った。眠くなってくると無意識にあなたの肩にもたれかかってきました。目が覚めて自分の姿勢に気づいた後、彼女はすぐには正座せず、回転する衣服に目を移しただけでした。――「あと十分だから、動くほうが面倒。しばらくそのままでいて……肩がつらくなったら、早めに言って。」",
+    "tags": [
+      "mole_under_eye",
+      "t_shirt",
+      "denim_shorts",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "laundromat",
+      "leaning",
+      "full_body",
+      "sneakers"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "烘干结束前的十分钟",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

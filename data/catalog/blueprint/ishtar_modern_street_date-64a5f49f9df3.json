@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_modern_street_date",
+  "revision": 1,
+  "sortOrder": 254,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_modern_street_date",
+    "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
+    "category": "都市日常",
+    "characterId": "ishtar_fate",
+    "description": "【现代都市街头·午后】牛仔外套与白色短上衣搭配高腰短裤，伊什塔尔举起吃了一半的甜甜圈，眼睛亮得像发现了宝藏。今天王冠换成星形发夹，她边走边得意地宣布，下一份考察清单还要多加几种甜点。",
+    "location": "现代都市街头",
+    "action": "举甜甜圈眼睛发亮，牛仔外套短上衣，边走边咬",
+    "timeOfDay": "午后",
+    "lighting": "明亮的街市午后阳光",
+    "camera": "medium shot, street walking, donut in hand, cheerful mood",
+    "mood": "女神好奇心、人间日常",
+    "sceneTags": [
+      "modern_street",
+      "walking",
+      "half_eaten_donut",
+      "delighted_eyes",
+      "denim_jacket",
+      "white_crop_tee",
+      "high_waisted_shorts",
+      "star_hairpin",
+      "afternoon_light",
+      "medium_shot"
+    ],
+    "promptProse": "Walking along the afternoon street, Ishtar holds up a half-eaten donut and turns toward the viewer with delighted red eyes. A denim jacket, white crop tee, high-waisted shorts and sneakers keep the modern outfit casual, while a star-shaped hairpin sits above her dark hair. Her free hand makes an enthusiastic little gesture as she presents this latest discovery of human desserts. Bright shopfront reflections catch her hoop earrings and dark hair. Frame the donut, hairpin and clear walking posture together, without readable shop signs or lettering.",
+    "promptTokens": [
+      "modern_street",
+      "walking",
+      "half_eaten_donut",
+      "delighted_eyes",
+      "denim_jacket",
+      "white_crop_tee",
+      "high_waisted_shorts",
+      "star_hairpin",
+      "afternoon_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "metal_tiara"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_modern_date",
+    "coverageTags": [
+      "daily",
+      "girlfriend"
+    ]
+  }
+}

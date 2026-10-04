@@ -1,0 +1,165 @@
+{
+  "kind": "character",
+  "id": "mimori_byakuya",
+  "revision": 1,
+  "sortOrder": 44,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "mimori_byakuya",
+    "profile": {
+      "id": "mimori_byakuya",
+      "name": "深森白夜",
+      "alias": [
+        "Mimori Byakuya",
+        "Byakuya",
+        "みもり びゃくや",
+        "白夜"
+      ],
+      "type": "popular",
+      "icon": "⭐",
+      "portrait": {
+        "image": "../assets/characters/popular-mimori_byakuya.png?v=5",
+        "alt": "深森白夜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白长发 · 双螺旋角发包",
+        "hair_color": "银白（Silver White）",
+        "eyes": "蓝（Gradient Blue）",
+        "hairstyle": "双螺旋角发包（twin horn buns）· 长鬓发",
+        "uniform": "维多利亚蕾丝白洋装 / 打工围裙 / 旧运动外套",
+        "expression": "天然呆 · 面无表情的可爱",
+        "style": "delicate poor magical girl",
+        "signature": "螺旋角发包、蓝瞳与不幸体质"
+      },
+      "source": "藤原可可亚《曾经魔法少女和大恶魔经常为敌》",
+      "bg_story": "深森白夜是藤原可可亚《魔法少女与恶曾是敌人》的女主角，兼任魔法少女、打工族与孤儿院助手的不幸少女。银白色的长发扎成标志性的双螺旋角发包，蓝色眼眸总是带着天然呆的平静。她与邪恶组织的干部米拉之间，展开了一段意想不到的日常。",
+      "personality": [
+        "天然呆",
+        "坚韧",
+        "不幸体质",
+        "认真打工",
+        "内敛温柔"
+      ],
+      "likes": [
+        "打工赚钱",
+        "孤儿院的孩子们",
+        "平静的日子",
+        "便宜的食物"
+      ],
+      "traits": [
+        "1girl",
+        "solo",
+        "silver_white_hair",
+        "platinum_hair",
+        "straight_hair",
+        "bangs",
+        "twin_horn_buns",
+        "spiral_buns",
+        "hair_buns",
+        "sidelocks",
+        "blue_eyes",
+        "gradient_eyes",
+        "round_eyes",
+        "deadpan",
+        "flat_chest"
+      ],
+      "speech": "深森白夜向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "打工的魔法少女",
+        "description": "她拎着便利店购物袋在路灯下数零钱，螺旋发包上还沾着蛋糕店的奶油——今天也努力活下去了。"
+      },
+      "identity": {
+        "role": "魔法少女（Glass Happiness）",
+        "age": "少女（学生）",
+        "occupation": "魔法少女 / 兼职打工 / 孤儿院助手",
+        "faction": "孤儿院 / 对抗邪恶组织"
+      },
+      "tags": [
+        "银白发",
+        "螺旋角",
+        "蓝瞳",
+        "魔法少女",
+        "贫穷"
+      ],
+      "palette": [
+        "银白",
+        "蕾丝白",
+        "天空蓝"
+      ],
+      "weather": [
+        "打工的傍晚",
+        "孤儿院午后",
+        "魔法少女的月夜"
+      ],
+      "series": "藤原可可亚《曾经魔法少女和大恶魔经常为敌》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "mimori byakuya",
+        "byakuya",
+        "glass happiness",
+        "magical girl and the evil officer",
+        "深森白夜"
+      ],
+      "animeStudio": "BONES, official anime screencap, anime coloring",
+      "canon": {
+        "era": "当代",
+        "formNotes": "银白发；蓝瞳；标志性双螺旋角发包；维多利亚蕾丝白色洋装；孤儿+打工族+贫穷；天然呆、不幸体质；魔法少女活动名 Glass Happiness",
+        "research": "2026-08-18 调研",
+        "world": "现代都市+魔法少女（魔法少女与恶曾是敌人，藤原可可亚）"
+      },
+      "curatedArtistStyles": [
+        "fujiwara_cocoa",
+        "rella",
+        "kantoku"
+      ],
+      "defaultOutfitId": "magical_girl_dress",
+      "displayName": "深森白夜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "byakuya_(mahimaho)",
+        "mimori_byakuya"
+      ],
+      "franchise": "The Magical Girl and the Evil Officer",
+      "id": "mimori_byakuya",
+      "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, a petite deadpan magical girl with long straight platinum-white hair styled in iconic twin horn buns, clear blue eyes, a slender flat-chested build, and an expressionless stoic demeanor.",
+      "identityTokens": [
+        "byakuya (mahimaho)",
+        "katsute_mahou_shoujo_to_aku_wa_tekitai_shiteita.",
+        "1girl",
+        "solo",
+        "white_hair",
+        "platinum_hair",
+        "long_hair",
+        "straight_hair",
+        "twin_horn_buns",
+        "hair_horns",
+        "blue_eyes",
+        "deadpan",
+        "expressionless",
+        "flat_chest",
+        "petite"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "深森白夜",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

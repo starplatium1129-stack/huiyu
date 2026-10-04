@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/evening_black_dress",
+  "revision": 1,
+  "sortOrder": 92,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "evening_black_dress",
+      "name": "英灵正装高开叉晚礼服",
+      "tokens": [
+        "evening_dress",
+        "black_dress",
+        "backless_dress",
+        "high_slit_dress",
+        "gloves"
+      ],
+      "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
+      "styleHint": "luxurious ballroom chiaroscuro",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

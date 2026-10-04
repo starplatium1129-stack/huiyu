@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc155",
+  "revision": 1,
+  "sortOrder": 152,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the newlywed living room floor scattered with empty wine glasses at midnight, Ayachi Nene in a loose home dress with an open collar flops across the viewer's lap, both hands gripping his shirt front. Her tipsy flushed face tilts up with watery eyes and a wavy ahoge under the warm dim living room glow.",
+    "auditRevision": "careful-batch07-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc155",
+    "lighting": "电视荧幕弱光",
+    "location": "新婚公寓客厅",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bare_legs, lying, across, viewer, both, hands, desperately, blush, empty, wine, glasses, warm_lighting, collarbone, slender_waist, cool_lighting, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 居家微醺高能篇】客厅地毯上散落着空酒杯。平时容易害羞的宁宁今晚在酒精的催化下彻底放下了所有防线。她换上了一件领口松垮的居家私服，发带微微散落，整个人软绵绵地扑在你的膝盖上。她满脸滚烫的红晕，水汪汪的眼睛紧紧盯着你，头顶的呆毛因为醉意弯成了一个极其可爱的波浪形，双手死死揪住你的衣襟不放——「柊史...不准推开我...魔女的魔法今晚全部失效了...我现在...只要你抱紧我...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·おうちで元気いっぱい】夜遅くに空のワイングラスがリビングルームのカーペットの上に散乱した。普段は内気な寧々は、今夜はアルコールの触媒作用ですべての防御を完全に外した。彼女は襟が緩いホームドレスを着て、ヘアバンドは少しゆるめで、全身が膝の上にぐったりと落ちていました。顔を赤らめ、潤んだ瞳でこちらを見つめ、酔ったせいで頭のてっぺんがとてもかわいらしい波形に曲がり、手はしっかりと服を掴んでいます。――「柊史……離さないでください。今夜は魔女の魔法も全部お休みです……今はただ、あなたに抱きしめてほしいんです。」",
+    "tags": [
+      "hair_ribbon",
+      "home_dress",
+      "open_collar",
+      "sitting_on_lap",
+      "grabbing_viewer_shirt",
+      "tipsy",
+      "heavy_blush",
+      "bare_legs",
+      "living_room",
+      "night",
+      "empty_wine_glass",
+      "ahoge",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "魔女的微醺真心话溢出协议",
+    "usage": [
+      "壁纸级",
+      "核心协议",
+      "R15"
+    ],
+    "weather": "微醺微热"
+  }
+}

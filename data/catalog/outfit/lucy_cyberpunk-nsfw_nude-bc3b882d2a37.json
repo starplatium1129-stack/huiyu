@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "lucy_cyberpunk/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 606,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lucy_cyberpunk",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, pristine pale skin kissed by soft ambient magenta neon glow, small shapely perky breasts with delicate berry-pink nipples, slender athletic midriff, glowing cyberware spinal interface sockets running down her elegant back, exposed pussy, bare legs and bare feet, cinematic high-rise apartment nightscape",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "small_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "cyberware",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc159",
+  "revision": 1,
+  "sortOrder": 156,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Collapsed on the bench in the steam-filled safehouse bathroom, Shiki Natsume wears only a translucent white shirt soaked through and clinging to her curves, wet black hair plastered to her collarbone and pale legs crossed, as she hooks both hot hands around the viewer's neck and leans in with closed eyes, welcoming the deep kiss with the tear mole flushed crimson in the mist. Droplets of water run down her soaked shoulders and chest.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc159",
+    "lighting": "局部昏暗弱光",
+    "location": "秘密安全屋浴室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, white_shirt, wet_clothes, see-through, lying, bare_legs, bar, water, droplets, body, barefoot, bathroom, dimly_lit, kiss, blush, bare_shoulders, dim_lighting, cinematic, depth, field, full_body, soft_diffused_light, soft_lighting, detailed_background, cinematic_lighting",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 湿透衬衫彻底沦陷】特工任务结束后的秘密安全屋，浴室水汽弥漫。平时高冷毒舌的夏目此时彻底瘫软在长椅上，身上只穿着一件被温水完全浸透、死死贴紧饱满身躯的白色衬衫。她黑发湿漉漉地贴着锁骨，眼角的泪痣在氤氲的雾气下显得极度潮红。她双腿交叠，虽然嘴上依然虚弱地骂着「哈？你这个变态笨蛋...」，却主动伸出滚烫的双手紧紧勾住你的脖子，闭上含泪的眼睛迎向你的深吻——",
+    "storyJa": "【夏目・びしょ濡れのシャツは完全にダメになった】エージェントの任務が終了した秘密の隠れ家では、バスルームが蒸気で満たされています。いつもは冷酷で毒舌だった夏目はベンチで完全にへたり込んでいた。彼女はぬるま湯に浸した白いシャツを着て、その豊満な体にぴったりと張り付いているだけだった。黒髪は濡れて鎖骨に張り付き、目尻の泣きぼくろは濃い霧の下でひどく赤くなっているように見えた。足を組み、「は？　この変態……ばか。」と弱々しく悪態をつきながらも、率先して熱い手を伸ばして首をしっかりと絡め、涙目でディープキスを歓迎する――。",
+    "tags": [
+      "mole_under_eye",
+      "wet_shirt",
+      "translucent",
+      "soaked_shirt",
+      "bare_legs",
+      "bench",
+      "bathroom",
+      "steam",
+      "arms_around_neck",
+      "deep_kiss",
+      "kissing",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "绝对臣服：特工安全屋的防线决堤",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "水汽氤氲"
+  }
+}

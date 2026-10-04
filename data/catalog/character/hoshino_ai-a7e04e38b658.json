@@ -1,0 +1,160 @@
+{
+  "kind": "character",
+  "id": "hoshino_ai",
+  "revision": 1,
+  "sortOrder": 53,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hoshino_ai",
+    "profile": {
+      "id": "hoshino_ai",
+      "name": "星野爱",
+      "alias": [
+        "Hoshino Ai",
+        "星野アイ",
+        "B 小町主推偶像"
+      ],
+      "type": "popular",
+      "icon": "⭐",
+      "portrait": {
+        "image": "../assets/characters/popular-hoshino_ai.png?v=5",
+        "alt": "星野爱 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "紫色长发（单侧扎起）",
+        "hair_color": "紫",
+        "eyes": "紫色 · 星形高光瞳孔",
+        "hairstyle": "单侧上扎 · 侧发 · 扫刘海 · 兔耳发饰",
+        "uniform": "无袖褶边粉裙 / 心形胸针 / 褶边手套",
+        "expression": "营业微笑完美无瑕 · 眼底藏着孤独",
+        "style": "top idol starry",
+        "signature": "紫色星瞳、兔耳发饰与粉裙"
+      },
+      "personality": [
+        "元气满分",
+        "台上完美偶像",
+        "台下天然",
+        "不懂爱却渴望爱",
+        "比谁都在乎粉丝"
+      ],
+      "likes": [
+        "演唱会",
+        "粉丝的应援",
+        "草莓蛋糕",
+        "拍摄工作",
+        "看星星"
+      ],
+      "classic_cg": {
+        "title": "万星应援",
+        "description": "万人场馆的聚光灯下，星形瞳孔的偶像跃上舞台，粉裙在光柱中飞扬，整片应援海为她闪烁。"
+      },
+      "identity": {
+        "role": "偶像（B 小町主推）",
+        "age": "初登场 16 岁 · 遇害 20 岁",
+        "occupation": "偶像",
+        "faction": "我推的孩子 · 艺能界"
+      },
+      "tags": [
+        "紫发",
+        "星形瞳孔",
+        "兔耳发饰",
+        "粉裙",
+        "偶像"
+      ],
+      "bg_story": "星野爱是《我推的孩子》中顶流偶像团体「B小町」无可争议的绝对 C 位，拥有天生夺目的双眸星形瞳孔与无可挑剔的舞台微笑。自幼在孤儿院长大、未曾体验过家庭温情，深信「谎言也是一种爱」，将每一次笑容都当作向世界传递爱的努力与伪装。在诞下双胞胎阿库亚与露比后，逐渐在母亲与偶像的双重身份中摸索真实情感的边界，渴望在巨蛋圆梦之日真正说出发自内心的「我爱你们」。场景应突出顶流偶像台前幕后的耀眼与孤寂反差——万人场馆的应援光海、彩排室镜面折射、化妆间私语与全景夜景套房，应援红与星芒是她的视觉核心，展现她深藏脆弱却永远耀眼的神性魅力。",
+      "palette": [
+        "紫",
+        "樱粉",
+        "应援红"
+      ],
+      "weather": [
+        "演唱会之夜",
+        "彩排午后",
+        "握手会会场"
+      ],
+      "speech": "星野爱对你露出招牌笑容——「今天也要好好应援哦！」",
+      "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+      "traits": [
+        "hoshino_ai",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "one_side_up",
+        "sidelocks",
+        "swept_bangs",
+        "hair_between_eyes",
+        "star_pupils",
+        "purple_eyes",
+        "rabbit_hair_ornament",
+        "idol",
+        "oshi_no_ko"
+      ],
+      "accent_color": "#E60012",
+      "bg_color": "#1a0f16"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "hoshino_ai",
+        "ai hoshino",
+        "oshi no ko",
+        "b-komachi",
+        "idol"
+      ],
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "canon": {
+        "era": "现代偶像时代",
+        "formNotes": "瞳孔=星形高光 star_pupils；B 小町主推；应援色=粉；强调色 #E60012 应援红",
+        "research": "2026-08-31 调研",
+        "world": "现代日本娱乐圈（艺能界）"
+      },
+      "curatedArtistStyles": [
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "mika_pikazo"
+      ],
+      "displayName": "星野爱",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "hoshino_ai"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "hoshino_ai",
+      "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+      "identityTokens": [
+        "hoshino_ai",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "one_side_up",
+        "sidelocks",
+        "swept_bangs",
+        "hair_between_eyes",
+        "star_pupils",
+        "purple_eyes",
+        "rabbit_hair_ornament",
+        "idol",
+        "oshi_no_ko"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Hoshino Ai",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

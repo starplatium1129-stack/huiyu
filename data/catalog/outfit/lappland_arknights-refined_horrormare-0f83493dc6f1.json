@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/refined_horrormare",
+  "revision": 1,
+  "sortOrder": 388,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "default": false,
+      "id": "refined_horrormare",
+      "isDefault": false,
+      "name": "典雅噩兆 / 宴会礼服",
+      "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
+      "tokens": [
+        "ballgown",
+        "black_dress",
+        "red_dress",
+        "gothic_dress",
+        "lace_mask",
+        "eye_mask",
+        "opera_gloves",
+        "black_gloves",
+        "rose",
+        "corsage",
+        "elegant",
+        "aristocratic"
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/bridal_wedding_dress",
+  "revision": 1,
+  "sortOrder": 838,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "bridal_wedding_dress",
+      "name": "高定抹胸鱼尾花嫁婚纱",
+      "prose": "a top-model couture strapless mermaid wedding gown tailored for her tall figure, a dreamy long bridal veil, and a bouquet of white roses, with her long black hair in a high ponytail",
+      "tokens": [
+        "wedding_dress",
+        "bridal_veil",
+        "strapless",
+        "bouquet",
+        "white_flowers",
+        "high_heels",
+        "jewelry",
+        "ponytail"
+      ]
+    }
+  }
+}

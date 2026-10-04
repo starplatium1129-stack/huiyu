@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/lava_silk_loungewear",
+  "revision": 1,
+  "sortOrder": 290,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "default": false,
+      "id": "lava_silk_loungewear",
+      "isDefault": false,
+      "name": "熔温夜曲丝绸慵懒睡袍",
+      "prose": "a luxurious silk loungewear set: a short black silk slip nightdress with champagne-pink trim and delicate black lace trim at the chest and hem, overlaid with a sheer translucent black silk robe slipping off one shoulder, barefoot",
+      "tokens": [
+        "silk",
+        "nightdress",
+        "lace_trim",
+        "robe",
+        "slipping_off_shoulder",
+        "barefoot"
+      ]
+    }
+  }
+}

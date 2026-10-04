@@ -1,0 +1,165 @@
+{
+  "kind": "character",
+  "id": "ellen_joe",
+  "revision": 1,
+  "sortOrder": 77,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ellen_joe",
+    "profile": {
+      "id": "ellen_joe",
+      "name": "艾莲·乔",
+      "alias": [
+        "Ellen Joe",
+        "艾莲",
+        "鲨鱼妹",
+        "维多利亚家政"
+      ],
+      "type": "popular",
+      "icon": "🦈",
+      "portrait": {
+        "image": "../assets/characters/popular-ellen_joe.png?v=5",
+        "alt": "艾莲·乔 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑红渐变短发 · 内层亮红挑染 · 刀片发卡",
+        "hair_color": "黑红渐变（外黑内红）",
+        "eyes": "倦怠暗红双瞳 · 眼角泪痣",
+        "hairstyle": "挑染短发 · 刀片发饰 · 巨大黑色锯齿鲨鱼尾 · 鲨齿尖牙",
+        "uniform": "维多利亚执事战斗女仆装 / 新艾利都女子高制服",
+        "expression": "厌世冷淡 · 困倦打盹 · 护食娇蛮",
+        "style": "cool gothic shark maid",
+        "signature": "巨大的鲨鱼尾巴、棒棒糖、冷酷死鱼眼、眼角泪痣与黑红挑染短发"
+      },
+      "personality": [
+        "极度嗜睡且怕麻烦",
+        "外冷内热的反差少女",
+        "热爱甜食尤其是圣代与棒棒糖",
+        "战斗时爆发力惊人毫不留情",
+        "珍视家政伙伴与重要羁绊"
+      ],
+      "likes": [
+        "下午四点前去吃限定圣代",
+        "水果味棒棒糖",
+        "安静无人的角落补觉",
+        "大海与冰爽的气泡水"
+      ],
+      "classic_cg": {
+        "title": "空洞深处的极寒猎杀",
+        "description": "冰晶以骸废墟中，艾莲拖着巨剪与强劲鲨鱼尾撕裂暴风雪，展现深海顶级掠食者的绝对力量。"
+      },
+      "identity": {
+        "role": "维多利亚家政专属女仆 / 高中在读学生",
+        "age": "高中生",
+        "occupation": "空洞作战执事 / 战斗女仆",
+        "faction": "新艾利都 · 维多利亚家政"
+      },
+      "tags": [
+        "鲨鱼尾巴",
+        "黑红渐变短发",
+        "女仆装",
+        "死鱼眼",
+        "巨剪武器",
+        "棒棒糖"
+      ],
+      "bg_story": "艾莲·乔是《绝区零》中维多利亚家政的专属执事，同时也是新艾利都的一名普通高中生。她拥有标志性的巨大鲨鱼尾巴与锐利鲨齿，平时在学校总是困倦不堪、含着棒棒糖厌世摸鱼，但一旦进入空洞执行家政任务，便会化身为挥舞重剪、速度极快的寒冰游猎者。",
+      "palette": [
+        "暗夜黑",
+        "深海红",
+        "冰霜白"
+      ],
+      "weather": [
+        "阴雨微风",
+        "冰晶空洞",
+        "六分街黄昏"
+      ],
+      "speech": "工作赶紧收工吧……我还赶着去吃今天限定的草莓圣代呢。",
+      "source": "HoYoverse《绝区零 / Zenless Zone Zero》",
+      "traits": [
+        "ellen joe",
+        "1girl",
+        "solo",
+        "short_hair",
+        "two-tone_hair",
+        "black_hair",
+        "red_hair",
+        "red_eyes",
+        "shark_tail",
+        "shark_teeth",
+        "zenless_zone_zero"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#090d16"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "ellen_joe",
+        "ellen",
+        "ellen (zenless zone zero)",
+        "艾莲",
+        "艾莲乔",
+        "鲨鱼妹",
+        "维多利亚家政",
+        "victoria housekeeping"
+      ],
+      "animeStudio": "Zenless Zone Zero official art, HoYoverse style",
+      "canon": {
+        "era": "后空洞灾害近未来都市",
+        "formNotes": "维多利亚家政专属女仆，平时在校贪睡且冷淡厌世，随身携带棒棒糖，战斗中甩动巨大鲨鱼尾与巨剪爆发惊人战力",
+        "research": "2026-09-02 调研（Danbooru ellen_joe 11000+ posts）",
+        "world": "新艾利都（New Eridu）· 维多利亚家政"
+      },
+      "curatedArtistStyles": [
+        "mika_pikazo",
+        "ask_(askzy)",
+        "swav"
+      ],
+      "displayName": "艾莲·乔",
+      "exactPrefixes": [
+        "ellen_"
+      ],
+      "exactTokens": [
+        "ellen joe"
+      ],
+      "franchise": "Zenless Zone Zero",
+      "id": "ellen_joe",
+      "identityProse": "Ellen Joe from Zenless Zone Zero, a high school maid from Victoria Housekeeping with two-tone black and crimson short hair, tired dark red eyes, red hairpins, a huge black and white spiky shark tail, sharp shark teeth, and a cool deadpan expression.",
+      "identityTokens": [
+        "ellen joe",
+        "1girl",
+        "solo",
+        "short_hair",
+        "two-tone_hair",
+        "black_hair",
+        "red_hair",
+        "colored_inner_hair",
+        "red_eyes",
+        "mole_under_eye",
+        "shark_tail",
+        "tail",
+        "shark_teeth",
+        "razor_blade_hair_ornament",
+        "hairclip",
+        "zenless_zone_zero"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Ellen Joe",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

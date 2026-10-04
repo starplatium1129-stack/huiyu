@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/victorian_traveler_coat",
+  "revision": 1,
+  "sortOrder": 298,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "default": false,
+      "id": "victorian_traveler_coat",
+      "isDefault": false,
+      "name": "维多利亚博物学者古典旅行大衣",
+      "prose": "a forest-green heavyweight wool greatcoat with dark brown velvet lapels and a detachable shoulder capelet, worn over a ruffled white stand-collar blouse with a burgundy satin ribbon tie",
+      "tokens": [
+        "greatcoat",
+        "wool",
+        "capelet",
+        "ruffled_collar",
+        "blouse",
+        "ribbon_tie"
+      ]
+    }
+  }
+}

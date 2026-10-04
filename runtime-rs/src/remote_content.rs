@@ -216,7 +216,34 @@ impl RemoteContent {
             return Err(unpublished());
         }
         let output = if let Some(name) = json_name {
-            serde_json::to_vec(&projection::project(name, &serde_json::from_slice(&bytes)?))?
+            let approved: Value = serde_json::from_slice(&bytes)?;
+            let database = self.runtime.join("content/catalog.sqlite");
+            let current = if database.is_file() || database.with_extension("identity.json").exists()
+            {
+                let options = crate::catalog::Options {
+                    source: self.app.clone(),
+                    database,
+                };
+                let selected = name.to_owned();
+                tokio::task::spawn_blocking(move || {
+                    crate::catalog::Catalog::open(options)?.projection(&selected)
+                })
+                .await
+                .map_err(|_| unpublished())?
+                .map_err(|_| unpublished())?
+            } else {
+                None
+            };
+            if current
+                .as_ref()
+                .is_some_and(|value| normalize_catalog(value) != normalize_catalog(&approved))
+            {
+                return Err(unpublished());
+            }
+            serde_json::to_vec(&projection::project(
+                name,
+                current.as_ref().unwrap_or(&approved),
+            ))?
         } else {
             bytes
         };
@@ -247,6 +274,24 @@ impl RemoteContent {
         }
         None
     }
+}
+fn normalize_catalog(value: &Value) -> Value {
+    if let Some(values) = value.as_array() {
+        let mut values = values.iter().map(normalize_catalog).collect::<Vec<_>>();
+        if values.iter().all(|v| v["id"].is_string()) {
+            values.sort_by(|a, b| a["id"].as_str().cmp(&b["id"].as_str()));
+        }
+        return values.into();
+    }
+    if let Some(fields) = value.as_object() {
+        return fields
+            .iter()
+            .filter(|(k, _)| !["sortOrder", "createdAt", "updatedAt"].contains(&k.as_str()))
+            .map(|(k, v)| (k.clone(), normalize_catalog(v)))
+            .collect::<serde_json::Map<_, _>>()
+            .into();
+    }
+    value.clone()
 }
 fn reviewed_date(value: &str) -> bool {
     chrono::DateTime::parse_from_rfc3339(value).is_ok()

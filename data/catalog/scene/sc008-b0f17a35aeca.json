@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc008",
+  "revision": 1,
+  "sortOrder": 7,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot before the vermilion torii gate and stone lanterns at the shrine, she reaches forward and gently clasps the viewer's hand with a focused and calm expression, under diffused overcast daylight.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "半身中景",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "平静",
+    "id": "sc008",
+    "lighting": "雪后清晨柔光",
+    "location": "神社",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(POV hand holding her hand:1.5), interlocked fingers, two joined hands in foreground, walking down shrine steps, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, shrine, snow, torii, holding_hands, snowfall, serene_expression, morning, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【宁宁 · 新年愿望的另一半】初雪覆盖了神社石阶，宁宁穿着和服在赛钱箱前认真合掌。祈愿结束后，她发现你一直站在旁边，立即用袖口挡住发热的脸。走下鸟居时，她又悄悄把手伸进你的掌心——「愿望说出来就不灵了。不过，如果你明年还陪我来，也许就能猜到答案。」",
+    "storyJa": "【寧々・新年の抱負の残り半分】神社の石段には初雪が降り、着物を着た寧々さんは賽銭箱の前で真剣に手を合わせた。祈りが終わった後、彼女はあなたが近くに立っているのを見つけて、すぐに熱い顔を袖で覆いました。鳥居をくぐるとまた静かに手のひらに手を添える――「願い事は、口にすると叶わなくなるんです。でも来年も一緒に来てくれたら、そのときは答えが分かるかもしれません。」",
+    "tags": [
+      "hair_ribbon",
+      "kimono",
+      "shrine",
+      "snow",
+      "torii",
+      "praying",
+      "holding_hands",
+      "snowfall",
+      "serene_expression",
+      "morning",
+      "upper_body",
+      "medium_shot",
+      "morning_light",
+      "soft_lighting",
+      "diffused_light",
+      "calm",
+      "relaxed"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "新年愿望的另一半",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雪"
+  }
+}

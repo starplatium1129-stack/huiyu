@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_goldfish_scooping_festival",
+  "revision": 1,
+  "sortOrder": 1051,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_goldfish_scooping_festival",
+    "title": "花火 · 和风游园的金鱼池笑靥",
+    "category": "游园祭典",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 和风游园的金鱼池笑靥】夏日祭典红灯笼摇曳的金鱼摊位前，花火蹲在水池边，身穿一袭轻盈的金鱼花纹红浴衣。她手中握着破了一半的纸网，另一手托着一个装着一条活泼红金鱼的小塑料水袋高高举向你，眼角笑得弯弯的，在水池反光下如同一只贪玩的小猫——「当当当当！看我抓到了什么！这只金鱼长得笨笨的，简直跟你一模一样，今天就归我养咯~」",
+    "location": "热闹夏日祭典金鱼摊位浅水池边",
+    "action": "蹲在水池边一手举着装有金鱼的小水袋，仰头露出元气灿烂的恶作剧笑容",
+    "timeOfDay": "夏夜祭典",
+    "lighting": "红色纸灯笼暖光与水池波光倒影",
+    "camera": "cowboy shot, high angle, cute crouching view",
+    "mood": "元气灵动",
+    "sceneTags": [
+      "festival",
+      "goldfish_stall",
+      "crouching",
+      "holding_bag",
+      "goldfish",
+      "red_yukata",
+      "lanterns",
+      "radiant_smile",
+      "twintails"
+    ],
+    "promptProse": "Crouching gracefully beside a shallow wooden goldfish pool at a bustling summer festival, Sparkle holds up a clear water pouch with a tiny red goldfish inside. Wearing an airy coral-red yukata with floral obi, she tilts her head up at the viewer with a beaming, playful grin beneath hanging paper lanterns. Warm festive glow, charming anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "festival_stall",
+      "lanterns",
+      "crouching",
+      "holding_plastic_bag",
+      "goldfish",
+      "red_yukata",
+      "summer_festival",
+      "radiant_smile",
+      "winking",
+      "pink_eyes",
+      "twintails",
+      "water_reflections",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "festive_goldfish_yukata",
+    "coverageTags": [
+      "date",
+      "festival",
+      "cute"
+    ]
+  }
+}

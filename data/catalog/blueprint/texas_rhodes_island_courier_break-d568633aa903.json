@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "texas_rhodes_island_courier_break",
+  "revision": 1,
+  "sortOrder": 662,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "斜倚在舒适布艺沙发上，单手递出一根巧克力棒，神情慵懒温柔",
+    "camera": "medium shot, eye level",
+    "category": "基地日常",
+    "characterId": "texas_arknights",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【德克萨斯 · 罗德岛休息室的巧克力棒】罗德岛阳光明媚的舰内休闲室内，绿植盆栽郁郁葱葱。德克萨斯倚靠在柔软的深灰沙发上，放松地蜷起一条修长的腿。她从红色纸盒里抽出一根巧克力棒递向坐在对面的博士，眼神平静而温和——「给。吃点甜的，能清醒一些。今天还有两份加急运单需要你签字。」",
+    "id": "texas_rhodes_island_courier_break",
+    "lighting": "大型舷窗洒入的明媚柔和自然光与绿植阴影",
+    "location": "罗德岛舰船休闲休息室",
+    "mood": "温馨放松",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "penguin_logistics",
+    "promptProse": "Inside a tranquil sunlit lounge aboard the landship Rhodes Island, Texas lounges comfortably on a soft grey fabric sofa beside lush indoor ferns. She wears her casual courier uniform with the sleeves rolled up, extending a chocolate pocky stick from a red cardboard box toward the viewer with a subtle, gentle gaze. Warm afternoon sunlight pours through the reinforced observation window, illuminating the soft sheen of her dark hair, wolf ears, and resting wolf tail. An intimate eye-level medium shot captures her rare relaxed warmth and understated beauty with clean anime visual novel elegance.",
+    "promptTokens": [
+      "lounge",
+      "couch",
+      "houseplants",
+      "window",
+      "pocky",
+      "holding_pocky",
+      "relaxed",
+      "gentle_expression",
+      "wolf_ears",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "lounge",
+      "couch",
+      "houseplants",
+      "window",
+      "pocky",
+      "holding_pocky",
+      "relaxed",
+      "gentle_expression",
+      "wolf_ears"
+    ],
+    "timeOfDay": "午后",
+    "title": "德克萨斯 · 罗德岛休息室的巧克力棒"
+  }
+}

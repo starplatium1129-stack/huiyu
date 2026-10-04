@@ -1,0 +1,162 @@
+{
+  "kind": "character",
+  "id": "tsukatsuki_rio",
+  "revision": 1,
+  "sortOrder": 50,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tsukatsuki_rio",
+    "profile": {
+      "id": "tsukatsuki_rio",
+      "name": "调月莉音",
+      "alias": [
+        "Tsukatsuki Rio",
+        "調月リオ",
+        "调月莉央",
+        "莉音"
+      ],
+      "type": "popular",
+      "icon": "📐",
+      "portrait": {
+        "image": "../assets/characters/popular-tsukatsuki_rio.png?v=5",
+        "alt": "调月莉音 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长直发",
+        "hair_color": "黑",
+        "eyes": "红",
+        "hairstyle": "黑长直 · 发夹",
+        "uniform": "研讨会制服 / 冬季大衣 / 正式礼服 / 夏日泳装",
+        "expression": "冷娇自负，腹黑天才",
+        "style": "brilliant seminar leader",
+        "signature": "黑长直、红瞳与研讨会制服"
+      },
+      "personality": [
+        "冷娇",
+        "腹黑",
+        "自负",
+        "天才",
+        "有心理阴影"
+      ],
+      "likes": [
+        "设计",
+        "精密计划",
+        "掌控局面",
+        "黑咖啡"
+      ],
+      "classic_cg": {
+        "title": "蓝图之后",
+        "description": "千年研讨会办公室里，莉音站在铺满蓝图的设计台前，红瞳映着屏幕冷光，像在把整个学院都算进自己的棋局。"
+      },
+      "identity": {
+        "role": "千年科学学园研讨会核心人物",
+        "age": "17岁",
+        "occupation": "学生 / 研讨会",
+        "faction": "千年科学学园 / 研讨会"
+      },
+      "tags": [
+        "黑长直",
+        "红瞳",
+        "研讨会制服",
+        "高领毛衣",
+        "天才"
+      ],
+      "bg_story": "调月莉音是《碧蓝档案》中千年科学学园学生会「研讨会」会长，掌握学园最高权能的天才领袖，拥有极度理智冷酷的战略眼光与强大的工程科技实力。曾因深陷毁灭预言的心理阴影而独自背负建造「要塞爱丽丝」的沉重罪业，在危机化解后逐渐学会向老师和同伴敞开心扉，展露出傲娇成熟又笨拙的大姐姐一面。场景应突出高科技千年学园的精密冷静与会长私下的知性柔情——研讨会全息办公室、冬季风衣街景、高挑晚礼服与阳光沙发，深黑与锐红是她的主色。",
+      "palette": [
+        "黑",
+        "红",
+        "白"
+      ],
+      "weather": [
+        "冬季雪天",
+        "黄昏",
+        "深夜"
+      ],
+      "speech": "莉音正在规划下一步。",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "tsukatsuki_rio",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_straight_hair",
+        "hime_cut",
+        "neat_bangs",
+        "sharp_red_eyes",
+        "red_eyes",
+        "tall_slender_mature_elegance",
+        "cool_beauty",
+        "deep_red_diamond_matrix_halo",
+        "millennium",
+        "seminar",
+        "blue_archive"
+      ],
+      "accent_color": "#b91c1c",
+      "bg_color": "#0f172a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "tsukatsuki_rio",
+        "rio",
+        "调月莉央",
+        "莉音",
+        "老大姐",
+        "millennium",
+        "seminar",
+        "blue archive"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "研讨会核心人物；天才、腹黑、冷娇，有心理阴影",
+        "research": "2026-08-27 调研",
+        "world": "基沃托斯（Kivotos）· 千年科学学园"
+      },
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "so-bin",
+        "hxxg"
+      ],
+      "displayName": "调月莉音",
+      "exactPrefixes": [
+        "tsukatsuki_"
+      ],
+      "exactTokens": [
+        "tsukatsuki_rio"
+      ],
+      "franchise": "Blue Archive",
+      "id": "tsukatsuki_rio",
+      "identityProse": "Tsukatsuki Rio from Blue Archive, the cool calculating Millennium student council president with flowing raven-black hair, piercing ruby eyes, a red geometric halo, and a mature voluptuous figure.",
+      "identityTokens": [
+        "rio (blue archive)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "red_eyes",
+        "halo",
+        "large_breasts",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Tsukatsuki Rio",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

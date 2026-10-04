@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc262",
+  "revision": 1,
+  "sortOrder": 257,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a quiet room, she gently presents a wrapped gift box, under soft ambient lighting.",
+    "audit": {
+      "attempt": 3,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_10.png",
+      "result": "pass",
+      "reviewer": "direct-vision",
+      "seedKey": "official-cg:ocn07:3"
+    },
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "官方CG横幅构图",
+    "category": "官方CG灵感",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "心动",
+    "id": "sc262",
+    "lighting": "柔和自然光",
+    "location": "室内场景",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, single rose, one flower, empty hands, shop, store shelves, fluorescent light, nsfw, nude, explicit",
+    "officialCgCandidate": "ocn07",
+    "prompt": "visual_novel_event_cg, portrait_composition_matching_an_official_event_illustration, low_angle_full_body_shot, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer_with_gold_buttons, gold_bow, gray_plaid_skirt, black_thighhighs, standing_beneath_warm_golden_stage_lights_and_large_star_decorations, (holding_a_rectangular_black_gift_box_filled_with_a_bouquet_of_pink_and_white_flowers_against_her_chest_with_both_arms), shy_gentle_smile, long_silver_hair_flowing_behind_her, <lora:ayachi_nene_v18_wd14:0.9>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【官方 CG 灵感】舞台灯火落在宁宁的银发上，她把装满花朵的礼盒抱在怀里。走到你面前时，她终于露出安心的笑：「这个，只想亲手交给你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "title": "灯火舞台前的礼物",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

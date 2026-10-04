@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/official_sobu_uniform",
+  "revision": 1,
+  "sortOrder": 204,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "official_sobu_uniform",
+      "name": "总武高水手西装制服与开衫",
+      "prose": "her Sobu High school uniform: an unbuttoned navy blazer over a light cream knit cardigan, a white collared blouse with a thin red ribbon tie, a short pleated plaid skirt, sheer black pantyhose, and loafers",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "navy_jacket",
+        "cardigan",
+        "cream_cardigan",
+        "white_shirt",
+        "ribbon_tie",
+        "pleated_skirt",
+        "plaid_skirt",
+        "black_pantyhose"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

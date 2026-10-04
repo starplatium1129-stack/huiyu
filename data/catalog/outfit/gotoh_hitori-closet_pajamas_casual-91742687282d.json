@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "gotoh_hitori/closet_pajamas_casual",
+  "revision": 1,
+  "sortOrder": 554,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "gotoh_hitori",
+    "outfit": {
+      "id": "closet_pajamas_casual",
+      "name": "壁橱避难所宽松睡衣私服",
+      "tokens": [
+        "oversized_t-shirt",
+        "pajamas",
+        "loose_clothes",
+        "bare_legs",
+        "headphones",
+        "casual_clothes"
+      ],
+      "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+      "styleHint": "moody dim ambient lighting with warm fairy lights and screen glow",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "albedo_overlord/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 709,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "albedo_overlord",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, voluptuous body with glossy black hair framing her waist, large natural breasts with soft pink areolas, a slender waist flanked by soft downy black feathers, and flawless pale skin",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "nipples",
+        "areola",
+        "pussy",
+        "black_wings",
+        "curved_horns",
+        "hourglass_body"
+      ]
+    }
+  }
+}

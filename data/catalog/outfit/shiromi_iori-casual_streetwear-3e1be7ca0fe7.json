@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/casual_streetwear",
+  "revision": 1,
+  "sortOrder": 515,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "default": false,
+      "id": "casual_streetwear",
+      "isDefault": false,
+      "name": "街头休闲私服",
+      "prose": "a trendy urban street outfit: a black ribbed sleeveless crop halter top, distressed denim shorts with a leather belt, open oversized flannel red-black checkered shirt, black choker, white high-top sneakers, and demon tail swishing freely",
+      "tokens": [
+        "casual",
+        "crop_top",
+        "halter_top",
+        "denim_shorts",
+        "short_shorts",
+        "plaid_shirt",
+        "flannel_shirt",
+        "choker",
+        "sneakers",
+        "streetwear"
+      ]
+    }
+  }
+}

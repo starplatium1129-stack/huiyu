@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc298",
+  "revision": 1,
+  "sortOrder": 293,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc298",
+    "title": "终夜后的沙发沉默",
+    "category": "同人/After_Story",
+    "story": "【成年 After Story · 宁宁 · 终夜后的沙发沉默】通宵赶完下一期合同志的稿件后，宁宁瘫倒在客厅沙发上，银白色的长发散乱地铺在扶手上，呆毛也垂成了有气无力的弧度。她穿着宽大的白色T恤当作睡衣，领口松松垮垮地露出大片锁骨。你收拾好绘图用的数位板和散落的参考图，走过来在她面前蹲下。她半睁开紫色的眼睛，视线模糊地聚焦在你脸上，声音因为熬夜而沙哑软糯——「完稿了……三十二页……再也不想看到那个分镜了。」你笑着摸了摸她的头顶，她顺势抓住你的手腕，把脸埋进你的掌心。过了一会儿，她闷闷地开口——「抱我去床上……我自己走不动了。」她抬起手臂圈住你的脖子，T恤的下摆在这个过程中被扯高了一截，露出平坦的小腹和腰线。客厅的顶灯还亮着，照着两个人重叠的影子和满地的参考稿。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "通宵后的全然信赖",
+    "season": "不限",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "hair_ribbon",
+      "white_t_shirt",
+      "midriff",
+      "bare_legs",
+      "sofa",
+      "full_body",
+      "barefoot",
+      "dawn"
+    ],
+    "mature": false,
+    "rating": "R15",
+    "location": "公寓客厅沙发",
+    "weather": "清晨室内",
+    "camera": "沙发前蹲姿平视",
+    "lighting": "客厅顶灯与窗外晨光混合",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, oversized, white, loose, collar, exposing, shirt, hem, hiked, midriff, bare_legs, curled, sofa, after, head, resting, armrest, messy, limp_ahoge_drooping, tired_gentle_blush, one, arm, extended, sunlight, window_light, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "storyJa": "【寧々・大人のAfter Story・徹夜明けのソファの静寂】次の合同誌の原稿を徹夜で仕上げた後、寧々はリビングのソファにぐったりと倒れ込んだ。銀色の長い髪がランバーレストに乱れ広がり、アホ毛も力なく垂れていた。彼女は大きめの白いTシャツをパジャマ代わりに着ており、襟元がゆるく開いて鎖骨が広く覗いていた。あなたが液タブと散らばった参考資料を片付け終えて、彼女の前にしゃがみ込むと、彼女は紫色の目を半分だけ開けた。焦点の合わない視線が徐々にあなたの顔に合い、徹夜でかすれた柔らかな声が出た——「原稿終わったよ……三十二ページ……あのコマ割り、もう二度と見たくない。」あなたが笑って彼女の頭を撫でると、彼女はあなたの手首を掴み、顔をあなたの掌に押し付けた。しばらくして、彼女がくぐもった声で言った——「ベッドまで連れてって……もう自分では歩けない。」彼女は腕を上げてあなたの首に絡めた。Tシャツの裾がその過程で持ち上がり、平らな腹と腰のラインが露出した。リビングの天井灯がまだ点いたままで、重なる二人の影と床一面の参考資料を照らしていた。",
+    "animaCaption": "After an all-night deadline, Nene collapses on the living room sofa in an oversized white T-shirt worn as pajamas, the loose collar hanging over her collarbones, the hem hiked up to show her flat stomach and waist as she reaches one arm toward the viewer with exhausted gentle eyes, under the ceiling light mixed with pale dawn.",
+    "auditRevision": "careful-batch03-2026-08-27"
+  }
+}

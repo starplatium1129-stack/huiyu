@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "misaki_cafe_milk_tea_afternoon",
+  "revision": 1,
+  "sortOrder": 402,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "卡座捧珍珠奶茶，星瞳盯着蛋糕草莓，手套轻碰碟沿",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "medium two-shot, cafe booth, bright interior, playful mood",
+    "category": "都市日常",
+    "characterId": "shokuhou_misaki",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "girlfriend"
+    ],
+    "description": "【学园都市奶茶店·午后】女王蜂窝在窗边卡座里，金色的长发铺满半个椅背，手里捧着大杯珍珠奶茶。她用吸管有一下没一下地搅着，星瞳在看到你蛋糕上的草莓时忽然亮起来——「本小姐才不是想要……只是帮你分担热量而已哦♪」雪白的手套指节轻轻碰了碰你的碟子边缘，像一场不动声色的加冕。",
+    "id": "misaki_cafe_milk_tea_afternoon",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "明亮的店内暖光与窗边日光",
+    "location": "学园都市奶茶店窗边卡座",
+    "mood": "女王撒娇、甜度超标",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_tokiwadai_uniform",
+    "promptProse": "Shokuhou Misaki sprawls in a window booth of an Academy City bubble tea shop, her very long blonde hair draping over half the seat as she stirs her milk tea with a straw. Her star-shaped pupils light up at the strawberry on your cake slice, and with her white-gloved knuckle she taps the edge of your plate, declaring she is merely helping share your calories. Bright interior warmth wraps the teasing queen. Medium two-shot, cinematic lighting, interior glow, detailed cafe background.",
+    "promptTokens": [
+      "shokuhou_misaki",
+      "1girl",
+      "solo",
+      "tokiwadai_school_uniform",
+      "sweater_vest",
+      "white_gloves",
+      "holding_cup",
+      "drinking",
+      "sitting",
+      "star-shaped_pupils",
+      "yellow_eyes",
+      "blonde_hair",
+      "very_long_hair",
+      "smirk",
+      "cafe",
+      "day",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "cafe",
+      "drinking",
+      "milk_tea",
+      "sitting",
+      "star-shaped_pupils",
+      "smirk",
+      "casual",
+      "daily"
+    ],
+    "timeOfDay": "午后",
+    "title": "食蜂操祈 · 奶茶店的午后加冕·「这块蛋糕，分你一口好了」"
+  }
+}

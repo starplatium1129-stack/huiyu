@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "cc_code_geass",
+  "revision": 1,
+  "sortOrder": 101,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cc_code_geass",
+    "profile": {
+      "id": "cc_code_geass",
+      "name": "C.C.",
+      "alias": [
+        "C.C.",
+        "CC",
+        "不老不死的魔女",
+        "披萨魔女",
+        "共犯"
+      ],
+      "type": "popular",
+      "icon": "🍕",
+      "portrait": {
+        "image": "../assets/characters/popular-cc_code_geass.png?v=1",
+        "alt": "C.C. 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰瀑布般翠绿长发 · 柔顺平刘海",
+        "hair_color": "翠绿 / 浅柠檬绿",
+        "eyes": "深邃琥珀金眸 · 剔透如晨露",
+        "hairstyle": "超长翠绿直发 · 优雅垂胸前",
+        "uniform": "纯白拘束服风衣 / 黑色骑士团制服",
+        "expression": "从容淡漠 · 似笑非笑 · 深邃温柔",
+        "style": "immortal enigmatic green-haired witch",
+        "signature": "及腰翠绿长发、金珀眼眸、纯白拘束服与奶酪君抱枕"
+      },
+      "personality": [
+        "看破世间沧桑的从容淡漠",
+        "唯独对你的生死相托与羁绊",
+        "酷爱披萨的慵懒萌态",
+        "偶尔脸红微怔的反差娇羞"
+      ],
+      "likes": [
+        "必胜客热烤披萨",
+        "奶酪君黄色玩偶",
+        "在午后的阳光下静静发呆"
+      ],
+      "classic_cg": {
+        "title": "废墟月下的契约魔女",
+        "description": "在钟楼断壁残垣之上迎风而立，纯白拘束带翻飞、额间Geass红光闪烁的绝代魔女。"
+      },
+      "identity": "反叛的鲁路修女主角 · 不老不死的Code持有者 · 灵魂共犯",
+      "tags": [
+        "反叛的鲁路修",
+        "C.C.",
+        "绿长直",
+        "不老不死",
+        "拘束服",
+        "披萨魔女"
+      ],
+      "bg_story": "二次元神作历史上无可争议的魔女之王。拥有不老不死之躯与赐予他人Geass力量的能力，经历了数百年的战乱、背叛与孤独，将自己的内心冰封在冷漠的面具之下。直到遇见了唯一的共犯，冰冷的心彻底被融化，甘愿背负一切罪孽与他同行至世界尽头。",
+      "palette": [
+        "#84cc16",
+        "#14532d",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "废墟清风 / 破晓晨曦",
+      "speech": "「无论世界如何看待我们，你和我都是背负一切的共犯……只要你呼唤我，我就会一直在。」",
+      "source": "谷口悟朗《反叛的鲁路修 / Code Geass》",
+      "traits": [
+        "immortal_witch",
+        "green_hair",
+        "yellow_eyes",
+        "straitjacket",
+        "geass"
+      ],
+      "accent_color": "#84cc16",
+      "bg_color": "#14532d",
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "geass_sigil"
+        ]
+      }
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "C.C.",
+        "CC",
+        "c.c.",
+        "c.c._(code_geass)",
+        "不老不死的魔女",
+        "披萨魔女",
+        "共犯"
+      ],
+      "animeStudio": "Sunrise",
+      "curatedArtistStyles": [
+        "Takahiro Kimura",
+        "CLAMP"
+      ],
+      "displayName": "C.C.",
+      "dna_lock": {
+        "avoid": [
+          "geass_sigil"
+        ],
+        "flexible": [],
+        "must": []
+      },
+      "exactPrefixes": [
+        "1girl, solo, c.c."
+      ],
+      "exactTokens": [
+        "c.c."
+      ],
+      "franchise": "Code Geass",
+      "id": "cc_code_geass",
+      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
+      "identityTokens": [
+        "c.c.",
+        "c.c._(code_geass)",
+        "green_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "golden_eyes",
+        "slender_waist",
+        "calm_expression",
+        "seductive_smile",
+        "code_geass"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "C.C.",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

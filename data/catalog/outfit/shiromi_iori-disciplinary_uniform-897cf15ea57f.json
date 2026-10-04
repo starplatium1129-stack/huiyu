@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/disciplinary_uniform",
+  "revision": 1,
+  "sortOrder": 513,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "default": true,
+      "id": "disciplinary_uniform",
+      "isDefault": true,
+      "name": "风纪突击队长制服",
+      "prose": "Gehenna Disciplinary Committee assault uniform with a black sleeveless cropped military jacket, red disciplinary armband, short black pleated miniskirt, garter belt with thigh-high black stockings, fingerless combat gloves, tactical harness, sniper rifle holster, and black combat boots",
+      "tokens": [
+        "military_uniform",
+        "black_jacket",
+        "crop_top",
+        "sleeveless",
+        "red_armband",
+        "armband",
+        "pleated_skirt",
+        "black_skirt",
+        "miniskirt",
+        "garter_straps",
+        "garter_belt",
+        "thighhighs",
+        "black_thighhighs",
+        "fingerless_gloves",
+        "combat_boots",
+        "sniper_rifle",
+        "gehenna"
+      ]
+    }
+  }
+}

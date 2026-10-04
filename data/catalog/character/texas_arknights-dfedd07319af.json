@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "texas_arknights",
+  "revision": 1,
+  "sortOrder": 74,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "texas_arknights",
+    "profile": {
+      "id": "texas_arknights",
+      "name": "德克萨斯",
+      "alias": [
+        "Texas",
+        "切利尼娜·德克萨斯",
+        "缄默德克萨斯",
+        "德狗"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-texas_arknights.png?v=5",
+        "alt": "德克萨斯 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "乌黑顺直长发 · 齐刘海",
+        "hair_color": "纯黑",
+        "eyes": "沉静琥珀褐瞳",
+        "hairstyle": "自然散落长黑发 · 黑色鲁珀狼耳与蓬松狼尾",
+        "uniform": "企鹅物流深蓝战术机能服 / 叙拉古黑帮西装大衣",
+        "expression": "冷酷寡言 · 沉静从容 · 眼神锐利",
+        "style": "stoic lupo courier assassin",
+        "signature": "黑发狼耳、源石光剑、冷峻信使与沉稳气场"
+      },
+      "personality": [
+        "寡言少语沉着冷静",
+        "刀法凌厉干脆利落",
+        "重情重义护卫伙伴",
+        "厌恶过去的黑帮纷争",
+        "习惯用巧克力棒代替吸烟"
+      ],
+      "likes": [
+        "各种口味的巧克力棒（Pocky）",
+        "在安全屋安静看书",
+        "企鹅物流平稳的运送任务",
+        "与能天使等人的日常"
+      ],
+      "classic_cg": {
+        "title": "剑雨落龙门",
+        "description": "龙门阴雨夜的摩天大楼天台上，少女嘴叼巧克力棒拔剑伫立，漫天金色光剑如暴雨般从天而降。"
+      },
+      "identity": {
+        "role": "企鹅物流王牌信使 / 德克萨斯家族末裔",
+        "age": "青年",
+        "occupation": "物流信使 / 近卫先锋干员",
+        "faction": "泰拉 · 龙门 / 企鹅物流 / 罗德岛"
+      },
+      "tags": [
+        "鲁珀狼耳",
+        "黑发长直",
+        "巧克力棒",
+        "企鹅物流",
+        "源石剑雨",
+        "冷酷信使"
+      ],
+      "bg_story": "德克萨斯（切利尼娜·德克萨斯）是《明日方舟》中企鹅物流的核心骨干，来自叙拉古曾经显赫一时的德克萨斯家族唯一幸存者。精通源石剑术与暗杀技巧，斩断过去后在龙门担任信使，以绝对的可靠与冷酷战力成为博士最信赖的前线搭档之一。",
+      "palette": [
+        "深蓝",
+        "纯黑",
+        "金黄"
+      ],
+      "weather": [
+        "龙门雨夜",
+        "叙拉古黄昏",
+        "冬日飞雪"
+      ],
+      "speech": "任务开始了。别离开我的视线范围，路上交给我解决就行。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "texas (arknights)",
+        "1girl",
+        "solo",
+        "lupo",
+        "wolf_ears",
+        "wolf_tail",
+        "black_hair",
+        "long_hair",
+        "brown_eyes",
+        "techwear",
+        "arknights"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "texas",
+        "texas_arknights",
+        "德克萨斯",
+        "德狗",
+        "企鹅物流",
+        "缄默德克萨斯",
+        "omertosa",
+        "texas the omertosa",
+        "arknights",
+        "texas (arknights)"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "企鹅物流信使 / 德克萨斯家族末裔；冷静沉稳、少言寡语，喜欢吃巧克力棒（Pocky），擅长使用源石剑雨技艺",
+        "research": "2026-08-31 调研（Danbooru texas_(arknights) 11000+ posts）",
+        "world": "泰拉（罗德岛 / 企鹅物流 / 叙拉古）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "displayName": "德克萨斯",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "texas (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "texas_arknights",
+      "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
+      "identityTokens": [
+        "texas (arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "wolf_ears",
+        "wolf_tail",
+        "amber_eyes",
+        "calm_expression",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Texas",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

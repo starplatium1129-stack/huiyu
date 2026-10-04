@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/street",
+  "revision": 1,
+  "sortOrder": 185,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "street",
+      "name": "街头风",
+      "prose": "a street-style casual outfit with a cropped jacket and sneakers",
+      "tokens": [
+        "casual_clothes",
+        "cropped_jacket",
+        "sneakers",
+        "crop_top",
+        "miniskirt"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

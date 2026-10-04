@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/wayfarer_wanderer",
+  "revision": 1,
+  "sortOrder": 306,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "id": "wayfarer_wanderer",
+      "name": "泰拉远行游历风衣",
+      "prose": "a long dark sage-green hooded travel trench coat with dust-proof shoulder guards over a charcoal ribbed turtleneck sweater, reinforced dark grey cargo pants tucked into brown leather hiking boots, twin swords strapped on her back and a metal canteen at her belt",
+      "tokens": [
+        "trench_coat",
+        "hood",
+        "turtleneck",
+        "sweater",
+        "cargo_pants",
+        "hiking_boots",
+        "sword_on_back",
+        "canteen"
+      ]
+    }
+  }
+}

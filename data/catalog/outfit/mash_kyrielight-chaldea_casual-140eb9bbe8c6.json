@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/chaldea_casual",
+  "revision": 1,
+  "sortOrder": 106,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "chaldea_casual",
+      "name": "迦勒底日常便服",
+      "prose": "her Chaldea casual outfit, a black collared dress with a grey open jacket, red necktie and black pantyhose, with glasses",
+      "tokens": [
+        "glasses",
+        "red_necktie",
+        "black_dress",
+        "black_pantyhose",
+        "grey_jacket",
+        "open_jacket",
+        "collared_dress"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

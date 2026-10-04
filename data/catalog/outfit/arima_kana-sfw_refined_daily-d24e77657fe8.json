@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 537,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "isDefault": false,
+      "isNsfw": false,
+      "name": "格纹短外套",
+      "prose": "a rust-brown checked jacket over a cream blouse, navy wide-leg trousers and a soft brown beret",
+      "tokens": [
+        "checkered_jacket",
+        "cream_blouse",
+        "wide_leg_pants",
+        "brown_beret"
+      ]
+    }
+  }
+}

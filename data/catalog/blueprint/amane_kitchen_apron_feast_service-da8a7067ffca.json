@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "amane_kitchen_apron_feast_service",
+  "revision": 1,
+  "sortOrder": 1180,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_kitchen_apron_feast_service",
+    "title": "周防天音 · 美浜厨房的爱心大餐",
+    "category": "居家温情",
+    "characterId": "suou_amane",
+    "outfitId": "apron_casual",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【周防天音 · 美浜厨房的爱心大餐】弥漫着浓郁炸猪排与咖喱香气的美浜学园和式大厨房内，天音系着粉色围裙，正单手用汤勺盛起一勺热腾腾的秘制咖喱。她俯身探向坐在吧台前的雄二，领口微敞露出深邃诱人的事业线，一只手轻掩小口吹凉，深蓝的眼眸满是宠溺与爱意——「来，雄二，张嘴说‘啊——’♪ 味道怎么样？今天可是特意为你加了双份苹果和蜂蜜哦！」",
+    "location": "美浜学园公用大厨房木质吧台前",
+    "action": "系着粉色围裙俯身吹凉汤勺喂食，敞开领口露出丰满双峰，眼神极尽温柔宠溺",
+    "timeOfDay": "傍晚",
+    "lighting": "厨房暖橙色吊灯与锅中升腾的热气弥漫出的温馨光泽",
+    "camera": "medium close-up, first-person pov, eye-level intimacy",
+    "mood": "温馨宠溺",
+    "sceneTags": [
+      "kitchen",
+      "apron",
+      "curry",
+      "spoon",
+      "feeding",
+      "cleavage",
+      "hair_rings",
+      "gentle_smile"
+    ],
+    "promptProse": "Leaning across the warm wooden kitchen counter in a soft pink apron, Amane gently blows on a steaming spoonful of homemade curry to feed her companion. The cozy incandescent glow highlights her generous cleavage and deeply affectionate sapphire eyes.",
+    "promptTokens": [
+      "traditional_kitchen",
+      "maid_apron",
+      "holding_spoon",
+      "serving_food",
+      "cleavage",
+      "hair_rings",
+      "gentle_smile",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

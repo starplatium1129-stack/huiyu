@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "makinohara_shouko_sfw_b8_07",
+  "revision": 1,
+  "sortOrder": 72,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "makinohara_shouko_sfw_b8_07",
+    "title": "牧之原翔子 · 厨房里系好的围裙",
+    "category": "日常羁绊",
+    "characterId": "makinohara_shouko",
+    "outfitId": "sfw_kitchen",
+    "description": "【梓川家厨房·清晨】翔子把长发束成侧辫，穿着素雅围裙准备便当，先把每一块水果摆成整齐的小花，再把写好祝福的便签压在盒盖下。",
+    "location": "梓川家厨房",
+    "action": "准备便当把水果摆成小花，将祝福便签压在盒盖下",
+    "timeOfDay": "清晨",
+    "lighting": "soft morning light over a clean counter",
+    "camera": "medium shot, vertical framing",
+    "mood": "把照料写进每一个便当细节",
+    "sceneTags": [
+      "kitchen",
+      "lunch_box",
+      "fruit_flower",
+      "apron",
+      "side_braid",
+      "handwritten_note",
+      "calm_smile",
+      "morning_light",
+      "afternoon_light"
+    ],
+    "promptProse": "Shouko Makinohara from Rascal Does Not Dream of Bunny Girl Senpai wears a cream blouse, long blue skirt and plain cotton apron, with her hair gathered into a braid. She ties her side braid before arranging fruit into a small flower inside the lunch box. She presses a handwritten blessing beneath the lid and looks toward the viewer with a calm smile, making the quiet kitchen feel like a promise carried through the day. soft morning light over a clean counter.",
+    "promptTokens": [
+      "kitchen",
+      "lunch_box",
+      "fruit_flower",
+      "apron",
+      "side_braid",
+      "handwritten_note",
+      "calm_smile",
+      "morning_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

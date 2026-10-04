@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "elaina/casual",
+  "revision": 1,
+  "sortOrder": 223,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "casual",
+      "name": "便服",
+      "prose": "a comfortable everyday dress in soft colors",
+      "tokens": [
+        "casual_clothes",
+        "dress",
+        "cardigan"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

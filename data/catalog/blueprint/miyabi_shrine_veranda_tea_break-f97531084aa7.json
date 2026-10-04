@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "miyabi_shrine_veranda_tea_break",
+  "revision": 1,
+  "sortOrder": 1069,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端庄跪坐在缘侧捧茶碗啜饮，微风吹拂巫女大袖与狐耳，眼神沉静平和",
+    "camera": "medium shot, eye level, serene composition",
+    "category": "日常雅韵",
+    "characterId": "hoshimi_miyabi",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【星见雅 · 神社回廊的静心抹茶】古老重樱神社的朱红木质缘侧上，初秋微风吹落数片金黄银杏。雅身穿宽袍大袖的传统雪白红裙巫女服，端庄地并拢双膝跪坐。她双手捧着细腻碧绿的茶碗细细啜饮，头顶的毛茸茸白狐耳偶尔轻轻抖动捕捉风声，在喧嚣的都会生活之外觅得一方极致宁静的心境。",
+    "id": "miyabi_shrine_veranda_tea_break",
+    "lighting": "庭院枫树间漏下的斑驳明澈晨光与朱红回廊反光",
+    "location": "古老神社木质回廊庭院边",
+    "mood": "静谧清幽",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "traditional_miko",
+    "promptProse": "Sitting gracefully in seiza posture on a polished wooden shrine veranda, Miyabi sips ceremonial matcha from an earthy ceramic bowl in her flowing white and vermilion miko robes. Gentle morning sunbeams illuminate falling golden ginkgo leaves and her soft twitching fox ears.",
+    "promptTokens": [
+      "shinto_shrine",
+      "wooden_veranda",
+      "miko_robes",
+      "drinking_tea",
+      "seiza",
+      "ginkgo_leaves",
+      "fox_ears",
+      "fox_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "shrine",
+      "veranda",
+      "engawa",
+      "miko",
+      "tea",
+      "drinking",
+      "fox_ears",
+      "fox_tail",
+      "autumn_leaves"
+    ],
+    "timeOfDay": "上午",
+    "title": "星见雅 · 神社回廊的静心抹茶"
+  }
+}

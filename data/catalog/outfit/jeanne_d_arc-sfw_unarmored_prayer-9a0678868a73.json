@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_d_arc/sfw_unarmored_prayer",
+  "revision": 1,
+  "sortOrder": 130,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_d_arc",
+    "outfit": {
+      "id": "sfw_unarmored_prayer",
+      "name": "卸甲素白祈祷裙",
+      "prose": "a plain opaque white long-sleeved prayer dress, with bare hands and golden hair in a long braid",
+      "tokens": [
+        "plain_white_dress",
+        "long_sleeves",
+        "braid"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc167",
+  "revision": 1,
+  "sortOrder": 164,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the messy sofa of the safehouse, Shiki Natsume's black tactical vest has been torn wide open exposing her flushed cleavage and smooth midriff while both of her arms are bound above her head with black tactical straps; her bare legs pressed tightly together, she pants heavily with the tear mole trembling and glares watery dead-hard eyes at the viewer.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc167",
+    "lighting": "局部强阴影光",
+    "location": "安全屋沙发",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, unbound_wrists, casual_clothes, free_wrists, hands_merely_clasped, hands_behind_head, invisible_restraint, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, blush, bodysuit, unzipped, cleavage, bare_legs, bar, sofa, lying, dimly_lit, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, backlight, rim_light, detailed_background, cinematic_lighting",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 安全屋软缚绝对臣服】因为在训练里对你\"出言不逊\"，高冷的特工少女在安全屋里迎来了她的惩罚。此刻她被用黑色的战术束带半固定在凌乱的沙发上，双手被缚至头顶。她身上的黑色战术背心已经被完全扯开，露出了大片极具肉感、泛着潮红的细腻肌肤。她光洁的长腿紧紧并拢，眼角的泪痣因为极度的羞嗔而微微颤动。她一边急促地娇喘，一边用充满水汽的死硬眼神狠狠剜着你——「哈？！你这个变态长官...居然用这种下三滥的手段...等我解开约束，绝对要把你秘密处决...唔嗯...」",
+    "storyJa": "【夏目・セーフハウスソフトボンデージ絶対降伏】訓練中にあなたに「はあ？　この変態店長、そんな卑怯な手を使うなんて……自由になったら、絶対に秘密裏に処分してあげる。」",
+    "tags": [
+      "mole_under_eye",
+      "tactical_vest",
+      "torn_vest",
+      "bound_arms",
+      "arms_above_head",
+      "soft_bondage",
+      "sofa",
+      "safehouse",
+      "bare_legs",
+      "full_body",
+      "heels"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "惩罚契约：被束缚的骄傲特工",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

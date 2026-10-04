@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc086",
+  "revision": 1,
+  "sortOrder": 84,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At a rain-washed crosswalk under a full rainbow after a summer downpour, Ayachi Nene in a soft grey sweater with navy pleated miniskirt and silky white thighhighs stands holding a transparent umbrella, laughing with joy as she grasps the viewer's hand, cool after-rain light with puddle reflections.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "全身远景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "惊喜",
+    "id": "sc086",
+    "lighting": "柔和光",
+    "location": "路口",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, raincoat, school_uniform",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bandeau_bikini, strapless_bikini, white_translucent_cardigan, wet_clothes, clinging_fabric, bare_shoulders, bare_midriff, bare_legs, holding_umbrella, standing_in_puddle, reflection, summer_rain, clearing_sky, sunlight, water_droplets, smiling, blush, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 雨停以后抬头】夏日阵雨刚停，宁宁撑着透明伞站在路口，忽然发现云层间出现完整彩虹。她兴奋地回头叫你，差点踩进积水，又被你及时拉住。她顺势握紧你的手，仰头笑起来——「还好没有急着回去。坏天气结束以后，真的会有值得等待的东西呢。」",
+    "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
+    "tags": [
+      "rainbow",
+      "hair_ribbon",
+      "grey_sweater",
+      "sheer_white_thighhigh_stockings",
+      "crosswalk",
+      "full_body",
+      "mary_jane",
+      "after_rain",
+      "transparent_umbrella",
+      "holding_hands",
+      "laughing"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "雨停以后抬头",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "彩虹"
+  }
+}

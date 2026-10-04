@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/casual_white_summer_dress",
+  "revision": 1,
+  "sortOrder": 759,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "id": "casual_white_summer_dress",
+      "name": "夏日草帽纯白无袖连身裙",
+      "prose": "a simple and elegant pure white cotton summer dress with lace hem, a wide-brim straw hat tied with a blue ribbon over her blonde braids, and leather sandals",
+      "tokens": [
+        "white_dress",
+        "sundress",
+        "straw_hat",
+        "sunhat",
+        "bare_arms",
+        "mechanical_hands",
+        "sandals"
+      ]
+    }
+  }
+}

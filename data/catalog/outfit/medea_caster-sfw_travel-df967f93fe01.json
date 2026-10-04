@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "medea_caster/sfw_travel",
+  "revision": 1,
+  "sortOrder": 171,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medea_caster",
+    "outfit": {
+      "id": "sfw_travel",
+      "name": "商店街兜帽长袍",
+      "prose": "a dark purple hooded robe over a high-collared inner dress and boots",
+      "tokens": [
+        "purple_robe",
+        "hood",
+        "high_collar",
+        "inner_dress",
+        "boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

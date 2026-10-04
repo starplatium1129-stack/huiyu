@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_d_arc/casual_french_civilian",
+  "revision": 1,
+  "sortOrder": 126,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_d_arc",
+    "outfit": {
+      "id": "casual_french_civilian",
+      "name": "奥尔良乡野白裙私服",
+      "prose": "a rustic French countryside outfit: a soft white blouse with lace collar, a long royal-blue skirt, a woven straw hat tied with a ribbon, and simple leather walking shoes, with golden hair in a long braid",
+      "tokens": [
+        "white_blouse",
+        "lace_trim",
+        "long_skirt",
+        "blue_skirt",
+        "straw_hat",
+        "casual_wear",
+        "sun_hat",
+        "braid"
+      ]
+    }
+  }
+}

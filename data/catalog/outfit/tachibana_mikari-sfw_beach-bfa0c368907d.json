@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/sfw_beach",
+  "revision": 1,
+  "sortOrder": 965,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "橘美花莉·海滨泳装",
+      "prose": "a metallic gold swimsuit with a sheer black beach wrap, small wing accessories and a themed iced drink",
+      "tokens": [
+        "gold_swimsuit",
+        "metallic_swimsuit",
+        "sheer_beach_wrap",
+        "wing_accessories",
+        "themed_iced_drink"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

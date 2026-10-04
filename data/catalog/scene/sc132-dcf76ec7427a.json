@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc132",
+  "revision": 1,
+  "sortOrder": 130,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "By the moonlit private indoor pool, Shiki Natsume sits on the pool edge in a tiny black string bikini whose top strings have come completely undone, the loose bottom hanging at her waist as she covers her bare chest with both hands in deep shame, head turned away with the tear mole beaded with pool water under cool rippling light.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "主观水平视线特写",
+    "category": "日常/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "极度羞耻防线崩溃",
+    "id": "sc132",
+    "lighting": "清冷月光与水面折射弱光",
+    "location": "别墅室内泳池边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, one-piece_swimsuit",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, criss-cross_bikini, black_bikini_unfastened, exposed_breasts, bare_breasts, nipples, areola, side-tie_panties_untied, exposed_pussy, sitting_at_pool_edge, water_lapping_thighs, wet_skin, moonlight_reflecting_in_water, heavy_blush, covering_face_shyly, night_pool, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 绑带比基尼滑落极致反差】夏夜寂静无人的私人别墅室内泳池。水波荡漾倒映着落地窗外的满天星斗。夏目今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。因为在水里的激烈打闹，泳衣的系带彻底滑落断开，整件比基尼松垮垮地悬挂在腰际，胸前饱满性感的双峰和光洁的小腹完全暴露在空气之中。她浑身挂满晶莹剔透的水珠，双手羞耻地护在胸前，眼角的泪痣挂着池水，偏过头发出羞耻至极的呻吟——「哈？！你这家伙...绝对是算好了的吧？不准看...再看把你淹死哦，笨蛋...」",
+    "storyJa": "【夏目・ストラップ付きビキニをずり下げて究極のコントラストを演出】夏の夜、静かなプライベートヴィラの屋内プール。床から天井まで届く窓の外には、水の波紋が空の星を映しています。今夜の夏目は、あなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。激しい水遊びのせいで、水着の紐が完全にずれて外れ、ビキニ全体が腰にぶら下がってしまった。豊満でセクシーな胸元と滑らかなお腹が完全に露出していた。全身が透き通った水滴で覆われ、両手で胸を恥ずかしそうに守り、プールの水が目尻に垂れ、顔を向けて恥ずかしいうめき声を上げた。――「はあ？　あなた、絶対に時間を計ってたでしょ。見ちゃだめ……これ以上見たら、水に沈めるからね。ばか。」",
+    "tags": [
+      "mole_under_eye",
+      "black_bikini",
+      "untied_bikini",
+      "strings_undone",
+      "hands_covering_chest",
+      "bare_breasts",
+      "bare_legs",
+      "indoor_pool",
+      "full_body",
+      "barefoot",
+      "moonlight"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "月光泳池的脱落契约",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "水汽氤氲"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc090",
+  "revision": 1,
+  "sortOrder": 88,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot under blooming cherry blossom trees in the park, she turns back over her shoulder with a soft, reassuring smile, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "温柔",
+    "id": "sc090",
+    "lighting": "晨光",
+    "location": "樱花道",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, standing, finger on lips, shushing, title",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, (crouching alone in extreme foreground:1.5), (right index finger touching the ground and tracing one heart groove through fallen pink cherry petals:1.8), hand and petal heart clearly visible, empty cherry tree path, spring morning, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "春",
+    "story": "【宁宁 · 樱吹雪中的名字】春日清晨的樱花道空无一人，宁宁站在花瓣形成的雪幕里，手指轻轻按住发带。你叫她名字时，她越过漫天粉白转身，先是惊讶，随后露出安心而温柔的笑——「原来被重要的人叫住，会觉得自己的名字也变得特别。再叫一次，可以吗？」",
+    "storyJa": "【寧々・桜吹雪の名前】春の早朝の桜並木は空いていました。寧々は花びらでできた雪のカーテンの中に立っており、ヘアバンドを指でそっと押さえていました。あなたが彼女の名前を呼ぶと、彼女はピンクの空の向こうを振り向いた。彼女は最初は驚いていましたが、その後安心したような優しい笑顔を見せてくれました。――「大切な人に呼び止められると、自分の名前まで特別になるんですね。もう一度、呼んでもらえますか？」",
+    "tags": [
+      "hair_ribbon",
+      "cherry_blossoms",
+      "petals",
+      "looking_back",
+      "gentle_smile",
+      "spring_morning",
+      "windblown_hair",
+      "morning",
+      "clear_sky",
+      "morning_light",
+      "soft_eyes",
+      "park",
+      "medium_shot",
+      "standing",
+      "touching_hair_ribbon"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "樱吹雪中的名字",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 741,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, slender and regal body with silver hair brushing her waist, perky natural breasts with delicate pink nipples, slender waist, and smooth fair skin",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc085",
+  "revision": 1,
+  "sortOrder": 83,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting in a cat cafe with a cat sleeping on her lap, Shiki Natsume in a casual grey sweater with navy pleated miniskirt and glossy black tights sits petting the cat, gentle composed blush under warm cat cafe light.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "半身中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "温柔",
+    "id": "sc085",
+    "lighting": "窗光",
+    "location": "猫咖啡",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dog, outdoor",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_sweater, grey_sweater, pleated_skirt, sheer_black_tights, loafers, sitting_at_cafe_table, sleeping_calico_cat_on_lap, gently_petting_cat, natsume_flustered_blush, embarrassed_glance_at_viewer, cafe_interior, warm_afternoon_sunlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 猫咪替她说出的喜欢】冬日下午的猫咖里，一只猫蜷在夏目腿上睡得很熟。她表面嫌弃无法起身，手指却一直轻轻梳理猫毛。你说她其实很喜欢可爱的东西，她抬眼瞪你，又把旁边的位置让出来——「是它自己过来的。你如果也想坐，就安静一点……别把它吵醒。」",
+    "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
+    "tags": [
+      "mole_under_eye",
+      "grey_sweater",
+      "sheer_black_tights",
+      "cat_cafe",
+      "full_body",
+      "ankle_boots",
+      "cat"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "猫咪替她说出的喜欢",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

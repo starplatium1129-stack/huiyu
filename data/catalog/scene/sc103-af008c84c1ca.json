@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc103",
+  "revision": 1,
+  "sortOrder": 101,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "近景特写",
+    "category": "日常/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc103",
+    "lighting": "柔和微弱床头灯",
+    "location": "凌乱卧室床榻",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, bra, panties, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "(POV lap straddle:1.55), thighs around viewer waist, viewer hands on her hips, close body contact, 1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, nightgown, off_shoulder, no_bra, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, sweat, bedroom, night, dim_lighting, sensual, warm_lighting, rainstorm_outside, stormy_night, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 居家单肩滑落真空】深夜暴雨倾盆的温馨卧室。宁宁在酒精的微醺下彻底向你敞开了心扉。她身上仅仅穿着一件极薄的粉色莫代尔睡裙，里面完全是真空状态。她跨坐在你身上，睡裙修长的吊带在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白。她手里还抓着你汗湿的衣角，满脸香汗与极致的红晕交织，头顶的呆毛软瘫成完美的心形——「柊史...不要一直盯着肩膀看啦...今晚的宁宁...已经全部是你的了哦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・おうちで片肩ずり掃除機】深夜に大雨が降りしきる、居心地の良い寝室。寧々はお酒の影響であなたに完全に心を開いてしまいました。彼女は非常に薄いピンクのモダールナイトドレスを着ているだけで、中は完全に真空でした。彼女はあなたにまたがって座ると、ナイトガウンの細いスリングが片側の腕まで完全に滑り落ち、丸い肩とふっくらとしたセクシーな白い半分が露出します。彼女はまだあなたの服の汗ばんだ裾を手に持っており、顔は汗と極度の赤面で覆われ、頭のアホ毛は柔らかく、完璧なハートの形に沈んでいます。――「柊史……肩ばかり見ないでください。今夜の寧々は……あなたのそばにいるって決めたんですから。」",
+    "tags": [
+      "adult",
+      "nightgown",
+      "off_shoulder",
+      "no_bra",
+      "straddling_viewer",
+      "sitting_on_lap",
+      "bare_legs",
+      "heavy_blush",
+      "sweat",
+      "hair_ribbon",
+      "ahoge",
+      "bedroom",
+      "night",
+      "dim_lighting",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "睡衣滑落的极乐失控",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "weather": "窗外暴雨狂轰"
+  }
+}

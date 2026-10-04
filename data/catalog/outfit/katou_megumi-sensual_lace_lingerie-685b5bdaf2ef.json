@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 796,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "纯白纯棉蕾丝内衣",
+      "prose": "a delicate pure white cotton lingerie set trimmed with soft floral lace: a soft-cup bra framing her modest breasts, matching lace-trimmed hipster panties, and a pale pink chiffon robe slipping off both shoulders",
+      "tokens": [
+        "white_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "cotton_panties",
+        "chiffon_robe",
+        "off_shoulder",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

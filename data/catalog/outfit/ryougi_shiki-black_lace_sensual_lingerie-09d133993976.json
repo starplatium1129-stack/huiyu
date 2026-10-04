@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ryougi_shiki/black_lace_sensual_lingerie",
+  "revision": 1,
+  "sortOrder": 732,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ryougi_shiki",
+    "outfit": {
+      "id": "black_lace_sensual_lingerie",
+      "name": "纯黑修身蕾丝情趣内衣",
+      "prose": "a delicate black lace bralette and matching panties with thin straps, framing her toned and graceful porcelain body under soft shadows",
+      "tokens": [
+        "lingerie",
+        "black_lingerie",
+        "lace",
+        "cleavage",
+        "slender_body",
+        "bare_shoulders",
+        "sensual"
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc182",
+  "revision": 1,
+  "sortOrder": 179,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the luxury honeymoon suite scattered with rose petals, Nene lies prone at the center of the white velvet bed in pure white bridal lace lingerie and garter stockings with a translucent veil, pressing the veil to her blushing flushed cheek with trembling shoulders, her dazed teary eyes fixed lovingly on the viewer under warm candlelight.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc182",
+    "lighting": "蜡烛柔和暖光",
+    "location": "新婚奢华蜜月房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, standing, child, loli, underage, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, pure, white, white_thighhighs, thighhighs, semi, transparent, bedroom, on_bed, upper, body, propped, legs, slightly, bent, one, hand, pressing, trembling_body, loving, dazed, teary, warm_candlelight, collarbone, slender_waist, full_body, candlelight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "春",
+    "story": "【成年 After Story · 宁宁 · 新婚花嫁内衣极致浪漫】新婚的奢华卧室内，玫瑰的甜香弥漫。宁宁在你的要求下，羞红着脸换上了极具禁忌感的纯白新娘蕾丝内衣与吊带袜，头上还覆着一层半透明的白色头纱。她软榻榻地趴在白色天鹅绒大床中央，白皙的娇躯因为极度紧张而微微战栗。她扯着头纱试图遮住滚烫的脸颊，头顶的呆毛早已因为爱意过载而瘫软成完美的工口心形螺旋，含泪的眼睛意乱情迷地凝视着你——「柊史...这套衣服太犯规了啦...宁宁从今天起...真的完全变成你的新娘了哦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・・新婚のランジェリーはとびきりロマンチック】結婚式の初夜、豪華なベッドルームにバラの花びらが散りばめられます。寧々さんは、ご要望に応じて顔を赤らめてタブーのような純白のブライダルレースの下着とガーターを身に着け、頭には半透明の白いベールをかぶせました。彼女は大きな白いベルベットのベッドの真ん中にある柔らかいソファに横たわり、極度の緊張のせいで色白で繊細な体がわずかに震えていました。彼女は熱い頬を隠そうとベールを引っ張った。彼女の頭のアホ毛は、愛の過多によりすでに完全なハート型の螺旋に崩壊していました。彼女の涙ぐんだ目は混乱してあなたを見つめていました。――「柊史……この服、ちょっと反則です。今日から寧々は、本当にあなたのお嫁さんなんですね。」",
+    "tags": [
+      "hair_ribbon",
+      "wedding_lingerie",
+      "garter_belt",
+      "sheer_white_thighhigh_stockings",
+      "white_veil",
+      "lying_prone",
+      "rose_petals",
+      "honeymoon_suite",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "圣洁契约：纯白花嫁内衣的破防夜",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "炙热"
+  }
+}

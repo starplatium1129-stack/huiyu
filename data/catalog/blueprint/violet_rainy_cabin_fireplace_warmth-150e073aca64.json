@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "violet_rainy_cabin_fireplace_warmth",
+  "revision": 1,
+  "sortOrder": 1392,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
+    "adult": false,
+    "animaStyleHint": "anime_warm_domestic",
+    "camera": "close-up intimate angle, fireplace glow reflections, cocoon of warmth, storm outside",
+    "category": "深情依恋",
+    "characterId": "violet_evergarden",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "cuddling",
+      "fireplace"
+    ],
+    "description": "【暴风雨夜的松木山间小屋】窗外雷雨交加，而简朴的小木屋内，红泥壁炉里的松木柴火正毕剥燃烧，暖意融融。薇尔莉特身穿纯白细带真丝睡裙，身上裹着一条厚厚的红白羊毛毯。她紧贴在你的怀里，微凉的机械手掌轻轻覆在你的胸膛上，感受着你的体温，翠眸中盈满了对归宿的安详眷恋。",
+    "id": "violet_rainy_cabin_fireplace_warmth",
+    "kreaStyleHint": "anime_warm_domestic",
+    "lighting": "壁炉柴火跳跃激荡出的深红与赤橙暖芒，勾勒出丝绸与毛毯的柔和轮廓",
+    "location": "山顶避雨的原始松木小木屋壁炉前",
+    "mood": "安心避风港、至死不渝的依恋",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy"
+    ],
+    "outfitId": "charming_nightgown_slip",
+    "promptProse": "Violet Evergarden curls into your embrace before a crackling cabin fireplace while torrential rain beats against the dark wooden shutters. A thick wool blanket covers her white silk nightgown, and her cool mechanical palm rests gently upon your chest to feel your heartbeat. Flickering orange hearthfire warms the quiet two-person shelter.",
+    "promptTokens": [
+      "cabin",
+      "fireplace",
+      "cuddling",
+      "blanket",
+      "nightgown",
+      "bare_shoulders",
+      "mechanical_hands",
+      "rain",
+      "night",
+      "close-up",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "log_cabin",
+      "fireplace",
+      "blanket",
+      "cuddling",
+      "rain_outside",
+      "nightgown",
+      "bare_shoulders",
+      "mechanical_hands"
+    ],
+    "timeOfDay": "暴雨夜",
+    "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎·「被您拥抱着的时候，身体会变得好暖」"
+  }
+}

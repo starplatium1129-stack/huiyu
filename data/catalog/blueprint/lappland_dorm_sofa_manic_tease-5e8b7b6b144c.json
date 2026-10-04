@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "lappland_dorm_sofa_manic_tease",
+  "revision": 1,
+  "sortOrder": 675,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "横躺倒挂在天鹅绒沙发上，长发垂地，单手抛接小刀，神情玩味危险",
+    "camera": "medium shot, dynamic tilted angle",
+    "category": "基地日常",
+    "characterId": "lappland_arknights",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【拉普兰德 · 休息室沙发上的危险挑逗】罗德岛医疗干员休息室内，拉普兰德整个人倒挂着横躺在天鹅绒沙发扶手上，银白长发如瀑布般垂落至地面。她指尖优雅地抛玩着一把锋利的精钢短匕，微微仰起脖颈注视着推门而入的博士，眼神中带着猫捉老鼠般的危险戏谑——「哎呀，博士，你迟到了整整三分二十秒哦。要怎么补偿我呢……？」",
+    "id": "lappland_dorm_sofa_manic_tease",
+    "lighting": "室内昏黄壁灯与落地窗外月光",
+    "location": "罗德岛生活区复古休息室",
+    "mood": "戏谑危险",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "casual_leather",
+    "promptProse": "Inside a dimly lit private lounge aboard Rhodes Island late at night, Lappland lounges upside down across a plush velvet armchair with chaotic elegance. Her cascade of layered white hair spills toward the wooden floor as she playfully tosses a gleaming silver combat knife between her gloved fingers. Glimmers of moonlight from the high transom window illuminate her pale collarbone, sharp lupo ears, and the dangerously alluring smirk on her lips. A creatively tilted medium shot captures her capricious, untamed nature with sublime visual novel storytelling flair.",
+    "promptTokens": [
+      "lounge",
+      "couch",
+      "playing_with_knife",
+      "dagger",
+      "lying_upside_down",
+      "messy_hair",
+      "hair_down",
+      "manic_smile",
+      "wolf_ears",
+      "medium_shot",
+      "dynamic_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "lounge",
+      "couch",
+      "playing_with_knife",
+      "dagger",
+      "lying_upside_down",
+      "messy_hair",
+      "hair_down",
+      "manic_smile",
+      "wolf_ears"
+    ],
+    "timeOfDay": "深夜",
+    "title": "拉普兰德 · 休息室沙发上的危险挑逗"
+  }
+}

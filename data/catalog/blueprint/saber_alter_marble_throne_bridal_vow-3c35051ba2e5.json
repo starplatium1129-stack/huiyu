@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_marble_throne_bridal_vow",
+  "revision": 1,
+  "sortOrder": 226,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_marble_throne_bridal_vow",
+    "title": "黑呆 · 纯白圣座的暴君新娘誓约",
+    "category": "纯白誓约",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 纯白圣座的暴君新娘誓约】古老辉煌的纯白大理石圣殿内，漆黑的魔力彻底被圣洁的誓约驱散。阿尔托莉雅·Alter身披一袭剪裁庄重的露肩哥特纯白婚纱与及地蕾丝长头纱，手中握着一束深红色的黑天鹅绒玫瑰。暗金色的眼眸中第一次褪去了所有的残虐与冷漠，眼底泛着泪光凝望着你，嘴角勾起霸道的幸福浅笑——「本王已接受你的求婚。从今天起，你的生命、你的灵魂与你的爱……全都被我一人所征服占有。」",
+    "location": "纯白大理石圣殿中央高耸王座圣坛前",
+    "action": "身着露肩纯白哥特婚纱手捧红黑玫瑰，眼神霸道而热泪盈眶，宣布主权契约",
+    "timeOfDay": "正午圣光",
+    "lighting": "高耸穹顶投射下来的耀眼纯净白色天光",
+    "camera": "full-body shot, white gown and long veil before marble throne",
+    "mood": "霸道神圣",
+    "sceneTags": [
+      "marble_throne",
+      "white_bridal_gown",
+      "lace_veil",
+      "crimson_rose_bouquet",
+      "both_hands",
+      "proud_smile",
+      "golden_eyes",
+      "daylight",
+      "full_body"
+    ],
+    "promptProse": "Before the white marble throne, Saber Alter holds a bouquet of dark crimson roses in both hands. An opaque white gothic bridal gown and long lace veil replace the black evening dress, while her blonde hair remains in a neat braided bun beneath the veil. Her golden eyes glisten as a proud smile softens her reserved expression. High windows cast pale daylight across the gown’s folds and the stone floor. Frame the complete formal silhouette, bouquet and trailing veil together, keeping the moment ceremonial and nonsexual. No lettering.",
+    "promptTokens": [
+      "marble_throne",
+      "white_bridal_gown",
+      "lace_veil",
+      "crimson_rose_bouquet",
+      "both_hands",
+      "proud_smile",
+      "golden_eyes",
+      "daylight",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_white_bridal",
+    "coverageTags": [
+      "bridal",
+      "vow",
+      "tyrant"
+    ]
+  }
+}

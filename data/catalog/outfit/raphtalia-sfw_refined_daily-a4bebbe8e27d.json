@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 888,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "青绿市集便装",
+      "prose": "a teal long-sleeved tunic, a cream waistcoat, brown straight trousers and sturdy lace-up boots",
+      "tokens": [
+        "teal_tunic",
+        "cream_vest",
+        "brown_pants",
+        "boots"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

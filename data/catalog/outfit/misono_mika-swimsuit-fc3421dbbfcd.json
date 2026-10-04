@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "misono_mika/swimsuit",
+  "revision": 1,
+  "sortOrder": 485,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "misono_mika",
+    "outfit": {
+      "default": false,
+      "id": "swimsuit",
+      "isDefault": false,
+      "name": "夏日泳装",
+      "prose": "a charming white and soft pink frilled two-piece bikini with a sheer pastel pareo wrap, sun visor hat, tropical seaside resort atmosphere",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "white_swimsuit",
+        "pink_swimsuit",
+        "frills",
+        "pareo"
+      ]
+    }
+  }
+}

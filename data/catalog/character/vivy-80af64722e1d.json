@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "vivy",
+  "revision": 1,
+  "sortOrder": 153,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "vivy",
+    "profile": {
+      "id": "vivy",
+      "name": "Vivy",
+      "alias": [
+        "Vivy",
+        "Vivy"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-vivy.png?v=50bfbc472ac9",
+        "alt": "Vivy · 无人小舞台的每日首唱场景样张"
+      },
+      "visual_dna": {
+        "signature": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+        "hair": "blue_hair, long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "白蓝舞台端庄长袖装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "认真履行歌唱的使命，愿意反复练习细节",
+        "以看似笨拙的方式理解人的感情",
+        "重视承诺，对微小的求助也会给予实际回应"
+      ],
+      "likes": [
+        "唱歌",
+        "整理演出与练习记录",
+        "照顾身边需要帮助的小生命"
+      ],
+      "classic_cg": {
+        "title": "Vivy · 无人小舞台的每日首唱",
+        "description": "游乐园角落的小舞台，观众席空空荡荡，她依然端正地站到定点、微笑、开唱；晨光落在白靴上——「用歌声让大家幸福」从不要求观众数量。"
+      },
+      "identity": "Vivy: Fluorite Eye's Song · Vivy",
+      "tags": [
+        "Vivy",
+        "Vivy—萤石眼之歌—",
+        "日常"
+      ],
+      "bg_story": "以歌声传达幸福的AI歌姬，重视每一场演出与每一个约定。蓝色长发、蓝瞳和端正姿态保持一致，接口配件随舞台服装登记。",
+      "palette": [
+        "#8fbad2",
+        "#282532"
+      ],
+      "source": "Vivy: Fluorite Eye's Song",
+      "speech": "今天，我也会认真唱好这首歌。",
+      "traits": [
+        "vivy",
+        "vivy:_fluorite_eye's_song",
+        "blue_hair",
+        "long_hair",
+        "ahoge"
+      ],
+      "accent_color": "#8fbad2",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "vivy",
+      "displayName": "Vivy",
+      "originalName": "Vivy",
+      "franchise": "Vivy: Fluorite Eye's Song",
+      "aliases": [
+        "Vivy",
+        "Vivy"
+      ],
+      "identityProse": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+      "identityTokens": [
+        "vivy",
+        "vivy:_fluorite_eye's_song",
+        "blue_hair",
+        "long_hair",
+        "ahoge",
+        "long_sidelocks",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "vivy"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, vivy"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

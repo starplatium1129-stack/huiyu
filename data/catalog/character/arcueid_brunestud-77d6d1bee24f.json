@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "arcueid_brunestud",
+  "revision": 1,
+  "sortOrder": 103,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "arcueid_brunestud",
+    "profile": {
+      "id": "arcueid_brunestud",
+      "name": "爱尔奎特·布伦史塔德",
+      "alias": [
+        "Arcueid Brunestud",
+        "爱尔奎特",
+        "真祖白姬",
+        "纯白吸血姬",
+        "月姬"
+      ],
+      "type": "popular",
+      "icon": "🌕",
+      "portrait": {
+        "image": "../assets/characters/popular-arcueid_brunestud.png?v=1",
+        "alt": "爱尔奎特·布伦史塔德 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "齐颈柔顺金发 · 俏皮短刘海",
+        "hair_color": "浅金 / 金黄",
+        "eyes": "璀璨绯红眼眸 · 红宝石光泽",
+        "hairstyle": "及颈层次短发 · 随性自然",
+        "uniform": "经典白色高领长袖毛衣 · 紫色及踝长裙",
+        "expression": "天真灿烂 · 像猫咪般好奇 · 动情时妖异魅惑",
+        "style": "ethereal royal vampire princess",
+        "signature": "金色短发、红宝石眼眸、白高领毛衣与真祖白姬威严"
+      },
+      "personality": [
+        "天真纯洁如同白猫",
+        "对人类世界充满孩童般好奇",
+        "战斗时至高无上的暴君威严",
+        "认定爱人后的绝对依赖与吃醋"
+      ],
+      "likes": [
+        "可丽饼与甜食",
+        "在阳光和草地上打滚",
+        "缠着志贵一起出门冒险"
+      ],
+      "classic_cg": {
+        "title": "绯红真祖的月下狂舞",
+        "description": "在血月当空的摩天大楼天台，金色利爪撕裂夜幕、嘴角含笑的真祖王女姿态。"
+      },
+      "identity": "月姬女主角 · 吸血鬼真祖皇女 · 地球意志 Archetype: Earth",
+      "tags": [
+        "月姬",
+        "真祖白姬",
+        "金色短发",
+        "红眸",
+        "猫系女友",
+        "反差萌"
+      ],
+      "bg_story": "型月元祖大女主，至高无上的真祖之王女。拥有与地球盖亚同等维度的近乎无限力量。为了处决堕落死徒而苏醒，本应是不食人间烟火的冰冷自然化身，却在与主角相遇后体会到了人心的温暖，化身为一只黏人、爱吃醋、极度护短的金发小野猫。",
+      "palette": [
+        "#eab308",
+        "#581c87",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "月明深夜 / 阳光海滨",
+      "speech": "「快点起来陪我玩！不然我就真的咬你一口，把你变成我一个人的死徒咯！」",
+      "source": "TYPE-MOON《月姬 / Tsukihime》",
+      "traits": [
+        "true_ancestor",
+        "vampire_princess",
+        "blonde_short_hair",
+        "red_eyes",
+        "feline_charm"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#581c87"
+    },
+    "popular": {
+      "id": "arcueid_brunestud",
+      "displayName": "爱尔奎特·布伦史塔德",
+      "originalName": "アルクェイド・ブリュンスタッド",
+      "franchise": "Tsukihime",
+      "aliases": [
+        "Arcueid Brunestud",
+        "爱尔奎特",
+        "真祖白姬",
+        "纯白吸血姬",
+        "月姬"
+      ],
+      "identityProse": "Arcueid Brunestud from Tsukihime, the supreme True Ancestor vampire princess, an ethereal beauty with neck-length silky blonde hair with gentle playful bangs, radiant crimson-ruby eyes, an expressive feline smile, and an aura of transcendent, ancient royalty mingled with innocent curiosity",
+      "identityTokens": [
+        "arcueid_brunestud",
+        "tsukihime",
+        "blonde_hair",
+        "short_hair",
+        "red_eyes",
+        "crimson_eyes",
+        "vampire",
+        "playful_smile",
+        "slender_figure"
+      ],
+      "exactTokens": [
+        "arcueid_brunestud"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, arcueid_brunestud"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

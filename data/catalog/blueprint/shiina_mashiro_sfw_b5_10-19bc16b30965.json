@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "shiina_mashiro_sfw_b5_10",
+  "revision": 1,
+  "sortOrder": 1522,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shiina_mashiro_sfw_b5_10",
+    "title": "椎名真白 · 毕业展的白色展厅",
+    "category": "日常生活",
+    "characterId": "shiina_mashiro",
+    "outfitId": "sfw_gallery",
+    "description": "个人画展的白色展厅，她穿着干净的连衣裙站在自己的巨幅画作前，双手背在身后；面对观众依旧是三无表情，但手指在背后悄悄握紧。",
+    "location": "毕业展白色画廊",
+    "action": "在巨幅画作前转头，双手藏在背后轻轻握紧。",
+    "timeOfDay": "日间",
+    "lighting": "soft_lighting",
+    "camera": "medium shot, environmental portrait",
+    "mood": "自然日常、细腻表情",
+    "sceneTags": [
+      "art_gallery",
+      "painting",
+      "white_wall",
+      "hands_behind_back",
+      "clasped_hands",
+      "looking_to_side",
+      "calm",
+      "soft_lighting",
+      "medium_shot"
+    ],
+    "promptProse": "A huge painting hangs behind Mashiro in the white graduation-exhibition gallery. She turns slightly toward visitors outside the frame, fingers quietly clasped behind her ivory dress although her expression stays composed. Her pale orange eyes carry restrained anticipation. Soft gallery lighting separates cream-blonde hair from the white wall, leaving generous headroom in the medium portrait.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "art_gallery",
+      "painting",
+      "white_wall",
+      "hands_behind_back",
+      "clasped_hands",
+      "looking_to_side",
+      "calm",
+      "soft_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

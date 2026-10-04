@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc064",
+  "revision": 1,
+  "sortOrder": 62,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "An open book settles face-down across Ayachi Nene's chest as she dozes on the sofa with her head on the viewer's lap. She wears a soft cream lounge top and loose pink trousers. One hand rests on the book while the other loosely touches the viewer's hand beside her shoulder. From the seated viewer's downward angle, her relaxed face, book and the edge of the sofa fill the frame in quiet afternoon light.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "从膝上方俯看的面部与书本近景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "温柔",
+    "id": "sc064",
+    "lighting": "秋日下午窗光",
+    "location": "客厅沙发",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cream_loungewear, pink_pajama_pants, lying_on_sofa, head_on_viewer_lap, lap_pillow, closed_eyes, sleeping, book_on_chest, hand_on_book, touching_hands, pov, high_angle, close_up, sofa, living_room, afternoon, soft_window_light, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "秋",
+    "story": "【宁宁 · 午后膝枕与闭眼许可】秋日下午的客厅很安静，宁宁枕在你腿上读书，翻了几页便困得睁不开眼。她察觉你低头看着自己，没有像往常那样慌乱躲开，只把书放到胸前，慢慢闭上紫色眼睛——「可以看，但不准趁我睡着做奇怪的事。等我醒来以后……也不要马上把手拿走。」",
+    "storyJa": "【寧々・午後の膝枕と目を閉じる許可】秋の午後、リビングルームはとても静かでした。寧々はあなたの膝の上で本を読んでいました。数ページめくった後、彼女はとても眠くて目を開けることができませんでした。彼女はあなたが自分を見下ろしていることに気づき、いつものようにパニックになって逃げるのではなく、ただ本を胸に置き、ゆっくりと紫色の目を閉じました。――「見てもいいですけど、寝ている間に変なことをしたらだめですよ。目が覚めてからも……すぐには手を離さないでください。」",
+    "tags": [
+      "cream_loungewear",
+      "pink_pajama_pants",
+      "lying_on_sofa",
+      "head_on_viewer_lap",
+      "lap_pillow",
+      "closed_eyes",
+      "sleeping",
+      "book_on_chest",
+      "hand_on_book",
+      "touching_hands",
+      "pov",
+      "high_angle",
+      "close_up",
+      "sofa",
+      "living_room",
+      "afternoon",
+      "soft_window_light"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "午后膝枕与闭眼许可",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

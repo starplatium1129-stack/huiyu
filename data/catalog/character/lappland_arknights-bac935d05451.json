@@ -1,0 +1,160 @@
+{
+  "kind": "character",
+  "id": "lappland_arknights",
+  "revision": 1,
+  "sortOrder": 75,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "lappland_arknights",
+    "profile": {
+      "id": "lappland_arknights",
+      "name": "拉普兰德",
+      "alias": [
+        "Lappland",
+        "荒芜拉普兰德",
+        "萨卢佐的狂狼",
+        "拉狗"
+      ],
+      "type": "popular",
+      "icon": "⚔️",
+      "portrait": {
+        "image": "../assets/characters/popular-lappland_arknights.png?v=5",
+        "alt": "拉普兰德 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "凌乱狂野银白及腰长发",
+        "hair_color": "银白 / 灰白",
+        "eyes": "狂气灰蓝瞳 · 锐利野兽眼神",
+        "hairstyle": "层次狂野碎发 · 纯白鲁珀狼耳与毛茸狼尾",
+        "uniform": "萨卢佐家族破损深灰长风衣 · 双持缺口源石剑",
+        "expression": "狂气狞笑 · 尖牙毕露 · 渴求强敌的狂热",
+        "style": "manic wolf swordswoman",
+        "signature": "白发狂狼、双缺口源石剑、矿石病结晶与疯狂笑容"
+      },
+      "personality": [
+        "狂放不羁嗜血好战",
+        "行为乖张不可捉摸",
+        "对德克萨斯抱有近乎宿命的执念",
+        "看似疯癫实则极度清醒通透",
+        "重度矿石病感染者"
+      ],
+      "likes": [
+        "生死边缘的激烈厮杀",
+        "欣赏德克萨斯动摇的眼神",
+        "荒原狂风与荒野狩猎",
+        "千层面"
+      ],
+      "classic_cg": {
+        "title": "月夜狂狼之舞",
+        "description": "叙拉古残破雨巷之中，白发狂狼双持源石电弧之刃在狂笑中回旋起舞，身后浮现巨大的幽灵白狼虚影。"
+      },
+      "identity": {
+        "role": "萨卢佐家族继承人 / 荒野漫游者",
+        "age": "青年",
+        "occupation": "近卫干员 / 叙拉古流浪剑客",
+        "faction": "泰拉 · 叙拉古 / 罗德岛"
+      },
+      "tags": [
+        "白发狼耳",
+        "双持狂战",
+        "狂气病娇",
+        "矿石病结晶",
+        "源石剑",
+        "叙拉古人"
+      ],
+      "bg_story": "拉普兰德是《明日方舟》中的高人气鲁珀族干员，叙拉古萨卢佐家族领袖阿尔贝托的女儿。身患严重的矿石病却毫无畏惧，凭借狂乱而精准的双剑源石技艺在战场上所向披靡。性格充满野性与危险魅力，是泰拉世界中最独特的灵魂之一。",
+      "palette": [
+        "银白",
+        "暗灰",
+        "源石黑",
+        "幽蓝"
+      ],
+      "weather": [
+        "月黑风高",
+        "荒原暴风雨",
+        "幽暗雨巷"
+      ],
+      "speech": "哈哈哈哈！真不错，博士！把最危险的敌人交给我吧，让我好好享受一番！",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "lappland (arknights)",
+        "1girl",
+        "solo",
+        "lupo",
+        "wolf_ears",
+        "wolf_tail",
+        "white_hair",
+        "silver_hair",
+        "smirk",
+        "sharp_teeth",
+        "sword",
+        "arknights"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "lappland",
+        "lappland_arknights",
+        "拉普兰德",
+        "拉狗",
+        "萨卢佐",
+        "叙拉古狂狼",
+        "arknights",
+        "lappland (arknights)"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "萨卢佐家族狂狼；双刀源石技艺能沉默敌方特殊能力，狂放不羁、享受杀戮与狂乱对决，对德克萨斯有着极度执着的痴迷",
+        "research": "2026-08-31 调研（Danbooru lappland_(arknights) 8000+ posts）",
+        "world": "泰拉（罗德岛 / 叙拉古 / 萨卢佐家族）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "displayName": "拉普兰德",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "lappland (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "lappland_arknights",
+      "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
+      "identityTokens": [
+        "lappland (arknights)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "messy_hair",
+        "wolf_ears",
+        "wolf_tail",
+        "grey_eyes",
+        "smirk",
+        "sharp_teeth",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Lappland",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

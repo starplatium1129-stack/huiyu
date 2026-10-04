@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/sfw_night",
+  "revision": 1,
+  "sortOrder": 777,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "default": false,
+      "id": "sfw_night",
+      "isDefault": false,
+      "name": "夜间散发针织装",
+      "prose": "a warm cream cardigan over a buttoned cotton shirt and navy trousers, her blonde hair loose around her shoulders",
+      "tokens": [
+        "cream_cardigan",
+        "buttoned_shirt",
+        "navy_pants",
+        "hair_down"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/adventurer",
+  "revision": 1,
+  "sortOrder": 251,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "default": false,
+      "id": "adventurer",
+      "isDefault": false,
+      "name": "冒险装",
+      "prose": "a practical adventurer outfit with a cape and boots",
+      "tokens": [
+        "adventurer",
+        "cape",
+        "boots",
+        "pants",
+        "belt"
+      ]
+    }
+  }
+}

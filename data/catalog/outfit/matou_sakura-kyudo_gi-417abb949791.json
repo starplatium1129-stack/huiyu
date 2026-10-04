@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/kyudo_gi",
+  "revision": 1,
+  "sortOrder": 100,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "kyudo_gi",
+      "name": "弓道服",
+      "tokens": [
+        "matou_sakura_kyudo_gi",
+        "kyudo_gi",
+        "kyudo_uniform",
+        "white_gi",
+        "hakama",
+        "indigo_hakama",
+        "japanese_clothes",
+        "traditional_clothes",
+        "long_sleeves"
+      ],
+      "prose": "wearing a crisp white kyudo gi with a deep indigo hakama, the traditional Japanese archery uniform",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

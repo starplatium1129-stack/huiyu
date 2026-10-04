@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "medea_caster",
+  "revision": 1,
+  "sortOrder": 136,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "medea_caster",
+    "profile": {
+      "id": "medea_caster",
+      "name": "美狄亚",
+      "alias": [
+        "美狄亚",
+        "Medea (Caster)"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-medea_caster.png?v=62354105c844",
+        "alt": "美狄亚 · 柳洞寺厨房的手作料理场景样张"
+      },
+      "visual_dna": {
+        "signature": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+        "hair": "blue_hair, long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "寺院料理襻带围裙装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "做事精细耐心，对手工成果有自己的坚持",
+        "外表戒备，进入熟悉日常后会流露柔和神态",
+        "愿意认真经营来之不易的安定生活"
+      ],
+      "likes": [
+        "手工缝制",
+        "料理",
+        "安静整理自己的收藏"
+      ],
+      "classic_cg": {
+        "title": "美狄亚 · 柳洞寺厨房的手作料理",
+        "description": "柳洞寺厨房，她把长袍袖子用襻带扎起、系着围裙做饭，尖耳从垂落的发丝间露出；尝味时专注的神情不像魔女，更像新婚的妻子。"
+      },
+      "identity": "Fate · 美狄亚",
+      "tags": [
+        "美狄亚",
+        "Fate 系列",
+        "日常"
+      ],
+      "bg_story": "在柳洞寺生活的魔术师，也珍惜料理、模型和针线这些日常手艺。蓝发侧辫、尖耳和专注神态是识别点，兜帽与长袍按活动切换。",
+      "palette": [
+        "#94a6d1",
+        "#282532"
+      ],
+      "source": "Fate",
+      "speech": "再缝好这一针，就可以穿了。",
+      "traits": [
+        "medea_(caster)_(fate)",
+        "fate/stay_night",
+        "blue_hair",
+        "long_hair",
+        "side_braid"
+      ],
+      "accent_color": "#94a6d1",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "medea_caster",
+      "displayName": "美狄亚",
+      "originalName": "Medea (Caster)",
+      "franchise": "Fate",
+      "aliases": [
+        "美狄亚",
+        "Medea (Caster)"
+      ],
+      "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+      "identityTokens": [
+        "medea_(caster)_(fate)",
+        "fate/stay_night",
+        "blue_hair",
+        "long_hair",
+        "side_braid",
+        "pointy_ears",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "medea_(caster)_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, medea_(caster)_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

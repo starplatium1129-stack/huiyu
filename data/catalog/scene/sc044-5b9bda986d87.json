@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc044",
+  "revision": 1,
+  "sortOrder": 42,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder, as clear window sunlight streams across the frame.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "主观沙发近景",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc044",
+    "lighting": "秋日下午窗光",
+    "location": "同居公寓客厅",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, bathroom, toilet, sink, bathtub, sitting alone, empty lap, armchair, single-person portrait, child, loli, underage",
+    "prompt": "(woman straddling the male viewer on a living room sofa:1.65), her knees on both sides of viewer hips, visible male trousered thighs beneath her, POV male hands around her waist, television remote in her right hand, (living room sofa:1.55), (sitting astride viewer lap:1.5), holding television remote, POV male hands at her waist, 1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, looking_back, straddling, close_up, adult, cohabitation, sitting_on_lap, trapping_viewer, holding_remote, subtle_blush, living_room, afternoon, clear_sky, pov, window_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【夏目 · 沙发上的主动休战】秋日下午的客厅里，夏目为了抢回被你拿走的遥控器，跨坐到沙发边把你困在靠背之间。真正靠近后，她反而被距离弄得耳根通红，却没有立刻退开。她把遥控器按在你肩上，故作镇定地补充——「我只是来结束无聊的频道争夺。至于这个距离……你不讨厌的话，就先保持一分钟。」",
+    "storyJa": "【夏目・ソファでのアクティブな休戦】秋の午後、リビングルームで、夏目はあなたに奪われたリモコンを奪い返​​そうとソファにまたがり、あなたを背もたれの間に挟み込みました。かなり近づいた後、距離のせいで耳が赤くなりましたが、すぐには離れませんでした。彼女はリモコンをあなたの肩に押し当てて、静かに付け加えた。――「くだらないチャンネル争いを終わらせに来ただけ。この距離は……あなたが嫌じゃないなら、一分だけこのままで。」",
+    "tags": [
+      "mole_under_eye",
+      "casual_clothes",
+      "sitting",
+      "looking_back",
+      "straddling",
+      "close_up",
+      "adult",
+      "cohabitation",
+      "sitting_on_lap",
+      "trapping_viewer",
+      "holding_remote",
+      "subtle_blush",
+      "living_room",
+      "afternoon",
+      "clear_sky",
+      "pov",
+      "window_light"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "沙发上的主动休战",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

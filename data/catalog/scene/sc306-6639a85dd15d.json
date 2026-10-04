@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc306",
+  "revision": 1,
+  "sortOrder": 301,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc306",
+    "title": "落雪窗边的温存回眸",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 宁宁 · 落雪窗边的温存回眸】窗外大雪纷飞，屋内暖意融融。宁宁赤足坐在凌乱的白被单上，仅用一条单薄浴巾微掩胸口，回眸望向你。雪光映亮她白皙的肩背与微露的侧乳，脸颊泛着动人的潮红——「窗外的雪下得好大……今晚，多陪我一会儿好不好？」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "羞涩含情",
+    "season": "冬",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "hair_ribbon",
+      "naked_towel",
+      "bare_shoulders",
+      "sideboob",
+      "on_bed",
+      "snow",
+      "sitting",
+      "looking_back",
+      "nene_r18",
+      "adult"
+    ],
+    "mature": true,
+    "rating": "R18",
+    "location": "落雪冬夜的卧室床榻",
+    "weather": "落雪",
+    "camera": "回眸半身特写",
+    "lighting": "雪夜窗光与室内暖光",
+    "usage": [
+      "官方CG灵感",
+      "壁纸级",
+      "展示图",
+      "成人向"
+    ],
+    "recommendedSize": "832×1216",
+    "prompt": "1girl, nene_r18, adult, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, @rella, breasts, looking at viewer, sitting, barefoot, bangs, blunt bangs, ass, butt crack, blush, covering, soles, towel, closed mouth, feet, on bed, indoors, snow, bed sheet, pillow, nude cover, medium breasts, looking back, toes, wariza, window, naked towel, sideboob, back, covering breasts, bare shoulders, from behind, large breasts, delicate_collarbone, warm_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, artist name, chromatic aberration, child, loli, underage",
+    "storyJa": "【大人のAfter Story・寧々・雪降る窓辺の温もり】窓の外は雪がしんしんと降り、部屋の中は暖かな空気に包まれていた。寧々は乱れたシーツの上に素足で座り、薄いバスタオルを胸元に寄せながら、振り返ってあなたを見つめた。雪明かりが白い背中と柔らかな横胸を優しく照らし、頬を朱に染める――「雪、すごく降ってきたね……今夜は、もっとそばにいてほしいな。」",
+    "animaCaption": "Ayachi Nene in a delicate naked towel cover sits on the white bed beside a snowy window, looking back over her bare shoulder with a shy blush under warm indoor lighting.",
+    "auditRevision": "user-curated-2026-09-02"
+  }
+}

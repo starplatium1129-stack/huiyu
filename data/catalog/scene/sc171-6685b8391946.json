@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc171",
+  "revision": 1,
+  "sortOrder": 168,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the dark rear seat of the evacuation vehicle with condensation dripping down the sealed windows, Shiki Natsume is completely naked, straddling the viewer's waist with both hands pressing his shoulders as she leans forward to meet his lips panting heavily, her soaked black hair plastered to her pale collarbone and the tear mole flushed crimson under the faint dashboard glow.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc171",
+    "lighting": "仪表盘微弱冷光",
+    "location": "特工车辆后座",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, trench_coat_open, black_lace_lingerie, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_in_car, rain_lashing_windshield, city_neon_lights_blurred, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 密闭车厢极致占有】狂风暴雨的深夜，荒郊野外的特工撤离车辆后座。密闭的车窗上挂满了密密麻麻的水滴，车内一片昏暗微热。平时高冷死板的夏目此时彻底撕下了伪装，一丝不挂地跨坐在你的腰间。她那一身湿透的黑色长发凌乱地贴在雪白的锁骨上，眼角的泪痣因为极度的动情和亢奋而被红晕彻底浸透。她双手死死按住你的肩膀，一边剧烈娇喘，一边主动迎向你的嘴唇——「长官...这里的信号已经完全切断了...今晚...谁也别想把我们分开了...」",
+    "storyJa": "【夏目・密閉されたコンパートメントの究極の所有物】嵐の夜の真夜中、荒野にいたエージェントたちは車両の後部座席から避難した。閉め切った窓は濃い水滴で覆われ、車内は暗くて少し暖かかった。いつもは冷たく堅い夏目も、この時は完全に変装を脱ぎ捨て、裸であなたの腰にまたがった。濡れた長い黒髪が乱れて純白の鎖骨に張り付き、目尻の泣きぼくろは極度の感動と興奮で真っ赤に染まっていた。彼女はあなたの肩を両手でしっかりと抱き、率先して唇を合わせながら激しく喘ぎました。――「店長……ここの通信はもう完全に切れてる。今夜は、誰にも私たちの邪魔をさせないから。」",
+    "tags": [
+      "mole_under_eye",
+      "completely_naked",
+      "nude",
+      "straddling_waist",
+      "riding",
+      "pressing_shoulders",
+      "kissing",
+      "wet_hair",
+      "vehicle",
+      "condensed_windows",
+      "rain"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "暴雨车载夜：特工的绝对溶解防御",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "车外暴雨如注"
+  }
+}

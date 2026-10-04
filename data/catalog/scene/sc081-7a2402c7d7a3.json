@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc081",
+  "revision": 1,
+  "sortOrder": 79,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sunlight forms a narrow band across the tatami as Shiki Natsume wakes beneath the blanket just placed over her. In a beige T-shirt and light-grey shorts, she remains lying on her side with her head on a cushion. Her fingers lightly close around the blanket corner while travel notes lie beside the low table. Show the resting posture in a calm full-length view through the washitsu.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "和室午睡全身远景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "困倦",
+    "id": "sc081",
+    "lighting": "纸门透入的午后柔光",
+    "location": "和室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, beige_t_shirt, grey_shorts, lying_on_side, head_on_cushion, blanket, holding_blanket_corner, sleepy_expression, travel_notes, low_table, tatami_room, shoji, afternoon, narrow_sunbeam, full_body, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "春",
+    "story": "【夏目 · 和室午睡的无声许可】春日下午，夏目在和室整理旅行资料，不知不觉枕着坐垫睡着。纸门漏进细长阳光，你替她盖上薄毯时，她半睁开眼却没有起身，只轻轻抓住毯角——「我没有睡，只是在闭目整理思路……既然已经盖了，就坐在旁边。醒来的时候我会还你人情。」",
+    "storyJa": "【夏目・和室での仮眠を黙って許可】春の午後、夏目は和室で旅行情報を整理していたところ、いつのまにか座布団に頭を乗せて眠ってしまいました。障子からはほのかな陽光が差し込んでいた。薄い毛布をかけてあげると、目は半分開いたものの起き上がろうとしませんでした。彼女は毛布の隅をそっと掴んだだけだった。――「眠っていたわけじゃない。目を閉じて考えを整理していただけ……もう掛けたなら、そばに座っていて。起きたら借りは返すから。」",
+    "tags": [
+      "beige_t_shirt",
+      "grey_shorts",
+      "lying_on_side",
+      "head_on_cushion",
+      "blanket",
+      "holding_blanket_corner",
+      "sleepy_expression",
+      "travel_notes",
+      "low_table",
+      "tatami_room",
+      "shoji",
+      "afternoon",
+      "narrow_sunbeam",
+      "full_body"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "和室午睡的无声许可",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

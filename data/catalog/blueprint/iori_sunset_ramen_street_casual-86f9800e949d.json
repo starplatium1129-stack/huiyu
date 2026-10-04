@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "iori_sunset_ramen_street_casual",
+  "revision": 1,
+  "sortOrder": 931,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在红色路边铁栏杆上，慌张将丸子竹签藏在身后，尾巴绷直，脸颊绯红",
+    "camera": "medium shot, eye level",
+    "category": "街头日常",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【银镜伊织 · 黄昏拉面街的偶遇】歌赫娜商业街狭窄热闹的黄昏街角，红色灯笼悄然亮起。伊织换上了便服挂脖吊带与牛仔短裤，手里拿着一串刚买的烤丸子坐在路边栏杆上。突然看到路过的老师，她慌忙把丸子藏到身后，尾巴猛地绷直——「老、老师？！你怎么会在这里？！我只是刚好路过巡视食品安全……才不是嘴馋在偷吃零食呢！」",
+    "id": "iori_sunset_ramen_street_casual",
+    "lighting": "温暖橙红晚霞与街边红色纸灯笼暖光",
+    "location": "歌赫娜美食商业街黄昏小巷",
+    "mood": "慌张可爱",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "casual_streetwear",
+    "promptProse": "At a lively Gehenna ramen street at dusk, Iori sits on the red roadside railing with a dango skewer hidden behind her back, her tail stiff and cheeks flushed when she notices the viewer. Red paper lanterns warm the embarrassed after-school moment.",
+    "promptTokens": [
+      "ramen_street",
+      "food_stall",
+      "lanterns",
+      "sitting_on_railing",
+      "dango",
+      "flustered",
+      "detailed_background",
+      "cinematic_lighting",
+      "hiding_dango",
+      "behind_back"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "street",
+      "alley",
+      "food_stall",
+      "lanterns",
+      "sitting_on_railing",
+      "crop_top",
+      "denim_shorts",
+      "dango",
+      "flustered",
+      "demon_tail"
+    ],
+    "timeOfDay": "黄昏日落",
+    "title": "银镜伊织 · 黄昏拉面街的偶遇"
+  }
+}

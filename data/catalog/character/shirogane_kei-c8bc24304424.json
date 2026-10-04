@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "shirogane_kei",
+  "revision": 1,
+  "sortOrder": 146,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shirogane_kei",
+    "profile": {
+      "id": "shirogane_kei",
+      "name": "白银圭",
+      "alias": [
+        "白银圭",
+        "Kei Shirogane"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-shirogane_kei.png?v=6f93fc8b9ffe",
+        "alt": "白银圭 · 清晨的报纸配送路线场景样张"
+      },
+      "visual_dna": {
+        "signature": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
+        "hair": "grey_hair, long_hair, straight_hair, black_hairband",
+        "eyes": "blue_eyes",
+        "uniform": "学生会整齐校服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "说话坦率，习惯把关心藏在抱怨后面",
+        "独立务实，对日常开支格外认真",
+        "在外保持整洁从容，也会为小小的成果开心"
+      ],
+      "likes": [
+        "骑车经过清晨街道",
+        "把日用品收拾整齐",
+        "挑选实用又合心意的衣物"
+      ],
+      "classic_cg": {
+        "title": "白银圭 · 清晨的报纸配送路线",
+        "description": "清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸；呼出的白气与渐亮的天色，是她不为人知的日常开头。"
+      },
+      "identity": "Kaguya-sama: Love Is War · 白银圭",
+      "tags": [
+        "白银圭",
+        "辉夜大小姐想让我告白",
+        "日常"
+      ],
+      "bg_story": "认真持家的学生，擅长计算与安排，外表冷静也会为小小结余开心。银灰直发、蓝瞳和黑发箍保持一致，日常关注学习、采购和家庭分工。",
+      "palette": [
+        "#a6bbd3",
+        "#282532"
+      ],
+      "source": "Kaguya-sama: Love Is War",
+      "speech": "这次的结余，比预计还多一点。",
+      "traits": [
+        "shirogane_kei",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "grey_hair",
+        "long_hair",
+        "straight_hair"
+      ],
+      "accent_color": "#a6bbd3",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "白银圭",
+        "Kei Shirogane"
+      ],
+      "displayName": "白银圭",
+      "exactPrefixes": [
+        "1girl, solo, shirogane_kei"
+      ],
+      "exactTokens": [
+        "shirogane_kei"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "shirogane_kei",
+      "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
+      "identityTokens": [
+        "shirogane_kei",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "grey_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_eyes",
+        "black_hairband",
+        "ribbon"
+      ],
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "originalName": "Kei Shirogane",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

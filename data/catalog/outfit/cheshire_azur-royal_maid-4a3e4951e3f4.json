@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "cheshire_azur/royal_maid",
+  "revision": 1,
+  "sortOrder": 592,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cheshire_azur",
+    "outfit": {
+      "id": "royal_maid",
+      "name": "皇家荷叶边女仆装",
+      "prose": "Royal Navy canonical maid dress: an elaborate dark navy-blue and snow-white lolita maid dress with ruffled lace collar, puffy shoulders, gold royal anchor pendant, white evening gloves with black ribbons, tiered frilled petticoat miniskirt, white thigh-high stockings with garter straps, and black patent strap mary janes",
+      "tokens": [
+        "maid",
+        "maid_dress",
+        "maid_apron",
+        "frills",
+        "lace_trim",
+        "gloves",
+        "white_gloves",
+        "anchor",
+        "choker",
+        "pleated_skirt",
+        "thighhighs",
+        "white_thighhighs",
+        "garter_straps",
+        "mary_janes",
+        "royal_navy"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

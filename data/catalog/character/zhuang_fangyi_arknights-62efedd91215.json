@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "zhuang_fangyi_arknights",
+  "revision": 1,
+  "sortOrder": 162,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "zhuang_fangyi_arknights",
+    "profile": {
+      "id": "zhuang_fangyi_arknights",
+      "name": "庄方宜",
+      "alias": [
+        "Zhuang Fangyi",
+        "庄方宜",
+        "Zhuang",
+        "Fangyi"
+      ],
+      "type": "popular",
+      "icon": "🪭",
+      "visual_dna": {
+        "hair": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+        "hair_color": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+        "eyes": "绿色眼眸",
+        "hairstyle": "披散的墨黑渐青绿色超长发，脸侧有红色挑染",
+        "uniform": "白绿中式无袖上装、黑白分离袖、黑色手套与腰带、绿色宽松长裤",
+        "expression": "认真负责、沉稳",
+        "style": "明日方舟：终末地官方形象为基础",
+        "signature": "墨黑渐青绿长发、脸侧红色挑染、绿眼、分叉红色龙角、尖耳与长龙尾"
+      },
+      "personality": [
+        "认真负责",
+        "沉稳"
+      ],
+      "likes": [],
+      "identity": {
+        "role": "武陵科学发展区管代 / 息壤新材项目负责天师",
+        "age": "官方未公开（原稿年龄缺少来源，待核实）",
+        "occupation": "裂隙研究与息壤新材项目研究者",
+        "faction": "武陵科学发展区"
+      },
+      "tags": [
+        "墨黑渐青绿长发、脸侧红色挑染、绿眼、分叉红色龙角、尖耳与长龙尾"
+      ],
+      "bg_story": "庄方宜是武陵科学发展区管代、息壤新材项目负责天师，经宏科院推荐与终末地合作开展裂隙研究。种族为麒麟。年龄未公开；日常场景与非默认衣装为创作设定。",
+      "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "traits": [
+        "zhuang_fangyi_(arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "green_hair",
+        "multicolored_hair",
+        "gradient_hair",
+        "red_streaks",
+        "very_long_hair",
+        "green_eyes",
+        "eastern_dragon_horns",
+        "red_horns",
+        "pointy_ears",
+        "eastern_dragon_tail",
+        "arknights:_endfield"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "庄方宜立绘待补（占位图）"
+      },
+      "speech": "我是庄方宜，武陵科学发展区管代。",
+      "accent_color": "#4ecdc4",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Zhuang Fangyi",
+        "庄方宜",
+        "Zhuang",
+        "Fangyi"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "world": "塔卫二",
+        "formNotes": "墨黑渐青绿长发、脸侧红色挑染、绿眼、分叉红色龙角、尖耳与长龙尾；默认衣装为中式上装、黑白分离袖及绿色长裤",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://endfield.hypergryph.com/operator"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "庄方宜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "zhuang_fangyi_(arknights)",
+        "zhuang_fangyi (arknights)"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "zhuang_fangyi_arknights",
+      "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair fading into teal-green lengths, red streaks framing her face, green eyes, branching dark red eastern-dragon horns, pointed ears and a long eastern-dragon tail.",
+      "identityTokens": [
+        "zhuang_fangyi_(arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "green_hair",
+        "multicolored_hair",
+        "gradient_hair",
+        "red_streaks",
+        "very_long_hair",
+        "green_eyes",
+        "eastern_dragon_horns",
+        "red_horns",
+        "pointy_ears",
+        "eastern_dragon_tail",
+        "arknights:_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Zhuang Fangyi",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

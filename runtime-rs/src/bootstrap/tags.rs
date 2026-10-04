@@ -118,7 +118,7 @@ fn validate_manifest(value: &Value) -> Result<()> {
     }
     Ok(())
 }
-pub(super) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
+pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
     record(policy, "Tag dictionary policy")?;
     let mut by_id = HashMap::new();
     let mut groups: HashMap<String, Vec<&Value>> = HashMap::new();

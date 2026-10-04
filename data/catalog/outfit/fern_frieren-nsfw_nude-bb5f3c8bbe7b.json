@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "fern_frieren/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 68,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fern_frieren",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "full_body_bare",
+        "large_breasts",
+        "exposed_pussy",
+        "detailed_vulva",
+        "pink_nipples",
+        "slender_body",
+        "soft_skin",
+        "bare_feet"
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "misaki_mental_out_queen_gesture",
+  "revision": 1,
+  "sortOrder": 401,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "白手套手指抵太阳穴施展心理掌握，星瞳狡黠，从容微笑",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, elegant gesture, school courtyard, queenly poise",
+    "category": "战斗高光",
+    "characterId": "shokuhou_misaki",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ],
+    "description": "【常盘台中庭·午后】女王蜂缓缓抬起雪白的手套手指，轻轻抵在太阳穴旁——那是最优雅的支配手势。星形的瞳孔里闪过狡黠的光，常盘台的中庭在她的一次眨眼间秩序井然。米色毛衣背心与灰裙勾勒出从容的仪态，手提包里的遥控器排成一列，仿佛整个学园都是她的舞台——「心理掌握，全员听我指挥哦♪」",
+    "id": "misaki_mental_out_queen_gesture",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "明亮校园阳光与中庭绿荫",
+    "location": "常盘台中学中庭",
+    "mood": "女王气场、游刃有余",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_tokiwadai_uniform",
+    "promptProse": "Shokuhou Misaki raises one white spider-web-printed glove to her temple in the elegant gesture of Mental Out, her star-shaped pupils glinting with playful dominance as the Tokiwadai courtyard falls into perfect order at a blink. Her beige sweater vest and grey pleated skirt carry her queenly poise, the handbag on her arm displaying its row of remote controls like a scepter, and her confident smile promises the whole academy is her stage. Medium shot, cinematic lighting, sunlight, detailed school background.",
+    "promptTokens": [
+      "shokuhou_misaki",
+      "1girl",
+      "solo",
+      "tokiwadai_school_uniform",
+      "school_uniform",
+      "sweater_vest",
+      "white_gloves",
+      "spider_web_print",
+      "pleated_skirt",
+      "handbag",
+      "remote_control",
+      "star-shaped_pupils",
+      "yellow_eyes",
+      "blonde_hair",
+      "very_long_hair",
+      "smirk",
+      "school",
+      "day",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "school_uniform",
+      "white_gloves",
+      "handbag",
+      "remote_control",
+      "star-shaped_pupils",
+      "smirk",
+      "courtyard",
+      "iconic"
+    ],
+    "timeOfDay": "午后",
+    "title": "食蜂操祈 · 心理掌握的女王仪态·「全员——听我指挥哦♪」"
+  }
+}

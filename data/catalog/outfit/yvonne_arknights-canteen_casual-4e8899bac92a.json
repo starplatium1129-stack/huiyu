@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/canteen_casual",
+  "revision": 1,
+  "sortOrder": 423,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "default": false,
+      "id": "canteen_casual",
+      "isDefault": false,
+      "name": "基地食堂·休闲装",
+      "prose": "a relaxed casual outfit with a cropped jacket, practical trousers and comfortable sneakers",
+      "tokens": [
+        "casual_clothes",
+        "cropped_jacket",
+        "trousers",
+        "sneakers"
+      ]
+    }
+  }
+}

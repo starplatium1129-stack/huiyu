@@ -1,0 +1,162 @@
+{
+  "kind": "character",
+  "id": "viviana_arknights",
+  "revision": 1,
+  "sortOrder": 76,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "viviana_arknights",
+    "profile": {
+      "id": "viviana_arknights",
+      "name": "薇薇安娜",
+      "alias": [
+        "Viviana Droste",
+        "烛骑士",
+        "德罗斯特",
+        "金律骑士"
+      ],
+      "type": "popular",
+      "icon": "🕯️",
+      "portrait": {
+        "image": "../assets/characters/popular-viviana_arknights.png?v=5",
+        "alt": "薇薇安娜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "波浪金发及腰 · 贵族卷发",
+        "hair_color": "耀眼金黄",
+        "eyes": "温润琥珀金瞳",
+        "hairstyle": "优雅波浪长发 · 华丽金角埃拉菲亚鹿角与鹿耳",
+        "uniform": "卡西米尔象牙白金铠甲礼装 / 莱塔尼亚贵族晚礼裙",
+        "expression": "高贵优雅 · 温柔清澈 · 诗意斐然",
+        "style": "noble candle knight poetess",
+        "signature": "金色鹿角、金发波浪、烛光细剑与诗集"
+      },
+      "personality": [
+        "高雅从容富有诗意",
+        "坚守纯粹骑士道精神",
+        "待人温柔体贴",
+        "渴望打破宿命桎梏",
+        "文学与艺术造诣极深"
+      ],
+      "likes": [
+        "创作与朗诵抒情诗篇",
+        "烛光下的古典音乐与红茶",
+        "卡西米尔夜空的宁静",
+        "金秋落叶下的漫步"
+      ],
+      "classic_cg": {
+        "title": "微光中的烛影华尔兹",
+        "description": "特锦赛华丽大竞技场中央，金鹿少女手持发光细剑优雅起舞，金色烛火源石光芒化作漫天影蛾璀璨盛开。"
+      },
+      "identity": {
+        "role": "卡西米尔特锦赛烛骑士 / 莱塔尼亚大选侯之女",
+        "age": "青年",
+        "occupation": "竞技骑士 / 诗人 / 近卫术师干员",
+        "faction": "泰拉 · 莱塔尼亚 / 卡西米尔 / 罗德岛"
+      },
+      "tags": [
+        "金色鹿角",
+        "金发波浪",
+        "烛骑士",
+        "贵族礼装",
+        "发光细剑",
+        "优雅诗人"
+      ],
+      "bg_story": "薇薇安娜·德罗斯特是《明日方舟》中莱塔尼亚选侯之女，曾远赴卡西米尔成为名震八方的「烛骑士」。她将源石技艺与烛火融合，剑锋如烛光般温柔而坚定，同时也是一位才华横溢的行吟诗人。在崔林特尔梅的动荡中重拾自我，以优雅而强大的姿态加入罗德岛。",
+      "palette": [
+        "耀金",
+        "象牙白",
+        "琥珀色"
+      ],
+      "weather": [
+        "金秋落叶",
+        "烛光礼堂",
+        "晴空竞技场"
+      ],
+      "speech": "愿这微弱的烛火，能为你照亮前行的长夜。我是薇薇安娜，很荣幸与您相伴。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "viviana (arknights)",
+        "viviana_droste",
+        "1girl",
+        "solo",
+        "elafia",
+        "antlers",
+        "deer_horns",
+        "golden_hair",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "arknights"
+      ],
+      "accent_color": "#fbbf24",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "viviana",
+        "viviana_arknights",
+        "viviana_droste",
+        "薇薇安娜",
+        "烛骑士",
+        "德罗斯特",
+        "卡西米尔",
+        "莱塔尼亚",
+        "arknights",
+        "viviana (arknights)"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "卡西米尔骑士大赛「烛骑士」/ 莱塔尼亚贵族后裔；优雅高贵、爱好诗歌与文学，以光影与微光微尘为源石技艺",
+        "research": "2026-08-31 调研（Danbooru viviana_(arknights) 4500+ posts）",
+        "world": "泰拉（卡西米尔 / 莱塔尼亚 / 罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "rella",
+        "swav"
+      ],
+      "displayName": "薇薇安娜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "viviana (arknights)",
+        "viviana_droste"
+      ],
+      "franchise": "Arknights",
+      "id": "viviana_arknights",
+      "identityProse": "Viviana Droste from Arknights, the Candle Knight of Kazimierz with flowing wavy golden-blonde hair, magnificent golden deer antlers, soft deer ears, sapphire eyes, and a gentle noble smile.",
+      "identityTokens": [
+        "viviana (arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "wavy_hair",
+        "antlers",
+        "animal_ears",
+        "blue_eyes",
+        "gentle_smile",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Viviana Droste",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

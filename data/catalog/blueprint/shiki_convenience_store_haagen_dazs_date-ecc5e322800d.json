@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "shiki_convenience_store_haagen_dazs_date",
+  "revision": 1,
+  "sortOrder": 1346,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手拿着冰淇淋盒，另一手执小勺微红着脸递向视角，眼神别扭又可爱",
+    "camera": "cowboy shot, eye level, sweet casual date view",
+    "category": "街头约会",
+    "characterId": "ryougi_shiki",
+    "coverageTags": [
+      "date",
+      "sweet",
+      "ice_cream"
+    ],
+    "description": "【两仪式 · 便利店门前的草莓冰淇淋】夏夜晚风习习的街角便利店外，两仪式身穿便服毛衣和风衣站在路灯下。她手里捧着一盒小巧的草莓味哈根达斯冰淇淋，拿着塑料小勺挖了一小块放入口中，双眼满足地微微眯起，像一只尝到甜头的小猫。随后她有些别扭地把勺子挖好递到你面前——「喏……只准吃一小口，剩下的都是我的。」",
+    "id": "shiki_convenience_store_haagen_dazs_date",
+    "lighting": "便利店透明落地窗投出的明亮灯光与路灯",
+    "location": "灯光温暖的24小时便利店门外长椅旁",
+    "mood": "反差纯情",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "winter_white_knit_coat",
+    "promptProse": "Standing beneath the warm fluorescent glow outside a 24-hour convenience store on a quiet summer evening, Ryougi Shiki enjoys a cup of strawberry Haagen-Dazs ice cream. Dressed in her stylish coat, her cool demeanor melts into subtle girlish sweetness as she extends a small plastic spoon toward the viewer with a shy, bashful pout. Charming, tender anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "convenience_store",
+      "night_street",
+      "streetlamp",
+      "winter_coat",
+      "turtleneck_sweater",
+      "holding_ice_cream",
+      "feeding_viewer",
+      "subtle_blush",
+      "blushing_ears",
+      "shy_pout",
+      "black_hair",
+      "blue_eyes",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "convenience_store",
+      "street_corner",
+      "night",
+      "holding_ice_cream",
+      "eating_ice_cream",
+      "feeding_viewer",
+      "winter_coat",
+      "subtle_blush",
+      "pout"
+    ],
+    "timeOfDay": "夏夜",
+    "title": "两仪式 · 便利店门前的草莓冰淇淋"
+  }
+}

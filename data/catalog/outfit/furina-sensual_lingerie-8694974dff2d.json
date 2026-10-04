@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "furina/sensual_lingerie",
+  "revision": 1,
+  "sortOrder": 8,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "furina",
+    "outfit": {
+      "id": "sensual_lingerie",
+      "name": "轻纱睡裙",
+      "prose": "delicate translucent sky-blue and white silk lingerie babydoll nightgown with fine lace trim, matching panties, sheer thighhigh stockings, and bare shoulders",
+      "tokens": [
+        "lingerie",
+        "lace_bra",
+        "panties",
+        "babydoll",
+        "translucent",
+        "thighhighs",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

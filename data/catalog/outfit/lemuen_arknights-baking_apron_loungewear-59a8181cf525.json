@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/baking_apron_loungewear",
+  "revision": 1,
+  "sortOrder": 317,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "baking_apron_loungewear",
+      "isDefault": false,
+      "name": "苹果派烘焙日恬静甜点师便服",
+      "prose": "a cozy home baking outfit: a cream ribbed knit turtleneck sweater with the sleeves rolled to mid-arm, over a beige linen baking apron with a small apple emblem and big front pockets",
+      "tokens": [
+        "ribbed_knit",
+        "turtleneck",
+        "sweater",
+        "apron",
+        "linen",
+        "baking"
+      ]
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "kind": "character",
+  "id": "vladilena_milize",
+  "revision": 1,
+  "sortOrder": 107,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "vladilena_milize",
+    "profile": {
+      "id": "vladilena_milize",
+      "name": "芙拉蒂蕾娜·米利杰",
+      "alias": [
+        "Vladilena Milizé",
+        "蕾娜",
+        "血染女王",
+        "Bloody Reina",
+        "米利杰少校"
+      ],
+      "type": "popular",
+      "icon": "🎧",
+      "portrait": {
+        "image": "../assets/characters/popular-vladilena_milize.png?v=1",
+        "alt": "芙拉蒂蕾娜·米利杰 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰银白长发 · 双天线呆毛",
+        "hair_color": "银白 / 铂银",
+        "eyes": "银灰色眼眸 · 端正而坚毅",
+        "hairstyle": "长直发自然垂落 · 齐刘海",
+        "uniform": "圣玛格诺利亚共和国蓝色军装 · 白色O环腰带与军帽",
+        "expression": "凛然高贵 · 指挥时果决 · 唯独对你流露出柔软",
+        "style": "noble silver-haired commander",
+        "signature": "银白长发、银灰眼眸、共和国军装与Para-RAID秘话"
+      },
+      "personality": [
+        "贵族教养与军人操守的双重端正",
+        "对不公与歧视零容忍的赤子正义",
+        "隔着遥远声波也要与你并肩的执念",
+        "卸下军装后意外地怕羞柔软"
+      ],
+      "likes": [
+        "深夜与你保持Para-RAID同调",
+        "整理得一丝不苟的军装与荣誉章",
+        "白花与哀悼的誓言"
+      ],
+      "classic_cg": {
+        "title": "鲜血女王的月光誓言",
+        "description": "染血赤发与黑色军装在硝烟中猎猎作响，她向长眠的士兵们献上不肯折断的旗。"
+      },
+      "identity": "86-不存在的战区-女主角 · 圣玛格诺利亚共和国少校 · Handler One / 鲜血女王",
+      "tags": [
+        "86-不存在的战区",
+        "银发军装",
+        "鲜血女王",
+        "Para-RAID",
+        "指挥官",
+        "军旅女友"
+      ],
+      "bg_story": "银发的 Alba 贵族少女，却以整个灵魂与『被废弃的配色』并肩作战。她为战死的小队染上一缕赤发、换上黑色军装，把五个人的名字刻进心脏。哪怕战区被宣称为『不存在』，她的信念也从未锈蚀——那副听得见你声音的耳机，是她在钢铁与硝烟里唯一的圣域。",
+      "palette": [
+        "#f43f5e",
+        "#cbd5e1",
+        "#1e293b",
+        "#f8fafc"
+      ],
+      "weather": "共和国防线薄暮 / 月下基地阳台",
+      "speech": "「这里是Handler One。……不，现在请允许我以蕾娜的身份与你同调。今晚，也请多指教了，我的指挥官。」",
+      "source": "安里アサト《86-不存在的战区 / 86 -Eighty Six-》",
+      "traits": [
+        "bloody_reina",
+        "republic_major",
+        "silver_hair",
+        "para_raid_bond"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#1e293b"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Vladilena Milizé",
+        "蕾娜",
+        "鲜血女王",
+        "米利杰少校"
+      ],
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Shirabii",
+        "Tetsuya Kawakami"
+      ],
+      "displayName": "芙拉蒂蕾娜·米利杰",
+      "exactPrefixes": [
+        "1girl, solo, vladilena_millize"
+      ],
+      "exactTokens": [
+        "vladilena_millize"
+      ],
+      "franchise": "86 -Eighty Six-",
+      "id": "vladilena_milize",
+      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, and unwavering resolve",
+      "identityTokens": [
+        "vladilena_millize",
+        "86_-eighty_six-",
+        "silver_hair",
+        "long_hair",
+        "antenna_hair",
+        "grey_eyes",
+        "slender_figure"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "ヴラディレーナ・ミリーゼ",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc185",
+  "revision": 1,
+  "sortOrder": 182,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sprawled on the fragrant tatami futon of the traditional inn after the summer festival, Shiki Natsume lies pinned beneath the viewer with her loose cotton yukata's belt completely undone and the garment slid down to her waist, exposing her pale chest, delicate collarbone and bare legs; she weakly hooks her arms around the viewer's neck and pants softly with the tear mole flushed crimson under warm paper lantern light. Fresh from the bath, water droplets glisten on her bare shoulders and chest.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc185",
+    "lighting": "日式纸灯笼柔和暖光",
+    "location": "温泉旅馆榻榻米",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, yukata, open_clothes, bare_shoulders, bare_legs, bar, bed, tatami, water, droplets, body, lying, blush, panting, warm_lighting, cinematic, depth, field, full_body, detailed_background, cinematic_lighting",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 温泉浴衣解开极致沦陷】夏日祭典结束后的传统温泉旅馆，窗外传来祭典散场后的隐隐人声。洗完澡后的夏目身穿宽松的棉质浴衣，软绵绵地躺在散发着清香的榻榻米床铺上。因为被你霸道地压在身下，她浴衣的腰带已被完全扯开，整件衣服凌乱地滑落到腰际，大片雪白的胸口、精致的锁骨和毫无防备的长腿毫无保留地暴露在灯光下。她眼角的泪痣因为极度动情被红晕染透，一边无力地勾住你的脖子承受你的索求，一边娇喘着呻吟——「哈啊...你这变态笨蛋...把人家的浴衣弄得这么乱...今晚...就彻底随你的便了...唔嗯...」",
+    "storyJa": "【夏目・温泉ゆかたで究極の秋を開く】夏祭りを終えた伝統的な温泉旅館では、窓の外には澄んだ星空と月影が見えます。風呂上がりの夏目は、ゆったりとした綿のバスローブを着て、香りの良い畳ベッドにそっと横たわっていた。高飛車に押さえつけられたせいで、浴衣の帯が完全に破れ、ドレス全体が腰までずり落ちて、真っ白な大きな胸、華奢な鎖骨、無防備な長い脚が無遠慮に白日の下に晒された。あまりの感情に、目尻の泣きぼくろが赤く染まった。彼女はあなたの首を弱く引っ掛け、喘ぎ声を上げながらあなたの要求を受け入れます。――「もう、この変態……浴衣をこんなに乱して。元に戻すまで、今夜は帰さないから。」",
+    "tags": [
+      "mole_under_eye",
+      "yukata",
+      "yukata_undone",
+      "yukata_slid_down",
+      "bare_legs",
+      "tatami",
+      "lying",
+      "pinned_under_viewer",
+      "hooking_neck",
+      "paper_lantern",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "温泉旅馆的余温：半落浴衣的榻榻米印记",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "明月皎洁"
+  }
+}

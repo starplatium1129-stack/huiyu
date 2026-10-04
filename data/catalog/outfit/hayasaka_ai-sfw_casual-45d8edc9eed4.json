@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/sfw_casual",
+  "revision": 1,
+  "sortOrder": 774,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "default": false,
+      "id": "sfw_casual",
+      "isDefault": false,
+      "name": "任务间隙便装",
+      "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
+      "tokens": [
+        "navy_jacket",
+        "t-shirt",
+        "jeans",
+        "side_ponytail"
+      ]
+    }
+  }
+}

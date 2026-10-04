@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "hatsune_miku",
+  "revision": 1,
+  "sortOrder": 7,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hatsune_miku",
+    "profile": {
+      "id": "hatsune_miku",
+      "name": "初音未来",
+      "alias": [
+        "Hatsune Miku",
+        "初音ミク"
+      ],
+      "type": "popular",
+      "icon": "🎤",
+      "portrait": {
+        "image": "../assets/characters/popular-hatsune_miku.png?v=5",
+        "alt": "初音未来 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "蓝绿超长双马尾",
+        "hair_color": "蓝绿（青绿）",
+        "eyes": "蓝绿",
+        "hairstyle": "超长双马尾 · 发梢微翘",
+        "uniform": "V2灰色无袖上衣、青绿领带与分离臂套",
+        "expression": "元气活泼 · 虚拟歌姬",
+        "style": "cheerful virtual diva",
+        "signature": "蓝绿超长双马尾与经典舞台装"
+      },
+      "personality": [
+        "元气活泼",
+        "天真可爱",
+        "充满未来感",
+        "可演绎多种气质",
+        "舞台上的闪耀"
+      ],
+      "likes": [
+        "演唱会",
+        "音乐",
+        "与粉丝的共鸣",
+        "新歌"
+      ],
+      "classic_cg": {
+        "title": "荧光棒之海",
+        "description": "巨蛋舞台中央，聚光灯与全息投影环绕，荧光棒的海洋随她的歌声起伏。"
+      },
+      "identity": {
+        "role": "虚拟歌姬（VOCALOID 2 首个角色）",
+        "age": "16 岁（设定）",
+        "occupation": "虚拟歌手",
+        "faction": "Crypton Future Media"
+      },
+      "tags": [
+        "蓝绿双马尾",
+        "虚拟歌姬",
+        "舞台装",
+        "领带",
+        "臂套"
+      ],
+      "bg_story": "初音未来是 Crypton Future Media 开发的 VOCALOID 虚拟歌姬，2007 年出道。无固定世界观，由庞大创作生态共同塑造，可自由放置于任何场景；演唱会舞台与音乐元素是核心意象。",
+      "palette": [
+        "未来青",
+        "白",
+        "霓虹粉"
+      ],
+      "weather": [
+        "舞台灯光",
+        "录音室暖光",
+        "街头庆典"
+      ],
+      "speech": "初音未来向你致以问候。",
+      "source": "Crypton Future Media《VOCALOID》",
+      "traits": [
+        "hatsune_miku",
+        "1girl",
+        "solo",
+        "very_long_hair",
+        "twintails",
+        "teal_hair",
+        "teal_eyes",
+        "black_hairband",
+        "hair_ribbon",
+        "01_shoulder_tattoo",
+        "headset",
+        "vocaloid"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "hatsune_miku",
+      "displayName": "初音未来",
+      "originalName": "Hatsune Miku",
+      "franchise": "VOCALOID",
+      "aliases": [
+        "hatsune_miku",
+        "miku",
+        "miku hatsune",
+        "vocaloid"
+      ],
+      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails with a glossy sheen, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
+      "identityTokens": [
+        "hatsune_miku",
+        "1girl",
+        "solo",
+        "very_long_hair",
+        "twintails",
+        "teal_hair",
+        "teal_eyes",
+        "black_hairband",
+        "hair_ribbon",
+        "01_shoulder_tattoo",
+        "vocaloid"
+      ],
+      "exactTokens": [
+        "hatsune_miku"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "虚拟歌姬（VOCALOID）",
+        "era": "无固定",
+        "formNotes": "青绿超长双马尾；经典舞台装=无袖深色上衣+领带+臂套；全场景灵活",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "rella, official vocaloid art, vibrant concert lighting",
+      "curatedArtistStyles": [
+        "rella",
+        "mika_pikazo",
+        "anmi"
+      ]
+    }
+  }
+}

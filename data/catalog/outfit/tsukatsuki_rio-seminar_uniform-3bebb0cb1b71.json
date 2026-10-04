@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/seminar_uniform",
+  "revision": 1,
+  "sortOrder": 501,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "default": true,
+      "id": "seminar_uniform",
+      "isDefault": true,
+      "name": "研讨会制服",
+      "prose": "Millennium Seminar uniform with a high-neck sweater, pleated skirt, black tights, high heels, a watch and a hairpin, mature student council look",
+      "tokens": [
+        "school_uniform",
+        "high_neck_sweater",
+        "pleated_skirt",
+        "black_tights",
+        "high_heels",
+        "watch",
+        "hairpin",
+        "millennium"
+      ]
+    }
+  }
+}

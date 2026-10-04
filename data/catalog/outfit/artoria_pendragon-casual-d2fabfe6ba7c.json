@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon/casual",
+  "revision": 1,
+  "sortOrder": 77,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "artoria_pendragon",
+    "outfit": {
+      "id": "casual",
+      "name": "卫宫家便服",
+      "prose": "a cozy dark blue knit cardigan over a crisp white collared shirt and skirt, her signature casual look from Today's Menu for the Emiya Family",
+      "tokens": [
+        "casual_clothes",
+        "white_shirt",
+        "collared_shirt",
+        "blue_skirt",
+        "skirt",
+        "long_sleeves"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 674,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, radiant soft ivory skin, colossal buoyant breasts with tender rose-pink nipples, slender toned waist flaring into wide plush hips, glistening exposed pussy, cascading ankle-length bubblegum pink hair, sensitive black spade-heart tail twitching with desire, bare feet, warm romantic bedroom glow",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "huge_breasts",
+        "areolae",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "demon_tail",
+        "tail",
+        "ahoge",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

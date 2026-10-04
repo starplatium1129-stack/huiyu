@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "murasame/spirit_kimono",
+  "revision": 1,
+  "sortOrder": 614,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "default": true,
+      "id": "spirit_kimono",
+      "isDefault": true,
+      "name": "神刀刀灵改良和服",
+      "prose": "sacred blade spirit ceremonial attire: deep navy-black sleeveless modified kimono showing bare shoulders and armpits, layered white frilled undershirt, black and vermilion criss-cross chest cords with a center knot, yellow woven obi rope, tiered pleated skirt with lace hem, detached floating sleeves, and the sheathed Murasamemaru katana at her hip",
+      "tokens": [
+        "kimono",
+        "japanese_clothes",
+        "sleeveless_kimono",
+        "detached_sleeves",
+        "bare_shoulders",
+        "frills",
+        "lace_trim",
+        "obi",
+        "cross_straps",
+        "katana",
+        "sheath",
+        "spirit"
+      ]
+    }
+  }
+}

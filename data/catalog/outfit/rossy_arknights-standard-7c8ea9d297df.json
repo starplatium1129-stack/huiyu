@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/standard",
+  "revision": 1,
+  "sortOrder": 435,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "洛茜红斗篷剑士服",
+      "prose": "her red hooded cloak, white dress with black waist protection, black boots and a sheathed sword",
+      "tokens": [
+        "red_cloak",
+        "hood",
+        "white_dress",
+        "black_boots",
+        "sheath"
+      ]
+    }
+  }
+}

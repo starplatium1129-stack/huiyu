@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sfw_festival",
+  "revision": 1,
+  "sortOrder": 47,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sfw_festival",
+      "name": "夏祭紫色浴衣",
+      "prose": "a securely wrapped violet floral yukata, pale pink obi and wooden sandals",
+      "tokens": [
+        "purple_yukata",
+        "floral_print",
+        "pink_obi",
+        "geta"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "goldenglow_arknights/sfw_pastel_tea_dress",
+  "revision": 1,
+  "sortOrder": 348,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "goldenglow_arknights",
+    "outfit": {
+      "default": false,
+      "id": "sfw_pastel_tea_dress",
+      "isDefault": false,
+      "isNsfw": false,
+      "name": "粉薄荷茶会裙（日常场景）",
+      "prose": "a cream-pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes",
+      "tokens": [
+        "lolita",
+        "dress",
+        "frills",
+        "ribbon",
+        "mary_janes"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/evening_dress",
+  "revision": 1,
+  "sortOrder": 490,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "default": false,
+      "id": "evening_dress",
+      "isDefault": false,
+      "name": "晚礼服",
+      "prose": "an elegant strapless black evening ballgown with ruffled hem, long black opera gloves, black ribbon corsage in hair, pearl necklace, high heels, grand piano recital aesthetic",
+      "tokens": [
+        "evening_dress",
+        "black_dress",
+        "strapless_dress",
+        "ruffles",
+        "opera_gloves",
+        "black_gloves",
+        "pearl_necklace",
+        "high_heels",
+        "formal",
+        "elegant"
+      ]
+    }
+  }
+}

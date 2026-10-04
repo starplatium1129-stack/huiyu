@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/winter_coat",
+  "revision": 1,
+  "sortOrder": 84,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "winter_coat",
+      "name": "Fate 本篇冬装",
+      "prose": "her purple winter coat with a hood and fur trim from the Fuyuki winter story",
+      "tokens": [
+        "coat",
+        "purple_coat",
+        "fur_trim",
+        "hood",
+        "winter_clothes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

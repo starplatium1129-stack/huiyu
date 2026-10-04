@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_highroller_club_balcony_cocktail",
+  "revision": 1,
+  "sortOrder": 1106,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手执荧光鸡尾酒杯靠在琉璃吧台旁，高开叉长裙展现修长美腿，眼神敏锐侦查",
+    "camera": "medium shot, cowboy perspective, elegant fashion framing",
+    "category": "名流潜行",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "stealth"
+    ],
+    "description": "【露西 · 云顶俱乐部的幻彩鸡尾酒】夜之城顶级云顶俱乐部顶层空中花园，水幕与全息锦鲤在身边穿梭。露西身穿闪烁着幻彩偏光的银灰高开叉吊带晚礼服，指尖捏着一杯冒着荧光烟雾的马天尼。她假装漫不经心地倚在吧台边观察着荒坂高层的动向，优雅高贵却暗藏致命杀机。",
+    "id": "lucy_highroller_club_balcony_cocktail",
+    "lighting": "水幕反射的荧光粉紫霓虹与奢华金箔吧台柔和光影",
+    "location": "云顶高空奢华俱乐部露天水榭",
+    "mood": "冷艳高贵",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "neon_evening_dress",
+    "promptProse": "Leaning against an illuminated frosted glass bar at an exclusive high-altitude Night City club, Lucy sips a luminescent neon cocktail in an iridescent metallic slip dress. Holographic water displays cast shifting magenta patterns across her graceful figure and sharp netrunner gaze.",
+    "promptTokens": [
+      "luxury_nightclub",
+      "cocktail_glass",
+      "metallic_dress",
+      "high_slit",
+      "holographic_koi",
+      "neon_ambience",
+      "cyberware",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "nightclub",
+      "cocktail",
+      "glass",
+      "slip_dress",
+      "high_slit",
+      "neon",
+      "hologram",
+      "water_features"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "露西 · 云顶俱乐部的幻彩鸡尾酒"
+  }
+}

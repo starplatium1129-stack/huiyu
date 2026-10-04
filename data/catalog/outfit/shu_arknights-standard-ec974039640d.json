@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "shu_arknights/standard",
+  "revision": 1,
+  "sortOrder": 402,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shu_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "大荒农业天师装",
+      "default": true,
+      "isDefault": true,
+      "tokens": [
+        "off_shoulder",
+        "open_jacket",
+        "white_jacket",
+        "long_sleeves",
+        "strapless_shirt",
+        "white_pants",
+        "black_boots",
+        "tassel_earrings",
+        "bead_bracelet",
+        "necklace"
+      ],
+      "prose": "her original white jacket with blue lining and gold fastenings, worn off the shoulders over a gray-and-white strapless top, wide white trousers with ocher-patterned hems, black boots, long tassel earrings, a geometric block necklace and bead bracelets"
+    }
+  }
+}

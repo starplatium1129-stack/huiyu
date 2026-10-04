@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 267,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "成年版婚礼礼服造型",
+      "isDefault": false,
+      "default": false,
+      "prose": "an elegant, fully covered ivory bridal-inspired gown with lace sleeves, a simple veil, a slim ivory sash and a modest floor-length skirt",
+      "tokens": [
+        "bridal_gown",
+        "wedding_dress",
+        "ivory_gown",
+        "lace_sleeves",
+        "veil",
+        "ivory_sash",
+        "floor_length_skirt"
+      ]
+    }
+  }
+}

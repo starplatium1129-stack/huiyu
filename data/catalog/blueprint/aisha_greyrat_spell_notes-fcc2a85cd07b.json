@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "aisha_greyrat_spell_notes",
+  "revision": 1,
+  "sortOrder": 485,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "aisha_greyrat_spell_notes",
+    "title": "爱夏·页边的术式修订",
+    "outfitId": "study_attire",
+    "action": "左手食指对照书中图形，右手在笔记页边补上一笔",
+    "location": "宅邸藏书室",
+    "timeOfDay": "午后",
+    "lighting": "柔和的斜射日光",
+    "mood": "机敏好学",
+    "camera": "three-quarter medium shot",
+    "category": "奇幻",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "magic",
+      "study",
+      "books",
+      "notes",
+      "fantasy"
+    ],
+    "description": "爱夏侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
+    "promptProse": "Two open volumes lie side side on the library table: a reference tome and a working notebook. Aisha leans slightly forward, placing her left index finger beneath a diagram in the tome while her right hand draws one connecting stroke in the notebook with a feather pen. A three-quarter view keeps her intent eyes and both contact points visible. Afternoon sun crosses the pages diagonally, with an inkpot at the far corner and the arch of a tall window behind her shoulder.",
+    "promptTokens": [
+      "leaning_forward",
+      "pointing_at_book",
+      "drawing_diagram",
+      "feather_pen",
+      "open_notebook",
+      "two_open_books",
+      "inkpot",
+      "arched_window",
+      "three_quarter_view",
+      "afternoon_sunlight"
+    ],
+    "adult": false,
+    "characterId": "aisha_greyrat",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ]
+  }
+}

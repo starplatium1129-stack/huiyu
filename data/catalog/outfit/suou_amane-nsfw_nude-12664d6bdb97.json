@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 647,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "huge_breasts",
+        "areolae",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "hair_rings",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, sun-kissed soft ivory skin, colossal buoyant breasts with tender rose-pink nipples, narrow curved waist flaring into wide plush hips, glistening exposed pussy, cascading crimson hair with signature hair rings spread across the pillows, sultry blue eyes, bare feet, warm passionate bedroom glow",
+      "styleHint": "tender romantic candlelight",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

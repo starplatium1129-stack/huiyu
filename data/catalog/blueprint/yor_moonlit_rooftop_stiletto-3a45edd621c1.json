@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "yor_moonlit_rooftop_stiletto",
+  "revision": 1,
+  "sortOrder": 808,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yor_moonlit_rooftop_stiletto",
+    "characterId": "yor_forger",
+    "title": "约尔·福杰 · 月下屋顶·荆棘双针与冷艳杀气",
+    "description": "【约尔 · 月下屋顶·荆棘双针与冷艳杀气】清冷孤月高悬的都市钟楼屋顶之上，代号「荆棘公主」的顶级暗杀者身着一袭优雅性感的露背黑礼裙。她反握着泛着寒光的金色锥针，眼底凌厉的杀气如极北寒冰——「为了守护劳埃德先生与阿尼亚的和平生活……阻碍于此的害虫们，就由我彻底打扫干净吧。」",
+    "outfitId": "thorn_princess_dress",
+    "sceneTags": [
+      "rooftop",
+      "full_moon",
+      "night_sky",
+      "stiletto_weapons",
+      "black_dress",
+      "floating_hair",
+      "intense_eyes",
+      "castle"
+    ],
+    "promptProse": "Poised atop a moonlit Berlint rooftop holding golden stiletto blades, Thorn Princess Yor stands ready with deadly assassin grace. Silver moonlight and billowing black rose silks create a breathtaking, lethal nocturnal portrait.",
+    "promptTokens": [
+      "city_rooftop",
+      "thorn_princess_dress",
+      "stiletto_weapons",
+      "full_moon",
+      "wind_blown_dress",
+      "lethal_gaze",
+      "night",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "dark shadowed face",
+      "flat lighting",
+      "extra characters",
+      "indoor",
+      "day",
+      "cozy",
+      "crowd",
+      "domestic",
+      "bad hands"
+    ],
+    "adult": false,
+    "recommendedEngine": "anima-miaomiao-v1.2",
+    "category": "日常羁绊",
+    "location": "月光下的屋顶",
+    "action": "荆棘公主装束立于月下，杀气凛然",
+    "timeOfDay": "night",
+    "lighting": "moonlight",
+    "camera": "medium_shot",
+    "mood": "tense",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
+  }
+}

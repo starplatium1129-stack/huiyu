@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/oversized_white_shirt",
+  "revision": 1,
+  "sortOrder": 282,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "oversized_white_shirt",
+      "name": "白衬衫私服",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "dress_shirt",
+        "unbuttoned",
+        "open_front",
+        "shirttail",
+        "bare_chest",
+        "bare_midriff",
+        "bare_legs",
+        "night_shirt"
+      ],
+      "prose": "wearing an oversized white dress shirt worn alone as a night shirt, fully unbuttoned with the long tails falling to mid-thigh",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/cosplay",
+  "revision": 1,
+  "sortOrder": 273,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "cosplay",
+      "isDefault": false,
+      "name": "泛用 cosplay",
+      "prose": "a playful cosplay outfit with character accents and a wig",
+      "tokens": [
+        "cosplay",
+        "costume",
+        "wig",
+        "hair_ornament",
+        "sailor_uniform"
+      ]
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "matou_sakura",
+  "revision": 1,
+  "sortOrder": 40,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "matou_sakura",
+    "profile": {
+      "id": "matou_sakura",
+      "name": "间桐樱",
+      "alias": [
+        "Matou Sakura",
+        "Sakura",
+        "まとう さくら",
+        "樱"
+      ],
+      "type": "popular",
+      "icon": "🎀",
+      "portrait": {
+        "image": "../assets/characters/popular-matou_sakura.png?v=5",
+        "alt": "间桐樱 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "紫色长发 · 齐刘海",
+        "hair_color": "紫（Violet）",
+        "eyes": "紫（Deep Violet）",
+        "hairstyle": "日常长发 · 厨房侧束发",
+        "uniform": "穗群原学园制服 / 白色连衣裙",
+        "expression": "温柔沉静 · 含情目光",
+        "style": "gentle violet-haired beauty",
+        "signature": "紫发紫瞳、红缎带与温柔的献身感"
+      },
+      "source": "TYPE-MOON《Fate 系列》",
+      "bg_story": "间桐樱是《Fate/stay night》的女主角之一，间桐家收养的少女，穗群原学园一年生。紫色长发与红色缎带是她的标志，性格温柔沉静、家务全能，在卫宫家找到了真正的归宿。黑化形态「Dark Sakura」则是她压抑情感的暴走形态。",
+      "personality": [
+        "温柔贤淑",
+        "隐忍坚强",
+        "善解人意",
+        "家务全能",
+        "内敛深情"
+      ],
+      "likes": [
+        "做饭",
+        "卫宫家",
+        "侍弄花草",
+        "前辈"
+      ],
+      "traits": [
+        "matou_sakura",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "hair_ribbon",
+        "red_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "fate/stay_night"
+      ],
+      "speech": "间桐樱向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "卫宫家的厨房",
+        "description": "她系着围裙在厨房里忙碌，回头对你露出安心的微笑——那是她最幸福的日常。"
+      },
+      "identity": {
+        "role": "穗群原学园一年生",
+        "age": "高中一年级",
+        "occupation": "学生",
+        "faction": "卫宫家 / 穗群原学园"
+      },
+      "tags": [
+        "紫发",
+        "紫瞳",
+        "红缎带",
+        "温柔",
+        "大和抚子"
+      ],
+      "palette": [
+        "紫罗兰",
+        "缎带红",
+        "暖白"
+      ],
+      "weather": [
+        "卫宫家厨房",
+        "冬木神社",
+        "黄昏坡道"
+      ]
+    },
+    "popular": {
+      "id": "matou_sakura",
+      "displayName": "间桐樱",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "homurahara_uniform",
+      "identityTokens": [
+        "matou_sakura",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "hair_ribbon",
+        "red_ribbon",
+        "purple_eyes",
+        "fate/stay_night"
+      ],
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
+      "animeStudio": "type-moon, ufotable, official anime screencap",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "morikura_en"
+      ],
+      "originalName": "间桐樱",
+      "exactTokens": [
+        "matou_sakura"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "matou sakura",
+        "sakura",
+        "sakura matou",
+        "fate stay night",
+        "fsn",
+        "间桐樱",
+        "樱"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/stay night）",
+        "era": "当代",
+        "formNotes": "紫色长发；紫色瞳；红色缎带发饰；身材丰满；穗群原学园制服；黑化形态红纹礼服",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

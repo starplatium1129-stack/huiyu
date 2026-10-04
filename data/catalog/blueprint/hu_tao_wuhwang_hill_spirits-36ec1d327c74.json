@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "hu_tao_wuhwang_hill_spirits",
+  "revision": 1,
+  "sortOrder": 21,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao_wuhwang_hill_spirits",
+    "title": "胡桃 · 无妄坡幽火幻舞",
+    "category": "奇幻夜景",
+    "characterId": "hu_tao",
+    "description": "【胡桃 · 无妄坡幽火幻舞】夜幕笼罩下的无妄坡古树林间，幽蓝色的磷火在空中静静漂浮。胡桃身姿轻盈地侧立在盘虬卧龙的古木枝头，单手掐诀操控着身边可爱的火灵小幽灵（Boo Tao），嘴角挂着神秘莫测又调皮可爱的狡黠微笑——「阴阳有序，命运无常！往生堂第七十七代堂主胡桃，奉陪到底哦～」",
+    "location": "无妄坡幽静古树秘境",
+    "action": "侧身轻点枝头，单手结印操控悬浮火灵小幽灵（Boo Tao），嘴角带着狡黠神秘微笑",
+    "timeOfDay": "夜晚",
+    "lighting": "幽蓝鬼火冷光与赤红火灵暖光双色交织",
+    "camera": "full-body shot, side view, branch and spirit in frame",
+    "mood": "神秘灵动",
+    "sceneTags": [
+      "tree_branch",
+      "standing",
+      "side_view",
+      "hand_sign",
+      "ghost_companion",
+      "blue_fire",
+      "red_fire",
+      "night",
+      "full_body",
+      "spooky_forest",
+      "smug_smile"
+    ],
+    "promptProse": "Hu Tao balances sideways on a broad old branch at Wuwang Hill. One hand forms a small guiding sign toward her round, friendly fire spirit while the other steadies her posture against the trunk. Blue wisps hang between the distant trees; The companion casts a warm red edge across her dark director coat, shorts and blossom-trimmed hat. Her flower-shaped red pupils turn toward the viewer with a secretive grin. Show her supported feet, branch and hovering spirit together, with cool forest depth behind them. No lettering.",
+    "promptTokens": [
+      "tree_branch",
+      "standing",
+      "side_view",
+      "hand_sign",
+      "ghost_companion",
+      "blue_fire",
+      "red_fire",
+      "night",
+      "full_body",
+      "spooky_forest",
+      "smug_smile",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_funeral_director",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

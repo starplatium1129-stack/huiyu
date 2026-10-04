@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/casual",
+  "revision": 1,
+  "sortOrder": 540,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "default": false,
+      "id": "casual",
+      "isDefault": false,
+      "name": "常服便装",
+      "prose": "her daily casual outfit, a white long-sleeved button-up shirt with the iconic red scarf around her neck, black shorts, a brown leather belt and tall black boots",
+      "tokens": [
+        "white_shirt",
+        "red_scarf",
+        "black_shorts",
+        "belt",
+        "tall_boots",
+        "casual_clothes"
+      ]
+    }
+  }
+}

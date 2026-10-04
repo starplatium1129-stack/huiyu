@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc018",
+  "revision": 1,
+  "sortOrder": 17,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Standing under a convenience store eaves on a rainy night, Shiki Natsume in a casual beige sweater with navy pleated miniskirt and glossy black tights holds a hot drink with both hands, composed blush under warm eaves light with steam.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "屋檐下半身中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "平静",
+    "id": "sc018",
+    "lighting": "便利店檐灯与雨夜反射",
+    "location": "便利店",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_convenience_store_floor, standing_under_convenience_store_eaves_holding_hot_drink_with_both_hands_and_composed_blush, warm_convenience_store_eaves_light_with_hot_drink_steam_and_store_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, rainy_night, night_rain, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 便利店屋檐下的热饮】秋雨把夜色洗得发亮，你和夏目并肩困在便利店屋檐下。她买了两罐热咖啡，把更甜的那一罐塞进你手里，又自然地往你这边挪了半步替你避开溅起的雨水。你问她是不是担心，她看着街面回答——「只是买一送一。雨小一点再走，省得你感冒以后还要麻烦别人。」",
+    "storyJa": "【夏目・コンビニの軒下で温かい飲み物】秋の雨が夜を明るく染め、あなたと夏目はコンビニの軒下に並んで閉じ込められます。彼女はホットコーヒーを2缶購入し、甘い方をあなたの手に置き、しぶき雨を避けるために自然に半歩あなたのほうに移動しました。あなたは彼女に心配しているかと尋ねると、彼女は通りを見て答えました――「たまたま二つで一つの値段だっただけ。雨が弱くなるまで待ちなさい。風邪をひいて、あとで誰かに迷惑をかけないように。」",
+    "tags": [
+      "mole_under_eye",
+      "beige_sweater",
+      "sheer_black_tights",
+      "convenience_store",
+      "ankle_boots",
+      "depth_of_field",
+      "medium_shot",
+      "two_hot_drinks",
+      "offering_drink"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "便利店屋檐下的热饮",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雨"
+  }
+}

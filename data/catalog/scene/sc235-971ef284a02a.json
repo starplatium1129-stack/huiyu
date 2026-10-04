@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc235",
+  "revision": 1,
+  "sortOrder": 230,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc235",
+    "recommendedSize": "1344×768",
+    "title": "私密卧室里的纯情防线决堤",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 私密卧室的心意】深夜唯余屏幕微光的女生公寓卧室。平日里在咖啡店冷静疏离的夏目，在只有你们两人的安静房间里终于放下了防备。她穿着单薄宽松的黑色居家背心，顺从地跨坐在你腿上。感受着你毫无保留的温柔怀抱，她平日里清冷的眼眸蒙上了一层动情的羞涩水汽，整张脸颊与耳根都泛着热度。她伸手轻轻拉住你的衣领，极力稳住呼吸呢喃着——「……别误会，我只是觉得……既然是你，就没必要再勉强自己装出冷淡的样子了。……大笨蛋，轻一点……抱紧我就好。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "black_camisole",
+      "short_shorts",
+      "no_underwear",
+      "sitting_on_lap",
+      "straddling",
+      "grabbing_lapels",
+      "shamed",
+      "flushed",
+      "computer_glow",
+      "bedroom",
+      "night",
+      "close_up"
+    ],
+    "mature": true,
+    "location": "夏目公寓卧室双人床榻",
+    "weather": "微热密闭",
+    "camera": "近景主观正面特写",
+    "lighting": "电脑屏幕与床头散发的幽暗高光与面部强烈红晕",
+    "usage": [
+      "核心协议",
+      "绝对独占",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, open-front_negligee, black_translucent_cloth, see-through, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_on_bed, grabbing_viewer_shirt_collar, teary_eyes, heavy_blush, panting, bedroom_night, warm_lamp, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "storyJa": "【夏目】【ナツメ・二人きりの寝室で】深夜、画面の淡い光だけが照らす静かな部屋。普段カフェで見せる冷淡さを解いたナツメは、部屋着のままあなたに寄り添っていた。温かな抱擁を受け止めながら、澄んだ金の瞳に潤みを帯び、耳まで紅潮させている。彼女はそっとあなたのシャツを掴み、震える声で呟いた――「……勘違いしないで。あなた相手なら、もう無理に強がらなくていいと思っただけ。……バカ、優しく抱きしめて」",
+    "rating": "R18",
+    "animaCaption": "In the pitch-dark private bedroom of her apartment lit only by the faint computer glow, Shiki Natsume in a loose black home camisole and thin short pants with nothing beneath obediently sits astride your thighs; her hands grab your lapels to stop your teasing while her dead-fish eyes swim with shamed tears and her face and ears flush to the roots, her cool tsundere murmur trembling.",
+    "auditRevision": "careful-batch10-2026-08-27"
+  }
+}

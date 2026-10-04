@@ -103,21 +103,25 @@ fn content_gate_matches_node_and_rejects_stale_products_and_pollution() {
     };
     let initial_issues = old_issues(root);
     assert!(initial_issues.is_empty(), "{initial_issues:?}");
-    let audit = validate(&options).unwrap();
+    let audit = validate_with(&options, std::collections::HashMap::new()).unwrap();
     assert_eq!(audit["referenceAudit"]["pending"], 1);
-    let mut popular = read(root, "data/popular-characters.json").unwrap();
+    let source = DataRoot {
+        path: root,
+        overrides: std::collections::HashMap::new(),
+    };
+    let mut popular = read(&source, "data/popular-characters.json").unwrap();
     popular["characters"][0]["identityTokens"] = json!(["ayachi_nene", "beach"]);
     popular["characters"][0]["outfits"][0]["default"] = json!(false);
     write(root, "data/popular-characters.json", &popular);
-    let mut blueprints = read(root, "data/scene-blueprints.json").unwrap();
+    let mut blueprints = read(&source, "data/scene-blueprints.json").unwrap();
     blueprints["blueprints"][0]["kreaStyleHint"] = json!("r18_sensual_cg");
     write(root, "data/scene-blueprints.json", &blueprints);
-    let mut scenes = read(root, "data/scenes.json").unwrap();
+    let mut scenes = read(&source, "data/scenes.json").unwrap();
     scenes[0]["mature"] = json!(true);
     write(root, "data/scenes.json", &scenes);
     let mut old = old_issues(root);
     old.sort();
-    let error = validate(&options).unwrap_err();
+    let error = validate_with(&options, std::collections::HashMap::new()).unwrap_err();
     let mut current: Vec<_> = list(&error.extra["issues"])
         .iter()
         .map(|v| v.as_str().unwrap().to_owned())

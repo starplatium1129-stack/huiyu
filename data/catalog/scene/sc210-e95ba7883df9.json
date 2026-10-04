@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc210",
+  "revision": 1,
+  "sortOrder": 205,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc210",
+    "title": "月下露天风吕的黑发水痕",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 夏目 · 月下温泉的短暂休战】旅行最后一晚，露天风吕外只剩虫鸣和远处的山风。夏目把湿透的黑发拨到身后，靠在温泉边缘仰望月色；平日锐利的眼神在蒸汽里慢慢放松。她听见你的脚步声却没有回头，只把空出来的位置留给你——「这次休假算你赢了。坐过来吧，但不许把这份安静弄得太吵。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "放松后的温柔",
+    "season": "秋",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "mole_under_eye",
+      "bare_shoulders",
+      "in_hot_spring",
+      "outdoor_onsen",
+      "wet_hair",
+      "leaning_on_edge",
+      "moon_gazing",
+      "steam",
+      "autumn",
+      "night",
+      "moonlight",
+      "water_reflections",
+      "medium_shot"
+    ],
+    "rating": "R15",
+    "mature": false,
+    "location": "山间旅馆私人露天风吕",
+    "weather": "秋夜微凉",
+    "camera": "侧面中近景",
+    "lighting": "月光、灯笼与水面反射光",
+    "usage": [
+      "旅行氛围",
+      "R15"
+    ],
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, outdoor_onsen, hot_springs, steam, bare_shoulders, water_droplets, wet_skin, leaning_back, relaxing, gazing_at_moon, serene_expression, softened_eyes, night, warm_lighting, moonlight, water_reflections, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」",
+    "animaCaption": "On the last night of the trip at the mountain inn's private outdoor onsen, Shiki Natsume pushes her soaked black hair back behind her shoulders and leans against the edge of the bath, looking up at the cool moon with her usual sharp eyes slowly relaxing in the steam; moonlight and lantern glow dance on the water surface around her bare shoulders. Water droplets glisten on her bare shoulders above the surface.",
+    "auditRevision": "careful-batch10-2026-08-27"
+  }
+}

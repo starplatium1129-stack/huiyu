@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_moonlit_harbor_carrier_flightdeck",
+  "revision": 1,
+  "sortOrder": 1085,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_moonlit_harbor_carrier_flightdeck",
+    "title": "大凤 · 极夜港口的烈焰航母出击",
+    "category": "装母威仪",
+    "characterId": "taihou_azur",
+    "outfitId": "sakura_kimono",
+    "coverageTags": [
+      "carrier"
+    ],
+    "description": "【大凤 · 极夜港口的烈焰航母出击】暗夜茫茫的要塞海面上，大凤立于自己巨大的重樱装甲航母飞行甲板之上。炽烈的红莲业火从甲板边缘升腾而起，引导着烈焰缭绕的舰载战机呼啸升空划破夜空。她站在烈火与狂风中心，双眸闪烁着狂热霸道的红芒——「重樱装甲航空母舰大凤，为了指挥官大人，将一切来犯之敌焚烧殆尽！」",
+    "location": "夜间深海航空母舰飞行甲板",
+    "action": "站在装甲甲板上扬起振袖号令战机起飞，周身红莲烈焰升腾，霸气凛然",
+    "timeOfDay": "深夜",
+    "lighting": "夜空冰冷月色与甲板升腾的滚滚红莲烈焰对冲",
+    "camera": "wide epic shot, low angle, massive warship scale",
+    "mood": "狂霸毁灭",
+    "sceneTags": [
+      "aircraft_carrier",
+      "flight_deck",
+      "fighter_aircraft",
+      "flames",
+      "fire",
+      "kimono",
+      "twintails",
+      "ocean"
+    ],
+    "promptProse": "Standing imperiously upon the steel armored flight deck of her aircraft carrier amid dark turbulent waters, Taihou directs flaming carrier strike aircraft into the midnight sky. Roaring crimson fires illuminate her billowing robes and long twin tails with awe-inspiring naval might.",
+    "promptTokens": [
+      "aircraft_carrier",
+      "flight_deck",
+      "naval_aviation",
+      "flames",
+      "fire_glow",
+      "kimono",
+      "twintails",
+      "stormy_sea",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

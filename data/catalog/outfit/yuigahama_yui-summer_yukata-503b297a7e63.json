@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/summer_yukata",
+  "revision": 1,
+  "sortOrder": 199,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "summer_yukata",
+      "name": "夏日祭典碎花浴衣",
+      "tokens": [
+        "yukata",
+        "floral_print",
+        "red_obi",
+        "hair_ornament",
+        "geta",
+        "folding_fan"
+      ],
+      "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+      "styleHint": "warm festive lantern glow",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

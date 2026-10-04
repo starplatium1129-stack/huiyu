@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/combat_armor",
+  "revision": 1,
+  "sortOrder": 107,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "combat_armor",
+      "name": "战斗装（灵基二/三破）",
+      "prose": "her combat armored dress with a diamond-shaped midriff cutout, leotard, elbow gloves and thigh-highs, carrying Lord Chaldeas",
+      "tokens": [
+        "armored_dress",
+        "stomach_cutout",
+        "two-tone_dress",
+        "leotard",
+        "elbow_gloves",
+        "thighhighs",
+        "shield"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

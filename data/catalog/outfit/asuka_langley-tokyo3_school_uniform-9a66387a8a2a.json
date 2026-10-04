@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/tokyo3_school_uniform",
+  "revision": 1,
+  "sortOrder": 564,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "default": false,
+      "id": "tokyo3_school_uniform",
+      "isDefault": false,
+      "name": "第3新东京市立中学水手校服",
+      "prose": "wearing the Tokyo-3 Junior High uniform with a short-sleeved white sailor blouse under a turquoise pinafore dress, bright red bow, black over-knee socks, and her signature red hair clips",
+      "styleHint": "vibrant afternoon breeze sunlit school hallway aesthetic",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "white_shirt",
+        "blue_jumper_skirt",
+        "jumper_skirt",
+        "red_bow",
+        "black_thighhighs",
+        "loafers",
+        "interface_headset"
+      ]
+    }
+  }
+}

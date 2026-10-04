@@ -9,12 +9,12 @@ it('orders by the chosen mode, then resolves relevance ties without mutating inp
   const now = 1_700_000_000_000
   vi.spyOn(Date, 'now').mockReturnValue(now)
   const scenes = [
-    { id: 'sc10', title: 'C', char: 'nene' },
+    { id: 'sc10', title: 'C', char: 'nene', createdAt: '2026-09-01T00:00:00Z' },
     { id: 'sc2', title: 'A', char: 'natsume' },
     { id: 'sc1', title: 'B', char: 'natsume' },
     { id: 'sc3', title: 'D', char: 'natsume' },
     { id: 'sc4', title: 'E', char: 'natsume' },
-    { id: 'sc5', title: 'F', char: 'natsume', story: 'quiet', emotion: 'joy', rating: 'All' },
+    { id: 'sc5', title: 'F', char: 'natsume', story: 'quiet', emotion: 'joy', rating: 'All', createdAt: '2026-10-01T00:00:00Z' },
   ] as ExplorerScene[]
   const options = {
     curation: { personaCoreSceneIds: ['sc1', 'sc3', 'sc1'], signatureSceneIds: ['sc3', 'sc2'], curatedSceneIds: ['sc2', 'sc4'] },
@@ -25,9 +25,9 @@ it('orders by the chosen mode, then resolves relevance ties without mutating inp
     curation: ['sc1', 'sc3', 'sc2', 'sc4', 'sc5', 'sc10'],
     smart: ['sc1', 'sc3', 'sc2', 'sc10', 'sc4', 'sc5'],
     favorite: ['sc3', 'sc10', 'sc2', 'sc1', 'sc4', 'sc5'],
-    used: ['sc2', 'sc10', 'sc1', 'sc3', 'sc4', 'sc5'],
+    used: ['sc2', 'sc1', 'sc3', 'sc4', 'sc5', 'sc10'],
     title: ['sc2', 'sc1', 'sc10', 'sc3', 'sc4', 'sc5'],
-    newest: ['sc10', 'sc5', 'sc4', 'sc3', 'sc2', 'sc1'],
+    newest: ['sc5', 'sc10', 'sc1', 'sc2', 'sc3', 'sc4'],
   }
   for (const [mode, ids] of Object.entries(expected)) {
     expect(orderExplorerScenes(scenes, { ...options, mode }).map(scene => scene.id)).toEqual(ids)

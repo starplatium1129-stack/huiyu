@@ -1,0 +1,60 @@
+{
+  "kind": "scene",
+  "id": "sc135",
+  "revision": 1,
+  "sortOrder": 133,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the candlelit occult club room with the door locked, Ayachi Nene in a black lace corset that cinches her waist tightly and black fishnet stockings kneels bent forward on the leather sofa, both arms bound behind her back. Her pitiful heart-shaped ahoge droops as she pants with tears in her hugely embarrassed eyes.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "主观略微仰视近景",
+    "category": "同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致绝对服从",
+    "id": "sc135",
+    "lighting": "古典烛台微弱暖光",
+    "location": "社办皮革沙发",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, cropped_feet, upper_body, artist_name, chromatic_aberration, clothes, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, black, lace, exaggerated, cleavage, squeezed, kneeling, bent, forward, blush, dim, candlelight, secretly, collarbone, slender_waist, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 哥特束身衣极致羞耻】深夜彻底反锁的神秘学活动室大沙发上。宁宁在你的强势要求下，被迫换上了一套充满了禁忌哥特风的黑色蕾丝加厚束身衣与黑色网眼丝袜。束身衣极其夸张地将她纤细的腰肢勒紧，使得胸前本就宏伟的饱满呈现出近乎炸裂的震撼深渊。她双手被你缚在身后跪趴在皮革沙发中央，头顶的呆毛早已因为承受不住这股极致的羞耻感而瘫软成可怜的爱心螺旋，含泪大口喘息——「呜... 柊史... 这种衣服太奇怪了啦... 肚子被勒得好热... 今晚... 宁宁整个人都属于你了啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・ゴスコルセット極恥】深夜完全に施錠されたオカルト活動室の大きなソファの上。あなたの強い要望により、寧々はタブーなゴシックスタイルに満ちた黒いレースの厚みのあるコルセットと黒いメッシュストッキングのセットを着用することになりました。細い腰をコルセットが極度に大袈裟に締め付け、ただでさえ素晴らしい胸の膨らみが爆発寸前の衝撃的な深淵に現れた。彼女はあなたの後ろで手を縛られ、革張りのソファの真ん中にひざまずいていました。頭上のアホ毛は極度の恥辱に耐えられず、すでに哀れな愛のスパイラルに崩壊しており、目には涙を浮かべ息を切らしている。――「柊史……この服、やっぱり変じゃないですか？　少し恥ずかしいですけど……今夜は寧々のことを、ずっと見ていてください。」",
+    "tags": [
+      "hair_ribbon",
+      "corset",
+      "black_fishnet",
+      "fishnet_stockings",
+      "slender_waist",
+      "cleavage",
+      "arms_bound",
+      "kneeling",
+      "bondage",
+      "heavy_blush",
+      "tears_in_eyes",
+      "heavy_breathing",
+      "ahoge",
+      "leather_sofa",
+      "clubroom",
+      "night",
+      "candlelight",
+      "dim_lighting",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "神秘学活动室的反锁梦境",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "weather": "静谧"
+  }
+}

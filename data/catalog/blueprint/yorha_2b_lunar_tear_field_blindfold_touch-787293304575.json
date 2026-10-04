@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_lunar_tear_field_blindfold_touch",
+  "revision": 1,
+  "sortOrder": 1118,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_lunar_tear_field_blindfold_touch",
+    "title": "2B · 月之泪花海的微风轻拂",
+    "category": "圣域柔情",
+    "characterId": "yorha_2b",
+    "outfitId": "gothic_dress",
+    "coverageTags": [
+      "emotional"
+    ],
+    "description": "【2B · 月之泪花海的微风轻拂】深藏于地底圣所的隐秘阳光洞窟中，漫山遍野盛开着发光的白色「月之泪」奇花。2B 单膝跪在纯白的花海花丛中，微风吹拂着她纯黑的裙角与白色花瓣。她微微抬起戴着黑手套的右手，指尖轻触着脸上的黑色眼罩边缘，唇边的美人痣在圣洁白光中若隐若现，流露出冰冷杀戮兵器外表下对生命与人性的深沉敬畏。",
+    "location": "地下洞窟月之泪纯白花海圣所",
+    "action": "单膝跪在纯白花海中，纤手轻抚眼罩边缘，发丝与花瓣在微风中轻舞",
+    "timeOfDay": "上午",
+    "lighting": "天顶裂缝投射下的神圣纯白圣光柱与花瓣发光微尘",
+    "camera": "medium close-up, 3/4 front view, ethereal cinematic glow",
+    "mood": "神圣凄美",
+    "sceneTags": [
+      "flower_field",
+      "lunar_tear",
+      "white_flowers",
+      "kneeling",
+      "blindfold",
+      "gothic_dress",
+      "god_rays",
+      "peaceful"
+    ],
+    "promptProse": "Kneeling amidst a hidden cavern sanctuary blanketed in glowing white Lunar Tear flowers, 2B gently touches the edge of her black blindfold with gloved fingers. Heavenly sunbeams pierce the ceiling fissure, enveloping her gothic dress in pure ethereal brilliance.",
+    "promptTokens": [
+      "white_flower_field",
+      "lunar_tear_flowers",
+      "divine_sunbeams",
+      "kneeling",
+      "gothic_dress",
+      "blindfold",
+      "silver_hair",
+      "mole_under_mouth",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

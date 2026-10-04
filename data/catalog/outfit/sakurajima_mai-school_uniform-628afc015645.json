@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/school_uniform",
+  "revision": 1,
+  "sortOrder": 22,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "school_uniform",
+      "name": "校服",
+      "prose": "the Minegahara High School uniform with a brown blazer, beige knit sweater vest, red necktie, white collared shirt, grey pleated skirt and black pantyhose",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "brown_blazer",
+        "sweater_vest",
+        "beige_vest",
+        "white_shirt",
+        "collared_shirt",
+        "red_necktie",
+        "pleated_skirt",
+        "grey_skirt",
+        "black_pantyhose",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

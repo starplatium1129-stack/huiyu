@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/sfw_verdant_bridal",
+  "revision": 1,
+  "sortOrder": 141,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "sfw_verdant_bridal",
+      "name": "花谷纯白花嫁",
+      "prose": "an opaque floor-length white wedding gown and a delicate veil, with purple hair braided into a floral arrangement",
+      "tokens": [
+        "white_wedding_gown",
+        "veil",
+        "flower_braid"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

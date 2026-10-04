@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "fubuki_one_punch",
+  "revision": 1,
+  "sortOrder": 132,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fubuki_one_punch",
+    "profile": {
+      "id": "fubuki_one_punch",
+      "name": "吹雪",
+      "alias": [
+        "吹雪",
+        "Fubuki"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-fubuki_one_punch.png?v=f24daad19118",
+        "alt": "吹雪 · 吹雪组的晨会场景样张"
+      },
+      "visual_dna": {
+        "signature": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",
+        "hair": "black_hair, short_hair",
+        "eyes": "green_eyes",
+        "uniform": "吹雪组绿色正装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "重视组织与仪态，希望以实力获得认可",
+        "善于安排事务，也容易受到比较心的牵动",
+        "独处时会暂时卸下领袖姿态，认真整理自己的想法"
+      ],
+      "likes": [
+        "有条理的工作环境",
+        "安静喝茶",
+        "与团队共享休息时间"
+      ],
+      "classic_cg": {
+        "title": "吹雪 · 吹雪组的晨会",
+        "description": "吹雪组总部，她坐在长桌主位听取各小队报告，指尖轻叩桌面；分配任务时的果断与滴水不漏，是 B 级第一真正的实力所在。"
+      },
+      "identity": "One-Punch Man · 吹雪",
+      "tags": [
+        "吹雪",
+        "一拳超人",
+        "日常"
+      ],
+      "bg_story": "吹雪组的组织者，重视同伴，也在学着走出姐姐的阴影。黑发绿瞳、珍珠饰品与克制姿态是重点，不能误写为姐姐龙卷的绿发。",
+      "palette": [
+        "#86ad9c",
+        "#282532"
+      ],
+      "source": "One-Punch Man",
+      "speech": "安排已经确认，接下来按顺序进行。",
+      "traits": [
+        "fubuki_(one-punch_man)",
+        "one-punch_man",
+        "black_hair",
+        "short_hair",
+        "blunt_bangs"
+      ],
+      "accent_color": "#86ad9c",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "fubuki_one_punch",
+      "displayName": "吹雪",
+      "originalName": "Fubuki",
+      "franchise": "One-Punch Man",
+      "aliases": [
+        "吹雪",
+        "Fubuki"
+      ],
+      "identityProse": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",
+      "identityTokens": [
+        "fubuki_(one-punch_man)",
+        "one-punch_man",
+        "black_hair",
+        "short_hair",
+        "blunt_bangs",
+        "green_eyes"
+      ],
+      "exactTokens": [
+        "fubuki_(one-punch_man)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, fubuki_(one-punch_man)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

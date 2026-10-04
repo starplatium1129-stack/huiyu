@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "ellen_joe/streetwear_hoodie",
+  "revision": 1,
+  "sortOrder": 584,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ellen_joe",
+    "outfit": {
+      "default": false,
+      "id": "streetwear_hoodie",
+      "isDefault": false,
+      "name": "潮派街区宽松卫衣",
+      "prose": "trendy Sixth Street streetwear: an oversized baggy charcoal black graphic zip-up hoodie loosely slipping off one shoulder, distressed denim shorts with frayed hems, striped knee-high socks, chunky street sneakers, and a red lollipop stick resting between her lips",
+      "tokens": [
+        "casual",
+        "hoodie",
+        "black_hoodie",
+        "oversized_clothes",
+        "off_shoulder",
+        "denim_shorts",
+        "short_shorts",
+        "striped_socks",
+        "sneakers",
+        "lollipop",
+        "streetwear"
+      ]
+    }
+  }
+}

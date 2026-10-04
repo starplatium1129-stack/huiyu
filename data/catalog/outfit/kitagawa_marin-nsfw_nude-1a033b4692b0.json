@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 277,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "breasts",
+        "nipples",
+        "navel",
+        "bare_shoulders",
+        "collarbone",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

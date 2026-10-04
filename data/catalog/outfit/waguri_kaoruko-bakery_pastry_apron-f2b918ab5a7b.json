@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/bakery_pastry_apron",
+  "revision": 1,
+  "sortOrder": 843,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "bakery_pastry_apron",
+      "name": "蛋糕工坊甜品烘焙围裙",
+      "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blackish-purple braids",
+      "tokens": [
+        "apron",
+        "brown_apron",
+        "knit_sweater",
+        "yellow_sweater",
+        "long_skirt",
+        "bandana",
+        "twin_braids",
+        "casual_wear"
+      ]
+    }
+  }
+}

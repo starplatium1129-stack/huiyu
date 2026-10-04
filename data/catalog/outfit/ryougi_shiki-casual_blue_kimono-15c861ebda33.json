@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ryougi_shiki/casual_blue_kimono",
+  "revision": 1,
+  "sortOrder": 730,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ryougi_shiki",
+    "outfit": {
+      "id": "casual_blue_kimono",
+      "name": "居家深蓝素雅和服",
+      "prose": "a relaxed dark indigo-blue casual cotton kimono with subtle floral accents, loosely tied with a simple black sash, showing her graceful neckline and bare feet",
+      "tokens": [
+        "kimono",
+        "blue_kimono",
+        "obi",
+        "exposed_nape",
+        "barefoot",
+        "casual_wear"
+      ]
+    }
+  }
+}

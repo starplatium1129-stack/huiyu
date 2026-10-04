@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "yamada_anna",
+  "revision": 1,
+  "sortOrder": 116,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yamada_anna",
+    "profile": {
+      "id": "yamada_anna",
+      "name": "山田杏奈",
+      "alias": [
+        "Anna Yamada",
+        "山田杏奈",
+        "山田",
+        "吃货超模",
+        "我心里危险的东西"
+      ],
+      "type": "popular",
+      "icon": "🍫",
+      "portrait": {
+        "image": "../assets/characters/popular-yamada_anna.png?v=1",
+        "alt": "山田杏奈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "光泽柔顺如黑丝缎般的极长黑发 · 标志性高马尾",
+        "hair_color": "夜黑 / 蓝黑",
+        "eyes": "明澈动人的深黑眼眸 · 左眼角下带有一颗极其性感的泪痣",
+        "hairstyle": "高束单马尾 · 散落前额碎刘海",
+        "uniform": "圣立学园制服配宽大开衫 · 杂志街拍超模大号卫衣短裤",
+        "expression": "杂志封面上的冷艳超模 · 市川面前鼓起腮帮子偷吃零食的黏人可爱",
+        "style": "towering 172cm model beauty with food-loving innocence",
+        "signature": "172cm 惊天大长腿、左眼泪痣、图书室死角偷吃薯片与鼓鼓腮帮子"
+      },
+      "personality": [
+        "现役青少杂志专属平面模特，拥有全校仰望的 172cm 完美超模身材",
+        "私下是个无可救药的大胃王吃货，只要有美味零食就会开心得手舞足蹈",
+        "在自卑内向的市川面前极其黏人、主动甚至带有一点笨拙的霸道占有欲",
+        "情商与心机并存，会巧妙利用身高反差与肢体接触试探喜欢之人的反应"
+      ],
+      "likes": [
+        "任何含有高热量糖分与巧克力的美味零食",
+        "放学后与市川京太郎在图书室死角的秘密相处",
+        "市川为她挑选、擦拭或偷偷投喂的一切点心"
+      ],
+      "classic_cg": {
+        "title": "图书室死角的偷吃惊慌",
+        "description": "阳光斜穿书架死角，172cm 的黑发少女嘴里塞满零食，慌乱转头按唇示意噤声。"
+      },
+      "identity": "我心里危险的东西 女主角 · 圣立学园初中部三年级生 · 现役知名青少年杂志模特",
+      "tags": [
+        "我心危",
+        "山田杏奈",
+        "172cm超模",
+        "泪痣",
+        "大胃王",
+        "高马尾",
+        "反差萌"
+      ],
+      "bg_story": "走在街头会被星探频频递名片的现役超模，在学校里也是男生们不敢直视的高岭之花。但在静谧的图书室死角，她却会像小动物一样偷偷把零食塞满两腮。当那个看似阴沉奇怪的市川撞破她的秘密，两人便缔结了关于食物与青春的契约。她用那双全校最修长的腿悄悄拉近彼此的三厘米，只为了成为属于他一个人的笨拙少女。",
+      "palette": [
+        "#3b82f6",
+        "#eff6ff",
+        "#172554",
+        "#f43f5e"
+      ],
+      "weather": "午休阳光斑驳的图书室角落 / 细雨微濛共用一把折叠伞的放学小路",
+      "speech": "「市川……这个草莓软糖特别甜哦，张开嘴……啊——不准躲，必须要吃掉！」",
+      "source": "The Dangers in My Heart",
+      "traits": [
+        "bokuyaba_heroine",
+        "tall_model_172cm",
+        "food_lover",
+        "eye_mole"
+      ],
+      "accent_color": "#3b82f6",
+      "bg_color": "#172554"
+    },
+    "popular": {
+      "id": "yamada_anna",
+      "displayName": "山田杏奈",
+      "originalName": "山田杏奈",
+      "franchise": "The Dangers in My Heart",
+      "aliases": [
+        "Anna Yamada",
+        "山田杏奈",
+        "山田",
+        "吃货超模",
+        "我心里危险的东西"
+      ],
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a tall junior-high student who works as a model, with long glossy black hair, warm brown eyes and a small beauty mark on her neck; her expressive face often gives away her enthusiasm for everyday treats",
+      "identityTokens": [
+        "yamada_anna",
+        "boku_no_kokoro_no_yabai_yatsu",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "brown_eyes",
+        "mole_on_neck",
+        "tall_female"
+      ],
+      "exactTokens": [
+        "yamada_anna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yamada_anna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Shin-Ei Animation",
+      "curatedArtistStyles": [
+        "Norio Sakurai"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

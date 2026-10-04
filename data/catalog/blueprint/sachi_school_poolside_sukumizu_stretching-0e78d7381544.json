@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_school_poolside_sukumizu_stretching",
+  "revision": 1,
+  "sortOrder": 1193,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_school_poolside_sukumizu_stretching",
+    "title": "小岭幸 · 水光潋滟的死库水压腿",
+    "category": "运动健美",
+    "characterId": "komine_sachi",
+    "outfitId": "school_swimsuit",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【小岭幸 · 水光潋滟的死库水压腿】午后阳光明朗的学园露天游泳池瓷砖池畔，幸身穿经典的深蓝色连体学校泳装，胸前缝着端正的白色布姓名牌。她单手扶在池边不锈钢扶手上，单腿架在台阶上做着标准的压腿柔韧拉伸。紧身弹力泳衣将她隐藏在女仆装下的丰满坚挺双峰与修长美腿线条淋漓尽致地勾勒出来，额头带有微汗，神态一丝不苟。",
+    "location": "学校露天游泳池不锈钢爬梯旁",
+    "action": "单手扶扶手架腿拉伸热身，紧身死库水勾勒出丰满身段，额头渗汗，表情认真",
+    "timeOfDay": "下午",
+    "lighting": "澄澈热带骄阳直射与池水折射出的碧蓝波光交错",
+    "camera": "full body, side 3/4 dynamic athletic angle, leg and waist focus",
+    "mood": "健康健美",
+    "sceneTags": [
+      "swimming_pool",
+      "poolside",
+      "school_swimsuit",
+      "sukumizu",
+      "stretching",
+      "athletic",
+      "large_breasts",
+      "wet_skin"
+    ],
+    "promptProse": "Stretching her slender legs against a stainless steel poolside ladder in a classic navy blue Japanese school competition swimsuit, Sachi warms up with disciplined focus. Bright summer sunbeams dance across the azure pool surface, casting rippling light over her athletic silhouette.",
+    "promptTokens": [
+      "swimming_pool",
+      "poolside_ladder",
+      "school_swimsuit",
+      "one-piece_swimsuit",
+      "stretching_legs",
+      "large_breasts",
+      "wet_skin",
+      "water_ripples",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

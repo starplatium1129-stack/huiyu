@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/cozy_winter_knit_coat",
+  "revision": 1,
+  "sortOrder": 331,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "default": false,
+      "id": "cozy_winter_knit_coat",
+      "isDefault": false,
+      "name": "暖冬高领粗针织毛衣与羊绒大衣",
+      "prose": "an elegant winter outfit: a thick ivory chunky cable-knit turtleneck sweater, worn under an open dark camel long wool coat, with a soft cashmere scarf",
+      "tokens": [
+        "cable_knit",
+        "turtleneck",
+        "sweater",
+        "wool_coat",
+        "scarf",
+        "winter_clothes"
+      ]
+    }
+  }
+}

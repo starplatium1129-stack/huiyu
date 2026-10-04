@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc138",
+  "revision": 1,
+  "sortOrder": 136,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the old-fashioned onsen inn dressing room, Shiki Natsume stands before the large mirror with only a half-wet white bath towel slipping down past her fully bare shoulders; the viewer's arms wrap around her waist from behind and both are reflected in the mirror as she flushes and glares at the viewer with the tear mole glistening with water droplets.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "镜面反射特写",
+    "category": "恋爱/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "极度羞嗔占有",
+    "id": "sc138",
+    "lighting": "日式纸灯笼朦胧弱光",
+    "location": "温泉旅馆梳妆镜前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, clothes, underwear, 2girls, multiple_girls, extra_girl, extra_person, duplicate_character, cloned_character, background_person, crowd, two_separate_women, twin, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, second_person, additional_woman, another_woman, child, loli, underage",
+    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, bar, bare_legs, onsen, steam, barefoot, hug, blush, warm_lighting, cinematic, depth, field, full_body, lantern_light, soft_lighting, detailed_background, cinematic_lighting",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【夏目 · 温泉浴衣滑落极致反差】古色古香的日式温泉旅馆，雾气氤氲。洗完澡后的夏目刚走到回廊，就被突然出现的你从身后拦腰抱住。她还带着泉水的水汽，眼角的泪痣挂着晶莹的水滴，面红耳赤地扭过头瞪着你——「哈？！你这家伙...绝对是算好了时间进来的吧？不准盯着镜子里看...变态笨蛋...」",
+    "storyJa": "【夏目・温泉浴衣を脱ぐと究極のコントラストが生まれる】窓の外には冷たく明るい月が高く垂れ下がる、古風な和風温泉宿。シャワーを浴びた夏目は巨大な半身鏡の前に立ち、温泉で半分濡れた白いバスタオル一枚を着て、静かに滑り落ちていた。鏡には彼女の完全に露出した肩と、激しくうねる官能的な雪のように白い肌の魅惑的な姿がはっきりと映っていた。突然後ろから抱きしめられた君を見て、彼女の目尻には水晶の水滴が垂れ、顔を赤らめた顔で鏡の中の君を見つめた。――「はあ？　あなた、絶対に時間を計って入ってきたでしょ。鏡越しに見ないで……この変態。」",
+    "tags": [
+      "mole_under_eye",
+      "white_bath_towel",
+      "towel_slipping",
+      "bare_shoulders",
+      "bare_back",
+      "mirror",
+      "onsen",
+      "embrace_from_behind",
+      "bare_legs",
+      "full_body",
+      "barefoot",
+      "paper_lantern"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "镜前审视的绝对占有视界",
+    "usage": [
+      "壁纸级",
+      "绝对独占",
+      "R15"
+    ],
+    "weather": "澄澈月夜"
+  }
+}

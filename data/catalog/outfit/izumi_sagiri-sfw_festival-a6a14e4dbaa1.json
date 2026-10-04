@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/sfw_festival",
+  "revision": 1,
+  "sortOrder": 858,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "sfw_festival",
+      "name": "夏祭淡蓝花纹浴衣",
+      "prose": "a properly wrapped pale blue floral yukata with a pink obi and sandals",
+      "tokens": [
+        "blue_yukata",
+        "floral_print",
+        "pink_obi",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

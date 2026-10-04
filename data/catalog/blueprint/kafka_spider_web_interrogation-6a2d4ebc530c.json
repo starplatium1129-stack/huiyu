@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_spider_web_interrogation",
+  "revision": 1,
+  "sortOrder": 1039,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_spider_web_interrogation",
+    "title": "卡芙卡 · 蛛网言灵私密审讯",
+    "category": "魅惑审问",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 蛛网言灵私密审讯】昏暗冰冷的金属审讯室内，微弱的单束顶光打下。卡芙卡微微俯身逼近，指尖缠绕着发光的深紫色灵能蛛丝，深邃迷离的紫色双瞳直视着镜头深处，轻启朱唇施展言灵之术——「听我的话……看着我的眼睛。把你所知道的一切，都一字不漏地告诉我吧。」",
+    "location": "昏暗金属审讯室内",
+    "action": "俯身逼近镜头，指尖缠绕发光紫色蛛丝，眼神带着支配感与致命诱惑",
+    "timeOfDay": "暗室",
+    "lighting": "单束冰冷顶光射灯与紫色灵能蛛丝辉光",
+    "camera": "close-up, dynamic high angle",
+    "mood": "支配魅惑",
+    "sceneTags": [
+      "interrogation_room",
+      "metal_walls",
+      "single_spotlight",
+      "spider_web",
+      "energy_threads",
+      "glowing_threads",
+      "bending_forward",
+      "intense_gaze",
+      "whispering",
+      "seductive"
+    ],
+    "promptProse": "Leaning forward into the single spotlight in the dark interrogation room manipulating glowing spirit threads, Kafka whispers with hypnotic charm. Glowing energy spiderwebs and dramatic chiaroscuro shadows emphasize her absolute dominance.",
+    "promptTokens": [
+      "interrogation_room",
+      "single_spotlight",
+      "energy_threads",
+      "spider_web",
+      "bending_forward",
+      "whispering",
+      "intense_gaze",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_hunter_coat",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

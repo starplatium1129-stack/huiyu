@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 643,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园大领制服",
+      "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar worn dangerously unbuttoned at the top revealing deep cleavage, plaid necktie loosely draped, high-waisted white pleated skirt, sheer black thigh-high stockings, and black loafers",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "unbuttoned",
+        "cleavage",
+        "deep_cleavage",
+        "plaid_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "thighhighs",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

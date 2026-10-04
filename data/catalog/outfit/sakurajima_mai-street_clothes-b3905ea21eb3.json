@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/street_clothes",
+  "revision": 1,
+  "sortOrder": 24,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "street_clothes",
+      "name": "私服",
+      "prose": "a soft casual street outfit with a knit sweater and skirt",
+      "tokens": [
+        "casual_clothes",
+        "sweater",
+        "skirt",
+        "open_jacket"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

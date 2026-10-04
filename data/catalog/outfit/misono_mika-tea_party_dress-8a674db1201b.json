@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "misono_mika/tea_party_dress",
+  "revision": 1,
+  "sortOrder": 483,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "misono_mika",
+    "outfit": {
+      "default": false,
+      "id": "tea_party_dress",
+      "isDefault": false,
+      "name": "茶话会礼装",
+      "prose": "an exquisite royal white tea party ballgown adorned with intricate golden filigree trim, white silk shawl, white evening gloves, white tights, golden high heels, regal Trinity princess elegance",
+      "tokens": [
+        "ballgown",
+        "white_dress",
+        "sleeveless_dress",
+        "golden_trim",
+        "gold_embroidery",
+        "white_gloves",
+        "white_tights",
+        "high_heels",
+        "elegant",
+        "regal"
+      ]
+    }
+  }
+}

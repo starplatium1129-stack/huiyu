@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc151",
+  "revision": 1,
+  "sortOrder": 148,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a lazy sunlit morning, Ayachi Nene on the left blushes and clutches your sleeve with her ahoge curled into a heart while Shiki Natsume on the right props herself up on one elbow and teases you with a sleepy flirtatious glance, both holding you prisoner under the blanket of the newlywed bed in warm morning light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景特写",
+    "category": "Active_Sync_Scenes",
+    "char": "triad",
+    "character": [
+      "nene",
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc151",
+    "lighting": "晨间碎光",
+    "location": "新婚大床",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 1girl, 3girls, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, standing, sitting_upright, girls_kissing_each_other, pink_ribbon_on_black_haired_woman, mole_on_white_haired_woman, identical_twins, extra_girl, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
+    "prompt": "2girls, pov_partner, bedroom, on_bed, under_blanket, messy_sheets, bright_morning_sunlight, warm_morning_light, close_up, (ayachi_nene_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nene_clutching_viewer's_sleeve, heart_shaped_ahoge, shy_blush), BREAK, (shiki_natsume_on_right, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_propping_on_one_elbow, sleepy_teasing_glance), shy_smiles, <lora:shiki_natsume_v18_wd14:0.7>, <lora:ayachi_nene_v18_wd14:0.7>",
+    "rating": "All",
+    "recommendedSize": "1344×896",
+    "season": "不限",
+    "story": "【成年 After Story · 究极甜蜜修罗场】一个无限慵懒的清晨。你从暖烘烘的床铺中醒来，震惊地发现自己陷入了最幸福的“重叠防线”：左边是红着脸、把你衣角死死攥在手里的宁宁，头顶的呆毛正羞涩地弯成完美的心形；右边是半撑着身体、用微带倦意的妩媚眼神调侃看着你的夏目。她们在晨光中一左一右，将你牢牢锁在被窝的温柔乡里——「早安，大笨蛋。今天的晨间协议，不准赖床哦。」",
+    "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
+    "tags": [
+      "2girls",
+      "ayachi_nene",
+      "shiki_natsume",
+      "hair_ribbon",
+      "ahoge",
+      "mole_under_eye",
+      "silk_loungewear",
+      "under_blanket",
+      "morning_light",
+      "morning_sunlight",
+      "newlywed_bed",
+      "heart_shaped_ahoge",
+      "shy_blush",
+      "close_up"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "晨光微醺：双重被窝绝对协议",
+    "usage": [
+      "核心协议",
+      "壁纸级"
+    ],
+    "weather": "初晴晨光"
+  }
+}

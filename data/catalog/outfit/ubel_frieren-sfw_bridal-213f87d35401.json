@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ubel_frieren/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 73,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ubel_frieren",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "尤贝尔·圣洁花嫁",
+      "prose": "a black long-sleeved bridal gown with a translucent veil, green embroidery and a wildflower bouquet",
+      "tokens": [
+        "black_wedding_dress",
+        "bridal_veil",
+        "green_embroidery",
+        "wildflower_bouquet",
+        "long_sleeves"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

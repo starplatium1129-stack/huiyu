@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "iori_sunset_rooftop_breeze_pause",
+  "revision": 1,
+  "sortOrder": 933,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "背靠着铁丝网栏杆怀抱狙击枪，微仰头享受晚风吹拂，眼神柔和",
+    "camera": "cowboy shot, medium angle",
+    "category": "黄昏日常",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【银镜伊织 · 晚霞天台的片刻喘息】歌赫娜学院教学楼天台上，炽烈的晚霞如火焰般燃烧在天际。伊织背靠着铁丝网栏杆，怀抱着狙击枪微微仰头眺望远方，微风将她的长发与恶魔尾巴轻轻吹起。褪去战场上的凌厉，此刻她的侧脸透着一丝罕有的宁静与温柔——「呼……今天的风纪巡查总算结束了。如果是老师在身边的话……稍微多呆一会儿也可以哦。」",
+    "id": "iori_sunset_rooftop_breeze_pause",
+    "lighting": "绚烂夕阳晚霞橙紫逆光与暖金轮廓光",
+    "location": "歌赫娜教学楼夕阳天台",
+    "mood": "宁静唯美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "disciplinary_uniform",
+    "promptProse": "Leaning against the rooftop chain-link fence as the day ends, Iori cradles her sniper rifle across her chest and tilts her face toward the evening breeze with a rare, peaceful smile. Warm golden hour sunlight bathes the Gehenna cityscape in nostalgic, comforting amber tones.",
+    "promptTokens": [
+      "school_rooftop",
+      "chainlink_fence",
+      "sunset",
+      "golden_hour",
+      "detailed_background",
+      "cinematic_lighting",
+      "holding_sniper_rifle"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "fence",
+      "chainlink_fence",
+      "sunset",
+      "golden_hour",
+      "leaning_against_railing",
+      "wind",
+      "calm",
+      "gentle_smile"
+    ],
+    "timeOfDay": "黄昏日落",
+    "title": "银镜伊织 · 晚霞天台的片刻喘息"
+  }
+}

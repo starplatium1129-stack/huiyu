@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "rias_beach_resort_sunshade_drink",
+  "revision": 1,
+  "sortOrder": 1283,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_beach_resort_sunshade_drink",
+    "title": "莉雅丝 · 碧海金沙的遮阳伞私语",
+    "category": "海滨度假",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 碧海金沙的遮阳伞私语】阳光灿烂的蔚蓝海岸线旁，白色遮阳伞下海风徐徐吹过。莉雅丝身着剪裁大胆的深红连体高开叉泳装斜倚在沙滩躺椅上，水珠顺着白皙胸口的沟壑与腹部线条缓缓滑落。她单手摘下大框太阳镜，另一手端着热带冷饮递向你，被海风吹拂的红发在蓝天下如烈焰绽放——「目光一直在往哪里看呢？我的身材，就这么让你移不开视线吗？」",
+    "location": "热带度假海滩遮阳伞下的白色躺椅",
+    "action": "优雅斜倚在沙滩躺椅上，单手微摘墨镜，侧头露出玩味而宠溺的浅笑",
+    "timeOfDay": "正午艳阳",
+    "lighting": "热带烈日与遮阳伞下的柔和阴影交界",
+    "camera": "cowboy shot, diagonal angle, beach perspective",
+    "mood": "魅惑惬意",
+    "sceneTags": [
+      "beach",
+      "ocean",
+      "deck_chair",
+      "parasol",
+      "red_swimsuit",
+      "sunglasses",
+      "wet_skin",
+      "cleavage",
+      "hourglass_figure",
+      "smirk"
+    ],
+    "promptProse": "Reclining luxuriously on a shaded beach lounge chair beside turquoise ocean waves, Rias Gremory lowers her designer sunglasses with a playful, teasing smile. Her deep red high-cut swimsuit emphasizes her breathtaking hourglass curves and gleaming sunlit cleavage. Droplets of sea water glisten on her porcelain skin under the tropical sun. Diagonal cowboy shot, vibrant anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "beach",
+      "ocean",
+      "sand",
+      "deck_chair",
+      "parasol",
+      "red_swimsuit",
+      "one-piece_swimsuit",
+      "highleg",
+      "wet_skin",
+      "cleavage",
+      "sunglasses",
+      "playful_smile",
+      "sunny",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sensual_swimsuit",
+    "coverageTags": [
+      "vacation",
+      "summer",
+      "swimsuit"
+    ]
+  }
+}

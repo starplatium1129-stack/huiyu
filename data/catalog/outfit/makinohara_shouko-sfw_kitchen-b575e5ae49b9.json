@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/sfw_kitchen",
+  "revision": 1,
+  "sortOrder": 31,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "sfw_kitchen",
+      "name": "晨间料理素色围裙",
+      "prose": "a cream blouse, long blue skirt and plain cotton apron, with her hair gathered into a braid",
+      "tokens": [
+        "cream_blouse",
+        "long_blue_skirt",
+        "cotton_apron",
+        "braid"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

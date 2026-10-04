@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/training_corps",
+  "revision": 1,
+  "sortOrder": 539,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "default": false,
+      "id": "training_corps",
+      "isDefault": false,
+      "name": "训练兵团制服",
+      "prose": "her 104th Training Corps uniform, a white jacket and shirt with white pants and brown boots, with the red scarf",
+      "tokens": [
+        "white_jacket",
+        "white_shirt",
+        "white_pants",
+        "brown_boots",
+        "belt",
+        "red_scarf"
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc051",
+  "revision": 1,
+  "sortOrder": 49,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Dinner can wait for a moment: adult Ayachi Nene wraps her arms around the viewer from behind, resting her chin near his shoulder after finishing the new recipe. Her white apron is tied over a pink long-sleeved lounge top and loose trousers. The perspective from beside the viewer's shoulder keeps her face and embracing arms in view, with the finished dish on the kitchen counter under warm evening lamps.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "肩侧回望的背后拥抱半身近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "温柔",
+    "id": "sc051",
+    "lighting": "厨房暖灯",
+    "location": "同居公寓厨房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, white_apron, pink_long_sleeved_top, loose_trousers, hugging_viewer_from_behind, arms_around_torso, chin_on_shoulder, gentle_smile, shoulder_level_view, kitchen, finished_dish, countertop, evening, warm_kitchen_light, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "秋",
+    "story": "【成年 After Story · 围裙还没解开的拥抱】共同生活后的秋夜，成年的宁宁在料理教室练习完新菜，回家后仍系着围裙复盘步骤。你从旁提醒她酱汁沾到了脸，她先认真擦了半天，最后干脆从背后抱住你，把下巴搁在肩上——「今天一直想着让你第一个试吃。先别回头，让我充一会儿电……然后再告诉我好不好吃。」",
+    "storyJa": "【寧々・大人のアフターストーリー・エプロンをしたままハグ】同棲を終えた秋の夜、大人になった寧々は料理教室で新しい料理の練習を終え、手順を復習するためにエプロン姿のまま帰宅した。あなたは彼女の顔にソースがついたことを横から彼女に思い出させました。彼女は長い時間丁寧に拭いて、最後には後ろから抱きついて肩に顎を乗せた。――「今日はずっと、最初にあなたに味見してもらおうって思ってたんです。まだ振り向かないで、少しだけ充電させてください……それから、おいしいか教えてくださいね。」",
+    "tags": [
+      "adult",
+      "white_apron",
+      "pink_long_sleeved_top",
+      "loose_trousers",
+      "hugging_viewer_from_behind",
+      "arms_around_torso",
+      "chin_on_shoulder",
+      "gentle_smile",
+      "shoulder_level_view",
+      "kitchen",
+      "finished_dish",
+      "countertop",
+      "evening",
+      "warm_kitchen_light",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "evening",
+    "title": "围裙还没解开的拥抱",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

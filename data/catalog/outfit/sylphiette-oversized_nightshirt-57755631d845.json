@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sylphiette/oversized_nightshirt",
+  "revision": 1,
+  "sortOrder": 256,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sylphiette",
+    "outfit": {
+      "default": false,
+      "id": "oversized_nightshirt",
+      "isDefault": false,
+      "name": "居家宽松露肩睡衣",
+      "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+      "styleHint": "soft cozy morning atmosphere",
+      "tokens": [
+        "oversized_shirt",
+        "off_shoulder_shirt",
+        "bare_thighs",
+        "bare_legs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/selfie_casual",
+  "revision": 1,
+  "sortOrder": 422,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "default": false,
+      "id": "selfie_casual",
+      "isDefault": false,
+      "name": "意象影画·自拍邀请",
+      "prose": "a relaxed selfie-ready casual look with her smartphone in hand and a bright smile",
+      "tokens": [
+        "smartphone",
+        "selfie",
+        "casual_clothes",
+        "smile"
+      ]
+    }
+  }
+}

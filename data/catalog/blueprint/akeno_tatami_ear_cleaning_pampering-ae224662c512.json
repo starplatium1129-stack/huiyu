@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_tatami_ear_cleaning_pampering",
+  "revision": 1,
+  "sortOrder": 1293,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_tatami_ear_cleaning_pampering",
+    "title": "姬岛朱乃 · 和室榻榻米的治愈耳语",
+    "category": "居家温存",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 和室榻榻米的治愈耳语】幽静和室里微风拂动竹帘，熏香在空气中静静弥漫。朱乃跪坐在榻榻米上，轻拍着自己铺着紫色晨袍的修长大腿，手中拿着一根细巧的棉顶耳勺。她俯下身凑近你的耳畔吐气如兰，眼神里带着极致的母性与宠溺——「来吧，乖乖躺下……今天就让我好好为你掏掏耳朵，把一整天的疲惫都融化掉吧。」",
+    "location": "推开日式障子门、散发蔺草清香的和室",
+    "action": "跪坐在榻榻米上轻拍大腿，一手执耳勺，微俯身面露温柔宠溺的微笑",
+    "timeOfDay": "午后闲暇",
+    "lighting": "透过竹帘洒入的斑驳柔和光线",
+    "camera": "cowboy shot, medium close perspective, cozy and warm",
+    "mood": "极致治愈",
+    "sceneTags": [
+      "tatami_room",
+      "japanese_room",
+      "bamboo_blinds",
+      "kneeling",
+      "patting_lap",
+      "lap_pillow",
+      "holding_earpick",
+      "pampering",
+      "gentle_smile"
+    ],
+    "promptProse": "Seated on fragrant woven tatami mats in a tranquil Japanese room, Akeno Himejima invites the viewer for a pampering ear-cleaning session. Dressed in a relaxed violet silk loungewear robe, she pats her soft lap invitingly with one hand while holding a bamboo earpick in the other. Her warm purple eyes brim with affectionate, doting tenderness. Serene, cozy anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "tatami_room",
+      "shoji_screen",
+      "kneeling",
+      "sitting_on_tatami",
+      "patting_lap",
+      "lap_pillow",
+      "purple_negligee",
+      "holding_earpick",
+      "gentle_smile",
+      "doting_expression",
+      "purple_eyes",
+      "high_ponytail",
+      "cozy",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "purple_lace_negligee",
+    "coverageTags": [
+      "healing",
+      "pampering",
+      "domestic"
+    ]
+  }
+}

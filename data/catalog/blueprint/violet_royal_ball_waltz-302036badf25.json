@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "violet_royal_ball_waltz",
+  "revision": 1,
+  "sortOrder": 1391,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，湛蓝双眸顾盼生辉",
+    "adult": false,
+    "animaStyleHint": "anime_night_glamour",
+    "camera": "dynamic wide shot, rotating dress flow, ballroom depth, royal grandeur",
+    "category": "浪漫华贵",
+    "characterId": "violet_evergarden",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "ballroom",
+      "glamour"
+    ],
+    "description": "【璀璨水晶吊灯舞厅】金碧辉煌的皇家晚宴大厅内，华尔兹圆舞曲悠扬回响。身着一袭深邃墨绿丝绒露肩晚礼裙的薇尔莉特身段曼妙，雪白肌肤胜雪。她将一只精巧的银白机械义手轻搭在你的掌心，另一手挽在你的肩头，随着舞步轻盈旋转，宛如夜幕中最夺目的翡翠精灵。",
+    "id": "violet_royal_ball_waltz",
+    "kreaStyleHint": "anime_night_glamour",
+    "lighting": "千万枚璀璨水晶吊灯折射出的华贵暖金光芒与流转光斑",
+    "location": "王国迎宾馆水晶吊灯盛大舞池中央",
+    "mood": "高贵华美、深情款款",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "festive_ballgown_dress",
+    "promptProse": "Violet Evergarden waltzes with you across a grand marble ballroom under the dazzling shimmer of crystal chandeliers. Her flowing emerald-green velvet ballgown sweeps around her in fluid waves as her silver prosthetic hand rests in your palm and her other hand settles on your shoulder. The two-person dance turns through the royal hall in warm light.",
+    "promptTokens": [
+      "ballroom",
+      "chandelier",
+      "dancing",
+      "ball_gown",
+      "green_dress",
+      "bare_shoulders",
+      "mechanical_hands",
+      "holding_hands",
+      "night",
+      "wide_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "hand_on_shoulder",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "ballroom",
+      "dancing",
+      "waltz",
+      "ball_gown",
+      "green_dress",
+      "bare_shoulders",
+      "mechanical_hands",
+      "chandelier"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆·「请握紧我的手……我不会松开」"
+  }
+}

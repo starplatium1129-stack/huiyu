@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_commander_office_tea_waiting",
+  "revision": 1,
+  "sortOrder": 1080,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_commander_office_tea_waiting",
+    "title": "大凤 · 官邸深夜的温情侍奉",
+    "category": "日常侍奉",
+    "characterId": "taihou_azur",
+    "outfitId": "forbidden_banquet",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【大凤 · 官邸深夜的温情侍奉】反锁的指挥官办公室内，窗外月色宁谧。大凤身穿一袭紧致勾勒曼妙漏斗身材的深绯绒面露背晚礼服，将一杯精心泡制的养生红茶轻柔端到书桌旁。她身姿前倾俯首，硕大双峰在深低领口下剧烈起伏，手指温柔拂过指挥官的脸颊，眼神带着近乎病态的温柔——「指挥官大人辛苦了……今晚就由大凤来全权接管您的身心吧……」",
+    "location": "指挥官办公室宽大红木书桌旁",
+    "action": "双手端茶杯俯身递茶，丰盈巨乳在领口呼之欲出，深情凝视指挥官",
+    "timeOfDay": "深夜",
+    "lighting": "台灯暖金光源与窗外皎洁银白月光的明暗交织",
+    "camera": "medium close-up, cowboy shot, looking up at cleavage and face",
+    "mood": "痴缠温存",
+    "sceneTags": [
+      "office",
+      "desk",
+      "tea_cup",
+      "evening_gown",
+      "cleavage",
+      "open_back",
+      "twintails",
+      "gentle_smile"
+    ],
+    "promptProse": "Leaning over the commander’s mahogany desk in the quiet midnight office, Taihou serves a steaming cup of tea in a form-fitting crimson velvet gown with a backless cutout. The warm lampglow accentuates her generous décolletage and the boundless affection glistening in her eyes.",
+    "promptTokens": [
+      "commander_office",
+      "desk",
+      "serving_tea",
+      "teacup",
+      "evening_gown",
+      "cleavage",
+      "twintails",
+      "gentle_expression",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

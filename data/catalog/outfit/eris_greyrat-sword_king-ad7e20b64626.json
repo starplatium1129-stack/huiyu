@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/sword_king",
+  "revision": 1,
+  "sortOrder": 260,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "default": true,
+      "id": "sword_king",
+      "isDefault": true,
+      "name": "剑王时期",
+      "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip",
+      "tokens": [
+        "crop_top",
+        "open_inner_thigh_pants",
+        "stirrup_leggings",
+        "white_pantyhose",
+        "headband",
+        "sword",
+        "sheath"
+      ]
+    }
+  }
+}

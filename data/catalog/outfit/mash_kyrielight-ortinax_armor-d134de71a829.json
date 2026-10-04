@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/ortinax_armor",
+  "revision": 1,
+  "sortOrder": 110,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "ortinax_armor",
+      "name": "奥特瑙斯装甲",
+      "prose": "her Ortinax armor, a black armored suit with thigh-highs and armored boots",
+      "tokens": [
+        "black_armor",
+        "thighhighs",
+        "armored_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

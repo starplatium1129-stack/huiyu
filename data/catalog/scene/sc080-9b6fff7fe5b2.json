@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc080",
+  "revision": 1,
+  "sortOrder": 78,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a seaside cliff with sea breeze blowing her very long silver hair, Ayachi Nene in a breezy white sundress and straw hat stands with sun-kissed bare legs, bare feet and white sandals on rock, holding her hat as she looks back with a wistful gentle smile.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc080",
+    "lighting": "黄金时刻",
+    "location": "海边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_summer_sundress_with_puff_sleeves_and_straw_hat_tilted_by_wind, sun_kissed_bare_legs_with_smooth_thigh_and_calf_lines_standing_on_seaside_cliff, barefoot_with_detailed_toes_and_white_sandals_placed_on_rock, standing_on_seaside_rock_with_one_hand_holding_hat_against_sea_breeze_looking_back, wistful_gentle_smile_with_windblown_hair_and_soft_blush, sparkling_blue_sea_and_clear_sky_with_warm_seaside_sunlight_and_spray_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, golden_sunset_light, sunset_sky, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 海风里的心之碎片】黄昏海边，宁宁沿着潮线走了很久，终于停下来面对你。她说过去总把重要情绪拆成碎片藏好，害怕一旦交出去就无法收回。海风掀起银白长发，她却没有再避开视线——「现在我想把完整的心意告诉你。不是契约，也不是魔法……我喜欢你，一直都是。」",
+    "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
+    "tags": [
+      "hair_ribbon",
+      "sundress",
+      "bare_legs",
+      "smooth_thighs",
+      "seaside",
+      "medium_shot",
+      "barefoot",
+      "wind",
+      "depth_of_field"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "海风里的心之碎片",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

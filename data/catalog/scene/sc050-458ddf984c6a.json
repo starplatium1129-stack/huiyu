@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc050",
+  "revision": 1,
+  "sortOrder": 48,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting side-by-side in the plush velvet seats of a dimly lit cinema hall as the credits roll, Shiki Natsume shyly interlocks her slender fingers with your hand resting on the armrest in an intimate cowboy shot. Wearing a neat autumn blazer and pleated skirt, she turns her profile away in flustered embarrassment with deeply flushed cheeks, the flickering silver light from the movie screen illuminating her golden eyes against the shadowy theater backdrop, no text, no extra people.",
+    "auditRevision": "skill-refine-sc050-2026-09-05",
+    "camera": "影院座椅侧身七分身平视",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "羞怯",
+    "id": "sc050",
+    "lighting": "银幕幽蓝冷银反射光与过道暗红地灯微弱轮廓光",
+    "location": "影院",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, extra limbs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, profile, seated, sitting_in_cinema, navy_blazer, black_pleated_skirt, sheer_black_tights, holding_hands, interlocked_fingers, hand_on_armrest, heavy_blush, flustered, head_tilt, looking_away, velvet_cinema_seat, movie_theater, cinema_interior, movie_screen_light, flickering_screen_light, cool_rim_light, dim_interior, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 电影散场前的手心】黑暗影院里，夏目在惊吓镜头出现时轻轻碰到你的手，犹豫片刻后干脆把手指扣紧。你回握，她虽然身体一僵，却没有再抽开。银幕的微光照出她装作专注的侧脸——「只是这里太暗，免得拿错饮料。电影结束前都别说话……也不准提前松手。」",
+    "storyJa": "【夏目・映画が終わる前のヤシの木】暗い劇場の中、怖いシーンが出てきた瞬間、夏目はそっと手を触れ、一瞬ためらった後、ただ指を組みました。あなたが手を振り返したとき、彼女の体は硬直しましたが、彼女は再び離れませんでした。画面の仄かな光で、気を配るふりをする彼女の横顔が浮かび上がった――「ここが暗くて、飲み物を取り違えないようにしただけ。映画が終わるまでは黙っていて……それから、先に手を離すのも禁止。」",
+    "tags": [
+      "mole_under_eye",
+      "blazer",
+      "pleated_skirt",
+      "sheer_black_tights",
+      "sitting_in_cinema",
+      "holding_hands",
+      "interlocked_fingers",
+      "armrest",
+      "movie_theater",
+      "profile",
+      "movie_screen_light",
+      "heavy_blush",
+      "flustered",
+      "cinema_seats",
+      "cowboy_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "电影散场前的手心",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

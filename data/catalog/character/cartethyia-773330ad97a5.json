@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "cartethyia",
+  "revision": 1,
+  "sortOrder": 156,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cartethyia",
+    "profile": {
+      "id": "cartethyia",
+      "name": "卡提希娅",
+      "alias": [
+        "卡提希娅",
+        "Cartethyia"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-cartethyia.png?v=09e806ae5a04",
+        "alt": "卡提希娅 · 埃格拉小镇的归还场景样张"
+      },
+      "visual_dna": {
+        "signature": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+        "hair": "blonde_hair, long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "流浪骑士轻便旅行装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "面对熟悉地点仍有探索与确认的认真",
+        "愿意帮助身边人，日常喜悦表达得朴素直接",
+        "重要身份之外，也珍惜小镇生活的温暖与归属"
+      ],
+      "likes": [
+        "新鲜面包",
+        "在石板街道散步",
+        "照看旅途用品"
+      ],
+      "classic_cg": {
+        "title": "卡提希娅 · 埃格拉小镇的归还",
+        "description": "故乡小镇的石板路，她以流浪骑士的装扮站在熟悉又陌生的街角，光环下的表情近乡情怯；二十年殉道换来的「回来」，第一步比任何战斗都难。"
+      },
+      "identity": "Wuthering Waves · 卡提希娅",
+      "tags": [
+        "卡提希娅",
+        "鸣潮",
+        "日常"
+      ],
+      "bg_story": "重返故乡的流浪骑士，在熟悉街道与日常善意中重新寻找归属。金色长辫、蓝瞳、尖耳和光环为识别点，本批不混用另一战斗形态的外观。",
+      "palette": [
+        "#c4b995",
+        "#282532"
+      ],
+      "source": "Wuthering Waves",
+      "speech": "这里的面包香气，好像一直没有变。",
+      "traits": [
+        "cartethyia",
+        "wuthering_waves",
+        "blonde_hair",
+        "long_hair",
+        "braid"
+      ],
+      "accent_color": "#c4b995",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "cartethyia",
+      "displayName": "卡提希娅",
+      "originalName": "Cartethyia",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "卡提希娅",
+        "Cartethyia"
+      ],
+      "identityProse": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+      "identityTokens": [
+        "cartethyia",
+        "wuthering_waves",
+        "blonde_hair",
+        "long_hair",
+        "braid",
+        "blue_eyes",
+        "pointy_ears",
+        "halo"
+      ],
+      "exactTokens": [
+        "cartethyia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, cartethyia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

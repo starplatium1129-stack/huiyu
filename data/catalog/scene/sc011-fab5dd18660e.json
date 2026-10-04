@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc011",
+  "revision": 1,
+  "sortOrder": 10,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Seated by a tall arched window in an empty university lecture amphitheater, Shiki Natsume turns around in surprise, pen in hand over her notebook with a flustered tsundere blush. Crisp golden morning sunbeams slice through the grand windows to highlight her long black hair, knit cardigan, and sheer black tights down to her leather shoes beneath the wooden desk.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "窗边半身中景",
+    "category": "校园",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "认真",
+    "id": "sc011",
+    "lighting": "春日清晨窗光",
+    "location": "大学阶梯教室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_smart_casual_college_knit_cardigan_and_checkered_skirt, sheer_black_tights, sitting_at_wooden_tiered_lecture_hall_desk_by_tall_window, holding_pen_above_open_notebook, turning_head_with_startled_tsundere_blush_looking_at_viewer, entire_legs_and_feet_fully_visible_in_frame, dark_leather_shoes_under_desk, brilliant_morning_sunbeams_slicing_through_tall_windows_illuminating_floating_dust_motes, tiered_amphitheater_classroom_with_chalkboard_in_background, detailed_background, cinematic_lighting, full_body, @rella",
+    "rating": "All",
+    "season": "春",
+    "story": "【夏目 · 大学教室的第一束晨光】春日清晨的大学阶梯教室还空着大半，夏目已经坐在窗边整理讲义，并顺手替你占了旁边的位置。你拉开椅子时，她没有抬头，只把一份标好重点的笔记推过来。晨光照亮她微红的耳廓——「昨天缺的内容我顺便整理了。别误会，我只是不想小组作业被你拖后腿。」",
+    "storyJa": "【夏目・大学の教室に朝の最初の光が射す】春先の朝、大学の講堂にはまだほとんど人がいなかった。夏目さんはすでに窓際に座って講義ノートを整理していて、あなたの隣の席に座りました。あなたが椅子を引くとき、彼女は顔を上げず、ただ重要事項が書かれたメモを押し倒しました。朝の光が彼女の赤みを照らす――「昨日抜けていたところ、ついでにまとめておいたから。勘違いしないで。グループ課題で足を引っ張られたくないだけ。」",
+    "tags": [
+      "mole_under_eye",
+      "school_blazer",
+      "sheer_black_tights",
+      "university_hall",
+      "loafers",
+      "depth_of_field",
+      "medium_shot",
+      "highlighted_notes",
+      "sliding_notes"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "大学教室的第一束晨光",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

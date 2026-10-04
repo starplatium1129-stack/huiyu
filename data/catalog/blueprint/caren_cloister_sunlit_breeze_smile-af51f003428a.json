@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "caren_cloister_sunlit_breeze_smile",
+  "revision": 1,
+  "sortOrder": 214,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_cloister_sunlit_breeze_smile",
+    "title": "卡莲 · 修道院回廊的微风回眸",
+    "category": "午后漫步",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 修道院回廊的微风回眸】春日明媚的修道院石柱长廊外，微风吹拂着庭院盛开的花草。卡莲身着无裙祭服漫步于石柱之间，微风吹动她长长的红色抹大拉圣骸布饰带与银白发丝，勾勒出修长挺拔的腿部线条。她停下脚步微微侧过身回眸，嘴角扬起一抹罕见而清澈的浅笑——「今天的风很舒服呢。如果是和你一起漫步的话，我倒是不介意走得更远一点。」",
+    "location": "阳光穿透哥特拱廊的古老修道院回廊石柱间",
+    "action": "漫步于石柱长廊间手扶石柱侧身回眸，红丝带随风轻扬，神情清冷温柔",
+    "timeOfDay": "午后晴天",
+    "lighting": "拱门透射进来的明朗金色阳光与石柱长影",
+    "camera": "cowboy shot, eye level, elegant cloister portrait",
+    "mood": "圣洁清冷",
+    "sceneTags": [
+      "cloister",
+      "colonnade",
+      "sunlight",
+      "wind",
+      "church_uniform",
+      "shroud_of_magdalene",
+      "no_skirt",
+      "black_thighhighs",
+      "gentle_smile",
+      "looking_back"
+    ],
+    "promptProse": "Strolling through the sunlit stone colonnade of an ancient monastery cloister, Caren Hortensia pauses beside a Gothic pillar to glance back. The long crimson ribbons of her Shroud flutter in the warm spring breeze alongside her silvery layered hair, framing her unique skirtless habit and slender legs. A rare, gentle smile graces her pale lips. Luminous, peaceful anime visual novel art, solo 1girl, no text.",
+    "promptTokens": [
+      "cloister",
+      "stone_pillars",
+      "sunlight",
+      "windy",
+      "church_uniform",
+      "shroud_of_magdalene",
+      "no_skirt",
+      "black_thighhighs",
+      "white_hair",
+      "purple_eyes",
+      "gentle_smile",
+      "looking_back",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_exorcist_habit",
+    "coverageTags": [
+      "daily",
+      "serene",
+      "cloister"
+    ],
+    "adult": true,
+    "sampleRating": "R18"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/rhodes_island_lounge_knit",
+  "revision": 1,
+  "sortOrder": 297,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "default": false,
+      "id": "rhodes_island_lounge_knit",
+      "isDefault": false,
+      "name": "罗德岛日常慵懒高领毛衣便服",
+      "prose": "a cozy lounge outfit: an oatmeal chunky-knit oversized turtleneck sweater with a relaxed dropped shoulder, over a sleeveless cotton camisole, paired with deep emerald wide-leg linen lounge trousers",
+      "tokens": [
+        "chunky_knit",
+        "oversized",
+        "turtleneck",
+        "sweater",
+        "wide_leg_pants",
+        "linen",
+        "lounge"
+      ]
+    }
+  }
+}

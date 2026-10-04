@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "chloe_von_einzbern_sfw_b7_07",
+  "revision": 1,
+  "sortOrder": 317,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "chloe_von_einzbern_sfw_b7_07",
+    "title": "克洛伊 · 夏日祭的草莓面具",
+    "category": "节日约会",
+    "characterId": "chloe_von_einzbern",
+    "outfitId": "sfw_festival",
+    "description": "【冬木夏日祭·黄昏】克洛伊穿着草莓粉浴衣站在面具摊前，先把一枚狐狸面具扣到自己脸上，又从摊主手里抢到最后一枚草莓糖；她掀开面具对镜头得意眨眼。",
+    "location": "Fuyuki summer festival mask stall",
+    "action": "祭典面具摊戴狐狸面具抢到最后一枚草莓糖，掀面具朝镜头得意眨眼",
+    "timeOfDay": "日间",
+    "lighting": "lantern glow at blue evening",
+    "camera": "medium shot, horizontal framing",
+    "mood": "把胜负心变成节日可爱战利品",
+    "sceneTags": [
+      "summer_festival",
+      "pink_yukata",
+      "fox_mask",
+      "strawberry_candy",
+      "lanterns",
+      "sandals",
+      "orange_eyes",
+      "wink",
+      "evening",
+      "afternoon_light"
+    ],
+    "promptProse": "Chloe von Einzbern from Fate wears a properly wrapped strawberry-pink floral yukata, cream obi and sandals. She von Einzbern stands at the festival mask stall in a strawberry-pink yukata, balancing a fox mask above her warm brown skin. She wins the last strawberry candy, lifts the mask to reveal a delighted orange-eyed wink, and lets lanterns turn the small victory into a summer memory. lantern glow at blue evening.",
+    "promptTokens": [
+      "summer_festival",
+      "pink_yukata",
+      "fox_mask",
+      "strawberry_candy",
+      "lanterns",
+      "sandals",
+      "orange_eyes",
+      "wink",
+      "evening",
+      "afternoon_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

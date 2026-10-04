@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/formal_dress",
+  "revision": 1,
+  "sortOrder": 503,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "default": false,
+      "id": "formal_dress",
+      "isDefault": false,
+      "name": "正式礼服",
+      "prose": "a sleek black formal dress with a high collar and long sleeves, elegant and commanding",
+      "tokens": [
+        "dress",
+        "black_dress",
+        "high_collar",
+        "long_sleeves",
+        "elegant"
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_halo_festival_track_victory",
+  "revision": 1,
+  "sortOrder": 917,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "微弯腰单手扶膝微喘，另一手拿白色运动毛巾擦汗，脸颊泛红娇羞微笑",
+    "camera": "medium shot, dynamic low angle",
+    "category": "运动竞技",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【早濑优香 · 晄轮大祭冲线时刻】晄轮大祭热闹非凡的巨型体育场跑道旁，阳光洒在泛着微光的塑胶地面上。优香刚刚冲过终点线，微喘着单手扶着白毛巾擦拭泛红的脸颊，胸前的银色秒表随着急促的呼吸轻轻起伏——「呼……呼……怎么样老师？我的速度……没有辜负大家的期待吧！」",
+    "id": "yuuka_halo_festival_track_victory",
+    "lighting": "明媚阳光直射与跑道漫射光",
+    "location": "晄轮大祭中央体育场跑道旁",
+    "mood": "活力心动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "gym_tracksuit",
+    "promptProse": "Crossing the finish line at the Halo Festival stadium, Yuuka wipes sweat with a towel, beaming with breathless victory. Bright stadium spotlights and fluttering victory banners capture the electrifying energy of her track triumph.",
+    "promptTokens": [
+      "stadium",
+      "running_track",
+      "sweat",
+      "happy_smile",
+      "stopwatch",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "stadium",
+      "track_and_field",
+      "running_track",
+      "towel",
+      "sweat",
+      "heavy_breathing",
+      "blush",
+      "happy",
+      "stopwatch"
+    ],
+    "timeOfDay": "午后",
+    "title": "早濑优香 · 晄轮大祭冲线时刻"
+  }
+}

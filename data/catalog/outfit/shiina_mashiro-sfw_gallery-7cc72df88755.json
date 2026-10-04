@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/sfw_gallery",
+  "revision": 1,
+  "sortOrder": 853,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "sfw_gallery",
+      "name": "毕业展浅色连衣裙",
+      "prose": "an opaque ivory knee-length dress with short sleeves and flat shoes",
+      "tokens": [
+        "white_dress",
+        "short_sleeves",
+        "flat_shoes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

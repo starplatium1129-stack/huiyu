@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 958,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "蓝白棒球衫野餐装",
+      "prose": "a blue-and-white baseball jacket over a yellow T-shirt, full-length light denim jeans and comfortable trainers",
+      "tokens": [
+        "baseball_jacket",
+        "yellow_shirt",
+        "jeans",
+        "sneakers"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

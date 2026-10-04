@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/student_council_blazer",
+  "revision": 1,
+  "sortOrder": 205,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "student_council_blazer",
+      "name": "学生会执行干练正装",
+      "prose": "her student council executive attire: a neatly buttoned navy blazer with an armband on her left sleeve, crisp white shirt with collar pins, a slightly longer pleated skirt, and sheer black tights",
+      "tokens": [
+        "formal_wear",
+        "blazer",
+        "navy_jacket",
+        "armband",
+        "white_shirt",
+        "pleated_skirt",
+        "black_pantyhose",
+        "professional"
+      ]
+    }
+  }
+}

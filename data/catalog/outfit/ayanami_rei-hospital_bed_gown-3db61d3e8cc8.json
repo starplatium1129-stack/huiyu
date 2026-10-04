@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ayanami_rei/hospital_bed_gown",
+  "revision": 1,
+  "sortOrder": 562,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ayanami_rei",
+    "outfit": {
+      "default": false,
+      "id": "hospital_bed_gown",
+      "isDefault": false,
+      "name": "病床坐姿绷带病服",
+      "prose": "wearing a loose white hospital patient gown with medical gauze bandages across her left arm and chest, a medical eyepatch, and bare feet",
+      "tokens": [
+        "hospital_gown",
+        "white_gown",
+        "bandages",
+        "bandage_on_arm",
+        "bandage_on_leg",
+        "eyepatch",
+        "medical_eyepatch",
+        "barefoot"
+      ]
+    }
+  }
+}

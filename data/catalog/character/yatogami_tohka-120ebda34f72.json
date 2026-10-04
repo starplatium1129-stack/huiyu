@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "yatogami_tohka",
+  "revision": 1,
+  "sortOrder": 125,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yatogami_tohka",
+    "profile": {
+      "id": "yatogami_tohka",
+      "name": "夜刀神十香",
+      "alias": [
+        "夜刀神十香",
+        "Tohka Yatogami"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-yatogami_tohka.png?v=f8970923b378",
+        "alt": "夜刀神十香 · 面包店的黄豆粉面包场景样张"
+      },
+      "visual_dna": {
+        "signature": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",
+        "hair": "purple_hair, very_long_hair",
+        "eyes": "purple_eyes",
+        "uniform": "来禅高校日常制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "好奇心旺盛，喜欢与不喜欢都表达得很直接",
+        "面对新鲜事物容易兴奋，做决定又很认真",
+        "珍视陪伴，普通的一顿饭也能带来由衷快乐"
+      ],
+      "likes": [
+        "黄豆粉面包",
+        "节日摊位",
+        "和朋友分享美食"
+      ],
+      "classic_cg": {
+        "title": "夜刀神十香 · 面包店的黄豆粉面包",
+        "description": "面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物；买到之后当场咬下一大口，幸福到头顶的蝴蝶结都在晃。"
+      },
+      "identity": "Date A Live · 夜刀神十香",
+      "tags": [
+        "夜刀神十香",
+        "约会大作战",
+        "日常"
+      ],
+      "bg_story": "初到人类世界的精灵，对面包、节日和日常小事抱有直接而热烈的好奇。深紫长发、蝴蝶结和坦率的表情是视觉重点，日常场景不混入灵装与巨剑。",
+      "palette": [
+        "#a794db",
+        "#282532"
+      ],
+      "source": "Date A Live",
+      "speech": "唔姆，这个面包也很好吃！",
+      "traits": [
+        "yatogami_tohka",
+        "date_a_live",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes"
+      ],
+      "accent_color": "#a794db",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "yatogami_tohka",
+      "displayName": "夜刀神十香",
+      "originalName": "Tohka Yatogami",
+      "franchise": "Date A Live",
+      "aliases": [
+        "夜刀神十香",
+        "Tohka Yatogami"
+      ],
+      "identityProse": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",
+      "identityTokens": [
+        "yatogami_tohka",
+        "date_a_live",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "ponytail",
+        "ribbon"
+      ],
+      "exactTokens": [
+        "yatogami_tohka"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yatogami_tohka"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ereshkigal_garden_walk_flower_field",
+  "revision": 1,
+  "sortOrder": 268,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ereshkigal_garden_walk_flower_field",
+    "title": "埃列什基伽勒 · 冥界花田的散步·「在冥界种花……是我的任性」",
+    "category": "专属羁绊",
+    "characterId": "ereshkigal_fate",
+    "description": "【冥界花田·花时】黑暗的国土上竟开着一整片白色的花田——是她一株一株亲手种下的。埃列什基伽勒提着裙摆走在花间，回头朝你招手，红瞳弯成温柔的弧度——「在冥界种花，是本王唯一的任性。……呐，你看，它们朝你开花了。花也是，我也是。」",
+    "location": "冥界白色花田",
+    "action": "一手提稳黑裙裙摆，另一手回身招呼同行者，沿白花间小径行走",
+    "timeOfDay": "花时",
+    "lighting": "花田上空的柔光与幽暗国土的对比",
+    "camera": "medium shot, flower field walk, beckoning, tender mood",
+    "mood": "温柔任性、花开告白",
+    "sceneTags": [
+      "underworld_flower_path",
+      "walking",
+      "holding_dress_hem",
+      "beckoning_hand",
+      "black_dress",
+      "blue_ribbons",
+      "golden_tiara",
+      "white_flowers",
+      "soft_magic_light",
+      "medium_shot"
+    ],
+    "promptProse": "Ereshkigal walks along the narrow path between the underworld’s white flowers, gathering a little of her black dress hem with one hand and beckoning to the viewer with the other. Pale blue ribbons move with her step beneath the golden tiara, and her red eyes soften into a small smile. Gentle magical light above the flower bed separates the blossoms from the surrounding darkness. Both hands remain devoted to the hem and invitation as the path opens ahead. The horizontal view includes the clear walking stance and flowers without lettering.",
+    "promptTokens": [
+      "underworld_flower_path",
+      "walking",
+      "holding_dress_hem",
+      "beckoning_hand",
+      "black_dress",
+      "blue_ribbons",
+      "golden_tiara",
+      "white_flowers",
+      "soft_magic_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "official_lancer_attire",
+    "coverageTags": [
+      "daily",
+      "romance"
+    ]
+  }
+}

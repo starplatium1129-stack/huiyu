@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/sainan_uniform",
+  "revision": 1,
+  "sortOrder": 670,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": true,
+      "id": "sainan_uniform",
+      "isDefault": true,
+      "name": "彩南高校标准水手制服",
+      "prose": "Sainan High School uniform: short-sleeved white sailor shirt with teal sailor collar, front neckline pulled slightly open showing cleavage, teal pleated miniskirt, white slouch loose socks, loafers, and her slender black spade-heart tail swishing cheerfully",
+      "tokens": [
+        "sainan_high_school_uniform",
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "sailor_collar",
+        "pleated_skirt",
+        "miniskirt",
+        "cleavage",
+        "loose_socks",
+        "loafers",
+        "demon_tail"
+      ]
+    }
+  }
+}

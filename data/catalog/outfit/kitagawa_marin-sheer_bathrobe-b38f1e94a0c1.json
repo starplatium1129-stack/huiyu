@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/sheer_bathrobe",
+  "revision": 1,
+  "sortOrder": 276,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "sheer_bathrobe",
+      "isDefault": false,
+      "name": "薄透浴袍",
+      "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "bathrobe",
+        "sheer_bathrobe",
+        "sheer",
+        "translucent",
+        "thin_fabric",
+        "loose_belt",
+        "robe",
+        "bare_shoulders",
+        "bare_legs",
+        "clinging_fabric"
+      ]
+    }
+  }
+}

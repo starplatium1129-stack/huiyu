@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/summer_swimsuit_assassin",
+  "revision": 1,
+  "sortOrder": 136,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "summer_swimsuit_assassin",
+      "name": "黑纱泳装杀手度假装",
+      "prose": "a daring black string bikini with gold ring accents and a sheer violet sarong knotted at her hip, her long purple hair loose over sunlit shoulders beside the summer sea",
+      "tokens": [
+        "bikini",
+        "black_bikini",
+        "string_bikini",
+        "sarong",
+        "bare_shoulders",
+        "bare_legs",
+        "cleavage",
+        "wet_skin"
+      ]
+    }
+  }
+}

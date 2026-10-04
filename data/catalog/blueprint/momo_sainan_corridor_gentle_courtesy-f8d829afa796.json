@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "momo_sainan_corridor_gentle_courtesy",
+  "revision": 1,
+  "sortOrder": 1248,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手交叠腹前优雅漫步颔首行礼，制服与百褶裙端庄得体，笑容温婉无瑕",
+    "camera": "medium shot, eye-level, refined ladylike perspective",
+    "category": "校园优雅",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "school"
+    ],
+    "description": "【梦梦 · 学园走廊的优雅淑女步】彩南高中明亮整洁的木质走廊上，窗外绿树成荫。梦梦双手端庄地交叠在小腹前，身穿彩南水手服制服百褶裙，黑丝及膝袜衬托出修长匀称的美腿。她微微侧身向迎面走来的老师与同学温和颔首致意，粉色短发垂落耳侧，脸上带着无可挑剔的大家闺秀甜美微笑，任谁也想不到这具纯良躯壳下隐藏着何等惊人的小恶魔心机。",
+    "id": "momo_sainan_corridor_gentle_courtesy",
+    "lighting": "长排大窗透入的纯白自然采光与木地板的反光",
+    "location": "教学楼洒满阳光的木质走廊中央",
+    "mood": "温婉大方",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Walking with refined poise down a sunlit polished school corridor with her hands demurely clasped, Momo bows politely in her Sainan sailor uniform. Crisp morning sunlight streams across her neat black thigh-high stockings and her softly curled pastel-pink locks.",
+    "promptTokens": [
+      "school_hallway",
+      "sunlit_window",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "black_thighhighs",
+      "demon_tail",
+      "polite_smile",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_hallway",
+      "window",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "black_thighhighs",
+      "demon_tail",
+      "polite_smile"
+    ],
+    "timeOfDay": "上午",
+    "title": "梦梦 · 学园走廊的优雅淑女步"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "hu_tao_bamboo_forest_prank",
+  "revision": 1,
+  "sortOrder": 25,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao_bamboo_forest_prank",
+    "title": "胡桃 · 翠竹幽径捉迷藏",
+    "category": "灵动日常",
+    "characterId": "hu_tao",
+    "description": "【胡桃 · 翠竹幽径捉迷藏】轻策庄青翠葱郁的竹林小径上，斑驳的晨光洒在青石板上。胡桃身穿休闲毛衣与百褶短裙，倚在一根粗壮翠竹后探出半边身子，将食指轻抵唇边做出噤声的手势，狡黠的大眼睛里满是想要吓人一跳的俏皮笑意——「嘘——！不要出声！本堂主这次一定要好好吓七七一跳！」",
+    "location": "轻策庄竹林幽径",
+    "action": "倚在粗壮翠竹后探出半边身子，食指轻抵唇边做噤声手势，眼神充满恶作剧笑意",
+    "timeOfDay": "上午",
+    "lighting": "竹叶缝隙漏下的斑驳明亮阳光",
+    "camera": "cowboy shot, eye level",
+    "mood": "俏皮灵动",
+    "sceneTags": [
+      "bamboo_grove",
+      "stone_path",
+      "hiding",
+      "peeking",
+      "finger_on_lips",
+      "hand_on_bamboo",
+      "mischievous_smile",
+      "dark_sweater",
+      "red_pleated_skirt",
+      "morning_light",
+      "eye_level"
+    ],
+    "promptProse": "Hu Tao leans around a thick bamboo stalk beside the stone path through Qingce’s grove. Only half of her figure has emerged: one index finger touches her lips while her other hand rests against the bamboo. A sly smile and bright flower-shaped pupils invite the viewer to keep her hiding place secret. Her loose dark sweater, red pleated skirt and knee-high socks fit the ordinary morning outing. Clear morning rays fall in broken stripes across the path and sleeves, with green leaves framing the eye-level view. No additional person or lettering.",
+    "promptTokens": [
+      "bamboo_grove",
+      "stone_path",
+      "hiding",
+      "peeking",
+      "finger_on_lips",
+      "hand_on_bamboo",
+      "mischievous_smile",
+      "dark_sweater",
+      "red_pleated_skirt",
+      "morning_light",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_liyue_street",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

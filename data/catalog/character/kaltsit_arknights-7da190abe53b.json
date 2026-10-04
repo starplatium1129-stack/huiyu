@@ -1,0 +1,141 @@
+{
+  "kind": "character",
+  "id": "kaltsit_arknights",
+  "revision": 1,
+  "sortOrder": 27,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kaltsit_arknights",
+    "profile": {
+      "id": "kaltsit_arknights",
+      "name": "凯尔希",
+      "alias": [
+        "Kal'tsit",
+        "凯尔希",
+        "ケルシー",
+        "AMa-10",
+        "老太婆"
+      ],
+      "type": "popular",
+      "icon": "🩺",
+      "visual_dna": {
+        "hair": "淡薄荷绿/灰绿色（Pale Mint Green / Light Sage Green）中短发，发丝轻盈有光泽。前额留有自然垂落的轻薄中分/偏分微卷碎刘海；两侧各有一缕精致细长的发辫/发束（Twin side braids）垂至胸前锁骨；后脑勺头发微卷蓬松齐肩。",
+        "hair_color": "淡薄荷绿 / 浅灰绿（Pale Mint Green / Light Sage Green / #A8C9B9）",
+        "eyes": "祖母绿 / 翠绿色（Emerald Green / Jade Green）瞳孔，眼眸清澈深邃、眼尾微挑，眼神冷静清冽、深沉睿智，常年带有洞察一切的理智克制与经历万年沧桑的淡淡疏离感与疲倦感。",
+        "hairstyle": "薄荷绿齐肩短发/微卷发，两侧留有垂肩细长发辫，头顶长有一对浅绿色菲林/猞猁兽耳（耳尖带有标志性的黑色毛簇）。",
+        "uniform": "基础立绘服装由科技感医生白大褂与黑色露背挂脖短裙组成：外层为半透明科技材质下摆与淡绿滚边的立领白大褂（Lab coat），七分袖，胸前挂有罗德岛身份工牌与通讯终端；内层为修身黑色高领挂脖短裙（Halterneck dress），后背为大面积深V露背设计（露出脊椎骨与连接 Mon3tr 的能量结晶组织）；腰部配有荧光绿/浅绿半透明机能战术绑带与医疗工具包；双腿穿黑色过膝高筒袜配黑色高跟机能皮短靴。",
+        "expression": "理智冷静、神情淡然严肃、从容不迫；少有大幅度情绪波动，眼神深邃锐利、洞察人心；言辞严谨繁复（长难句/哲理话术），在面对阿米娅与罗德岛安危时流露出隐秘的深沉关切与决绝。",
+        "style": "科幻医疗机能风（Sci-Fi Medic Techwear）、冷淡理智知识分子（Intellectual & Stoic）、末世神秘学者（Apocalyptic Sage）、露背黑白撞色与荧光绿点缀（Monochrome Contrast with Neon Green Accents）。",
+        "signature": "浅绿色猞猁兽耳（耳尖黑色毛簇）、双耳佩戴的长条棱柱形祖母绿晶体耳坠（Emerald crystal drop earrings）、大面积深V露背与脊柱结晶接口（Backless spine exposure）、伴生生物 Mon3tr（黑色骨骼甲壳与绿色源石晶体构成的机械脊椎兽）、薄荷绿双侧垂肩细发辫、胸前罗德岛身份工牌与绿色透明战术挂带。"
+      },
+      "personality": [
+        "理智冷静",
+        "博学深邃",
+        "言辞严谨（长难句哲学风格）",
+        "外冷内热",
+        "责任沉重",
+        "决断果敢",
+        "悲悯包容",
+        "执着坚定"
+      ],
+      "likes": [
+        "纯黑咖啡与微苦热茶",
+        "泰拉古代历史文献与前文明遗迹研究",
+        "医学、病理学及源石生物学深入钻研",
+        "阿米娅的健康成长与罗德岛全员的安全",
+        "深夜在罗德岛舰桥独自观测星空与大地脉动"
+      ],
+      "identity": {
+        "role": "罗德岛最高管理者之一（三巨头）、罗德岛医疗部门总负责人、阿米娅的监护人兼导师、前文明守望者造物（AMa-10）",
+        "age": "未知（肉身实际已存续数万年以上，历经多次重构与苏醒，外表维持在20多岁成熟知性女性）",
+        "occupation": "罗德岛医疗总监 / 首席医生 / 战略指挥官 / 泰拉文明观察者",
+        "faction": "罗德岛（Rhodes Island）/ 前巴别塔（Babel）"
+      },
+      "tags": [
+        "淡薄荷绿 / 浅灰绿（Pale Mint Green / Light Sage Green / #A8C9B9）",
+        "祖母绿 / 翠绿色（Emerald Green / Jade Green）瞳孔，眼眸清澈深邃、眼尾微挑，眼神冷静清冽、深沉睿智，常年带有洞察一切的理智克制与经历万年沧桑的淡淡疏离感与疲倦感。"
+      ],
+      "bg_story": "凯尔希是罗德岛的联合创始人与最高管理层之一，总揽医疗体系与全舰核心战略事务，同时作为导师悉心守护阿米娅的成长。其真实身份是前人类文明留存的守护造物（代号 AMa-10），拥有跨越数万年漫长时间尺度的记忆，亲历并见证了泰拉大地上无数种族的繁衍、国家的崛起与文明的覆灭。曾与特蕾西娅、博士并肩建立巴别塔，在巴别塔分崩离析后重整旗鼓建立罗德岛，毕生致力于攻克矿石病、救助苦难感染者并寻求延续文明火种的道路。面对严酷的大地宿命与重重危机，她始终以近乎严苛的冷静理性作为外壳，在最深处默默守护着对这片大地和所有生命的深沉爱意与责任。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "kal'tsit",
+        "1girl",
+        "solo",
+        "light_green_hair",
+        "short_hair",
+        "cat_ears",
+        "green_eyes",
+        "green_clothes",
+        "white_clothes",
+        "coat",
+        "earring",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-kaltsit_arknights.png?v=5",
+        "alt": "凯尔希热门角色立绘"
+      },
+      "speech": "凯尔希向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "kaltsit",
+        "kal'tsit",
+        "arknights",
+        "mon3tr",
+        "kal'tsit (arknights)"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
+        "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "displayName": "凯尔希",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kal'tsit (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "kaltsit_arknights",
+      "identityProse": "Kal'tsit from Arknights, the venerable feline medical director with short pale mint-green hair, feline ears, sharp analytical green eyes, and a calm, stoic expression.",
+      "identityTokens": [
+        "kal'tsit (arknights)",
+        "1girl",
+        "solo",
+        "light_green_hair",
+        "short_hair",
+        "cat_ears",
+        "green_eyes",
+        "earring",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Kal'tsit",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_r18_couch_cowgirl_paw_straddle",
+  "revision": 1,
+  "sortOrder": 1099,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_r18_couch_cowgirl_paw_straddle",
+    "title": "柴郡 · 沙发戴爪跨坐骑乘与娇憨起伏",
+    "category": "深层欢愉",
+    "characterId": "cheshire_azur",
+    "outfitId": "summer_bikini",
+    "coverageTags": [
+      "cowgirl"
+    ],
+    "description": "【成年柴郡 · 天鹅绒沙发扶手的猫系独处】成年柴郡独自跨坐沙发扶手，白蕾丝女仆比基尼松开，一手抓靠背、一手在腿间自抚，猫尾避开双腿。",
+    "location": "私密休息室天鹅绒大沙发",
+    "action": "独自跨坐沙发扶手，一手抓靠背、一手腿间自抚",
+    "timeOfDay": "下午",
+    "lighting": "遮光窗帘缝隙透入的一抹浓金落日余晖映照在雪肤与猫耳上",
+    "camera": "straddling pov, medium close-up looking upward into bouncing cleavage and happy blushing face",
+    "mood": "极乐沉沦",
+    "sceneTags": [
+      "cowgirl_position",
+      "straddling",
+      "gloves",
+      "white_gloves",
+      "bikini",
+      "bouncing_breasts",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "smile",
+      "heavy_blush"
+    ],
+    "promptProse": "Amber lounge light finds adult Cheshire alone astride the arm of a velvet sofa. Her white lace maid bikini is loosened beneath bare breasts and pulled aside at the hips, while one gloved hand grips the backrest and the other fingers herself between her thighs. Cat ears, a striped tail and long purple hair frame bright eyes and an ecstatic playful grin. The compact vertical pose keeps every limb and paw-like glove readable. No text or extra people.",
+    "promptTokens": [
+      "cowgirl_position",
+      "straddling",
+      "gloves",
+      "white_gloves",
+      "bikini",
+      "bouncing_breasts",
+      "large_breasts",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "heavy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_bedroom",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [
+      "cowgirl",
+      "straddling",
+      "gloves",
+      "large_breasts",
+      "cat_ear_headband",
+      "heavy_blush"
+    ],
+    "nsfwProse": ""
+  }
+}

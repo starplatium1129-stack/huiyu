@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/sfw_street_hoodie",
+  "revision": 1,
+  "sortOrder": 188,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "sfw_street_hoodie",
+      "name": "试听与便利店卫衣便服",
+      "prose": "an oversized teal hoodie with a dark knee-length skirt, opaque tights and sneakers",
+      "tokens": [
+        "oversized_hoodie",
+        "teal_hoodie",
+        "dark_skirt",
+        "opaque_tights",
+        "sneakers"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

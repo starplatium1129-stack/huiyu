@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc031",
+  "revision": 1,
+  "sortOrder": 29,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the illuminated ritual hall with three heart-rate curves projected on the dome and a slowly rotating halo above, Ayachi Nene laughs with tears of joy holding your right hand while Shiki Natsume grips your left hand tighter and speaks the vow with calm determination.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全景",
+    "category": "Active_Sync_Scenes",
+    "char": "triad",
+    "character": [
+      "natsume",
+      "nene"
+    ],
+    "emotion": "Absolute Dependency",
+    "id": "sc031",
+    "lighting": "光芒万丈",
+    "location": "仪式厅",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 1girl, 3girls, artist_name, chromatic_aberration, nsfw, nude, explicit, girls_holding_each_other's_hands, girls_kissing_each_other, pink_ribbon_on_black_haired_woman, white_ribbon_on_black_haired_woman, flower_hair_ornament_on_black_haired_woman, mole_on_white_haired_woman, identical_twins, third_woman, camera, video_camera, television_camera, filming_equipment, photography_equipment, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
+    "prompt": "2girls, pov, holy_ritual_hall, three_heart_rate_curves_projected_on_dome, rotating_halo, golden_light, (ayachi_nene_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_formal_gown, tears_of_joy, holding_viewer_right_hand), BREAK, (shiki_natsume_on_right, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_formal_gown, calm_determined_expression, holding_viewer_left_hand), interlocking_fingers_with_viewer, full_body, wide_shot, <lora:shiki_natsume_v18_wd14:0.7>, <lora:ayachi_nene_v18_wd14:0.7>",
+    "rating": "All",
+    "recommendedSize": "1344×896",
+    "season": "不限",
+    "story": "【成年 AU · 三人契约的无限回路】仪式厅的光幕将三条心率曲线投向穹顶，宁宁与夏目分别握住你的左右手。同步数值越过阈值后没有失控，反而稳定成一枚缓慢旋转的光环。宁宁先笑着落泪，夏目则握得更紧，用简短的话替三个人完成誓言——「不是谁依附谁。是我们都选择留下，并且一次次重新选择。」",
+    "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
+    "tags": [
+      "2girls",
+      "formal_gown",
+      "sheer_white_thighhigh_stockings",
+      "sheer_black_tights",
+      "ritual_hall",
+      "tears_of_joy",
+      "crying_from_joy",
+      "rotating_halo",
+      "holding_hands",
+      "full_body",
+      "wide_shot",
+      "heels"
+    ],
+    "time": "仪式时刻",
+    "timeOfDay": "all_day",
+    "title": "三人契约的无限回路",
+    "usage": [
+      "协议核心"
+    ],
+    "weather": "神圣"
+  }
+}

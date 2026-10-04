@@ -1,0 +1,46 @@
+{
+  "kind": "scene",
+  "id": "sc301",
+  "revision": 1,
+  "sortOrder": 296,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc301",
+    "title": "晨光里的坦诚",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 宁宁 · 晨光里的坦诚】清晨的卧室还笼着淡金色的光。宁宁仰躺在床上，把双腿抬起、缓缓分开，全裸的身体被晨光勾勒得毫无保留——白嫩的双乳与腿间最私密的地方都清晰可见。她红着脸，努力稳住声音——「说好了，只准看宁宁一个人……连这里，也只准给宁宁喜欢的人看。」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "害羞而信任",
+    "season": "不限",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "adult",
+      "nene"
+    ],
+    "rating": "R18",
+    "mature": true,
+    "location": "清晨的卧室大床",
+    "weather": "室内晨光",
+    "camera": "电影级16:9横幅构图",
+    "lighting": "清晨金光与柔和暗影",
+    "usage": [
+      "官方CG灵感",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, white_hair, very_long_hair, low_twintails, pink_hair_ribbons, purple_eyes, ahoge, naked, nude, bare_breasts, nipples, navel, pussy, lying_on_back_with_knees_raised_and_legs_spread, anatomically_correct_torso, heavy_blush, shy_open_mouth, looking_at_viewer, bedroom, bed, morning_light, golden_hour, soft_shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, night, dark, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【大人のAfter Story・寧々・朝の光の中の素直さ】朝の寝室には、まだ淡い金色の光が満ちていた。寧々は仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体を朝の光にさらけ出している。白い胸も、脚の付け根の一番秘かな場所も、はっきりと見えている。彼女は顔を赤らめながら、必死に声を落ち着けて言った。「約束して、寧々だけを見て……ここも、寧々が好きな人にだけ見せるんだから。」",
+    "animaCaption": "In an intimate cinematic view, Ayachi Nene lies gracefully on the soft bed with knees raised apart, looking shyly toward the viewer in the warm morning light.",
+    "auditRevision": "careful-batch15-2026-08-27"
+  }
+}

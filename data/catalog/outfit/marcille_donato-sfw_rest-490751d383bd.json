@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "marcille_donato/sfw_rest",
+  "revision": 1,
+  "sortOrder": 989,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "marcille_donato",
+    "outfit": {
+      "id": "sfw_rest",
+      "name": "营地休息针织便装",
+      "prose": "a cream knit top and comfortable brown trousers",
+      "tokens": [
+        "cream_sweater",
+        "brown_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

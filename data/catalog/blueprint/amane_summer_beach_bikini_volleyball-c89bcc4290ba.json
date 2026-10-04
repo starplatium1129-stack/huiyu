@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "amane_summer_beach_bikini_volleyball",
+  "revision": 1,
+  "sortOrder": 1182,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_summer_beach_bikini_volleyball",
+    "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
+    "category": "盛夏海滨",
+    "characterId": "suou_amane",
+    "outfitId": "summer_bikini",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【周防天音 · 耀阳金滩的细带艳红惊艳】碧海连天的热带细白沙滩排球场边，海风扬起漫天细沙。天音身穿一套极为火辣大胆的深红细带微型比基尼，难以遮掩的极品巨乳与高挑曼妙的沙漏腰臀在烈日下闪闪发亮。她单手托起排球回眸，酒红长发与发环在海风中肆意舞动，水珠顺着饱满的胸骨滑落，散发出无人能抵御的成熟女性荷尔蒙。",
+    "location": "热带海滩排球场白沙浪花边",
+    "action": "单手托排球侧身回眸，极细比基尼勾勒出震撼身段，汗水流淌，神态自信热烈",
+    "timeOfDay": "正午",
+    "lighting": "万里无云的热带透亮骄阳与碧蓝海面折射的晶莹焦散光斑",
+    "camera": "full body, 3/4 dynamic perspective, athletic hourglass focus",
+    "mood": "热烈美艳",
+    "sceneTags": [
+      "beach",
+      "volleyball",
+      "bikini",
+      "red_bikini",
+      "micro_bikini",
+      "wet_skin",
+      "hair_rings",
+      "large_breasts"
+    ],
+    "promptProse": "Holding a volleyball while posing along turquoise tropical ocean shallows in a daring red string micro-bikini, Amane looks back with confident summer radiance. Tropical sunlight glistens across her tanned athletic curves and flowing crimson hair rings against azure waves.",
+    "promptTokens": [
+      "tropical_beach",
+      "beach_volleyball",
+      "ocean_waves",
+      "red_bikini",
+      "micro_bikini",
+      "wet_skin",
+      "hair_rings",
+      "large_breasts",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

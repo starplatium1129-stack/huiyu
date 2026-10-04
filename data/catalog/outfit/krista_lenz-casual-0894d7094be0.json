@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "krista_lenz/casual",
+  "revision": 1,
+  "sortOrder": 546,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "krista_lenz",
+    "outfit": {
+      "default": false,
+      "id": "casual",
+      "isDefault": false,
+      "name": "常服便装",
+      "prose": "a soft casual look with a white dress and a gentle smile",
+      "tokens": [
+        "casual_clothes",
+        "white_dress",
+        "smile"
+      ]
+    }
+  }
+}

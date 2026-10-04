@@ -1,5 +1,6 @@
 use super::*;
 use crate::maintenance::{backup, context::Context, journal};
+use std::path::Path;
 fn write(path: &Path, value: &Value) {
     std::fs::create_dir_all(path.parent().unwrap()).unwrap();
     std::fs::write(path, blueprints::json_text(value)).unwrap();
@@ -20,6 +21,32 @@ fn fixture(base: &Path) -> Options {
     write(
         &root.join("data/popular-characters.json"),
         &json!({"characters":[{"id":"alpha","displayName":"Alpha"}]}),
+    );
+    let records = vec![
+        ("scene", "sc001", scene),
+        (
+            "character",
+            "alpha",
+            json!({"id":"alpha","popular":{"id":"alpha","displayName":"Alpha"}}),
+        ),
+        (
+            "blueprint",
+            "quiet_blueprint",
+            json!({"id":"quiet_blueprint","characterId":"alpha","title":"Reading","description":"A neutral bookshelf.","adult":false}),
+        ),
+    ];
+    let mut files = Vec::new();
+    for (index, (kind, id, data)) in records.into_iter().enumerate() {
+        let file = format!("{index}.json");
+        write(
+            &root.join("data/catalog").join(&file),
+            &json!({"kind":kind,"id":id,"revision":1,"sortOrder":index,"createdAt":null,"updatedAt":null,"data":data}),
+        );
+        files.push(file);
+    }
+    write(
+        &root.join("data/catalog/manifest.json"),
+        &json!({"version":1,"files":files}),
     );
     let showcase = base.join("showcase/v2");
     write(

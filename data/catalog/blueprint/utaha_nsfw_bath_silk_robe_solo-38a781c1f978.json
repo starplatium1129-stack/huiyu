@@ -1,0 +1,82 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_nsfw_bath_silk_robe_solo",
+  "revision": 1,
+  "sortOrder": 1439,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_nsfw_bath_silk_robe_solo",
+    "title": "霞之丘诗羽 · 浴后的丝绸湿身独奏·「取材日记，禁止外传」",
+    "category": "单人成人",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【公寓浴室·深夜】写作卡稿的深夜，诗羽的解压方式是一缸热水与一件湿透的丝质睡袍。她斜倚在浴缸边，丝绸紧贴着成熟的曲线透出底色，红瞳半阖，指尖在水下描摹着记忆里的轮廓——「取材日记，第无数页：今晚验证了……独自一人时，回忆的精度足以……哈啊……禁止外传。」",
+    "location": "公寓浴室浴缸",
+    "action": "斜倚缸沿湿身丝袍，水下手指描摹回忆自抚",
+    "timeOfDay": "深夜",
+    "lighting": "浴室暖光与丝绸的湿润反光",
+    "camera": "medium shot, steam haze, wet silk robe, sensual solo framing",
+    "mood": "成熟自持、回忆取材",
+    "sceneTags": [
+      "nsfw",
+      "solo",
+      "wet_clothes",
+      "see-through",
+      "silk_robe",
+      "bath",
+      "masturbation",
+      "steam"
+    ],
+    "promptProse": "Kasumigaoka Utaha's deadline-night ritual is a tub of hot water and a silk robe soaked to translucent sheerness. Reclining against the bath rim with the wet silk clinging to every mature curve, she lets one hand drift beneath the water, tracing remembered contours while her red eyes fall half-lidded, recording in her mental research diary that memory alone has verifiable precision. Sensual solo composition, wet translucent silk, cinematic lighting, steam, detailed bathroom background.",
+    "nsfwProse": "Reclining in hot bathwater with a wet silk robe clinging sheerly over full breasts and taut dark nipples, Utaha touches herself beneath the steaming ripples with lazy, sensual precision.",
+    "promptTokens": [
+      "bathroom",
+      "bathtub",
+      "steam",
+      "water_droplets",
+      "night",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "nsfw",
+      "solo",
+      "special_nsfw"
+    ],
+    "nsfwTokens": [
+      "sitting_in_water",
+      "bathtub",
+      "translucent_clothing",
+      "wet_clothes",
+      "see-through",
+      "wet_cloth",
+      "silk_robe",
+      "nipples_visible_through_clothes",
+      "bare_breasts",
+      "submerged",
+      "hand_between_legs",
+      "masturbation",
+      "pussy_juice",
+      "heavy_blush",
+      "teary_eyes",
+      "parted_lips"
+    ]
+  }
+}

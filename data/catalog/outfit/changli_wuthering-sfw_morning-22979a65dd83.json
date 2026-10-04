@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/sfw_morning",
+  "revision": 1,
+  "sortOrder": 933,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "sfw_morning",
+      "name": "清晨束发针织便装",
+      "prose": "a cream long-sleeved blouse and comfortable dark trousers",
+      "tokens": [
+        "cream_blouse",
+        "long_sleeves",
+        "dark_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ereshkigal_bridal_vow_kur_cathedral",
+  "revision": 1,
+  "sortOrder": 270,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ereshkigal_bridal_vow_kur_cathedral",
+    "title": "埃列什基伽勒 · 冥界花嫁的誓约·「连死亡都拆不散的契约」",
+    "category": "圣洁花嫁",
+    "characterId": "ereshkigal_fate",
+    "description": "【想象场景】【冥界大圣堂·婚礼日】连神都很少踏足的冥界深处，今天亮起了婚礼的烛光。埃列什基伽勒披着白纱站在圣堂中央，金发王冠与白纱相映，红瞳里的泪光胜过所有魂火——「冥界的女王结婚……连死神都会来观礼的吧。这份契约的效力是——直到永远。连死亡，都拆不散哦。」",
+    "location": "冥界大圣堂",
+    "action": "白纱立于圣堂烛光中，金冠白纱相映红瞳含泪微笑",
+    "timeOfDay": "婚礼夜",
+    "lighting": "婚礼烛光与魂火交映",
+    "camera": "wide shot, environmental portrait, underworld chapel bride, candle glow, sacred mood",
+    "mood": "永恒契约、泪光圣洁",
+    "sceneTags": [
+      "underworld_cathedral",
+      "white_wedding_gown",
+      "long_veil",
+      "golden_tiara",
+      "white_flower_bouquet",
+      "both_hands",
+      "relieved_smile",
+      "candlelight",
+      "soul_fire_glow",
+      "full_body"
+    ],
+    "promptProse": "At the center of the underworld cathedral, Ereshkigal stands in an opaque white wedding gown and long veil beneath her golden tiara. Both hands hold a small bouquet of white flowers, leaving the formal silhouette calm and complete. Her red eyes shine with a relieved smile as candlelight mingles with the blue soul fires around the distant columns. In this imagined ceremony, she offers a quiet vow of companionship beyond death. Show the full gown, bouquet and veil within the vertical frame. No lettering.",
+    "promptTokens": [
+      "underworld_cathedral",
+      "white_wedding_gown",
+      "long_veil",
+      "golden_tiara",
+      "white_flower_bouquet",
+      "both_hands",
+      "relieved_smile",
+      "candlelight",
+      "soul_fire_glow",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "sfw_underworld_bridal",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/gremory_crimson_battle",
+  "revision": 1,
+  "sortOrder": 692,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "gremory_crimson_battle",
+      "name": "吉蒙里公爵纯血战袍",
+      "prose": "her majestic devil combat attire adorned with crimson and black noble embroideries, flared open shoulders, glowing magical crests, and a magnificent pair of bat-like dark devil wings unfurled gracefully from her back",
+      "tokens": [
+        "devil_wings",
+        "bat_wings",
+        "noble_dress",
+        "crimson_dress",
+        "black_accents",
+        "magic_circle",
+        "bare_shoulders",
+        "detached_sleeves"
+      ]
+    }
+  }
+}

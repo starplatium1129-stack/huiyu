@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sylphiette/silent_fitz_uniform",
+  "revision": 1,
+  "sortOrder": 255,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sylphiette",
+    "outfit": {
+      "default": false,
+      "id": "silent_fitz_uniform",
+      "isDefault": false,
+      "name": "菲兹学长魔术学院执事装",
+      "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+      "styleHint": "sharp noble academy aesthetic",
+      "tokens": [
+        "white_hair",
+        "short_hair",
+        "sunglasses",
+        "academy_uniform",
+        "formal_suit",
+        "white_pants",
+        "cape"
+      ]
+    }
+  }
+}

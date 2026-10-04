@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 818,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "天使薄纱纯白内衣",
+      "prose": "an angelic pure white and pale gold lace lingerie set: a demi-cup bra lifting her modest breasts with delicate scalloped lace, matching low-rise lace panties, and a gossamer silk robe slipping down both arms",
+      "tokens": [
+        "white_lingerie",
+        "gold_trim",
+        "lace_bra",
+        "lace_panties",
+        "silk_robe",
+        "off_shoulder",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

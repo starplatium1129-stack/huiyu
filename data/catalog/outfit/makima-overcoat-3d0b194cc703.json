@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makima/overcoat",
+  "revision": 1,
+  "sortOrder": 236,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "overcoat",
+      "name": "风衣",
+      "prose": "her long black overcoat with a high collar",
+      "tokens": [
+        "long_coat",
+        "overcoat",
+        "black_coat",
+        "high_collar"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

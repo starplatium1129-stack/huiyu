@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/home_pink_apron",
+  "revision": 1,
+  "sortOrder": 569,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "default": false,
+      "id": "home_pink_apron",
+      "isDefault": false,
+      "name": "居家粉色围裙便装",
+      "prose": "wearing a casual short-sleeved home t-shirt under a pink ruffled baking apron, with her signature red hair clips",
+      "tokens": [
+        "casual_tshirt",
+        "pink_apron",
+        "apron",
+        "red_hair_clips"
+      ]
+    }
+  }
+}

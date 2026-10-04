@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 714,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, slender immortal body with long silky green hair pooling beneath her, porcelain ivory skin, tender natural breasts with small pink nipples, and a slender graceful waist",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "small_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/nun_habit",
+  "revision": 1,
+  "sortOrder": 320,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "nun_habit",
+      "isDefault": false,
+      "name": "素白修女服",
+      "prose": "wearing a plain white nun habit with a long modest white gown, high collar, long sleeves, and a white head veil",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "lemuen_nun_habit",
+        "nun_habit",
+        "white_gown",
+        "long_dress",
+        "white_veil",
+        "wimple",
+        "cross_pendant",
+        "long_sleeves",
+        "white_clothes"
+      ]
+    }
+  }
+}

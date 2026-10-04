@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "violet_bougainvillea_field_parasol",
+  "revision": 1,
+  "sortOrder": 1389,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
+    "adult": false,
+    "animaStyleHint": "anime_cinematic_scenic",
+    "camera": "medium shot, wide scenic perspective, flower petals fluttering, romantic summer stroll",
+    "category": "唯美浪漫",
+    "characterId": "violet_evergarden",
+    "coverageTags": [
+      "daily",
+      "romantic",
+      "summer"
+    ],
+    "description": "【繁花盛开的花园小径】南国小镇的花园里，紫红色的九重葛花藤宛如瀑布般从白色石墙倾泻而下。薇尔莉特身着一袭纯白的夏日轻薄棉质连身裙，头戴系着海蓝缎带的宽檐草帽。她一手轻撑着蕾丝遮阳伞，一手小心翼翼地牵住你的指尖，微微偏过头，脸颊泛着淡淡的樱粉色。",
+    "id": "violet_bougainvillea_field_parasol",
+    "kreaStyleHint": "anime_cinematic_scenic",
+    "lighting": "明媚灿烂的地中海夏日阳光穿透花隙，投下绚丽的紫红与金黄光斑",
+    "location": "沿海山城蜿蜒的紫红九重葛花径",
+    "mood": "清纯唯美、少女情怀",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_white_summer_dress",
+    "promptProse": "Violet Evergarden strolls along a cobblestone path lined with cascading magenta bougainvillea flowers beneath a lace parasol. Her simple white summer cotton sundress sways with the gentle sea breeze as her ribboned straw hat frames her blushing porcelain cheeks. She gently clasps your hand with silver prosthetic fingers while flower petals drift across the sunlit afternoon warmth.",
+    "promptTokens": [
+      "garden",
+      "flowers",
+      "bougainvillea",
+      "white_dress",
+      "straw_hat",
+      "parasol",
+      "holding_hands",
+      "walking",
+      "blushing",
+      "summer",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "flower_garden",
+      "bougainvillea",
+      "white_dress",
+      "straw_hat",
+      "parasol",
+      "holding_hands",
+      "blushing",
+      "summer"
+    ],
+    "timeOfDay": "午后",
+    "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」"
+  }
+}

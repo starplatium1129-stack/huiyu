@@ -1,0 +1,117 @@
+{
+  "kind": "character",
+  "id": "tobiichi_origami",
+  "revision": 1,
+  "sortOrder": 126,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tobiichi_origami",
+    "profile": {
+      "id": "tobiichi_origami",
+      "name": "鸢一折纸",
+      "alias": [
+        "鸢一折纸",
+        "Origami Tobiichi"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-tobiichi_origami.png?v=a17f22bad3d8",
+        "alt": "鸢一折纸 · 教室窗边的完美侧脸场景样张"
+      },
+      "visual_dna": {
+        "signature": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+        "hair": "white_hair, hair_ornament",
+        "eyes": "blue_eyes",
+        "uniform": "旧时间线短发制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "表情克制，说话简洁，做事具有明确目标",
+        "对细节的关注往往比外在反应更强烈",
+        "放松时也保持认真，偶尔显出不自觉的笨拙"
+      ],
+      "likes": [
+        "整理笔记",
+        "有规律的练习",
+        "安静的居家休息"
+      ],
+      "classic_cg": {
+        "title": "鸢一折纸 · 教室窗边的完美侧脸",
+        "description": "教室靠窗，她坐姿笔直地看书，白发在午后光里近乎透明；周围同学的窃窃私语全部被她无视，翻页的节奏都像设定好的程序——直到手机震动，她的视线瞬间离开书本。"
+      },
+      "identity": "Date A Live · 鸢一折纸",
+      "tags": [
+        "鸢一折纸",
+        "约会大作战",
+        "日常"
+      ],
+      "bg_story": "成绩和运动都出色的少女，也是AST成员。她习惯以准确的动作表达心意，旧时间线短发与新时间线长发分别绑定服装形态，避免常驻DNA冲突。",
+      "palette": [
+        "#9dbce5",
+        "#282532"
+      ],
+      "source": "Date A Live",
+      "speech": "检查完毕。今天的安排没有问题。",
+      "traits": [
+        "tobiichi_origami",
+        "date_a_live",
+        "white_hair",
+        "blue_eyes",
+        "hair_ornament"
+      ],
+      "accent_color": "#9dbce5",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "tobiichi_origami",
+      "displayName": "鸢一折纸",
+      "originalName": "Origami Tobiichi",
+      "franchise": "Date A Live",
+      "aliases": [
+        "鸢一折纸",
+        "Origami Tobiichi"
+      ],
+      "identityProse": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+      "identityTokens": [
+        "tobiichi_origami",
+        "date_a_live",
+        "white_hair",
+        "blue_eyes",
+        "hair_ornament"
+      ],
+      "exactTokens": [
+        "tobiichi_origami"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tobiichi_origami"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

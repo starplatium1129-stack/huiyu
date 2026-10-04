@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_hospital_bed_window_reading",
+  "revision": 1,
+  "sortOrder": 1169,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_hospital_bed_window_reading",
+    "title": "风见一姬 · 白昼病房的书卷沉思",
+    "category": "日常静谧",
+    "characterId": "kazami_kazuki",
+    "outfitId": "hospital_casual",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【风见一姬 · 白昼病房的书卷沉思】洒满纯白阳光的安宁单人疗养病房内，微风吹拂着薄纱窗帘。一姬身穿宽松单薄的白色长衬衫，双腿自然曲起坐在洁白的病床被褥上。她单手托腮靠在曲起的膝盖上，另一只手翻阅着厚重的哲学典籍，散落的白发如丝缎般铺满床单，红瞳在文字间流转，展现出褪去风霜后令人心安的柔和文静。",
+    "location": "白色简约单人疗养病房靠窗病床",
+    "action": "曲膝坐在病床上单手托腮看书，宽松白衬衫领口微敞露出锁骨，神情专注沉静",
+    "timeOfDay": "上午",
+    "lighting": "宽幅玻璃窗透射进来的明净晨曦与白被褥的柔和漫反射",
+    "camera": "medium shot, seated eye-level, intimate serene framing",
+    "mood": "恬静知性",
+    "sceneTags": [
+      "hospital_room",
+      "bed",
+      "reading",
+      "book",
+      "oversized_shirt",
+      "bare_legs",
+      "white_hair",
+      "red_eyes"
+    ],
+    "promptProse": "Sitting cross-legged upon a pristine white medical bed beside sun-drenched sheer curtains, Kazuki immerses herself in a heavy philosophical tome in an oversized white dress shirt. Gentle morning sunbeams illuminate her cascading silvery locks and delicate crimson gaze in tranquil peace.",
+    "promptTokens": [
+      "hospital_room",
+      "hospital_bed",
+      "white_sheets",
+      "reading_book",
+      "oversized_shirt",
+      "bare_legs",
+      "white_hair",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

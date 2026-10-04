@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "shiki_rainy_day_shared_umbrella",
+  "revision": 1,
+  "sortOrder": 1349,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "并肩共撑黑伞，侧身紧贴视角手臂，抬头看着伞沿滴落的雨水，眼神柔和",
+    "camera": "cowboy shot, eye level, atmospheric rainy walk",
+    "category": "雨天温存",
+    "characterId": "ryougi_shiki",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "date",
+      "rain",
+      "umbrella"
+    ],
+    "description": "【两仪式 · 细雨霏霏的并肩黑伞】烟雨朦胧的石板小巷里，细密的雨丝织成灰色的薄雾。在同一把黑色长柄雨伞下，两仪式身着纯白和服与红皮夹克，悄悄往你身边靠得极近，甚至肩膀贴着你的手臂，靴底踩在湿漉漉的水洼中泛起涟漪。她微微仰起头，漆黑深邃的眼眸倒映着伞沿滴落的雨珠，轻声低语——「伞这么小，靠紧一点才不会淋湿吧……走吧，回去了。」",
+    "id": "shiki_rainy_day_shared_umbrella",
+    "lighting": "雨丝反光的柔和冷灰色天光与伞下微弱暖影",
+    "location": "被青苔与细雨笼罩的幽静日式老式石板巷",
+    "mood": "静谧浪漫",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "kimono_red_jacket_no_knife",
+    "promptProse": "Walking closely together beneath a single black umbrella through a rain-slicked cobblestone alley, Ryougi Shiki leans gently against the viewer's side to stay sheltered from the falling mist. Raindrops patter musically against the canvas as her red leather jacket brushes against the viewer's arm. Looking up through the soft grey rainfall with deep, quiet tenderness, her black eyes soften completely. Atmospheric anime film visual style with two clothed figures, no text.",
+    "promptTokens": [
+      "rain",
+      "rainy_alley",
+      "cobblestones",
+      "umbrella",
+      "shared_umbrella",
+      "white_kimono",
+      "red_jacket",
+      "walking_together",
+      "close_distance",
+      "gentle_smile",
+      "black_hair",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rain",
+      "rainy_street",
+      "stone_pavement",
+      "umbrella",
+      "shared_umbrella",
+      "kimono",
+      "red_jacket",
+      "walking_together",
+      "close_distance",
+      "gentle_gaze"
+    ],
+    "timeOfDay": "阴雨天",
+    "title": "两仪式 · 细雨霏霏的并肩黑伞"
+  }
+}

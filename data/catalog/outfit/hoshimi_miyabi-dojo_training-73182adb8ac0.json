@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "hoshimi_miyabi/dojo_training",
+  "revision": 1,
+  "sortOrder": 589,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshimi_miyabi",
+    "outfit": {
+      "default": false,
+      "id": "dojo_training",
+      "isDefault": false,
+      "name": "道场居合练功服",
+      "prose": "austere martial arts keikogi dojo training attire: breathable pure white cotton crossover training top, deep indigo pleated training hakama, white cloth handwraps and wrist bandages, barefoot stance on tatami floor, holding a wooden bokken practice sword",
+      "tokens": [
+        "keikogi",
+        "martial_arts_uniform",
+        "white_shirt",
+        "hakama",
+        "indigo_hakama",
+        "hand_wraps",
+        "wrist_wraps",
+        "bandages",
+        "barefoot",
+        "bokken",
+        "wooden_sword",
+        "dojo"
+      ]
+    }
+  }
+}

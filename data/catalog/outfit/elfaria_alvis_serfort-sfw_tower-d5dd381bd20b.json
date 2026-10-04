@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/sfw_tower",
+  "revision": 1,
+  "sortOrder": 967,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "sfw_tower",
+      "name": "高塔议事长袍",
+      "prose": "a pale blue long robe with white embroidered layers, high collar and covered sleeves",
+      "tokens": [
+        "blue_robe",
+        "white_layers",
+        "embroidery",
+        "high_collar",
+        "long_sleeves"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

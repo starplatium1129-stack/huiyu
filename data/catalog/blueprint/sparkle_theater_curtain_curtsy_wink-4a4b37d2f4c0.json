@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_theater_curtain_curtsy_wink",
+  "revision": 1,
+  "sortOrder": 1052,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_theater_curtain_curtsy_wink",
+    "title": "花火 · 帷幕之后的绝妙谢幕",
+    "category": "舞台戏弄",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 帷幕之后的绝妙谢幕】金碧辉煌的大剧场落幕后，沉重的深红金穗大帷幕缓缓合拢。花火从帷幕的缝隙中探出娇俏的身姿，一只手优雅地捏起和风短裙的裙摆行了一个夸张的提裙礼，另一只手在唇边比了个俏皮的“嘘”手势，向你眨动着一只灵动的赤红眸子——「今晚的表演精彩吗？不过真正的压轴好戏，要在帷幕彻底拉上之后，才由我们两个人独家上演哦。」",
+    "location": "金碧辉煌的大剧院舞台深红大帷幕缝隙",
+    "action": "从深红帷幕间侧身探出，单手提裙行礼，另一手竖起食指抵在唇边眨眼微笑",
+    "timeOfDay": "剧场散场",
+    "lighting": "舞台聚光灯与帷幕天鹅绒的暗红深影",
+    "camera": "cowboy shot, eye level, theatrical curtsy view",
+    "mood": "神秘魅惑",
+    "sceneTags": [
+      "stage",
+      "red_curtains",
+      "curtsy",
+      "skirt_lift",
+      "finger_on_lips",
+      "winking",
+      "kitsune_mask",
+      "mini_kimono",
+      "seductive_smile"
+    ],
+    "promptProse": "Peeking out through the parted fold of heavy crimson velvet stage curtains, Sparkle executes a theatrical curtsy, delicately pinching the hem of her black and red mini kimono. With an index finger pressed over her cherry lips and one glowing ruby eye winking playfully, she casts a spellbinding, coquettish spell under the dim golden spotlights. Theatrical anime key visual finish, solo 1girl, no text.",
+    "promptTokens": [
+      "theater_stage",
+      "velvet_curtain",
+      "curtsy",
+      "skirt_lift",
+      "finger_on_lips",
+      "winking",
+      "mini_kimono",
+      "kitsune_mask",
+      "pink_eyes",
+      "twintails",
+      "seductive_smile",
+      "spotlight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_kimono_dress",
+    "coverageTags": [
+      "theatrical",
+      "flirty",
+      "stage"
+    ]
+  }
+}

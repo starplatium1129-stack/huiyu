@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/millennium_uniform",
+  "revision": 1,
+  "sortOrder": 505,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "default": true,
+      "id": "millennium_uniform",
+      "isDefault": true,
+      "name": "研讨会制服",
+      "prose": "Millennium Seminar school uniform featuring a sleeveless white collared blouse, blue necktie, open dark navy blazer draped over her shoulders, ID card lanyard, black pleated miniskirt, black thighhighs with white trim, brown loafers, and a handheld digital calculator tablet",
+      "tokens": [
+        "school_uniform",
+        "sleeveless_shirt",
+        "collared_shirt",
+        "white_shirt",
+        "blue_necktie",
+        "open_jacket",
+        "navy_jacket",
+        "lanyard",
+        "id_card",
+        "pleated_skirt",
+        "black_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thighhighs",
+        "loafers",
+        "calculator",
+        "millennium",
+        "seminar"
+      ]
+    }
+  }
+}

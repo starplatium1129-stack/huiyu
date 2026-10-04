@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_living_room_hugged_blush_fang",
+  "revision": 1,
+  "sortOrder": 1325,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "背靠在怀中双手反握住环抱的手臂，脸红透耳根，咬唇露出小尖牙害羞别头",
+    "camera": "medium close-up, eye level, flustered tender embrace",
+    "category": "反差娇羞",
+    "characterId": "arcueid_brunestud",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "gap_moe",
+      "flustered",
+      "embrace"
+    ],
+    "description": "【爱尔奎特 · 客厅突袭相拥的娇羞发颤】黄昏的客厅沙发旁，当你突然从背后将毫无防备的爱尔奎特整个揽入怀中、将下巴搁在她柔软的发窝时，这位活了数百年的真祖少女瞬间僵住。整张脸颊与白皙的耳根迅速被绯红吞没，双手羞涩地抓着你的手臂，小小的吸血犬齿在咬唇时隐约若现，声音微颤却舍不得挣脱——「突、突然抱过来干什么啦……我的心跳声……都要被你听到了啦……」",
+    "id": "arcueid_living_room_hugged_blush_fang",
+    "lighting": "窗外如蜂蜜般浓郁的金黄夕阳余晖",
+    "location": "夕阳斜照的温馨公寓客厅沙发旁",
+    "mood": "反差心动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "outfitId": "official_white_sweater_purple_skirt",
+    "promptProse": "Wrapped from behind in a tender, sudden embrace in the sunset-lit living room, Arcueid Brunestud freezes in delightful fluster. Her fair cheeks and ears flush deep crimson with embarrassment as her small hands grasp the viewer's forearms. Biting her lower lip, revealing the hint of a tiny vampire fang, her ruby eyes quiver between shyness and deep affection. Emotional anime illustration with two clothed figures, no text.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "back_hug",
+      "white_sweater",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "biting_lip",
+      "fang",
+      "flustered",
+      "shy_expression",
+      "red_eyes",
+      "sunset",
+      "golden_hour",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "living_room",
+      "back_hug",
+      "held_by_viewer",
+      "white_sweater",
+      "heavy_blush",
+      "blushing_ears",
+      "biting_lip",
+      "fang",
+      "flustered",
+      "shy"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "爱尔奎特 · 客厅突袭相拥的娇羞发颤"
+  }
+}

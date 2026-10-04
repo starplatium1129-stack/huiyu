@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 935,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "长离·圣洁花嫁",
+      "prose": "a layered white-and-red bridal gown with phoenix embroidery, a light veil and a white flower fan",
+      "tokens": [
+        "wedding_dress",
+        "red_white_gown",
+        "phoenix_embroidery",
+        "light_veil",
+        "white_flower_fan"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

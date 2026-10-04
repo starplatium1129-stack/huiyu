@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "rias_late_night_study_lap_pillow",
+  "revision": 1,
+  "sortOrder": 1282,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_late_night_study_lap_pillow",
+    "title": "莉雅丝 · 深夜书房的温软膝枕",
+    "category": "温柔陪伴",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 深夜书房的温软膝枕】深夜壁炉暖火微跳的私人书房里，红茶的醇香在微凉的夜色中静静流淌。莉雅丝跪坐在柔软的厚地毯上，双手轻拍着自己穿着丝袜的丰满大腿，向疲惫的你张开温暖怀抱。火光勾勒出她柔和的侧颜，深红的长发如瀑布般披散在她膝头——「今天累坏了吧？不用逞强了，把头靠过来，今晚我是你一个人的莉雅丝。」",
+    "location": "铺着名贵波斯地毯的壁炉暖意私人书房",
+    "action": "跪坐在地毯上轻拍自己修长丰满的大腿提供膝枕，眼神极尽温柔与包容",
+    "timeOfDay": "深夜",
+    "lighting": "壁炉柴火跳跃的暖橙微光与复古台灯",
+    "camera": "cowboy shot, medium angle, cozy perspective",
+    "mood": "深情包容",
+    "sceneTags": [
+      "study",
+      "fireplace",
+      "carpet",
+      "sitting_on_floor",
+      "kneeling",
+      "patting_lap",
+      "lap_pillow",
+      "gentle_smile",
+      "loving_gaze",
+      "warm_glow"
+    ],
+    "promptProse": "Kneeling gracefully upon a plush Persian rug beside a crackling stone fireplace late at night, Rias Gremory gestures gently to her lap, offering a soothing lap pillow. Dressed in elegant crimson silk loungewear, her overflowing crimson tresses catch the amber hearth fire, and her eyes gaze down with profound tenderness and loving devotion. Warm, tranquil anime mood, solo 1girl, no text.",
+    "promptTokens": [
+      "study",
+      "fireplace",
+      "warm_light",
+      "kneeling",
+      "sitting_on_carpet",
+      "patting_lap",
+      "lap_pillow",
+      "crimson_lingerie",
+      "gentle_smile",
+      "tender_gaze",
+      "flowing_hair",
+      "cozy",
+      "cowboy_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "crimson_silk_lingerie",
+    "coverageTags": [
+      "healing",
+      "comfort",
+      "romantic"
+    ]
+  }
+}

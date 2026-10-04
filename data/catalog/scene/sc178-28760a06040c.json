@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc178",
+  "revision": 1,
+  "sortOrder": 175,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the dim closed cafe after hours she sits on the wooden counter wearing only a cafe apron, her bare back, sideboob framed by the loose apron strings and fully bare vacuum legs exposed, nervously squeezing her thighs together with a heavy blush as the ahoge curls into a heart, seen from the entrance under the weak warm counter lamp.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "羞怯",
+    "id": "sc178",
+    "lighting": "吧台吊灯微弱暖光",
+    "location": "咖啡馆木质吧台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, clothed, stockings, thighhighs, mary_jane, shoes, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, apron, maid_apron, cafe, cafe_window, no_underwear, bare_back, sideboob, slender_bare_legs, sitting, legs, squeezed, together, heavy_blush, heart_ahoge, panicked_expression, dim, counter, lamp, collarbone, slender_waist, full_body, warm_lighting, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 裸体围裙极致羞耻】深夜彻底打烊后的星光咖啡馆。在一片安静昏暗的氛围中，宁宁换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地坐在微凉的吧台桌面上，围裙带子松垮垮地勾勒出她丰满迷人的侧乳轮廓，光洁白皙的后背与完全真空的双腿毫无防备地暴露在外。因为听到你推门进来的脚步声，她慌乱地夹紧双腿试图遮挡，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・裸エプロン極限羞恥】深夜完全閉店後のスターライトカフェ。静かで薄暗い雰囲気の中、寧々はカフェエプロンだけというタブーな衣装を着た。彼女は顔を赤らめながら、少し涼しいバーテーブルに座っていた。エプロンの紐が彼女の豊満で魅力的な横乳の輪郭をゆるやかに描いている。滑らかな白い背中と完全にバキュームになった美脚が無防備にさらけ出された。あなたがドアを押す足音が聞こえたので、彼女は頭を覆おうとして必死に足を締めました。彼女の頭の上のアホ毛はとても恥ずかしがり屋で狂ったように震え、完璧な愛のスパイラルへと丸まっていった。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
+    "tags": [
+      "hair_ribbon",
+      "maid_apron",
+      "no_underwear",
+      "completely_naked",
+      "bare_back",
+      "sideboob",
+      "bare_legs",
+      "cafe_counter",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "打烊后的秘享：星光吧台的真空魔女女仆",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

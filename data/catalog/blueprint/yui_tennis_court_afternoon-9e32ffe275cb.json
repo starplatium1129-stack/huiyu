@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "yui_tennis_court_afternoon",
+  "revision": 1,
+  "sortOrder": 354,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yui_tennis_court_afternoon",
+    "title": "由比滨结衣 · 网球训练场",
+    "category": "现代校园",
+    "characterId": "yuigahama_yui",
+    "outfitId": "tennis_sportswear",
+    "adult": false,
+    "description": "【由比滨结衣 · 网球训练场】午后明亮的网球场上，结衣穿着清爽的网球运动装，握着球拍稍作休息。她擦去额头的汗珠，团子发髻被微风轻轻拂动，转头露出灿烂的笑容——「刚才那一球我可是用了全力哦！休息一下，再来一局吧。」",
+    "location": "学校网球场",
+    "action": "握着网球拍在场边擦汗，笑着准备下一局",
+    "timeOfDay": "afternoon",
+    "lighting": "sunny",
+    "camera": "medium_shot",
+    "mood": "energetic",
+    "sceneTags": [
+      "tennis_court",
+      "tennis_racket",
+      "sports",
+      "sunny_day",
+      "athletic",
+      "skirt_flaring",
+      "action_shot"
+    ],
+    "promptProse": "Holding her tennis racket with a confident, sporty stance on the sunny school court, Yui wipes a bead of sweat with a cheerful grin. Bright afternoon daylight highlights her energetic, athletic vitality.",
+    "promptTokens": [
+      "tennis_court",
+      "tennis_racket",
+      "sports_uniform",
+      "sweat",
+      "cheerful_smile",
+      "sunlight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "extra fingers",
+      "gloomy",
+      "winter"
+    ],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

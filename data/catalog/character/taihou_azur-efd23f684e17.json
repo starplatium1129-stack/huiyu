@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "taihou_azur",
+  "revision": 1,
+  "sortOrder": 80,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_azur",
+    "profile": {
+      "id": "taihou_azur",
+      "name": "大凤",
+      "alias": [
+        "Taihou",
+        "大凤航母",
+        "重樱大凤",
+        "病娇装母"
+      ],
+      "type": "popular",
+      "icon": "🪭",
+      "portrait": {
+        "image": "../assets/characters/popular-taihou_azur.png?v=5",
+        "alt": "大凤 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及膝乌黑超长双马尾 · 金凤发饰",
+        "hair_color": "漆黑曜石",
+        "eyes": "炽热如火赤红眼眸",
+        "hairstyle": "极长双马尾 · 齐刘海 · 奢华红金金鱼大振袖",
+        "uniform": "重樱朱砂金鱼华服 / 禁忌盛宴深红丝绒晚礼裙",
+        "expression": "深情迷醉 · 极度占有 · 娇羞依赖",
+        "style": "devoted yandere armored carrier",
+        "signature": "曳地漆黑双马尾、金鱼大振袖、极具压迫感丰满身段与赤红凤眸"
+      },
+      "personality": [
+        "对指挥官怀有毫无保留的炽热爱意",
+        "独占欲强但极度听话顺从",
+        "家务与侍奉全能的完美贤妻",
+        "战场上如烈焰般果断狂猛",
+        "内心极其渴望被全心全意注视"
+      ],
+      "likes": [
+        "为指挥官打理官邸所有内务",
+        "亲手烹饪滋补的重樱和食",
+        "在深夜陪伴在指挥官身侧",
+        "漫步在盛开落樱的神殿庭院"
+      ],
+      "classic_cg": {
+        "title": "重樱烈焰的深情相候",
+        "description": "神殿朱红回廊下，漫天绯樱飘扬，大凤执赤金折扇侧身含情脉脉相迎，身段曼妙美艳不可方物。"
+      },
+      "identity": {
+        "role": "重樱主力装甲航空母舰",
+        "age": "青年",
+        "occupation": "装甲航母舰船 / 指挥官贴身侍奉",
+        "faction": "碧蓝航线 · 重樱群岛"
+      },
+      "tags": [
+        "黑长双马尾",
+        "红瞳",
+        "金鱼振袖",
+        "和服",
+        "病娇深情",
+        "装甲航母",
+        "丰腴尤物"
+      ],
+      "bg_story": "大凤是《碧蓝航线》中重樱阵营的装甲航空母舰。外表是美艳绝伦的和风绝色佳人，拖曳着如夜色般的极长黑双马尾，身着华丽如锦鲤的红金振袖。她对指挥官有着近乎病态却毫无恶意的绝对深情与献身精神，时时刻刻将指挥官的一切放在第一位。",
+      "palette": [
+        "朱砂红",
+        "曜石黑",
+        "赤金"
+      ],
+      "weather": [
+        "绯樱飘落",
+        "红月夜色",
+        "烈焰晴空"
+      ],
+      "speech": "指挥官大人，您的一切，大凤全都了如指掌哦……今晚也请全心全意交给我吧。",
+      "source": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "taihou (azur lane)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "twintails",
+        "red_eyes",
+        "huge_breasts",
+        "cleavage",
+        "azur_lane"
+      ],
+      "accent_color": "#dc2626",
+      "bg_color": "#160808"
+    },
+    "popular": {
+      "id": "taihou_azur",
+      "displayName": "大凤",
+      "originalName": "Taihou",
+      "franchise": "Azur Lane",
+      "aliases": [
+        "taihou_azur",
+        "taihou",
+        "taihou (azur lane)",
+        "大凤",
+        "大凤 (碧蓝航线)",
+        "重樱装母",
+        "sakura empire"
+      ],
+      "identityProse": "Taihou from Azur Lane, Sakura Empire armored aircraft carrier with floor-sweeping jet-black twin tails, intense fiery red-amber eyes, an extraordinarily voluptuous hourglass figure, devoted seductive gaze, and gold phoenix hair accessories.",
+      "identityTokens": [
+        "taihou (azur lane)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "twintails",
+        "red_eyes",
+        "huge_breasts",
+        "cleavage",
+        "hair_ornament",
+        "azur_lane"
+      ],
+      "exactTokens": [
+        "taihou (azur lane)"
+      ],
+      "exactPrefixes": [
+        "taihou_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "碧蓝航线（Azur Lane）· 重樱群岛",
+        "era": "架空近现代舰船拟人世界",
+        "formNotes": "重樱装甲航空母舰，对指挥官有着毫无保留、近乎痴狂的深沉爱意与献身精神；身着华丽的金鱼浴衣，外表美艳绝伦，内心渴望指挥官全心全意的注视",
+        "research": "2026-09-02 调研（Danbooru taihou_(azur_lane) 18000+ posts）"
+      },
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "curatedArtistStyles": [
+        "kishiyo",
+        "dishwasher1910",
+        "ciloranko"
+      ]
+    }
+  }
+}

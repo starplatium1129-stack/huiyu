@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "hu_tao_crimson_butterfly_battle",
+  "revision": 1,
+  "sortOrder": 27,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao_crimson_butterfly_battle",
+    "title": "胡桃 · 蝶引来生烈焰长枪",
+    "category": "战斗觉醒",
+    "characterId": "hu_tao",
+    "description": "【胡桃 · 蝶引来生烈焰长枪】炽热火光与阴阳符文交织的古战场上，护摩之杖通体迸发出灼热的赤红烈焰。胡桃压低重心单膝微蹲，双手紧握长枪破空挥斩，无数由纯净火元素凝结而成的火蝶在周身盘旋翻飞——「受命于天，既寿永昌！蝶引来生，火化九幽！」",
+    "location": "烈焰环绕的荒古祭坛",
+    "action": "侧身压低重心单膝微蹲，双手紧握护摩之杖，周身火蝶飞舞烈焰升腾",
+    "timeOfDay": "昏暗战局",
+    "lighting": "护摩之杖炽烈赤红火光与周身火蝶辉光",
+    "camera": "full-body shot, dynamic low angle, both hands and full polearm visible",
+    "mood": "英姿飒爽",
+    "sceneTags": [
+      "cracked_altar",
+      "combat_crouch",
+      "bent_knees",
+      "both_hands_on_polearm",
+      "staff_of_homa",
+      "fire_trail",
+      "flame_butterflies",
+      "focused_expression",
+      "red_firelight",
+      "low_angle",
+      "full_body"
+    ],
+    "promptProse": "Hu Tao settles into a low combat crouch on the cracked altar stones, both hands spaced firmly along the Staff of Homa. The polearm sweeps diagonally across the frame, leaving a thin red fire trail while small flame butterflies circle the shaft. Her director coat tails and red-tipped twintails follow the movement; her flower-shaped eyes stay fixed on the path of the strike. Use a low, wide view that includes her grounded feet, bent knees and the complete weapon. The staff’s red glow supplies the main light against the dim battlefield. No injured opponent or lettering.",
+    "promptTokens": [
+      "cracked_altar",
+      "combat_crouch",
+      "bent_knees",
+      "both_hands_on_polearm",
+      "staff_of_homa",
+      "fire_trail",
+      "flame_butterflies",
+      "focused_expression",
+      "red_firelight",
+      "low_angle",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1536x1152",
+    "outfitId": "official_funeral_director",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

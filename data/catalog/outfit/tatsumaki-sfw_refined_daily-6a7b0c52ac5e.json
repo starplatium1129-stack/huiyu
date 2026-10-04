@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "tatsumaki/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 902,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tatsumaki",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "薄荷飞行夹克便装",
+      "prose": "a mint bomber jacket over an opaque cream turtleneck, navy straight trousers and white sneakers",
+      "tokens": [
+        "mint_bomber_jacket",
+        "cream_turtleneck",
+        "navy_pants",
+        "white_sneakers"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

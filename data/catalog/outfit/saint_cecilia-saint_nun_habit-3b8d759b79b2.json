@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "saint_cecilia/saint_nun_habit",
+  "revision": 1,
+  "sortOrder": 476,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "saint_cecilia",
+    "outfit": {
+      "default": true,
+      "id": "saint_nun_habit",
+      "isDefault": true,
+      "name": "纯白圣女修女长袍",
+      "prose": "wearing her ceremonial pure white saint nun habit and veil with elegant gold cross embroidery and holy pendant",
+      "styleHint": "divine cathedral stained glass rays",
+      "tokens": [
+        "nun_habit",
+        "white_habit",
+        "veil",
+        "white_veil",
+        "gold_trim",
+        "cross_necklace"
+      ]
+    }
+  }
+}

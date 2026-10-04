@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "iori_gehenna_sniper_rooftop_vanguard",
+  "revision": 1,
+  "sortOrder": 927,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单膝跪在黑石护栏边架狙瞄准，恶魔尾巴卷曲蓄力，眼神凌厉专注",
+    "camera": "wide shot, low angle, dramatic perspective",
+    "category": "战术狙击",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【银镜伊织 · 歌赫娜尖顶的冷冽狙击】歌赫娜学院宏伟哥特式尖顶钟楼边缘，狂风呼啸。伊织单膝跪在冰凉的黑石雕花护栏上，沉稳地架起重型狙击步枪，银白色的双马尾与黑色恶魔尾巴在风中激烈舞动，绯红色的眼眸透过瞄准镜锁定目标——「风纪委员会突击队已就位！所有违纪分子，一个都别想逃掉！」",
+    "id": "iori_gehenna_sniper_rooftop_vanguard",
+    "lighting": "阴云间透射的冷冽夕阳束光与金属反光",
+    "location": "歌赫娜学院钟楼哥特式天台屋顶",
+    "mood": "冷冽英勇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "disciplinary_uniform",
+    "promptProse": "Kneeling atop a gothic Gehenna spire with her heavy sniper rifle aimed downrange, Iori scouts the vanguard with cold determination. Sunset winds whip her silver twintails across the dark slate spires in dramatic cinematic contrast.",
+    "promptTokens": [
+      "gothic_rooftop",
+      "sniper_rifle",
+      "aiming",
+      "kneeling",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "gothic_architecture",
+      "sniper_rifle",
+      "aiming",
+      "kneeling",
+      "wind",
+      "demon_tail",
+      "pointy_ears",
+      "dark_skin",
+      "twintails"
+    ],
+    "timeOfDay": "下午",
+    "title": "银镜伊织 · 歌赫娜尖顶的冷冽狙击"
+  }
+}

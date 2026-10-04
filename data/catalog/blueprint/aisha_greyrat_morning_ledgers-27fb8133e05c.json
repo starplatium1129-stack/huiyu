@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "aisha_greyrat_morning_ledgers",
+  "revision": 1,
+  "sortOrder": 484,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "aisha_greyrat_morning_ledgers",
+    "title": "爱夏·晨光中的账目核对",
+    "outfitId": "maid_uniform",
+    "action": "左手压住账册，右手用羽毛笔圈出一项数字",
+    "location": "格雷拉特宅邸书房",
+    "timeOfDay": "清晨",
+    "lighting": "温暖的窗边晨光",
+    "mood": "专注而从容",
+    "camera": "medium shot",
+    "category": "日常",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "maid",
+      "manor",
+      "ledger",
+      "morning",
+      "fantasy"
+    ],
+    "description": "晨光从书桌左侧照入。爱夏坐在桌后，左手压住摊开的账册，右手的羽毛笔停在刚圈出的数字上，眉梢微挑。深褐连衣裙与白色围裙保持整齐；前景的收据束与后方的分类书架交代宅邸事务，焦点落在脸、笔尖和账页之间。",
+    "promptProse": "At an oak desk, Aisha pauses with her quill touching a circled entry in an open household ledger. Her left palm holds the page flat while her raised eyebrow suggests she has found a discrepancy. Seen across the near desk corner in a waist-up view, she sits between a bundle of receipts in the foreground and labeled storage shelves behind her. Sunlight from the window on the left illuminates her face, the writing hand and the paper together; the far shelves remain softly shaded.",
+    "promptTokens": [
+      "seated_at_desk",
+      "holding_quill",
+      "hand_on_page",
+      "raised_eyebrow",
+      "open_ledger",
+      "receipt_bundle",
+      "oak_desk",
+      "window_light",
+      "waist_up"
+    ],
+    "adult": false,
+    "characterId": "aisha_greyrat",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "coverageTags": [
+      "iconic",
+      "daily"
+    ]
+  }
+}

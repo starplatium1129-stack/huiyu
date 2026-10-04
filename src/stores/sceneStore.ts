@@ -1,4 +1,6 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { catalogApi } from '../api/catalogApi'
+import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
@@ -93,7 +95,7 @@ function sceneNumber(scene: Scene): number {
 }
 
 function sortScenes(list: Scene[]): Scene[] {
-  return [...list].sort((left, right) => sceneNumber(left) - sceneNumber(right))
+  return [...list].sort((left, right) => (typeof left.sortOrder === 'number' ? left.sortOrder : sceneNumber(left)) - (typeof right.sortOrder === 'number' ? right.sortOrder : sceneNumber(right)) || String(left.id).localeCompare(String(right.id)))
 }
 
 function mergeScenes(...lists: Array<Scene[] | undefined>): Scene[] {
@@ -163,7 +165,6 @@ export const useSceneStore = defineStore('scenes', () => {
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
     { file: 'scenes-index.json', required: false, lite: true, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
     { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
-    { file: 'scene-blueprints.json', required: true, lite: false, parse: (raw) => parseSceneBlueprints(requireDataCollection(raw, 'blueprints')), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
   ]
 
   interface MetaCacheEntry { epoch: number; data: unknown }
@@ -351,6 +352,8 @@ export const useSceneStore = defineStore('scenes', () => {
     metaLoadedEpoch = null
     metaFailuresByEpoch.clear()
     metaFailedFiles.value = new Set()
+    blueprintRequests.clear()
+    sceneBlueprints.value = []
     // Do not cancel or clear old transports here. Their completion handlers
     // still run, but their epoch guards make the result harmless.
   }
@@ -470,9 +473,24 @@ export const useSceneStore = defineStore('scenes', () => {
   /** Blueprint browsers need metadata, not character scene shards or studio options. */
   async function loadBlueprintCatalog(): Promise<void> {
     await Promise.all([
-      loadMeta(false, false, new Set(['popular-characters.json', 'scene-blueprints.json'])),
+      loadMeta(false, false, new Set(['popular-characters.json'])),
       loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, loadEpoch, version.value, false),
     ])
+  }
+
+  const blueprintRequests = new Map<string, Promise<void>>()
+  function loadBlueprintCharacter(id: string): Promise<void> {
+    const existing = blueprintRequests.get(id)
+    if (existing) return existing
+    const epoch = loadEpoch
+    const request = (async () => {
+      const raw = isLocalStudioHost() ? (await catalogApi.character(id)).blueprints
+        : requireDataCollection(await fetchJson('scene-blueprints.json', version.value), 'blueprints')
+      const parsed = parseSceneBlueprints(raw).filter(item => item.characterId === id)
+      if (epoch === loadEpoch) sceneBlueprints.value = [...sceneBlueprints.value.filter(item => item.characterId !== id), ...parsed]
+    })().catch(error => { if (blueprintRequests.get(id) === request) blueprintRequests.delete(id); throw error })
+    blueprintRequests.set(id, request)
+    return request
   }
 
   /** 场景维护只需要角色元数据；不要为一个编辑器首屏拉取三份场景分片。 */
@@ -512,6 +530,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
   }
 })

@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc296",
+  "revision": 1,
+  "sortOrder": 291,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc296",
+    "title": "打烊后的同人庆功",
+    "category": "日常/同人/After_Story",
+    "story": "【成年 After Story · 夏目 · 打烊后的同人庆功】新刊发售后的庆功聚餐，其他人都已经散去，居酒屋的暖帘也半垂了下来。夏目坐在角落的座位上，脸上带着微醺的薄红，黑发有几缕散落到脸侧。她解开领口的第一颗扣子，呼出一口气，抬眼看向你时金色的瞳孔比平时柔和了许多——「今天卖得比预期好……你选的排版方向是对的。」她的认可来得突然却真诚。你坐到她旁边帮她拿起外套时，她没有站起来，反而靠过来将额头抵在你肩上，声音低到几乎被背景音乐淹没了——「就一分钟……站了一整天，脚很酸。」她的气息带着梅酒的甜香，手指悄悄勾住了你外套的下摆，像是怕你在她说出那句话之前就走掉。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "微醺后的柔软依赖",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "black_tshirt",
+      "denim_skirt",
+      "tipsy",
+      "forehead_on_shoulder",
+      "holding_coat_hem",
+      "izakaya",
+      "night",
+      "medium_shot"
+    ],
+    "mature": false,
+    "rating": "R15",
+    "location": "深夜的居酒屋角落座位",
+    "weather": "室内",
+    "camera": "桌边近景侧视",
+    "lighting": "居酒屋暖色灯光",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, casual_black_shirt, unbuttoned_collar, dark_denim_miniskirt, black_thighhighs, leaning_forehead_against_viewer_shoulder_on_couch, fingers_hooking_viewer_sleeve, sweet_umeshu_breath, heavy_blush, tipsy, cozy_living_room, dim_warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform, child, loli, underage",
+    "storyJa": "【夏目・大人のAfter Story・閉店後の同人打ち上げ】新刊発売後の打ち上げが終わり、他のメンバーは既に帰路についた。居酒屋の暖簾も半分ほど垂れていた。夏目は座敷の隅に座り、ほろ酔いで頬を薄赤く染めていた。黒い髪が何本か顔の横に落ちている。彼女は襟元の第一ボタンを外し、息をついた。顔を上げてあなたを見た時、金色の瞳はいつもよりずっと柔らかかった——「今日は予想より売れた……あなたの選んだレイアウト方向は正しかったね。」その評価は突然だが誠実だった。あなたが隣に座って彼女の上着を取りに行こうとすると、彼女は立ち上がらず、むしろ寄りかかってきて額をあなたの肩に預けた。声はBGMにかき消されそうなほど小さかった——「あと一分だけ……一日中立ちっぱなしで、足がすごく痛い。」彼女の息からは梅酒の甘い香りがした。指があなたの上着の裾をそっと掴んでいた——あなたが彼女の言葉を聞く前に立ち去ってしまうのが怖いかのように。",
+    "animaCaption": "At the corner seat of the late-night izakaya with the noren half lowered, slightly tipsy Shiki Natsume in a casual black T-shirt and dark denim skirt undoes the first collar button and lets out a sigh; as you sit down beside her she does not get up but leans over, pressing her forehead against your shoulder with sweet plum-wine breath, her fingers quietly hooking the hem of your coat as if afraid you might leave before she finishes speaking.",
+    "auditRevision": "careful-batch01-2026-08-27"
+  }
+}

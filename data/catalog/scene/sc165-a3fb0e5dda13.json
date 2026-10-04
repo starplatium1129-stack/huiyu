@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc165",
+  "revision": 1,
+  "sortOrder": 162,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On the closed cafe counter in the pitch-dark night, Shiki Natsume sits cross-legged wearing only the viewer's oversized pure black shirt hanging loose over her naked body, her long bare legs crossed and one hand idly swirling half a glass of red wine, gaze tipsy and possessively alluring as she looks down at the viewer with the tear mole soaked in her blush.",
+    "auditRevision": "careful-batch14-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc165",
+    "lighting": "聚光灯打在面部",
+    "location": "打烊后的吧台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, black_shirt_unbuttoned, falling_strap, bra_lift, exposed_breasts, bare_breasts, nipples, areola, bare_legs, crotchless_panties, exposed_pussy, pussy_juice, sitting_cross-legged_on_cafe_bar_counter, heavy_blush, wine_glass_nearby, dim_bar_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 吧台绝对独占篇】深夜打烊后的漆黑咖啡馆。夏目在你的霸道要求下，脱掉了全部衣服，仅仅套着你那一身宽大的纯黑衬衫。她面红耳赤地盘腿坐在微凉的吧台桌面上，衬衫下摆刚好遮住绝对领域，大片白皙笔直的长腿毫无防备地交叠袒露。她手里摇晃着半杯红酒，眼神微醺却带着极度撩人、强势的占有欲，居高临下地斜睨着你，眼角的泪痣被红晕浸透，性感得不可救药——「喂，大变态。今晚这间店反锁了，既然不让我回家...你最好做足了被我彻底吃掉的觉悟。」",
+    "storyJa": "【夏目・バーでは絶対に独占的】深夜の閉店後の薄暗いカフェ。あなたの強引な要求に、夏目は服をすべて脱いで、あなたのゆったりとした黒いシャツだけを着ました。彼女は顔を赤らめて、少しひんやりとしたバーテーブルにあぐらをかいて座っていた。シャツの裾は絶対領域を覆うばかりで、色白でまっすぐな長い脚が無防備に重なり露出している。彼女はグラス半分の赤ワインを手に振っており、その目は少し酔っていますが、非常に色っぽくて強い独占欲を持っています。彼女はあなたを軽蔑するように目を細めています。目尻の泣きぼくろが赤面してて、どうしようもなくセクシーです。――「ねえ、この大変態。今夜は店に鍵をかけた。帰さないと言った以上……最後まで私に付き合う覚悟をして。」",
+    "tags": [
+      "mole_under_eye",
+      "oversized_shirt",
+      "black_shirt",
+      "bare_legs",
+      "smooth_thighs",
+      "closed_cafe",
+      "counter",
+      "holding_wine_glass",
+      "red_wine",
+      "tipsy",
+      "possession",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "深夜特权：吧台上的衬衫单线支配",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "yorha_2b/evening_gown",
+  "revision": 1,
+  "sortOrder": 612,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yorha_2b",
+    "outfit": {
+      "id": "evening_gown",
+      "name": "失落纪元露背深黑晚礼服",
+      "prose": "a lavish midnight black velvet formal evening gown with an open heart neckline, dramatic backless cutout showing her shoulder blades, black silk elbow-length opera gloves, silver filigree choker, and dark stiletto heels",
+      "tokens": [
+        "dress",
+        "evening_gown",
+        "black_dress",
+        "velvet",
+        "backless",
+        "open_back",
+        "gloves",
+        "opera_gloves",
+        "choker",
+        "high_heels",
+        "cleavage",
+        "elegant"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

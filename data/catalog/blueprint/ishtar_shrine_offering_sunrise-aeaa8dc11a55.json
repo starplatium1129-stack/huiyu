@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_shrine_offering_sunrise",
+  "revision": 1,
+  "sortOrder": 255,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_shrine_offering_sunrise",
+    "title": "伊什塔尔 · 神殿供品的清晨·「今天的供品，本女神勉强收下了」",
+    "category": "专属羁绊",
+    "characterId": "ishtar_fate",
+    "description": "【重建的神殿·清晨】晨光穿过重建的神殿廊柱，你摆在她座前的供品是一份热腾腾的早餐。伊什塔尔盘腿坐在座台上，闻着香气眼睛都直了，却还要端着架子清清嗓子——「哼、这份心意本女神收下了。作为回礼……今天一天，你的运气由本女神亲自罩着。感恩吧，凡人。」",
+    "location": "重建神殿的座台",
+    "action": "盘腿坐座台前收供品，闻香眼亮，端架子清嗓",
+    "timeOfDay": "清晨",
+    "lighting": "廊柱间的金色晨光",
+    "camera": "medium shot, seated goddess, offering table, morning glow",
+    "mood": "女神口嫌体正直、晨间甜",
+    "sceneTags": [
+      "rebuilt_temple",
+      "dais",
+      "sitting_cross_legged",
+      "hands_on_knees",
+      "breakfast_tray",
+      "offering_table",
+      "golden_tiara",
+      "hungry_expression",
+      "morning_light",
+      "medium_shot"
+    ],
+    "promptProse": "Ishtar sits cross-legged on the rebuilt temple dais with both hands resting on her knees as the aroma of a freshly placed breakfast reaches her. The tray remains on the low offering table in front of the seat, with warm steam rising from the bowl. Her golden tiara and black goddess outfit retain the formal appearance despite the plainly hungry look in her red eyes. Morning light enters between the columns and brightens the food and relaxed posture. Keep the seated figure and offering table central, with no lettering.",
+    "promptTokens": [
+      "rebuilt_temple",
+      "dais",
+      "sitting_cross_legged",
+      "hands_on_knees",
+      "breakfast_tray",
+      "offering_table",
+      "golden_tiara",
+      "hungry_expression",
+      "morning_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "official_goddess_attire",
+    "coverageTags": [
+      "daily",
+      "signature",
+      "romance"
+    ]
+  }
+}

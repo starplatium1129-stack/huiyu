@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/sfw_beach",
+  "revision": 1,
+  "sortOrder": 457,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "玛夏·海滨泳装",
+      "prose": "a warm brown resort swimsuit with a cream shawl, pearl hairpin and a steaming cocoa mug",
+      "tokens": [
+        "brown_resort_swimsuit",
+        "cream_shawl",
+        "pearl_hairpin",
+        "cocoa_mug",
+        "coastal_onsen"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

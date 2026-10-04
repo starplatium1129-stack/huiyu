@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/sfw_school",
+  "revision": 1,
+  "sortOrder": 773,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "default": false,
+      "id": "sfw_school",
+      "isDefault": false,
+      "name": "秀知院校服侧马尾",
+      "prose": "a dark Shuchiin school uniform with a white collar, red ribbon, loose socks and a blonde side ponytail",
+      "tokens": [
+        "shuuchiin_academy_school_uniform",
+        "white_collar",
+        "red_ribbon",
+        "loose_socks",
+        "side_ponytail",
+        "hair_scrunchie"
+      ]
+    }
+  }
+}

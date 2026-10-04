@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "maria_mikhailovna_kujou",
+  "revision": 1,
+  "sortOrder": 151,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "maria_mikhailovna_kujou",
+    "profile": {
+      "id": "maria_mikhailovna_kujou",
+      "name": "玛夏",
+      "alias": [
+        "玛夏",
+        "Mariya Mikhailovna Kujou (Masha)"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-maria_mikhailovna_kujou.png?v=9c3031c8deb5",
+        "alt": "玛夏 · 学生会书记的午后场景样张"
+      },
+      "visual_dna": {
+        "signature": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
+        "hair": "brown_hair, long_hair, wavy_hair",
+        "eyes": "brown_eyes",
+        "uniform": "学生会与音乐教室制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "待人温和，能注意到别人忽略的小需求",
+        "看似悠闲，照顾身边的人时十分周到",
+        "会把自己的感受收在柔和笑容后，不急于说破"
+      ],
+      "likes": [
+        "泡茶与准备茶点",
+        "整理学生会的日常事务",
+        "温暖安静的休息时间"
+      ],
+      "classic_cg": {
+        "title": "玛夏 · 学生会书记的午后",
+        "description": "学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐；递出茶杯时笑容温暖，却在转身的瞬间对某份文件上的名字露出若有所思的一瞥。"
+      },
+      "identity": "Alya Sometimes Hides Her Feelings in Russian · 玛夏",
+      "tags": [
+        "玛夏",
+        "不时轻声地用俄语遮羞的邻座艾莉同学",
+        "日常"
+      ],
+      "bg_story": "学生会中温柔细致的学姐，习惯关心妹妹与朋友，也珍惜安静读书和弹琴的时间。亚麻浅棕卷发、棕瞳和呆毛是核心，花饰按服装选择。",
+      "palette": [
+        "#ceb79b",
+        "#282532"
+      ],
+      "source": "Alya Sometimes Hides Her Feelings in Russian",
+      "speech": "稍微休息一下吧，我准备了热茶。",
+      "traits": [
+        "maria_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "brown_hair",
+        "long_hair",
+        "wavy_hair"
+      ],
+      "accent_color": "#ceb79b",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "maria_mikhailovna_kujou",
+      "displayName": "玛夏",
+      "originalName": "Mariya Mikhailovna Kujou (Masha)",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "aliases": [
+        "玛夏",
+        "Mariya Mikhailovna Kujou (Masha)"
+      ],
+      "identityProse": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
+      "identityTokens": [
+        "maria_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "brown_hair",
+        "long_hair",
+        "wavy_hair",
+        "ahoge",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "maria_mikhailovna_kujou"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, maria_mikhailovna_kujou"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

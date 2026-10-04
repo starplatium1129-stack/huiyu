@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/library_casual_no_hat",
+  "revision": 1,
+  "sortOrder": 764,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "default": false,
+      "id": "library_casual_no_hat",
+      "isDefault": false,
+      "name": "图书馆白裙·无帽",
+      "prose": "a simple pure white cotton summer dress with a lace hem, leather sandals and articulated silver mechanical hands, with no hat",
+      "tokens": [
+        "white_dress",
+        "sundress",
+        "bare_arms",
+        "mechanical_hands",
+        "sandals"
+      ]
+    }
+  }
+}

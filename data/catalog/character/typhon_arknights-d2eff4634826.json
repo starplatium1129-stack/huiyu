@@ -1,0 +1,128 @@
+{
+  "kind": "character",
+  "id": "typhon_arknights",
+  "revision": 1,
+  "sortOrder": 165,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "typhon_arknights",
+    "profile": {
+      "id": "typhon_arknights",
+      "name": "提丰",
+      "alias": [
+        "Typhon",
+        "提丰",
+        "ティフォン",
+        "小提丰",
+        "Typhon Arknights"
+      ],
+      "type": "popular",
+      "icon": "🏹",
+      "visual_dna": {
+        "hair": "浅紫色长发，额前刘海与少量细编发",
+        "hair_color": "浅紫 / 淡粉紫",
+        "eyes": "粉紫色眼眸",
+        "hairstyle": "披散长发与少量细编发",
+        "uniform": "黑色猎人上装、浅色立领与颈部护具、暗色披肩，大型弓",
+        "expression": "警觉、沉静",
+        "style": "萨米猎人",
+        "signature": "大型黑色角及金属角饰、浅紫长发、粉紫眼、大弓"
+      },
+      "personality": [
+        "警觉",
+        "沉静"
+      ],
+      "likes": [],
+      "identity": {
+        "role": "萨米猎人 / 罗德岛合作干员",
+        "age": "官方未公开（原稿年龄缺少来源，待核实）",
+        "occupation": "萨米猎人 / 狙击干员",
+        "faction": "萨米 / 罗德岛"
+      },
+      "tags": [
+        "萨卡兹猎人",
+        "萨米"
+      ],
+      "bg_story": "提丰是来自萨米的萨卡兹猎人，使用大型弓作战并与罗德岛合作。年龄未公开，日常场景与非默认衣装为创作设定。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "typhon_(arknights)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "pink_eyes",
+        "horns",
+        "braid"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "提丰立绘待补（占位图）"
+      },
+      "speech": "风向变了，小心前方。",
+      "accent_color": "#10b981",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "typhon",
+        "typhon arknights",
+        "arknights",
+        "提丰"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "泰拉科幻",
+        "world": "泰拉 / 萨米",
+        "formNotes": "浅紫长发、粉紫眼、大型黑角及金属角饰、大弓",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://www.bilibili.com/video/BV1tz4y1E7WY/",
+          "https://ak.hypergryph.com/news/3046"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "提丰",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "typhon (arknights)",
+        "typhon_(arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "typhon_arknights",
+      "identityProse": "Typhon from Arknights, a female Sarkaz hunter from Sami with long pale lavender hair, pink-magenta eyes and large dark horns fitted with metal ornaments.",
+      "identityTokens": [
+        "typhon_(arknights)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "pink_eyes",
+        "horns",
+        "braid"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Typhon",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

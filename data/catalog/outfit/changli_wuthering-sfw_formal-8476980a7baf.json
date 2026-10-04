@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/sfw_formal",
+  "revision": 1,
+  "sortOrder": 931,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "sfw_formal",
+      "name": "今州端庄议事长袍",
+      "prose": "a layered white-and-red long robe with an opaque high-collared inner blouse and embroidered cuffs",
+      "tokens": [
+        "white_robe",
+        "red_layers",
+        "high_collar",
+        "embroidered_cuffs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

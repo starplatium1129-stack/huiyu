@@ -6,6 +6,10 @@ use tokio_util::sync::CancellationToken;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if let Some(result) = huiyu_runtime::catalog::cli(&args)? {
+        println!("{}", serde_json::to_string_pretty(&result)?);
+        return Ok(());
+    }
     if let Some(result) = huiyu_runtime::resources::offline::cli(&args).await? {
         println!("{}", serde_json::to_string_pretty(&result)?);
         return Ok(());
@@ -53,6 +57,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         signal_task.abort();
         return Ok(());
     }
+    let catalog_options = huiyu_runtime::catalog::Options::from_config(&config);
+    tokio::task::spawn_blocking(move || {
+        huiyu_runtime::catalog::Catalog::open(catalog_options).map(|_| ())
+    })
+    .await??;
     let listener = tokio::net::TcpListener::bind(config.bind).await?;
     config.bind = listener.local_addr()?;
     config.gateway_origin = format!("http://{}", config.bind);

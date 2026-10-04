@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_riverbank_sunset_chain_walk",
+  "revision": 1,
+  "sortOrder": 1217,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
+    "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
+    "category": "黄昏依恋",
+    "characterId": "ikaros",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "sunset"
+    ],
+    "description": "【伊卡洛斯 · 金红河堤的锁链相伴】斜阳如血的空美町河川高架草堤上，晚风将芦苇荡吹拂成一片金色波涛。伊卡洛斯脖颈上的金属拘束项圈垂落着一段断裂铁链，链子的末端正被主人牵在手中。她落后智树半步安静跟随，巨大洁白的羽翼在夕照下被染成温暖的橙红金辉，红润的脸颊微微泛起幸福的红晕，眼神中满溢着对主人的无限依恋。",
+    "id": "ikaros_riverbank_sunset_chain_walk",
+    "lighting": "浓烈宏大的落日余晖打在羽毛末端与长发上的温暖逆光轮廓",
+    "location": "空美町夕阳金红河堤草坡步道",
+    "mood": "温馨依恋",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "angeloid_dress",
+    "promptProse": "Walking half a step behind her companion along the grassy riverbank at sunset, Ikaros lightly touches the red bow at her chest while the companion holds the broken chain from her metal collar. Warm twilight turns her broad white wings gold as the reeds move in the evening breeze.",
+    "promptTokens": [
+      "grassy_riverbank",
+      "blazing_sunset",
+      "sunset_sky",
+      "walking_together",
+      "metal_collar",
+      "chain",
+      "white_dress",
+      "angel_wings",
+      "detailed_background",
+      "cinematic_lighting",
+      "medium_two_shot",
+      "touching_red_bow",
+      "chain_held_by_companion",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "riverbank",
+      "grass_hill",
+      "sunset",
+      "walking",
+      "chain",
+      "collar",
+      "angel_wings",
+      "white_wings",
+      "wind"
+    ],
+    "timeOfDay": "日落",
+    "title": "伊卡洛斯 · 金红河堤的锁链相伴"
+  }
+}

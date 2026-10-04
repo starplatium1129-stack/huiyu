@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/school_uniform",
+  "revision": 1,
+  "sortOrder": 279,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "school_uniform",
+      "name": "校服",
+      "prose": "her school uniform with a white sailor collar, red bow, grey jacket with puffy sleeves, white pleated skirt and black kneehighs, with a bandage on her right thigh",
+      "tokens": [
+        "school_uniform",
+        "sailor_collar",
+        "red_bow",
+        "grey_jacket",
+        "puffy_sleeves",
+        "white_pleated_skirt",
+        "black_kneehighs",
+        "hair_ribbon",
+        "bandage_on_leg"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

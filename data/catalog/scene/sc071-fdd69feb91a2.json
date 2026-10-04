@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc071",
+  "revision": 1,
+  "sortOrder": 69,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "From a rock outside the tent, Shiki Natsume offers the viewer a thermos cup while her other hand lifts an unlit flashlight to indicate the predicted direction of the meteor shower. She wears an olive parka, cream scarf and hiking trousers. The flashlight stays switched off so the Milky Way remains visible. A small camp lantern lights her quiet smile in the broad mountaintop night scene.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "星空营地全身远景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "幸福",
+    "id": "sc071",
+    "lighting": "星光与营灯暖光",
+    "location": "山顶",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, olive_parka, cream_scarf, hiking_trousers, hiking_boots, sitting_on_rock, offering_thermos_cup, holding_flashlight, unlit_flashlight_pointing_toward_sky, faint_smile, tent, mountaintop, milky_way, starry_night, camp_lantern, wide_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "1216×832",
+    "season": "夏",
+    "story": "【夏目 · 星空下只说一遍的约定】夏夜山顶，夏目坐在帐篷外陪你等银河升起。她用手电指出预报中的流星方向，又把保温杯塞到你手里。第一颗流星出现时，她没有许愿，只平静地望着你——「特意带你来，是因为觉得你会喜欢。下次想看什么就直接说……我会考虑继续陪你。」",
+    "storyJa": "【夏目・星空の下で一度だけの約束】夏の夜、山の頂上で、夏目はテントの外に座って、あなたと一緒に天の川が昇るのを待っています。彼女は予報にある流星の方向を懐中電灯で示し、魔法瓶のカップを手に持った。最初の流れ星が現れた時、彼女は願い事をせず、ただ静かに君を見つめていた――「わざわざ連れてきたのは、あなたが好きそうだと思ったから。次に見たいものがあったら、素直に言って……また付き合うかは考えてあげる。」",
+    "tags": [
+      "olive_parka",
+      "cream_scarf",
+      "hiking_trousers",
+      "hiking_boots",
+      "sitting_on_rock",
+      "offering_thermos_cup",
+      "holding_flashlight",
+      "unlit_flashlight_pointing_toward_sky",
+      "faint_smile",
+      "tent",
+      "mountaintop",
+      "milky_way",
+      "starry_night",
+      "camp_lantern",
+      "wide_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "星空下只说一遍的约定",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

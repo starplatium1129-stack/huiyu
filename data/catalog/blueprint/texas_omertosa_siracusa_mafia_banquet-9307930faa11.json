@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "texas_omertosa_siracusa_mafia_banquet",
+  "revision": 1,
+  "sortOrder": 661,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐在复古皮质高背椅上，双腿交叠，单手轻按金色佩剑，眼神深邃冷静",
+    "camera": "cowboy shot, eye level, aristocratic elegance",
+    "category": "黑帮史诗",
+    "characterId": "texas_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【德克萨斯 · 叙拉古雨夜的沉默家主】叙拉古古典庄严的家族官邸宴会厅内，高耸的水晶吊灯与壁炉火焰交相辉映。德克萨斯身着剪裁极其合体的黑色西装双排扣风衣，内衬透着暗红丝绸光泽。她优雅地端坐在皮质高背椅上，单手扶着金柄刺剑剑柄，神情冷峻而高贵——「家族的仇怨已经落幕。但叙拉古的雨……依然没有停。」",
+    "id": "texas_omertosa_siracusa_mafia_banquet",
+    "lighting": "暖色壁炉炭火与水晶吊灯金色漫射",
+    "location": "叙拉古古典贵族豪宅壁炉宴会厅",
+    "mood": "高贵深沉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "omertosa_mafia",
+    "promptProse": "Inside an opulent candlelit Siracusan mafia estate on a dark rainy night, Texas the Omertosa sits composedly in a vintage studded leather wingback chair before a crackling marble fireplace. She wears a tailored double-breasted charcoal mafia overcoat with crimson silk lining, a sharp pinstripe vest, and a crimson ascot, resting one black-gloved hand on her ornate golden rapier. The warm amber firelight glints off her dark flowing hair and the solemn golden depths of her eyes. An exquisite medium cowboy shot evokes the timeless grandeur and brooding aristocratic melancholy of classic cinematic crime dramas.",
+    "promptTokens": [
+      "mansion",
+      "fireplace",
+      "leather_chair",
+      "chandelier",
+      "trench_coat",
+      "suit",
+      "formal_wear",
+      "rapier",
+      "sitting",
+      "crossed_legs",
+      "cowboy_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "mansion",
+      "fireplace",
+      "leather_chair",
+      "chandelier",
+      "trench_coat",
+      "suit",
+      "formal_wear",
+      "rapier",
+      "sitting",
+      "crossed_legs"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "德克萨斯 · 叙拉古雨夜的沉默家主"
+  }
+}

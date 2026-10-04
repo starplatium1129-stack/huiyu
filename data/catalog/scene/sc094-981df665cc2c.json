@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc094",
+  "revision": 1,
+  "sortOrder": 92,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "A white bridal skirt opens in a small circle as adult Ayachi Nene tries one gentle turn before the fitting-room mirror. The opaque gown has a lined lace bodice and a floor-length hem; she lifts the skirt slightly with one hand and extends the other toward the viewer after hearing his answer. Her eyes shine with relieved happiness. A full-body portrait keeps the flowing hem and white shoes inside the frame.",
+    "auditRevision": "careful-batch14-2026-08-27",
+    "camera": "婚纱裙摆完整可见的全身远景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc094",
+    "lighting": "试衣区柔和窗光",
+    "location": "婚纱店试衣区",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, standing, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, opaque_white_wedding_dress, lined_lace_bodice, floor_length_skirt, holding_dress_hem, small_turn, extending_hand, happy_tears, gentle_smile, bridal_shop, fitting_mirror, white_shoes, soft_window_light, afternoon, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "春",
+    "story": "【成年 After Story · 婚纱裙摆的第一次旋转】成年后的春日下午，宁宁在婚纱店试穿选定的礼服。她站到镜前仍紧张得不敢看你，直到你认真说出感想，才提起裙摆轻轻转了一圈。白纱像花一样展开，她含着幸福的泪光伸出手——「那就选这一件。正式那天，也要像现在这样一直看着我。」",
+    "storyJa": "【寧々・大人のアフターストーリー・ウェディングドレスの1回転目】大人になった春の午後、寧々さんはブライダルショップで選んだドレスを試着しました。彼女は鏡の前に立っていましたが、まだ緊張していてあなたを見ることができませんでした。あなたが真剣に自分の気持ちを表現して初めて、彼女はスカートの裾を持ち上げて少し向きを変えました。白いガーゼが花のように広がり、彼女は目に幸せの涙を浮かべて手を差し出した――「それなら、これにします。本番の日も、今みたいにずっと私を見ていてくださいね。」",
+    "tags": [
+      "adult",
+      "opaque_white_wedding_dress",
+      "lined_lace_bodice",
+      "floor_length_skirt",
+      "holding_dress_hem",
+      "small_turn",
+      "extending_hand",
+      "happy_tears",
+      "gentle_smile",
+      "bridal_shop",
+      "fitting_mirror",
+      "white_shoes",
+      "soft_window_light",
+      "afternoon",
+      "full_body",
+      "standing"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "婚纱裙摆的第一次旋转",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

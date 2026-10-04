@@ -1,0 +1,33 @@
+{
+  "kind": "document",
+  "id": "retired-scenes",
+  "revision": 1,
+  "sortOrder": 0,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "version": 1,
+    "records": [
+      {
+        "id": "sc148",
+        "retiredAt": "2026-07-23",
+        "reason": "双人构图和故事关键要素无法稳定达到发布质量，按视觉审核结果移除。"
+      },
+      {
+        "id": "sc024",
+        "retiredAt": "2026-07-25",
+        "reason": "在场景管理中下架"
+      },
+      {
+        "id": "sc196",
+        "retiredAt": "2026-08-28",
+        "reason": "与 sc127 逐字重复，清理重复场景保留 sc127。"
+      },
+      {
+        "id": "sc198",
+        "retiredAt": "2026-08-28",
+        "reason": "与 sc135 逐字重复，清理重复场景保留 sc135。"
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc010",
+  "revision": 1,
+  "sortOrder": 9,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Across the wet sand at sunset, Ayachi Nene pauses mid-step and looks back toward the viewer. Her right hand carries both sandals by their straps; her left keeps a light cardigan from slipping off her white summer dress. Retreating foam curls around her bare feet. A wide view includes the shoreline and long evening shadows, holding the quiet reluctance of a trip about to end.",
+    "camera": "全身远景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "忧郁",
+    "id": "sc010",
+    "lighting": "海边夕照与湿沙反光",
+    "location": "退潮后的海滩",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_sundress, light_cardigan, holding_sandals, sandals_in_hand, barefoot, walking, looking_back, gentle_smile, beach, wet_sand, sea_foam, shoreline, sunset, long_shadows, golden_hour, full_body, wide_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "1216×832",
+    "season": "夏",
+    "story": "【宁宁 · 潮声尽头的舍不得】旅行最后一天的黄昏，宁宁提着凉鞋赤脚走在退潮后的沙滩上。夕阳把两个人的影子拉得很长，她几次想说什么，又被海风吹散。直到返程时间快到，她才停在浪线旁回头——「我不是不喜欢回家……只是和你在这里的时候，时间过得太快了。下次，也要一起看同一片海。」",
+    "storyJa": "【寧々・潮の終わりの抵抗】旅行最終日の夕暮れ時、寧々さんは潮が引いた後のビーチを裸足でサンダルを履いて歩いた。夕日が二人の影を長く伸ばした。彼女は何度か何か言おうとしたが、海風に吹き飛ばされてしまっていた。彼女が波打ち際で立ち止まって振り返ったのは、帰路の時間が近づいてきたときだった。――「帰るのが嫌なわけじゃないんです……ただ、あなたとここにいると、時間が過ぎるのが早すぎて。今度も同じ海を一緒に見ましょうね。」",
+    "tags": [
+      "white_sundress",
+      "light_cardigan",
+      "holding_sandals",
+      "sandals_in_hand",
+      "barefoot",
+      "walking",
+      "looking_back",
+      "gentle_smile",
+      "beach",
+      "wet_sand",
+      "sea_foam",
+      "shoreline",
+      "sunset",
+      "long_shadows",
+      "golden_hour",
+      "full_body",
+      "wide_shot"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "潮声尽头的舍不得",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

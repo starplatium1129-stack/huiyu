@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_millennium_rooftop_tactical_command",
+  "revision": 1,
+  "sortOrder": 922,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "迎风伫立在金属露台边缘，一手扶耳侧战术耳机，一手滑动全息光屏",
+    "camera": "wide shot, low angle, epic vista",
+    "category": "战术指挥",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【早濑优香 · 千年科学钟塔战术指挥】千年科学学园宏伟的高塔露台上，俯瞰着整座未来科技都市。强劲的高空气流猎猎吹拂着优香披在肩头的外套与双马尾。她神情果敢坚毅，指尖在半空中漂浮的战术全息光幕上迅速滑动演算，精准下达资源调配指令——「各小组注意，战术算力与后勤护盾已全部配置完毕！研讨会不会允许任何意外发生！」",
+    "id": "yuuka_millennium_rooftop_tactical_command",
+    "lighting": "黎明破晓的第一缕冷金晨光与全息蓝光",
+    "location": "千年科学学园主塔高空全景露台",
+    "mood": "决断飒爽",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "millennium_uniform",
+    "promptProse": "On the Millennium tower balcony at dawn, Yuuka stands at the metal railing with one hand touching her tactical earpiece and the other sliding across a floating holographic screen. High-altitude wind moves the jacket over her shoulders as the blue city skyline glows below.",
+    "promptTokens": [
+      "millennium_skyscraper",
+      "holographic_screen",
+      "coat_on_shoulders",
+      "wind",
+      "detailed_background",
+      "cinematic_lighting",
+      "hand_on_earpiece",
+      "sliding_screen"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "balcony",
+      "skyscraper",
+      "futuristic_city",
+      "hologram",
+      "holographic_screen",
+      "wind",
+      "coat_draped_over_shoulders",
+      "confident"
+    ],
+    "timeOfDay": "清晨破晓",
+    "title": "早濑优香 · 千年科学钟塔战术指挥"
+  }
+}

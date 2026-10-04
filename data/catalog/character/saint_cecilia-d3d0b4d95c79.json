@@ -1,0 +1,158 @@
+{
+  "kind": "character",
+  "id": "saint_cecilia",
+  "revision": 1,
+  "sortOrder": 45,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saint_cecilia",
+    "profile": {
+      "id": "saint_cecilia",
+      "name": "塞西莉亚",
+      "alias": [
+        "Cecilia",
+        "セシリア",
+        "塞西莉亚"
+      ],
+      "type": "popular",
+      "icon": "🕊️",
+      "portrait": {
+        "image": "../assets/characters/popular-saint_cecilia.png?v=5",
+        "alt": "塞西莉亚 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅绿长发 · 低盘发",
+        "hair_color": "薄荷嫩绿（Mint）",
+        "eyes": "翠绿（Emerald Green）",
+        "hairstyle": "低盘发 · 不对称长鬓发 · M形刘海",
+        "uniform": "纯白圣女修女袍 / 碎花连衣裙",
+        "expression": "天然呆 · 像小动物一样",
+        "style": "pure holy saint",
+        "signature": "薄荷绿发、翠绿圆瞳与圣女白袍"
+      },
+      "source": "和武叶佐乃《白圣女与黑牧师》",
+      "bg_story": "塞西莉亚是和武叶佐乃《白圣女与黑牧师》的女主角，小镇教堂的圣女。薄荷嫩绿的长发盘成低髻，翠绿的眼眸纯净而天真，纯白圣女袍与头纱是她的标志。她天然呆得像小动物，喜怒哀乐全写在脸上，与牧师劳伦斯之间有着温柔又笨拙的日常。",
+      "personality": [
+        "天然呆",
+        "温柔治愈",
+        "喜怒形于色",
+        "怕打雷",
+        "依赖劳伦斯"
+      ],
+      "likes": [
+        "劳伦斯",
+        "司康饼",
+        "教会的人们",
+        "晒太阳"
+      ],
+      "traits": [
+        "1girl",
+        "solo",
+        "pastel_green_hair",
+        "light_green_hair",
+        "mint_hair",
+        "low_bun",
+        "braided_bun",
+        "single_sidelock",
+        "long_sidelock",
+        "bangs",
+        "green_eyes",
+        "emerald_eyes",
+        "round_eyes",
+        "blush",
+        "gold_necklace",
+        "cross_necklace",
+        "large_breasts"
+      ],
+      "speech": "塞西莉亚向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "教堂的午后",
+        "description": "她抱着圣经在长椅上打瞌睡，头纱滑落一半——劳伦斯轻轻替她扶正，没有叫醒她。"
+      },
+      "identity": {
+        "role": "小镇教堂的圣女",
+        "age": "不到二十岁",
+        "occupation": "圣女",
+        "faction": "教会（与劳伦斯一起）"
+      },
+      "tags": [
+        "薄荷绿发",
+        "绿瞳",
+        "圣女",
+        "天然呆",
+        "巨乳"
+      ],
+      "palette": [
+        "薄荷绿",
+        "圣洁白",
+        "暖黄"
+      ],
+      "weather": [
+        "教堂晨光",
+        "小镇集市",
+        "雷雨夜"
+      ],
+      "series": "和武叶佐乃《白圣女与黑牧师》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "cecilia",
+        "saint cecilia",
+        "shiro seijo to kuro bokushi",
+        "pastor lawrence",
+        "塞西莉亚"
+      ],
+      "animeStudio": "doga kobo, official anime screencap, anime coloring",
+      "canon": {
+        "era": "中世纪风",
+        "formNotes": "浅绿/薄荷嫩绿长发低盘发+不对称长鬓发+M形刘海；翠绿圆瞳；官方萌点巨乳；纯白圣女修女袍+头纱+十字架金项链；天然呆、怕打雷、平地摔；暗恋劳伦斯",
+        "research": "2026-08-18 调研",
+        "world": "中世纪欧洲小镇（白圣女与黑牧师，和武叶佐乃）"
+      },
+      "curatedArtistStyles": [
+        "kazutake_hazano",
+        "rella",
+        "kantoku"
+      ],
+      "defaultOutfitId": "saint_nun_habit",
+      "displayName": "塞西莉亚",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "cecilia (shiro seijo to kuro bokushi)"
+      ],
+      "franchise": "Saint Cecilia and Pastor Lawrence",
+      "id": "saint_cecilia",
+      "identityProse": "Saint Cecilia, a gentle and innocent saintess with soft mint-green hair tied in a braided low bun, large emerald green eyes, and a voluptuous figure.",
+      "identityTokens": [
+        "cecilia (pastor lawrence)",
+        "shiro_seijo_to_kuro_bokushi",
+        "1girl",
+        "solo",
+        "mint_green_hair",
+        "braided_bun",
+        "emerald_eyes",
+        "large_breasts"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "塞西莉亚",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

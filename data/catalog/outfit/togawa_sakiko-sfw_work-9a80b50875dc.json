@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "togawa_sakiko/sfw_work",
+  "revision": 1,
+  "sortOrder": 1011,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "togawa_sakiko",
+    "outfit": {
+      "id": "sfw_work",
+      "name": "客服工位简洁便装",
+      "prose": "a pale blue collared blouse, dark trousers and a simple work cardigan",
+      "tokens": [
+        "blue_blouse",
+        "collar",
+        "dark_pants",
+        "cardigan"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

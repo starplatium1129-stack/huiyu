@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_shrine_rooftop_cloud_watching",
+  "revision": 1,
+  "sortOrder": 1128,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "侧卧在青黑屋脊瓦片上望天，手伸向云朵，草绿长发披散在瓦片间，赤足微翘",
+    "camera": "wide cinematic shot, side-lying on curved roof tiles with one hand reaching toward the clouds",
+    "category": "闲适午后",
+    "characterId": "murasame",
+    "coverageTags": [
+      "scenic"
+    ],
+    "description": "【丛雨 · 飞檐之上的天高云淡】朝武神社主殿飞檐雕梁的最高瓦顶上，白云如棉絮般在纯净蓝天缓缓游动。丛雨惬意地侧躺在温热的青黑瓦片上，单手枕在脑后，另一只小手伸向天空仿佛在虚握飘荡的白云。她修长的素足在屋脊边晃荡，身侧两团小鬼火像宠物一样静静悬浮，展现出刀灵不受俗世拘束的悠然自得。",
+    "id": "murasame_shrine_rooftop_cloud_watching",
+    "lighting": "万里晴空的纯净天光与屋瓦反射的暖灰漫光",
+    "location": "神社大殿古旧青瓦高处飞檐",
+    "mood": "悠远宁静",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "spirit_kimono",
+    "promptProse": "Lying on her side atop the curved dark roof tiles of the main shrine hall, Murasame reaches one hand toward drifting summer clouds while the other supports her head. Her pale-green hair spills across the tiles and her bare feet lift slightly, while soft mountain winds ripple her detached sleeves and blue spirit wisps hover beside the eaves.",
+    "promptTokens": [
+      "temple_rooftop",
+      "roof_tiles",
+      "lying_on_roof",
+      "clouds",
+      "blue_sky",
+      "sleeveless_kimono",
+      "spirit_wisps",
+      "mountain_breeze",
+      "detailed_background",
+      "cinematic_lighting",
+      "side_lying",
+      "reaching_toward_cloud",
+      "hand_under_head",
+      "bare_feet"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "shrine_roof",
+      "roof_tiles",
+      "lying_down",
+      "clouds",
+      "blue_sky",
+      "bare_shoulders",
+      "floating_wisps"
+    ],
+    "timeOfDay": "下午",
+    "title": "丛雨 · 飞檐之上的天高云淡"
+  }
+}

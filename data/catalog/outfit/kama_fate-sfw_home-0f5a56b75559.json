@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/sfw_home",
+  "revision": 1,
+  "sortOrder": 176,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "游戏时间宽松家居装",
+      "prose": "an opaque plum sweatshirt and full-length charcoal lounge trousers",
+      "tokens": [
+        "plum_sweatshirt",
+        "long_sleeves",
+        "charcoal_pants"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

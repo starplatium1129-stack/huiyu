@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sfw_school",
+  "revision": 1,
+  "sortOrder": 46,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "来禅高校日常制服",
+      "prose": "a neat white school blouse, navy jacket, ribbon tie, knee-length pleated skirt and loafers",
+      "tokens": [
+        "school_uniform",
+        "white_blouse",
+        "navy_jacket",
+        "ribbon",
+        "pleated_skirt",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

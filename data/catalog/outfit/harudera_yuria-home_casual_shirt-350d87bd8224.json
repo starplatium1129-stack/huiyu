@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/home_casual_shirt",
+  "revision": 1,
+  "sortOrder": 655,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "home_casual_shirt",
+      "name": "松垮白衬衫黑丝居家常服",
+      "prose": "intimate off-duty loungewear: an oversized unbuttoned men's white dress shirt casually slipping off one shoulder, black lace bra peeking through, sheer black pantyhose, holding a coffee mug with tired affectionate eyes",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "unbuttoned",
+        "off_shoulder",
+        "bra",
+        "black_bra",
+        "cleavage",
+        "pantyhose",
+        "black_pantyhose",
+        "coffee_mug",
+        "casual"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

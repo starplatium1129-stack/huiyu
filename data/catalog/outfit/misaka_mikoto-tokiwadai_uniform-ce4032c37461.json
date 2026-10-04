@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/tokiwadai_uniform",
+  "revision": 1,
+  "sortOrder": 224,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "default": true,
+      "id": "tokiwadai_uniform",
+      "isDefault": true,
+      "name": "常盘台校服",
+      "prose": "her Tokiwadai uniform, a white blouse with a light-brown sweater vest and a beige pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "white_shirt",
+        "sweater_vest",
+        "pleated_skirt",
+        "beige_skirt"
+      ]
+    }
+  }
+}

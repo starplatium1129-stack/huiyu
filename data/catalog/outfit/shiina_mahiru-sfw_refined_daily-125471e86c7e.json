@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 821,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "奶油针织居家服",
+      "prose": "an opaque cream cable-knit sweater, loose pale-blue full-length lounge trousers and soft house socks",
+      "tokens": [
+        "cream_sweater",
+        "cable_knit",
+        "pajama_pants",
+        "socks"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

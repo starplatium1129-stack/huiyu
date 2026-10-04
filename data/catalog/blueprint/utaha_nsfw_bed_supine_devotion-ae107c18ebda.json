@@ -1,0 +1,77 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_nsfw_bed_supine_devotion",
+  "revision": 1,
+  "sortOrder": 1438,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_nsfw_bed_supine_devotion",
+    "title": "霞之丘诗羽 · 卸下毒舌的床褥真心·「只有今晚……不毒舌了」",
+    "category": "成人私密",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【公寓卧室·深夜】毒舌作家在床上意外地安静。诗羽仰卧在大床上，黑发铺散成夜色，双腿轻微分开展露诱人身段。她只是仰着头，红瞳湿润地望着你，一言不发。到最后才气若游丝地补上一句——「……只有今晚，不毒舌了。因为……说不出口的话，全部都……在这里面了……」",
+    "location": "公寓卧室大床",
+    "action": "仰卧床榻双腿轻微分开自抚，黑发如夜色铺散，红瞳含水凝望动情无言",
+    "timeOfDay": "深夜",
+    "lighting": "卧室幽暗暖光与湿润高光",
+    "camera": "vertical POV, supine, touching own body, emotional soft lighting, silent devotion",
+    "mood": "无言深情、卸下毒舌",
+    "sceneTags": [
+      "nsfw",
+      "lying_on_back",
+      "spread_legs",
+      "bed",
+      "hair_down",
+      "exposed_pussy",
+      "bare_breasts",
+      "tears"
+    ],
+    "promptProse": "The sharp-tongued novelist is disarmingly tender in the quiet of the night. Lying across the soft bedsheets with her long black hair spread out like night itself, Kasumigaoka Utaha watches with glistening ruby eyes, words failing her as one hand drifts softly between her pale thighs. Her generous chest rises and falls with gentle, vulnerable gasps, dusky pink nipples glistening beneath the dim warm glow, finally confessing with trembling lips that tonight the sharp tongue is retired because everything she cannot write is right here. Intimate vertical composition, warm cinematic lighting, detailed bedroom background.",
+    "nsfwProse": "Lying supine across soft bedsheets with long dark hair fanning the pillows, Utaha Kasumigaoka curves her bare breasts and glides fingers between pale parted thighs in tender, speechless surrender.",
+    "promptTokens": [
+      "bedroom",
+      "bed_sheet",
+      "night",
+      "warm_lighting",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "nsfw_nude",
+    "coverageTags": [
+      "h_cg",
+      "sensual_solo",
+      "special_nsfw"
+    ],
+    "nsfwTokens": [
+      "completely_nude",
+      "on_back",
+      "spread_legs",
+      "arched_back",
+      "bare_breasts",
+      "pink_nipples",
+      "large_breasts",
+      "hand_between_legs",
+      "masturbation",
+      "pussy_juice",
+      "teary_eyes",
+      "heavy_blush"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_rooftop_soda_night_sky",
+  "revision": 1,
+  "sortOrder": 1050,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_rooftop_soda_night_sky",
+    "title": "花火 · 梦境天台的汽水与私语",
+    "category": "温柔陪伴",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 梦境天台的汽水与私语】匹诺康尼最高摩天大楼的天台边缘，脚下是万家灯火汇聚的流光银河。花火身穿私服短裙并肩坐在你身旁，双腿悬空轻轻摇晃，手里握着一瓶喝了一半的苏乐达汽水。夜晚的微风吹散了白天的喧嚣，她转过头，难得收起了恶作剧的假面，眼神纯净而安静地望着你——「这个世界全都是虚妄的梦呢……不过，坐在这里吹着风、看着你在我身边的样子……好像还不赖嘛。」",
+    "location": "匹诺康尼顶层天台金属护栏边缘",
+    "action": "并肩坐在天台边缘晃腿，手中握着玻璃汽水瓶，侧过头温柔安静地凝视视角",
+    "timeOfDay": "深夜微风",
+    "lighting": "脚下整座繁华大都会的金色夜景地平线",
+    "camera": "cowboy shot, slightly high angle, tranquil rooftop view",
+    "mood": "难得宁静",
+    "sceneTags": [
+      "rooftop",
+      "skyscraper",
+      "city_lights",
+      "night_sky",
+      "sitting_on_ledge",
+      "holding_bottle",
+      "soda_bottle",
+      "gentle_smile",
+      "soft_expression",
+      "twintails"
+    ],
+    "promptProse": "Sitting side by side along the edge of a soaring Penacony skyscraper rooftop, Sparkle lets her legs dangle over the glittering city of dreams. Holding a half-emptied glass bottle of SoulGlad soda, the cool night breeze ruffles her raven twintails. Dropping her theatrical mask for a rare quiet moment, she looks at the viewer with serene, genuine fondness in her deep crimson eyes. Atmospheric anime artwork, solo 1girl, no text.",
+    "promptTokens": [
+      "rooftop",
+      "city_lights",
+      "night_view",
+      "sitting_on_ledge",
+      "holding_bottle",
+      "glass_bottle",
+      "casual_street_hoodie",
+      "bare_legs",
+      "gentle_smile",
+      "soft_gaze",
+      "peaceful",
+      "pink_eyes",
+      "twintails",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "playful_nightgown",
+    "coverageTags": [
+      "healing",
+      "peaceful",
+      "romantic"
+    ]
+  }
+}

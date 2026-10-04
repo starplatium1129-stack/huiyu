@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/pajamas_loungewear",
+  "revision": 1,
+  "sortOrder": 507,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "default": false,
+      "id": "pajamas_loungewear",
+      "isDefault": false,
+      "name": "居家居服与眼镜",
+      "prose": "a cozy oversized pastel blue knit sweater falling off one shoulder, comfortable dark shorts, soft house slippers, clear red-framed glasses, and loose low twintails, holding a warm mug of cocoa",
+      "tokens": [
+        "loungewear",
+        "sweater",
+        "oversized_sweater",
+        "off_shoulder",
+        "shorts",
+        "glasses",
+        "red_eyeglasses",
+        "slippers",
+        "holding_mug",
+        "low_twintails",
+        "casual"
+      ]
+    }
+  }
+}

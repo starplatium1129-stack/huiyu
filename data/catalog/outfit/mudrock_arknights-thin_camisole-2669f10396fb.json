@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/thin_camisole",
+  "revision": 1,
+  "sortOrder": 333,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "default": false,
+      "id": "thin_camisole",
+      "isDefault": false,
+      "name": "轻薄吊带单衣",
+      "prose": "wearing only a thin sleeveless camisole of soft lightweight fabric with thin straps, leaving her shoulders and collarbone bare",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "mudrock_thin_camisole",
+        "camisole",
+        "sleeveless_shirt",
+        "undershirt",
+        "thin_fabric",
+        "lightweight_fabric",
+        "bare_shoulders",
+        "collarbone",
+        "pale_skin"
+      ]
+    }
+  }
+}

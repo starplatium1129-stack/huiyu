@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shinjou_akane/sfw_model",
+  "revision": 1,
+  "sortOrder": 870,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinjou_akane",
+    "outfit": {
+      "id": "sfw_model",
+      "name": "怪兽模型工作便装",
+      "prose": "an oversized opaque lavender sweatshirt, grey trousers and craft glasses",
+      "tokens": [
+        "lavender_sweatshirt",
+        "grey_pants",
+        "glasses"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

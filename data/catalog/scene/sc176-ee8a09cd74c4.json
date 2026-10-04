@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc176",
+  "revision": 1,
+  "sortOrder": 173,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the quiet warm bedroom at midnight, Nene wearing an oversized beige knit sweater kneels on the bed, leaning forward in a vulnerable POV composition, reaching toward the viewer with sweat on her flushed cheeks and an intensely sweet, affectionate gaze.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc176",
+    "lighting": "床头灯微弱暖光",
+    "location": "温馨卧室床榻",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, oversized_knit_sweater, beige_sweater, off-shoulder, bare_legs, no_pants, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, reaching_towards_viewer, sweating, heavy_blush, bedroom, on_bed, warm_lighting, soft_lighting, collarbone, slender_waist, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 针织衫真空极致高能】反锁的卧室里，空气炙热得让人窒息。宁宁因为白天的傲娇被你拉入了“惩罚协议”。此刻她只穿着一件你送的宽松针织毛衣，里面完全是真空状态，胸前的纽扣已经被你尽数解开，大片温热雪白的饱满身躯与娇嫩的小腹毫无防备地暴露在外。她跪伏在你身上，发带早已滑落，头顶的呆毛因为极度动情而完全软瘫成了一个完美的爱心螺旋。她双手死死抓着你的衣襟，满脸滚烫的红晕连到耳根，含泪的眼睛迷离地注视着你——「呜...柊史...针织衫里面...好奇怪...不要一直盯着看啦...快点抱紧宁宁...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·ニットセーターバキューム極高エネルギー】深夜、鍵のかかった寝室は息が詰まるほど熱い空気が漂っていた。寧々は、昼間のツンデレのせいで、あなたによって「柊史……このニット、やっぱり変じゃないですか？　そんなに見つめないで……早く寧々を抱きしめてください。」",
+    "tags": [
+      "hair_ribbon",
+      "oversized_sweater",
+      "unbuttoned_shirt",
+      "no_underwear",
+      "cleavage",
+      "kneeling_on_bed",
+      "straddling_viewer",
+      "grabbing_viewer_shirt",
+      "bare_legs",
+      "bedroom",
+      "heavy_blush",
+      "tears_in_eyes",
+      "ahoge",
+      "night",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "魔女的惩罚：绝对依恋的深夜跨坐",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "炙热"
+  }
+}

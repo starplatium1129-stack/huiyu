@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc015",
+  "revision": 1,
+  "sortOrder": 14,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Seated behind a classroom desk, she pushes one exam paper toward the viewer and points to a problem with one visible hand.",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "紧张",
+    "id": "sc015",
+    "lighting": "窗光",
+    "location": "教室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, hidden_hands, hands_out_of_frame, sitting_on_top_of_desk, empty_desk, missing_exam_paper, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, autumn, sitting_at_desk, exam_paper, pushing_exam_paper_toward_viewer, desk, pointing, hands_on_table, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 考前一小时的求救】期中考试前的教室里，宁宁对着同一道题看了很久，草稿纸上已经画满凌乱的推导。见你经过，她先把卷子压住，几秒后又认命地推到你面前，呆毛也跟着垂下——「我知道平时应该早点复习……所以别说教了。教会这一题的话，放学后我请你喝东西。」",
+    "storyJa": "【寧々・試験の1時間前に助けを求める】中間試験前の教室で、寧々は同じ問題を長い間見つめており、草稿はすでにめちゃくちゃな派生で覆われていました。あなたが通り過ぎるのを見て、彼女は最初に紙を押さえ、数秒後に諦めて紙をあなたの前に押し出し、アホ毛もぶら下がっていました。――「普段から早めに復習すべきなのは分かっています……だから、お説教はやめてください。この問題を教えてくれたら、放課後に飲み物をごちそうしますから。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "classroom",
+      "autumn",
+      "sitting_at_desk",
+      "exam_paper",
+      "pushing_exam_paper_toward_viewer",
+      "one_hand_pointing_at_exam_problem",
+      "hands_visible_on_desk",
+      "troubled_expression",
+      "ahoge_drooping",
+      "afternoon",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "window_light",
+      "nervous",
+      "blush"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "考前一小时的求救",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

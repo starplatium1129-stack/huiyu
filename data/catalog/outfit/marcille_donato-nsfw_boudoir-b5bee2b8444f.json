@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "marcille_donato/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 991,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "marcille_donato",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "玛露希尔·成人私密造型",
+      "prose": "a private adult ensemble built around robe, blue_robe, completely_nude",
+      "tokens": [
+        "robe",
+        "blue_robe",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

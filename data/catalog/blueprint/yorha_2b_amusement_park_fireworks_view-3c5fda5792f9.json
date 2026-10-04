@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_amusement_park_fireworks_view",
+  "revision": 1,
+  "sortOrder": 1114,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_amusement_park_fireworks_view",
+    "title": "2B · 废弃游乐园城堡的机械烟火",
+    "category": "梦幻废土",
+    "characterId": "yorha_2b",
+    "outfitId": "leotard_kaine",
+    "coverageTags": [
+      "scenic"
+    ],
+    "description": "【2B · 废弃游乐园城堡的机械烟火】长满爬山虎的废弃哥特式游乐园城堡尖顶平台上，夜空不断爆开机械生命体发射的五彩缤纷节日烟火。2B 身穿浅蓝白蕾丝的清凉战斗装束，单手扶着栏杆仰望夜空。眼罩下的面容微仰，火光将她雪白的肌肤与轻柔的裙纱染上梦幻般的彩光，在这怪诞而孤独的世界中呈现出震撼人心的纯净之美。",
+    "location": "废弃游乐园古堡观景平台",
+    "action": "单手扶栏杆仰望满天机械烟火，清凉战斗服随风扬起，微仰下颌若有所思",
+    "timeOfDay": "夜晚",
+    "lighting": "盛大璀璨烟花在夜空中爆裂的多色艳丽光晕与古堡暗色剪影",
+    "camera": "medium shot, 3/4 low angle, vibrant night sky focus",
+    "mood": "梦幻悲怆",
+    "sceneTags": [
+      "amusement_park",
+      "castle",
+      "fireworks",
+      "night_sky",
+      "revealing_outfit",
+      "lingerie",
+      "blindfold",
+      "wind"
+    ],
+    "promptProse": "Watching celebratory mechanical fireworks burst above an overgrown gothic amusement park castle, 2B stands wistfully in her sky-blue and white lace battle lingerie. Cascading floral sparks shower the ruined ramparts with enchanting vibrant luminescence.",
+    "promptTokens": [
+      "ruined_amusement_park",
+      "gothic_castle",
+      "fireworks_burst",
+      "night_sky",
+      "lace_lingerie",
+      "revealing_clothes",
+      "blindfold",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

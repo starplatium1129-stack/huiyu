@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/siesta_hotspring_yukata",
+  "revision": 1,
+  "sortOrder": 313,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "default": false,
+      "id": "siesta_hotspring_yukata",
+      "isDefault": false,
+      "name": "【汐斯塔之憩】地热温泉和风浴衣",
+      "prose": "a traditional Japanese onsen yukata with a pale floral pattern, light cotton fabric, tied with an obi sash, summer resort hot-spring robe",
+      "tokens": [
+        "yukata",
+        "floral_pattern",
+        "cotton",
+        "obi",
+        "hot_spring"
+      ]
+    }
+  }
+}

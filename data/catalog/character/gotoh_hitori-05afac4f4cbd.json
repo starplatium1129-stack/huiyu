@@ -1,0 +1,160 @@
+{
+  "kind": "character",
+  "id": "gotoh_hitori",
+  "revision": 1,
+  "sortOrder": 66,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "gotoh_hitori",
+    "profile": {
+      "id": "gotoh_hitori",
+      "name": "后藤一里",
+      "alias": [
+        "Gotoh Hitori",
+        "波奇酱",
+        "Bocchi",
+        "guitarhero"
+      ],
+      "type": "popular",
+      "icon": "🎸",
+      "portrait": {
+        "image": "../assets/characters/popular-gotoh_hitori.png?v=5",
+        "alt": "后藤一里 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "长粉色直发 · 呆毛",
+        "hair_color": "淡粉色",
+        "eyes": "水蓝色 / 青瞳",
+        "hairstyle": "凌乱长发 · 蓝黄双色立方体发饰 · 呆毛",
+        "uniform": "粉色运动外套 · 灰色百褶裙",
+        "expression": "极度害羞 · 慌乱社恐 · 弹琴时专注执着",
+        "style": "introverted rock guitar hero",
+        "signature": "粉色运动服、蓝黄立方体发饰与黑色电吉他"
+      },
+      "personality": [
+        "极度社恐胆怯",
+        "容易石化或融化颜艺",
+        "内心戏极其丰富",
+        "弹吉他时气场全开",
+        "真诚善良珍视伙伴"
+      ],
+      "likes": [
+        "吉他练习与独奏",
+        "幽暗安静的壁橱",
+        "录制网络视频",
+        "结束乐队的大家"
+      ],
+      "classic_cg": {
+        "title": "壁橱中的吉他英雄",
+        "description": "昏暗温暖的壁橱内，少女屈膝抱着黑色电吉他专注调音，夕阳微光照亮粉色发丝与蓝黄发饰。"
+      },
+      "identity": {
+        "role": "结束乐队主音吉他手 / 网络吉他英雄",
+        "age": "16岁（高中生）",
+        "occupation": "高中生 / Livehouse STARRY店员",
+        "faction": "秀华高中 / 结束乐队"
+      },
+      "tags": [
+        "粉毛",
+        "双色立方体发饰",
+        "粉色运动服",
+        "电吉他",
+        "社恐少女",
+        "反差巨乳"
+      ],
+      "bg_story": "后藤一里是《孤独摇滚！》的女主角，外号「波奇酱」。极度怕生且缺乏社交能力，但为了改变自己而每天苦练吉他6小时以上，以「guitarhero」之名在网络上收获极高人气。后被伊地知虹夏拉入「结束乐队」，在下北泽Livehouse STARRY开启了青春摇滚之路。",
+      "palette": [
+        "樱粉",
+        "天蓝",
+        "淡黄"
+      ],
+      "weather": [
+        "放学黄昏",
+        "Livehouse霓虹",
+        "雨后街道"
+      ],
+      "speech": "那、那个……我是结束乐队的吉他手后藤一里……请多关照……！",
+      "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
+      "traits": [
+        "gotoh_hitori",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "blue_eyes",
+        "cube_hair_ornament",
+        "ahoge",
+        "track_jacket",
+        "pink_jacket",
+        "bocchi_the_rock!"
+      ],
+      "accent_color": "#f472b6",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "gotoh_hitori",
+      "displayName": "后藤一里",
+      "originalName": "後藤ひとり",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "gotoh_hitori",
+        "gotoh hitori",
+        "hitori gotoh",
+        "bocchi",
+        "bocchi the rock",
+        "bocchi the rock!",
+        "后藤一里",
+        "波奇酱",
+        "后藤独",
+        "guitarhero"
+      ],
+      "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+      "identityTokens": [
+        "gotoh_hitori",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ornament",
+        "cube_hair_ornament",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "gotoh_hitori"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "pink_tracksuit",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "粉色长发+蓝黄方块发夹+青蓝瞳；极度社交恐惧吉他手（guitarhero）；结束乐队主音吉他；反差巨乳身材；常态粉色运动服/Live T恤/女仆装/壁橱自闭服",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ]
+    }
+  }
+}

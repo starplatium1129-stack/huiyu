@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "lucy_cyberpunk/apartment_streetwear_barefoot",
+  "revision": 1,
+  "sortOrder": 607,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lucy_cyberpunk",
+    "outfit": {
+      "default": false,
+      "id": "apartment_streetwear_barefoot",
+      "isDefault": false,
+      "name": "安全屋赤足街头便装",
+      "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, a glowing cybernetic cigarette between her fingers, and bare feet",
+      "tokens": [
+        "casual",
+        "tank_top",
+        "crop_top",
+        "sleeveless",
+        "cargo_pants",
+        "pants",
+        "cigarette",
+        "smoking",
+        "barefoot",
+        "streetwear",
+        "cyberpunk"
+      ]
+    }
+  }
+}

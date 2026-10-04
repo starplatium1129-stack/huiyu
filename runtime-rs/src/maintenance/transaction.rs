@@ -59,9 +59,6 @@ impl Transaction {
         }
         Ok(current.value)
     }
-    pub(super) fn assert_owned(&self) -> Result<()> {
-        self.owned().map(|_| ())
-    }
     fn update(&self, patch: Value) -> Result<()> {
         let mut current = self.owned()?;
         current

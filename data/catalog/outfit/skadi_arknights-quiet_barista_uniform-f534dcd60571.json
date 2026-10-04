@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/quiet_barista_uniform",
+  "revision": 1,
+  "sortOrder": 352,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "default": false,
+      "id": "quiet_barista_uniform",
+      "isDefault": false,
+      "name": "静谧午后·咖啡店围裙便服",
+      "prose": "a quiet barista outfit: a crisp white button-up collared shirt with sleeves rolled to the forearm, over a dark black canvas waist apron with a red pen and notepad in the front pocket, charcoal tailored trousers",
+      "tokens": [
+        "button_up_shirt",
+        "apron",
+        "barista",
+        "rolled_sleeves",
+        "white_shirt"
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "misaki_poolside_crown_maintenance",
+  "revision": 1,
+  "sortOrder": 404,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "躺椅上拉低墨镜打量你，湿发铺开星瞳狡黠",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "medium shot, lounging with sunglasses, pool glow, teasing mood",
+    "category": "海滨度假",
+    "characterId": "shokuhou_misaki",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ],
+    "description": "【学园都市室内泳池·夏日】白金比基尼的女王蜂斜倚在池畔躺椅上，金色长发湿漉漉地铺开，雪白手套难得换成了裸手。她把王冠造型的墨镜往下一拉，星瞳越过镜框上缘打量你——「盯着我看的话，要收观光费哦♪ 现金……或者陪本小姐游十圈也可以。」",
+    "id": "misaki_poolside_crown_maintenance",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "池水折射的粼粼波光",
+    "location": "学园都市室内泳池",
+    "mood": "女王调情、盛夏诱惑",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "summer_swimsuit",
+    "promptProse": "Shokuhou Misaki lounges poolside on a deck chair in her white-and-gold bikini, wet blonde hair spread across the towel and her spider-web gloves traded for bare hands. She pulls her crown-shaped sunglasses down to peer over the frames, star-shaped pupils sizing you up as she names her sightseeing fee — cash, or ten laps by your side. Refracted pool light shimmers across her regal, teasing figure. Medium shot, cinematic lighting, detailed swimming pool background.",
+    "promptTokens": [
+      "shokuhou_misaki",
+      "1girl",
+      "solo",
+      "swimsuit",
+      "white_bikini",
+      "gold_trim",
+      "bikini",
+      "sunglasses",
+      "lounging",
+      "wet_hair",
+      "wet_skin",
+      "star-shaped_pupils",
+      "yellow_eyes",
+      "blonde_hair",
+      "very_long_hair",
+      "smirk",
+      "pool",
+      "day",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "pool",
+      "swimsuit",
+      "bikini",
+      "sunglasses",
+      "lying",
+      "wet_hair",
+      "smirk",
+      "summer"
+    ],
+    "timeOfDay": "夏日午后",
+    "title": "食蜂操祈 · 泳池畔的王冠保养·「盯着我看的话，要收观光费哦」"
+  }
+}

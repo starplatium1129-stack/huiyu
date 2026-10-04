@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_ancestral_curse_dog_ears_flustered",
+  "revision": 1,
+  "sortOrder": 1147,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手试图捂住头顶突然长出的白色犬耳，眼含泪花，满面通红娇嗔求饶",
+    "camera": "medium close-up, cowboy framing, extreme blush and ear focus",
+    "category": "反差萌动",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "dog_ears"
+    ],
+    "description": "【朝武芳乃 · 犬耳初现的羞耻悸动】仪式后静谧无人的神社寝殿深处，祖先的古老血脉诅咒突然被情绪引动。芳乃双手捂住自己的头顶，一对毛茸茸、柔软雪白的犬耳从她银白秀发间探出并微微颤动。她身穿金绣神服，满面通红如烈火灼烧，泪光在美丽的深蓝眸子里打转，羞耻得几乎无地自容——「请、请不要看……！为什么偏偏在这个时候长出来了……太羞耻了……！」",
+    "id": "yoshino_ancestral_curse_dog_ears_flustered",
+    "lighting": "昏暗寝殿内和纸行灯透射出的温润暖黄侧光",
+    "location": "神社内室屏风前软垫上",
+    "mood": "极度羞怯",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "ancestral_dog_ears",
+    "promptProse": "Clutching her head in flustered embarrassment as fluffy white dog ears sprout from her silver hair under ancestral enchantment, Yoshino blushes furiously before a gilded screen. Soft amber shoji lamplight highlights her tearful sapphire eyes and quivering canine ears in poignant charm.",
+    "promptTokens": [
+      "japanese_chamber",
+      "dog_ears",
+      "animal_ears",
+      "covering_ears",
+      "white_kimono",
+      "heavy_blush",
+      "teary_eyes",
+      "hair_flower",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "dog_ears",
+      "animal_ears",
+      "covering_ears",
+      "blushing",
+      "teary_eyes",
+      "flustered",
+      "kimono",
+      "shinto"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "朝武芳乃 · 犬耳初现的羞耻悸动"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/beige_trench_sunhat",
+  "revision": 1,
+  "sortOrder": 715,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "default": false,
+      "id": "beige_trench_sunhat",
+      "isDefault": false,
+      "name": "米色风衣宽檐草帽",
+      "prose": "a sophisticated beige English-style trench coat with a wide-brim black-ribbon sunhat and comfortable walking shoes",
+      "tokens": [
+        "trench_coat",
+        "beige_coat",
+        "sunhat",
+        "holding_hat",
+        "casual_outfit"
+      ]
+    }
+  }
+}

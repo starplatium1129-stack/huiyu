@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_street_run_hand_holding_date",
+  "revision": 1,
+  "sortOrder": 1048,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_street_run_hand_holding_date",
+    "title": "花火 · 霓虹街角的回眸疾走约会",
+    "category": "街头约会",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 霓虹街角的回眸疾走约会】流光溢彩的匹诺康尼商业步行街上，到处都是欢笑的游客与悬浮的气球。花火一只小手紧紧拽着你的手掌在人群中快步奔跑穿梭，红色的双马尾在气流中飞扬。她转过身拉着你冲进一条安静的樱花小巷，双眸晶莹剔透，喘着微气笑得如同偷吃到糖果的小狐狸——「快跑快跑！刚才顺手把猎犬家系巡逻官的帽子给变没了，再不跑就要被抓住啦，哈哈哈！」",
+    "location": "璀璨霓虹与飘带飞舞的梦境商业街小巷口",
+    "action": "牵着视角手掌向前疾走奔跑并突然回眸，双马尾飞扬，脸上洋溢着恶作剧得逞的灿烂大笑",
+    "timeOfDay": "夜幕狂欢",
+    "lighting": "商业街两侧流光溢彩的霓虹暖光与街灯",
+    "camera": "cowboy shot, dynamic running perspective, intimate handholding",
+    "mood": "心动奔放",
+    "sceneTags": [
+      "street",
+      "neon_lights",
+      "running",
+      "holding_hands",
+      "pulling_viewer",
+      "looking_back",
+      "laughing",
+      "twintails",
+      "mini_kimono",
+      "dynamic_motion"
+    ],
+    "promptProse": "Pulling the viewer by the hand through a glittering Penacony street illuminated by warm neon signs, Sparkle sprints forward before glancing back with a breathless, delighted laugh. Her red and black mini kimono flaps in the wind as her twintails swirl dynamically around her shoulders. Her ruby eyes sparkle with thrill and romantic excitement. Dynamic angle, high-energy anime visual, solo 1girl focus, no text.",
+    "promptTokens": [
+      "city_street",
+      "neon_lights",
+      "running",
+      "holding_hands",
+      "pulling_viewer",
+      "looking_back",
+      "laughing",
+      "playful",
+      "mini_kimono",
+      "flowing_hair",
+      "twintails",
+      "pink_eyes",
+      "night_city",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_kimono_dress",
+    "coverageTags": [
+      "date",
+      "fun",
+      "dynamic"
+    ]
+  }
+}

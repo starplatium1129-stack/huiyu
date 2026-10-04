@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/sfw_studio",
+  "revision": 1,
+  "sortOrder": 959,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "sfw_studio",
+      "name": "摄影棚时尚露肩裙",
+      "prose": "a glamorous off-the-shoulder stylish white top and chic pink miniskirt with fashionable heels",
+      "tokens": [
+        "off_shoulder_top",
+        "pink_skirt",
+        "high_heels",
+        "two_side_up",
+        "pink_ribbon"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/study_attire",
+  "revision": 1,
+  "sortOrder": 264,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "study_attire",
+      "name": "书房日常装",
+      "isDefault": false,
+      "default": false,
+      "prose": "a neat cream high-neck blouse under a forest-green vest, a long charcoal skirt and a slim leather belt",
+      "tokens": [
+        "cream_blouse",
+        "high_neck",
+        "green_vest",
+        "long_skirt",
+        "leather_belt"
+      ]
+    }
+  }
+}

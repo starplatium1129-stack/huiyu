@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/autumn_stroll_casual",
+  "revision": 1,
+  "sortOrder": 394,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "default": false,
+      "id": "autumn_stroll_casual",
+      "isDefault": false,
+      "name": "金秋漫步羊毛风衣",
+      "prose": "an autumn casual promenade ensemble: a warm camel-beige wool trench coat over a cream cable-knit turtleneck sweater, brown tartan pleated midi skirt, dark brown leather riding boots, leather gloves, and a soft beige wool beret nestled between her antlers",
+      "tokens": [
+        "trench_coat",
+        "wool_coat",
+        "turtleneck",
+        "sweater",
+        "plaid_skirt",
+        "midi_skirt",
+        "riding_boots",
+        "boots",
+        "leather_gloves",
+        "beret",
+        "casual",
+        "autumn_clothes"
+      ]
+    }
+  }
+}

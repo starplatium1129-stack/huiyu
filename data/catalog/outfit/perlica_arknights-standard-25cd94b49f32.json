@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "perlica_arknights/standard",
+  "revision": 1,
+  "sortOrder": 406,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "perlica_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "终末地官方监督制服",
+      "prose": "her signature official Endfield supervisor attire: a loose cropped white techwear jacket with wide sleeves worn over a sleeveless white high-neck tunic dress with a delicate necktie, a technical utility belt, sheer black pantyhose with a yellow thigh strap on the left leg, black high heels, and black combat gloves, wielding a sleek sci-fi protocol dagger",
+      "tokens": [
+        "white_jacket",
+        "cropped_jacket",
+        "oversized_sleeves",
+        "white_dress",
+        "sleeveless_dress",
+        "tunic",
+        "necktie",
+        "utility_belt",
+        "pantyhose",
+        "black_pantyhose",
+        "sheer_pantyhose",
+        "thigh_strap",
+        "high_heels",
+        "gloves",
+        "holding_dagger",
+        "techwear"
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/sensual_silk_nightwear",
+  "revision": 1,
+  "sortOrder": 740,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "id": "sensual_silk_nightwear",
+      "name": "深蓝真丝吊带情趣睡裙",
+      "prose": "a luxurious midnight-blue silk nightgown with fine lace trim along her bust, plunging backline showing her delicate shoulder blades, and short hem skimming her thighs",
+      "tokens": [
+        "nightgown",
+        "blue_nightgown",
+        "camisole",
+        "silk_lingerie",
+        "lace_trim",
+        "cleavage",
+        "bare_legs",
+        "sensual"
+      ]
+    }
+  }
+}

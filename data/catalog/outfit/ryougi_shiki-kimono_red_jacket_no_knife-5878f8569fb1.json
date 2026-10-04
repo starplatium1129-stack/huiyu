@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ryougi_shiki/kimono_red_jacket_no_knife",
+  "revision": 1,
+  "sortOrder": 736,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ryougi_shiki",
+    "outfit": {
+      "default": false,
+      "id": "kimono_red_jacket_no_knife",
+      "isDefault": false,
+      "name": "和服赤红皮夹克·无刀",
+      "prose": "her signature pure white kimono with a dark patterned obi under a red leather biker jacket and brown lace-up boots, with no weapon",
+      "tokens": [
+        "kimono",
+        "white_kimono",
+        "obi",
+        "leather_jacket",
+        "red_jacket",
+        "boots"
+      ]
+    }
+  }
+}

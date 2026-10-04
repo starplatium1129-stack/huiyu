@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "reze_chainsaw",
+  "revision": 1,
+  "sortOrder": 42,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "reze_chainsaw",
+    "profile": {
+      "id": "reze_chainsaw",
+      "name": "蕾塞",
+      "alias": [
+        "Reze",
+        "レゼ",
+        "蕾塞",
+        "Bomb Devil"
+      ],
+      "type": "popular",
+      "icon": "💣",
+      "portrait": {
+        "image": "../assets/characters/popular-reze_chainsaw.png?v=5",
+        "alt": "蕾塞 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉紫渐变短发 · 齐刘海",
+        "hair_color": "粉紫（Pink-Purple）",
+        "eyes": "绿（Emerald Green）",
+        "hairstyle": "齐刘海短发 · 微卷发尾",
+        "uniform": "无袖白衬衫+黑领带 / 咖啡厅围裙 / 死库水",
+        "expression": "俏皮危险 · 恋爱中的少女",
+        "style": "playful dangerous girl",
+        "signature": "粉紫短发、绿瞳与黑色颈环"
+      },
+      "source": "藤本タツキ《电锯人 / Chainsaw Man》",
+      "bg_story": "蕾塞是《电锯人》蕾塞篇的女主角，苏联派来的特工，真实身份是炸弹恶魔。粉紫色的短发、绿色眼眸与黑色颈环是她的标志。她在咖啡店与电次相遇，度过了一个像梦一样的夏天，最后却在任务与真心之间做出了选择。",
+      "personality": [
+        "俏皮",
+        "率直",
+        "危险又温柔",
+        "恋爱脑",
+        "反差"
+      ],
+      "likes": [
+        "电次",
+        "咖啡",
+        "海边的夏天",
+        "甜甜圈"
+      ],
+      "traits": [
+        "reze (chainsaw man)",
+        "reze",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
+      ],
+      "speech": "蕾塞向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "咖啡店的午后",
+        "description": "她端着咖啡探出柜台，歪头冲你笑——像普通女孩一样，让人几乎忘了她是炸弹恶魔。"
+      },
+      "identity": {
+        "role": "苏联特工 / 炸弹恶魔（Bomb Devil）",
+        "age": "外表约 16-17 岁",
+        "occupation": "咖啡店店员（表面）",
+        "faction": "苏联（枪之恶魔阵营）"
+      },
+      "tags": [
+        "粉紫短发",
+        "绿瞳",
+        "颈环",
+        "咖啡店",
+        "危险浪漫"
+      ],
+      "palette": [
+        "粉紫",
+        "薄荷绿",
+        "咖啡棕"
+      ],
+      "weather": [
+        "咖啡店午后",
+        "海边夏日",
+        "烟花大会"
+      ]
+    },
+    "popular": {
+      "id": "reze_chainsaw",
+      "displayName": "蕾塞",
+      "franchise": "Chainsaw Man",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sleeveless_white_shirt",
+      "identityTokens": [
+        "reze (chainsaw man)",
+        "chainsaw_man",
+        "reze",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
+      ],
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair with a soft matte texture, expressive emerald green eyes that catch the light, a signature pin choker, and a playful dangerous smile",
+      "animeStudio": "MAPPA, official anime screencap, anime coloring",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "rella",
+        "so-bin"
+      ],
+      "originalName": "蕾塞",
+      "exactTokens": [
+        "reze (chainsaw man)"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "reze",
+        "reze chainsaw man",
+        "chainsaw man",
+        "蕾塞"
+      ],
+      "canon": {
+        "world": "现代都市+恶魔（电锯人·蕾塞篇）",
+        "era": "1997",
+        "formNotes": "粉紫短发；绿色瞳；标志性黑色颈环（choker）；无袖白衬衫+黑领带+黑短裤；咖啡厅打工围裙装；夜间学校泳池死库水；炸弹恶魔",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

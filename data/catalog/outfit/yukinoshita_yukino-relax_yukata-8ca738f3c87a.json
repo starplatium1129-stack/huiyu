@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/relax_yukata",
+  "revision": 1,
+  "sortOrder": 196,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "relax_yukata",
+      "name": "和室私居浅紫浴衣",
+      "prose": "a pale lavender relaxed home yukata loosely draped and slipping slightly off her shoulder, tied with a simple obi",
+      "tokens": [
+        "yukata",
+        "japanese_clothes",
+        "obi",
+        "short_sleeves",
+        "loose_clothes"
+      ]
+    }
+  }
+}

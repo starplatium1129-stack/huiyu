@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "togawa_sakiko_sfw_b9_05",
+  "revision": 1,
+  "sortOrder": 1756,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "togawa_sakiko_sfw_b9_05",
+    "title": "丰川祥子 · 海边闭园后的蓝色灯串",
+    "category": "海滨度假",
+    "characterId": "togawa_sakiko",
+    "outfitId": "sfw_beach",
+    "description": "【闭园海滨舞台·傍晚】祥子穿着深蓝泳装外搭黑色薄衫，坐在空舞台边拆下一串灯饰；海风把蓝发两侧的发带吹起，她把最后一盏灯重新点亮，抬头看向镜头时笑容带着少见的轻松。",
+    "location": "closed seaside concert stage",
+    "action": "闭园舞台边重新点亮最后一串蓝灯，海风吹起发带并轻松抬头",
+    "timeOfDay": "傍晚",
+    "lighting": "blue dusk with warm bulbs and ocean haze",
+    "camera": "medium shot, horizontal framing",
+    "mood": "演出结束后才属于自己的假日",
+    "sceneTags": [
+      "swimsuit",
+      "indigo_swimsuit",
+      "seaside_stage",
+      "string_lights",
+      "ribbons",
+      "blue_hair",
+      "unguarded_smile",
+      "ocean",
+      "dusk"
+    ],
+    "promptProse": "Sakiko Togawa from BanG Dream! wears a deep indigo swimsuit with a black sheer overshirt, ribbon hair ties and a strand of blue stage lights. She sits at the closed seaside stage untangling a strand of blue lights after rehearsal. She gets the last bulb glowing, and the sea breeze lifts her indigo ribbons as she looks toward the viewer with a small, unguarded smile beyond the performance. blue dusk with warm bulbs and ocean haze.",
+    "promptTokens": [
+      "swimsuit",
+      "indigo_swimsuit",
+      "seaside_stage",
+      "string_lights",
+      "ribbons",
+      "blue_hair",
+      "unguarded_smile",
+      "ocean",
+      "dusk"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ]
+  }
+}

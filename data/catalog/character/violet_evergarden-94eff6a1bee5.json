@@ -1,0 +1,134 @@
+{
+  "kind": "character",
+  "id": "violet_evergarden",
+  "revision": 1,
+  "sortOrder": 106,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "violet_evergarden",
+    "profile": {
+      "id": "violet_evergarden",
+      "name": "薇尔莉特·伊芙加登",
+      "alias": [
+        "Violet Evergarden",
+        "薇尔莉特",
+        "自动手记人偶",
+        "莱登的战斗少女"
+      ],
+      "type": "popular",
+      "icon": "✒️",
+      "portrait": {
+        "image": "../assets/characters/popular-violet_evergarden.png?v=1",
+        "alt": "薇尔莉特·伊芙加登 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及背金发 · 麻花辫与红色发带",
+        "hair_color": "亚麻金 / 小麦金",
+        "eyes": "湛蓝眼眸 · 如湖水般澄澈",
+        "hairstyle": "中长发单侧编辫 · 额前碎发",
+        "uniform": "普鲁士蓝人偶礼服外套 · 白色百褶长裙与翡翠胸针",
+        "expression": "纯真无垢 · 逐渐学会情感 · 泪水与微笑同样笨拙而动人",
+        "style": "ethereal auto memories doll",
+        "signature": "金发红发带、机械义手、湛蓝眼眸与普鲁士蓝人偶装"
+      },
+      "personality": [
+        "军人出身令行禁止的刻板认真",
+        "对『爱』的含义怀有执拗的探寻",
+        "像人偶般端正却渴望被触碰温度",
+        "学会情感后笨拙而滚烫的温柔"
+      ],
+      "likes": [
+        "代笔信完成后客人的眼泪与笑容",
+        "少佐留下的翡翠胸针",
+        "第一次吃到的桃子挞"
+      ],
+      "classic_cg": {
+        "title": "晨光废墟的代笔誓言",
+        "description": "破晓石柱遗迹上，机械义手轻捧胸针的金发人偶在晨曦中第一次读懂了心声。"
+      },
+      "identity": "紫罗兰永恒花园女主角 · C.H.邮政公司自动手记人偶 · 前战争兵器少女",
+      "tags": [
+        "紫罗兰永恒花园",
+        "自动手记人偶",
+        "机械义手",
+        "金发蓝眼",
+        "神圣人偶",
+        "治愈系"
+      ],
+      "bg_story": "在战场上被当作兵器养大的少女，失去了双臂，也失去了理解人心的能力。成为代笔人偶后，她借由一封封他人的情书，笨拙地拼凑出『我爱你』这句话的形状。那双银白机械义手可以敲出最优雅的字体，也在学会之后，想要第一次为你捧起自己的心。",
+      "palette": [
+        "#3b82f6",
+        "#f59e0b",
+        "#1e3a8a",
+        "#f8fafc"
+      ],
+      "weather": "莱顿港的晴日邮局 / 黎明山岗遗迹",
+      "speech": "「只要您需要，我可以去任何地方、书写任何文字。……那个，如果是为您代笔的话，即使是『喜欢』这样的句子，我也想亲自念给您听。」",
+      "source": "暁佳奈《紫罗兰永恒花园 / Violet Evergarden》",
+      "traits": [
+        "auto_memories_doll",
+        "mechanical_arms",
+        "former_soldier",
+        "emotion_learning"
+      ],
+      "accent_color": "#3b82f6",
+      "bg_color": "#1e3a8a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Violet Evergarden",
+        "薇尔莉特",
+        "自动手记人偶",
+        "战争兵器少女"
+      ],
+      "animeStudio": "Kyoto Animation",
+      "curatedArtistStyles": [
+        "Akiko Takase",
+        "Taichi Ishidate"
+      ],
+      "displayName": "薇尔莉特·伊芙加登",
+      "exactPrefixes": [
+        "1girl, solo, violet_evergarden"
+      ],
+      "exactTokens": [
+        "violet_evergarden"
+      ],
+      "franchise": "Violet Evergarden",
+      "id": "violet_evergarden",
+      "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
+      "identityTokens": [
+        "violet_evergarden",
+        "blonde_hair",
+        "braid",
+        "hair_ribbon",
+        "blue_eyes",
+        "mechanical_hands",
+        "prosthetic_hands",
+        "doll-like_face",
+        "slender_figure"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "ヴァイオレット・エヴァーガーデン",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

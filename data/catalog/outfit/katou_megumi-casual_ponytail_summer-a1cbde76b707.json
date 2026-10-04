@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/casual_ponytail_summer",
+  "revision": 1,
+  "sortOrder": 795,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "casual_ponytail_summer",
+      "name": "后期长发马尾夏日私服",
+      "prose": "her later-series mature style: her brown hair grown longer and tied in a neat ponytail with a hair scrunchie, wearing a sleeveless pastel pink knit top and a cream pleated midi skirt",
+      "tokens": [
+        "casual_clothes",
+        "pink_top",
+        "sleeveless",
+        "knit_top",
+        "pleated_skirt",
+        "midi_skirt",
+        "long_hair",
+        "ponytail",
+        "hair_scrunchie"
+      ]
+    }
+  }
+}

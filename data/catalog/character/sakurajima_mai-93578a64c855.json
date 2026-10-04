@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "sakurajima_mai",
+  "revision": 1,
+  "sortOrder": 3,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sakurajima_mai",
+    "profile": {
+      "id": "sakurajima_mai",
+      "name": "樱岛麻衣",
+      "alias": [
+        "Sakurajima Mai",
+        "桜島麻衣"
+      ],
+      "type": "popular",
+      "icon": "🎬",
+      "portrait": {
+        "image": "../assets/characters/popular-sakurajima_mai.png?v=5",
+        "alt": "樱岛麻衣 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长直发",
+        "hair_color": "黑",
+        "eyes": "棕色",
+        "hairstyle": "中分长直发",
+        "uniform": "峰岸高中制服 / 黑色兔女郎装",
+        "expression": "冷静沉稳 · 成熟御姐",
+        "style": "composed actress senpai",
+        "signature": "黑长直、棕瞳与兔女郎名场面"
+      },
+      "personality": [
+        "冷静沉稳",
+        "成熟御姐系",
+        "毒舌但温柔",
+        "自尊心强",
+        "重视重要的人"
+      ],
+      "likes": [
+        "图书馆的安静",
+        "天台的风",
+        "重要的约会",
+        "兔女郎装的自由"
+      ],
+      "classic_cg": {
+        "title": "图书馆的兔女郎",
+        "description": "她穿着兔女郎装在图书馆里安静阅读——全校只有你「看见」她的瞬间。"
+      },
+      "identity": {
+        "role": "当红女演员（思春期症候群）",
+        "age": "高中三年级",
+        "occupation": "女演员 / 学生",
+        "faction": "峰岸高中"
+      },
+      "tags": [
+        "黑长直",
+        "棕瞳",
+        "兔女郎装",
+        "女演员",
+        "成熟气质"
+      ],
+      "bg_story": "樱岛麻衣是《青春猪头少年》的女主角，知名女演员，因思春期症候群逐渐被人遗忘。她冷静成熟、略带毒舌却温柔体贴。兔女郎装是贯穿全作的名场面造型。场景应偏现代校园、城市夜景与图书馆。",
+      "palette": [
+        "黑",
+        "兔白",
+        "绯红"
+      ],
+      "weather": [
+        "图书馆午后",
+        "天台夕照",
+        "城市夜景"
+      ],
+      "speech": "樱岛麻衣向你致以问候。",
+      "source": "鴨志田一《青春猪头少年不会梦到兔女郎学姐 / Seishun Buta Yarou》",
+      "traits": [
+        "sakurajima_mai",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "purple_eyes",
+        "brown_eyes",
+        "bangs",
+        "ahoge",
+        "rabbit_hair_ornament",
+        "hair_clip",
+        "beauty_mark"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "sakurajima_mai",
+      "displayName": "樱岛麻衣",
+      "originalName": "Sakurajima Mai",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "aliases": [
+        "sakurajima_mai",
+        "mai sakurajima",
+        "mai-san",
+        "bunny girl senpai"
+      ],
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, with a composed, attentive manner",
+      "identityTokens": [
+        "sakurajima_mai",
+        "seishun_buta_yarou",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "purple_eyes",
+        "bangs",
+        "ahoge",
+        "rabbit_hair_ornament",
+        "hair_clip",
+        "beauty_mark"
+      ],
+      "exactTokens": [
+        "sakurajima_mai"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代校园（青春猪头少年）",
+        "era": "当代",
+        "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "cloverworks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "tiv"
+      ]
+    }
+  }
+}

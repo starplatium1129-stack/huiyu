@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/casual_leather",
+  "revision": 1,
+  "sortOrder": 389,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "default": false,
+      "id": "casual_leather",
+      "isDefault": false,
+      "name": "狂野机车皮衣便服",
+      "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
+      "tokens": [
+        "leather_jacket",
+        "biker_jacket",
+        "crop_top",
+        "camisole",
+        "denim_shorts",
+        "short_shorts",
+        "fishnet_stockings",
+        "choker",
+        "platform_boots",
+        "rebellious",
+        "casual"
+      ]
+    }
+  }
+}

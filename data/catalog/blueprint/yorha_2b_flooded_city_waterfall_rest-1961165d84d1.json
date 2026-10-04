@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_flooded_city_waterfall_rest",
+  "revision": 1,
+  "sortOrder": 1116,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_flooded_city_waterfall_rest",
+    "title": "2B · 废墟小屋清晨大号男友白衬衫",
+    "category": "居家女友",
+    "characterId": "yorha_2b",
+    "outfitId": "gothic_dress",
+    "coverageTags": [
+      "water"
+    ],
+    "description": "【2B · 废墟小屋清晨大号男友白衬衫】绿植环绕的废墟温室小木屋内，温暖明澈的金色晨光透过木窗玻璃斜射进室内。2B 仅穿着一件宽大松垮的男士纯白棉质衬衫，下摆堪堪遮到大腿根，单侧肩头微微滑落露出光洁锁骨。她没有佩戴战斗眼罩，银白短发略带晨起的微乱，双手捧着一只冒着热气的暖咖啡杯坐在床沿边。她看着刚刚苏醒的你，蓝宝石般的双眸泛起晨雾般的柔光与浅浅的依恋——「早上好……今天……想和你多待一会儿。」",
+    "location": "绿植小屋床边晨光木地板",
+    "action": "身穿大号白衬衫双手捧热咖啡杯坐在床沿，发丝微乱，单侧露肩，眼眸温柔凝视",
+    "timeOfDay": "清晨",
+    "lighting": "薄纱窗帘透入的柔和金黄丁达尔晨曦光束与微尘飘拂",
+    "camera": "medium shot, seated intimacy, domestic warmth framing",
+    "mood": "慵懒温馨",
+    "sceneTags": [
+      "bedroom",
+      "sunlight",
+      "oversized_shirt",
+      "white_shirt",
+      "off_shoulder",
+      "holding_cup",
+      "blue_eyes",
+      "mole_under_mouth",
+      "morning"
+    ],
+    "promptProse": "Sitting comfortably on the edge of a rustic wooden bed in a sunlit greenhouse cabin, 2B relaxes in the morning light wearing only an oversized white button-up boyfriend shirt slipping off one shoulder. Without her blindfold, her sapphire eyes gaze warmly as she cradles a steaming coffee mug with both hands in serene domestic bliss.",
+    "promptTokens": [
+      "rustic_bedroom",
+      "window_light",
+      "oversized_shirt",
+      "white_shirt",
+      "off-shoulder",
+      "holding_mug",
+      "blue_eyes",
+      "mole_under_mouth",
+      "white_hair",
+      "morning_light",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_shadow_land_duel",
+  "revision": 1,
+  "sortOrder": 242,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_shadow_land_duel",
+    "title": "斯卡哈 · 影之国雾海的弑神双枪·「想从我这里学艺，先接下这一击」",
+    "category": "战斗高光",
+    "characterId": "scathach_fate",
+    "description": "【影之国雾海尽头的裂谷·永暮】紫黑的雾气在裂谷间翻涌，身着紫色紧身衣的斯卡哈单膝微沉地立于黑岩之巅。双手的Gáe Bolg赤红双枪同时振起，枪尖撕裂雾海迸出猩红的光弧，银色护肩映着幽暗的冷光。赤红的眼眸俯瞰着来者，长发如夜旗狂舞——影之国的女王弹响了弑神的前奏。",
+    "location": "影之国裂谷黑岩之巅",
+    "action": "单膝微沉双枪同时振起，赤红枪光撕裂雾海，长发狂舞俯瞰来者",
+    "timeOfDay": "永暮",
+    "lighting": "赤红枪光与紫黑雾海的明暗对撞，护肩冷光点睛",
+    "camera": "full-body low-angle horizontal shot, two spears and balanced stance visible",
+    "mood": "威压无双、弑神凛然",
+    "sceneTags": [
+      "shadow_realm_rift",
+      "black_rock",
+      "low_combat_stance",
+      "two_crimson_spears",
+      "separate_weapon_grips",
+      "silver_pauldrons",
+      "purple_battle_outfit",
+      "red_magic_arcs",
+      "full_body",
+      "low_angle"
+    ],
+    "promptProse": "Scathach lowers her center of gravity on a broad black rock above the misty rift, one crimson spear held in each hand. Both spear tips rise toward the fog as she prepares the opening movement, with the silver pauldrons of her purple battle outfit catching cold reflected light. Her very long purple hair streams behind the balanced stance, and her red eyes remain fixed on the approaching challenger. Crimson magical arcs trace the two weapons without obscuring their separate grips. Use a wide low-angle frame with her boots, arms and complete spears visible. No lettering.",
+    "promptTokens": [
+      "shadow_realm_rift",
+      "black_rock",
+      "low_combat_stance",
+      "two_crimson_spears",
+      "separate_weapon_grips",
+      "silver_pauldrons",
+      "purple_battle_outfit",
+      "red_magic_arcs",
+      "full_body",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "official_lancer_bodysuit",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ]
+  }
+}

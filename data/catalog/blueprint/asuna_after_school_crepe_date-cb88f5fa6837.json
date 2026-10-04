@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_after_school_crepe_date",
+  "revision": 1,
+  "sortOrder": 1369,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuna_after_school_crepe_date",
+    "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
+    "category": "现代校园",
+    "characterId": "asuna_yuuki",
+    "description": "【现实世界放学后的涩谷繁华街】夕阳洒在热闹的商业街十字路口。脱离虚拟世界的亚丝娜穿着修身的灰色私立高中制服西装与藏青百褶裙，洋溢着高中少女的无限元气。她双手握着一份盛满新鲜草莓与鲜奶油的可丽饼，俏皮地递到你的嘴边，脸颊泛着娇羞的绯红，眨了眨灵动的大眼睛。",
+    "location": "现实世界涩谷商业街可丽饼小站前",
+    "action": "双手捧着草莓奶油可丽饼递向你喂食，微踮脚尖，身穿高中制服百褶裙，眼眸含笑俏皮娇嗔",
+    "timeOfDay": "傍晚放学",
+    "lighting": "繁华都市街头暖橙色夕阳光辉与两旁商店温暖橱窗暖光",
+    "camera": "medium close-up, girlfriend date angle, vibrant city bokeh, lively youth atmosphere",
+    "mood": "青春活力、心动甜蜜",
+    "sceneTags": [
+      "city_street",
+      "crepe",
+      "feeding_you",
+      "school_uniform",
+      "blazer",
+      "pleated_skirt",
+      "blushing",
+      "sweet_smile"
+    ],
+    "promptProse": "Asuna Yuuki stands outside a colorful dessert shop in modern Shibuya, wearing her neat high school uniform blazer and pleated navy skirt. She playfully feeds you a fresh strawberry whipped cream crepe with both hands, her cheeks glowing in a sweet after-school blush as evening city neon lights begin to sparkle. Crowds and vibrant shopfronts blur into soft cinematic bokeh behind her.",
+    "promptTokens": [
+      "city_street",
+      "storefront",
+      "school_uniform",
+      "blazer",
+      "pleated_skirt",
+      "crepe",
+      "feeding",
+      "food",
+      "blushing",
+      "sweet_smile",
+      "close-up",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_real_world_uniform",
+    "coverageTags": [
+      "daily",
+      "date",
+      "school",
+      "girlfriend"
+    ]
+  }
+}

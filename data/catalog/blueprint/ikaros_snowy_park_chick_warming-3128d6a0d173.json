@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_snowy_park_chick_warming",
+  "revision": 1,
+  "sortOrder": 1218,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手捧着小黄鸡哈气取暖，巨大白羽翼向前环抱护风，长发落雪，神态极度温柔",
+    "camera": "medium close-up, eye-level, intimate protective atmosphere",
+    "category": "雪野纯善",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "snow"
+    ],
+    "description": "【伊卡洛斯 · 冬雪公园的暖心护雏】白雪覆盖的冬日儿童公园长椅旁，细雪纷纷扬扬地飘落。伊卡洛斯坐在落满积雪的木椅上，将宽大的纯白羽翼向前包裹成一个避风的小帐篷。她双手手心紧紧合拢成一个小温室，里面正保护着一只瑟瑟发抖的黄色小雏鸟。她低着头，小心翼翼地向手心里哈出一缕暖白的热气，神态慈爱纯真如圣母降临。",
+    "id": "ikaros_snowy_park_chick_warming",
+    "lighting": "漫天落雪折射出的高纯度清冷白光与手心微弱的温暖橙光",
+    "location": "积雪厚重的冬日街心公园木长椅",
+    "mood": "纯真圣洁",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "angeloid_dress",
+    "promptProse": "Sheltering a fragile yellow baby chick inside her cupped hands on a snow-covered park bench, Ikaros curls her enormous white wings forward to block the winter wind. Gentle breath vapor rises as she warms the small creature with angelic tenderness in falling powder snow.",
+    "promptTokens": [
+      "snowy_park",
+      "falling_snow",
+      "bench",
+      "cupped_hands",
+      "protecting_bird",
+      "breath_vapor",
+      "angel_wings",
+      "white_wings",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "snow",
+      "park",
+      "bench",
+      "bird",
+      "chick",
+      "warming_hands",
+      "breath",
+      "angel_wings",
+      "white_wings"
+    ],
+    "timeOfDay": "上午",
+    "title": "伊卡洛斯 · 冬雪公园的暖心护雏"
+  }
+}

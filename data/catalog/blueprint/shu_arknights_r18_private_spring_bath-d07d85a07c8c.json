@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_r18_private_spring_bath",
+  "revision": 1,
+  "sortOrder": 712,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_r18_private_spring_bath",
+    "characterId": "shu_arknights",
+    "title": "黍 · 晨光人体写生",
+    "description": "晨光透过炎国画室的亚麻窗帘，落在低矮木台与旧木地板上。黍未着衣，仅穿烟灰色长筒丝袜，以自然的人体写生站姿立在台上：重心落在右腿，左膝稍松，双臂垂于身侧，转头望向窗外。银灰长发中的金色挑染与钴蓝发梢清晰可见，白金龙角迎着窗光，浅色龙尾绕开双脚沿台面弯开。画面关注完整人体的比例、重心、光影和丝袜材质。",
+    "category": "人体艺术",
+    "location": "炎国庭院中的独立画室",
+    "action": "自然站在低木台上，双臂垂落，重心偏向右腿，转头望向窗外",
+    "mood": "平静从容",
+    "lighting": "侧窗晨光与浅色墙面柔和反光",
+    "timeOfDay": "早晨",
+    "camera": "full body, eye level, three-quarter view",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "figure_study",
+      "art_studio",
+      "window",
+      "morning_light",
+      "standing",
+      "contrapposto",
+      "stockings",
+      "full_body"
+    ],
+    "promptTokens": [
+      "indoors",
+      "art_studio",
+      "window",
+      "sunlight",
+      "wooden_floor",
+      "standing",
+      "contrapposto",
+      "arms_at_sides",
+      "looking_away",
+      "full_body",
+      "three_quarter_view"
+    ],
+    "promptProse": "Morning light enters a quiet Yan-style artist's studio through a linen curtain. Shu stands on a low wooden platform in a relaxed contrapposto, her weight resting on her right leg and her left knee slightly relaxed. Both arms hang naturally at her sides as she turns her head toward the window. Her long tricolored hair falls behind her shoulders, her branched horns catch the side light, and her pale scaled tail curves across the platform clear of her feet. Use an eye-level, full-body three-quarter composition for an observational figure study, with the worn floorboards, folded curtain and an empty easel providing a simple sense of scale. Soft wall reflections lift the shadows and keep the figure's proportions and the legwear material readable.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "bad anatomy",
+      "watermark",
+      "text",
+      "duplicate",
+      "split image"
+    ],
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "",
+    "nsfwTokens": [
+      "nude",
+      "thighhighs",
+      "grey_legwear"
+    ],
+    "nsfwProse": "Shu, an adult woman, is unclothed apart from a pair of smoke-gray thigh-high stockings. Her posture and expression are calm and natural, presented as a fine-art figure study of body proportions, balance, light and material."
+  }
+}

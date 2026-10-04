@@ -1,0 +1,163 @@
+{
+  "kind": "character",
+  "id": "lala_satalin_deviluke",
+  "revision": 1,
+  "sortOrder": 93,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "lala_satalin_deviluke",
+    "profile": {
+      "id": "lala_satalin_deviluke",
+      "name": "菈菈·萨塔琳·戴比路克",
+      "alias": [
+        "Lala Satalin Deviluke",
+        "ララ",
+        "第一王女",
+        "出包王女"
+      ],
+      "type": "popular",
+      "icon": "💖",
+      "portrait": {
+        "image": "../assets/characters/popular-lala_satalin_deviluke.png?v=5",
+        "alt": "菈菈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及踝泡泡糖粉色长发 · 活泼高挑呆毛",
+        "hair_color": "鲜艳泡泡糖粉",
+        "eyes": "明亮通透翡翠绿大眼",
+        "hairstyle": "极长粉发如瀑 · 黑色桃心恶魔长尾 · 曼妙沙漏身段",
+        "uniform": "彩南高校标准水手制服 / 戴比路克王族露肩战服",
+        "expression": "天真烂漫 · 热情奔放 · 笑容如阳",
+        "style": "radiant alien princess of love and chaos",
+        "signature": "及踝粉发、爱心恶魔尾巴、绿瞳大眼、元气笑容与巨乳身段"
+      },
+      "personality": [
+        "天真纯洁、毫无心机的大元气少女",
+        "脑洞惊人的超级机械发明家，但发明总引发色气大骚乱",
+        "对结城梨斗怀有一见钟情且毫不动摇的炽热爱意",
+        "心胸极度宽广，完全不介意梨斗身边有其他可爱的女孩子",
+        "尾巴尖端的黑色爱心是戴比路克王族的绝对弱点与私密敏感点"
+      ],
+      "likes": [
+        "整天缠着梨斗“梨斗！梨斗！”地撒娇拥抱",
+        "在实验室制作各种稀奇古怪的神奇发明道具",
+        "地球上的各种美食与甜品",
+        "和彩南高中的伙伴们一起无忧无虑地玩耍"
+      ],
+      "classic_cg": {
+        "title": "突如其来的浴室天降",
+        "description": "水汽蒸腾的浴室中，全裸的戴比路克第一王女带着爱心长尾巴突兀出现，由此开启了席卷全宇宙的恋爱物语。"
+      },
+      "identity": {
+        "role": "戴比路克星第一王女 / 结城梨斗未婚妻",
+        "age": "少女",
+        "occupation": "王女 / 彩南高中学生 / 天才发明家",
+        "faction": "戴比路克星际帝国 · 彩南高中"
+      },
+      "tags": [
+        "粉发",
+        "及踝长发",
+        "恶魔尾巴",
+        "绿瞳",
+        "呆毛",
+        "巨乳",
+        "王女",
+        "出包王女"
+      ],
+      "bg_story": "菈菈·萨塔琳·戴比路克是《出包王女》的第一女主角，统治全银河系的戴比路克帝国第一王女。为了逃避无聊的政治联姻而逃到地球，在结城梨斗家浴室里与梨斗意外相撞并因误会对梨斗一见钟情。虽然性格单纯得像个孩子，却拥有全宇宙最高超的发明创造才能，以无条件的爱与纯真成为了整个后宫乐园的中心太阳。",
+      "palette": [
+        "热烈粉",
+        "薄荷绿",
+        "纯白"
+      ],
+      "weather": [
+        "艳阳晴空",
+        "彩南夏日",
+        "星海微光"
+      ],
+      "speech": "梨斗——！我最喜欢你了！今天我又发明了一个超级厉害的道具哦，快来试一试嘛！",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "lala_satalin_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "ahoge",
+        "green_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#1a090e"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "lala_satalin_deviluke",
+        "lala",
+        "lala_(to_love-ru)",
+        "菈菈",
+        "第一王女",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第一王女，天才发明家但总发明出失控搞笑道具；性格单纯天真、极度深爱结城梨斗，身后尾巴尖端的黑色爱心是戴比路克王族的超级弱点与敏感部位",
+        "research": "2026-09-02 调研（Danbooru lala_satalin_deviluke 1100+ posts）",
+        "world": "彩南町 · 戴比路克星王族"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "mika_pikazo",
+        "kappe"
+      ],
+      "displayName": "菈菈·萨塔琳·戴比路克",
+      "exactPrefixes": [
+        "lala_"
+      ],
+      "exactTokens": [
+        "lala_satalin_deviluke"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "lala_satalin_deviluke",
+      "identityProse": "Lala Satalin Deviluke from To LOVE-Ru by Kentaro Yabuki, the first princess of Planet Deviluke with ankle-length vibrant bubblegum-pink hair, a prominent bouncy ahoge, cheerful emerald-green eyes, a voluptuous hourglass figure, and a slender black devil tail with a spade-shaped heart tip.",
+      "identityTokens": [
+        "lala_satalin_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "ahoge",
+        "green_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "ララ・サタリン・デビルーク (Lala)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

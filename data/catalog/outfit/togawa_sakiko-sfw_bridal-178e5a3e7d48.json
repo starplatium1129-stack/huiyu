@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "togawa_sakiko/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 1014,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "togawa_sakiko",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "丰川祥子·圣洁花嫁",
+      "prose": "a black-and-indigo bridal gown with feather trim, a delicate veil, pearl buttons and a small music-note bouquet",
+      "tokens": [
+        "wedding_dress",
+        "black_indigo_gown",
+        "feather_trim",
+        "delicate_veil",
+        "music_note_bouquet"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

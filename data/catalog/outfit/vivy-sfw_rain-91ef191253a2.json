@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "vivy/sfw_rain",
+  "revision": 1,
+  "sortOrder": 975,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vivy",
+    "outfit": {
+      "id": "sfw_rain",
+      "name": "闭园雨天蓝色外套",
+      "prose": "a blue waterproof coat over the stage outfit, opaque tights and practical boots",
+      "tokens": [
+        "blue_raincoat",
+        "tights",
+        "boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

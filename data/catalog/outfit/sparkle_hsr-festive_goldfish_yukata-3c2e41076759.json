@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/festive_goldfish_yukata",
+  "revision": 1,
+  "sortOrder": 578,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "festive_goldfish_yukata",
+      "name": "夏日游园金鱼薄浴衣",
+      "prose": "a light coral-red summer yukata printed with swimming goldfishes, tied loosely with a dark obi sash, exposing her slender collarbone and nape",
+      "tokens": [
+        "yukata",
+        "red_yukata",
+        "goldfish_print",
+        "obi",
+        "exposed_nape",
+        "japanese_festival"
+      ]
+    }
+  }
+}

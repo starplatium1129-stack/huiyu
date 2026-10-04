@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "caren_hortensia/sensual_black_camisole",
+  "revision": 1,
+  "sortOrder": 114,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "caren_hortensia",
+    "outfit": {
+      "id": "sensual_black_camisole",
+      "name": "黑色真丝吊带露背睡裙",
+      "prose": "a delicate black silk nightgown with a low back revealing her pale shoulderblades and stigmata marks, thin spaghetti straps, and a short hem skimming her slender hips",
+      "tokens": [
+        "nightgown",
+        "black_nightgown",
+        "camisole",
+        "backless",
+        "bare_shoulders",
+        "bare_legs",
+        "cleavage"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

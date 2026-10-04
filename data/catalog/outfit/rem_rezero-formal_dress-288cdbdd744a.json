@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "rem_rezero/formal_dress",
+  "revision": 1,
+  "sortOrder": 245,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rem_rezero",
+    "outfit": {
+      "id": "formal_dress",
+      "name": "礼服",
+      "prose": "an elegant formal dress for a special evening",
+      "tokens": [
+        "evening_gown",
+        "blue_dress",
+        "long_sleeves",
+        "dress"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

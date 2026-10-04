@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc118",
+  "revision": 1,
+  "sortOrder": 116,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc118",
+    "title": "机密机房的越界重叠",
+    "category": "同人/After_Story",
+    "story": "【夏目 · 紧身衣撕裂极致肉感】深夜彻底反锁的中央控制室机房。四周闪烁着密密麻麻的服务器幽蓝指示灯，空气里弥漫着设备的微热。平时高冷死板的特工少女夏目，此时大汗淋漓地跨坐在你腰间。她身上那一身漆黑的特工连体衣从领口被一路粗暴拉开、敞剥至腹部，暴露出让人血脉偾张的傲人起伏。她眼角的泪痣被脸颊的潮红彻底浸透，双手用力按住你的胸膛将你死死压制在身下，俯下身发出近乎疯狂独占的急促喘息——「长官...这里的信号已经完全切断了...今晚...你别想从我身边逃走...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "狂热独占占有",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "agent_jumpsuit",
+      "jumpsuit_unzipped",
+      "bare_torso",
+      "straddling",
+      "hands_on_viewer",
+      "leaning_forward",
+      "server_room",
+      "blue_lights",
+      "sweaty",
+      "night"
+    ],
+    "mature": true,
+    "location": "反锁控制室机房",
+    "weather": "设备微热",
+    "camera": "仰视主观近景",
+    "lighting": "机柜幽蓝冷光与警示弱光",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, agent_jumpsuit, unzipped_bodysuit, open_front, skin-tight_leather, exposed_breasts, bare_breasts, nipples, areola, straddling_viewer, leaning_forward, hands_on_viewer, pinning_down, server_room, blinking_blue_led_lights, cool_lighting, sweat_sheen, heavy_blush, teary_eyes, parted_lips, panting, sensual, possessive, cowboy_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, hands on neck, gripping neck, choking, strangling, self-harm, neck hold, fully_zipped, text, watermark, signature, child, loli, underage",
+    "storyJa": "【夏目・タイツを破いて究極の官能を】中央制御室は深夜に完全に施錠された。周囲にはサーバーの濃い青色の表示灯が点滅し、空気は装置のわずかな熱で満たされていました。普段は飄々として堅物なエージェントの女の子夏目が、今では大量の汗をかきながらあなたの腰にまたがっています。彼女が着ていたダークエージェントのジャンプスーツは、襟元から腹部にかけて乱暴に開かれ、その内側にある人々の血を騒がせる誇らしげなラインが露わになった。頬の紅潮で目尻の泣きぼくろが完全に濡れていた。あなたの胸を両手で強く押さえつけて身動きを封じ、身を乗り出して狂気じみた独占欲の混じる荒い息を吐き出しました。――「店長……ここの通信は完全に切れてる。今夜は、私のそばから逃げられると思わないで。」",
+    "rating": "R18",
+    "animaCaption": "Deep in the locked server room with racks of blue indicator lights blinking in the dark, Shiki Natsume, drenched in sweat, straddles your waist with her black agent jumpsuit unzipped all the way down to her abdomen over heaving bare breasts; mole soaked in blush and eyes glinting with possessive fervor, she pins you down by pressing both hands firmly onto your chest, leaning forward as she pants breathlessly, whispering that you will never escape her tonight.",
+    "auditRevision": "finetune-sc118-no-choke-2026-09-05"
+  }
+}

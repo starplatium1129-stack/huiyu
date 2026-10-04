@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "ciel_winter_park_scarf_hand_pocket",
+  "revision": 1,
+  "sortOrder": 1338,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
+    "camera": "cowboy shot, eye level, winter romantic walk",
+    "category": "冬日漫步",
+    "characterId": "ciel_tsukihime",
+    "coverageTags": [
+      "date",
+      "winter",
+      "romantic"
+    ],
+    "description": "【希耶尔 · 冬日公园的暖袋牵手】初雪飘落的宁静公园长椅旁，希耶尔穿着暖和的米色毛衣与风衣，脖子上围着一条红色长围巾。寒风吹红了她小巧的鼻尖，她呵出一口白色的暖气，有些羞怯地将自己冰凉纤细的手指悄悄钻进你的大衣口袋里十指相扣，侧过头露出安心又幸福的笑靥——「呼……手好冷呢。不过，被你握住的话，一下子就变得好暖和了。」",
+    "id": "ciel_winter_park_scarf_hand_pocket",
+    "lighting": "初雪折射的清冷天光与公园路灯初上",
+    "location": "初雪落满松树与木长椅的静谧冬日公园",
+    "mood": "冬日纯爱",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_knit_sweater_jeans",
+    "promptProse": "Walking through a snow-dusted park at twilight, Ciel wears a cozy thick red scarf wrapped snug around her neck. Her cheeks and nose are dusted with a delicate cold pink flush as puffs of white breath escape her lips. She shyly slips her cold hand into the viewer's coat pocket, smiling with serene romantic bliss behind her fogged glasses. Heartwarming winter anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "winter_park",
+      "snowing",
+      "snow_ground",
+      "red_scarf",
+      "coat",
+      "turtleneck_sweater",
+      "hands_in_pocket",
+      "steaming_breath",
+      "glasses",
+      "radiant_smile",
+      "blush",
+      "blue_hair",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "winter",
+      "park",
+      "snowing",
+      "scarf",
+      "hands_in_pocket",
+      "steaming_breath",
+      "glasses",
+      "happy_smile",
+      "blush"
+    ],
+    "timeOfDay": "冬日黄昏",
+    "title": "希耶尔 · 冬日公园的暖袋牵手"
+  }
+}

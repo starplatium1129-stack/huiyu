@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc199",
+  "revision": 1,
+  "sortOrder": 194,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the locked dim commander office at midnight, adult Shiki Natsume in gold-rimmed glasses sits perched on the mahogany desk edge in an intimate cowboy shot. Her crisp white silk blouse is unbuttoned nearly to her waist showing fine black lace and cleavage, and her sheer black pantyhose are torn across her smooth thighs; she slightly tilts her head to push up her sliding glasses with one slender finger, panting with a heavy breathless blush under the dramatic side shadow of the warm desk lamp, no text, no extra people.",
+    "auditRevision": "skill-refine-sc199-2026-09-05",
+    "camera": "七分身办公桌近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc199",
+    "lighting": "办公桌台灯打在面部的强烈侧光阴影与窗外暗夜对比",
+    "location": "指挥官办公室桌上",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, glasses, gold-rimmed_glasses, cowboy_shot, pov, white_shirt, unbuttoned_shirt, collarbone, cleavage, black_lace_bra, black_pencil_skirt, torn_pantyhose, torn_black_tights, sitting_on_desk, adjusting_glasses, finger_on_glasses, head_tilt, heavy_blush, panting, parted_lips, breathless, office_desk, office_interior, night, desk_lamp, warm_lighting, strong_shadows, chiaroscuro, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 眼镜职场窄裙裂丝绝对沦陷】深夜空无一人的指挥官专属办公室。平时高冷霸道的职场特工夏目，今晚破天荒戴上了一副金丝眼镜，增添了无尽的知性禁欲感。此时她正面红耳赤地坐在微凉的办公桌边缘，身上的白衬衫纽扣已被你解开了大半，露出了极其诱人的饱满曲线。腿上性感的黑色丝袜已经被你大面积撕裂，露出了光洁细腻的大腿绝对领域。她微仰着头，修长手指推了推滑落的眼镜，眼角的泪痣在台灯强阴影下散发着极致动情的危险红晕，娇喘着呻吟——「哈啊...长官...今晚这场『秘密越界审讯』...你已经彻底赢了...随你把我坏掉吧...」",
+    "storyJa": "【夏目・職場のメガネとひび割れの狭いスカートは間違いなく転落につながります】司令官専用執務室は深夜には閑散としていた。普段はよそよそしく横暴な職場エージェントである夏目は、今夜初めて金縁の眼鏡をかけ、限りない知的禁欲感を加えた。このとき、彼女は顔を真っ赤にして冷たい机の端に座っていましたが、すでに彼女の体の白いシャツのほとんどのボタンが外されており、彼女の非常に魅力的で豊満な曲線が明らかになっていました。あなたの脚のセクシーな黒ストッキングはあなたによって大きく破かれ、滑らかで繊細な太ももの絶対領域が露出しています。彼女は少し頭を上げ、細い指でずれた眼鏡を押し上げた。電気スタンドの強い影の下で、目の端の泣きぼくろが非常に感情的で危険な赤面をにじみ出し、彼女は息を呑んでうめき声を上げました。――「店長……今夜の『秘密の越境尋問』は、あなたの勝ち。だからもう少しだけ……私のそばにいて。」",
+    "tags": [
+      "mole_under_eye",
+      "glasses",
+      "gold_rimmed_glasses",
+      "white_shirt",
+      "unbuttoned_shirt",
+      "cleavage",
+      "pencil_skirt",
+      "torn_black_pantyhose",
+      "torn_tights",
+      "sitting_on_desk",
+      "adjusting_glasses",
+      "heavy_blush",
+      "panting",
+      "office",
+      "desk_lamp",
+      "cowboy_shot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "特别审讯协议：眼镜OL窄裙的越界支配",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/noble_child",
+  "revision": 1,
+  "sortOrder": 262,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "default": false,
+      "id": "noble_child",
+      "isDefault": false,
+      "name": "贵族大小姐",
+      "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge",
+      "tokens": [
+        "dress",
+        "frills",
+        "headband",
+        "hair_ribbon",
+        "ahoge",
+        "red_hair"
+      ]
+    }
+  }
+}

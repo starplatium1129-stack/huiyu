@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ereshkigal_fate/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 151,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ereshkigal_fate",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "冥界女王夏日比基尼",
+      "prose": "a modest yet lovely black-and-blue frilled bikini, her blonde twin-tails tied with pale blue ribbons, a sheer sarong wrap, and sunscreen smelling faintly of lilies",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "black_bikini",
+        "blue_bikini",
+        "frilled_swimsuit",
+        "sarong",
+        "hair_ribbon",
+        "bare_shoulders",
+        "wet_skin"
+      ]
+    }
+  }
+}

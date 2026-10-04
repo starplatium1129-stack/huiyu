@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "emilia_rezero",
+  "revision": 1,
+  "sortOrder": 16,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "emilia_rezero",
+    "profile": {
+      "id": "emilia_rezero",
+      "name": "爱蜜莉雅",
+      "alias": [
+        "Emilia",
+        "エミリア"
+      ],
+      "type": "popular",
+      "icon": "❄️",
+      "portrait": {
+        "image": "../assets/characters/popular-emilia_rezero.png?v=5",
+        "alt": "爱蜜莉雅 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银色长直发 · 侧卷",
+        "hair_color": "银",
+        "eyes": "淡紫",
+        "hairstyle": "长直发 · 两侧卷发 · 呆毛",
+        "uniform": "白裙红饰（王选礼服）",
+        "expression": "纯洁善良 · 天然认真",
+        "style": "pure silver half-elf",
+        "signature": "银发紫瞳、独角与白裙"
+      },
+      "personality": [
+        "纯洁善良",
+        "天真认真",
+        "略带笨拙",
+        "坚韧",
+        "温柔"
+      ],
+      "likes": [
+        "雪",
+        "契约精灵帕克",
+        "重要的人",
+        "王选的使命"
+      ],
+      "classic_cg": {
+        "title": "冰雪森林",
+        "description": "艾利欧尔冰雪森林，银发半精灵与契约精灵帕克在冰晶与雪光中驻足。"
+      },
+      "identity": {
+        "role": "半精灵（王选候选人）",
+        "age": "约 114 岁（外貌年轻）",
+        "occupation": "王选候选人",
+        "faction": "卢格尼卡王国"
+      },
+      "tags": [
+        "银发",
+        "紫瞳",
+        "独角",
+        "半精灵",
+        "白裙"
+      ],
+      "bg_story": "爱蜜莉雅是《Re:Zero》的女主角，银发半精灵王选候选人，契约精灵为帕克。冰雪系与纯洁气质是核心。场景应偏冰雪森林、王城宫廷与宅邸花园。",
+      "palette": [
+        "银白",
+        "冰雪蓝",
+        "王室红"
+      ],
+      "weather": [
+        "雪林",
+        "王城晨光",
+        "花园晴日"
+      ],
+      "speech": "爱蜜莉雅向你致以问候。",
+      "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+      "traits": [
+        "emilia (re zero)",
+        "1girl",
+        "solo",
+        "long_silver_hair",
+        "white_hair",
+        "purple_eyes",
+        "elf",
+        "pointy_ears",
+        "hair_flower",
+        "purple_hair_ribbon",
+        "re:zero"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "emilia_rezero",
+      "displayName": "爱蜜莉雅",
+      "originalName": "Emilia",
+      "franchise": "Re:Zero",
+      "aliases": [
+        "emilia (re zero)",
+        "emt",
+        "emilia rezero",
+        "re zero",
+        "emilia from re zero"
+      ],
+      "identityProse": "Emilia from Re:Zero, a half-elf maiden with flowing silver-white hair, soft pointed elf ears, amethyst purple eyes, and a white flower hair clip.",
+      "identityTokens": [
+        "emilia (re:zero)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "purple_eyes",
+        "pointy_ears",
+        "hair_flower",
+        "re:zero"
+      ],
+      "exactTokens": [
+        "emilia (re zero)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "anmi"
+      ]
+    }
+  }
+}

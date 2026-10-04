@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 934,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "长离·成人私密造型",
+      "prose": "a private adult ensemble built around robe, completely_nude",
+      "tokens": [
+        "robe",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

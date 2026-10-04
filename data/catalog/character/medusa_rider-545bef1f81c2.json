@@ -1,0 +1,117 @@
+{
+  "kind": "character",
+  "id": "medusa_rider",
+  "revision": 1,
+  "sortOrder": 134,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "medusa_rider",
+    "profile": {
+      "id": "medusa_rider",
+      "name": "美杜莎 Rider",
+      "alias": [
+        "美杜莎 Rider",
+        "Medusa (Rider)"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-medusa_rider.png?v=8bacdb352eda",
+        "alt": "美杜莎 Rider · 书店文库本的站立阅读场景样张"
+      },
+      "visual_dna": {
+        "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+        "hair": "purple_hair, very_long_hair",
+        "eyes": "purple_eyes",
+        "uniform": "书店与采购针织便装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "沉默稳重，关心常通过行动而非长篇言语表达",
+        "在阅读和日常家务中流露安静耐心",
+        "保持警觉，却也珍惜不必战斗的平和时刻"
+      ],
+      "likes": [
+        "阅读",
+        "安静的书店",
+        "为信任的人准备日常所需"
+      ],
+      "classic_cg": {
+        "title": "美杜莎 Rider · 书店文库本的站立阅读",
+        "description": "书店角落，她戴着眼镜站在文库本书架前静静翻阅，长发垂落遮出私密的空间；店员经过时她礼貌地让出半步，全程没有一句话却气场安定。"
+      },
+      "identity": "Fate · 美杜莎 Rider",
+      "tags": [
+        "美杜莎 Rider",
+        "Fate 系列",
+        "日常"
+      ],
+      "bg_story": "以Rider身份现界的美杜莎，沉默、细心，喜欢在书本与平静的生活中停留。长紫发和紫瞳是常驻特征，眼镜、眼罩与武器按服装或场景配置。",
+      "palette": [
+        "#b09dcf",
+        "#282532"
+      ],
+      "source": "Fate",
+      "speech": "这本书很安静，适合现在读。",
+      "traits": [
+        "medusa_(fate)",
+        "fate/stay_night",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes"
+      ],
+      "accent_color": "#b09dcf",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "medusa_rider",
+      "displayName": "美杜莎 Rider",
+      "originalName": "Medusa (Rider)",
+      "franchise": "Fate",
+      "aliases": [
+        "美杜莎 Rider",
+        "Medusa (Rider)"
+      ],
+      "identityProse": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "identityTokens": [
+        "medusa_(fate)",
+        "fate/stay_night",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "medusa_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, medusa_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

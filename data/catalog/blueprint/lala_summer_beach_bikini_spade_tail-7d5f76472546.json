@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "lala_summer_beach_bikini_spade_tail",
+  "revision": 1,
+  "sortOrder": 1237,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "踩在清凉海水中向镜头开朗招手，鹅黄比基尼勾勒极品身段，爱心尾巴撩拨水花",
+    "camera": "full body, 3/4 dynamic angle, vibrant beach depth",
+    "category": "盛夏海滨",
+    "characterId": "lala_satalin_deviluke",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【菈菈 · 耀阳金沙的鹅黄比基尼欢跃】热带碧海蓝天的细白沙滩浪花边，阳光将海水照得如同剔透翡翠。菈菈身穿一袭鲜亮夺目的鹅黄色荷叶边分体比基尼，沉甸甸的饱满双峰呼之欲出。她光着白嫩小脚踩在浅海浪花中，单手向镜头挥手欢呼，身后黑色的爱心尾巴尖端顽皮地撩拨着清凉的海水泡沫，水珠顺着白皙滑嫩的肌肤滚落，洋溢着无限的青春活力。",
+    "id": "lala_summer_beach_bikini_spade_tail",
+    "lighting": "万里晴空的强日光与海面反射的跳跃焦散水波光斑",
+    "location": "热带海岛细白沙滩与碧蓝浅海浪花处",
+    "mood": "开朗热情",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "summer_bikini",
+    "promptProse": "Splashing cheerfully through crystal turquoise ocean shallows in a bright yellow ruffled bikini, Lala waves happily to the viewer. Tropical sunshine glistens across her sun-warmed curves and endless bubblegum-pink hair trailing through sea spray beside her playful spade tail.",
+    "promptTokens": [
+      "tropical_beach",
+      "ocean_waves",
+      "yellow_bikini",
+      "frills",
+      "cleavage",
+      "wet_skin",
+      "demon_tail",
+      "beaming_smile",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean_waves",
+      "bikini",
+      "yellow_bikini",
+      "demon_tail",
+      "cleavage",
+      "wet_skin",
+      "beaming_smile"
+    ],
+    "timeOfDay": "正午",
+    "title": "菈菈 · 耀阳金沙的鹅黄比基尼欢跃"
+  }
+}

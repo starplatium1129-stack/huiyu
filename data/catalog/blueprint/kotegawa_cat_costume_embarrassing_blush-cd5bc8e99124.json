@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_cat_costume_embarrassing_blush",
+  "revision": 1,
+  "sortOrder": 1258,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "戴猫爪手套双手护在深沟胸前，满面通红泪眼汪汪娇嗔，猫耳与尾巴紧绷微颤",
+    "camera": "medium shot, eye-level, extreme flustered blush focus",
+    "category": "反差娇羞",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "cosplay"
+    ],
+    "description": "【古手川唯 · 羞耻万分的心跳猫娘变身】文化祭后台挂满布帘的更衣室角落里，唯因为意外换装道具变成了一套紧身黑色皮革抹胸猫娘装。头顶戴着毛茸茸的黑色猫耳，胸前深低领口勒出令人惊叹的丰满乳沟，身后黑色猫尾巴随着动作僵硬地轻晃。她双手戴着毛绒猫爪手套护在胸前，脸蛋红透得几乎要滴出血来，眼角泛着泪花结结巴巴——「呜……！不准看……！快把头转过去！身为风纪委员竟然穿成这种……不知羞耻的样子……！」",
+    "id": "kotegawa_cat_costume_embarrassing_blush",
+    "lighting": "室内柔和暖黄顶灯与黑色皮革战装上的高光质感对比",
+    "location": "更衣室屏风布帘后木质地板上",
+    "mood": "极度羞耻",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "cat_costume",
+    "promptProse": "Clutching her plush cat-paw mittens defensively over her deep cleavage in a strapless black leather leotard and fluffy cat ears, Yui blushes to the roots of her hair. Warm dressing room lighting highlights her mortified tears and twitching cat tail in peak tsundere embarrassment.",
+    "promptTokens": [
+      "dressing_room",
+      "cat_costume",
+      "cat_ears",
+      "cat_tail",
+      "paw_gloves",
+      "strapless_leotard",
+      "cleavage",
+      "heavy_blush",
+      "teary_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cat_costume",
+      "cat_ears",
+      "cat_tail",
+      "paw_gloves",
+      "strapless_leotard",
+      "cleavage",
+      "heavy_blush",
+      "teary_eyes"
+    ],
+    "timeOfDay": "下午",
+    "title": "古手川唯 · 羞耻万分的心跳猫娘变身"
+  }
+}

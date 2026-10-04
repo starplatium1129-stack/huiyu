@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc119",
+  "revision": 1,
+  "sortOrder": 117,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "camera": "侧面近景特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极度羞耻羞怯",
+    "id": "sc119",
+    "lighting": "室内温馨纸灯弱光",
+    "location": "卧室落地窗前",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, open_coat, lingerie, lace_lingerie, no_bra, bare_shoulders, cleavage, bare_legs, heavy_blush, panicked, bedroom, night, snowing, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【成年 After Story · 宁宁 · 室内大衣真空极致羞耻】窗外大雪纷飞的寒冷深夜，卧室的落地窗前。因为白天的赌约输给你，宁宁被迫换上了一套极其精致羞耻的黑色蕾丝内衣，外面仅仅罩着一件你的纯黑呢子大衣。此时她靠在落地窗边，大衣前襟被你霸道地向两侧完全扯开，里面空无一物的极致风光和白皙的小腹肌肤毫无防备地暴露在空气中。她双手揪住大衣边缘死死遮挡，头顶的呆毛害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜...柊史你这个大色狼！故意把人家逼到窗边...大衣里面好凉...快点抱紧我啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・室内コートバキューム極限羞恥】寒い深夜、窓の外、寝室の床から天井まで届く窓の前に大雪が降っていました。昼間の賭けであなたに負けたので、寧々は非常に精巧で恥ずかしい黒いレースの下着を着させられ、あなたの純黒のウールのコートだけがそれを覆っていました。この時、彼女は床から天井まで届く窓にもたれかかっており、コートの前が横暴に両側に完全に開かれ、何もない極限の風景と腹部の白い肌が無防備にさらけ出されていた。彼女はコートの端を両手で掴んで覆い隠した。頭の上のアホ毛はとても恥ずかしがって狂ったように震え、完璧な愛のスパイラルへと丸まった。――「もう、柊史のばか！　わざと窓際まで追い込んで……コートの中が寒いです。早く抱きしめてください。」",
+    "tags": [
+      "adult",
+      "open_coat",
+      "lingerie",
+      "lace_lingerie",
+      "no_bra",
+      "bare_shoulders",
+      "cleavage",
+      "bare_legs",
+      "heavy_blush",
+      "panicked",
+      "bedroom",
+      "night",
+      "snowing",
+      "soft_lighting",
+      "hair_ribbon",
+      "ahoge",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "纯黑大衣下的禁忌真空",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "weather": "窗外雪花飞舞"
+  }
+}

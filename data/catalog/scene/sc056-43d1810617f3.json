@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc056",
+  "revision": 1,
+  "sortOrder": 54,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "A full-body view shows her stepping out of shallow beach water and looking back over her shoulder, with both feet visible among small waves.",
+    "camera": "全身回眸中景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc056",
+    "lighting": "明亮海滩日光",
+    "location": "海边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, cropped_feet, missing_feet, deformed_legs, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, beach, bikini, looking_back, beach_coverup, walking_out_of_water, shy_smile, ocean, summer, afternoon, clear_sky, cowboy_shot, over_shoulder, blush, shy, sunlight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 浪花边的泳装回眸】盛夏午后，宁宁穿着新泳装从浅水区走来，外罩被海风吹得不断扬起。她察觉你的视线后先是害羞地拉了拉衣摆，随后又鼓起勇气转身让你看清整体搭配——「选了很久才决定这一套。你可以说感想，但不准只盯着一个地方……要认真地全部看完。」",
+    "storyJa": "【寧々・波紋エッジの水着を振り返る】真夏の午後、寧々さんが新しい水着を着て浅瀬から出てきたところ、外側のカバーが潮風で飛ばされてしまいました。あなたの視線に気づいた彼女は、恥ずかしそうに服の裾を引っ張り、勇気を出して振り向くと、服装全体がはっきりと見えました。――「ずいぶん迷って、これに決めたんです。感想は聞かせてほしいですけど、一か所ばかり見ないで……ちゃんと全部見てくださいね。」",
+    "tags": [
+      "hair_ribbon",
+      "beach",
+      "swimsuit",
+      "looking_back",
+      "beach_coverup",
+      "walking_out_of_water",
+      "shy_smile",
+      "ocean",
+      "summer",
+      "afternoon",
+      "clear_sky",
+      "full_body",
+      "over_shoulder",
+      "blush",
+      "shy",
+      "wide_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "浪花边的泳装回眸",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

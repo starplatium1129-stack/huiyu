@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "mudrock_arknights",
+  "revision": 1,
+  "sortOrder": 30,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "mudrock_arknights",
+    "profile": {
+      "id": "mudrock_arknights",
+      "name": "泥岩",
+      "alias": [
+        "Mudrock",
+        "泥岩",
+        "マドロック",
+        "土石之子",
+        "大药队长"
+      ],
+      "type": "popular",
+      "icon": "🛡️",
+      "visual_dna": {
+        "hair": "银白色/纯白色长发，发质柔顺有光泽，前额有轻薄齐刘海与修饰脸型的微卷垂发，发长及腰",
+        "hair_color": "银白色 / 纯白色（Silver-white / Platinum blonde）",
+        "eyes": "血红色 / 绯红色瞳孔（Crimson red eyes / Ruby eyes），眼神清澈纯粹、温和内敛，略带坚毅与淡淡忧伤",
+        "hairstyle": "披肩及腰自然微卷长发，轻柔齐碎刘海，头顶两侧生长有一对深黑色弯曲向上的萨卡兹角",
+        "uniform": "基础立绘穿着厚重全封闭防化/工兵外骨骼动力重装甲（橄榄绿、工业灰与泥土黄配色，配防毒面具与呼吸管）；精二及脱盔后内穿黑色/深灰高领防爆贴身连体作战服，勾勒出丰满曼妙身材与曼妙曲线",
+        "expression": "温和谦逊、宁静寡言、坚毅沉稳，战斗时专注坚定，卸甲后流露出纯净害羞与柔和的少女神情",
+        "style": "机甲重装与绝美少女的反差萌（Gap Moe）、末世废土工业风、暗黑哥特与萨卡兹神秘学、性感健康美",
+        "signature": "超重型动力工程战锤、头顶弯曲深黑萨卡兹双角、全封闭防爆重装甲、银白长发与血红眼瞳、巨大的泥石魔像傀儡"
+      },
+      "personality": [
+        "沉稳寡言",
+        "温柔慈悲",
+        "极富责任心",
+        "珍视同伴",
+        "坚毅不屈",
+        "内敛害羞",
+        "厌恶争斗",
+        "向往安宁"
+      ],
+      "likes": [
+        "与泥土和大地的源石技艺共鸣",
+        "捏制可爱的泥塑小玩偶送给同伴",
+        "新鲜的红苹果与水果",
+        "安静祥和的自然环境",
+        "同伴们安全幸福的笑脸"
+      ],
+      "identity": {
+        "role": "罗德岛重装干员 / 前整合运动泥岩小队领袖 / 前卡兹戴尔雇佣兵",
+        "age": "未知（外表与心智呈青年女性，经历丰富沉稳）",
+        "occupation": "重装干员（不屈者分支）/ 源石技艺术师（土石操控）",
+        "faction": "罗德岛（曾隶属于卡兹戴尔雇佣兵部族、整合运动泥岩小队）"
+      },
+      "tags": [
+        "银白色 / 纯白色（Silver-white / Platinum blonde）",
+        "血红色 / 绯红色瞳孔（Crimson red eyes / Ruby eyes），眼神清澈纯粹、温和内敛，略带坚毅与淡淡忧伤"
+      ],
+      "bg_story": "泥岩曾是卡兹戴尔的萨卡兹雇佣兵，因不愿卷入同族相残与无休止的血腥仇杀，率领一支由感染者组成的队伍脱离战场流浪。切尔诺伯格事件后辗转至莱塔尼亚，在沃伦姆德暴乱中竭尽全力保护无辜平民免遭伤害，并结识了罗德岛。在带领小队艰难迁徙返回卡兹戴尔途中遭遇敌对同族雇佣兵疯狂追杀，绝境之际得到罗德岛精英干员Logos的救援。为了给饱受病痛与战火折磨的感染者同伴提供长久庇护和医疗救治，泥岩正式率队加入罗德岛，以不屈的钢铁身躯与强大的土石巫术守护伙伴。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "mudrock (arknights)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "red_eyes",
+        "horns",
+        "power_armor",
+        "armor",
+        "hammer",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-mudrock_arknights.png?v=5",
+        "alt": "泥岩热门角色立绘"
+      },
+      "speech": "泥岩向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "mudrock",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银发红瞳萨卡兹；重甲+大锤；外冷内柔",
+        "research": "2026-08-15 调研（Danbooru mudrock_(arknights) 4238 posts）",
+        "world": "泰拉（泥岩小队）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "so-bin",
+        "rella"
+      ],
+      "displayName": "泥岩",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "mudrock (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "mudrock_arknights",
+      "identityProse": "Mudrock from Arknights, a gentle yet formidable Sarkaz with flowing silver-white hair, obsidian curved horns, ruby eyes, and a voluptuous figure.",
+      "identityTokens": [
+        "mudrock (arknights)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "red_eyes",
+        "horns",
+        "large_breasts",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Mudrock",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

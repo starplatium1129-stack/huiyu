@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon_alter/official_black_armor",
+  "revision": 1,
+  "sortOrder": 118,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "artoria_pendragon_alter",
+    "outfit": {
+      "id": "official_black_armor",
+      "name": "漆黑哥特重铠战袍",
+      "prose": "heavy black plate armor with jagged red filigree, dark blue gown accents and iron gauntlets, with platinum-blonde hair secured in a braided bun",
+      "tokens": [
+        "black_armor",
+        "plate_armor",
+        "gauntlets",
+        "excalibur_morgan",
+        "dark_dress",
+        "red_trim",
+        "hair_bun"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc073",
+  "revision": 1,
+  "sortOrder": 71,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a winter evening at the onsen inn veranda, Shiki Natsume sits in a light pink floral yukata with damp hair tips from the bath. She accepts one cold milk bottle and pushes the second back into the viewer's hand, her cheeks flushing brighter beneath the warm garden lanterns and cool snowlight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "放松",
+    "id": "sc073",
+    "lighting": "傍晚灯笼暖光与雪地冷光",
+    "location": "温泉旅馆缘侧",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, light_pink_floral_yukata, seated_on_wooden_onsen_inn_veranda, hair_tips_still_damp_from_bath, holding_one_cold_milk_bottle, offering_second_cold_milk_bottle_to_viewer, snowy_garden, winter_evening, warm_lantern_light, cool_snowlight, flushed_face, composed_shy_expression, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 温泉旅馆的晚风】冬日傍晚，夏目穿着浴衣坐在温泉旅馆的缘侧，发梢还带着水汽。你递来冰牛奶，她接过后把另一瓶推回你掌心，脸上的红色在灯笼下更明显——「是温泉太热，不是别的原因。外面在下雪……喝完以后，陪我去庭院走一圈。」",
+    "storyJa": "【夏目・温泉旅館の夜風】冬の夕方、夏目は髪先に湿気を残したまま、浴衣を着て温泉旅館の端に座っていた。あなたがアイスミルクを手渡すと、彼女はそれを受け取り、もう一方のボトルをあなたの手のひらに押し戻しました。彼女の顔の赤い色はランタンの下でさらにはっきりと見えました。――「温泉が熱かっただけ。ほかに理由はない。外は雪だから……飲み終わったら、庭を少し歩かない？」",
+    "tags": [
+      "mole_under_eye",
+      "yukata",
+      "white_tabi",
+      "onsen_veranda",
+      "snow",
+      "evening",
+      "medium_shot",
+      "cold_milk",
+      "offering_drink"
+    ],
+    "time": "傍晚",
+    "timeOfDay": "sunset",
+    "title": "温泉旅馆的晚风",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "雪"
+  }
+}

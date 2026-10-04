@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/ambience_synesthesia_rocker",
+  "revision": 1,
+  "sortOrder": 307,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "id": "ambience_synesthesia_rocker",
+      "name": "音律联觉·赤雷电音摇滚装",
+      "prose": "a crimson and matte-black asymmetric cropped leather biker jacket with silver studs over a sheer black mesh crop top, a silver dragon-engraved choker, high-waisted distressed black denim shorts, ripped fishnet thighhighs, black lace-up platform knee-high boots and a crimson electric guitar",
+      "tokens": [
+        "leather_jacket",
+        "cropped_jacket",
+        "mesh",
+        "crop_top",
+        "choker",
+        "denim_shorts",
+        "fishnet_thighhighs",
+        "platform_boots",
+        "electric_guitar"
+      ]
+    }
+  }
+}

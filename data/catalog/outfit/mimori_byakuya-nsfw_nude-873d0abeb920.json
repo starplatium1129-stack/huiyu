@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "mimori_byakuya/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 474,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mimori_byakuya",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+      "styleHint": "soft pristine studio illumination",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "full_body_bare",
+        "flat_chest",
+        "exposed_pussy",
+        "detailed_vulva",
+        "pink_nipples",
+        "slender_body",
+        "bare_feet"
+      ]
+    }
+  }
+}

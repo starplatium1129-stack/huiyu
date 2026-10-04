@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/stage",
+  "revision": 1,
+  "sortOrder": 184,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "stage",
+      "name": "舞台装",
+      "prose": "a sparkling concert stage outfit with light-up accents and flowing sleeves",
+      "tokens": [
+        "stage_clothes",
+        "sparkling_clothes",
+        "lighting",
+        "frills",
+        "dress"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

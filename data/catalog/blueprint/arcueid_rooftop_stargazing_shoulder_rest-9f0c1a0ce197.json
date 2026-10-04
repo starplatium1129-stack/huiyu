@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "arcueid_rooftop_stargazing_shoulder_rest",
+  "revision": 1,
+  "sortOrder": 1326,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
+    "camera": "cowboy shot, medium angle, peaceful romantic night",
+    "category": "温柔陪伴",
+    "characterId": "arcueid_brunestud",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "healing",
+      "peaceful",
+      "romantic"
+    ],
+    "description": "【爱尔奎特 · 天台夜风中的倚肩私语】夜幕降临的高楼天台边缘，晚风吹拂着她轻盈的白裙裙摆。爱尔奎特安静地并肩依偎在你身侧，将毛茸茸的金发脑袋轻轻靠在你的肩头，双手环抱着曲起的小腿。红宝石般的眼眸中映照着漫天繁星与城市灯火，收敛了所有王者的霸道，唯有恋人间最温柔的眷恋——「如果一直留在你身边，即便吸血冲动发作……我也绝对能战胜它呢。」",
+    "id": "arcueid_rooftop_stargazing_shoulder_rest",
+    "lighting": "幽蓝夜空微光与远处城市金黄灯海",
+    "location": "俯瞰整座安宁城市的公寓楼顶露台",
+    "mood": "深情依恋",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_summer_sundress",
+    "promptProse": "Sitting peacefully together on an apartment rooftop beneath a vast star-studded night sky, Arcueid Brunestud rests her blonde head gently upon the viewer's shoulder. Dressed in her breezy white sundress, she hugs her knees while gazing at the twinkling city below. Her crimson eyes radiate tranquil devotion and serene love. Atmospheric, emotional anime CG with two clothed figures, no text.",
+    "promptTokens": [
+      "rooftop",
+      "night_sky",
+      "starry_sky",
+      "city_lights",
+      "sitting_on_ground",
+      "head_on_shoulder",
+      "hugging_knees",
+      "white_dress",
+      "gentle_smile",
+      "peaceful",
+      "red_eyes",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "night_sky",
+      "stars",
+      "city_lights",
+      "sitting_side_by_side",
+      "head_on_shoulder",
+      "hugging_knees",
+      "white_dress",
+      "gentle_smile"
+    ],
+    "timeOfDay": "深夜",
+    "title": "爱尔奎特 · 天台夜风中的倚肩私语"
+  }
+}

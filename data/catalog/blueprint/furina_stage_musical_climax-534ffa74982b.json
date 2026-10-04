@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "furina_stage_musical_climax",
+  "revision": 1,
+  "sortOrder": 14,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "furina_stage_musical_climax",
+    "title": "芙宁娜 · 最终乐章舞台谢幕",
+    "category": "舞台演出",
+    "characterId": "furina",
+    "description": "【芙宁娜 · 最终乐章舞台谢幕】欧庇克莱大歌剧院的辉煌主舞台上，激昂的交响乐迎来终曲。芙宁娜身着流光溢彩的湛蓝层叠晚礼服，单膝微屈优雅向全场观众致意行屈膝礼，漫天金色彩带与水形泡泡在聚光灯下绚烂飘舞——「愿枫丹的每一个明天，都如这曲终幕的乐章般璀璨夺目！」",
+    "location": "枫丹歌剧院大剧场主舞台",
+    "action": "单膝微屈优雅向观众席行屈膝礼，双手轻挽湛蓝裙摆，水幕与彩带在身后升腾",
+    "timeOfDay": "夜晚",
+    "lighting": "耀眼舞台聚光灯与幽蓝水光特效",
+    "camera": "medium full shot, low angle",
+    "mood": "华丽璀璨",
+    "sceneTags": [
+      "stage",
+      "theatre",
+      "spotlight",
+      "confetti",
+      "bubbles",
+      "curtsy",
+      "holding_skirt",
+      "ballgown",
+      "opera_gloves",
+      "applause"
+    ],
+    "promptProse": "Taking a theatrical final curtsy under blazing stage spotlights as confetti and water bubbles rain down, Furina dazzles her audience. Vibrant stage illumination and cheering auditorium shadows frame her triumphant musical performance.",
+    "promptTokens": [
+      "theatre_stage",
+      "spotlight",
+      "confetti",
+      "water_bubbles",
+      "curtsy",
+      "ballgown",
+      "opera_gloves",
+      "proud_smile",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "opera_ballgown",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

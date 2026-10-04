@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "cc_street_trench_sunhat_stroll",
+  "revision": 1,
+  "sortOrder": 1313,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "一手轻按宽檐草帽防风吹落，侧身漫步在落叶大道上回眸浅笑",
+    "camera": "cowboy shot, slightly high angle, romantic street stroll",
+    "category": "街头约会",
+    "characterId": "cc_code_geass",
+    "coverageTags": [
+      "date",
+      "elegant",
+      "autumn"
+    ],
+    "description": "【C.C. · 梧桐树下的遮阳帽漫步】秋日落叶金黄的林荫大道旁，微风卷起片片泛黄的梧桐叶。C.C.身着一件米色英伦风衣，头戴一顶优雅的大檐黑色缎带遮阳草帽，修长身姿亭亭玉立。她用手轻轻按住微风拂起的草帽边缘，翠绿发丝在阳光下闪烁着温润光泽，微微侧过身望向你，眼眸平静中透着只有你看得懂的柔软——「走慢一点。这么好的天气，可不要浪费了难得的约会。」",
+    "id": "cc_street_trench_sunhat_stroll",
+    "lighting": "穿过梧桐树冠的金色斑驳秋日光斑",
+    "location": "落满金黄梧桐落叶的欧式林荫道步道",
+    "mood": "知性优雅",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "beige_trench_sunhat",
+    "promptProse": "Strolling down a tranquil European promenade blanketed with golden autumn leaves, C.C. touches the brim of her elegant wide sunhat to steady it in the gentle breeze. Dressed in a sophisticated beige trench coat, her iconic green hair cascades past her waist. She glances sideways at the viewer with a subtle, affectionate smile in the dappled afternoon sunlight. Serene, romantic anime artwork, solo 1girl, no text.",
+    "promptTokens": [
+      "avenue",
+      "autumn_leaves",
+      "falling_leaves",
+      "trench_coat",
+      "sunhat",
+      "holding_hat",
+      "green_hair",
+      "yellow_eyes",
+      "gentle_smile",
+      "windy",
+      "afternoon_sun",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "street",
+      "autumn_leaves",
+      "trees",
+      "sunhat",
+      "trench_coat",
+      "green_hair",
+      "holding_hat",
+      "gentle_smile",
+      "romantic_stroll"
+    ],
+    "timeOfDay": "午后晴天",
+    "title": "C.C. · 梧桐树下的遮阳帽漫步"
+  }
+}

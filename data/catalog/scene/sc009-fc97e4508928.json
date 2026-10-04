@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc009",
+  "revision": 1,
+  "sortOrder": 8,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "By a cafe window in an oversized cream knit sweater and light grey pleated miniskirt with silky white thighhighs, Ayachi Nene sits holding a steaming latte mug with both hands, gentle loving smile in warm autumn afternoon cafe light.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "半身中景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "放松",
+    "id": "sc009",
+    "lighting": "窗光",
+    "location": "咖啡厅",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform, shirt, blazer, casual_clothes",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, virgin_killer_sweater, white_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, sitting_on_chair, leaning_forward_on_table, holding_coffee_mug_with_both_hands, shy, heavy_blush, looking_away, cafe, wooden_table, warm_afternoon_light, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【宁宁 · 咖啡杯旁的偷看】秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
+    "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
+    "tags": [
+      "hair_ribbon",
+      "knit_sweater",
+      "sheer_white_thighhigh_stockings",
+      "smooth_thighs",
+      "cafe_window",
+      "full_body",
+      "mary_jane"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "咖啡杯旁的偷看",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

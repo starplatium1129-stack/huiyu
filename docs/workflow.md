@@ -294,6 +294,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 门禁与构建
 
+记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库（首次使用会初始化）；patch/import 默认预览，--apply 写入；export --out 显式导出逐条项目快照；check 检查结构与关联，colors 复用原生配色检查。命令需要 --root 和 --runtime-root 的绝对路径以及 Rust/Cargo。权威边界和字段补丁格式见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
+
 ### Rust 运行时迁移
 
 产品后端为 `runtime-rs/`，Node 只负责前端/开发工具和旧行为对照。先 `npm run build:runtime` 准备工作流及 Node oracle，再运行：

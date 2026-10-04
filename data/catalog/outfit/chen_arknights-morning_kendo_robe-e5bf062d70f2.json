@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/morning_kendo_robe",
+  "revision": 1,
+  "sortOrder": 303,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "morning_kendo_robe",
+      "isDefault": false,
+      "name": "清晨道场练功服",
+      "prose": "a minimalist modern wushu training outfit: a loose white martial-arts gi jacket with dark teal accents, paired with dark teal wide-leg pleated hakama pants and a cloth obi belt",
+      "tokens": [
+        "gi",
+        "hakama",
+        "pleated_skirt",
+        "martial_arts",
+        "training_clothes"
+      ]
+    }
+  }
+}

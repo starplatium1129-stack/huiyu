@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc014",
+  "revision": 1,
+  "sortOrder": 13,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "A returning wave catches Ayachi Nene just after she splashes water toward the viewer. Wearing a light-blue one-piece swimsuit, she laughs and reaches for the forearm entering the edge of the frame to steady herself. Her other hand remains above the foam. A full-body view keeps both feet in the shallow surf and the bright beach behind her.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "浅浪中全身远景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "开心",
+    "id": "sc014",
+    "lighting": "明亮海滨日光与海水反射",
+    "location": "海边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, standing, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_one_piece_swimsuit, laughing, off_balance, reaching_for_viewer_arm, holding_arm, splashing_water, bare_feet_in_water, shallow_surf, beach, ocean, sea_foam, summer, bright_daylight, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "1216×832",
+    "season": "夏",
+    "story": "【宁宁 · 浪花反击战】盛夏海边，宁宁一开始还拘谨地拉着泳装外罩，确认你没有取笑她后才慢慢放松。她趁你不备捧起海水泼来，自己却被回卷的浪花打得站不稳，笑着抓住你的手臂。发带被海风吹歪，她也顾不上整理——「刚才那次不算！再来一次，这回我一定不会先摔倒。」",
+    "storyJa": "【寧々・スプラッシュカウンターアタック】真夏の海辺で、寧々さんは最初は控えめに水着を着ていました。あなたが彼女をからかっていないことを確認した後、彼女はゆっくりとリラックスしました。あなたが準備をしていないときに、彼女は海水を拾い、飛び散りましたが、打ち寄せる波によって彼女は不安定になりました。彼女は微笑んであなたの腕をつかみました。彼女のヘアバンドは海風で斜めになってしまいましたが、彼女はそれを直す気はありませんでした。――「今のはなしです！　もう一回。次こそ、私が先に転んだりしませんから。」",
+    "tags": [
+      "light_blue_one_piece_swimsuit",
+      "laughing",
+      "off_balance",
+      "reaching_for_viewer_arm",
+      "holding_arm",
+      "splashing_water",
+      "bare_feet_in_water",
+      "shallow_surf",
+      "beach",
+      "ocean",
+      "sea_foam",
+      "summer",
+      "bright_daylight",
+      "full_body",
+      "standing"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "浪花反击战",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

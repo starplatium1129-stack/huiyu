@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc218",
+  "revision": 1,
+  "sortOrder": 213,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc218",
+    "title": "温泉旅馆的绝对热量对流",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 私人温泉的月下温存】深夜寂静的温泉旅馆私密汤池，四周水汽氤氲。夏目裹着一条白色浴巾刚从温泉里走出来，白皙的肌肤上挂着晶莹水珠，透着一层动人的粉红。因为池边地面湿滑，她不小心踩空跌进了坐在池边的你怀里，原本就松垮的浴巾在慌乱间滑落到腰间，整个人贴在你大腿上动弹不得。她下意识地抱住你的肩膀，眼角的泪痣在月光下轻轻颤动，耳根早已红得彻底，却还是努力维持着平日的冷静语气——「……别误会。只是刚才踩空滑倒了而已。……既然衣服都湿了，暂时先别动。……喂，视线不准往奇怪的地方乱看，听见没有。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "冬",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "mini_bath_towel",
+      "bath_towel",
+      "wet_body",
+      "water_droplets",
+      "exposed_breasts",
+      "sitting_on_lap",
+      "straddling",
+      "slipping",
+      "hands_covering_chest",
+      "private_onsen",
+      "night",
+      "moonlight",
+      "mist",
+      "medium_shot"
+    ],
+    "mature": true,
+    "location": "温泉旅馆私密汤池边",
+    "weather": "水汽氤氲",
+    "camera": "近景平视特写",
+    "lighting": "清冷月光与波光粼粼的水面折射弱光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, small_white_bath_towel, towel_loosely_held_at_chest, exposed_breasts, bare_breasts, nipples, areola, bare_legs, wet_skin, water_droplets, sitting_at_poolside, steam_rising, outdoor_onsen, night, bamboo_fence, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "storyJa": "【夏目】【ナツメ・客室露天の月下のぬくもり】深夜、静まり返った温泉旅館の客室露天風呂。湯上がりのナツメは白いバスタオルをまとい、全身にきらめく水滴を湛え、肌はほんのり桜色に上気していた。滑りやすい足元に足を取られ、彼女は思わず池の端に座るあなたの胸元へと倒れ込んでしまう。緩んだタオルが腰元まで滑り落ち、二人の距離は一瞬で零になった。ナツメは咄嗟にあなたの肩に手を置き、目尻の泣きぼくろを月光に震わせながら、真っ赤になった耳を隠すように呟く――「……勘違いしないで。ただ滑っただけ。……濡れたんだから、少しこのままでいなさい。……変なところ見ないでよね、聞こえた？」",
+    "rating": "R18",
+    "animaCaption": "At the misty edge of the private onsen pool late at night, Shiki Natsume has just stepped out wrapped in only a narrow white mini towel, her body beaded with glistening water; she slips on the wet stone and tumbles straight into your lap, landing astride your thighs with the towel hanging loosely askew at her slender waist, her plump breasts fully exposed as she covers them with both hands in shame, red ears betraying her calm denial under the cold moonlight.",
+    "auditRevision": "careful-batch13-2026-08-27"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/sfw_studio",
+  "revision": 1,
+  "sortOrder": 850,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "sfw_studio",
+      "name": "画室衬衫与长裤",
+      "prose": "a buttoned white cotton shirt with paint marks on its hem and navy ankle-length trousers",
+      "tokens": [
+        "white_shirt",
+        "long_sleeves",
+        "buttoned_shirt",
+        "blue_pants",
+        "paint_splatter"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

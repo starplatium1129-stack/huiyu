@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "nana_festival_yukata_apple_candy",
+  "revision": 1,
+  "sortOrder": 1273,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手举着红亮苹果糖递向对方喂食，脸颊微红露出小虎牙，爱心尾巴欢快甩动",
+    "camera": "medium close-up, cowboy framing, charming festival eye-level",
+    "category": "夏夜漫步",
+    "characterId": "nana_asta_deviluke",
+    "coverageTags": [
+      "festival"
+    ],
+    "description": "【娜娜 · 夏夜祭典的红彤苹果糖】彩南神社挂满朱红纸灯笼的小吃祭典长街上，微风吹拂着祭典彩旗。娜娜单手举着一根晶莹剔透、包裹着红糖浆的大苹果糖，正高高兴兴地小口舔食。看着身旁走着的梨斗，她罕见地没有发脾气，而是微红着脸把苹果糖递到梨斗嘴边，小虎牙笑成可爱的弧度——「喏……看你一副嘴馋的样子，就勉为其难分你咬一口好了……只有一口哦！」",
+    "id": "nana_festival_yukata_apple_candy",
+    "lighting": "两侧红灯笼洒落的浓郁暖橙火光与苹果糖糖衣晶莹反光",
+    "location": "祭典红灯笼小吃街小道",
+    "mood": "甜美傲娇",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Offering a glossy crimson candy apple to her companion with a flustered blush at a lively summer night festival, Nana smiles sweetly around her sharp fang. Red paper lanterns cast cheerful amber illumination across her pink twintails and happily waving spade tail.",
+    "promptTokens": [
+      "night_festival",
+      "paper_lanterns",
+      "candy_apple",
+      "sharing_food",
+      "demon_tail",
+      "fang",
+      "blush",
+      "twintails",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "festival",
+      "lanterns",
+      "candy_apple",
+      "eating",
+      "sharing_food",
+      "demon_tail",
+      "fang",
+      "blushing"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "娜娜 · 夏夜祭典的红彤苹果糖",
+    "compositionIntent": "group"
+  }
+}

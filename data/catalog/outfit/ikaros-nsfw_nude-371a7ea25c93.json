@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "ikaros/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 663,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ikaros",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "collar",
+        "metal_collar",
+        "chain",
+        "white_wings",
+        "angel_wings",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, soft glowing alabaster skin, voluptuous buoyant breasts with tender rose-pink nipples, slender curved waist, exposed pussy, metallic choker collar with broken chain links across her collarbone, broad fluffy white angel wings resting softly around her, bare feet, warm candlelight glow",
+      "styleHint": "tender romantic candlelight",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

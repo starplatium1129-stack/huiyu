@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "ciel_late_night_library_shared_study",
+  "revision": 1,
+  "sortOrder": 1337,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
+    "camera": "cowboy shot, eye level, tranquil intellectual romance",
+    "category": "温柔陪伴",
+    "characterId": "ciel_tsukihime",
+    "coverageTags": [
+      "healing",
+      "peaceful",
+      "intellectual"
+    ],
+    "description": "【希耶尔 · 深夜图书馆的指尖相触】静谧古老的私人图书室内，只有复古绿罩台灯散发着温暖的光芒。希耶尔与你并肩坐在厚重的木质书桌旁查阅典籍，微风翻动着泛黄的书页。当你们同时伸手去拿同一本词典时，冰凉与温暖的指尖在桌面上轻轻触碰。希耶尔推了推眼镜，侧脸泛着一层浅浅的红晕，嘴角扬起温柔又深情的弧度——「不用急……长夜漫漫，我们还有很多时间，慢慢看吧。」",
+    "id": "ciel_late_night_library_shared_study",
+    "lighting": "经典复古绿色台灯散发的温润暖调光晕",
+    "location": "四面被高耸书架包围的古朴私人图书室",
+    "mood": "知性温存",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_knit_sweater_jeans",
+    "promptProse": "Seated side by side at an antique wooden study desk in a quiet late-night library, Ciel shares a scholarly vigil under the warm glow of a green banker's lamp. As their fingers brush softly across an ancient tome, she looks over her glasses with a gentle rosy flush and a tender, deeply affectionate smile. Atmospheric, cozy intellectual anime visual, two clothed figures, no text.",
+    "promptTokens": [
+      "library",
+      "bookshelves",
+      "antique_desk",
+      "lamp_light",
+      "sitting_at_desk",
+      "touching_fingers",
+      "open_book",
+      "glasses",
+      "gentle_smile",
+      "subtle_blush",
+      "blue_hair",
+      "blue_eyes",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "library",
+      "bookshelves",
+      "desk_lamp",
+      "sitting_at_desk",
+      "books",
+      "touching_fingers",
+      "glasses",
+      "gentle_smile",
+      "subtle_blush"
+    ],
+    "timeOfDay": "深夜",
+    "title": "希耶尔 · 深夜图书馆的指尖相触",
+    "compositionIntent": "group"
+  }
+}

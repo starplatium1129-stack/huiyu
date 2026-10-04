@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc036",
+  "revision": 1,
+  "sortOrder": 34,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Cicadas fill the summer garden while Ayachi Nene sits on the wooden veranda in a pale-yellow floral yukata. She directs a paper fan toward the viewer with one hand and nudges a glass of iced barley tea closer with the other. Her feet hang below the veranda edge. Leaf-filtered light falls across the fan, tea glass and her patient smile in a seated medium view.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "缘侧纸扇与麦茶半身中景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "温柔",
+    "id": "sc036",
+    "lighting": "树荫下柔和夏日光",
+    "location": "夏日庭院",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yellow_floral_yukata, obi, sitting_on_engawa, holding_paper_fan, fanning_viewer, iced_barley_tea, glass_on_veranda, hand_near_glass, gentle_smile, japanese_garden, summer, tree_shade, dappled_light, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【宁宁 · 蝉鸣里的纸扇风】夏日庭院被蝉鸣填满，宁宁穿着轻薄浴衣坐在缘侧，一边抱怨炎热，一边耐心替你摇着纸扇。你让她也休息，她却把冰麦茶推过来，额前呆毛被热风吹得一晃一晃——「我当然也觉得热呀。可是看到你舒服一点，就觉得这个夏天没有那么难熬了。」",
+    "storyJa": "【寧々・蝉の鳴き声の中、うちわの風】夏の中庭は蝉の鳴き声でいっぱいです。寧々さんは薄手の浴衣を着て端に座って、暑さを訴えながら辛抱強くうちわを振っています。あなたは彼女に休むように言いましたが、彼女はアイス麦茶を押し倒し、額が熱風で揺れました。――「もちろん私だって暑いですよ。でも、あなたが少し楽そうにしているのを見ると、この夏もそれほどつらくない気がするんです。」",
+    "tags": [
+      "yellow_floral_yukata",
+      "obi",
+      "sitting_on_engawa",
+      "holding_paper_fan",
+      "fanning_viewer",
+      "iced_barley_tea",
+      "glass_on_veranda",
+      "hand_near_glass",
+      "gentle_smile",
+      "japanese_garden",
+      "summer",
+      "tree_shade",
+      "dappled_light",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "蝉鸣里的纸扇风",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

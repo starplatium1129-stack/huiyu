@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
+  "revision": 1,
+  "sortOrder": 220,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
+    "title": "黑呆 · 冬木残垣的卑王铁槌",
+    "category": "身份高光",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 冬木残垣的卑王铁槌】黑泥翻涌沸腾的冬木废墟中心，阿尔托莉雅·Alter屹立在崩塌的石柱顶端。漆黑深沉的哥特重铠在赤色闪电中散发着令人窒息的霸绝威压，手中高高举起黑红魔力奔流暴涨的「誓约胜利之剑·Morgan」。暗金色的冰冷瞳孔俯瞰战场，剑尖轰然挥落撕裂天地——「宣告。卑王铁槌，反转极光……在此吞噬一切吧！」",
+    "location": "黑泥与赤雷交织的冬木市废墟决战核心",
+    "action": "立于宽阔断柱顶端，双手高举黑红魔剑，在斩落前俯视战场",
+    "timeOfDay": "血月深夜",
+    "lighting": "誓约胜利之剑极恶魔力奔涌的血红强光与黑泥阴影",
+    "camera": "full-body low-angle shot, both hands and raised sword visible",
+    "mood": "暴君神威",
+    "sceneTags": [
+      "fuyuki_ruins",
+      "broken_pillar",
+      "standing",
+      "both_hands_on_sword",
+      "raised_sword",
+      "excalibur_morgan",
+      "black_armor",
+      "red_energy",
+      "golden_eyes",
+      "full_body"
+    ],
+    "promptProse": "Saber Alter stands firmly on the broad top of a broken stone pillar in the Fuyuki ruins, both armored hands raising Excalibur Morgan above her head before the strike. Dark crimson energy gathers along the black blade while red reflections trace her plate armor and secured blonde bun. Her golden eyes remain fixed on the battlefield below. Use a low vertical view that includes her grounded boots, complete figure and raised sword, with black mud and fractured masonry far beneath the ledge. One warrior, no injured bodies or lettering.",
+    "promptTokens": [
+      "fuyuki_ruins",
+      "broken_pillar",
+      "standing",
+      "both_hands_on_sword",
+      "raised_sword",
+      "excalibur_morgan",
+      "black_armor",
+      "red_energy",
+      "golden_eyes",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_black_armor",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ]
+  }
+}

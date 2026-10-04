@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_kitchen_baking_cat_cookies",
+  "revision": 1,
+  "sortOrder": 1094,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_kitchen_baking_cat_cookies",
+    "title": "柴郡 · 甜蜜厨房里的猫咪烘焙",
+    "category": "料理甜蜜",
+    "characterId": "cheshire_azur",
+    "outfitId": "royal_maid",
+    "coverageTags": [
+      "cooking"
+    ],
+    "description": "【柴郡 · 甜蜜厨房里的猫咪烘焙】洋溢着烤黄油香气的指挥官官邸厨房内，柴郡系着荷叶边围裙，鼻尖沾着一小抹白面粉。她小心翼翼地捧着刚出炉的烤盘，上面整齐排列着烤成金黄色的爱心印记饼干。她睁圆了碧绿的眸子满脸自豪求夸奖——「当当当~！柴郡亲手烤的爱心猫咪饼干！第一口必须喂给亲爱的吃~」",
+    "location": "暖色调欧式家庭厨房操作台",
+    "action": "双手戴防烫手套捧刚出炉的饼干烤盘，鼻尖沾着白面粉，骄傲求表扬",
+    "timeOfDay": "傍晚",
+    "lighting": "烤箱内部暖橙火光与厨房吊灯的温馨暖黄色调",
+    "camera": "medium close-up, front view, eye-level warmth",
+    "mood": "温馨甜美",
+    "sceneTags": [
+      "kitchen",
+      "baking",
+      "cookies",
+      "oven",
+      "apron",
+      "flour_on_nose",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "proud"
+    ],
+    "promptProse": "Proudly presenting a baking tray of golden freshly baked cat-shaped sugar cookies in a warm kitchen, Cheshire beams with a speck of white flour on her nose tip. Warm amber incandescent lighting illuminates her lace-trimmed maid apron and twitching pastel cat ears.",
+    "promptTokens": [
+      "kitchen",
+      "baking_cookies",
+      "oven_glow",
+      "apron",
+      "maid_dress",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "sweet_smile",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

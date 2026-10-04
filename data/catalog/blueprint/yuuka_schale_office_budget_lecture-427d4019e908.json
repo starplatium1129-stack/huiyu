@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_schale_office_budget_lecture",
+  "revision": 1,
+  "sortOrder": 919,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "一手叉腰，另一手托着计算器平板与账单文件，鼓腮说教",
+    "camera": "cowboy shot, medium angle",
+    "category": "学园日常",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【早濑优香 · 夏莱办公室的说教与陪伴】夏莱总指挥室内，午后暖阳透过百叶窗洒下斑驳光影。优香一手叉腰站在老师的办公桌旁，另一手托着计算器平板和一叠被驳回的零食请款单，鼓起腮帮子故作威严地进行说教——「老师！怎么又偷偷买了这么多高价手办和点心！真拿老师没办法……这次的账目我帮您平了，但下不为例！」",
+    "id": "yuuka_schale_office_budget_lecture",
+    "lighting": "百叶窗透射的斜射暖阳与室内明亮荧光",
+    "location": "夏莱（SCHALE）中央办公室",
+    "mood": "傲娇关切",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "millennium_uniform",
+    "promptProse": "Lecturing Sensei on budget management with one hand on her hip and the other supporting a calculator tablet with the bills held against it in the Schale office, Yuuka pouts with endearing authority. Golden afternoon sunbeams streaming through office blinds illuminate her animated, adorable scolding.",
+    "promptTokens": [
+      "schale_office",
+      "documents",
+      "hand_on_hip",
+      "tsundere_pout",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "office",
+      "schale_office",
+      "blinds",
+      "sunlight",
+      "documents",
+      "hands_on_hips",
+      "pout",
+      "tsundere",
+      "school_uniform"
+    ],
+    "timeOfDay": "下午",
+    "title": "早濑优香 · 夏莱办公室的说教与陪伴"
+  }
+}

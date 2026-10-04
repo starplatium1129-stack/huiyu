@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/gothic_lolita",
+  "revision": 1,
+  "sortOrder": 274,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": false,
+      "id": "gothic_lolita",
+      "isDefault": false,
+      "name": "哥特洛丽塔 cos",
+      "prose": "her handmade gothic lolita cosplay with black frilled dress, lace and a hair bow",
+      "tokens": [
+        "gothic_lolita",
+        "black_dress",
+        "frilled_dress",
+        "lace",
+        "hair_bow"
+      ]
+    }
+  }
+}

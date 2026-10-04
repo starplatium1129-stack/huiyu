@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc221",
+  "revision": 1,
+  "sortOrder": 216,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc221",
+    "title": "密闭地下书库的重力平衡",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 封闭地下书库的意外】深夜因系统故障被反锁的大学图书馆地下书库。由于通风停运，安静的狭窄书架间泛着微热。夏目因为闷热脱下了针织开衫，只穿着单薄的真丝小吊带。在垫脚去取最上层古籍时，老旧的木梯突然晃动，她失衡跌落，正巧被守在下方的你接了个满怀。温热的身躯紧紧靠在你怀里，她那双平日里清冷微倦的金色瞳孔中泛起了难得的慌乱，耳根在昏暗的应急灯下彻底泛红，却依然嘴硬地移开视线——「……别误会。刚才只是条件反射的防跌落缓冲而已。……喂，手放在哪里呢？要是敢趁机胡思乱想，小心我把你秘密处决掉。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "silk_camisole",
+      "low_cut",
+      "no_bra",
+      "side_boob",
+      "fallen_onto_lap",
+      "straddling",
+      "clinging",
+      "shamed",
+      "library",
+      "underground",
+      "broken_ladder",
+      "green_light",
+      "night",
+      "medium_shot"
+    ],
+    "mature": false,
+    "location": "图书馆深层地下书库地面",
+    "weather": "微热密闭",
+    "camera": "近景主观平视特写",
+    "lighting": "应急指示灯与书架间微弱绿色荧光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_silk_camisole, low_cut_camisole, cleavage, sideboob, bare_shoulders, delicate_collarbone, straddling, sitting_on_lap, clinging_to_shoulders, fallen_pose, dead-fish_eyes, shamed_expression, heavy_blush, library, underground_library, bookshelves, broken_wooden_ladder, scattered_books, night, dim_lighting, green_emergency_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【夏目】【ナツメ・密閉書庫の予期せぬ落下】深夜、システム障害で閉じ込められた大学図書館の地下書庫。換気が止まり、静かな本棚の間には微熱がこもっていた。暑さにカーディガンを脱いだナツメは、薄手のシルクキャミソール姿。高所の古書を取ろうとした瞬間、梯子がぐらつき、下で見守っていたあなたの腕の中へと落ちてきた。温かな温もりが胸元に飛び込み、普段は涼やかな金の瞳が動揺に揺れる。薄暗い非常灯の下で耳まで赤くしながら、彼女は視線を逸らして呟いた――「……勘違いしないで。怪我を防ぐための咄嗟の緩衝動作よ。……ちょっと、どこ触ってるの。変なこと考えたら秘密処刑にするからね」",
+    "rating": "R15",
+    "animaCaption": "Locked deep in the stuffy underground stacks of the university library at night, Shiki Natsume wears only a very low-cut silk camisole with nothing beneath, her plump side breasts hinting with every hurried breath; when the old wooden ladder snaps she falls from the top and lands astride in your arms below, clinging to your shoulders, her dead-fish eyes dissolving into shamed wavering with flushed cheeks in the dim green fluorescence of the emergency light.",
+    "auditRevision": "fix-no-burn-ears-sc221-2026-09-05"
+  }
+}

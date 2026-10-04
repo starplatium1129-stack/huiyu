@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_cyberpunk_alley_assassination",
+  "revision": 1,
+  "sortOrder": 1036,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_cyberpunk_alley_assassination",
+    "title": "卡芙卡 · 霓虹雨巷交锋",
+    "category": "战斗潜行",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 霓虹雨巷双枪暗杀】异星赛博都市阴雨绵绵的霓虹小巷深处，积水倒映着高耸摩天大楼的紫色全息招牌。卡芙卡单手撑着透明雨伞，另一手优雅举起特制冲锋枪果断射击，枪口喷吐出耀眼的枪火，黑色蛛网丝袜在水洼反光中格外妖娆——「目标清除。这场狩猎……比预想的还要无趣呢。」",
+    "location": "异星赛博都市霓虹雨巷",
+    "action": "单手撑着透明雨伞，另一手优雅举起冲锋枪射击，风衣在雨幕与火光中飞扬",
+    "timeOfDay": "雨夜",
+    "lighting": "高饱和紫色粉色霓虹光与枪口赤红火光",
+    "camera": "cowboy shot, dynamic low angle",
+    "mood": "冷艳危险",
+    "sceneTags": [
+      "cyberpunk_city",
+      "alley",
+      "rain",
+      "neon_lights",
+      "holding_umbrella",
+      "transparent_umbrella",
+      "submachine_gun",
+      "shooting",
+      "muzzle_flash",
+      "spider_web_tights",
+      "high_heels"
+    ],
+    "promptProse": "Firing a submachine gun with one hand while holding a clear umbrella in the other with lethal elegance in a rain-slicked cyberpunk alley, Kafka smiles effortlessly. Blinding muzzle flashes and neon reflections in puddle water illuminate her lethal, stylish combat.",
+    "promptTokens": [
+      "cyberpunk_alley",
+      "rain",
+      "neon_lights",
+      "holding_umbrella",
+      "submachine_gun",
+      "shooting",
+      "muzzle_flash",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_hunter_coat",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

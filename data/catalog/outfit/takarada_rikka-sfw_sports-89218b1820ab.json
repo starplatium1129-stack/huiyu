@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/sfw_sports",
+  "revision": 1,
+  "sortOrder": 866,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "sfw_sports",
+      "name": "接力练习运动服",
+      "prose": "an opaque white sports T-shirt, navy tracksuit trousers and running shoes",
+      "tokens": [
+        "sportswear",
+        "white_t-shirt",
+        "track_pants",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

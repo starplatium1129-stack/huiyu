@@ -1,0 +1,59 @@
+{
+  "kind": "scene",
+  "id": "sc168",
+  "revision": 1,
+  "sortOrder": 165,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "诱惑",
+    "id": "sc168",
+    "lighting": "温馨弱光氛围",
+    "location": "咖啡馆吧台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, towel, bath towel, bathrobe, dress under apron",
+    "prompt": "(nude body wearing only a frilled cooking apron:1.55), apron clearly tied at the bare back, bar counter, cooking utensils, 1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, naked_apron, apron_only, lying_on_table, legs_apart, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, cafe_interior, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 围裙滑落决堤篇】打烊后的星光咖啡馆吧台上，微凉的石质桌面与滚烫的肉体形成了强烈的反差。宁宁身上的咖啡厅围裙带子早已被你扯断，松垮垮地挂在腰际，大片诱人的丰满和光洁的小腹毫无防备地袒露在空气中。她无力地仰躺在吧台上，乌黑的发带掉在一边，头顶的呆毛疯狂卷曲成完美的爱心螺旋。她双手死死抓着你的肩膀，双腿紧紧环住你的腰，满脸泪痕与香汗交织，小嘴微张发出令人意乱情迷的娇喘——「柊史...魔法已经不管用了...宁宁的身体和灵魂...全部都要被你融化了...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・・エプロンがずれて堤防が決壊】閉店後のスターライトカフェのバーでは、冷たい石の天板と熱い肉のコントラストが印象的だった。あなたはすでに寧々の腰にぶら下がっているカフェエプロンのストラップを引きちぎり、彼女の魅力的なふくよかさと滑らかなお腹を無防備に空中に露出させています。彼女は力なくバーの上に仰向けに横たわり、黒いヘアバンドは脇に落ち、頭のアホ毛は狂ったように丸まって完璧な愛のスパイラルを形成していました。彼女は両手であなたの肩を抱き、足であなたの腰をしっかりと抱きしめました。彼女の顔は涙と汗で覆われ、小さな口がわずかに開き、魅力的なあえぎ声を上げました。――「柊史……もう魔法なんて役に立ちません。寧々の心まで、あなたに溶かされてしまいそうです。」",
+    "tags": [
+      "adult",
+      "naked_apron",
+      "apron_only",
+      "towel_slip",
+      "lying_on_table",
+      "legs_apart",
+      "heavy_blush",
+      "tears_in_eyes",
+      "open_mouth",
+      "sweat",
+      "messy_hair",
+      "cafe_interior",
+      "night",
+      "soft_lighting",
+      "hair_ribbon",
+      "ahoge",
+      "sensual",
+      "warm_lighting",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "决堤的料理魔法：吧台上的绝对极乐",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "炙热"
+  }
+}

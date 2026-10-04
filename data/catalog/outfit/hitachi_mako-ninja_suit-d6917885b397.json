@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "hitachi_mako/ninja_suit",
+  "revision": 1,
+  "sortOrder": 620,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hitachi_mako",
+    "outfit": {
+      "default": true,
+      "id": "ninja_suit",
+      "isDefault": true,
+      "name": "常陆流隐密忍者装",
+      "prose": "Hitachi clan shinobi combat attire: black form-fitting sleeveless tactical ninja top revealing cleavage, dark fishnet arm warmers, leather forearm guards, short pleated wrap skirt over black safety bike shorts, utility thigh pouch with kunai throwing knives, and soft ninja tabi boots",
+      "tokens": [
+        "ninja",
+        "ninja_suit",
+        "sleeveless_shirt",
+        "cleavage",
+        "arm_guards",
+        "gloves",
+        "pleated_skirt",
+        "safety_shorts",
+        "thigh_strap",
+        "kunai",
+        "boots",
+        "tabi"
+      ]
+    }
+  }
+}

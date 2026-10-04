@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kitagawa_marin/school_uniform",
+  "revision": 1,
+  "sortOrder": 271,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kitagawa_marin",
+    "outfit": {
+      "default": true,
+      "id": "school_uniform",
+      "isDefault": true,
+      "name": "校服",
+      "prose": "her school uniform with an open blazer and a loose tie",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "open_jacket",
+        "pleated_skirt",
+        "loose_tie"
+      ]
+    }
+  }
+}

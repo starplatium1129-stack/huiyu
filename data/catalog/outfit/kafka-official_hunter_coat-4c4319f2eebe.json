@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "kafka/official_hunter_coat",
+  "revision": 1,
+  "sortOrder": 570,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kafka",
+    "outfit": {
+      "id": "official_hunter_coat",
+      "name": "星核猎手风衣",
+      "prose": "Kafka's signature Stellaron Hunter tailored burgundy-black coat draped over her shoulders, white collared shirt with spider web lace collar, dark purple shorts, intricate spiderweb patterned sheer black tights, leather gloves, and high-heel boots",
+      "tokens": [
+        "coat",
+        "jacket_draped_over_shoulders",
+        "white_shirt",
+        "collar",
+        "shorts",
+        "patterned_tights",
+        "spider_web_tights",
+        "thighhighs",
+        "gloves",
+        "leather_gloves",
+        "high_heels",
+        "boots",
+        "sunglasses_on_head"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "momo_velia_deviluke/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 679,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "momo_velia_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, luminous fair porcelain skin, ripe heavy voluptuous breasts with tender rose-pink nipples, slender waist, wide sensual hips, exposed pussy, shoulder-length pink hair with curved strands framing her face, blushing mischievous eyes, sensitive black spade tail wriggling with pleasure, bare feet, warm bedroom candlelight",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "areolae",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "demon_tail",
+        "tail",
+        "pink_hair",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

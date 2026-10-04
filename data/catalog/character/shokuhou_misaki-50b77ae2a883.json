@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "shokuhou_misaki",
+  "revision": 1,
+  "sortOrder": 12,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shokuhou_misaki",
+    "profile": {
+      "id": "shokuhou_misaki",
+      "name": "食蜂操祈",
+      "alias": [
+        "Shokuhou Misaki",
+        "食蜂操祈",
+        "女王蜂",
+        "Mental Out",
+        "心理掌握",
+        "常盘台女王"
+      ],
+      "type": "popular",
+      "icon": "👑",
+      "portrait": {
+        "image": "../assets/characters/popular-shokuhou_misaki.png?v=1",
+        "alt": "食蜂操祈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金色超长发 · 女王卷",
+        "hair_color": "蜜金 / 浅金",
+        "eyes": "黄棕瞳 · 标志性星形瞳孔",
+        "hairstyle": "超长直发自然垂落",
+        "uniform": "常盘台制服 · 米色背心与蛛网白手套",
+        "expression": "从容自信 · 撒娇时星瞳发亮 · 意外怕吃亏",
+        "style": "queen bee mental-out esper",
+        "signature": "星形瞳孔、蛛网白手套、遥控器手提包"
+      },
+      "personality": [
+        "常盘台的女王蜂与天生领袖",
+        "对认定之人占有欲全开的甜",
+        "绝不让自己吃亏的精明",
+        "能力越强越怕『被真心操纵』的柔软"
+      ],
+      "likes": [
+        "珍珠奶茶与甜品",
+        "对你的心理掌握（自称）",
+        "被夸奖时的星瞳发亮"
+      ],
+      "classic_cg": {
+        "title": "女王的加冕沉腰",
+        "description": "遥控器抵在胸前如权杖，星瞳迷离里完成只属于你的加冕。"
+      },
+      "identity": "某科学的超电磁炮 女主角之一 · 学园都市第五位 Level 5 · 心理掌握（Mental Out）",
+      "tags": [
+        "某科学的超电磁炮",
+        "Level 5",
+        "女王蜂",
+        "金发星瞳",
+        "常盘台",
+        "心理掌握"
+      ],
+      "bg_story": "学园都市第五位的超能力者，以『心理掌握』操控人心的女王蜂。她可以操纵任何人的记忆与情感，唯独不肯对你用——因为她要的从来不是被操纵的忠诚，而是你清醒着、自愿走过来牵她的手。这份笨拙的骄傲，比任何支配都更像女王。",
+      "palette": [
+        "#fbbf24",
+        "#f8fafc",
+        "#78350f",
+        "#a855f7"
+      ],
+      "weather": "学园都市的晴日 / 深夜宿舍的台灯下",
+      "speech": "「本小姐的心理掌握对你永久失效——因为你的心，根本不需要操纵就会走过来♪」",
+      "source": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+      "traits": [
+        "mental_out",
+        "queen_bee",
+        "star_pupils",
+        "tokiwadai"
+      ],
+      "accent_color": "#fbbf24",
+      "bg_color": "#78350f"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Shokuhou Misaki",
+        "食蜂操祈",
+        "女王蜂",
+        "Mental Out",
+        "心理掌握",
+        "常盘台女王"
+      ],
+      "animeStudio": "J.C.Staff",
+      "curatedArtistStyles": [
+        "Motoi Fuyukawa"
+      ],
+      "displayName": "食蜂操祈",
+      "exactPrefixes": [
+        "1girl, solo, shokuhou_misaki"
+      ],
+      "exactTokens": [
+        "shokuhou_misaki"
+      ],
+      "franchise": "A Certain Scientific Railgun",
+      "id": "shokuhou_misaki",
+      "identityProse": "Shokuhou Misaki from A Certain Scientific Railgun, Academy City's fifth-ranked Level 5 esper nicknamed the Queen of Tokiwadai, a regal honey-blonde beauty with very long blonde hair, yellow-brown eyes with distinctive star-shaped pupils, and a teasing confident smile",
+      "identityTokens": [
+        "shokuhou_misaki",
+        "toaru_kagaku_no_railgun",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "brown_eyes",
+        "star-shaped_pupils",
+        "large_breasts",
+        "confident_smile"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "食蜂操祈",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

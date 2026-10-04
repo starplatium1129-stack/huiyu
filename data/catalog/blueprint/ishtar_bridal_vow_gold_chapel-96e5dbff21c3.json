@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_bridal_vow_gold_chapel",
+  "revision": 1,
+  "sortOrder": 258,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_bridal_vow_gold_chapel",
+    "title": "伊什塔尔 · 金色花嫁的圣约·「女神下嫁，空前绝后」",
+    "category": "圣洁花嫁",
+    "characterId": "ishtar_fate",
+    "description": "【想象婚礼·巴比伦式圣殿】伊什塔尔穿着金线绣纹的纯白长婚纱走过圣殿廊柱，王冠换成花冠。她一手轻提裙边，一手伸向同行者，红瞳里既得意又有些不敢置信。这段女神婚礼作为场景创作中的想象誓约，不宣称是神史上首次婚姻。",
+    "location": "巴比伦式圣殿长廊",
+    "action": "金线白纱行进花冠在首，红瞳得意又恍惚",
+    "timeOfDay": "婚礼日",
+    "lighting": "圣殿金柱折射的辉煌光",
+    "camera": "wide shot, processional portrait, gold-lined chapel, bride walk, epic mood",
+    "mood": "史诗级下嫁、得意幸福",
+    "sceneTags": [
+      "imagined_temple_wedding",
+      "golden_columns",
+      "walking",
+      "white_wedding_gown",
+      "gold_embroidery",
+      "flower_crown",
+      "veil",
+      "offering_hand",
+      "warm_reflected_light",
+      "full_body"
+    ],
+    "promptProse": "In an imagined temple wedding, Ishtar walks between the golden Babylonian-style columns in an opaque white gown embroidered with gold thread. A flower crown rests beneath the long veil. One hand gathers the gown’s edge while the other reaches toward the viewer, her red eyes bright with a mixture of triumph and shy disbelief. Warm reflected light follows the embroidery and the careful forward step. Show the complete formal silhouette, offered hand and floral headpiece within the vertical frame, without lettering.",
+    "promptTokens": [
+      "imagined_temple_wedding",
+      "golden_columns",
+      "walking",
+      "white_wedding_gown",
+      "gold_embroidery",
+      "flower_crown",
+      "veil",
+      "offering_hand",
+      "warm_reflected_light",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "metal_tiara"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "sfw_gold_thread_bridal",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ]
+  }
+}

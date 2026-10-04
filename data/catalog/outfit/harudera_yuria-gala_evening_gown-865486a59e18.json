@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/gala_evening_gown",
+  "revision": 1,
+  "sortOrder": 656,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "gala_evening_gown",
+      "name": "潜入夜宴露背深蓝晚礼服",
+      "prose": "high-society infiltration evening attire: an exquisite backless midnight navy silk evening gown with a daring plunging sweetheart neckline, thigh-high side slit showing slender legs, diamond drop earrings, opera gloves, and silver strappy high heels",
+      "tokens": [
+        "evening_gown",
+        "dress",
+        "navy_dress",
+        "backless",
+        "open_back",
+        "cleavage",
+        "deep_cleavage",
+        "high_slit",
+        "opera_gloves",
+        "high_heels",
+        "elegant"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

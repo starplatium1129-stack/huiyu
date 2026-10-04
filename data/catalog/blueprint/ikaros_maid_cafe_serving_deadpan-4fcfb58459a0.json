@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_maid_cafe_serving_deadpan",
+  "revision": 1,
+  "sortOrder": 1215,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手端着茶壶与西瓜的银质托盘立正端立，白羽翼收拢在后，神态严肃呆萌",
+    "camera": "cowboy shot, medium framing, eye-level charming service",
+    "category": "日常反差",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "cafe"
+    ],
+    "description": "【伊卡洛斯 · 咖啡茶舍的忠犬端茶】空美町复古和洋风咖啡厅内，伊卡洛斯换上了一身荷叶边女仆装，白色围裙浆洗得笔挺。她双手平端着一只放着红茶壶与两片西瓜的银托盘走来，羽翼乖巧地紧紧收在身后避免碰落杯碟。她直挺挺地站在主人身旁，面无表情却极度认真地低头请示——「主人，这是为您准备的下午茶与今日份切片西瓜。请问还有其他命令需要执行吗？」",
+    "id": "ikaros_maid_cafe_serving_deadpan",
+    "lighting": "咖啡厅彩色玻璃窗洒入的斑驳柔和光斑与红木反光",
+    "location": "复古木质装潢咖啡厅靠窗座席前",
+    "mood": "呆萌反差",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "maid_uniform",
+    "promptProse": "Serving a steaming silver tea service accompanied by a fresh slice of watermelon in a retro cafe, Ikaros stands with disciplined posture in a frilled black and white maid dress. Warm stained-glass sunlight streams across her neatly tucked white wings and earnest emerald eyes.",
+    "promptTokens": [
+      "retro_cafe",
+      "maid_dress",
+      "maid_apron",
+      "silver_tray",
+      "teacup",
+      "watermelon",
+      "angel_wings",
+      "polite_standing",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cafe",
+      "maid_dress",
+      "maid_apron",
+      "serving_food",
+      "tray",
+      "teacup",
+      "watermelon",
+      "angel_wings"
+    ],
+    "timeOfDay": "下午",
+    "title": "伊卡洛斯 · 咖啡茶舍的忠犬端茶"
+  }
+}

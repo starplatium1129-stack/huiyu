@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "caren_hortensia/sacred_white_swimsuit",
+  "revision": 1,
+  "sortOrder": 115,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "caren_hortensia",
+    "outfit": {
+      "id": "sacred_white_swimsuit",
+      "name": "圣洁纯白高开叉连体泳装",
+      "prose": "a pristine white one-piece swimsuit with a high neckline, cross-back straps, and daring high-cut leg openings accentuating her flawless long legs",
+      "tokens": [
+        "swimsuit",
+        "one-piece_swimsuit",
+        "white_swimsuit",
+        "highleg",
+        "bare_legs",
+        "cleavage",
+        "wet_skin"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

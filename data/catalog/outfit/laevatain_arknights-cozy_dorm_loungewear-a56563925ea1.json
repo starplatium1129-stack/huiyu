@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/cozy_dorm_loungewear",
+  "revision": 1,
+  "sortOrder": 416,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "default": false,
+      "id": "cozy_dorm_loungewear",
+      "isDefault": false,
+      "name": "极简落肩·休息舱私服",
+      "prose": "a minimalist cozy loungewear for a private cabin: an oversized charcoal drop-shoulder hoodie with a tail slot at the back hem, soft cotton lounge shorts, over-knee cotton socks",
+      "tokens": [
+        "oversized_hoodie",
+        "hoodie",
+        "loungewear",
+        "lounge_shorts",
+        "tail"
+      ]
+    }
+  }
+}

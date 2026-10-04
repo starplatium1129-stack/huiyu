@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 391,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "originium_crystal",
+        "breasts",
+        "pink_nipples",
+        "slender_waist",
+        "toned_abs",
+        "navel",
+        "pussy",
+        "wolf_ears",
+        "wolf_tail",
+        "bare_feet"
+      ]
+    }
+  }
+}

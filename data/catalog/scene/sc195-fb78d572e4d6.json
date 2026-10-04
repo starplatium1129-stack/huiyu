@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc195",
+  "revision": 1,
+  "sortOrder": 192,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Before the crackling fireplace in the safehouse on a cold winter night, Shiki Natsume sits cross-legged on the rug wearing a grey virgin-killer knit sweater with a fully open back, generous side breasts and her bare back glowing with a warm blush in the firelight; she twists her head around to glare at the viewer with a hard watery gaze of shame and desire as the tear mole trembles under the viewer's possessive caress.",
+    "auditRevision": "careful-batch07-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc195",
+    "lighting": "壁炉橙红跳跃火光",
+    "location": "安全屋壁炉前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, virgin_killer_sweater, black_sweater, backless_sweater, sleeveless_sweater, sideboob, bare_back, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_rug_before_fireplace, warm_flickering_firelight, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "冬",
+    "story": "【夏目 · 童贞杀手毛衣极致侧乳】寒冷冬夜的秘密安全屋。卸下冰冷防线的夏目，在你的恶作剧要求下，换上了一件后背完全镂空、毫无防备的灰色针织童贞杀手毛衣。她面红耳赤地盘腿坐在地毯上，背对着壁炉的火光。毛衣两侧大片袒露的惊人侧乳与完全暴露的性感裸背在火光照耀下泛着诱人的温润红晕。她眼角的泪痣因为承受着你从身后的霸道爱抚而剧烈颤动，扭过头用死硬却充满情欲的羞嗔眼神瞪着你——「哈？！你这变态笨蛋...眼睛到底在往哪里看啊...再乱摸...今晚就让你彻底融化在这里哦...」",
+    "storyJa": "【夏目・極端な横乳の処女キラーセーター】寒い冬の夜を守る秘密の隠れ家。寒い防御線を脱いだ夏目は、あなたのいたずらのリクエストに応じて、背中が完全に空洞で防御力のないグレーのヴァージンキラーニットセーターを着ました。彼女は顔を赤らめ、暖炉の明かりに背を向けてカーペットの上にあぐらをかいて座っていた。セーターの両側に露出した素晴らしい横乳と、完全に露出したセクシーな裸の背中が、暖炉の明かりの下で魅惑的な暖かい赤面で輝きました。あなたの横暴な背後からの愛撫に、彼女の目尻の泣きぼくろが激しく震えました。彼女は頭を向けて、頑固だが貪欲な内気で怒った表情であなたを見つめました。――「はあ？　この変態、いったいどこを見てるの？　これ以上いたずらしたら……今夜はここから帰さないから。」",
+    "tags": [
+      "mole_under_eye",
+      "virgin_killer_sweater",
+      "open_back",
+      "side_breasts",
+      "bare_back",
+      "bare_legs",
+      "fireplace",
+      "rug",
+      "cross_legged",
+      "safehouse",
+      "winter",
+      "firelight",
+      "full_body",
+      "barefoot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "安全屋的温热陷阱：镂空毛衣的绝对沦陷",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "木柴轻响"
+  }
+}

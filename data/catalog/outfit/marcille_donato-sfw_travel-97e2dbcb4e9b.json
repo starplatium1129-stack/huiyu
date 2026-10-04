@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "marcille_donato/sfw_travel",
+  "revision": 1,
+  "sortOrder": 988,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "marcille_donato",
+    "outfit": {
+      "id": "sfw_travel",
+      "name": "迷宫旅行蓝色长袍",
+      "prose": "a practical blue long-sleeved robe over a cream tunic, leggings and boots",
+      "tokens": [
+        "blue_robe",
+        "long_sleeves",
+        "cream_tunic",
+        "leggings",
+        "boots"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

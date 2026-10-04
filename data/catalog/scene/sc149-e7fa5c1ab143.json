@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc149",
+  "revision": 1,
+  "sortOrder": 146,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a dim bedroom after a bath, Ayachi Nene wrapped in a large fluffy white towel sits on the bed edge, slender bare legs with soft skin sheen and water droplets, wet silver hair draping over bare shoulders. She leans close to gently touch the viewer's cheek with a deep blush and drooping ahoge.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc149",
+    "lighting": "床头灯柔和暖光",
+    "location": "温馨卧室床榻",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, bare_legs, smooth, bare, thighs, barefoot, bedroom, on_bed, sitting, wet, long, hair, blush, collarbone, slender_waist, full_body, warm_lighting, soft_diffused_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 沐浴后的心跳】公寓里弥漫着沐浴后的柠檬香气。宁宁刚洗完澡，赤脚坐在你的床边，湿漉漉的银白色长发散落，没有绑平时的发带。她用温热的手指轻轻贴住你的脸颊，脸红得快要滴出水来，头顶的呆毛也害羞地耷拉着——「大笨蛋...眼睛往哪里看呢。不准乱动，先帮人家把头发吹干啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー · ·深夜の入浴後の鼓動】深夜の入浴後、マンション内はレモンの香りで満たされます。寧々は、通常のヘアゴムも付けずに、濡れた長い白銀の髪を散らしながら、大きなゆったりとしたバスタオルだけを巻き、あなたのベッドの横に座っています。温かい指でそっと頬を押さえた彼女の顔は水が滴るほど赤く、頭の髪は恥ずかしそうに垂れていた。――「もう、どこを見てるんですか。動かないで、先に髪を乾かすのを手伝ってください……。」",
+    "tags": [
+      "loose_towel",
+      "wet_hair",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "soft_lighting"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "半湿长发与柠檬香的距离",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "温暖"
+  }
+}

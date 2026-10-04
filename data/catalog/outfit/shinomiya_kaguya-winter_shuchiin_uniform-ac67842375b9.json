@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shinomiya_kaguya/winter_shuchiin_uniform",
+  "revision": 1,
+  "sortOrder": 770,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinomiya_kaguya",
+    "outfit": {
+      "default": false,
+      "id": "winter_shuchiin_uniform",
+      "isDefault": false,
+      "name": "圣诞雪夜保暖校服",
+      "prose": "her Shuchiin Academy uniform under a warm dark winter coat, with a white scarf, black tights, polished shoes and her red hair ribbon",
+      "tokens": [
+        "school_uniform",
+        "winter_coat",
+        "white_scarf",
+        "black_tights",
+        "polished_shoes",
+        "red_ribbon"
+      ]
+    }
+  }
+}

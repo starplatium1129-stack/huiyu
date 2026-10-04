@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/cadet_royal_guard",
+  "revision": 1,
+  "sortOrder": 305,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "id": "cadet_royal_guard",
+      "name": "维多利亚近卫军校学员礼服",
+      "prose": "a Victorian Royal Guard Military Academy cadet dress uniform: a deep navy double-breasted military jacket with gold braided trim, brass buttons and tasseled gold epaulettes over a crisp white high-collar shirt with a dark red neck scarf, beige high-waisted equestrian jodhpurs, polished black knee-high riding boots, white cavalry gloves and a fencing rapier at her belt",
+      "tokens": [
+        "military_uniform",
+        "double-breasted",
+        "gold_trim",
+        "epaulettes",
+        "white_shirt",
+        "ascot",
+        "jodhpurs",
+        "riding_boots",
+        "white_gloves",
+        "rapier"
+      ]
+    }
+  }
+}

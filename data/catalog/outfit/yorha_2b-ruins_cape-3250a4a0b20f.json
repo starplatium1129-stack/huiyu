@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yorha_2b/ruins_cape",
+  "revision": 1,
+  "sortOrder": 611,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yorha_2b",
+    "outfit": {
+      "id": "ruins_cape",
+      "name": "废墟风沙行者斗篷",
+      "prose": "a weathered desert exploration outfit: a tattered windblown dark gray traveler cloak and cowl draped over a form-fitting charcoal tactical combat suit, reinforced knee guards, tactical combat boots dusted with golden desert sand, and heavy two-handed greatsword mounted across her back",
+      "tokens": [
+        "cloak",
+        "hood",
+        "cape",
+        "tattered_clothes",
+        "bodysuit",
+        "tight_suit",
+        "armor",
+        "boots",
+        "greatsword",
+        "desert",
+        "ruins"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

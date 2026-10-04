@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc096",
+  "revision": 1,
+  "sortOrder": 94,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Caught beside the open refrigerator, adult Ayachi Nene guards a tub of vanilla ice cream for one last second before pushing it toward the viewer. She sits cross-legged on the kitchen floor in an oversized white T-shirt and blue cotton shorts, holding her spoon in her right hand. A second clean spoon lies ready on the low stool between them. Cool fridge light meets the small warm night lamp on her guilty smile.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "冰箱前坐姿与冰淇淋半身中景",
+    "category": "日常/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "羞怯",
+    "id": "sc096",
+    "lighting": "冰箱冷光与厨房夜灯暖光",
+    "location": "厨房冰箱前地面",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, adult, oversized_white_t_shirt, blue_cotton_shorts, sitting_cross_legged_on_floor, pushing_ice_cream_tub_toward_viewer, spoon_in_right_hand, second_spoon_on_low_stool, low_stool, guilty_smile, kitchen, open_refrigerator, midnight, fridge_light, warm_night_lamp, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【成年 After Story · 凌晨两点的冰淇淋同盟】成年同居后的夏夜，宁宁穿着你的宽大 T 恤在厨房偷吃冰淇淋，被突然亮起的灯吓得差点掉了勺子。你没有揭穿，只拿出第二把勺坐到她旁边。她把杯子护在怀里几秒，最后认命地推来一半——「只分你三口。吃完以后要替我保密，不准告诉明天早起的我。」",
+    "storyJa": "【寧々・大人のアフターストーリー・午前二時のアイスクリーム同盟】私たちが大人として一緒に引っ越した後の夏の夜、寧々はあなたの特大Tシャツを着たまま、キッチンでこっそりアイスクリームを食べていました。彼女は突然の光に怖くなってスプーンを落としそうになった。あなたはそれを暴露せず、ただ2本目のスプーンを取り出して彼女の隣に座りました。彼女は数秒間カップを腕に抱き、ついに半分まで押し込みました。――「三口だけ分けてあげます。食べ終わったら秘密にしてくださいね。明日の朝、早起きした私にも教えちゃだめです。」",
+    "tags": [
+      "adult",
+      "oversized_white_t_shirt",
+      "blue_cotton_shorts",
+      "sitting_cross_legged_on_floor",
+      "pushing_ice_cream_tub_toward_viewer",
+      "spoon_in_right_hand",
+      "second_spoon_on_low_stool",
+      "low_stool",
+      "guilty_smile",
+      "kitchen",
+      "open_refrigerator",
+      "midnight",
+      "fridge_light",
+      "warm_night_lamp",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "凌晨两点的冰淇淋同盟",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

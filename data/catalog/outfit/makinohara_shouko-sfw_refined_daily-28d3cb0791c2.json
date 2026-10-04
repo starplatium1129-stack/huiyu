@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 35,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "浅蓝衬衫裙",
+      "prose": "an opaque pale-blue long-sleeved shirt dress with a calf-length hem, a white knit vest and brown flats",
+      "tokens": [
+        "blue_shirtdress",
+        "sweater_vest",
+        "long_sleeves",
+        "flat_shoes"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

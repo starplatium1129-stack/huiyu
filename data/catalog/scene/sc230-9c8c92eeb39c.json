@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc230",
+  "revision": 1,
+  "sortOrder": 225,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a secluded mountain grass slope behind a shrine during the summer festival fireworks finale, Ayachi Nene in a luxurious light pink furisode kimono with long sweeping sleeves trips on the hem and falls straight into the viewer's arms, blushing furiously with her ahoge curled into a perfect heart spiral as colorful fireworks burst across the night sky.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "中景正面拉近特写",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc230",
+    "lighting": "夜空中五彩斑斓绚丽烟花的动态映射弱光与面部红晕",
+    "location": "神社后方偏僻半山草坡",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, luxurious_light_pink_furisode, wide_obi_and_ornate_sash_ribbons, white_tabi, tripping_on_long_kimono_hem, falling_into_viewer's_arms, viewer_catching_her, mountain_grass_slope_behind_shrine, summer_festival, colorful_fireworks, heart_spiral_ahoge, intense_blush, late_night, medium_close_up, soft_fireworks_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 华丽振袖和服心跳】夏日祭典最高潮的烟花大会，远离喧嚣的神社后方深夜草坡。宁宁今天换上了一整套极其奢华美丽的浅粉色大振袖和服，宽大的腰封与繁复的缎带将她衬托得宛如古典画卷中的大小姐。随着夜空中巨大的烟花轰鸣炸开，五彩斑斓的流光洒在她银白色的清纯发丝上。正当她有些羞涩地转头对你微笑时，却不慎被长长的和服下摆绊了一下，整个人惊呼着直接扑进你怀里。你顺势将她紧紧抱住，宁宁瞬间满脸通红，头顶那根标志性的呆毛在满天烟花的照耀下慌乱地狂卷成完美的爱心螺旋，红着脸大声自曝掩饰动摇——「呜啊！柊、柊史！什么时候靠得这么近的啦！人家、人家绝对没有故意借助被绊倒来投怀送抱哦……呜，心跳声太大了啦，笨蛋快闭上眼睛！」",
+    "storyJa": "【寧々・花火の夜空と緋色の自爆】夏祭りの最高潮を迎えた花火大会、喧騒から離れた神社裏手の深夜の草豊かな丘。寧々は今日、非常に豪華で美しい薄ピンク色の振袖和服一式に身を包み、大きな帯と複雑なリボンが彼女をまるで古典絵巻の中のお嬢様のように引き立てていた。夜空に巨大な花火が轟音と共に弾け飛ぶと、色とりどりのきらめく光が彼女の銀髪の清純な髪の毛に降り注ぐ。少し恥ずかしそうに振り向いてあなたに微笑もうとした瞬間、彼女は長い和服の裾に足を取られてしまい、小さく悲鳴を上げてあなたの胸の中に真っ直ぐ飛び込んできた。あなたが咄嗟に彼女をきつく抱きしめると、寧々は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛が満天の花火に照らされながら慌てて完璧なハート型に丸まり、顔を真っ赤にして大声で自爆した――「うあぁ！柊、柊史！いつの間にそんなに近くにいたのよ？！私、私は決してわざと転んだフリをして抱きついたわけじゃ……うう、心臓の音が大きすぎるよ、バカ、目を閉じて！」",
+    "tags": [
+      "hair_ribbon",
+      "furisode",
+      "white_tabi",
+      "mountain_grass",
+      "medium_shot",
+      "fireworks",
+      "falling_into_arms",
+      "heart_spiral_ahoge",
+      "night"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "花火夜空下的绯红自曝",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "夏夜晴朗"
+  }
+}

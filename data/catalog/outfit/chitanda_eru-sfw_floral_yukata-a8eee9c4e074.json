@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/sfw_floral_yukata",
+  "revision": 1,
+  "sortOrder": 831,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "sfw_floral_yukata",
+      "name": "花纹轻棉浴衣",
+      "prose": "a lightweight cotton yukata with a floral pattern and a neatly tied obi sash",
+      "tokens": [
+        "yukata",
+        "floral_print",
+        "obi",
+        "japanese_clothes"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

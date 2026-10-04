@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/snow_dress",
+  "revision": 1,
+  "sortOrder": 195,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "snow_dress",
+      "name": "冬季大衣围巾装",
+      "prose": "a warm navy duffle coat, a plaid knitted scarf, dark tights and winter boots",
+      "tokens": [
+        "navy_duffle_coat",
+        "plaid_scarf",
+        "dark_tights",
+        "winter_boots"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

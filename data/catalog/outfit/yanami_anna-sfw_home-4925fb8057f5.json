@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/sfw_home",
+  "revision": 1,
+  "sortOrder": 953,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "厨房围裙日常装",
+      "prose": "a yellow long-sleeved top, blue trousers and a cream apron",
+      "tokens": [
+        "yellow_shirt",
+        "long_sleeves",
+        "blue_pants",
+        "cream_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

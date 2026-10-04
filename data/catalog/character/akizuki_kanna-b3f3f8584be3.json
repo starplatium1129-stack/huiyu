@@ -1,0 +1,121 @@
+{
+  "kind": "character",
+  "id": "akizuki_kanna",
+  "revision": 1,
+  "sortOrder": 140,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akizuki_kanna",
+    "profile": {
+      "id": "akizuki_kanna",
+      "name": "明月栞那",
+      "alias": [
+        "明月栞那",
+        "Kanna Akizuki"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-akizuki_kanna.png?v=31d906cc344d",
+        "alt": "明月栞那 · 虹吸壶里的晨光场景样张"
+      },
+      "visual_dna": {
+        "signature": "Kanna Akizuki from Cafe Stella and the Reapers’ Butterflies, with very long white hair, a side ponytail, ribbon, ahoge and gentle pink eyes. Her relaxed smile suggests long experience behind a playful manner.",
+        "hair": "white_hair, very_long_hair, hair_ribbon",
+        "eyes": "pink_eyes",
+        "uniform": "星光咖啡馆端庄工作服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "语气轻松，常用玩笑拉近距离",
+        "面对工作熟练从容，懂得体察身边人的疲惫",
+        "漫长经历没有消磨她对普通日常的兴味"
+      ],
+      "likes": [
+        "咖啡馆的工作节奏",
+        "休息时品尝茶点",
+        "与熟悉的人闲聊"
+      ],
+      "classic_cg": {
+        "title": "明月栞那 · 吧台后的百年手艺",
+        "description": "星光咖啡馆吧台后，她用老式虹吸壶冲煮咖啡，动作是从容到近乎悠闲的精准；阳光穿过玻璃杯，她抬眼对客人微笑，眼角藏着与外表年龄不符的沉淀。"
+      },
+      "identity": "YUZUSOFT · 明月栞那",
+      "tags": [
+        "明月栞那",
+        "柚子社作品",
+        "日常"
+      ],
+      "bg_story": "在星光咖啡馆工作的神秘店员，从容的手艺与对新式设备的生疏形成反差。白发侧马尾、粉瞳和轻松带笑的神情是识别点。",
+      "palette": [
+        "#d5a4bd",
+        "#282532"
+      ],
+      "source": "YUZUSOFT",
+      "speech": "今天也慢慢来，咖啡很快就好。",
+      "traits": [
+        "akizuki_kanna",
+        "cafe_stella_to_shinigami_no_chou",
+        "white_hair",
+        "very_long_hair",
+        "ahoge"
+      ],
+      "accent_color": "#d5a4bd",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "明月栞那",
+        "Kanna Akizuki"
+      ],
+      "displayName": "明月栞那",
+      "exactPrefixes": [
+        "1girl, solo, akizuki_kanna"
+      ],
+      "exactTokens": [
+        "akizuki_kanna"
+      ],
+      "franchise": "YUZUSOFT",
+      "id": "akizuki_kanna",
+      "identityProse": "Kanna Akizuki from Cafe Stella and the Reapers’ Butterflies, with very long white hair, a side ponytail, ribbon, ahoge and gentle pink eyes. Her relaxed smile suggests long experience behind a playful manner.",
+      "identityTokens": [
+        "akizuki_kanna",
+        "cafe_stella_to_shinigami_no_chou",
+        "white_hair",
+        "very_long_hair",
+        "ahoge",
+        "sidelocks",
+        "side_ponytail",
+        "hair_ribbon",
+        "pink_eyes"
+      ],
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "originalName": "Kanna Akizuki",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

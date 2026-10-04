@@ -1,0 +1,169 @@
+{
+  "kind": "character",
+  "id": "kotegawa_yui",
+  "revision": 1,
+  "sortOrder": 95,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kotegawa_yui",
+    "profile": {
+      "id": "kotegawa_yui",
+      "name": "古手川唯",
+      "alias": [
+        "Kotegawa Yui",
+        "古手川唯",
+        "唯",
+        "风纪委员",
+        "破廉耻"
+      ],
+      "type": "popular",
+      "icon": "⚡",
+      "portrait": {
+        "image": "../assets/characters/popular-kotegawa_yui.png?v=5",
+        "alt": "古手川唯 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "如墨极长乌黑直发 · 标志性纯白细发箍",
+        "hair_color": "纯黑/乌黑",
+        "eyes": "锐利傲娇深琥珀金瞳/棕眸",
+        "hairstyle": "齐腰黑长直 · 细白色发带 · 红色风纪委员臂章",
+        "uniform": "彩南风纪委员水手制服 / 羞耻猫娘变身毛绒装",
+        "expression": "正经严厉 · 极度害羞 · 口嫌体正直",
+        "style": "righteous disciplinarian with bashful purity",
+        "signature": "黑长直、白色发带、风纪袖章、水手服百褶裙与名台词“不知羞耻”"
+      },
+      "personality": [
+        "正义感极强、一丝不苟的彩南学园风纪委员",
+        "口头禅是愤怒而娇羞地大喊“不知羞耻！（破廉耻）”",
+        "极度反感公共场合的伤风败俗，但本人却因各种意外屡屡沦陷",
+        "深处是一个极度渴望纯爱、容易脑补浪漫少女漫画的小女孩",
+        "对结城梨斗由最开始的严厉防备，逐渐沦陷为最深沉的暗恋与依赖"
+      ],
+      "likes": [
+        "维护彩南学园的校风与良好纪律",
+        "阅读纯情的少女恋爱漫画并偷偷幻想",
+        "收留和照顾无家可归的可爱流浪小猫",
+        "在无人的黄昏被梨斗温柔相待"
+      ],
+      "classic_cg": {
+        "title": "走廊拐角的破廉耻怒斥",
+        "description": "学园走廊上，黑长直的风纪委员双手抱胸满面通红，红色臂章分外醒目，羞怒娇嗔着“不知羞耻！”"
+      },
+      "identity": {
+        "role": "彩南高中风纪委员 / 结城梨斗同班同学",
+        "age": "高中生",
+        "occupation": "风纪委员 / 学生",
+        "faction": "彩南高中风纪委员会"
+      },
+      "tags": [
+        "黑长直",
+        "白色发箍",
+        "风纪委员",
+        "水手服",
+        "傲娇",
+        "不知羞耻",
+        "巨乳",
+        "出包王女"
+      ],
+      "bg_story": "古手川唯是《出包王女》的核心女主角之一，彩南高中的风纪委员。严谨自律、视整肃男女不良风气为己任，每天在校园各处巡逻捕捉违纪行为。然而命运多舛，每次结城梨斗发生神摔倒贴的超自然色情事故时，古手川几乎必定在场成为受害者。表面对梨斗严厉叱责，但其实是整个作品里对梨斗纯爱度最高、脑补能力最强的纯情傲娇少女。",
+      "palette": [
+        "校服深墨绿",
+        "纯白",
+        "纪律绯红"
+      ],
+      "weather": [
+        "微风走廊",
+        "夕阳天台",
+        "晴朗校园"
+      ],
+      "speech": "结城梨斗！你、你又在走廊上做出这种不知羞耻的事情！身为风纪委员，我绝对不会原谅你的……不知羞耻！",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "kotegawa_yui",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "very_long_hair",
+        "straight_hair",
+        "hairband",
+        "white_hairband",
+        "yellow_eyes",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "accent_color": "#10b981",
+      "bg_color": "#071610"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "kotegawa_yui",
+        "yui",
+        "yui_(to_love-ru)",
+        "古手川唯",
+        "唯",
+        "风纪委员",
+        "不知羞耻",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻肉番世界",
+        "formNotes": "彩南高校风纪委员，正义感极强、严厉整肃校风；口头禅是愤怒大喊“不知羞耻！（破廉耻）”，但本人经常因各种意外倒贴陷入各种极其香艳的尴尬场面，内心是个极度渴望纯爱的小少女",
+        "research": "2026-09-02 调研（Danbooru kotegawa_yui 960+ posts）",
+        "world": "彩南町 · 彩南高校风纪委员会"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "古手川唯",
+      "exactPrefixes": [
+        "yui_"
+      ],
+      "exactTokens": [
+        "kotegawa_yui"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "kotegawa_yui",
+      "identityProse": "Kotegawa Yui from To LOVE-Ru by Kentaro Yabuki, the serious and easily flustered disciplinary committee member with long straight glossy black hair, thin white hairband, striking golden-brown eyes, a curvaceous hourglass figure, and a proud tsundere expression.",
+      "identityTokens": [
+        "kotegawa_yui",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "very_long_hair",
+        "straight_hair",
+        "hairband",
+        "white_hairband",
+        "yellow_eyes",
+        "brown_eyes",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "古手川 唯 (Kotegawa Yui)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/gothic_dress",
+  "revision": 1,
+  "sortOrder": 43,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "gothic_dress",
+      "name": "哥特洋装",
+      "prose": "her signature black and crimson gothic dress with frills and a high collar",
+      "tokens": [
+        "gothic_lolita",
+        "black_dress",
+        "frills",
+        "high_collar",
+        "black_thighhighs",
+        "hair_ornament"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

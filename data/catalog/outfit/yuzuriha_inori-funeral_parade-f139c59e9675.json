@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yuzuriha_inori/funeral_parade",
+  "revision": 1,
+  "sortOrder": 189,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuzuriha_inori",
+    "outfit": {
+      "id": "funeral_parade",
+      "name": "葬仪社装",
+      "prose": "the white funeral parade combat outfit with a sleeveless top, black shorts, and a red ribbon",
+      "tokens": [
+        "white_shirt",
+        "sleeveless",
+        "black_shorts",
+        "red_ribbon",
+        "thighhighs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_tatami_bedroom_fan_dance",
+  "revision": 1,
+  "sortOrder": 1084,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_tatami_bedroom_fan_dance",
+    "title": "大凤 · 和风寝殿的红扇雅舞",
+    "category": "重樱乐舞",
+    "characterId": "taihou_azur",
+    "outfitId": "sakura_kimono",
+    "coverageTags": [
+      "dance"
+    ],
+    "description": "【大凤 · 和风寝殿的红扇雅舞】弥漫着沉香气息的重樱传统大寝殿内，朱红金漆屏风绘满了翔舞凤凰。大凤赤足踩在温润细密的草席上，金鱼华服下摆飞旋如浪。她双手执赤金绘扇优雅舒展身姿，漆黑长发与朱红长袖在空中曼妙缠绕，为心爱之人献上唯有主君方可得见的绝世神乐舞。",
+    "location": "重樱华美寝殿金箔屏风前",
+    "action": "手执双扇翩跹旋转起舞，振袖与及膝长发飞扬，赤足踩在榻榻米上",
+    "timeOfDay": "夜晚",
+    "lighting": "宫灯烛台在金箔屏风上映照出流光溢彩的金红光晕",
+    "camera": "full body, dynamic mid-dance angle, wide composition",
+    "mood": "华美曼妙",
+    "sceneTags": [
+      "tatami",
+      "byobu_screen",
+      "kimono",
+      "dancing",
+      "folding_fan",
+      "barefoot",
+      "twintails",
+      "graceful"
+    ],
+    "promptProse": "Spinning in a mesmerizing traditional ceremonial dance before a gilded phoenix screen in her imperial tatami bedchamber, Taihou sweeps gold fans through the air. Trailing crimson kimono sleeves and floor-length twintails float with breathtaking elegance across the lantern-lit mats.",
+    "promptTokens": [
+      "japanese_chamber",
+      "gold_screen",
+      "tatami",
+      "kimono",
+      "folding_fan",
+      "traditional_dance",
+      "twintails",
+      "barefoot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

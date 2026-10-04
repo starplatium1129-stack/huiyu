@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc225",
+  "revision": 1,
+  "sortOrder": 220,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the quiet morning mist on the ancient shrine stone steps, Shiki Natsume in a traditional white-and-red miko outfit with her hair tied back by a broad red ribbon accepts the hot canned tea your hand offers from behind while her other hand keeps the bamboo broom; the dead-fish eyes stay flat but her pale ears quietly turn red under the morning sunlight.",
+    "auditRevision": "careful-batch07-2026-08-27",
+    "camera": "中景侧面特写",
+    "category": "祭典・节日",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc225",
+    "lighting": "耶稣光透过树叶的柔和斑驳晨光",
+    "location": "古老神社石阶前庭",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, miko_attire, white_kimono_top, red_hakama, split_toe_tabi_socks, zouri_sandals, sweeping_shrine_steps_with_bamboo_broom, accepting_canned_warm_tea_from_viewer, blushing_ears, deadpan_cute_glance, misty_morning_shrine, torii_gate, morning_sunbeams, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 晨雾神社的巫女服】清晨被淡淡薄雾笼罩的静谧古老神社，四周唯有清脆的鸟鸣。夏目今天作为神社帮工换上了一袭素雅端庄的红白巫女服，柔顺的黑发用朱红缎带束在脑后，正拿着竹扫帚安静地清扫着庭前落叶。朝阳透过古树的枝桠洒落在她清秀的侧颜上，显得格外空灵。当你悄悄走近递上一罐刚加热好的热红茶时，夏目手上的动作微微一滞，半垂着清澈的金色眼眸接过热饮，白皙的耳根却悄然浮起一抹浅浅的红晕——「……别误会。我只是觉得早起扫地手太冷了，需要热量维持动作而已。……还有，早安……真是个爱操心的大笨蛋。」",
+    "storyJa": "【夏目】【ナツメ・朝霧の神社と巫女姿】早朝、静かな霧に包まれた古社。ナツメは今日、手伝いとして紅白の巫女服を身に纏い、艶やかな黒髪を朱のリボンで束ねて静かに落ち葉を掃いていた。木漏れ日が彼女の横顔を淡く照らし出す。そっと近づいて温かい缶紅茶を差し出すと、ナツメは手を止め、金の瞳を伏せて受け取った。白い耳がほんのり赤く染まっていく――「……勘違いしないで。手が冷えて掃除の手が鈍るのを防ぐためよ。……それと、おはよう。お節介なバカね」",
+    "tags": [
+      "mole_under_eye",
+      "miko_outfit",
+      "red_ribbon",
+      "hair_tied_back",
+      "bamboo_broom",
+      "hot_canned_tea",
+      "shrine_steps",
+      "morning_mist",
+      "white_tabi",
+      "red_ears",
+      "full_body"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "晨雾神社前的绯红羁绊",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "晨雾朝阳"
+  }
+}

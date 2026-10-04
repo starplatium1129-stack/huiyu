@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/sfw_winter",
+  "revision": 1,
+  "sortOrder": 912,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "sfw_winter",
+      "name": "冬日手织围巾装",
+      "prose": "a navy wool coat, hand-knitted cream scarf, warm trousers and boots",
+      "tokens": [
+        "navy_coat",
+        "cream_scarf",
+        "wool",
+        "pants",
+        "boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

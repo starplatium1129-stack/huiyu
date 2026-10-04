@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc063",
+  "revision": 1,
+  "sortOrder": 61,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc063",
+    "title": "男友视角下的赖床许可",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 男友视角下的赖床许可】秋日清晨，夏目趴在你胸前确认今日行程，明明已经醒了却不肯起身。你问她是不是在撒娇，她抬起金色眼睛，眼下泪痣旁慢慢浮起红晕，仍把下巴搁回原处——「只是测试这个枕头合不合格。结论是勉强通过……所以今天允许你再抱五分钟。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "撒娇",
+    "season": "秋",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "mole_under_eye",
+      "oversized_tshirt",
+      "pajamas",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "morning_light"
+    ],
+    "mature": false,
+    "location": "同居公寓卧室",
+    "weather": "晴",
+    "camera": "男友主观面部近景",
+    "lighting": "秋日清晨暖光",
+    "usage": [
+      "展示图",
+      "头像",
+      "R15"
+    ],
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, boyfriend_shirt, white_shirt, unbuttoned, falling_strap, bare_shoulders, collarbone, bare_legs, bottomless, lying_on_bed, messy_hair, yawning, lazy_smirk, bedroom, bright_morning_sunlight, soft_white_sheets, cozy, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas, sleepwear_pants, nsfw, nude, explicit",
+    "storyJa": "【夏目・彼氏から見たベッドの許可】秋の早朝、夏目があなたの胸に横たわり、今日の旅程を確認します。彼女は明らかに起きていますが、起き上がることを拒否します。あなたが彼女にコケティッシュな態度をとっているのかと尋ねると、彼女は金色の目を上げました。目の横がゆっくりと赤くなったが、それでも顎を元の位置に戻した。――「この枕が合格か確かめていただけ。結論は、ぎりぎり合格……だから今日は、あと五分だけ抱いていてもいい。」",
+    "rating": "R15",
+    "animaCaption": "On an autumn morning bed, Shiki Natsume lies prone on the viewer's chest in an oversized heather grey sleep T-shirt, slender bare legs tucked under the comforter with soft skin sheen. Her messy black hair and mole-accented blush catch warm window light as she looks up with sleepy affection.",
+    "auditRevision": "careful-batch01-2026-08-27"
+  }
+}

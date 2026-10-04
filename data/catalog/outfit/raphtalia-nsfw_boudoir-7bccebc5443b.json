@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 885,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "拉芙塔莉雅·成人私密造型",
+      "prose": "a private adult ensemble built around armor, leather_armor, dressing_room, completely_nude",
+      "tokens": [
+        "armor",
+        "leather_armor",
+        "dressing_room",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

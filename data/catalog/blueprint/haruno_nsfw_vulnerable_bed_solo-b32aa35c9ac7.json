@@ -1,0 +1,78 @@
+{
+  "kind": "blueprint",
+  "id": "haruno_nsfw_vulnerable_bed_solo",
+  "revision": 1,
+  "sortOrder": 379,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "haruno_nsfw_vulnerable_bed_solo",
+    "title": "雪之下阳乃 · 卸下伪装的床褥动情独奏 ·「哪怕是虚伪的温柔……今晚也给我吧」",
+    "category": "私密自持",
+    "characterId": "yukinoshita_haruno",
+    "description": "【公寓主卧·黎明】喝完酒后的空虚深夜。阳乃完全卸下了平日里那副无懈可击的笑容，浑身赤裸躺在凌乱的丝绸被褥上。双腿大开，手指在湿热的爱液中疯狂抽插，嘴唇颤抖着流出真心的眼泪——「大家都怕我、大家都讨厌我……只有在你面前……我才觉得自己还活着……哈啊……」",
+    "location": "公寓主卧·黎明",
+    "action": "仰卧丝绸床褥双腿大开剧烈自抚，长发散乱失神高潮，泪水滑落胸口",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Stripped of every calculating smile, Haruno Yukinoshita sprawls completely naked across her disheveled black silk sheets in the cold blue dawn. Her voluptuous body arches violently as two fingers pump urgently between wide-spread, glistening thighs, drenched in her own passion. Her dark hair spreads wild over the pillows, genuine tears streaming across flushed cheeks and catching on her collarbone as broken, choked cries escape her lips. Vulnerable vertical framing, pale morning dusk fighting moody bedroom shadows, detailed luxury background, solo 1girl, no extra people.",
+    "nsfwProse": "Sprawled completely naked across disheveled black silk sheets in the blue dawn, Haruno Yukinoshita arches her hips and pumps wet fingers between wide thighs, weeping genuine tears of surrender.",
+    "promptTokens": [
+      "bedroom",
+      "silk_bedsheets",
+      "morning_dusk",
+      "dawn",
+      "pillows",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "nsfw_nude",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "completely_nude",
+      "on_back",
+      "spread_legs",
+      "arched_back",
+      "bare_breasts",
+      "pink_nipples",
+      "hand_between_legs",
+      "masturbation",
+      "pussy_juice",
+      "teary_eyes",
+      "crying",
+      "heavy_blush"
+    ]
+  }
+}

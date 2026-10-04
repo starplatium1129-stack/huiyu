@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "violet_battlefield_relic_dawn",
+  "revision": 1,
+  "sortOrder": 1387,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，湛蓝眼眸清澈凝视",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, cinematic low angle, dawn mist atmosphere, emotional reflection",
+    "category": "战争叙事",
+    "characterId": "violet_evergarden",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ],
+    "description": "【黎明晨曦中的石柱遗迹】冷冽的晨风拂过残破古老的大理石废墟，晨曦的微光割裂天际。身着普鲁士蓝军装礼服的薇尔莉特单膝微屈，银白机械义手轻捧着那枚象征着誓言的祖母绿胸针。晨风吹拂起她金色的秀发与红色发带，她那双宝石般清透的湛蓝双眸中，第一次流淌出对生与爱的深切追寻。",
+    "id": "violet_battlefield_relic_dawn",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "破晓初升的清冷淡金曙光穿透薄雾，映亮机械指节与翡翠晶体",
+    "location": "战火停歇的古遗迹山岗顶端",
+    "mood": "庄严肃穆、圣洁空灵",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_auto_memories_doll_attire",
+    "promptProse": "Kneeling on one knee among ancient dawn ruins, Violet Evergarden holds her radiant emerald brooch against her chest with articulated silver mechanical fingers. The first golden rays of sunrise pierce the morning mist, reflecting across her Prussian-blue doll uniform as the wind lifts her golden hair and white pleated skirt.",
+    "promptTokens": [
+      "ruins",
+      "dawn",
+      "sunrise",
+      "kneeling",
+      "holding_brooch",
+      "emerald",
+      "mechanical_hands",
+      "blue_jacket",
+      "white_dress",
+      "wind_blown",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "one_knee",
+      "brooch_at_chest"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "ruins",
+      "dawn",
+      "sunrise",
+      "emerald_brooch",
+      "holding_brooch",
+      "mechanical_hands",
+      "wind_blown",
+      "emotional"
+    ],
+    "timeOfDay": "黎明破晓",
+    "title": "薇尔莉特 · 破晓废墟的祖母绿胸针·「我也想明白……『我爱你』的含义」"
+  }
+}

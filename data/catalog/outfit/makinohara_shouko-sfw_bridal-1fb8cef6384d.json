@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 33,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "牧之原翔子·圣洁花嫁",
+      "prose": "a soft white bridal dress with a sea-blue sash, short veil and a bouquet of white coastal flowers",
+      "tokens": [
+        "wedding_dress",
+        "soft_white_dress",
+        "sea_blue_sash",
+        "short_veil",
+        "coastal_flowers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

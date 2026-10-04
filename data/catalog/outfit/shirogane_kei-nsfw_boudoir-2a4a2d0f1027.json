@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 782,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_boudoir",
+      "isDefault": false,
+      "name": "白银圭·成人私密造型",
+      "prose": "a private adult ensemble built around small_towel",
+      "tokens": [
+        "small_towel"
+      ]
+    }
+  }
+}

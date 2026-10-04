@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/charming_nightgown_slip",
+  "revision": 1,
+  "sortOrder": 760,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "id": "charming_nightgown_slip",
+      "name": "闺房纯白真丝细带吊带睡裙",
+      "prose": "a delicate pure white silk camisole nightgown with soft ruffles, thin straps resting on her porcelain shoulders, her golden hair unbraided in soft waves, and bare feet",
+      "tokens": [
+        "nightgown",
+        "white_nightgown",
+        "camisole",
+        "bare_shoulders",
+        "cleavage",
+        "bare_legs",
+        "mechanical_hands",
+        "barefoot"
+      ]
+    }
+  }
+}

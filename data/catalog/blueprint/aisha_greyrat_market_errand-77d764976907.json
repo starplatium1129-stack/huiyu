@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "aisha_greyrat_market_errand",
+  "revision": 1,
+  "sortOrder": 487,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "aisha_greyrat_market_errand",
+    "title": "爱夏·香料摊前的比较",
+    "outfitId": "travel_cloak",
+    "action": "左手托起一只香料罐，右手把清单压在摊位边缘",
+    "location": "阿斯拉王国城镇市集",
+    "timeOfDay": "白天",
+    "lighting": "晴朗日光",
+    "mood": "灵活干练",
+    "camera": "medium-wide shot",
+    "category": "奇幻",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "market",
+      "shopping",
+      "travel",
+      "fantasy",
+      "town"
+    ],
+    "description": "爱夏停在市集香料摊前，左手将一只小陶罐托到视线下方，右手把采购单压在木柜台边缘。旅行斗篷的兜帽垂在肩后，马尾和发带完整露出，挎包闭合。棚布投下柔和阴影，罐口与手背接住摊位外的日光；横幅背景以空置摊架、布幌和石墙交代市集。",
+    "promptProse": "Beneath a striped market awning, Aisha lifts a small ceramic spice jar in her left palm and examines its contents. Her right hand pins a shopping slip against the wooden counter, and her closed cross-body satchel rests at her hip. The travel cloak hood lies behind her shoulders, leaving the ponytail and ribbon visible. A medium-wide view includes rows of jars along the counter; daylight catches their rims beneath the awning shade, with empty stall frames and stone walls beyond.",
+    "promptTokens": [
+      "examining_jar",
+      "ceramic_jar",
+      "hand_on_counter",
+      "paper_slip",
+      "hood_down",
+      "closed_satchel",
+      "striped_awning",
+      "wooden_counter",
+      "market_stall",
+      "awning_shade"
+    ],
+    "adult": false,
+    "characterId": "aisha_greyrat",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ]
+  }
+}

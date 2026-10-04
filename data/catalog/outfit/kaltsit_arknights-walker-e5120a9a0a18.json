@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/walker",
+  "revision": 1,
+  "sortOrder": 296,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "default": false,
+      "id": "walker",
+      "isDefault": false,
+      "name": "遗尘漫步（学者行装）",
+      "prose": "a grey-green hooded scholar cloak over a long robe, a brass astrolabe at her waist and a scholar staff",
+      "tokens": [
+        "cloak",
+        "hood",
+        "robe",
+        "scholar",
+        "staff"
+      ]
+    }
+  }
+}

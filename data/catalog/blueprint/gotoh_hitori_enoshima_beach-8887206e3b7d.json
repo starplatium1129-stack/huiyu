@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "gotoh_hitori_enoshima_beach",
+  "revision": 1,
+  "sortOrder": 1007,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手按住发丝回眸微笑，海风吹起裙角",
+    "camera": "medium shot, eye level",
+    "category": "风景旅行",
+    "characterId": "gotoh_hitori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【后藤一里 · 江之岛海风】蔚蓝的大海泛着波光粼粼的浪花，江之岛海风卷起白色水手服的裙摆。后藤一里扶着海滨栏杆，双手紧紧按住被风吹乱的发丝，回眸看向镜头，羞涩而灿烂的微笑在夏日晴空下格外动人——「大家一起看到的大海……比我想象中要辽阔几千倍呢。」",
+    "id": "gotoh_hitori_enoshima_beach",
+    "lighting": "夏日海滨明朗阳光与海面高光反光",
+    "location": "江之岛海滨步道",
+    "mood": "明媚开朗",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "shuka_summer_uniform",
+    "promptProse": "On a scenic coastal overlook in Enoshima, Gotoh Hitori stands beside a white sea railing against a vast sparkling azure ocean under a brilliant summer sky. She wears her crisp Shuka High School summer sailor uniform as fresh ocean gusts playfully billow her pleated skirt and long pink hair. She presses both hands gently against her temples to tame her flying bangs, turning to offer a tender, radiant smile illuminated by bright seaside sunlight. Glistening water reflections and vivid sky hues produce an uplifting, cinematic vacation illustration.",
+    "promptTokens": [
+      "enoshima",
+      "beach",
+      "ocean",
+      "sea_breeze",
+      "railing",
+      "coastal",
+      "wind_blown_hair",
+      "holding_hair",
+      "shy_smile",
+      "summer_sky",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "enoshima",
+      "beach",
+      "ocean",
+      "sea_breeze",
+      "railing",
+      "coastal",
+      "wind_blown_hair",
+      "holding_hair",
+      "shy_smile",
+      "summer_sky"
+    ],
+    "timeOfDay": "白天",
+    "title": "后藤一里 · 江之岛海风"
+  }
+}

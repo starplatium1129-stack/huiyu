@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/shogun_virgin_killer",
+  "revision": 1,
+  "sortOrder": 3,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "shogun_virgin_killer",
+      "name": "鸣神纯黑露背高领毛衣",
+      "prose": "an alluring black sleeveless turtleneck virgin killer sweater, completely backless showing her smooth spine and waist contours, subtle sideboob, and delicate purple ribbons",
+      "tokens": [
+        "virgin_killer_sweater",
+        "black_sweater",
+        "backless_sweater",
+        "turtleneck_sweater",
+        "sleeveless_sweater",
+        "sideboob",
+        "bare_back",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

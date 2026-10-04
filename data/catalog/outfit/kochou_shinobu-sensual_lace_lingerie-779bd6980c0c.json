@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 804,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "紫藤微毒黑紫内衣",
+      "prose": "a black-and-violet lace lingerie set: a delicate lace bra over her petite frame, matching panties with a butterfly charm, sheer violet thighhighs, and a translucent haori-style robe slipping down her arms",
+      "tokens": [
+        "purple_lingerie",
+        "black_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "purple_thighhighs",
+        "sheer_robe",
+        "butterfly_charm",
+        "petite",
+        "sensual"
+      ]
+    }
+  }
+}

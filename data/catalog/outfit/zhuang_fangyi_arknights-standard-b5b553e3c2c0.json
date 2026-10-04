@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "zhuang_fangyi_arknights/standard",
+  "revision": 1,
+  "sortOrder": 424,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "zhuang_fangyi_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "武陵白绿中式衣装",
+      "prose": "her white-and-green Chinese-inspired sleeveless top, detached black-and-white sleeves, black gloves, black waist belt and flowing green wide-legged trousers",
+      "tokens": [
+        "chinese_clothes",
+        "detached_sleeves",
+        "white_sleeves",
+        "black_sleeves",
+        "black_gloves",
+        "green_pants",
+        "belt",
+        "boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc099",
+  "revision": 1,
+  "sortOrder": 97,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Inside the stalled elevator, Shiki Natsume stands in a charcoal business blazer with one hand pressing the emergency call button. Only after the rescue call connects does she register how close the viewer is, her composed blush deepening in the amber emergency light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "主观狭窄空间近景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "紧张",
+    "id": "sc099",
+    "lighting": "电梯应急顶光",
+    "location": "电梯",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_jacket",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, charcoal_business_blazer, white_business_shirt, pencil_skirt, black_pantyhose, black_low_heels, standing_in_stalled_elevator, one_hand_pressing_emergency_call_button, calm_expression_with_heavy_blush, close_proximity_to_viewer, amber_emergency_lights, night, mirrored_elevator_walls, medium_close_up, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 电梯暂停后的冷静方案】秋夜电梯突然停层，夏目被晃得退到角落，你下意识撑住墙面保护她。应急灯亮起后，她先冷静按下呼叫按钮，随后才意识到彼此距离过近，呼吸明显停顿了一拍——「救援已经联系了。你可以不用退得太远……只是保持这个姿势比较安全。」",
+    "storyJa": "【夏目・エレベーター停止後の落ち着くプラン】秋の夜、突然エレベーターが止まり、夏目は隅に追いやられた。あなたは無意識のうちに彼女を守るために壁を支えていました。非常灯が点灯した後、彼女は落ち着いて通話ボタンを押した。それから彼女は、彼らが近づきすぎていることに気づき、呼吸が一瞬止まりました。――「救助にはもう連絡した。そんなに離れなくてもいい……ただ、この体勢のほうが安全なだけ。」",
+    "tags": [
+      "mole_under_eye",
+      "business_blazer",
+      "slacks",
+      "elevator",
+      "heels",
+      "emergency_light",
+      "pressing_call_button",
+      "medium_shot",
+      "close_proximity"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "电梯暂停后的冷静方案",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

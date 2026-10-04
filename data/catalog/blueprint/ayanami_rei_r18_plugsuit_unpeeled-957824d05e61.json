@@ -1,0 +1,81 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_r18_plugsuit_unpeeled",
+  "revision": 1,
+  "sortOrder": 1021,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "独自斜倚检查台，驾驶服褪至腰际，一手按住绷带、一手探入腰间",
+    "adult": true,
+    "adultArtistHint": "@kousaki rui",
+    "animaStyleHint": "r18_sensual_art",
+    "camera": "high angle, top-down view, vertical foreshortening, pov",
+    "category": "私密情欲",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "description": "【成年绫波丽 · 检查台上的自我觉醒】成年丽独自斜倚医疗检查台，白色驾驶服褪至腰际。一手将松散绷带贴在胸前，另一手探入腰间，红瞳在冷光中第一次显露由自己掌控的欲望。",
+    "id": "ayanami_rei_r18_plugsuit_unpeeled",
+    "kreaStyleHint": "",
+    "lighting": "冷色医疗射灯下的柔光侧影与微弱监视器荧光",
+    "location": "NERV 隔离准备室诊察床",
+    "mood": "清冷动情",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "extra legs",
+      "fused legs",
+      "missing limbs",
+      "pregnant",
+      "stomach_bulge",
+      "belly_inflation",
+      "bad proportions",
+      "deformed",
+      "signature"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [
+      "white_plugsuit",
+      "plugsuit_half_removed",
+      "bare_breasts",
+      "pink_nipples",
+      "heavy_blush"
+    ],
+    "outfitId": "plugsuit_white",
+    "promptProse": "Clinical light finds adult Rei reclining alone on an examination table. Her white plugsuit is peeled to the waist, exposing bare breasts above one leg bent over the padded edge. She holds a loose medical bandage against her chest with one hand and explores beneath the suit at her hips with the other. Blue hair and red eyes remain calm through wet lashes, a faint blush and newly understood sensation. Vertical medical solo portrait, no text or extra people.",
+    "promptTokens": [
+      "medical_room",
+      "examination_table",
+      "dim_lights",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R18",
+    "sceneTags": [
+      "medical_room",
+      "examination_table",
+      "tech_equipment",
+      "dim_lights",
+      "plugsuit_half_removed",
+      "latex_suit",
+      "bare_breasts",
+      "pink_nipples",
+      "heavy_blush"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "绫波丽 · 紧身胶衣剥落的私密触碰"
+  }
+}

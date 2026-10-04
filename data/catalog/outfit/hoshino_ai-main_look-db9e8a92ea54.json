@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/main_look",
+  "revision": 1,
+  "sortOrder": 523,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "default": true,
+      "id": "main_look",
+      "isDefault": true,
+      "name": "立绘主形象",
+      "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair",
+      "tokens": [
+        "frilled_dress",
+        "pink_dress",
+        "sleeveless_dress",
+        "heart_brooch",
+        "frilled_gloves",
+        "thigh_boots",
+        "rabbit_hair_ornament"
+      ]
+    }
+  }
+}

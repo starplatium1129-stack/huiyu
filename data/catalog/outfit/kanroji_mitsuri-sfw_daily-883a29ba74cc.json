@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "kanroji_mitsuri/sfw_daily",
+  "revision": 1,
+  "sortOrder": 808,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kanroji_mitsuri",
+    "outfit": {
+      "default": true,
+      "id": "sfw_daily",
+      "isDefault": true,
+      "name": "庭院端庄日常和装",
+      "prose": "a pale pink kimono securely wrapped with a green obi and opaque inner collar",
+      "tokens": [
+        "pink_kimono",
+        "green_obi",
+        "inner_collar",
+        "japanese_clothes"
+      ]
+    }
+  }
+}

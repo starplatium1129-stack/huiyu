@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc237",
+  "revision": 1,
+  "sortOrder": 232,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc237",
+    "title": "水光波纹间的死水熔断",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 泳池边的意外贴近】深夜空无一人的室内景观泳池，水波在月光下泛着幽蓝微光。换上深蓝色泳衣的夏目浑身被水润湿，黑发湿漉漉地披在肩后。在起身上岸时，她因脚下湿滑失去重心，整个人跌进了躺椅上的你怀里。湿润温热的身体紧紧相贴，她眼角的泪痣在水光倒影下轻轻颤动，虽然心慌得耳根彻底发烫，却依然扶着你的肩膀强装镇定——「……别误会。刚才是水太滑没踩稳而已。……都说了别乱动，等我稍微缓过来一下……大笨蛋，眼睛不准乱瞟。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "bikini",
+      "wet_clothes",
+      "soaked",
+      "no_underwear",
+      "sitting_on_lap",
+      "straddling",
+      "slipping",
+      "gripping_shoulders",
+      "indoor_pool",
+      "night",
+      "moonlight",
+      "water_reflections",
+      "close_up"
+    ],
+    "mature": true,
+    "location": "室内池边奢华皮质躺椅上",
+    "weather": "水汽氤氲",
+    "camera": "主观略微仰视近景特写",
+    "lighting": "清冷月光与水面动态波纹折射弱光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini_untied, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_at_poolside, water_lapping_bodies, wet_skin, water_droplets, clinging_wet_hair, heavy_blush, shy, teary_watery_eyes, night_pool, moonlight_reflections, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fiery ears, fire effects, text, watermark, signature, child, loli, underage",
+    "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
+    "rating": "R18",
+    "animaCaption": "Late at night beside the quiet rippling indoor landscape pool, Shiki Natsume in a dark navy swimsuit soaked through and clinging to her bare curves slips on the wet marble and tumbles astride onto your lap on the lounger, pressing flush against you with no gap; she grips your shoulders with a heavy blush and shamed watery eyes, keeping an impossibly calm voice under the cool moonlight and the swaying water reflections.",
+    "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "kind": "blueprint",
+  "id": "megumi_nsfw_bed_supine_devotion",
+  "revision": 1,
+  "sortOrder": 1450,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "megumi_nsfw_bed_supine_devotion",
+    "title": "加藤惠 · 创作合宿被单深处的柔情真心 ·「这一次……不许再把我当路人了哦」",
+    "category": "私密自持",
+    "characterId": "katou_megumi",
+    "description": "【合宿旅馆·深夜】同人社团截稿后的静谧房间。惠仰卧在白色床单上，解开束缚的长发披散如云。双腿微屈轻分，指尖陷在床单与大腿根部，红瞳含水凝视着你——「脚本里的女主角终于完成了……那、那个原型……今晚全部属于你哦。」",
+    "location": "合宿旅馆·深夜",
+    "action": "仰卧床单双腿微屈展开自抚，长发铺散，动情含泪微张唇瓣",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Megumi Kato lies back across the rumpled futon of the mountain retreat lodge after finishing the doujin game deadline. Her brown hair spreads out across the sheets as her slender frame arches in profound, quiet vulnerability, fingers resting tenderly between her pale thighs. Her soft brown eyes glisten with unguarded devotion, murmuring with parted trembling lips that tonight she is no longer an invisible passerby, but the only heroine meant for you. Intimate vertical composition, warm shadows across flushed skin, detailed tatami background, solo 1girl, no extra people.",
+    "nsfwProse": "Lying back across the futon with hair fanning the mats, Megumi Kato parts slender thighs in quiet vulnerability, offering bare breasts and wet warmth to her only creator.",
+    "promptTokens": [
+      "japanese_room",
+      "tatami",
+      "futon",
+      "night",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "nsfw_nude",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "completely_nude",
+      "on_back",
+      "spread_legs",
+      "arched_back",
+      "bare_breasts",
+      "pink_nipples",
+      "hand_between_legs",
+      "touching_own_body",
+      "pussy_juice",
+      "heavy_blush",
+      "teary_eyes"
+    ]
+  }
+}

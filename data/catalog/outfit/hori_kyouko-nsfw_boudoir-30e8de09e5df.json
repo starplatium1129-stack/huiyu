@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 880,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "堀京子·成人私密造型",
+      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "tokens": [
+        "private_lingerie",
+        "sheer_lace",
+        "soft_shadows"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

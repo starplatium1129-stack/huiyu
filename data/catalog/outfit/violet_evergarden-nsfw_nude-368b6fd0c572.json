@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 762,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, doll-like porcelain body with golden hair unpinned around her waist, perky natural breasts with delicate rose-pink nipples, silver mechanical hands resting gently, and slender waist",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "mechanical_hands",
+        "slender_body"
+      ]
+    }
+  }
+}

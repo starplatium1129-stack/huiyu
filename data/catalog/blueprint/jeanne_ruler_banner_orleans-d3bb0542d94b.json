@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_ruler_banner_orleans",
+  "revision": 1,
+  "sortOrder": 231,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_ruler_banner_orleans",
+    "title": "圣女贞德 · 奥尔良山岗的圣旗展开·「吾名贞德，此地由吾守护」",
+    "category": "战斗高光",
+    "characterId": "jeanne_d_arc",
+    "description": "【奥尔良郊外的山岗·战云低垂】狂风撕扯着战云，身着白银胸铠Ruler圣装的贞德立于山岗之巅。她双手高举神圣战旗吾主在此（Luminosité Éternelle），白披风在罡风中猎猎翻卷，旗面的圣辉劈开铅灰色的天空。金色的长辫与旗杆成一线绷直，紫蓝色的眼眸里没有半分动摇——圣女的祈祷，此刻化为一面绝不可能倒下的战旗。",
+    "location": "奥尔良郊外山岗最高点",
+    "action": "双手高举圣旗吾主在此，旗离地迎风展开，白披风与金辫齐扬",
+    "timeOfDay": "战云白昼",
+    "lighting": "圣旗迸发的白金圣辉与铅灰战云形成明暗对撞",
+    "camera": "low angle full shot, banner raised skyward, wind and light burst, epic saint framing",
+    "mood": "神圣凛然、战旗不倒",
+    "sceneTags": [
+      "orleans_ridge",
+      "raised_banner",
+      "luminosite_eternelle",
+      "both_hands_on_pole",
+      "ruler_armor",
+      "white_cape",
+      "golden_braid",
+      "resolute_eyes",
+      "holy_light",
+      "full_body"
+    ],
+    "promptProse": "On the windswept ridge above Orleans, Jeanne raises the sacred banner Luminosite Eternelle with both hands, holding its pole clear of the ground as the cloth opens against the storm. Her silver breastplate, white-and-blue armored dress and flowing cape retain the Ruler outfit, with the golden braid streaming behind her. Pale holy light breaks through the grey clouds around the banner while her violet-blue eyes remain resolute. A low full-body view includes her stable boots, two gripping hands and lifted standard. No lettering.",
+    "promptTokens": [
+      "orleans_ridge",
+      "raised_banner",
+      "luminosite_eternelle",
+      "both_hands_on_pole",
+      "ruler_armor",
+      "white_cape",
+      "golden_braid",
+      "resolute_eyes",
+      "holy_light",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "official_ruler_flag_armor",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ]
+  }
+}

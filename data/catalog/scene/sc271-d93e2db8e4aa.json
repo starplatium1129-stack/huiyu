@@ -1,0 +1,59 @@
+{
+  "kind": "scene",
+  "id": "sc271",
+  "revision": 1,
+  "sortOrder": 266,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a quiet room, she sits gracefully with glistening, emotive eyes, under soft ambient lighting.",
+    "audit": {
+      "attempt": 1,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_01.png",
+      "result": "pass",
+      "reviewer": "direct-vision",
+      "seedKey": "official-cg:ocs01:1"
+    },
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "官方CG横幅构图",
+    "category": "官方CG灵感",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "心动",
+    "id": "sc271",
+    "lighting": "柔和自然光",
+    "location": "室内场景",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "officialCgCandidate": "ocs01",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, high_angle_diagonal_shot, 1girl, solo, adult_shiki_natsume, black_hair, very_long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_panties, black_thighhigh_stockings, sitting_on_a_locker_room_bench, one_knee_raised_toward_the_foreground_while_adjusting_a_stocking, embarrassed_direct_eye_contact, white_lockers_and_shower_room_behind_her, soft_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "recommendedSize": "1344×768",
+    "season": "不限",
+    "story": "【官方 CG 灵感】更衣室安静下来后，夏目坐在折叠椅上整理黑色长袜。察觉你的视线，她故作平静：「看够了吗？看够了就过来帮我系好。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo",
+      "folded_opaque_kraft_paper_wrapper",
+      "paper_pouch",
+      "both_cupped_hands_presenting_one_sweet"
+    ],
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "title": "更衣室里的紫色内衣",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

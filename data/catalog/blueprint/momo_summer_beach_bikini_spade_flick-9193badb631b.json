@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "momo_summer_beach_bikini_spade_flick",
+  "revision": 1,
+  "sortOrder": 1249,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "踩在清凉海水中侧身回眸，浅紫比基尼勾勒极致三围，爱心尾巴在水中划水挑逗",
+    "camera": "full body, 3/4 dynamic perspective, voluptuous hourglass focus",
+    "category": "盛夏海滨",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【梦梦 · 碧波金沙的浅紫比基尼回眸】碧海连天的热带海岛沙滩上，浪花欢快拍打礁石。梦梦身穿一套极度惹火的浅紫色荷叶边细带分体比基尼，饱满沉甸甸的玉乳与纤细柔软的柳腰形成了完美的沙漏曲线。她站在清澈的海水泡沫中侧身回眸，金色细链腰链在腰腹微晃，身后的黑色爱心恶魔尾巴尖端狡黠地在海水中轻划水花，眼神带着令人心跳加速的挑逗——「梨斗先生，视线移不开了吗？想看的话……可以再靠近一点哦♪」",
+    "id": "momo_summer_beach_bikini_spade_flick",
+    "lighting": "明烈热带阳光与水面反射的跳跃焦散水波光斑",
+    "location": "热带海岛细白沙滩浅水浪花边",
+    "mood": "娇媚撩人",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "summer_bikini",
+    "promptProse": "Standing in sparkling turquoise ocean surf in a delicate lilac ruffled bikini with side-tie bottoms, Momo casts a bewitching glance back over her bare shoulder. Blinding tropical sunbeams shimmer across her wet porcelain skin and the spade-heart tail splashing playfully in the tide.",
+    "promptTokens": [
+      "tropical_beach",
+      "ocean_waves",
+      "purple_bikini",
+      "frills",
+      "cleavage",
+      "wet_skin",
+      "demon_tail",
+      "seductive_look",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean_waves",
+      "bikini",
+      "purple_bikini",
+      "demon_tail",
+      "cleavage",
+      "wet_skin",
+      "seductive_smile"
+    ],
+    "timeOfDay": "正午",
+    "title": "梦梦 · 碧波金沙的浅紫比基尼回眸"
+  }
+}

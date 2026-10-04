@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 916,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "砖红冬季牛角扣大衣",
+      "prose": "a brick-red duffle coat over a cream turtleneck, navy full-length trousers and brown ankle boots",
+      "tokens": [
+        "red_duffle_coat",
+        "cream_turtleneck",
+        "navy_pants",
+        "ankle_boots"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

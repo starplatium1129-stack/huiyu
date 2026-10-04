@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/sfw_casual",
+  "revision": 1,
+  "sortOrder": 533,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "default": false,
+      "id": "sfw_casual",
+      "isDefault": false,
+      "name": "围读针织便装",
+      "prose": "a cream knit cardigan over a white blouse and a navy knee-length skirt",
+      "tokens": [
+        "cream_cardigan",
+        "white_blouse",
+        "navy_skirt"
+      ]
+    }
+  }
+}

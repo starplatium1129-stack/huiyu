@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc032",
+  "revision": 1,
+  "sortOrder": 30,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with a focused and calm expression, as warm golden-hour sunlight illuminates the scene.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "坚强",
+    "id": "sc032",
+    "lighting": "黄金时刻",
+    "location": "学校操场",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sunset, sweat, sportswear, running_track, determined, reaching_finish_line, autumn, clear_sky, upper_body, medium_shot, golden_hour, serious, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 操场最后一圈】秋日社团活动结束后，宁宁独自在操场练习长跑，想证明自己也能坚持完成定下的目标。天色逐渐转暗，她在最后一圈被你追上，明明累得说不出话，仍抬手示意不要停。冲过终点后，她撑着膝盖笑起来——「看吧，我没有半途而废。下次……你从第一圈就陪我跑，好不好？」",
+    "storyJa": "【寧々・遊び場の最終周回】秋のクラブ活動の後、寧々さんは、自分が設定した目標を最後までやり遂げることができることを証明したいと思い、運動場で一人で長距離走の練習をしました。空は徐々に暗くなり、最終周回で彼女はあなたに追いつきました。彼女は明らかに疲れていて話すこともできなかったが、それでも手を上げて止まらないように合図した。ゴールした後、彼女は膝を抱えて笑った――「ほら、途中で諦めなかったでしょう。次は……最初の一周から一緒に走ってくれませんか？」",
+    "tags": [
+      "hair_ribbon",
+      "sport_clothes",
+      "sunset",
+      "sweat",
+      "sportswear",
+      "running_track",
+      "determined",
+      "autumn",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "golden_hour",
+      "hands_on_knees",
+      "relieved_smile",
+      "post_run"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "操场最后一圈",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

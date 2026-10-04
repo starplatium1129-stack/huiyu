@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "murasame/festival_red_yukata_no_fan",
+  "revision": 1,
+  "sortOrder": 619,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "default": false,
+      "id": "festival_red_yukata_no_fan",
+      "isDefault": false,
+      "name": "祭典绯红浴衣·空手捞金鱼",
+      "prose": "a cheerful scarlet summer yukata with delicate goldfish and water-ripple patterns, a deep red obi sash and wooden geta sandals, leaving both hands free for the paper scoop",
+      "tokens": [
+        "yukata",
+        "red_yukata",
+        "goldfish_pattern",
+        "red_obi",
+        "geta"
+      ]
+    }
+  }
+}

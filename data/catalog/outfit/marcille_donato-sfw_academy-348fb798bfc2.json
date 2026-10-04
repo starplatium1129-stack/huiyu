@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "marcille_donato/sfw_academy",
+  "revision": 1,
+  "sortOrder": 990,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "marcille_donato",
+    "outfit": {
+      "id": "sfw_academy",
+      "name": "学院古籍阅读装",
+      "prose": "a tidy blue academic jacket, white blouse and ankle-length skirt",
+      "tokens": [
+        "blue_jacket",
+        "white_blouse",
+        "long_skirt",
+        "academic_clothes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

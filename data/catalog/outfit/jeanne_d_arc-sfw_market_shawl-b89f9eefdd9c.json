@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_d_arc/sfw_market_shawl",
+  "revision": 1,
+  "sortOrder": 132,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_d_arc",
+    "outfit": {
+      "id": "sfw_market_shawl",
+      "name": "夜市披肩便服",
+      "prose": "a white blouse and long blue skirt beneath a soft evening shawl, with golden hair in a long braid",
+      "tokens": [
+        "white_blouse",
+        "long_blue_skirt",
+        "shawl",
+        "braid"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "fiona_frost_rooftop_binocular_surveillance",
+  "revision": 1,
+  "sortOrder": 821,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost_rooftop_binocular_surveillance",
+    "characterId": "fiona_frost",
+    "title": "菲奥娜 · 寒夜天台的静默监视",
+    "description": "【菲奥娜 · 寒夜天台的静默监视】冬夜冷风呼啸的高耸钟楼天台之上，菲奥娜身披深蓝厚大衣隐匿于背光的阴影中。她戴着棕色皮质手套双手稳定托举战术双筒望远镜，镜头锁向远处街角亮着橘暖微光的福杰家公寓。风吹乱了她额前垂落的发丝，她如同雕塑般在零下风雪中静止伫立，无怨无悔地在暗夜中担任守护者。",
+    "outfitId": "wise_agent_trench",
+    "category": "间谍日常",
+    "location": "城市钟楼高层天台",
+    "action": "双手持战术望远镜俯瞰夜市与公寓",
+    "timeOfDay": "深夜",
+    "lighting": "冷冽月光与远方城市微光",
+    "camera": "cowboy shot",
+    "mood": "静谧守望",
+    "sceneTags": [
+      "rooftop",
+      "binoculars",
+      "night_city",
+      "cold_wind",
+      "pea_coat",
+      "brown_leather_gloves",
+      "surveillance",
+      "snowflakes"
+    ],
+    "promptProse": "High above the sleeping city on a stone clock-tower parapet, Fiona Frost aims military-grade black binoculars at the warmly lit windows of the distant Forger apartment on a street corner. Chilly night winds toss her short white hair while her dark-blue pea coat is buttoned tight to her throat against falling snow, the purple turtleneck pulled above her chin. The apartment’s small amber glow below contrasts with cold architectural stone and her solitary standing silhouette. Vertical cowboy shot under winter moonlight.",
+    "promptTokens": [
+      "clock_tower",
+      "rooftop",
+      "holding_binoculars",
+      "pea_coat",
+      "brown_leather_gloves",
+      "snowing",
+      "city_lights",
+      "moonlight",
+      "cowboy_shot",
+      "night",
+      "cold_atmosphere",
+      "apartment_windows",
+      "amber_window_light"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

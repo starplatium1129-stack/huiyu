@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "miyabi_dojo_kendo_kata_discipline",
+  "revision": 1,
+  "sortOrder": 1070,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手持木刀摆出中段持剑姿态，赤足站立，眼神如刀锋般锐利清澈",
+    "camera": "full body, front view, disciplined martial composition",
+    "category": "武道修行",
+    "characterId": "hoshimi_miyabi",
+    "coverageTags": [
+      "martial"
+    ],
+    "description": "【星见雅 · 剑道场上的修心挥斩】庄严肃穆的家族剑道场内，清晨阳光透过排窗在地板上映出整齐的光栅。雅赤足踩在古旧平滑的桧木地板上，手持一柄深色木刀保持着笔直的中段构势。绷带紧密缠绕的双手沉稳有力，汗水顺着修长的玉颈滑落浸润练功服领口，纯净专注的武者风范令人屏息。",
+    "id": "miyabi_dojo_kendo_kata_discipline",
+    "lighting": "高排窗倾泻的清冽晨曦光柱与木地板镜面微光",
+    "location": "传统和风剑道场正殿",
+    "mood": "刚毅专注",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "dojo_training",
+    "promptProse": "Holding a polished wooden bokken in precise centered kendo stance across sunlit cedar dojo floorboards, Miyabi trains with unyielding concentration. Slanting morning shafts of golden sunlight catch the beads of sweat along her porcelain jawline and white-tipped fox tail.",
+    "promptTokens": [
+      "kendo_dojo",
+      "wooden_sword",
+      "bokken",
+      "keikogi",
+      "martial_arts_stance",
+      "sunlight_beams",
+      "fox_ears",
+      "fox_tail",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "dojo",
+      "kendo",
+      "bokken",
+      "wooden_sword",
+      "barefoot",
+      "hand_wraps",
+      "fox_ears",
+      "fox_tail",
+      "discipline"
+    ],
+    "timeOfDay": "清晨",
+    "title": "星见雅 · 剑道场上的修心挥斩"
+  }
+}

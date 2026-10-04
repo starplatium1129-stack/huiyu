@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_lightning_miko_thunderbolt",
+  "revision": 1,
+  "sortOrder": 1289,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_lightning_miko_thunderbolt",
+    "title": "姬岛朱乃 · 降魔雷光神圣制裁",
+    "category": "身份高光",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 降魔雷光神圣制裁】幽暗雷云密布的神社上空，朱乃展开一对由堕天使羽翼与雷电符文交织的黑色神圣羽翼。她身着纯白绯袴巫女服，单手虚引苍蓝色的狂暴神圣雷光，黑色高马尾在雷霆风暴中高高扬起，嘴角勾起一抹令人战栗的从容微笑——「啊啦啊啦……竟敢在神社里撒野，准备好接受雷光的净化了吗？」",
+    "location": "电闪雷鸣的神社鸟居上方高空",
+    "action": "展开堕天使黑翼悬停半空，单手引落万丈雷光，眼神从容中透着致命威严",
+    "timeOfDay": "暴风雨夜",
+    "lighting": "撕裂夜空的苍蓝雷电强光与幽暗背景",
+    "camera": "cowboy shot, low angle, dramatic storm perspective",
+    "mood": "神圣威严",
+    "sceneTags": [
+      "storm",
+      "thunderstorm",
+      "lightning",
+      "black_wings",
+      "fallen_angel_wings",
+      "floating",
+      "miko_attire",
+      "high_ponytail",
+      "confident_smile"
+    ],
+    "promptProse": "Suspended amid a raging nighttime thunderstorm above a traditional shrine, Akeno Himejima unleashes celestial judgment. A pair of feathered black fallen-angel wings spread wide from her back while blinding azure lightning crackles around her raised hand. Her flowing miko robes and sleek black ponytail billow dramatically. With a chillingly composed smile in her violet eyes, she commands the storm. Dynamic low-angle anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "thunderstorm",
+      "lightning",
+      "black_wings",
+      "fallen_angel_wings",
+      "floating",
+      "miko",
+      "white_kimono",
+      "red_hakama",
+      "high_ponytail",
+      "confident_smile",
+      "purple_eyes",
+      "intense_lighting",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_miko_robe",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ]
+  }
+}

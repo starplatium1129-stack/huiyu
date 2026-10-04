@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_summer_beach_splashing",
+  "revision": 1,
+  "sortOrder": 1370,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuna_summer_beach_splashing",
+    "title": "结城明日奈 · 碧海晴空的细带比基尼戏水·「抓不到我吧？再发呆就要被泼水啦！」",
+    "category": "海滨盛夏",
+    "characterId": "asuna_yuuki",
+    "description": "【阳光炙热的热带白沙滩】湛蓝透亮的碧海白浪翻涌，椰影婆娑。亚丝娜身着一套勾勒出极品腰臀曲线的鲜红细带比基尼泳装，雪白大腿与紧致平坦的小腹在阳光下泛着诱人的水珠。她倒退着踏在清凉的浪花中，捧起一簇晶莹的海水朝你欢快泼洒，娇躯花枝乱颤，展露出无可挑剔的元气运动美感。",
+    "location": "海滨度假区碧海细白沙滩浅水区",
+    "action": "赤脚踏在浅海浪花中后退，双手捧起海水向你泼洒，鲜红比基尼勾勒完美马甲线，笑容如夏日阳光般灿烂",
+    "timeOfDay": "盛夏正午",
+    "lighting": "热烈明朗的高饱和热带夏日强日光，海面泛着千万枚耀眼光斑",
+    "camera": "wide shot, energetic dynamic perspective, splashing water droplets in air, tropical paradise",
+    "mood": "元气热情、性感迷人",
+    "sceneTags": [
+      "beach",
+      "sea",
+      "bikini",
+      "red_bikini",
+      "splashing_water",
+      "wet_skin",
+      "laughing",
+      "summer"
+    ],
+    "promptProse": "Asuna Yuuki splashes sparkling seawater playfully towards the camera along a sun-kissed tropical white sand beach. Her athletic hourglass curves are flattered by a crimson string bikini, droplets of ocean spray glistening across her toned midriff and sunlit skin. Azure ocean waves break gently behind her as palm fronds rustle under the radiant blue summer sky.",
+    "promptTokens": [
+      "beach",
+      "tropical",
+      "ocean",
+      "bikini",
+      "red_bikini",
+      "splashing_water",
+      "wet_skin",
+      "toned_abs",
+      "laughing",
+      "dynamic_pose",
+      "wide_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_cinematic_scenic",
+    "animaStyleHint": "anime_cinematic_scenic",
+    "outfitId": "sensual_bikini_swimsuit",
+    "coverageTags": [
+      "daily",
+      "beach",
+      "summer",
+      "swimsuit"
+    ]
+  }
+}

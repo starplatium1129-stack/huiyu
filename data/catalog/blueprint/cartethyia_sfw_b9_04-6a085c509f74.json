@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "cartethyia_sfw_b9_04",
+  "revision": 1,
+  "sortOrder": 1652,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cartethyia_sfw_b9_04",
+    "title": "卡提希娅 · 埃格拉归途的蓝色花嫁",
+    "category": "圣洁花嫁",
+    "characterId": "cartethyia",
+    "outfitId": "sfw_bridal",
+    "description": "【埃格拉小镇旧礼拜堂·清晨】卡提希娅穿着蓝白长裙婚纱站在石板路尽头，金色长辫落在披肩上，头顶光环在彩窗光里微亮；她握住花冠，近乡情怯的神情终于在看见镜头时变成回家的笑。",
+    "location": "old chapel at the entrance to Egra",
+    "action": "礼拜堂门口握花冠深呼吸，近乡情怯转成终于回家的笑",
+    "timeOfDay": "清晨",
+    "lighting": "clear morning light through stained glass",
+    "camera": "medium full shot, vertical framing",
+    "mood": "归乡骑士的花嫁誓约",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "chapel",
+      "stone_street",
+      "flower_crown",
+      "gold_braid",
+      "halo",
+      "relieved_smile",
+      "morning_light"
+    ],
+    "promptProse": "Cartethyia from Wuthering Waves wears a pale blue bridal gown with a cream mantle, braided gold trim, a flower crown and a delicate halo. She stands at the old chapel door with a flower crown resting in her hands. Her golden braid and delicate halo catch the stained-glass light; she takes a breath, then faces the viewer with the relieved smile of a knight who has finally returned home. clear morning light through stained glass.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "chapel",
+      "stone_street",
+      "flower_crown",
+      "gold_braid",
+      "halo",
+      "relieved_smile",
+      "morning_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ]
+  }
+}

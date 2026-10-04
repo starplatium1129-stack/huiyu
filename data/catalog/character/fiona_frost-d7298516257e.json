@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "fiona_frost",
+  "revision": 1,
+  "sortOrder": 161,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost",
+    "profile": {
+      "id": "fiona_frost",
+      "name": "菲奥娜·弗罗斯特",
+      "alias": [
+        "Fiona Frost",
+        "Nightfall",
+        "夜帷",
+        "菲奥娜·弗洛斯特",
+        "フィオナ・フロスト",
+        "とばり"
+      ],
+      "type": "popular",
+      "icon": "🕶️",
+      "portrait": {
+        "image": "../assets/characters/popular-fiona_frost.png?v=6e3cf3dbb616",
+        "alt": "菲奥娜·弗罗斯特 · 雨夜公用电话亭暗号接头场景样张"
+      },
+      "visual_dna": {
+        "hair": "白色齐尾短发（漫画为薰衣草紫）· 右侧长刘海遮住右半脸",
+        "hair_color": "白色（动画）／薰衣草紫（漫画）",
+        "eyes": "冷静深灰瞳（漫画为紫）· 浅色睫毛",
+        "hairstyle": "齐尾短发（bob）· 右侧长刘海遮眼、左侧别在耳后",
+        "uniform": "深蓝双排扣 WISE 大衣＋紫色高领毛衣 / 医院事务员制服 / 白色网球运动装",
+        "expression": "毫无表情的扑克脸 · 隐藏狂热暗恋",
+        "style": "cool elite spy with hidden passion",
+        "signature": "白色短发与右侧遮眼刘海、冰冷扑克脸、深蓝大衣与狂热反差萌"
+      },
+      "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+      "bg_story": "菲奥娜·弗罗斯特是西国情报局（WISE）对东课的干员，代号「夜帷（Nightfall，とばり）」，公开身份是柏林特综合医院的事务员。受黄昏严格教导的她始终维持毫无破绽的扑克脸与冷酷计算，被同事视为没有感情的谍报机器；但在冷若冰霜的假面之下，隐藏着对前辈「黄昏」炽热狂乱的暗恋，梦想成为他的妻子，并把约尔视为情敌。",
+      "personality": [
+        "极度冷静",
+        "扑克脸",
+        "深沉狂热",
+        "运动全能",
+        "反差萌",
+        "忠诚专一"
+      ],
+      "likes": [
+        "黄昏（洛伊德）",
+        "成为洛伊德的妻子",
+        "网球与体能训练",
+        "高效完成任务"
+      ],
+      "traits": [
+        "fiona_frost",
+        "1girl",
+        "solo",
+        "short_hair",
+        "bob_cut",
+        "white_hair",
+        "hair_over_one_eye",
+        "grey_eyes",
+        "expressionless",
+        "spy_x_family"
+      ],
+      "speech": "夜帷正在执行任务。请勿妨碍工作……以及，请离前辈远一点。",
+      "accent_color": "#6366f1",
+      "bg_color": "#0f172a",
+      "series": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+      "classic_cg": {
+        "title": "夜色下的暗号交接",
+        "description": "细雨霏霏的街头，她撑着黑伞在电话亭中以毫无波澜的声音汇报情报，眼神却穿透玻璃凝视着远处的微光。"
+      }
+    },
+    "popular": {
+      "id": "fiona_frost",
+      "displayName": "菲奥娜·弗罗斯特",
+      "originalName": "Fiona Frost",
+      "franchise": "SPY x FAMILY",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "wise_agent_trench",
+      "identityTokens": [
+        "fiona_frost",
+        "1girl",
+        "solo",
+        "short_hair",
+        "bob_cut",
+        "white_hair",
+        "hair_over_one_eye",
+        "grey_eyes",
+        "expressionless",
+        "spy_x_family"
+      ],
+      "identityProse": "Fiona Frost (Nightfall) from SPY x FAMILY, an elite WISE spy and hospital clerk with a sleek blunt-ended white bob (lavender-tinted in the manga) whose long right-side fringe covers much of her right eye while the left side is tucked behind her ear, calm dark grey eyes with pale lashes, an unshakeable expressionless poker face, and a secretly passionate heart",
+      "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "rella",
+        "kantoku"
+      ],
+      "exactTokens": [
+        "fiona_frost"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "fiona frost",
+        "nightfall",
+        "tobari",
+        "spy x family",
+        "菲奥娜·弗罗斯特",
+        "菲奥娜·弗洛斯特",
+        "夜帷",
+        "菲奥娜"
+      ],
+      "canon": {
+        "world": "现代日常+间谍（SPY x FAMILY）",
+        "era": "冷战东欧架空",
+        "formNotes": "白色齐尾短发（漫画为薰衣草紫），右侧长刘海遮住右半脸，深灰瞳（漫画紫），浅色睫毛；面无表情扑克脸与狂热暗恋的反差；深蓝双排扣大衣＋紫色高领毛衣、医院事务员制服、地下网球赛运动装",
+        "research": "2026-09 调研"
+      }
+    }
+  }
+}

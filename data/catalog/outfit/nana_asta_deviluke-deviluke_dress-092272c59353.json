@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nana_asta_deviluke/deviluke_dress",
+  "revision": 1,
+  "sortOrder": 686,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "nana_asta_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "deviluke_dress",
+      "isDefault": false,
+      "name": "戴比路克王女科技短装",
+      "prose": "royal Deviluke futuristic princess attire: sleek dark grey and vermilion sleeveless mini-dress with metallic cyber line trim, detached flared sleeves, thigh-high boots, and spade tail coiling behind her",
+      "tokens": [
+        "futuristic_dress",
+        "sleeveless_dress",
+        "bare_shoulders",
+        "detached_sleeves",
+        "thighhighs",
+        "boots",
+        "demon_tail",
+        "sci-fi"
+      ]
+    }
+  }
+}

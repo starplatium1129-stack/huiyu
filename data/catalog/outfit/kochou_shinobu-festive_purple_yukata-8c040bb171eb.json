@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/festive_purple_yukata",
+  "revision": 1,
+  "sortOrder": 802,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "id": "festive_purple_yukata",
+      "name": "紫藤花纹浴衣",
+      "prose": "a soft lavender yukata patterned with wisteria blossoms, cinched with a pale purple obi, her butterfly ornament holding the bun, and wooden geta sandals",
+      "tokens": [
+        "yukata",
+        "lavender_yukata",
+        "wisteria_pattern",
+        "floral_print",
+        "obi",
+        "japanese_clothes",
+        "geta",
+        "butterfly_hair_ornament"
+      ]
+    }
+  }
+}

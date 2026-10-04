@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "kafka_luofu_divination_balcony",
+  "revision": 1,
+  "sortOrder": 1037,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka_luofu_divination_balcony",
+    "title": "卡芙卡 · 仙舟月下凭栏远眺",
+    "category": "异星风情",
+    "characterId": "kafka",
+    "description": "【卡芙卡 · 仙舟月下凭栏远眺】仙舟罗浮太卜司耸入云霄的白玉雕花露台上，巨大的全息星象盘在头顶缓缓旋转。卡芙卡换上一袭深紫天鹅绒露背晚礼裙，修长双臂倚靠在石雕栏杆前，一手轻摇盛有醇香红酒的郁金香杯，凝视着虚空中穿梭的星际飞槎——「无论仙舟的命运如何流转……一切都会如艾利欧所见，分毫不差。」",
+    "location": "仙舟罗浮太卜司高耸雕花露台",
+    "action": "身穿露背晚礼服倚靠在白玉雕花栏杆前，一手轻托高脚红酒杯，回眸凝视星汉",
+    "timeOfDay": "夜晚",
+    "lighting": "冷色星月光芒与全息星图的淡紫漫射光",
+    "camera": "cowboy shot, eye level",
+    "mood": "高贵神秘",
+    "sceneTags": [
+      "xianzhou_luofu",
+      "balcony",
+      "stone_railing",
+      "evening_gown",
+      "backless_dress",
+      "wine_glass",
+      "red_wine",
+      "holographic_star_map",
+      "stars",
+      "nebula",
+      "looking_back"
+    ],
+    "promptProse": "Leaning against the carved stone balustrade on the Xianzhou Luofu balcony holding a glass of red wine, Kafka looks back with a knowing smile. Drifting holographic star charts and sparkling stellar nebulas create an ethereal, cosmic night.",
+    "promptTokens": [
+      "xianzhou_luofu",
+      "balcony",
+      "stone_railing",
+      "backless_dress",
+      "wine_glass",
+      "red_wine",
+      "stars",
+      "looking_back",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "nightclub_evening_dress",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

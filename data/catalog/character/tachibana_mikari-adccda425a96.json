@@ -1,0 +1,130 @@
+{
+  "kind": "character",
+  "id": "tachibana_mikari",
+  "revision": 1,
+  "sortOrder": 148,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tachibana_mikari",
+    "profile": {
+      "id": "tachibana_mikari",
+      "name": "橘美花莉",
+      "alias": [
+        "橘美花莉",
+        "Mikari Tachibana",
+        "Tachibana Mikari",
+        "ミカリン",
+        "みかリン"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-tachibana_mikari.png?v=dfa4e29fc05a",
+        "alt": "橘美花莉 · 摄影棚收工的三秒场景样张"
+      },
+      "visual_dna": {
+        "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
+        "hair": "brown_hair, long_hair, two_side_up, hair_between_eyes, sidelocks, pink_ribbon",
+        "eyes": "pink_eyes",
+        "uniform": "名模露肩时尚私服 / 高中黑色开襟西装制服 / 恶魔米莉艾拉 Cos 战衣",
+        "expression": "专业甜美名模笑颜 · 对正宗娇嗔傲娇",
+        "style": "anime"
+      },
+      "personality": [
+        "镜头前表现力惊人的现役人气模特，Cosplay 圈里的常识人",
+        "面对青梅竹马奥村正宗傲娇又极度专一深情",
+        "一牵扯到奥村就会失控，为了追回他的视线踏入 Cosplay 界"
+      ],
+      "likes": [
+        "奥村正宗",
+        "时尚穿搭与拍摄",
+        "被奥村注视与夸赞"
+      ],
+      "classic_cg": {
+        "title": "橘美花莉 · 摄影棚收工的三秒",
+        "description": "摄影棚白色背景前，闪光灯刚停，她从完美表情切换到松一口气的真实脸只用三秒；工作人员围着看片，她独自拿起水杯，眼神飘向手机里的社团群消息。"
+      },
+      "identity": "2.5 Dimensional Seduction · 橘美花莉",
+      "tags": [
+        "橘美花莉",
+        "2.5次元的诱惑",
+        "现役模特",
+        "青梅竹马",
+        "日常"
+      ],
+      "bg_story": "现役人气模特（爱称：みかリン／Mikarin，上过电视），奥村正宗的青梅竹马。小时候因天生蓬松微卷的头发被欺负时被正宗解围，从此单恋他十余年。本体为浅栗棕色长发、斜分碎刘海与不对称长鬓发，头顶两侧以粉色缎带束起两束发，粉色双眸；校服是黑色开襟西装＋米色针织背心＋红领结＋灰百褶裙。为了追回正宗的视线踏入 Cosplay 界，在漫展上戴上紫粉双色长双马尾假发，出作中作《阿修福德战记》中莉莉艾露的亲友恶魔「米莉艾拉」，惊艳全场。",
+      "palette": [
+        "#d8a4be",
+        "#282532"
+      ],
+      "source": "桥本悠《2.5次元的诱惑 / 2.5 Dimensional Seduction》",
+      "speech": "奥村君……我的目光十年来都只看着你，你的视线也只能看着我一个人哦！",
+      "traits": [
+        "tachibana_mikari",
+        "2.5_jigen_no_ririsa",
+        "brown_hair",
+        "long_hair",
+        "two_side_up",
+        "hair_between_eyes",
+        "sidelocks",
+        "pink_ribbon",
+        "pink_eyes"
+      ],
+      "accent_color": "#d8a4be",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "tachibana_mikari",
+      "displayName": "橘美花莉",
+      "originalName": "Mikari Tachibana",
+      "franchise": "2.5 Dimensional Seduction",
+      "aliases": [
+        "橘美花莉",
+        "Mikari Tachibana",
+        "Tachibana Mikari",
+        "ミカリン",
+        "みかリン"
+      ],
+      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
+      "identityTokens": [
+        "tachibana_mikari",
+        "2.5_jigen_no_ririsa",
+        "brown_hair",
+        "long_hair",
+        "two_side_up",
+        "hair_between_eyes",
+        "sidelocks",
+        "pink_ribbon",
+        "pink_eyes"
+      ],
+      "exactTokens": [
+        "tachibana_mikari"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tachibana_mikari"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy"
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "asuka_langley_nerv_corridor_strut",
+  "revision": 1,
+  "sortOrder": 1030,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "身穿居家T恤系粉色围裙双手递出便当盒，脸颊泛红偏头傲娇娇嗔",
+    "camera": "medium shot, eye level, domestic warmth",
+    "category": "居家女友",
+    "characterId": "asuka_langley",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【惣流·明日香 · 居家围裙做便当的傲娇早晨】公寓温馨整洁的厨房料理台前，晨光透过窗台照亮了冒着热气的煎蛋卷。明日香身穿简单的居家短袖T恤，外罩一件带着荷叶边的粉红色围裙。她微红着脸偏过头，双手将一个精心制作、摆放得整整齐齐的双层爱心便当盒递到你面前，长双马尾轻晃，傲娇又娇嗔地大声嘱咐——「看、看什么看！本小姐只是碰巧做多了而已！必须全部给我吃光，要是敢剩下一颗米粒就绝对不轻饶你！」",
+    "id": "asuka_langley_nerv_corridor_strut",
+    "lighting": "厨房窗户透进的明亮柔和晨曦光斑与料理台温润木色",
+    "location": "公寓明亮家庭厨房料理台前",
+    "mood": "傲娇心动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "home_pink_apron",
+    "promptProse": "Standing proudly in a sunlit kitchen wearing a cute pink ruffled apron over a casual home t-shirt, Asuka presents a freshly packed bento box with both hands and an indignant, rosy blush. Her auburn twintails bounce as she turns her chin up with charming tsundere affection.",
+    "promptTokens": [
+      "domestic_kitchen",
+      "apron",
+      "pink_apron",
+      "holding_bento",
+      "bento_box",
+      "casual_tshirt",
+      "auburn_hair",
+      "twintails",
+      "blue_eyes",
+      "heavy_blush",
+      "pouting_face",
+      "detailed_background",
+      "cinematic_lighting",
+      "soft_lighting",
+      "presenting_bento"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "kitchen",
+      "apron",
+      "cooking",
+      "bento",
+      "holding_bento",
+      "twintails",
+      "auburn_hair",
+      "blue_eyes",
+      "blushing"
+    ],
+    "timeOfDay": "清晨",
+    "title": "惣流·明日香 · 居家围裙做便当的傲娇早晨"
+  }
+}

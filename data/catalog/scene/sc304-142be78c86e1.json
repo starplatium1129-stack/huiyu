@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc304",
+  "revision": 1,
+  "sortOrder": 299,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc304",
+    "title": "月光窗前的完整姿态",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 夏目 · 月光窗前的完整姿态】夜深人静，夏目站在落地窗前，正面朝向月光，睡袍顺着身体滑落。银白光线里，从胸口到腰线、再到腿间最私密的地方，全都毫无遮挡地浸在月色中。她没有回避，声音带着笑意——「看够之前，不许移开眼睛。今晚的月色，连最后的地方都分给你一个人。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "从容坦荡",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "portrait",
+      "adult",
+      "natsume",
+      "wide_shot",
+      "full_body"
+    ],
+    "rating": "R18",
+    "mature": true,
+    "location": "月光下的落地窗前",
+    "weather": "晴朗月夜",
+    "camera": "官方CG全身构图",
+    "lighting": "清冷月光与室内微光",
+    "usage": [
+      "官方CG灵感",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_shiki_natsume, shiki_natsume, black_hair, long_hair, two_red_hairclips, mole_under_eye, yellow_eyes, naked, nude, completely_naked, pussy, standing, front_view, bare_breasts, nipples, navel, fair_skin, calm_smile, night, french_window, moonlight, soft_shadows, sensual, full_body, wide_shot, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, day, bright, rain, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【大人のAfter Story・夏目・月明かりの窓辺の姿】夜も更け、夏目は窓辺に立っていた。月の光が彼女の輪郭を照らしている。ガウンを解いてそのまま滑り落とし、正面から月明かりに晒す。胸も、腰も、脚の付け根の一番秘かな場所も、銀色の光の中に何の隠しもなく浮かんでいる。彼女は目をそらさず、笑みを含んだ声で言った。「見飽きるまで、目を離さないで。今夜の月明かりは、最後の場所まであなたにだけ分けてあげる。」",
+    "animaCaption": "In a graceful full-body view standing before a large moonlit window at night, she looks forward with a calm smile, silver moonlight illuminating her figure.",
+    "auditRevision": "careful-batch11-2026-08-27"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_traveling_mountain_camp",
+  "revision": 1,
+  "sortOrder": 243,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_traveling_mountain_camp",
+    "title": "斯卡哈 · 山道旅装的篝火休憩·「在现代世界旅行……比想象中有趣」",
+    "category": "旅路日常",
+    "characterId": "scathach_fate",
+    "description": "【现代山道观景营地·黄昏】褪去紧身衣的斯卡哈换上白衬衫与棕色束腰旅装，长旅外套披在肩上，宽檐帽的阴影里赤瞳平静地眺望山谷。她以女王般端正的坐姿坐在篝火边的圆木上，用树枝拨弄火堆，动作却出奇地一丝不苟——「火候、风向、柴薪的间距……嗯，这些和武艺一样，都有讲究。」",
+    "location": "山道观景营地篝火边",
+    "action": "端坐篝火旁圆木，一手持树枝拨柴，另一手放膝上，行囊置于身旁",
+    "timeOfDay": "黄昏",
+    "lighting": "橙金篝火光与青蓝暮色的冷暖交映",
+    "camera": "medium shot, sitting on log by campfire, mountain dusk vista, calm warmth",
+    "mood": "沉稳治愈、旅人风骨",
+    "sceneTags": [
+      "mountain_overlook",
+      "campfire",
+      "sitting_on_log",
+      "holding_twig",
+      "moving_kindling",
+      "hand_on_knee",
+      "travel_pack",
+      "white_shirt",
+      "brown_vest",
+      "dusk_firelight",
+      "medium_shot"
+    ],
+    "promptProse": "At the mountain overlook, Scathach sits upright on a log and uses a small twig to shift one piece of kindling in the campfire. Her other hand rests on her knee, and the travel pack sits beside the log. A white shirt, brown vest, long coat over her shoulders and wide-brimmed hat make the travelling outfit explicit. She watches the fire with quiet precision while orange light meets the blue dusk over the valley. The horizontal view keeps the twig, hands, log and supported seated posture clear, with no lettering.",
+    "promptTokens": [
+      "mountain_overlook",
+      "campfire",
+      "sitting_on_log",
+      "holding_twig",
+      "moving_kindling",
+      "hand_on_knee",
+      "travel_pack",
+      "white_shirt",
+      "brown_vest",
+      "dusk_firelight",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_traveling_outfit",
+    "coverageTags": [
+      "daily",
+      "story"
+    ]
+  }
+}

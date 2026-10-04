@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_bedroom_gaming_carpet_slouch",
+  "revision": 1,
+  "sortOrder": 1063,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "趴在地毯上翘起小腿打掌机，鲨鱼尾巴垫在身后，专注微咬唇",
+    "camera": "overhead high angle shot, intimate framing",
+    "category": "居家私享",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "cozy"
+    ],
+    "description": "【艾莲·乔 · 宅室地毯上的掌机时光】杂乱温馨的少女卧室内，屏幕光斑在墙上跳跃。艾莲整个人趴在厚实的毛绒羊毛地毯上，双手捧着掌上游戏机全神贯注操作。两条修长的素腿高高翘起在半空交叠晃悠，庞大的鲨鱼尾巴平铺在地毯上充当柔软靠垫，整个人散发着不修边幅的惬意死宅快乐。",
+    "id": "ellen_bedroom_gaming_carpet_slouch",
+    "lighting": "电视大屏冷光与床头暖色盐灯交融的光影",
+    "location": "少女卧室毛绒地毯与懒人沙发旁",
+    "mood": "松弛治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "streetwear_hoodie",
+    "promptProse": "Lying comfortably on a fluffy bedroom rug playing a handheld video game console, Ellen playfully swings her bare legs in the air. Her massive shark tail rests like a plush bolster behind her while cozy ambient lamplight paints the room in tranquil warmth.",
+    "promptTokens": [
+      "cozy_bedroom",
+      "fluffy_rug",
+      "gaming_console",
+      "playing_games",
+      "lying_on_stomach",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "bedroom",
+      "carpet",
+      "handheld_console",
+      "gaming",
+      "feet_up",
+      "pillow",
+      "shark_tail"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "艾莲·乔 · 宅室地毯上的掌机时光"
+  }
+}

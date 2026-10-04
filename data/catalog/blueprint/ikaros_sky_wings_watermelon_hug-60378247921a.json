@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_sky_wings_watermelon_hug",
+  "revision": 1,
+  "sortOrder": 1212,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "悬浮于云海天际展开巨大白羽翼，双手紧抱大西瓜，神情呆萌纯真，长双马尾飘扬",
+    "camera": "full body, dynamic mid-air upward angle, wide cloudscape scale",
+    "category": "空之女王",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【伊卡洛斯 · 碧空云海的西瓜守护】空美町上空万里无云的纯净蔚蓝天际，巨大耀眼的白云积雨云在身侧如雪山般耸立。伊卡洛斯背后展开展幅数米的纯白机械天使羽翼，微风扬起她粉红色的长双马尾与白色轻纱裙角。她双手小心翼翼地紧紧环抱着一颗圆滚滚、带有墨绿条纹的大西瓜，翡翠绿色的清澈眼眸带着呆萌三无的神情俯瞰着大地——「主人，今天的西瓜非常圆润健康……这是要献给您的重要宝物。」",
+    "id": "ikaros_sky_wings_watermelon_hug",
+    "lighting": "高空极度纯净通透的日光与羽毛边缘剔透的金色透射光",
+    "location": "蔚蓝天穹之巅与浩瀚积雨云海前",
+    "mood": "空灵纯真",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "angeloid_dress",
+    "promptProse": "Hovering serenely high above coastal plains against towering white summer thunderheads, Ikaros cradles a large striped green watermelon with both hands as her magnificent feathered wings unfurl. Brilliant azure sunlight catches the metallic sheen of her neck collar and broken chain links.",
+    "promptTokens": [
+      "blue_sky",
+      "clouds",
+      "flying",
+      "angel_wings",
+      "white_wings",
+      "holding_watermelon",
+      "watermelon",
+      "white_dress",
+      "collar",
+      "chain",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "sky",
+      "clouds",
+      "cumulonimbus_cloud",
+      "flying",
+      "angel_wings",
+      "white_wings",
+      "holding_watermelon",
+      "watermelon",
+      "collar",
+      "chain"
+    ],
+    "timeOfDay": "上午",
+    "title": "伊卡洛斯 · 碧空云海的西瓜守护"
+  }
+}

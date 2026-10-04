@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "zero_two",
+  "revision": 1,
+  "sortOrder": 129,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "zero_two",
+    "profile": {
+      "id": "zero_two",
+      "name": "02",
+      "alias": [
+        "02",
+        "Zero Two"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-zero_two.png?v=7f86138c68a3",
+        "alt": "02 · 蜂蜜浇一切场景样张"
+      },
+      "visual_dna": {
+        "signature": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+        "hair": "pink_hair, long_hair, white_hairband",
+        "eyes": "green_eyes",
+        "uniform": "红色长袖日常制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "活泼不羁，喜欢用玩笑试探距离",
+        "对自由与陪伴有强烈向往，也藏着孤独",
+        "面对珍视的绘本会安静下来，动作格外小心"
+      ],
+      "likes": [
+        "蜂蜜",
+        "反复阅读珍藏绘本",
+        "到户外感受风与天空"
+      ],
+      "classic_cg": {
+        "title": "02 · 蜂蜜浇一切",
+        "description": "食堂，她把整瓶蜂蜜豪爽地浇在饭菜上，在周围目瞪口呆中满足地大快朵颐；嘴角沾着蜜转头问「DARLING 也要吗」，是她的款待方式。"
+      },
+      "identity": "DARLING in the FRANXX · 02",
+      "tags": [
+        "02",
+        "DARLING in the FRANXX",
+        "日常"
+      ],
+      "bg_story": "向往外面世界的少女驾驶员，以红角、粉色长发、绿瞳和棒棒糖为识别点。日常场景保留她好奇又自由的性格，选择食堂、绘本和海边散步等全着装情境。",
+      "palette": [
+        "#db9eae",
+        "#282532"
+      ],
+      "source": "DARLING in the FRANXX",
+      "speech": "今天去看看外面的世界吧。",
+      "traits": [
+        "zero_two_(darling_in_the_franxx)",
+        "darling_in_the_franxx",
+        "pink_hair",
+        "long_hair",
+        "green_eyes"
+      ],
+      "accent_color": "#db9eae",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "zero_two",
+      "displayName": "02",
+      "originalName": "Zero Two",
+      "franchise": "DARLING in the FRANXX",
+      "aliases": [
+        "02",
+        "Zero Two"
+      ],
+      "identityProse": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+      "identityTokens": [
+        "zero_two_(darling_in_the_franxx)",
+        "darling_in_the_franxx",
+        "pink_hair",
+        "long_hair",
+        "green_eyes",
+        "horns",
+        "red_horns",
+        "white_hairband"
+      ],
+      "exactTokens": [
+        "zero_two_(darling_in_the_franxx)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, zero_two_(darling_in_the_franxx)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

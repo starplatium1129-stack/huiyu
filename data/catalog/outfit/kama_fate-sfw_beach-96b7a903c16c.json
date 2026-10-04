@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/sfw_beach",
+  "revision": 1,
+  "sortOrder": 181,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "迦摩·海滨泳装",
+      "prose": "a black-and-crimson resort swimsuit with gold jewelry, a sheer beach wrap and a chilled fruit drink",
+      "tokens": [
+        "resort_swimsuit",
+        "black_crimson_swimsuit",
+        "gold_jewelry",
+        "beach_wrap",
+        "fruit_drink"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

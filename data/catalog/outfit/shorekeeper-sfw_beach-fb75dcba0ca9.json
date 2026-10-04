@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shorekeeper/sfw_beach",
+  "revision": 1,
+  "sortOrder": 943,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shorekeeper",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "守岸人·海滨泳装",
+      "prose": "a blue-and-white coastal swimsuit with a translucent shoulder wrap, shell bracelet and bare feet",
+      "tokens": [
+        "coastal_swimsuit",
+        "blue_white_swimsuit",
+        "shoulder_wrap",
+        "shell_bracelet",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

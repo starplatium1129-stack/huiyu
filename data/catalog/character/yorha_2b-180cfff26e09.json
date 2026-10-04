@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "yorha_2b",
+  "revision": 1,
+  "sortOrder": 83,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b",
+    "profile": {
+      "id": "yorha_2b",
+      "name": "2B",
+      "alias": [
+        "YoRHa No.2 Type B",
+        "尤尔哈2号B型",
+        "2B小姐姐",
+        "尼尔2B"
+      ],
+      "type": "popular",
+      "icon": "⚔️",
+      "portrait": {
+        "image": "../assets/characters/popular-yorha_2b.png?v=5",
+        "alt": "2B 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白波波头短发 · 黑色发带",
+        "hair_color": "银白",
+        "eyes": "黑色战术护目眼罩 · 晶莹冰蓝双瞳",
+        "hairstyle": "短波波头 · 唇下精致美人痣",
+        "uniform": "尤尔哈哥特镂空刺绣战斗裙 / 破损凯妮战斗装束",
+        "expression": "沉着内敛 · 冰冷寡言 · 隐藏深情",
+        "style": "stoic gothic battle android",
+        "signature": "黑色战术眼罩、银白波波头、露背高叉哥特裙与白之契约太刀"
+      },
+      "personality": [
+        "恪守寄叶军规严禁流露情感",
+        "冷静理智、战斗技艺巅峰绝伦",
+        "内心深处温柔且充满人性关怀",
+        "愿意为了守护 9S 奉献自身一切",
+        "在无尽轮回中背负着沉重宿命"
+      ],
+      "likes": [
+        "默默守护同伴的安全",
+        "月之泪花海的微风",
+        "随行支援机 Pod 的规律互动",
+        "废墟都市中罕见的花草生长"
+      ],
+      "classic_cg": {
+        "title": "高架断崖的白之契约",
+        "description": "废墟都市高架断桥前，2B 单手虚空按剑，哥特黑裙迎着海风烈烈飞舞，周身散发冷峻傲岸的战神气场。"
+      },
+      "identity": {
+        "role": "人类会议寄叶部队泛用型战斗人造人",
+        "age": "外观青年",
+        "occupation": "寄叶战斗员 (Battler)",
+        "faction": "寄叶部队 (YoRHa)"
+      },
+      "tags": [
+        "银白短发",
+        "战术眼罩",
+        "哥特裙",
+        "美人痣",
+        "人造人",
+        "白之契约",
+        "高叉黑靴"
+      ],
+      "bg_story": "2B（尤尔哈2号B型）是《尼尔：机械纪元》的女主角，寄叶部队部署在地球夺还战第一线的泛用战斗型人造人。她配备有近战长刀与远程随行机 Pod，战力高超，严苛遵守“禁止拥有情感”的部队铁律；然而在冰冷的机械外表下，却拥有一颗比任何生命都细腻温柔、甘愿为他人赴死的炽热之心。",
+      "palette": [
+        "哥特黑",
+        "白之契约银",
+        "冷冽钢灰"
+      ],
+      "weather": [
+        "废墟阴天",
+        "月之泪微风",
+        "雨后水没都市"
+      ],
+      "speech": "一切存在皆是为了被毁灭而设计……我们盲目地被困在生死相续的螺旋中。",
+      "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
+      "traits": [
+        "2b (nier:automata)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "blindfold",
+        "mole_under_mouth",
+        "cleavage",
+        "large_breasts",
+        "nier:automata"
+      ],
+      "accent_color": "#94a3b8",
+      "bg_color": "#0a0d14"
+    },
+    "popular": {
+      "id": "yorha_2b",
+      "displayName": "2B",
+      "originalName": "YoRHa No.2 Type B",
+      "franchise": "NieR:Automata",
+      "aliases": [
+        "yorha_2b",
+        "2b",
+        "2b (nier:automata)",
+        "尤尔哈2号B型",
+        "尼尔",
+        "nier",
+        "automata",
+        "yorha"
+      ],
+      "identityProse": "YoRHa No.2 Type B (2B) from NieR:Automata, an elite battle android with silvery-white bob hair, iconic black visor blindfold, subtle beauty mark beneath the left corner of her lips, curvaceous athletic silhouette, and a stoic expression.",
+      "identityTokens": [
+        "2b (nier:automata)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "blindfold",
+        "mole_under_mouth",
+        "cleavage",
+        "large_breasts",
+        "nier:automata"
+      ],
+      "exactTokens": [
+        "2b (nier:automata)"
+      ],
+      "exactPrefixes": [
+        "2b_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "尼尔：机械纪元（NieR:Automata）· 地球废墟",
+        "era": "公元 11945 年第十四次机械战争",
+        "formNotes": "寄叶部队所属泛用战斗型人造人，性格沉着内敛、严守“禁止拥有情感”军规，却在内心深处对 9S 与人性的美好抱有无尽温柔与守护信念",
+        "research": "2026-09-02 调研（Danbooru 2b_(nier:automata) 25000+ posts）"
+      },
+      "animeStudio": "A-1 Pictures / Square Enix style",
+      "curatedArtistStyles": [
+        "wlop",
+        "krenz_cushart",
+        "toshi_aki"
+      ]
+    }
+  }
+}

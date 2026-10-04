@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "dorothy_nikke/sfw_private",
+  "revision": 1,
+  "sortOrder": 997,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dorothy_nikke",
+    "outfit": {
+      "id": "sfw_private",
+      "name": "私人房间针织便装",
+      "prose": "a pale rose cardigan, white blouse and navy trousers",
+      "tokens": [
+        "rose_cardigan",
+        "white_blouse",
+        "navy_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

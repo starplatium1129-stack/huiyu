@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 180,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "迦摩·圣洁花嫁",
+      "prose": "a black-and-rose bridal gown with gold trim, a sheer veil and star-shaped celestial flowers",
+      "tokens": [
+        "wedding_dress",
+        "black_rose_gown",
+        "gold_trim",
+        "sheer_veil",
+        "star_flowers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

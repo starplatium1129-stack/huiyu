@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_winter_snowy_shrine_stairs",
+  "revision": 1,
+  "sortOrder": 1151,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手撑红油纸伞伫立雪地回眸，木屐踩在雪中，哈出一缕白汽，眼神脉脉",
+    "camera": "full body, 3/4 perspective, deep winter perspective",
+    "category": "雪野静修",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "snow"
+    ],
+    "description": "【朝武芳乃 · 初雪初霁的红伞回眸】覆盖着厚厚纯白新雪的神社漫长参道石阶上，两排朱红灯笼在雪地中分外夺目。芳乃手撑一把传统的重樱朱红油纸伞，脚踏木屐伫立在积雪中央。她撑伞侧身回眸，银白长发与绯红和服在银装素裹的世界中呈现出极高的视觉对比，呵出的一团淡淡白汽在寒风中化作缱绻的柔情。",
+    "id": "yoshino_winter_snowy_shrine_stairs",
+    "lighting": "漫天白雪折射出的高纯度清冷白光与红伞内部的朱红暖调",
+    "location": "大雪初霁的神社参道石阶与朱红鸟居下",
+    "mood": "空灵唯美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_maiden",
+    "promptProse": "Holding a vibrant red oil-paper umbrella upon snow-covered stone shrine steps flanked by scarlet lanterns, Yoshino glances back with pure affection. Breath vapor drifts into the crisp winter air as powdery snow clings softly to her silver hair and miko robes.",
+    "promptTokens": [
+      "snowy_shrine",
+      "snow_falling",
+      "red_umbrella",
+      "oil_paper_umbrella",
+      "stone_stairs",
+      "miko_attire",
+      "breath_vapor",
+      "twintails",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "snow",
+      "winter",
+      "oil_paper_umbrella",
+      "stone_stairs",
+      "lanterns",
+      "miko",
+      "breath",
+      "twintails"
+    ],
+    "timeOfDay": "上午",
+    "title": "朝武芳乃 · 初雪初霁的红伞回眸"
+  }
+}

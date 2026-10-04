@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 757,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "灰蓝雨天夹克",
+      "prose": "a slate-blue hooded jacket over a grey knit top, black straight jeans and black-rimmed glasses",
+      "tokens": [
+        "blue_hooded_jacket",
+        "grey_sweater",
+        "black_jeans",
+        "glasses"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

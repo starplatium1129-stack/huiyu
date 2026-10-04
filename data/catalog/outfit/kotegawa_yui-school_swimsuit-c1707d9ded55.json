@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kotegawa_yui/school_swimsuit",
+  "revision": 1,
+  "sortOrder": 682,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kotegawa_yui",
+    "outfit": {
+      "default": false,
+      "id": "school_swimsuit",
+      "isDefault": false,
+      "name": "风纪委员纯白深蓝死库水",
+      "prose": "traditional Japanese navy-blue one-piece school competition swimsuit (sukumizu), form-fitting stretch fabric accentuating her voluptuous bust and trim waist, white rectangular fabric name tag reading Kotegawa on the chest, water droplets on smooth skin, and white swim cap held in hand",
+      "tokens": [
+        "swimsuit",
+        "school_swimsuit",
+        "one-piece_swimsuit",
+        "navy_blue_swimsuit",
+        "cleavage",
+        "wet_skin",
+        "white_hairband",
+        "barefoot"
+      ]
+    }
+  }
+}

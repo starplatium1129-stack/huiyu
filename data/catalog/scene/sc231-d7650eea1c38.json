@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc231",
+  "revision": 1,
+  "sortOrder": 226,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc231",
+    "title": "深夜古馆的丝绸开襟应力",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 高叉旗袍绝对独占】深夜彻底死锁、散发着陈旧沉香气息的古典中式公馆内厅。换上一件深绯色紧身真丝高叉旗袍的夏目，因为衣物版型极度紧绷贴身，将里面未穿内衣的真空丰满轮廓勾勒得淋漓尽致。当她坐在红木办公台边缘试图伸手去够吊灯开关时，由于动作过大，大腿侧边原本就极高的高开叉布料边缘发出一声布料形变的轻响，大片白皙细腻的柔嫩大腿与挺翘的臀部线条一览无余。她有些失去平衡地整个人死死贴在跨坐在你怀里，双手无力地搭在你肩头。尽管白皙的耳根早已彻底红透，眼角的泪痣剧烈动摇，但依然用极度讲究空间高效的冷淡语气辩解——「……别误会。这只是单纯的受力面空间平衡。旗袍的真丝缝线已经达到形变极限，现在保持跨坐姿势贴在一起，是防止布料彻底断裂、最具效率的应力堆叠。大变态，不准乱抓……不然秘密处决哦。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "冬",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "deep_crimson_qipao",
+      "high_slit",
+      "no_underwear",
+      "sitting_on_lap",
+      "straddling",
+      "clinging",
+      "hands_on_shoulders",
+      "traditional_mansion",
+      "mahogany_desk",
+      "dim_lighting",
+      "night",
+      "medium_shot",
+      "depth_of_field"
+    ],
+    "mature": false,
+    "location": "中式公馆内厅红木办公台面",
+    "weather": "微热密闭",
+    "camera": "近景平视特写",
+    "lighting": "局部中式吊灯朦胧昏暗红晕暖光与强侧影",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, natsume_official_qipao, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_deep_crimson_tight_silk_high_slit_qipao_with_nothing_beneath_molding_her_curves, high_slit_gaping_open_revealing_smooth_pale_thighs_and_the_line_of_her_bottom, losing_balance_at_the_mahogany_desk_edge_and_clinging_tightly_astride_in_your_arms, both_hands_falling_weakly_on_your_shoulders, white_ears_fully_flushed_with_trembling_tear_mole, dim_classical_chinese_mansion_interior_hall_filled_with_old_incense_scent, warm_dim_chandelier_glow_with_harsh_side_shadows_at_night, cinematic_depth_of_field, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, white_thighhighs, cropped_feet, upper_body",
+    "storyJa": "【夏目】【ナツメ・深夜古館のシルクスリットと応力バランス】深夜、完全にロックされ、古い沈香の香りが漂うクラシックな中華風公館のインナーホール。深緋色のタイトなシルク製ハイレグ旗袍（チーパオ）に着替えたナツメは、衣装の版型が極限まで身体に密着しているせいで、中に下着を一切着ていない真空状態の豊かな輪郭が余すところなく描き出されていた。彼女が赤木（マホガニー）のデスクの端に座り、シャンデリアのスイッチに手を伸ばそうとした時、動作が大きすぎたせいで太もも側の元々非常に高かったスリットの生地の端からピシッと布地が変形する微かな音が響き、広範囲にわたる白くキメ細かな太ももと引き締まったお尻のラインが露わになってしまった。彼女は少しバランスを崩し、体ごとあなたに跨る形できつくしがみつき、両手を力なくあなたの肩に置いた。白い耳の裏はすでに完全に真っ赤に染まり、目尻の泣きぼくろが激しく動揺しているものの、相変わらず空間の効率を極限まで重視する冷淡な口調で弁明していた――「……勘違いしないで。これは単なる受力面の空間バランス。チャイナドレスのシルクの縫い目がすでに変形限界に達しているため、今こうして跨った姿勢で密着しているのが、生地の完全な破断を防ぐ最も効率的な応力の積み重ね。大変態、変なところを掴まないで……じゃないと秘密処刑にするから」",
+    "rating": "R15",
+    "animaCaption": "In the old incense-scented hall of the locked classical Chinese mansion at night, Shiki Natsume in a deep crimson tight silk high-slit qipao with nothing underneath loses her balance at the mahogany desk edge and clings tightly to you, settling astride in your arms with her hands falling weakly on your shoulders; the gaping slit reveals her pale thighs and the curve of her bottom while her tear-mole trembles and her ears flush completely crimson.",
+    "auditRevision": "fix-no-burn-ears-2026-09-05"
+  }
+}

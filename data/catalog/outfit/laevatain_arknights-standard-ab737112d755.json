@@ -1,0 +1,42 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/standard",
+  "revision": 1,
+  "sortOrder": 414,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "萨卡兹熔火战装",
+      "prose": "her signature official combat outfit: a black sleeveless dress with white collar and metal pendant, chest straps, deep cleavage, a short layered torn dress with petticoat and pink interior, single free shoulder loose jacket, black long gloves, pink purse, thigh straps, knee boots",
+      "tokens": [
+        "black_dress",
+        "sleeveless_dress",
+        "sideless_dress",
+        "short_dress",
+        "layered_dress",
+        "torn_dress",
+        "petticoat",
+        "white_cut",
+        "single_free_shoulder",
+        "loose_jacket",
+        "black_long_gloves",
+        "pink_dress_interior",
+        "pink_purse",
+        "dress_decorations",
+        "thigh_straps",
+        "arm_strap",
+        "knee_boots",
+        "high_heel_boots",
+        "large_breasts",
+        "hair_intakes",
+        "detached_sleeves",
+        "circle_floating_behind"
+      ]
+    }
+  }
+}

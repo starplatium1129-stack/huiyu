@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sfw_beach",
+  "revision": 1,
+  "sortOrder": 51,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "夜刀神十香·海滨泳装",
+      "prose": "a violet ruffled swimsuit with a large ribbon, a light cover-up skirt and barefoot sandals",
+      "tokens": [
+        "violet_swimsuit",
+        "ruffled_swimsuit",
+        "large_ribbon",
+        "cover_up_skirt",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "akizuki_kanna/sfw_break",
+  "revision": 1,
+  "sortOrder": 632,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "akizuki_kanna",
+    "outfit": {
+      "default": false,
+      "id": "sfw_break",
+      "isDefault": false,
+      "name": "休息日浅色针织装",
+      "prose": "a pale pink cardigan over a white top and comfortable dark trousers",
+      "tokens": [
+        "pink_cardigan",
+        "white_top",
+        "dark_pants"
+      ]
+    }
+  }
+}

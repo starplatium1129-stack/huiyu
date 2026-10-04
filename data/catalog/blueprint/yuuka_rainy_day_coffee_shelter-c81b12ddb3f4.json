@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_rainy_day_coffee_shelter",
+  "revision": 1,
+  "sortOrder": 918,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手捧着热咖啡杯端坐在木椅上，微缩肩膀，羞怯抬眸注视对面",
+    "camera": "medium close-up, eye level",
+    "category": "约会日常",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【早濑优香 · 雨幕咖啡馆约会】街角静谧的欧式木质咖啡馆内，窗外细雨蒙蒙。优香脱下米色风衣搭在椅背上，双手捧着冒着热气的拿铁咖啡杯，微微低头偷瞄着坐在对面的老师，耳根泛起一抹可爱的红晕——「咳……今天的行程全是我按照预算和时间表严密制订的，可不是什么特意挑选的约会路线哦……！」",
+    "id": "yuuka_rainy_day_coffee_shelter",
+    "lighting": "窗外冷色雨光与室内暖黄色吊灯交融",
+    "location": "学园都市街角温馨咖啡馆窗边",
+    "mood": "羞怯甜蜜",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "rainy_cafe_sweater",
+    "promptProse": "Inside a rainy cafe, Yuuka sits on a wooden chair with both hands around a steaming coffee mug, shoulders slightly drawn in as she shyly looks across the table. Her beige trench coat rests over the chair back while cool window rain and a warm pendant light meet around the quiet date.",
+    "promptTokens": [
+      "cafe",
+      "holding_coffee_cup",
+      "steaming",
+      "window_rain",
+      "turtleneck_sweater",
+      "shy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "coat_on_chair"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cafe",
+      "coffee_shop",
+      "window",
+      "rain",
+      "rainy_day",
+      "holding_cup",
+      "coffee_cup",
+      "steaming",
+      "blush",
+      "shy",
+      "turtleneck_sweater"
+    ],
+    "timeOfDay": "午后阴雨",
+    "title": "早濑优香 · 雨幕咖啡馆约会"
+  }
+}

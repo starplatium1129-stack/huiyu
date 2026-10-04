@@ -1,0 +1,60 @@
+{
+  "kind": "scene",
+  "id": "sc190",
+  "revision": 1,
+  "sortOrder": 187,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc190",
+    "title": "祭典终幕：巫女服的禁忌拆封协议",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 宁宁 · 传统巫女服解开极致工口】夏日祭典彻底结束后的深夜古老神社后山客房。空气里弥漫着榻榻米的清香与微热的夜风。宁宁被迫换上了神圣高雅的日式巫女服，此刻她已被你温柔地推倒在松软的被窝中央。白色的巫女上衣被你完全解开并褪至香肩两侧，露出了里面大片娇嫩泛红的雪白胴体，红色的绯袴也被掀到了腰际，光洁的绝对领域毫无防备。她扯着宽大的纯白袖口死死遮住自己几乎融化的羞耻面颊，头顶的呆毛早已因为亢奋软瘫成工口的心形螺旋——「呜...柊史...竟然在神圣的社务所拆人家的巫女服...你这个大色狼绝对会遭天谴的啦...快点...抱紧我...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "羞怯",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "miko_uniform",
+      "disheveled_clothes",
+      "unbuttoned_shirt",
+      "cleavage",
+      "bare_shoulders",
+      "hakama_pushed_up",
+      "skirt_lifted",
+      "no_panties",
+      "lying_on_bed",
+      "bare_legs",
+      "heavy_blush",
+      "tears_in_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "shrine",
+      "night",
+      "lantern_light",
+      "tatami",
+      "sensual",
+      "warm_lighting",
+      "close_up"
+    ],
+    "mature": true,
+    "location": "神社社务所客房",
+    "weather": "风铃微动",
+    "camera": "近景特写",
+    "lighting": "传统纸灯笼朦胧暖光",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "storyJa": "【寧々・大人のアフターストーリー · ·伝統的な魔女の衣装が究極のエロゲを明らかにします】夏祭りが終わった深夜、古びた神社の奥座敷。畳の香りと暖かい夜風が空気に満ちています。寧々は、神聖で優雅な日本の魔女の衣装を着ることを強制されました。この瞬間、彼女はあなたによって柔らかいベッドの真ん中でそっと押し倒されました。白い巫女の上着はあなたによってボタンが完全に外され、肩の両側まで落ち、内側の繊細で赤みを帯びた雪のように白い体が広範囲に露出しました。赤い緋の袴も腰まで引き上げられ、滑らかな絶対領域が無防備になった。彼女は純白の広い袖口を引っ張り、恥ずかしさで溶けそうになった頬を覆った。彼女の頭のアホ毛は長い間、興奮により麻痺してハート型の螺旋を描いていた。――「もう、柊史……神聖な社務所で巫女服を引っ張るなんて、罰が当たりますよ。だから……早く、ちゃんと抱きしめてください。」",
+    "rating": "R18",
+    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+  }
+}

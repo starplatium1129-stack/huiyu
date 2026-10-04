@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc005",
+  "revision": 1,
+  "sortOrder": 4,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot beneath summer festival fireworks, Shiki Natsume in a light pink floral yukata walks half a step ahead through the riverbank crowd and turns back to check that the viewer is still with her. Firework flashes and warm lanterns catch the mole under her eye and her reddening ears.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "回眸半身中景",
+    "category": "祭典・节日",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "幸福",
+    "id": "sc005",
+    "lighting": "烟花闪光与祭典灯笼暖光",
+    "location": "夏日祭典会场",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, light_pink_floral_yukata, white_tabi, geta, walking_half_a_step_ahead_through_festival_crowd, turning_back_to_check_on_viewer, averted_gaze, subtle_blush, fireworks_in_night_sky, riverbank_festival, warm_lantern_light, medium_shot, bokeh, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【夏目 · 烟花亮起时的回眸】夏日祭的人潮在河岸缓慢移动，穿浴衣的夏目始终走在你半步之前。烟花升空时，她没有立刻抬头，反而先回身确认你还跟着；绚丽光影映亮她眼下的泪痣，也照出耳根的红色。被你发现后，她迅速移开视线——「我只是怕你在人群里走丢。烟花已经开始了，别再看我。」",
+    "storyJa": "【夏目・花火が上がる頃に振り返る】夏祭りの人だかりが川岸をゆっくりと進んでいく中、常に半歩先を行くのが浴衣姿の夏目です。花火が打ち上げられたとき、彼女はすぐには顔を上げなかった。代わりに、彼女は最初に振り返って、あなたがまだ追いかけていることを確認しました。華やかな光と影が目の下の泣きぼくろを照らし、耳の赤い色も照らしました。あなたに発見された後、彼女はすぐに目をそらしました――「人混みではぐれたら困ると思っただけ。ほら、花火はもう始まってるんだから、私ばかり見てないで。」",
+    "tags": [
+      "mole_under_eye",
+      "yukata",
+      "white_tabi",
+      "festival",
+      "looking_back",
+      "fireworks",
+      "medium_shot",
+      "walking_ahead",
+      "festival_crowd"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "烟花亮起时的回眸",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

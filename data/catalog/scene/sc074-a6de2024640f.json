@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc074",
+  "revision": 1,
+  "sortOrder": 72,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Cotton candy nearly brushes Ayachi Nene's cheek as she hurries back through the amusement park. She holds it away with one hand and offers the Ferris-wheel tickets with the other, her white blouse and light-blue skirt moving with her last hurried step. The wheel rises behind her in the sunset. Keep the two objects separate and clearly visible beside her eager smile.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "棉花糖与摩天轮票半身中景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "期待",
+    "id": "sc074",
+    "lighting": "游乐园黄金时刻夕照",
+    "location": "游乐园",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_blouse, light_blue_skirt, walking_toward_viewer, holding_cotton_candy, offering_tickets, ferris_wheel_tickets, two_hands_separate_objects, eager_smile, amusement_park, ferris_wheel, sunset, golden_light, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【宁宁 · 摩天轮前差点飞走的棉花糖】黄昏的游乐园里，宁宁拿着棉花糖朝你跑来，险些被风把糖丝吹到脸上。她一边慌忙整理，一边把排了很久才拿到的摩天轮票递给你。夕阳映亮她期待的表情——「最后一圈刚好能看到夜景。我没有特意计算时间……只是觉得，和你一起看会更漂亮。」",
+    "storyJa": "【寧々・観覧車の前で飛びそうになったマシュマロ】夕暮れの遊園地で、寧々がマシュマロを持ってあなたに向かって走ってきて、風でキャンディの束があなたの顔に当たりそうになりました。急いで整理している間に、彼女は長い間並んで手に入れた観覧車のチケットをあなたに手渡しました。夕日が彼女の期待に満ちた表情を照らす――「最後の一周なら、ちょうど夜景が見えるんです。時間を計算したわけじゃありません……ただ、あなたと一緒ならもっと綺麗だろうって思って。」",
+    "tags": [
+      "white_blouse",
+      "light_blue_skirt",
+      "walking_toward_viewer",
+      "holding_cotton_candy",
+      "offering_tickets",
+      "ferris_wheel_tickets",
+      "two_hands_separate_objects",
+      "eager_smile",
+      "amusement_park",
+      "ferris_wheel",
+      "sunset",
+      "golden_light",
+      "medium_shot"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "摩天轮前差点飞走的棉花糖",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

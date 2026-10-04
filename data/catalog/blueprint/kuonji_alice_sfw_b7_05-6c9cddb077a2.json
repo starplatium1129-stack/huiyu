@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "kuonji_alice_sfw_b7_05",
+  "revision": 1,
+  "sortOrder": 1631,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kuonji_alice_sfw_b7_05",
+    "title": "久远寺有珠 · 潮池里的玻璃魔法",
+    "category": "海滨度假",
+    "characterId": "kuonji_alice",
+    "outfitId": "sfw_beach",
+    "description": "【海边岩池·午后】有珠穿着深蓝色泳装与长罩衫，坐在潮池边用玻璃瓶收集发光海藻；她把瓶子举向阳光，海水在黑发旁闪烁，嘴角出现几乎看不见的满意弧度。",
+    "location": "quiet rocky tide pool",
+    "action": "岩池边举起发光海藻玻璃瓶观察，嘴角浮起几乎看不见的满意",
+    "timeOfDay": "日间",
+    "lighting": "clear afternoon beam on blue water",
+    "camera": "medium shot, horizontal framing",
+    "mood": "把海边也变成安静的魔术工房",
+    "sceneTags": [
+      "swimsuit",
+      "deep_blue_swimsuit",
+      "rock_pool",
+      "seaweed",
+      "glass_jar",
+      "dark_cover_up",
+      "black_hair",
+      "small_smile",
+      "afternoon_light"
+    ],
+    "promptProse": "Alice Kuonji from Witch on the Holy Night wears a deep blue one-piece swimsuit with a long dark cover-up, shell clasp and a clear glass jar. She sits beside the rock pool with a clear jar of luminous seaweed balanced in her hands. She raises it into the afternoon beam to inspect the color, the quiet water and her dark hair reflecting around the almost invisible satisfaction on her face. clear afternoon beam on blue water.",
+    "promptTokens": [
+      "swimsuit",
+      "deep_blue_swimsuit",
+      "rock_pool",
+      "seaweed",
+      "glass_jar",
+      "dark_cover_up",
+      "black_hair",
+      "small_smile",
+      "afternoon_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ]
+  }
+}

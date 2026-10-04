@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "hu_tao_wangsheng_parlor_daybreak",
+  "revision": 1,
+  "sortOrder": 22,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao_wangsheng_parlor_daybreak",
+    "title": "胡桃 · 往生堂晨曦清理",
+    "category": "传统日常",
+    "characterId": "hu_tao",
+    "description": "【胡桃 · 往生堂晨曦清理】清晨第一缕阳光洒在往生堂古朴的青石庭院里，案几上摊开着古老的阴阳仪式典籍与往来账簿。胡桃坐在青石雕花凳上，侧着脑袋轻嗅手中刚刚折下的清晨红梅花枝，神情少见地柔和宁静——「晨光清朗，梅花正艳。生老病死本是常事，但活着的每一天都要开开心心才对嘛！」",
+    "location": "往生堂门前青石小院",
+    "action": "整理好的账簿与线装古籍留在案几上，坐在石凳侧头嗅手中红梅",
+    "timeOfDay": "清晨",
+    "lighting": "柔和清朗的晨曦金光与庭院青砖冷调",
+    "camera": "medium shot, eye level",
+    "mood": "恬淡宁静",
+    "sceneTags": [
+      "courtyard",
+      "carved_stone_bench",
+      "sitting",
+      "plum_blossom_branch",
+      "smelling_flower",
+      "ledger",
+      "books_on_table",
+      "hand_on_lap",
+      "morning_light",
+      "gentle_smile",
+      "eye_level"
+    ],
+    "promptProse": "A red plum blossom rests just beneath Hu Tao’s nose as she pauses beside the courtyard desk. Seated on a carved stone bench, she holds the small branch in one hand and lets the other relax on her lap. The account ledgers and stitched ritual books she has just arranged remain open on the low table. Morning light passes beneath the Wangsheng courtyard eaves, touching the red ribbon at her collar and her unusually gentle smile. The eye-level view includes the bench, table and flower without asking for readable writing.",
+    "promptTokens": [
+      "courtyard",
+      "carved_stone_bench",
+      "sitting",
+      "plum_blossom_branch",
+      "smelling_flower",
+      "ledger",
+      "books_on_table",
+      "hand_on_lap",
+      "morning_light",
+      "gentle_smile",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_funeral_director",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

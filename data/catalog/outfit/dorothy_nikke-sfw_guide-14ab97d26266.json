@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "dorothy_nikke/sfw_guide",
+  "revision": 1,
+  "sortOrder": 995,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dorothy_nikke",
+    "outfit": {
+      "id": "sfw_guide",
+      "name": "伊甸园白色端庄长裙",
+      "prose": "an opaque white long-sleeved midi dress with a pale pink jacket and closed shoes",
+      "tokens": [
+        "white_dress",
+        "long_sleeves",
+        "midi_dress",
+        "pink_jacket",
+        "closed_shoes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

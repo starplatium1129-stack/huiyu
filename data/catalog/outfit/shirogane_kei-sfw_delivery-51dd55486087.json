@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/sfw_delivery",
+  "revision": 1,
+  "sortOrder": 781,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "default": false,
+      "id": "sfw_delivery",
+      "isDefault": false,
+      "name": "清晨配送防风装",
+      "prose": "a blue windbreaker over a white top, long trousers and practical sneakers",
+      "tokens": [
+        "blue_windbreaker",
+        "white_top",
+        "long_pants",
+        "sneakers"
+      ]
+    }
+  }
+}

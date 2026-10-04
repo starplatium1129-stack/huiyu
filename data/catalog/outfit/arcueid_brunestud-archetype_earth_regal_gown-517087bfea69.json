@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "arcueid_brunestud/archetype_earth_regal_gown",
+  "revision": 1,
+  "sortOrder": 719,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arcueid_brunestud",
+    "outfit": {
+      "id": "archetype_earth_regal_gown",
+      "name": "地球姬华丽纯白大礼服皇冠",
+      "prose": "her majestic Archetype: Earth True Ancestor royal dress: a multi-layered pristine white grand ballgown with gold filigree embroideries, glowing crimson gemstones, a gold tiara on her head, and an aura of overwhelming celestial royalty",
+      "tokens": [
+        "ball_gown",
+        "white_dress",
+        "royal_dress",
+        "gold_trim",
+        "tiara",
+        "glowing_aura",
+        "bare_shoulders",
+        "cleavage"
+      ]
+    }
+  }
+}

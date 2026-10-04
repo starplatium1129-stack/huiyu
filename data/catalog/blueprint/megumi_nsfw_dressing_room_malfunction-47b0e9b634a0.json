@@ -1,0 +1,78 @@
+{
+  "kind": "blueprint",
+  "id": "megumi_nsfw_dressing_room_malfunction",
+  "revision": 1,
+  "sortOrder": 1449,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "megumi_nsfw_dressing_room_malfunction",
+    "title": "加藤惠 · 服装店试衣间的白裙拉链卡壳事故 ·「伦也君……能进来帮我拉一下吗」",
+    "category": "更衣事故",
+    "characterId": "katou_megumi",
+    "description": "【服装店试衣间·周末】白色连衣裙的后背拉链卡在腰部软肉处，惠双手反剪在身后拼命够拉链，胸口布料被挤压勒出深邃弧度。门帘被悄悄掀开一条缝，她转过通红的脸——「唔……卡住了动不了……伦也君，不许只在外面偷看……快进来帮我弄好啦……」",
+    "location": "服装店试衣间·周末",
+    "action": "撑试衣镜塌腰翘臀双手反剪扯拉链，白裙半褪黑丝勒大腿，咬唇回眸求助",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "horizontal POV, wide shot",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Trapped inside a warm boutique dressing room, Megumi Kato leans forward against the full-length mirror as the back zipper of her new white summer dress jams stubbornly at her slender waist. Her hands strain behind her arched back, the tight bodice squeezing her modest breasts into an alluring spill while her skirt bunches over taut hips. She glances back over her shoulder with glowing red cheeks and teary brown eyes, biting her lip as she murmurs for help. Cinematic horizontal composition, warm fitting-room overhead lighting, soft shadows, detailed background, solo 1girl, no extra people.",
+    "nsfwProse": "Leaning against the boutique mirror as her dress zipper jams tight around her waist, Megumi Kato strains her arms behind arched hips, biting her lip in flustered, blushing appeal.",
+    "promptTokens": [
+      "dressing_room",
+      "fitting_room",
+      "mirror",
+      "warm_lighting",
+      "looking_back",
+      "horizontal_framing",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "bent_over",
+      "leaning_forward",
+      "white_dress",
+      "stuck_zipper",
+      "hands_behind_back",
+      "cleavage",
+      "skirt_lift",
+      "black_pantyhose",
+      "exposed_pussy",
+      "biting_lip",
+      "heavy_blush",
+      "teary_eyes"
+    ]
+  }
+}

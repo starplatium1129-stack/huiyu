@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "elfaria_alvis_serfort",
+  "revision": 1,
+  "sortOrder": 152,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "elfaria_alvis_serfort",
+    "profile": {
+      "id": "elfaria_alvis_serfort",
+      "name": "艾尔菲利亚",
+      "alias": [
+        "艾尔菲利亚",
+        "Elfaria Alvis Serfort"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-elfaria_alvis_serfort.png?v=0c90874c76de",
+        "alt": "艾尔菲利亚 · 高塔之巅的俯瞰场景样张"
+      },
+      "visual_dna": {
+        "signature": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",
+        "hair": "blue_hair, very_long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "高塔议事长袍",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "外表冷静疏离，内心对重要约定十分执着",
+        "面对熟悉记忆时会显出与身份不同的柔软",
+        "在独处的学习与等待中保持耐心"
+      ],
+      "likes": [
+        "安静读书",
+        "俯瞰高塔外的景色",
+        "与旧日约定有关的小物"
+      ],
+      "classic_cg": {
+        "title": "艾尔菲利亚 · 高塔之巅的俯瞰",
+        "description": "塔的顶层，她站在巨大的观测水晶前俯瞰下方学院，蓝发垂落及地；水晶里映出某个少年的身影时，她威严的表情瞬间软化成傻笑——冰姬与恋爱脑的一秒切换。"
+      },
+      "identity": "Wistoria: Wand and Sword · 艾尔菲利亚",
+      "tags": [
+        "艾尔菲利亚",
+        "杖与剑的魔剑谭",
+        "日常"
+      ],
+      "bg_story": "居于高塔的冰之魔法使，在繁重职责外仍珍视旧日约定。极长蓝发、蓝瞳和浅色睫毛为识别点，日常围绕茶、文书、冰花与信件展开。",
+      "palette": [
+        "#97bddd",
+        "#282532"
+      ],
+      "source": "Wistoria: Wand and Sword",
+      "speech": "这朵冰花……是不是还可以更好一点？",
+      "traits": [
+        "elfaria_alvis_serfort",
+        "tsue_to_tsurugi_no_wistoria",
+        "blue_hair",
+        "very_long_hair",
+        "long_sidelocks"
+      ],
+      "accent_color": "#97bddd",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "elfaria_alvis_serfort",
+      "displayName": "艾尔菲利亚",
+      "originalName": "Elfaria Alvis Serfort",
+      "franchise": "Wistoria: Wand and Sword",
+      "aliases": [
+        "艾尔菲利亚",
+        "Elfaria Alvis Serfort"
+      ],
+      "identityProse": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",
+      "identityTokens": [
+        "elfaria_alvis_serfort",
+        "tsue_to_tsurugi_no_wistoria",
+        "blue_hair",
+        "very_long_hair",
+        "long_sidelocks",
+        "blue_eyes",
+        "colored_eyelashes"
+      ],
+      "exactTokens": [
+        "elfaria_alvis_serfort"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, elfaria_alvis_serfort"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

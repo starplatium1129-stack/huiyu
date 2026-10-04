@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "tatsumaki/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 899,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tatsumaki",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "战栗的龙卷·成人私密造型",
+      "prose": "a private adult ensemble built around black_dress, completely_nude",
+      "tokens": [
+        "black_dress",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

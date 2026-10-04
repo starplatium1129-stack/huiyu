@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "medea_caster/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 172,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medea_caster",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "美狄亚·成人私密造型",
+      "prose": "a private adult ensemble built around robe, purple_robe, completely_nude",
+      "tokens": [
+        "robe",
+        "purple_robe",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

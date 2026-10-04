@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/demon_dress",
+  "revision": 1,
+  "sortOrder": 280,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "demon_dress",
+      "name": "恶魔装",
+      "prose": "her demon outfit: a sleeveless black dress with a side slit, black thighhighs, a single black glove and a red bow",
+      "tokens": [
+        "black_dress",
+        "sleeveless_dress",
+        "side_slit",
+        "black_thighhighs",
+        "gloves",
+        "red_bow"
+      ],
+      "adult": true,
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "mako_tatami_room_massage_embarrassed",
+  "revision": 1,
+  "sortOrder": 1138,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "跪坐为对方揉肩，手腕被握住瞬间满脸通红，别过头猫嘴羞耻慌乱",
+    "camera": "medium close-up, intimate side angle, intense blush focus",
+    "category": "日常反差",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "massage"
+    ],
+    "description": "【常陆茉子 · 榻榻米上的推拿羞红】训练后的和风静室内，茉子盘膝坐在坐垫上，正伸出双手为将臣捏揉酸痛的肩膀。看似平日大大咧咧的护卫，在将臣反手轻握住她纤细手腕道谢时，脸颊瞬间涨得通红。头顶呆毛一颤一颤，猫嘴慌乱地别开视线，语无伦次地自曝心声——「哇啊！突、突然抓手腕什么的太犯规了！在下只是作为护卫尽本分而已啦……！」",
+    "id": "mako_tatami_room_massage_embarrassed",
+    "lighting": "纸拉门外透入的浓郁黄昏暖金光晕与室内柔和阴影",
+    "location": "和室榻榻米坐席拉门前",
+    "mood": "极度害羞",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_casual",
+    "promptProse": "Kneeling on tatami mats to massage her companion’s shoulders, Mako flushes bright crimson when her wrist is gently caught in gratitude. Sunset orange glow through sliding paper shoji highlights her adorably flustered cat-pout and trembling ahoge in sweet intimate romance.",
+    "promptTokens": [
+      "tatami_room",
+      "kneeling",
+      "massage",
+      "heavy_blush",
+      "flustered",
+      "cat_mouth",
+      "ahoge",
+      "sunset_light",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "tatami",
+      "massage",
+      "kneeling",
+      "blushing",
+      "flustered",
+      "cat_mouth",
+      "holding_hands",
+      "ahoge"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "常陆茉子 · 榻榻米上的推拿羞红",
+    "compositionIntent": "group"
+  }
+}

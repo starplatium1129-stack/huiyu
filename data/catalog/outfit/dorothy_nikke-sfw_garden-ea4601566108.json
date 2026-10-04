@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "dorothy_nikke/sfw_garden",
+  "revision": 1,
+  "sortOrder": 996,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dorothy_nikke",
+    "outfit": {
+      "id": "sfw_garden",
+      "name": "花房园艺围裙装",
+      "prose": "a cream blouse, long pink skirt, gardening apron and work gloves",
+      "tokens": [
+        "cream_blouse",
+        "long_pink_skirt",
+        "gardening_apron",
+        "gloves"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "momo_velia_deviluke/deviluke_dress",
+  "revision": 1,
+  "sortOrder": 677,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "momo_velia_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "deviluke_dress",
+      "isDefault": false,
+      "name": "戴比路克王女华彩短裙",
+      "prose": "royal Deviluke futuristic princess attire: an elegant lilac-purple strapless cocktail dress with silver metallic panels, detached flared white arm cuffs, golden choker, dark purple thigh-high boots, and lush alien D-dial flowers blooming at her side",
+      "tokens": [
+        "strapless_dress",
+        "purple_dress",
+        "bare_shoulders",
+        "cleavage",
+        "detached_sleeves",
+        "thighhighs",
+        "boots",
+        "demon_tail",
+        "alien_plant"
+      ]
+    }
+  }
+}

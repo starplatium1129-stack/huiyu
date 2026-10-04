@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "suzuran_arknights/small_kimono",
+  "revision": 1,
+  "sortOrder": 375,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suzuran_arknights",
+    "outfit": {
+      "default": false,
+      "id": "small_kimono",
+      "isDefault": false,
+      "name": "小和服",
+      "prose": "wearing a traditional small kimono with a crisp white collar, neat obi sash, and long sleeves, elegant Japanese classical dress",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "suzuran_small_kimono",
+        "small_kimono",
+        "kimono",
+        "japanese_clothes",
+        "traditional_clothes",
+        "obi",
+        "long_sleeves",
+        "collar"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "hoshimi_miyabi/moonlight_yukata",
+  "revision": 1,
+  "sortOrder": 590,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshimi_miyabi",
+    "outfit": {
+      "default": false,
+      "id": "moonlight_yukata",
+      "isDefault": false,
+      "name": "月夜雅韵华纹浴衣",
+      "prose": "an elegant midnight navy silk summer yukata adorned with delicate gilded spider lily and silver moon crest patterns, contrasting deep crimson obi sash, soft wooden geta sandals, and a small silver bell hairpin gently ringing by her fox ear",
+      "tokens": [
+        "yukata",
+        "navy_yukata",
+        "japanese_clothes",
+        "obi",
+        "red_obi",
+        "geta",
+        "hairpin",
+        "bell",
+        "traditional_japanese",
+        "elegant"
+      ]
+    }
+  }
+}

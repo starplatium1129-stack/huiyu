@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc069",
+  "revision": 1,
+  "sortOrder": 67,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a first-person close-up on the rainy night walk home, Shiki Natsume in a navy school blazer, pleated miniskirt and sheer black tights tilts the shared umbrella toward the viewer while keeping her arm linked with him. Warm street lamps stretch across the wet asphalt as she looks away with a subtle blush.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "伞下第一人称近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "亲密",
+    "id": "sc069",
+    "lighting": "雨夜路灯反射",
+    "location": "雨夜回家路",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime, sunny",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, navy_school_blazer, white_blouse, pleated_miniskirt, sheer_black_tights, black_loafers, standing_close_under_one_shared_umbrella, holding_umbrella_handle, linking_arm_with_viewer, tilting_umbrella_toward_viewer, rainy_night, wet_asphalt_reflections, warm_street_lamp_glow, rain_streaks, subtle_blush, looking_away, close_up, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【夏目 · 共伞回家路的半步距离】夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",
+    "storyJa": "【夏目・半歩家まで傘を相合】夏の夜、雨が強くなってきました。夏目さんは傘をこちらに傾けますが、肩が濡れてしまいます。あなたは彼女を引き寄せました。最初は眉をひそめ、歩くのが不便だと言いましたが、自然と腕を強く抱きしめました。街灯が水面に長く反射する――「近づけば濡れないのは確か。この結論が成り立つのは、傘が小さいときだけ……家に着くまで離さないで。」",
+    "tags": [
+      "mole_under_eye",
+      "school_blazer",
+      "sheer_black_tights",
+      "rainy_night",
+      "close_up",
+      "loafers",
+      "umbrella",
+      "arm_linked"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "共伞回家路的半步距离",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雨"
+  }
+}

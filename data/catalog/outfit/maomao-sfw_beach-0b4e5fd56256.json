@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "maomao/sfw_beach",
+  "revision": 1,
+  "sortOrder": 986,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "猫猫·海滨泳装",
+      "prose": "a deep green swimsuit with a short cream cape, herb pouch and a glass of chilled citrus herbal tea",
+      "tokens": [
+        "deep_green_swimsuit",
+        "cream_cape",
+        "herb_pouch",
+        "citrus_tea",
+        "market_stall"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

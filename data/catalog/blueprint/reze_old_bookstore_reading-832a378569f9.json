@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "reze_old_bookstore_reading",
+  "revision": 1,
+  "sortOrder": 429,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "reze_old_bookstore_reading",
+    "title": "蕾塞 · 旧书店午后",
+    "category": "现代日常",
+    "characterId": "reze_chainsaw",
+    "outfitId": "sleeveless_white_shirt",
+    "adult": false,
+    "description": "【蕾塞 · 旧书店午后】弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本时尚杂志，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
+    "location": "街角旧书店",
+    "action": "靠在书架旁翻杂志",
+    "timeOfDay": "afternoon",
+    "lighting": "window_light",
+    "camera": "medium shot, leaning against bookstore stack reading magazine",
+    "mood": "relaxed",
+    "sceneTags": [
+      "bookstore",
+      "bookshelves",
+      "magazine",
+      "window_light",
+      "afternoon",
+      "relaxed",
+      "casual",
+      "dusty_sunbeams"
+    ],
+    "promptProse": "Flipping through a fashion magazine in the quiet aisles of an old used bookstore, Reze lounges with relaxed, casual charm. Dusty golden sunbeams slant through tall wooden shelves in peaceful afternoon warmth.",
+    "promptTokens": [
+      "old_bookstore",
+      "bookshelves",
+      "reading_magazine",
+      "sitting",
+      "dusty_sunbeams",
+      "relaxed",
+      "daylight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "extra fingers",
+      "weapon",
+      "blood",
+      "night"
+    ],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

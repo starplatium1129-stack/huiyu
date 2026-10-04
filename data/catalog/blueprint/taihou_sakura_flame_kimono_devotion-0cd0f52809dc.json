@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_sakura_flame_kimono_devotion",
+  "revision": 1,
+  "sortOrder": 1079,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_sakura_flame_kimono_devotion",
+    "title": "大凤 · 重樱绯焰华服的深情相迎",
+    "category": "重樱盛景",
+    "characterId": "taihou_azur",
+    "outfitId": "sakura_kimono",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【大凤 · 重樱绯焰华服的深情相迎】古雅奢华的重樱朱雀神殿廊下，漫天绯红落樱如雨纷飞。大凤身披重樱红黑刺金的大振袖金鱼华服，深V领口毫无保留地露出白皙硕大、呼之欲出的宏伟胸脯。她拖着长达数米的漆黑双马尾，手执赤金折扇掩口轻笑，炽热如火的赤红美眸满溢着令人窒息的深沉独占欲——「指挥官大人……无论您去往何方，大凤都会如影随形……永远、永远地注视着您哦。」",
+    "location": "重樱朱红回廊与繁盛樱花庭院",
+    "action": "折扇掩唇侧身浅笑，宽大金鱼大袖随风舞动，深邃双眸满是痴情与占有欲",
+    "timeOfDay": "午后",
+    "lighting": "朱红回廊与穿透粉白樱花冠层的浓艳夕阳光斑",
+    "camera": "full body, dynamic 3/4 perspective, flowing sleeves",
+    "mood": "美艳深情",
+    "sceneTags": [
+      "shrine",
+      "kimono",
+      "cleavage",
+      "deep_cleavage",
+      "twintails",
+      "folding_fan",
+      "cherry_blossoms",
+      "obsessive_smile"
+    ],
+    "promptProse": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes.",
+    "promptTokens": [
+      "shinto_temple",
+      "vermilion_veranda",
+      "cherry_blossoms",
+      "kimono",
+      "cleavage",
+      "deep_cleavage",
+      "twintails",
+      "folding_fan",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

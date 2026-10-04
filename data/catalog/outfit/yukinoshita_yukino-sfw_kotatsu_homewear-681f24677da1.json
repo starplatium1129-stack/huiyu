@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/sfw_kotatsu_homewear",
+  "revision": 1,
+  "sortOrder": 197,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "sfw_kotatsu_homewear",
+      "name": "暖桌针织家居服",
+      "prose": "a soft long-sleeved knit top, comfortable lounge trousers and warm socks beneath the kotatsu blanket",
+      "tokens": [
+        "knit_top",
+        "long_sleeves",
+        "lounge_pants",
+        "warm_socks",
+        "kotatsu_blanket"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

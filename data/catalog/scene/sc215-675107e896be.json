@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc215",
+  "revision": 1,
+  "sortOrder": 210,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the deserted school library just before closing, Ayachi Nene in a navy school uniform hugs an old magic-history book to her chest and looks up at the viewer, inviting him to study together under moonlight and a warm desk lamp.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "平视中景，书架形成纵深",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "鼓起勇气的信任",
+    "id": "sc215",
+    "lighting": "月光与书桌暖灯交织",
+    "location": "学院图书馆深处",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, speech_bubble, dialogue_bubble, captions, subtitles, letters, words, typography, gibberish_text, unreadable_text, comic_panel, manga_panel, writing, symbols, graphic_print, japanese_text, book_cover_facing_viewer, title_on_book, decorated_cover, title, loose_paper, separate_sheet, letter, note_card, book_left_on_table, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform, navy_blazer, white_blouse, pleated_skirt, white_thighhighs, loafers, standing_in_deserted_school_library, bookshelves, hugging_old_magic_history_book_to_chest, inviting_viewer_to_study_together, looking_up_at_viewer, serious_shy_expression, moonlight_through_library_window, warm_desk_lamp, evening, medium_shot, bokeh, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 图书馆的月光练习】闭馆前的图书馆安静得只剩翻页声。宁宁把一本关于魔法史的旧书抱在胸前，犹豫了很久才邀请你一起核对笔记。窗外的月光落在她银白色的发带上，她明明紧张得指尖发凉，却还是认真地抬起眼睛——「这次不是因为害怕才找你帮忙。只是……我想和你一起把它读完。」",
+    "storyJa": "【寧々・月明かりの読書室】閉館前の図書室には、ページをめくる音だけが残っていた。寧々は魔法史の古い本を胸に抱え、迷った末にあなたへノートを照らし合わせようと誘う。月明かりが銀色の髪飾りに落ちる中、震える指先を隠して彼女は顔を上げた――「怖いから頼るんじゃないの。一緒に最後まで読みたいだけ……」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "library",
+      "full_body",
+      "loafers",
+      "moonlight",
+      "hugging_book",
+      "evening"
+    ],
+    "time": "闭馆前",
+    "timeOfDay": "evening",
+    "title": "月光书页里的小小勇气",
+    "usage": [
+      "角色还原",
+      "氛围优先"
+    ],
+    "weather": "秋夜晴朗"
+  }
+}

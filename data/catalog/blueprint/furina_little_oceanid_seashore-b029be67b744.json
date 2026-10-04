@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "furina_little_oceanid_seashore",
+  "revision": 1,
+  "sortOrder": 15,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "furina_little_oceanid_seashore",
+    "title": "芙宁娜 · 澄澈水畔假日",
+    "category": "唯美假日",
+    "characterId": "furina",
+    "description": "【芙宁娜 · 澄澈水畔假日】远离喧嚣的枫丹隐秘海湾，阳光洒在如水晶般透亮的碧蓝浅滩上。芙宁娜轻轻挽起华美礼裙的下摆，赤足漫步在清凉的海水中，回眸朝镜头绽放出纯真无邪的笑容——「偶尔离开歌剧院，赤脚走在水里的感觉……真的好舒服呢！」",
+    "location": "枫丹清澈浅滩与阳光白沙",
+    "action": "提裙赤足踏在清澈浅水之中，回眸浅笑，水花飞溅",
+    "timeOfDay": "正午",
+    "lighting": "热带清澈阳光与水底波光粼粼折射",
+    "camera": "full body, eye level, feet and shallow waves visible",
+    "mood": "纯真唯美",
+    "sceneTags": [
+      "beach",
+      "shallow_water",
+      "crystal_clear_water",
+      "barefoot",
+      "lifting_dress",
+      "water_splash",
+      "looking_back",
+      "happy_smile",
+      "sunlight_reflection",
+      "sea"
+    ],
+    "promptProse": "Splashing barefoot in clear turquoise shallows along the sun-drenched Fontaine coastline, Furina lifts her skirt with playful laughter. Shimmering sunlight reflections on crystal water ripples create a dazzling, pure summer visual.",
+    "promptTokens": [
+      "sunny_beach",
+      "shallow_water",
+      "crystal_clear_water",
+      "lifting_dress",
+      "splashing",
+      "looking_back",
+      "happy_smile",
+      "detailed_background",
+      "cinematic_lighting",
+      "full_body",
+      "barefoot"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "opera_ballgown",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

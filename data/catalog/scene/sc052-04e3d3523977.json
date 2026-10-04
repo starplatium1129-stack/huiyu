@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc052",
+  "revision": 1,
+  "sortOrder": 50,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting on a wooden bench atop the school rooftop late at night, Ayachi Nene holds a warm tea can with both hands, looking toward you with deep, affectionate violet eyes. Her low silver twintails flutter gently against a backdrop of a brilliant Milky Way galaxy and distant city lights, with warm lantern glow balancing cool starlight across her sheer black stockings and loafers.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc052",
+    "lighting": "月光",
+    "location": "屋顶",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_school_uniform_with_navy_pleated_skirt, sheer_black_thighhigh_socks, sitting_on_rooftop_wooden_bench_under_breathtaking_starry_night_sky, leaning_forward_holding_warm_can_of_tea_with_both_hands, tender_affectionate_smile_looking_at_viewer, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_resting_on_rooftop_floor, glittering_milky_way_galaxy_and_distant_glowing_city_skyline, warm_lantern_glow_contrasting_with_cool_starlight_and_lunar_rim_light, detailed_background, cinematic_lighting, full_body, @rella",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 屋顶星空下的第二个约定】夏夜的屋顶风很轻，宁宁靠在你肩上数星星，数到一半却总把同一颗重复计算。你拆穿她只是想延长独处时间，她索性抬头吻了一下你的脸侧，随后把发热的脸藏进你肩窝——「既然被发现就没办法了。那我们约好，下一次流星雨也一起看，不准让别人抢走这个位置。」",
+    "storyJa": "【寧々・屋上の星空の下二度目の約束】夏の夜、屋上に吹く風はとても軽いです。寧々はあなたの肩に寄りかかって星を数えます。数えの途中で、彼女はいつも同じものをもう一度数えます。あなたは、彼女がただ一人の時間を引き延ばしたかっただけだと明らかにしました。彼女はただ頭を上げてあなたの顔の横にキスをし、熱くなった顔をあなたの肩に隠しました。――「見つかってしまったなら仕方ありませんね。じゃあ約束です。次の流星群も一緒に見て、この場所を誰にも取らせないこと。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "smooth_thighs",
+      "rooftop",
+      "leaning_on_shoulder",
+      "counting_stars",
+      "kiss_on_cheek",
+      "starry_sky",
+      "close_up",
+      "loafers",
+      "night",
+      "depth_of_field"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "屋顶星空下的第二个约定",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc046",
+  "revision": 1,
+  "sortOrder": 44,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Pausing on the quiet back stairwell of Cafe Stella after closing, Shiki Natsume leans against the rustic brick wall in her cafe uniform and sheer black gartered stockings. A single warm hanging bulb casts dramatic chiaroscuro across her slender frame and reflective black shoes, illuminating her hesitant, tender expression as she looks back at you in the quiet corridor.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "主观近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "热烈",
+    "id": "sc046",
+    "lighting": "楼梯间暖灯与阴影",
+    "location": "Café Stella 闭店楼梯间",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_starlight_cafe_uniform_with_green_vest_and_white_blouse, pleated_black_skirt, sheer_black_thighhigh_socks_with_garter_clips, leaning_back_against_cafe_backstairs_brick_wall_after_closing, arms_crossed_below_chest_with_soft_vulnerable_gaze, entire_legs_and_feet_fully_visible_in_frame, polished_black_work_shoes_on_concrete_stairs, warm_amber_stairwell_pendant_light_casting_dramatic_shadows_contrasting_with_cool_night_doorway, detailed_background, cinematic_lighting, full_body, @rella",
+    "rating": "All",
+    "season": "春",
+    "story": "【夏目 · 闭店楼梯间的一分钟】Café Stella 闭店后，夏目在楼梯转角叫住准备离开的你。她先替你取下围裙上沾着的纸屑，又把你推回墙边，像是终于决定执行某件计划。吻落下前，她眼下的泪痣都被红晕包围——「只给你一分钟，不准得寸进尺。还有……明天见面时，不许装作什么都没发生。」",
+    "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
+    "tags": [
+      "mole_under_eye",
+      "cafe_uniform",
+      "sheer_black_tights",
+      "cafe_stairs",
+      "about_to_kiss",
+      "close_up",
+      "mary_jane",
+      "depth_of_field"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "闭店楼梯间的一分钟",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

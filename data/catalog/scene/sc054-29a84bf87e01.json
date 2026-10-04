@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc054",
+  "revision": 1,
+  "sortOrder": 52,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Before the sun rises, Ayachi Nene shares a wide wool blanket with the viewer on the beach. She curls toward his shoulder in a light-blue cotton dress, holding the blanket closed at her collar with one hand. Only her sleepy face and the blanket folds need to fill the foreground. Pale blue waves and the first warm line on the horizon frame their quiet wait for dawn.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "共毯肩侧面部近景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "温柔",
+    "id": "sc054",
+    "lighting": "日出前蓝调与远方第一线晨光",
+    "location": "海边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_cotton_dress, wool_blanket, shared_blanket, sitting_on_beach, leaning_on_viewer_shoulder, holding_blanket_edge, sleepy_eyes, small_smile, ocean, gentle_waves, dawn_horizon, blue_hour, soft_dawn_light, close_up, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【宁宁 · 日出之前借来的体温】夏日旅行的最后一晚，你们坐在海边等日出。夜风比预想中更冷，宁宁把毯子分给你一半，又蜷进你的怀里听潮声。天际开始发白时，她抬起困倦的紫色眼睛——「原来一起等天亮是这种感觉。下一次不用熬夜也可以……只要醒来的时候，你还在旁边就好。」",
+    "storyJa": "【寧々・日の出前に体温を借りた】夏の旅行の最後の夜、あなたはビーチに座って日の出を待っていました。夜風は思ったより冷たかったです。寧々は毛布の半分をあなたに渡し、あなたの腕の中で丸まって潮の音を聞きました。空が白み始めると、彼女は眠そうな紫色の目を上げた――「一緒に夜明けを待つって、こんな感じなんですね。次は徹夜じゃなくてもいいです……目を覚ましたとき、あなたが隣にいてくれれば。」",
+    "tags": [
+      "light_blue_cotton_dress",
+      "wool_blanket",
+      "shared_blanket",
+      "sitting_on_beach",
+      "leaning_on_viewer_shoulder",
+      "holding_blanket_edge",
+      "sleepy_eyes",
+      "small_smile",
+      "ocean",
+      "gentle_waves",
+      "dawn_horizon",
+      "blue_hour",
+      "soft_dawn_light",
+      "close_up"
+    ],
+    "time": "黎明",
+    "timeOfDay": "dawn",
+    "title": "日出之前借来的体温",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/summer_yukata",
+  "revision": 1,
+  "sortOrder": 253,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "default": false,
+      "id": "summer_yukata",
+      "isDefault": false,
+      "name": "温泉旅馆浴衣",
+      "prose": "a loose cotton yukata with a simple obi sash",
+      "tokens": [
+        "yukata",
+        "cotton",
+        "obi"
+      ]
+    }
+  }
+}

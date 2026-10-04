@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 601,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "huge_breasts",
+        "areolae",
+        "dark_pink_nipples",
+        "slender_waist",
+        "hourglass_figure",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "very_long_hair",
+        "twintails",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, blushing alabaster skin, immense heavy voluptuous breasts with swollen tender raspberry nipples, slender curved waist flaring into wide sensual hips, glistening exposed pussy, floor-length dark twintails trailing across the sheets, bare legs and bare feet, passionate bedroom candle glow",
+      "styleHint": "tender romantic candlelight",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

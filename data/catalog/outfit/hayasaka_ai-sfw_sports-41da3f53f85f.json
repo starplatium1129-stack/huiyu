@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/sfw_sports",
+  "revision": 1,
+  "sortOrder": 775,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "default": false,
+      "id": "sfw_sports",
+      "isDefault": false,
+      "name": "庭院体操运动装",
+      "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
+      "tokens": [
+        "blue_t-shirt",
+        "track_pants",
+        "sportswear",
+        "side_ponytail"
+      ]
+    }
+  }
+}

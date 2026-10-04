@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/shinjuku_jacket_casual",
+  "revision": 1,
+  "sortOrder": 90,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "shinjuku_jacket_casual",
+      "name": "新宿皮夹克便服",
+      "tokens": [
+        "leather_jacket",
+        "black_tank_top",
+        "black_pants",
+        "leather_pants",
+        "choker",
+        "boots"
+      ],
+      "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
+      "styleHint": "stylish urban neon contrast",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

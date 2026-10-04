@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_cathedral_throne_bridal_veil",
+  "revision": 1,
+  "sortOrder": 1306,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_cathedral_throne_bridal_veil",
+    "title": "雅儿贝德 · 纯白圣堂的魔后花嫁",
+    "category": "纯白誓约",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 纯白圣堂的魔后花嫁】在铺满万朵白玫瑰的圣坛尽头，雅儿贝德身穿神圣华丽的纯白拖地婚纱，纤细的腰肢被束腰勾勒出极致的沙漏曲线。透明的蕾丝长头纱轻覆在她白角与如云长发上，黑色的羽翼在婚纱背后缓缓舒展，圣洁与恶魔的极致冲突美感震撼人心。她眼中闪烁着幸福到极致的泪花，双手紧扣在心前走向你——「这一天……雅儿贝德终于成为了您真正的唯一妻子……」",
+    "location": "铺满万朵白玫瑰的宏伟神圣婚礼圣坛",
+    "action": "身着纯白婚纱与蕾丝头纱，双手交扣在胸前，泪光盈盈展颜露出至高幸福微笑",
+    "timeOfDay": "正午圣光",
+    "lighting": "神圣彩窗投下的璀璨七彩天光",
+    "camera": "cowboy shot, slightly low angle, grand bridal perspective",
+    "mood": "神圣幸福",
+    "sceneTags": [
+      "church",
+      "altar",
+      "white_roses",
+      "wedding_dress",
+      "bridal_veil",
+      "black_wings",
+      "curved_horns",
+      "teary_eyes",
+      "happy_tears",
+      "radiant_smile",
+      "vow"
+    ],
+    "promptProse": "Walking down an aisle lined with thousands of white roses toward the grand altar, Albedo is radiant in a lavish bridal wedding gown and delicate lace veil draped over her curved horns. Her obsidian wings spread gently behind the sweeping train of pure white silk. Tears of overwhelming, sublime joy sparkle in her golden eyes as she clasps her hands to her heart. Breathtaking anime visual novel art, solo 1girl, no text.",
+    "promptTokens": [
+      "wedding_chapel",
+      "white_roses",
+      "wedding_dress",
+      "bridal_veil",
+      "black_wings",
+      "curved_horns",
+      "cleavage",
+      "hourglass_body",
+      "teary_eyes",
+      "happy_tears",
+      "radiant_smile",
+      "yellow_eyes",
+      "cowboy_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_white_dress",
+    "coverageTags": [
+      "bridal",
+      "romantic",
+      "vow"
+    ]
+  }
+}

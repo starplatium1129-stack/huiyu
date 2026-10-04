@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shiranui_mai/sfw_home",
+  "revision": 1,
+  "sortOrder": 1003,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiranui_mai",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "厨房与针线日常便装",
+      "prose": "a cream long-sleeved shirt, dark trousers and a red apron",
+      "tokens": [
+        "cream_shirt",
+        "long_sleeves",
+        "dark_pants",
+        "red_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

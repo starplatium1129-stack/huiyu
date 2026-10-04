@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "cc_adjusting_necktie_caught_blush",
+  "revision": 1,
+  "sortOrder": 1314,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
+    "camera": "cowboy shot, intimate eye level, subtle blush focus",
+    "category": "反差娇羞",
+    "characterId": "cc_code_geass",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "gap_moe",
+      "subtle_blush",
+      "intimate"
+    ],
+    "description": "【C.C. · 整理领带的反差微怔】出征前的更衣室内，气氛静谧而微促。C.C.主动走上前，双手动作熟练地为你整理衬衫领带。然而当你突然伸手轻轻握住她微凉的手腕、凝视她双眸时，这位不老不死的魔女罕见地动作一僵。原本平淡如水的眼底泛起波澜，两颊浮现出一抹淡淡的红晕，她轻轻别过头，声音带着一丝不易察觉的慌乱——「……怎么突然这样看着我？领带已经系好了……别闹了。」",
+    "id": "cc_adjusting_necktie_caught_blush",
+    "lighting": "百叶窗透进来的冷色调战术室内天光",
+    "location": "战备指挥所后方的私人更衣室镜前",
+    "mood": "暗流涌动",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "outfitId": "black_knights_uniform",
+    "promptProse": "Inside a quiet preparation room, C.C. adjusts the viewer's necktie with both hands until her wrists are gently held. Caught off-guard by the sudden intimacy, the usually unflappable immortal witch freezes slightly. A rare, delicate rosy blush dusts her pale cheeks and small ears as her golden eyes look aside with tender embarrassment. Intimate, cinematic anime composition with two clothed figures, no text.",
+    "promptTokens": [
+      "room",
+      "adjusting_necktie",
+      "hands_on_tie",
+      "black_knights_uniform",
+      "subtle_blush",
+      "blushing_ears",
+      "red_ears",
+      "looking_away",
+      "yellow_eyes",
+      "green_hair",
+      "intimate",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "dressing_room",
+      "adjusting_necktie",
+      "hands_on_tie",
+      "wrist_hold",
+      "subtle_blush",
+      "blushing_ears",
+      "looking_away",
+      "green_hair",
+      "yellow_eyes"
+    ],
+    "timeOfDay": "出征清晨",
+    "title": "C.C. · 整理领带的反差微怔"
+  }
+}

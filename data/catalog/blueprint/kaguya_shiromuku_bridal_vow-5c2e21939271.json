@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "kaguya_shiromuku_bridal_vow",
+  "revision": 1,
+  "sortOrder": 1403,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "白无垢端坐神前捧扇，闻誓词睫毛颤动落泪红瞳",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "wide shot, formal portrait, seated bride, shrine ceremony, sacred mood",
+    "category": "圣洁花嫁",
+    "characterId": "shinomiya_kaguya",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ],
+    "description": "【东京大神宫·婚礼日】纯白无垢的婚纱衬着辉夜挺直的背脊，白色角隐覆在折叠马尾上，她双手捧着扇子端坐于神前。当你说出誓词，她的睫毛颤了颤，红瞳里终于蓄不住泪光——那个把『先告白的人就输了』挂在嘴边的大小姐，此刻放下所有胜负，轻声说：这次，换我先说。我爱你。",
+    "id": "kaguya_shiromuku_bridal_vow",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "神社檐下柔光与白无垢相映的圣洁光",
+    "location": "东京大神宫神前",
+    "mood": "放下胜负、泪光倾城",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "white_shiromuku",
+    "promptProse": "Shinomiya Kaguya sits with perfect posture in a pure white shiromuku bridal kimono before the shrine altar on her wedding day, the white tsunokakushi headdress resting over her folded ponytail and a folding fan cradled in her hands. As the wedding vows reach her, her lashes tremble and tears finally brim in her red tareme eyes, the girl who swore whoever confessed first loses laying every score down at last. Formal portrait, cinematic lighting, sacred light, detailed shrine background.",
+    "promptTokens": [
+      "shinomiya_kaguya",
+      "1girl",
+      "solo",
+      "shiromuku",
+      "wedding_dress",
+      "japanese_clothes",
+      "bridal_veil",
+      "holding_fan",
+      "sitting",
+      "seiza",
+      "tears",
+      "happy_tears",
+      "red_eyes",
+      "black_hair",
+      "smile",
+      "shrine",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "shiromuku",
+      "wedding_dress",
+      "japanese_clothes",
+      "bridal_veil",
+      "holding_fan",
+      "tears",
+      "shrine",
+      "smile"
+    ],
+    "timeOfDay": "婚礼正午",
+    "title": "四宫辉夜 · 白无垢的花嫁誓言·「这次，换我先说」"
+  }
+}

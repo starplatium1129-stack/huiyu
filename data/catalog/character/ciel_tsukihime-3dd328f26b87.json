@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "ciel_tsukihime",
+  "revision": 1,
+  "sortOrder": 104,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ciel_tsukihime",
+    "profile": {
+      "id": "ciel_tsukihime",
+      "name": "希耶尔",
+      "alias": [
+        "Ciel",
+        "希耶尔",
+        "知性修女",
+        "埋葬机关第七位",
+        "咖喱学姐"
+      ],
+      "type": "popular",
+      "icon": "🍛",
+      "portrait": {
+        "image": "../assets/characters/popular-ciel_tsukihime.png?v=1",
+        "alt": "希耶尔 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "齐下巴深蓝短发 · 层次分明",
+        "hair_color": "深蓝 / 藏青",
+        "eyes": "深邃蔚蓝宝石眼眸 · 无框椭圆眼镜",
+        "hairstyle": "清爽短发 · 知性书卷气",
+        "uniform": "埋葬机关深蓝法衣黑丝 · 三咲高中西装制服",
+        "expression": "温柔知性 · 可靠学姐 · 摘下眼镜时的无防备娇羞",
+        "style": "intellectual heavy-weapon nun executor",
+        "signature": "深蓝短发、无框眼镜、法衣黑丝与巨型第七圣典重火器"
+      },
+      "personality": [
+        "极度可靠、成熟知性",
+        "痴迷特制咖喱的搞笑反差",
+        "背负永生罪孽的脆弱悲愿",
+        "摘下眼镜后的极度害羞与纯情"
+      ],
+      "likes": [
+        "各色浓郁辛辣的特制咖喱",
+        "茶道与日式点心",
+        "在图书馆与心爱之人并肩读书"
+      ],
+      "classic_cg": {
+        "title": "第七圣典的月下重炮",
+        "description": "在废弃工厂天台单臂架起神圣重炮第七圣典、推着眼镜冷冷锁定目标的帅气姿态。"
+      },
+      "identity": "月姬女二号 · 圣堂教会埋葬机关第七席 · 代行者",
+      "tags": [
+        "月姬",
+        "埋葬机关",
+        "修女",
+        "知性眼镜",
+        "重火器",
+        "反差萌"
+      ],
+      "bg_story": "圣堂教会最精锐、最危险的杀戮机关『埋葬机关』第七席，代号『第七圣典』。曾是不死转生者的受害容器，背负着滔天的罪孽与孤独。在三咲高中伪装成温柔可靠的茶道部学姐，极其热爱吃咖喱。一旦卸下冷酷处刑人的武装，是一位极度渴望被当成普通女孩怜爱对待的温婉女子。",
+      "palette": [
+        "#2563eb",
+        "#1e1b4b",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "冬日落雪 / 黄昏茶室",
+      "speech": "「请不要把我看作什么杀戮代行者……只要在你面前，我永远只是那个爱吃咖喱的普通学姐。」",
+      "source": "TYPE-MOON《月姬 / Tsukihime》",
+      "traits": [
+        "burial_agency",
+        "heavy_weapons",
+        "glasses_beauty",
+        "blue_hair",
+        "curry_lover"
+      ],
+      "accent_color": "#2563eb",
+      "bg_color": "#1e1b4b",
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "glasses"
+        ]
+      }
+    },
+    "popular": {
+      "id": "ciel_tsukihime",
+      "displayName": "希耶尔",
+      "originalName": "シエル",
+      "franchise": "Tsukihime",
+      "aliases": [
+        "Ciel",
+        "希耶尔",
+        "知性修女",
+        "埋葬机关第七位",
+        "咖喱学姐"
+      ],
+      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, and an intellectual yet deeply passionate aura",
+      "identityTokens": [
+        "ciel_(tsukihime)",
+        "tsukihime",
+        "blue_hair",
+        "short_hair",
+        "blue_eyes",
+        "curvaceous_body",
+        "intellectual_smile"
+      ],
+      "exactTokens": [
+        "ciel_(tsukihime)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ciel_(tsukihime)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "glasses"
+        ]
+      }
+    }
+  }
+}

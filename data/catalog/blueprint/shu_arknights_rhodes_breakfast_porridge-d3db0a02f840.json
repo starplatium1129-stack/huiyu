@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_rhodes_breakfast_porridge",
+  "revision": 1,
+  "sortOrder": 709,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_rhodes_breakfast_porridge",
+    "characterId": "shu_arknights",
+    "title": "黍 · 罗德岛晨粥",
+    "description": "罗德岛厨房的早餐准备台前，黍系着青绿围裙，把一勺热粥盛入稳放在台面的碗里。切好的南瓜与谷物罐排在一旁，暖色工作灯照着她专注的侧脸，舷窗透进蓝白晨光。",
+    "category": "罗德岛日常",
+    "location": "罗德岛厨房早餐准备台",
+    "action": "一手握长柄汤勺，将热粥盛进台面上的陶碗",
+    "mood": "温暖踏实",
+    "lighting": "厨房暖色工作灯与舷窗晨光",
+    "timeOfDay": "早晨",
+    "camera": "medium shot, side view",
+    "outfitId": "rhodes_kitchen_apron",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "kitchen",
+      "cooking",
+      "porridge",
+      "ladle",
+      "bowl",
+      "steam"
+    ],
+    "promptTokens": [
+      "indoors",
+      "kitchen",
+      "cooking",
+      "ladle",
+      "bowl",
+      "porridge",
+      "steam",
+      "pumpkin",
+      "counter",
+      "side_view",
+      "medium_shot"
+    ],
+    "promptProse": "Warm task lights illuminate the breakfast counter in the Rhodes Island galley. Wearing her sage-green apron over a white shirt, Shu pours a ladle of thick grain porridge into a ceramic bowl resting securely on the counter. Her free hand rests beside the bowl, clear of the hot pot. Pumpkin pieces and closed grain jars occupy the far end of the worktop, while cool dawn light enters through a small ship window. The side medium shot connects her calm face, the tilted ladle and the rising steam without hiding the serving action.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

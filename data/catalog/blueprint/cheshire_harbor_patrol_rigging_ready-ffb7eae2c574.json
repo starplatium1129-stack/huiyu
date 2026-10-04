@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_harbor_patrol_rigging_ready",
+  "revision": 1,
+  "sortOrder": 1096,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_harbor_patrol_rigging_ready",
+    "title": "柴郡 · 碧海港湾的重巡护航",
+    "category": "重巡战巡",
+    "characterId": "cheshire_azur",
+    "outfitId": "royal_maid",
+    "coverageTags": [
+      "combat"
+    ],
+    "description": "【柴郡 · 碧海港湾的重巡护航】皇家港区要塞防波堤外，浩瀚海面上激起雪白浪花。柴郡身后的巨大皇家重巡舰装连装炮缓缓转向，炮管在海风中闪耀着冷冽的青钢光泽。平日娇憨黏人的小猫此刻眼中闪过认真的光芒，猫耳向后压低，单手叉腰护在防线正前——「有柴郡在，谁也别想靠近亲爱的一步！」",
+    "location": "军港防波堤石砌栈桥与大海交界",
+    "action": "站在要塞栈桥上展开巨大舰装火炮，海风卷起荷叶边裙摆，神情认真护短",
+    "timeOfDay": "下午",
+    "lighting": "海面辽阔日光与舰装金属炮管冷硬的高光对比",
+    "camera": "wide dramatic angle, low perspective, epic naval warship scale",
+    "mood": "英勇威武",
+    "sceneTags": [
+      "harbor",
+      "battleship",
+      "rigging",
+      "naval_guns",
+      "ocean",
+      "waves",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "protective"
+    ],
+    "promptProse": "Standing protectively on an azure harbor seawall with her massive Royal Navy cruiser rigging and twin naval turrets aimed out to sea, Cheshire braces against sea winds. Sunlight sparkles across rolling waves and heavy steel armor panels beside her alert cat ear headband.",
+    "promptTokens": [
+      "naval_port",
+      "cruiser_rigging",
+      "naval_artillery",
+      "ocean_waves",
+      "maid_dress",
+      "protective_stance",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

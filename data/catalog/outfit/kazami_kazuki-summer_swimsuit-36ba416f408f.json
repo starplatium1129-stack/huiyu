@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 641,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "月华银辉竞技连体泳装",
+      "prose": "a sleek minimalist silvery-white one-piece swimsuit hugging her slender silhouette, high-cut leg openings, low back scoop, thin cross-back straps, water droplets glistening on smooth fair skin",
+      "tokens": [
+        "swimsuit",
+        "one-piece_swimsuit",
+        "white_swimsuit",
+        "highleg",
+        "cross-back_straps",
+        "wet_skin",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

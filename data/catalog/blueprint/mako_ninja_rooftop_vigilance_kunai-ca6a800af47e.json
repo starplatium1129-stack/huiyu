@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "mako_ninja_rooftop_vigilance_kunai",
+  "revision": 1,
+  "sortOrder": 1134,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单膝半跪在屋脊边缘，单手反握苦无，黑色短发与发束随风飘扬，猫嘴自信微笑",
+    "camera": "dynamic low angle, cowboy shot, dramatic moonlit perspective",
+    "category": "隐密机警",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【常陆茉子 · 月夜飞檐的苦无警备】穗织镇朝武宅邸的高耸黑瓦屋脊之上，一轮皎洁圆月将飞檐染上一层清冽白霜。茉子身穿无袖贴身忍者战装，左手反握一柄寒光闪闪的钢制苦无。她单膝半跪在屋脊边缘，黑色短发与耳侧垂颊的长发束在夜风中轻盈舞动。她嘴角浮现出一贯调皮自信的猫嘴微笑，翠绿的眼眸在月光下警惕扫视着整片庭院——「今夜的风声很安静呢……不过只要有在下在，任何可疑分子都别想踏进芳乃大人的宅邸一步哦！」",
+    "id": "mako_ninja_rooftop_vigilance_kunai",
+    "lighting": "圆月洒下的清冽银白月辉与屋檐暗影的高对比反差",
+    "location": "朝武宅邸青黑瓦片高处屋脊",
+    "mood": "帅气敏捷",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "ninja_suit",
+    "promptProse": "Kneeling with agile balance upon the curved black roof tiles of an ancient estate beneath a radiant full moon, Mako watches the perimeter with a sharp steel kunai in hand. Cool night winds flutter her raven sidelocks and sleeveless ninja tunic as her playful cat-mouth smile gleams in the moonlight.",
+    "promptTokens": [
+      "temple_rooftop",
+      "roof_tiles",
+      "full_moon",
+      "ninja_suit",
+      "kneeling",
+      "holding_kunai",
+      "cat_mouth",
+      "ahoge",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "rooftop",
+      "roof_tiles",
+      "moon",
+      "ninja",
+      "kunai",
+      "kneeling",
+      "cat_mouth",
+      "ahoge",
+      "wind"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "常陆茉子 · 月夜飞檐的苦无警备"
+  }
+}

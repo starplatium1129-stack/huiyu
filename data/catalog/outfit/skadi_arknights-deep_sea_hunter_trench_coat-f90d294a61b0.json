@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/deep_sea_hunter_trench_coat",
+  "revision": 1,
+  "sortOrder": 355,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "default": false,
+      "id": "deep_sea_hunter_trench_coat",
+      "isDefault": false,
+      "name": "深海猎人·长风衣",
+      "prose": "a long black deep-sea hunter trench coat over her black high-cut sleeveless bodysuit with red accents, paired with black thigh-high boots",
+      "tokens": [
+        "trench_coat",
+        "bodysuit",
+        "black_clothes",
+        "red_clothes",
+        "high_boots"
+      ]
+    }
+  }
+}

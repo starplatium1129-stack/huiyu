@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/rehab_cozy_knitwear",
+  "revision": 1,
+  "sortOrder": 318,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "rehab_cozy_knitwear",
+      "isDefault": false,
+      "name": "温室休养录罗德岛医疗康复针织便服",
+      "prose": "a soft recovery lounge outfit: an oversized chunky sage-green cable-knit cardigan over a champagne silk camisole, paired with flowing lounge trousers",
+      "tokens": [
+        "chunky_knit",
+        "cardigan",
+        "silk_camisole",
+        "lounge_pants",
+        "sage_green"
+      ]
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "kind": "character",
+  "id": "kasugano_sora",
+  "revision": 1,
+  "sortOrder": 138,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kasugano_sora",
+    "profile": {
+      "id": "kasugano_sora",
+      "name": "春日野穹",
+      "alias": [
+        "春日野穹",
+        "Sora Kasugano"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-kasugano_sora.png?v=4d13d58d7002",
+        "alt": "春日野穹 · 夏日乡道的白裙场景样张"
+      },
+      "visual_dna": {
+        "signature": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+        "hair": "white_hair, very_long_hair, straight_hair, antenna_hair",
+        "eyes": "grey_eyes",
+        "uniform": "乡间白色连衣裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "不善主动交际，对熟悉的人和物有强烈依恋",
+        "安静外表下有任性与倔强，也会坦率表达不满",
+        "在安心的环境里才慢慢显露柔软与好奇"
+      ],
+      "likes": [
+        "随身的兔子玩偶",
+        "安静的居家时间",
+        "乡间夏日风景"
+      ],
+      "classic_cg": {
+        "title": "春日野穹 · 夏日乡道的白裙",
+        "description": "奥木染町的乡间道路，她穿着白色连衣裙走在蝉鸣里，双手背在身后抱着兔子布偶；远处是稻田与积雨云，她微微眯眼躲避阳光，像一幅会呼吸的油画。"
+      },
+      "identity": "Yosuga no Sora · 春日野穹",
+      "tags": [
+        "春日野穹",
+        "缘之空",
+        "日常"
+      ],
+      "bg_story": "回到乡间旧居后逐渐适应日常的少女，安静又有些倔强。长白发、黑色发带与兔子布偶是识别点，场景聚焦乡道、居家手工和季节变化。",
+      "palette": [
+        "#b0b8cd",
+        "#282532"
+      ],
+      "source": "Yosuga no Sora",
+      "speech": "兔子的耳朵……终于缝好了。",
+      "traits": [
+        "kasugano_sora",
+        "yosuga_no_sora",
+        "white_hair",
+        "very_long_hair",
+        "straight_hair"
+      ],
+      "accent_color": "#b0b8cd",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "kasugano_sora",
+      "displayName": "春日野穹",
+      "originalName": "Sora Kasugano",
+      "franchise": "Yosuga no Sora",
+      "aliases": [
+        "春日野穹",
+        "Sora Kasugano"
+      ],
+      "identityProse": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+      "identityTokens": [
+        "kasugano_sora",
+        "yosuga_no_sora",
+        "white_hair",
+        "very_long_hair",
+        "straight_hair",
+        "twintails",
+        "black_ribbon",
+        "antenna_hair",
+        "grey_eyes"
+      ],
+      "exactTokens": [
+        "kasugano_sora"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kasugano_sora"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

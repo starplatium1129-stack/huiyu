@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "tobiichi_origami_sfw_b6_07",
+  "revision": 1,
+  "sortOrder": 105,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tobiichi_origami_sfw_b6_07",
+    "title": "鸢一折纸 · 长发形态的晨间整理",
+    "category": "现代日常",
+    "characterId": "tobiichi_origami",
+    "outfitId": "sfw_home_long",
+    "description": "【公寓晨间·日出】折纸穿着浅蓝长袖便装，对着窗边镜子把新生的长发整理到腰后；她一丝不苟地固定最后一缕发丝，转身时白发在晨光里展开，冷静眼神难得带着一点新鲜感。",
+    "location": "quiet apartment room at sunrise",
+    "action": "窗边镜前整理及腰长发，转身时白发在日出里展开，眼神带一点新鲜感",
+    "timeOfDay": "日间",
+    "lighting": "pale sunrise reflected in the mirror",
+    "camera": "medium shot, vertical framing",
+    "mood": "严谨少女与新发型的温柔适应",
+    "sceneTags": [
+      "morning_room",
+      "mirror",
+      "long_hair",
+      "hair_ribbon",
+      "pale_blue_blouse",
+      "ankle_length_skirt",
+      "sunrise",
+      "composed",
+      "curiosity",
+      "afternoon_light"
+    ],
+    "promptProse": "Origami Tobiichi from Date A Live wears a pale blue long-sleeved blouse and ankle-length skirt, with flowing waist-length white hair. She stands beside the morning mirror, securing her newly grown white hair behind her waist with exacting care. She checks the last strand, then turns toward the viewer as the long hair opens in the sunrise, her composed blue eyes carrying a small curiosity about the unfamiliar silhouette. pale sunrise reflected in the mirror.",
+    "promptTokens": [
+      "morning_room",
+      "mirror",
+      "long_hair",
+      "hair_ribbon",
+      "pale_blue_blouse",
+      "ankle_length_skirt",
+      "sunrise",
+      "composed",
+      "curiosity",
+      "morning_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

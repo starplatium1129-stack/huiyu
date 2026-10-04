@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_morning_chair_straddle_lollipop",
+  "revision": 1,
+  "sortOrder": 1047,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_morning_chair_straddle_lollipop",
+    "title": "花火 · 晨间椅背跨坐的棒棒糖挑衅",
+    "category": "晨间女友",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 晨间椅背跨坐的棒棒糖挑衅】酒店客房晨曦初露，花火反客为主反向跨坐在你的扶手转椅上，下巴搁在椅背顶端，一双白皙修长的小腿悬空晃晃悠悠。她嘴里叼着一根晶莹的草莓棒棒糖，穿着宽大的红黑连帽卫衣露出大半截白嫩大腿，眨巴着大眼睛直勾勾盯着刚睡醒的你——「大懒虫，终于舍得醒啦？快点起来给我买早餐，不然今天的恶作剧惩罚可就要开始咯~」",
+    "location": "匹诺康尼复古酒店客房落地窗前转椅",
+    "action": "反向跨坐在椅背上双腿晃动，下巴支在椅背上含着棒棒糖，眼神俏皮坏笑",
+    "timeOfDay": "清晨",
+    "lighting": "透过落地窗倾泻进室内的晨曦金色阳光",
+    "camera": "cowboy shot, eye level, playful perspective",
+    "mood": "活泼挑衅",
+    "sceneTags": [
+      "hotel_room",
+      "sitting_reverse_on_chair",
+      "straddling_chair",
+      "oversized_hoodie",
+      "bare_legs",
+      "lollipop",
+      "eating_lollipop",
+      "playful_smile",
+      "winking"
+    ],
+    "promptProse": "Sitting playfully backward on a swivel chair in a sunlit luxury hotel suite, Sparkle rests her chin on the backrest while swinging her bare legs. Wearing an oversized crimson and black hoodie with sleeves draped over her hands, she rolls a red strawberry lollipop in her mouth, gazing at the viewer with a teasing, mischievous glint in her ruby eyes. Bright anime artwork, solo 1girl, no text.",
+    "promptTokens": [
+      "hotel_room",
+      "swivel_chair",
+      "sitting_backward",
+      "oversized_hoodie",
+      "denim_shorts",
+      "bare_legs",
+      "holding_lollipop",
+      "lollipop",
+      "winking",
+      "mischievous_smile",
+      "twintails",
+      "pink_eyes",
+      "morning_light",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_street_hoodie",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "teasing"
+    ]
+  }
+}

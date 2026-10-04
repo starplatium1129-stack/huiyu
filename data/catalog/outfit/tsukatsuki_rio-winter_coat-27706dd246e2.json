@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/winter_coat",
+  "revision": 1,
+  "sortOrder": 502,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "default": false,
+      "id": "winter_coat",
+      "isDefault": false,
+      "name": "冬季大衣",
+      "prose": "a long winter coat with a belt, boots and gloves, sharp executive look",
+      "tokens": [
+        "winter_coat",
+        "belt",
+        "boots",
+        "gloves",
+        "long_coat"
+      ]
+    }
+  }
+}

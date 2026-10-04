@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "albedo_overlord/official_white_dress",
+  "revision": 1,
+  "sortOrder": 705,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "albedo_overlord",
+    "outfit": {
+      "id": "official_white_dress",
+      "name": "纯白神圣晚礼服与漆黑恶魔翼",
+      "prose": "her signature elegant pure white backless evening dress with a spiderweb-patterned golden necklace, a waist cincher with a green gem brooch, and magnificent feathered black wings extending gracefully from her lower back",
+      "tokens": [
+        "white_dress",
+        "backless_dress",
+        "evening_gown",
+        "cleavage",
+        "golden_necklace",
+        "black_wings",
+        "feathered_wings",
+        "curved_horns"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/sfw_casual",
+  "revision": 1,
+  "sortOrder": 904,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "日常会议针织装",
+      "prose": "a dark green cardigan over a cream blouse and black tailored trousers, with pearl earrings",
+      "tokens": [
+        "green_cardigan",
+        "cream_blouse",
+        "black_pants",
+        "pearl_earrings"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "kind": "character",
+  "id": "kanroji_mitsuri",
+  "revision": 1,
+  "sortOrder": 128,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kanroji_mitsuri",
+    "profile": {
+      "id": "kanroji_mitsuri",
+      "name": "甘露寺蜜璃",
+      "alias": [
+        "甘露寺蜜璃",
+        "Mitsuri Kanroji"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-kanroji_mitsuri.png?v=d33d7374ebbb",
+        "alt": "甘露寺蜜璃 · 樱饼与发色的传说场景样张"
+      },
+      "visual_dna": {
+        "signature": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+        "hair": "pink_hair, green_hair, gradient_hair, long_hair",
+        "eyes": "green_eyes",
+        "uniform": "庭院端庄日常和装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "热情真诚，善于发现他人的可爱与优点",
+        "害羞时反应明显，但面对责任十分勇敢",
+        "力量与温柔并存，对小动物和美食会露出毫不掩饰的笑容"
+      ],
+      "likes": [
+        "樱饼",
+        "和人分享饭食",
+        "逗猫与照看小动物"
+      ],
+      "classic_cg": {
+        "title": "甘露寺蜜璃 · 樱饼与发色的传说",
+        "description": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待。粉色长辫的绿发梢落在腰带边，茶杯和庭院樱叶映着柔光；只呈现当前粉发形态。"
+      },
+      "identity": "Kimetsu no Yaiba · 甘露寺蜜璃",
+      "tags": [
+        "甘露寺蜜璃",
+        "鬼灭之刃",
+        "日常"
+      ],
+      "bg_story": "拥有惊人力量与温柔心性的恋柱。樱饼、猫咪、朋友送来的袜子和热情的笑容构成日常识别点，发色固定为粉发渐变绿发梢，不叠加早期黑发回忆。",
+      "palette": [
+        "#d69aaf",
+        "#282532"
+      ],
+      "source": "Kimetsu no Yaiba",
+      "speech": "能和大家一起吃饭，真是太幸福了！",
+      "traits": [
+        "kanroji_mitsuri",
+        "kimetsu_no_yaiba",
+        "pink_hair",
+        "green_hair",
+        "gradient_hair"
+      ],
+      "accent_color": "#d69aaf",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "甘露寺蜜璃",
+        "Mitsuri Kanroji"
+      ],
+      "displayName": "甘露寺蜜璃",
+      "exactPrefixes": [
+        "1girl, solo, kanroji_mitsuri"
+      ],
+      "exactTokens": [
+        "kanroji_mitsuri"
+      ],
+      "franchise": "Kimetsu no Yaiba",
+      "id": "kanroji_mitsuri",
+      "identityProse": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+      "identityTokens": [
+        "kanroji_mitsuri",
+        "kimetsu_no_yaiba",
+        "pink_hair",
+        "green_hair",
+        "gradient_hair",
+        "long_hair",
+        "multiple_braids",
+        "green_eyes",
+        "mole_under_eye"
+      ],
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "originalName": "Mitsuri Kanroji",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

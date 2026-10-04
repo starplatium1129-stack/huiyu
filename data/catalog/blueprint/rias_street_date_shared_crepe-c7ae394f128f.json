@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "rias_street_date_shared_crepe",
+  "revision": 1,
+  "sortOrder": 1280,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_street_date_shared_crepe",
+    "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
+    "category": "街头约会",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 商业街午后的甜蜜可丽饼】繁华步行街的露天遮阳伞下，微风卷起路旁的樱花花瓣。莉雅丝穿着合身的驹王学园制服，双手捧着刚买的草莓奶油可丽饼，微红着脸颊将最顶端的新鲜草莓递向你的唇边，水蓝色的眼眸里满是期待——「啊——张嘴。听说这家店在人类情侣里很受欢迎，味道真的不错呢。」",
+    "location": "洒满落樱的商业步行街遮阳伞长椅",
+    "action": "坐在长椅上微倾身子，双手捧着草莓可丽饼向视角前方喂食，脸颊泛着淡淡红晕",
+    "timeOfDay": "午后晴天",
+    "lighting": "明亮通透的自然阳光与落樱微影",
+    "camera": "medium shot, slightly high angle, close perspective",
+    "mood": "心动纯情",
+    "sceneTags": [
+      "street",
+      "bench",
+      "outdoor_cafe",
+      "cherry_blossoms",
+      "holding_food",
+      "crepe",
+      "feeding_viewer",
+      "shy_smile",
+      "blush"
+    ],
+    "promptProse": "Sitting at a charming outdoor cafe bench beneath blooming cherry trees, Rias Gremory leans forward holding a fresh strawberry crepe toward the viewer. Dressed in her Kuoh Academy school uniform, her porcelain cheeks show a bashful pink blush as her cyan eyes sparkle with sweet romantic affection. Medium shot, vibrant afternoon lighting, solo 1girl, no text.",
+    "promptTokens": [
+      "outdoor_cafe",
+      "park_bench",
+      "cherry_blossoms",
+      "holding_crepe",
+      "feeding_viewer",
+      "kuoh_academy_uniform",
+      "leaning_forward",
+      "shy_smile",
+      "blush",
+      "cyan_eyes",
+      "afternoon_sun",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad hands",
+      "extra fingers",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_kuoh_uniform",
+    "coverageTags": [
+      "date",
+      "sweet",
+      "daily"
+    ]
+  }
+}

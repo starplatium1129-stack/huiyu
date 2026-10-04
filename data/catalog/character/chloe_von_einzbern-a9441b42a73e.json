@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "chloe_von_einzbern",
+  "revision": 1,
+  "sortOrder": 135,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "chloe_von_einzbern",
+    "profile": {
+      "id": "chloe_von_einzbern",
+      "name": "克洛伊",
+      "alias": [
+        "克洛伊",
+        "Chloe von Einzbern"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-chloe_von_einzbern.png?v=6ea4fcf35fa1",
+        "alt": "克洛伊 · 爱因兹贝伦家的早餐战争场景样张"
+      },
+      "visual_dna": {
+        "signature": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+        "hair": "pink_hair, long_hair",
+        "eyes": "orange_eyes",
+        "uniform": "早餐料理围裙便装",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "活泼好胜，喜欢以得意笑容发起小小挑战",
+        "嘴上不服输，也会悄悄为身边人着想",
+        "熟悉的家庭日常能让她放下逞强"
+      ],
+      "likes": [
+        "热闹的早餐时间",
+        "和朋友玩游戏",
+        "参加节日活动"
+      ],
+      "classic_cg": {
+        "title": "克洛伊 · 爱因兹贝伦家的早餐战争",
+        "description": "餐桌前，她伸长筷子抢走伊莉雅盘子里的煎蛋，动作快得只剩残影；被瞪之后露出得意的小恶魔笑，却把自已盘子里的培根默默分了过去——争归争，照顾归照顾。"
+      },
+      "identity": "Fate · 克洛伊",
+      "tags": [
+        "克洛伊",
+        "Fate 系列",
+        "日常"
+      ],
+      "bg_story": "伊莉雅身边活泼好胜的伙伴，擅长料理，也会用玩笑掩饰在意。保留深肤色、浅粉长发和橙瞳，本批只采用完整日常服装与校园、居家活动。",
+      "palette": [
+        "#d5a293",
+        "#282532"
+      ],
+      "source": "Fate",
+      "speech": "这次是我赢了，不过点心可以分你一半。",
+      "traits": [
+        "chloe_von_einzbern",
+        "fate/kaleid_liner_prisma_illya",
+        "dark_skin",
+        "pink_hair",
+        "long_hair"
+      ],
+      "accent_color": "#d5a293",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "chloe_von_einzbern",
+      "displayName": "克洛伊",
+      "originalName": "Chloe von Einzbern",
+      "franchise": "Fate",
+      "aliases": [
+        "克洛伊",
+        "Chloe von Einzbern"
+      ],
+      "identityProse": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+      "identityTokens": [
+        "chloe_von_einzbern",
+        "fate/kaleid_liner_prisma_illya",
+        "dark_skin",
+        "pink_hair",
+        "long_hair",
+        "sidelocks",
+        "orange_eyes"
+      ],
+      "exactTokens": [
+        "chloe_von_einzbern"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, chloe_von_einzbern"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

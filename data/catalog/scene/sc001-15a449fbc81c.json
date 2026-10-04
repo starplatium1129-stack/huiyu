@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc001",
+  "revision": 1,
+  "sortOrder": 0,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "By a classroom window, she adjusts one pink hair ribbon with one hand while cradling lecture papers in her other arm.",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc001",
+    "lighting": "窗光",
+    "location": "教室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, loose_hair, untied_hair, missing_hair_ribbon, high_twintails, single_ponytail, side_ponytail, holding_papers_with_both_hands, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, school_uniform, three_quarter_view, looking_at_viewer, turning_head, hand_to_hair, adjusting_hair_ribbon, holding_papers, waiting, standing, gentle_smile, classroom_window, sunset, clear_sky, upper_body, medium_shot, window_light, blush, shy, classroom, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "春",
+    "story": "【宁宁 · 放学后的等待】夕阳把空教室染成柔软的橙色。宁宁抱着替你收好的讲义站在窗边，明明已经等了很久，听见门响却先装作整理发带。直到你走近，她才把讲义递来，紫色眼睛里藏不住安心的亮光——「你总算来了。那个……如果不急着回家，要不要陪我去一趟社团活动室？」",
+    "storyJa": "【寧々・放課後の待ち合わせ】夕日が、誰もいない教室を柔らかな橙色に染めている。寧々はあなたのためにまとめたプリントを抱え、窓辺に立っていた。ずっと待っていたはずなのに、扉の音がすると慌ててリボンを整えるふりをする。あなたがそばまで来ると、ようやくプリントを差し出した。紫の瞳には、ほっとした光が隠しきれない――「やっと来てくれたんですね。その……急いで帰らなくてもいいなら、一緒に部室へ行きませんか？」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "three_quarter_view",
+      "one_hand_adjusting_hair_ribbon",
+      "holding_papers_in_other_arm",
+      "smile",
+      "holding_papers",
+      "waiting",
+      "standing",
+      "gentle_smile",
+      "looking_at_viewer",
+      "classroom_window",
+      "sunset",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "window_light",
+      "blush",
+      "shy",
+      "classroom"
+    ],
+    "time": "午后",
+    "timeOfDay": "sunset",
+    "title": "放学后的等待",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

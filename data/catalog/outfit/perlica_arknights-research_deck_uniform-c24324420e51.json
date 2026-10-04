@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "perlica_arknights/research_deck_uniform",
+  "revision": 1,
+  "sortOrder": 412,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "perlica_arknights",
+    "outfit": {
+      "default": false,
+      "id": "research_deck_uniform",
+      "isDefault": false,
+      "name": "研究舰甲板·监督风衣",
+      "prose": "a crisp white-and-charcoal Endfield supervisor trench coat with a technical utility belt and practical black boots",
+      "tokens": [
+        "uniform",
+        "trench_coat",
+        "white_jacket",
+        "utility_belt",
+        "black_clothes",
+        "boots"
+      ]
+    }
+  }
+}

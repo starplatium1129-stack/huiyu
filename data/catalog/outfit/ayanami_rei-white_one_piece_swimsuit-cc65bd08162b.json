@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ayanami_rei/white_one_piece_swimsuit",
+  "revision": 1,
+  "sortOrder": 560,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ayanami_rei",
+    "outfit": {
+      "default": false,
+      "id": "white_one_piece_swimsuit",
+      "isDefault": false,
+      "name": "经典白色连体泳装",
+      "prose": "wearing a minimalist pure white one-piece athletic swimsuit hugging her slender silhouette with glistening water droplets on her pale porcelain skin",
+      "styleHint": "azure pool water caustic light reflections on pale skin",
+      "tokens": [
+        "swimsuit",
+        "one_piece_swimsuit",
+        "white_swimsuit",
+        "wet_skin",
+        "bare_legs",
+        "bare_shoulders",
+        "water_droplets"
+      ]
+    }
+  }
+}

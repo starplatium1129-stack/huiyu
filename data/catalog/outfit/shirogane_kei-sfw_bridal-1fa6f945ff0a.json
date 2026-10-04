@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 783,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "default": false,
+      "id": "sfw_bridal",
+      "isDefault": false,
+      "name": "白银圭·圣洁花嫁",
+      "prose": "a simple silver-white bridal dress with a black ribbon headband, modest veil and a small budget-friendly flower bouquet",
+      "tokens": [
+        "wedding_dress",
+        "silver_white_dress",
+        "black_headband",
+        "modest_veil",
+        "small_bouquet"
+      ]
+    }
+  }
+}

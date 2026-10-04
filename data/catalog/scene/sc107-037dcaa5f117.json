@@ -1,0 +1,60 @@
+{
+  "kind": "scene",
+  "id": "sc107",
+  "revision": 1,
+  "sortOrder": 105,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "round3-2026-07-22",
+    "camera": "主观平视特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "感官过载",
+    "id": "sc107",
+    "lighting": "暗房微弱红光对比",
+    "location": "秘密社办暗房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, bedroom, bed, hotel room, hospital, clinic, medical tray, medical equipment, kitchen, blue lighting, daylight, child, loli, underage",
+    "prompt": "(traditional photographic darkroom under saturated red safelight:1.7), hanging photographic prints, photo enlarger with lens column, shallow chemical developing trays, Nene lying on darkroom workbench, (photography darkroom:1.55), sensor cable, 1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, lace_lingerie, lying_on_table, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, darkroom, night, red_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 居家衬衫半脱高能】社办暗房深处，冲洗照片的微弱红光映照着彼此。因为环境闷热，宁宁解开了衬衫大半纽扣，里面精致的黑色蕾丝内衣若隐若现。她有些脱力地仰躺在宽大的工作台上，乌黑的发带掉在一边，头顶的呆毛疯狂卷曲成完美的爱心螺旋。她双手死死抓着你的肩膀，满脸泪痕与香汗交织，小嘴微张发出令人意乱情迷的娇喘——「呜...柊史...魔法已经不管用了...宁宁的身体...快要被你彻底融化了...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・ホームシャツ半額ハイエナジー】社務所の暗室の奥では、写真の現像に使われるほのかな赤い光が反射していた。息苦しい環境だったため、寧々さんはシャツのほとんどのボタンを外し、その下にある絶妙な黒いレースの下着を露出させました。彼女は大きな作業台に仰向けに横たわり、黒いヘアバンドは脇に落ち、頭の上のアホ毛は狂ったように丸まって完璧な愛のスパイラルを描いていました。彼女は両手であなたの肩を抱き、顔は涙と汗で覆われ、口をわずかに開き、魅力的なあえぎ声を上げました。――「柊史……もう魔法なんて役に立ちません。こんなに胸が熱いのは、全部あなたのせいです。」",
+    "tags": [
+      "unbuttoned_shirt",
+      "lace_lingerie",
+      "lying_on_table",
+      "bare_shoulders",
+      "cleavage",
+      "bare_legs",
+      "heavy_blush",
+      "tears_in_eyes",
+      "open_mouth",
+      "sweat",
+      "messy_hair",
+      "darkroom",
+      "night",
+      "red_light",
+      "hair_ribbon",
+      "ahoge",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "微热暗房的显影意外",
+    "usage": [
+      "壁纸级",
+      "绝对独占",
+      "R15"
+    ],
+    "weather": "炙热"
+  }
+}

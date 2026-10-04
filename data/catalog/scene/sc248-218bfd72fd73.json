@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc248",
+  "revision": 1,
+  "sortOrder": 243,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she looks forward toward the viewer with a gentle blush on her cheeks, as warm amber lantern light glows softly.",
+    "camera": "侧面近景特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc248",
+    "lighting": "更衣室柔和均匀的白色灯光",
+    "location": "商场更衣室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【宁宁 · 换装意外】购物商场的更衣室。宁宁正在试穿一件新买的连衣裙，因为拉链卡在背后够不到，她下意识地拉开帘子想求助，却没想到外面站着的是你。帘子只拉开了一半，她光洁的背部与精致的肩胛骨线条在柔和的灯光下一览无余，只有一条细细的内衣带子横亘其中。两人对视的瞬间，空气仿佛凝固了。宁宁愣了一秒，然后尖叫着把帘子甩上，从帘子后面传来慌乱的声音——「呜啊！柊、柊史！你为什么会在这里！不准想刚才的画面！快忘掉！才、才没有故意让你看到呢……呜，笨蛋，帮我叫店员来啦！」",
+    "storyJa": "【寧々】【寨々・試着室の隙間の驚鴻一瞥】ショッピングモールの試着室。寨々は新しく買ったワンピースを試着していたが、背中のファスナーが上がって届かず、思わずカーテンを開けて助けを求めようとした。外に立っていたのがあなただとは想像もしていなかった。カーテンは半分しか開いておらず、彼女の滑らかな背中と精致な肩甲骨のラインが柔らかな灯りの下で余すところなく露出し、細い下着の紐だけが一本横たわっていた。二人の視線が交わった瞬間、空気が凍りついた。寨々は一秒固まった後、叫びながらカーテンを閉め、向こう側から慌てた声が聞こえてきた――「うあぁ！柊、柊史！なぜここにいるの？！さっきの映像を思い浮かべないで！早く忘れて！べ、別にわざと見せたわけじゃない……うう、バカ、店員を呼んできて！」",
+    "tags": [
+      "white_hair",
+      "very_long_hair",
+      "low_twintails",
+      "purple_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "dress",
+      "backless",
+      "bare_shoulders",
+      "shoulder_blade",
+      "underwear_strap",
+      "fitting_room",
+      "heavy_blush",
+      "panicked",
+      "open_mouth",
+      "indoors",
+      "bright",
+      "romantic_atmosphere",
+      "close_up"
+    ],
+    "time": "白天",
+    "timeOfDay": "all_day",
+    "title": "试衣间帘隙的惊鸿一瞥",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "室内"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "kaguya_library_shared_reading",
+  "revision": 1,
+  "sortOrder": 1404,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "并肩共读留三厘米距离，侧脸微近，余光偷看",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "medium two-shot, window seat reading, dust motes, quiet intimacy",
+    "category": "校园日常",
+    "characterId": "shinomiya_kaguya",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "school"
+    ],
+    "description": "【秀知院图书室·午后】辉夜与你并肩坐在靠窗的阅读位，两本书之间刻意留出三厘米的距离——这是她计算过的、既不会越界也不会疏远的安全值。翻页的间隙她的侧脸靠近了一点，红瞳的余光一直落在你的书页上。午后的光尘在两人之间浮游，谁都没有开口，谁都没有挪开。",
+    "id": "kaguya_library_shared_reading",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "窗边洒落的明亮午后光与浮游光尘",
+    "location": "秀知院图书室靠窗阅读位",
+    "mood": "计算中的心动、静谧",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_shuchiin_uniform",
+    "promptProse": "Shinomiya Kaguya sits beside you at the window seats of the Shuchiin library, her book and yours separated by a calculated three centimeters that is neither intrusion nor distance. Between page turns her profile draws a little closer, the red irises of her sidelong gaze lingering on your book more than her own. Afternoon light dusts the air between you with drifting motes and neither of you moves away. Two-person medium shot, cinematic lighting, window glow, detailed library background.",
+    "promptTokens": [
+      "shinomiya_kaguya",
+      "1girl",
+      "shuuchiin_academy_school_uniform",
+      "school_uniform",
+      "holding_book",
+      "reading",
+      "sitting",
+      "blush",
+      "red_eyes",
+      "black_hair",
+      "short_hair",
+      "folded_ponytail",
+      "red_ribbon",
+      "library",
+      "window",
+      "day",
+      "detailed_background",
+      "cinematic_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "library",
+      "reading",
+      "holding_book",
+      "sitting",
+      "window",
+      "blush",
+      "quiet",
+      "daily"
+    ],
+    "timeOfDay": "午后",
+    "title": "四宫辉夜 · 图书室的共读午后·「距离……刚好是三厘米」"
+  }
+}

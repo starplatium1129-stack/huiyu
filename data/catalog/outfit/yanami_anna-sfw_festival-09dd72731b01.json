@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/sfw_festival",
+  "revision": 1,
+  "sortOrder": 954,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "sfw_festival",
+      "name": "夏祭蓝色花纹浴衣",
+      "prose": "a blue floral yukata with a yellow obi and wooden sandals",
+      "tokens": [
+        "blue_yukata",
+        "floral_print",
+        "yellow_obi",
+        "geta"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

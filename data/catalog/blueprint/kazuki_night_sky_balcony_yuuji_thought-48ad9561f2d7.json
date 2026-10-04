@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_night_sky_balcony_yuuji_thought",
+  "revision": 1,
+  "sortOrder": 1173,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_night_sky_balcony_yuuji_thought",
+    "title": "风见一姬 · 繁星穹顶下的月下凝思",
+    "category": "深情思念",
+    "characterId": "kazami_kazuki",
+    "outfitId": "white_dress",
+    "coverageTags": [
+      "night"
+    ],
+    "description": "【风见一姬 · 繁星穹顶下的月下凝思】高耸于山巅的现代建筑顶层露天阳台上，满天浩瀚星河如银色缎带横跨苍穹。一姬倚靠在透明钢化玻璃护栏旁，单手轻轻将耳边被夜风拂乱的银丝挽至耳后。皎洁的银月洒下清辉，将她纯白的裙摆映照得如同发光的羽翼，深红的美眸倒映着繁星，无声诉说着对远方弟弟的深沉守护与执念。",
+    "location": "山顶观景露天大理石阳台护栏边",
+    "action": "倚靠栏杆轻挽耳侧白发侧身凝望星空，白裙随夜风飘拂，红眸含情脉脉",
+    "timeOfDay": "夜晚",
+    "lighting": "漫天浩瀚银河与高悬明月的清冷皎洁月华",
+    "camera": "cowboy shot, low angle, vast starry sky background",
+    "mood": "深情凄美",
+    "sceneTags": [
+      "balcony",
+      "night_sky",
+      "stars",
+      "milky_way",
+      "moonlight",
+      "tucking_hair_behind_ear",
+      "white_dress",
+      "wind"
+    ],
+    "promptProse": "Leaning against a glass balcony railing beneath a breathtaking tapestry of the Milky Way, Kazuki gently tucks a strand of silver hair behind her ear. Cool celestial starlight blankets her flowing white sundress in ethereal radiance as her crimson eyes gaze lovingly into the infinite night.",
+    "promptTokens": [
+      "observation_balcony",
+      "starry_night_sky",
+      "milky_way",
+      "full_moon",
+      "white_dress",
+      "tucking_hair",
+      "very_long_hair",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

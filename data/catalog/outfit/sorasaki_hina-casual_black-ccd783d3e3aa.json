@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/casual_black",
+  "revision": 1,
+  "sortOrder": 487,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "default": false,
+      "id": "casual_black",
+      "isDefault": false,
+      "name": "日常黑裙",
+      "prose": "a refined casual black gothic dress with red ribbon trim, dark stockings and Mary Jane shoes, quiet and delicate private look",
+      "tokens": [
+        "dress",
+        "black_dress",
+        "red_ribbon",
+        "ribbon_trim",
+        "black_tights",
+        "mary_janes",
+        "refined",
+        "casual"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "shinomiya_kaguya/official_shuchiin_uniform",
+  "revision": 1,
+  "sortOrder": 765,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinomiya_kaguya",
+    "outfit": {
+      "default": true,
+      "id": "official_shuchiin_uniform",
+      "isDefault": true,
+      "name": "私立秀知院学园制服",
+      "prose": "her Shuchiin Academy school uniform: a pristine white long-sleeved blouse with a black sleeveless dress over it, a stiff white collar with a small dark ribbon tie, a red ribbon in her folded-ponytail black hair, and sheer black pantyhose",
+      "tokens": [
+        "shuuchiin_academy_school_uniform",
+        "school_uniform",
+        "white_shirt",
+        "black_dress",
+        "pinafore_dress",
+        "collar",
+        "ribbon_tie",
+        "black_pantyhose",
+        "red_ribbon",
+        "folded_ponytail"
+      ]
+    }
+  }
+}

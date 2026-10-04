@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc016",
+  "revision": 1,
+  "sortOrder": 15,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Beside the campfire, Shiki Natsume holds her phone out in one hand to show a badly tilted photograph of the stars. Her other hand starts to reach back for it after the viewer asks to keep the picture. She sits on a low camping stool in an olive windbreaker and dark trousers, her embarrassed face warmed by the fire. A tent and the real starry sky establish the summer campsite behind her.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "篝火旁半身中景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc016",
+    "lighting": "篝火暖光与星空冷光",
+    "location": "夏夜露营地",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, olive_jacket, windbreaker, dark_pants, hiking_shoes, sitting_on_camping_stool, holding_phone, phone_screen, tilted_star_photograph, reaching, embarrassed_smile, campsite, campfire, tent, starry_sky, night, firelight, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【夏目 · 篝火旁的歪照片】夏夜露营地只剩木柴燃烧的轻响。夏目把刚拍的照片递给你，画面里星空歪了一半，却意外留下你回头看她的瞬间。你说想保留，她立刻伸手来抢，脸颊被火光映得通红——「构图失败的照片有什么好留的……算了，只能存在你手机里，不准发给别人。」",
+    "storyJa": "【夏目・キャンプファイヤーの曲がった写真】夏の夜、キャンプ場に残るのは薪が燃える柔らかな音だけ。夏目が撮ったばかりの写真を渡しました。写真の中の星空は半分傾いていたが、思いがけず彼女を振り返った瞬間を残した。あなたがそれを保管したいと言うと、彼女はすぐに手を伸ばしてそれを掴み、焚き火の光で頬を赤らめました。――「構図に失敗した写真なんて、残してどうするの……まあいいわ。あなたのスマホだけに保存して、誰にも送らないで。」",
+    "tags": [
+      "olive_jacket",
+      "windbreaker",
+      "dark_pants",
+      "hiking_shoes",
+      "sitting_on_camping_stool",
+      "holding_phone",
+      "phone_screen",
+      "tilted_star_photograph",
+      "reaching",
+      "embarrassed_smile",
+      "campsite",
+      "campfire",
+      "tent",
+      "starry_sky",
+      "night",
+      "firelight",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "篝火旁的歪照片",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

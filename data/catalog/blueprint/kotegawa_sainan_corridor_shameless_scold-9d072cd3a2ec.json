@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_sainan_corridor_shameless_scold",
+  "revision": 1,
+  "sortOrder": 1256,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手抱胸端立微倾身躯，红色臂章醒目，面红耳赤含羞娇叱，黑长直发丝飞扬",
+    "camera": "medium shot, eye-level, classic tsundere confrontation framing",
+    "category": "风纪严明",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【古手川唯 · 学园走廊的“不知羞耻”斥责】彩南高中阳光明朗的课间走廊拐角处，古手川唯双手抱胸端立在木地板中央。她身穿规规矩矩扣齐纽扣的水手服制服，手臂上鲜红的风纪委员臂章格外醒目。一头乌黑柔顺的齐腰长直发与纯白发箍在微风中轻扬。她看着刚刚摔倒陷入尴尬神摔的梨斗，脸颊涨得通红，琥珀色的双眸含羞带怒，大声娇叱——「结城梨斗！你、你又在大庭广众之下做出这种事情！身为风纪委员，我绝对不容许这种行为……不知羞耻！」",
+    "id": "kotegawa_sainan_corridor_shameless_scold",
+    "lighting": "走廊高大玻璃窗洒入的明澈日光与黑长直发丝上的剔透光泽",
+    "location": "彩南高中教学楼采光走廊拐角处",
+    "mood": "正经娇羞",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Standing with arms crossed defensively and blushing furiously in a sunlit high school hallway, Yui scolds with righteous indignation in her tidy school sailor uniform. Morning sunbeams illuminate her crisp red disciplinary armband and lustrous waist-length black hair held by a white hairband.",
+    "promptTokens": [
+      "school_hallway",
+      "arms_crossed",
+      "heavy_blush",
+      "tsundere_glare",
+      "red_armband",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "white_hairband",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_hallway",
+      "arms_crossed",
+      "heavy_blush",
+      "tsundere_glare",
+      "armband",
+      "sainan_high_school_uniform",
+      "white_hairband",
+      "black_hair"
+    ],
+    "timeOfDay": "上午",
+    "title": "古手川唯 · 学园走廊的“不知羞耻”斥责"
+  }
+}

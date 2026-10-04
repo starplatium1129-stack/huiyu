@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "suzuran_arknights/fluffy_cloak",
+  "revision": 1,
+  "sortOrder": 374,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suzuran_arknights",
+    "outfit": {
+      "default": false,
+      "id": "fluffy_cloak",
+      "isDefault": false,
+      "name": "厚绒斗篷",
+      "prose": "wearing a thick fluffy fur cloak with a plush hood, fur trim collar, and a warm voluminous winter silhouette",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "suzuran_fluffy_cloak",
+        "fur_cloak",
+        "fluffy_cloak",
+        "fur_trim",
+        "hooded_cloak",
+        "cloak",
+        "winter_clothes",
+        "fur_collar",
+        "long_cloak",
+        "warm_clothes"
+      ]
+    }
+  }
+}

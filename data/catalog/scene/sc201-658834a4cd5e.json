@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc201",
+  "revision": 1,
+  "sortOrder": 196,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc201",
+    "title": "微热雨夜的纯白茧化",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 宁宁 · 宽松衬衫下的极致依恋】窗外雷雨大作，深夜的卧室只亮着一盏昏暖的床头灯。宁宁蜷在你的怀抱里，身上只套着你那件宽大的纯白衬衫；松开的前襟与半露的肩线，被暖光勾出柔软轮廓。她双手紧紧攥住你的衣角，泪光与红晕在眼底交叠，头顶的呆毛也因慌乱卷成了心形。她仰起脸，声音轻得几乎被雨声淹没——「大色狼……说好只是抱着聊天的。再这样下去，宁宁真的没办法冷静啦……」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "极致羞耻动情",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "oversized_white_shirt",
+      "unbuttoned_shirt",
+      "bare_shoulders",
+      "bare_legs",
+      "embracing",
+      "bedroom",
+      "full_body"
+    ],
+    "mature": false,
+    "location": "温馨卧室大床",
+    "weather": "窗外雷雨",
+    "camera": "主观仰视近景",
+    "lighting": "微弱床头灯暖光",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, oversized_shirt, white_shirt, unbuttoned_shirt, off-shoulder, bare_shoulders, cleavage, no_pants, slender_bare_legs, lying_on_bed, curled_up, leaning_forward, close-up, looking_at_viewer, gripping_bedsheet, heavy_blush, heart_ahoge, teary_eyes, bedroom, on_bed, dim_lighting, warm_lighting, rain_on_window, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, underwear, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "storyJa": "【寧々・大人のアフターストーリー · ·ゆるいシャツの下に究極の愛着を】窓の外は雷雨で、深夜の寝室には薄暗いベッドサイドランプだけが灯っていました。寧々は腕の中で丸まって、ゆったりとした白いシャツだけを着ています。緩んだフロントと半分露出した肩のラインが、暖かい光によって柔らかく輪郭を描かれます。彼女はあなたの服の裾を両手でしっかりと握り、目には涙と赤みが重なって、頭のアホ毛がパニックになってハート型に丸まりました。彼女は顔を上げ、その声は雨の音にほとんどかき消されそうなほど小さかった。――「もう……抱きしめて話すだけって約束したのに。これ以上からかわれたら、寧々は本当に落ち着けません……。」",
+    "rating": "R15",
+    "animaCaption": "During a thunderstorm night in the dim bedroom lit by a single warm lamp, Nene curls up on the bed wearing only an unbuttoned oversized white shirt falling off one shoulder, gripping the sheets as she gazes into the viewer's eyes with a teary, blushing heart-shaped ahoge.",
+    "auditRevision": "careful-batch13-2026-08-27"
+  }
+}

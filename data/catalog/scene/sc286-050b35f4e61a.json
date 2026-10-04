@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc286",
+  "revision": 1,
+  "sortOrder": 281,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc286",
+    "title": "雨夜的体温",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 夏目 · 淋湿之后】深夜的暴雨将两人淋得透湿才跌进玄关。夏目的白衬衫湿透贴在身上，她反手带上门，没有开灯——黑暗中只有窗外的路灯光线和她微微急促的呼吸。她转过身，手指从领口开始，一颗一颗解开湿衬衫的扣子。湿透的布料顺着肩头滑落，堆在脚边。她抬起眼，琥珀色的瞳孔在昏暗中亮得惊人——没有再说话，她伸手拽住你的衣襟，把你拉进了那片被雨水打湿的、灼热的沉默里。窗外雨声不止，而她皮肤的触感比所有说过的话都诚实。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "热情",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "wet_shirt",
+      "see_through_clothing",
+      "wet_clothes",
+      "unbuttoned_shirt",
+      "off_shoulder",
+      "bare_shoulders",
+      "black_lace_bra",
+      "water_droplets",
+      "clinging_wet_hair",
+      "pulling_lapel",
+      "standing_close",
+      "genkan",
+      "night",
+      "rain",
+      "streetlight",
+      "cowboy_shot",
+      "heavy_blush"
+    ],
+    "mature": false,
+    "rating": "R15",
+    "location": "公寓玄关",
+    "weather": "暴雨",
+    "camera": "七分身主观近景特写",
+    "lighting": "雨夜窗外路灯幽蓝冷光与玄关阴影构成的强烈轮廓光",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, wet_skin, water_droplets, unbuttoned_shirt, white_shirt, off_shoulder, shirt_slipping_off, bare_shoulders, collarbone, black_lace_bra, see-through_shirt, disheveled_clothes, grabbing_lapel, pulling_viewer_closer, standing_close, heavy_blush, breathless, parted_lips, intense_gaze, looking_at_viewer, apartment_entrance, genkan, dark_room, night, pouring_rain, rain_on_window, streetlight_through_window, rim_light, chiaroscuro, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【夏目・大人のAfter Story・雨に濡れた後】深夜の豪雨に二人はずぶ濡れになって玄関に辿り着いた。夏目の白いブラウスは濡れて肌に張り付いている。彼女は後ろ手に扉を閉め、明かりはつけなかった——暗闇には窓の外の街灯の光と、彼女の微かに荒い呼吸だけがあった。彼女は振り返り、指を襟元に置いて、濡れたブラウスのボタンを一つずつ外していった。濡れた布地が肩から滑り落ち、足元に積もった。彼女は顔を上げた。琥珀色の瞳が薄暗がりの中で驚くほどに輝いていた——もう何も言わなかった。彼女は手を伸ばしてあなたの襟を掴み、雨に打たれた熱い沈黙の中へと引き込んだ。窓の外では雨音が止まず、彼女の肌の感触は、すべての言葉よりも誠実だった。",
+    "animaCaption": "Drenched by the midnight downpour and tumbling into the dark apartment entrance with the door shut behind you and the lights off, Shiki Natsume stands in the intimate shadows with rain dripping from her long glossy black hair. Her white shirt is thoroughly soaked transparent and completely unbuttoned, sliding off her bare shoulders to reveal delicate black lace lingerie and glistening water droplets along her collarbone. In an intimate cowboy shot framing, her amber eyes glow passionately in the dim streetlamp backlight streaming through the rain-streaked window; without a word, her trembling hand reaches out to firmly grip your lapel, pulling you close into the hot, breathless silence. Cinematic chiaroscuro lighting, dramatic rim light, moody rainy atmosphere, no text, no extra people.",
+    "auditRevision": "skill-refine-sc286-2026-09-05"
+  }
+}

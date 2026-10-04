@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc043",
+  "revision": 1,
+  "sortOrder": 41,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets bead on her bare shoulders above the steaming water.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "隔着蒸汽的肩上近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "诱惑",
+    "id": "sc043",
+    "lighting": "月光与温泉灯暖光",
+    "location": "雪夜露天温泉",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, no phone, empty hands",
+    "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, water_droplets_on_body, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【成年 After Story · 雪夜温泉的视线约定】旅行的露天温泉被雪夜围住，成年的宁宁躲在蒸汽与岩石后，只露出泛红的脸。你主动转开视线，她才慢慢放松，隔着水声挪到不远处。月光落在银白长发上，她小声提出规则——「可以陪我说话，但不准突然回头。等我准备好了……我会自己走到你看得见的地方。」",
+    "storyJa": "【寧々・大人のアフターストーリー・雪の夜温泉の視線の約束】旅先の露天風呂は雪の夜に包まれていた。大人の寧々は、赤い顔だけを露出させて、湯気と岩の陰に隠れていました。あなたが率先して目をそらしてみると、彼女はゆっくりとリラックスして、水の音を聞きながら遠くないところへ動きました。月光が彼女の長い銀髪に降り注ぎ、彼女はルールをささやいた――「話し相手になってくれるのは嬉しいですけど、急に振り向くのは禁止です。準備ができたら……私から、あなたに見えるところへ行きますから。」",
+    "tags": [
+      "hair_ribbon",
+      "night",
+      "soft_lighting",
+      "shy",
+      "blush",
+      "onsen",
+      "outdoor_onsen",
+      "steam",
+      "adult",
+      "snowfall",
+      "face_only",
+      "rocks",
+      "looking_at_viewer",
+      "moonlight",
+      "close_up",
+      "warm_lighting",
+      "snow"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "雪夜露天温泉的视线约定",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "小雪"
+  }
+}

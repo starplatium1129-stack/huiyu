@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "asuka_langley_classroom_argument",
+  "revision": 1,
+  "sortOrder": 1026,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手抱胸身体微前倾，眉头轻挑傲娇俯视",
+    "camera": "cowboy shot, low angle",
+    "category": "校园日常",
+    "characterId": "asuka_langley",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【惣流·明日香 · 教室里的傲娇女王】课间嘈杂的教室窗边，明亮的日光倾泻在过道上。明日香双手抱胸站在课桌前，穿着精致的水手服与过膝黑丝袜，眉头微挑，红润的樱唇轻翘，神采飞扬地俯视着面前的同伴——「你到底是不是笨蛋啊？这点基础算式还要本天才亲自教你吗？还不快把笔记本拿过来！」",
+    "id": "asuka_langley_classroom_argument",
+    "lighting": "教室大窗投射的温暖自然日光",
+    "location": "学校教室课桌过道",
+    "mood": "盛气凌人",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "tokyo3_school_uniform",
+    "promptProse": "Crossing her arms in the sunny Tokyo-3 classroom, Asuka delivers a sharp, confident argument with a proud smirk. Clear afternoon window daylight illuminates her fluttering twintails and crisp school uniform.",
+    "promptTokens": [
+      "classroom",
+      "school_uniform",
+      "arms_crossed",
+      "smug_smile",
+      "raised_eyebrow",
+      "window_light",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "desks",
+      "blackboard",
+      "arms_crossed",
+      "leaning_forward",
+      "smug_smile",
+      "raised_eyebrow",
+      "black_thighhighs",
+      "school_hallway_visible"
+    ],
+    "timeOfDay": "午后",
+    "title": "惣流·明日香 · 教室里的傲娇女王"
+  }
+}

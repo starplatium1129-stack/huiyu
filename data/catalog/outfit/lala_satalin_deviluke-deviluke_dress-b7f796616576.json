@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/deviluke_dress",
+  "revision": 1,
+  "sortOrder": 671,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "deviluke_dress",
+      "isDefault": false,
+      "name": "戴比路克王族露肩战服",
+      "prose": "royal Deviluke futuristic battle dress: a sleek white and yellow strapless mini-dress with cybernetic line accents, detached white arm sleeves, yellow mechanical choker, dark thigh-high boots, and her spade-tipped tail coiling freely",
+      "tokens": [
+        "futuristic_dress",
+        "white_dress",
+        "strapless_dress",
+        "bare_shoulders",
+        "cleavage",
+        "detached_sleeves",
+        "thighhighs",
+        "boots",
+        "demon_tail",
+        "sci-fi"
+      ]
+    }
+  }
+}

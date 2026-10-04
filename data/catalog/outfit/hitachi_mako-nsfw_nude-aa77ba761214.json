@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "hitachi_mako/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 624,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hitachi_mako",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, smooth glowing pale skin, beautifully shaped bountiful breasts with sensitive rosy-pink nipples, slender toned midriff, exposed pussy, playful cat-like smile with a flustered blush, cute ahoge, bare legs and bare feet, soft warm tatami mat lighting",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "athletic_body",
+        "navel",
+        "pussy",
+        "cat_mouth",
+        "ahoge",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

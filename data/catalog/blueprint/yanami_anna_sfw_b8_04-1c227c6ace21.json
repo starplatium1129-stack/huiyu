@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "yanami_anna_sfw_b8_04",
+  "revision": 1,
+  "sortOrder": 1671,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yanami_anna_sfw_b8_04",
+    "title": "八奈见杏菜 · 食堂花束里的花嫁定食",
+    "category": "圣洁花嫁",
+    "characterId": "yanami_anna",
+    "outfitId": "sfw_bridal",
+    "description": "【学校礼堂小食堂·午后】杏菜穿着清爽的蓝白婚纱坐在长桌边，捧花里偷偷插着一枚苹果糖；她先确认仪式菜单够不够丰盛，再对镜头举起苹果糖，笑得像终于等到一场不会落空的约会。",
+    "location": "small school dining hall dressed for a ceremony",
+    "action": "长桌边先核对庆典菜单再举起花束中的苹果糖，笑得像等到不会落空的约会",
+    "timeOfDay": "午后",
+    "lighting": "warm afternoon light over blue-white decorations",
+    "camera": "medium full shot, vertical framing",
+    "mood": "把失恋体质暂时换成花嫁满足感",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "hall",
+      "long_table",
+      "bouquet",
+      "apple_candy",
+      "blue_hair",
+      "relieved_smile",
+      "afternoon_light"
+    ],
+    "promptProse": "Anna Yanami from Too Many Losing Heroines! wears a blue-and-white bridal dress with a short veil, ribbon sash and an apple-candy bouquet charm. She sits at the long table checking a celebratory menu before lifting the apple candy hidden among her flowers. She looks toward the viewer with a relieved, hungry smile, as if this promise finally includes enough food and a date worth remembering. warm afternoon light over blue-white decorations.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "hall",
+      "long_table",
+      "bouquet",
+      "apple_candy",
+      "blue_hair",
+      "relieved_smile",
+      "afternoon_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc030",
+  "revision": 1,
+  "sortOrder": 28,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting in an ergonomic chair inside her darkened private emotion research lab late at night, adult Shiki Natsume wears an unbuttoned white lab coat over a black camisole and sheer black gartered stockings. Holding a detached biometric sensor in one hand while touching her deeply blushing cheek with the other, massive curved monitoring screens display pulsing cyan heart-rate waveforms in the background. The cool screen radiance clashes with a warm amber desk lamp in rich chiaroscuro, bringing vibrant, glowing warmth and subsurface scattering to her porcelain skin while clearly capturing her stocking-clad feet on the laboratory floor.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "监测屏前半身中景",
+    "category": "Active_Sync_Scenes",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "克制动摇",
+    "id": "sc030",
+    "lighting": "屏幕冷光与侧面轮廓光",
+    "location": "私人情绪研究室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, clothes, child, loli",
+    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, long_hair, mole_under_eye, adult, wearing_unbuttoned_white_research_lab_coat_over_black_camisole, sheer_black_thighhigh_socks_with_lace_garters, sitting_in_ergonomic_lab_chair_before_massive_curved_biometric_monitoring_screens, holding_small_glowing_biometric_sensor_in_one_hand, raising_other_hand_to_touch_flustered_red_cheek, blushing_intensely_looking_away_with_restrained_vulnerable_gaze, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet_resting_firmly_on_anti-static_lab_floor, delicate_toe_contours_beneath_semi-translucent_fabric, dark_high-tech_private_emotion_laboratory_at_night, massive_holographic_screens_displaying_glowing_cyan_heartbeat_waveforms_and_vital_statistics_casting_cool_ambient_light, warm_amber_desk_gooseneck_lamp_casting_rich_bounce_light_on_skin, subsurface_scattering_on_porcelain_skin, cinematic_chiaroscuro, full_body, @rella\nSitting in an ergonomic chair inside her darkened private emotion research lab late at night, adult Shiki Natsume wears an unbuttoned white lab coat over a black camisole and sheer black gartered stockings. Holding a detached biometric sensor in one hand while touching her deeply blushing cheek with the other, massive curved monitoring screens display pulsing cyan heart-rate waveforms in the background. The cool screen radiance clashes with a warm amber desk lamp in rich chiaroscuro, bringing vibrant, glowing warmth and subsurface scattering to her porcelain skin while clearly capturing her stocking-clad feet on the laboratory floor.",
+    "rating": "All",
+    "season": "不限",
+    "story": "【成年跨界 AU · 夏目的迟滞校准】深夜私人研究室只亮着监测屏的冷光。成年的夏目坚持完成最后一轮压力测试，直到系统把她刻意压低的心率与真实情绪同时投上大屏。她沉默地摘下传感器，眼下泪痣旁已经泛红——「机器偶尔也会误判。你如果敢把刚才的数据保存下来……至少先让我确认加密等级。」",
+    "storyJa": "【夏目・大人のクロスオーバーAUのヒステリシス校正・】深夜、個室研究室は監視画面の冷たい光だけが照らしていた。大人の夏目さんは、システムが意図的に低い心拍数と本当の感情を同時に大画面に映し出すまで、ストレステストの最後のラウンドを完了することを主張しました。彼女が黙ってセンサーを外すと、泣きぼくろはすでに赤くなっていた。――「機械だって、たまには判定を間違えるものよ。さっきのデータを保存するつもりなら……せめて先に、暗号化の強度を確認させて。」",
+    "tags": [
+      "blushing",
+      "mole_under_eye",
+      "eye_contact",
+      "vulnerable_expression",
+      "adult",
+      "sensor_headset",
+      "holding_biometric_sensor_in_one_hand",
+      "heart_rate_monitor",
+      "heart_rate_graphs_on_large_monitors",
+      "screen_glow",
+      "restrained_expression",
+      "blush",
+      "laboratory",
+      "night",
+      "medium_shot",
+      "screen_light",
+      "shy",
+      "serious"
+    ],
+    "time": "深夜",
+    "timeOfDay": "night",
+    "title": "情绪迟滞：夏目的克制校准",
+    "usage": [
+      "实验CG"
+    ],
+    "weather": "静谧"
+  }
+}

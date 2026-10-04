@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc097",
+  "revision": 1,
+  "sortOrder": 95,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a wide full-body view along the sandy shoreline with gentle ocean waves, she stands poised with a gentle blush on her cheeks, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全身中景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "放松",
+    "id": "sc097",
+    "lighting": "盛夏海滩阳光",
+    "location": "海边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, swimsuit, blush, angry, hair_blowing, bikini, black_swimsuit, adjusting_strap, standing, windblown_hair, subtle_blush, summer, afternoon, clear_sky, full_body, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【夏目 · 沙滩上的黑色泳装】盛夏海滩，夏目穿着简洁的黑色泳装调整肩带，察觉你的视线后先用目光警告，随后又站直让你看清整体。海风吹起黑色长发，她眼下泪痣旁微微泛红——「提前说好，不接受夸张评价。……如果只是觉得合适，就正常地说出来。」",
+    "storyJa": "【夏目・ビーチでの黒い水着】真夏のビーチで、夏目はシンプルな黒の水着を着て、肩紐を調整していました。あなたの視線に気づいた彼は、まず目で警告し、それから全体をはっきりと見えるように背筋を伸ばして立ち上がった。海風が彼女の長い黒髪をなびかせ、瞳はほんのり赤く染まっていた。――「先に言っておくけど、大げさな感想はいらない。……似合うと思っただけなら、普通にそう言って。」",
+    "tags": [
+      "mole_under_eye",
+      "beach",
+      "swimsuit",
+      "blush",
+      "hair_blowing",
+      "black_swimsuit",
+      "adjusting_strap",
+      "warning_glance",
+      "standing",
+      "windblown_hair",
+      "subtle_blush",
+      "summer",
+      "afternoon",
+      "clear_sky",
+      "full_body",
+      "calm",
+      "wide_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "沙滩上的黑色泳装",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

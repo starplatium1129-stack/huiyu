@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/standard",
+  "revision": 1,
+  "sortOrder": 321,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "水墨旗袍",
+      "prose": "her ink-black high-slit qipao with dark teal cloud motifs, overlaid with a sheer black-and-white gradient wide-sleeve robe, barefoot",
+      "tokens": [
+        "qipao",
+        "high_slit",
+        "ink_wash",
+        "chinese_clothes",
+        "sheer_clothes",
+        "wide_sleeves",
+        "barefoot",
+        "black_clothes",
+        "white_clothes"
+      ]
+    }
+  }
+}

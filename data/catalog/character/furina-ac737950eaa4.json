@@ -1,0 +1,160 @@
+{
+  "kind": "character",
+  "id": "furina",
+  "revision": 1,
+  "sortOrder": 69,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "furina",
+    "profile": {
+      "id": "furina",
+      "name": "芙宁娜",
+      "alias": [
+        "Furina",
+        "芙卡洛斯",
+        "Focalors",
+        "水神"
+      ],
+      "type": "popular",
+      "icon": "🎭",
+      "portrait": {
+        "image": "../assets/characters/popular-furina.png?v=5",
+        "alt": "芙宁娜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "分层白发带深蓝挑染 · 卷曲大呆毛",
+        "hair_color": "白底深蓝挑染",
+        "eyes": "水滴瞳异色瞳（深蓝/青绿）",
+        "hairstyle": "波浪卷短发 · 优雅高礼帽 · 戏剧性呆毛",
+        "uniform": "荒芒维多利亚宫廷燕尾礼服 / 短裤长靴",
+        "expression": "华丽戏剧感 · 傲娇骄傲 · 卸下伪装后真挚温柔",
+        "style": "dramatic grand opera star",
+        "signature": "异色水滴眼眸、蓝白礼服与华丽小礼帽"
+      },
+      "personality": [
+        "热爱戏剧与舞台",
+        "平日傲娇俏皮",
+        "内心极其坚韧伟大",
+        "热爱甜点与红茶",
+        "真诚深爱枫丹的人民"
+      ],
+      "likes": [
+        "欧庇克莱大歌剧院的掌声",
+        "精致的法式小蛋糕与红茶",
+        "海原水族的沙龙伙伴",
+        "卸下神性后的自在生活"
+      ],
+      "classic_cg": {
+        "title": "独舞审判席",
+        "description": "欧庇克莱大歌剧院的水晶吊灯下，少女身着华丽燕尾服托腮轻笑，向全场献上最璀璨的谢幕。"
+      },
+      "identity": {
+        "role": "枫丹著名大导演 / 前水神（正义之神）",
+        "age": "500岁以上（外貌少女）",
+        "occupation": "戏剧导演 / 歌剧明星",
+        "faction": "提瓦特 · 枫丹廷"
+      },
+      "tags": [
+        "异色瞳",
+        "白蓝挑染",
+        "水滴瞳",
+        "高礼帽",
+        "燕尾服",
+        "枫丹水神"
+      ],
+      "bg_story": "芙宁娜是《原神》中枫丹篇章的核心灵魂人物，曾以人类之躯在神座上独自扮演水神五百年，以无与伦比的意志默默承受孤独直至完成救赎预言。卸下重担后作为才华横溢的戏剧导演与歌剧明星继续生活在枫丹廷，深受全提瓦特旅行者喜爱。",
+      "palette": [
+        "宝石蓝",
+        "纯白",
+        "水绿"
+      ],
+      "weather": [
+        "枫丹细雨",
+        "歌剧院华灯",
+        "海原晴空"
+      ],
+      "speech": "欢迎来到审判与歌剧的殿堂！请尽情向我献上最精彩的剧目吧！",
+      "source": "miHoYo《原神 / Genshin Impact》",
+      "traits": [
+        "furina (genshin impact)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "blue_streaks",
+        "heterochromia",
+        "blue_eyes",
+        "cyan_eyes",
+        "ahoge",
+        "top_hat",
+        "genshin_impact"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "furina",
+      "displayName": "芙宁娜",
+      "originalName": "Furina",
+      "franchise": "Genshin Impact",
+      "aliases": [
+        "furina",
+        "focalors",
+        "hydro archon",
+        "furina de fontaine",
+        "genshin impact",
+        "芙宁娜",
+        "芙卡洛斯"
+      ],
+      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge",
+      "identityTokens": [
+        "furina (genshin impact)",
+        "1girl",
+        "solo",
+        "two-tone_hair",
+        "white_hair",
+        "streaked_hair",
+        "blue_streaks",
+        "heterochromia",
+        "blue_eyes",
+        "cyan_eyes",
+        "ahoge",
+        "twin_ponytails",
+        "hair_ribbon",
+        "genshin_impact"
+      ],
+      "exactTokens": [
+        "furina (genshin impact)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "奇幻欧风（提瓦特·水之国枫丹）",
+        "era": "蒸汽与律法时代",
+        "formNotes": "水神人格（人类之躯），双色白蓝挑染发与异色水滴瞳，戏剧性举止与华丽礼帽，退位后成为歌剧导演",
+        "research": "2026-08 调研"
+      },
+      "animeStudio": "genshin impact, official anime art, miHoYo style",
+      "curatedArtistStyles": [
+        "rella",
+        "swav",
+        "ask_(askzy)"
+      ]
+    }
+  }
+}

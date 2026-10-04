@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/empress_black_gown",
+  "revision": 1,
+  "sortOrder": 713,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "id": "empress_black_gown",
+      "name": "高贵深黑高开叉皇妃晚礼裙",
+      "prose": "a regal black velvet evening gown with high side slits, gold filigree along the corseted bodice, bare back, and trailing sheer black silk train",
+      "tokens": [
+        "black_dress",
+        "evening_gown",
+        "high_slit",
+        "backless_dress",
+        "cleavage",
+        "gold_trim",
+        "bare_legs",
+        "heels"
+      ]
+    }
+  }
+}

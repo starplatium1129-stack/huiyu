@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc186",
+  "revision": 1,
+  "sortOrder": 183,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc186",
+    "title": "惊喜指令：卧室里的傲娇兔女郎协议",
+    "category": "恋爱/After_Story",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 漆黑兔女郎装极致羞耻】反锁的公寓卧室。作为给你的特别生日礼物，宁宁在极度心理斗争后，终于换上了极其性感的漆黑高叉兔女郎连体衣与黑色丝袜。她头戴萌系的兔耳，面红赤地跪坐在你面前的床铺上，紧身衣勾勒出大片迷人的侧乳与绝对领域。她双手捂住滚烫的面颊不敢看你，头顶的呆毛从兔耳缝隙中钻出，害羞地扭曲成了工口的心形——「呜...生、生日快乐...大色狼！不准发出奇怪的笑声！这套衣服...也是宁宁最后的任性妥协了啦...快抱紧我...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "羞怯",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "black_bunny_costume",
+      "bunny_ears",
+      "black_thighhigh_stockings",
+      "sideboob",
+      "straddling",
+      "bedroom",
+      "full_body"
+    ],
+    "mature": true,
+    "location": "温馨卧室",
+    "weather": "炙热",
+    "camera": "近景特写",
+    "lighting": "微弱床头灯暖光",
+    "usage": [
+      "核心协议",
+      "绝对独占",
+      "成人向"
+    ],
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, black_bunny_suit, highleg_bunny_suit, bunny_ears, cleavage, sideboob, black_thighhighs, zettai_ryouiki, kneeling_on_bed, sitting_on_bed, leaning_forward, close-up, looking_at_viewer, hands_covering_face, shy_tsundere_expression, heavy_blush, bedroom, on_bed, warm_lighting, soft_lighting, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, bare_legs, cropped_feet, upper_body, standing, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "storyJa": "【寧々・大人のアフターストーリー · ·漆黒のバニーガールコスチューム極度の恥辱】アパートの寝室は深夜に施錠されます。あなたへの特別な誕生日プレゼントとして、寧々は、極限の心理的葛藤の末、ついに極めてセクシーな漆黒のハイカットバニーガールボディスーツと黒のストッキングを履きました。可愛いうさ耳を付けた彼女は顔を赤らめ腕にまたがり、タイツが魅力的な横乳と絶対領域を広大な面積で輪郭を描きます。彼女は熱い頬を両手で覆い、あなたを見ようとはしませんでした。頭のアホ毛がウサミミの隙間から出てきて、恥ずかしそうにエロティックなハート型に歪んでいる。――「た、誕生日おめでとうございます……もう、変な笑い方をしないで！　この服は寧々からの特別なプレゼントです。だから、早く抱きしめてください。」",
+    "rating": "R18",
+    "animaCaption": "In the locked dim bedroom at night, Nene in a sexy black high-cut bunny girl bodysuit with bunny ears and black thighhighs kneels on the bed leaning in close, covering her blushing flushed face with both hands in a flustered tsundere gesture, her heart-shaped ahoge poking through the bunny ears.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

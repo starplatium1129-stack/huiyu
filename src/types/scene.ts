@@ -31,4 +31,4 @@ export interface Scene {
 }
 
 export type { SceneBlueprint } from './sceneBlueprint'
-export type { SceneDraft, SceneRating, SceneChangeSet, SceneSaveResult } from './api'
+export type { SceneDraft, SceneRating } from './api'

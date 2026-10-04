@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 57,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "鸢一折纸·圣洁花嫁",
+      "prose": "a tailored white bridal gown with a clean short veil, silver fastening and a single white rose",
+      "tokens": [
+        "wedding_dress",
+        "short_veil",
+        "white_rose",
+        "silver_fastening",
+        "clean_lines"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

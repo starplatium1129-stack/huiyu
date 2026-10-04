@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/stage_two_tone",
+  "revision": 1,
+  "sortOrder": 525,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "default": false,
+      "id": "stage_two_tone",
+      "isDefault": false,
+      "name": "舞台服·白上粉下",
+      "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs",
+      "tokens": [
+        "two_tone_dress",
+        "white_dress",
+        "pink_skirt",
+        "collar",
+        "brown_belt",
+        "brown_boots",
+        "white_thighhighs"
+      ]
+    }
+  }
+}

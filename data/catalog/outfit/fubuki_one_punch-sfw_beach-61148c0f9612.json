@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/sfw_beach",
+  "revision": 1,
+  "sortOrder": 908,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "吹雪·海滨泳装",
+      "prose": "an emerald one-piece swimsuit with a white beach coat, pearl earrings and a woven sun hat",
+      "tokens": [
+        "emerald_one_piece",
+        "white_beach_coat",
+        "pearl_earrings",
+        "woven_sun_hat",
+        "beach_table"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

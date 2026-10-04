@@ -1,0 +1,34 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 962,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "恶魔米莉艾拉 Cos 战衣",
+      "prose": "her Miriella cosplay from the in-universe Ashford War Chronicles: a two-tone purple-and-pink long twintail wig, a black open-navel sleeveless top with pink trim, a pink belt, a short black-and-pink pleated skirt, black over-knee socks with pink garter straps, pink heels, white angular decorative wings on her shoulders and small white demon horns",
+      "tokens": [
+        "cosplay",
+        "miriella_(2.5_jigen_no_ririsa)",
+        "miriella_(2.5_jigen_no_ririsa)_(cosplay)",
+        "wig",
+        "multicolored_hair",
+        "two-tone_hair",
+        "twintails",
+        "wings",
+        "demon_horns",
+        "midriff",
+        "sleeveless_shirt",
+        "pink_skirt",
+        "thighhighs",
+        "high_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

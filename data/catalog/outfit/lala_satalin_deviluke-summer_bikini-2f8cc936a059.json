@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/summer_bikini",
+  "revision": 1,
+  "sortOrder": 672,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "summer_bikini",
+      "isDefault": false,
+      "name": "活力鹅黄分体绑带比基尼",
+      "prose": "a sunny yellow and white frilled halterneck bikini hugging her bountiful curves, delicate ribbon bow at the cleavage, side-tie bottoms with her sensitive spade tail twitching playfully, wet skin glistening in the sunlight",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "yellow_bikini",
+        "halterneck",
+        "frills",
+        "cleavage",
+        "side-tie_bikini_bottom",
+        "wet_skin",
+        "demon_tail"
+      ]
+    }
+  }
+}

@@ -10,23 +10,8 @@ use axum::{
     routing::post,
 };
 use serde_json::{Value, json};
-use std::{
-    collections::HashMap,
-    net::SocketAddr,
-    path::{Path, PathBuf},
-    sync::{Arc, LazyLock, Mutex},
-    time::SystemTime,
-};
+use std::{net::SocketAddr, sync::LazyLock};
 
-type Catalog = Arc<HashMap<String, Value>>;
-struct Cached {
-    path: PathBuf,
-    modified: Option<SystemTime>,
-    size: u64,
-    identity: crate::file_identity::Identity,
-    values: Catalog,
-}
-static CACHE: Mutex<Option<Cached>> = Mutex::new(None);
 static DIALOGUE: LazyLock<regex::Regex> =
     LazyLock::new(|| regex::Regex::new("「([^「」]+)」").unwrap());
 static TITLE: LazyLock<regex::Regex> =
@@ -125,52 +110,7 @@ fn build(blueprint: &Value, intent: &Value) -> Value {
     }).collect();
     json!({"title":text(&blueprint["title"],&text(&blueprint["id"],"undefined")),"blueprintId":text(&blueprint["id"],"undefined"),"characterId":text(&blueprint["characterId"],""),"beats":BEATS.iter().map(|b|b.0).collect::<Vec<_>>(),"shots":shots})
 }
-fn load(root: &Path) -> Option<Catalog> {
-    let path = root.join("data/scene-blueprints.json");
-    let metadata = std::fs::metadata(&path).ok()?;
-    if metadata.len() > 16 * 1024 * 1024 {
-        return None;
-    }
-    let identity = crate::file_identity::path(&path, false).ok()?;
-    let mut cache = CACHE.lock().unwrap();
-    if let Some(current) = &*cache
-        && current.path == path
-        && current.modified == metadata.modified().ok()
-        && current.size == metadata.len()
-        && current.identity == identity
-    {
-        return Some(current.values.clone());
-    }
-    let bytes = std::fs::read(&path).ok()?;
-    if bytes.len() > 16 * 1024 * 1024 {
-        return None;
-    }
-    let data: Value = serde_json::from_slice(&bytes).ok()?;
-    let values: HashMap<_, _> = data["blueprints"]
-        .as_array()?
-        .iter()
-        .filter_map(|b| b["id"].as_str().map(|id| (id.into(), b.clone())))
-        .collect();
-    let values = Arc::new(values);
-    *cache = Some(Cached {
-        path,
-        modified: metadata.modified().ok(),
-        size: metadata.len(),
-        identity,
-        values: values.clone(),
-    });
-    Some(values)
-}
-pub(super) fn resolve(root: &Path, id: &Value, intent: &Value) -> Result<Value> {
-    let id = id
-        .as_str()
-        .filter(|s| !s.is_empty())
-        .ok_or_else(|| ApiError::new(400, "INVALID_PARAMETER", "blueprintId 需为字符串"))?;
-    let catalog =
-        load(root).ok_or_else(|| ApiError::new(404, "UNKNOWN_BLUEPRINT", "未知场景蓝图"))?;
-    let blueprint = catalog
-        .get(id)
-        .ok_or_else(|| ApiError::new(404, "UNKNOWN_BLUEPRINT", "未知场景蓝图"))?;
+pub(super) fn resolve_blueprint(blueprint: &Value, intent: &Value) -> Result<Value> {
     // Explicit rating fields cannot bypass the video lane through a benign category.
     if blueprint["adult"] == true
         || blueprint["mature"] == true
@@ -205,11 +145,16 @@ async fn handle(
         ));
     }
     app.host.check_available()?;
-    let root = app.config.content_root();
-    let value =
-        tokio::task::spawn_blocking(move || resolve(&root, &body["blueprintId"], &body["intent"]))
-            .await
-            .map_err(|_| ApiError::new(503, "STORYBOARD_UNAVAILABLE", "剧本读取失败"))??;
+    let options = crate::catalog::Options::from_config(&app.config);
+    let value = tokio::task::spawn_blocking(move || {
+        let id = body["blueprintId"]
+            .as_str()
+            .ok_or_else(|| ApiError::invalid("blueprintId 需为字符串"))?;
+        let record = crate::catalog::Catalog::open(options)?.get("blueprint", id)?;
+        resolve_blueprint(&record.data, &body["intent"])
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "STORYBOARD_UNAVAILABLE", "剧本读取失败"))??;
     Ok((
         [("cache-control".into(), "no-store".into())],
         Json(json!({"ok":true,"storyboard":value})),

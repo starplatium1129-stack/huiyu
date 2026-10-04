@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc115",
+  "revision": 1,
+  "sortOrder": 113,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the warm dim newlywed bedroom, Ayachi Nene wearing only the viewer's loose pure white shirt, completely bare underneath, straddles his waist and pulls his collar closer with both hands. Her pink ribbon lies on the sheet; her dazed flushed face and heart-shaped ahoge hover close with warm breath.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "主观仰视近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "绝对依恋过载",
+    "id": "sc115",
+    "lighting": "微弱侧向床头灯",
+    "location": "温馨卧室大床",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform, fully_clothed",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, black_lace_lingerie, bra_lift, exposed_breasts, bare_breasts, nipples, areola, garter_straps, black_thighhighs, tight_straps, crotchless_panties, exposed_pussy, pussy_juice, spread_legs, arched_back, hand_between_legs, lying_on_bed, silk_sheets, heavy_blush, teary_eyes, parted_lips, biting_lip, sensual, dim_lighting, warm_lamp, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 黑蕾丝绝对缴械】微热的深夜婚房。宁宁向你彻底缴械投降，换上了那套黑色蕾丝内衣与吊带袜。她红着俏脸、眼神迷离地仰面躺在丝质床单上，散开的发带掉在枕边，头顶的呆毛早因为滚烫的依恋瘫软成了工口的心形螺旋。她纤细的手指无力地蜷起身下的床单，温热的呼吸急促起来——「施了魔法的身体...早就坏掉了...今晚的宁宁...随便你怎么处置都行了啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・バキューム白シャツにまたがり】少し暑い深夜のウエディングルーム。寧々は完全にあなたに降伏しました。彼女はあなたのゆるい白いシャツを着ているだけで、中は完全に真空でした。彼女はきれいな顔とぼやけた目であなたの腰にまたがります。彼女の緩んだヘアバンドがベッドシーツに落ちます。頭のアホ毛は既にぐったりとしていて、熱い執着でハート型の螺旋を描いている。彼女の細い手があなたの襟をしっかりと掴んで引き寄せ、彼女の温かい息が頬に当たりました。――「魔法をかけたのに、もう胸のどきどきが止まりません……今夜は、ずっと寧々のそばにいてください。」",
+    "tags": [
+      "hair_ribbon",
+      "oversized_shirt",
+      "no_underwear",
+      "unbuttoned_shirt",
+      "sitting_on_lap",
+      "straddling_viewer",
+      "grabbing_viewer_collar",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "heavy_blush",
+      "ahoge",
+      "night",
+      "sensual"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "枕边的绝对服从协议",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "炙热"
+  }
+}

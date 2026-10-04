@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 788,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "海水浴场黑肤意外比基尼",
+      "prose": "a mature garnet-red one-piece swimsuit with a plunging neckline and side cutouts, her long black hair tied up with the white hairband, and translucent white sarong draped at her hips",
+      "tokens": [
+        "swimsuit",
+        "red_swimsuit",
+        "one-piece_swimsuit",
+        "plunging_neckline",
+        "side_slit",
+        "sarong",
+        "hairband",
+        "bare_shoulders"
+      ]
+    }
+  }
+}

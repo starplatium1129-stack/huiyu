@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc113",
+  "revision": 1,
+  "sortOrder": 111,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets still bead on her damp shoulders and collarbone.",
+    "camera": "平视近景特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极度慌张羞怯",
+    "id": "sc113",
+    "lighting": "浴室镜前柔和暖光",
+    "location": "公寓大浴室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, water_droplets_on_body, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 浴后浴巾不慎滑落】深夜蒸气弥漫的浴室内。洗完澡的宁宁只裹着一条松松垮垮的大号纯白浴巾坐在洗手台上，湿漉漉的银白色长发散落，没来得及系发带。由于起身的动作过大，浴巾的一角悄然滑落，露出大片白皙细腻的香肩与若隐若现的傲人饱满。她惊慌失措地迎上推门而入的你，满脸通红连到耳根，头顶的呆毛因为极度害羞疯狂颤动——「大笨蛋！眼睛在往哪里看呢！不准看，快点把头转过去啦...呜...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・・お風呂上りにうっかりタオルがずれてしまった】深夜、湯気の立つ浴室内。シャワーを浴びた後、寧々は、ゆったりとした大きな純白のバスタオルだけを着て洗面台に座っていました。濡れた白銀の長い髪は散り、ヘアゴムを結ぶ暇もなかった。立ち上がるあまりの動きのせいで、バスタオルの角が静かに滑り、白くて華奢な肩と、うっすらと誇らしげなふくよかな肉付きが広範囲に露出した。彼女はパニックになってあなたに向かって突進し、顔は耳の付け根まで赤くなり、頭の上のアホ毛は極度の恥ずかしさで狂ったように震えていました。――「もう、どこを見てるんですか！　だめです、早くあっちを向いてください……。」",
+    "tags": [
+      "loose_towel",
+      "towel_slip",
+      "wet_hair",
+      "sitting_on_counter",
+      "bare_shoulders",
+      "cleavage",
+      "bare_legs",
+      "heavy_blush",
+      "embarrassed",
+      "panicked",
+      "bathroom",
+      "steam",
+      "indoors",
+      "night",
+      "soft_lighting",
+      "sensual",
+      "ahoge",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "水汽弥漫的解约时刻",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "水汽氤氲"
+  }
+}

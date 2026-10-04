@@ -1,0 +1,77 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
+  "revision": 1,
+  "sortOrder": 1088,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
+    "title": "大凤 · 诊疗台护士服半解跨坐主动骑乘",
+    "category": "深层欢愉",
+    "characterId": "taihou_azur",
+    "outfitId": "school_nurse",
+    "coverageTags": [
+      "cowgirl"
+    ],
+    "description": "【成年大凤 · 诊疗软凳的私密执着】成年大凤独自跨坐诊疗软凳，护士裙敞开至腰际，一手抓椅背、一手在黑丝双腿间自抚。",
+    "location": "医务室皮质诊疗床中央",
+    "action": "独自跨坐诊疗软凳，一手抓椅背、一手腿间自抚",
+    "timeOfDay": "黄昏",
+    "lighting": "拉帘缝隙投射下的暖橙色斜阳打在起伏的雪肤与黑长双马尾上",
+    "camera": "cowboy shot, straddling pov looking upward into bouncing cleavage and loving eyes",
+    "mood": "极乐沉沦",
+    "sceneTags": [
+      "cowgirl_position",
+      "straddling",
+      "nurse_dress",
+      "open_shirt",
+      "bouncing_breasts",
+      "twintails",
+      "heavy_blush"
+    ],
+    "promptProse": "Soft clinic lamps frame adult Taihou seated alone astride a padded examination stool. Her nurse dress is unbuttoned and pulled below bare breasts, while black stockings tighten around folded thighs. She grips the stool back with one hand and fingers herself beneath the lifted hem with the other, red ribbon straps trailing safely along the seat. Dark twin tails and golden eyes hold feverish devotion through tears and a lush blush. Vertical single-subject portrait, no text or extra people.",
+    "promptTokens": [
+      "cowgirl_position",
+      "straddling",
+      "nurse_dress",
+      "open_shirt",
+      "bouncing_breasts",
+      "large_breasts",
+      "twintails",
+      "heavy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_bedroom",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [
+      "cowgirl",
+      "straddling",
+      "large_breasts",
+      "wet_pussy",
+      "twintails",
+      "heavy_blush"
+    ],
+    "nsfwProse": ""
+  }
+}

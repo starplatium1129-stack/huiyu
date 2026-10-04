@@ -1,0 +1,117 @@
+{
+  "kind": "character",
+  "id": "asada_shino",
+  "revision": 1,
+  "sortOrder": 130,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asada_shino",
+    "profile": {
+      "id": "asada_shino",
+      "name": "朝田诗乃",
+      "alias": [
+        "朝田诗乃",
+        "Shino Asada"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-asada_shino.png?v=ecd3cc2d0a80",
+        "alt": "朝田诗乃 · 图书馆的角落场景样张"
+      },
+      "visual_dna": {
+        "signature": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",
+        "hair": "brown_hair, medium_hair",
+        "eyes": "brown_eyes",
+        "uniform": "现实形态校服与眼镜",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "谨慎内敛，习惯先观察再作回应",
+        "遇到困难愿意磨练自己，逐渐建立信任",
+        "现实生活与游戏中的表现不同，但都重视专注与可靠"
+      ],
+      "likes": [
+        "安静阅读",
+        "了解游戏资讯",
+        "整理自己的生活空间"
+      ],
+      "classic_cg": {
+        "title": "朝田诗乃 · 图书馆的角落",
+        "description": "现实中的图书馆，她坐在最里面的座位读军事纪实，眼镜稍稍滑下；窗外下雨，她伸手把书页上的光挡住一点——安静的下午是她的充电器。"
+      },
+      "identity": "Sword Art Online · 朝田诗乃",
+      "tags": [
+        "朝田诗乃",
+        "刀剑神域",
+        "日常"
+      ],
+      "bg_story": "现实中安静爱读书的少女，在虚拟世界以Sinon之名活动。本批采用现实形态，灰棕发与眼镜和GGO冰蓝发、ALO猫耳严格分开，围巾与读物连接两个世界的记忆。",
+      "palette": [
+        "#9bb8c6",
+        "#282532"
+      ],
+      "source": "Sword Art Online",
+      "speech": "先把书看完，晚点再上线。",
+      "traits": [
+        "asada_shino",
+        "sword_art_online",
+        "brown_hair",
+        "medium_hair",
+        "brown_eyes"
+      ],
+      "accent_color": "#9bb8c6",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "asada_shino",
+      "displayName": "朝田诗乃",
+      "originalName": "Shino Asada",
+      "franchise": "Sword Art Online",
+      "aliases": [
+        "朝田诗乃",
+        "Shino Asada"
+      ],
+      "identityProse": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",
+      "identityTokens": [
+        "asada_shino",
+        "sword_art_online",
+        "brown_hair",
+        "medium_hair",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "asada_shino"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, asada_shino"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

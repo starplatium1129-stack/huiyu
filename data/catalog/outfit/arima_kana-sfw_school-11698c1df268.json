@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/sfw_school",
+  "revision": 1,
+  "sortOrder": 534,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "default": false,
+      "id": "sfw_school",
+      "isDefault": false,
+      "name": "阳东高校制服",
+      "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "white_blouse",
+        "ribbon",
+        "pleated_skirt"
+      ]
+    }
+  }
+}

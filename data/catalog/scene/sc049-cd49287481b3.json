@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc049",
+  "revision": 1,
+  "sortOrder": 47,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Cherry petals settle around Ayachi Nene just after her brief first kiss. Still on tiptoe in her complete navy school uniform, she holds the viewer's hand in both of hers and looks up with an astonished blush. Her pink ribbons flutter beside her face. A close outdoor portrait includes the clasped hands and soft flowering branches, illuminated by clear spring morning light.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "樱花道面部与交握双手近景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc049",
+    "lighting": "春日室外柔和晨光",
+    "location": "樱花树下",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform, white_blouse, pleated_skirt, on_tiptoes, holding_viewer_hand, both_hands, looking_up, surprised_blush, shy_smile, pink_hair_ribbons, cherry_blossoms, falling_petals, spring_morning, soft_daylight, close_up, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "春",
+    "story": "【宁宁 · 樱吹雪里的初吻】樱花道上忽然刮起一阵风，宁宁按住发带，鼓起勇气踮脚吻了你一下。花瓣落下时她才意识到自己真的做了什么，整张脸瞬间红透，双手也不知道该放在哪里。你刚叫她的名字，她便慌张地握住你的手——「不准让我一个人害羞！刚才不是意外……所以，你要认真回应。」",
+    "storyJa": "【寧々・桜吹雪のファーストキス】突然、桜並木に突風が吹きました。寧々はヘアゴムを押さえ、勇気を振り絞ってつま先立ちであなたにキスしました。花びらが散ったとき、彼女は自分が本当に何をしてしまったのかに気づきました。一瞬で顔全体が真っ赤になり、どこに手を付けたらいいのか分からなくなった。あなたが彼女の名前を呼ぶとすぐに、彼女はパニックになってあなたの手を握った――「私一人だけ恥ずかしがらせるのは禁止です！　今のは事故じゃありません……だから、あなたもちゃんと応えてください。」",
+    "tags": [
+      "navy_school_uniform",
+      "white_blouse",
+      "pleated_skirt",
+      "on_tiptoes",
+      "holding_viewer_hand",
+      "both_hands",
+      "looking_up",
+      "surprised_blush",
+      "shy_smile",
+      "pink_hair_ribbons",
+      "cherry_blossoms",
+      "falling_petals",
+      "spring_morning",
+      "soft_daylight",
+      "close_up"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "樱吹雪里的初吻",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

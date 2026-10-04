@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kuonji_alice/sfw_house",
+  "revision": 1,
+  "sortOrder": 924,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kuonji_alice",
+    "outfit": {
+      "id": "sfw_house",
+      "name": "洋馆黑色长袖洋装",
+      "prose": "a modest black long-sleeved dress with a white collar, dark tights and indoor shoes",
+      "tokens": [
+        "black_dress",
+        "long_sleeves",
+        "white_collar",
+        "tights",
+        "indoor_shoes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

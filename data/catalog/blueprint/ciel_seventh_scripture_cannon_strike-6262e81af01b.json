@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "ciel_seventh_scripture_cannon_strike",
+  "revision": 1,
+  "sortOrder": 1333,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
+    "camera": "cowboy shot, low angle, heavy artillery combat view",
+    "category": "身份高光",
+    "characterId": "ciel_tsukihime",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ],
+    "description": "【希耶尔 · 第七圣典月下重炮制裁】废弃工业大楼顶端狂风呼啸，希耶尔身穿深蓝修女法衣战袍，戴着金丝无框眼镜。她单臂稳稳架起比人还庞大、散发着神圣白光的巨型概念武装「第七圣典」，炮口魔力洪流汇聚如炽热烈阳。短发在狂暴的气流中飞舞，镜片后深蓝眼眸冷静而决绝——「转生之因果，由我在此斩断。第七圣典，神圣真理击铁开合！」",
+    "id": "ciel_seventh_scripture_cannon_strike",
+    "lighting": "第七圣典炽烈白金炮口光芒与清冷夜色",
+    "location": "废弃工厂高耸水泥平台顶端",
+    "mood": "冷彻重火",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_burial_agency_habit",
+    "promptProse": "Standing resolute upon a deserted industrial rooftop under the cold night sky, Ciel heaves the colossal, sacred cannon Seventh Scripture onto her shoulder. Brilliant white holy energy swirls around the massive barrel as her short navy hair flutters in the wind. Pushing up her wire-rim glasses with leather-gloved fingers, her dark blue eyes lock onto her target with unflinching resolve. Epic low-angle anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "rooftop",
+      "industrial_ruins",
+      "heavy_weapon",
+      "holding_weapon",
+      "church_uniform",
+      "blue_dress",
+      "cross",
+      "glasses",
+      "pushing_up_glasses",
+      "blue_hair",
+      "blue_eyes",
+      "intense_gaze",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "industrial_ruins",
+      "heavy_weapon",
+      "seventh_scripture",
+      "church_uniform",
+      "blue_dress",
+      "glasses",
+      "pushing_up_glasses",
+      "cold_gaze"
+    ],
+    "timeOfDay": "深夜月冷",
+    "title": "希耶尔 · 第七圣典月下重炮制裁"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "krista_lenz/coronation_dress",
+  "revision": 1,
+  "sortOrder": 545,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "krista_lenz",
+    "outfit": {
+      "default": false,
+      "id": "coronation_dress",
+      "isDefault": false,
+      "name": "女王加冕礼服",
+      "prose": "her coronation dress, an off-shoulder white gown with a cloak, crown and jewelry, radiant with gentle resolve",
+      "tokens": [
+        "crown",
+        "off_shoulder_dress",
+        "white_dress",
+        "cloak",
+        "sandals",
+        "jewelry"
+      ]
+    }
+  }
+}

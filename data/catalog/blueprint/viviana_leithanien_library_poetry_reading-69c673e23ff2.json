@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "viviana_leithanien_library_poetry_reading",
+  "revision": 1,
+  "sortOrder": 683,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐在复古花窗飘窗软垫上，膝上摊开羊皮纸诗集，轻抚书页，转头温柔微笑",
+    "camera": "medium shot, eye level, poetic solitude",
+    "category": "书斋雅集",
+    "characterId": "viviana_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【薇薇安娜 · 莱塔尼亚书斋的月下长诗】莱塔尼亚古老宏伟的皇家哥特图书馆内，高耸入云的胡桃木书架环绕四周。薇薇安娜身着深蓝天鹅绒蕾丝贵族礼裙，静静坐在雕花彩绘玻璃窗边的软垫长椅上，膝上摊开一本手抄诗集，月光如银纱般披拂在她金色的巨角与发丝上——「‘当烛火在长夜中熄灭，唯有诗篇在星尘中永生。’……博士，你也喜欢这首诗吗？」",
+    "id": "viviana_leithanien_library_poetry_reading",
+    "lighting": "彩绘玻璃透入的静谧冷月光与黄铜台灯微光",
+    "location": "莱塔尼亚大图书馆月光花窗边",
+    "mood": "诗意静谧",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "lethe_poet_gown",
+    "promptProse": "Inside a magnificent multi-story gothic library in Leithanien, Viviana Droste sits peacefully on a velvet-cushioned bay window seat beneath towering walnut bookshelves. She wears a romantic deep sapphire-blue velvet gown with delicate sheer lace sleeves, holding an open leather-bound poetry anthology with graceful fingers. Pale silver moonlight streams through ornate stained glass windows, casting enchanting crystalline patterns across her magnificent golden antlers and wavy flaxen hair. A poetic eye-level medium shot captures her ethereal serenity, literary grace, and gentle smile with sublime key visual artistry.",
+    "promptTokens": [
+      "library",
+      "bookshelves",
+      "stained_glass",
+      "window_seat",
+      "moonlight",
+      "reading",
+      "poetry_book",
+      "velvet_dress",
+      "antlers",
+      "gentle_smile",
+      "medium_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "library",
+      "bookshelves",
+      "stained_glass",
+      "window_seat",
+      "moonlight",
+      "reading",
+      "poetry_book",
+      "velvet_dress",
+      "antlers",
+      "gentle_smile"
+    ],
+    "timeOfDay": "夜晚月明",
+    "title": "薇薇安娜 · 莱塔尼亚书斋的月下长诗"
+  }
+}

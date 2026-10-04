@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ciel_tea_room_veranda_snack_date",
+  "revision": 1,
+  "sortOrder": 1335,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "跪坐在走廊上双手奉上热茶与和果子，推了推鼻梁上的眼镜，神态温婉可靠",
+    "camera": "cowboy shot, eye level, peaceful school view",
+    "category": "校园日常",
+    "characterId": "ciel_tsukihime",
+    "coverageTags": [
+      "daily",
+      "school",
+      "sweet"
+    ],
+    "description": "【希耶尔 · 茶道室长廊的静谧茶点】三咲高中放学后的静谧茶道社外走廊，庭院竹林微风飒飒。希耶尔身穿端庄的三咲校服西装与灰色百褶裙，双手托着茶盘跪坐在木地板上，将一碗泛着抹茶香气的热茶与精致和果子推到你面前。她推了推眼镜，嘴角扬起可靠又亲近的学姐微笑——「辛苦了，远野同学……不，在只有我们两个人的时候，直接叫我学姐就好了哦。」",
+    "id": "ciel_tea_room_veranda_snack_date",
+    "lighting": "庭院竹林过滤的金色斜阳柔光",
+    "location": "三咲高中僻静日式茶道室木质走廊长廊",
+    "mood": "温婉知性",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "misaki_school_uniform",
+    "promptProse": "Sitting gracefully along the wooden veranda of the school tea ceremony room at sunset, Ciel serves freshly whisked matcha tea and wagashi sweets. Dressed in her neat high school uniform blazer and pleated skirt, she adjusts her glasses with a fond, dependable upperclassman smile. Dappled amber evening light filters through the bamboo garden. Serene, nostalgic anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "japanese_veranda",
+      "bamboo_garden",
+      "school_uniform",
+      "blazer",
+      "pleated_skirt",
+      "black_stockings",
+      "kneeling",
+      "holding_tray",
+      "tea_cup",
+      "glasses",
+      "gentle_smile",
+      "blue_hair",
+      "sunset_light",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "japanese_room",
+      "veranda",
+      "school_uniform",
+      "blazer",
+      "kneeling",
+      "serving_tea",
+      "matcha",
+      "holding_tray",
+      "glasses",
+      "gentle_smile"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "希耶尔 · 茶道室长廊的静谧茶点"
+  }
+}

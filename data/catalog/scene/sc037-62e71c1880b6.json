@@ -1,0 +1,59 @@
+{
+  "kind": "scene",
+  "id": "sc037",
+  "revision": 1,
+  "sortOrder": 35,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Standing on the weathered stone steps of an ancient mountain shrine beneath a canopy of blazing red maple leaves, Shiki Natsume clutches a wooden prayer plaque to her chest, turning with an intense, vulnerable blush. Golden late afternoon sunlight filters through the vermilion torii gates, casting brilliant light across her ornate kimono and white tabi socks in geta clogs.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全身远景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "平静",
+    "id": "sc037",
+    "lighting": "薄雾清晨漫射光",
+    "location": "京都古寺石阶",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_traditional_autumn_kimono_with_gold_leaf_patterns, holding_wooden_ema_prayer_tablet_against_chest, turning_around_on_ancient_stone_temple_steps, biting_lip_with_deeply_flustered_confessing_blush, entire_legs_and_feet_fully_visible_in_frame, white_tabi_socks_and_lacquered_geta_clogs_on_stone_steps, towering_vermilion_torii_gates_and_canopy_of_glowing_crimson_autumn_maple_leaves, soft_early_morning_light_filtering_through_mist_and_foliage, detailed_background, cinematic_lighting, full_body, @rella",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 古寺前没有说出的愿望】大学研修旅行的清晨，夏目在京都古寺前认真合掌，黑色长发被薄雾打湿。她睁眼后发现你一直等在石阶下，便若无其事地把御守塞进你手里。你问她求了什么，她略微侧过脸——「愿望说出来就没有意义。这个御守只是顺便买的……至少旅行结束前别弄丢。」",
+    "storyJa": "【夏目・古神殿の前の暗黙の願い】大学の研修旅行の早朝、夏目は京都の古刹の前で、長い黒髪を霧に濡らしながら真剣に手を合わせた。目を開けると、あなたが石段の下で待っていたことに気づき、何事もなかったかのようにあなたの手に警備員を置きました。あなたが彼女に何を懇願したのかと尋ねると、彼女はわずかに顔を向きました。――「願い事は口にしたら意味がないでしょ。このお守りは、ついでに買っただけ……せめて旅行が終わるまでは、なくさないで。」",
+    "tags": [
+      "mole_under_eye",
+      "shrine",
+      "standing",
+      "temple",
+      "autumn",
+      "kyoto_temple",
+      "stone_steps",
+      "kimono",
+      "holding_omamori",
+      "one_small_omamori_charm_in_one_hand",
+      "morning_mist",
+      "side_glance",
+      "morning",
+      "full_body",
+      "wide_shot",
+      "morning_light",
+      "soft_lighting",
+      "diffused_light",
+      "calm",
+      "relaxed"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "古寺前没有说出的愿望",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

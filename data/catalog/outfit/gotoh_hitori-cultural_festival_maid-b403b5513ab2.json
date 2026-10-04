@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "gotoh_hitori/cultural_festival_maid",
+  "revision": 1,
+  "sortOrder": 552,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "gotoh_hitori",
+    "outfit": {
+      "id": "cultural_festival_maid",
+      "name": "文化祭复古黑白女仆装",
+      "tokens": [
+        "maid_uniform",
+        "maid_dress",
+        "black_dress",
+        "white_apron",
+        "maid_apron",
+        "maid_headdress",
+        "frills",
+        "frilled_apron",
+        "thighhighs",
+        "black_thighhighs"
+      ],
+      "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+      "styleHint": "warm nostalgic classroom cafe lighting with soft bokeh",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

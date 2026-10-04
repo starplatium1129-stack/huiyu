@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_clubroom_flustered_weak_point",
+  "revision": 1,
+  "sortOrder": 1291,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_clubroom_flustered_weak_point",
+    "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
+    "category": "反差娇羞",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 触碰软肋的破防娇羞】部室书架角落，朱乃平日里游刃有余的“啊啦啊啦”防线彻底崩溃。因为被你轻轻从背后挽住纤腰、指尖轻抚过她最敏感的耳垂与侧颈，她原本挂着的戏谑笑容僵住，整张俏脸瞬间涨得通红，两只手下意识紧紧揪住你的衣襟，身体微微发软颤抖——「等等……啊……不要揉那里……太狡猾了……这样子……我就没办法欺负你了啊……」",
+    "location": "神秘学研究部昏暗书架夹道",
+    "action": "后背微倚书架，被触碰到敏感耳垂整张脸通红，双手抓着对方衣襟眼神羞乱",
+    "timeOfDay": "黄昏",
+    "lighting": "书架阴影与窗口透入的金色斜阳",
+    "camera": "medium close-up, eye level, flustered expression",
+    "mood": "反差羞耻",
+    "sceneTags": [
+      "bookshelves",
+      "library",
+      "leaning_back",
+      "clutching_shirt",
+      "heavy_blush",
+      "blushing_ears",
+      "teary_eyes",
+      "parted_lips",
+      "shy",
+      "flustered"
+    ],
+    "promptProse": "Cornered playfully between vintage bookshelves in the clubroom, Akeno Himejima's teasing facade completely shatters into overwhelming embarrassment. As the viewer gently caresses her delicate ear and neck, a bright crimson blush rushes across her entire face and ears. Clinging to the viewer's collar with trembling fingers, her violet eyes glisten with shy vulnerability. Medium close-up, golden evening light, emotional anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "bookshelves",
+      "library_aisle",
+      "leaning_against_shelf",
+      "clutching_clothes",
+      "kuoh_academy_uniform",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "parted_lips",
+      "teary_eyes",
+      "flustered",
+      "purple_eyes",
+      "high_ponytail",
+      "medium_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "kuoh_academy_uniform",
+    "coverageTags": [
+      "gap_moe",
+      "flustered",
+      "sweet"
+    ]
+  }
+}

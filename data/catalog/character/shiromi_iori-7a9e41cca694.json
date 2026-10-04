@@ -1,0 +1,168 @@
+{
+  "kind": "character",
+  "id": "shiromi_iori",
+  "revision": 1,
+  "sortOrder": 73,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shiromi_iori",
+    "profile": {
+      "id": "shiromi_iori",
+      "name": "银镜伊织",
+      "alias": [
+        "Shiromi Iori",
+        "伊织",
+        "风纪委员会突击队长"
+      ],
+      "type": "popular",
+      "icon": "🎯",
+      "portrait": {
+        "image": "../assets/characters/popular-shiromi_iori.png?v=5",
+        "alt": "银镜伊织 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白色顺滑双马尾 · 斜刘海遮单眼",
+        "hair_color": "纯银白",
+        "eyes": "赤红血瞳 · 小虎牙",
+        "hairstyle": "长双马尾 · 黑色兔耳发带 · 浅紫准星光环",
+        "uniform": "歌赫娜风纪委员会黑红军装 · 黑色过膝袜军靴",
+        "expression": "傲娇刚烈 · 羞怒炸毛 · 战意高昂",
+        "style": "fierce tanned demon prefect",
+        "signature": "黑皮白发双马尾、尖耳朵与狙击步枪"
+      },
+      "personality": [
+        "刚烈好强忠于职责",
+        "易被老师捉弄而炸毛",
+        "战场上果决无畏",
+        "典型小麦色辣妹傲娇",
+        "极具风纪正义感"
+      ],
+      "likes": [
+        "枪械维护与射击训练",
+        "巡视歌赫娜维护秩序",
+        "辣味拉面",
+        "被老师认真夸奖"
+      ],
+      "classic_cg": {
+        "title": "屋顶狙击阵地",
+        "description": "歌赫娜硝烟弥漫的残垣断壁顶端，褐肤白发少女架起狙击枪，血色双眸在夜风中威风凛凛。"
+      },
+      "identity": {
+        "role": "歌赫娜学园风纪委员会突击队长",
+        "age": "16岁（高二）",
+        "occupation": "学生 / 风纪委员会突击队长",
+        "faction": "基沃托斯 · 歌赫娜学园 / 风纪委员会"
+      },
+      "tags": [
+        "黑皮褐肤",
+        "白发双马尾",
+        "兔耳发带",
+        "浅紫准星光环",
+        "狙击枪",
+        "风纪委员会"
+      ],
+      "bg_story": "银镜伊织是《碧蓝档案》中歌赫娜学园风纪委员会的突击队长，空崎日奈最信任的左膀右臂之一。拥有标志性的小麦色肌肤、白发尖耳与过人枪法。虽然总因冲动被夏莱的老师调侃捉弄，但在任何危急关头都是最可靠的铁血风纪官。",
+      "palette": [
+        "小麦色",
+        "银白",
+        "漆黑",
+        "血红"
+      ],
+      "weather": [
+        "残垣夜色",
+        "烈日海滩",
+        "硝烟街区"
+      ],
+      "speech": "老师！不许再盯着我的脚看了！再胡闹的话，我可要以妨碍公务把你逮捕了！",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "iori (blue archive)",
+        "1girl",
+        "solo",
+        "dark_skin",
+        "tanned",
+        "silver_hair",
+        "white_hair",
+        "twintails",
+        "hair_over_one_eye",
+        "red_eyes",
+        "hair_ribbon",
+        "pointy_ears",
+        "halo",
+        "blue_archive"
+      ],
+      "accent_color": "#f87171",
+      "bg_color": "#0f172a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "shiromi_iori",
+        "iori",
+        "iori_(blue_archive)",
+        "银镜伊织",
+        "伊织",
+        "风纪委员会突击队长",
+        "gehenna",
+        "disciplinary committee",
+        "blue archive",
+        "iori (blue archive)"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "风纪委员会突击队长；褐肤白发尖耳，嘴硬心软、傲娇好胜，常被老师以各种理由捉弄舔脚而羞愤不已",
+        "research": "2026-08-31 调研（Danbooru shiromi_iori 9500+ posts）",
+        "world": "基沃托斯（Kivotos）· 歌赫娜学院"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "rella",
+        "mika_pikazo"
+      ],
+      "displayName": "银镜伊织",
+      "exactPrefixes": [
+        "shiromi_"
+      ],
+      "exactTokens": [
+        "iori (blue archive)"
+      ],
+      "franchise": "Blue Archive",
+      "id": "shiromi_iori",
+      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, asymmetrical bangs falling over one eye, red eyes, a pale violet crosshair halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
+      "identityTokens": [
+        "iori (blue archive)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "twintails",
+        "hair_over_one_eye",
+        "red_eyes",
+        "hair_ribbon",
+        "halo",
+        "dark_skin",
+        "pointy_ears",
+        "tail",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Shiromi Iori",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

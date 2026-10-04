@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc226",
+  "revision": 1,
+  "sortOrder": 221,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a retro glass greenhouse bathed in bright summer sunlight, Ayachi Nene in an elaborate black gothic lolita dress with gold trim, layered lace ruffles and a bonnet reaches for a high rose as her skirt hem catches on the flower stand edge, losing balance and being steadied from behind by the viewer, face crimson at the sudden eye contact under blazing greenhouse light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景正面水平特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc226",
+    "lighting": "明亮的自然窗光与穿透玻璃的朦胧光晕",
+    "location": "欧式玻璃花房繁花深处",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, black_gothic_lolita_dress_with_gold_trim_and_layered_lace_ruffles, black_lolita_bonnet, white_thighhighs, mary_janes, standing_in_retro_glass_greenhouse, bright_summer_sunlight, reaching_up_toward_high_rose, skirt_hem_caught_on_flower_stand, losing_balance, viewer_steadying_her_from_behind, sudden_eye_contact, crimson_blush, hand_gripping_dress_edge, close_up, window_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 哥特洛丽塔华丽反差】盛夏午后阳光明媚的植物园复古玻璃花房。宁宁因为超自然研究会的活动拍摄需求，破天荒地换上了一身极其华丽复杂的黑底金边哥特洛丽塔风格长裙，层层叠叠的蕾丝褶皱与精致的软帽将她衬托得宛如古堡里的高贵人偶。然而当她试图伸手去够一朵高处的蔷薇时，繁复的裙摆和软衬却不慎挂在了花架边缘，整个人顿时失去了平稳。你眼疾手快地从身后扶住她，宁宁在对视的瞬间瞬间防线超载，面红耳赤地揪住衣角，头顶那根呆毛慌乱地打着卷，语无伦次地自曝起来——「等、等等！不准用那种好笑的眼神看我！人家、人家才不是因为想让你觉得可爱，才在衣柜前挑了两个小时这件衣服的呢……呜，越说越奇怪了，笨蛋快忘掉啦！」",
+    "storyJa": "【寧々・華麗なゴシックロリータのギャップ自爆】盛夏の午後、陽光が降り注ぐ植物園のレトロなガラス温室。超自然研究部の活動撮影の必要性から、寧々は前代未聞の、非常に華麗で複雑な黒地に金の縁取りのゴシックロリータ風のドレスに身を包んでいた。幾重にも重なるレースのフリルと精緻なボンネットが、彼女をまるで古城の高貴な人形のように引き立てている。しかし、彼女が高い場所にある薔薇の一輪に手を伸ばそうとした時、複雑なスカートの裾とパニエが花の棚の端に引っかかってしまい、一瞬にしてバランスを崩した。あなたが目端を利かせて背後から彼女を支えると、寧々は視線が交わった瞬間に防衛線がオーバーロードし、顔を真っ赤にして衣装の端を掴み、頭のアホ毛を慌てて丸めながら支離滅裂に自爆した――「ま、待って！そんなおかしそうな目で私を見ないで！私、私は決してあなたにかわいいって思われたくて、クローゼットの前で二時間もこの服を選んでたわけじゃ……うう、言うほど変になる、バカ、今の忘れて！」",
+    "tags": [
+      "hair_ribbon",
+      "lolita_dress",
+      "bonnet",
+      "sheer_white_thighhigh_stockings",
+      "greenhouse",
+      "close_up",
+      "mary_jane",
+      "rose",
+      "reaching_up"
+    ],
+    "time": "白天",
+    "timeOfDay": "all_day",
+    "title": "繁花玻璃温室的暗黑洛丽塔",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "盛夏晴朗"
+  }
+}

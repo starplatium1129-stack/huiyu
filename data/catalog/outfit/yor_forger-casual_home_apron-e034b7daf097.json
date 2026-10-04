@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yor_forger/casual_home_apron",
+  "revision": 1,
+  "sortOrder": 462,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yor_forger",
+    "outfit": {
+      "id": "casual_home_apron",
+      "name": "居家常服与熊熊围裙",
+      "tokens": [
+        "casual_dress",
+        "bear_apron",
+        "apron",
+        "sleeveless",
+        "bare_arms"
+      ],
+      "prose": "wearing a cute home apron over casual dress while trying her best in the kitchen",
+      "styleHint": "soft cheerful morning daylight",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

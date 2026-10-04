@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "rias_clubroom_desk_pinned_tsundere",
+  "revision": 1,
+  "sortOrder": 1281,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_clubroom_desk_pinned_tsundere",
+    "title": "莉雅丝 · 部长室桌沿的越界反制",
+    "category": "反差娇羞",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 部长室桌沿的越界反制】黄昏时分的神秘学研究部部长室内，金红色的夕阳斜照在沉重的大理石办公桌上。莉雅丝被你反客为主轻揽住纤腰按靠在桌沿边，手中原本批改的公文散落一旁。她平日里统御公爵领地的沉稳从容瞬间瓦解，双手抵在你的胸前，耳根红透，眼神飘忽慌乱却不曾推开——「等等……这可是在部室里……要是被朱乃她们看到……」",
+    "location": "神秘学研究部奢华部长办公室桌沿",
+    "action": "背靠大理石办公桌沿，双手轻抵对方胸膛，面色潮红、耳根红透，眼神微颤害羞注视",
+    "timeOfDay": "黄昏逢魔时刻",
+    "lighting": "夕阳熔金般的暖橙侧逆光",
+    "camera": "cowboy shot, intimate eye level",
+    "mood": "心跳加速",
+    "sceneTags": [
+      "office",
+      "desk",
+      "leaning_against_desk",
+      "hands_on_viewer_chest",
+      "flushed_face",
+      "blushing_ears",
+      "shy",
+      "parted_lips",
+      "sunset_light"
+    ],
+    "promptProse": "Backed gently against the polished mahogany desk in the twilight-lit occult research clubroom, Rias Gremory is caught in an intimate moment. Her hands rest against the viewer's chest with soft hesitation, papers strewn beside her. Her cheeks and delicate ears flushed deep crimson with embarrassment, her aquamarine eyes trembling between fluster and deep desire. Golden hour rim light, cinematic anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "office",
+      "study",
+      "leaning_back",
+      "hands_on_chest",
+      "kuoh_academy_uniform",
+      "unbuttoned_collar",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "shy_expression",
+      "parted_lips",
+      "sunset",
+      "golden_hour",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra fingers",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_kuoh_uniform",
+    "coverageTags": [
+      "gap_moe",
+      "intimate",
+      "romance"
+    ]
+  }
+}

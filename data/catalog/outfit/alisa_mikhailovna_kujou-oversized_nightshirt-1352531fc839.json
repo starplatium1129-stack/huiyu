@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "alisa_mikhailovna_kujou/oversized_nightshirt",
+  "revision": 1,
+  "sortOrder": 442,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfit": {
+      "id": "oversized_nightshirt",
+      "name": "居家男友衬衫",
+      "prose": "soft silk oversized light blue button-up nightshirt and bare legs",
+      "tokens": [
+        "pajamas",
+        "nightshirt",
+        "oversized_shirt",
+        "bare_legs"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

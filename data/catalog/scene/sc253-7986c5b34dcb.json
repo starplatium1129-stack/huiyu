@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc253",
+  "revision": 1,
+  "sortOrder": 248,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc253",
+    "title": "深夜居间的纯棉余温共享",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 居家棉质睡衣真空】深夜静谧温馨、仅亮着一盏暖黄色床头灯的公寓主卧。夏目换上了一身极其干净好看的居家私服：一套极其贴身柔软的纯白细棉质细吊带背心与舒适短裤睡衣，里面完全真空未着寸缕。由于空调冷气直接吹向床头，畏寒的她微微咬紧双唇，面无表情却极其主动地直接跨坐在坐在床边的你大腿上，柔顺的黑发伴随着她温热的吐息拂过你的面颊。纯棉织物在身体形变间将白皙丰满的侧乳和匀称的腿部线条勾勒得淋漓尽致。尽管她清冷的金瞳此时布满了羞耻的动摇，红透的耳根暴露无遗，但说话时依旧是那副标志性的讲究效率口吻——「……别误会。这只是最合理的房间温控对应策略。冷气直吹会降低明天的排班效率，现在贴在一起可以最快达到体温平衡。大变态，手不准乱放……听到没有。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "white_camisole",
+      "cotton",
+      "short_shorts",
+      "pajamas",
+      "no_underwear",
+      "sitting_on_lap",
+      "straddling",
+      "lip_bite",
+      "shamed",
+      "flushed",
+      "master_bedroom",
+      "night",
+      "warm_light",
+      "medium_shot"
+    ],
+    "mature": true,
+    "location": "公寓主卧温热双人床中央",
+    "weather": "微热密闭",
+    "camera": "近景主观正面视线特写",
+    "lighting": "床头灯洒在棉质面料与白皙肌肤上的朦胧暖黄色局部弱光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, black_translucent_cloth, see-through, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_straddling_viewer_on_futon, blushing_ears, golden_eyes, flushed_cheeks, night, dim_lamp_light, soft_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fire effects, text, watermark, signature, child, loli, underage, fully_clothed",
+    "storyJa": "【夏目】【ナツメ・ルームウェアの余温と効率的密着】深夜、静まり返り居心地の良い、暖色系のベッドサイドランプだけが灯るマンションの寝室。ナツメは非常にクリーンで可愛らしい部屋着に着替えていた。身体にぴったりと密着した柔らかい純白のコットン製細キャミソールと快適なショートパンツのパジャマで、その中身は何も身に着けていない完全な真空状態だった。エアコンの冷気がベッド頭に直撃するため、寒がりの彼女はわずかに唇を噛み、無表情ながらも極めて能動的にベッドの端に座っていたあなたの大腿の上に跨り、しなやかな黒髪が温かい吐息と共にあなたの頬をかすめた。コットンの織物が身体のラインに合わせて、白く豊かな側乳と整った脚のラインを余すところなく描き出している。ジト目は羞恥の動揺で満たされ、真っ赤になった耳の裏が完全に暴露されているものの、口を開けば相変わらず効率を重んじる口調だった――「……勘違いしないで。これは最も合理的な部屋の温度管理対応プロトコル。冷気の直撃は明日のシフト効率を低下させるし、今こうして密着するのが最も早く体温均衡を達成できるの。大変態、手を乱雑に置かないで……聞こえた？」",
+    "rating": "R18",
+    "animaCaption": "Deep at night in the warm master bedroom lit by a single amber bedside lamp, Shiki Natsume in a soft pure-white cotton strap camisole and comfortable short pajama pants with nothing beneath bites her lip against the cold draft and, expressionless, takes the initiative to sit astride your thighs at the bed edge, her soft black hair brushing your cheek with her warm breath; the cotton traces her fair side breasts and leg lines while her golden eyes waver with shame and her ears flushed deep crimson with embarrassment.",
+    "auditRevision": "fix-no-burn-ears-2026-09-05"
+  }
+}

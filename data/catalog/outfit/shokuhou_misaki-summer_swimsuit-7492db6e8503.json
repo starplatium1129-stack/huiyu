@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 229,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "女王蜂白金比基尼",
+      "prose": "a regal white-and-gold two-piece swimsuit with a small golden crown charm at the hip, her very long blonde hair loose over sunlit skin, and a gauzy see-through sarong knotted low",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "white_bikini",
+        "gold_trim",
+        "sarong",
+        "see-through",
+        "bare_shoulders",
+        "cleavage",
+        "wet_skin"
+      ]
+    }
+  }
+}

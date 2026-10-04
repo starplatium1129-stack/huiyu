@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/sfw_drawing",
+  "revision": 1,
+  "sortOrder": 856,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "sfw_drawing",
+      "name": "粉色连帽衫绘画装",
+      "prose": "an opaque pink hoodie, loose grey trousers and a drawing headset",
+      "tokens": [
+        "pink_hoodie",
+        "grey_pants",
+        "headphones"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

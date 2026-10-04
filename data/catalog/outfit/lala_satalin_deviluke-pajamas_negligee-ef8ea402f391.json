@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/pajamas_negligee",
+  "revision": 1,
+  "sortOrder": 673,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "pajamas_negligee",
+      "isDefault": false,
+      "name": "薄透粉色丝绸睡裙",
+      "prose": "sweet and seductive nightwear: a sheer pastel pink translucent silk camisole baby-doll negligee with delicate white lace trim along the plunging sweetheart neckline, bare shoulders, exposed thighs, and spade tail wagging gently",
+      "tokens": [
+        "nightgown",
+        "negligee",
+        "pink_sleepwear",
+        "camisole",
+        "sheer_fabric",
+        "lace_trim",
+        "cleavage",
+        "bare_shoulders",
+        "demon_tail"
+      ]
+    }
+  }
+}

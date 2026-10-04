@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "shiranui_mai_sfw_b9_07",
+  "revision": 1,
+  "sortOrder": 1751,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shiranui_mai_sfw_b9_07",
+    "title": "不知火舞 · 夏祭折扇与苹果糖",
+    "category": "节日约会",
+    "characterId": "shiranui_mai",
+    "outfitId": "sfw_festival",
+    "description": "【乡镇夏祭·夜】不知火舞穿着红白浴衣站在苹果糖摊前，折扇轻轻挡住被糖浆黏住的手指；她把刚挑好的苹果糖递向镜头，红白灯笼映出高马尾和明朗笑容。",
+    "location": "small-town summer festival",
+    "action": "苹果糖摊前用折扇解开黏住的手指，再把亮晶晶的糖果递向镜头",
+    "timeOfDay": "傍晚或夜间",
+    "lighting": "warm lantern light under the night sky",
+    "camera": "medium shot, horizontal framing",
+    "mood": "不知火流继承人的轻快祭典",
+    "sceneTags": [
+      "summer_festival",
+      "red_yukata",
+      "dark_obi",
+      "apple_candy",
+      "folding_fan",
+      "lanterns",
+      "high_ponytail",
+      "bright_smile",
+      "night",
+      "night_light"
+    ],
+    "promptProse": "Mai Shiranui from Fatal Fury wears a modest red-and-white floral yukata with an opaque inner collar and a dark obi. She stands beneath the festival lanterns with a red apple candy and her folding fan. She uses the fan to rescue a sticky fingertip, then presents the glossy treat toward the viewer, her high ponytail and bright smile moving with the warm night crowd. warm lantern light under the night sky.",
+    "promptTokens": [
+      "summer_festival",
+      "red_yukata",
+      "dark_obi",
+      "apple_candy",
+      "folding_fan",
+      "lanterns",
+      "high_ponytail",
+      "bright_smile",
+      "night",
+      "night_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

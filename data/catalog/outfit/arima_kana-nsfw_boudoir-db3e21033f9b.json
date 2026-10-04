@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 536,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_boudoir",
+      "isDefault": false,
+      "name": "有马加奈·成人私密造型",
+      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "tokens": [
+        "private_lingerie",
+        "sheer_lace",
+        "soft_shadows"
+      ]
+    }
+  }
+}

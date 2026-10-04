@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "nana_sainan_corridor_tsundere_glare",
+  "revision": 1,
+  "sortOrder": 1267,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
+    "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
+    "category": "傲娇王女",
+    "characterId": "nana_asta_deviluke",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【娜娜 · 走廊拐角的傲娇小虎牙】彩南高中洒满明亮晨光的木地板走廊上，娜娜双手叉腰气鼓鼓地挡在路中央。她身穿彩南高校水手服百褶裙，粉色的长双马尾在肩后晃动，嘴角露出可爱锐利的小虎牙。身后的黑色爱心恶魔尾巴不服气地左右甩动，紫粉色的眼眸瞪着迎面走来的梨斗——「笨蛋梨斗！一大清早就在东张西望，肯定又在打什么变态的主意吧？看在姐姐的份上，我才勉为其难提醒你的哦！哼！」",
+    "id": "nana_sainan_corridor_tsundere_glare",
+    "lighting": "走廊明净朝阳与粉色发丝边缘的剔透逆光轮廓",
+    "location": "彩南高中教学楼采光走廊木地板",
+    "mood": "傲娇好胜",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Standing defensively with hands planted on her hips in a sunlit high school hallway, Nana bares her cute little snaggletooth in playful defiance. Crisp morning sunbeams illuminate her bouncing pink twintails and the twitching spade-heart tail coiling behind her sailor skirt.",
+    "promptTokens": [
+      "school_hallway",
+      "hands_on_hips",
+      "tsundere_glare",
+      "fang",
+      "sainan_high_school_uniform",
+      "sailor_suit",
+      "pleated_skirt",
+      "twintails",
+      "demon_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_hallway",
+      "hands_on_hips",
+      "tsundere",
+      "fang",
+      "demon_tail",
+      "sainan_high_school_uniform",
+      "twintails",
+      "pink_hair"
+    ],
+    "timeOfDay": "早晨",
+    "title": "娜娜 · 走廊拐角的傲娇小虎牙"
+  }
+}

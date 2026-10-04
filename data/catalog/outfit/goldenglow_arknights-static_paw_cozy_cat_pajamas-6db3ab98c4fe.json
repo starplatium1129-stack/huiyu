@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "goldenglow_arknights/static_paw_cozy_cat_pajamas",
+  "revision": 1,
+  "sortOrder": 344,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "goldenglow_arknights",
+    "outfit": {
+      "default": false,
+      "id": "static_paw_cozy_cat_pajamas",
+      "isDefault": false,
+      "name": "静电防线·小猫绒绒睡衣",
+      "prose": "a pastel pink-and-white fluffy cat-ear fleece pajama set: an oversized hooded hoodie with realistic cat-ear hood and golden lightning bolt print, matching fleece shorts, ultra soft loungewear",
+      "tokens": [
+        "cat_ears",
+        "fleece",
+        "pajamas",
+        "hoodie",
+        "pink",
+        "lightning"
+      ]
+    }
+  }
+}

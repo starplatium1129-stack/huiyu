@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "medea_caster/sfw_craft",
+  "revision": 1,
+  "sortOrder": 170,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medea_caster",
+    "outfit": {
+      "id": "sfw_craft",
+      "name": "模型与针线便装",
+      "prose": "a pale blue long-sleeved blouse, dark ankle-length skirt and fine-framed craft glasses",
+      "tokens": [
+        "blue_blouse",
+        "long_sleeves",
+        "long_skirt",
+        "glasses"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

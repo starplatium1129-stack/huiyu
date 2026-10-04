@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 629,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, radiant alabaster porcelain skin, voluptuous firm breasts with tender cherry-blossom pink nipples, narrow curved waist, lush hips, glistening exposed pussy, cascading silvery hair adorned with a single soft flower pin, bare feet, romantic candlelight ambiance",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "very_long_hair",
+        "hair_flower",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

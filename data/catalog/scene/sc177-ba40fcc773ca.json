@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc177",
+  "revision": 1,
+  "sortOrder": 174,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Caught during stealth training in the safehouse, Shiki Natsume is pinned against the cold wall with both arms locked behind her back, her black tactical bodysuit peeled open from the collar down to the abdomen exposing her flustered cleavage and flushed skin; legs pressed weakly together and lips bitten swollen, she pants while glaring watery dead-hard eyes at the viewer under the tactical flashlight shadow.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc177",
+    "lighting": "战术手电筒强光阴影",
+    "location": "安全屋冰冷墙边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_zipped",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, bodysuit, skin-tight_latex, unzipped_bodysuit, exposed_breasts, bare_breasts, nipples, areola, combat_boots, pinned_against_concrete_wall, arms_held_behind_back, flushed_cheeks, biting_lip, panting, safehouse, dramatic_shadows, single_overhead_bulb, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【夏目 · 战术紧身衣解开绝对沦陷】特工安全屋的潜行训练中，夏目试图对你进行“反向制服”，却被你敏锐地反扣双手，狠狠按在了冰凉的墙壁上。她身上那一身漆黑的紧身特工连体衣从领口被你一路拉开、剥离到了腹部，露出了里面让人血脉偾张的傲人线条与大片潮红的细腻肌肤。她双腿无力地并拢，眼角的泪痣因为极度的羞嗔与快感而剧烈颤动。她一边急促地娇喘，一边用充满水汽的死硬眼神狠狠剜着你，嘴唇却早已被啃咬得红肿——「哈啊...你这变态长官...竟然用体重压着我...快放开...唔嗯...不准再往下摸了...」",
+    "storyJa": "【夏目・タクティカルタイツを解くと必ず崩壊する】秘密諜報員の隠れ家でのステルス訓練中、夏目はあなたを「もう、この変態店長……重いから、少し離れて。これ以上からかったら、本気で怒るから。」",
+    "tags": [
+      "mole_under_eye",
+      "tactical_bodysuit",
+      "torn_bodysuit",
+      "pinned_against_wall",
+      "arms_held_behind",
+      "pinned_arms",
+      "cold_wall",
+      "safehouse",
+      "bare_legs",
+      "full_body",
+      "combat_boots"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "潜行败露的代价：安全屋墙边的绝对支配",
+    "usage": [
+      "核心协议",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

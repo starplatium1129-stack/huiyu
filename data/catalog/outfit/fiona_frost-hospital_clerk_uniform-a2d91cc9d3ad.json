@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "fiona_frost/hospital_clerk_uniform",
+  "revision": 1,
+  "sortOrder": 466,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fiona_frost",
+    "outfit": {
+      "id": "hospital_clerk_uniform",
+      "name": "巴林特综合医院事务员制服",
+      "tokens": [
+        "office_lady",
+        "sweater",
+        "grey_vest",
+        "white_shirt",
+        "black_skirt",
+        "pantyhose",
+        "heels"
+      ],
+      "prose": "wearing her Berlint General Hospital office worker uniform: a long-sleeved dark blue sweater under a grey vest with black stripes and buttons, over a white long-sleeved shirt, with a black knee-length office skirt, dark grey tights and black heeled shoes",
+      "styleHint": "bright organized hospital interior",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

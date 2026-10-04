@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc104",
+  "revision": 1,
+  "sortOrder": 102,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a locked command office on a rainy night, Shiki Natsume sits on the desk edge in a soaked translucent white shirt revealing a black lace bra and a high-waisted pencil skirt. Slender bare legs with wet sheen dangle, black heels placed on the floor, rain streaks on the window and strong office shadows framing her heavy blush.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "近景特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc104",
+    "lighting": "单一台灯强烈侧光",
+    "location": "反锁指挥办公室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dry_clothes, jacket",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_white_shirt, translucent_cloth, see-through, black_lace_bra_visible, cleavage, pencil_skirt, wet_clothes, clinging_fabric, sitting_on_office_desk, rainy_night_outside_window, city_lights, heavy_blush, parted_lips, biting_lip, sensual, dim_office_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 职场湿身绝对透光】夏日深夜突降暴雨，刚跑回公司指挥中心的夏目全身被雨水彻底淋透。她面红耳赤地坐在你宽大的办公桌边缘，身上那件轻薄的白衬衫被雨水打得半透明，死死贴紧在她饱满高耸的优美身躯上，里面黑色的性感内衣轮廓和光洁的小腹肌肤被透光勾勒得一清二楚。她细长的双腿交叠，推了推滑落的镜框，眼角的泪痣在桌上台灯的强阴影下显得欲气满满——「哈？变态长官，把我反锁在办公室，盯着淋湿的我...这就是你的特殊命令吗？」",
+    "storyJa": "【夏目・職場で濡れても完全に透明】夏の深夜、突然雨が降り、会社の指令センターに走って戻ったばかりの夏目さんは雨でずぶ濡れになった。彼女は顔を真っ赤にして大きな机の端に座っています。雨に濡れた薄手の白いシャツが透けて、豊満で長身で優美な体にぴったりと張り付いている。黒のセクシーな下着の輪郭と滑らかな下腹部の肌が光によってくっきりと浮かび上がります。彼女は細い足を交差させ、スライドフレームを押しました。テーブルランプの強い影の下で、彼女の目の隅にある泣きぼくろは欲望に満ちているように見えました。――「は？　この変態店長。私を事務所に閉じ込めて、濡れたまま見ているなんて……これが特別命令のつもり？」",
+    "tags": [
+      "mole_under_eye",
+      "wet_shirt",
+      "translucent",
+      "black_bra",
+      "bare_legs",
+      "smooth_thighs",
+      "office",
+      "desk",
+      "full_body",
+      "barefoot",
+      "rain",
+      "night",
+      "glasses"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "湿透白衬衫的职场潜规则",
+    "usage": [
+      "展示图",
+      "成人向"
+    ],
+    "weather": "大雨瓢泼"
+  }
+}

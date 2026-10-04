@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "dusk_arknights_new_year_scroll_selection",
+  "revision": 1,
+  "sortOrder": 693,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfitId": "dying_dust",
+    "id": "dusk_arknights_new_year_scroll_selection",
+    "title": "夕 · 新春画轴挑选",
+    "category": "雅趣日常",
+    "location": "挂着画轴的室内长廊",
+    "timeOfDay": "夜晚",
+    "mood": "安静端详",
+    "description": "【夕 · 新春画轴挑选】暖灯照着室内长廊，夕穿着黑金旗袍和毛边短披肩，站在几幅新挂好的水墨画前。她一手垂握细长烟管，另一手轻扶卷轴下缘，眯起眼判断留白是否合适——「这幅就放这里。空出来的地方，也是画的一部分。」",
+    "action": "站在画轴前，一手垂握烟管，另一手轻扶画轴下缘",
+    "promptProse": "In a quiet indoor gallery, Dusk studies a hanging ink scroll in her black-and-gold qipao and fur-trimmed capelet, holding the slender pipe down in one hand while steadying the scroll's lower edge with the other. Warm paper lamps reveal the brush texture and the empty wall around the painting, framing her thoughtful pause without a crowd or a festival procession.",
+    "promptTokens": [
+      "gallery",
+      "hanging_scroll",
+      "ink_painting",
+      "standing",
+      "qipao",
+      "capelet",
+      "holding_pipe",
+      "paper_lamp",
+      "warm_light",
+      "night",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "camera": "medium shot, one hanging scroll and both hands within the frame",
+    "lighting": "室内纸灯映出画纸纹理的暖光",
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single",
+    "sceneTags": [
+      "gallery",
+      "hanging_scroll",
+      "ink_painting",
+      "standing",
+      "qipao",
+      "capelet",
+      "holding_pipe",
+      "paper_lamp",
+      "warm_light",
+      "night",
+      "medium_shot"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "bad hands",
+      "extra fingers",
+      "extra limbs",
+      "text",
+      "watermark",
+      "nsfw",
+      "nude",
+      "explicit"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 836,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, statuesque 172cm model body with inky black hair spilling down her back, enormous natural breasts with pale pink nipples, a toned flat belly, plush wide hips, and endlessly long sculpted legs",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "tall_female",
+        "long_legs",
+        "mole_under_eye"
+      ]
+    }
+  }
+}

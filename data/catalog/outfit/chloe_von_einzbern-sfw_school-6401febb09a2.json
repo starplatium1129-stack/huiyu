@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "chloe_von_einzbern/sfw_school",
+  "revision": 1,
+  "sortOrder": 163,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chloe_von_einzbern",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "放学后的整齐制服",
+      "prose": "a white school blouse, red cardigan and knee-length pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "white_blouse",
+        "red_cardigan",
+        "pleated_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_r18_pov_silk_bed",
+  "revision": 1,
+  "sortOrder": 714,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_r18_pov_silk_bed",
+    "characterId": "shu_arknights",
+    "title": "黍 · 丝帐间的邀约",
+    "description": "【黍 · 丝帐间的邀约】私密卧房里，黍仰卧在微乱的丝被上，以第一人称视角望向镜头。她裸露的双腿抬起并向两侧分开，一只金色手指在湿润的私处间轻柔动作；另一只手抚着裸露胸口，泛红的脸上带着羞涩却主动的邀请。",
+    "category": "成人",
+    "location": "罗德岛访客舱的私密卧室",
+    "action": "仰卧张开双腿，以手指爱抚私处并注视镜头",
+    "mood": "羞涩主动、情欲高涨",
+    "lighting": "床头灯的暖光与柔和暗部",
+    "timeOfDay": "夜晚",
+    "camera": "direct pov, vertical full body",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "pov",
+      "on_back",
+      "spread_legs",
+      "masturbation",
+      "nude",
+      "rumpled_sheets"
+    ],
+    "promptTokens": [
+      "indoors",
+      "bedroom",
+      "on_bed",
+      "rumpled_sheets",
+      "pov",
+      "on_back",
+      "spread_legs",
+      "knees_up",
+      "looking_at_viewer",
+      "overhead_angle"
+    ],
+    "promptProse": "A quiet guest cabin aboard Rhodes Island after lights-out, with rumpled silk sheets and one shaded bedside lamp. From a direct first-person view above the bed, frame Shu's face, chest, hands and parted legs together so her expression remains readable. Her long hair fans over the pillow; her branching horns clear the headboard, and her tail curves along the outside edge of the mattress without crossing her body.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "bad anatomy",
+      "watermark",
+      "text",
+      "duplicate",
+      "split image"
+    ],
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_cg",
+    "animaStyleHint": "r18_sensual_cg",
+    "nsfwTokens": [
+      "completely_nude",
+      "pov",
+      "on_back",
+      "spread_legs",
+      "knees_up",
+      "masturbation",
+      "fingering",
+      "pussy",
+      "pussy_juice",
+      "bare_breasts",
+      "nipples",
+      "heavy_blush",
+      "parted_lips"
+    ],
+    "nsfwProse": "From a direct POV, Shu lies completely nude on her back with both thighs raised and parted. One golden hand gently fingers her wet pussy, making her breasts rise with quickened breaths as the other hand squeezes one nipple. Moisture shines over her intimate folds and inner thighs; she looks up with flushed cheeks and parted lips, clearly inviting the viewer closer."
+  }
+}

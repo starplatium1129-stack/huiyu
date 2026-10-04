@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "misono_mika/trinity_uniform",
+  "revision": 1,
+  "sortOrder": 482,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "misono_mika",
+    "outfit": {
+      "default": true,
+      "id": "trinity_uniform",
+      "isDefault": true,
+      "name": "崔尼蒂校服",
+      "prose": "Trinity tea party school uniform with a sleeveless white collared dress, royal red ribbon tie, white fur-trimmed shoulder capelet draped over shoulders, pleated skirt with red trim slit, white pantyhose tights and strap high heels",
+      "tokens": [
+        "school_uniform",
+        "sleeveless_dress",
+        "white_dress",
+        "red_ribbon",
+        "capelet",
+        "shoulder_cape",
+        "pleated_skirt",
+        "white_tights",
+        "pantyhose",
+        "high_heels",
+        "trinity",
+        "tea_party"
+      ]
+    }
+  }
+}

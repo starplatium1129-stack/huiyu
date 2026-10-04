@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/tennis_sportswear",
+  "revision": 1,
+  "sortOrder": 201,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "tennis_sportswear",
+      "name": "网球无袖运动短裙",
+      "tokens": [
+        "sportswear",
+        "sleeveless_top",
+        "tennis_skirt",
+        "pleated_skirt",
+        "wristband",
+        "sneakers"
+      ],
+      "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+      "styleHint": "bright dynamic daylight",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

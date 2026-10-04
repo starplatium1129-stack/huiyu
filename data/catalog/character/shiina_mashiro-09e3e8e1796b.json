@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "shiina_mashiro",
+  "revision": 1,
+  "sortOrder": 118,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shiina_mashiro",
+    "profile": {
+      "id": "shiina_mashiro",
+      "name": "椎名真白",
+      "alias": [
+        "椎名真白",
+        "Mashiro Shiina"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-shiina_mashiro.png?v=bc4cd2532b64",
+        "alt": "椎名真白 · 雨中撑伞的猫步场景样张"
+      },
+      "visual_dna": {
+        "signature": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+        "hair": "blonde_hair, long_hair, straight_hair, hair_between_eyes",
+        "eyes": "orange_eyes, hair_between_eyes",
+        "uniform": "画室衬衫与长裤",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "专注创作",
+        "生活上较依赖同伴",
+        "表达情绪较含蓄"
+      ],
+      "likes": [
+        "创作漫画",
+        "年轮蛋糕"
+      ],
+      "classic_cg": {
+        "title": "画室中央的新作",
+        "description": "樱花庄 202 室，她赤脚站在比人还高的画布前，白衬衫下摆沾满颜料，手里横握着画笔；回头看向门口时脸上毫无表情，发丝上还沾着一点钴蓝。"
+      },
+      "identity": "The Pet Girl of Sakurasou · 椎名真白",
+      "tags": [
+        "The Pet Girl of Sakurasou",
+        "椎名真白",
+        "全年龄日常"
+      ],
+      "bg_story": "从英国转学到水明艺大附高的天才画家，住在樱花庄202室。她对生活琐事反应迟钝，对绘画却极为执着；在学习创作漫画的过程中，也慢慢理解同伴、表达与自己的情绪。",
+      "palette": [
+        "#d6b586",
+        "#665641"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "这张画……我还想再改一点。",
+      "source": "The Pet Girl of Sakurasou",
+      "traits": [
+        "shiina_mashiro",
+        "sakura-sou_no_pet_na_kanojo",
+        "blonde_hair",
+        "long_hair",
+        "straight_hair"
+      ],
+      "accent_color": "#d6b586",
+      "bg_color": "#665641"
+    },
+    "popular": {
+      "id": "shiina_mashiro",
+      "displayName": "椎名真白",
+      "originalName": "Mashiro Shiina",
+      "franchise": "The Pet Girl of Sakurasou",
+      "aliases": [
+        "椎名真白",
+        "Mashiro Shiina"
+      ],
+      "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+      "identityTokens": [
+        "shiina_mashiro",
+        "sakura-sou_no_pet_na_kanojo",
+        "blonde_hair",
+        "long_hair",
+        "straight_hair",
+        "orange_eyes",
+        "hair_between_eyes"
+      ],
+      "exactTokens": [
+        "shiina_mashiro"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shiina_mashiro"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

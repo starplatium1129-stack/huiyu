@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc029",
+  "revision": 1,
+  "sortOrder": 27,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot beside a large heart-rate monitor in the bright emotion laboratory, adult Ayachi Nene wears a lightweight white lab coat over a pink dress and a small sensor. She records the joyful waveform with a notebook and pen, one hand over her heart as the synchronized reading rises under blue-white lab light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "监测屏旁半身中景",
+    "category": "Active_Sync_Scenes",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "安心喜悦",
+    "id": "sc029",
+    "lighting": "明亮柔和蓝白实验光",
+    "location": "跨界情绪实验室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform, nsfw, nude, explicit, transparent_clothing, cleavage, bare_midriff",
+    "prompt": "1girl, solo, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, lightweight_white_lab_coat_over_pink_dress, wearing_heart_rate_sensor, standing_beside_laboratory_bench_and_large_heart_rate_monitor, recording_joyful_emotion_curve_with_notebook_and_pen, one_hand_over_heart, joyful_blush, teary_happy_eyes, bright_blue_white_laboratory_light, clinical_emotion_lab, medium_shot, cinematic_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "不限",
+    "story": "【成年跨界 AU · 情绪同步校准】明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",
+    "storyJa": "【寧々・大人のクロスオーバーAU・感情同調キャリブレーション】明るい実験室では、大人の寧々が軽量の心拍数センサーを身に着けており、アホ毛が画面上の感情曲線に合わせて優しく揺れています。あなたの幸せがデバイスによって増幅された後、彼女も笑わずにはいられませんでしたが、すべてのピークを注意深く記録しました。シンクロ率が上がり続けることに気づき、顔を赤らめて胸を押さえた――「安心って、こんなにはっきりした形になるんですね……このデータは、ほかの人には見せちゃだめです。」",
+    "tags": [
+      "hair_ribbon",
+      "lab_coat",
+      "heart_rate_monitor",
+      "laboratory",
+      "heart_rate_sensor",
+      "notebook",
+      "pen",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "情绪同步：快乐波峰校准",
+    "usage": [
+      "实验CG"
+    ],
+    "weather": "晴"
+  }
+}

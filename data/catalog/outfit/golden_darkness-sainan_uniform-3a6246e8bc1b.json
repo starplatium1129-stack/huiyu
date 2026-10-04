@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "golden_darkness/sainan_uniform",
+  "revision": 1,
+  "sortOrder": 665,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "golden_darkness",
+    "outfit": {
+      "default": false,
+      "id": "sainan_uniform",
+      "isDefault": false,
+      "name": "彩南高校女子水手制服",
+      "prose": "Sainan High School uniform: a crisp short-sleeved white sailor blouse with teal sailor collar, matching teal pleated miniskirt, dark neckerchief with golden brooch, dark knee socks, and black school loafers",
+      "tokens": [
+        "sainan_high_school_uniform",
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "sailor_collar",
+        "pleated_skirt",
+        "miniskirt",
+        "knee_socks",
+        "loafers"
+      ]
+    }
+  }
+}

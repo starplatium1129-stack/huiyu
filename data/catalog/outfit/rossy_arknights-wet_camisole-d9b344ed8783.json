@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/wet_camisole",
+  "revision": 1,
+  "sortOrder": 438,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "default": false,
+      "id": "wet_camisole",
+      "isDefault": false,
+      "name": "汗湿清凉背心",
+      "prose": "a thin translucent white camisole drenched in sweat and clinging tightly across perky breasts",
+      "tokens": [
+        "camisole",
+        "wet_clothes",
+        "translucent",
+        "see-through_clothes",
+        "bare_shoulders",
+        "collarbone"
+      ]
+    }
+  }
+}

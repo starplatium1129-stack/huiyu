@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/atelier_slouchy_loungewear",
+  "revision": 1,
+  "sortOrder": 323,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "default": false,
+      "id": "atelier_slouchy_loungewear",
+      "isDefault": false,
+      "name": "画斋幽梦",
+      "prose": "an oversized slouchy ink-grey hoodie printed with a cute hand-drawn ink spirit mascot and splatter calligraphy, loose cotton loungewear shorts, messy hair bun held with a calligraphy brush, paint smudges on sleeves",
+      "tokens": [
+        "oversized_hoodie",
+        "slouchy",
+        "loungewear",
+        "hoodie",
+        "ink",
+        "messy_bun"
+      ]
+    }
+  }
+}

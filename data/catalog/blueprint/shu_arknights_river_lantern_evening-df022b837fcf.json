@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "shu_arknights_river_lantern_evening",
+  "revision": 1,
+  "sortOrder": 711,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shu_arknights_river_lantern_evening",
+    "characterId": "shu_arknights",
+    "title": "黍 · 河灯夜行",
+    "description": "夜色中的石桥边，黍穿青黛常服提着一盏纸灯停下脚步，望向河面漂过的零星灯火。暖光从灯笼照到她的金色手指和衣襟，青蓝月色勾出龙角与长发，河岸保持安静无人。",
+    "category": "闲居日常",
+    "location": "炎国河畔石桥",
+    "action": "提纸灯停在桥边，侧身望向河面漂过的河灯",
+    "mood": "从容宁静",
+    "lighting": "纸灯暖光与青蓝月光",
+    "timeOfDay": "夜晚",
+    "camera": "cowboy shot, three quarter view",
+    "outfitId": "evening_hanfu",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "stone_bridge",
+      "river",
+      "paper_lantern",
+      "night",
+      "moonlight",
+      "standing"
+    ],
+    "promptTokens": [
+      "outdoors",
+      "stone_bridge",
+      "river",
+      "paper_lantern",
+      "holding_lantern",
+      "standing",
+      "looking_away",
+      "night",
+      "moonlight",
+      "reflection",
+      "cowboy_shot"
+    ],
+    "promptProse": "Beside the stone bridge on a quiet riverbank, Shu pauses with a single paper lantern hanging from her right hand and turns three quarters toward the floating lights on the water. The lantern warms her golden fingers and the ivory folds of her hanfu, while blue moonlight traces the edges of her branched horns, long hair and curled tail. Sparse river lanterns form a receding line beyond the bridge parapet. Keep the view from her head to below the knees, with her face visible in profile and the handheld lantern unobstructed against the dark water.",
+    "negativeTokens": [
+      "extra people",
+      "extra limbs",
+      "bad hands",
+      "watermark",
+      "text"
+    ],
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

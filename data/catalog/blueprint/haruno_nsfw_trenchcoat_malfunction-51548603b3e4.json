@@ -1,0 +1,82 @@
+{
+  "kind": "blueprint",
+  "id": "haruno_nsfw_trenchcoat_malfunction",
+  "revision": 1,
+  "sortOrder": 378,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "haruno_nsfw_trenchcoat_malfunction",
+    "title": "雪之下阳乃 · 玄关风衣内真空的黑丝撕裂事故 ·「姐姐今晚……可是什么都没穿就来找你了哦」",
+    "category": "更衣事故",
+    "characterId": "yukinoshita_haruno",
+    "description": "【八幡公寓玄关·雨夜】阳乃裹着湿漉漉的卡其色双排扣风衣闯入，双手撑在鞋柜上。当她解开风衣纽扣时，里面竟然空无一物，只有被雨水浸湿、勾丝撕裂的黑色吊带袜勒在丰满大腿根部。她咬着唇转头，眼里满是危险的挑逗——「冷死了……快点用手帮姐姐暖一暖嘛……」",
+    "location": "八幡公寓玄关·雨夜",
+    "action": "撑鞋柜塌腰翘臀风衣大敞露真空，黑丝撕裂勒出大腿软肉，回眸戏谑喘息",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "horizontal POV, wide shot",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Haruno Yukinoshita braces her hands against the entryway console table, throwing open her soaked trench coat to reveal utter nudity beneath: lush full breasts, pink nipples taut from the rain, and torn black thigh-high stockings straining against plush thighs. Her arched hips highlight a glistening, swollen core as rainwater drips down her trembling spine. Looking back over her shoulder with an intoxicating, wicked flush and tear-slick eyes, she dares you to warm her shivering flesh. Cinematic horizontal composition, hallway amber lamp casting dramatic shadows across naked curves, detailed apartment background, solo 1girl, no extra people.",
+    "nsfwProse": "Bracing against the console table with her drenched trenchcoat thrown wide open to reveal complete nudity, Haruno Yukinoshita flaunts bare breasts and torn stockings with a shivering, wicked blush.",
+    "promptTokens": [
+      "entryway",
+      "apartment",
+      "hallway",
+      "rainy_night",
+      "looking_back",
+      "horizontal_framing",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_black_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "bent_over",
+      "leaning_forward",
+      "open_coat",
+      "trenchcoat",
+      "naked_beneath",
+      "bare_breasts",
+      "pink_nipples",
+      "torn_pantyhose",
+      "black_stockings",
+      "garter_straps",
+      "crotchless_panties",
+      "exposed_pussy",
+      "pussy_juice",
+      "biting_lip",
+      "heavy_blush",
+      "parted_lips"
+    ]
+  }
+}

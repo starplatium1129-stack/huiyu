@@ -1,0 +1,163 @@
+{
+  "kind": "character",
+  "id": "aisha_greyrat",
+  "revision": 1,
+  "sortOrder": 160,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "aisha_greyrat",
+    "profile": {
+      "id": "aisha_greyrat",
+      "name": "爱夏·格雷拉特",
+      "alias": [
+        "Aisha Greyrat",
+        "Aisha",
+        "アイシャ・グレイラット",
+        "爱夏",
+        "爱夏·格雷拉特",
+        "爱莎·格雷拉特",
+        "艾莎·格雷拉特"
+      ],
+      "type": "popular",
+      "icon": "character",
+      "portrait": {
+        "image": "../assets/characters/popular-aisha_greyrat.png?v=93950c9050e7",
+        "alt": "爱夏·格雷拉特 · 晨光中的账目核对场景样张"
+      },
+      "visual_dna": {
+        "hair": "深栗红（红发）短发 · 高马尾",
+        "hair_color": "深栗红／茶褐（红发）",
+        "eyes": "鲜绿色",
+        "hairstyle": "短发高马尾 · 白色发带与鬓发",
+        "uniform": "格雷拉特家女仆装：深褐长袖连衣裙、白色褶边围裙与白色褶领",
+        "expression": "机敏聪慧 · 从容自信 · 笑露小虎牙",
+        "style": "quick-witted fantasy house steward",
+        "signature": "深栗红高马尾、绿色眼睛、白色发带与利落的女仆装"
+      },
+      "personality": [
+        "聪明敏锐",
+        "善于察言观色",
+        "灵活务实",
+        "自信从容",
+        "善于统筹"
+      ],
+      "likes": [
+        "整理计划",
+        "魔法与知识",
+        "观察局势",
+        "高效处理事务"
+      ],
+      "classic_cg": {
+        "title": "宅邸账册与晨光",
+        "description": "成年版爱夏在格雷拉特宅邸的书房核对账册，棕红马尾、绿色眼睛与白色发带清晰可见。"
+      },
+      "identity": {
+        "role": "鲁迪乌斯的女仆 / 鲁德佣兵团顾问",
+        "age": "成年形态（原作正传结局 29 岁；本条目为 22+ 成年版）",
+        "occupation": "宅邸事务统筹 / 佣兵团顾问 / 魔术师",
+        "faction": "格雷拉特家 / 鲁德佣兵团"
+      },
+      "tags": [
+        "深栗红高马尾",
+        "绿色眼睛",
+        "白色发带",
+        "格雷拉特家女仆",
+        "机敏",
+        "成年版"
+      ],
+      "bg_story": "爱夏·格雷拉特是保罗与女仆莉莉娅的女儿，也是鲁迪乌斯与诺伦同父异母的妹妹，与诺伦同日出生。她聪明敏锐、学什么都快，十岁便在拉诺亚魔法大学入学考试拿到满分，后来成为鲁迪乌斯的女仆兼鲁德佣兵团顾问，统筹宅邸与佣兵团事务。此条目采用成年形态（原作正传结局已 29 岁，本条目为 22+），以深栗红（红发）短发高马尾、绿色眼睛、白色发带与深褐女仆装＋白围裙作为稳定识别特征；不戴眼镜（眼镜与发髻属母亲莉莉娅），不沿用幼年形象。",
+      "palette": [
+        "深栗红",
+        "森林绿",
+        "象牙白"
+      ],
+      "weather": [
+        "宅邸清晨",
+        "书房午后",
+        "海滨晴日"
+      ],
+      "speech": "爱夏向你致以问候。",
+      "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "traits": [
+        "aisha_greyrat",
+        "solo",
+        "adult_woman",
+        "red_hair",
+        "short_hair",
+        "ponytail",
+        "hairband",
+        "sidelocks",
+        "green_eyes",
+        "mushoku_tensei"
+      ],
+      "accent_color": "#A74458",
+      "bg_color": "#1b171c",
+      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "aisha_greyrat",
+        "aisha greyrat",
+        "aisha",
+        "アイシャ・グレイラット",
+        "爱夏",
+        "爱夏·格雷拉特",
+        "爱莎·格雷拉特",
+        "艾莎·格雷拉特",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "animeStudio": "studio bind, official anime coloring, fantasy anime illustration",
+      "canon": {
+        "era": "中世纪奇幻（成年形态）",
+        "formNotes": "成年形态（原作正传结局 29 岁，本条目为 22+ 成年版）；深栗红／茶褐色短发扎高马尾、两侧鬓发、绿色眼睛、笑露小虎牙；发饰为素色白色发带，女仆装为深褐近黑长袖连衣裙＋白色褶边围裙＋白色褶领，不戴眼镜（眼镜与发髻是母亲莉莉娅的特征）",
+        "research": "2026-09 调研：萌娘百科《爱夏·格雷拉特》https://zh.moegirl.org.cn/爱夏·格雷拉特 （「拥有和母亲莉莉娅一样特征的红发」）；原作小说第 6 卷「パウロに似た茶髪をポニーテールにしている」；英文维基/Fandom 发型与发饰、Danbooru aisha_greyrat 关联 tag（red_hair 主导、hair_ribbon 不成立）",
+        "world": "异世界奇幻（无职转生·六面世界）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "defaultOutfitId": "maid_uniform",
+      "displayName": "爱夏·格雷拉特（成年版）",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "aisha_greyrat"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "aisha_greyrat",
+      "identityProse": "Aisha Greyrat from Mushoku Tensei as a grown woman, the quick-witted daughter of Paul and the maid Lilia, with short reddish-brown auburn hair gathered into a neat ponytail by a plain white hairband, sidelocks framing her cheeks, vivid green eyes, a small fang showing when she smiles, and a composed, perceptive presence.",
+      "identityTokens": [
+        "aisha_greyrat",
+        "solo",
+        "adult_woman",
+        "red_hair",
+        "short_hair",
+        "ponytail",
+        "hairband",
+        "sidelocks",
+        "green_eyes",
+        "mushoku_tensei"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Aisha Greyrat",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

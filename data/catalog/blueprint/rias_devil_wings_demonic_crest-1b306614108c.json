@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "rias_devil_wings_demonic_crest",
+  "revision": 1,
+  "sortOrder": 1278,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_devil_wings_demonic_crest",
+    "title": "莉雅丝 · 纯血恶魔破灭之翼",
+    "category": "身份高光",
+    "characterId": "rias_gremory",
+    "description": "【莉雅丝 · 纯血恶魔破灭之翼】旧校舍顶端破碎的红月夜空之下，莉雅丝悬浮半空展开两柄深邃漆黑的恶魔蝠翼。鲜红如血的及膝长发在狂暴魔力气流中肆意翻涌，足尖悬空，掌心凝聚起吉蒙里一族毁灭之力的深红魔法阵——「只要有我在，没有任何人能动我的眷属分毫。」",
+    "location": "驹王学园旧校舍钟楼顶层夜空",
+    "action": "展开漆黑恶魔双翼悬浮于夜空，掌心凝聚深红吉蒙里魔力阵，眼眸冷冽威严凝视前方",
+    "timeOfDay": "深夜红月",
+    "lighting": "猩红月光与掌心魔力光晕交织",
+    "camera": "cowboy shot, low angle, dynamic framing",
+    "mood": "威严霸气",
+    "sceneTags": [
+      "night_sky",
+      "red_moon",
+      "floating",
+      "bat_wings",
+      "devil_wings",
+      "magic_circle",
+      "energy_aura",
+      "flowing_crimson_hair"
+    ],
+    "promptProse": "Hovering gracefully against a dramatic crimson moonlit night sky, Rias Gremory unleashes her noble devil heritage with enormous dark bat wings outstretched. Her vivid red hair whips dynamically in turbulent magical currents as a glowing crimson Gremory seal revolves in her raised palm. Medium cowboy shot, vibrant anime key visual style, no text, no extra characters.",
+    "promptTokens": [
+      "floating",
+      "bat_wings",
+      "devil_wings",
+      "magic_circle",
+      "energy_aura",
+      "glowing_runes",
+      "flowing_hair",
+      "crimson_hair",
+      "cyan_eyes",
+      "intense_gaze",
+      "cowboy_shot",
+      "low_angle",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "gremory_crimson_battle",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ]
+  }
+}

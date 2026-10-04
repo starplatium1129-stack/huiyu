@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "vivy/sfw_stage",
+  "revision": 1,
+  "sortOrder": 974,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vivy",
+    "outfit": {
+      "id": "sfw_stage",
+      "name": "白蓝舞台端庄长袖装",
+      "prose": "an opaque white-and-blue stage dress with covered shoulders, knee-length skirt, small earpiece and white boots",
+      "tokens": [
+        "white_blue_dress",
+        "covered_shoulders",
+        "knee_length_skirt",
+        "earpiece",
+        "white_boots"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

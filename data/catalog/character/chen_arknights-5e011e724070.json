@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "chen_arknights",
+  "revision": 1,
+  "sortOrder": 21,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "chen_arknights",
+    "profile": {
+      "id": "chen_arknights",
+      "name": "陈",
+      "alias": [
+        "Ch'en",
+        "陈",
+        "陈晖洁",
+        "老陈",
+        "陈Sir"
+      ],
+      "type": "popular",
+      "icon": "⚔️",
+      "visual_dna": {
+        "hair": "深邃墨绿色/蓝绿色（Deep teal / dark cyan-tinted blue）中长发，发质顺滑利落。前额留有略带分叉的齐碎刘海，两侧垂下自然修饰脸颊的长鬓角发缕；后脑两侧各扎一支垂至肩颈处的对称双低马尾（Low twintails / low dual ponytails），马尾根部用鲜红色发绳/发带固定绑系，发尾平整微向内收。",
+        "hair_color": "墨绿色偏蓝 / 黛青色（Deep teal / dark cyan-blue）",
+        "eyes": "明亮的金褐色 / 琥珀棕色（Amber / golden-brown eyes），眼神锐利坚定、英气逼人，目光中带着执法者的冷静严谨与不容侵犯的正义感。",
+        "hairstyle": "双低马尾（Low twintails，用两条鲜红色发绳系于后颈两侧），搭配齐碎刘海与垂肩长鬓角。",
+        "uniform": "龙门近卫局（L.G.D.）高级督察制服：上身内穿纯白修身立领长袖衬衫，系干练黑色窄领带；外穿一件深藏青与炭黑拼色、短袖立领剪裁的战术防弹风衣短外套，左胸和双肩缀有龙门近卫局金色警徽与红蓝战术识别标；腰束多功能黑色皮革战术腰带、快拔手枪套与双剑背挂系统；下身穿黑色百褶短裙内搭防走光战术安全裤；腿着及膝黑色高筒袜与系带黑色战术短皮靴；双手佩戴黑色皮革战术手套；腰挎两把佩剑（红色鞘赤霄剑与制式警用直剑）。",
+        "expression": "不苟言笑、冷峻干练、神情威严坚毅、正气凛然；在私下与密友相处或面对市井烟火时，会偶露一丝不易察觉的温和、无奈或傲娇关切。",
+        "style": "近未来都市战术机能（Urban Tactical Techwear）、英姿飒爽警官风、新中式国风与现代制服结合、硬朗干练。",
+        "signature": "头顶两侧靠前生长的一对红棕/黑褐色分叉东方龙角（Lung dragon horns）；后腰延展出的修长墨绿色龙鳞长尾（Lung dragon tail）；系着鲜红发绳的双低马尾；左腰/背负的炎国古剑「赤霄」（朱红刀鞘、龙首剑柄、符文封印带）与右腰近卫局制式直剑；龙门近卫局金色警徽与战术枪套。"
+      },
+      "personality": [
+        "严于律己",
+        "恪尽职守",
+        "嫉恶如仇",
+        "外冷内热",
+        "执着坚毅",
+        "重情重义",
+        "雷厉风行",
+        "务实正直"
+      ],
+      "likes": [
+        "龙门老街地道传统美食（特别偏爱叉烧饭、云吞面与路边摊特色小吃）",
+        "每日清晨高强度的近身剑术打磨与体能训练",
+        "维护城市治安秩序，庇护弱小与市井百姓",
+        "与近卫局旧友（星熊、诗怀雅）拌嘴或下班后小酌畅谈",
+        "游历泰拉各地，探寻正义与拯救苦难的真正道路",
+        "悉心擦拭与保养佩剑（赤霄古剑与近卫局制式直剑）"
+      ],
+      "identity": {
+        "role": "前龙门近卫局特别督察组组长（高级警司） / 罗德岛合作干员 / 炎国真龙血脉执剑者",
+        "age": "未知（官方未公布确切数字，根据生平履历推测为20代中后期，外貌保持青年女性英气挺拔状态）",
+        "occupation": "警官 / 游历剑客 / 罗德岛近卫与远程支援干员",
+        "faction": "炎国·龙门（Lungmen） / 罗德岛（Rhodes Island） / 前龙门近卫局（L.G.D.）"
+      },
+      "tags": [
+        "墨绿色偏蓝 / 黛青色（Deep teal / dark cyan-blue）",
+        "明亮的金褐色 / 琥珀棕色（Amber / golden-brown eyes），眼神锐利坚定、英气逼人，目光中带着执法者的冷静严谨与不容侵犯的正义感。"
+      ],
+      "bg_story": "陈（陈晖洁）出身龙门名门望族，身具炎国真龙血脉，毕业于维多利亚皇家近卫学校，曾任龙门近卫局特别督察组长与高级警司，以严苛雷厉的作风与高超剑术名震龙门。切尔诺伯格核心城事件期间，她为了坚守心中的正义、查明旧日阴谋并斩断与同母异父姐姐塔露拉的恩怨宿命，毅然违抗魏彦吾命令单刀直入核心城与罗德岛并肩作战。事件平息后，陈辞去近卫局职位脱下警服，以罗德岛合作干员及行者身份踏上游历泰拉大地的旅程，先后在多索雷斯粉碎阴谋、在炎国斩断纠葛，历经风雨逐渐褪去执拗与迷茫，最终成长为能真正挥动赤霄、背负天下公道的一代剑豪。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "ch'en (arknights)",
+        "1girl",
+        "solo",
+        "teal_hair",
+        "long_hair",
+        "low_twintails",
+        "hair_ribbon",
+        "amber_eyes",
+        "horns",
+        "tail",
+        "black_clothes",
+        "blue_clothes",
+        "military_uniform",
+        "coat",
+        "sword",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-chen_arknights.png?v=5",
+        "alt": "陈热门角色立绘"
+      },
+      "speech": "陈向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "ch'en",
+        "chen",
+        "arknights",
+        "lungmen"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "蓝发金瞳小龙角；近卫局制服；赤霄双剑",
+        "research": "2026-08-15 调研（Danbooru ch'en_(arknights) 4467 posts）",
+        "world": "泰拉（龙门近卫局）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "so-bin"
+      ],
+      "displayName": "陈",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "ch'en (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "chen_arknights",
+      "identityProse": "Ch'en from Arknights, the disciplined Lung inspector with dark teal hair tied in low twin tails with red ribbons, sharp amber eyes, dragon horns, and a slender dragon tail.",
+      "identityTokens": [
+        "ch'en (arknights)",
+        "1girl",
+        "solo",
+        "teal_hair",
+        "long_hair",
+        "low_twintails",
+        "hair_ribbon",
+        "amber_eyes",
+        "horns",
+        "tail",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Ch'en",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

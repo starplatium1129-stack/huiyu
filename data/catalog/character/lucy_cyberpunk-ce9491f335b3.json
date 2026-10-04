@@ -1,0 +1,160 @@
+{
+  "kind": "character",
+  "id": "lucy_cyberpunk",
+  "revision": 1,
+  "sortOrder": 82,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "lucy_cyberpunk",
+    "profile": {
+      "id": "lucy_cyberpunk",
+      "name": "露西",
+      "alias": [
+        "Lucy",
+        "边缘行者露西",
+        "夜之城黑客",
+        "月球露西"
+      ],
+      "type": "popular",
+      "icon": "🌙",
+      "portrait": {
+        "image": "../assets/characters/popular-lucy_cyberpunk.png?v=5",
+        "alt": "露西 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "不对称渐变短发 · 幻彩白粉紫微蓝",
+        "hair_color": "七彩幻彩白",
+        "eyes": "神秘紫罗兰魅瞳 · 鲜红眼影",
+        "hairstyle": "不对称波波头 · 赛博脊椎神经接口插槽",
+        "uniform": "高领黑短夹克与深潜紧身战术衣 / 月球漫步轻型宇航服",
+        "expression": "清冷孤傲 · 抽烟沉思 · 唯美动情",
+        "style": "melancholic cyberpunk netrunner",
+        "signature": "幻彩渐变短发、单分子线手环、脊柱发光插槽与月球追忆"
+      },
+      "personality": [
+        "防备心极强、性格清冷独立",
+        "曾受荒坂残酷训练内心渴望自由",
+        "对认定的人深情至死不渝",
+        "夜之城最顶级的神经黑客技术",
+        "毕生心愿是前往宁静纯洁的月球"
+      ],
+      "likes": [
+        "坐在沃森区高空天台仰望月球",
+        "抽着泛淡紫光的赛博香烟",
+        "在深潜数据冰海中畅游",
+        "与深爱之人相依为命的平静时光"
+      ],
+      "classic_cg": {
+        "title": "月球之巅的蔚蓝地出",
+        "description": "荒凉死寂的月球平原上，露西手抱宇航头盔凝望星空中冉冉升起的蔚蓝地球，目光深邃凄美。"
+      },
+      "identity": {
+        "role": "夜之城顶尖自由网络黑客 / 原荒坂深潜逃犯",
+        "age": "青年",
+        "occupation": "网络黑客 (Netrunner)",
+        "faction": "夜之城 · 曼恩佣兵小队"
+      },
+      "tags": [
+        "幻彩短发",
+        "赛博黑客",
+        "单分子线",
+        "月球梦想",
+        "深潜紧身衣",
+        "红眼影",
+        "赛博朋克"
+      ],
+      "bg_story": "露西是《赛博朋克：边缘行者》的女主角，夜之城身手最高超的网络黑客之一。年幼时曾被荒坂当做深潜探针残酷训练，逃出生天后独自在夜之城流浪，性格戒备而孤傲。直到遇见大卫后冰封的心才被融化，她始终怀抱着逃离夜之城、前往纯净月球生活的终极梦想。",
+      "palette": [
+        "幻彩白",
+        "赛博紫",
+        "霓虹青"
+      ],
+      "weather": [
+        "夜之城酸雨",
+        "沃森霓虹夜",
+        "月面星空"
+      ],
+      "speech": "夜之城吞噬一切……但在那颗月球上，什么都没有，只有绝对的平静。",
+      "source": "Studio TRIGGER / CD PROJEKT RED《赛博朋克：边缘行者》",
+      "traits": [
+        "lucy (cyberpunk)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "multicolored_hair",
+        "gradient_hair",
+        "eyeliner",
+        "red_eyeshadow",
+        "cyberware",
+        "cyberpunk"
+      ],
+      "accent_color": "#c084fc",
+      "bg_color": "#0e0b16"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "lucy_cyberpunk",
+        "lucy",
+        "lucy (cyberpunk)",
+        "露西",
+        "边缘行者",
+        "cyberpunk edgerunners",
+        "夜之城"
+      ],
+      "animeStudio": "Studio TRIGGER / CD PROJEKT RED style",
+      "canon": {
+        "era": "近未来高科技低生活时代",
+        "formNotes": "夜之城顶尖网络黑客，曾逃脱荒坂的残酷深潜设施；性格清冷孤傲、内心深情脆弱，始终梦想着前往安宁纯洁的月球表面",
+        "research": "2026-09-02 调研（Danbooru lucy_(cyberpunk) 16000+ posts）",
+        "world": "赛博朋克 2077（Cyberpunk 2077）· 夜之城"
+      },
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "swav",
+        "kappe"
+      ],
+      "displayName": "露西",
+      "exactPrefixes": [
+        "lucy_"
+      ],
+      "exactTokens": [
+        "lucy (cyberpunk)"
+      ],
+      "franchise": "Cyberpunk: Edgerunners",
+      "id": "lucy_cyberpunk",
+      "identityProse": "Lucy from Cyberpunk: Edgerunners, an elite netrunner in Night City with asymmetrical short hair blending white and pastel rainbow gradients, vibrant purple eyeliner, red eyeshadow, glowing cyberware spinal interface ports, and a slender agile silhouette.",
+      "identityTokens": [
+        "lucy (cyberpunk)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "multicolored_hair",
+        "gradient_hair",
+        "eyeliner",
+        "red_eyeshadow",
+        "cyberware",
+        "cyberpunk"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Lucy",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

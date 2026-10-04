@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_casino_bunny_vip_beaming_smile",
+  "revision": 1,
+  "sortOrder": 938,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手端银质鸡尾酒托盘侧身展露完美曲线，灿烂招手甜笑，头顶兔耳发箍与金发流转",
+    "camera": "full body, 3/4 dynamic perspective, leg and waist focus",
+    "category": "破圈名流",
+    "characterId": "ichinose_asuna",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【一之濑明日奈 · 极奢赌场的兔女郎迎宾】停泊在公海之上的黄金豪华赌船 VIP 厅内，巨型水晶吊灯洒下耀眼的金辉。明日奈身穿贴身反光的黑色高叉兔女郎连体衣，胸口深V大敞露出惊人丰满的雪白深沟。她头戴修长的黑兔耳发箍，及踝灿金长发如瀑流转。她一只玉手端着鸡尾酒托盘，侧身向主人灿烂甜笑招手——「主人主人~！今晚的 VIP 轮盘赌局马上就要开始了哦！明日奈的直觉今晚可是无敌的呢~」",
+    "id": "asuna_casino_bunny_vip_beaming_smile",
+    "lighting": "水晶吊灯极尽奢华的璀璨暖金高光与吧台霓虹流光",
+    "location": "豪华游轮赌场 VIP 吧台大厅",
+    "mood": "璀璨开朗",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "bunny_suit",
+    "promptProse": "Welcoming her master inside a sparkling luxury cruise ship casino hall beneath crystal chandeliers, Asuna beams joyfully in her glossy black high-leg bunny suit. Her floor-length golden hair and black bunny headband glow warmly against the polished marble floor and roulette tables.",
+    "promptTokens": [
+      "luxury_casino",
+      "roulette_table",
+      "bunny_suit",
+      "fake_bunny_ears",
+      "cleavage",
+      "black_pantyhose",
+      "high_heels",
+      "blonde_hair",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "casino",
+      "bunny_suit",
+      "cleavage",
+      "deep_cleavage",
+      "pantyhose",
+      "high_heels",
+      "blonde_hair",
+      "beaming_smile"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "一之濑明日奈 · 极奢赌场的兔女郎迎宾"
+  }
+}

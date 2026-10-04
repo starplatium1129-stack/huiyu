@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/summer_swimsuit_berserker",
+  "revision": 1,
+  "sortOrder": 91,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "summer_swimsuit_berserker",
+      "name": "水着狂阶黑色比基尼",
+      "tokens": [
+        "bikini",
+        "black_bikini",
+        "strappy_bikini",
+        "sarong",
+        "katana",
+        "summer_clothes"
+      ],
+      "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
+      "styleHint": "dramatic sunset ocean glow",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

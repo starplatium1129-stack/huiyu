@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/modern_clothes",
+  "revision": 1,
+  "sortOrder": 1,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "modern_clothes",
+      "name": "现代便服",
+      "prose": "a refined modern purple dress and her signature long single braid",
+      "tokens": [
+        "modern_clothing",
+        "dress",
+        "purple_dress",
+        "long_sleeves"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

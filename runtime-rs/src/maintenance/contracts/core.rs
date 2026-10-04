@@ -1,6 +1,11 @@
 use super::*;
 
-pub(super) fn validate(root: &Path, assets: Option<&Path>, data: &Value, issues: &mut Vec<String>) {
+pub(super) fn validate(
+    root: &DataRoot,
+    assets: Option<&Path>,
+    data: &Value,
+    issues: &mut Vec<String>,
+) {
     let (characters, loras, scenes) = (&data["characters"], &data["loras"], &data["scenes"]);
     let initial = issues.len();
     if !characters.is_array() || list(characters).is_empty() {
@@ -150,7 +155,7 @@ pub(super) fn validate(root: &Path, assets: Option<&Path>, data: &Value, issues:
         }
     }
 }
-pub(super) fn shards(root: &Path, data: &Value, issues: &mut Vec<String>) {
+pub(super) fn shards(root: &DataRoot, data: &Value, issues: &mut Vec<String>) {
     let Some(scenes) = data["scenes"].as_array() else {
         return;
     };

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "maomao/sfw_pharmacy",
+  "revision": 1,
+  "sortOrder": 981,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "sfw_pharmacy",
+      "name": "药房长袖襦裙",
+      "prose": "a modest green long-sleeved jacket over a cream inner collar and ankle-length skirt",
+      "tokens": [
+        "green_jacket",
+        "long_sleeves",
+        "cream_collar",
+        "aoqun",
+        "long_skirt"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/rhodes_casual_knit",
+  "revision": 1,
+  "sortOrder": 399,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "default": false,
+      "id": "rhodes_casual_knit",
+      "isDefault": false,
+      "name": "罗德岛舰内休闲毛衣",
+      "prose": "a cozy oversized thick-knit forest green sweater with casual shorts and soft slippers",
+      "tokens": [
+        "oversized_sweater",
+        "knit_sweater",
+        "green_sweater",
+        "shorts",
+        "slippers"
+      ]
+    }
+  }
+}

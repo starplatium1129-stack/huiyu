@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/sfw_beach",
+  "revision": 1,
+  "sortOrder": 34,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "牧之原翔子·海滨泳装",
+      "prose": "a pale blue swimsuit with a loose white shirt, canvas tote and a lemon soda",
+      "tokens": [
+        "pale_blue_swimsuit",
+        "white_shirt",
+        "canvas_tote",
+        "lemon_soda",
+        "seawall_bench"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

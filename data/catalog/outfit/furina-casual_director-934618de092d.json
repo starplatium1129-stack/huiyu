@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "furina/casual_director",
+  "revision": 1,
+  "sortOrder": 6,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "furina",
+    "outfit": {
+      "id": "casual_director",
+      "name": "导演便服",
+      "prose": "a cozy Fontaine theater director casual outfit with a soft navy cardigan draped over a crisp white blouse with a frilled collar, navy pleated skirt, black beret, and dark leather loafers",
+      "tokens": [
+        "casual_clothes",
+        "cardigan",
+        "blouse",
+        "frills",
+        "pleated_skirt",
+        "beret",
+        "socks",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/black_knights_uniform",
+  "revision": 1,
+  "sortOrder": 711,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "id": "black_knights_uniform",
+      "name": "黑色骑士团高领制服",
+      "prose": "her Black Knights executive uniform: a fitted black tailored jacket with red trim and gold emblems, high stand collar, black mini skirt, and matching thigh-high leather boots",
+      "tokens": [
+        "black_knights_uniform",
+        "military_uniform",
+        "black_jacket",
+        "red_trim",
+        "gold_buttons",
+        "miniskirt",
+        "thighhighs",
+        "boots"
+      ]
+    }
+  }
+}

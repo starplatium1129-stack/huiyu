@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "frieren/travel_clothes",
+  "revision": 1,
+  "sortOrder": 61,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "travel_clothes",
+      "name": "旅行装",
+      "prose": "a practical traveler's cloak over simple clothes",
+      "tokens": [
+        "cloak",
+        "jacket",
+        "pants",
+        "traveling_clothes"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

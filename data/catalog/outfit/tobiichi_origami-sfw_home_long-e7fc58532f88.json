@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/sfw_home_long",
+  "revision": 1,
+  "sortOrder": 55,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "sfw_home_long",
+      "name": "新时间线长发居家装",
+      "prose": "a pale blue long-sleeved blouse and ankle-length skirt, with flowing waist-length white hair",
+      "tokens": [
+        "blue_blouse",
+        "long_sleeves",
+        "long_skirt",
+        "long_hair"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

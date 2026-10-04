@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "miyabi_summer_festival_fireworks_yukata",
+  "revision": 1,
+  "sortOrder": 1071,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手持折扇侧身回眸，夜空烟花璀璨，浴衣下摆微扬，神情柔和含蓄",
+    "camera": "medium shot, low angle looking up, dramatic sky view",
+    "category": "夏夜华彩",
+    "characterId": "hoshimi_miyabi",
+    "coverageTags": [
+      "festival"
+    ],
+    "description": "【星见雅 · 夏夜花火与深蓝浴衣】临海神社石阶的高台上，夜空绽放出一朵璀璨耀眼的千轮金色花火。雅身穿月夜深蓝暗纹浴衣，系着深红腰带，手持一柄精巧的折扇侧身回眸。盛大花火的光华映照在她清秀绝俗的面庞上，金色的狐瞳中罕见地流露出一丝少女特有的柔软微光。",
+    "id": "miyabi_summer_festival_fireworks_yukata",
+    "lighting": "漫天花火爆开的金色、绯红多重光晕映照脸庞与发丝",
+    "location": "神社鸟居石阶高台观景处",
+    "mood": "绚烂唯美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "moonlight_yukata",
+    "promptProse": "Standing on the hillside shrine stone steps beneath brilliant cascading golden fireworks, Miyabi turns over one shoulder while holding a delicate folding fan in her elegant midnight navy floral yukata tied with a deep crimson obi. Vivid festival light illuminates her amber eyes, fox ears and plush white tail against the star-filled evening sky. Medium low-angle portrait, detailed torii background, cinematic lighting.",
+    "promptTokens": [
+      "fireworks_display",
+      "night_festival",
+      "yukata",
+      "torii_gate",
+      "folding_fan",
+      "fox_ears",
+      "fox_tail",
+      "night_sky",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "fireworks",
+      "festival",
+      "yukata",
+      "folding_fan",
+      "night_sky",
+      "torii",
+      "fox_ears",
+      "fox_tail",
+      "gazing_at_viewer"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "星见雅 · 夏夜花火与深蓝浴衣"
+  }
+}

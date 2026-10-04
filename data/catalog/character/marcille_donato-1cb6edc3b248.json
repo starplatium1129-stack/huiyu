@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "marcille_donato",
+  "revision": 1,
+  "sortOrder": 155,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "marcille_donato",
+    "profile": {
+      "id": "marcille_donato",
+      "name": "玛露希尔",
+      "alias": [
+        "玛露希尔",
+        "Marcille Donato"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-marcille_donato.png?v=382309c85bd9",
+        "alt": "玛露希尔 · 魔物料理的真香现场场景样张"
+      },
+      "visual_dna": {
+        "signature": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+        "hair": "blonde_hair, long_hair",
+        "eyes": "green_eyes",
+        "uniform": "迷宫旅行蓝色长袍",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "认真好学，对自己的知识和施法有责任感",
+        "面对陌生食物反应丰富，嘴上抗拒也愿意尝试",
+        "珍惜同伴，也在艰苦旅途中保留整理仪容的小坚持"
+      ],
+      "likes": [
+        "阅读魔法书",
+        "编辫子与整理发饰",
+        "和同伴围坐休息"
+      ],
+      "classic_cg": {
+        "title": "玛露希尔 · 魔物料理的真香现场",
+        "description": "迷宫营地的锅前，她从「绝对不吃魔物！」的激烈抗拒到小心翼翼地尝一口，再到捧着碗追加第二碗——三个阶段表情变化是这个角色的灵魂三连。"
+      },
+      "identity": "Delicious in Dungeon · 玛露希尔",
+      "tags": [
+        "玛露希尔",
+        "迷宫饭",
+        "日常"
+      ],
+      "bg_story": "认真钻研魔法、珍惜同伴的精灵法师，面对陌生料理也会先犹豫再好奇。金发、绿瞳、尖耳与高额头保持一致，法杖是场景道具而非日常常驻装备。",
+      "palette": [
+        "#c5bd8e",
+        "#282532"
+      ],
+      "source": "Delicious in Dungeon",
+      "speech": "先确认清楚再试，我是认真的！",
+      "traits": [
+        "marcille_donato",
+        "dungeon_meshi",
+        "blonde_hair",
+        "long_hair",
+        "green_eyes"
+      ],
+      "accent_color": "#c5bd8e",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "marcille_donato",
+      "displayName": "玛露希尔",
+      "originalName": "Marcille Donato",
+      "franchise": "Delicious in Dungeon",
+      "aliases": [
+        "玛露希尔",
+        "Marcille Donato"
+      ],
+      "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+      "identityTokens": [
+        "marcille_donato",
+        "dungeon_meshi",
+        "blonde_hair",
+        "long_hair",
+        "green_eyes",
+        "pointy_ears",
+        "high_forehead",
+        "braid"
+      ],
+      "exactTokens": [
+        "marcille_donato"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, marcille_donato"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "yorha_2b/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 613,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yorha_2b",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "large_butt",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "mole_under_mouth",
+        "short_hair",
+        "white_hair",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, pristine pale porcelain android skin, remarkably voluptuous firm breasts with delicate soft pink nipples, slender waist flaring into her iconic sculpted round hips and curvaceous thighs, exposed pussy, beauty mark under her lip, blindfold removed revealing breathtaking crystalline blue eyes, bare feet, serene ruined church moonlight",
+      "styleHint": "tender romantic candlelight",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

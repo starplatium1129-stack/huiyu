@@ -2,16 +2,14 @@ mod backup;
 pub mod blueprints;
 pub mod cli;
 mod codec;
-mod colors;
-mod commands;
+pub(crate) mod colors;
 mod content_products;
 mod context;
-mod contracts;
+pub(crate) mod contracts;
 pub(crate) mod fs;
 mod generated;
 mod identity;
 pub mod journal;
-mod preview;
 mod prompt;
 pub mod recovery;
 mod recovery_claim;
@@ -23,7 +21,7 @@ pub(crate) mod state;
 #[cfg(test)]
 mod tests;
 pub mod transaction;
-mod validation;
+pub(crate) mod validation;
 
 use crate::{AppState, config::Config, security};
 use axum::{
@@ -91,7 +89,6 @@ impl IntoResponse for Error {
 }
 pub struct MaintenanceService {
     options: Options,
-    cache: Mutex<Option<(u64, Bytes)>>,
     hero: Mutex<Option<(std::time::Instant, Value)>>,
     write_slots: Arc<tokio::sync::Semaphore>,
     write_lock: Arc<tokio::sync::Mutex<()>>,
@@ -109,7 +106,6 @@ impl MaintenanceService {
                 runtime: config.runtime_root.clone(),
                 showcase,
             },
-            cache: Mutex::new(None),
             hero: Mutex::new(None),
             write_slots: Arc::new(tokio::sync::Semaphore::new(8)),
             write_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -126,52 +122,11 @@ impl MaintenanceService {
         *cache = Some((std::time::Instant::now(), value.clone()));
         value
     }
-    fn scene_state(&self) -> Result<Bytes> {
-        let token = journal::read_token(&self.options)?;
-        let version = state::version(&self.options.root)?;
-        let mut cache = self.cache.lock().unwrap();
-        if let Some((cached, value)) = &*cache
-            && *cached == version
-        {
-            journal::assert_token(&self.options, &token)?;
-            return Ok(value.clone());
-        }
-        let mut value = state::read(&self.options)?.value;
-        value["ok"] = json!(true);
-        value["writesEnabled"] = json!(true);
-        let bytes = Bytes::from(
-            serde_json::to_vec(&value).map_err(|_| Error::journal("维护快照序列化失败"))?,
-        );
-        *cache = Some((version, bytes.clone()));
-        journal::assert_token(&self.options, &token)?;
-        Ok(bytes)
-    }
 }
 pub fn router(service: Arc<MaintenanceService>) -> Router<AppState> {
     Router::new()
         .route("/api/maintenance/recovery-status", get(status))
         .route("/api/maintenance/backups", get(backups))
-        .route("/api/maintenance/scenes-state", get(scenes))
-        .route(
-            "/api/maintenance/scenes/preview",
-            post(changes).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
-        )
-        .route(
-            "/api/maintenance/scenes",
-            post(save_content).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
-        )
-        .route(
-            "/api/maintenance/scenes/import",
-            post(save_content).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
-        )
-        .route(
-            "/api/maintenance/scenes/changes",
-            post(save_content).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
-        )
-        .route(
-            "/api/maintenance/run",
-            post(save_content).layer(DefaultBodyLimit::max(2 * 1024)),
-        )
         .route(
             "/api/maintenance/showcase",
             post(save_content).layer(DefaultBodyLimit::max(26 * 1024 * 1024)),
@@ -227,43 +182,6 @@ async fn backups(
     let value = blocking(move || backup::list(&context::Context::new(&service.options)?)).await?;
     Ok(([("cache-control", "no-store")], Json(value)).into_response())
 }
-async fn scenes(
-    State(app): State<AppState>,
-    Extension(service): Extension<Arc<MaintenanceService>>,
-    ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
-    headers: HeaderMap,
-) -> Result<Response> {
-    authorize(&app, &service, &headers, peer)?;
-    let bytes = blocking(move || service.scene_state()).await?;
-    Ok((
-        [
-            ("cache-control", "no-store"),
-            ("content-type", "application/json; charset=utf-8"),
-        ],
-        bytes,
-    )
-        .into_response())
-}
-async fn changes(
-    State(app): State<AppState>,
-    Extension(service): Extension<Arc<MaintenanceService>>,
-    ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
-    headers: HeaderMap,
-    body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
-) -> Result<Response> {
-    authorize(&app, &service, &headers, peer)?;
-    let body = body.map_err(|error| {
-        Error::new(
-            error.status().as_u16(),
-            "MAINTENANCE_ARGUMENT",
-            "请求体无效或超过上限",
-        )
-    })?;
-    let body: Value =
-        serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
-    let value = blocking(move || preview::run(&service.options, &body)).await?;
-    Ok(([("cache-control", "no-store")], Json(value)).into_response())
-}
 async fn save_content(
     State(app): State<AppState>,
     Extension(service): Extension<Arc<MaintenanceService>>,
@@ -273,10 +191,6 @@ async fn save_content(
     body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
 ) -> Result<Response> {
     authorize(&app, &service, &headers, peer)?;
-    let product = matches!(
-        uri.path(),
-        "/api/maintenance/showcase" | "/api/maintenance/home-hero"
-    );
 
     let body = body.map_err(|error| {
         Error::new(
@@ -301,23 +215,14 @@ async fn save_content(
         .host
         .admit_owned()
         .map_err(|error| Error::new(error.status.as_u16(), &error.code, error.message))?;
-    let import = !uri.path().ends_with("/changes");
     let value = blocking(move || {
         let _guards = (slot, lock, admission);
-        *service.cache.lock().unwrap() = None;
-        let result = if product {
-            content_products::save(
-                &service.options,
-                &body,
-                uri.path() == "/api/maintenance/home-hero",
-                &cancel,
-            )
-        } else if uri.path() == "/api/maintenance/run" {
-            commands::run(&service.options, &body, &cancel)
-        } else {
-            save::execute(&service.options, &body, import, &cancel)
-        };
-        *service.cache.lock().unwrap() = None;
+        let result = content_products::save(
+            &service.options,
+            &body,
+            uri.path() == "/api/maintenance/home-hero",
+            &cancel,
+        );
         *service.hero.lock().unwrap() = None;
         result
     })

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "cartethyia/sfw_town",
+  "revision": 1,
+  "sortOrder": 946,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cartethyia",
+    "outfit": {
+      "id": "sfw_town",
+      "name": "小镇节日长裙",
+      "prose": "an opaque pale blue ankle-length dress with a cream cardigan and flat shoes",
+      "tokens": [
+        "blue_dress",
+        "long_dress",
+        "cream_cardigan",
+        "flat_shoes"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,6 +1,6 @@
 use super::*;
 use std::io::Read;
-pub(super) fn validate(root: &Path, issues: &mut Vec<String>) {
+pub(super) fn validate(root: &DataRoot, issues: &mut Vec<String>) {
     let data = root.join("data");
     if !data.exists() {
         return;
@@ -9,7 +9,7 @@ pub(super) fn validate(root: &Path, issues: &mut Vec<String>) {
         issues.push(format!("precompressed artifact audit failed: {error}"));
     }
 }
-fn walk(root: &Path, directory: &Path, issues: &mut Vec<String>) -> Result<()> {
+fn walk(root: &DataRoot, directory: &Path, issues: &mut Vec<String>) -> Result<()> {
     for entry in std::fs::read_dir(directory)? {
         let entry = entry?;
         let path = entry.path();

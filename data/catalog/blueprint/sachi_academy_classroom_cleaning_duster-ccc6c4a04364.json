@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_academy_classroom_cleaning_duster",
+  "revision": 1,
+  "sortOrder": 1191,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_academy_classroom_cleaning_duster",
+    "title": "小岭幸 · 放学后的一尘不染大扫除",
+    "category": "日常尽职",
+    "characterId": "komine_sachi",
+    "outfitId": "maid_uniform",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【小岭幸 · 放学后的一尘不染大扫除】放学后夕阳余晖染红的空教室里，所有课桌椅整齐划一得如同用尺子量过。幸手持羽毛除尘掸，正踮起脚尖仔细拂去黑板顶槽的最后一抹微尘。围裙带在身后系成完美的蝴蝶结，丰满匀称的身段在紧身女仆装包裹下勾勒出诱人弧度，脸上带着对一尘不染的执着与开朗满足。",
+    "location": "夕阳斜照整洁空教室内",
+    "action": "踮脚举起羽毛掸仔细打扫黑板顶框，女仆围裙勾勒出曼妙腰身，神态认真虔诚",
+    "timeOfDay": "日落",
+    "lighting": "教室窗外透入的浓郁金色夕阳与黑板微尘光带",
+    "camera": "cowboy shot, medium framing, side 3/4 diligent view",
+    "mood": "认真治愈",
+    "sceneTags": [
+      "classroom",
+      "cleaning",
+      "feather_duster",
+      "blackboard",
+      "maid",
+      "maid_apron",
+      "diligence",
+      "sunset"
+    ],
+    "promptProse": "Dusting the top of the classroom chalkboard with a soft feather duster during quiet golden sunset, Sachi works with meticulous perfection in her maid attire. Amber dusk rays stream through open windows, highlighting her neat pink braids and dedicated focus.",
+    "promptTokens": [
+      "school_classroom",
+      "cleaning_duster",
+      "blackboard",
+      "maid_dress",
+      "maid_apron",
+      "sunset_light",
+      "pink_hair",
+      "blue_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

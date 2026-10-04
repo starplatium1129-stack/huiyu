@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/official_republic_military_uniform",
+  "revision": 1,
+  "sortOrder": 737,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "default": true,
+      "id": "official_republic_military_uniform",
+      "isDefault": true,
+      "name": "圣玛格诺利亚共和国蓝色军装",
+      "prose": "her crisp San Magnolia Republic Handler uniform: a blue high-collared cropped military jacket with an armband and rank insignia, a white shirt with blue and gold trim, a blue high-waist skirt, a white o-ring belt, white thighhighs supported by garter straps, tall blue officer boots, a blue peaked cap, and a tactical Para-RAID headset",
+      "tokens": [
+        "military_uniform",
+        "blue_jacket",
+        "cropped_jacket",
+        "high_collar",
+        "armband",
+        "white_shirt",
+        "blue_skirt",
+        "high-waist_skirt",
+        "o-ring_belt",
+        "white_thighhighs",
+        "garter_straps",
+        "blue_footwear",
+        "boots",
+        "peaked_cap",
+        "military_hat",
+        "officer",
+        "headset"
+      ]
+    }
+  }
+}

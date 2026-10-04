@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "ubel_frieren/sfw_winter",
+  "revision": 1,
+  "sortOrder": 71,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ubel_frieren",
+    "outfit": {
+      "id": "sfw_winter",
+      "name": "冬夜修补针织装",
+      "prose": "a charcoal knitted cardigan over a cream blouse and long skirt",
+      "tokens": [
+        "charcoal_cardigan",
+        "cream_blouse",
+        "long_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

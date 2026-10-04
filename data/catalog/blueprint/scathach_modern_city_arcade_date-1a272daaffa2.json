@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_modern_city_arcade_date",
+  "revision": 1,
+  "sortOrder": 244,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_modern_city_arcade_date",
+    "title": "斯卡哈 · 都市电玩城的师匠·「这里的格斗游戏，判定倒是相当严谨」",
+    "category": "都市约会",
+    "characterId": "scathach_fate",
+    "description": "【繁华都市的电子游戏厅·夜晚】斯卡哈站在格斗游戏的机台前，指尖在按键上翻飞如出枪。屏幕上连段的伤害数字节节攀升，她赤红的眼眸里燃起一丝难得的兴味，长发从肩头滑落垂到地面。回头望向你时，女王的嘴角挑起一个危险的弧度——「你也想来一局？输了的人，今晚听我调遣。」",
+    "location": "都市电子游戏厅机台前",
+    "action": "立于街机前指尖翻飞连段，回头挑起危险笑意下战书，长发垂地",
+    "timeOfDay": "夜晚",
+    "lighting": "街机屏幕冷彩光与霓虹灯渲染面庞",
+    "camera": "medium shot, arcade cabinet duel, neon glow, playful danger",
+    "mood": "好胜撩人、都市反差",
+    "sceneTags": [
+      "city_arcade",
+      "fighting_game_cabinet",
+      "hand_on_joystick",
+      "hand_on_buttons",
+      "between_rounds",
+      "amused_smile",
+      "white_shirt",
+      "brown_vest",
+      "screen_light",
+      "medium_shot"
+    ],
+    "promptProse": "Scathach stands at the fighting-game cabinet with one hand on the joystick and the other poised over the buttons. She glances toward the viewer between rounds, a small amused smile suggesting an invitation to try the next match. Her white shirt, brown vest and long travel coat retain the selected casual outfit, with the wide-brimmed hat casting a soft edge of shade over her red eyes. Purple hair falls behind her shoulder as the screen and arcade lights color the controls. Show the two distinct hand positions and machine clearly, without readable scores or lettering.",
+    "promptTokens": [
+      "city_arcade",
+      "fighting_game_cabinet",
+      "hand_on_joystick",
+      "hand_on_buttons",
+      "between_rounds",
+      "amused_smile",
+      "white_shirt",
+      "brown_vest",
+      "screen_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_traveling_outfit",
+    "coverageTags": [
+      "daily",
+      "date",
+      "girlfriend"
+    ]
+  }
+}

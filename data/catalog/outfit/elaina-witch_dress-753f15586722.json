@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "elaina/witch_dress",
+  "revision": 1,
+  "sortOrder": 221,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "witch_dress",
+      "name": "魔女装",
+      "prose": "her black witch dress with a star brooch, frilled skirt and short staff",
+      "tokens": [
+        "witch",
+        "witch_hat",
+        "black_dress",
+        "frills",
+        "brooch",
+        "staff"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc297",
+  "revision": 1,
+  "sortOrder": 292,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc297",
+    "title": "出差酒店的相邻房间",
+    "category": "恋爱/成年_AU/After_Story",
+    "story": "【成年 After Story · 夏目 · 出差酒店的相邻房间】公司年会在邻市举办，你和夏目作为不同部门的代表入住同一家酒店。房间相邻，阳台之间只隔着一道不到腰高的栏杆。深夜的年会结束后，你回到房间不久，阳台的玻璃门被轻轻敲了两下。夏目穿着酒店浴袍站在隔壁阳台上，黑发还带着洗发水的香气，夜风把浴袍的下摆吹得微微扬起。她手里拿着两罐从自动贩卖机买的啤酒，递了一罐给你——「年会上的那个部长又在说教了，需要解药。」她翻过栏杆坐到你的阳台上，把冰凉的啤酒罐贴在你手背上。月光照亮她锁骨的线条和浴袍领口之间那片被夜风亲吻过的肌肤，她仰头喝了一口，喉结轻轻滚动——「明天汇报完就自由了……今晚要不要定个合谋计划？」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "职场之外的反差亲密",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "hotel_bathrobe",
+      "bathrobe",
+      "beer_cans",
+      "holding_beer",
+      "sitting_on_balcony",
+      "railing",
+      "moonlight",
+      "night",
+      "city_lights",
+      "hotel",
+      "medium_shot"
+    ],
+    "mature": false,
+    "rating": "R15",
+    "location": "高层酒店阳台",
+    "weather": "晴朗夏夜",
+    "camera": "阳台近景平视",
+    "lighting": "月光与远处城市灯光",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, white_hotel_bathrobe, loose_bathrobe, off_shoulder, bare_shoulders, collarbone, bare_legs, sitting_on_hotel_balcony_chair_at_night, holding_cold_beer_can_against_cheek, city_night_skyline_bokeh, cool_breeze, relaxing, subtle_smirk, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, formal_suit, child, loli, underage",
+    "storyJa": "【夏目・大人のAfter Story・出張ホテルの隣室】会社の年次パーティーが隣市で開催され、あなたと夏目は別々の部署の代表として同じホテルに宿泊していた。部屋は隣り合っており、バルコニーの間は腰ほどの高さの手すりしかなかった。深夜のパーティーが終わり、部屋に戻って間もなく、バルコニーのガラスドアが軽く二度叩かれた。夏目がホテルのバスローブを着て隣のバルコニーに立っていた。黒い髪からはシャンプーの香りが漂い、夜風がバスローブの裾を軽く持ち上げていた。彼女は自動販売機で買ったビールを二缶持っており、一つをあなたに差し出した——「パーティーであの部長がまた説教してたから、解毒剤が必要なんだよ。」彼女は手すりを越えてあなたのバルコニーに座り、冷えたビール缶をあなたの手の甲に当てた。月明かりが彼女の鎖骨の線と、バスローブの襟元の間にある夜風に撫でられた肌を照らしていた。彼女は顔を上げて一口飲み、喉がそっと動いた——「明日の報告が終われば自由だ……今夜は共謀計画を立てない？」",
+    "animaCaption": "Deep at night on the high hotel balcony of the adjacent room, Shiki Natsume in a hotel bathrobe with the hem lifted by the night breeze holds two cans of beer bought from the vending machine and passes one to you; she climbs over the low railing to sit on your balcony and presses the cold can against the back of your hand, moonlight tracing her collarbone and the skin between the robe's lapels as she tilts her head back for a sip.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "scathach_home_tea_morning",
+  "revision": 1,
+  "sortOrder": 245,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_home_tea_morning",
+    "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
+    "category": "居家日常",
+    "characterId": "scathach_fate",
+    "description": "【和风茶室的清晨·榻榻米】难得的休息日清晨，斯卡哈身着宽松的白色居家衫跪坐在矮桌旁，以行云流水般的动作为你点茶。紫色长发只松松系在脑后，发梢铺满榻榻米。她把茶碗转过一个角度推到你面前，赤瞳里浮起极淡的笑意——「茶道与枪术相通，讲究的都是在『间』里的一击。喝吧，然后……今天陪我多坐一会儿。」",
+    "location": "和风茶室矮桌旁",
+    "action": "点茶结束后把茶筅放好，双手转正茶碗并轻推到桌对面",
+    "timeOfDay": "清晨",
+    "lighting": "障子纸滤入的柔白晨光，茶汤升起细细热气",
+    "camera": "medium shot, seiza tea pouring, tatami room morning calm",
+    "mood": "宁静温存、师匠柔情",
+    "sceneTags": [
+      "tatami_tea_room",
+      "seiza",
+      "serving_matcha",
+      "both_hands_on_bowl",
+      "whisk_on_rest",
+      "white_house_shirt",
+      "dark_lounge_pants",
+      "loosely_tied_hair",
+      "morning_screen_light",
+      "medium_shot"
+    ],
+    "promptProse": "Kneeling seiza beside the low tea table, Scathach turns the prepared matcha bowl with both hands and gently slides it toward the viewer. The whisk has been set on its rest, so the serving moment does not compete with active whisking. Her loose white house shirt and dark lounge trousers replace the travelling layers, and long purple hair is tied back loosely behind her shoulders. Soft morning light passes through the paper screen and catches the bowl rim. Frame the two hands, tea utensils and calm seated posture together, with no lettering.",
+    "promptTokens": [
+      "tatami_tea_room",
+      "seiza",
+      "serving_matcha",
+      "both_hands_on_bowl",
+      "whisk_on_rest",
+      "white_house_shirt",
+      "dark_lounge_pants",
+      "loosely_tied_hair",
+      "morning_screen_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "purple_bodysuit"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_home_tea",
+    "coverageTags": [
+      "daily",
+      "girlfriend",
+      "morning"
+    ]
+  }
+}

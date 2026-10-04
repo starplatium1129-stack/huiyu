@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_sacred_kagura_sword_dance",
+  "revision": 1,
+  "sortOrder": 1126,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手持神刀丛雨丸旋转舞动，巫女宽袖与绯红袴裤翻飞，刀刃拖出神圣白芒",
+    "camera": "full body, dynamic mid-action angle, wide composition",
+    "category": "祭祀剑舞",
+    "characterId": "murasame",
+    "coverageTags": [
+      "dance"
+    ],
+    "description": "【丛雨 · 神乐殿前的神刀奉纳舞】夜幕降临的朝武神社神乐殿朱红木台上，四周烛火通明。丛雨身穿白衣绯袴的小巫女服，双手紧握神刀丛雨丸的刀柄。她踏着古老神道仪轨的节奏轻巧旋身，刀锋划过空气留下一道冰清玉洁的雪亮光弧，神刀之灵在这一刻展露出守护这方水土的庄严神圣气魄。",
+    "id": "murasame_sacred_kagura_sword_dance",
+    "lighting": "四周石灯笼与红烛火光映衬出的高对比金红与刀光冷白",
+    "location": "神社神乐殿红木露天戏台",
+    "mood": "神圣庄严",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_miko",
+    "promptProse": "Executing an ethereal ceremonial sword dance atop a vermilion kagura stage at night, Murasame sweeps her sacred katana in a gleaming crescent arc. Torches and stone lanterns illuminate her flowing miko hakama and concentrated expression with sacred beauty.",
+    "promptTokens": [
+      "kagura_stage",
+      "shinto_shrine",
+      "miko_attire",
+      "holding_katana",
+      "sword_dance",
+      "candlelight",
+      "paper_lanterns",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "shrine_stage",
+      "kagura_dance",
+      "miko",
+      "katana",
+      "sword_slash",
+      "motion_blur",
+      "lanterns",
+      "night_sky"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "丛雨 · 神乐殿前的神刀奉纳舞"
+  }
+}

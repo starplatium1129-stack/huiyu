@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc020",
+  "revision": 1,
+  "sortOrder": 19,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Waiting behind the university festival curtain, Shiki Natsume presses the closed play script against her chest with both hands. She has just taken a steadying breath and turns toward the viewer for one last reassuring glance before entering the stage. A black turtleneck and brown plaid skirt form her simple rehearsal costume. Warm light slips beneath the curtain while the backstage props remain softly out of focus.",
+    "auditRevision": "careful-batch08-2026-08-27",
+    "camera": "手持台本半身中景",
+    "category": "校园",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "紧张",
+    "id": "sc020",
+    "lighting": "后台暖灯与舞台漏光",
+    "location": "大学祭舞台后台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_turtleneck, brown_plaid_skirt, black_tights, holding_script, book_against_chest, hands_together, standing, looking_back, nervous_smile, stage_curtain, backstage, theater_props, warm_stage_light, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【夏目 · 校园祭后台的深呼吸】大学祭的舞台后台忙成一片，临时担任女主角的夏目握着台本，表面平静，指尖却在轻轻发抖。你替她整理好领口并重复暗号，她终于缓慢呼出一口气。上场铃响前，她回头看了你一眼——「我不是为了谁才演的。不过，你最好坐在能让我看见的位置，别中途离开。」",
+    "storyJa": "【夏目・キャンパスフェスティバルの舞台裏で深呼吸】大学祭のステージや楽屋は大賑わいでした。臨時ヒロインの夏目は、穏やかな表情で台本を持っていたが、その指先は微かに震えていた。あなたが彼女の首輪を調整し、コードを繰り返すと、彼女はついにゆっくりと息を吐き出しました。鐘が鳴る前に彼女はあなたを振り返った――「誰かのために演じるわけじゃない。でも、私から見える席に座って、途中で帰らないことね。」",
+    "tags": [
+      "black_turtleneck",
+      "brown_plaid_skirt",
+      "black_tights",
+      "holding_script",
+      "book_against_chest",
+      "hands_together",
+      "standing",
+      "looking_back",
+      "nervous_smile",
+      "stage_curtain",
+      "backstage",
+      "theater_props",
+      "warm_stage_light",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "校园祭后台的深呼吸",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

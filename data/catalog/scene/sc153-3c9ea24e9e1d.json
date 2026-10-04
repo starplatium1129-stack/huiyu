@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc153",
+  "revision": 1,
+  "sortOrder": 150,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "camera": "近景特写",
+    "category": "亲密",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc153",
+    "lighting": "局部聚光灯",
+    "location": "咖啡馆吧台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked_apron, apron_only, sitting_on_counter, legs_apart, bare_back, bare_legs, blush, embarrassed, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 傲娇防线彻底崩溃】星光咖啡馆深夜闭店后，因为打赌输给你，夏目不得不接受了极其羞耻的“惩罚游戏”。此刻她正面红耳赤地坐在空无一人的吧台上，身上居然只穿着那件充满禁忌感的咖啡厅围裙，光洁的后背与大片雪白的肌肤毫无防备地暴露在外。她崩溃地夹紧双腿，眼角的泪痣因为极度羞耻而微微颤抖，一边试图用双手遮挡，一边咬着银牙对你发出最后的毒舌警告——「哈？！你是无可救药的变态笨蛋吗？敢用手机拍下来的话...明天绝对会把你秘密处决的！」",
+    "storyJa": "【夏目・ツンデレのディフェンスラインは完全に崩壊した】深夜のスターライトカフェ閉店後、夏目はあなたに賭けに負けたため、非常に恥ずかしい「はあ？　本当に救いようのない変態ね。スマホで撮ったりしたら……明日は秘密裏に処分するから！」",
+    "tags": [
+      "adult",
+      "naked_apron",
+      "apron_only",
+      "mole_under_eye",
+      "sitting_on_counter",
+      "legs_apart",
+      "bare_back",
+      "bare_legs",
+      "blush",
+      "embarrassed",
+      "tears_in_eyes",
+      "tsundere",
+      "cafe_interior",
+      "night",
+      "shadows",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "闭店后的惩罚游戏：夏目的裸体围裙",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "微凉"
+  }
+}

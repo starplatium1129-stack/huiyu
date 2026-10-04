@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "chitanda_eru",
+  "revision": 1,
+  "sortOrder": 113,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "chitanda_eru",
+    "profile": {
+      "id": "chitanda_eru",
+      "name": "千反田爱瑠",
+      "alias": [
+        "Eru Chitanda",
+        "千反田爱瑠",
+        "千反田",
+        "我很好奇",
+        "古典部部长"
+      ],
+      "type": "popular",
+      "icon": "🍇",
+      "portrait": {
+        "image": "../assets/characters/popular-chitanda_eru.png?v=1",
+        "alt": "千反田爱瑠 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "如墨般光滑垂直的极长黑发 · 齐刘海",
+        "hair_color": "乌黑 / 墨夜黑",
+        "eyes": "巨大而清澈透亮的深紫色眸子 · 满载繁星好奇火花",
+        "hairstyle": "及腰黑长直 · 和服高雅发髻",
+        "uniform": "神山高校深蓝水手服 · 节日淡紫印花振袖和服",
+        "expression": "豪农名门的端庄礼貌 · 探求谜团时的倾身迫近与星光双眸",
+        "style": "curious aristocratic high-school beauty",
+        "signature": "双手撑桌身体前倾的‘我很好奇！’与神山神社的白无垢誓约"
+      },
+      "personality": [
+        "知书达礼的豪农千反田家掌上明珠，待人彬彬有礼",
+        "一旦产生好奇心便势不可挡，会以极近的距离紧盯对方不放",
+        "天真烂漫的外表下，背负着继承庞大家业与守护故乡土地的责任感",
+        "恋爱时极度纯真羞怯，却敢于在夕阳下的水渠边许下未来的约定"
+      ],
+      "likes": [
+        "未解之谜与古典部文集《冰菓》",
+        "自家农园里种植的果蔬与紫阳花",
+        "折木奉太郎打破节能模式时的认真神情"
+      ],
+      "classic_cg": {
+        "title": "我很好奇！",
+        "description": "放学后的教室夕阳下，黑发千金双手撑桌倾身迫近，紫眸中闪耀着璀璨星尘。"
+      },
+      "identity": "冰菓 女主角 · 神山高中古典部部长 · 地方名门富农千反田家独生女",
+      "tags": [
+        "冰菓",
+        "千反田",
+        "我很好奇",
+        "黑长直",
+        "紫瞳",
+        "名门千金",
+        "水手服"
+      ],
+      "bg_story": "地方名门豪农千反田家的掌上明珠。为了查明舅舅当年在古典部留下的真相，她推开了那扇尘封三十年的活动室大门。她有着让任何节能主义者都无从招架的好奇心与清亮紫眸，也有着深沉眷恋故乡土地的端庄风骨。夕阳下的水渠边，她挽起被风吹散的黑发说出‘这里是我的故乡’，那份美丽早已超越了青春的谜团。",
+      "palette": [
+        "#8b5cf6",
+        "#f5f3ff",
+        "#4c1d95",
+        "#10b981"
+      ],
+      "weather": "黄昏余晖洒满的古典部教室 / 雨后初晴飘着水汽的紫阳花庭院",
+      "speech": "「折木同学……关于那件事，我无论如何都放不下……请帮我解开谜团吧……我、我很好奇！」",
+      "source": "Hyouka",
+      "traits": [
+        "hyouka_classics",
+        "watashi_kininarimasu",
+        "noble_heiress",
+        "purple_eyes"
+      ],
+      "accent_color": "#8b5cf6",
+      "bg_color": "#4c1d95"
+    },
+    "popular": {
+      "id": "chitanda_eru",
+      "displayName": "千反田爱瑠",
+      "originalName": "千反田える",
+      "franchise": "Hyouka",
+      "aliases": [
+        "Eru Chitanda",
+        "千反田爱瑠",
+        "千反田",
+        "我很好奇",
+        "古典部部长"
+      ],
+      "identityProse": "Eru Chitanda from Hyouka, the polite and curious heiress of the Chitanda estate, with long lustrous black hair, enormous expressive purple eyes that sparkle with intense curiosity, and a graceful dignified bearing",
+      "identityTokens": [
+        "chitanda_eru",
+        "hyouka",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "bangs",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "exactTokens": [
+        "chitanda_eru"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, chitanda_eru"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Kyoto Animation",
+      "curatedArtistStyles": [
+        "Futoshi Nishiya"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

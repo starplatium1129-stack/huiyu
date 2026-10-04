@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "yuzuriha_inori",
+  "revision": 1,
+  "sortOrder": 8,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yuzuriha_inori",
+    "profile": {
+      "id": "yuzuriha_inori",
+      "name": "楪祈",
+      "alias": [
+        "Inori Yuzuriha",
+        "楪いのり"
+      ],
+      "type": "popular",
+      "icon": "🎵",
+      "portrait": {
+        "image": "../assets/characters/popular-yuzuriha_inori.png?v=5",
+        "alt": "楪祈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉色长发 · 下双马尾",
+        "hair_color": "粉",
+        "eyes": "红",
+        "hairstyle": "下双马尾 · 红色发夹",
+        "uniform": "红色歌姬战斗服 / 白裙",
+        "expression": "三无歌姬 · 空灵",
+        "style": "ethereal void singer",
+        "signature": "粉发下双马尾、红瞳与红发夹"
+      },
+      "personality": [
+        "三无",
+        "安静",
+        "对男主忠诚",
+        "献身",
+        "隐藏的坚强"
+      ],
+      "likes": [
+        "歌唱",
+        "与集的羁绊",
+        "安静的角落"
+      ],
+      "classic_cg": {
+        "title": "废墟舞台",
+        "description": "被占领的东京废墟中，她立于聚光灯下歌唱，红色歌姬装在末世里格外鲜明。"
+      },
+      "identity": {
+        "role": "网络歌姬 / 葬仪社成员",
+        "age": "约 15 岁（克隆体）",
+        "occupation": "歌手（EGOIST）/ 葬仪社",
+        "faction": "葬仪社（Guilty Crown）"
+      },
+      "tags": [
+        "粉发",
+        "下双马尾",
+        "红瞳",
+        "红发夹",
+        "歌姬"
+      ],
+      "bg_story": "楪祈是《罪恶王冠》的女主角，网络歌姬 EGOIST 主唱兼葬仪社成员，也是樱满真名的容器。2039 年的末世东京，歌姬的歌声与虚空之剑并存。场景应偏末世废都、舞台与屋顶。",
+      "palette": [
+        "樱粉",
+        "歌姬红",
+        "末世灰"
+      ],
+      "weather": [
+        "舞台红光",
+        "废都阴天",
+        "屋顶黄昏"
+      ],
+      "speech": "楪祈向你致以问候。",
+      "source": "Production I.G《罪恶王冠 / Guilty Crown》",
+      "traits": [
+        "yuzuriha_inori",
+        "1girl",
+        "solo",
+        "gradient_hair",
+        "pink_hair",
+        "orange_hair",
+        "twintails",
+        "red_eyes",
+        "red_hair_clips",
+        "hair_ornament",
+        "ahoge",
+        "guilty_crown"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "yuzuriha_inori",
+      "displayName": "楪祈",
+      "originalName": "Yuzuriha Inori",
+      "franchise": "Guilty Crown",
+      "aliases": [
+        "yuzuriha_inori",
+        "inori",
+        "inori yuzuriha",
+        "guilty crown"
+      ],
+      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair shimmering like sunset silk, two slender front locks held by red hair tubes, bright crimson eyes with a glassy sheen, red hair clips, and a fragile ethereal presence",
+      "identityTokens": [
+        "yuzuriha_inori",
+        "1girl",
+        "solo",
+        "long_hair",
+        "flowing_hair",
+        "gradient_hair",
+        "pink_hair",
+        "orange_hair",
+        "two_side_up",
+        "hair_tubes",
+        "red_eyes",
+        "red_hair_clips",
+        "hair_ornament",
+        "ahoge",
+        "guilty_crown"
+      ],
+      "exactTokens": [
+        "yuzuriha_inori"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "negativeTokens": [
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails",
+        "short_hair",
+        "bob_cut"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "rella",
+        "swav"
+      ],
+      "canon": {
+        "world": "近未来末世（罪恶王冠）",
+        "era": "2039",
+        "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "production i.g, redjuice, official anime screencap"
+    }
+  }
+}

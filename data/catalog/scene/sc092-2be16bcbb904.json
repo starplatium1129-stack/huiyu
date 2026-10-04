@@ -1,0 +1,46 @@
+{
+  "kind": "scene",
+  "id": "sc092",
+  "revision": 1,
+  "sortOrder": 90,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium close-up at the edge of the cohabitation bedroom bed on a spring morning, Ayachi Nene wears the viewer's oversized white shirt and pulls its loosened collar back into place before resting her forehead against the viewer's. Her shy warm blush catches the soft window light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "床边主观半身近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "困倦",
+    "id": "sc092",
+    "lighting": "春日清晨窗光",
+    "location": "同居公寓卧室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_viewer's_oversized_white_button_up_shirt, seated_on_bed_edge, pulling_loosened_shirt_collar_back_into_place, touching_forehead_to_viewer, shy_morning_greeting, warm_blush, cohabitation_bedroom, spring_morning, warm_window_light, medium_close_up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "春",
+    "story": "【成年 After Story · 起床后十分钟】成年同居后的春日清晨，宁宁披着你的衬衫坐在床边醒神，松开的领口不小心滑到肩侧。她发现你醒来后先慌忙拉好衣服，随后又坐回原处，把额头靠上你的额头——「早安。刚才什么都没看见，对吧？回答正确的话，今天可以多抱十分钟。」",
+    "storyJa": "【寧々・大人のアフターストーリー・起きてから10分】私たちが大人として一緒に引っ越してからのある春の朝、寧々は目を覚ますためにあなたのシャツを掛けたままベッドの端に座っていました。緩んだ首輪がうっかり肩の横に滑り落ちてしまった。あなたが目を覚ましたことに気づいた彼女は、急いであなたの服をたくし上げ、再び座り、あなたの額に額を当てました。――「おはようございます。さっきは何も見ていませんよね？　正しく答えられたら、今日はあと十分長く抱いていてもいいですよ。」",
+    "tags": [
+      "hair_ribbon",
+      "oversized_shirt",
+      "forehead_touch",
+      "bed_edge",
+      "bedroom",
+      "medium_close_up",
+      "morning"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "起床后十分钟",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

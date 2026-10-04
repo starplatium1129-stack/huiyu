@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 158,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "美杜莎 Rider·成人私密造型",
+      "prose": "a private adult ensemble built around bodysuit, highleg_bodysuit, completely_nude",
+      "tokens": [
+        "bodysuit",
+        "highleg_bodysuit",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

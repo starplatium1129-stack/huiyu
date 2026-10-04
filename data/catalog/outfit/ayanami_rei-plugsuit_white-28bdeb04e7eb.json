@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ayanami_rei/plugsuit_white",
+  "revision": 1,
+  "sortOrder": 556,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ayanami_rei",
+    "outfit": {
+      "default": true,
+      "id": "plugsuit_white",
+      "isDefault": true,
+      "name": "初代白色战斗服（Plugsuit）",
+      "prose": "wearing her iconic pristine white pilot plugsuit with orange and black tech accents, skin-tight composite bodysuit material, and red neural interface headset clips in her blue hair",
+      "styleHint": "high-tech sci-fi cockpit lighting with cool blue and amber volumetric beams",
+      "tokens": [
+        "plugsuit",
+        "white_plugsuit",
+        "bodysuit",
+        "latex_suit",
+        "interface_headset",
+        "gloves",
+        "skin_tight",
+        "number_00"
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/official_kamiyama_uniform",
+  "revision": 1,
+  "sortOrder": 823,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "official_kamiyama_uniform",
+      "name": "神山高校水手长裙制服",
+      "prose": "her Kamiyama High School sailor uniform: a crisp white short-sleeved blouse with a navy blue sailor collar, a black silk scarf tie, a pleated navy skirt falling just below the knees, white ankle socks, and black leather school shoes",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "white_shirt",
+        "sailor_collar",
+        "scarf",
+        "pleated_skirt",
+        "navy_skirt",
+        "white_socks",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

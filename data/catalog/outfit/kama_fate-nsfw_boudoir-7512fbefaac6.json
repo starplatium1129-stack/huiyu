@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 179,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "迦摩·成人私密造型",
+      "prose": "a private adult ensemble built around sheer_cloth, palace, completely_nude",
+      "tokens": [
+        "sheer_cloth",
+        "palace",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

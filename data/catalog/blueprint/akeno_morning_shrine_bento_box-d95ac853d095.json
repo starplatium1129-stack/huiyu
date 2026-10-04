@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "akeno_morning_shrine_bento_box",
+  "revision": 1,
+  "sortOrder": 1290,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_morning_shrine_bento_box",
+    "title": "姬岛朱乃 · 神社晨间的特制便当",
+    "category": "晨间女友",
+    "characterId": "akeno_himejima",
+    "description": "【姬岛朱乃 · 神社晨间的特制便当】清晨的神社走廊，阳光洒在光洁的木地板上。朱乃刚完成晨间洒扫，身穿整齐的巫女服，双手将一个精心包扎的花布双层便当盒递到你手中。她倾身向前，黑发发丝从肩头滑落，紫瞳带着温柔与狡黠——「今天的便当是我亲手做的哦，里面全是你爱吃的菜……如果不全部吃完的话，晚上可是会有惩罚的呢，呵呵。」",
+    "location": "阳光斑驳的神社传统木质回廊",
+    "action": "双手托着精致花布便当盒微倾身递上，面带温柔又带着一丝小恶魔的微笑",
+    "timeOfDay": "清晨",
+    "lighting": "穿过松柏枝桠的清澈金色晨曦",
+    "camera": "cowboy shot, eye level, peaceful portrait",
+    "mood": "温婉贤淑",
+    "sceneTags": [
+      "shrine",
+      "wooden_veranda",
+      "morning_light",
+      "holding_bento",
+      "feeding",
+      "miko",
+      "leaning_forward",
+      "gentle_smile",
+      "blush"
+    ],
+    "promptProse": "Standing along the sun-drenched wooden veranda of a quiet Shinto shrine in the early morning, Akeno Himejima gently offers a handmade wrapped bento box with both hands. Her traditional miko shrine maiden attire is impeccably neat, and her sleek black ponytail cascades over her shoulder. She smiles with sweet, teasing domestic warmth, violet eyes gleaming softly. Clean anime visual novel artwork, solo 1girl, no text.",
+    "promptTokens": [
+      "shrine",
+      "wooden_veranda",
+      "morning_sun",
+      "holding_bento",
+      "offering_food",
+      "miko",
+      "white_kimono",
+      "red_hakama",
+      "leaning_forward",
+      "gentle_smile",
+      "blush",
+      "purple_eyes",
+      "high_ponytail",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_miko_robe",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "domestic"
+    ]
+  }
+}

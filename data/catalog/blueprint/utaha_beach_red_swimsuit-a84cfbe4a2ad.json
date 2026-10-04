@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_beach_red_swimsuit",
+  "revision": 1,
+  "sortOrder": 1433,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_beach_red_swimsuit",
+    "title": "霞之丘诗羽 · 海边的成熟邀请·「愣着做什么，帮你涂防晒是报酬」",
+    "category": "海滨度假",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【湘南海岸·夏日】石榴红的连体泳装衬得诗羽的成熟曲线一览无余。她背对着你坐在沙地上，把白发箍递到手里把玩，金色的阳光洒在她拉开的后颈拉链上——「愣着做什么。拉链够不到……帮你涂防晒是报酬的一部分哦，前辈可是很会给后辈添麻烦的♪」",
+    "location": "湘南海岸沙滩",
+    "action": "背身坐在沙滩拉开背链，递白发箍，红瞳回头挑眉",
+    "timeOfDay": "夏日正午",
+    "lighting": "炽白阳光与海面反光",
+    "camera": "medium shot, sitting on sand, zipper request, teasing mood",
+    "mood": "成熟撩拨、前辈特权",
+    "sceneTags": [
+      "beach",
+      "swimsuit",
+      "one-piece_swimsuit",
+      "sitting",
+      "zipper",
+      "smirk",
+      "summer",
+      "ocean"
+    ],
+    "promptProse": "Kasumigaoka Utaha sits on the Shonan beach sand with her back to you in a garnet-red one-piece that leaves her mature curves in full evidence, toying with her white hairband while she pulls the back zipper down a teasing inch. Over her shoulder one red eye arches in a challenge: the zipper is out of her reach, and sunscreen from a junior is part of a senpai's rightful privileges. Bright midday sun glitters across the sea. Medium shot, cinematic lighting, detailed ocean background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "swimsuit",
+      "red_swimsuit",
+      "one-piece_swimsuit",
+      "sitting",
+      "on_stomach",
+      "zipper",
+      "hairband",
+      "bare_back",
+      "smirk",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "beach",
+      "ocean",
+      "day",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "summer_swimsuit",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "albedo_overlord/cozy_nightwear_lingerie",
+  "revision": 1,
+  "sortOrder": 707,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "albedo_overlord",
+    "outfit": {
+      "id": "cozy_nightwear_lingerie",
+      "name": "大坟墓闺房黑色丝绸睡裙",
+      "prose": "a delicate black silk camisole nightgown with sheer lace trim over her bust, leaving her smooth back bare around her resting black wings, bare legs peeking through soft silk sheets",
+      "tokens": [
+        "nightgown",
+        "black_nightgown",
+        "camisole",
+        "lace_trim",
+        "bare_shoulders",
+        "cleavage",
+        "black_wings",
+        "curved_horns",
+        "bare_legs"
+      ]
+    }
+  }
+}

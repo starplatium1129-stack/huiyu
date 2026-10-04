@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 59,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "青白运动休息装",
+      "prose": "a pale teal track jacket over a white T-shirt, charcoal athletic trousers and plain trainers",
+      "tokens": [
+        "teal_track_jacket",
+        "white_t-shirt",
+        "track_pants",
+        "sneakers"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

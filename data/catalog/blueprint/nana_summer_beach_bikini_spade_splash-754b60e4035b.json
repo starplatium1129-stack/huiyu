@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "nana_summer_beach_bikini_spade_splash",
+  "revision": 1,
+  "sortOrder": 1270,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单脚踢起浪花水花嬉闹，珊瑚粉比基尼衬托紧致身材，小虎牙绽放灿烂笑容",
+    "camera": "full body, 3/4 dynamic action angle, splashing water foreground",
+    "category": "盛夏海滨",
+    "characterId": "nana_asta_deviluke",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【娜娜 · 蔚蓝浪花的珊瑚粉活力踢水】阳光明媚的热带海岛白沙滩浅水区，碧蓝清澈的波浪层层卷来。娜娜身穿一套亮眼的珊瑚粉分体运动比基尼，虽然身材娇小纤细，但充满青春少女的紧致活力。她单脚轻快地踢起一串晶莹剔透的水珠飞向镜头，小虎牙伴随着欢笑闪烁，爱心尾巴在身后激动拍水，将夏日海滩的热烈气氛推至顶点。",
+    "id": "nana_summer_beach_bikini_spade_splash",
+    "lighting": "澄澈热带阳光直射与海面跳跃的耀眼水纹光斑",
+    "location": "热带海岛细白沙滩浅海浪花间",
+    "mood": "元气活力",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "summer_bikini",
+    "promptProse": "Kicking up crystalline sea spray with one bare foot while splashing through turquoise ocean shallows, Nana laughs enthusiastically in a sporty coral-pink bikini. Brilliant tropical sunshine glistens over her petite athletic frame and dancing pink twintails.",
+    "promptTokens": [
+      "tropical_beach",
+      "ocean_waves",
+      "pink_bikini",
+      "splashing_water",
+      "kicking_water",
+      "demon_tail",
+      "fang",
+      "twintails",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean_waves",
+      "bikini",
+      "pink_bikini",
+      "splashing_water",
+      "demon_tail",
+      "fang",
+      "athletic"
+    ],
+    "timeOfDay": "正午",
+    "title": "娜娜 · 蔚蓝浪花的珊瑚粉活力踢水"
+  }
+}

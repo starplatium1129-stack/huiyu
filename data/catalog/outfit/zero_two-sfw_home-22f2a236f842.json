@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "zero_two/sfw_home",
+  "revision": 1,
+  "sortOrder": 890,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "zero_two",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "绘本时间宽松便装",
+      "prose": "a cream sweatshirt and relaxed red trousers",
+      "tokens": [
+        "cream_sweatshirt",
+        "red_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

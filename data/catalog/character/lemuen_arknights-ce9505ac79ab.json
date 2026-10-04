@@ -1,0 +1,141 @@
+{
+  "kind": "character",
+  "id": "lemuen_arknights",
+  "revision": 1,
+  "sortOrder": 29,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "lemuen_arknights",
+    "profile": {
+      "id": "lemuen_arknights",
+      "name": "蕾缪安",
+      "alias": [
+        "Lemuen",
+        "蕾缪安",
+        "蕾缪安·席尔瓦",
+        "Lemuen Silva",
+        "小祥"
+      ],
+      "type": "popular",
+      "icon": "🕊️",
+      "visual_dna": {
+        "hair": "温婉柔顺的暖橙棕色/姜红褐色微卷长发（Warm ginger-brown / light amber-brown wavy hair），发质细腻蓬松，两侧梳理有精致的细麻花辫与低垂的侧马尾散发，头顶有自然分叉的灵动发丝，额前配有轻薄自然的空气感斜刘海",
+        "hair_color": "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
+        "eyes": "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意",
+        "hairstyle": "优雅半扎低垂微卷发配侧编发（Half-up wavy long hair with delicate side braids and low ponytail），发梢自然垂散于胸前与肩膀，既具圣职人员的端庄典雅，又显居家闲适的温柔感",
+        "uniform": "拉特兰教廷公证所兼教宗枢机处高级顾问风纪正装：外穿深深灰黑色高定质感长款风衣外套（Slate dark tailored overcoat），内搭洁白挺括的修身翻领衬衫与纯黑细领带，衣领和胸前饰有精致的拉特兰金色圣徽金属徽章与流线暗纹；下身穿深色修身西裤与黑色短靴，腿部及膝盖常覆有保暖典雅的深色毛呢盖毯或战术护套；端坐于极具工业科技感的拉特兰专属定制机械轮椅上",
+        "expression": "温和恬静、优雅从容、唇角常带一丝若有若无的玩味与腹黑微笑（Gentle, serene, subtle playful and confident smile）；在举枪瞄准与战场指挥时转为绝对冷静、波澜不惊的锐利专注神情",
+        "style": "圣洁圣堂典雅（Sacred Elegance）、机能战术辅助（Tactical Mobility/Wheelchair）、拉特兰宗教神职正装与致命超远距狙击美学的完美交融（Angelic Precision Sniper）",
+        "signature": "头顶悬浮的乳白泛淡金色萨科塔神圣光环（Floating luminescent golden-white Sankta halo）；后腰部悬浮的一对半透明淡金色小巧光质羽翼（Small translucent light wings at lower back）；专门定制的高科技机械战斗轮椅（配备硬质树脂实心胎、操控机械杆与枪架，High-tech mechanical wheelchair）；随身配备的特制长管源石精密狙击铳（Custom long-barrel heavy sniper rifle）"
+      },
+      "personality": [
+        "温柔恬淡",
+        "腹黑风趣",
+        "沉着冷静",
+        "意志坚定",
+        "洞察敏锐",
+        "善解人意",
+        "宠溺护短（对能天使等同伴）",
+        "优雅从容"
+      ],
+      "likes": [
+        "烘焙与品尝各类甜点（特别是特制苹果派与拉特兰特色甜食）",
+        "精细校准、拆解与保养自己的长管源石狙击铳",
+        "在阳光明媚的午后晒太阳、阅读书籍与品尝红茶",
+        "和能天使（妹妹）、莫斯提马、菲亚梅塔等老友聚会闲聊",
+        "暗中观察局势并偶尔用风趣温和的话语开同伴的玩笑"
+      ],
+      "identity": {
+        "role": "拉特兰教宗枢机处及第七厅顾问 / 公证所高级特工兼神射手 / 罗德岛合作干员",
+        "age": "未知（成年轻熟女性，能天使的年长亲姐）",
+        "occupation": "狙击干员（神射手 / 战略狙击手）",
+        "faction": "拉特兰（Laterano） / 罗德岛（Rhodes Island）"
+      },
+      "tags": [
+        "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
+        "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意"
+      ],
+      "bg_story": "蕾缪安是拉特兰公证所声名赫赫的顶尖神射手，亦是能天使（蕾缪尔）敬爱的亲生姐姐。早年她曾与莫斯提马、菲亚梅塔、安多恩组成备受瞩目的拉特兰精英小队，但在八年前的意外变故中遭受重创并陷入长达五年的昏迷。苏醒后因下肢神经受损不得不依靠特制轮椅代步，然而身体的创伤从未磨灭她强大的内心与炉火纯青的铳术。在‘吾导先路’与‘空想花庭’等关乎拉特兰局势的关键事件中，她作为教宗万国峰会与第七厅的核心智囊，凭借惊人的远距狙击视野和超凡定力多次扭转危局。随后她以合作干员身份登上罗德岛，在接受神经康复治疗的同时，以无懈可击的战略视野为罗德岛提供绝对信赖的超远距狙击支援。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "lemuen (arknights)",
+        "1girl",
+        "solo",
+        "ginger_hair",
+        "long_hair",
+        "amber_eyes",
+        "halo",
+        "wings",
+        "dark_clothes",
+        "coat",
+        "tie",
+        "wheelchair",
+        "sniper_rifle",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-lemuen_arknights.png?v=5",
+        "alt": "蕾缪安热门角色立绘"
+      },
+      "speech": "蕾缪安向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "lemuen",
+        "arknights",
+        "laterano"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
+        "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）",
+        "world": "泰拉（拉特兰）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "rella",
+        "ask_(askzy)"
+      ],
+      "displayName": "蕾缪安",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "lemuen (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "lemuen_arknights",
+      "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
+      "identityTokens": [
+        "lemuen (arknights)",
+        "1girl",
+        "solo",
+        "ginger_hair",
+        "long_hair",
+        "amber_eyes",
+        "halo",
+        "wings",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Lemuen",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

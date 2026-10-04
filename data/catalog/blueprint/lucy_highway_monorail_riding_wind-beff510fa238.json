@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_highway_monorail_riding_wind",
+  "revision": 1,
+  "sortOrder": 1105,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手抓车厢扶手探出身躯迎风狂驰，霓虹光芒倒退飞掠，发丝狂乱飞扬",
+    "camera": "side view, dynamic angle, high speed motion blur background",
+    "category": "都市穿梭",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "motion"
+    ],
+    "description": "【露西 · 磁悬浮空轨的车厢迎风】在夜之城摩天大楼之间飞速穿梭的高空磁悬浮列车外廊间，呼啸的狂风撕扯着衣摆。露西单手拉着车厢扶手，身体探向车外俯瞰脚下的霓虹车流。高速掠过的全息广告光带将她白皙的面孔染上绚烂光芒，渐变短发在狂暴气流中狂舞，展现出狂野而自由的街头灵魂。",
+    "id": "lucy_highway_monorail_riding_wind",
+    "lighting": "高速倒退的五彩霓虹广告牌形成长曝光拖尾动态光效",
+    "location": "高空穿梭磁浮列车敞开式连接处",
+    "mood": "狂放自由",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "monorail_transit_no_cigarette",
+    "promptProse": "Riding the exterior landing of a high-speed elevated monorail slicing between Night City mega-towers, Lucy grips the carriage handrail with one hand and leans out into the turbulent night wind. Streaking magenta and cyan light trails illuminate her wind-whipped hair as the electric metropolis blurs past below.",
+    "promptTokens": [
+      "flying_train",
+      "elevated_monorail",
+      "speeding",
+      "motion_blur_neon",
+      "windy",
+      "cyberpunk_city",
+      "streetwear",
+      "detailed_background",
+      "cinematic_lighting",
+      "hand_on_rail",
+      "leaning_out"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "monorail",
+      "train",
+      "wind",
+      "speed",
+      "cityscape",
+      "cyberpunk",
+      "neon_trails",
+      "hair_blowing"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "露西 · 磁悬浮空轨的车厢迎风"
+  }
+}

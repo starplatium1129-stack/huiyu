@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ishtar_fate/sensual_golden_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 145,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ishtar_fate",
+    "outfit": {
+      "id": "sensual_golden_lace_lingerie",
+      "name": "神域金纱内衣",
+      "prose": "a gold-and-black divine lingerie set: a golden lace bra fit for a goddess, matching panties with a jeweled waist chain, sheer black thighhighs with garter straps, and a translucent veil cape",
+      "tokens": [
+        "gold_lingerie",
+        "black_lingerie",
+        "lace_bra",
+        "waist_chain",
+        "jewelry",
+        "black_thighhighs",
+        "garter_straps",
+        "veil",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

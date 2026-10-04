@@ -1,0 +1,62 @@
+{
+  "kind": "scene",
+  "id": "sc066",
+  "revision": 1,
+  "sortOrder": 64,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Ayachi Nene stops on the evening beach when the viewer calls her name. A light-blue swimsuit shows beneath a loose white cover-up, whose hem she holds against the breeze with one hand. The other arm hangs relaxed as she turns back for the photograph. Her wet hair catches the sunset rim light, and a full-length view leaves room for the sea she wants included.",
+    "auditRevision": "careful-batch05-2026-08-27",
+    "camera": "海岸回眸全身中景",
+    "category": "旅行",
+    "cfg": 4.5,
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "诱惑",
+    "height": 1216,
+    "id": "sc066",
+    "lighting": "夕阳逆光与发丝轮廓光",
+    "location": "海边",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_swimsuit, white_beach_coverup, holding_coverup_hem, standing_on_sand, looking_back, relaxed_arm, gentle_blush, wet_hair, sea_breeze, beach, ocean, sunset, golden_rim_light, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "sampler": "res_multistep",
+    "scheduler": "simple",
+    "season": "夏",
+    "seed": 20261097,
+    "steps": 30,
+    "story": "【宁宁 · 夕阳里的回眸】海边黄昏，宁宁披着薄外罩走在前面，忽然被你叫住。她回头时，夕阳给湿润的发梢镀上一圈金边。发现你认真看呆，她害羞地按住被风扬起的衣摆，却没有催促——「拍照可以，但要把海也拍进去。以后看到照片时，我想记得今天的风和你站的位置。」",
+    "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
+    "tags": [
+      "light_blue_swimsuit",
+      "white_beach_coverup",
+      "holding_coverup_hem",
+      "standing_on_sand",
+      "looking_back",
+      "relaxed_arm",
+      "gentle_blush",
+      "wet_hair",
+      "sea_breeze",
+      "beach",
+      "ocean",
+      "sunset",
+      "golden_rim_light",
+      "full_body"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "夕阳里的泳装背影",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴",
+    "width": 832
+  }
+}

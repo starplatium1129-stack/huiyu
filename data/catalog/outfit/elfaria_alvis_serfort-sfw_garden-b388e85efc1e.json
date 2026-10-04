@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/sfw_garden",
+  "revision": 1,
+  "sortOrder": 968,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "sfw_garden",
+      "name": "庭院休憩长裙",
+      "prose": "an opaque white ankle-length dress with a light blue cardigan",
+      "tokens": [
+        "white_dress",
+        "long_dress",
+        "blue_cardigan"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

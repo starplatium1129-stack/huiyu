@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "momo_starry_balcony_night_whisper",
+  "revision": 1,
+  "sortOrder": 1251,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "踮脚凑近对方耳边轻声耳语，薄纱睡裙微拂，爱心尾巴缠绕手腕，神情妩媚深情",
+    "camera": "medium close-up, intimate couple framing, whispering proximity",
+    "category": "深情轻语",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "night"
+    ],
+    "description": "【梦梦 · 繁星露台的乐园私语】微风吹拂的结城家二楼露天阳台上，满天夏夜繁星闪烁。梦梦仅穿薄透的浅紫睡裙倚在栏杆前，双手背在身后。她微微仰起娇艳的面容，凑近身旁的梨斗耳畔呵气如兰，身后的黑色爱心恶魔尾巴早已悄无声息地缠上了梨斗的手腕。她半闭着水润的紫瞳，嘴角扬起甜蜜而深邃的微笑，轻诉着全员后宫的终极美梦。",
+    "id": "momo_starry_balcony_night_whisper",
+    "lighting": "夜空清凉星光与阳台室内溢出的暖黄色灯光",
+    "location": "结城家二楼露天木质小阳台",
+    "mood": "暧昧深情",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "harem_negligee",
+    "promptProse": "Whispering softly into her companion’s ear on a starlit second-floor balcony in a translucent lilac nightgown, Momo rests her cheek intimately close. Soft twilight breezes play through her pink hair as her sensitive spade tail coils gently around his wrist.",
+    "promptTokens": [
+      "house_balcony",
+      "starry_night_sky",
+      "whispering",
+      "negligee",
+      "sheer_clothing",
+      "cleavage",
+      "demon_tail",
+      "seductive_smile",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "balcony",
+      "night_sky",
+      "stars",
+      "whispering",
+      "negligee",
+      "demon_tail",
+      "cleavage",
+      "seductive_smile"
+    ],
+    "timeOfDay": "深夜",
+    "title": "梦梦 · 繁星露台的乐园私语"
+  }
+}

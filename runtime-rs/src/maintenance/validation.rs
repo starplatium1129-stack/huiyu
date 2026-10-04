@@ -1,11 +1,8 @@
-use super::{Error, Result, fs, state};
+use super::{Error, Result, state};
 use serde_json::{Value, json};
-use std::{
-    collections::{HashMap, HashSet},
-    path::Path,
-};
+use std::collections::HashSet;
 
-pub(super) fn collection(items: &Value) -> Result<&Vec<Value>> {
+pub(crate) fn collection(items: &Value) -> Result<&Vec<Value>> {
     let items = items
         .as_array()
         .filter(|items| items.len() <= 10000)
@@ -28,99 +25,6 @@ pub(super) fn collection(items: &Value) -> Result<&Vec<Value>> {
     }
     Ok(items)
 }
-pub(super) fn changed(current: &[Value], changes: &Value) -> Result<Vec<Value>> {
-    let map = changes
-        .as_object()
-        .ok_or_else(|| Error::invalid("场景 变更集格式错误"))?;
-    if map
-        .keys()
-        .any(|key| !matches!(key.as_str(), "upsert" | "remove"))
-    {
-        return Err(Error::invalid("场景 变更集格式错误"));
-    }
-    let updates = collection(&changes["upsert"])?;
-    let removed = changes["remove"]
-        .as_array()
-        .filter(|items| items.len() <= 10000)
-        .ok_or_else(|| Error::invalid("场景 remove 必须为 ID 数组"))?;
-    let ids = current
-        .iter()
-        .filter_map(|scene| scene["id"].as_str())
-        .collect::<HashSet<_>>();
-    let updates_by_id = updates
-        .iter()
-        .map(|scene| (scene["id"].as_str().unwrap(), scene))
-        .collect::<HashMap<_, _>>();
-    let mut remove = HashSet::new();
-    for value in removed {
-        let id = value
-            .as_str()
-            .ok_or_else(|| Error::invalid("场景 删除 ID 无效"))?;
-        if !ids.contains(id) || !remove.insert(id) || updates_by_id.contains_key(id) {
-            return Err(Error::invalid(format!(
-                "场景 删除 ID 不存在、重复或同时更新：{id}"
-            )));
-        }
-    }
-    let mut output = current
-        .iter()
-        .filter(|scene| !remove.contains(scene["id"].as_str().unwrap()))
-        .map(|scene| {
-            updates_by_id
-                .get(scene["id"].as_str().unwrap())
-                .copied()
-                .unwrap_or(scene)
-                .clone()
-        })
-        .collect::<Vec<_>>();
-    output.extend(
-        updates
-            .iter()
-            .filter(|scene| !ids.contains(scene["id"].as_str().unwrap()))
-            .cloned(),
-    );
-    collection(&Value::Array(output.clone()))?;
-    if output.is_empty() {
-        return Err(Error::invalid("场景库不能为空"));
-    }
-    Ok(output)
-}
-pub(super) fn protect_pins(root: &Path, before: &[Value], after: &[Value]) -> Result<()> {
-    let pins = fs::json(&root.join("data/prompt-pinned-scenes.json"))?;
-    let current = before
-        .iter()
-        .filter_map(|item| item["id"].as_str().map(|id| (id, item)))
-        .collect::<HashMap<_, _>>();
-    let incoming = after
-        .iter()
-        .filter_map(|item| item["id"].as_str().map(|id| (id, item)))
-        .collect::<HashMap<_, _>>();
-    if let Some(pins) = pins["scenes"].as_object() {
-        for id in pins.keys() {
-            let Some(previous) = current.get(id.as_str()) else {
-                continue;
-            };
-            let next = incoming
-                .get(id.as_str())
-                .ok_or_else(|| Error::invalid(format!("定稿场景不能在普通保存中删除：{id}")))?;
-            for key in [
-                "prompt",
-                "negative",
-                "animaCaption",
-                "recommendedSize",
-                "rating",
-                "mature",
-            ] {
-                if previous.get(key).map(crate::storage::stringify)
-                    != next.get(key).map(crate::storage::stringify)
-                {
-                    return Err(Error::invalid(format!("定稿保护拒绝修改 {id}.{key}")));
-                }
-            }
-        }
-    }
-    Ok(())
-}
 fn text(value: &Value) -> String {
     match value {
         Value::String(value) => value.clone(),
@@ -128,13 +32,12 @@ fn text(value: &Value) -> String {
         value => crate::storage::stringify(value),
     }
 }
-pub(super) fn tags(value: &Value) -> Result<()> {
+pub(crate) fn tags(value: &Value) -> Result<()> {
     let tags = value
         .as_array()
         .filter(|items| items.len() <= 2000)
         .ok_or_else(|| Error::invalid("Tag 数据格式错误或数量超出限制"))?;
     let mut ids = HashSet::new();
-    let mut names = HashSet::new();
     for tag in tags {
         let id = text(&tag["id"]).trim().to_owned();
         let name = text(&tag["en"]).trim().to_owned();
@@ -157,7 +60,6 @@ pub(super) fn tags(value: &Value) -> Result<()> {
         if name.is_empty()
             || name.encode_utf16().count() > 120
             || name.contains(['\r', '\n', '<', '>'])
-            || !names.insert(name.to_lowercase())
         {
             return Err(Error::invalid(format!(
                 "Tag 英文名必须唯一且可用于 Prompt：{name}"
@@ -172,7 +74,7 @@ pub(super) fn tags(value: &Value) -> Result<()> {
     }
     Ok(())
 }
-pub(super) fn curation(value: &Value, active: &HashSet<&str>, previous: &Value) -> Result<Value> {
+pub(crate) fn curation(value: &Value, active: &HashSet<&str>, previous: &Value) -> Result<Value> {
     let mut value = if value.is_object() {
         value.clone()
     } else {

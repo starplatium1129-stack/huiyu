@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "hu_tao_liyue_harbor_rooftop_sunset",
+  "revision": 1,
+  "sortOrder": 23,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hu_tao_liyue_harbor_rooftop_sunset",
+    "title": "胡桃 · 飞檐屋顶夕阳赋诗",
+    "category": "唯美日常",
+    "characterId": "hu_tao",
+    "description": "【胡桃 · 飞檐屋顶夕阳赋诗】黄昏时分的璃月港，万家灯火如星河般逐渐点亮。胡桃盘腿坐在绯云坡古建飞檐的琉璃瓦屋顶上，双手托着脸颊俯瞰繁华港口与绯红晚霞，摇头晃脑地即兴吟诵着大作打油诗——「大太阳落山红霞飞，小胡桃屋顶看落晖！怎么样？本堂主这首诗是不是极有文采？」",
+    "location": "璃月港绯云坡古建飞檐屋顶",
+    "action": "盘腿坐在琉璃瓦屋脊上，双手托腮俯瞰万家灯火与绯红夕阳，神情灵动惬意",
+    "timeOfDay": "黄昏日落",
+    "lighting": "壮丽绚烂的绯红金黄晚霞与城市初升暖灯",
+    "camera": "full-body shot, high angle, harbor behind the seated figure",
+    "mood": "诗意灵动",
+    "sceneTags": [
+      "tiled_roof",
+      "roof_ridge",
+      "cross-legged",
+      "both_hands_on_cheeks",
+      "elbows_on_knees",
+      "playful_expression",
+      "harbor",
+      "crimson_sunset",
+      "high_angle",
+      "full_body"
+    ],
+    "promptProse": "Cross-legged on a broad tiled ridge above Liyue Harbor, Hu Tao cups both cheeks in her hands with her elbows resting on her knees. Her lips part around an improvised little verse, and the red-tipped twintails stir beside her dark uniform coat. From the slightly elevated view, the curve of the roof leads down toward the first harbor lights. Crimson sunset meets their warm glow beyond her small, relaxed figure. Keep both hands, folded legs and the supporting roof visible; Convey the playful poetry through her expression, without written verse.",
+    "promptTokens": [
+      "tiled_roof",
+      "roof_ridge",
+      "cross-legged",
+      "both_hands_on_cheeks",
+      "elbows_on_knees",
+      "playful_expression",
+      "harbor",
+      "crimson_sunset",
+      "high_angle",
+      "full_body",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "recommendedSize": "1536x1152",
+    "outfitId": "official_funeral_director",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "shirogane_kei_sfw_b8_04",
+  "revision": 1,
+  "sortOrder": 1418,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium full shot, vertical framing",
+    "category": "圣洁花嫁",
+    "characterId": "shirogane_kei",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ],
+    "description": "【白银家公寓客厅·清晨】圭穿着简洁的银白婚纱坐在矮桌前，旁边仍放着她整理过的家计簿与一束便宜但新鲜的小花；她核对完最后一笔预算，才抬眼向镜头露出“这次没有超支”的满足笑。",
+    "id": "shirogane_kei_sfw_b8_04",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "gentle morning light across the low table",
+    "location": "Shirogane family apartment living room",
+    "mood": "把精打细算也变成花嫁幸福",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_bridal",
+    "promptProse": "Kei Shirogane from Kaguya-sama: Love Is War wears a simple silver-white bridal dress with a black ribbon headband, modest veil and a small budget-friendly flower bouquet. She sits at the low table with her household ledger beside a small bouquet chosen for its sensible price. After checking the final figure, she closes the book and gives the viewer a modest, satisfied smile as morning light reaches the silver fabric. gentle morning light across the low table.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "low_table",
+      "ledger",
+      "small_bouquet",
+      "headband",
+      "silver_hair",
+      "satisfied_smile",
+      "morning_light"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "low_table",
+      "ledger",
+      "small_bouquet",
+      "headband",
+      "silver_hair",
+      "satisfied_smile",
+      "morning_light"
+    ],
+    "timeOfDay": "清晨",
+    "title": "白银圭 · 预算表旁的银色花嫁"
+  }
+}

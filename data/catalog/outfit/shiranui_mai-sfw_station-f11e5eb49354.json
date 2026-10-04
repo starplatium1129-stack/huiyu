@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiranui_mai/sfw_station",
+  "revision": 1,
+  "sortOrder": 1005,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiranui_mai",
+    "outfit": {
+      "id": "sfw_station",
+      "name": "车站送行简洁便装",
+      "prose": "a cream long-sleeved shirt and tailored dark trousers",
+      "tokens": [
+        "cream_shirt",
+        "long_sleeves",
+        "dark_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

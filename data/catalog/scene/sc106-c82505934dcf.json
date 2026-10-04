@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc106",
+  "revision": 1,
+  "sortOrder": 104,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc106",
+    "title": "安全屋的绝对盲区",
+    "category": "同人/After_Story",
+    "story": "【夏目 · 紧身战术服防线崩溃】任务撤离后的秘密安全屋，空气微热。平时高冷刻板的夏目此时有些狼狈地被你反扣双手按在墙边，身上那一身漆黑的紧身特工连体衣从领口被你一路拉开、剥离到了腹部，露出了里面让人血脉偾张的傲人线条与大片潮红的细腻肌肤。她眼角的泪痣因为极度的羞嗔与急促的娇喘而剧烈颤动，虽然嘴上依然死硬地骂着，却主动闭上含泪的眼睛应迎你的强吻——「哈啊...你这变态长官...唔嗯...不准再往下摸了...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "羞嗔绝对沦陷",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "tactical_gear",
+      "unzipped",
+      "cleavage",
+      "trapped_by_viewer",
+      "leaning_against_wall",
+      "heavy_blush",
+      "tears_in_eyes",
+      "tsundere",
+      "mole_under_eye",
+      "bare_legs",
+      "safehouse",
+      "night",
+      "strong_shadows",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "mature": true,
+    "location": "安全屋冰冷墙边",
+    "weather": "静谧",
+    "camera": "主观近景特写",
+    "lighting": "战术手电筒强侧光",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, solo, (POV male hand firmly pinning her wrist overhead against concrete wall:1.7), second male hand lifting her chin, close face-to-face distance, black tactical vest, thigh holster, (black tactical vest:1.55), utility belts, pinned against a concrete safehouse wall, tense close contact, shiki_natsume, mole_under_eye, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties, hoodie, swimsuit, casual jacket, standing alone, empty hands, no interaction, distant full body, child, loli, underage",
+    "storyJa": "【夏目・緻密な戦術的統一守備が崩壊】任務が撤収された後の秘密の隠れ家は、空気がほんのりと暖かかった。普段は飄々として堅物だった夏目が、あなたに後ろ手に組まれて少し恥ずかしい様子で壁に釘付けになりました。彼が着ていたぴったりとした黒のエージェントジャンプスーツは、襟から腹部まで引き開かれ、誇らしげなラインと内側の繊細で赤らんだ皮膚の広い領域が明らかになりました。極度の恥ずかしさと素早い喘ぎに、彼女の目尻の泣きぼくろが激しく震えた。彼女はまだ執拗に悪態をつきながらも、あなたの強引なキスを歓迎するために、率先して涙目で目を閉じました。――「もう、この変態店長……それ以上からかったら、本気で怒るから。」",
+    "rating": "R18",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+  }
+}

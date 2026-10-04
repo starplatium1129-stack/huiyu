@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc114",
+  "revision": 1,
+  "sortOrder": 112,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In an empty locker room after intense training, Shiki Natsume in navy gym bloomers and white T-shirt sits panting on a wooden bench, slender bare legs with sweaty sheen, bare feet and white sneakers on floor, heavy blush with sweat droplets under warm gym light.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "主观平视中景",
+    "category": "恋爱/同人",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "防御全面崩溃",
+    "id": "sc114",
+    "lighting": "落日透过排气扇的强阴影",
+    "location": "学校体育更衣室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sleeveless_bodysuit, tight_gym_clothes, sports_bra, bare_shoulders, bare_midriff, bare_legs, sweat_glistening_on_skin, sitting_on_bench_in_changing_room, holding_sports_towel, heavy_breathing, flushed_face, warm_sunset_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "夏",
+    "story": "【夏目 · 体操服极限肉感】放学后彻底空无一人的体育馆更衣室。刚刚结束高强度体能训练的夏目，正脱力地靠在长椅上喘息。她身上那件紧身的深蓝色体操服和短裤已经被汗水完全浸透，紧紧贴在极具多肉线条的饱满身躯上。见你走进来，她有些羞耻地用手扯了扯衣领试图散热，眼角的泪痣挂着亮晶晶的汗珠，偏过头去发出最后防线的毒舌娇嗔——「哈啊...变态大笨蛋...盯着女孩子的体操服看...你想被我秘密处决吗...」",
+    "storyJa": "【夏目・極エロ体操服】放課後の体育館の更衣室はガラガラだった。高強度のフィジカルトレーニングを終えたばかりの夏目は、ベンチにもたれかかって息を切らしていた。ピチピチの紺色の体操服とショートパンツは汗でびっしょり濡れており、肉感豊かな豊満な身体にぴったりと張り付いている。あなたが入ってくるのを見て、彼女は暑さを紛らわそうと少し恥ずかしそうに襟を引っ張りました。彼女の目の端には、玉のような汗が光っていた。彼女は顔を向け、最後の防衛線として毒々しい声を上げた。――「まったく、この変態……女の子の体操服をじっと見て。秘密裏に処分されたいの？」",
+    "tags": [
+      "mole_under_eye",
+      "gym_bloomers",
+      "bare_legs",
+      "smooth_thighs",
+      "locker_room",
+      "full_body",
+      "barefoot",
+      "sweat"
+    ],
+    "time": "傍晚",
+    "timeOfDay": "sunset",
+    "title": "打烊更衣室的专属教练",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "微热"
+  }
+}

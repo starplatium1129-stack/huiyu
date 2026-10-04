@@ -126,6 +126,19 @@ function ensureReferencesBuilt({ onlyIfMissing = false }: any = {}) {
  *    已构建但陈旧时不动手——"改源忘重建"必须继续由 --check 门禁报红，
  *    自愈不能把守卫静默抹掉。 */
 function ensureAll({ onlyIfMissing = false }: any = {}) {
+  const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
+  const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
+  const records = catalog.read(root);
+  if (records) {
+    const view = catalog.views(records);
+    const atomic = require('./atomic-files') as typeof import('./atomic-files');
+    for (const [name, value] of [['characters', view.characters], ['curation', view.documents.curation], ['loras', view.documents.loras], ['tags', view.documents.tags]] as const) {
+      if (value === undefined) continue;
+      const file = require('node:path').join(root, 'data', name + '.json');
+      const text = JSON.stringify(value, null, 2) + '\n';
+      if ((!onlyIfMissing || !fs.existsSync(file)) && (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== text)) atomic.writeTextAtomic(file, text);
+    }
+  }
   const scenes = ensureScenesBuilt({ onlyIfMissing });
   const popular = ensurePopularBuilt({ onlyIfMissing });
   const blueprints = ensureBlueprintsBuilt({ onlyIfMissing });

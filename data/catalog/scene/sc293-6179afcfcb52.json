@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc293",
+  "revision": 1,
+  "sortOrder": 288,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc293",
+    "title": "仓库清点时的越界",
+    "category": "恋爱/同人/After_Story",
+    "story": "【成年 After Story · 夏目 · 仓库清点时的越界】同人活动结束后的仓库里堆满了还未整理的纸箱和周边。夏目蹲在一角清点剩余数量，黑色长发在弯腰时垂落遮住侧脸。你从她身后递来登记板时手指不小心擦过她的后颈，她动作顿住，却没有回头。仓库的灯管发出微弱的嗡鸣，半掩的铁门外传来远处撤场的嘈杂声。她慢慢站起身，转过身时手里还攥着那支笔，金色的瞳孔在狭小空间里格外亮——「还有三箱没清点完……你最好是有正经事要说。」她没有退后，反而往前迈了半步，你和她之间只剩下登记板的距离。纸箱的阴影落在她脸上，她微微仰起下巴，声音压低了半度在纸箱的阴影里显得格外轻——「算了……登记的事，等会儿再说。」她说罢把笔往箱顶一放，抬手拽住了你的衣领。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "克制到决堤的独占欲",
+    "season": "不限",
+    "time": "傍晚",
+    "timeOfDay": "evening",
+    "tags": [
+      "mole_under_eye",
+      "grey_sweater",
+      "pleated_skirt",
+      "sheer_black_tights",
+      "grabbing_collar",
+      "holding_pen",
+      "cardboard_boxes",
+      "warehouse",
+      "fluorescent_light",
+      "cold_light",
+      "evening",
+      "cowboy_shot"
+    ],
+    "mature": false,
+    "rating": "R15",
+    "location": "活动会场后方的临时仓库",
+    "weather": "室内",
+    "camera": "纸箱阴影间的近景平视",
+    "lighting": "荧光灯管冷光与纸箱阴影",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, grey_sweater, dark_pleated_skirt, sheer_black_tights, grabbing_collar, grabbing_clothes, pulling_viewer_closer, standing_close, chin_up, serious_look, slight_blush, eye_contact, warehouse, cardboard_boxes, stacked_boxes, event_merchandise, fluorescent_lighting, cold_lighting, dramatic_shadows, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【夏目・大人のAfter Story・倉庫整理の越境】同人イベント終了後の倉庫は、まだ整理されていない段ボール箱とグッズで溢れていた。夏目は隅にしゃがみ込み、残数を数えていた。黒い長髪が前屈みになった拍子に垂れ落ち、横顔を隠している。あなたが後ろから伝票板を差し出した時、指がうっかり彼女の首筋を掠めた。彼女の動きが止まったが、振り返らなかった。倉庫の蛍光灯が微かに唸り、半開きの鉄扉の向こうからは遠くの撤収の喧騒が聞こえていた。彼女はゆっくりと立ち上がり、振り返った時もまだペンを握りしめていた。金色の瞳が狭い空間の中でひときわ鋭く光っていた——「あと三箱残ってるんだけど……まさか本当に用事があって来たって言うんじゃないでしょうね。」彼女は後退せず、むしろ半歩前に出た。あなたと彼女の間には伝票板一枚分の距離しか残っていなかった。段ボールの影が彼女の顔に落ち、彼女はわずかに顎を上げた。声は半音低くなり、段ボールの影の中でひときわ軽く響いた——「もういい……伝票のことは、後で話す。」そう言ってペンを箱の上に置き、手を伸ばしてあなたの襟を掴んだ。",
+    "animaCaption": "In the warehouse behind the event venue piled high with cardboard boxes and merchandise, Shiki Natsume stands up from inventory count and steps close to you in a tense cowboy shot framing. Wearing a fitted grey knit sweater, pleated miniskirt, and sheer black tights, she sets her pen on a cardboard box and boldly grabs your collar with one hand, her chin slightly raised and her sharp golden eyes staring directly into yours under the buzzing cold fluorescent tube lighting and dramatic box shadows, no text, no extra people.",
+    "auditRevision": "skill-refine-sc293-2026-09-05"
+  }
+}

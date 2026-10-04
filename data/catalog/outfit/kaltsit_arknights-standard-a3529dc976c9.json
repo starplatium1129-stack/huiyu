@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/standard",
+  "revision": 1,
+  "sortOrder": 293,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "罗德岛医师服",
+      "prose": "her white lab coat with pale green trim and a translucent hem over a black halterneck backless dress, a green tech utility belt and long emerald crystal drop earrings",
+      "tokens": [
+        "lab_coat",
+        "white_clothes",
+        "green_clothes",
+        "halter_top",
+        "backless_dress",
+        "dress",
+        "utility_belt",
+        "earrings"
+      ]
+    }
+  }
+}

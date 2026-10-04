@@ -1,0 +1,62 @@
+{
+  "kind": "scene",
+  "id": "sc285",
+  "revision": 1,
+  "sortOrder": 280,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc285",
+    "recommendedSize": "1344×768",
+    "title": "储物架间掀起的裙摆",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】储物架间没有别人，夏目抬起女仆裙摆，俯视着你的反应。「这是闭店后的特别服务，」她笑了笑，“仅此一次。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult",
+      "solo",
+      "maid",
+      "skirt_lift",
+      "yellow_panties",
+      "from_below"
+    ],
+    "mature": false,
+    "location": "咖啡馆储物室",
+    "weather": "晴",
+    "camera": "低机位仰视横幅构图",
+    "lighting": "储物室柔和暖光与微影",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, 1girl, solo, adult_shiki_natsume, shiki_natsume, natsume_maid_uniform, maid, maid_headdress, black_hair, two_red_hairclips, golden_yellow_eyes, mole_under_eye, dark_gray_dress, white_apron, clothes_lift, skirt_lift, dress_lift, yellow_panties, white_socks, kneehighs, fair_skin, blushing_cheeks, teasing_smile, looking_at_viewer, from_below, low_angle, dutch_angle, storage_room, metal_shelves_in_background, warm_interior_light, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, skirt down, closed skirt, high angle, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, 2girls, 1boy, 2boys, multiple girls, couple, extra person, child, loli, underage",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "R15",
+    "officialCgCandidate": "ocs19",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs19:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V20_Anima_Scientific_Unified\\train\\011_natsume_v17_0033.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
+      "result": "pass"
+    },
+    "animaCaption": "In a dynamic low-angle shot from below inside a dimly lit cafe storage room, Shiki Natsume stands in her maid uniform, gracefully lifting her skirt and apron with a teasing smile and a gentle blush as she looks directly down at the viewer, with storage shelves visible in the soft warm background.",
+    "auditRevision": "careful-batch15-2026-08-27"
+  }
+}

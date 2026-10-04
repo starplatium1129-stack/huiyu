@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_apartment_morning_cigarette_couch",
+  "revision": 1,
+  "sortOrder": 1102,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "赤足抱膝蜷坐在旧皮沙发上抽烟，神情清冷疏离，烟圈在晨光中升腾",
+    "camera": "medium shot, eye-level, intimate atmospheric realism",
+    "category": "日常清冷",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【露西 · 安全屋清晨的抱膝浅思】杂乱而充满科技感的高层小公寓内，清晨惨淡的阳光透过带有雨痕的百叶窗在地板上划出道道光栅。露西身穿宽松的无袖背心和工装慢跑裤，赤足抱膝蜷缩在皮质沙发一角。烟灰缸里落着几根烟蒂，她微眯起眼睛凝视着升腾的淡蓝烟圈，整个人散发着猫一般的警惕与片刻安宁。",
+    "id": "lucy_apartment_morning_cigarette_couch",
+    "lighting": "百叶窗投射出的清冷水平光栅与屋内全息投影的幽蓝微光",
+    "location": "高层公寓客厅百叶窗边皮沙发",
+    "mood": "疏离静谧",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "apartment_streetwear_barefoot",
+    "promptProse": "Curled up barefoot on a worn leather couch inside her high-rise Night City apartment, Lucy holds a glowing cigarette and watches pale smoke rise through the slats of the morning window blinds. Her charcoal cropped tank top and dark cargo joggers sit naturally around her folded legs as cool daylight cuts across the quiet room.",
+    "promptTokens": [
+      "cyberpunk_apartment",
+      "leather_couch",
+      "smoking_cigarette",
+      "curled_up",
+      "barefoot",
+      "window_blinds",
+      "dusty_sunlight",
+      "detailed_background",
+      "cinematic_lighting",
+      "holding_cigarette",
+      "cargo_pants"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "apartment",
+      "couch",
+      "sofa",
+      "cigarette",
+      "smoking",
+      "barefoot",
+      "curled_up",
+      "blinds",
+      "sunlight_rays"
+    ],
+    "timeOfDay": "清晨",
+    "title": "露西 · 安全屋清晨的抱膝浅思"
+  }
+}

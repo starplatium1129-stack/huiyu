@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "shiki_snowy_night_mystic_eyes_slash",
+  "revision": 1,
+  "sortOrder": 1344,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "反手持短刀侧身踏雪，双眸闪烁湛蓝赤红直死魔眼光芒，风雪中金戈冷冽回眸",
+    "camera": "cowboy shot, low angle, dynamic blade perspective",
+    "category": "身份高光",
+    "characterId": "ryougi_shiki",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ],
+    "description": "【两仪式 · 踏雪折梅直死断线】大雪纷飞的深夜孤清竹林外，街灯投下一道清冷的光柱。两仪式身穿纯白和服与鲜红皮夹克，反手拔出腰间短刀，眼眸中亮起流转着湛蓝与绯红神性光辉的「直死之魔眼」。刀锋在空气中划出一道绚丽的死亡切线，短发随夜风扬起，神情冷傲如霜——「只要是活着的东西，就算是神也杀给你看。」",
+    "id": "shiki_snowy_night_mystic_eyes_slash",
+    "lighting": "古老昏黄路灯与直死之魔眼绚丽虹彩光晕",
+    "location": "大雪静谧飘落的古旧神社竹林石阶前",
+    "mood": "孤高冷彻",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "official_kimono_leather_jacket",
+    "promptProse": "Stepping through a blizzard of swirling snow beneath a solitary streetlamp outside a quiet bamboo grove, Ryougi Shiki unsheathes her combat knife in a fluid reverse grip. Her Mystic Eyes of Death Perception blaze with ethereal rings of sapphire and crimson, tracing the lines of mortality in the frigid air. Her red leather jacket contrasts sharply with her white kimono and dark layered hair. Breathtaking low-angle anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "snow",
+      "falling_snow",
+      "bamboo",
+      "streetlamp",
+      "night",
+      "white_kimono",
+      "red_jacket",
+      "holding_knife",
+      "mystic_eyes_of_death_perception",
+      "blue_eyes",
+      "intense_gaze",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "snow",
+      "falling_snow",
+      "bamboo_forest",
+      "streetlamp",
+      "kimono",
+      "red_jacket",
+      "holding_knife",
+      "knife",
+      "mystic_eyes_of_death_perception",
+      "cold_gaze"
+    ],
+    "timeOfDay": "暴风雪夜",
+    "title": "两仪式 · 踏雪折梅直死断线"
+  }
+}

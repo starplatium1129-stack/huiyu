@@ -1,0 +1,183 @@
+{
+  "kind": "character",
+  "id": "sorasaki_hina",
+  "revision": 1,
+  "sortOrder": 47,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sorasaki_hina",
+    "profile": {
+      "id": "sorasaki_hina",
+      "name": "空崎日奈",
+      "alias": [
+        "Sorasaki Hina",
+        "空崎ヒナ",
+        "空崎陽奈",
+        "日奈"
+      ],
+      "type": "popular",
+      "icon": "⚖️",
+      "portrait": {
+        "image": "../assets/characters/popular-sorasaki_hina.png?v=5",
+        "alt": "空崎日奈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "超长银白发 · 蓬松巨量散发",
+        "hair_color": "银白",
+        "eyes": "紫",
+        "hairstyle": "中分刘海 · 极长散发 · 蓬松发量",
+        "uniform": "格黑娜披肩军大衣 / 死库水泳装 / 晚礼服",
+        "expression": "认真可靠，偶尔慵懒疲惫",
+        "style": "serious sleepy disciplinary chair",
+        "signature": "精致黑色小角、紫黑荆棘光环、背部蝠翼、散发与披肩军大衣"
+      },
+      "personality": [
+        "认真",
+        "可靠",
+        "慵懒",
+        "反差萌",
+        "责任感强"
+      ],
+      "likes": [
+        "睡觉",
+        "休息",
+        "维护纪律",
+        "机枪"
+      ],
+      "classic_cg": {
+        "title": "深夜的委员长",
+        "description": "歌赫娜风纪委员会办公室里，她独自整理文件，白发扬起，红瞳在台灯下映出从未示人的疲惫与温柔。"
+      },
+      "identity": {
+        "role": "歌赫娜学院风纪委员会委员长",
+        "age": "17岁",
+        "occupation": "学生 / 风纪委员长",
+        "faction": "歌赫娜学院 / 风纪委员会"
+      },
+      "tags": [
+        "银白发",
+        "紫瞳",
+        "黑色小恶魔角",
+        "光环",
+        "背部蝠翼",
+        "蓬松长发",
+        "披肩军大衣",
+        "格黑娜军服"
+      ],
+      "bg_story": "空崎日奈是《碧蓝档案》中格黑娜学园风纪委员会最高委员长，以一人之力威慑整座混乱无序的格黑娜学园，被全基沃托斯敬畏为「绝对实力的象征」。娇小的身躯终日披着沉重的军大衣，背后承载着繁重的公文与无休止的平叛任务，私下里却极易疲惫害羞，最渴望的就是能在老师身边安心卸下防备睡个好觉。场景应突出威严风纪委员长与疲惫娇羞少女的反差——深夜办公室伏案、阳光更衣室、水汽晨浴与晚礼服宴会，紫黑与纯白是她的主色。",
+      "palette": [
+        "白",
+        "红",
+        "黑"
+      ],
+      "weather": [
+        "雨夜",
+        "月光",
+        "黄昏"
+      ],
+      "speech": "日奈正在执行风纪巡查。",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "sorasaki_hina",
+        "1girl",
+        "solo",
+        "horns",
+        "small_horns",
+        "black_horns",
+        "curved_horns",
+        "demon_horns",
+        "halo",
+        "purple_halo",
+        "spiked_halo",
+        "bat_wings",
+        "demon_wings",
+        "black_wings",
+        "very_long_hair",
+        "massive_hair",
+        "fluffy_hair",
+        "hair_down",
+        "parted_bangs",
+        "silver_hair",
+        "purple_eyes",
+        "sleepy_eyes",
+        "serious_expression",
+        "petite",
+        "flat_chest",
+        "slender",
+        "small_stature",
+        "blush",
+        "gehenna",
+        "blue_archive"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#0f172a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "sorasaki_hina",
+        "hina",
+        "hina_(blue_archive)",
+        "空崎陽奈",
+        "日奈",
+        "blue archive",
+        "gehenna",
+        "disciplinary committee",
+        "hina (blue archive)"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "风纪委员会委员长；身高 142cm，外表严肃但私下容易害羞",
+        "research": "2026-08-27 调研",
+        "world": "基沃托斯（Kivotos）· 歌赫娜学院"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "rella",
+        "swav"
+      ],
+      "displayName": "空崎日奈",
+      "exactPrefixes": [
+        "sorasaki_"
+      ],
+      "exactTokens": [
+        "hina (blue archive)"
+      ],
+      "franchise": "Blue Archive",
+      "id": "sorasaki_hina",
+      "identityProse": "Sorasaki Hina from Blue Archive, the petite Gehenna Head Prefect with floor-length silver-purple hair, sleek black demon horns, a floating purple halo, small bat wings, and sleepy yet sharp purple eyes.",
+      "identityTokens": [
+        "hina (blue archive)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "horns",
+        "halo",
+        "bat_wings",
+        "flat_chest",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Sorasaki Hina",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

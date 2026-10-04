@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/crimson_silk_lingerie",
+  "revision": 1,
+  "sortOrder": 694,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "crimson_silk_lingerie",
+      "name": "深红蕾丝情趣吊带睡袍",
+      "prose": "a seductive deep crimson silk lingerie set with black floral lace trims, matching garter straps over sheer black stockings, and a translucent matching babydoll negligee flowing down her hips",
+      "tokens": [
+        "lingerie",
+        "crimson_lingerie",
+        "black_lace",
+        "sheer_babydoll",
+        "garter_straps",
+        "black_stockings",
+        "cleavage",
+        "sensual"
+      ]
+    }
+  }
+}

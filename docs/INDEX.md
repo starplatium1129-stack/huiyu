@@ -1,5 +1,7 @@
 # 项目文档索引
 
+[记录式内容库](architecture/CONTENT-CATALOG-DESIGN.md)说明 SQLite 工作权威、逐条 JSON 快照、修订冲突、三方导入与旧数据迁移；操作见[维护手册](maintenance.md)。
+
 [创作、灵感返回与长期运行统筹](audits/2026-10-03/creation-inspiration-longrun-integration.md)记录草稿重复操作、筛选/浏览器返回、完整图片预览、后台健康请求和有限资源计数，以及四路交付、预算修错、真实 SFW 验收和原生设备边界。
 
 [创作恢复、图库性能与数据安全统筹](audits/2026-10-03/workflow-performance-data-integration.md)记录四路独立边界、迟到成片恢复修复、真实 SFW 浏览与有限下载源测量、隔离保存恢复检查及本轮集成验收边界。

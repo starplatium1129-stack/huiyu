@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_summer_beach_surf_patrol",
+  "revision": 1,
+  "sortOrder": 1060,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "踩在清澈浅水海浪中，手扶墨镜回眸，鲨鱼尾在海水中激起晶莹水花",
+    "camera": "full body, 3/4 dynamic perspective",
+    "category": "海滨夏日",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【艾莲·乔 · 碧海清波的鲨鱼泳姿】夏日灿烂艳阳下的金沙浅海，碧蓝清澈的波浪轻轻拍击着艾莲细嫩的脚踝。她身穿红黑相间的运动分体泳装，单手推起墨镜，结实修长的深海鲨鱼尾巴在清澈海水间轻快划动，激起一圈圈纯白的浪花泡沫，整个人宛如真正回到归宿的海洋游猎少女。",
+    "id": "ellen_summer_beach_surf_patrol",
+    "lighting": "明澈热带阳光与水面反射的跳跃焦散光斑",
+    "location": "阳光蔚蓝浅海沙滩",
+    "mood": "清凉明媚",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shark_swimsuit",
+    "promptProse": "Wading through turquoise tropical ocean shallows in her sporty shark-patterned swimsuit, Ellen gazes back playfully as crystal waves splash against her legs. Her sleek wet shark tail cuts smoothly through the sparkling azure water in brilliant summer sunshine.",
+    "promptTokens": [
+      "tropical_beach",
+      "ocean_waves",
+      "sea_water",
+      "water_splashes",
+      "bikini",
+      "sunglasses",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean",
+      "waves",
+      "splashing_water",
+      "sunglasses",
+      "bikini",
+      "shark_tail",
+      "summer"
+    ],
+    "timeOfDay": "上午",
+    "title": "艾莲·乔 · 碧海清波的鲨鱼泳姿"
+  }
+}

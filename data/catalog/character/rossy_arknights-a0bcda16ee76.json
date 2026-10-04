@@ -1,0 +1,122 @@
+{
+  "kind": "character",
+  "id": "rossy_arknights",
+  "revision": 1,
+  "sortOrder": 164,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rossy_arknights",
+    "profile": {
+      "id": "rossy_arknights",
+      "name": "洛茜",
+      "alias": [
+        "Rossi",
+        "洛茜",
+        "洛茜娜·狼珀·卢皮诺"
+      ],
+      "type": "popular",
+      "icon": "🔧",
+      "visual_dna": {
+        "hair": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+        "hair_color": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+        "eyes": "眼色待进一步核实，不固定绿眸",
+        "hairstyle": "浅金色长发，搭配鲁珀狼耳；不是棕色双马尾",
+        "uniform": "红色兜帽斗篷、白色裙装、黑色腰身护具与黑靴，佩剑",
+        "expression": "果敢、关心同伴",
+        "style": "明日方舟：终末地官方形象为基础",
+        "signature": "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑"
+      },
+      "personality": [
+        "果敢",
+        "关心同伴"
+      ],
+      "likes": [],
+      "identity": {
+        "role": "狼群领导者 / 狼卫的妹妹",
+        "age": "官方未公开（原稿年龄缺少来源，待核实）",
+        "occupation": "近卫干员 / 剑士",
+        "faction": "狼群（与终末地合作）"
+      },
+      "tags": [
+        "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑"
+      ],
+      "bg_story": "洛茜，本名洛茜娜·狼珀·卢皮诺，是鲁珀族剑士、狼卫的妹妹，也是狼群领导者。官方简介未提供精确年龄，不采用原稿未经证实的18岁设定，日常场景与非默认衣装为创作设定。",
+      "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "traits": [
+        "rossi_(arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "wolf_ears",
+        "wolf_tail",
+        "arknights_endfield"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "洛茜立绘待补（占位图）"
+      },
+      "speech": "狼群的伙伴都准备好了，出发吧。",
+      "accent_color": "#c84242",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Rossi",
+        "洛茜",
+        "洛茜娜·狼珀·卢皮诺"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "world": "塔卫二",
+        "formNotes": "鲁珀狼耳、蓬松狼尾、红色兜帽斗篷与剑",
+        "research": "2026-10-03 官方简介与形象核对；官方年龄未公开，未据此改动用户原分级配置",
+        "sources": [
+          "https://endfield.hypergryph.com/operator"
+        ]
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "洛茜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "rossi_(arknights)"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "rossy_arknights",
+      "identityProse": "Rossi from Arknights: Endfield, a Lupo sword user and Wulfgard's younger sister who leads a wolf pack, with long light-blonde hair, wolf ears and a fluffy wolf tail.",
+      "identityTokens": [
+        "rossi_(arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "wolf_ears",
+        "wolf_tail",
+        "arknights:_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Rossi",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

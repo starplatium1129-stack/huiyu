@@ -1,0 +1,138 @@
+{
+  "kind": "character",
+  "id": "kochou_shinobu",
+  "revision": 1,
+  "sortOrder": 110,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kochou_shinobu",
+    "profile": {
+      "id": "kochou_shinobu",
+      "name": "蝴蝶忍",
+      "alias": [
+        "Kochou Shinobu",
+        "蝴蝶忍",
+        "虫柱",
+        "蝶屋敷主人",
+        "紫藤姐姐"
+      ],
+      "type": "popular",
+      "icon": "🦋",
+      "portrait": {
+        "image": "../assets/characters/popular-kochou_shinobu.png?v=1",
+        "alt": "蝴蝶忍 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑发渐变紫发梢 · 发髻与蝴蝶饰",
+        "hair_color": "墨黑 / 紫藤紫渐变",
+        "eyes": "紫色眼眸 · 微笑时弯成月牙",
+        "hairstyle": "波浪渐变发 · 后发髻",
+        "uniform": "鬼杀队队服 · 蝶翼羽织",
+        "expression": "永远温柔的微笑 · 笑容之下是向死而行的觉悟",
+        "style": "gentle insect hashira smile",
+        "signature": "蝶翼羽织、渐变紫发与不灭的微笑"
+      },
+      "personality": [
+        "杀鬼的刀与治愈的手并存",
+        "以毒为刃的最弱却最强",
+        "微笑是铠甲也是温柔的伪装",
+        "向死而生却渴望普通的幸福"
+      ],
+      "likes": [
+        "紫藤花与花田",
+        "照顾蝶屋敷的孩子们",
+        "被你发现笑容背后的疲惫"
+      ],
+      "classic_cg": {
+        "title": "紫藤花下的微笑",
+        "description": "花帘垂落的紫藤园里，她第一次让微笑之下的悲伤被看见。"
+      },
+      "identity": "鬼灭之刃 · 虫柱 · 蝶屋敷主人",
+      "tags": [
+        "鬼灭之刃",
+        "虫柱",
+        "蝶翼羽织",
+        "渐变紫发",
+        "紫藤",
+        "微笑姐姐"
+      ],
+      "bg_story": "无法斩下鬼头的孩子，把自己的身体炼成了毒。她笑着说『要好好上药哦』，转身却把每一天当作最后一天来燃烧。紫藤花下那句『毒也会变成药』，是她此生唯一的任性——如果有你在，余下的每一天，她想用来对你温柔。",
+      "palette": [
+        "#a78bfa",
+        "#f8fafc",
+        "#4c1d95",
+        "#f9a8d4"
+      ],
+      "weather": "紫藤园的花时午后 / 蝶屋敷的晨光",
+      "speech": "「伤口要好好上药哦，不然我会生气的。……呐，如果是你的话，毒也会变成药——这句话，只说一次哦。」",
+      "source": "吾峠呼世晴《鬼灭之刃 / Kimetsu no Yaiba》",
+      "traits": [
+        "insect_hashira",
+        "butterfly_mansion",
+        "wisteria_poison",
+        "eternal_smile"
+      ],
+      "accent_color": "#a78bfa",
+      "bg_color": "#4c1d95"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Kochou Shinobu",
+        "蝴蝶忍",
+        "虫柱",
+        "蝶屋敷主人",
+        "紫藤姐姐"
+      ],
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "ufotable"
+      ],
+      "displayName": "蝴蝶忍",
+      "exactPrefixes": [
+        "1girl, solo, kochou_shinobu"
+      ],
+      "exactTokens": [
+        "kochou_shinobu"
+      ],
+      "franchise": "Kimetsu no Yaiba",
+      "id": "kochou_shinobu",
+      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple",
+      "identityTokens": [
+        "kochou_shinobu",
+        "kimetsu_no_yaiba",
+        "1girl",
+        "solo",
+        "black_hair",
+        "purple_hair",
+        "two-tone_hair",
+        "gradient_hair",
+        "wavy_hair",
+        "purple_eyes",
+        "pale_skin",
+        "smile"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "胡蝶しのぶ",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

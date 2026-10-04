@@ -49,6 +49,16 @@ function readManifest() {
 }
 
 function loadBlueprintShards() {
+  const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
+  const records = catalog.read(root);
+  if (records) {
+    const view = catalog.views(records);
+    const franchises = new Map(view.popular.map(c => [c.id, c.franchise]));
+    const groups = new Map<string, Blueprint[]>();
+    for (const blueprint of view.blueprints) { const key = franchises.get(blueprint.characterId) || 'unknown'; if (!groups.has(key)) groups.set(key, []); groups.get(key)!.push(blueprint); }
+    const sources = [...groups].map(([franchise, blueprints]) => ({ entry: { file: franchiseSlug(franchise) + '.json', franchise, count: blueprints.length }, source: path.join(shardsDir, franchiseSlug(franchise) + '.json'), blueprints }));
+    return { manifest: { version: 1, files: sources.map(s => s.entry) }, sources, blueprints: view.blueprints };
+  }
   const manifest = readManifest();
   const sources = manifest.files.map((entry) => {
     const source = path.join(shardsDir, entry.file);
@@ -78,6 +88,7 @@ function aggregateIsCurrent() {
 /** 聚合 -> 分片（拆解回写）：依据 popular 体系的角色 franchise 归属，
  *  按系列拆分写入 data/blueprints/<franchise-slug>.json。 */
 function writeBlueprintShards() {
+  (require('./catalog-snapshot') as typeof import('./catalog-snapshot')).assertLegacyWrite(root);
   const aggregate = readJson(aggregatePath);
   const blueprints = Array.isArray(aggregate.blueprints) ? aggregate.blueprints : [];
 

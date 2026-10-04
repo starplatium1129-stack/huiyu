@@ -94,7 +94,6 @@ fn fixture() -> (
     };
     let service = Arc::new(MaintenanceService {
         options: options.clone(),
-        cache: Mutex::new(None),
         hero: Mutex::new(None),
         write_slots: Arc::new(tokio::sync::Semaphore::new(8)),
         write_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -119,7 +118,14 @@ async fn call(app: &Router, method: &str, path: &str, body: Value) -> (StatusCod
     let response = app.clone().oneshot(request).await.unwrap();
     let status = response.status();
     let bytes = response.into_body().collect().await.unwrap().to_bytes();
-    (status, serde_json::from_slice(&bytes).unwrap())
+    (
+        status,
+        if bytes.is_empty() {
+            Value::Null
+        } else {
+            serde_json::from_slice(&bytes).unwrap()
+        },
+    )
 }
 fn node_oracle(options: &Options) -> Value {
     let repo = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
@@ -148,63 +154,25 @@ fn node_oracle(options: &Options) -> Value {
 }
 
 #[tokio::test]
-async fn scene_preview_preserves_readonly_baseline_ids_pins_and_content_contract_boundary() {
+async fn retired_whole_library_write_routes_do_not_mutate_content() {
     let (_directory, options, service, state) = fixture();
     let app = router(service).with_state(state);
-    let (status, snapshot) = call(&app, "GET", "/api/maintenance/scenes-state", Value::Null).await;
-    assert_eq!(status, StatusCode::OK);
-    assert_eq!(snapshot["nextSceneId"], "sc008");
-    let versions: Value = serde_json::from_str(include_str!(
-        "../../tests/fixtures/legacy-scene-version.json"
-    ))
-    .unwrap();
+    let before = std::fs::read(options.root.join("data/scenes/nene-core.json")).unwrap();
+    for path in [
+        "/api/maintenance/scenes",
+        "/api/maintenance/scenes/changes",
+        "/api/maintenance/scenes/import",
+    ] {
+        assert_eq!(
+            call(&app, "POST", path, json!({"scenes":[]})).await.0,
+            StatusCode::NOT_FOUND
+        );
+    }
     assert_eq!(
-        snapshot["version"],
-        versions[if cfg!(windows) { "windows" } else { "posix" }]
-    );
-    let mut changed = snapshot["snapshot"]["scenes"][0].clone();
-    changed["title"] = json!("changed title");
-    let body = json!({"baseVersion":snapshot["version"],"changeSet":{"version":1,"scenes":{"upsert":[changed],"remove":[]}}});
-    let (status, preview) = call(
-        &app,
-        "POST",
-        "/api/maintenance/scenes/preview",
-        body.clone(),
-    )
-    .await;
-    assert_eq!(status, StatusCode::OK);
-    assert_eq!(preview["updated"], json!(["sc001"]));
-    assert_eq!(preview["writesEnabled"], true);
-    let mut pinned = body.clone();
-    pinned["changeSet"]["scenes"]["upsert"][0]["prompt"] = json!("refused change");
-    assert_eq!(
-        call(&app, "POST", "/api/maintenance/scenes/preview", pinned)
-            .await
-            .0,
-        StatusCode::BAD_REQUEST
-    );
-    let mut blueprint = body.clone();
-    blueprint["changeSet"]["blueprints"] = json!({"upsert":[],"remove":[]});
-    assert_eq!(
-        call(&app, "POST", "/api/maintenance/scenes/preview", blueprint)
-            .await
-            .0,
-        StatusCode::OK
-    );
-    assert_eq!(
-        call(&app, "POST", "/api/maintenance/scenes/changes", body)
-            .await
-            .0,
-        StatusCode::BAD_REQUEST
-    );
-    assert!(!options.runtime.exists());
-    assert!(!options.root.join("runtime").exists());
-    assert_eq!(
-        fs::json(&options.root.join("data/scenes/nene-core.json")).unwrap()[0]["title"],
-        "neutral fixture"
+        std::fs::read(options.root.join("data/scenes/nene-core.json")).unwrap(),
+        before
     );
 }
-
 #[test]
 fn transactions_interoperate_with_node_lease_identity_and_restore_only_declared_bytes() {
     let (_directory, options, _service, _state) = fixture();

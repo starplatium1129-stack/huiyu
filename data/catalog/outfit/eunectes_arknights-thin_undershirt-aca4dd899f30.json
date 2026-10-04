@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/thin_undershirt",
+  "revision": 1,
+  "sortOrder": 340,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "default": false,
+      "id": "thin_undershirt",
+      "isDefault": false,
+      "name": "单薄内衬背心",
+      "prose": "wearing only a thin form-fitting tank-top undershirt of lightweight fabric, leaving her shoulders and arms bare",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "eunectes_thin_undershirt",
+        "tank_top",
+        "undershirt",
+        "sleeveless_shirt",
+        "thin_fabric",
+        "form_fitting",
+        "bare_shoulders",
+        "goggles"
+      ]
+    }
+  }
+}

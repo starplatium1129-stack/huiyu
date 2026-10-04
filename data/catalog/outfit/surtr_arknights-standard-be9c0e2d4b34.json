@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/standard",
+  "revision": 1,
+  "sortOrder": 286,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "罗德岛作战服",
+      "prose": "her black sleeveless cropped turtleneck with a black-and-white techwear jacket with red lining, black high-waisted shorts, thigh holster, asymmetrical black thigh-high socks, combat boots, fingerless gloves and a black headband",
+      "tokens": [
+        "black_clothes",
+        "white_clothes",
+        "techwear",
+        "jacket",
+        "crop_top",
+        "shorts",
+        "thighhighs",
+        "combat_boots",
+        "fingerless_gloves",
+        "headband"
+      ]
+    }
+  }
+}

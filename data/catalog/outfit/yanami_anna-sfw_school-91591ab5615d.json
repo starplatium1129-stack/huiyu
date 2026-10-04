@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/sfw_school",
+  "revision": 1,
+  "sortOrder": 952,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "石蕗高校整齐制服",
+      "prose": "a white school blouse, blue bow, navy knee-length skirt and black socks",
+      "tokens": [
+        "school_uniform",
+        "white_blouse",
+        "blue_bow",
+        "navy_skirt",
+        "black_socks"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

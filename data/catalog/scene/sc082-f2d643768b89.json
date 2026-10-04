@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc082",
+  "revision": 1,
+  "sortOrder": 80,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Ayachi Nene locks her phone as the viewer steps onto the veranda, leaving the unsent message hidden. She sits in a pink floral yukata with the dark screen resting in her lap, one hand still on it. Turning slightly toward the newly occupied space beside her, she smiles beneath the autumn full moon. The garden stays dim behind her in this seated medium view.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "缘侧手机与侧脸半身中景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "思念",
+    "id": "sc082",
+    "lighting": "秋夜月光",
+    "location": "日式庭院",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pink_floral_yukata, sitting_on_engawa, phone_on_lap, dark_phone_screen, hand_on_phone, turning_toward_viewer, affectionate_smile, japanese_garden, autumn_night, full_moon, moonlight, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "秋",
+    "story": "【宁宁 · 月下缘侧的思念】秋夜庭院洒满月光，宁宁独自坐在缘侧，把白天没能说出口的话写在手机备忘录里。你推门出来，她立即锁屏，却在你坐下后主动靠近半步。满月映在她紫色眼睛里——「我刚才在想，如果想念一个人时他正好出现，是不是也算很小的魔法？」",
+    "storyJa": "【寧々・月の下縁への思い】秋の夜、中庭は月明かりで満たされ、寧々はその端に一人座って、日中言えなかった言葉を携帯電話に書き留めていました。あなたがドアを開けて出てくると、すぐに画面ロックをかけましたが、あなたが座ると、彼女は率先して半歩近づいてきました。紫の瞳に満月が映る――「今、考えていたんです。会いたいと思った人がちょうど現れるのも、小さな魔法に入るんでしょうか？」",
+    "tags": [
+      "pink_floral_yukata",
+      "sitting_on_engawa",
+      "phone_on_lap",
+      "dark_phone_screen",
+      "hand_on_phone",
+      "turning_toward_viewer",
+      "affectionate_smile",
+      "japanese_garden",
+      "autumn_night",
+      "full_moon",
+      "moonlight",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "月下缘侧的思念",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc078",
+  "revision": 1,
+  "sortOrder": 76,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Inside the shrine guest room, Ayachi Nene has finished trying on her new white tabi socks in front of a standing mirror. Dressed in a pale-blue kimono, she turns from the mirror and offers a small hand warmer to the viewer with both hands. The mirror reflects only the quiet room at an oblique angle. A full-body view shows the split-toe socks on the cool wooden floor in soft morning light.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "镜前足袋可见的全身远景",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "感动",
+    "id": "sc078",
+    "lighting": "神社宿舍清晨柔光",
+    "location": "神社宿舍镜前",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pale_blue_kimono, white_tabi_socks, standing, offering_hand_warmer, both_hands, gentle_smile, shrine_guest_room, standing_mirror, oblique_reflection, wooden_floor, winter_morning, soft_window_light, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【宁宁 · 鸟居下的第一场雪】年末的神社宿舍里，宁宁试穿刚备好、准备新年参拜的白色足袋，赤足踩过微凉的地板站到镜子前。你替她理了理微乱的发梢，她先是愣住，随后笑着把温热的手炉塞进你掌心——「新年的第一次参拜要一起去哦。这样的话，明年也会记得今天吧？」",
+    "storyJa": "【寧々・鳥居の下に初雪が降りました】早朝、神社ではこの冬初雪が降りました。寧々は着物を着て赤い鳥居の下に立ち、降る雪の結晶を掴もうと手を伸ばしていました。あなたは彼女の髪についた雪を払い落としました。彼女は最初は驚いていましたが、その後微笑んで、暖かいハンドストーブをあなたの手のひらに置きました。――「今年の初雪は、一緒に見られましたね。これなら来年も、今日のことを覚えていられるでしょうか？」",
+    "tags": [
+      "pale_blue_kimono",
+      "white_tabi_socks",
+      "standing",
+      "offering_hand_warmer",
+      "both_hands",
+      "gentle_smile",
+      "shrine_guest_room",
+      "standing_mirror",
+      "oblique_reflection",
+      "wooden_floor",
+      "winter_morning",
+      "soft_window_light",
+      "full_body"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "参拜前试穿的白足袋",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "雪"
+  }
+}

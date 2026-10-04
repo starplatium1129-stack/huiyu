@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_rainy_bus_stop_accidental_fall",
+  "revision": 1,
+  "sortOrder": 1262,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "半跌坐在地上双手撑地，百褶裙翻卷撩起，满脸涨红含泪娇叱，雨水溅湿发梢",
+    "camera": "medium shot, low angle, dynamic accidental fall perspective",
+    "category": "名场面跌倒",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "accident"
+    ],
+    "description": "【古手川唯 · 雨夜站台的命中注定神摔】大雨倾盆的学园车站避雨亭下，湿漉漉的地面反光如同镜面。因为意外滑倒，梨斗正巧跌倒在一身水手服的唯身前。唯半跌坐在长椅边，水手百褶裙在跌倒间翻卷撩起，露出黑色及膝袜上雪白柔嫩的绝对领域。她双手慌乱按在地上，满脸通红眼眶泛泪，又羞又急地大喊出招牌台词——「结城梨斗！为、为什么每次滑倒你都会准确跌到这里来啊……不知羞耻！」",
+    "id": "kotegawa_rainy_bus_stop_accidental_fall",
+    "lighting": "车站昏黄吊灯与外围暴雨倾盆的冷暗对比，水洼折射强烈光泽",
+    "location": "雨夜公交车站避雨长椅水泥地面",
+    "mood": "香艳娇怒",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Tumbling awkwardly onto the wet pavement of a sheltered rain-swept bus stop with her sailor skirt hiked up, Yui glares in mortified disbelief. Ambient amber streetlights catch puddles and raindrops clinging to her soaked black hair as she cries out in flustered indignation.",
+    "promptTokens": [
+      "rainy_bus_stop",
+      "falling_down",
+      "sainan_high_school_uniform",
+      "skirt_lift",
+      "thighs",
+      "heavy_blush",
+      "teary_eyes",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bus_stop",
+      "rain",
+      "falling_down",
+      "sainan_high_school_uniform",
+      "skirt_lift",
+      "thighs",
+      "heavy_blush",
+      "teary_eyes"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "古手川唯 · 雨夜站台的命中注定神摔"
+  }
+}

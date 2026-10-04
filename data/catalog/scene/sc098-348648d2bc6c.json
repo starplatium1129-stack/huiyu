@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc098",
+  "revision": 1,
+  "sortOrder": 96,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Lying on the tatami mat on a sunlit afternoon in a first-person POV perspective, Ayachi Nene in a soft pink knit camisole and silk slip tilts her head slightly, looking directly up at the viewer with an affectionate, moist gaze and a gentle loving blush.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "膝上主观面部特写",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc098",
+    "lighting": "秋日下午柔和窗光",
+    "location": "客厅",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, pajamas",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, silk_slip, pink_camisole, lace_trim, spaghetti_straps, falling_strap, bare_shoulders, cleavage, bare_legs, lying_down, looking_up_at_viewer, head_tilt, close-up, affectionate_gaze, gentle_smile, heavy_blush, tatami_room, tatami_mat, afternoon_light, cozy, sensual, collarbone, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【宁宁 · 膝上倒映的眼睛】秋日下午，宁宁躺在你腿上看窗外摇动的树影，忽然转过脸认真端详你。她说从这个角度能看见平时忽略的表情，随后用手指轻轻描过你的掌纹。被问在想什么，她眯起眼笑——「在确认我喜欢的人是不是还在这里。答案没有变，所以可以放心睡一会儿了。」",
+    "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
+    "tags": [
+      "hair_ribbon",
+      "pink_sweater",
+      "sheer_white_thighhigh_stockings",
+      "smooth_thighs",
+      "sofa",
+      "full_body",
+      "mary_jane",
+      "lying_down"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "膝上倒映的眼睛",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "weather": "晴"
+  }
+}

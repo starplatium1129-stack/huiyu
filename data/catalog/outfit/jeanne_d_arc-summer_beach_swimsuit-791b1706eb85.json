@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_d_arc/summer_beach_swimsuit",
+  "revision": 1,
+  "sortOrder": 127,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_d_arc",
+    "outfit": {
+      "id": "summer_beach_swimsuit",
+      "name": "海滨纯白比基尼泳装",
+      "prose": "a pure white bikini with delicate blue ribbon accents and a sheer gauzy pareo draped at her hips, sun-kissed and radiant beside the summer sea, with golden hair in a long braid",
+      "tokens": [
+        "bikini",
+        "white_bikini",
+        "sarong",
+        "bare_shoulders",
+        "bare_legs",
+        "cleavage",
+        "wet_skin",
+        "braid"
+      ]
+    }
+  }
+}

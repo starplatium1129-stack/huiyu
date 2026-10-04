@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "violet_evening_library_reading_together",
+  "revision": 1,
+  "sortOrder": 1390,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
+    "adult": false,
+    "animaStyleHint": "anime_warm_domestic",
+    "camera": "medium close-up, cozy two-person intimacy, library dust motes floating in sunbeam",
+    "category": "温馨陪伴",
+    "characterId": "violet_evergarden",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "daily",
+      "library",
+      "healing"
+    ],
+    "description": "【夕阳静谧的高穹图书馆】高达穹顶的老式木质图书馆内弥漫着古卷与墨汁的沉静清香。斜阳将巨大的落地窗棂投影在长木桌上。薇尔莉特与你并肩而坐共享一本厚厚的诗集。或许是因为看得入神，她那松散开的金色秀发轻轻倚靠在你的肩膀上，静静聆听着你均匀的心跳声。",
+    "id": "violet_evening_library_reading_together",
+    "kreaStyleHint": "anime_warm_domestic",
+    "lighting": "晚霞透过高耸彩绘玻璃投射的浓郁暖橙与古铜金斜射光",
+    "location": "莱顿大学皇家藏书馆一角",
+    "mood": "沉静治愈、心照不宣",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "library_casual_no_hat",
+    "promptProse": "Violet Evergarden rests her head gently against your shoulder at a dark mahogany desk in a majestic sunlit library. Her articulated silver fingers rest on an open antique book of poetry as the two of you read together, while golden dust motes dance in the late-afternoon sunbeams through the towering arched windows.",
+    "promptTokens": [
+      "library",
+      "bookshelves",
+      "sitting",
+      "leaning_on_shoulder",
+      "reading",
+      "open_book",
+      "mechanical_hands",
+      "sunset",
+      "golden_hour",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "two_clothed_figures"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "library",
+      "books",
+      "reading",
+      "leaning_on_shoulder",
+      "sunset",
+      "golden_hour",
+      "peaceful",
+      "intimate"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚·「书里描绘的幸福，就像现在这样吗？」"
+  }
+}

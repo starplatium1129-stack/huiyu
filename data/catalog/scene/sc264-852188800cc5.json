@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc264",
+  "revision": 1,
+  "sortOrder": 259,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc264",
+    "recommendedSize": "1344×768",
+    "title": "夕照图书室里的失控一刻",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】黄昏的图书室深处，狭窄的书架通道被染成一片暖金。被突如其来的燥热与悸动俘获，宁宁侧倚在书架旁，指尖紧紧攥起格子百褶裙的裙摆向上撩起。夕阳的逆光穿透窗户，在她银白的发丝与泛红发烫的脸颊上镀上一层微光。泪光闪烁的紫色眼眸既羞耻又带着难以自持的渴望，小嘴轻喘着望向你：「既然……被你看到了，就不许丢下我一个人……」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult",
+      "nene_r18"
+    ],
+    "mature": false,
+    "location": "图书室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "R15"
+    ],
+    "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "R15",
+    "officialCgCandidate": "ocn09",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn09:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_230616_069.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
+      "result": "pass"
+    },
+    "animaCaption": "In a dramatic Dutch angle medium close-up inside a narrow library bookshelf aisle during golden hour sunset, she leans against the shelves with tearful, blushing purple eyes and parted lips, lifting her plaid skirt to reveal delicate pink panties while warm golden sunlight bathes her silver hair in a radiant rim light.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

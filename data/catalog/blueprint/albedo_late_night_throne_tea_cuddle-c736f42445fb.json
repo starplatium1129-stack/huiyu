@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_late_night_throne_tea_cuddle",
+  "revision": 1,
+  "sortOrder": 1304,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_late_night_throne_tea_cuddle",
+    "title": "雅儿贝德 · 王座深夜的伴茶温存",
+    "category": "温柔陪伴",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 王座深夜的伴茶温存】深夜寂静无声的王座之厅，宏伟的烛火在黑曜石石柱上映出跳跃的暖光。雅儿贝德跪坐在王座扶手边，双手捧上一杯热气腾腾的红茶。当被你轻轻拉住手腕后，她顺从地将头轻轻枕在你的腿侧，黑色羽翼温柔地半合拢包裹住两人的身侧，眼底尽是一生一世的眷恋——「万籁俱寂，只要能这样守在您身边，这里便是整座大坟墓最幸福的所在。」",
+    "location": "黑曜石王座扶手旁的深红长毯处",
+    "action": "跪坐在王座扶手旁，头枕在视角腿侧，黑色羽翼半合拢护卫身旁，眼神依恋深情",
+    "timeOfDay": "深夜",
+    "lighting": "宏伟吊灯与烛台交织的静谧暖黄色",
+    "camera": "cowboy shot, medium angle, intimate cozy throne view",
+    "mood": "生死相依",
+    "sceneTags": [
+      "throne_room",
+      "throne",
+      "carpet",
+      "kneeling",
+      "resting_head_on_lap",
+      "wing_embrace",
+      "black_wings",
+      "white_dress",
+      "holding_teacup",
+      "loving_smile"
+    ],
+    "promptProse": "Kneeling beside the grand obsidian throne late at night, Albedo rests her cheek lovingly against the viewer's knee. Her large black feathered wings gently curve forward, cocooning the space in private warmth. Holding a steaming porcelain teacup, her golden eyes look up with absolute, unwavering adoration in the dim candlelight. Intimate, atmospheric anime key visual style, solo 1girl, no text.",
+    "promptTokens": [
+      "throne_room",
+      "throne",
+      "dim_lighting",
+      "kneeling",
+      "resting_head_on_lap",
+      "black_wings",
+      "wing_embrace",
+      "curved_horns",
+      "white_dress",
+      "holding_cup",
+      "gentle_smile",
+      "loving_gaze",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_white_dress",
+    "coverageTags": [
+      "healing",
+      "devotion",
+      "romantic"
+    ]
+  }
+}

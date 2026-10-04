@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "lucy_cyberpunk/neon_evening_dress",
+  "revision": 1,
+  "sortOrder": 605,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lucy_cyberpunk",
+    "outfit": {
+      "default": false,
+      "id": "neon_evening_dress",
+      "isDefault": false,
+      "name": "沃森霓虹幻彩吊带裙",
+      "prose": "a stunning iridescent metallic silk slip dress reflecting shifting cyan and magenta neon lights, daring thigh-high side slit, delicate fiber-optic choker, sheer black pantyhose, and pointed ankle-strap stiletto heels",
+      "tokens": [
+        "dress",
+        "slip_dress",
+        "silver_dress",
+        "high_slit",
+        "cleavage",
+        "choker",
+        "pantyhose",
+        "black_pantyhose",
+        "high_heels",
+        "elegant"
+      ]
+    }
+  }
+}

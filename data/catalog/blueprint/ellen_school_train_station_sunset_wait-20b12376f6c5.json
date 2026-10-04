@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_school_train_station_sunset_wait",
+  "revision": 1,
+  "sortOrder": 1062,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单肩背包靠在栏杆边听歌，列车进站风卷起发丝与百褶裙，尾尖微摆",
+    "camera": "medium shot, side angle, cinematic wide view",
+    "category": "校园黄昏",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "moody"
+    ],
+    "description": "【艾莲·乔 · 暮色站台的黄昏候车】高架空铁站台上，晚霞把铁轨染成浓郁的金红。艾莲倚靠在安全防护栏旁，耳机线顺着脖颈垂落，书包随手搭在肩头。列车进站的狂风掀起她的水手服裙摆与短发，巨大的鲨鱼尾巴在背后沉稳保持平衡，勾勒出都市女高放学后最真实的静谧剪影。",
+    "id": "ellen_school_train_station_sunset_wait",
+    "lighting": "浓郁金红晚霞与站台荧光灯交融的丁达尔光",
+    "location": "新艾利都高架空铁露天站台",
+    "mood": "落日怀旧",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_uniform",
+    "promptProse": "Leaning against safety railings at an elevated transit platform during a fiery orange sunset, Ellen listens to her headphones as the incoming train wind billows her skirt. Her majestic shark tail maintains steady balance against the glowing rails in nostalgic urban dusk.",
+    "promptTokens": [
+      "railway_station",
+      "train_platform",
+      "sunset_sky",
+      "railroad",
+      "headphones",
+      "wind_blown",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "train_station",
+      "platform",
+      "sunset",
+      "railway",
+      "headphones",
+      "wind",
+      "shark_tail"
+    ],
+    "timeOfDay": "日落",
+    "title": "艾莲·乔 · 暮色站台的黄昏候车"
+  }
+}

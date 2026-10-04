@@ -1,0 +1,141 @@
+{
+  "kind": "character",
+  "id": "caren_hortensia",
+  "revision": 1,
+  "sortOrder": 58,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_hortensia",
+    "profile": {
+      "id": "caren_hortensia",
+      "name": "卡莲·C·奥尔黛西亚",
+      "alias": [
+        "Caren Hortensia",
+        "卡莲",
+        "圣痕修女",
+        "毒舌修女",
+        "抹大拉的圣骸布"
+      ],
+      "type": "popular",
+      "icon": "✝️",
+      "portrait": {
+        "image": "../assets/characters/popular-caren_hortensia.png?v=1",
+        "alt": "卡莲·C·奥尔黛西亚 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白及颈短发 · 层次碎发",
+        "hair_color": "银白 / 铂银",
+        "eyes": "幽冷淡紫 / 丁香紫眼眸",
+        "hairstyle": "清冷层次短发 · 额前自然碎刘海",
+        "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
+        "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
+        "style": "sacred yet seductive exorcist nun",
+        "signature": "银白短发、无裙黑白祭服、黑长袜与金色抹大拉圣骸布"
+      },
+      "personality": [
+        "言辞尖锐刻薄的毒舌属性",
+        "感知世间恶意的圣痕受难者",
+        "对心爱之人极具依赖的脆弱反差",
+        "偶尔恶作剧的小恶魔趣味"
+      ],
+      "likes": [
+        "热可可与浓汤",
+        "在安静的壁炉前翻看圣经",
+        "观察愚蠢人类的慌乱神态"
+      ],
+      "classic_cg": {
+        "title": "暴风雪中的抹大拉圣骸布",
+        "description": "在深夜暴雪教会前挥舞金色圣骸布赤练、以无裙祭袍傲然立于风雪中的神圣驱魔姿态。"
+      },
+      "identity": "Fate/hollow ataraxia女主角 · 圣堂教会驱魔修女 · 圣痕受难者",
+      "tags": [
+        "Fate",
+        "hollow_ataraxia",
+        "银发短发",
+        "毒舌修女",
+        "无裙祭服",
+        "圣痕反差"
+      ],
+      "bg_story": "圣堂教会的驱魔代行者，拥有能够通过肉体共鸣感知恶魔与恶意的『圣痕』体质。因为常年承受非人的苦痛折磨，造就了她冰冷麻木、言辞如刀的毒舌性格。穿着没有下半身裙摆的特异祭袍。唯独在面对走进她内心的恋人时，高烧颤抖的娇躯会毫无保留地寻求体温与爱抚。",
+      "palette": [
+        "#c084fc",
+        "#3b0764",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "暴风雪夜 / 破晓晨曦",
+      "speech": "「听说无能的懒汉通常会睡到日上三竿呢……不过，这碗热汤就大发慈悲赏给你好了，快点喝完。」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "exorcist_nun",
+        "stigmata",
+        "skirtless_vestment",
+        "silver_hair",
+        "sharp_tongue"
+      ],
+      "accent_color": "#c084fc",
+      "bg_color": "#3b0764"
+    },
+    "popular": {
+      "id": "caren_hortensia",
+      "displayName": "卡莲·C·奥尔黛西亚",
+      "originalName": "カレン・オルテンシア",
+      "franchise": "Fate",
+      "aliases": [
+        "Caren Hortensia",
+        "caren_hortensia",
+        "caren_ortensia",
+        "caren ortensia",
+        "卡莲",
+        "圣痕修女",
+        "毒舌修女",
+        "抹大拉的圣骸布"
+      ],
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued beauty with chin-length layered platinum-silver hair, piercing amber-yellow eyes, a slender fragile silhouette, and a cool, deadpan composure",
+      "identityTokens": [
+        "caren_hortensia",
+        "fate/hollow_ataraxia",
+        "white_hair",
+        "short_hair",
+        "yellow_eyes",
+        "slender_body",
+        "cool_beauty",
+        "deadpan"
+      ],
+      "exactTokens": [
+        "caren_hortensia",
+        "caren_ortensia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, caren_hortensia",
+        "1girl, solo, caren_ortensia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

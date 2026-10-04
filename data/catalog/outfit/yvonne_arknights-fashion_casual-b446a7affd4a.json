@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/fashion_casual",
+  "revision": 1,
+  "sortOrder": 421,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "default": false,
+      "id": "fashion_casual",
+      "isDefault": false,
+      "name": "意象影画·趋势话题",
+      "prose": "a trendy fashion-casual look with nail polish and stylish coordination",
+      "tokens": [
+        "fashion",
+        "nail_polish",
+        "casual_clothes",
+        "dress"
+      ]
+    }
+  }
+}

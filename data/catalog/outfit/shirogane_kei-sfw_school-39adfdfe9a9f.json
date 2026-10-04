@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/sfw_school",
+  "revision": 1,
+  "sortOrder": 779,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "default": true,
+      "id": "sfw_school",
+      "isDefault": true,
+      "name": "学生会整齐校服",
+      "prose": "a dark school uniform with a white collar, knee-length skirt and black headband",
+      "tokens": [
+        "school_uniform",
+        "white_collar",
+        "pleated_skirt",
+        "black_hairband"
+      ]
+    }
+  }
+}

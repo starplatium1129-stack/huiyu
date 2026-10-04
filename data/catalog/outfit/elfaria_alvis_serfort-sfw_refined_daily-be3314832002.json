@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 973,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "冰蓝高领针织裙",
+      "prose": "an opaque ice-blue high-neck knitted maxi dress, a white wool capelet and soft flat shoes",
+      "tokens": [
+        "blue_knit_dress",
+        "turtleneck",
+        "long_dress",
+        "white_capelet",
+        "flat_shoes"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

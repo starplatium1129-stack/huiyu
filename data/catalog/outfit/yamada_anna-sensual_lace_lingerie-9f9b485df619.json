@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 835,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "纯白纯棉大号运动蕾丝内衣",
+      "prose": "a pure white cotton-and-lace lingerie set designed for full figures: a supportive underwire bra framing her heavy breasts with scalloped lace, matching high-cut lace-trimmed briefs hugging her wide hips, and sheer thigh-high stockings",
+      "tokens": [
+        "white_lingerie",
+        "lace_bra",
+        "lace_panties",
+        "cotton_panties",
+        "white_thighhighs",
+        "cleavage",
+        "large_breasts",
+        "tall_female",
+        "sensual"
+      ]
+    }
+  }
+}

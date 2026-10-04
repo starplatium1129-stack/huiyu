@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "maomao/sfw_market",
+  "revision": 1,
+  "sortOrder": 982,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "sfw_market",
+      "name": "街巷外出襦裙",
+      "prose": "a pale rose long-sleeved blouse, dark green ankle-length skirt and small cloth bag",
+      "tokens": [
+        "rose_blouse",
+        "long_sleeves",
+        "green_skirt",
+        "cloth_bag"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "changli_wuthering",
+  "revision": 1,
+  "sortOrder": 142,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "changli_wuthering",
+    "profile": {
+      "id": "changli_wuthering",
+      "name": "长离",
+      "alias": [
+        "长离",
+        "Changli"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-changli_wuthering.png?v=7a175364f42e",
+        "alt": "长离 · 边庭的沙盘推演场景样张"
+      },
+      "visual_dna": {
+        "signature": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+        "hair": "pink_hair, long_hair, ring_hair_extensions",
+        "eyes": "orange_eyes",
+        "uniform": "今州端庄议事长袍",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "处事沉稳，善于从细节推敲局势",
+        "对后辈有耐心，常以点到为止的方式启发",
+        "在茶馆与街市中观察生活，轻松笑意也带着思考"
+      ],
+      "likes": [
+        "棋局",
+        "听故事与品茶",
+        "庭院中的闲步"
+      ],
+      "classic_cg": {
+        "title": "长离 · 边庭的沙盘推演",
+        "description": "今州边庭，她俯身在巨大的沙盘/棋盘前移动棋子，指尖悬停在最后一手之上；抬眼微笑的瞬间，对手的命运已在局中——军师的日常即是布局。"
+      },
+      "identity": "Wuthering Waves · 长离",
+      "tags": [
+        "长离",
+        "鸣潮",
+        "日常"
+      ],
+      "bg_story": "擅长观察和引导的谋士，举止优雅而思考周密。粉色环形发束、橙瞳与折扇是重点，折扇为可选道具，日常不常驻火焰或武器。",
+      "palette": [
+        "#d79e8c",
+        "#282532"
+      ],
+      "source": "Wuthering Waves",
+      "speech": "先别急着落子，再看看眼前的局面。",
+      "traits": [
+        "changli_(wuthering_waves)",
+        "wuthering_waves",
+        "pink_hair",
+        "long_hair",
+        "ring_hair_extensions"
+      ],
+      "accent_color": "#d79e8c",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "changli_wuthering",
+      "displayName": "长离",
+      "originalName": "Changli",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "长离",
+        "Changli"
+      ],
+      "identityProse": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+      "identityTokens": [
+        "changli_(wuthering_waves)",
+        "wuthering_waves",
+        "pink_hair",
+        "long_hair",
+        "ring_hair_extensions",
+        "braid",
+        "orange_eyes",
+        "ahoge"
+      ],
+      "exactTokens": [
+        "changli_(wuthering_waves)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, changli_(wuthering_waves)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

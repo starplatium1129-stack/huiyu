@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/home_lavender_kimono",
+  "revision": 1,
+  "sortOrder": 806,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "default": false,
+      "id": "home_lavender_kimono",
+      "isDefault": false,
+      "name": "蝶屋敷淡紫居家着物",
+      "prose": "a comfortable lavender home kimono with a simple obi and her butterfly hair ornament, suited to a quiet breakfast at the Butterfly Mansion",
+      "tokens": [
+        "kimono",
+        "casual_kimono",
+        "lavender_kimono",
+        "obi",
+        "japanese_clothes",
+        "butterfly_hair_ornament"
+      ]
+    }
+  }
+}

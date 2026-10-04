@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/pioneer_hoodie",
+  "revision": 1,
+  "sortOrder": 437,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "default": false,
+      "id": "pioneer_hoodie",
+      "isDefault": false,
+      "name": "拓荒休闲卫衣",
+      "prose": "an oversized yellow-and-black hooded pioneer sweatshirt with casual denim shorts and chunky sneakers",
+      "tokens": [
+        "hoodie",
+        "oversized_clothes",
+        "shorts",
+        "sneakers"
+      ]
+    }
+  }
+}

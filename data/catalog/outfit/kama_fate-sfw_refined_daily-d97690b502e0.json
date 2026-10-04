@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 182,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "紫色运动家居服",
+      "prose": "an opaque violet sweatshirt, loose charcoal full-length joggers and soft indoor socks",
+      "tokens": [
+        "purple_sweatshirt",
+        "joggers",
+        "socks"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

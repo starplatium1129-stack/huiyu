@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "furina/official_archon",
+  "revision": 1,
+  "sortOrder": 5,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "furina",
+    "outfit": {
+      "id": "official_archon",
+      "name": "枫丹礼服",
+      "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves, completed by an ornate mini top hat with ribbons and iris-flower ornaments",
+      "tokens": [
+        "formal",
+        "frock_coat",
+        "blue_coat",
+        "vest",
+        "white_vest",
+        "jabot",
+        "ascot",
+        "shorts",
+        "thighhighs",
+        "white_gloves",
+        "detached_sleeves",
+        "high_heels",
+        "mini_top_hat"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

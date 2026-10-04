@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc217",
+  "revision": 1,
+  "sortOrder": 212,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In an old dark wooden warehouse behind a shrine while a storm rages, Ayachi Nene in a rain-soaked translucent light pink yukata with the collar fallen wide open sits astride a wooden box piled with festival offerings, pressing close against the viewer with teary blushing eyes and an ahoge curled into a heart spiral, lightning flashing through the wooden window.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "camera": "近景水平正面特写",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc217",
+    "lighting": "闪电划过木窗的强闪光与极暗阴影",
+    "location": "神社后方木质旧仓库",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, wet_hair, wet_skin, smooth, bare, calf, sitting, blush, shy_smile, lightning, flash, through, collarbone, slender_waist, full_body, backlight, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 避雨古仓浴衣半解】夏日祭典突降暴雨，你和宁宁慌不择路地躲进神社后面的阴暗古旧木质仓库。宁宁的姬松学院夏日浴衣在奔跑中被雨水彻底浸透，轻薄的布料近乎全透明地死死贴在她傲人的胴体上，衣领也早已在慌乱中完全松开，大片雪白丰满的酥胸一览无余。因为密闭空间的极度紧绷，她的魔女契约气场瞬间超载。她被你拉着一同坐在堆满祭祀道具的木箱上，紧紧贴着你，头顶那根呆毛疯狂卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔绝赞自曝——「呜啊！标签、标签都湿透了啦……不准一直盯着人家透明的地方看！才、才没有故意借助契约来诱惑你呢……唔，快抱紧我帮我挡住啦，笨蛋！」",
+    "storyJa": "【寧々】【寨々・神社倉庫の俄か雨と契約過負荷】夏祭りの最中に突如降ってきた豪雨の中、あなたと寨々は慌てて神社の裏手にある薄暗く古い木造の倉庫へと逃げ込んだ。寨々の浴衣は走っている間に雨水で完全に濡れそぼり、薄い生地がまるで透明であるかのように彼女の豊かな肢体にぴったりと張り付いていた。衣紋もすでに混乱の中で完全にはだけ、大きく豊かな胸元が露わになっている。密閉された空間の極度の緊張感のせいで、彼女の魔女の契約のオーラが瞬時にオーバーロードした。彼女は祭祀道具の積まれた木箱の上に跨ってあなたにぴったりと寄り添い、頭の上のアホ毛を猛烈に震わせて完璧なハート型に丸めながら、顔を真っ赤にして慌てて押し返しつつ涙声で自爆した――「うあぁ！柊、柊史！浴衣がすっかり濡れちゃったじゃない……そんな透けてるところばかり見ないでよ！べ、別にわざと契約を利用してあなたを誘惑したわけじゃないんだから……ん、早くきつく抱きしめて隠してよ、バカ！」",
+    "tags": [
+      "hair_ribbon",
+      "yukata",
+      "wet_clothes",
+      "exposed_cleavage",
+      "old_warehouse",
+      "full_body",
+      "white_tabi",
+      "storm",
+      "straddling",
+      "heart_spiral_ahoge"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "神社木仓骤雨中的契约过载",
+    "usage": [
+      "绝对独占",
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "窗外狂风暴雨"
+  }
+}

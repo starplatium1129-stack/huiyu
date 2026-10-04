@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_balcony_sunset_whisper",
+  "revision": 1,
+  "sortOrder": 1372,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuna_balcony_sunset_whisper",
+    "title": "结城明日奈 · 骑士团露台的解剑深吻·「不论在哪个世界，我的心只属于你」",
+    "category": "深情誓约",
+    "characterId": "asuna_yuuki",
+    "description": "【血盟骑士团总部门外高耸石阶露台】如火如荼的壮阔晚霞铺满整座艾恩葛朗特苍穹。亚丝娜解下了腰间佩戴细剑的皮带靠在一旁，罕见地褪去了副团长的严肃盔甲。她双手环绕在你的颈后，微微踮起脚尖，栗色长发在晚霞金风中如绸缎飞舞，双唇微启，主动迎向你的深情一吻。",
+    "location": "大圣堂前俯瞰云海的高台护栏边",
+    "action": "解下配剑放在身侧，双手环住你的脖颈踮起脚尖，闭眼倾身与你拥吻，晚霞染金战袍与发丝",
+    "timeOfDay": "黄昏晚霞",
+    "lighting": "瑰丽磅礴的金色夕阳与漫天绯红晚霞，逆光勾勒金红边缘光",
+    "camera": "medium close-up, sunset backlight silhouette, wind-blown romantic kiss, epic floating castle backdrop",
+    "mood": "旷世之恋、执子之手",
+    "sceneTags": [
+      "balcony",
+      "sunset",
+      "golden_hour",
+      "knights_of_the_blood_uniform",
+      "embrace",
+      "about_to_kiss",
+      "holding_neck",
+      "wind_blown"
+    ],
+    "promptProse": "Asuna Yuuki unbuckles her rapier belt and steps into your arms upon the high stone terrace of the Grand Cathedral at dusk. Her hands drape tenderly around your neck as she rises on tiptoes to kiss you, her chestnut braid and white tunic gleaming in spectacular golden sunset backlight. Majestic clouds of Aincrad stretch across the blazing orange horizon below the ancient stone parapet.",
+    "promptTokens": [
+      "balcony",
+      "castle",
+      "sunset",
+      "golden_hour",
+      "knights_of_the_blood_uniform",
+      "arms_around_neck",
+      "embrace",
+      "wind_blown",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_cinematic_scenic",
+    "animaStyleHint": "anime_cinematic_scenic",
+    "outfitId": "official_knights_of_blood_uniform",
+    "coverageTags": [
+      "daily",
+      "sunset",
+      "romantic",
+      "confession"
+    ]
+  }
+}

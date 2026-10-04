@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "morgan_le_fay_fate",
+  "revision": 1,
+  "sortOrder": 56,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "morgan_le_fay_fate",
+    "profile": {
+      "id": "morgan_le_fay_fate",
+      "name": "摩根",
+      "alias": [
+        "Morgan le Fay",
+        "モルガン",
+        "冬之女王",
+        "梣（Aesc）"
+      ],
+      "type": "popular",
+      "icon": "🏰",
+      "portrait": {
+        "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=5",
+        "alt": "摩根 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白色长直发",
+        "hair_color": "银白",
+        "eyes": "冰蓝色",
+        "hairstyle": "长直发 · 王冠",
+        "uniform": "黑蓝哥特长裙：高领褶边 / 分离翼袖 / 层叠开衩裙",
+        "expression": "至高女王的威严 · 深藏温柔与孤独",
+        "style": "winter queen gothic",
+        "signature": "银白长发、冰蓝瞳与黑蓝哥特王裙"
+      },
+      "personality": [
+        "威严高傲",
+        "母性深沉",
+        "孤独",
+        "为子民不惜一切",
+        "外冷内热"
+      ],
+      "likes": [
+        "冬宫的雪",
+        "圣枪",
+        "妖精国的土地",
+        "子民的安宁",
+        "雨后的森林"
+      ],
+      "classic_cg": {
+        "title": "冬之王座",
+        "description": "妖精国不列颠的冬之王座厅，银发女王端坐黑蓝王裙之中，冰蓝瞳孔俯视着以寂静为誓的国土。"
+      },
+      "identity": {
+        "role": "妖精国冬之女王（乐园妖精）",
+        "age": "约 6000 岁（成年形态）",
+        "occupation": "异闻带不列颠之王",
+        "faction": "Fate/Grand Order · LB6"
+      },
+      "tags": [
+        "银白长发",
+        "冰蓝瞳",
+        "王冠",
+        "黑蓝哥特裙",
+        "圣枪"
+      ],
+      "bg_story": "摩根是《Fate/Grand Order》第2部第6章中统治不列颠异闻带两千余年的「冬之女王」，乐园妖精「梣」历经无数次背叛与苦难后的最终姿态。曾以救世主与雨之魔女身份游历大地试图拯救妖精国，却被同族的背叛磨灭温情，最终以绝对冷酷的铁腕、圣枪伦戈米尼亚德与玉座结界强行维系这片虚假国土的存续。在至高无上的女王威严之下，深藏着对国土、对子民以及对御主（丈夫/伴侣）极其沉重而笨拙的深情与孤独。场景应突出冬之宫廷的庄严肃穆与女王深处的苍凉柔情——冬之王座厅、雪景暖阁、水妃晨海与林间木屋，冰蓝、深黑与银白是她的主色，避免弱化其女王气场。",
+      "palette": [
+        "深蓝",
+        "黑",
+        "银白"
+      ],
+      "weather": [
+        "冬宫雪庭",
+        "妖精森林雨后",
+        "月夜静海"
+      ],
+      "speech": "摩根以冰蓝的瞳仁凝视你——「冬之女王座前，报上你的名。」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "morgan (fate/grand order)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_eyes",
+        "pale_skin",
+        "fgo"
+      ],
+      "accent_color": "#1B2A5E",
+      "bg_color": "#0a0e1c",
+      "series": "TYPE-MOON《Fate 系列》"
+    },
+    "popular": {
+      "id": "morgan_le_fay_fate",
+      "displayName": "摩根",
+      "originalName": "Morgan le Fay",
+      "franchise": "Fate",
+      "aliases": [
+        "morgan_le_fay_fate",
+        "morgan le fay",
+        "morgan fate",
+        "queen morgan",
+        "aesc",
+        "fgo"
+      ],
+      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
+      "identityTokens": [
+        "morgan (fate/grand order)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_eyes",
+        "pale_skin",
+        "fgo"
+      ],
+      "exactTokens": [
+        "morgan (fate/grand order)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "异闻带不列颠（妖精国）",
+        "era": "妖精纪奇幻",
+        "formNotes": "雨之魔女 tag=aesc_(fate)；水妃 tag=morgan_le_fay_(water_princess)_(fate)；神器=Rhongomyniad；强调色 #1B2A5E 深蓝",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "so-bin",
+        "rella"
+      ]
+    }
+  }
+}

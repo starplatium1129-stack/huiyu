@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "exusiai_arknights_apple_pie_cooling_rack",
+  "revision": 1,
+  "sortOrder": 694,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfitId": "apple_pie_bakery_patissiere",
+    "id": "exusiai_arknights_apple_pie_cooling_rack",
+    "title": "能天使 · 苹果派出炉之后",
+    "category": "现代日常",
+    "location": "烘焙间",
+    "timeOfDay": "上午",
+    "mood": "期待满足",
+    "description": "【能天使 · 苹果派出炉之后】烘焙间飘着苹果和肉桂的香气，穿着奶油色毛衣、百褶裙与苹果图案围裙的能天使站在操作台前。她戴好隔热手套，用双手把一盘刚出炉的苹果派稳稳放上冷却架，忍不住露出期待的笑容——「先等它凉一点！这次边缘烤得刚刚好！」",
+    "action": "戴着隔热手套，双手把烤盘放在台面的冷却架上",
+    "promptProse": "At a bakery worktop, Exusiai wears her cream sweater and apple-print apron, using both oven-mitted hands to lower a fresh apple pie tray onto a wire cooling rack. Morning light through the flour-dusted window meets the warm oven glow, illuminating the browned pastry and her eager smile as the pie begins to cool.",
+    "promptTokens": [
+      "bakery",
+      "apron",
+      "sweater",
+      "oven_mitts",
+      "baking_tray",
+      "apple_pie",
+      "cooling_rack",
+      "standing",
+      "morning_light",
+      "oven_glow",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "camera": "medium shot, worktop at waist height with tray and gloved hands visible",
+    "lighting": "清晨窗光与烤箱余光",
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single",
+    "sceneTags": [
+      "bakery",
+      "apron",
+      "sweater",
+      "oven_mitts",
+      "baking_tray",
+      "apple_pie",
+      "cooling_rack",
+      "standing",
+      "morning_light",
+      "oven_glow",
+      "medium_shot"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "bad hands",
+      "extra fingers",
+      "extra limbs",
+      "text",
+      "watermark",
+      "nsfw",
+      "nude",
+      "explicit"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_mihama_classroom_desk_lecture",
+  "revision": 1,
+  "sortOrder": 1170,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_mihama_classroom_desk_lecture",
+    "title": "风见一姬 · 美浜讲台的天才教诲",
+    "category": "学园讲义",
+    "characterId": "kazami_kazuki",
+    "outfitId": "mihama_uniform",
+    "coverageTags": [
+      "school"
+    ],
+    "description": "【风见一姬 · 美浜讲台的天才教诲】美浜学园明亮空旷的阶梯教室讲台前，黑板上写满了密密麻麻的高等数理逻辑公式。一姬身穿美浜学园紫衫白裙制服，单手反撑在讲台边缘，另一手优雅地夹着一支白粉笔。她侧过身，唇角挂着一丝若有若无的自信从容浅笑，深红双眸俯视着台下的学生——「解题的思路只要三步。愚蠢的人才会在此处徘徊不前哦。」",
+    "location": "美浜学园宽大阶梯教室黑板讲台前",
+    "action": "单手靠在讲桌旁手持粉笔侧身讲解，紫衫与白百褶裙衬托出曼妙身姿，眼神睿智从容",
+    "timeOfDay": "下午",
+    "lighting": "高排采光窗洒下的明澈阳光勾勒出讲台粉笔微尘光柱",
+    "camera": "cowboy shot, medium close-up, commanding eye-level focus",
+    "mood": "聪慧干练",
+    "sceneTags": [
+      "classroom",
+      "blackboard",
+      "podium",
+      "chalk",
+      "school_uniform",
+      "purple_shirt",
+      "white_skirt",
+      "red_eyes"
+    ],
+    "promptProse": "Leaning with composed poise against the dark wooden podium in a sunlit academy lecture hall, Kazuki explains complex mathematical formulas written across the chalkboard. Golden afternoon sunbeams highlight her Mihama school uniform and brilliant crimson eyes.",
+    "promptTokens": [
+      "school_classroom",
+      "blackboard",
+      "podium",
+      "holding_chalk",
+      "school_uniform",
+      "purple_shirt",
+      "white_skirt",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

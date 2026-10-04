@@ -1,5 +1,5 @@
 mod compress;
-mod tags;
+pub(crate) mod tags;
 #[cfg(test)]
 mod tests;
 use crate::{
@@ -47,7 +47,7 @@ struct Plan {
 fn plan(root: &Path, face: &str) -> Result<Plan> {
     let (items, count, mode) = match face {
         "scenes" => {
-            let (_, _, scenes) = maintenance::state::load_scenes(root)?;
+            let (_, scenes) = maintenance::state::load_scenes(root)?;
             let count = scenes.len();
             (
                 maintenance::scenes::scene_products(root, &scenes),
@@ -238,6 +238,12 @@ fn run(config: &Config, cancel: &CancellationToken, packaged: bool) -> Result<Va
         return Ok(result);
     }
     for name in ["scenes", "popular", "blueprints", "tags", "references"] {
+        if options.root.join("data/catalog/manifest.json").is_file()
+            && ["scenes", "popular", "blueprints"].contains(&name)
+        {
+            result[name] = json!({"rebuilt":false,"source":"catalog-snapshot"});
+            continue;
+        }
         result[name] = face(&options, name, cancel)?;
     }
     Ok(result)

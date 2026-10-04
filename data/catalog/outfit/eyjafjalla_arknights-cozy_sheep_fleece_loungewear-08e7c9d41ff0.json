@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/cozy_sheep_fleece_loungewear",
+  "revision": 1,
+  "sortOrder": 312,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "default": false,
+      "id": "cozy_sheep_fleece_loungewear",
+      "isDefault": false,
+      "name": "【温软梦乡】羊羔绒暖绒居家睡衣",
+      "prose": "a fluffy oversized cream-and-tan sherpa fleece hoodie cardigan with a hood, worn like a cozy loungewear set with sheep pajamas, soft warm winter lounge look",
+      "tokens": [
+        "sherpa_fleece",
+        "oversized",
+        "hoodie",
+        "cardigan",
+        "pajamas",
+        "loungewear"
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/biker_jacket",
+  "revision": 1,
+  "sortOrder": 644,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "biker_jacket",
+      "name": "烈焰机车皮衣与热裤",
+      "prose": "cool motorcycle rider attire: a cropped black leather biker jacket with silver zipper accents worn over a tight crimson tank top, distressed denim cutoff shorts, wide leather belt, black fingerless riding gloves, and knee-high leather combat boots",
+      "tokens": [
+        "leather_jacket",
+        "biker_jacket",
+        "black_jacket",
+        "crop_top",
+        "tank_top",
+        "cleavage",
+        "denim_shorts",
+        "short_shorts",
+        "fingerless_gloves",
+        "boots",
+        "leather_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

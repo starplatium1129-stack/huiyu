@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/homurahara_uniform",
+  "revision": 1,
+  "sortOrder": 95,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "homurahara_uniform",
+      "name": "穗群原学园制服",
+      "tokens": [
+        "school_uniform",
+        "brown_jacket",
+        "white_shirt",
+        "red_bow",
+        "pleated_skirt",
+        "black_pantyhose"
+      ],
+      "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
+      "styleHint": "soft school hallway sunlight",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "momo_deviluke_formal_palace_gown",
+  "revision": 1,
+  "sortOrder": 1250,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手执香槟杯倚在观景玻璃前侧身而立，抹胸礼裙展露丰满曲线，爱心尾巴优雅卷曲",
+    "camera": "cowboy shot, medium framing, grand cosmic backdrop",
+    "category": "星际盛装",
+    "characterId": "momo_velia_deviluke",
+    "coverageTags": [
+      "formal"
+    ],
+    "description": "【梦梦 · 戴比路克星际晚宴的王女风范】星光璀璨的戴比路克皇家飞舰顶层全景星空大厅内，浩瀚的星云在透明穹顶外缓慢旋转。梦梦身着戴比路克王女浅紫抹胸鸡尾酒礼裙，深V领口与分层荷叶边相得益彰。她单手托着高脚香槟杯，黑色的爱心恶魔尾巴在裙边优雅地蜷成一个可爱的弧度，在星海的见证下展露出兼具王族高贵与小恶魔娇媚的倾城之姿。",
+    "id": "momo_deviluke_formal_palace_gown",
+    "lighting": "全景星海透入的幽紫浩瀚天光与大厅香槟色水晶吊灯暖光",
+    "location": "皇家星际飞舰全景透明观景大厅",
+    "mood": "高贵迷离",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "deviluke_dress",
+    "promptProse": "Sipping champagne before a panoramic observation window looking out into swirling cosmic nebulae on a royal starship, Momo glows in a strapless lilac cocktail dress. Distant starlight blankets her soft pink hair and delicate spade tail in mesmerizing celestial beauty.",
+    "promptTokens": [
+      "starship_interior",
+      "cosmic_nebula",
+      "deep_space",
+      "strapless_dress",
+      "cleavage",
+      "champagne_glass",
+      "demon_tail",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "starship",
+      "cockpit",
+      "space",
+      "nebula",
+      "strapless_dress",
+      "champagne",
+      "demon_tail",
+      "cleavage"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "梦梦 · 戴比路克星际晚宴的王女风范"
+  }
+}

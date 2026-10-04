@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc004",
+  "revision": 1,
+  "sortOrder": 3,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot between tall library bookshelves, Ayachi Nene peeks out while holding several mysterious reference books, tucking the top volume against her chest with a relieved, shy smile in soft afternoon window light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "惊喜",
+    "id": "sc004",
+    "lighting": "窗光",
+    "location": "图书馆",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nene_school_uniform, navy_blazer, pleated_skirt, white_thighhighs, peeking_from_behind_a_tall_bookshelf, holding_several_occult_reference_books, tucking_the_top_book_against_her_chest, relieved_shy_smile, library, afternoon_window_light, medium_shot, detailed_bookshelves, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 书架间的偶遇】午后的图书馆里只有翻页声。宁宁抱着几本神秘学资料从高书架后探出头，发现来人是你时明显松了口气，又慌忙把最上面那本藏进怀里。窗光落在她发梢，她故作自然地挪出半个位置——「你也来查资料吗？那就坐这里吧。不过，不准问我为什么借了这一本。」",
+    "storyJa": "【寧々・本棚との出会い】午後の図書館にはページをめくる音だけが響いていた。寧々は、いくつかのオカルト資料を収めた高い本棚の後ろから顔を出しました。来たのがあなただと分かったとき、彼女は目に見えて安堵し、急いで一番上の本を腕の中に隠しました。窓からの光が髪先に当たり、彼女は自然を装って半分位置を移動した。――「あなたも資料を調べに来たんですか？　それなら、ここに座ってください。でも、どうしてこの本を借りたのかは聞かないこと。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "library",
+      "loafers",
+      "medium_shot",
+      "peeking_from_bookshelves",
+      "multiple_books"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "书架间的偶遇",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

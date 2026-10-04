@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc202",
+  "revision": 1,
+  "sortOrder": 197,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc202",
+    "title": "深网之下的特工禁区",
+    "category": "同人/After_Story",
+    "story": "【夏目 · 战术背心下的失控警报】深夜，机密指令中心的办公室已经反锁。平日冷静强硬的夏目被困在微凉的办公桌边，漆黑战术服的拉链一路松至腰际，凌厉的制服线条与泛红的肌肤形成鲜明反差。她竭力维持镇定，眼角的泪痣却随着紊乱的呼吸轻轻颤动。夏目回头瞪着你，嗓音里仍带着不肯服输的锋芒——「竟敢滥用长官权限……等我挣脱以后，一定把这次行动列为最高机密！」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "羞嗔绝对沦陷",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "tactical_uniform",
+      "zipper_open",
+      "exposed_waist",
+      "trapped",
+      "desk",
+      "glaring",
+      "defiant",
+      "locked_office",
+      "night",
+      "desk_lamp",
+      "side_lighting",
+      "medium_shot"
+    ],
+    "mature": false,
+    "location": "反锁指令办公室",
+    "weather": "室内微热",
+    "camera": "主观微仰近景",
+    "lighting": "单一台灯强侧光",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bodysuit, blush, desk, glaring, unyielding, fierce, eyes, pencil_skirt, office, warm_lighting, night, cinematic, depth, field, medium_shot, rim_light, detailed_background, cinematic_lighting",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "storyJa": "【夏目・タクティカルベストの下にある制御不能アラーム】深夜、機密指令センターのオフィスは施錠された。普段は冷静でタフな夏目が、少し涼しい机に閉じ込められていた。黒い戦術服のジッパーが腰まで緩んでいた。制服のシャープなラインが赤い肌と対照的だった。懸命に平静を保とうと努めたが、目の端の泣きぼくろが乱れた呼吸で微かに震えていた。夏目はあなたを振り返り、その声にはまだ敗北を認めない鋭さが溢れています。――「店長の権限を悪用するなんて……自由になったら、この作戦は必ず最高機密に指定するから！」",
+    "rating": "R15",
+    "animaCaption": "Trapped against the edge of the desk in the locked top-secret command office at midnight, Shiki Natsume's black tactical uniform zipper hangs loose all the way to her waist, the sharp uniform lines contrasting with flushed bare skin; she looks back and glares at you with unconceded fierceness while her tear-mole trembles with her uneven breathing under the single strong beam of the desk lamp.",
+    "auditRevision": "careful-batch10-2026-08-27"
+  }
+}

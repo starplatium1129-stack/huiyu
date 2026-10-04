@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc141",
+  "revision": 1,
+  "sortOrder": 139,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Crouching on a steel girder high above a neon-lit futuristic metropolis, Shiki Natsume's tactical agent catsuit is zipped down to expose her bare, firm breasts and toned stomach. Holding a silenced pistol with a daring, seductive smirk, the dazzling full moon and radiant cyan city lights cast sharp rim highlights across her curves and combat boots against the dark sky.",
+    "camera": "全身远景",
+    "category": "战斗",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "认真",
+    "id": "sc141",
+    "lighting": "皎洁月光",
+    "location": "高楼天台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_tight_tactical_catsuit_unzipped_to_navel, firm_shapely_breasts_fully_exposed, pink_nipples, exposed_pussy, slender_waist, crouching_on_narrow_steel_beam_atop_skyscraper_helipad, holding_silenced_pistol, looking_back_over_shoulder_with_sharp_seductive_smirk, entire_legs_and_feet_fully_visible_in_frame, sleek_tactical_boots_gripping_metal_beam, panoramic_cyberpunk_tokyo_night_skyline_with_glowing_neon_holograms_and_radiant_full_moon, cool_cyan_rim_light_and_warm_amber_ambient_city_glow, cinematic_chiaroscuro, full_body, @rella",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【Astral 超能力特工形态】抛弃了咖啡馆女仆的伪装，此时的夏目是属于 Astral 组织的精英特工。她换上了紧身的黑色特工战斗服，站在月光皎洁的摩天大楼天台边缘。夜风吹拂着她的黑发，她居高临下地俯瞰着都市的霓虹，眼神冰冷而决绝，周身隐隐有超能力能量在波动。",
+    "storyJa": "【夏目・Astralエージェント】カフェのメイドという仮の姿を解き、今夜の夏目はAstralに所属する精鋭エージェントとして任務に立つ。黒い戦闘服に身を包み、月明かりに照らされた高層ビルの屋上から街のネオンを見下ろしていた。夜風が黒髪を揺らし、黄色い瞳は冷静に標的を捉えている。周囲には、抑え込まれた異能の気配がかすかに波打っていた。",
+    "tags": [
+      "tactical_gear",
+      "black_outfit",
+      "mole_under_eye",
+      "rooftop",
+      "moonlight",
+      "night_sky",
+      "serious",
+      "cold_expression",
+      "glowing_eyes",
+      "action_pose",
+      "standing_on_rooftop_edge",
+      "both_feet_visible",
+      "swirling_energy_particles",
+      "psychic_energy",
+      "dynamic_shadows",
+      "cityscape_background",
+      "bokeh",
+      "rim_light",
+      "wide_shot",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "特工完全体：月夜下的冷艳潜行",
+    "usage": [
+      "壁纸级"
+    ],
+    "weather": "夜空澄澈"
+  }
+}

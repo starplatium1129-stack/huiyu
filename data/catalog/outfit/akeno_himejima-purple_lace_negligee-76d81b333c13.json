@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "akeno_himejima/purple_lace_negligee",
+  "revision": 1,
+  "sortOrder": 701,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "akeno_himejima",
+    "outfit": {
+      "id": "purple_lace_negligee",
+      "name": "深紫薄纱情趣晨袍",
+      "prose": "a tantalizing semi-sheer deep violet lace negligee with fluttering flutter sleeves, open-front design revealing her full cleavage and matching purple lace panties beneath",
+      "tokens": [
+        "negligee",
+        "purple_negligee",
+        "sheer_cloth",
+        "black_lace",
+        "open_front",
+        "cleavage",
+        "lace_panties",
+        "sensual"
+      ]
+    }
+  }
+}

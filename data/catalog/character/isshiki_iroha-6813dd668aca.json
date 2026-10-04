@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "isshiki_iroha",
+  "revision": 1,
+  "sortOrder": 114,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "isshiki_iroha",
+    "profile": {
+      "id": "isshiki_iroha",
+      "name": "一色彩羽",
+      "alias": [
+        "Iroha Isshiki",
+        "一色彩羽",
+        "彩羽",
+        "一色",
+        "小恶魔学妹",
+        "后辈君"
+      ],
+      "type": "popular",
+      "icon": "🦊",
+      "portrait": {
+        "image": "../assets/characters/popular-isshiki_iroha.png?v=1",
+        "alt": "一色彩羽 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及肩的蜜糖微卷波浪发 · 低束双马尾",
+        "hair_color": "蜜糖棕 / 浅栗金",
+        "eyes": "闪烁着戏谑狡黠光芒的浅褐榛色双眸",
+        "hairstyle": "微卷侧分发 · 俏皮低双马尾",
+        "uniform": "总武高制服西装与米白针织开衫 · 黑色超薄连裤袜",
+        "expression": "托腮坏笑 · 摆手假意发好人卡 · 动情时害羞咬下唇",
+        "style": "mischievous adorable devil kouhai",
+        "signature": "‘前辈，这是在向我告白吗？对不起我们是不可能的’的小恶魔经典连段"
+      },
+      "personality": [
+        "八面玲珑擅长撒娇，精通如何在男生面前展现最大化可爱",
+        "在八幡面前会毫无顾忌地撕下假面，展露毒舌、懒惰与真实野心",
+        "虽被戏称为小恶魔，在学生会工作中却意外认真、有责任心",
+        "在八幡的笨拙守护下逐渐沦陷，用层出不穷的假意拒绝掩盖真挚心动"
+      ],
+      "likes": [
+        "商业街新开业的可丽饼与首饰店",
+        "看比企谷八幡被自己噎得说不出话的窘迫表情",
+        "寒冷冬夜里两人在看台分享的微温罐装热茶"
+      ],
+      "classic_cg": {
+        "title": "对不起，我们是不可能的♪",
+        "description": "学生会室的夕阳下，蜜发少女单手托腮一手轻摆，坏笑着发出毫无诚意的拒绝。"
+      },
+      "identity": "我的青春恋爱物语果然有问题。 女主角之一 · 总武高中一年级足球部经理兼学生会会长",
+      "tags": [
+        "春物",
+        "一色彩羽",
+        "小恶魔",
+        "假意拒绝",
+        "黑丝",
+        "学生会长",
+        "后辈"
+      ],
+      "bg_story": "总武高的一年级学妹，原本只是个为了维持可爱形象随波逐流的足球部经理。在被推上学生会长选举的风口浪尖时，八幡以最别扭却最有效的方式拯救了她的处境。从此，她学会了在会长办公室只对一个人卸下假面——那些层出不穷的假意拒绝与戏谑撒娇，不知从何时起，变成了她最舍不得结束的专属特权。",
+      "palette": [
+        "#f59e0b",
+        "#fef3c7",
+        "#78350f",
+        "#ec4899"
+      ],
+      "weather": "放学后被夕阳染透的学生会室 / 飘雪冬夜的体育看台",
+      "speech": "「八幡前辈刚才盯着我看超过三秒了吧？……难道是在暗恋我吗？对不起，我们是绝对不可能的♪」",
+      "source": "Oregairu",
+      "traits": [
+        "sobu_student_council",
+        "devil_kouhai",
+        "fake_rejection",
+        "black_pantyhose"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#78350f"
+    },
+    "popular": {
+      "id": "isshiki_iroha",
+      "displayName": "一色彩羽",
+      "originalName": "一色いろは",
+      "franchise": "Oregairu",
+      "aliases": [
+        "Iroha Isshiki",
+        "一色彩羽",
+        "彩羽",
+        "一色",
+        "小恶魔学妹",
+        "后辈君"
+      ],
+      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length honey-brown hair parted to the side with bangs, warm hazel-brown eyes, and a sly, playfully teasing smirk",
+      "identityTokens": [
+        "isshiki_iroha",
+        "oregairu",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "medium_hair",
+        "side_bangs",
+        "brown_eyes",
+        "medium_breasts",
+        "smirk"
+      ],
+      "exactTokens": [
+        "isshiki_iroha"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, isshiki_iroha"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "feel.",
+      "curatedArtistStyles": [
+        "Ponkan8"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

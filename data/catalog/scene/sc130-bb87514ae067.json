@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc130",
+  "revision": 1,
+  "sortOrder": 128,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc130",
+    "title": "安全屋的绝对支配盲区",
+    "category": "同人/After_Story",
+    "story": "【夏目 · 特工背心撕裂绝对臣服】深夜突降暴雨的安全屋冷硬地板上。平时高冷霸道的特工少女夏目，此时大汗淋漓地被你死死按在身下，动弹不得。她身上那件漆黑的战术紧身衣已经被你从领口一路撕裂到了腹部，露出了里面让人血脉偾张的傲人线条与泛着动情潮红的细腻肌肤。她双腿紧并，眼角的泪痣因为承受着极大的感官冲击而剧烈颤动，用充满水汽的死硬眼神狠狠剜着你——「哈啊...你这变态长官...竟然用体重压着我...等我解开约束...绝对处决你...唔嗯...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "羞嗔绝对沦陷",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "tactical_bodysuit",
+      "torn_clothes",
+      "ripped_clothes",
+      "exposed_abdomen",
+      "pinned_down",
+      "lying_on_back",
+      "cold_floor",
+      "safehouse",
+      "sweat",
+      "defiant_glare",
+      "rain",
+      "night",
+      "flashlight",
+      "full_body"
+    ],
+    "mature": false,
+    "location": "安全屋冰冷地板",
+    "weather": "密闭炙热",
+    "camera": "主观近景特写",
+    "lighting": "战术手电筒强光阴影",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bodysuit, blush, dimly_lit, legs, pressed, tightly, together, sweaty_skin_sheen, night, rain, cinematic, depth, field, full_body, backlight, rim_light, detailed_background, cinematic_lighting",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, skirt, thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "storyJa": "【夏目・秘密諜報員のベストは破れ、完全に降伏している】真夜中に突然の大雨が降ったとき、セーフハウスの冷たく固い床の上で。いつもは冷酷で横暴なエージェントの女の子夏目が、今では大量の汗をかきながらあなたに押さえつけられて身動きが取れなくなっています。全身の黒っぽいタクティカルタイツが襟元から腹部まで引き裂かれ、血が騒ぐような誇らしいラインと繊細な肌が露わになっている。両脚はぴんと組み、目頭の泣きぼくろが巨大な感覚衝撃に震え、水蒸気を含んだ硬い瞳でこちらをえぐる。――「もう、この変態店長……体重をかけないで。自由になったら、絶対にお仕置きしてあげるんだから。」",
+    "rating": "R15",
+    "animaCaption": "Pinned down hard on the cold concrete floor of the safehouse on a sudden rainy midnight, Shiki Natsume's black tactical bodysuit is ripped from her collar down to her abdomen by you, baring flushed sweat-slicked skin and proud curves; her legs stay pressed tightly together and her tear-mole trembles as she glares at you with a defiant, watering stare under the harsh beam of the tactical flashlight.",
+    "auditRevision": "careful-batch09-2026-08-27"
+  }
+}

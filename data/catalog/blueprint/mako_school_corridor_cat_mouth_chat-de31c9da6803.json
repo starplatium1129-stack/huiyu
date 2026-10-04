@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "mako_school_corridor_cat_mouth_chat",
+  "revision": 1,
+  "sortOrder": 1136,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "倚靠窗台探身说笑，水手服领口随动作微倾，猫嘴笑意满满，呆毛灵动",
+    "camera": "medium close-up, cowboy framing, eye-level playful interaction",
+    "category": "校园趣事",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "school"
+    ],
+    "description": "【常陆茉子 · 走廊窗边的猫嘴调侃】穗织学园午后阳光明媚的木质教学楼走廊上，微风吹拂着白纱窗帘。茉子靠在木质窗台边，身穿水手服百褶裙，双手插在短裙口袋里微微探身。她头顶的大呆毛随着说话晃来晃去，翡翠绿的大眼睛闪烁着恶作剧的光芒，露出标志性猫嘴逗趣将臣——「哎呀呀，将臣刚才盯着隔壁班女生看了很久呢？小心在下向芳乃大人告密哦~」",
+    "id": "mako_school_corridor_cat_mouth_chat",
+    "lighting": "宽大木窗透入的明亮金色暖光与地板反光",
+    "location": "学园教学楼向阳走廊木窗边",
+    "mood": "轻松诙谐",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_uniform",
+    "promptProse": "Leaning casually against a sun-drenched wooden windowsill in a high school hallway, Mako teases playfully with her trademark cat-like pout in a neat sailor uniform. Golden afternoon light streams through the glass panes, highlighting her expressive green eyes and buoyant ahoge.",
+    "promptTokens": [
+      "school_hallway",
+      "window",
+      "sailor_suit",
+      "pleated_skirt",
+      "cat_mouth",
+      "ahoge",
+      "teasing_expression",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_hallway",
+      "window",
+      "sailor_suit",
+      "pleated_skirt",
+      "leaning_on_rail",
+      "cat_mouth",
+      "ahoge"
+    ],
+    "timeOfDay": "午后",
+    "title": "常陆茉子 · 走廊窗边的猫嘴调侃"
+  }
+}

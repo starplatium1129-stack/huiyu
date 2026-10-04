@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/avenger_black_armor",
+  "revision": 1,
+  "sortOrder": 89,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "avenger_black_armor",
+      "name": "复仇者黑铁战铠",
+      "tokens": [
+        "black_armor",
+        "dragon_witch",
+        "cape",
+        "headpiece",
+        "gauntlets",
+        "armored_boots",
+        "flag"
+      ],
+      "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece",
+      "styleHint": "dramatic dark fantasy rim light",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

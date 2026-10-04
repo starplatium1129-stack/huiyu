@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc055",
+  "revision": 1,
+  "sortOrder": 53,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a side medium close-up inside an almost empty late-night tram, Shiki Natsume stands by the door after the turn nudges her against the viewer. She grips the viewer's sleeve instead of pulling away, and their close silhouettes appear together in the glass reflection beneath the cool carriage lights.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "车窗倒影侧面近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "热烈",
+    "id": "sc055",
+    "lighting": "末班车厢灯与城市流光",
+    "location": "末班电车车厢",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, autumn_blazer, black_skirt, black_thighhighs, zettai_ryouiki, black_loafers, standing_by_train_door, one_hand_gripping_viewer's_sleeve, shoulder_bumped_by_the_turn, reflection_of_two_people_in_glass_window, quiet_night_city_lights, bokeh, tired_gentle_expression, blush, side_medium_close_up, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 末班电车的玻璃倒影】冬夜末班电车几乎空无一人，夏目站在门边看着玻璃里的倒影，身体随着转弯轻轻撞到你。你扶住她后，她没有离开，反而借着车厢晃动握住你的衣袖。倒影里两个人靠得很近——「下一站才下车，所以不用急着放开。还有，不准一直看玻璃……那里什么都没有。」",
+    "storyJa": "【夏目・最終路面電車のガラス反射】冬の夜、最後のトラムはほとんど空いていました。夏目はドアのそばに立ってガラスに映る景色を眺め、向きを変えたときに体がそっとあなたにぶつかりました。あなたが彼女をサポートした後、彼女は離れませんでした。その代わりに、馬車が揺れている間、彼女はあなたの袖を押さえていました。反射の中で二人はとても近くにいます――「降りるのは次の駅だから、急いで離さなくてもいい。あと、窓ばかり見ないで……そこには何も映ってないから。」",
+    "tags": [
+      "mole_under_eye",
+      "school_blazer",
+      "sheer_black_tights",
+      "tram",
+      "loafers",
+      "night",
+      "medium_shot",
+      "holding_sleeve",
+      "close_two_person"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "末班电车的玻璃倒影",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

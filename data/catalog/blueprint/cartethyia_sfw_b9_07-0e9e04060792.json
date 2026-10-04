@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "cartethyia_sfw_b9_07",
+  "revision": 1,
+  "sortOrder": 1667,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cartethyia_sfw_b9_07",
+    "title": "卡提希娅 · 溪边擦剑的短暂休息",
+    "category": "专属羁绊",
+    "characterId": "cartethyia",
+    "outfitId": "sfw_rest",
+    "description": "【埃格拉溪边·午后】卡提希娅穿着白衬衫与长蓝裙坐在溪石上，把旅途用剑横放膝头擦拭；水声让她停下手，抬头朝镜头举起擦亮的剑身，像确认归途仍在自己手中。",
+    "location": "stream outside Egra",
+    "action": "溪石上擦亮旅途用剑，举起剑身确认自己终于有地方休息",
+    "timeOfDay": "日间",
+    "lighting": "clear afternoon light on water and polished steel",
+    "camera": "medium shot, horizontal framing",
+    "mood": "流浪骑士终于拥有的停歇",
+    "sceneTags": [
+      "stream",
+      "stone",
+      "sword_care",
+      "white_blouse",
+      "blue_skirt",
+      "sandals",
+      "polished_blade",
+      "relaxed",
+      "afternoon_light"
+    ],
+    "promptProse": "Cartethyia from Wuthering Waves wears a white long-sleeved blouse, long blue skirt and simple sandals. She sits on a stream stone with her travel sword across her knees, polishing away the last trace of road dust. The water makes her pause; she lifts the bright blade toward the viewer, then smiles at the familiar certainty of having a safe place to rest. clear afternoon light on water and polished steel.",
+    "promptTokens": [
+      "stream",
+      "stone",
+      "sword_care",
+      "white_blouse",
+      "blue_skirt",
+      "sandals",
+      "polished_blade",
+      "relaxed",
+      "afternoon_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

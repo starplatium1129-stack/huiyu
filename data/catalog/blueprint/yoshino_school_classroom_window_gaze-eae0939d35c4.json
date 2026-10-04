@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_school_classroom_window_gaze",
+  "revision": 1,
+  "sortOrder": 1148,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端庄端坐课桌前侧头望向窗外远山，黑丝长腿并拢斜放，单手轻抚领口领带",
+    "camera": "cowboy shot, medium framing, gentle depth of field",
+    "category": "校园清纯",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "school"
+    ],
+    "description": "【朝武芳乃 · 穗织学园的黑丝少女心】穗织学园午休时间的空教室靠窗座位上，微风掀动窗帘。芳乃端庄地坐在木椅上，身穿整洁的白色水手服百褶裙，修长笔直的美腿包裹在细腻透肉的黑色连裤袜中自然并拢。她侧着脸凝视窗外远处的青山神社，单手轻轻拨弄着胸前的红色丝带，褪去巫女姬的光环后呈现出普通高中少女最纯粹的青春美感。",
+    "id": "yoshino_school_classroom_window_gaze",
+    "lighting": "大玻璃窗倾泻而入的明媚日光与蓝天反射的清亮天光",
+    "location": "学园空无一人的采光教室靠窗课桌",
+    "mood": "清纯优雅",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_uniform",
+    "promptProse": "Sitting gracefully at a sunlit classroom desk by an open window, Yoshino gazes thoughtfully across distant mountain peaks in her school sailor uniform. Translucent black pantyhose accentuate her elegant legs as breezy curtains dance in gentle afternoon sunbeams.",
+    "promptTokens": [
+      "school_classroom",
+      "desk",
+      "window",
+      "sailor_suit",
+      "pantyhose",
+      "black_pantyhose",
+      "twintails",
+      "hair_flower",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "desk",
+      "window",
+      "sailor_suit",
+      "pantyhose",
+      "black_pantyhose",
+      "twintails",
+      "contemplative"
+    ],
+    "timeOfDay": "午后",
+    "title": "朝武芳乃 · 穗织学园的黑丝少女心"
+  }
+}

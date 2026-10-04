@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "togawa_sakiko/sfw_practice",
+  "revision": 1,
+  "sortOrder": 1012,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "togawa_sakiko",
+    "outfit": {
+      "id": "sfw_practice",
+      "name": "乐团练习针织便装",
+      "prose": "a cream knitted top and comfortable blue trousers",
+      "tokens": [
+        "cream_sweater",
+        "blue_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

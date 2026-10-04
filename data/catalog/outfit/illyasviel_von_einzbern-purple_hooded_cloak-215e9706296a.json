@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/purple_hooded_cloak",
+  "revision": 1,
+  "sortOrder": 86,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "purple_hooded_cloak",
+      "name": "紫色连帽斗篷",
+      "tokens": [
+        "cloak",
+        "hooded_cloak",
+        "purple_cloak",
+        "violet",
+        "hood",
+        "wool",
+        "winter_cloak",
+        "outerwear",
+        "cape",
+        "thick_fabric"
+      ],
+      "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "kind": "character",
+  "id": "ichinose_asuna",
+  "revision": 1,
+  "sortOrder": 81,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ichinose_asuna",
+    "profile": {
+      "id": "ichinose_asuna",
+      "name": "一之濑明日奈",
+      "alias": [
+        "Ichinose Asuna",
+        "明日奈",
+        "兔女郎明日奈",
+        "C&C 00"
+      ],
+      "type": "popular",
+      "icon": "🐰",
+      "portrait": {
+        "image": "../assets/characters/popular-ichinose_asuna.png?v=5",
+        "alt": "一之濑明日奈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及踝灿金长瀑发 · 单眼遮发 · 纯正人类耳",
+        "hair_color": "璀璨金黄",
+        "eyes": "清澈湛蓝美眸（蔚蓝水瞳）",
+        "hairstyle": "极长直发金瀑 · 遮单眼流海 · 细环光环",
+        "uniform": "标志性反光高叉黑兔女郎装 / C&C 特勤女仆制服",
+        "expression": "灿烂爽朗 · 天真单纯 · 毫无防备",
+        "style": "beaming bunny agent goddess",
+        "signature": "灿烂金长发、高叉黑兔女郎、湛蓝眼眸与治愈笑容"
+      },
+      "personality": [
+        "天真纯真、不拘小节",
+        "拥有不可思议的超强直觉与幸运",
+        "像大狗狗一样热情依恋老师",
+        "执行特勤任务时果敢利落",
+        "笑容如小太阳般感染周围所有人"
+      ],
+      "likes": [
+        "像大狗狗一样扑到老师怀里撒娇",
+        "在豪华赌船的轮盘桌上大展身手",
+        "海滩排球与肆意奔跑",
+        "好吃的点心与冰激凌"
+      ],
+      "classic_cg": {
+        "title": "黄金赌船的迎宾微笑",
+        "description": "极尽奢华的游轮水晶灯下，明日奈身着黑色高叉兔女郎服侧身甜笑招手，及踝金发如瀑流转，璀璨夺目。"
+      },
+      "identity": {
+        "role": "千年科技学园秘密特勤组 C&C 特工",
+        "age": "高中生",
+        "occupation": "秘密特勤干员 / 战斗女仆",
+        "faction": "基沃托斯 · 千年科技学园 C&C"
+      },
+      "tags": [
+        "兔女郎",
+        "金发及踝",
+        "犬耳",
+        "女仆装",
+        "高挑身段",
+        "开朗甜美",
+        "光环"
+      ],
+      "bg_story": "一之濑明日奈是《蔚蓝档案》中千年科技学园秘密组织 C&C 的王牌特工（代号 00）。她拥有罕见的野兽直觉和超强气运，平时总是一副天真无邪、开朗灿烂的模样，对老师有着毫无保留的亲近与信任。其标志性的兔女郎装扮在同人生图圈享有统治级人气。",
+      "palette": [
+        "日光金",
+        "纯漆黑",
+        "温润白"
+      ],
+      "weather": [
+        "金色暖阳",
+        "晴空万里",
+        "海风微拂"
+      ],
+      "speech": "主人主人！今天明日奈也有好好完成特勤任务哦，快点夸夸我嘛~！",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "asuna (blue archive)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "blue_eyes",
+        "large_breasts",
+        "halo",
+        "blue_archive"
+      ],
+      "accent_color": "#fbbf24",
+      "bg_color": "#141006"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "ichinose_asuna",
+        "asuna",
+        "asuna (blue archive)",
+        "一之濑明日奈",
+        "明日奈",
+        "兔女郎明日奈",
+        "c&c",
+        "cleaning & clearing"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "千年前往秘密特勤部门 C&C 的王牌特工，代号 Zero Zero；有着超乎常人的敏锐第六感和直觉，性格天真烂漫、爽朗单纯，极度信赖老师并喜欢亲昵依偎",
+        "research": "2026-09-02 调研（Danbooru ichinose_asuna 28000+ posts）",
+        "world": "基沃托斯（Kivotos）· 千年科技学园"
+      },
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "displayName": "一之濑明日奈",
+      "exactPrefixes": [
+        "asuna_"
+      ],
+      "exactTokens": [
+        "asuna (blue archive)"
+      ],
+      "franchise": "Blue Archive",
+      "id": "ichinose_asuna",
+      "identityProse": "Ichinose Asuna from Blue Archive, C&C agent and combat maid with floor-length golden blonde hair covering one eye, striking blue eyes, towering voluptuous hourglass figure, sweet beaming smile, and a delicate ring halo.",
+      "identityTokens": [
+        "asuna (blue archive)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "halo",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Ichinose Asuna",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

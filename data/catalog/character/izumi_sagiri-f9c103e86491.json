@@ -1,0 +1,120 @@
+{
+  "kind": "character",
+  "id": "izumi_sagiri",
+  "revision": 1,
+  "sortOrder": 119,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "izumi_sagiri",
+    "profile": {
+      "id": "izumi_sagiri",
+      "name": "和泉纱雾",
+      "alias": [
+        "和泉纱雾",
+        "Sagiri Izumi"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-izumi_sagiri.png",
+        "alt": "和泉纱雾 全年龄日常立绘"
+      },
+      "visual_dna": {
+        "signature": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+        "hair": "grey_hair, long_hair, gradient_hair, hair_bow",
+        "eyes": "blue_eyes",
+        "uniform": "粉色连帽衫绘画装",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "熟悉环境里直率",
+        "面对陌生人容易紧张",
+        "认真投入绘画"
+      ],
+      "likes": [
+        "绘制插画",
+        "阅读轻小说"
+      ],
+      "classic_cg": {
+        "title": "被炉绘图舱",
+        "description": "她的房间中央，被炉上架着绘图板与显示器，她整个人缩在被炉里只露出脑袋和拿笔的手，耳机夹着碎发；屏幕上是从未示人的新插画，房间灯光全关只剩屏幕光。"
+      },
+      "identity": "Eromanga Sensei · 和泉纱雾",
+      "tags": [
+        "Eromanga Sensei",
+        "和泉纱雾",
+        "全年龄日常"
+      ],
+      "bg_story": "独自在房间里画插画的年轻创作者。她在熟悉的线上环境里说话直接，面对现实中的陌生环境却容易紧张；通过绘画、家人的陪伴和一次次小小的外出，逐渐尝试与外界建立联系。",
+      "palette": [
+        "#a9bced",
+        "#424f70"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "等一下，我把这层颜色画完！",
+      "source": "Eromanga Sensei",
+      "traits": [
+        "izumi_sagiri",
+        "eromanga_sensei",
+        "grey_hair",
+        "long_hair",
+        "gradient_hair"
+      ],
+      "accent_color": "#a9bced",
+      "bg_color": "#424f70"
+    },
+    "popular": {
+      "id": "izumi_sagiri",
+      "displayName": "和泉纱雾",
+      "originalName": "Sagiri Izumi",
+      "franchise": "Eromanga Sensei",
+      "aliases": [
+        "和泉纱雾",
+        "Sagiri Izumi"
+      ],
+      "identityProse": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+      "identityTokens": [
+        "izumi_sagiri",
+        "eromanga_sensei",
+        "grey_hair",
+        "long_hair",
+        "gradient_hair",
+        "blue_eyes",
+        "hair_bow",
+        "sidelocks"
+      ],
+      "exactTokens": [
+        "izumi_sagiri"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, izumi_sagiri"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

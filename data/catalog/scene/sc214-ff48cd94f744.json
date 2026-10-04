@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc214",
+  "revision": 1,
+  "sortOrder": 209,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc214",
+    "title": "极寒冷藏库的绝对热交换",
+    "category": "亲密/After_Story",
+    "story": "【夏目 · 绝境下的冷酷沦陷】遭遇意外断电、金属重门被死锁的 Café Stella 地下冷藏库。四周温度骤降至零度以下，空气中布满白雾。平时冷静理智的夏目此时被冻得瑟瑟发抖，身上的衬衫纽扣在先前的慌乱摸索中被扯开了数颗，内里精致的内衣蕾丝在寒气中若隐若现。为了生存，她咬咬牙，破天荒地主动跨坐在你大腿上，将滚烫的面颊死死贴在你颈窝处，用冻得通红的双手探入你衣服内索取体温。虽然耳根早已因为这种极致的亲密彻底泛红，但说话时依旧带着标志性的冰冷毒舌掩饰动摇——「……别误会。这只是单纯的热效率物理交换。这个温度下不进行人体接触，不出十分钟两人都会冻伤。大变态，不准用这种眼神看着我……文句があるなら、別の暖房方法を提案してみなさいよ。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "恋爱",
+    "season": "冬",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "unbuttoned_shirt",
+      "torn_buttons",
+      "lingerie_visible",
+      "sitting_on_lap",
+      "straddling",
+      "cheek_pressed_to_neck",
+      "frozen_hands",
+      "body_heat",
+      "cold_storage",
+      "white_breath",
+      "emergency_light",
+      "freezing",
+      "medium_shot"
+    ],
+    "mature": false,
+    "location": "Café Stella 地下冷藏库冷硬地面",
+    "weather": "极寒密闭",
+    "camera": "近景主观平视",
+    "lighting": "应急指示灯微弱冷绿光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_shirt, unbuttoned_shirt, black_lace_lingerie_visible, pencil_skirt, sitting, straddling, cheek_pressed_to_neck, hands_inside_clothes, frozen_hands, body_warmth, trembling, cold, heavy_blush, white_breath, freezing_cold, underground_storage, steel_shelves, faint_green_emergency_light, cool_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【夏目】【ナツメ・極寒冷蔵庫の絶対的熱交換】深夜、不意の停電に見舞われ、重い金属の扉がロックされてしまったカフェ・ステラの地下冷蔵庫。周囲の温度は氷点下まで急降下し、空気中には白い霧が立ち込めていた。普段は冷静沈着なナツメも、今は寒さでガタガタと震えており、先ほどの暗闇での手探りのせいでシャツのボタンが数個引きちぎられ、中の繊細な下着のレースが寒気の中で見え隠れしていた。生き延びるため、彼女は唇を噛み、なんと自らあなたの大腿の上に跨り、熱い頬をあなたの首元に強く押し当て、凍えるほど冷たい両手をあなたの服の中に滑り込ませて体温を貪った。極限の親密さに耳の裏まで真っ赤に染まっているものの、口を開けば相変わらず冷静で毒舌な口調で動揺を隠していた――「……勘違いしないで。これは単なる熱効率の物理的交換。この温度で身体接触を行わなければ、十分もしないうちに二人とも凍傷になるわ。大変态、そんな目で私を見ないで……文句があるなら、別の暖房方法を提案してみなさいよ」",
+    "rating": "R15",
+    "animaCaption": "In the dead-locked underground cold storage during the power-failed midnight, the temperature far below freezing, Shiki Natsume shivers in a shirt whose buttons were torn open in her earlier fumbling, fine lingerie lace showing through; for survival she takes the startling initiative to sit astride your thighs, pressing her hot cheek against the hollow of your neck and slipping her frozen red hands inside your clothes to steal your warmth, with heavily flushed cheeks while white breath frosts the air under the faint green emergency light.",
+    "auditRevision": "fix-no-burn-ears-sc214-2026-09-05"
+  }
+}

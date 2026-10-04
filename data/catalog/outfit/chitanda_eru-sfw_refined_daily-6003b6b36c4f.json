@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 828,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "文集工作围裙裙装",
+      "prose": "a lavender long-sleeved blouse beneath a navy pinafore dress, with an ankle-length skirt and flat brown shoes",
+      "tokens": [
+        "lavender_blouse",
+        "long_sleeves",
+        "pinafore_dress",
+        "long_skirt",
+        "flat_shoes"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

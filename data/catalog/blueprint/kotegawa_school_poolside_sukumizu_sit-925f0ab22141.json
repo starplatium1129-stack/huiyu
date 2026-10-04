@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_school_poolside_sukumizu_sit",
+  "revision": 1,
+  "sortOrder": 1259,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "抱膝坐在泳池边双腿浸水，紧身死库水勾勒出丰满身段，侧脸微红眼神纯情",
+    "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
+    "category": "夏日校园",
+    "characterId": "kotegawa_yui",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【古手川唯 · 校园池畔的死库水抱膝静候】体育课后静谧的学园露天游泳池瓷砖台阶旁，微风拂起水波。唯身穿规矩正统的深蓝色连体死库水，胸前白布名牌清晰写着“古手川”。她抱膝坐在清凉的池边，修长白嫩的匀称美腿自然浸在水中。水珠顺着她柔嫩的肩膀与黑色直发滑落，她侧过微红的脸庞看着走来的梨斗，纯情少女的心事在波光粼粼的水面悄然荡漾。",
+    "id": "kotegawa_school_poolside_sukumizu_sit",
+    "lighting": "澄澈热带骄阳与碧蓝池水反射出的灵动焦散水波光斑",
+    "location": "学校露天游泳池深蓝瓷砖台阶边",
+    "mood": "纯真清凉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_swimsuit",
+    "promptProse": "Sitting with knees drawn up beside the sparkling turquoise pool in a traditional navy blue Japanese sukumizu, Yui dips her toes into clear water. Summer sunlight casts shimmering water reflections across her wet raven hair and bashful expression.",
+    "promptTokens": [
+      "swimming_pool",
+      "poolside",
+      "school_swimsuit",
+      "one-piece_swimsuit",
+      "sitting_on_edge",
+      "wet_skin",
+      "water_caustics",
+      "white_hairband",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "swimming_pool",
+      "poolside",
+      "school_swimsuit",
+      "sukumizu",
+      "sitting_on_edge",
+      "curled_up",
+      "wet_skin",
+      "white_hairband"
+    ],
+    "timeOfDay": "正午",
+    "title": "古手川唯 · 校园池畔的死库水抱膝静候"
+  }
+}

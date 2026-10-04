@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "lala_festival_yukata_cotton_candy",
+  "revision": 1,
+  "sortOrder": 1240,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "一手捧巨型棉花糖开怀大笑，另一手拉着同伴，爱心尾巴欢快摇摆",
+    "camera": "medium shot, eye-level, joyful festive atmosphere",
+    "category": "夏夜漫游",
+    "characterId": "lala_satalin_deviluke",
+    "coverageTags": [
+      "festival"
+    ],
+    "description": "【菈菈 · 夏夜祭典的云朵棉花糖】挂满红色纸灯笼的彩南神社夏日祭典长街上，晚风吹拂着祭典彩旗。菈菈一手捧着一朵比她脑袋还大的纯白蓬松棉花糖，正开心地伸出粉嫩舌尖轻舔甜味。她拉着梨斗的手穿梭在热闹的人流中，身后的黑色爱心恶魔尾巴兴奋地摇成螺旋桨，及踝粉发在灯火阑珊中流光溢彩，笑容纯真得宛如整个夏夜最灿烂的星火。",
+    "id": "lala_festival_yukata_cotton_candy",
+    "lighting": "漫天红灯笼洒下的浓郁暖橙火光与摊位彩灯的缤纷倒影",
+    "location": "彩南町夏日祭典红灯笼小吃长街",
+    "mood": "纯真欢愉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "Holding a massive fluffy cloud of pink cotton candy at a bustling summer festival lined with red paper lanterns, Lala laughs with incandescent joy. Warm festival lampglow illuminates her pink locks and energetic spade tail as she pulls her partner through the vibrant crowd.",
+    "promptTokens": [
+      "night_festival",
+      "paper_lanterns",
+      "holding_cotton_candy",
+      "eating_sweets",
+      "demon_tail",
+      "beaming_smile",
+      "very_long_hair",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "festival",
+      "lanterns",
+      "cotton_candy",
+      "eating",
+      "demon_tail",
+      "holding_hands",
+      "beaming_smile",
+      "very_long_hair"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "菈菈 · 夏夜祭典的云朵棉花糖",
+    "compositionIntent": "group"
+  }
+}

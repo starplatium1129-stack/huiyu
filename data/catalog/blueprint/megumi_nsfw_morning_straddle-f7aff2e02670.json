@@ -1,0 +1,80 @@
+{
+  "kind": "blueprint",
+  "id": "megumi_nsfw_morning_straddle",
+  "revision": 1,
+  "sortOrder": 1447,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "megumi_nsfw_morning_straddle",
+    "title": "加藤惠 · 假日晨光的大号衬衫柔情 ·「伦也君……这个节奏可以吗」",
+    "category": "主控骑乘",
+    "characterId": "katou_megumi",
+    "description": "【伦也卧室·假日清晨】难得留宿的早晨，惠套着男式大号白衬衫跨坐在你腰间。衬衫扣子解开了大半，露出纤细白皙的锁骨与软肉，平时波澜不惊的眼神在微喘中漾起轻微水光——「伦也君……别光看着啊。要是社团脚本写不出来的话……这种取材……稍微、再多陪你一下也可以哦。」",
+    "location": "伦也卧室·假日清晨",
+    "action": "跪坐晨光软被大号衬衫半敞，纤细双腿微曲，垂眸微喘前倾浅笑",
+    "timeOfDay": "morning",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Megumi Kato from Saekano kneels forward upon tangled sheets in the quiet holiday morning light, wearing an oversized white boyfriend shirt left mostly unbuttoned. Her modest pale chest rises and falls with delicate breaths, pink nipples exposed above the parted cotton as her slender thighs fold beneath her. Her deadpan expression softens into a fond, bashful gaze, soft brown eyes glinting through subtle morning tears as she leans close with quiet tenderness. Vertical low-angle composition, sunlight streaming across rumpled sheets, detailed bedroom background, solo 1girl, no extra people.",
+    "nsfwProse": "Kneeling forward upon tangled morning sheets with her oversized boyfriend shirt unbuttoned over bare perky breasts, Megumi Kato leans in close with shy, tender affection.",
+    "promptTokens": [
+      "bedroom",
+      "bed",
+      "morning_light",
+      "sunlight",
+      "low_angle",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "pov",
+      "kneeling",
+      "on_bed",
+      "white_sheets",
+      "leaning_forward",
+      "oversized_shirt",
+      "white_shirt",
+      "open_shirt",
+      "bare_breasts",
+      "pink_nipples",
+      "pussy_juice",
+      "heavy_blush",
+      "gentle_smile",
+      "parted_lips"
+    ]
+  }
+}

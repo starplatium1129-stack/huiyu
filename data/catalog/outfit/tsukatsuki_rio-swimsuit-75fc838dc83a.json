@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/swimsuit",
+  "revision": 1,
+  "sortOrder": 504,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "default": false,
+      "id": "swimsuit",
+      "isDefault": false,
+      "name": "夏日泳装",
+      "prose": "a sleek black bikini with elegant red trim and a sheer black cover-up, commanding summer look",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "black_bikini",
+        "red_trim",
+        "sheer_cover-up"
+      ]
+    }
+  }
+}

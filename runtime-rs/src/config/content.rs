@@ -9,7 +9,11 @@ pub(super) fn prepare(app: &Path, root: &Path, packaged: bool) -> Result<()> {
         return Ok(());
     }
     if root.exists() {
-        if !root.is_dir() || !root.join("data/scenes/manifest.json").is_file() {
+        if !root.is_dir()
+            || !(root.join("data/scenes/manifest.json").is_file()
+                || root.join("data/catalog/manifest.json").is_file()
+                || root.join("catalog.sqlite").is_file())
+        {
             return Err(ApiError::new(
                 503,
                 "CONTENT_STORE_INVALID",
@@ -26,7 +30,9 @@ pub(super) fn prepare(app: &Path, root: &Path, packaged: bool) -> Result<()> {
     fs::create_dir(&staged)?;
     let result = (|| -> Result<()> {
         copy_tree(&app.join("data"), &staged.join("data"))?;
-        if !staged.join("data/scenes/manifest.json").is_file() {
+        if !(staged.join("data/scenes/manifest.json").is_file()
+            || staged.join("data/catalog/manifest.json").is_file())
+        {
             return Err(ApiError::new(
                 503,
                 "CONTENT_SEED_INVALID",

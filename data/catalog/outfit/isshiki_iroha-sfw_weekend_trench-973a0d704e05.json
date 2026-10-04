@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/sfw_weekend_trench",
+  "revision": 1,
+  "sortOrder": 210,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "sfw_weekend_trench",
+      "name": "浅蓝周末风衣",
+      "prose": "a pale-blue lightweight trench coat over a cream crewneck knit top, navy full-length trousers and white trainers",
+      "tokens": [
+        "blue_trench_coat",
+        "cream_sweater",
+        "navy_pants",
+        "white_sneakers"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

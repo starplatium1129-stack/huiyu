@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "togawa_sakiko/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 1013,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "togawa_sakiko",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "丰川祥子·成人私密造型",
+      "prose": "a private adult ensemble built around black_dress, completely_nude",
+      "tokens": [
+        "black_dress",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

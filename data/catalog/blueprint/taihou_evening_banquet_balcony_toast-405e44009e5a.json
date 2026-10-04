@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "taihou_evening_banquet_balcony_toast",
+  "revision": 1,
+  "sortOrder": 1083,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "taihou_evening_banquet_balcony_toast",
+    "title": "大凤 · 盛宴露台的月下独酌",
+    "category": "奢华晚宴",
+    "characterId": "taihou_azur",
+    "outfitId": "forbidden_banquet",
+    "coverageTags": [
+      "gala"
+    ],
+    "description": "【大凤 · 盛宴露台的月下独酌】高耸于悬崖军港之上的欧式迎宾馆宴会露台，夜风吹拂着白色帷幔。大凤身着露背深红丝绒晚礼服，单手轻托郁金香香槟杯，背对着满天繁星与下方喧嚣的港口灯火。她微微侧过无瑕的后背，美背线条一路凹陷至腰窝，回眸举杯邀约——「嘈杂的人群太碍眼了……大凤只要能和指挥官大人在这月色下单独共饮，就足够了。」",
+    "location": "悬崖城堡宴会厅露天大理石露台",
+    "action": "手举香槟杯倚靠汉白玉护栏回眸，露背晚礼服展现无瑕背部与曼妙腰臀",
+    "timeOfDay": "夜晚",
+    "lighting": "皎洁圆月与露台银质蜡烛台摇曳的冷暖交织",
+    "camera": "cowboy shot, rear 3/4 view, open back focus",
+    "mood": "高贵迷离",
+    "sceneTags": [
+      "balcony",
+      "banquet",
+      "champagne",
+      "wine_glass",
+      "open_back",
+      "velvet_dress",
+      "moonlight",
+      "harbor_view"
+    ],
+    "promptProse": "Standing along a moonlit marble balcony overlooking the sparkling naval harbor, Taihou raises a crystal champagne glass in her backless velvet evening gown. Romantic silver moonlight traces the curve of her bare spine and long dark twintails against the star-studded sea.",
+    "promptTokens": [
+      "marble_balcony",
+      "champagne_glass",
+      "velvet_dress",
+      "open_back",
+      "backless_dress",
+      "moonlight",
+      "harbor_lights",
+      "twintails",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

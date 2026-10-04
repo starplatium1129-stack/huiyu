@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/shogun_robes",
+  "revision": 1,
+  "sortOrder": 0,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "shogun_robes",
+      "name": "将军神装",
+      "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid with gold trim, pauldron, black fingerless gloves, obi, and sash",
+      "tokens": [
+        "japanese_clothes",
+        "kimono",
+        "purple_clothes",
+        "gold_trim",
+        "pauldron",
+        "black_fingerless_gloves",
+        "obi",
+        "sash",
+        "bare_shoulders",
+        "black_thighhighs",
+        "detached_sleeves",
+        "long_sleeves"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 862,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "薄荷熊耳连帽家居服",
+      "prose": "a fully zipped mint fleece hoodie with small bear ears on the hood, loose navy lounge trousers and thick socks",
+      "tokens": [
+        "mint_hoodie",
+        "fleece",
+        "long_pants",
+        "pajama_pants",
+        "socks"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

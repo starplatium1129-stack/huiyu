@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "aisha_greyrat_beach_day",
+  "revision": 1,
+  "sortOrder": 489,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "aisha_greyrat_beach_day",
+    "title": "爱夏·潮线之外",
+    "outfitId": "sfw_beach",
+    "action": "一手扶住草帽帽檐，另一手拢住被海风吹起的罩衫侧摆",
+    "location": "六面世界海滨",
+    "timeOfDay": "白天",
+    "lighting": "明亮的海面反光",
+    "mood": "轻松而警觉",
+    "camera": "wide shot",
+    "category": "日常",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "beach",
+      "sea",
+      "ocean",
+      "swimsuit",
+      "summer"
+    ],
+    "description": "爱夏穿着深绿连身泳装、亚麻罩衫与平底凉鞋，站在潮线之外的干沙上。一手扶住草帽帽檐，另一手拢住罩衫侧摆，目光追随右侧刚退去的浪花。横幅给海面留出空间，海风将发带和衣摆带向同一侧；明亮沙地反光照亮面部，浅色礁石压住远景。",
+    "promptProse": "A retreating wave leaves a bright curved line across the right half of the beach. On dry sand to its left, Aisha steadies the brim of her straw sunhat with one hand and gathers the side hem of her linen cover-up with the other, watching the foam. Flat sandals support both feet above the wet shoreline; the dark-green one-piece swimsuit remains beneath the cover-up. The ribbon and loose fabric trail in the same sea breeze, with reflected sand light on her face and pale rocks beyond the open water.",
+    "promptTokens": [
+      "holding_hat_brim",
+      "gathering_fabric",
+      "standing_on_sand",
+      "flat_sandals",
+      "retreating_wave",
+      "sea_foam",
+      "windblown_ribbon",
+      "pale_rocks",
+      "wide_shot",
+      "reflected_sunlight"
+    ],
+    "adult": false,
+    "characterId": "aisha_greyrat",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

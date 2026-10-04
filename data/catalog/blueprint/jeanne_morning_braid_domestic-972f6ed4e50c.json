@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_morning_braid_domestic",
+  "revision": 1,
+  "sortOrder": 234,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_morning_braid_domestic",
+    "title": "圣女贞德 · 晨间梳辫的居家温存·「发辫……就交给你来编好不好？」",
+    "category": "居家日常",
+    "characterId": "jeanne_d_arc",
+    "description": "【借宿民家的清晨·窗边】晨光里，贞德披散着从未在人前解开的金色长发坐在窗边椅上，把一柄木梳递到你手里，脸颊微红地垂下眼——「在军中都是自己编的……不过，既然你说了想试试……」及腰的金发在晨光里流淌成蜜色的河，她安静地坐着，耳朵却悄悄红了，那是圣女才允许自己露出的一点点任性。",
+    "location": "借宿民家窗边",
+    "action": "披散金发坐在椅上递出木梳，红着耳朵低头等待你为她编辫",
+    "timeOfDay": "清晨",
+    "lighting": "柔白晨光漫过发丝，蜜金色流光",
+    "camera": "three-quarter rear medium shot, loose hair and over-shoulder comb offer visible",
+    "mood": "娇羞软糯、日常心动",
+    "sceneTags": [
+      "village_house_window",
+      "sitting",
+      "loose_golden_hair",
+      "offering_wooden_comb",
+      "hand_on_lap",
+      "shy_smile",
+      "white_blouse",
+      "blue_skirt",
+      "morning_light",
+      "three_quarter_rear_view"
+    ],
+    "promptProse": "Seated beside the village-house window, Jeanne turns slightly and offers a wooden comb over her shoulder with one hand. Her other hand rests on her lap while completely loose golden hair falls past the back of the chair. The white blouse and long blue skirt are comfortable indoor clothes, leaving her head uncovered for the requested braiding. Morning light catches the strands and her small, shy smile as she glances downward. Use a three-quarter rear view that makes the comb and unbraided hair clear without losing the gentle head turn. No lettering.",
+    "promptTokens": [
+      "village_house_window",
+      "sitting",
+      "loose_golden_hair",
+      "offering_wooden_comb",
+      "hand_on_lap",
+      "shy_smile",
+      "white_blouse",
+      "blue_skirt",
+      "morning_light",
+      "three_quarter_rear_view",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_loose_hair_civilian",
+    "coverageTags": [
+      "daily",
+      "girlfriend",
+      "morning"
+    ]
+  }
+}

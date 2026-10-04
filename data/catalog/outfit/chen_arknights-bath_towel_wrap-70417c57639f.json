@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/bath_towel_wrap",
+  "revision": 1,
+  "sortOrder": 308,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "bath_towel_wrap",
+      "isDefault": false,
+      "name": "浴后浴巾",
+      "prose": "wrapped in a large thick bath towel secured at the bust, soft cotton towel fabric with bare shoulders and bare legs",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "bath_towel",
+        "towel",
+        "towel_wrap",
+        "wrapped_in_towel",
+        "cotton",
+        "bare_shoulders",
+        "bare_legs",
+        "bare_back",
+        "collarbone",
+        "thick_towel"
+      ]
+    }
+  }
+}

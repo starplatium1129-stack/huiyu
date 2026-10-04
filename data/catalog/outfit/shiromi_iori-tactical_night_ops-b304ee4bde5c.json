@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/tactical_night_ops",
+  "revision": 1,
+  "sortOrder": 516,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "default": false,
+      "id": "tactical_night_ops",
+      "isDefault": false,
+      "name": "暗夜潜行紧身衣",
+      "prose": "a high-tech black tactical stealth bodysuit with reinforced kevlar panels, utility pouches, night-vision monocle headset, combat knife sheathed on her hip, fingerless tactical gloves, and combat boots",
+      "tokens": [
+        "bodysuit",
+        "tight_suit",
+        "stealth_suit",
+        "tactical_gear",
+        "pouches",
+        "utility_belt",
+        "headset",
+        "fingerless_gloves",
+        "combat_boots",
+        "military"
+      ]
+    }
+  }
+}

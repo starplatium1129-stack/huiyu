@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_bridal_vow_church",
+  "revision": 1,
+  "sortOrder": 1435,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_bridal_vow_church",
+    "title": "霞之丘诗羽 · 白纱下的作家誓言·「这次的结局，由我执笔」",
+    "category": "圣洁花嫁",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【教堂·婚礼日】以毒舌恋爱小说家闻名的霞诗子，第一次把真实的心写进了别人的誓词里。诗羽披着纯白婚纱站在圣坛前，白发箍换成了头纱，红瞳里的讥诮化成了认真的光——「我写过的故事里，女主角总在最后一步胆怯。所以这一次的结局，由我亲自执笔——我愿意。」",
+    "location": "教堂圣坛前",
+    "action": "白纱立于圣坛，红瞳讥诮化认真，手执誓词",
+    "timeOfDay": "婚礼上午",
+    "lighting": "彩窗光瀑洒落白纱",
+    "camera": "wide shot, environmental portrait, altar bride, stained glass cascade, resolute tenderness",
+    "mood": "执笔结局、认真动人",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "church",
+      "light_rays",
+      "smile",
+      "romance"
+    ],
+    "promptProse": "Kasumigaoka Utaha stands at the church altar in a pure white wedding gown, her white hairband traded for a veil over her long black hair, holding her handwritten vows. The sardonic glint in her red eyes gives way to sincere light as she declares that heroines in her stories always faltered at the final step, so this ending she will write herself, in person. Environmental portrait, cinematic lighting, stained-glass light, detailed church background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "white_flower",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "smile",
+      "happy_tears",
+      "church",
+      "stained_glass",
+      "light_rays",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "sfw_white_bridal_gown",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ]
+  }
+}

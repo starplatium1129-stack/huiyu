@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "yuria_cirs_office_desk_glasses_push",
+  "revision": 1,
+  "sortOrder": 1201,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yuria_cirs_office_desk_glasses_push",
+    "title": "春寺由梨亚 · 办公室门反锁后的长官专属查勤",
+    "category": "长官情趣",
+    "characterId": "harudera_yuria",
+    "outfitId": "executive_suit",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【春寺由梨亚 · 办公室门反锁后的长官专属查勤】日美防务机构 CIRS 高层指挥办公室的厚重门锁被轻轻反锁，巨幅防弹百叶窗外俯瞰着都会夜景。脱去了外人面前的冰冷距离，JB将高背皮椅转向你，修身黑色职业西装套裙内衬白衬衫领口解开两颗纽扣，露出成熟白皙的深邃事业线。她单手轻推鼻梁上的红色半框眼镜，嘴角带着一丝调侃又宠溺的坏笑，把抽屉里的高档黑巧克力递到你唇边——「既然门都反锁了……今晚向长官汇报的时间，可就完全由我说了算哦，雄二。」",
+    "location": "CIRS 高层指挥办公室内百叶窗前高背皮椅后",
+    "action": "反锁办公室后坐皮椅轻推红框眼镜，白衬衫微敞喂巧克力，嘴角坏笑眼神宠溺",
+    "timeOfDay": "夜晚",
+    "lighting": "百叶窗透入的冷蓝城市天光与书桌暖金台灯形成的强烈专业氛围",
+    "camera": "cowboy shot, medium close-up, commanding executive eye-level focus",
+    "mood": "知性宠溺",
+    "sceneTags": [
+      "office",
+      "desk",
+      "glasses",
+      "red-framed_eyewear",
+      "business_suit",
+      "pencil_skirt",
+      "mole_under_eye",
+      "blinds"
+    ],
+    "promptProse": "A sophisticated and playfully dominant anime illustration of Harudera Yuria (JB) from The Fruit of Grisaia alone with her partner inside her locked CIRS executive office at night. Sitting behind a polished mahogany desk in her sharp charcoal-black business suit, her crisp white collared shirt has its top buttons undone to show enticing cleavage. With one manicured hand playfully adjusting her iconic red-framed glasses, her sharp sapphire-blue eyes and delicate beauty mark beneath her right eye radiate affectionate mischief and mature girlfriend allure. Warm desk lamp radiance cutting through moody window blind shadows, clean anime line art, no text.",
+    "promptTokens": [
+      "intelligence_office",
+      "executive_desk",
+      "business_suit",
+      "pencil_skirt",
+      "white_shirt",
+      "cleavage",
+      "glasses",
+      "red-framed_eyewear",
+      "mole",
+      "mole_under_eye",
+      "blonde_hair",
+      "very_long_hair",
+      "wavy_hair",
+      "blue_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

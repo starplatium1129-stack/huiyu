@@ -86,6 +86,13 @@ fn fixture() -> (tempfile::TempDir, Config, String) {
         br#"[{"id":"nene"}]"#,
     )
     .unwrap();
+    std::fs::create_dir_all(dir.path().join("data/catalog")).unwrap();
+    std::fs::write(
+        dir.path().join("data/catalog/manifest.json"),
+        json!({"version":1,"files":["nene.json"]}).to_string(),
+    )
+    .unwrap();
+    std::fs::write(dir.path().join("data/catalog/nene.json"),json!({"kind":"character","id":"nene","revision":1,"sortOrder":0,"createdAt":null,"updatedAt":null,"data":{"id":"nene","profile":{"id":"nene"}}}).to_string()).unwrap();
     let image = image::RgbaImage::from_fn(600, 900, |x, y| {
         if x < 200 && y < 200 {
             image::Rgba([0, 0, 0, 0])

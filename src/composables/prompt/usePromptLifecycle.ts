@@ -1,4 +1,5 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
+import { useSceneStore } from '@/stores/sceneStore'
 
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
@@ -43,10 +44,15 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
     }
     onBeforeUnmount(() => { disposed = true; viewActive = false; });
     onDeactivated(() => { viewActive = false; animaSession.pauseStatusPolling(); });
-    onActivated(() => {
+    onActivated(async () => {
         if (viewActive || disposed)
             return;
         viewActive = true;
+        if (!useSceneStore().loaded) {
+            await pb.loadData();
+            if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+            if (disposed || !viewActive) return;
+        }
         if (drawEngine.value !== 'sd')
             animaSession.startStatusPolling();
     });
@@ -80,6 +86,8 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         if (disposed) return;
         if (!handledDeepLink)
             pb.restoreDraft();
+        if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+        if (disposed) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
         if ((!handledDeepLink || route.query.resume === '1') && !displayResultUrl.value) {
             await restoreTempResult();

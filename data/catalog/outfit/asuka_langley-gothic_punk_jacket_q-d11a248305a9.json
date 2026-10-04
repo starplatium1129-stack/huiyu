@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/gothic_punk_jacket_q",
+  "revision": 1,
+  "sortOrder": 567,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "default": false,
+      "id": "gothic_punk_jacket_q",
+      "isDefault": false,
+      "name": "Q版猫耳帽红黑夹克私服",
+      "prose": "wearing a red and black pilot bomber jacket over a casual tank top and dark shorts, a black beanie hat with small cat ear pins, and a badass black tactical eyepatch",
+      "styleHint": "gritty post-apocalyptic cinematic desert sunset lighting",
+      "tokens": [
+        "jacket",
+        "red_jacket",
+        "bomber_jacket",
+        "cat_ear_hat",
+        "knit_cap",
+        "shorts",
+        "black_thighhighs",
+        "eyepatch",
+        "black_eyepatch",
+        "boots"
+      ]
+    }
+  }
+}

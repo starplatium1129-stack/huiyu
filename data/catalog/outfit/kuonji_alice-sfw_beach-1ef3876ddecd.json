@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kuonji_alice/sfw_beach",
+  "revision": 1,
+  "sortOrder": 929,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kuonji_alice",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "久远寺有珠·海滨泳装",
+      "prose": "a deep blue one-piece swimsuit with a long dark cover-up, shell clasp and a clear glass jar",
+      "tokens": [
+        "deep_blue_swimsuit",
+        "one_piece_swimsuit",
+        "dark_cover_up",
+        "shell_clasp",
+        "glass_jar"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

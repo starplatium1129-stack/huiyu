@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kasugano_sora/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 920,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kasugano_sora",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "春日野穹·成人私密造型",
+      "prose": "a private adult ensemble built around garter_straps, completely_nude, dress",
+      "tokens": [
+        "garter_straps",
+        "completely_nude",
+        "dress"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

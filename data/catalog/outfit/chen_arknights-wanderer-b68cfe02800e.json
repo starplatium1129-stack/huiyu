@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/wanderer",
+  "revision": 1,
+  "sortOrder": 301,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "wanderer",
+      "isDefault": false,
+      "name": "赤刃明霄（游侠行装）",
+      "prose": "a dark green and crimson traveller robe with a grey cape, a jade belt pendant, holding the crimson sword Chi Xiao",
+      "tokens": [
+        "robe",
+        "chinese_clothes",
+        "cape",
+        "green_clothes",
+        "red_clothes",
+        "sword"
+      ]
+    }
+  }
+}

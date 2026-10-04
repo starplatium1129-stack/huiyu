@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/sfw_white_shiromuku",
+  "revision": 1,
+  "sortOrder": 807,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "default": false,
+      "id": "sfw_white_shiromuku",
+      "isDefault": false,
+      "name": "神前白无垢与角隐",
+      "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs, a white tsunokakushi head covering and white tabi socks",
+      "tokens": [
+        "shiromuku",
+        "white_bridal_kimono",
+        "white_obi",
+        "tsunokakushi",
+        "white_tabi",
+        "opaque_fabric"
+      ]
+    }
+  }
+}

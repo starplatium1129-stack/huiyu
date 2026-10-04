@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_lunar_regolith_earthrise_walking",
+  "revision": 1,
+  "sortOrder": 1104,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手抱着宇航头盔立于月球灰白岩原，仰望漆黑星空中巨大的蔚蓝地球",
+    "camera": "sweeping wide landscape, full body, sublime cosmic scale",
+    "category": "月面追寻",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "space"
+    ],
+    "description": "【露西 · 荒凉月表的蔚蓝地出漫步】寂静无声的月球静海灰白平原上，无数环形山延绵至星空尽头。露西身穿轻型白色太空服，头盔夹在臂弯之下。她独立在细密的月壤上，迎着宇宙的永恒微风，仰望着漆黑天幕中那一颗璀璨升起的蔚蓝地球。没有枪声、没有荒坂、没有杀戮，她的眼中倒映着地球的蓝光，嘴角泛起释怀而又悲悯的微笑。",
+    "id": "lucy_lunar_regolith_earthrise_walking",
+    "lighting": "没有大气散射的极高对比度宇宙阳光与蔚蓝地球的柔和反光",
+    "location": "月球表面宁静海陨石坑边缘",
+    "mood": "空灵唯美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "moon_spacesuit",
+    "promptProse": "Standing solitary on the cratered gray expanse of the Moon, Lucy holds her clear astronaut helmet while gazing at the magnificent blue Earth hanging in deep space. Blinding cosmic sunlight casts long sharp shadows across the lunar regolith in breathtaking bittersweet wonder.",
+    "promptTokens": [
+      "lunar_landscape",
+      "moon_surface",
+      "earthrise",
+      "deep_space",
+      "stars",
+      "spacesuit",
+      "holding_helmet",
+      "gradient_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "moon",
+      "space",
+      "earth",
+      "earthrise",
+      "spacesuit",
+      "lunar_surface",
+      "stars",
+      "emotional_smile"
+    ],
+    "timeOfDay": "外太空",
+    "title": "露西 · 荒凉月表的蔚蓝地出漫步"
+  }
+}

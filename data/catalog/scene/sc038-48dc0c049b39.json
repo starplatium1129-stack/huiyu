@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc038",
+  "revision": 1,
+  "sortOrder": 36,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Pausing beneath a glowing streetlamp amidst gentle twilight snowfall, Ayachi Nene turns back to face the viewer, clutching her plaid scarf to her blushing face with teary affection. Her silver-white twintails peek out from beneath her scarf while glowing neighborhood shopfronts and lampposts create rich spatial depth behind her leather boots firmly planted in fresh white snow.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "隔雨回眸中景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "委屈",
+    "id": "sc038",
+    "lighting": "阴雨漫射光与路灯反射",
+    "location": "雨中街道",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_duffle_coat_and_red_plaid_muffler, sheer_black_tights, stopping_and_turning_back_around_under_rainy_streetlamp, holding_white_umbrella_with_clenched_hand, clutching_muffler_close_to_mouth, entire_legs_and_feet_fully_visible_in_frame, brown_leather_winter_boots_standing_on_wet_asphalt, teary_affectionate_glance, twilight_rain_in_residential_street, glowing_warm_amber_streetlights_and_illuminated_shop_windows_in_background, falling_rain_and_mist, full_body, @rella",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 走了三步又回头】争吵后的雨天街道上，宁宁转身离开，走出三步却怎么也无法继续。她站在路灯下攥紧伞柄，直到你从身后叫住她，才带着委屈重新转回来。雨水沿伞缘落成一道帘，她终于说出真正难过的原因——「我不是想赢。我只是害怕，你有一天会连解释都不愿意听。」",
+    "storyJa": "【寧々・三歩歩いて引き返した】口論後の雨の道路で、寧々は向きを変えて立ち去りました。彼女は三歩進みましたが、続けることができませんでした。彼女は街灯の下に立って、あなたが後ろから呼ぶまで傘の柄を握りしめていましたが、その後、不機嫌そうに振り返りました。雨が傘の端に沿ってカーテンに落ち、彼女はついに悲しみの本当の理由を明らかにしました。――「勝ちたいわけじゃないんです。ただ、いつかあなたが、私の説明さえ聞いてくれなくなるのが怖くて。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "rainy_street",
+      "umbrella",
+      "holding_umbrella",
+      "rain_curtain",
+      "turning_back",
+      "streetlamp",
+      "hurt",
+      "teary_eyes",
+      "loafers",
+      "depth_of_field",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "走了三步又回头",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雨"
+  }
+}

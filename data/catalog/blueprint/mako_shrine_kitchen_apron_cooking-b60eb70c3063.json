@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "mako_shrine_kitchen_apron_cooking",
+  "revision": 1,
+  "sortOrder": 1135,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "系着白围裙双手端汤碗托盘，露出可爱猫嘴笑意，丰满胸部在围裙下起伏",
+    "camera": "medium shot, eye-level warmth, intimate household framing",
+    "category": "居家温情",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【常陆茉子 · 晨炊香浓的围裙侍奉】朝武家洋溢着柴火饭与烤鱼香气的宽敞和风厨房内，晨光洒在光洁的料理台边。茉子身系白色荷叶边围裙，双手小心翼翼地端着刚盛好的热腾腾味噌汤托盘。看着准备起筷的将臣，她露出标志性可爱的猫嘴笑容，略带得意地微微挺起丰满的胸部——「当当当~！朝武家首席大厨常陆茉子的特制早餐出炉啦！不好好吃完的话，在下可是会用忍术惩罚你的哦？」",
+    "id": "mako_shrine_kitchen_apron_cooking",
+    "lighting": "厨房格子木窗透入的温润晨曦与料理冒出的袅袅水汽",
+    "location": "朝武家和式家庭厨房与餐桌旁",
+    "mood": "温馨治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_casual",
+    "promptProse": "Serving a steaming wooden tray of fresh breakfast miso soup inside a sunlit traditional kitchen, Mako beams with her charming cat-like smile in a frilled white apron. Soft morning sunlight streams across the polished counters, illuminating her cheerful demeanor and domestic warmth.",
+    "promptTokens": [
+      "traditional_kitchen",
+      "maid_apron",
+      "serving_food",
+      "tray",
+      "cat_mouth",
+      "ahoge",
+      "large_breasts",
+      "morning_sunlight",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "kitchen",
+      "apron",
+      "cooking",
+      "miso_soup",
+      "tray",
+      "cat_mouth",
+      "ahoge",
+      "large_breasts"
+    ],
+    "timeOfDay": "早晨",
+    "title": "常陆茉子 · 晨炊香浓的围裙侍奉"
+  }
+}

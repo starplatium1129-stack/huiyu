@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_geofront_terminal_dogma",
+  "revision": 1,
+  "sortOrder": 1019,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "伫立于高空平台边缘俯瞰下方红色海洋",
+    "camera": "medium shot, standing on a high platform overlooking the crimson LCL lake",
+    "category": "科幻机甲",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【绫波丽 · 最终教条的神圣肃穆】深邃浩瀚的地底最终教条区，庞大无垠的LCL红海散发着神圣而压抑的光晕。绫波丽身着白色的战斗服独立于钢铁升降梯前端，凝视着沉眠于十字架上的神之具现，眼底涌动着超越人类理解的崇高宿命——「这就是最初与最终的源头……一切生命归于一体的时刻，终将到来。」",
+    "id": "ayanami_rei_geofront_terminal_dogma",
+    "lighting": "地下红海暗红辉光与高空探照冷光交错",
+    "location": "NERV 最终教条区 LCL 巨大湖泊",
+    "mood": "庄严宏大",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "plugsuit_white",
+    "promptProse": "Standing at the edge of a high platform in Terminal Dogma, Rei looks down over the vast crimson LCL lake with the distant white cross and colossal subterranean architecture beyond. Red reflected light and cold searchlights frame her still, enigmatic silhouette.",
+    "promptTokens": [
+      "terminal_dogma",
+      "geofront",
+      "giant_cross",
+      "sacred_light",
+      "calm_expression",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "standing",
+      "overlooking",
+      "lcl_lake"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "terminal_dogma",
+      "geofront",
+      "underground_facility",
+      "red_lake",
+      "giant_cross",
+      "catwalk",
+      "holy_atmosphere",
+      "sacred_light"
+    ],
+    "timeOfDay": "白天",
+    "title": "绫波丽 · 最终教条的神圣肃穆"
+  }
+}

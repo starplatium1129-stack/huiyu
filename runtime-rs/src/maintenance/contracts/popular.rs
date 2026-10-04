@@ -44,14 +44,14 @@ fn environment(tokens: Vec<&str>) -> Vec<&str> {
         })
         .collect()
 }
-pub(super) fn validate(root: &Path, issues: &mut Vec<String>) {
+pub(super) fn validate(root: &DataRoot, issues: &mut Vec<String>) {
     if let Err(error) = run(root, issues) {
         issues.push(format!(
             "popular/scene-blueprints data failed to parse: {error}"
         ));
     }
 }
-fn run(root: &Path, issues: &mut Vec<String>) -> std::result::Result<(), String> {
+fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), String> {
     let characters = characters(read(root, "data/popular-characters.json")?)?;
     let blueprints = blueprints(read(root, "data/scene-blueprints.json")?)?;
     if characters.is_empty() {

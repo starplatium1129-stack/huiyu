@@ -1,0 +1,162 @@
+{
+  "kind": "character",
+  "id": "raiden_shogun",
+  "revision": 1,
+  "sortOrder": 2,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "raiden_shogun",
+    "profile": {
+      "id": "raiden_shogun",
+      "name": "雷电将军",
+      "alias": [
+        "Raiden Shogun",
+        "雷電将軍",
+        "雷电影"
+      ],
+      "type": "popular",
+      "icon": "⚡",
+      "portrait": {
+        "image": "../assets/characters/popular-raiden_shogun.png?v=5",
+        "alt": "雷电将军 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "深紫长直发 · 单边长辫",
+        "hair_color": "深紫",
+        "eyes": "紫红色",
+        "hairstyle": "单边长辫 · 长刘海 · 额头雷纹",
+        "uniform": "稻妻和服振袖铠 / 白色羽织",
+        "expression": "威严沉静 · 近无感情的人偶君主",
+        "style": "serene thunder archon",
+        "signature": "深紫长辫、紫瞳与额前雷纹"
+      },
+      "personality": [
+        "威严沉静",
+        "贯彻永恒的秩序",
+        "寡言",
+        "战斗凌厉",
+        "日常清冷克制"
+      ],
+      "likes": [
+        "稻妻的安宁",
+        "雷雨中的寂静",
+        "天守阁的屏风",
+        "永恒的理想"
+      ],
+      "classic_cg": {
+        "title": "万雷之下",
+        "description": "稻妻天守阁外雷暴骤起，她拔刀而立，紫电环绕，为「永恒」降下裁决。"
+      },
+      "identity": {
+        "role": "雷电之神（稻妻的统治者）",
+        "age": "神（外貌年轻）",
+        "occupation": "稻妻幕府将军",
+        "faction": "稻妻 / 幕府"
+      },
+      "tags": [
+        "深紫长辫",
+        "紫瞳",
+        "雷纹",
+        "和服振袖",
+        "雷元素"
+      ],
+      "bg_story": "雷电将军是《原神》中稻妻的雷电之神，理念为「永恒」。真身为雷电影，其人偶之身运行着将军的意志。故事发生在稻妻——和风岛国文明，幕府、神社与雷电信仰。场景应突出和风神性、雷雨与神社，而非现代都市。",
+      "palette": [
+        "雷紫",
+        "樱粉",
+        "白"
+      ],
+      "weather": [
+        "雷暴之夜",
+        "神社夕照",
+        "雨夜"
+      ],
+      "speech": "雷电将军向你致以问候。",
+      "source": "miHoYo《原神 / Genshin Impact》",
+      "traits": [
+        "raiden_shogun",
+        "raiden_ei",
+        "1girl",
+        "solo",
+        "long_purple_hair",
+        "braid",
+        "single_braid",
+        "glowing_purple_eyes",
+        "bangs",
+        "mole_under_eye",
+        "mole_under_right_eye",
+        "golden_hairpin",
+        "hair_flower",
+        "tassel",
+        "genshin_impact"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "raiden_shogun",
+      "displayName": "雷电将军",
+      "originalName": "Raiden Shogun",
+      "franchise": "Genshin Impact",
+      "aliases": [
+        "raiden_shogun",
+        "raiden ei",
+        "ei",
+        "baal",
+        "genshin impact",
+        "electro archon"
+      ],
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze",
+      "identityTokens": [
+        "raiden_shogun",
+        "raiden_ei",
+        "1girl",
+        "solo",
+        "long_purple_hair",
+        "braid",
+        "single_braid",
+        "glowing_purple_eyes",
+        "bangs",
+        "mole_under_eye",
+        "mole_under_right_eye",
+        "golden_hairpin",
+        "hair_flower",
+        "tassel",
+        "genshin_impact"
+      ],
+      "exactTokens": [
+        "raiden_shogun"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "奇幻和风（提瓦特·雷电神）",
+        "era": "前现代和风",
+        "formNotes": "真身=雷电影（人偶之身）；雷电元素=紫色电光；武器=梦想一心",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "genshin impact, official anime art, miHoYo style",
+      "curatedArtistStyles": [
+        "rella",
+        "swav",
+        "ask_(askzy)"
+      ]
+    }
+  }
+}

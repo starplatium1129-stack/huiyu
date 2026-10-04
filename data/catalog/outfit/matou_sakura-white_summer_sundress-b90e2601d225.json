@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/white_summer_sundress",
+  "revision": 1,
+  "sortOrder": 96,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "white_summer_sundress",
+      "name": "经典纯白夏日连衣裙",
+      "tokens": [
+        "sundress",
+        "white_dress",
+        "sleeveless_dress",
+        "hair_ribbon",
+        "sandals"
+      ],
+      "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
+      "styleHint": "pure nostalgic summer breeze",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

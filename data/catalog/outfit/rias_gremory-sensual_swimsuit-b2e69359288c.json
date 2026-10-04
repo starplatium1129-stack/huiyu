@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/sensual_swimsuit",
+  "revision": 1,
+  "sortOrder": 695,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "sensual_swimsuit",
+      "name": "深红高开叉修身泳装",
+      "prose": "a glamorous deep red one-piece swimsuit with daring side cutouts, high-cut leg openings accentuating her curvy hips, and crossed back-straps glistening under the summer sun",
+      "tokens": [
+        "swimsuit",
+        "one-piece_swimsuit",
+        "red_swimsuit",
+        "highleg",
+        "side_cutout",
+        "backless",
+        "cleavage",
+        "wet_skin"
+      ]
+    }
+  }
+}

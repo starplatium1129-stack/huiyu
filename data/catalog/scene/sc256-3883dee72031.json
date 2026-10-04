@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc256",
+  "revision": 1,
+  "sortOrder": 251,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "吧台侧面中景，人物与热饮同框",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "沉默的关心",
+    "id": "sc256",
+    "lighting": "单盏暖灯、窗外冷色雨光",
+    "location": "Café Stella 吧台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "冬",
+    "story": "【夏目 · 不必说明的照顾】Café Stella 打烊后，夏目把最后一盏吧台灯留了下来。你刚从雨里进门，她没有问太多，只是把一杯热可可推到你面前，又把干毛巾搭在椅背上。等你抬头时，她已经假装在整理账本——「……别误会。客人感冒会影响明天的营业效率。喝完再走。」",
+    "storyJa": "【夏目・閉店後のホットココア】Café Stellaの閉店後、夏目はカウンターの灯りを一つだけ残していた。雨の中から入ってきたあなたへ、何も聞かずに温かいココアと乾いたタオルを差し出す。帳簿へ視線を落としたまま、彼女は小さく言った――「……勘違いしないで。風邪をひかれたら明日の営業に困るだけ。飲んでから帰って」",
+    "tags": [
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
+      "mole_under_eye",
+      "hairclip",
+      "cafe_uniform",
+      "suspender_dress",
+      "hot_chocolate",
+      "dry_towel",
+      "chair",
+      "ledger",
+      "rain",
+      "window",
+      "warm_lighting",
+      "medium_shot",
+      "reserved_expression"
+    ],
+    "time": "闭店后",
+    "timeOfDay": "night",
+    "title": "闭店后留给你的那杯热可可",
+    "usage": [
+      "角色还原",
+      "日常叙事"
+    ],
+    "weather": "冬夜小雨"
+  }
+}

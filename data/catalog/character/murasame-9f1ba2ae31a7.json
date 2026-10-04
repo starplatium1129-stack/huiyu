@@ -1,0 +1,172 @@
+{
+  "kind": "character",
+  "id": "murasame",
+  "revision": 1,
+  "sortOrder": 84,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "murasame",
+    "profile": {
+      "id": "murasame",
+      "name": "丛雨",
+      "alias": [
+        "Murasame",
+        "ムラサメ",
+        "幼刀",
+        "村雨",
+        "丛雨丸"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-murasame.png?v=5",
+        "alt": "丛雨 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅黄绿及腰长发 · 侧发束 · 头顶翘起大呆毛",
+        "hair_color": "浅黄绿/淡草绿",
+        "eyes": "红宝石色晶莹双瞳",
+        "hairstyle": "双马尾侧长束 · 鲜红垂落发带 · 灵动呆毛",
+        "uniform": "神刀刀灵露肩改良和服 / 穗织夏日洋装",
+        "expression": "元气活泼 · 傲娇害羞 · 自称老朽/我辈",
+        "style": "cheerful ancient sacred sword spirit",
+        "signature": "浅草绿长发、头顶大呆毛、鲜红长发带、露肩改良和服与神刀丛雨丸"
+      },
+      "personality": [
+        "元气开朗、自来熟又有些小傲娇",
+        "第一人称自称“我辈/老朽”",
+        "身为神刀之灵却极度怕鬼",
+        "特别喜欢吃甜点尤其是棒棒糖和蛋糕",
+        "对将臣充满深深的依恋与守护之意"
+      ],
+      "likes": [
+        "甜点、草莓蛋糕和冰淇淋",
+        "在穗织的神社屋檐上晒太阳",
+        "被将臣摸摸头",
+        "擦拭和展示自己的神刀丛雨丸"
+      ],
+      "classic_cg": {
+        "title": "神刀相唤的初遇",
+        "description": "将臣拔出断裂的丛雨丸后，娇小的草绿发少女从天而降伴随着神圣光芒，轻巧地自称神刀之管理者。"
+      },
+      "identity": {
+        "role": "神刀「丛雨丸」之灵 / 朝武神社守护刀灵",
+        "age": "外表萝莉 / 存在数百岁",
+        "occupation": "神刀之灵 / 刀灵守护者",
+        "faction": "穗织镇 · 朝武神社"
+      },
+      "tags": [
+        "绿发",
+        "红瞳",
+        "呆毛",
+        "红发带",
+        "露肩和服",
+        "刀灵",
+        "萝莉",
+        "千恋万花"
+      ],
+      "bg_story": "丛雨是柚子社《千恋＊万花》的核心女主角之一，乃是穗织镇供奉的神刀「丛雨丸」中诞生的刀之灵。拥有娇小的幼女身姿、一头浅草绿长发和灵动的大呆毛，已在世间存在了数百年。自称“我辈”，性格活泼单纯、容易吃醋害羞，虽然本体是灵体却极度害怕幽灵怪物，在与将臣的羁绊中逐渐体会到人类的温暖与爱意。",
+      "palette": [
+        "浅草绿",
+        "朱砂红",
+        "曜石黑"
+      ],
+      "weather": [
+        "晴空温阳",
+        "神木晨曦",
+        "夏夜微风"
+      ],
+      "speech": "呼啊~感觉睡了好久好久呢。汝就是唤醒我辈的人吗？我辈正是神刀丛雨丸的管理者丛雨！",
+      "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "traits": [
+        "murasame (senren)",
+        "1girl",
+        "solo",
+        "pale_green_hair",
+        "light_green_hair",
+        "very_long_hair",
+        "sidelocks",
+        "ahoge",
+        "red_eyes",
+        "red_ribbon",
+        "hair_ribbon",
+        "flat_chest",
+        "spirit",
+        "katana",
+        "senren_banka"
+      ],
+      "accent_color": "#86efac",
+      "bg_color": "#08170e"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "murasame",
+        "murasame_(senren)",
+        "ムラサメ",
+        "丛雨",
+        "村雨",
+        "幼刀",
+        "千恋万花",
+        "senren banka"
+      ],
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "canon": {
+        "era": "和风奇幻美少女世界",
+        "formNotes": "神刀「丛雨丸」的刀之灵，外表是娇小玲珑的白/浅绿发少女，已存在数百年的神刀管理者；平时元气活泼自称“我辈”，有着极度怕鬼与爱吃甜点的可爱反差",
+        "research": "2026-09-02 调研（Danbooru murasame_(senren) + 萌娘百科官方设定）",
+        "world": "穗织镇（Hoori）· 神刀丛雨丸"
+      },
+      "curatedArtistStyles": [
+        "kobuichi",
+        "muririn",
+        "mika_pikazo"
+      ],
+      "displayName": "丛雨",
+      "exactPrefixes": [
+        "murasame_"
+      ],
+      "exactTokens": [
+        "murasame (senren)"
+      ],
+      "franchise": "YUZUSOFT",
+      "id": "murasame",
+      "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, and a petite slender figure.",
+      "identityTokens": [
+        "murasame (senren)",
+        "1girl",
+        "solo",
+        "pale_green_hair",
+        "light_green_hair",
+        "very_long_hair",
+        "sidelocks",
+        "blunt_bangs",
+        "ahoge",
+        "red_eyes",
+        "red_ribbon",
+        "hair_ribbon",
+        "flat_chest",
+        "small_breasts",
+        "spirit",
+        "senren_banka"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "ムラサメ (Murasame)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "arima_kana",
+  "revision": 1,
+  "sortOrder": 122,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "arima_kana",
+    "profile": {
+      "id": "arima_kana",
+      "name": "有马加奈",
+      "alias": [
+        "有马加奈",
+        "Kana Arima"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-arima_kana.png",
+        "alt": "有马加奈 全年龄日常立绘"
+      },
+      "visual_dna": {
+        "signature": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+        "hair": "red_hair, short_hair",
+        "eyes": "red_eyes",
+        "uniform": "B小町舞台打歌服",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "自尊心强",
+        "对表演认真",
+        "不轻易示弱"
+      ],
+      "likes": [
+        "钻研演技",
+        "舞台表演"
+      ],
+      "classic_cg": {
+        "title": "东京blade 的舞台中央",
+        "description": "舞台聚光灯下，她穿着打歌服握着麦克风完成定格姿势，汗水在额角发亮；眼神是专业的、燃烧的状态，整个画面只给她一个人和光——17 年艺龄的厚度。"
+      },
+      "identity": "Oshi no Ko · 有马加奈",
+      "tags": [
+        "Oshi no Ko",
+        "有马加奈",
+        "全年龄日常"
+      ],
+      "bg_story": "从童星时期开始磨练演技的演员，也曾以偶像身份登台。她的自尊背后是反复排练与对认可的渴望；舞台、剧本、帽子和不肯坦率示弱的日常表情，是人物还原的重点。",
+      "palette": [
+        "#d79baf",
+        "#753c50"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "这一次，我要把最好的表演留在舞台上。",
+      "source": "Oshi no Ko",
+      "traits": [
+        "arima_kana",
+        "oshi_no_ko",
+        "red_hair",
+        "short_hair",
+        "blunt_bangs"
+      ],
+      "accent_color": "#d79baf",
+      "bg_color": "#753c50"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "有马加奈",
+        "Kana Arima"
+      ],
+      "displayName": "有马加奈",
+      "exactPrefixes": [
+        "1girl, solo, arima_kana"
+      ],
+      "exactTokens": [
+        "arima_kana"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "arima_kana",
+      "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+      "identityTokens": [
+        "arima_kana",
+        "oshi_no_ko",
+        "red_hair",
+        "short_hair",
+        "blunt_bangs",
+        "red_eyes"
+      ],
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "originalName": "Kana Arima",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

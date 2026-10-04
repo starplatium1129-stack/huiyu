@@ -2,14 +2,14 @@
 mod tests;
 use super::{
     Error, Options, Result, blueprints, codec, fs, prompt, save as transaction_save, showcase,
-    state, transaction::Transaction,
+    transaction::Transaction,
 };
 use base64::{
     Engine, alphabet,
     engine::{DecodePaddingMode, GeneralPurpose, GeneralPurposeConfig},
 };
 use serde_json::{Value, json};
-use std::{path::Path, time::Instant};
+use std::time::Instant;
 use tokio_util::sync::CancellationToken;
 
 /// Client-side rendering already produced both JPEGs. Preserve those exact
@@ -65,8 +65,18 @@ fn source_string(value: Option<&Value>) -> String {
         Some(v) => prompt::text(v),
     }
 }
-fn entry(root: &Path, id: &str) -> Result<Value> {
-    let (_, _, scenes) = state::load_scenes(root)?;
+fn entry(options: &Options, id: &str) -> Result<Value> {
+    let catalog = crate::catalog::Catalog::open(crate::catalog::Options {
+        source: options.root.clone(),
+        database: options.runtime.join("content/catalog.sqlite"),
+    })
+    .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?;
+    let scenes = catalog
+        .records("scene")
+        .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?
+        .into_iter()
+        .map(|r| r.data)
+        .collect::<Vec<_>>();
     if let Some(scene) = scenes.iter().find(|s| s["id"] == id) {
         let mut entry = json!({});
         for key in ["id", "title", "category", "story", "char", "rating"] {
@@ -77,53 +87,54 @@ fn entry(root: &Path, id: &str) -> Result<Value> {
         entry["attempt"] = json!(1);
         return Ok(entry);
     }
-    let bp = root.join("data/scene-blueprints.json");
-    let popular = root.join("data/popular-characters.json");
-    if fs::safe(&bp, false, true)?.is_some() && fs::safe(&popular, false, true)?.is_some() {
-        let blueprints = fs::json(&bp)?;
-        let popular = fs::json(&popular)?;
-        if let Some(blueprint) = list(&blueprints, "blueprints").iter().find(|b| {
-            b["id"] == id
-                || format!(
-                    "pc_{}_{}",
-                    source_string(b.get("characterId")),
-                    source_string(b.get("id"))
-                ) == id
-        }) {
-            let character = list(&popular, "characters")
-                .iter()
-                .find(|c| c["id"] == blueprint["characterId"]);
-            let display = character.and_then(|c| c.get("displayName")).or_else(|| {
-                character
-                    .is_none()
-                    .then(|| blueprint.get("characterId"))
-                    .flatten()
-            });
-            let manifest_id = if id.starts_with("pc_") {
-                id.to_string()
-            } else {
-                format!(
-                    "pc_{}_{}",
-                    source_string(blueprint.get("characterId")),
-                    source_string(blueprint.get("id"))
-                )
-            };
-            let mut entry = json!({"id":manifest_id,"title":format!("{} / {}",source_string(display),source_string(blueprint.get("title"))),"story":if prompt::truthy(&blueprint["description"]){blueprint["description"].clone()}else{json!("")},"category":"热门角色"});
-            if let Some(value) = blueprint.get("characterId") {
-                entry["char"] = value.clone();
-            }
-            if let Some(value) = display {
-                entry["displayName"] = value.clone();
-            }
-            entry["rating"] = json!(if prompt::truthy(&blueprint["adult"]) {
-                "R18"
-            } else {
-                "All"
-            });
-            entry["attempt"] = json!(1);
-            entry["type"] = json!("popular");
-            return Ok(entry);
+    if let (Some(blueprints), Some(popular)) = (
+        catalog
+            .projection("scene-blueprints.json")
+            .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?,
+        catalog
+            .projection("popular-characters.json")
+            .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?,
+    ) && let Some(blueprint) = list(&blueprints, "blueprints").iter().find(|b| {
+        b["id"] == id
+            || format!(
+                "pc_{}_{}",
+                source_string(b.get("characterId")),
+                source_string(b.get("id"))
+            ) == id
+    }) {
+        let character = list(&popular, "characters")
+            .iter()
+            .find(|c| c["id"] == blueprint["characterId"]);
+        let display = character.and_then(|c| c.get("displayName")).or_else(|| {
+            character
+                .is_none()
+                .then(|| blueprint.get("characterId"))
+                .flatten()
+        });
+        let manifest_id = if id.starts_with("pc_") {
+            id.to_string()
+        } else {
+            format!(
+                "pc_{}_{}",
+                source_string(blueprint.get("characterId")),
+                source_string(blueprint.get("id"))
+            )
+        };
+        let mut entry = json!({"id":manifest_id,"title":format!("{} / {}",source_string(display),source_string(blueprint.get("title"))),"story":if prompt::truthy(&blueprint["description"]){blueprint["description"].clone()}else{json!("")},"category":"热门角色"});
+        if let Some(value) = blueprint.get("characterId") {
+            entry["char"] = value.clone();
         }
+        if let Some(value) = display {
+            entry["displayName"] = value.clone();
+        }
+        entry["rating"] = json!(if prompt::truthy(&blueprint["adult"]) {
+            "R18"
+        } else {
+            "All"
+        });
+        entry["attempt"] = json!(1);
+        entry["type"] = json!("popular");
+        return Ok(entry);
     }
     Err(Error::new(
         404,
@@ -148,7 +159,7 @@ fn write_showcase(
     {
         return Err(Error::invalid("需要合法场景或蓝图 ID"));
     }
-    let mut entry = entry(&options.root, id)?;
+    let mut entry = entry(options, id)?;
     let image = jpeg(&body["image"], "原图")?;
     let thumbnail = if prompt::truthy(&body["thumbnail"]) {
         Some(jpeg(&body["thumbnail"], "缩略图")?)

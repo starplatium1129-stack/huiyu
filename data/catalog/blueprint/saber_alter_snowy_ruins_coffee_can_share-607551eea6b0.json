@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_snowy_ruins_coffee_can_share",
+  "revision": 1,
+  "sortOrder": 225,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_snowy_ruins_coffee_can_share",
+    "title": "黑呆 · 寒风断壁的热咖啡分享",
+    "category": "风雪温存",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 寒风断壁的热咖啡分享】大雪纷飞的断壁残垣下，黑呆身披厚重的黑色大风衣，金发发髻在风雪中微颤。她手里握着两罐刚从自动售货机买来的滚烫罐装黑咖啡，将其中一罐重重地按进你的手心。暗金色的双眸微斜，傲慢中透着独属于暴君的霸道关怀——「拿着。如果因为寒冷而冻死在我的面前，那不仅是对我的侮辱，更是不可饶恕的死罪。」",
+    "location": "自动售货机旁的断壁避雪处",
+    "action": "在残墙下避雪，两手各持一罐热咖啡，将其中一罐递向同行者",
+    "timeOfDay": "冬日雪夜",
+    "lighting": "自动售货机投射出的明亮白光与暴雪倒影",
+    "camera": "cowboy shot, eye level, winter cool date view",
+    "mood": "傲慢体贴",
+    "sceneTags": [
+      "snowy_ruins",
+      "shelter",
+      "vending_machine",
+      "two_coffee_cans",
+      "offering_can",
+      "gloved_hands",
+      "black_winter_coat",
+      "visible_breath",
+      "vending_light",
+      "medium_shot"
+    ],
+    "promptProse": "Sheltering beneath a broken concrete wall beside a vending machine, Saber Alter offers one warm sealed coffee can to the viewer while keeping a second can in her other gloved hand. Her thick black overcoat, scarf and winter boots fit the snowy stop, with a few flakes settling on her blonde bun. Her breath is visible in the cold air; the vending light catches the closed can lids. The vending light catches the metal and her quietly insistent golden eyes. Keep both cans, both hands and the protective wall in view, without readable labels.",
+    "promptTokens": [
+      "snowy_ruins",
+      "shelter",
+      "vending_machine",
+      "two_coffee_cans",
+      "offering_can",
+      "gloved_hands",
+      "black_winter_coat",
+      "visible_breath",
+      "vending_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_winter_coffee",
+    "coverageTags": [
+      "date",
+      "winter",
+      "coffee"
+    ]
+  }
+}

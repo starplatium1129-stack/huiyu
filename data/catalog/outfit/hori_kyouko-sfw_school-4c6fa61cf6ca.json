@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/sfw_school",
+  "revision": 1,
+  "sortOrder": 876,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "片桐高校长发制服",
+      "prose": "a white wing-collar school shirt, dark blazer and knee-length pleated skirt, her chestnut hair worn long",
+      "tokens": [
+        "katagiri_senior_high_school_uniform",
+        "white_shirt",
+        "wing_collar",
+        "blazer",
+        "pleated_skirt",
+        "long_hair"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

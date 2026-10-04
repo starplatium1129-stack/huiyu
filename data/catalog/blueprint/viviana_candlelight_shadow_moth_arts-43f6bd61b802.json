@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "viviana_candlelight_shadow_moth_arts",
+  "revision": 1,
+  "sortOrder": 682,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "优雅侧身摆出古典细剑击剑架势，身后巨大影蛾金翼展开，剑尖凝聚星烛",
+    "camera": "cowboy shot, dynamic medium angle",
+    "category": "战场决胜",
+    "characterId": "viviana_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【薇薇安娜 · 微光照彻长夜的剑芒】昏暗沉寂的战场中央，薇薇安娜摆出高雅古典的击剑架势。金色细剑的尖端凝聚起一团璀璨如星辰的烛光，巨大的影蛾光翼在她身后展开，将周围的阴影与黑暗尽数驱散——「即使微光渺小……我也绝不会背弃我的誓言。」",
+    "id": "viviana_candlelight_shadow_moth_arts",
+    "lighting": "细剑尖端凝聚的耀眼星烛金光与身后影蛾光芒",
+    "location": "泰拉暗夜荒原战场",
+    "mood": "决然高洁",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "candle_knight_armor",
+    "promptProse": "Poised in an elegant classical fencing stance on a dark and quiet battlefield, Viviana Droste channels her brilliant Candle Knight Arts. Her golden rapier points forward with supreme precision, its tip ablaze with an intensely glowing golden candle flame that projects majestic radiant moth wings behind her back. Her flaxen wavy hair flows over polished golden pauldrons as her sapphire blue eyes shine with steadfast resolution. A magnificent cowboy shot captures her knightly dignity, intricate filigree armor details, and luminous magical effects with master-class anime illustration polish.",
+    "promptTokens": [
+      "battlefield",
+      "night",
+      "fencing_stance",
+      "rapier",
+      "glowing_sword",
+      "candle_flame",
+      "moth_wings",
+      "antlers",
+      "armor",
+      "opera_gloves",
+      "cowboy_shot",
+      "dynamic_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "battlefield",
+      "night",
+      "fencing_stance",
+      "rapier",
+      "glowing_sword",
+      "candle_flame",
+      "moth_wings",
+      "antlers",
+      "armor",
+      "opera_gloves"
+    ],
+    "timeOfDay": "深夜",
+    "title": "薇薇安娜 · 微光照彻长夜的剑芒"
+  }
+}

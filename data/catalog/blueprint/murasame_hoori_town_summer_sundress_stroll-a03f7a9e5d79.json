@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_hoori_town_summer_sundress_stroll",
+  "revision": 1,
+  "sortOrder": 1125,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手压草帽回眸张望，吊带裙摆随风摇曳，脸上带着探索小镇的好奇神采",
+    "camera": "cowboy shot, slight low angle, vibrant street depth",
+    "category": "夏日悠游",
+    "characterId": "murasame",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【丛雨 · 穗织温泉街的薄荷洋装漫步】温泉水汽袅袅的穗织古街石板路上，两旁是古色古香的和风旅馆与垂柳。丛雨换上一袭清凉的薄荷白吊带洋装，头戴系着红丝带的草帽。她轻快地单手压着草帽帽檐，另一只手在身边欢快摆动，好奇地打量着街边各式各样的小吃摊位，草绿色的长发在夏日微风中轻扬。",
+    "id": "murasame_hoori_town_summer_sundress_stroll",
+    "lighting": "明朗纯净的夏日山间阳光穿透柳树枝条的斑驳绿影",
+    "location": "穗织镇温泉老街石板路",
+    "mood": "明媚活泼",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "modern_dress",
+    "promptProse": "Strolling cheerfully along the cobblestone hot spring streets of Hoori in a breezy mint-white sundress, Murasame gently holds down her straw sunhat against the warm mountain breeze. Summer sunlight dapples through weeping willows, illuminating her flowing green hair and delighted expression.",
+    "promptTokens": [
+      "hot_spring_village",
+      "stone_street",
+      "sundress",
+      "straw_hat",
+      "walking",
+      "willow_trees",
+      "summer_sunlight",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "hot_spring_town",
+      "cobblestone_street",
+      "sundress",
+      "sun_hat",
+      "willow_trees",
+      "walking",
+      "summer_breeze"
+    ],
+    "timeOfDay": "上午",
+    "title": "丛雨 · 穗织温泉街的薄荷洋装漫步"
+  }
+}

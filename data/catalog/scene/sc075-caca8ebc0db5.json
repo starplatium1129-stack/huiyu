@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc075",
+  "revision": 1,
+  "sortOrder": 73,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "A school of fish turns behind the aquarium glass before Shiki Natsume notices the viewer calling. She stands in a navy cardigan, white blouse and light-grey trousers, with one palm resting on the glass at shoulder height. Her head is still tilted toward the fish and her golden eyes retain a look of absorbed wonder. Blue water reflections travel across her dark hair and the quiet side profile.",
+    "camera": "玻璃幕墙前侧面中景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "惊喜",
+    "id": "sc075",
+    "lighting": "水族馆蓝色水纹光",
+    "location": "水族馆大型玻璃幕墙前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, navy_cardigan, white_blouse, grey_trousers, standing, palm_on_glass, looking_up, side_view, attentive_expression, aquarium, large_aquarium_window, school_of_fish, blue_water, water_caustics, reflected_light, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【夏目 · 蓝光里的忘神片刻】水族馆巨大的玻璃幕墙前，夏目难得忘记周围，仰头追随成群游鱼。蓝色波纹掠过她的黑发与眼下泪痣，你叫了两次她才回神。她轻轻靠上玻璃，语气仍很平淡——「鱼确实比某人安静。不过……你在这儿也不算碍事，再陪我看一会儿。」",
+    "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
+    "tags": [
+      "navy_cardigan",
+      "white_blouse",
+      "grey_trousers",
+      "standing",
+      "palm_on_glass",
+      "looking_up",
+      "side_view",
+      "attentive_expression",
+      "aquarium",
+      "large_aquarium_window",
+      "school_of_fish",
+      "blue_water",
+      "water_caustics",
+      "reflected_light",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "蓝光里的忘神片刻",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 913,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "毛利兰·成人私密造型",
+      "prose": "a private adult ensemble built around small_towel, dressing_room, bikini, red_bikini, strap_slip, completely_nude",
+      "tokens": [
+        "small_towel",
+        "dressing_room",
+        "bikini",
+        "red_bikini",
+        "strap_slip",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

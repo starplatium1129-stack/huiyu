@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "nana_deviluke_flying_ship_balcony",
+  "revision": 1,
+  "sortOrder": 1269,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手扶着护盾栏杆眺望蔚蓝地球，微重力下长双马尾与爱心尾巴飘拂，神采飞扬",
+    "camera": "cowboy shot, low angle, sweeping cosmic planetary backdrop",
+    "category": "星际王族",
+    "characterId": "nana_asta_deviluke",
+    "coverageTags": [
+      "royal"
+    ],
+    "description": "【娜娜 · 皇家战舰露台的星河眺望】停泊在地球轨道上的戴比路克王家战舰露天观景甲板边，浩瀚星空与地球的蔚蓝弧线近在咫尺。娜娜身穿暗红相间的王女科技短裙，单手扶着能量护盾栏杆。太空中的微重力让她的粉色长双马尾轻盈悬浮，黑色的爱心尾巴在身后自如舒展。她侧过脸庞注视着下方的蓝色行星，眼神中闪烁着对异星冒险的向往。",
+    "id": "nana_deviluke_flying_ship_balcony",
+    "lighting": "地球大气层边缘折射的极亮蔚蓝弧光与深空繁星点点",
+    "location": "轨道星际战舰露天观景甲板边缘",
+    "mood": "辽阔壮丽",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "deviluke_dress",
+    "promptProse": "Resting one hand on the energy-shield railing of an orbital royal starship overlooking the glowing curve of Earth, Nana gazes into the cosmos in her dark-grey and vermilion Deviluke royal mini-dress. Starlight reflects along her weightless pink twin-tails and the graceful sweep of her devil tail. Cowboy shot, low angle, sweeping cosmic planetary backdrop, cinematic lighting.",
+    "promptTokens": [
+      "starship_deck",
+      "deep_space",
+      "earth_view",
+      "futuristic_dress",
+      "demon_tail",
+      "floating_hair",
+      "twintails",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting",
+      "dark_grey_dress",
+      "vermilion_dress",
+      "one_hand_on_rail"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "starship",
+      "space",
+      "earth",
+      "futuristic_dress",
+      "demon_tail",
+      "floating_hair",
+      "twintails",
+      "sci-fi",
+      "dark_grey_dress",
+      "vermilion_dress",
+      "one_hand_on_rail"
+    ],
+    "timeOfDay": "外太空",
+    "title": "娜娜 · 皇家战舰露台的星河眺望"
+  }
+}

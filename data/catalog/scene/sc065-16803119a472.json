@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc065",
+  "revision": 1,
+  "sortOrder": 63,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a side medium shot on a library window seat in the autumn afternoon, Shiki Natsume wears a beige trench coat over a black turtleneck and pleated skirt with sheer black tights and brown ankle boots. She raises a burgundy book to cover her lower face and peeks over it with a heavy blush as warm window light falls through the dust.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "侧面",
+    "category": "R15",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc065",
+    "lighting": "窗光",
+    "location": "图书馆窗边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, beige_trench_coat, black_turtleneck, pleated_skirt, sheer_black_tights, brown_ankle_boots, sitting_on_library_window_seat, holding_burgundy_open_book_in_front_of_lower_face, peeking_over_book, heavy_blush, tall_bookshelves, autumn_sunlight_streaming_through_window, dust_motes, side_medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 书页挡不住的侧脸】秋日午后，夏目坐在图书馆窗边阅读，阳光沿着黑色长发落在书页上。她早已发现你隔着书架偷看，直到同一页停了太久才把书抬高，遮住泛红的下半张脸——「公共场合一直盯着别人很没礼貌。真想坐在这里就过来……别像可疑人物一样躲着。」",
+    "storyJa": "【夏目・本のページに遮られない横顔】秋の午後、夏目は図書館の窓際に座って本を読んでいました。太陽の光が彼の長い黒髪に沿って本のページに降り注いでいました。彼女はあなたが本棚から覗いていることにすでに気づいていました。あなたが同じページで長時間立ち止まり、顔の赤い下半分を覆うまで、彼女は本を持ち上げませんでした。――「公共の場所で人をじっと見るのは失礼。ここに座りたいなら、こっちへ来て……不審者みたいに隠れないで。」",
+    "tags": [
+      "mole_under_eye",
+      "trench_coat",
+      "turtleneck",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "library",
+      "medium_shot",
+      "ankle_boots",
+      "window_light"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "书页挡不住的侧脸",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

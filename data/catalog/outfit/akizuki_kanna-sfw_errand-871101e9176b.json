@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "akizuki_kanna/sfw_errand",
+  "revision": 1,
+  "sortOrder": 633,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "akizuki_kanna",
+    "outfit": {
+      "default": false,
+      "id": "sfw_errand",
+      "isDefault": false,
+      "name": "粗点心店外出便装",
+      "prose": "a cream collared blouse, dark red midi skirt and light jacket",
+      "tokens": [
+        "cream_blouse",
+        "collar",
+        "red_skirt",
+        "jacket"
+      ]
+    }
+  }
+}

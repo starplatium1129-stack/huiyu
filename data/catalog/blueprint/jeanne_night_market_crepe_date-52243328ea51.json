@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "jeanne_night_market_crepe_date",
+  "revision": 1,
+  "sortOrder": 236,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_night_market_crepe_date",
+    "title": "圣女贞德 · 夜市可丽饼的约会·「原来甜食……是这么幸福的东西啊」",
+    "category": "街头约会",
+    "characterId": "jeanne_d_arc",
+    "description": "【灯火通明的夜市街角·夜晚】贞德双手捧着一块涂满草莓与奶油的可丽饼，小心翼翼地咬下第一口——下一瞬，她的眼睛倏地睁大，金色的眉毛幸福地舒展开来。身着便服披肩的她全然不顾圣女形象地小口小口吃着，嘴角沾上一点奶油也浑然不觉。夜市的暖红灯笼在她紫蓝色的眼眸里跳动，映出满溢的、毫无防备的幸福。",
+    "location": "夜市街角小吃摊前",
+    "action": "双手捧可丽饼小口品尝，眼睛惊喜睁大，嘴角沾着奶油浑然不觉",
+    "timeOfDay": "夜晚",
+    "lighting": "暖红灯笼串光与摊位蒸汽暖光笼罩侧脸",
+    "camera": "medium close-up, holding crepe, lantern bokeh, delighted expression",
+    "mood": "幸福满溢、反差萌",
+    "sceneTags": [
+      "night_market",
+      "strawberry_crepe",
+      "paper_wrapper",
+      "both_hands",
+      "surprised_eyes",
+      "cream_spot",
+      "shawl",
+      "golden_braid",
+      "red_lantern_light",
+      "medium_closeup"
+    ],
+    "promptProse": "At the lantern-lit night market, Jeanne holds the paper-wrapped strawberry crepe with both hands and pauses after her first careful bite. Her violet-blue eyes widen with surprise before she smiles at the taste, unaware of a tiny dab of cream at the corner of her mouth. A soft shawl covers the white blouse above her long blue skirt, with the golden braid resting over one shoulder. Warm red lantern light separates her face and the crepe from the evening stalls. Keep the two-handed hold and small reaction clear, with no lettering.",
+    "promptTokens": [
+      "night_market",
+      "strawberry_crepe",
+      "paper_wrapper",
+      "both_hands",
+      "surprised_eyes",
+      "cream_spot",
+      "shawl",
+      "golden_braid",
+      "red_lantern_light",
+      "medium_closeup",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_market_shawl",
+    "coverageTags": [
+      "daily",
+      "date",
+      "girlfriend"
+    ]
+  }
+}

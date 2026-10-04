@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/sfw_formal",
+  "revision": 1,
+  "sortOrder": 903,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "sfw_formal",
+      "name": "吹雪组绿色正装",
+      "prose": "an opaque forest-green midi dress, pearl necklace and white collared coat",
+      "tokens": [
+        "green_dress",
+        "midi_dress",
+        "pearl_necklace",
+        "white_coat"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

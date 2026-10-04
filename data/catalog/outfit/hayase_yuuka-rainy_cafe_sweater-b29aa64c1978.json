@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/rainy_cafe_sweater",
+  "revision": 1,
+  "sortOrder": 511,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "default": false,
+      "id": "rainy_cafe_sweater",
+      "isDefault": false,
+      "name": "雨日咖啡馆·风衣搭椅",
+      "prose": "a cream ribbed knit turtleneck sweater and navy tartan skirt, with a beige trench coat draped over the back of the wooden chair, dark tights and ankle boots",
+      "tokens": [
+        "turtleneck",
+        "sweater",
+        "plaid_skirt",
+        "trench_coat",
+        "coat_on_chair",
+        "tights",
+        "ankle_boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/sfw_night",
+  "revision": 1,
+  "sortOrder": 38,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "sfw_night",
+      "name": "观星保暖外套",
+      "prose": "a dark padded jacket, wool scarf, warm trousers and glasses",
+      "tokens": [
+        "padded_jacket",
+        "wool_scarf",
+        "pants",
+        "glasses"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

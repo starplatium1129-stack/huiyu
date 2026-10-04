@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/casual_summer_dress",
+  "revision": 1,
+  "sortOrder": 739,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "id": "casual_summer_dress",
+      "name": "夏日淡紫花朵私服连身裙",
+      "prose": "a delicate light lilac summer sundress patterned with soft blossoms, ribbon tied at her slender waist, bare shoulders, and a light cardigan draped over her arms",
+      "tokens": [
+        "sundress",
+        "floral_dress",
+        "purple_dress",
+        "bare_shoulders",
+        "bare_legs",
+        "casual_wear"
+      ]
+    }
+  }
+}

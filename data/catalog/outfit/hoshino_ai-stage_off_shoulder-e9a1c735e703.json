@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/stage_off_shoulder",
+  "revision": 1,
+  "sortOrder": 524,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "default": false,
+      "id": "stage_off_shoulder",
+      "isDefault": false,
+      "name": "舞台服·露肩粉裙",
+      "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes",
+      "tokens": [
+        "off_shoulder",
+        "pink_dress",
+        "blue_necktie",
+        "white_thighhighs",
+        "black_shoes"
+      ]
+    }
+  }
+}

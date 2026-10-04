@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "dorothy_nikke",
+  "revision": 1,
+  "sortOrder": 157,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "dorothy_nikke",
+    "profile": {
+      "id": "dorothy_nikke",
+      "name": "桃乐丝",
+      "alias": [
+        "桃乐丝",
+        "Dorothy"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-dorothy_nikke.png?v=c61c176d88ae",
+        "alt": "桃乐丝 · 拱廊前的清晨迎接场景样张"
+      },
+      "visual_dna": {
+        "signature": "Dorothy from Goddess of Victory: NIKKE, with very long pink hair, a single side bun, lifted temple sections and violet eyes. Her carefully measured smile and elegant posture carry the composure of an experienced guide.",
+        "hair": "pink_hair, very_long_hair, hair_intakes",
+        "eyes": "purple_eyes",
+        "uniform": "伊甸园白色端庄长裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "举止优雅，习惯维持周全的礼节",
+        "对秩序与理想有坚持，真实情绪不轻易外露",
+        "独处照料花草时，专注能暂时取代社交姿态"
+      ],
+      "likes": [
+        "修整玫瑰",
+        "安静茶歇",
+        "维护熟悉环境的整洁"
+      ],
+      "classic_cg": {
+        "title": "桃乐丝 · 伊甸园的迎宾",
+        "description": "伊甸园入口，她双手交叠在身前向来访者躬身致意，白裙与粉色长发在乐土的风里一尘不染；「欢迎来到伊甸园」——完美的笑容，完美的弧度，完美的距离。"
+      },
+      "identity": "Goddess of Victory: NIKKE · 桃乐丝",
+      "tags": [
+        "桃乐丝",
+        "胜利女神：妮姬",
+        "日常"
+      ],
+      "bg_story": "伊甸园的引导者，举止从容，对秩序与自己珍视的事物十分执着。粉色长发、单侧发髻和紫瞳是核心，茶会、园艺和旧照片表现不同的日常情绪。",
+      "palette": [
+        "#d4a9c3",
+        "#282532"
+      ],
+      "source": "Goddess of Victory: NIKKE",
+      "speech": "欢迎，请跟我往这边走。",
+      "traits": [
+        "dorothy_(nikke)",
+        "goddess_of_victory:_nikke",
+        "pink_hair",
+        "very_long_hair",
+        "single_side_bun"
+      ],
+      "accent_color": "#d4a9c3",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "dorothy_nikke",
+      "displayName": "桃乐丝",
+      "originalName": "Dorothy",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "桃乐丝",
+        "Dorothy"
+      ],
+      "identityProse": "Dorothy from Goddess of Victory: NIKKE, with very long pink hair, a single side bun, lifted temple sections and violet eyes. Her carefully measured smile and elegant posture carry the composure of an experienced guide.",
+      "identityTokens": [
+        "dorothy_(nikke)",
+        "goddess_of_victory:_nikke",
+        "pink_hair",
+        "very_long_hair",
+        "single_side_bun",
+        "hair_intakes",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "dorothy_(nikke)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, dorothy_(nikke)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

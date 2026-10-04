@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/casual_street_hoodie",
+  "revision": 1,
+  "sortOrder": 576,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "casual_street_hoodie",
+      "name": "匹诺康尼街头潮牌卫衣",
+      "prose": "a stylish oversized red and black streetwear hoodie with neon graffiti accents, denim micro-shorts, mismatched striped stockings, and playful hair clips",
+      "tokens": [
+        "hoodie",
+        "oversized_hoodie",
+        "red_hoodie",
+        "denim_shorts",
+        "short_shorts",
+        "thighhighs",
+        "sneakers",
+        "streetwear"
+      ]
+    }
+  }
+}

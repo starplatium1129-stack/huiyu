@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_christmas_underworld_visit",
+  "revision": 1,
+  "sortOrder": 257,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_christmas_underworld_visit",
+    "title": "伊什塔尔 · 冥界圣诞的来访·「姐姐的东西，本女神先看看」",
+    "category": "专属羁绊",
+    "characterId": "ishtar_fate",
+    "description": "【冥界·圣诞夜】以「慰问妹妹」之名，伊什塔尔拎着一大袋圣诞礼物踏进了冥界的雪原。她把包装精美的盒子塞到你手里，红瞳别向一边——「给、给你的。人类世界流行这个……本女神只是入乡随俗！啊，艾蕾要是问起来，就说是一半的一半，分她的那半另算！」",
+    "location": "冥界雪原",
+    "action": "礼物袋放在脚边，双手递出包装好的礼盒，红瞳别向一边",
+    "timeOfDay": "圣诞夜",
+    "lighting": "冥界幽蓝雪光与礼物缎带的暖金",
+    "camera": "medium shot, snowfield gift, blue-gold contrast, tsundere mood",
+    "mood": "姐妹情谊、傲娇送礼",
+    "sceneTags": [
+      "underworld_snowfield",
+      "christmas_gift",
+      "offering_box",
+      "both_gloved_hands",
+      "gift_sack_on_ground",
+      "white_winter_coat",
+      "red_scarf",
+      "looking_aside",
+      "blue_snow_light",
+      "medium_shot"
+    ],
+    "promptProse": "On the snowy underworld plain, Ishtar offers a neatly wrapped Christmas box with both gloved hands while looking bashfully to the side. The larger sack of presents stands beside her boots, leaving her hands free for the gift. A warm white coat, red scarf and long trousers replace her summer street clothes; The star-shaped hairpin remains above her dark hair. Blue snowlight catches the wrapping. Frame the complete handover pose and grounded gift sack, with no readable labels or lettering.",
+    "promptTokens": [
+      "underworld_snowfield",
+      "christmas_gift",
+      "offering_box",
+      "both_gloved_hands",
+      "gift_sack_on_ground",
+      "white_winter_coat",
+      "red_scarf",
+      "looking_aside",
+      "blue_snow_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "metal_tiara"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "sfw_christmas_winter",
+    "coverageTags": [
+      "daily",
+      "story"
+    ]
+  }
+}

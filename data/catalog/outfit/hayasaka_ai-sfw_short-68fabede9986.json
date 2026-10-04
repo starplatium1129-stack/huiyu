@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/sfw_short",
+  "revision": 1,
+  "sortOrder": 776,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "default": false,
+      "id": "sfw_short",
+      "isDefault": false,
+      "name": "离职后短发旅行装",
+      "prose": "a light blue jacket over a cream top and dark trousers, with her pale blonde hair cut in a neat short bob",
+      "tokens": [
+        "blue_jacket",
+        "cream_shirt",
+        "dark_pants",
+        "short_hair",
+        "bob_cut"
+      ]
+    }
+  }
+}

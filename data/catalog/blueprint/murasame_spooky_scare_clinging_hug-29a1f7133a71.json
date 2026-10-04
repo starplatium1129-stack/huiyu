@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_spooky_scare_clinging_hug",
+  "revision": 1,
+  "sortOrder": 1129,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "吓得扑抱进对方怀中，双手紧抓胸口衣襟，眼含泪花脸埋肩膀，呆毛剧颤",
+    "camera": "medium close-up, first-person pov, emotional proximity",
+    "category": "萌趣反差",
+    "characterId": "murasame",
+    "compositionIntent": "group",
+    "coverageTags": [
+      "cute"
+    ],
+    "description": "【丛雨 · 怕鬼刀灵的投怀送抱】傍晚昏暗静寂的神社后山小径旁，古老的石灯笼在落日阴影中透着丝丝凉意。远处一阵怪异的树影摇曳，把身为刀灵的丛雨吓得发出一声娇呼，整个人猛地扑入将臣怀中。两只小手死死揪住将臣胸口的衣服不放，泪眼汪汪、眼眶微红地把小脸埋在将臣肩窝——「呜哇啊啊！刚才那里有可疑的白影动了一下！我辈才没有害怕……只是借汝的肩膀避一避啦！」",
+    "id": "murasame_spooky_scare_clinging_hug",
+    "lighting": "落日残留的幽暗冷紫暮光与石灯笼透出的微弱灯火",
+    "location": "神社后山黄昏古树石阶小路",
+    "mood": "反差娇羞",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "spirit_kimono",
+    "promptProse": "Clinging tightly to her companion in sudden fright along a shadowy forest path at dusk, Murasame buries her tear-streaked face against the companion's chest. Dim twilight filters through dense ancient pines, highlighting her trembling red hair ribbons and adorably terrified pout.",
+    "promptTokens": [
+      "forest_path",
+      "dusk",
+      "hugging_tightly",
+      "clinging",
+      "teary_eyes",
+      "blushing",
+      "sleeveless_kimono",
+      "stone_lantern",
+      "detailed_background",
+      "cinematic_lighting",
+      "red_hair_ribbons"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "mountain_path",
+      "scared",
+      "hugging",
+      "clinging",
+      "teary_eyes",
+      "blush",
+      "dusk",
+      "lantern"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "丛雨 · 怕鬼刀灵的投怀送抱"
+  }
+}

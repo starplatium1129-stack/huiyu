@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "jeanne_d_arc",
+  "revision": 1,
+  "sortOrder": 60,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "jeanne_d_arc",
+    "profile": {
+      "id": "jeanne_d_arc",
+      "name": "圣女贞德",
+      "alias": [
+        "Jeanne d'Arc",
+        "贞德",
+        "圣女贞德",
+        "Ruler",
+        "法兰西圣女",
+        "白贞"
+      ],
+      "type": "popular",
+      "icon": "⚜️",
+      "portrait": {
+        "image": "../assets/characters/popular-jeanne_d_arc.png?v=1",
+        "alt": "圣女贞德 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰金色长发 · 圣洁单长辫",
+        "hair_color": "黄金 / 麦金",
+        "eyes": "紫蓝色眼眸 · 慈悲而坚定",
+        "hairstyle": "日常长辫 · 晨间梳发场景散发",
+        "uniform": "白银胸铠Ruler圣装 · 白披风与神圣战旗",
+        "expression": "温柔慈悲 · 祈祷时圣洁 · 战场上凛然不屈",
+        "style": "holy maiden saint knight",
+        "signature": "金色长辫、白银胸铠、神圣战旗吾主在此与不动信仰"
+      },
+      "personality": [
+        "对众生的苦难怀有无限的慈悲",
+        "信念如战旗般绝不动摇的坚韧",
+        "被夸奖或被示爱时毫无防备的脸红",
+        "把所有人的幸福看得比自己重"
+      ],
+      "likes": [
+        "清晨小教堂里的静祷",
+        "草莓奶油可丽饼",
+        "被你编头发时的安静晨光"
+      ],
+      "classic_cg": {
+        "title": "奥尔良的圣旗不倒",
+        "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
+      },
+      "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
+      "tags": [
+        "Fate",
+        "圣女",
+        "金色长辫",
+        "白银胸铠",
+        "神圣战旗",
+        "信仰女友"
+      ],
+      "bg_story": "法兰西的农家少女，听见神的召唤便再未回头。她举起战旗拯救了祖国，却被火焰送回了神的怀抱——而如今以Ruler之身再临的她，依然把温柔留给生者，把坚定留给战场。只有面对你时，这位献出了一切的圣女才肯承认：自己也想被谁守护一次。",
+      "palette": [
+        "#60a5fa",
+        "#f8fafc",
+        "#1e40af",
+        "#fbbf24"
+      ],
+      "weather": "奥尔良麦田的午后 / 大教堂的圣光正午",
+      "speech": "「愿主宽恕你的罪过……啊，不、现在不是祈祷的时候！那个……可丽饼，只剩最后一口了哦？」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "holy_maiden",
+        "ruler_class",
+        "sacred_banner",
+        "unshaken_faith"
+      ],
+      "accent_color": "#60a5fa",
+      "bg_color": "#1e40af"
+    },
+    "popular": {
+      "id": "jeanne_d_arc",
+      "displayName": "圣女贞德",
+      "originalName": "ジャンヌ・ダルク",
+      "franchise": "Fate",
+      "aliases": [
+        "Jeanne d'Arc",
+        "贞德",
+        "圣女贞德",
+        "Ruler",
+        "法兰西圣女",
+        "白贞"
+      ],
+      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityTokens": [
+        "jeanne d'arc (fate)",
+        "fate/grand_order",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "ahoge",
+        "purple_eyes",
+        "gentle_smile",
+        "holy_motherly"
+      ],
+      "exactTokens": [
+        "jeanne d'arc (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, jeanne d'arc (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Takeuchi Takashi",
+        "konoe ototsu"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

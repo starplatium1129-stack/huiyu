@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "shinomiya_kaguya",
+  "revision": 1,
+  "sortOrder": 108,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shinomiya_kaguya",
+    "profile": {
+      "id": "shinomiya_kaguya",
+      "name": "四宫辉夜",
+      "alias": [
+        "Shinomiya Kaguya",
+        "辉夜",
+        "四宫辉夜",
+        "副会长",
+        "秀知院的辉夜"
+      ],
+      "type": "popular",
+      "icon": "🌙",
+      "portrait": {
+        "image": "../assets/characters/popular-shinomiya_kaguya.png?v=1",
+        "alt": "四宫辉夜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色短发折叠马尾 · 红缎带",
+        "hair_color": "乌黑 / 墨黑",
+        "eyes": "红色垂眼 · 恋爱时软化",
+        "hairstyle": "折叠马尾 · 分线刘海与侧发",
+        "uniform": "秀知院学园制服 · 黑色背心裙与黑丝",
+        "expression": "大小姐矜持 · 恋爱时傲娇破防 · 『冰』模式冷艳",
+        "style": "elegant heiress tsundere genius",
+        "signature": "折叠马尾红缎带、红瞳垂眼与『お可愛いこと』"
+      },
+      "personality": [
+        "多才多艺的万能天才",
+        "把『先告白的人就输了』奉为铁律的傲娇",
+        " grew up sheltered 导致常识缺失的反差",
+        "恋爱时毫无防备的柔软"
+      ],
+      "likes": [
+        "与学生会的日常斗智",
+        "烟花与祭典",
+        "被你戳破傲娇的瞬间"
+      ],
+      "classic_cg": {
+        "title": "烟花下的お可愛いこと",
+        "description": "深红振袖回眸的瞬间，金色烟花与傲娇浅笑同时绽放。"
+      },
+      "identity": "辉夜大小姐想让我告白 女主角 · 秀知院学生会副会长 · 四宫家千金",
+      "tags": [
+        "辉夜大小姐",
+        "傲娇大小姐",
+        "黑发红瞳",
+        "折叠马尾",
+        "学生会",
+        "恋爱头脑战"
+      ],
+      "bg_story": "四宫家的名门千金，秀知院天文台的学生会副会长。她可以解出任何难题、赢下任何比赛，唯独在『喜欢你』这三个字上输得彻彻底底。那场持续了无数回合的恋爱头脑战，最后是谁先告白其实已经不重要了——重要的是，烟花下那句『お可愛いこと』，终于变成了只对你一人的真心话。",
+      "palette": [
+        "#e11d48",
+        "#f8fafc",
+        "#450a0a",
+        "#fbbf24"
+      ],
+      "weather": "京都夏夜烟花 / 学生会室的夕阳",
+      "speech": "「お可愛いこと……哼、今天的作战也是本小姐的完全胜利。……诶，你、你刚才笑什么！不许笑！」",
+      "source": "赤坂アカ《辉夜大小姐想让我告白 / Kaguya-sama: Love Is War》",
+      "traits": [
+        "love_is_war",
+        "vice_president",
+        "folded_ponytail",
+        "okawaii_koto"
+      ],
+      "accent_color": "#e11d48",
+      "bg_color": "#450a0a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "Shinomiya Kaguya",
+        "辉夜",
+        "四宫辉夜",
+        "副会长",
+        "秀知院的辉夜"
+      ],
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Aka Akasaka"
+      ],
+      "displayName": "四宫辉夜",
+      "exactPrefixes": [
+        "1girl, solo, shinomiya_kaguya"
+      ],
+      "exactTokens": [
+        "shinomiya_kaguya"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "shinomiya_kaguya",
+      "identityProse": "Shinomiya Kaguya from Kaguya-sama: Love Is War, the elegant vice president of Shuchiin Academy, a wealthy refined beauty with short black hair styled in a folded ponytail with parted bangs and sidelocks, and tareme red eyes that soften when she is in love",
+      "identityTokens": [
+        "shinomiya_kaguya",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "folded_ponytail",
+        "parted_bangs",
+        "sidelocks",
+        "red_eyes",
+        "tareme"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "originalName": "四宮かぐや",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

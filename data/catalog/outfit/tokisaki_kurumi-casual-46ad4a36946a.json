@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/casual",
+  "revision": 1,
+  "sortOrder": 45,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "casual",
+      "name": "私服",
+      "prose": "a casual black outfit with a choker and loose cardigan",
+      "tokens": [
+        "casual_clothes",
+        "choker",
+        "cardigan",
+        "black_clothes"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

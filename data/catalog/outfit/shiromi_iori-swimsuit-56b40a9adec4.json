@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/swimsuit",
+  "revision": 1,
+  "sortOrder": 514,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "default": false,
+      "id": "swimsuit",
+      "isDefault": false,
+      "name": "夏日灼阳泳装",
+      "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her hair ribbons, and a water squirt rifle",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "white_bikini",
+        "halterneck",
+        "tanlines",
+        "tan_lines",
+        "pareo",
+        "sunglasses",
+        "sandals",
+        "water_gun",
+        "beachwear"
+      ]
+    }
+  }
+}

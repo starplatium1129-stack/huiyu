@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/sfw_casual",
+  "revision": 1,
+  "sortOrder": 864,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "周末宽松帽衫与长裤",
+      "prose": "a roomy grey hoodie and relaxed dark trousers",
+      "tokens": [
+        "grey_hoodie",
+        "dark_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

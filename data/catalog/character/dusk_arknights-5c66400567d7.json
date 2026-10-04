@@ -1,0 +1,142 @@
+{
+  "kind": "character",
+  "id": "dusk_arknights",
+  "revision": 1,
+  "sortOrder": 22,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "dusk_arknights",
+    "profile": {
+      "id": "dusk_arknights",
+      "name": "夕",
+      "alias": [
+        "Dusk",
+        "夕",
+        "夕娘娘",
+        "十一妹",
+        "小夕"
+      ],
+      "type": "popular",
+      "icon": "🖌️",
+      "visual_dna": {
+        "hair": "墨黑色长发，发梢及内层发丝呈现深青绿/墨绿色水墨渐变晕染（black hair with teal/emerald-green ink gradient tips），发质柔顺飘逸，尾端伴随水墨气流自然漂浮；额前留有中分齐眉刘海，双颊两侧垂下微卷的长发发绺。",
+        "hair_color": "墨黑底色配青绿水墨渐变（Black fading to teal / cyan-green ink gradient）",
+        "eyes": "青碧色/墨绿色眼眸（Teal / emerald green eyes），眼尾处抹有典雅艳丽的朱红色眼影与泪痣般精致眼妆，神情慵懒清冷、微带倦怠与傲慢厌世之感。",
+        "hairstyle": "水墨黑长直/微卷及腰披肩长发，发丝带有国风水墨流转质感，两侧各有一缕青丝垂于胸前，自然垂落或随泼墨气流悬浮起伏。",
+        "uniform": "中式新水墨风改良长袍与开衩长裙：内着墨黑底色、缀有暗青色山水云纹的无袖修身高开衩旗袍/长衫，腰间束墨绿与朱红丝绦挂饰；外罩一件轻薄如烟、半透明的墨色与雾白渐变广袖薄纱大氅（仙风羽织道袍），衣摆呈现墨滴流淌与飞白散落特效；下身赤足（barefoot，未穿鞋履），踝间环绕墨痕；手持长杆中式大毛笔与水墨画卷/墨色短剑。",
+        "expression": "清冷出尘、慵懒倦怠、高傲孤僻、厌世死宅。常呈半睁半阖的厌倦眼神，或略带挑衅与不耐烦的清冷浅笑。",
+        "style": "新中式国风写意水墨（Neo-Chinese Ink Wash Painting）、仙风道骨与现代国潮解构、青黑青绿主色调、墨韵虚实。",
+        "signature": "头顶生有一对深青墨色、微透光泽的玉质龙角（Teal jade dragon horns）；身后有一条修长厚重且末端泛青绿的水墨龙尾（Ink-wash dragon tail）；周身漂浮着墨滴、墨痕烟霞与水墨小精怪（召唤物“小自在/墨魉”）；手持巨大毛笔与泼墨画卷；赤足踏墨凌空。"
+      },
+      "personality": [
+        "孤僻避世",
+        "深度死宅",
+        "傲娇毒舌",
+        "狂热创作",
+        "慵懒随性",
+        "内敛护短",
+        "清冷超然",
+        "厌恶社交"
+      ],
+      "likes": [
+        "闭关画画（待在画中世界专心创作）",
+        "独处与绝对安静的环境（讨厌出门和被俗人打扰）",
+        "收集稀世画具与珍奇矿物颜料",
+        "通过画卷洞察大千世界之景",
+        "调侃与嫌弃姐姐年（但关键时刻互相关心）"
+      ],
+      "identity": {
+        "role": "罗德岛干员 / 岁兽分裂化身之一（排行第十一 / 夕娘娘） / 炎国国画大家",
+        "age": "未知（外表为年轻女子，实为存活上千年的岁兽本体碎片化身）",
+        "occupation": "画师 / 术师（扩散术师）",
+        "faction": "炎国 / 岁（巨兽分裂体） / 罗德岛合作干员"
+      },
+      "tags": [
+        "墨黑底色配青绿水墨渐变（Black fading to teal / cyan-green ink gradient）",
+        "青碧色/墨绿色眼眸（Teal / emerald green eyes），眼尾处抹有典雅艳丽的朱红色眼影与泪痣般精致眼妆，神情慵懒清冷、微带倦怠与傲慢厌世之感。"
+      ],
+      "bg_story": "夕是炎国古老神祇巨兽「岁」分裂出的十二枚碎片化身之一，排行第十一，被尊称为「夕娘娘」。她拥有将万物具象化入画、化假为真、开辟「画中天地」的造物神迹，因厌倦尘世与兄妹纷争，曾在大荒城夕娥山的画卷中闭关避世数百年。在姐姐「年」联合罗德岛众人将其逼出画境后，为了收集稀有颜料及应对岁兽本体复苏的存亡危机，夕勉强接受了罗德岛的合作邀请。然而她骨子里依旧是个极度厌恶出门与上班的顶级死宅，日常大多时间都将自己锁在罗德岛特辟的专属画室中醉心丹青。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "dusk (arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "green_eyes",
+        "horns",
+        "tail",
+        "qipao",
+        "ink_wash",
+        "chinese_clothes",
+        "white_clothes",
+        "black_clothes",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-dusk_arknights.png?v=5",
+        "alt": "夕热门角色立绘"
+      },
+      "speech": "夕向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "dusk",
+        "xi",
+        "arknights",
+        "sui"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "黑长直红瞳；水墨画师；白底黑纹旗袍",
+        "research": "2026-08-15 调研（Danbooru dusk_(arknights) 4097 posts）",
+        "world": "泰拉（岁兽一脉）"
+      },
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "displayName": "夕",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "dusk (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "dusk_arknights",
+      "identityProse": "Dusk from Arknights, a reclusive dragon painter with flowing floor-length ink-black hair, slit emerald eyes, curved black dragon horns, and a long scaly tail.",
+      "identityTokens": [
+        "dusk (arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "green_eyes",
+        "horns",
+        "tail",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Dusk",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

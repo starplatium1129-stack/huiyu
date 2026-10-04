@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "cartethyia/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 951,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cartethyia",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "栗色短斗篷旅行装",
+      "prose": "a chestnut short hooded cape over a pale-blue long-sleeved tunic, cream trousers and sturdy brown boots",
+      "tokens": [
+        "brown_cape",
+        "blue_tunic",
+        "long_sleeves",
+        "cream_pants",
+        "boots"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

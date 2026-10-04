@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc110",
+  "revision": 1,
+  "sortOrder": 108,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc110",
+    "title": "特工长官的越界特权",
+    "category": "同人/After_Story",
+    "story": "【夏目 · 职场窄裙裂丝绝对沦陷】深夜反锁的指挥官独立办公室。高冷的职场OL夏目正面红耳赤地被你强行抱上了宽大的办公桌边缘。她身上的职业包臀裙已经被你完全掀到了腰际，腿上那条性感的薄黑丝袜已经被你霸道地完全撕裂开来，露出了大片白皙细腻的绝对领域。她双手死死撑在身后，眼角的泪痣因为承受着极大的感官冲击而剧烈颤动，一边急促地娇喘，一边扭过头发出羞耻至极的呻吟——「哈啊...你这变态大笨蛋...把丝袜扯成这样...准备怎么补偿我啊...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "防御全面崩溃",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "white_shirt",
+      "pencil_skirt",
+      "skirt_lifted_up",
+      "torn_black_stockings",
+      "fair_thighs",
+      "office_desk",
+      "executive_office",
+      "hands_propped_behind",
+      "moonlight",
+      "night",
+      "full_body"
+    ],
+    "mature": true,
+    "location": "独立长官办公室",
+    "weather": "微热",
+    "camera": "平视中景近景",
+    "lighting": "百叶窗透进的微弱月光",
+    "usage": [
+      "核心协议",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, open-front_negligee, sheer_babydoll, black_translucent_cloth, see-through, garter_straps, torn_thighhighs, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, sitting_on_executive_desk, moonlight_through_blinds, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, business_suit, fully_clothed, child, loli, underage",
+    "storyJa": "【夏目・職場の狭いスカートは絶対ダメだよ】司令官の独立した執務室は深夜に施錠された。飄々とした職場で、OL夏目は顔を赤らめながら、あなたに大きな机の端に強引に抱きしめられました。彼女の体のプロ仕様のお尻を覆うスカートはあなたによって腰まで完全に持ち上げられ、彼女の脚のセクシーな薄い黒のストッキングはあなたによって完全に引き裂かれ、白く繊細な絶対領域の広い範囲が露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
+    "rating": "R18",
+    "auditRevision": "careful-batch12-2026-08-27",
+    "animaCaption": "In the locked commander office under faint moonlight through the venetian blinds, Shiki Natsume sits on the edge of the wide desk with both hands propped behind her, her black pencil skirt lifted to her waist and thin black stockings torn wide open over fair thighs; mole trembling from the sensory shock, she turns her head away with a shameful breathless moan."
+  }
+}

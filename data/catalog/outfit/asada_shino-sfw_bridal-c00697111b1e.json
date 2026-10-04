@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 755,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "朝田诗乃·圣洁花嫁",
+      "prose": "a blue-and-white bridal gown with a simple veil, silver hair ornament and a small blue bouquet",
+      "tokens": [
+        "wedding_dress",
+        "blue_white_dress",
+        "simple_veil",
+        "silver_hair_ornament",
+        "blue_bouquet"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

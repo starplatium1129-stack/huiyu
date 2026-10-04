@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/sfw_formal",
+  "revision": 1,
+  "sortOrder": 447,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "sfw_formal",
+      "name": "茶会与祭典端庄和装",
+      "prose": "a modest pale violet kimono-style dress with opaque layers and a cream sash",
+      "tokens": [
+        "violet_dress",
+        "kimono_style",
+        "opaque_layers",
+        "cream_sash"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

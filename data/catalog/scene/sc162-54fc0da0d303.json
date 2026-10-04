@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc162",
+  "revision": 1,
+  "sortOrder": 159,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the morning sunlight, Nene in only an oversized loose white shirt kneels on the bed, leaning in close in an intimate POV view, her warm breath quick and cheeks flushed with a sleepy, obedient blush as golden morning light backlights her silver twintails.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "camera": "近景特写",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc162",
+    "lighting": "逆光晨间碎光",
+    "location": "公寓大床",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, loose_white_shirt, off-shoulder, bare_shoulders, cleavage, no_pants, bare_legs, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, heavy_blush, warm_breath, open_mouth, bedroom, on_bed, morning_light, backlight, sunbeam, collarbone, slender_waist, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "春",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 新婚晨间绝对沦陷】清晨的阳光透过白纱轻柔地泼洒在凌乱的床榻上。宁宁身上只穿着你那件松垮的白衬衫，纽扣大开，半露的香肩与若隐若现的精致锁骨散发着致命的诱惑。她满脸滚烫地跪伏在你身上，发带凌乱地散在一边，头顶的呆毛早因为极度的动情而软绵绵地瘩成了一个完美的爱心形状。她用近乎融化的迷离眼神俯视着你，急促地喘息着——「大色狼...一大清早就这么欺负人...魔女的早安吻...你还没给够呢...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・・結婚式の朝に絶対堕ちる】白いガーゼ越しに、散らかったベッドに朝の日差しが柔らかく差し込む。寧々はだぶだぶの白いシャツを着ているだけで、ボタンは全開で、半分露出した肩と繊細な鎖骨が致命的な誘惑をにじみ出させています。彼女は熱い顔であなたにまたがり、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛はすでに柔らかくなり、極度の感情のために完璧な愛の形に結ばれていました。彼女はとろけそうなぼやけた目であなたを見下ろし、呼吸が速くなりました。――「もう、朝からからかわないでください……魔女のおはようのキス、まだ足りないんですから。」",
+    "tags": [
+      "hair_ribbon",
+      "oversized_shirt",
+      "unbuttoned_shirt",
+      "bare_shoulders",
+      "kneeling_on_bed",
+      "straddling_viewer",
+      "bare_legs",
+      "bedroom",
+      "morning",
+      "backlight",
+      "heavy_blush",
+      "tears_in_eyes",
+      "ahoge",
+      "sensual",
+      "close_up",
+      "pov"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "晨光协议：魔女的早安顺从",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "温暖晨光"
+  }
+}

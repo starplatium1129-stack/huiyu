@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ryougi_shiki/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 733,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ryougi_shiki",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, slender yet toned body with short black hair brushing her collarbone, perky natural breasts with delicate pink nipples, slender waist, and flawless pale skin under moonlight",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
+      ]
+    }
+  }
+}

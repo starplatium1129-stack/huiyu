@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "yami_trans_blade_hair_combat_strike",
+  "revision": 1,
+  "sortOrder": 1225,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "轻盈腾空而起，金色长发化作巨大锋利金属刀刃破空斩击，黑裙翻飞，杀意凌厉",
+    "camera": "full body, dynamic action low angle, wide dramatic scale",
+    "category": "致命杀手",
+    "characterId": "golden_darkness",
+    "coverageTags": [
+      "combat"
+    ],
+    "description": "【金色暗影 · 杀手本色的金发利刃斩击】夜色笼罩的彩南町高架公路桥下，路灯在水泥地面拉出长长的暗影。小暗完全激活生物变形能力，她金色长发的两束发梢化作数把闪耀着寒光的巨大精钢利刃破空扫过，将眼前的机械傀儡一刀两断。火花与狂风在身边激荡，她身穿黑色哥特战裙凌空跃起，深红的眼眸不带丝毫感情波动，展现出银河第一杀手的绝对战力。",
+    "id": "yami_trans_blade_hair_combat_strike",
+    "lighting": "刀刃斩断机械爆发出的炽烈橙红火花与冷蓝路灯逆光",
+    "location": "夜间高架桥下立柱与开阔公路水泥地面",
+    "mood": "冷酷凌厉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "gothic_dress_no_snack",
+    "promptProse": "Leaping through midnight shadows beneath an elevated concrete overpass, Yami transforms her golden hair strands into gleaming steel scythe blades that cleanly slice an incoming mechanical puppet. Blazing orange sparks illuminate her form-fitting black leather dress and pitiless assassin gaze.",
+    "promptTokens": [
+      "urban_highway",
+      "hair_transformation",
+      "blade_hair",
+      "mid_air",
+      "slashing",
+      "sparks_flying",
+      "gothic_dress",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "highway_bridge",
+      "sparks",
+      "weapon",
+      "hair_transformation",
+      "blade_hair",
+      "jumping",
+      "gothic_dress",
+      "red_eyes"
+    ],
+    "timeOfDay": "深夜",
+    "title": "金色暗影 · 杀手本色的金发利刃斩击"
+  }
+}

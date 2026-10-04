@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ellen_school_classroom_desk_nap",
+  "revision": 1,
+  "sortOrder": 1058,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "趴在课桌上侧头浅睡，嘴边衔着棒棒糖，鲨鱼尾巴垂在桌边地毯上轻轻晃动",
+    "camera": "medium close-up, eye-level, shallow depth of field",
+    "category": "日常校园",
+    "characterId": "ellen_joe",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【艾莲·乔 · 慵懒午后的靠窗打盹】新艾利都高中女子部的暖洋洋午后，微风吹拂窗帘。艾莲趴在靠窗的课桌上酣睡，黑红挑染的短发散乱在臂弯间，嘴里还衔着未吃完的棒棒糖小棒。那根引人注目的巨大厚重鲨鱼尾巴从课桌侧面垂落，尖端在木质地板上无意识地轻轻拍打，透着令人安心的慵懒少女气息。",
+    "id": "ellen_school_classroom_desk_nap",
+    "lighting": "窗帘缝隙透入的温暖金色斜阳与柔和漫反射",
+    "location": "高中靠窗课桌教室",
+    "mood": "恬静慵懒",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "school_uniform",
+    "promptProse": "Resting her head peacefully on a wooden high school desk beside sunlit curtains, Ellen takes a drowsy afternoon nap with a red lollipop stick resting in her lips. Her colossal shark tail rests gently on the polished classroom floor as golden dust motes float through the warm air.",
+    "promptTokens": [
+      "school_classroom",
+      "desk",
+      "sleeping",
+      "window",
+      "afternoon_sunlight",
+      "curtains",
+      "shark_tail",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "desk",
+      "sleeping",
+      "window",
+      "curtains",
+      "sunlight",
+      "shark_tail",
+      "peaceful"
+    ],
+    "timeOfDay": "午后",
+    "title": "艾莲·乔 · 慵懒午后的靠窗打盹"
+  }
+}

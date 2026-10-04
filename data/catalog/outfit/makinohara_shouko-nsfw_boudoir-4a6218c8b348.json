@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 32,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "牧之原翔子·成人私密造型",
+      "prose": "a private adult ensemble built around white_dress, small_towel, dressing_room, wedding_dress, hospital_gown",
+      "tokens": [
+        "white_dress",
+        "small_towel",
+        "dressing_room",
+        "wedding_dress",
+        "hospital_gown"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

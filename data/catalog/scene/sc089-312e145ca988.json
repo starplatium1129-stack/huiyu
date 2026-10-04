@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc089",
+  "revision": 1,
+  "sortOrder": 87,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "The lid of Shiki Natsume's carefully packed picnic box lies open to reveal two portions of sandwiches and fruit. Sitting on the checkered blanket in a white sleeveless blouse and khaki shorts, she offers a drink with one hand while the other steadies the box against the breeze. She watches for the viewer's reaction with a quietly proud smile. The summer lake glints just beyond the grass.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "野餐盒与递饮料半身中景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "开心",
+    "id": "sc089",
+    "lighting": "夏日湖畔柔和阳光",
+    "location": "湖畔野餐草地",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, white_sleeveless_blouse, khaki_shorts, straw_hat, sitting_on_picnic_blanket, open_lunchbox, sandwiches, fruit, two_portions, offering_drink, hand_on_lunchbox, proud_smile, checkered_blanket, lake, grass, summer_afternoon, sunlight, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【夏目 · 野餐盒里多出来的一份】夏日湖畔，夏目把准备得过分整齐的野餐盒打开，里面正好有两人份三明治和水果。她说只是计算失误，却在你吃下第一口时认真观察表情。湖风吹动餐布，她把饮料递来——「盐没有放多吧？如果合口味，下次……我可以再做，不代表这是固定约会。」",
+    "storyJa": "【夏目・ピクニックボックスの追加分】夏の湖畔で、夏目さんはきちんと準備されたピクニックボックスを開けました。中にはサンドイッチが2つとフルーツが入っていました。単なる誤算だったと彼女は言いましたが、最初の一口を食べたときのあなたの表情を注意深く観察しました。湖の風がテーブルクロスを波立たせ、彼女は飲み物を手渡した。――「塩、多すぎなかった？　口に合うなら、次も……作ってあげてもいい。これを恒例のデートにするって意味ではないけど。」",
+    "tags": [
+      "white_sleeveless_blouse",
+      "khaki_shorts",
+      "straw_hat",
+      "sitting_on_picnic_blanket",
+      "open_lunchbox",
+      "sandwiches",
+      "fruit",
+      "two_portions",
+      "offering_drink",
+      "hand_on_lunchbox",
+      "proud_smile",
+      "checkered_blanket",
+      "lake",
+      "grass",
+      "summer_afternoon",
+      "sunlight",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "野餐盒里多出来的一份",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

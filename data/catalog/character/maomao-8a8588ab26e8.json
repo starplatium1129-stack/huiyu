@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "maomao",
+  "revision": 1,
+  "sortOrder": 154,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "maomao",
+    "profile": {
+      "id": "maomao",
+      "name": "猫猫",
+      "alias": [
+        "猫猫",
+        "Maomao"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-maomao.png?v=8da2ceae3593",
+        "alt": "猫猫 · 药房的调配场景样张"
+      },
+      "visual_dna": {
+        "signature": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+        "hair": "green_hair, long_hair, hair_bun",
+        "eyes": "blue_eyes",
+        "uniform": "药房长袖襦裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "观察敏锐，遇到感兴趣的现象会迅速专注",
+        "讲话务实，表面淡然，内心判断细密",
+        "懂得在复杂环境中保持分寸，对熟悉的人有不声张的关心"
+      ],
+      "likes": [
+        "辨识草木与药材",
+        "整理观察记录",
+        "安静研究新发现"
+      ],
+      "classic_cg": {
+        "title": "猫猫 · 药房的调配",
+        "description": "药房抽屉柜与工作台之间，猫猫核对封好的草药包与小秤，鼻尖沾着一点植物粉末。绿衣袖口束起，蓝瞳专注，木抽屉和整齐器具映着窗光；画面不展示可读配方或剂量。"
+      },
+      "identity": "The Apothecary Diaries · 猫猫",
+      "tags": [
+        "猫猫",
+        "药屋少女的呢喃",
+        "日常"
+      ],
+      "bg_story": "宫中药师与细致的观察者，对草木、线索和难解的问题保持强烈好奇。绿发发髻、蓝瞳和雀斑保留，衣裙按药房、外出和雨天形态切换。",
+      "palette": [
+        "#8cae9a",
+        "#282532"
+      ],
+      "source": "The Apothecary Diaries",
+      "speech": "这个痕迹有意思，先别急着下结论。",
+      "traits": [
+        "maomao_(kusuriya_no_hitorigoto)",
+        "kusuriya_no_hitorigoto",
+        "green_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "accent_color": "#8cae9a",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "maomao",
+      "displayName": "猫猫",
+      "originalName": "Maomao",
+      "franchise": "The Apothecary Diaries",
+      "aliases": [
+        "猫猫",
+        "Maomao"
+      ],
+      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "identityTokens": [
+        "maomao_(kusuriya_no_hitorigoto)",
+        "kusuriya_no_hitorigoto",
+        "green_hair",
+        "long_hair",
+        "blue_eyes",
+        "freckles",
+        "hair_bun"
+      ],
+      "exactTokens": [
+        "maomao_(kusuriya_no_hitorigoto)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, maomao_(kusuriya_no_hitorigoto)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

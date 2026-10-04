@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "yami_beach_bikini_hating_ecchi_blush",
+  "revision": 1,
+  "sortOrder": 1226,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手护在比基尼胸前，金发化作巨拳微颤，满面通红娇羞咬牙怒斥，水花四溅",
+    "camera": "medium shot, eye-level, extreme blush and tsundere focus",
+    "category": "海滨娇羞",
+    "characterId": "golden_darkness",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【金色暗影 · 碧海金沙的讨厌色情娇羞】烈日炎炎的热带碧蓝海滩上，清澈的海浪拍打着白沙。小暗身穿一套纯黑色的极简细带分体比基尼，将她白皙细腻如瓷器的雪肤与玲珑曼妙的身材完美勾勒出来。梨斗不慎失足滑倒摔在她身前，小暗满面通红地双手护胸，头顶发缕化作巨拳蓄势待发，红宝石般的双眸含羞带怒——「结城梨斗……我、我最讨厌色情的事情了！受死吧！」",
+    "id": "yami_beach_bikini_hating_ecchi_blush",
+    "lighting": "万里晴空的强日光与海面反射的跳跃焦散水波光斑",
+    "location": "阳光灿烂的热带白沙滩与海浪边",
+    "mood": "反差娇羞",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "bikini_swimsuit",
+    "promptProse": "Crossing her arms defensively over her chest while standing ankle-deep in turquoise tropical surf in a minimal black string bikini, Yami flushes bright crimson with tsundere indignation. Radiant summer sunlight glistens across her petite curves and endless golden locks trailing in the foam.",
+    "promptTokens": [
+      "tropical_beach",
+      "ocean_waves",
+      "black_bikini",
+      "string_bikini",
+      "arms_crossed",
+      "heavy_blush",
+      "tsundere_glare",
+      "wet_skin",
+      "very_long_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "ocean_waves",
+      "bikini",
+      "black_bikini",
+      "covering_breasts",
+      "heavy_blush",
+      "tsundere",
+      "wet_skin",
+      "very_long_hair"
+    ],
+    "timeOfDay": "正午",
+    "title": "金色暗影 · 碧海金沙的讨厌色情娇羞"
+  }
+}

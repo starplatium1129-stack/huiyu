@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "zero_two/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 892,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "zero_two",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "02·成人私密造型",
+      "prose": "a private adult ensemble built around red_bodysuit, completely_nude, dressing_room, red_dress",
+      "tokens": [
+        "red_bodysuit",
+        "completely_nude",
+        "dressing_room",
+        "red_dress"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

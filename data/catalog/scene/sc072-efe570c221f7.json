@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc072",
+  "revision": 1,
+  "sortOrder": 70,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Walking side by side along a stone path through misty bamboo in light rain, Ayachi Nene in a breezy white blouse and light blue skirt holds an umbrella tilted toward her partner, silver hair lifting lightly in the wind, calm quiet smile.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "全身中景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "平静",
+    "id": "sc072",
+    "lighting": "阴天光",
+    "location": "竹林",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_blouse_with_light_blue_skirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_sandals_on_bamboo_path, walking_side_by_side_along_stone_bamboo_path_under_one_umbrella_tilted_toward_partner_side, silver_long_hair_lifting_lightly_in_wind, cool_misty_bamboo_light_with_bamboo_bokeh_and_path_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, light_drizzle, misty_rain, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 竹林细雨里的脚步声】细雨落在竹叶上，宁宁撑伞沿着青石路慢慢前行。她故意放慢脚步，让你能与她并肩，伞面也始终偏向你这一侧。风吹来时，银白长发在湿润绿意间轻轻扬起——「这里安静得能听见两个人的脚步。别走太快，我想把这段路记得久一点。」",
+    "storyJa": "【寧々・霧雨の竹林の足音】霧雨が笹の葉の上に落ち、寧々は傘をさし、ブルーストーンの道をゆっくりと歩きました。彼女はあなたが肩を並べられるようにわざと速度を落とし、傘は常にあなたの側に傾いていました。風が吹くと銀色の長い髪がしっとりとした緑の中でそっと舞い上がる――「二人分の足音まで聞こえるくらい、静かですね。そんなに早く歩かないでください。この道のこと、もう少し長く覚えていたいから。」",
+    "tags": [
+      "hair_ribbon",
+      "bamboo_path",
+      "sheer_white_thighhigh_stockings",
+      "smooth_thighs",
+      "sharing_umbrella",
+      "umbrella",
+      "walking_together",
+      "light_rain",
+      "full_body",
+      "sandals",
+      "mist",
+      "depth_of_field"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "竹林细雨里的脚步声",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "雨"
+  }
+}

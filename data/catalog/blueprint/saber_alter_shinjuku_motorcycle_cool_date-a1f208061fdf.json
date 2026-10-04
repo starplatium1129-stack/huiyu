@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "saber_alter_shinjuku_motorcycle_cool_date",
+  "revision": 1,
+  "sortOrder": 222,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "saber_alter_shinjuku_motorcycle_cool_date",
+    "title": "黑呆 · 新宿街头的机车酷感倚待",
+    "category": "街头约会",
+    "characterId": "artoria_pendragon_alter",
+    "description": "【黑呆 · 新宿街头的机车酷感倚待】深夜霓虹闪烁的新宿十字街角，一辆纯黑哑光重型机车停在路旁。黑呆身着紧身黑色机车皮夹克与牛仔热裤，黑丝包裹的修长美腿搭在机车脚踏板上，一手搭在车把手，一手取下头盔抱在腰际。金色发髻在霓虹灯下泛着微光，她抬起暗金眼眸看着匆匆赶来的你，嘴角勾起一抹酷炫又宠溺的弧度——「慢死了。如果再晚一分钟，我就自己开车去兜风了。上车，抓紧我的腰。」",
+    "location": "流光溢彩、机车轰鸣的新宿繁华街角红绿灯旁",
+    "action": "一手扶停稳机车的车把，另一手托头盔在腰侧，一脚靠脚踏板等待同行者",
+    "timeOfDay": "深夜",
+    "lighting": "新宿繁华街头五彩缤纷的霓虹灯影与机车站灯",
+    "camera": "cowboy shot, eye level, ultra-cool motorcycle date view",
+    "mood": "帅气御姐",
+    "sceneTags": [
+      "shinjuku_street",
+      "parked_motorcycle",
+      "kickstand",
+      "hand_on_handlebar",
+      "holding_helmet",
+      "boot_on_footpeg",
+      "leather_jacket",
+      "waiting",
+      "neon_light",
+      "medium_shot"
+    ],
+    "promptProse": "Beside a matte-black motorcycle resting on its kickstand in Shinjuku, Saber Alter keeps one hand on the handlebar and holds the helmet at her hip with the other. One boot rests on the footpeg while the grounded leg supports her relaxed waiting stance. Her leather jacket, white cropped top, dark denim shorts and black tights retain the selected street outfit. Neon reflections edge the bike and her braided blonde bun as she looks toward the arriving companion with a restrained smile. Frame the hands, helmet and parked motorcycle together, with no lettering.",
+    "promptTokens": [
+      "shinjuku_street",
+      "parked_motorcycle",
+      "kickstand",
+      "hand_on_handlebar",
+      "holding_helmet",
+      "boot_on_footpeg",
+      "leather_jacket",
+      "waiting",
+      "neon_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "casual_shinjuku_jacket_shorts",
+    "coverageTags": [
+      "date",
+      "cool",
+      "motorcycle"
+    ]
+  }
+}

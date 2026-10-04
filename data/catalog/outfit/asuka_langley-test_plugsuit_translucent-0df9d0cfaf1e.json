@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/test_plugsuit_translucent",
+  "revision": 1,
+  "sortOrder": 566,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "default": false,
+      "id": "test_plugsuit_translucent",
+      "isDefault": false,
+      "name": "三号机测试用半透光战斗服（破）",
+      "prose": "wearing the daring experimental orange and white Unit-03 test plugsuit with translucent body panels highlighting her curves, cleavage, and red interface clips",
+      "styleHint": "high-tech test chamber lighting with sharp amber and neon white highlights",
+      "tokens": [
+        "test_plugsuit",
+        "orange_plugsuit",
+        "translucent_clothing",
+        "bodysuit",
+        "latex_suit",
+        "interface_headset",
+        "cleavage",
+        "skin_tight"
+      ]
+    }
+  }
+}

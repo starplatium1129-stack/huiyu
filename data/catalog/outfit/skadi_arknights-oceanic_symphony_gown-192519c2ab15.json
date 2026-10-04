@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/oceanic_symphony_gown",
+  "revision": 1,
+  "sortOrder": 353,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "default": false,
+      "id": "oceanic_symphony_gown",
+      "isDefault": false,
+      "name": "海潮绝响·音律交响晚礼服",
+      "prose": "a haute couture Aegir symphony gown: a midnight-blue to deep-black gradient velvet strapless gown with a high side slit and faint silver wave embroidery, a single sheer crimson chiffon train draped over one shoulder",
+      "tokens": [
+        "evening_gown",
+        "velvet",
+        "strapless",
+        "side_slit",
+        "gradient",
+        "chiffon"
+      ]
+    }
+  }
+}

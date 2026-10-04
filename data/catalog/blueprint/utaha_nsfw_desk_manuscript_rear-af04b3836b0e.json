@@ -1,0 +1,77 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_nsfw_desk_manuscript_rear",
+  "revision": 1,
+  "sortOrder": 1437,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_nsfw_desk_manuscript_rear",
+    "title": "霞之丘诗羽 · 稿纸桌上的截稿日·「这一段……要写进书里哦」",
+    "category": "成人私密",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【公寓书房·截稿深夜】截稿日的压力被她转化成了完全不同的东西。诗羽双手撑在铺满稿纸的书桌上，黑丝长腿绷直，裙裾堆在腰际。她微微侧过头，红瞳水雾弥漫——「哈啊……这、这一段要写进书里哦……题目就叫……《被后辈欺负的学姐的一夜》……」",
+    "location": "公寓书房稿纸桌",
+    "action": "撑稿纸桌塌腰翘臀更衣整理受力，黑丝裤袜撕裂勒出肉痕，红瞳含水回眸戏谑喘息",
+    "timeOfDay": "截稿深夜",
+    "lighting": "书房台灯暖光洒在稿纸与肌肤",
+    "camera": "horizontal POV, leaning over manuscript desk, arched spine, torn black pantyhose, looking back",
+    "mood": "截稿发情、毒舌逞强",
+    "sceneTags": [
+      "nsfw",
+      "bent_over",
+      "leaning_forward",
+      "desk",
+      "black_pantyhose",
+      "skirt_lift",
+      "exposed_pussy",
+      "papers"
+    ],
+    "promptProse": "Deadline pressure transmutes into captivating intimacy. Leaning forward across her manuscript-covered desk with her uniform skirt pushed to her waist and glossy black pantyhose strained taut over generous curves, Kasumigaoka Utaha grips the scattered papers as her trembling body arches in delight. She turns her head with a teasing, flushed smile and glistening crimson eyes, whispering through uneven gasps that this scandalous scene will be immortalized in her next novel. Warm desk-lamp amber light spills across her stockinged thighs and scattered manuscripts in a horizontal composition, detailed background.",
+    "nsfwProse": "Leaning across her paper-strewn desk with her pleated skirt hitched to her waist and sheer black tights strained taut, Utaha glances back with ruby eyes in breathless teasing arousal.",
+    "promptTokens": [
+      "study",
+      "desk",
+      "manuscript_papers",
+      "desk_lamp",
+      "night",
+      "looking_back",
+      "horizontal_framing",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "official_toyogasaki_uniform",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "bent_over",
+      "leaning_forward",
+      "skirt_lift",
+      "black_pantyhose",
+      "crotchless_panties",
+      "exposed_pussy",
+      "pussy_juice",
+      "biting_lip",
+      "heavy_blush",
+      "smirk",
+      "red_eyes"
+    ]
+  }
+}

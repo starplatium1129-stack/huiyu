@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "byakuya_home_ramen_cooling",
+  "revision": 1,
+  "sortOrder": 838,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mimori_byakuya",
+    "outfitId": "tattered_oversized_jersey",
+    "id": "byakuya_home_ramen_cooling",
+    "title": "白夜 · 小屋里的热拉面",
+    "category": "现代日常",
+    "location": "小公寓的餐桌旁",
+    "timeOfDay": "夜晚",
+    "mood": "放松满足",
+    "description": "【白夜 · 小屋里的热拉面】忙完一天的白夜换上宽松的旧运动外套和运动短裤，坐在小公寓的餐桌旁吃晚饭。她一手扶着拉面碗，另一手用筷子夹起面条，小心吹散热气，眼前这顿便宜却热乎的晚餐让她安心下来——「趁热吃吧，今天的汤还挺好喝的。」",
+    "action": "坐在餐桌前，一手扶碗，另一手用筷子夹起面条并轻轻吹凉",
+    "promptProse": "At a small apartment table, Byakuya sits in her loose vintage track jacket and gym shorts, steadying a ramen bowl with one hand while lifting noodles with chopsticks and blowing gently on them. A warm kitchen lamp lights the rising steam, the simple tabletop and her relaxed face, leaving the rest of the modest room softly shaded.",
+    "promptTokens": [
+      "apartment",
+      "dining_table",
+      "sitting",
+      "track_jacket",
+      "ramen",
+      "bowl",
+      "chopsticks",
+      "steam",
+      "kitchen_lamp",
+      "night",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "camera": "medium shot across the dining table, face, bowl and hands in frame",
+    "lighting": "小厨房吊灯照亮面碗热气的暖光",
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single",
+    "sceneTags": [
+      "apartment",
+      "dining_table",
+      "sitting",
+      "track_jacket",
+      "ramen",
+      "bowl",
+      "chopsticks",
+      "steam",
+      "kitchen_lamp",
+      "night",
+      "medium_shot"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "bad hands",
+      "extra fingers",
+      "extra limbs",
+      "text",
+      "watermark",
+      "nsfw",
+      "nude",
+      "explicit"
+    ]
+  }
+}

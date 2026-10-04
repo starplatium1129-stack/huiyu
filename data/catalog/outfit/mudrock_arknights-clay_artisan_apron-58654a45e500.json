@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/clay_artisan_apron",
+  "revision": 1,
+  "sortOrder": 329,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "default": false,
+      "id": "clay_artisan_apron",
+      "isDefault": false,
+      "name": "陶艺工坊泥塑工装",
+      "prose": "a pottery artisan outfit: a breathable ivory linen long-sleeve shirt with sleeves rolled to the elbows, over a dark khaki canvas work apron with leather pockets holding wooden carving tools, clay smudges on the apron and fingertips, loose comfortable trousers",
+      "tokens": [
+        "apron",
+        "linen_shirt",
+        "rolled_sleeves",
+        "work_clothes",
+        "craftsman"
+      ]
+    }
+  }
+}

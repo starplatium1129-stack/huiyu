@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ishtar_night_stargazing_talk",
+  "revision": 1,
+  "sortOrder": 259,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ishtar_night_stargazing_talk",
+    "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
+    "category": "专属羁绊",
+    "characterId": "ishtar_fate",
+    "description": "【神殿屋顶·日落后】伊什塔尔与你并肩躺在平整的屋顶平台上，指向西方低空明亮的金星。天边的余晖尚未散尽，几颗较亮的星已显现。她难得放轻了声音，说起爱与战争之外那些不擅表达的心事。",
+    "location": "神殿屋顶瓦片",
+    "action": "并肩躺看星空指金星，红瞳柔软低语",
+    "timeOfDay": "日落后的暮色",
+    "lighting": "西方地平线残留的暮光与神殿暖灯",
+    "camera": "wide two-shot, two clothed figures reclining and Venus low in western twilight",
+    "mood": "女神真心、星空秘密",
+    "sceneTags": [
+      "temple_rooftop",
+      "two_clothed_figures",
+      "reclining_side_by_side",
+      "pointing_hand",
+      "venus_low_in_west",
+      "twilight",
+      "temple_lamps",
+      "golden_tiara",
+      "wide_two_shot"
+    ],
+    "promptProse": "After sunset, Ishtar and a fully clothed companion recline side by side on a broad, flat temple rooftop, looking toward Venus low in the western sky. She raises one hand to indicate the bright planet while her other arm rests beside her. Her black goddess outfit and golden tiara remain in place; the companion’s simple travelling clothes distinguish the second figure. A few bright stars appear as the twilight fades, and warm temple lamps edge the roof. Use a horizontal two-shot that includes the pointing gesture and low horizon, with no lettering.",
+    "promptTokens": [
+      "temple_rooftop",
+      "two_clothed_figures",
+      "reclining_side_by_side",
+      "pointing_hand",
+      "venus_low_in_west",
+      "twilight",
+      "temple_lamps",
+      "golden_tiara",
+      "wide_two_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "official_goddess_attire",
+    "coverageTags": [
+      "daily",
+      "signature",
+      "romance"
+    ],
+    "compositionIntent": "group"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 455,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "玛夏·成人私密造型",
+      "prose": "a private adult ensemble built around dressing_room, evening_dress, green_dress, completely_nude",
+      "tokens": [
+        "dressing_room",
+        "evening_dress",
+        "green_dress",
+        "completely_nude"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

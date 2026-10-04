@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/red_hooded_tee",
+  "revision": 1,
+  "sortOrder": 367,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "default": false,
+      "id": "red_hooded_tee",
+      "isDefault": false,
+      "name": "红色连帽T恤",
+      "prose": "wearing an oversized red hooded t-shirt with long sleeves, a soft relaxed silhouette, and a loose off-shoulder collar",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "exusiai_red_hooded_tee",
+        "hooded_tee",
+        "red_hoodie",
+        "hoodie",
+        "oversized_clothes",
+        "t-shirt",
+        "red_clothes",
+        "long_sleeves",
+        "off_shoulder"
+      ]
+    }
+  }
+}

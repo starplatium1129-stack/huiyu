@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "amane_rooftop_night_sky_confession_wind",
+  "revision": 1,
+  "sortOrder": 1185,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_rooftop_night_sky_confession_wind",
+    "title": "周防天音 · 学园天台的夜风倾诉",
+    "category": "星空倾怀",
+    "characterId": "suou_amane",
+    "outfitId": "mihama_uniform",
+    "coverageTags": [
+      "night"
+    ],
+    "description": "【周防天音 · 学园天台的夜风倾诉】美浜学园最高处的天台铁丝网边，夜风吹卷着城市的遥远灯火。天音背靠着防护铁丝网，双手背在身后。夜风掀起她雪白的百褶裙角与酒红色的长长卷发，制服衬衫紧贴着丰满诱人的身段。她微微抬起头，那对平日豪爽的大眼睛此刻染上一层淡淡的脆弱与泪光，轻启朱唇向雄二坦白着深埋心底十年的秘密与爱意。",
+    "location": "美浜学园高空天台铁丝网边缘",
+    "action": "背靠铁丝网双手背在身后，夜风掀动裙摆与发环，眼神脆弱深情",
+    "timeOfDay": "深夜",
+    "lighting": "下方城市远景微弱灯火与清冷夜空繁星在发丝上投射的轮廓光",
+    "camera": "cowboy shot, medium close-up, dramatic windblown depth",
+    "mood": "动情凄美",
+    "sceneTags": [
+      "rooftop",
+      "fence",
+      "night_sky",
+      "city_lights",
+      "wind",
+      "school_uniform",
+      "twintails",
+      "hair_rings",
+      "emotional"
+    ],
+    "promptProse": "Leaning back against the rooftop chain-link fence of Mihama Academy beneath a vast star-lit night sky, Amane looks into the distance as cool winds whip her crimson hair rings and white skirt. Soft city lights twinkle far below, accentuating her tear-glistening sapphire gaze and heartfelt emotion.",
+    "promptTokens": [
+      "school_rooftop",
+      "chainlink_fence",
+      "starry_night_sky",
+      "windy",
+      "school_uniform",
+      "pleated_skirt",
+      "hair_rings",
+      "emotional_expression",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

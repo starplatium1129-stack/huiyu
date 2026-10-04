@@ -1,0 +1,59 @@
+{
+  "kind": "scene",
+  "id": "sc251",
+  "revision": 1,
+  "sortOrder": 246,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot in a quiet room, she turns the page of an open book with a focused and calm expression, under soft ambient lighting.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "害羞",
+    "id": "sc251",
+    "lighting": "午后柔和的自然光与风中的光影",
+    "location": "公寓阳台栏杆边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book, table, desk, book on table, indoor room, closed window, still hair",
+    "prompt": "1girl, solo, shiki_natsume, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, white casual blouse, (standing directly beside an apartment balcony railing:1.7), outdoor balcony clearly visible, laundry fluttering behind her, (one open book held in both hands at chest height:1.75), both hands gripping book covers, strong breeze blowing her long black hair sideways toward viewer, hair crossing foreground, close eye contact, red ears, subtle blush, autumn afternoon sunlight, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 风中的距离】秋日午后的公寓阳台，微风吹动着晾晒的衣物。夏目靠在栏杆边看书，乌黑的长发被风吹起，发梢轻轻拂过站在她身旁的你的脸颊。她似乎没有注意到这个亲密的距离，依旧专注地翻着书页。直到风再次吹起，她的整个发丝都缠绕在你的肩头，她才后知后觉地抬起头。四目相对的距离近得能感受到彼此的呼吸，她的耳根瞬间泛红，但依旧保持着那副冷淡的表情——「……别误会。是风的问题，不是我靠太近。而且……你也没躲开，大笨蛋。」",
+    "storyJa": "【夏目・風にほどける髪】秋の午後のベランダ。読書中の夏目の黒髪が風に舞い、あなたの頬をかすめた。髪が肩に絡んで初めて、彼女は近すぎる距離に気づく。赤い耳を隠すように視線をそらし――「……風のせい。私が近づいたわけじゃないし、あなたも避けなかったでしょ」",
+    "tags": [
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
+      "mole_under_eye",
+      "hairclip",
+      "casual_clothes",
+      "holding_book",
+      "wind",
+      "hair_blowing",
+      "balcony",
+      "leaning_by_railing",
+      "red_ears",
+      "subtle_blush",
+      "expressionless",
+      "eye_contact",
+      "afternoon",
+      "sunlight",
+      "soft_lighting",
+      "romantic_atmosphere",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "午后阳台的发梢拂面",
+    "usage": [
+      "壁纸级"
+    ],
+    "weather": "秋日微风"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "vivy/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 977,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vivy",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "Vivy·成人私密造型",
+      "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room",
+      "tokens": [
+        "dress",
+        "white_dress",
+        "completely_nude",
+        "dressing_room"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

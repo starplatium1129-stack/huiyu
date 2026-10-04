@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shinomiya_kaguya/casual_summer_dress",
+  "revision": 1,
+  "sortOrder": 767,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinomiya_kaguya",
+    "outfit": {
+      "id": "casual_summer_dress",
+      "name": "盛夏纯白连衣裙",
+      "prose": "a light summer one-piece dress in soft white cotton with a navy ribbon at the chest, thin shoulder straps over her fair shoulders, and a flared skirt reaching her knees",
+      "tokens": [
+        "summer_dress",
+        "white_dress",
+        "sundress",
+        "bare_shoulders",
+        "ribbon",
+        "casual_wear"
+      ]
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc088",
+  "revision": 1,
+  "sortOrder": 86,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a wide full-body view in a quiet room, she reaches forward and gently clasps the viewer's hand with a focused and calm expression, under diffused overcast daylight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全身远景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "认真",
+    "id": "sc088",
+    "lighting": "柔光",
+    "location": "画廊",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, street, road, sidewalk, outdoors",
+    "prompt": "(indoor art gallery:1.55), standing directly in front of a large framed painting, museum spotlights, polished gallery floor, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 画框前共享的沉默】秋日下午，宁宁在画廊一幅描绘星空与归途的作品前停了很久。你走到身边后，她没有立刻解释感受，只悄悄把手背贴上你的手背。柔和顶光落在银白长发上——「有些画不需要说出答案。像现在这样一起看着，就已经能明白一点了。」",
+    "storyJa": "【寧々・フレームの前で共有された沈黙】秋の午後、寧々さんはギャラリーにある星空と帰路を描いた作品の前で長い時間立ち止まった。あなたが彼女の側に来てからも、彼女は自分の気持ちをすぐには説明しませんでした。彼女はただ静かにあなたの手の甲に手を当てました。長い銀髪に柔らかな頭上の光が降り注ぐ――「答えを言葉にしなくてもいい絵もあるんですね。今みたいに一緒に見ているだけで、少し分かる気がします。」",
+    "tags": [
+      "hair_ribbon",
+      "standing",
+      "looking_back",
+      "casual_clothes",
+      "looking_away",
+      "art_gallery",
+      "standing_before_painting",
+      "holding_hands",
+      "soft_expression",
+      "museum_lighting",
+      "autumn",
+      "afternoon",
+      "clear_sky",
+      "full_body",
+      "wide_shot",
+      "soft_lighting",
+      "diffused_light",
+      "serious"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "画框前共享的沉默",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

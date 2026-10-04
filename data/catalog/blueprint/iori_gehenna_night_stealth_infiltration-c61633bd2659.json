@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "iori_gehenna_night_stealth_infiltration",
+  "revision": 1,
+  "sortOrder": 932,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在钢架阴影中单膝蹲伏潜伏，单手扶夜视镜，恶魔双翼微微贴背收拢",
+    "camera": "cowboy shot, high angle, stealth atmosphere",
+    "category": "战术潜行",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【银镜伊织 · 暗夜要塞潜行突防】深夜重工业基地的高空钢梁结构上，红色的警戒探照灯在下方冰冷的管道间来回扫过。伊织身穿紧贴身形的黑色战术潜行衣，单膝蹲伏在阴影之中，指尖轻触夜视单目光镜，恶魔双翼微微收拢隐入夜色——「潜入成功，已绕过外部传感器。突击准备完毕，倒数三秒发起压制。」",
+    "id": "iori_gehenna_night_stealth_infiltration",
+    "lighting": "冷色月光与下方红色探照灯交错硬光",
+    "location": "要塞工厂高空重型钢架走廊",
+    "mood": "冷峻肃杀",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "tactical_night_ops",
+    "promptProse": "Crouching low on the high metal catwalks during a midnight stealth mission, Iori touches her night-vision monocular with one hand while keeping her body tucked into the steel shadows. Cool moonlight and red searchlights cut across the industrial facility.",
+    "promptTokens": [
+      "industrial_complex",
+      "catwalk",
+      "stealth_suit",
+      "crouching",
+      "night",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "night_vision_monocular",
+      "red_searchlight"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "industrial",
+      "catwalk",
+      "metal_beams",
+      "searchlight",
+      "bodysuit",
+      "stealth_suit",
+      "crouching",
+      "night_vision",
+      "demon_tail"
+    ],
+    "timeOfDay": "深夜",
+    "title": "银镜伊织 · 暗夜要塞潜行突防"
+  }
+}

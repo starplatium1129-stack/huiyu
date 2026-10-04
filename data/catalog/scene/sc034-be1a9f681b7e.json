@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc034",
+  "revision": 1,
+  "sortOrder": 32,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Sitting cross-legged on the wooden floor of the school art studio at the break of dawn, Ayachi Nene works on a sprawling celestial canvas with a sleepy, radiant smile. Soft blue twilight and golden sunrise filter through high arched skylights to illuminate her silver-white hair and pink ribbons, framing her paint-speckled bare feet resting naturally on the canvas cloth.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "认真",
+    "id": "sc034",
+    "lighting": "破晓窗光与画布反射",
+    "location": "清晨美术室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_loose_white_art_smock_over_pastel_pink_dress, sitting_cross-legged_on_wooden_art_studio_floor, holding_fine_detail_paintbrush_over_large_canvas_of_starry_sky, entire_legs_and_feet_fully_visible_in_frame, bare_feet_resting_on_canvas_drop_cloth, detailed_toes_with_blue_paint_smudge, sleepy_happy_smile, art_classroom_at_blue_dawn, golden_morning_twilight_filtering_through_tall_skylights, colorful_paint_palettes_and_easels_around, full_body, @rella",
+    "rating": "All",
+    "season": "春",
+    "story": "【宁宁 · 把星空画到天亮】春日美术室里，宁宁为了完成社团海报，对着昨晚拍下的星空画了一整夜。晨光照进来时，她还在为最后一颗星调整颜色，银白长发沾上几道蓝紫颜料。你替她拿走画笔，她才疲惫地靠过来——「再一下就完成了……好吧，先休息五分钟。醒来以后，你要第一个看成品。」",
+    "storyJa": "【寧々・夜明けまで星空を描いて】春の美術室では、寧々さんがクラブのポスターを完成させるために、昨夜撮った星空を一晩かけて描きました。朝の光が入ってきたとき、彼女はまだ最後の星の色を調整しており、彼女の長い銀の髪は青と紫の絵の具の数筋で汚れていました。あなたが彼女のためにブラシを取り上げると、彼女は疲れたように身をかがめました。――「あと少しで完成するんです……分かりました、五分だけ休みます。起きたら、あなたが最初に完成品を見てくださいね。」",
+    "tags": [
+      "hair_ribbon",
+      "golden_hour",
+      "art_room",
+      "painting",
+      "painting_starry_sky_on_front_facing_canvas",
+      "art_supplies_around_easel",
+      "paint_on_hair",
+      "dawn",
+      "tired_smile",
+      "canvas",
+      "morning",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "window_light",
+      "serious",
+      "brush_taken_by_viewer",
+      "viewer_holding_paintbrush",
+      "resting_after_painting"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "把星空画到天亮",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

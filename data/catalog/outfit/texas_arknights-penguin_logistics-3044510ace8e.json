@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "texas_arknights/penguin_logistics",
+  "revision": 1,
+  "sortOrder": 382,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "texas_arknights",
+    "outfit": {
+      "default": true,
+      "id": "penguin_logistics",
+      "isDefault": true,
+      "name": "企鹅物流制服",
+      "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
+      "tokens": [
+        "techwear",
+        "jacket",
+        "hooded_jacket",
+        "black_jacket",
+        "white_shirt",
+        "black_necktie",
+        "shorts",
+        "black_shorts",
+        "thighhighs",
+        "black_thighhighs",
+        "combat_boots",
+        "fingerless_gloves",
+        "holster",
+        "sheath",
+        "penguin_logistics"
+      ]
+    }
+  }
+}

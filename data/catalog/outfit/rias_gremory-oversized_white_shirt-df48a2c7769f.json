@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/oversized_white_shirt",
+  "revision": 1,
+  "sortOrder": 693,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "oversized_white_shirt",
+      "name": "居家男友风大号衬衫",
+      "prose": "a relaxed oversized boyfriend-style white button-up shirt draped loosely over her bare body, slipping off one shoulder to reveal her smooth collarbone and cleavage, bare legs emerging beneath the hem",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "off-shoulder",
+        "bare_legs",
+        "cleavage",
+        "thighs",
+        "barefoot",
+        "casual_morning"
+      ]
+    }
+  }
+}

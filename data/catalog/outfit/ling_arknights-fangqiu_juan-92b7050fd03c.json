@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ling_arknights/fangqiu_juan",
+  "revision": 1,
+  "sortOrder": 379,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ling_arknights",
+    "outfit": {
+      "default": false,
+      "id": "fangqiu_juan",
+      "isDefault": false,
+      "name": "方遒卷（银甲玄袍）",
+      "prose": "the official Fangqiu Juan outfit: a silver-armored dark robe with white beast-embroidered lapels, jade-green accessories and a jade hair ornament, a border-command style with a proud wandering air",
+      "tokens": [
+        "armor",
+        "black_clothes",
+        "white_clothes",
+        "silver_trim",
+        "chinese_clothes",
+        "jade",
+        "hair_ornament",
+        "wide_sleeves"
+      ]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yuuka_seminar_late_night_accounting",
+  "revision": 1,
+  "sortOrder": 916,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "端坐在现代办公桌前微俯身核对账目，单手持计算器，微蹙眉头看向镜头",
+    "camera": "cowboy shot, slightly high angle",
+    "category": "办公日常",
+    "characterId": "hayase_yuuka",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【早濑优香 · 研讨会深夜清算】千年科学学园研讨会宽敞现代的办公室内，窗外是基沃托斯璀璨的霓虹夜景。优香端坐在堆满发票与预算表的宽大办公桌前，单手飞速敲击着特制数字计算器，深蓝色的双马尾在柔和的台灯光晕下微微晃动——「老师！这个月夏莱的账单赤字又超标了！不许装傻，现在就跟我一笔笔核对清楚！」",
+    "id": "yuuka_seminar_late_night_accounting",
+    "lighting": "暖色现代办公台灯与窗外全息霓虹泛光",
+    "location": "千年科学学园研讨会核心办公室",
+    "mood": "专注认真",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "millennium_uniform",
+    "promptProse": "Reviewing expense spreadsheets late into the night at the Seminar office, Yuuka taps her calculator with an exasperated tsundere pout. Warm desk lamplight and stacks of sorted receipts create an authentic Millennium accounting scene.",
+    "promptTokens": [
+      "seminar_office",
+      "desk",
+      "calculator",
+      "sitting",
+      "tsundere_pout",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "office",
+      "desk",
+      "chair",
+      "calculator",
+      "paper",
+      "receipts",
+      "tablet_pc",
+      "sitting",
+      "leaning_forward",
+      "frown",
+      "tsundere"
+    ],
+    "timeOfDay": "深夜",
+    "title": "早濑优香 · 研讨会深夜清算"
+  }
+}

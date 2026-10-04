@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_shrine_corridor_maid_curtsy",
+  "revision": 1,
+  "sortOrder": 1190,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_shrine_corridor_maid_curtsy",
+    "title": "小岭幸 · 晨光回廊的恭敬屈膝礼",
+    "category": "全能女仆",
+    "characterId": "komine_sachi",
+    "outfitId": "maid_uniform",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【小岭幸 · 晨光回廊的恭敬屈膝礼】美浜学园一楼洒满纯净清晨朝阳的木质长廊中，一尘不染的地板倒映着窗外绿树。幸身穿整洁挺拔的法式黑白女仆装，白色荷叶边围裙浆洗得极为平整。她双手轻轻捏起黑裙裙摆两侧，右脚微后退半步，微微垂首做出极其标准得体的屈膝礼。粉色短发双小辫在微风中垂落，湛蓝的双眼满是顺从与忠诚——「早上好，雄二先生。今天也是精力充沛的一天呢，请随时差遣幸。」",
+    "location": "美浜学园一楼明亮木地板阳光长廊",
+    "action": "双手轻提女仆裙摆微微屈膝行礼，垂首微笑，粉色小辫与女仆发箍整齐端庄",
+    "timeOfDay": "早晨",
+    "lighting": "晨光穿透高大木窗洒落的清朗冷白晨曦与木地板镜面微光",
+    "camera": "medium shot, full body curtsy perspective, eye-level polite framing",
+    "mood": "端庄恭顺",
+    "sceneTags": [
+      "corridor",
+      "hallway",
+      "curtsy",
+      "maid",
+      "maid_dress",
+      "maid_apron",
+      "pink_hair",
+      "polite_smile"
+    ],
+    "promptProse": "Performing a flawless maid curtsy with both hands lifting her black dress along a sun-drenched wooden academy hallway, Sachi bows with demure obedience. Pure morning sunbeams illuminate her crisp white apron ruffles and neat pink side braids.",
+    "promptTokens": [
+      "school_hallway",
+      "curtsy",
+      "maid_dress",
+      "maid_apron",
+      "white_thighhighs",
+      "pink_hair",
+      "two_side_up",
+      "polite_smile",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

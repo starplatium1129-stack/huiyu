@@ -1,0 +1,46 @@
+{
+  "kind": "scene",
+  "id": "sc302",
+  "revision": 1,
+  "sortOrder": 297,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc302",
+    "title": "深夜镜前的完整坦诚",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 宁宁 · 深夜镜前的完整坦诚】更衣室只剩一盏暖灯。宁宁在镜前站定，把最后一件衣物褪去，正面完全朝向镜面，把自己从头到脚毫无保留地照给镜中人看——白皙的胸口、腰线，连腿间最隐秘的地方都清晰映在镜里。她抿了抿嘴，声音又轻又软——「成年之后的宁宁，连这里也好好长大了……你要看清楚，宁宁只给你一个人看。」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "羞涩笃定",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "portrait",
+      "adult",
+      "nene"
+    ],
+    "rating": "R18",
+    "mature": true,
+    "location": "深夜的更衣室镜前",
+    "weather": "室内恒温",
+    "camera": "官方CG半身构图",
+    "lighting": "暖色台灯与镜面反光",
+    "usage": [
+      "官方CG灵感",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_ayachi_nene, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, naked, nude, completely_naked, pussy, standing, front_view, mirror_reflection, bare_breasts, nipples, navel, fair_skin, heavy_blush, shy_open_mouth, night, lamp, soft_lighting, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, day, bright, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」",
+    "animaCaption": "In a medium shot standing before a softly lit dressing mirror at night, she looks forward toward the viewer with a gentle blush, her reflection clearly visible under warm lamplight.",
+    "auditRevision": "careful-batch15-2026-08-27"
+  }
+}

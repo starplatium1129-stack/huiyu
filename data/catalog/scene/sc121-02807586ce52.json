@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc121",
+  "revision": 1,
+  "sortOrder": 119,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At dawn on the beach house veranda, Ayachi Nene in an extremely thin pink summer dress soaked completely translucent by the morning water clings wetly to her bare figure, her hands flying up to cover her chest in a flustered panic while the golden backlight traces her outline against the sea breeze. Fine droplets of water still cling to her sun-kissed skin.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "camera": "主观逆光近景特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极度慌张羞怯",
+    "id": "sc121",
+    "lighting": "朝阳通透逆光与黄金碎光",
+    "location": "海滨度假木屋露台",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wet_hair, wet_skin, water_droplets, wet_dress, pink_summer_dress, translucent_dress, clinging_fabric, hands_covering_chest, no_underwear, bare_legs, beach_house_veranda, ocean, waves, barefoot, heavy_blush, panicked_blush, dawn, golden_backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成年 After Story · 宁宁 · 湿透连衣裙完全真空】黎明破晓的海滨度假木屋边缘。清晨温柔的海风徐徐吹过，宁宁只穿着一件极其轻薄的粉色夏日无袖连衣裙伫立在露天浴池旁。因为早晨在水边的嬉戏，裙子的布料被清泉完全打透，半透明死死贴紧在她完美毫无瑕疵的娇躯线条上，里面真空未着寸缕的傲然痕迹与饱满乳沟在朝阳的逆光勾勒下近乎全透明！她面红耳赤地用双手护在胸前，头顶的呆毛害羞得疯狂颤动卷曲——「啊啊啊！裙子怎么变透明了啦！大色狼不准看！再看我就用魔法把你变成章鱼！」",
+    "storyJa": "【寧々・大人のアフターストーリー・・びしょ濡れドレス完全バキューム】海辺のリゾートのキャビンの端で夜が明ける。穏やかな海風がゆっくりと吹く朝、寧々さんは極薄のピンク色の夏用ノースリーブワンピースだけを着て露天風呂の横に立っていた。朝の水辺遊びのせいで、スカートの生地は清らかな泉にすっかり浸透し、完璧なボディラインに透け感がぴったりと張り付いている。内側にある自慢の跡と豊満な谷間が朝日の逆光でほぼ透け透け！彼女は顔を赤らめて両手で胸を覆い、頭の上のアホ毛が恥ずかしすぎて震えて狂ったように丸まった。――「きゃあっ、スカートが透けてる！　見ちゃだめです！　これ以上見たら、魔法でタコに変えちゃいますから！」",
+    "tags": [
+      "hair_ribbon",
+      "pink_sundress",
+      "wet_clothes",
+      "see_through_clothing",
+      "bare_legs",
+      "smooth_thighs",
+      "beach_house",
+      "full_body",
+      "barefoot",
+      "wet_sheen",
+      "dawn"
+    ],
+    "time": "拂晓",
+    "timeOfDay": "dawn",
+    "title": "破晓海滩的透明防线",
+    "usage": [
+      "新手推荐",
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "破晓海风徐徐"
+  }
+}

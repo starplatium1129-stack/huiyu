@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc207",
+  "revision": 1,
+  "sortOrder": 202,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc207",
+    "title": "雾气散去后的白色浴巾",
+    "category": "亲密/After_Story",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 浴室蒸汽里的清晨】周末清晨，浴室的镜面还留着一层薄雾。洗完澡的宁宁只围着柔软白浴巾，湿润的白发从肩头垂下；她一边整理发带，一边被你看得耳根发热。窗外的晨光穿过水汽，把她的轮廓照得格外柔和。她故作镇定地偏过头，小声提醒你——「宁宁已经是大人了也会害羞的……只准看一会儿，听见没有？」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "害羞而信任",
+    "season": "不限",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "hair_ribbon",
+      "bath_towel",
+      "bare_legs",
+      "bathroom",
+      "full_body",
+      "barefoot",
+      "steam",
+      "depth_of_field"
+    ],
+    "rating": "R15",
+    "mature": false,
+    "location": "公寓主卧浴室",
+    "weather": "室内温暖水汽",
+    "camera": "平视上半身近景",
+    "lighting": "窗边晨光与柔和反射光",
+    "usage": [
+      "角色还原",
+      "R15"
+    ],
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_bath_towel_wrapped_around_body_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_steamy_skin_sheen_and_water_droplets, barefoot_with_detailed_toes_on_bathroom_tiles, standing_in_bathroom_with_one_hand_holding_towel_and_other_hand_holding_hair_with_shy_embarrassed_blush, warm_steamy_bathroom_light_with_tile_and_water_droplets_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, morning_bathroom, early_morning, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "storyJa": "【大人のAfter Story・寧々・浴室の湯気に包まれた朝】週末の朝、浴室の鏡にはまだ薄い湯気が残っていた。湯上がりの寧々は柔らかな白いタオルだけをまとい、濡れた白髪を肩に落としている。リボンを整えながら見つめられると、耳まで赤くなった。窓から差す朝の光が水蒸気を通り、彼女の輪郭をやさしく照らす。寧々は平静を装って顔をそむけ、小さな声で言った。――「大人になった寧々だって、恥ずかしいんだから……少しだけなら、見てもいいよ。」",
+    "animaCaption": "Standing in a bathroom wrapped in a soft white bath towel, Ayachi Nene shows slender bare legs with steamy skin sheen and water droplets, bare feet on tiles, holding her towel and hair with a shy embarrassed blush.",
+    "auditRevision": "careful-batch09-2026-08-27"
+  }
+}

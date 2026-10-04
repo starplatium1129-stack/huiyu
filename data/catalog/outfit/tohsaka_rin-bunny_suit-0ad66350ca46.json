@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/bunny_suit",
+  "revision": 1,
+  "sortOrder": 82,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "bunny_suit",
+      "name": "深红魅惑漆皮兔女郎装",
+      "prose": "a glossy crimson latex bunny suit clinging to her slender waist, black bunny ears, white collar and bowtie, sheer black pantyhose, and stiletto heels",
+      "tokens": [
+        "bunny_suit",
+        "red_bunny_suit",
+        "glossy_latex",
+        "bunny_ears",
+        "bowtie",
+        "cuffs",
+        "bare_shoulders",
+        "cleavage",
+        "black_pantyhose",
+        "high_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

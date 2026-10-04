@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "shirogane_kei_sfw_b8_05",
+  "revision": 1,
+  "sortOrder": 1419,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, horizontal framing",
+    "category": "海滨度假",
+    "characterId": "shirogane_kei",
+    "coverageTags": [
+      "daily",
+      "summer",
+      "beach"
+    ],
+    "description": "【海滨商业街·午后】圭穿着蓝灰色泳装外搭轻薄风衣，蹲在自动贩卖机前认真比较两种冷饮；她最终选择最划算的一瓶，坐到海堤边把罐子贴在脸上，蓝眼睛里藏着小小的得意。",
+    "id": "shirogane_kei_sfw_b8_05",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "warm afternoon light with cool can highlights",
+    "location": "seaside shopping street and seawall",
+    "mood": "把节俭过成小小胜利",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_beach",
+    "promptProse": "Kei Shirogane from Kaguya-sama: Love Is War wears a slate-blue swimsuit with a light windbreaker, black headband and a chilled canned drink. She crouches before a seaside vending machine and compares two chilled drinks with practical concentration. She chooses the better value, then sits on the seawall with the cold can against her cheek, letting a small victorious smile escape into the afternoon. warm afternoon light with cool can highlights.",
+    "promptTokens": [
+      "swimsuit",
+      "slate_blue_swimsuit",
+      "seaside",
+      "vending_machine",
+      "canned_drink",
+      "seawall",
+      "headband",
+      "small_smile",
+      "afternoon_light"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "swimsuit",
+      "slate_blue_swimsuit",
+      "seaside",
+      "vending_machine",
+      "canned_drink",
+      "seawall",
+      "headband",
+      "small_smile",
+      "afternoon_light"
+    ],
+    "timeOfDay": "日间",
+    "title": "白银圭 · 海边自动贩卖机的冷饮选择"
+  }
+}

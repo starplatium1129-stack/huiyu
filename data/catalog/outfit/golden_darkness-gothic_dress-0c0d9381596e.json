@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "golden_darkness/gothic_dress",
+  "revision": 1,
+  "sortOrder": 664,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "golden_darkness",
+    "outfit": {
+      "default": true,
+      "id": "gothic_dress",
+      "isDefault": true,
+      "name": "杀手黑色抹胸哥特战裙",
+      "prose": "her iconic assassin attire: a form-fitting black leather tube top mini-dress with crimson inner lining, silver chain clasps over the bare midriff, detached black sleeves flared at the wrists, black thigh-high boots, holding a warm brown fish-shaped taiyaki pastry in her small hands",
+      "tokens": [
+        "gothic_dress",
+        "black_dress",
+        "strapless_dress",
+        "tube_top",
+        "detached_sleeves",
+        "midriff",
+        "bare_shoulders",
+        "thighhighs",
+        "boots",
+        "holding_taiyaki",
+        "taiyaki"
+      ]
+    }
+  }
+}

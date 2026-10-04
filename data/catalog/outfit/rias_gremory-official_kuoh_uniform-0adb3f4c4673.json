@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/official_kuoh_uniform",
+  "revision": 1,
+  "sortOrder": 691,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "official_kuoh_uniform",
+      "name": "驹王学园校服制服",
+      "prose": "her classic Kuoh Academy school uniform featuring a white collared blouse, a tight black buttoned vest corset accentuating her voluptuous bust, a short black pleated skirt, a delicate magenta cross tie at the collar, and white thigh-high socks",
+      "tokens": [
+        "kuoh_academy_school_uniform",
+        "kuoh_academy_uniform",
+        "white_shirt",
+        "collared_shirt",
+        "black_vest",
+        "black_skirt",
+        "pleated_skirt",
+        "cross_tie",
+        "thighhighs",
+        "white_thighhighs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

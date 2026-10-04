@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc236",
+  "revision": 1,
+  "sortOrder": 231,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the locked old gym equipment room on a bright sports day, Ayachi Nene in a hot midriff-baring sleeveless cheerleader uniform with an ultra-short pleated skirt trips over a volleyball and falls into the viewer's arms on the gym mat, bare waist pressing close, golden pom-poms dropped beside her, ahoge curled into a heart spiral as she blushes furiously.",
+    "auditRevision": "careful-batch12-2026-08-27",
+    "camera": "近景正面水平特写",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc236",
+    "lighting": "百叶窗打进来的明亮斑驳日照窗光与面部红晕",
+    "location": "旧体育馆备用器材室软垫",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, multiple_girls, extra_girl, extra_person, duplicate_character, cloned_character, background_person, crowd, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, second_person, additional_woman, another_woman",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, midriff, baring, bare, slender, white, sneakers, gym, sitting, blush, shy_smile, golden, pom, poms, bright, summer, light, collarbone, slender_waist, full_body, window_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 啦啦队服青春自曝】体育祭当天的室外艳阳高照，反锁的学校旧体育馆备用器材室。为了给班级应援，宁宁在超自然研究会伙伴的怂恿下，破天荒地换上了一身极其热烈性感的露脐无袖啦啦队服，超短的百褶裙摆随风摇曳，双手还握着金色的手摇花。正当她羞耻地躲在器材室镜子前练习动作时，你突然推门进来。惊慌失措下她直接被地上的排球绊倒，整个人惊呼着跌进坐在软垫上的你怀里。宁宁瞬间满脸通红，高叉露脐的剪裁让盈盈一握的细腰毫无防备地贴紧你，头顶的呆毛慌乱卷成完美的爱心狂喊自曝——「呜啊！柊、柊史！为什么你会在这里啦！不准盯着人家露出来的肚子看！才、才没有为了让你觉得可爱故意穿成这样呢……呜，大色狼，快闭上眼睛！」",
+    "storyJa": "【寧々・体育館裏のオーバーロード応援自爆】体育祭当日、外は快晴、ロックされた学校の旧体育館の備品室。クラスの応援のため、寧々は超自然研究部の仲間たちに唆され、前代未聞の、非常にアクティブでセクシーなへそ出しノースリーブのチアリーダー衣装に身を包んでいた。超ミニのプリーツスカートの裾が風に揺れ、両手には金色のポンポンを握っている。恥ずかしそうに備品室の鏡の前でポーズの練習をしていたところ、あなたが突然ドアを開けて入ってきた。パニックに陥った彼女は床のバレーボールに足を取られ、小さく悲鳴を上げてマットに座っていたあなたの胸の中に真っ直ぐ転がり込んできた。寧々は瞬間的に顔を真っ赤にし、へそ出しの裁断のせいで細い腰があなたの体に無防備に密着し、頭のアホ毛を慌てて完璧なハート型に丸めながら叫んだ――「うあぁ！柊、柊史！なぜここにいるのよ？！人の露出したお腹ばかり見ないで！け、決してあなたにかわいいって思われたくてこんな格好をしてるわけじゃ……うう、大色狼、早く目を閉じて！」",
+    "tags": [
+      "hair_ribbon",
+      "cheerleader_uniform",
+      "bare_midriff",
+      "golden_pom_poms",
+      "gym_mat",
+      "full_body",
+      "sneakers",
+      "falling_into_arms"
+    ],
+    "time": "白天",
+    "timeOfDay": "all_day",
+    "title": "体育馆后方的超载应援",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "夏日晴朗"
+  }
+}

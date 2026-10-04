@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/sfw_travel",
+  "revision": 1,
+  "sortOrder": 882,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "sfw_travel",
+      "name": "轻装旅行服",
+      "prose": "a red-brown travel tunic over a cream blouse, light leather vest, practical trousers and boots",
+      "tokens": [
+        "red_tunic",
+        "cream_blouse",
+        "leather_vest",
+        "pants",
+        "boots"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

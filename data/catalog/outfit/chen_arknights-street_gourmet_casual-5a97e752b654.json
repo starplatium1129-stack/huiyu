@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/street_gourmet_casual",
+  "revision": 1,
+  "sortOrder": 302,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "default": false,
+      "id": "street_gourmet_casual",
+      "isDefault": false,
+      "name": "龙门夜市街头休闲装",
+      "prose": "a retro 90s Hong Kong street-style casual outfit: an open vintage floral-print shirt over a plain white tee, slim washed dark jeans, white canvas sneakers, and a small black crossbody sling bag",
+      "tokens": [
+        "casual_clothes",
+        "vintage_shirt",
+        "floral_print",
+        "jeans",
+        "sneakers",
+        "crossbody_bag"
+      ]
+    }
+  }
+}

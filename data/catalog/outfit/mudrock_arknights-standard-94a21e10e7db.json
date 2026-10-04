@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/standard",
+  "revision": 1,
+  "sortOrder": 327,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "重型装甲（战斗态）",
+      "prose": "her heavy olive-green sealed power armor with a hazmat helmet and a huge engineering warhammer",
+      "tokens": [
+        "power_armor",
+        "armor",
+        "olive",
+        "helmet",
+        "hammer"
+      ]
+    }
+  }
+}

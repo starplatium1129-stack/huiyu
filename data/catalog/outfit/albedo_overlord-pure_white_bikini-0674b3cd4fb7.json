@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "albedo_overlord/pure_white_bikini",
+  "revision": 1,
+  "sortOrder": 708,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "albedo_overlord",
+    "outfit": {
+      "id": "pure_white_bikini",
+      "name": "纯白露翼修身度假比基尼",
+      "prose": "a radiant pure white micro bikini with gold ring connectors, her sleek horns and black wings spreading gently as sea breeze caresses her sunlit porcelain skin",
+      "tokens": [
+        "bikini",
+        "white_bikini",
+        "micro_bikini",
+        "halterneck",
+        "cleavage",
+        "black_wings",
+        "curved_horns",
+        "wet_skin"
+      ]
+    }
+  }
+}

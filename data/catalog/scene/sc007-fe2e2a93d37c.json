@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc007",
+  "revision": 1,
+  "sortOrder": 6,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close two-person view beneath one umbrella on a rainy after-school street, Ayachi Nene reaches beside the umbrella handle to hold her partner's hand, her shy moved smile lit by cool diffuse rain and puddle reflections.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "伞下双人近景",
+    "category": "恋爱",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "感动",
+    "id": "sc007",
+    "lighting": "阴雨漫射光与路面反射",
+    "location": "雨中放学路",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_stella_school_uniform, pleated_skirt, white_thighhighs, rainy_afternoon, standing_close_under_one_shared_umbrella, holding_umbrella_handle, holding_partner_hand_beside_umbrella_handle, partner_hand_visible, shy_moved_smile, wet_hair, wet_street, puddle_reflections, medium_close_up, overcast_soft_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【宁宁 · 雨声里的正式回答】骤雨困住了放学后的街道。宁宁原本想独自跑回去，却看见你带着伞从雨幕里赶来。两个人挤在不算宽的伞下，她沉默地听完你的心意，手指越攥越紧，最终主动握住伞柄旁的手——「让我想了这么久，太狡猾了……我的回答是愿意。所以，从今天开始不准把我落在雨里。」",
+    "storyJa": "【寧々・雨音の中で正式な答え】放課後、通りはにわか雨で閉じ込められました。寧々本当は一人で走って帰ろうと思ってたんですが、雨の中傘をさして出てくる君を見かけました。二人はそれほど広くない傘の下に押し込められていた。彼女はあなたの考えを黙って聞いていました。彼女の指は力強くなり、ついに率先して傘の柄の横にある手を握りました。――「こんなに長く考えさせるなんて、ずるいです……私の答えは、はい。だから今日から、雨の中に私を置いていかないでくださいね。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "rainy_road",
+      "shared_umbrella",
+      "holding_hands",
+      "standing_close",
+      "rain",
+      "loafers",
+      "umbrella",
+      "shy",
+      "moved",
+      "medium_shot",
+      "partner_hand_visible"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "雨声里的正式回答",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雨"
+  }
+}

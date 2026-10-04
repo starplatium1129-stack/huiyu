@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc241",
+  "revision": 1,
+  "sortOrder": 236,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At the 24-hour convenience store counter late at night, Shiki Natsume in a plain black hoodie and dark jeans holds a shopping basket with an instant bento, the last limited pudding and a hot canned coffee. She nods expressionlessly at the clerk's heating offer while warm yellow lights catch her reddening ears.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景平视特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc241",
+    "lighting": "便利店暖黄荧光灯与货架微光",
+    "location": "24小时便利店收银台前",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_oversized_hoodie, dark_jeans, convenience_store_counter_at_night, holding_shopping_basket_with_instant_bento_limited_pudding_and_hot_canned_coffee, nodding_to_clerk, deadpan_face_with_blushing_ears, warm_yellow_fluorescent_shelf_lights, late_night, convenience_store_shelves, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "不限",
+    "story": "【夏目 · 深夜便利店】凌晨一点，打烊后独自整理完库存的夏目拖着疲惫的身体走进隔壁24小时便利店。她机械地往购物篮里扔着速食便当，直到看见货架上最后一盒你最爱吃的限定布丁。犹豫了三秒，她还是把它放进了篮子里，顺手又拿了一罐热咖啡。结账时店员问要不要加热，她面无表情地点了点头，耳根却在暖黄的灯光下悄悄泛红。推开公寓门时，她把布丁和咖啡轻轻放在熟睡的你床头，用只有自己能听见的声音嘟囔——「……只是顺便买的。不吃的话明天就过期了，属于合理的资源回收。大笨蛋……晚安。」",
+    "storyJa": "【夏目】【ナツメ・深夜のコンビニと温かい思いやり】午前一時、閉店後に一人で在庫整理を終えたナツメは疲れた身体を引きずるようにして隣の24時間コンビニに入った。彼女は機械的に買い物かごにインスタント弁当を放り込みながら、棚に並ぶ最後の一箱のあなたの大好きな限定プリンを見つけるまでそうしていた。三秒踌躇して、彼女はそれをかごに入れ、顺便にホットコーヒーの缶も一つ取った。レジで店員が温めるかと尋ねると、彼女は表情を変えずに頷いたが、暖かい蛍光灯の下で耳の裏がそっと赤く染まっていた。マンションの扉を開けると、彼女はプリンとコーヒーを眠っているあなたの枕元にそっと置き、自分にしか聞こえない小さな声で呟いた――「……ただ顺便に買っただけ。食べなかったら明日が賞味期限切れになるから、合理的な資源リサイクル。大バカ者……おやすみ」",
+    "tags": [
+      "mole_under_eye",
+      "hoodie",
+      "jeans",
+      "convenience_store",
+      "shopping_basket",
+      "bento",
+      "limited_pudding",
+      "canned_coffee",
+      "night",
+      "red_ears",
+      "medium_shot"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "便利店深夜的限定布丁暖意",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "深夜静谧"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/white_bridal_gown",
+  "revision": 1,
+  "sortOrder": 743,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "default": false,
+      "id": "white_bridal_gown",
+      "isDefault": false,
+      "name": "教堂白色婚纱",
+      "prose": "a pure white wedding gown with a delicate bridal veil and opaque fabric",
+      "tokens": [
+        "wedding_dress",
+        "white_dress",
+        "bridal_veil",
+        "opaque_fabric"
+      ]
+    }
+  }
+}

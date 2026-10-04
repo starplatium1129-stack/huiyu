@@ -1,0 +1,156 @@
+{
+  "kind": "character",
+  "id": "yor_forger",
+  "revision": 1,
+  "sortOrder": 41,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yor_forger",
+    "profile": {
+      "id": "yor_forger",
+      "name": "约尔·福杰",
+      "alias": [
+        "Yor Forger",
+        "Yor Briar",
+        "Thorn Princess",
+        "ヨル・フォージャー",
+        "约尔"
+      ],
+      "type": "popular",
+      "icon": "🌹",
+      "portrait": {
+        "image": "../assets/characters/popular-yor_forger.png?v=5",
+        "alt": "约尔·福杰 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长发 · 低发髻",
+        "hair_color": "黑（Raven Black）",
+        "eyes": "红（Ruby Red）",
+        "hairstyle": "低丸子头 · 两鬓碎发",
+        "uniform": "市政厅职业装 / 居家红毛衣 / 荆棘公主礼服",
+        "expression": "温柔人妻 · 战斗时凌厉",
+        "style": "elegant assassin beauty",
+        "signature": "黑发红瞳、玫瑰耳环与杀手/人妻反差"
+      },
+      "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+      "bg_story": "约尔·福杰是《SPY×FAMILY》的女主角，表面是伯林特市政厅的温和职员，真实身份是代号「荆棘公主」的顶尖杀手。黑色长发与红色眼眸、金色玫瑰耳环是她的标志。为完成任务与黄昏组建了福杰家，却在这份「虚假」的家庭里找到了真正的幸福。",
+      "personality": [
+        "天然",
+        "温柔",
+        "运动万能",
+        "不善社交",
+        "反差萌"
+      ],
+      "likes": [
+        "家人",
+        "做饭（努力中）",
+        "花生",
+        "平静的生活"
+      ],
+      "traits": [
+        "yor_briar",
+        "1girl",
+        "solo",
+        "black_hair",
+        "hair_bun",
+        "updo",
+        "red_eyes",
+        "earrings",
+        "flower_earrings",
+        "spy_x_family"
+      ],
+      "speech": "约尔·福杰向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "福杰家的晚餐",
+        "description": "她系着熊熊围裙端上卖相微妙的料理，丈夫和女儿却都笑得很开心——这就是她守护的日常。"
+      },
+      "identity": {
+        "role": "市政厅职员 / 代号「荆棘公主」的杀手",
+        "age": "27 岁（官方设定）",
+        "occupation": "公务员（表面）",
+        "faction": "福杰家 / 伯林特市政厅"
+      },
+      "tags": [
+        "黑发",
+        "红瞳",
+        "杀手",
+        "人妻",
+        "反差萌"
+      ],
+      "palette": [
+        "绯红",
+        "玄黑",
+        "橄榄绿"
+      ],
+      "weather": [
+        "福杰家黄昏",
+        "市政厅午休",
+        "任务雨夜"
+      ],
+      "series": "远藤达哉《间谍过家家 / SPY x FAMILY》"
+    },
+    "popular": {
+      "id": "yor_forger",
+      "displayName": "约尔·福杰",
+      "franchise": "SPY x FAMILY",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "thorn_princess_dress",
+      "identityTokens": [
+        "yor_briar",
+        "1girl",
+        "solo",
+        "black_hair",
+        "hair_bun",
+        "updo",
+        "red_eyes",
+        "earrings",
+        "flower_earrings",
+        "spy_x_family"
+      ],
+      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair with a sleek shine, striking ruby red eyes, gold rose earrings, and an endearing innocent blush",
+      "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "约尔·福杰",
+      "exactTokens": [
+        "yor_briar"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "yor forger",
+        "yor briar",
+        "thorn princess",
+        "spy x family",
+        "约尔·福杰",
+        "约尔"
+      ],
+      "canon": {
+        "world": "现代日常+间谍（SPY x FAMILY）",
+        "era": "当代",
+        "formNotes": "黑色长发低发髻；红瞳；金色玫瑰耳环；荆棘公主（Thorn Princess）黑色露肩高叉礼服名场面；居家红色露肩毛衣；市政厅绿色职业装",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

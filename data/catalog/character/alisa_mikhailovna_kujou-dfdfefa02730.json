@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "alisa_mikhailovna_kujou",
+  "revision": 1,
+  "sortOrder": 36,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "alisa_mikhailovna_kujou",
+    "profile": {
+      "id": "alisa_mikhailovna_kujou",
+      "name": "艾莉莎·米哈伊洛夫娜·九条",
+      "alias": [
+        "Alisa Mikhailovna Kujou",
+        "Alya",
+        "艾莉",
+        "俄妹"
+      ],
+      "type": "popular",
+      "icon": "❄️",
+      "portrait": {
+        "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=5",
+        "alt": "艾莉莎·米哈伊洛夫娜·九条 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银色长发 · 半双马尾",
+        "hair_color": "银白",
+        "eyes": "海蓝",
+        "hairstyle": "半双马尾 · 蓝色发带",
+        "uniform": "征岭学园制服 / 白色夏日连衣裙",
+        "expression": "傲娇孤高 · 害羞时用俄语低语",
+        "style": "tsundere silver-haired beauty",
+        "signature": "银发半双马尾、蓝眸与蓝发带"
+      },
+      "personality": [
+        "孤高傲娇",
+        "成绩优异",
+        "不服输",
+        "害羞时会用俄语吐露真情",
+        "暗地里纯情可爱"
+      ],
+      "likes": [
+        "俄语",
+        "红茶",
+        "猫咪",
+        "被真心夸奖"
+      ],
+      "classic_cg": {
+        "title": "放学后的夕阳窗边",
+        "description": "教室窗边夕阳洒在银发上，她转过头红着脸轻声用俄语说出喜欢。"
+      },
+      "identity": {
+        "role": "学生会干部（高一学生）",
+        "age": "高中一年级",
+        "occupation": "学生",
+        "faction": "征岭学园学生会"
+      },
+      "tags": [
+        "银发",
+        "蓝瞳",
+        "傲娇",
+        "制服",
+        "俄妹"
+      ],
+      "bg_story": "艾莉莎是《不时轻声地用俄语遮羞的邻座艾莉同学》的女主角，日俄混血的银发蓝瞳美少女。表面冷若冰霜、严以律己，实际上极易害羞，习惯用俄语掩饰自己的真心。",
+      "palette": [
+        "冰川蓝",
+        "雪银白",
+        "夕阳绯红"
+      ],
+      "weather": [
+        "夕阳教室",
+        "午后微风",
+        "夏夜祭典"
+      ],
+      "speech": "艾莉莎·米哈伊洛夫娜·九条向你致以问候。",
+      "source": "灿灿SUN《不时轻声地用俄语遮羞的邻座艾莉同学》",
+      "traits": [
+        "alisa_mikhailovna_kujou",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ribbon",
+        "blue_ribbon",
+        "twintails",
+        "half_updo",
+        "bangs",
+        "fair_skin"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "alisa_mikhailovna_kujou",
+      "displayName": "艾莉莎·米哈伊洛夫娜·九条",
+      "originalName": "Alisa Mikhailovna Kujou",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "aliases": [
+        "alya",
+        "alisa kujou",
+        "alya roshidere",
+        "alisa mikhailovna kujou",
+        "艾莉",
+        "艾莉莎",
+        "俄妹"
+      ],
+      "identityProse": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, a stunning high school girl with silky silver hair glowing with luminous platinum highlights, gathered in a neat half-updo with small blue ribbons, striking clear blue eyes, delicate fair skin, and a proud yet secretly shy presence",
+      "identityTokens": [
+        "alisa_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ribbon",
+        "blue_ribbon",
+        "half_updo",
+        "bangs",
+        "fair_skin"
+      ],
+      "exactTokens": [
+        "alisa_mikhailovna_kujou"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "momoco_haru",
+        "nekotomi_chao",
+        "kantoku"
+      ],
+      "animeStudio": "doga kobo, official anime screencap, nekotomi chao, anime coloring, crisp lineart",
+      "canon": {
+        "world": "现代校园（不时轻声地用俄语遮羞的邻座艾莉同学）",
+        "era": "当代",
+        "formNotes": "银发蓝瞳混血美少女，半双马尾系蓝色发带；表面高冷孤高，私下傲娇羞涩",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

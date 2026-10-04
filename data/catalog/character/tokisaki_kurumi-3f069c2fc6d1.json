@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "tokisaki_kurumi",
+  "revision": 1,
+  "sortOrder": 4,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tokisaki_kurumi",
+    "profile": {
+      "id": "tokisaki_kurumi",
+      "name": "时崎狂三",
+      "alias": [
+        "Tokisaki Kurumi",
+        "時崎狂三"
+      ],
+      "type": "popular",
+      "icon": "⏰",
+      "portrait": {
+        "image": "../assets/characters/popular-tokisaki_kurumi.png?v=5",
+        "alt": "时崎狂三 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色长双马尾（一长一短）",
+        "hair_color": "黑",
+        "eyes": "异色瞳：左金时钟瞳 / 右红瞳",
+        "hairstyle": "不对称双马尾 · 刘海遮左眼",
+        "uniform": "红黑哥特洛丽塔灵装",
+        "expression": "优雅温柔 · 腹黑危险",
+        "style": "elegant dangerous gothic",
+        "signature": "左金时钟瞳右红瞳与黑红哥特装"
+      },
+      "personality": [
+        "表面优雅温柔",
+        "腹黑病娇",
+        "冷静果决",
+        "为达目的不惜代价",
+        "隐藏坚定"
+      ],
+      "likes": [
+        "月夜",
+        "时钟与齿轮",
+        "与时间博弈",
+        "危险的美学"
+      ],
+      "classic_cg": {
+        "title": "月下钟楼",
+        "description": "刻刻帝的巨大金色表盘在月下旋转，她持双燧发枪立于钟楼顶端，回眸一笑。"
+      },
+      "identity": {
+        "role": "时之精灵（最凶的精灵）",
+        "age": "精灵（外貌 17 岁左右）",
+        "occupation": "精灵 / 转学生",
+        "faction": "精灵（Ratatoskr 追迹对象）"
+      },
+      "tags": [
+        "黑长直",
+        "不对称双马尾",
+        "时钟瞳",
+        "哥特洛丽塔",
+        "燧发枪"
+      ],
+      "bg_story": "时崎狂三是《约会大作战》中被称为「最凶的精灵」的存在。左眼为金色时钟瞳（刻刻帝），右眼为红色。灵装为红黑哥特洛丽塔，武器是双燧发枪与背后巨大时钟。场景应偏哥特暗黑、月夜钟楼与时间主题。",
+      "palette": [
+        "夜黑",
+        "血红",
+        "时钟金"
+      ],
+      "weather": [
+        "月夜",
+        "钟楼黄昏",
+        "时间静止"
+      ],
+      "speech": "时崎狂三向你致以问候。",
+      "source": "橘公司《约会大作战 / Date A Live》",
+      "traits": [
+        "tokisaki_kurumi",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "uneven_twintails",
+        "heterochromia",
+        "red_right_eye",
+        "clock_eye",
+        "yellow_left_eye",
+        "bangs",
+        "gothic_hair_ornament",
+        "date_a_live"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "tokisaki_kurumi",
+      "displayName": "时崎狂三",
+      "originalName": "Tokisaki Kurumi",
+      "franchise": "Date A Live",
+      "aliases": [
+        "tokisaki_kurumi",
+        "kurumi",
+        "kurumi tokisaki",
+        "date a live"
+      ],
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes with an intense gleam, a pale elegant face, and an enigmatic, composed manner",
+      "identityTokens": [
+        "tokisaki_kurumi",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "uneven_twintails",
+        "heterochromia",
+        "red_right_eye",
+        "clock_eye",
+        "yellow_left_eye",
+        "bangs",
+        "gothic_hair_ornament",
+        "date_a_live"
+      ],
+      "exactTokens": [
+        "tokisaki_kurumi"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代超能力（约会大作战）",
+        "era": "当代",
+        "formNotes": "左金时钟瞳/右红瞳异色；不对称双马尾；刻刻帝+双燧发枪",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "tsunako, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "tsunako",
+        "rella",
+        "swav"
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc083",
+  "revision": 1,
+  "sortOrder": 81,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Shiki Natsume has doubled back on the maple-covered path to brush one red leaf from the viewer's shoulder. Her beige cardigan, white blouse and brown plaid skirt catch the warm autumn light. She holds the leaf between two fingers just after lifting it away, looking up with a composed expression and faintly pink ears. A stone path and a distant bench remain visible behind her.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "camera": "肩上取枫叶的半身近景",
+    "category": "旅行",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "开心",
+    "id": "sc083",
+    "lighting": "秋日下午暖日光",
+    "location": "枫叶步道",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, beige_cardigan, white_blouse, brown_plaid_skirt, black_tights, standing_close, holding_maple_leaf, leaf_between_fingers, hand_near_viewer_shoulder, looking_up, slight_blush, stone_path, autumn_maples, park_bench, afternoon, warm_daylight, medium_shot, detailed_background, cinematic_lighting, <lora:shiki_natsume_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "秋",
+    "story": "【夏目 · 枫叶路上的确认】秋日下午，夏目沿着铺满枫叶的石板路走在前面，每隔一段就会不动声色地回头确认你的位置。你故意停下，她很快折返回来，替你拍掉肩上的红叶——「只是确认没有人走丢。既然脚累了就说……前面有长椅，我可以陪你休息。」",
+    "storyJa": "【夏目・紅葉ロードの確認】秋の午後、もみじの葉が積もった石畳の道を、夏目が前を歩き、時折振り返って位置を確認する。あなたがわざと立ち止まると、彼女はすぐに振り返り、あなたの肩に落ちた赤い葉を撫でました。――「誰も迷子になっていないか確認しただけ。足が疲れたなら、そう言って……少し先にベンチがあるから、休むくらいなら付き合う。」",
+    "tags": [
+      "beige_cardigan",
+      "white_blouse",
+      "brown_plaid_skirt",
+      "black_tights",
+      "standing_close",
+      "holding_maple_leaf",
+      "leaf_between_fingers",
+      "hand_near_viewer_shoulder",
+      "looking_up",
+      "slight_blush",
+      "stone_path",
+      "autumn_maples",
+      "park_bench",
+      "afternoon",
+      "warm_daylight",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "枫叶路上的确认",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

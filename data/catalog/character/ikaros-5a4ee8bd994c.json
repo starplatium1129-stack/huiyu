@@ -1,0 +1,170 @@
+{
+  "kind": "character",
+  "id": "ikaros",
+  "revision": 1,
+  "sortOrder": 91,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ikaros",
+    "profile": {
+      "id": "ikaros",
+      "name": "伊卡洛斯",
+      "alias": [
+        "Ikaros",
+        "イカロス",
+        "空之女王",
+        "天降之物",
+        "阿尔法"
+      ],
+      "type": "popular",
+      "icon": "🪽",
+      "portrait": {
+        "image": "../assets/characters/popular-ikaros.png?v=5",
+        "alt": "伊卡洛斯 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "淡粉渐变超长双马尾 · 灵动呆毛 · 机械耳饰",
+        "hair_color": "淡粉色",
+        "eyes": "清澈澄净翡翠绿双眸",
+        "hairstyle": "双马尾长发 · 脖颈金属项圈与断裂铁链 · 背负纯白机械羽翼",
+        "uniform": "战略用人造天使轻纱白裙 / 空美町女仆围裙装",
+        "expression": "呆萌三无 · 纯真无邪 · 温柔顺从",
+        "style": "innocent mechanical angel of the sky",
+        "signature": "粉发双马尾、翡翠绿眸、金属项圈铁链、纯白天使羽翼与大西瓜"
+      },
+      "personality": [
+        "不谙世事、呆萌纯真的战略级人造天使",
+        "极度热爱圆滚滚的西瓜与毛茸茸的小鸡",
+        "对主人樱井智树抱有绝对的服从与深沉守护之心",
+        "在感知到人类的“爱”后逐渐拥有了真正的心跳与感情",
+        "战斗状态下化身空之女王，火力无匹却一心只为守护主人"
+      ],
+      "likes": [
+        "圆滚滚的大西瓜（在菜园里悉心培育）",
+        "毛茸茸的黄色小鸡",
+        "被智树牵着脖子上的铁链一起散步",
+        "蔚蓝晴空与温暖的微风"
+      ],
+      "classic_cg": {
+        "title": "空之女王的纯白天降",
+        "description": "蔚蓝晴空与浩瀚积雨云下，粉发天使展开展幅数米的纯白羽翼，双手紧抱大西瓜呆萌凝望。"
+      },
+      "identity": {
+        "role": "型号 Alpha 战略用人造天使 / 空之女王",
+        "age": "外观少女",
+        "occupation": "人造天使 / 樱井家专属宠物仆从",
+        "faction": "空美町 · 西纳普斯"
+      },
+      "tags": [
+        "粉发",
+        "双马尾",
+        "绿瞳",
+        "天使羽翼",
+        "项圈铁链",
+        "机械耳",
+        "西瓜",
+        "天降之物"
+      ],
+      "bg_story": "伊卡洛斯是《天降之物》的女主角，自称是“娱乐用人造天使”，真实身份却是西纳普斯历史上最强悍、令诸神战栗的最终决战兵器——型号 Alpha「空之女王（Uranus Queen）」。从高空坠落与樱井智树铭刻契约后，被智树当做普通家人温柔对待，由此逐渐萌发了人类的情感与笑容，一生最大的愿望就是永远陪伴在主人身边吃西瓜。",
+      "palette": [
+        "纯洁粉",
+        "苍穹蓝",
+        "天使白"
+      ],
+      "weather": [
+        "夏日晴空",
+        "积雨云霄",
+        "西瓜田园"
+      ],
+      "speech": "我的名字是伊卡洛斯。娱乐用人造天使，Alpha型。主人，请尽情使用我……今天也可以去吃西瓜吗？",
+      "source": "水无月すう《天降之物 / Sora no Otoshimono》",
+      "traits": [
+        "ikaros",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "green_eyes",
+        "collar",
+        "metal_collar",
+        "chain",
+        "white_wings",
+        "angel_wings",
+        "robot_ears",
+        "large_breasts",
+        "sora_no_otoshimono"
+      ],
+      "accent_color": "#f472b6",
+      "bg_color": "#0c1322"
+    },
+    "popular": {
+      "id": "ikaros",
+      "displayName": "伊卡洛斯",
+      "originalName": "イカロス (Ikaros)",
+      "franchise": "Sora no Otoshimono",
+      "aliases": [
+        "ikaros",
+        "ikaros_(sora_no_otoshimono)",
+        "伊卡洛斯",
+        "空之女王",
+        "天降之物",
+        "sora no otoshimono"
+      ],
+      "identityProse": "Ikaros from Sora no Otoshimono, the type Alpha strategic battle angeloid with long pastel pink twin-tails, a delicate ahoge, luminous emerald-green eyes, a metal collar around her neck with a trailing broken chain, mechanical ear winglets, massive pure white feathered angel wings, and a quiet gentle expression.",
+      "identityTokens": [
+        "ikaros",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "ahoge",
+        "green_eyes",
+        "collar",
+        "metal_collar",
+        "chain",
+        "white_wings",
+        "angel_wings",
+        "robot_ears",
+        "large_breasts",
+        "sora_no_otoshimono"
+      ],
+      "exactTokens": [
+        "ikaros"
+      ],
+      "exactPrefixes": [
+        "ikaros_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "空美町 · 西纳普斯（Synapse）",
+        "era": "近现代人造天使奇幻世界",
+        "formNotes": "型号 Alpha 战略用人造天使（空之女王），背生巨大白羽翼，颈部带有拘束项圈与断裂铁链；战斗时拥有毁灭级火力，日常生活极其喜爱西瓜、小鸡，对主人樱井智树绝对服从与深情依恋",
+        "research": "2026-09-02 调研（Danbooru ikaros 450+ posts + 官方设定）"
+      },
+      "animeStudio": "AIC A.S.T.A. official anime art, Watanabe Ryuichi style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "kobuichi",
+        "rella"
+      ]
+    }
+  }
+}

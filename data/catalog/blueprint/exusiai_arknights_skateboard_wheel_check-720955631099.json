@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "exusiai_arknights_skateboard_wheel_check",
+  "revision": 1,
+  "sortOrder": 695,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfitId": "lungmen_streetwear_skater",
+    "id": "exusiai_arknights_skateboard_wheel_check",
+    "title": "能天使 · 滑板出发前的检查",
+    "category": "现代日常",
+    "location": "龙门街头广场边的长椅",
+    "timeOfDay": "下午",
+    "mood": "轻快专注",
+    "description": "【能天使 · 滑板出发前的检查】龙门广场边，能天使穿着红白拼色卫衣和黑色工装裤，耳机挂在颈间，坐在长椅上检查滑板。她一手稳住竖在身旁的板面，另一手用小工具拧紧轮轴，抬头朝你笑了一下——「出发前再检查一遍，可不能滑到一半掉链子！」",
+    "action": "坐在长椅上，一手稳住滑板，另一手用工具拧紧轮轴",
+    "promptProse": "On a bench beside a Lungmen plaza, Exusiai checks her skateboard in a red-and-white hoodie and black cargo pants, holding the deck upright with one hand while tightening a wheel nut with a skate tool. Clear afternoon light catches the metal axle and the headphones around her neck, with paving stones and low shopfronts receding behind the bench.",
+    "promptTokens": [
+      "city_plaza",
+      "bench",
+      "sitting",
+      "skateboard",
+      "skate_tool",
+      "hoodie",
+      "cargo_pants",
+      "headphones",
+      "afternoon",
+      "sunlight",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "camera": "medium shot, bench and upright skateboard with wheel adjustment visible",
+    "lighting": "街头广场清透的午后日光",
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single",
+    "sceneTags": [
+      "city_plaza",
+      "bench",
+      "sitting",
+      "skateboard",
+      "skate_tool",
+      "hoodie",
+      "cargo_pants",
+      "headphones",
+      "afternoon",
+      "sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "blurry",
+      "bad anatomy",
+      "bad hands",
+      "extra fingers",
+      "extra limbs",
+      "text",
+      "watermark",
+      "nsfw",
+      "nude",
+      "explicit"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/dead_end_adventurer",
+  "revision": 1,
+  "sortOrder": 261,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "default": false,
+      "id": "dead_end_adventurer",
+      "isDefault": false,
+      "name": "冒险者 Dead End",
+      "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt",
+      "tokens": [
+        "jacket",
+        "pants",
+        "boots",
+        "sword",
+        "sheath",
+        "belt",
+        "adventure"
+      ]
+    }
+  }
+}

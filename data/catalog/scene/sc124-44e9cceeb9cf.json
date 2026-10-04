@@ -1,0 +1,58 @@
+{
+  "kind": "scene",
+  "id": "sc124",
+  "revision": 1,
+  "sortOrder": 122,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc124",
+    "title": "晚宴落幕后的解封指令",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 晚礼服解开极致沦陷】奢华宴会彻底结束后的五星级酒店总统套房。窗外是繁华都市一望无际的璀璨霓虹，房间内一片微热。平时优雅高冷的夏目此时有些脱力地被你推倒在宽大的双人床上。她身上那件黑色露背高开叉丝绸晚礼服背后的精细拉链已经被你完全拉开，整件礼服无力地向两侧滑落，露出了大片极具肉感线条、泛着动情潮红的绝美裸背与侧乳弧度。她腿上包裹的性感超薄黑丝袜在弱光下散发着极其缭人的光泽，眼角的泪痣被红晕彻底染透，一边无力地勾紧你的脖子，一边娇喘着呻吟——「长官...今晚这件衣服...就随你高兴撕裂掉好了...嗯嗯...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "防御彻底崩溃沦陷",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "evening_gown",
+      "backless",
+      "high_slit",
+      "zipper_open",
+      "sliding_off_shoulders",
+      "bare_back",
+      "black_stockings",
+      "pinned_down",
+      "arms_around_neck",
+      "flushed",
+      "moaning",
+      "hotel_suite",
+      "large_bed",
+      "night",
+      "neon_light",
+      "bedside_lamp",
+      "full_body"
+    ],
+    "mature": true,
+    "location": "酒店套房大床",
+    "weather": "霓虹闪烁",
+    "camera": "主观平视近景",
+    "lighting": "落地窗透进的霓虹弱光与床头灯",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, backless_dress, black_evening_gown, open_back, sheer_black_thighhighs, lying_on_bed, on_back, arms_around_neck, heavy_blush, parted_lips, breathless, neon_lights_through_window, messy_bed, night, warm_lighting, cool_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
+    "rating": "R18",
+    "animaCaption": "Pushed down onto the wide double bed of the presidential suite after the banquet, Shiki Natsume's black backless high-slit silk evening gown hangs open with its zipper fully undone, the fabric sliding off both sides to bare her flushed back and the curve of one side breast; thin sheer black stockings gleam on her legs as she weakly locks her arms around your neck and moans with half-lidded eyes, her tear-mole flushed red under the mix of bedside lamp and city neon.",
+    "auditRevision": "careful-batch04-2026-08-27"
+  }
+}

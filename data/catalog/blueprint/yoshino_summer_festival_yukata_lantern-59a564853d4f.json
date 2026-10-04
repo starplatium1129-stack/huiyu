@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_summer_festival_yukata_lantern",
+  "revision": 1,
+  "sortOrder": 1149,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "手执折扇倚靠石栏杆侧身回眸，夜空烟花璀璨，浴衣下摆微扬，眼神温柔深情",
+    "camera": "cowboy shot, low angle looking up, dramatic festival sky view",
+    "category": "夏夜华彩",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "festival"
+    ],
+    "description": "【朝武芳乃 · 繁星花火下的幽紫浴衣】高台神社俯瞰穗织小镇的石阶前，夜空中盛大绽放开紫红色的千轮花火。芳乃身穿深蓝暗紫底紫藤花纹浴衣，轻挽着浅紫腰带，手持一柄精致的和风折扇回眸。盛夏花火在夜空中绽放的华彩倒映在她深邃清澈的蓝眸里，微风拂动银白长发与樱花发饰，展现出端庄千金特有的古典倾城风华。",
+    "id": "yoshino_summer_festival_yukata_lantern",
+    "lighting": "漫天绚烂花火爆裂的高照度多色光晕与神社石灯笼暖光",
+    "location": "神社观景高台石阶与鸟居前",
+    "mood": "绚丽浪漫",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "summer_yukata",
+    "promptProse": "Standing on hillside stone stairs beneath brilliant cascading festival fireworks, Yoshino turns gracefully in her dark purple wisteria silk yukata. Glowing sparklers illuminate the summer night sky, casting vibrant reflections across her sapphire eyes and silver hair.",
+    "promptTokens": [
+      "fireworks_display",
+      "night_festival",
+      "yukata",
+      "folding_fan",
+      "stone_stairs",
+      "hair_flower",
+      "twintails",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "fireworks",
+      "night_sky",
+      "festival",
+      "yukata",
+      "folding_fan",
+      "torii",
+      "hair_flower",
+      "gazing_at_viewer"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "朝武芳乃 · 繁星花火下的幽紫浴衣"
+  }
+}

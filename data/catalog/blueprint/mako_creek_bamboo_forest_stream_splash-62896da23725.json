@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "mako_creek_bamboo_forest_stream_splash",
+  "revision": 1,
+  "sortOrder": 1137,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "弯腰涉水双手泼洒晶莹溪水，比基尼勾勒曼妙身材，水珠飞溅，神采奕奕",
+    "camera": "cowboy shot, dynamic water splashing foreground, action depth",
+    "category": "清凉夏日",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "summer"
+    ],
+    "description": "【常陆茉子 · 幽谷清溪的碧波逐浪】穗织镇后山竹林环抱的山涧溪流边，清泉击石，水花飞溅。茉子身着一袭墨绿相间的运动分体泳装，修长健美的大腿毫无防备地浸在清凉的泉水中。她弯下腰双手捧起冰凉甘甜的溪水向镜头泼洒，水珠在灿烂阳光下化作剔透的水帘，丰满诱人的胸线在微湿的布料下若隐若现。",
+    "id": "mako_creek_bamboo_forest_stream_splash",
+    "lighting": "茂密竹林间透射下的直射烈日与水面跳跃的焦散光斑",
+    "location": "竹林深处山涧清澈溪流卵石滩",
+    "mood": "元气清凉",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "summer_bikini",
+    "promptProse": "Splashing refreshing mountain spring water toward the viewer while wading into a sunlit forest creek, Mako laughs merrily in her sporty dark-green bikini. Emerald bamboo leaves frame the crystal ripples as dancing water droplets glisten across her sun-warmed skin.",
+    "promptTokens": [
+      "mountain_creek",
+      "bamboo_forest",
+      "splashing_water",
+      "bikini",
+      "wet_skin",
+      "cat_mouth",
+      "large_breasts",
+      "caustics",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "stream",
+      "creek",
+      "bamboo_forest",
+      "splashing_water",
+      "bikini",
+      "wet_skin",
+      "cat_mouth",
+      "large_breasts"
+    ],
+    "timeOfDay": "正午",
+    "title": "常陆茉子 · 幽谷清溪的碧波逐浪"
+  }
+}

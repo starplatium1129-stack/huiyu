@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc223",
+  "revision": 1,
+  "sortOrder": 218,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the closed cafe kitchen at midnight after the cream dispenser malfunction, Shiki Natsume in a thin white work shirt soaked translucent across her chest with whipped cream splatters over her black lace bra boldly straddles your thigh in a cowboy shot; wiping your cheek with a towel, her lips are pressed tight with a heavy tsundere blush under her flat cool voice, warm overhead kitchen lights reflecting off the stainless steel counter, no text, no extra people.",
+    "auditRevision": "skill-refine-sc223-2026-09-05",
+    "camera": "七分身料理台平视特写",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc223",
+    "lighting": "后厨大理石台面上方局部白炽吊灯强光",
+    "location": "Café Stella 后厨不锈钢料理台面",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_shirt, wet_shirt, translucent_shirt, unbuttoned_shirt, collarbone, black_lace_bra, whipped_cream_on_chest, straddling, sitting_on_thigh, holding_towel, wiping_cheek, pressed_lips, tsundere_pout, heavy_blush, cool_expression, cafe_kitchen, stainless_counter, night, overhead_lamp, warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【夏目 · 后厨甜点奶油失控】深夜彻底打烊、空无一人的Café Stella后厨料理间。夏目正有些无干劲地尝试制作新季度甜点，不料手中的奶油喷枪突然发生气压故障，大量的浓稠白色鲜奶油瞬间大范围喷溅出来，直接糊满了她胸前的白衬衫与精致的锁骨。轻薄的工装白衬衫遇水瞬间融化般贴在身上，内里精致黑色蕾丝内衣的丰满轮廓完全暴露。为了高效率清理现场，她紧抿着双唇，极其大胆地直接跨坐在不锈钢料理台边的你大腿上，抓起毛巾一边帮你擦拭脸颊，一边用彻底红透的耳根和毫无起伏的冷淡声线掩饰动摇——「……别误会。我只是觉得这样清洗最有效率。原料浪费已经造成了，在原地大呼小叫只会降低清洁速度。大变态，不准乱看……尤其是我的领口，真的把你秘密处决哦。」",
+    "storyJa": "【夏目】【ナツメ・閉店後キッチンの絶対的効率洗浄】深夜、完全に営業が終了し、誰もいないカフェ・ステラの厨房調理室。ナツメは少しやる気なさそうに新シーズンのデザート作りを試していたが、手元の生クリームスプレーが突然気圧故障を起こし、大量の濃厚な白いホイップクリームが一瞬にして広範囲に噴射され、彼女の胸元の白シャツと精緻な鎖骨を直接覆い尽くしてしまった。薄手の仕事用白シャツは、水分を含んだ瞬間に溶けるように体に張り付き、中の繊细な黒レースの下着の豊かな輪郭が完全に露出している。現場を効率的に清掃するため、彼女は唇をきゅっと結び、極めて大胆にステンレス調理台の脇にいるあなたの大腿の上に跨り、タオルを掴んであなたの頬を拭いながら、完全に真っ赤になった耳の裏と、起伏のない冷淡な声で動揺を隠していた――「……勘違いしないで。私はただ、この方法で洗浄するのが最も効率的だと思っただけ。原料の浪費はすでに発生してしまったのだから、その場で大騒ぎするのは清掃速度を低下させるだけ。大変態、変なところ見ないで……特に私の襟元、本当に秘密処分にするわよ」",
+    "tags": [
+      "mole_under_eye",
+      "wet_white_shirt",
+      "whipped_cream",
+      "black_lace_bra",
+      "cream_splatter",
+      "work_pants",
+      "straddling",
+      "kitchen_counter",
+      "wiping_face",
+      "towel",
+      "red_ears",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "闭店后厨的绝对效率清洗",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "微热密闭"
+  }
+}

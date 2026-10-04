@@ -1,0 +1,64 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_flashing_rapier_dungeon",
+  "revision": 1,
+  "sortOrder": 1366,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuna_flashing_rapier_dungeon",
+    "title": "结城明日奈 · 闪光的细剑连击·「攻略就交给我吧，绝对不会输的！」",
+    "category": "奇幻冒险",
+    "characterId": "asuna_yuuki",
+    "description": "【浮游城艾恩葛朗特迷宫区高层】险峻昏暗的地下城迷宫中，悬浮的魔法水晶闪烁着冷冽紫芒。身着血盟骑士团红白骑士战袍的亚丝娜轻盈前踏，手中的细剑「闪烁之光」绽放出凌厉绚烂的五连击金色剑气光芒。栗色长发在狂风中疾舞，那双坚定英气的琥珀色双眸中满载着副团长的自信与威严。",
+    "location": "艾恩葛朗特第74层迷宫区深处主回廊",
+    "action": "弓步突刺疾驰，手持细剑闪烁之光迸发出撕裂空气的金色剑技光轨，红白战袍飘扬，琥珀眼眸锐利自信",
+    "timeOfDay": "迷宫暗夜",
+    "lighting": "细剑剑技爆发出璀璨耀眼的白金流光与迷宫水晶的幽紫环境光",
+    "camera": "dynamic wide shot, high-speed sword action, particle light trails, dramatic motion blur",
+    "mood": "英姿飒爽、锐不可当",
+    "sceneTags": [
+      "dungeon",
+      "sword_skills",
+      "rapier",
+      "holding_sword",
+      "knights_of_the_blood_uniform",
+      "light_particles",
+      "action",
+      "confident"
+    ],
+    "promptProse": "Asuna Yuuki charges forward through an ominous high-level dungeon corridor wielding her rapier Lambent Light. Brilliant golden sword skill light trails ignite from the swift blade tips, casting crisp specular highlights over her crimson-and-white Knights of the Blood tunic and flowing chestnut hair. Magic light flicker against the stone dungeon walls in battle atmosphere.",
+    "promptTokens": [
+      "dungeon",
+      "ruins",
+      "charging",
+      "holding_sword",
+      "rapier",
+      "sword_trail",
+      "light_particles",
+      "knights_of_the_blood_uniform",
+      "action",
+      "dynamic_angle",
+      "wide_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "outfitId": "official_knights_of_blood_uniform",
+    "coverageTags": [
+      "official_default",
+      "iconic",
+      "signature"
+    ]
+  }
+}

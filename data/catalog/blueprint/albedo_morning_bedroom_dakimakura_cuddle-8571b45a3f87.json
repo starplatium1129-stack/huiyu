@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_morning_bedroom_dakimakura_cuddle",
+  "revision": 1,
+  "sortOrder": 1301,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_morning_bedroom_dakimakura_cuddle",
+    "title": "雅儿贝德 · 大坟墓晨间的等身抱枕赖床",
+    "category": "晨间女友",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 大坟墓晨间的等身抱枕赖床】总管奢华卧室里弥漫着温暖的香薰与晨光。雅儿贝德身着宽松黑色丝绸吊带睡裙侧躺在大床上，双臂紧紧搂着一个她亲手缝制的等身骨王抱枕，脸颊深深埋在枕芯里蹭来蹭去。羽翼轻搭在床单上，金色眼眸水汪汪泛着满足的傻笑，嘴角还挂着一丝晶莹的唾液——「呼呼……安兹大人的味道……好温暖……啊！您、您什么时候进来的？！」",
+    "location": "纳萨力克总管寝室奢华天鹅绒大床",
+    "action": "侧卧在床上紧紧抱着等身抱枕蹭脸，被发现后满脸通红慌忙抬头捂嘴",
+    "timeOfDay": "清晨",
+    "lighting": "透过哥特雕花窗洒在床榻上的金色晨光",
+    "camera": "cowboy shot, high angle, adorable bed view",
+    "mood": "极品反差萌",
+    "sceneTags": [
+      "bedroom",
+      "luxurious_bed",
+      "holding_pillow",
+      "hugging_pillow",
+      "black_nightgown",
+      "bare_legs",
+      "black_wings",
+      "curved_horns",
+      "heavy_blush",
+      "drooling",
+      "flustered"
+    ],
+    "promptProse": "Curled up warmly upon her lavish velvet bed inside her private chambers, Albedo clings passionately to a large handmade body pillow. Dressed in a soft black silk camisole nightgown, her black wings fan across the ruffled silk sheets. Caught in the act of daydreaming, she looks up with cheeks burning bright crimson and golden eyes wide in delightfully flustered panic. Charming, romantic anime art, solo 1girl, no text.",
+    "promptTokens": [
+      "bedroom",
+      "luxury_bed",
+      "silk_sheets",
+      "lying_on_side",
+      "hugging_pillow",
+      "black_nightgown",
+      "camisole",
+      "bare_legs",
+      "cleavage",
+      "black_wings",
+      "curved_horns",
+      "heavy_blush",
+      "blushing_ears",
+      "flustered",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "cozy_nightwear_lingerie",
+    "coverageTags": [
+      "daily",
+      "gap_moe",
+      "sweet"
+    ]
+  }
+}

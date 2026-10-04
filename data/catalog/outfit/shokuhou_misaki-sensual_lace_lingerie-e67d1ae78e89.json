@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/sensual_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 230,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "sensual_lace_lingerie",
+      "name": "星眸女王黑金内衣",
+      "prose": "a black-and-gold lace lingerie set: a strappy lace bra lifting her large breasts, a matching garter belt and sheer black thighhighs, and thin gold chains crossing her soft stomach",
+      "tokens": [
+        "black_lingerie",
+        "gold_trim",
+        "lace_bra",
+        "garter_straps",
+        "black_thighhighs",
+        "cleavage",
+        "underboob",
+        "sensual"
+      ]
+    }
+  }
+}

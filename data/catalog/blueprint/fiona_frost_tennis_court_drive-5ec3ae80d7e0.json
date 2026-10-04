@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "fiona_frost_tennis_court_drive",
+  "revision": 1,
+  "sortOrder": 820,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "fiona_frost_tennis_court_drive",
+    "characterId": "fiona_frost",
+    "title": "菲奥娜 · 地下球场的破空抽击",
+    "description": "【菲奥娜 · 地下球场的破空抽击】坎贝尔顿地下网球赛的聚光灯耀眼夺目，全场观众屏息凝视。菲奥娜身着白色无袖运动球衫与飘逸百褶短裙，双足蹬地凌空飞跃。球拍在空气中划出凌厉的风压残影，网球如炮弹般轰然砸向对手半场。晶莹的汗珠沿她雪白的下颌飞溅，冷静淡漠的灰瞳深处点燃了为了前辈誓夺胜利的狂怒烈焰。",
+    "outfitId": "tennis_sportswear",
+    "category": "名场面",
+    "location": "地下网球锦标赛球场",
+    "action": "腾空挥动球拍，击出强力破风抽球",
+    "timeOfDay": "夜晚",
+    "lighting": "球场顶部的耀眼聚光灯",
+    "camera": "wide dynamic shot",
+    "mood": "狂热激烈",
+    "sceneTags": [
+      "tennis_court",
+      "spotlight",
+      "athletic_action",
+      "tennis_racket",
+      "pleated_skirt",
+      "sweat_drops",
+      "dynamic_motion",
+      "intense_gaze"
+    ],
+    "promptProse": "Under dazzling stadium floodlights on an underground championship tennis court, Fiona Frost executes an explosive mid-air forehand drive in full athletic motion. Her white sleeveless tennis top and pleated skirt flutter as she rotates her core, swinging her racket with immense force against the speeding ball. Sharp stadium lighting illuminates fine droplets of perspiration and her blunt white bob with its long right-side fringe. Wide dynamic action framing captured at the peak of the strike.",
+    "promptTokens": [
+      "tennis_court",
+      "tennis_racket",
+      "swinging_racket",
+      "tennis_ball",
+      "jumping",
+      "sweat_droplets",
+      "stadium_lights",
+      "floodlight",
+      "wide_shot",
+      "motion_blur",
+      "dynamic_angle"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra characters",
+      "duplicate subject",
+      "split screen"
+    ],
+    "recommendedSize": "1536x1152",
+    "adult": false,
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

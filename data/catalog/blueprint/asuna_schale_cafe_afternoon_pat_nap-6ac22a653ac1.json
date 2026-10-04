@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_schale_cafe_afternoon_pat_nap",
+  "revision": 1,
+  "sortOrder": 939,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "侧卧把头枕在老师膝上求摸头，金发如瀑铺散，双眼微眯流露安心满足笑意",
+    "camera": "medium shot, intimate couple framing, soft depth of field",
+    "category": "日常依偎",
+    "characterId": "ichinose_asuna",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【一之濑明日奈 · 夏莱午后的摸头撒娇】夏莱办公楼一楼的明亮咖啡厅靠窗沙发座，温暖阳光晒得人昏昏欲睡。明日奈身穿软糯的露肩白色粗针毛衣，整个人像一只大金毛狗狗一样自然把脑袋枕在老师的膝盖上。柔顺如瀑的金发散铺在沙发上，享受着老师大手的抚摸其柔顺发丝，嘴角洋溢着无比安心纯真的满足笑意。",
+    "id": "asuna_schale_cafe_afternoon_pat_nap",
+    "lighting": "全景落地窗洒下的明澈阳光与树影光斑",
+    "location": "夏莱阳光咖啡厅转角沙发座",
+    "mood": "治愈甜宠",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "casual_sweater",
+    "promptProse": "Resting her head affectionately on Sensei’s lap on a sunlit cafe sofa, Asuna purrs happily as warm hands stroke her soft golden hair. Golden afternoon sunbeams illuminate her oversized white knit sweater and cascading blonde locks in tranquil serenity.",
+    "promptTokens": [
+      "sunlit_cafe",
+      "sofa",
+      "headpat",
+      "lap_pillow",
+      "blonde_hair",
+      "very_long_hair",
+      "off_shoulder_sweater",
+      "peaceful_smile",
+      "detailed_background",
+      "cinematic_lighting",
+      "depth_of_field"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "cafe",
+      "sofa",
+      "lap_pillow",
+      "headpat",
+      "sweater",
+      "off_shoulder",
+      "blonde_hair",
+      "very_long_hair",
+      "relaxing"
+    ],
+    "timeOfDay": "午后",
+    "title": "一之濑明日奈 · 夏莱午后的摸头撒娇"
+  }
+}

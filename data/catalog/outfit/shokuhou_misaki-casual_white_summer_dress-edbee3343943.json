@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/casual_white_summer_dress",
+  "revision": 1,
+  "sortOrder": 228,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "casual_white_summer_dress",
+      "name": "女王私服纯白连衣裙",
+      "prose": "a queenly off-duty outfit: a flowy white sundress with a wide-brimmed straw hat, sun visor shading her star-pupiled eyes, a thin bracelet on her gloved wrist, and sandals",
+      "tokens": [
+        "sundress",
+        "white_dress",
+        "straw_hat",
+        "sun_hat",
+        "bare_shoulders",
+        "casual_wear",
+        "jewelry"
+      ]
+    }
+  }
+}

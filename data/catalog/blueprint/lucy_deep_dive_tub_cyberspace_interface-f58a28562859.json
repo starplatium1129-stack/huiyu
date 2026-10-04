@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_deep_dive_tub_cyberspace_interface",
+  "revision": 1,
+  "sortOrder": 1103,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "半卧在冰水深潜舱中，神经光纤插入脊髓插槽，双眼泛着数据流金光",
+    "camera": "top-down overhead angle, intimate technological depth",
+    "category": "黑客深潜",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "netrunning"
+    ],
+    "description": "【露西 · 冰水深潜舱的数据流接入】漆黑的安全屋暗室内，高科技深潜冰水浴缸泛着幽幽的青蓝冷光。露西半浸泡在漂浮着碎冰的纯净冷水中，深潜战术服紧贴肌肤。数根粗重的高速神经光纤线缆插在她脖颈与脊椎的神经接口上，数以亿计的代码数据流在她眼中如流星般飞速瀑流而过，展现出顶级黑客撕裂荒坂防火墙时的超然神态。",
+    "id": "lucy_deep_dive_tub_cyberspace_interface",
+    "lighting": "浴缸水底发光二极管的幽蓝冷光与全息数据流的高亮反光",
+    "location": "黑客安全屋深潜冰水浴缸",
+    "mood": "神秘科技",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "netrunner_suit",
+    "promptProse": "Submerged in a chilling deep-dive ice tub inside a dark server bunker, Lucy connects heavy optic data cables to her glowing spinal implants. Swirling holographic cyberspace streams reflect vividly across the icy water ripples and her focused expression.",
+    "promptTokens": [
+      "deep_dive_tub",
+      "ice_water",
+      "cyberware_cables",
+      "data_stream",
+      "cyberspace",
+      "glowing_ports",
+      "netrunner_suit",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bathtub",
+      "ice_water",
+      "deep_dive",
+      "cables",
+      "wires",
+      "cyberspace",
+      "cyberware",
+      "glowing_eyes"
+    ],
+    "timeOfDay": "夜间",
+    "title": "露西 · 冰水深潜舱的数据流接入"
+  }
+}

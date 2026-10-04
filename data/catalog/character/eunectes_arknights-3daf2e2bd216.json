@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "eunectes_arknights",
+  "revision": 1,
+  "sortOrder": 23,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "eunectes_arknights",
+    "profile": {
+      "id": "eunectes_arknights",
+      "name": "森蚺",
+      "alias": [
+        "Eunectes",
+        "森蚺",
+        "祖玛玛",
+        "Zumama",
+        "大丑的驾驶员"
+      ],
+      "type": "popular",
+      "icon": "🔧",
+      "visual_dna": {
+        "hair": "深墨绿色（Dark Forest Green / Olive Green）的长直微波浪发，发量丰厚蓬松，自然披散至后背腰部与胸前，前额有随性的碎刘海修饰脸型；头顶通常架着一副橙黄色透镜的工业翻盖护目镜（goggles on head）。",
+        "hair_color": "深墨绿色 / 暗橄榄绿（Dark Green / Deep Olive Green）",
+        "eyes": "金黄色 / 琥珀金（Golden amber / Yellow eyes），具有爬行类与蛇类典型的细长竖瞳（slit pupils），目光锐利专注却又透着工匠的纯粹与率真。",
+        "hairstyle": "蓬松微卷的墨绿色及腰长发，带有工匠不拘小节的野性随性感与层次感。",
+        "uniform": "清凉且兼具硬核工业与雨林部族风格的工装战术服。上身为黑色/深墨绿色紧身系带挂脖抹胸短背心（halter crop top），露出紧致健康的腹肌与胸部曲线，外搭深灰墨绿色无袖战术工装小坎肩；下身为皮质深色超短热裤配粗皮带工具扣具；单腿穿着深色工装护腿长袜与战术绑带，脚穿厚底重型工装战术短靴；佩戴耐磨工装手套与多功能工具腰包。",
+        "expression": "平时神情专注冷静、质朴沉稳；面对机械、蓝图或零件时双眼放光，展露出狂热纯粹的工匠兴奋；战斗中神情坚毅自信，兼具部族首领与重装战士的从容气魄。",
+        "style": "硬核机甲工匠（Industrial Mecha Mechanic）与雨林野性力量（Wild Rainforest Tribe）的完美融合风格。",
+        "signature": "身后连接并蜿蜒盘踞着一条极其粗壮巨大的墨绿色巨蟒蛇尾（带有暗黑绿色斑纹，绿水蚺生物特征）；无兽耳与角（人类双耳）；171cm的高挑丰满、健美肉感身材；随身携带的巨型重工业扳手/工具以及巨大重型机械机甲伙伴“暴食”（大丑 / Big Ugly）。"
+      },
+      "personality": [
+        "机械狂热",
+        "专注执着",
+        "耿直坦率",
+        "质朴纯真",
+        "坚毅果敢",
+        "重情重义",
+        "求知若渴",
+        "崇拜强者"
+      ],
+      "likes": [
+        "拆解、维修与改造各类机械设备",
+        "巨型机甲（尤其是自己的杰作“暴食/大丑”）",
+        "收集重型金属零件、齿轮、轴承与优质钢材",
+        "嘉维尔（由衷崇拜并认同嘉维尔的意志与强大）",
+        "阿卡胡拉雨林、家乡族人与雨林烤肉",
+        "与大祭司（长生种会说话的金刚鹦鹉）探讨机械设计构想",
+        "向罗德岛工程部的可露希尔等工程师请教现代移动城市工业科技"
+      ],
+      "identity": {
+        "role": "罗德岛六星重装干员（决战者分支） / 萨尔贡阿卡胡拉森蚺部族前酋长",
+        "age": "未知（年轻成年女性，外表约20岁上下）",
+        "occupation": "部族酋长 / 机械工程师 / 罗德岛干员",
+        "faction": "萨尔贡（Sargon）阿卡胡拉地区 / 嘉维尔意志 / 罗德岛（Rhodes Island）工程部"
+      },
+      "tags": [
+        "深墨绿色 / 暗橄榄绿（Dark Green / Deep Olive Green）",
+        "金黄色 / 琥珀金（Golden amber / Yellow eyes），具有爬行类与蛇类典型的细长竖瞳（slit pupils），目光锐利专注却又透着工匠的纯粹与率真。"
+      ],
+      "bg_story": "祖玛玛出生于萨尔贡封闭落后的阿卡胡拉雨林，幼年时曾被掠过雨林边缘的现代移动城市钢铁巨躯深深震撼，自此对机械造物产生了毕生难以遏制的狂热追求。在神秘长生生物“大祭司”的启蒙下，她无师自通地利用雨林废弃矿石与零件独立制造出了重型战斗机甲“大丑”（暴食）。在“密林悍将归来”事件中，她为了推动部族进步与保护雨林同归乡的嘉维尔产生理念碰撞，被嘉维尔击败后心服口服并与之结盟。随后她率部加入嘉维尔意志，并正式入职罗德岛工程部，致力于系统钻研现代高端机械工业，誓要用先进科技反哺改造家乡。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "eunectes (arknights)",
+        "1girl",
+        "solo",
+        "green_hair",
+        "long_hair",
+        "golden_eyes",
+        "tail",
+        "goggles",
+        "crop_top",
+        "hotpants",
+        "tactical",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-eunectes_arknights.png?v=5",
+        "alt": "森蚺热门角色立绘"
+      },
+      "speech": "森蚺向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "eunectes",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "深绿长发金瞳健康肤色；机甲工程痴",
+        "research": "2026-08-15 调研（Danbooru eunectes_(arknights) 1138 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "liduke",
+        "swav",
+        "rella"
+      ],
+      "displayName": "森蚺",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eunectes (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "eunectes_arknights",
+      "identityProse": "Eunectes (Zumama) from Arknights, an inventive Pythia engineer with lush forest-green long hair, sharp golden reptilian eyes, and a thick snake tail.",
+      "identityTokens": [
+        "eunectes (arknights)",
+        "1girl",
+        "solo",
+        "green_hair",
+        "long_hair",
+        "golden_eyes",
+        "tail",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Eunectes",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

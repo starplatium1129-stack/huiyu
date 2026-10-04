@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shinjou_akane/sfw_beach",
+  "revision": 1,
+  "sortOrder": 874,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shinjou_akane",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "新条茜·海滨泳装",
+      "prose": "a lavender swimsuit with a white sun shirt, shell hair clips and a small monster sand sculpture kit",
+      "tokens": [
+        "lavender_swimsuit",
+        "white_sun_shirt",
+        "shell_hair_clips",
+        "sand_sculpture_kit",
+        "monster_sandcastle"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

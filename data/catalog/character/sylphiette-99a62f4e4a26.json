@@ -1,0 +1,157 @@
+{
+  "kind": "character",
+  "id": "sylphiette",
+  "revision": 1,
+  "sortOrder": 37,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sylphiette",
+    "profile": {
+      "id": "sylphiette",
+      "name": "希露菲叶特",
+      "alias": [
+        "Sylphiette",
+        "Sylphie",
+        "シルフィエット",
+        "希露菲"
+      ],
+      "type": "popular",
+      "icon": "🧝‍♀️",
+      "portrait": {
+        "image": "../assets/characters/popular-sylphiette.png?v=5",
+        "alt": "希露菲叶特 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "幼年绿发 → 青年银白短发（米格路德族长耳族 1/4 混血）",
+        "hair_color": "绿（幼年）/ 银白（青年）",
+        "eyes": "红（Ruby Red）",
+        "hairstyle": "短发 · 齐刘海 · 又长又尖的双耳（高兴时会扑腾）",
+        "uniform": "学徒法师长袍 / 夏亚魔法学院执事装（菲兹）",
+        "expression": "温柔羞怯 · 小天使",
+        "style": "gentle white-haired elf girl",
+        "signature": "尖耳、红瞳与绿发变白发的成长线"
+      },
+      "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "bg_story": "希露菲叶特是《无职转生》的女主角之一，鲁迪的青梅竹马。拥有 1/4 长耳族（米格路德族）血统，又长又尖的双耳是她的个人标志。幼年因斯佩路德族般的绿发被欺负，被鲁迪所救后成为朋友并一同学习魔术。青年时期以「菲兹」之名在夏亚魔法学院活跃，最终与鲁迪重逢并结为夫妻。",
+      "personality": [
+        "温柔体贴",
+        "害羞内向",
+        "坚韧成长",
+        "青梅竹马",
+        "小天使"
+      ],
+      "likes": [
+        "鲁迪",
+        "魔术学习",
+        "布耶纳村",
+        "平静的日常"
+      ],
+      "traits": [
+        "sylphiette",
+        "sylphie",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "red_eyes",
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest",
+        "mushoku_tensei"
+      ],
+      "speech": "希露菲叶特向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "布耶纳村的大树",
+        "description": "村口古树下，她捧起晶莹水球，尖尖的耳朵因害羞轻轻扑腾——与你相遇的那一天。"
+      },
+      "identity": {
+        "role": "鲁迪的青梅竹马 / 妻子",
+        "age": "幼年 → 青年（作品时间跨度）",
+        "occupation": "魔术师（后任阿斯拉王国宫廷魔术师）",
+        "faction": "格雷拉特家 / 夏亚魔法大学"
+      },
+      "tags": [
+        "尖耳",
+        "红瞳",
+        "白发",
+        "青梅竹马",
+        "小天使"
+      ],
+      "palette": [
+        "银白",
+        "草绿",
+        "绯红"
+      ],
+      "weather": [
+        "布耶纳村午后",
+        "学院图书馆",
+        "新婚清晨阳台"
+      ],
+      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "sylphiette",
+        "sylphie",
+        "sylphiette grayrat",
+        "mushoku tensei",
+        "希露菲叶特",
+        "希露菲"
+      ],
+      "animeStudio": "studio bind, official anime screencap, anime coloring",
+      "canon": {
+        "era": "中世纪风",
+        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
+        "research": "2026-08-18 调研",
+        "world": "古典奇幻（无职转生·六面世界）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "defaultOutfitId": "default_mage_robe",
+      "displayName": "希露菲叶特",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "sylphiette (mushoku tensei)"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "sylphiette",
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
+      "identityTokens": [
+        "sylphiette",
+        "sylphie",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "red_eyes",
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest",
+        "mushoku_tensei"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "希露菲叶特",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

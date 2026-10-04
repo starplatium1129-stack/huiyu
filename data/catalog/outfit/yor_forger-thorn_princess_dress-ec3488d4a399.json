@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yor_forger/thorn_princess_dress",
+  "revision": 1,
+  "sortOrder": 459,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yor_forger",
+    "outfit": {
+      "id": "thorn_princess_dress",
+      "name": "荆棘公主杀手礼服",
+      "tokens": [
+        "thorn_princess",
+        "black_dress",
+        "halterneck_dress",
+        "rose_pattern",
+        "black_thighhighs",
+        "heels",
+        "hair_ornament"
+      ],
+      "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and black stiletto heels",
+      "styleHint": "sharp cinematic assassin contrast",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

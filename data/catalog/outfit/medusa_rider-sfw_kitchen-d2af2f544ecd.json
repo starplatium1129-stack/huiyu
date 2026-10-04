@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/sfw_kitchen",
+  "revision": 1,
+  "sortOrder": 156,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "sfw_kitchen",
+      "name": "卫宫家料理围裙装",
+      "prose": "a cream blouse, dark trousers and a purple apron",
+      "tokens": [
+        "cream_blouse",
+        "dark_pants",
+        "purple_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

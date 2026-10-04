@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "amane_highway_motorcycle_sunset_stride",
+  "revision": 1,
+  "sortOrder": 1179,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_highway_motorcycle_sunset_stride",
+    "title": "周防天音 · 沿海公路的机车烈焰英姿",
+    "category": "机车狂飙",
+    "characterId": "suou_amane",
+    "outfitId": "biker_jacket",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【周防天音 · 沿海公路的机车烈焰英姿】落日熔金的沿海盘山公路观景台旁，浪涛拍打着断崖礁石。天音斜靠在一辆重型大排量黑色机车旁，单手取下全盔夹在腰际。她身穿短款机车皮衣与紧身牛仔热裤，饱满傲人的上围呼之欲出。酒红色的如瀑长发与招牌环形发圈在海风中狂野飞扬，深蓝如海的双眸带着豪爽明艳的笑意——「雄二，跟得上我的速度吗？抓紧我的腰，我们一起冲向地平线吧！」",
+    "location": "沿海悬崖公路观景护栏与重型机车旁",
+    "action": "单手抱头盔斜靠机车，皮衣热裤展现极致漏斗身材，酒红发丝与发环随风激扬",
+    "timeOfDay": "日落",
+    "lighting": "壮丽金红晚霞逆光勾勒出的耀眼轮廓光与机车漆面高反光",
+    "camera": "cowboy shot, low dynamic angle, cinematic coastal horizon",
+    "mood": "豪爽飒爽",
+    "sceneTags": [
+      "motorcycle",
+      "highway",
+      "sunset",
+      "ocean",
+      "leather_jacket",
+      "biker",
+      "hair_rings",
+      "large_breasts"
+    ],
+    "promptProse": "Leaning with confident allure against a heavy black cruiser motorcycle on a coastal highway overlooking fiery sunset waves, Amane holds her helmet beneath one arm. Brilliant golden dusk winds sweep her crimson tresses and signature hair rings into the sea air.",
+    "promptTokens": [
+      "coastal_highway",
+      "motorcycle",
+      "sunset_sky",
+      "ocean_waves",
+      "leather_jacket",
+      "hair_rings",
+      "large_breasts",
+      "holding_helmet",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

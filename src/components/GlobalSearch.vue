@@ -177,7 +177,7 @@ const PAGES: PageItem[] = [
   // 显示名与页面 h1 统一为「色彩情绪」（2026-08-30 UX 审计 P1）。keywords 里
   // 保留全部旧叫法：改名之后，按老名字找它的用户不应该什么都搜不到。
   { id: 'color-script', label: '色彩情绪', icon: 'palette', path: '/color-script', keywords: '色彩 情绪 色调 脚本 剧本 配色 对照' },
-  { id: 'manager', label: '场景管理', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },
+  { id: 'manager', label: '内容维护', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },
   { id: 'control', label: '控制面板', icon: 'gear', path: '/control', keywords: '控制 服务 设置' },
 ]
 

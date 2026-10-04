@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_dreamscape_carnival_masks",
+  "revision": 1,
+  "sortOrder": 1046,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_dreamscape_carnival_masks",
+    "title": "花火 · 匹诺康尼梦境的千面狂欢",
+    "category": "身份高光",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 匹诺康尼梦境的千面狂欢】匹诺康尼黄金时刻的璀璨钟表广场上，五彩斑斓的狂欢纸屑如雨纷落。花火漂浮在半空中，指尖轻勾着半掩面容的华丽狐狸面具，身后幻化出无数个戏谑冷笑的虚幻分身与红色金鱼游弋在夜空。她俯瞰着整座梦境之城，眼中闪烁着狂热的戏剧之光——「舞台已经搭好，演员也全部就位……那么，今天陪我演一出颠覆世界的荒诞剧如何？」",
+    "location": "匹诺康尼「黄金的时刻」霓虹钟表广场高空",
+    "action": "悬浮在漫天狂欢纸屑中，单手轻托狐狸面具斜挂额侧，嘴角扬起恶作剧般的戏谑坏笑",
+    "timeOfDay": "永夜繁华",
+    "lighting": "霓虹灯光海与空中漂浮的红色梦境符文",
+    "camera": "cowboy shot, low angle, dynamic theatrical view",
+    "mood": "戏弄狂气",
+    "sceneTags": [
+      "penacony",
+      "neon_city",
+      "confetti",
+      "floating",
+      "kitsune_mask",
+      "mini_kimono",
+      "wide_sleeves",
+      "smirk",
+      "playful"
+    ],
+    "promptProse": "Floating dynamically above the bustling neon-lit Clockie Plaza in Penacony, Sparkle orchestrates a surreal dream carnival. Confetti and ethereal red goldfish swim through the midnight air around her as she tips her kitsune mask to reveal glowing scarlet eyes and a wicked, theatrical smirk. Vibrant cinematic anime illustration, solo 1girl focus, no text.",
+    "promptTokens": [
+      "penacony",
+      "neon_lights",
+      "clock_tower",
+      "confetti",
+      "floating",
+      "mini_kimono",
+      "wide_sleeves",
+      "kitsune_mask",
+      "pink_eyes",
+      "twintails",
+      "wicked_smirk",
+      "cowboy_shot",
+      "low_angle",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_kimono_dress",
+    "coverageTags": [
+      "iconic",
+      "theatrical"
+    ]
+  }
+}

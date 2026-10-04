@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "iori_ruins_combat_breach_charge",
+  "revision": 1,
+  "sortOrder": 928,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "在硝烟与碎石中贴地滑铲突进，手持卡宾狙击枪射击，恶魔翅膀展开",
+    "camera": "cowboy shot, dynamic Dutch angle",
+    "category": "学园战斗",
+    "characterId": "shiromi_iori",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【银镜伊织 · 突击队长的破晓突进】硝烟弥漫的废墟走廊内，砖石碎屑在空中飞扬。伊织在爆破烟雾中完成凌空滑铲突进，修长矫健的双腿在黑丝包裹下划出凌厉的弧线，枪口火光瞬间照亮了她倔强而充满战意的小脸——「第一突击点突破！跟紧我，不要拖后腿！」",
+    "id": "iori_ruins_combat_breach_charge",
+    "lighting": "枪口火光与晨曦穿透硝烟的强体积光",
+    "location": "废弃学园战术据点走廊",
+    "mood": "激情决断",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "disciplinary_uniform",
+    "promptProse": "Sliding through broken concrete rubble during a rapid breach, Iori levels her rifle with fierce combat focus. Flying concrete dust and fiery muzzle flash embers illuminate her athletic, battle-ready charge.",
+    "promptTokens": [
+      "combat_ruins",
+      "sniper_rifle",
+      "sliding",
+      "smoke",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "ruins",
+      "smoke",
+      "explosion",
+      "muzzle_flash",
+      "sliding",
+      "dynamic_pose",
+      "sniper_rifle",
+      "thighhighs",
+      "garter_straps"
+    ],
+    "timeOfDay": "清晨破晓",
+    "title": "银镜伊织 · 突击队长的破晓突进"
+  }
+}

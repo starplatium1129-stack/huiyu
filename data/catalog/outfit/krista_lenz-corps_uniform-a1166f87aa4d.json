@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "krista_lenz/corps_uniform",
+  "revision": 1,
+  "sortOrder": 543,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "krista_lenz",
+    "outfit": {
+      "default": true,
+      "id": "corps_uniform",
+      "isDefault": true,
+      "name": "兵团制服 850 年",
+      "prose": "her Training and Survey Corps uniform with a brown jacket, white shirt and pants, brown boots, green cape and a low ponytail",
+      "tokens": [
+        "survey_corps_uniform",
+        "brown_jacket",
+        "white_shirt",
+        "white_pants",
+        "brown_boots",
+        "green_cape",
+        "low_ponytail"
+      ]
+    }
+  }
+}

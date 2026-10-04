@@ -1,0 +1,83 @@
+{
+  "kind": "blueprint",
+  "id": "haruno_nsfw_apartment_sofa_straddle",
+  "revision": 1,
+  "sortOrder": 376,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "haruno_nsfw_apartment_sofa_straddle",
+    "title": "雪之下阳乃 · 深夜单身公寓的黑丝魅影 ·「真物什么的……比得上现在贴紧的温度吗」",
+    "category": "主控骑乘",
+    "characterId": "yukinoshita_haruno",
+    "description": "【阳乃的高层公寓客厅·午夜】微醺的魔性大姐姐跨坐在你的腰间，薄如蝉翼的黑色吊带睡裙滑到腰间。黑丝长腿死死盘住你的腰，指甲陷入你的肩膀，平日里玩世不恭的笑容化作灼热的执念——「比企谷君……整天把‘真物’挂在嘴边……那现在，姐姐身上流出来的热度，算不算真物呢？」",
+    "location": "阳乃的高层公寓客厅·午夜",
+    "action": "跪坐皮质沙发身体前倾黑丝缠腿，吊带裙褪落露出丰满双峰，凤眸微眯吐气如兰",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Haruno Yukinoshita from Oregairu kneels forward on her luxury high-rise leather sofa in the intoxicating midnight air. Her sheer black silk chemise slips down to her slender hips, freeing ripe, full breasts that heave with her commanding presence. Her long legs in torn black stockings tuck beneath her, sharp dark eyes narrowing with predatory yet desperately vulnerable warmth as her scarlet lips murmur against the quiet night. Vertical low-angle solo shot, city skyline neon glow filtering through floor-to-ceiling windows, detailed modern apartment background, solo 1girl, no extra people.",
+    "nsfwProse": "Kneeling forward across her leather sofa with sheer black lingerie slipping down to her waist, Haruno Yukinoshita reveals full bare breasts and stockinged thighs with predatory, intoxicating warmth.",
+    "promptTokens": [
+      "living_room",
+      "leather_sofa",
+      "city_skyline",
+      "night",
+      "neon_lights",
+      "vertical_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_black_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "pov",
+      "kneeling",
+      "sofa",
+      "leather_sofa",
+      "leaning_forward",
+      "black_lingerie",
+      "off_shoulder",
+      "bare_breasts",
+      "bouncing_breasts",
+      "pink_nipples",
+      "black_pantyhose",
+      "garter_straps",
+      "pussy_juice",
+      "heavy_blush",
+      "smirk",
+      "parted_lips"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kisara_engage_kiss/sheer_lingerie",
+  "revision": 1,
+  "sortOrder": 284,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "kisara_engage_kiss",
+    "outfit": {
+      "id": "sheer_lingerie",
+      "name": "薄纱里衣",
+      "tokens": [
+        "lingerie",
+        "sheer_lingerie",
+        "chemise",
+        "sheer",
+        "translucent",
+        "thin_straps",
+        "delicate_fabric",
+        "slip",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "prose": "wearing only a thin sheer chemise of translucent delicate fabric, fine straps and a loose flowing silhouette",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

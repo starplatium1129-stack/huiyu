@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "marcille_donato_sfw_b9_07",
+  "revision": 1,
+  "sortOrder": 1730,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "marcille_donato_sfw_b9_07",
+    "title": "玛露希尔 · 学院古籍的书签",
+    "category": "学园日常",
+    "characterId": "marcille_donato",
+    "outfitId": "sfw_academy",
+    "description": "【精灵学院图书馆·午后】玛露希尔穿着蓝色学院夹克坐在高窗边，为一本古籍制作叶脉书签；她把完成的书签夹进书页，抬头时尖耳和绿瞳都因为找到合适的魔法材料而闪亮。",
+    "location": "elven academy library",
+    "action": "高窗边为古籍制作叶脉书签，材料干透后尖耳和绿瞳一起亮起来",
+    "timeOfDay": "日间",
+    "lighting": "dusty afternoon light through the high window",
+    "camera": "medium shot, vertical framing",
+    "mood": "把魔法研究变成书页间的心动",
+    "sceneTags": [
+      "academy_library",
+      "ancient_book",
+      "leaf_bookmark",
+      "blue_jacket",
+      "white_blouse",
+      "high_window",
+      "pointed_ears",
+      "green_eyes",
+      "scholarly_delight",
+      "afternoon_light"
+    ],
+    "promptProse": "Marcille Donato from Delicious in Dungeon wears a tidy blue academic jacket, white blouse and ankle-length skirt. She sits by the high library window, pressing a delicate leaf-vein bookmark inside an ancient book. She checks that the magic material has dried correctly, then looks toward the viewer with bright green eyes and pointed ears lifted in scholarly delight. dusty afternoon light through the high window.",
+    "promptTokens": [
+      "academy_library",
+      "ancient_book",
+      "leaf_bookmark",
+      "blue_jacket",
+      "white_blouse",
+      "high_window",
+      "pointed_ears",
+      "green_eyes",
+      "scholarly_delight",
+      "afternoon_light"
+    ],
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "animaStyleHint": "anime_portrait_sharp",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

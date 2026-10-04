@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/festival_black_gold_qipao",
+  "revision": 1,
+  "sortOrder": 326,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "default": false,
+      "id": "festival_black_gold_qipao",
+      "isDefault": false,
+      "name": "岁节灯会·黑金旗袍",
+      "prose": "a black-and-gold woven qipao with a modest short silhouette and black heeled shoes",
+      "tokens": [
+        "qipao",
+        "black_clothes",
+        "gold_trim",
+        "black_heels"
+      ]
+    }
+  }
+}

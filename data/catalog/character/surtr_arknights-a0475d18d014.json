@@ -1,0 +1,143 @@
+{
+  "kind": "character",
+  "id": "surtr_arknights",
+  "revision": 1,
+  "sortOrder": 34,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "surtr_arknights",
+    "profile": {
+      "id": "surtr_arknights",
+      "name": "史尔特尔",
+      "alias": [
+        "Surtr",
+        "史尔特尔",
+        "surtur",
+        "42姐",
+        "42"
+      ],
+      "type": "popular",
+      "icon": "🔥",
+      "visual_dna": {
+        "hair": "浓郁耀眼的酒红色/绯红长发，发梢微卷，通常扎成标志性的低侧马尾垂于身侧，佩戴黑色皮质发带/头带，额前有偏分的轻盈刘海修饰脸庞",
+        "hair_color": "酒红色 / 绯红色（Wine Red / Crimson）",
+        "eyes": "红金色 / 琥珀橙金色（Amber / Red-Orange eyes），眼尾微挑，眼神冷冽锐利且带有疏离感与自信",
+        "hairstyle": "偏分刘海搭配黑色发带的单侧低马尾（Side low ponytail with black headband），长发及腰",
+        "uniform": "基础机能战术风常服。内穿黑色高领露脐无袖紧身背心（展现纤细腰腹），外搭黑白拼色短款机能风夹克外套（带有红色内衬与战术织带），下身着深黑色高腰战术超短裤配双层皮质腰带与腿环，腿部穿不对称黑色长筒过膝袜/皮质战术腿套，脚穿黑色绑带战术短靴，双手佩戴黑色半指战术皮手套",
+        "expression": "孤高冷淡、眼神凌厉从容、略带慵懒疏离，神态自信果断，不苟言笑但内心执着",
+        "style": "机能战术街头风（Techwear）、暗黑熔岩奇幻（Dark Molten Fantasy）、末世废土美学",
+        "signature": "头顶向后上方弯曲的黑红色萨卡兹双角（类似黑曜石与熔岩光泽）、双手握持的古老巨型熔岩大剑「莱瓦汀」（Lævateinn，带有火光裂隙与符文）、背后伴随火焰与岩浆升腾的巨型黑红熔岩魔像（炎之巨人/替身）、黑色头带、日常爱吃的冰淇淋"
+      },
+      "personality": [
+        "孤高冷淡",
+        "直率果断",
+        "我行我素",
+        "好胜好战",
+        "独立坚毅",
+        "外冷内热",
+        "嗜甜执着"
+      ],
+      "likes": [
+        "各式口味的冰淇淋（尤其是浓郁甜味与果味冰淇淋）",
+        "各类甜食与甜品",
+        "寻找记忆中的风景与遗迹",
+        "独自漫步与安静的环境",
+        "用烈焰与大剑进行纯粹直接的战斗"
+      ],
+      "identity": {
+        "role": "近卫干员（近卫-术战者） / 感染者漫游者",
+        "age": "未知（萨卡兹长寿种，由于记忆碎片化且无生理年龄确切记载，真实年龄无法考证）",
+        "occupation": "独行漫游者/战士（加入前） -> 罗德岛干员",
+        "faction": "罗德岛（Rhodes Island） / 萨卡兹（Sarkaz）"
+      },
+      "tags": [
+        "酒红色 / 绯红色（Wine Red / Crimson）",
+        "红金色 / 琥珀橙金色（Amber / Red-Orange eyes），眼尾微挑，眼神冷冽锐利且带有疏离感与自信"
+      ],
+      "bg_story": "史尔特尔是一名罹患严重记忆认知障碍的萨卡兹少女，脑中混杂着无数互不相连、真实与虚妄交织的碎片记忆。她手持一把蕴含强大源石技艺的古老双手巨剑「莱瓦汀」，能随心驱动高温烈焰并召唤出具象化的熔岩火巨人魔像。为了探寻自己脑海中混乱记忆的源头与真实自我，她曾独自一人游历大地寻找记忆中的风景，后加入罗德岛接受矿石病治疗与记忆整理。平日里性格冷淡寡言、独来独往，唯独对冰淇淋有着难以抗拒的狂热喜爱，常通过甜食来缓解记忆错乱带来的烦躁与头痛。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "surtr (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "side_ponytail",
+        "hairband",
+        "amber_eyes",
+        "horns",
+        "black_clothes",
+        "white_clothes",
+        "jacket",
+        "techwear",
+        "greatsword",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-surtr_arknights.png?v=5",
+        "alt": "史尔特尔热门角色立绘"
+      },
+      "speech": "史尔特尔向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "surtr",
+        "surtur",
+        "arknights",
+        "laevatein"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
+        "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "swav",
+        "rella"
+      ],
+      "displayName": "史尔特尔",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "surtr (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "surtr_arknights",
+      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, and a slender athletic build.",
+      "identityTokens": [
+        "surtr (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "side_ponytail",
+        "hairband",
+        "amber_eyes",
+        "horns",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Surtr",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

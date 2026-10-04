@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc109",
+  "revision": 1,
+  "sortOrder": 107,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "round2-2026-07-22",
+    "camera": "平视近景俯瞰",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致温柔依恋",
+    "id": "sc109",
+    "lighting": "室内温馨弱光氛围",
+    "location": "咖啡馆休息室沙发",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, child, loli, underage",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, hair_ribbon, ahoge, nightgown, translucent_clothing, see_through_clothing, bare_legs, lying_on_couch, heavy_blush, shy_smile, cafe_interior, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成年 After Story · 宁宁 · 真丝睡裙绝对占有】深夜彻底打烊后的星光咖啡馆休息室。宁宁今晚彻底放下了所有防备，身上仅仅套着一件极薄的半透明粉色真丝睡裙软软地倒在沙发中央。薄薄的真丝贴紧在她完美的娇躯线条上，前胸凸显的诱人痕迹在暧昧的弱光下近乎全透明。她满脸滚烫的红晕，大片白皙笔直的长腿毫无防备地袒露。头顶的呆毛因为极致的依恋顺从地垂成完美的心形螺旋——「大色狼...一直盯着人家的腿看什么呢...快过来抱紧人家啦...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・シルクナイトガウンは絶対に特別なもの】スターライトカフェの深夜完全閉店後のラウンジ。寧々は今夜、完全に警戒を解いて、非常に薄い半透明のピンクのシルクのナイトガウンだけを着て、ソファの中央にそっと横たわっていました。薄い絹が彼女の完璧なボディラインに張り付き、彼女の胸の魅惑的な痕跡が曖昧な薄明かりの下でほぼ完全に透けて見えた。彼女の顔は紅潮し、白くてまっすぐな脚が何の防御もなく露出した。頭頂部のアホ毛は、執着のあまりに素直に完全なハート型の螺旋を描きます。――「もう、どこを見てるんですか……そんなところにいないで、早くこっちへ来て抱きしめてください。」",
+    "tags": [
+      "nightgown",
+      "translucent_clothing",
+      "see_through_clothing",
+      "bare_legs",
+      "lying_on_couch",
+      "heavy_blush",
+      "shy_smile",
+      "hair_ribbon",
+      "ahoge",
+      "cafe_interior",
+      "night",
+      "soft_lighting",
+      "sensual",
+      "close_up"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "打烊后的甜蜜负荷",
+    "usage": [
+      "新手推荐",
+      "成人向"
+    ],
+    "weather": "微热"
+  }
+}

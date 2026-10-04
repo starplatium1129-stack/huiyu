@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc039",
+  "revision": 1,
+  "sortOrder": 37,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up framing along the sandy shoreline with gentle ocean waves, she turns back over her shoulder with bright expectant eyes, as warm golden-hour sunlight illuminates the scene.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "手部与侧脸近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "期待",
+    "id": "sc039",
+    "lighting": "海边夕阳轮廓光",
+    "location": "海边",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(clear corked glass message bottle held in both hands:1.55), blank rolled note visibly inside the bottle, seaside sunset, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, sunset, looking_back, close_up, message_bottle, holding_note, profile, subtle_blush, ocean, clear_sky, golden_hour, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【夏目 · 许愿瓶里的空白纸条】海边黄昏，夏目把折好的纸条塞进玻璃瓶，却不肯让你看内容。瓶子埋进沙里以后，她又悄悄记下位置，显然并不打算让潮水带走。你故意追问，她迎着夕光别开脸——「没有写什么夸张的愿望。只是希望明年还能来这里……对象是谁，你自己想。」",
+    "storyJa": "【夏目・願いの瓶の中の白紙のメモ】夕暮れの海岸で、夏目は折りたたんだメモをガラス瓶に詰めますが、中身を読ませようとはしません。瓶が砂に埋められた後、彼女は静かにその場所をメモしたが、明らかに潮に流されるつもりはなかった。あなたがわざとそう尋ねると、彼女は夕焼けに顔をそむけた。――「大げさな願い事なんて書いてない。ただ、来年もここへ来られますようにって……誰と来たいかは、自分で考えて。」",
+    "tags": [
+      "mole_under_eye",
+      "beach",
+      "sunset",
+      "looking_back",
+      "close_up",
+      "message_bottle",
+      "profile",
+      "subtle_blush",
+      "ocean",
+      "clear_sky",
+      "golden_hour",
+      "expectant",
+      "bright_eyes",
+      "note_inside_bottle",
+      "sealed_message_bottle"
+    ],
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "title": "许愿瓶里的空白纸条",
+    "usage": [
+      "展示图",
+      "头像"
+    ],
+    "weather": "晴"
+  }
+}

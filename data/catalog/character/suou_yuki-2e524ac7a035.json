@@ -1,0 +1,119 @@
+{
+  "kind": "character",
+  "id": "suou_yuki",
+  "revision": 1,
+  "sortOrder": 150,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "suou_yuki",
+    "profile": {
+      "id": "suou_yuki",
+      "name": "周防有希",
+      "alias": [
+        "周防有希",
+        "Yuki Suou"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-suou_yuki.png?v=0ae9e780d43c",
+        "alt": "周防有希 · 学生会宣传委员的海报场景样张"
+      },
+      "visual_dna": {
+        "signature": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
+        "hair": "black_hair, long_hair",
+        "eyes": "purple_eyes",
+        "uniform": "学生会端庄制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "在公众场合端庄得体，私下活泼爱开玩笑",
+        "善于观察气氛，也有认真承担事务的一面",
+        "谈起喜欢的作品会卸下大小姐姿态，显得格外投入"
+      ],
+      "likes": [
+        "游戏与动画",
+        "准备校园活动",
+        "悠闲的居家时光"
+      ],
+      "classic_cg": {
+        "title": "周防有希 · 学生会宣传委员的海报",
+        "description": "放学后学生会室，她跪坐在长桌上给文化祭宣传海报描边，制服袖口用发圈挽起；画到满意处露出大小姐式完美微笑，桌下的小腿却在开心地晃。"
+      },
+      "identity": "Alya Sometimes Hides Her Feelings in Russian · 周防有希",
+      "tags": [
+        "周防有希",
+        "不时轻声地用俄语遮羞的邻座艾莉同学",
+        "日常"
+      ],
+      "bg_story": "善于维持端庄形象的学生会成员，私下爱好漫画与游戏。黑色半扎长发、呆毛和紫瞳是重点，正式茶会与居家兴趣使用不同服装。",
+      "palette": [
+        "#b0a4cb",
+        "#282532"
+      ],
+      "source": "Alya Sometimes Hides Her Feelings in Russian",
+      "speech": "海报交给我，保证完成得漂漂亮亮。",
+      "traits": [
+        "suou_yuki",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "black_hair",
+        "long_hair",
+        "half_updo"
+      ],
+      "accent_color": "#b0a4cb",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "suou_yuki",
+      "displayName": "周防有希",
+      "originalName": "Yuki Suou",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "aliases": [
+        "周防有希",
+        "Yuki Suou"
+      ],
+      "identityProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
+      "identityTokens": [
+        "suou_yuki",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "black_hair",
+        "long_hair",
+        "half_updo",
+        "ahoge",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "suou_yuki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, suou_yuki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

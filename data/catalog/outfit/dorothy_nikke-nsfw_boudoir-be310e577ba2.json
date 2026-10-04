@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "dorothy_nikke/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 998,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "dorothy_nikke",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "桃乐丝·成人私密造型",
+      "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room, gown",
+      "tokens": [
+        "dress",
+        "white_dress",
+        "completely_nude",
+        "dressing_room",
+        "gown"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

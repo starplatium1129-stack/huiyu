@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_blade_spirit_awakening_shrine",
+  "revision": 1,
+  "sortOrder": 1123,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "轻盈悬浮于空中半落姿态，双手背在身后微微前倾，鬼火环绕，神刀在腰间发光",
+    "camera": "cowboy shot, medium close-up, dynamic low angle looking slightly up",
+    "category": "刀灵显世",
+    "characterId": "murasame",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【丛雨 · 神刀复苏的空中轻降】穗织镇古老朝武神社的神木古殿前，神刀丛雨丸的断刃在将臣手中发出璀璨辉光。丛雨宛如被晨曦拂开的轻雾，从半空悠然旋转轻降。她一头浅草绿的长发与鲜红长发带如波浪翻卷，头顶呆毛欢快抖动。几团幽蓝色的青空鬼火环绕周身，她双手背后微微倾身，傲娇元气地自报家门——「呼啊~睡了太久身子都僵了呢！唤醒我辈的人，就是汝吗？」",
+    "id": "murasame_blade_spirit_awakening_shrine",
+    "lighting": "透过千年神木冠层洒落的金灿晨曦与身侧环绕的青蓝鬼火冷辉",
+    "location": "朝武神社神木大殿中庭",
+    "mood": "神秘元气",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "spirit_kimono",
+    "promptProse": "Floating weightlessly above the sunlit courtyard of an ancient mountain shrine, Murasame tilts forward playfully with both hands clasped behind her back as ethereal azure spirit wisps orbit her delicate form. Radiant morning sunlight filters through sacred cedar boughs, illuminating her floating pale-green twin tails and the sheathed katana at her hip.",
+    "promptTokens": [
+      "shinto_shrine",
+      "sacred_tree",
+      "floating",
+      "spirit_wisps",
+      "katana",
+      "sleeveless_kimono",
+      "bare_shoulders",
+      "ahoge",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "hands_behind_back",
+      "slight_forward_lean"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "shrine",
+      "sacred_tree",
+      "floating",
+      "spirit",
+      "katana",
+      "will_o_the_wisp",
+      "ahoge",
+      "bare_shoulders"
+    ],
+    "timeOfDay": "上午",
+    "title": "丛雨 · 神刀复苏的空中轻降"
+  }
+}

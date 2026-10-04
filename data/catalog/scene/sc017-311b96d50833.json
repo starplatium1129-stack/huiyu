@@ -1,0 +1,52 @@
+{
+  "kind": "scene",
+  "id": "sc017",
+  "revision": 1,
+  "sortOrder": 16,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot by the large windows of an empty classroom, she stands poised with glistening, emotive eyes, as clear window sunlight streams across the frame.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "校园",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "感动",
+    "id": "sc017",
+    "lighting": "窗光",
+    "location": "教室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, diploma, certificate, scroll, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text",
+    "prompt": "(large classroom blackboard filled with colorful farewell chalk doodles:1.6), chalk hearts and flowers, deliberately blurred chalk marks, holding one uniform button, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, cherry_blossoms, graduation_day, holding_button, tears_of_joy, afternoon, clear_sky, upper_body, medium_shot, window_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "春",
+    "story": "【宁宁 · 最后一块黑板】毕业典礼后的教室里，黑板写满同学们留下的名字和祝福。宁宁站在自己的签名旁，认真替你补上一行“以后也要见面”。人群散去后，她把第二颗制服纽扣轻轻握在掌心，笑里带着泪光——「毕业不是结束，对吧？就算换了新的生活，我也想继续出现在你的每一天里。」",
+    "storyJa": "【寧々・最後の黒板】卒業式後の教室では、黒板に生徒たちの名前と祝福の言葉が書かれていました。寧々はサインの隣に立ち、「卒業は終わりじゃありませんよね？　新しい暮らしになっても、あなたの毎日の中に、ずっと私がいたいです。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "classroom",
+      "cherry_blossoms",
+      "graduation_day",
+      "signed_blackboard",
+      "holding_button",
+      "tears_of_joy",
+      "afternoon",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "window_light"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "最后一块黑板",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "lappland_siracusa_rain_ruins_solitude",
+  "revision": 1,
+  "sortOrder": 676,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "独自坐在雨夜古堡断壁顶端，双刀插在身侧，仰天狂笑，任由暴雨冲刷",
+    "camera": "cowboy shot, dramatic low angle",
+    "category": "孤狼叙事",
+    "characterId": "lappland_arknights",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【拉普兰德 · 废墟雨夜的孤狼狂想】暴雨倾盆的叙拉古荒废古堡顶端，雷鸣撕裂夜空。拉普兰德独自坐在坍塌的断壁残垣边缘，将双刀随意插在脚边碎石中。雨水浇透了她的衣服与发丝，她却仰起头对着雷云狂放地大笑，眼角闪烁着不知是雨水还是泪光的痕迹——「雷霆、暴雨、鲜血……这才是叙拉古最悦耳的交响乐！」",
+    "id": "lappland_siracusa_rain_ruins_solitude",
+    "lighting": "划破夜空的刺目闪电蓝白强光与阴郁雨夜冷调",
+    "location": "叙拉古暴雨雷鸣荒废古堡残垣",
+    "mood": "狂暴凄美",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "nomad_wasteland",
+    "promptProse": "High atop the crumbling stone battlements of a ruined Siracusan castle during a raging midnight thunderstorm, Lappland sits solitary on the broken ledge with her twin blades planted in the masonry beside her. Drenching rain plasters her white-silver hair and tattered mercenary duster coat to her skin as blinding forks of lightning illuminate the dark tempestuous sky. She throws her head back in wild, defiant laughter with rain streaming down her porcelain face. A monumental low-angle cowboy shot delivers unforgettable emotional drama, glistening storm textures, and pristine anime key visual mastery.",
+    "promptTokens": [
+      "ruins",
+      "castle",
+      "rain",
+      "thunderstorm",
+      "lightning",
+      "sitting_on_ruins",
+      "dual_swords",
+      "wet_clothes",
+      "laughing",
+      "wolf_ears",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "ruins",
+      "castle",
+      "rain",
+      "thunderstorm",
+      "lightning",
+      "sitting_on_ruins",
+      "dual_swords",
+      "wet_clothes",
+      "laughing",
+      "wolf_ears"
+    ],
+    "timeOfDay": "深夜暴雨",
+    "title": "拉普兰德 · 废墟雨夜的孤狼狂想"
+  }
+}

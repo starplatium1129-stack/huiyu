@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "yanami_anna",
+  "revision": 1,
+  "sortOrder": 147,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yanami_anna",
+    "profile": {
+      "id": "yanami_anna",
+      "name": "八奈见杏菜",
+      "alias": [
+        "八奈见杏菜",
+        "Anna Yanami"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-yanami_anna.png?v=9b01ab0ba67e",
+        "alt": "八奈见杏菜 · 食堂大份定食的满足感场景样张"
+      },
+      "visual_dna": {
+        "signature": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+        "hair": "blue_hair, medium_hair",
+        "eyes": "blue_eyes",
+        "uniform": "石蕗高校整齐制服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "反应鲜活，开心和失落都很容易写在脸上",
+        "谈起食物兴致勃勃，遇到心事又会故作轻松",
+        "愿意参与朋友的日常，热闹过后也需要独处整理情绪"
+      ],
+      "likes": [
+        "丰盛的午餐",
+        "分享零食",
+        "文学部的闲谈"
+      ],
+      "classic_cg": {
+        "title": "八奈见杏菜 · 食堂大份定食的满足感",
+        "description": "学校食堂，她面前摆着堆成小山的特大份定食，双手合十说出「我开动了」的瞬间眼睛亮得像星星；第一口下去后整个人散发出幸福气场，周围同学都侧目。"
+      },
+      "identity": "Too Many Losing Heroines! · 八奈见杏菜",
+      "tags": [
+        "八奈见杏菜",
+        "败犬女主太多了！",
+        "日常"
+      ],
+      "bg_story": "开朗爱吃、表情丰富的文学部少女，也会在热闹背后认真消化失落。蓝发、呆毛与蓝瞳为识别点，食物场景保留情绪变化而不只堆砌食量。",
+      "palette": [
+        "#9caed8",
+        "#282532"
+      ],
+      "source": "Too Many Losing Heroines!",
+      "speech": "这个新品看起来不错，要不要尝一口？",
+      "traits": [
+        "yanami_anna",
+        "make_heroine_ga_oo_sugiru!",
+        "blue_hair",
+        "medium_hair",
+        "ahoge"
+      ],
+      "accent_color": "#9caed8",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "yanami_anna",
+      "displayName": "八奈见杏菜",
+      "originalName": "Anna Yanami",
+      "franchise": "Too Many Losing Heroines!",
+      "aliases": [
+        "八奈见杏菜",
+        "Anna Yanami"
+      ],
+      "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+      "identityTokens": [
+        "yanami_anna",
+        "make_heroine_ga_oo_sugiru!",
+        "blue_hair",
+        "medium_hair",
+        "ahoge",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "yanami_anna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yanami_anna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_poolside_water",
+  "revision": 1,
+  "sortOrder": 1018,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在泳池边双腿浸入水中，晶莹水珠挂在皮肤",
+    "camera": "cowboy shot, eye level",
+    "category": "现代日常",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【绫波丽 · 蔚蓝水波与纯白泳装】午后静谧的室内游泳池，清澈碧蓝的池水泛着潋滟的水波纹。绫波丽穿着纯白连体泳装坐在泳池边缘，双足轻垂入水激起细小的水花，晶莹的水珠沿着她如羊脂玉般白皙的锁骨与修长双腿缓缓滑落——「水很凉……但浸入水中的感觉，就像回到了最初的母体一样宁静。」",
+    "id": "ayanami_rei_poolside_water",
+    "lighting": "池水折射的波光水影与明亮天窗漫射光",
+    "location": "学校室内游泳池畔",
+    "mood": "清冷纯净",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "white_one_piece_swimsuit",
+    "promptProse": "Sitting at the edge of the school pool dipping her bare feet into clear water in a white swimsuit, Rei rests in peaceful stillness. Sparkling water caustics and bright summer daylight create a clean, refreshing moment of calm.",
+    "promptTokens": [
+      "swimming_pool",
+      "sitting_on_edge",
+      "feet_in_water",
+      "white_swimsuit",
+      "water_reflections",
+      "sunlight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "swimming_pool",
+      "indoor_pool",
+      "water_reflections",
+      "sitting_on_edge",
+      "feet_in_water",
+      "water_drops_on_skin",
+      "wet_skin",
+      "caustics"
+    ],
+    "timeOfDay": "午后",
+    "title": "绫波丽 · 蔚蓝水波与纯白泳装"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "gotoh_hitori_school_cultural_maid",
+  "revision": 1,
+  "sortOrder": 1004,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
+    "camera": "cowboy shot, eye level",
+    "category": "校园日常",
+    "characterId": "gotoh_hitori",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【后藤一里 · 文化祭女仆危机】高中文化祭热闹的教室里，波奇酱换上了黑白蕾丝花边的女仆装，双手战战兢兢地端着盛有蛋包饭的餐盘。面对客人的注视，她的脸颊泛起剧烈的红晕，头顶的呆毛剧烈颤抖——「欢、欢迎光临主人……请问要给蛋包饭施加变好吃的魔法吗……呜呜我好想钻进地缝里！」",
+    "id": "gotoh_hitori_school_cultural_maid",
+    "lighting": "教室午后明亮柔和窗光",
+    "location": "秀华高中文化祭班级女仆咖啡厅",
+    "mood": "羞涩慌乱",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "cultural_festival_maid",
+    "promptProse": "Inside a festively decorated high school classroom during the cultural festival, Gotoh Hitori stands flustered in a classic black and white frilled maid uniform while timidly balancing a serving tray with ketchup-decorated omurice. Bright sunny afternoon light filters through the classroom windows, casting soft reflections on the chalkboard and chalk art behind her. Her cheeks burn with an intense crimson blush, eyes wide and watery with cute panic as she bows slightly forward in nervous embarrassment. Vibrant pastel colors and delicate line art deliver a charmingly comedic and endearing anime scene.",
+    "promptTokens": [
+      "classroom",
+      "school_festival",
+      "maid_uniform",
+      "holding_tray",
+      "omelet_rice",
+      "blushing",
+      "heavy_blush",
+      "teary_eyes",
+      "flustered",
+      "cowboy_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "school_festival",
+      "maid_uniform",
+      "holding_tray",
+      "omelet_rice",
+      "blushing",
+      "heavy_blush",
+      "teary_eyes",
+      "flustered",
+      "shaking"
+    ],
+    "timeOfDay": "午后",
+    "title": "后藤一里 · 文化祭女仆危机"
+  }
+}

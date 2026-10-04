@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/nsfw_boudoir",
+  "revision": 1,
+  "sortOrder": 448,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "nsfw_boudoir",
+      "name": "周防有希·成人私密造型",
+      "prose": "a private adult ensemble built around small_towel",
+      "tokens": [
+        "small_towel"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

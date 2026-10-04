@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "nana_asta_deviluke/casual_denim",
+  "revision": 1,
+  "sortOrder": 687,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "nana_asta_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "casual_denim",
+      "isDefault": false,
+      "name": "假日休闲无袖背心短裤",
+      "prose": "sporty casual streetwear: a fitted dark-red sleeveless crop top, distressed denim cutoff shorts, sneakers, and holding a small alien creature in her arms with a fond smile",
+      "tokens": [
+        "casual",
+        "crop_top",
+        "tank_top",
+        "denim_shorts",
+        "short_shorts",
+        "sneakers",
+        "demon_tail"
+      ]
+    }
+  }
+}

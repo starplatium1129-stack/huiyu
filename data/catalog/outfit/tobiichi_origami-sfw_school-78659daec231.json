@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/sfw_school",
+  "revision": 1,
+  "sortOrder": 53,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "旧时间线短发制服",
+      "prose": "a navy school blazer, white blouse and pleated skirt, with a neat short white haircut",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "white_blouse",
+        "pleated_skirt",
+        "short_hair"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

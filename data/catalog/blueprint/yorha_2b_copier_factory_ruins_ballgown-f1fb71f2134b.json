@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_copier_factory_ruins_ballgown",
+  "revision": 1,
+  "sortOrder": 1117,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_copier_factory_ruins_ballgown",
+    "title": "2B · 沉沦大理石殿堂的露背回眸",
+    "category": "殿堂幽影",
+    "characterId": "yorha_2b",
+    "outfitId": "evening_gown",
+    "coverageTags": [
+      "gala"
+    ],
+    "description": "【2B · 沉沦大理石殿堂的露背回眸】地下深处古老而残破的古典大理石宴会遗址内，蛛网与尘封的雕像林立。2B 身穿一袭极致贴身的午夜黑色丝绒露背晚礼服，将她傲视众生的完美漏斗身段与绝美蝴蝶骨暴露在空气中。她缓步走在大理石台阶中央，单手轻挽黑色丝绸长手套，侧身回眸，眼罩微偏勾勒出极致冷艳的雕塑之美。",
+    "location": "地下古代残破大理石宫殿台阶",
+    "action": "拾级而上侧身回眸，露背晚礼服勾勒出紧致腰窝与完美沙漏体态",
+    "timeOfDay": "夜间",
+    "lighting": "穹顶裂隙透下的淡紫幽蓝天光与残存烛台温暖光斑",
+    "camera": "cowboy shot, back 3/4 view, curvature emphasis",
+    "mood": "冷艳高贵",
+    "sceneTags": [
+      "ruined_palace",
+      "marble_stairs",
+      "evening_gown",
+      "open_back",
+      "backless_dress",
+      "opera_gloves",
+      "blindfold",
+      "gazing_back"
+    ],
+    "promptProse": "Glancing back over her bare sculpted shoulder while ascending ruined marble palace stairs, 2B captivates in a midnight black velvet backless evening gown. Faint violet moonbeams through vaulted ceilings trace the curvature of her spine and silver hair with regal allure.",
+    "promptTokens": [
+      "ruined_palace",
+      "marble_pillars",
+      "velvet_dress",
+      "open_back",
+      "backless_dress",
+      "opera_gloves",
+      "blindfold",
+      "curved_hips",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

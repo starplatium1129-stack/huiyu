@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 52,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "橙色雨后出游装",
+      "prose": "an orange rain jacket over a white cotton top, navy full-length dungarees and yellow rubber boots",
+      "tokens": [
+        "orange_raincoat",
+        "white_shirt",
+        "overalls",
+        "yellow_boots"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

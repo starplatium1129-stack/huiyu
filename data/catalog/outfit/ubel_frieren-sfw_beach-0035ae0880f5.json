@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ubel_frieren/sfw_beach",
+  "revision": 1,
+  "sortOrder": 74,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ubel_frieren",
+    "outfit": {
+      "id": "sfw_beach",
+      "name": "尤贝尔·海滨泳装",
+      "prose": "a deep green layered swimsuit with a short black beach skirt, shell jewelry and bare feet",
+      "tokens": [
+        "green_swimsuit",
+        "layered_swimsuit",
+        "black_beach_skirt",
+        "shell_jewelry",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

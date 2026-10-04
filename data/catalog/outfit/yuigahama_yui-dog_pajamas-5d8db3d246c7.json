@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/dog_pajamas",
+  "revision": 1,
+  "sortOrder": 200,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "dog_pajamas",
+      "name": "居家露肩连帽卫衣",
+      "tokens": [
+        "hoodie",
+        "off_shoulder_hoodie",
+        "short_shorts",
+        "bare_legs",
+        "casual_clothes"
+      ],
+      "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+      "styleHint": "cozy modern room lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

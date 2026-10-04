@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc100",
+  "revision": 1,
+  "sortOrder": 98,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On Christmas morning in the newlywed bedroom, Ayachi Nene in carefully chosen holiday lingerie draped with a bedsheet sits on the bed edge, shyly pushing a wrapped gift box toward the waking viewer, her blushing face half hidden behind it while snow drifts past the window.",
+    "auditRevision": "careful-batch10-2026-08-27",
+    "camera": "床边主观半身近景",
+    "category": "恋爱/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc100",
+    "lighting": "雪日圣诞晨光",
+    "location": "婚后卧室",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, bedroom, on_bed, bare_legs, sitting, barefoot, holding_gift, gift_box, blush, shy_smile, christmas, snowing, winter_street, collarbone, slender_waist, full_body, morning_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "冬",
+    "story": "【成年 After Story · 圣诞早晨的拆礼物顺序】婚后圣诞清晨，成年的宁宁换上精心挑选的节日内衣，披着被单坐在床边等你醒来。她原本准备了从容的台词，却在你睁眼的瞬间全忘了，只能红着脸把礼物盒塞进你怀里——「先拆盒子里的礼物，不准跳过顺序……至于我准备的这一份，要等你认真说喜欢以后。」",
+    "storyJa": "【寧々・大人のアフターストーリー・クリスマスの朝にプレゼントを開ける順番】結婚後のクリスマスの朝、大人の寧々は厳選したホリデー用の下着を身に着け、シーツを背負ってベッドのそばに座って、あなたが起きるのを待っています。彼女は穏やかなセリフを用意していましたが、あなたが目を開けた瞬間にそれをすべて忘れてしまい、顔を赤らめてギフトボックスをあなたの腕に詰め込むことしかできませんでした。――「まず箱の中のプレゼントから開けてください。順番を飛ばしたらだめですよ……私が用意したほうは、ちゃんと好きだと言ってくれてからです。」",
+    "tags": [
+      "hair_ribbon",
+      "holiday_lingerie",
+      "bedsheet",
+      "bare_legs",
+      "newlywed_bedroom",
+      "full_body",
+      "barefoot",
+      "christmas"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "圣诞早晨的拆礼物顺序",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "weather": "雪"
+  }
+}

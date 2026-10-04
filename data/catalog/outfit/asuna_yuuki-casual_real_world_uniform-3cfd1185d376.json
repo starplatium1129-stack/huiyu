@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/casual_real_world_uniform",
+  "revision": 1,
+  "sortOrder": 745,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "casual_real_world_uniform",
+      "name": "现实世界私立高中制服",
+      "prose": "her real-world high school uniform: a grey tailored blazer over a crisp white collared shirt, red ribbon bow tie, pleated navy skirt, and dark brown loafers",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "white_shirt",
+        "ribbon_tie",
+        "pleated_skirt",
+        "black_stockings"
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc188",
+  "revision": 1,
+  "sortOrder": 185,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc188",
+    "title": "甜点协议：围裙与丝绸睡裙的晨间熔断",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 宁宁 · 丝绸吊带裙与围裙极致高能】婚后清晨的温馨厨房，空气里弥漫着烘焙的微热甜香。宁宁在你的使坏要求下，身上是一件极低胸的粉色丝绸吊带睡裙，外面套着一件小巧的厨房围裙。她面红耳赤地被你抱上了大理石吧台桌面，细窄的围裙带子根本遮挡不住两侧大片暴露的白皙侧乳。她羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已害羞地瘫软成完美的爱心螺旋，急促地娇喘着——「呜...柊史...一大清早就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "害羞",
+    "season": "春",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "hair_ribbon",
+      "slip_dress",
+      "apron",
+      "sideboob",
+      "flour",
+      "bare_legs",
+      "smooth_thighs",
+      "kitchen",
+      "full_body",
+      "barefoot"
+    ],
+    "mature": true,
+    "location": "新婚公寓厨房吧台",
+    "weather": "温暖晨光",
+    "camera": "近景特写",
+    "lighting": "晨曦柔和侧窗光",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "adult, 1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, apron, maid_apron, kitchen, counter, sideboob, sitting, barefoot, blush, collarbone, slender_waist, full_body, window_light, morning_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "storyJa": "【寧々・大人のアフターストーリー・・・シルクサスペンダースカートとエプロンは超高機能】結婚式の翌朝、暖かいキッチンでは、パンを焼く温かく甘い香りが空気に満ちています。あなたのリクエストに応じて、寧々は非常にローカットのピンクのシルクのサスペンダーナイトガウンと小さなキッチンエプロンを外で着ているだけでした。あなたが彼女を大理石のバーテーブルに乗せたとき、彼女は顔を赤らめていました。細いエプロンの紐では露出した両側の白い胸を覆うことができませんでした。彼女は恥ずかしそうに小麦粉に汚れた手をあなたの胸に押し付けました。彼女の頭上のアホ毛はすでに恥ずかしそうに愛の完璧なスパイラルに崩壊しており、彼女は速く喘いでいました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
+    "rating": "R18",
+    "animaCaption": "On the marble kitchen counter in the warm morning, Nene in a low-cut pale pink silk slip dress with a small kitchen apron presses both flour-dusted hands against the viewer's chest, sideboob spilling past the narrow apron strings, blushing hard with her ahoge curling into a heart.",
+    "auditRevision": "careful-batch02-2026-08-27"
+  }
+}

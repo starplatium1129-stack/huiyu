@@ -51,6 +51,8 @@ if (process.argv.includes('--help')) {
 } else if(action==='start') {
   Object.assign(env,nativeInputs.developmentNativeEnvironment(root,env));
   run(['run','--manifest-path',manifest,'--locked','--release','--',...process.argv.slice(3)]);
+} else if(action==='catalog') {
+  run(['run','--manifest-path',manifest,'--locked','--','catalog',...process.argv.slice(3)]);
 } else if(action==='recover') {
   const executable=path.join(root,'runtime-rs','target','release',process.platform==='win32'?'huiyu-runtime.exe':'huiyu-runtime');
   if(!fs.existsSync(executable))throw Error('Build the native recovery tool first: npm run wf -- rust:build');

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "amane_garage_repair_tanktop_wrench",
+  "revision": 1,
+  "sortOrder": 1183,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_garage_repair_tanktop_wrench",
+    "title": "周防天音 · 铁工车库的机油与汗水",
+    "category": "机能硬核",
+    "characterId": "suou_amane",
+    "outfitId": "biker_jacket",
+    "coverageTags": [
+      "mechanic"
+    ],
+    "description": "【周防天音 · 铁工车库的机油与汗水】散落着工具箱与备用轮胎的机车车库内，射灯打在冰冷的发动机金属构件上。天音褪去皮衣外套，仅着一袭紧贴胸膛的深黑工字背心与短热裤。她半跪在机车旁，手里握着沉重的扳手正在调试化油器螺栓。额头渗出的细密汗珠顺着脸颊与锁骨滑落，鼻尖沾着一抹淡淡的黑机油，展现出巾帼不让须眉的硬核机车女郎魅力。",
+    "location": "复古工业风私人机车维修车库内",
+    "action": "单膝跪地手持扳手调试机车引擎，紧身背心勾勒丰满胸脯，额头带汗，眼神专注",
+    "timeOfDay": "下午",
+    "lighting": "高照度暖白工作射灯与金属扳手、发动机的高光反光",
+    "camera": "cowboy shot, medium close-up, dynamic low angle, sweaty texture",
+    "mood": "性感专注",
+    "sceneTags": [
+      "garage",
+      "workshop",
+      "motorcycle",
+      "wrench",
+      "tank_top",
+      "sweat",
+      "grease",
+      "hair_rings",
+      "large_breasts"
+    ],
+    "promptProse": "Kneeling beside an exposed motorcycle engine with a heavy steel wrench in hand inside a rustic workshop, Amane tunes the mechanics with focused determination. Bright overhead halogen lighting catches beads of sweat along her bare collarbone and cropped black tank top.",
+    "promptTokens": [
+      "motorcycle_garage",
+      "engine_repair",
+      "holding_wrench",
+      "tank_top",
+      "crop_top",
+      "cleavage",
+      "sweat",
+      "hair_rings",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536"
+  }
+}

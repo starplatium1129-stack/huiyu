@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "maria_mikhailovna_kujou_sfw_b9_04",
+  "revision": 1,
+  "sortOrder": 797,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "温室钢琴旁弹完旋律向镜头点头，捧花里藏着给妹妹的花",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium full shot, vertical framing",
+    "category": "圣洁花嫁",
+    "characterId": "maria_mikhailovna_kujou",
+    "coverageTags": [
+      "iconic",
+      "bridal",
+      "daily"
+    ],
+    "description": "【学校温室音乐室·午后】玛夏穿着暖白婚纱坐在钢琴旁，浅棕卷发从头纱两侧落下，捧花里夹着一枚妹妹喜欢的花朵；她弹完一小段旋律后向镜头点头，笑容像一封写给家人的信。",
+    "id": "maria_mikhailovna_kujou_sfw_b9_04",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "warm afternoon light through glass and leaves",
+    "location": "greenhouse music room at the academy",
+    "mood": "把照顾家人的心意写成花嫁",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_bridal",
+    "promptProse": "Mariya Mikhailovna Kujou (Masha) from Alya Sometimes Hides Her Feelings in Russian wears a warm white bridal gown with a soft veil, light-brown ribbon, pearl buttons and a bouquet of family flowers. She sits beside the greenhouse piano with a bouquet holding a flower chosen for her sister. After playing a quiet phrase, she turns toward the viewer and inclines her head with a considerate smile, warm glass light settling across her wavy hair. warm afternoon light through glass and leaves.",
+    "promptTokens": [
+      "wedding_dress",
+      "bridal_veil",
+      "greenhouse",
+      "piano",
+      "family_flowers",
+      "wavy_hair",
+      "brown_ribbon",
+      "considerate_smile",
+      "afternoon_light"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "greenhouse",
+      "piano",
+      "family_flowers",
+      "wavy_hair",
+      "brown_ribbon",
+      "considerate_smile",
+      "afternoon_light"
+    ],
+    "timeOfDay": "午后",
+    "title": "玛夏 · 温室钢琴旁的温柔花嫁"
+  }
+}

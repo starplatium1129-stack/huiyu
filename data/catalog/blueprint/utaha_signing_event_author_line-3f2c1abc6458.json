@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "utaha_signing_event_author_line",
+  "revision": 1,
+  "sortOrder": 1430,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "utaha_signing_event_author_line",
+    "title": "霞之丘诗羽 · 签售会的作家真身·「要签名？先把感想写满一页」",
+    "category": "都市日常",
+    "characterId": "kasumigaoka_utaha",
+    "description": "【书店签售会·周末】作家霞诗子的签售队伍排到了店门口。诗羽端坐在签到台后，钢笔在她指间转了一个华丽的弧度，红瞳扫过脸红到耳根的你——「哦呀，最忠实的读者先生来了。要签名可以……不过先把这一卷的感想写满一页纸，本作家只给认真的读者落笔。」",
+    "location": "书店签售会签到台",
+    "action": "端坐签到台转钢笔，红瞳扫过读者微笑宣判",
+    "timeOfDay": "周末午后",
+    "lighting": "书店明亮的暖光",
+    "camera": "medium shot, signing table, pen twirl, authorial poise",
+    "mood": "毒舌作家、从容气场",
+    "sceneTags": [
+      "signing",
+      "holding_pen",
+      "sitting",
+      "book",
+      "smirk",
+      "indoors",
+      "daily"
+    ],
+    "promptProse": "Kasumigaoka Utaha sits behind the signing table of her book event as the queue spills out the store door, twirling her fountain pen in a graceful arc. Her red eyes sweep over your blush-red ears as she offers her terms: a signature only for readers who fill a full page with their impressions, delivered with the effortless poise of the author behind the pen name Kasumi Utako. Medium shot, cinematic lighting, interior glow, detailed bookstore background.",
+    "promptTokens": [
+      "kasumigaoka_utaha",
+      "1girl",
+      "solo",
+      "elegant_clothes",
+      "sitting",
+      "holding_pen",
+      "holding_book",
+      "smirk",
+      "red_eyes",
+      "black_hair",
+      "long_hair",
+      "bangs",
+      "white_hairband",
+      "indoors",
+      "day",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "elegant_black_dress",
+    "coverageTags": [
+      "daily",
+      "signature"
+    ]
+  }
+}

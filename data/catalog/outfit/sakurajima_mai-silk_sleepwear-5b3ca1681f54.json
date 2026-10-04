@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/silk_sleepwear",
+  "revision": 1,
+  "sortOrder": 25,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "silk_sleepwear",
+      "name": "丝绸晨睡套装",
+      "tokens": [
+        "silk",
+        "sleepwear",
+        "silk_sleepwear",
+        "camisole",
+        "thin_straps",
+        "loose_shorts",
+        "matching_set",
+        "bare_shoulders",
+        "nightwear",
+        "smooth_fabric"
+      ],
+      "prose": "wearing a soft silk sleepwear set of a thin-strap camisole top and matching loose shorts, smooth lustrous silk fabric in a soft neutral tone",
+      "styleHint": "soft cinematic lighting",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

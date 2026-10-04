@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc142",
+  "revision": 1,
+  "sortOrder": 140,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a cozy morning kitchen, Ayachi Nene wears her official witch outfit with a small white apron over it, flustered and blushing as she panics over a magically levitating frying pan with purple magical sparks, illuminated by warm morning sunlight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc142",
+    "lighting": "逆光晨曦",
+    "location": "新婚公寓厨房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, full apron, ordinary cook, generic witch dress, plain black dress, full-length gown, simple witch costume",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, official_witch_outfit, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, waist_apron, floating_cooking_pan, purple_magic_sparks, levitating_frying_pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "春",
+    "story": "【宁宁 After Story】婚后清晨的公寓厨房里弥漫着面包的焦味。宁宁穿着你那件大号的衬衫、套着围裙，正手忙脚乱地准备早餐。因为平底锅快烧焦了，她慌乱间下意识用了魔力让锅子自己悬浮在半空，结果正好被推门而入的你撞个正着。她瞬间满脸通红，头顶的呆毛直接害羞地弯成了心形——「啊啊啊！不准看！魔女的料理魔法失败现场也是家务最高机密！」",
+    "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
+    "tags": [
+      "oversized_shirt",
+      "apron",
+      "hair_ribbon",
+      "ahoge",
+      "kitchen",
+      "cooking_pan",
+      "floating_objects",
+      "magic_sparks",
+      "blush",
+      "panicked",
+      "indoors",
+      "morning_light",
+      "cozy",
+      "warm_lighting",
+      "medium_shot",
+      "viewer_shirt"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "魔女小娇妻的厨房魔法事故",
+    "usage": [
+      "壁纸级"
+    ],
+    "weather": "晴朗晨曦"
+  }
+}

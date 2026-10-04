@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cartethyia/sfw_bridal",
+  "revision": 1,
+  "sortOrder": 949,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cartethyia",
+    "outfit": {
+      "id": "sfw_bridal",
+      "name": "卡提希娅·圣洁花嫁",
+      "prose": "a pale blue bridal gown with a cream mantle, braided gold trim, a flower crown and a delicate halo",
+      "tokens": [
+        "wedding_dress",
+        "pale_blue_gown",
+        "cream_mantle",
+        "gold_braid_trim",
+        "flower_crown",
+        "halo"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

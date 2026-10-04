@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "ayanami_rei_classroom_sunset",
+  "revision": 1,
+  "sortOrder": 1015,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "侧坐在课桌旁单手托腮，凝视窗外夕阳",
+    "camera": "cowboy shot, eye level",
+    "category": "校园日常",
+    "characterId": "ayanami_rei",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【绫波丽 · 黄昏窗边的沉思】放学后空荡荡的教室里，金色如熔金般的晚霞洒满木质课桌。绫波丽穿着水手服安静地坐在靠窗的座位上，单手托着腮凝视着窗外层层叠叠的城市防御装甲板，微风拂起她额前轻柔的碎发——「第3新东京市的黄昏……总是这么安静。人类为何要在彼此的距离中感到恐惧呢？」",
+    "id": "ayanami_rei_classroom_sunset",
+    "lighting": "金色夕阳穿透落地玻璃窗的温暖漫射光",
+    "location": "第3新东京市立中学教室窗边",
+    "mood": "宁静深邃",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "tokyo3_school_uniform",
+    "promptProse": "Sitting quietly at a classroom desk by the open window at golden hour, Rei rests one hand against her cheek and gazes into the sunset in her Tokyo-3 school uniform. Warm orange sunlight and fluttering white curtains cast long, nostalgic shadows across the wooden floor.",
+    "promptTokens": [
+      "classroom",
+      "window",
+      "sitting_at_desk",
+      "sunset",
+      "golden_hour",
+      "wind_blown_curtains",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "hand_on_cheek",
+      "school_uniform"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "window",
+      "sitting_at_desk",
+      "hand_on_cheek",
+      "sunset",
+      "golden_hour",
+      "tokyo-3",
+      "curtains"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "绫波丽 · 黄昏窗边的沉思"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
+  "revision": 1,
+  "sortOrder": 1121,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
+    "title": "2B · 凯妮蕾丝战装跨坐骑乘与上下轻摇",
+    "category": "深层欢愉",
+    "characterId": "yorha_2b",
+    "outfitId": "leotard_kaine",
+    "coverageTags": [
+      "cowgirl"
+    ],
+    "description": "【成年2B · 营地软垫的单人休整】成年2B独自跨坐折叠软垫，蓝白战斗内衣松开，一手撑住床褥、一手在腿间自抚，武器与Pod均关闭置于远处。",
+    "location": "抵抗军营地帐篷行军榻",
+    "action": "独自跨坐软垫，一手撑床、一手腿间自抚",
+    "timeOfDay": "夜间",
+    "lighting": "营火透过帐篷帆布透射的暖橙光晕照亮玉体",
+    "camera": "straddling pov, looking up at heaving bust and mole under mouth",
+    "mood": "极乐沉沦",
+    "sceneTags": [
+      "cowgirl_position",
+      "straddling",
+      "lingerie",
+      "large_breasts",
+      "blindfold",
+      "mole_under_mouth",
+      "heavy_blush"
+    ],
+    "promptProse": "A ruined camp light frames adult 2B seated alone astride a folded futon. Blue-white battle lingerie is loosened beneath bare breasts and pulled aside at the hips, while black thigh-highs tighten around folded legs. She braces on the bedding with one gloved hand and fingers herself with the other, her sword and Pod resting powered down in the background. White bobbed hair and blindfold frame parted lips and a restrained blush. Vertical solo portrait, no text or extra people.",
+    "promptTokens": [
+      "cowgirl_position",
+      "straddling",
+      "lingerie",
+      "large_breasts",
+      "blindfold",
+      "mole_under_mouth",
+      "heavy_blush",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "soft_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_sensual_bedroom",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [
+      "cowgirl",
+      "straddling",
+      "large_breasts",
+      "lingerie",
+      "heavy_blush"
+    ],
+    "nsfwProse": ""
+  }
+}

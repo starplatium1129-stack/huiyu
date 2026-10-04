@@ -1,0 +1,121 @@
+{
+  "kind": "character",
+  "id": "raphtalia",
+  "revision": 1,
+  "sortOrder": 124,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "raphtalia",
+    "profile": {
+      "id": "raphtalia",
+      "name": "拉芙塔莉雅",
+      "alias": [
+        "拉芙塔莉雅",
+        "Raphtalia"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-raphtalia.png?v=faab887e9062",
+        "alt": "拉芙塔莉雅 · 晨训后的擦剑场景样张"
+      },
+      "visual_dna": {
+        "signature": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
+        "hair": "brown_hair, long_hair, messy_hair",
+        "eyes": "pink_eyes",
+        "uniform": "轻装旅行服",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "认真可靠，重视承诺与相互信赖",
+        "经历磨难后仍保留体贴他人的耐心",
+        "面对安稳生活会显出朴素而坦率的喜悦"
+      ],
+      "likes": [
+        "和伙伴共享热饭",
+        "照料日常用品",
+        "和平小镇的散步"
+      ],
+      "classic_cg": {
+        "title": "拉芙塔莉雅 · 晨训后的擦剑",
+        "description": "营地清晨，她坐在木桩上保养爱剑，耳朵随着远处的鸟鸣轻轻转动；擦完收剑入鞘，尾巴满足地晃了一下——剑士的日常从保养开始。"
+      },
+      "identity": "The Rising of the Shield Hero · 拉芙塔莉雅",
+      "tags": [
+        "拉芙塔莉雅",
+        "盾之勇者成名录",
+        "日常"
+      ],
+      "bg_story": "从艰难境遇中成长起来的亚人剑士，认真珍惜同伴与来之不易的日常。耳朵与尾巴会先于语言流露情绪，旅行中的照料、采购与装备保养体现她可靠的一面。",
+      "palette": [
+        "#c99473",
+        "#282532"
+      ],
+      "source": "The Rising of the Shield Hero",
+      "speech": "路上的东西收好了，接下来也请放心交给我。",
+      "traits": [
+        "raphtalia",
+        "tate_no_yuusha_no_nariagari",
+        "brown_hair",
+        "long_hair",
+        "messy_hair"
+      ],
+      "accent_color": "#c99473",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "raphtalia",
+      "displayName": "拉芙塔莉雅",
+      "originalName": "Raphtalia",
+      "franchise": "The Rising of the Shield Hero",
+      "aliases": [
+        "拉芙塔莉雅",
+        "Raphtalia"
+      ],
+      "identityProse": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
+      "identityTokens": [
+        "raphtalia",
+        "tate_no_yuusha_no_nariagari",
+        "brown_hair",
+        "long_hair",
+        "messy_hair",
+        "pink_eyes",
+        "raccoon_ears",
+        "raccoon_tail",
+        "animal_ear_fluff"
+      ],
+      "exactTokens": [
+        "raphtalia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, raphtalia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

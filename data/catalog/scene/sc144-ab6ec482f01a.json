@@ -1,0 +1,63 @@
+{
+  "kind": "scene",
+  "id": "sc144",
+  "revision": 1,
+  "sortOrder": 142,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a wide full-body view inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "全身远景",
+    "category": "Active_Sync_Scenes",
+    "char": "triad",
+    "character": [
+      "nene",
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc144",
+    "lighting": "柔和氛围灯",
+    "location": "星光Occult咖啡馆",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, pink ribbon on black-haired woman, mole on white-haired woman, identical costumes, closed laptop, no laptop, extra girl, 3girls, male, man, boy, 1boy",
+    "prompt": "2girls, two adult women only, mysterious_cafe_interior_after_closing, wooden_bar_counter, night, dim_warm_ambient_lighting, wide_shot, full_body, clearly_different_faces, (ayachi_nene_sitting_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, neat_classic_maid_dress, casting_small_pink_magic_sparkles, one_floating_teacup_pouring_tea_itself, gentle_smile, blush) BREAK (shiki_natsume_leaning_on_bar_counter_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, black_maid_style_tactical_gear, typing_on_open_laptop, seductive_side_glance_at_viewer, confident_smirk, blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
+    "rating": "All",
+    "recommendedSize": "1344×896",
+    "season": "不限",
+    "story": "【成年 After Story · 打破壁垒的究极脑洞】你和宁宁、夏目共同开了一家跨越超能力与魔法的神秘咖啡馆。深夜打烊后，店里亮起昏暗柔和的氛围灯。宁宁正用魔法让精致的红茶杯在半空中自己倒茶，而换上改良特工女仆装的夏目则靠在吧台边，一边在笔记本电脑上敲打着秘密账目，一边用极其撩人且危险的眼神斜睨着你——「喂，店长，今晚两个人的加班费，你打算用自己抵债吗？」",
+    "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
+    "tags": [
+      "2girls",
+      "dual_pose_verified",
+      "ayachi_nene",
+      "shiki_natsume",
+      "hair_ribbon",
+      "ahoge",
+      "mole_under_eye",
+      "maid_style_tactical_gear",
+      "cafe_interior",
+      "floating_cup",
+      "laptop",
+      "in_love",
+      "night",
+      "soft_lighting",
+      "seductive_look",
+      "smirk",
+      "blush",
+      "ayachi_nene_sitting_on_the_left",
+      "smile",
+      "wide_shot",
+      "full_body"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "终极协定：魔女与特工的『非正常事件咖啡馆』",
+    "usage": [
+      "核心协议",
+      "壁纸级"
+    ],
+    "weather": "微醺"
+  }
+}

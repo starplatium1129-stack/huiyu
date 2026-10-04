@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "shiki_morning_futon_tying_hair_ribbon",
+  "revision": 1,
+  "sortOrder": 1345,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "坐在被褥边双手撩起发丝，嘴唇咬着发带准备束发，衣襟微敞眼神慵懒",
+    "camera": "cowboy shot, eye level, peaceful domestic view",
+    "category": "晨间女友",
+    "characterId": "ryougi_shiki",
+    "coverageTags": [
+      "daily",
+      "sweet",
+      "morning"
+    ],
+    "description": "【两仪式 · 晨光微醒的咬发带束发】晨光静谧地洒在铺着草席的日式和室里。两仪式身穿宽松深蓝棉和服坐在铺开的榻榻米被窝边，刚睡醒的黑发微乱，衣襟微敞露出圆润修长的锁骨。她嘴唇轻轻咬着一根黑色的细发带，双手抬起将耳侧的发丝拢向脑后，眼眸带着未消的困意与难得的柔和注视着你——「哈欠……看什么看。快去洗脸，今天黑桐不是还要来吗。」",
+    "id": "shiki_morning_futon_tying_hair_ribbon",
+    "lighting": "透过障子门洒入的清澈柔白晨曦",
+    "location": "飘散蔺草清香的静谧和室榻榻米晨榻上",
+    "mood": "晨间慵懒",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_blue_kimono",
+    "promptProse": "Sitting on the edge of her laid-out futon in a quiet tatami room filled with morning light, Ryougi Shiki prepares her hair for the day. Her loose indigo kimono slips open slightly at the collar, revealing her smooth collarbone and slender shoulders. She bites a black hair ribbon between her lips while raising both hands to gather her short black locks, looking toward the viewer with half-lidded, sleepy affection. Intimate domestic anime visual, solo 1girl, no text.",
+    "promptTokens": [
+      "tatami_room",
+      "futon",
+      "morning_sun",
+      "blue_kimono",
+      "open_collar",
+      "exposed_collarbone",
+      "cleavage",
+      "hair_tie_in_mouth",
+      "tying_hair",
+      "barefoot",
+      "lazy_smile",
+      "subtle_blush",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "tatami_room",
+      "futon",
+      "morning_light",
+      "blue_kimono",
+      "open_collar",
+      "cleavage",
+      "barefoot",
+      "hair_tie_in_mouth",
+      "tying_hair",
+      "lazy_gaze"
+    ],
+    "timeOfDay": "清晨",
+    "title": "两仪式 · 晨光微醒的咬发带束发"
+  }
+}

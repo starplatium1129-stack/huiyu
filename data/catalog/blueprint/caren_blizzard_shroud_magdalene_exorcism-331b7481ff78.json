@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "caren_blizzard_shroud_magdalene_exorcism",
+  "revision": 1,
+  "sortOrder": 209,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_blizzard_shroud_magdalene_exorcism",
+    "title": "卡莲 · 暴雪教会的抹大拉圣骸布",
+    "category": "身份高光",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 暴雪教会的抹大拉圣骸布】寒风呼啸的深夜荒原教会前，漫天暴风雪狂乱席卷。卡莲身穿无裙下摆的特殊黑白祭服，修长白皙的双腿在严寒中毫不退缩。她单臂轻挥，金色耀眼的「抹大拉圣骸布」如神圣红绫般在风雪中暴涨翻飞缠绕，紫眸冰冷俯瞰被束缚的魔物——「在神圣的真理面前，一切伪装与污秽皆无所遁形。」",
+    "location": "暴风雪覆盖的冬木郊外静谧老教会前",
+    "action": "单手挥舞金色抹大拉圣骸布翻涌如赤练，祭袍在风雪中飞扬，紫眸冷傲清冽",
+    "timeOfDay": "暴雪深夜",
+    "lighting": "抹大拉圣骸布炽烈的金红微光与白雪反光",
+    "camera": "cowboy shot, low angle, dramatic blizzard perspective",
+    "mood": "神圣冷冽",
+    "sceneTags": [
+      "snow",
+      "blizzard",
+      "church_exterior",
+      "shroud_of_magdalene",
+      "habit",
+      "no_skirt",
+      "black_thighhighs",
+      "purple_eyes",
+      "cold_gaze"
+    ],
+    "promptProse": "Standing fearless amid a howling winter blizzard outside an old gothic church, Caren Hortensia brandishes the sacred Shroud of Magdalene. The glowing crimson and gold silk ribbon coils dynamically through the falling snow as her skirtless vestment billows. Her lilac eyes shine with chilling, impassive divine judgment. Epic low-angle anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "snow",
+      "blizzard",
+      "church",
+      "shroud_of_magdalene",
+      "church_uniform",
+      "sleeveless",
+      "no_skirt",
+      "black_thighhighs",
+      "white_hair",
+      "purple_eyes",
+      "intense_gaze",
+      "cowboy_shot",
+      "low_angle",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_exorcist_habit",
+    "coverageTags": [
+      "iconic",
+      "combat"
+    ],
+    "adult": true,
+    "sampleRating": "R18"
+  }
+}

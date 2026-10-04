@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 909,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "黑白格纹休息日套装",
+      "prose": "a black-and-white checked blazer over a forest-green blouse, cream wide-leg trousers and small pearl earrings",
+      "tokens": [
+        "checkered_blazer",
+        "green_blouse",
+        "cream_pants",
+        "pearl_earrings"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

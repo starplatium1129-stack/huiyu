@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc252",
+  "revision": 1,
+  "sortOrder": 247,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At a sunny window table in a cozy autumn cafe, Ayachi Nene in a light beige chunky knit sweater with a falling shoulder, reddish-brown British plaid pleated miniskirt, black knee socks and a dark beret feeds the viewer a bite of strawberry cake with a small spoon, the cake touching his lips, flustered blush as her ahoge curls into a heart spiral and she squeezes her sweater sleeve.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "近景正面视线平视",
+    "category": "日常",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "恋爱",
+    "id": "sc252",
+    "lighting": "明亮通透的午后自然窗光与温暖环境光",
+    "location": "靠窗的阳光双人卡座",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_beige_chunky_knit_sweater_with_dropped_shoulder, reddish_brown_british_plaid_pleated_miniskirt, black_knee_socks, dark_beret, sitting_at_sunny_window_table_in_autumn_cafe, feeding_viewer_a_small_spoonful_of_strawberry_cake, cake_touching_viewer's_lips, flustered_blush, heart_spiral_ahoge, squeezing_sweater_sleeve, close_up, warm_window_light, sunlight, bokeh, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【宁宁 · 日系私服秋季穿搭】秋日午后洒满阳光的街角温馨咖啡馆。今天出门约会的宁宁换上了一身极其温柔好看的私服：一件浅米色的粗针织软羊毛毛衣，宽松的落肩剪裁将一侧精致的锁骨若隐若现，下身搭配一条红褐色的英伦格子百褶短裙与黑色及膝袜，头顶戴着一顶俏皮的深色贝雷帽。当她红着脸试图用小汤匙喂你品尝她最喜欢的草莓蛋糕时，因为动作太近，两人的视线死死对撞。宁宁手一抖，小蛋糕直接沾到了你唇边。她瞬间面红耳赤，头顶那根标志性的呆毛慌乱地卷成爱心螺旋，揪着毛衣袖口连声自曝——「呜啊！柊、柊史对不起！不准用那种眼神看人家啦！人家、人家才没有因为第一次和你单独约会，就在镜子前挑了两个小时这件毛衣呢……呜，笨蛋快忘掉啦！」",
+    "storyJa": "【寧々・秋のカフェの私服コーディネートと純情自爆】秋の午後、陽光が降り注ぐ街角の居心地の良いカフェ。今日のデートで寧々は、非常にフェミニンで可愛らしい私服に身を包んでいた。ライトベージュのローゲージニットの柔らかいセーターは、ルーズなドロップショルダーの裁断で片側の精緻な鎖骨をのぞかせ、ボトムスには赤茶色の英国風チェック柄プリーツミニスカートと黒のニーソックスを合わせ、頭にはお茶目な深色のベレー帽を被っている。彼女は顔を真っ赤にしながら、小さなスプーンで大好きなイチゴケーキをあなたに食べさせようとしたが、距離が近すぎたせいで二人の視線が真っ直ぐにぶつかってしまった。寧々の手が震え、小さなケーキがあなたの唇の端についてしまった。彼女は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛を慌てて完璧なハート型に丸めながら、セーターの袖口を掴んで大声で自爆した――「うあぁ！柊、柊史ごめんね！そんな目で私を見ないでよ！私、私は決してあなたと初めて二人きりでデートするからって、鏡の前で二時間もこのセーターを選んでたわけじゃ……うう、バカ、今の忘れて！」",
+    "tags": [
+      "hair_ribbon",
+      "beige_sweater",
+      "plaid_skirt",
+      "knee_socks",
+      "beret",
+      "cafe_window",
+      "close_up",
+      "feeding",
+      "strawberry_cake",
+      "small_spoon"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "午后咖啡香气里的红晕自曝",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "秋日晴朗"
+  }
+}

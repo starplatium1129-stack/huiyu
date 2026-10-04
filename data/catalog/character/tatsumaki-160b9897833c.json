@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "tatsumaki",
+  "revision": 1,
+  "sortOrder": 131,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "tatsumaki",
+    "profile": {
+      "id": "tatsumaki",
+      "name": "战栗的龙卷",
+      "alias": [
+        "战栗的龙卷",
+        "Tatsumaki"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-tatsumaki.png?v=228405a552c1",
+        "alt": "战栗的龙卷 · 英雄协会的蔑视场景样张"
+      },
+      "visual_dna": {
+        "signature": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",
+        "hair": "green_hair, curly_hair, short_hair",
+        "eyes": "green_eyes",
+        "uniform": "黑色长袖及膝连衣裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "自信强势，表达不耐烦时毫不掩饰",
+        "对妹妹的关心常被命令与抱怨包裹",
+        "不喜欢被小看，也有需要放松的普通日常"
+      ],
+      "likes": [
+        "独处时的清静",
+        "按自己的节奏处理事务",
+        "为亲近的人准备小礼物"
+      ],
+      "classic_cg": {
+        "title": "战栗的龙卷 · 英雄协会的蔑视",
+        "description": "协会会议室，她悬停在比所有坐着的干部都高的位置听汇报，脚尖离地的距离就是她与他人的距离；听到无聊的提案时毫不掩饰地咂舌。"
+      },
+      "identity": "One-Punch Man · 战栗的龙卷",
+      "tags": [
+        "战栗的龙卷",
+        "一拳超人",
+        "日常"
+      ],
+      "bg_story": "英雄协会的超能力者，习惯漂浮着行动，嘴上强硬却很在意妹妹。短绿卷发与绿瞳不可与吹雪混淆，日常以报告、茶点和城市生活呈现强者的反差。",
+      "palette": [
+        "#8abc9d",
+        "#282532"
+      ],
+      "source": "One-Punch Man",
+      "speech": "这点小事，我当然已经处理好了。",
+      "traits": [
+        "tatsumaki",
+        "one-punch_man",
+        "green_hair",
+        "curly_hair",
+        "short_hair"
+      ],
+      "accent_color": "#8abc9d",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "tatsumaki",
+      "displayName": "战栗的龙卷",
+      "originalName": "Tatsumaki",
+      "franchise": "One-Punch Man",
+      "aliases": [
+        "战栗的龙卷",
+        "Tatsumaki"
+      ],
+      "identityProse": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",
+      "identityTokens": [
+        "tatsumaki",
+        "one-punch_man",
+        "green_hair",
+        "curly_hair",
+        "short_hair",
+        "green_eyes"
+      ],
+      "exactTokens": [
+        "tatsumaki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tatsumaki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

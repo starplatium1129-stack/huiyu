@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "asuka_langley_yellow_sundress_train",
+  "revision": 1,
+  "sortOrder": 1025,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手背在身后回首傲娇娇嗔，夏裙微扬",
+    "camera": "medium shot, eye level",
+    "category": "现代日常",
+    "characterId": "asuka_langley",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【惣流·明日香 · 夏日黄色连衣裙】烈日炎炎的盛夏高架电车月台上，蝉鸣在炽热空气中回响。明日香身着一袭明艳娇嫩的黄色吊带连衣裙，双手背在身后，微风掀起明黄色的裙摆露出修长白皙的美腿。她微微侧身回头，眼神中带着三分娇嗔与七分骄傲——「笨蛋真嗣！连电车时间都记不住，待会可别指望本小姐在路上等你！」",
+    "id": "asuka_langley_yellow_sundress_train",
+    "lighting": "盛夏炽烈阳光与清透蓝天光照",
+    "location": "第3新东京市高架列车月台",
+    "mood": "傲娇明媚",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "yellow_summer_sundress",
+    "promptProse": "Waiting on the sunny train platform in her bright yellow summer sundress, Asuka glances back with an adorable tsundere pout. Summer cumulus clouds and glistening railway tracks create a nostalgic, radiant vacation frame.",
+    "promptTokens": [
+      "train_station",
+      "platform",
+      "yellow_sundress",
+      "cumulus_clouds",
+      "hands_behind_back",
+      "looking_back",
+      "tsundere_pout",
+      "daylight",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "train_station",
+      "platform",
+      "summer_sky",
+      "cumulus_clouds",
+      "yellow_sundress",
+      "hands_behind_back",
+      "looking_back",
+      "tsundere_pout",
+      "sun_glare"
+    ],
+    "timeOfDay": "白天",
+    "title": "惣流·明日香 · 夏日黄色连衣裙"
+  }
+}

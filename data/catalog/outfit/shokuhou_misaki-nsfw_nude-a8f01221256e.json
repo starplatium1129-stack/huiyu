@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 231,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "纯净圣洁胴体",
+      "prose": "her completely bare, regal body with very long blonde hair spilling loose, large soft breasts with pale pink nipples, a slim waist, and flawless skin — her star-shaped pupils still glinting even when she blushes",
+      "tokens": [
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "star-shaped_pupils"
+      ]
+    }
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "kind": "character",
+  "id": "natsume",
+  "revision": 1,
+  "sortOrder": 1,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "natsume",
+    "profile": {
+      "id": "natsume",
+      "name": "四季夏目",
+      "alias": [
+        "Shiki Natsume",
+        "四季ナツメ",
+        "夏目"
+      ],
+      "type": "heroine",
+      "icon": "☕",
+      "portrait": {
+        "image": "../assets/characters/natsume-official.webp",
+        "alt": "四季夏目官方旗袍立绘"
+      },
+      "visual_dna": {
+        "hair": "乌黑长发 · 侧发夹",
+        "hair_color": "黑色",
+        "eyes": "金黄色",
+        "hairstyle": "柔顺长发 · 侧边发夹",
+        "uniform": "大学便服 / Café Stella 店员制服",
+        "expression": "看似冷静 · 动摇时耳根泛红",
+        "style": "reserved university cafe heroine",
+        "signature": "黑色长发、金瞳与眼下泪痣"
+      },
+      "personality": [
+        "不擅长表达感情",
+        "外冷内柔",
+        "相当纯情",
+        "做事认真",
+        "讨厌轻浮喧闹",
+        "熟悉后会露出小脾气"
+      ],
+      "likes": [
+        "安静的相处",
+        "认真完成咖啡馆工作",
+        "含蓄地照顾重要的人",
+        "不被打扰的个人时间"
+      ],
+      "classic_cg": {
+        "title": "闭店后的无声关心",
+        "description": "她把最后一杯热饮推到你面前，嘴上说只是顺手，视线却一直确认你有没有好好喝下去。"
+      },
+      "identity": {
+        "role": "不擅长表达感情的大学生",
+        "age": "大学生",
+        "occupation": "大学生 / Café Stella 店员",
+        "faction": "Café Stella"
+      },
+      "voice": "……别误会。我只是觉得这样比较有效率。",
+      "voiceJa": "それ、単純に相手の誘いに気付いてなかっただけでしょ",
+      "tags": [
+        "黑色长发",
+        "金瞳",
+        "眼下泪痣",
+        "侧发夹",
+        "咖啡馆制服"
+      ],
+      "bg_story": "四季夏目是《星光咖啡馆与死神之蝶》的女主角之一，与主人公就读同一所大学。旁人常把她当成冷静疏离的类型，其实她只是不擅长把感情写在脸上；她相当纯情，碰到暧昧或成人话题会迅速脸红，也很厌烦轻浮吵闹的饮酒圈子。场景应让她通过动作表达关心，再用简短的否认掩饰动摇。特工、长官和战术服可以作为同人 AU 使用，但分类与故事必须明确，不应冒充本篇身份。",
+      "palette": [
+        "夜色黑",
+        "琥珀金",
+        "咖啡棕"
+      ],
+      "weather": [
+        "雨夜",
+        "阴天窗光",
+        "闭店暖灯"
+      ],
+      "speech": "reserved and concise; care shown through actions; blushes at intimate topics; sharper wording when flustered",
+      "source": "YUZUSOFT《喫茶ステラと死神の蝶 / 星光咖啡馆与死神之蝶》",
+      "lora": {
+        "name": "shiki_natsume_v18_wd14",
+        "weight": 0.85,
+        "recommended_scene": [
+          "sc005",
+          "sc018",
+          "sc050",
+          "sc073",
+          "sc085"
+        ],
+        "special_outfits": {
+          "official_qipao": [
+            "natsume_official_qipao",
+            "chinese_clothes",
+            "china_dress",
+            "red_dress",
+            "floral_print",
+            "side_slit",
+            "long_sleeves",
+            "black_thighhighs",
+            "hair_bun",
+            "double_bun",
+            "hair_flower",
+            "red_flower"
+          ],
+          "official_cafe": [
+            "natsume_cafe_uniform",
+            "white_shirt",
+            "suspenders",
+            "suspender_skirt",
+            "brown_skirt",
+            "long_sleeves",
+            "collared_shirt",
+            "purple_ribbon",
+            "hair_flower"
+          ],
+          "official_maid": [
+            "natsume_maid_uniform",
+            "maid",
+            "maid_apron",
+            "white_apron",
+            "maid_headdress",
+            "long_sleeves",
+            "frills"
+          ],
+          "official_sleepwear": [
+            "natsume_sleepwear",
+            "blue_shirt",
+            "pillow",
+            "on_bed"
+          ],
+          "special_virgin_killer": [
+            "virgin_killer_sweater",
+            "black_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "special_glossy_bunny": [
+            "bunny_suit",
+            "glossy_latex",
+            "bunny_ears",
+            "bowtie",
+            "cuffs",
+            "bare_shoulders",
+            "cleavage",
+            "fishnet_thighhighs",
+            "high_heels"
+          ],
+          "special_criss_cross_bikini": [
+            "criss-cross_bikini",
+            "black_bikini",
+            "wrap_bikini",
+            "side-tie_panties",
+            "midriff_straps",
+            "cleavage",
+            "bare_midriff",
+            "barefoot"
+          ],
+          "special_velvet_santa": [
+            "santa_costume",
+            "red_dress",
+            "white_fur_trim",
+            "santa_hat",
+            "off_shoulder",
+            "black_belt",
+            "black_thighhighs",
+            "high_heels"
+          ]
+        }
+      },
+      "traits": [
+        {
+          "tag": "black_hair",
+          "label": "黑发",
+          "icon": "◆"
+        },
+        {
+          "tag": "long_hair",
+          "label": "长发",
+          "icon": "〰"
+        },
+        {
+          "tag": "yellow_eyes",
+          "label": "金瞳",
+          "icon": "◉"
+        },
+        {
+          "tag": "mole_under_eye",
+          "label": "眼下泪痣",
+          "icon": "·"
+        },
+        {
+          "tag": "hairclip",
+          "label": "侧发夹",
+          "icon": "✦"
+        },
+        {
+          "tag": "large_breasts",
+          "label": "丰满胸部",
+          "icon": "♥"
+        }
+      ],
+      "accent_color": "#fbb040",
+      "bg_color": "#0f172a"
+    }
+  }
+}

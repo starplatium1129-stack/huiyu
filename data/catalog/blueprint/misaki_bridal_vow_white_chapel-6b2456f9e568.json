@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "misaki_bridal_vow_white_chapel",
+  "revision": 1,
+  "sortOrder": 406,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "捧白纱花束立于圣堂，星瞳湿润含笑",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "wide shot, environmental portrait, bridal chapel, stained glass light, sacred mood",
+    "category": "圣洁花嫁",
+    "characterId": "shokuhou_misaki",
+    "coverageTags": [
+      "bridal",
+      "iconic",
+      "romance"
+    ],
+    "description": "【学园都市小圣堂·婚礼日】女王蜂第一次没有使用任何能力，就得到了全场的心。纯白婚纱与头纱之下，星形的瞳孔罕见地湿润——「本小姐明明……可以操纵所有人的心……可你的这份心意，是怎么都无法被操纵的……所以、所以本小姐宣布：这份心理掌握，对你永久失效——因为根本不需要。」",
+    "id": "misaki_bridal_vow_white_chapel",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "圣堂彩窗折射的圣洁光柱",
+    "location": "学园都市小圣堂",
+    "mood": "女王真心、泪光圣洁",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "sfw_white_bridal_gown",
+    "promptProse": "Shokuhou Misaki stands in the small Academy City chapel in a pure white wedding gown, holding a bouquet of white flowers without a trace of her usual powers — because none were needed to win the heart walking toward her. Beneath the veil her star-shaped pupils glisten with rare, unguarded tears as she declares her Mental Out permanently ineffective on you, since your heart was never something she could control in the first place. Environmental portrait, cinematic lighting, volumetric sacred light, detailed chapel background.",
+    "promptTokens": [
+      "shokuhou_misaki",
+      "1girl",
+      "solo",
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "white_flower",
+      "blonde_hair",
+      "very_long_hair",
+      "star-shaped_pupils",
+      "yellow_eyes",
+      "tears",
+      "happy_tears",
+      "smile",
+      "church",
+      "stained_glass",
+      "light_rays",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "wedding_dress",
+      "bridal_veil",
+      "bouquet",
+      "chapel",
+      "light_rays",
+      "tears",
+      "smile",
+      "romance"
+    ],
+    "timeOfDay": "婚礼正午",
+    "title": "食蜂操祈 · 星瞳花嫁的誓约·「心理掌握……对你永久失效才好」"
+  }
+}

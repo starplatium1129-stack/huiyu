@@ -1,0 +1,55 @@
+{
+  "kind": "scene",
+  "id": "sc139",
+  "revision": 1,
+  "sortOrder": 137,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "At dawn in the beach house bedroom, Ayachi Nene in an extremely thin white sleeveless sundress glowing translucent in the golden backlight sits on the bed edge, one hand pulling the viewer down into a deep kiss. Sweat glistens on her skin as the sea breeze lifts her silver hair and heart-shaped ahoge, ocean waves framed in the window.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "camera": "主观逆光特写",
+    "category": "日常/同人/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "极致温柔依恋",
+    "id": "sc139",
+    "lighting": "朝阳通透逆光与温润碎光",
+    "location": "海滨度假木屋床榻",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, pants, underwear, bra, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, extremely, thin, sitting, kissing, on_tiptoes, bedroom, on_bed, sweating, beach, ocean, waves, collarbone, slender_waist, full_body, morning_light, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【成年 After Story · 宁宁 · 连衣长裙逆光】黎明拂晓的海滨度假木屋，落地窗外是初升的金色朝阳与海浪翻滚。宁宁穿着一件极其轻薄的白色夏日无袖连衣裙，薄薄的布料被拂晓的逆光照得近乎透明，胸前迷人的傲然轮廓与凸显的饱满痕迹极其诱人地印刻出来。她大汗淋漓地坐在床边，任由海风吹乱她的银白长发，头顶的呆毛温顺且深情地弯成了完美的爱心形状。她主动伸手狠狠拉住你的脖子将你带入深吻——「大色狼...看傻了吗？既然天已经亮了...那就从现在开始...把昨天没做完的契约继续填满吧...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・ロングドレス真空バックライト】海辺の別荘で夜明けになると、床から天井まで届く窓の外に黄金色の太陽が昇り、打ち寄せる波が見えます。寧々は、非常に薄い白い夏用のノースリーブのワンピースを着ているだけで、その下は全裸でした。薄い生地が夜明けの逆光に全面的に照らされ、魅力的で誇らしげな胸の輪郭と際立ったフルマークが魅惑的に刻まれました。彼女は大量の汗をかきながらベッドの端に座り、海風に銀色の長い髪をなびかせ、頭の上のアホ毛がおとなしく愛情を込めて完璧な愛の形に曲がりました。彼女は率先して手を伸ばしてあなたの首を掴み、ディープキスへと導きました。――「もう、見とれちゃったんですか？　朝になったなら……昨日の続きの約束を、今から一緒に叶えましょう。」",
+    "tags": [
+      "deep_kiss",
+      "sundress",
+      "see_through_clothing",
+      "sweat",
+      "bare_legs",
+      "sitting_on_bed",
+      "beach_house_bed",
+      "full_body",
+      "barefoot",
+      "backlight",
+      "dawn",
+      "hair_ribbon",
+      "ahoge",
+      "heavy_blush",
+      "open_mouth"
+    ],
+    "time": "拂晓",
+    "timeOfDay": "dawn",
+    "title": "海滨晨光下的真空依恋",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "破晓拂晓"
+  }
+}

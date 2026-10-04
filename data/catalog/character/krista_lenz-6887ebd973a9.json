@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "krista_lenz",
+  "revision": 1,
+  "sortOrder": 65,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "krista_lenz",
+    "profile": {
+      "id": "krista_lenz",
+      "name": "希斯特里亚",
+      "alias": [
+        "Historia Reiss",
+        "ヒストリア・レイス",
+        "克里斯塔·连兹",
+        "墙内女王"
+      ],
+      "type": "popular",
+      "icon": "👑",
+      "portrait": {
+        "image": "../assets/characters/popular-krista_lenz.png?v=5",
+        "alt": "希斯特里亚 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金色长发",
+        "hair_color": "金（#D4AF37）",
+        "eyes": "蓝色",
+        "hairstyle": "长直发 · 行军时低马尾 · 加冕后挽发",
+        "uniform": "兵团制服 850 年：棕夹克 / 白衬衫 / 白长裤 / 绿披风 / 低马尾",
+        "expression": "温柔治愈的微笑 · 加冕后多一分坚定",
+        "style": "queen golden",
+        "signature": "金色长发、蓝瞳与温柔微笑"
+      },
+      "personality": [
+        "温柔善良",
+        "外柔内刚",
+        "为他人而活过",
+        "觉醒后勇敢",
+        "是墙内的光"
+      ],
+      "likes": [
+        "孩子",
+        "田野",
+        "书",
+        "墙内的人们",
+        "苹果"
+      ],
+      "classic_cg": {
+        "title": "加冕之光",
+        "description": "大教堂的光柱中，金发少女接过王冠抬起头，白礼裙与金发熠熠生辉。"
+      },
+      "identity": {
+        "role": "墙内女王",
+        "age": "少年期 15 岁（850 年）· 成年期 19 岁（854 年即位）",
+        "occupation": "帕拉迪岛女王",
+        "faction": "进击的巨人 · 帕拉迪岛"
+      },
+      "tags": [
+        "金发",
+        "蓝瞳",
+        "微笑",
+        "王冠",
+        "女王"
+      ],
+      "bg_story": "希斯特里亚·雷斯（曾用名克里斯塔·连兹）是《进击的巨人》中帕拉迪岛真正的王族雷斯家血脉。曾以假名加入第104期训练兵团，因温柔治愈、舍己为人的善良举止被同期士兵奉为“女神”。在经历自我怀疑与尤弥尔的真情启示后，毅然砸碎虚假的顺从，以「即便全世界都要我当个好人，我也要选择自己的人生」的觉悟加冕为帕拉迪岛第100任墙内女王。即位后大举开办孤儿院救济贫民，在战争风云中以坚定柔韧的意志庇护臣民，成为高墙内外真正的希望之光。场景应突出由纯真少女向崇高女王蜕变的光芒——大教堂加冕礼、王宫阳光寝殿、田野孤儿院木栏与雪地城墙眺望，纯白与圣金色是她的主色。",
+      "palette": [
+        "金",
+        "白",
+        "浅棕"
+      ],
+      "weather": [
+        "加冕日大教堂",
+        "王宫花园午后",
+        "雪原"
+      ],
+      "speech": "希斯特里亚对你露出温柔的微笑——「谢谢你，愿意站在我身边。」",
+      "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+      "traits": [
+        "krista_lenz",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "petite_female",
+        "smile",
+        "heart_shaped_face",
+        "attack_on_titan"
+      ],
+      "accent_color": "#D4AF37",
+      "bg_color": "#151210"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "krista_lenz",
+        "krista",
+        "historia reiss",
+        "historia",
+        "attack on titan",
+        "queen of the walls"
+      ],
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "canon": {
+        "era": "架空近代（墙内）",
+        "formNotes": "主 tag=krista_lenz（historia_reiss 为别名）；金发=王族象征；加冕=854 年即位女王；强调色 #D4AF37 金",
+        "research": "2026-08-31 调研",
+        "world": "高墙内人类世界（帕拉迪岛）"
+      },
+      "curatedArtistStyles": [
+        "asano_kyoji",
+        "isayama_hajime",
+        "rella"
+      ],
+      "displayName": "希斯特里亚",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "krista_lenz"
+      ],
+      "franchise": "Attack on Titan",
+      "id": "krista_lenz",
+      "identityProse": "Historia Reiss from Attack on Titan, also known as Krista Lenz, a petite girl with long blonde hair and blue eyes, a heart-shaped face and a gentle smile, who becomes the Queen of the Walls",
+      "identityTokens": [
+        "krista_lenz",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "petite_female",
+        "smile",
+        "heart_shaped_face",
+        "attack_on_titan"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Historia Reiss",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

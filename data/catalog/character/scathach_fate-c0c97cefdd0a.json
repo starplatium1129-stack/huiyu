@@ -1,0 +1,136 @@
+{
+  "kind": "character",
+  "id": "scathach_fate",
+  "revision": 1,
+  "sortOrder": 61,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "scathach_fate",
+    "profile": {
+      "id": "scathach_fate",
+      "name": "斯卡哈",
+      "alias": [
+        "Scathach",
+        "斯卡哈",
+        "影之国女王",
+        "弑神师匠",
+        "Siabhair"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-scathach_fate.png?v=1",
+        "alt": "斯卡哈 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及地紫色长发 · 如夜色倾泻",
+        "hair_color": "深紫 / 夜紫",
+        "eyes": "赤红眼眸 · 弑神者的锐利",
+        "hairstyle": "超长直发 · 额前分缕",
+        "uniform": "紫色紧身衣战装 · 银色护肩与双红枪",
+        "expression": "从容好胜 · 训练时严苛 · 动情时危险而深情",
+        "style": "immortal warrior queen mentor",
+        "signature": "紫色紧身衣、双持Gáe Bolg、赤瞳与影之国女王的威压"
+      },
+      "personality": [
+        "活得太久而对万物从容不迫",
+        "对弟子严苛却深藏期许的师匠魂",
+        "对现代世界的一切抱有孩童式好奇",
+        "认定之人面前危险的独占欲"
+      ],
+      "likes": [
+        "现代世界的甜品与游戏机台",
+        "擦得雪亮的枪尖",
+        "深夜同调时你的呼吸声"
+      ],
+      "classic_cg": {
+        "title": "影之国的弑神双枪",
+        "description": "紫黑雾海裂开的刹那，赤红双枪划出弑神的猩红光弧。"
+      },
+      "identity": "Fate/Grand Order 女主角 · Lancer-class 从者 · 影之国女王 / 弑神师匠",
+      "tags": [
+        "Fate",
+        "影之国",
+        "紫色紧身衣",
+        "双红枪",
+        "师匠",
+        "女王女友"
+      ],
+      "bg_story": "影之国的女王，执掌生死与战争技艺的不死者。她教出了名震爱尔兰的英雄，自己的枪却早已刺穿过诸神的躯体。活得太久的代价是对『明天』失去兴趣——直到遇见你，这位女王才重新想起：原来战技之外，还有值得反复练习的东西，叫作心动。",
+      "palette": [
+        "#a855f7",
+        "#dc2626",
+        "#3b0764",
+        "#f8fafc"
+      ],
+      "weather": "影之国的紫雾永暮 / 秘汤温泉的深夜",
+      "speech": "「想学枪术？可以。但先说好——我的课业很重，而且……一旦收了你这个弟子，就不打算还回去了哦？」",
+      "source": "TYPE-MOON《Fate 系列》",
+      "traits": [
+        "shadow_queen",
+        "god_slayer",
+        "gae_bolg",
+        "eternal_mentor"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#3b0764"
+    },
+    "popular": {
+      "id": "scathach_fate",
+      "displayName": "斯卡哈",
+      "originalName": "スカサハ",
+      "franchise": "Fate",
+      "aliases": [
+        "Scathach",
+        "斯卡哈",
+        "影之国女王",
+        "弑神师匠",
+        "Siabhair"
+      ],
+      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a tall mature woman with very long purple hair, crimson-red eyes and a poised, confident presence",
+      "identityTokens": [
+        "scathach (fate)",
+        "fate/grand_order",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "very_long_hair",
+        "red_eyes",
+        "tall_female",
+        "mature_female",
+        "confident_smile"
+      ],
+      "exactTokens": [
+        "scathach (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, scathach (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Koyama Hirokazu"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

@@ -54,6 +54,8 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     if (disposed || (!historyKey(q) && !contextKey(q))) return false
     const query = { ...q }
     const isCurrent = () => !disposed && request === historyRequest
+    if (typeof query.popular === 'string') await pb.loadPopularCharacter(query.popular)
+    if (!isCurrent()) return false
     const { applyPromptDeepLink } = await import('./promptDeepLinkActions')
     if (!isCurrent()) return false
     const result = await applyPromptDeepLink(query, deps, isCurrent)

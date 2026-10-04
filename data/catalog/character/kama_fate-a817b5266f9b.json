@@ -1,0 +1,123 @@
+{
+  "kind": "character",
+  "id": "kama_fate",
+  "revision": 1,
+  "sortOrder": 137,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kama_fate",
+    "profile": {
+      "id": "kama_fate",
+      "name": "迦摩",
+      "alias": [
+        "迦摩",
+        "Kama",
+        "カーマ",
+        "爱神迦摩"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-kama_fate.png?v=fd963146190a",
+        "alt": "迦摩 · 金莲宫殿的粉色花嫁场景样张"
+      },
+      "visual_dna": {
+        "signature": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+        "hair": "white_hair, long_hair（银白长发 · 第三再临成年形态）",
+        "hair_color": "银白（silver white）",
+        "eyes": "red_eyes",
+        "uniform": "游戏时间宽松家居装 / 咖啡馆便装 / 冬季参拜大衣",
+        "expression": "嫌麻烦的傲沉神态 · 被注视后会露出不耐的红晕",
+        "style": "anime"
+      },
+      "personality": [
+        "常以嫌麻烦的语气掩饰真实关注",
+        "机敏而爱挖苦，对意外的体贴会短暂失去从容",
+        "独处时愿意把注意力交给简单舒适的小事"
+      ],
+      "likes": [
+        "悠闲休息",
+        "甜点",
+        "观察城市里的人情趣事"
+      ],
+      "classic_cg": {
+        "title": "迦摩 · 魔王沙发的慵懒午后",
+        "description": "她的领域一角，成年形态的她横卧在华丽沙发上，单手撑头、另一只手指尖转着花之箭；身边散落着零食与靠垫，「魔王的工作」看起来就是彻底地躺着。"
+      },
+      "identity": "Fate · 迦摩（Assassin / 爱神）",
+      "tags": [
+        "迦摩",
+        "Fate 系列",
+        "爱神",
+        "银白长发",
+        "日常"
+      ],
+      "bg_story": "迦摩是印度神话中的爱神，在《Fate/Grand Order》中以凭依在间桐樱「恶／影」一侧的姿态现界，职阶为 Assassin。她辛辣倦怠、看不起人类，却又自认能爱任何存在；面对御主时不自觉露出的动摇才是她的识别点。外观按官方立绘以银白长发与红瞳为准（第三再临的成年形态），本批以完整居家装、外出装和冬装表现日常。",
+      "palette": [
+        "#c9a0b1",
+        "#282532"
+      ],
+      "source": "TYPE-MOON《Fate/Grand Order》",
+      "speech": "只是顺路看看，才没有特意来买甜点。",
+      "traits": [
+        "kama_(fate)",
+        "fate/grand_order",
+        "white_hair",
+        "long_hair",
+        "red_eyes"
+      ],
+      "accent_color": "#c9a0b1",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "kama_fate",
+      "displayName": "迦摩",
+      "originalName": "Kama",
+      "franchise": "Fate",
+      "aliases": [
+        "迦摩",
+        "Kama",
+        "カーマ",
+        "爱神迦摩",
+        "kama (fate)"
+      ],
+      "identityProse": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "identityTokens": [
+        "kama_(fate)",
+        "fate/grand_order",
+        "white_hair",
+        "long_hair",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "kama_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kama_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "horns",
+        "2girls",
+        "1boy"
+      ]
+    }
+  }
+}

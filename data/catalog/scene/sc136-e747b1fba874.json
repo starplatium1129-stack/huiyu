@@ -1,0 +1,56 @@
+{
+  "kind": "scene",
+  "id": "sc136",
+  "revision": 1,
+  "sortOrder": 134,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc136",
+    "title": "特工指令：吧台上的丝绸臣服",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 丝绸旗袍撕裂高能】打烊后空无一人的私人复古酒廊包厢，空气中弥漫着红酒与微热的荷尔蒙。平时高冷克制的特工少女夏目，此刻正面红耳赤地坐在冰凉的吧台桌面上。她身上那件极为华丽的暗红丝绸高开叉旗袍已经被你暴力撕裂到了大腿根部，露出了大片极具肉感的雪白绝对领域，腿上性感的超薄黑丝袜在灯光下散发着缭人的反光。她眼角的泪痣因为极度亢奋被红晕彻底浸透，双手死死搂住你的脖子将你拉近深吻——「长官...任务已经结束了...现在...我要收回属于我的全部战利品...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "独占欲全面决堤",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "mole_under_eye",
+      "dark_crimson_qipao",
+      "high_slit",
+      "torn_clothes",
+      "torn_qipao",
+      "sitting_on_counter",
+      "black_stockings",
+      "arms_around_neck",
+      "deep_kiss",
+      "flushed",
+      "excited",
+      "private_bar",
+      "night",
+      "spotlight",
+      "medium_shot",
+      "depth_of_field"
+    ],
+    "mature": true,
+    "location": "打烊后的私人吧台",
+    "weather": "炙热",
+    "camera": "主观俯视近景",
+    "lighting": "聚光灯打在面部强侧光",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "prompt": "1girl, solo, natsume_official_qipao, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_dark_crimson_silk_qipao_with_high_slit_torn_open_to_her_thigh_roots_by_you, ripped_qipao_revealing_smooth_white_absolute_domain_of_thighs, glossy_sheer_black_stockings_gleaming_in_dim_light, sitting_on_the_cold_private_bar_counter_surface, both_arms_locked_around_your_neck_pulling_you_into_a_deep_kiss, closed_eyes_with_heavy_blush_and_breathless_expression, tear_mole_flushed_dark_red_with_extreme_excitement, private_retro_lounge_booth_after_closing_with_spotlight_on_her_face, red_wine_and_warm_dim_atmosphere, cinematic_depth_of_field, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, white_thighhighs, cropped_feet, upper_body",
+    "storyJa": "【夏目・シルクのチャイナドレスが高エネルギーを引き裂く】閉店後のレトロな個室ラウンジボックスは空いていて、赤ワインとちょっと熱めのホルモンで空気が満ちていました。普段は飄々として控えめなエージェントの女の子夏目が、顔を赤らめながら冷たいバーのテーブルに座っていた。極めてゴージャスな深紅のシルクハイスリットチャイナドレスが太ももの上まで激しく引き裂かれ、官能的な雪白の絶対領域が広範囲に露出している。彼女の脚にはセクシーな極薄の黒ストッキングが光の下で眩しく反射します。極度の興奮で目尻の泣きぼくろは真っ赤に染まっていた。彼女はあなたの首に腕をしっかりと巻きつけ、あなたを引き寄せてディープキスをしました。――「店長……任務はもう終わった。ここからは、私が大切なものを全部取り戻す番。」",
+    "rating": "R18",
+    "animaCaption": "In the empty private booth of the vintage lounge after closing, Shiki Natsume sits on the cold bar counter in a gorgeous dark crimson silk high-slit qipao that you have torn open to her thigh roots, exposing smooth white thighs above the gleam of glossy black stockings; she locks both arms around your neck and pulls you into a deep kiss, her tear-mole flushed dark red with building excitement under the spotlight.",
+    "auditRevision": "careful-batch11-2026-08-27"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_mask_taken_off_flustered_tsundere",
+  "revision": 1,
+  "sortOrder": 1049,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sparkle_mask_taken_off_flustered_tsundere",
+    "title": "花火 · 被摘面具的破防羞恼",
+    "category": "反差娇羞",
+    "characterId": "sparkle_hsr",
+    "description": "【花火 · 被摘面具的破防羞恼】在无人的剧场后台帷幕阴影里，你趁她不备突然伸手摘下了她一直斜戴在头上的狐狸面具。失去了面具防线的小恶魔彻底乱了阵脚，双手慌忙抬起想要抢回面具，整张白皙的脸颊与小巧的耳廓瞬间涨得通红，眼角泛起羞恼的泪花，嘴硬地咬着下唇怒视着你——「喂！谁准你随便碰本小姐的面具了？！快点还给我啦！……不准盯着我的脸看，笨蛋笨蛋！」",
+    "location": "红丝绒帷幕低垂的昏暗剧场后台",
+    "action": "面具被摘下，双手慌忙向上抓取抢夺，满脸通红、耳根红透，咬唇羞恼跺脚",
+    "timeOfDay": "演出幕后",
+    "lighting": "后台微弱聚光灯照在绯红的面庞上",
+    "camera": "medium close-up, eye level, flustered tsundere view",
+    "mood": "反差破防",
+    "sceneTags": [
+      "theater",
+      "backstage",
+      "velvet_curtain",
+      "reaching_up",
+      "heavy_blush",
+      "blushing_ears",
+      "teary_eyes",
+      "biting_lip",
+      "flustered",
+      "tsundere_pout"
+    ],
+    "promptProse": "Trapped in the shadowed wings of the theater stage, Sparkle's theatrical composure shatters as the viewer playfully confiscates her fox mask. Reaching up desperately with both small hands to snatch it back, her porcelain face and ears flush completely crimson. Her ruby eyes well up with bashful frustration as she pouts fiercely with biting lips. Emotional medium close-up, rich stage lighting, expressive anime CG, solo 1girl, no text.",
+    "promptTokens": [
+      "backstage",
+      "curtain",
+      "reaching_up",
+      "mini_kimono",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "teary_eyes",
+      "biting_lip",
+      "tsundere_pout",
+      "flustered",
+      "pink_eyes",
+      "twintails",
+      "medium_shot",
+      "cinematic_lighting",
+      "detailed_background"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears",
+      "self-harm, choking"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sfw_kimono_mask_removed",
+    "coverageTags": [
+      "gap_moe",
+      "flustered",
+      "tsundere"
+    ]
+  }
+}

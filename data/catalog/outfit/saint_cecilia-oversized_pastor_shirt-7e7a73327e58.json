@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "saint_cecilia/oversized_pastor_shirt",
+  "revision": 1,
+  "sortOrder": 479,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "saint_cecilia",
+    "outfit": {
+      "default": false,
+      "id": "oversized_pastor_shirt",
+      "isDefault": false,
+      "name": "偷穿牧师宽大黑衬衫",
+      "prose": "wearing Lawrence's oversized black pastor dress shirt that swallows her hands, leaving bare slender legs",
+      "styleHint": "sweet domestic morning romance",
+      "tokens": [
+        "oversized_shirt",
+        "black_shirt",
+        "bare_thighs",
+        "bare_legs",
+        "blush"
+      ]
+    }
+  }
+}

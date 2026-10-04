@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "shorekeeper",
+  "revision": 1,
+  "sortOrder": 143,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "shorekeeper",
+    "profile": {
+      "id": "shorekeeper",
+      "name": "守岸人",
+      "alias": [
+        "守岸人",
+        "The Shorekeeper"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-shorekeeper.png?v=3a3601415204",
+        "alt": "守岸人 · 黑海岸的潮起场景样张"
+      },
+      "visual_dna": {
+        "signature": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+        "hair": "blue_hair, long_hair",
+        "eyes": "purple_eyes",
+        "uniform": "黑海岸不透内衬长裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "举止精确轻柔，习惯耐心观察细微变化",
+        "对普通生活的感受带着安静的新鲜与珍惜",
+        "重视陪伴，用持续关注表达心意"
+      ],
+      "likes": [
+        "海岸晨光",
+        "观察发光蝴蝶",
+        "记录微小而珍贵的日常"
+      ],
+      "classic_cg": {
+        "title": "守岸人 · 黑海岸的潮起",
+        "description": "黎明的黑海岸，她赤足站在浅滩上，头纱与蓝色长发被海风托起；掌心悬浮的发光蝴蝶照亮她的侧脸——五千年的守望从每天第一个潮起开始。"
+      },
+      "identity": "Wuthering Waves · 守岸人",
+      "tags": [
+        "守岸人",
+        "鸣潮",
+        "日常"
+      ],
+      "bg_story": "黑海岸的守望者，在潮汐、记录与微小日常中学习感受。蓝色层次长发与紫瞳为核心，头纱按服装绑定，发光蝴蝶只在具体场景中出现。",
+      "palette": [
+        "#9cbbda",
+        "#282532"
+      ],
+      "source": "Wuthering Waves",
+      "speech": "原来，停下来听海也是一种休息。",
+      "traits": [
+        "the_shorekeeper_(wuthering_waves)",
+        "wuthering_waves",
+        "blue_hair",
+        "long_hair",
+        "purple_eyes"
+      ],
+      "accent_color": "#9cbbda",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "shorekeeper",
+      "displayName": "守岸人",
+      "originalName": "The Shorekeeper",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "守岸人",
+        "The Shorekeeper"
+      ],
+      "identityProse": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+      "identityTokens": [
+        "the_shorekeeper_(wuthering_waves)",
+        "wuthering_waves",
+        "blue_hair",
+        "long_hair",
+        "purple_eyes",
+        "jellyfish_cut"
+      ],
+      "exactTokens": [
+        "the_shorekeeper_(wuthering_waves)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, the_shorekeeper_(wuthering_waves)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

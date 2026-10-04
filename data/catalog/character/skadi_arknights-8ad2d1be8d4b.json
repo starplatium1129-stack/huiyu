@@ -1,0 +1,138 @@
+{
+  "kind": "character",
+  "id": "skadi_arknights",
+  "revision": 1,
+  "sortOrder": 33,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "skadi_arknights",
+    "profile": {
+      "id": "skadi_arknights",
+      "name": "斯卡蒂",
+      "alias": [
+        "Skadi",
+        "斯卡蒂",
+        "スカジ",
+        "蒂蒂",
+        "深海猎人"
+      ],
+      "type": "popular",
+      "icon": "🌊",
+      "visual_dna": {
+        "hair": "极其浓密柔顺的银白色长发（silver-white / platinum hair），发长直垂脚踝至小腿（ankle-length / very long hair），发丝微带天然波浪蓬松感与自然飘逸弧度。前额有轻薄齐刘海与层次碎发，耳侧垂落两缕修长的发丝，发质在光照下呈现珍珠般的冷白光泽。",
+        "hair_color": "银白色 / 冰冷珍珠白（Silver-white / Platinum blonde）",
+        "eyes": "深邃冷艳的绯红色/红宝石色瞳孔（Crimson red eyes / Ruby eyes），眼神清澈纯粹却带着天然的冰冷、警惕与一丝孤独忧郁。",
+        "hairstyle": "披散及踝超长微卷发（very long loose hair reaching ankles），头戴宽檐帽时发丝从帽檐两侧与后方大波浪般倾泻而下；战斗与水中时发丝大范围飘逸散开。",
+        "uniform": "基础立绘服装为极具深海猎人冷峻风格的紧身战衣：内搭深黑色高叉无袖紧身连体衣（black sleeveless high-cut bodysuit / leotard），深V领口带有红色金属拉链与鲜红滚边；外披剪裁利落的短款黑色立领小风衣夹克（black cropped jacket / capelet），内衬与袖扣系带为鲜艳血红色；下身搭配黑色高筒过膝皮靴/皮质长袜（black thigh-high boots）与右大腿黑色皮质枪套/绑带（thigh strap），形成绝对领域；头戴标志性黑色宽檐猎人礼帽（black wide-brimmed hunter hat），帽檐系有红黑装饰带。",
+        "expression": "高冷沉静、神秘疏离、面无表情但神情清澈；战斗时坚毅专注、气场强大且冷酷霸气；日常独处或面对信任之人时会流露出不易察觉的温柔、落寞与单纯呆萌。",
+        "style": "深海猎人哥特风（Abyssal Hunter Gothic）、暗黑机能紧身连体衣（Sleek Tactical Bodysuit）、海洋克苏鲁神秘美学、高冷长腿御姐美感。",
+        "signature": "及踝银白长发（silver extra long hair）、绯红双眸（crimson eyes）、黑色高叉紧身连体衣（black high-cut bodysuit）、黑色宽檐猎人帽（black wide-brimmed hat）、超巨大双手阔剑/重剑（giant greatsword）、大型黑色硬壳吉他/琴盒（black guitar/weapon case）、虎鲸图腾与深海巨浪（orca motif）。"
+      },
+      "personality": [
+        "寡言高冷",
+        "孤独迷茫",
+        "外冷内热",
+        "渴望陪伴",
+        "单纯直接",
+        "缺乏常识",
+        "战斗本能极强",
+        "执着深情"
+      ],
+      "likes": [
+        "轻声哼唱来自阿戈尔的古老民谣与歌谣",
+        "红色系的衣物与饰品配件",
+        "虎鲸玩偶、海洋生物造型的毛绒玩具与小纪念品",
+        "与博士静静呆在一起、被摸头与信任的时光",
+        "独自在安静无人的海岸边漫步吹风",
+        "简单纯粹的事物，远离复杂的人际算计"
+      ],
+      "identity": {
+        "role": "罗德岛近卫攻坚干员 / 前阿戈尔深海猎人第二小队成员 / 独行赏金猎人",
+        "age": "未知（阿戈尔人生理机能及寿命远超普通陆地种族，档案未公开具体年龄）",
+        "occupation": "近卫干员（无畏者分支）/ 赏金猎人",
+        "faction": "阿戈尔（出生地）/ 深海猎人 / 罗德岛"
+      },
+      "tags": [
+        "银白色 / 冰冷珍珠白（Silver-white / Platinum blonde）",
+        "深邃冷艳的绯红色/红宝石色瞳孔（Crimson red eyes / Ruby eyes），眼神清澈纯粹却带着天然的冰冷、警惕与一丝孤独忧郁。"
+      ],
+      "bg_story": "斯卡蒂出生于泰拉大洋深处高度发达的神秘水下国度阿戈尔，曾是精锐作战组织「深海猎人」第二小队的成员，体内被植入海嗣血肉以获取对抗深渊巨兽的超凡战力。在阿戈尔防御战争惨烈受挫后，斯卡蒂流落陆地成为独来独往的赏金猎人，因其所至之处常吸引深海怪物与灾厄降临，被陆地势力敬畏地称为“移动天灾”。受雇加入罗德岛后，她担任单兵攻坚干员，虽因害怕体内血脉与灾祸波及同伴而刻意与人保持距离，但在与博士的朝夕相处中逐渐打开冰封的心扉，寻找着自我存在的真正意义与归宿。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "skadi (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "red_eyes",
+        "black_swimsuit",
+        "coat",
+        "wide_brimmed_hat",
+        "claymore",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-skadi_arknights.png?v=5",
+        "alt": "斯卡蒂热门角色立绘"
+      },
+      "speech": "斯卡蒂向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "skadi",
+        "arknights",
+        "abyss hunter"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；黑色连体作战服+大剑",
+        "research": "2026-08-15 调研（Danbooru skadi_(arknights) 6856 posts）",
+        "world": "泰拉（深海猎人）"
+      },
+      "curatedArtistStyles": [
+        "alchemaniac",
+        "swav",
+        "rella"
+      ],
+      "displayName": "斯卡蒂",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "skadi (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "skadi_arknights",
+      "identityProse": "Skadi from Arknights, a melancholic Abyssal Hunter with flowing pure white hair, haunting red eyes, and a tall, shapely silhouette.",
+      "identityTokens": [
+        "skadi (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "red_eyes",
+        "large_breasts",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Skadi",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

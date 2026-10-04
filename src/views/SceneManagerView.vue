@@ -1,515 +1,163 @@
 <template>
-  <article class="page scene-maintenance-page" :class="{ 'is-catalog': tab === 'scenes' || tab === 'blueprints' }" style="--page-max:1640px">
-    <WorkspaceArchiveBar
-      chapter="12"
-      title="SCENE MAINTENANCE"
-      :subtitle="`${scenes.length || '—'} RECORDS · ${tab.toUpperCase()}`"
-      :status="loading ? 'READING ARCHIVE' : (loadError ? 'ARCHIVE EXCEPTION' : (saving ? 'WRITING PROJECT' : (dirty ? 'UNSAVED CHANGES' : 'ARCHIVE SYNCED')))"
-      :state="loading ? 'active' : (loadError ? 'warning' : (saving ? 'active' : (dirty ? 'warning' : 'success')))"
-      shape="frame"
-    />
-    <header class="sm-head">
-      <div>
-        <div class="page-kicker">Scene manager</div>
-        <h1 class="title">场景维护</h1>
-        <div class="maintenance-state" :class="{ dirty: dirty }">
-          <strong id="maintenanceTitle">{{ loading ? '正在读取场景档案' : (loadError ? '场景档案暂不可用' : (dirty ? '有尚未保存的修改' : '已同步')) }}</strong>
-          <span id="maintenanceHint" role="status" aria-live="polite">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
-          <span v-if="saving && savingPhase" class="saving-phase">{{ savingPhase }}</span>
-        </div>
+  <article class="page catalog-studio" style="--page-max:1660px">
+    <aside class="catalog-sidebar" aria-label="内容分类">
+      <div class="catalog-brand"><ArchiveIcon name="manager" /><div><strong>内容工作室</strong><span>让设定与故事慢慢成形</span></div></div>
+      <div class="catalog-nav-group">
+        <span class="catalog-nav-caption">创作资料</span>
+        <button v-for="entry in kinds" :key="entry.value" type="button" :aria-current="section === 'records' && kind === entry.value ? 'page' : undefined" :disabled="busy" @click="switchKind(entry.value)">
+          <ArchiveIcon :name="entry.icon" /><span>{{ entry.label }}</span><small>{{ counts[entry.value] ?? '—' }}</small>
+        </button>
       </div>
-      <div class="sm-head-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:shrink-0 tw:max-w-full">
-        <button class="btn btn-ghost" type="button" :disabled="loading || saving || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
-        <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="loading"><ArchiveIcon name="download" /> 导出 JSON</button>
-        <button class="btn btn-ghost" type="button" :disabled="!canPreview" @click="tab = 'tools'; previewChanges()"><ArchiveIcon name="eye" /> 影响预览</button>
-        <StudioTooltip anchor :content="maintenanceReadonly ? '请先读取完整场景数据' : undefined">
-          <button class="btn btn-primary" type="button" :disabled="!canSave" @click="saveToProject">
-            {{ saving ? '正在保存…' : (maintenanceReadonly ? '等待场景数据' : '保存到项目') }}
-          </button>
-        </StudioTooltip>
+      <div class="catalog-nav-group catalog-nav-secondary">
+        <span class="catalog-nav-caption">整理与备份</span>
+        <button type="button" :aria-current="section === 'portraits' ? 'page' : undefined" @click="section = 'portraits'"><ArchiveIcon name="character" /><span>角色立绘</span></button>
+        <button type="button" :aria-current="section === 'media' ? 'page' : undefined" @click="section = 'media'"><ArchiveIcon name="gallery" /><span>样张与封面</span></button>
+        <button type="button" :aria-current="section === 'bulk' ? 'page' : undefined" @click="section = 'bulk'"><ArchiveIcon name="upload" /><span>批量整理</span></button>
+        <button type="button" :aria-current="section === 'tools' ? 'page' : undefined" @click="section = 'tools'"><ArchiveIcon name="download" /><span>文件与备份</span></button>
       </div>
-    </header>
-
-    <ArchiveStatePanel
-      v-if="loading"
-      kind="loading"
-      title="正在读取场景档案"
-      message="正在从本地数据源同步场景、标签和维护记录。"
-    />
-
-
-    <ArchiveStatePanel
-      v-if="!loading && loadError"
-      kind="error"
-      title="场景档案读取失败"
-      :message="`${loadError} 请确认本地服务正常运行且场景数据完好。`"
-    >
-      <button class="btn btn-primary" type="button" @click="loadFromStore(true)">重新读取</button>
-    </ArchiveStatePanel>
-
-    <template v-if="!loading && !loadError">
-      <SceneStatsSummary :scenes-count="scenes.length" :stats="stats" />
-      <div class="manager-workspace">
-      <nav class="manager-nav" aria-label="维护分区">
-        <span class="manager-nav-heading">内容与维护</span>
-        <button v-for="t in TABS" :key="t.id" type="button" :aria-pressed="tab === t.id" @click="tab = t.id"><span>{{ t.label }}</span><small v-if="recordCounts[t.id] !== undefined">{{ recordCounts[t.id] }}</small></button>
-        <p>选择记录查看详情。编辑后先保存草稿，再保存到项目。</p>
-      </nav>
-      <div class="manager-content" v-content-motion="tab">
-      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :focus-id="sceneRecords.some(row => row.id === createdSceneId) ? createdSceneId : ''" :readonly="maintenanceReadonly" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
-      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :focus-id="blueprintRecords.some(row => row.id === createdSceneId) ? createdSceneId : ''" :readonly="maintenanceReadonly" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
-
-      <CharacterArtManager v-if="portraitsVisited" v-show="tab === 'portraits'" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" />
-      <!-- 标签库 -->
-      <template v-if="tab==='tags'">
-        <div class="toolbar">
-          <input v-model="tagSearch" class="search-input" type="search" aria-label="搜索标签（英文、中文或分类）" placeholder="搜索标签（英文/中文/分类）…" />
-          <StudioSelect v-model="tagCatFilter" class="filter-select" label="标签分类" :options="[{ value: '', label: '全部分类' }, ...tagCats.map(c => ({ value: c, label: c }))]" />
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="startAddTag">＋ 新增标签</button>
-          <span class="list-meta">{{ filteredTags.length }} / {{ tags.length }} 个</span>
+      <p class="catalog-sidebar-note">先选一份内容，补充它的细节。<br />写好以后，记得保存更改。</p>
+    </aside>
+    <div class="catalog-main">
+      <header class="catalog-page-head">
+        <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1><p class="catalog-intro">{{ sectionDescription }}</p></div>
+        <div class="catalog-head-actions">
+          <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在保存' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
+          <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
+          <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" @click="saveEdits">{{ busy ? '正在保存…' : '保存更改' }}</button>
+          <StudioPopover label="更多整理操作">
+            <template #trigger><button class="btn btn-ghost catalog-more-trigger" type="button" aria-label="更多整理操作"><ArchiveIcon name="chevron-down" /></button></template>
+            <div class="catalog-more-menu">
+              <button type="button" :disabled="busy" @click="load"><ArchiveIcon name="refresh" />刷新内容</button>
+              <button type="button" @click="exportDraft"><ArchiveIcon name="download" />备份未保存的修改</button>
+              <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />导出全部内容</button>
+            </div>
+          </StudioPopover>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>ID</th><th>分类</th><th>英文</th><th>中文</th><th>权重</th><th>使用</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr v-if="!filteredTags.length" class="table-state-row">
-                <td colspan="7">
-                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的标签" message="调整筛选条件，或新建一个标签。" />
-                </td>
-              </tr>
-              <tr v-for="t in pagedTags" :key="t.id">
-                <td><code class="id-code">{{ t.id }}</code></td>
-                <td>{{ t.cat }}</td>
-                <td><span class="tag-chip" v-html="hl(t.en, tagSearchDebounced)"></span></td>
-                <td>{{ t.cn }}</td>
-                <td>{{ t.weight }}</td>
-                <td>{{ tagUsage[t.en] || 0 }}</td>
-                <td>
-                  <div class="action-btns">
-                    <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="startEditTag(t.id)">编辑</button>
-                    <button class="btn btn-danger btn-sm" type="button" :disabled="maintenanceReadonly" @click="deleteTag(t.id)">删除</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      </header>
+      <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
+      <div v-if="section === 'portraits'" class="catalog-support-surface"><CharacterArtManager :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
+      <div v-else-if="section === 'media'" class="catalog-support-surface"><CatalogMediaManager :record="selected" /><p v-if="!selected" class="catalog-note">在故事或蓝图中选中一份内容，再来整理它的样张。</p></div>
+      <section v-else-if="section === 'tools'" class="catalog-support-surface">
+        <h2>给内容留一份备份</h2><p class="catalog-note">导出完整资料，或者看看之前的图片备份。每份内容的旧版本也可以在编辑区找回。</p>
+        <div class="catalog-tool-options">
+          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出全部内容</strong><span>留存当前的角色、服装与故事资料</span></button>
+          <button type="button" :disabled="checking" @click="listBackups"><ArchiveIcon name="image" /><strong>查看图片备份</strong><span>查看样张和封面的历史备份</span></button>
+          <button type="button" :disabled="checking" @click="checkContent"><ArchiveIcon name="manager" /><strong>检查资料关联</strong><span>确认角色、服装和场景的引用是否完整</span></button>
         </div>
-        <div v-if="tagTotalPages > 1" class="pagination">
-          <button class="btn btn-ghost btn-sm" :disabled="tagPage <= 1" @click="tagPage--">← 上一页</button>
-          <span class="hint-sm">{{ tagPage }} / {{ tagTotalPages }}</span>
-          <button class="btn btn-ghost btn-sm" :disabled="tagPage >= tagTotalPages" @click="tagPage++">下一页 →</button>
+        <p class="catalog-feedback" role="status" aria-live="polite">{{ toolHint }}</p>
+        <div v-for="entry in backups" :key="entry.id" class="catalog-history-row"><span>{{ entry.label }} · {{ catalogDate(entry.createdAt) }}</span><small>{{ entry.fileCount }} 个文件</small></div>
+      </section>
+      <section v-else-if="section === 'bulk'" class="catalog-support-surface">
+        <h2>把准备好的修改带进来</h2><p class="catalog-note">选择修改文件或完整备份，先看看哪些内容会变化，再决定保存。</p>
+        <label class="catalog-file-picker"><ArchiveIcon name="upload" /><strong>选择整理文件</strong><span>支持修改文件和完整内容备份</span><input type="file" accept="application/json,.json" aria-label="选择整理文件" @change="readBulkFile" /></label>
+        <details class="catalog-advanced"><summary>直接填写修改数据</summary><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></details>
+        <p v-if="bulkError" role="alert" class="catalog-error">{{ bulkError }}</p>
+        <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 份内容</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">看看导入的变化</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
+      </section>
+      <template v-else>
+        <div class="catalog-workspace">
+          <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
+            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><span aria-hidden="true">＋</span>新建</button></header>
+            <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
+            <div class="catalog-list-controls">
+              <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
+              <StudioPopover label="筛选内容" align="start">
+                <template #trigger><button class="catalog-filter-button" type="button" :class="{ active: hasFilters }"><ArchiveIcon name="manager" />筛选<span v-if="hasFilters" class="catalog-filter-dot"></span></button></template>
+                <div class="catalog-filter-fields">
+                  <StudioSelect v-model="character" label="角色" :options="[{ value: '', label: '全部角色' }, ...(result?.facets.characters ?? []).map(id => ({ value: id, label: characterNames[id] || '未命名角色' }))]" />
+                  <StudioSelect v-model="category" label="分类" :options="[{ value: '', label: '全部分类' }, ...(result?.facets.categories ?? []).map(value => ({ value, label: catalogCategory(value) || value }))]" />
+                  <StudioSelect v-model="rating" label="适用范围" :options="[{ value: '', label: '全部内容' }, ...(result?.facets.ratings ?? []).map(value => ({ value, label: catalogRating(value) || '其他内容' }))]" />
+                  <button class="btn btn-ghost btn-sm" type="button" @click="character = ''; category = ''; rating = ''">清除筛选</button>
+                </div>
+              </StudioPopover>
+            </div>
+            <ArchiveStatePanel v-if="error" compact kind="error" title="内容暂时没能读出来" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">再试一次</button></ArchiveStatePanel>
+            <div class="catalog-record-list">
+              <button v-for="item in result?.items ?? []" :key="item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item)">
+                <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
+                <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span>
+              </button>
+              <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="这里还没有匹配的内容" message="换个关键词，或者从一份新内容开始。" />
+            </div>
+            <footer class="catalog-pagination"><button type="button" :disabled="loading || page <= 1" @click="page--" aria-label="上一页">上一页</button><span>{{ page }} / {{ totalPages }}</span><button type="button" :disabled="loading || page >= totalPages" @click="page++" aria-label="下一页">下一页</button></footer>
+          </section>
+          <section ref="editorPane" class="catalog-editor-pane" aria-label="内容编辑" :aria-busy="detailLoading">
+            <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
+            <template v-else-if="selected">
+              <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="remove" />
+              <details v-if="selected.revision" class="catalog-history"><summary>之前写过的版本</summary><div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button></details>
+              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><summary>查看最新内容</summary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
+            </template>
+            <div v-else class="catalog-editor-empty"><span class="catalog-empty-illustration"><ArchiveIcon :name="kindIcon(kind)" /></span><p>{{ sectionTitle }}</p><h2>挑一份内容，接着写</h2><span>从左侧选中它，补上设定、故事和画面细节。</span><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">也可以从新内容开始</button></div>
+          </section>
         </div>
       </template>
-
-      <!-- 样张管理 -->
-      <template v-if="tab==='images'">
-        <section class="home-hero-maintenance">
-          <div class="toolbar">
-            <strong>首页主视觉</strong>
-            <span class="list-meta">当前首页右侧的宁宁 / 夏目两张图，可单独替换</span>
-          </div>
-          <p class="note">上传后会归一化为 JPEG 并写入本机 SceneShowcase；首页刷新后立即生效。点击“恢复内置图”可回退到项目自带版本。</p>
-          <div class="image-grid home-hero-grid">
-            <button v-for="hero in homeHeroes" :key="hero.id" class="sm-image-card" type="button" :class="{ active: selectedHeroId === hero.id }" @click="previewHero(hero)">
-              <span class="sm-card-id">首页 · {{ hero.id }}</span>
-              <span class="sm-card-title">{{ hero.title }}</span>
-              <span class="sm-card-meta">{{ hero.updatedAt ? `已替换 ${hero.updatedAt}` : '使用内置图' }}</span>
-            </button>
-          </div>
-          <div v-if="selectedHeroId" class="image-preview">
-            <div class="image-preview-head">
-              <strong>首页 · {{ selectedHeroTitle }}</strong>
-              <span class="row-tight">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="pickHero">上传 / 替换</button>
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="resetHero">恢复内置图</button>
-                <button class="btn btn-ghost btn-sm" type="button" @click="selectedHeroId = ''">关闭</button>
-              </span>
-            </div>
-            <RuntimeImage :src="heroUrl" v-slot="{ image, failed }">
-              <img v-if="image.src && !failed" v-bind="image" class="image-preview-img home-hero-preview" :alt="selectedHeroTitle" />
-            </RuntimeImage>
-            <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
-            <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
-          </div>
-        </section>
-        <div class="toolbar">
-          <input v-model="imageSearch" class="search-input" type="search" aria-label="搜索场景、蓝图、角色或标题" placeholder="搜索场景/蓝图 ID、标题、角色…" />
-          <StudioSelect v-model="imageTypeFilter" class="filter-select" label="样张类型" :options="[
-            { value: 'all', label: '全部样张 (' + allShowcaseItems.length + ')' },
-            { value: 'scene', label: '经典主线场景 (' + scenes.length + ')' },
-            { value: 'popular', label: '热门角色蓝图 (' + (allShowcaseItems.length - scenes.length) + ')' },
-          ]" />
-          <span class="list-meta">{{ filteredImageScenes.length }} 个场景/蓝图</span>
-        </div>
-        <p class="note">点选任意主线场景或热门角色蓝图查看当前样张，支持直接上传替换。图片会自动归一化为标准 JPEG 并更新官方 Manifest，刷新后即时生效。</p>
-        <div class="image-grid">
-          <button
-            v-for="s in pagedImageScenes" :key="s.id"
-            class="sm-image-card" type="button"
-            :class="{ active: selectedImageId === s.id }"
-            @click="previewImage(s)"
-          >
-            <RuntimeImage :src="thumbUrl(s.id)" v-slot="{ image, failed }">
-              <img v-if="image.src && !failed" v-bind="image" loading="lazy" class="sm-card-thumb" alt="" />
-            </RuntimeImage>
-            <span class="sm-card-id">{{ s.id }}</span>
-            <span class="sm-card-title">{{ s.title }}</span>
-            <span class="sm-card-meta">{{ charLabel(s.char) }} · {{ s.rating || 'All' }}</span>
-          </button>
-        </div>
-        <div v-if="imageTotalPages > 1" class="pagination">
-          <button class="btn btn-ghost btn-sm" :disabled="imagePage <= 1" @click="imagePage--">← 上一页</button>
-          <span class="hint-sm">{{ imagePage }} / {{ imageTotalPages }}</span>
-          <button class="btn btn-ghost btn-sm" :disabled="imagePage >= imageTotalPages" @click="imagePage++">下一页 →</button>
-        </div>
-
-        <div v-if="selectedImageId" class="image-preview">
-          <div class="image-preview-head">
-            <strong>{{ selectedImageId }} · {{ selectedImageTitle }}</strong>
-            <span class="row-tight">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="pickShowcase">上传 / 替换样张</button>
-              <button class="btn btn-ghost btn-sm" type="button" @click="selectedImageId = ''">关闭</button>
-            </span>
-          </div>
-          <RuntimeImage :src="showcaseUrl" v-slot="{ image, failed }">
-            <img v-if="image.src && !failed" v-bind="image" class="image-preview-img" :alt="selectedImageTitle" @error="onShowcaseMissing" />
-          </RuntimeImage>
-          <input ref="showcaseFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
-          <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
-        </div>
-      </template>
-
-      <!-- 重复检测 -->
-      <template v-if="tab==='duplicates'">
-        <div class="toolbar">
-          <button class="btn btn-primary btn-sm" type="button" @click="detectDuplicates">开始检测</button>
-          <span class="list-meta">{{ dupResult }}</span>
-        </div>
-        <p class="note">按关键词分组，同一关键词命中 3 个以上场景会列出，便于合并或下架冗余场景。</p>
-        <ArchiveStatePanel
-          v-if="!dupGroups.length"
-          compact
-          :kind="dupChecked ? 'success' : 'empty'"
-          :title="dupChecked ? '未发现明显重复' : '尚未开始检测'"
-          :message="dupChecked ? '当前场景库没有命中三条以上的重复关键词。' : '按关键词分组，快速定位可合并或下架的冗余场景。'"
-        />
-        <div v-for="g in dupGroups" :key="g.keyword" class="dup-group">
-          <h4>「{{ g.keyword }}」· {{ g.scenes.length }} 个场景</h4>
-          <div v-for="s in g.scenes" :key="s.id" class="dup-item">
-            <span>
-              <strong>{{ s.id }}</strong> {{ s.title }}
-              <span class="rating-badge" :class="'rating-' + (s.rating || 'All')">{{ s.rating || 'All' }}</span>
-            </span>
-            <div class="action-btns">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="openEditModal(s.id)">编辑</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="maintenanceReadonly" @click="deleteSceneFromDup(s.id)">下架</button>
-            </div>
-          </div>
-        </div>
-      </template>
-
-      <!-- 导入 -->
-      <template v-if="tab==='import'">
-        <p class="note">粘贴单个或多个场景 JSON（数组或对象），校验后加入列表。记得保存到项目。</p>
-        <textarea v-model="importInput" class="import-input" aria-label="场景导入 JSON" rows="10" placeholder='[{ "id":"sc1000", "title":"…", "story":"…", "char":"nene", "rating":"All" }]'></textarea>
-        <div class="import-actions">
-          <button class="btn btn-primary" type="button" :disabled="maintenanceReadonly || importing || toolRunning" @click="importScenes">校验并导入</button>
-          <button class="btn btn-ghost" type="button" :disabled="maintenanceReadonly || importing || toolRunning" @click="loadFullSnapshot">载入完整快照草稿</button>
-          <button class="btn btn-ghost" type="button" @click="importInput=''; importResult=''">清空</button>
-        </div>
-        <div v-if="importResult" class="import-result" v-html="importResult"></div>
-        <p class="note">普通导入仅追加新场景。完整快照须含场景、蓝图、标签和策展，载入时替换内存草稿；保存前可用顶部“影响预览”核对退役及引用。</p>
-        <button v-if="fullImportLoaded" class="btn btn-danger" type="button" :disabled="!canSave || importing" @click="importSnapshotToProject">全量导入到项目</button>
-      </template>
-
-      <!-- 维护工具 -->
-      <template v-if="tab==='tools'">
-        <SceneImpactPreview :preview="preview" :groups="previewGroups" :companions="previewCompanions" :busy="previewing" :enabled="canPreview" :error="previewError" :invalidated="previewInvalidated" :empty="previewEmpty" @preview="previewChanges" />
-        <div class="tool-grid">
-          <StudioTooltip v-for="t in TOOLS" :key="t.id" anchor :content="maintenanceReadonly ? '桌面应用模式不支持维护任务' : undefined">
-            <button class="sm-tool-card" type="button" :disabled="toolRunning || maintenanceReadonly || saving || previewing" @click="runTool(t.id)">
-              <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
-              <div class="sm-tool-label">{{ t.label }}</div>
-              <div class="sm-tool-desc">{{ t.desc }}</div>
-            </button>
-          </StudioTooltip>
-        </div>
-        <div v-if="toolResult" class="tool-result-panel">
-          <div class="tool-result-head">
-            <strong>{{ toolResultTitle }}</strong>
-            <span class="badge" :class="toolResult.ok ? 'badge-success' : 'badge-danger'">{{ toolResult.ok ? '通过' : '有问题' }}</span>
-            <span v-if="!toolResult.ok" class="tool-error-hint">可按高亮的完整场景编号定位失败场景</span>
-          </div>
-          <pre class="tool-output" v-html="highlightedOutput"></pre>
-        </div>
-        <section class="backup-history">
-          <div class="backup-history-head">
-            <strong>备份历史</strong>
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="backupsLoading" @click="loadBackups">{{ backupsLoading ? '读取中…' : '查看备份历史' }}</button>
-          </div>
-          <p class="note">展示最近 50 份维护备份（按创建时间倒序），只读清单，便于核对保存前后的备份编号。</p>
-          <p v-if="backupsError" class="form-hint" role="alert">{{ backupsError }}</p>
-          <template v-if="backupsExpanded">
-            <ArchiveStatePanel v-if="!backups.length && !backupsError" compact kind="empty" title="暂无备份" message="尚未产生任何维护备份，保存一次场景内容后会自动创建。" />
-            <ul v-else-if="backups.length" class="backup-list">
-              <li v-for="b in backups" :key="b.id" class="backup-item">
-                <code class="id-code">{{ b.id }}</code>
-                <span class="backup-label">{{ b.label || '—' }}</span>
-                <span class="backup-meta">{{ formatBackupTime(b.createdAt) }} · {{ b.fileCount }} 文件</span>
-              </li>
-            </ul>
-          </template>
-        </section>
-      </template>
-      </div>
-      </div>
-    </template>
-
-    <!-- 编辑 Modal -->
-    <Teleport to="body">
-      <FluidTransition>
-      <div v-if="editing" class="overlay" @click.self="closeModal">
-        <div
-          ref="modalEl"
-          class="modal-card modal-card-wide"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="scene-editor-title"
-        >
-          <h2 id="scene-editor-title">{{ editingId ? '编辑场景 · ' + editing.id : '新增场景' }}</h2>
-          <p v-if="editing.generatedRecipe" class="field-hint">来自已生成画面：角色和来源提示词只读保留；名称与说明可修改。想改变画面时，可在创作页调整、重新生成后另存场景。</p>
-          <fieldset class="form-section">
-            <legend class="form-legend">基础信息</legend>
-            <div class="form-grid">
-              <label class="form-group"><span class="field-label">ID</span><input v-model="editing.id" class="input" :disabled="!!editingId || maintenanceReadonly" placeholder="sc001" /></label>
-              <label class="form-group"><span class="field-label">标题 *</span><input v-model="editing.title" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!editing.title.trim() && triedSave" :class="{invalid: !editing.title.trim() && triedSave}" /></label>
-              <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" :disabled="maintenanceReadonly" placeholder="恋爱 / 日常 / 校园…" /></label>
-              <label class="form-group">
-                <span class="field-label">角色</span>
-                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="maintenanceReadonly || !!editing.generatedRecipe" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
-              </label>
-              <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="maintenanceReadonly || !!editing.generatedRecipe" /></label>
-              <label class="form-group">
-                <span class="field-label">分级</span>
-                <StudioSelect v-model="editing.rating" class="filter-select" label="分级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">叙事信息</legend>
-            <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">故事 *</span><textarea v-model="editing.story" class="input" :disabled="maintenanceReadonly" rows="3" required :aria-invalid="!editing.story.trim() && triedSave" :class="{invalid: !editing.story.trim() && triedSave}"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">故事日文</span><textarea v-model="editing.storyJa" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
-              <label class="form-group"><span class="field-label">地点</span><input v-model="editing.location" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">天气</span><input v-model="editing.weather" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">镜头</span><input v-model="editing.camera" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">光照</span><input v-model="editing.lighting" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">季节</span><input v-model="editing.season" class="input" :disabled="maintenanceReadonly" placeholder="春/夏/秋/冬/不限" /></label>
-              <label class="form-group"><span class="field-label">时段</span><input v-model="editing.time" class="input" :disabled="maintenanceReadonly" placeholder="清晨/白天/黄昏/深夜" /></label>
-              <label class="form-group"><span class="field-label">timeOfDay</span><input v-model="editing.timeOfDay" class="input" :disabled="maintenanceReadonly" placeholder="morning/noon/late_night" /></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">视觉标签</legend>
-            <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">标签（逗号分隔）</span><input v-model="tagsInput" class="input" :disabled="maintenanceReadonly" placeholder="silk, looking_back,…" /></label>
-              <label class="form-group form-group-full"><span class="field-label">用途（逗号分隔）</span><input v-model="usageInput" class="input" :disabled="maintenanceReadonly" placeholder="壁纸, 表情包" /></label>
-              <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" :disabled="maintenanceReadonly || !!editing.generatedRecipe" rows="2"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" :disabled="maintenanceReadonly || !!editing.generatedRecipe" rows="2"></textarea></label>
-              <label class="form-group"><span class="field-label">情绪</span><input v-model="editing.emotion" class="input" :disabled="maintenanceReadonly" /></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">策展信息</legend>
-            <div class="form-grid">
-              <label class="form-group">
-                <span class="field-label">策展层级</span>
-                <StudioSelect v-model="curationTierValue" class="filter-select" label="策展层级" :disabled="maintenanceReadonly" @update:model-value="onCurationTierChange" :options="[{ value: 'normal', label: '普通' }, { value: 'review', label: '待审' }, { value: 'curated', label: '精选' }, { value: 'signature', label: '招牌' }]" />
-              </label>
-              <label class="form-group form-group-full"><span class="field-label">推荐理由（招牌必填）</span><input v-model="curationReason" class="input" :disabled="maintenanceReadonly || curationTierValue==='normal'||curationTierValue==='review'" :aria-invalid="curationTierValue==='signature' && !curationReason.trim() && triedSave" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></label>
-            </div>
-          </fieldset>
-          <p v-if="formHint" id="scene-form-hint" class="form-hint" role="alert">{{ formHint }}</p>
-          <div class="modal-actions">
-            <button class="btn btn-primary" type="button" @click="saveScene">保存</button>
-            <button class="btn btn-ghost" type="button" @click="copyJson">复制 JSON</button>
-            <button class="btn btn-ghost" type="button" @click="closeModal">取消</button>
-          </div>
-          <p class="note-sm">注意：修改仅在内存中生效，需点"保存到项目"写回 data/scenes.json</p>
-        </div>
-      </div>
-      </FluidTransition>
-    </Teleport>
-
-    <!-- 蓝图编辑 Modal -->
-    <Teleport to="body">
-      <FluidTransition>
-      <div v-if="bpEditing" class="overlay" @click.self="closeBlueprintModal">
-        <div
-          ref="bpModalEl"
-          class="modal-card modal-card-wide"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="blueprint-editor-title"
-        >
-          <h2 id="blueprint-editor-title">{{ bpEditingId ? '编辑蓝图 · ' + bpEditing.id : '新增蓝图' }}</h2>
-          <p v-if="bpEditing.generatedRecipe" class="field-hint">来自已生成画面：角色、服装和来源提示词只读保留；可修改名称、说明和分类。</p>
-          <fieldset class="form-section">
-            <legend class="form-legend">基础信息</legend>
-            <div class="form-grid">
-              <label class="form-group"><span class="field-label">ID *</span><input v-model="bpEditing.id" class="input" :disabled="!!bpEditingId || maintenanceReadonly" placeholder="bp_001 / character_scene" /></label>
-              <label class="form-group"><span class="field-label">标题 *</span><input v-model="bpEditing.title" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!bpEditing.title.trim() && bpTriedSave" :class="{invalid: !bpEditing.title.trim() && bpTriedSave}" /></label>
-              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
-              <label class="form-group"><span class="field-label">分类</span><input v-model="bpEditing.category" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" placeholder="default / school / witch…" /></label>
-              <label class="form-group">
-                <span class="field-label">样张定级</span>
-                <StudioSelect v-model="bpEditing.sampleRating" class="filter-select" label="样张定级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
-              </label>
-              <ToggleSwitch v-model="bpEditing.adult" :disabled="maintenanceReadonly" class="form-group form-check" label="成人蓝图（adult）"><span>成人蓝图（adult）</span></ToggleSwitch>
-              <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">场景要素</legend>
-            <div class="form-grid">
-              <label class="form-group"><span class="field-label">地点</span><input v-model="bpEditing.location" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">动作</span><input v-model="bpEditing.action" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">时段</span><input v-model="bpEditing.timeOfDay" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">光照</span><input v-model="bpEditing.lighting" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">镜头</span><input v-model="bpEditing.camera" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">情绪</span><input v-model="bpEditing.mood" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group form-group-full"><span class="field-label">场景标签（逗号分隔）</span><input v-model="bpSceneTagsInput" class="input" :disabled="maintenanceReadonly" placeholder="inazuma, shoji, night…" /></label>
-              <label class="form-group form-group-full"><span class="field-label">推荐尺寸</span><input v-model="bpEditing.recommendedSize" class="input" :disabled="maintenanceReadonly" placeholder="832x1216 / 1024x1024" /></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">Prompt 数据（核心）</legend>
-            <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="4"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="3" required></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="3" required></textarea></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend class="form-legend">风格 / 成人扩展</legend>
-            <div class="form-grid">
-              <label class="form-group"><span class="field-label">Krea 风格 hint</span><input v-model="bpEditing.kreaStyleHint" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">Anima 风格 hint</span><input v-model="bpEditing.animaStyleHint" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group form-group-full"><span class="field-label">成人画师提示</span><input v-model="bpEditing.adultArtistHint" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group form-group-full"><span class="field-label">NSFW 标签（逗号分隔）</span><input v-model="bpNsfwTokensInput" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group form-group-full"><span class="field-label">NSFW 散文</span><textarea v-model="bpEditing.nsfwProse" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">验收覆盖 coverageTags（逗号分隔）</span><input v-model="bpCoverageTagsInput" class="input" :disabled="maintenanceReadonly" placeholder="iconic, daily, special_nsfw" /></label>
-            </div>
-          </fieldset>
-
-          <p v-if="bpFormHint" class="form-hint" role="alert">{{ bpFormHint }}</p>
-          <div class="modal-actions">
-            <button class="btn btn-primary" type="button" @click="saveBlueprint">保存</button>
-            <button class="btn btn-ghost" type="button" @click="copyBlueprintJson">复制 JSON</button>
-            <button class="btn btn-ghost" type="button" @click="closeBlueprintModal">取消</button>
-          </div>
-          <p class="note-sm">注意：修改仅在内存中生效，需点“保存到项目”写回 data/scene-blueprints.json</p>
-        </div>
-      </div>
-      </FluidTransition>
-    </Teleport>
-
-    <!-- 标签表单 Modal -->
-    <Teleport to="body">
-      <FluidTransition>
-      <div v-if="tagModalOpen" class="overlay" @click.self="closeTagModal">
-        <div
-          ref="tagModalEl"
-          class="modal-card modal-card-tag"
-          role="dialog"
-          aria-modal="true"
-          :aria-labelledby="tagEditing ? 'tag-editor-title-edit' : 'tag-editor-title-add'"
-        >
-          <h2 :id="tagEditing ? 'tag-editor-title-edit' : 'tag-editor-title-add'">{{ tagEditing ? '编辑标签 · ' + tagEditing.id : '新增标签' }}</h2>
-          <div class="form-grid form-grid-single">
-            <label class="form-group">
-              <span class="field-label">英文名 *</span>
-              <input v-model="tagForm.en" class="input" :disabled="maintenanceReadonly" placeholder="Danbooru 格式，用下划线" />
-            </label>
-            <label class="form-group">
-              <span class="field-label">中文名 *</span>
-              <input v-model="tagForm.cn" class="input" :disabled="maintenanceReadonly" placeholder="标签中文名" />
-            </label>
-            <label class="form-group">
-              <span class="field-label">分类 *</span>
-              <StudioSelect v-model="tagForm.cat" class="filter-select" label="分类" :disabled="maintenanceReadonly" :options="tagCats.map(c => ({ value: c, label: c }))" />
-            </label>
-            <label class="form-group">
-              <span class="field-label">权重 * (0–2)</span>
-              <input v-model.number="tagForm.weight" class="input" :disabled="maintenanceReadonly" type="number" :min="0" :max="2" :step="0.1" />
-            </label>
-          </div>
-          <p v-if="tagFormError" class="form-hint" role="alert">{{ tagFormError }}</p>
-          <div class="modal-actions">
-            <button class="btn btn-primary" type="button" @click="submitTag">{{ tagEditing ? '保存' : '新增' }}</button>
-            <button class="btn btn-ghost" type="button" @click="closeTagModal">取消</button>
-          </div>
-        </div>
-      </div>
-      </FluidTransition>
-    </Teleport>
+      <section v-if="pending.length" class="catalog-review-area">
+        <details :open="!!preview"><summary>{{ pending.length }} 项修改还没有保存</summary><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="pending.splice(index, 1)">撤回这项</button></div></details>
+      </section>
+      <CatalogChangePreview v-if="preview" :preview="preview" />
+    </div>
   </article>
 </template>
-
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import RuntimeImage from '@/components/visual/RuntimeImage.vue'
-
-import FluidTransition from "@/components/visual/FluidTransition.vue"
-import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import MaintenanceCatalog from '@/components/maintenance/MaintenanceCatalog.vue'
-import SceneImpactPreview from '@/components/maintenance/SceneImpactPreview.vue'
-import SceneStatsSummary from '@/components/maintenance/SceneStatsSummary.vue'
-import { useSceneManagerWorkspace } from "@/composables/scene/useSceneManagerWorkspace"
-const {
-canSave, canPreview, preview, previewing, previewError, previewInvalidated, previewEmpty,
-previewCompanions, previewGroups, previewChanges, fullImportLoaded, importing, loadFullSnapshot, importSnapshotToProject,
- tagModalEl,bpModalEl,modalEl,showcaseFileEl,heroFileEl,tab, scenes, loading, loadError, saving, dirty,
-maintenanceReadonly, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
-stats, TABS, recordCounts, sceneRecords, openAddModal, openEditModal,
-duplicateScene, deleteScene, blueprintRecords, openBlueprintAddModal, openBlueprintEditModal, duplicateBlueprint,
-deleteBlueprint, tagSearch, tagCatFilter, tagCats, startAddTag, filteredTags,
-tags, pagedTags, hl, tagSearchDebounced, tagUsage, startEditTag,
-deleteTag, tagTotalPages, tagPage, homeHeroes, selectedHeroId, previewHero,
-selectedHeroTitle, uploadBusy, pickHero, resetHero, heroUrl, onHeroPicked,
-showcaseError, showcaseFeedback, imageSearch, imageTypeFilter, allShowcaseItems, filteredImageScenes,
-pagedImageScenes, selectedImageId, previewImage, thumbUrl, charLabel,
-imageTotalPages, imagePage, selectedImageTitle, pickShowcase, showcaseUrl, onShowcaseMissing,
-onShowcasePicked, detectDuplicates, dupResult, dupGroups, dupChecked, deleteSceneFromDup,
-importInput, importScenes, importResult, TOOLS, toolRunning, runTool,
-toolResult, toolResultTitle, highlightedOutput, backupsLoading, loadBackups, backupsError,
-backupsExpanded, backups, formatBackupTime, editing, closeModal, editingId,
-triedSave, updateCharacterDefaults, tagsInput, usageInput, curationTierValue, onCurationTierChange,
-curationReason, formHint, saveScene, copyJson, bpEditing, closeBlueprintModal,
-bpEditingId, bpTriedSave, bpSceneTagsInput, bpPromptTokensInput, bpNegativeTokensInput, bpNsfwTokensInput,
-bpCoverageTagsInput, bpFormHint, saveBlueprint, copyBlueprintJson, tagModalOpen, closeTagModal,
-tagEditing, tagForm, tagFormError, submitTag,
-} = useSceneManagerWorkspace()
-const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
-const portraitsVisited = ref(false)
-watch(tab, value => { if (value === 'portraits') portraitsVisited.value = true }, { immediate: true })
-const route = useRoute()
-watch(() => route.query.tab, value => { if (value === 'portraits') tab.value = 'portraits' }, { immediate: true })
-const createdSceneId = computed(() => typeof route.query.created === 'string' ? route.query.created : '')
-watch(blueprintRecords, rows => { if (createdSceneId.value && rows.some(row => row.id === createdSceneId.value)) tab.value = 'blueprints' }, { immediate: true })
+import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
+import CharacterArtManager from '@/components/maintenance/CharacterArtManager.vue'
+import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'
+import CatalogMediaManager from '@/components/maintenance/CatalogMediaManager.vue'
+import CatalogChangePreview from '@/components/maintenance/CatalogChangePreview.vue'
+import { useCatalogMaintenance } from '@/composables/scene/useCatalogMaintenance'
+import { CATALOG_LABELS, catalogTitle, catalogRating, catalogCategory, catalogDate, recordTitle } from '@/composables/scene/catalogPresentation'
+import type { CatalogChange, CatalogKind, CatalogSummary } from '@/api/catalogApi'
+import { catalogApi } from '@/api/catalogApi'
+import { maintenanceApi, type BackupEntry } from '@/api/maintenanceApi'
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
+import '@/assets/css/catalog-maintenance.css'
+const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
+const checking = ref(false), toolHint = ref(''), backups = ref<BackupEntry[]>([])
+const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }> = [
+  { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
+  { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
+]
+const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
+const sectionDescription = computed(() => section.value !== 'records' ? '把创作资料整理好，留给下一次灵感。' : ({ character: '补充人物的来历与外观，让角色的样子更清晰。', outfit: '整理服装的样子与细节，为角色留住不同的形态。', scene: '写下故事与画面细节，让下一次创作更有依据。', blueprint: '把动作、氛围和镜头整理成一份可用的画面方案。', document: '整理常用词与推荐顺序，让内容更容易被找到。' } as Record<CatalogKind, string>)[kind.value])
+const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
+const hasFilters = computed(() => !!(character.value || category.value || rating.value))
+const sortOptions = [{ value: 'order', label: '按整理顺序' }, { value: 'title', label: '按名称' }, { value: 'newest', label: '最近加入' }, { value: 'updated', label: '最近编辑' }]
+function kindIcon(value: CatalogKind): ArchiveIconName { return kinds.find(entry => entry.value === value)!.icon }
+function rowImage(item: CatalogSummary) {
+  if (item.kind === 'character') return popularPortraitSrc(item.id)
+  if (item.kind === 'outfit') return popularPortraitSrc(item.characterId)
+  if (item.kind === 'scene') return '/scene-showcase/thumbs/' + encodeURIComponent(item.id) + '.jpg'
+  if (item.kind === 'blueprint') return '/scene-showcase/thumbs/pc_' + encodeURIComponent(item.characterId) + '_' + encodeURIComponent(item.id) + '.jpg'
+  return ''
+}
+function rowSubtitle(item: CatalogSummary) {
+  if (item.kind === 'document') return ({ tags: '常用关键词与显示名称', curation: '精选故事与展示顺序', 'tag-dictionary-policy': '让同义词指向正确的内容', 'prompt-pinned-scenes': '已确认的内容，在此查看', loras: '绘图资源，在此查看', 'retired-scenes': '保留已经归档的故事' } as Record<string, string>)[item.id] || '创作资料'
+  const role = item.kind !== 'character' ? characterNames.value[item.characterId] : ''
+  return [role, catalogCategory(item.category), item.rating === 'R18' ? catalogRating(item.rating) : ''].filter(Boolean).join(' · ') || CATALOG_LABELS[item.kind]
+}
+function isPending(item: CatalogSummary) { return pending.value.some(c => c.kind === item.kind && c.id === item.id) }
+function pendingTitle(change: CatalogChange) {
+  if (change.data) return recordTitle({ kind: change.kind, id: change.id, revision: change.expectedRevision, sortOrder: 0, createdAt: null, updatedAt: null, data: change.data })
+  return catalogTitle(change.kind, change.id, result.value?.items.find(row => row.id === change.id)?.title || '选中的内容')
+}
+async function openContent(item: CatalogSummary) { await select(item); if (window.innerWidth < 1100) editorPane.value?.scrollIntoView({ block: 'start' }) }
+async function saveEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(false) }
+async function reviewEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(true) }
+async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
+async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
+function switchKind(value: CatalogKind) { kind.value = value; character.value = ''; category.value = ''; rating.value = ''; section.value = 'records' }
+async function readBulkFile(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; if (file) { bulkInput.value = await file.text(); loadBulk() } }
+onMounted(() => {
+  if (route.query.tab === 'portraits') section.value = 'portraits'
+  if (typeof route.query.created === 'string') { const id = route.query.created; kind.value = /^sc\d+$/.test(id) ? 'scene' : 'blueprint'; search.value = id; void select({ kind: kind.value, id }) }
+})
 </script>
-
-<style scoped src="@/assets/css/scene-manager-view.css"></style>

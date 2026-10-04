@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc028",
+  "revision": 1,
+  "sortOrder": 26,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium two-person shot on the canopy bed of the candlelit honeymoon suite, adult Ayachi Nene and Shiki Natsume sit on either side of the viewer in elegant white wedding gowns with their heavy veils removed. Nene interlaces her fingers with the viewer while holding their marriage contract, and Natsume fixes Nene's tilted hair ornament, both trying to hide how moved they are.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "Active_Sync_Scenes",
+    "char": "triad",
+    "character": [
+      "natsume",
+      "nene"
+    ],
+    "emotion": "极致依赖",
+    "id": "sc028",
+    "lighting": "暖色烛光",
+    "location": "新房",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, six_fingers, nsfw, nude, explicit, heterochromia, swapped_eye_colors, wrong_eye_color, same_eye_color, same_hair_color, cloned_face, identical_twins, extra_girl, 3girls, girls_kissing_each_other, holding_each_other's_hands, pink_ribbon_on_black_haired_woman, white_bow_on_black_haired_woman, ahoge_on_black_haired_woman, mole_on_white_haired_woman, missing_card, no_card, hidden_card, bridal_veil, long_veil, short_veil, apron, kitchen, cooking, witch_hat, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
+    "prompt": "2girls, pov_partner, adult_women, honeymoon_suite, warm_candlelight, sitting_on_either_side_of_viewer_on_canopy_bed, elegant_white_wedding_gowns, bridal_veils_removed, (ayachi_nene_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nene_holding_marriage_contract, nene_interlacing_fingers_with_viewer), BREAK, (shiki_natsume_on_right, black_hair, very_long_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, natsume_fixing_nene_hair_ornament), shy_moved_smiles, medium_shot, cinematic_lighting, <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
+    "rating": "All",
+    "recommendedSize": "1344×896",
+    "season": "不限",
+    "story": "【成年 AU · 婚礼后的余温协议】仪式结束后的新房只剩暖色烛光。已经成年的宁宁与夏目换下沉重头纱，一左一右坐到你身边，把三个人共同写下的未来约定放在掌心。宁宁紧张却坦率地与你十指相扣，夏目则替她整理歪掉的发饰，嘴上仍不肯承认感动——「从今晚开始，遇到任何事都不准有人独自逞强。」",
+    "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
+    "tags": [
+      "2girls",
+      "wedding_gown",
+      "bridal_veil_removed",
+      "marriage_contract_paper",
+      "hair_ornament",
+      "honeymoon_suite",
+      "candlelight",
+      "holding_hands",
+      "medium_shot",
+      "heels"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "婚礼后的余温协议",
+    "usage": [
+      "核心CG"
+    ],
+    "weather": "静谧"
+  }
+}

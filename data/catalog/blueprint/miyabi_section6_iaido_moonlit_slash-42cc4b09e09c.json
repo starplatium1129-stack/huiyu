@@ -1,0 +1,65 @@
+{
+  "kind": "blueprint",
+  "id": "miyabi_section6_iaido_moonlit_slash",
+  "revision": 1,
+  "sortOrder": 1068,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "微微压低身形拇指推刀出鞘，金瞳凝视前方，白狐尾猎猎扬起，刀刃寒芒迸射",
+    "camera": "cinematic dynamic low angle, 3/4 front view",
+    "category": "刀术居合",
+    "characterId": "hoshimi_miyabi",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【星见雅 · 对空六课月夜居合斩决】新艾利都幽邃竹林空洞深处，一轮苍白银月高悬。雅身着笔挺的对空六课深蓝军装，白狐耳机警竖起，金瞳如炬。伴随着太刀出鞘半寸的一道极寒白光，斩断落叶的居合气刃瞬间横扫十方。她蓬松的黑尖白狐尾在身后凛冽扬起，清丽绝伦的面容不带丝毫人间杂念——「星见流拔刀术……虚空俱灭。」",
+    "id": "miyabi_section6_iaido_moonlit_slash",
+    "lighting": "皎洁清冷圆月天光与太刀出鞘的青白电光",
+    "location": "银月当空竹林以骸废墟",
+    "mood": "冷峻肃穆",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "section6_uniform",
+    "promptProse": "Poised in a lethal iaido quick-draw crouch within a moonlit bamboo grove, Miyabi partially unclasps her glowing steel katana. Frosty cyan moonlight glints across her amber fox eyes and luxuriant white fox tail with peerless cinematic elegance.",
+    "promptTokens": [
+      "moonlit_bamboo_forest",
+      "katana",
+      "drawing_sword",
+      "iaido_stance",
+      "fox_ears",
+      "fox_tail",
+      "cinematic_blade",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "moonlight",
+      "bamboo_forest",
+      "katana",
+      "sheath",
+      "iaido",
+      "fox_ears",
+      "fox_tail",
+      "drawing_sword"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "星见雅 · 对空六课月夜居合斩决"
+  }
+}

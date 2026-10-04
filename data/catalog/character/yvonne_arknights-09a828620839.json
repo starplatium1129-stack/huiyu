@@ -1,0 +1,156 @@
+{
+  "kind": "character",
+  "id": "yvonne_arknights",
+  "revision": 1,
+  "sortOrder": 55,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yvonne_arknights",
+    "profile": {
+      "id": "yvonne_arknights",
+      "name": "伊冯",
+      "alias": [
+        "Yvonne",
+        "イヴォンヌ",
+        "Vaivai 天才工程师"
+      ],
+      "type": "popular",
+      "icon": "🔧",
+      "portrait": {
+        "image": "../assets/characters/popular-yvonne_arknights.png?v=5",
+        "alt": "伊冯 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉色双马尾（发梢渐变挑染）",
+        "hair_color": "粉（#FF8FB1）",
+        "eyes": "蓝色",
+        "hairstyle": "双马尾 · 挑染发梢",
+        "uniform": "初始作战装：露脐短上衣 / 分离袖套 / 手套 / 短靴",
+        "expression": "张扬自信的辣妹工程师 · 眼神狡黠",
+        "style": "gyaru punk engineer",
+        "signature": "粉色双马尾、小角与尾巴"
+      },
+      "personality": [
+        "自信张扬",
+        "天才工程师",
+        "毒舌但靠谱",
+        "爱好收集时尚",
+        "乐天派"
+      ],
+      "likes": [
+        "修机器",
+        "双枪",
+        "打游戏",
+        "自拍",
+        "霓虹灯光"
+      ],
+      "classic_cg": {
+        "title": "天才回旋",
+        "description": "终末地工坊的射灯下，粉色双马尾的工程师转着刚修好的手枪，小角在光里反光。"
+      },
+      "identity": {
+        "role": "Vaivai 龙族天才工程师",
+        "age": "官方未公布（成年干员形象）",
+        "occupation": "工程师（双枪手）",
+        "faction": "明日方舟：终末地"
+      },
+      "tags": [
+        "粉发双马尾",
+        "蓝瞳",
+        "小角",
+        "尾巴",
+        "双枪",
+        "工程师"
+      ],
+      "bg_story": "伊冯是《明日方舟：终末地》塔罗斯-II开拓阵线上的 Vaivai 龙族精锐干员，性格张扬热烈、机灵俏皮的 gyaru-punk 天才枪械与机械工程师。拥有异于常人的机械直觉与双持手枪的爆裂技巧，终日穿梭在废土工坊、古代遗迹与开拓据点之间，随手就能将废弃零件改造成致命武装。平日里热爱收集潮流穿搭、自拍美甲与打街机，看似毒舌跳脱，在面对侵蚀浪潮时却是基地最值得信赖的重火力与技术后盾。场景应突出近未来工业废土与辣妹朋克工程师的鲜活撞色——机械天窗工坊、遗迹飞跃、天台晨曦自拍与霓虹街机厅，粉色与机械银是她的主色调。",
+      "palette": [
+        "粉",
+        "蓝",
+        "机械银"
+      ],
+      "weather": [
+        "工坊射灯",
+        "遗迹天光",
+        "基地夜景"
+      ],
+      "speech": "伊冯晃了晃手里的扳手——「找本天才修东西？排队哦。」",
+      "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "traits": [
+        "yvonne_arknights",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "tail",
+        "pointed_ears",
+        "gun",
+        "engineer",
+        "arknights_endfield"
+      ],
+      "accent_color": "#FF8FB1",
+      "bg_color": "#150f1a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "yvonne_arknights",
+        "yvonne",
+        "arknights endfield",
+        "endfield",
+        "vaivai"
+      ],
+      "animeStudio": "arknights endfield, official game art, Hypergryph style",
+      "canon": {
+        "era": "近未来科幻",
+        "formNotes": "龙族=Vaivai 亚种；双枪天才工程师；粉发粉瞳；强调色 #FF8FB1（辅 #7FB3FF 蓝瞳对比）",
+        "research": "2026-08-31 调研",
+        "world": "科幻末世（塔拉工业废墟与终末地）"
+      },
+      "curatedArtistStyles": [
+        "wei_at_w",
+        "swav",
+        "mika_pikazo"
+      ],
+      "displayName": "伊冯",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "yvonne_arknights"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "yvonne_arknights",
+      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
+      "identityTokens": [
+        "yvonne_arknights",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "tail",
+        "pointed_ears",
+        "engineer",
+        "arknights_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Yvonne",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

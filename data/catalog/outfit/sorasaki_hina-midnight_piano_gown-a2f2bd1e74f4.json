@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/midnight_piano_gown",
+  "revision": 1,
+  "sortOrder": 491,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "default": false,
+      "id": "midnight_piano_gown",
+      "isDefault": false,
+      "name": "晚宴钢琴·深紫露背礼服",
+      "prose": "a deep-purple backless evening gown with a flowing skirt, an elegant updo and subtle stage jewelry",
+      "tokens": [
+        "purple_dress",
+        "backless",
+        "evening_dress",
+        "hair_updo",
+        "formal"
+      ]
+    }
+  }
+}

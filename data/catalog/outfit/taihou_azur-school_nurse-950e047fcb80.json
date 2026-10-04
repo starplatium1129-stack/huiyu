@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/school_nurse",
+  "revision": 1,
+  "sortOrder": 600,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "school_nurse",
+      "name": "保健室专属医护制服",
+      "prose": "a seductive pink nurse uniform: tight pastel pink mini-dress unbuttoned dangerously low at the chest, silver stethoscope draped over her collarbone, white thigh-high stockings with lace garters, nurse cap perched in her long dark twin tails, and pink medical pumps",
+      "tokens": [
+        "nurse",
+        "nurse_dress",
+        "pink_dress",
+        "nurse_cap",
+        "stethoscope",
+        "cleavage",
+        "garter_straps",
+        "thighhighs",
+        "white_thighhighs",
+        "high_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

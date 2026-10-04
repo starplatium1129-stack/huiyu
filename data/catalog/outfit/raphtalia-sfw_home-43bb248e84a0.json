@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/sfw_home",
+  "revision": 1,
+  "sortOrder": 883,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "营地料理便装",
+      "prose": "a cream long-sleeved blouse, brown ankle-length skirt and blue cooking apron",
+      "tokens": [
+        "cream_blouse",
+        "long_sleeves",
+        "long_skirt",
+        "blue_apron"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

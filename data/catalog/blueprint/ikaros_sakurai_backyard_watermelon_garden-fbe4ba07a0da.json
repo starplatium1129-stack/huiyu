@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_sakurai_backyard_watermelon_garden",
+  "revision": 1,
+  "sortOrder": 1213,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "收拢羽翼蹲在菜畦边伸手指轻抚西瓜，白裙微拢，神情专注温柔，呆毛轻摆",
+    "camera": "medium shot, crouching at eye level beside the garden bed",
+    "category": "田园日常",
+    "characterId": "ikaros",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【伊卡洛斯 · 樱井家菜园的西瓜私语】樱井智树家后院生机勃勃的西瓜菜畦旁，木篱笆缠绕着牵牛花。伊卡洛斯将巨大的羽翼轻轻收拢在背后，乖巧地双膝蹲在泥土垄边。她伸出一只纤细白嫩的手指，极其温柔专注地轻抚着瓜藤下一颗刚刚长大的小西瓜。头顶呆毛随着动作晃动，嘴角泛起极其罕见、比春风还要柔软的微弱微笑。",
+    "id": "ikaros_sakurai_backyard_watermelon_garden",
+    "lighting": "透过树荫洒在西瓜叶片上的斑驳金黄日光与泥土暖色",
+    "location": "樱井家后院绿色西瓜田与木栅栏边",
+    "mood": "恬静治愈",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "angeloid_dress",
+    "promptProse": "Crouching with delicate care beside sprawling green watermelon vines in a sun-dappled backyard garden, Ikaros gently strokes a growing striped melon with one finger. Folded white feathered wings frame her peaceful silhouette as warm afternoon sunbeams dance through the tomato trellises.",
+    "promptTokens": [
+      "vegetable_garden",
+      "watermelon_patch",
+      "crouching",
+      "touching_watermelon",
+      "angel_wings",
+      "white_wings",
+      "white_dress",
+      "collar",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "folded_wings"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "garden",
+      "vegetable_garden",
+      "watermelon",
+      "crouching",
+      "angel_wings",
+      "white_wings",
+      "collar",
+      "gentle_smile"
+    ],
+    "timeOfDay": "午后",
+    "title": "伊卡洛斯 · 樱井家菜园的西瓜私语"
+  }
+}

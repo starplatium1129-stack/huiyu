@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/lingerie_only",
+  "revision": 1,
+  "sortOrder": 252,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "default": false,
+      "id": "lingerie_only",
+      "isDefault": false,
+      "name": "私密内衣形态",
+      "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "lingerie",
+        "bra",
+        "panties",
+        "underwear",
+        "matching_set",
+        "thin_straps",
+        "cotton",
+        "bare_shoulders",
+        "bare_legs",
+        "bare_midriff"
+      ]
+    }
+  }
+}

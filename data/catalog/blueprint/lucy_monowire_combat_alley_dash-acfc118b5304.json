@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "lucy_monowire_combat_alley_dash",
+  "revision": 1,
+  "sortOrder": 1107,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "极速滑铲突进甩出青蓝单分子线切裂敌机，火花在暴雨中炸裂，眼神凌厉绝杀",
+    "camera": "dynamic low angle, action freeze frame",
+    "category": "致命截杀",
+    "characterId": "lucy_cyberpunk",
+    "coverageTags": [
+      "combat"
+    ],
+    "description": "【露西 · 赛博暗巷的单分子线截杀】倾盆大雨冲刷的昏暗潮湿小巷中，雨水在垃圾桶与废弃电缆间飞溅。露西极速向前滑铲突进，右手手腕的线轴中骤然爆射出数道极细耀眼的青蓝单分子光丝。锋利光丝撕裂雨幕将眼前的无人机瞬间切碎，火花在雨夜中剧烈四溅，清冷神情带着不可阻挡的决绝死意。",
+    "id": "lucy_monowire_combat_alley_dash",
+    "lighting": "单分子线青蓝电弧闪光与火花照亮潮湿积水路面",
+    "location": "大雨滂沱的狭窄赛博暗巷废墟",
+    "mood": "凌厉决绝",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "netrunner_suit",
+    "promptProse": "Sliding beneath falling rain across a puddle-strewn alleyway, Lucy unleashes glowing cyan monowire threads that slice cleanly through incoming combat drones. Explosive orange sparks flare against wet cyberpunk asphalt, illuminating her fearless combat strike.",
+    "promptTokens": [
+      "rainy_alley",
+      "falling_rain",
+      "monowire",
+      "slashing",
+      "sparks_flying",
+      "combat_stance",
+      "netrunner_suit",
+      "wet_ground",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "alley",
+      "rain",
+      "monowire",
+      "weapon",
+      "sparks",
+      "sliding",
+      "combat",
+      "cyberware",
+      "wet_concrete"
+    ],
+    "timeOfDay": "深夜",
+    "title": "露西 · 赛博暗巷的单分子线截杀"
+  }
+}

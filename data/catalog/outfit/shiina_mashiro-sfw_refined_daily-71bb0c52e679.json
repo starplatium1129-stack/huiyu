@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 855,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "亚麻画室工作服",
+      "prose": "an oatmeal linen artist smock with rolled cuffs over an opaque charcoal dress, dark leggings and flat shoes",
+      "tokens": [
+        "artist_smock",
+        "linen",
+        "rolled_sleeves",
+        "dark_dress",
+        "leggings"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

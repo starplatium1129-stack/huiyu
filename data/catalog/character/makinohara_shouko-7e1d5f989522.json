@@ -1,0 +1,118 @@
+{
+  "kind": "character",
+  "id": "makinohara_shouko",
+  "revision": 1,
+  "sortOrder": 144,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "makinohara_shouko",
+    "profile": {
+      "id": "makinohara_shouko",
+      "name": "牧之原翔子",
+      "alias": [
+        "牧之原翔子",
+        "Shouko Makinohara"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-makinohara_shouko.png?v=a43372d74164",
+        "alt": "牧之原翔子 · 七里滨的白色连衣裙场景样张"
+      },
+      "visual_dna": {
+        "signature": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",
+        "hair": "black_hair, long_hair",
+        "eyes": "blue_eyes",
+        "uniform": "七里滨白色连衣裙",
+        "expression": "按各日常场景的动作与神态呈现",
+        "style": "anime"
+      },
+      "personality": [
+        "温柔体谅，习惯先照顾他人的情绪",
+        "珍惜平凡生活，也愿意给予坚定的鼓励",
+        "安静的微笑里有自己的思虑，不是始终无忧无虑"
+      ],
+      "likes": [
+        "海边散步",
+        "安静阅读",
+        "照看猫咪"
+      ],
+      "classic_cg": {
+        "title": "牧之原翔子 · 七里滨的白色连衣裙",
+        "description": "傍晚的七里滨海岸，她赤脚踩在湿沙上，白色连衣裙下摆被海风轻轻掀起，单手拢着被吹散的长发；回头时笑容很浅，像一段随时会消失的回忆。远景海面只做暖色光带，人物保持中近景。"
+      },
+      "identity": "Rascal Does Not Dream of Bunny Girl Senpai · 牧之原翔子",
+      "tags": [
+        "牧之原翔子",
+        "青春猪头少年不会梦到兔女郎学姐",
+        "日常"
+      ],
+      "bg_story": "与七里滨和温柔鼓励相连的少女，重视猫咪、书本与平凡的相处时刻。深色长发和蓝瞳保持一致，海边白裙与校园制服分别对应场景时间线。",
+      "palette": [
+        "#9bafcb",
+        "#282532"
+      ],
+      "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "speech": "今天也有值得好好记住的小事呢。",
+      "traits": [
+        "makinohara_shouko",
+        "seishun_buta_yarou",
+        "black_hair",
+        "long_hair",
+        "hime_cut"
+      ],
+      "accent_color": "#9bafcb",
+      "bg_color": "#282532"
+    },
+    "popular": {
+      "id": "makinohara_shouko",
+      "displayName": "牧之原翔子",
+      "originalName": "Shouko Makinohara",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "aliases": [
+        "牧之原翔子",
+        "Shouko Makinohara"
+      ],
+      "identityProse": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",
+      "identityTokens": [
+        "makinohara_shouko",
+        "seishun_buta_yarou",
+        "black_hair",
+        "long_hair",
+        "hime_cut",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "makinohara_shouko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, makinohara_shouko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ]
+    }
+  }
+}

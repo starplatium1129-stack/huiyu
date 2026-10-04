@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_office_desk_grinding_ink_duty",
+  "revision": 1,
+  "sortOrder": 1302,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_office_desk_grinding_ink_duty",
+    "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
+    "category": "职场日常",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 办公桌旁的墨水与公文批改】肃穆的总管办公室内，厚重的羊皮纸文件堆叠整齐。雅儿贝德身着优雅的纯白晚礼服长裙站在你身侧，一手按在桌沿，另一手拿着细巧的羽毛笔蘸好墨水，准备协助处理公文。微风拂过她柔顺的黑发与白色裙摆，金色的眼眸专注而温柔地注视着你批阅文件的侧脸——「大坟墓内外的一切事务我都已经妥善梳理完毕，请您务必不要操劳过度，有我在呢。」",
+    "location": "堆满古老羊皮纸文献的总管书房办公桌旁",
+    "action": "立于办公桌侧，一手按在桌上，一手持羽毛笔，侧头露出温婉忠诚的微笑",
+    "timeOfDay": "午后",
+    "lighting": "古老拱形窗投下的明亮柔和自然光",
+    "camera": "cowboy shot, eye level, elegant portrait",
+    "mood": "知性忠诚",
+    "sceneTags": [
+      "office",
+      "desk",
+      "parchment",
+      "feather_pen",
+      "white_dress",
+      "backless_dress",
+      "black_wings",
+      "curved_horns",
+      "gentle_smile",
+      "loving_gaze"
+    ],
+    "promptProse": "Standing poised beside an antique mahogany desk covered in neatly stacked parchment documents, Albedo assists with administrative duties. Her pure white backless gown drapes gracefully over her figure as her dark wings rest calmly. Holding a quill pen, she gazes affectionately at the viewer with serene devotion in her golden eyes. Elegant, high-fidelity anime key visual, solo 1girl, no text.",
+    "promptTokens": [
+      "office",
+      "study",
+      "desk",
+      "documents",
+      "holding_pen",
+      "white_dress",
+      "backless_dress",
+      "golden_necklace",
+      "cleavage",
+      "black_wings",
+      "curved_horns",
+      "yellow_eyes",
+      "gentle_smile",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_white_dress",
+    "coverageTags": [
+      "daily",
+      "office",
+      "devotion"
+    ]
+  }
+}

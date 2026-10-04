@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "kazuki_cliff_survival_genius_command",
+  "revision": 1,
+  "sortOrder": 1168,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kazuki_cliff_survival_genius_command",
+    "title": "风见一姬 · 泷园断崖的天才决断",
+    "category": "命运转折",
+    "characterId": "kazami_kazuki",
+    "outfitId": "white_dress",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【风见一姬 · 泷园断崖的天才决断】阴沉暴雨后的泷园深山险峻悬崖边缘，跌落破损的校车残骸在身后冒着轻烟。一姬身穿纯白简约连身裙，雪白长发与齐刘海在凛冽山风中翻卷飞舞。她单手按在身旁的灰岩石块上，深红如血的双眸异常冷静从容地俯瞰深渊，以远超常人的绝对理智制定着全员生存路线——「惊慌毫无意义。听从我的指示，我们一定会活下去。」",
+    "location": "深山断崖绝壁与校车废墟旁",
+    "action": "单手按住山崖岩石迎风侧立，雪白长发狂乱翻飞，红瞳冷静如冰，神情从容超凡",
+    "timeOfDay": "傍晚",
+    "lighting": "阴云裂缝处透射下的微弱冷白夕照与岩壁潮湿冷冽高光",
+    "camera": "dynamic low angle, full body wide shot, sweeping cliff scale",
+    "mood": "凄绝孤高",
+    "sceneTags": [
+      "cliff",
+      "mountain",
+      "ruins",
+      "wind",
+      "white_dress",
+      "bare_shoulders",
+      "very_long_hair",
+      "red_eyes"
+    ],
+    "promptProse": "Standing fearless along a rugged precipice overlooking misty mountain chasms, Kazuki commands the survival effort with absolute intellectual composure in her pristine white dress. Gale-force mountain winds whip her floor-sweeping silver hair as piercing crimson eyes cut through the cold dusk.",
+    "promptTokens": [
+      "rocky_cliff",
+      "mountain_chasm",
+      "ruined_bus",
+      "white_dress",
+      "bare_shoulders",
+      "very_long_hair",
+      "wind_blown_hair",
+      "red_eyes",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

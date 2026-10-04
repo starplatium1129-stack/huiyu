@@ -1,0 +1,34 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/candle_knight_armor",
+  "revision": 1,
+  "sortOrder": 392,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "default": true,
+      "id": "candle_knight_armor",
+      "isDefault": true,
+      "name": "烛骑士礼装铠甲",
+      "prose": "the Candle Knight ceremonial armor: a tailored midnight-black and gold knightly tunic dress with polished golden breastplate and pauldrons, flowing pleated layered skirt with gold filigree embroidery, white silk opera gloves, golden sword sash, and polished armored greaves boots, carrying her golden rapier",
+      "tokens": [
+        "armor",
+        "breastplate",
+        "pauldrons",
+        "knight",
+        "black_dress",
+        "gold_trim",
+        "pleated_skirt",
+        "opera_gloves",
+        "white_gloves",
+        "greaves",
+        "boots",
+        "rapier",
+        "sash",
+        "kazimierz"
+      ]
+    }
+  }
+}

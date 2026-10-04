@@ -1,0 +1,142 @@
+{
+  "kind": "character",
+  "id": "akeno_himejima",
+  "revision": 1,
+  "sortOrder": 98,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "akeno_himejima",
+    "profile": {
+      "id": "akeno_himejima",
+      "name": "姬岛朱乃",
+      "alias": [
+        "Akeno Himejima",
+        "姬岛朱乃",
+        "雷光巫女",
+        "神圣副会长"
+      ],
+      "type": "popular",
+      "icon": "⚡",
+      "portrait": {
+        "image": "../assets/characters/popular-akeno_himejima.png?v=1",
+        "alt": "姬岛朱乃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "乌黑柔顺长发 · 优雅高马尾",
+        "hair_color": "深黑 / 乌黑",
+        "eyes": "神秘深邃紫眸",
+        "hairstyle": "高马尾 · 橙色发带 · 柔和斜刘海",
+        "uniform": "传统神道纯白绯袴巫女服 / 驹王学园副会长制服",
+        "expression": "温柔微醺 · 危险挑逗 · 被攻陷时的娇羞破防",
+        "style": "seductive lightning shrine maiden",
+        "signature": "黑色高马尾、橙色发带、绯袴巫女服与堕天使黑翼"
+      },
+      "personality": [
+        "口癖『啊啦啊啦』的抖S调戏",
+        "内心极度渴望被爱与救赎",
+        "被触及弱点时的慌乱纯情",
+        "温柔体贴的包容人妻感"
+      ],
+      "likes": [
+        "神前祈祷与泡茶",
+        "制作手工便当",
+        "调戏心爱之人"
+      ],
+      "classic_cg": {
+        "title": "降魔雷光与堕天之翼",
+        "description": "在暴风雨夜中展开漆黑羽翼引落万丈雷霆的神圣制裁姿态。"
+      },
+      "identity": "恶魔高校DxD女二号 · 吉蒙里眷属『女王』 · 雷光巫女",
+      "tags": [
+        "恶魔高校DxD",
+        "黑发高马尾",
+        "巫女",
+        "堕天使",
+        "抖S",
+        "温柔学姐"
+      ],
+      "bg_story": "神道巫女与堕天使干部之女，继承了神圣雷光与堕天之力的强大混血修罗。平日里是一口一个『啊啦啊啦』、喜欢调戏后辈的抖S大姐姐，实则内心背负着沉重的家庭创伤，在得到救赎后成为了最温顺深情的专属小娇妻。",
+      "palette": [
+        "#9333ea",
+        "#3b0764",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "夏夜花火 / 幽静雨夜",
+      "speech": "「啊啦啊啦……表情变得这么舒服呢，今晚可不会轻易放过你哦。」",
+      "source": "石踏一榮《恶魔高校DxD / High School DxD》",
+      "traits": [
+        "fallen_angel_hybrid",
+        "black_ponytail",
+        "purple_eyes",
+        "miko",
+        "seductive"
+      ],
+      "accent_color": "#9333ea",
+      "bg_color": "#3b0764"
+    },
+    "popular": {
+      "id": "akeno_himejima",
+      "displayName": "姬岛朱乃",
+      "originalName": "姫島朱乃",
+      "franchise": "High School DxD",
+      "aliases": [
+        "Akeno Himejima",
+        "himejima_akeno",
+        "himejima akeno",
+        "akeno_himejima",
+        "akeno himejima",
+        "朱乃",
+        "姬岛朱乃",
+        "雷光巫女",
+        "神圣副会长"
+      ],
+      "identityProse": "Akeno Himejima from High School DxD, a ravishing half-human half-fallen-angel beauty with very long raven-black hair tied into a sleek high ponytail with a delicate orange ribbon, alluring violet-purple eyes, a gentle mature smile, and an intoxicatingly teasing aura",
+      "identityTokens": [
+        "himejima_akeno",
+        "high_school_dxd",
+        "akeno_himejima",
+        "black_hair",
+        "very_long_hair",
+        "high_ponytail",
+        "orange_hair_ribbon",
+        "orange_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "seductive_smile"
+      ],
+      "exactTokens": [
+        "himejima_akeno"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, himejima_akeno"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "TNK / Passione",
+      "curatedArtistStyles": [
+        "Miyama-Zero",
+        "Gotou Junji"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

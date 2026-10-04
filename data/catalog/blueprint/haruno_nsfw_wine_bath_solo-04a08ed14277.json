@@ -1,0 +1,83 @@
+{
+  "kind": "blueprint",
+  "id": "haruno_nsfw_wine_bath_solo",
+  "revision": 1,
+  "sortOrder": 377,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "haruno_nsfw_wine_bath_solo",
+    "title": "雪之下阳乃 · 豪华大理石浴缸的红酒水光独奏 ·「把醉意都发泄在水里……就不算失态了吧」",
+    "category": "水光湿身",
+    "characterId": "yukinoshita_haruno",
+    "description": "【公寓主卫·凌晨】飘散着玫瑰花瓣的按摩浴缸，阳乃斜倚在温水中，一杯红酒搁在池边。她只穿着一件湿透半透明的黑色蕾丝连体衣，指尖在激荡的水流中用力揉按着自己，仰头发出沙哑的喘息——「真是的……为什么要生在雪之下家啊……哈啊……好想把一切都毁掉……」",
+    "location": "公寓主卫·凌晨",
+    "action": "斜靠大理石浴缸湿透黑蕾丝贴身，单手探入水底急促自抚，仰头迷离喘息",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Haruno Yukinoshita lounges inside her sunken marble jacuzzi beneath soft light, holding a crystal wine glass while warm whirlpool jets churn around her. Her black lace teddy is drenched clinging translucently over mature, generous curves and taut dark nipples. Her fingers slide aggressively beneath the swirling scented water between her parted thighs, head thrown back against the stone headrest in ragged, drunken moans as tears leak from the corners of her dark eyes. Sensual vertical composition, golden chandelier reflection on rippling water, detailed bathroom background, solo 1girl, no text.",
+    "nsfwProse": "Lounging inside the marble jacuzzi in soaked, transparent black lace that clings to her dark nipples, Haruno Yukinoshita strokes herself underwater in drunken, weeping ecstasy amidst rippling red water.",
+    "promptTokens": [
+      "bathroom",
+      "jacuzzi",
+      "bathtub",
+      "wine_glass",
+      "rose_petals",
+      "night",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_black_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "sitting_in_water",
+      "bathtub",
+      "marble_bath",
+      "translucent_clothing",
+      "wet_clothes",
+      "see-through",
+      "black_lace",
+      "nipples_visible_through_clothes",
+      "bare_breasts",
+      "wet_skin",
+      "underwater",
+      "hand_between_legs",
+      "masturbation",
+      "heavy_blush",
+      "teary_eyes",
+      "parted_lips"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/maid_uniform",
+  "revision": 1,
+  "sortOrder": 263,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "maid_uniform",
+      "name": "格雷拉特家女仆装",
+      "isDefault": true,
+      "default": true,
+      "prose": "a modest, fully covered Greyrat-house maid uniform: a dark brown long-sleeved dress with a white frilled apron, a white ascot collar and white cuffs, her hair gathered under a plain white maid headdress",
+      "tokens": [
+        "maid",
+        "maid_apron",
+        "black_dress",
+        "long_sleeves",
+        "white_apron",
+        "white_ascot",
+        "maid_headdress",
+        "hairband"
+      ]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/sfw_casual",
+  "revision": 1,
+  "sortOrder": 911,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "sfw_casual",
+      "name": "日常针织上衣与长裙",
+      "prose": "a cream cardigan over a pale blue blouse and navy knee-length skirt",
+      "tokens": [
+        "cream_cardigan",
+        "blue_blouse",
+        "navy_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

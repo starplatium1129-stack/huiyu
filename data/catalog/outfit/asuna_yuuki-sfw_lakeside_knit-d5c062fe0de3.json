@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/sfw_lakeside_knit",
+  "revision": 1,
+  "sortOrder": 750,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "sfw_lakeside_knit",
+      "name": "湖畔休憩针织私服",
+      "prose": "a soft cream knit sweater with a modest round neckline and a flowing navy knee-length skirt, with simple brown flats placed beside the picnic blanket",
+      "tokens": [
+        "cream_knit_sweater",
+        "round_neckline",
+        "navy_skirt",
+        "brown_flats"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -81,6 +81,15 @@ function expandShardFiles(entry: SceneManifestEntry) {
 }
 
 function loadSceneShards() {
+  const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
+  const records = catalog.read(root);
+  if (records) {
+    const scenes: Scene[] = catalog.views(records).scenes;
+    const groups = new Map<string, Scene[]>();
+    for (const scene of scenes) { const file = targetFile(scene); if (!groups.has(file)) groups.set(file, []); groups.get(file)!.push(scene); }
+    const sources = [...groups].map(([file, scenes]) => ({ entry: { file, character: scenes[0].char }, source: path.join(shardsDir, file), file, scenes }));
+    return { manifest: { files: sources.map(s => s.entry), batchSize: DEFAULT_BATCH_SIZE }, sources, scenes };
+  }
   const manifest = readManifest();
   const sources = manifest.files.flatMap((entry) =>
     expandShardFiles(entry).map((file) => {
@@ -135,6 +144,7 @@ function writeShardBatches(manifest: SceneManifest, baseFile: string, items: Sce
 }
 
 function writeSceneShards(scenes: Scene[]) {
+  (require('./catalog-snapshot') as typeof import('./catalog-snapshot')).assertLegacyWrite(root);
   const manifest = readManifest();
   const groups = new Map<string, Scene[]>();
   manifest.files.forEach((entry) => groups.set(entry.file, []));

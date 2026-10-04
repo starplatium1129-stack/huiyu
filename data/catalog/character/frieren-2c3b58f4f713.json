@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "frieren",
+  "revision": 1,
+  "sortOrder": 5,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "frieren",
+    "profile": {
+      "id": "frieren",
+      "name": "芙莉莲",
+      "alias": [
+        "Frieren",
+        "フリーレン"
+      ],
+      "type": "popular",
+      "icon": "🪄",
+      "portrait": {
+        "image": "../assets/characters/popular-frieren.png?v=5",
+        "alt": "芙莉莲 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银白极长发 · 双马尾",
+        "hair_color": "银白",
+        "eyes": "绿色",
+        "hairstyle": "双马尾",
+        "uniform": "白色魔导斗篷 / 浅色裙装",
+        "expression": "温和缄默 · 长寿者的疏离感",
+        "style": "wistful elf mage",
+        "signature": "银白双马尾、绿瞳与精灵长耳"
+      },
+      "personality": [
+        "温和缄默",
+        "理性",
+        "对时间流逝淡然",
+        "怀念故人",
+        "偶尔慵懒"
+      ],
+      "likes": [
+        "魔法书",
+        "旅途",
+        "安静的回忆",
+        "古老的魔法"
+      ],
+      "classic_cg": {
+        "title": "勇者之墓",
+        "description": "白花丛生的墓前，她静静站立——对精灵而言，十年只是一瞬，怀念却是一生。"
+      },
+      "identity": {
+        "role": "精灵魔法使（葬送的芙莉莲）",
+        "age": "精灵（长寿，外貌年轻）",
+        "occupation": "魔法使 / 旅人",
+        "faction": "勇者一行（过去）"
+      },
+      "tags": [
+        "银白长发",
+        "双马尾",
+        "绿瞳",
+        "精灵耳",
+        "魔导袍"
+      ],
+      "bg_story": "芙莉莲是《葬送的芙莉莲》的主角，击败魔王的勇者队伍中的精灵魔法使。寿命绵长的她以「人类的时间」重新认识旅途与怀念。场景应偏古典奇幻、旅途与魔法书。",
+      "palette": [
+        "银白",
+        "奶油白",
+        "魔法紫"
+      ],
+      "weather": [
+        "旷野黄昏",
+        "雪原",
+        "魔法图书馆"
+      ],
+      "speech": "芙莉莲向你致以问候。",
+      "source": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
+      "traits": [
+        "frieren",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "very_long_hair",
+        "twin_braids",
+        "purple_eyes",
+        "elf",
+        "pointy_ears",
+        "gold_earrings"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "frieren",
+      "displayName": "芙莉莲",
+      "originalName": "Frieren",
+      "franchise": "Frieren: Beyond Journey's End",
+      "aliases": [
+        "frieren",
+        "sousou no frieren",
+        "frieren the slayer",
+        "elf mage"
+      ],
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, an elf mage who has lived for over a thousand years, with very long silver-white hair in twintails, green eyes, pointed ears and a calm, contemplative expression",
+      "identityTokens": [
+        "frieren",
+        "sousou_no_frieren",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "very_long_hair",
+        "twintails",
+        "green_eyes",
+        "elf",
+        "pointy_ears",
+        "gold_earrings"
+      ],
+      "exactTokens": [
+        "frieren"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ]
+    }
+  }
+}

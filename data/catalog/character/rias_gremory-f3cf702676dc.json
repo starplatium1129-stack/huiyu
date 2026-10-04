@@ -1,0 +1,138 @@
+{
+  "kind": "character",
+  "id": "rias_gremory",
+  "revision": 1,
+  "sortOrder": 97,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "rias_gremory",
+    "profile": {
+      "id": "rias_gremory",
+      "name": "莉雅丝·吉蒙里",
+      "alias": [
+        "Rias Gremory",
+        "莉雅丝",
+        "红发的灭杀姬",
+        "吉蒙里公爵千金"
+      ],
+      "type": "popular",
+      "icon": "🍷",
+      "portrait": {
+        "image": "../assets/characters/popular-rias_gremory.png?v=1",
+        "alt": "莉雅丝·吉蒙里 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "深红鲜艳及膝长发 · 活泼呆毛",
+        "hair_color": "深红 / 鲜红",
+        "eyes": "清澈水蓝 / 碧青眼眸",
+        "hairstyle": "长直发及膝 · 柔美前刘海 · 标志性呆毛",
+        "uniform": "驹王学园制服 / 吉蒙里纯血恶魔礼服",
+        "expression": "高贵端庄 · 温柔威严 · 面对心爱之人脸红娇羞",
+        "style": "regal crimson-haired devil noblewoman",
+        "signature": "鲜红及膝长发、水蓝双瞳、恶魔羽翼与沙漏身材"
+      },
+      "personality": [
+        "威严而极重情义",
+        "专一且毫无保留的爱意",
+        "偶尔吃醋撒娇的纯情反差",
+        "骨子里的贵族担当与领袖风范"
+      ],
+      "likes": [
+        "红茶与日式料理",
+        "与心爱之人同床共枕",
+        "保护自己的眷属"
+      ],
+      "classic_cg": {
+        "title": "纯血恶魔的破灭之翼",
+        "description": "在赤月之下展开漆黑恶魔羽翼，掌心凝聚毁灭魔力阵的绝代公爵千金。"
+      },
+      "identity": "恶魔高校DxD女主角 · 冥界吉蒙里家族下任当家 · 神秘学研究部部长",
+      "tags": [
+        "恶魔高校DxD",
+        "红发及膝",
+        "公爵千金",
+        "恶魔羽翼",
+        "正宫肉感",
+        "反差萌"
+      ],
+      "bg_story": "冥界名门吉蒙里家族的下任宗主，拥有『红发的灭杀姬』之称的纯血恶魔贵族。在驹王学园担任神秘学研究部部长，表面上是威严尊贵的千金大小姐，但在认定了心爱之人后，展现出极致的温柔、专一与毫无保留的奉献。",
+      "palette": [
+        "#e52b50",
+        "#1e1b4b",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "月明深夜 / 温暖晨曦",
+      "speech": "「今晚我只想做你一个人的莉雅丝……把你的全部都交给我吧。」",
+      "source": "石踏一榮《恶魔高校DxD / High School DxD》",
+      "traits": [
+        "pureblood_devil",
+        "crimson_hair",
+        "large_breasts",
+        "ahoge",
+        "cyan_eyes"
+      ],
+      "accent_color": "#e52b50",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "rias_gremory",
+      "displayName": "莉雅丝·吉蒙里",
+      "originalName": "リアス・グレモリー",
+      "franchise": "High School DxD",
+      "aliases": [
+        "Rias Gremory",
+        "rias_gremory",
+        "rias gremory",
+        "莉雅丝",
+        "红发的灭杀姬",
+        "吉蒙里公爵千金"
+      ],
+      "identityProse": "Rias Gremory from High School DxD, a voluptuous pureblood devil noblewoman with knee-length vivid crimson-red hair, an expressive ahoge on top, striking aquamarine-cyan eyes, and a regal yet deeply affectionate demeanor",
+      "identityTokens": [
+        "rias_gremory",
+        "high_school_dxd",
+        "red_hair",
+        "crimson_hair",
+        "very_long_hair",
+        "ahoge",
+        "blue_eyes",
+        "cyan_eyes",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "exactTokens": [
+        "rias_gremory"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, rias_gremory"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "TNK / Passione",
+      "curatedArtistStyles": [
+        "Miyama-Zero",
+        "Gotou Junji"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

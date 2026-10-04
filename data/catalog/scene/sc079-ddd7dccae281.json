@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc079",
+  "revision": 1,
+  "sortOrder": 77,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a side medium shot on the wooden ladder of an old bookstore, Shiki Natsume reaches for an out-of-print book in a vintage cream knit sweater and long pleated brown skirt. After finding it, she holds the book against her chest and looks down toward the viewer steadying the ladder below.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "书架间侧面中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "认真",
+    "id": "sc079",
+    "lighting": "旧书店秋日下午窗光",
+    "location": "旧书店",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, heavy_coat, winter_coat",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, vintage_cream_knit_sweater, long_pleated_brown_skirt, brown_leather_shoes, standing_on_wooden_ladder, reaching_for_out_of_print_book, holding_found_book_against_chest, looking_down_at_viewer, old_bookstore, tall_bookshelves, warm_afternoon_sunlight, dust_motes, medium_shot, intellectual_charm, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 旧书店梯子上的停顿】秋日下午，夏目站在旧书店的木梯上翻找绝版书，黑色长发垂过肩侧。你在下方扶住梯子，她低头道谢，却因为视线角度突然脸红，立刻用书挡住胸前——「扶稳就好，不准抬头乱看。找到以后……我可以把第一章借给你。」",
+    "storyJa": "【夏目・古本屋のはしごで立ち止まる】秋の午後、夏目は古書店の木のはしごに立って、絶版になった本を漁っていました。彼女の長い黒髪は肩を越えて垂れ下がっていた。あなたが下のはしごを持っていたので、彼女は頭を下げて感謝しました。しかし、彼女は視線の角度のせいで突然顔を赤らめ、すぐに本で胸を隠しました。――「しっかり支えていればいいから、上を見ないで。見つかったら……第一章を貸してあげてもいい。」",
+    "tags": [
+      "mole_under_eye",
+      "knit_sweater",
+      "long_skirt",
+      "smooth_thighs",
+      "old_bookstore",
+      "ladder",
+      "standing",
+      "loafers",
+      "afternoon",
+      "medium_shot",
+      "holding_book_to_chest"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "旧书店梯子上的停顿",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

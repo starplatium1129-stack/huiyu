@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc292",
+  "revision": 1,
+  "sortOrder": 287,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the living room turned photo studio with the fill light still on, Ayachi Nene in a large knit cardigan slipped off one shoulder with most buttons undone over a white cotton inner top sits on the sofa edge, looking up from the camera preview as the viewer's fingers right her collar on her shoulder, biting her lower lip with a heavy blush under warm single-side fill light.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "沙发上方的近景俯视",
+    "category": "日常/同人",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "半工作半私密的暧昧试探",
+    "id": "sc292",
+    "lighting": "补光灯暖色单侧照明",
+    "location": "作为临时摄影棚的公寓客厅",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cardigan, sitting, barefoot, blush, bokeh, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 私服拍摄的界线】同人社团的室内私服摄影进行到后半段，其他成员已经先去了便利店。客厅只剩下你和宁宁，补光灯还亮着，她坐在沙发边缘，宽大的针织开衫从一侧肩膀滑落。银白色的长发被风吹散了几缕贴在脸颊边，她低头翻着相机里的成片，却没有调整滑落的衣襟。你走近帮她整理衣领时，她抬起眼，紫色瞳孔在补光灯的暖色里显得格外透亮——「拍了一个下午了……这张构图你觉得怎么样？」她问的是照片，声音却有轻微的颤抖。你的手指没有离开她的肩头，她也没有后退。开衫的纽扣不知何时已经松开大半，白色的棉质内衬边缘微微卷起，她轻轻咬住下唇，呼吸在安静的客厅里清晰可闻——「如果还有想拍的角度……现在只有我们两个人了。」",
+    "storyJa": "【寧々・大人のAfter Story・私服撮影の境界線】同人サークルの室内私服撮影も後半に差し掛かり、他のメンバーは先にコンビニへ行ってしまった。リビングにはあなたと寧々だけが残り、補光灯はまだ点いたままだった。彼女はソファの端に座り、大きめのニットカーディガンが片方の肩からずり落ちていた。銀色の長い髪が何本か風に散って頬に張り付き、彼女はうつむいてカメラのプレビューを眺めていたが、落ちた襟元は直そうとしなかった。あなたが近づいて襟元を整えようとすると、彼女は顔を上げた。紫色の瞳が補光灯の暖かな色の中でひときわ透き通って見えた——「一晩中撮ってたね……この構図、どう思う？」彼女は写真について尋ねたが、声は微かに震えていた。あなたの指は彼女の肩先に留まったままで、彼女も後退しなかった。カーディガンのボタンはいつの間にかほとんど外れており、白いコットンのインナーの端がほんのりと卷れていた。彼女はそっと下唇を噛み、静かなリビングで彼女の呼吸がはっきりと聞こえた——「もし他に撮りたいアングルがあったら……今は二人だけだよ。」",
+    "tags": [
+      "hair_ribbon",
+      "cardigan",
+      "inner_top",
+      "bare_legs",
+      "sofa",
+      "full_body",
+      "barefoot",
+      "camera",
+      "heavy_blush"
+    ],
+    "time": "傍晚",
+    "timeOfDay": "evening",
+    "title": "私服拍摄的界线",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "室内"
+  }
+}

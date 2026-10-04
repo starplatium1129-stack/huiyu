@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "yoshino_shrine_kagura_dance_bells",
+  "revision": 1,
+  "sortOrder": 1145,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "双手执金铃神乐杖轻盈旋身起舞，巫女宽袖与银白双马尾飘飞，神态端庄肃穆",
+    "camera": "full body, dynamic mid-dance angle, wide composition",
+    "category": "神职奉纳",
+    "characterId": "tomotake_yoshino",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【朝武芳乃 · 神乐殿前的金铃奉纳舞】穗织朝武神社庄严肃穆的神乐殿上，古桧木搭建的舞台四周环绕着燃烧的篝火。芳乃身穿正统红白大袖巫女服，下衬行灯红袴与黑色连裤袜。她双手执金色神乐铃杖优雅旋身，银白色的长双马尾在空中曼妙翻卷，樱花头饰在火光下闪耀着神圣华彩。她深蓝的眼眸清冷端庄，在除祟舞乐中展现出守护穗织的巫女姬非凡威仪。",
+    "id": "yoshino_shrine_kagura_dance_bells",
+    "lighting": "舞台四周铁笼篝火的浓艳金红火光与清冷圆月月华交融",
+    "location": "朝武神社神乐殿露天桧木舞台",
+    "mood": "神圣高洁",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "shrine_maiden",
+    "promptProse": "Spinning with regal grace upon a cedar kagura stage surrounded by glowing bonfires, Yoshino performs the sacred purification dance with golden kagura bells in hand. Vivid firelight illuminates her pristine white kimono, flowing crimson hakama, and shimmering silver twin tails.",
+    "promptTokens": [
+      "kagura_stage",
+      "shinto_shrine",
+      "miko_attire",
+      "holding_bells",
+      "sacred_dance",
+      "pantyhose",
+      "hair_flower",
+      "bonfire",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "shrine_stage",
+      "kagura_dance",
+      "miko",
+      "bells",
+      "pantyhose",
+      "black_pantyhose",
+      "hair_flower",
+      "twintails",
+      "bonfire"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "朝武芳乃 · 神乐殿前的金铃奉纳舞"
+  }
+}

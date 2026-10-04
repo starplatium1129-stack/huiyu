@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc192",
+  "revision": 1,
+  "sortOrder": 189,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc192",
+    "title": "壁炉余温：单肩滑落的松垮毛衣乐章",
+    "category": "恋爱/After_Story",
+    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 假日木屋毛衣单肩滑落真空】大雪封山的冬日深夜，私人度假木屋内，壁炉里的木柴正劈啪作响，泼洒着温暖的橙红火光。宁宁今晚彻底放下了防线，身上仅仅套着一件大号的粗线针织毛衣，里面完全真空没有着任何衣物。她慵懒地仰躺在厚厚的长毛地毯上，毛衣的宽大领口在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白侧乳。她修长柔嫩的双腿在火光下泛着诱人的温润光泽，头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形——「大色狼...一直盯着人家的肩膀看什么呢...壁炉好暖和...但是...你抱紧我的时候更暖和哦...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "恋爱",
+    "season": "冬",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "oversized_knit_sweater",
+      "one_shoulder_slipped",
+      "sideboob",
+      "no_underwear",
+      "bare_legs",
+      "fireplace",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
+    ],
+    "mature": true,
+    "location": "度假木屋壁炉前地毯",
+    "weather": "窗外漫天大雪",
+    "camera": "近景特写",
+    "lighting": "壁炉强烈的暖色跳跃火光",
+    "usage": [
+      "核心协议",
+      "绝对独占",
+      "成人向"
+    ],
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_thick_knit_sweater, one_sleeve_slipped_off_shoulder_with_neckline_slid_below_arm, sideboob, no_underwear, lying_on_back_on_thick_fur_carpet_before_fireplace, slender_bare_legs_relaxed_with_soft_skin_sheen_catching_firelight, barefoot_with_soft_toes_on_rug, relaxed_contented_blush_with_ahoge_drooping_into_heart_shape, warm_fireplace_crackling_light_with_rug_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, snowy_night, blizzard_outside, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, sitting, standing, stockings, thighhighs, cropped_feet, upper_body",
+    "storyJa": "【寧々・大人のアフターストーリー・・ホリデーキャビンセーターワンショルダーずり落ちバキューム】雪の降る冬の夜遅く、貸切の別荘で、暖炉の薪がパチパチと音を立て、オレンジがかった赤の暖かい火の光が飛び散っていた。寧々は今夜は守備を完全に下げた。彼女は大きな厚手のニットセーターを着ているだけで、何も着ていませんでした。彼女は毛の長い分厚いカーペットの上に仰向けになってのんびりと横たわっていた。彼女のセーターの広いネックラインは片方の腕に完全に滑り込み、丸い肩とふっくらとしたセクシーな白い胸の半分が露出しました。彼女の細くて柔らかい脚は、火の光の下で魅惑的な暖かい光沢を放ち、頭のアホ毛は究極の快適さと安心感のために完璧なハートの形に素直に垂れ下がりました。――「もう、肩ばかり見てどうしたんですか？　暖炉も暖かいですけど……あなたに抱きしめてもらうほうが、もっと暖かいです。」",
+    "rating": "R18",
+    "animaCaption": "By the crackling fireplace of the snowy cabin, Nene lies relaxed on her back on the thick fur carpet wearing only an oversized knit sweater whose wide neckline has slipped below one arm, exposing her round shoulder and the swell of one breast, bare legs glowing in the warm orange firelight, the ahoge drooping into a heart.",
+    "auditRevision": "careful-batch13-2026-08-27"
+  }
+}

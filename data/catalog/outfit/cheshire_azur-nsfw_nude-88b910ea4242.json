@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "cheshire_azur/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 596,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "cheshire_azur",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "cat_ears",
+        "animal_ears",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, blushing soft porcelain skin, bountiful voluptuous breasts with tender strawberry-pink nipples, slender waist transitioning into plush curved hips, exposed pussy, twitching pink cat ears, hair buns with gentle ribbons, bare legs and bare feet, warm cozy bedroom atmosphere",
+      "styleHint": "tender romantic candlelight",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

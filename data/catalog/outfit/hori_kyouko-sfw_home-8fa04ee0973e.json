@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/sfw_home",
+  "revision": 1,
+  "sortOrder": 877,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "家务围裙与束发",
+      "prose": "a blue cotton apron over an opaque cream T-shirt and comfortable dark trousers, with chestnut hair tied up",
+      "tokens": [
+        "blue_apron",
+        "cream_t-shirt",
+        "dark_pants",
+        "hair_up"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

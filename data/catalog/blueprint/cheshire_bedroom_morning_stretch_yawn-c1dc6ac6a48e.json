@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "cheshire_bedroom_morning_stretch_yawn",
+  "revision": 1,
+  "sortOrder": 1091,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "cheshire_bedroom_morning_stretch_yawn",
+    "title": "柴郡 · 晨光微熹的猫猫伸懒腰",
+    "category": "慵懒晨曦",
+    "characterId": "cheshire_azur",
+    "outfitId": "date_sweater",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【柴郡 · 晨光微熹的猫猫伸懒腰】指挥官居所温暖的木地板上，晨曦金光透过白纱窗帘漫溢。柴郡身穿宽大软糯的露背毛衣，像一只真正的小猫一样双膝跪伏在绒毯上。纤细的腰肢下沉凹陷出诱人的S形腰臀曲线，胸口轻贴毛毯，双臂向前笔直伸展打着可爱的哈欠，猫耳发箍微微颤动，透着毫无防备的娇憨春光。",
+    "location": "指挥官居室阳光毛毯地垫",
+    "action": "跪伏在绒毯上向前深长伸展腰肢打哈欠，腰臀曲线毕露，猫耳轻微抖动",
+    "timeOfDay": "清晨",
+    "lighting": "白纱帘后透射的极轻柔淡金朝阳与漫反射漫步光",
+    "camera": "medium shot, side 3/4 low angle, arching back curve",
+    "mood": "惬意慵懒",
+    "sceneTags": [
+      "bedroom",
+      "stretching",
+      "yawning",
+      "kneeling",
+      "open_back",
+      "sweater",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "morning_light"
+    ],
+    "promptProse": "Kneeling on a plush bedroom carpet while arching her back in a cat-like morning stretch, Cheshire lets out an adorable yawn in her cozy oversized sweater. Gentle dawn sunlight streams through sheer white drapes, catching the dust motes around her playful cat ears.",
+    "promptTokens": [
+      "cozy_bedroom",
+      "morning_sunlight",
+      "stretching",
+      "yawning",
+      "open_back_sweater",
+      "carpet",
+      "cat_ear_headband",
+      "fake_hair_ornament",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

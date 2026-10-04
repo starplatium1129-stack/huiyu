@@ -1,0 +1,79 @@
+{
+  "kind": "blueprint",
+  "id": "megumi_nsfw_bath_translucent_solo",
+  "revision": 1,
+  "sortOrder": 1448,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "megumi_nsfw_bath_translucent_solo",
+    "title": "加藤惠 · 浴后薄纱毛巾的水光独奏 ·「在浴室里……脑子里却全是你的事」",
+    "category": "水光湿身",
+    "characterId": "katou_megumi",
+    "description": "【浴室·深夜】泡完热水澡的惠坐在水汽弥漫的瓷砖边缘，微湿的短发贴在白皙颈项。薄透的湿浴巾半掩着胸脯，单手在水汽氤氲中悄悄探入腿间——「明明是最普通的成年女性子……被伦也君那样看着……连自己都变得有些奇怪了呢。」",
+    "location": "浴室·深夜",
+    "action": "斜坐浴池边微湿浴巾半遮，单手探入腿间自抚，水珠顺锁骨滑落",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Megumi Kato sits on the smooth tiled edge of a steaming bathroom late at night, a soaked white towel clinging translucently over her petite frame. Droplets of moisture glisten down her delicate collarbone and bare stomach as one slender hand glides between her trembling thighs beneath the rising vapor. Her calm brown eyes turn glossy with private longing, lips parted in a quiet sigh of shy pleasure. Sensual vertical composition, soft cinematic rim light cutting through misty steam, detailed bathroom background, solo 1girl, no text.",
+    "nsfwProse": "Sitting upon the tiled tub edge with a soaked white towel clinging translucently over small bare breasts, Megumi Kato touches her wet thighs in quiet, misty yearning amidst warm bathroom vapors.",
+    "promptTokens": [
+      "bathroom",
+      "bath_edge",
+      "steam",
+      "water_droplets",
+      "night",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "sitting_on_edge",
+      "bathtub",
+      "wet_skin",
+      "wet_towel",
+      "small_towel",
+      "translucent_clothing",
+      "nipples_visible_through_clothes",
+      "bare_breasts",
+      "hand_between_legs",
+      "masturbation",
+      "pussy_juice",
+      "heavy_blush",
+      "parted_lips"
+    ]
+  }
+}

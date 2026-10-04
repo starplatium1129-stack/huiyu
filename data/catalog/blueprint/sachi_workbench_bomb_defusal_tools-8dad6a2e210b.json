@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "sachi_workbench_bomb_defusal_tools",
+  "revision": 1,
+  "sortOrder": 1194,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sachi_workbench_bomb_defusal_tools",
+    "title": "小岭幸 · 地下工坊的硬核防爆拆解",
+    "category": "硬核反差",
+    "characterId": "komine_sachi",
+    "outfitId": "maid_uniform",
+    "coverageTags": [
+      "tactical"
+    ],
+    "description": "【小岭幸 · 地下工坊的硬核防爆拆解】堆满电子元件、示波器与机械零件的地下隐秘工坊内，工作台上一盏强光台灯低垂。幸依然身穿女仆装，但手上却熟练地戴着防静电绝缘手套，正用精密的螺丝刀与线钳全神贯注地调试着一枚防爆引信装置。女仆围裙与硬核军工仪器的极致反差，完美诠释了美浜学园第一全能者的深不可测。",
+    "location": "地下隐密车库机械工作台前",
+    "action": "手持螺丝刀与线钳俯身专注检修防爆引信，强光灯照射操作台，神情冷静专业",
+    "timeOfDay": "夜间",
+    "lighting": "聚焦于工作台零件上的极高对比度冷白聚光灯与周围幽暗阴影",
+    "camera": "medium close-up, cowboy shot, high contrast industrial focus",
+    "mood": "冷静硬核",
+    "sceneTags": [
+      "workshop",
+      "workbench",
+      "tools",
+      "screwdriver",
+      "electronics",
+      "maid_dress",
+      "focused",
+      "pink_hair"
+    ],
+    "promptProse": "Focusing with surgeon-like precision under a focused desk lamp in an underground workshop, Sachi disassembles a complex technical apparatus with a screwdriver in her maid uniform. Dramatic high-contrast shadows carve out the contrast between her delicate lace apron and heavy industrial tools.",
+    "promptTokens": [
+      "technical_workshop",
+      "workbench",
+      "holding_screwdriver",
+      "electronic_parts",
+      "desk_lamp_glow",
+      "maid_dress",
+      "intense_focus",
+      "pink_hair",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1536x1152"
+  }
+}

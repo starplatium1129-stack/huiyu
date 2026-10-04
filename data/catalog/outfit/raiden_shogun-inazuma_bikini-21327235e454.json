@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/inazuma_bikini",
+  "revision": 1,
+  "sortOrder": 2,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "inazuma_bikini",
+      "name": "稻妻紫电前系带比基尼",
+      "prose": "a captivating deep purple front-tie string bikini adorned with subtle golden Mitsudomoe emblems, thin side-tie panties, bare shoulders, bare midriff, and glowing violet electro accents",
+      "tokens": [
+        "front-tie_bikini",
+        "triangle_bikini",
+        "purple_bikini",
+        "side-tie_panties",
+        "cleavage",
+        "bare_shoulders",
+        "bare_midriff",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_headpat_horn_sensitive_melting",
+  "revision": 1,
+  "sortOrder": 1303,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_headpat_horn_sensitive_melting",
+    "title": "雅儿贝德 · 抚角摸头的融化娇羞",
+    "category": "反差娇羞",
+    "characterId": "albedo_overlord",
+    "description": "【雅儿贝德 · 抚角摸头的融化娇羞】在无人的回廊角落，因为受到你的温和表扬，你伸出手掌轻轻揉了揉她的发顶、并指尖不经意擦过她额旁洁白敏感的恶魔之角。雅儿贝德浑身如同触电般微微一颤，双翼瞬间绷紧又软软垂下，两颊涨得通红，双腿发软几乎站立不稳，双手合十抵在胸前，喉间溢出甜腻的轻吟——「啊……呀……角……不能摸那里……身体……会融化掉的……」",
+    "location": "水晶吊灯柔光照耀的幽静回廊拐角",
+    "action": "被摸头触碰敏感角部，双手护胸身体微蜷发软，脸红如醉、眼神水润迷离娇喘",
+    "timeOfDay": "黄昏",
+    "lighting": "回廊墙壁上水晶壁灯的浪漫暖调光晕",
+    "camera": "medium close-up, slightly high angle, melting reaction",
+    "mood": "极致融化",
+    "sceneTags": [
+      "corridor",
+      "crystal_lamp",
+      "headpat",
+      "touching_horns",
+      "curved_horns",
+      "white_dress",
+      "heavy_blush",
+      "blushing_ears",
+      "teary_eyes",
+      "parted_lips",
+      "melting_expression"
+    ],
+    "promptProse": "Leaning weakly against the corridor wall as the viewer gently strokes her head and brushes against her sensitive white horns, Albedo completely melts. Her feathered black wings shudder with intense pleasure, and an all-consuming crimson blush spreads across her cheeks. Clasping her trembling hands to her heaving chest, her golden eyes brim with tearful, overwhelming ecstasy. Tender, expressive anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "corridor",
+      "wall",
+      "curved_horns",
+      "black_wings",
+      "white_dress",
+      "hands_on_chest",
+      "heavy_blush",
+      "blushing_ears",
+      "red_ears",
+      "teary_eyes",
+      "parted_lips",
+      "saliva_trail",
+      "melting_expression",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "official_white_dress",
+    "coverageTags": [
+      "gap_moe",
+      "sensitive",
+      "sweet"
+    ]
+  }
+}

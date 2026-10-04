@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc193",
+  "revision": 1,
+  "sortOrder": 190,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "On a high sea-view balcony under a full moon, Shiki Natsume in a thin semi-transparent white silk nightgown stands at the railing, slender bare legs with moonlit skin sheen, bare feet on stone floor. Sea breeze clings the sheer fabric to her silhouette as moonlight highlights her blush and mole.",
+    "auditRevision": "careful-batch01-2026-08-27",
+    "camera": "近景特写",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "诱惑",
+    "id": "sc193",
+    "lighting": "皎洁月光逆光与大楼局部弱光",
+    "location": "公寓高空阳台",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": true,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_nightgown, translucent_nightgown, sheer_fabric, clinging_fabric, bare_shoulders, delicate_collarbone, looking_back, grabbing_clothes, heavy_blush, parted_lips, balcony, high_balcony, railing, ocean_view, night, full_moon, silver_moonlight, cool_rim_light, sea_breeze, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R18",
+    "season": "夏",
+    "story": "【夏目 · 真丝半透明睡裙海滨月夜】寂静的海滨度假公寓高空阳台。夜空澄澈，一轮巨大的圆月将清冷皎洁的银辉泼洒在平静如镜的海面上。夏目此时只穿着一件极其薄软的半透明白色真丝睡裙伫立在围栏前，里面完全真空。海风徐徐吹过，不仅吹乱了她柔顺的黑色长发，更是将轻薄如纱的睡裙死死贴紧在她完美毫无瑕疵的娇躯线条上，前胸凸显的诱人傲然痕迹与饱满轮廓在月光的逆光勾勒下近乎全透明！她面红耳赤地回过头，眼角的泪痣闪烁着极致的妩媚与独占欲，主动扯住你的衣角——「大笨蛋...风有点凉...你还不打算从后面...把我抱进房间里去吗...」",
+    "storyJa": "【夏目・海辺の月夜にぴったりのシルク半透明のナイトガウン】静かな海辺のリゾートマンションのハイバルコニー。夜空は晴れ渡り、鏡のような穏やかな海に巨大な満月が冷たく輝く銀色の光をふりまいていた。夏目は、極薄で柔らかな半透明の白いシルクのナイトガウンだけを着てフェンスの前に立っており、中は完全に真空になっていました。海風がゆっくりと吹き抜け、彼女の絹のような長い黒髪を乱すだけでなく、薄いガーゼのナイトガウンが彼女の完璧で完璧な体のラインにぴったりと張り付いた。魅惑的で誇らしげな胸の跡と豊満な胸の輪郭が、月明かりの逆光でほぼ透けて見える！彼女は顔を赤らめて振り返り、目の端の泣きぼくろが極度の魅力と独占欲で光り、彼女は率先してあなたの服の角をつかみました。――「ばか……少し風が冷たい。いつまでそこにいるつもり？　後ろから抱きしめて、部屋まで連れていって。」",
+    "tags": [
+      "mole_under_eye",
+      "silk_nightgown",
+      "translucent",
+      "bare_legs",
+      "smooth_thighs",
+      "balcony",
+      "full_body",
+      "barefoot",
+      "moonlight"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "月明夜：半透明真丝睡裙的绝对占有视界",
+    "usage": [
+      "壁纸级",
+      "成人向"
+    ],
+    "weather": "澄澈月夜海风"
+  }
+}

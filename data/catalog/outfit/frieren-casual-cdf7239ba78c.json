@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "frieren/casual",
+  "revision": 1,
+  "sortOrder": 62,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "casual",
+      "name": "便服",
+      "prose": "a soft casual dress she wears away from battle",
+      "tokens": [
+        "casual_clothes",
+        "dress",
+        "cardigan"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

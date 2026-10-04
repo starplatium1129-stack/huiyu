@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc134",
+  "revision": 1,
+  "sortOrder": 132,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc134",
+    "title": "黎明拂晓的真空支配",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 晨间真空大衬衫绝对独占】一个无限慵懒的假日清晨，金色的拂晓碎光透过巨大的落地窗。昨晚宿醉过后的夏目从白色大床中央醒来，身上仅仅松垮垮地套着你那一身纯黑色的长袖衬衫，里面完全是真空状态。衬衫纽扣大开，前襟挂在圆润的香肩两侧，大片白皙笔直的长腿毫无防备地交叠袒露。眼角的泪痣被初升的朝阳照亮，性感得不可救药。她半撑着身体斜睨着你，用极具占有欲的傲娇微笑低语——「早安，大变态。盯着人家的腿看够了没有？看够了的话...就过来抱我。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "绝对绝对独占",
+    "season": "不限",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "mole_under_eye",
+      "oversized_black_shirt",
+      "unbuttoned_shirt",
+      "no_bra",
+      "bare_legs",
+      "crossed_legs",
+      "propped_on_elbow",
+      "tsundere_smile",
+      "teasing",
+      "dawn",
+      "morning_light",
+      "white_bed",
+      "medium_shot"
+    ],
+    "mature": true,
+    "location": "双人床榻被窝",
+    "weather": "温暖初晴",
+    "camera": "平视近景特写",
+    "lighting": "朝阳柔和侧光逆光",
+    "usage": [
+      "壁纸级",
+      "绝对独占",
+      "成人向"
+    ],
+    "prompt": "adult, 1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, shirt, oversized_shirt, open_shirt, disheveled_clothes, bare_shoulders, nude, bare_legs, leaning_back, possessive, tsundere, teasing, smile, morning, cinematic, depth, field, medium_shot, morning_light, backlight, detailed_background, cinematic_lighting",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, pants, underwear, bra, panties, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "storyJa": "【夏目・モーニングバキュームビッグシャツ絶対独占】限りなく怠惰な休日の朝、床から天井まで届く大きな窓から金色の夜明けの光が差し込みます。昨夜二日酔いの後、夏目は大きな白いベッドの真ん中で目を覚ましました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。シャツのボタンは大きく開き、前立ては丸い肩の両側に垂れ下がっています。長くて色白でまっすぐな脚が無造作に露出します。目尻の泣きぼくろが朝日に照らされて、どうしようもなくセクシーです。彼女は体を半分伸ばして横目であなたを見つめ、非常に独占的で傲慢な笑顔でささやきました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
+    "rating": "R18",
+    "animaCaption": "At a lazy holiday dawn with golden light streaming through the huge window, Shiki Natsume in the white bed wears only your oversized black long-sleeve shirt with every button undone, the open front hanging off her round shoulders and completely bare beneath; her pale slender legs are crossed and exposed as she props herself up on one elbow and slants a possessive, teasing glance at you, the tear-mole lit by the rising sunlight.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

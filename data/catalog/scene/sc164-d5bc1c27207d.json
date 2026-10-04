@@ -1,0 +1,60 @@
+{
+  "kind": "scene",
+  "id": "sc164",
+  "revision": 1,
+  "sortOrder": 161,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the locked occult club room while a storm lashes the window, Ayachi Nene lies on her back across the wide office desk, her school uniform fully unbuttoned over black lace lingerie, both hands gripping the desk edge as she looks up at the viewer with teary eyes, a heavy blush and a heart-shaped ahoge, her lips parted in quick breathing.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "camera": "第一人称",
+    "category": "亲密/After_Story",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "羞怯",
+    "id": "sc164",
+    "lighting": "动态强弱暗影",
+    "location": "研究会课桌",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": true,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, nene_school_uniform, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_stella_school_uniform_fully_unbuttoned_over_black_lace_lingerie, navy_skirt, sheer_white_thighhigh_socks, lying_on_back_on_wide_office_desk_with_both_hands_gripping_desk_edge, teary_faced_looking_up_at_viewer_with_heavy_flushed_blush_and_heart_shaped_ahoge_and_open_mouth_heavy_breathing, violent_rain_lashing_outside_window_of_locked_club_room_at_night, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R18",
+    "season": "不限",
+    "story": "【成年 After Story · 宁宁 · 课桌禁忌越界篇】深夜空无一人的神秘学研究部，窗外暴雨狂轰。反锁的木门隔绝了世界，宁宁被你温柔地推倒在宽大的办公桌上。平时整洁的校服已经被你完全解开，露出了里面精致羞耻的黑色蕾丝内衣，黑色布料在白皙的肌肤上勾勒出让人血脉偾张的弧度。她双手死死抓着桌角，泪眼婆娑地仰望着将她完全笼罩的你，头顶的呆毛直接害羞得疯狂卷曲成极其工口的心形螺旋，小嘴微张急促娇喘——「呜...柊史...不行了...在社办这种地方...宁宁的理智快要被你彻底坏掉了...」",
+    "storyJa": "【寧々・大人のアフターストーリー・・・机上の禁忌犯編】深夜のオカルト研究部は閑散としており、窓の外では大雨が降り続いていた。鍵のかかった木の扉が外界を遮断し、寧々はあなたによってそっと大きな机の上に押し倒されました。普段はきちんとしている制服の紐を完全に解き、その下にある絶妙で恥ずかしい黒いレースの下着が露わになります。黒い布地が、白い肌に血の凍るような弧を描きます。彼女は両手でテーブルの角を握り、涙を浮かべながら自分を包み込む君を見上げた。彼女の頭の上のアホ毛はとても恥ずかしがり屋で、非常にエロティックなハート型の螺旋に狂ったように丸まり、彼女の小さな口がわずかに開き、彼女は息を呑みました。――「柊史……ここ、部室ですよ。こんなにどきどきさせられたら、寧々はもう平静でいられません……。」",
+    "tags": [
+      "hair_ribbon",
+      "school_uniform",
+      "unbuttoned_shirt",
+      "lace_lingerie",
+      "sheer_white_thighhigh_stockings",
+      "lying_on_back",
+      "lying_on_desk",
+      "gripping_desk_edge",
+      "bare_shoulders",
+      "cleavage",
+      "heavy_blush",
+      "tears_in_eyes",
+      "open_mouth",
+      "heavy_breathing",
+      "club_room",
+      "night",
+      "rain",
+      "ahoge",
+      "sensual",
+      "pov"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "反锁社办：课桌上的魔女决堤仪式",
+    "usage": [
+      "核心协议",
+      "R15"
+    ],
+    "weather": "窗外狂风暴雨"
+  }
+}

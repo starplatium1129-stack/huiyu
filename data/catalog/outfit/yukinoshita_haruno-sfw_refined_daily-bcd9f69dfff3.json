@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/sfw_refined_daily",
+  "revision": 1,
+  "sortOrder": 217,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "sfw_refined_daily",
+      "name": "墨蓝缎面晚宴套装",
+      "prose": "a midnight-blue satin jacket with matching wide-leg evening trousers, a high-neck ivory silk blouse and small silver earrings",
+      "tokens": [
+        "blue_suit",
+        "satin",
+        "wide_leg_pants",
+        "ivory_blouse",
+        "high_collar",
+        "silver_earrings"
+      ],
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

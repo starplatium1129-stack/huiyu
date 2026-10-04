@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/standard",
+  "revision": 1,
+  "sortOrder": 316,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "default": true,
+      "id": "standard",
+      "isDefault": true,
+      "name": "拉特兰制服",
+      "prose": "her slate dark tailored long overcoat with a white collared shirt, a black necktie, dark trousers and a warm lap blanket, seated in her high-tech wheelchair",
+      "tokens": [
+        "overcoat",
+        "coat",
+        "white_shirt",
+        "necktie",
+        "trousers",
+        "lap_blanket",
+        "wheelchair",
+        "dark_clothes"
+      ]
+    }
+  }
+}

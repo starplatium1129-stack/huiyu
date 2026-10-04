@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "quillpen_arknights",
+  "revision": 1,
+  "sortOrder": 32,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "quillpen_arknights",
+    "profile": {
+      "id": "quillpen_arknights",
+      "name": "羽毛笔",
+      "alias": [
+        "La Pluma",
+        "羽毛笔",
+        "拉菲艾拉·席尔瓦",
+        "Rafaela Silva"
+      ],
+      "type": "popular",
+      "icon": "🍸",
+      "visual_dna": {
+        "hair": "银白色至浅灰色为主色、发尾与内层渐变至珊瑚粉/橙红色的蓬松层次感中短发；头顶高高竖起一束醒目的红腿叫鹤羽冠呆毛（羽毛状呆毛），两鬓垂下较长的修饰脸型发缕，后颈发尾微翘且富有轻盈空气感。",
+        "hair_color": "银白色至浅灰配发尾珊瑚粉红/橙红渐变（silver white with coral pink / red gradient tips）",
+        "eyes": "鲜艳的朱红色/珊瑚橙红双瞳，眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。",
+        "hairstyle": "蓬松层次感渐变中短发，带羽毛状高耸呆毛与两鬓垂发（layered short hair with feather ahoge and side locks）",
+        "uniform": "多索雷斯热带机能风格调酒战斗服。深灰/黑底短款露肩连帽外披夹克（半搭半穿），内搭黑色抹胸短背心（露脐 crop top），露出平坦腰腹；下身着高腰黑色工装热裤/短裤，系多功能机能战术腰带与调酒工具挂包、单侧大腿皮质绑带；脚穿黑色厚底机能短靴配不对称脚踝短袜；颈戴黑色细项圈（choker），右手戴黑色半指战术防滑手套。",
+        "expression": "常态下神情慵懒困倦、微张嘴唇、反应慢半拍的迷糊乖巧神态；进入战斗时眼神骤变，展现出高度专注、冷冽而凌厉的斩杀者气场（强烈的反差萌）。",
+        "style": "热带机能风（Tropical Techwear）、反差萌（Gap Moe）、慵懒少女与重型杀戮兵器的暴力美学（Heavy Weapon Cute Girl）。",
+        "signature": "比人还高的重型单刃黑色机械斩首大镰刀（Giant Scythe，由义兄龙舌兰亲手打造调整）、头顶叫鹤羽冠呆毛、银白染珊瑚红的发丝与朱红睡眼、随身调酒雪克壶配件（非信使/邮差，武器绝非羽毛笔）。"
+      },
+      "personality": [
+        "嗜睡迷糊",
+        "反应慢半拍",
+        "沉默寡言",
+        "温顺乖巧",
+        "依赖家人（义兄龙舌兰）",
+        "战斗果决凌厉",
+        "纯真天然呆",
+        "重情重义"
+      ],
+      "likes": [
+        "睡觉与打瞌睡",
+        "调酒与研发冰镇特调饮品",
+        "冰饮与甜果汁（如甘蔗汁）",
+        "晒太阳发呆",
+        "和哥哥龙舌兰（埃内斯托）待在一起",
+        "打扫与整理吧台"
+      ],
+      "identity": {
+        "role": "前玻利瓦尔军官之女、多索雷斯酒吧调酒师兼安保、罗德岛近卫干员",
+        "age": "未知（外表为年轻少女）",
+        "occupation": "调酒师 / 保镖 / 罗德岛干员",
+        "faction": "玻利瓦尔 / 罗德岛"
+      },
+      "tags": [
+        "银白色至浅灰配发尾珊瑚粉红/橙红渐变（silver white with coral pink / red gradient tips）",
+        "鲜艳的朱红色/珊瑚橙红双瞳，眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。"
+      ],
+      "bg_story": "羽毛笔本名拉菲艾拉·席尔瓦，是玻利瓦尔军官之女，父亲阵亡后被潘乔·萨拉斯收养，与义兄龙舌兰（埃内斯托）一同在多索雷斯长大，并在其经营的酒吧中担任调酒师与服务生。多索雷斯事件落幕后，她跟随龙舌兰一同加入罗德岛，成为近卫收割者干员。尽管平时总是一副睡不醒、反应迟钝的迷糊模样，但手握哥哥为她特制的巨大斩首镰刀时，能在战场上以惊人的敏捷与力量精准收割敌人。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "la pluma (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "medium_hair",
+        "hair_gradient",
+        "ahoge",
+        "winged_ears",
+        "red_eyes",
+        "sleepy",
+        "black_clothes",
+        "grey_clothes",
+        "crop_top",
+        "jacket",
+        "hotpants",
+        "scythe",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-quillpen_arknights.png?v=5",
+        "alt": "羽毛笔热门角色立绘"
+      },
+      "speech": "羽毛笔向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "la pluma",
+        "la pluma (arknights)",
+        "la_pluma_(arknights)",
+        "rafaela silva",
+        "arknights"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白短发红瞳；镰刀信使兼调酒师；Danbooru 词条 la_pluma_(arknights)（2026-08-29 修正，原 quillpen 调研有误，WD14 反推实测命中）",
+        "research": "2026-08-15 初调研误作 Quillpen（Danbooru quillpen 0 posts，视觉词兜底）；2026-08-29 修正：官方英文名 La Pluma（本名拉菲艾拉·席尔瓦），Danbooru 词条 la_pluma_(arknights)",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "displayName": "羽毛笔",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "la pluma (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "quillpen_arknights",
+      "identityProse": "La Pluma (Rafaela) from Arknights, a soft-spoken Liberi girl with white-to-teal gradient hair, feathery winged ears, sleepy crimson eyes, and an ahoge.",
+      "identityTokens": [
+        "la pluma (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "medium_hair",
+        "hair_gradient",
+        "ahoge",
+        "winged_ears",
+        "red_eyes",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "La Pluma",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

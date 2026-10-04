@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/sfw_study",
+  "revision": 1,
+  "sortOrder": 969,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "sfw_study",
+      "name": "夜间书房针织便装",
+      "prose": "a soft blue sweater and a long cream skirt",
+      "tokens": [
+        "blue_sweater",
+        "long_cream_skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

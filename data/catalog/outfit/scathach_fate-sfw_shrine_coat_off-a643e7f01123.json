@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "scathach_fate/sfw_shrine_coat_off",
+  "revision": 1,
+  "sortOrder": 140,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "scathach_fate",
+    "outfit": {
+      "id": "sfw_shrine_coat_off",
+      "name": "夜谈旅装（外套脱下）",
+      "prose": "a white shirt, brown vest, dark trousers and leather boots with a wide-brimmed hat; the long traveling coat is removed and shared as a lap covering",
+      "tokens": [
+        "white_shirt",
+        "brown_vest",
+        "dark_pants",
+        "boots",
+        "hat",
+        "coat_on_lap"
+      ],
+      "isDefault": false,
+      "default": false,
+      "isNsfw": false
+    }
+  }
+}

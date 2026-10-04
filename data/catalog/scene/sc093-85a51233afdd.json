@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc093",
+  "revision": 1,
+  "sortOrder": 91,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a two-person medium shot under one shared umbrella on a rainy night, Shiki Natsume in a grey sweater, navy pleated skirt and sheer black tights links her arm with the viewer while holding the umbrella handle, trying to keep a composed expression as cool street lights reflect in puddles.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "伞下双人半身中景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "紧张",
+    "id": "sc093",
+    "lighting": "雨夜路灯与湿地反射",
+    "location": "街上",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, sunny",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, grey_sweater, navy_pleated_skirt, sheer_black_tights, ankle_boots, walking_under_one_shared_umbrella, linking_arm_with_viewer, holding_umbrella_handle, rainy_night, street_lights_reflecting_in_puddles, heavy_rain_bokeh, red_ears, composed_shy_expression, looking_forward, medium_shot, cool_rainy_street_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "夏",
+    "story": "【夏目 · 雨夜共伞的自然靠近】夏夜回家途中，雨势让伞下的空间越来越窄。夏目主动挽住你的手臂，把两个人拉到不会淋湿的距离，脸上却努力维持平静。你提醒她耳朵红了，她立刻看向前方——「只是走得太快。伞这么小，靠近是合理选择……别故意把路走短。」",
+    "storyJa": "【夏目・雨の夜の相合傘の自然な親近感】夏の夜の帰り道、雨で傘の下はどんどん狭くなった。夏目は率先して腕を掴み、濡れない距離まで二人を引っ張りながらも、懸命に平静な表情を保っていた。彼女の耳が赤いことを思い出させると、彼女はすぐに前を向きます――「少し歩くのが速かっただけ。傘がこんなに小さいなら、近づくのは合理的……わざと近道しないで。」",
+    "tags": [
+      "mole_under_eye",
+      "grey_sweater",
+      "sheer_black_tights",
+      "rainy_street",
+      "medium_shot",
+      "ankle_boots",
+      "umbrella",
+      "arm_linked"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "雨夜共伞的自然靠近",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雨"
+  }
+}

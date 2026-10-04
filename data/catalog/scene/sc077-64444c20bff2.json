@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc077",
+  "revision": 1,
+  "sortOrder": 75,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot inside a traditional tea room, Shiki Natsume kneels in proper seiza on tatami wearing a dark green kimono with a gold obijime. She offers a tea bowl with both hands at the proper angle, her lowered gaze and restrained blush framed by warm shoji light.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "半身中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "温柔",
+    "id": "sc077",
+    "lighting": "窗光",
+    "location": "茶室",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "safe, 1girl, pov, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, dark_green_kimono, gold_obijime, kneeling_in_seiza_on_tatami, offering_tea_bowl_with_both_hands, tea_bowl, close_distance, lowered_gaze, restrained_blush, traditional_tea_room, shoji_window_light, medium_shot, detailed_background, cinematic_lighting, @rella",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 茶碗递来时的温柔】秋日下午的茶道室里，夏目跪坐在榻榻米上，动作认真得近乎一丝不苟。她把亲手点好的茶转到最适合入口的角度，双手递给你，随后才发现彼此距离过近。她低下眼睛掩住动摇——「只是练习礼法，别想得太复杂。味道……如果不合适，我可以再做一碗。」",
+    "storyJa": "【夏目・ティーカップを渡した時の優しさ】秋の午後の茶室で、夏目は畳の上に膝をつき、その動作はほとんど細心の注意を払っていた。彼女は注文したお茶を入り口に最適な角度に回し、両手で渡してくれた。それから彼女は、彼らが近すぎることに気づきました。彼女は震えを隠すために目を下げた――「礼儀作法の練習をしているだけ。あまり深く考えないで。味は……口に合わなければ、もう一杯点ててもいい。」",
+    "tags": [
+      "mole_under_eye",
+      "kimono",
+      "smooth_thighs",
+      "white_tabi",
+      "tatami",
+      "dark_green_kimono",
+      "medium_shot",
+      "tea_bowl",
+      "offering_tea",
+      "seiza"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "茶碗递来时的温柔",
+    "usage": [
+      "展示图",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

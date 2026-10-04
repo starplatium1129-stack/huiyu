@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/casual_summer_onepiece",
+  "revision": 1,
+  "sortOrder": 825,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "casual_summer_onepiece",
+      "name": "豪农千金素雅长裙",
+      "prose": "a refined summer casual outfit: a sleeveless pale lavender cotton maxi sundress with fine pintucks down the bodice, a thin white cardigan draped loosely over her forearms, and woven flat sandals",
+      "tokens": [
+        "sundress",
+        "lavender_dress",
+        "maxi_dress",
+        "bare_shoulders",
+        "cardigan",
+        "white_cardigan",
+        "casual_wear"
+      ]
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "kind": "character",
+  "id": "momo_velia_deviluke",
+  "revision": 1,
+  "sortOrder": 94,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "momo_velia_deviluke",
+    "profile": {
+      "id": "momo_velia_deviluke",
+      "name": "梦梦·贝莉雅·戴比路克",
+      "alias": [
+        "Momo Belia Deviluke",
+        "梦梦",
+        "モモ",
+        "第三王女",
+        "乐园计划",
+        "小姨子",
+        "茉茉"
+      ],
+      "type": "popular",
+      "icon": "🍇",
+      "portrait": {
+        "image": "../assets/characters/popular-momo_velia_deviluke.png?v=5",
+        "alt": "茉茉 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "齐肩粉色短发 · 两侧微翘发缕 · 娇艳紫粉双瞳",
+        "hair_color": "柔和浅粉",
+        "eyes": "妩媚勾人紫粉双眸",
+        "hairstyle": "短卷发带双侧翘发 · 黑色爱心恶魔尾巴 · 丰腴沙漏身段",
+        "uniform": "彩南高校水手制服 / 乐园计划透视薄纱蕾丝睡裙",
+        "expression": "娇媚乖巧 · 小恶魔腹黑 · 运筹帷幄",
+        "style": "demure seductive succubus princess",
+        "signature": "粉色短卷发、紫粉魅眸、心形恶魔尾巴、乐园计划与腹黑小恶魔神态"
+      },
+      "personality": [
+        "外表是礼貌温顺、知书达理的大家闺秀",
+        "内心深处是擅长谋略、极度腹黑的“小恶魔”策士",
+        "深爱着姐夫结城梨斗，发誓要为梨斗建立合法的“乐园（全员后宫）”",
+        "拥有与植物心灵沟通、召唤各种异星触手与藤蔓的强大能力",
+        "喜欢悄悄钻进梨斗的被窝里进行各种清晨贴身侍奉"
+      ],
+      "likes": [
+        "谋划推行“乐园计划”将所有女孩拉入梨斗的怀抱",
+        "清晨潜入梨斗的被窝进行甜蜜偷袭",
+        "培育和沟通各种奇特的外星植物（D-Dial）",
+        "看到梨斗手足无措又害羞的可爱表情"
+      ],
+      "classic_cg": {
+        "title": "乐园计划的床畔呢喃",
+        "description": "薄纱透视睡裙下，粉发小恶魔王女侧卧在床铺边，尾巴尖的爱心轻触对方，耳语倾诉着全员后宫的美妙愿景。"
+      },
+      "identity": {
+        "role": "戴比路克星第三王女 / “乐园计划”总设计师",
+        "age": "少女",
+        "occupation": "王女 / 彩南高中学生 / 植物操控使",
+        "faction": "戴比路克星际帝国 · 彩南高中"
+      },
+      "tags": [
+        "粉发短发",
+        "恶魔尾巴",
+        "紫瞳",
+        "巨乳",
+        "小恶魔",
+        "腹黑",
+        "乐园计划",
+        "出包王女"
+      ],
+      "bg_story": "梦梦·贝莉雅·戴比路克是《出包王女 Darkness》的真正主导灵魂人物，戴比路克帝国第三王女。性格表面温婉柔弱，实则兼具极高智商与小恶魔般的腹黑。在目睹了梨斗因无法在众多女孩中做出抉择而苦恼后，决意利用自己的王族特权推行“乐园计划”，让所有喜欢梨斗的女孩都成为梨斗的侧室。",
+      "palette": [
+        "魅惑紫",
+        "淡粉色",
+        "夜空黑"
+      ],
+      "weather": [
+        "温室花影",
+        "星夜私语",
+        "微风清晨"
+      ],
+      "speech": "梨斗先生……如果大家都能幸福地在一起，那不就是最完美的乐园了吗？今晚，也请允许梦梦钻进您的被窝哦♪",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "momo_velia_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "short_hair",
+        "pink_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "accent_color": "#c084fc",
+      "bg_color": "#16081c"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "momo_velia_deviluke",
+        "momo",
+        "momo_(to_love-ru)",
+        "梦梦",
+        "梦梦·贝莉雅·戴比路克",
+        "梦梦",
+        "第三王女",
+        "乐园计划",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第三王女，表面温文尔雅、礼貌纯情，实则极具小恶魔般的腹黑与策士手腕；主导并全力推行“乐园计划”（帮助梨斗建立全员后宫），擅长召唤使用各类奇异的外星植物",
+        "research": "2026-09-02 调研（Danbooru momo_velia_deviluke 1250+ posts）",
+        "world": "彩南町 · 戴比路克星王族"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "rella",
+        "mika_pikazo"
+      ],
+      "displayName": "梦梦·贝莉雅·戴比路克",
+      "exactPrefixes": [
+        "momo_"
+      ],
+      "exactTokens": [
+        "momo_velia_deviluke"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "momo_velia_deviluke",
+      "identityProse": "Momo Belia Deviluke from To LOVE-Ru by Kentaro Yabuki, the third princess of Planet Deviluke with shoulder-length soft pastel pink hair with two curled strands sticking out, seductive amethyst purple-pink eyes, a voluptuous hourglass figure, a slender spade-heart devil tail, and a demure yet mischievous expression.",
+      "identityTokens": [
+        "momo_velia_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "short_hair",
+        "pink_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "モモ・ベリア・デビルーク (Momo)",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

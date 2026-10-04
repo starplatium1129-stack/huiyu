@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/white_beret_dress",
+  "revision": 1,
+  "sortOrder": 794,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "white_beret_dress",
+      "name": "春日坡道命运白裙与贝雷帽",
+      "prose": "the iconic white one-piece summer dress with short puff sleeves, a flowing flared skirt fluttering in the spring breeze, and her signature white beret resting lightly on her short brown bob",
+      "tokens": [
+        "white_dress",
+        "one-piece_dress",
+        "puff_sleeves",
+        "flared_skirt",
+        "white_beret",
+        "beret",
+        "casual_wear",
+        "short_hair",
+        "bob_cut"
+      ]
+    }
+  }
+}

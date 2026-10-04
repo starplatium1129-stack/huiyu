@@ -1,0 +1,34 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 396,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "default": false,
+      "id": "nsfw_nude",
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "prose": "completely naked, full nudity, fair porcelain skin bathed in warm amber candlelight, glowing golden antlers, soft blonde wavy hair, voluptuous and elegant feminine body, full breasts with sensitive pink nipples, slender waist, curving hips, navel, delicate moist pink pussy, bare legs, bare feet, poetic romantic intimacy",
+      "styleHint": "tender romantic candlelight",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "antlers",
+        "deer_ears",
+        "breasts",
+        "pink_nipples",
+        "slender_waist",
+        "curvy_hips",
+        "navel",
+        "pussy",
+        "bare_legs",
+        "bare_feet"
+      ]
+    }
+  }
+}

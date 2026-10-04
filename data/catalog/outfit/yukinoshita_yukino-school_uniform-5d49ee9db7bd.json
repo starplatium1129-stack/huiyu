@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/school_uniform",
+  "revision": 1,
+  "sortOrder": 193,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "school_uniform",
+      "name": "校服",
+      "prose": "her neat navy school uniform with a ribbon and pleated skirt",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "pleated_skirt",
+        "navy_clothes",
+        "ribbon"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "caren_fireplace_bible_shoulder_lean",
+  "revision": 1,
+  "sortOrder": 213,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "caren_fireplace_bible_shoulder_lean",
+    "title": "卡莲 · 壁炉圣经前的倚肩依偎",
+    "category": "温柔陪伴",
+    "characterId": "caren_hortensia",
+    "description": "【卡莲 · 壁炉圣经前的倚肩依偎】深夜火光微跳的教会休息室，柴火噼啪作响。卡莲身穿黑色真丝吊带睡裙坐在厚地毯上，双手合着一本厚重的皮革圣经，身体不知不觉倚靠在你肩头。微弱的火光勾勒出她优美修长的颈项与露背曲线，银白发丝垂在你胸前，呼吸均匀而恬静——「只有在这一刻……我才能忘记世间那些嘈杂的声音，感受到真正的安息。」",
+    "location": "教会后室石砌壁炉前的厚织羊毛地毯上",
+    "action": "合着圣经将头轻倚在视角肩头，火光映照侧颜，嘴角挂着静谧的安心微笑",
+    "timeOfDay": "深夜",
+    "lighting": "石砌壁炉柴火跳跃的暖红光影",
+    "camera": "cowboy shot, medium angle, cozy hearthside view",
+    "mood": "静谧安息",
+    "sceneTags": [
+      "fireplace",
+      "carpet",
+      "holding_bible",
+      "book",
+      "black_nightgown",
+      "bare_shoulders",
+      "head_on_shoulder",
+      "gentle_smile",
+      "peaceful"
+    ],
+    "promptProse": "Resting her silver head peacefully against the viewer's shoulder before a roaring stone fireplace late at night, Caren Hortensia holds an antique leather-bound Bible in her lap. Dressed in her delicate black silk nightgown, the warm hearth fire highlights her slender back and peaceful features. Her violet eyes gaze softly into the embers. Intimate, tranquil anime artwork, solo 1girl, no text.",
+    "promptTokens": [
+      "fireplace",
+      "hearth",
+      "carpet",
+      "holding_book",
+      "black_nightgown",
+      "bare_shoulders",
+      "cleavage",
+      "head_on_shoulder",
+      "gentle_smile",
+      "white_hair",
+      "purple_eyes",
+      "cozy",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "outfitId": "sensual_black_camisole",
+    "coverageTags": [
+      "healing",
+      "peaceful",
+      "fireplace"
+    ],
+    "adult": true,
+    "sampleRating": "R18"
+  }
+}

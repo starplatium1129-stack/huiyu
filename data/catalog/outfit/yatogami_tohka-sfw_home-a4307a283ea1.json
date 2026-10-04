@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sfw_home",
+  "revision": 1,
+  "sortOrder": 48,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "冬季居家针织装",
+      "prose": "a cream knitted sweater, soft purple trousers and warm socks",
+      "tokens": [
+        "cream_sweater",
+        "purple_pants",
+        "warm_socks"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

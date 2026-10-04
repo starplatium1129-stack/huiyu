@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "albedo_overlord",
+  "revision": 1,
+  "sortOrder": 99,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "albedo_overlord",
+    "profile": {
+      "id": "albedo_overlord",
+      "name": "雅儿贝德",
+      "alias": [
+        "Albedo",
+        "雅儿贝德",
+        "守护者总管",
+        "纯白恶魔"
+      ],
+      "type": "popular",
+      "icon": "🕊️",
+      "portrait": {
+        "image": "../assets/characters/popular-albedo_overlord.png?v=1",
+        "alt": "雅儿贝德 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰乌黑长发 · 洁白恶魔双角",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "璀璨金眸 · 爬虫类竖瞳",
+        "hairstyle": "长直发自然垂落 · 两侧弯曲白色山羊角",
+        "uniform": "纯白露背神圣晚礼服 / 赫尔墨斯三层黑铠",
+        "expression": "端庄圣洁 · 傲视凡俗 · 私下病娇痴情",
+        "style": "regal pure-white succubus guardian overseer",
+        "signature": "白色双角、纯白露背晚礼服、腰间黑色羽翼与金色竖瞳"
+      },
+      "personality": [
+        "绝对的忠诚与崇拜",
+        "智谋通天的守护者领袖",
+        "病娇与独占欲天花板",
+        "被窝里打滚的纯情小女生"
+      ],
+      "likes": [
+        "缝制安兹大人的周边",
+        "处理大坟墓内政",
+        "与心爱之人共处一室"
+      ],
+      "classic_cg": {
+        "title": "三层黑铠的守护者总管",
+        "description": "在纳萨力克大坟墓王座前身披全黑重铠赫尔墨斯、手持战斧守卫圣域的巍峨姿态。"
+      },
+      "identity": "OVERLORD女主角 · 纳萨力克大坟墓守护者总管 · 纯白魅魔",
+      "tags": [
+        "OVERLORD",
+        "守护者总管",
+        "纯白礼服",
+        "黑色羽翼",
+        "病娇",
+        "反差萌"
+      ],
+      "bg_story": "纳萨力克地下大坟墓的守护者总管，统御全体NPC与魔物的最高管理层。原本设定为淫魔，却因设定修改而将所有的爱意与痴狂全盘系于一人之身。对待外人冷酷无情视如尘埃，唯独在心爱之人面前展现出令人忍俊不禁的极端痴情与娇羞。",
+      "palette": [
+        "#eab308",
+        "#1e293b",
+        "#0f172a",
+        "#f8fafc"
+      ],
+      "weather": "王座幽光 / 纯白雪景",
+      "speech": "「您就是我的全世界……请将您的全部，毫无保留地赐予雅儿贝德吧。」",
+      "source": "丸山くがね《不死者之王 / OVERLORD》",
+      "traits": [
+        "succubus",
+        "black_wings",
+        "curved_horns",
+        "yellow_eyes",
+        "yandere"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#1e293b"
+    },
+    "popular": {
+      "id": "albedo_overlord",
+      "displayName": "雅儿贝德",
+      "originalName": "アルベド",
+      "franchise": "OVERLORD",
+      "aliases": [
+        "Albedo",
+        "雅儿贝德",
+        "守护者总管",
+        "纯白恶魔"
+      ],
+      "identityProse": "Albedo from OVERLORD, the supreme Guardian Overseer of the Great Tomb of Nazarick, an exquisite succubus with long glossy raven-black hair, curved white horns on the sides of her head, luminous golden-slitted eyes, a majestic pair of feathered black wings emerging from her waist, and a flawless hourglass figure",
+      "identityTokens": [
+        "albedo_(overlord)",
+        "overlord",
+        "black_hair",
+        "very_long_hair",
+        "horns",
+        "curved_horns",
+        "yellow_eyes",
+        "golden_eyes",
+        "slit_pupils",
+        "black_wings",
+        "feathered_wings",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "exactTokens": [
+        "albedo_(overlord)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, albedo_(overlord)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "MADHOUSE",
+      "curatedArtistStyles": [
+        "so-bin",
+        "Satoshi Tasaki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

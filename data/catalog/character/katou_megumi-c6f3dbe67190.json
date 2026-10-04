@@ -1,0 +1,134 @@
+{
+  "kind": "character",
+  "id": "katou_megumi",
+  "revision": 1,
+  "sortOrder": 111,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "katou_megumi",
+    "profile": {
+      "id": "katou_megumi",
+      "name": "加藤惠",
+      "alias": [
+        "Megumi Kato",
+        "加藤惠",
+        "圣人惠",
+        "惠",
+        "路人女主"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-katou_megumi.png?v=1",
+        "alt": "加藤惠 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "棕色波波头短发 · 后期长发马尾",
+        "hair_color": "深棕 / 浅栗色",
+        "eyes": "柔和深邃的棕色眼眸 · 极浅的笑意",
+        "hairstyle": "自然短波波头 · 齐刘海",
+        "uniform": "丰之崎学园水手服 · 樱桃红针织开衫",
+        "expression": "平静波澜不惊 · 慢半拍吐槽 · 若有若无的温柔浅笑",
+        "style": "understated girlfriend next door",
+        "signature": "春日坡道白贝雷帽、红开衫与‘明明是同班同学却被忽略’的平静吐槽"
+      },
+      "personality": [
+        "存在感看似极淡却有不可逾越的边界",
+        "言行克制，越平静的吐槽杀伤力越大",
+        "愿意默默陪伴他人实现梦想的包容与人情味",
+        "表面无所谓但被忽视时也会赌气吃醋"
+      ],
+      "likes": [
+        "春日盛开的樱花坡道",
+        "便利店的关东煮与热奶茶",
+        "安艺伦也认真的笨拙背影"
+      ],
+      "classic_cg": {
+        "title": "春日坡道的白色贝雷帽",
+        "description": "樱花飞舞的坡道上，她单手轻按被风吹起的白色贝雷帽，回眸露出若有若无的浅笑。"
+      },
+      "identity": "路人女主的养成方法 女主角 · blessing software 社团第一女主角与企划原型",
+      "tags": [
+        "路人女主",
+        "圣人惠",
+        "波波头",
+        "贝雷帽",
+        "红开衫",
+        "水手服",
+        "同人社团"
+      ],
+      "bg_story": "明明是同班同学，却直到春日坡道上那一顶被风吹落的白色贝雷帽，才被真正的命运所捕捉。她是同人游戏社团最坚实的核心，从最初对宅文化毫无了解的普通高中女生，到陪伴伦也一路跌跌撞撞完成属于所有人的游戏。那句平静的吐槽和最后毫无保留的握手，终于让她从路人走成了独一无二的女主角。",
+      "palette": [
+        "#f43f5e",
+        "#f8fafc",
+        "#4c0519",
+        "#fde047"
+      ],
+      "weather": "春日樱花坡道午后 / 傍晚泛橙的放学归途",
+      "speech": "「那个……就算伦也君突然对我告白，我也是会困扰的哦。……不过，脚本里女主角的结局，由我来决定也没关系吧？」",
+      "source": "Saenai Heroine no Sodatekata",
+      "traits": [
+        "blessing_software",
+        "white_beret",
+        "stealth_heroine",
+        "deadpan_smile"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#4c0519"
+    },
+    "popular": {
+      "id": "katou_megumi",
+      "displayName": "加藤惠",
+      "originalName": "加藤恵",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "aliases": [
+        "Megumi Kato",
+        "加藤惠",
+        "圣人惠",
+        "惠",
+        "路人女主"
+      ],
+      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair and blunt bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityTokens": [
+        "katou_megumi",
+        "saenai_heroine_no_sodatekata",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "blunt_bangs",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "katou_megumi"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, katou_megumi"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Kurehito Misaki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ]
+    }
+  }
+}

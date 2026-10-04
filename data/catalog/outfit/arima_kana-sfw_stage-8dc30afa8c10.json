@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/sfw_stage",
+  "revision": 1,
+  "sortOrder": 531,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "default": true,
+      "id": "sfw_stage",
+      "isDefault": true,
+      "name": "B小町舞台打歌服",
+      "prose": "an opaque red-and-white idol stage dress with layered knee-length skirt, fitted jacket, gloves and polished shoes",
+      "tokens": [
+        "idol_clothes",
+        "red_dress",
+        "white_jacket",
+        "layered_skirt",
+        "gloves",
+        "stage_shoes"
+      ]
+    }
+  }
+}

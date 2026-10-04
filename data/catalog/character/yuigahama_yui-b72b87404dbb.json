@@ -1,0 +1,155 @@
+{
+  "kind": "character",
+  "id": "yuigahama_yui",
+  "revision": 1,
+  "sortOrder": 38,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "yuigahama_yui",
+    "profile": {
+      "id": "yuigahama_yui",
+      "name": "由比滨结衣",
+      "alias": [
+        "Yuigahama Yui",
+        "Yui",
+        "ゆいがはま ゆい",
+        "结衣"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-yuigahama_yui.png?v=5",
+        "alt": "由比滨结衣 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "橙粉中长发 · 团子头",
+        "hair_color": "橙粉（Coral）",
+        "eyes": "琥珀（Amber）",
+        "hairstyle": "团子头（side bun）· 双色团子发饰 · 微卷",
+        "uniform": "总武高校服 / 粉色针织开衫",
+        "expression": "开朗天然 · 治愈笑容",
+        "style": "sunny cheerful girl",
+        "signature": "团子头、琥珀瞳与治愈系笑容"
+      },
+      "source": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
+      "bg_story": "由比滨结衣是《春物》的女主角之一，总武高中二年生，侍奉部成员。橙粉色的团子头与琥珀色眼眸是她的标志，开朗天然的笑容背后是细腻的体贴。她努力融入集体、珍惜每一段关系，偶尔笨拙却总是真诚。",
+      "personality": [
+        "开朗活泼",
+        "天然呆",
+        "善解人意",
+        "重感情",
+        "厨艺苦手"
+      ],
+      "likes": [
+        "和朋友们在一起",
+        "甜食",
+        "打扮",
+        "狗狗"
+      ],
+      "traits": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts",
+        "oregairu"
+      ],
+      "speech": "由比滨结衣向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "classic_cg": {
+        "title": "侍奉部的午休",
+        "description": "她带着亲手做的（卖相失败的）曲奇走进侍奉部，脸上却是比谁都明亮的笑容。"
+      },
+      "identity": {
+        "role": "总武高中二年生 / 侍奉部成员",
+        "age": "高中二年级",
+        "occupation": "学生",
+        "faction": "总武高中侍奉部"
+      },
+      "tags": [
+        "团子头",
+        "琥珀瞳",
+        "开朗",
+        "侍奉部",
+        "治愈"
+      ],
+      "palette": [
+        "橙粉",
+        "樱粉",
+        "琥珀棕"
+      ],
+      "weather": [
+        "教室午后",
+        "祭典夏夜",
+        "狗公园"
+      ]
+    },
+    "popular": {
+      "id": "yuigahama_yui",
+      "displayName": "由比滨结衣",
+      "franchise": "Oregairu",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sobu_uniform",
+      "identityTokens": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts",
+        "oregairu"
+      ],
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun with a soft warm sheen, amber eyes, and a cheerful blushing smile",
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "由比滨结衣",
+      "exactTokens": [
+        "yuigahama_yui"
+      ],
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "yuigahama_yui",
+        "yui",
+        "yui yuigahama",
+        "oregairu",
+        "yahari ore no seishun",
+        "由比滨结衣",
+        "结衣"
+      ],
+      "canon": {
+        "world": "现代校园（春物·总武高中）",
+        "era": "当代",
+        "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
+        "research": "2026-08-18 调研"
+      }
+    }
+  }
+}

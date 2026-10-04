@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/sobu_uniform",
+  "revision": 1,
+  "sortOrder": 198,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "sobu_uniform",
+      "name": "总武高中制服",
+      "tokens": [
+        "school_uniform",
+        "open_blazer",
+        "pink_cardigan",
+        "white_shirt",
+        "red_ribbon",
+        "pleated_skirt",
+        "black_thighhighs"
+      ],
+      "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+      "styleHint": "vibrant anime school aesthetic",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

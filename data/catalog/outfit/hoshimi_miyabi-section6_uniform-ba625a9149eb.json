@@ -1,0 +1,34 @@
+{
+  "kind": "outfit",
+  "id": "hoshimi_miyabi/section6_uniform",
+  "revision": 1,
+  "sortOrder": 587,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "hoshimi_miyabi",
+    "outfit": {
+      "default": true,
+      "id": "section6_uniform",
+      "isDefault": true,
+      "name": "对空六课课长军服",
+      "prose": "Section 6 executive uniform: sleek futuristic navy blue military coat with ceremonial gold cord tassels, black sleeveless under-armor top, pleated high-waisted haori miniskirt, sheer absolute-territory black thighhighs, armored gauntlet arm guards, tactical sheath harness, and polished dark low-heeled boots",
+      "tokens": [
+        "military_uniform",
+        "coat",
+        "navy_coat",
+        "sleeveless_shirt",
+        "pleated_skirt",
+        "black_skirt",
+        "miniskirt",
+        "thighhighs",
+        "black_thighhighs",
+        "gauntlets",
+        "armor",
+        "sheath",
+        "boots",
+        "section_6"
+      ]
+    }
+  }
+}

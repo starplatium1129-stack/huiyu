@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "fern_frieren/inn_morning_nightgown",
+  "revision": 1,
+  "sortOrder": 67,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "fern_frieren",
+    "outfit": {
+      "id": "inn_morning_nightgown",
+      "name": "旅馆清晨纯棉睡裙",
+      "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+      "tokens": [
+        "nightgown",
+        "white_nightgown",
+        "loose_dress",
+        "bare_shoulders",
+        "messy_hair"
+      ]
+    }
+  }
+}

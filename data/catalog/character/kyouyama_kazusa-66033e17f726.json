@@ -1,0 +1,169 @@
+{
+  "kind": "character",
+  "id": "kyouyama_kazusa",
+  "revision": 1,
+  "sortOrder": 48,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kyouyama_kazusa",
+    "profile": {
+      "id": "kyouyama_kazusa",
+      "name": "杏山和纱",
+      "alias": [
+        "Kyouyama Kazusa",
+        "杏山カズサ",
+        "杏山千纱",
+        "和纱"
+      ],
+      "type": "popular",
+      "icon": "🎸",
+      "portrait": {
+        "image": "../assets/characters/popular-kyouyama_kazusa.png?v=5",
+        "alt": "杏山和纱 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "黑色妹妹头",
+        "hair_color": "黑",
+        "eyes": "粉红",
+        "hairstyle": "妹妹头 · 内层挑染 · 发夹",
+        "uniform": "崔尼蒂校服 / 甜点部围裙 / 乐队舞台装 / 夏日泳装",
+        "expression": "文静害羞，偶尔傲娇",
+        "style": "quiet sweets club bassist",
+        "signature": "黑发、粉瞳、猫耳兜帽与甜点/乐队双面"
+      },
+      "personality": [
+        "文静",
+        "傲娇",
+        "甜食控",
+        "容易慌张",
+        "前不良少女"
+      ],
+      "likes": [
+        "平凡地吃甜点",
+        "乐队排练",
+        "贝斯",
+        "兜帽",
+        "被人温柔对待"
+      ],
+      "classic_cg": {
+        "title": "甜点与旋律",
+        "description": "放学后的甜点部，她一边哼歌一边给蛋糕裱花，奶油沾到鼻尖也浑然不觉。"
+      },
+      "identity": {
+        "role": "崔尼蒂综合学院高一学生 · 甜点部成员 · SugarRush 主唱兼贝斯手",
+        "age": "15岁",
+        "occupation": "学生",
+        "faction": "崔尼蒂综合学院 / 甜点部 / SugarRush"
+      },
+      "tags": [
+        "黑发",
+        "粉瞳",
+        "猫耳兜帽",
+        "崔尼蒂校服",
+        "甜点部",
+        "贝斯"
+      ],
+      "bg_story": "杏山和纱是《碧蓝档案》中崔尼蒂放学后甜点部核心成员，同时是「SugarRush」乐队的贝斯手兼主唱，曾是威名远扬的暴走族不良少女「卡兹萨」，如今努力扮演温柔内向的文静女高。极易害羞和慌张，总是在被提起黑历史或面对老师的温柔调侃时脸红动摇，但在朋友受欺负或乐队演出时会瞬间切换为帅气霸道的靠谱大姐头。场景应突出甜品屋的甜蜜日常与乐队舞台的帅气魅力——阳光甜品厨房、猫耳兜帽晨休、古书馆书架深处与舞台排练室，抹茶绿、黑发与粉瞳是她的特色。",
+      "palette": [
+        "棕",
+        "金",
+        "白"
+      ],
+      "weather": [
+        "午后阳光",
+        "黄昏",
+        "放学后"
+      ],
+      "speech": "和纱紧张地向你打招呼。",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "kyouyama_kazusa",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "bob_cut",
+        "black_cat_ears",
+        "animal_ears",
+        "no_human_ears",
+        "pink_eyes",
+        "pointed_spiked_red_halo_with_cross_and_ring",
+        "jagged_red_halo",
+        "trinity",
+        "blue_archive",
+        "sweets_club",
+        "bass",
+        "singer",
+        "sweet_shy_expression",
+        "blush"
+      ],
+      "accent_color": "#d4a017",
+      "bg_color": "#7c2d12",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "kyouyama_kazusa",
+        "kazusa",
+        "杏山千纱",
+        "和纱",
+        "blue archive",
+        "trinity",
+        "sweets club",
+        "sugar rush"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "甜点部成员 / SugarRush 主唱兼贝斯手；冒失、容易慌张但认真",
+        "research": "2026-08-27 调研",
+        "world": "基沃托斯（Kivotos）· 崔尼蒂综合学院"
+      },
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "tiv"
+      ],
+      "displayName": "杏山和纱",
+      "exactPrefixes": [
+        "kyouyama_"
+      ],
+      "exactTokens": [
+        "kyouyama_kazusa"
+      ],
+      "franchise": "Blue Archive",
+      "id": "kyouyama_kazusa",
+      "identityProse": "Kyouyama Kazusa from Blue Archive, a cool cat-eared student with short black hair, feline ears and tail, a sleek halo, and a sweet, slightly tsundere gaze.",
+      "identityTokens": [
+        "kazusa (blue archive)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "halo",
+        "cat_ears",
+        "cat_tail",
+        "medium_breasts",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Kyouyama Kazusa",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

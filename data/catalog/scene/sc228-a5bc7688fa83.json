@@ -1,0 +1,54 @@
+{
+  "kind": "scene",
+  "id": "sc228",
+  "revision": 1,
+  "sortOrder": 223,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc228",
+    "title": "整备间拉链卡死的过载轰鸣",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 赛车女郎服真空跨坐】深夜彻底打烊、死锁的赛车场地下整备间。为了帮超自然研究会测试赞助服装，宁宁换上了一件极度紧身、高叉露背的漆皮赛车女郎连体衣，然而里面却是完全真空未着寸缕。由于衣服剪裁过于紧绷，胸前那条长长的金属拉链在拉到一半时死死卡住，将大片饱满性感的雪白酥胸与若隐若现的致命弧度完全暴露。她在惊慌后退时不慎踩到工具箱，整个人失去平衡直接反向跨坐在你大腿上。巨大的冲击力让卡住的拉链再度下滑数公分，她头顶的呆毛疯狂扭动成爱心螺旋，红着脸挂着眼泪崩溃自曝——「呜啊！大、大色狼！不准一直盯着拉链裂开的地方看啦！人家、人家只是因为拉链坏了动弹不得……绝对没有故意用这种羞耻的姿势来诱惑你！呜，快帮我拉上去，笨蛋！」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v21_anima",
+    "emotion": "恋爱",
+    "season": "夏",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "hair_ribbon",
+      "race_queen_suit",
+      "patent_leather",
+      "high_cut",
+      "backless",
+      "zipper_open",
+      "cleavage",
+      "no_underwear",
+      "reverse_straddling",
+      "tire_stack",
+      "garage",
+      "full_body",
+      "depth_of_field"
+    ],
+    "mature": true,
+    "location": "地下赛车整备间轮胎堆上",
+    "weather": "微热密闭",
+    "camera": "近景主观正面特写",
+    "lighting": "头顶局部探照灯昏暗黄光与金属反光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "R15"
+    ],
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_tight_high_cut_backless_race_queen_style_patent_leather_catsuit, zipper_half_open_exposing_chest, cleavage, no_underwear, reverse_straddling_partner_thighs, sitting_on_lap_facing_away, upper_body_turned_looking_back_at_partner, one_hand_frantically_grasping_partner_arm, heavy_blush, crying_teary_eyes, open_mouth, ahoge_curling_into_heart_shape, underground_garage_with_tire_stack_and_overhead_work_spotlight, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, late_night, night_garage, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, lying, stockings, thighhighs, cropped_feet, upper_body, helmet, child, loli, underage",
+    "storyJa": "【寧々・整備室のファスナー詰まりと過負荷の轟鳴】深夜、完全に営業が終了し閉鎖されたサーキットの地下整備室。超自然研究部のスポンサー衣装をテストするため、寧々は極めてタイトでハイレグなバックレスのパテントレザー製レースクイーンスーツに着替えたが、その中身は完全に何も身に着けていない真空状態だった。衣装の裁断がキツすぎるせいで、胸元の長い金属ファスナーが途中で完全にロックされてしまい、豊満でセクシーな白い胸元と見え隠れする致命的なラインが完全に露出してしまっている。彼女は慌てて後退した際に工具箱をパニックで踏みつけてしまい、バランスを崩してあなたの太ももの上に逆向きに跨る形で転がり込んできた。強い衝撃でロックされていたファスナーがさらに数センチずり下がり、彼女の頭のアホ毛は猛烈に震えてハート型に丸まり、顔を真っ赤にして涙目で自爆した――「うあぁ！大、大色狼！ファスナーが裂けてるところばかり見ないでよ！私、私はただファスナーが壊れて動けないだけで……決してわざとこんな恥ずかしいポーズであなたを誘惑したわけじゃ……うう、早く引き上げてよ、バカ！」",
+    "rating": "R18",
+    "animaCaption": "In the fully locked underground pit garage, Nene in a tight high-cut backless patent leather race queen catsuit with the chest zipper stuck half-open stumbles and ends up reverse-straddling her partner's thighs, turning back with flushed tearful eyes as the stuck zipper slips a few more centimeters, under the overhead work spotlight.",
+    "auditRevision": "careful-batch12-2026-08-27"
+  }
+}

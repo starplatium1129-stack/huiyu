@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/sfw_practice",
+  "revision": 1,
+  "sortOrder": 532,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "default": false,
+      "id": "sfw_practice",
+      "isDefault": false,
+      "name": "排练室运动便装",
+      "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
+      "tokens": [
+        "t-shirt",
+        "track_pants",
+        "sneakers"
+      ]
+    }
+  }
+}

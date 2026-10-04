@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/adult_loungewear",
+  "revision": 1,
+  "sortOrder": 269,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "adult_loungewear",
+      "name": "成年私密居家装",
+      "isDefault": false,
+      "default": false,
+      "isNsfw": true,
+      "prose": "opaque burgundy satin loungewear with a high neckline and a long matching robe, fully covering the chest and hips",
+      "tokens": [
+        "satin_loungewear",
+        "opaque_robe",
+        "high_neckline",
+        "full_coverage"
+      ]
+    }
+  }
+}

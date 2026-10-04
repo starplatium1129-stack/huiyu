@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "togawa_sakiko/sfw_school",
+  "revision": 1,
+  "sortOrder": 1010,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "togawa_sakiko",
+    "outfit": {
+      "id": "sfw_school",
+      "name": "音乐教室端正制服",
+      "prose": "a tidy navy school blazer, white blouse, ribbon and knee-length skirt",
+      "tokens": [
+        "school_uniform",
+        "navy_blazer",
+        "white_blouse",
+        "ribbon",
+        "pleated_skirt"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

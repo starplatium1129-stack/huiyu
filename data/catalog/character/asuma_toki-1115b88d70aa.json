@@ -1,0 +1,163 @@
+{
+  "kind": "character",
+  "id": "asuma_toki",
+  "revision": 1,
+  "sortOrder": 49,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "asuma_toki",
+    "profile": {
+      "id": "asuma_toki",
+      "name": "飞鸟马时",
+      "alias": [
+        "Asuma Toki",
+        "飛鳥馬トキ",
+        "飞鸟马季",
+        "小时"
+      ],
+      "type": "popular",
+      "icon": "🎧",
+      "portrait": {
+        "image": "../assets/characters/popular-asuma_toki.png?v=5",
+        "alt": "飞鸟马时 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "金色长发",
+        "hair_color": "金",
+        "eyes": "蓝",
+        "hairstyle": "盘发/公主辫 · 挑染 · 耳麦",
+        "uniform": "C&C高叉紧身衣 / 兔女郎装 / 夏日泳装",
+        "expression": "冷静脱线，冷娇",
+        "style": "cool maid agent",
+        "signature": "金发、蓝瞳与C&C女仆特工装"
+      },
+      "personality": [
+        "冷静",
+        "脱线",
+        "冷娇",
+        "认真",
+        "卖萌"
+      ],
+      "likes": [
+        "执行任务",
+        "提裙礼",
+        "寻找兴趣中",
+        "兔女郎伪装"
+      ],
+      "classic_cg": {
+        "title": "任务之后",
+        "description": "千年C&C据点里，时坐在全息屏前拆下耳麦，金色长发散落，蓝色眼眸难得露出一丝疲惫。"
+      },
+      "identity": {
+        "role": "千年科学学园C&C特殊小队 Zero Four",
+        "age": "16岁",
+        "occupation": "学生 / C&C特工",
+        "faction": "千年科学学园 / C&C"
+      },
+      "tags": [
+        "金发",
+        "蓝瞳",
+        "女仆特工",
+        "C&C",
+        "耳麦"
+      ],
+      "bg_story": "飞鸟马时是《碧蓝档案》中千年科学学园秘密特工组织 C&C 的专属王牌「Zero Four」，拥有极其精湛的单兵战斗力与专属外骨骼战术动力装甲「Abi-Eshuh」。天生面瘫三无死鱼眼，说话一本正经却常常做出脱线的无厘头举动（如无论何时都比着剪刀手✌️或以兔女郎身份潜入），对老师抱有纯真而绝对的忠诚。场景应突出冷酷特工女仆与脱线天然呆的可爱反差——高科技 C&C 据点、阳光更衣室、任务后装甲清洗与落地窗晨光，香槟金与冷白是她的主色。",
+      "palette": [
+        "金",
+        "蓝",
+        "白"
+      ],
+      "weather": [
+        "白天",
+        "黄昏",
+        "深夜"
+      ],
+      "speech": "时正在执行C&C任务。",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "asuma_toki",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "champagne_blonde_hair",
+        "very_long_hair",
+        "sharp_ice_blue_eyes",
+        "blue_eyes",
+        "expressionless",
+        "deadpan_gaze",
+        "tactical_headset_with_boom_mic",
+        "blue_geometric_hud_halo",
+        "millennium",
+        "c&c",
+        "blue_archive"
+      ],
+      "accent_color": "#fbbf24",
+      "bg_color": "#1e3a8a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "asuma_toki",
+        "toki",
+        "飞鸟马季",
+        "小时",
+        "c&c",
+        "zero four",
+        "millennium",
+        "blue archive"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "C&C 特殊小队 Zero Four；女仆特工，脱线冷娇，有兔女郎形态",
+        "research": "2026-08-27 调研",
+        "world": "基沃托斯（Kivotos）· 千年科学学园"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "mika_pikazo",
+        "yoneyama_mai"
+      ],
+      "displayName": "飞鸟马时",
+      "exactPrefixes": [
+        "asuma_"
+      ],
+      "exactTokens": [
+        "asuma_toki"
+      ],
+      "franchise": "Blue Archive",
+      "id": "asuma_toki",
+      "identityProse": "Asuma Toki from Blue Archive, a deadpan C&C maid with sleek blonde hair in a side ponytail, cool blue eyes, a minimalist halo, and an expressionless demeanor.",
+      "identityTokens": [
+        "toki (blue archive)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "side_ponytail",
+        "blue_eyes",
+        "halo",
+        "expressionless",
+        "medium_breasts",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Asuma Toki",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

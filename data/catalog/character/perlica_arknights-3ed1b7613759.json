@@ -1,0 +1,140 @@
+{
+  "kind": "character",
+  "id": "perlica_arknights",
+  "revision": 1,
+  "sortOrder": 31,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "perlica_arknights",
+    "profile": {
+      "id": "perlica_arknights",
+      "name": "佩丽卡",
+      "alias": [
+        "Perlica",
+        "佩丽卡",
+        "ペリカ",
+        "佩丽卡监督",
+        "Supervisor Perlica"
+      ],
+      "type": "popular",
+      "icon": "📋",
+      "visual_dna": {
+        "hair": "白银微泛浅蓝的长发（medium to long layered platinum hair），发尾带有淡天蓝色/青蓝色微渐变挑染，头顶竖立一对毛茸茸的菲林猫耳，耳尖与内侧绒毛细腻，头部两侧佩戴有科技感强烈的机械发夹/通讯发饰，前额有轻薄修颜刘海，两侧留有较长的垂鬓微卷发束。",
+        "hair_color": "铂金银白偏浅天蓝渐变（platinum blonde / pale silver with soft cyan-blue gradient tips），发尾及猫耳尖端带有淡淡的科技天蓝晕染挑染。",
+        "eyes": "清澈透亮的天蓝色/灰蓝色眼眸（clear light cyan / sky blue eyes），神情清澈敏锐、沉稳温和，透出上位指挥官的专注与坚定。",
+        "hairstyle": "中长微卷分层披肩发（layered shoulder-length to long hair），头顶微蓬松自然垂落，刘海规整自然，两侧长鬓角自然贴面，发型兼具现代科技感与少女的柔顺感。",
+        "uniform": "终末地工业监督标准制服（Endfield Supervisor Uniform），以纯白色、深炭灰色与终末地工业标志性的高亮科技青蓝（Endfield Cyan）拼接为主色调。上身为修身立领工装战术夹克，左胸及肩部点缀有终末地工业 Logo、等级标识与肩章，内衬高领深色打底衫；下身为黑色高腰修身百褶战术短裙，搭配黑色过膝高筒袜/战术长袜与灰色/黑色机能战术短靴；腰间配有多功能战术挂带、工装小包、合金卡扣与通讯终端，整体呈现利落帅气的现代机能科技风（Techwear）。",
+        "expression": "沉着冷静、严谨专注而又不失温和体贴（calm, composed, gentle, professional supervisor），在工作中神情专注果断，与同伴相处时流露出亲切而略带思虑的浅笑。",
+        "style": "现代机能工业风（Techwear）、科幻废土与开拓美学（Sci-Fi Exploration / Industrial Aesthetic）、干练制服战术少女（Tactical Anime Girl）。",
+        "signature": "头顶直立的毛茸茸菲林猫耳（feline animal ears）、细长猫尾（cat tail）、头部两侧独特的终末地机械发饰/发夹（mechanical hair clips / headset hair ornament）、黑白青撞色工业战术制服（Endfield techwear uniform）、手持多功能工业源石战术法杖（tactical staff / Originium Arts unit）。"
+      },
+      "personality": [
+        "沉着冷静",
+        "严谨专业",
+        "大局观强",
+        "坚韧果决",
+        "体贴关怀",
+        "深受信赖"
+      ],
+      "likes": [
+        "开拓规划与基建设施协议优化",
+        "一线实地勘探与工程建造",
+        "与苏醒的管理员并肩作战并分享前线进展",
+        "在繁忙工作间隙享用一杯温热红茶",
+        "终末地工业的平稳运转与所有干员的平安归来"
+      ],
+      "identity": {
+        "role": "终末地工业「监督」（Supervisor），前线基地核心领导与协议执行者",
+        "age": "未知（外表呈现约 18-20 岁的年轻少女形象）",
+        "occupation": "终末地工业前线监督 / 协议回收部门核心主管 / 术师干员（施术者）",
+        "faction": "终末地工业（Endfield Industries）"
+      },
+      "tags": [
+        "铂金银白偏浅天蓝渐变（platinum blonde / pale silver with soft cyan-blue gradient tips），发尾及猫耳尖端带有淡淡的科技天蓝晕染挑染。",
+        "清澈透亮的天蓝色/灰蓝色眼眸（clear light cyan / sky blue eyes），神情清澈敏锐、沉稳温和，透出上位指挥官的专注与坚定。"
+      ],
+      "bg_story": "佩丽卡担任终末地工业的「监督」，在环境严酷、充满未知危机的开拓前线行星「塔罗斯-II」（Talos-II）上主持大局，负责统筹基础设施建设、协议回收及前线干员的调度。在「管理员」长期沉睡的岁月里，她作为中流砥柱守护着基地的平稳运转，亲手招募并带领团队在荒凉大地上开荒前行。随着管理员的苏醒，佩丽卡不仅是其最得力的引路人与副手，更与其携手直面侵蚀浪潮的威胁，共同拓展文明在荒野中的边界。",
+      "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "traits": [
+        "perlica (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "short_hair",
+        "blue_eyes",
+        "hair_highlights",
+        "cat_ears",
+        "cat_tail",
+        "white_clothes",
+        "teal_jacket",
+        "tactical",
+        "jacket",
+        "pleated_skirt",
+        "thighhighs",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-perlica_arknights.png?v=5",
+        "alt": "佩丽卡热门角色立绘"
+      },
+      "speech": "佩丽卡向你致以问候。",
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "perlica",
+        "arknights endfield",
+        "endfield"
+      ],
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来科幻",
+        "formNotes": "白色短发蓝绿挑染、绿瞳、毛茸耳；白青战术制服；2026-08-15 Anima 实测还原 7.5/10",
+        "research": "2026-08-15 调研（Danbooru perlica_(arknights) 2446 posts + 本机实测）",
+        "world": "塔罗斯-II（终末地工业）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "displayName": "佩丽卡",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "perlica_(arknights)"
+      ],
+      "franchise": "Arknights: Endfield",
+      "id": "perlica_arknights",
+      "identityProse": "Perlica from Arknights: Endfield, the composed Endfield Industries supervisor with straight silver hair, delicate avian feather ears, and clear cyan eyes.",
+      "identityTokens": [
+        "perlica (arknights)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "feather_ears",
+        "cyan_eyes",
+        "arknights_endfield"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Perlica",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

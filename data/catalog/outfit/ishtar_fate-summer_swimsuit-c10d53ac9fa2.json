@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ishtar_fate/summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 144,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "ishtar_fate",
+    "outfit": {
+      "id": "summer_swimsuit",
+      "name": "女神度假不对称比基尼",
+      "prose": "a daring mismatched bikini — one black halter cup and one gold-string side, with a sheer red sarong — celebrating summer like the noisy goddess she is, tiara firmly in place",
+      "tokens": [
+        "swimsuit",
+        "mismatched_bikini",
+        "bikini",
+        "black_bikini",
+        "gold_trim",
+        "sarong",
+        "see-through",
+        "tiara",
+        "bare_shoulders",
+        "wet_skin"
+      ]
+    }
+  }
+}

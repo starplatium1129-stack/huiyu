@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "krista_lenz/queen_garden_casual",
+  "revision": 1,
+  "sortOrder": 548,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "krista_lenz",
+    "outfit": {
+      "default": false,
+      "id": "queen_garden_casual",
+      "isDefault": false,
+      "name": "女王花园便装",
+      "prose": "her pale queen's coat over a white shirt and trousers with dark boots, worn with her long blonde hair loose",
+      "tokens": [
+        "pale_coat",
+        "long_sleeves",
+        "white_shirt",
+        "pants",
+        "dark_boots",
+        "hair_down"
+      ]
+    }
+  }
+}

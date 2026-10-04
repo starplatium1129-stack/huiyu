@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "ereshkigal_christmas_snowdate",
+  "revision": 1,
+  "sortOrder": 265,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "ereshkigal_christmas_snowdate",
+    "title": "埃列什基伽勒 · 冥界圣诞的初雪·「这份温暖……是给我的吗」",
+    "category": "专属羁绊",
+    "characterId": "ereshkigal_fate",
+    "description": "【想象场景】【冥界雪原·圣诞夜】冥界飘起了历史上第一场雪——是某位女神偷偷从人间引来的。埃列什基伽勒站在雪里，白色毛衣连衣裙与红围巾衬得她像误落幽府的圣诞天使，接住雪花的掌心久久没有收回——「冥界……从来没有下过雪。这份温暖……真的是给我的吗？不是搞错收件人了吗……给我吗……」",
+    "location": "冥界雪原",
+    "action": "雪中站定伸手接雪花，毛衣围巾映红瞳，不敢置信",
+    "timeOfDay": "圣诞夜",
+    "lighting": "幽蓝雪原与围巾暖红的对比",
+    "camera": "medium shot, snowfield, catching snowflakes, tender mood",
+    "mood": "初雪感动、温暖治愈",
+    "sceneTags": [
+      "imagined_underworld_snow",
+      "standing",
+      "open_palm",
+      "catching_snow",
+      "white_knit_dress",
+      "red_scarf",
+      "beret",
+      "hesitant_smile",
+      "blue_snow_light",
+      "medium_shot"
+    ],
+    "promptProse": "In this imagined first snowfall in the underworld, Ereshkigal holds an open palm beneath the drifting flakes and keeps it raised in quiet disbelief. Her white knitted dress, red scarf, wool beret and dark tights give the winter scene a complete, warm outfit. Blonde twintails catch the blue reflected light while her red eyes brighten with a hesitant smile. The dark plain stretches behind her under the soft snow, leaving the gift-like moment central. Frame the open hand and still posture in a clear medium view, without lettering.",
+    "promptTokens": [
+      "imagined_underworld_snow",
+      "standing",
+      "open_palm",
+      "catching_snow",
+      "white_knit_dress",
+      "red_scarf",
+      "beret",
+      "hesitant_smile",
+      "blue_snow_light",
+      "medium_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "SFW",
+    "kreaStyleHint": "anime_slice_of_life",
+    "animaStyleHint": "anime_slice_of_life",
+    "outfitId": "casual_winter_date",
+    "coverageTags": [
+      "daily",
+      "signature",
+      "story"
+    ]
+  }
+}

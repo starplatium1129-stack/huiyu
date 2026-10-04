@@ -1,0 +1,167 @@
+{
+  "kind": "character",
+  "id": "harudera_yuria",
+  "revision": 1,
+  "sortOrder": 90,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "harudera_yuria",
+    "profile": {
+      "id": "harudera_yuria",
+      "name": "春寺由梨亚 (JB)",
+      "alias": [
+        "Harudera Yuria",
+        "JB",
+        "茱莉亚·巴尔德拉",
+        "女上司",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🕶️",
+      "portrait": {
+        "image": "../assets/characters/popular-harudera_yuria.png?v=5",
+        "alt": "春寺由梨亚 (JB) 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "极长蜂蜜金大波浪卷发 · 成熟偏分",
+        "hair_color": "蜂蜜金黄",
+        "eyes": "锐利智慧冰蓝双瞳 · 右眼下美人泪痣",
+        "hairstyle": "微卷金长大波浪 · 标志性红框眼镜 · 职场知性",
+        "uniform": "CIRS 剪裁修身深色西装套裙 / 特勤暗夜潜行紧身衣",
+        "expression": "威严干练 · 成熟沉稳 · 私密娇嗔",
+        "style": "authoritative elegant intelligence handler",
+        "signature": "红框眼镜、右眼角泪痣、金发大波浪、职业西服套裙与女上司威严"
+      },
+      "personality": [
+        "处事果断理智、铁腕干练的情报官",
+        "刀子嘴豆腐心，表面严厉其实极其护短",
+        "雄二唯一的监护人，常年为雄二各种出格行动收拾残局",
+        "职场上位者的威严下深藏着女人味与私密柔情",
+        "工作过载时会有些许依赖雄二的反差萌"
+      ],
+      "likes": [
+        "手冲特浓黑咖啡与平静的深夜办公",
+        "看到雄二平安完成任务归来",
+        "高档丝绸睡衣与舒适的沙发补觉",
+        "小酌高年份单一麦芽威士忌"
+      ],
+      "classic_cg": {
+        "title": "机密办公室的深夜审度",
+        "description": "百叶窗透入冷清夜色的特工办公室内，JB轻推红框眼镜倚在皮椅上，白衬衫微敞，知性与成熟韵味拉满。"
+      },
+      "identity": {
+        "role": "日美联合反恐情报机构 CIRS 部门长 / 雄二监护人",
+        "age": "成年御姐",
+        "occupation": "情报长官 / CIRS 课长",
+        "faction": "日美国防特工机构 CIRS"
+      },
+      "tags": [
+        "金发大波浪",
+        "红框眼镜",
+        "泪痣",
+        "西装套裙",
+        "女上司",
+        "成熟御姐",
+        "监护人",
+        "灰色的果实"
+      ],
+      "bg_story": "春寺由梨亚（代号 JB，全名茱莉亚·巴尔德拉）是《灰色的果实》中的核心高人气女长官。身为日美反恐特工机构 CIRS 的课长，她是风见雄二唯一的直属上司与名义上的监护人。外表知性冷艳、戴着标志性的红框眼镜，做事雷厉风行；虽然常常对雄二的任性行为感到头痛大发雷霆，但在关键时刻总是不惜动用一切权力与资源为雄二善后与护短，二人的关系兼具上司、义姐与情妇般的深沉纽带。",
+      "palette": [
+        "商务深灰",
+        "日光金",
+        "暗绯红"
+      ],
+      "weather": [
+        "夜之城霓虹",
+        "百叶窗雨夜",
+        "黎明微光"
+      ],
+      "speech": "雄二，任务报告我已经看过了。你这次又擅自搞出那么大动静……坐下，给我好好从头交代清楚。",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "harudera_yuria",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "wavy_hair",
+        "blue_eyes",
+        "glasses",
+        "red-framed_eyewear",
+        "mole_under_eye",
+        "large_breasts",
+        "mature_female",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#140f06"
+    },
+    "popular": {
+      "id": "harudera_yuria",
+      "displayName": "春寺由梨亚 (JB)",
+      "originalName": "春寺 由梨亜 / JB (Harudera Yuria)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "harudera_yuria",
+        "jb",
+        "julia_bardera",
+        "春寺由梨亚",
+        "茱莉亚·巴尔德拉",
+        "女上司",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Harudera Yuria (JB) from Grisaia by Frontwing, CIRS chief and Yuuji's official handler and guardian with long wavy honey-blonde hair, a distinct beauty mark beneath her right eye, sharp intelligent sapphire-blue eyes, and commanding yet affectionate mature grace.",
+      "identityTokens": [
+        "harudera_yuria",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "wavy_hair",
+        "blue_eyes",
+        "mole",
+        "mole_under_eye",
+        "large_breasts",
+        "mature_female",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "harudera_yuria"
+      ],
+      "exactPrefixes": [
+        "yuria_",
+        "jb_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "CIRS（日美国防特工机构）· 美浜学园监护人",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "日美联合反恐组织 CIRS 的女性干部长官，风见雄二的直属上司与表面监护人；外表干练严格戴红框眼镜，内心极度关心雄二、常常为他善后收拾残局，在威严上司与情妇般温柔之间展现出无尽的包容成熟反差",
+        "research": "2026-09-02 调研（Danbooru harudera_yuria 80+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "swav",
+        "rella"
+      ]
+    }
+  }
+}

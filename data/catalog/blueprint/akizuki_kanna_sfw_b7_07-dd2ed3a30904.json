@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "akizuki_kanna_sfw_b7_07",
+  "revision": 1,
+  "sortOrder": 1166,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "点心店门口检查怀旧糖果后递给镜头，外套和侧马尾迎风轻动",
+    "adult": false,
+    "animaStyleHint": "anime_portrait_sharp",
+    "camera": "medium shot, horizontal framing",
+    "category": "现代日常",
+    "characterId": "akizuki_kanna",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "【小镇粗点心店·午后】栞那穿着外出便装站在点心店门口，双手抱着刚买的纸袋，先挑出一颗糖确认包装，再把最怀旧的那颗递给镜头。",
+    "id": "akizuki_kanna_sfw_b7_07",
+    "kreaStyleHint": "anime_portrait_sharp",
+    "lighting": "late afternoon street light and warm shop glow",
+    "location": "small-town dagashi shop",
+    "mood": "把童年味道带进今天的外出",
+    "negativeTokens": [
+      "worst_quality",
+      "low_quality",
+      "bad_anatomy",
+      "bad_hands",
+      "missing_fingers",
+      "extra_fingers",
+      "extra_limbs",
+      "blurry",
+      "watermark",
+      "text",
+      "signature",
+      "2girls",
+      "1boy",
+      "nude",
+      "underwear",
+      "see-through"
+    ],
+    "outfitId": "sfw_errand",
+    "promptProse": "Kanna Akizuki from YUZUSOFT wears a cream collared blouse, dark red midi skirt and light jacket. She pauses outside the old-fashioned snack shop with a paper bag tucked in both hands. She checks the most nostalgic candy, then offers it toward the viewer with a playful smile as the light jacket and side ponytail catch the late afternoon breeze. late afternoon street light and warm shop glow.",
+    "promptTokens": [
+      "snack_shop",
+      "paper_bag",
+      "candy",
+      "collared_blouse",
+      "midi_skirt",
+      "side_ponytail",
+      "playful_smile",
+      "street",
+      "afternoon_light"
+    ],
+    "recommendedSize": "1536x1152",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "snack_shop",
+      "paper_bag",
+      "candy",
+      "collared_blouse",
+      "midi_skirt",
+      "side_ponytail",
+      "playful_smile",
+      "street",
+      "afternoon_light"
+    ],
+    "timeOfDay": "日间",
+    "title": "明月栞那 · 粗点心店的纸袋"
+  }
+}

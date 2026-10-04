@@ -1,0 +1,57 @@
+{
+  "kind": "scene",
+  "id": "sc006",
+  "revision": 1,
+  "sortOrder": 5,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Snow gathers on the Christmas street as Ayachi Nene offers a carefully wrapped small box with both mittened hands. A thick beige duffle coat, red scarf and brown boots keep her warm beneath the lights. The box contains her handmade charm; its contents stay hidden. Her shy smile and the uneven ribbon knot share the focus of this waist-up winter portrait.",
+    "auditRevision": "careful-batch14-2026-08-27",
+    "camera": "半身中景",
+    "category": "祭典・节日",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "害羞",
+    "id": "sc006",
+    "lighting": "圣诞灯串暖光与雪地反射光",
+    "location": "圣诞街区灯串下",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, winter_coat, beige_coat, duffle_coat, red_scarf, mittens, brown_boots, holding_gift, small_gift_box, ribbon, hands_together, standing, shy_smile, christmas_lights, snowy_street, night, warm_lighting, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【宁宁 · 平安夜的手作礼物】雪落在圣诞街区的灯串之间，宁宁把围巾拉到鼻尖，犹豫许久才将包装得过分认真的小盒子递给你。盒里是她亲手做的护身符，针脚并不完美，却藏着一枚写有祝福的小纸片。你刚要道谢，她便慌忙别开脸——「不是什么贵重东西啦。只是……希望明年的今天，你也能平安回到我面前。」",
+    "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
+    "tags": [
+      "winter_coat",
+      "beige_coat",
+      "duffle_coat",
+      "red_scarf",
+      "mittens",
+      "brown_boots",
+      "holding_gift",
+      "small_gift_box",
+      "ribbon",
+      "hands_together",
+      "standing",
+      "shy_smile",
+      "christmas_lights",
+      "snowy_street",
+      "night",
+      "warm_lighting",
+      "medium_shot"
+    ],
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "title": "平安夜的手作礼物",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "雪"
+  }
+}

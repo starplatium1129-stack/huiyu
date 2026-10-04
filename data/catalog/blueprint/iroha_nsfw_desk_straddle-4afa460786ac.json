@@ -1,0 +1,79 @@
+{
+  "kind": "blueprint",
+  "id": "iroha_nsfw_desk_straddle",
+  "revision": 1,
+  "sortOrder": 365,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "iroha_nsfw_desk_straddle",
+    "title": "一色彩羽 · 成年同事会室桌上的小恶魔诱惑 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
+    "category": "主控骑乘",
+    "characterId": "isshiki_iroha",
+    "description": "【成年同事会办公室·熄灯后】门锁咔哒一声合上。彩羽跳上会议桌，顺势跨坐在你的大腿上，总武高制服裙被撩到大腿根部。她伸出食指抵在你的嘴唇上，小恶魔般的浅笑在潮红的脸颊上绽放——「前辈要是露出这种可怜巴巴的眼神……就算被你欺负一下，我也只能负起责任了呢♪」",
+    "location": "成年同事会办公室·熄灯后",
+    "action": "斜坐在长桌边缘制服裙高撩，食指抵唇小恶魔浅笑，波浪发轻晃俯身微喘",
+    "timeOfDay": "深夜",
+    "lighting": "柔和暖光与唯美阴影交错",
+    "camera": "vertical POV",
+    "mood": "唯美动情、私密深情",
+    "sceneTags": [
+      "nsfw",
+      "sensual_solo",
+      "bare_breasts",
+      "exposed_pussy",
+      "special_nsfw"
+    ],
+    "promptProse": "Iroha Isshiki from Oregairu perches on the edge of the dark adult researcher council conference table and leans forward with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that heave with her intentional, teasing rhythm. Her soft brown wavy hair sways as she presses one finger against her lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle solo perspective, amber sunset glow fading into room darkness, detailed office background, solo 1girl, no extra people.",
+    "nsfwProse": "Perched along the conference table with her uniform blazer unbuttoned and skirt hitched up over sheer black pantyhose, Iroha Isshiki teases forward with bare perky breasts and an insolent smirk.",
+    "promptTokens": [
+      "classroom",
+      "conference_table",
+      "afterschool",
+      "dusk",
+      "sunset",
+      "low_angle",
+      "vertical_shot",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "missing fingers",
+      "extra fingers",
+      "blurry",
+      "cropped",
+      "watermark",
+      "fire, flames, burning ears",
+      "2girls",
+      "1boy"
+    ],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "r18_explicit_h_cg",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "outfitId": "sensual_lace_lingerie",
+    "coverageTags": [
+      "special_nsfw",
+      "h_cg"
+    ],
+    "nsfwTokens": [
+      "pov",
+      "sitting_on_desk",
+      "leaning_forward",
+      "unbuttoned_blazer",
+      "skirt_lift",
+      "black_pantyhose",
+      "bare_breasts",
+      "pink_nipples",
+      "pussy_juice",
+      "heavy_blush",
+      "smirk",
+      "parted_lips"
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "kind": "character",
+  "id": "hayase_yuuka",
+  "revision": 1,
+  "sortOrder": 72,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hayase_yuuka",
+    "profile": {
+      "id": "hayase_yuuka",
+      "name": "早濑优香",
+      "alias": [
+        "Hayase Yuuka",
+        "优香",
+        "冷酷的算数使",
+        "大魔王"
+      ],
+      "type": "popular",
+      "icon": "📱",
+      "portrait": {
+        "image": "../assets/characters/popular-hayase_yuuka.png?v=5",
+        "alt": "早濑优香 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "深紫蓝及腰长直双马尾",
+        "hair_color": "深蓝微紫",
+        "eyes": "深邃靛蓝眼眸",
+        "hairstyle": "高扎双马尾 · 几何金属发卡 · 青色数字光环",
+        "uniform": "千禧年研讨会白色兜帽西装外套 · 黑色过膝袜",
+        "expression": "傲娇认真 · 面对老师时羞涩娇嗔",
+        "style": "meticulous seminar treasurer",
+        "signature": "双马尾、青色立方光环、丰腴美腿与计算器"
+      },
+      "personality": [
+        "精打细算极负责任",
+        "典型的傲娇正宫气质",
+        "嘴硬心软极度关照老师",
+        "逻辑清晰数学天才",
+        "在意自己的体重与大腿"
+      ],
+      "likes": [
+        "整理账目与核对预算",
+        "购买逻辑难题集",
+        "与老师一起巡视学园",
+        "安静的研讨会办公室"
+      ],
+      "classic_cg": {
+        "title": "深夜算筹与温情",
+        "description": "千禧年办公室的全息霓虹夜景前，少女伏案核对账单回眸，脸颊微红地递上热咖啡与考卷。"
+      },
+      "identity": {
+        "role": "千禧年科学学园研讨会（Seminar）会计",
+        "age": "16岁（高二）",
+        "occupation": "学生 / 研讨会学生会干部",
+        "faction": "基沃托斯 · 千禧年科学学园 / 研讨会"
+      },
+      "tags": [
+        "双马尾",
+        "青色光环",
+        "黑色过膝袜",
+        "丰腴大腿",
+        "傲娇会计",
+        "千禧年研讨会"
+      ],
+      "bg_story": "早濑优香是《碧蓝档案》中千禧年科学学园研讨会的会计，学园都市中掌管庞大科研预算的精算天才。因精打细算和对各社团赤字的严苛管理被称为「冷酷算数使」，但对夏莱的老师极其温柔体贴，是Sensei心目中无可替代的正宫代表之一。",
+      "palette": [
+        "纯白",
+        "深蓝",
+        "青色"
+      ],
+      "weather": [
+        "晴空学园",
+        "雨中车站",
+        "天台晚霞"
+      ],
+      "speech": "老师！这次的赤字账单如果不核对完，我可绝对不会放你回去休息的哦！",
+      "source": "NEXON《蔚蓝档案 / Blue Archive》",
+      "traits": [
+        "yuuka (blue archive)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "dark_blue_hair",
+        "twintails",
+        "halo",
+        "cyan_halo",
+        "blue_eyes",
+        "plump_thighs",
+        "school_uniform",
+        "blue_archive"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "hayase_yuuka",
+        "yuuka",
+        "yuuka_(blue_archive)",
+        "早瀬ユウカ",
+        "优香",
+        "小计算器",
+        "100kg",
+        "没关系反正优香会算账",
+        "millennium",
+        "seminar",
+        "blue archive",
+        "yuuka (blue archive)"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "formNotes": "研讨会会计；精打细算、责任心极强，因大腿肉感被老师戏称为100kg，极其傲娇容易害羞",
+        "research": "2026-08-31 调研（Danbooru hayase_yuuka 12000+ posts）",
+        "world": "基沃托斯（Kivotos）· 千年科学学园"
+      },
+      "curatedArtistStyles": [
+        "morikura_en",
+        "tiv",
+        "anmi"
+      ],
+      "displayName": "早濑优香",
+      "exactPrefixes": [
+        "hayase_"
+      ],
+      "exactTokens": [
+        "yuuka (blue archive)"
+      ],
+      "franchise": "Blue Archive",
+      "id": "hayase_yuuka",
+      "identityProse": "Hayase Yuuka from Blue Archive, the meticulous Millennium Seminar treasurer with twin navy blue twintails, bright blue eyes, a geometric floating halo, and voluptuous soft thighs.",
+      "identityTokens": [
+        "yuuka (blue archive)",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "twintails",
+        "blue_eyes",
+        "halo",
+        "thick_thighs",
+        "large_breasts",
+        "blue_archive"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Hayase Yuuka",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

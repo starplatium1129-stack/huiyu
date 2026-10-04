@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc288",
+  "revision": 1,
+  "sortOrder": 283,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In the traditional inn room on the last night of the hot-spring trip, Ayachi Nene in a thin light pink yukata sits by the open window, collar loosened to expose her wet collarbone, the obi silently sliding open in the moonlight as she closes her eyes and blushes at the viewer's touch on her cheek, trembling eyelashes under warm lantern and moon light through shoji. Water droplets still glisten on her damp collarbone and bare calves.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "窗边近景平视",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "羞怯而深情的交付",
+    "id": "sc288",
+    "lighting": "月光与纸灯笼的暖色柔光",
+    "location": "古温泉街的和风旅馆客房",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, couple_pose, couple_embrace, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, water, droplets, body, obi, unfastening, sliding, sitting, white, tabi, socks, blush, trembling, eyelashes, quickened, warm, lantern, light, collarbone, slender_waist, full_body, moonlight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
+    "season": "秋",
+    "story": "【成年 After Story · 宁宁 · 温泉旅馆的月下约定】古温泉街的最后一晚，宁宁泡完露天风吕回到房间，银白色的长发还带着水汽，身上是一件旅馆的轻薄浴衣。她坐在敞开的窗边，山间溪流的低语伴着月光淌进室内。你坐到她身旁时，她微微一颤，却没有躲开。浴衣的领口在低头时松散开来，露出湿润锁骨与大片雪白的肌肤。她双手捏着衣襟，紫色瞳孔在月光下泛着水光——「今晚的月亮好亮……亮到让人藏不住任何秘密。」她偏过头，呼吸变得急促，却没有移开视线。你伸手触碰她微凉的脸颊，她闭上眼睛，睫毛轻轻颤动，浴衣的腰带在月光滑落中悄然松开——「至少在离开这家温泉旅馆之前……我想把这一刻的样子，完整地留给你。」",
+    "storyJa": "【寧々・大人のアフターストーリー・温泉旅館の月下の約束】古い温泉街での最後の夜。寧々は露天風呂から上がり、部屋に戻ると、銀色の長い髪はまだ湯気を帯びており、身には旅館の薄い浴衣だけをまとっていた。彼女は開け放たれた窓辺に座り、山から流れる川のせせらぎが月明かりとともに室内に流れ込んでいた。あなたが隣に座ると、彼女は微かに震えたが、逃げようとはしなかった。浴衣の襟元がうつむき加減に緩み、濡れた鎖骨と雪のように白い肌が広く露わになっていた。彼女は両手で衣襟を握りしめ、紫色の瞳が月明かりの下で潤んでいた——「今夜の月はとても明るい……明るすぎて、何も隠せない。」彼女は顔をそらし、呼吸が荒くなったが、視線は外さなかった。あなたが彼女の冷えた頬に触れると、彼女は目を閉じ、まつげが微かに震え、月明かりの中で浴衣の帯が静かにほどけていった——「せめて、この温泉旅館を去る前に……今のこの瞬間を、完全にあなたに捧げたい。」",
+    "tags": [
+      "hair_ribbon",
+      "yukata",
+      "bare_legs",
+      "white_tabi",
+      "inn",
+      "full_body",
+      "tatami",
+      "moonlight",
+      "open_collar"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "温泉旅馆的月下约定",
+    "usage": [
+      "壁纸级",
+      "R15"
+    ],
+    "weather": "月夜晴朗"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "roxy_migurdia",
+  "revision": 1,
+  "sortOrder": 17,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "roxy_migurdia",
+    "profile": {
+      "id": "roxy_migurdia",
+      "name": "洛琪希",
+      "alias": [
+        "Roxy Migurdia",
+        "ロキシー・ミグルディア"
+      ],
+      "type": "popular",
+      "icon": "🎓",
+      "portrait": {
+        "image": "../assets/characters/popular-roxy_migurdia.png?v=5",
+        "alt": "洛琪希 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅蓝长发双辫",
+        "hair_color": "浅蓝",
+        "eyes": "浅蓝",
+        "hairstyle": "长双辫 · 长刘海",
+        "uniform": "蓝袍白围裙 + 尖顶魔女帽",
+        "expression": "内向认真 · 努力型",
+        "style": "earnest migurd mage",
+        "signature": "浅蓝发双辫、浅蓝肤与尖顶魔女帽"
+      },
+      "personality": [
+        "内向认真",
+        "努力型",
+        "温柔端庄",
+        "天然呆",
+        "对魔法执着"
+      ],
+      "likes": [
+        "魔法研究",
+        "读书",
+        "独处",
+        "学生（和鲁迪）"
+      ],
+      "classic_cg": {
+        "title": "学院图书馆",
+        "description": "魔法学院的图书馆，她在书架间查找典籍，尖顶魔女帽与蓝袍是熟悉的风景。"
+      },
+      "identity": {
+        "role": "魔导师（水圣级）",
+        "age": "米格路德族（数百岁，外貌年轻）",
+        "occupation": "魔导师 / 教师",
+        "faction": "米里斯魔法学院"
+      },
+      "tags": [
+        "浅蓝发",
+        "双辫",
+        "蓝肤",
+        "魔女帽",
+        "蓝袍"
+      ],
+      "bg_story": "洛琪希是《无职转生》中主角的魔法启蒙导师，米格路德族（蓝发蓝肤、矮个）。蓝袍白围裙与尖顶魔女帽是标志。场景应偏魔法学院、荒野旅行与故乡村落。",
+      "palette": [
+        "水蓝",
+        "魔女深蓝",
+        "白"
+      ],
+      "weather": [
+        "学院窗光",
+        "荒野黄昏",
+        "村落晴日"
+      ],
+      "speech": "洛琪希向你致以问候。",
+      "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "traits": [
+        "roxy_migurdia",
+        "1girl",
+        "solo",
+        "long_blue_hair",
+        "twin_braids",
+        "blue_eyes",
+        "normal_ears",
+        "round_ears",
+        "mole_on_collarbone",
+        "petite_female",
+        "mushoku_tensei"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a",
+      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "roxy_migurdia",
+        "roxy",
+        "roxy migurdia",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "animeStudio": "studio bind, official anime screencap, anime coloring",
+      "canon": {
+        "era": "中世纪风",
+        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
+        "research": "2026-08-14 调研",
+        "world": "异世界奇幻（无职转生）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "displayName": "洛琪希",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "roxy_migurdia"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "roxy_migurdia",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids with a soft silky shine, blue eyes, a mole on her left collarbone",
+      "identityTokens": [
+        "roxy_migurdia",
+        "1girl",
+        "solo",
+        "long_blue_hair",
+        "twin_braids",
+        "blue_eyes",
+        "normal_ears",
+        "round_ears",
+        "mole_on_collarbone",
+        "petite_female",
+        "mushoku_tensei"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Roxy Migurdia",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

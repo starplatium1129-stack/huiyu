@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "amane_rainy_bus_station_shared_umbrella",
+  "revision": 1,
+  "sortOrder": 1184,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "amane_rainy_bus_station_shared_umbrella",
+    "title": "周防天音 · 雨夜站台的红伞依偎",
+    "category": "深情羁绊",
+    "characterId": "suou_amane",
+    "outfitId": "mihama_uniform",
+    "coverageTags": [
+      "rain"
+    ],
+    "description": "【周防天音 · 雨夜站台的红伞依偎】暴雨倾盆的郊外公交车站凉亭外，水洼在夜色中倒映着昏黄路灯。天音撑着一把宽大的红色雨伞，整个身子小鸟依人地紧贴在雄二的身边。雨水打湿了她的美浜制服肩膀，但她却将伞的大半部分倾向雄二。深蓝的眸子里满溢着不言而喻的温柔，在淅淅沥沥的雨声中，无声传达着想要一辈子守护在雄二身旁的宿命誓言。",
+    "location": "雨夜郊外公交车站亭旁路灯下",
+    "action": "撑着红雨伞侧身紧紧依偎在对方身旁，雨水打湿发梢，眼神深情而柔和",
+    "timeOfDay": "夜晚",
+    "lighting": "昏黄复古路灯穿透密密雨幕形成的温暖光晕与地面水洼倒影",
+    "camera": "medium shot, couple proximity framing, moody rain atmosphere",
+    "mood": "深情依恋",
+    "sceneTags": [
+      "bus_stop",
+      "rain",
+      "umbrella",
+      "red_umbrella",
+      "rain_drops",
+      "night",
+      "pantyhose",
+      "hair_rings"
+    ],
+    "promptProse": "Sheltering close together beneath a large red umbrella at a lonely suburban bus stop in the pouring rain, Amane presses her shoulder lovingly against her companion. Amber streetlights cast glowing reflections across the wet asphalt as raindrops bead upon her crimson hair.",
+    "promptTokens": [
+      "rainy_night",
+      "bus_stop",
+      "holding_umbrella",
+      "red_umbrella",
+      "falling_rain",
+      "wet_ground",
+      "school_uniform",
+      "hair_rings",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "group"
+  }
+}

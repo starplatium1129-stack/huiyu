@@ -1,0 +1,157 @@
+{
+  "kind": "character",
+  "id": "kafka",
+  "revision": 1,
+  "sortOrder": 71,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "kafka",
+    "profile": {
+      "id": "kafka",
+      "name": "卡芙卡",
+      "alias": [
+        "Kafka",
+        "星核猎手卡芙卡",
+        "言灵支配者"
+      ],
+      "type": "popular",
+      "icon": "🕸️",
+      "portrait": {
+        "image": "../assets/characters/popular-kafka.png?v=5",
+        "alt": "卡芙卡 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "酒红微卷长发 · 低马尾",
+        "hair_color": "酒红色 / 莓紫",
+        "eyes": "深邃紫眸 · 无恐惧神采",
+        "hairstyle": "侧分长刘海 · 优雅低马尾 · 复古圆框墨镜",
+        "uniform": "星核猎手深紫皮大衣 · 蛛网花纹黑丝连裤袜",
+        "expression": "优雅从容 · 成熟魅惑 · 掌控一切的神秘浅笑",
+        "style": "lethal seductive stellaron hunter",
+        "signature": "酒红低马尾、蛛网黑丝、墨镜与双枪大提琴"
+      },
+      "personality": [
+        "绝对从容无畏",
+        "优雅温柔却致命",
+        "掌控欲与母性交织",
+        "对命运剧本忠贞不渝",
+        "言谈极具魅惑与煽动性"
+      ],
+      "likes": [
+        "演奏大提琴",
+        "品尝红酒与咖啡",
+        "收集复古外套",
+        "引导开拓者的命运"
+      ],
+      "classic_cg": {
+        "title": "命运的言灵织网",
+        "description": "星港废墟与浩瀚星云之下，女子端坐拉奏大提琴，幽紫色的言灵蛛丝如命运般在虚空中蔓延。"
+      },
+      "identity": {
+        "role": "星核猎手核心成员",
+        "age": "外貌成熟女性",
+        "occupation": "星核猎手 / 命运执行者",
+        "faction": "星核猎手（Stellaron Hunters）"
+      },
+      "tags": [
+        "酒红发",
+        "紫瞳",
+        "蛛网黑丝",
+        "皮大衣",
+        "言灵能力",
+        "星核猎手"
+      ],
+      "bg_story": "卡芙卡是《崩坏：星穹铁道》中「星核猎手」的核心成员，天生不知恐惧为何物。擅长使用言灵操控人心、双枪与大提琴战斗。遵从命运奴隶艾利欧的预见，在黑塔空间站将星核注入开拓者体内，是引导整个星穹铁道故事展开的关键人物。",
+      "palette": [
+        "酒红",
+        "幽紫",
+        "漆黑"
+      ],
+      "weather": [
+        "赛博雨夜",
+        "星云异度空间",
+        "红月当空"
+      ],
+      "speech": "倾听吧，这是命运为你谱写的乐章。现在……乖乖听从我的指令哦。",
+      "source": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "traits": [
+        "kafka (honkai: star rail)",
+        "1woman",
+        "solo",
+        "purple_hair",
+        "wine_red_hair",
+        "low_ponytail",
+        "purple_eyes",
+        "sunglasses_on_head",
+        "spider_web_print",
+        "patterned_pantyhose",
+        "honkai:_star_rail"
+      ],
+      "accent_color": "#c084fc",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "kafka",
+      "displayName": "卡芙卡",
+      "originalName": "Kafka",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "kafka",
+        "kafka (honkai: star rail)",
+        "stellaron hunter kafka",
+        "honkai star rail",
+        "卡芙卡",
+        "星核猎手卡芙卡"
+      ],
+      "identityProse": "Kafka from Honkai: Star Rail, a dangerous and elegant Stellaron Hunter woman with long wine-red magenta hair tied back in a low ponytail, hypnotic lilac purple ringed eyes, a stylish pair of tinted aviator sunglasses rested on top of her head, and an alluring, composed smile",
+      "identityTokens": [
+        "kafka (honkai: star rail)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "low_ponytail",
+        "bangs",
+        "purple_eyes",
+        "ringed_eyes",
+        "sunglasses_on_head",
+        "spider_web_print",
+        "earrings",
+        "honkai:_star_rail"
+      ],
+      "exactTokens": [
+        "kafka (honkai: star rail)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "太空科幻（崩坏：星穹铁道）",
+        "era": "星际歌剧时代",
+        "formNotes": "星核猎手核心成员，言灵能力，操控隐形丝线与双冲锋枪/单手太刀，优雅危险如成熟蛛网女郎",
+        "research": "2026-08 调研"
+      },
+      "animeStudio": "honkai star rail, official anime art, miHoYo style",
+      "curatedArtistStyles": [
+        "rella",
+        "swav",
+        "ask_(askzy)"
+      ]
+    }
+  }
+}

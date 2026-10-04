@@ -1,0 +1,115 @@
+{
+  "kind": "character",
+  "id": "hayasaka_ai",
+  "revision": 1,
+  "sortOrder": 121,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "hayasaka_ai",
+    "profile": {
+      "id": "hayasaka_ai",
+      "name": "早坂爱",
+      "alias": [
+        "早坂爱",
+        "Ai Hayasaka"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/popular-hayasaka_ai.png?v=91bcfe32d07a",
+        "alt": "早坂爱 · 清晨四宫宅的女仆晨检场景样张"
+      },
+      "visual_dna": {
+        "signature": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+        "hair": "blonde_hair",
+        "eyes": "blue_eyes",
+        "uniform": "四宫宅长发女仆装",
+        "expression": "参照各场景的独立表情与动作",
+        "style": "anime"
+      },
+      "personality": [
+        "专业敏锐",
+        "擅长应变",
+        "渴望自主生活"
+      ],
+      "likes": [
+        "组装小型电脑",
+        "独自泡澡放松"
+      ],
+      "classic_cg": {
+        "title": "清晨四宫宅的女仆晨检",
+        "description": "清晨的四宫宅走廊，她穿着整洁女仆装核对平板上的日程清单，晨光从高窗洒下；走路带风、表情无波，是专业模式全开的瞬间。"
+      },
+      "identity": "Kaguya-sama: Love Is War · 早坂爱",
+      "tags": [
+        "Kaguya-sama: Love Is War",
+        "早坂爱",
+        "全年龄日常"
+      ],
+      "bg_story": "四宫辉夜身边善于切换身份的侍从。专业、敏锐，也会为任务繁忙而疲惫；离职与剪短头发的阶段代表她开始尝试自己选择的生活，长发女仆时期和短发旅行时期应分别呈现。",
+      "palette": [
+        "#8ea9d7",
+        "#3c5076"
+      ],
+      "weather": "随所选日常场景变化",
+      "speech": "日程已经核对好了，接下来按顺序处理。",
+      "source": "Kaguya-sama: Love Is War",
+      "traits": [
+        "hayasaka_ai",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "blonde_hair",
+        "blue_eyes"
+      ],
+      "accent_color": "#8ea9d7",
+      "bg_color": "#3c5076"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "早坂爱",
+        "Ai Hayasaka"
+      ],
+      "displayName": "早坂爱",
+      "exactPrefixes": [
+        "1girl, solo, hayasaka_ai"
+      ],
+      "exactTokens": [
+        "hayasaka_ai"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "hayasaka_ai",
+      "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+      "identityTokens": [
+        "hayasaka_ai",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "blonde_hair",
+        "blue_eyes"
+      ],
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "originalName": "Ai Hayasaka",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6"
+    }
+  }
+}

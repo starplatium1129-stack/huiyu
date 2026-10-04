@@ -1,0 +1,67 @@
+{
+  "kind": "blueprint",
+  "id": "mako_hot_spring_peek_clumsy_log_switch",
+  "revision": 1,
+  "sortOrder": 1140,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "从冒烟的替身木桩后慌乱探身，手握苦无遮掩胸口，面红耳赤窘迫大喊",
+    "camera": "medium shot, eye-level comedic framing, dense steam depth",
+    "category": "搞笑名场面",
+    "characterId": "hitachi_mako",
+    "coverageTags": [
+      "stealth"
+    ],
+    "description": "【常陆茉子 · 温泉雾气的替身术自爆】水雾蒸腾的露天天然温泉浴池边，圆木替身桩正冒着青烟。茉子手忙脚乱地从假山岩石后探出半个身子，紧身忍者服因为水汽浸润半贴在丰满娇躯上。她一手握着苦无，一手护在胸前，脸蛋红透得像煮熟的龙虾，猫嘴窘迫地大喊——「才、才没有借着潜行侦察偷看呢！在下是正经在执行警卫任务！木桩……木桩只是意外发动啦！」",
+    "id": "mako_hot_spring_peek_clumsy_log_switch",
+    "lighting": "温泉水雾中灯笼透出的暖黄柔光与暮色天光",
+    "location": "山野露天温泉热气腾腾假山后",
+    "mood": "反差娇羞",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude"
+    ],
+    "outfitId": "ninja_suit",
+    "promptProse": "Peeking out flustered from behind a smoking wooden substitution log beside a misty outdoor hot spring bath, Mako clutches her chest in embarrassed defense. Dense rising steam catches warm lantern light, illuminating her soaked ninja suit and bright red embarrassed pout.",
+    "promptTokens": [
+      "outdoor_onsen",
+      "steam",
+      "ninja_suit",
+      "wooden_log",
+      "smoke",
+      "heavily_flustered",
+      "cat_mouth",
+      "ahoge",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "hot_spring",
+      "steam",
+      "ninja",
+      "wooden_log",
+      "smoke",
+      "flustered",
+      "cat_mouth",
+      "blushing",
+      "ahoge"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "常陆茉子 · 温泉雾气的替身术自爆"
+  }
+}

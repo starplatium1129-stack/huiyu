@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/maid_uniform",
+  "revision": 1,
+  "sortOrder": 648,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "maid_uniform",
+      "name": "全能忠犬荷叶边女仆装",
+      "prose": "classical French maid uniform: frilled white lace maid headdress, tailored black short-sleeved maid dress, crisp white ruffled apron tied in a large bow at the back, red ribbon bowtie at the collar, white frilled thigh-high stockings with garter straps, and black patent leather mary jane shoes",
+      "tokens": [
+        "maid",
+        "maid_dress",
+        "maid_apron",
+        "maid_headdress",
+        "black_dress",
+        "red_bowtie",
+        "frills",
+        "thighhighs",
+        "white_thighhighs",
+        "garter_straps",
+        "mary_janes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

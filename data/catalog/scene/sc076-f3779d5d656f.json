@@ -1,0 +1,59 @@
+{
+  "kind": "scene",
+  "id": "sc076",
+  "revision": 1,
+  "sortOrder": 74,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "Between towering sunflowers, Ayachi Nene turns back at the sound of her name, one hand parting a broad green leaf beside the narrow path. Her opaque white cotton dress and straw hat catch the hot summer breeze. She points along the path with her free hand toward the place she has found for their photograph. A full-length view follows the path through golden flowers and keeps her sandals visible on the dry earth.",
+    "auditRevision": "careful-batch03-2026-08-27",
+    "camera": "花田路径全身远景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "开心",
+    "id": "sc076",
+    "lighting": "盛夏午后明亮日光",
+    "location": "向日葵田小径",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_cotton_dress, opaque_dress, straw_hat, sandals, standing_on_path, looking_back, holding_leaf, pointing, bright_smile, sunflower_field, tall_sunflowers, green_leaves, dirt_path, summer, afternoon, sunlight, full_body, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "夏",
+    "story": "【宁宁 · 向日葵田里的回身】盛夏午后，宁宁走在比人还高的向日葵之间，白色连衣裙被热风吹得轻轻扬起。她听见你在后面叫她，转身时笑容与金色花海一起亮起来。跑回你面前后，她把找到的最佳位置指向远处——「从那里可以拍到整片花田。拍完以后，也要留一张我们两个人的。」",
+    "storyJa": "【寧々・ひまわり畑で振り向いて】真夏の午後、寧々さんは人の背丈を超えるひまわりの中を歩き、白いドレスが熱風にそよぐ。後ろからあなたが呼ぶ声が聞こえ、振り向くと彼女の笑顔が金色の花の海とともに輝きました。彼女はあなたのところに走って戻った後、遠くに見つけた最高の場所を指さしました。――「あそこからなら、花畑全体を撮れますよ。撮り終わったら、私たち二人の写真も一枚残してくださいね。」",
+    "tags": [
+      "white_cotton_dress",
+      "opaque_dress",
+      "straw_hat",
+      "sandals",
+      "standing_on_path",
+      "looking_back",
+      "holding_leaf",
+      "pointing",
+      "bright_smile",
+      "sunflower_field",
+      "tall_sunflowers",
+      "green_leaves",
+      "dirt_path",
+      "summer",
+      "afternoon",
+      "sunlight",
+      "full_body"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "向日葵田里的回身",
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
+    "weather": "晴"
+  }
+}

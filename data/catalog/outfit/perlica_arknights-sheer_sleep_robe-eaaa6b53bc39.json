@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "perlica_arknights/sheer_sleep_robe",
+  "revision": 1,
+  "sortOrder": 411,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "perlica_arknights",
+    "outfit": {
+      "default": false,
+      "id": "sheer_sleep_robe",
+      "isDefault": false,
+      "name": "薄纱睡袍",
+      "prose": "wearing only a sheer translucent sleep robe of thin airy fabric, the see-through material tracing her bare shoulders and collarbone",
+      "styleHint": "soft cinematic lighting",
+      "tokens": [
+        "perlica_sheer_sleep_robe",
+        "sheer_robe",
+        "nightgown",
+        "sleep_robe",
+        "sheer_clothes",
+        "translucent_fabric",
+        "see_through",
+        "thin_clothes",
+        "bare_shoulders",
+        "collarbone"
+      ]
+    }
+  }
+}

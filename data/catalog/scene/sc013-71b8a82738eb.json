@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc013",
+  "revision": 1,
+  "sortOrder": 12,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a close-up along a spring cherry-blossom path, Shiki Natsume in a cream blouse and beige pleated skirt offers a single petal with an averted gaze. Soft petal bokeh and morning light frame her quiet, reserved blush.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "手部与侧脸近景",
+    "category": "恋爱",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc013",
+    "lighting": "春日清晨柔光",
+    "location": "樱花公园步道",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, heavy_coat",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cream_blouse, beige_pleated_skirt, sheer_white_thighhigh_stockings, brown_ankle_boots, walking_along_cherry_blossom_path, offering_a_single_sakura_petal_with_one_hand, averted_gaze, reserved_blush, spring_morning, flying_petals, soft_morning_light, close_up, profile, cinematic_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "春",
+    "story": "【夏目 · 花瓣落进掌心以后】春日公园的樱花正盛，夏目安静地走在外侧，替你挡开迎面的人群。一片花瓣落进她掌心，你说很适合她，她便故作冷淡地把花瓣递来，视线却不肯与你相接——「只是碰巧接到而已。既然你这么喜欢，就收好……不准笑，我没有在特意送你什么。」",
+    "storyJa": "【夏目・花びらが手のひらに落ちたあと、】春日公園の桜は満開で、夏目は外から来る人混みを遮りながら静かに歩いています。花びらが彼女の手のひらに落ちた。とても似合っているとあなたが言ったので、彼女は無関心を装って花びらをあなたに渡しましたが、彼女はあなたの目と目を合わせようとしませんでした。――「たまたま受け止めただけ。そんなに気に入ったなら、大事にしなさい……笑わないで。別に、あなたに贈ったわけじゃないから。」",
+    "tags": [
+      "mole_under_eye",
+      "cream_blouse",
+      "sheer_white_thighhigh_stockings",
+      "sakura_path",
+      "ankle_boots",
+      "close_up",
+      "offering_petal",
+      "averted_gaze"
+    ],
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "title": "花瓣落进掌心以后",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_home",
+  "revision": 1,
+  "sortOrder": 753,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_home",
+      "name": "下线后的居家针织装",
+      "prose": "a soft blue sweater and grey lounge trousers",
+      "tokens": [
+        "blue_sweater",
+        "grey_pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

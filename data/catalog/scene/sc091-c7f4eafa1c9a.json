@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc091",
+  "revision": 1,
+  "sortOrder": 89,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "id": "sc091",
+    "title": "门外递来的换洗衣物",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 门外递来的换洗衣物】冬夜浴室门没有关严，裹着浴巾的夏目只探出半张通红的脸，请你帮忙拿落在卧室的衣服。你把衣物递到门边后主动转身，她沉默几秒，轻轻接过——「处理得还算合格。等我换好以后……可以给你一杯热饮作为谢礼。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v21_anima",
+    "emotion": "害羞",
+    "season": "冬",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "mole_under_eye",
+      "bath_towel",
+      "bathroom_door",
+      "peeking",
+      "half_face",
+      "steam",
+      "folded_clothes",
+      "door_gap",
+      "red_ears",
+      "night",
+      "medium_shot"
+    ],
+    "mature": false,
+    "location": "公寓浴室门口",
+    "weather": "晴",
+    "camera": "门缝半身近景",
+    "lighting": "浴室暖灯与夜间暗部",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, bath_towel, white_bath_towel_wrapped_around_body, bare_shoulders, cleavage, wet_skin, water_droplets, wet_hair, peeking_through_partially_open_bathroom_door, extending_hand_to_take_clothes, heavy_blush, embarrassed, steamy_bathroom, night, warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, fire, flames, text, watermark, signature, child, loli, underage, fully_clothed",
+    "usage": [
+      "展示图",
+      "R15"
+    ],
+    "storyJa": "【夏目・ドアの外に着替えが届けられます】冬の夜、バスルームのドアがしっかりと閉まっていなかったため、バスタオルを巻いた夏目が赤い顔の半分だけを出し、寝室に残っている服を取り出すのを手伝ってほしいと頼みました。あなたは服をドアに渡し、振り返った。彼女は数秒間沈黙し、そっとそれらを受け取りました。――「処置は一応、合格。着替えたら……お礼に温かい飲み物くらいは淹れてあげる。」",
+    "rating": "R15",
+    "animaCaption": "Behind the half-open bathroom door on a winter night, Shiki Natsume wrapped in a white bath towel peeks out only half of her flushed face, one slender shoulder catching the steam, reaching out to take the folded change of clothes you pass through the gap; she takes it with a small silent pause, ears flushed crimson before the door closes. A few droplets of water catch the light on her bare shoulder.",
+    "auditRevision": "fix-no-burn-ears-2026-09-05"
+  }
+}

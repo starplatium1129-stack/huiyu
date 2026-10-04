@@ -1,0 +1,53 @@
+{
+  "kind": "scene",
+  "id": "sc243",
+  "revision": 1,
+  "sortOrder": 238,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "In a medium shot on the observatory roof under a crisp autumn night sky, Shiki Natsume stands beside the telescope with one hot cocoa in hand and points toward Orion with the other. A second cup rests on the observatory rail while the telescope remains visible in the foreground under the moonlight.",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
+    "camera": "天文台侧面中景",
+    "category": "日常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "emotion": "恋爱",
+    "id": "sc243",
+    "lighting": "月光与星光的柔和冷光",
+    "location": "学校天文台屋顶",
+    "lora": "shiki_natsume_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, dark_wool_coat, red_plaid_muffler, black_gloves, standing_beside_telescope_on_observatory_roof, one_hand_holding_hot_cocoa_paper_cup, other_hand_pointing_toward_orion_constellation, second_hot_cocoa_cup_resting_on_observatory_rail, telescope_in_foreground, crisp_autumn_night_sky, full_of_stars, rare_faint_smile, moonlight, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "All",
+    "season": "秋",
+    "story": "【夏目 · 深夜观星】深秋晴朗的夜晚，学校的天文台屋顶。夏目难得没有在打瞌睡，而是专注地调试着望远镜的焦距。你拿着两杯热可可走上来时，她头也不回地伸出手，仿佛早就在等你。当猎户座清晰地出现在目镜中时，她难得露出了淡淡的微笑，指着星空用毫无起伏的语调讲解着——「那是参宿四，红超巨星，距离地球约700光年。也就是说，我们现在看到的光，是700年前发出的。」她顿了顿，微垂着眼睑，耳根在月光下悄悄泛红，「……700年前的光都能传到现在，有些话……是不是也该说出口了。大笨蛋。」",
+    "storyJa": "【夏目】【ナツメ・天文台のオリオン座の囁き】深秋の澄んだ夜、学校の天文台の屋上。ナツメは珍しく居眠りせず、望遠鏡の焦点を合わせることに集中していた。あなたがホットココアを二つ持って上がってきた時、彼女は振り返らずに手を差し出したまるで前から待っていたかのように。オリオン座が接眼レンザに鮮明に現れると、彼女は珍しく淡淡的な微笑みを見せ、星を指差しながら感情のない口調で解説した――「あれはベテルギウス。赤色超巨星で、地球から約700光年離れている。つまり、今私たちが見ている光は、700年前に放たれたもの」彼女は少し間を置き、まぶたを少し伏せ、月光の中で耳の裏がそっと赤く染まり、「……700年前の光だって今に届くのよ。บาง言葉は……口に出すべきじゃないかしら。大バカ者」",
+    "tags": [
+      "mole_under_eye",
+      "wool_coat",
+      "telescope",
+      "observatory_roof",
+      "hot_cocoa",
+      "two_hot_drinks",
+      "pointing_at_stars",
+      "faint_smile",
+      "starry_sky",
+      "night",
+      "red_ears",
+      "medium_shot",
+      "telescope_in_foreground"
+    ],
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "title": "屋顶天文台的猎户座低语",
+    "usage": [
+      "新手推荐",
+      "壁纸级"
+    ],
+    "weather": "晴朗夜空"
+  }
+}

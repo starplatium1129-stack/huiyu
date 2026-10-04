@@ -1,0 +1,51 @@
+{
+  "kind": "scene",
+  "id": "sc068",
+  "revision": 1,
+  "sortOrder": 66,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "animaCaption": "The cable car has steadied, but Ayachi Nene still keeps both arms around the viewer's arm. Her thick cream coat and burgundy scarf contrast with the snow-covered mountains outside the glass. Seated close beside him, she turns toward the window with an overly serious expression that almost hides her smile. Frame the linked arms and her face at eye level inside the gondola.",
+    "camera": "缆车内相挽双臂半身中景",
+    "category": "旅行",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "emotion": "幸福",
+    "id": "sc068",
+    "lighting": "雪山午后漫射光",
+    "location": "缆车",
+    "lora": "ayachi_nene_v21_anima",
+    "mature": false,
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
+    "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cream_winter_coat, burgundy_scarf, sitting_in_cable_car, hugging_viewer_arm, both_arms, looking_out_window, restrained_smile, gondola_window, snowy_mountains, winter, diffused_daylight, medium_shot, detailed_background, cinematic_lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "rating": "All",
+    "recommendedSize": "832×1216",
+    "season": "冬",
+    "story": "【宁宁 · 缆车晃动时的借口】冬日缆车缓缓升向雪山，车厢被侧风吹得轻轻摇晃。宁宁原本坐在对面，晃动后顺势挪到你身边，双手紧紧抱住你的手臂。发现风停了也没有松开，她便认真望向窗外——「现在放手的话又会晃起来，所以保持这样最安全。山顶到了以后……也可以再多借我一会儿。」",
+    "storyJa": "【寧々・ケーブルカーが揺れたらすみません】冬、ケーブルカーは雪を頂いた山々に向かってゆっくりと登っていきますが、車両は横風でわずかに揺れます。寧々は彼の向かい側に座っていましたが、震えた後、あなたの側に移動して、両手であなたの腕をしっかりと抱きました。風が止んでもなお衰えていないことに気づき、彼女は真剣に窓の外を眺めた。――「今手を離したら、また揺れてしまいますから。このままが一番安全なんです。頂上に着いてからも……もう少しだけ、借りていてもいいですか？」",
+    "tags": [
+      "cream_winter_coat",
+      "burgundy_scarf",
+      "sitting_in_cable_car",
+      "hugging_viewer_arm",
+      "both_arms",
+      "looking_out_window",
+      "restrained_smile",
+      "gondola_window",
+      "snowy_mountains",
+      "winter",
+      "diffused_daylight",
+      "medium_shot"
+    ],
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "title": "缆车晃动时的借口",
+    "usage": [
+      "展示图"
+    ],
+    "weather": "晴"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "blueprint",
+  "id": "cc_sunny_picnic_lawn_reclining",
+  "revision": 1,
+  "sortOrder": 1316,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "单手支颐侧卧在草地野餐垫上，发丝铺散，神情慵懒戏弄地看着视角",
+    "camera": "cowboy shot, diagonal angle, relaxing lawn view",
+    "category": "春日野餐",
+    "characterId": "cc_code_geass",
+    "coverageTags": [
+      "daily",
+      "picnic",
+      "relaxing"
+    ],
+    "description": "【C.C. · 阳光草坪的慵懒侧卧】春日微风吹拂的青青草地上，红白格子的野餐垫上散落着精美的三明治与果汁。C.C.侧卧在松软的草地上，单手支着下巴，翠绿的长发如绿色锦缎般铺展在花草之间。她嘴里衔着一根青草，微眯起金珀色的眼眸注视着正在看书的你，嘴角挂着一丝戏谑的慵懒——「书有什么好看的，难道我还不如那几张纸有趣吗？」",
+    "id": "cc_sunny_picnic_lawn_reclining",
+    "lighting": "透过树梢洒下温暖和煦的金色春日阳光",
+    "location": "开满雏菊与蒲公英的湖畔青草地野餐垫上",
+    "mood": "惬意调侃",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "lawn_sweater_no_plush",
+    "promptProse": "Reclining leisurely on her side atop a picnic blanket on a blooming green lawn, C.C. props her head with one hand. Her vast lime-green hair spreads across the fresh spring daisies like liquid silk. Dressed in her relaxed sweater and denim shorts, she looks up at the viewer with an amused, teasing glint in her golden eyes under the dappled sunlight. Beautiful pastoral anime illustration, solo 1girl, no text.",
+    "promptTokens": [
+      "meadow",
+      "grass",
+      "wildflowers",
+      "picnic_blanket",
+      "lying_on_side",
+      "hand_on_cheek",
+      "oversized_sweater",
+      "bare_legs",
+      "green_hair",
+      "yellow_eyes",
+      "smirk",
+      "sunny",
+      "cowboy_shot",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "meadow",
+      "grass",
+      "picnic_mat",
+      "flowers",
+      "lying_on_side",
+      "hand_on_cheek",
+      "green_hair",
+      "casual_sweater",
+      "bare_legs",
+      "lazy_smirk"
+    ],
+    "timeOfDay": "春日午后",
+    "title": "C.C. · 阳光草坪的慵懒侧卧"
+  }
+}

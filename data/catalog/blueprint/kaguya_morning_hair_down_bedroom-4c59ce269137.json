@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "kaguya_morning_hair_down_bedroom",
+  "revision": 1,
+  "sortOrder": 1400,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
+    "adult": false,
+    "animaStyleHint": "anime_slice_of_life",
+    "camera": "medium shot, seated on bed, morning softness, intimate atmosphere",
+    "category": "居家日常",
+    "characterId": "shinomiya_kaguya",
+    "coverageTags": [
+      "daily",
+      "girlfriend",
+      "morning"
+    ],
+    "description": "【四宫家寝室·清晨】难得的假日清晨，辉夜卸下了折叠马尾，黑发如绸缎般披散过肩——那是只有『冰』融化时才允许出现的柔软。她抱着枕头坐在大床中央，晨光穿过蕾丝窗帘落在发梢，红瞳带着刚睡醒的湿润，傲娇地别过脸去——「……只、只准看一秒哦？……才、才不是特意为你散开的呢。」",
+    "id": "kaguya_morning_hair_down_bedroom",
+    "kreaStyleHint": "anime_slice_of_life",
+    "lighting": "蕾丝窗帘过滤的柔白晨光",
+    "location": "四宫家寝室大床",
+    "mood": "冰融反差、娇软日常",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "bad anatomy",
+      "bad hands",
+      "extra limbs",
+      "fire, flames, burning ears"
+    ],
+    "outfitId": "casual_summer_dress",
+    "promptProse": "Shinomiya Kaguya sits hugging a pillow in the middle of the Shinomiya mansion's grand bed on a lazy holiday morning, her black hair let down for once and flowing past her shoulders like silk. Lace-filtered morning light falls across the strands as her red tareme eyes blink sleepily, and she turns her head away in a huff yet peeks back at you, insisting you may only look for one second. Medium shot, cinematic lighting, detailed bedroom background.",
+    "promptTokens": [
+      "shinomiya_kaguya",
+      "1girl",
+      "solo",
+      "hair_down",
+      "long_hair",
+      "black_hair",
+      "red_eyes",
+      "tareme",
+      "hugging_pillow",
+      "sitting",
+      "on_bed",
+      "blush",
+      "tsundere",
+      "looking_back",
+      "pajamas",
+      "morning",
+      "bedroom",
+      "detailed_background",
+      "cinematic_lighting"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "SFW",
+    "sceneTags": [
+      "bedroom",
+      "morning",
+      "hair_down",
+      "long_hair",
+      "pillow_hug",
+      "blush",
+      "tsundere",
+      "daily"
+    ],
+    "timeOfDay": "清晨",
+    "title": "四宫辉夜 · 冰融晨光的散发时刻·「只准看一秒……才怪」"
+  }
+}

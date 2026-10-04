@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "gotoh_hitori_shimokitazawa_alley",
+  "revision": 1,
+  "sortOrder": 1006,
+  "createdAt": null,
+  "updatedAt": null,
+  "data": {
+    "action": "背着吉他包在街道前行，回首害羞张望",
+    "camera": "cowboy shot, eye level",
+    "category": "现代日常",
+    "characterId": "gotoh_hitori",
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【后藤一里 · 下北泽街巷漫步】下北泽错落有致的文艺后巷中，涂鸦墙与复古店铺牌匾在午后树影斑驳下交错。波奇酱背着比自己身躯还沉重的黑色吉他包，小心翼翼地沿着路沿石走过，微风吹拂着她粉色的发丝与蓝黄发夹——「去排练室的这条路我已经走过很多次了……但每次心跳还是快得像双踩鼓点一样。」",
+    "id": "gotoh_hitori_shimokitazawa_alley",
+    "lighting": "午后阳光穿透树叶投下斑驳光斑",
+    "location": "下北泽街头后巷",
+    "mood": "羞怯小心",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "deformed",
+      "signature",
+      "nsfw",
+      "nude",
+      "explicit"
+    ],
+    "outfitId": "pink_tracksuit",
+    "promptProse": "Along a picturesque bohemian alleyway in Shimokitazawa, Gotoh Hitori walks cautiously with her heavy black guitar case strapped securely to her back. Dappled afternoon sunlight filters through street trees, projecting soft geometric patterns onto rustic brick walls adorned with indie music posters and stylish graffiti. She turns her head back towards the viewer with a bashful, hesitant blush, her distinctive blue-and-yellow cubic hair clip catching the gentle city breeze. Rich urban environmental details and warm ambient contrast deliver an authentic anime key visual feel.",
+    "promptTokens": [
+      "shimokitazawa",
+      "city_street",
+      "alley",
+      "carrying_guitar_case",
+      "guitar_case_on_back",
+      "graffiti_wall",
+      "dappled_sunlight",
+      "looking_back",
+      "blushing",
+      "cowboy_shot",
+      "eye_level",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "cubic_hair_clip"
+    ],
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "shimokitazawa",
+      "city_street",
+      "alley",
+      "carrying_guitar_case",
+      "guitar_case_on_back",
+      "graffiti_wall",
+      "dappled_sunlight",
+      "looking_back",
+      "blushing"
+    ],
+    "timeOfDay": "午后",
+    "title": "后藤一里 · 下北泽街巷漫步"
+  }
+}
