@@ -32,6 +32,11 @@ pub(super) fn no_links(path: &Path) -> Result<()> {
 
 fn open(path: &Path) -> Result<(Take<File>, u64)> {
     no_links(path)?;
+    // Reject existing FIFOs/devices before open can block. The opened handle is
+    // still checked below; this preflight does not exclude concurrent replacement.
+    if !fs::metadata(path).map_err(|_| unavailable())?.is_file() {
+        return Err(unavailable());
+    }
     let file = File::open(path).map_err(|_| unavailable())?;
     let meta = file.metadata().map_err(|_| unavailable())?;
     if !meta.is_file()

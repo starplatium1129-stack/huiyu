@@ -101,13 +101,43 @@ fn published_profiles_revoke_without_legacy_fallback() {
 }
 
 #[test]
-fn linked_reference_files_are_rejected() {
+fn non_regular_and_linked_reference_files_are_rejected() {
     let fixture = tempfile::tempdir().unwrap();
     let original = fixture.path().join("original.json");
     let alias = fixture.path().join("alias.json");
     fs::write(&original, b"{}").unwrap();
     fs::hard_link(&original, &alias).unwrap();
     assert!(io::bytes(&alias).is_err());
+    fs::remove_file(&alias).unwrap();
+    assert_eq!(io::bytes(&original).unwrap(), b"{}");
+    #[cfg(unix)]
+    {
+        use std::{ffi::CString, os::unix::ffi::OsStrExt, time::Duration};
+        let fifo = fixture.path().join("profile.json");
+        let name = CString::new(fifo.as_os_str().as_bytes()).unwrap();
+        assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
+        let (done, waiting) = std::sync::mpsc::channel();
+        let unblock = std::thread::spawn(move || {
+            if matches!(
+                waiting.recv_timeout(Duration::from_secs(2)),
+                Err(std::sync::mpsc::RecvTimeoutError::Timeout)
+            ) {
+                // Bound the old blocking open without providing profile contents.
+                let _writer = fs::OpenOptions::new().write(true).open(fifo).unwrap();
+                true
+            } else {
+                false
+            }
+        });
+        let result = io::bytes(&fixture.path().join("profile.json"));
+        let _ = done.send(());
+        let blocked = unblock.join().unwrap();
+        assert!(result.is_err());
+        assert!(
+            !blocked,
+            "non-regular reference must be rejected before opening"
+        );
+    }
 }
 
 #[test]
