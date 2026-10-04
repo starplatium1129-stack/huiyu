@@ -16,7 +16,7 @@ type Options = Pick<Workspace, 'history' | 'projects' | 'thumbUrls' | 'cardUrls'
   | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'>
 
 export function useGalleryCollections(options: Options) {
-  const { albums, characterAlbums } = useGalleryProjectAlbums(options)
+  const { albums, characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums(options)
   const albumSection = ref<'characters' | 'albums'>('albums')
   const visibleAlbumIds = ref<string[]>([])
   const selection = computed({
@@ -71,12 +71,7 @@ export function useGalleryCollections(options: Options) {
     return { id: item.id, src: /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached) }
   }))
   // Read only album representatives while the wall is hidden, through its existing thumbnail owner.
-  const albumPreviewItems = computed(() => {
-    const visible = new Set(visibleAlbumIds.value)
-    const ids = new Set((albumSection.value === 'characters' ? characterAlbums.value : albums.value)
-      .filter(album => visible.has(album.id)).flatMap(album => album.previewIds || []))
-    return options.history.value.filter(item => ids.has(item.id))
-  })
+  const albumPreviewItems = computed(() => resolvePreviewItems(albumSection.value, visibleAlbumIds.value))
   const syncPreviews = computed(() => editorOpen.value ? previewItems.value.slice(0, 3) : navigation.albumsOpen.value ? albumPreviewItems.value : null)
   async function openCollection(id: string) {
     options.resetGalleryFilters()

@@ -36,6 +36,26 @@ function setup() {
 }
 
 describe('smart album editor lifecycle', () => {
+  it('keeps overview thumbnail demand stable as covers arrive, but updates visible membership', () => {
+    const { options, collections } = setup()
+    options.projects.value = [{ id: 'existing', title: 'Album', history_ids: [1] }]
+    collections.albumsOpen.value = true
+    expect(collections.syncPreviews.value).toEqual([])
+    collections.visibleAlbumIds.value = ['existing']
+    const requested = collections.syncPreviews.value
+    expect(requested?.map(item => item.id)).toEqual([1])
+    options.thumbUrls[1] = 'data:image/jpeg;base64,cover'
+    expect(collections.albums.value[0].covers).toHaveLength(1)
+    expect(collections.syncPreviews.value).toBe(requested)
+    delete options.thumbUrls[1]
+    expect(collections.syncPreviews.value).toBe(requested)
+    options.history.value.push({ id: 2 })
+    options.projects.value[0].history_ids.push(2)
+    expect(collections.syncPreviews.value?.map(item => item.id)).toEqual([1, 2])
+    collections.visibleAlbumIds.value = []
+    expect(collections.syncPreviews.value).toEqual([])
+  })
+
   it('only computes previews while the editor is open', () => {
     const { options, collections } = setup()
     expect(collections.previewItems.value).toEqual([])

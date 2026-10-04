@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { GalleryProject } from './galleryStorage'
@@ -26,7 +26,7 @@ describe('project album presentation', () => {
   it('counts live, distinct project members and hides empty albums', () => {
     const state = fixture()
     const { albums } = useGalleryProjectAlbums(state)
-    expect(albums.value).toEqual([{ id: 'first', title: '雨后的来信', kind: 'manual', count: 3, covers: [], previewIds: [3, 2, 1] }])
+    expect(albums.value).toEqual([{ id: 'first', title: '雨后的来信', kind: 'manual', count: 3, covers: [] }])
     expect(state.projects.value[0].history_ids).toEqual([1, 1, 2, 3, 'gone'])
     state.projects.value[0].history_ids = ['1', 2]
     expect(albums.value[0].count).toBe(1)
@@ -57,10 +57,10 @@ describe('project album presentation', () => {
     state.projects.value[0].history_ids.push(4, 5)
     for (const id of [1, 2, 3, 4]) state.thumbUrls[id] = `data:image/png;base64,${id}`
     state.thumbUrls[5] = 'javascript:alert(1)'
-    const { albums } = useGalleryProjectAlbums(state)
+    const { albums, resolvePreviewItems } = useGalleryProjectAlbums(state)
     expect(albums.value[0].count).toBe(5)
     expect(albums.value[0].covers.map(cover => cover.id)).toEqual([4, 3, 2])
-    expect(albums.value[0].previewIds).toEqual([5, 4, 3])
+    expect(resolvePreviewItems('albums', ['first']).map(item => item.id)).toEqual([3, 4, 5])
     expect(state.history.value.map(item => item.id)).toEqual([1, 2, 3, 4, 5])
   })
 
@@ -76,14 +76,16 @@ describe('project album presentation', () => {
       { id: 6, timestamp: 50, manual_tags: ['nene'], prompt: 'nene portrait' },
     ]
     const saved = JSON.stringify(state.history.value)
-    const { characterAlbums, coverItems } = useGalleryProjectAlbums({ ...state,
+    const { characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums({ ...state,
       characterName: id => id === 'nene' ? '绫地宁宁' : id === 'kurumi/key ?' ? '时崎狂三' : '四季夏目' })
     expect(characterAlbums.value.map(album => [album.characterId, album.title, album.count])).toEqual([
       ['kurumi/key ?', '时崎狂三', 1], ['nene', '绫地宁宁', 5], ['natsume', '四季夏目', 2],
       [UNASSIGNED_CHARACTER_ID, '未标注角色', 1],
     ])
     expect(characterAlbums.value[0].id).toBe(`character:${encodeURIComponent('kurumi/key ?')}`)
-    expect(coverItems.value.map(item => item.id)).toEqual([4, 5, 2, 3, 6])
+    const visibleIds = characterAlbums.value.map(album => album.id)
+    expect(resolvePreviewItems('characters', visibleIds).map(item => item.id)).toEqual([2, 3, 4, 5, 6])
+    expect(resolvePreviewItems('characters', ['character:nene']).map(item => item.id)).toEqual([2, 4, 5])
     expect(JSON.stringify(state.history.value)).toBe(saved)
     expect(artworkCharacterIds(state.history.value[0])).toEqual(['nene'])
     expect(createSmartAlbumMatcher(rule({ characterId: UNASSIGNED_CHARACTER_ID }), [])(state.history.value[5])).toBe(true)
@@ -91,7 +93,7 @@ describe('project album presentation', () => {
     expect(characterAlbums.value.find(album => album.characterId === 'nene')?.title).toBe('绫地宁宁')
     state.history.value.push({ id: 7, timestamp: 700, characterId: 'nene' })
     expect(characterAlbums.value[0]).toMatchObject({ characterId: 'nene', count: 6 })
-    expect(coverItems.value.map(item => item.id)).toContain(7)
+    expect(resolvePreviewItems('characters', visibleIds).map(item => item.id)).toContain(7)
   })
 
   it('keeps smart albums live with AND conditions, exact saved tags, and strict manual source membership', () => {
@@ -151,15 +153,17 @@ describe('project album presentation', () => {
     state.history.value[0].prompt = 'portrait'
     state.projects.value.push({ id: 'smart', title: '肖像', history_ids: [], smartRule: rule({ search: 'portrait' }) })
     const searchSpy = vi.spyOn(galleryHelpers, 'searchHaystack')
-    const { albums, coverItems } = useGalleryProjectAlbums(state)
+    const { albums, resolvePreviewItems } = useGalleryProjectAlbums(state)
+    const previewItems = computed(() => resolvePreviewItems('albums', ['smart']))
     expect(albums.value.find(album => album.id === 'smart')?.count).toBe(1)
     expect(searchSpy).toHaveBeenCalledTimes(3)
-    const preparedCovers = coverItems.value
+    const preparedPreviews = previewItems.value
+    expect(preparedPreviews.map(item => item.id)).toEqual([1])
     state.thumbUrls[1] = 'data:image/png;base64,portrait'
     expect(albums.value.find(album => album.id === 'smart')?.covers).toEqual([{ id: 1, src: state.thumbUrls[1] }])
     delete state.thumbUrls[1]
     expect(albums.value.find(album => album.id === 'smart')?.covers).toEqual([])
-    expect(coverItems.value).toBe(preparedCovers)
+    expect(previewItems.value).toBe(preparedPreviews)
     expect(searchSpy).toHaveBeenCalledTimes(3)
   })
 })
