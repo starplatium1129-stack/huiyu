@@ -68,6 +68,35 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
   expect(jobs).toBe(0)
 })
 
+test('showcase search keeps relevance tiers, catalog ties, filters and pagination', async ({ page }) => {
+  await installShowcaseFixture(page)
+  const fullText = Array.from({ length: 21 }, (_, index) => ({ id: `a-full${String(index).padStart(2, '0')}x`, title: `Full text ${index}`, story: 'Needle' }))
+  const entries = [...fullText,
+    { id: 'c-needle-a', title: 'ID hit A' }, { id: 'd-needle-b', title: 'ID hit B', char: 'natsume' },
+    { id: 'w-no-match', title: 'Unrelated' }, { id: 'x-title-a', title: 'Title NEEDLE A' },
+    { id: 'y-title-b', title: 'Title needle B' }, { id: 'z-exact', title: 'NEEDLE' },
+  ].map(entry => ({ char: 'nene', type: 'scene', rating: 'All', ...entry }))
+  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: { entries } }))
+  await page.goto('/showcase')
+  const cards = page.locator('.showcase-grid .sample')
+  const ids = () => cards.evaluateAll(elements => elements.map(element => element.getAttribute('data-sample-id')))
+  const catalogIds = entries.map(entry => entry.id)
+  await expect.poll(ids).toEqual(catalogIds.slice(0, 24))
+  const input = page.getByRole('searchbox', { name: '搜索画册' })
+  await input.fill('  NeEdLe  ')
+  const rankedIds = ['z-exact', 'x-title-a', 'y-title-b', 'c-needle-a', 'd-needle-b', ...fullText.map(entry => entry.id)]
+  await expect.poll(ids).toEqual(rankedIds.slice(0, 24))
+  await page.getByRole('button', { name: /加载更多/ }).evaluate(button => (button as HTMLButtonElement).click())
+  await expect.poll(ids).toEqual(rankedIds)
+  await page.locator('.showcase-filters > summary').press('Enter')
+  await pickStudioOptionByValue(page.getByRole('combobox', { name: '筛选角色', exact: true }), 'nene')
+  await expect.poll(ids).toEqual(rankedIds.filter(id => id !== 'd-needle-b').slice(0, 24))
+  await input.fill('   ')
+  await expect.poll(ids).toEqual(catalogIds.filter(id => id !== 'd-needle-b').slice(0, 24))
+  await page.getByRole('button', { name: '清除筛选' }).click()
+  await expect.poll(ids).toEqual(catalogIds.slice(0, 24))
+})
+
 test('closing a linked CG clears its URL and does not reopen on reload', async ({ page }) => {
   await installShowcaseFixture(page)
   await page.goto('/showcase?scene=sc001')

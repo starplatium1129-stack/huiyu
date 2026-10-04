@@ -253,7 +253,10 @@ const characterLabels = computed(() => {
 })
 function charLabel(value: string) { return LABELS[value] || characterLabels.value.get(value) || value || '角色' }
 const filterSummary = computed(() => [typeFilter.value === 'all' ? '' : typeLabel(typeFilter.value), charFilter.value === 'all' ? '' : charLabel(charFilter.value), ratingFilter.value === 'all' ? '' : ratingLabel(ratingFilter.value)].filter(Boolean).join(' · ') || '类型、角色与分级')
-const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id, norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' '))])))
+const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id, {
+  title: norm(entry.title), id: norm(entry.id),
+  text: norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' ')),
+}])))
 const hasFilters = computed(() => Boolean(searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
   return entry.thumb ? `/scene-showcase/${entry.thumb}?cv=${imgVersion.value}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}`
@@ -297,11 +300,14 @@ const filtered = computed(() => {
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
     if (ratingFilter.value !== 'all' && e.rating !== ratingFilter.value) return false
-    return !term || searchIndex.value.get(e.id)?.includes(term)
+    return !term || searchIndex.value.get(e.id)?.text.includes(term)
   })
   if (!term) return matches
-  const relevance = (entry: ShowcaseEntry) => norm(entry.title) === term ? 3 : norm(entry.title).includes(term) ? 2 : norm(entry.id).includes(term) ? 1 : 0
-  return matches.sort((a, b) => relevance(b) - relevance(a))
+  return matches.map(entry => {
+    const indexed = searchIndex.value.get(entry.id)!
+    const score = indexed.title === term ? 3 : indexed.title.includes(term) ? 2 : indexed.id.includes(term) ? 1 : 0
+    return { entry, score }
+  }).sort((a, b) => b.score - a.score).map(({ entry }) => entry)
 })
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
