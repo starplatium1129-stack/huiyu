@@ -7,14 +7,11 @@
 
 import { ref, computed, watch, onScopeDispose } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
-import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
-import type { SceneBlueprint } from '@/utils/popularContent'
+import type { HomeHeroCharacter } from '@/types/api'
 import { confirmAction } from '@/composables/useConfirm'
 import { useHomeHeroes, type HeroEntry } from '@/composables/useHomeHeroes'
 import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
-
-const IMAGE_PAGE_SIZE = 36
 
 export interface ShowcaseSceneItem {
   id: string
@@ -25,8 +22,6 @@ export interface ShowcaseSceneItem {
 }
 
 interface UploadHooks {
-  scenes: { value: SceneDraft[] }
-  blueprints?: { value: SceneBlueprint[] }
   errorMessage: (error: unknown, fallback: string) => string
 }
 
@@ -57,21 +52,14 @@ function readFileAsImage(file: File): Promise<HTMLImageElement> {
   })
 }
 
-export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: UploadHooks) {
-  const imageSearch = ref('')
-  const imageSearchDebounced = ref('')
-  let imageDebounceTimer: ReturnType<typeof setTimeout> | null = null
-  watch(imageSearch, (v) => {
-    if (imageDebounceTimer) clearTimeout(imageDebounceTimer)
-    imageDebounceTimer = setTimeout(() => { imageSearchDebounced.value = v }, 250)
-  })
-  const imagePage = ref(1)
-  const imageTypeFilter = ref<'all' | 'scene' | 'popular'>('all')
+export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   const selectedImageId = ref('')
   const selectedImageTitle = ref('')
   const showcaseFeedback = ref('')
   const showcaseError = ref(false)
   const showcaseVersion = ref(Date.now())
+  const assetVersions = ref<Record<string, number>>({})
+  const manifestLoading = ref(false), manifestError = ref('')
   const uploadBusy = ref(false)
   const showcaseFileEl = ref<HTMLInputElement | null>(null)
   const heroFileEl = ref<HTMLInputElement | null>(null)
@@ -83,17 +71,19 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   let alive = true
   let heroRequest: AbortController | undefined
   let showcaseRequest: AbortController | undefined
+  let uploadRequest: AbortController | undefined
   onScopeDispose(() => {
     alive = false
     heroRequest?.abort()
     showcaseRequest?.abort()
-    if (imageDebounceTimer) clearTimeout(imageDebounceTimer)
+    uploadRequest?.abort()
   })
 
   async function loadShowcaseManifest() {
     showcaseRequest?.abort()
     const controller = new AbortController()
     showcaseRequest = controller
+    manifestLoading.value = true; manifestError.value = ''
     const timeout = setTimeout(() => controller.abort(), 10_000)
     try {
       const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
@@ -103,59 +93,19 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       for (const item of raw.entries ?? []) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
       const entries = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
       if (alive && !controller.signal.aborted) showcaseEntries.value = new Map(entries.map(item => [item.id, item]))
+    } catch (error) {
+      if (alive && !controller.signal.aborted) manifestError.value = errorMessage(error, '样张清单暂时无法读取')
+      throw error
     } finally {
       clearTimeout(timeout)
-      if (showcaseRequest === controller) showcaseRequest = undefined
+      if (showcaseRequest === controller) { showcaseRequest = undefined; manifestLoading.value = false }
     }
   }
   watch(runtimeResourceIdentity, () => {
     showcaseEntries.value = new Map()
+    assetVersions.value = {}; showcaseVersion.value = Date.now()
     void loadShowcaseManifest().catch(() => {})
   }, { immediate: true })
-
-  const allShowcaseItems = computed<ShowcaseSceneItem[]>(() => {
-    const items: ShowcaseSceneItem[] = scenes.value.map(s => ({
-      id: s.id,
-      title: s.title,
-      char: s.char,
-      rating: s.rating,
-      type: 'scene'
-    }))
-
-    if (blueprints?.value?.length) {
-      blueprints.value.forEach(bp => {
-        const charId = bp.characterId || ''
-        const entryId = `pc_${charId}_${bp.id}`
-        items.push({
-          id: entryId,
-          title: bp.title,
-          char: charId,
-          rating: bp.adult ? 'R18' : 'All',
-          type: 'popular'
-        })
-      })
-    }
-
-    return items
-  })
-
-  const filteredImageScenes = computed(() => {
-    const q = imageSearchDebounced.value.trim().toLowerCase()
-    let list = allShowcaseItems.value
-
-    if (imageTypeFilter.value !== 'all') {
-      list = list.filter(item => item.type === imageTypeFilter.value)
-    }
-
-    if (!q) return list
-    return list.filter(s => (s.id + ' ' + s.title + ' ' + s.char).toLowerCase().includes(q))
-  })
-
-  const imageTotalPages = computed(() => Math.max(1, Math.ceil(filteredImageScenes.value.length / IMAGE_PAGE_SIZE)))
-  const pagedImageScenes = computed(() =>
-    filteredImageScenes.value.slice((imagePage.value - 1) * IMAGE_PAGE_SIZE, imagePage.value * IMAGE_PAGE_SIZE),
-  )
-  watch([imageSearchDebounced, imageTypeFilter], () => { imagePage.value = 1 })
 
   const showcaseUrl = computed(() => imageUrl(selectedImageId.value))
   const heroUrl = computed(() => selectedHeroId.value
@@ -167,16 +117,16 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
     if (!entry) return ''
     const path = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${id}.jpg`
     return /^(?:images|thumbs)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path)
-      ? `/scene-showcase/${path}?v=${showcaseVersion.value}` : ''
+      ? `/scene-showcase/${path}?v=${assetVersions.value[id] ?? showcaseVersion.value}` : ''
   }
   const thumbUrl = (id: string) => showcaseAssetUrl(id, 'thumb')
   const imageUrl = (id: string) => showcaseAssetUrl(id, 'image')
+  const hasShowcase = (id: string) => showcaseEntries.value.has(id)
 
-  function previewImage(s: ShowcaseSceneItem | SceneDraft) {
+  function previewImage(s: ShowcaseSceneItem) {
     selectedImageId.value = s.id
     selectedImageTitle.value = s.title
     showcaseError.value = false
-    showcaseVersion.value = Date.now()
     showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }
 
@@ -233,7 +183,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   async function onShowcasePicked(e: Event) {
     const input = e.target as HTMLInputElement
     const file = input.files?.[0]
-    if (!file || !selectedImageId.value) return
+    if (!file || !selectedImageId.value || uploadBusy.value) return
     const id = selectedImageId.value
     showcaseError.value = false
     if (file.size > 15 * 1024 * 1024) {
@@ -243,6 +193,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       return
     }
     uploadBusy.value = true
+    uploadRequest = new AbortController()
     showcaseFeedback.value = '正在保存样张…'
     try {
       const image = await readFileAsImage(file)
@@ -256,11 +207,11 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
         id,
         image: normalized,
         thumbnail,
-      })
+      }, { signal: uploadRequest.signal })
       if (!alive) return
       const message = data.message || '样张已保存'
       if (selectedImageId.value === id) showcaseFeedback.value = message
-      showcaseVersion.value = Date.now()
+      assetVersions.value = { ...assetVersions.value, [id]: Date.now() }
       try { await loadShowcaseManifest() } catch (error) {
         if (!alive || selectedImageId.value !== id) return
         showcaseError.value = true
@@ -272,6 +223,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally {
       uploadBusy.value = false
+      uploadRequest = undefined
       input.value = ''
     }
   }
@@ -301,11 +253,11 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   }
 
   return {
-    imageSearch, imageSearchDebounced, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
+    selectedImageId, selectedImageTitle,
     showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
     showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroes,
-    allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
-    thumbUrl, imageUrl,
+    showcaseUrl, heroUrl, manifestLoading, manifestError,
+    thumbUrl, imageUrl, hasShowcase, loadShowcaseManifest,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
     loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
   }

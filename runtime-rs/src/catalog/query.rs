@@ -19,7 +19,7 @@ pub struct Query {
 impl Catalog {
     pub fn query(&self, query: &Query) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
-        if !KINDS.contains(&query.kind.as_str()) {
+        if query.kind != "media" && !KINDS.contains(&query.kind.as_str()) {
             return Err(ApiError::invalid("记录类型无效"));
         }
         let page = query.page.unwrap_or(1).max(1);
@@ -32,9 +32,15 @@ impl Catalog {
             "" | "order" => "sort_order,id",
             _ => return Err(ApiError::invalid("排序方式无效")),
         };
-        let filter = "kind=?1 AND deleted=0 AND (?2='' OR instr(search_text,lower(?2))>0) AND (?3='' OR character_id=?3) AND (?4='' OR category=?4) AND (?5='' OR rating=?5)";
+        let (first_kind, second_kind) = if query.kind == "media" {
+            ("scene", "blueprint")
+        } else {
+            (query.kind.as_str(), query.kind.as_str())
+        };
+        let filter = "kind IN (?1,?2) AND deleted=0 AND (?3='' OR instr(search_text,lower(?3))>0) AND (?4='' OR character_id=?4) AND (?5='' OR category=?5) AND (?6='' OR rating=?6)";
         let values = params![
-            query.kind,
+            first_kind,
+            second_kind,
             query.search.trim().to_lowercase(),
             query.character,
             query.category,
@@ -46,16 +52,16 @@ impl Catalog {
             |r| r.get(0),
         )?;
         let selected_page = page.min(((total + size - 1) / size).max(1));
-        let mut statement = self.connection.prepare(&format!("SELECT {COLUMNS},title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ?6 OFFSET ?7"))?;
-        let items = statement.query_map(params![query.kind,query.search.trim().to_lowercase(),query.character,query.category,query.rating,size,(selected_page-1)*size], |r| {
+        let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ?7 OFFSET ?8"))?;
+        let items = statement.query_map(params![first_kind,second_kind,query.search.trim().to_lowercase(),query.character,query.category,query.rating,size,(selected_page-1)*size], |r| {
             Ok(json!({"kind":r.get::<_,String>(0)?,"id":r.get::<_,String>(1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":r.get::<_,Option<String>>(4)?,"updatedAt":r.get::<_,Option<String>>(5)?,
-                "title":r.get::<_,String>(7)?,"characterId":r.get::<_,String>(8)?,"category":r.get::<_,String>(9)?,"rating":r.get::<_,String>(10)?}))
+                "title":r.get::<_,String>(6)?,"characterId":r.get::<_,String>(7)?,"category":r.get::<_,String>(8)?,"rating":r.get::<_,String>(9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
-        let mut facets = self.connection.prepare("SELECT DISTINCT character_id,category,rating FROM content_records WHERE kind=?1 AND deleted=0")?;
+        let mut facets = self.connection.prepare("SELECT DISTINCT character_id,category,rating FROM content_records WHERE kind IN (?1,?2) AND deleted=0")?;
         let mut characters = std::collections::BTreeSet::new();
         let mut categories = std::collections::BTreeSet::new();
         let mut ratings = std::collections::BTreeSet::new();
-        for result in facets.query_map([&query.kind], |r| {
+        for result in facets.query_map([first_kind, second_kind], |r| {
             Ok((
                 r.get::<_, String>(0)?,
                 r.get::<_, String>(1)?,

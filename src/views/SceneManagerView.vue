@@ -20,7 +20,7 @@
     <div class="catalog-main">
       <header class="catalog-page-head">
         <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1><p class="catalog-intro">{{ sectionDescription }}</p></div>
-        <div class="catalog-head-actions">
+        <div v-if="section === 'records' || dirty" class="catalog-head-actions">
           <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在保存' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
           <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
           <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" @click="saveEdits">{{ busy ? '正在保存…' : '保存更改' }}</button>
@@ -36,7 +36,7 @@
       </header>
       <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
       <div v-if="section === 'portraits'" class="catalog-support-surface"><CharacterArtManager :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
-      <div v-else-if="section === 'media'" class="catalog-support-surface"><CatalogMediaManager :record="selected" /><p v-if="!selected" class="catalog-note">在故事或蓝图中选中一份内容，再来整理它的样张。</p></div>
+      <div v-else-if="section === 'media'" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
       <section v-else-if="section === 'tools'" class="catalog-support-surface">
         <h2>给内容留一份备份</h2><p class="catalog-note">导出完整资料，或者看看之前的图片备份。每份内容的旧版本也可以在编辑区找回。</p>
         <div class="catalog-tool-options">
@@ -100,7 +100,7 @@
   </article>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -108,9 +108,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
-import CharacterArtManager from '@/components/maintenance/CharacterArtManager.vue'
 import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'
-import CatalogMediaManager from '@/components/maintenance/CatalogMediaManager.vue'
 import CatalogChangePreview from '@/components/maintenance/CatalogChangePreview.vue'
 import { useCatalogMaintenance } from '@/composables/scene/useCatalogMaintenance'
 import { CATALOG_LABELS, catalogTitle, catalogRating, catalogCategory, catalogDate, recordTitle } from '@/composables/scene/catalogPresentation'
@@ -120,6 +118,8 @@ import { maintenanceApi, type BackupEntry } from '@/api/maintenanceApi'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
+const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
+const CatalogMediaManager = defineAsyncComponent(() => import('@/components/maintenance/CatalogMediaManager.vue'))
 const checking = ref(false), toolHint = ref(''), backups = ref<BackupEntry[]>([])
 const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }> = [
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
@@ -127,7 +127,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
 ]
 const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
-const sectionDescription = computed(() => section.value !== 'records' ? '把创作资料整理好，留给下一次灵感。' : ({ character: '补充人物的来历与外观，让角色的样子更清晰。', outfit: '整理服装的样子与细节，为角色留住不同的形态。', scene: '写下故事与画面细节，让下一次创作更有依据。', blueprint: '把动作、氛围和镜头整理成一份可用的画面方案。', document: '整理常用词与推荐顺序，让内容更容易被找到。' } as Record<CatalogKind, string>)[kind.value])
+const sectionDescription = computed(() => section.value === 'media' ? '找到场景、替换样张，或者为首页换一张封面。' : section.value !== 'records' ? '把创作资料整理好，留给下一次灵感。' : ({ character: '补充人物的来历与外观，让角色的样子更清晰。', outfit: '整理服装的样子与细节，为角色留住不同的形态。', scene: '写下故事与画面细节，让下一次创作更有依据。', blueprint: '把动作、氛围和镜头整理成一份可用的画面方案。', document: '整理常用词与推荐顺序，让内容更容易被找到。' } as Record<CatalogKind, string>)[kind.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
 const hasFilters = computed(() => !!(character.value || category.value || rating.value))
 const sortOptions = [{ value: 'order', label: '按整理顺序' }, { value: 'title', label: '按名称' }, { value: 'newest', label: '最近加入' }, { value: 'updated', label: '最近编辑' }]

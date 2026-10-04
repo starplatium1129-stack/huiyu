@@ -17,7 +17,7 @@ function setup() {
   return flow
 }
 beforeEach(() => {
-  mock.query.mockResolvedValue({ ok: true, items: [], total: 0, page: 1, pageSize: 24, facets: { characters: [], categories: [], ratings: [] } })
+  mock.query.mockResolvedValue({ ok: true, version: 1, items: [], total: 0, page: 1, pageSize: 24, facets: { characters: [], categories: [], ratings: [] } })
   mock.stats.mockResolvedValue({ counts: {}, nextSceneId: 'sc002' })
   mock.record.mockResolvedValue({ record: record() })
   mock.history.mockResolvedValue({ items: [] })
@@ -39,6 +39,8 @@ it('keeps a pending draft revision when reopened against newer server data until
 it('preserves unsaved changes after a failed save and reads details separately from the summary', async () => {
   const flow = setup(); await flushPromises()
   expect(mock.record).not.toHaveBeenCalled()
+  await flow.load()
+  expect(mock.stats).toHaveBeenCalledTimes(1)
   await flow.select({ kind: 'scene', id: 'sc001' })
   ;(flow.selected.value!.data as Record<string, unknown>).title = 'draft'; flow.stage()
   mock.changes.mockRejectedValue(new Error('storage unavailable'))

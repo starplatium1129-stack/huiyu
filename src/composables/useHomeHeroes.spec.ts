@@ -1,4 +1,4 @@
-import { effectScope, nextTick, ref, type EffectScope } from 'vue'
+import { effectScope, nextTick, type EffectScope } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { maintenanceApi } from '@/api/maintenanceApi'
@@ -46,7 +46,7 @@ describe('home and maintenance hero sources', () => {
 
   it('refreshes an explicit upload and returns to the bundled cover after reset', async () => {
     const home = scoped(useHomeHeroes)
-    const maintenance = scoped(() => useSceneShowcaseUpload({ scenes: ref([]), errorMessage: String }))
+    const maintenance = scoped(() => useSceneShowcaseUpload({ errorMessage: String }))
     await flushPromises()
     vi.mocked(maintenanceApi.getHomeHero).mockResolvedValue(uploaded())
     await Promise.all([home.reload(), maintenance.loadHomeHeroes()])
@@ -67,7 +67,7 @@ describe('home and maintenance hero sources', () => {
     let confirm!: (value: boolean) => void
     vi.mocked(confirmAction).mockReturnValue(new Promise(resolve => { confirm = resolve }))
     vi.mocked(maintenanceApi.resetHomeHero).mockResolvedValue({ ok: true, character: 'nene', action: 'reset', backup: 'fixture' })
-    const maintenance = scoped(() => useSceneShowcaseUpload({ scenes: ref([]), errorMessage: String }))
+    const maintenance = scoped(() => useSceneShowcaseUpload({ errorMessage: String }))
     await flushPromises()
     maintenance.previewHero(maintenance.homeHeroes.value[0])
     const pending = maintenance.resetHero()
@@ -77,7 +77,7 @@ describe('home and maintenance hero sources', () => {
   })
 
   it('reports a successful reset separately from a failed preview refresh', async () => {
-    const maintenance = scoped(() => useSceneShowcaseUpload({ scenes: ref([]), errorMessage: String }))
+    const maintenance = scoped(() => useSceneShowcaseUpload({ errorMessage: String }))
     await flushPromises()
     maintenance.previewHero(maintenance.homeHeroes.value[0])
     vi.mocked(confirmAction).mockResolvedValue(true)

@@ -98,6 +98,17 @@ fn import_preserves_values_unknown_dates_and_summary_queries() {
     assert_eq!(value["total"], 2);
     assert_eq!(value["items"].as_array().unwrap().len(), 1);
     assert!(value["items"][0].get("data").is_none());
+    let mut blueprint = catalog.get("scene", "sc001").unwrap();
+    blueprint.kind = "blueprint".into();
+    blueprint.id = "bp_fixture".into();
+    blueprint.data = json!({"id":"bp_fixture","title":"角色蓝图","characterId":"nene","adult":false});
+    write::put(&catalog.connection, &blueprint, false).unwrap();
+    let media = catalog.query(&Query { kind:"media".into(), ..Default::default() }).unwrap();
+    assert_eq!(media["total"], 3);
+    let media_items = media["items"].as_array().unwrap();
+    assert!(media_items.iter().any(|item| item["kind"] == "blueprint" && item["characterId"] == "nene"));
+    assert!(media_items.iter().any(|item| item["kind"] == "scene"));
+    assert!(media_items.iter().all(|item| item.get("data").is_none()));
     assert_eq!(catalog.next_scene_id().unwrap(), "sc006");
 }
 #[test]

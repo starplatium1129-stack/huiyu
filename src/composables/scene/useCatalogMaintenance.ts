@@ -19,10 +19,12 @@ export function useCatalogMaintenance() {
   const nextSceneId = ref('')
   const characterNames = ref<Record<string, string>>({})
   let namesVersion = -1, namesController: AbortController | null = null
+  let namesLoadingVersion: number | null = null, statsVersion = -1
   async function loadCharacterNames(version: number) {
-    if (version === namesVersion) return
+    if (version === namesVersion || version === namesLoadingVersion) return
     namesController?.abort()
     const controller = new AbortController(); namesController = controller
+    namesLoadingVersion = version
     try {
       const first = await catalogApi.query({ kind: 'character', pageSize: 100 }, controller.signal)
       const remaining = await Promise.all(Array.from({ length: Math.max(0, Math.ceil(first.total / 100) - 1) }, (_, index) => catalogApi.query({ kind: 'character', pageSize: 100, page: index + 2 }, controller.signal)))
@@ -30,6 +32,7 @@ export function useCatalogMaintenance() {
       characterNames.value = Object.fromEntries([first, ...remaining].flatMap(result => result.items).map(item => [item.id, item.title]))
       namesVersion = version
     } catch { /* The content list stays usable while display names are unavailable. */ }
+    finally { if (namesController === controller) namesLoadingVersion = null }
   }
   const importSnapshot = ref<CatalogSnapshot | null>(null), importPreview = ref(false)
   let listController: AbortController | null = null, detailController: AbortController | null = null, listSeq = 0, detailSeq = 0
@@ -44,8 +47,10 @@ export function useCatalogMaintenance() {
       if (seq !== listSeq) return
       result.value = data; page.value = data.page
       void loadCharacterNames(data.version)
-      const stats = await catalogApi.stats(controller.signal)
-      if (seq === listSeq) { counts.value = stats.counts; nextSceneId.value = stats.nextSceneId }
+      if (data.version !== statsVersion) {
+        const stats = await catalogApi.stats(controller.signal)
+        if (seq === listSeq) { counts.value = stats.counts; nextSceneId.value = stats.nextSceneId; statsVersion = data.version }
+      }
     } catch (e) { if (seq === listSeq && !controller.signal.aborted) error.value = (e as Error).message }
     finally { if (seq === listSeq) loading.value = false }
   }

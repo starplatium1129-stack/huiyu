@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { maintenanceApi } from '@/api/maintenanceApi'
 import { setRuntimeFetch, setRuntimeOrigin } from '@/platform/runtimeUrl'
 import { useSceneShowcaseUpload } from './useSceneShowcaseUpload'
+import { showcaseItem } from './useCatalogMedia'
 
 vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { saveShowcase: vi.fn(), resetHomeHero: vi.fn() }, maintenanceFailure: () => null }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: vi.fn().mockResolvedValue(true) }))
@@ -16,7 +17,7 @@ const entry = {
 const response = (entries: unknown[]) => new Response(JSON.stringify({ entries }), { headers: { 'Content-Type': 'application/json' } })
 function setup() {
   const scope = effectScope(); scopes.push(scope)
-  return scope.run(() => useSceneShowcaseUpload({ scenes: ref([]), errorMessage: String }))!
+  return scope.run(() => useSceneShowcaseUpload({ errorMessage: String }))!
 }
 beforeEach(() => {
   setRuntimeOrigin(null, false)
@@ -34,9 +35,12 @@ describe('maintenance showcase sources', () => {
   it('uses the published image and thumbnail paths for the same logical scene', async () => {
     const upload = setup()
     await flushPromises()
-    upload.previewImage({ id: entry.id, title: entry.title, char: entry.char, type: 'popular' })
+    upload.previewImage(showcaseItem({ kind: 'blueprint', id: 'library', title: entry.title, characterId: entry.char, rating: 'All' }))
     expect(upload.showcaseUrl.value).toMatch(/^\/scene-showcase\/images\/pc_current_alice_library\.png\?v=\d+$/)
     expect(upload.thumbUrl(entry.id)).toMatch(/^\/scene-showcase\/thumbs\/pc_current_alice_library\.webp\?v=\d+$/)
+    const cachedThumbnail = upload.thumbUrl(entry.id)
+    upload.previewImage({ id: 'sc001', title: '另一个故事', char: 'nene', type: 'scene' })
+    expect(upload.thumbUrl(entry.id)).toBe(cachedThumbnail)
   })
 
   it('derives the default path only for a verified manifest entry and rejects unsafe or ambiguous entries', async () => {
@@ -117,7 +121,7 @@ describe('maintenance showcase sources', () => {
     } else {
       expect(maintenanceApi.saveShowcase).toHaveBeenCalledExactlyOnceWith({
         id: entry.id, image: 'data:image/jpeg;base64,normalized', thumbnail: 'data:image/jpeg;base64,normalized',
-      })
+      }, { signal: expect.any(AbortSignal) })
       expect(upload.thumbUrl(entry.id)).toContain(`/scene-showcase/thumbs/${entry.id}.jpg`)
       if (selection === 'changed') {
         expect(upload.selectedImageId.value).toBe('pc_other')

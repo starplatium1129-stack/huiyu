@@ -5,7 +5,7 @@ export interface CatalogRecord {
   createdAt: string | null; updatedAt: string | null; data: Record<string, unknown> | unknown[]
 }
 export interface CatalogSummary extends Omit<CatalogRecord, 'data'> { title: string; characterId: string; category: string; rating: string }
-export interface CatalogQuery { kind: CatalogKind; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number }
+export interface CatalogQuery { kind: CatalogKind | 'media'; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number }
 export interface CatalogPage { ok: true; version: number; items: CatalogSummary[]; total: number; page: number; pageSize: number; facets: { characters: string[]; categories: string[]; ratings: string[] } }
 export interface CatalogChange { kind: CatalogKind; id: string; expectedRevision: number; data?: CatalogRecord['data']; patch?: Record<string, unknown>; sortOrder?: number; remove?: boolean }
 export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }> }
