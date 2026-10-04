@@ -10,16 +10,14 @@ pub(super) struct Bounds {
 }
 
 impl Inner {
-    pub(super) async fn raw(
+    pub(super) fn request(
         &self,
         provider: &str,
         method: Method,
         path: &str,
         body: Option<&Value>,
-        bounds: Bounds,
-        cancel: &CancellationToken,
-    ) -> Result<(u16, String, Vec<u8>)> {
-        let Bounds { timeout, max_bytes } = bounds;
+        timeout: Duration,
+    ) -> Result<reqwest::RequestBuilder> {
         let base = crate::upstream::local_url(if provider == "webui" {
             &self.config.sd_host
         } else {
@@ -49,6 +47,19 @@ impl Inner {
         if let Some(body) = body {
             request = request.json(body);
         }
+        Ok(request)
+    }
+    pub(super) async fn raw(
+        &self,
+        provider: &str,
+        method: Method,
+        path: &str,
+        body: Option<&Value>,
+        bounds: Bounds,
+        cancel: &CancellationToken,
+    ) -> Result<(u16, String, Vec<u8>)> {
+        let Bounds { timeout, max_bytes } = bounds;
+        let request = self.request(provider, method, path, body, timeout)?;
         let work = async {
             let response = request
                 .send()
@@ -138,7 +149,7 @@ impl Inner {
         Ok(value)
     }
 }
-fn too_large(provider: &str) -> ApiError {
+pub(super) fn too_large(provider: &str) -> ApiError {
     ApiError::new(
         502,
         if provider == "webui" {
@@ -149,7 +160,7 @@ fn too_large(provider: &str) -> ApiError {
         "上游响应过大",
     )
 }
-fn network_error(provider: &str, error: reqwest::Error) -> ApiError {
+pub(super) fn network_error(provider: &str, error: reqwest::Error) -> ApiError {
     ApiError::new(
         if error.is_timeout() { 504 } else { 502 },
         if error.is_timeout() {

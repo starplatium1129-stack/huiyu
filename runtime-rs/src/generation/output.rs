@@ -1,4 +1,5 @@
 use super::*;
+use futures_util::StreamExt;
 use regex::Regex;
 use reqwest::Method;
 use std::sync::LazyLock;
@@ -62,84 +63,157 @@ pub(super) async fn materialize_scoped(
         .append_pair("filename", &filename)
         .append_pair("type", "output")
         .finish();
-    let (status, mime, bytes) = inner
-        .raw(
-            "comfy",
-            Method::GET,
-            &format!("/view?{query}"),
-            None,
-            transport::Bounds {
-                timeout: Duration::from_secs(20),
-                max_bytes: constants::MAX_IMAGE,
-            },
-            &inner.cancel,
-        )
-        .await?;
-    if !(200..300).contains(&status) {
-        return Err(ApiError::new(
-            502,
-            "COMFY_RESULT_ERROR",
-            "ComfyUI 图片读取失败",
-        ));
-    }
-    let mime = mime
-        .split(';')
-        .next()
-        .unwrap_or("")
-        .trim()
-        .to_ascii_lowercase();
-    let extension = match mime.as_str() {
-        "image/png" if bytes.starts_with(b"\x89PNG\r\n\x1a\n") => "png",
-        "image/jpeg" if bytes.starts_with(b"\xff\xd8\xff") => "jpg",
-        "image/webp" if bytes.starts_with(b"RIFF") && bytes.get(8..12) == Some(b"WEBP") => "webp",
-        _ => {
-            return Err(ApiError::new(
-                502,
-                "INVALID_RESULT",
-                "ComfyUI 返回的结果不是受支持的图片",
-            ));
+    let timeout = Duration::from_secs(20);
+    let request = inner.request(
+        "comfy",
+        Method::GET,
+        &format!("/view?{query}"),
+        None,
+        timeout,
+    )?;
+    let transfer = async {
+        let response = request
+            .send()
+            .await
+            .map_err(|error| transport::network_error("comfy", error))?;
+        let status = response.status().as_u16();
+        let mime = response
+            .headers()
+            .get("content-type")
+            .and_then(|h| h.to_str().ok())
+            .unwrap_or("")
+            .split(';')
+            .next()
+            .unwrap_or("")
+            .trim()
+            .to_ascii_lowercase();
+        if response
+            .content_length()
+            .is_some_and(|n| n > constants::MAX_IMAGE as u64)
+        {
+            return Err(transport::too_large("comfy"));
         }
+        let mut stream = response.bytes_stream();
+        let mut header = Vec::with_capacity(12);
+        let mut remainder = None;
+        let mut length = 0_usize;
+        while header.len() < 12 {
+            let Some(chunk) = stream.next().await else {
+                break;
+            };
+            let chunk = chunk.map_err(|error| transport::network_error("comfy", error))?;
+            length = length.saturating_add(chunk.len());
+            if length > constants::MAX_IMAGE {
+                return Err(transport::too_large("comfy"));
+            }
+            let count = (12 - header.len()).min(chunk.len());
+            header.extend_from_slice(&chunk[..count]);
+            if count < chunk.len() {
+                remainder = Some(chunk.slice(count..));
+            }
+        }
+        let extension = match mime.as_str() {
+            "image/png" if header.starts_with(b"\x89PNG\r\n\x1a\n") => Some("png"),
+            "image/jpeg" if header.starts_with(b"\xff\xd8\xff") => Some("jpg"),
+            "image/webp" if header.starts_with(b"RIFF") && header.get(8..12) == Some(b"WEBP") => {
+                Some("webp")
+            }
+            _ => None,
+        };
+        // raw used to finish its bounded read before checking status or format.
+        // Drain rejected bodies without buffering to retain network/limit errors.
+        let extension = if (200..300).contains(&status)
+            && let Some(extension) = extension
+        {
+            extension
+        } else {
+            drop(remainder);
+            while let Some(chunk) = stream.next().await {
+                let chunk = chunk.map_err(|error| transport::network_error("comfy", error))?;
+                length = length.saturating_add(chunk.len());
+                if length > constants::MAX_IMAGE {
+                    return Err(transport::too_large("comfy"));
+                }
+            }
+            return Err(if !(200..300).contains(&status) {
+                ApiError::new(502, "COMFY_RESULT_ERROR", "ComfyUI 图片读取失败")
+            } else {
+                ApiError::new(502, "INVALID_RESULT", "ComfyUI 返回的结果不是受支持的图片")
+            });
+        };
+        let directory = inner.config.runtime_root.join("outputs").join(namespace);
+        let path = directory.join(format!("{id}.{extension}"));
+        let mut save = async {
+            tokio::fs::create_dir_all(&directory).await?;
+            let root = tokio::fs::canonicalize(&directory).await?;
+            let (file, pending) = tempfile::Builder::new()
+                .prefix(&format!("{id}."))
+                .suffix(".tmp")
+                .tempfile_in(&directory)?
+                .into_parts();
+            let mut file = tokio::fs::File::from_std(file);
+            file.write_all(&header).await?;
+            if let Some(bytes) = remainder {
+                file.write_all(&bytes).await?;
+            }
+            Ok::<_, std::io::Error>((file, pending, root))
+        }
+        .await;
+        drop(header);
+        while let Some(chunk) = stream.next().await {
+            let chunk = chunk.map_err(|error| transport::network_error("comfy", error))?;
+            length = length.saturating_add(chunk.len());
+            if length > constants::MAX_IMAGE {
+                return Err(transport::too_large("comfy"));
+            }
+            if let Ok((file, _, _)) = &mut save
+                && let Err(error) = file.write_all(&chunk).await
+            {
+                // A disk failure reclaims the temp file, but upstream errors still
+                // take priority until the same bounded response has completed.
+                save = Err(error);
+            }
+        }
+        let (file, pending, root) = save.map_err(save_error)?;
+        Ok((file, pending, root, path, mime, length))
     };
-    let directory = inner.config.runtime_root.join("outputs").join(namespace);
-    let path = directory.join(format!("{id}.{extension}"));
-    let save = async {
-        tokio::fs::create_dir_all(&directory).await?;
-        let root = tokio::fs::canonicalize(&directory).await?;
-        let (file, pending) = tempfile::Builder::new()
-            .prefix(&format!("{id}."))
-            .suffix(".tmp")
-            .tempfile_in(&directory)?
-            .into_parts();
-        let mut file = tokio::fs::File::from_std(file);
-        file.write_all(&bytes).await?;
-        // Tokio may still be writing in the background; finish and surface any
-        // write error before publishing the path to result collection.
-        file.flush().await?;
-        drop(file);
-        // TempPath also cleans up when the caller drops recovery mid-write.
-        // Keep publication and return in one poll so cancellation cannot leave
-        // a renamed output that was never handed to its owner.
-        pending.persist(&path).map_err(|error| error.error)?;
-        let target = std::fs::canonicalize(&path)?;
-        if !target.starts_with(root) {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::PermissionDenied,
-                "result escaped output directory",
-            ));
-        }
-        Ok::<_, std::io::Error>(())
+    let (mut file, pending, root, path, mime, length) = tokio::select! {
+        result = tokio::time::timeout(timeout, transfer) => result.map_err(|_| ApiError::new(504, "COMFY_TIMEOUT", "上游请求超时"))?,
+        _ = inner.cancel.cancelled() => Err(ApiError::new(499, "ABORT_ERR", "上游请求已取消")),
+    }?;
+    // EOF ends the upstream timeout, as it did for raw. Finish any background
+    // disk write and surface its error before publishing the result path.
+    file.flush().await.map_err(save_error)?;
+    drop(file);
+    if inner.cancel.is_cancelled() {
+        return Err(ApiError::new(499, "ABORT_ERR", "上游请求已取消"));
     }
-    .await;
-    if save.is_err() {
-        return Err(ApiError::new(
-            507,
-            "RESULT_SAVE_FAILED",
-            "生成图片保存失败，请检查本地磁盘空间和目录写入权限",
-        ));
+    // TempPath also cleans up when the caller drops recovery mid-write.
+    // Keep publication and return in one poll so cancellation cannot leave
+    // a renamed output that was never handed to its owner.
+    pending
+        .persist(&path)
+        .map_err(|error| save_error(error.error))?;
+    let target = std::fs::canonicalize(&path).map_err(save_error)?;
+    if !target.starts_with(root) {
+        return Err(save_error(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            "result escaped output directory",
+        )));
     }
     Ok(Output::File {
         path,
         mime,
-        bytes: bytes.len() as u64,
+        bytes: length as u64,
     })
 }
+fn save_error(_: std::io::Error) -> ApiError {
+    ApiError::new(
+        507,
+        "RESULT_SAVE_FAILED",
+        "生成图片保存失败，请检查本地磁盘空间和目录写入权限",
+    )
+}
+
+#[cfg(test)]
+mod tests;
