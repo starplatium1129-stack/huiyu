@@ -183,6 +183,10 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
 }
 
 async function main() {
+  if (process.argv.includes('--help')) {
+    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]');
+    return;
+  }
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
   if (PUBLISH && BUMP_KIND) fail('--publish 不能与 --bump 同时使用，请先构建、提交并推送版本');
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {

@@ -16,6 +16,22 @@ const {
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
+test('release help succeeds without a signing key or starting a build', () => {
+  const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'desktop-release-help-'));
+  try {
+    const result = spawnSync(process.execPath, [path.join(ROOT, 'scripts/maintenance/release-desktop-update.js'), '--help'], {
+      env: { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: path.join(temporary, 'missing.key') },
+      encoding: 'utf8', windowsHide: true, timeout: 5000,
+    });
+    assert.ifError(result.error);
+    assert.equal(result.status, 0, result.stderr);
+    assert.ok(result.stdout.trim(), 'help should describe the supported invocation');
+  } finally {
+    (require('./resource-test-cleanup') as typeof import('./resource-test-cleanup')).cleanupResourceFixture(temporary, 'desktop-release-help-');
+  }
+});
+
 function buildBindingFixture() {
   const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
   const { execFileSync }: typeof import('node:child_process') = require('node:child_process');

@@ -16,6 +16,8 @@ foreach ($version in @('1.0.0','1.1.0')) {
   & $compiler /nologo /target:winexe /platform:x64 "/out:$auditRoot\host-$version.exe" "$auditRoot\host-$version.cs"
   if ($LASTEXITCODE -ne 0) { throw 'Fixture host compilation failed' }
 }
+New-Item -ItemType Directory -Path (Join-Path $auditRoot 'old-source') | Out-Null
+Copy-Item -LiteralPath (Join-Path $auditRoot 'host-1.0.0.exe') -Destination (Join-Path $auditRoot 'old-source/ai-cg-studio-desktop.exe')
 $data = New-Object byte[] (2MB)
 $random = [Security.Cryptography.RandomNumberGenerator]::Create()
 try { $random.GetBytes($data) } finally { $random.Dispose() }
@@ -54,7 +56,8 @@ SilentInstall silent
 SilentUnInstall silent
 SetCompress off
 !include LogicLib.nsh
-!define MAINBINARYSRCPATH "@ROOT@\host-1.0.0.exe"
+!define MAINBINARYNAME "ai-cg-studio-desktop"
+!define MAINBINARYSRCPATH "@ROOT@\old-source\ai-cg-studio-desktop.exe"
 !define INSTALLWEBVIEW2MODE "offlineInstaller"
 OutFile "@ROOT@\full.exe"
 Name "Huiyu isolated upgrade fixture"
@@ -81,7 +84,7 @@ Section WebView2
 SectionEnd
 Section Install
   SetOutPath "$INSTDIR"
-  File "/oname=ai-cg-studio-desktop.exe" "${MAINBINARYSRCPATH}"
+  File "${MAINBINARYSRCPATH}"
   CreateDirectory "$INSTDIR\gateway\assets\characters"
   File /a "/oname=gateway\assets\characters\portrait.bin" "@ROOT@\portrait.bin"
   WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -121,6 +124,7 @@ if ((Get-Item "$install\ai-cg-studio-desktop.exe").VersionInfo.ProductVersion -n
 [IO.File]::WriteAllBytes($asset,$unchanged)
 Run "$auditRoot\upgrade.exe" @('/S')
 if ((Get-Item "$install\ai-cg-studio-desktop.exe").VersionInfo.ProductVersion -ne '1.1.0') { throw 'New executable was not installed' }
+if (Test-Path "$install\host-1.1.0.exe") { throw 'Derived host leaked its build filename into the installation' }
 if (Test-Path "$install\uninstaller-was-called") { throw 'Upgrade invoked old uninstaller' }
 if (-not [Linq.Enumerable]::SequenceEqual([byte[]][IO.File]::ReadAllBytes($asset),[byte[]]$unchanged)) { throw 'Retained asset changed' }
 if ((Get-Item "$auditRoot\full.exe").Length - (Get-Item "$auditRoot\upgrade.exe").Length -lt 2800000) { throw 'Upgrade still embeds the large fixture resources' }

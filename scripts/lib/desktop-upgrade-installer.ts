@@ -43,6 +43,8 @@ export function upgradeScript(source: string, assets: Asset[], verifier: string,
   const destination = text.match(/^OutFile "[^"]+"$/m);
   if (!binary || !destination) throw Error('Missing installer host/output declarations');
   text = once(text, binary[0], `!define MAINBINARYSRCPATH "${nsisPath(host)}"`);
+  // The derived host has a temporary basename; install it under the product name.
+  text = once(text, '  File "${MAINBINARYSRCPATH}"', '  File "/oname=${MAINBINARYNAME}.exe" "${MAINBINARYSRCPATH}"');
   text = once(text, destination[0], `OutFile "${nsisPath(output)}"`);
   const check = `Function GameCheckUpgradeResources
   InitPluginsDir

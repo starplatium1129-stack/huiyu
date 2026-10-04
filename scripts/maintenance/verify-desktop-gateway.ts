@@ -29,7 +29,7 @@ function isolatedEnvironment(temporary: string, gateway: string): NodeJS.Process
 async function verifyDesktopGateway({ root = ROOT, logger = console.log }: { root?: string; logger?: (text: string) => void } = {}) {
   const tauri = path.join(root, 'desktop-tauri/src-tauri'), config = JSON.parse(fs.readFileSync(path.join(tauri, 'tauri.conf.json'), 'utf8'));
   if (config.bundle.externalBin?.length) throw Error('Rust bundle must not ship interpreter sidecars');
-  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-installed-rust-'));
+  const temporary = fs.mkdtempSync(path.join(fs.realpathSync.native(os.tmpdir()), 'huiyu-installed-rust-'));
   let child: ReturnType<typeof spawn> | undefined, exited: Promise<unknown> | undefined, output = '';
   try {
     for (const [source, destination] of Object.entries(config.bundle.resources)) {
