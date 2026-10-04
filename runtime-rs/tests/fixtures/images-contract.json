@@ -1894,7 +1894,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "35",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -2028,7 +2028,7 @@
                 0
               ],
               "latent_image": [
-                "32",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -2092,6 +2092,84 @@
               "expand": 0,
               "tapered_corners": true
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16_grow",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "32",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "35",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -2239,7 +2317,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "25",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -2374,7 +2452,7 @@
                 0
               ],
               "latent_image": [
-                "23",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -2447,6 +2525,84 @@
               "expand": 0,
               "tapered_corners": true
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16_grow",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "23",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "25",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -2592,7 +2748,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "35",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -2735,7 +2891,7 @@
                 0
               ],
               "latent_image": [
-                "32",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -2769,6 +2925,84 @@
               "method": "rcas",
               "method.strength": 0.75
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "32",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "35",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -2916,7 +3150,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "25",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -3060,7 +3294,7 @@
                 0
               ],
               "latent_image": [
-                "23",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -3103,6 +3337,84 @@
                 0
               ]
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "23",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "25",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -3727,7 +4039,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "35",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -3861,7 +4173,7 @@
                 0
               ],
               "latent_image": [
-                "32",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -3925,6 +4237,84 @@
               "expand": 0,
               "tapered_corners": true
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16_grow",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "32",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "35",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -4093,7 +4483,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "25",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -4228,7 +4618,7 @@
                 0
               ],
               "latent_image": [
-                "23",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -4301,6 +4691,84 @@
               "expand": 0,
               "tapered_corners": true
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16_grow",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "23",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "25",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -4467,7 +4935,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "35",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -4610,7 +5078,7 @@
                 0
               ],
               "latent_image": [
-                "32",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -4644,6 +5112,84 @@
               "method": "rcas",
               "method.strength": 0.75
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "32",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "35",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
@@ -4812,7 +5358,7 @@
             "class_type": "SaveImage",
             "inputs": {
               "images": [
-                "25",
+                "hires_composite",
                 0
               ],
               "filename_prefix": "anima_app"
@@ -4956,7 +5502,7 @@
                 0
               ],
               "latent_image": [
-                "23",
+                "hires_noise_mask",
                 0
               ],
               "seed": 271829,
@@ -4999,6 +5545,84 @@
                 0
               ]
             }
+          },
+          "hires_mask_image": {
+            "inputs": {
+              "mask": [
+                "16",
+                0
+              ]
+            },
+            "class_type": "MaskToImage"
+          },
+          "hires_mask_scale": {
+            "inputs": {
+              "upscale_method": "nearest-exact",
+              "width": 1664,
+              "image": [
+                "hires_mask_image",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_mask": {
+            "inputs": {
+              "image": [
+                "hires_mask_scale",
+                0
+              ],
+              "channel": "red"
+            },
+            "class_type": "ImageToMask"
+          },
+          "hires_reference": {
+            "inputs": {
+              "upscale_method": "lanczos",
+              "width": 1664,
+              "image": [
+                "19",
+                0
+              ],
+              "crop": "disabled",
+              "height": 2432
+            },
+            "class_type": "ImageScale"
+          },
+          "hires_noise_mask": {
+            "inputs": {
+              "samples": [
+                "23",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "SetLatentNoiseMask"
+          },
+          "hires_composite": {
+            "inputs": {
+              "y": 0,
+              "destination": [
+                "hires_reference",
+                0
+              ],
+              "x": 0,
+              "resize_source": false,
+              "source": [
+                "25",
+                0
+              ],
+              "mask": [
+                "hires_mask",
+                0
+              ]
+            },
+            "class_type": "ImageCompositeMasked"
           }
         }
       }
