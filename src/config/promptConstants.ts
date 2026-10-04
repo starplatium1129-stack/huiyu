@@ -44,23 +44,23 @@ export const LIGHTING: ChoiceDef[] = [
   { id:'window',   iconName:'windowlight', name:'窗光 Window Light', en:'Window Light', prompt:'window light' },
   { id:'back',     iconName:'backlight',   name:'逆光 Backlight',   en:'Backlight',    prompt:'backlighting' },
   { id:'moon',     iconName:'moonlight',   name:'月光 Moonlight',   en:'Moonlight',    prompt:'moonlight' },
-  { id:'lantern',  iconName:'lantern',     name:'夜灯 Lantern',     en:'Lantern',      prompt:'lantern' },
+  { id:'lantern',  iconName:'lantern',     name:'暖光 Warm Light',   en:'Warm Light',   prompt:'warm lighting' },
   { id:'overcast', iconName:'overcast',    name:'阴天柔光 Overcast', en:'Overcast',    prompt:'overcast' },
 ]
 
 export const COMPOSITION: ChoiceDef[] = [
   { id:'center',     iconName:'centercomp', name:'居中',    en:'Center',      prompt:'centered composition' },
   { id:'rule3',      iconName:'rule3',      name:'三分法',  en:'Rule of 3',   prompt:'rule of thirds' },
-  { id:'left',       iconName:'leftcomp',   name:'左构图',  en:'Left',        prompt:'off-center composition' },
-  { id:'right',      iconName:'rightcomp',  name:'右构图',  en:'Right',       prompt:'off-center composition' },
+  { id:'left',       iconName:'leftcomp',   name:'左构图',  en:'Left',        prompt:'subject on the left side of the image' },
+  { id:'right',      iconName:'rightcomp',  name:'右构图',  en:'Right',       prompt:'subject on the right side of the image' },
   { id:'foreground', iconName:'foreground', name:'前景遮挡', en:'Foreground',  prompt:'blurry foreground' },
-  { id:'frame',      iconName:'framecomp',  name:'框架构图', en:'Frame',       prompt:'framed' },
+  { id:'frame',      iconName:'framecomp',  name:'框架构图', en:'Frame',       prompt:'natural framing' },
   { id:'bywindow',   iconName:'bywindow',   name:'窗边',    en:'By Window',   prompt:'by window' },
 ]
 
 export const COLOR_MOODS: ColorMoodDef[] = [
   { id:'joy',     iconName:'sun',      name:'快乐', en:'Joy',     prompt:'yellow theme, warm tones',        desc:'暖黄/浅橙/明亮', colors:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'] },
-  { id:'love',    iconName:'love',     name:'恋爱', en:'Love',    prompt:'pink theme, warm light',          desc:'夕阳/粉色/暖光', colors:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'] },
+  { id:'love',    iconName:'love',     name:'恋爱', en:'Love',    prompt:'pink theme, warm tones',          desc:'粉色/玫瑰/暖调', colors:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'] },
   { id:'calm',    iconName:'leaf',     name:'平静', en:'Calm',    prompt:'green theme, soft tones',        desc:'淡绿/青绿/奶白', colors:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'] },
   { id:'sad',     iconName:'rain',     name:'忧伤', en:'Sad',     prompt:'blue theme, cool tones',          desc:'蓝色/灰蓝/冷调', colors:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'] },
   { id:'tension', iconName:'moonlight', name:'神秘', en:'Mystery', prompt:'purple theme, blue tones',        desc:'紫蓝/深紫/冷调', colors:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'] },

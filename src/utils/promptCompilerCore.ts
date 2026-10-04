@@ -177,7 +177,7 @@ const SHOT_FIELD_PHRASE = {
 } as const
 const LIGHT_FIELD_PHRASE = {
   golden: 'golden-hour light', window: 'window light', back: 'backlighting',
-  moon: 'moonlight', lantern: 'lantern light', overcast: 'diffused overcast light',
+  moon: 'moonlight', lantern: 'warm light', overcast: 'diffused overcast light',
 } as const
 
 function sceneFieldPhrases(scene: PromptSceneContext | null): string[] {

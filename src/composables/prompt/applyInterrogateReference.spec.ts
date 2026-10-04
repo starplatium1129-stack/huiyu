@@ -28,19 +28,19 @@ function fixture() {
 }
 const extract = (tags: string[], extra = {}) => ({ engine: 'wd14', mode: 'tag', tags, ...extra })
 
-it.each(['anima', 'krea2'] as const)('keeps candles owned by the reference or user instead of warm color and lantern presets in %s', async engine => {
+it.each(['anima', 'krea2'] as const)('keeps authored props while director lighting and palette add only their selected effect in %s', async engine => {
   const pb = fixture()
   pb.setColorMood('warmth')
   const assembly = usePopularPromptAssembly(pb, ref(engine), ref('fixture-model'))
   await applyInterrogateResult(pb, extract(['white_coat', 'sitting', 'library']))
-  for (const lighting of ['window', 'lantern']) {
+  for (const lighting of ['window', 'lantern', 'moon', 'back']) {
     pb.setLighting(lighting)
     const prompt = assembly.positivePrompt.value
     expect(prompt).toContain('orange theme')
     expect(prompt).toContain('warm tones')
     expect(prompt).toMatch(/white[_ ]coat/)
     expect(prompt).toContain('library')
-    expect(prompt).not.toMatch(/candle/)
+    expect(prompt).not.toMatch(/candle|\blantern\b|\bstars\b|silhouette|sunlight|volumetric/)
   }
   pb.setColorMood('calm')
   pb.setLighting(null)

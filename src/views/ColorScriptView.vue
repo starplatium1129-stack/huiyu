@@ -109,7 +109,7 @@ const LIGHTINGS = [
   { iconName:'windowlight' as const, name:'窗光',   reason:'室内/安静/治愈/独处' },
   { iconName:'backlight' as const,   name:'逆光',   reason:'神秘/回忆/感动/剪影' },
   { iconName:'moonlight' as const,   name:'月光',   reason:'夜晚/孤独/宁静/思念' },
-  { iconName:'lantern' as const,     name:'夜灯',   reason:'夜祭/温馨/安全感/传统' },
+  { iconName:'lantern' as const,     name:'暖光',   reason:'夜祭/温馨/安全感/传统' },
   { iconName:'overcast' as const,    name:'阴天柔光', reason:'平静/文艺/清新/日常' },
 ]
 
@@ -125,12 +125,12 @@ interface ColorMood {
 }
 
 const MOODS: ColorMood[] = [
-  { id:'joy',     iconName:'sun',       name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
-  { id:'love',    iconName:'love',      name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
-  { id:'calm',    iconName:'leaf',      name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
-  { id:'sad',     iconName:'rain',      name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light' },
-  { id:'tension', iconName:'moonlight', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows' },
-  { id:'warmth',  iconName:'lantern',   name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' },
+  { id:'joy',     iconName:'sun',       name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, warm color palette, vibrant but soft' },
+  { id:'love',    iconName:'love',      name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tones, warm color palette, gentle colors' },
+  { id:'calm',    iconName:'leaf',      name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, muted tones, gentle palette' },
+  { id:'sad',     iconName:'rain',      name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, muted tones' },
+  { id:'tension', iconName:'moonlight', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, cool color palette' },
+  { id:'warmth',  iconName:'lantern',   name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, warm color palette, gentle colors' },
 ]
 
 const selected = ref<ColorMood | null>(null)

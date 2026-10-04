@@ -6,6 +6,7 @@ import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { identityDomainOf } from '../../utils/interrogateMerge.ts'
+import { sceneStyleBaseline } from '../../utils/randomVariationContext.ts'
 import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles.ts'
 import { popularPortraitSrc } from '../../utils/popularPortraitSource.ts'
 import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '../../stores/promptBuilderStore.ts'
@@ -192,14 +193,23 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(',')].map(normalizeKey))
       const engine = animaState.value.family === 'krea2' ? 'krea2' : 'anima'
       const decisions = blueprint ? inferBlueprintDecisions(blueprint) : null
-      const mood = COLOR_MOODS.find(option => option.id === (decisions?.colorMood ?? pb.colorMood))
+      const currentSubject = pb.subject
+      const sourceBlueprint = currentSubject.kind === 'popular' && currentSubject.blueprintId
+        ? pb.sceneBlueprints.find(item => item.id === currentSubject.blueprintId) : null
+      const inherited = !blueprint ? null : sourceBlueprint ? inferBlueprintDecisions(sourceBlueprint)
+        : currentSubject.kind === 'studio' && pb.activeScene ? sceneStyleBaseline(pb.activeScene) : null
+      const shot = pb.selections.shot === inherited?.shot ? null : pb.selections.shot
+      const lighting = pb.selections.lighting === inherited?.lighting ? null : pb.selections.lighting
+      const composition = pb.selections.composition === inherited?.composition ? null : pb.selections.composition
+      const colorMood = pb.colorMood === inherited?.colorMood ? null : pb.colorMood
+      const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
       const planResult = buildPopularPromptPlan({
         character: pop, outfit, blueprint, engine, profile: modelProfile.value,
         manual: [...pb.manualTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
         emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-        shot: decisions?.shot ?? pb.selections.shot,
-        lighting: decisions?.lighting ?? pb.selections.lighting,
-        composition: decisions?.composition ?? pb.selections.composition,
+        shot: shot ?? decisions?.shot,
+        lighting: lighting ?? decisions?.lighting,
+        composition: composition ?? decisions?.composition,
         palette: mood ? tokenize(mood.prompt) : [],
         visualDescription: target.kind === 'character' ? baseText : pb.visualDescription,
         outfitOverride: detectOutfitOverrideFromContext(),

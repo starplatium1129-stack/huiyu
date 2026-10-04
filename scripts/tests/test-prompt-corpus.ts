@@ -40,11 +40,11 @@ const SHOT_PROMPT = {
   high:'high_angle', side:'side_view', turn:'looking_back', over:'selfie', detail:'close_up_detail',
 };
 const LIGHT_PROMPT = {
-  golden:'golden_hour', window:'window_light', back:'backlit', moon:'moonlight', lantern:'lantern_light', overcast:'overcast',
+  golden:'golden_hour', window:'window_light', back:'backlit', moon:'moonlight', lantern:'warm_lighting', overcast:'overcast',
 };
 const COMPOSITION_PROMPT = {
-  center:'centered_composition', rule3:'rule_of_thirds', left:'left_composition', right:'right_composition',
-  foreground:'foreground_framing', frame:'framed_composition', bywindow:'by_window',
+  center:'centered_composition', rule3:'rule_of_thirds', left:'subject on the left side of the image', right:'subject on the right side of the image',
+  foreground:'blurry_foreground', frame:'natural_framing', bywindow:'by_window',
 };
 
 // 1216x832 为 sc234（月夜主卧魔女契约）的字节级定稿尺寸（prompt-pinned-scenes.json，

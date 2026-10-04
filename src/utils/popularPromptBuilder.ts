@@ -11,7 +11,7 @@ import {
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { blueprintNegative, compositionTokens } from './blueprintComposition.ts'
-import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
+import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
@@ -60,33 +60,6 @@ export interface PopularPromptResult {
   prompt: string
   negative: string
   adult: boolean
-}
-
-const SHOT_TOKENS: Record<string, string> = {
-  close: 'close-up', medium: 'medium shot', wide: 'wide shot',
-  pov: 'pov', low: 'low angle', high: 'high angle', side: 'side view',
-  turn: 'looking back', over: 'selfie', detail: 'extreme close-up',
-}
-const LIGHTING_TOKENS: Record<string, string> = {
-  golden: 'golden_hour', window: 'window_light', back: 'backlighting',
-  moon: 'moonlight', lantern: 'lantern', overcast: 'overcast',
-}
-/**
- * 氛围词强化（壁纸级第一）：每种光线决策除主光照 token 外追加一组通透感
- * 标签——逆光/轮廓光/体积光/景深是参考图（sc300 标杆）与平庸平涂的最大分水岭。
- */
-const AMBIENCE_TOKENS: Record<string, string[]> = {
-  golden: ['golden_hour', 'backlight', 'rim_light', 'volumetric_lighting', 'deep_depth_of_field', 'warm_lighting'],
-  back: ['backlighting', 'rim_light', 'volumetric_lighting', 'silhouette', 'deep_depth_of_field'],
-  window: ['window_light', 'soft_lighting', 'sunlight', 'volumetric_lighting', 'shadows'],
-  moon: ['moonlight', 'night', 'cool_lighting', 'stars', 'deep_depth_of_field'],
-  lantern: ['lantern', 'warm_lighting', 'volumetric_lighting', 'shadows'],
-  overcast: ['overcast', 'soft_diffused_light', 'cloudy', 'hazy'],
-}
-const COMPOSITION_TOKENS: Record<string, string> = {
-  center: 'centered_composition', rule3: 'rule_of_thirds',
-  left: 'off-center composition', right: 'off-center composition',
-  foreground: 'blurry foreground', frame: 'framed', bywindow: 'by_window',
 }
 
 const NENE_NATSUME_POLLUTION = /(?:ayachi_nene|shiki_natsume|nene_r18|natsume_r18)/i
@@ -244,16 +217,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const manualR18 = character.adultEligibility === 'adult'
     && isManualR18Tags(manual, options.matureTokens)
   const ratingLevel = (adultGranted || manualR18) ? 'R18' : 'ALL'
-  const shotToken = options.shot ? SHOT_TOKENS[options.shot] : ''
-  const lightingKey = options.lighting ?? ''
-  const lightingToken = lightingKey ? LIGHTING_TOKENS[lightingKey] : ''
-  const lightingTokens = lightingKey
-    ? [...new Set([lightingToken, ...(AMBIENCE_TOKENS[lightingKey] || [])])].filter(Boolean)
-    : []
-  const compositionToken = options.composition ? COMPOSITION_TOKENS[options.composition] : ''
-  // 情绪摄影语法（v2）：蓝图 mood → 附加镜头语言；不覆盖显式 shot/lighting 决策。
-  const moodGrammar = blueprint ? inferBlueprintDecisions(blueprint).moodGrammar : undefined
-  const moodGrammarTokens = moodGrammar?.tokens ?? []
+  const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
+  const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
+  const lightingTokens = lightingToken ? [lightingToken] : []
+  const compositionToken = COMPOSITION.find(item => item.id === options.composition)?.prompt || ''
   // Character DNA 锁 avoid（v2）：从常驻身份锚定流过滤易失真元素（如 C.C. 印记、
   // 花火面具、式和服类死绑回归）。只过滤 identity 标签流；场景蓝图按需使用不受限。
   const dnaAvoid = new Set((character.dnaLock?.avoid || []).map(key => normalizeProseKey(key)))
@@ -270,8 +237,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
     blueprint?.promptProse,
-    // 情绪摄影语法（v2）：Krea 自然语言流以一句镜头语言收尾。
-    ...(moodGrammar ? [moodGrammar.prose] : []),
   ].filter(Boolean).join(' ')
 
   const emotionTokens = options.emotion || []
@@ -296,25 +261,13 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 蓝图 adultArtistHint 不再作为无手动画师时的自动回退——画师完全由用户
     // 手动选择（artistProse/artistTags），未选即不带画师。
     const effectiveArtistProse = options.artistProse
-    // 2026-08-24 审计修复：Krea 分支此前硬编码 camera/lighting 为空数组，
-    // 导演面板与蓝图推断的镜头/光照决策在 Krea 上被整体丢弃（438 蓝图实测
-    // 仅剩 rule_of_thirds 一句构图）。经 promptCompiler 的 cameraPhrase/
-    // lightPhrase 散文转换器织入；光照只取主词 + 前 2 个氛围词，并剔除
-    // 2026-08-30 调研放宽：只丢 night（"lit by moonlight and night" 重复不成立），
-    // 保留 stars（"lit by moonlight and stars" 自然，夜景氛围更足，Krea2 官方
-    // "name the lighting" 指南）；氛围词从 2 个放宽到 4 个，光照描述更丰富。
-    const KREA_PROSE_LIGHT_DROP = /^(?:night)$/
-    const kreaLightingTokens = lightingKey
-      ? [...new Set([lightingToken,
-        ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 4)])]
-      : []
     const plan = createPromptPlan({
       subjectProse,
       outfitProse,
       sceneProse,
       emotion: emotionTokens,
       camera: shotToken ? [shotToken] : [],
-      lighting: kreaLightingTokens,
+      lighting: lightingTokens,
       palette: options.palette,
       composition: compositionToken ? [compositionToken] : [],
       manual,
@@ -370,7 +323,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
-    lighting: [...lightingTokens, ...moodGrammarTokens].length ? [...new Set([...lightingTokens, ...moodGrammarTokens])] : [],
+    lighting: lightingTokens,
     palette: options.palette,
     composition: compositionToken ? [compositionToken] : [],
     manual,

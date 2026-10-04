@@ -22,9 +22,12 @@ function setup() {
 }
 afterEach(() => { sessionStorage.clear(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
-it.each(['inferred', 'selected'] as const)('retry keeps original model, seed, blueprint, clothing, negative and %s palette', async palette => {
+it.each(['inferred', 'selected'] as const)('retry keeps original inputs with explicit palette and %s lighting', async palette => {
   const { runner, pb, state, blueprint } = setup()
   if (palette === 'selected') blueprint.lighting = 'window'
+  pb.sceneBlueprints.push({ ...blueprint, id: 'source', lighting: 'moonlight' })
+  Object.assign(pb.subject, { blueprintId: 'source' })
+  Object.assign(pb.selections, { lighting: palette === 'inferred' ? 'moon' : 'window' })
   const request = vi.spyOn(apiClient, 'request').mockRejectedValue(new ApiClientError('invalid environment', { kind: 'http', status: 400 }))
   await runner.onBatchStart({ sceneIds: ['one'], count: 1 })
   const original = request.mock.calls[0][1]?.body as Record<string, unknown>
@@ -36,7 +39,10 @@ it.each(['inferred', 'selected'] as const)('retry keeps original model, seed, bl
   expect(original.teaCache).toBe(false)
   expect(original.teaCacheThresh).toBe(0)
   expect(original.prompt).toContain('coat')
-  expect(String(original.prompt)).toMatch(palette === 'inferred' ? /orange[_ ]theme/ : /yellow[_ ]theme/)
+  expect(String(original.prompt)).toMatch(/yellow[_ ]theme/)
+  expect(String(original.prompt)).not.toMatch(/orange[_ ]theme/)
+  expect(String(original.prompt)).not.toContain('moonlight')
+  if (palette === 'selected') expect(String(original.prompt)).toMatch(/window[_ ]light/)
   pb.colorMood = 'sad'
   pb.manualTags.add('day'); blueprint.promptProse = 'changed scene'; state.value.modelId = 'changed'
   state.value.teaCache = true; state.value.teaCacheThresh = 0.4

@@ -64,11 +64,11 @@ function explicitCameraShot(value: unknown): ShotId | null {
 /** 精确规范化标签 → 光照。 */
 const TAG_TO_LIGHTING: Record<string, LightingId> = {
   golden_hour: 'golden', golden_hour_lighting: 'golden', golden_light: 'golden',
-  window_light: 'window', window: 'window',
+  window_light: 'window',
   backlit: 'back', backlight: 'back', backlighting: 'back', rim_light: 'back',
-  moonlight: 'moon', moon: 'moon',
-  lantern_light: 'lantern', lantern: 'lantern',
-  overcast: 'overcast', cloudy: 'overcast', overcast_sky: 'overcast',
+  moonlight: 'moon',
+  warm_light: 'lantern', warm_lighting: 'lantern',
+  overcast: 'overcast', overcast_sky: 'overcast',
 }
 
 function explicitLighting(value: unknown): LightingId | null {
@@ -76,31 +76,20 @@ function explicitLighting(value: unknown): LightingId | null {
   if (!text) return null
   const normalized = normalizeTag(text)
   if (LIGHTING_IDS.includes(normalized as LightingId)) return normalized as LightingId
+  if (TAG_TO_LIGHTING[normalized]) return TAG_TO_LIGHTING[normalized]
   if (/黄金|夕阳|黄昏|落日|夕照/.test(text)) return 'golden'
-  if (/窗光|侧窗|百叶窗|落地窗/.test(text)) return 'window'
+  if (/窗光|侧窗光/.test(text)) return 'window'
   if (/逆光|背光/.test(text)) return 'back'
   if (/月光|明月/.test(text)) return 'moon'
-  if (/灯笼|纸灯/.test(text)) return 'lantern'
-  if (/阴天|阴雨|漫射|薄雾/.test(text)) return 'overcast'
+  if (/暖光|暖灯光/.test(text)) return 'lantern'
+  if (/阴天|阴雨/.test(text)) return 'overcast'
   return null
 }
-
-/** 精确规范化标签 → 色彩情调。不做中文子串扫描，只在明确情调标签上命中。 */
-const TAG_TO_MOOD: Record<string, MoodId> = {
-  smile: 'joy', smiling: 'joy', laughing: 'joy', bright: 'joy', sunny: 'joy', sparkles: 'joy',
-  blush: 'love', in_love: 'love', heart: 'love', love_letter: 'love',
-  sleeping: 'calm', peaceful: 'calm', relaxed: 'calm', serene: 'calm',
-  rain: 'sad', rainy: 'sad', crying: 'sad', tears: 'sad', tears_in_eyes: 'sad', overcast: 'sad',
-  mist: 'tension', fog: 'tension', storm: 'tension', night_sky: 'tension', neon_lighting: 'tension',
-  candlelight: 'warmth', fireplace: 'warmth', warm_lighting: 'warmth', lantern_light: 'warmth',
-}
-
-/** 情调优先级：情绪信号强于氛围词，出现多个标签时按此顺序取第一个。 */
-const MOOD_PRIORITY: readonly MoodId[] = ['love', 'sad', 'warmth', 'joy', 'tension', 'calm']
 
 export function sceneLighting(scene: { tags?: string[]; lighting?: unknown } | null): LightingId | null {
   const explicit = explicitLighting(scene?.lighting)
   if (explicit) return explicit
+  if (String(scene?.lighting ?? '').trim()) return null
   const tags = (scene?.tags || []).map(normalizeTag)
   for (const tag of tags) {
     const hit = TAG_TO_LIGHTING[tag]
@@ -122,12 +111,7 @@ export function sceneShot(scene: { tags?: string[]; camera?: unknown } | null): 
 
 export function sceneColorMood(scene: { tags?: string[]; colorMood?: unknown } | null): MoodId | null {
   const explicit = String(scene?.colorMood ?? '') as MoodId
-  if (MOOD_IDS.includes(explicit)) return explicit
-  const tags = (scene?.tags || []).map(normalizeTag)
-  for (const moodId of MOOD_PRIORITY) {
-    if (tags.some(tag => TAG_TO_MOOD[tag] === moodId)) return moodId
-  }
-  return null
+  return MOOD_IDS.includes(explicit) ? explicit : null
 }
 
 export function sceneComposition(scene: unknown): CompositionId | null {

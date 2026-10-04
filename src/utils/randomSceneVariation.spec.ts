@@ -83,7 +83,7 @@ describe('bounded scene-aware inspiration', () => {
     const authored = { ...scene, prompt: 'classroom, looking_back', prose: 'An extreme close-up in moonlight, before looking back toward the viewer.' }
     const overlay = sceneVariationOverlay(authored, [], tags, 'wide', 'lantern')
     expect(overlay.prompt).toContain('looking_back')
-    expect(renderRandomVariationProse(overlay.prose, 'wide', 'lantern')).toBe('An wide shot in lantern, before looking back toward the viewer.')
+    expect(renderRandomVariationProse(overlay.prose, 'wide', 'lantern')).toBe('An wide shot in warm lighting, before looking back toward the viewer.')
     const changed = renderRandomVariationProse(overlay.prose, 'close', 'moon')
     expect(changed).toContain('close-up')
     expect(changed).not.toContain('wide shot')

@@ -29,34 +29,15 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
+import { SHOT, LIGHTING, COMPOSITION, EMOTION } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
-export const SHOT_PROMPT: Record<string, string> = {
-  close: 'close-up', medium: 'medium shot', wide: 'wide shot',
-  pov: 'pov', low: 'low angle', high: 'high angle',
-  side: 'side view', turn: 'looking back', over: 'selfie', detail: 'extreme close-up',
-}
-
-export const LIGHTING_PROMPT: Record<string, string> = {
-  golden: 'golden hour', window: 'window light', back: 'backlighting',
-  moon: 'moonlight', lantern: 'lantern', overcast: 'overcast',
-}
-
-export const COMPOSITION_PROMPT: Record<string, string> = {
-  center: 'centered composition', rule3: 'rule of thirds',
-  left: 'off-center composition', right: 'off-center composition',
-  foreground: 'blurry foreground', frame: 'framed', bywindow: 'by window',
-}
-
-export const PROMPT_MAP_EMOTION: Record<string, string> = {
-  happy: 'happy', shy: 'shy, blush', miss: 'wistful',
-  expect: 'excited, sparkling eyes', nervous: 'nervous, blush', gentle: 'light smile',
-  moved: 'teary_eyes', sad: 'sad', calm: 'calm', joyful: 'in_love, blush',
-  relaxed: 'relaxed', serious: 'serious', love: 'in_love, blush',
-  sleepy: 'sleepy', spoiled: 'pout', wronged: 'teary_eyes, pout',
-}
+export const SHOT_PROMPT: Record<string, string> = Object.fromEntries(SHOT.map(item => [item.id, item.prompt || '']))
+export const LIGHTING_PROMPT: Record<string, string> = Object.fromEntries(LIGHTING.map(item => [item.id, item.prompt || '']))
+export const COMPOSITION_PROMPT: Record<string, string> = Object.fromEntries(COMPOSITION.map(item => [item.id, item.prompt || '']))
+export const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
 
 export const CHAR_PROMPT: Record<string, string> = {
   // 单女主壁纸构图默认锁定 solo；互动场景只保留局部手/手臂，避免不稳定的第二人物抢占画面。

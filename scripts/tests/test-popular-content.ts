@@ -566,14 +566,21 @@ test('blueprint lighting: explicit emitters outrank prose colors, titles and tim
   assert.strictEqual(decide({ lighting: 'soft daylight', timeOfDay: 'day', promptProse: 'Saber from Fate/stay night with golden eyes.', sceneTags: [] }), null);
   assert.strictEqual(decide({ lighting: 'blue neon through the window', timeOfDay: 'night', sceneTags: ['night', 'golden_eyes'] }), null);
   assert.strictEqual(decide({ lighting: '月光透过窗户', timeOfDay: 'night', sceneTags: [] }), 'moon');
-  assert.strictEqual(decide({ lighting: 'warm desk lamp', timeOfDay: 'night', sceneTags: ['moonlight'] }), 'lantern');
+  assert.strictEqual(decide({ lighting: 'warm desk lamp', timeOfDay: 'night', sceneTags: ['moonlight'] }), null);
   assert.strictEqual(decide({ lighting: '', timeOfDay: 'night', sceneTags: ['night', 'golden_hair'] }), null);
   assert.strictEqual(decide({ lighting: '', timeOfDay: 'day', sceneTags: ['golden_hour'] }), 'golden');
   assert.strictEqual(decide({ lighting: 'soft afternoon window light', timeOfDay: 'afternoon' }), 'window');
-  assert.strictEqual(decide({ lighting: '窗光', timeOfDay: '冬夜', sceneTags: [] }), null);
-  assert.strictEqual(decide({ lighting: 'warm morning sunlight', timeOfDay: 'morning', sceneTags: [] }), 'golden');
+  assert.strictEqual(decide({ lighting: '窗光', timeOfDay: '冬夜', sceneTags: [] }), 'window');
+  assert.strictEqual(decide({ lighting: 'warm morning sunlight', timeOfDay: 'morning', sceneTags: [] }), null);
   assert.strictEqual(decide({ lighting: 'bright sunlight', timeOfDay: 'noon', sceneTags: [] }), null);
   assert.strictEqual(decide({ lighting: 'golden hologram light', timeOfDay: 'day', sceneTags: [] }), null);
+  for (const adult of [false, true]) {
+    for (const lighting of ['desk lamp', 'streetlamp', 'spotlight', 'candlelight', 'firelight', 'cool morning light']) {
+      assert.strictEqual(decide({ adult, lighting, sceneTags: [] }), null, lighting);
+    }
+    assert.strictEqual(decide({ adult, lighting: 'cool fluorescent lighting', timeOfDay: 'night',
+      promptProse: 'Inside a windowless room at night.', sceneTags: [] }), null);
+  }
 });
 
 test('blueprint lighting: all SFW decisions are independent of prose, mood and camera contamination', function () {
@@ -584,7 +591,7 @@ test('blueprint lighting: all SFW decisions are independent of prose, mood and c
   }
 });
 
-test('blueprint decisions: angle keywords outrank framing substrings; every blueprint resolves a shot', function () {
+test('blueprint decisions: authored camera keywords resolve without borrowing prose', function () {
   let thunderNight = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; })!;
   let decision = popular.inferBlueprintDecisions(thunderNight);
   assert.strictEqual(decision.shot, 'wide', 'the corrected beach scene must retain its authored full-body framing');
@@ -597,9 +604,8 @@ test('blueprint decisions: angle keywords outrank framing substrings; every blue
   let maiLibrary = blueprints.find(function (item) { return item.id === 'sakurajima_mai_library'; })!;
   assert.strictEqual(popular.inferBlueprintDecisions(maiLibrary).shot, 'low',
     '"cinematic low angle medium shot" must keep the authored low angle');
-  let unresolved = blueprints.filter(function (item) { return !popular.inferBlueprintDecisions(item).shot; });
-  assert.strictEqual(unresolved.length, 0,
-    'every blueprint camera field must resolve to a director shot; unresolved: ' + unresolved.map(function (b) { return b.id; }).join(', '));
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: '', promptProse: 'A wide shot.' }).shot, null,
+    'unsupported camera metadata must not be filled from scene prose');
 });
 
 test('blueprint decisions: word boundaries and authored symmetry preserve explicit choices', () => {
@@ -612,14 +618,17 @@ test('blueprint decisions: word boundaries and authored symmetry preserve explic
   const outfit = popular.findOutfit(character, mika.outfitId!)!;
   const decisions = popular.inferBlueprintDecisions(mika);
   assert.strictEqual(decisions.composition, 'center');
-  assert.strictEqual(popular.inferBlueprintDecisions({ ...mika, camera: 'medium shot, asymmetrical composition' }).composition, 'rule3');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...mika, camera: 'medium shot, asymmetrical composition' }).composition, null);
   for (const engine of ['anima', 'krea2'] as const) {
     const automatic = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions })!;
     assert.ok(automatic.prompt.includes('centered composition'));
     assert.ok(!automatic.prompt.includes('rule of thirds'));
     const explicit = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, ...decisions, shot: 'wide', composition: 'right' })!;
-    assert.ok(explicit.prompt.includes('off-center composition'));
+    assert.ok(explicit.prompt.includes('subject on the right side of the image'));
     assert.ok(!explicit.prompt.includes('centered composition'));
+    const framed = popular.buildPopularPromptPlan({ character, outfit, blueprint: mika, engine, composition: 'frame' })!;
+    assert.ok(framed.prompt.includes('natural framing'));
+    assert.ok(!framed.prompt.split('\n')[0].split(',').map(t => t.trim()).includes('framed'));
   }
 });
 
@@ -638,7 +647,7 @@ test('shared compiler retains reference outfit, manual pose, visual background a
     assert.ok(/standing/.test(result.prompt) && !/\bsitting\b/.test(result.prompt));
     assert.ok(/forest/.test(result.prompt) && /garden/i.test(result.prompt));
     assert.ok(/close-up/.test(result.prompt) && /moonlight/.test(result.prompt));
-    assert.ok(/off-center composition/.test(result.prompt));
+    assert.ok(/subject on the left side of the image/.test(result.prompt));
     assert.ok(result.prompt.includes('Mika'));
     assert.ok(!result.prompt.includes(outfit.prose));
   }

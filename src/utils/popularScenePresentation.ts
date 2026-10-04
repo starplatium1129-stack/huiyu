@@ -40,7 +40,7 @@ const SHOT_LABELS: Record<string, string> = {
 }
 const LIGHT_LABELS: Record<string, string> = {
   golden: '黄金光', window: '窗光', back: '逆光', moon: '月光',
-  lantern: '灯笼光', overcast: '阴天光',
+  lantern: '暖光', overcast: '阴天光',
 }
 const MOOD_LABELS: Record<string, string> = {
   warmth: '暖色', calm: '平静', tension: '张力', sad: '忧郁', joy: '欢快',

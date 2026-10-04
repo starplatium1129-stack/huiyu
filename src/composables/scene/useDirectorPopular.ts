@@ -185,8 +185,8 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const targetOutfitId = blueprint.outfitId || pb.subject.outfitId
     pb.setPopularSubject(pb.subject.characterId, targetOutfitId, blueprint.id)
     const decision = inferBlueprintDecisions(blueprint)
-    if (decision.shot) pb.setShot(decision.shot)
-    if (decision.lighting) pb.setLighting(decision.lighting)
+    pb.setShot(decision.shot)
+    pb.setLighting(decision.lighting)
     pb.setComposition(decision.composition)
     pb.setColorMood(decision.colorMood)
     // 蓝图推荐尺寸必须收敛到当前底模白名单：Krea 已激活时 832x1216 会让

@@ -109,11 +109,16 @@ it('does not replay an older generated recipe over newer reference layers during
   pb.$dispose()
 })
 
-it('releases the previous blueprint color and lighting when selecting another character', () => {
+it('clears unsupported new scene controls and releases inherited settings when selecting another character', () => {
   const { pb, flow } = setup()
   flow.selectBlueprint(blueprint)
-  expect(pb.colorMood).toBe('calm')
+  expect(pb.colorMood).toBeNull()
   expect(pb.selections.lighting).toBe('window')
+  const next = { ...blueprint, id: 'studio-light', camera: '', lighting: 'cool fluorescent lighting', mood: 'mysterious' }
+  useSceneStore().sceneBlueprints.push(next)
+  flow.selectBlueprint(next)
+  expect(pb.selections).toMatchObject({ shot: null, lighting: null, composition: null })
+  expect(pb.colorMood).toBeNull()
   flow.selectPopularCharacter(characters[1])
   expect(pb.subject).toMatchObject({ blueprintId: null })
   expect(pb.colorMood).toBeNull()
