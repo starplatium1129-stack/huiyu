@@ -346,6 +346,7 @@ mod tests {
         let cancel = CancellationToken::new();
         let translation = Translation::new(
             Arc::new(Settings {
+                engine: super::super::config::Engine::GptSoVits,
                 tts_host: "http://127.0.0.1:1".into(),
                 profiles: Default::default(),
                 translation_url: "http://127.0.0.1:1".into(),

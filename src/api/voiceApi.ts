@@ -33,7 +33,7 @@ async function synthesizeVoice(fetchAudio: FetchImplementation, payload: VoiceSy
       const error = isObject(body) ? body : {}
       const detail = typeof error.detail === 'string' ? error.detail : ''
       const message = response.status === 502 && /ECONNREFUSED|9880/.test(detail)
-        ? 'GPT-SoVITS 未启动（127.0.0.1:9880 拒绝连接）。到控制面板点「启动语音」。'
+        ? '角色语音服务未启动。到控制面板点「启动语音」。'
         : [typeof error.error === 'string' ? error.error : '', detail].filter(Boolean).join('：') || `语音生成失败 (${response.status})`
       throw new ApiClientError(message, { kind: 'http', status: response.status, detail, responseBody: error })
     }

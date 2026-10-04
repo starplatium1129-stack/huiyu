@@ -83,9 +83,14 @@ describe('control room state', () => {
     status.renderStatus(snapshot())
     status.sdHost.value = 'http://127.0.0.1:7861'
     status.voiceNenePrompt.value = 'new voice prompt'
+    status.ttsEngine.value = 'voxcpm2'
+    status.voiceNeneLora.value = 'new-nene.safetensors'
     status.renderStatus(snapshot({ voices: { nene: { promptText: 'old voice prompt' } } } as Partial<ControlStatus>))
     expect(status.sdHost.value).toBe('http://127.0.0.1:7861')
     expect(status.voiceNenePrompt.value).toBe('new voice prompt')
+    expect(status.ttsEngine.value).toBe('voxcpm2')
+    expect(status.voiceNeneLora.value).toBe('new-nene.safetensors')
+    expect(status.activeVoiceEngine.value).toBe('GPT-SoVITS')
     status.renderStatus(snapshot({ sdHost: 'http://127.0.0.1:7861' }))
     status.renderStatus(snapshot({ sdHost: 'http://127.0.0.1:7862' }))
     expect(status.sdHost.value).toBe('http://127.0.0.1:7862')

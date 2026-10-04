@@ -1,4 +1,4 @@
-use super::config::{Profile, Settings};
+use super::config::{Engine, Profile, Settings};
 use crate::error::{ApiError, Result};
 use serde_json::{Value, json};
 use unicode_normalization::UnicodeNormalization;
@@ -43,12 +43,15 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
     let profile = settings
         .profiles
         .get(voice)
-        .filter(|profile| profile.configured())
+        .filter(|profile| {
+            profile.configured()
+                && (settings.engine != Engine::VoxCpm2 || !profile.lora_weights_path.is_empty())
+        })
         .ok_or_else(|| {
             ApiError::new(
                 409,
                 "VOICE_UNCONFIGURED",
-                "该角色尚未配置 GPT-SoVITS 参考音频",
+                "该角色尚未配置当前语音引擎的声线和参考音频",
             )
         })?
         .clone();
@@ -87,12 +90,16 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
         .or_else(|| input["speed"].as_str().and_then(|s| s.parse().ok()));
     // Installed GPT-SoVITS v2Pro/v2ProPlus rejects ordinary Japanese with cut0;
     // retain cut5 until an engine upgrade is verified with the same dialogue.
-    let payload = json!({"text": text, "text_lang": language, "ref_audio_path": choose(|r| &r.ref_audio_path),
+    let mut payload = json!({"text": text, "text_lang": language, "ref_audio_path": choose(|r| &r.ref_audio_path),
         "prompt_lang": if prompt_lang.is_empty() { "ja" } else { &prompt_lang }, "prompt_text": choose(|r| &r.prompt_text),
         "text_split_method": "cut5", "batch_size": 1, "split_bucket": false, "speed_factor": numeric(speed, 1.0, 0.75, 1.35, false),
         "seed": numeric(profile.seed, 1234.0, 0.0, 2147483647.0, true) as i64,
         "top_k": numeric(profile.top_k, 15.0, 1.0, 100.0, true) as i64, "top_p": numeric(profile.top_p, 1.0, 0.1, 1.0, false),
         "temperature": numeric(profile.temperature, 1.0, 0.1, 2.0, false), "parallel_infer": false, "media_type": "wav", "streaming_mode": false});
+    if settings.engine == Engine::VoxCpm2 {
+        payload["voice"] = voice.into();
+        payload["lora_weights_path"] = profile.lora_weights_path.clone().into();
+    }
     Ok(Validated {
         voice: voice.into(),
         profile,
@@ -163,4 +170,22 @@ pub(super) fn fix_wav(bytes: &mut [u8]) {
         }
         offset += 8 + size + size % 2;
     }
+}
+
+pub(super) fn pcm_wave(pcm: &[u8], rate: u32) -> Vec<u8> {
+    let mut wave = Vec::with_capacity(44 + pcm.len());
+    wave.extend_from_slice(b"RIFF");
+    wave.extend_from_slice(&((36 + pcm.len()) as u32).to_le_bytes());
+    wave.extend_from_slice(b"WAVEfmt ");
+    wave.extend_from_slice(&16u32.to_le_bytes());
+    wave.extend_from_slice(&1u16.to_le_bytes());
+    wave.extend_from_slice(&1u16.to_le_bytes());
+    wave.extend_from_slice(&rate.to_le_bytes());
+    wave.extend_from_slice(&(rate * 2).to_le_bytes());
+    wave.extend_from_slice(&2u16.to_le_bytes());
+    wave.extend_from_slice(&16u16.to_le_bytes());
+    wave.extend_from_slice(b"data");
+    wave.extend_from_slice(&(pcm.len() as u32).to_le_bytes());
+    wave.extend_from_slice(pcm);
+    wave
 }

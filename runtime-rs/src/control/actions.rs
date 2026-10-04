@@ -24,15 +24,11 @@ async fn output<R: AsyncRead + Unpin>(stream: Option<R>, cancel: CancellationTok
     data
 }
 impl ControlService {
-    pub(super) fn script(&self, index: usize, start: bool) -> PathBuf {
+    pub(super) fn script(&self, index: usize, _start: bool) -> PathBuf {
         match index {
             0 => self.config.app_root.join("scripts/lib/managed-webui.ps1"),
             1 => self.config.app_root.join("scripts/lib/managed-comfyui.ps1"),
-            _ => self.config.ai_workspace_root.join(if start {
-                "Voice/Start-Voice.ps1"
-            } else {
-                "Voice/Stop-Voice.ps1"
-            }),
+            _ => self.config.app_root.join("scripts/lib/managed-voice.ps1"),
         }
     }
     fn args(&self, index: usize, start: bool, settings: &Value) -> Vec<String> {
@@ -43,13 +39,6 @@ impl ControlService {
                 .to_string_lossy()
                 .into_owned()
         };
-        if index == 2 {
-            return if start {
-                vec!["-WaitSeconds".into(), "60".into()]
-            } else {
-                vec![]
-            };
-        }
         let mut args = vec![
             "-Action".into(),
             if start { "Start".into() } else { "Stop".into() },
@@ -67,12 +56,24 @@ impl ControlService {
                 "-ControlNetRoot".into(),
                 path("Data/Models/ControlNet"),
             ]);
-        } else {
+        } else if index == 1 {
             args.extend([
                 "-AIWorkspaceRoot".into(),
                 self.config.ai_workspace_root.to_string_lossy().into_owned(),
                 "-ComfyHost".into(),
                 settings["comfyHost"].as_str().unwrap_or("").into(),
+            ]);
+        } else {
+            args.extend([
+                "-AIWorkspaceRoot".into(),
+                self.config.ai_workspace_root.to_string_lossy().into_owned(),
+                "-Engine".into(),
+                settings["ttsEngine"]
+                    .as_str()
+                    .unwrap_or("gpt-sovits")
+                    .into(),
+                "-TtsHost".into(),
+                settings["ttsHost"].as_str().unwrap_or("").into(),
             ]);
         }
         args
@@ -185,7 +186,8 @@ impl ControlService {
         }
         let seconds = match (index, start) {
             (0, true) => 360,
-            (2, true) => 90,
+            (2, true) if settings["ttsEngine"] == "voxcpm2" => 390,
+            (2, true) => 120,
             (2, false) => 30,
             _ => 120,
         };
@@ -215,10 +217,7 @@ impl ControlService {
                 )
             }));
         }
-        let owned = start
-            && result
-                .as_ref()
-                .is_ok_and(|v| index == 2 || v["managed"] == true);
+        let owned = start && result.as_ref().is_ok_and(|v| v["managed"] == true);
         {
             let mut state = self.state.lock().unwrap();
             let m = &mut state.managed[index];

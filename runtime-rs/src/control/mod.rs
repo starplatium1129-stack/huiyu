@@ -87,7 +87,7 @@ impl ControlService {
                 .filter(|s| crate::upstream::local_url(s).is_ok())
                 .unwrap_or(default.into())
         };
-        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
+        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":if saved["ttsEngine"]=="voxcpm2"{"voxcpm2"}else{"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
         let service = Arc::new(Self {
             voice,
             config,

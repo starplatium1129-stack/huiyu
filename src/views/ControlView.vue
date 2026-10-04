@@ -122,7 +122,7 @@
         <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
         </ToggleSwitch>
-        <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
+        <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖角色语音服务。</p>
         <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
           未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
           <span v-if="!scripts.webui">WebUI 脚本 </span>
@@ -160,7 +160,13 @@
         </div>
         <p id="comfy-host-help" class="field-help">Anima、Krea 与视频生成共用此地址。</p>
 
-        <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
+        <label class="field-label" for="tts-engine">角色语音引擎</label>
+        <select id="tts-engine" v-model="ttsEngine" class="input" aria-describedby="tts-engine-help">
+          <option value="voxcpm2">VoxCPM2</option>
+          <option value="gpt-sovits">GPT-SoVITS</option>
+        </select>
+        <p id="tts-engine-help" class="field-help">保存后重启应用生效；切换前先停止原语音服务。</p>
+        <label class="field-label" for="tts-host">语音 API 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
             <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
@@ -173,6 +179,10 @@
           <div class="voice-grid">
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
+              <template v-if="ttsEngine === 'voxcpm2'">
+                <label for="v-nene-lora">宁宁 LoRA 权重路径</label>
+                <input id="v-nene-lora" v-model="voiceNeneLora" class="input" placeholder="lora_weights.safetensors 路径" />
+              </template>
               <label for="v-nene-ref">宁宁参考音频路径</label>
             <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
               <label for="v-nene-prompt">宁宁提示文本（日文）</label>
@@ -180,6 +190,10 @@
             </div>
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">夏目</div>
+              <template v-if="ttsEngine === 'voxcpm2'">
+                <label for="v-nat-lora">夏目 LoRA 权重路径</label>
+                <input id="v-nat-lora" v-model="voiceNatsumeLora" class="input" placeholder="lora_weights.safetensors 路径" />
+              </template>
               <label for="v-nat-ref">夏目参考音频路径</label>
             <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
               <label for="v-nat-prompt">夏目提示文本（日文）</label>
@@ -329,7 +343,7 @@ const actions = useControlActions(status, { showToast })
 const {
   tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
-  sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
+  sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
@@ -366,7 +380,7 @@ function lineClass(line: string) { return status.lineClass(line) }
 const SERVICE_STOP_LABELS: Record<string, string> = {
   webui: 'SD WebUI 绘图服务',
   comfy: 'ComfyUI 绘图服务',
-  voice: 'GPT-SoVITS 语音服务',
+  voice: '角色语音服务',
 }
 
 async function confirmServiceAction(service: string, action: string): Promise<void> {
@@ -400,7 +414,7 @@ const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima �
 const serviceCards = computed<Array<{ key: string; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
   { key: 'webui', name: 'SD WebUI', icon: 'image', online: sdOnline.value, detail: sdOnline.value ? (webuiManaged.value ? '受控绘图服务' : '手动启动的绘图服务') : 'SD 引擎 · Stable Diffusion 绘图' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `Anima · Krea 2 · 视频${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
-  { key: 'voice', name: 'GPT-SoVITS 语音', icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
+  { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },
 ])
 

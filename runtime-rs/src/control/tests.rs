@@ -39,11 +39,16 @@ pub(super) fn fixture(saved: Value) -> (tempfile::TempDir, Arc<ControlService>) 
 async fn config_commit_preserves_unknown_fields_and_requires_restart() {
     let (_temp, s) = fixture(json!({"privateOther":{"credential":"secret"}}));
     let saved = s
-        .patch(http::validated_patch(json!({"sdHost":"http://127.0.0.1:9999"})).unwrap())
+        .patch(
+            http::validated_patch(json!({"sdHost":"http://127.0.0.1:9999", "ttsEngine":"voxcpm2"}))
+                .unwrap(),
+        )
         .await
         .unwrap();
     assert_eq!(saved["sdHost"], "http://127.0.0.1:1");
     assert_eq!(saved["savedConfig"]["sdHost"], "http://127.0.0.1:9999");
+    assert_eq!(saved["ttsEngine"], "gpt-sovits");
+    assert_eq!(saved["savedConfig"]["ttsEngine"], "voxcpm2");
     assert_eq!(saved["restartRequired"], true);
     assert!(saved["savedConfig"].get("privateOther").is_none());
     let (a, b) = tokio::join!(
@@ -56,10 +61,11 @@ async fn config_commit_preserves_unknown_fields_and_requires_restart() {
         serde_json::from_slice(&std::fs::read(s.config.runtime_root.join("config.json")).unwrap())
             .unwrap();
     assert_eq!(disk["privateOther"]["credential"], "secret");
+    assert_eq!(disk["ttsEngine"], "voxcpm2");
     assert_eq!(disk["autoStartVoice"], true);
     assert_eq!(disk["autoTunnel"], false);
     let cleared = s
-        .patch(json!({"sdHost":"http://127.0.0.1:1"}))
+        .patch(json!({"sdHost":"http://127.0.0.1:1", "ttsEngine":"gpt-sovits"}))
         .await
         .unwrap();
     assert_eq!(cleared["restartRequired"], false);
@@ -389,11 +395,13 @@ async fn routes_reject_tunnel_local_spoof_and_preserve_sd_status_shape() {
     ] {
         let request = Request::builder()
             .uri(path)
-            .method(if path.contains("/verify/") || path.contains("/download/") {
-                "POST"
-            } else {
-                "GET"
-            })
+            .method(
+                if path.contains("/verify/") || path.contains("/download/") {
+                    "POST"
+                } else {
+                    "GET"
+                },
+            )
             .header("host", "localhost:3210")
             .header("x-forwarded-for", "203.0.113.1")
             .extension(ConnectInfo(

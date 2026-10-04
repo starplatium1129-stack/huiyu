@@ -17,7 +17,7 @@
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2（自研 DiT + Qwen3-VL 编码器，非 SD3.5 系）**：当前本地编译使用英文 prose，清理标签堆词、评分词和括号权重，negative 为空；CFG 以实际节点定义为准，不把本地约束泛化为所有版本能力。提示词按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 执行，人物环境融合见 [叙事 CG 规范](guides/prompts/narrative-cg-prompt-standard.md)；历史研究不覆盖当前实现与后续证据。
 - **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。运行时维护见 [Live2D 指南](guides/desktop/live2d-native-runtime.md)。
-- **配音与陪伴**：GPT-SoVITS + 本机翻译管道，自动剥离台词舞台提示，长句分段与 in-flight 缓存去重。
+- **配音与陪伴**：VoxCPM2 角色 LoRA / GPT-SoVITS + 本机翻译管道，自动剥离台词舞台提示与长句分段。VoxCPM2 分片即播、下一句预取、完整句缓存；GPT 整句播放保留 in-flight 去重。停止播放取消所属 PCM 请求并释放音频节点，半句不作为可重播音频。
 
 作品历史/工作台的纯类型、配方解码、资源所有权和可执行依赖方向见 [可维护性试点边界](guides/engineering/maintainability-boundaries.md)。类型兼容转导出不改变持久化格式。
 

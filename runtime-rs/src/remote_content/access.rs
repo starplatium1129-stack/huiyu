@@ -106,7 +106,7 @@ impl RemoteAccess {
             {
                 return None;
             }
-            if path == "/api/tts" {
+            if path == "/api/tts" || path == "/api/tts-stream" {
                 return self.tts.check(false);
             }
             if provider_path(path, method) {

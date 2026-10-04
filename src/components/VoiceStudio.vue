@@ -3,7 +3,7 @@
     <div class="voice-head">
       <div>
         <div class="voice-title">成片配音</div>
-        <div class="voice-sub">中文字幕可单独保留；日文配音稿用于 GPT-SoVITS。</div>
+        <div class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</div>
       </div>
       <div class="voice-head-actions">
         <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
@@ -151,13 +151,13 @@ async function refreshVoiceStatus() {
     voiceConfigured.value = Boolean(data.voices[voice])
     if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     if (voiceOnline.value && voiceConfigured.value) {
-      voiceStatus.value = 'GPT-SoVITS 已连接；可翻译或生成角色声线。'
+      voiceStatus.value = `${data.engine || '语音服务'} 已连接；可翻译或生成角色声线。`
       // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
       void voiceApi.prepare({ voice, translation: voiceLang.value === 'ja' }, callOptions).catch(() => {})
     } else if (voiceOnline.value) {
       voiceStatus.value = '语音服务在线，但当前角色参考音频尚未配置。'
     } else {
-      voiceStatus.value = '语音服务未启动。可到控制面板启动 GPT-SoVITS。'
+      voiceStatus.value = '语音服务未启动。可到控制面板启动所选语音引擎。'
     }
   } catch {
     if (!viewActive || controller.signal.aborted || request !== statusRequest || voiceBusy.value || ownedSpeech || operation !== operationRevision) return

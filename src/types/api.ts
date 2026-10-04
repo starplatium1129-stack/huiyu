@@ -28,7 +28,7 @@ export type HostConfig =
   | { ok?: true; configured: true; model: string; baseUrl: string }
 export type ConfiguredHostConfig = Extract<HostConfig, { configured: true }>
 export interface ProviderTestResult { ok: true; models: string[] }
-export interface TtsStatus { online: boolean; voices: Record<string, boolean>; translation?: { ready: boolean }; activeVoice?: string; error?: string }
+export interface TtsStatus { online: boolean; voices: Record<string, boolean>; engine?: string; streamingPcm?: boolean; translation?: { ready: boolean }; activeVoice?: string; error?: string }
 export interface VoicePrepareResult { ok: true; voice: string; translation: boolean; prepareMs?: number }
 export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
 export interface Live2DStatusResponse { models: Record<string, unknown> }
@@ -61,6 +61,7 @@ export interface VoiceProfileView {
   textLang?: string
   gptWeightsPath?: string
   sovitsWeightsPath?: string
+  loraWeightsPath?: string
   [key: string]: unknown
 }
 
@@ -84,6 +85,7 @@ export interface ControlStatus {
   sdHost: string
   comfyHost: string
   ttsHost: string
+  ttsEngine?: 'gpt-sovits' | 'voxcpm2'
   ollamaHost: string
   localLink: string
   shareLinkAvailable: boolean
@@ -141,6 +143,7 @@ export interface ControlConfigPayload {
   sdHost: string
   comfyHost: string
   ttsHost: string
+  ttsEngine?: 'gpt-sovits' | 'voxcpm2'
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
 }
 

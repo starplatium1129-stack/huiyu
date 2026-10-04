@@ -5,12 +5,14 @@ import {
 } from '../utils/stream.ts'
 import { voiceApi } from '../api/voiceApi.ts'
 import { ApiClientError } from '../api/client.ts'
+import { VoicePcmStream } from './voicePcmStream.ts'
 
 export interface VoiceAvailability {
   online: boolean
   voices?: Record<string, boolean>
   translation?: { ready: boolean }
   activeVoice?: string
+  streamingPcm?: boolean
   error?: string
 }
 
@@ -32,13 +34,16 @@ interface PreparedSentence {
 interface SynthesizedClip {
   url: string
   emotion: string
+  stream?: VoicePcmStream
 }
 
 interface QueuedClip extends SynthesizedClip {
   mid: string
   session: number
-  /** 流式播放失败时的剩余重试次数（服务端句级缓存使重试不再重复烧 GPU） */
+  /** 整句播放失败时的剩余重试次数；已经开播的句子不重复生成。 */
   retryLeft?: number
+  recorded?: SynthesizedClip
+  observed?: boolean
 }
 
 interface AudioWithSource extends HTMLAudioElement {
@@ -78,6 +83,7 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
     voices,
     translation,
     activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
+    streamingPcm: value.streamingPcm === true,
     error: typeof value.error === 'string' ? value.error : undefined,
   }
 }
@@ -110,7 +116,7 @@ export function useVoice(options: {
   // "诶…那个…" style fragments.
   // 单句上限收紧到 44 字：更长文本 cut5 内部分多段，GPT-SoVITS 更容易
   // 复读/结巴，且单句 GPU 时间随长度线性增长，是长语句等待和"反复说
-  // 一个词"的主要来源之一。首句放宽到 8 字即放行：对话开场白通常短，
+  // 一个词"的主要来源之一。首句在句末累计 8 字即可放行：开场白通常短，
   // 等满 12 字才合成会让第一句语音明显滞后。
   const sentenceBuffer = new SentenceBuffer({ minimumLength: 12, maximumLength: 44, firstThreshold: 8 })
   let session = 0, controller: AbortController | null = null
@@ -118,6 +124,7 @@ export function useVoice(options: {
   let synthChain: Promise<void> = Promise.resolve()
   let pending = 0, queue: QueuedClip[] = [], playing = false
   let currentAudio: AudioWithSource | null = null, replayAudio: AudioWithSource | null = null
+  let currentPcm: VoicePcmStream | null = null
   const messageAudio = new Map<string, SynthesizedClip[]>()
   let audioContext: AudioContext | null = null, analyser: AnalyserNode | null = null
   let gainNode: GainNode | null = null, lipFrame = 0, lipSmooth = 0
@@ -225,10 +232,13 @@ export function useVoice(options: {
       return synthesize(req, meta, signal)
     }).then(item => {
       if (!item) return
-      if (sess !== session) { URL.revokeObjectURL(item.url); return }
-      const clips = messageAudio.get(meta.mid) || []; clips.push({ url: item.url, emotion: item.emotion || 'neutral' })
-      messageAudio.set(meta.mid, clips); queue.push({ ...item, mid: meta.mid, session: sess })
-      onAudioReady(meta.mid); pump(sess)
+      if (sess !== session) { item.stream?.cancel(); URL.revokeObjectURL(item.url); return }
+      const clips = messageAudio.get(meta.mid) || []
+      const stored = { url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' }
+      clips.push(stored); messageAudio.set(meta.mid, clips)
+      queue.push({ ...item, mid: meta.mid, session: sess, recorded: stored })
+      if (!item.stream) onAudioReady(meta.mid)
+      pump(sess); prefetch()
     }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)) })
     .finally(() => {
       if (sess !== session) return; pending = Math.max(0, pending - 1)
@@ -277,9 +287,8 @@ export function useVoice(options: {
   }
 
   async function requestTts(request: PreparedSentence, meta: VoiceTurn): Promise<string> {
-    // 流式端点：audio 元素直连 GET，浏览器对 PCM WAV 边下边播，
-    // 播放开始不再等整段音频下载完（公网分享下感知延迟明显下降）。
-    // 服务端按句缓存 + in-flight 合并，重播/同句重复不重复占用 GPU 队列。
+    // Canonical whole-clip address remains available for replay and GPT.
+    // VoxCPM2 uses the PCM route below to start playback before synthesis ends.
     const params = new URLSearchParams({
       voice: meta.voice,
       text: request.text,
@@ -293,11 +302,24 @@ export function useVoice(options: {
   }
 
   async function synthesize(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<SynthesizedClip> {
-    // 流式路径：失败（HTTP 错误 / 空音频 / 超时）由播放层的 audio error
-    // 事件捕获并触发一次重试，这里只负责构造播放地址。
+    // Playback or next-sentence prefetch starts the request. Each player owns
+    // its errors and cancellation; this step only selects the playback route.
     if (signal.aborted) throw new DOMException('aborted', 'AbortError')
-    return { url: await requestTts(request, meta), emotion: request.emotion }
+    const url = await requestTts(request, meta)
+    return { url, emotion: request.emotion,
+      ...(availability.value.streamingPcm ? { stream: new VoicePcmStream(url.replace('/api/tts?', '/api/tts-stream?')) } : {}) }
   }
+
+  function observeStream(item: QueuedClip) {
+    if (!item.stream || item.observed) return
+    item.observed = true
+    void item.stream.start().then(blob => {
+      if (!item.recorded || !messageAudio.get(item.mid)?.includes(item.recorded)) return
+      item.recorded.url = URL.createObjectURL(blob)
+      onAudioReady(item.mid)
+    }).catch(() => {}) // Playback reports a prefetched failure once it owns this clip.
+  }
+  function prefetch() { if (playing && queue[0]?.stream) observeStream(queue[0]) }
 
   function attachAnalyser(audio: AudioWithSource) {
     if (!audioContext || !analyser || audio.__sourceNode) return
@@ -311,7 +333,7 @@ export function useVoice(options: {
     const tick = () => {
       const audio = currentAudio || replayAudio; let target = 0
       let peak = 0
-      if (audio && !audio.paused && !audio.ended) {
+      if ((audio && !audio.paused && !audio.ended) || currentPcm?.playing) {
         analyser!.getByteTimeDomainData(samples); let sum = 0
         for (const s of samples) {
           const n = (s - 128) / 128
@@ -326,7 +348,7 @@ export function useVoice(options: {
       if (lipSmooth < 0.015) lipSmooth = 0
       onMouth(lipSmooth)
       onAudioLevel(lipSmooth, Math.min(1, peak * 2.2))
-      if ((audio && !audio.ended) || lipSmooth > 0.01) lipFrame = requestAnimationFrame(tick)
+      if ((audio && !audio.ended) || currentPcm || lipSmooth > 0.01) lipFrame = requestAnimationFrame(tick)
       else stopLipSync()
     }
     lipFrame = requestAnimationFrame(tick)
@@ -340,7 +362,7 @@ export function useVoice(options: {
     volume = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1
     if (audioContext && gainNode) gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05)
   }
-  function onVisibilityChange() { if (document.hidden) stopLipSync(); else if (currentAudio || replayAudio) startLipSync() }
+  function onVisibilityChange() { if (document.hidden) stopLipSync(); else if (currentAudio || currentPcm || replayAudio) startLipSync() }
   document.addEventListener('visibilitychange', onVisibilityChange)
 
   function pump(sess: number) {
@@ -348,6 +370,28 @@ export function useVoice(options: {
     const item = queue.shift()
     if (!item) return
     playing = true
+    if (item.stream && audioContext && analyser) {
+      const stream = item.stream
+      currentPcm = stream; observeStream(item)
+      cancelPlayback = () => stream.cancel()
+      onStatus('语音合成中…'); notifyActivity()
+      void stream.play(audioContext, analyser, () => {
+        if (sess !== session || currentPcm !== stream) return
+        onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); startLipSync()
+      }).catch(e => { if (sess === session && !isAbortError(e)) onError('一句配音失败：' + errorMessage(e)) })
+        .finally(() => {
+          if (sess !== session || currentPcm !== stream) return
+          currentPcm = null; playing = false; cancelPlayback = null
+          if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending ? '语音合成中…' : '') }
+          pump(sess); prefetch(); notifyActivity()
+        })
+      prefetch(); return
+    }
+    if (item.stream) {
+      item.stream.cancel()
+      if (item.recorded) item.recorded.url = item.url
+      onAudioReady(item.mid)
+    }
     const audio = new Audio() as AudioWithSource
     audio.crossOrigin = runtimeResourceCors() ?? null
     audio.src = resolveRuntimeUrl(item.url)
@@ -416,7 +460,7 @@ export function useVoice(options: {
   }
 
   async function playMessage(mid: string): Promise<boolean> {
-    const clips = (messageAudio.get(mid) || []).slice()
+    const clips = (messageAudio.get(mid) || []).filter(clip => clip.url)
     if (!clips.length) return false
     stop({ preserveMessageAudio: true, silent: true }); ensureAudioContext()
     const rs = session; onSpeaking(true, mid); onStatus('重播中…'); notifyActivity()
@@ -450,7 +494,7 @@ export function useVoice(options: {
     return rs === session
   }
 
-  function hasAudio(mid: string) { const c = messageAudio.get(mid); return Boolean(c?.length) }
+  function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => clip.url)) }
 
   function clearMessages(mids: string[]) {
     mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => URL.revokeObjectURL(cl.url)); messageAudio.delete(mid) })
@@ -464,10 +508,10 @@ export function useVoice(options: {
     cancelReplay?.(); cancelReplay = null
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
     const refs = new Set<string>(); messageAudio.forEach(c => c.forEach(cl => refs.add(cl.url)))
-    queue.forEach(it => { if (!refs.has(it.url)) URL.revokeObjectURL(it.url) }); queue = []
+    queue.forEach(it => { it.stream?.cancel(); if (!refs.has(it.url)) URL.revokeObjectURL(it.url) }); queue = []
     if (currentAudio) { currentAudio.pause(); removeAudioSource(currentAudio); currentAudio.removeAttribute('src') }
     if (replayAudio) { replayAudio.pause(); removeAudioSource(replayAudio); replayAudio.removeAttribute('src') }
-    currentAudio = null; replayAudio = null; playing = false; stopLipSync()
+    currentPcm = null; currentAudio = null; replayAudio = null; playing = false; stopLipSync()
     _lastEmotion = 'neutral'; _neutralStreak = 0
     onSpeaking(false); onExpression('neutral')
     if (!opts.silent) onStatus('')

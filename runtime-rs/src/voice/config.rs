@@ -1,9 +1,9 @@
 use crate::{config::Config, upstream::local_url};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, env, path::PathBuf};
 
-#[derive(Clone, Default, Deserialize)]
+#[derive(Clone, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Reference {
     #[serde(default)]
@@ -13,7 +13,7 @@ pub(super) struct Reference {
     #[serde(default)]
     pub prompt_lang: String,
 }
-#[derive(Clone, Default, Deserialize)]
+#[derive(Clone, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Profile {
     #[serde(flatten)]
@@ -22,6 +22,8 @@ pub(super) struct Profile {
     pub gpt_weights_path: String,
     #[serde(default)]
     pub sovits_weights_path: String,
+    #[serde(default)]
+    pub lora_weights_path: String,
     pub seed: Option<f64>,
     pub top_k: Option<f64>,
     pub top_p: Option<f64>,
@@ -37,6 +39,7 @@ impl Profile {
 
 #[derive(Clone)]
 pub(super) struct Settings {
+    pub engine: Engine,
     pub tts_host: String,
     pub profiles: HashMap<String, Profile>,
     pub translation_url: String,
@@ -44,6 +47,25 @@ pub(super) struct Settings {
     pub python: PathBuf,
     pub script: PathBuf,
     pub log: PathBuf,
+}
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(super) enum Engine {
+    GptSoVits,
+    VoxCpm2,
+}
+impl Engine {
+    pub fn id(self) -> &'static str {
+        match self {
+            Self::GptSoVits => "gpt-sovits",
+            Self::VoxCpm2 => "voxcpm2",
+        }
+    }
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::GptSoVits => "GPT-SoVITS",
+            Self::VoxCpm2 => "VoxCPM2",
+        }
+    }
 }
 impl Settings {
     pub fn load(config: &Config) -> Self {
@@ -85,6 +107,11 @@ impl Settings {
             .map(PathBuf::from)
             .unwrap_or_else(|| root.join("tools"));
         Self {
+            engine: if saved["ttsEngine"] == "voxcpm2" {
+                Engine::VoxCpm2
+            } else {
+                Engine::GptSoVits
+            },
             tts_host,
             profiles,
             translation_port,

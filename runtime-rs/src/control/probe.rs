@@ -23,6 +23,20 @@ impl ControlService {
         if index == 3 {
             return self.voice.translation_status().await["ready"] == true;
         }
+        if index == 2 && settings["ttsEngine"] == "voxcpm2" {
+            return self
+                .request(
+                    settings["ttsHost"].as_str().unwrap_or(""),
+                    "/health",
+                    None,
+                    3,
+                )
+                .await
+                .is_ok_and(|(status, data)| {
+                    (200..300).contains(&status)
+                        && data.is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
+                });
+        }
         let (key, path, strict) = match index {
             0 => ("sdHost", "/sdapi/v1/sd-models", false),
             1 => ("comfyHost", "/system_stats", true),
@@ -30,7 +44,15 @@ impl ControlService {
         };
         let host = settings[key].as_str().unwrap_or("");
         match self.request(host, path, None, 3).await {
-            Ok((status, _)) => (200..if strict { 300 } else { 500 }).contains(&status),
+            Ok((status, _)) => {
+                let online = (200..if strict { 300 } else { 500 }).contains(&status);
+                online
+                    && (index != 2
+                        || !self
+                            .request(host, "/health", None, 2)
+                            .await
+                            .is_ok_and(|(_, data)| data.is_some_and(|v| v["engine"] == "VoxCPM2")))
+            }
             Err(_) if index == 2 => self
                 .request(host, "/", None, 3)
                 .await

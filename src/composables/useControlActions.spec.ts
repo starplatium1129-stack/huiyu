@@ -8,6 +8,7 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
   const status = {
     lastStatus: () => ({}), pollStatus: vi.fn(), feedbackText: ref(''),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
+    ttsEngine: ref('voxcpm2'), voiceNeneLora: ref('nene.safetensors'), voiceNatsumeLora: ref('natsume.safetensors'),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
   } as unknown as Parameters<typeof useControlActions>[0]
   let reject!: (error: Error) => void
@@ -18,6 +19,9 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
   const first = actions.saveConfig()
   await actions.saveConfig()
   expect(saveConfig).toHaveBeenCalledTimes(1)
+  expect(saveConfig).toHaveBeenCalledWith(expect.objectContaining({ ttsEngine: 'voxcpm2', voices: expect.objectContaining({
+    nene: expect.objectContaining({ loraWeightsPath: 'nene.safetensors' }), natsume: expect.objectContaining({ loraWeightsPath: 'natsume.safetensors' }),
+  }) }))
   expect(actions.savingConfig.value).toBe(true)
   reject(new Error('network failed'))
   await first
@@ -34,6 +38,7 @@ it('reports saved configuration awaiting restart and does not start sharing with
   const status = {
     lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''),
     sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
+    ttsEngine: ref('gpt-sovits'), voiceNeneLora: ref(''), voiceNatsumeLora: ref(''),
     voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
   } as unknown as Parameters<typeof useControlActions>[0]
   const saveConfig = vi.fn().mockResolvedValue({ ok: true, restartRequired: true, message: '配置已保存，重新启动应用后生效' })

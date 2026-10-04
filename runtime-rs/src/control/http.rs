@@ -243,6 +243,9 @@ pub(super) fn validated_patch(body: Value) -> Result<Value> {
                 result[key] = json!(url.origin().ascii_serialization());
             }
             "voices" if value.is_object() => result[key] = value.clone(),
+            "ttsEngine" if matches!(value.as_str(), Some("voxcpm2" | "gpt-sovits")) => {
+                result[key] = value.clone()
+            }
             "autoStartVoice" if value.is_boolean() => result[key] = value.clone(),
             _ => return Err(ApiError::invalid(format!("不支持的配置字段或类型：{key}"))),
         }

@@ -20,6 +20,7 @@ struct Mock {
     fail_tts: AtomicBool,
     switches: Mutex<Vec<String>>,
     payloads: Mutex<Vec<Value>>,
+    finish_pcm: tokio::sync::Notify,
 }
 fn wave() -> Vec<u8> {
     let mut data = vec![0; 128];
@@ -35,11 +36,33 @@ async fn mock_speech(
     Json(payload): Json<Value>,
 ) -> Response {
     mock.spoken.fetch_add(1, Ordering::SeqCst);
-    mock.payloads.lock().unwrap().push(payload);
+    mock.payloads.lock().unwrap().push(payload.clone());
     if mock.fail_tts.load(Ordering::Relaxed) {
         return (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"error":"RuntimeError: reference audio missing"})),
+        )
+            .into_response();
+    }
+    if payload["media_type"] == "raw" {
+        let stream = futures_util::stream::unfold((0, mock), |(index, mock)| async move {
+            match index {
+                0 => Some((Ok::<_, std::io::Error>(vec![1, 2, 3, 4]), (1, mock))),
+                1 => {
+                    mock.finish_pcm.notified().await;
+                    Some((Ok(vec![5, 6, 7, 8]), (2, mock)))
+                }
+                _ => None,
+            }
+        });
+        return (
+            [
+                ("content-type", "audio/pcm"),
+                ("x-audio-sample-rate", "48000"),
+                ("x-audio-channels", "1"),
+                ("x-audio-format", "pcm_s16le"),
+            ],
+            Body::from_stream(stream),
         )
             .into_response();
     }
@@ -72,11 +95,37 @@ async fn fixture() -> (
     Arc<Mock>,
     CancellationToken,
 ) {
+    fixture_for(config::Engine::GptSoVits).await
+}
+async fn fixture_for(
+    engine: config::Engine,
+) -> (
+    tempfile::TempDir,
+    Arc<VoiceService>,
+    AppState,
+    Arc<Mock>,
+    CancellationToken,
+) {
     let directory = tempfile::tempdir().unwrap();
     let mock = Arc::new(Mock::default());
     let upstream = Router::new()
         .route("/docs", get(|| async { "docs" }))
-        .route("/health", get(|| async { "ok" }))
+        .route(
+            "/health",
+            get(move || async move { Json(json!({"online":true, "engine":engine.label()})) }),
+        )
+        .route(
+            "/prepare",
+            post(
+                |Extension(mock): Extension<Arc<Mock>>, Json(value): Json<Value>| async move {
+                    mock.switches
+                        .lock()
+                        .unwrap()
+                        .push(value["lora_weights_path"].as_str().unwrap().into());
+                    Json(json!({"ok":true}))
+                },
+            ),
+        )
         .route("/tts", post(mock_speech))
         .route("/translate", post(mock_translate))
         .route("/set_sovits_weights", get(weight))
@@ -105,6 +154,7 @@ async fn fixture() -> (
                     },
                     gpt_weights_path: format!("{id}.gpt"),
                     sovits_weights_path: format!("{id}.sovits"),
+                    lora_weights_path: format!("{id}.lora"),
                     ..Default::default()
                 },
             )
@@ -112,6 +162,7 @@ async fn fixture() -> (
         .collect();
     let shutdown = CancellationToken::new();
     let settings = Settings {
+        engine,
         tts_host: format!("http://{address}"),
         translation_url: format!("http://{address}"),
         translation_port: address.port(),
@@ -207,9 +258,101 @@ async fn tts_protocol_shares_audio_fixes_wav_and_keeps_post_queue_until_body_dro
         .unwrap_err();
     assert_eq!(error.status, StatusCode::BAD_GATEWAY);
     assert_eq!(error.code, "TTS_FAILED");
-    assert!(error.message.contains("GPT-SoVITS 生成失败"));
+    assert!(error.message.contains("语音生成失败"));
     assert!(error.message.contains("reference audio missing"));
     assert_eq!(service.queue_status()["running"], false);
+    service.close().await;
+    stop.cancel();
+}
+
+#[tokio::test]
+async fn vox_stream_starts_before_eof_caches_complete_wave_and_discards_cancelled_audio() {
+    let (_directory, service, state, mock, stop) = fixture_for(config::Engine::VoxCpm2).await;
+    let app = router(service.clone()).with_state(state);
+    assert_eq!(service.speech.status().await["streamingPcm"], true);
+    assert_eq!(service.speech.status().await["online"], true);
+    let request = |route: &str, voice: &str, text: &str| {
+        Request::builder()
+            .uri(format!("{route}?voice={voice}&text={text}"))
+            .body(Body::empty())
+            .unwrap()
+    };
+    let response = app
+        .clone()
+        .oneshot(request("/api/tts-stream", "nene", "first"))
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    assert_eq!(response.headers()["x-audio-format"], "pcm_s16le");
+    assert!(
+        response.headers()["access-control-expose-headers"]
+            .to_str()
+            .unwrap()
+            .contains("X-Audio-Format")
+    );
+    let mut body = response.into_body();
+    let first = tokio::time::timeout(std::time::Duration::from_secs(1), body.frame())
+        .await
+        .unwrap()
+        .unwrap()
+        .unwrap();
+    assert_eq!(first.into_data().unwrap(), [1, 2, 3, 4].as_slice());
+    assert_eq!(
+        service.queue_status()["running"],
+        true,
+        "provider is still generating after first PCM"
+    );
+    assert_eq!(mock.payloads.lock().unwrap()[0]["streaming_mode"], true);
+    mock.finish_pcm.notify_one();
+    assert_eq!(
+        body.collect().await.unwrap().to_bytes(),
+        [5, 6, 7, 8].as_slice()
+    );
+    let replay = app
+        .clone()
+        .oneshot(request("/api/tts", "nene", "first"))
+        .await
+        .unwrap();
+    assert_eq!(replay.headers()["x-tts-cache"], "hit");
+    let wave = replay.into_body().collect().await.unwrap().to_bytes();
+    assert_eq!(&wave[..4], b"RIFF");
+    assert_eq!(&wave[44..], &[1, 2, 3, 4, 5, 6, 7, 8]);
+    assert_eq!(
+        mock.spoken.load(Ordering::SeqCst),
+        1,
+        "replay must reuse the completed stream"
+    );
+
+    let response = app
+        .clone()
+        .oneshot(request("/api/tts-stream", "natsume", "cancel"))
+        .await
+        .unwrap();
+    let mut body = response.into_body();
+    body.frame().await.unwrap().unwrap();
+    drop(body);
+    tokio::time::timeout(std::time::Duration::from_secs(1), async {
+        while service.queue_status()["running"] == true {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    let retry = app
+        .oneshot(request("/api/tts-stream", "natsume", "cancel"))
+        .await
+        .unwrap();
+    assert_eq!(retry.status(), StatusCode::OK);
+    assert!(
+        retry.headers().get("x-tts-cache").is_none(),
+        "partial PCM must not become replay audio"
+    );
+    assert_eq!(mock.spoken.load(Ordering::SeqCst), 3);
+    assert_eq!(
+        *mock.switches.lock().unwrap(),
+        ["nene.lora", "natsume.lora"]
+    );
+    drop(retry);
     service.close().await;
     stop.cancel();
 }

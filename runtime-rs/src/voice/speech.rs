@@ -1,5 +1,7 @@
+mod streaming;
+
 use super::{
-    config::Settings,
+    config::{Engine, Settings},
     payload::{Validated, fix_wav},
     queue::{Permit, Queue, Reservation, cancelled},
 };
@@ -7,20 +9,13 @@ use crate::{
     error::{ApiError, Result},
     upstream::LocalUpstream,
 };
-use axum::{
-    body::{Body, Bytes},
-    http::HeaderValue,
-    response::{IntoResponse, Response},
-};
+use axum::{body::Bytes, response::Response};
 use futures_util::StreamExt;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
     collections::{HashMap, VecDeque},
-    sync::{
-        Arc, Mutex,
-        atomic::{AtomicBool, Ordering},
-    },
+    sync::{Arc, Mutex},
     time::Duration,
 };
 use tokio::sync::watch;
@@ -33,6 +28,7 @@ struct Active {
     gpt: String,
     sovits: String,
     voice: String,
+    lora: String,
 }
 #[derive(Default)]
 struct AudioCache {
@@ -46,7 +42,7 @@ pub(super) struct Speech {
     transport: LocalUpstream,
     cancel: CancellationToken,
     active: Mutex<Active>,
-    cache: Mutex<AudioCache>,
+    cache: Arc<Mutex<AudioCache>>,
 }
 impl Speech {
     pub fn new(
@@ -54,34 +50,95 @@ impl Speech {
         transport: LocalUpstream,
         cancel: CancellationToken,
     ) -> Arc<Self> {
+        let queue = Queue::new(settings.engine.id());
         Arc::new(Self {
             settings,
             transport,
             cancel,
-            queue: Queue::new("gpt-sovits"),
+            queue,
             active: Mutex::new(Active::default()),
-            cache: Mutex::new(AudioCache::default()),
+            cache: Arc::new(Mutex::new(AudioCache::default())),
         })
     }
     pub async fn status(&self) -> Value {
-        let online = self
+        let vox = self.settings.engine == Engine::VoxCpm2;
+        let mut online = self
             .transport
             .json(
                 &self.settings.tts_host,
-                "/docs",
+                if vox { "/health" } else { "/docs" },
                 None,
                 Duration::from_millis(1500),
                 1024 * 1024,
                 &self.cancel,
             )
             .await
-            .is_ok_and(|(status, _)| (200..500).contains(&status));
+            .is_ok_and(|(status, data)| {
+                if vox {
+                    (200..300).contains(&status)
+                        && data.is_ok_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
+                } else {
+                    (200..500).contains(&status)
+                }
+            });
+        if online && !vox {
+            online = !self
+                .transport
+                .json(
+                    &self.settings.tts_host,
+                    "/health",
+                    None,
+                    Duration::from_millis(1500),
+                    64 * 1024,
+                    &self.cancel,
+                )
+                .await
+                .is_ok_and(|(_, data)| data.is_ok_and(|v| v["engine"] == "VoxCPM2"));
+        }
         let voice = self.active.lock().unwrap().voice.clone();
-        json!({"online": online, "engine": "GPT-SoVITS", "voices": {
-            "nene": self.settings.profiles.get("nene").is_some_and(|p| p.configured()),
-            "natsume": self.settings.profiles.get("natsume").is_some_and(|p| p.configured())}, "activeVoice": voice, "queue": self.queue.status()})
+        let configured = |id: &str| {
+            self.settings.profiles.get(id).is_some_and(|p| {
+                p.configured()
+                    && (self.settings.engine != Engine::VoxCpm2 || !p.lora_weights_path.is_empty())
+            })
+        };
+        json!({"online": online, "engine": self.settings.engine.label(), "streamingPcm": self.settings.engine == Engine::VoxCpm2,
+            "voices": {"nene": configured("nene"), "natsume": configured("natsume")}, "activeVoice": voice, "queue": self.queue.status()})
     }
     async fn activate(&self, value: &Validated) -> Result<()> {
+        if self.settings.engine == Engine::VoxCpm2 {
+            let same = {
+                let active = self.active.lock().unwrap();
+                active.voice == value.voice && active.lora == value.profile.lora_weights_path
+            };
+            if !same {
+                *self.active.lock().unwrap() = Active::default();
+                let (status, _) = self
+                    .transport
+                    .json(
+                        &self.settings.tts_host,
+                        "/prepare",
+                        Some(&value.payload),
+                        Duration::from_secs(60),
+                        1024 * 1024,
+                        &self.cancel,
+                    )
+                    .await?;
+                if !(200..300).contains(&status) {
+                    return Err(ApiError::new(
+                        502,
+                        "TTS_WEIGHTS_FAILED",
+                        "VoxCPM2 角色声线准备失败",
+                    ));
+                }
+                *self.active.lock().unwrap() = Active {
+                    voice: value.voice.clone(),
+                    lora: value.profile.lora_weights_path.clone(),
+                    ..Default::default()
+                };
+            }
+            return Ok(());
+        }
         let (sovits, gpt) = {
             // Dropping a request future during a partial model switch skips
             // error handlers. Invalidate first so the next voice restores both.
@@ -129,6 +186,7 @@ impl Speech {
             gpt: value.profile.gpt_weights_path.clone(),
             sovits: value.profile.sovits_weights_path.clone(),
             voice: value.voice.clone(),
+            lora: String::new(),
         };
         Ok(())
     }
@@ -139,7 +197,11 @@ impl Speech {
             .await?;
         // A profile without weight paths still needs a real reachability check.
         if self.status().await["online"] != true {
-            return Err(ApiError::new(503, "TTS_UNAVAILABLE", "GPT-SoVITS 尚未运行"));
+            return Err(ApiError::new(
+                503,
+                "TTS_UNAVAILABLE",
+                "当前语音引擎尚未运行",
+            ));
         }
         self.activate(value).await
     }
@@ -157,7 +219,7 @@ impl Speech {
             .json(&value.payload)
             .timeout(Duration::from_secs(180));
         let deadline = tokio::time::Instant::now() + Duration::from_secs(180);
-        let response = tokio::select! { response = request.send() => response.map_err(|_| ApiError::new(502, "TTS_FAILED", "GPT-SoVITS 生成请求失败或超时"))?, _ = self.cancel.cancelled() => return Err(cancelled()) };
+        let response = tokio::select! { response = request.send() => response.map_err(|_| ApiError::new(502, "TTS_FAILED", "语音生成请求失败或超时"))?, _ = self.cancel.cancelled() => return Err(cancelled()) };
         if !response.status().is_success() {
             let status = if response.status().is_client_error() {
                 response.status().as_u16()
@@ -187,7 +249,7 @@ impl Speech {
             return Err(ApiError::new(
                 status,
                 "TTS_FAILED",
-                crate::upstream::diagnostic_message(&detail, "GPT-SoVITS 生成失败"),
+                crate::upstream::diagnostic_message(&detail, "语音生成失败"),
             ));
         }
         let mime = response
@@ -205,89 +267,10 @@ impl Speech {
         Ok((response, permit, deadline))
     }
     pub async fn stream(&self, value: Validated) -> Result<Response> {
-        let (response, permit, deadline) = self.upstream(&value, self.queue.reserve()?).await?;
-        let mime = response
-            .headers()
-            .get("content-type")
-            .cloned()
-            .unwrap_or(HeaderValue::from_static("audio/wav"));
-        let wait = permit.wait_ms;
-        let cancel = self.cancel.child_token();
-        let body_cancel = cancel.clone().drop_guard();
-        let (send, receive) = tokio::sync::mpsc::channel(4);
-        let complete = Arc::new(AtomicBool::new(false));
-        let producer_complete = complete.clone();
-        // A stalled listener must not keep the GPU queue forever: the bounded
-        // producer enforces the same deadline while blocked on downstream flow.
-        tokio::spawn(async move {
-            let _permit = permit;
-            let mut upstream = response.bytes_stream();
-            loop {
-                let chunk = tokio::select! {
-                    biased;
-                    _ = cancel.cancelled() => break,
-                    _ = tokio::time::sleep_until(deadline) => {
-                        let _ = send.try_send(Err(std::io::Error::new(std::io::ErrorKind::TimedOut, "Audio response timed out")));
-                        break;
-                    },
-                    chunk = upstream.next() => chunk,
-                };
-                let Some(chunk) = chunk else {
-                    producer_complete.store(true, Ordering::Release);
-                    break;
-                };
-                let chunk = chunk.map_err(std::io::Error::other);
-                let failed = chunk.is_err();
-                let sent = tokio::select! {
-                    biased;
-                    _ = cancel.cancelled() => false,
-                    _ = tokio::time::sleep_until(deadline) => false,
-                    result = send.send(chunk) => result.is_ok(),
-                };
-                if failed || !sent {
-                    break;
-                }
-            }
-        });
-        let stream = futures_util::stream::unfold(
-            (receive, body_cancel, complete, false),
-            |(mut receive, cancel, complete, ended)| async move {
-                if let Some(chunk) = receive.recv().await {
-                    Some((chunk, (receive, cancel, complete, ended)))
-                } else if !ended && !complete.load(Ordering::Acquire) {
-                    Some((
-                        Err(std::io::Error::new(
-                            std::io::ErrorKind::UnexpectedEof,
-                            "Audio stream was interrupted",
-                        )),
-                        (receive, cancel, complete, true),
-                    ))
-                } else {
-                    None
-                }
-            },
-        );
-        let mut response = Body::from_stream(stream).into_response();
-        response.headers_mut().insert("content-type", mime);
-        response
-            .headers_mut()
-            .insert("x-voice-queue-wait", wait.to_string().parse().unwrap());
-        response
-            .headers_mut()
-            .insert("x-accel-buffering", HeaderValue::from_static("no"));
-        Ok(response)
+        self.stream_inner(value, None).await
     }
     pub async fn buffered(self: &Arc<Self>, value: Validated) -> Result<(Bytes, bool)> {
-        let key = hex::encode(Sha256::digest(
-            serde_json::to_vec(&json!([
-                self.settings.tts_host,
-                value.voice,
-                value.profile.gpt_weights_path,
-                value.profile.sovits_weights_path,
-                value.payload
-            ]))
-            .unwrap(),
-        ));
+        let key = self.cache_key(&value);
         let (mut receiver, hit) = {
             let mut cache = self.cache.lock().unwrap();
             if let Some((_, bytes)) = cache.entries.iter().find(|(cached, _)| *cached == key) {
@@ -300,10 +283,7 @@ impl Speech {
                 let (send, receiver) = watch::channel(None);
                 cache.flights.insert(key.clone(), receiver.clone());
                 let speech = self.clone();
-                // Preserve routes/voice.ts: shared GET synthesis outlives every
-                // listener to populate replay cache, bounded by the 180s upstream
-                // deadline and shutdown cancellation. Listener-count cancellation
-                // would change retry/replay semantics and needs a product decision.
+                // Legacy whole-clip GET retains its replay/in-flight contract.
                 tokio::spawn(async move {
                     let result = speech.collect(value, reservation).await;
                     if let Ok(bytes) = &result {
@@ -327,12 +307,25 @@ impl Speech {
             receiver.changed().await.map_err(|_| cancelled())?;
         }
     }
+    fn cache_key(&self, value: &Validated) -> String {
+        hex::encode(Sha256::digest(
+            serde_json::to_vec(&json!([
+                self.settings.tts_host,
+                value.voice,
+                value.profile.gpt_weights_path,
+                value.profile.sovits_weights_path,
+                value.payload
+            ]))
+            .unwrap(),
+        ))
+    }
     async fn collect(&self, value: Validated, reservation: Reservation) -> Result<Bytes> {
-        let (response, _permit, _deadline) = self.upstream(&value, reservation).await?;
+        let (response, _permit, deadline) = self.upstream(&value, reservation).await?;
         let mut stream = response.bytes_stream();
         let mut bytes = Vec::new();
         loop {
-            let chunk = tokio::select! { chunk = stream.next() => chunk, _ = self.cancel.cancelled() => return Err(cancelled()) };
+            let chunk = tokio::select! { chunk = stream.next() => chunk, _ = self.cancel.cancelled() => return Err(cancelled()),
+            _ = tokio::time::sleep_until(deadline) => return Err(ApiError::new(504, "TTS_TIMEOUT", "语音音频传输超时")) };
             let Some(chunk) = chunk else {
                 break;
             };
@@ -353,10 +346,13 @@ impl Speech {
         Ok(Bytes::from(bytes))
     }
     fn remember(&self, key: String, bytes: Bytes) {
-        let mut cache = self.cache.lock().unwrap();
         if self.cancel.is_cancelled() {
             return;
         }
+        Self::remember_into(&self.cache, key, bytes);
+    }
+    fn remember_into(store: &Mutex<AudioCache>, key: String, bytes: Bytes) {
+        let mut cache = store.lock().unwrap();
         cache.bytes += bytes.len();
         cache.entries.push_back((key, bytes));
         while cache.entries.len() > 60 || cache.bytes > 128 * 1024 * 1024 {

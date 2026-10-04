@@ -298,6 +298,16 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库（首次使用会初始化）；record/history 读取完整记录与历史，character 返回含修订号的整位角色快照。query 支持排序、分页和带时区的创建时间范围；createdAt 仅允许以有来源的时间补录空值。patch/import 默认预览，--apply 写入；export --out 显式导出逐条项目快照，--character / --record 可重复选择并合并到既有快照，保留范围外内容；check 检查结构与关联，colors 复用原生配色检查。--root 默认当前项目，--runtime-root 必须显式指定，命令需要 Rust/Cargo。check:rewrite 可直接读记录快照及编写前 baseline-file，按角色/ID/SFW 选测并用 compiled-out 输出双引擎文本，不调用模型。权威边界和操作格式见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
+### 角色语音引擎
+
+`npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost http://127.0.0.1:9880 -Engine voxcpm2` 默认只探测状态。显式 `-Action Start` 加载已有 VoxCPM2 基座和角色 LoRA，写入 PID/日志；`-Action Stop` 只停止本应用启动的 VoxCPM2。GPT-SoVITS 使用 `-Engine gpt-sovits`，沿用 AI/Voice 的启停脚本。入口不下载模型，也不卸载绘图服务。
+
+控制室保存 `ttsEngine` 与角色 `loraWeightsPath`、参考音频和原文，重启应用后生效；切换引擎前先停止原服务。VoxCPM2 默认基座位于 AI/Voice/models/pretrained/VoxCPM2，环境位于 AI/VoxCPM-env。宁宁和夏目使用各自 LoRA，单个基座依次切换，避免同时驻留两份模型。
+
+本机 PyTorch 2.7.1 + CUDA 12.8 使用 `triton-windows==3.3.1.post21` 启用模型官方 `torch.compile` 加速，版本对应见 [Triton Windows 文档](https://github.com/triton-lang/triton-windows#3-pytorch)。编译线程限为 1；首次预热会生成 AI/Voice/cache/voxcpm2 缓存，启动入口等待上限为 360 秒，后续复用缓存。无需更改 LoRA、参考音频或 10 步采样来加速。
+
+聊天通过 `/api/tts-stream` 接收 48kHz 单声道 PCM 分片，第一片即可播放；下一句在当前句播放时预取。完整句保存为 WAV 供重播，取消的半句不进入缓存；`/api/tts` 保留整句播放与工作台变速。首句仍需积累足够台词，中文还需日语翻译；分片传输不代表零延迟。真实音色、首片延迟和显存占用需在用户绘图结束后另测。
+
 ### Rust 运行时迁移
 
 产品后端为 `runtime-rs/`，Node 只负责前端/开发工具和旧行为对照。先 `npm run build:runtime` 准备工作流及 Node oracle，再运行：

@@ -558,6 +558,17 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     opts: '[-UseSageAttention] 显式启用已安装的可选 SageAttention；也可由启动进程设置 AICS_COMFY_USE_SAGE_ATTENTION=1',
     run: { nature: ['service'], machine: ['windows'], switches: { '-UseSageAttention': ['service'] }, resume: 'na', evidence: 'scripts/maintenance/start-comfyui.ps1:1', unknown: [] },
   },
+  'voice:service': {
+    desc: '查看本机语音状态；显式 -Action Start/Stop 管理当前引擎',
+    cmd: ['powershell.exe', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/lib/managed-voice.ps1'],
+    required: ['-AIWorkspaceRoot', '-RuntimeRoot', '-TtsHost'],
+    opts: '-AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost <本机地址> [-Engine voxcpm2|gpt-sovits] [-Action Status|Start|Stop]',
+    docs: 'docs/workflow.md',
+    needs: 'VoxCPM2 已有 Python 环境、基座与角色 LoRA；runtime/config.json 保存 voices。不会下载模型。',
+    run: { nature: ['read-only'], machine: ['windows'], switches: { '-Action': ['service'], '-Engine': ['read-only'] }, resume: 'na',
+      evidence: 'scripts/lib/managed-voice.ps1; tools/voxcpm-server.py', unknown: ['真实角色发音与当时可用显存需另验'],
+      notes: ['默认仅状态探测；Start 加载本机权重并写 PID/日志，Stop 释放本应用的 VoxCPM2。GPT 复用已有 Voice 启停脚本。'] },
+  },
   // ── test: 套件入口 ────────────────────────────────────────────────
   'check:domain-types': {
     desc: '检查公共类型、结果快照与入册用例的间接依赖，报告类型边、运行候选边及未知导入',

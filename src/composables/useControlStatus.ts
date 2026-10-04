@@ -40,12 +40,16 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const sdHost = ref('http://127.0.0.1:7860')
   const comfyHost = ref('http://127.0.0.1:8188')
   const ttsHost = ref('http://127.0.0.1:9880')
+  const ttsEngine = ref('gpt-sovits')
+  const activeVoiceEngine = ref('GPT-SoVITS')
+  const voiceNeneLora = ref('')
+  const voiceNatsumeLora = ref('')
   const voiceNeneRef = ref('')
   const voiceNenePrompt = ref('')
   const voiceNatsumeRef = ref('')
   const voiceNatsumePrompt = ref('')
   // Polling updates clean fields; moving focus must never discard an unsaved draft.
-  const configFields = [sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt]
+  const configFields = [sdHost, comfyHost, ttsHost, ttsEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt]
   const syncedConfig = new Map(configFields.map(field => [field, field.value]))
   function syncConfigField(field: Ref<string>, incoming: string | undefined) {
     if (incoming === undefined) return
@@ -132,8 +136,8 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   })
   const voiceConfiguredCount = computed(() => {
     let n = 0
-    if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim()) n += 1
-    if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim()) n += 1
+    if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNeneLora.value.trim())) n += 1
+    if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNatsumeLora.value.trim())) n += 1
     return n
   })
   const shareState = computed(() => tunnelActive.value ? 'on' : (tunnelStatus.value === 'disabled' ? 'off' : 'warn'))
@@ -177,6 +181,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     sdOnline.value = !!data.sdOnline
     comfyOnline.value = !!data.comfyOnline
     ttsOnline.value = !!data.ttsOnline
+    activeVoiceEngine.value = data.ttsEngine === 'voxcpm2' ? 'VoxCPM2' : 'GPT-SoVITS'
     ollamaOnline.value = !!data.ollamaOnline
     webuiManaged.value = !!data.webuiManaged
     comfyManaged.value = !!data.comfyManaged
@@ -208,11 +213,14 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     syncConfigField(sdHost, displayedConfig.sdHost)
     syncConfigField(comfyHost, displayedConfig.comfyHost)
     syncConfigField(ttsHost, displayedConfig.ttsHost)
+    syncConfigField(ttsEngine, displayedConfig.ttsEngine ?? 'gpt-sovits')
     const voices = displayedConfig.voices || {}
     syncConfigField(voiceNeneRef, voices.nene?.refAudioPath)
     syncConfigField(voiceNenePrompt, voices.nene?.promptText)
+    syncConfigField(voiceNeneLora, voices.nene?.loraWeightsPath ?? '')
     syncConfigField(voiceNatsumeRef, voices.natsume?.refAudioPath)
     syncConfigField(voiceNatsumePrompt, voices.natsume?.promptText)
+    syncConfigField(voiceNatsumeLora, voices.natsume?.loraWeightsPath ?? '')
     if (!savingAutoStartVoice.value && (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox')) {
       autoStartVoice.value = !!data.autoStartVoice
     }
@@ -232,7 +240,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     } else if (imageOnline) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '画面创作就绪'
-      actionNote.value = '可正常出图。需要声线时启动 GPT-SoVITS。'
+      actionNote.value = '可正常出图。需要角色声线时启动语音服务。'
     } else if (data.ttsOnline) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '语音已连接 · 等待绘图引擎'
@@ -368,7 +376,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   return {
     tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, serviceChecking, statusLoaded, statusError, scripts,
-    sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
+    sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,

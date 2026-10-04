@@ -83,9 +83,19 @@ impl ControlService {
         if saved["voices"].is_object() {
             target["voices"] = saved["voices"].clone();
         }
-        let restart = ["sdHost", "comfyHost", "ttsHost", "ollamaHost", "voices"]
-            .iter()
-            .any(|key| target[*key] != result[*key]);
+        if saved["ttsEngine"].is_string() {
+            target["ttsEngine"] = saved["ttsEngine"].clone();
+        }
+        let restart = [
+            "sdHost",
+            "comfyHost",
+            "ttsHost",
+            "ttsEngine",
+            "ollamaHost",
+            "voices",
+        ]
+        .iter()
+        .any(|key| target[*key] != result[*key]);
         result["savedConfig"] = target;
         result["restartRequired"] = json!(restart);
         result["message"] = json!(if restart {

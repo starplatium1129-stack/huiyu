@@ -76,6 +76,7 @@ pub fn router(service: Arc<VoiceService>) -> Router<AppState> {
             post(prepare).layer(DefaultBodyLimit::max(4 * 1024)),
         )
         .route("/api/tts", get(get_audio).post(post_audio))
+        .route("/api/tts-stream", get(get_pcm))
         .layer(DefaultBodyLimit::max(32 * 1024))
         .layer(Extension(service))
 }
@@ -175,6 +176,24 @@ async fn get_audio(
         bytes,
     )
         .into_response())
+}
+async fn get_pcm(
+    State(state): State<AppState>,
+    Extension(service): Extension<Arc<VoiceService>>,
+    Query(query): Query<HashMap<String, String>>,
+) -> Result<Response> {
+    service.running(&state)?;
+    let input = serde_json::to_value(query).expect("String query serializes");
+    let value = payload::validate(&input, &service.speech.settings)?;
+    let mut response = service.speech.stream_pcm(value).await?;
+    response
+        .headers_mut()
+        .insert("cache-control", HeaderValue::from_static("no-store"));
+    response.headers_mut().insert(
+        "access-control-expose-headers",
+        HeaderValue::from_static("X-Audio-Sample-Rate, X-Audio-Channels, X-Audio-Format"),
+    );
+    Ok(response)
 }
 
 #[cfg(test)]

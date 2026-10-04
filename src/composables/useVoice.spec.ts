@@ -93,3 +93,43 @@ it('a mid-playback error never restarts the same sentence, and the next turn can
   await speak('next')
   expect(audios).toHaveLength(2)
 })
+
+it('prefetches only the next PCM sentence during playback and cancels both requests on stop', async () => {
+  const requests: Array<{ signal: AbortSignal; input: ReadableStreamDefaultController<Uint8Array> }> = []
+  const sources: Array<{ start: ReturnType<typeof vi.fn>; stop: ReturnType<typeof vi.fn> }> = []
+  vi.stubGlobal('fetch', vi.fn((_url, { signal }) => {
+    const body = new ReadableStream<Uint8Array>({ start(input) {
+      requests.push({ signal, input })
+      signal.addEventListener('abort', () => input.error(new DOMException('aborted', 'AbortError')))
+    } })
+    return Promise.resolve(new Response(body, { headers: {
+      'X-Audio-Sample-Rate': '48000', 'X-Audio-Channels': '1', 'X-Audio-Format': 'pcm_s16le',
+    } }))
+  }))
+  vi.stubGlobal('AudioContext', class {
+    state = 'running'; currentTime = 0; destination = {}
+    close = vi.fn().mockResolvedValue(undefined)
+    createAnalyser = () => ({ connect: vi.fn(), getByteTimeDomainData: vi.fn() })
+    createGain = () => ({ gain: { value: 1 }, connect: vi.fn(), disconnect: vi.fn() })
+    createBuffer = (_channels: number, length: number, rate: number) => ({ duration: length / rate, getChannelData: () => new Float32Array(length) })
+    createBufferSource = () => {
+      const source = { start: vi.fn(), stop: vi.fn(), connect: vi.fn(), disconnect: vi.fn(), buffer: null, onended: null }
+      sources.push(source); return source
+    }
+  })
+  api.getStatus.mockResolvedValue({ online: true, voices: { nene: true }, streamingPcm: true })
+  const { onSpeaking } = await setup()
+  voice.startTurn({ mid: 'streaming', voice: 'nene', character: 'nene' })
+  voice.append('今天我们一起去公园散步吧。然后再去买一点喜欢的甜点。最后坐下来一起喝杯热茶吧。')
+  voice.finishTurn(); await flush(); await flush()
+  expect(requests).toHaveLength(2)
+  expect(voice.hasAudio('streaming')).toBe(false)
+  requests[0]!.input.enqueue(new Uint8Array([0, 64])); await flush()
+  expect(sources[0]!.start).toHaveBeenCalled()
+  expect(onSpeaking).toHaveBeenCalledWith(true, 'streaming')
+  voice.stop({ preserveMessageAudio: true }); await flush()
+  expect(requests.every(request => request.signal.aborted)).toBe(true)
+  expect(sources[0]!.stop).toHaveBeenCalled()
+  expect(voice.hasAudio('streaming')).toBe(false)
+  expect(voice.isActive()).toBe(false)
+})

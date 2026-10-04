@@ -60,9 +60,10 @@ export function useControlActions(
       sdHost: status.sdHost.value.trim(),
       comfyHost: status.comfyHost.value.trim(),
       ttsHost: status.ttsHost.value.trim(),
+      ttsEngine: status.ttsEngine.value === 'voxcpm2' ? 'voxcpm2' as const : 'gpt-sovits' as const,
       voices: {
-        nene: { ...neneBase, refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
-        natsume: { ...natBase, refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+        nene: { ...neneBase, loraWeightsPath: status.voiceNeneLora.value.trim(), refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+        natsume: { ...natBase, loraWeightsPath: status.voiceNatsumeLora.value.trim(), refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
       },
     }
   }
