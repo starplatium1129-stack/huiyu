@@ -16,6 +16,10 @@ mod tests;
 pub use http::{overlay, router};
 pub use manager::Service;
 
+pub(crate) fn check_available_space(path: &std::path::Path, needed: u64) -> Result<()> {
+    fs::space(path, needed)
+}
+
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
