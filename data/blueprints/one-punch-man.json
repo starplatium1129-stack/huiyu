@@ -182,9 +182,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -530,9 +528,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -857,7 +853,7 @@
         "green_aura",
         "black_dress"
       ],
-      "promptProse": "Tatsumaki from One-Punch Man hovers using green telekinetic aura to straddle your lap in her penthouse living room during a raging storm. Her iconic black dress with high leg slits is ripped open down her chest, freeing her petite, firm breasts with bright pink nipples that heave as she forces her hips down with supernatural gravity. Her emerald curly bob flutters wildly, huge green eyes glaring with ferocious tsundere fury and heavy tears as she fiercely forbids you from dismissing her as small. Vertical low-angle cowgirl shot, green psychic lightning crackling across bare pale skin and storm clouds outside, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Tatsumaki from One-Punch Man hovers using green telekinetic aura to straddle your lap in her penthouse living room during a raging storm. Her iconic black dress with high leg slits is ripped open down her chest, freeing her petite, firm breasts with bright pink nipples that heave as she forces her hips down with supernatural gravity. Her emerald curly bob flutters wildly, huge green eyes glaring with ferocious tsundere fury and heavy tears as she fiercely forbids you from dismissing her as small. Vertical low-angle cowgirl shot, green psychic lightning crackling across bare pale skin and storm clouds outside, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -887,9 +883,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -914,7 +908,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -946,11 +940,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tatsumaki from One-Punch Man hovers using green telekinetic aura to straddle your lap in her penthouse living room during a raging storm. Her iconic black dress with high leg slits is ripped open down her chest, freeing her petite, firm breasts with bright pink nipples that heave as she forces her hips down with supernatural gravity. Her emerald curly bob flutters wildly, huge green eyes glaring with ferocious tsundere fury and heavy tears as she fiercely forbids you from dismissing her as small. Vertical low-angle cowgirl shot, green psychic lightning crackling across bare pale skin and storm clouds outside, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Tatsumaki from One-Punch Man hovers using green telekinetic aura to straddle your lap in her penthouse living room during a raging storm. Her iconic black dress with high leg slits is ripped open down her chest, freeing her petite, firm breasts with bright pink nipples that heave as she forces her hips down with supernatural gravity. Her emerald curly bob flutters wildly, huge green eyes glaring with ferocious tsundere fury and heavy tears as she fiercely forbids you from dismissing her as small. Vertical low-angle cowgirl shot, green psychic lightning crackling across bare pale skin and storm clouds outside, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -983,7 +975,7 @@
         "green_aura",
         "bathtub"
       ],
-      "promptProse": "Tatsumaki floats levitated inside her luxury marble jacuzzi, glowing emerald psychic aura causing the bathwater to swirl around her naked limbs like ribbons. Her small, perfectly sculpted breasts bob in the swirling currents, rosy nipples taut as her hand violently rubs into her dripping pink center beneath the waves. Her curly green hair defies gravity, her haughty emerald eyes rolling upward in helpless, shuddering climaxes as she curses her traitorous flesh. Sensual vertical framing, green psychic sparks dancing on turbulent water and smooth pale curves, detailed penthouse bath background, depth of field, solo 1girl, no text.",
+      "promptProse": "Tatsumaki floats levitated inside her luxury marble jacuzzi, glowing emerald psychic aura causing the bathwater to swirl around her naked limbs like ribbons. Her small, perfectly sculpted breasts bob in the swirling currents, rosy nipples taut as her hand violently rubs into her dripping pink center beneath the waves. Her curly green hair defies gravity, her haughty emerald eyes rolling upward in helpless, shuddering climaxes as she curses her traitorous flesh. Sensual vertical framing, green psychic sparks dancing on turbulent water and smooth pale curves, detailed penthouse bath background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1010,9 +1002,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1037,7 +1027,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1066,11 +1056,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tatsumaki floats levitated inside her luxury marble jacuzzi, glowing emerald psychic aura causing the bathwater to swirl around her naked limbs like ribbons. Her small, perfectly sculpted breasts bob in the swirling currents, rosy nipples taut as her hand violently rubs into her dripping pink center beneath the waves. Her curly green hair defies gravity, her haughty emerald eyes rolling upward in helpless, shuddering climaxes as she curses her traitorous flesh. Sensual vertical framing, green psychic sparks dancing on turbulent water and smooth pale curves, detailed penthouse bath background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Tatsumaki floats levitated inside her luxury marble jacuzzi, glowing emerald psychic aura causing the bathwater to swirl around her naked limbs like ribbons. Her small, perfectly sculpted breasts bob in the swirling currents, rosy nipples taut as her hand violently rubs into her dripping pink center beneath the waves. Her curly green hair defies gravity, her haughty emerald eyes rolling upward in helpless, shuddering climaxes as she curses her traitorous flesh. Sensual vertical framing, green psychic sparks dancing on turbulent water and smooth pale curves, detailed penthouse bath background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1103,7 +1091,7 @@
         "torn_clothes",
         "open_clothes"
       ],
-      "promptProse": "Tatsumaki leans forward against the shattered glass frame of an observation deck, her signature black gown shredded up to her armpits by residual telekinetic windstorms. The ripped fabric exposes her flat tummy, pert breasts, and her smooth, bottomless hips with nothing underneath, completely showcasing her peach bottom and dripping cleft. Glancing back over her shoulder with glowing green eyes and blazing red cheeks, her emerald curls whip around her face as she shrieks threats of utter obliteration. Cinematic horizontal composition, golden sunset over smoking cityscape casting long shadows across bare petite contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Tatsumaki leans forward against the shattered glass frame of an observation deck, her signature black gown shredded up to her armpits by residual telekinetic windstorms. The ripped fabric exposes her flat tummy, pert breasts, and her smooth, bottomless hips with nothing underneath, completely showcasing her peach bottom and dripping cleft. Glancing back over her shoulder with glowing green eyes and blazing red cheeks, her emerald curls whip around her face as she shrieks threats of utter obliteration. Cinematic horizontal composition, golden sunset over smoking cityscape casting long shadows across bare petite contours, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1134,9 +1122,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1161,7 +1147,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1194,11 +1180,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tatsumaki leans forward against the shattered glass frame of an observation deck, her signature black gown shredded up to her armpits by residual telekinetic windstorms. The ripped fabric exposes her flat tummy, pert breasts, and her smooth, bottomless hips with nothing underneath, completely showcasing her peach bottom and dripping cleft. Glancing back over her shoulder with glowing green eyes and blazing red cheeks, her emerald curls whip around her face as she shrieks threats of utter obliteration. Cinematic horizontal composition, golden sunset over smoking cityscape casting long shadows across bare petite contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Tatsumaki leans forward against the shattered glass frame of an observation deck, her signature black gown shredded up to her armpits by residual telekinetic windstorms. The ripped fabric exposes her flat tummy, pert breasts, and her smooth, bottomless hips with nothing underneath, completely showcasing her peach bottom and dripping cleft. Glancing back over her shoulder with glowing green eyes and blazing red cheeks, her emerald curls whip around her face as she shrieks threats of utter obliteration. Cinematic horizontal composition, golden sunset over smoking cityscape casting long shadows across bare petite contours, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1231,7 +1215,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Crushing the mattress beneath a localized field of green telekinesis, Tatsumaki lies completely naked across her oversized king bed in the dead of night. Her slender thighs are spread wide as two fingers pump urgently into her drenched, quivering depths, her tiny arched body wracked by violent tremors of overdue pleasure. Her emerald curls fan across the silk, genuine tears of lonely exhaustion flowing down her soft cheeks as tiny, broken sobs slip past her clenched teeth. Intimate vertical framing, green aura illuminating tears and trembling porcelain curves, detailed luxury bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Crushing the mattress beneath a localized field of green telekinesis, Tatsumaki lies completely naked across her oversized king bed in the dead of night. Her slender thighs are spread wide as two fingers pump urgently into her drenched, quivering depths, her tiny arched body wracked by violent tremors of overdue pleasure. Her emerald curls fan across the silk, genuine tears of lonely exhaustion flowing down her soft cheeks as tiny, broken sobs slip past her clenched teeth. Intimate vertical framing, green aura illuminating tears and trembling porcelain curves, detailed luxury bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1261,9 +1245,7 @@
         "curly_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1288,7 +1270,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1320,11 +1302,9 @@
         "curly_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Crushing the mattress beneath a localized field of green telekinesis, Tatsumaki lies completely naked across her oversized king bed in the dead of night. Her slender thighs are spread wide as two fingers pump urgently into her drenched, quivering depths, her tiny arched body wracked by violent tremors of overdue pleasure. Her emerald curls fan across the silk, genuine tears of lonely exhaustion flowing down her soft cheeks as tiny, broken sobs slip past her clenched teeth. Intimate vertical framing, green aura illuminating tears and trembling porcelain curves, detailed luxury bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Crushing the mattress beneath a localized field of green telekinesis, Tatsumaki lies completely naked across her oversized king bed in the dead of night. Her slender thighs are spread wide as two fingers pump urgently into her drenched, quivering depths, her tiny arched body wracked by violent tremors of overdue pleasure. Her emerald curls fan across the silk, genuine tears of lonely exhaustion flowing down her soft cheeks as tiny, broken sobs slip past her clenched teeth. Intimate vertical framing, green aura illuminating tears and trembling porcelain curves, detailed luxury bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1357,7 +1337,7 @@
         "green_dress",
         "open_clothes"
       ],
-      "promptProse": "Fubuki (Hellish Blizzard) from One-Punch Man straddles your lap on the leather sofa of the Blizzard Group headquarters at midnight, her white fur-trimmed coat draped over her bare shoulders. Her skintight dark-green gown is pulled down to her waist, freeing immense, mature breasts adorned by a pearl necklace that swings wildly with her commanding, sensual hip rolls. Her dark green bob frames a face of aristocratic elegance, emerald eyes smoldering with a mix of queenly superiority and breathless submission. Vertical low-angle cowgirl shot, fireplace embers and city night lights reflecting across lavish curves, detailed office background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Fubuki (Hellish Blizzard) from One-Punch Man straddles your lap on the leather sofa of the Blizzard Group headquarters at midnight, her white fur-trimmed coat draped over her bare shoulders. Her skintight dark-green gown is pulled down to her waist, freeing immense, mature breasts adorned by a pearl necklace that swings wildly with her commanding, sensual hip rolls. Her dark green bob frames a face of aristocratic elegance, emerald eyes smoldering with a mix of queenly superiority and breathless submission. Vertical low-angle cowgirl shot, fireplace embers and city night lights reflecting across lavish curves, detailed office background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1385,9 +1365,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1412,7 +1390,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1442,11 +1420,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Fubuki (Hellish Blizzard) from One-Punch Man straddles your lap on the leather sofa of the Blizzard Group headquarters at midnight, her white fur-trimmed coat draped over her bare shoulders. Her skintight dark-green gown is pulled down to her waist, freeing immense, mature breasts adorned by a pearl necklace that swings wildly with her commanding, sensual hip rolls. Her dark green bob frames a face of aristocratic elegance, emerald eyes smoldering with a mix of queenly superiority and breathless submission. Vertical low-angle cowgirl shot, fireplace embers and city night lights reflecting across lavish curves, detailed office background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Fubuki (Hellish Blizzard) from One-Punch Man straddles your lap on the leather sofa of the Blizzard Group headquarters at midnight, her white fur-trimmed coat draped over her bare shoulders. Her skintight dark-green gown is pulled down to her waist, freeing immense, mature breasts adorned by a pearl necklace that swings wildly with her commanding, sensual hip rolls. Her dark green bob frames a face of aristocratic elegance, emerald eyes smoldering with a mix of queenly superiority and breathless submission. Vertical low-angle cowgirl shot, fireplace embers and city night lights reflecting across lavish curves, detailed office background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1479,7 +1455,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Fubuki reclines across the sunken white marble steps of her private roman bath, champagne glass resting nearby among drifting rose petals. Her black lace nightdress is drenched clinging like liquid shadow over her voluptuous hourglass silhouette and prominent dark nipples. Her hand glides beneath the scented surface into her hot, slick folds, her emerald eyes half-lidded in bittersweet pleasure as she seeks refuge from her sister's overwhelming shadow. Sensual vertical framing, golden chandelier light sparkling through scented steam onto wet mature curves, detailed luxury bath background, depth of field, solo 1girl, no text.",
+      "promptProse": "Fubuki reclines across the sunken white marble steps of her private roman bath, champagne glass resting nearby among drifting rose petals. Her black lace nightdress is drenched clinging like liquid shadow over her voluptuous hourglass silhouette and prominent dark nipples. Her hand glides beneath the scented surface into her hot, slick folds, her emerald eyes half-lidded in bittersweet pleasure as she seeks refuge from her sister's overwhelming shadow. Sensual vertical framing, golden chandelier light sparkling through scented steam onto wet mature curves, detailed luxury bath background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1504,9 +1480,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1531,7 +1505,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1558,11 +1532,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Fubuki reclines across the sunken white marble steps of her private roman bath, champagne glass resting nearby among drifting rose petals. Her black lace nightdress is drenched clinging like liquid shadow over her voluptuous hourglass silhouette and prominent dark nipples. Her hand glides beneath the scented surface into her hot, slick folds, her emerald eyes half-lidded in bittersweet pleasure as she seeks refuge from her sister's overwhelming shadow. Sensual vertical framing, golden chandelier light sparkling through scented steam onto wet mature curves, detailed luxury bath background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Fubuki reclines across the sunken white marble steps of her private roman bath, champagne glass resting nearby among drifting rose petals. Her black lace nightdress is drenched clinging like liquid shadow over her voluptuous hourglass silhouette and prominent dark nipples. Her hand glides beneath the scented surface into her hot, slick folds, her emerald eyes half-lidded in bittersweet pleasure as she seeks refuge from her sister's overwhelming shadow. Sensual vertical framing, golden chandelier light sparkling through scented steam onto wet mature curves, detailed luxury bath background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1595,7 +1567,7 @@
         "torn_clothes",
         "open_back"
       ],
-      "promptProse": "Fubuki leans forward over an ornate vanity table inside a charity gala VIP lounge, her skintight emerald velvet mermaid dress having burst its rear zipper under the pressure of her voluptuous hips. The gown hangs completely open down her smooth, arched back, forcing her colossal breasts into an overwhelming swell above the plunging neckline. Glancing back over her shoulder with an aristocratic scowl and burning red cheeks, she commands silence with haughty desperation. Cinematic horizontal framing, Hollywood vanity lights reflecting off silk velvet and bare mature skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Fubuki leans forward over an ornate vanity table inside a charity gala VIP lounge, her skintight emerald velvet mermaid dress having burst its rear zipper under the pressure of her voluptuous hips. The gown hangs completely open down her smooth, arched back, forcing her colossal breasts into an overwhelming swell above the plunging neckline. Glancing back over her shoulder with an aristocratic scowl and burning red cheeks, she commands silence with haughty desperation. Cinematic horizontal framing, Hollywood vanity lights reflecting off silk velvet and bare mature skin, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1625,9 +1597,7 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1652,7 +1622,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1684,11 +1654,9 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Fubuki leans forward over an ornate vanity table inside a charity gala VIP lounge, her skintight emerald velvet mermaid dress having burst its rear zipper under the pressure of her voluptuous hips. The gown hangs completely open down her smooth, arched back, forcing her colossal breasts into an overwhelming swell above the plunging neckline. Glancing back over her shoulder with an aristocratic scowl and burning red cheeks, she commands silence with haughty desperation. Cinematic horizontal framing, Hollywood vanity lights reflecting off silk velvet and bare mature skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Fubuki leans forward over an ornate vanity table inside a charity gala VIP lounge, her skintight emerald velvet mermaid dress having burst its rear zipper under the pressure of her voluptuous hips. The gown hangs completely open down her smooth, arched back, forcing her colossal breasts into an overwhelming swell above the plunging neckline. Glancing back over her shoulder with an aristocratic scowl and burning red cheeks, she commands silence with haughty desperation. Cinematic horizontal framing, Hollywood vanity lights reflecting off silk velvet and bare mature skin, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1721,7 +1689,7 @@
         "bare_breasts",
         "huge_breasts"
       ],
-      "promptProse": "Sprawled naked across emerald-green velvet sheets in her penthouse sanctuary, Fubuki casts away all leadership burdens. Her lush thighs are spread wide as two fingers pump urgently into her drenched, swollen core, her mature voluptuous body arching off the mattress in magnificent, shuddering tremors. Her dark-green bob frames flushed cheeks, tears of sweet emotional surrender slipping from emerald eyes as breathless, aristocratic moans break into raw whimpers. Intimate vertical framing, city moonlight casting silver caustics over lush hips and heaving breasts, detailed luxury bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled naked across emerald-green velvet sheets in her penthouse sanctuary, Fubuki casts away all leadership burdens. Her lush thighs are spread wide as two fingers pump urgently into her drenched, swollen core, her mature voluptuous body arching off the mattress in magnificent, shuddering tremors. Her dark-green bob frames flushed cheeks, tears of sweet emotional surrender slipping from emerald eyes as breathless, aristocratic moans break into raw whimpers. Intimate vertical framing, city moonlight casting silver caustics over lush hips and heaving breasts, detailed luxury bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1750,9 +1718,7 @@
         "mature_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1777,7 +1743,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1808,11 +1774,9 @@
         "mature_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sprawled naked across emerald-green velvet sheets in her penthouse sanctuary, Fubuki casts away all leadership burdens. Her lush thighs are spread wide as two fingers pump urgently into her drenched, swollen core, her mature voluptuous body arching off the mattress in magnificent, shuddering tremors. Her dark-green bob frames flushed cheeks, tears of sweet emotional surrender slipping from emerald eyes as breathless, aristocratic moans break into raw whimpers. Intimate vertical framing, city moonlight casting silver caustics over lush hips and heaving breasts, detailed luxury bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled naked across emerald-green velvet sheets in her penthouse sanctuary, Fubuki casts away all leadership burdens. Her lush thighs are spread wide as two fingers pump urgently into her drenched, swollen core, her mature voluptuous body arching off the mattress in magnificent, shuddering tremors. Her dark-green bob frames flushed cheeks, tears of sweet emotional surrender slipping from emerald eyes as breathless, aristocratic moans break into raw whimpers. Intimate vertical framing, city moonlight casting silver caustics over lush hips and heaving breasts, detailed luxury bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

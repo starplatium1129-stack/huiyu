@@ -43,9 +43,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -124,9 +122,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -205,9 +201,7 @@
         "medium_shot",
         "day",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -470,7 +464,7 @@
         "mask",
         "broken_mask"
       ],
-      "promptProse": "Sakiko Togawa (Oblivionis) from BanG Dream! It's MyGO!!!!! / Ave Mujica straddles your lap in the green room, having shattered her feather masquerade mask across the floor. Her dark gothic lolita gown is torn open down the center, exposing pale, trembling breasts that bounce with her frantic, emotionally wrecked hip movements. Her floor-length indigo hair whips wildly around her flushed, tear-stained face, deep blue eyes burning with aristocratic pride crumbling into desperate, sobbing fury as she demands your complete submission. Vertical low-angle cowgirl shot, dim backstage mirror bulbs reflecting tears and shattered porcelain, detailed gothic background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sakiko Togawa (Oblivionis) from BanG Dream! It's MyGO!!!!! / Ave Mujica straddles your lap in the green room, having shattered her feather masquerade mask across the floor. Her dark gothic lolita gown is torn open down the center, exposing pale, trembling breasts that bounce with her frantic, emotionally wrecked hip movements. Her floor-length indigo hair whips wildly around her flushed, tear-stained face, deep blue eyes burning with aristocratic pride crumbling into desperate, sobbing fury as she demands your complete submission. Vertical low-angle cowgirl shot, dim backstage mirror bulbs reflecting tears and shattered porcelain, detailed gothic background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -499,9 +493,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -526,7 +518,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -557,11 +549,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sakiko Togawa (Oblivionis) from BanG Dream! It's MyGO!!!!! / Ave Mujica straddles your lap in the green room, having shattered her feather masquerade mask across the floor. Her dark gothic lolita gown is torn open down the center, exposing pale, trembling breasts that bounce with her frantic, emotionally wrecked hip movements. Her floor-length indigo hair whips wildly around her flushed, tear-stained face, deep blue eyes burning with aristocratic pride crumbling into desperate, sobbing fury as she demands your complete submission. Vertical low-angle cowgirl shot, dim backstage mirror bulbs reflecting tears and shattered porcelain, detailed gothic background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sakiko Togawa (Oblivionis) from BanG Dream! It's MyGO!!!!! / Ave Mujica straddles your lap in the green room, having shattered her feather masquerade mask across the floor. Her dark gothic lolita gown is torn open down the center, exposing pale, trembling breasts that bounce with her frantic, emotionally wrecked hip movements. Her floor-length indigo hair whips wildly around her flushed, tear-stained face, deep blue eyes burning with aristocratic pride crumbling into desperate, sobbing fury as she demands your complete submission. Vertical low-angle cowgirl shot, dim backstage mirror bulbs reflecting tears and shattered porcelain, detailed gothic background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -594,7 +584,7 @@
         "cold_water",
         "water_droplets"
       ],
-      "promptProse": "Sakiko Togawa huddles naked inside the cramped, yellowed plastic bathtub of her dilapidated apartment after a grueling shift at the customer support call center. Freezing water drips over her shivering collarbones and small breasts as her fingers pump harshly into her slick, aching center, trying to numb the crushing reality of poverty. Her long indigo hair floats in the stagnant water, her aristocratic blue eyes overflowing with bitter tears as muffled, heartbroken sobs vibrate through the moldy tiles. Sensual vertical framing, flickering bare fluorescent tube casting harsh shadows over trembling pale curves, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Sakiko Togawa huddles naked inside the cramped, yellowed plastic bathtub of her dilapidated apartment after a grueling shift at the customer support call center. Freezing water drips over her shivering collarbones and small breasts as her fingers pump harshly into her slick, aching center, trying to numb the crushing reality of poverty. Her long indigo hair floats in the stagnant water, her aristocratic blue eyes overflowing with bitter tears as muffled, heartbroken sobs vibrate through the moldy tiles. Sensual vertical framing, flickering bare fluorescent tube casting harsh shadows over trembling pale curves, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -621,9 +611,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -648,7 +636,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -677,11 +665,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sakiko Togawa huddles naked inside the cramped, yellowed plastic bathtub of her dilapidated apartment after a grueling shift at the customer support call center. Freezing water drips over her shivering collarbones and small breasts as her fingers pump harshly into her slick, aching center, trying to numb the crushing reality of poverty. Her long indigo hair floats in the stagnant water, her aristocratic blue eyes overflowing with bitter tears as muffled, heartbroken sobs vibrate through the moldy tiles. Sensual vertical framing, flickering bare fluorescent tube casting harsh shadows over trembling pale curves, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Sakiko Togawa huddles naked inside the cramped, yellowed plastic bathtub of her dilapidated apartment after a grueling shift at the customer support call center. Freezing water drips over her shivering collarbones and small breasts as her fingers pump harshly into her slick, aching center, trying to numb the crushing reality of poverty. Her long indigo hair floats in the stagnant water, her aristocratic blue eyes overflowing with bitter tears as muffled, heartbroken sobs vibrate through the moldy tiles. Sensual vertical framing, flickering bare fluorescent tube casting harsh shadows over trembling pale curves, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -714,7 +700,7 @@
         "black_pantyhose",
         "skirt_lift"
       ],
-      "promptProse": "Sakiko Togawa leans forward over a rusted metal locker in the call-center basement as her cheap black tights snag on a jagged hinge, ripping wide open up to her hip. The torn nylon exposes a pale, shuddering thigh and simple white cotton panties beneath her bunched work skirt, while her thin polyester blouse strains tightly over her chest. Looking back over her shoulder with unshed tears welling in her proud blue eyes, she bites her lip in humiliated agony, fiercely commanding you to look away. Cinematic horizontal framing, buzzing green fluorescent lighting casting cold shadows across ripped stockings and pale hips, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sakiko Togawa leans forward over a rusted metal locker in the call-center basement as her cheap black tights snag on a jagged hinge, ripping wide open up to her hip. The torn nylon exposes a pale, shuddering thigh and simple white cotton panties beneath her bunched work skirt, while her thin polyester blouse strains tightly over her chest. Looking back over her shoulder with unshed tears welling in her proud blue eyes, she bites her lip in humiliated agony, fiercely commanding you to look away. Cinematic horizontal framing, buzzing green fluorescent lighting casting cold shadows across ripped stockings and pale hips, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -742,9 +728,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -769,7 +753,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -799,11 +783,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sakiko Togawa leans forward over a rusted metal locker in the call-center basement as her cheap black tights snag on a jagged hinge, ripping wide open up to her hip. The torn nylon exposes a pale, shuddering thigh and simple white cotton panties beneath her bunched work skirt, while her thin polyester blouse strains tightly over her chest. Looking back over her shoulder with unshed tears welling in her proud blue eyes, she bites her lip in humiliated agony, fiercely commanding you to look away. Cinematic horizontal framing, buzzing green fluorescent lighting casting cold shadows across ripped stockings and pale hips, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sakiko Togawa leans forward over a rusted metal locker in the call-center basement as her cheap black tights snag on a jagged hinge, ripping wide open up to her hip. The torn nylon exposes a pale, shuddering thigh and simple white cotton panties beneath her bunched work skirt, while her thin polyester blouse strains tightly over her chest. Looking back over her shoulder with unshed tears welling in her proud blue eyes, she bites her lip in humiliated agony, fiercely commanding you to look away. Cinematic horizontal framing, buzzing green fluorescent lighting casting cold shadows across ripped stockings and pale hips, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -836,7 +818,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Lying naked across her thin, threadbare futon on the rotting tatami while her alcoholic father snores in the next room, Sakiko Togawa breaks down completely. Her pale thighs are flung wide as her fingers pump with frantic, weeping violence into her drenched pink core, her slender body arching in spasms of raw, devastating pleasure that only amplify her grief. Her floor-length indigo hair fans across the stained mats, endless tears pouring from her blue eyes as suffocated, agonizing whimpers leak through her bitten lips. Intimate vertical framing, amber streetlight bleeding through thin paper windows onto naked, shuddering curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying naked across her thin, threadbare futon on the rotting tatami while her alcoholic father snores in the next room, Sakiko Togawa breaks down completely. Her pale thighs are flung wide as her fingers pump with frantic, weeping violence into her drenched pink core, her slender body arching in spasms of raw, devastating pleasure that only amplify her grief. Her floor-length indigo hair fans across the stained mats, endless tears pouring from her blue eyes as suffocated, agonizing whimpers leak through her bitten lips. Intimate vertical framing, amber streetlight bleeding through thin paper windows onto naked, shuddering curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -867,9 +849,7 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -894,7 +874,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -927,11 +907,9 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Lying naked across her thin, threadbare futon on the rotting tatami while her alcoholic father snores in the next room, Sakiko Togawa breaks down completely. Her pale thighs are flung wide as her fingers pump with frantic, weeping violence into her drenched pink core, her slender body arching in spasms of raw, devastating pleasure that only amplify her grief. Her floor-length indigo hair fans across the stained mats, endless tears pouring from her blue eyes as suffocated, agonizing whimpers leak through her bitten lips. Intimate vertical framing, amber streetlight bleeding through thin paper windows onto naked, shuddering curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Lying naked across her thin, threadbare futon on the rotting tatami while her alcoholic father snores in the next room, Sakiko Togawa breaks down completely. Her pale thighs are flung wide as her fingers pump with frantic, weeping violence into her drenched pink core, her slender body arching in spasms of raw, devastating pleasure that only amplify her grief. Her floor-length indigo hair fans across the stained mats, endless tears pouring from her blue eyes as suffocated, agonizing whimpers leak through her bitten lips. Intimate vertical framing, amber streetlight bleeding through thin paper windows onto naked, shuddering curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

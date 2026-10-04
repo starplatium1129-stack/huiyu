@@ -37,9 +37,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -128,9 +126,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -216,9 +212,7 @@
         "window_light",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -304,8 +298,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -357,7 +350,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "open_white_shirt",
@@ -399,9 +392,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -490,9 +481,7 @@
         "breeze",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -594,9 +583,7 @@
         "happy_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -689,9 +676,7 @@
         "bare_shoulders",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -750,7 +735,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "completely_nude",
@@ -794,9 +779,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -863,7 +846,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "thin_negligee",
@@ -906,9 +889,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -955,7 +936,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "completely_nude",

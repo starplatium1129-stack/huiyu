@@ -37,9 +37,7 @@
         "gradient_hair",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -132,8 +130,6 @@
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "shu_ouma"
       ],
       "negativeTokens": [
@@ -230,9 +226,7 @@
         "twilight_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -303,7 +297,6 @@
       "sceneTags": [
         "recording_studio",
         "velvet_daybed",
-        "floating_particles",
         "void_crystals",
         "night",
         "intimate"
@@ -317,9 +310,7 @@
         "folded_legs",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -371,7 +362,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "adult",
@@ -431,9 +422,7 @@
         "storefront_daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -534,9 +523,7 @@
         "warm_kitchen_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -636,8 +623,6 @@
         "medium_two_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "shu_ouma"
       ],
       "negativeTokens": [
@@ -730,8 +715,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -790,7 +774,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "adult",
@@ -847,9 +831,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -905,7 +887,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "adult",
@@ -960,8 +942,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1029,7 +1010,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "adult",

@@ -39,9 +39,7 @@
         "warm_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -135,9 +133,7 @@
         "afternoon_light",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -227,9 +223,7 @@
         "remembrance",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -314,9 +308,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -372,7 +364,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "fireplace, soft lighting, elf_ears, bare_shoulders, bathrobe, blushing",
       "nsfwTokens": [
         "open_bathrobe",
@@ -427,9 +419,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -527,9 +517,7 @@
         "indoor_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -623,9 +611,7 @@
         "dappled_afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -716,8 +702,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -784,7 +768,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "blanket_around_body",
@@ -839,8 +823,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -956,9 +938,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1068,8 +1048,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1133,7 +1112,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "open_nightgown",
@@ -1181,9 +1160,7 @@
         "morning_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1299,7 +1276,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -1368,9 +1344,7 @@
         "sunset_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1471,9 +1445,7 @@
         "morning_sun",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1560,7 +1532,7 @@
       "camera": "medium shot, bed sheets, voluptuous silhouette, soft morning glow",
       "mood": "傲娇可爱与私密",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "bed, nightgown, cleavage, voluptuous, pouting, blushing, soft lighting",
       "sampleRating": "R18"
     },
@@ -1587,9 +1559,7 @@
         "snowing_outside",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1677,7 +1647,7 @@
       "camera": "horizontal medium portrait, bare sole in gentle foreground foreshortening",
       "mood": "赌气娇嗔",
       "recommendedSize": "1536x1152",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "coverageTags": [
@@ -1709,9 +1679,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1810,7 +1778,7 @@
       "camera": "back_view",
       "mood": "sensual",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18"
     },
@@ -1857,9 +1825,7 @@
         "candlelight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1959,9 +1925,7 @@
         "chandelier_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2050,10 +2014,9 @@
         "beige_coat",
         "half_updo",
         "overcast_light",
-        "warm_lantern",
         "medium_shot"
       ],
-      "promptProse": "Under the wooden eaves of the snowbound carriage stop, Fern offers a small earthenware soup pot toward the viewer with both gloved hands. Steam rises between her muffler and the bowl while falling snow remains beyond the shelter. Her beige winter coat is closed against the cold, and the half-up purple hair rests over its collar. She watches the recipient with a patient, reassuring expression, keeping the pot level during the handover. Cool overcast light meets the warm station lantern beside her. Frame the extended hands and sheltered upper body, with no lettering.",
+      "promptProse": "Under the wooden eaves of the snowbound carriage stop, Fern offers a small earthenware soup pot toward the viewer with both gloved hands. Steam rises between her muffler and the bowl while falling snow remains beyond the shelter. Her beige winter coat is closed against the cold, and the half-up purple hair rests over its collar. She watches the recipient with a patient, reassuring expression, keeping the pot level during the handover. Cool overcast light. Frame the extended hands and sheltered upper body, with no lettering.",
       "promptTokens": [
         "carriage_stop",
         "wooden_eaves",
@@ -2066,12 +2029,9 @@
         "beige_coat",
         "half_updo",
         "overcast_light",
-        "warm_lantern",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2188,9 +2148,7 @@
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2280,7 +2238,7 @@
         "water_droplets",
         "heavy_blush"
       ],
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "sampleRating": "R18"
@@ -2467,9 +2425,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2733,7 +2689,7 @@
         "cleavage",
         "open_clothes"
       ],
-      "promptProse": "Übel from Frieren: Beyond Journey's End straddles your lap beside the crackling campfire in the dark forest, her plunging black dress parted wide to her hips. Her firm, round breasts heave with dangerous, sensual excitement, dark nipples erect in the cool night breeze as she grinds down with sharp, deliberate malice. Her sleek green ponytail sways, bright jade-green eyes narrowing in a predatory, intoxicating smile as her slender fingers dig into your collarbones. Vertical low-angle cowgirl shot, orange embers and flickering firelight casting high-contrast shadows across pale dangerous curves, detailed forest background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Übel from Frieren: Beyond Journey's End straddles your lap beside the crackling campfire in the dark forest, her plunging black dress parted wide to her hips. Her firm, round breasts heave with dangerous, sensual excitement, dark nipples erect in the cool night breeze as she grinds down with sharp, deliberate malice. Her sleek green ponytail sways, bright jade-green eyes narrowing in a predatory, intoxicating smile as her slender fingers dig into your collarbones. Vertical low-angle cowgirl shot, orange embers and flickering firelight casting high-contrast shadows across pale dangerous curves, detailed forest background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -2760,9 +2716,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2787,7 +2741,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2816,11 +2770,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Übel from Frieren: Beyond Journey's End straddles your lap beside the crackling campfire in the dark forest, her plunging black dress parted wide to her hips. Her firm, round breasts heave with dangerous, sensual excitement, dark nipples erect in the cool night breeze as she grinds down with sharp, deliberate malice. Her sleek green ponytail sways, bright jade-green eyes narrowing in a predatory, intoxicating smile as her slender fingers dig into your collarbones. Vertical low-angle cowgirl shot, orange embers and flickering firelight casting high-contrast shadows across pale dangerous curves, detailed forest background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Übel from Frieren: Beyond Journey's End straddles your lap beside the crackling campfire in the dark forest, her plunging black dress parted wide to her hips. Her firm, round breasts heave with dangerous, sensual excitement, dark nipples erect in the cool night breeze as she grinds down with sharp, deliberate malice. Her sleek green ponytail sways, bright jade-green eyes narrowing in a predatory, intoxicating smile as her slender fingers dig into your collarbones. Vertical low-angle cowgirl shot, orange embers and flickering firelight casting high-contrast shadows across pale dangerous curves, detailed forest background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2853,7 +2805,7 @@
         "dark",
         "water_droplets"
       ],
-      "promptProse": "Übel perches completely naked on a slick black boulder in an underground cavern river, glacial water swirling around her slender hips. Her wet emerald-green hair clings like vines across her pale spine and firm breasts, water droplets sparkling on perky nipples. Her fingers plunge aggressively between her thighs, rubbing herself with feral, dangerous passion while a crooked smirk curls her swollen lips, jade eyes glowing in the damp gloom. Sensual vertical composition, luminescent moss and torch reflections dancing on dark water and pale curves, detailed cavern background, depth of field, solo 1girl, no text.",
+      "promptProse": "Übel perches completely naked on a slick black boulder in an underground cavern river, glacial water swirling around her slender hips. Her wet emerald-green hair clings like vines across her pale spine and firm breasts, water droplets sparkling on perky nipples. Her fingers plunge aggressively between her thighs, rubbing herself with feral, dangerous passion while a crooked smirk curls her swollen lips, jade eyes glowing in the damp gloom. Sensual vertical composition, luminescent moss and torch reflections dancing on dark water and pale curves, detailed cavern background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -2877,9 +2829,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2904,7 +2854,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2930,11 +2880,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Übel perches completely naked on a slick black boulder in an underground cavern river, glacial water swirling around her slender hips. Her wet emerald-green hair clings like vines across her pale spine and firm breasts, water droplets sparkling on perky nipples. Her fingers plunge aggressively between her thighs, rubbing herself with feral, dangerous passion while a crooked smirk curls her swollen lips, jade eyes glowing in the damp gloom. Sensual vertical composition, luminescent moss and torch reflections dancing on dark water and pale curves, detailed cavern background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Übel perches completely naked on a slick black boulder in an underground cavern river, glacial water swirling around her slender hips. Her wet emerald-green hair clings like vines across her pale spine and firm breasts, water droplets sparkling on perky nipples. Her fingers plunge aggressively between her thighs, rubbing herself with feral, dangerous passion while a crooked smirk curls her swollen lips, jade eyes glowing in the damp gloom. Sensual vertical composition, luminescent moss and torch reflections dancing on dark water and pale curves, detailed cavern background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2967,7 +2915,7 @@
         "open_clothes",
         "bare_breasts"
       ],
-      "promptProse": "Übel leans forward over a crumbling stone balustrade in the fortress ruins, her cutting magic having accidentally cleaved her black combat gown down the center seam. The fabric splits completely apart, freeing her full pale breasts, hard rose nipples, and smooth hips to the breeze. Holding her three-ring staff loosely in one hand, she looks back over her shoulder with an unhinged, sultry smirk in her vivid green eyes, daring you to take advantage of her stripped defenses. Cinematic horizontal composition, harsh midday sunlight streaming through fortress cracks onto pale slashed contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Übel leans forward over a crumbling stone balustrade in the fortress ruins, her cutting magic having accidentally cleaved her black combat gown down the center seam. The fabric splits completely apart, freeing her full pale breasts, hard rose nipples, and smooth hips to the breeze. Holding her three-ring staff loosely in one hand, she looks back over her shoulder with an unhinged, sultry smirk in her vivid green eyes, daring you to take advantage of her stripped defenses. Cinematic horizontal composition, harsh midday sunlight streaming through fortress cracks onto pale slashed contours, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -2994,9 +2942,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3021,7 +2967,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -3050,11 +2996,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Übel leans forward over a crumbling stone balustrade in the fortress ruins, her cutting magic having accidentally cleaved her black combat gown down the center seam. The fabric splits completely apart, freeing her full pale breasts, hard rose nipples, and smooth hips to the breeze. Holding her three-ring staff loosely in one hand, she looks back over her shoulder with an unhinged, sultry smirk in her vivid green eyes, daring you to take advantage of her stripped defenses. Cinematic horizontal composition, harsh midday sunlight streaming through fortress cracks onto pale slashed contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Übel leans forward over a crumbling stone balustrade in the fortress ruins, her cutting magic having accidentally cleaved her black combat gown down the center seam. The fabric splits completely apart, freeing her full pale breasts, hard rose nipples, and smooth hips to the breeze. Holding her three-ring staff loosely in one hand, she looks back over her shoulder with an unhinged, sultry smirk in her vivid green eyes, daring you to take advantage of her stripped defenses. Cinematic horizontal composition, harsh midday sunlight streaming through fortress cracks onto pale slashed contours, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -3087,7 +3031,7 @@
         "bare_breasts",
         "pink_nipples"
       ],
-      "promptProse": "Sprawled naked across a coarse wool travel blanket deep in the dungeon, Übel wrires in the throes of full empathic synchronization. Her thighs are thrown wide as two fingers pump violently into her soaking, sensitive core, her back arching off the stone floor in ragged, shuddering tremors. Her emerald hair spreads wildly across the dust, genuine tears of twisted joy leaking from her wild green eyes as she revels in having sliced open your darkest mental vulnerabilities. Intimate vertical framing, lantern glow casting dramatic shadows across trembling curves and sharp collarbones, detailed dungeon background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled naked across a coarse wool travel blanket deep in the dungeon, Übel wrires in the throes of full empathic synchronization. Her thighs are thrown wide as two fingers pump violently into her soaking, sensitive core, her back arching off the stone floor in ragged, shuddering tremors. Her emerald hair spreads wildly across the dust, genuine tears of twisted joy leaking from her wild green eyes as she revels in having sliced open your darkest mental vulnerabilities. Intimate vertical framing, glow casting dramatic shadows across trembling curves and sharp collarbones, detailed dungeon background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -3114,9 +3058,7 @@
         "green_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3141,7 +3083,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -3170,11 +3112,9 @@
         "green_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sprawled naked across a coarse wool travel blanket deep in the dungeon, Übel wrires in the throes of full empathic synchronization. Her thighs are thrown wide as two fingers pump violently into her soaking, sensitive core, her back arching off the stone floor in ragged, shuddering tremors. Her emerald hair spreads wildly across the dust, genuine tears of twisted joy leaking from her wild green eyes as she revels in having sliced open your darkest mental vulnerabilities. Intimate vertical framing, lantern glow casting dramatic shadows across trembling curves and sharp collarbones, detailed dungeon background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled naked across a coarse wool travel blanket deep in the dungeon, Übel wrires in the throes of full empathic synchronization. Her thighs are thrown wide as two fingers pump violently into her soaking, sensitive core, her back arching off the stone floor in ragged, shuddering tremors. Her emerald hair spreads wildly across the dust, genuine tears of twisted joy leaking from her wild green eyes as she revels in having sliced open your darkest mental vulnerabilities. Intimate vertical framing, glow casting dramatic shadows across trembling curves and sharp collarbones, detailed dungeon background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

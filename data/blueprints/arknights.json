@@ -73,7 +73,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "hugging_knees",
         "looking_out_window",
         "annoyed",
@@ -152,8 +151,6 @@
         "cold_sky",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "standing",
         "wide_shot"
       ],
@@ -240,7 +237,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "fire_giant"
       ],
       "recommendedSize": "1152x1536",
@@ -323,8 +319,6 @@
         "happy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hand_on_cheek",
         "two_scoop_ice_cream",
         "medium_close_up"
@@ -418,8 +412,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sword_pointing_down"
       ],
       "recommendedSize": "1152x1536",
@@ -516,7 +508,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "holding_book",
         "reading_book",
         "medium_close_up"
@@ -542,7 +533,7 @@
       "characterId": "surtr_arknights",
       "description": "【史尔特尔 · 舱室夜色】深夜锁闭的私人舱室内，卸下战术装甲的史尔特尔半倚在床沿，黑色抹胸与短裙半敞，雪白滑腻的肌肤因体内涌动的源石热流而泛着诱人的绯红。她回眸斜睨着你——「身体里很烫……魔剑的热度压不下去。博士，你的手很凉……靠近一点，替我降温。」",
       "id": "surtr_arknights_r18_cabin_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm candlelight and dim blue night light",
       "location": "罗德岛·史尔特尔私人舱室",
       "mood": "慵懒诱惑",
@@ -611,9 +602,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -637,7 +626,7 @@
       "characterId": "surtr_arknights",
       "description": "【史尔特尔 · 北境温泉】北境山谷被白雪覆盖的露天天然温泉中，史尔特尔将整个人浸泡在滚烫的泉水里，仰头凝望着漫天落雪。湿透的红发散落于泉面，雪白饱满的胸脯在水汽中起伏——「这池热水的温度勉强能让我感到舒服……别站在岸上吹冷风了，下来和我一起泡。」",
       "id": "surtr_arknights_r18_hot_spring",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "steam and moonlight",
       "location": "北境温泉",
       "mood": "松弛温热",
@@ -702,9 +691,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -728,7 +715,7 @@
       "characterId": "surtr_arknights",
       "description": "【史尔特尔 · 晨光床榻】清晨第一缕阳光洒在凌乱的被单上，史尔特尔裹着薄薄的丝被侧卧在床铺中央，慵懒回眸看着醒来的你。她伸出白皙的手臂拉住你的手腕——「哈啊……天亮得真快。今天罗德岛没有紧急出击任务吧？那就再陪我躺一个小时。」",
       "id": "surtr_arknights_r18_morning_bed",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft pale morning light",
       "location": "罗德岛·史尔特尔私人舱室",
       "mood": "慵懒缱绻",
@@ -796,9 +783,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -825,7 +810,7 @@
       ],
       "description": "【史尔特尔 · 熔光之下】地热密室内暗红色的熔岩矿脉散发着微弱的暖光，赤身倚靠在光滑黑石壁上的史尔特尔曲线毕露，火光的阴影在曼妙身躯上流转。她眼神迷离地轻咬下唇——「看着我……今夜在此处燃烧的，可不仅仅是魔剑的火焰哦。」",
       "id": "surtr_arknights_r18_lava_glow",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "deep red lava glow",
       "location": "火山遗迹石室",
       "mood": "炽烈魅惑",
@@ -899,9 +884,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -989,8 +972,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "tablet",
         "holding_tablet",
         "walking"
@@ -1071,8 +1052,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "deck",
         "night",
         "arms_crossed"
@@ -1153,9 +1132,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1243,9 +1220,7 @@
         "warm_lighting",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1323,9 +1298,7 @@
         "directional_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1400,8 +1373,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "ledger",
         "paper",
         "writing"
@@ -1427,7 +1398,7 @@
       "characterId": "kaltsit_arknights",
       "description": "【凯尔希 · 深夜礼服】深夜指挥官私人舱室的落地窗前，褪去厚重白大褂、换上一袭深黑露背丝绸晚礼服的凯尔希侧身伫立，回眸凝视着你，翠绿的眼眸中流淌着极其罕见的动容——「卸下所有职责与身份之后……站在这里的，只是见证了你全部岁月的凯尔希。过来吧。」",
       "id": "kaltsit_arknights_r18_cabin_robe",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "舰内低照度暖色光廊与舷窗外泰拉夜空星海，丝绸与白瓷肌肤高光细腻",
       "location": "罗德岛舰长室私人回廊",
       "mood": "高贵清冷与私密",
@@ -1515,13 +1486,10 @@
       "promptTokens": [
         "private_quarters",
         "canopy_bed",
-        "candlelight",
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1547,7 +1515,7 @@
       "characterId": "kaltsit_arknights",
       "description": "【凯尔希 · 医疗部浴间】水汽弥漫的医疗部专属淋浴间内，滚烫的水幕顺着凯尔希白皙紧致的背部与优美的脊椎线条滑落。她仰起脸任由热水冲刷，微闭眼眸轻叹——「即便是我，也无法彻底免疫身体与神经的疲惫……能在这个时候走进这间浴室的，在这片大地上也只有你了。」",
       "id": "kaltsit_arknights_r18_medical_bath",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm steam and soft light",
       "location": "罗德岛医疗部浴间",
       "mood": "疲惫而放松",
@@ -1636,9 +1604,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1665,7 +1631,7 @@
       ],
       "description": "【凯尔希 · 灯下案前】深夜书房昏黄的台灯旁，衣衫半解的凯尔希坐在红木办公桌边缘，修长纤细的黑丝美腿在视线下交叠。她用指尖轻轻挑起你的下颌，目光意味深长——「博士，你现在的心率和瞳孔扩张程度，已经远远超出了安全阈值……不打算做点什么来平复心率吗？」",
       "id": "kaltsit_arknights_r18_desk_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "desk lamp and shadows",
       "location": "罗德岛办公室",
       "mood": "理智掌控",
@@ -1739,9 +1705,7 @@
         "lynx_ears",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1765,7 +1729,7 @@
       "characterId": "kaltsit_arknights",
       "description": "【凯尔希 · 守卫身侧】私密卧室宽大的床榻上，赤裸侧卧在床沿的凯尔希指尖轻点着被单，身侧微缩休眠的 Mon3tr 化作温和的荧光护卫在床前。她眼中泛起一丝柔情——「今夜这间屋子被严密隔离，不会有任何公务与警报打扰……把你的全部思绪，都交给我吧。」",
       "id": "kaltsit_arknights_r18_mon3tr_guard",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight through the window",
       "location": "罗德岛·凯尔希办公室休息间",
       "mood": "静谧亲密",
@@ -1842,8 +1806,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1922,7 +1885,7 @@
         "two people"
       ],
       "outfitId": "standard",
-      "promptProse": "Patrolling the bustling neon streets of Lungmen in her Special Inspection Unit uniform, Ch'en walks slowly with one hand resting on the hilt of Chi Xiao, keeping disciplined watch over the rain-slick district. Red neon reflections frame her strict, noble focus.",
+      "promptProse": "Patrolling the bustling neon streets of Lungmen in her Special Inspection Unit uniform, Ch'en walks slowly with one hand resting on the hilt of Chi Xiao, keeping disciplined watch over the district. Red neon reflections frame her strict, noble focus.",
       "promptTokens": [
         "lungmen_street",
         "police_uniform",
@@ -1932,8 +1895,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "walking",
         "hand_on_hilt"
       ],
@@ -2021,9 +1982,7 @@
         "lively",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2109,9 +2068,7 @@
         "city_skyline",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2210,8 +2167,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "tripe",
         "sesame_oil_dish"
       ],
@@ -2293,9 +2248,7 @@
         "sunbeam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2361,7 +2314,7 @@
         "two people"
       ],
       "outfitId": "lgd_detective_undercover",
-      "promptProse": "Waiting on the rainy train platform at midnight, Ch'en holds a transparent umbrella and watches the misty tracks with steady resolve. When the train doors open, she steps forward and angles the umbrella toward the arriving passenger as station lights shimmer across the wet ground.",
+      "promptProse": "Waiting on the rainy train platform at midnight, Ch'en holds a transparent umbrella and watches the tracks with steady resolve. When the train doors open, she steps forward and angles the umbrella toward the arriving passenger as station lights shimmer across the wet ground.",
       "promptTokens": [
         "train_station",
         "rain",
@@ -2371,8 +2324,6 @@
         "night",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "clear_umbrella"
       ],
       "recommendedSize": "1152x1536",
@@ -2399,7 +2350,7 @@
       ],
       "description": "【陈 · 居所夜话】深夜温馨的单身公寓客厅里，卸下重担的陈坐在沙发扶手旁，制服衬衫的领扣被随意解开两颗，露出白皙性感的锁骨。她微红着脸端起啤酒罐小酌一口——「呼……终于能把近卫局的规矩全抛在脑后了。博士……今晚可以留下来陪我喝完这罐酒吗？」",
       "id": "chen_arknights_r18_apartment",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm living-room lamp",
       "location": "龙门公寓",
       "mood": "卸甲后的温柔",
@@ -2476,7 +2427,7 @@
         "tsundere_glare"
       ],
       "outfitId": "standard",
-      "promptProse": "Rain streaks the Lungmen window behind adult Ch'en seated alone on an apartment sofa. Her uniform shirt is open and pushed beneath bare breasts while fitted trousers loosen at the waist above crossed legs. She sets her sword in its scabbard beside the cushion, braces one hand on the armrest and slips the other between her thighs. Dark blue hair, red horns and amber eyes stay sharply disciplined even as wet lashes and a deep blush betray her breathing. Vertical medium solo portrait, no text or extra people.",
+      "promptProse": "Adult Ch'en is seated alone on an apartment sofa. Her uniform shirt is open and pushed beneath bare breasts while fitted trousers loosen at the waist above crossed legs. She sets her sword in its scabbard beside the cushion, braces one hand on the armrest and slips the other between her thighs. Dark blue hair, red horns and amber eyes stay sharply disciplined even as wet lashes and a deep blush betray her breathing. Vertical medium solo portrait, no text or extra people.",
       "promptTokens": [
         "apartment",
         "bed",
@@ -2484,9 +2435,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2510,7 +2459,7 @@
       "characterId": "chen_arknights",
       "description": "【陈 · 浴后】浴室的大理石镜前弥漫着温热白汽，裹着大浴巾的陈正用毛巾轻轻擦拭着湿漉漉的墨绿秀发。水珠沿着饱满的胸部与紧致修长的大腿滑落，她转过脸娇嗔地瞪了你一眼——「敲门之后不马上说话……看傻了吗？还不快点拿吹风机过来帮我吹头发。」",
       "id": "chen_arknights_r18_bath_towels",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft warm bathroom light",
       "location": "龙门近卫局浴间",
       "mood": "慵懒湿润",
@@ -2585,16 +2534,14 @@
         "heavy_blush"
       ],
       "outfitId": "bath_towel_wrap",
-      "promptProse": "Steam fills a private Lungmen bath where adult Ch'en sits alone on a cedar stool between folded towels. A wet towel clings translucent over bare breasts and another circles her hips, opening above one raised knee. She wrings water from her long blue hair with one hand and lets the other travel under the lower towel between her thighs. Red horns catch the warm lantern light as amber eyes glance sideways through flushed cheeks. Compact seated bath portrait, no text or extra people.",
+      "promptProse": "Steam fills a private Lungmen bath where adult Ch'en sits alone on a cedar stool between folded towels. A wet towel clings translucent over bare breasts and another circles her hips, opening above one raised knee. She wrings water from her long blue hair with one hand and lets the other travel under the lower towel between her thighs. Red horns catch the warm light as amber eyes glance sideways through flushed cheeks. Compact seated bath portrait, no text or extra people.",
       "promptTokens": [
         "bathroom",
         "steam",
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2618,7 +2565,7 @@
       "characterId": "chen_arknights",
       "description": "【陈 · 床边赤霄】卧房大床上，侧卧在床铺上的陈只着轻薄内衣，赤霄古剑静静横放在枕边。她将手掌轻轻覆在你的手背上，平日严厉的眼眸中满是脉脉温情——「有你在身边的时候，这柄剑才能真正安稳地收在鞘中……今夜，就让我好好依靠你一次吧。」",
       "id": "chen_arknights_r18_bed_sword",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim bedside lamp",
       "location": "龙门近卫局宿舍",
       "mood": "柔韧相伴",
@@ -2678,17 +2625,14 @@
         "dragon_tail"
       ],
       "outfitId": "light_lingerie",
-      "promptProse": "Moonlight falls over adult Ch'en reclining alone diagonally across a firm apartment bed. Nude except for a black thigh strap, she keeps her sheathed sword parallel to one extended leg and draws the other knee upward. One hand rests safely on the scabbard while the other touches herself between parted thighs, keeping weapon and body clearly separated. Blue hair spreads around red horns, sweat-bright skin and amber eyes softened by a reluctant blush. Horizontal solo portrait, no text or extra people.",
+      "promptProse": "Light falls over adult Ch'en reclining alone diagonally across a firm apartment bed. Nude except for a black thigh strap, she keeps her sheathed sword parallel to one extended leg and draws the other knee upward. One hand rests safely on the scabbard while the other touches herself between parted thighs, keeping weapon and body clearly separated. Blue hair spreads around red horns, sweat-bright skin and amber eyes softened by a reluctant blush. Horizontal solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
-        "moonlight",
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2712,7 +2656,7 @@
       "characterId": "chen_arknights",
       "description": "【陈 · 深夜窗畔】落地窗外龙门都市的霓虹夜景如繁星铺展，衣衫半褪的陈被你轻轻按在冰凉的玻璃窗前。她呼吸急促，双颊滚烫地紧紧环住你的脖颈——「外面全都是灯火……要是被人看到就死定了……唔，吻我，不要让我分心……」",
       "id": "chen_arknights_r18_rooftop_kiss",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "city lights and moonlight",
       "location": "龙门近卫局宿舍窗畔",
       "mood": "克制而炽热",
@@ -2790,7 +2734,7 @@
         "heavy_blush"
       ],
       "outfitId": "standard",
-      "promptProse": "Neon rain surrounds adult Ch'en alone beneath a rooftop shelter after patrol. Her soaked uniform shirt hangs open across bare breasts and a high-waisted skirt is unfastened over one bent leg. She presses two fingers to her own lips, then lets the other hand follow a rain trail down her inner thigh, with the sheathed sword resting beyond reach. Dark blue hair and red horns frame amber eyes, parted breath and a rare private flush. Vertical environmental portrait, no text or extra people.",
+      "promptProse": "Neon surrounds adult Ch'en alone beneath a rooftop shelter after patrol. Her soaked uniform shirt hangs open across bare breasts and a high-waisted skirt is unfastened over one bent leg. She presses two fingers to her own lips, then lets the other hand follow a trail down her inner thigh, with the sheathed sword resting beyond reach. Dark blue hair and red horns frame amber eyes, parted breath and a rare private flush. Vertical environmental portrait, no text or extra people.",
       "promptTokens": [
         "apartment_balcony",
         "city_night_view",
@@ -2798,9 +2742,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2916,8 +2858,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "spectrometer",
         "recording_data"
       ],
@@ -3017,7 +2957,6 @@
         "coat",
         "crater",
         "crouching",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "frills",
@@ -3031,7 +2970,6 @@
         "steam",
         "thighhighs",
         "volcano",
-        "volumetric_lighting",
         "white_shirt"
       ],
       "recommendedSize": "1152x1536",
@@ -3118,7 +3056,6 @@
         "book",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "glasses",
@@ -3129,7 +3066,6 @@
         "reading",
         "soft_lighting",
         "sweater",
-        "volumetric_lighting",
         "window",
         "holding_book"
       ],
@@ -3219,9 +3155,7 @@
         "medium_close_up",
         "atmospheric",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -3305,10 +3239,8 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
-        "dynamic_lighting",
-        "volumetric_lighting"
+        "dynamic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -3406,9 +3338,7 @@
         "full_body",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -3431,7 +3361,7 @@
       "characterId": "eyjafjalla_arknights",
       "description": "【艾雅法拉 · 夜班实验室】深夜无人的地质实验室内，外套大衣半褪的艾雅法拉坐在实验台边缘，雪白娇小的身躯在暖黄色的台灯下透着诱人的粉红。她红着脸将头埋进你的胸口——「前辈……实验室的门已经锁好了。听力不好的我……只能通过前辈剧烈的心跳，来感受前辈有多喜欢我了……」",
       "id": "eyjafjalla_arknights_r18_lab_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim lab glow",
       "location": "罗德岛实验室",
       "mood": "疲惫而娇柔",
@@ -3496,9 +3426,7 @@
         "warm_lamp",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3525,7 +3453,7 @@
       ],
       "description": "【艾雅法拉 · 宿舍薄毯】私密宿舍温暖的大床上，艾雅法拉裹着薄薄的羊毛毯蜷缩在床角，单薄的睡裙滑落露出圆润可爱的香肩与雪白小腿。她怯生生地掀开毛毯的一角——「前辈……屋子里有点冷呢。可以钻进毛毯里抱紧小羊吗？我想和前辈贴在一起。」",
       "id": "eyjafjalla_arknights_r18_dorm_blanket",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bedside lamp",
       "location": "罗德岛·艾雅法拉宿舍",
       "mood": "柔软困倦",
@@ -3584,12 +3512,9 @@
         "dormitory",
         "bed",
         "morning_sun",
-        "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3613,7 +3538,7 @@
       "characterId": "eyjafjalla_arknights",
       "description": "【艾雅法拉 · 私汤】私人风吕热气蒸腾的石砌池边，艾雅法拉整个人趴在光滑的池石上，湿漉漉的卷发紧贴着纤弱白皙的肩颈，羊耳因水温而泛着红晕。她微红着脸回头看你——「前辈……水温好舒服。能麻烦前辈帮我把背上够不到的地方轻轻揉一揉吗？」",
       "id": "eyjafjalla_arknights_r18_hot_spring_private",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "steam and moonlight",
       "location": "泰拉温泉",
       "mood": "温润可人",
@@ -3703,9 +3628,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -3729,7 +3652,7 @@
       "characterId": "eyjafjalla_arknights",
       "description": "【艾雅法拉 · 烛光实验】实验室内跳跃的烛光在石壁上投下摇曳的阴影，只穿着一件宽大白衬衫的艾雅法拉侧身坐在桌沿，修长细腻的双腿毫无防备地展露在外。她眼眸泛着水光轻声呼唤——「前辈……今晚的火山数据已经全部记录完了，接下来的时间……全部都是属于前辈的。」",
       "id": "eyjafjalla_arknights_r18_candle_lab",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "flickering candlelight",
       "location": "罗德岛实验室",
       "mood": "明昧交叠",
@@ -3803,9 +3726,7 @@
         "sheep_horns",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3901,9 +3822,7 @@
         "medium_shot",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -3999,10 +3918,8 @@
         "composed_smile",
         "atmospheric",
         "cinematic_lighting",
-        "depth_of_field",
         "detailed_background",
-        "medium_shot",
-        "volumetric_lighting"
+        "medium_shot"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -4088,9 +4005,7 @@
         "full_body",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -4184,9 +4099,7 @@
         "medium_close_up",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -4287,9 +4200,7 @@
         "bright_lighting",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -4388,9 +4299,7 @@
         "atmospheric",
         "soft_lighting",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -4413,7 +4322,7 @@
       "characterId": "lemuen_arknights",
       "description": "【蕾缪安 · 教堂夜祷】深夜寂静的私人祈祷室内烛光摇曳，蕾缪安坐在轮椅上，素白的修女长裙从肩头悄然滑落，露出白皙圆润的香肩与精致的锁骨。她眼中水波流转，神情虔诚又带着无尽的深情——「即便双腿无法给予你回应……我也渴望用我的双手与全部温度，将你紧紧拥入怀中。」",
       "id": "lemuen_arknights_r18_church_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "rows of candlelight",
       "location": "拉特兰教堂侧厅",
       "mood": "圣洁下的私语",
@@ -4488,16 +4397,14 @@
         "heavy_blush"
       ],
       "outfitId": "nun_habit",
-      "promptProse": "Blue moonlight enters an empty Laterano chapel where adult Lemuen sits alone across the front pew. Her dark ceremonial jacket is open and a white blouse is drawn beneath bare breasts while one leg rests along the bench. She holds a spent cartridge between two fingers and lets her other hand move beneath the lifted skirt, causing her halo to brighten above loose pale hair. Cool eyes soften behind wet lashes and a deliberate blush. Horizontal sacred solo portrait, no text or extra people.",
+      "promptProse": "Blue light enters an empty Laterano chapel where adult Lemuen sits alone across the front pew. Her dark ceremonial jacket is open and a white blouse is drawn beneath bare breasts while one leg rests along the bench. She holds a spent cartridge between two fingers and lets her other hand move beneath the lifted skirt, causing her halo to brighten above loose pale hair. Cool eyes soften behind wet lashes and a deliberate blush. Horizontal sacred solo portrait, no text or extra people.",
       "promptTokens": [
         "church_nave",
         "stained_glass",
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -4521,7 +4428,7 @@
       "characterId": "lemuen_arknights",
       "description": "【蕾缪安 · 浴室的微光】弥漫着温热白汽的无障碍浴室里，蕾缪安赤身倚靠在浅底浴缸边缘，头顶的光环在水雾中泛着柔和的金色微光。湿透的长发贴在雪白的后背上，她向你伸出颤抖的指尖——「能麻烦你……抱我进水池里吗？只有在你的怀里，我才不会觉得自己是残缺的。」",
       "id": "lemuen_arknights_r18_bath_halo",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft steam light",
       "location": "拉特兰圣堂宿舍浴间",
       "mood": "湿润慵懒",
@@ -4619,9 +4526,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -4648,7 +4553,7 @@
       ],
       "description": "【成年蕾缪安 · 客房侧卧与翼架微光】成年蕾缪安独自侧卧在宽床上，旅行衬衫解开露出胸部，一条长袜卷到膝下。她一手支颐，另一手在层叠床单间自抚；折叠机械翼架安稳放在椅上，光环随呼吸轻轻明灭。",
       "id": "lemuen_arknights_r18_bedroom_wing",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim moonlight",
       "location": "拉特兰圣堂宿舍",
       "mood": "柔软圣洁",
@@ -4738,9 +4643,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -4764,7 +4667,7 @@
       "characterId": "lemuen_arknights",
       "description": "【蕾缪安 · 旅店夜装】五星级酒店落地窗前俯瞰着城市璀璨夜色，蕾缪安穿着半透明的丝绸睡袍坐在轮椅上侧身回眸，夜色与头顶光环交织成梦幻的光晕。她轻咬朱唇低语——「今夜的巡逻与职责已经全部结束了……抱我到床上去吧，我的指挥官。」",
       "id": "lemuen_arknights_r18_hotel_suit",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "city lights through the window",
       "location": "拉特兰旅店",
       "mood": "都市夜色",
@@ -4847,8 +4750,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4947,10 +4849,8 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
-        "dynamic_lighting",
-        "volumetric_lighting"
+        "dynamic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -5019,7 +4919,7 @@
         "two people"
       ],
       "outfitId": "atelier_slouchy_loungewear",
-      "promptProse": "In a studio stacked with scrolls of ink paintings and aged pine-soot ink sticks, Dusk sits cross-legged with bare feet in the middle of an enormous spread of rice paper, dressed in her slouchy oversized ink-grey studio hoodie with hair in a messy bun, a huge brush hanging motionless above the sheet as she thinks, ink dripping from its tip while faint ink dragons and mountain silhouettes coil out of the shadows around her, her horns and tail sharp against the cold blue lantern glow as she glances back at you with lazy disdain. The cold blue lantern glow casts long ink-dark shadows across the rice paper as faint dragons coil in the corners of the studio.",
+      "promptProse": "In a studio stacked with scrolls of ink paintings and aged pine-soot ink sticks, Dusk sits cross-legged with bare feet in the middle of an enormous spread of rice paper, dressed in her slouchy oversized ink-grey studio hoodie with hair in a messy bun, a huge brush hanging motionless above the sheet as she thinks, ink dripping from its tip while faint ink dragons and mountain silhouettes coil out of the shadows around her, her horns and tail sharp against the cold blue glow as she glances back at you with lazy disdain. The cold blue glow casts long ink-dark shadows across the rice paper as faint dragons coil in the corners of the studio.",
       "promptTokens": [
         "sitting_cross_legged",
         "barefoot",
@@ -5029,7 +4929,6 @@
         "ink_dragons",
         "ink_wash_painting",
         "floating_scrolls",
-        "cold_lantern_glow",
         "dragon_horns",
         "dragon_tail",
         "oversized_hoodie",
@@ -5043,10 +4942,8 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
-        "dynamic_lighting",
-        "volumetric_lighting"
+        "dynamic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -5141,13 +5038,11 @@
         "monochrome_tone",
         "standing",
         "ink_wash",
-        "volumetric_lighting",
         "wide_shot",
         "full_body",
         "atmospheric",
         "cinematic_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -5234,7 +5129,6 @@
         "chinese_clothes",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "high_slit",
@@ -5244,7 +5138,6 @@
         "qipao",
         "tea",
         "veranda",
-        "volumetric_lighting",
         "wide_sleeves",
         "kneeling",
         "teacup",
@@ -5322,8 +5215,6 @@
         "rain_courtyard",
         "standard",
         "medium_shot",
-        "volumetric_lighting",
-        "depth_of_field",
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
@@ -5432,8 +5323,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "gold_trim",
         "rabbit_lantern",
         "bridge"
@@ -5530,7 +5419,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Ink-blue lanterns surround adult Dusk kneeling alone in her private painting studio. Her layered black robe has fallen open and gathered around the hips, leaving bare breasts above folded thighs amid scrolls. One hand guides a long brush through glowing ink while the other reaches beneath the robe between her legs, making painted mountains rise as mist from the paper. Dark hair, dragon horns and red eyes remain precise through damp lashes and a secluded blush. Vertical solo fantasy portrait, no text or extra people.",
+      "promptProse": "Ink-blue lights surround adult Dusk kneeling alone in her private painting studio. Her layered black robe has fallen open and gathered around the hips, leaving bare breasts above folded thighs amid scrolls. One hand guides a long brush through glowing ink while the other reaches beneath the robe between her legs, making painted mountains rise as air from the paper. Dark hair, dragon horns and red eyes remain precise through damp lashes and a secluded blush. Vertical solo fantasy portrait, no text or extra people.",
       "promptTokens": [
         "painting_studio",
         "scrolls",
@@ -5538,9 +5427,7 @@
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -5568,7 +5455,7 @@
       "characterId": "dusk_arknights",
       "description": "【夕 · 月下浴汤】月光倒映的庭院私汤温泉内，夕赤身靠在池畔光滑的青石上，墨绿色的长发如丝绸般漂浮在水面，水流从她挺翘的双峰与修长龙尾间滑落。她斜倚池沿勾起一抹媚笑——「画里的水温可是能随我的心意随意变化的……敢下来和我一起泡吗，胆小鬼？」",
       "id": "dusk_arknights_r18_bath_moon",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight and floating lanterns",
       "location": "岁家庭院浴池",
       "mood": "月华如水",
@@ -5651,9 +5538,7 @@
         "moonlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -5679,7 +5564,7 @@
       "characterId": "dusk_arknights",
       "description": "【成年夕 · 雨夜回廊的水墨独处】成年夕独自坐在雨夜红木回廊的竹席上，湿透黑袍敞开并聚在腰际。她一手端着浅墨碟，另一手沿雨水探入腿间，黑色游鱼随呼吸在地板水光中显形。",
       "id": "dusk_arknights_r18_veranda_rain",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim lantern and rain glow",
       "location": "岁家回廊",
       "mood": "雨湿衣香",
@@ -5762,9 +5647,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -5788,7 +5671,7 @@
       "characterId": "dusk_arknights",
       "description": "【夕 · 笔落诗成】深夜画案前微弱的烛火摇曳，赤身执笔的夕在宣纸上落下最后一笔墨迹，回眸望向你的清冷脸颊染着醉人的红霞。她丢下画笔扑进你的怀里——「这幅长卷画的是天地山河……而画卷最深处的题跋，唯独写满了你的名字。」",
       "id": "dusk_arknights_r18_brush_poem",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "candlelight",
       "location": "岁家画室",
       "mood": "风情入画",
@@ -5863,9 +5746,7 @@
         "tail",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -5968,9 +5849,7 @@
         "medium_shot",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6076,9 +5955,7 @@
         "wide_shot",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
         "detailed_background",
-        "depth_of_field",
         "helmet"
       ],
       "recommendedSize": "1152x1536",
@@ -6152,7 +6029,6 @@
         "cable_knit",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dusk",
         "dynamic_lighting",
@@ -6164,7 +6040,6 @@
         "scarf",
         "sweater",
         "turtleneck",
-        "volumetric_lighting",
         "war_zone",
         "winter_clothes",
         "wool_coat",
@@ -6264,9 +6139,7 @@
         "medium_shot",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6345,7 +6218,6 @@
         "cinematic_lighting",
         "clean_face",
         "craftsman",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "food",
@@ -6357,7 +6229,6 @@
         "rhodes_island",
         "rolled_sleeves",
         "tray",
-        "volumetric_lighting",
         "work_clothes",
         "stewed_potatoes",
         "roasted_sausages",
@@ -6458,8 +6329,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "standing",
         "earth_guardians",
         "stone_golems"
@@ -6485,7 +6354,7 @@
       "characterId": "mudrock_arknights",
       "description": "【泥岩 · 舱室灯下】深夜安静的私人舱室内，卸下全部重型装甲的泥岩穿着轻薄单衣坐在床沿，卸下的甲片整齐地堆叠在脚边。雪白的肌肤与平日铠甲下的强悍形成极致的反差，她羞涩地垂下眼帘——「脱掉装甲后的我……其实只是一个非常普通的萨卡兹成年女性。博士……请抱抱真正的我。」",
       "id": "mudrock_arknights_r18_cabin_quiet",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bedside lamp",
       "location": "罗德岛·泥岩私人舱室",
       "mood": "卸下重负",
@@ -6568,9 +6437,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6595,7 +6462,7 @@
       "characterId": "mudrock_arknights",
       "description": "【泥岩 · 整备间浴水】水雾弥漫的淋浴间内，滚烫的热水冲刷着泥岩被汗水打湿的银发。水珠沿着她线条紧致优美、充满健康力量感的身躯流淌而下。她转过身用手臂半遮着胸前饱满的雪峰——「战斗后的身体总是充满肌肉酸痛……博士，能进来帮我放松一下紧绷的肌肉吗？」",
       "id": "mudrock_arknights_r18_bath_muscle",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm steam light",
       "location": "罗德岛整备间淋浴",
       "mood": "松弛舒展",
@@ -6685,9 +6552,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6715,7 +6580,7 @@
       ],
       "description": "【泥岩 · 掌心温热】温暖的被窝里，侧卧在床铺中央的泥岩握住你伸过去的手，将你的指尖紧紧贴在她雪白柔软的胸口上。她眼神深情而专注——「我的掌心因为常年握锤长满了粗茧……但博士的手掌总是这么温暖细腻。请就这样一直握着我，不要松开。」",
       "id": "mudrock_arknights_r18_bed_hands",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim night light",
       "location": "罗德岛·泥岩私人舱室",
       "mood": "笨拙温情",
@@ -6786,9 +6651,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -6814,7 +6677,7 @@
       "characterId": "mudrock_arknights",
       "description": "【泥岩 · 战锤之侧】漆黑的武器整备室内，赤裸身躯的泥岩背靠着自己冰冷的巨大破城战锤席地而坐，昏黄的顶灯勾勒出她无瑕修长的曼妙曲线。她仰起脸向你伸出双臂——「战锤是用来守护生命的兵器……而在今夜，我只想做你怀里唯一的战利品。」",
       "id": "mudrock_arknights_r18_hammer_rest",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim warm lamp",
       "location": "罗德岛·泥岩私人舱室",
       "mood": "安宁厚重",
@@ -6890,9 +6753,7 @@
         "sitting_on_floor",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6980,9 +6841,7 @@
         "low_angle",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
         "detailed_background",
-        "depth_of_field",
         "mechanic"
       ],
       "recommendedSize": "1152x1536",
@@ -7056,7 +6915,6 @@
         "cargo_pants",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "excavation",
@@ -7068,7 +6926,6 @@
         "sun",
         "towel",
         "utility_shirt",
-        "volumetric_lighting",
         "rainforest",
         "standing"
       ],
@@ -7167,9 +7024,7 @@
         "medium_shot",
         "atmospheric",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7265,8 +7120,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field",
         "upper_body"
       ],
       "recommendedSize": "1152x1536",
@@ -7353,8 +7206,6 @@
         "wrench",
         "medium_shot",
         "dusk",
-        "volumetric_lighting",
-        "depth_of_field",
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
@@ -7452,9 +7303,7 @@
         "full_body",
         "atmospheric",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7477,7 +7326,7 @@
       "characterId": "eunectes_arknights",
       "description": "【森蚺 · 工坊夜话】深夜无人的机库死角里，坐在机甲底座旁的森蚺将身上的工装背心拉链拉开大半，露出被汗水浸润、饱满紧致的健美胸膛与腹肌。她粗壮的鳄尾悄悄缠上你的小腿——「今晚机甲已经改装完了……博士，现在能帮我检查一下身体内部的‘零件’了吗？」",
       "id": "eunectes_arknights_r18_garage_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim work lamp",
       "location": "罗德岛机工坊",
       "mood": "热汗未歇",
@@ -7560,9 +7409,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7586,7 +7433,7 @@
       "characterId": "eunectes_arknights",
       "description": "【森蚺 · 河湾暮色】夕阳西下的热带河湾里，赤身沐浴的森蚺从清凉的水中站起身，湿漉漉的墨绿短发贴在锁骨两旁，水流顺着她完美无瑕的健美身材曲线滴落。她回眸露出充满野性魅力的微笑——「萨贡的夜晚来得很快哦……博士，再不过来抱紧我的话，我可就要游走咯。」",
       "id": "eunectes_arknights_r18_river_dusk",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "golden dusk on water",
       "location": "阿卡胡拉雨林河湾",
       "mood": "爽朗魅惑",
@@ -7669,9 +7516,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -7695,7 +7540,7 @@
       "characterId": "eunectes_arknights",
       "description": "【森蚺 · 舱室床铺】私人舱室温暖的床铺上，盘腿坐着的森蚺赤身裹着一条干毛巾擦拭着头发，强健有力的尾巴在被单上不安分地轻轻拍打。她大大方方地张开怀抱——「在雨林里长大的孩子可不习惯扭扭捏捏！博士，快过来躺在我的尾巴上睡觉，超级软和哦！」",
       "id": "eunectes_arknights_r18_cabin_bunk",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm lamp",
       "location": "罗德岛·森蚺私人舱室",
       "mood": "清爽放松",
@@ -7772,7 +7617,7 @@
         "blushing"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "A single lantern lights adult Eunectes lying alone diagonally across a narrow jungle bunk. Her cropped work shirt is lifted above bare breasts and utility shorts hang open at the hips, with a serpent tail coiled safely around one bedpost. One hand supports her head while the other moves beneath the loosened waistband between her thighs. Tools and machine sketches anchor the cabin as dark green hair frames golden eyes and a breathless grin. Horizontal intimate solo portrait, no text or extra people.",
+      "promptProse": "A single light lights adult Eunectes lying alone diagonally across a narrow jungle bunk. Her cropped work shirt is lifted above bare breasts and utility shorts hang open at the hips, with a serpent tail coiled safely around one bedpost. One hand supports her head while the other moves beneath the loosened waistband between her thighs. Tools and machine sketches anchor the cabin as dark green hair frames golden eyes and a breathless grin. Horizontal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "cabin",
         "bunk_bed",
@@ -7784,9 +7629,7 @@
         "bare_shoulders",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -7813,7 +7656,7 @@
       ],
       "description": "【森蚺 · 驾驶座】巨型机甲狭窄而封闭的专属驾驶座舱内，只着单薄内衬的森蚺跨坐在主驾驶位上，额头上的护目镜推到发间。她一把将你拉进驾驶舱将舱门锁死——「这里的空间虽然小……但隔音效果是全罗德岛最好的。今晚，就让我们在驾驶座上做个彻底的性能测试吧！」",
       "id": "eunectes_arknights_r18_mech_seat",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "cockpit instrument glow",
       "location": "机甲驾驶舱",
       "mood": "私密空间",
@@ -7903,9 +7746,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7996,7 +7837,6 @@
         "clean_face",
         "combs",
         "daylight",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "hair_salon",
@@ -8006,7 +7846,6 @@
         "striped_shirt",
         "stylist",
         "twin_ponytails",
-        "volumetric_lighting",
         "wiping_tools",
         "arranging_tools"
       ],
@@ -8092,7 +7931,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "flowers",
@@ -8100,7 +7938,6 @@
         "medium_shot",
         "morning",
         "plants",
-        "volumetric_lighting",
         "watering",
         "marigolds",
         "watering_can",
@@ -8189,7 +8026,6 @@
         "cat_ears",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "grass",
@@ -8200,7 +8036,6 @@
         "oversized",
         "pleated_skirt",
         "sketchbook",
-        "volumetric_lighting",
         "sitting_cross_legged",
         "holding_letter"
       ],
@@ -8302,8 +8137,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field",
         "upper_body"
       ],
       "recommendedSize": "1152x1536",
@@ -8401,9 +8234,7 @@
         "medium_shot",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "detailed_background",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -8514,9 +8345,7 @@
         "soft_lighting",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -8539,7 +8368,7 @@
       "characterId": "goldenglow_arknights",
       "description": "【澄闪 · 打烊之后】深夜熄灯打烊后的理发店内唯有梳妆镜前留着一盏暖灯。坐在理发皮椅上的苏茜将单薄衬衫解开大半，雪白娇嫩的双峰因紧张而泛着诱人的粉红。微弱的静电在她娇躯上噼啪作响——「博士……身体里的静电突然变得好强烈……请握紧我的手，帮我疏导一下……」",
       "id": "goldenglow_arknights_r18_library_close",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "single warm lamp",
       "location": "维多利亚理发沙龙",
       "mood": "静谧私语",
@@ -8606,9 +8435,7 @@
         "warm_lamp",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8633,7 +8460,7 @@
       "characterId": "goldenglow_arknights",
       "description": "【澄闪 · 花瓣浴】洒满新鲜玫瑰花瓣的温热浴缸里，苏茜赤身泡在清澈的水中，纤细娇柔的双臂搭在浴缸边沿，湿漉漉的粉色猫耳害羞地紧紧贴在头顶。她红着脸将下巴藏在水面下——「博士……水里漂着好多香香的花瓣呢。能进来……帮苏茜洗头发吗？」",
       "id": "goldenglow_arknights_r18_bath_flowers",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft candlelit bathroom",
       "location": "罗德岛干员浴室",
       "mood": "芬芳慵懒",
@@ -8690,9 +8517,7 @@
         "steam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8716,7 +8541,7 @@
       "characterId": "goldenglow_arknights",
       "description": "【澄闪 · 床头灯】温馨寝室内微弱的床头灯下，苏茜靠在床头的大软枕上，滑落的被角将她纤细诱人的身段与白皙大腿暴露无遗。她抱着膝盖红着脸向你伸手——「屋子里好安静，静电把被子弄得噼里啪啦的……博士，可以钻进被窝里抱紧我吗？」",
       "id": "goldenglow_arknights_r18_bed_lamp",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bedside lamp",
       "location": "罗德岛·澄闪宿舍",
       "mood": "温软居家",
@@ -8807,9 +8632,7 @@
         "hugging_knees",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8837,7 +8660,7 @@
       ],
       "description": "【澄闪 · 花房夜香】深夜万籁俱寂的温室花房深处，赤身坐在厚厚花草间的苏茜指尖轻捻着一片芳香的粉色花瓣，眼波流转满含春意。她柔柔地靠进你的怀里——「夜晚的花香比白天更浓郁呢……博士，今晚就在这片花海里，一直陪着苏茜好不好？」",
       "id": "goldenglow_arknights_r18_greenhouse_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight through glass",
       "location": "罗德岛花房",
       "mood": "幽香朦胧",
@@ -8911,8 +8734,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8990,15 +8812,13 @@
         "clean_face",
         "container",
         "dawn",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "harbor",
         "leaning",
         "mist",
         "red_clothes",
-        "trench_coat",
-        "volumetric_lighting"
+        "trench_coat"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -9084,7 +8904,6 @@
         "bodysuit",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dusk",
         "dynamic_lighting",
@@ -9100,7 +8919,6 @@
         "smooth_thighs",
         "thighhighs",
         "twilight",
-        "volumetric_lighting",
         "waves"
       ],
       "recommendedSize": "1152x1536",
@@ -9179,7 +8997,6 @@
         "cinematic_lighting",
         "clean_face",
         "deck",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "high_boots",
@@ -9188,7 +9005,6 @@
         "red_clothes",
         "sea",
         "ship",
-        "volumetric_lighting",
         "wind",
         "standing",
         "blanket",
@@ -9287,7 +9103,6 @@
         "cinematic_lighting",
         "clean_face",
         "cross_legged_sitting",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "greatsword",
@@ -9295,8 +9110,7 @@
         "red_clothes",
         "reef",
         "sea",
-        "sitting",
-        "volumetric_lighting"
+        "sitting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -9371,7 +9185,7 @@
         "two people"
       ],
       "outfitId": "quiet_barista_uniform",
-      "promptProse": "In the dimmest corner of the noisy Iberian tavern at night, Skadi sits alone at the worn wooden table, one hand propping up her chin, her untouched glass of dark rum standing before her in the weak amber light, eyes lowered and distant as the chatter of the crowd seems not to reach her at all. The weak amber light of the tavern lanterns pools on the worn tabletop, leaving her corner in quiet shadow.",
+      "promptProse": "In the dimmest corner of the noisy Iberian tavern at night, Skadi sits alone at the worn wooden table, one hand propping up her chin, her untouched glass of dark rum standing before her in the weak amber light, eyes lowered and distant as the chatter of the crowd seems not to reach her at all. The weak amber light of the tavern lights pools on the worn tabletop, leaving her corner in quiet shadow.",
       "promptTokens": [
         "apron",
         "atmospheric",
@@ -9383,7 +9197,6 @@
         "clean_face",
         "combat_boots",
         "corner",
-        "depth_of_field",
         "detailed_background",
         "drink",
         "dynamic_lighting",
@@ -9393,7 +9206,6 @@
         "sitting",
         "soft_lighting",
         "tavern",
-        "volumetric_lighting",
         "white_shirt"
       ],
       "recommendedSize": "1152x1536",
@@ -9437,7 +9249,6 @@
         "chiffon",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "evening_gown",
@@ -9448,7 +9259,6 @@
         "standing",
         "strapless",
         "velvet",
-        "volumetric_lighting",
         "window",
         "touching_glass",
         "fogged_window",
@@ -9479,7 +9289,7 @@
       ],
       "description": "【斯卡蒂 · 舱室解发】昏暗的船舱大床上，褪去厚重风衣与皮手套的斯卡蒂坐在床沿，抬手解开发绳，瀑布般的银发如银河倾泻铺满雪白的香肩。她深红色的眼眸中泛起醉人的柔光——「深海的血脉让我力大无穷……但面对你的时候，我只想把最柔软脆弱的一面献给你。」",
       "id": "skadi_arknights_r18_cabin_rope",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim warm lamp",
       "location": "罗德岛舱室",
       "mood": "卸下警惕",
@@ -9538,17 +9348,14 @@
         "melancholy_blush"
       ],
       "outfitId": "cozy_orca_loungewear",
-      "promptProse": "A ship cabin lantern illuminates adult Skadi seated alone on a narrow bunk, nude except for dark thigh straps and a loose red cord. She loops the cord around one wrist and a raised knee under her own control, pulling it taut with one hand while the other touches herself between folded legs. Her greatsword lies sheathed against the far wall. Long silver hair frames red eyes, damp skin and a quiet blush against weathered timber. Vertical maritime solo portrait, no text or extra people.",
+      "promptProse": "A ship cabin light illuminates adult Skadi seated alone on a narrow bunk, nude except for dark thigh straps and a loose red cord. She loops the cord around one wrist and a raised knee under her own control, pulling it taut with one hand while the other touches herself between folded legs. Her greatsword lies sheathed against the far wall. Long silver hair frames red eyes, damp skin and a quiet blush against weathered timber. Vertical maritime solo portrait, no text or extra people.",
       "promptTokens": [
         "ship_cabin",
         "bed",
-        "candlelight",
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -9572,7 +9379,7 @@
       "characterId": "skadi_arknights",
       "description": "【斯卡蒂 · 月光海浴】夜色下波光粼粼的幽静浅海中，赤裸伫立在清凉海水中的斯卡蒂回眸凝视着你，湿漉漉的银发紧贴着光洁无瑕的后背与饱满挺翘的臀线。她向你伸出雪白的手臂——「海水的温度正好……敢脱掉衣服，和我一起沉入这片安静的海底吗？」",
       "id": "skadi_arknights_r18_sea_bath",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlit water",
       "location": "泰拉近海",
       "mood": "清冷幽美",
@@ -9647,7 +9454,7 @@
         "gentle_smile"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Cold sea mist surrounds adult Skadi reclining alone in a stone tidal bath at dusk. A soaked black wrap clings open across bare breasts while one knee rises from dark water and the other leg extends along the pool. She grips the rock edge with one hand and moves the other beneath the surface between her thighs, sending bioluminescent ripples outward. Wet silver hair and red eyes remain calm amid salt droplets and a deepening flush. Horizontal bath portrait, no text or extra people.",
+      "promptProse": "Cold sea air surrounds adult Skadi reclining alone in a stone tidal bath at dusk. A soaked black wrap clings open across bare breasts while one knee rises from dark water and the other leg extends along the pool. She grips the rock edge with one hand and moves the other beneath the surface between her thighs, sending bioluminescent ripples outward. Wet silver hair and red eyes remain calm amid salt droplets and a deepening flush. Horizontal bath portrait, no text or extra people.",
       "promptTokens": [
         "ocean_water",
         "shallow_waves",
@@ -9655,9 +9462,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -9681,7 +9486,7 @@
       "characterId": "skadi_arknights",
       "description": "【斯卡蒂 · 剑侧长夜】私密卧房的大床上，侧卧在床单间的斯卡蒂玉体横陈，指尖轻垂在床边冰冷的巨剑剑柄上。她将脸颊贴在你的胸膛上，眼眸迷离——「今夜没有猎杀也没有噩梦……博士，抱紧我，用你的体温填满我心底所有的空虚。」",
       "id": "skadi_arknights_r18_bed_sword_side",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "thin moonlight",
       "location": "罗德岛舱室",
       "mood": "警惕下的柔软",
@@ -9756,9 +9561,7 @@
         "bare_back",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -9782,7 +9585,7 @@
       "characterId": "skadi_arknights",
       "description": "【斯卡蒂 · 酒馆深夜】打烊后空无一人的昏暗酒馆包厢内，斯卡蒂背靠着粗糙的橡木酒桶席地而坐，身上的紧身连体皮衣拉链被完全拉开至小腹，丰满白皙的双峰剧烈起伏。她咬着唇瓣低语——「烈酒的后劲好像上来了……博士，今晚我允许你对我做任何事情。」",
       "id": "skadi_arknights_r18_tavern_late",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "distant neon and moonlight",
       "location": "港口小酒馆角落",
       "mood": "冷艳疏离",
@@ -9840,7 +9643,7 @@
         "loving_gaze"
       ],
       "outfitId": "standard",
-      "promptProse": "After closing time, adult Skadi sits alone sideways on a tavern bench beneath low amber lamps. Her dark coat has slipped from both shoulders and the fitted dress beneath is opened below bare breasts, while one boot rests on the seat. She holds an untouched glass in one hand and reaches beneath the skirt with the other as rain traces the window behind her. Silver hair, red eyes and cool features soften through wet lashes and flushed skin. Horizontal tavern solo portrait, no text or extra people.",
+      "promptProse": "After closing time, adult Skadi sits alone sideways on a tavern bench beneath low amber lamps. Her dark coat has slipped from both shoulders and the fitted dress beneath is opened below bare breasts, while one boot rests on the seat. She holds an untouched glass in one hand and reaches beneath the skirt with the other as traces the window behind her. Silver hair, red eyes and cool features soften through wet lashes and flushed skin. Horizontal tavern solo portrait, no text or extra people.",
       "promptTokens": [
         "seaside_tavern",
         "wooden_table",
@@ -9848,9 +9651,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -9958,7 +9759,6 @@
         "shaking_cocktail_shaker",
         "short_sleeves",
         "sleepy",
-        "volumetric_lighting",
         "white_shirt",
         "yawning"
       ],
@@ -10045,7 +9845,7 @@
         "two people"
       ],
       "outfitId": "standard",
-      "promptProse": "Standing alert in a rain-slicked Dossoles back alley at midnight, La Pluma balances her massive black scythe in one hand, her feathered hair catching cool magenta and cyan rim light as she watches the alley with razor-sharp focus.",
+      "promptProse": "Standing alert in a damp Dossoles back alley at midnight, La Pluma balances her massive black scythe in one hand, her feathered hair catching cool magenta and cyan rim light as she watches the alley with razor-sharp focus.",
       "promptTokens": [
         "alley",
         "atmospheric",
@@ -10055,7 +9855,6 @@
         "clean_face",
         "combat_ready",
         "crop_top",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "feathers",
@@ -10067,7 +9866,6 @@
         "neon_lighting",
         "night",
         "scythe",
-        "volumetric_lighting",
         "weapon",
         "standing"
       ],
@@ -10166,7 +9964,6 @@
         "curled_up",
         "daylight",
         "denim_shorts",
-        "depth_of_field",
         "detailed_background",
         "dozing",
         "dynamic_lighting",
@@ -10178,7 +9975,6 @@
         "sunny_day",
         "swimming_pool",
         "tropical",
-        "volumetric_lighting",
         "waterpark"
       ],
       "recommendedSize": "1152x1536",
@@ -10266,7 +10062,6 @@
         "cinematic_lighting",
         "clean_face",
         "cozy_indoor",
-        "depth_of_field",
         "detailed_background",
         "dozing",
         "dynamic_lighting",
@@ -10277,7 +10072,6 @@
         "pink",
         "pullover",
         "rain_window",
-        "volumetric_lighting",
         "water_drops",
         "upper_body",
         "blanket"
@@ -10373,7 +10167,6 @@
         "curled_up",
         "cushion",
         "daylight",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "hugging_cushion",
@@ -10385,8 +10178,7 @@
         "pullover",
         "rhodes_island_lounge",
         "sleeping",
-        "sofa",
-        "volumetric_lighting"
+        "sofa"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -10469,7 +10261,6 @@
         "cinematic_lighting",
         "clean_face",
         "cocktail_glass",
-        "depth_of_field",
         "detailed_background",
         "dusk",
         "dynamic_lighting",
@@ -10481,7 +10272,6 @@
         "sipping",
         "tasting",
         "twilight",
-        "volumetric_lighting",
         "white_shirt"
       ],
       "recommendedSize": "1152x1536",
@@ -10507,7 +10297,7 @@
       "characterId": "quillpen_arknights",
       "description": "【羽毛笔 · 深夜寝室】深夜紧闭的宿舍卧室内，全裸蜷坐在床沿的拉菲艾拉双颊泛着微醺的绯红，迷离的水眸带着浓浓的睡意与娇羞。她向你伸出软绵绵的小手——「博士……头晕晕的，浑身都好热……抱我到床上去睡好不好？想和博士贴贴……」",
       "id": "quillpen_arknights_r18_dorm_night",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bedside lamp glow, soft dim bedroom shadows",
       "location": "罗德岛干员寝室",
       "mood": "慵懒私密",
@@ -10602,9 +10392,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -10630,7 +10418,7 @@
       "characterId": "quillpen_arknights",
       "description": "【羽毛笔 · 氤氲私汤】热汽蒸腾的单人温泉木桶里，全裸浸泡在热水中的拉菲艾拉将下巴枕在桶沿，湿漉漉的短发垂在娇小的香肩上，水珠顺着白皙滑腻的锁骨缓缓滑落。她睡眼迷蒙地轻声呼唤——「水温好舒服……博士，能进来帮我洗羽毛吗？后背够不到呢……」",
       "id": "quillpen_arknights_r18_bath_feather",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm steamy ambient glow, glistening water reflections",
       "location": "罗德岛私密浴室",
       "mood": "湿润微醺",
@@ -10710,7 +10498,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Steam softens a cedar bath where adult Quillpen reclines alone on a submerged bench. A wet white camisole clings translucent across bare breasts and one raised knee catches drifting feathers. She draws a long feather along her own collarbone with one hand while the other touches herself below the water, each tremor sending ripples toward a lantern. Damp auburn hair frames green eyes, reddened ears and a breathless smile. Compact three-quarter bath portrait, no text or extra people.",
+      "promptProse": "Steam softens a cedar bath where adult Quillpen reclines alone on a submerged bench. A wet white camisole clings translucent across bare breasts and one raised knee catches drifting feathers. She draws a long feather along her own collarbone with one hand while the other touches herself below the water, each tremor sending ripples toward a light. Damp auburn hair frames green eyes, reddened ears and a breathless smile. Compact three-quarter bath portrait, no text or extra people.",
       "promptTokens": [
         "hot_spring",
         "onsen",
@@ -10718,9 +10506,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -10748,7 +10534,7 @@
       ],
       "description": "【羽毛笔 · 包厢微醺】酒吧私密包厢柔软的真皮大沙发上，全裸侧卧的拉菲艾拉慵懒地舒展着娇小匀称的曼妙身躯，雪白的双乳与圆润的翘臀毫无遮掩地展露在外。她咬着手指小声呢喃——「博士一直在看我的身体呢……只要是博士的话，想摸哪里都可以哦……」",
       "id": "quillpen_arknights_r18_couch_letter",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim amber floor lamp, subtle neon leakage, luxurious cozy shadows",
       "location": "多索雷斯酒吧包厢",
       "mood": "沉溺微醺",
@@ -10815,7 +10601,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Rain taps the window behind adult Quillpen lying alone diagonally across a common-room couch. Her postal jacket is open and shirt lifted above bare breasts while one stocking rolls below the knee. She reads a private letter in one hand and lets the other slip beneath her skirt between her thighs, creasing the paper with each breath. Auburn hair and soft feathers frame green eyes, wet lashes and a helpless blush. Horizontal letter-lit solo portrait, no text or extra people.",
+      "promptProse": "Adult Quillpen is lying alone diagonally across a common-room couch. Her postal jacket is open and shirt lifted above bare breasts while one stocking rolls below the knee. She reads a private letter in one hand and lets the other slip beneath her skirt between her thighs, creasing the paper with each breath. Auburn hair and soft feathers frame green eyes, wet lashes and a helpless blush. Horizontal letter-lit solo portrait, no text or extra people.",
       "promptTokens": [
         "bar_lounge",
         "velvet_couch",
@@ -10823,9 +10609,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -10850,7 +10634,7 @@
       "characterId": "quillpen_arknights",
       "description": "【羽毛笔 · 海景窗夜】多索雷斯高层酒店巨大的全景落地窗前，俯瞰着下方璀璨的海景灯火。全裸倚靠在玻璃窗旁的拉菲艾拉睡眼迷蒙地回眸注视着你，修长白皙的双腿微微交叠——「外面的灯光好漂亮……但拉菲艾拉最喜欢的，还是博士温暖的怀抱。」",
       "id": "quillpen_arknights_r18_moon_roof",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "cool blue moonlight, city neon rim glow, soft starry sky",
       "location": "多索雷斯海景套房",
       "mood": "澄澈私密",
@@ -10943,9 +10727,7 @@
         "bare_shoulders",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -11030,7 +10812,6 @@
         "cinematic_lighting",
         "clean_face",
         "daylight",
-        "depth_of_field",
         "desk",
         "detailed_background",
         "dynamic_lighting",
@@ -11046,7 +10827,6 @@
         "smooth_thighs",
         "sneakers",
         "thighhighs",
-        "volumetric_lighting",
         "white_clothes",
         "white_jacket"
       ],
@@ -11129,7 +10909,6 @@
         "cinematic_lighting",
         "clean_face",
         "counter",
-        "depth_of_field",
         "detailed_background",
         "drink",
         "dynamic_lighting",
@@ -11137,8 +10916,7 @@
         "laughing",
         "medium_shot",
         "night",
-        "raising_glass",
-        "volumetric_lighting"
+        "raising_glass"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -11210,7 +10988,7 @@
         "two people"
       ],
       "outfitId": "city_rider",
-      "promptProse": "On the wind-whipped edge of a Lungmen skyscraper rooftop at dusk, Exusiai crouches on one knee atop the guardrail, one hand shading her eyes as she scans the traffic far below, her eight recoil arms and golden wings catching the orange sunset light. The orange sunset light catches her golden wings while the city traffic far below threads through the evening haze.",
+      "promptProse": "On the wind-whipped edge of a Lungmen skyscraper rooftop at dusk, Exusiai crouches on one knee atop the guardrail, one hand shading her eyes as she scans the traffic far below, her eight recoil arms and golden wings catching the orange sunset light. The orange sunset light catches her golden wings while the city traffic far below threads through the evening air.",
       "promptTokens": [
         "atmospheric",
         "baseball_cap",
@@ -11219,7 +10997,6 @@
         "clean_face",
         "crouching",
         "delivery_uniform",
-        "depth_of_field",
         "detailed_background",
         "dusk",
         "dynamic_lighting",
@@ -11233,7 +11010,6 @@
         "shorts",
         "sneakers",
         "twilight",
-        "volumetric_lighting",
         "white_clothes"
       ],
       "recommendedSize": "1152x1536",
@@ -11316,7 +11092,6 @@
         "clean_face",
         "crowd",
         "daylight",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "full_body",
@@ -11327,7 +11102,6 @@
         "soft_lighting",
         "sneakers",
         "street",
-        "volumetric_lighting",
         "cargo_pants",
         "delivery_uniform"
       ],
@@ -11415,7 +11189,6 @@
         "black_shirt",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "hoodie",
@@ -11430,7 +11203,6 @@
         "sneakers",
         "sunlight",
         "thighhighs",
-        "volumetric_lighting",
         "white_clothes",
         "white_jacket"
       ],
@@ -11512,7 +11284,6 @@
         "black_clothes",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "evening",
@@ -11525,7 +11296,6 @@
         "reflective",
         "street",
         "tactical",
-        "volumetric_lighting",
         "waiting",
         "tactical_boots"
       ],
@@ -11550,7 +11320,7 @@
       "characterId": "exusiai_arknights",
       "description": "【能天使 · 公寓沙发】深夜安全屋客厅的沙发上，能天使毫无防备地瘫倒在软垫间，宽松的红色连帽 T 恤领口完全歪斜，大片雪白丰满的胸脯与平坦紧致的小腹一览无遗。她微红着脸抓起枕头砸向你——「喂！眼睛往哪儿瞄呢！……虽然平时称呼你为老板，但今晚允许你做一些老板之外的事情哦。」",
       "id": "exusiai_arknights_r18_apartment_couch",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm TV light",
       "location": "龙门公寓",
       "mood": "松弛亲昵",
@@ -11630,9 +11400,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -11656,7 +11424,7 @@
       "characterId": "exusiai_arknights",
       "description": "【能天使 · 泡泡浴】装满丰富泡沫的宽大浴缸里，能天使整个人趴在浴缸沿旁，指尖欢快地戳破一个又一个飞起的七彩肥皂泡。白皙滑腻的香肩在水雾中泛着红晕——「老板快来看！这个泡泡吹得超级大！……一个人洗澡好无聊啊，要不要进来和我一起打水仗？」",
       "id": "exusiai_arknights_r18_bath_bubbles",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bathroom glow",
       "location": "龙门近卫局宿舍浴室",
       "mood": "俏皮放松",
@@ -11722,9 +11490,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -11751,7 +11517,7 @@
       ],
       "description": "【能天使 · 深夜卧室】深夜大床上，只穿着单薄内裤的能天使趴在松软的枕头堆里玩手机游戏，修长匀称的雪白大腿高高翘起在半空中欢快地晃动。感觉到你上床的动静，她翻过身一把将你拽倒——「嘿嘿，抓住你了！今晚通宵联机……还是做点比游戏更刺激的心跳挑战呢？」",
       "id": "exusiai_arknights_r18_bed_late",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "phone glow and dim lamp",
       "location": "龙门近卫局宿舍",
       "mood": "轻松日常",
@@ -11830,9 +11596,7 @@
         "bent_knees",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -11856,7 +11620,7 @@
       "characterId": "exusiai_arknights",
       "description": "【能天使 · 窗畔夜饮】公寓落地窗前俯瞰着整座城市的夜景，全裸盘腿坐在木地板上的能天使将一杯冒着气泡的冰镇苹果酒递到你面前，头顶光环将她火辣健美的胴体镀上了一层梦幻的金光——「为了今夜唯独属于我们两个人的狂欢……干杯！老板，准备好接受来自天使的最高洗礼了吗？」",
       "id": "exusiai_arknights_r18_rooftop_drinks",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "city lights",
       "location": "龙门近卫局宿舍窗畔",
       "mood": "畅快亲近",
@@ -11931,9 +11695,7 @@
         "breeze",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -12017,7 +11779,6 @@
         "bare_legs",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "garden",
@@ -12027,7 +11788,6 @@
         "morning",
         "nine_tails",
         "soft_lighting",
-        "volumetric_lighting",
         "walking",
         "white_clothes",
         "white_dress"
@@ -12117,7 +11877,6 @@
         "boots",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "fox_ears",
@@ -12129,7 +11888,6 @@
         "pleated_skirt",
         "reading",
         "sitting",
-        "volumetric_lighting",
         "white_clothes",
         "medium_close_up"
       ],
@@ -12211,7 +11969,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "food_box",
@@ -12221,7 +11978,6 @@
         "medium_shot",
         "snow",
         "visit",
-        "volumetric_lighting",
         "white_clothes",
         "winter",
         "office_door",
@@ -12310,7 +12066,6 @@
         "backpack",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "explorer",
@@ -12324,8 +12079,7 @@
         "lily_of_the_valley",
         "offering_flower",
         "soft_lighting",
-        "squatting",
-        "volumetric_lighting"
+        "squatting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -12406,7 +12160,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "kimono",
@@ -12417,7 +12170,6 @@
         "tea",
         "tea_bowl",
         "veranda",
-        "volumetric_lighting",
         "holding_tea_bowl"
       ],
       "recommendedSize": "1152x1536",
@@ -12495,7 +12247,6 @@
         "clean_face",
         "cozy",
         "curled_up",
-        "depth_of_field",
         "detailed_background",
         "dorm",
         "dynamic_lighting",
@@ -12507,7 +12258,6 @@
         "nine_tails",
         "pajamas",
         "pastel",
-        "volumetric_lighting",
         "wrapped_in_tails",
         "covered_by_tails"
       ],
@@ -12532,7 +12282,7 @@
       "characterId": "suzuran_arknights",
       "description": "【铃兰 · 和服微敞】和室幽暗的烛光下，跪坐在柔软草席上的丽萨小和服衣襟悄然微敞，露出纤细雪白的锁骨与娇嫩如凝脂的肌肤。九条毛茸茸的金色尾巴害羞地轻轻护在身前，她红透了小脸仰望你——「博士……丽萨是大家的光芒……但在今夜，丽萨只想做博士一个人专属的小狐狸。」",
       "id": "suzuran_arknights_r18_kimono_slip",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "candlelight",
       "location": "罗德岛·铃兰宿舍",
       "mood": "青涩旖旎",
@@ -12590,7 +12340,7 @@
         "heavy_blush"
       ],
       "outfitId": "small_kimono",
-      "promptProse": "Lanterns warm a private garden room where the unmistakably adult, age-twenty-plus Suzuran kneels alone on tatami. Her mature white-and-gold kimono has slipped from both shoulders and opens beneath bare breasts, while nine full fox tails curve behind her without covering her hands. She holds the loosened obi with one hand and touches herself beneath the robe with the other. Pale hair, fox ears and golden eyes remain clearly adult through wet lashes and a deep blush. Vertical solo portrait, no text or extra people.",
+      "promptProse": "Lights warm a private garden room where the unmistakably adult, age-twenty-plus Suzuran kneels alone on tatami. Her mature white-and-gold kimono has slipped from both shoulders and opens beneath bare breasts, while nine full fox tails curve behind her without covering her hands. She holds the loosened obi with one hand and touches herself beneath the robe with the other. Pale hair, fox ears and golden eyes remain clearly adult through wet lashes and a deep blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "tatami_room",
         "futon",
@@ -12598,9 +12348,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -12627,7 +12375,7 @@
       ],
       "description": "【铃兰 · 九尾环绕】宽大舒适的床榻上，赤身侧卧的丽萨将九条蓬松温暖的金色狐尾完全舒展开来，温柔地将你整个人环抱进毛茸茸的尾巴丛深处。她把滚烫的小脸贴在你的掌心里——「被尾巴紧紧抱住的时候……博士就不会觉得孤单和冷了对吧？请尽情摸摸丽萨的尾巴吧。」",
       "id": "suzuran_arknights_r18_tails_wrap",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight",
       "location": "罗德岛·铃兰宿舍",
       "mood": "柔软依恋",
@@ -12695,9 +12443,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -12721,7 +12467,7 @@
       "characterId": "suzuran_arknights",
       "description": "【铃兰 · 汤泉九尾】热汽缭绕的天然岩石温泉池边，丽萨整个人趴在光滑的池石沿旁，九条湿漉漉的金色长尾巴搭在石岸上，水珠顺着她娇小玲珑的身躯滑落。她羞涩地回过头——「温泉把尾巴泡得好重好软……博士，能进来帮丽萨把尾巴上的水擦干吗？」",
       "id": "suzuran_arknights_r18_spring_bath",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "steam and lantern light",
       "location": "泰拉温泉",
       "mood": "湿润柔软",
@@ -12788,9 +12534,7 @@
         "bamboo",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -12814,7 +12558,7 @@
       "characterId": "suzuran_arknights",
       "description": "【铃兰 · 晨榻】清晨温暖的阳光透过窗纸洒在榻榻米上，丽萨裹着被角揉着睡眼惺忪的双眸，单薄的睡衣滑落露出圆润小巧的香肩。九条大尾巴在晨光中伸了个大大的懒腰——「唔……早安，博士。昨晚在博士温暖的怀里睡得超级安心……今天也可以一直陪着丽萨吗？」",
       "id": "suzuran_arknights_r18_futon_morning",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "pale morning light",
       "location": "罗德岛·铃兰宿舍",
       "mood": "初醒娇憨",
@@ -12890,9 +12634,7 @@
         "bare_shoulders",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -12949,7 +12691,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "double-breasted",
         "dynamic_lighting",
@@ -13025,7 +12766,6 @@
         "cargo_pants",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dust",
         "dynamic_lighting",
@@ -13038,7 +12778,6 @@
         "sword_on_back",
         "trench_coat",
         "turtleneck",
-        "volumetric_lighting",
         "walking",
         "wasteland",
         "wilderness",
@@ -13104,7 +12843,6 @@
         "crop_top",
         "cropped_jacket",
         "denim_shorts",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "electric_guitar",
@@ -13226,9 +12964,7 @@
         "wine",
         "wine_glass",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -13325,7 +13061,6 @@
         "dynamic_lighting",
         "bamboo",
         "chinese_clothes",
-        "daylight",
         "gourd",
         "hanfu",
         "loungewear",
@@ -13337,9 +13072,7 @@
         "sleepy",
         "wine",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -13441,9 +13174,7 @@
         "wide_sleeves",
         "wind",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -13548,7 +13279,6 @@
         "wide_sleeves",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -13654,8 +13384,6 @@
         "wind",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "outstretched_arm",
         "meteor"
       ],
@@ -13762,7 +13490,6 @@
         "wine_glass",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -13791,7 +13518,7 @@
       ],
       "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
       "id": "ling_arknights_r18_royal_chamber",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm candlelight, flickering red candle glow, soft silk shadows",
       "location": "岁府寝殿",
       "mood": "慵懒私密",
@@ -13872,7 +13599,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Jade lanterns illuminate adult Ling seated alone on a broad daybed in a Yan chamber. Her blue-black robe has fallen open and gathered below bare breasts while one long leg folds beneath her and the other rests on the floor. She lifts a wine cup with one hand and reaches beneath the loosened silk with the other, making blue dragon smoke curl around the bedposts. Indigo hair, horns and crimson eyes hold a languid, knowing blush. Vertical intimate solo portrait, no text or extra people.",
+      "promptProse": "Jade lights illuminate adult Ling seated alone on a broad daybed in a Yan chamber. Her blue-black robe has fallen open and gathered below bare breasts while one long leg folds beneath her and the other rests on the floor. She lifts a wine cup with one hand and reaches beneath the loosened silk with the other, making blue dragon smoke curl around the bedposts. Indigo hair, horns and crimson eyes hold a languid, knowing blush. Vertical intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "palace_bedroom",
         "canopy_bed",
@@ -13880,9 +13607,7 @@
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -13908,7 +13633,7 @@
       "characterId": "ling_arknights",
       "description": "【令 · 玉池汤沐】岁府汤室的玉池水汽氤氲，青瓷香炉吐着袅袅白烟。令倚着白玉池壁，全裸的身子浸在温水中，湿漉漉的蓝发贴着光裸的脊背垂入池面，指尖有一搭没一搭地拨弄着水面漂浮的桃花瓣。她眯起蓝瞳，声音懒洋洋的——「水温正好，雾气也正好……博士，要下来一起泡一会儿吗？」",
       "id": "ling_arknights_r18_jade_bath",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm candlelight through carved lattice, incense smoke, glistening jade pool reflections",
       "location": "岁府玉池汤室",
       "mood": "湿润微醺",
@@ -13989,17 +13714,15 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Green moonlight crosses adult Ling reclining alone in a carved jade bath. A soaked translucent robe clings open across bare breasts, one knee rises from the water and a blue tail coils along the far rim. She balances a wine cup on the stone with one hand and lets the other move beneath the ripples between her thighs. Indigo hair and horns frame crimson eyes, damp lips and a dreamy flush among drifting petals. Horizontal bath portrait, no text or extra people.",
+      "promptProse": "Green light crosses adult Ling reclining alone in a carved jade bath. A soaked translucent robe clings open across bare breasts, one knee rises from the water and a blue tail coils along the far rim. She balances a wine cup on the stone with one hand and lets the other move beneath the ripples between her thighs. Indigo hair and horns frame crimson eyes, damp lips and a dreamy flush among drifting petals. Horizontal bath portrait, no text or extra people.",
       "promptTokens": [
         "jade_pool",
         "hot_spring",
         "steam",
-        "lantern_light",
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -14026,7 +13749,7 @@
       "characterId": "ling_arknights",
       "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
       "id": "ling_arknights_r18_silk_curtain",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "cool blue moonlight through lattice window, sheer curtain shadows, silver rim light",
       "location": "岁府寝殿窗边",
       "mood": "澄澈私密",
@@ -14109,7 +13832,7 @@
         "blushing"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Night wind lifts a silk curtain around adult Ling standing alone beside a high lattice window. Her loose blue robe is tied only at the waist and opens across bare breasts, while one thigh presses against the curtain to compact the pose. She catches the fabric above her head with one hand and slips the other beneath the sash between her legs, summoning a narrow ribbon of dragon mist. Indigo hair, horns and red eyes glow through a wine-warm blush. Vertical solo portrait, no text or extra people.",
+      "promptProse": "Night wind lifts a silk curtain around adult Ling standing alone beside a high lattice window. Her loose blue robe is tied only at the waist and opens across bare breasts, while one thigh presses against the curtain to compact the pose. She catches the fabric above her head with one hand and slips the other beneath the sash between her legs, summoning a narrow ribbon of dragon air. Indigo hair, horns and red eyes glow through a wine-warm blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "chinese_palace",
         "carved_window",
@@ -14123,8 +13846,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -14153,7 +13875,7 @@
       ],
       "description": "【令 · 竹林微醺】月下竹林的石台上铺着锦垫，酒盏东倒西歪。全裸的令半醉半醒地侧卧在锦垫上，脸颊浮着薄红，龙角沾着夜色，蓝发散落在竹叶间。她伸手勾住你的衣角，声音软得像化开的酒——「今夜月色这么好……陪我再喝一杯，好不好？」",
       "id": "ling_arknights_r18_bamboo_grove",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight filtered through bamboo leaves, dappled silver shadows, soft mist",
       "location": "岁府后山竹林",
       "mood": "迷离微醺",
@@ -14236,7 +13958,7 @@
         "alluring_smile"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "Rain darkens a bamboo pavilion where adult Ling reclines alone on a low lacquer bench. Her soaked robe lies open and gathered at the hips, exposing bare breasts above one leg extended along the seat and the other folded inward. She holds a brush over an unfinished poem with one hand and touches herself beneath the silk with the other, turning ink into blue smoke. Long indigo hair and horns frame red eyes, wet skin and an amused blush. Horizontal environmental solo portrait, no text or extra people.",
+      "promptProse": "Adult Ling reclines alone on a low lacquer bench. Her soaked robe lies open and gathered at the hips, exposing bare breasts above one leg extended along the seat and the other folded inward. She holds a brush over an unfinished poem with one hand and touches herself beneath the silk with the other, turning ink into blue smoke. Long indigo hair and horns frame red eyes, wet skin and an amused blush. Horizontal environmental solo portrait, no text or extra people.",
       "promptTokens": [
         "bamboo_grove",
         "stone_bench",
@@ -14250,8 +13972,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -14314,9 +14035,7 @@
         "wide_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -14381,9 +14100,7 @@
         "dynamic_angle",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14447,9 +14164,7 @@
         "cowboy_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14513,9 +14228,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14580,9 +14293,7 @@
         "medium_shot",
         "slightly_low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14647,9 +14358,7 @@
         "wolf_tail",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14715,9 +14424,7 @@
         "dynamic_angle",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -14808,9 +14515,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -14904,9 +14609,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -14994,9 +14697,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -15025,7 +14726,7 @@
       ],
       "description": "【成年德克萨斯 · 蒸汽淋浴独处】成年德克萨斯独自在私人淋浴间靠住湿墙，一脚踩上低凳。湿白衬衫半透明敞开，她一手撑墙、一手循水流探向腿间，黑色狼尾在身后避开双腿，琥珀眼睛于雾气里保持克制。",
       "id": "texas_r18_shower_steam_wall_press",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "浴室顶灯透过水雾的柔光与水滴反光",
       "location": "现代豪华浴室磨砂玻璃淋浴房",
       "mood": "炽热缠绵",
@@ -15084,8 +14785,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -15135,7 +14835,7 @@
         "explicit"
       ],
       "outfitId": "standard_mercenary",
-      "promptProse": "Leaping through the air amidst the moonlit crumbling arches of an ancient Roman amphitheater in Siracusa, Lappland unleashes her berserk twin-blade Arts. Her wild layered white-silver hair and fluffy wolf tail thrash violently in the night wind as jagged pale blue Originium lightning crackles across her dual serrated swords. The blood-red harvest moon casts an eerie crimson glow across the ancient stonework and her pale, manic face grinning with predatory sharp fangs. An electrifying low-angle action shot delivers supreme kinetic energy, crackling volumetric lightning, and unmatched anime key visual intensity.",
+      "promptProse": "Leaping through the air amidst the moonlit crumbling arches of an ancient Roman amphitheater in Siracusa, Lappland unleashes her berserk twin-blade Arts. Her wild layered white-silver hair and fluffy wolf tail thrash violently in the night wind as jagged pale blue Originium lightning crackles across her dual serrated swords. The blood-red harvest moon casts an eerie crimson glow across the ancient stonework and her pale, manic face grinning with predatory sharp fangs. An electrifying low-angle action shot delivers supreme kinetic energy, crackling lightning, and unmatched anime key visual intensity.",
       "promptTokens": [
         "ruins",
         "colosseum",
@@ -15153,9 +14853,7 @@
         "wide_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -15221,9 +14919,7 @@
         "content_smile",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15286,9 +14982,7 @@
         "cowboy_shot",
         "medium_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15356,9 +15050,7 @@
         "sharp_teeth",
         "toothy_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15426,9 +15118,7 @@
         "dynamic_angle",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15492,9 +15182,7 @@
         "medium_shot",
         "dynamic_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15558,9 +15246,7 @@
         "cowboy_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -15656,9 +15342,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -15694,7 +15378,7 @@
       ],
       "description": "【成年拉普兰德 · 红月寝室的自我支配】成年拉普兰德独自跨坐雕花木椅，破损黑外套与蕾丝上衣褪至胸下。她咬住腿带，一手抓紧椅背，另一手在腿间自抚；白发、狼耳与躁动尾巴被红月勾出锋利轮廓。",
       "id": "lappland_r18_gothic_bedchamber_domination",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "红天鹅绒床幔间的暖红烛光与幽暗阴影",
       "location": "叙拉古古堡深红天鹅绒豪华卧室大床",
       "mood": "狂暴支配",
@@ -15746,9 +15430,7 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "candlelight",
-        "volumetric_lighting",
-        "depth_of_field"
+        "candlelight"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -15835,9 +15517,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -15933,9 +15613,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -16007,9 +15685,7 @@
         "wide_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -16077,9 +15753,7 @@
         "cowboy_shot",
         "dynamic_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16144,9 +15818,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16212,8 +15884,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16278,9 +15949,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16345,8 +16014,6 @@
         "slightly_low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hand_on_chest"
       ],
       "recommendedSize": "1152x1536",
@@ -16414,8 +16081,6 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "one_knee"
       ],
       "recommendedSize": "1536x1152",
@@ -16505,9 +16170,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -16594,9 +16257,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -16689,9 +16350,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -16787,9 +16446,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -16835,9 +16492,7 @@
         "afternoon",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, side view of the display case and the pointing hand",
       "lighting": "甜品店侧窗柔和日光",
@@ -16900,9 +16555,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, one hanging scroll and both hands within the frame",
       "lighting": "室内纸灯映出画纸纹理的暖光",
@@ -16966,9 +16619,7 @@
         "oven_glow",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, worktop at waist height with tray and gloved hands visible",
       "lighting": "清晨窗光与烤箱余光",
@@ -17032,9 +16683,7 @@
         "sunlight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, bench and upright skateboard with wheel adjustment visible",
       "lighting": "街头广场清透的午后日光",
@@ -17660,8 +17309,7 @@
         "nipples",
         "wet",
         "blush",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Submerged to her hips in a secluded volcanic hot spring surrounded by Sami snowbanks, Typhon lets her damp linen bath towel slip down into the steamy water. The warm mineral water glistens over her natural firm breasts, erect pink nipples, and wild hunter physique in the lantern light. She hugs her arms shyly against her chest as a deep blush warms her cheeks.",
       "negativeTokens": [
@@ -17727,7 +17375,7 @@
       ],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@anmi",
       "nsfwTokens": [
@@ -17771,8 +17419,7 @@
         "nipples",
         "navel",
         "blush",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Standing beside the radiant radiator in her private Rhodes Island quarters, Typhon awkwardly lifts the hem of her oversized green sweater up above her bust. Unadorned by any underwear, her supple breasts, perky pink nipples, and taut belly are revealed to the warm room. She bites her lower lip in nervous innocence, her curved black horns trembling slightly as she looks up.",
       "negativeTokens": [
@@ -17836,7 +17483,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@tsunako",
       "nsfwTokens": [
@@ -17880,8 +17527,7 @@
         "breasts",
         "nipples",
         "bare_legs",
-        "full_body",
-        "depth_of_field"
+        "full_body"
       ],
       "promptProse": "Completely naked and resting atop a thick pile of white polar bear furs inside a heated hunting yurt, Typhon reclines gracefully on her side. Warm yellow hearth fire illuminates her athletic yet delicate curves, firm breasts, rosy nipples, and smooth bare thighs. Her pale lavender braids spill across the fur rug as she stretches like a contented feline.",
       "negativeTokens": [
@@ -17945,7 +17591,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "nsfwTokens": [
@@ -17991,8 +17637,7 @@
         "knees_up",
         "breasts",
         "nipples",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Lying on her back across a wooden bunk beneath a large skylight showing the shimmering green aurora, Typhon draws her bare knees upward and spreads her thighs in sweet surrender. The ethereal celestial glow bathes her full breasts, pink nipples, exposed navel, and glistening intimate folds in magical light. Her pink-magenta eyes look into yours with pure, untamed passion.",
       "negativeTokens": [
@@ -18056,7 +17701,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "adultArtistHint": "@anmi",
       "nsfwTokens": [

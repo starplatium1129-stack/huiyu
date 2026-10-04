@@ -41,7 +41,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "one_knee",
         "brooch_at_chest"
       ],
@@ -99,9 +98,7 @@
         "morning",
         "close-up",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -158,8 +155,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -217,7 +213,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -261,7 +256,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "festive_ballgown_dress",
-      "promptProse": "Violet Evergarden waltzes with you across a grand marble ballroom under the dazzling shimmer of crystal chandeliers. Her flowing emerald-green velvet ballgown sweeps around her in fluid waves as her silver prosthetic hand rests in your palm and her other hand settles on your shoulder. The two-person dance turns through the royal hall in warm candlelight.",
+      "promptProse": "Violet Evergarden waltzes with you across a grand marble ballroom under the dazzling shimmer of crystal chandeliers. Her flowing emerald-green velvet ballgown sweeps around her in fluid waves as her silver prosthetic hand rests in your palm and her other hand settles on your shoulder. The two-person dance turns through the royal hall in warm light.",
       "promptTokens": [
         "ballroom",
         "chandelier",
@@ -275,8 +270,6 @@
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hand_on_shoulder",
         "two_clothed_figures"
       ],
@@ -334,8 +327,6 @@
         "close-up",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -394,7 +385,6 @@
         "close-up",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field",
         "two_clothed_figures"
       ],
@@ -472,9 +462,7 @@
         "sweat",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -554,8 +542,7 @@
         "vertical_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -603,7 +590,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "nsfw_nude",
-      "promptProse": "Violet Evergarden enjoying a deeply peaceful, sensual private hot spring bath surrounded by rising steam and polished marble walls. She is completely solo, reclining gracefully against the smooth stone rim with warm geothermal water lapping around her waist. Her supple, bare porcelain breasts and pink nipples glisten with warm droplets in the soft ambient lantern glow, her long wet golden hair clinging delicately to her bare shoulders. With one silver mechanical hand resting on the wet marble and her other hand gliding softly below the water's surface to caress her glistening pink core, a breathless tremor parts her lips. Her wide sapphire eyes glisten with shy ecstasy, rich reflections on rippling water, cinematic steam atmosphere, pristine anime art style, solo 1girl, no text, no extra people.",
+      "promptProse": "Violet Evergarden enjoying a deeply peaceful, sensual private hot spring bath surrounded by rising steam and polished marble walls. She is completely solo, reclining gracefully against the smooth stone rim with warm geothermal water lapping around her waist. Her supple, bare porcelain breasts and pink nipples glisten with warm droplets in the soft ambient glow, her long wet golden hair clinging delicately to her bare shoulders. With one silver mechanical hand resting on the wet marble and her other hand gliding softly below the water's surface to caress her glistening pink core, a breathless tremor parts her lips. Her wide sapphire eyes glisten with shy ecstasy, rich reflections on rippling water, cinematic steam atmosphere, pristine anime art style, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "onsen",
@@ -632,9 +619,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -709,9 +694,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

@@ -45,9 +45,7 @@
         "window_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -115,9 +113,7 @@
         "vanity_lights",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -183,9 +179,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -261,9 +255,7 @@
         "bright_interior_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -329,9 +321,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -407,8 +397,6 @@
         "romantic",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting",
         "one_sandal_removed",
         "rubbing_ankle"
       ],
@@ -477,9 +465,7 @@
         "stage_spotlight",
         "medium_full_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -524,8 +510,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon sunlight through closed blinds, detailed otaku bedroom background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon sunlight through closed blinds, detailed otaku bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon light through closed blinds, detailed otaku bedroom background, solo 1girl, no extra people.",
+      "nsfwProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon light through closed blinds, detailed otaku bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -551,9 +537,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -599,8 +583,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, depth of field, solo 1girl, no text.",
-      "nsfwProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, depth of field, solo 1girl, no text.",
+      "promptProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, solo 1girl, no text.",
+      "nsfwProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -624,9 +608,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -661,7 +643,7 @@
       "description": "【杂志拍摄摄影棚更衣室·午后】拍摄泳装特辑时，服装师准备的比基尼尺寸偏小。山田撑在更衣台镜子前，超小的布料根本遮挡不住她过于丰满的胸部，两团软肉直接溢出大半，后背系带几乎崩断。她慌忙回头，眼角泪花闪烁——「呜……胸口好勒……系带快解开了……市川！不许笑我肉多……快帮我重新绑一下！」",
       "location": "杂志拍摄摄影棚更衣室·午后",
       "action": "撑更衣台塌腰回眸双手护胸溢乳，微型比基尼系带断裂勒肉，娇羞跺脚咬唇",
-      "timeOfDay": "深夜",
+      "timeOfDay": "afternoon",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "horizontal POV, wide shot",
       "mood": "唯美动情、私密深情",
@@ -672,8 +654,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Trapped inside a cramped photo-studio dressing room, Anna Yamada leans forward against the vanity mirror, her overflowing natural breasts hopelessly bursting out of a micro string bikini intended for a smaller model. The thin straps dig deep into her sun-kissed plush flesh, threatening to snap as her round bottom strains against the mirror frame. She glances back over her arched shoulder with mortified teary eyes and puffed cheeks, beauty mark burning bright red as she begs for help. Cinematic horizontal composition, Hollywood vanity bulb warm glow, detailed makeup room background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Trapped inside a cramped photo-studio dressing room, Anna Yamada leans forward against the vanity mirror, her overflowing natural breasts hopelessly bursting out of a micro string bikini intended for a smaller model. The thin straps dig deep into her sun-kissed plush flesh, threatening to snap as her round bottom strains against the mirror frame. She glances back over her arched shoulder with mortified teary eyes and puffed cheeks, beauty mark burning bright red as she begs for help. Cinematic horizontal composition, Hollywood vanity bulb warm glow, detailed makeup room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Trapped inside a cramped photo-studio dressing room, Anna Yamada leans forward against the vanity mirror, her overflowing natural breasts hopelessly bursting out of a micro string bikini intended for a smaller model. The thin straps dig deep into her sun-kissed plush flesh, threatening to snap as her round bottom strains against the mirror frame. She glances back over her arched shoulder with mortified teary eyes and puffed cheeks, beauty mark burning bright red as she begs for help. Cinematic horizontal composition, Hollywood vanity bulb warm glow, detailed makeup room background, solo 1girl, no extra people.",
+      "nsfwProse": "Trapped inside a cramped photo-studio dressing room, Anna Yamada leans forward against the vanity mirror, her overflowing natural breasts hopelessly bursting out of a micro string bikini intended for a smaller model. The thin straps dig deep into her sun-kissed plush flesh, threatening to snap as her round bottom strains against the mirror frame. She glances back over her arched shoulder with mortified teary eyes and puffed cheeks, beauty mark burning bright red as she begs for help. Cinematic horizontal composition, Hollywood vanity bulb warm glow, detailed makeup room background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -701,9 +683,7 @@
         "tall_female",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -738,7 +718,7 @@
       "description": "【学校图书室最深处·午休】在只有两个人知道的旧书架死角。山田背靠在书架上，修长的大腿高高撩起成年礼服百褶裙，黑丝袜被撕开一个缺口，露出粉嫩诱人的秘境。她一边含着市川给的棒棒糖，一边把手指探入深处，喉咙溢出甜腻湿热的喘息——「市川就站在书架对面吧？要是发出声音被管理员发现……我们可就完蛋了哦♪」",
       "location": "学校图书室最深处·午休",
       "action": "靠书架单腿抬起撩裙自抚，黑丝撕裂开档，口含棒棒糖失神轻喘",
-      "timeOfDay": "深夜",
+      "timeOfDay": "noon",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "vertical POV",
       "mood": "唯美动情、私密深情",
@@ -749,8 +729,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, solo 1girl, no extra people.",
+      "nsfwProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "standing",
@@ -777,9 +757,7 @@
         "tall_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

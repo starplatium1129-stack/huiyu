@@ -40,8 +40,7 @@
         "folding_fan",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -99,9 +98,7 @@
         "twintails",
         "gentle_expression",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -160,9 +157,7 @@
         "twintails",
         "cleavage",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -220,9 +215,7 @@
         "blush",
         "close_proximity",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -280,9 +273,7 @@
         "harbor_lights",
         "twintails",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -340,9 +331,7 @@
         "twintails",
         "barefoot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -400,9 +389,7 @@
         "twintails",
         "stormy_sea",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -477,9 +464,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -573,9 +558,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -647,9 +630,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -722,8 +703,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -743,7 +723,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",
@@ -795,8 +775,7 @@
         "maid_dress",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -855,9 +834,7 @@
         "cat_ear_headband",
         "fake_hair_ornament",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -917,9 +894,7 @@
         "cat_ear_headband",
         "fake_hair_ornament",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -978,9 +953,7 @@
         "fake_hair_ornament",
         "sunlight_caustics",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1039,9 +1012,7 @@
         "fake_hair_ornament",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1101,8 +1072,7 @@
         "fake_hair_ornament",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1162,9 +1132,7 @@
         "cat_ear_headband",
         "fake_hair_ornament",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1242,9 +1210,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1338,9 +1304,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1417,9 +1381,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1477,7 +1439,7 @@
         "fake_hair_ornament",
         "heavy_blush"
       ],
-      "promptProse": "Vanity lamps surround adult Cheshire standing alone beside an ornate mirror clouded to a soft gold haze. Her silk qipao is lifted above the hips and opened beneath bare breasts, one leg raised on a low stool. She holds the hem with one gloved hand and fingers herself with the other, while her cat tail curves clear of both legs. Purple hair and ears frame blue eyes, wet lashes and a flustered smile. Vertical solo portrait, no text or extra people.",
+      "promptProse": "Vanity lamps surround adult Cheshire standing alone beside an ornate mirror. Her silk qipao is lifted above the hips and opened beneath bare breasts, one leg raised on a low stool. She holds the hem with one gloved hand and fingers herself with the other, while her cat tail curves clear of both legs. Purple hair and ears frame blue eyes, wet lashes and a flustered smile. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "mirror_reflection",
         "masturbation",
@@ -1490,9 +1452,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1512,7 +1472,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",

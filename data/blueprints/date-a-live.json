@@ -41,9 +41,7 @@
         "wind",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -141,9 +139,7 @@
         "head_tilt",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -233,9 +229,7 @@
         "half_smile",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -315,9 +309,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -380,7 +372,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "dress_slip",
@@ -434,9 +426,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -535,9 +525,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -641,9 +629,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -720,7 +706,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "outfitId": "gothic_dress",
       "sceneTags": [
@@ -751,7 +737,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "vertical_shot"
       ],
       "negativeTokens": [
@@ -852,9 +837,7 @@
         "moonlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -961,9 +944,7 @@
         "moonlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1013,7 +994,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "arms_up",
@@ -1212,9 +1193,7 @@
         "full_body",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1557,9 +1536,7 @@
         "medium_shot",
         "day",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1634,9 +1611,7 @@
         "medium_shot",
         "noon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1893,7 +1868,7 @@
         "armor",
         "open_clothes"
       ],
-      "promptProse": "Tohka Yatogami from Date A Live straddles your lap upon a throne of glowing violet astral crystals, her divine armor peeled down to her hips. Her colossal, milk-white breasts bounce heavily with each innocent yet devastating downward thrust of her waist, her dusky purple eyes glowing with spirit mana and primal affection. Her floor-length inky-purple hair billows weightlessly around you both as she leans in with parted lips, crying out your name in sweet, breathless confusion. Vertical low-angle cowgirl shot, ethereal purple spirit particles and crystal reflections illuminating flawless curves, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Tohka Yatogami from Date A Live straddles your lap upon a throne of glowing violet astral crystals, her divine armor peeled down to her hips. Her colossal, milk-white breasts bounce heavily with each innocent yet devastating downward thrust of her waist, her dusky purple eyes glowing with spirit mana and primal affection. Her floor-length inky-purple hair billows weightlessly around you both as she leans in with parted lips, crying out your name in sweet, breathless confusion. Vertical low-angle cowgirl shot, ethereal purple spirit particles and crystal reflections illuminating flawless curves, detailed fantasy background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1918,9 +1893,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1945,7 +1918,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1972,11 +1945,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tohka Yatogami from Date A Live straddles your lap upon a throne of glowing violet astral crystals, her divine armor peeled down to her hips. Her colossal, milk-white breasts bounce heavily with each innocent yet devastating downward thrust of her waist, her dusky purple eyes glowing with spirit mana and primal affection. Her floor-length inky-purple hair billows weightlessly around you both as she leans in with parted lips, crying out your name in sweet, breathless confusion. Vertical low-angle cowgirl shot, ethereal purple spirit particles and crystal reflections illuminating flawless curves, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Tohka Yatogami from Date A Live straddles your lap upon a throne of glowing violet astral crystals, her divine armor peeled down to her hips. Her colossal, milk-white breasts bounce heavily with each innocent yet devastating downward thrust of her waist, her dusky purple eyes glowing with spirit mana and primal affection. Her floor-length inky-purple hair billows weightlessly around you both as she leans in with parted lips, crying out your name in sweet, breathless confusion. Vertical low-angle cowgirl shot, ethereal purple spirit particles and crystal reflections illuminating flawless curves, detailed fantasy background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2009,7 +1980,7 @@
         "water_droplets",
         "wet_skin"
       ],
-      "promptProse": "Tohka Yatogami sits inside the deep steamy tub of the Itsuka home, splashing water over her enormous breasts to rinse away sweet soy powder and cream from snack time. Droplets run down her swollen pink nipples as her fingers glide naturally beneath the water into her slick, dripping cleft, her purple eyes wide with wonder at the intoxicating sensations coursing through her spirit body. A pure, bashful smile parts her lips as she hums your name in hazy bliss. Sensual vertical framing, warm overhead bath lighting sparkling on wet porcelain skin and soapy bubbles, detailed bathroom background, depth of field, solo 1girl, no text.",
+      "promptProse": "Tohka Yatogami sits inside the deep steamy tub of the Itsuka home, splashing water over her enormous breasts to rinse away sweet soy powder and cream from snack time. Droplets run down her swollen pink nipples as her fingers glide naturally beneath the water into her slick, dripping cleft, her purple eyes wide with wonder at the intoxicating sensations coursing through her spirit body. A pure, bashful smile parts her lips as she hums your name in hazy bliss. Sensual vertical framing, warm overhead bath lighting sparkling on wet porcelain skin and soapy bubbles, detailed bathroom background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -2034,9 +2005,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2061,7 +2030,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2088,11 +2057,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tohka Yatogami sits inside the deep steamy tub of the Itsuka home, splashing water over her enormous breasts to rinse away sweet soy powder and cream from snack time. Droplets run down her swollen pink nipples as her fingers glide naturally beneath the water into her slick, dripping cleft, her purple eyes wide with wonder at the intoxicating sensations coursing through her spirit body. A pure, bashful smile parts her lips as she hums your name in hazy bliss. Sensual vertical framing, warm overhead bath lighting sparkling on wet porcelain skin and soapy bubbles, detailed bathroom background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Tohka Yatogami sits inside the deep steamy tub of the Itsuka home, splashing water over her enormous breasts to rinse away sweet soy powder and cream from snack time. Droplets run down her swollen pink nipples as her fingers glide naturally beneath the water into her slick, dripping cleft, her purple eyes wide with wonder at the intoxicating sensations coursing through her spirit body. A pure, bashful smile parts her lips as she hums your name in hazy bliss. Sensual vertical framing, warm overhead bath lighting sparkling on wet porcelain skin and soapy bubbles, detailed bathroom background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2108,7 +2075,7 @@
       "description": "【十香房间更衣镜前·早晨】因为吃了太多面包导致身材过于丰腴，穿成年礼服时侧边拉链啪的一声整条崩开。十香双手撑在穿衣镜上，制服衬衫和百褶裙彻底裂开，雪白宏伟的巨乳完全弹跳出来，裙摆卡在大腿上露出被勒紧的小熊胖次。她委屈万分地回头——「士道！十香真的没有吃胖！……快用灵力帮我把衣服修好啦！」",
       "location": "十香房间更衣镜前·早晨",
       "action": "撑穿衣镜塌腰回眸制服崩裂双乳弹出，裙卡大腿露小熊胖次，委屈嘟嘴跺脚",
-      "timeOfDay": "night",
+      "timeOfDay": "morning",
       "lighting": "warm_cinematic_lighting",
       "camera": "intimate horizontal medium shot",
       "mood": "意外失控与羞赧",
@@ -2125,7 +2092,7 @@
         "clothes_pull",
         "breast_squeeze"
       ],
-      "promptProse": "Tohka Yatogami leans forward over her full-length bedroom mirror in tragic dismay as the side zipper of her Raizen Academy uniform snaps cleanly apart. Her colossal breasts burst out of the torn blouse with magnificent force, areolas flushed deep pink, while the skirt strains helplessly over her round, shapely hips to reveal bear-print cotton panties. Looking back over her shoulder with giant purple eyes brimming with tears, she pouts in adorable panic, protesting that she hasn't gained weight. Cinematic horizontal composition, morning sunlight illuminating pale skin and torn fabric seams, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Tohka Yatogami leans forward over her full-length bedroom mirror in tragic dismay as the side zipper of her Raizen Academy uniform snaps cleanly apart. Her colossal breasts burst out of the torn blouse with magnificent force, areolas flushed deep pink, while the skirt strains helplessly over her round, shapely hips to reveal bear-print cotton panties. Looking back over her shoulder with giant purple eyes brimming with tears, she pouts in adorable panic, protesting that she hasn't gained weight. Cinematic horizontal composition, morning sunlight illuminating pale skin and torn fabric seams, detailed bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -2153,9 +2120,7 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2180,7 +2145,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2210,11 +2175,9 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Tohka Yatogami leans forward over her full-length bedroom mirror in tragic dismay as the side zipper of her Raizen Academy uniform snaps cleanly apart. Her colossal breasts burst out of the torn blouse with magnificent force, areolas flushed deep pink, while the skirt strains helplessly over her round, shapely hips to reveal bear-print cotton panties. Looking back over her shoulder with giant purple eyes brimming with tears, she pouts in adorable panic, protesting that she hasn't gained weight. Cinematic horizontal composition, morning sunlight illuminating pale skin and torn fabric seams, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Tohka Yatogami leans forward over her full-length bedroom mirror in tragic dismay as the side zipper of her Raizen Academy uniform snaps cleanly apart. Her colossal breasts burst out of the torn blouse with magnificent force, areolas flushed deep pink, while the skirt strains helplessly over her round, shapely hips to reveal bear-print cotton panties. Looking back over her shoulder with giant purple eyes brimming with tears, she pouts in adorable panic, protesting that she hasn't gained weight. Cinematic horizontal composition, morning sunlight illuminating pale skin and torn fabric seams, detailed bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2247,7 +2210,7 @@
         "glowing",
         "completely_nude"
       ],
-      "promptProse": "Lying naked across her futon late at night as spirit energy fluctuates through her veins, Tohka Yatogami surrenders to an uncontrollable surge of romantic longing. Her magnificent body glows with soft purple mana particles as two fingers plunge deep into her dripping, nectarous core, her voluptuous hips thrashing against the cotton in raw ecstatic pulses. Her endless inky-purple hair fans across the tatami, tears of pure, desperate adoration spilling from her violet eyes as loud, innocent moans fill the quiet house. Intimate vertical framing, spirit glow casting lavender highlights over heaving breasts and trembling thighs, detailed room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying naked across her futon late at night as spirit energy fluctuates through her veins, Tohka Yatogami surrenders to an uncontrollable surge of romantic longing. Her magnificent body glows with soft purple mana particles as two fingers plunge deep into her dripping, nectarous core, her voluptuous hips thrashing against the cotton in raw ecstatic pulses. Her endless inky-purple hair fans across the tatami, tears of pure, desperate adoration spilling from her violet eyes as loud, innocent moans fill the quiet house. Intimate vertical framing, spirit glow casting lavender highlights over heaving breasts and trembling thighs, detailed room background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -2278,9 +2241,7 @@
         "purple_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2305,7 +2266,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2338,11 +2299,9 @@
         "purple_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Lying naked across her futon late at night as spirit energy fluctuates through her veins, Tohka Yatogami surrenders to an uncontrollable surge of romantic longing. Her magnificent body glows with soft purple mana particles as two fingers plunge deep into her dripping, nectarous core, her voluptuous hips thrashing against the cotton in raw ecstatic pulses. Her endless inky-purple hair fans across the tatami, tears of pure, desperate adoration spilling from her violet eyes as loud, innocent moans fill the quiet house. Intimate vertical framing, spirit glow casting lavender highlights over heaving breasts and trembling thighs, detailed room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Lying naked across her futon late at night as spirit energy fluctuates through her veins, Tohka Yatogami surrenders to an uncontrollable surge of romantic longing. Her magnificent body glows with soft purple mana particles as two fingers plunge deep into her dripping, nectarous core, her voluptuous hips thrashing against the cotton in raw ecstatic pulses. Her endless inky-purple hair fans across the tatami, tears of pure, desperate adoration spilling from her violet eyes as loud, innocent moans fill the quiet house. Intimate vertical framing, spirit glow casting lavender highlights over heaving breasts and trembling thighs, detailed room background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2375,7 +2334,7 @@
         "open_clothes",
         "bare_breasts"
       ],
-      "promptProse": "Origami Tobiichi from Date A Live straddles your lap on her immaculate bed, clad in an unzipped white AST pilot bodysuit split down to her pelvic bone. Her pale, toned breasts with sensitive pink nipples bounce with relentless, mechanical precision as she sinks down to the hilt, her deadpan expression completely unperturbed by the sheer lewdness of her position. Her cool silver bob frames icy blue eyes burning with clinical, obsessive mania, whispering calculated conception statistics with a flushed face. Vertical low-angle cowgirl shot, cool fluorescent room light gleaming off slick white vinyl and sweat, detailed apartment background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Origami Tobiichi from Date A Live straddles your lap on her immaculate bed, clad in an unzipped white AST pilot bodysuit split down to her pelvic bone. Her pale, toned breasts with sensitive pink nipples bounce with relentless, mechanical precision as she sinks down to the hilt, her deadpan expression completely unperturbed by the sheer lewdness of her position. Her cool silver bob frames icy blue eyes burning with clinical, obsessive mania, whispering calculated conception statistics with a flushed face. Vertical low-angle cowgirl shot, cool fluorescent room light gleaming off slick white vinyl and sweat, detailed apartment background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -2402,9 +2361,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2429,7 +2386,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2458,11 +2415,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Origami Tobiichi from Date A Live straddles your lap on her immaculate bed, clad in an unzipped white AST pilot bodysuit split down to her pelvic bone. Her pale, toned breasts with sensitive pink nipples bounce with relentless, mechanical precision as she sinks down to the hilt, her deadpan expression completely unperturbed by the sheer lewdness of her position. Her cool silver bob frames icy blue eyes burning with clinical, obsessive mania, whispering calculated conception statistics with a flushed face. Vertical low-angle cowgirl shot, cool fluorescent room light gleaming off slick white vinyl and sweat, detailed apartment background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Origami Tobiichi from Date A Live straddles your lap on her immaculate bed, clad in an unzipped white AST pilot bodysuit split down to her pelvic bone. Her pale, toned breasts with sensitive pink nipples bounce with relentless, mechanical precision as she sinks down to the hilt, her deadpan expression completely unperturbed by the sheer lewdness of her position. Her cool silver bob frames icy blue eyes burning with clinical, obsessive mania, whispering calculated conception statistics with a flushed face. Vertical low-angle cowgirl shot, cool fluorescent room light gleaming off slick white vinyl and sweat, detailed apartment background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2495,7 +2450,7 @@
         "water_droplets",
         "wet_clothes"
       ],
-      "promptProse": "Origami Tobiichi stands motionless under the cold stream of an AST base shower stall, her white nanotech pilot skin drenched see-through over her taut, athletic physique and dark pink areolas. With an eerily calm, expressionless stare, her fingers pump into her soaking cleft beneath the fabric with practiced military efficiency, her hips shuddering subtly as droplets stream down her silver bangs. Her breath catches, pupils dilating as physiological bliss overrides her stoic calculations. Sensual vertical framing, stark industrial steel and frosted glass tiles under cold floodlights, detailed shower background, depth of field, solo 1girl, no text.",
+      "promptProse": "Origami Tobiichi stands motionless under the cold stream of an AST base shower stall, her white nanotech pilot skin drenched see-through over her taut, athletic physique and dark pink areolas. With an eerily calm, expressionless stare, her fingers pump into her soaking cleft beneath the fabric with practiced military efficiency, her hips shuddering subtly as droplets stream down her silver bangs. Her breath catches, pupils dilating as physiological bliss overrides her stoic calculations. Sensual vertical framing, stark industrial steel and frosted glass tiles under cold floodlights, detailed shower background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -2518,9 +2473,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2545,7 +2498,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2570,11 +2523,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Origami Tobiichi stands motionless under the cold stream of an AST base shower stall, her white nanotech pilot skin drenched see-through over her taut, athletic physique and dark pink areolas. With an eerily calm, expressionless stare, her fingers pump into her soaking cleft beneath the fabric with practiced military efficiency, her hips shuddering subtly as droplets stream down her silver bangs. Her breath catches, pupils dilating as physiological bliss overrides her stoic calculations. Sensual vertical framing, stark industrial steel and frosted glass tiles under cold floodlights, detailed shower background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Origami Tobiichi stands motionless under the cold stream of an AST base shower stall, her white nanotech pilot skin drenched see-through over her taut, athletic physique and dark pink areolas. With an eerily calm, expressionless stare, her fingers pump into her soaking cleft beneath the fabric with practiced military efficiency, her hips shuddering subtly as droplets stream down her silver bangs. Her breath catches, pupils dilating as physiological bliss overrides her stoic calculations. Sensual vertical framing, stark industrial steel and frosted glass tiles under cold floodlights, detailed shower background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2607,7 +2558,7 @@
         "hands_behind_back",
         "harness"
       ],
-      "promptProse": "Origami Tobiichi lies sprawled forward over her pristine bed, her arms accidentally trapped behind her back by the tangled harness straps of her inverted bridal astral dress. The tight ribbons dig deep into her pale flesh, hoisting her bare, rounded bottom high into the air with her lace bridal veil trailing across the sheets. Looking back over her shoulder with an unblinking, analytical blue gaze and a deadpan expression, her cheeks burn with suppressed heat as she calmly invites you to take advantage of her helplessness. Cinematic horizontal composition, sterile room lighting casting sharp shadows across bound limbs and pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Origami Tobiichi lies sprawled forward over her pristine bed, her arms accidentally trapped behind her back by the tangled harness straps of her inverted bridal astral dress. The tight ribbons dig deep into her pale flesh, hoisting her bare, rounded bottom high into the air with her lace bridal veil trailing across the sheets. Looking back over her shoulder with an unblinking, analytical blue gaze and a deadpan expression, her cheeks burn with suppressed heat as she calmly invites you to take advantage of her helplessness. Cinematic horizontal composition, sterile room lighting casting sharp shadows across bound limbs and pale curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -2634,9 +2585,7 @@
         "silver_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2661,7 +2610,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2690,11 +2639,9 @@
         "silver_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Origami Tobiichi lies sprawled forward over her pristine bed, her arms accidentally trapped behind her back by the tangled harness straps of her inverted bridal astral dress. The tight ribbons dig deep into her pale flesh, hoisting her bare, rounded bottom high into the air with her lace bridal veil trailing across the sheets. Looking back over her shoulder with an unblinking, analytical blue gaze and a deadpan expression, her cheeks burn with suppressed heat as she calmly invites you to take advantage of her helplessness. Cinematic horizontal composition, sterile room lighting casting sharp shadows across bound limbs and pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Origami Tobiichi lies sprawled forward over her pristine bed, her arms accidentally trapped behind her back by the tangled harness straps of her inverted bridal astral dress. The tight ribbons dig deep into her pale flesh, hoisting her bare, rounded bottom high into the air with her lace bridal veil trailing across the sheets. Looking back over her shoulder with an unblinking, analytical blue gaze and a deadpan expression, her cheeks burn with suppressed heat as she calmly invites you to take advantage of her helplessness. Cinematic horizontal composition, sterile room lighting casting sharp shadows across bound limbs and pale curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2727,7 +2674,7 @@
         "bare_breasts",
         "pink_nipples"
       ],
-      "promptProse": "Lying naked on the cold hardwood floor before a wall of surveillance monitors tracking Shido's biological rhythms, Origami Tobiichi presses military headphones tight to her ears. Her fingers pump feverishly into her dripping, swollen core in rapid, violent strokes, her back arching off the floor as wave after wave of shuddering climax washes over her. Her silver hair splays against the dark wood, her icy blue eyes wide and bloodshot with fanatical obsession as she gasps his name with every beat of his heart. Intimate vertical framing, green radar and monitor light painting eerie geometric patterns across glistening pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying naked on the cold hardwood floor before a wall of surveillance monitors tracking Shido's biological rhythms, Origami Tobiichi presses military headphones tight to her ears. Her fingers pump feverishly into her dripping, swollen core in rapid, violent strokes, her back arching off the floor as wave after wave of shuddering climax washes over her. Her silver hair splays against the dark wood, her icy blue eyes wide and bloodshot with fanatical obsession as she gasps his name with every beat of his heart. Intimate vertical framing, green radar and monitor light painting eerie geometric patterns across glistening pale curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -2755,9 +2702,7 @@
         "yandere",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2782,7 +2727,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2812,11 +2757,9 @@
         "yandere",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Lying naked on the cold hardwood floor before a wall of surveillance monitors tracking Shido's biological rhythms, Origami Tobiichi presses military headphones tight to her ears. Her fingers pump feverishly into her dripping, swollen core in rapid, violent strokes, her back arching off the floor as wave after wave of shuddering climax washes over her. Her silver hair splays against the dark wood, her icy blue eyes wide and bloodshot with fanatical obsession as she gasps his name with every beat of his heart. Intimate vertical framing, green radar and monitor light painting eerie geometric patterns across glistening pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Lying naked on the cold hardwood floor before a wall of surveillance monitors tracking Shido's biological rhythms, Origami Tobiichi presses military headphones tight to her ears. Her fingers pump feverishly into her dripping, swollen core in rapid, violent strokes, her back arching off the floor as wave after wave of shuddering climax washes over her. Her silver hair splays against the dark wood, her icy blue eyes wide and bloodshot with fanatical obsession as she gasps his name with every beat of his heart. Intimate vertical framing, green radar and monitor light painting eerie geometric patterns across glistening pale curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

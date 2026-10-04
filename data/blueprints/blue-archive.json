@@ -69,9 +69,7 @@
         "lamplight",
         "night",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -155,8 +153,6 @@
         "looking_away",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "night",
         "city_lights"
       ],
@@ -242,8 +238,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "machine_gun"
       ],
       "recommendedSize": "1152x1536",
@@ -324,7 +318,6 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field",
         "strawberry_parfait",
         "strawberry",
@@ -410,7 +403,7 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "gehenna_uniform",
-      "promptProse": "On a rain-washed Gehenna street at night, Hina shifts her black umbrella so it covers both herself and you, her wet uniform hem catching the streetlight. She tilts her face up with a quiet protective warmth while the two of you walk close together through amber reflections. Medium two-shot, cinematic rain haze, detailed wet street background, depth of field.",
+      "promptProse": "On a rain-washed Gehenna street at night, Hina shifts her black umbrella so it covers both herself and you, her wet uniform hem catching the streetlight. She tilts her face up with a quiet protective warmth while the two of you walk close together through amber reflections. Medium two-shot, cinematic, detailed wet street background.",
       "promptTokens": [
         "city_street",
         "rain",
@@ -418,8 +411,6 @@
         "night",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "shared_umbrella",
         "standing_close",
         "two_clothed_figures",
@@ -453,7 +444,7 @@
       ],
       "description": "【空崎日奈 · 办公室深夜的疲惫卸防】深夜反锁的办公室内，疲惫到极点的日奈坐在办公桌沿，厚重的黑色制服外套被完全褪去，银白长发如瀑散落。她眼眶泛红、神情娇柔地依偎进你的怀里——「……老师，我已经没有力气再当那个无所不能的委员长了……现在的日奈，只想当一个被老师摸头、被老师宠溺的普通成年女性子……」",
       "id": "sorasaki_hina_office_desk",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "昏暗台灯",
       "location": "深夜风纪委员会办公室",
       "mood": "隐忍诱惑",
@@ -517,9 +508,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -546,7 +535,7 @@
       ],
       "description": "【空崎日奈 · 月光天台的害羞遮掩】天台清冷的月光下，夜风骤起掀起了日奈的百褶裙摆。她慌乱地按住裙角，大片雪白滑腻的大腿在银色月光下格外耀眼，绯红的眼眸泛着泪光与羞意——「呀……！老师，不许看……！风太大了……快、快转过身去啦……！」",
       "id": "sorasaki_hina_rooftop_moon",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "冷色月光",
       "location": "歌赫娜旧校舍天台",
       "mood": "羞耻暴露",
@@ -609,9 +598,7 @@
         "wind",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -638,7 +625,7 @@
       ],
       "description": "【空崎日奈 · 风纪委员长的晨浴】晨光透过浴室高窗洒进来，日奈擦着半干的银色长发，发梢还滴着水珠。紫色的光环上挂着几颗晶莹的水滴，随着她抬手擦发的动作轻轻晃动。她对着镜子整理了一下制服领口，声音恢复了平时的温和——「……今天也要认真工作才行。啊，那边的咖啡店新品，巡逻结束后去尝尝吧。」",
       "id": "sorasaki_hina_shower",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "soft morning light through high window, gentle steam haze, clean bright glow",
       "location": "歌赫娜风纪委员宿舍浴室",
       "mood": "清爽认真",
@@ -701,8 +688,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -731,7 +717,7 @@
       ],
       "description": "【空崎日奈 · 更衣室镜前的娇羞对视】风纪委员会更衣室的落地水银镜前，日奈正解开衬衫领扣准备换装，镜中映出她小巧玲珑、肌肤如雪的动人身段。透过镜子的反射看到站在门边的你，她耳根滚烫地捂住胸前——「老、老师？！怎么突然进来了……呜，至少等我把衣服换好再看啊……」",
       "id": "sorasaki_hina_locker_mirror",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "冷白更衣室灯",
       "location": "风纪委员会更衣室",
       "mood": "羞耻对峙",
@@ -793,9 +779,7 @@
         "after_office",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -821,7 +805,7 @@
       ],
       "description": "【空崎日奈 · 废弃私人工作室里的包扎时刻】黄昏寂静的旧私人工作室里，战斗结束后的日奈坐在课桌旁，成年礼服半解露出裹着绷带的白皙香肩。看着小心翼翼为她上药的你，她眼眸湿润，轻声开口——「老师处理伤口的手法好温柔……一点都不疼了。有你在身边……真好。」",
       "id": "sorasaki_hina_abandoned_classroom",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "夕光透过破窗",
       "location": "歌赫娜废弃私人工作室",
       "mood": "脆弱又危险",
@@ -885,8 +869,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -972,8 +955,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "macarons"
       ],
       "recommendedSize": "1152x1536",
@@ -1059,8 +1040,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_books",
         "bracing_on_shelf"
       ],
@@ -1146,9 +1125,7 @@
         "blue_stage_lights",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -1232,7 +1209,6 @@
         "warm_lighting",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field",
         "offering_fork",
         "strawberry_cake",
@@ -1321,8 +1297,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "carrying_bass_case"
       ],
       "recommendedSize": "1152x1536",
@@ -1408,9 +1382,7 @@
         "wind_blown_hair",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -1437,7 +1409,7 @@
       ],
       "description": "【杏山和纱 · 甜点部围裙下】甜点部更衣室里，换装发生意外的和纱身上只套着一件雪白的烘焙围裙，光洁无暇的肩头与修长双腿毫无防备地暴露在外。她慌乱地按紧围裙下摆，头顶猫耳紧紧贴在发间，粉瞳水汪汪地泛着羞愤红晕——「老、老师？！为什么不敲门就进来了……！不许看……呜，绝对不准当成甜点一样盯着我看啦……！」",
       "id": "kyouyama_kazusa_apron_only",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "更衣室暖灯",
       "location": "崔尼蒂甜点部更衣室",
       "mood": "慌乱羞耻",
@@ -1498,9 +1470,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1526,7 +1496,7 @@
       ],
       "description": "【杏山和纱 · 排练后汗水与成年礼服半解】高强度的乐队排练结束后，和纱脱力地靠在巨大的低音音箱旁轻轻喘息。衬衫领口的缎带被扯开，细密的汗珠沿着白皙修长的脖颈滑入锁骨，黑发湿漉漉地贴在微红的脸颊边。她抬起湿润的粉瞳看向你——「呼……好热……老师，把水递给我一下……顺便，能帮我把黏在后背的头发拨开吗？」",
       "id": "kyouyama_kazusa_rehearsal_sweat",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "昏暗排练灯",
       "location": "乐队排练室",
       "mood": "汗湿诱惑",
@@ -1598,9 +1568,7 @@
         "cat_ears",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1627,7 +1595,7 @@
       ],
       "description": "【杏山和纱 · 古书馆书架间】旧古书馆最昏暗的书架过道深处，和纱被你轻轻抵在橡木书架旁，百褶裙摆被悄然撩起，黑色发丝散落在陈旧的书卷上。她双手紧抓着你的衣角，死死咬住下唇不敢发出一点声音，粉色眼眸中满是慌乱、羞涩与沉溺——「……等、等一下……要是被别人听到就全完了……老师，轻一点……」",
       "id": "kyouyama_kazusa_library_stacks",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "昏暗书库灯",
       "location": "崔尼蒂旧古书馆书架间",
       "mood": "禁忌慌乱",
@@ -1690,9 +1658,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1719,7 +1685,7 @@
       ],
       "description": "【杏山和纱 · 打烊后的热可可与猫耳兜帽】甜点部打烊后，和纱裹着浴后家居服窝进休息角的沙发里，猫耳形状的兜帽半戴在头上，双手捧着冒热气的大杯热可可。她眯起粉瞳，像只餍足的猫一样呼出一口气——「……今天试做的焦糖布丁卖光了。嗯，明天要不要加个新品？……再加一勺奶油。」",
       "id": "kyouyama_kazusa_after_bath",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm dim café light after closing, soft counter glow, gentle lamp",
       "location": "崔尼蒂甜点部打烊后的休息角",
       "mood": "慵懒餍足",
@@ -1782,9 +1748,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1813,7 +1777,7 @@
       ],
       "description": "【杏山和纱 · 放学后私人工作室甜点与裸露】黄昏空无一人的私人工作室里，课桌上摆着吃了一半的鲜奶蛋糕。和纱双腿并拢坐在桌沿，成年礼服制服半褪露出雪白柔嫩的香肩，指尖还沾着一抹晶莹的奶油。她脸颊滚烫地望向你，小声诱惑道——「……吃不完的话太浪费了。老师……你要直接尝尝我手上的奶油……还是，尝尝别的？」",
       "id": "kyouyama_kazusa_classroom_dessert",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "窗外暮色与室内灯",
       "location": "放学后空私人工作室",
       "mood": "甜腻挑逗",
@@ -1876,9 +1840,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1963,8 +1925,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "saluting",
         "reporting_mission"
       ],
@@ -2050,9 +2010,7 @@
         "elegant_pose",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -2136,8 +2094,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "powered_exoskeleton",
         "mechanical_armor",
         "assault_rifle"
@@ -2222,7 +2178,6 @@
         "deadpan_expression",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field",
         "strawberry_parfait",
         "offering_spoon",
@@ -2308,8 +2263,6 @@
         "white_tights",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "cruise_lounge",
         "white_bunny_suit"
       ],
@@ -2395,8 +2348,6 @@
         "wind_blown_hair",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sitting_by_railing",
         "hand_on_headset"
       ],
@@ -2425,7 +2376,7 @@
       ],
       "description": "【飞鸟马时 · C&C更衣室半脱】激战归来的更衣室内，时背对着你解开紧绷的战斗紧身衣拉链，金发披散在光滑白皙的后背与腰窝间。面对你的视线，她平静地回过头，蓝眸里带着全然的信赖——「主人，装备维护需要褪下紧身内衬……在主人面前，时没有任何需要隐藏的秘密。」",
       "id": "asuma_toki_locker_room",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "冷白更衣室灯",
       "location": "千年C&C更衣室",
       "mood": "冷静暴露",
@@ -2488,15 +2439,12 @@
         "lockers",
         "bench",
         "overhead_light",
-        "daylight",
         "unzipping_catsuit",
         "bare_back",
         "bare_shoulders",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2522,7 +2470,7 @@
       ],
       "description": "【飞鸟马时 · 任务后据点装甲散落】任务圆满结束的秘密据点里，外骨骼装甲部件散落在一旁，时只穿着贴身的战术紧身衣倚在长桌边，金发略显凌乱，蓝瞳中泛着战斗后的余温与放松——「任务完成率 100%。但是时的体力已降至 5%……需要主人的摸头与拥抱来进行充能补给，请求执行。」",
       "id": "asuma_toki_base_after_mission",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "昏暗据点灯",
       "location": "任务后C&C据点",
       "mood": "战后松弛",
@@ -2584,9 +2532,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2613,7 +2559,7 @@
       ],
       "description": "【飞鸟马时 · 兔女郎更衣室】潜入任务结束后的狭小更衣室里，时正褪下紧绷的兔女郎连体衣，白色丝袜堪堪勾在修长的大腿膝弯处。她扶着更衣镜转过身，神色镇定却耳根微红——「这套服装的透气性低于标准值，身体变得很热……主人，可以请您帮时把背后的拉链完全拉开吗？」",
       "id": "asuma_toki_bunny_change",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "更衣室暖灯",
       "location": "兔女郎咖啡厅更衣室",
       "mood": "冷色诱惑",
@@ -2675,9 +2621,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2703,7 +2647,7 @@
       ],
       "description": "【飞鸟马时 · 任务归来的装甲清洗】任务归来的 C&C 据点清洗间里，时把外骨骼装甲半卸下来挂在支架上，只穿着贴身的作战内衬站在高压水雾下，冲洗着金发上的灰尘。耳机挂在挂钩上，还飘着未挂断的任务频道杂音。她眯起蓝眼睛，语气轻快——「……作战完成。Zero Four，进入清洗程序。」",
       "id": "asuma_toki_shower_gold",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "cool industrial washroom light, spray mist, metallic reflections",
       "location": "千年 C&C 据点清洗间",
       "mood": "清爽飒爽",
@@ -2765,9 +2709,7 @@
         "steam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2796,7 +2738,7 @@
       ],
       "description": "【飞鸟马时 · 秘密审讯室的伪装】封闭的审讯室内，时坐在铁椅上配合进行反审讯演练，战斗服被微扯开露出雪白的锁骨与大腿。她抬起冷澈的蓝瞳盯住你，唇角泛起一丝不易察觉的狡黠——「审讯官先生，无论您用什么手段，我都不会招供的……除非，您愿意答应我一个私下约会的请求。」",
       "id": "asuma_toki_interrogation",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "顶部冷光灯",
       "location": "C&C秘密审讯室",
       "mood": "危险冷艳",
@@ -2857,9 +2799,7 @@
         "overhead_light",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2944,8 +2884,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "computing_plan",
         "data_stream"
       ],
@@ -3031,9 +2969,7 @@
         "evening_city_lights",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -3119,9 +3055,7 @@
         "cold_breath",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -3207,7 +3141,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -3291,7 +3224,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field",
         "leaning_on_bookshelf",
         "holding_data_chip"
@@ -3377,9 +3309,7 @@
         "dramatic_shadows",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -3406,7 +3336,7 @@
       ],
       "description": "【调月莉音 · 研讨会办公室制服半解】深夜彻底反锁的会长办公室里，莉音卸下了所有防备坐在宽大的办公桌沿，黑色高领毛衣被拉下露出雪白的香肩，百褶裙微散。她居高临下却耳根发烫地凝视着你——「所有安全日志已断网……老师，现在这里只有理智与本能的交锋，由你来验收最终的结论吧。」",
       "id": "tsukatsuki_rio_office_unbutton",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "昏暗台灯",
       "location": "深夜研讨会办公室",
       "mood": "冷艳支配",
@@ -3469,9 +3399,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3498,7 +3426,7 @@
       ],
       "description": "【调月莉音 · 冬季更衣室风衣与黑丝】研讨会专属更衣室里，莉音解开风衣腰带，被透肉黑丝紧紧包裹的高挑长腿优雅交叠。她回过头，血色红瞳在昏暗暖光下显得格外妖冶——「这身丝袜在低温环境下保暖率最高……怎么，老师的视线一直停留在我的腿上，是有什么需要现场确认的物理参数吗？」",
       "id": "tsukatsuki_rio_winter_change",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "冷白更衣室灯",
       "location": "研讨会冬季更衣室",
       "mood": "冷艳危险",
@@ -3560,9 +3488,7 @@
         "cold_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3589,7 +3515,7 @@
       ],
       "description": "【调月莉音 · 研讨会深夜的数据浴】研讨会办公室深处的私人浴室里，莉音把黑发挽起，泡在温水中，单手举着防水平板，屏幕上滚动着明天的预算数据。红瞳在蒸汽中依然锐利，她轻轻推了推滑落的眼镜——「……预算案还剩最后一页。泡完这十分钟，就把它改完。」",
       "id": "tsukatsuki_rio_shower_blackhair",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "cool tablet glow, warm dim bath light, gentle steam haze",
       "location": "千年研讨会私人浴室",
       "mood": "冷静疏离",
@@ -3653,9 +3579,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -3684,7 +3608,7 @@
       ],
       "description": "【调月莉音 · 高跟鞋与红瞳凝视】秘密控制室的皮质扶手椅上，莉音脚踩纤细的黑色红底高跟鞋，双手轻轻搭在扶手上。她扬起绝美而傲慢的下颌，红瞳直勾勾地锁住你的视线——「在这个封闭的房间里，权力的天平完全倾斜到了你的手上……来吧，老师，让我看看你会如何行使你的特权。」",
       "id": "tsukatsuki_rio_high_heels_bondage",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "顶部暖灯",
       "location": "秘密房间",
       "mood": "傲慢受缚",
@@ -3747,9 +3671,7 @@
         "dim_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3776,7 +3698,7 @@
       ],
       "description": "【调月莉音 · 沙发高领毛衣半褪】研讨会休息室柔软的真皮沙发上，莉音半倚在靠枕上，紧身黑色毛衣被褪至胸口，大片如雪般滑腻的肌肤在幽暗灯光下起伏。她神情慵懒而迷离——「就算是我……在过度运转后也会有想要彻底被支配的时刻……老师，不要让我等太久。」",
       "id": "tsukatsuki_rio_sofa_sweater",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "暖色落地灯",
       "location": "研讨会休息室沙发",
       "mood": "慵懒支配",
@@ -3838,9 +3760,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -3924,9 +3844,7 @@
         "gentle_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -4011,8 +3929,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -4097,7 +4014,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -4181,9 +4097,7 @@
         "holding_grimoire",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -4258,7 +4172,7 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "trinity_uniform",
-      "promptProse": "Strolling through the rainy white rose garden under a frilled parasol, Mika smiles gently as raindrops sparkle on delicate petals. Soft misty grey daylight and lush green foliage create a tranquil, romantic rainy day scene.",
+      "promptProse": "Strolling through the rainy white rose garden under a frilled parasol, Mika smiles gently as raindrops sparkle on delicate petals. Soft grey daylight and lush green foliage create a tranquil, romantic rainy day scene.",
       "promptTokens": [
         "rose_garden",
         "rain",
@@ -4267,9 +4181,7 @@
         "walking",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -4355,8 +4267,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "pink_sundress",
         "ivory_cardigan"
       ],
@@ -4385,7 +4295,7 @@
       ],
       "description": "【圣园未花 · 更衣室里的心跳瞬间】茶话会结束后的私密更衣室内，未花解开了纯白礼装的肩带，粉色秀发散落在白皙无暇的香肩与羽翼上。她转过身眨着湿润的金眸，双颊微红地咬住下唇——「老师……拉链卡住了，能不能帮帮我呀？……呜，眼睛不准乱看奇怪的地方哦☆」",
       "id": "misono_mika_tea_change",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "暖色更衣灯",
       "location": "崔尼蒂茶话会更衣室",
       "mood": "优雅诱惑",
@@ -4447,9 +4357,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4538,9 +4446,7 @@
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4568,7 +4474,7 @@
       ],
       "description": "【圣园未花 · 书架深处的禁忌拥抱】旧书库无人经过的书架深处，未花被你温柔地搂在怀中，纯白的裙摆轻轻堆叠。她紧紧环住你的脖颈，粉发散落在你的肩头，金瞳泛着迷离的水光——「老师……不要离开我……把未花抱得再紧一点……好不好？」",
       "id": "misono_mika_library_stacks_secret",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "昏暗烛光",
       "location": "崔尼蒂禁书库书架间",
       "mood": "禁忌沉溺",
@@ -4631,9 +4537,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4723,9 +4627,7 @@
         "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4752,7 +4654,7 @@
       ],
       "description": "【圣园未花 · 蕾丝寝所的公主时刻】圣三一顶层铺满蕾丝软垫的大床上，未花跪坐在床中央，纯白睡裙半褪露出优美动人的曲线。她张开双臂，金瞳中满是深情与依赖——「老师是属于未花一个人的大英雄……今晚，就请留在未花的身边，一直陪着我吧☆」",
       "id": "misono_mika_lace_bedroom",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "暖色床头灯",
       "location": "崔尼蒂高塔私密卧室",
       "mood": "支配诱惑",
@@ -4815,9 +4717,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -4902,8 +4802,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two-piece_bikini",
         "pareo"
       ],
@@ -4989,8 +4887,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two-piece_swimsuit",
         "light_cover_up"
       ],
@@ -5076,8 +4972,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_ice_cream",
         "two_scoop_ice_cream"
       ],
@@ -5163,9 +5057,7 @@
         "sunlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5250,9 +5142,7 @@
         "sunlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5338,9 +5228,7 @@
         "backlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5427,7 +5315,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "hands_behind_back",
         "leaning_back"
       ],
@@ -5520,8 +5407,7 @@
         "biting_lip",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -5613,8 +5499,6 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two-piece_swimsuit"
       ],
       "recommendedSize": "1152x1536",
@@ -5699,9 +5583,7 @@
         "summer_sunlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5786,9 +5668,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5873,9 +5753,7 @@
         "sunset_light",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -5961,7 +5839,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -6016,9 +5893,7 @@
         "sitting",
         "tsundere_pout",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6077,9 +5952,7 @@
         "happy_smile",
         "stopwatch",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6138,8 +6011,6 @@
         "shy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "coat_on_chair"
       ],
       "recommendedSize": "1152x1536",
@@ -6199,8 +6070,7 @@
         "tsundere_pout",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6258,8 +6128,6 @@
         "notebook",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hugging_cushion",
         "notebook_on_lap",
         "cocoa_on_table"
@@ -6322,9 +6190,7 @@
         "blushing",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6383,8 +6249,6 @@
         "wind",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hand_on_earpiece",
         "sliding_screen"
       ],
@@ -6416,7 +6280,7 @@
       ],
       "description": "【成年优香 · 深夜办公室账表间的独处】成年优香独自横卧在锁闭办公室的宽桌上，职业外套敞开、裙摆堆至腰际。她一手抓住桌沿，另一手在黑丝包裹的双腿间自抚，账表与计算器被急促呼吸扰乱。",
       "id": "yuuka_r18_seminar_desk_after_hours",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "台灯昏黄暖光与窗外夜景微光",
       "location": "研讨会反锁的深夜办公室办公桌",
       "mood": "极乐沉沦",
@@ -6475,9 +6339,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6572,9 +6434,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6609,7 +6469,7 @@
       ],
       "description": "【成年优香 · 晨光床单与丰润腿线】成年优香独自在白色床单上屈起丰润双腿，一手抓紧床褥，另一手在腿间自抚，湿润痕迹与黑丝勒痕在晨光中清楚可见。",
       "id": "yuuka_r18_bedside_thigh_entanglement",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "窗纱透过的柔和淡金晨光与微尘浮光",
       "location": "温馨私人卧室大床",
       "mood": "深情极乐",
@@ -6652,8 +6512,7 @@
         "pov",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6684,7 +6543,7 @@
       ],
       "description": "【成年优香 · 山泉水波的私密失控】成年优香独自斜倚温泉石阶，湿蓝色浴巾敞开，一手遮住潮红嘴角，另一手在水下自抚，丰润大腿推动清晰水波。",
       "id": "yuuka_r18_onsen_steam_creampie",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "竹林暖色石灯笼泛光与水面波光倒影",
       "location": "私人露天温泉石阶旁",
       "mood": "羞赧销魂",
@@ -6723,9 +6582,7 @@
         "stone_steps",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -6782,9 +6639,7 @@
         "aiming",
         "kneeling",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -6842,8 +6697,7 @@
         "smoke",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6900,7 +6754,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "garter_straps"
       ],
       "recommendedSize": "1152x1536",
@@ -6962,9 +6815,7 @@
         "ocean_waves",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7025,8 +6876,6 @@
         "flustered",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hiding_dango",
         "behind_back"
       ],
@@ -7088,8 +6937,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "night_vision_monocular",
         "red_searchlight"
       ],
@@ -7148,8 +6995,6 @@
         "golden_hour",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_sniper_rifle"
       ],
       "recommendedSize": "1152x1536",
@@ -7180,7 +7025,7 @@
       ],
       "description": "【银镜伊织 · 夏莱办公桌上的脚足特写与傲娇伸腿】反锁的夏莱办公室内，伊织被要求坐在宽大的实木办公桌上。黑色百褶裙微撩，半褪的破洞黑丝卷在纤细脚踝处。她极度羞耻地将修长细腻的褐色玉足伸向镜头正前方，十根圆润可爱的脚趾敏感地微微蜷曲，足弓线条紧绷优美。小恶魔尾巴死死缠在桌腿上，脸颊通红别过头娇嗔——「呜……！看够了没有啊老师！明明是来汇报工作的……为什么非要一直盯着我的脚看啊……！」",
       "id": "iori_r18_schale_desk_feet_worship_sex",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "暖黄台灯聚焦于湿润足部与交合私密处",
       "location": "夏莱办公室反锁木质办公桌",
       "mood": "极乐沉沦",
@@ -7217,9 +7062,7 @@
         "foot_focus",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7308,9 +7151,7 @@
         "parted_lips",
         "biting_lip",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7345,7 +7186,7 @@
       ],
       "description": "【成年伊织 · 黑绸床褥的单人高潮】成年伊织独自仰卧黑绸床面，双膝屈起，一手抓床单、一手在腿间自抚至失神，角、尾巴与四肢彼此分离清晰。",
       "id": "iori_r18_bedside_succubus_climax",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "床头暗红烛光与幽暗月光",
       "location": "私密情侣卧室大床",
       "mood": "极度绝顶",
@@ -7403,9 +7244,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7437,7 +7276,7 @@
       ],
       "description": "【银镜伊织 · 战术紧身衣下的秘密开发】废弃机库阴暗无人的集装箱夹缝中，伊织被按在冰冷的铁壁上。紧身潜行衣的拉链被一路拉至腹部，内裤被粗暴地扯向一侧，手指在湿润敏感的花蕊中肆意抽插搅动，爱液不断顺着大腿滑落。她捂住自己的嘴巴拼命压抑喘息，眼角泛着屈辱又舒服的泪水——「唔嗯……！不要在那里抠……巡逻队就在外面……会被听到的……嗯啊……！」",
       "id": "iori_r18_tactical_stocking_fingering",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "狭缝透入的一缕微弱月光与战术手电反光",
       "location": "要塞机库阴暗集装箱夹缝",
       "mood": "禁忌刺激",
@@ -7498,9 +7337,7 @@
         "demon_tail",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -7563,9 +7400,7 @@
         "blonde_hair",
         "very_long_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7624,7 +7459,6 @@
         "peaceful_smile",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1536x1152",
@@ -7684,9 +7518,7 @@
         "blonde_hair",
         "dynamic_running",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -7744,9 +7576,7 @@
         "halo",
         "blonde_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7805,9 +7635,7 @@
         "cleavage",
         "halo",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -7866,8 +7694,6 @@
         "leaning_forward",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hands_behind_back",
         "yellow_safety_line",
         "passing_train",
@@ -7933,9 +7759,7 @@
         "maid_dress",
         "halo",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -8020,9 +7844,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8086,7 +7908,7 @@
         "teary_eyes"
       ],
       "outfitId": "nsfw_nude",
-      "promptProse": "A deeply enchanting, intensely romantic anime illustration of Ichinose Asuna from Blue Archive lying across an opulent oceanview suite bed at midnight. She is loosely wrapped in a diaphanous, semi-translucent white silk robe that clings sheerly to her colossal buoyant bust and plush curves, keeping her soft pink areolae and sculpted waist enticingly visible. Floor-length golden hair flows across the silky pillows like radiant sunshine under the soft blue radiance of her overhead halo. Cuddling a plush pillow like an affectionate canine, her manicured fingers gently pleasure her dripping intimate center beneath the gossamer hem. Tears of joyful devotion sparkle in her red eyes as a radiant blush covers her cheeks. Moonlit ocean reflections through floor-to-ceiling windows, delicate anime linework, solo 1girl, completely alone in peaceful solitude, fine anime art style.",
+      "promptProse": "A deeply enchanting, intensely romantic anime illustration of Ichinose Asuna from Blue Archive lying across an opulent oceanview suite bed at midnight. She is loosely wrapped in a diaphanous, semi-translucent white silk robe that clings sheerly to her colossal buoyant bust and plush curves, keeping her soft pink areolae and sculpted waist enticingly visible. Floor-length golden hair flows across the silky pillows like radiant sunshine under the soft blue radiance of her overhead halo. Cuddling a plush pillow like an affectionate canine, her manicured fingers gently pleasure her dripping intimate center beneath the gossamer hem. Tears of joyful devotion sparkle in her red eyes as a radiant blush covers her cheeks. Ocean reflections through floor-to-ceiling windows, delicate anime linework, solo 1girl, completely alone in peaceful solitude, fine anime art style.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -8111,9 +7933,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -8189,8 +8009,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8219,7 +8038,7 @@
       ],
       "description": "【一之濑明日奈 · 浴室磨砂玻璃前的水雾自抚】蒸气弥漫的热水淋浴房内，水流自花洒顺滑而下。明日奈背靠着被体温捂热的磨砂玻璃墙，单手轻托着自己湿漉漉的沉重双乳，另一只纤细的手指顺着平坦小腹轻柔抚摸私密花径。在温水滋润下轻抚自身，两颊染上娇羞可爱的红晕，嘴角泛起甜甜的傻笑——「哈啊……主人……洗澡的时候只要想起你……身体就变得好热好软呀……」",
       "id": "asuna_r18_hotel_shower_glass_fingering_blush",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "水雾弥漫中顶棚防水暖白射灯打在水流与起伏胴体上的剔透高光",
       "location": "热气蒸腾的酒店浴室淋浴间玻璃墙",
       "mood": "极乐沉沦",
@@ -8261,9 +8080,7 @@
         "halo",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -8306,9 +8123,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot from the piano side, score and both hands on keys visible",
       "lighting": "琴灯与柔和舞台追光",
@@ -8374,9 +8189,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, cocoa mug in both hands and closed ledger beside her",
       "lighting": "床头小灯照亮杯口热气的暖光",
@@ -8442,9 +8255,7 @@
         "sunlight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot at the bookstore entrance, books and receipt visible",
       "lighting": "书店橱窗前温和的午后日光",

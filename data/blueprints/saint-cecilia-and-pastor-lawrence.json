@@ -83,8 +83,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -186,8 +185,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "lying_on_couch",
         "swinging_legs",
         "afternoon_light"
@@ -287,8 +284,6 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "standing",
         "holding_hat",
         "medium_shot",
@@ -382,9 +377,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -417,7 +410,7 @@
       ],
       "description": "【塞西莉亚 · 教堂钟楼的白月光】小镇入夜后，塞西莉亚独自登上教堂钟楼。月光穿过彩绘玻璃，在她身上落下一片斑斓。她披着月光立在玻璃前，修女的头纱被夜风轻轻掀起，薄荷绿的长发在风中飘散。她双手交叠于胸前轻声祈祷，脸颊却悄悄泛红——「……主啊，请原谅塞西莉亚心里，那一点点不纯洁的思念。」",
       "id": "cecilia_r18_bedroom_soles_nun_veil",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight through stained glass, rainbow refractions, soft silver glow",
       "location": "小镇教堂钟楼彩绘玻璃前",
       "mood": "圣洁悸动",
@@ -478,8 +471,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -506,7 +498,7 @@
       "characterId": "saint_cecilia",
       "description": "【塞西莉亚 · 起居室长椅·牧师黑衬衫敞开与私处显露】起居室的长木椅上，塞西莉亚偷穿了劳伦斯的宽大黑色牧师衬衫，纽扣完全敞开露出雪白如凝脂的饱满双乳与平坦小腹。她双腿并拢微颤，眼神湿润而依赖——「穿上劳伦斯的衣服……就好像整个人都被你包裹着一样。抱紧我……不要松开。」",
       "id": "cecilia_r18_pastor_shirt_open_couch",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_lamp_light",
       "location": "教会起居室长椅",
       "mood": "sensual",
@@ -598,9 +590,7 @@
         "warm_lamp",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -665,9 +655,7 @@
         "gentle_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -772,8 +760,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "kneading_dough"
       ],
       "recommendedSize": "1152x1536",
@@ -838,8 +824,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_hat",
         "two_clothed_figures"
       ],
@@ -867,7 +851,7 @@
       "characterId": "saint_cecilia",
       "description": "【塞西莉亚 · 教堂寝室月光】清幽月光透过高窗洒落在教堂小寝室的大床上，睡梦中的塞西莉亚翻了个身，薄被滑落露出洁白无瑕的曼妙身躯。她迷迷糊糊地伸出手抱住身旁的你，嘴角带着甜甜的梦呓——「唔……劳伦斯……明天的司康饼……要加双倍红茶果酱哦……」",
       "id": "cecilia_r18_church_dorm_moonlight",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "moonlight",
       "location": "教堂寝室",
       "mood": "sensual",
@@ -959,9 +943,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

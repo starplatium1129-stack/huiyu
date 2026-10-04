@@ -49,9 +49,7 @@
         "overcast_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -101,7 +99,7 @@
         "blonde_hair",
         "gentle_smile"
       ],
-      "promptProse": "Mahiru Shiina turns around in a cozy sunlit apartment kitchen, holding a steaming platter of freshly cooked Japanese breakfast dishes. She wears an oversized soft knit sweater under a pastel-pink ruffled apron, her long golden locks gathered in a loose low side-tail. Early morning sunbeams beam through the kitchen window, bathing her porcelain skin and amber eyes in radiant warmth as she offers a tender, slightly exasperated smile. Medium shot, crisp domestic key visual style, detailed kitchen interior background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mahiru Shiina turns around in a cozy sunlit apartment kitchen, holding a steaming platter of freshly cooked Japanese breakfast dishes. She wears an oversized soft knit sweater under a pastel-pink ruffled apron, her long golden locks gathered in a loose low side-tail. Early morning sunbeams beam through the kitchen window, bathing her porcelain skin and amber eyes in radiant warmth as she offers a tender, slightly exasperated smile. Medium shot, crisp domestic key visual style, detailed kitchen interior background, solo 1girl, no extra people.",
       "promptTokens": [
         "shiina_mahiru",
         "1girl",
@@ -122,7 +120,6 @@
         "gentle_smile",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
         "volumetric_lighting"
       ],
       "negativeTokens": [
@@ -189,9 +186,7 @@
         "evening",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -243,7 +238,7 @@
         "amber_eyes",
         "city_lights"
       ],
-      "promptProse": "Mahiru Shiina stands at the railing of her apartment balcony in the purple twilight air, looking across the short divider toward the adjacent balcony. She raises both graceful arms to retie her golden hair as the evening breeze catches her flowing tresses and sweater. Her amber eyes sparkle with pure, unguarded delight, her profile painted by the radiant afterglow of the setting sun over the distant city skyline. Medium shot, cinematic twilight lighting, cityscape bokeh, detailed balcony background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mahiru Shiina stands at the railing of her apartment balcony in the purple twilight air, looking across the short divider toward the adjacent balcony. She raises both graceful arms to retie her golden hair as the evening breeze catches her flowing tresses and sweater. Her amber eyes sparkle with pure, unguarded delight, her profile painted by the radiant afterglow of the setting sun over the distant city skyline. Medium shot, cinematic twilight lighting, cityscape bokeh, detailed balcony background, solo 1girl, no extra people.",
       "promptTokens": [
         "shiina_mahiru",
         "1girl",
@@ -263,9 +258,7 @@
         "gentle_smile",
         "city_lights",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -313,7 +306,7 @@
         "shy",
         "looking_down"
       ],
-      "promptProse": "Mahiru Shiina walks beside you on a crisp winter afternoon shopping street, wrapped snugly in an ivory duffle coat and a fluffy plaid scarf. Her hands are tucked inside her oversized sleeves, her fingers hesitantly tugging at the edge of your jacket. As your hands brush, a rich crimson blush spreads over her cheeks above the wool scarf, her golden eyelashes fluttering as she bashfully turns her gaze toward the brick sidewalk. Medium shot, soft winter sunlight, holiday shopping street background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mahiru Shiina walks beside you on a crisp winter afternoon shopping street, wrapped snugly in an ivory duffle coat and a fluffy plaid scarf. Her hands are tucked inside her oversized sleeves, her fingers hesitantly tugging at the edge of your jacket. As your hands brush, a rich crimson blush spreads over her cheeks above the wool scarf, her golden eyelashes fluttering as she bashfully turns her gaze toward the brick sidewalk. Medium shot, soft winter sunlight, holiday shopping street background, solo 1girl, no text.",
       "promptTokens": [
         "shiina_mahiru",
         "1girl",
@@ -332,9 +325,7 @@
         "shy",
         "looking_down",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -395,9 +386,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -450,7 +439,7 @@
         "radiant_smile",
         "angelic"
       ],
-      "promptProse": "Mahiru Shiina stands at the altar of a grand cathedral bathed in radiant celestial light, wearing an angelically pure white wedding gown with a sweeping cathedral train. A delicate translucent lace veil cascades over her waist-length golden hair, framing a face of ethereal beauty. Her hands clutch a bouquet of white calla lilies as tears of overwhelming joy and true love brim in her wide amber eyes, her lips parted in an unforgettable radiant smile. Medium shot, divine sunbeams cutting through high cathedral windows, detailed floral aisle background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mahiru Shiina stands at the altar of a grand cathedral bathed in radiant celestial light, wearing an angelically pure white wedding gown with a sweeping cathedral train. A delicate translucent lace veil cascades over her waist-length golden hair, framing a face of ethereal beauty. Her hands clutch a bouquet of white calla lilies as tears of overwhelming joy and true love brim in her wide amber eyes, her lips parted in an unforgettable radiant smile. Medium shot, divine sunbeams cutting through high cathedral windows, detailed floral aisle background, solo 1girl, no text.",
       "promptTokens": [
         "shiina_mahiru",
         "1girl",
@@ -471,7 +460,6 @@
         "romantic",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
         "volumetric_lighting"
       ],
       "negativeTokens": [
@@ -516,8 +504,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Mahiru Shiina from The Angel Next Door straddles your waist on the living room sofa in the quiet evening, wearing an oversized cream knit sweater slipping completely off one shoulder. Her golden flaxen hair falls like silk around her flushed face, amber eyes shining with intense, shy determination as she rolls her hips in earnest, clumsy rhythm. Her modest full breasts heave with breathless gasps, pink nipples taut beneath the warm room light as she forbids you from teasing her. Vertical low-angle cowgirl shot, cinematic warm lamplight, detailed living room background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Mahiru Shiina from The Angel Next Door straddles your waist on the living room sofa in the quiet evening, wearing an oversized cream knit sweater slipping completely off one shoulder. Her golden flaxen hair falls like silk around her flushed face, amber eyes shining with intense, shy determination as she rolls her hips in earnest, clumsy rhythm. Her modest full breasts heave with breathless gasps, pink nipples taut beneath the warm room light as she forbids you from teasing her. Vertical low-angle cowgirl shot, cinematic warm lamplight, detailed living room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mahiru Shiina from The Angel Next Door straddles your waist on the living room sofa in the quiet evening, wearing an oversized cream knit sweater slipping completely off one shoulder. Her golden flaxen hair falls like silk around her flushed face, amber eyes shining with intense, shy determination as she rolls her hips in earnest, clumsy rhythm. Her modest full breasts heave with breathless gasps, pink nipples taut beneath the warm room light as she forbids you from teasing her. Vertical low-angle cowgirl shot, cinematic warm lamplight, detailed living room background, solo 1girl, no extra people.",
+      "nsfwProse": "Mahiru Shiina from The Angel Next Door straddles your waist on the living room sofa in the quiet evening, wearing an oversized cream knit sweater slipping completely off one shoulder. Her golden flaxen hair falls like silk around her flushed face, amber eyes shining with intense, shy determination as she rolls her hips in earnest, clumsy rhythm. Her modest full breasts heave with breathless gasps, pink nipples taut beneath the warm room light as she forbids you from teasing her. Vertical low-angle cowgirl shot, cinematic warm lamplight, detailed living room background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -541,9 +529,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -589,8 +575,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Mahiru Shiina reclines against the smooth stone ledge of an outdoor private hot spring at night, a drenched white modesty towel clinging semi-translucently to her slender body. Her long golden hair spreads across the steaming surface like liquid amber as one trembling hand slips underwater between her thighs, tracing herself in the mineral-rich warmth. Her lashes flutter, amber eyes misting over with bittersweet longing for your touch. Sensual vertical composition, lantern glow filtering through steam, detailed onsen background, depth of field, solo 1girl, no text.",
-      "nsfwProse": "Mahiru Shiina reclines against the smooth stone ledge of an outdoor private hot spring at night, a drenched white modesty towel clinging semi-translucently to her slender body. Her long golden hair spreads across the steaming surface like liquid amber as one trembling hand slips underwater between her thighs, tracing herself in the mineral-rich warmth. Her lashes flutter, amber eyes misting over with bittersweet longing for your touch. Sensual vertical composition, lantern glow filtering through steam, detailed onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mahiru Shiina reclines against the smooth stone ledge of an outdoor private hot spring at night, a drenched white modesty towel clinging semi-translucently to her slender body. Her long golden hair spreads across the steaming surface like liquid amber as one trembling hand slips underwater between her thighs, tracing herself in the mineral-rich warmth. Her lashes flutter, amber eyes misting over with bittersweet longing for your touch. Sensual vertical composition, glow filtering through steam, detailed onsen background, solo 1girl, no text.",
+      "nsfwProse": "Mahiru Shiina reclines against the smooth stone ledge of an outdoor private hot spring at night, a drenched white modesty towel clinging semi-translucently to her slender body. Her long golden hair spreads across the steaming surface like liquid amber as one trembling hand slips underwater between her thighs, tracing herself in the mineral-rich warmth. Her lashes flutter, amber eyes misting over with bittersweet longing for your touch. Sensual vertical composition, glow filtering through steam, detailed onsen background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -612,9 +598,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -660,8 +644,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Caught in a breathless accident in the warm evening kitchen, Mahiru Shiina leans forward over the granite cooking island as her ruffled pink apron unties, sliding loose down her bare flanks. With no clothes beneath, her round porcelain breasts and dusky pink nipples are exposed to the warm sunset light streaming past the stove. She glances back over her arched spine with glistening, mortified amber eyes, biting her lip as she pleads for restraint while sauce simmers on the stove. Cinematic horizontal composition, golden hour amber rays, detailed kitchen background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Caught in a breathless accident in the warm evening kitchen, Mahiru Shiina leans forward over the granite cooking island as her ruffled pink apron unties, sliding loose down her bare flanks. With no clothes beneath, her round porcelain breasts and dusky pink nipples are exposed to the warm sunset light streaming past the stove. She glances back over her arched spine with glistening, mortified amber eyes, biting her lip as she pleads for restraint while sauce simmers on the stove. Cinematic horizontal composition, golden hour amber rays, detailed kitchen background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Caught in a breathless accident in the warm evening kitchen, Mahiru Shiina leans forward over the granite cooking island as her ruffled pink apron unties, sliding loose down her bare flanks. With no clothes beneath, her round porcelain breasts and dusky pink nipples are exposed to the warm sunset light streaming past the stove. She glances back over her arched spine with glistening, mortified amber eyes, biting her lip as she pleads for restraint while sauce simmers on the stove. Cinematic horizontal composition, golden hour amber rays, detailed kitchen background, solo 1girl, no extra people.",
+      "nsfwProse": "Caught in a breathless accident in the warm evening kitchen, Mahiru Shiina leans forward over the granite cooking island as her ruffled pink apron unties, sliding loose down her bare flanks. With no clothes beneath, her round porcelain breasts and dusky pink nipples are exposed to the warm sunset light streaming past the stove. She glances back over her arched spine with glistening, mortified amber eyes, biting her lip as she pleads for restraint while sauce simmers on the stove. Cinematic horizontal composition, golden hour amber rays, detailed kitchen background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -685,9 +669,7 @@
         "blonde_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -733,8 +715,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Curled deep beneath the fluffy duvet during a stormy midnight, Mahiru Shiina clutches the sheets as thunder rumbles against the window. Her white cotton nightgown is hitched high above her slender hips, one trembling hand seeking desperate comfort between her thighs as she repeats your name like a prayer. Her golden hair pools messy across the pillow, tears of pleasure and fear glistening in her wide amber eyes as she arches into the warmth. Intimate vertical framing, soft bedside glow fighting the storm shadows, detailed bedroom background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Curled deep beneath the fluffy duvet during a stormy midnight, Mahiru Shiina clutches the sheets as thunder rumbles against the window. Her white cotton nightgown is hitched high above her slender hips, one trembling hand seeking desperate comfort between her thighs as she repeats your name like a prayer. Her golden hair pools messy across the pillow, tears of pleasure and fear glistening in her wide amber eyes as she arches into the warmth. Intimate vertical framing, soft bedside glow fighting the storm shadows, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Curled deep beneath the fluffy duvet during a stormy midnight, Mahiru Shiina clutches the sheets as thunder rumbles against the window. Her white cotton nightgown is hitched high above her slender hips, one trembling hand seeking desperate comfort between her thighs as she repeats your name like a prayer. Her golden hair pools messy across the pillow, tears of pleasure and fear glistening in her wide amber eyes as she arches into the warmth. Intimate vertical framing, soft bedside glow fighting the storm shadows, detailed bedroom background, solo 1girl, no extra people.",
+      "nsfwProse": "Curled deep beneath the fluffy duvet during a stormy midnight, Mahiru Shiina clutches the sheets as thunder rumbles against the window. Her white cotton nightgown is hitched high above her slender hips, one trembling hand seeking desperate comfort between her thighs as she repeats your name like a prayer. Her golden hair pools messy across the pillow, tears of pleasure and fear glistening in her wide amber eyes as she arches into the warmth. Intimate vertical framing, soft bedside glow fighting the storm shadows, detailed bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -756,9 +738,7 @@
         "blonde_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

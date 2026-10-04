@@ -402,9 +402,7 @@
         "afternoon",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -461,7 +459,7 @@
         "demon_horns",
         "leather_outfit"
       ],
-      "promptProse": "Mikari Tachibana from 2.5 Dimensional Seduction straddles your lap in the hotel room after a major comic convention, half out of her Miriella demon cosplay. Wearing a two-tone purple-and-pink long twintail cosplay wig and small white demon horns, with white angular decorative wings on her shoulders, her full round breasts heave free from the boned corset, pink nipples taut and glistening as she grinds her hips with possessive fury. Her vivid pink eyes blaze with a mixture of jealous tears and burning childhood passion. Vertical low-angle cowgirl shot, vanity lights reflecting off glossy black vinyl and pale curves, detailed hotel room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mikari Tachibana from 2.5 Dimensional Seduction straddles your lap in the hotel room after a major comic convention, half out of her Miriella demon cosplay. Wearing a two-tone purple-and-pink long twintail cosplay wig and small white demon horns, with white angular decorative wings on her shoulders, her full round breasts heave free from the boned corset, pink nipples taut and glistening as she grinds her hips with possessive fury. Her vivid pink eyes blaze with a mixture of jealous tears and burning childhood passion. Vertical low-angle cowgirl shot, vanity lights reflecting off glossy black vinyl and pale curves, detailed hotel room background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -490,9 +488,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -517,7 +513,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -548,11 +544,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mikari Tachibana from 2.5 Dimensional Seduction straddles your lap in the hotel room after a major comic convention, half out of her Miriella demon cosplay. Wearing a two-tone purple-and-pink long twintail cosplay wig and small white demon horns, with white angular decorative wings on her shoulders, her full round breasts heave free from the boned corset, pink nipples taut and glistening as she grinds her hips with possessive fury. Her vivid pink eyes blaze with a mixture of jealous tears and burning childhood passion. Vertical low-angle cowgirl shot, vanity lights reflecting off glossy black vinyl and pale curves, detailed hotel room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mikari Tachibana from 2.5 Dimensional Seduction straddles your lap in the hotel room after a major comic convention, half out of her Miriella demon cosplay. Wearing a two-tone purple-and-pink long twintail cosplay wig and small white demon horns, with white angular decorative wings on her shoulders, her full round breasts heave free from the boned corset, pink nipples taut and glistening as she grinds her hips with possessive fury. Her vivid pink eyes blaze with a mixture of jealous tears and burning childhood passion. Vertical low-angle cowgirl shot, vanity lights reflecting off glossy black vinyl and pale curves, detailed hotel room background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -587,7 +581,7 @@
         "brown_hair",
         "pink_eyes"
       ],
-      "promptProse": "Mikari Tachibana lounges at the edge of a rooftop infinity pool late at night, the city skyline twinkling below. Her metallic gold micro bikini and sheer gossamer sarong are drenched, sticking like paint over her slender figure and the outline of her nipples. Underwater, her hand caresses her slick core with rhythmic passion, wavy chestnut brown hair trailing across the pool edge as her pink eyes shimmer and she arches her throat in a sultry whimper. Sensual vertical framing, blue pool caustics and city neon illuminating glistening wet curves, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mikari Tachibana lounges at the edge of a rooftop infinity pool late at night, the city skyline twinkling below. Her metallic gold micro bikini and sheer gossamer sarong are drenched, sticking like paint over her slender figure and the outline of her nipples. Underwater, her hand caresses her slick core with rhythmic passion, wavy chestnut brown hair trailing across the pool edge as her pink eyes shimmer and she arches her throat in a sultry whimper. Sensual vertical framing, blue pool caustics and city neon illuminating glistening wet curves, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -612,9 +606,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -639,7 +631,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -666,11 +658,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mikari Tachibana lounges at the edge of a rooftop infinity pool late at night, the city skyline twinkling below. Her metallic gold micro bikini and sheer gossamer sarong are drenched, sticking like paint over her slender figure and the outline of her nipples. Underwater, her hand caresses her slick core with rhythmic passion, wavy chestnut brown hair trailing across the pool edge as her pink eyes shimmer and she arches her throat in a sultry whimper. Sensual vertical framing, blue pool caustics and city neon illuminating glistening wet curves, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Mikari Tachibana lounges at the edge of a rooftop infinity pool late at night, the city skyline twinkling below. Her metallic gold micro bikini and sheer gossamer sarong are drenched, sticking like paint over her slender figure and the outline of her nipples. Underwater, her hand caresses her slick core with rhythmic passion, wavy chestnut brown hair trailing across the pool edge as her pink eyes shimmer and she arches her throat in a sultry whimper. Sensual vertical framing, blue pool caustics and city neon illuminating glistening wet curves, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -705,7 +695,7 @@
         "brown_hair",
         "pink_eyes"
       ],
-      "promptProse": "Mikari Tachibana leans forward over the makeup table, hopelessly trapped in a skintight black latex battle-angel bodysuit with its front zipper jammed halfway down her sternum. The intense compression squeezes her soft breasts into a strained overflow of pale flesh and erect pink nipples, while the glossy rubber stretches taut across her rounded hips. Looking back over her shoulder with tear-filled pink eyes and pouting crimson lips, her tousled chestnut brown hair clinging to sweaty collarbones as she gasps for breath in flustered desperation. Cinematic horizontal composition, studio floodlights reflecting off shiny latex curves, detailed studio background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mikari Tachibana leans forward over the makeup table, hopelessly trapped in a skintight black latex battle-angel bodysuit with its front zipper jammed halfway down her sternum. The intense compression squeezes her soft breasts into a strained overflow of pale flesh and erect pink nipples, while the glossy rubber stretches taut across her rounded hips. Looking back over her shoulder with tear-filled pink eyes and pouting crimson lips, her tousled chestnut brown hair clinging to sweaty collarbones as she gasps for breath in flustered desperation. Cinematic horizontal composition, studio floodlights reflecting off shiny latex curves, detailed studio background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -734,9 +724,7 @@
         "pink_eyes",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -761,7 +749,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -792,11 +780,9 @@
         "pink_eyes",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mikari Tachibana leans forward over the makeup table, hopelessly trapped in a skintight black latex battle-angel bodysuit with its front zipper jammed halfway down her sternum. The intense compression squeezes her soft breasts into a strained overflow of pale flesh and erect pink nipples, while the glossy rubber stretches taut across her rounded hips. Looking back over her shoulder with tear-filled pink eyes and pouting crimson lips, her tousled chestnut brown hair clinging to sweaty collarbones as she gasps for breath in flustered desperation. Cinematic horizontal composition, studio floodlights reflecting off shiny latex curves, detailed studio background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mikari Tachibana leans forward over the makeup table, hopelessly trapped in a skintight black latex battle-angel bodysuit with its front zipper jammed halfway down her sternum. The intense compression squeezes her soft breasts into a strained overflow of pale flesh and erect pink nipples, while the glossy rubber stretches taut across her rounded hips. Looking back over her shoulder with tear-filled pink eyes and pouting crimson lips, her tousled chestnut brown hair clinging to sweaty collarbones as she gasps for breath in flustered desperation. Cinematic horizontal composition, studio floodlights reflecting off shiny latex curves, detailed studio background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -831,7 +817,7 @@
         "brown_hair",
         "pink_eyes"
       ],
-      "promptProse": "Mikari Tachibana lies completely naked across the bed in her own modest bedroom, stared at by a framed childhood photo on her nightstand. Her slender body arches off the cotton sheets as her fingers rhythmically pump through soaking, honeyed wetness, her full round breasts quivering with each shuddering breath. Her wavy chestnut brown hair spreads across the pillow, tears of desperate long-held love glistening in her pink eyes as she calls out to the only boy she has loved for a decade. Intimate vertical framing, dim amber light from a single bedside lamp, everyday teenage bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mikari Tachibana lies completely naked across the bed in her own modest bedroom, stared at by a framed childhood photo on her nightstand. Her slender body arches off the cotton sheets as her fingers rhythmically pump through soaking, honeyed wetness, her full round breasts quivering with each shuddering breath. Her wavy chestnut brown hair spreads across the pillow, tears of desperate long-held love glistening in her pink eyes as she calls out to the only boy she has loved for a decade. Intimate vertical framing, dim amber light from a single bedside lamp, everyday teenage bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -860,9 +846,7 @@
         "pink_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -887,7 +871,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -918,11 +902,9 @@
         "pink_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mikari Tachibana lies completely naked across the bed in her own modest bedroom, stared at by a framed childhood photo on her nightstand. Her slender body arches off the cotton sheets as her fingers rhythmically pump through soaking, honeyed wetness, her full round breasts quivering with each shuddering breath. Her wavy chestnut brown hair spreads across the pillow, tears of desperate long-held love glistening in her pink eyes as she calls out to the only boy she has loved for a decade. Intimate vertical framing, dim amber light from a single bedside lamp, everyday teenage bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mikari Tachibana lies completely naked across the bed in her own modest bedroom, stared at by a framed childhood photo on her nightstand. Her slender body arches off the cotton sheets as her fingers rhythmically pump through soaking, honeyed wetness, her full round breasts quivering with each shuddering breath. Her wavy chestnut brown hair spreads across the pillow, tears of desperate long-held love glistening in her pink eyes as she calls out to the only boy she has loved for a decade. Intimate vertical framing, dim amber light from a single bedside lamp, everyday teenage bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_nude",
       "coverageTags": [
         "nsfw",

@@ -27,7 +27,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_demon_slayer_uniform",
-      "promptProse": "Kochou Shinobu flips and vaults across the broken beams of a demon-haunted fortress ruin at dusk, her butterfly-patterned haori spreading behind her like real wings. Her toes graze a splintered rafter, the hidden stinger flashes cold light between her fingers, and her gentle smile never wavers as she names Insect Breathing, Centipede. Landing softly with her gradient black-purple hair settling, she winks at your stunned face and reminds you the next enemy will not wait. Dynamic action shot, cinematic lighting, volumetric dusk haze, detailed ruin background, depth of field.",
+      "promptProse": "Kochou Shinobu flips and vaults across the broken beams of a demon-haunted fortress ruin at dusk, her butterfly-patterned haori spreading behind her like real wings. Her toes graze a splintered rafter, the hidden stinger flashes cold light between her fingers, and her gentle smile never wavers as she names Insect Breathing, Centipede. Landing softly with her gradient black-purple hair settling, she winks at your stunned face and reminds you the next enemy will not wait. Dynamic action shot, cinematic lighting, detailed ruin background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -51,8 +51,6 @@
         "sunset",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "poison_needle",
         "needle_between_fingers"
       ],
@@ -99,7 +97,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_demon_slayer_uniform",
-      "promptProse": "Kneeling opposite you on a cushion in the Butterfly Mansion's treatment room, Kochou Shinobu changes the dressing on your wounded arm with fingertips light as butterfly wings, her purple eyes focused seriously on the wound. She warns with her unbroken smile that her poison paralyzes bad people and careless ones alike, and that neglecting the ointment would make her angry — the concern beneath the words scalding. Medium two-shot, cinematic lighting, volumetric lantern glow, detailed tatami background, depth of field.",
+      "promptProse": "Kneeling opposite you on a cushion in the Butterfly Mansion's treatment room, Kochou Shinobu changes the dressing on your wounded arm with fingertips light as butterfly wings, her purple eyes focused seriously on the wound. She warns with her unbroken smile that her poison paralyzes bad people and careless ones alike, and that neglecting the ointment would make her angry — the concern beneath the words scalding. Medium two-shot, cinematic lighting, volumetric lantern glow, detailed tatami background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -123,7 +121,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -168,7 +165,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_demon_slayer_uniform",
-      "promptProse": "Beneath a waterfall of blooming wisteria, Kochou Shinobu stands with her face lifted into the falling violet light, petals catching in her gradient hair. She speaks softly that the wisteria poison fatal to demons is fatal to her too, so while she can still smile, the two of you must come see many, many more flowers — and when she turns, the sadness beneath the smile shows itself for the first time. Medium shot, cinematic lighting, volumetric petal haze, detailed garden background, depth of field.",
+      "promptProse": "Beneath a waterfall of blooming wisteria, Kochou Shinobu stands with her face lifted into the falling violet light, petals catching in her gradient hair. She speaks softly that the wisteria poison fatal to demons is fatal to her too, so while she can still smile, the two of you must come see many, many more flowers — and when she turns, the sadness beneath the smile shows itself for the first time. Medium shot, cinematic lighting, detailed garden background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -192,9 +189,7 @@
         "smile",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -261,8 +256,6 @@
         "indoors",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hands_clasped",
         "miso_soup",
         "bowl_on_table"
@@ -310,7 +303,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "festive_purple_yukata",
-      "promptProse": "Kochou Shinobu walks the festival crowd in her wisteria-patterned yukata, the sweet smell of candy apples weaving through the lantern-lit noise. At the crowded crossing she simply offers her hand — easier not to get separated, she says, and when you take it your face heats as she teases that it is only an anti-lost measure. The first firework blooms overhead and she tilts her head with a smile, urging you to look before it fades. Medium two-shot, cinematic lighting, volumetric lantern glow, detailed festival background, depth of field.",
+      "promptProse": "Kochou Shinobu walks the festival crowd in her wisteria-patterned yukata, the sweet smell of candy apples weaving through the lantern-lit noise. At the crowded crossing she simply offers her hand — easier not to get separated, she says, and when you take it your face heats as she teases that it is only an anti-lost measure. The first firework blooms overhead and she tilts her head with a smile, urging you to look before it fades. Medium two-shot, cinematic lighting, lantern glow, detailed festival background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -333,8 +326,6 @@
         "night",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -379,7 +370,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "summer_swimsuit",
-      "promptProse": "Kochou Shinobu sits poolside at the Butterfly Mansion with her toes dipped and swaying in the water, a purple butterfly-print bikini making her petite frame look all the more exquisite. She looks up and puffs her cheeks at your gaze, insisting her small stature is a tactical advantage in narrow terrain, then thrusts the sunscreen at you — if she tans, it will clash with her haori. Bright sun and rippling pool light over the scene. Medium shot, cinematic lighting, volumetric summer haze, detailed poolside background, depth of field.",
+      "promptProse": "Kochou Shinobu sits poolside at the Butterfly Mansion with her toes dipped and swaying in the water, a purple butterfly-print bikini making her petite frame look all the more exquisite. She looks up and puffs her cheeks at your gaze, insisting her small stature is a tactical advantage in narrow terrain, then thrusts the sunscreen at you — if she tans, it will clash with her haori. Bright sun and rippling pool light over the scene. Medium shot, cinematic lighting, detailed poolside background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -402,9 +393,7 @@
         "pool",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -449,7 +438,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "sfw_white_shiromuku",
-      "promptProse": "The Insect Hashira who walked toward death all her life wears pure white shiromuku today. Standing at the shrine altar with fingers interlaced with yours, Kochou Shinobu's purple eyes are more earnest than ever beneath the white tsunokakushi as she vows that the poison meant to be buried with her turns to medicine in your hands, and asks to spend every remaining day being gentle to you. Formal portrait, cinematic lighting, volumetric shrine light, detailed background, depth of field.",
+      "promptProse": "The Insect Hashira who walked toward death all her life wears pure white shiromuku today. Standing at the shrine altar with fingers interlaced with yours, Kochou Shinobu's purple eyes are more earnest than ever beneath the white tsunokakushi as she vows that the poison meant to be buried with her turns to medicine in your hands, and asks to spend every remaining day being gentle to you. Formal portrait, cinematic lighting, shrine light, detailed background.",
       "promptTokens": [
         "kochou_shinobu",
         "1girl",
@@ -470,8 +459,6 @@
         "shrine",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -519,7 +506,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "nsfw_nude",
-      "promptProse": "The always-smiling Insect Hashira puts her smile away for the first time in the quiet of the night. Lying across the Butterfly Mansion's soft futon with her wavy gradient black-purple hair flowing unbound across the tatami, Kochou Shinobu looks up through glistening violet eyes. Her petite chest rises and falls with tender, unadorned sighs as one trembling hand explores the warmth between her parted thighs. Tears slip silently past her flushed cheeks as she confesses in a fragile whisper that only before you does she never have to keep smiling. Vulnerable vertical composition, warm lantern glow over pale skin, detailed Japanese room background, depth of field.",
+      "promptProse": "The always-smiling Insect Hashira puts her smile away for the first time in the quiet of the night. Lying across the Butterfly Mansion's soft futon with her wavy gradient black-purple hair flowing unbound across the tatami, Kochou Shinobu looks up through glistening violet eyes. Her petite chest rises and falls with tender, unadorned sighs as one trembling hand explores the warmth between her parted thighs. Tears slip silently past her flushed cheeks as she confesses in a fragile whisper that only before you does she never have to keep smiling. Vulnerable vertical composition, warm lantern glow over pale skin, detailed Japanese room background.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -546,9 +533,7 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -594,7 +579,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "official_demon_slayer_uniform",
-      "promptProse": "Caught in a private examination after hours in the Butterfly Mansion's dispensary, Kochou Shinobu leans forward against the polished wooden treatment table, her butterfly haori slipping from petite pale shoulders. She glances back over her shoulder with an exquisite, biting pout and trembling purple eyes, fingers digging into the edge as her uniform belt hangs loose. Soft candlelight from the medicine cabinets illuminates the graceful arch of her spine and flushed thighs in a breathtaking horizontal composition, detailed background, depth of field.",
+      "promptProse": "Caught in a private examination after hours in the Butterfly Mansion's dispensary, Kochou Shinobu leans forward against the polished wooden treatment table, her butterfly haori slipping from petite pale shoulders. She glances back over her shoulder with an exquisite, biting pout and trembling purple eyes, fingers digging into the edge as her uniform belt hangs loose. Soft candlelight from the medicine cabinets illuminates the graceful arch of her spine and flushed thighs in a breathtaking horizontal composition, detailed background.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -617,9 +602,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -666,7 +649,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "sensual_lace_lingerie",
-      "promptProse": "Straddling your waist in the wisteria-scented dark of the Butterfly Mansion, Kochou Shinobu works her petite body in eager rolls with the ribbons of her violet lingerie half undone and her gradient hair falling like a black-purple veil around your faces. She orders you to keep looking into her wet purple eyes, to hold her when the poison spreads — because tonight the spreading thing is something far sweeter than venom. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, volumetric candle glow, depth of field.",
+      "promptProse": "Straddling your waist in the wisteria-scented dark of the Butterfly Mansion, Kochou Shinobu works her petite body in eager rolls with the ribbons of her violet lingerie half undone and her gradient hair falling like a black-purple veil around your faces. She orders you to keep looking into her wet purple eyes, to hold her when the poison spreads — because tonight the spreading thing is something far sweeter than venom. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, candle glow.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -688,9 +671,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -737,7 +718,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "festive_purple_yukata",
-      "promptProse": "A body honed for killing demons loosens tonight only for itself. Kochou Shinobu reclines against the rim of a wisteria-shadowed hot spring in a white yukata soaked to translucence, the wet fabric tracing her petite frame as one hand drifts beneath the water over her most sensitive places, purple eyes unfocused on the flower shadows while she bargains with the night for one greedy exception to a lifetime of discipline. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed onsen background, depth of field.",
+      "promptProse": "A body honed for killing demons loosens tonight only for itself. Kochou Shinobu reclines against the rim of a wisteria-shadowed hot spring in a white yukata soaked to translucence, the wet fabric tracing her petite frame as one hand drifts beneath the water over her most sensitive places, purple eyes unfocused on the flower shadows while she bargains with the night for one greedy exception to a lifetime of discipline. Sensual solo composition, wet translucent fabric, cinematic lighting, steam, detailed onsen background.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -762,9 +743,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -974,9 +953,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1216,7 +1193,7 @@
       ],
       "description": "【刀匠村私人露天温泉·夜】八倍常人肌肉密度的恋柱大人。蜜璃跨坐在你的腰间，那件标志性的前胸完全敞开的鬼杀队服被推到两旁，无与伦比的宏伟巨乳在温泉水光下晃出惊人的乳浪。粉绿渐变的粗大麻花辫扫过你的胸口，双颊带着天然的红晕，主动摇晃着丰腴的腰身——「啊呜……心跳跳得好快……感觉整个人……都要被融化在里面了啦！」",
       "id": "kanroji_mitsuri_r18_b6_01",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "刀匠村私人露天温泉·夜",
       "mood": "主动亲密与失神",
@@ -1241,7 +1218,7 @@
         "second_person",
         "duplicate"
       ],
-      "nsfwProse": "Mitsuri Kanroji from Demon Slayer straddles your lap inside a private outdoor hot spring at the Swordsmith Village, her wide-open corps uniform pinned under her arms. Her colossal, muscular yet impossibly soft breasts bounce in massive, dizzying arcs with each eager roll of her hips, rosy areolas flushed deep crimson in the steam. Her thick pink-and-green gradient braids swing against your shoulders, vibrant lime-green eyes sparkling with pure, uninhibited love and joyous tears as she giggles in breathless ecstasy. Vertical low-angle cowgirl shot, lantern light reflecting off splashing warm water and lush curves, detailed onsen background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mitsuri Kanroji from Demon Slayer straddles your lap inside a private outdoor hot spring at the Swordsmith Village, her wide-open corps uniform pinned under her arms. Her colossal, muscular yet impossibly soft breasts bounce in massive, dizzying arcs with each eager roll of her hips, rosy areolas flushed deep crimson in the steam. Her thick pink-and-green gradient braids swing against your shoulders, vibrant lime-green eyes sparkling with pure, uninhibited love and joyous tears as she giggles in breathless ecstasy. Vertical low-angle cowgirl shot, light reflecting off splashing warm water and lush curves, detailed onsen background, solo 1girl, no extra people.",
       "nsfwTokens": [
         "straddling",
         "cowgirl_position",
@@ -1268,12 +1245,10 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Mitsuri Kanroji from Demon Slayer straddles your lap inside a private outdoor hot spring at the Swordsmith Village, her wide-open corps uniform pinned under her arms. Her colossal, muscular yet impossibly soft breasts bounce in massive, dizzying arcs with each eager roll of her hips, rosy areolas flushed deep crimson in the steam. Her thick pink-and-green gradient braids swing against your shoulders, vibrant lime-green eyes sparkling with pure, uninhibited love and joyous tears as she giggles in breathless ecstasy. Vertical low-angle cowgirl shot, lantern light reflecting off splashing warm water and lush curves, detailed onsen background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mitsuri Kanroji from Demon Slayer straddles your lap inside a private outdoor hot spring at the Swordsmith Village, her wide-open corps uniform pinned under her arms. Her colossal, muscular yet impossibly soft breasts bounce in massive, dizzying arcs with each eager roll of her hips, rosy areolas flushed deep crimson in the steam. Her thick pink-and-green gradient braids swing against your shoulders, vibrant lime-green eyes sparkling with pure, uninhibited love and joyous tears as she giggles in breathless ecstasy. Vertical low-angle cowgirl shot, light reflecting off splashing warm water and lush curves, detailed onsen background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1300,9 +1275,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1336,7 +1309,7 @@
       ],
       "description": "【刀匠村天然硫磺温泉·黄昏】只穿着伊黑先生送的草绿色条纹过膝长袜泡在水里。蜜璃赤裸着上身靠在光滑的木栏边，被水泡湿的绿色长袜紧紧包裹着丰满强健的修长大腿。单手在热水中探入湿漉漉的花径快速抽弄，整个人舒服得眼角挂泪——「哈啊……温泉好舒服……樱饼好好吃……还有你……最喜欢了……」",
       "id": "kanroji_mitsuri_r18_b6_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "刀匠村天然硫磺温泉·黄昏",
       "mood": "湿身水光与私密自持",
@@ -1361,7 +1334,7 @@
         "second_person",
         "duplicate"
       ],
-      "nsfwProse": "Mitsuri Kanroji soaks in a natural sulfur spring at twilight, completely naked save for the damp lime-green striped thigh-high socks given to her by Obanai. Her immense, pillowy breasts float buoyantly on the steaming surface, dark rosebuds glistening under mineral spray as her hand plunges beneath the water between her thick, muscular thighs. Her head falls back against the wooden deck, green eyes rolling in rapturous bliss as she moans softly into the mountain evening. Sensual vertical framing, glowing paper lanterns and misty outdoor forest backlighting wet skin, detailed onsen background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Mitsuri Kanroji soaks in a natural sulfur spring at twilight, completely naked save for the damp lime-green striped thigh-high socks given to her by Obanai. Her immense, pillowy breasts float buoyantly on the steaming surface, dark rosebuds glistening under mineral spray as her hand plunges beneath the water between her thick, muscular thighs. Her head falls back against the wooden deck, green eyes rolling in rapturous bliss as she moans softly into the mountain evening. Sensual vertical framing, glowing light and misty outdoor forest backlighting wet skin, detailed onsen background, solo 1girl, no text.",
       "nsfwTokens": [
         "sensual_solo",
         "masturbation",
@@ -1387,12 +1360,10 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Mitsuri Kanroji soaks in a natural sulfur spring at twilight, completely naked save for the damp lime-green striped thigh-high socks given to her by Obanai. Her immense, pillowy breasts float buoyantly on the steaming surface, dark rosebuds glistening under mineral spray as her hand plunges beneath the water between her thick, muscular thighs. Her head falls back against the wooden deck, green eyes rolling in rapturous bliss as she moans softly into the mountain evening. Sensual vertical framing, glowing paper lanterns and misty outdoor forest backlighting wet skin, detailed onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mitsuri Kanroji soaks in a natural sulfur spring at twilight, completely naked save for the damp lime-green striped thigh-high socks given to her by Obanai. Her immense, pillowy breasts float buoyantly on the steaming surface, dark rosebuds glistening under mineral spray as her hand plunges beneath the water between her thick, muscular thighs. Her head falls back against the wooden deck, green eyes rolling in rapturous bliss as she moans softly into the mountain evening. Sensual vertical framing, glowing light and misty outdoor forest backlighting wet skin, detailed onsen background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1418,9 +1389,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1454,7 +1423,7 @@
       ],
       "description": "【蝶屋敷更衣室·午后】换装时因为胸围再次发育导致队服特制纽扣啪的一声崩飞。蜜璃双手撑在更衣长凳上，整件黑色鬼杀队制服完全大门洞开，两团沉甸甸的惊人雪峰完全弹跳在外，短百褶裙掀起露出勒在白嫩大腿肉里的草绿条纹袜。她羞得眼泪汪汪回头——「呜哇哇……裁缝隐先生肯定又要生气了……快帮我找找纽扣掉去哪里了啦！」",
       "id": "kanroji_mitsuri_r18_b6_03",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "蝶屋敷更衣室·午后",
       "mood": "意外失控与羞赧",
@@ -1479,7 +1448,7 @@
         "second_person",
         "duplicate"
       ],
-      "nsfwProse": "Mitsuri Kanroji bends forward over a wooden dressing bench in the Butterfly Mansion as the golden button of her revealing Demon Slayer uniform violently snaps off. Her monumental breasts burst free from the black fabric in an earth-shattering cascade of pale flesh and puffy pink nipples, while her short pleated skirt hikes up to display thick, powerful thighs squeezed by green striped socks. Looking back over her shoulder with teary emerald eyes and beet-red cheeks, she flails her hands in flustered embarrassment. Cinematic horizontal composition, warm tatami sunbeams illuminating creamy cleavage and ripped cloth, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mitsuri Kanroji bends forward over a wooden dressing bench in the Butterfly Mansion as the golden button of her revealing Demon Slayer uniform violently snaps off. Her monumental breasts burst free from the black fabric in an earth-shattering cascade of pale flesh and puffy pink nipples, while her short pleated skirt hikes up to display thick, powerful thighs squeezed by green striped socks. Looking back over her shoulder with teary emerald eyes and beet-red cheeks, she flails her hands in flustered embarrassment. Cinematic horizontal composition, warm tatami sunbeams illuminating creamy cleavage and ripped cloth, detailed background, solo 1girl, no extra people.",
       "nsfwTokens": [
         "bent_over",
         "leaning_forward",
@@ -1508,12 +1477,10 @@
         "green_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Mitsuri Kanroji bends forward over a wooden dressing bench in the Butterfly Mansion as the golden button of her revealing Demon Slayer uniform violently snaps off. Her monumental breasts burst free from the black fabric in an earth-shattering cascade of pale flesh and puffy pink nipples, while her short pleated skirt hikes up to display thick, powerful thighs squeezed by green striped socks. Looking back over her shoulder with teary emerald eyes and beet-red cheeks, she flails her hands in flustered embarrassment. Cinematic horizontal composition, warm tatami sunbeams illuminating creamy cleavage and ripped cloth, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mitsuri Kanroji bends forward over a wooden dressing bench in the Butterfly Mansion as the golden button of her revealing Demon Slayer uniform violently snaps off. Her monumental breasts burst free from the black fabric in an earth-shattering cascade of pale flesh and puffy pink nipples, while her short pleated skirt hikes up to display thick, powerful thighs squeezed by green striped socks. Looking back over her shoulder with teary emerald eyes and beet-red cheeks, she flails her hands in flustered embarrassment. Cinematic horizontal composition, warm tatami sunbeams illuminating creamy cleavage and ripped cloth, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1542,9 +1509,7 @@
         "green_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1578,7 +1543,7 @@
       ],
       "description": "【蝶屋敷偏院和室·春夜】飘落樱花瓣的榻榻米房间。蜜璃完全赤裸地仰躺在铺开的被单上，粗大的粉绿麻花辫散在身旁。双手狂乱地在泛滥成灾的私处急速抽弄，八倍肌肉密度的丰满肉体剧烈弓起，汗水与爱液交融，眼角涌出幸福又极乐的泪水——「啊啊……这就是恋之呼吸的奥义吗……全身上下……全部都在呼喊着你的名字啊！」",
       "id": "kanroji_mitsuri_r18_b6_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "silver_moonlight",
       "location": "蝶屋敷偏院和室·春夜",
       "mood": "独处沉沦与情绪释放",
@@ -1603,7 +1568,7 @@
         "second_person",
         "duplicate"
       ],
-      "nsfwProse": "Sprawled naked across her cherry blossom-scattered futon in the spring night, Mitsuri Kanroji surrenders to an explosive climax of pure romantic passion. Her incredible eight-fold muscular yet marshmallow-soft frame arches high off the mats as her fingers pump through gushing, slick honey, her enormous breasts shuddering in seismic ecstasy. Pink-and-green braids splay across the straw weave, joyful tears flooding her lime-green eyes as breathless, high-pitched squeals of bliss echo into the blooming garden. Intimate vertical framing, pink moonlight and drifting blossom petals resting on glistening curves, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled naked across her cherry blossom-scattered futon in the spring night, Mitsuri Kanroji surrenders to an explosive climax of pure romantic passion. Her incredible eight-fold muscular yet marshmallow-soft frame arches high off the mats as her fingers pump through gushing, slick honey, her enormous breasts shuddering in seismic ecstasy. Pink-and-green braids splay across the straw weave, joyful tears flooding her lime-green eyes as breathless, high-pitched squeals of bliss echo into the blooming garden. Intimate vertical framing, pink moonlight and drifting blossom petals resting on glistening curves, detailed Japanese room background, solo 1girl, no extra people.",
       "nsfwTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1634,12 +1599,10 @@
         "braids",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Sprawled naked across her cherry blossom-scattered futon in the spring night, Mitsuri Kanroji surrenders to an explosive climax of pure romantic passion. Her incredible eight-fold muscular yet marshmallow-soft frame arches high off the mats as her fingers pump through gushing, slick honey, her enormous breasts shuddering in seismic ecstasy. Pink-and-green braids splay across the straw weave, joyful tears flooding her lime-green eyes as breathless, high-pitched squeals of bliss echo into the blooming garden. Intimate vertical framing, pink moonlight and drifting blossom petals resting on glistening curves, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled naked across her cherry blossom-scattered futon in the spring night, Mitsuri Kanroji surrenders to an explosive climax of pure romantic passion. Her incredible eight-fold muscular yet marshmallow-soft frame arches high off the mats as her fingers pump through gushing, slick honey, her enormous breasts shuddering in seismic ecstasy. Pink-and-green braids splay across the straw weave, joyful tears flooding her lime-green eyes as breathless, high-pitched squeals of bliss echo into the blooming garden. Intimate vertical framing, pink moonlight and drifting blossom petals resting on glistening curves, detailed Japanese room background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1670,9 +1633,7 @@
         "braids",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

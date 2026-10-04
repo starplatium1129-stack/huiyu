@@ -34,9 +34,7 @@
         "standing",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -108,7 +106,7 @@
         "parted_lips"
       ],
       "nsfwProse": "Standing beside the tall library ladder with her bunny suit unzipped down to her ribs, Mai Sakurajima pulls sheer pantyhose aside, caressing her drenched center with proud, flustered elegance.",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir"
     },
     {
@@ -148,9 +146,7 @@
         "sunset_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -245,7 +241,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -325,9 +320,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -396,7 +389,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "soft lighting, bedroom, sensual, blushing",
       "nsfwTokens": [
         "sitting_on_bed",
@@ -457,9 +450,7 @@
         "supermarket_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -555,9 +546,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -661,9 +650,7 @@
         "pendant_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -748,9 +735,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -808,7 +793,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "standing",
@@ -859,8 +844,7 @@
         "vertical_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -924,7 +908,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "sitting_on_bed",
@@ -970,12 +954,10 @@
       "promptTokens": [
         "bedroom",
         "bed_edge",
-        "moonlight",
         "night",
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -1032,7 +1014,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "barefoot, 5_toes, detailed_toes, pantyhose_pull, soft lighting",
       "nsfwTokens": [
         "sitting_on_bed",
@@ -1233,9 +1215,7 @@
         "afternoon",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1644,9 +1624,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1901,7 +1879,7 @@
         "bare_shoulders",
         "bare_breasts"
       ],
-      "promptProse": "Shouko Makinohara from Rascal Does Not Dream kneels forward on cushions overlooking the dark Shichirigahama coastline at night. Her iconic white sundress is pulled down to her slender waist, unveiling graceful, modest breasts tipped with delicate rose nipples that rise with each slow, loving breath. Her dark blue-black hime-cut hair with subtle side braids frames her face like night itself, luminous sapphire eyes filled with years of tender sacrifice and tears of joy. Vertical low-angle solo shot, moonlight and distant ocean waves through sheer curtains, detailed coastal room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Shouko Makinohara from Rascal Does Not Dream kneels forward on cushions overlooking the dark Shichirigahama coastline at night. Her iconic white sundress is pulled down to her slender waist, unveiling graceful, modest breasts tipped with delicate rose nipples that rise with each slow, loving breath. Her dark blue-black hime-cut hair with subtle side braids frames her face like night itself, luminous sapphire eyes filled with years of tender sacrifice and tears of joy. Vertical low-angle solo shot, moonlight and distant ocean waves through sheer curtains, detailed coastal room background, solo 1girl, no extra people.",
       "promptTokens": [
         "hotel_room",
         "balcony_window",
@@ -1910,9 +1888,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1937,7 +1913,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1989,7 +1965,7 @@
         "hot_spring",
         "ocean_view"
       ],
-      "promptProse": "Shouko Makinohara rests against the smooth granite rim of an infinity onsen overlooking the golden sunset sea. Her sheer white camisole is thoroughly drenched, clinging like a second skin over her slender ribs and sensitive nipples, water droplets pooling near her delicate chest. One hand traces softly downward through the steaming turquoise water between her thighs, rubbing herself with gentle reverence as her deep blue eyes mist over. Sensual vertical composition, golden hour sun setting over ocean horizon, warm steam, detailed outdoor onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Shouko Makinohara rests against the smooth granite rim of an infinity onsen overlooking the golden sunset sea. Her sheer white camisole is thoroughly drenched, clinging like a second skin over her slender ribs and sensitive nipples, water droplets pooling near her delicate chest. One hand traces softly downward through the steaming turquoise water between her thighs, rubbing herself with gentle reverence as her deep blue eyes mist over. Sensual vertical composition, golden hour sun setting over ocean horizon, warm steam, detailed outdoor onsen background, solo 1girl, no text.",
       "promptTokens": [
         "infinity_pool",
         "onsen",
@@ -1999,9 +1975,7 @@
         "twilight",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2026,7 +2000,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2079,7 +2053,7 @@
         "stuck_zipper",
         "clothes_pull"
       ],
-      "promptProse": "Inside the sun-drenched bridal dressing room by the sea, Shouko Makinohara leans forward against the vanity table as the delicate pearl corsetry of her white wedding dress snags tight along her spine. The tension pushes her round, supple breasts high in the lace neckline while the mermaid skirt clings snugly over her hips. Turning back with her sheer veil fluttering, her deep blue eyes sparkle with fond, teasing warmth as she bites her lower lip in mock distress. Cinematic horizontal composition, brilliant chapel sunlight streaming through arched stained glass, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Inside the sun-drenched bridal dressing room by the sea, Shouko Makinohara leans forward against the vanity table as the delicate pearl corsetry of her white wedding dress snags tight along her spine. The tension pushes her round, supple breasts high in the lace neckline while the mermaid skirt clings snugly over her hips. Turning back with her sheer veil fluttering, her deep blue eyes sparkle with fond, teasing warmth as she bites her lower lip in mock distress. Cinematic horizontal composition, brilliant chapel sunlight streaming through arched stained glass, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bridal_suite",
         "dressing_room",
@@ -2088,9 +2062,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2115,7 +2087,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2164,7 +2136,7 @@
         "open_clothes",
         "bare_breasts"
       ],
-      "promptProse": "Lying across the crisp white hospital bed in the quiet midnight silence, Shouko Makinohara casts aside all enigma, her pale green patient gown pulled wide open to her waist. Her slender frame arches off the mattress as trembling fingers swirl between her parted, glistening thighs, proving her warmth and vitality. Her midnight-blue hair spreads across the pillow, genuine tears of gratitude trailing down her flushed cheeks into her ears as breathless whimpers escape her lips. Vulnerable vertical framing, moonlight filtering through hospital blinds, heart monitor glow in background, detailed room, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying across the crisp white hospital bed in the quiet midnight silence, Shouko Makinohara casts aside all enigma, her pale green patient gown pulled wide open to her waist. Her slender frame arches off the mattress as trembling fingers swirl between her parted, glistening thighs, proving her warmth and vitality. Her midnight-blue hair spreads across the pillow, genuine tears of gratitude trailing down her flushed cheeks into her ears as breathless whimpers escape her lips. Vulnerable vertical framing, moonlight filtering through hospital blinds, heart monitor glow in background, detailed room, solo 1girl, no extra people.",
       "promptTokens": [
         "hospital_room",
         "white_bed",
@@ -2172,9 +2144,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2199,7 +2169,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2248,7 +2218,7 @@
         "large_breasts",
         "bouncing_breasts"
       ],
-      "promptProse": "Rio Futaba from Rascal Does Not Dream sits on the edge of the heavy black laboratory workbench after hours, leaning forward over her knees. Her signature white lab coat hangs loose off her pale shoulders, revealing an astonishing, voluptuous chest freed from restraint, massive soft breasts glistening under the dim fixture. Her round glasses sit abandoned beside a test-tube rack, her exposed hazel-gray eyes damp and wide with analytical desire as she orders you not to interrupt the experiment. Vertical low-angle solo shot, moonlight bouncing off glass beakers and blackboard equations, detailed lab background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Rio Futaba from Rascal Does Not Dream sits on the edge of the heavy black laboratory workbench after hours, leaning forward over her knees. Her signature white lab coat hangs loose off her pale shoulders, revealing an astonishing, voluptuous chest freed from restraint, massive soft breasts glistening under the dim fixture. Her round glasses sit abandoned beside a test-tube rack, her exposed hazel-gray eyes damp and wide with analytical desire as she orders you not to interrupt the experiment. Vertical low-angle solo shot, moonlight bouncing off glass beakers and blackboard equations, detailed lab background, solo 1girl, no extra people.",
       "promptTokens": [
         "physics_lab",
         "laboratory_bench",
@@ -2257,9 +2227,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2284,7 +2252,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2335,7 +2303,7 @@
         "water_droplets",
         "wet_clothes"
       ],
-      "promptProse": "Rio Futaba stands under the streaming spray of an empty school shower, her school blouse soaked transparent and clinging helplessly over enormous, heavy breasts and dark aroused nipples. Without her thick spectacles, her delicate face is completely laid bare, water coursing over her neck as one hand reaches beneath her wet soaked skirt to stimulate her throbbing center. Her head lolls back against the tiled wall, chest heaving with muffled gasps as she laments the failure of her rational defenses. Sensual vertical framing, water splashes on tile floor, cool fluorescent bathroom lighting, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Rio Futaba stands under the streaming spray of an empty school shower, her school blouse soaked transparent and clinging helplessly over enormous, heavy breasts and dark aroused nipples. Without her thick spectacles, her delicate face is completely laid bare, water coursing over her neck as one hand reaches beneath her wet soaked skirt to stimulate her throbbing center. Her head lolls back against the tiled wall, chest heaving with muffled gasps as she laments the failure of her rational defenses. Sensual vertical framing, water splashes on tile floor, cool fluorescent bathroom lighting, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "shower",
         "shower_room",
@@ -2343,9 +2311,7 @@
         "steam",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2370,7 +2336,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2423,7 +2389,7 @@
         "torn_clothes",
         "torn_pantyhose"
       ],
-      "promptProse": "Rio Futaba leans forward against a tall metal equipment cabinet in the physics prep room after her uniform skirt snags on a shelving bracket, tearing open at the hip seam. The fabric drapes loose to expose her thick black tights shredded down the back of her plush, shapely thigh, revealing creamy skin and lace panties. Pushing her round glasses up with one trembling hand while the other futilely tries to cover her rear, she glares back over her shoulder in mortal embarrassment, cheeks burning scarlet. Cinematic horizontal framing, afternoon sun cutting across dust motes and glassware, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Rio Futaba leans forward against a tall metal equipment cabinet in the physics prep room after her uniform skirt snags on a shelving bracket, tearing open at the hip seam. The fabric drapes loose to expose her thick black tights shredded down the back of her plush, shapely thigh, revealing creamy skin and lace panties. Pushing her round glasses up with one trembling hand while the other futilely tries to cover her rear, she glares back over her shoulder in mortal embarrassment, cheeks burning scarlet. Cinematic horizontal framing, afternoon sun cutting across dust motes and glassware, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "prep_room",
         "equipment_cabinet",
@@ -2431,9 +2397,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2458,7 +2422,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2508,7 +2472,7 @@
         "large_breasts",
         "pink_nipples"
       ],
-      "promptProse": "Alone on her rumpled bed in the quiet hours of the night, Rio Futaba finally drops the crushing weight of her stoic armor. Stripped topless with her massive breasts spilling to the sides, she pumps two trembling fingers deep into her soaking pink slit, her thighs spread wide upon the cotton sheets. Her messy gray ponytail unravels across the pillow, glasses discarded as genuine tears of loneliness spill down her reddened cheeks, desperate whines vibrating through her clenched teeth. Intimate vertical framing, desk lamp throwing warm amber light across glistening curves, detailed room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Alone on her rumpled bed in the quiet hours of the night, Rio Futaba finally drops the crushing weight of her stoic armor. Stripped topless with her massive breasts spilling to the sides, she pumps two trembling fingers deep into her soaking pink slit, her thighs spread wide upon the cotton sheets. Her messy gray ponytail unravels across the pillow, glasses discarded as genuine tears of loneliness spill down her reddened cheeks, desperate whines vibrating through her clenched teeth. Intimate vertical framing, desk lamp throwing warm amber light across glistening curves, detailed room background, solo 1girl, no extra people.",
       "promptTokens": [
         "bedroom",
         "bed_sheet",
@@ -2516,9 +2480,7 @@
         "lamp",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2543,7 +2505,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2672,9 +2634,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",

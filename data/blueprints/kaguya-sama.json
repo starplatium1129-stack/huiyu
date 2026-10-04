@@ -27,7 +27,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "festive_furisode_kimono",
-      "promptProse": "Shinomiya Kaguya glances back over her shoulder on the stone steps of the Kamo riverside at a Kyoto summer night, wearing a deep crimson furisode kimono with golden maple-leaf patterns. Golden fireworks bloom inside her red tareme eyes as her lips curl into that signature, equal-parts imperious and lovesick little smile, the phrase o-kawaii koto forming silently. Wide sleeves and black folded ponytail stir in the river breeze. Medium close-up, cinematic lighting, volumetric firework haze, detailed riverside background, depth of field.",
+      "promptProse": "Shinomiya Kaguya glances back over her shoulder on the stone steps of the Kamo riverside at a Kyoto summer night, wearing a deep crimson furisode kimono with golden maple-leaf patterns. Golden fireworks bloom inside her red tareme eyes as her lips curl into that signature, equal-parts imperious and lovesick little smile, the phrase o-kawaii koto forming silently. Wide sleeves and black folded ponytail stir in the river breeze. Medium close-up, cinematic lighting, firework haze, detailed riverside background, depth of field.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -49,7 +49,6 @@
         "river",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -95,7 +94,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_shuchiin_uniform",
-      "promptProse": "Shinomiya Kaguya sits beside the president's seat in the Shuchiin student council room, elegantly reviewing documents as her fountain pen whispers across the paper. She sneaks glances at you between pages and immediately looks down with pinkened ears, her red ribbon and folded black ponytail gilded by warm sunset light slanting across the long table. Third cup of tea gone cold within reach. Eye-level medium shot, cinematic lighting, volumetric sunset glow, detailed classroom background, depth of field.",
+      "promptProse": "Shinomiya Kaguya sits beside the president's seat in the Shuchiin student council room, elegantly reviewing documents as her fountain pen whispers across the paper. She sneaks glances at you between pages and immediately looks down with pinkened ears, her red ribbon and folded black ponytail gilded by warm sunset light slanting across the long table. Third cup of tea gone cold within reach. Eye-level medium shot, cinematic lighting, sunset glow, detailed classroom background.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -120,9 +119,7 @@
         "classroom",
         "sunset",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -166,7 +163,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "casual_summer_dress",
-      "promptProse": "Shinomiya Kaguya sits hugging a pillow in the middle of the Shinomiya mansion's grand bed on a lazy holiday morning, her black hair let down for once and flowing past her shoulders like silk. Lace-filtered morning light falls across the strands as her red tareme eyes blink sleepily, and she turns her head away in a huff yet peeks back at you, insisting you may only look for one second. Medium shot, cinematic lighting, volumetric morning haze, detailed bedroom background, depth of field.",
+      "promptProse": "Shinomiya Kaguya sits hugging a pillow in the middle of the Shinomiya mansion's grand bed on a lazy holiday morning, her black hair let down for once and flowing past her shoulders like silk. Lace-filtered morning light falls across the strands as her red tareme eyes blink sleepily, and she turns her head away in a huff yet peeks back at you, insisting you may only look for one second. Medium shot, cinematic lighting, detailed bedroom background.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -186,9 +183,7 @@
         "morning",
         "bedroom",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -232,7 +227,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "winter_shuchiin_uniform",
-      "promptProse": "Shinomiya Kaguya stands beneath the Christmas illuminations of Ginza as the first snow falls, a white scarf wrapped around her neck while she thrusts a perfectly wrapped gift box toward you. Her red eyes glitter in the snowy light and her mouth struggles to keep its noble composure, insisting it was merely a spare present. Snowflakes settle on her red hair ribbon and lashes like unwilling-to-melt heartbeats. Medium close-up, cinematic lighting, volumetric snow haze, detailed illuminated street background, depth of field.",
+      "promptProse": "Shinomiya Kaguya stands beneath the Christmas illuminations of Ginza as the first snow falls, a white scarf wrapped around her neck while she thrusts a perfectly wrapped gift box toward you. Her red eyes glitter in the snowy light and her mouth struggles to keep its noble composure, insisting it was merely a spare present. Snowflakes settle on her red hair ribbon and lashes like unwilling-to-melt heartbeats. Medium close-up, cinematic lighting, detailed illuminated street background, depth of field.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -254,7 +249,6 @@
         "christmas_lights",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -300,7 +294,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "casual_summer_dress",
-      "promptProse": "Shinomiya Kaguya lounges on a deck chair beneath a parasol at the villa poolside, a white swim dress draped over her carefully chosen modest bikini. She holds out a bottle of sunscreen with her face turned away, muttering that sunburn would be improper so you may apply it, her fair shoulders already flushed pink and the tips of her folded ponytail dripping pool water. Bright sunlight dances across the water behind her. Medium shot, cinematic lighting, volumetric summer haze, detailed poolside background, depth of field.",
+      "promptProse": "Shinomiya Kaguya lounges on a deck chair beneath a parasol at the villa poolside, a white swim dress draped over her carefully chosen modest bikini. She holds out a bottle of sunscreen with her face turned away, muttering that sunburn would be improper so you may apply it, her fair shoulders already flushed pink and the tips of her folded ponytail dripping pool water. Bright sunlight dances across the water behind her. Medium shot, cinematic lighting, detailed poolside background.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -322,9 +316,7 @@
         "day",
         "wet_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -369,7 +361,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "white_shiromuku",
-      "promptProse": "Shinomiya Kaguya sits with perfect posture in a pure white shiromuku bridal kimono before the shrine altar on her wedding day, the white tsunokakushi headdress resting over her folded ponytail and a folding fan cradled in her hands. As the wedding vows reach her, her lashes tremble and tears finally brim in her red tareme eyes, the girl who swore whoever confessed first loses laying every score down at last. Formal portrait, cinematic lighting, volumetric sacred light, detailed shrine background, depth of field.",
+      "promptProse": "Shinomiya Kaguya sits with perfect posture in a pure white shiromuku bridal kimono before the shrine altar on her wedding day, the white tsunokakushi headdress resting over her folded ponytail and a folding fan cradled in her hands. As the wedding vows reach her, her lashes tremble and tears finally brim in her red tareme eyes, the girl who swore whoever confessed first loses laying every score down at last. Formal portrait, cinematic lighting, sacred light, detailed shrine background.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -388,9 +380,7 @@
         "smile",
         "shrine",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -434,7 +424,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_shuchiin_uniform",
-      "promptProse": "Shinomiya Kaguya sits beside you at the window seats of the Shuchiin library, her book and yours separated by a calculated three centimeters that is neither intrusion nor distance. Between page turns her profile draws a little closer, the red irises of her sidelong gaze lingering on your book more than her own. Afternoon light dusts the air between you with drifting motes and neither of you moves away. Two-person medium shot, cinematic lighting, volumetric window glow, detailed library background, depth of field.",
+      "promptProse": "Shinomiya Kaguya sits beside you at the window seats of the Shuchiin library, her book and yours separated by a calculated three centimeters that is neither intrusion nor distance. Between page turns her profile draws a little closer, the red irises of her sidelong gaze lingering on your book more than her own. Afternoon light dusts the air between you with drifting motes and neither of you moves away. Two-person medium shot, cinematic lighting, window glow, detailed library background.",
       "promptTokens": [
         "shinomiya_kaguya",
         "1girl",
@@ -454,8 +444,6 @@
         "day",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "two_clothed_figures"
       ],
       "recommendedSize": "1536x1152",
@@ -512,9 +500,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -574,19 +560,16 @@
       ],
       "nsfwProse": "Leaning over the council desk at sunset with her school skirt hitched to her waist and dark pantyhose peeled down, Kaguya bites her hand in breathless, sweet humiliation.",
       "outfitId": "official_shuchiin_uniform",
-      "promptProse": "Leaning forward across the polished wooden desk in the locked adult colleague council room at sunset, Shinomiya Kaguya grips the edge with her skirt hitched high to her slender waist. She turns her head back over her shoulder, biting the back of her trembling hand to stifle flustered gasps, red eyes glistening with sweet humiliation as her dark pantyhose are peeled down to her pale thighs. Golden dusk sunlight cuts through the tall private studio windows, highlighting the delicate arch of her spine, taut hips, and flushed cheeks in a cinematic horizontal composition, detailed background, depth of field.",
+      "promptProse": "Leaning forward across the polished wooden desk in the locked adult colleague council room at sunset, Shinomiya Kaguya grips the edge with her skirt hitched high to her slender waist. She turns her head back over her shoulder, biting the back of her trembling hand to stifle flustered gasps, red eyes glistening with sweet humiliation as her dark pantyhose are peeled down to her pale thighs. Golden dusk light cuts through the tall private studio windows, highlighting the delicate arch of her spine, taut hips, and flushed cheeks in a cinematic horizontal composition, detailed background.",
       "promptTokens": [
         "council_room",
         "wooden_desk",
         "window",
         "sunset",
-        "golden_hour",
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -656,8 +639,7 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -719,7 +701,7 @@
       ],
       "nsfwProse": "Curled beneath the covers in disheveled crimson lace lingerie, Kaguya Shinomiya bites her trembling lower lip and strokes her wet thighs in quiet, flustered ecstasy under soft ambient shadows.",
       "outfitId": "sensual_lace_lingerie",
-      "promptProse": "Tucked deep into the covers of her bedroom after a late bath, Shinomiya Kaguya wears her crimson lace lingerie grown disheveled, silk straps slipped from one shoulder as her fingers tremble between her thighs. Her red tareme eyes lose focus against the pillow, biting her lower lip through a haze of first-love longing, whispering that this is the one battlefield she has never trained for. Warm bedside lamplight pools over the rumpled bedding in a sensual solo composition, cinematic lighting, volumetric warmth, detailed bedroom background, depth of field.",
+      "promptProse": "Tucked deep into the covers of her bedroom after a late bath, Shinomiya Kaguya wears her crimson lace lingerie grown disheveled, silk straps slipped from one shoulder as her fingers tremble between her thighs. Her red tareme eyes lose focus against the pillow, biting her lower lip through a haze of first-love longing, whispering that this is the one battlefield she has never trained for. Warm bedside lamplight pools over the rumpled bedding in a sensual solo composition, cinematic lighting, warmth, detailed bedroom background.",
       "promptTokens": [
         "bedroom",
         "covers",
@@ -728,9 +710,7 @@
         "warm_lighting",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -954,9 +934,7 @@
         "convenience_store",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1584,9 +1562,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1619,7 +1595,7 @@
       ],
       "description": "【白银家公寓房间·清晨】成年女性套着白银御行的松垮灰色连帽卫衣，光洁的长腿跨坐在你腰间。平时总是嫌弃脸的圭此刻耳尖滴血，卫衣帽子扣在头上，双手按在你胸前有些生硬地晃动腰肢——「听好了……这是我们两个人的秘密……敢漏给老哥半个字……我就跟你绝交一辈子……」",
       "id": "shirogane_kei_r18_b8_01",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "白银家公寓房间·清晨",
       "mood": "主动亲密与失神",
@@ -1663,7 +1639,7 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Kei Shirogane from Kaguya-sama kneels forward on the tatami futon in the small apartment bedroom at dawn, wearing an oversized gray hoodie with nothing on beneath. Her slender, pale legs fold under her hips as she leans in, her hood pulled low to hide her burning face while pink nipples peek beneath the hem. Her striking silver-white hair spills around her collar, luminous blue eyes glaring with embarrassed ferocity through unshed tears as she threatens eternal silence. Vertical low-angle solo framing, soft morning light illuminating the humble apartment, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kei Shirogane from Kaguya-sama kneels forward on the tatami futon in the small apartment bedroom at dawn, wearing an oversized gray hoodie with nothing on beneath. Her slender, pale legs fold under her hips as she leans in, her hood pulled low to hide her burning face while pink nipples peek beneath the hem. Her striking silver-white hair spills around her collar, luminous blue eyes glaring with embarrassed ferocity through unshed tears as she threatens eternal silence. Vertical low-angle solo framing, soft morning light illuminating the humble apartment, solo 1girl, no extra people.",
       "promptTokens": [
         "apartment",
         "bedroom",
@@ -1672,9 +1648,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1707,7 +1681,7 @@
       ],
       "description": "【公共澡堂包厢·黄昏】银白色的秀发用发圈扎成小团子。圭斜倚在水汽氤氲的瓷砖池壁上，一条微小的湿毛巾贴在丰润的雪白胸脯上。指尖在温热的泉水中悄悄向下摸索，蓝眸迷茫又羞怯——「明明每天都在烦恼生活费……为什么闭上眼睛……满脑子都是那家伙的脸啊……」",
       "id": "shirogane_kei_r18_b8_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "公共澡堂包厢·黄昏",
       "mood": "湿身水光与私密自持",
@@ -1751,7 +1725,7 @@
         "blue_eyes"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Kei Shirogane sits partially submerged in the steaming waters of a neighborhood bathhouse at twilight, her silver hair twisted up in a messy topknot. A small wet hand towel clings across her slender collarbones and perky small breasts, dark water droplets clinging to her flushed ribs. Her slender hand drifts beneath the rippling surface between her parted thighs, blue eyes glossy with conflicting adult desire as she bites her lower lip. Sensual vertical composition, golden afternoon sunlight cutting through bathhouse steam, detailed tiled background, depth of field, solo 1girl, no text.",
+      "promptProse": "Kei Shirogane sits partially submerged in the steaming waters of a neighborhood bathhouse at twilight, her silver hair twisted up in a messy topknot. A small wet hand towel clings across her slender collarbones and perky small breasts, dark water droplets clinging to her flushed ribs. Her slender hand drifts beneath the rippling surface between her parted thighs, blue eyes glossy with conflicting adult desire as she bites her lower lip. Sensual vertical composition, golden afternoon sunlight cutting through bathhouse steam, detailed tiled background, solo 1girl, no text.",
       "promptTokens": [
         "bathhouse",
         "public_bath",
@@ -1760,9 +1734,7 @@
         "twilight",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1796,7 +1768,7 @@
       ],
       "description": "【白银家玄关壁橱前·放学后】换便服时秀知院水手服背后的隐形拉链意外咬死在裙边。圭双手反剪在背后拼命拉扯，过紧的成年礼服勒得小腹深陷，水手服下摆被高高掀起，露出浅蓝条纹纯棉内裤与白嫩细腿。她气急败坏地回头瞪视，眼角挂着羞怒的泪珠——「不要站在那里发呆啦！快过来帮我把咬住的布拉出来啊笨蛋！」",
       "id": "shirogane_kei_r18_b8_03",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "白银家玄关壁橱前·放学后",
       "mood": "意外失控与羞赧",
@@ -1836,7 +1808,7 @@
         "teary_eyes"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Kei Shirogane leans forward against the apartment entryway closet, her pristine Shuchiin sailor uniform jammed tightly at the side zipper. Her slender, arched lower back pushes her pleated navy skirt up to reveal pale hips and blue-and-white striped cotton panties strained against smooth skin. Glancing back over her shoulder with watery sapphire eyes and furiously flushed cheeks, she snaps petulantly for assistance while her fists strain behind her back. Cinematic horizontal framing, cramped Japanese hallway lighting, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kei Shirogane leans forward against the apartment entryway closet, her pristine Shuchiin sailor uniform jammed tightly at the side zipper. Her slender, arched lower back pushes her pleated navy skirt up to reveal pale hips and blue-and-white striped cotton panties strained against smooth skin. Glancing back over her shoulder with watery sapphire eyes and furiously flushed cheeks, she snaps petulantly for assistance while her fists strain behind her back. Cinematic horizontal framing, cramped Japanese hallway lighting, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "apartment",
         "hallway",
@@ -1844,9 +1816,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1880,7 +1850,7 @@
       ],
       "description": "【白银家隔间床褥·深夜】隔着薄薄的木拉门。圭只穿着单薄的白色吊带睡裙躺在被窝里，生怕弄出一点动静。她死死咬住枕头的一角，指尖在湿透的私处轻轻抽送，银白色的刘海被汗水打湿贴在额头——「小声一点……绝对不能被隔壁听到……哈啊……好舒服……讨厌……」",
       "id": "shirogane_kei_r18_b8_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "silver_moonlight",
       "location": "白银家隔间床褥·深夜",
       "mood": "独处沉沦与情绪释放",
@@ -1921,7 +1891,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Kei Shirogane lies upon her thin futon mattress late at night, terrified of the creaking floorboards in the cheap apartment. Her white cotton camisole is bunched above her delicate ribs, two fingers moving between her tightly clenched thighs as they pump gently through slick moisture, biting hard onto the corner of her pillow to silence her moans. Her silver bangs are glued with sweat to her forehead, tear-stained blue eyes rolling upward in helpless adolescent pleasure. Intimate vertical framing, moonlight filtering through paper shoji screens, detailed modest apartment background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kei Shirogane lies upon her thin futon mattress late at night, terrified of the creaking floorboards in the cheap apartment. Her white cotton camisole is bunched above her delicate ribs, two fingers moving between her tightly clenched thighs as they pump gently through slick moisture, biting hard onto the corner of her pillow to silence her moans. Her silver bangs are glued with sweat to her forehead, tear-stained blue eyes rolling upward in helpless adolescent pleasure. Intimate vertical framing, moonlight filtering through paper shoji screens, detailed modest apartment background, solo 1girl, no extra people.",
       "promptTokens": [
         "apartment",
         "futon",
@@ -1931,9 +1901,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1967,7 +1935,7 @@
       ],
       "description": "【涉谷高层情侣酒店·夜】早坂爱解开辣妹成年礼服开襟毛衣，金色侧马尾垂在耳边。她熟练地跨坐在你的腰间，蓝色蕾丝抹胸内衣被推到胸口下方，指尖挑起你的下巴，眼神在伪装辣妹的轻浮与近侍特工的绝对掌控间切换——「伪娘管家、无垢女仆、还是辣妹JK？……其实无论哪一个……想要把你榨干的心情都是真的哦♪」",
       "id": "hayasaka_ai_r18_b5_01",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "涉谷高层情侣酒店·夜",
       "mood": "主动亲密与失神",
@@ -2010,7 +1978,7 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Ai Hayasaka from Kaguya-sama kneels forward on a Shibuya boutique hotel bed in full blonde gyaru mode, her oversized beige cardigan pulled wide open. Her blue lace bralette is shoved down past firm, rounded breasts that bounce gently as she leans close with practiced precision. Her golden side-ponytail swings across her collarbone, striking blue eyes narrowed in a wickedly teasing smirk while hot breath escapes her parted lips. Vertical low-angle solo portrait, ambient neon glow, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Ai Hayasaka from Kaguya-sama kneels forward on a Shibuya boutique hotel bed in full blonde gyaru mode, her oversized beige cardigan pulled wide open. Her blue lace bralette is shoved down past firm, rounded breasts that bounce gently as she leans close with practiced precision. Her golden side-ponytail swings across her collarbone, striking blue eyes narrowed in a wickedly teasing smirk while hot breath escapes her parted lips. Vertical low-angle solo portrait, ambient neon glow, solo 1girl, no extra people.",
       "promptTokens": [
         "hotel_room",
         "boutique_hotel",
@@ -2020,9 +1988,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2055,7 +2021,7 @@
       ],
       "description": "【四宫本邸后院室内泳池·深夜】执行完所有保密任务后的极度疲惫。早坂爱靠在泳池水线浮标边，身上的黑色高叉特工连体泳衣湿透贴身，勾勒出没有一丝赘肉的完美特工腰线。单手潜入水底在自己滚烫的私处缓缓揉动，蓝瞳倒映着幽蓝的池水——「整天伺候那个恋爱脑大小姐……我也想……被人狠狠抱住啊……」",
       "id": "hayasaka_ai_r18_b5_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "四宫本邸后院室内泳池·深夜",
       "mood": "湿身水光与私密自持",
@@ -2080,7 +2046,7 @@
         "second_person",
         "duplicate"
       ],
-      "nsfwProse": "Clinging to the moonlit pool ladder in soaked, high-cut tactical swimwear, Ai Hayasaka slips her hand beneath the sheer elastic underwater, massaging her throbbing center with exhausted, tearful urgency.",
+      "nsfwProse": "Clinging to the pool ladder in soaked, high-cut tactical swimwear, Ai Hayasaka slips her hand beneath the sheer elastic underwater, massaging her throbbing center with exhausted, tearful urgency.",
       "nsfwTokens": [
         "swimming_pool",
         "pool_ladder",
@@ -2108,9 +2074,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2144,7 +2108,7 @@
       ],
       "description": "【四宫别邸更衣室·早晨】换装女仆「早坂爱」形态时，后背隐藏拉链卡死在内衣扣环上。早坂爱单膝跪在换衣凳上，双手反剪在背后用力拉扯，过紧的黑白女仆装勒得胸部几乎呼之欲出，围裙吊带滑落。她咬牙回头，满头冷汗——「还有三分钟早会……喂！你摸到哪里去了！……唔、好烫……快点啦……」",
       "id": "hayasaka_ai_r18_b5_03",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "四宫别邸更衣室·早晨",
       "mood": "意外失控与羞赧",
@@ -2193,9 +2157,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2229,7 +2191,7 @@
       ],
       "description": "【早坂自己的单身公寓·深夜】没有窃听器，没有大小姐，没有角色扮演。早坂爱彻底赤裸地趴在凌乱的大床上，金色长发全散。她将整根手指毫无节制地插进爱液横流的小穴深处，脸颊埋在被子里痛哭出声——「伪装了这么多年……连自己喜欢谁都快不知道了……只有这里的快感……是真的啊……」",
       "id": "hayasaka_ai_r18_b5_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "早坂自己的单身公寓·深夜",
       "mood": "独处沉沦与情绪释放",
@@ -2277,9 +2239,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

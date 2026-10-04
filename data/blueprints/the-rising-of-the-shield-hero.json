@@ -113,9 +113,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -451,7 +449,7 @@
         "open_clothes",
         "animal_ears"
       ],
-      "promptProse": "Raphtalia from The Rising of the Shield Hero straddles your lap inside the covered travel carriage at midnight, her fitted leather cuirass undone and peeled down. Her full, healthy breasts bounce with her earnest, loyal hip motion, while her fluffy brown raccoon tail curls possessively around your wrist. Her animal ears flatten back in sweet bashfulness, golden-amber eyes filled with fierce adoration and tears as she leans down to rest her forehead against yours. Vertical low-angle cowgirl shot, warm campfire embers glowing through carriage canvas onto bronze skin, detailed travel wagon background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Raphtalia from The Rising of the Shield Hero straddles your lap inside the covered travel carriage at midnight, her fitted leather cuirass undone and peeled down. Her full, healthy breasts bounce with her earnest, loyal hip motion, while her fluffy brown raccoon tail curls possessively around your wrist. Her animal ears flatten back in sweet bashfulness, golden-amber eyes filled with fierce adoration and tears as she leans down to rest her forehead against yours. Vertical low-angle cowgirl shot, warm campfire embers glowing through carriage canvas onto bronze skin, detailed travel wagon background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -478,9 +476,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -505,7 +501,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -534,11 +530,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Raphtalia from The Rising of the Shield Hero straddles your lap inside the covered travel carriage at midnight, her fitted leather cuirass undone and peeled down. Her full, healthy breasts bounce with her earnest, loyal hip motion, while her fluffy brown raccoon tail curls possessively around your wrist. Her animal ears flatten back in sweet bashfulness, golden-amber eyes filled with fierce adoration and tears as she leans down to rest her forehead against yours. Vertical low-angle cowgirl shot, warm campfire embers glowing through carriage canvas onto bronze skin, detailed travel wagon background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Raphtalia from The Rising of the Shield Hero straddles your lap inside the covered travel carriage at midnight, her fitted leather cuirass undone and peeled down. Her full, healthy breasts bounce with her earnest, loyal hip motion, while her fluffy brown raccoon tail curls possessively around your wrist. Her animal ears flatten back in sweet bashfulness, golden-amber eyes filled with fierce adoration and tears as she leans down to rest her forehead against yours. Vertical low-angle cowgirl shot, warm campfire embers glowing through carriage canvas onto bronze skin, detailed travel wagon background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -571,7 +565,7 @@
         "forest",
         "water_droplets"
       ],
-      "promptProse": "Raphtalia bathes in a secluded forest brook at dawn, the crystal-clear mountain water rushing past her toned, curvy frame. Her white modesty cloth clings completely transparent over ripe breasts and dark pink nipples, her thick striped raccoon tail swishing playfully on the water surface. Her fingers slide through the cold stream into her hot, slick core, amber eyes softening in guilty morning pleasure as birds sing overhead. Sensual vertical framing, morning sunbeams piercing green canopy onto sparkling droplets and pale skin, detailed forest background, depth of field, solo 1girl, no text.",
+      "promptProse": "Raphtalia bathes in a secluded forest brook at dawn, the crystal-clear mountain water rushing past her toned, curvy frame. Her white modesty cloth clings completely transparent over ripe breasts and dark pink nipples, her thick striped raccoon tail swishing playfully on the water surface. Her fingers slide through the cold stream into her hot, slick core, amber eyes softening in guilty morning pleasure as birds sing overhead. Sensual vertical framing, morning sunbeams piercing green canopy onto sparkling droplets and pale skin, detailed forest background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -598,9 +592,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -625,7 +617,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -654,11 +646,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Raphtalia bathes in a secluded forest brook at dawn, the crystal-clear mountain water rushing past her toned, curvy frame. Her white modesty cloth clings completely transparent over ripe breasts and dark pink nipples, her thick striped raccoon tail swishing playfully on the water surface. Her fingers slide through the cold stream into her hot, slick core, amber eyes softening in guilty morning pleasure as birds sing overhead. Sensual vertical framing, morning sunbeams piercing green canopy onto sparkling droplets and pale skin, detailed forest background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Raphtalia bathes in a secluded forest brook at dawn, the crystal-clear mountain water rushing past her toned, curvy frame. Her white modesty cloth clings completely transparent over ripe breasts and dark pink nipples, her thick striped raccoon tail swishing playfully on the water surface. Her fingers slide through the cold stream into her hot, slick core, amber eyes softening in guilty morning pleasure as birds sing overhead. Sensual vertical framing, morning sunbeams piercing green canopy onto sparkling droplets and pale skin, detailed forest background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -691,7 +681,7 @@
         "clothes_pull",
         "animal_ears"
       ],
-      "promptProse": "Inside the blacksmith's fitting alcove, Raphtalia leans forward over a wooden workbench as the brass buckle of her new breastplate jams against the fur at the base of her tail. The tight armor pinches her waist, thrusting her bountiful cleavage high into the air while her pleated battle skirt rides up over her toned, bare thighs. Turning her head back with moist amber eyes and flattened raccoon ears, she winces in adorable distress while pleading for her master's careful hands. Cinematic horizontal composition, warm forge firelight glinting off polished steel and naked skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Inside the blacksmith's fitting alcove, Raphtalia leans forward over a wooden workbench as the brass buckle of her new breastplate jams against the fur at the base of her tail. The tight armor pinches her waist, thrusting her bountiful cleavage high into the air while her pleated battle skirt rides up over her toned, bare thighs. Turning her head back with moist amber eyes and flattened raccoon ears, she winces in adorable distress while pleading for her master's careful hands. Cinematic horizontal composition, warm forge firelight glinting off polished steel and naked skin, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -721,9 +711,7 @@
         "brown_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -748,7 +736,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -780,11 +768,9 @@
         "brown_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Inside the blacksmith's fitting alcove, Raphtalia leans forward over a wooden workbench as the brass buckle of her new breastplate jams against the fur at the base of her tail. The tight armor pinches her waist, thrusting her bountiful cleavage high into the air while her pleated battle skirt rides up over her toned, bare thighs. Turning her head back with moist amber eyes and flattened raccoon ears, she winces in adorable distress while pleading for her master's careful hands. Cinematic horizontal composition, warm forge firelight glinting off polished steel and naked skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Inside the blacksmith's fitting alcove, Raphtalia leans forward over a wooden workbench as the brass buckle of her new breastplate jams against the fur at the base of her tail. The tight armor pinches her waist, thrusting her bountiful cleavage high into the air while her pleated battle skirt rides up over her toned, bare thighs. Turning her head back with moist amber eyes and flattened raccoon ears, she winces in adorable distress while pleading for her master's careful hands. Cinematic horizontal composition, warm forge firelight glinting off polished steel and naked skin, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -817,7 +803,7 @@
         "raccoon_tail",
         "slave_crest"
       ],
-      "promptProse": "Stretched out naked across the straw mattress of a frontier inn, Raphtalia hugs her bushy raccoon tail tight against her trembling bare breasts. Her slave crest tattoo glows faintly red over her sternum as two fingers pump urgently into her soaking core, her hips shuddering off the sheets in waves of wild, loyal ecstasy. Her long brown hair sprawls around her flattened ears, tears of absolute fidelity and overwhelming pleasure rolling down her flushed cheeks into her parted mouth. Intimate vertical framing, silver moonlight through wooden shutters illuminating glowing crest and sweat-sheened curves, detailed inn background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Stretched out naked across the straw mattress of a frontier inn, Raphtalia hugs her bushy raccoon tail tight against her trembling bare breasts. Her slave crest tattoo glows faintly red over her sternum as two fingers pump urgently into her soaking core, her hips shuddering off the sheets in waves of wild, loyal ecstasy. Her long brown hair sprawls around her flattened ears, tears of absolute fidelity and overwhelming pleasure rolling down her flushed cheeks into her parted mouth. Intimate vertical framing, silver moonlight through wooden shutters illuminating glowing crest and sweat-sheened curves, detailed inn background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -846,9 +832,7 @@
         "brown_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -873,7 +857,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -904,11 +888,9 @@
         "brown_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Stretched out naked across the straw mattress of a frontier inn, Raphtalia hugs her bushy raccoon tail tight against her trembling bare breasts. Her slave crest tattoo glows faintly red over her sternum as two fingers pump urgently into her soaking core, her hips shuddering off the sheets in waves of wild, loyal ecstasy. Her long brown hair sprawls around her flattened ears, tears of absolute fidelity and overwhelming pleasure rolling down her flushed cheeks into her parted mouth. Intimate vertical framing, silver moonlight through wooden shutters illuminating glowing crest and sweat-sheened curves, detailed inn background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Stretched out naked across the straw mattress of a frontier inn, Raphtalia hugs her bushy raccoon tail tight against her trembling bare breasts. Her slave crest tattoo glows faintly red over her sternum as two fingers pump urgently into her soaking core, her hips shuddering off the sheets in waves of wild, loyal ecstasy. Her long brown hair sprawls around her flattened ears, tears of absolute fidelity and overwhelming pleasure rolling down her flushed cheeks into her parted mouth. Intimate vertical framing, silver moonlight through wooden shutters illuminating glowing crest and sweat-sheened curves, detailed inn background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

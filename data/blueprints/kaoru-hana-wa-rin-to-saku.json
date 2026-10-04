@@ -43,9 +43,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -119,9 +117,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -191,9 +187,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -263,9 +257,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -338,9 +330,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -419,9 +409,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -496,9 +484,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -538,7 +524,7 @@
       "description": "【和栗家蛋糕店二楼阁楼·清晨】空气中飘散着新烤面包与黄油香气。小吃货薰子套着淡黄色开襟开衫，跨坐在你的腰间。平日里甜美可人的千金小姐此刻满脸通红，把一粒草莓轻轻含在你唇边，娇小丰满的身体主动起伏——「凛太郎做蛋糕的手艺那么好……那、那要不要尝尝……比蛋糕还要甜的东西呢？」",
       "location": "和栗家蛋糕店二楼阁楼·清晨",
       "action": "跨坐腰间针织衫半敞溢乳，含草莓喂吻，金发飘拂娇羞动情起伏",
-      "timeOfDay": "深夜",
+      "timeOfDay": "morning",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "vertical POV",
       "mood": "唯美动情、私密深情",
@@ -549,8 +535,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, solo 1girl, no extra people.",
+      "nsfwProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -572,9 +558,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -620,8 +604,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft lantern light glowing through aromatic steam, detailed traditional bath background, depth of field, solo 1girl, no text.",
-      "nsfwProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft lantern light glowing through aromatic steam, detailed traditional bath background, depth of field, solo 1girl, no text.",
+      "promptProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft light glowing through aromatic steam, detailed traditional bath background, solo 1girl, no text.",
+      "nsfwProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft light glowing through aromatic steam, detailed traditional bath background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -642,9 +626,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -690,8 +672,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, solo 1girl, no extra people.",
+      "nsfwProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -716,9 +698,7 @@
         "blonde_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -764,8 +744,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Lying across her floral pink comforter late at night, Kaoruko Waguri surrenders her elite private-academy composure, clad only in a pair of sheer black tights sliced wide open at the crotch. Her round hips arch off the mattress as her trembling fingers swirl through slick, sweet nectar, her lush soft breasts bare and heaving with breathless gasps. Golden pigtails unravel across the pillows, tear-filled doe eyes rolling toward the ceiling as she moans your name into the quiet bedroom. Intimate vertical framing, warm bedside fairy lights casting amber glow over pale skin, detailed background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Lying across her floral pink comforter late at night, Kaoruko Waguri surrenders her elite private-academy composure, clad only in a pair of sheer black tights sliced wide open at the crotch. Her round hips arch off the mattress as her trembling fingers swirl through slick, sweet nectar, her lush soft breasts bare and heaving with breathless gasps. Golden pigtails unravel across the pillows, tear-filled doe eyes rolling toward the ceiling as she moans your name into the quiet bedroom. Intimate vertical framing, warm bedside fairy lights casting amber glow over pale skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying across her floral pink comforter late at night, Kaoruko Waguri surrenders her elite private-academy composure, clad only in a pair of sheer black tights sliced wide open at the crotch. Her round hips arch off the mattress as her trembling fingers swirl through slick, sweet nectar, her lush soft breasts bare and heaving with breathless gasps. Golden pigtails unravel across the pillows, tear-filled doe eyes rolling toward the ceiling as she moans your name into the quiet bedroom. Intimate vertical framing, warm bedside fairy lights casting amber glow over pale skin, detailed background, solo 1girl, no extra people.",
+      "nsfwProse": "Lying across her floral pink comforter late at night, Kaoruko Waguri surrenders her elite private-academy composure, clad only in a pair of sheer black tights sliced wide open at the crotch. Her round hips arch off the mattress as her trembling fingers swirl through slick, sweet nectar, her lush soft breasts bare and heaving with breathless gasps. Golden pigtails unravel across the pillows, tear-filled doe eyes rolling toward the ceiling as she moans your name into the quiet bedroom. Intimate vertical framing, warm bedside fairy lights casting amber glow over pale skin, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -791,9 +771,7 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

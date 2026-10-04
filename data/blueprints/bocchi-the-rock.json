@@ -32,7 +32,7 @@
         "explicit"
       ],
       "outfitId": "kessoku_band_live_tshirt",
-      "promptProse": "Inside the vibrant STARRY livehouse in Shimokitazawa, Gotoh Hitori performs passionately on stage with her black and gold electric guitar slung across her chest. Intense stage spotlights and cool blue volumetric lighting pierce through rising stage haze, casting radiant rim lights across her messy pink hair and cubic hair clip. She leans forward into the dynamic low angle frame, fingers flying across the guitar fretboard with flying sweat droplets capturing the raw energy of her solo performance. Crisp line art and high contrast concert stage atmosphere deliver a breathtaking anime key visual aesthetic.",
+      "promptProse": "Inside the vibrant STARRY livehouse in Shimokitazawa, Gotoh Hitori performs passionately on stage with her black and gold electric guitar slung across her chest. Intense stage spotlights and cool blue pierce through rising stage air, casting radiant rim lights across her messy pink hair and cubic hair clip. She leans forward into the dynamic low angle frame, fingers flying across the guitar fretboard with flying sweat droplets capturing the raw energy of her solo performance. Crisp line art and high contrast concert stage atmosphere deliver a breathtaking anime key visual aesthetic.",
       "promptTokens": [
         "live_house",
         "stage",
@@ -48,9 +48,7 @@
         "dynamic_angle",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -113,9 +111,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -178,9 +174,7 @@
         "cowboy_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -244,9 +238,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -311,7 +303,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "cubic_hair_clip"
       ],
       "recommendedSize": "1152x1536",
@@ -376,9 +367,7 @@
         "medium_shot",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -441,9 +430,7 @@
         "medium_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -472,7 +459,7 @@
       ],
       "description": "【后藤一里 · 壁橱深处的秘密喘息】狭窄幽闭的壁橱在昏暗暖黄串灯下泛着微红的暧昧光晕。波奇酱浑身赤裸地斜靠在软垫与吉他箱之间，雪白娇躯因极度的情欲而泛起一层剧烈的粉色潮红，丰满耸立的白皙乳房随着急促的喘息剧烈起伏，粉嫩的乳头挺立如樱。她羞耻地咬着指节，双腿自然向两侧屈膝大张，沾满晶莹爱液的修长指尖正在娇嫩的花缝间羞涩抽送，眼神迷离如水——「呜……壁橱里太热了……明明是在弹吉他……身体为什么会变得这么奇怪……」",
       "id": "gotoh_hitori_r18_closet_desire",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "暖黄色串灯昏暗暧昧光影",
       "location": "昏暗私密的卧室壁橱内部",
       "mood": "极度情欲",
@@ -530,9 +517,7 @@
         "parted_lips",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -566,7 +551,7 @@
       ],
       "description": "【后藤一里 · 运动服下的隐藏巨乳】排练结束后的隔音室角落，粉色运动服拉链被一路拉到底，露出毫无内衣束缚的极品爆乳。沉甸甸的雪乳随着心跳微微晃动，粉嫩的乳晕在阴影中若隐若现。波奇酱满脸通红地想要伸手遮掩却欲拒还迎，娇喘连连地看着视线前方的恋人——「请、请不要一直盯着看……我的身材……真的没有那么奇怪啦……」",
       "id": "gotoh_hitori_r18_tracksuit_unzipped",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "排练室昏暗顶灯与阴影边缘对比",
       "location": "排练室昏暗器械角落",
       "mood": "羞耻诱惑",
@@ -608,9 +593,7 @@
         "amplifier",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -643,7 +626,7 @@
       ],
       "description": "【成年后藤一里 · 私人排练室的女仆装失控】成年一里独自坐在工作台上，女仆围裙卷至腰间，一手抓桌沿、一手在腿间指交自抚，粉发与泪眼映着夕光。",
       "id": "gotoh_hitori_r18_maid_service",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "黄昏暖橘色夕阳穿透窗帘的斜射光",
       "location": "文化祭后的空私人工作室角落",
       "mood": "沉沦娇吟",
@@ -701,8 +684,7 @@
         "first-person_pov",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -735,7 +717,7 @@
       ],
       "description": "【成年后藤一里 · 白床单上的私密高潮】成年一里独自仰卧白床单，双腿分开，一手紧抓床褥、另一手在湿润腿间指交，丰满胸部与失神泪眼处于竖幅核心。",
       "id": "gotoh_hitori_r18_bed_climax",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "柔和床头台灯暖色侧光与静谧夜色",
       "location": "卧室凌乱的单人床铺",
       "mood": "极度绝顶",
@@ -792,9 +774,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

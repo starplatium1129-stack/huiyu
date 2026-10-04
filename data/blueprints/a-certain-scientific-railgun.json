@@ -64,8 +64,6 @@
         "overpass",
         "tokiwadai_uniform",
         "medium_shot",
-        "volumetric_lighting",
-        "depth_of_field",
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
@@ -157,7 +155,6 @@
         "combat_boots",
         "convenience_store",
         "day",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "kicking_vending_machine",
@@ -171,7 +168,6 @@
         "sweater_vest",
         "urban",
         "vending_machine",
-        "volumetric_lighting",
         "white_shirt"
       ],
       "recommendedSize": "1152x1536",
@@ -259,7 +255,6 @@
         "coin",
         "coin_launch",
         "crackling_lightning",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "electricity_sparks",
@@ -294,7 +289,7 @@
       "characterId": "misaka_mikoto",
       "description": "【成年 After Story · 御坂美琴 · 公寓夜雨的静电失控】二十岁后的美琴独居在学园都市高层公寓，夜雨沿落地窗蜿蜒而下。她斜倚在深色沙发角落，宽松针织开衫从肩头滑落，薄蕾丝内衣被指尖拨开，成熟健美的身体因私密抚触而绷紧。失控的蓝白静电沿靠垫边缘跳动，她咬住下唇却仍倔强地直视镜头——「别以为成年后的我就会坦率……再靠近一点，被电到也不准逃。」",
       "id": "misaka_mikoto_r18_dorm",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "雨夜城市冷光、暖色落地灯与蓝白静电轮廓光",
       "location": "学园都市高层私人公寓客厅",
       "mood": "成年后的傲娇克制与静电失控",
@@ -383,9 +378,7 @@
         "one_knee_up",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -474,15 +467,13 @@
         "clean_face",
         "crane_claw",
         "crane_game",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "focused",
         "gripping_joystick",
         "leaning_on_glass",
         "medium_shot",
-        "neon",
-        "volumetric_lighting"
+        "neon"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -564,7 +555,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "festival_stall",
@@ -577,7 +567,6 @@
         "soft_lighting",
         "squatting",
         "summer_festival",
-        "volumetric_lighting",
         "yukata"
       ],
       "recommendedSize": "1152x1536",
@@ -664,7 +653,6 @@
         "cinematic_lighting",
         "clean_face",
         "cross_legged",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "fighting_game",
@@ -672,8 +660,7 @@
         "living_room",
         "on_rug",
         "pressing_buttons",
-        "tv_screen",
-        "volumetric_lighting"
+        "tv_screen"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -697,7 +684,7 @@
       "characterId": "misaka_mikoto",
       "description": "【成年 After Story · 御坂美琴 · 研究公寓的蒸汽电光】完成能力研究后的深夜，二十岁后的美琴独自在私人公寓淋浴间降温。浸透的白色细肩带背心紧贴成熟健美的身体，胸前布料变得半透明；她单膝踩上石质浴凳，背靠雾湿玻璃，手指沿水流探入腿间。细小电弧在水珠之间噼啪闪烁，她满脸通红地侧过视线——「只是残留电荷……才不是因为你在看。既然来了，就把门锁好。」",
       "id": "misaka_mikoto_r18_shower",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "暖色浴灯穿过蒸汽，水珠间跳动的蓝白电弧补出冷色轮廓",
       "location": "学园都市研究员私人公寓淋浴间",
       "mood": "成熟克制、湿身羞赧与能力过载",
@@ -776,9 +763,7 @@
         "leaning_back",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -806,7 +791,7 @@
       "characterId": "misaka_mikoto",
       "description": "【成年 After Story · 御坂美琴 · 城市观景层的礼裙拉链事故】二十岁后的美琴参加完学园都市研究晚宴，独自躲进高层观景台的私密休息间。深蓝礼裙的前拉链卡在胸骨下方，她一手捏住发烫的金属拉片、一手向下绷紧裙摆，拉开的领口挤出成熟胸线，侧缝也因受力绽开露出黑色蕾丝与大腿勒痕。月光和电弧映亮她通红的耳尖——「不许笑！一定是电磁场让拉链卡住了……先把视线移开，我自己能处理。」",
       "id": "misaka_mikoto_r18_rooftop_moon",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "落地窗月光、城市霓虹与礼裙边缘的细微电弧",
       "location": "学园都市高层观景台私人休息间",
       "mood": "成年晚宴后的狼狈傲娇与紧绷张力",
@@ -901,9 +886,7 @@
         "wind",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -933,7 +916,7 @@
       ],
       "description": "【成年 After Story · 御坂美琴 · 落地窗边的黑丝静电】夕阳落入学园都市的高楼之间，二十岁后的美琴结束研究工作回到私人公寓。她侧坐在落地窗前的软垫长椅上，宽松白衬衫敞到腰间，黑色长袜勒住成熟结实的大腿；一只长袜已经褪到膝弯，蕾丝底裤被她羞恼地拨向一侧。指尖贴近腿间时细小电光沿袜口游走，她红着脸抬起脚尖挡住视线——「只准看我现在的样子，别想起以前……听懂了吗？」",
       "id": "misaka_mikoto_r18_thighs",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "金红夕照、室内柔光与袜口游走的蓝白静电",
       "location": "学园都市高层私人公寓窗边长椅",
       "mood": "成年后的占有欲、羞恼与柔软信任",
@@ -1007,9 +990,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1051,7 +1032,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_tokiwadai_uniform",
-      "promptProse": "Shokuhou Misaki raises one white spider-web-printed glove to her temple in the elegant gesture of Mental Out, her star-shaped pupils glinting with playful dominance as the Tokiwadai courtyard falls into perfect order at a blink. Her beige sweater vest and grey pleated skirt carry her queenly poise, the handbag on her arm displaying its row of remote controls like a scepter, and her confident smile promises the whole academy is her stage. Medium shot, cinematic lighting, volumetric sunlight, detailed school background, depth of field.",
+      "promptProse": "Shokuhou Misaki raises one white spider-web-printed glove to her temple in the elegant gesture of Mental Out, her star-shaped pupils glinting with playful dominance as the Tokiwadai courtyard falls into perfect order at a blink. Her beige sweater vest and grey pleated skirt carry her queenly poise, the handbag on her arm displaying its row of remote controls like a scepter, and her confident smile promises the whole academy is her stage. Medium shot, cinematic lighting, sunlight, detailed school background.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1072,9 +1053,7 @@
         "school",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1118,7 +1097,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_tokiwadai_uniform",
-      "promptProse": "Shokuhou Misaki sprawls in a window booth of an Academy City bubble tea shop, her very long blonde hair draping over half the seat as she stirs her milk tea with a straw. Her star-shaped pupils light up at the strawberry on your cake slice, and with her white-gloved knuckle she taps the edge of your plate, declaring she is merely helping share your calories. Bright interior warmth wraps the teasing queen. Medium two-shot, cinematic lighting, volumetric interior glow, detailed cafe background, depth of field.",
+      "promptProse": "Shokuhou Misaki sprawls in a window booth of an Academy City bubble tea shop, her very long blonde hair draping over half the seat as she stirs her milk tea with a straw. Her star-shaped pupils light up at the strawberry on your cake slice, and with her white-gloved knuckle she taps the edge of your plate, declaring she is merely helping share your calories. Bright interior warmth wraps the teasing queen. Medium two-shot, cinematic lighting, interior glow, detailed cafe background.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1137,9 +1116,7 @@
         "cafe",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1184,7 +1161,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "casual_white_summer_dress",
-      "promptProse": "Shokuhou Misaki walks arm in arm with you beneath the rose arches of the Academy City botanical garden, a wide-brimmed straw hat shading her very long blonde hair while her star-shaped pupils narrow like a sun-fed cat. Petals drift onto her shoulders and white gloves as a breeze passes, and she declares with perfect satisfaction that every flower blooms for her, and you, of course, are hers too. Medium two-shot, cinematic lighting, volumetric petal haze, detailed garden background, depth of field.",
+      "promptProse": "Shokuhou Misaki walks arm in arm with you beneath the rose arches of the Academy City botanical garden, a wide-brimmed straw hat shading her very long blonde hair while her star-shaped pupils narrow like a sun-fed cat. Petals drift onto her shoulders and white gloves as a breeze passes, and she declares with perfect satisfaction that every flower blooms for her, and you, of course, are hers too. Medium two-shot, cinematic lighting, detailed garden background.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1206,8 +1183,7 @@
         "day",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -1251,7 +1227,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "summer_swimsuit",
-      "promptProse": "Shokuhou Misaki lounges poolside on a deck chair in her white-and-gold bikini, wet blonde hair spread across the towel and her spider-web gloves traded for bare hands. She pulls her crown-shaped sunglasses down to peer over the frames, star-shaped pupils sizing you up as she names her sightseeing fee — cash, or ten laps by your side. Refracted pool light shimmers across her regal, teasing figure. Medium shot, cinematic lighting, volumetric pool haze, detailed swimming pool background, depth of field.",
+      "promptProse": "Shokuhou Misaki lounges poolside on a deck chair in her white-and-gold bikini, wet blonde hair spread across the towel and her spider-web gloves traded for bare hands. She pulls her crown-shaped sunglasses down to peer over the frames, star-shaped pupils sizing you up as she names her sightseeing fee — cash, or ten laps by your side. Refracted pool light shimmers across her regal, teasing figure. Medium shot, cinematic lighting, detailed swimming pool background.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1272,9 +1248,7 @@
         "pool",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "SFW",
@@ -1349,9 +1323,7 @@
         "desk_light",
         "small_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1402,7 +1374,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "sfw_white_bridal_gown",
-      "promptProse": "Shokuhou Misaki stands in the small Academy City chapel in a pure white wedding gown, holding a bouquet of white flowers without a trace of her usual powers — because none were needed to win the heart walking toward her. Beneath the veil her star-shaped pupils glisten with rare, unguarded tears as she declares her Mental Out permanently ineffective on you, since your heart was never something she could control in the first place. Environmental portrait, cinematic lighting, volumetric sacred light, detailed chapel background, depth of field.",
+      "promptProse": "Shokuhou Misaki stands in the small Academy City chapel in a pure white wedding gown, holding a bouquet of white flowers without a trace of her usual powers — because none were needed to win the heart walking toward her. Beneath the veil her star-shaped pupils glisten with rare, unguarded tears as she declares her Mental Out permanently ineffective on you, since your heart was never something she could control in the first place. Environmental portrait, cinematic lighting, volumetric sacred light, detailed chapel background.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1423,8 +1395,7 @@
         "light_rays",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1469,7 +1440,7 @@
         "fire, flames, burning ears"
       ],
       "outfitId": "official_tokiwadai_uniform",
-      "promptProse": "Caught in a sudden summer downpour on an Academy City street, Shokuhou Misaki ducks under your offered umbrella, pretending total indifference while her shoulder presses firmly against yours. Rain curtains the world in blue-grey and warm streetlamp glow, and she declares that everything within three centimeters beneath this umbrella is her sovereign territory, star-shaped pupils betraying how satisfied she really is. Medium two-shot, cinematic lighting, volumetric rain haze, detailed wet street background, depth of field.",
+      "promptProse": "Caught in a sudden summer downpour on an Academy City street, Shokuhou Misaki ducks under your offered umbrella, pretending total indifference while her shoulder presses firmly against yours. Rain curtains the world in blue-grey and warm streetlamp glow, and she declares that everything within three centimeters beneath this umbrella is her sovereign territory, star-shaped pupils betraying how satisfied she really is. Medium two-shot, cinematic lighting, detailed wet street background, depth of field.",
       "promptTokens": [
         "shokuhou_misaki",
         "1girl",
@@ -1489,7 +1460,6 @@
         "day",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -1536,7 +1506,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "sensual_lace_lingerie",
-      "promptProse": "Shokuhou Misaki presses you into the armchair and straddles your lap with her skirt gathered, her black-and-gold lace lingerie glinting under the desk lamp as she holds a TV remote against your chest like a royal scepter. She sinks down in a slow, crowning descent, star-shaped pupils glazing with pleasure while her smile stays imperious, granting you tonight-only access to the queen's limited seat. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, volumetric warmth, depth of field.",
+      "promptProse": "Shokuhou Misaki presses you into the armchair and straddles your lap with her skirt gathered, her black-and-gold lace lingerie glinting under the desk lamp as she holds a TV remote against your chest like a royal scepter. She sinks down in a slow, crowning descent, star-shaped pupils glazing with pleasure while her smile stays imperious, granting you tonight-only access to the queen's limited seat. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, warmth.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1556,9 +1526,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1605,7 +1573,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "sensual_lace_lingerie",
-      "promptProse": "Trapped in a narrow fitting room with the back zipper of her date-night dress jammed halfway, Shokuhou Misaki twists her hands behind her back trying to reach it, the tight fabric squeezing her large breasts into a breathtaking spill of black lace against the lining. Her star-shaped pupils swim with flustered panic as she orders you to stop staring and help with your hands, gasping as the fabric strains. Warm overhead fitting-room light over squeezed flesh in a sensual solo composition, cinematic lighting, depth of field.",
+      "promptProse": "Trapped in a narrow fitting room with the back zipper of her date-night dress jammed halfway, Shokuhou Misaki twists her hands behind her back trying to reach it, the tight fabric squeezing her large breasts into a breathtaking spill of black lace against the lining. Her star-shaped pupils swim with flustered panic as she orders you to stop staring and help with your hands, gasping as the fabric strains. Warm overhead fitting-room light over squeezed flesh in a sensual solo composition, cinematic lighting.",
       "promptTokens": [
         "sensual_solo",
         "fitting_room",
@@ -1623,9 +1591,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1672,7 +1638,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "nsfw_nude",
-      "promptProse": "Lying across the dormitory bed with her cascading golden hair fanned out like silk over the white pillows, Shokuhou Misaki surrenders her royal composure in a private moment of deep passion. Her full breasts heave with breathless sighs, pink nipples flushed beneath dim bedside lamplight as her trembling fingers glide tenderly across her inner thighs. The signature star shapes in her eyes glisten softly through a haze of tears and arousal, murmuring with parted lips that tonight you are forbidden from thinking of anyone else. Sensual vertical composition, warm cinematic lighting, soft focus, detailed bedroom background, depth of field.",
+      "promptProse": "Lying across the dormitory bed with her cascading golden hair fanned out like silk over the white pillows, Shokuhou Misaki surrenders her royal composure in a private moment of deep passion. Her full breasts heave with breathless sighs, pink nipples flushed beneath dim bedside lamplight as her trembling fingers glide tenderly across her inner thighs. The signature star shapes in her eyes glisten softly through a haze of tears and arousal, murmuring with parted lips that tonight you are forbidden from thinking of anyone else. Sensual vertical composition, warm cinematic lighting, detailed bedroom background.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1697,9 +1663,7 @@
         "star-shaped_pupils",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1746,7 +1710,7 @@
       ],
       "nsfwProse": "",
       "outfitId": "sensual_lace_lingerie",
-      "promptProse": "Bare-handed for once without her signature white gloves, Shokuhou Misaki reclines against the rim of a steaming bathtub, her black lace lingerie soaked to translucent sheerness and dragged to her thighs. One hand glides slowly beneath the water between her parted legs while her star-shaped pupils fall half-lidded in the fog, murmuring that what lies beneath the gloves is the real her, and tonight she permits you a closer look. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed bathroom background, depth of field.",
+      "promptProse": "Bare-handed for once without her signature white gloves, Shokuhou Misaki reclines against the rim of a steaming bathtub, her black lace lingerie soaked to translucent sheerness and dragged to her thighs. One hand glides slowly beneath the water between her parted legs while her star-shaped pupils fall half-lidded in the fog, murmuring that what lies beneath the gloves is the real her, and tonight she permits you a closer look. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed bathroom background.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1769,8 +1733,7 @@
         "parted_lips",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

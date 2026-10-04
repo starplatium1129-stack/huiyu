@@ -42,9 +42,7 @@
         "neon_reflections",
         "gradient_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -103,8 +101,6 @@
         "dusty_sunlight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_cigarette",
         "cargo_pants"
       ],
@@ -164,9 +160,7 @@
         "glowing_ports",
         "netrunner_suit",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -224,9 +218,7 @@
         "holding_helmet",
         "gradient_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -284,8 +276,6 @@
         "streetwear",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "hand_on_rail",
         "leaning_out"
       ],
@@ -344,9 +334,7 @@
         "neon_ambience",
         "cyberware",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -404,9 +392,7 @@
         "netrunner_suit",
         "wet_ground",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -491,9 +477,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -582,9 +566,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -660,9 +642,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -689,7 +669,7 @@
       ],
       "description": "【露西 · 冰水深潜舱中的私密抚穴自抚】冷寂的安全屋内，深潜浴缸中的水温早已由冰冷转为微温。工装裤早已被脱在一旁，露西仰靠在浴缸边缘。她单手捂住发烫的娇艳面颊，另一只手指在温水下缓缓抚弄着自己湿热敏感的私密花径。在水流润滑下轻轻自我探索，激起一圈圈细密的水花波纹，嘴里吐出灼热而思念的低语——「哈啊……怎么会……突然想起他的气味……连数据流都无法压制心跳……」",
       "id": "lucy_r18_deep_dive_tub_sensual_fingering",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "浴缸微光与室内泛青数据终端屏风冷暖交织的静谧光晕",
       "location": "黑客安全室微温水深潜浴缸",
       "mood": "极乐沉沦",
@@ -729,9 +709,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",

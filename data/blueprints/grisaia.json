@@ -39,9 +39,7 @@
         "wind_blown_hair",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -99,9 +97,7 @@
         "white_hair",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -160,8 +156,7 @@
         "red_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -219,9 +214,7 @@
         "water_caustics",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -279,9 +272,7 @@
         "white_dress",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -339,9 +330,7 @@
         "very_long_hair",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -399,9 +388,7 @@
         "very_long_hair",
         "red_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -477,8 +464,7 @@
         "parted_lips",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -569,9 +555,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -643,9 +627,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -702,7 +684,7 @@
         "red_eyes",
         "heavy_blush"
       ],
-      "promptProse": "Rain darkens the window behind adult Kazuki reclining alone across a broad sill. Her fitted dress is unzipped and pooled beneath bare breasts, one leg extended along the ledge and the other folded inward. She steadies herself on the frame with one hand and fingers herself with the other, city droplets casting moving light over pale skin. Black hair frames violet eyes, parted breath and a rare vulnerable blush. Horizontal solo portrait, no text or extra people.",
+      "promptProse": "Adult Kazuki is reclining alone across a broad sill. Her fitted dress is unzipped and pooled beneath bare breasts, one leg extended along the ledge and the other folded inward. She steadies herself on the frame with one hand and fingers herself with the other. Black hair frames violet eyes, parted breath and a rare vulnerable blush. Horizontal solo portrait, no text or extra people.",
       "promptTokens": [
         "window_sill",
         "moonlight",
@@ -717,8 +699,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -738,7 +719,7 @@
       "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",
@@ -786,9 +767,7 @@
         "large_breasts",
         "holding_helmet",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -845,9 +824,7 @@
         "hair_rings",
         "gentle_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -905,9 +882,7 @@
         "hair_rings",
         "seductive_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -965,9 +940,7 @@
         "hair_rings",
         "large_breasts",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1026,9 +999,7 @@
         "sweat",
         "hair_rings",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1087,8 +1058,7 @@
         "hair_rings",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1148,9 +1118,7 @@
         "hair_rings",
         "emotional_expression",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1227,9 +1195,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1320,9 +1286,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1393,9 +1357,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1464,9 +1426,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1486,7 +1446,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",
@@ -1534,8 +1494,7 @@
         "polite_smile",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1593,9 +1552,7 @@
         "pink_hair",
         "blue_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1653,9 +1610,7 @@
         "pink_hair",
         "blue_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1713,9 +1668,7 @@
         "wet_skin",
         "water_ripples",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1773,9 +1726,7 @@
         "intense_focus",
         "pink_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1834,7 +1785,6 @@
         "pink_hair",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -1894,8 +1844,7 @@
         "pink_hair",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1975,9 +1924,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2070,9 +2017,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2140,9 +2085,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2211,9 +2154,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2233,7 +2174,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",
@@ -2286,9 +2227,7 @@
         "wavy_hair",
         "blue_eyes",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2357,9 +2296,7 @@
         "gentle_smile",
         "tender_gaze",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2434,8 +2371,7 @@
         "blushing",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2505,9 +2441,7 @@
         "blue_eyes",
         "mole_under_eye",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2584,9 +2518,7 @@
         "flushed_cheeks",
         "gentle_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2659,7 +2591,6 @@
         "tender_gaze",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -2736,9 +2667,7 @@
         "blushing",
         "gentle_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2816,9 +2745,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2913,9 +2840,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3006,9 +2931,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3101,9 +3024,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3126,7 +3047,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "sensual_solo",

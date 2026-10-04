@@ -35,8 +35,7 @@
         "purple_lightning",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -100,7 +99,7 @@
       ],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "kneeling",
@@ -168,9 +167,7 @@
         "parasol_shade",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -237,9 +234,7 @@
         "sunset",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -297,9 +292,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -361,7 +354,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "on_back",
@@ -432,9 +425,7 @@
         "rim_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -494,8 +485,7 @@
         "purple_lightning",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -551,7 +541,7 @@
       ],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "sitting",
@@ -615,9 +605,7 @@
         "afternoon",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -675,9 +663,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -740,7 +726,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "completely_nude",
@@ -795,9 +781,7 @@
         "night",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -860,7 +844,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "lying_on_side",
@@ -911,13 +895,10 @@
         "onsen",
         "steam",
         "night",
-        "moonlight",
         "water_ripples",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -953,7 +934,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "sitting",
@@ -970,7 +951,7 @@
         "seductive_smile",
         "parted_lips"
       ],
-      "nsfwProse": "Perched at the edge of the moonlit wooden pavilion with her shapely legs submerged in the steaming foot bath, Raiden Ei lets her purple kimono slip from her bare shoulders, glancing back with an alluring blush and exposed glowing breasts.",
+      "nsfwProse": "Perched at the edge of the wooden pavilion with her shapely legs submerged in the steaming foot bath, Raiden Ei lets her purple kimono slip from her bare shoulders, glancing back with an alluring blush and exposed glowing breasts.",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "shogun_robes",
       "sampleRating": "R18",
@@ -1013,9 +994,7 @@
         "theatrical_pose",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1081,9 +1060,7 @@
         "distant_streetlights",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1153,9 +1130,7 @@
         "window_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1225,9 +1200,7 @@
         "morning",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1285,9 +1258,7 @@
         "proud_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1348,8 +1319,6 @@
         "happy_smile",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "full_body",
         "barefoot"
       ],
@@ -1423,9 +1392,7 @@
         "focused_expression",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1483,9 +1450,7 @@
         "top-down_view",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1509,7 +1474,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "on_back",
@@ -1573,9 +1538,7 @@
         "water_ripples",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1654,9 +1617,7 @@
         "padded_stool",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1741,9 +1702,7 @@
         "top-down_view",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1821,7 +1780,7 @@
         "spooky_forest",
         "smug_smile"
       ],
-      "promptProse": "Hu Tao balances sideways on a broad old branch above the mist at Wuwang Hill. One hand forms a small guiding sign toward her round, friendly fire spirit while the other steadies her posture against the trunk. Blue wisps hang between the distant trees; the companion casts a warm red edge across her dark director coat, shorts and blossom-trimmed hat. Her flower-shaped red pupils turn toward the viewer with a secretive grin. Show her supported feet, branch and hovering spirit together, with cool forest depth behind them. No lettering.",
+      "promptProse": "Hu Tao balances sideways on a broad old branch at Wuwang Hill. One hand forms a small guiding sign toward her round, friendly fire spirit while the other steadies her posture against the trunk. Blue wisps hang between the distant trees; The companion casts a warm red edge across her dark director coat, shorts and blossom-trimmed hat. Her flower-shaped red pupils turn toward the viewer with a secretive grin. Show her supported feet, branch and hovering spirit together, with cool forest depth behind them. No lettering.",
       "promptTokens": [
         "tree_branch",
         "standing",
@@ -1835,9 +1794,7 @@
         "spooky_forest",
         "smug_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1902,9 +1859,7 @@
         "gentle_smile",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1950,12 +1905,11 @@
         "elbows_on_knees",
         "playful_expression",
         "harbor",
-        "lanterns",
         "crimson_sunset",
         "high_angle",
         "full_body"
       ],
-      "promptProse": "Cross-legged on a broad tiled ridge above Liyue Harbor, Hu Tao cups both cheeks in her hands with her elbows resting on her knees. Her lips part around an improvised little verse, and the red-tipped twintails stir beside her dark uniform coat. From the slightly elevated view, the curve of the roof leads down toward the first harbor lanterns. Crimson sunset meets their warm glow beyond her small, relaxed figure. Keep both hands, folded legs and the supporting roof visible; convey the playful poetry through her expression, without written verse.",
+      "promptProse": "Cross-legged on a broad tiled ridge above Liyue Harbor, Hu Tao cups both cheeks in her hands with her elbows resting on her knees. Her lips part around an improvised little verse, and the red-tipped twintails stir beside her dark uniform coat. From the slightly elevated view, the curve of the roof leads down toward the first harbor lights. Crimson sunset meets their warm glow beyond her small, relaxed figure. Keep both hands, folded legs and the supporting roof visible; Convey the playful poetry through her expression, without written verse.",
       "promptTokens": [
         "tiled_roof",
         "roof_ridge",
@@ -1964,14 +1918,11 @@
         "elbows_on_knees",
         "playful_expression",
         "harbor",
-        "lanterns",
         "crimson_sunset",
         "high_angle",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2038,9 +1989,7 @@
         "night",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2105,9 +2054,7 @@
         "morning_light",
         "eye_level",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2174,9 +2121,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2241,9 +2186,7 @@
         "low_angle",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2305,9 +2248,7 @@
         "top-down_view",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2331,7 +2272,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "on_back",
@@ -2394,9 +2335,7 @@
         "ghost_butterflies",
         "vertical_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2484,9 +2423,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2572,9 +2509,7 @@
         "top-down_view",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2806,9 +2741,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3067,19 +3000,16 @@
         "open_clothes",
         "fox_ears"
       ],
-      "promptProse": "Yae Miko from Genshin Impact straddles your lap beneath the sacred sakura tree at midnight, her red-and-white shrine maiden robes pulled down to her slender hips. Her lush, bountiful breasts bounce in tantalizing, predatory rhythm as her five fluffy pink fox tails wrap possessively around your thighs, her fox ears twitching with heat. Her violet eyes glitter with wicked amusement and genuine carnal appetite, a breathtaking smirk curving her lips as she whispers scandalous threats. Vertical low-angle cowgirl perspective, drifting cherry blossom petals and purple electro lanterns illuminating flawless curves, detailed Grand Narukami Shrine background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Yae Miko from Genshin Impact straddles your lap beneath the sacred sakura tree at midnight, her red-and-white shrine maiden robes pulled down to her slender hips. Her lush, bountiful breasts bounce in tantalizing, predatory rhythm as her five fluffy pink fox tails wrap possessively around your thighs, her fox ears twitching with heat. Her violet eyes glitter with wicked amusement and genuine carnal appetite, a breathtaking smirk curving her lips as she whispers scandalous threats. Vertical low-angle cowgirl perspective, drifting cherry blossom petals and purple light illuminating flawless curves, detailed Grand Narukami Shrine background, solo 1girl, no extra people.",
       "promptTokens": [
         "shinto_shrine",
         "sacred_sakura",
         "cherry_blossoms",
         "night",
-        "lantern_light",
         "low_angle",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3104,7 +3034,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -3159,7 +3089,7 @@
         "cherry_blossoms",
         "petals"
       ],
-      "promptProse": "Yae Miko relaxes inside an open-air hot spring atop Mt. Yougou, glowing cherry blossom petals clinging to her wet skin. Completely bare, her enormous breasts and rosebud nipples float buoyantly in the steaming water as her fox ears droop in languid pleasure. Underwater, her hand caresses her slick, sensitive folds with experienced decadence, her purple gaze locking onto you through the vapor with an irresistible, teasing come-hither smirk. Sensual vertical framing, glowing sacred sakura boughs and lantern reflections dancing across rippling pink water and creamy curves, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Yae Miko relaxes inside an open-air hot spring atop Mt. Yougou, glowing cherry blossom petals clinging to her wet skin. Completely bare, her enormous breasts and rosebud nipples float buoyantly in the steaming water as her fox ears droop in languid pleasure. Underwater, her hand caresses her slick, sensitive folds with experienced decadence, her purple gaze locking onto you through the vapor with an irresistible, teasing come-hither smirk. Sensual vertical framing, glowing sacred sakura boughs and light reflections dancing across rippling pink water and creamy curves, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "hot_spring",
         "onsen",
@@ -3170,9 +3100,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3197,7 +3125,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -3254,7 +3182,7 @@
         "fox_ears",
         "fox_tail"
       ],
-      "promptProse": "Yae Miko leans forward over her lacquered wooden vanity as her fluffy pink fox tails accidentally knot the silk cords of her ceremonial shrine robes into a tangled mess. The tension pulls her gown wide open down her flanks, forcing her massive, creamy breasts and erect nipples into a breathtaking display above the tight sash. Looking back over her shoulder with twitching fox ears and a fierce, flustered blush on her mature features, she snaps for assistance while shifting to ease the ache. Cinematic horizontal framing, golden sunset beams reflecting off gold hairpins and bare skin, detailed shrine background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Yae Miko leans forward over her lacquered wooden vanity as her fluffy pink fox tails accidentally knot the silk cords of her ceremonial shrine robes into a tangled mess. The tension pulls her gown wide open down her flanks, forcing her massive, creamy breasts and erect nipples into a breathtaking display above the tight sash. Looking back over her shoulder with twitching fox ears and a fierce, flustered blush on her mature features, she snaps for assistance while shifting to ease the ache. Cinematic horizontal framing, golden sunset beams reflecting off gold hairpins and bare skin, detailed shrine background, solo 1girl, no extra people.",
       "promptTokens": [
         "dressing_room",
         "wooden_vanity",
@@ -3263,9 +3191,7 @@
         "golden_hour",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3290,7 +3216,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -3346,7 +3272,7 @@
         "fox_tail",
         "multiple_tails"
       ],
-      "promptProse": "Sprawled completely naked across red silk bedding in her inner sanctuary, Yae Miko casts aside every trace of smug irony. Her five plush pink tails curl around her heaving bare breasts as two fingers pump urgently into her dripping, honeyed core, her mature body arching in relentless waves of raw vulpine ecstasy. Her long pastel-pink tresses fan across the mats, genuine tears of centuries-old affection misting her violet eyes as desperate, wanton moans escape her swollen lips. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening mature curves, detailed Japanese shrine background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled completely naked across red silk bedding in her inner sanctuary, Yae Miko casts aside every trace of smug irony. Her five plush pink tails curl around her heaving bare breasts as two fingers pump urgently into her dripping, honeyed core, her mature body arching in relentless waves of raw vulpine ecstasy. Her long pastel-pink tresses fan across the mats, genuine tears of centuries-old affection misting her violet eyes as desperate, wanton moans escape her swollen lips. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening mature curves, detailed Japanese shrine background, solo 1girl, no extra people.",
       "promptTokens": [
         "tatami",
         "japanese_room",
@@ -3357,9 +3283,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3384,7 +3308,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [

@@ -385,9 +385,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -445,7 +443,7 @@
         "red_outfit",
         "open_clothes"
       ],
-      "promptProse": "Mai Shiranui from Fatal Fury / King of Fighters straddles your lap across the tatami mats of her traditional ninja dojo, her iconic red-and-white high-slit ninja tunic untied to her navel. Her colossal, muscular yet impossibly soft breasts bounce with energetic, earth-shaking rhythm as her hips roll in masterly ninja technique. Her high chestnut ponytail whips behind her, warm brown eyes glowing with passionate, triumphant affection and a bold smirk as she flutters her folding fan beside your head. Vertical low-angle cowgirl shot, paper lanterns and dojo wooden pillars bathed in amber glow, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mai Shiranui from Fatal Fury / King of Fighters straddles your lap across the tatami mats of her traditional ninja dojo, her iconic red-and-white high-slit ninja tunic untied to her navel. Her colossal, muscular yet impossibly soft breasts bounce with energetic, earth-shaking rhythm as her hips roll in masterly ninja technique. Her high chestnut ponytail whips behind her, warm brown eyes glowing with passionate, triumphant affection and a bold smirk as she flutters her folding fan beside your head. Vertical low-angle cowgirl shot, light and dojo wooden pillars bathed in amber glow, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -471,9 +469,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -498,7 +494,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -526,11 +522,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mai Shiranui from Fatal Fury / King of Fighters straddles your lap across the tatami mats of her traditional ninja dojo, her iconic red-and-white high-slit ninja tunic untied to her navel. Her colossal, muscular yet impossibly soft breasts bounce with energetic, earth-shaking rhythm as her hips roll in masterly ninja technique. Her high chestnut ponytail whips behind her, warm brown eyes glowing with passionate, triumphant affection and a bold smirk as she flutters her folding fan beside your head. Vertical low-angle cowgirl shot, paper lanterns and dojo wooden pillars bathed in amber glow, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mai Shiranui from Fatal Fury / King of Fighters straddles your lap across the tatami mats of her traditional ninja dojo, her iconic red-and-white high-slit ninja tunic untied to her navel. Her colossal, muscular yet impossibly soft breasts bounce with energetic, earth-shaking rhythm as her hips roll in masterly ninja technique. Her high chestnut ponytail whips behind her, warm brown eyes glowing with passionate, triumphant affection and a bold smirk as she flutters her folding fan beside your head. Vertical low-angle cowgirl shot, light and dojo wooden pillars bathed in amber glow, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -563,7 +557,7 @@
         "folding_fan",
         "steam"
       ],
-      "promptProse": "Mai Shiranui soaks in an outdoor hot spring high in the Iga mountains, holding her painted paper fan lightly across one magnificent, bare breast while steam rises around her. Her tanned, muscular yet luscious curves glisten under warm water as her fingers dive between her powerful parted thighs, stroking herself with sultry, expert passion. Her chestnut hair is plastered wet across her shoulder, eyes misting with sweet romantic frustration as she sighs for marriage into the cool night air. Sensual vertical framing, glowing lanterns casting golden ripples over athletic curves, detailed onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Mai Shiranui soaks in an outdoor hot spring high in the Iga mountains, holding her painted paper fan lightly across one magnificent, bare breast while steam rises around her. Her tanned, muscular yet luscious curves glisten under warm water as her fingers dive between her powerful parted thighs, stroking herself with sultry, expert passion. Her chestnut hair is plastered wet across her shoulder, eyes misting with sweet romantic frustration as she sighs for marriage into the cool night air. Sensual vertical framing, glowing lights casting golden ripples over athletic curves, detailed onsen background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -590,9 +584,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -617,7 +609,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -646,11 +638,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mai Shiranui soaks in an outdoor hot spring high in the Iga mountains, holding her painted paper fan lightly across one magnificent, bare breast while steam rises around her. Her tanned, muscular yet luscious curves glisten under warm water as her fingers dive between her powerful parted thighs, stroking herself with sultry, expert passion. Her chestnut hair is plastered wet across her shoulder, eyes misting with sweet romantic frustration as she sighs for marriage into the cool night air. Sensual vertical framing, glowing lanterns casting golden ripples over athletic curves, detailed onsen background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Mai Shiranui soaks in an outdoor hot spring high in the Iga mountains, holding her painted paper fan lightly across one magnificent, bare breast while steam rises around her. Her tanned, muscular yet luscious curves glisten under warm water as her fingers dive between her powerful parted thighs, stroking herself with sultry, expert passion. Her chestnut hair is plastered wet across her shoulder, eyes misting with sweet romantic frustration as she sighs for marriage into the cool night air. Sensual vertical framing, glowing lights casting golden ripples over athletic curves, detailed onsen background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -683,7 +673,7 @@
         "rope",
         "tied_up"
       ],
-      "promptProse": "Mai Shiranui leans forward over a wooden bench in the dojo dressing room, the thick shimenawa ropes of her ninja attire knotted firmly against her sweat-slick lower back. The strain hikes her skimpy red uniform high, framing her legendary, voluptuous bottom in a thin crimson thong while thrusting her colossal breasts into an explosive cleavage spill. Glancing back over her shoulder with sweat dripping down her flushed temple and brown eyes brimming with bashful irritation, she pleads for swift rescue. Cinematic horizontal framing, dusk light gleaming across toned, glistening athletic curves and braided hemp, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Mai Shiranui leans forward over a wooden bench in the dojo dressing room, the thick shimenawa ropes of her ninja attire knotted firmly against her sweat-slick lower back. The strain hikes her skimpy red uniform high, framing her legendary, voluptuous bottom in a thin crimson thong while thrusting her colossal breasts into an explosive cleavage spill. Glancing back over her shoulder with sweat dripping down her flushed temple and brown eyes brimming with bashful irritation, she pleads for swift rescue. Cinematic horizontal framing, dusk light gleaming across toned, glistening athletic curves and braided hemp, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -713,9 +703,7 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -740,7 +728,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -772,11 +760,9 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Mai Shiranui leans forward over a wooden bench in the dojo dressing room, the thick shimenawa ropes of her ninja attire knotted firmly against her sweat-slick lower back. The strain hikes her skimpy red uniform high, framing her legendary, voluptuous bottom in a thin crimson thong while thrusting her colossal breasts into an explosive cleavage spill. Glancing back over her shoulder with sweat dripping down her flushed temple and brown eyes brimming with bashful irritation, she pleads for swift rescue. Cinematic horizontal framing, dusk light gleaming across toned, glistening athletic curves and braided hemp, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Mai Shiranui leans forward over a wooden bench in the dojo dressing room, the thick shimenawa ropes of her ninja attire knotted firmly against her sweat-slick lower back. The strain hikes her skimpy red uniform high, framing her legendary, voluptuous bottom in a thin crimson thong while thrusting her colossal breasts into an explosive cleavage spill. Glancing back over her shoulder with sweat dripping down her flushed temple and brown eyes brimming with bashful irritation, she pleads for swift rescue. Cinematic horizontal framing, dusk light gleaming across toned, glistening athletic curves and braided hemp, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -809,7 +795,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Sprawled naked across scarlet silk futon mats with a white bridal veil clutched over her breasts, Mai Shiranui surrenders to an inferno of romantic yearning. Her powerful, shapely legs are thrown wide as two fingers pump vigorously into her dripping, honey-drenched core, her athletic body arching off the floor in seismic, shuddering waves of climax. Her chestnut hair splays across the straw mats, happy yet frustrated tears leaking from her brown eyes as her wanton cries echo through the quiet ninja shrine. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening muscular curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled naked across scarlet silk futon mats with a white bridal veil clutched over her breasts, Mai Shiranui surrenders to an inferno of romantic yearning. Her powerful, shapely legs are thrown wide as two fingers pump vigorously into her dripping, honey-drenched core, her athletic body arching off the floor in seismic, shuddering waves of climax. Her chestnut hair splays across the straw mats, happy yet frustrated tears leaking from her brown eyes as her wanton cries echo through the quiet ninja shrine. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening muscular curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -840,9 +826,7 @@
         "brown_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -867,7 +851,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -900,11 +884,9 @@
         "brown_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sprawled naked across scarlet silk futon mats with a white bridal veil clutched over her breasts, Mai Shiranui surrenders to an inferno of romantic yearning. Her powerful, shapely legs are thrown wide as two fingers pump vigorously into her dripping, honey-drenched core, her athletic body arching off the floor in seismic, shuddering waves of climax. Her chestnut hair splays across the straw mats, happy yet frustrated tears leaking from her brown eyes as her wanton cries echo through the quiet ninja shrine. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening muscular curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled naked across scarlet silk futon mats with a white bridal veil clutched over her breasts, Mai Shiranui surrenders to an inferno of romantic yearning. Her powerful, shapely legs are thrown wide as two fingers pump vigorously into her dripping, honey-drenched core, her athletic body arching off the floor in seismic, shuddering waves of climax. Her chestnut hair splays across the straw mats, happy yet frustrated tears leaking from her brown eyes as her wanton cries echo through the quiet ninja shrine. Intimate vertical framing, moonlight filtering through paper shoji screens onto glistening muscular curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

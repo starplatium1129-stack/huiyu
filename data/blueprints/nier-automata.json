@@ -41,8 +41,7 @@
         "windy",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -113,8 +112,7 @@
         "blushing",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -171,9 +169,7 @@
         "revealing_clothes",
         "blindfold",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -236,9 +232,7 @@
         "mole_under_mouth",
         "white_hair",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -301,8 +295,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -360,9 +353,7 @@
         "blindfold",
         "curved_hips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -421,8 +412,7 @@
         "mole_under_mouth",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -465,7 +455,7 @@
       "adult": true,
       "adultEligibility": "adult",
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "sceneTags": [
@@ -484,7 +474,7 @@
         "detailed_background",
         "intimate"
       ],
-      "promptProse": "Early in the morning atop the shattered concrete ledge of an overgrown city skyscraper ruin, ethereal golden god rays beam through steel rebar. Adult android 2B (YoRHa No.2 Type B) sits in noble quietude amidst patches of blooming white Lunar Tear flowers. A solitary silver katana stands embedded within fractured rubble beside her, with delicate white petals drifting on a gentle dawn breeze. The quiet apocalyptic world is bathed in transcendent volumetric dawn light and atmospheric mist. Masterpiece composition, sharp focus, layered background depth, detailed background.",
+      "promptProse": "Early in the morning atop the shattered concrete ledge of an overgrown city skyscraper ruin, ethereal golden god rays beam through steel rebar. Adult android 2B (YoRHa No.2 Type B) sits in noble quietude amidst patches of blooming white Lunar Tear flowers. A solitary silver katana stands embedded within fractured rubble beside her, with delicate white petals drifting on a gentle dawn breeze. The quiet apocalyptic world is bathed in transcendent volumetric dawn light and atmospheric air. Masterpiece composition, sharp focus, layered background depth, detailed background.",
       "promptTokens": [
         "ruins",
         "overgrown_ruins",
@@ -499,7 +489,6 @@
         "atmospheric_depth",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
         "vertical_shot"
       ],
       "negativeTokens": [
@@ -623,9 +612,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -686,7 +673,7 @@
         "mole_under_mouth",
         "heavy_blush"
       ],
-      "promptProse": "A ruined camp lantern frames adult 2B seated alone astride a folded futon. Blue-white battle lingerie is loosened beneath bare breasts and pulled aside at the hips, while black thigh-highs tighten around folded legs. She braces on the bedding with one gloved hand and fingers herself with the other, her sword and Pod resting powered down in the background. White bobbed hair and blindfold frame parted lips and a restrained blush. Vertical solo portrait, no text or extra people.",
+      "promptProse": "A ruined camp light frames adult 2B seated alone astride a folded futon. Blue-white battle lingerie is loosened beneath bare breasts and pulled aside at the hips, while black thigh-highs tighten around folded legs. She braces on the bedding with one gloved hand and fingers herself with the other, her sword and Pod resting powered down in the background. White bobbed hair and blindfold frame parted lips and a restrained blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
         "straddling",
@@ -698,8 +685,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -771,9 +757,7 @@
         "heavy_blush",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "golden_hour",
-        "depth_of_field"
+        "golden_hour"
       ],
       "negativeTokens": [
         "worst quality",
@@ -793,7 +777,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "masturbation",

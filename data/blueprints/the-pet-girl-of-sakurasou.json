@@ -259,9 +259,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -470,9 +468,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -497,7 +493,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -522,9 +518,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Mashiro Shiina from The Pet Girl of Sakurasou straddles your lap in the Sakurasou art studio late at night, wearing only an oversized white painting shirt smeared with vibrant streaks of oil paint. Her fair chest is bare, rose nipples dusted with cobalt and yellow pigment bouncing gently as she rocks with unhurried, innocent sensuality. Her flaxen blonde hair falls around your faces, large luminous eyes staring into yours without a shred of guile as she whispers your name.",
       "outfitId": "nsfw_boudoir",
@@ -583,9 +577,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -610,7 +602,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -636,9 +628,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Mashiro Shiina sits motionless in the steaming cedar communal bath of Sakurasou, having walked straight in while still wearing her thin white camisole. The drenched cotton clings transparently like plastic wrap, outlining every curve of her small breasts and peach nipples in exquisite clarity. Her pale fingers softly explore the slick warmth between her thighs beneath the water, golden eyes tilted upward in innocent bewilderment as a faint blush creeps down her neck.",
       "outfitId": "nsfw_boudoir",
@@ -699,9 +689,7 @@
         "blonde_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -726,7 +714,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -754,9 +742,7 @@
         "blonde_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Caught in her daily wardrobe struggle, Mashiro Shiina bends forward over her study desk, her school skirt hitched all the way to her ribs. Her pastel kitty-pattern panties are snagged awkwardly around one slender thigh, pulling tightly into soft flesh and leaving her pristine peach bottom completely bare to the room. She turns her head slowly over her arched back, large golden eyes gazing in serene, unbothered deadpan while her cheeks flush warm crimson, quietly asking you to dress her.",
       "outfitId": "nsfw_boudoir",
@@ -817,9 +803,7 @@
         "golden_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -844,7 +828,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -872,9 +856,7 @@
         "golden_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Mashiro Shiina lies completely naked across her sprawling white futon as thunderstorm rain lashes against the window. Her long golden tresses pool like silk around her porcelain shoulders, her slender back arching gracefully as two fingers slide deep into her glistening, dripping core. Her pale chest heaves with soft, astonished gasps, her golden eyes clouding over in pure ecstatic wonder as she discovers the overwhelming colors of intimate pleasure.",
       "outfitId": "nsfw_boudoir",

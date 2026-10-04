@@ -109,9 +109,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -437,7 +435,7 @@
         "dress",
         "white_dress"
       ],
-      "promptProse": "Vivy (Diva) from Vivy -Fluorite Eye's Song- straddles your lap atop a grand black concert piano in the dark theatre after hours, her elegant white-and-teal diva gown unclasped down the front. Her precision-crafted, porcelain synthetic breasts bounce with uncanny, breathless perfection as her hips roll in rhythm with a silent internal symphony, her core feverishly hot. Her floor-length aqua-blue hair trails over the ivory keys, deep blue robotic eyes softening with profound human emotion as she guides your hands to her synthetic heart. Vertical low-angle cowgirl shot, theatrical spotlights cutting through dust motes onto glistening curves, detailed grand stage background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Vivy (Diva) from Vivy -Fluorite Eye's Song- straddles your lap atop a grand black concert piano in the dark theatre after hours, her elegant white-and-teal diva gown unclasped down the front. Her precision-crafted, porcelain synthetic breasts bounce with uncanny, breathless perfection as her hips roll in rhythm with a silent internal symphony, her core feverishly hot. Her floor-length aqua-blue hair trails over the ivory keys, deep blue robotic eyes softening with profound human emotion as she guides your hands to her synthetic heart. Vertical low-angle cowgirl shot, theatrical spotlights cutting through dust motes onto glistening curves, detailed grand stage background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -465,9 +463,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -492,7 +488,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -522,11 +518,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Vivy (Diva) from Vivy -Fluorite Eye's Song- straddles your lap atop a grand black concert piano in the dark theatre after hours, her elegant white-and-teal diva gown unclasped down the front. Her precision-crafted, porcelain synthetic breasts bounce with uncanny, breathless perfection as her hips roll in rhythm with a silent internal symphony, her core feverishly hot. Her floor-length aqua-blue hair trails over the ivory keys, deep blue robotic eyes softening with profound human emotion as she guides your hands to her synthetic heart. Vertical low-angle cowgirl shot, theatrical spotlights cutting through dust motes onto glistening curves, detailed grand stage background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Vivy (Diva) from Vivy -Fluorite Eye's Song- straddles your lap atop a grand black concert piano in the dark theatre after hours, her elegant white-and-teal diva gown unclasped down the front. Her precision-crafted, porcelain synthetic breasts bounce with uncanny, breathless perfection as her hips roll in rhythm with a silent internal symphony, her core feverishly hot. Her floor-length aqua-blue hair trails over the ivory keys, deep blue robotic eyes softening with profound human emotion as she guides your hands to her synthetic heart. Vertical low-angle cowgirl shot, theatrical spotlights cutting through dust motes onto glistening curves, detailed grand stage background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -559,7 +553,7 @@
         "liquid",
         "steam"
       ],
-      "promptProse": "Vivy floats inside a vertical cylindrical maintenance pod filled with glowing turquoise coolant, venting thermal exhaust through her synthetic skin. Completely naked, her flawless manufactured curves glisten as her long aqua hair floats around her like ethereal seafoam. Her delicate fingers massage her overheated biomorphic core beneath the cooling gel, sending rhythmic ripples through the fluid as warning glyphs blink across her dilated blue eyes. Sensual vertical framing, holographic medical diagnostics and cool blue fluid backlighting her exquisite body, detailed futuristic lab background, depth of field, solo 1girl, no text.",
+      "promptProse": "Vivy floats inside a vertical cylindrical maintenance pod filled with glowing turquoise coolant, venting thermal exhaust through her synthetic skin. Completely naked, her flawless manufactured curves glisten as her long aqua hair floats around her like ethereal seafoam. Her delicate fingers massage her overheated biomorphic core beneath the cooling gel, sending rhythmic ripples through the fluid as warning glyphs blink across her dilated blue eyes. Sensual vertical framing, holographic medical diagnostics and cool blue fluid backlighting her exquisite body, detailed futuristic lab background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -585,9 +579,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -612,7 +604,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -640,11 +632,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Vivy floats inside a vertical cylindrical maintenance pod filled with glowing turquoise coolant, venting thermal exhaust through her synthetic skin. Completely naked, her flawless manufactured curves glisten as her long aqua hair floats around her like ethereal seafoam. Her delicate fingers massage her overheated biomorphic core beneath the cooling gel, sending rhythmic ripples through the fluid as warning glyphs blink across her dilated blue eyes. Sensual vertical framing, holographic medical diagnostics and cool blue fluid backlighting her exquisite body, detailed futuristic lab background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Vivy floats inside a vertical cylindrical maintenance pod filled with glowing turquoise coolant, venting thermal exhaust through her synthetic skin. Completely naked, her flawless manufactured curves glisten as her long aqua hair floats around her like ethereal seafoam. Her delicate fingers massage her overheated biomorphic core beneath the cooling gel, sending rhythmic ripples through the fluid as warning glyphs blink across her dilated blue eyes. Sensual vertical framing, holographic medical diagnostics and cool blue fluid backlighting her exquisite body, detailed futuristic lab background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -677,7 +667,7 @@
         "stuck_zipper",
         "clothes_pull"
       ],
-      "promptProse": "Vivy leans forward over her dressing room mirror as the carbon-fiber zipper of her concert gown binds tightly into her spinal cooling port. The strain yanks the dress taut over her arched lower back, squeezing her synthetic breasts into a breathtaking swell of creamy flesh and rosebud nipples, while the split skirt exposes long cybernetic legs. Glancing back over her bare shoulder with a tiny warning diode flashing red in her sapphire gaze, she requests manual override with flushed, overheating composure. Cinematic horizontal framing, backstage makeup bulbs casting golden highlights over chrome ports and soft skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Vivy leans forward over her dressing room mirror as the carbon-fiber zipper of her concert gown binds tightly into her spinal cooling port. The strain yanks the dress taut over her arched lower back, squeezing her synthetic breasts into a breathtaking swell of creamy flesh and rosebud nipples, while the split skirt exposes long cybernetic legs. Glancing back over her bare shoulder with a tiny warning diode flashing red in her sapphire gaze, she requests manual override with flushed, overheating composure. Cinematic horizontal framing, backstage makeup bulbs casting golden highlights over chrome ports and soft skin, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -707,9 +697,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -734,7 +722,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -766,11 +754,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Vivy leans forward over her dressing room mirror as the carbon-fiber zipper of her concert gown binds tightly into her spinal cooling port. The strain yanks the dress taut over her arched lower back, squeezing her synthetic breasts into a breathtaking swell of creamy flesh and rosebud nipples, while the split skirt exposes long cybernetic legs. Glancing back over her bare shoulder with a tiny warning diode flashing red in her sapphire gaze, she requests manual override with flushed, overheating composure. Cinematic horizontal framing, backstage makeup bulbs casting golden highlights over chrome ports and soft skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Vivy leans forward over her dressing room mirror as the carbon-fiber zipper of her concert gown binds tightly into her spinal cooling port. The strain yanks the dress taut over her arched lower back, squeezing her synthetic breasts into a breathtaking swell of creamy flesh and rosebud nipples, while the split skirt exposes long cybernetic legs. Glancing back over her bare shoulder with a tiny warning diode flashing red in her sapphire gaze, she requests manual override with flushed, overheating composure. Cinematic horizontal framing, backstage makeup bulbs casting golden highlights over chrome ports and soft skin, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -803,7 +789,7 @@
         "pink_nipples",
         "android"
       ],
-      "promptProse": "Sprawled completely naked across white linen at the end of her century-long mission, Vivy finally experiences true human emotion. Her thighs part wide as her slender fingers stroke deep into her dripping, synthetic core, her spine arching gracefully off the bed as waves of organic ecstasy flood her programming. Her brilliant aqua-blue hair fans across the pillows like starlight, genuine warm human tears streaming from her sapphire eyes as a song of pure love escapes her parted lips. Intimate vertical framing, moonlight filtering through floor-to-ceiling windows onto glistening flawless skin, detailed futuristic bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled completely naked across white linen at the end of her century-long mission, Vivy finally experiences true human emotion. Her thighs part wide as her slender fingers stroke deep into her dripping, synthetic core, her spine arching gracefully off the bed as waves of organic ecstasy flood her programming. Her brilliant aqua-blue hair fans across the pillows like starlight, genuine warm human tears streaming from her sapphire eyes as a song of pure love escapes her parted lips. Intimate vertical framing, moonlight filtering through floor-to-ceiling windows onto glistening flawless skin, detailed futuristic bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -832,9 +818,7 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -859,7 +843,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -890,11 +874,9 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sprawled completely naked across white linen at the end of her century-long mission, Vivy finally experiences true human emotion. Her thighs part wide as her slender fingers stroke deep into her dripping, synthetic core, her spine arching gracefully off the bed as waves of organic ecstasy flood her programming. Her brilliant aqua-blue hair fans across the pillows like starlight, genuine warm human tears streaming from her sapphire eyes as a song of pure love escapes her parted lips. Intimate vertical framing, moonlight filtering through floor-to-ceiling windows onto glistening flawless skin, detailed futuristic bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled completely naked across white linen at the end of her century-long mission, Vivy finally experiences true human emotion. Her thighs part wide as her slender fingers stroke deep into her dripping, synthetic core, her spine arching gracefully off the bed as waves of organic ecstasy flood her programming. Her brilliant aqua-blue hair fans across the pillows like starlight, genuine warm human tears streaming from her sapphire eyes as a song of pure love escapes her parted lips. Intimate vertical framing, moonlight filtering through floor-to-ceiling windows onto glistening flawless skin, detailed futuristic bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

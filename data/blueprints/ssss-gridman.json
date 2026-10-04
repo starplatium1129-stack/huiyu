@@ -123,9 +123,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -635,9 +633,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -899,7 +895,7 @@
         "bottomless",
         "barefoot"
       ],
-      "promptProse": "Akane Shinjou from SSSS.GRIDMAN straddles your lap in her dark, sculpture-filled bedroom, clad in an unbuttoned lavender knit cardigan with her bare feet planted on either side of your hips. Her petite, voluptuous body grinds down with erratic, desperate intensity, her porcelain breasts heaving while her slender hand rests possessively against your throat. Her magenta-pink hair frames a face glowing with unstable, god-like euphoria and deep crimson tears, whispering that in this world you exist solely for her comfort. Vertical low-angle cowgirl shot, eerie green monitor glow mixing with desk lamplight, detailed workshop background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Akane Shinjou from SSSS.GRIDMAN straddles your lap in her dark, sculpture-filled bedroom, clad in an unbuttoned lavender knit cardigan with her bare feet planted on either side of your hips. Her petite, voluptuous body grinds down with erratic, desperate intensity, her porcelain breasts heaving while her slender hand rests possessively against your throat. Her magenta-pink hair frames a face glowing with unstable, god-like euphoria and deep crimson tears, whispering that in this world you exist solely for her comfort. Vertical low-angle cowgirl shot, eerie green monitor glow mixing with desk lamplight, detailed workshop background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -925,9 +921,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -952,7 +946,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -980,11 +974,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Akane Shinjou from SSSS.GRIDMAN straddles your lap in her dark, sculpture-filled bedroom, clad in an unbuttoned lavender knit cardigan with her bare feet planted on either side of your hips. Her petite, voluptuous body grinds down with erratic, desperate intensity, her porcelain breasts heaving while her slender hand rests possessively against your throat. Her magenta-pink hair frames a face glowing with unstable, god-like euphoria and deep crimson tears, whispering that in this world you exist solely for her comfort. Vertical low-angle cowgirl shot, eerie green monitor glow mixing with desk lamplight, detailed workshop background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Akane Shinjou from SSSS.GRIDMAN straddles your lap in her dark, sculpture-filled bedroom, clad in an unbuttoned lavender knit cardigan with her bare feet planted on either side of your hips. Her petite, voluptuous body grinds down with erratic, desperate intensity, her porcelain breasts heaving while her slender hand rests possessively against your throat. Her magenta-pink hair frames a face glowing with unstable, god-like euphoria and deep crimson tears, whispering that in this world you exist solely for her comfort. Vertical low-angle cowgirl shot, eerie green monitor glow mixing with desk lamplight, detailed workshop background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1017,7 +1009,7 @@
         "wet_skin",
         "wet_clothes"
       ],
-      "promptProse": "Akane Shinjou sits slumped in a dark, overflowing bathtub with only the hallway light creeping past the cracked door. Her white dress shirt is soaked transparent over tender pale breasts and hard nipples, her cracked spectacles askew on her nose as water droplets drip from her magenta bangs. Underwater, her hand works feverishly into her dripping center with punishing intensity, tears streaming through cracked laughter as she mocks her own useless godhood. Sensual vertical framing, dramatic chiaroscuro lighting on wet skin, detailed moody bathroom background, depth of field, solo 1girl, no text.",
+      "promptProse": "Akane Shinjou sits slumped in a dark, overflowing bathtub with only the hallway light creeping past the cracked door. Her white dress shirt is soaked transparent over tender pale breasts and hard nipples, her cracked spectacles askew on her nose as water droplets drip from her magenta bangs. Underwater, her hand works feverishly into her dripping center with punishing intensity, tears streaming through cracked laughter as she mocks her own useless godhood. Sensual vertical framing, dramatic chiaroscuro lighting on wet skin, detailed moody bathroom background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1043,9 +1035,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1070,7 +1060,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1098,11 +1088,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Akane Shinjou sits slumped in a dark, overflowing bathtub with only the hallway light creeping past the cracked door. Her white dress shirt is soaked transparent over tender pale breasts and hard nipples, her cracked spectacles askew on her nose as water droplets drip from her magenta bangs. Underwater, her hand works feverishly into her dripping center with punishing intensity, tears streaming through cracked laughter as she mocks her own useless godhood. Sensual vertical framing, dramatic chiaroscuro lighting on wet skin, detailed moody bathroom background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Akane Shinjou sits slumped in a dark, overflowing bathtub with only the hallway light creeping past the cracked door. Her white dress shirt is soaked transparent over tender pale breasts and hard nipples, her cracked spectacles askew on her nose as water droplets drip from her magenta bangs. Underwater, her hand works feverishly into her dripping center with punishing intensity, tears streaming through cracked laughter as she mocks her own useless godhood. Sensual vertical framing, dramatic chiaroscuro lighting on wet skin, detailed moody bathroom background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1135,7 +1123,7 @@
         "torn_sweater",
         "open_clothes"
       ],
-      "promptProse": "Akane Shinjou leans forward over her clay modeling bench after a modeling knife slips, neatly slicing the side seam of her oversized lavender sweater. The garment hangs wide open along her left flank, exposing creamy sideboob, a flushed pink areola, and bare pale hips to the cold room air. Turning her head back over her arched back, her crimson eyes burn with twisted, thrilling amusement as she taps the dull side of the blade against her thigh. Cinematic horizontal composition, desk lamp casting razor-sharp shadows over sculpting tools and naked contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Akane Shinjou leans forward over her clay modeling bench after a modeling knife slips, neatly slicing the side seam of her oversized lavender sweater. The garment hangs wide open along her left flank, exposing creamy sideboob, a flushed pink areola, and bare pale hips to the cold room air. Turning her head back over her arched back, her crimson eyes burn with twisted, thrilling amusement as she taps the dull side of the blade against her thigh. Cinematic horizontal composition, desk lamp casting razor-sharp shadows over sculpting tools and naked contours, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1162,9 +1150,7 @@
         "red_eyes",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1189,7 +1175,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1218,11 +1204,9 @@
         "red_eyes",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Akane Shinjou leans forward over her clay modeling bench after a modeling knife slips, neatly slicing the side seam of her oversized lavender sweater. The garment hangs wide open along her left flank, exposing creamy sideboob, a flushed pink areola, and bare pale hips to the cold room air. Turning her head back over her arched back, her crimson eyes burn with twisted, thrilling amusement as she taps the dull side of the blade against her thigh. Cinematic horizontal composition, desk lamp casting razor-sharp shadows over sculpting tools and naked contours, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Akane Shinjou leans forward over her clay modeling bench after a modeling knife slips, neatly slicing the side seam of her oversized lavender sweater. The garment hangs wide open along her left flank, exposing creamy sideboob, a flushed pink areola, and bare pale hips to the cold room air. Turning her head back over her arched back, her crimson eyes burn with twisted, thrilling amusement as she taps the dull side of the blade against her thigh. Cinematic horizontal composition, desk lamp casting razor-sharp shadows over sculpting tools and naked contours, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1255,7 +1239,7 @@
         "pink_nipples",
         "spread_legs"
       ],
-      "promptProse": "Curled in the corner of her ransacked bedroom amidst shattered monster figures, Akane Shinjou lies completely naked on her mattress in the cold dawn. Her fingers pump desperately into her soaking core, her slender body shaking violently with each climax as the illusion of her omnipotence shatters into million pieces. Her pink hair is soaked with tears and sweat, crimson eyes wide with raw panic and heartbroken surrender, sobbing for true human warmth. Intimate vertical framing, pale gray dawn light cutting across broken plastic and trembling curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Curled in the corner of her ransacked bedroom amidst shattered monster figures, Akane Shinjou lies completely naked on her mattress in the cold dawn. Her fingers pump desperately into her soaking core, her slender body shaking violently with each climax as the illusion of her omnipotence shatters into million pieces. Her pink hair is soaked with tears and sweat, crimson eyes wide with raw panic and heartbroken surrender, sobbing for true human warmth. Intimate vertical framing, pale gray dawn light cutting across broken plastic and trembling curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_bed",
@@ -1282,9 +1266,7 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1309,7 +1291,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1338,11 +1320,9 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Curled in the corner of her ransacked bedroom amidst shattered monster figures, Akane Shinjou lies completely naked on her mattress in the cold dawn. Her fingers pump desperately into her soaking core, her slender body shaking violently with each climax as the illusion of her omnipotence shatters into million pieces. Her pink hair is soaked with tears and sweat, crimson eyes wide with raw panic and heartbroken surrender, sobbing for true human warmth. Intimate vertical framing, pale gray dawn light cutting across broken plastic and trembling curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Curled in the corner of her ransacked bedroom amidst shattered monster figures, Akane Shinjou lies completely naked on her mattress in the cold dawn. Her fingers pump desperately into her soaking core, her slender body shaking violently with each climax as the illusion of her omnipotence shatters into million pieces. Her pink hair is soaked with tears and sweat, crimson eyes wide with raw panic and heartbroken surrender, sobbing for true human warmth. Intimate vertical framing, pale gray dawn light cutting across broken plastic and trembling curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1400,9 +1380,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1427,7 +1405,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1455,9 +1433,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Rikka Takarada from SSSS.GRIDMAN straddles your lap in the muggy afternoon heat of the upstairs junk shop room, wearing only her oversized beige cardigan left unbuttoned. Her iconic, deliciously plump thighs clamp tightly around your waist as she lowers herself in lazy, effortless rhythm, her soft, natural breasts swaying with grace. Her short inky hair brushes against your cheek, silver ear piercings catching the fan's breeze as her cool blue eyes soften in tender, exasperated affection.",
       "outfitId": "nsfw_boudoir",
@@ -1515,9 +1491,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1542,7 +1516,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1567,9 +1541,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Rikka Takarada leans back against the glass sliding door of her rain-lashed apartment balcony, her white school shirt completely soaked and transparent against her lush, full-figured frame. Rainwater drips from her short dark bob down her voluptuous thighs as one hand slips casually beneath her drenched pleated skirt, rubbing herself with slow, humid friction. She bites the tip of her index finger, blue eyes clouded with moody, adult longing as thunder rumbles over Tsutsujidai.",
       "outfitId": "nsfw_boudoir",
@@ -1632,9 +1604,7 @@
         "black_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1659,7 +1629,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1689,9 +1659,7 @@
         "black_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Rikka Takarada bends forward over the wooden counter of the junk shop as her school pleated skirt snags securely in a rusted metal drawer runner. The stuck fabric hikes high up her lower back, fully showcasing her legendary, juicy thick thighs and pale bottom clad in simple cotton panties. She looks back over her shoulder with round, mortified blue eyes and burning red cheeks, biting her lower lip as she commands you to unjam the drawer immediately.",
       "outfitId": "nsfw_boudoir",
@@ -1752,9 +1720,7 @@
         "black_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1779,7 +1745,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1807,9 +1773,7 @@
         "black_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Lying sprawled across her messy bed with white earphones plugged into her ears, Rikka Takarada listens to your recorded voice notes on loop in the middle of the night. Her casual tee is bunched under her armpits, her soft, plump thighs spread wide as her hand glides deep between her dripping folds, fingers moving in slow, rhythmic sync with your voice. Her dark hair spreads across the sheets, blue eyes closed in heavy bliss as lazy whimpers slip past her swollen lips.",
       "outfitId": "nsfw_boudoir",

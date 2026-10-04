@@ -43,9 +43,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -117,9 +115,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -442,7 +438,7 @@
         "angel_wings",
         "open_clothes"
       ],
-      "promptProse": "Dorothy from Goddess of Victory: NIKKE straddles your lap amidst the shattered marble pillars of the surface paradise ruins at midnight, her pristine white-and-pink commander gown torn open down the front. Her soft, bountiful breasts bounce wild with each desperate, broken roll of her hips, her immaculate white angelic wings shivering behind her back. Her voluminous pink curls frame a face of god-like beauty cracked by grief, crimson eyes burning with unhinged yearning and tears as she begs to be loved above all else. Vertical low-angle cowgirl shot, pale moonlight through ruined cathedral roof bathing pale curves, detailed post-apocalyptic background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Dorothy from Goddess of Victory: NIKKE straddles your lap amidst the shattered marble pillars of the surface paradise ruins at midnight, her pristine white-and-pink commander gown torn open down the front. Her soft, bountiful breasts bounce wild with each desperate, broken roll of her hips, her immaculate white angelic wings shivering behind her back. Her voluminous pink curls frame a face of god-like beauty cracked by grief, crimson eyes burning with unhinged yearning and tears as she begs to be loved above all else. Vertical low-angle cowgirl shot, pale moonlight through ruined cathedral roof bathing pale curves, detailed post-apocalyptic background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -468,9 +464,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -495,7 +489,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -523,11 +517,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Dorothy from Goddess of Victory: NIKKE straddles your lap amidst the shattered marble pillars of the surface paradise ruins at midnight, her pristine white-and-pink commander gown torn open down the front. Her soft, bountiful breasts bounce wild with each desperate, broken roll of her hips, her immaculate white angelic wings shivering behind her back. Her voluminous pink curls frame a face of god-like beauty cracked by grief, crimson eyes burning with unhinged yearning and tears as she begs to be loved above all else. Vertical low-angle cowgirl shot, pale moonlight through ruined cathedral roof bathing pale curves, detailed post-apocalyptic background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Dorothy from Goddess of Victory: NIKKE straddles your lap amidst the shattered marble pillars of the surface paradise ruins at midnight, her pristine white-and-pink commander gown torn open down the front. Her soft, bountiful breasts bounce wild with each desperate, broken roll of her hips, her immaculate white angelic wings shivering behind her back. Her voluminous pink curls frame a face of god-like beauty cracked by grief, crimson eyes burning with unhinged yearning and tears as she begs to be loved above all else. Vertical low-angle cowgirl shot, pale moonlight through ruined cathedral roof bathing pale curves, detailed post-apocalyptic background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -560,7 +552,7 @@
         "roses",
         "steam"
       ],
-      "promptProse": "Dorothy bathes in a sunken white marble pool inside Eden, fresh white roses drifting across the surface. Completely bare, her soft angelic wings drag damply in the water as her exquisite breasts and pink nipples float in the scented mist. Her slender hand caresses her slick, dripping cleft underwater in rhythmic, lonely torment, her ruby eyes clouding over with a terrifying cocktail of grief for Pinne and burning obsession for you. Sensual vertical framing, glowing holographic paradise chandeliers illuminating wet porcelain curves and drifting petals, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Dorothy bathes in a sunken white marble pool inside Eden, fresh white roses drifting across the surface. Completely bare, her soft angelic wings drag damply in the water as her exquisite breasts and pink nipples float in the scented mist. Her slender hand caresses her slick, dripping cleft underwater in rhythmic, lonely torment, her ruby eyes clouding over with a terrifying cocktail of grief for Pinne and burning obsession for you. Sensual vertical framing, glowing holographic paradise chandeliers illuminating wet porcelain curves and drifting petals, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -585,9 +577,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -612,7 +602,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -639,11 +629,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Dorothy bathes in a sunken white marble pool inside Eden, fresh white roses drifting across the surface. Completely bare, her soft angelic wings drag damply in the water as her exquisite breasts and pink nipples float in the scented mist. Her slender hand caresses her slick, dripping cleft underwater in rhythmic, lonely torment, her ruby eyes clouding over with a terrifying cocktail of grief for Pinne and burning obsession for you. Sensual vertical framing, glowing holographic paradise chandeliers illuminating wet porcelain curves and drifting petals, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Dorothy bathes in a sunken white marble pool inside Eden, fresh white roses drifting across the surface. Completely bare, her soft angelic wings drag damply in the water as her exquisite breasts and pink nipples float in the scented mist. Her slender hand caresses her slick, dripping cleft underwater in rhythmic, lonely torment, her ruby eyes clouding over with a terrifying cocktail of grief for Pinne and burning obsession for you. Sensual vertical framing, glowing holographic paradise chandeliers illuminating wet porcelain curves and drifting petals, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -676,7 +664,7 @@
         "angel_wings",
         "mechanical_parts"
       ],
-      "promptProse": "Dorothy leans forward against a steel locker bench as the mechanical mounting brackets of her angelic wings jam into the boning of her white silk gown. The severe constriction yanks the dress wide open down her spine, thrusting her pale breasts into a staggering display of cleavage and pink nipples while exposing her round hips. Glancing back over her shoulder with tear-slick crimson eyes and a burning blush, she fiercely orders you to release her before her pride shatters completely. Cinematic horizontal framing, clinical Eden fluorescent lighting casting sharp highlights on steel wings and bare skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Dorothy leans forward against a steel locker bench as the mechanical mounting brackets of her angelic wings jam into the boning of her white silk gown. The severe constriction yanks the dress wide open down her spine, thrusting her pale breasts into a staggering display of cleavage and pink nipples while exposing her round hips. Glancing back over her shoulder with tear-slick crimson eyes and a burning blush, she fiercely orders you to release her before her pride shatters completely. Cinematic horizontal framing, clinical Eden fluorescent lighting casting sharp highlights on steel wings and bare skin, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -704,9 +692,7 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -731,7 +717,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -761,11 +747,9 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Dorothy leans forward against a steel locker bench as the mechanical mounting brackets of her angelic wings jam into the boning of her white silk gown. The severe constriction yanks the dress wide open down her spine, thrusting her pale breasts into a staggering display of cleavage and pink nipples while exposing her round hips. Glancing back over her shoulder with tear-slick crimson eyes and a burning blush, she fiercely orders you to release her before her pride shatters completely. Cinematic horizontal framing, clinical Eden fluorescent lighting casting sharp highlights on steel wings and bare skin, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Dorothy leans forward against a steel locker bench as the mechanical mounting brackets of her angelic wings jam into the boning of her white silk gown. The severe constriction yanks the dress wide open down her spine, thrusting her pale breasts into a staggering display of cleavage and pink nipples while exposing her round hips. Glancing back over her shoulder with tear-slick crimson eyes and a burning blush, she fiercely orders you to release her before her pride shatters completely. Cinematic horizontal framing, clinical Eden fluorescent lighting casting sharp highlights on steel wings and bare skin, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -798,7 +782,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Thrashing completely naked across a blood-red velvet bed in her ruined surface castle, Dorothy drowns in agonizing, ecstatic despair. Her long pale thighs part wide as her fingers drive relentlessly into her soaking, sensitive depths, her angelic wings shuddering in the dust as violent orgasmic spasms shake her frame. Her voluminous pink hair spreads wild across the pillows, heavy tears flooding her crimson eyes as heartbreaking, choked pleas for your love tear from her throat. Intimate vertical framing, moonlight filtering through cracked skylights onto glistening porcelain curves, detailed post-apocalyptic background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Thrashing completely naked across a blood-red velvet bed in her ruined surface castle, Dorothy drowns in agonizing, ecstatic despair. Her long pale thighs part wide as her fingers drive relentlessly into her soaking, sensitive depths, her angelic wings shuddering in the dust as violent orgasmic spasms shake her frame. Her voluminous pink hair spreads wild across the pillows, heavy tears flooding her crimson eyes as heartbreaking, choked pleas for your love tear from her throat. Intimate vertical framing, moonlight filtering through cracked skylights onto glistening porcelain curves, detailed post-apocalyptic background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -828,9 +812,7 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -855,7 +837,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -887,11 +869,9 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Thrashing completely naked across a blood-red velvet bed in her ruined surface castle, Dorothy drowns in agonizing, ecstatic despair. Her long pale thighs part wide as her fingers drive relentlessly into her soaking, sensitive depths, her angelic wings shuddering in the dust as violent orgasmic spasms shake her frame. Her voluminous pink hair spreads wild across the pillows, heavy tears flooding her crimson eyes as heartbreaking, choked pleas for your love tear from her throat. Intimate vertical framing, moonlight filtering through cracked skylights onto glistening porcelain curves, detailed post-apocalyptic background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Thrashing completely naked across a blood-red velvet bed in her ruined surface castle, Dorothy drowns in agonizing, ecstatic despair. Her long pale thighs part wide as her fingers drive relentlessly into her soaking, sensitive depths, her angelic wings shuddering in the dust as violent orgasmic spasms shake her frame. Her voluminous pink hair spreads wild across the pillows, heavy tears flooding her crimson eyes as heartbreaking, choked pleas for your love tear from her throat. Intimate vertical framing, moonlight filtering through cracked skylights onto glistening porcelain curves, detailed post-apocalyptic background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

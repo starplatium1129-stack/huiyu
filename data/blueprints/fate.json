@@ -35,8 +35,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -125,9 +124,7 @@
         "warm_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -217,7 +214,7 @@
         "war",
         "epic"
       ],
-      "promptProse": "Unleashing Excalibur in the final battlefield, Artoria raises her radiant golden blade with fierce royal determination. Blinding golden mana beams pierce the storm clouds, casting brilliant lens flares across the ruined landscape.",
+      "promptProse": "Unleashing Excalibur in the final battlefield, Artoria raises her radiant golden blade with fierce royal determination. Blinding golden mana beams pierce the storm clouds.",
       "promptTokens": [
         "ruined_city",
         "excalibur",
@@ -227,9 +224,7 @@
         "dynamic_pose",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -304,7 +299,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sceneTags": [
         "royal_bedchamber",
@@ -317,20 +312,17 @@
         "oil_painting_aesthetic",
         "intimate"
       ],
-      "promptProse": "Inside a secluded royal salon within Camelot, a crackling stone hearth casts dancing warm golden firelight across an intimate nocturnal sanctuary. Adult, age-twenty-plus Artoria Pendragon reclines with timeless noble grace upon an emerald-green velvet chaise longue. On a polished walnut table nearby rest the sheathed golden scabbard of Excalibur and folds of discarded white lace. The ambient chamber is bathed in deep atmospheric chiaroscuro, where rich velvet textures and stone arches frame an exquisitely quiet scene. Masterpiece composition, sharp focus, volumetric fireplace lighting, detailed background.",
+      "promptProse": "Inside a secluded royal salon within Camelot, a crackling stone hearth casts dancing warm golden firelight across an intimate nocturnal sanctuary. Adult, age-twenty-plus Artoria Pendragon reclines with timeless noble grace upon an emerald-green velvet chaise longue. On a polished walnut table nearby rest the sheathed golden scabbard of Excalibur and folds of discarded white lace. The ambient chamber is bathed in deep atmospheric chiaroscuro, where rich velvet textures and stone arches frame an exquisitely quiet scene. Masterpiece composition, sharp focus, fireplace lighting, detailed background.",
       "promptTokens": [
         "royal_bedroom",
         "castle",
         "stone_fireplace",
         "velvet_chaise_longue",
         "warm_fireplace_lighting",
-        "candlelight",
         "night",
         "atmospheric_depth",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "horizontal_shot"
       ],
       "negativeTokens": [
@@ -439,9 +431,7 @@
         "sitting_at_table",
         "window_light",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -518,8 +508,7 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -594,8 +583,7 @@
         "afternoon",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -651,12 +639,9 @@
         "stone_bathtub",
         "castle_bathroom",
         "steam",
-        "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -720,7 +705,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "bathing",
@@ -732,7 +717,7 @@
         "heavy_blush",
         "shy"
       ],
-      "nsfwProse": "Soaking in the steaming castle stone bath, Artoria shyly shields her bare breasts with both hands, blushing deeply in the flickering candlelight.",
+      "nsfwProse": "Soaking in the steaming castle stone bath, Artoria shyly shields her bare breasts with both hands, blushing deeply in the flickering light.",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -772,7 +757,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -833,7 +817,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "oversized_shirt",
@@ -875,7 +859,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "A single candle lights adult Artoria Pendragon seated alone before an opaque vanity mirror in her castle chamber. Nude except for a blue ribbon around one wrist, she raises both arms to release her braided bun, letting golden hair fall across bare shoulders and breasts. The glass reflects only warm haze, never a duplicate face; Excalibur's blue scabbard rests across the stool beneath her. She turns enough to show green eyes, flushed ears and the vulnerable nape in one compact rear three-quarter frame. No text or extra people.",
+      "promptProse": "A single candle lights adult Artoria Pendragon seated alone before an opaque vanity mirror in her castle chamber. Nude except for a blue ribbon around one wrist, she raises both arms to release her braided bun, letting golden hair fall across bare shoulders and breasts. The glass reflects only warm light, never a duplicate face; Excalibur's blue scabbard rests across the stool beneath her. She turns enough to show green eyes, flushed ears and the vulnerable nape in one compact rear three-quarter frame. No text or extra people.",
       "promptTokens": [
         "bedroom",
         "mirror",
@@ -883,9 +867,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -990,10 +972,9 @@
         "red_turtleneck",
         "brown_twintails",
         "ruby_light",
-        "candlelight",
         "medium_shot"
       ],
-      "promptProse": "Rin stands with both arms folded before the magic circle in the Tohsaka basement workshop. A ruby floats independently above the circle, casting a red pool of light over the old books and the hem of her black skirt. Her red turtleneck and ribbon-tied brown twintails remain clearly separate from the crimson glow. She lifts her chin with a self-assured half-smile, observing the stable formation rather than holding or firing the gem. Candlelight outlines the workbench behind her. Frame the crossed arms and floating ruby together, with no readable symbols or lettering.",
+      "promptProse": "Rin stands with both arms folded before the magic circle in the Tohsaka basement workshop. A ruby floats independently above the circle, casting a red pool of light over the old books and the hem of her black skirt. Her red turtleneck and ribbon-tied brown twintails remain clearly separate from the crimson glow. She lifts her chin with a self-assured half-smile, observing the stable formation rather than holding or firing the gem. Light outlines the workbench behind her. Frame the crossed arms and floating ruby together, with no readable symbols or lettering.",
       "promptTokens": [
         "basement_workshop",
         "magic_circle",
@@ -1004,12 +985,9 @@
         "red_turtleneck",
         "brown_twintails",
         "ruby_light",
-        "candlelight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1102,9 +1080,7 @@
         "sunset_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1194,9 +1170,7 @@
         "moonlight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1272,7 +1246,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "outfitId": "virgin_killer_sweater",
       "sceneTags": [
@@ -1307,8 +1281,6 @@
         "atmospheric_depth",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "vertical_shot"
       ],
       "negativeTokens": [
@@ -1425,9 +1397,7 @@
         "counter_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1523,9 +1493,7 @@
         "midday_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1621,9 +1589,7 @@
         "evening",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1709,9 +1675,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1819,9 +1783,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1878,7 +1840,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "pressed_against_fence",
@@ -1924,8 +1886,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1981,7 +1942,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "sitting_on_bed, bent_knees, black_thighhighs, barefoot, 5_toes, detailed_toes, blushing, moonlight",
       "nsfwTokens": [
         "red_turtleneck",
@@ -2047,13 +2008,10 @@
         "teary_eyes",
         "panting",
         "study_room",
-        "candlelight",
         "sensual",
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -2107,7 +2065,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "loose_pajamas",
@@ -2167,9 +2125,7 @@
         "candlelight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2270,9 +2226,7 @@
         "moonlight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2361,9 +2315,7 @@
         "moonlight",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2447,8 +2399,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2511,7 +2462,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "sitting_on_rug",
@@ -2566,9 +2517,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2664,8 +2613,6 @@
         "indoor_light",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "full_body"
       ],
       "negativeTokens": [
@@ -2762,9 +2709,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2851,9 +2796,7 @@
         "firelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2960,9 +2903,7 @@
         "cold_moonlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3021,7 +2962,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "kneeling_on_sill",
@@ -3065,9 +3006,7 @@
         "firelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3118,7 +3057,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "white_thighhighs",
@@ -3166,8 +3105,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3231,7 +3169,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "completely_nude",
@@ -3277,9 +3215,7 @@
         "firelight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3384,9 +3320,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3457,9 +3391,7 @@
         "sunset_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3553,9 +3485,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3643,7 +3573,7 @@
       "camera": "low angle throne perspective, bold confident posture, dramatic gothic lighting",
       "mood": "傲娇霸道与私密",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "throne, open_jacket, cleavage, white_hair, haughty_blush, bare_legs, gothic lighting",
       "sampleRating": "R18",
       "coverageTags": [
@@ -3673,9 +3603,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3766,7 +3694,7 @@
       "camera": "medium shot, slightly low angle",
       "mood": "傲娇冷冽",
       "recommendedSize": "1536x1152",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "coverageTags": [
@@ -3795,9 +3723,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3877,9 +3803,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3961,9 +3885,7 @@
         "overcast_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4033,9 +3955,7 @@
         "sunset_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4107,12 +4027,9 @@
         "japanese_room",
         "tatami",
         "futon",
-        "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4200,7 +4117,7 @@
       "camera": "medium_shot",
       "mood": "sensual",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18"
     },
@@ -4227,9 +4144,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4314,7 +4229,7 @@
       "camera": "intimate medium shot",
       "mood": "温柔幽深",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "coverageTags": [
@@ -4352,8 +4267,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -4449,7 +4362,7 @@
       "camera": "medium_shot",
       "mood": "intense",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18"
     },
@@ -4492,9 +4405,7 @@
         "torchlight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4595,8 +4506,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4698,9 +4608,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4801,8 +4709,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -4933,9 +4839,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -5038,9 +4942,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -5143,9 +5045,7 @@
         "sunset_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -5241,8 +5141,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -5324,7 +5223,7 @@
         "gentle_smile",
         "heavy_blush"
       ],
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "sampleRating": "R18"
@@ -5423,9 +5322,7 @@
         "cold_daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
@@ -5527,9 +5424,7 @@
         "sunset_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
@@ -5629,9 +5524,7 @@
         "after_rain_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "aesc_hooded_travel",
@@ -5731,9 +5624,7 @@
         "daylight_reflections",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "aesc_savior",
@@ -5833,9 +5724,7 @@
         "beach_daylight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "water_princess",
@@ -5937,9 +5826,7 @@
         "reflected_snowlight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
@@ -6042,13 +5929,11 @@
         "sunbeams",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "completely_nude",
@@ -6163,12 +6048,11 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "aesc_rain_witch",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "robe_drop",
@@ -6278,13 +6162,11 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "outfitId": "water_princess",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "swimsuit_unfastened",
@@ -6391,13 +6273,11 @@
         "rim_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "backless_dress",
@@ -6517,9 +6397,7 @@
         "ceiling_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "chaldea_casual",
@@ -6638,9 +6516,7 @@
         "holographic_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "combat_armor",
@@ -6750,9 +6626,7 @@
         "beach_daylight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "summer_swimsuit",
@@ -6883,8 +6757,7 @@
         "heavy_blush",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "dangerous_beast",
@@ -6904,7 +6777,7 @@
         "heavy_blush"
       ],
       "nsfwProse": "",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir"
     },
     {
@@ -7018,9 +6891,7 @@
         "cool_hangar_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "ortinax_armor",
@@ -7133,9 +7004,7 @@
         "midday_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "chaldea_cafeteria_jacket_off",
@@ -7253,8 +7122,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -7262,7 +7129,7 @@
       ],
       "recommendedSize": "1536x1152",
       "outfitId": "chaldea_casual",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "off-shoulder_sweater",
@@ -7391,13 +7258,11 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "summer_swimsuit",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "naked_towel",
@@ -7513,13 +7378,11 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "outfitId": "chaldea_casual",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "leaning_forward",
@@ -7636,13 +7499,11 @@
         "bright_room",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "combat_armor",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "unzipped_suit",
@@ -7694,9 +7555,7 @@
         "cowboy_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7752,8 +7611,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7809,9 +7667,7 @@
         "streetlamp_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7869,9 +7725,7 @@
         "fragile",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7930,9 +7784,7 @@
         "cozy",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7991,9 +7843,7 @@
         "looking_back",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8052,8 +7902,7 @@
         "full_body",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8119,8 +7968,6 @@
         "high_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -8210,9 +8057,7 @@
         "sensual_solo",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8283,8 +8128,6 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "on_lap",
         "pussy_juice"
       ],
@@ -8353,9 +8196,7 @@
         "purple_eyes",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8415,9 +8256,7 @@
         "golden_eyes",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8470,9 +8309,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8526,9 +8363,7 @@
         "neon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8580,9 +8415,7 @@
         "window_light",
         "medium_closeup",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8638,9 +8471,7 @@
         "warm_wall_lamp",
         "side_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8699,9 +8530,7 @@
         "vending_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8753,9 +8582,7 @@
         "daylight",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8820,8 +8647,6 @@
         "high_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -8908,9 +8733,7 @@
         "sensual_solo",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8982,8 +8805,6 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "on_lap",
         "pussy_juice"
       ],
@@ -9054,9 +8875,7 @@
         "sensual_solo",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9116,9 +8935,7 @@
         "holy_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9178,8 +8995,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9242,9 +9058,7 @@
         "afternoon_light",
         "medium_full_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9302,9 +9116,7 @@
         "morning_light",
         "three_quarter_rear_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9363,9 +9175,7 @@
         "midday_sunlight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9425,7 +9235,6 @@
         "medium_closeup",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -9485,9 +9294,7 @@
         "stained_glass_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9566,9 +9373,7 @@
         "blonde_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9646,9 +9451,7 @@
         "sweat",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9720,9 +9523,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9768,7 +9569,7 @@
         "masturbation",
         "moonlight"
       ],
-      "promptProse": "Reclining against the rim of a moonlit holy spring behind the chapel, Jeanne d'Arc wears her angelic white lace lingerie soaked to translucent sheerness, clinging to the full pale curves of her chest. Water beads roll down her collarbone as one trembling hand glides beneath the surface between her parted thighs, wet blonde hair drifting across the water like melted moonlight. Tears mingle with steam on her flushed cheeks as she finally admits the yearning to be touched was never a sin. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric moon haze, detailed stone spring background, depth of field.",
+      "promptProse": "Reclining against the rim of a moonlit holy spring behind the chapel, Jeanne d'Arc wears her angelic white lace lingerie soaked to translucent sheerness, clinging to the full pale curves of her chest. Water beads roll down her collarbone as one trembling hand glides beneath the surface between her parted thighs, wet blonde hair drifting across the water like melted moonlight. Tears mingle with steam on her flushed cheeks as she finally admits the yearning to be touched was never a sin. Sensual solo composition, wet translucent fabric, cinematic lighting, moon haze, detailed stone spring background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -9792,9 +9593,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9855,9 +9654,7 @@
         "full_body",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9918,9 +9715,7 @@
         "dusk_firelight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -9979,9 +9774,7 @@
         "screen_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10041,9 +9834,7 @@
         "morning_screen_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10103,9 +9894,7 @@
         "summer_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10165,9 +9954,7 @@
         "moonlight",
         "wide_two_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10228,9 +10015,7 @@
         "afternoon_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10305,9 +10090,7 @@
         "red_eyes",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10352,7 +10135,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "outfitId": "nsfw_nude",
       "sceneTags": [
@@ -10389,8 +10172,6 @@
         "atmospheric_depth",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "horizontal_shot"
       ],
       "negativeTokens": [
@@ -10509,8 +10290,6 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "masturbation",
         "touching_own_body",
         "hand_between_legs"
@@ -10565,7 +10344,7 @@
         "masturbation",
         "steam"
       ],
-      "promptProse": "Reclining against the rock rim of a violet-misted open-air hot spring in the Land of Shadows, Scathach wears her purple bodysuit soaked to translucent sheerness with a torn seam curling at her chest, the wet fabric clinging to every saturated curve. Her long purple hair drifts across the steaming water as one hand glides beneath the surface between her thighs, fingertips stroking her most sensitive core while her crimson eyes fall half-lidded, murmuring that even immortality wearies on nights like this. Ambient steam and lantern glow in a sensual solo composition, cinematic lighting, volumetric mist, detailed onsen background, depth of field.",
+      "promptProse": "Reclining against the rock rim of a violet-misted open-air hot spring in the Land of Shadows, Scathach wears her purple bodysuit soaked to translucent sheerness with a torn seam curling at her chest, the wet fabric clinging to every saturated curve. Her long purple hair drifts across the steaming water as one hand glides beneath the surface between her thighs, fingertips stroking her most sensitive core while her crimson eyes fall half-lidded, murmuring that even immortality wearies on nights like this. Ambient steam and lantern glow in a sensual solo composition, cinematic lighting, mist, detailed onsen background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -10590,9 +10369,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10653,9 +10430,7 @@
         "high_sunlight",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10714,9 +10489,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10775,9 +10548,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10821,7 +10592,7 @@
         "summer",
         "day"
       ],
-      "promptProse": "Ishtar leaps from the summer pool in her daring mismatched bikini, water bursting into golden spray as she flops onto the deck chair beside you, wet black hair plastered to one cheek. She demands your judgment on the deliberately asymmetric design — absolutely not a dressing mistake, she insists — invoking the latest Mesopotamian fashion with a smirk that dares you to disagree. Noon glare and pool glitter over the scene. Medium shot, cinematic lighting, volumetric summer haze, detailed pool background, depth of field.",
+      "promptProse": "Ishtar leaps from the summer pool in her daring mismatched bikini, water bursting into golden spray as she flops onto the deck chair beside you, wet black hair plastered to one cheek. She demands your judgment on the deliberately asymmetric design — absolutely not a dressing mistake, she insists — invoking the latest Mesopotamian fashion with a smirk that dares you to disagree. Noon glare and pool glitter over the scene. Medium shot, cinematic lighting, detailed pool background.",
       "promptTokens": [
         "ishtar (fate)",
         "1girl",
@@ -10843,9 +10614,7 @@
         "pool",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10891,7 +10660,7 @@
         "blue_snow_light",
         "medium_shot"
       ],
-      "promptProse": "On the snowy underworld plain, Ishtar offers a neatly wrapped Christmas box with both gloved hands while looking bashfully to the side. The larger sack of presents stands beside her boots, leaving her hands free for the gift. A warm white coat, red scarf and long trousers replace her summer street clothes; the star-shaped hairpin remains above her dark hair. Blue snowlight catches the wrapping while a nearby lantern supplies a small warm glow. Frame the complete handover pose and grounded gift sack, with no readable labels or lettering.",
+      "promptProse": "On the snowy underworld plain, Ishtar offers a neatly wrapped Christmas box with both gloved hands while looking bashfully to the side. The larger sack of presents stands beside her boots, leaving her hands free for the gift. A warm white coat, red scarf and long trousers replace her summer street clothes; The star-shaped hairpin remains above her dark hair. Blue snowlight catches the wrapping. Frame the complete handover pose and grounded gift sack, with no readable labels or lettering.",
       "promptTokens": [
         "underworld_snowfield",
         "christmas_gift",
@@ -10904,9 +10673,7 @@
         "blue_snow_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10965,9 +10732,7 @@
         "warm_reflected_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11025,9 +10790,7 @@
         "golden_tiara",
         "wide_two_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11072,7 +10835,7 @@
         "tears",
         "jewelry"
       ],
-      "promptProse": "On the temple's sacred marble throne steps with translucent bridal-thin veils scattered around her, Ishtar arches her slender back in an overwhelming rush of divine ecstasy. Her fingers clutch the carved armrests while her golden hoop earrings catch the warm candlelight, ruby red eyes glistening with rare, vulnerable tears no mortal has ever witnessed. Her small divine chest rises and falls rapidly as one trembling hand touches her inner thigh, protesting between ragged gasps that mortal audacity on the goddess's throne has exceeded all bounds. Intimate vertical composition, cinematic lighting, golden volumetric glow, detailed temple background, depth of field.",
+      "promptProse": "On the temple's sacred marble throne steps with translucent bridal-thin veils scattered around her, Ishtar arches her slender back in an overwhelming rush of divine ecstasy. Her fingers clutch the carved armrests while her golden hoop earrings catch the warm candlelight, ruby red eyes glistening with rare, vulnerable tears no mortal has ever witnessed. Her small divine chest rises and falls rapidly as one trembling hand touches her inner thigh, protesting between ragged gasps that mortal audacity on the goddess's throne has exceeded all bounds. Intimate vertical composition, cinematic lighting, golden glow, detailed temple background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -11098,9 +10861,7 @@
         "hoop_earrings",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11146,7 +10907,7 @@
         "night",
         "romance"
       ],
-      "promptProse": "A night with a goddess is a night that enters mythology. Ishtar straddles your waist in her gold-and-black lingerie, fine chains chiming with every roll of her hips while the tiara sits abandoned on the nightstand. She offers a fraction more tenderness than usual tonight — because it is you — her red eyes glazing as bouncing breasts and heavy blush compete with her regal composure. Vertical low-angle cowgirl composition, cinematic lighting, volumetric city glow, depth of field.",
+      "promptProse": "A night with a goddess is a night that enters mythology. Ishtar straddles your waist in her gold-and-black lingerie, fine chains chiming with every roll of her hips while the tiara sits abandoned on the nightstand. She offers a fraction more tenderness than usual tonight — because it is you — her red eyes glazing as bouncing breasts and heavy blush compete with her regal composure. Vertical low-angle cowgirl composition, cinematic lighting, volumetric city glow.",
       "nsfwProse": "",
       "promptTokens": [
         "straddling",
@@ -11169,8 +10930,7 @@
         "low_angle",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11217,7 +10977,7 @@
         "exposed_pussy",
         "biting_lip"
       ],
-      "promptProse": "Ishtar sweeps the ceremonial offerings aside and leans forward over the temple table at dusk, her short black skirt lifted as the delicate gold chains around her hips chime with every breath. Looking back over her bare shoulder with a defiant, blushing glare in her ruby eyes, she bites her full lower lip while trembling fingers steady her arched posture. Warm amber twilight spills across the offering altar, highlighting the graceful curve of her back, taut waist, and flushed thighs in an arresting horizontal composition, detailed background, depth of field.",
+      "promptProse": "Ishtar sweeps the ceremonial offerings aside and leans forward over the temple table at dusk, her short black skirt lifted as the delicate gold chains around her hips chime with every breath. Looking back over her bare shoulder with a defiant, blushing glare in her ruby eyes, she bites her full lower lip while trembling fingers steady her arched posture. Warm amber twilight spills across the offering altar, highlighting the graceful curve of her back, taut waist, and flushed thighs in an arresting horizontal composition, detailed background.",
       "nsfwProse": "",
       "promptTokens": [
         "bent_over",
@@ -11239,9 +10999,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11286,7 +11044,7 @@
         "masturbation",
         "steam"
       ],
-      "promptProse": "During the goddess's private bath, Ishtar reclines against the rim of the sacred spring in a gold-veiled gown soaked to translucence, the wet fabric outlining curves divine and dangerous alike. One hand glides beneath the water over herself while her red eyes glance sidelong at your hiding spot, naming the viewing fee for a goddess's bath and offering to collect the balance by other means. Sensual solo composition, wet translucent veil, cinematic lighting, volumetric steam, detailed spring background, depth of field.",
+      "promptProse": "During the goddess's private bath, Ishtar reclines against the rim of the sacred spring in a gold-veiled gown soaked to translucence, the wet fabric outlining curves divine and dangerous alike. One hand glides beneath the water over herself while her red eyes glance sidelong at your hiding spot, naming the viewing fee for a goddess's bath and offering to collect the balance by other means. Sensual solo composition, wet translucent veil, cinematic lighting, steam, detailed spring background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -11310,9 +11068,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11373,9 +11129,7 @@
         "soul_fire_light",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11434,9 +11188,7 @@
         "blue_snow_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11495,9 +11247,7 @@
         "sunrise_light",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11556,9 +11306,7 @@
         "dark_cavern",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11616,9 +11364,7 @@
         "soft_magic_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11674,9 +11420,7 @@
         "blue_lantern_light",
         "wide_two_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11736,9 +11480,7 @@
         "soul_fire_glow",
         "full_body",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11783,7 +11525,7 @@
         "glowing",
         "tears"
       ],
-      "promptProse": "The quiet land of the dead knows profound warmth for the very first time. Lying back upon a grand bed draped in gossamer pale-blue gauze, Ereshkigal lets her magnificent golden hair spill out like liquid moonlight across the pillows. Her delicate chest rises and falls with trembling, sacred breaths, pink nipples taut beneath the ghostly soul-glow as her slender fingers drift between her parted pale thighs. Tears of long-buried longing glisten in her crimson eyes, whispering through parted lips that this warmth is far heavier and more precious than the entire underworld. Sensual vertical composition, cinematic lighting, ethereal blue volumetric glow, detailed underworld background, depth of field.",
+      "promptProse": "The quiet land of the dead knows profound warmth for the very first time. Lying back upon a grand bed draped in gossamer pale-blue gauze, Ereshkigal lets her magnificent golden hair spill out like liquid moonlight across the pillows. Her delicate chest rises and falls with trembling, sacred breaths, pink nipples taut beneath the ghostly soul-glow as her slender fingers drift between her parted pale thighs. Tears of long-buried longing glisten in her crimson eyes, whispering through parted lips that this warmth is far heavier and more precious than the entire underworld. Sensual vertical composition, cinematic lighting, ethereal blue glow, detailed underworld background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -11811,9 +11553,7 @@
         "glowing",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11859,7 +11599,7 @@
         "exposed_pussy",
         "biting_lip"
       ],
-      "promptProse": "Caught in a rare unshielded moment on the dark stone steps of her underworld throne, Ereshkigal leans forward with both hands bracing against the cold marble, her staff set aside and her black dress gathered at her hips. Looking back over her slender arched back with a tearful, crimson-eyed gaze, she bites her lip in flushed embarrassment while soul-fire light illuminates the lovely curve of her waist and thighs. Ghostly blue luminescence dances across her trembling form in a breathtaking horizontal composition, detailed background, depth of field.",
+      "promptProse": "Caught in a rare unshielded moment on the dark stone steps of her underworld throne, Ereshkigal leans forward with both hands bracing against the cold marble, her staff set aside and her black dress gathered at her hips. Looking back over her slender arched back with a tearful, crimson-eyed gaze, she bites her lip in flushed embarrassment while soul-fire light illuminates the lovely curve of her waist and thighs. Ghostly blue luminescence dances across her trembling form in a breathtaking horizontal composition, detailed background.",
       "nsfwProse": "",
       "promptTokens": [
         "bent_over",
@@ -11881,9 +11621,7 @@
         "glowing",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11928,7 +11666,7 @@
         "glowing",
         "night"
       ],
-      "promptProse": "Even the queen of the dead practices being proactive. Straddling your waist with the ribbons of her blue-black lace half undone and blonde hair curtaining your faces, Ereshkigal moves with earnest, unpracticed rolls while studying every micro-change of your expression like a judgment, red eyes wet as she admits that being watched makes her composure crack. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, volumetric soul glow, depth of field.",
+      "promptProse": "Even the queen of the dead practices being proactive. Straddling your waist with the ribbons of her blue-black lace half undone and blonde hair curtaining your faces, Ereshkigal moves with earnest, unpracticed rolls while studying every micro-change of your expression like a judgment, red eyes wet as she admits that being watched makes her composure crack. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, soul glow.",
       "nsfwProse": "",
       "promptTokens": [
         "straddling",
@@ -11950,9 +11688,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -11998,7 +11734,7 @@
         "masturbation",
         "steam"
       ],
-      "promptProse": "The queen who tends all the underworld's dead tends herself for once. Reclining at the rim of the soul spring in blue-black lace soaked to translucence, Ereshkigal lets her blonde hair drift across the water while trembling fingers trace her most private curves, red eyes unfocused in the ghostly glow as she adds a page to her official diary about checking the compatibility of soul and body — a page forbidden from archiving. Sensual solo composition, wet translucent lace, cinematic lighting, volumetric steam, detailed spring background, depth of field.",
+      "promptProse": "The queen who tends all the underworld's dead tends herself for once. Reclining at the rim of the soul spring in blue-black lace soaked to translucence, Ereshkigal lets her blonde hair drift across the water while trembling fingers trace her most private curves, red eyes unfocused in the ghostly glow as she adds a page to her official diary about checking the compatibility of soul and body — a page forbidden from archiving. Sensual solo composition, wet translucent lace, cinematic lighting, steam, detailed spring background.",
       "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
@@ -12022,9 +11758,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -12096,8 +11830,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -12159,9 +11892,7 @@
         "looking_back",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -12291,9 +12022,7 @@
         "morning",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -12705,9 +12434,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -13390,9 +13117,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -13601,9 +13326,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -13862,7 +13585,7 @@
         "highleg_bodysuit",
         "deep_v"
       ],
-      "promptProse": "Medusa (Rider) from Fate/stay night straddles your lap atop the dark stone throne of the Blood Fort Andromeda. Her iconic black latex bodysuit is unzipped to her navel, freeing heavy, voluptuous breasts with erect dark nipples that bounce with her slow, crushing hip descent. Her floor-length violet hair cascades in massive waves over both of your bodies, her blindfold removed to reveal glowing mystic eyes of petrification shining with dangerous, predatory lust. Vertical low-angle cowgirl shot, eerie crimson temple torches reflecting off gleaming black latex and pale skin, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Medusa (Rider) from Fate/stay night straddles your lap atop the dark stone throne of the Blood Fort Andromeda. Her iconic black latex bodysuit is unzipped to her navel, freeing heavy, voluptuous breasts with erect dark nipples that bounce with her slow, crushing hip descent. Her floor-length violet hair cascades in massive waves over both of your bodies, her blindfold removed to reveal glowing mystic eyes of petrification shining with dangerous, predatory lust. Vertical low-angle cowgirl shot, eerie crimson temple torches reflecting off gleaming black latex and pale skin, detailed fantasy background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -13890,9 +13613,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -13917,7 +13638,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -13947,11 +13668,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medusa (Rider) from Fate/stay night straddles your lap atop the dark stone throne of the Blood Fort Andromeda. Her iconic black latex bodysuit is unzipped to her navel, freeing heavy, voluptuous breasts with erect dark nipples that bounce with her slow, crushing hip descent. Her floor-length violet hair cascades in massive waves over both of your bodies, her blindfold removed to reveal glowing mystic eyes of petrification shining with dangerous, predatory lust. Vertical low-angle cowgirl shot, eerie crimson temple torches reflecting off gleaming black latex and pale skin, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Medusa (Rider) from Fate/stay night straddles your lap atop the dark stone throne of the Blood Fort Andromeda. Her iconic black latex bodysuit is unzipped to her navel, freeing heavy, voluptuous breasts with erect dark nipples that bounce with her slow, crushing hip descent. Her floor-length violet hair cascades in massive waves over both of your bodies, her blindfold removed to reveal glowing mystic eyes of petrification shining with dangerous, predatory lust. Vertical low-angle cowgirl shot, eerie crimson temple torches reflecting off gleaming black latex and pale skin, detailed fantasy background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -13984,7 +13703,7 @@
         "marble",
         "steam"
       ],
-      "promptProse": "Medusa lounges in the deep marble subterranean pool beneath an ancient Greek temple, her endless violet tresses spreading across the water like serpents. Her statuesque, muscular yet voluptuous body is completely bare, water droplets beading along her defined collarbones and heavy breasts. Underwater, her long fingers rhythmically stroke her swollen pink core, her head thrown back against the carved stone as breathless moans echo off the marble pillars. Sensual vertical composition, torches reflecting off rippling turquoise water and pale muscular curves, detailed ancient temple background, depth of field, solo 1girl, no text.",
+      "promptProse": "Medusa lounges in the deep marble subterranean pool beneath an ancient Greek temple, her endless violet tresses spreading across the water like serpents. Her statuesque, muscular yet voluptuous body is completely bare, water droplets beading along her defined collarbones and heavy breasts. Underwater, her long fingers rhythmically stroke her swollen pink core, her head thrown back against the carved stone as breathless moans echo off the marble pillars. Sensual vertical composition, torches reflecting off rippling turquoise water and pale muscular curves, detailed ancient temple background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -14008,9 +13727,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14035,7 +13752,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14061,11 +13778,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medusa lounges in the deep marble subterranean pool beneath an ancient Greek temple, her endless violet tresses spreading across the water like serpents. Her statuesque, muscular yet voluptuous body is completely bare, water droplets beading along her defined collarbones and heavy breasts. Underwater, her long fingers rhythmically stroke her swollen pink core, her head thrown back against the carved stone as breathless moans echo off the marble pillars. Sensual vertical composition, torches reflecting off rippling turquoise water and pale muscular curves, detailed ancient temple background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Medusa lounges in the deep marble subterranean pool beneath an ancient Greek temple, her endless violet tresses spreading across the water like serpents. Her statuesque, muscular yet voluptuous body is completely bare, water droplets beading along her defined collarbones and heavy breasts. Underwater, her long fingers rhythmically stroke her swollen pink core, her head thrown back against the carved stone as breathless moans echo off the marble pillars. Sensual vertical composition, torches reflecting off rippling turquoise water and pale muscular curves, detailed ancient temple background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14098,7 +13813,7 @@
         "entangled",
         "stuck_zipper"
       ],
-      "promptProse": "Medusa leans forward over a low bookshelf in the Emiya household library as the steel chain of her spiked dagger snags fatally into the zipper of her skintight combat suit. The tension hoists the black fabric high into her rear crevice and squeezes her immense breasts into an overflowing display of cleavage and dusky areolas. Glancing back over her shoulder with her blindfold slipping, a single glowing mystic eye wide with mortified vulnerability, she pleads for rescue. Cinematic horizontal composition, warm tatami lamplight glinting off chrome chains and glossy fabric, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Medusa leans forward over a low bookshelf in the Emiya household library as the steel chain of her spiked dagger snags fatally into the zipper of her skintight combat suit. The tension hoists the black fabric high into her rear crevice and squeezes her immense breasts into an overflowing display of cleavage and dusky areolas. Glancing back over her shoulder with her blindfold slipping, a single glowing mystic eye wide with mortified vulnerability, she pleads for rescue. Cinematic horizontal composition, warm tatami lamplight glinting off chrome chains and glossy fabric, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -14127,9 +13842,7 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14154,7 +13867,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14185,11 +13898,9 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medusa leans forward over a low bookshelf in the Emiya household library as the steel chain of her spiked dagger snags fatally into the zipper of her skintight combat suit. The tension hoists the black fabric high into her rear crevice and squeezes her immense breasts into an overflowing display of cleavage and dusky areolas. Glancing back over her shoulder with her blindfold slipping, a single glowing mystic eye wide with mortified vulnerability, she pleads for rescue. Cinematic horizontal composition, warm tatami lamplight glinting off chrome chains and glossy fabric, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Medusa leans forward over a low bookshelf in the Emiya household library as the steel chain of her spiked dagger snags fatally into the zipper of her skintight combat suit. The tension hoists the black fabric high into her rear crevice and squeezes her immense breasts into an overflowing display of cleavage and dusky areolas. Glancing back over her shoulder with her blindfold slipping, a single glowing mystic eye wide with mortified vulnerability, she pleads for rescue. Cinematic horizontal composition, warm tatami lamplight glinting off chrome chains and glossy fabric, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14222,7 +13933,7 @@
         "bare_breasts",
         "large_breasts"
       ],
-      "promptProse": "Stretched out completely bare across the tatami futon in the quiet midnight, Medusa lets her endless purple hair engulf the floor like an ocean. Her long, muscular legs spread wide as two fingers plunge urgently into her dripping, swollen core, her back arching in powerful, serpentine waves of ecstasy. Tears shimmer in her unmasked mystic eyes as her lips part in ragged, sultry hisses, completely broken by the addictive pleasure of her Master's phantom touch. Intimate vertical framing, moonlight filtering through shoji screens onto glistening tall curves, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Stretched out completely bare across the tatami futon in the quiet midnight, Medusa lets her endless purple hair engulf the floor like an ocean. Her long, muscular legs spread wide as two fingers plunge urgently into her dripping, swollen core, her back arching in powerful, serpentine waves of ecstasy. Tears shimmer in her unmasked mystic eyes as her lips part in ragged, sultry hisses, completely broken by the addictive pleasure of her Master's phantom touch. Intimate vertical framing, moonlight filtering through shoji screens onto glistening tall curves, detailed Japanese room background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -14251,9 +13962,7 @@
         "tall_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14278,7 +13987,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14309,11 +14018,9 @@
         "tall_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Stretched out completely bare across the tatami futon in the quiet midnight, Medusa lets her endless purple hair engulf the floor like an ocean. Her long, muscular legs spread wide as two fingers plunge urgently into her dripping, swollen core, her back arching in powerful, serpentine waves of ecstasy. Tears shimmer in her unmasked mystic eyes as her lips part in ragged, sultry hisses, completely broken by the addictive pleasure of her Master's phantom touch. Intimate vertical framing, moonlight filtering through shoji screens onto glistening tall curves, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Stretched out completely bare across the tatami futon in the quiet midnight, Medusa lets her endless purple hair engulf the floor like an ocean. Her long, muscular legs spread wide as two fingers plunge urgently into her dripping, swollen core, her back arching in powerful, serpentine waves of ecstasy. Tears shimmer in her unmasked mystic eyes as her lips part in ragged, sultry hisses, completely broken by the addictive pleasure of her Master's phantom touch. Intimate vertical framing, moonlight filtering through shoji screens onto glistening tall curves, detailed Japanese room background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14345,7 +14052,7 @@
         "red_hair",
         "short_hair"
       ],
-      "promptProse": "Chloe von Einzbern (Kuro) from Fate/kaleid liner straddles your lap on a grand antique bed, wearing her skimpy red-and-black magical Archer mantle pushed aside to bare her sun-kissed chest. Her dark, smooth thighs clamp eagerly against your hips as she rolls with lewd, practiced agility, her golden-amber eyes sparkling with mischievous vampiric greed. She leans forward to steal your breath with a wet kiss, her petite breasts pressing flush against yours as she drains your magical energy. Vertical low-angle cowgirl shot, crimson magical circle glowing beneath the bed, detailed castle background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Chloe von Einzbern (Kuro) from Fate/kaleid liner straddles your lap on a grand antique bed, wearing her skimpy red-and-black magical Archer mantle pushed aside to bare her sun-kissed chest. Her dark, smooth thighs clamp eagerly against your hips as she rolls with lewd, practiced agility, her golden-amber eyes sparkling with mischievous vampiric greed. She leans forward to steal your breath with a wet kiss, her petite breasts pressing flush against yours as she drains your magical energy. Vertical low-angle cowgirl shot, crimson magical circle glowing beneath the bed, detailed castle background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -14370,9 +14077,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14397,7 +14102,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14424,11 +14129,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Chloe von Einzbern (Kuro) from Fate/kaleid liner straddles your lap on a grand antique bed, wearing her skimpy red-and-black magical Archer mantle pushed aside to bare her sun-kissed chest. Her dark, smooth thighs clamp eagerly against your hips as she rolls with lewd, practiced agility, her golden-amber eyes sparkling with mischievous vampiric greed. She leans forward to steal your breath with a wet kiss, her petite breasts pressing flush against yours as she drains your magical energy. Vertical low-angle cowgirl shot, crimson magical circle glowing beneath the bed, detailed castle background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Chloe von Einzbern (Kuro) from Fate/kaleid liner straddles your lap on a grand antique bed, wearing her skimpy red-and-black magical Archer mantle pushed aside to bare her sun-kissed chest. Her dark, smooth thighs clamp eagerly against your hips as she rolls with lewd, practiced agility, her golden-amber eyes sparkling with mischievous vampiric greed. She leans forward to steal your breath with a wet kiss, her petite breasts pressing flush against yours as she drains your magical energy. Vertical low-angle cowgirl shot, crimson magical circle glowing beneath the bed, detailed castle background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14461,7 +14164,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Chloe von Einzbern lounges on the sunken marble steps of the Einzbern castle bath, a drenched hand towel clinging sheer across her sun-kissed torso and dark pink nipples. Her hand slides beneath the steaming, rose-scented water between her spread thighs, rhythmically stoking her aching heat while her tongue playfully traces her upper lip. Her amber eyes glow like hot coals through the steam, dripping with insatiable flirtatious hunger. Sensual vertical composition, golden candelabra reflecting off rippling bathwater onto bronze skin, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Chloe von Einzbern lounges on the sunken marble steps of the Einzbern castle bath, a drenched hand towel clinging sheer across her sun-kissed torso and dark pink nipples. Her hand slides beneath the steaming, rose-scented water between her spread thighs, rhythmically stoking her aching heat while her tongue playfully traces her upper lip. Her amber eyes glow like hot coals through the steam, dripping with insatiable flirtatious hunger. Sensual vertical composition, golden candelabra reflecting off rippling bathwater onto bronze skin, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -14487,9 +14190,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14514,7 +14215,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14542,11 +14243,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Chloe von Einzbern lounges on the sunken marble steps of the Einzbern castle bath, a drenched hand towel clinging sheer across her sun-kissed torso and dark pink nipples. Her hand slides beneath the steaming, rose-scented water between her spread thighs, rhythmically stoking her aching heat while her tongue playfully traces her upper lip. Her amber eyes glow like hot coals through the steam, dripping with insatiable flirtatious hunger. Sensual vertical composition, golden candelabra reflecting off rippling bathwater onto bronze skin, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Chloe von Einzbern lounges on the sunken marble steps of the Einzbern castle bath, a drenched hand towel clinging sheer across her sun-kissed torso and dark pink nipples. Her hand slides beneath the steaming, rose-scented water between her spread thighs, rhythmically stoking her aching heat while her tongue playfully traces her upper lip. Her amber eyes glow like hot coals through the steam, dripping with insatiable flirtatious hunger. Sensual vertical composition, golden candelabra reflecting off rippling bathwater onto bronze skin, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14579,7 +14278,7 @@
         "clothes_pull",
         "dark_skin"
       ],
-      "promptProse": "Chloe von Einzbern leans forward over a gym locker bench as the front seam of an ill-fitting navy school swimsuit pops under the strain of her curves. The torn fabric gapes completely open, popping her perky tanned breasts and bright pink nipples into the open air while the tight bottom cuts high into her smooth cheeks. Glancing back with an impish wink and a rosy tongue poking out, she laughs wickedly at your reddening face. Cinematic horizontal composition, fluorescent lights gleaming over bronzed shoulders and damp tiles, detailed locker room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Chloe von Einzbern leans forward over a gym locker bench as the front seam of an ill-fitting navy school swimsuit pops under the strain of her curves. The torn fabric gapes completely open, popping her perky tanned breasts and bright pink nipples into the open air while the tight bottom cuts high into her smooth cheeks. Glancing back with an impish wink and a rosy tongue poking out, she laughs wickedly at your reddening face. Cinematic horizontal composition, fluorescent lights gleaming over bronzed shoulders and damp tiles, detailed locker room background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -14606,9 +14305,7 @@
         "smirk",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14633,7 +14330,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14662,11 +14359,9 @@
         "smirk",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Chloe von Einzbern leans forward over a gym locker bench as the front seam of an ill-fitting navy school swimsuit pops under the strain of her curves. The torn fabric gapes completely open, popping her perky tanned breasts and bright pink nipples into the open air while the tight bottom cuts high into her smooth cheeks. Glancing back with an impish wink and a rosy tongue poking out, she laughs wickedly at your reddening face. Cinematic horizontal composition, fluorescent lights gleaming over bronzed shoulders and damp tiles, detailed locker room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Chloe von Einzbern leans forward over a gym locker bench as the front seam of an ill-fitting navy school swimsuit pops under the strain of her curves. The torn fabric gapes completely open, popping her perky tanned breasts and bright pink nipples into the open air while the tight bottom cuts high into her smooth cheeks. Glancing back with an impish wink and a rosy tongue poking out, she laughs wickedly at your reddening face. Cinematic horizontal composition, fluorescent lights gleaming over bronzed shoulders and damp tiles, detailed locker room background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14699,7 +14394,7 @@
         "red_hair",
         "completely_nude"
       ],
-      "promptProse": "Thrashing across the scarlet velvet bedding of the castle, Chloe von Einzbern lies naked in the throes of severe mana deprivation. Her bronze legs are thrown wide as she aggressively pumps two slick fingers into her overflowing, dripping core, her back arching taut as spasms of pure electric pleasure ripple through her brown belly. Her crimson hair sticks with sweat to her flushed cheeks, golden eyes wide and dazed with desperate, addictive ecstasy as she begs for your kiss. Intimate vertical framing, moonlit gothic window casting silver beams over glistening tanned curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Thrashing across the scarlet velvet bedding of the castle, Chloe von Einzbern lies naked in the throes of severe mana deprivation. Her bronze legs are thrown wide as she aggressively pumps two slick fingers into her overflowing, dripping core, her back arching taut as spasms of pure electric pleasure ripple through her brown belly. Her crimson hair sticks with sweat to her flushed cheeks, golden eyes wide and dazed with desperate, addictive ecstasy as she begs for your kiss. Intimate vertical framing, moonlit gothic window casting silver beams over glistening tanned curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -14725,9 +14420,7 @@
         "parted_lips",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14752,7 +14445,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14780,11 +14473,9 @@
         "parted_lips",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Thrashing across the scarlet velvet bedding of the castle, Chloe von Einzbern lies naked in the throes of severe mana deprivation. Her bronze legs are thrown wide as she aggressively pumps two slick fingers into her overflowing, dripping core, her back arching taut as spasms of pure electric pleasure ripple through her brown belly. Her crimson hair sticks with sweat to her flushed cheeks, golden eyes wide and dazed with desperate, addictive ecstasy as she begs for your kiss. Intimate vertical framing, moonlit gothic window casting silver beams over glistening tanned curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Thrashing across the scarlet velvet bedding of the castle, Chloe von Einzbern lies naked in the throes of severe mana deprivation. Her bronze legs are thrown wide as she aggressively pumps two slick fingers into her overflowing, dripping core, her back arching taut as spasms of pure electric pleasure ripple through her brown belly. Her crimson hair sticks with sweat to her flushed cheeks, golden eyes wide and dazed with desperate, addictive ecstasy as she begs for your kiss. Intimate vertical framing, moonlit gothic window casting silver beams over glistening tanned curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14817,7 +14508,7 @@
         "off_shoulder",
         "elf_ears"
       ],
-      "promptProse": "Medea (Caster) from Fate/stay night straddles your lap upon the stone altar of her Ryudou Temple workshop. Her hooded violet magus robe slips off her shoulders to pool at her elbows, revealing delicate pointed elf ears and a stunning, mature hourglass figure, her ripe breasts jiggling with each devoted roll of her hips. Her long indigo hair falls around you like a curtain, her violet eyes gazing with overwhelming, loyal reverence as her gentle hands cradle your face. Vertical low-angle cowgirl shot, glowing magical runes and purple crystal lanterns casting mystical light over pale skin, detailed workshop background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Medea (Caster) from Fate/stay night straddles your lap upon the stone altar of her Ryudou Temple workshop. Her hooded violet magus robe slips off her shoulders to pool at her elbows, revealing delicate pointed elf ears and a stunning, mature hourglass figure, her ripe breasts jiggling with each devoted roll of her hips. Her long indigo hair falls around you like a curtain, her violet eyes gazing with overwhelming, loyal reverence as her gentle hands cradle your face. Vertical low-angle cowgirl shot, glowing magical runes and purple light casting mystical light over pale skin, detailed workshop background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -14844,9 +14535,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14871,7 +14560,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -14900,11 +14589,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medea (Caster) from Fate/stay night straddles your lap upon the stone altar of her Ryudou Temple workshop. Her hooded violet magus robe slips off her shoulders to pool at her elbows, revealing delicate pointed elf ears and a stunning, mature hourglass figure, her ripe breasts jiggling with each devoted roll of her hips. Her long indigo hair falls around you like a curtain, her violet eyes gazing with overwhelming, loyal reverence as her gentle hands cradle your face. Vertical low-angle cowgirl shot, glowing magical runes and purple crystal lanterns casting mystical light over pale skin, detailed workshop background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Medea (Caster) from Fate/stay night straddles your lap upon the stone altar of her Ryudou Temple workshop. Her hooded violet magus robe slips off her shoulders to pool at her elbows, revealing delicate pointed elf ears and a stunning, mature hourglass figure, her ripe breasts jiggling with each devoted roll of her hips. Her long indigo hair falls around you like a curtain, her violet eyes gazing with overwhelming, loyal reverence as her gentle hands cradle your face. Vertical low-angle cowgirl shot, glowing magical runes and purple light casting mystical light over pale skin, detailed workshop background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -14937,7 +14624,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Medea rests against the carved basalt edge of her underground potion spring, mystical steam curling around her statuesque frame. A drenched veil of royal purple silk clings transparently over her full breasts and taut dark nipples, while her pointed elven ears flush deep crimson in the fragrant vapor. Her hand slides underwater between her parted thighs, massaging her dripping folds in slow, intoxicating rhythm as she tilts her head back in ragged sighs. Sensual vertical framing, bioluminescent potion jars casting eerie lavender glows across wet skin, detailed fantasy alchemy background, depth of field, solo 1girl, no text.",
+      "promptProse": "Medea rests against the carved basalt edge of her underground potion spring, mystical steam curling around her statuesque frame. A drenched veil of royal purple silk clings transparently over her full breasts and taut dark nipples, while her pointed elven ears flush deep crimson in the fragrant vapor. Her hand slides underwater between her parted thighs, massaging her dripping folds in slow, intoxicating rhythm as she tilts her head back in ragged sighs. Sensual vertical framing, bioluminescent potion jars casting eerie lavender glows across wet skin, detailed fantasy alchemy background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -14962,9 +14649,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -14989,7 +14674,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15016,11 +14701,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medea rests against the carved basalt edge of her underground potion spring, mystical steam curling around her statuesque frame. A drenched veil of royal purple silk clings transparently over her full breasts and taut dark nipples, while her pointed elven ears flush deep crimson in the fragrant vapor. Her hand slides underwater between her parted thighs, massaging her dripping folds in slow, intoxicating rhythm as she tilts her head back in ragged sighs. Sensual vertical framing, bioluminescent potion jars casting eerie lavender glows across wet skin, detailed fantasy alchemy background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Medea rests against the carved basalt edge of her underground potion spring, mystical steam curling around her statuesque frame. A drenched veil of royal purple silk clings transparently over her full breasts and taut dark nipples, while her pointed elven ears flush deep crimson in the fragrant vapor. Her hand slides underwater between her parted thighs, massaging her dripping folds in slow, intoxicating rhythm as she tilts her head back in ragged sighs. Sensual vertical framing, bioluminescent potion jars casting eerie lavender glows across wet skin, detailed fantasy alchemy background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15053,7 +14736,7 @@
         "elf_ears",
         "pointed_ears"
       ],
-      "promptProse": "Medea leans forward over her modeling desk in flustered embarrassment after the straps of her housemaid apron snap while assembling a Saber garage kit. The garment slides off her smooth flanks, baring heavy sideboob and flushed nipples to the room, her long purple gown riding high over bare shapely thighs. Looking back over her shoulder with her pointed ears twitching in mortification, her violet eyes glisten with adorable panic as she tries to hide both her hobby and her nakedness. Cinematic horizontal composition, workbench magnifying lamps highlighting plastic model parts and pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Medea leans forward over her modeling desk in flustered embarrassment after the straps of her housemaid apron snap while assembling a Saber garage kit. The garment slides off her smooth flanks, baring heavy sideboob and flushed nipples to the room, her long purple gown riding high over bare shapely thighs. Looking back over her shoulder with her pointed ears twitching in mortification, her violet eyes glisten with adorable panic as she tries to hide both her hobby and her nakedness. Cinematic horizontal composition, workbench magnifying lamps highlighting plastic model parts and pale curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -15081,9 +14764,7 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15108,7 +14789,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15138,11 +14819,9 @@
         "purple_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Medea leans forward over her modeling desk in flustered embarrassment after the straps of her housemaid apron snap while assembling a Saber garage kit. The garment slides off her smooth flanks, baring heavy sideboob and flushed nipples to the room, her long purple gown riding high over bare shapely thighs. Looking back over her shoulder with her pointed ears twitching in mortification, her violet eyes glisten with adorable panic as she tries to hide both her hobby and her nakedness. Cinematic horizontal composition, workbench magnifying lamps highlighting plastic model parts and pale curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Medea leans forward over her modeling desk in flustered embarrassment after the straps of her housemaid apron snap while assembling a Saber garage kit. The garment slides off her smooth flanks, baring heavy sideboob and flushed nipples to the room, her long purple gown riding high over bare shapely thighs. Looking back over her shoulder with her pointed ears twitching in mortification, her violet eyes glisten with adorable panic as she tries to hide both her hobby and her nakedness. Cinematic horizontal composition, workbench magnifying lamps highlighting plastic model parts and pale curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15175,7 +14854,7 @@
         "bare_breasts",
         "large_breasts"
       ],
-      "promptProse": "Clutching Souichirou's formal suit jacket tightly against her chest, Medea lies completely naked across the crisp tatami futon. Her slender legs spread wide as her fingers plunge deep into her hot, soaking core, her hips arching into the air as powerful tremors of devotion wrack her mature frame. Her indigo hair blankets the straw mats, tears of pure emotional salvation flowing from her violet eyes as her pointed ears quiver with each breathless climax. Intimate vertical framing, moonlight filtering through shoji screens onto ivory curves and dark robes, detailed Japanese temple background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Clutching Souichirou's formal suit jacket tightly against her chest, Medea lies completely naked across the crisp tatami futon. Her slender legs spread wide as her fingers plunge deep into her hot, soaking core, her hips arching into the air as powerful tremors of devotion wrack her mature frame. Her indigo hair blankets the straw mats, tears of pure emotional salvation flowing from her violet eyes as her pointed ears quiver with each breathless climax. Intimate vertical framing, moonlight filtering through shoji screens onto ivory curves and dark robes, detailed Japanese temple background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -15205,9 +14884,7 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15232,7 +14909,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15264,11 +14941,9 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Clutching Souichirou's formal suit jacket tightly against her chest, Medea lies completely naked across the crisp tatami futon. Her slender legs spread wide as her fingers plunge deep into her hot, soaking core, her hips arching into the air as powerful tremors of devotion wrack her mature frame. Her indigo hair blankets the straw mats, tears of pure emotional salvation flowing from her violet eyes as her pointed ears quiver with each breathless climax. Intimate vertical framing, moonlight filtering through shoji screens onto ivory curves and dark robes, detailed Japanese temple background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Clutching Souichirou's formal suit jacket tightly against her chest, Medea lies completely naked across the crisp tatami futon. Her slender legs spread wide as her fingers plunge deep into her hot, soaking core, her hips arching into the air as powerful tremors of devotion wrack her mature frame. Her indigo hair blankets the straw mats, tears of pure emotional salvation flowing from her violet eyes as her pointed ears quiver with each breathless climax. Intimate vertical framing, moonlight filtering through shoji screens onto ivory curves and dark robes, detailed Japanese temple background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15301,7 +14976,7 @@
         "floating_hair",
         "white_hair"
       ],
-      "promptProse": "Kama from Fate/Grand Order straddles your lap upon the golden celestial lotus of the cosmic space. Drifting black gossamer ribbons slip off her shoulders, leaving her pert, flawless breasts completely bare to bounce with her relentless, maddening hip rolls. Her star-speckled long white hair floats weightlessly around you, ruby-red eyes burning with a terrifying yet infinitely sweet desire to drown you in endless cosmic affection. Vertical low-angle cowgirl perspective, swirling galaxies and burning golden petals casting ethereal light over pale skin, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kama from Fate/Grand Order straddles your lap upon the golden celestial lotus of the cosmic space. Drifting black gossamer ribbons slip off her shoulders, leaving her pert, flawless breasts completely bare to bounce with her relentless, maddening hip rolls. Her star-speckled long white hair floats weightlessly around you, ruby-red eyes burning with a terrifying yet infinitely sweet desire to drown you in endless cosmic affection. Vertical low-angle cowgirl perspective, swirling galaxies and burning golden petals casting ethereal light over pale skin, detailed fantasy background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -15326,9 +15001,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15354,7 +15027,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15381,11 +15054,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Kama from Fate/Grand Order straddles your lap upon the golden celestial lotus of the cosmic space. Drifting black gossamer ribbons slip off her shoulders, leaving her pert, flawless breasts completely bare to bounce with her relentless, maddening hip rolls. Her star-speckled long white hair floats weightlessly around you, ruby-red eyes burning with a terrifying yet infinitely sweet desire to drown you in endless cosmic affection. Vertical low-angle cowgirl perspective, swirling galaxies and burning golden petals casting ethereal light over pale skin, detailed fantasy background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Kama from Fate/Grand Order straddles your lap upon the golden celestial lotus of the cosmic space. Drifting black gossamer ribbons slip off her shoulders, leaving her pert, flawless breasts completely bare to bounce with her relentless, maddening hip rolls. Her star-speckled long white hair floats weightlessly around you, ruby-red eyes burning with a terrifying yet infinitely sweet desire to drown you in endless cosmic affection. Vertical low-angle cowgirl perspective, swirling galaxies and burning golden petals casting ethereal light over pale skin, detailed fantasy background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15418,7 +15089,7 @@
         "golden_water",
         "steam"
       ],
-      "promptProse": "Kama lounges across the carved mother-of-pearl steps of a cosmic golden spring, starlight-infused water rippling over her porcelain body. Her gossamer crimson divine veil clings sheer like molten silk, accentuating her small, sensitive breasts and bright pink nipples. Her fingers massage her dripping center beneath the glowing liquid, sending ripples of gold across the surface as her lips part in an aching, lonely whimper. Sensual vertical framing, glowing celestial waters casting liquid gold caustics across delicate limbs, detailed divine background, depth of field, solo 1girl, no text.",
+      "promptProse": "Kama lounges across the carved mother-of-pearl steps of a cosmic golden spring, light-infused water rippling over her porcelain body. Her gossamer crimson divine veil clings sheer like molten silk, accentuating her small, sensitive breasts and bright pink nipples. Her fingers massage her dripping center beneath the glowing liquid, sending ripples of gold across the surface as her lips part in an aching, lonely whimper. Sensual vertical framing, glowing celestial waters casting liquid gold caustics across delicate limbs, detailed divine background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -15443,9 +15114,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15471,7 +15140,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15498,11 +15167,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Kama lounges across the carved mother-of-pearl steps of a cosmic golden spring, starlight-infused water rippling over her porcelain body. Her gossamer crimson divine veil clings sheer like molten silk, accentuating her small, sensitive breasts and bright pink nipples. Her fingers massage her dripping center beneath the glowing liquid, sending ripples of gold across the surface as her lips part in an aching, lonely whimper. Sensual vertical framing, glowing celestial waters casting liquid gold caustics across delicate limbs, detailed divine background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Kama lounges across the carved mother-of-pearl steps of a cosmic golden spring, light-infused water rippling over her porcelain body. Her gossamer crimson divine veil clings sheer like molten silk, accentuating her small, sensitive breasts and bright pink nipples. Her fingers massage her dripping center beneath the glowing liquid, sending ripples of gold across the surface as her lips part in an aching, lonely whimper. Sensual vertical framing, glowing celestial waters casting liquid gold caustics across delicate limbs, detailed divine background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15534,7 +15201,7 @@
         "chain",
         "entangled"
       ],
-      "promptProse": "Kama bends forward against an ornate gold-leaf folding screen as the heavy jewelry chains of her divine raiment tangle hopelessly around her slender waist and hip sashes. The tension yanks her sheer veil aside, completely baring her compact, beautiful breasts and flushed nipples while digging deep into her soft flanks. Turning her head with teary crimson eyes and a fierce blush, she huffs in flustered indignation, threatening you with divine retribution if you dare touch her rear. Cinematic horizontal composition, golden candlelight reflecting off gilded screens and bare skin, detailed Ooku palace background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Kama bends forward against an ornate gold-leaf folding screen as the heavy jewelry chains of her divine raiment tangle hopelessly around her slender waist and hip sashes. The tension yanks her sheer veil aside, completely baring her compact, beautiful breasts and flushed nipples while digging deep into her soft flanks. Turning her head with teary crimson eyes and a fierce blush, she huffs in flustered indignation, threatening you with divine retribution if you dare touch her rear. Cinematic horizontal composition, golden light reflecting off gilded screens and bare skin, detailed Ooku palace background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -15563,9 +15230,7 @@
         "white_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15591,7 +15256,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15622,11 +15287,9 @@
         "white_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Kama bends forward against an ornate gold-leaf folding screen as the heavy jewelry chains of her divine raiment tangle hopelessly around her slender waist and hip sashes. The tension yanks her sheer veil aside, completely baring her compact, beautiful breasts and flushed nipples while digging deep into her soft flanks. Turning her head with teary crimson eyes and a fierce blush, she huffs in flustered indignation, threatening you with divine retribution if you dare touch her rear. Cinematic horizontal composition, golden candlelight reflecting off gilded screens and bare skin, detailed Ooku palace background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Kama bends forward against an ornate gold-leaf folding screen as the heavy jewelry chains of her divine raiment tangle hopelessly around her slender waist and hip sashes. The tension yanks her sheer veil aside, completely baring her compact, beautiful breasts and flushed nipples while digging deep into her soft flanks. Turning her head with teary crimson eyes and a fierce blush, she huffs in flustered indignation, threatening you with divine retribution if you dare touch her rear. Cinematic horizontal composition, golden light reflecting off gilded screens and bare skin, detailed Ooku palace background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -15658,7 +15321,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Floating naked across endless starlit sheets in the void of her inner universe, Kama surrenders to the agonizing poison of her own affection. Her slender legs spread wide into the cosmic dark as two fingers pump urgently into her overflowing, dripping cleft, her back arching off the mattress in relentless tremors of climax. Her long white hair drifts among dying stars, tears of glorious humiliation streaming past her ruby eyes as she sobs your name in unconditional defeat. Intimate vertical framing, nebula glow painting ethereal purples and golds across pristine curves, detailed cosmic background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Floating naked across endless starlit sheets in the void of her inner universe, Kama surrenders to the agonizing poison of her own affection. Her slender legs spread wide into the cosmic dark as two fingers pump urgently into her overflowing, dripping cleft, her back arching off the mattress in relentless tremors of climax. Her long white hair drifts among dying stars, tears of glorious humiliation streaming past her ruby eyes as she sobs your name in unconditional defeat. Intimate vertical framing, nebula glow painting ethereal purples and golds across pristine curves, detailed cosmic background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -15687,9 +15350,7 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -15715,7 +15376,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -15746,11 +15407,9 @@
         "red_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Floating naked across endless starlit sheets in the void of her inner universe, Kama surrenders to the agonizing poison of her own affection. Her slender legs spread wide into the cosmic dark as two fingers pump urgently into her overflowing, dripping cleft, her back arching off the mattress in relentless tremors of climax. Her long white hair drifts among dying stars, tears of glorious humiliation streaming past her ruby eyes as she sobs your name in unconditional defeat. Intimate vertical framing, nebula glow painting ethereal purples and golds across pristine curves, detailed cosmic background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Floating naked across endless starlit sheets in the void of her inner universe, Kama surrenders to the agonizing poison of her own affection. Her slender legs spread wide into the cosmic dark as two fingers pump urgently into her overflowing, dripping cleft, her back arching off the mattress in relentless tremors of climax. Her long white hair drifts among dying stars, tears of glorious humiliation streaming past her ruby eyes as she sobs your name in unconditional defeat. Intimate vertical framing, nebula glow painting ethereal purples and golds across pristine curves, detailed cosmic background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

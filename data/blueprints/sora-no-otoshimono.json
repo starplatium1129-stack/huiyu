@@ -44,9 +44,7 @@
         "collar",
         "chain",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -108,7 +106,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "folded_wings"
       ],
       "recommendedSize": "1152x1536",
@@ -168,8 +165,6 @@
         "combat_stance",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "night"
       ],
       "recommendedSize": "1536x1152",
@@ -229,9 +224,7 @@
         "angel_wings",
         "polite_standing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -290,8 +283,6 @@
         "angel_wings",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "watermelon_in_water",
         "observing_buoyancy"
       ],
@@ -353,8 +344,6 @@
         "angel_wings",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "medium_two_shot",
         "touching_red_bow",
         "chain_held_by_companion",
@@ -417,9 +406,7 @@
         "angel_wings",
         "white_wings",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -508,9 +495,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -608,9 +593,7 @@
         "parted_lips",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -675,7 +658,7 @@
         "heavy_blush"
       ],
       "outfitId": "angeloid_dress",
-      "promptProse": "Moonlit shoji frame adult Ikaros seated alone astride a tatami cushion. Her white battle dress is opened and gathered beneath bare breasts while pink wings rise symmetrically behind folded legs. She steadies one sensitive wing root with one hand and fingers herself with the other, causing blue core light to pulse at her chest. Long pink hair and green eyes remain calm through wet lashes and a vivid blush. Vertical solo portrait, no text or extra people.",
+      "promptProse": "Shoji frame adult Ikaros seated alone astride a tatami cushion. Her white battle dress is opened and gathered beneath bare breasts while pink wings rise symmetrically behind folded legs. She steadies one sensitive wing root with one hand and fingers herself with the other, causing blue core light to pulse at her chest. Long pink hair and green eyes remain calm through wet lashes and a vivid blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
         "straddling",
@@ -687,9 +670,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -716,7 +697,7 @@
       ],
       "description": "【伊卡洛斯 · 卧房独处探寻心跳私密自抚】深夜空无一人的房间内，伊卡洛斯独自坐在被褥边。白裙被轻轻撩起堆在腰腹上方，纯白羽翼收拢在身侧。她一只手轻轻抚摸着自己脖颈上的金属项圈与断裂铁链，另一只纤细的手指顺着水润滑入自己湿热的花径深处。白皙指尖在敏感花褶间慢慢摸索，嘴里吐出不解却温暖的低语——「哈啊……为什么……只要想起主人的温柔……胸口的动力炉就会狂跳不停……身体里……也变得好湿好热……」",
       "id": "ikaros_r18_bedroom_solo_chain_fingering",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "窗帘缝隙透射的微弱月色洒在湿漉漉雪白肌肤与金属项圈反光",
       "location": "单人卧房被褥边缘坐姿",
       "mood": "极乐沉沦",
@@ -759,9 +740,7 @@
         "parted_lips",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",

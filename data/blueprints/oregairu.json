@@ -39,9 +39,7 @@
         "afternoon_window_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -145,9 +143,7 @@
         "streetlamp_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -239,9 +235,7 @@
         "afternoon_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -325,12 +319,9 @@
         "futon",
         "yukata",
         "japanese_clothes",
-        "candlelight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -392,7 +383,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "on_back",
@@ -453,9 +444,7 @@
         "warm_pendant_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -549,9 +538,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -645,9 +632,7 @@
         "table_lamp_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -731,9 +716,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -797,7 +780,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "standing",
@@ -848,9 +831,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -905,7 +886,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
         "sitting",
@@ -955,9 +936,7 @@
         "moonlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1021,7 +1000,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "sitting",
@@ -1070,9 +1049,7 @@
         "energetic_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1154,7 +1131,6 @@
         "fireworks",
         "stone_steps",
         "yukata",
-        "lanterns",
         "looking_back",
         "night_sky"
       ],
@@ -1170,8 +1146,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "riverbank",
         "stone_steps"
       ],
@@ -1270,9 +1244,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1380,9 +1352,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1453,7 +1423,7 @@
       "camera": "medium_shot",
       "mood": "sensual",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18"
     },
@@ -1480,9 +1450,7 @@
         "afternoon_sun",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1579,7 +1547,7 @@
       "camera": "medium shot",
       "mood": "明媚娇憨",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "coverageTags": [
@@ -1609,9 +1577,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1709,7 +1675,7 @@
       "camera": "medium shot",
       "mood": "笨拙温馨",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18"
     },
@@ -1746,9 +1712,7 @@
         "sunlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1799,9 +1763,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1897,9 +1859,7 @@
         "morning_sun",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1991,9 +1951,7 @@
         "steam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2083,7 +2041,7 @@
         "heavy_blush",
         "sweet_smile"
       ],
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "sampleRating": "R18"
@@ -2113,7 +2071,7 @@
         "teasing",
         "iconic"
       ],
-      "promptProse": "Iroha Isshiki leans back in the executive swivel chair of the student council office at sunset, one elbow resting on the mahogany desk as she props her chin in her hand. Wearing her open navy blazer and cream cardigan, she raises her other hand in her signature playful 'rejection' gesture, her honey-brown wavy side-pigtails bouncing slightly. A delightfully wicked, flirtatious smirk dances across her parted lips as hazel eyes sparkle with mischievous delight under golden hour light. Medium shot, warm office sunset lighting, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Iroha Isshiki leans back in the executive swivel chair of the student council office at sunset, one elbow resting on the mahogany desk as she props her chin in her hand. Wearing her open navy blazer and cream cardigan, she raises her other hand in her signature playful 'rejection' gesture, her honey-brown wavy side-pigtails bouncing slightly. A delightfully wicked, flirtatious smirk dances across her parted lips as hazel eyes sparkle with mischievous delight under golden hour light. Medium shot, warm office sunset lighting, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "isshiki_iroha",
         "1girl",
@@ -2134,9 +2092,7 @@
         "sunset",
         "golden_hour",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2200,9 +2156,7 @@
         "empty_field",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2268,9 +2222,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2341,9 +2293,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2398,7 +2348,7 @@
         "off_shoulder",
         "cute"
       ],
-      "promptProse": "Iroha Isshiki stands before a gleaming vanity mirror in a stylish boutique accessory shop, trying on one soft plush cat-ear headband over her wavy honey-brown hair. Wearing a slouchy pink off-the-shoulder knit sweater and plaid miniskirt, she leans against the counter propping her cheeks with both palms, offering a delightful, irresistible wink toward your reflection in the mirror. Bright jewelry store spotlights illuminate her glossy lips and flushed, radiant expression. Medium shot, glamorous boutique bokeh, detailed shopping background, depth of field, solo 1girl, no text.",
+      "promptProse": "Iroha Isshiki stands before a gleaming vanity mirror in a stylish boutique accessory shop, trying on one soft plush cat-ear headband over her wavy honey-brown hair. Wearing a slouchy pink off-the-shoulder knit sweater and plaid miniskirt, she leans against the counter propping her cheeks with both palms, offering a delightful, irresistible wink toward your reflection in the mirror. Bright jewelry store spotlights illuminate her glossy lips and flushed, radiant expression. Medium shot, glamorous boutique bokeh, detailed shopping background, solo 1girl, no text.",
       "promptTokens": [
         "isshiki_iroha",
         "1girl",
@@ -2419,9 +2369,7 @@
         "shopping",
         "cute",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2469,7 +2417,7 @@
         "sunset",
         "golden_hour"
       ],
-      "promptProse": "Iroha Isshiki hurries down a polished wooden school hallway lined with tall windows at sunset, clutching a thick stack of student council printouts against her blazer. Coming to a quick stop, she breathes rapidly with puffed rosy cheeks, glaring upward in playful petulance as her low wavy twintails bounce against her shoulders. Golden hour sunlight bathes the entire corridor in rich amber and long purple shadows. Medium shot, energetic slice-of-life key visual style, detailed high school hallway background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Iroha Isshiki hurries down a polished wooden school hallway lined with tall windows at sunset, clutching a thick stack of student council printouts against her blazer. Coming to a quick stop, she breathes rapidly with puffed rosy cheeks, glaring upward in playful petulance as her low wavy twintails bounce against her shoulders. Golden hour sunlight bathes the entire corridor in rich amber and long purple shadows. Medium shot, energetic slice-of-life key visual style, detailed high school hallway background, solo 1girl, no extra people.",
       "promptTokens": [
         "isshiki_iroha",
         "1girl",
@@ -2489,9 +2437,7 @@
         "sunset",
         "golden_hour",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2539,7 +2485,7 @@
         "sincere_smile",
         "romantic"
       ],
-      "promptProse": "Iroha Isshiki stands in the quiet backstage wings of the school auditorium during a snowy Christmas eve event, illuminated by strings of colorful fairy lights. She wears a festive white-trimmed red velvet capelet over her uniform, holding a neatly wrapped gift box against her chest. Shedding every trace of her manipulative teasing, her hazel eyes well with genuine, heartfelt warmth and bashful tears, her cheeks glowing crimson as she offers the present with a trembling, tender smile. Medium shot, magical holiday bokeh, detailed backstage background, depth of field, solo 1girl, no text.",
+      "promptProse": "Iroha Isshiki stands in the quiet backstage wings of the school auditorium during a snowy Christmas eve event, illuminated by strings of colorful fairy lights. She wears a festive white-trimmed red velvet capelet over her uniform, holding a neatly wrapped gift box against her chest. Shedding every trace of her manipulative teasing, her hazel eyes well with genuine, heartfelt warmth and bashful tears, her cheeks glowing crimson as she offers the present with a trembling, tender smile. Medium shot, magical holiday bokeh, detailed backstage background, solo 1girl, no text.",
       "promptTokens": [
         "isshiki_iroha",
         "1girl",
@@ -2559,9 +2505,7 @@
         "sincere_smile",
         "romantic",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2605,7 +2549,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Iroha Isshiki from Oregairu perches on the edge of the dark adult researcher council conference table and leans forward with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that heave with her intentional, teasing rhythm. Her soft brown wavy hair sways as she presses one finger against her lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle solo perspective, amber sunset glow fading into room darkness, detailed office background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Iroha Isshiki from Oregairu perches on the edge of the dark adult researcher council conference table and leans forward with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that heave with her intentional, teasing rhythm. Her soft brown wavy hair sways as she presses one finger against her lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle solo perspective, amber sunset glow fading into room darkness, detailed office background, solo 1girl, no extra people.",
       "nsfwProse": "Perched along the conference table with her uniform blazer unbuttoned and skirt hitched up over sheer black pantyhose, Iroha Isshiki teases forward with bare perky breasts and an insolent smirk.",
       "promptTokens": [
         "classroom",
@@ -2616,9 +2560,7 @@
         "low_angle",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2678,7 +2620,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Iroha Isshiki sits on a wooden gym locker bench stranded by an afternoon deluge, her white school blouse soaked completely see-through and plastered to her creamy skin, clearly detailing pink nipples and soft curves. One hand slips audaciously beneath her wet pleated hem between her thighs, rubbing herself with slow insolence while her hazel-brown eyes fixate on you through heavy lashes. A mocking, blush-stained smirk plays across her parted lips. Sensual vertical shot, raindrops streaking locker room glass behind her, cinematic cool lighting, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Iroha Isshiki sits on a wooden gym locker bench stranded by an afternoon deluge, her white school blouse soaked completely see-through and plastered to her creamy skin, clearly detailing pink nipples and soft curves. One hand slips audaciously beneath her wet pleated hem between her thighs, rubbing herself with slow insolence while her hazel-brown eyes fixate on you through heavy lashes. A mocking, blush-stained smirk plays across her parted lips. Sensual vertical shot, raindrops streaking locker room glass behind her, cinematic cool lighting, detailed background, solo 1girl, no text.",
       "nsfwProse": "Sitting on the gym locker bench in a rain-soaked blouse that clings sheerly over blushing pink nipples, Iroha Isshiki touches herself beneath her wet skirt with mocking, teasing desire.",
       "promptTokens": [
         "locker_room",
@@ -2688,9 +2630,7 @@
         "window",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2752,20 +2692,17 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Iroha Isshiki leans forward over the private studio windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed private studio background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Iroha Isshiki leans forward over the private studio windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed private studio background, solo 1girl, no extra people.",
       "nsfwProse": "Leaning over the windowsill as her jammed skirt zipper exposes her lace-clad hips and black tights, Iroha Isshiki glances back with crimson cheeks and a pouting bite of her lip.",
       "promptTokens": [
         "private_studio",
         "windowsill",
         "dusk",
         "sunset",
-        "golden_hour",
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2824,7 +2761,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Tucked into the spare futon of your apartment late at night, Iroha Isshiki drops every calculated shield. Her oversized pastel pajamas are thrown wide open, exposing pink perky nipples and a heaving chest as her trembling fingers pump softly between slick, parted thighs. She bites down on the corner of the pillow to suppress desperate moans, hazel eyes overflowing with frustrated tears as she curses the grumpy senior who stole her thoughts. Intimate vertical framing, warm floor lamp amber glow, detailed room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Tucked into the spare futon of your apartment late at night, Iroha Isshiki drops every calculated shield. Her oversized pastel pajamas are thrown wide open, exposing pink perky nipples and a heaving chest as her trembling fingers pump softly between slick, parted thighs. She bites down on the corner of the pillow to suppress desperate moans, hazel eyes overflowing with frustrated tears as she curses the grumpy senior who stole her thoughts. Intimate vertical framing, warm floor lamp amber glow, detailed room background, solo 1girl, no extra people.",
       "nsfwProse": "Lying back on the spare futon with her pastel pajamas thrown open, Iroha Isshiki bites her pillow and strokes her wet center, crying sweet tears of desperate longing.",
       "promptTokens": [
         "futon",
@@ -2834,9 +2771,7 @@
         "warm_lighting",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2901,7 +2836,7 @@
         "mature_female",
         "iconic"
       ],
-      "promptProse": "Haruno Yukinoshita from Oregairu lounges at a chic outdoor cafe terrace on a sunny afternoon in Chiba, one long black-stockinged leg crossed elegantly over the other. Her beige trench coat hangs open over a form-fitting black turtleneck that accentuates her voluptuous mature bust. She lowers designer sunglasses slightly down her nose with one manicured finger, her sharp dark eyes pinning you with a dangerous, playfully mocking gaze, a knowing smirk playing on her lips. Medium shot, crisp European street bokeh, detailed cafe background, depth of field, solo 1girl, no text.",
+      "promptProse": "Haruno Yukinoshita from Oregairu lounges at a chic outdoor cafe terrace on a sunny afternoon in Chiba, one long black-stockinged leg crossed elegantly over the other. Her beige trench coat hangs open over a form-fitting black turtleneck that accentuates her voluptuous mature bust. She lowers designer sunglasses slightly down her nose with one manicured finger, her sharp dark eyes pinning you with a dangerous, playfully mocking gaze, a knowing smirk playing on her lips. Medium shot, crisp European street bokeh, detailed cafe background, solo 1girl, no text.",
       "promptTokens": [
         "yukinoshita_haruno",
         "1girl",
@@ -2923,9 +2858,7 @@
         "smirk",
         "teasing",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2974,7 +2907,7 @@
         "mature_female",
         "melancholy"
       ],
-      "promptProse": "Haruno Yukinoshita leans back against the glass railing of her high-rise penthouse balcony at midnight, overlooking the sprawling coastal city lights of Chiba. She wears an exquisite backless black velvet gown with a daring thigh slit that reveals her long legs in sheer dark stockings. Holding a crystal red wine glass loosely in one hand, her black hair whips in the sea breeze as her piercing dark eyes gaze wistfully into the distance, dropping her teasing mask for a moment of quiet melancholy. Medium shot, stunning city night skyline bokeh, detailed luxury balcony background, depth of field, solo 1girl, no text.",
+      "promptProse": "Haruno Yukinoshita leans back against the glass railing of her high-rise penthouse balcony at midnight, overlooking the sprawling coastal city lights of Chiba. She wears an exquisite backless black velvet gown with a daring thigh slit that reveals her long legs in sheer dark stockings. Holding a crystal red wine glass loosely in one hand, her black hair whips in the sea breeze as her piercing dark eyes gaze wistfully into the distance, dropping her teasing mask for a moment of quiet melancholy. Medium shot, stunning city night skyline bokeh, detailed luxury balcony background, solo 1girl, no text.",
       "promptTokens": [
         "yukinoshita_haruno",
         "1girl",
@@ -2996,9 +2929,7 @@
         "flying_hair",
         "melancholy",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3064,9 +2995,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3120,7 +3049,7 @@
         "breath",
         "city_street"
       ],
-      "promptProse": "Haruno Yukinoshita strolls along a snow-covered urban pedestrian avenue at night, her hands tucked deep inside the pockets of her belted camel trench coat. Black leather high-heeled boots leave sharp tracks in the fresh powder as snowflakes melt against her glossy black hair and dark lashes. She turns back over her shoulder with a playful, teasing smile, a puff of white condensation escaping her painted crimson lips into the chilly air. Medium full shot, festive holiday lights creating colorful street bokeh, detailed winter background, depth of field, solo 1girl, no text.",
+      "promptProse": "Haruno Yukinoshita strolls along a snow-covered urban pedestrian avenue at night, her hands tucked deep inside the pockets of her belted camel trench coat. Black leather high-heeled boots leave sharp tracks in the fresh powder as snowflakes melt against her glossy black hair and dark lashes. She turns back over her shoulder with a playful, teasing smile, a puff of white condensation escaping her painted crimson lips into the chilly air. Medium full shot, festive holiday lights creating colorful street bokeh, detailed winter background, solo 1girl, no text.",
       "promptTokens": [
         "yukinoshita_haruno",
         "1girl",
@@ -3141,9 +3070,7 @@
         "street",
         "city_lights",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3206,9 +3133,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3276,9 +3201,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -3336,7 +3259,7 @@
         "melancholy",
         "mature_female"
       ],
-      "promptProse": "Haruno Yukinoshita stands barefoot on the wooden floor of her family estate's quiet music parlor at midnight, beside a vintage brass horn phonograph spinning a vinyl record. Wearing only a soft, oversized white dress shirt draped over her shoulders, her fingers lightly graze the turntable needle as gentle classical jazz plays into the room. She looks back toward you with a breathtaking, fragile smile—the teasing mask completely melted into pure, unconditional tenderness and protective warmth. Medium shot, warm amber wall sconce lighting, detailed antique study background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Haruno Yukinoshita stands barefoot on the wooden floor of her family estate's quiet music parlor at midnight, beside a vintage brass horn phonograph spinning a vinyl record. Wearing only a soft, oversized white dress shirt draped over her shoulders, her fingers lightly graze the turntable needle as gentle classical jazz plays into the room. She looks back toward you with a breathtaking, fragile smile—the teasing mask completely melted into pure, unconditional tenderness and protective warmth. Medium shot, warm amber wall sconce lighting, detailed antique study background, solo 1girl, no extra people.",
       "promptTokens": [
         "record_player",
         "phonograph",
@@ -3350,9 +3273,7 @@
         "gentle_smile",
         "melancholy",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3369,7 +3290,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "coverageTags": [
         "bridal",
@@ -3413,7 +3334,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Haruno Yukinoshita from Oregairu kneels forward on her luxury high-rise leather sofa in the intoxicating midnight haze. Her sheer black silk chemise slips down to her slender hips, freeing ripe, full breasts that heave with her commanding presence. Her long legs in torn black stockings tuck beneath her, sharp dark eyes narrowing with predatory yet desperately vulnerable warmth as her scarlet lips murmur against the quiet night. Vertical low-angle solo shot, city skyline neon glow filtering through floor-to-ceiling windows, detailed modern apartment background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Haruno Yukinoshita from Oregairu kneels forward on her luxury high-rise leather sofa in the intoxicating midnight air. Her sheer black silk chemise slips down to her slender hips, freeing ripe, full breasts that heave with her commanding presence. Her long legs in torn black stockings tuck beneath her, sharp dark eyes narrowing with predatory yet desperately vulnerable warmth as her scarlet lips murmur against the quiet night. Vertical low-angle solo shot, city skyline neon glow filtering through floor-to-ceiling windows, detailed modern apartment background, solo 1girl, no extra people.",
       "nsfwProse": "Kneeling forward across her leather sofa with sheer black lingerie slipping down to her waist, Haruno Yukinoshita reveals full bare breasts and stockinged thighs with predatory, intoxicating warmth.",
       "promptTokens": [
         "living_room",
@@ -3424,9 +3345,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3490,7 +3409,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Haruno Yukinoshita lounges inside her sunken marble jacuzzi beneath soft candlelight, holding a crystal wine glass while warm whirlpool jets churn around her. Her black lace teddy is drenched clinging translucently over mature, generous curves and taut dark nipples. Her fingers slide aggressively beneath the swirling scented water between her parted thighs, head thrown back against the stone headrest in ragged, drunken moans as tears leak from the corners of her dark eyes. Sensual vertical composition, golden chandelier reflection on rippling water, detailed bathroom background, depth of field, solo 1girl, no text.",
+      "promptProse": "Haruno Yukinoshita lounges inside her sunken marble jacuzzi beneath soft light, holding a crystal wine glass while warm whirlpool jets churn around her. Her black lace teddy is drenched clinging translucently over mature, generous curves and taut dark nipples. Her fingers slide aggressively beneath the swirling scented water between her parted thighs, head thrown back against the stone headrest in ragged, drunken moans as tears leak from the corners of her dark eyes. Sensual vertical composition, golden chandelier reflection on rippling water, detailed bathroom background, solo 1girl, no text.",
       "nsfwProse": "Lounging inside the marble jacuzzi in soaked, transparent black lace that clings to her dark nipples, Haruno Yukinoshita strokes herself underwater in drunken, weeping ecstasy amidst rippling red water.",
       "promptTokens": [
         "bathroom",
@@ -3499,12 +3418,9 @@
         "wine_glass",
         "rose_petals",
         "night",
-        "candlelight",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3568,7 +3484,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Haruno Yukinoshita braces her hands against the entryway console table, throwing open her soaked trench coat to reveal utter nudity beneath: lush full breasts, pink nipples taut from the rain, and torn black thigh-high stockings straining against plush thighs. Her arched hips highlight a glistening, swollen core as rainwater drips down her trembling spine. Looking back over her shoulder with an intoxicating, wicked flush and tear-slick eyes, she dares you to warm her shivering flesh. Cinematic horizontal composition, hallway amber lamp casting dramatic shadows across naked curves, detailed apartment background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Haruno Yukinoshita braces her hands against the entryway console table, throwing open her soaked trench coat to reveal utter nudity beneath: lush full breasts, pink nipples taut from the rain, and torn black thigh-high stockings straining against plush thighs. Her arched hips highlight a glistening, swollen core as rainwater drips down her trembling spine. Looking back over her shoulder with an intoxicating, wicked flush and tear-slick eyes, she dares you to warm her shivering flesh. Cinematic horizontal composition, hallway amber lamp casting dramatic shadows across naked curves, detailed apartment background, solo 1girl, no extra people.",
       "nsfwProse": "Bracing against the console table with her drenched trenchcoat thrown wide open to reveal complete nudity, Haruno Yukinoshita flaunts bare breasts and torn stockings with a shivering, wicked blush.",
       "promptTokens": [
         "entryway",
@@ -3578,9 +3494,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -3644,7 +3558,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Stripped of every calculating smile, Haruno Yukinoshita sprawls completely naked across her disheveled black silk sheets in the cold blue dawn. Her voluptuous body arches violently as two fingers pump urgently between wide-spread, glistening thighs, drenched in her own passion. Her dark hair spreads wild over the pillows, genuine tears streaming across flushed cheeks and catching on her collarbone as broken, choked cries escape her lips. Vulnerable vertical framing, pale morning dusk fighting moody bedroom shadows, detailed luxury background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Stripped of every calculating smile, Haruno Yukinoshita sprawls completely naked across her disheveled black silk sheets in the cold blue dawn. Her voluptuous body arches violently as two fingers pump urgently between wide-spread, glistening thighs, drenched in her own passion. Her dark hair spreads wild over the pillows, genuine tears streaming across flushed cheeks and catching on her collarbone as broken, choked cries escape her lips. Vulnerable vertical framing, pale morning dusk fighting moody bedroom shadows, detailed luxury background, solo 1girl, no extra people.",
       "nsfwProse": "Sprawled completely naked across disheveled black silk sheets in the blue dawn, Haruno Yukinoshita arches her hips and pumps wet fingers between wide thighs, weeping genuine tears of surrender.",
       "promptTokens": [
         "bedroom",
@@ -3654,9 +3568,7 @@
         "pillows",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

@@ -93,9 +93,7 @@
         "console",
         "screens",
         "futuristic_interior",
-        "depth_of_field",
         "cinematic_lighting",
-        "volumetric_lighting",
         "atmospheric",
         "detailed_background",
         "star_map",
@@ -192,9 +190,7 @@
         "ruined_machinery",
         "outdoor",
         "atmospheric",
-        "depth_of_field",
         "cinematic_lighting",
-        "volumetric_lighting",
         "dramatic_lighting",
         "detailed_background",
         "hand_on_earpiece",
@@ -289,7 +285,6 @@
         "atmospheric",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
@@ -302,7 +297,6 @@
         "stars",
         "trench_coat",
         "uniform",
-        "volumetric_lighting",
         "cyan_streaks",
         "animal_ears",
         "hairclip",
@@ -403,7 +397,6 @@
         "cinematic_lighting",
         "clean_face",
         "cream",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
@@ -415,7 +408,6 @@
         "ship",
         "soft_lighting",
         "sweater",
-        "volumetric_lighting",
         "cyan_streaks",
         "animal_ears",
         "hairclip",
@@ -520,7 +512,6 @@
         "clean_face",
         "combat_boots",
         "data",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
@@ -531,7 +522,6 @@
         "tactical",
         "terminal",
         "utility_belt",
-        "volumetric_lighting",
         "white_clothes",
         "cyan_streaks",
         "animal_ears",
@@ -642,7 +632,6 @@
         "cinematic_lighting",
         "clean_face",
         "crouching",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
@@ -652,7 +641,6 @@
         "medium_shot",
         "plants",
         "seedling",
-        "volumetric_lighting",
         "cyan_streaks",
         "animal_ears",
         "hairclip",
@@ -689,7 +677,7 @@
       ],
       "description": "【佩丽卡 · 舱室终端】深夜安静的指挥官舱室内，解开制服全部领扣的佩丽卡坐在床沿，修长笔直的美腿在微弱的终端蓝光下散发着知性而性感的魅力。她抬手轻抚发丝低语——「所有开拓日志与指令均已归档……管理员，现在已经没有任何人能打扰我们的私人汇报了。」",
       "id": "perlica_arknights_r18_quarters_terminal",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "screen glow and dim lamp",
       "location": "终末地私人舱室",
       "mood": "卸下严谨",
@@ -754,9 +742,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -780,7 +766,7 @@
       "characterId": "perlica_arknights",
       "description": "【佩丽卡 · 清洁舱】水汽弥漫的高压消毒淋浴舱内，滚烫的水流冲刷着佩丽卡湿透的短发与紧致优美的背部曲线。水珠顺着她高挑修长的大腿流淌而下，她抹开脸上的水痕回眸注视——「野外勘探归来的深度清洁非常重要……管理员，如果不介意的话，请进来与我一同完成洗消程序。」",
       "id": "perlica_arknights_r18_hygiene_bay",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft steam light",
       "location": "终末地清洁舱",
       "mood": "湿润放松",
@@ -870,9 +856,7 @@
         "water_droplets",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -896,7 +880,7 @@
       "characterId": "perlica_arknights",
       "description": "【佩丽卡 · 夜读报告】深夜床榻上，盘腿坐着的佩丽卡只披着一件单薄的外套，雪白饱满的胸脯在布料边缘若隐若现。她揉了揉泛酸的眼眶靠在你的肩头——「今天审阅了整整四十份工程报告……脑子快要运转过载了。管理员……能让我这样靠着你休息一会儿吗？」",
       "id": "perlica_arknights_r18_bunk_late",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim reading lamp",
       "location": "终末地私人舱室",
       "mood": "深夜专注",
@@ -962,9 +946,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -988,7 +970,7 @@
       "characterId": "perlica_arknights",
       "description": "【佩丽卡 · 舷窗星海】巨大的强化玻璃舷窗外是一望无际的静谧星海与流转星云，只着薄纱睡袍的佩丽卡倚着舷窗侧身回眸，星光为她完美的胴体镀上了一层梦幻银边。她向你伸出修长的指尖——「在宇宙的尺度下生命何其渺小……但此刻你的心跳与体温，对我而言便是整个宇宙的意义。」",
       "id": "perlica_arknights_r18_viewport",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "starlight through the window",
       "location": "终末地舰舷窗",
       "mood": "静谧亲近",
@@ -1060,8 +1042,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1165,8 +1146,6 @@
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "detailed_background",
         "walking",
         "sword_over_shoulder",
@@ -1264,8 +1243,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "depth_of_field",
-        "volumetric_lighting",
         "forge",
         "anvil",
         "molten_metal",
@@ -1373,8 +1350,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "depth_of_field",
-        "volumetric_lighting",
         "ice_cream",
         "eating",
         "happy",
@@ -1480,8 +1455,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "depth_of_field",
-        "volumetric_lighting",
         "battlefield",
         "dusk",
         "sunset",
@@ -1603,8 +1576,6 @@
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "depth_of_field",
-        "volumetric_lighting",
         "scifi_corridor",
         "warship",
         "riveted_metal",
@@ -1703,14 +1674,12 @@
         "medium_hair"
       ],
       "outfitId": "street_cafe_sweet",
-      "promptProse": "At a bubbling nine-grid blazing-spicy hotpot in the ship canteen at noon, she sits leaning forward across the table in a medium shot, fishing a piece of hairy tripe from the roiling red broth with her chopsticks, delighted eyes sparkling. Around her: a riveted metal table, a glass of cold barley tea sweating with condensation, hanging lantern bulbs, a pot of pickled vegetables, a small window showing the midday sky.",
+      "promptProse": "At a bubbling nine-grid blazing-spicy hotpot in the ship canteen at noon, she sits leaning forward across the table in a medium shot, fishing a piece of hairy tripe from the roiling red broth with her chopsticks, delighted eyes sparkling. Around her: a riveted metal table, a glass of cold barley tea sweating with condensation, hanging light bulbs, a pot of pickled vegetables, a small window showing the midday sky.",
       "promptTokens": [
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
-        "depth_of_field",
-        "volumetric_lighting",
         "hotpot",
         "chopsticks",
         "eating",
@@ -1748,7 +1717,7 @@
       ],
       "description": "【莱瓦汀 · 舱室余烬】深夜私密卧房的大床上，只穿轻薄抹胸的莱瓦汀坐在床沿，微弱的熔岩火光在修长的指尖跳跃明灭。被源石热力蒸得通红的雪白肌肤散发着惊人的温度，她一把抓住你的领口——「身体里像是有火在烧……光靠冰淇淋可降不下这种温度。管理员……今晚由你来负责熄灭我心头的狂热！」",
       "id": "laevatain_arknights_r18_quarters_flame",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "舱内柔和淡蓝环境光与床头暖灯，白嫩肌肤泛着微热红晕",
       "location": "塔罗斯研究舰单人休息舱",
       "mood": "私密温存与异种性感",
@@ -1831,7 +1800,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -1860,7 +1828,7 @@
       "characterId": "laevatain_arknights",
       "description": "【莱万汀 · 冰浴】堆满冰块的深水浴缸内，莱万汀赤裸着健美修长的身躯仰靠在冰水边缘，滚烫的体温将周围的冰块迅速融化蒸发成阵阵白汽。她咬着下唇眼神灼热——「冰水越冷，身体里的火焰就烧得越旺……管理员，敢跳进这池冰火交加的水里，和我融为一体吗？」",
       "id": "laevatain_arknights_r18_ice_bath",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "cold blue light",
       "location": "终末地冰浴室",
       "mood": "冷冽炽热",
@@ -1937,9 +1905,7 @@
         "steam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1963,7 +1929,7 @@
       "characterId": "laevatain_arknights",
       "description": "【莱万汀 · 剑侧夜话】昏暗的卧室床单上，赤身侧卧的莱万汀指尖搭在床头大剑的熔光剑柄上，修长丰满的大腿毫无防备地大开。她微眯起金红色的眼眸拉近你的身躯——「在战场上我是你最锋利的剑刃……而在今夜的床上，我只想做被你征服的女人。」",
       "id": "laevatain_arknights_r18_sword_side",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "thin ember light",
       "location": "终末地私人舱室",
       "mood": "警戒下的柔软",
@@ -2045,9 +2011,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2071,7 +2035,7 @@
       "characterId": "laevatain_arknights",
       "description": "【莱万汀 · 熔池畔】地热工坊沸腾的红光照亮了整座岩洞，赤身伫立在池边的莱万汀身姿婀娜挺拔，火光在她紧致无暇的胴体上勾勒出动人心魄的完美轮廓。她向你张开双臂——「这里没有寒冷也没有顾虑……来吧，管理员，让我们在这片熔光之中尽情燃烧！」",
       "id": "laevatain_arknights_r18_lava_pool",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "deep lava glow",
       "location": "塔罗斯熔池",
       "mood": "危险旖旎",
@@ -2176,9 +2140,7 @@
         "slender_waist",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2261,12 +2223,11 @@
         "two people"
       ],
       "outfitId": "combat_outfit",
-      "promptProse": "In the repair workshop of the Endfield base, Yvonne leans over her workbench with a screwdriver between her teeth while she spins a freshly repaired handgun on her finger, pink twin tails streaked with grime as her small horns catch the overhead work light. Blueprints and spare parts scatter across the metal table while cool fluorescent beams slice through the faint haze of solder smoke.",
+      "promptProse": "In the repair workshop of the Endfield base, Yvonne leans over her workbench with a screwdriver between her teeth while she spins a freshly repaired handgun on her finger, pink twin tails streaked with grime as her small horns catch the overhead work light. Blueprints and spare parts scatter across the metal table while cool fluorescent beams slice through the faint air of solder smoke.",
       "promptTokens": [
         "blue_eyes",
         "cinematic_lighting",
         "crop_top",
-        "depth_of_field",
         "detailed_background",
         "detached_sleeves",
         "dual_wielding",
@@ -2283,7 +2244,6 @@
         "short_boots",
         "tail",
         "twintails",
-        "volumetric_lighting",
         "workshop",
         "screwdriver"
       ],
@@ -2373,7 +2333,6 @@
         "blue_eyes",
         "cinematic_lighting",
         "crop_top",
-        "depth_of_field",
         "detailed_background",
         "detached_sleeves",
         "dual_wielding",
@@ -2389,7 +2348,6 @@
         "short_boots",
         "tail",
         "twintails",
-        "volumetric_lighting",
         "wide_shot"
       ],
       "recommendedSize": "1536x1152",
@@ -2480,7 +2438,6 @@
       "promptTokens": [
         "blue_eyes",
         "cinematic_lighting",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "fashion",
@@ -2493,8 +2450,7 @@
         "pink_hair",
         "screen_glow",
         "tail",
-        "twintails",
-        "volumetric_lighting"
+        "twintails"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2585,7 +2541,6 @@
         "blue_eyes",
         "blue_sky",
         "cinematic_lighting",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "horns",
@@ -2596,8 +2551,7 @@
         "smartphone",
         "smile",
         "tail",
-        "twintails",
-        "volumetric_lighting"
+        "twintails"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2686,7 +2640,6 @@
         "blue_eyes",
         "canteen",
         "cinematic_lighting",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "horns",
@@ -2696,8 +2649,7 @@
         "pink_hair",
         "smile",
         "tail",
-        "twintails",
-        "volumetric_lighting"
+        "twintails"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -2786,7 +2738,6 @@
         "arcade",
         "blue_eyes",
         "cinematic_lighting",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "fashion",
@@ -2799,8 +2750,7 @@
         "night",
         "pink_hair",
         "tail",
-        "twintails",
-        "volumetric_lighting"
+        "twintails"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2828,7 +2778,7 @@
       ],
       "description": "【伊冯 · 机械工坊操作台辣妹】工坊金属操作台上，伊冯头顶推着太阳镜，身着性感黑色细带比基尼，龙尾灵动摇曳，紧致小腹与饱满胸型在天窗明媚日光下散发着满分辣妹挑逗魅力。",
       "id": "yvonne_arknights_r18_workshop_night",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "天窗倾泻的明朗日光与金属反光",
       "location": "基地天窗工坊",
       "mood": "辣妹挑逗",
@@ -2921,9 +2871,7 @@
         "flirtatious_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2953,7 +2901,7 @@
       "coverageTags": [],
       "description": "【伊冯 · 晨间浴缸彩虹泡泡】阳光浴室的温热浴缸里，伊冯俏皮地探出湿润的粉色双马尾与小龙角，绵密泡沫贴在饱满的胸脯与摇曳的龙尾上，撩起水花眨眼娇笑。",
       "id": "yvonne_arknights_r18_dorm_shower",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "百叶窗透射的明亮晨光与水汽光晕",
       "location": "基地晨光浴室",
       "mood": "俏皮娇媚",
@@ -3043,9 +2991,7 @@
         "playful_wink",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3073,7 +3019,7 @@
       "coverageTags": [],
       "description": "【伊冯 · 时尚试衣间全身镜心跳】明亮的精品店试衣间全身镜前，伊冯半褪下紧身上衣回眸征询，沙漏般的火辣辣妹腰臀比与挺拔双峰在环形柔光下极具视觉冲击力。",
       "id": "yvonne_arknights_r18_fashion_fitting",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "全身镜环绕高显色柔光与暖白天幕",
       "location": "VIP 试衣间",
       "mood": "火辣心动",
@@ -3164,9 +3110,7 @@
         "bright_room",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3196,7 +3140,7 @@
       ],
       "description": "【伊冯 · 宿舍沙发玩手机仰卧拉扯】阳光充足的宿舍布艺沙发上，伊冯一手举着手机一手轻拉纯白小裤裤边缘，粉发龙角轻蹭软枕，平坦小腹微红，坏笑征询你的心跳。",
       "id": "yvonne_arknights_r18_rooftop_star",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "壮丽金色朝霞与万丈朝阳晨辉",
       "location": "基地朝霞天台",
       "mood": "辣妹私密挑逗",
@@ -3288,9 +3232,7 @@
         "top-down_view",
         "pov",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3337,9 +3279,7 @@
         "doorway_lamp",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot, sensor housing and tablet visible beside the station entrance",
       "lighting": "雪原清晨冷光与入口暖灯",
@@ -5083,8 +5023,7 @@
         "cleavage",
         "bare_shoulders",
         "blush",
-        "close-up",
-        "depth_of_field"
+        "close-up"
       ],
       "promptProse": "Lounging across an ornate carved daybed draped in deep vermilion silk, Zhuang Fangyi allows her sheer translucent oriental night robe to slip down her bare shoulders. Warm lantern light glows softly across her smooth pale skin, exposed cleavage, and slender waist. Her green eyes gaze with a heavy blush and an uncharacteristic, breathless intimacy.",
       "negativeTokens": [
@@ -5195,10 +5134,9 @@
         "steam",
         "bare_shoulders",
         "water_drop",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
-      "promptProse": "Sitting on the smooth stone edge of a secluded geothermal bath, Zhuang Fangyi is wrapped only in a soaked white linen towel that clings translucently to her drenched curves. Rising steam drifts through soft lantern illumination, highlighting glistening water droplets running down her collarbone and thighs. Her damp hair clings to her flushed neck as she glances shyly aside.",
+      "promptProse": "Sitting on the smooth stone edge of a secluded geothermal bath, Zhuang Fangyi is wrapped only in a soaked white linen towel that clings translucently to her drenched curves. Rising steam drifts through soft illumination, highlighting glistening water droplets running down her collarbone and thighs. Her damp hair clings to her flushed neck as she glances shyly aside.",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -5260,7 +5198,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@anmi",
       "nsfwTokens": [
@@ -5306,8 +5244,7 @@
         "breasts",
         "nipples",
         "bare_legs",
-        "full_body",
-        "depth_of_field"
+        "full_body"
       ],
       "promptProse": "Completely naked and standing in the quiet seclusion of her candlelit study past midnight, Zhuang Fangyi leans gracefully against the polished wooden desk. The flickering flame illuminates her natural full breasts, delicate pink nipples, slender waist, and flawless bare skin from head to toe. Her black-to-teal hair falls loosely past her bare shoulders as her dignified composure gives way to sensual vulnerability.",
       "negativeTokens": [
@@ -5371,7 +5308,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@tsunako",
       "nsfwTokens": [
@@ -5415,10 +5352,9 @@
         "knees_up",
         "breasts",
         "nipples",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
-      "promptProse": "Lying on her back across embroidered satin sheets beneath a sheer bed canopy, Zhuang Fangyi draws her slender legs slightly apart with bent knees. Soft golden candlelight shimmers across her flat stomach, exposed navel, bare breasts, and blushing thighs. Her clear green eyes glisten with tears of pleasure and sweet surrender as her breath trembles in the quiet room.",
+      "promptProse": "Lying on her back across embroidered satin sheets beneath a sheer bed canopy, Zhuang Fangyi draws her slender legs slightly apart with bent knees. Soft golden light shimmers across her flat stomach, exposed navel, bare breasts, and blushing thighs. Her clear green eyes glisten with tears of pleasure and sweet surrender as her breath trembles in the quiet room.",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -5480,7 +5416,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "adultArtistHint": "@rella",
       "nsfwTokens": [
@@ -5526,8 +5462,7 @@
         "nipples",
         "strap_slip",
         "cleavage",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Sitting on the edge of her luxury bed in the private quarters, the Administrator lets the spaghetti strap of her silk nightgown slide freely down her left shoulder. The delicate fabric pulls open to reveal her firm bare breasts, pink nipples, and toned midriff in the dim ambient cabin lighting. Her piercing eyes gaze forward with an alluring mix of imperial pride and sensual yearning.",
       "negativeTokens": [
@@ -5593,7 +5528,7 @@
       ],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "nsfwTokens": [
@@ -5635,8 +5570,7 @@
         "breasts",
         "nipples",
         "sweat",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Leaning back against the reinforced metal wall of the decontamination airlock, the Administrator pulls down the front zipper of her compression bodysuit all the way to her navel. The tight fabric peels open, fully exposing her full perky breasts, rosy nipples, and sweat-sheened stomach under warm service spotlights. Heavy breathing parts her lips as she looks at you with fierce intimacy.",
       "negativeTokens": [
@@ -5700,7 +5634,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@yoneyama_mai",
       "nsfwTokens": [
@@ -5742,8 +5676,7 @@
         "breasts",
         "nipples",
         "wet",
-        "full_body",
-        "depth_of_field"
+        "full_body"
       ],
       "promptProse": "Stepping out of the restorative bio-fluid immersion bath, the Administrator stands drenched as the translucent white tunic clings like transparent film over her bare body. The viscous liquid outlines every curve of her erect nipples, hourglass waist, and sculpted thighs under bright medical examination lights. She tosses her wet long dark hair back, unabashed by her exposed beauty.",
       "negativeTokens": [
@@ -5807,7 +5740,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "adultArtistHint": "@rella",
       "nsfwTokens": [
@@ -5849,8 +5782,7 @@
         "breasts",
         "nipples",
         "navel",
-        "full_body",
-        "depth_of_field"
+        "full_body"
       ],
       "promptProse": "Standing completely naked in the center of the private ultraviolet purification rotunda, the Administrator presents her athletic female form without a single thread of concealment. Soft diffused overhead radiance illuminates her firm rounded breasts, tender pink nipples, slender waist, and flawless bare thighs. Her sovereign gaze holds yours with breathtaking confidence and unspoken passion.",
       "negativeTokens": [
@@ -5914,7 +5846,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "adultArtistHint": "@tsunako",
       "nsfwTokens": [
@@ -5957,8 +5889,7 @@
         "nipples",
         "sweat",
         "blush",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Leaning back against a warm engine block after hours of strenuous repair work, Rossi is drenched in sweat that turns her thin white camisole completely sheer. The wet fabric clings tightly across her perky breasts, clearly revealing pink nipples and flushed skin under overhead work spotlights. She tugs at the neckline to fan herself, panting softly with a flustered blush.",
       "negativeTokens": [
@@ -6024,7 +5955,7 @@
       ],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@tsunako",
       "nsfwTokens": [
@@ -6067,8 +5998,7 @@
         "nipples",
         "bare_legs",
         "blush",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Sitting on the edge of the heavy steel workbench in the locked workshop, Rossi shyly rolls her ribbed racerback tank top up to her collarbone. Her bare youthful breasts and rosy nipples tremble in the cool breeze of the ventilation fan as she covers her mouth with one grease-stained glove. Her yellow eyes dart upward to meet yours in sweet embarrassment.",
       "negativeTokens": [
@@ -6132,7 +6062,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@anmi",
       "nsfwTokens": [
@@ -6177,8 +6107,7 @@
         "breasts",
         "nipples",
         "bare_legs",
-        "full_body",
-        "depth_of_field"
+        "full_body"
       ],
       "promptProse": "Standing completely naked inside the compact shower stall of the engineering dorm, Rossi tilts her head back as warm water cascades over her hair and shoulders. The clear droplets stream down her perky breasts, pink nipples, toned abdomen, and slender thighs through misty steam. She rubs shower gel across her collarbone with a cute, contented sigh.",
       "negativeTokens": [
@@ -6242,7 +6171,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "nsfwTokens": [
@@ -6288,8 +6217,7 @@
         "breasts",
         "nipples",
         "navel",
-        "cowboy_shot",
-        "depth_of_field"
+        "cowboy_shot"
       ],
       "promptProse": "Lying on her back across the narrow cot in her personal workshop nook, Rossi stretches her completely naked body with her knees playfully spread apart. A faint fingerprint of motor grease smudges her inner thigh, contrasting against her smooth fair skin and pink intimate folds in the soft lamplight. She glances upward with an eager, blushing smile.",
       "negativeTokens": [
@@ -6353,7 +6281,7 @@
       "coverageTags": [],
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "adultArtistHint": "@tsunako",
       "nsfwTokens": [

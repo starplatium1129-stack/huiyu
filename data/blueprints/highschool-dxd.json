@@ -39,9 +39,7 @@
         "cowboy_shot",
         "low_angle",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -96,7 +94,6 @@
         "morning_light",
         "sunlight",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting"
@@ -141,7 +138,7 @@
         "shy_smile",
         "blush"
       ],
-      "promptProse": "Sitting at a charming outdoor cafe bench beneath blooming cherry trees, Rias Gremory leans forward holding a fresh strawberry crepe toward the viewer. Dressed in her Kuoh Academy school uniform, her porcelain cheeks show a bashful pink blush as her cyan eyes sparkle with sweet romantic affection. Medium shot, vibrant afternoon lighting, sparkling lens flare, solo 1girl, no text.",
+      "promptProse": "Sitting at a charming outdoor cafe bench beneath blooming cherry trees, Rias Gremory leans forward holding a fresh strawberry crepe toward the viewer. Dressed in her Kuoh Academy school uniform, her porcelain cheeks show a bashful pink blush as her cyan eyes sparkle with sweet romantic affection. Medium shot, vibrant afternoon lighting, solo 1girl, no text.",
       "promptTokens": [
         "outdoor_cafe",
         "park_bench",
@@ -155,10 +152,8 @@
         "cyan_eyes",
         "afternoon_sun",
         "medium_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -215,10 +210,8 @@
         "sunset",
         "golden_hour",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -276,9 +269,7 @@
         "cozy",
         "cowboy_shot",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -335,10 +326,8 @@
         "playful_smile",
         "sunny",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -397,8 +386,7 @@
         "cowboy_shot",
         "cinematic_lighting",
         "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -462,9 +450,7 @@
         "vertical_shot",
         "high_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -543,9 +529,7 @@
         "wide_shot",
         "horizontal",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -616,9 +600,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -688,9 +670,7 @@
         "teary_eyes",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -754,9 +734,7 @@
         "cowboy_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -811,10 +789,8 @@
         "purple_eyes",
         "high_ponytail",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -872,9 +848,7 @@
         "high_ponytail",
         "medium_shot",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -933,9 +907,7 @@
         "romantic_atmosphere",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -993,8 +965,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1051,9 +1022,7 @@
         "sunny",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1110,9 +1079,7 @@
         "purple_eyes",
         "cowboy_shot",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1176,9 +1143,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1255,9 +1220,7 @@
         "wide_shot",
         "horizontal",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1311,7 +1274,6 @@
       "promptProse": "Lying supine upon a crimson tapestry inside the tranquil shrine inner sanctum, Akeno Himejima's white miko robes are pulled wide open, exposing her gorgeous full breasts and firm rosy nipples. Her long black hair spreads across the floor while her shapely legs part in total invitation. One hand interlocks tightly with the viewer's fingers as she whispers breathless adoration through parted lips, cheeks glowing crimson. Luminous vertical anime CG, solo 1girl, no text.",
       "promptTokens": [
         "shrine_interior",
-        "candlelight",
         "lying_on_back",
         "miko",
         "open_shirt",
@@ -1331,9 +1293,7 @@
         "vertical_shot",
         "high_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1405,9 +1365,7 @@
         "high_ponytail",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

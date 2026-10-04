@@ -80,8 +80,6 @@
         "golden_hour",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sitting_on_concrete_steps",
         "chain_link_fence",
         "plain_white_rice",
@@ -197,8 +195,6 @@
         "puddles",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "raising_wand",
         "magic_circle",
         "star_dust",
@@ -212,7 +208,6 @@
         "night",
         "magical_girl",
         "magic_circle",
-        "starlight",
         "magic_wand",
         "combat_ready"
       ],
@@ -255,7 +250,7 @@
         "bad hands"
       ],
       "outfitId": "tattered_oversized_jersey_street",
-      "promptProse": "After finishing a long convenience-store shift, Byakuya sits on a street bench beneath a weak streetlamp and counts the coins she earned one by one. She carefully puts them into a worn, faded wallet and exhales in relief, gathering herself for tomorrow's work. Medium street-level portrait, quiet night ambience, detailed storefront background, cinematic lighting, depth of field.",
+      "promptProse": "After finishing a long convenience-store shift, Byakuya sits on a street bench beneath a weak streetlamp and counts the coins she earned one by one. She carefully puts them into a worn, faded wallet and exhales in relief, gathering herself for tomorrow's work. Medium street-level portrait, quiet night ambience, detailed storefront background, cinematic lighting.",
       "promptTokens": [
         "convenience_store",
         "counting_coins",
@@ -263,8 +258,6 @@
         "deadpan",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "street_bench",
         "streetlamp",
         "worn_wallet",
@@ -300,7 +293,7 @@
       "characterId": "mimori_byakuya",
       "description": "【深森白夜 · 简陋出租屋·旧水手服解扣与纤细私密】简陋狭小的老旧出租屋内，洗得发旧的水手服上衣纽扣被悄然解开，身材纤细玲珑的白夜端坐在草席上，单薄的香肩因极度的羞耻而微微发颤。她咬着下唇满脸通红——「我的身体很瘦弱……可能并不如那些好看的成年女性子有吸引力……但是为了你，我什么都愿意做。」",
       "id": "byakuya_r18_tatami_room_unbuttoned_spread",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "dim_lamp",
       "location": "简陋出租屋榻榻米",
       "mood": "sensual",
@@ -392,9 +385,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -427,7 +418,7 @@
       ],
       "description": "【深森白夜 · 出租屋的星光夜灯】狭小的出租屋里，白夜盘腿坐在旧床铺上，用魔法成年女性的星尘光点充当夜灯，一点一点地数着今天打工挣来的硬币。她打了个小小的哈欠，把硬币罐抱在怀里，脸上带着疲惫又满足的浅笑——「……今天的饭钱和电费都够了。星星说，明天也会是好天气。」",
       "id": "byakuya_r18_bedroom_soles_shackled",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft starlight particles, dim warm ceiling bulb, cozy cramped glow",
       "location": "狭小出租屋床铺",
       "mood": "清贫温馨",
@@ -485,9 +476,7 @@
         "nightlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -514,7 +503,7 @@
       "characterId": "mimori_byakuya",
       "description": "【深森白夜 · 战后废墟·破碎战服与无防备私密】激烈战斗后的硝烟废墟中，魔法成年女性的战服被魔力余波撕裂大半，白夜无力地跌坐在碎石堆上，大片雪白滑腻的肌肤与贴身衣物完全暴露在外。她喘息着抬头望向走近的你——「敌人……终于被击退了……但是战服坏成这副模样，根本没办法走出去了啦……」",
       "id": "byakuya_r18_magical_girl_torn_dress",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "moonlight",
       "location": "战后废墟",
       "mood": "intense",
@@ -606,9 +595,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -714,9 +701,7 @@
         "afternoon",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -820,7 +805,7 @@
         "same character twice"
       ],
       "outfitId": "part_time_maid_apron",
-      "promptProse": "Carefully carrying a tray loaded with steaming black tea and cake through a refined maid cafe, Byakuya nearly trips, steadies herself, then bows repeatedly with a bright embarrassed blush. Her simple black-and-white maid dress and warm cafe lighting keep the mishap lighthearted. Medium shot, detailed indoor cafe background, cinematic lighting, depth of field.",
+      "promptProse": "Carefully carrying a tray loaded with steaming black tea and cake through a refined maid cafe, Byakuya nearly trips, steadies herself, then bows repeatedly with a bright embarrassed blush. Her simple black-and-white maid dress and warm cafe lighting keep the mishap lighthearted. Medium shot, detailed indoor cafe background, cinematic lighting.",
       "promptTokens": [
         "maid_cafe",
         "maid_uniform",
@@ -828,8 +813,6 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "black_tea",
         "cake",
         "careful_steps",
@@ -925,17 +908,14 @@
         "bystanders"
       ],
       "outfitId": "magical_girl_dress",
-      "promptProse": "On a city rooftop surrounded by high-rise silhouettes, Byakuya turns her head toward the viewer as a luminous transformation ring rises from her feet. Fine star-dust particles drift upward around her beneath a visible full moon. Cool silver moonlight and blue magic light illuminate her twin horn buns and magical-girl outfit. A wide shot includes the rooftop edge, city skyline and complete rising transformation glow.",
+      "promptProse": "On a city rooftop surrounded by high-rise silhouettes, Byakuya turns her head toward the viewer as a luminous transformation ring rises from her feet. Fine star- drift upward around her beneath a visible full moon. Cool silver moonlight and blue magic light illuminate her twin horn buns and magical-girl outfit. A wide shot includes the rooftop edge, city skyline and complete rising transformation glow.",
       "promptTokens": [
         "rooftop",
         "moonlight",
         "magic_circle",
-        "starlight",
         "night",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "city_rooftop",
         "city_skyline",
         "full_moon",
@@ -951,7 +931,6 @@
         "transformation",
         "magical_girl",
         "sparkles",
-        "starlight",
         "magic_wand",
         "city_lights"
       ],
@@ -971,7 +950,7 @@
       ],
       "description": "【深森白夜 · 女仆店打烊后的员工淋浴】女仆咖啡店打烊后，白夜拖着疲惫的身体走进狭小的员工淋浴间。热水冲下来的一瞬间，她长长地舒了口气，靠着瓷砖墙仰起头，水珠顺着银白的发丝滑落。她小声嘟囔着——「……今天的营业额，够交这个月房租了……明天也要加油。」",
       "id": "byakuya_r18_public_bath_steam",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dim fluorescent light, cascading water, soft steam haze",
       "location": "女仆咖啡店员工淋浴间",
       "mood": "疲惫松弛",
@@ -1061,9 +1040,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1103,9 +1080,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "camera": "medium shot across the dining table, face, bowl and hands in frame",
       "lighting": "小厨房吊灯照亮面碗热气的暖光",

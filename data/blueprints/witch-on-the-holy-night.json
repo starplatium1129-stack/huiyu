@@ -386,9 +386,7 @@
         "morning",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -442,7 +440,7 @@
         "victorian_clothes",
         "bare_breasts"
       ],
-      "promptProse": "Alice Kuonji from Mahoutsukai no Yoru straddles your lap in a high-backed velvet armchair before the dying embers of the Kuonji manor fireplace. Her severe black Victorian dress is unbuttoned to her waist, unveiling porcelain-pale, untouched breasts with rosy nipples that heave gently with her unhurried, commanding hip motion. Her short black bob frames a face of aristocratic perfection, obsidian eyes softening with ancient, deep affection as her cool hands rest upon your shoulders. Vertical low-angle cowgirl shot, dim crimson hearth light and candle flicker across flawless skin, detailed Victorian study background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Alice Kuonji from Mahoutsukai no Yoru straddles your lap in a high-backed velvet armchair before the dying embers of the Kuonji manor fireplace. Her severe black Victorian dress is unbuttoned to her waist, unveiling porcelain-pale, untouched breasts with rosy nipples that heave gently with her unhurried, commanding hip motion. Her short black bob frames a face of aristocratic perfection, obsidian eyes softening with ancient, deep affection as her cool hands rest upon your shoulders. Vertical low-angle cowgirl shot, dim crimson hearth light and light flicker across flawless skin, detailed Victorian study background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -466,9 +464,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -493,7 +489,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -519,11 +515,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Alice Kuonji from Mahoutsukai no Yoru straddles your lap in a high-backed velvet armchair before the dying embers of the Kuonji manor fireplace. Her severe black Victorian dress is unbuttoned to her waist, unveiling porcelain-pale, untouched breasts with rosy nipples that heave gently with her unhurried, commanding hip motion. Her short black bob frames a face of aristocratic perfection, obsidian eyes softening with ancient, deep affection as her cool hands rest upon your shoulders. Vertical low-angle cowgirl shot, dim crimson hearth light and candle flicker across flawless skin, detailed Victorian study background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Alice Kuonji from Mahoutsukai no Yoru straddles your lap in a high-backed velvet armchair before the dying embers of the Kuonji manor fireplace. Her severe black Victorian dress is unbuttoned to her waist, unveiling porcelain-pale, untouched breasts with rosy nipples that heave gently with her unhurried, commanding hip motion. Her short black bob frames a face of aristocratic perfection, obsidian eyes softening with ancient, deep affection as her cool hands rest upon your shoulders. Vertical low-angle cowgirl shot, dim crimson hearth light and light flicker across flawless skin, detailed Victorian study background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -556,7 +550,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Alice Kuonji lounges inside a clawfoot cast-iron bathtub filled with herb-infused steaming water in her vintage attic bath. Her short jet-black hair clings damp to her pale neck, dark droplets trickling down slender, untouched breasts and erect rosebuds. Underwater, her fingers trace her private folds with quiet, scientific curiosity, her composed gaze misting over as a genuine shiver of arousal arches her pale back. Sensual vertical composition, stained glass window backlighting cool steam and warm oil lamps, detailed gothic mansion background, depth of field, solo 1girl, no text.",
+      "promptProse": "Alice Kuonji lounges inside a clawfoot cast-iron bathtub filled with herb-infused steaming water in her vintage attic bath. Her short jet-black hair clings damp to her pale neck, dark droplets trickling down slender, untouched breasts and erect rosebuds. Underwater, her fingers trace her private folds with quiet, scientific curiosity, her composed gaze misting over as a genuine shiver of arousal arches her pale back. Sensual vertical composition, stained glass window backlighting cool steam and warm oil lamps, detailed gothic mansion background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -580,9 +574,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -607,7 +599,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -633,11 +625,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Alice Kuonji lounges inside a clawfoot cast-iron bathtub filled with herb-infused steaming water in her vintage attic bath. Her short jet-black hair clings damp to her pale neck, dark droplets trickling down slender, untouched breasts and erect rosebuds. Underwater, her fingers trace her private folds with quiet, scientific curiosity, her composed gaze misting over as a genuine shiver of arousal arches her pale back. Sensual vertical composition, stained glass window backlighting cool steam and warm oil lamps, detailed gothic mansion background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Alice Kuonji lounges inside a clawfoot cast-iron bathtub filled with herb-infused steaming water in her vintage attic bath. Her short jet-black hair clings damp to her pale neck, dark droplets trickling down slender, untouched breasts and erect rosebuds. Underwater, her fingers trace her private folds with quiet, scientific curiosity, her composed gaze misting over as a genuine shiver of arousal arches her pale back. Sensual vertical composition, stained glass window backlighting cool steam and warm oil lamps, detailed gothic mansion background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -670,7 +660,7 @@
         "clothes_pull",
         "hands_behind_back"
       ],
-      "promptProse": "Alice Kuonji leans forward over her mahogany vanity table as her bluebird familiar Robin tangles the silk laces of her black Victorian corset into an impossible knot. The intense boning squeezes her slender waist to an impossible taper, forcing her pale, flawless breasts upward into a staggering swell above the lace neckline. Looking back over her arched shoulder with flushed cheeks and rare, indignant tears glistening in her dark eyes, she commands you to rescue her from her mischievous familiar. Cinematic horizontal framing, twilight filtering through heavy velvet drapes onto porcelain skin, detailed antique room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Alice Kuonji leans forward over her mahogany vanity table as her bluebird familiar Robin tangles the silk laces of her black Victorian corset into an impossible knot. The intense boning squeezes her slender waist to an impossible taper, forcing her pale, flawless breasts upward into a staggering swell above the lace neckline. Looking back over her arched shoulder with flushed cheeks and rare, indignant tears glistening in her dark eyes, she commands you to rescue her from her mischievous familiar. Cinematic horizontal framing, twilight filtering through heavy velvet drapes onto porcelain skin, detailed antique room background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -698,9 +688,7 @@
         "black_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -725,7 +713,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -755,11 +743,9 @@
         "black_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Alice Kuonji leans forward over her mahogany vanity table as her bluebird familiar Robin tangles the silk laces of her black Victorian corset into an impossible knot. The intense boning squeezes her slender waist to an impossible taper, forcing her pale, flawless breasts upward into a staggering swell above the lace neckline. Looking back over her arched shoulder with flushed cheeks and rare, indignant tears glistening in her dark eyes, she commands you to rescue her from her mischievous familiar. Cinematic horizontal framing, twilight filtering through heavy velvet drapes onto porcelain skin, detailed antique room background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Alice Kuonji leans forward over her mahogany vanity table as her bluebird familiar Robin tangles the silk laces of her black Victorian corset into an impossible knot. The intense boning squeezes her slender waist to an impossible taper, forcing her pale, flawless breasts upward into a staggering swell above the lace neckline. Looking back over her arched shoulder with flushed cheeks and rare, indignant tears glistening in her dark eyes, she commands you to rescue her from her mischievous familiar. Cinematic horizontal framing, twilight filtering through heavy velvet drapes onto porcelain skin, detailed antique room background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -792,7 +778,7 @@
         "bare_breasts",
         "pink_nipples"
       ],
-      "promptProse": "Deep inside the heavy velvet drapes of her antique four-poster bed, Alice Kuonji lies completely naked across the ivory sheets. Stripped of all witchcraft, her fingers pump rhythmically into her soaking, sensitive depths, her arched spine trembling as waves of unfamiliar passion overwhelm her discipline. Her dark bob splays across the pillows, silent tears of profound emotional discovery slipping past her porcelain cheeks as breathless gasps escape her parted lips. Intimate vertical framing, silver moonlight slicing through gothic mullioned windows, detailed Victorian mansion background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Deep inside the heavy velvet drapes of her antique four-poster bed, Alice Kuonji lies completely naked across the ivory sheets. Stripped of all witchcraft, her fingers pump rhythmically into her soaking, sensitive depths, her arched spine trembling as waves of unfamiliar passion overwhelm her discipline. Her dark bob splays across the pillows, silent tears of profound emotional discovery slipping past her porcelain cheeks as breathless gasps escape her parted lips. Intimate vertical framing, silver moonlight slicing through gothic mullioned windows, detailed Victorian mansion background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -819,9 +805,7 @@
         "black_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -846,7 +830,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -875,11 +859,9 @@
         "black_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Deep inside the heavy velvet drapes of her antique four-poster bed, Alice Kuonji lies completely naked across the ivory sheets. Stripped of all witchcraft, her fingers pump rhythmically into her soaking, sensitive depths, her arched spine trembling as waves of unfamiliar passion overwhelm her discipline. Her dark bob splays across the pillows, silent tears of profound emotional discovery slipping past her porcelain cheeks as breathless gasps escape her parted lips. Intimate vertical framing, silver moonlight slicing through gothic mullioned windows, detailed Victorian mansion background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Deep inside the heavy velvet drapes of her antique four-poster bed, Alice Kuonji lies completely naked across the ivory sheets. Stripped of all witchcraft, her fingers pump rhythmically into her soaking, sensitive depths, her arched spine trembling as waves of unfamiliar passion overwhelm her discipline. Her dark bob splays across the pillows, silent tears of profound emotional discovery slipping past her porcelain cheeks as breathless gasps escape her parted lips. Intimate vertical framing, silver moonlight slicing through gothic mullioned windows, detailed Victorian mansion background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

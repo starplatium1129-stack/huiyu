@@ -84,7 +84,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "jumping",
         "mid-air"
       ],
@@ -182,9 +181,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -277,8 +274,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "blowing_kiss",
         "hand_to_lips"
       ],
@@ -373,9 +368,7 @@
         "flashing_lights",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -470,9 +463,7 @@
         "looking_in_mirror",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -566,8 +557,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "shaking_hands",
         "two_clothed_figures"
       ],
@@ -596,7 +585,7 @@
       ],
       "description": "【星野爱 · 演出后后台化妆镜前】明亮专属化妆室的大面发光化妆镜前，星野爱坐在转椅上，解开偶像礼服拉链滑落至腰际，双眸中标志性的璀璨六芒星瞳闪烁着私密的娇羞与爱意，明亮环形柔光映衬着纤细锁骨、平坦小腹与迷人胸线。",
       "id": "hoshino_ai_r18_hotel_after_live",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "大面发光化妆镜的明亮环形柔光与化妆室通透漫射光",
       "location": "演出后台专属化妆室",
       "mood": "私密娇羞",
@@ -678,9 +667,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -709,7 +696,7 @@
       "coverageTags": [],
       "description": "【星野爱 · 剧场阳光舞台兔女郎】白日阳光透过剧场巨大天窗倾泻在舞台中央，星野爱身着纯白兔女郎紧身衣与半透白丝，俯身手扶舞台边缘回眸眨眼，兔子尾巴微颤，细腰挺胸在明媚天光下充满灵动魅力。",
       "id": "hoshino_ai_r18_stage_room_alone",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "纯白高光舞台聚光灯与舞台天顶主光",
       "location": "独占剧场舞台",
       "mood": "俏皮反差",
@@ -792,8 +779,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -823,7 +809,7 @@
       "coverageTags": [],
       "description": "【星野爱 · 阳台晴空薄衫微敞】私密公寓阳光露台上，明媚海风轻拂星野爱的紫色发丝，身上宽大的薄白衬衫滑落肩头，俯瞰着蔚蓝海天侧身回眸，星瞳闪烁，充沛阳光勾勒着白皙锁骨与曼妙侧胸。",
       "id": "hoshino_ai_r18_dressing_room",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "化妆台环形高显色柔光灯与天花漫射白光",
       "location": "明亮化妆间",
       "mood": "晴空浪漫",
@@ -905,9 +891,7 @@
         "breeze",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -937,7 +921,7 @@
       ],
       "description": "【星野爱 · 客厅地毯抱枕纯欲】私密公寓温暖的客厅阳光地毯上，星野爱单人抱着软绵绵的白抱枕斜倚，身着黑色细带比基尼，清晨温暖的晨光洒在平坦紧致的小腹与娇嫩双峰上，双眸中标志性的六芒星瞳闪烁着卸下偶像光环后的纯真爱意。",
       "id": "hoshino_ai_r18_apartment_morning",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "落地窗洒入的清晨金色阳光与柔和丁达尔光束",
       "location": "私密公寓温暖客厅",
       "mood": "纯真爱恋",
@@ -1007,8 +991,7 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1119,7 +1102,7 @@
         "claws"
       ],
       "outfitId": "sayahime_stage",
-      "promptProse": "At the decisive moment of the Tokyo Blade stage performance, Akane draws her prop katana from its sheath with intense method-acting focus. Her star-lit eyes and billowing blue-violet hair catch the dramatic blood-red stage spotlights, while theatrical fog surrounds the blade as it clears the scabbard.",
+      "promptProse": "At the decisive moment of the Tokyo Blade stage performance, Akane draws her prop katana from its sheath with intense method-acting focus. Her star-lit eyes and billowing blue-violet hair catch the dramatic blood-red stage spotlights, while theatrical air surrounds the blade as it clears the scabbard.",
       "promptTokens": [
         "theatre_stage",
         "tokyo_blade_costume",
@@ -1130,8 +1113,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "drawing_katana",
         "sheath"
       ],
@@ -1231,8 +1212,6 @@
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_textbooks",
         "walking"
       ],
@@ -1350,8 +1329,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "holding_script",
         "white_wall"
       ],
@@ -1422,8 +1399,6 @@
         "daylight",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "full_body"
       ],
       "recommendedSize": "1216x832",
@@ -1535,8 +1510,6 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "sitting_on_sofa",
         "studio_sofa"
       ],
@@ -1649,9 +1622,7 @@
         "soft_lighting",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1679,7 +1650,7 @@
       ],
       "description": "【黑川茜 · 晨光厨房单薄围裙】清晨明媚阳光照亮的开放式厨房吧台前，黑川茜仅系着一条单薄棉质围裙为你准备热饮，侧身回眸带着娇羞的微嗔，围裙侧空展露出迷人的侧乳、纤细腰肢与白皙肌肤，明亮通透。",
       "id": "kurokawa_akane_r18_actor_dressing",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "梳妆镜高显色柔光与室内温暖漫射光",
       "location": "单人更衣室",
       "mood": "日常私密温情",
@@ -1753,7 +1724,7 @@
         "heavy_blush"
       ],
       "outfitId": "sayahime_stage",
-      "promptProse": "Kitchen sunlight frames adult Akane Kurokawa alone in a white apron tied around her waist. The apron bib has slipped beneath bare breasts as she kneels beside an open oven, one leg folded on a mat. She holds a wooden spoon in one hand and wipes flour from her inner thigh with the other, blue theatrical light reflecting faint stars in her eyes. Dark hair, parted breath and a devoted blush remain crisp. Vertical domestic solo portrait, no text or extra people.",
+      "promptProse": "Kitchen sunlight frames adult Akane Kurokawa alone in a white apron tied around her waist. The apron bib has slipped beneath bare breasts as she kneels beside an open oven, one leg folded on a mat. She holds a wooden spoon in one hand and wipes flour from her inner thigh with the other, blue theatrical light reflecting faint in her eyes. Dark hair, parted breath and a devoted blush remain crisp. Vertical domestic solo portrait, no text or extra people.",
       "promptTokens": [
         "kitchen",
         "apron",
@@ -1761,9 +1732,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1792,7 +1761,7 @@
       "coverageTags": [],
       "description": "【黑川茜 · 晴窗白纱长裙微敞】阳光明媚的高大落地窗前，白纱轻扬，充沛天光将黑川茜白皙高挑、修长曼妙的全身身段勾勒得分外迷人，她半解丝绸长裙立姿回眸微喘，青紫长发垂落，星瞳中满溢着对恋人的全身心托付。",
       "id": "kurokawa_akane_r18_apartment_blue",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "宽大落地窗倾泻的淡金晨光与漫射天光",
       "location": "晨光公寓窗边",
       "mood": "温存依恋",
@@ -1876,9 +1845,7 @@
         "breeze",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1908,7 +1875,7 @@
       "coverageTags": [],
       "description": "【黑川茜 · 阳光排练室女仆装微嗔】采光通透的排练室更衣帘旁，黑川茜身穿露肩女仆短裙与黑丝袜，提撩裙摆微微蹙眉回眸，体验派角色的沉浸微嗔与饱满胸型在明亮日光下充满惊艳张力。",
       "id": "kurokawa_akane_r18_school_rooftop",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "绚烂紫金晚霞逆光与金色高光轮廓",
       "location": "晚霞天台",
       "mood": "微嗔傲娇",
@@ -1990,9 +1957,7 @@
         "maid_uniform",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2022,7 +1987,7 @@
       ],
       "description": "【黑川茜 · 优雅试衣间挂脖露背】精品店私密试衣间内柔和环光下，黑川茜身着挂脖露背晚礼服站在垂落的丝绒更衣帘旁，侧身回眸带着甜美自信的微笑与星眸，展露出优美的背部曲线、纤细腰肢与高挑身姿，单人私享纯净无镜面干扰。",
       "id": "kurokawa_akane_r18_pinafore_evening",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "试衣间柔和环形灯光与温暖漫射光",
       "location": "精品店试衣更衣室",
       "mood": "私密挑逗",
@@ -2114,9 +2079,7 @@
         "warm_lighting",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2397,8 +2360,7 @@
         "red_eyes",
         "blunt_bangs",
         "white_collar",
-        "studio_light",
-        "blurry_background"
+        "studio_light"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -2415,8 +2377,7 @@
         "red_eyes",
         "blunt_bangs",
         "white_collar",
-        "studio_light",
-        "blurry_background"
+        "studio_light"
       ],
       "timeOfDay": "日间",
       "title": "有马加奈 · 10 秒落泪的现场"
@@ -2470,9 +2431,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -2572,7 +2531,7 @@
       ],
       "description": "【偶像巡演休息室·散场后】B小町红色担当偶像服。加奈跨坐在你的腰间，蓬蓬裙被推到腰部，红白蕾丝内衣解开了胸前的蝴蝶结。平日里满嘴带刺的傲娇童星，此刻红瞳湿润欲滴，一边主动晃动纤细的腰肢，一边霸道又脆弱地命令——「不管外面有多少粉丝……看着我的眼神，绝对不许分给别人哪怕一秒钟！」",
       "id": "arima_kana_r18_b5_01",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "偶像巡演休息室·散场后",
       "mood": "主动亲密与失神",
@@ -2620,9 +2579,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima from Oshi no Ko straddles your lap in the locked backstage dressing room after a B-Komachi concert, her ruffled red idol costume shoved up to her waist. Her matching crimson lace bra hangs open, freeing her perky, sensitive breasts to bounce with her passionate, defiant hip motion as she grips your collar. Her glossy red bob and signature beret frame a face burning scarlet with tears and fierce love, demanding that you look only at her.",
@@ -2648,9 +2605,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2684,7 +2639,7 @@
       ],
       "description": "【加奈公寓浴室·深夜】卸掉舞台浓妆的加奈赤裸着站在花洒下。湿透的红色短发贴在颈项，温水顺着眼角冲刷走白天积攒的委屈。她的单手在水雾中探向腿心，饱满的红唇咬得泛白——「十秒就能哭出来的天才童星……为什么唯独在你面前……眼泪怎么也止不住啊……」",
       "id": "arima_kana_r18_b5_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "加奈公寓浴室·深夜",
       "mood": "湿身水光与私密自持",
@@ -2732,9 +2687,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima stands completely bare under the cascading spray of her apartment shower after washing off her stage makeup. Her red bob clings wetly to her temples as tears mix with water streaming over her porcelain collarbones and compact, beautiful breasts. Her trembling fingers massage herself with frantic, aching need between parted thighs, her throat knotting around muffled sobs as her famous crying-act becomes genuine heartbreak and desire.",
@@ -2760,9 +2713,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2796,7 +2747,7 @@
       ],
       "description": "【服装品牌赞助更衣室·午后】为了试镜挑了一件超修身的暗红色包臀迷你裙，后背拉链却卡在腰臀转折处。加奈双手拼命向后够，紧绷的布料把饱满微翘的臀部勒得弧度毕露，侧乳从开衩边缘完全溢出。她慌乱回头，小尖牙咬住嘴唇——「裙子真的拉不开了啦！要是试镜迟到的话……我、我就拿你是问！」",
       "id": "arima_kana_r18_b5_03",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "服装品牌赞助更衣室·午后",
       "mood": "意外失控与羞赧",
@@ -2850,9 +2801,7 @@
         "red_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima bends forward over a boutique fitting stool, trapped inside a skin-tight burgundy velvet minidress with its rear zipper jammed hopelessly over her arched hips. The severe constriction pushes her chest forward into an exquisite spill of cleavage while the hem rides high enough to reveal sheer black stockings and lace panties. Glancing back with her beret askew, her crimson eyes swim with flustered tears as her sharp canine bites into her lower lip.",
@@ -2884,9 +2833,7 @@
         "red_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2920,7 +2867,7 @@
       ],
       "description": "【加奈卧室·深夜】看到阿库亚和茜的新闻后的夜晚。加奈把整张脸埋在被窝里，睡衣被扯开露出一侧饱满白皙的乳房。手指在爱液里急促揉弄，眼泪大颗大颗砸在床单上——「明明我才是最早认识你的人……为什么每一次……都只能看着别人的背影……哈啊……」",
       "id": "arima_kana_r18_b5_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "加奈卧室·深夜",
       "mood": "独处沉沦与情绪释放",
@@ -2971,9 +2918,7 @@
         "red_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "outfitId": "nsfw_boudoir",
       "promptProse": "Curled on her side across a messy bed after seeing the latest entertainment tabloids, Kana Arima pulls her pink nightgown open, exposing one round breast and taut pink nipple. Her fingers pump feverishly between her damp thighs, her other hand clawing into the cotton sheets as choking sobs break from her chest. Tears flood her deep crimson eyes, glistening across her flushed cheeks as she climaxes alone in agonizing jealousy and pure yearning.",
@@ -3002,9 +2947,7 @@
         "red_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

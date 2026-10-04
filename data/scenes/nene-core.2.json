@@ -59,7 +59,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, multiple_girls, extra_girl, extra_person, duplicate_character, cloned_character, background_person, crowd, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, second_person, additional_woman, another_woman",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, midriff, baring, bare, slender, white, sneakers, gym, sitting, blush, shy_smile, golden, pom, poms, bright, summer, light, depth_of_field, collarbone, slender_waist, full_body, window_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, midriff, baring, bare, slender, white, sneakers, gym, sitting, blush, shy_smile, golden, pom, poms, bright, summer, light, collarbone, slender_waist, full_body, window_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 啦啦队服青春自曝】体育祭当天的室外艳阳高照，反锁的学校旧体育馆备用器材室。为了给班级应援，宁宁在超自然研究会伙伴的怂恿下，破天荒地换上了一身极其热烈性感的露脐无袖啦啦队服，超短的百褶裙摆随风摇曳，双手还握着金色的手摇花。正当她羞耻地躲在器材室镜子前练习动作时，你突然推门进来。惊慌失措下她直接被地上的排球绊倒，整个人惊呼着跌进坐在软垫上的你怀里。宁宁瞬间满脸通红，高叉露脐的剪裁让盈盈一握的细腰毫无防备地贴紧你，头顶的呆毛慌乱卷成完美的爱心狂喊自曝——「呜啊！柊、柊史！为什么你会在这里啦！不准盯着人家露出来的肚子看！才、才没有为了让你觉得可爱故意穿成这样呢……呜，大色狼，快闭上眼睛！」",
@@ -72,8 +72,7 @@
       "gym_mat",
       "full_body",
       "sneakers",
-      "falling_into_arms",
-      "depth_of_field"
+      "falling_into_arms"
     ],
     "time": "白天",
     "timeOfDay": "all_day",
@@ -209,7 +208,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, multiple_girls, extra_girl, duplicate_character, cloned_character, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes_closed, ahoge, pink_hair_ribbons, soft_white_knit_sweater, light_grey_shorts, curled_up_on_living_room_sofa_with_head_on_viewer's_lap, sleeping_peacefully, silver_hair_spilling_over_cushions, supernatural_research_documents_scattered_nearby, contented_catlike_smile, ahoge_swaying_gently, warm_afternoon_window_light, overhead_close_up, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes_closed, ahoge, pink_hair_ribbons, soft_white_knit_sweater, light_grey_shorts, curled_up_on_living_room_sofa_with_head_on_viewer's_lap, sleeping_peacefully, silver_hair_spilling_over_cushions, supernatural_research_documents_scattered_nearby, contented_catlike_smile, ahoge_swaying_gently, warm_afternoon_window_light, overhead_close_up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "不限",
     "story": "【宁宁 · 慵懒午后】周末午后温暖的阳光洒进客厅。宁宁蜷缩在沙发上看着超自然研究会的资料，不知不觉就睡着了，银白色的长发散落在靠垫上，呼吸均匀而轻柔。你轻手轻脚地走过去，小心翼翼地把她的头搬到你的膝盖上。宁宁在睡梦中似乎感觉到了什么，嘴角微微上扬，头顶那根呆毛在阳光下轻轻晃动。她含糊地嘟囔了一句——「柊史的味道……安心……」然后又沉沉睡去，脸颊在你的膝盖上蹭了蹭，像一只餍足的猫咪。",
@@ -221,8 +220,7 @@
       "sofa",
       "close_up",
       "lap_pillow",
-      "sleeping",
-      "depth_of_field"
+      "sleeping"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -338,7 +336,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cozy_pink_fleece_loungewear, curled_up_in_sofa_corner_under_shared_blanket, leaning_closer_to_viewer_under_blanket, watching_a_movie, winter_night_living_room, dim_orange_heater_glow, cool_tv_glow, shy_lowered_eyelids, ahoge_quivering, close_up, warm_and_cool_mixed_lighting, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cozy_pink_fleece_loungewear, curled_up_in_sofa_corner_under_shared_blanket, leaning_closer_to_viewer_under_blanket, watching_a_movie, winter_night_living_room, dim_orange_heater_glow, cool_tv_glow, shy_lowered_eyelids, ahoge_quivering, close_up, warm_and_cool_mixed_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
     "story": "【宁宁 · 冬夜的靠近】冬夜寒冷的公寓客厅，暖炉的温度不够。宁宁裹着毯子缩在沙发角落看电影，银白色的长发在昏暗的光线中泛着柔和的光泽。当你坐到她身边时，她犹豫了一下，然后悄悄把毯子分了一半给你。两人在毯子下的距离越来越近，她的体温带着沐浴后的淡淡香气，隔着薄薄的毯子传来。她微垂着眼睑，呆毛在暖黄的光线中轻轻颤动，声音小得几乎听不见——「……只是觉得两个人盖比较暖和而已。柊史……你身上好热。靠、靠太近了啦……不过，再近一点点……也是可以的。」",
@@ -351,8 +349,7 @@
       "blanket",
       "shared_blanket",
       "winter_night",
-      "tv_glow",
-      "depth_of_field"
+      "tv_glow"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -378,7 +375,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_beige_chunky_knit_sweater_with_dropped_shoulder, reddish_brown_british_plaid_pleated_miniskirt, black_knee_socks, dark_beret, sitting_at_sunny_window_table_in_autumn_cafe, feeding_viewer_a_small_spoonful_of_strawberry_cake, cake_touching_viewer's_lips, flustered_blush, heart_spiral_ahoge, squeezing_sweater_sleeve, close_up, warm_window_light, sunlight, bokeh, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_beige_chunky_knit_sweater_with_dropped_shoulder, reddish_brown_british_plaid_pleated_miniskirt, black_knee_socks, dark_beret, sitting_at_sunny_window_table_in_autumn_cafe, feeding_viewer_a_small_spoonful_of_strawberry_cake, cake_touching_viewer's_lips, flustered_blush, heart_spiral_ahoge, squeezing_sweater_sleeve, close_up, warm_window_light, sunlight, bokeh, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 日系私服秋季穿搭】秋日午后洒满阳光的街角温馨咖啡馆。今天出门约会的宁宁换上了一身极其温柔好看的私服：一件浅米色的粗针织软羊毛毛衣，宽松的落肩剪裁将一侧精致的锁骨若隐若现，下身搭配一条红褐色的英伦格子百褶短裙与黑色及膝袜，头顶戴着一顶俏皮的深色贝雷帽。当她红着脸试图用小汤匙喂你品尝她最喜欢的草莓蛋糕时，因为动作太近，两人的视线死死对撞。宁宁手一抖，小蛋糕直接沾到了你唇边。她瞬间面红耳赤，头顶那根标志性的呆毛慌乱地卷成爱心螺旋，揪着毛衣袖口连声自曝——「呜啊！柊、柊史对不起！不准用那种眼神看人家啦！人家、人家才没有因为第一次和你单独约会，就在镜子前挑了两个小时这件毛衣呢……呜，笨蛋快忘掉啦！」",
@@ -393,8 +390,7 @@
       "close_up",
       "feeding",
       "strawberry_cake",
-      "small_spoon",
-      "depth_of_field"
+      "small_spoon"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -421,7 +417,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, artist_name, chromatic_aberration, nsfw, nude, explicit, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, huge_red_hair_ribbon, red_and_white_arrow_feather_kimono_top, deep_purple_hakama, black_lace_up_boots, tripping_on_hakama_hem_while_carrying_props, falling_into_viewer's_arms, viewer_catching_her, ancient_shrine_stone_steps, red_maple_leaves, warm_maple_filtered_sunlight, teary_blush, heart_spiral_ahoge, medium_close_up, golden_hour, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, huge_red_hair_ribbon, red_and_white_arrow_feather_kimono_top, deep_purple_hakama, black_lace_up_boots, tripping_on_hakama_hem_while_carrying_props, falling_into_viewer's_arms, viewer_catching_her, ancient_shrine_stone_steps, red_maple_leaves, warm_maple_filtered_sunlight, teary_blush, heart_spiral_ahoge, medium_close_up, golden_hour, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 大正风袴裙古典反差】秋意浓郁、漫天红枫如火般飘落的学院古老神社后山石阶。为了参加民俗部的传统节日拍摄，宁宁换上了一整套极其优雅华丽的大正风格袴裙：上身是红白相间的正统箭羽纹和服，下身搭配深紫色的传统袴裙与一双秀气的黑色系带皮靴，银白色的长发用巨大的红色蝴蝶结发带优雅地束在脑后，显得格外的明艳端庄。然而由于袴裙摆过于繁复，她在抱着道具走下石阶时下摆不慎绊了一下，整个人惊呼着直接失去了平稳。你眼疾手快地跨上一步将她稳稳抱进怀里，宁宁在对视的瞬间瞬间面红耳赤，头顶那根心形呆毛在漫天飘落的红色枫叶中慌乱地打着卷，挂着眼泪当场语无伦次自曝——「呜啊！柊、柊史！为什么每次你都能接住人家啦！人家、人家绝对没有故意借助被裙子绊倒来让你抱住哦……呜，越解释越像在狡辩了，笨蛋快闭上眼睛不准看！」",
@@ -434,8 +430,7 @@
       "autumn_steps",
       "medium_shot",
       "maple",
-      "caught_in_arms",
-      "depth_of_field"
+      "caught_in_arms"
     ],
     "time": "白天",
     "timeOfDay": "all_day",
@@ -663,7 +658,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, couple_pose, couple_embrace, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, water, droplets, body, obi, unfastening, sliding, sitting, white, tabi, socks, blush, trembling, eyelashes, quickened, warm, lantern, light, depth_of_field, collarbone, slender_waist, full_body, moonlight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, water, droplets, body, obi, unfastening, sliding, sitting, white, tabi, socks, blush, trembling, eyelashes, quickened, warm, lantern, light, collarbone, slender_waist, full_body, moonlight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R15",
     "season": "秋",
     "story": "【成年 After Story · 宁宁 · 温泉旅馆的月下约定】古温泉街的最后一晚，宁宁泡完露天风吕回到房间，银白色的长发还带着水汽，身上是一件旅馆的轻薄浴衣。她坐在敞开的窗边，山间溪流的低语伴着月光淌进室内。你坐到她身旁时，她微微一颤，却没有躲开。浴衣的领口在低头时松散开来，露出湿润锁骨与大片雪白的肌肤。她双手捏着衣襟，紫色瞳孔在月光下泛着水光——「今晚的月亮好亮……亮到让人藏不住任何秘密。」她偏过头，呼吸变得急促，却没有移开视线。你伸手触碰她微凉的脸颊，她闭上眼睛，睫毛轻轻颤动，浴衣的腰带在月光滑落中悄然松开——「至少在离开这家温泉旅馆之前……我想把这一刻的样子，完整地留给你。」",
@@ -677,8 +672,7 @@
       "full_body",
       "tatami",
       "moonlight",
-      "open_collar",
-      "depth_of_field"
+      "open_collar"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -705,7 +699,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sweater, oversized_sweater, bare_legs, sweating, smooth, bare, thighs, sitting, blush, two, cups, black, rain, wet_ground, sunlight, window_light, depth_of_field, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sweater, oversized_sweater, bare_legs, sweating, smooth, bare, thighs, sitting, blush, two, cups, black, rain, wet_ground, sunlight, window_light, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R15",
     "season": "秋",
     "story": "【成年 After Story · 宁宁 · 雨天午后的毛衣】周末的雨从早上就没有停过。宁宁穿着一件宽大的灰色毛衣——那是你的，长度几乎盖住短裤——蜷在沙发角落翻着一本旧画集。你泡了两杯红茶出来时，她已经把位置挪到沙发中间，空出了半边。你坐下后她顺势侧过身，把腿搭在你膝上，画集搁在你手臂旁边让你一起看。雨声填满了窗外的世界，屋内只有翻页和偶尔的啜饮声。她翻到某一页时动作顿了顿，偏过头来看你，紫色瞳孔里映着窗外的灰色天光——「这张的构图……很像上次你拍我的角度。」她说完没有移开视线，毛衣的宽领在她侧身时滑落一截，露出圆润的肩头和锁骨的浅凹。她感觉到你的目光，脸颊慢慢泛红，却没有拉回衣领——「雨好像不会停了……那今天的预定，是不是也可以全部取消？」",
@@ -719,8 +713,7 @@
       "full_body",
       "art_book",
       "legs_on_lap",
-      "rain",
-      "depth_of_field"
+      "rain"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -747,7 +740,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cardigan, sitting, barefoot, blush, bokeh, depth_of_field, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cardigan, sitting, barefoot, blush, bokeh, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 私服拍摄的界线】同人社团的室内私服摄影进行到后半段，其他成员已经先去了便利店。客厅只剩下你和宁宁，补光灯还亮着，她坐在沙发边缘，宽大的针织开衫从一侧肩膀滑落。银白色的长发被风吹散了几缕贴在脸颊边，她低头翻着相机里的成片，却没有调整滑落的衣襟。你走近帮她整理衣领时，她抬起眼，紫色瞳孔在补光灯的暖色里显得格外透亮——「拍了一个下午了……这张构图你觉得怎么样？」她问的是照片，声音却有轻微的颤抖。你的手指没有离开她的肩头，她也没有后退。开衫的纽扣不知何时已经松开大半，白色的棉质内衬边缘微微卷起，她轻轻咬住下唇，呼吸在安静的客厅里清晰可闻——「如果还有想拍的角度……现在只有我们两个人了。」",
@@ -761,8 +754,7 @@
       "full_body",
       "barefoot",
       "camera",
-      "heavy_blush",
-      "depth_of_field"
+      "heavy_blush"
     ],
     "time": "傍晚",
     "timeOfDay": "evening",

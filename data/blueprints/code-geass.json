@@ -39,9 +39,7 @@
         "cowboy_shot",
         "low_angle",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -99,9 +97,7 @@
         "morning_light",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -156,10 +152,8 @@
         "windy",
         "afternoon_sun",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -215,10 +209,8 @@
         "green_hair",
         "intimate",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
@@ -275,8 +267,6 @@
         "cowboy_shot",
         "cinematic_lighting",
         "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field",
         "cup_on_table"
       ],
       "recommendedSize": "1152x1536",
@@ -334,8 +324,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -393,9 +382,7 @@
         "serene_smile",
         "cowboy_shot",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -465,9 +452,7 @@
         "vertical_shot",
         "high_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -543,9 +528,7 @@
         "wide_shot",
         "horizontal",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -620,9 +603,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -689,9 +670,7 @@
         "yellow_eyes",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

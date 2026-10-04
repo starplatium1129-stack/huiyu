@@ -27,7 +27,7 @@
         "curious_expression",
         "iconic"
       ],
-      "promptProse": "Eru Chitanda leans forward aggressively across a classroom desk in the after-school classics clubroom, her face inches away in an iconic, curious confrontation. Her enormous, luminous purple eyes sparkle with unquenchable curiosity and starlight-like reflections under the warm setting sun. Her long lustrous black hair falls in straight silky sheets over the desk edge, her sailor collar fluttering slightly as her parted lips form her famous question. Close-up intimate perspective, golden hour light highlighting dilated purple pupils, detailed clubroom background, depth of field, solo 1girl, no text.",
+      "promptProse": "Eru Chitanda leans forward aggressively across a classroom desk in the after-school classics clubroom, her face inches away in an iconic, curious confrontation. Her enormous, luminous purple eyes sparkle with unquenchable curiosity and starlight-like reflections under the warm setting sun. Her long lustrous black hair falls in straight silky sheets over the desk edge, her sailor collar fluttering slightly as her parted lips form her famous question. Close-up intimate perspective, golden hour light highlighting dilated purple pupils, detailed clubroom background, solo 1girl, no text.",
       "promptTokens": [
         "chitanda_eru",
         "1girl",
@@ -47,9 +47,7 @@
         "sunset",
         "golden_hour",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -116,9 +114,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -173,7 +169,7 @@
         "dignified",
         "elegant"
       ],
-      "promptProse": "Eru Chitanda stands gracefully before the snow-dusted red torii gate of the shrine on New Year's Day, wearing a magnificent lavender silk furisode kimono with floral crest patterns and a golden obi sash. Her raven hair is swept up into a traditional noble chignon secured by a flowering kanzashi hairpin. She rests her hands neatly over her front sash, looking back over her shoulder with a shy, radiant New Year's greeting as gentle snowflakes drift through the winter air. Medium full shot, crisp winter dawn lighting, detailed Japanese shrine background, depth of field, solo 1girl, no text.",
+      "promptProse": "Eru Chitanda stands gracefully before the snow-dusted red torii gate of the shrine on New Year's Day, wearing a magnificent lavender silk furisode kimono with floral crest patterns and a golden obi sash. Her raven hair is swept up into a traditional noble chignon secured by a flowering kanzashi hairpin. She rests her hands neatly over her front sash, looking back over her shoulder with a shy, radiant New Year's greeting as gentle snowflakes drift through the winter air. Medium full shot, crisp winter dawn lighting, detailed Japanese shrine background, solo 1girl, no text.",
       "promptTokens": [
         "chitanda_eru",
         "1girl",
@@ -194,9 +190,7 @@
         "winter",
         "gentle_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -261,9 +255,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -317,7 +309,7 @@
         "blush",
         "romantic"
       ],
-      "promptProse": "Eru Chitanda enjoys a lively Japanese summer festival at night, walking beneath strings of glowing vermilion paper lanterns. Dressed in a breezy summer yukata with floral patterns, she holds a glossy, candy-glazed red apple up toward you with a bashful, sweet expression, offering a bite while carrying a clear water pouch with a goldfish in her other hand. Warm lantern light paints soft ruby highlights across her inky hair and flushed porcelain cheeks. Medium shot, bustling festival bokeh, detailed festival stall background, depth of field, solo 1girl, no text.",
+      "promptProse": "Eru Chitanda enjoys a lively Japanese summer festival at night, walking beneath strings of glowing vermilion paper lanterns. Dressed in a breezy summer yukata with floral patterns, she holds a glossy, candy-glazed red apple up toward you with a bashful, sweet expression, offering a bite while carrying a clear water pouch with a goldfish in her other hand. Warm lantern light paints soft ruby highlights across her inky hair and flushed porcelain cheeks. Medium shot, bustling festival bokeh, detailed festival stall background, solo 1girl, no text.",
       "promptTokens": [
         "chitanda_eru",
         "1girl",
@@ -336,9 +328,7 @@
         "blush",
         "sweet_smile",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -389,7 +379,7 @@
         "open_palm",
         "catching_raindrop"
       ],
-      "promptProse": "Eru Chitanda walks through the lush stone garden of her family estate after a refreshing summer rain, surrounded by blooming bushes of deep blue and violet hydrangeas glistening with rain droplets. She wears a simple sleeveless lavender sundress, gently gathering the skirt with one hand as she pauses and turns her head back with a calm, proud smile. Her free palm catches one drop sliding from a nearby flower. Soft sunlight breaks through fading rain clouds, illuminating water droplets on her long black hair and porcelain shoulders. Medium full shot, fresh post-rain atmosphere, detailed Japanese estate garden background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Eru Chitanda walks through the lush stone garden of her family estate after a refreshing summer rain, surrounded by blooming bushes of deep blue and violet hydrangeas glistening with rain droplets. She wears a simple sleeveless lavender sundress, gently gathering the skirt with one hand as she pauses and turns her head back with a calm, proud smile. Her free palm catches one drop sliding from a nearby flower. Soft sunlight breaks through fading rain clouds, illuminating water droplets on her long black hair and porcelain shoulders. Medium full shot, fresh post-rain atmosphere, detailed Japanese estate garden background, solo 1girl, no extra people.",
       "promptTokens": [
         "chitanda_eru",
         "1girl",
@@ -410,8 +400,6 @@
         "nature",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting",
         "holding_skirt",
         "open_palm",
         "catching_raindrop"
@@ -475,9 +463,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -525,8 +511,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Eru Chitanda from Hyouka straddles your hips on the woven tatami of her family estate late at night, her formal yukata loosened until her generous pale breasts spill freely into the moonlight. Her silky black hair cascades past her collarbones, distinctive large purple eyes wide and luminous with an intoxicating blend of pure curiosity and overwhelming arousal. She leans forward with parted lips, insisting that tonight energy conservation is strictly prohibited. Vertical low-angle cowgirl shot, cool silver moonlight mixing with warm sliding-screen lanterns, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Eru Chitanda from Hyouka straddles your hips on the woven tatami of her family estate late at night, her formal yukata loosened until her generous pale breasts spill freely into the moonlight. Her silky black hair cascades past her collarbones, distinctive large purple eyes wide and luminous with an intoxicating blend of pure curiosity and overwhelming arousal. She leans forward with parted lips, insisting that tonight energy conservation is strictly prohibited. Vertical low-angle cowgirl shot, cool silver moonlight mixing with warm sliding-screen lanterns, detailed Japanese room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Eru Chitanda from Hyouka straddles your hips on the woven tatami of her family estate late at night, her formal yukata loosened until her generous pale breasts spill freely into the moonlight. Her silky black hair cascades past her collarbones, distinctive large purple eyes wide and luminous with an intoxicating blend of pure curiosity and overwhelming arousal. She leans forward with parted lips, insisting that tonight energy conservation is strictly prohibited. Vertical low-angle cowgirl shot, cool silver moonlight mixing with warm sliding-screen lights, detailed Japanese room background, solo 1girl, no extra people.",
+      "nsfwProse": "Eru Chitanda from Hyouka straddles your hips on the woven tatami of her family estate late at night, her formal yukata loosened until her generous pale breasts spill freely into the moonlight. Her silky black hair cascades past her collarbones, distinctive large purple eyes wide and luminous with an intoxicating blend of pure curiosity and overwhelming arousal. She leans forward with parted lips, insisting that tonight energy conservation is strictly prohibited. Vertical low-angle cowgirl shot, cool silver moonlight mixing with warm sliding-screen lights, detailed Japanese room background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -549,9 +535,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -586,7 +570,7 @@
       "description": "【千反田家庭院古温泉·清晨】晨雾中的岩石浴池，爱瑠浸在清泉中，薄透的白色衬衣被泉水彻底泡透，紧紧贴在丰满的胸腹曲线上。她有些出神地用指腹抚摸着自己的敏感点，困惑而动情地轻喘——「为什么一想到折木同学……心脏跳动的频率会完全失控呢……」",
       "location": "千反田家庭院古温泉·清晨",
       "action": "斜倚温泉石壁湿透薄衣贴身，单手探入清泉自抚，水光折射丰腴身段",
-      "timeOfDay": "深夜",
+      "timeOfDay": "morning",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "vertical POV",
       "mood": "唯美动情、私密深情",
@@ -597,8 +581,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, depth of field, solo 1girl, no text.",
-      "nsfwProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, solo 1girl, no text.",
+      "nsfwProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -619,9 +603,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -667,8 +649,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Caught in a flustered struggle inside her traditional dressing room after the summer festival, Eru Chitanda bends forward over a low cedar table as her ornate silk obi snags tightly around her waist. The heavy brocade pulls her kimono apart, squeezing her abundant breasts into breathtaking prominence while the hem rides up over bare pale thighs. She twists her head back, huge purple eyes glistening with helpless tears, biting her trembling lip as she pleads for rescue. Cinematic horizontal framing, warm amber lantern illumination, detailed tatami background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Caught in a flustered struggle inside her traditional dressing room after the summer festival, Eru Chitanda bends forward over a low cedar table as her ornate silk obi snags tightly around her waist. The heavy brocade pulls her kimono apart, squeezing her abundant breasts into breathtaking prominence while the hem rides up over bare pale thighs. She twists her head back, huge purple eyes glistening with helpless tears, biting her trembling lip as she pleads for rescue. Cinematic horizontal framing, warm amber lantern illumination, detailed tatami background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Caught in a flustered struggle inside her traditional dressing room after the summer festival, Eru Chitanda bends forward over a low cedar table as her ornate silk obi snags tightly around her waist. The heavy brocade pulls her kimono apart, squeezing her abundant breasts into breathtaking prominence while the hem rides up over bare pale thighs. She twists her head back, huge purple eyes glistening with helpless tears, biting her trembling lip as she pleads for rescue. Cinematic horizontal framing, warm amber illumination, detailed tatami background, solo 1girl, no extra people.",
+      "nsfwProse": "Caught in a flustered struggle inside her traditional dressing room after the summer festival, Eru Chitanda bends forward over a low cedar table as her ornate silk obi snags tightly around her waist. The heavy brocade pulls her kimono apart, squeezing her abundant breasts into breathtaking prominence while the hem rides up over bare pale thighs. She twists her head back, huge purple eyes glistening with helpless tears, biting her trembling lip as she pleads for rescue. Cinematic horizontal framing, warm amber illumination, detailed tatami background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -695,9 +677,7 @@
         "black_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -743,8 +723,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Alone in the locked after-hours classics clubroom, Eru Chitanda surrenders to overwhelming scientific and sensual curiosity, lying back across two pushed-together wooden desks. Her black sailor uniform is unbuttoned and her pleated skirt shoved high, fingers trembling as they delve between her parted thighs with glistening wetness. Her long black hair cascades over the desk edge, massive purple eyes rolling half-lidded in ecstatic wonder as her spine arches off the wood. Intimate vertical shot, soft moonlight through tall private studio windows, detailed clubroom background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Alone in the locked after-hours classics clubroom, Eru Chitanda surrenders to overwhelming scientific and sensual curiosity, lying back across two pushed-together wooden desks. Her black sailor uniform is unbuttoned and her pleated skirt shoved high, fingers trembling as they delve between her parted thighs with glistening wetness. Her long black hair cascades over the desk edge, massive purple eyes rolling half-lidded in ecstatic wonder as her spine arches off the wood. Intimate vertical shot, soft moonlight through tall private studio windows, detailed clubroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Alone in the locked after-hours classics clubroom, Eru Chitanda surrenders to overwhelming scientific and sensual curiosity, lying back across two pushed-together wooden desks. Her black sailor uniform is unbuttoned and her pleated skirt shoved high, fingers trembling as they delve between her parted thighs with glistening wetness. Her long black hair cascades over the desk edge, massive purple eyes rolling half-lidded in ecstatic wonder as her spine arches off the wood. Intimate vertical shot, soft light through tall private studio windows, detailed clubroom background, solo 1girl, no extra people.",
+      "nsfwProse": "Alone in the locked after-hours classics clubroom, Eru Chitanda surrenders to overwhelming scientific and sensual curiosity, lying back across two pushed-together wooden desks. Her black sailor uniform is unbuttoned and her pleated skirt shoved high, fingers trembling as they delve between her parted thighs with glistening wetness. Her long black hair cascades over the desk edge, massive purple eyes rolling half-lidded in ecstatic wonder as her spine arches off the wood. Intimate vertical shot, soft light through tall private studio windows, detailed clubroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -769,9 +749,7 @@
         "spread_hair",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

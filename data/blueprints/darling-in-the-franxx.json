@@ -113,9 +113,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -445,7 +443,7 @@
         "pilot_suit",
         "red_bodysuit"
       ],
-      "promptProse": "Zero Two (CODE:002) from DARLING in the FRANXX straddles your lap inside the glowing crimson cockpit of Strelizia, her skin-tight red pilot suit completely unzipped to her groin. Her round, bountiful breasts bounce wild and heavy with her savage, possessive hip grinding, her blood-red horns glowing with intense draconic mana. Her long pastel-pink hair whips around the cabin as she flashes her cute sharp fangs and licks her lips, turquoise eyes burning with feral, devoted passion for her Darling. Vertical low-angle cowgirl shot, cockpit holographic warnings and crimson neural pulse light bathing sweat-glistening skin, detailed mecha background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Zero Two (CODE:002) from DARLING in the FRANXX straddles your lap inside the glowing crimson cockpit of Strelizia, her skin-tight red pilot suit completely unzipped to her groin. Her round, bountiful breasts bounce wild and heavy with her savage, possessive hip grinding, her blood-red horns glowing with intense draconic mana. Her long pastel-pink hair whips around the cabin as she flashes her cute sharp fangs and licks her lips, turquoise eyes burning with feral, devoted passion for her Darling. Vertical low-angle cowgirl shot, cockpit holographic warnings and crimson neural pulse light bathing sweat-glistening skin, detailed mecha background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -474,9 +472,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -501,7 +497,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -532,11 +528,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Zero Two (CODE:002) from DARLING in the FRANXX straddles your lap inside the glowing crimson cockpit of Strelizia, her skin-tight red pilot suit completely unzipped to her groin. Her round, bountiful breasts bounce wild and heavy with her savage, possessive hip grinding, her blood-red horns glowing with intense draconic mana. Her long pastel-pink hair whips around the cabin as she flashes her cute sharp fangs and licks her lips, turquoise eyes burning with feral, devoted passion for her Darling. Vertical low-angle cowgirl shot, cockpit holographic warnings and crimson neural pulse light bathing sweat-glistening skin, detailed mecha background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Zero Two (CODE:002) from DARLING in the FRANXX straddles your lap inside the glowing crimson cockpit of Strelizia, her skin-tight red pilot suit completely unzipped to her groin. Her round, bountiful breasts bounce wild and heavy with her savage, possessive hip grinding, her blood-red horns glowing with intense draconic mana. Her long pastel-pink hair whips around the cabin as she flashes her cute sharp fangs and licks her lips, turquoise eyes burning with feral, devoted passion for her Darling. Vertical low-angle cowgirl shot, cockpit holographic warnings and crimson neural pulse light bathing sweat-glistening skin, detailed mecha background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -569,7 +563,7 @@
         "forest",
         "night"
       ],
-      "promptProse": "Zero Two stands waist-deep in the tranquil forest lake beneath full moonlight, completely bare and unashamed. Her endless pink hair spreads like cherry blossoms across the dark water as crystal droplets slide down her glowing red horns and taut rosebuds. Underwater, her hand caresses her dripping core with wild, unapologetic desire, her turquoise eyes locked onto you on the shore with a predatory, darling-devouring smirk. Sensual vertical framing, silver moonbeams and firefly sparkles dancing on rippling water and pale voluptuous curves, detailed outdoor background, depth of field, solo 1girl, no text.",
+      "promptProse": "Zero Two stands waist-deep in the tranquil forest lake beneath full moonlight, completely bare and unashamed. Her endless pink hair spreads like cherry blossoms across the dark water as crystal droplets slide down her glowing red horns and taut rosebuds. Underwater, her hand caresses her dripping core with wild, unapologetic desire, her turquoise eyes locked onto you on the shore with a predatory, darling-devouring smirk. Sensual vertical framing, silver moonbeams and firefly sparkles dancing on rippling water and pale voluptuous curves, detailed outdoor background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -597,9 +591,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -624,7 +616,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -654,11 +646,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Zero Two stands waist-deep in the tranquil forest lake beneath full moonlight, completely bare and unashamed. Her endless pink hair spreads like cherry blossoms across the dark water as crystal droplets slide down her glowing red horns and taut rosebuds. Underwater, her hand caresses her dripping core with wild, unapologetic desire, her turquoise eyes locked onto you on the shore with a predatory, darling-devouring smirk. Sensual vertical framing, silver moonbeams and firefly sparkles dancing on rippling water and pale voluptuous curves, detailed outdoor background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Zero Two stands waist-deep in the tranquil forest lake beneath full moonlight, completely bare and unashamed. Her endless pink hair spreads like cherry blossoms across the dark water as crystal droplets slide down her glowing red horns and taut rosebuds. Underwater, her hand caresses her dripping core with wild, unapologetic desire, her turquoise eyes locked onto you on the shore with a predatory, darling-devouring smirk. Sensual vertical framing, silver moonbeams and firefly sparkles dancing on rippling water and pale voluptuous curves, detailed outdoor background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -691,7 +681,7 @@
         "red_horns",
         "fangs"
       ],
-      "promptProse": "Zero Two leans forward over an olive-drab military locker bench as the rear zipper of her red officer uniform jams tight into the shoulder epaulets. The strain pops the front gold buttons wide open, spilling her magnificent breasts and flushed pink nipples into view, while the tight skirt hikes up to show black stockings straining against toned hips. Turning her horned head back with a flash of sharp fangs and luminous teal eyes, she growls in sweet, dangerous frustration, threatening to tear your clothes off if you don't hurry. Cinematic horizontal framing, harsh industrial plantation lighting highlighting pale curves and crimson cloth, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Zero Two leans forward over an olive-drab military locker bench as the rear zipper of her red officer uniform jams tight into the shoulder epaulets. The strain pops the front gold buttons wide open, spilling her magnificent breasts and flushed pink nipples into view, while the tight skirt hikes up to show black stockings straining against toned hips. Turning her horned head back with a flash of sharp fangs and luminous teal eyes, she growls in sweet, dangerous frustration, threatening to tear your clothes off if you don't hurry. Cinematic horizontal framing, harsh industrial plantation lighting highlighting pale curves and crimson cloth, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -722,9 +712,7 @@
         "pink_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -749,7 +737,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -782,11 +770,9 @@
         "pink_hair",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Zero Two leans forward over an olive-drab military locker bench as the rear zipper of her red officer uniform jams tight into the shoulder epaulets. The strain pops the front gold buttons wide open, spilling her magnificent breasts and flushed pink nipples into view, while the tight skirt hikes up to show black stockings straining against toned hips. Turning her horned head back with a flash of sharp fangs and luminous teal eyes, she growls in sweet, dangerous frustration, threatening to tear your clothes off if you don't hurry. Cinematic horizontal framing, harsh industrial plantation lighting highlighting pale curves and crimson cloth, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Zero Two leans forward over an olive-drab military locker bench as the rear zipper of her red officer uniform jams tight into the shoulder epaulets. The strain pops the front gold buttons wide open, spilling her magnificent breasts and flushed pink nipples into view, while the tight skirt hikes up to show black stockings straining against toned hips. Turning her horned head back with a flash of sharp fangs and luminous teal eyes, she growls in sweet, dangerous frustration, threatening to tear your clothes off if you don't hurry. Cinematic horizontal framing, harsh industrial plantation lighting highlighting pale curves and crimson cloth, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -819,7 +805,7 @@
         "red_horns",
         "glowing_horns"
       ],
-      "promptProse": "Clutching her illustrated beast-princess picture book to her bare breasts, Zero Two lies completely naked across her sheets in the dead of night. Her crimson horns glow with intense draconic light as two fingers drive savagely into her boiling, dripping core, her voluptuous hips arching high in feral, shuddering waves of ecstasy. Her pink hair fans across the mattress like dragon wings, genuine tears streaming from turquoise eyes as her sharp fangs part in raw, desperate cries for her Darling. Intimate vertical framing, pulsating red horn light casting dangerous crimson shadows over porcelain skin, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Clutching her illustrated beast-princess picture book to her bare breasts, Zero Two lies completely naked across her sheets in the dead of night. Her crimson horns glow with intense draconic light as two fingers drive savagely into her boiling, dripping core, her voluptuous hips arching high in feral, shuddering waves of ecstasy. Her pink hair fans across the mattress like dragon wings, genuine tears streaming from turquoise eyes as her sharp fangs part in raw, desperate cries for her Darling. Intimate vertical framing, pulsating red horn light casting dangerous crimson shadows over porcelain skin, detailed bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -852,9 +838,7 @@
         "cyan_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -879,7 +863,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -914,11 +898,9 @@
         "cyan_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Clutching her illustrated beast-princess picture book to her bare breasts, Zero Two lies completely naked across her sheets in the dead of night. Her crimson horns glow with intense draconic light as two fingers drive savagely into her boiling, dripping core, her voluptuous hips arching high in feral, shuddering waves of ecstasy. Her pink hair fans across the mattress like dragon wings, genuine tears streaming from turquoise eyes as her sharp fangs part in raw, desperate cries for her Darling. Intimate vertical framing, pulsating red horn light casting dangerous crimson shadows over porcelain skin, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Clutching her illustrated beast-princess picture book to her bare breasts, Zero Two lies completely naked across her sheets in the dead of night. Her crimson horns glow with intense draconic light as two fingers drive savagely into her boiling, dripping core, her voluptuous hips arching high in feral, shuddering waves of ecstasy. Her pink hair fans across the mattress like dragon wings, genuine tears streaming from turquoise eyes as her sharp fangs part in raw, desperate cries for her Darling. Intimate vertical framing, pulsating red horn light casting dangerous crimson shadows over porcelain skin, detailed bedroom background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

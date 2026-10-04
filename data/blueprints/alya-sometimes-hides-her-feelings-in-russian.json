@@ -77,7 +77,6 @@
         "classroom",
         "clean_face",
         "curtains_fluttering",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "loafers",
@@ -195,7 +194,6 @@
         "brown_blazer",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "loafers",
@@ -210,7 +208,6 @@
         "sofa",
         "student_council_room",
         "teacup",
-        "volumetric_lighting",
         "white_shirt",
         "holding_teacup",
         "leather_sofa"
@@ -303,7 +300,6 @@
         "cinematic_lighting",
         "clean_face",
         "clear_umbrella",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "loafers",
@@ -320,7 +316,6 @@
         "smooth_thighs",
         "train_station",
         "umbrella",
-        "volumetric_lighting",
         "wet_ground",
         "white_shirt",
         "two_clothed_figures",
@@ -414,7 +409,6 @@
         "brown_blazer",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "library",
@@ -611,7 +605,6 @@
         "candy_apple",
         "cinematic_lighting",
         "clean_face",
-        "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "festival",
@@ -623,7 +616,6 @@
         "night",
         "sandals",
         "summer_night",
-        "volumetric_lighting",
         "yukata"
       ],
       "recommendedSize": "1152x1536",
@@ -654,7 +646,7 @@
       ],
       "description": "【艾莉莎·九条 · 枕边俄语私语】深夜的北欧风卧室，月光透过百叶窗洒在白色床铺上。艾莉莎裹着大号睡衣半坐床头，银色长发散在枕边，蓝色发带已经解开。她指尖绕着发梢，用俄语小声说着什么，说完才发现你在看她，瞬间涨红了脸——「……只是练习一下明天的发言，才、才不是在说你！」",
       "id": "alya_r18_bedroom_soles_foreshortening",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "cool moonlight through blinds, soft warm bedside lamp, silver rim light",
       "location": "艾莉的北欧风卧室床铺",
       "mood": "傲娇私密",
@@ -755,8 +747,7 @@
         "top-down",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -782,7 +773,7 @@
       "characterId": "alisa_mikhailovna_kujou",
       "description": "【艾莉 · 放学后的空私人工作室·课桌上的私语】夕阳落尽后的空私人工作室门扉紧锁，艾莉坐在最靠窗的课桌边缘，成年礼服制服上衣扣子被完全解开，雪白的胸口因急促的喘息而剧烈起伏。她咬着下唇抓住你的领带——「门已经反锁了……在被其他人发现之前，快一点……」",
       "id": "alya_r18_classroom_afterschool_desk",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "dramatic warm orange sunset illumination casting long shadows",
       "location": "放学后空无一人的私人工作室",
       "mood": "禁断刺激与满面潮红",
@@ -872,9 +863,7 @@
         "afterschool",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -900,7 +889,7 @@
       "characterId": "alisa_mikhailovna_kujou",
       "description": "【艾莉 · 浴室水汽·湿发与薄透水痕】被浓郁水汽包裹的玻璃淋浴间内，温热的花洒水幕顺着艾莉银白湿发与玲珑曼妙的娇躯流淌而下。她抬手轻轻抚过优美的锁骨，眼波流转满是动情——「水流好舒服……但被你隔着玻璃这么一直看着，身体……反而变得更烫了。」",
       "id": "alya_r18_shower_steam_translucent",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft diffused warm bathroom light filtered through steam",
       "location": "现代浴室淋浴间",
       "mood": "温润湿热与纯净诱惑",
@@ -1023,7 +1012,7 @@
       ],
       "description": "【艾莉莎·九条 · 晨光阳台的凉风与银发】清晨的高层公寓阳台，晨风把晾着的衬衫吹得鼓起。艾莉莎只穿着那件大号睡衣倚在栏杆边，银发被风扬起，睡裙下摆轻轻翻飞。她眯起眼眺望晨光中的城市，回头时语气依然逞强——「……才不是特意早起等你。只是、只是阳台的风很舒服而已！」",
       "id": "alya_r18_sofa_morning_shirt",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "soft golden morning light, gentle breeze, hazy city skyline glow",
       "location": "高层公寓晨光阳台",
       "mood": "清爽娇矜",
@@ -1113,9 +1102,7 @@
         "wind",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1141,7 +1128,7 @@
       "characterId": "alisa_mikhailovna_kujou",
       "description": "【艾莉莎·九条 · 镜前练习的俄语情话】温泉旅馆的更衣室里，艾莉莎对着落地镜一遍遍练习那句俄语。她清了清嗓子，声音越来越小——「Я люблю тебя……不行！太害羞了！换一句换一句！」她抓起浴巾捂住发烫的脸，镜子里映出她红透的耳尖和散开的银发。",
       "id": "alya_r18_hotel_mirror_reflection",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm bathhouse lantern glow, soft steam haze, gentle mirror reflections",
       "location": "旅馆更衣镜前",
       "mood": "羞恼可爱",
@@ -1230,9 +1217,7 @@
         "warm_lighting",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1635,9 +1620,7 @@
         "morning",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -1776,9 +1759,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "SFW",
@@ -2083,7 +2064,7 @@
       ],
       "description": "【成年同事会器材备品室·锁门后】卸下完美名媛假面的极度兄控。有希把成年礼服百褶裙掀到腰间，跨坐在你的腰间。黑发短发随动作轻轻晃动，红棕色眸子里闪烁着病态的独占欲与恶趣味调戏——「在学校里要叫周防同学……但是在这里，我只是政近君一个人的有希哦……快点动起来嘛，欧尼酱♪」",
       "id": "suou_yuki_r18_b8_01",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "成年同事会器材备品室·锁门后",
       "mood": "主动亲密与失神",
@@ -2127,18 +2108,14 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian kneels forward on cushions in the locked, shadowy adult colleague council storage room. Her pristine school blazer is pushed open and pleated skirt hitched up over her black tights, revealing bouncy, well-formed breasts that heave with her mischievous, assertive rhythm. Her dark bob sways as she cups her flushed cheeks, rich brown eyes glittering with wicked bro-con delight and heavy desire as she whispers taboo promises. Vertical low-angle solo perspective, amber sunlight leaking through storage door slats, detailed school background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian kneels forward on cushions in the locked, shadowy adult colleague council storage room. Her pristine school blazer is pushed open and pleated skirt hitched up over her black tights, revealing bouncy, well-formed breasts that heave with her mischievous, assertive rhythm. Her dark bob sways as she cups her flushed cheeks, rich brown eyes glittering with wicked bro-con delight and heavy desire as she whispers taboo promises. Vertical low-angle solo perspective, amber light leaking through storage door slats, detailed school background, solo 1girl, no extra people.",
       "promptTokens": [
         "storage_room",
         "school",
-        "sunlight_slats",
-        "dust_particles",
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2171,7 +2148,7 @@
       ],
       "description": "【周防大宅主卫·夜】散发着高级柏木香气的日式汤池。有希斜靠在光滑的木质池壁上，一条微小的湿浴巾半遮住胸口。单手在热水中探入两腿之间轻柔抚弄，平日优雅端庄的仪态彻底融化在淫靡的水汽中——「在艾莉同学面前逞强的哥哥……其实每天晚上……都是这样被我欺负的呢……」",
       "id": "suou_yuki_r18_b8_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "周防大宅主卫·夜",
       "mood": "湿身水光与私密自持",
@@ -2216,18 +2193,15 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Yuki Suou reclines against the aromatic cypress wood of her aristocratic estate's private bath at dusk. A soaked white washcloth clings sheer over her lovely pert breasts and erect nipples, water rippling over her smooth pale torso. Beneath the surface, her hand caresses her slick folds with practiced decadence, a sly, triumphant flush coloring her cheeks as she daydreams about keeping her brother all to herself. Sensual vertical framing, glowing lanterns casting warm reflection on steaming bathwater, detailed Japanese bath background, depth of field, solo 1girl, no text.",
+      "promptProse": "Yuki Suou reclines against the aromatic cypress wood of her aristocratic estate's private bath at dusk. A soaked white washcloth clings sheer over her lovely pert breasts and erect nipples, water rippling over her smooth pale torso. Beneath the surface, her hand caresses her slick folds with practiced decadence, a sly, triumphant flush coloring her cheeks as she daydreams about keeping her brother all to herself. Sensual vertical framing, glowing lights casting warm reflection on steaming bathwater, detailed Japanese bath background, solo 1girl, no text.",
       "promptTokens": [
         "onsen",
         "cypress_tub",
         "steam",
-        "lanterns",
         "twilight",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2261,7 +2235,7 @@
       ],
       "description": "【有希秘密宅房间·周末】偷穿哥哥买的二次元限定痛连帽卫衣，拉链卡在超短裤蕾丝上。有希双手撑在手办展示柜前，卫衣被拉扯得侧向大开，露出雪白饱满的侧乳与穿了开档黑丝的浑圆翘臀。她回头撅着嘴，娇嗔地命令——「快点帮我弄好啦！要是把哥哥送我的痛衣拉坏了……我就罚你今晚抱着我睡！」",
       "id": "suou_yuki_r18_b8_03",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "有希秘密宅房间·周末",
       "mood": "意外失控与羞赧",
@@ -2301,7 +2275,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Inside her secret otaku sanctuary, Yuki Suou leans forward over an anime figure display cabinet, her zip-up anime hoodie caught stubbornly at the hip hem. The fabric pulls wide apart along her flank, exposing creamy sideboob and taut rose nipples, while her short pleated skirt rides up over sheer black stockings. Glancing back with an irresistible, pouty glare in her warm brown eyes, she stamps her foot in mock exasperation, demanding immediate rescue. Cinematic horizontal framing, colorful LED showcase lights reflecting across pale curves, detailed otaku room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Inside her secret otaku sanctuary, Yuki Suou leans forward over an anime figure display cabinet, her zip-up anime hoodie caught stubbornly at the hip hem. The fabric pulls wide apart along her flank, exposing creamy sideboob and taut rose nipples, while her short pleated skirt rides up over sheer black stockings. Glancing back with an irresistible, pouty glare in her warm brown eyes, she stamps her foot in mock exasperation, demanding immediate rescue. Cinematic horizontal framing, colorful LED showcase lights reflecting across pale curves, detailed otaku room background, solo 1girl, no extra people.",
       "promptTokens": [
         "bedroom",
         "figure_cabinet",
@@ -2309,9 +2283,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2345,7 +2317,7 @@
       ],
       "description": "【有希闺房大床·深夜】把政近换洗下来的成年礼服白衬衫紧紧抱在怀里。有希完全赤裸下半身躺在羽绒被中，鼻尖深吸着衬衫领口的肥皂香气，手指在湿成一片的私处急速抽送，双腿剧烈颤抖——「政近君的衬衫……政近君的味道……哈啊……好想要哥哥……全部填满我……」",
       "id": "suou_yuki_r18_b8_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "silver_moonlight",
       "location": "有希闺房大床·深夜",
       "mood": "独处沉沦与情绪释放",
@@ -2390,7 +2362,7 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Sprawled on her luxurious canopy bed with Masachika's discarded white shirt clutched to her face, Yuki Suou inhales his scent in pure ecstasy. Bottomless beneath the silk sheets, she drives her fingers deep into her dripping, swollen pussy, her lithe body shuddering in violent, unchecked waves of climax. Her short dark bob fans across the white linen, tears of forbidden yearning leaking from her brown eyes as her moans turn into a desperate chant of her brother's name. Intimate vertical framing, moonlit bedroom shadows and soft bedside glow, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled on her luxurious canopy bed with Masachika's discarded white shirt clutched to her face, Yuki Suou inhales his scent in pure ecstasy. Bottomless beneath the silk sheets, she drives her fingers deep into her dripping, swollen pussy, her lithe body shuddering in violent, unchecked waves of climax. Her short dark bob fans across the white linen, tears of forbidden yearning leaking from her brown eyes as her moans turn into a desperate chant of her brother's name. Intimate vertical framing, moonlit bedroom shadows and soft bedside glow, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bedroom",
         "canopy_bed",
@@ -2399,9 +2371,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2435,7 +2405,7 @@
       ],
       "description": "【九重家公寓客厅·冬夜】壁炉柴火噼啪作响。巨乳温柔姐姐玛夏只穿一件粗针织开胸毛衣，跨坐在你的腰间。那对令人窒息的丰满雪乳毫无保留地压在你的胸口，金色大波浪卷发如温暖的阳光般将你包裹。她温柔地摸着你的头发，眼神满是包容一切的母性与爱欲——「政近君……不要忍耐了……全部交给我吧……」",
       "id": "maria_mikhailovna_kujou_r18_b9_01",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_firelight",
       "location": "九重家公寓客厅·冬夜",
       "mood": "主动亲密与失神",
@@ -2479,7 +2449,7 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Masha (Mariya Kujou) from Alya Sometimes Hides Her Feelings in Russian kneels forward before a crackling living room fireplace in winter. Her knit sweater is parted down the middle, allowing her enormous, pillow-soft breasts to spill forward in the warm hearth light, rose nipples flushed with heat. Her voluminous wavy golden hair envelops your senses like a warm blanket, her gentle cornflower-blue eyes radiant with boundless maternal tenderness as she reaches out in slow, comforting embrace. Vertical low-angle solo perspective, golden firelight dancing over voluptuous curves, detailed Russian-Japanese living room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Masha (Mariya Kujou) from Alya Sometimes Hides Her Feelings in Russian kneels forward before a crackling living room fireplace in winter. Her knit sweater is parted down the middle, allowing her enormous, pillow-soft breasts to spill forward in the warm hearth light, rose nipples flushed with heat. Her voluminous wavy golden hair envelops your senses like a warm blanket, her gentle cornflower-blue eyes radiant with boundless maternal tenderness as she reaches out in slow, comforting embrace. Vertical low-angle solo perspective, golden firelight dancing over voluptuous curves, detailed Russian-Japanese living room background, solo 1girl, no extra people.",
       "promptTokens": [
         "living_room",
         "fireplace",
@@ -2488,9 +2458,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2524,7 +2492,7 @@
       ],
       "description": "【雪山温泉旅馆·深夜】飘着鹅毛大雪的露天汤池。玛夏整个丰腴饱满的身躯浸在滚烫的温泉中，雪花落在她雪白宏伟的乳丘上瞬间化成水珠。单手在热气弥漫的水底缓缓抚弄着丰润的私处，蓝眸迷醉地仰望着夜空——「小萨夏……要是知道姐姐在这里想你……一定会害羞得说俄语吧……」",
       "id": "maria_mikhailovna_kujou_r18_b9_02",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "liquid_reflection_lighting",
       "location": "雪山温泉旅馆·深夜",
       "mood": "湿身水光与私密自持",
@@ -2570,7 +2538,7 @@
         "parted_lips"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Masha relaxes in an outdoor hot spring while gentle snow flurries fall through the night air. The contrast of freezing air and steaming water blankets her magnificent, full-figured silhouette, snowflakes melting on her enormous pale breasts as water droplets glisten on dark pink nipples. Beneath the warm surface, her hand glides smoothly over her plush thighs and swollen folds, head thrown back in a dreamy, fog-wreathed sigh. Sensual vertical framing, glowing outdoor lanterns illuminating falling snowflakes and steamy water ripples, detailed winter onsen background, depth of field, solo 1girl, no text.",
+      "promptProse": "Masha relaxes in an outdoor hot spring while gentle snow flurries fall through the night air. The contrast of freezing air and steaming water blankets her magnificent, full-figured silhouette, snowflakes melting on her enormous pale breasts as water droplets glisten on dark pink nipples. Beneath the warm surface, her hand glides smoothly over her plush thighs and swollen folds, head thrown back in a dreamy, fog-wreathed sigh. Sensual vertical framing, glowing outdoor lights illuminating falling snowflakes and steamy water ripples, detailed winter onsen background, solo 1girl, no text.",
       "promptTokens": [
         "outdoor_onsen",
         "hot_spring",
@@ -2580,9 +2548,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2616,7 +2582,7 @@
       ],
       "description": "【舞会更衣间·午后】准备出席晚宴时试穿修身墨绿丝绒礼服，因胸围过大导致背部拉链整条崩开。玛夏双手撑在换衣桌上，礼服后背全开，丰腴诱人的脊背凹线与几乎勒爆的前胸软肉一览无余。她有些困扰却依然温柔地回头微笑着——「政近君……帮玛夏姐姐拉一下好吗？要是弄坏了，可得罚你陪我跳第一支舞哦♪」",
       "id": "maria_mikhailovna_kujou_r18_b9_03",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "舞会更衣间·午后",
       "mood": "意外失控与羞赧",
@@ -2656,7 +2622,7 @@
         "gentle_smile"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Masha leans forward against the dressing table as the rear zipper of her emerald velvet evening gown bursts under the sheer volume of her bust. The dress gapes wide open down her supple spine, pushing her colossal breasts forward in an unbelievable display of cleavage and dusky rose nipples. Turning her head back with a soft, bashful chuckle, her blue eyes beam with serene maternal charm, completely unbothered by her scandalous state. Cinematic horizontal composition, warm chandelier light gleaming over creamy shoulders and plush hips, detailed fitting room background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Masha leans forward against the dressing table as the rear zipper of her emerald velvet evening gown bursts under the sheer volume of her bust. The dress gapes wide open down her supple spine, pushing her colossal breasts forward in an unbelievable display of cleavage and dusky rose nipples. Turning her head back with a soft, bashful chuckle, her blue eyes beam with serene maternal charm, completely unbothered by her scandalous state. Cinematic horizontal composition, warm chandelier light gleaming over creamy shoulders and plush hips, detailed fitting room background, solo 1girl, no extra people.",
       "promptTokens": [
         "dressing_room",
         "dressing_table",
@@ -2665,9 +2631,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -2701,7 +2665,7 @@
       ],
       "description": "【玛夏公寓卧房·暴风雪夜】在温暖厚重的羽绒被深处。玛夏浑身赤裸躺在床上，将枕头紧紧搂在丰满的双峰之间。指尖在湿热甘甜的爱液深处轻柔揉按，金发如云雾散开，嘴唇溢出包容一切的深情喘息——「哪怕艾莉也喜欢你……玛夏姐姐也绝对不会退让的哦……因为政近君……是我最宝贝的人……」",
       "id": "maria_mikhailovna_kujou_r18_b9_04",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm_cinematic_lighting",
       "location": "玛夏公寓卧房·暴风雪夜",
       "mood": "独处沉沦与情绪释放",
@@ -2742,7 +2706,7 @@
         "heavy_blush"
       ],
       "outfitId": "nsfw_boudoir",
-      "promptProse": "Deep inside her plush down comforter during a howling winter blizzard, Masha lies completely naked, squeezing a soft down pillow between her monumental breasts. Her fingers knead softly into her dripping, honeyed center, her bountiful hips rolling in slow, deep waves of ecstatic warmth. Golden wavy locks sprawl across the pillow, her cornflower-blue eyes brimming with tearful, unconditional devotion as she softly whispers your name into the quiet dark. Intimate vertical framing, amber nightlight casting butter-soft shadows across monumental curves, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Deep inside her plush down comforter during a howling winter blizzard, Masha lies completely naked, squeezing a soft down pillow between her monumental breasts. Her fingers knead softly into her dripping, honeyed center, her bountiful hips rolling in slow, deep waves of ecstatic warmth. Golden wavy locks sprawl across the pillow, her cornflower-blue eyes brimming with tearful, unconditional devotion as she softly whispers your name into the quiet dark. Intimate vertical framing, amber nightlight casting butter-soft shadows across monumental curves, detailed bedroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "bedroom",
         "down_comforter",
@@ -2751,9 +2715,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",

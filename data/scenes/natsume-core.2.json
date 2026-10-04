@@ -15,7 +15,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, crowded",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, school_uniform, blazer_off_shoulder, pleated_skirt, black_thighhighs, mary_janes, sitting_on_classroom_desk, leaning_forward_toward_viewer, sunset_golden_hour_through_windows, locked_room, flustered_blush, looking_away, tsundere, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, school_uniform, blazer_off_shoulder, pleated_skirt, black_thighhighs, mary_janes, sitting_on_classroom_desk, leaning_forward_toward_viewer, sunset_golden_hour_through_windows, locked_room, flustered_blush, looking_away, tsundere, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 强势壁咚反差萌】放学后空无一人的超自然社办，窗外落日熔金。夏目悄悄转动钥匙反锁了门，绕到你的办公椅前，双手撑在椅背两侧将你完全“壁咚”。她微微俯身，黑色发丝伴随着她标志性的傲娇呼吸拂过你的耳畔，眼角的泪痣在夕阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的女孩子看，把我当空气吗？现在...是我的专属补偿时间了哦。」",
@@ -29,8 +29,7 @@
       "club_room",
       "sunset_backlight",
       "full_body",
-      "mary_jane",
-      "depth_of_field"
+      "mary_jane"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",
@@ -150,7 +149,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, white_shirt, wet_clothes, see-through, lying, bare_legs, bar, water, droplets, body, barefoot, bathroom, dimly_lit, kiss, blush, bare_shoulders, dim_lighting, cinematic, depth, field, full_body, soft_diffused_light, soft_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, white_shirt, wet_clothes, see-through, lying, bare_legs, bar, water, droplets, body, barefoot, bathroom, dimly_lit, kiss, blush, bare_shoulders, dim_lighting, cinematic, depth, field, full_body, soft_diffused_light, soft_lighting, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 湿透衬衫彻底沦陷】特工任务结束后的秘密安全屋，浴室水汽弥漫。平时高冷毒舌的夏目此时彻底瘫软在长椅上，身上只穿着一件被温水完全浸透、死死贴紧饱满身躯的白色衬衫。她黑发湿漉漉地贴着锁骨，眼角的泪痣在氤氲的雾气下显得极度潮红。她双腿交叠，虽然嘴上依然虚弱地骂着「哈？你这个变态笨蛋...」，却主动伸出滚烫的双手紧紧勾住你的脖子，闭上含泪的眼睛迎向你的深吻——",
@@ -168,8 +167,7 @@
       "deep_kiss",
       "kissing",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -212,8 +210,7 @@
       "pressing_shoulders",
       "sweat",
       "messy_bed_sheets",
-      "disheveled_bedroom",
-      "depth_of_field"
+      "disheveled_bedroom"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -285,7 +282,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, black_shirt_unbuttoned, falling_strap, bra_lift, exposed_breasts, bare_breasts, nipples, areola, bare_legs, crotchless_panties, exposed_pussy, pussy_juice, sitting_cross-legged_on_cafe_bar_counter, heavy_blush, wine_glass_nearby, dim_bar_lighting, depth_of_field, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, black_shirt_unbuttoned, falling_strap, bra_lift, exposed_breasts, bare_breasts, nipples, areola, bare_legs, crotchless_panties, exposed_pussy, pussy_juice, sitting_cross-legged_on_cafe_bar_counter, heavy_blush, wine_glass_nearby, dim_bar_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 吧台绝对独占篇】深夜打烊后的漆黑咖啡馆。夏目在你的霸道要求下，脱掉了全部衣服，仅仅套着你那一身宽大的纯黑衬衫。她面红耳赤地盘腿坐在微凉的吧台桌面上，衬衫下摆刚好遮住绝对领域，大片白皙笔直的长腿毫无防备地交叠袒露。她手里摇晃着半杯红酒，眼神微醺却带着极度撩人、强势的占有欲，居高临下地斜睨着你，眼角的泪痣被红晕浸透，性感得不可救药——「喂，大变态。今晚这间店反锁了，既然不让我回家...你最好做足了被我彻底吃掉的觉悟。」",
@@ -303,8 +300,7 @@
       "tipsy",
       "possession",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -331,7 +327,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, unbound_wrists, casual_clothes, free_wrists, hands_merely_clasped, hands_behind_head, invisible_restraint, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, blush, bodysuit, unzipped, cleavage, bare_legs, bar, sofa, lying, dimly_lit, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, backlight, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, blush, bodysuit, unzipped, cleavage, bare_legs, bar, sofa, lying, dimly_lit, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, backlight, rim_light, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 安全屋软缚绝对臣服】因为在训练里对你\"出言不逊\"，高冷的特工少女在安全屋里迎来了她的惩罚。此刻她被用黑色的战术束带半固定在凌乱的沙发上，双手被缚至头顶。她身上的黑色战术背心已经被完全扯开，露出了大片极具肉感、泛着潮红的细腻肌肤。她光洁的长腿紧紧并拢，眼角的泪痣因为极度的羞嗔而微微颤动。她一边急促地娇喘，一边用充满水汽的死硬眼神狠狠剜着你——「哈？！你这个变态长官...居然用这种下三滥的手段...等我解开约束，绝对要把你秘密处决...唔嗯...」",
@@ -347,8 +343,7 @@
       "safehouse",
       "bare_legs",
       "full_body",
-      "heels",
-      "depth_of_field"
+      "heels"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -375,7 +370,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bodysuit, unzipped, cleavage, straddling, dimly_lit, kiss, blush, sweat, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, rim_light, warm_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bodysuit, unzipped, cleavage, straddling, dimly_lit, kiss, blush, sweat, panting, dim_lighting, cinematic, depth, field, bare_shoulders, full_body, rim_light, warm_lighting, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 特工服战损跨坐】刚刚结束激烈遭遇战的地下安全屋，空气中弥漫着硝烟与荷尔蒙的微热。夏目那一身漆黑的特工连体衣从领口被一路拉开、撕裂到了腹部，露出了里面让人血脉偾张的饱满线条。她跨坐在地板上的你身上，大汗淋漓，黑色发丝凌乱地贴在潮红的脸颊上。眼角的泪痣因为极度亢奋和动情而闪烁着近乎疯狂的独占欲。她纤细的双手死死掐住你的脖子将你带入深吻，一边急促喘息一边在你耳边呢喃——「长官...任务成功了...现在...我要收回属于我的全部战利品...」",
@@ -393,8 +388,7 @@
       "sweat",
       "cold_floor",
       "safehouse",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -438,8 +432,7 @@
       "wet_hair",
       "vehicle",
       "condensed_windows",
-      "rain",
-      "depth_of_field"
+      "rain"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -482,8 +475,7 @@
       "moonlight",
       "blinds",
       "full_body",
-      "heels",
-      "depth_of_field"
+      "heels"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -511,7 +503,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, white_shirt, pale_shirt, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "adult, 1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, black_shirt, oversized_shirt, bare_legs, bar, leaning_back, lying, bed, barefoot, messy_bed, blush, morning, cinematic, depth, field, bare_shoulders, full_body, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, shirt, black_shirt, oversized_shirt, bare_legs, bar, leaning_back, lying, bed, barefoot, messy_bed, blush, morning, cinematic, depth, field, bare_shoulders, full_body, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 晨间真空衬衫绝对独占】一个无限慵懒的假日清晨，阳光透过巨大的落地窗。昨晚宿醉过后的夏目从凌乱的被窝里醒来，身上仅仅松垮垮地套着你那一身纯黑色的长袖衬衫，里面完全是真空状态。她眼神带着一丝微醺过后的慵懒与极致妩媚，半撑着身体侧卧在白色床单上，大片白皙笔直的长腿毫无防备地交叠裸露。眼角的泪痣被清晨的碎光照亮，性感得让人屏息。她挑了挑眉，用极具占有欲的傲娇微笑注视着你——「早安，大变态。盯着人家的腿看够了没有？看够了的话...就过来抱我。」",
@@ -527,8 +519,7 @@
       "bedroom",
       "morning_light",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "清晨",
     "timeOfDay": "morning",
@@ -571,8 +562,7 @@
       "safehouse",
       "bare_legs",
       "full_body",
-      "combat_boots",
-      "depth_of_field"
+      "combat_boots"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -599,7 +589,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, disheveled_clothes, bar, straddling, bare_legs, bed, barefoot, messy_bed, bare_shoulders, blush, panting, dim_lighting, cinematic, depth, field, full_body, cool_lighting, soft_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, disheveled_clothes, bar, straddling, bare_legs, bed, barefoot, messy_bed, bare_shoulders, blush, panting, dim_lighting, cinematic, depth, field, full_body, cool_lighting, soft_lighting, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 宿醉衣衫解开极致独占】深夜同居公寓里，散落着红酒杯。平时永远把理智挂在嘴边的特工少女夏目，今晚在酒精的催化下彻底失去了防线。她主动将你狠狠推倒在床榻上，身上那件休闲连衣裙的拉链已经被她自己粗暴地拉到了底端，挂在圆润的香肩两侧。她跨坐在你的腰间，大汗淋漓，黑色长发散乱。眼角的泪痣因为眼神里燃起的极度独占欲与情欲而闪烁着危险的红晕。她一边剧烈娇喘，一边俯身狠狠地咬在你的锁骨上——「你是我的...哪怕身体和理智全部坏掉...我这辈子也绝对不会放过你了...笨蛋...」",
@@ -617,8 +607,7 @@
       "disheveled_bed",
       "bare_legs",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -662,8 +651,7 @@
       "deep_kiss",
       "kissing",
       "bare_legs",
-      "bathroom",
-      "depth_of_field"
+      "bathroom"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -690,7 +678,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, school_uniform, gym_uniform",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_official_qipao, natsume_r18, mole_under_eye, cheongsam, qipao, high_slit, sitting_on_barstool, leaning_forward, gripping_viewer_collar, pulling_viewer_closer, close_up, looking_at_viewer, cleavage, heavy_blush, tsundere, holding_wine_glass, bar_interior, night, strong_shadows, sensual, black_hair, long_hair, yellow_eyes, hairclip, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, neon_lighting, cool_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_official_qipao, natsume_r18, mole_under_eye, cheongsam, qipao, high_slit, sitting_on_barstool, leaning_forward, gripping_viewer_collar, pulling_viewer_closer, close_up, looking_at_viewer, cleavage, heavy_blush, tsundere, holding_wine_glass, bar_interior, night, strong_shadows, sensual, black_hair, long_hair, yellow_eyes, hairclip, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, neon_lighting, cool_lighting, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 丝绸旗袍极致沦陷】潜伏任务结束后的复古私人酒廊包厢。平时高冷刻板的夏目此时换上了一件华丽的高开叉暗红丝绸旗袍，修长笔直的丰满美腿包裹在性感的超薄黑丝袜中。她面红耳赤地坐在包厢吧台前的高脚凳上朝你举杯，高开的旗袍下摆滑落到腿根，大片极具肉感的绝对领域随着交叠的长腿若隐若现。她手里摇晃着红酒杯，眼角的泪痣被脸颊的潮红彻底浸透，一边剧烈娇喘一边扯住你的衣领将你拉近深吻——「哼...长官...今晚这里没有特工任务...只有属于我的...绝对独占时间...笨蛋...」",
@@ -748,7 +736,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, yukata, open_clothes, bare_shoulders, bare_legs, bar, bed, tatami, water, droplets, body, lying, blush, panting, warm_lighting, cinematic, depth, field, full_body, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, yukata, open_clothes, bare_shoulders, bare_legs, bar, bed, tatami, water, droplets, body, lying, blush, panting, warm_lighting, cinematic, depth, field, full_body, detailed_background, cinematic_lighting",
     "rating": "R18",
     "season": "夏",
     "story": "【夏目 · 温泉浴衣解开极致沦陷】夏日祭典结束后的传统温泉旅馆，窗外传来祭典散场后的隐隐人声。洗完澡后的夏目身穿宽松的棉质浴衣，软绵绵地躺在散发着清香的榻榻米床铺上。因为被你霸道地压在身下，她浴衣的腰带已被完全扯开，整件衣服凌乱地滑落到腰际，大片雪白的胸口、精致的锁骨和毫无防备的长腿毫无保留地暴露在灯光下。她眼角的泪痣因为极度动情被红晕染透，一边无力地勾住你的脖子承受你的索求，一边娇喘着呻吟——「哈啊...你这变态笨蛋...把人家的浴衣弄得这么乱...今晚...就彻底随你的便了...唔嗯...」",
@@ -764,8 +752,7 @@
       "pinned_under_viewer",
       "hooking_neck",
       "paper_lantern",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -811,8 +798,7 @@
       "pulling_neck",
       "deep_kiss",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "拂晓",
     "timeOfDay": "dawn",
@@ -839,7 +825,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, tactical_bodysuit, unzipped_bodysuit, cleavage, bare_shoulders, black_thighhighs, bound_to_chair, bound_wrists, teary_eyes, panting, heavy_blush, shameful_expression, interrogation_room, overhead_spotlight, dramatic_shadows, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, tactical_bodysuit, unzipped_bodysuit, cleavage, bare_shoulders, black_thighhighs, bound_to_chair, bound_wrists, teary_eyes, panting, heavy_blush, shameful_expression, interrogation_room, overhead_spotlight, dramatic_shadows, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 审讯椅软缚绝对沦陷】空无一人的特工审讯室，厚重的隔音铁门被反锁。平时高冷死硬的特工少女夏目，此刻被你以“违抗命令”为由，用精钢锁扣半固定在冰凉的特工审讯椅上。她身上那一身紧身的战术特工背心已经被你完全暴力扯开，大片极具肉感的雪白胸口与细腻的小腹毫无防备地暴露在外，随着急促的娇喘剧烈起伏。她修长笔直的黑丝长腿被强行分开，眼角的泪痣因为极度的羞嗔与快感红得发烫，一边含泪瞪着你一边发出难耐的呻吟——「哈啊...你这变态长官...竟然假公济私...等我解开锁扣...绝对要把你秘密处决...唔嗯...」",
@@ -857,8 +843,7 @@
       "shameful",
       "heavy_panting",
       "full_body",
-      "heels",
-      "depth_of_field"
+      "heels"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -885,7 +870,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_latex_bodysuit, unzipped_bodysuit, cleavage, navel, straddling_viewer, leaning_forward, heavy_blush, looking_down_at_viewer, rooftop, skyscraper_rooftop, neon_cityscape, cyberpunk_city, night_sky, cool_rim_light, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_latex_bodysuit, unzipped_bodysuit, cleavage, navel, straddling_viewer, leaning_forward, heavy_blush, looking_down_at_viewer, rooftop, skyscraper_rooftop, neon_cityscape, cyberpunk_city, night_sky, cool_rim_light, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "不限",
     "story": "【夏目 · 漆黑乳胶高叉衣极致肉感】深夜繁华都市的摩天大楼天台边缘，脚下是无边无际的霓虹灯海与赛博暗流。夏目今晚彻底换上了一件充满了绝对支配欲与禁忌感的漆黑高叉乳胶紧身衣。乳胶材质死死贴紧她惊人饱满的丰挺弧度，在反光下散发着极具科幻肉感的光泽。她衣领的拉链被一路拉到了肚脐，露出了极其深邃的乳沟与光洁如玉的大片腹部肌肤。她跨坐在天台护栏边缘你的大腿上，长腿交叠，眼角的泪痣被都市的霓虹灯火照亮，挂着一丝危险且极其性感的玩味笑意——「长官...今晚在这个高度...我的指令是越界支配你哦...」",
@@ -903,8 +888,7 @@
       "cyberpunk",
       "full_body",
       "heels",
-      "night",
-      "depth_of_field"
+      "night"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -932,7 +916,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_nightgown, translucent_nightgown, sheer_fabric, clinging_fabric, bare_shoulders, delicate_collarbone, looking_back, grabbing_clothes, heavy_blush, parted_lips, balcony, high_balcony, railing, ocean_view, night, full_moon, silver_moonlight, cool_rim_light, sea_breeze, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_nightgown, translucent_nightgown, sheer_fabric, clinging_fabric, bare_shoulders, delicate_collarbone, looking_back, grabbing_clothes, heavy_blush, parted_lips, balcony, high_balcony, railing, ocean_view, night, full_moon, silver_moonlight, cool_rim_light, sea_breeze, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "夏",
     "story": "【夏目 · 真丝半透明睡裙海滨月夜】寂静的海滨度假公寓高空阳台。夜空澄澈，一轮巨大的圆月将清冷皎洁的银辉泼洒在平静如镜的海面上。夏目此时只穿着一件极其薄软的半透明白色真丝睡裙伫立在围栏前，里面完全真空。海风徐徐吹过，不仅吹乱了她柔顺的黑色长发，更是将轻薄如纱的睡裙死死贴紧在她完美毫无瑕疵的娇躯线条上，前胸凸显的诱人傲然痕迹与饱满轮廓在月光的逆光勾勒下近乎全透明！她面红耳赤地回过头，眼角的泪痣闪烁着极致的妩媚与独占欲，主动扯住你的衣角——「大笨蛋...风有点凉...你还不打算从后面...把我抱进房间里去吗...」",
@@ -946,8 +930,7 @@
       "balcony",
       "full_body",
       "barefoot",
-      "moonlight",
-      "depth_of_field"
+      "moonlight"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -993,8 +976,7 @@
       "winter",
       "firelight",
       "full_body",
-      "barefoot",
-      "depth_of_field"
+      "barefoot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1021,7 +1003,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_backless_dress, evening_gown, gown_slipped_down, bare_back, sideboob, sheer_black_thighhighs, lying_on_bed, arms_around_neck, panting, heavy_blush, breathless, messy_bed, hotel_suite, neon_lights_through_window, warm_bedside_lamp, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_backless_dress, evening_gown, gown_slipped_down, bare_back, sideboob, sheer_black_thighhighs, lying_on_bed, arms_around_neck, panting, heavy_blush, breathless, messy_bed, hotel_suite, neon_lights_through_window, warm_bedside_lamp, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 高开叉晚礼服解开极致沦陷】高档宴会结束后的顶级酒店总统套房。窗外是繁华都市的无边霓虹。平时高冷优雅的夏目此时被你温柔地推倒在宽大的双人床上。她身上那一件奢华的黑色露背高开叉丝绸晚礼服背后的拉链已经被你完全拉开，整件礼服松垮垮地滑落到了腰际，露出了大片极具线条感、泛着潮红的绝美裸背与丰满侧乳。她腿上性感的超薄黑丝袜在灯光下散发着撩人光泽。她眼角的泪痣被红晕彻底染透，一边无力地搂紧你的脖子，一边娇喘着呻吟——「长官...今晚这件衣服...就随你高兴撕裂掉好了...嗯嗯...」",
@@ -1038,8 +1020,7 @@
       "arms_around_neck",
       "lying_on_bed",
       "neon_light",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1066,7 +1047,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, glasses, gold-rimmed_glasses, cowboy_shot, pov, white_shirt, unbuttoned_shirt, collarbone, cleavage, black_lace_bra, black_pencil_skirt, torn_pantyhose, torn_black_tights, sitting_on_desk, adjusting_glasses, finger_on_glasses, head_tilt, heavy_blush, panting, parted_lips, breathless, office_desk, office_interior, night, desk_lamp, warm_lighting, strong_shadows, chiaroscuro, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, glasses, gold-rimmed_glasses, cowboy_shot, pov, white_shirt, unbuttoned_shirt, collarbone, cleavage, black_lace_bra, black_pencil_skirt, torn_pantyhose, torn_black_tights, sitting_on_desk, adjusting_glasses, finger_on_glasses, head_tilt, heavy_blush, panting, parted_lips, breathless, office_desk, office_interior, night, desk_lamp, warm_lighting, strong_shadows, chiaroscuro, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 眼镜职场窄裙裂丝绝对沦陷】深夜空无一人的指挥官专属办公室。平时高冷霸道的职场特工夏目，今晚破天荒戴上了一副金丝眼镜，增添了无尽的知性禁欲感。此时她正面红耳赤地坐在微凉的办公桌边缘，身上的白衬衫纽扣已被你解开了大半，露出了极其诱人的饱满曲线。腿上性感的黑色丝袜已经被你大面积撕裂，露出了光洁细腻的大腿绝对领域。她微仰着头，修长手指推了推滑落的眼镜，眼角的泪痣在台灯强阴影下散发着极致动情的危险红晕，娇喘着呻吟——「哈啊...长官...今晚这场『秘密越界审讯』...你已经彻底赢了...随你把我坏掉吧...」",
@@ -1087,8 +1068,7 @@
       "panting",
       "office",
       "desk_lamp",
-      "cowboy_shot",
-      "depth_of_field"
+      "cowboy_shot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1130,8 +1110,7 @@
       "changing_room",
       "hand_over_face",
       "night",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1174,8 +1153,7 @@
       "arms_around_neck",
       "blush",
       "red_ears",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1203,7 +1181,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_shirt, wet_shirt, translucent_shirt, unbuttoned_shirt, collarbone, black_lace_bra, whipped_cream_on_chest, straddling, sitting_on_thigh, holding_towel, wiping_cheek, pressed_lips, tsundere_pout, heavy_blush, cool_expression, cafe_kitchen, stainless_counter, night, overhead_lamp, warm_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_shirt, wet_shirt, translucent_shirt, unbuttoned_shirt, collarbone, black_lace_bra, whipped_cream_on_chest, straddling, sitting_on_thigh, holding_towel, wiping_cheek, pressed_lips, tsundere_pout, heavy_blush, cool_expression, cafe_kitchen, stainless_counter, night, overhead_lamp, warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "冬",
     "story": "【夏目 · 后厨甜点奶油失控】深夜彻底打烊、空无一人的Café Stella后厨料理间。夏目正有些无干劲地尝试制作新季度甜点，不料手中的奶油喷枪突然发生气压故障，大量的浓稠白色鲜奶油瞬间大范围喷溅出来，直接糊满了她胸前的白衬衫与精致的锁骨。轻薄的工装白衬衫遇水瞬间融化般贴在身上，内里精致黑色蕾丝内衣的丰满轮廓完全暴露。为了高效率清理现场，她紧抿着双唇，极其大胆地直接跨坐在不锈钢料理台边的你大腿上，抓起毛巾一边帮你擦拭脸颊，一边用彻底红透的耳根和毫无起伏的冷淡声线掩饰动摇——「……别误会。我只是觉得这样清洗最有效率。原料浪费已经造成了，在原地大呼小叫只会降低清洁速度。大变态，不准乱看……尤其是我的领口，真的把你秘密处决哦。」",
@@ -1220,8 +1198,7 @@
       "wiping_face",
       "towel",
       "red_ears",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1249,7 +1226,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, miko_attire, white_kimono_top, red_hakama, split_toe_tabi_socks, zouri_sandals, sweeping_shrine_steps_with_bamboo_broom, accepting_canned_warm_tea_from_viewer, blushing_ears, deadpan_cute_glance, misty_morning_shrine, torii_gate, morning_sunbeams, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, miko_attire, white_kimono_top, red_hakama, split_toe_tabi_socks, zouri_sandals, sweeping_shrine_steps_with_bamboo_broom, accepting_canned_warm_tea_from_viewer, blushing_ears, deadpan_cute_glance, misty_morning_shrine, torii_gate, morning_sunbeams, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 晨雾神社的巫女服】清晨被淡淡薄雾笼罩的静谧古老神社，四周唯有清脆的鸟鸣。夏目今天作为神社帮工换上了一袭素雅端庄的红白巫女服，柔顺的黑发用朱红缎带束在脑后，正拿着竹扫帚安静地清扫着庭前落叶。朝阳透过古树的枝桠洒落在她清秀的侧颜上，显得格外空灵。当你悄悄走近递上一罐刚加热好的热红茶时，夏目手上的动作微微一滞，半垂着清澈的金色眼眸接过热饮，白皙的耳根却悄然浮起一抹浅浅的红晕——「……别误会。我只是觉得早起扫地手太冷了，需要热量维持动作而已。……还有，早安……真是个爱操心的大笨蛋。」",
@@ -1265,8 +1242,7 @@
       "morning_mist",
       "white_tabi",
       "red_ears",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "清晨",
     "timeOfDay": "morning",
@@ -1293,7 +1269,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dress, cafe_uniform",
-    "prompt": "1girl, solo, shiki_natsume, short_black_hair, black_baseball_cap, black_choker, golden_yellow_eyes, mole_under_eye, fitted_long_sleeve_jacket, tight_denim_jeans, playing_rhythm_arcade_machine, perfect_score, handing_limited_plush_toy_to_viewer, cool_bored_expression, flushed_ears, retro_arcade, neon_lights, night, medium_shot, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, short_black_hair, black_baseball_cap, black_choker, golden_yellow_eyes, mole_under_eye, fitted_long_sleeve_jacket, tight_denim_jeans, playing_rhythm_arcade_machine, perfect_score, handing_limited_plush_toy_to_viewer, cool_bored_expression, flushed_ears, retro_arcade, neon_lights, night, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 潮酷机能风私服】深夜光影交错、充满赛博霓虹色彩的街头复古电玩城。脱下咖啡馆制服的夏目今天穿得极为率性休闲：一顶纯黑色的棒球帽斜斜扣在乌黑的短发上，脖子上戴着一条酷劲十足的窄黑色Choker，修身的长袖夹克与利落的紧身牛仔裤勾勒出她完美的双腿线条。她正全神贯注地用极为高效灵敏的手速操作着音乐街机，在以绝对完美的积分通关后，她微微转过头，眼角的泪痣在粉紫色的霓虹灯光下折射出极具个性的光芒。她将机器吐出来的限量版玩偶一把塞进你怀里，用毫无起伏却微微有些别扭的冷淡口吻掩饰动摇——「……拿着。这只是通关的附赠产物，放在包里很占空间，属于多余的负重。不准露出那种感动的表情……大变态。」",
@@ -1310,7 +1286,6 @@
       "neon_light",
       "night",
       "red_ears",
-      "depth_of_field",
       "medium_shot",
       "perfect_score",
       "handing_plush"
@@ -1340,7 +1315,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
-    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, small_round_glasses, light_coffee_thick_knit_sweater, sitting_on_attic_sofa, playing_handheld_game_console, sharing_wool_blanket_with_viewer, one_half_of_blanket_over_viewer's_legs, rainy_window, cozy_attic_study, rainy_afternoon, cool_screen_glow, gentle_smile, medium_shot, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, small_round_glasses, light_coffee_thick_knit_sweater, sitting_on_attic_sofa, playing_handheld_game_console, sharing_wool_blanket_with_viewer, one_half_of_blanket_over_viewer's_legs, rainy_window, cozy_attic_study, rainy_afternoon, cool_screen_glow, gentle_smile, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 阴雨午后的阁楼书房】窗外细雨绵绵的温馨阁楼书房。没有排班的假日午后，夏目穿着一件宽大松软的浅咖啡色粗针毛衣，乌黑的长发随意散落，鼻梁上罕见地架着一副精巧的细圆框眼镜，正全神贯注地看着掌机屏幕。当你端着热茶坐到她身边时，她自然地拉起身上柔软的羊毛毯，分出一半盖在你腿上。距离瞬间拉近，她眼角的泪痣在屏幕荧光映照下分外动人，耳根悄悄泛起红晕，语气依然带着几分特有的淡然——「……别误会。我只是觉得两个人一起盖毯子比较暖和。……喂，顺便帮我把桌上的红茶递过来一下。」",
@@ -1356,7 +1331,6 @@
       "sofa",
       "rain",
       "red_ears",
-      "depth_of_field",
       "medium_shot",
       "shared_blanket"
     ],
@@ -1425,7 +1399,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, denim_overalls, off-shoulder_top, white_sleeveless_shirt, strap_slip, bare_shoulders, delicate_collarbone, white_paint_on_collarbone, tensed_body, dead-fish_eyes, heavy_blush, shy, tsundere_pout, art_studio, wood_and_canvases, bright_afternoon_sunlight, window_light, rim_light, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, denim_overalls, off-shoulder_top, white_sleeveless_shirt, strap_slip, bare_shoulders, delicate_collarbone, white_paint_on_collarbone, tensed_body, dead-fish_eyes, heavy_blush, shy, tsundere_pout, art_studio, wood_and_canvases, bright_afternoon_sunlight, window_light, rim_light, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 工装背带裤的手工时光】午后阳光洒满堆放木材与画板的手工工作室。为了修缮咖啡店的桌椅，夏目换上了利落帅气的深蓝丹宁工装背带裤与无袖白上衣，修长的脖颈与锁骨线条格外干净。搬运木料时背带扣不慎滑下一侧，白皙的锁骨处还沾上了一抹白色木工漆。你自然地上前抬手帮她擦拭，夏目身子猛地一僵，半垂着清冷的金瞳动弹不得。午后明亮的窗光把她红透的耳根照得无所遁形，她小声嘟囔着——「……别误会。我只是觉得让你顺手擦掉最省事而已。要是蹭在衣服上更难洗。……真是的，离得太近了啦。」",
@@ -1441,8 +1415,7 @@
       "art_studio",
       "frozen_pose",
       "blush",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -1470,7 +1443,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_oversized_hoodie, dark_jeans, convenience_store_counter_at_night, holding_shopping_basket_with_instant_bento_limited_pudding_and_hot_canned_coffee, nodding_to_clerk, deadpan_face_with_blushing_ears, warm_yellow_fluorescent_shelf_lights, late_night, convenience_store_shelves, medium_shot, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, black_oversized_hoodie, dark_jeans, convenience_store_counter_at_night, holding_shopping_basket_with_instant_bento_limited_pudding_and_hot_canned_coffee, nodding_to_clerk, deadpan_face_with_blushing_ears, warm_yellow_fluorescent_shelf_lights, late_night, convenience_store_shelves, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "不限",
     "story": "【夏目 · 深夜便利店】凌晨一点，打烊后独自整理完库存的夏目拖着疲惫的身体走进隔壁24小时便利店。她机械地往购物篮里扔着速食便当，直到看见货架上最后一盒你最爱吃的限定布丁。犹豫了三秒，她还是把它放进了篮子里，顺手又拿了一罐热咖啡。结账时店员问要不要加热，她面无表情地点了点头，耳根却在暖黄的灯光下悄悄泛红。推开公寓门时，她把布丁和咖啡轻轻放在熟睡的你床头，用只有自己能听见的声音嘟囔——「……只是顺便买的。不吃的话明天就过期了，属于合理的资源回收。大笨蛋……晚安。」",
@@ -1486,7 +1459,6 @@
       "canned_coffee",
       "night",
       "red_ears",
-      "depth_of_field",
       "medium_shot"
     ],
     "time": "深夜",
@@ -1514,7 +1486,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, dark_wool_coat, red_plaid_muffler, black_gloves, standing_beside_telescope_on_observatory_roof, one_hand_holding_hot_cocoa_paper_cup, other_hand_pointing_toward_orion_constellation, second_hot_cocoa_cup_resting_on_observatory_rail, telescope_in_foreground, crisp_autumn_night_sky, full_of_stars, rare_faint_smile, moonlight, medium_shot, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, dark_wool_coat, red_plaid_muffler, black_gloves, standing_beside_telescope_on_observatory_roof, one_hand_holding_hot_cocoa_paper_cup, other_hand_pointing_toward_orion_constellation, second_hot_cocoa_cup_resting_on_observatory_rail, telescope_in_foreground, crisp_autumn_night_sky, full_of_stars, rare_faint_smile, moonlight, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 深夜观星】深秋晴朗的夜晚，学校的天文台屋顶。夏目难得没有在打瞌睡，而是专注地调试着望远镜的焦距。你拿着两杯热可可走上来时，她头也不回地伸出手，仿佛早就在等你。当猎户座清晰地出现在目镜中时，她难得露出了淡淡的微笑，指着星空用毫无起伏的语调讲解着——「那是参宿四，红超巨星，距离地球约700光年。也就是说，我们现在看到的光，是700年前发出的。」她顿了顿，微垂着眼睑，耳根在月光下悄悄泛红，「……700年前的光都能传到现在，有些话……是不是也该说出口了。大笨蛋。」",
@@ -1531,7 +1503,6 @@
       "starry_sky",
       "night",
       "red_ears",
-      "depth_of_field",
       "medium_shot",
       "telescope_in_foreground"
     ],
@@ -1560,7 +1531,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daylight",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_cafe_uniform, white_shirt, suspender_skirt, purple_ribbon, black_thighhighs, sitting_on_bar_stool_after_closing, sipping_fresh_hot_black_tea_from_porcelain_cup, gaze_trailing_viewer_cleaning, soft_red_ears, cafe_night, warm_amber_pendant_lamps, shallow_depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_cafe_uniform, white_shirt, suspender_skirt, purple_ribbon, black_thighhighs, sitting_on_bar_stool_after_closing, sipping_fresh_hot_black_tea_from_porcelain_cup, gaze_trailing_viewer_cleaning, soft_red_ears, cafe_night, warm_amber_pendant_lamps, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "不限",
     "story": "【夏目 · 疲惫的温柔】深夜打烊后的Café Stella，只剩吧台一盏暖灯。夏目靠在柜台边，单手托着下巴，金瞳毫无干劲地盯着面前的账本。你默默走过去，把一杯刚泡好的红茶放在她面前，然后开始帮她整理散落的订单。夏目愣了一下，看着你忙碌的背影，眼角的泪痣在灯光下微微颤动。她端起红茶抿了一口，温度刚刚好。沉默了很久，她才用几乎听不见的声音说了一句——「……谢谢。还有，明天的班……我帮你顶。大笨蛋，早点回去睡。」",
@@ -1576,8 +1547,7 @@
       "ledger",
       "night",
       "red_ears",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1604,7 +1574,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, cafe, bar, blush, hazy, dead, fish, gaze, lifting, meet, warm_lighting, night, bokeh, focus, cinematic, glow, full_body, soft_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, cafe, bar, blush, hazy, dead, fish, gaze, lifting, meet, warm_lighting, night, bokeh, focus, cinematic, glow, full_body, soft_lighting, detailed_background, cinematic_lighting",
     "rating": "R15",
     "season": "不限",
     "story": "【夏目 · 闭店后的微醺时光】深夜打烊后的Café Stella。夏目难得倒了小半杯红酒放松，白皙的脸颊染上了一抹浅浅的绯红，平日清冷平淡的眼眸也多了几分慵懒水汽。她微微倚着大理石吧台，衬衫领口随着倾斜的动作稍稍松开，露出漂亮的锁骨线条。见你走近，她微仰起脸看着你，眼角的泪痣在暖色灯光下分外迷人。她带着一丝醉意小声呢喃——「……柊史，你靠得太近了。还有……视线在看哪里呢？……算了，看在今天忙了一整天的份上，特别允许你多看几秒。」",
@@ -1620,8 +1590,7 @@
       "tipsy",
       "flushed",
       "night",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -1799,7 +1768,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_off-shoulder_blouse, chiffon_top, bare_shoulders, delicate_collarbone, blue_denim_shorts, sitting_at_table, offering_food, holding_spoon, spoon_with_ice_cream, cup_of_ice_cream, head_tilt, heavy_blush, shy, tsundere_pout, looking_away, dessert_shop, cafe_interior, bright_summer_day, sunlight_through_window, soft_rim_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_off-shoulder_blouse, chiffon_top, bare_shoulders, delicate_collarbone, blue_denim_shorts, sitting_at_table, offering_food, holding_spoon, spoon_with_ice_cream, cup_of_ice_cream, head_tilt, heavy_blush, shy, tsundere_pout, looking_away, dessert_shop, cafe_interior, bright_summer_day, sunlight_through_window, soft_rim_lighting, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 盛夏甜品店的心动】盛夏午后阳光明媚的冷饮店。夏目身着轻盈的纯白一字领雪纺衫与牛仔短裤，修长的双肩与锁骨在冷气中透着清凉。她正握着小勺吃着手里的双色冰淇淋，看到你一直目不转睛地看着，便有些不解地将自己刚尝过一口的冰淇淋勺递到了你嘴边。间接接触的暧昧气氛瞬间蔓延，夏目手腕一顿，半垂着金瞳，耳根在明媚的夏日日光下迅速泛红，催促着移开视线——「……别误会。我只是看你一直盯着，怕冰淇淋融化太快才分你一口而已。……真是的，别愣着了，快点吃掉啦。」",
@@ -1819,8 +1788,7 @@
       "heavy_blush",
       "tsundere",
       "summer",
-      "window_sunlight",
-      "depth_of_field"
+      "window_sunlight"
     ],
     "time": "白天",
     "timeOfDay": "all_day",
@@ -2146,7 +2114,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young_looking, plastic_bag, transparent_plastic, cellophane_wrapper, glassine_wrapper, baking_cup, cupcake_liner, clear_container, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
     "officialCgCandidate": "ocs14",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, waist_up, wearing_stella_cafe_uniform, maid_apron, ruffled_apron, white_collar, gold_bow, holding_pastry_pouch, gentle_smile, subtle_blush, looking_at_viewer, warm_wooden_cafe, wall_racks_with_cups, warm_lighting, soft_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, waist_up, wearing_stella_cafe_uniform, maid_apron, ruffled_apron, white_collar, gold_bow, holding_pastry_pouch, gentle_smile, subtle_blush, looking_at_viewer, warm_wooden_cafe, wall_racks_with_cups, warm_lighting, soft_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -2185,7 +2153,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, western_clothes",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, yukata, dark_blue_floral_yukata, loose_yukata, bare_shoulders, collarbone, bare_legs, geta, standing_in_shadow_of_shrine_warehouse_after_fireworks, eyes_closed_with_trembling_lashes, stepping_close_toward_viewer, quiet_breath, moonlight_filtering_through_trees, summer_night, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, yukata, dark_blue_floral_yukata, loose_yukata, bare_shoulders, collarbone, bare_legs, geta, standing_in_shadow_of_shrine_warehouse_after_fireworks, eyes_closed_with_trembling_lashes, stepping_close_toward_viewer, quiet_breath, moonlight_filtering_through_trees, summer_night, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "夏",
     "story": "【成年 After Story · 夏目 · 花火散尽的秘密余温】夏日祭典的最后一发巨大花火在空中散尽，人群的欢呼声渐渐变为离去的脚步声。夏目穿着深色浴衣，拉着你的袖子逆着人潮拐进神社主殿后方的古老仓库阴影里。远离灯笼的光线，只有远处零星的花火余烬映在她金色的瞳孔里。她松开你的袖子，却没有后退，反而往前迈了半步。浴衣的襟口在奔跑中微微敞开，露出了锁骨和泪痣旁泛红的肌肤。她抬眼望着你，呼吸有些乱，却还是努力维持着平静的语调——「人太多了……在这里等他们走完再回去。」然而她没有再说话，只是静静地靠近你，直到浴衣的腰带被你轻轻一拉便散开。她闭上眼，睫毛在花火余烬的微光中颤动——「只是今晚……可以不必马上回家。」",
@@ -2202,8 +2170,7 @@
       "fireworks",
       "eyes_closed",
       "night",
-      "full_body",
-      "depth_of_field"
+      "full_body"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -2215,7 +2182,7 @@
     "weather": "晴朗夏夜"
   },
   {
-    "animaCaption": "Late at night in the cozy old station-side inn room, Shiki Natsume sits relaxed on the edge of the bed in an intimate cowboy shot. Wearing a loosely tied cotton yukata after her bath with a white towel draped over one bare shoulder, droplets of warm water glisten along her collarbone and wet black hair clings to her neck; with a tender, gentle smile and a soft blush, she pats the mattress beside her, illuminated by the warm room lantern while faint platform lights flicker through the window, no text, no extra people.",
+    "animaCaption": "Late at night in the cozy old station-side inn room, Shiki Natsume sits relaxed on the edge of the bed in an intimate cowboy shot. Wearing a loosely tied cotton yukata after her bath with a white towel draped over one bare shoulder, droplets of warm water glisten along her collarbone and wet black hair clings to her neck; With a tender, gentle smile and a soft blush, she pats the mattress beside her, illuminated by the warm room light while faint platform lights flicker through the window, no text, no extra people.",
     "auditRevision": "skill-refine-sc295-2026-09-05",
     "camera": "床沿七分身亲密平视",
     "category": "旅行",
@@ -2230,7 +2197,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, japanese_yukata, loose_yukata, bare_shoulders, collarbone, water_droplets, wet_skin, white_towel_around_neck, sitting_on_bed, bed_edge, bare_legs, hand_patting_bed, sideways_glance, relaxed_smile, subtle_blush, looking_at_viewer, traditional_inn_room, tatami, window, night, station_platform_lights_outside, warm_ambient_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, japanese_yukata, loose_yukata, bare_shoulders, collarbone, water_droplets, wet_skin, white_towel_around_neck, sitting_on_bed, bed_edge, bare_legs, hand_patting_bed, sideways_glance, relaxed_smile, subtle_blush, looking_at_viewer, traditional_inn_room, tatami, window, night, station_platform_lights_outside, warm_ambient_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "冬",
     "story": "【成年 After Story · 夏目 · 车站旅馆的最后一夜】旅行最后一晚错过了末班车，两人在小站旁边的老旅馆找到最后一间房。房间很小，窗户正对着车站月台，夜里只剩下零星几盏灯。夏目洗完澡出来，穿着旅馆的浴衣，用毛巾擦着湿漉漉的黑发。她站在窗前往外看了一会儿，然后转身坐到床沿，浴衣的下摆在她坐下时微微敞开，露出修长的腿线。她拍了拍身边的位置，语气里带着旅途特有的那种松弛——「床不算大……不过应该够两个人躺。前提是你不乱动。」她把毛巾挂在一旁，侧过脸看着你，湿发贴着脖颈，水珠顺着锁骨往下滑。窗外的站台灯光在她瞳孔里微微晃动，她低声补了一句——「明天就要回去了……今晚至少暖气够足。」",
@@ -2253,8 +2220,7 @@
       "inn_room",
       "night",
       "station_platform_lights",
-      "cowboy_shot",
-      "depth_of_field"
+      "cowboy_shot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

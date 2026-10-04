@@ -113,9 +113,7 @@
         "medium_shot",
         "evening",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -475,9 +473,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -502,7 +498,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -531,9 +527,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Sagiri Izumi from Eromanga Sensei straddles your lap in her locked, cluttered bedroom, wearing her oversized pink and pastel-green hoodie with nothing on below. Clutching her Wacom stylus in one trembling hand, her small hips move in frantic, tearfully embarrassed rolls, her tiny bud-like pink nipples peeking past the lifted zipper. Her shimmering silver-blue hair falls around flushed cheeks, huge sapphire eyes swimming with indignant tears as she insists this is strictly for artistic reference.",
       "outfitId": "nsfw_boudoir",
@@ -591,9 +585,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -618,7 +610,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -643,9 +635,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Sagiri Izumi perches atop the humming, vibrating washing machine in the downstairs laundry room while her brother is out shopping. Her sheer white summer nightgown is soaked with splashed water, adhering transparently to her delicate, petite frame and rosy nipples. Taking advantage of the machine's rhythmic hum, her small fingers stroke deep into her slick cleft, her tiny pale toes curling tight as her sky-blue eyes glaze over in shame and pleasure.",
       "outfitId": "nsfw_boudoir",
@@ -708,9 +698,7 @@
         "petite",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -735,7 +723,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -765,9 +753,7 @@
         "petite",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Sagiri Izumi bends forward over her drawing desk in absolute panic as the straps of her signature green goblin mask tangle irreversibly into the back of her frilled nightgown. The tension hoists her skirt high up her slender back, showcasing an adorable, smooth bottom and dripping white panties to the whole room. Looking back with tears streaming down her furiously reddened face, she kicks her feet in mortification while the live-stream countdown ticks away.",
       "outfitId": "nsfw_boudoir",
@@ -831,9 +817,7 @@
         "petite",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -858,7 +842,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -889,9 +873,7 @@
         "petite",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "nsfwProse": "Nestled deep inside her dark, cozy bedroom closet, Sagiri Izumi hugs an illustrated light novel body pillow tightly against her small bare breasts. Her silver hair spills across spare blankets as she drives two fingers into her dripping pink folds with breathless, sobbing abandon, her slender legs spread wide in the shadows. Huge blue eyes spill tears of hopeless adult devotion down her flushed cheeks, stifling her sobs into the fabric as she climaxes alone.",
       "outfitId": "nsfw_boudoir",

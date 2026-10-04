@@ -29,9 +29,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -108,9 +106,7 @@
         "relieved",
         "window_light",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -185,9 +181,7 @@
         "small_smile",
         "red_leaf",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -250,9 +244,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -337,7 +329,7 @@
       "camera": "medium_shot",
       "mood": "sensual",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18"
     },
@@ -365,7 +357,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sceneTags": [
         "penthouse",
@@ -389,8 +381,6 @@
         "distant_skyscrapers",
         "glass_reflection",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "detailed_background",
         "rim_light",
         "cool_tones",
@@ -483,9 +473,7 @@
         "water_droplets",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -525,7 +513,7 @@
       "camera": "medium shot",
       "mood": "温柔杀机",
       "recommendedSize": "1152x1536",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18"
     },
@@ -576,9 +564,7 @@
         "small_smile",
         "window_light",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -654,9 +640,7 @@
         "belted_coat",
         "knee_boots",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -731,9 +715,7 @@
         "indoors",
         "green_yarn",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -788,7 +770,7 @@
         "night",
         "soft_glow"
       ],
-      "promptProse": "Moonlight crosses adult Yor Forger kneeling alone on a canopy bed. A black silk robe has fallen from both shoulders and gathers beneath bare breasts, while one knee presses into the sheets and the other rises beside her. She tightens the loose sash around one thigh with one hand and fingers herself with the other. Long black hair and gold earrings frame red eyes, wet lashes and an adoring blush without any second subject. Horizontal intimate solo portrait, no text or extra people.",
+      "promptProse": "Light crosses adult Yor Forger kneeling alone on a canopy bed. A black silk robe has fallen from both shoulders and gathers beneath bare breasts, while one knee presses into the sheets and the other rises beside her. She tightens the loose sash around one thigh with one hand and fingers herself with the other. Long black hair and gold earrings frame red eyes, wet lashes and an adoring blush without any second subject. Horizontal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "canopy_bed",
@@ -796,9 +778,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -907,7 +887,7 @@
         "expressionless",
         "wet_glass"
       ],
-      "promptProse": "Inside a glowing glass telephone booth on a rain-slicked Berlint boulevard at night, Fiona Frost holds a black telephone receiver to her ear while her other hand steadies a closed black umbrella against the glass door. Her dark-blue WISE pea coat and purple turtleneck remain buttoned against the cold. Yellow booth lamplight outlines her blunt white bob and long right-side fringe as she calmly reports a coded message, watching the empty street through rain-streaked glass. Wet cobblestone reflections and heavy rain haze establish the nocturnal espionage setting.",
+      "promptProse": "Inside a glowing glass telephone booth on a rain-slicked Berlint boulevard at night, Fiona Frost holds a black telephone receiver to her ear while her other hand steadies a closed black umbrella against the glass door. Her dark-blue WISE pea coat and purple turtleneck remain buttoned against the cold. Yellow booth lamplight outlines her blunt white bob and long right-side fringe as she calmly reports a coded message, watching the empty street through rain-streaked glass. Wet cobblestone reflections and heavy establish the nocturnal espionage setting.",
       "promptTokens": [
         "telephone_booth",
         "rainy_night",
@@ -978,7 +958,6 @@
         "sunbeam",
         "tiled_floor",
         "three_quarter_view",
-        "depth_of_field",
         "two_clothed_figures",
         "passing_by",
         "doctor",
@@ -1310,7 +1289,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "coverageTags": [
         "intimate"
@@ -1388,7 +1367,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "coverageTags": [
         "intimate"
@@ -1467,7 +1446,7 @@
       "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "coverageTags": [
         "special_nsfw"
@@ -1552,7 +1531,7 @@
       "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "coverageTags": [
         "special_nsfw"

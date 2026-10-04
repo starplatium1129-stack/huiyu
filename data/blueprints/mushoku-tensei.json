@@ -83,9 +83,7 @@
         "curious_look",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -181,9 +179,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -269,9 +265,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -296,7 +290,7 @@
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，褪去宽大法袍的洛琪希仅着内衣斜倚在床上，水蓝色的长发凌乱地铺在枕间。她红着脸将头顶的魔女帽往下压了压遮住眼睛——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
       "id": "roxy_migurdia_r18_teacher",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm oil lamp and soft fireplace glow",
       "location": "魔法成人研修院教师宿舍",
       "mood": "小巧玲珑与成熟教师反差",
@@ -377,9 +371,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -471,9 +463,7 @@
         "daylight",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -564,7 +554,6 @@
         "cinematic_lighting",
         "clean_face",
         "daylight",
-        "depth_of_field",
         "detailed_background",
         "dishes",
         "dress",
@@ -574,8 +563,7 @@
         "medium_shot",
         "reaching_up",
         "soft_lighting",
-        "tiptoe",
-        "volumetric_lighting"
+        "tiptoe"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -667,11 +655,9 @@
         "tatami",
         "tea",
         "veranda",
-        "volumetric_lighting",
         "yukata",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
         "water_droplets",
         "wet_skin"
       ],
@@ -697,7 +683,7 @@
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 成人研修院浴室】弥漫着浓厚水雾的石砌大浴池里，洛琪希整个人浸在清澈的水中，水蓝色发丝漂浮在水面上。水流勾勒出她娇小玲珑却比例完美的雪白身躯，她红着脸把下半张脸埋入水中——「进、进来之前好歹先敲一下门啊……不过既然进来了，就只能麻烦你帮我擦背了。」",
       "id": "roxy_migurdia_r18_academy_bath",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm steam and soft lamplight",
       "location": "魔法成人研修院浴室",
       "mood": "小巧羞涩",
@@ -774,9 +760,7 @@
         "steam",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -801,7 +785,7 @@
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 书桌夜读】深夜书房昏黄的油灯下，洛琪希伏在堆满羊皮纸的书桌前，睡眼惺忪中单薄的睡衣滑落肩头。她揉了揉泛酸的眼睛，声音软糯迷糊——「唔……这道水系复合术式终于推导完成了……好困，抱我回床上去睡嘛……」",
       "id": "roxy_migurdia_r18_desk_night",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm oil lamp",
       "location": "教师宿舍",
       "mood": "深夜温柔",
@@ -882,9 +866,7 @@
         "bare_shoulders",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -912,7 +894,7 @@
       ],
       "description": "【洛琪希 · 白丝与油灯】昏暗的木屋卧房内，洛琪希坐在高木椅上，将穿着纯白过膝袜的纤细双腿搭在椅子横梁上，足尖在灯影下轻轻晃动。她低下头害羞地抓着衣角——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
       "id": "roxy_migurdia_r18_white_socks",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "warm oil lamp",
       "location": "成人研修院宿舍",
       "mood": "小巧羞怯",
@@ -994,9 +976,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1022,7 +1002,7 @@
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 晨光魔导书】清晨的第一抹金色晨曦透过窗帘缝隙洒在大床上，洛琪希光着身子趴在松软的棉被里翻看魔法书，雪白圆润的翘臀与修长小腿在晨光下一览无遗。她侧过头软软一笑——「早上好。昨晚折腾得那么晚……今天早上的魔术课，我们一起翘掉好不好？」",
       "id": "roxy_migurdia_r18_morning_grimoire",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "soft morning light",
       "location": "成人研修院宿舍",
       "mood": "认真慵懒",
@@ -1110,9 +1090,7 @@
         "feet_up",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1211,9 +1189,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -1311,8 +1287,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -1386,9 +1361,7 @@
         "gentle_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "recommendedSize": "1152x1536",
@@ -1417,7 +1390,7 @@
       ],
       "description": "【希露菲 · 床榻私密·足底大透视与尖耳发红】主卧松软舒适的大床上，希露菲害羞地屈膝分开双腿仰卧在被单间，雪白小巧的足弓与娇嫩脚趾在视线下一览无余。她修长的精灵尖耳红得仿佛要滴血，双手紧抓着枕头——「鲁迪……这样看着我好难为情……但是只要是你想做的事，我全部都愿意接受。」",
       "id": "sylphiette_r18_bedroom_soles_foreshortening",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "床头暖橙烛火与柔和月光交织，将娇小身段渲染得极其柔嫩",
       "location": "格雷拉特宅邸温馨主卧",
       "mood": "温柔依恋与私密",
@@ -1506,9 +1479,7 @@
         "top-down_view",
         "pov",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1538,7 +1509,7 @@
       "characterId": "sylphiette",
       "description": "【希露菲 · 书房课桌·半解执事衬衫与私密暴露】魔法大学空无一人的书房里，希露菲半解开白色的执事衬衫坐在厚重的书桌边缘，平日遮掩身份的墨镜滑落至鼻梁。她胸前雪白的风光因剧烈的喘息而起伏——「在这里被别人撞见的话……菲兹学长的身份就彻底暴露了……鲁迪，快抱紧我……」",
       "id": "sylphiette_r18_fitz_unbuttoned_desk",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "desk_lamp_light",
       "location": "宅邸书房宽大书桌",
       "mood": "sensual",
@@ -1626,13 +1597,11 @@
         "flustered_expression"
       ],
       "outfitId": "silent_fitz_uniform",
-      "promptProse": "Library sunlight finds adult Sylphiette perched alone on a wide wooden desk in her Fitz attire. Her white butler shirt is unbuttoned and pulled below bare breasts, while dark trousers open at the waist above one knee drawn onto the tabletop. Tinted glasses slide down her nose as one hand braces among books and the other reaches beneath the loosened waistband. Pale hair frames deeply red elf ears and green eyes startled by her own reflection in a polished brass lamp. Horizontal medium solo portrait, no text or extra people.",
+      "promptProse": "Library light finds adult Sylphiette perched alone on a wide wooden desk in her Fitz attire. Her white butler shirt is unbuttoned and pulled below bare breasts, while dark trousers open at the waist above one knee drawn onto the tabletop. Tinted glasses slide down her nose as one hand braces among books and the other reaches beneath the loosened waistband. Pale hair frames deeply red elf ears and green eyes startled by her own reflection in a polished brass lamp. Horizontal medium solo portrait, no text or extra people.",
       "promptTokens": [
         "study_room",
         "wooden_desk",
         "books",
-        "sunlight",
-        "daylight",
         "butler_shirt",
         "unbuttoned_shirt",
         "sunglasses_on_nose",
@@ -1641,9 +1610,7 @@
         "cleavage",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1671,7 +1638,7 @@
       "characterId": "sylphiette",
       "description": "【希露菲叶特 · 格雷拉特家的初汤】新婚宅邸的木质汤浴间里，希露菲把身子沉进温热的汤水，只露出一双尖尖的精灵耳——耳朵尖已经被热气熏成了绯红色。她羞得把脸埋进水里咕嘟咕嘟冒泡，半晌才探出脑袋，红着脸小声说——「……水温、水温刚刚好！不是害羞！真的不是！」",
       "id": "sylphiette_r18_onsen_wet_elf_ears",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "warm wooden bathhouse lantern glow, rising steam, soft firelight reflections",
       "location": "格雷拉特家木质汤浴间",
       "mood": "娇羞温软",
@@ -1765,9 +1732,7 @@
         "night",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1861,9 +1826,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1966,9 +1929,7 @@
         "sunlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2031,9 +1992,7 @@
         "happy_smile",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2059,7 +2018,7 @@
       "characterId": "sylphiette",
       "description": "【希露菲 · 晨光苏醒】清晨柔和温暖的阳光洒在宽大的双人床上，希露菲慵懒地翻了个身，滑落的薄被下展露出玲珑剔透的雪白胴体。她揉着惺忪的眼眸，软软地将脸颊贴在你的胸膛上——「唔……鲁迪的味道好安心……今天可以让我再赖床五分钟吗？」",
       "id": "sylphiette_r18_morning_wake_sheets",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "morning_sunlight",
       "location": "主卧大床",
       "mood": "sensual",
@@ -2152,9 +2111,7 @@
         "top-down_view",
         "pov",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2253,9 +2210,7 @@
         "intense_gaze",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2349,9 +2304,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2447,9 +2400,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2544,9 +2495,7 @@
         "golden_hour",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2643,9 +2592,7 @@
         "night",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2741,8 +2688,6 @@
         "haughty_expression",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "full_body"
       ],
       "recommendedSize": "1216x832",
@@ -2771,7 +2716,7 @@
       ],
       "description": "【艾莉丝 · 旅店木桌前晨光解带】冒险者旅店的阳光木桌旁，艾莉丝解开上衣搭在椅背上，修长健美的全身身姿立于晨光中，金辉穿透木格窗洒在白皙紧致的平坦小腹、修长美腿与挺拔双峰上，红卷发如烈火散落，红眸带着罕见的娇羞依偎。",
       "id": "eris_greyrat_r18_sword_king_dawn",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "高窗倾泻的明亮淡金晨光与漫射天光",
       "location": "剑王居所阳光卧室",
       "mood": "野性娇羞",
@@ -2854,8 +2799,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -2888,7 +2832,7 @@
       ],
       "description": "【艾莉丝 · 林间营地帐篷晨光解甲】森林营地的敞开帐篷边，清晨明朗的阳光穿透树梢洒入，艾莉丝卸下厚重皮甲仅裹单薄毛毯立于草地毯边，修长健美的全身线条、平坦紧实的小腹、优美锁骨与饱满胸型在晨光中散发着野性魅力。",
       "id": "eris_greyrat_r18_adventurer_campfire",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "旷野壮丽金色朝阳与天光",
       "location": "魔大陆朝阳营地",
       "mood": "野性心动",
@@ -2968,9 +2912,7 @@
         "daylight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3001,7 +2943,7 @@
       "coverageTags": [],
       "description": "【艾莉丝 · 道馆木柱微汗傲娇】晨练后的道馆木柱旁，艾莉丝解开练功服领口立姿擦汗，修长健美的全身线条尽收眼底，微蹙眉头带着傲娇的红晕，晶莹汗珠滑过锁骨、平坦腹部、挺拔双峰与修长美腿，斜射晨光充满张力。",
       "id": "eris_greyrat_r18_training_hall",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "道场高窗倾泻的明亮晨光与通透天光",
       "location": "晨光剑道馆",
       "mood": "热烈傲娇",
@@ -3084,8 +3026,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -3116,7 +3057,7 @@
       "coverageTags": [],
       "description": "【艾莉丝 · 晴林岩石温泉水汽】露天温泉清澈的暖汤中，阳光明媚，艾莉丝坐在天然岩石台阶上展露修长全身身段，湿润红发贴在光滑背脊上，侧首回眸招手，水珠沿着优美腰线与修长美腿滚落，神情娇羞燥热。",
       "id": "eris_greyrat_r18_bath_house",
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "lighting": "林隙透射的明媚阳光与温泉水面波光",
       "location": "晴日山林露天温泉",
       "mood": "娇羞燥热",
@@ -3205,9 +3146,7 @@
         "bare_shoulders",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -3560,8 +3499,7 @@
         "unbuttoned_shirt",
         "bare_breasts",
         "garter_straps",
-        "night",
-        "candlelight"
+        "night"
       ],
       "description": "夜深人静，爱夏在核验完最后一叠账卷后反锁了书房。松懈下日间的严谨克制，她倚坐在坚实的胡桃木书桌边缘，解开深色女仆连衣裙的前襟，把白色围裙推到腰侧，任由薄棉衣料向两侧大敞，饱满雪白的双乳与娇嫩的粉红乳头完全袒露在微凉空气中。她一手轻抚锁骨下起伏的胸脯，另一手撩起深褐裙裾，展示出紧勒着吊袜带与黑色过膝袜的大腿线条，面泛潮红，目光微转。",
       "promptProse": "Inside the locked mansion accounting chamber late at night, adult Aisha Greyrat leans back against the polished walnut desk beside stacked parchment ledgers and an inkpot. A hooded desk lantern casts warm amber lamplight across her flushed collarbones and the wooden table surface, while soft pale moonlight cuts through the leaded windowpane behind her high auburn ponytail. One hand rests near her throat while the other lifts the hem of her dark maid skirt, revealing leather garter clips and dark thighhighs against smooth skin. Seated medium composition framed against book-lined walls.",
@@ -3598,7 +3536,7 @@
       "adult": true,
       "sampleRating": "R18",
       "characterId": "aisha_greyrat",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "negativeTokens": [
         "worst quality",
@@ -3768,7 +3706,7 @@
       "adult": true,
       "sampleRating": "R18",
       "characterId": "aisha_greyrat",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "negativeTokens": [
         "worst quality",
@@ -3857,7 +3795,7 @@
       "adult": true,
       "sampleRating": "R18",
       "characterId": "aisha_greyrat",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "negativeTokens": [
         "worst quality",

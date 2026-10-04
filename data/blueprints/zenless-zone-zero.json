@@ -40,9 +40,7 @@
         "charging",
         "shark_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -99,7 +97,6 @@
         "shark_tail",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
@@ -157,9 +154,7 @@
         "hoodie",
         "shark_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -215,9 +210,7 @@
         "sunglasses",
         "shark_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -264,7 +257,7 @@
         "nude"
       ],
       "outfitId": "maid_service_uniform",
-      "promptProse": "With one hand, Ellen carries a steaming cup of Earl Grey on an ornate silver tray through an elegant Victoria Housekeeping cafe salon. She looks down at the guest with her signature tired deadpan expression while the other hand stays clear of the tray. Polished mahogany furniture and amber chandelier light frame the quiet tea service. Close-up, slight low angle from the guest's perspective, cinematic lighting, depth of field.",
+      "promptProse": "With one hand, Ellen carries a steaming cup of Earl Grey on an ornate silver tray through an elegant Victoria Housekeeping cafe salon. She looks down at the guest with her signature tired deadpan expression while the other hand stays clear of the tray. Polished mahogany furniture and amber chandelier light frame the quiet tea service. Close-up, slight low angle from the guest's perspective, cinematic lighting.",
       "promptTokens": [
         "maid_cafe",
         "tea_tray",
@@ -272,7 +265,6 @@
         "shark_tail",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "earl_grey",
         "one_hand_holding_tray",
         "serving_tea",
@@ -339,8 +331,7 @@
         "shark_tail",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -395,9 +386,7 @@
         "lying_on_stomach",
         "shark_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -484,9 +473,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -576,9 +563,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -651,9 +636,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -681,7 +664,7 @@
       ],
       "description": "【艾莲·乔 · 放学后无人物理私人工作室的私密自抚】夕阳西下的空寂实验室课桌旁，艾莲反锁了房门。百褶裙被轻轻撩起推在腰间。她靠坐在讲台长凳边，纤细的手指轻柔探入湿润花径深处，白皙指尖在温热花褶中慢慢摩挲。硕大的鲨鱼尾巴在身侧蜷曲轻颤，嘴唇微张溢出甜软的低语——「唔嗯……哈啊……明明今天只是想快点回家睡觉的……怎么会变成这样……」",
       "id": "ellen_r18_classroom_desk_fingering_masturbation",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "浓稠金红夕阳斜射穿透窗框，打在泛红脸颊与雪白肌肤上的暖光",
       "location": "放学后空无一人的物理实验室讲台",
       "mood": "极乐沉沦",
@@ -722,8 +705,7 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "golden_hour",
-        "depth_of_field"
+        "golden_hour"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -779,9 +761,7 @@
         "fox_tail",
         "cinematic_blade",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -839,9 +819,7 @@
         "fox_ears",
         "fox_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -901,8 +879,7 @@
         "fox_tail",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -950,7 +927,7 @@
         "nude"
       ],
       "outfitId": "moonlight_yukata",
-      "promptProse": "Standing on the hillside shrine stone steps beneath brilliant cascading golden fireworks, Miyabi turns over one shoulder while holding a delicate folding fan in her elegant midnight navy floral yukata tied with a deep crimson obi. Vivid festival light illuminates her amber eyes, fox ears and plush white tail against the star-filled evening sky. Medium low-angle portrait, detailed torii background, cinematic lighting, depth of field.",
+      "promptProse": "Standing on the hillside shrine stone steps beneath brilliant cascading golden fireworks, Miyabi turns over one shoulder while holding a delicate folding fan in her elegant midnight navy floral yukata tied with a deep crimson obi. Vivid festival light illuminates her amber eyes, fox ears and plush white tail against the star-filled evening sky. Medium low-angle portrait, detailed torii background, cinematic lighting.",
       "promptTokens": [
         "fireworks_display",
         "night_festival",
@@ -961,9 +938,7 @@
         "fox_tail",
         "night_sky",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1023,9 +998,7 @@
         "fox_ears",
         "fox_tail",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [
@@ -1091,9 +1064,7 @@
         "flustered",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1142,7 +1113,7 @@
         "nude"
       ],
       "outfitId": "traditional_miko",
-      "promptProse": "A heart-meltingly charming slice-of-life anime illustration of Hoshimi Miyabi from Zenless Zone Zero sitting at a cozy, steaming street-side ramen stall counter at night. Dressed in her comfortable shrine robes with her sword resting safely behind her, she holds a large ceramic bowl of steaming tonkotsu ramen with both hands, her cheeks adorable and puffed out as she blows gently on hot noodles. Caught off guard by her partner sitting down beside her, her pointy white fox ears shoot straight up in sudden fluster and her fluffy tail curls tightly around the stool. With a soft blush heating her porcelain face and her golden eyes wide with embarrassment, she quickly swallows to explain herself. Warm lantern glow diffusing through delicious rising steam, cozy midnight atmosphere, clean anime linework, no text.",
+      "promptProse": "A heart-meltingly charming slice-of-life anime illustration of Hoshimi Miyabi from Zenless Zone Zero sitting at a cozy, steaming street-side ramen stall counter at night. Dressed in her comfortable shrine robes with her sword resting safely behind her, she holds a large ceramic bowl of steaming tonkotsu ramen with both hands, her cheeks adorable and puffed out as she blows gently on hot noodles. Caught off guard by her partner sitting down beside her, her pointy white fox ears shoot straight up in sudden fluster and her fluffy tail curls tightly around the stool. With a soft blush heating her porcelain face and her golden eyes wide with embarrassment, she quickly swallows to explain herself. Warm glow diffusing through delicious rising steam, cozy midnight atmosphere, clean anime linework, no text.",
       "promptTokens": [
         "ramen_shop",
         "noodle_stand",
@@ -1161,9 +1132,7 @@
         "flustered",
         "cute_expression",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1252,9 +1221,7 @@
         "parted_lips",
         "biting_lip",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1344,9 +1311,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",
@@ -1409,7 +1374,7 @@
         "heavy_blush"
       ],
       "outfitId": "moonlight_yukata",
-      "promptProse": "Moonlight crosses adult Hoshimi Miyabi seated alone astride a thick tatami cushion. Her dark blue yukata is untied and gathered below bare breasts while one knee folds on each side of the cushion. She rests one hand on her thigh and fingers herself with the other, her fluffy white fox tail sweeping clear of both legs. Long dark hair, fox ears and blue eyes stay disciplined through a bitten lip and shy flush. Vertical solo portrait, no text or extra people.",
+      "promptProse": "Light crosses adult Hoshimi Miyabi seated alone astride a thick tatami cushion. Her dark blue yukata is untied and gathered below bare breasts while one knee folds on each side of the cushion. She rests one hand on her thigh and fingers herself with the other, her fluffy white fox tail sweeping clear of both legs. Long dark hair, fox ears and blue eyes stay disciplined through a bitten lip and shy flush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
         "straddling",
@@ -1423,9 +1388,7 @@
         "teary_eyes",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "R18",
@@ -1454,7 +1417,7 @@
       ],
       "description": "【星见雅 · 课长桌前的私密情愫抚弄】深夜空无一人的对空六课办公室内，都市霓虹在落地窗外悄然闪烁。雅反锁了厚重的合金门，靠坐在自己的红木办公桌边。黑色百褶军裙被轻轻撩起推至腿根，修长美腿微张。她颤抖的手指探入湿润敏感的花径边缘轻柔抚弄，雪白狐耳羞怯地贴在发丝间，嘴唇紧咬溢出甜软的低语——「哈啊……这种心乱如麻的思念……即使练一整天的居合斩……也无法平静下来……」",
       "id": "miyabi_r18_office_desk_clit_fingering_blush",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "lighting": "落地窗外霓虹夜景与桌上台灯冷暖交织的静谧光晕",
       "location": "深夜紧闭的对空六课课长办公室桌前",
       "mood": "极乐沉沦",
@@ -1496,9 +1459,7 @@
         "parted_lips",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "soft_lighting",
-        "depth_of_field"
+        "soft_lighting"
       ],
       "recommendedSize": "1536x1152",
       "sampleRating": "R18",

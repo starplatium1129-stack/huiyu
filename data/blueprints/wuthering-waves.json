@@ -180,9 +180,7 @@
         "medium_shot",
         "night",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -591,9 +589,7 @@
         "morning",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -936,9 +932,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1268,7 +1262,7 @@
         "open_clothes",
         "feathers"
       ],
-      "promptProse": "Changli from Wuthering Waves straddles your lap across a low mahogany weiqi board in an open-air mountain pavilion at midnight. Her opulent crimson-and-white feathered gown is pushed off her shoulders, freeing magnificent, firm breasts with glowing peach nipples that bounce as she commands your waist in slow, fiery, mesmerizing rhythm. Her two-tone vermilion and white hair drifts like phoenix plumage in the thermal draft, her sharp amber-red eyes smoldering with masterly affection and delicious surrender as she strokes your cheek. Vertical low-angle cowgirl shot, fiery lantern glow and ember particles illuminating lavish curves, detailed Eastern fantasy background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Changli from Wuthering Waves straddles your lap across a low mahogany weiqi board in an open-air mountain pavilion at midnight. Her opulent crimson-and-white feathered gown is pushed off her shoulders, freeing magnificent, firm breasts with glowing peach nipples that bounce as she commands your waist in slow, fiery, mesmerizing rhythm. Her two-tone vermilion and white hair drifts like phoenix plumage in the thermal draft, her sharp amber-red eyes smoldering with masterly affection and delicious surrender as she strokes your cheek. Vertical low-angle cowgirl shot, fiery glow and ember particles illuminating lavish curves, detailed Eastern fantasy background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1298,9 +1292,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1325,7 +1317,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1357,11 +1349,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Changli from Wuthering Waves straddles your lap across a low mahogany weiqi board in an open-air mountain pavilion at midnight. Her opulent crimson-and-white feathered gown is pushed off her shoulders, freeing magnificent, firm breasts with glowing peach nipples that bounce as she commands your waist in slow, fiery, mesmerizing rhythm. Her two-tone vermilion and white hair drifts like phoenix plumage in the thermal draft, her sharp amber-red eyes smoldering with masterly affection and delicious surrender as she strokes your cheek. Vertical low-angle cowgirl shot, fiery lantern glow and ember particles illuminating lavish curves, detailed Eastern fantasy background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Changli from Wuthering Waves straddles your lap across a low mahogany weiqi board in an open-air mountain pavilion at midnight. Her opulent crimson-and-white feathered gown is pushed off her shoulders, freeing magnificent, firm breasts with glowing peach nipples that bounce as she commands your waist in slow, fiery, mesmerizing rhythm. Her two-tone vermilion and white hair drifts like phoenix plumage in the thermal draft, her sharp amber-red eyes smoldering with masterly affection and delicious surrender as she strokes your cheek. Vertical low-angle cowgirl shot, fiery glow and ember particles illuminating lavish curves, detailed Eastern fantasy background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1394,7 +1384,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Changli soaks inside a steaming vermilion mineral spring in the mountain heights, wisps of phoenix fire vapor curling from the water. Her drenched crimson silk undergarment clings sheer across monumental breasts and dark pink nipples, water droplets gleaming along her hourglass waist. Her hand moves deep beneath the heated surface into her dripping folds with decadent precision, her head resting back against white jade as husky moans slip from her lips. Sensual vertical framing, glowing fiery lotus lanterns reflecting off rippling ruby water and pale skin, detailed Asian fantasy background, depth of field, solo 1girl, no text.",
+      "promptProse": "Changli soaks inside a steaming vermilion mineral spring in the mountain heights, wisps of phoenix fire vapor curling from the water. Her drenched crimson silk undergarment clings sheer across monumental breasts and dark pink nipples, water droplets gleaming along her hourglass waist. Her hand moves deep beneath the heated surface into her dripping folds with decadent precision, her head resting back against white jade as husky moans slip from her lips. Sensual vertical framing, light reflecting off rippling ruby water and pale skin, detailed Asian fantasy background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1422,9 +1412,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1449,7 +1437,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1479,11 +1467,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Changli soaks inside a steaming vermilion mineral spring in the mountain heights, wisps of phoenix fire vapor curling from the water. Her drenched crimson silk undergarment clings sheer across monumental breasts and dark pink nipples, water droplets gleaming along her hourglass waist. Her hand moves deep beneath the heated surface into her dripping folds with decadent precision, her head resting back against white jade as husky moans slip from her lips. Sensual vertical framing, glowing fiery lotus lanterns reflecting off rippling ruby water and pale skin, detailed Asian fantasy background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Changli soaks inside a steaming vermilion mineral spring in the mountain heights, wisps of phoenix fire vapor curling from the water. Her drenched crimson silk undergarment clings sheer across monumental breasts and dark pink nipples, water droplets gleaming along her hourglass waist. Her hand moves deep beneath the heated surface into her dripping folds with decadent precision, her head resting back against white jade as husky moans slip from her lips. Sensual vertical framing, light reflecting off rippling ruby water and pale skin, detailed Asian fantasy background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1516,7 +1502,7 @@
         "feathers",
         "stuck_clothes"
       ],
-      "promptProse": "Changli leans forward over a rosewood study desk after the tassel of her feathered court gown catches in the bronze filigree of a go bowl. The gown slips entirely down her slender back, showcasing an arched, flawless spine and round bare hips while compressing her colossal bust into an unbelievable spill of pale flesh and flushed areolas above the desk. Turning her head back with a slow, calculating smile in her vermilion eyes, she chides your staring eyes with smoky amusement. Cinematic horizontal framing, warm candlelight illuminating ink paintings, silk feathers, and naked mature curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Changli leans forward over a rosewood study desk after the tassel of her feathered court gown catches in the bronze filigree of a go bowl. The gown slips entirely down her slender back, showcasing an arched, flawless spine and round bare hips while compressing her colossal bust into an unbelievable spill of pale flesh and flushed areolas above the desk. Turning her head back with a slow, calculating smile in her vermilion eyes, she chides your staring eyes with smoky amusement. Cinematic horizontal framing, warm light illuminating ink paintings, silk feathers, and naked mature curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1547,9 +1533,7 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1574,7 +1558,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1607,11 +1591,9 @@
         "heavy_blush",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Changli leans forward over a rosewood study desk after the tassel of her feathered court gown catches in the bronze filigree of a go bowl. The gown slips entirely down her slender back, showcasing an arched, flawless spine and round bare hips while compressing her colossal bust into an unbelievable spill of pale flesh and flushed areolas above the desk. Turning her head back with a slow, calculating smile in her vermilion eyes, she chides your staring eyes with smoky amusement. Cinematic horizontal framing, warm candlelight illuminating ink paintings, silk feathers, and naked mature curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Changli leans forward over a rosewood study desk after the tassel of her feathered court gown catches in the bronze filigree of a go bowl. The gown slips entirely down her slender back, showcasing an arched, flawless spine and round bare hips while compressing her colossal bust into an unbelievable spill of pale flesh and flushed areolas above the desk. Turning her head back with a slow, calculating smile in her vermilion eyes, she chides your staring eyes with smoky amusement. Cinematic horizontal framing, warm light illuminating ink paintings, silk feathers, and naked mature curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1644,7 +1626,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Sprawled completely naked across crimson silk sheets in her secluded bedchamber, Changli burns with the unchecked fever of her phoenix flame. Her long thighs spread wide into the candlelight as her fingers pump deep into her boiling, honey-sweet core, her voluptuous mature body arching in magnificent, shuddering waves of ecstatic release. Her two-tone hair spreads across the pillows like flames, tears of long-buried romantic yearning leaking from her red eyes as she sobs your name into the perfumed air. Intimate vertical framing, dancing firelight casting liquid amber shadows across lavish curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sprawled completely naked across crimson silk sheets in her secluded bedchamber, Changli burns with the unchecked fever of her phoenix flame. Her long thighs spread wide into the light as her fingers pump deep into her boiling, honey-sweet core, her voluptuous mature body arching in magnificent, shuddering waves of ecstatic release. Her two-tone hair spreads across the pillows like flames, tears of long-buried romantic yearning leaking from her red eyes as she sobs your name into the perfumed air. Intimate vertical framing, dancing firelight casting liquid amber shadows across lavish curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1677,9 +1659,7 @@
         "mature_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1704,7 +1684,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1739,11 +1719,9 @@
         "mature_female",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sprawled completely naked across crimson silk sheets in her secluded bedchamber, Changli burns with the unchecked fever of her phoenix flame. Her long thighs spread wide into the candlelight as her fingers pump deep into her boiling, honey-sweet core, her voluptuous mature body arching in magnificent, shuddering waves of ecstatic release. Her two-tone hair spreads across the pillows like flames, tears of long-buried romantic yearning leaking from her red eyes as she sobs your name into the perfumed air. Intimate vertical framing, dancing firelight casting liquid amber shadows across lavish curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sprawled completely naked across crimson silk sheets in her secluded bedchamber, Changli burns with the unchecked fever of her phoenix flame. Her long thighs spread wide into the light as her fingers pump deep into her boiling, honey-sweet core, her voluptuous mature body arching in magnificent, shuddering waves of ecstatic release. Her two-tone hair spreads across the pillows like flames, tears of long-buried romantic yearning leaking from her red eyes as she sobs your name into the perfumed air. Intimate vertical framing, dancing firelight casting liquid amber shadows across lavish curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1776,7 +1754,7 @@
         "open_clothes",
         "butterflies"
       ],
-      "promptProse": "The Shorekeeper from Wuthering Waves straddles your lap on the dark obsidian altar of the Black Shores, her flowing monochrome dress unfastened to expose her pristine, luminous breasts. Her dark and white data butterflies flutter around her hair and collarbones, her deep starry eyes glowing with centuries of accumulated emotional resonance as she sinks her hips down in steady, transcendent rhythm. Her endless snowy hair floats weightlessly around you both, her delicate hands framing your jaw as breathless, tender whimpers escape her lips. Vertical low-angle cowgirl shot, glowing digital particles and coastal starlight reflecting across pale skin, detailed sci-fi fantasy background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "The Shorekeeper from Wuthering Waves straddles your lap on the dark obsidian altar of the Black Shores, her flowing monochrome dress unfastened to expose her pristine, luminous breasts. Her dark and white data butterflies flutter around her hair and collarbones, her deep starry eyes glowing with centuries of accumulated emotional resonance as she sinks her hips down in steady, transcendent rhythm. Her endless snowy hair floats weightlessly around you both, her delicate hands framing your jaw as breathless, tender whimpers escape her lips. Vertical low-angle cowgirl shot, glowing digital particles and coastal starlight reflecting across pale skin, detailed sci-fi fantasy background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1803,9 +1781,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1830,7 +1806,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1859,11 +1835,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "The Shorekeeper from Wuthering Waves straddles your lap on the dark obsidian altar of the Black Shores, her flowing monochrome dress unfastened to expose her pristine, luminous breasts. Her dark and white data butterflies flutter around her hair and collarbones, her deep starry eyes glowing with centuries of accumulated emotional resonance as she sinks her hips down in steady, transcendent rhythm. Her endless snowy hair floats weightlessly around you both, her delicate hands framing your jaw as breathless, tender whimpers escape her lips. Vertical low-angle cowgirl shot, glowing digital particles and coastal starlight reflecting across pale skin, detailed sci-fi fantasy background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "The Shorekeeper from Wuthering Waves straddles your lap on the dark obsidian altar of the Black Shores, her flowing monochrome dress unfastened to expose her pristine, luminous breasts. Her dark and white data butterflies flutter around her hair and collarbones, her deep starry eyes glowing with centuries of accumulated emotional resonance as she sinks her hips down in steady, transcendent rhythm. Her endless snowy hair floats weightlessly around you both, her delicate hands framing your jaw as breathless, tender whimpers escape her lips. Vertical low-angle cowgirl shot, glowing digital particles and coastal starlight reflecting across pale skin, detailed sci-fi fantasy background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1896,7 +1870,7 @@
         "night",
         "crystals"
       ],
-      "promptProse": "The Shorekeeper bathes in the mirror-like calm of the Black Shores nocturnal ocean, glowing crystalline formations floating nearby. Completely naked, her celestial pale breasts and peach nipples rise above the surface as her endless white hair spreads like liquid glass beneath the dark water. Her hand slips between her parted thighs, rhythmically stoking her sensitive core as digital ripples pulse across the water with each heartbeat. Sensual vertical framing, bioluminescent sea glow and celestial nebulae painting ethereal blues across her porcelain curves, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "The Shorekeeper bathes in the mirror-like calm of the Black Shores nocturnal ocean, glowing crystalline formations floating nearby. Completely naked, her celestial pale breasts and peach nipples rise above the surface as her endless white hair spreads like liquid glass beneath the dark water. Her hand slips between her parted thighs, rhythmically stoking her sensitive core as digital ripples pulse across the water with each heartbeat. Sensual vertical framing, bioluminescent sea glow and celestial nebulae painting ethereal blues across her porcelain curves, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1923,9 +1897,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1950,7 +1922,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1979,11 +1951,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "The Shorekeeper bathes in the mirror-like calm of the Black Shores nocturnal ocean, glowing crystalline formations floating nearby. Completely naked, her celestial pale breasts and peach nipples rise above the surface as her endless white hair spreads like liquid glass beneath the dark water. Her hand slips between her parted thighs, rhythmically stoking her sensitive core as digital ripples pulse across the water with each heartbeat. Sensual vertical framing, bioluminescent sea glow and celestial nebulae painting ethereal blues across her porcelain curves, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "The Shorekeeper bathes in the mirror-like calm of the Black Shores nocturnal ocean, glowing crystalline formations floating nearby. Completely naked, her celestial pale breasts and peach nipples rise above the surface as her endless white hair spreads like liquid glass beneath the dark water. Her hand slips between her parted thighs, rhythmically stoking her sensitive core as digital ripples pulse across the water with each heartbeat. Sensual vertical framing, bioluminescent sea glow and celestial nebulae painting ethereal blues across her porcelain curves, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1999,7 +1969,7 @@
       "description": "【神殿中枢控制台前·早晨】概念投影校准时，黑白流光长裙的能量锁链意外在腰臀处咬死。守岸人双手撑在全息控制台上，身体前倾塌腰，紧绷的能量束将纤细的腰身与饱满丰挺的胸脯勒出道道青蓝色的数据光痕，裙摆卡在一半露出毫无防备的雪白蜜桃臀。她回头眼神空灵却泛起诱人红晕——「漂泊者……这不是故障……是身体因你而产生的未知异常……」",
       "location": "神殿中枢控制台前·早晨",
       "action": "撑全息台塌腰回眸数据链勒肉溢乳，裙摆卡死露雪臀，空灵眸子染上红晕娇喘",
-      "timeOfDay": "night",
+      "timeOfDay": "morning",
       "lighting": "warm_cinematic_lighting",
       "camera": "intimate horizontal medium shot",
       "mood": "意外失控与羞赧",
@@ -2016,7 +1986,7 @@
         "data_cable",
         "energy_chain"
       ],
-      "promptProse": "The Shorekeeper leans forward over a glowing holographic console as the data-weave chains of her dress lock tightly around her hips during an energy recalibration. The compression squeezes her generous breasts into an exquisite, overflowing display above the translucent neckline, while the holographic skirt freezes high to reveal pale, bottomless curves marked by faint blue light veins. Looking back over her shoulder with wide, starry eyes burning with digital fever, she asks for your physical intervention to clear the overflow error. Cinematic horizontal framing, cyan holographic glyphs casting geometric reflections across bare skin, detailed sci-fi background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "The Shorekeeper leans forward over a glowing holographic console as the data-weave chains of her dress lock tightly around her hips during an energy recalibration. The compression squeezes her generous breasts into an exquisite, overflowing display above the translucent neckline, while the holographic skirt freezes high to reveal pale, bottomless curves marked by faint blue light veins. Looking back over her shoulder with wide, starry eyes burning with digital fever, she asks for your physical intervention to clear the overflow error. Cinematic horizontal framing, cyan holographic glyphs casting geometric reflections across bare skin, detailed sci-fi background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -2046,9 +2016,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2073,7 +2041,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2105,11 +2073,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "The Shorekeeper leans forward over a glowing holographic console as the data-weave chains of her dress lock tightly around her hips during an energy recalibration. The compression squeezes her generous breasts into an exquisite, overflowing display above the translucent neckline, while the holographic skirt freezes high to reveal pale, bottomless curves marked by faint blue light veins. Looking back over her shoulder with wide, starry eyes burning with digital fever, she asks for your physical intervention to clear the overflow error. Cinematic horizontal framing, cyan holographic glyphs casting geometric reflections across bare skin, detailed sci-fi background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "The Shorekeeper leans forward over a glowing holographic console as the data-weave chains of her dress lock tightly around her hips during an energy recalibration. The compression squeezes her generous breasts into an exquisite, overflowing display above the translucent neckline, while the holographic skirt freezes high to reveal pale, bottomless curves marked by faint blue light veins. Looking back over her shoulder with wide, starry eyes burning with digital fever, she asks for your physical intervention to clear the overflow error. Cinematic horizontal framing, cyan holographic glyphs casting geometric reflections across bare skin, detailed sci-fi background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2142,7 +2108,7 @@
         "glowing_butterflies",
         "completely_nude"
       ],
-      "promptProse": "Stretched out naked across the black obsidian slab of the Shore Altar, the Shorekeeper experiences the overwhelming overflow of mortal passion. Her long pale thighs are spread wide as her fingers plunge relentlessly into her dripping, honeyed core, her slender frame arching in sublime waves of ecstatic release that send clouds of luminescent butterflies swarming into the dark dome. Her snowy hair floats like stardust, genuine tears of love streaming from her starry eyes as she gasps your name in joyful surrender. Intimate vertical framing, glowing celestial particles painting ethereal caustics over pristine curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Stretched out naked across the black obsidian slab of the Shore Altar, the Shorekeeper experiences the overwhelming overflow of mortal passion. Her long pale thighs are spread wide as her fingers plunge relentlessly into her dripping, honeyed core, her slender frame arching in sublime waves of ecstatic release that send clouds of luminescent butterflies swarming into the dark dome. Her snowy hair floats like stardust, genuine tears of love streaming from her starry eyes as she gasps your name in joyful surrender. Intimate vertical framing, glowing celestial particles painting ethereal caustics over pristine curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -2172,9 +2138,7 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2199,7 +2163,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2231,11 +2195,9 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Stretched out naked across the black obsidian slab of the Shore Altar, the Shorekeeper experiences the overwhelming overflow of mortal passion. Her long pale thighs are spread wide as her fingers plunge relentlessly into her dripping, honeyed core, her slender frame arching in sublime waves of ecstatic release that send clouds of luminescent butterflies swarming into the dark dome. Her snowy hair floats like stardust, genuine tears of love streaming from her starry eyes as she gasps your name in joyful surrender. Intimate vertical framing, glowing celestial particles painting ethereal caustics over pristine curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Stretched out naked across the black obsidian slab of the Shore Altar, the Shorekeeper experiences the overwhelming overflow of mortal passion. Her long pale thighs are spread wide as her fingers plunge relentlessly into her dripping, honeyed core, her slender frame arching in sublime waves of ecstatic release that send clouds of luminescent butterflies swarming into the dark dome. Her snowy hair floats like stardust, genuine tears of love streaming from her starry eyes as she gasps your name in joyful surrender. Intimate vertical framing, glowing celestial particles painting ethereal caustics over pristine curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2268,7 +2230,7 @@
         "silver_armor",
         "open_clothes"
       ],
-      "promptProse": "Cartethyia (Fleurdelys) from Wuthering Waves straddles your lap upon the marble dais of the Holy Sanctuary, her silver plate cuirass unfastened and hanging open. Her magnificent pale breasts bounce with each regal yet breathless roll of her athletic hips, her pink nipples glistening under celestial light. Her flowing silver-white hair blankets your shoulders like liquid moonlight, her pure sapphire eyes misting with devout, vulnerable affection as her armored gauntlets cup your face. Vertical low-angle cowgirl shot, holy stained-glass moonlight illuminating sculpted curves and engraved steel, detailed fantasy cathedral background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Cartethyia (Fleurdelys) from Wuthering Waves straddles your lap upon the marble dais of the Holy Sanctuary, her silver plate cuirass unfastened and hanging open. Her magnificent pale breasts bounce with each regal yet breathless roll of her athletic hips, her pink nipples glistening under celestial light. Her flowing silver-white hair blankets your shoulders like liquid moonlight, her pure sapphire eyes misting with devout, vulnerable affection as her armored gauntlets cup your face. Vertical low-angle cowgirl shot, holy stained-glass moonlight illuminating sculpted curves and engraved steel, detailed fantasy cathedral background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -2295,9 +2257,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2322,7 +2282,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2351,11 +2311,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Cartethyia (Fleurdelys) from Wuthering Waves straddles your lap upon the marble dais of the Holy Sanctuary, her silver plate cuirass unfastened and hanging open. Her magnificent pale breasts bounce with each regal yet breathless roll of her athletic hips, her pink nipples glistening under celestial light. Her flowing silver-white hair blankets your shoulders like liquid moonlight, her pure sapphire eyes misting with devout, vulnerable affection as her armored gauntlets cup your face. Vertical low-angle cowgirl shot, holy stained-glass moonlight illuminating sculpted curves and engraved steel, detailed fantasy cathedral background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Cartethyia (Fleurdelys) from Wuthering Waves straddles your lap upon the marble dais of the Holy Sanctuary, her silver plate cuirass unfastened and hanging open. Her magnificent pale breasts bounce with each regal yet breathless roll of her athletic hips, her pink nipples glistening under celestial light. Her flowing silver-white hair blankets your shoulders like liquid moonlight, her pure sapphire eyes misting with devout, vulnerable affection as her armored gauntlets cup your face. Vertical low-angle cowgirl shot, holy stained-glass moonlight illuminating sculpted curves and engraved steel, detailed fantasy cathedral background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2388,7 +2346,7 @@
         "steam",
         "water_droplets"
       ],
-      "promptProse": "Cartethyia bathes in the subterranean sacred spring of the holy capital, luminous mana particles floating on the calm water. Her drenched white linen undergarment clings sheer to her tall, athletic body, outlining full round breasts and sensitive pink nipples in breathtaking detail. Her hand moves with trembling reverence beneath the glowing surface into her hot, slick folds, her head tilted back in a quiet, breathless whimper as holy starlight reflects in her blue eyes. Sensual vertical framing, divine glowing water ripples casting soft caustics across pale muscular skin, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "Cartethyia bathes in the subterranean sacred spring of the holy capital, luminous mana particles floating on the calm water. Her drenched white linen undergarment clings sheer to her tall, athletic body, outlining full round breasts and sensitive pink nipples in breathtaking detail. Her hand moves with trembling reverence beneath the glowing surface into her hot, slick folds, her head tilted back in a quiet, breathless whimper as holy starlight reflects in her blue eyes. Sensual vertical framing, divine glowing water ripples casting soft caustics across pale muscular skin, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -2414,9 +2372,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2441,7 +2397,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2469,11 +2425,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Cartethyia bathes in the subterranean sacred spring of the holy capital, luminous mana particles floating on the calm water. Her drenched white linen undergarment clings sheer to her tall, athletic body, outlining full round breasts and sensitive pink nipples in breathtaking detail. Her hand moves with trembling reverence beneath the glowing surface into her hot, slick folds, her head tilted back in a quiet, breathless whimper as holy starlight reflects in her blue eyes. Sensual vertical framing, divine glowing water ripples casting soft caustics across pale muscular skin, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "Cartethyia bathes in the subterranean sacred spring of the holy capital, luminous mana particles floating on the calm water. Her drenched white linen undergarment clings sheer to her tall, athletic body, outlining full round breasts and sensitive pink nipples in breathtaking detail. Her hand moves with trembling reverence beneath the glowing surface into her hot, slick folds, her head tilted back in a quiet, breathless whimper as holy starlight reflects in her blue eyes. Sensual vertical framing, divine glowing water ripples casting soft caustics across pale muscular skin, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2506,7 +2460,7 @@
         "clothes_pull",
         "hands_behind_back"
       ],
-      "promptProse": "Cartethyia leans forward over a weapon rack in the royal armory as the silver chainmail buckles of her ceremonial dress tangle with her scabbard straps. The jammed harness pinches her waist tight, thrusting her voluptuous breasts forward in an exquisite swell of cleavage and erect rosebuds while exposing her bare, sculpted back. Glancing back over her shoulder with an aristocratic blush burning her pale cheeks, her blue eyes swim with mortified dignity as she commands you to maintain chivalric decorum. Cinematic horizontal framing, afternoon sunbeams gleaming off polished silver and bare skin, detailed armory background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Cartethyia leans forward over a weapon rack in the royal armory as the silver chainmail buckles of her ceremonial dress tangle with her scabbard straps. The jammed harness pinches her waist tight, thrusting her voluptuous breasts forward in an exquisite swell of cleavage and erect rosebuds while exposing her bare, sculpted back. Glancing back over her shoulder with an aristocratic blush burning her pale cheeks, her blue eyes swim with mortified dignity as she commands you to maintain chivalric decorum. Cinematic horizontal framing, afternoon sunbeams gleaming off polished silver and bare skin, detailed armory background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -2536,9 +2490,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2563,7 +2515,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2595,11 +2547,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Cartethyia leans forward over a weapon rack in the royal armory as the silver chainmail buckles of her ceremonial dress tangle with her scabbard straps. The jammed harness pinches her waist tight, thrusting her voluptuous breasts forward in an exquisite swell of cleavage and erect rosebuds while exposing her bare, sculpted back. Glancing back over her shoulder with an aristocratic blush burning her pale cheeks, her blue eyes swim with mortified dignity as she commands you to maintain chivalric decorum. Cinematic horizontal framing, afternoon sunbeams gleaming off polished silver and bare skin, detailed armory background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Cartethyia leans forward over a weapon rack in the royal armory as the silver chainmail buckles of her ceremonial dress tangle with her scabbard straps. The jammed harness pinches her waist tight, thrusting her voluptuous breasts forward in an exquisite swell of cleavage and erect rosebuds while exposing her bare, sculpted back. Glancing back over her shoulder with an aristocratic blush burning her pale cheeks, her blue eyes swim with mortified dignity as she commands you to maintain chivalric decorum. Cinematic horizontal framing, afternoon sunbeams gleaming off polished silver and bare skin, detailed armory background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -2632,7 +2582,7 @@
         "bare_breasts",
         "pink_nipples"
       ],
-      "promptProse": "Lying naked across the crisp white silk of her high sanctuary bed with her broadsword leaning against the post, Cartethyia surrenders her proud knightly soul. Her long, sculpted legs are spread wide as two fingers pump relentlessly into her soaking, sensitive depths, her chiseled abdomen and firm breasts shuddering in raw, devotional ecstasy. Her silver-white hair blankets the bed, tears of absolute surrender leaking from her sapphire eyes as ragged cries of love echo into the vaulted hall. Intimate vertical framing, moonlight filtering through holy stained glass onto glistening curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying naked across the crisp white silk of her high sanctuary bed with her broadsword leaning against the post, Cartethyia surrenders her proud knightly soul. Her long, sculpted legs are spread wide as two fingers pump relentlessly into her soaking, sensitive depths, her chiseled abdomen and firm breasts shuddering in raw, devotional ecstasy. Her silver-white hair blankets the bed, tears of absolute surrender leaking from her sapphire eyes as ragged cries of love echo into the vaulted hall. Intimate vertical framing, moonlight filtering through holy stained glass onto glistening curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -2662,9 +2612,7 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -2689,7 +2637,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -2721,11 +2669,9 @@
         "blue_eyes",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Lying naked across the crisp white silk of her high sanctuary bed with her broadsword leaning against the post, Cartethyia surrenders her proud knightly soul. Her long, sculpted legs are spread wide as two fingers pump relentlessly into her soaking, sensitive depths, her chiseled abdomen and firm breasts shuddering in raw, devotional ecstasy. Her silver-white hair blankets the bed, tears of absolute surrender leaking from her sapphire eyes as ragged cries of love echo into the vaulted hall. Intimate vertical framing, moonlight filtering through holy stained glass onto glistening curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Lying naked across the crisp white silk of her high sanctuary bed with her broadsword leaning against the post, Cartethyia surrenders her proud knightly soul. Her long, sculpted legs are spread wide as two fingers pump relentlessly into her soaking, sensitive depths, her chiseled abdomen and firm breasts shuddering in raw, devotional ecstasy. Her silver-white hair blankets the bed, tears of absolute surrender leaking from her sapphire eyes as ragged cries of love echo into the vaulted hall. Intimate vertical framing, moonlight filtering through holy stained glass onto glistening curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

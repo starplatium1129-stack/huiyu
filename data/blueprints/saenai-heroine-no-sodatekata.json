@@ -24,7 +24,7 @@
         "city_lights",
         "iconic"
       ],
-      "promptProse": "Kasumigaoka Utaha leans against her apartment balcony railing late at night after finishing a manuscript, her black evening dress slit high to reveal one long leg in glossy black stockings. City lights flicker in her red eyes as she sweeps her long black hair behind her ear and raises a wine glass toward you, announcing that the villain of her next chapter will be the one who peeked at her drafts tonight. Medium shot, cinematic lighting, volumetric night haze, detailed city background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha leans against her apartment balcony railing late at night after finishing a manuscript, her black evening dress slit high to reveal one long leg in glossy black stockings. City lights flicker in her red eyes as she sweeps her long black hair behind her ear and raises a wine glass toward you, announcing that the villain of her next chapter will be the one who peeked at her drafts tonight. Medium shot, cinematic lighting, night haze, detailed city background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -46,9 +46,7 @@
         "night",
         "city",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -91,7 +89,7 @@
         "indoors",
         "daily"
       ],
-      "promptProse": "Kasumigaoka Utaha sits behind the signing table of her book event as the queue spills out the store door, twirling her fountain pen in a graceful arc. Her red eyes sweep over your blush-red ears as she offers her terms: a signature only for readers who fill a full page with their impressions, delivered with the effortless poise of the author behind the pen name Kasumi Utako. Medium shot, cinematic lighting, volumetric interior glow, detailed bookstore background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha sits behind the signing table of her book event as the queue spills out the store door, twirling her fountain pen in a graceful arc. Her red eyes sweep over your blush-red ears as she offers her terms: a signature only for readers who fill a full page with their impressions, delivered with the effortless poise of the author behind the pen name Kasumi Utako. Medium shot, cinematic lighting, interior glow, detailed bookstore background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -109,9 +107,7 @@
         "indoors",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -154,7 +150,7 @@
         "focused",
         "daily"
       ],
-      "promptProse": "Kasumigaoka Utaha sits at a long table among the old stacks in morning light, manuscript pages spread across the wood as she bites the end of her fountain pen in rare, genuine concentration, white sleeves rolled to her elbows. Sunbeams slant between the bookshelves with drifting dust motes, and without looking up she admits that her writing efficiency does measurably improve when you sit nearby. Medium shot, cinematic lighting, volumetric god rays, detailed library background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha sits at a long table among the old stacks in morning light, manuscript pages spread across the wood as she bites the end of her fountain pen in rare, genuine concentration, white sleeves rolled to her elbows. Sunbeams slant between the bookshelves with drifting dust motes, and without looking up she admits that her writing efficiency does measurably improve when you sit nearby. Medium shot, cinematic lighting, volumetric god rays, detailed library background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -175,8 +171,7 @@
         "light_rays",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -219,7 +214,7 @@
         "casual",
         "daily"
       ],
-      "promptProse": "Kasumigaoka Utaha curls up on her apartment sofa on a weekend morning in a silk robe, black hair loose without its headband, cradling steaming black coffee with a magazine open on her lap that she has not read once. She beckons you closer with lazy red eyes, declaring that senpai mode is switched off today and only a woman who wants to be spoiled remains, so you had better not laugh. Medium shot, cinematic lighting, volumetric morning glow, detailed apartment background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha curls up on her apartment sofa on a weekend morning in a silk robe, black hair loose without its headband, cradling steaming black coffee with a magazine open on her lap that she has not read once. She beckons you closer with lazy red eyes, declaring that senpai mode is switched off today and only a woman who wants to be spoiled remains, so you had better not laugh. Medium shot, cinematic lighting, morning glow, detailed apartment background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -240,9 +235,7 @@
         "sofa",
         "morning",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -286,7 +279,7 @@
         "summer",
         "ocean"
       ],
-      "promptProse": "Kasumigaoka Utaha sits on the Shonan beach sand with her back to you in a garnet-red one-piece that leaves her mature curves in full evidence, toying with her white hairband while she pulls the back zipper down a teasing inch. Over her shoulder one red eye arches in a challenge: the zipper is out of her reach, and sunscreen from a junior is part of a senpai's rightful privileges. Bright midday sun glitters across the sea. Medium shot, cinematic lighting, volumetric summer haze, detailed ocean background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha sits on the Shonan beach sand with her back to you in a garnet-red one-piece that leaves her mature curves in full evidence, toying with her white hairband while she pulls the back zipper down a teasing inch. Over her shoulder one red eye arches in a challenge: the zipper is out of her reach, and sunscreen from a junior is part of a senpai's rightful privileges. Bright midday sun glitters across the sea. Medium shot, cinematic lighting, detailed ocean background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -307,9 +300,7 @@
         "ocean",
         "day",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -353,7 +344,7 @@
         "smile",
         "date"
       ],
-      "promptProse": "Kasumigaoka Utaha walks the winter streets in celebration of a met deadline, black wool coat and wine-red scarf wrapped against the cold. Under a streetlamp she suddenly extends her hand, fingertips chilled pink, offering to lend it to you exactly once — purely, she insists, as writer's research for writing heart-flutter into her next book. Warm lamp glow against blue snow-night in a medium two-shot, cinematic lighting, volumetric night haze, detailed street background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha walks the winter streets in celebration of a met deadline, black wool coat and wine-red scarf wrapped against the cold. Under a streetlamp she suddenly extends her hand, fingertips chilled pink, offering to lend it to you exactly once — purely, she insists, as writer's research for writing heart-flutter into her next book. Warm lamp glow against blue snow-night in a medium two-shot, cinematic lighting, detailed street background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -374,9 +365,7 @@
         "night",
         "winter",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -419,7 +408,7 @@
         "smile",
         "romance"
       ],
-      "promptProse": "Kasumigaoka Utaha stands at the church altar in a pure white wedding gown, her white hairband traded for a veil over her long black hair, holding her handwritten vows. The sardonic glint in her red eyes gives way to sincere light as she declares that heroines in her stories always faltered at the final step, so this ending she will write herself, in person. Environmental portrait, cinematic lighting, volumetric stained-glass light, detailed church background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha stands at the church altar in a pure white wedding gown, her white hairband traded for a veil over her long black hair, holding her handwritten vows. The sardonic glint in her red eyes gives way to sincere light as she declares that heroines in her stories always faltered at the final step, so this ending she will write herself, in person. Environmental portrait, cinematic lighting, stained-glass light, detailed church background.",
       "promptTokens": [
         "kasumigaoka_utaha",
         "1girl",
@@ -437,9 +426,7 @@
         "stained_glass",
         "light_rays",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -483,7 +470,7 @@
         "sensual_solo"
       ],
       "adultArtistHint": "@rella",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "outfitId": "sensual_lace_lingerie",
       "sceneTags": [
@@ -512,8 +499,6 @@
         "night",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field",
         "vertical_shot"
       ],
       "negativeTokens": [
@@ -603,7 +588,7 @@
         "exposed_pussy",
         "papers"
       ],
-      "promptProse": "Deadline pressure transmutes into captivating intimacy. Leaning forward across her manuscript-covered desk with her uniform skirt pushed to her waist and glossy black pantyhose strained taut over generous curves, Kasumigaoka Utaha grips the scattered papers as her trembling body arches in delight. She turns her head with a teasing, flushed smile and glistening crimson eyes, whispering through uneven gasps that this scandalous scene will be immortalized in her next novel. Warm desk-lamp amber light spills across her stockinged thighs and scattered manuscripts in a horizontal composition, detailed background, depth of field.",
+      "promptProse": "Deadline pressure transmutes into captivating intimacy. Leaning forward across her manuscript-covered desk with her uniform skirt pushed to her waist and glossy black pantyhose strained taut over generous curves, Kasumigaoka Utaha grips the scattered papers as her trembling body arches in delight. She turns her head with a teasing, flushed smile and glistening crimson eyes, whispering through uneven gasps that this scandalous scene will be immortalized in her next novel. Warm desk-lamp amber light spills across her stockinged thighs and scattered manuscripts in a horizontal composition, detailed background.",
       "nsfwProse": "Leaning across her paper-strewn desk with her pleated skirt hitched to her waist and sheer black tights strained taut, Utaha glances back with ruby eyes in breathless teasing arousal.",
       "promptTokens": [
         "study",
@@ -614,9 +599,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -674,7 +657,7 @@
         "bare_breasts",
         "tears"
       ],
-      "promptProse": "The sharp-tongued novelist is disarmingly tender in the quiet of the night. Lying across the soft bedsheets with her long black hair spread out like night itself, Kasumigaoka Utaha watches with glistening ruby eyes, words failing her as one hand drifts softly between her pale thighs. Her generous chest rises and falls with gentle, vulnerable gasps, dusky pink nipples glistening beneath the dim warm glow, finally confessing with trembling lips that tonight the sharp tongue is retired because everything she cannot write is right here. Intimate vertical composition, warm cinematic lighting, detailed bedroom background, depth of field.",
+      "promptProse": "The sharp-tongued novelist is disarmingly tender in the quiet of the night. Lying across the soft bedsheets with her long black hair spread out like night itself, Kasumigaoka Utaha watches with glistening ruby eyes, words failing her as one hand drifts softly between her pale thighs. Her generous chest rises and falls with gentle, vulnerable gasps, dusky pink nipples glistening beneath the dim warm glow, finally confessing with trembling lips that tonight the sharp tongue is retired because everything she cannot write is right here. Intimate vertical composition, warm cinematic lighting, detailed bedroom background.",
       "nsfwProse": "Lying supine across soft bedsheets with long dark hair fanning the pillows, Utaha Kasumigaoka curves her bare breasts and glides fingers between pale parted thighs in tender, speechless surrender.",
       "promptTokens": [
         "bedroom",
@@ -683,9 +666,7 @@
         "warm_lighting",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -745,7 +726,7 @@
         "masturbation",
         "steam"
       ],
-      "promptProse": "Kasumigaoka Utaha's deadline-night ritual is a tub of hot water and a silk robe soaked to translucent sheerness. Reclining against the bath rim with the wet silk clinging to every mature curve, she lets one hand drift beneath the water, tracing remembered contours while her red eyes fall half-lidded, recording in her mental research diary that memory alone has verifiable precision. Sensual solo composition, wet translucent silk, cinematic lighting, volumetric steam, detailed bathroom background, depth of field.",
+      "promptProse": "Kasumigaoka Utaha's deadline-night ritual is a tub of hot water and a silk robe soaked to translucent sheerness. Reclining against the bath rim with the wet silk clinging to every mature curve, she lets one hand drift beneath the water, tracing remembered contours while her red eyes fall half-lidded, recording in her mental research diary that memory alone has verifiable precision. Sensual solo composition, wet translucent silk, cinematic lighting, steam, detailed bathroom background.",
       "nsfwProse": "Reclining in hot bathwater with a wet silk robe clinging sheerly over full breasts and taut dark nipples, Utaha touches herself beneath the steaming ripples with lazy, sensual precision.",
       "promptTokens": [
         "bathroom",
@@ -755,9 +736,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -822,7 +801,7 @@
         "slight_smile",
         "iconic"
       ],
-      "promptProse": "Megumi Kato stands on a sunlit hillside street in spring during the full bloom of cherry blossoms. She wears her iconic pristine white dress with fluttering short sleeves and her signature white beret. She presses one hand lightly against the beret brim to steady it against the playful breeze while holding a small paper bag, turning back over her shoulder with a faint, heartwarming smile. Soft pink petals drift around her in the golden afternoon air. Medium shot, cinematic natural lighting, volumetric sun haze, detailed slope background, depth of field, solo 1girl, no text.",
+      "promptProse": "Megumi Kato stands on a sunlit hillside street in spring during the full bloom of cherry blossoms. She wears her iconic pristine white dress with fluttering short sleeves and her signature white beret. She presses one hand lightly against the beret brim to steady it against the playful breeze while holding a small paper bag, turning back over her shoulder with a faint, heartwarming smile. Soft pink petals drift around her in the golden afternoon air. Medium shot, cinematic natural lighting, detailed slope background, depth of field, solo 1girl, no text.",
       "promptTokens": [
         "katou_megumi",
         "1girl",
@@ -846,8 +825,7 @@
         "sunlight",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -894,7 +872,7 @@
         "school_uniform",
         "red_cardigan"
       ],
-      "promptProse": "Megumi Kato sits at a computer desk inside the after-school game development clubroom, wearing her navy sailor uniform under an unbuttoned cherry-red cardigan. Playtesting a rough demo, she rests her cheek against one palm while holding the mouse, her soft brown eyes narrowing into an adorable deadpan squint at the bizarre dialogue on screen. The soft glow of the monitor illuminates her calm, understated expression amidst stacks of scenario scripts. Medium shot, warm late-afternoon twilight mixing with screen light, detailed clubroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Megumi Kato sits at a computer desk inside the after-school game development clubroom, wearing her navy sailor uniform under an unbuttoned cherry-red cardigan. Playtesting a rough demo, she rests her cheek against one palm while holding the mouse, her soft brown eyes narrowing into an adorable deadpan squint at the bizarre dialogue on screen. The soft glow of the monitor illuminates her calm, understated expression amidst stacks of scenario scripts. Medium shot, warm late-afternoon twilight mixing with screen light, detailed clubroom background, solo 1girl, no extra people.",
       "promptTokens": [
         "katou_megumi",
         "1girl",
@@ -918,9 +896,7 @@
         "papers",
         "screen_light",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -986,9 +962,7 @@
         "streetlight",
         "medium_shot",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1040,7 +1014,7 @@
         "serious",
         "cute"
       ],
-      "promptProse": "Megumi Kato stands thoughtfully in a brightly lit boutique clothing store on a weekend afternoon, her brown hair tied up in a neat ponytail. She holds two contrasting summer dresses up against her figure with quiet seriousness, glancing down between the price tags and fabrics with honest, unpretentious consideration. Soft pastel garments on racks surround her in warm golden store lighting. Medium shot, crisp line art, elegant boutique bokeh, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Megumi Kato stands thoughtfully in a brightly lit boutique clothing store on a weekend afternoon, her brown hair tied up in a neat ponytail. She holds two contrasting summer dresses up against her figure with quiet seriousness, glancing down between the price tags and fabrics with honest, unpretentious consideration. Soft pastel garments on racks surround her in warm golden store lighting. Medium shot, crisp line art, elegant boutique bokeh, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "katou_megumi",
         "1girl",
@@ -1059,9 +1033,7 @@
         "clothes_rack",
         "warm_lighting",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1108,7 +1080,7 @@
         "calm",
         "looking_out_window"
       ],
-      "promptProse": "Megumi Kato sits quietly beside a large train window on an evening commuter ride home. Earphone cables drape down the front of her red cardigan and sailor uniform as she lifts her calm brown eyes from her phone toward the vibrant sunset outside. Broad beams of golden and violet light stream through the glass, casting rich warm highlights across her short brown bob and tranquil profile. Medium shot, cinematic golden hour lighting, detailed train interior background, depth of field, solo 1girl, no text.",
+      "promptProse": "Megumi Kato sits quietly beside a large train window on an evening commuter ride home. Earphone cables drape down the front of her red cardigan and sailor uniform as she lifts her calm brown eyes from her phone toward the vibrant sunset outside. Broad beams of golden and violet light stream through the glass, casting rich warm highlights across her short brown bob and tranquil profile. Medium shot, cinematic golden hour lighting, detailed train interior background, solo 1girl, no text.",
       "promptTokens": [
         "katou_megumi",
         "1girl",
@@ -1131,7 +1103,6 @@
         "golden_hour",
         "detailed_background",
         "cinematic_lighting",
-        "depth_of_field",
         "volumetric_lighting"
       ],
       "negativeTokens": [
@@ -1197,9 +1168,7 @@
         "medium_shot",
         "morning",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1267,9 +1236,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1306,7 +1273,7 @@
       "description": "【伦也卧室·假日清晨】难得留宿的早晨，惠套着男式大号白衬衫跨坐在你腰间。衬衫扣子解开了大半，露出纤细白皙的锁骨与软肉，平时波澜不惊的眼神在微喘中漾起轻微水光——「伦也君……别光看着啊。要是社团脚本写不出来的话……这种取材……稍微、再多陪你一下也可以哦。」",
       "location": "伦也卧室·假日清晨",
       "action": "跪坐晨光软被大号衬衫半敞，纤细双腿微曲，垂眸微喘前倾浅笑",
-      "timeOfDay": "深夜",
+      "timeOfDay": "morning",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "vertical POV",
       "mood": "唯美动情、私密深情",
@@ -1317,20 +1284,17 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Megumi Kato from Saekano kneels forward upon tangled sheets in the quiet holiday morning light, wearing an oversized white boyfriend shirt left mostly unbuttoned. Her modest pale chest rises and falls with delicate breaths, pink nipples exposed above the parted cotton as her slender thighs fold beneath her. Her deadpan expression softens into a fond, bashful gaze, soft brown eyes glinting through subtle morning tears as she leans close with quiet tenderness. Vertical low-angle composition, golden hour sunlight streaming across rumpled sheets, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Megumi Kato from Saekano kneels forward upon tangled sheets in the quiet holiday morning light, wearing an oversized white boyfriend shirt left mostly unbuttoned. Her modest pale chest rises and falls with delicate breaths, pink nipples exposed above the parted cotton as her slender thighs fold beneath her. Her deadpan expression softens into a fond, bashful gaze, soft brown eyes glinting through subtle morning tears as she leans close with quiet tenderness. Vertical low-angle composition, sunlight streaming across rumpled sheets, detailed bedroom background, solo 1girl, no extra people.",
       "nsfwProse": "Kneeling forward upon tangled morning sheets with her oversized boyfriend shirt unbuttoned over bare perky breasts, Megumi Kato leans in close with shy, tender affection.",
       "promptTokens": [
         "bedroom",
         "bed",
         "morning_light",
         "sunlight",
-        "golden_hour",
         "low_angle",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1392,7 +1356,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Megumi Kato sits on the smooth tiled edge of a steaming bathroom late at night, a soaked white towel clinging translucently over her petite frame. Droplets of moisture glisten down her delicate collarbone and bare stomach as one slender hand glides between her trembling thighs beneath the rising vapor. Her calm brown eyes turn glossy with private longing, lips parted in a quiet sigh of shy pleasure. Sensual vertical composition, soft cinematic rim light cutting through misty steam, detailed bathroom background, depth of field, solo 1girl, no text.",
+      "promptProse": "Megumi Kato sits on the smooth tiled edge of a steaming bathroom late at night, a soaked white towel clinging translucently over her petite frame. Droplets of moisture glisten down her delicate collarbone and bare stomach as one slender hand glides between her trembling thighs beneath the rising vapor. Her calm brown eyes turn glossy with private longing, lips parted in a quiet sigh of shy pleasure. Sensual vertical composition, soft cinematic rim light cutting through misty steam, detailed bathroom background, solo 1girl, no text.",
       "nsfwProse": "Sitting upon the tiled tub edge with a soaked white towel clinging translucently over small bare breasts, Megumi Kato touches her wet thighs in quiet, misty yearning amidst warm bathroom vapors.",
       "promptTokens": [
         "bathroom",
@@ -1402,9 +1366,7 @@
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1465,7 +1427,7 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Trapped inside a warm boutique dressing room, Megumi Kato leans forward against the full-length mirror as the back zipper of her new white summer dress jams stubbornly at her slender waist. Her hands strain behind her arched back, the tight bodice squeezing her modest breasts into an alluring spill while her skirt bunches over taut hips. She glances back over her shoulder with glowing red cheeks and teary brown eyes, biting her lip as she murmurs for help. Cinematic horizontal composition, warm fitting-room overhead lighting, soft shadows, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Trapped inside a warm boutique dressing room, Megumi Kato leans forward against the full-length mirror as the back zipper of her new white summer dress jams stubbornly at her slender waist. Her hands strain behind her arched back, the tight bodice squeezing her modest breasts into an alluring spill while her skirt bunches over taut hips. She glances back over her shoulder with glowing red cheeks and teary brown eyes, biting her lip as she murmurs for help. Cinematic horizontal composition, warm fitting-room overhead lighting, soft shadows, detailed background, solo 1girl, no extra people.",
       "nsfwProse": "Leaning against the boutique mirror as her dress zipper jams tight around her waist, Megumi Kato strains her arms behind arched hips, biting her lip in flustered, blushing appeal.",
       "promptTokens": [
         "dressing_room",
@@ -1475,9 +1437,7 @@
         "looking_back",
         "horizontal_framing",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1537,19 +1497,16 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Megumi Kato lies back across the rumpled futon of the mountain retreat lodge after finishing the doujin game deadline. Her brown hair spreads out across the sheets as her slender frame arches in profound, quiet vulnerability, fingers resting tenderly between her pale thighs. Her soft brown eyes glisten with unguarded devotion, murmuring with parted trembling lips that tonight she is no longer an invisible passerby, but the only heroine meant for you. Intimate vertical composition, warm lantern shadows across flushed skin, detailed tatami background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Megumi Kato lies back across the rumpled futon of the mountain retreat lodge after finishing the doujin game deadline. Her brown hair spreads out across the sheets as her slender frame arches in profound, quiet vulnerability, fingers resting tenderly between her pale thighs. Her soft brown eyes glisten with unguarded devotion, murmuring with parted trembling lips that tonight she is no longer an invisible passerby, but the only heroine meant for you. Intimate vertical composition, warm shadows across flushed skin, detailed tatami background, solo 1girl, no extra people.",
       "nsfwProse": "Lying back across the futon with hair fanning the mats, Megumi Kato parts slender thighs in quiet vulnerability, offering bare breasts and wet warmth to her only creator.",
       "promptTokens": [
         "japanese_room",
         "tatami",
         "futon",
-        "lantern_light",
         "night",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",

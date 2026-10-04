@@ -24,7 +24,7 @@
         "action",
         "confident"
       ],
-      "promptProse": "Asuna Yuuki charges forward through an ominous high-level dungeon corridor wielding her rapier Lambent Light. Brilliant golden sword skill light trails ignite from the swift blade tips, casting crisp specular highlights over her crimson-and-white Knights of the Blood tunic and flowing chestnut hair. Magic crystal lanterns flicker against the stone dungeon walls in volumetric battle atmosphere.",
+      "promptProse": "Asuna Yuuki charges forward through an ominous high-level dungeon corridor wielding her rapier Lambent Light. Brilliant golden sword skill light trails ignite from the swift blade tips, casting crisp specular highlights over her crimson-and-white Knights of the Blood tunic and flowing chestnut hair. Magic light flicker against the stone dungeon walls in battle atmosphere.",
       "promptTokens": [
         "dungeon",
         "ruins",
@@ -38,9 +38,7 @@
         "dynamic_angle",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -104,9 +102,7 @@
         "morning_light",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -183,8 +179,7 @@
         "afternoon",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -250,7 +245,6 @@
         "close-up",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
         "depth_of_field"
       ],
       "negativeTokens": [
@@ -308,9 +302,7 @@
         "dynamic_pose",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -367,9 +359,7 @@
         "blushing",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -423,9 +413,7 @@
         "wind_blown",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -504,8 +492,7 @@
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -580,9 +567,7 @@
         "sweat",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -658,8 +643,7 @@
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -732,9 +716,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -935,9 +917,7 @@
         "medium_shot",
         "afternoon",
         "detailed_background",
-        "depth_of_field",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1196,7 +1176,7 @@
         "open_clothes",
         "bare_breasts"
       ],
-      "promptProse": "Shino Asada (Sinon) from Sword Art Online straddles your lap behind a sniper bunker in a ruined Gun Gale Online desert tower. Her dark-green military combat suit is unzipped to the navel, baring compact, firm breasts with taut pink nipples that bounce with the precise, athletic rhythm of her hips. Her Cait Sith cat tail coils possessively around your thigh, her aqua-blue eyes burning with icy sniper focus melting into raw sensual panic as she grips your shoulders. Vertical low-angle cowgirl shot, neon HUD reflections and desert sandstorm moonlight illuminating pale curves, detailed sci-fi ruins background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Shino Asada (Sinon) from Sword Art Online straddles your lap behind a sniper bunker in a ruined Gun Gale Online desert tower. Her dark-green military combat suit is unzipped to the navel, baring compact, firm breasts with taut pink nipples that bounce with the precise, athletic rhythm of her hips. Her Cait Sith cat tail coils possessively around your thigh, her aqua-blue eyes burning with icy sniper focus melting into raw sensual panic as she grips your shoulders. Vertical low-angle cowgirl shot, neon HUD reflections and desert sandstorm light illuminating pale curves, detailed sci-fi ruins background, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
@@ -1222,9 +1202,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1249,7 +1227,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1277,11 +1255,9 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Shino Asada (Sinon) from Sword Art Online straddles your lap behind a sniper bunker in a ruined Gun Gale Online desert tower. Her dark-green military combat suit is unzipped to the navel, baring compact, firm breasts with taut pink nipples that bounce with the precise, athletic rhythm of her hips. Her Cait Sith cat tail coils possessively around your thigh, her aqua-blue eyes burning with icy sniper focus melting into raw sensual panic as she grips your shoulders. Vertical low-angle cowgirl shot, neon HUD reflections and desert sandstorm moonlight illuminating pale curves, detailed sci-fi ruins background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Shino Asada (Sinon) from Sword Art Online straddles your lap behind a sniper bunker in a ruined Gun Gale Online desert tower. Her dark-green military combat suit is unzipped to the navel, baring compact, firm breasts with taut pink nipples that bounce with the precise, athletic rhythm of her hips. Her Cait Sith cat tail coils possessively around your thigh, her aqua-blue eyes burning with icy sniper focus melting into raw sensual panic as she grips your shoulders. Vertical low-angle cowgirl shot, neon HUD reflections and desert sandstorm light illuminating pale curves, detailed sci-fi ruins background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1314,7 +1290,7 @@
         "water_droplets",
         "wet_skin"
       ],
-      "promptProse": "In her modest Tokyo apartment bathroom, real-world Shino Asada huddles naked inside a small ceramic bathtub, her natural black hair glued damp to her fragile collarbones. Without her virtual avatar's bravado, her hands tremble as she caresses her slick, aching core beneath the warm water, her knees drawn close to protect her petite frame. Tears of lingering trauma and desperate need for Kirito's reassurance stream into the bath, her breath hitching in fragile, shuddering moans. Sensual vertical composition, dim yellow bathroom bulb cutting through heavy steam onto porcelain curves, detailed background, depth of field, solo 1girl, no text.",
+      "promptProse": "In her modest Tokyo apartment bathroom, real-world Shino Asada huddles naked inside a small ceramic bathtub, her natural black hair glued damp to her fragile collarbones. Without her virtual avatar's bravado, her hands tremble as she caresses her slick, aching core beneath the warm water, her knees drawn close to protect her petite frame. Tears of lingering trauma and desperate need for Kirito's reassurance stream into the bath, her breath hitching in fragile, shuddering moans. Sensual vertical composition, dim yellow bathroom bulb cutting through heavy steam onto porcelain curves, detailed background, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -1340,9 +1316,7 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1367,7 +1341,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1395,11 +1369,9 @@
         "teary_eyes",
         "parted_lips",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "In her modest Tokyo apartment bathroom, real-world Shino Asada huddles naked inside a small ceramic bathtub, her natural black hair glued damp to her fragile collarbones. Without her virtual avatar's bravado, her hands tremble as she caresses her slick, aching core beneath the warm water, her knees drawn close to protect her petite frame. Tears of lingering trauma and desperate need for Kirito's reassurance stream into the bath, her breath hitching in fragile, shuddering moans. Sensual vertical composition, dim yellow bathroom bulb cutting through heavy steam onto porcelain curves, detailed background, depth of field, solo 1girl, no text.",
+      "nsfwProse": "In her modest Tokyo apartment bathroom, real-world Shino Asada huddles naked inside a small ceramic bathtub, her natural black hair glued damp to her fragile collarbones. Without her virtual avatar's bravado, her hands tremble as she caresses her slick, aching core beneath the warm water, her knees drawn close to protect her petite frame. Tears of lingering trauma and desperate need for Kirito's reassurance stream into the bath, her breath hitching in fragile, shuddering moans. Sensual vertical composition, dim yellow bathroom bulb cutting through heavy steam onto porcelain curves, detailed background, solo 1girl, no text.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1432,7 +1404,7 @@
         "stuck_zipper",
         "clothes_pull"
       ],
-      "promptProse": "Sinon leans forward over a heavy metal ammo crate in the GGO armory as the rear thermal vent zipper of her tactical bodysuit jams against the ballistic lining. The tight composite fabric squeezes her lithe waist and arches her round, supple backside high, pressing her compact breasts into exquisite relief against the reinforced fabric. Glancing back over her shoulder with flattened feline ears and aqua eyes glazed with heat-stroke arousal, she orders you to cut her free before her avatar overheats. Cinematic horizontal framing, green holographic terminal displays casting sci-fi lighting over tight curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Sinon leans forward over a heavy metal ammo crate in the GGO armory as the rear thermal vent zipper of her tactical bodysuit jams against the ballistic lining. The tight composite fabric squeezes her lithe waist and arches her round, supple backside high, pressing her compact breasts into exquisite relief against the reinforced fabric. Glancing back over her shoulder with flattened feline ears and aqua eyes glazed with heat-stroke arousal, she orders you to cut her free before her avatar overheats. Cinematic horizontal framing, green holographic terminal displays casting sci-fi lighting over tight curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -1459,9 +1431,7 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1486,7 +1456,7 @@
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1515,11 +1485,9 @@
         "parted_lips",
         "wide_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Sinon leans forward over a heavy metal ammo crate in the GGO armory as the rear thermal vent zipper of her tactical bodysuit jams against the ballistic lining. The tight composite fabric squeezes her lithe waist and arches her round, supple backside high, pressing her compact breasts into exquisite relief against the reinforced fabric. Glancing back over her shoulder with flattened feline ears and aqua eyes glazed with heat-stroke arousal, she orders you to cut her free before her avatar overheats. Cinematic horizontal framing, green holographic terminal displays casting sci-fi lighting over tight curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Sinon leans forward over a heavy metal ammo crate in the GGO armory as the rear thermal vent zipper of her tactical bodysuit jams against the ballistic lining. The tight composite fabric squeezes her lithe waist and arches her round, supple backside high, pressing her compact breasts into exquisite relief against the reinforced fabric. Glancing back over her shoulder with flattened feline ears and aqua eyes glazed with heat-stroke arousal, she orders you to cut her free before her avatar overheats. Cinematic horizontal framing, green holographic terminal displays casting sci-fi lighting over tight curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",
@@ -1552,7 +1520,7 @@
         "completely_nude",
         "bare_breasts"
       ],
-      "promptProse": "Lying naked across her cramped single bed in the Tokyo night, Shino Asada hugs an imitation model revolver to her chest in intense psychological surrender. Her slender legs spread wide as her fingers drive relentlessly into her dripping pink depths, her petite, toned body arching in violent spasms of pleasure that wash away years of terror. Her dark hair splays across the pillow, tears of pure emotional catharsis streaming into her mouth as breathless cries of Kirito's name fill the room. Intimate vertical framing, blue city moonlight spilling through sheer curtains onto trembling curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Lying naked across her cramped single bed in the Tokyo night, Shino Asada hugs an imitation model revolver to her chest in intense psychological surrender. Her slender legs spread wide as her fingers drive relentlessly into her dripping pink depths, her petite, toned body arching in violent spasms of pleasure that wash away years of terror. Her dark hair splays across the pillow, tears of pure emotional catharsis streaming into her mouth as breathless cries of Kirito's name fill the room. Intimate vertical framing, blue city moonlight spilling through sheer curtains onto trembling curves, detailed background, solo 1girl, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -1580,9 +1548,7 @@
         "petite",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1607,7 +1573,7 @@
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
       "nsfwTokens": [
@@ -1637,11 +1603,9 @@
         "petite",
         "vertical_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
-      "nsfwProse": "Lying naked across her cramped single bed in the Tokyo night, Shino Asada hugs an imitation model revolver to her chest in intense psychological surrender. Her slender legs spread wide as her fingers drive relentlessly into her dripping pink depths, her petite, toned body arching in violent spasms of pleasure that wash away years of terror. Her dark hair splays across the pillow, tears of pure emotional catharsis streaming into her mouth as breathless cries of Kirito's name fill the room. Intimate vertical framing, blue city moonlight spilling through sheer curtains onto trembling curves, detailed background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Lying naked across her cramped single bed in the Tokyo night, Shino Asada hugs an imitation model revolver to her chest in intense psychological surrender. Her slender legs spread wide as her fingers drive relentlessly into her dripping pink depths, her petite, toned body arching in violent spasms of pleasure that wash away years of terror. Her dark hair splays across the pillow, tears of pure emotional catharsis streaming into her mouth as breathless cries of Kirito's name fill the room. Intimate vertical framing, blue city moonlight spilling through sheer curtains onto trembling curves, detailed background, solo 1girl, no extra people.",
       "outfitId": "nsfw_boudoir",
       "coverageTags": [
         "nsfw",

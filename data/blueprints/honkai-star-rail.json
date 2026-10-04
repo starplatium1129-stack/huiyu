@@ -36,9 +36,7 @@
         "composed_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -100,9 +98,7 @@
         "muzzle_flash",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -165,9 +161,7 @@
         "looking_back",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -228,9 +222,7 @@
         "seductive_smile",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -291,9 +283,7 @@
         "intense_gaze",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -354,9 +344,7 @@
         "pensive_smile",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -405,7 +393,7 @@
         "charming_smile",
         "cobblestone_street"
       ],
-      "promptProse": "Sitting at an outdoor cafe table at golden hour with hands clasped over her wine, Kafka welcomes the viewer with a captivating, intimate smile. Cobblestone street lanterns and warm amber twilight create a romantic, unforgettable rendezvous.",
+      "promptProse": "Sitting at an outdoor cafe table at golden hour with hands clasped over her wine, Kafka welcomes the viewer with a captivating, intimate smile. Cobblestone street lights and warm amber twilight create a romantic, unforgettable rendezvous.",
       "promptTokens": [
         "street_cafe",
         "cast_iron_table",
@@ -416,9 +404,7 @@
         "charming_smile",
         "medium_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -486,9 +472,7 @@
         "cowboy_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -547,7 +531,7 @@
       "adult": true,
       "adultEligibility": "adult",
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "",
       "animaStyleHint": "r18_sensual_cg",
       "adultArtistHint": "@rella",
       "outfitId": "seductive_spider_lingerie",
@@ -586,7 +570,6 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field",
         "vertical_shot"
       ],
       "negativeTokens": [
@@ -705,9 +688,7 @@
         "high_angle",
         "top-down_view",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -796,9 +777,7 @@
         "medium_shot",
         "first-person_pov",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -856,7 +835,6 @@
       "mood": "戏弄狂气",
       "sceneTags": [
         "penacony",
-        "golden_hour",
         "neon_city",
         "confetti",
         "floating",
@@ -882,9 +860,7 @@
         "cowboy_shot",
         "low_angle",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -941,8 +917,7 @@
         "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "volumetric_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -999,10 +974,8 @@
         "pink_eyes",
         "night_city",
         "cowboy_shot",
-        "depth_of_field",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1060,9 +1033,7 @@
         "twintails",
         "medium_shot",
         "cinematic_lighting",
-        "detailed_background",
-        "volumetric_lighting",
-        "depth_of_field"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1121,9 +1092,7 @@
         "twintails",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1179,9 +1148,7 @@
         "water_reflections",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1237,9 +1204,7 @@
         "spotlight",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1301,9 +1266,7 @@
         "vertical_shot",
         "low_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1377,9 +1340,7 @@
         "wide_shot",
         "horizontal",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1455,9 +1416,7 @@
         "vertical_shot",
         "high_angle",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1527,9 +1486,7 @@
         "sensual_solo",
         "cowboy_shot",
         "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+        "cinematic_lighting"
       ],
       "negativeTokens": [
         "worst quality",
